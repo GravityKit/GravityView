@@ -49,15 +49,11 @@
 
 				// [View, WP widget] hook to update row input types
 				.on( 'change', "." + wrapClass +" select.gv-search-fields", gvSearchWidget.updateRow )
-
-				// Change Search Mode when date_range is selected
 				.on( 'change', "." + wrapClass +" select.gv-search-inputs", gvSearchWidget.toggleSearchMode )
+				.on( 'keyup', "." + wrapClass +" input.gv-search-labels", gvSearchWidget.updateWidgetConfig )
 
 				// [View, WP widget] add alt class to table when sorting
 				.on('sortcreate sortupdate sort', '.'+ wrapClass +' table', gvSearchWidget.zebraStripe )
-
-				// [View] hook on dialog close to update widget config
-				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .' +  wrapClass, gvSearchWidget.updateOnClose )
 
 				// [WP widget] hook on update widget config to save the fields into the hidden input field
 				.on( 'click', ".widget[id*='"+ wp_widget_id +"'] input.widget-control-save", gvSearchWidget.saveWidget )
@@ -73,7 +69,7 @@
 			$(document)
 				.on( 'widget-added widget-updated', gvSearchWidget.refreshWidget )
 				// [View] If submitting a View by hitting enter inside a Widget, make sure it saves
-				.on( 'submit', 'form#post', gvSearchWidget.updateOnClose );
+				.on( 'submit', 'form#post', gvSearchWidget.updateWidgetConfig );
 		},
 
 		/**
@@ -199,6 +195,10 @@
 
 				gvSearchWidget.updateAvailableFields();
 
+				gvSearchWidget.updateWidgetConfig();
+
+				gvSearchWidget.triggerWidgetChange( table );
+
 				gvSearchWidget.styleRow( table );
 			});
 
@@ -211,9 +211,10 @@
 		 * @param  {jQuery} parent The dialog div object
 		 */
 		renderUI: function( parent ) {
-
 			var fields = $('.gv-search-fields-value', parent ).val(),
 				viewId = $('#gravityview_view_id', parent ).val();
+
+			gvSearchWidget.widgetTarget = $( parent ).find( 'div.'+ gvSearchWidget.wrapClass );
 
 			if( viewId === '' ) {
 				return;
@@ -257,16 +258,33 @@
 			gvSearchWidget.toggleSearchMode();
 
 			gvSearchWidget.widgetTarget.find('table tbody').sortable({
-				start: function( event, ui ) {
+				start: function ( event, ui ) {
 					$( ui.item ).removeClass( 'alt' );
+					$( ui.item ).find( '.cell-add-remove' ).toggle();
+				},
+				stop: function ( event, ui ) {
+					$( ui.item ).find( '.cell-add-remove' ).toggle();
+
+					gvSearchWidget.updateWidgetConfig( ui.item );
+
+					gvSearchWidget.triggerWidgetChange( ui.item );
 				}
 			});
 
 			gvSearchWidget.updateAvailableFields();
 
+			gvSearchWidget.updateWidgetConfig();
+
 			$gvloading.remove();
 		},
 
+		/**
+		 * Triggers change on the widget thus enabling the save/update buttons
+		 * @param  {{jQuery DOM object}} el
+		 */
+		triggerWidgetChange: function ( el ) {
+			$( el ).parents( '.widget-content' ).find( 'p input' ).trigger( 'change' );
+		},
 
 		/**
 		 * Add alt classes on table sort
@@ -375,6 +393,12 @@
  					$(this).find('select.gv-search-inputs').val( curr.input );
  				}
 
+				$( this ).find( 'select.gv-search-fields, input.gv-search-labels, select.gv-search-inputs' ).on( 'change keyup', gvSearchWidget.updateWidgetConfig );
+
+				gvSearchWidget.updateWidgetConfig();
+
+				gvSearchWidget.triggerWidgetChange( this );
+
 				// Fade in
 				$(this).show().removeClass('hide-if-js');
 			});
@@ -456,6 +480,7 @@
 
 		/**
 		 * When field is changed, update the search fields selector (disable the ones in use) and the input types for the new field selected
+		 * @param  {jQuery} e
 		 * @return {[type]} [description]
 		 */
 		updateRow: function(e) {
@@ -463,6 +488,7 @@
 			gvSearchWidget.updateSelectInput( $row );
 			gvSearchWidget.updateAvailableFields();
 			gvSearchWidget.updatePlaceholder( $row );
+			gvSearchWidget.updateWidgetConfig( $row )
 		},
 
 		/**
@@ -627,22 +653,25 @@
 		 */
 		saveWidget: function() {
 			gvSearchWidget.resetWidgetTarget( $(this) );
-			gvSearchWidget.updateOnClose();
+			gvSearchWidget.updateWidgetConfig();
 		},
 
 		/**
-		 * Update widget config on dialog close
+		 * Stringify search field data and update other widget values
 		 * @param {jQuery} e Event
 		 */
-		updateOnClose: function( e ) {
-
+		updateWidgetConfig: function(e) {
+			var widgetTarget;
 			var configs = [];
 
-			// Reset
-			$( 'input[name*="search_mode"]', gvSearchWidget.widgetTarget ).attr( 'disabled', null );
+			if ( e ) {
+				widgetTarget = e.target ? $( e.target ).parents( '.gv-widget-search-fields' ) : e.parents( '.gv-widget-search-fields' );
+			} else {
+				widgetTarget = gvSearchWidget.widgetTarget;
+			}
 
-			//loop throught table rows
-			gvSearchWidget.widgetTarget.find('table tr.gv-search-field-row').each( function() {
+			// Loop through table rows
+			widgetTarget.find('table tr.gv-search-field-row').each( function() {
 				var row = {
 					'field': $( this ).find( 'select.gv-search-fields' ).val(),
 					'input': $( this ).find( 'select.gv-search-inputs' ).val(),
@@ -651,8 +680,8 @@
 				configs.push( row );
 			});
 
-			// save
-			$( '.gv-search-fields-value', gvSearchWidget.widgetTarget ).val( JSON.stringify( configs ) );
+			// Save
+			$( '.gv-search-fields-value', widgetTarget ).val( JSON.stringify( configs ) );
 
 		},
 

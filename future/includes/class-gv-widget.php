@@ -391,7 +391,7 @@ abstract class Widget {
 		/**
 		 * @filter `gravityview/widget/hide_until_searched/allowlist` Some widgets have got to stay shown.
 		 * @since 2.14
-		 * @param[in,out] string[] $allowlist The widget IDs that have to be shown by default.
+		 * @param string[] $allowlist The widget IDs that have to be shown by default.
 		 */
 		$allowlist = apply_filters( 'gravityview/widget/hide_until_searched/allowlist', $allowlist );
 

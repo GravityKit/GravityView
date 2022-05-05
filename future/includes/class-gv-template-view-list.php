@@ -68,7 +68,7 @@ class View_List_Template extends View_Template {
 		/**
 		 * @filter `gravityview/template/field/label` Override the field label.
 		 * @since 2.0
-		 * @param[in,out] string $label The label to override.
+		 * @param string $label The label to override.
 		 * @param \GV\Template_Context $context The context.
 		 */
 		$label = apply_filters( 'gravityview/template/field/label', $label, $context );

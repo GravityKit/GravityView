@@ -545,21 +545,21 @@ $gv-overlay-index: 10000;
 }
 
 // Fix issue with theme conflicts where .gv-overlay gets in the way
-.ui-front,
-.CodeMirror-hints,
-.CodeMirror-lint-tooltip {
+.post-type-gravityview .ui-front,
+.post-type-gravityview .CodeMirror-hints,
+.post-type-gravityview .CodeMirror-lint-tooltip {
   z-index: $gv-overlay-index + 1 !important;
 }
-.CodeMirror, .CodeMirror-hint {
+.post-type-gravityview .CodeMirror, .CodeMirror-hint {
 	font-size: 15px;
 }
 
-.CodeMirror {
+.post-type-gravityview .CodeMirror {
 	height: 15.75em; // 10 visible rows
 }
 
 /** View configuration tabs */
-.ui-tabs {
+.post-type-gravityview .ui-tabs {
 	position: relative;
 	padding: .1em;
 	zoom: 1;
@@ -1694,9 +1694,6 @@ $dialog-button-padding: 5px;
 
 		.cell-sort,
 		.cell-add-remove {
-
-			//width: 40px;
-
 			button {
 				@extend .gv-reset-button-style;
 
@@ -1721,10 +1718,9 @@ $dialog-button-padding: 5px;
 				}
 
 				.dashicons-dismiss {
-					margin-top: 2px;
-					font-size: 17px;
-					height: 17px;
-					width: 17px;
+					font-size: 20px;
+					height: 20px;
+					width: 20px;
 					color: $dismiss-red;
 				}
 			}
@@ -1734,11 +1730,21 @@ $dialog-button-padding: 5px;
 			width: 24px;
 		}
 
-	  	.cell-add-remove {
-		  width: 50px;
-		}
+        .cell-add-remove {
+            display: flex;
+            width: 50px;
+        }
+    }
+}
 
-	}
+.wp-block-legacy-widget {
+    .gv-widget-search-fields .cell-add-remove {
+        width: 70px !important;
+    }
+
+    .gv-howto.howto {
+        font-size: small;
+    }
 }
 
 // Only modify GV post type

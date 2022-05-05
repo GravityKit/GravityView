@@ -1313,9 +1313,9 @@ class GravityView_frontend {
 					/**
 					 * @filter `gravityview/sorting/full-name` Override how to sort when sorting full name.
 					 * @since 1.7.4
-					 * @param[in,out] string $name_part Sort by `first` or `last` (default: `first`)
-					 * @param[in] string $sort_field_id Field used for sorting
-					 * @param[in] int $form_id GF Form ID
+					 * @param string $name_part Sort by `first` or `last` (default: `first`)
+					 * @param string $sort_field_id Field used for sorting
+					 * @param int $form_id GF Form ID
 					 */
 					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
 
@@ -1335,8 +1335,8 @@ class GravityView_frontend {
 				 * @filter `gravityview/sorting/time` Override how to sort when sorting time
 				 * @see GravityView_Field_Time
 				 * @since 1.14
-				 * @param[in,out] string $name_part Field used for sorting
-				 * @param[in] int $form_id GF Form ID
+				 * @param string $name_part Field used for sorting
+				 * @param int $form_id GF Form ID
 				 */
 				$sort_field_id = apply_filters( 'gravityview/sorting/time', $sort_field_id, $form_id );
 				break;
@@ -1633,7 +1633,7 @@ class GravityView_frontend {
 		/**
 		 * @filter `gravityview/sortable/field_blocklist` Modify what fields should never be sortable.
 		 * @since 2.14
-		 * @param[in,out] array $not_sortable Array of field types that aren't sortable.
+		 * @param array $not_sortable Array of field types that aren't sortable.
 		 * @param string $field_type Field type to check whether the field is sortable.
 		 * @param array $form Gravity Forms form.
 		 */

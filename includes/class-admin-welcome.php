@@ -261,6 +261,14 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.5 on May 4, 2022</h3>
+
+				<ul>
+					<li>Added: A link that allows administrators to disable the "Show only approved entries" View setting from the front-end</li>
+					<li>Fixed: Configuring new Search Bar WordPress widgets wasn't working in WordPress 5.8+</li>
+					<li>Fixed: Styling of form settings dropdowns on the Gravity Forms "Forms" page</li>
+				</ul>
+
 				<h3>2.14.4 on April 27, 2022</h3>
 
 				<ul>

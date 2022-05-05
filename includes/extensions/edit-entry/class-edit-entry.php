@@ -237,7 +237,7 @@ class GravityView_Edit_Entry {
 
 		/**
 		 * @filter `gravityview/edit/link` Filter the edit URL link.
-		 * @param[in,out] string $url The url.
+		 * @param string $url The url.
 		 * @param array $entry The entry.
 		 * @param \GV\View $view The View.
 		 */
@@ -409,9 +409,9 @@ class GravityView_Edit_Entry {
         /**
          * @filter `gravityview/edit_entry/user_can_edit_entry` Modify whether user can edit an entry.
          * @since 1.15 Added `$entry` and `$view_id` parameters
-         * @param[in,out] boolean $user_can_edit Can the current user edit the current entry? (Default: false)
-         * @param[in] array $entry Gravity Forms entry array {@since 1.15}
-         * @param[in] int $view_id ID of the view you want to check visibility against {@since 1.15}
+         * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
+         * @param array $entry Gravity Forms entry array {@since 1.15}
+         * @param int $view_id ID of the view you want to check visibility against {@since 1.15}
          */
         $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );
 
