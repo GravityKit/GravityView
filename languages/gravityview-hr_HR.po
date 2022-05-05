@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.14.4\n"
+"Project-Id-Version: GravityView 2.14.5\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
-"POT-Creation-Date: 2022-04-28 00:49:03+00:00\n"
+"POT-Creation-Date: 2022-05-05 02:10:32+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
 "Language-Team: Croatian (Croatia) (https://www.transifex.com/katzwebservices/teams/18775/hr_HR/)\n"
 "MIME-Version: 1.0\n"
@@ -226,33 +226,61 @@ msgstr ""
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:123
+#: future/includes/class-gv-renderer.php:236
+msgid "This link opens in a new window."
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:237
 msgid "Hide this notice"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:127
+#: future/includes/class-gv-renderer.php:239
 msgid ""
 "The \"Show only approved entries\" setting is enabled, so only entries that "
 "have been approved are displayed."
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:128
+#: future/includes/class-gv-renderer.php:240
 msgid "Learn about entry approval."
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:132
+#: future/includes/class-gv-renderer.php:242
+msgid "Disable the \"Show only approved entries\" setting for this View"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:243
+msgid ""
+"Click to immediately disable the \"Show only approved entries\" setting. All"
+" entry statuses will be shown."
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:245
+msgid "Manage entry approval"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:246
+msgid "Go to the Gravity Forms entries screen to moderate entry approval."
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:248
 #: future/includes/class-gv-settings-view.php:88
 msgid "Show only approved entries"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:134
-#: future/includes/class-gv-renderer.php:179
-#: future/includes/class-gv-renderer.php:235
+#: future/includes/class-gv-renderer.php:249
+#: includes/admin/metaboxes/views/view-configuration.php:62
+#: includes/admin/metaboxes/views/view-configuration.php:87
+msgid "Note: %s"
+msgstr ""
+
+#: future/includes/class-gv-renderer.php:249
+#: future/includes/class-gv-renderer.php:297
+#: future/includes/class-gv-renderer.php:353
 #: future/includes/class-gv-view.php:301 includes/class-frontend-views.php:681
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:155
+#: future/includes/class-gv-renderer.php:273
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:153
 #: includes/admin/metaboxes/views/view-configuration.php:11
 #: includes/admin/metaboxes/views/view-configuration.php:87
@@ -267,7 +295,7 @@ msgstr ""
 msgid "Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:159
+#: future/includes/class-gv-renderer.php:277
 #: future/includes/class-gv-settings-view.php:409
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:145
 #: includes/admin/metaboxes/views/view-configuration.php:10
@@ -277,7 +305,7 @@ msgstr ""
 msgid "Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:163
+#: future/includes/class-gv-renderer.php:281
 #: future/includes/class-gv-settings-view.php:408
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
 #: includes/admin/metaboxes/views/view-configuration.php:9
@@ -285,17 +313,17 @@ msgstr ""
 msgid "Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:178
+#: future/includes/class-gv-renderer.php:296
 #: includes/class-frontend-views.php:680
 msgid "Add fields to %s"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:233
+#: future/includes/class-gv-renderer.php:351
 msgid ""
 "GravityView will not work correctly on this page because of the URL Slug."
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:234
+#: future/includes/class-gv-renderer.php:352
 msgid "Please <a href=\"%s\">read this article</a> for more information."
 msgstr ""
 
@@ -1610,11 +1638,6 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:62
 #: includes/admin/metaboxes/views/view-configuration.php:87
-msgid "Note: %s"
-msgstr ""
-
-#: includes/admin/metaboxes/views/view-configuration.php:62
-#: includes/admin/metaboxes/views/view-configuration.php:87
 msgid "No fields link to the %s layout."
 msgstr ""
 
@@ -2077,23 +2100,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:486
+#: includes/class-admin-welcome.php:494
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:506
+#: includes/class-admin-welcome.php:514
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:557
+#: includes/class-admin-welcome.php:565
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:584
+#: includes/class-admin-welcome.php:592
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:585
+#: includes/class-admin-welcome.php:593
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -4748,12 +4771,7 @@ msgctxt "1: GravityView upgrade name, 2: Cost of upgrade"
 msgid "Upgrade to %1$s for %2$s"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:130
-msgctxt "Replacements are HTML links"
-msgid "%sEdit the View settings%s or %sApprove entries%s"
-msgstr ""
-
-#: future/includes/class-gv-renderer.php:176
+#: future/includes/class-gv-renderer.php:294
 #: includes/class-frontend-views.php:678
 msgctxt ""
 "Displayed when a View is not configured. %s is replaced by the tab label"
