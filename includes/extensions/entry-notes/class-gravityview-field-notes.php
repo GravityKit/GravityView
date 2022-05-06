@@ -737,12 +737,12 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @since 1.17
 	 *
 	 * @param false|object $note If note was created, object. Otherwise, false.
-	 * @param array $entry Entry data
-	 * @param array $data $_POST data
+	 * @param array $entry Entry data.
+	 * @param array $data $_POST data.
 	 *
 	 * @return void Tap in to Gravity Forms' `gform_after_email` action if you want a return result from sending the email.
 	 */
-	private function maybe_send_entry_notes( $note = false, $entry, $data ) {
+	private function maybe_send_entry_notes( $note = false, $entry = array(), $data = array() ) {
 
 		if( ! $note || ! GVCommon::has_cap('gravityview_email_entry_notes') ) {
 			gravityview()->log->debug( 'User doesn\'t have "gravityview_email_entry_notes" cap, or $note is empty', array( 'data' => $note ) );

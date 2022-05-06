@@ -459,7 +459,7 @@ EOD;
 	 * @param  mixed      $curr_value Current value of option
 	 * @return string     HTML output of option
 	 */
-	public static function render_field_option( $name = '', $option = array(), $curr_value = NULL ) {
+	public static function render_field_option( $name = '', $option = array(), $curr_value = null ) {
 
 		$output = '';
 
@@ -719,7 +719,7 @@ EOD;
 	 * @param  string $current [current value]
 	 * @return string          [html tags]
 	 */
-	public static function render_select_option( $name = '', $id = '', $choices, $current = '' ) {
+	public static function render_select_option( $name = '', $id = '', $choices = array(), $current = '' ) {
 
 		_deprecated_function( __METHOD__, '1.2', 'GravityView_FieldType_select::render_input' );
 

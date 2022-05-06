@@ -165,10 +165,10 @@ class GravityView_Entry_Notes {
 	 * Note: The function is static so that it's easier to remove the filter: `remove_filter( 'gform_notes_avatar', array( 'GravityView_Entry_Notes', 'filter_avatar' ) );`
 	 * @since 1.15
 	 * @param string $avatar Avatar image, if available. 48px x 48px by default.
-	 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
-	 * @return string Possibly-modified avatar
+	 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars.
+	 * @return string Possibly-modified avatar.
 	 */
-	public static function filter_avatar( $avatar = '', $note ) {
+	public static function filter_avatar( $avatar = '', $note = null ) {
 
 		if( 'gravityview' === $note->note_type && -1 === (int)$note->user_id ) {
 			$avatar =  sprintf( '<img src="%s" width="48" height="48" alt="GravityView" class="avatar avatar-48 gravityview-avatar" />', esc_url_raw( plugins_url( 'assets/images/floaty-avatar.png', GRAVITYVIEW_FILE ) ) );

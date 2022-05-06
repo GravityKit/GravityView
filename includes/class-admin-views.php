@@ -235,7 +235,7 @@ class GravityView_Admin_Views {
 	 * @deprecated since 1.2
 	 * Start using GravityView_Render_Settings::render_field_option
 	 */
-	public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
+	public static function render_field_option( $name = '', $option = array(), $curr_value = null ) {
 		_deprecated_function( 'GravityView_Admin_Views::render_field_option', '1.1.7', 'GravityView_Render_Settings::render_field_option' );
 		return GravityView_Render_Settings::render_field_option( $name, $option, $curr_value );
 	}
@@ -424,12 +424,12 @@ class GravityView_Admin_Views {
 	/**
 	 * Add the Data Source information
 	 *
-	 * @param null $column_name
-	 * @param $post_id
+	 * @param null $column_name Name of the column in the Views table.
+	 * @param int $post_id Post ID.
 	 *
 	 * @return void
 	 */
-	public function add_custom_column_content( $column_name = NULL, $post_id )	{
+	public function add_custom_column_content( $column_name = null, $post_id = 0 )	{
 
 		$output = '';
 
