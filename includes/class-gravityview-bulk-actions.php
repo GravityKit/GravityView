@@ -34,11 +34,11 @@ class GravityView_Bulk_Actions {
 	 */
 	public function __construct() {
 
-		if ( did_action( 'gform_loaded' ) ) {
+		if ( did_action( 'admin_init' ) ) {
 			$this->process_bulk_action();
 		} else {
 			// capture bulk actions
-			add_action( 'gform_loaded', array( $this, 'process_bulk_action' ) );
+			add_action( 'admin_init', array( $this, 'process_bulk_action' ) );
 		}
 	}
 
