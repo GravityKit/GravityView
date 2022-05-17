@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Fixed: Search Bar GravityView widget was not saving the chosen fields
 * Fixed: Multiple PHP 8 warnings
 
 = 2.14.5 on May 4, 2022 =
