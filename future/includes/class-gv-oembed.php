@@ -205,6 +205,12 @@ class oEmbed {
 	 * @return string The rendered oEmbed.
 	 */
 	private static function render_frontend( $view, $entry ) {
+
+		// We do not give a hint that this content exists, for security purposes.
+		if ( 'trash' === get_post_status( $view->ID ) ) {
+			return '';
+		}
+
 		/** Private, pending, draft, etc. */
 		$public_states = get_post_stati( array( 'public' => true ) );
 		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {

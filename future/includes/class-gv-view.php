@@ -306,15 +306,7 @@ class View implements \ArrayAccess {
 					}
 					break;
 				case 'in_trash':
-
-					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						$notice = sprintf( __( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
-
-						return \GVCommon::generate_notice( '<h3>' . $notice . '</h3>', 'notice', array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID );
-					}
-
-					return ''; // Do not show
-					break;
+					return '';  // Views in trash are unreachable when accessed as a CPT, but adding this just in case. We do not give a hint that this content exists, for security purposes.
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
@@ -500,9 +492,13 @@ class View implements \ArrayAccess {
 			}
 		}
 
+		if ( 'trash' === get_post_status( $this->ID ) ) {
+			return new \WP_Error( 'gravityview/in_trash' );
+		}
+
 		/** Private, pending, draft, etc. */
 		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $this->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $this->ID ) ) {
+		if ( ! in_array( $this->post_status, $public_states, true ) && ! \GVCommon::has_cap( 'read_gravityview', $this->ID ) ) {
 			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $this->ID ) );
 			return new \WP_Error( 'gravityview/not_public' );
 		}
