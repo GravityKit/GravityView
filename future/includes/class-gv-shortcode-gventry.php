@@ -199,7 +199,7 @@ class gventry extends \GV\Shortcode {
 				return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts );
 			} );
 
-			ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
+			ob_start() && $render->init( $data, \GV\GF_Entry::by_id( $entry['id'] ), $view );
 			$output = ob_get_clean(); // Render :)
 
 			remove_filter( 'gravityview/is_single_entry', '__return_true' );

@@ -225,27 +225,32 @@ class GravityView_Edit_Entry_Render {
 	}
 
 	/**
-	 * When Edit entry view is requested setup the vars
+	 * When Edit entry view is requested, set up key class variables
+	 *
+	 * @since 2.14.6 Added $view and $entry params
+	 *
+	 * @param \GV\View  $view  The View.
+	 * @param \GV\Entry $entry The Entry.
+	 *
+	 * @return void
 	 */
-	private function setup_vars() {
-        global $post;
+	private function setup_vars( $view, $entry ) {
+		global $post;
 
-		$gravityview_view = GravityView_View::getInstance();
-
-
-		$entries = $gravityview_view->getEntries();
-	    self::$original_entry = $entries[0];
-	    $this->entry = $entries[0];
+		self::$original_entry = $entry->as_entry();
+		$this->entry          = $entry->as_entry();
 
 		self::$original_form = GFAPI::get_form( $this->entry['form_id'] );
-		$this->form = self::$original_form;
+		$this->form          = self::$original_form;
+
 		$this->form_id = $this->entry['form_id'];
-		$this->view_id = $gravityview_view->getViewId();
+
+		$this->view_id = $view->ID;
+
 		$this->post_id = \GV\Utils::get( $post, 'ID', null );
 
 		self::$nonce_key = GravityView_Edit_Entry::get_nonce_key( $this->view_id, $this->form_id, $this->entry['id'] );
 	}
-
 
 	/**
 	 * Load required files and trigger edit flow
@@ -266,7 +271,7 @@ class GravityView_Edit_Entry_Render {
 		require_once( GFCommon::get_base_path() . '/form_display.php' );
 		require_once( GFCommon::get_base_path() . '/entry_detail.php' );
 
-		$this->setup_vars();
+		$this->setup_vars( $view, $entry );
 
 		if ( ! $gv_data ) {
 			$gv_data = GravityView_View_Data::getInstance();
