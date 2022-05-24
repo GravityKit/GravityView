@@ -21,9 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= develop =
+= 2.14.6 on May 24, 2022 =
 
-* Fixed: Edit Entry link wasn't working when used inside an embedded Single Entry View
+* Added: Now you can embed the Edit Entry context directly in a page/post
+* Fixed: Edit Entry link wasn't working in the Single Entry context of an embedded View
 * Fixed: Search Bar GravityView widget was not saving the chosen fields
 * Fixed: Multiple PHP 8 warnings
 

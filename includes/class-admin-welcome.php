@@ -261,6 +261,15 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.6 on May 24, 2022</h3>
+
+				<ul>
+					<li>Added: Now you can embed the Edit Entry context directly in a page/post</li>
+					<li>Fixed: Edit Entry link wasn't working in the Single Entry context of an embedded View</li>
+					<li>Fixed: Search Bar GravityView widget was not saving the chosen fields</li>
+					<li>Fixed: Multiple PHP 8 warnings</li>
+				</ul>
+
 				<h3>2.14.5 on May 4, 2022</h3>
 
 				<ul>
