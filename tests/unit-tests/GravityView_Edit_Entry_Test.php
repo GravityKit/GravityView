@@ -86,10 +86,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( add_query_arg( $args, get_permalink( $view->ID ) ), $edit_link_no_post );
 
 		$args = array(
-			'p' => $post_id,
+			'p'     => $post_id,
 			'entry' => $entry['id'],
-			'edit' => $nonce,
-			'gvid' => $view->ID,
+			'edit'  => $nonce,
+			'gvid'  => $view->ID,
 		);
 
 		// When running all tests, this test thinks we have multiple Views. Correct that.

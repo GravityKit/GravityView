@@ -237,15 +237,22 @@ class GravityView_Edit_Entry_Render {
 	private function setup_vars( $view, $entry ) {
 		global $post;
 
-		self::$original_entry = $entry->as_entry();
-		$this->entry          = $entry->as_entry();
+		if ( $entry ) {
+			self::$original_entry = $entry->as_entry();
+			$this->entry          = $entry->as_entry();
+		} else {
+			$gravityview_view     = GravityView_View::getInstance();
+			$entries              = $gravityview_view->getEntries();
+			self::$original_entry = $entries[0];
+			$this->entry          = $entries[0];
+		}
 
 		self::$original_form = GFAPI::get_form( $this->entry['form_id'] );
 		$this->form          = self::$original_form;
 
 		$this->form_id = $this->entry['form_id'];
 
-		$this->view_id = $view->ID;
+		$this->view_id = $view ? $view->ID : $gravityview_view->getViewId();
 
 		$this->post_id = \GV\Utils::get( $post, 'ID', null );
 
@@ -275,6 +282,10 @@ class GravityView_Edit_Entry_Render {
 
 		if ( ! $gv_data ) {
 			$gv_data = GravityView_View_Data::getInstance();
+		}
+
+		if ( $view && ! $gv_data->views->count() ) {
+			$gv_data->views->add( $view );
 		}
 
 		// Multiple Views embedded, don't proceed if nonce fails
@@ -309,7 +320,7 @@ class GravityView_Edit_Entry_Render {
 
 		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack', 'plupload-all', 'gravityview-fe-view' ) );
 
-		GFFormDisplay::enqueue_form_scripts( $gravityview_view->getForm(), false);
+		GFFormDisplay::enqueue_form_scripts( $this->form ? $this->form : $gravityview_view->getForm(), false );
 
 		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', array( 'cookiepath' => COOKIEPATH ) );
 
@@ -1167,7 +1178,7 @@ class GravityView_Edit_Entry_Render {
 			$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
 		}
 
-		$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
+		$back_link = remove_query_arg( array( 'page', 'view', 'edit', 'gvid' ) );
 
 		if( ! $this->is_valid ){
 
@@ -1226,13 +1237,16 @@ class GravityView_Edit_Entry_Render {
 
 			/**
 			 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
-			 * @since 1.5.4
-			 * @param string $entry_updated_message Existing message
-			 * @param int $view_id View ID
-			 * @param array $entry Gravity Forms entry array
-			 * @param string $back_link URL to return to the original entry. @since 1.6
+			 *
+			 * @since  1.5.4
+			 *
+			 * @param string      $entry_updated_message Existing message
+			 * @param int         $view_id               View ID
+			 * @param array       $entry                 Gravity Forms entry array
+			 * @param string      $back_link             URL to return to the original entry. @since 1.6
+			 * @param string|null $redirect_url          URL to return to after the update. @since 2.14.6
 			 */
-			$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message , $this->view_id, $this->entry, $back_link );
+			$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message, $this->view_id, $this->entry, $back_link, isset( $redirect_url ) ? $redirect_url : null );
 
 			echo GVCommon::generate_notice( $message );
 		}
