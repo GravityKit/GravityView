@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 = develop =
 
+* Fixed: Edit Entry link wasn't working when used inside an embedded Single Entry View
 * Fixed: Search Bar GravityView widget was not saving the chosen fields
 * Fixed: Multiple PHP 8 warnings
 

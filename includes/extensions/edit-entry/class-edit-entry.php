@@ -215,9 +215,9 @@ class GravityView_Edit_Entry {
             'edit' => wp_create_nonce( $nonce_key )
         ), $base );
 
-        if( $post_id ) {
-	        $url = add_query_arg( array( 'gvid' => $view_id ), $url );
-        }
+	    if ( $post_id ) {
+		    $url = add_query_arg( array( 'gvid' => $view_id ), $url );
+	    }
 
 	    /**
 	     * Allow passing params to dynamically populate entry with values
@@ -235,13 +235,17 @@ class GravityView_Edit_Entry {
 		    $url = add_query_arg( $params, $url );
 	    }
 
-		/**
-		 * @filter `gravityview/edit/link` Filter the edit URL link.
-		 * @param string $url The url.
-		 * @param array $entry The entry.
-		 * @param \GV\View $view The View.
-		 */
-		return apply_filters( 'gravityview/edit/link', $url, $entry, \GV\View::by_id( $view_id  ) );
+	    /**
+	     * @filter `gravityview/edit/link` Filter the edit URL link.
+	     *
+	     * @since  2.14.6 Added $post param.
+	     *
+	     * @param string   $url   The url.
+	     * @param array    $entry The entry.
+	     * @param \GV\View $view  The View.
+	     * @param WP_Post|null WP_Post $post WP post.
+	     */
+	    return apply_filters( 'gravityview/edit/link', $url, $entry, \GV\View::by_id( $view_id ), get_post( $view_id ) );
     }
 
 	/**
