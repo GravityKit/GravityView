@@ -4,7 +4,7 @@ Requires at least: 4.7
 Tested up to: 5.9.3
 Requires PHP: 5.6.30
 Stable tag: trunk
-Contributors: The GravityView Team
+Contributors: The GravityKit Team
 License: GPL 3 or higher
 
 Beautifully display and edit your Gravity Forms entries.
