@@ -1,4 +1,4 @@
-# Copyright (C) 2022 GravityView
+# Copyright (C) 2022 GravityKit
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Zachary Katz <zack@katz.co>, 2021
@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.14.5\n"
+"Project-Id-Version: GravityView 2.14.6\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
-"POT-Creation-Date: 2022-05-05 02:10:32+00:00\n"
+"POT-Creation-Date: 2022-05-27 20:39:14+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
 "Last-Translator: Dariusz Zielonka <info@dariusz-zielonka.pl>, 2022\n"
 "Language-Team: Polish (Poland) (https://www.transifex.com/katzwebservices/teams/18775/pl_PL/)\n"
@@ -249,7 +249,7 @@ msgstr "Zatwierdzenie pozycji GravityView"
 
 #: future/includes/class-gv-renderer.php:236
 msgid "This link opens in a new window."
-msgstr ""
+msgstr "To łącze otwiera się w nowym oknie."
 
 #: future/includes/class-gv-renderer.php:237
 msgid "Hide this notice"
@@ -269,21 +269,24 @@ msgstr "Dowiedz się więcej o zatwierdzaniu pozycji."
 
 #: future/includes/class-gv-renderer.php:242
 msgid "Disable the \"Show only approved entries\" setting for this View"
-msgstr ""
+msgstr "Wyłącz \"Pokaż tylko zatwierdzone wpisy\" dla tego widoku"
 
 #: future/includes/class-gv-renderer.php:243
 msgid ""
 "Click to immediately disable the \"Show only approved entries\" setting. All"
 " entry statuses will be shown."
 msgstr ""
+"Kliknij, aby natychmiast wyłączyć ustawienie \"Pokaż tylko zatwierdzone "
+"wpisy\". Wyświetlane będą wszystkie statusy wpisów."
 
 #: future/includes/class-gv-renderer.php:245
 msgid "Manage entry approval"
-msgstr ""
+msgstr "Zarządzaj zatwierdzaniem wpisów"
 
 #: future/includes/class-gv-renderer.php:246
 msgid "Go to the Gravity Forms entries screen to moderate entry approval."
 msgstr ""
+"Przejdź do ekranu wpisów Gravity Forms, aby moderować zatwierdzanie wpisów."
 
 #: future/includes/class-gv-renderer.php:248
 #: future/includes/class-gv-settings-view.php:88
@@ -313,7 +316,7 @@ msgstr ""
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:148
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1085
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1101
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
 msgid "Edit Entry"
@@ -1052,9 +1055,9 @@ msgid "Only shown when multi-page forms are enabled."
 msgstr "Wyświetlane tylko wtedy, gdy włączone są formularze wielostronicowe."
 
 #: future/includes/class-gv-settings-view.php:451
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1148
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1274
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2506
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1164
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1293
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2525
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 msgid "Next"
 msgstr "Następny"
@@ -1064,9 +1067,9 @@ msgid "Previous Page Button Text"
 msgstr "Tekst przycisku poprzedniej strony"
 
 #: future/includes/class-gv-settings-view.php:459
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1149
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1275
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2507
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1165
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1294
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2526
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr "Poprzednie"
@@ -1173,10 +1176,6 @@ msgstr ""
 "Ten widok nie jest poprawnie skonfigurowany. Zacznij od <a "
 "href=\"%s\">wybrania formularza</a>."
 
-#: future/includes/class-gv-shortcode-gventry.php:189
-msgid "Entry Updated"
-msgstr "Zaktualizowano pozycję"
-
 #: future/includes/class-gv-view.php:145
 msgid "Parent View:"
 msgstr "Widok nadrzędny:"
@@ -1232,19 +1231,19 @@ msgstr "Atrybuty Widoku"
 
 #: future/includes/class-gv-view.php:160
 msgid "View updated."
-msgstr ""
+msgstr "Zaktualizowano widok."
 
 #: future/includes/class-gv-view.php:161
 msgid "View published."
-msgstr ""
+msgstr "Opublikowano widok."
 
 #: future/includes/class-gv-view.php:162
 msgid "View reverted to draft."
-msgstr ""
+msgstr "Przywrócono wpis do stany szkicu."
 
 #: future/includes/class-gv-view.php:163
 msgid "View scheduled."
-msgstr ""
+msgstr "Zaplanowano widok."
 
 #: future/includes/class-gv-view.php:167
 msgid "view"
@@ -1325,25 +1324,26 @@ msgstr "Ten widok nie jest poprawnie skonfigurowany."
 #. translators: the plugin name.
 #: future/lib/EDD_SL_Plugin_Updater.php:231
 msgid "There is a new version of %1$s available."
-msgstr ""
+msgstr "Dostępna jest nowa wersja %1$s."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:237
 msgid "Contact your network administrator to install the update."
 msgstr ""
+"Skontaktuj się z administratorem sieci, aby zainstalować aktualizację."
 
 #. translators: 1. opening anchor tag, do not translate 2. the new plugin
 #. version 3. closing anchor tag, do not translate.
 #: future/lib/EDD_SL_Plugin_Updater.php:242
 msgid "%1$sView version %2$s details%3$s."
-msgstr ""
+msgstr "%1$sWyświetl szczegóły wersji %2$s%3$s."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:250
 msgid "%1$sView version %2$s details%3$s or %4$supdate now%5$s."
-msgstr ""
+msgstr "%1$sWyświetl szczegóły wersji %2$s%3$s lub %4$saktualizuj teraz%5$s."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:261
 msgid "Update now."
-msgstr ""
+msgstr "Aktualizuj teraz."
 
 #: future/lib/EDD_SL_Plugin_Updater.php:493
 #: includes/lib/EDD_SL_Plugin_Updater.php:518
@@ -1844,8 +1844,8 @@ msgstr "(bez tytułu)"
 #: includes/class-admin-add-shortcode.php:135
 #: includes/class-admin-views.php:1314
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1146
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1272
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1162
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1291
 #: trustedlogin/trustedlogin/client/src/Admin.php:1018
 msgid "Cancel"
 msgstr "Anuluj"
@@ -2268,23 +2268,23 @@ msgstr "Lista zmian"
 msgid "What&rsquo;s New"
 msgstr "Co nowego"
 
-#: includes/class-admin-welcome.php:494
+#: includes/class-admin-welcome.php:525
 msgid "View change history"
 msgstr "Wyświetl historię zmian"
 
-#: includes/class-admin-welcome.php:514
+#: includes/class-admin-welcome.php:545
 msgid "GravityView is brought to you by:"
 msgstr "GravityView jest dostarczany przez:"
 
-#: includes/class-admin-welcome.php:565
+#: includes/class-admin-welcome.php:596
 msgid "Contributors"
 msgstr "Współtwórcy"
 
-#: includes/class-admin-welcome.php:592
+#: includes/class-admin-welcome.php:623
 msgid "Want to contribute?"
 msgstr "Chcesz się przyczynić?"
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:624
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2550,23 +2550,23 @@ msgstr ""
 msgid "Dismiss"
 msgstr "Ukryj"
 
-#: includes/class-gravityview-bulk-actions.php:133
+#: includes/class-gravityview-bulk-actions.php:135
 msgid "%d entries"
 msgstr "%d pozycji"
 
-#: includes/class-gravityview-bulk-actions.php:133
+#: includes/class-gravityview-bulk-actions.php:135
 msgid "1 entry"
 msgstr "1 pozycja"
 
-#: includes/class-gravityview-bulk-actions.php:138
+#: includes/class-gravityview-bulk-actions.php:140
 msgid "%s approved."
 msgstr "%s zaakceptowano."
 
-#: includes/class-gravityview-bulk-actions.php:142
+#: includes/class-gravityview-bulk-actions.php:144
 msgid "%s unapproved."
 msgstr "%s nie zatwierdzono."
 
-#: includes/class-gravityview-bulk-actions.php:146
+#: includes/class-gravityview-bulk-actions.php:148
 msgid "%s disapproved."
 msgstr "%s odrzucono."
 
@@ -2729,7 +2729,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr "Żądanie było niepoprawne. Odśwież stronę i spróbuj ponownie."
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2355
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2374
 msgid "You do not have permission to edit this entry."
 msgstr "Nie masz uprawnień do edytowania tej pozycji."
 
@@ -2950,52 +2950,52 @@ msgstr "Zażądaj ponownie"
 msgid "Your request was rejected"
 msgstr "Twoje żądanie zostało odrzucone"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1147
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1273
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1163
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1292
 msgid "Update"
 msgstr "Aktualizuj"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1170
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1186
 msgid "There was a problem with your submission."
 msgstr "Wystąpił problem z Twoim zgłoszeniem."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1170
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1186
 msgid "Errors have been highlighted below."
 msgstr "Błędy zostały podkreślone poniżej."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1177
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1193
 msgid "Entry Updated."
 msgstr "Zaktualizowano pozycję."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1214
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1230
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Pozycja została zaktualizowana. %sWróć do widoku pozycji%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1427
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1446
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr "Nie masz uprawnień do edytowania tego wpisu."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1434
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1453
 msgid "This field is not editable; the post no longer exists."
 msgstr "To pole nie jest edytowalne; wpis już nie istnieje."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1766
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1785
 msgid "This field is required."
 msgstr "To pole jest wymagane."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1802
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1821
 msgid "Maximum number of files reached"
 msgstr "Osiągnięto maksymalną liczbę plików"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2349
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2368
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Link do edycji tego wpisu jest niepoprawny; mógł on wygasnąć."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2359
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2378
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Nie możesz edytować tej pozycji; znajduje się on w koszu."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2399
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2418
 msgid "You do not have permission to edit this field."
 msgstr "Nie masz uprawnień do edytowania tego pola."
 
@@ -3161,7 +3161,7 @@ msgstr "Wyświetl link \"Pokaż na mapie\" pod adresem"
 
 #: includes/fields/class-gravityview-field-address.php:309
 msgid "Open map link in a new tab or window?"
-msgstr ""
+msgstr "Otworzyć łącze do mapy w nowej karcie lub oknie?"
 
 #: includes/fields/class-gravityview-field-approval.php:27
 msgid "Approve Entries"
@@ -3180,9 +3180,9 @@ msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
 #: includes/fields/class-gravityview-field-chainedselect.php:23
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-chainedselects.php:191
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-chainedselects.php:195
 msgid "Chained Select"
-msgstr ""
+msgstr "Powiązane wybory"
 
 #: includes/fields/class-gravityview-field-checkbox.php:27
 #: includes/widgets/search-widget/class-search-widget.php:226
@@ -4945,7 +4945,7 @@ msgstr "Nie przyznano dostępu do pomocy technicznej"
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1064
 msgid "There was an error granting access: "
-msgstr "Wystąpił błąd w przyznaniu dostępu"
+msgstr "Wystąpił błąd w przyznaniu dostępu: "
 
 #: trustedlogin/trustedlogin/client/src/Admin.php:1067
 msgid "Your authorized session has expired. Please refresh the page."
@@ -5087,6 +5087,14 @@ msgstr ""
 "Użytkownik nie został utworzony; Użytkownik o tym adresie e-mail już "
 "istnieje"
 
+#. Author URI of the plugin/theme
+msgid "https://www.gravitykit.com"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "GravityKit"
+msgstr ""
+
 #: future/includes/class-gv-license-handler.php:309
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
@@ -5155,13 +5163,13 @@ msgid "duplicate entries"
 msgstr "duplikuj pozycje"
 
 #: future/includes/class-gv-settings-view.php:435
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2505
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2524
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr "Aktualizuj"
 
 #: future/includes/class-gv-settings-view.php:443
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2504
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2523
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr "Anuluj"
@@ -5297,7 +5305,7 @@ msgstr "Brak użytkownika"
 #: includes/class-gravityview-change-entry-creator.php:295
 msgctxt "To show that the entry was created by a no longer existing user."
 msgid "Deleted User"
-msgstr ""
+msgstr "Usunięto użytkownika"
 
 #: includes/class-gravityview-change-entry-creator.php:327
 msgctxt "No user assigned to the entry"
@@ -5356,26 +5364,26 @@ msgctxt "Referring to the user who is currently editing a locked entry"
 msgid "the person who is editing the entry"
 msgstr "osoba, która redaguje pozycję"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1198
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1214
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr "Pozycja została zaktualizowana. %sWróć do pozycji%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1203
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1219
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
 " will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr "Pozycja została zaktualizowana. %sWróć do %s%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1209
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1225
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr "Pozycja została zaktualizowana. %sPrzekierowuję do %s%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2375
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2394
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Wróć."
