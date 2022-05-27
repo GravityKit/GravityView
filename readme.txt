@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 5.9.3
+Tested up to: 6.0
 Requires PHP: 5.6.30
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -11,7 +11,7 @@ Beautifully display and edit your Gravity Forms entries.
 
 == Description ==
 
-Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](https://gravityview.co).
+Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](https://www.gravitykit.com).
 
 == Installation ==
 
@@ -21,12 +21,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravityview.co](h
 
 == Changelog ==
 
-= 2.14.6 on May 24, 2022 =
+= 2.14.6 on May 27, 2022 =
 
-* Added: Now you can embed the Edit Entry context directly in a page/post
+* [GravityView (the company) is now GravityKit!](https://www.gravitykit.com/rebrand/)
+* Fixed: Embedding Edit Entry context directly in a page/post using the `[gventry edit="1"]` shortcode ([learn more](https://docs.gravitykit.com/article/463-gventry-shortcode))
 * Fixed: Edit Entry link wasn't working in the Single Entry context of an embedded View
 * Fixed: Search Bar GravityView widget was not saving the chosen fields
+* Fixed: Gravity PDF shortcodes would not be processed when bulk-approving entries using GravityView. Thanks, Jake!
+* Fixed: Sometimes embedding a GravityView shortcode in the block editor could cause a fatal error
 * Fixed: Multiple PHP 8 warnings
+
+__Developer Updates:__
+
+* Added: `redirect_url` parameter to the `gravityview/edit_entry/success` filter
+* Added `redirect_url` and `back_link` parameters to the `gravityview/shortcodes/gventry/edit/success` filter
+
 
 = 2.14.5 on May 4, 2022 =
 

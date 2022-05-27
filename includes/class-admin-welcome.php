@@ -261,13 +261,35 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
-				<h3>2.14.6 on May 24, 2022</h3>
+				<h3>2.14.6 on May 27, 2022</h3>
 
 				<ul>
-					<li>Added: Now you can embed the Edit Entry context directly in a page/post</li>
+					<li><a href='https://www.gravitykit.com/rebrand/'>GravityView (the company) is now GravityKit!</a>
+					</li>
+					<li>Fixed: Embedding Edit Entry context directly in a page/post using the <code>[gventry
+							edit='1']</code> shortcode (<a
+								href='https://docs.gravitykit.com/article/463-gventry-shortcode'>learn more</a>)
+					</li>
 					<li>Fixed: Edit Entry link wasn't working in the Single Entry context of an embedded View</li>
 					<li>Fixed: Search Bar GravityView widget was not saving the chosen fields</li>
+					<li>Fixed: Gravity PDF shortcodes would not be processed when bulk-approving entries using
+						GravityView. Thanks, Jake!
+					</li>
+					<li>Fixed: Sometimes embedding a GravityView shortcode in the block editor could cause a fatal
+						error
+					</li>
 					<li>Fixed: Multiple PHP 8 warnings</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>redirect_url</code> parameter to the <code>gravityview/edit_entry/success</code>
+						filter
+					</li>
+					<li>Added <code>redirect_url</code> and <code>back_link</code> parameters to the <code>gravityview/shortcodes/gventry/edit/success</code>
+						filter
+					</li>
 				</ul>
 
 				<h3>2.14.5 on May 4, 2022</h3>
