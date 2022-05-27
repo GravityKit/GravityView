@@ -3299,7 +3299,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'truncatelink' => true ) );
-		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1">gravityview.co</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1">gravitykit.com</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** HTML is allowed. */
