@@ -13,7 +13,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 abstract class Extension {
 	/**
-	 * @var string Name of the plugin in gravityview.co
+	 * @var string Name of the plugin in gravitykit.com
 	 */
 	protected $_title = NULL;
 
@@ -23,7 +23,7 @@ abstract class Extension {
 	protected $_version = NULL;
 
 	/**
-	 * @var int The ID of the download on gravityview.co
+	 * @var int The ID of the download on gravitykit.com
 	 * @since 1.1
 	 */
 	protected $_item_id = NULL;
@@ -51,7 +51,7 @@ abstract class Extension {
 	/**
 	 * @var string The URL to fetch license info from. Do not change unless you know what you're doing.
 	 */
-	protected $_remote_update_url = 'https://gravityview.co';
+	protected $_remote_update_url = 'https://www.gravitykit.com';
 
 	/**
 	 * @var string Author of plugin, sent when fetching license info.

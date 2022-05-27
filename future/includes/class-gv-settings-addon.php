@@ -814,7 +814,7 @@ HTML;
 				$update_below = __( 'Activate your license key below.', 'gravityview' );
 				break;
 		}
-		$url = 'https://gravityview.co/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content=' . $license_status . '&utm_campaign=Admin%20Notice';
+		$url = 'https://www.gravitykit.com/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content=' . $license_status . '&utm_campaign=Admin%20Notice';
 
 		// Show a different notice on settings page for inactive licenses (hide the buttons)
 		if ( $update_below && gravityview()->request->is_admin( '', 'settings' ) ) {
@@ -973,7 +973,7 @@ HTML;
 
 		$disabled_attribute = \GVCommon::has_cap( 'gravityview_edit_settings' ) ? false : 'disabled';
 
-		$affiliate_link = 'https://gravityview.co/account/affiliate/?utm_source=in-plugin&utm_medium=setting&utm_content=Register as an affiliate';
+		$affiliate_link = 'https://www.gravitykit.com/account/affiliate/?utm_source=in-plugin&utm_medium=setting&utm_content=Register as an affiliate';
 
 		$fields = array(
 				array(

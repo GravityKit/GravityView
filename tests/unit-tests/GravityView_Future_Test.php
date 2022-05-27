@@ -3283,7 +3283,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'18' => 'https://gravityview.co/?<script>a</script>=<script>b</script>&1',
+			'18' => 'https://www.gravitykit.com/?<script>a</script>=<script>b</script>&1',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -3295,24 +3295,24 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '18' );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1">https://gravityview.co/?scripta/script=scriptb/script&1</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1">https://www.gravitykit.com/?scripta/script=scriptb/script&1</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'truncatelink' => true ) );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1">gravityview.co</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1">gravityview.co</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** HTML is allowed. */
 		$field->update_configuration( array( 'anchor_text' => '<danger>ok {entry_id}', 'new_window' => true ) );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank"><danger>ok ' . $entry->ID . '</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank"><danger>ok ' . $entry->ID . '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'open_same_window' => true, 'new_window' => true ) );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'open_same_window' => true ) );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 	}
@@ -5939,7 +5939,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 				'license' => 'valid',
 				'license_key' => 'TEST',
 				'license_name' => 'Test Suite License',
-				'upgrades' => array( 'one' => array( 'name' => 'what', 'price' => 10, 'price_id' => 1, 'url' => 'https://gravityview.co', 'description' => 'testing' ) ),
+				'upgrades' => array( 'one' => array( 'name' => 'what', 'price' => 10, 'price_id' => 1, 'url' => 'https://www.gravitykit.com', 'description' => 'testing' ) ),
 			) ) );
 		} );
 
