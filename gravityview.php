@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name:       	GravityView
- * Plugin URI:        	https://gravityview.co
+ * Plugin URI:        	https://www.gravitykit.com
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:             2.14.5
- * Author:            	GravityView
- * Author URI:        	https://gravityview.co
+ * Version:             2.14.6
+ * Author:            	GravityKit
+ * Author URI:        	https://www.gravitykit.com
  * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.14.5' );
+define( 'GV_PLUGIN_VERSION', '2.14.6' );
 
 /**
  * Full path to the GravityView file

@@ -34,11 +34,11 @@ class GravityView_Bulk_Actions {
 	 */
 	public function __construct() {
 
-		if ( did_action( 'gform_loaded' ) ) {
+		if ( did_action( 'admin_init' ) ) {
 			$this->process_bulk_action();
 		} else {
 			// capture bulk actions
-			add_action( 'gform_loaded', array( $this, 'process_bulk_action' ) );
+			add_action( 'admin_init', array( $this, 'process_bulk_action' ) );
 		}
 	}
 
@@ -86,66 +86,67 @@ class GravityView_Bulk_Actions {
 
 		// gforms_entry_list is the nonce that confirms we're on the right page
 		// gforms_update_note is sent when bulk editing entry notes. We don't want to process then.
-		if ( $bulk_action && \GV\Utils::_POST( 'gforms_entry_list' ) && empty( $_POST['gforms_update_note'] ) ) {
+		if ( ! ( $bulk_action && \GV\Utils::_POST( 'gforms_entry_list' ) && empty( $_POST['gforms_update_note'] ) ) ) {
+			return;
+		}
 
-			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
+		check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
 
-			/**
-			 * The extra '-' is to make sure that there are at *least* two items in array.
-			 * @see https://github.com/katzwebservices/GravityView/issues/370
-			 */
-			$bulk_action .= '-';
+		/**
+		 * The extra '-' is to make sure that there are at *least* two items in array.
+		 * @see https://github.com/katzwebservices/GravityView/issues/370
+		 */
+		$bulk_action .= '-';
 
-			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
+		list( $approved_status, $form_id ) = explode( '-', $bulk_action );
 
-			if ( empty( $form_id ) ) {
-				gravityview()->log->error( 'Form ID is empty from parsing bulk action.', array( 'data' => $bulk_action ) );
-				return false;
-			}
+		if ( empty( $form_id ) ) {
+			gravityview()->log->error( 'Form ID is empty from parsing bulk action.', array( 'data' => $bulk_action ) );
+			return false;
+		}
 
-			// All entries are set to be updated, not just the visible ones
-			if ( ! empty( $_POST['all_entries'] ) ) {
+		// All entries are set to be updated, not just the visible ones
+		if ( ! empty( $_POST['all_entries'] ) ) {
 
-				// Convert the current entry search into GF-formatted search criteria
-				$search = array(
-					'search_field' => isset( $_POST['f'] ) ? $_POST['f'][0] : 0,
-					'search_value' => isset( $_POST['v'][0] ) ? $_POST['v'][0] : '',
-					'search_operator' => isset( $_POST['o'][0] ) ? $_POST['o'][0] : 'contains',
-				);
+			// Convert the current entry search into GF-formatted search criteria
+			$search = array(
+				'search_field' => isset( $_POST['f'] ) ? $_POST['f'][0] : 0,
+				'search_value' => isset( $_POST['v'][0] ) ? $_POST['v'][0] : '',
+				'search_operator' => isset( $_POST['o'][0] ) ? $_POST['o'][0] : 'contains',
+			);
 
-				$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
+			$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
 
-				// Get all the entry IDs for the form
-				$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
+			// Get all the entry IDs for the form
+			$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
 
-			} else {
+		} else {
 
-				// Changed from 'lead' to 'entry' in 2.0
-				$entries = isset( $_POST['lead'] ) ? $_POST['lead'] : $_POST['entry'];
+			// Changed from 'lead' to 'entry' in 2.0
+			$entries = isset( $_POST['lead'] ) ? $_POST['lead'] : $_POST['entry'];
 
-			}
+		}
 
-			if ( empty( $entries ) ) {
-				gravityview()->log->error( 'Entries are empty' );
-				return false;
-			}
+		if ( empty( $entries ) ) {
+			gravityview()->log->error( 'Entries are empty' );
+			return false;
+		}
 
-			$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
+		$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
 
-			switch ( $approved_status ) {
-				case self::$bulk_action_prefixes['approve']:
-					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::APPROVED, $form_id );
-					self::$bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
-					break;
-				case self::$bulk_action_prefixes['unapprove']:
-					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::UNAPPROVED, $form_id );
-					self::$bulk_update_message = sprintf( __( '%s unapproved.', 'gravityview' ), $entry_count );
-					break;
-				case self::$bulk_action_prefixes['disapprove']:
-					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::DISAPPROVED, $form_id );
-					self::$bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
-					break;
-			}
+		switch ( $approved_status ) {
+			case self::$bulk_action_prefixes['approve']:
+				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::APPROVED, $form_id );
+				self::$bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
+				break;
+			case self::$bulk_action_prefixes['unapprove']:
+				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::UNAPPROVED, $form_id );
+				self::$bulk_update_message = sprintf( __( '%s unapproved.', 'gravityview' ), $entry_count );
+				break;
+			case self::$bulk_action_prefixes['disapprove']:
+				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::DISAPPROVED, $form_id );
+				self::$bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
+				break;
 		}
 	}
 

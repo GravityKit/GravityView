@@ -299,7 +299,7 @@ class GravityView_Compatibility {
 			$message .= '<p>' . sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gravityview' ), '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>' ) . '</p>';
 
 			/* translators: In this context, "get" means purchase */
-			$message .= '<p><a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' . esc_html__( 'Get the Latest Gravity Forms', 'gravityview' ) . '</a></p>';
+			$message .= '<p><a href="https://www.gravitykit.com/gravityforms/" class="button button-secondary button-large button-hero">' . esc_html__( 'Get the Latest Gravity Forms', 'gravityview' ) . '</a></p>';
 
 
 			// Show the notice even if the future version requirements aren't met
@@ -356,7 +356,7 @@ class GravityView_Compatibility {
 			default:
 				self::$notices['gf_installed'] = array(
 					'class' => 'error',
-					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $59%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="https://gravityview.co/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $59%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="https://www.gravitykit.com/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 					'cap' => 'install_plugins',
 					'dismiss' => 'gf_installed',
 				);

@@ -86,10 +86,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( add_query_arg( $args, get_permalink( $view->ID ) ), $edit_link_no_post );
 
 		$args = array(
-			'p' => $post_id,
+			'p'     => $post_id,
 			'entry' => $entry['id'],
-			'edit' => $nonce,
-			'gvid' => $view->ID,
+			'edit'  => $nonce,
+			'gvid'  => $view->ID,
 		);
 
 		// When running all tests, this test thinks we have multiple Views. Correct that.
@@ -1729,7 +1729,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 	function get_redirect_after_edit_data() {
 
-		$custom_url = 'https://gravityview.co/floaty-loves-you/?with=<>&wild[]=! &characters=",';
+		$custom_url = 'https://www.gravitykit.com/floaty-loves-you/?with=<>&wild[]=! &characters=",';
 
 		return array(
 			array( '', false ),

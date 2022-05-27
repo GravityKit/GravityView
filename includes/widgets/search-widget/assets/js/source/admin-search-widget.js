@@ -665,7 +665,7 @@
 			var configs = [];
 
 			if ( e ) {
-				widgetTarget = e.target ? $( e.target ).parents( '.gv-widget-search-fields' ) : e.parents( '.gv-widget-search-fields' );
+				widgetTarget = e.target ? $( e.target ).parents( '.gv-widget-search-fields, .gv-fields' ) : e.parents( '.gv-widget-search-fields, .gv-fields' );
 			} else {
 				widgetTarget = gvSearchWidget.widgetTarget;
 			}

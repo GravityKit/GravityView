@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @author    Zack Katz <zack@gravityview.co>
- * @link      https://gravityview.co
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -261,6 +261,37 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.6 on May 27, 2022</h3>
+
+				<ul>
+					<li><a href='https://www.gravitykit.com/rebrand/'>GravityView (the company) is now GravityKit!</a>
+					</li>
+					<li>Fixed: Embedding Edit Entry context directly in a page/post using the <code>[gventry
+							edit='1']</code> shortcode (<a
+								href='https://docs.gravitykit.com/article/463-gventry-shortcode'>learn more</a>)
+					</li>
+					<li>Fixed: Edit Entry link wasn't working in the Single Entry context of an embedded View</li>
+					<li>Fixed: Search Bar GravityView widget was not saving the chosen fields</li>
+					<li>Fixed: Gravity PDF shortcodes would not be processed when bulk-approving entries using
+						GravityView. Thanks, Jake!
+					</li>
+					<li>Fixed: Sometimes embedding a GravityView shortcode in the block editor could cause a fatal
+						error
+					</li>
+					<li>Fixed: Multiple PHP 8 warnings</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>redirect_url</code> parameter to the <code>gravityview/edit_entry/success</code>
+						filter
+					</li>
+					<li>Added <code>redirect_url</code> and <code>back_link</code> parameters to the <code>gravityview/shortcodes/gventry/edit/success</code>
+						filter
+					</li>
+				</ul>
+
 				<h3>2.14.5 on May 4, 2022</h3>
 
 				<ul>
@@ -491,7 +522,7 @@ class GravityView_Welcome {
 				</ul>
 
 				<p style="text-align: center;">
-					<a href="https://gravityview.co/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
+					<a href="https://www.gravitykit.com/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
 				</p>
 
 				<div class="clear"></div>
@@ -605,7 +636,7 @@ class GravityView_Welcome {
 					<li><a href="https://github.com/10up/flexibility">Flexibility</a> - Adds support for CSS flexbox to Internet Explorer 8 &amp; 9</li>
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
-					<li><a href="https://gravityview.co/gravityforms">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
+					<li><a href="https://www.gravitykit.com/gravityforms">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
 					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="https://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
 					<li>GravityView uses free vector art by <a href="https://www.vecteezy.com">vecteezy.com</a></li>
 					<li><a href="https://github.com/jnicol/standalone-phpenkoder">PHPEnkoder</a> script encodes the email addresses.</li>

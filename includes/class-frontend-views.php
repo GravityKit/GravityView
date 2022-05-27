@@ -1550,13 +1550,13 @@ class GravityView_frontend {
 	 *
 	 * @since 1.7
 	 *
-	 * @param string $label Field label
-	 * @param array $field Field settings
-	 * @param array $form Form object
+	 * @param string $label Field label.
+	 * @param array $field Field settings.
+	 * @param array $form Form object.
 	 *
-	 * @return string Field Label
+	 * @return string Field Label.
 	 */
-	public function add_columns_sort_links( $label = '', $field, $form ) {
+	public function add_columns_sort_links( $label = '', $field = array(), $form = array() ) {
 
 		/**
 		 * Not a table-based template; don't add sort icons
