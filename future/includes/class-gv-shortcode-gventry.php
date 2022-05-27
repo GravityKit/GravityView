@@ -199,7 +199,7 @@ class gventry extends \GV\Shortcode {
 				 * @param \GV\View    $view         The View.
 				 * @param \GV\Entry   $entry        The entry.
 				 * @param array       $atts         The attributes.
-				 * @param string      $back_link    URL to return to the original entry. @since 1.6
+				 * @param string      $back_link    URL to return to the original entry. @since 2.14.6
 				 * @param string|null $redirect_url URL to return to after the update. @since 2.14.6
 				 */
 				return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts, $back_link, $redirect_url );
