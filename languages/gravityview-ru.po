@@ -1,4 +1,4 @@
-# Copyright (C) 2022 GravityView
+# Copyright (C) 2022 GravityKit
 # This file is distributed under the GPLv2 or later.
 # Translators:
 # Zachary Katz <zack@katz.co>, 2018
@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.14.5\n"
+"Project-Id-Version: GravityView 2.14.6\n"
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
-"POT-Creation-Date: 2022-05-05 02:10:32+00:00\n"
+"POT-Creation-Date: 2022-05-27 20:39:14+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
 "Last-Translator: Viktor S <awsswa59@gmail.com>, 2021\n"
 "Language-Team: Russian (https://www.transifex.com/katzwebservices/teams/18775/ru/)\n"
@@ -314,7 +314,7 @@ msgstr ""
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:148
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1085
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1101
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
 msgid "Edit Entry"
@@ -1021,9 +1021,9 @@ msgid "Only shown when multi-page forms are enabled."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:451
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1148
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1274
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2506
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1164
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1293
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2525
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 msgid "Next"
 msgstr "Следующий"
@@ -1033,9 +1033,9 @@ msgid "Previous Page Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:459
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1149
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1275
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2507
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1165
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1294
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2526
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr "Предыдущий"
@@ -1132,10 +1132,6 @@ msgid ""
 "This View is not configured properly. Start by <a href=\"%s\">selecting a "
 "form</a>."
 msgstr ""
-
-#: future/includes/class-gv-shortcode-gventry.php:189
-msgid "Entry Updated"
-msgstr "Запись обновлена"
 
 #: future/includes/class-gv-view.php:145
 msgid "Parent View:"
@@ -1796,8 +1792,8 @@ msgstr "(без названия)"
 #: includes/class-admin-add-shortcode.php:135
 #: includes/class-admin-views.php:1314
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1146
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1272
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1162
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1291
 #: trustedlogin/trustedlogin/client/src/Admin.php:1018
 msgid "Cancel"
 msgstr "Отмена"
@@ -2223,23 +2219,23 @@ msgstr "Список изменений"
 msgid "What&rsquo;s New"
 msgstr "Что&rsquo;s нового"
 
-#: includes/class-admin-welcome.php:494
+#: includes/class-admin-welcome.php:525
 msgid "View change history"
 msgstr "Посмотреть историю изменений"
 
-#: includes/class-admin-welcome.php:514
+#: includes/class-admin-welcome.php:545
 msgid "GravityView is brought to you by:"
 msgstr "Плагин GravityView разработан:"
 
-#: includes/class-admin-welcome.php:565
+#: includes/class-admin-welcome.php:596
 msgid "Contributors"
 msgstr "Помощники"
 
-#: includes/class-admin-welcome.php:592
+#: includes/class-admin-welcome.php:623
 msgid "Want to contribute?"
 msgstr "Хотите помочь?"
 
-#: includes/class-admin-welcome.php:593
+#: includes/class-admin-welcome.php:624
 msgid ""
 "If you want to contribute to the code, %syou can on Github%s. If your "
 "contributions are accepted, you will be thanked here."
@@ -2501,23 +2497,23 @@ msgstr "Создание копии не завершено. Не могу на�
 msgid "Dismiss"
 msgstr "Завершить"
 
-#: includes/class-gravityview-bulk-actions.php:133
+#: includes/class-gravityview-bulk-actions.php:135
 msgid "%d entries"
 msgstr "%d записей"
 
-#: includes/class-gravityview-bulk-actions.php:133
+#: includes/class-gravityview-bulk-actions.php:135
 msgid "1 entry"
 msgstr "1 запись"
 
-#: includes/class-gravityview-bulk-actions.php:138
+#: includes/class-gravityview-bulk-actions.php:140
 msgid "%s approved."
 msgstr "%s одобрено."
 
-#: includes/class-gravityview-bulk-actions.php:142
+#: includes/class-gravityview-bulk-actions.php:144
 msgid "%s unapproved."
 msgstr "%s не принято."
 
-#: includes/class-gravityview-bulk-actions.php:146
+#: includes/class-gravityview-bulk-actions.php:148
 msgid "%s disapproved."
 msgstr "%s отклонено."
 
@@ -2674,7 +2670,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr "Запрос неверный. Обновите страницу и попробуйте снова."
 
 #: includes/class-gravityview-entry-approval.php:213
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2355
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2374
 msgid "You do not have permission to edit this entry."
 msgstr "У вас нет полномочий для редактирования записи."
 
@@ -2898,52 +2894,52 @@ msgstr "Запросить снова"
 msgid "Your request was rejected"
 msgstr "Ваш запрос отклонен"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1147
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1273
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1163
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1292
 msgid "Update"
 msgstr "Обновить"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1170
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1186
 msgid "There was a problem with your submission."
 msgstr "Есть проблемы с вашим утверждением."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1170
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1186
 msgid "Errors have been highlighted below."
 msgstr "Ошибки выделены ниже."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1177
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1193
 msgid "Entry Updated."
 msgstr "Запись обновлена."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1214
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1230
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr "Запись обновлена. %sВернуться к записи%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1427
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1446
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr "У вас нет прав на редактирование."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1434
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1453
 msgid "This field is not editable; the post no longer exists."
 msgstr "Это поле не может быть отредактировано. Данный пост не существует."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1766
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1785
 msgid "This field is required."
 msgstr "Это поле обязательно к заполнению."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1802
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1821
 msgid "Maximum number of files reached"
 msgstr "Достигнуто максимально возможное количество файлов"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2349
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2368
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr "Неверная ссылка для редактирования. Возможно, истек срок действия."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2359
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2378
 msgid "You cannot edit the entry; it is in the trash."
 msgstr "Вы не можете редактировать эту запись. Она перемещена в корзину."
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2399
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2418
 msgid "You do not have permission to edit this field."
 msgstr "У вас нет полномочий редактировать это поле."
 
@@ -3128,7 +3124,7 @@ msgid "CAPTCHA"
 msgstr "CAPTCHA"
 
 #: includes/fields/class-gravityview-field-chainedselect.php:23
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-chainedselects.php:191
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-chainedselects.php:195
 msgid "Chained Select"
 msgstr ""
 
@@ -4984,6 +4980,14 @@ msgstr ""
 msgid "User not created; User with that email already exists"
 msgstr ""
 
+#. Author URI of the plugin/theme
+msgid "https://www.gravitykit.com"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "GravityKit"
+msgstr ""
+
 #: future/includes/class-gv-license-handler.php:309
 msgctxt "1: Customer name; 2: Customer email"
 msgid "Licensed to: %1$s (%2$s)"
@@ -5052,13 +5056,13 @@ msgid "duplicate entries"
 msgstr "дублировать записи"
 
 #: future/includes/class-gv-settings-view.php:435
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2505
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2524
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr "Обновить"
 
 #: future/includes/class-gv-settings-view.php:443
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2504
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2523
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr "Отмена"
@@ -5253,26 +5257,26 @@ msgctxt "Referring to the user who is currently editing a locked entry"
 msgid "the person who is editing the entry"
 msgstr "пользователь, редактирующий запись"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1198
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1214
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr "Запись обновлена. %sВозвращаясь к записи%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1203
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1219
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the title of the page where the user"
 " will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr "Запись обновлена. %sВозвращаясь к %s%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1209
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1225
 msgctxt ""
 "Replacement 1 is HTML. Replacement 2 is the URL where the user will be "
 "taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr "Запись обновлена. %sПеренаправление на %s%s"
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2375
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2394
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr "Назад"
