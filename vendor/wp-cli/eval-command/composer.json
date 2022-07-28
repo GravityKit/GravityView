@@ -1,0 +1,64 @@
+{
+    "name": "wp-cli/eval-command",
+    "type": "wp-cli-package",
+    "description": "Executes arbitrary PHP code or files.",
+    "homepage": "https://github.com/wp-cli/eval-command",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Bachhuber",
+            "email": "daniel@runcommand.io",
+            "homepage": "https://runcommand.io"
+        }
+    ],
+    "require": {
+        "wp-cli/wp-cli": "^2.5"
+    },
+    "require-dev": {
+        "wp-cli/wp-cli-tests": "^3.1"
+    },
+    "config": {
+        "process-timeout": 7200,
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "2.x-dev"
+        },
+        "bundled": true,
+        "commands": [
+            "eval",
+            "eval-file"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        },
+        "files": [
+            "eval-command.php"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/eval-command/issues"
+    }
+}

@@ -1,0 +1,89 @@
+{
+    "name": "wp-cli/wp-cli-bundle",
+    "description": "WP-CLI bundle package with default commands.",
+    "keywords": [
+        "cli",
+        "wordpress"
+    ],
+    "homepage": "https://wp-cli.org",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.6",
+        "composer/composer": "^1.10.23 || ^2.2.3",
+        "wp-cli/cache-command": "^2",
+        "wp-cli/checksum-command": "^2.1",
+        "wp-cli/config-command": "^2.1",
+        "wp-cli/core-command": "^2.1",
+        "wp-cli/cron-command": "^2",
+        "wp-cli/db-command": "^2",
+        "wp-cli/embed-command": "^2",
+        "wp-cli/entity-command": "^2",
+        "wp-cli/eval-command": "^2",
+        "wp-cli/export-command": "^2",
+        "wp-cli/extension-command": "^2.1",
+        "wp-cli/i18n-command": "^2",
+        "wp-cli/import-command": "^2",
+        "wp-cli/language-command": "^2",
+        "wp-cli/maintenance-mode-command": "^2",
+        "wp-cli/media-command": "^2",
+        "wp-cli/package-command": "^2.1",
+        "wp-cli/rewrite-command": "^2",
+        "wp-cli/role-command": "^2",
+        "wp-cli/scaffold-command": "^2",
+        "wp-cli/search-replace-command": "^2",
+        "wp-cli/server-command": "^2",
+        "wp-cli/shell-command": "^2",
+        "wp-cli/super-admin-command": "^2",
+        "wp-cli/widget-command": "^2",
+        "wp-cli/wp-cli": "^2.6"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest",
+        "wp-cli/wp-cli-tests": "^3.0.7"
+    },
+    "suggest": {
+        "psy/psysh": "Enhanced `wp shell` functionality"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        },
+        "platform": {
+            "php": "5.6"
+        },
+        "process-timeout": 7200,
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "2.6.x-dev"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WP_CLI\\Maintenance\\": "utils/maintenance"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "behat": "run-behat-tests",
+        "behat-rerun": "rerun-behat-tests",
+        "lint": "run-linter-tests",
+        "phpcs": "run-phpcs-tests",
+        "phpunit": "run-php-unit-tests",
+        "placeholder": "value",
+        "prepare-tests": "install-package-tests",
+        "test": [
+            "@lint",
+            "@phpcs",
+            "@phpunit",
+            "@behat"
+        ]
+    },
+    "support": {
+        "issues": "https://github.com/wp-cli/wp-cli-bundle/issues",
+        "source": "https://github.com/wp-cli/wp-cli-bundle",
+        "docs": "https://make.wordpress.org/cli/handbook/"
+    }
+}

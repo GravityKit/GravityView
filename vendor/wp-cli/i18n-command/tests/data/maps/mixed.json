@@ -1,0 +1,4 @@
+{
+  "src/index.js": ["dist/index.js"],
+  "src/other.js": "dist/index.js"
+}
