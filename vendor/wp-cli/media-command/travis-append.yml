@@ -1,5 +1,0 @@
-
-addons:
-  apt:
-    packages:
-    - ghostscript
