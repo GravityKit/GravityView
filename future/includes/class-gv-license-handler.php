@@ -58,6 +58,7 @@ class License_Handler {
 		}
 
 		add_action( 'init', array( $this, 'setup_edd' ), 0 );
+		add_action( 'admin_init', array( $this, 'setup_edd' ), 0 );
 		add_action( 'wp_ajax_gravityview_license', array( $this, 'license_call' ) );
 		add_action( 'admin_init', array( $this, 'refresh_license_status' ) );
 		add_action( 'admin_init', array( $this, 'check_license' ) );
