@@ -558,6 +558,19 @@ $gv-overlay-index: 10000;
 	height: 15.75em; // 10 visible rows
 }
 
+.gv-settings-link-icon {
+	text-decoration: none;
+
+	padding: 10px 20px;
+
+	.dashicons {
+		font-size: 32px;
+		width: 25px;
+		height: 25px;
+		line-height: 25px;
+	}
+}
+
 /** View configuration tabs */
 .post-type-gravityview .ui-tabs {
 	position: relative;
