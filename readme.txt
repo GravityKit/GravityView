@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.14.7 on July 31, 2022 =
+
+* Fixed: GravityView plugin updates were not shown in the plugin update screen since version 2.14.4 (April 27, 2022)
+
 = 2.14.6 on May 27, 2022 =
 
 * [GravityView (the company) is now GravityKit!](https://www.gravitykit.com/rebrand/)
@@ -35,7 +39,6 @@ __Developer Updates:__
 
 * Added: `redirect_url` parameter to the `gravityview/edit_entry/success` filter
 * Added `redirect_url` and `back_link` parameters to the `gravityview/shortcodes/gventry/edit/success` filter
-
 
 = 2.14.5 on May 4, 2022 =
 
