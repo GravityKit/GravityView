@@ -1,10 +1,10 @@
 # Copyright (C) 2022 GravityKit
 # This file is distributed under the GPLv2 or later.
 # Translators:
+# Zachary Katz <zack@katz.co>, 2019
 # mypan.eu, 2021
 # d4612589015893c3847c952c7b6b32a3_acd8610 <d2f1a6b51307b9cecd23acf3420d6c6e_326297>, 2021
 # a270031086f2a0d3514bc0cb507b48f6, 2021
-# Zachary Katz <zack@katz.co>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gravityview.co/support/\n"
 "POT-Creation-Date: 2022-05-27 20:39:14+00:00\n"
 "PO-Revision-Date: 2018-04-30 22:20+0000\n"
-"Last-Translator: Zachary Katz <zack@katz.co>, 2022\n"
+"Last-Translator: a270031086f2a0d3514bc0cb507b48f6, 2021\n"
 "Language-Team: French (France) (https://www.transifex.com/katzwebservices/teams/18775/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
