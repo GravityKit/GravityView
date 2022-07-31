@@ -33,6 +33,7 @@
 					if ( '#' === pluginPath && installUrl.length ) {
 						$( item ).attr( 'rel', 'external noreferrer noopener' );
 						window.location = installUrl;
+						var defer = $.Deferred();
 						return defer.resolve();
 					}
 

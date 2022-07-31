@@ -261,6 +261,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.14.7 on July 31, 2022</h3>
+
+				<ul>
+					<li>Fixed: GravityView plugin updates were not shown in the plugin update screen since version 2.14.4 (April 27, 2022)</li>
+				</ul>
+
 				<h3>2.14.6 on May 27, 2022</h3>
 
 				<ul>
