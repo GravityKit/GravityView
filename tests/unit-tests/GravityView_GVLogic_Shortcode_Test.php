@@ -387,7 +387,7 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$content = sprintf( '[gvlogic if="%s" %s="%s"]CORRECT[/gvlogic]', $date1, $op, $date2 );
 
-		$this->assertEquals( $result ? 'CORRECT' : '', do_shortcode( $content ), $date1 . ' ' . $date2 . ' ' . $op );
+		$this->assertEquals( $result ? 'CORRECT' : '', do_shortcode( $content ) );
 	}
 
 
@@ -429,12 +429,12 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 			array( '01/14/2019', '2019-01-14', 'less_than_or_is', true ),
 
 			// Test relative dates.
-			array( $last_week, '-1 week', 'equals', true ),
-			array( $last_week, '-1 week', 'isnot', false ),
+			array( $last_week, 'midnight -1 week', 'equals', true ),
+			array( $last_week, 'midnight -1 week', 'isnot', false ),
+			array( $last_week, 'midnight -1 week', 'greater_than_or_is', true ),
+			array( $last_week, 'midnight -1 week', 'less_than_or_is', true ),
+			array( $last_week, 'midnight -1 week', 'less_than', false ),
 			array( $last_week, '-1 week', 'greater_than', false ),
-			array( $last_week, '-1 week', 'less_than', false ),
-			array( $last_week, '-1 week', 'greater_than_or_is', true ),
-			array( $last_week, '-1 week', 'less_than_or_is', true ),
 			array( $next_week, '-1 week', 'equals', false ),
 			array( $next_week, '-1 week', 'greater_than', true ),
 			array( $next_year, 'today', 'greater_than', true ),
