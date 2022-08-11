@@ -770,6 +770,16 @@ class GVCommon {
 			$val1 = in_array( gravityview_get_context(), $matching_contexts ) ? $val2 : false;
 		}
 
+		// Attempt to parse dates.
+		$timestamp_1 = strtotime( $val1 );
+		$timestamp_2 = strtotime( $val2 );
+
+		// If both are timestamps, cast to string so we can use the > and < comparisons below.
+		if ( $timestamp_1 && $timestamp_2 ) {
+			$val1 = (string) $timestamp_1;
+			$val2 = (string) $timestamp_2;
+		}
+
 		switch ( $operation ) {
 			case 'equals':
 				$value = self::matches_operation( $val1, $val2, 'is' );
