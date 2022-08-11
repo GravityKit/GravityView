@@ -361,11 +361,11 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 	function get_test_gv_shortcode_date_comparison() {
 
-		$last_week = date( 'Y-m-d', strtotime( '-1 week' ) );
-		$next_week = date( 'Y-m-d', strtotime( '+1 week' ) );
-		$last_year = date( 'Y-m-d', strtotime( '-1 year' ) );
-		$next_year = date( 'Y-m-d', strtotime( '+1 year' ) );
-		$last_sat  = date( 'Y-m-d', strtotime( 'last Saturday' ) );
+		$last_week = date( 'Y-m-d', strtotime( 'midnight -1 week' ) );
+		$next_week = date( 'Y-m-d', strtotime( 'midnight +1 week' ) );
+		$last_year = date( 'Y-m-d', strtotime( 'midnight -1 year' ) );
+		$next_year = date( 'Y-m-d', strtotime( 'midnight +1 year' ) );
+		$last_sat  = date( 'Y-m-d', strtotime( 'midnight last Saturday' ) );
 
 		return array(
 			array( '2019-01-13', '2019-01-13', 'equals', true ),
@@ -416,6 +416,7 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 			array( $next_week, '-1 week', 'greater_than', true ),
 			array( $next_year, 'today', 'greater_than', true ),
 			array( 'today', $last_week, 'greater_than', true ),
+			array( 'today', $last_sat, 'greater_than', true ),
 			array( $next_year, $last_year, 'greater_than', true ),
 			array( $next_year, $last_week, 'greater_than', true ),
 		);
