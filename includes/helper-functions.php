@@ -649,7 +649,9 @@ function _gravityview_process_posted_fields() {
 }
 
 /**
- * Convert a string to a timestamp if it's a valid date.
+ * Convert a string to a timestamp if it's a valid date or a relative date prefixed with "relative:".
+ *
+ * For example: "relative:-1 week" or "relative:tomorrow" will be converted to a timestamp.
  *
  * Note: This assumes the date is using a Gregorian calendar.
  *
@@ -666,11 +668,15 @@ function _gravityview_process_posted_fields() {
  */
 function gravityview_maybe_convert_date_string_to_timestamp( string $value ) {
 
-	$timestamp = strtotime( $value );
+	if( false !== strpos( strtolower( $value ), "relative:") ) {
+		$value = str_replace( 'relative:', '', $value );
 
-	// It's a valid date/time.
-	if ( $timestamp ) {
-		return $timestamp;
+		$timestamp = strtotime( $value );
+
+		// It's a valid date/time.
+		if ( $timestamp ) {
+			return $timestamp;
+		}
 	}
 
 	// Attempt to parse dates.
