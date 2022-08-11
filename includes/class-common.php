@@ -771,8 +771,8 @@ class GVCommon {
 		}
 
 		// Attempt to parse dates.
-		$timestamp_1 = strtotime( $val1 );
-		$timestamp_2 = strtotime( $val2 );
+		$timestamp_1 = gravityview_maybe_convert_date_string_to_timestamp( $val1 );
+		$timestamp_2 = gravityview_maybe_convert_date_string_to_timestamp( $val2 );
 
 		// If both are timestamps, cast to string so we can use the > and < comparisons below.
 		if ( $timestamp_1 && $timestamp_2 ) {
