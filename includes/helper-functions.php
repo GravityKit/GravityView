@@ -666,7 +666,11 @@ function _gravityview_process_posted_fields() {
  *
  * @return false|int Timestamp if valid date, otherwise false.
  */
-function gravityview_maybe_convert_date_string_to_timestamp( string $value ) {
+function gravityview_maybe_convert_date_string_to_timestamp( $value = '' ) {
+
+	if ( ! is_string( $value ) ) {
+		return false;
+	}
 
 	if( false !== strpos( strtolower( $value ), "relative:") ) {
 		$value = str_replace( 'relative:', '', $value );
