@@ -676,15 +676,20 @@ function gravityview_maybe_convert_date_string_to_timestamp( string $value ) {
 	// Attempt to parse dates.
 	$parsed_date = array_filter( \GFCommon::parse_date( $value ) );
 
-	$year  = rgar( $parsed_date, 'year' );
-	$month = rgar( $parsed_date, 'month' );
-	$day   = rgar( $parsed_date, 'day' );
+	// Should always have year/month/day.
+	if ( 3 !== sizeof( $parsed_date ) ) {
+		return false;
+	}
+
+	$year  = (int) rgar( $parsed_date, 'year' );
+	$month = (int) rgar( $parsed_date, 'month' );
+	$day   = (int) rgar( $parsed_date, 'day' );
 
 	// If the month is greater than 12, it's probably a day (in d/m/Y format). This may be why strtotime() failed.
 	// Let's correct this by swapping the day and month.
 	if ( ! checkdate( $month, $day, $year ) ) {
-		$day   = rgar( $parsed_date, 'month' );
-		$month = rgar( $parsed_date, 'day' );
+		$day   = (int) rgar( $parsed_date, 'month' );
+		$month = (int) rgar( $parsed_date, 'day' );
 	}
 
 	// Still not valid. Perhaps not a date.
