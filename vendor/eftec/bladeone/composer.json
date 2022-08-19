@@ -1,0 +1,62 @@
+{
+  "name": "eftec/bladeone",
+  "description": "The standalone version Blade Template Engine from Laravel in a single php file",
+  "type": "library",
+  "keywords": [
+    "blade",
+    "template",
+    "view",
+    "php",
+    "templating"
+  ],
+  "homepage": "https://github.com/EFTEC/BladeOne",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jorge Patricio Castro Castillo",
+      "email": "jcastro@eftec.cl"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "5.6.1"
+    }
+  },
+  "require": {
+    "php": ">=5.6",
+    "ext-json": "*"
+  },
+  "suggest": {
+    "ext-mbstring": "This extension is used if it's active",
+    "eftec/bladeonehtml": "Extension to create forms"
+  },  
+  "archive": {
+    "exclude": [
+      "/examples"
+    ]
+  },
+  "autoload": {
+    "psr-4": {
+      "eftec\\bladeone\\": "lib/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "eftec\\tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7",
+    "squizlabs/php_codesniffer": "^3.5.4",
+    "friendsofphp/php-cs-fixer": "^2.16.1"
+  },
+  "scripts": {
+    "sniff": [
+      "phpcs --extensions=php ."
+    ],
+    "fix": [
+      "php-cs-fixer fix",
+      "phpcbf --extensions=php ."
+    ]
+  }
+}

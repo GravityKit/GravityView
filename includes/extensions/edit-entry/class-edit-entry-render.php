@@ -404,7 +404,7 @@ class GravityView_Edit_Entry_Render {
 			// Process calculation fields
 			$this->update_calculation_fields();
 
-			// Handle hidden approval fields (or their absense)
+			// Handle hidden approval fields (or their absence)
 			$this->preset_approval_fields();
 
 			// Perform actions normally performed after updating a lead

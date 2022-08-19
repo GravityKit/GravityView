@@ -30,7 +30,7 @@ class View implements \ArrayAccess {
 	public $settings;
 
 	/**
-	 * @var \GV\Widget_Collection The widets attached here.
+	 * @var \GV\Widget_Collection The widgets attached here.
 	 *
 	 * @api
 	 * @since 2.0
