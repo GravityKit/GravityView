@@ -10,6 +10,10 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
+echo '<div id="' . esc_attr( $gravityview->view->get_anchor_id() ) . '">';
+
 $gravityview->template->get_template_part( 'list/list', 'header' );
 $gravityview->template->get_template_part( 'list/list', 'body' );
 $gravityview->template->get_template_part( 'list/list', 'footer' );
+
+echo '</div>';
