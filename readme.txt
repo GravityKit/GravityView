@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: The "entry approval is changed" notification, if configured, was being sent for new form submissions.
+
 = 2.14.7 on July 31, 2022 =
 
 * Fixed: GravityView plugin updates were not shown in the plugin update screen since version 2.14.4 (April 27, 2022)
