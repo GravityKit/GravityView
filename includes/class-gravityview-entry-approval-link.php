@@ -22,6 +22,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GravityView_Entry_Approval_Link {
 
+	/**
+	 * Default value for the expiration_hours modifier.
+	 */
+	const EXPIRATION_HOURS = 24;
+
+	/**
+	 * Default value for the privacy modifier.
+	 */
+	const PRIVACY = 'private';
+
+	/**
+	 * Initialization.
+	 */
 	public function __construct() {
 		$this->add_hooks();
 	}
@@ -133,6 +146,12 @@ class GravityView_Entry_Approval_Link {
 
 		foreach( $matches as $match ) {
 
+			/**
+			 * @param string $full_tag         $match[0]
+			 * @param string $action           $match[1]
+			 * @param int    $expiration_hours $match[2]
+			 * @param string $privacy          $match[3]
+			 */
 			list( $full_tag, $action, $expiration_hours, $privacy ) = $match;
 
 			if ( false === (bool) gravityview()->plugin->settings->get( 'public-approval-link' ) ) {
@@ -148,11 +167,17 @@ class GravityView_Entry_Approval_Link {
 			$link_url = $this->get_link_url( $token, $privacy );
 
 
-			if ( 24 > (int) $expiration_hours ) {
+			if ( self::EXPIRATION_HOURS > (int) $expiration_hours ) {
 				$link_url = add_query_arg( array( 'nonce' => wp_create_nonce( 'gv_token' ) ), $link_url );
 			}
 
-			$link = sprintf( '<a href="%s">%s</a>', esc_url( $link_url ), ucfirst( $action ) );
+			$link_labels = array(
+				'approve'    => _x( 'Approve', 'Change entry approval status to approved.', 'gravityview' ),
+				'disapprove' => _x( 'Disapprove', 'Change entry approval status to disapproved.', 'gravityview' ),
+				'unapprove'  => _x( 'Unapprove', 'Change entry approval status to unapproved.', 'gravityview' ),
+			);
+
+			$link = sprintf( '<a href="%s">%s</a>', esc_url( $link_url ), esc_html( $link_labels[ $action ] ) );
 
 			$text = str_replace( $full_tag, $link, $text );
 		}
@@ -179,11 +204,11 @@ class GravityView_Entry_Approval_Link {
 		}
 
 		if ( ! $expiration_hours ) {
-			$expiration_hours = 24;
+			$expiration_hours = self::EXPIRATION_HOURS;
 		}
 
 		if ( ! $privacy ) {
-			$privacy = 'private';
+			$privacy = self::PRIVACY;
 		}
 
 		$approval_status = $this->get_approval_status( $action );
@@ -213,8 +238,8 @@ class GravityView_Entry_Approval_Link {
 
 		$secret = get_option( 'gravityview_token_secret' );
 		if ( empty( $secret ) ) {
-			$secret = wp_generate_password( 64 );
-			update_option( 'gravityview_token_secret', $secret );
+			$secret = $this->generate_secret();
+			update_option( 'gravityview_token_secret', $secret, false );
 		}
 
 		$sig = hash_hmac( 'sha256', $token, $secret );
@@ -222,6 +247,28 @@ class GravityView_Entry_Approval_Link {
 		$token .= '.' . $sig;
 
 		return $token;
+	}
+
+	/**
+	 *
+	 */
+	protected function generate_secret( $byte_length = 128 ) {
+
+		if ( function_exists( 'random_bytes' ) ) {
+			try {
+				return bin2hex( random_bytes( $byte_length ) ); // phpcs:ignore
+			} catch ( \Exception $e ) {
+			}
+		}
+
+		if ( function_exists( 'openssl_random_pseudo_bytes' ) ) {
+			$crypto_strong = false;
+
+			$bytes = openssl_random_pseudo_bytes( $byte_length, $crypto_strong );
+			if ( true === $crypto_strong ) {
+				return bin2hex( $bytes );
+			}
+		}
 	}
 
 	/**
@@ -263,6 +310,8 @@ class GravityView_Entry_Approval_Link {
 			$base_url = admin_url( '/' );
 		}
 
+		$query_args = array();
+
 		if ( ! empty( $token ) ) {
 			$query_args['gv_token'] = $token;
 		}
@@ -288,6 +337,10 @@ class GravityView_Entry_Approval_Link {
 	 */
 	public function _filter_init() {
 
+		if ( ! GV\Utils::_GET( 'gv_token' ) && ! GV\Utils::_GET( 'gv_approval_link_result' ) ) {
+			return;
+		}
+
 		if ( GV\Utils::_GET( 'gv_token' ) ) {
 			$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
 
@@ -300,7 +353,7 @@ class GravityView_Entry_Approval_Link {
 			if ( empty( $token_array ) ) {
 				GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
 
-				return false;
+				return;
 			}
 
 			$scopes = $token_array['scopes'];
@@ -308,13 +361,13 @@ class GravityView_Entry_Approval_Link {
 			if ( empty( $scopes['entry_id'] ) || empty( $scopes['approval_status'] ) || empty( $scopes['privacy'] ) ) {
 				GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
 
-				return false;
+				return;
 			}
 
-			if ( 'private' === $scopes['privacy'] && ! is_user_logged_in() ) {
+			if ( self::PRIVACY === $scopes['privacy'] && ! is_user_logged_in() ) {
 				GVCommon::generate_notice( __( 'You are not allowed to perform this operation.', 'gravityview' ) , 'gv-error' );
 
-				return false;
+				return;
 			}
 
 			$this->update_approved( $scopes );
@@ -394,6 +447,10 @@ class GravityView_Entry_Approval_Link {
 			return false;
 		}
 
+		/**
+		 * @param string $body_64 $parts[0]
+		 * @param string $sig     $parts[1]
+		 */
 		list( $body_64, $sig ) = $parts;
 
 		if ( empty( $sig ) ) {
@@ -439,7 +496,7 @@ class GravityView_Entry_Approval_Link {
 			return false;
 		}
 
-		if ( 24 > $token['scopes']['expiration_hours'] ) {
+		if ( self::EXPIRATION_HOURS > $token['scopes']['expiration_hours'] ) {
 
 			if ( ! isset( $_GET['nonce'] ) ) {
 				return false;
@@ -507,7 +564,7 @@ class GravityView_Entry_Approval_Link {
 
 		}
 
-		$return_url = get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&id=' . $form_id;
+		$return_url = admin_url( '/admin.php?page=gf_entries&id=' . $form_id );
 
 		if ( is_wp_error( $result ) ) {
 
@@ -519,7 +576,7 @@ class GravityView_Entry_Approval_Link {
 
 		}
 
-		wp_redirect( esc_url( $return_url ) );
+		wp_safe_redirect( esc_url( $return_url ) );
 		exit;
 	}
 }
