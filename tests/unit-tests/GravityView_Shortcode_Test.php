@@ -393,6 +393,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 					),
 					wp_generate_password( 4, false ) => array(
 						'id' => '1',
+						'label' => 'Expected Field Value',
 					),
 				),
 			),
@@ -415,9 +416,9 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
 
-		$shorcode = new \GV\Shortcodes\gravityview();
+		$shortcode = new \GV\Shortcodes\gravityview();
 
-		$this->assertContains( $field, $shorcode->callback( array( 'id' => $view->ID ) ) );
+		$this->assertContains( $field, $shortcode->callback( array( 'id' => $view->ID ) ) );
 
 		gravityview()->request = new \GV\Frontend_Request();
 	}
