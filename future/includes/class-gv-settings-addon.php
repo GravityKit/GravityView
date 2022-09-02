@@ -672,6 +672,7 @@ HTML;
 			'support_port'         => '1',
 			'flexbox_search'       => '1',
 			'lightbox'             => 'fancybox',
+			'public-approval-link' => '0',
 			'rest_api'             => '0',
 			'beta'                 => '0',
 			'powered_by'           => '0',
@@ -1024,6 +1025,24 @@ HTML;
 								),
 						),
 						'description'   => __( 'Set this to ON to prevent extraneous scripts and styles from being printed on GravityView admin pages, reducing conflicts with other plugins and themes.', 'gravityview' ) . ' ' . __( 'If your Edit View tabs are ugly, enable this setting.', 'gravityview' ),
+				),
+				array(
+						'name'          => 'public-approval-link',
+						'type'          => 'radio',
+						'label'         => __( 'Public Approval Link', 'gravityview' ),
+						'default_value' => $default_settings['public-approval-link'],
+						'horizontal'    => 1,
+						'choices'       => array(
+								array(
+										'label' => _x( 'On', 'Setting: On or off', 'gravityview' ),
+										'value' => '1',
+								),
+								array(
+										'label' => _x( 'Off', 'Setting: On or off', 'gravityview' ),
+										'value' => '0',
+								),
+						),
+						'description'   => __( 'Set this to ON to enable public modifier on approval merge tags.', 'gravityview' ),
 				),
 				/**
 				 * @since 2.0 Added REST API

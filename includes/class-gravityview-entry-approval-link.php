@@ -139,15 +139,24 @@ class GravityView_Entry_Approval_Link {
 
 		foreach( $matches as $match ) {
 
-			list( $full_tag, $action, $expiration_hours, $permissions ) = $match;
+			list( $full_tag, $action, $expiration_hours, $privacy ) = $match;
 
-			$token = $this->get_token( $action, $expiration_hours, $permissions, $entry );
+			if ( false === (bool) gravityview()->plugin->settings->get( 'public-approval-link' ) ) {
+				$privacy = 'private';
+			}
+
+			$token = $this->get_token( $action, $expiration_hours, $privacy, $entry );
 
 			if ( ! $token ) {
 				continue;
 			}
 
 			$link_url = $this->get_link_url( $token, $privacy );
+
+
+			if ( 24 > (int) $expiration_hours ) {
+				$link_url = add_query_arg( array( 'nonce' => wp_create_nonce( 'gv_token' ) ), $link_url );
+			}
 
 			$link = sprintf( '<a href="%s">%s</a>', esc_url( $link_url ), ucfirst( $action ) );
 
