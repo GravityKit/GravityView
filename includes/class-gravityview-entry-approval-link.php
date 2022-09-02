@@ -322,7 +322,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Check page load for approval link token then maybe process it
+	 * Check page load for known parameters
 	 *
 	 * @since 2.14.8
 	 *
@@ -340,6 +340,26 @@ class GravityView_Entry_Approval_Link {
 		if ( ! GV\Utils::_GET( 'gv_token' ) && ! GV\Utils::_GET( 'gv_approval_link_result' ) ) {
 			return;
 		}
+
+		$this->maybe_update_approved();
+		$this->maybe_show_approval_notice();
+	}
+
+	/**
+	 * Check page load for approval link token then maybe process it
+	 *
+	 * @since 2.14.8
+	 *
+	 * Expects a $_GET request with the following $_GET keys and values:
+	 *
+	 * @global array $_GET {
+	 * @type string $gv_token Approval link token
+	 * @type string $nonce (optional) Nonce hash to be validated. Only available if $expiration_hours is smaller than 24.
+	 * }
+	 *
+	 * @return void
+	 */
+	protected function maybe_update_approved() {
 
 		if ( GV\Utils::_GET( 'gv_token' ) ) {
 			$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
@@ -372,6 +392,22 @@ class GravityView_Entry_Approval_Link {
 
 			$this->update_approved( $scopes );
 		}
+	}
+
+	/**
+	 * Check page load for approval link result then maybe show notice
+	 *
+	 * @since 2.14.8
+	 *
+	 * Expects a $_GET request with the following $_GET keys and values:
+	 *
+	 * @global array $_GET {
+	 * @type string $gv_approval_link_result Approval link result
+	 * }
+	 *
+	 * @return void
+	 */
+	protected function maybe_show_approval_notice() {
 
 		if ( GV\Utils::_GET( 'gv_approval_link_result' ) ) {
 			$result = GV\Utils::_GET( 'gv_approval_link_result' );
@@ -502,7 +538,7 @@ class GravityView_Entry_Approval_Link {
 				return false;
 			}
 
-			if ( ! wp_verify_nonce( $_GET['nonce'], 'gv_token' ) ) {
+			if ( ! wp_verify_nonce( GV\Utils::_GET( 'nonce' ), 'gv_token' ) ) {
 				return false;
 			}
 		}
@@ -528,15 +564,17 @@ class GravityView_Entry_Approval_Link {
 		$entry_id        = $scopes['entry_id'];
 		$approval_status = $scopes['approval_status'];
 
-		$entry   = GFAPI::get_entry( $entry_id );
-		$form_id = $entry['form_id'];
+		$entry      = GFAPI::get_entry( $entry_id );
+		$form_id    = $entry['form_id'];
+		$return_url = admin_url( '/admin.php?page=gf_entries&id=' . $form_id );
 
 		// Valid status
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
 
 			gravityview()->log->error( 'Invalid approval status', array( 'data' => $scopes ) );
 
-			$result = new WP_Error( 'invalid_status', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+			wp_safe_redirect( add_query_arg( array( 'gv_approval_link_result' => 'error' ), $return_url ) );
+			exit;
 
 		}
 
@@ -545,26 +583,22 @@ class GravityView_Entry_Approval_Link {
 
 			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
 
-			$result = new WP_Error( 'empty_details', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+			wp_safe_redirect( add_query_arg( array( 'gv_approval_link_result' => 'error' ), $return_url ) );
+			exit;
 
 		}
 
 		// Has capability
-		elseif ( 'private' === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
+		elseif ( self::PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
-			$result = new WP_Error( 'Missing Cap: gravityview_moderate_entries', __( 'You do not have permission to edit this entry.', 'gravityview') );
+			wp_safe_redirect( add_query_arg( array( 'gv_approval_link_result' => 'error' ), $return_url ) );
+			exit;
 
 		}
 
-		else {
-
-			$result = GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form_id );
-
-		}
-
-		$return_url = admin_url( '/admin.php?page=gf_entries&id=' . $form_id );
+		$result = GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form_id );
 
 		if ( is_wp_error( $result ) ) {
 
