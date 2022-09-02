@@ -22,15 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GravityView_Entry_Approval_Link {
 
-	/**
-	 * The regular expression to use for the matching.
-	 *
-	 * @since 1.7.1-dev
-	 *
-	 * @var string
-	 */
-	protected $regex = '';
-
 	public function __construct() {
 		$this->add_hooks();
 	}
