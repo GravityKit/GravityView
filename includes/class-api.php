@@ -1387,7 +1387,7 @@ function gravityview_get_files_array( $value, $gv_class = '', $context = null ) 
  *
  * @todo use GF's field get_export_value() instead
  *
- * @see https://gravityview.co/support/documentation/201608159 Read how to modify the link
+ * @see https://docs.gravitykit.com/article/59-modify-the-map-it-address-link Read how to modify the link
  * @param  string $address Address
  * @return string          URL of link to map of address
  */

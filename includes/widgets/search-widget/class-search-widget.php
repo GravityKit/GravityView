@@ -1649,7 +1649,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		if ( 'created_by' === $field['field'] ) {
-			$filter['choices'] = self::get_created_by_choices( $context->view );
+			$filter['choices'] = self::get_created_by_choices( ( isset( $context->view ) ? $context->view : null ) );
 			$filter['type'] = 'created_by';
 		}
 
@@ -1756,7 +1756,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Calculate the search choices for the users
 	 *
-	 * @param \GV\View $view The view
+	 * @param \GV\View|null $view The View, if set.
 	 * @since develop
 	 *
 	 * @since 1.8
@@ -1778,7 +1778,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * @since develop
 			 * @param string[in,out] The text. Default: $user->display_name
 			 * @param \WP_User $user The user.
-			 * @param \GV\View $view The view.
+			 * @param \GV\View|null $view The view.
 			 */
 			$text = apply_filters( 'gravityview/search/created_by/text', $user->display_name, $user, $view );
 			$choices[] = array(

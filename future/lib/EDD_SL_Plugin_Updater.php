@@ -10,13 +10,15 @@ use stdClass;
  */
 
 // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
  * Allows plugins to use their own update API.
  *
  * @author Easy Digital Downloads
- * @version 1.9.1
+ * @version 1.9.2
  */
 class EDD_SL_Plugin_Updater {
 
@@ -150,11 +152,44 @@ class EDD_SL_Plugin_Updater {
 			// This is required for your plugin to support auto-updates in WordPress 5.5.
 			$version_info->plugin = $this->name;
 			$version_info->id     = $this->name;
+			$version_info->tested = $this->get_tested_version( $version_info );
 
 			$this->set_version_info_cache( $version_info );
 		}
 
 		return $version_info;
+	}
+
+	/**
+	 * Gets the plugin's tested version.
+	 *
+	 * @since 1.9.2
+	 * @param object $version_info
+	 * @return null|string
+	 */
+	private function get_tested_version( $version_info ) {
+
+		// There is no tested version.
+		if ( empty( $version_info->tested ) ) {
+			return null;
+		}
+
+		// Strip off extra version data so the result is x.y or x.y.z.
+		list( $current_wp_version ) = explode( '-', get_bloginfo( 'version' ) );
+
+		// The tested version is greater than or equal to the current WP version, no need to do anything.
+		if ( version_compare( $version_info->tested, $current_wp_version, '>=' ) ) {
+			return $version_info->tested;
+		}
+		$current_version_parts = explode( '.', $current_wp_version );
+		$tested_parts          = explode( '.', $version_info->tested );
+
+		// The current WordPress version is x.y.z, so update the tested version to match it.
+		if ( isset( $current_version_parts[2] ) && $current_version_parts[0] === $tested_parts[0] && $current_version_parts[1] === $tested_parts[1] ) {
+			$tested_parts[2] = $current_version_parts[2];
+		}
+
+		return implode( '.', $tested_parts );
 	}
 
 	/**
