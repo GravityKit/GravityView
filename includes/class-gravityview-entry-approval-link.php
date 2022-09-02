@@ -38,9 +38,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Add custom merge tags to merge tag options. DO NOT OVERRIDE.
-	 *
-	 * @internal Not to be overridden by fields
+	 * Add custom merge tags to merge tag options.
 	 *
 	 * @since 2.14.8
 	 *
@@ -91,7 +89,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Match the merge tag in replacement text for the field.  DO NOT OVERRIDE.
+	 * Match the merge tag in replacement text for the field.
 	 *
 	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
 	 *
@@ -118,13 +116,9 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Run GravityView filters when using GFCommon::replace_variables()
-	 *
-	 * Instead of adding multiple hooks, add all hooks into this one method to improve speed
+	 * Replace merge tags
 	 *
 	 * @since 2.14.8
-	 *
-	 * @see GFCommon::replace_variables()
 	 *
 	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace
@@ -167,6 +161,17 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
+	 * Generate token from merge tag parameters
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param string|bool $action Action to be taken by the merge tag.
+	 * @param int         $expiration_hours Amount of hours the approval link is valid.
+	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
+	 * @param array       $entry Entry array.
+	 *
+	 * @return array Encrypted hash
+	 */
 	protected function get_token( $action = false, $expiration_hours = 24, $privacy = 'private', $entry = array() ) {
 
 		if ( ! $action || ! $entry['id'] ) {
@@ -220,6 +225,14 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
+	 * Returns an approval status based on the provided action
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param string|bool $action
+	 *
+	 * @return int Value of respective approval status
+	 */
 	protected function get_approval_status( $action = false ) {
 
 		if ( ! $action ) {
@@ -258,6 +271,21 @@ class GravityView_Entry_Approval_Link {
 
 		return $url;
 	}
+
+	/**
+	 * Check page load for approval link token then maybe process it
+	 *
+	 * @since 2.14.8
+	 *
+	 * Expects a $_GET request with the following $_GET keys and values:
+	 *
+	 * @global array $_GET {
+	 * @type string $gv_token Approval link token
+	 * @type string $nonce (optional) Nonce hash to be validated. Only available if $expiration_hours is smaller than 24.
+	 * }
+	 *
+	 * @return void
+	 */
 	public function _filter_init() {
 
 		if ( GV\Utils::_GET( 'gv_token' ) ) {
@@ -276,6 +304,20 @@ class GravityView_Entry_Approval_Link {
 			if ( 'private' === $scopes['privacy'] && ! is_user_logged_in() ) {
 				return false;
 			}
+
+			$this->update_approved( $scopes );
+		}
+	}
+
+	/**
+	 * Decode received token to its original form.
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param string|bool $token
+	 *
+	 * @return array Original scopes
+	 */
 	protected function decode_token( $token = false ) {
 
 		if ( ! $token ) {
@@ -307,6 +349,16 @@ class GravityView_Entry_Approval_Link {
 
 		return json_decode( $body_json, true );
 	}
+
+	/**
+	 * Validate token
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param string|boold $token
+	 *
+	 * @return bool Token is valid or not
+	 */
 	protected function validate_token( $token = false ) {
 
 		if ( ! $token ) {
@@ -376,10 +428,76 @@ class GravityView_Entry_Approval_Link {
 
 		return true;
 	}
+
+	/**
+	 * Update approval status
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param array $scopes
+	 *
+	 * @return void Output success or error messages to user on redirect.
+	 */
+	protected function update_approved( $scopes = array() ) {
+
+		if ( empty( $scopes ) ) {
+			return false;
 		}
-	}
-	}
+
+		$entry_id        = $scopes['entry_id'];
+		$approval_status = $scopes['approval_status'];
+
+		$entry   = GFAPI::get_entry( $entry_id );
+		$form_id = $entry['form_id'];
+
+		// Valid status
+		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
+
+			gravityview()->log->error( 'Invalid approval status', array( 'data' => $scopes ) );
+
+			$result = new WP_Error( 'invalid_status', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+
 		}
+
+		// Valid values
+		elseif ( empty( $entry_id ) || empty( $form_id ) ) {
+
+			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
+
+			$result = new WP_Error( 'empty_details', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+
+		}
+
+		// Has capability
+		elseif ( 'private' === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
+
+			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
+
+			$result = new WP_Error( 'Missing Cap: gravityview_moderate_entries', __( 'You do not have permission to edit this entry.', 'gravityview') );
+
+		}
+
+		else {
+
+			$result = GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form_id );
+
+		}
+
+		$return_url = get_bloginfo( 'wpurl' ) . '/wp-admin/admin.php?page=gf_entries&id=' . $form_id;
+
+		if ( is_wp_error( $result ) ) {
+
+			$return_url = add_query_arg( array( 'gv_approval_link_result' => 'error' ) );
+
+		} else {
+
+			$return_url = add_query_arg( array( 'gv_approval_link_result' => 'success' ) );
+
+		}
+
+		wp_redirect( esc_url( $return_url ) );
+		exit;
+	}
 }
 
 new GravityView_Entry_Approval_Link;
