@@ -5430,7 +5430,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Trash */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'trash' ) );
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
-		$this->assertContains( 'not allowed to view', \GV\View::content( 'what!?' ) );
+		$this->assertEquals( '', \GV\View::content( 'what!?' ) );
 
 		/** Scheduled */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'future', 'post_date_gmt' => '2117-11-10 18:02:56' ) );
@@ -5491,7 +5491,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Trash */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'trash' ) );
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
-		$this->assertContains( 'not allowed to view', $future->callback( $args ) );
+		$this->assertEquals( '', $future->callback( $args ) );
 
 		/** Scheduled */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'future', 'post_date_gmt' => '2117-11-10 18:02:56' ) );
