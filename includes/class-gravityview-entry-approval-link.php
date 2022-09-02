@@ -34,6 +34,7 @@ class GravityView_Entry_Approval_Link {
 	private function add_hooks() {
 		add_filter( 'gform_custom_merge_tags', array( $this, '_filter_gform_custom_merge_tags' ), 10, 4 );
 		add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
+		add_action( 'init', array( $this, '_filter_init' ) );
 	}
 
 	/**
@@ -248,6 +249,128 @@ class GravityView_Entry_Approval_Link {
 
 		return $url;
 	}
+	public function _filter_init() {
+
+		if ( GV\Utils::_GET( 'gv_token' ) ) {
+			$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
+
+			if ( empty( $token_array ) || is_wp_error( $token_array ) ) {
+				return false;
+			}
+
+			$scopes = $token_array['scopes'];
+
+			if ( empty( $scopes['entry_id'] ) || empty( $scopes['approval_status'] ) || empty( $scopes['privacy'] ) ) {
+				return false;
+			}
+
+			if ( 'private' === $scopes['privacy'] && ! is_user_logged_in() ) {
+				return false;
+			}
+	protected function decode_token( $token = false ) {
+
+		if ( ! $token ) {
+			return false;
+		}
+
+		if ( ! $this->validate_token( $token ) ) {
+
+			gravityview()->log->error( 'Security check failed.', array( 'data' => $token ) );
+
+			return new WP_Error( 'securiy_check_failed', __( 'Security check failed.', 'gravityview' ) );
+		}
+
+		$parts = explode( '.', $token );
+		if ( count( $parts ) < 2 ) {
+			return false;
+		}
+
+		$body_64 = $parts[0];
+
+		$body_json = base64_decode( $body_64 );
+		if ( empty( $body_json ) ) {
+			return false;
+		}
+
+		if ( empty( json_decode( $body_json, true ) ) ) {
+			$body_json = base64_decode( urldecode( $body_64 ) );
+		}
+
+		return json_decode( $body_json, true );
+	}
+	protected function validate_token( $token = false ) {
+
+		if ( ! $token ) {
+			return false;
+		}
+
+		$parts = explode( '.', $token );
+		if ( count( $parts ) < 2 ) {
+			return false;
+		}
+
+		list( $body_64, $sig ) = $parts;
+
+		if ( empty( $sig ) ) {
+			return false;
+		}
+
+		$secret = get_option( 'gravityview_token_secret' );
+		if ( empty( $secret ) ) {
+			return false;
+		}
+
+
+		$verification_sig  = hash_hmac( 'sha256', $body_64, $secret );
+		$verification_sig2 = hash_hmac( 'sha256', rawurlencode( $body_64 ), $secret );
+
+		if ( ! hash_equals( $sig, $verification_sig ) && ! hash_equals( $sig, $verification_sig2 ) ) {
+			return false;
+		}
+
+		$body_json = base64_decode( $body_64 );
+		if ( empty( $body_json ) || empty( json_decode( $body_json, true ) ) ) {
+			$body_json = base64_decode( urldecode( $body_64 ) );
+			if ( empty( $body_json ) ) {
+				return false;
+			}
+		}
+
+		$token = json_decode( $body_json, true );
+
+		if ( ! isset( $token['jti'] ) ) {
+			return false;
+		}
+
+		if ( ! isset( $token['exp'] ) || $token['exp'] < time() ) {
+			return false;
+		}
+
+		if ( ! isset( $token['scopes'] ) ) {
+			return false;
+		}
+
+		if ( ! isset( $token['scopes']['expiration_hours'] ) ) {
+			return false;
+		}
+
+		if ( 24 > $token['scopes']['expiration_hours'] ) {
+
+			if ( ! isset( $_GET['nonce'] ) ) {
+				return false;
+			}
+
+			if ( ! wp_verify_nonce( $_GET['nonce'], 'gv_token' ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+		}
+	}
+	}
+		}
 }
 
 new GravityView_Entry_Approval_Link;
