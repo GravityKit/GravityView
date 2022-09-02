@@ -146,7 +146,9 @@ class GravityView_Entry_Approval_Link {
 				continue;
 			}
 
-			$link = sprintf( '<a href="%s">%s</a>', esc_url( $this->get_link_url( $token ) ), ucfirst( $action ) );
+			$link_url = $this->get_link_url( $token, $privacy );
+
+			$link = sprintf( '<a href="%s">%s</a>', esc_url( $link_url ), ucfirst( $action ) );
 
 			$text = str_replace( $full_tag, $link, $text );
 		}
@@ -154,22 +156,36 @@ class GravityView_Entry_Approval_Link {
 		return $text;
 	}
 
-	protected function get_token( $action = '', $expiration_hours = 24, $permissions = 'private', $entry = array() ) {
+	/**
+	protected function get_token( $action = false, $expiration_hours = 24, $privacy = 'private', $entry = array() ) {
 
 		if ( ! $action || ! $entry['id'] ) {
 			return false;
 		}
 
+		if ( ! $expiration_hours ) {
+			$expiration_hours = 24;
+		}
+
+		if ( ! $privacy ) {
+			$privacy = 'private';
+		}
+
+		$approval_status = $this->get_approval_status( $action );
+
+		if ( ! $approval_status ) {
+			return false;
+		}
+
 		$scopes = array(
-			'entry_timestamp' => $entry['timestamp'],
-			'entry_id'        => $entry['id'],
-			'action'          => $action,
-			'permissions'     => $permissions,
+			'entry_id'         => $entry['id'],
+			'approval_status'  => $approval_status,
+			'expiration_hours' => $expiration_hours,
+			'privacy'          => $privacy,
 		);
 
+		$jti                  = uniqid();
 		$expiration_timestamp = strtotime( '+' . (int) $expiration_hours . ' hours' );
-
-		$jti = uniqid();
 
 		$token_array = array(
 			'iat'    => time(),
@@ -193,11 +209,35 @@ class GravityView_Entry_Approval_Link {
 		return $token;
 	}
 
-	protected function get_link_url( $token ) {
+	/**
+	protected function get_approval_status( $action = false ) {
 
-		$base_url = '';
-		if ( empty( $base_url ) ) {
-			$base_url = admin_url( 'admin.php' );
+		if ( ! $action ) {
+			return false;
+		}
+
+		$key    = GravityView_Entry_Approval_Status::get_key( $action . 'd' );
+		$values = GravityView_Entry_Approval_Status::get_values();
+
+		return $values[ $key ];
+	}
+
+	/**
+	 * Generate approval link URL
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param string|bool $token
+	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
+	 *
+	 * @return string Approval link URL
+	 */
+	protected function get_link_url( $token = false, $privacy = 'private' ) {
+
+		if ( 'public' === $privacy ) {
+			$base_url = home_url( '/' );
+		} else {
+			$base_url = admin_url( '/' );
 		}
 
 		if ( ! empty( $token ) ) {
