@@ -291,21 +291,45 @@ class GravityView_Entry_Approval_Link {
 		if ( GV\Utils::_GET( 'gv_token' ) ) {
 			$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
 
-			if ( empty( $token_array ) || is_wp_error( $token_array ) ) {
+			if ( is_wp_error( $token_array ) ) {
+				GVCommon::generate_notice( $token_array->get_error_messages() , 'gv-error' );
+
+				return;
+			}
+
+			if ( empty( $token_array ) ) {
+				GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
+
 				return false;
 			}
 
 			$scopes = $token_array['scopes'];
 
 			if ( empty( $scopes['entry_id'] ) || empty( $scopes['approval_status'] ) || empty( $scopes['privacy'] ) ) {
+				GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
+
 				return false;
 			}
 
 			if ( 'private' === $scopes['privacy'] && ! is_user_logged_in() ) {
+				GVCommon::generate_notice( __( 'You are not allowed to perform this operation.', 'gravityview' ) , 'gv-error' );
+
 				return false;
 			}
 
 			$this->update_approved( $scopes );
+		}
+
+		if ( GV\Utils::_GET( 'gv_approval_link_result' ) ) {
+			$result = GV\Utils::_GET( 'gv_approval_link_result' );
+
+			if ( 'success' === $result ) {
+				GVCommon::generate_notice( __( 'Entry approval updated!', 'gravityview' ), 'gv-success' );
+			}
+
+			elseif ( 'error' === $result ) {
+				GVCommon::generate_notice( __( 'Error updating approval.', 'gravityview' ), 'gv-error' );
+			}
 		}
 	}
 
@@ -316,7 +340,7 @@ class GravityView_Entry_Approval_Link {
 	 *
 	 * @param string|bool $token
 	 *
-	 * @return array Original scopes
+	 * @return array|object Original scopes or WP Error object
 	 */
 	protected function decode_token( $token = false ) {
 
@@ -487,11 +511,11 @@ class GravityView_Entry_Approval_Link {
 
 		if ( is_wp_error( $result ) ) {
 
-			$return_url = add_query_arg( array( 'gv_approval_link_result' => 'error' ) );
+			$return_url = add_query_arg( array( 'gv_approval_link_result' => 'error' ), $return_url );
 
 		} else {
 
-			$return_url = add_query_arg( array( 'gv_approval_link_result' => 'success' ) );
+			$return_url = add_query_arg( array( 'gv_approval_link_result' => 'success' ), $return_url );
 
 		}
 
