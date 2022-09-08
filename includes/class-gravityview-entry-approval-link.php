@@ -359,7 +359,7 @@ class GravityView_Entry_Approval_Link {
 			$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
 
 			if ( is_wp_error( $token_array ) ) {
-				GVCommon::generate_notice( $token_array->get_error_messages() , 'gv-error' );
+				GVCommon::generate_notice( $token_array->get_error_message(), 'gv-error' );
 
 				return;
 			}
