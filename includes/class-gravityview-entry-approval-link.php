@@ -301,7 +301,7 @@ class GravityView_Entry_Approval_Link {
 		if ( 'public' === $privacy ) {
 			$base_url = home_url( '/' );
 		} else {
-			$base_url = admin_url( '/' );
+			$base_url = admin_url( 'admin.php?page=gf_entries' );
 		}
 
 		$query_args = array();
@@ -359,13 +359,13 @@ class GravityView_Entry_Approval_Link {
 			$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
 
 			if ( is_wp_error( $token_array ) ) {
-				GVCommon::generate_notice( $token_array->get_error_message(), 'gv-error' );
+				echo \GVCommon::generate_notice( $token_array->get_error_message(), 'gv-error' );
 
 				return;
 			}
 
 			if ( empty( $token_array ) ) {
-				GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
+				echo \GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
 
 				return;
 			}
@@ -373,13 +373,13 @@ class GravityView_Entry_Approval_Link {
 			$scopes = $token_array['scopes'];
 
 			if ( empty( $scopes['entry_id'] ) || empty( $scopes['approval_status'] ) || empty( $scopes['privacy'] ) ) {
-				GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
+				echo \GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
 
 				return;
 			}
 
 			if ( self::PRIVACY === $scopes['privacy'] && ! is_user_logged_in() ) {
-				GVCommon::generate_notice( __( 'You are not allowed to perform this operation.', 'gravityview' ) , 'gv-error' );
+				echo \GVCommon::generate_notice( __( 'You are not allowed to perform this operation.', 'gravityview' ) , 'gv-error' );
 
 				return;
 			}
@@ -407,11 +407,11 @@ class GravityView_Entry_Approval_Link {
 			$result = GV\Utils::_GET( 'gv_approval_link_result' );
 
 			if ( 'success' === $result ) {
-				GVCommon::generate_notice( __( 'Entry approval updated!', 'gravityview' ), 'gv-success' );
+				echo \GVCommon::generate_notice( __( 'Entry approval updated!', 'gravityview' ), 'gv-success' );
 			}
 
 			elseif ( 'error' === $result ) {
-				GVCommon::generate_notice( __( 'Error updating approval.', 'gravityview' ), 'gv-error' );
+				echo \GVCommon::generate_notice( __( 'Error updating approval.', 'gravityview' ), 'gv-error' );
 			}
 		}
 	}
