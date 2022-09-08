@@ -255,20 +255,14 @@ class GravityView_Entry_Approval_Link {
 	protected function generate_secret( $byte_length = 128 ) {
 
 		if ( function_exists( 'random_bytes' ) ) {
-			try {
-				return bin2hex( random_bytes( $byte_length ) ); // phpcs:ignore
-			} catch ( \Exception $e ) {
-			}
+			$bytes = random_bytes( ceil( $byte_length / 2 ) );
+		} elseif ( function_exists( 'openssl_random_pseudo_bytes' ) ) {
+			$bytes = openssl_random_pseudo_bytes( ceil( $byte_length / 2 ) );
+		} else {
+			$bytes = sha1( md5( time() * rand() ) );
 		}
 
-		if ( function_exists( 'openssl_random_pseudo_bytes' ) ) {
-			$crypto_strong = false;
-
-			$bytes = openssl_random_pseudo_bytes( $byte_length, $crypto_strong );
-			if ( true === $crypto_strong ) {
-				return bin2hex( $bytes );
-			}
-		}
+		return substr( bin2hex( $bytes ), 0, $byte_length );
 	}
 
 	/**
