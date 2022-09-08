@@ -45,9 +45,61 @@ class GravityView_Entry_Approval_Link {
 	 * @return void
 	 */
 	private function add_hooks() {
+		add_filter( 'gform_form_settings_fields', array( $this, '_filter_gform_form_settings_fields' ), 10, 2 );
 		add_filter( 'gform_custom_merge_tags', array( $this, '_filter_gform_custom_merge_tags' ), 10, 4 );
 		add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
 		add_action( 'init', array( $this, '_filter_init' ) );
+	}
+
+	/**
+	 * Filters existing GF Form Settings Fields
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param array $fields Array of sections and settings fields
+	 * @param array $form GF Form
+	 *
+	 * @return array Modified array of sections and settings fields
+	 */
+	public function _filter_gform_form_settings_fields( $fields = array(), $form = array() ) {
+
+		$fields = $this->add_form_settings( $fields, $form );
+
+		return $fields;
+	}
+
+	/**
+	 * Adds new form settings
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param array $fields Array of sections and settings fields
+	 * @param array $form GF Form
+	 *
+	 * @return array Modified array of sections and settings fields
+	 */
+	protected function add_form_settings( $fields = array(), $form = array() ) {
+
+		$fields['restrictions']['fields'][] = array(
+			'name'       => 'publicApprovalLink',
+			'type'       => 'radio',
+			'horizontal' => true,
+			'label'      => __( 'Public Approval Link', 'gravityview' ),
+			'tooltip'    => __( 'Set this to ON to enable public modifier on approval merge tags.', 'gravityview' ),
+			'choices'    => array(
+				array(
+					'label' => _x( 'On', 'Setting: On or off', 'gravityview' ),
+					'value' => '1',
+				),
+				array(
+						'label' => _x( 'Off', 'Setting: On or off', 'gravityview' ),
+						'value' => '0',
+				),
+			),
+			'default_value' => gravityview()->plugin->settings->get( 'public-approval-link' ),
+		);
+
+		return $fields;
 	}
 
 	/**
@@ -151,7 +203,7 @@ class GravityView_Entry_Approval_Link {
 			$expiration_hours = isset( $match[2] ) ? intval( $match[2] ) : self::EXPIRATION_HOURS;
 			$privacy          = isset( $match[3] ) ? $match[3] : self::PRIVACY;
 
-			if ( false === (bool) gravityview()->plugin->settings->get( 'public-approval-link' ) ) {
+			if ( false === (bool) $form['publicApprovalLink'] ) {
 				$privacy = self::PRIVACY;
 			}
 
@@ -249,7 +301,10 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Generates a random hash to be used as a secret-key of encryptions
 	 *
+	 * @since 2.14.8
+	 *
 	 * @param integer $byte_length How long is the generated hash
+	 *
 	 * @return string Random hash
 	 */
 	protected function generate_secret( $byte_length = 128 ) {
