@@ -600,15 +600,7 @@ class GravityView_Entry_Approval_Link {
 
 		$result = GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form_id );
 
-		if ( is_wp_error( $result ) ) {
-
-			$return_url = add_query_arg( array( 'gv_approval_link_result' => 'error' ), $return_url );
-
-		} else {
-
-			$return_url = add_query_arg( array( 'gv_approval_link_result' => 'success' ), $return_url );
-
-		}
+		$return_url = add_query_arg( array( 'gv_approval_link_result' => $result ? 'success' : 'error' ), $return_url );
 
 		wp_safe_redirect( esc_url( $return_url ) );
 		exit;
