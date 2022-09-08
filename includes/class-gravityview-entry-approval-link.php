@@ -118,7 +118,7 @@ class GravityView_Entry_Approval_Link {
 	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
 
 		$matches = array();
-		preg_match_all( '/{gv_(.+)_entry:?([0-9]+)?:?(.+)?}/', $text, $matches, PREG_SET_ORDER );
+		preg_match_all( '/{gv_([dis|un]*approve)_entry:?([0-9]+)?:?(.+)?}/', $text, $matches, PREG_SET_ORDER );
 
 		// If there are no matches, return original text
 		if ( empty( $matches ) ) {
@@ -146,16 +146,13 @@ class GravityView_Entry_Approval_Link {
 
 		foreach( $matches as $match ) {
 
-			/**
-			 * @param string $full_tag         $match[0]
-			 * @param string $action           $match[1]
-			 * @param int    $expiration_hours $match[2]
-			 * @param string $privacy          $match[3]
-			 */
-			list( $full_tag, $action, $expiration_hours, $privacy ) = $match;
+			$full_tag         = $match[0];
+			$action           = $match[1];
+			$expiration_hours = $match[2] ?: self::EXPIRATION_HOURS;
+			$privacy          = $match[3] ?: self::PRIVACY;
 
 			if ( false === (bool) gravityview()->plugin->settings->get( 'public-approval-link' ) ) {
-				$privacy = 'private';
+				$privacy = self::PRIVACY;
 			}
 
 			$token = $this->get_token( $action, $expiration_hours, $privacy, $entry );
