@@ -148,8 +148,8 @@ class GravityView_Entry_Approval_Link {
 
 			$full_tag         = $match[0];
 			$action           = $match[1];
-			$expiration_hours = $match[2] ?: self::EXPIRATION_HOURS;
-			$privacy          = $match[3] ?: self::PRIVACY;
+			$expiration_hours = isset( $match[2] ) ? intval( $match[2] ) : self::EXPIRATION_HOURS;
+			$privacy          = isset( $match[3] ) ? $match[3] : self::PRIVACY;
 
 			if ( false === (bool) gravityview()->plugin->settings->get( 'public-approval-link' ) ) {
 				$privacy = self::PRIVACY;
