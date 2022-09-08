@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Handle approval links
+ * Handles approval links
  *
  * @since 2.14.8
  */
@@ -40,7 +40,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Add actions and filters related to entry approval links
+	 * Adds actions and filters related to entry approval links
 	 *
 	 * @return void
 	 */
@@ -51,7 +51,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Add custom merge tags to merge tag options.
+	 * Adds custom merge tags to merge tag options.
 	 *
 	 * @since 2.14.8
 	 *
@@ -72,7 +72,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Add custom Merge Tags to Merge Tag options, if custom Merge Tags exist
+	 * Adds custom Merge Tags to Merge Tag options, if custom Merge Tags exist
 	 *
 	 * @since 2.14.8
 	 *
@@ -102,7 +102,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Match the merge tag in replacement text for the field.
+	 * Matches the merge tag in replacement text for the field.
 	 *
 	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
 	 *
@@ -129,7 +129,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Replace merge tags
+	 * Replaces merge tags
 	 *
 	 * @since 2.14.8
 	 *
@@ -183,7 +183,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Generate token from merge tag parameters
+	 * Generates token from merge tag parameters
 	 *
 	 * @since 2.14.8
 	 *
@@ -247,7 +247,10 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
+	 * Generates a random hash to be used as a secret-key of encryptions
 	 *
+	 * @param integer $byte_length How long is the generated hash
+	 * @return string Random hash
 	 */
 	protected function generate_secret( $byte_length = 128 ) {
 
@@ -290,7 +293,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Generate approval link URL
+	 * Generates an approval link URL
 	 *
 	 * @since 2.14.8
 	 *
@@ -319,7 +322,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Check page load for known parameters
+	 * Checks page load for known parameters
 	 *
 	 * @since 2.14.8
 	 *
@@ -343,7 +346,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Check page load for approval link token then maybe process it
+	 * Checks page load for approval link token then maybe process it
 	 *
 	 * @since 2.14.8
 	 *
@@ -392,7 +395,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Check page load for approval link result then maybe show notice
+	 * Checks page load for approval link result then maybe show notice
 	 *
 	 * @since 2.14.8
 	 *
@@ -420,7 +423,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Decode received token to its original form.
+	 * Decodes received token to its original form.
 	 *
 	 * @since 2.14.8
 	 *
@@ -461,7 +464,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Validate token
+	 * Validates an approval token
 	 *
 	 * @since 2.14.8
 	 *
@@ -544,7 +547,7 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Update approval status
+	 * Updates approval status
 	 *
 	 * @since 2.14.8
 	 *
