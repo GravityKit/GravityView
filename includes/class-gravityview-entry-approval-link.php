@@ -177,6 +177,10 @@ class GravityView_Entry_Approval_Link {
 			return $text;
 		}
 
+		if ( ! isset( $form['publicApprovalLink'] ) ) {
+			$form['publicApprovalLink'] = gravityview()->plugin->settings->get( 'public-approval-link' );
+		}
+
 		return $this->replace_merge_tag( $matches, $text, $form, $entry, $url_encode, $esc_html );
 	}
 
