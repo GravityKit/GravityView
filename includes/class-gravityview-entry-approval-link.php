@@ -204,7 +204,7 @@ class GravityView_Entry_Approval_Link {
 
 			$full_tag         = $match[0];
 			$action           = $match[1];
-			$expiration_hours = isset( $match[2] ) ? intval( $match[2] ) : self::EXPIRATION_HOURS;
+			$expiration_hours = isset( $match[2] ) ? (int) $match[2] : self::EXPIRATION_HOURS;
 			$privacy          = isset( $match[3] ) ? $match[3] : self::PRIVACY;
 
 			if ( false === (bool) $form['publicApprovalLink'] ) {
@@ -291,7 +291,7 @@ class GravityView_Entry_Approval_Link {
 
 		$secret = get_option( 'gravityview_token_secret' );
 		if ( empty( $secret ) ) {
-			$secret = $this->generate_secret();
+			$secret = wp_salt( 'nonce' );
 			update_option( 'gravityview_token_secret', $secret, false );
 		}
 
@@ -300,28 +300,6 @@ class GravityView_Entry_Approval_Link {
 		$token .= '.' . $sig;
 
 		return $token;
-	}
-
-	/**
-	 * Generates a random hash to be used as a secret-key of encryptions
-	 *
-	 * @since 2.14.8
-	 *
-	 * @param integer $byte_length How long is the generated hash
-	 *
-	 * @return string Random hash
-	 */
-	protected function generate_secret( $byte_length = 128 ) {
-
-		if ( function_exists( 'random_bytes' ) ) {
-			$bytes = random_bytes( ceil( $byte_length / 2 ) );
-		} elseif ( function_exists( 'openssl_random_pseudo_bytes' ) ) {
-			$bytes = openssl_random_pseudo_bytes( ceil( $byte_length / 2 ) );
-		} else {
-			$bytes = sha1( md5( time() * rand() ) );
-		}
-
-		return substr( bin2hex( $bytes ), 0, $byte_length );
 	}
 
 	/**
