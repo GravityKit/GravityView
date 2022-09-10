@@ -619,7 +619,7 @@ class GravityView_Entry_Approval_Link {
 
 		$entry      = GFAPI::get_entry( $entry_id );
 		$form_id    = $entry['form_id'];
-		$return_url = admin_url( '/admin.php?page=gf_entries&id=' . $form_id );
+		$return_url = self::PRIVACY === $scopes['privacy'] ? admin_url( '/admin.php?page=gf_entries&id=' . $form_id ) : home_url( '/' );
 
 		// Valid status
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
