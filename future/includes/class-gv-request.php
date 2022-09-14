@@ -240,7 +240,7 @@ abstract class Request {
 
 		$get = array_filter( $get, 'gravityview_is_not_empty_string' );
 
-		if( $has_field_key = $this->_has_field_key( $get ) ) {
+		if( $this->_has_field_key( $get ) ) {
 			return true;
 		}
 
