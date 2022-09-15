@@ -934,6 +934,12 @@ class View implements \ArrayAccess {
 	 * @return \GV\Entry_Collection The entries.
 	 */
 	public function get_entries( $request = null ) {
+		static $entries;
+
+		if( $entries && ! gravityview()->request->is_entry() ) {
+			return $entries;
+		}
+
 		$entries = new \GV\Entry_Collection();
 
 		if ( ! $this->form ) {
