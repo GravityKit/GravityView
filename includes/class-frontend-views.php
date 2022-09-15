@@ -604,7 +604,7 @@ class GravityView_frontend {
 	/**
 	 * In case View post is called directly, insert the view in the post content
 	 *
-	 * @deprecated Use \GV\View::content() instead.
+	 * @deprecated {@see \GV\View::content()} instead.
 	 *
 	 * @static
 	 * @param mixed $content
