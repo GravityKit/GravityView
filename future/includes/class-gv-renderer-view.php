@@ -127,14 +127,24 @@ class View_Renderer extends Renderer {
 		} );
 
 		/**
-		 * Append the View anchor ID to the search form action.
-		 * @since 2.15
-		 * @uses {@var View $view}
-		 * @param string $action The search form action URL.
+		 * @filter `gravityview/widget/search/set_view_id_anchor` Allow appending the View ID anchor to the search URL.
+		 * @since  2.15
+		 *
+		 * @param bool   $set_view_id_anchor
 		 */
-		add_filter( 'gravityview/widget/search/form/action', $add_search_action_filter = function ( $action ) use ( $view ) {
-			return $action . '#' . $view->get_anchor_id();
-		} );
+		if ( apply_filters( 'gravityview/widget/search/append_view_id_anchor', true ) ) {
+			/**
+			 * Append the View anchor ID to the search form action.
+			 * @since 2.15
+			 *
+			 * @param string $action The search form action URL.
+			 *
+			 * @uses  {@var View $view}
+			 */
+			add_filter( 'gravityview/widget/search/form/action', $add_search_action_filter = function ( $action ) use ( $view ) {
+				return $action . '#' . $view->get_anchor_id();
+			} );
+		}
 
 		/**
 		 * Remove multiple sorting before calling legacy filters.
