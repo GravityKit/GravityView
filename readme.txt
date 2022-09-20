@@ -21,6 +21,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= dev =
+
+* Added: Ability to wrap the View in a custom container
+* Added: Ability to specify an anchor ID and navigate to the View when performing search
+
+__Developer Updates:__
+
+* Added: `gravityview/widget/search/set_view_id_anchor` filter to control appending the unique View anchor ID to the search URL (enabled by default)
+* Added: `gravityview/view/wrapper_container` filter to wrap to optionally wrap the View in a container (enabled by default)
+* Added: `gravityview/view/anchor_id` filter to control the unique View anchor ID
+
 = 2.14.7 on July 31, 2022 =
 
 * Fixed: GravityView plugin updates were not shown in the plugin update screen since version 2.14.4 (April 27, 2022)
