@@ -58,6 +58,15 @@ class View implements \ArrayAccess {
 	public $fields;
 
 	/**
+	 * @var string A unique anchor ID used to wrap Views.
+	 *
+	 * @see View_Renderer::render() Dynamically set in hooks here.
+	 *
+	 * @since 2.15
+	 */
+	private $anchor_id;
+
+	/**
 	 * @var array
 	 *
 	 * Internal static cache for gets, and whatnot.
@@ -1584,6 +1593,36 @@ class View implements \ArrayAccess {
 		endswitch;
 
 		return $caps;
+	}
+
+	/**
+	 * Sets the anchor ID of a View, without the prefix.
+	 *
+	 * @since 2.15
+	 *
+	 * @param int $counter An incremental counter reflecting how many times this View has been rendered.
+	 *
+	 * @return void
+	 */
+	public function set_anchor_id( $counter = 1 ) {
+		$this->anchor_id = sprintf( 'gv-view-%d-%d', $this->ID, (int) $counter );
+	}
+
+	/**
+	 * Returns the anchor ID to be used in the View container HTML `id` attribute.
+	 *
+	 * @since 2.15
+	 *
+	 * @return string Unsanitized anchor ID.
+	 */
+	public function get_anchor_id() {
+		/**
+		 * @filter `gravityview/view/anchor_id` Modify the anchor ID.
+		 * @since 2.15
+		 * @param string $anchor_id The anchor ID.
+		 * @param \GV\View $this The View.
+		 */
+		return apply_filters( 'gravityview/view/anchor_id', $this->anchor_id, $this );
 	}
 
 	public function __get( $key ) {

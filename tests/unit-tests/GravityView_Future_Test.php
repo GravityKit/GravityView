@@ -1703,6 +1703,9 @@ class GVFuture_Test extends GV_UnitTestCase {
         gravityview()->request = new \GV\Mock_Request();
         gravityview()->request->returns['is_view'] = $view;
 
+        add_filter( 'gravityview/view/anchor_id', '__return_false' );
+        add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+
         $legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
         $future = $renderer->render( $view );
 
@@ -1746,7 +1749,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '[25] Some text in a textarea', $future );
 
 		$this->assertTrue( remove_filter( 'gravityview/view/entries', $callback ) );
-    }
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
+	}
 
     /**
      * Return only entries with an even entry ID
@@ -1818,6 +1824,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = new \GV\Entry_Collection();
 
 		$renderer = new \GV\View_Renderer();
+
+        add_filter( 'gravityview/view/anchor_id', '__return_false' );
+        add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
 
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
@@ -1992,6 +2001,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 		$this->assertNotContains( 'The Multiple Entries layout has not been configured.', $future );
 		$this->assertNotContains( 'Textarea', $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
 	}
 
 	/**
@@ -2120,6 +2132,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$renderer = new \GV\View_Renderer();
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
 		$future = $renderer->render( $view, new \GV\Frontend_Request() );
 
@@ -2163,6 +2177,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$future = preg_replace( '#>\s*<#', '><', $future );
 
 		$this->assertEquals( $legacy, $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
 	}
 
 	public function test_frontend_widgets() {
@@ -2228,6 +2244,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+		add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+
 		$renderer = new \GV\View_Renderer();
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
@@ -2238,6 +2257,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Displaying 1 - 3 of 5', $future );
 		$this->assertContains( "class='page-numbers'", $future );
 		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
 	}
 
 	/**
@@ -5274,6 +5296,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			)
 		) );
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+		add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+
 		$legacy = new GravityView_Shortcode();
 		$future = new \GV\Shortcodes\gravityview();
 
@@ -5315,6 +5340,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $legacy_output, $future_output );
 		$this->assertContains( '] Entry ', $future_output );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
 	}
 
 	/**
@@ -6340,6 +6368,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 
+		add_filter('gravityview/view/wrapper_container', '__return_false');
+
 		$out = $renderer->render( $view );
 
 		$this->assertStringStartsWith( '{{ gravityview/template/before }}{{ gravityview_before }}', $out );
@@ -6458,6 +6488,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
+
+		remove_all_filters('gravityview/view/wrapper_container');
 	}
 
 	public function test_template_hooks_compat_table_single() {
@@ -6599,6 +6631,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_entry'] = $entry;
 
+		add_filter('gravityview/view/wrapper_container', '__return_false');
+
 		$out = $renderer->render( $entry, $view );
 
 		$this->assertStringStartsWith( '{{ gravityview/template/before }}{{ gravityview_before }}', $out );
@@ -6644,6 +6678,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
+
+		remove_all_filters('gravityview/view/wrapper_container');
 	}
 
 	public function test_template_hooks_compat_list_directory( $really_directory = true, $save_callback = null ) {
@@ -6912,6 +6948,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		gravityview()->request = new \GV\Mock_Request();
 
+		add_filter('gravityview/view/wrapper_container', '__return_false');
+
 		if ( $mode == 'directory' ) {
 			$renderer = new \GV\View_Renderer();
 			gravityview()->request->returns['is_view'] = $view;
@@ -7019,6 +7057,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
+
+		remove_all_filters('gravityview/view/wrapper_container');
 	}
 
 	public function test_template_hooks_compat_list_single() {
