@@ -374,6 +374,8 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
 		}
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 
@@ -385,6 +387,8 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'Search Entries', $future );
 		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
 	}
 
 	/**
