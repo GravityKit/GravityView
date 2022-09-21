@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Added: Entire View contents are wrapped in a container, allowing for better styling
 * Added: When submitting a search form, the page will scroll to the search form
+* Modified: Select and Multiselect search inputs will now use the connected field's "Placeholder" values, if defined in Gravity Forms ([read about Search Bar placeholders](https://docs.gravitykit.com/article/866-search-bar-placeholder))
 * Improved: Date comparisons when using `[gvlogic]` with `greater_than` or `less_than` comparisons
 * Fixed: Reduced the number of database queries to render a View, especially when using Custom Content, Entry Link, Edit Link, and Delete Link fields
 * Fixed: Removed the Gravity Forms Partial Entries Add-On privacy notice when using Edit Entry because auto-saving in Edit Entry is not supported
@@ -37,6 +38,19 @@ __Developer Updates:__
 * Added: `gravityview/widget/search/append_view_id_anchor` filter to control appending the unique View anchor ID to the search URL (enabled by default)
 * Added: `gravityview/view/wrapper_container` filter to wrap to optionally wrap the View in a container (enabled by default)
 * Added: `gravityview/view/anchor_id` filter to control the unique View anchor ID
+* Modified the following template files:
+	- `includes/widgets/search-widget/templates/search-field-multiselect.php`
+	- `includes/widgets/search-widget/templates/search-field-select.php`
+	- `templates/views/list.php`
+	- `templates/views/table.php`
+	- `templates/fields/field-custom.php`
+	- `templates/fields/field-duplicate_link-html.php`
+	- `templates/fields/field-delete_link-html.php`
+	- `templates/fields/field-edit_link-html.php`
+	- `templates/fields/field-entry_link-html.php`
+	- `templates/fields/field-website-html.php`
+	- `templates/deprecated/fields/custom.php`
+	- `templates/deprecated/fields/website.php`
 
 = 2.14.7 on July 31, 2022 =
 
