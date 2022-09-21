@@ -624,7 +624,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		$add_note_html = str_replace( '{entry_slug}', $entry_slug, $add_note_html );
 		$add_note_html = str_replace( '{nonce_field}', $nonce_field, $add_note_html );
-		$add_note_html = str_replace( '{show_delete}', intval( empty( $visibility_settings['delete'] ) ? 0 : $visibility_settings['delete'] ), $add_note_html );
+		$add_note_html = str_replace( '{show_delete}', (string) intval( empty( $visibility_settings['delete'] ) ? 0 : $visibility_settings['delete'] ), $add_note_html );
 		$add_note_html   = str_replace( '{email_fields}', $email_fields, $add_note_html );
 		$add_note_html = str_replace( '{url}', esc_url_raw( add_query_arg( array() ) ), $add_note_html );
 
@@ -737,12 +737,12 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @since 1.17
 	 *
 	 * @param false|object $note If note was created, object. Otherwise, false.
-	 * @param array $entry Entry data
-	 * @param array $data $_POST data
+	 * @param array $entry Entry data.
+	 * @param array $data $_POST data.
 	 *
 	 * @return void Tap in to Gravity Forms' `gform_after_email` action if you want a return result from sending the email.
 	 */
-	private function maybe_send_entry_notes( $note = false, $entry, $data ) {
+	private function maybe_send_entry_notes( $note = false, $entry = array(), $data = array() ) {
 
 		if( ! $note || ! GVCommon::has_cap('gravityview_email_entry_notes') ) {
 			gravityview()->log->debug( 'User doesn\'t have "gravityview_email_entry_notes" cap, or $note is empty', array( 'data' => $note ) );
@@ -776,7 +776,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			if( 'custom' === $to && $include_custom ) {
 				$to = $email_data['gv-note-to-custom'];
-				gravityview()->log->debug( 'Sending note to a custom email address: {to}' . array( 'to' => $to ) );
+				gravityview()->log->debug( 'Sending note to a custom email address: {to}', array( 'to' => $to ) );
 			}
 
 			if ( ! GFCommon::is_valid_email_list( $to ) ) {
@@ -799,7 +799,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			 * @filter `gravityview/field/notes/email_content` Modify the values passed when sending a note email
 			 * @see GVCommon::send_email
 			 * @since 1.17
-			 * @param[in,out] array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
+			 * @param array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
 			 */
 			$email_content = apply_filters( 'gravityview/field/notes/email_content', compact( 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer' ) );
 

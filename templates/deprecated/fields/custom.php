@@ -26,7 +26,7 @@ $gravityview_view->setCurrentFieldSetting('show_as_link', false);
  */
 $field_settings['content'] = apply_filters( 'gravityview/fields/custom/content_before', $field_settings['content'] );
 
-$field_settings['content'] = trim( rtrim( $field_settings['content'] ) );
+$field_settings['content'] = trim( rtrim( (string) $field_settings['content'] ) );
 
 // No custom content
 if( empty( $field_settings['content'] ) ) {

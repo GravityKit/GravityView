@@ -14,7 +14,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class GravityView_Powered_By {
 
-	const url = 'https://gravityview.co/powered-by/';
+	const url = 'https://www.gravitykit.com/powered-by/';
 
 	/**
 	 * GravityView_Powered_By constructor.

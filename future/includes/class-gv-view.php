@@ -58,6 +58,15 @@ class View implements \ArrayAccess {
 	public $fields;
 
 	/**
+	 * @var string A unique anchor ID used to wrap Views.
+	 *
+	 * @see View_Renderer::render() Dynamically set in hooks here.
+	 *
+	 * @since 2.15
+	 */
+	private $anchor_id;
+
+	/**
 	 * @var array
 	 *
 	 * Internal static cache for gets, and whatnot.
@@ -133,31 +142,36 @@ class View implements \ArrayAccess {
 		 * @see add_post_type_support()
 		 * @since 1.15.2
 		 * @param array $supports Array of features associated with a functional area of the edit screen. Default: 'title', 'revisions'. If $is_hierarchical, also 'page-attributes'
-		 * @param[in] boolean $is_hierarchical Do Views support parent/child relationships? See `gravityview_is_hierarchical` filter.
+		 * @param boolean $is_hierarchical Do Views support parent/child relationships? See `gravityview_is_hierarchical` filter.
 		 */
 		$supports = apply_filters( 'gravityview_post_type_support', $supports, $is_hierarchical );
 
 		/** Register Custom Post Type - gravityview */
 		$labels = array(
-			'name'                => _x( 'Views', 'Post Type General Name', 'gravityview' ),
-			'singular_name'       => _x( 'View', 'Post Type Singular Name', 'gravityview' ),
-			'menu_name'           => _x( 'Views', 'Menu name', 'gravityview' ),
-			'parent_item_colon'   => __( 'Parent View:', 'gravityview' ),
-			'all_items'           => __( 'All Views', 'gravityview' ),
-			'view_item'           => _x( 'View', 'View Item', 'gravityview' ),
-			'add_new_item'        => __( 'Add New View', 'gravityview' ),
-			'add_new'             => __( 'New View', 'gravityview' ),
-			'edit_item'           => __( 'Edit View', 'gravityview' ),
-			'update_item'         => __( 'Update View', 'gravityview' ),
-			'search_items'        => __( 'Search Views', 'gravityview' ),
-			'not_found'           => \GravityView_Admin::no_views_text(),
-			'not_found_in_trash'  => __( 'No Views found in Trash', 'gravityview' ),
-			'filter_items_list'     => __( 'Filter Views list', 'gravityview' ),
-			'items_list_navigation' => __( 'Views list navigation', 'gravityview' ),
-			'items_list'            => __( 'Views list', 'gravityview' ),
-			'view_items'            => __( 'See Views', 'gravityview' ),
-			'attributes'            => __( 'View Attributes', 'gravityview' ),
+			'name'                   => _x( 'Views', 'Post Type General Name', 'gravityview' ),
+			'singular_name'          => _x( 'View', 'Post Type Singular Name', 'gravityview' ),
+			'menu_name'              => _x( 'Views', 'Menu name', 'gravityview' ),
+			'parent_item_colon'      => __( 'Parent View:', 'gravityview' ),
+			'all_items'              => __( 'All Views', 'gravityview' ),
+			'view_item'              => _x( 'View', 'View Item', 'gravityview' ),
+			'add_new_item'           => __( 'Add New View', 'gravityview' ),
+			'add_new'                => __( 'New View', 'gravityview' ),
+			'edit_item'              => __( 'Edit View', 'gravityview' ),
+			'update_item'            => __( 'Update View', 'gravityview' ),
+			'search_items'           => __( 'Search Views', 'gravityview' ),
+			'not_found'              => \GravityView_Admin::no_views_text(),
+			'not_found_in_trash'     => __( 'No Views found in Trash', 'gravityview' ),
+			'filter_items_list'      => __( 'Filter Views list', 'gravityview' ),
+			'items_list_navigation'  => __( 'Views list navigation', 'gravityview' ),
+			'items_list'             => __( 'Views list', 'gravityview' ),
+			'view_items'             => __( 'See Views', 'gravityview' ),
+			'attributes'             => __( 'View Attributes', 'gravityview' ),
+			'item_updated'           => __( 'View updated.', 'gravityview' ),
+			'item_published'         => __( 'View published.', 'gravityview' ),
+			'item_reverted_to_draft' => __( 'View reverted to draft.', 'gravityview' ),
+			'item_scheduled'         => __( 'View scheduled.', 'gravityview' ),
 		);
+
 		$args = array(
 			'label'               => __( 'view', 'gravityview' ),
 			'description'         => __( 'Create views based on a Gravity Forms form', 'gravityview' ),
@@ -168,7 +182,7 @@ class View implements \ArrayAccess {
 			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
 			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
 			 * @since 1.15.2
-			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
+			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
 			'public'              => apply_filters( 'gravityview_direct_access', gravityview()->plugin->is_compatible(), 0 ),
@@ -470,7 +484,7 @@ class View implements \ArrayAccess {
 			/**
 			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
 			 * @deprecated
-			 * @param[in,out] boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
+			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
 			$direct_access = apply_filters( 'gravityview_direct_access', true, $this->ID );
@@ -478,7 +492,7 @@ class View implements \ArrayAccess {
 			/**
 			 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
 			 * @since 2.0
-			 * @param[in,out] boolean Accessible or not. Default: accessbile.
+			 * @param boolean Accessible or not. Default: accessbile.
 			 * @param \GV\View $view The View we're trying to directly render here.
 			 * @param \GV\Request $request The current request.
 			 */
@@ -519,7 +533,7 @@ class View implements \ArrayAccess {
 		$joins = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			gravityview()->log->error( 'Cannot get joined forms; joins feature not supported.' );
+			gravityview()->log->info( 'Cannot get joined forms; joins feature not supported.' );
 			return $joins;
 		}
 
@@ -569,7 +583,7 @@ class View implements \ArrayAccess {
 		$forms = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			gravityview()->log->error( 'Cannot get joined forms; joins feature not supported.' );
+			gravityview()->log->info( 'Cannot get joined forms; joins feature not supported.' );
 			return $forms;
 		}
 
@@ -828,6 +842,7 @@ class View implements \ArrayAccess {
 	 * @since 2.0
 	 * @return bool Whether the offset exists or not, limited to GravityView_View_Data::$views element keys.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
 		$data_keys = array( 'id', 'view_id', 'form_id', 'template_id', 'atts', 'fields', 'widgets', 'form' );
 		return in_array( $offset, $data_keys );
@@ -844,6 +859,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @return mixed The value of the requested view data key limited to GravityView_View_Data::$views element keys. If offset not found, return null.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 
 		gravityview()->log->notice( 'This is a \GV\View object should not be accessed as an array.' );
@@ -880,6 +896,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
 		gravityview()->log->error( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
 	}
@@ -892,6 +909,7 @@ class View implements \ArrayAccess {
 	 * @since 2.0
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetUnset( $offset ) {
 		gravityview()->log->error( 'The old view data is no longer mutable. This is a \GV\View object should not be accessed as an array.' );
 	}
@@ -1472,7 +1490,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * @filter `gravityview/csv/entry/fields` Allowlist more entry fields by ID that are output in CSV requests.
-			 * @param[in,out] array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
+			 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.
 			 */
@@ -1524,7 +1542,7 @@ class View implements \ArrayAccess {
 	public function get_query_class() {
 		/**
 		 * @filter `gravityview/query/class`
-		 * @param[in,out] string The query class. Default: GF_Query.
+		 * @param string The query class. Default: GF_Query.
 		 * @param \GV\View $this The View.
 		 */
 		$query_class = apply_filters( 'gravityview/query/class', '\GF_Query', $this );
@@ -1548,7 +1566,7 @@ class View implements \ArrayAccess {
 	public static function restrict( $caps, $cap, $user_id, $args ) {
 		/**
 		 * @filter `gravityview/security/require_unfiltered_html` Bypass restrictions on Views that require `unfiltered_html`.
-		 * @param[in,out] boolean
+		 * @param boolean
 		 *
 		 * @since develop
 		 * @param string $cap The capability requested.
@@ -1579,6 +1597,36 @@ class View implements \ArrayAccess {
 		endswitch;
 
 		return $caps;
+	}
+
+	/**
+	 * Sets the anchor ID of a View, without the prefix.
+	 *
+	 * @since 2.15
+	 *
+	 * @param int $counter An incremental counter reflecting how many times this View has been rendered.
+	 *
+	 * @return void
+	 */
+	public function set_anchor_id( $counter = 1 ) {
+		$this->anchor_id = sprintf( 'gv-view-%d-%d', $this->ID, (int) $counter );
+	}
+
+	/**
+	 * Returns the anchor ID to be used in the View container HTML `id` attribute.
+	 *
+	 * @since 2.15
+	 *
+	 * @return string Unsanitized anchor ID.
+	 */
+	public function get_anchor_id() {
+		/**
+		 * @filter `gravityview/view/anchor_id` Modify the anchor ID.
+		 * @since 2.15
+		 * @param string $anchor_id The anchor ID.
+		 * @param \GV\View $this The View.
+		 */
+		return apply_filters( 'gravityview/view/anchor_id', $this->anchor_id, $this );
 	}
 
 	public function __get( $key ) {

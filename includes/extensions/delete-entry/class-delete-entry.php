@@ -780,7 +780,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		$status = esc_attr( $_GET['status'] );
-		$message_from_url = \GV\Utils::_GET( 'message' );
+		$message_from_url = \GV\Utils::_GET( 'message', '' );
 		$message_from_url = rawurldecode( stripslashes_deep( $message_from_url ) );
 		$class = '';
 

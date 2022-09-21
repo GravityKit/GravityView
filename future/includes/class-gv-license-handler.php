@@ -21,7 +21,7 @@ class License_Handler {
 
 	const name = 'GravityView';
 	const author = 'Katz Web Services, Inc.';
-	const url = 'https://gravityview.co';
+	const url = 'https://www.gravitykit.com';
 
 	/**
 	 * Post ID on gravityview.co
@@ -57,6 +57,7 @@ class License_Handler {
 			$this->settings = gravityview()->plugin->settings;
 		}
 
+		add_action( 'init', array( $this, 'setup_edd' ), 0 );
 		add_action( 'admin_init', array( $this, 'setup_edd' ), 0 );
 		add_action( 'wp_ajax_gravityview_license', array( $this, 'license_call' ) );
 		add_action( 'admin_init', array( $this, 'refresh_license_status' ) );
@@ -99,6 +100,10 @@ class License_Handler {
 			'language'  => get_locale(),
 			'url'       => home_url(),
 		    'beta'      => $this->settings->get( 'beta' ),
+			'php_version' => phpversion(),
+			'wp_version' => get_bloginfo( 'version' ),
+			'gv_version' => \GV\Plugin::$version,
+			'environment' => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
 		);
 
 		if ( ! empty( $action ) ) {
@@ -121,7 +126,18 @@ class License_Handler {
 			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
 		}
 
-		// setup the updater
+		// If doing ajax, get outta here.
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
+			return;
+		}
+
+		// To support auto-updates, this needs to run during the wp_version_check cron job for privileged users.
+		$doing_cron = defined( 'DOING_CRON' ) && DOING_CRON;
+		if ( ! current_user_can( 'manage_options' ) && ! $doing_cron ) {
+			return;
+		}
+
+		// Set up the updater.
 		$this->EDD_SL_Plugin_Updater = new EDD_SL_Plugin_Updater(
 			self::url,
 			GRAVITYVIEW_FILE,
@@ -284,7 +300,7 @@ class License_Handler {
 
 				$login_link_class = gravityview()->plugin->is_GF_25() ? 'button button-outline outline' : 'text-link';
 				$renews_on = ( 'lifetime' === $response['expires'] ) ? '' : sprintf( esc_html__( 'Renew on: %s', 'gravityview' ), date_i18n( get_option( 'date_format' ), strtotime( $response['expires'] ) - DAY_IN_SECONDS ) );
-				$login_link       = sprintf( '<a href="%s" class="gv-access-account ' . $login_link_class . '" rel="external">%s</a>', esc_url( sprintf( 'https://gravityview.co/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
+				$login_link       = sprintf( '<a href="%s" class="gv-access-account ' . $login_link_class . '" rel="external">%s</a>', esc_url( sprintf( 'https://www.gravitykit.com/wp-login.php?username=%s', $response['customer_email'] ) ), esc_html__( 'Access your GravityView account', 'gravityview' ) );
 				$local_text       = ( ! empty( $response['is_local'] ) ? '<span class="howto">' . __( 'This development site does not count toward license activation limits', 'gravityview' ) . '</span>' : '' );
 				$license_limit    = empty( $response['license_limit'] ) ? __( 'Unlimited', 'gravityview' ) : (int) $response['license_limit'];
 
@@ -414,10 +430,10 @@ class License_Handler {
 			'failed'  => esc_html__( 'Could not deactivate the license. The license key you attempted to deactivate may not be active or valid.', 'gravityview' ),
 			'site_inactive' => esc_html__( 'The license key is valid, but it has not been activated for this site.', 'gravityview' ),
 			'inactive' => esc_html__( 'The license key is valid, but it has not been activated for this site.', 'gravityview' ),
-			'no_activations_left' => esc_html__( 'Invalid: this license has reached its activation limit.', 'gravityview' ) . ' ' . sprintf( esc_html__( 'You can manage license activations %son your GravityView account page%s.', 'gravityview' ), '<a href="https://gravityview.co/account/#licenses">', '</a>' ),
+			'no_activations_left' => esc_html__( 'Invalid: this license has reached its activation limit.', 'gravityview' ) . ' ' . sprintf( esc_html__( 'You can manage license activations %son your GravityView account page%s.', 'gravityview' ), '<a href="https://www.gravitykit.com/account/#licenses">', '</a>' ),
 			'deactivated' => esc_html__( 'The license has been deactivated.', 'gravityview' ),
 			'valid' => esc_html__( 'The license key is valid and active.', 'gravityview' ),
-			'disabled' => sprintf( esc_html__( 'This license key is disabled. For updates and support, %spurchase a new license%s.', 'gravityview' ), '<a href="https://gravityview.co/account/">', '</a>' ),
+			'disabled' => sprintf( esc_html__( 'This license key is disabled. For updates and support, %spurchase a new license%s.', 'gravityview' ), '<a href="https://www.gravitykit.com/account/">', '</a>' ),
 			'invalid' => esc_html__( 'The license key entered is invalid.', 'gravityview' ),
 			'invalid_item_id' => esc_html__( 'This license key does not have access to this plugin.', 'gravityview' ),
 			'missing' => esc_html__( 'The license key entered is invalid.', 'gravityview' ), // Missing is "the license couldn't be found", not "you submitted an empty license"
@@ -451,9 +467,9 @@ class License_Handler {
 		if ( ! empty( $license_data->renewal_url ) ) {
 			$renew_license_url = $license_data->renewal_url;
 		} elseif( ! empty( $license_data->license_key ) ) {
-			$renew_license_url = sprintf( 'https://gravityview.co/checkout/?download_id=17&edd_license_key=%s', $license_data->license_key );
+			$renew_license_url = sprintf( 'https://www.gravitykit.com/checkout/?download_id=17&edd_license_key=%s', $license_data->license_key );
 		} else {
-			$renew_license_url = 'https://gravityview.co/account/';
+			$renew_license_url = 'https://www.gravitykit.com/account/';
 		}
 
 		$renew_license_url = add_query_arg( wp_parse_args( 'utm_source=admin_notice&utm_medium=admin&utm_content=expired&utm_campaign=Activation&force_login=1' ), $renew_license_url );
@@ -621,7 +637,6 @@ class License_Handler {
 	 * Check the GravityView license information
 	 *
 	 * @since 1.19.3
-	 * @param bool $force Whether to force checking license, even if AJAX
 	 *
 	 * @return void
 	 */

@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 25-March-2022 using Strauss.
+ * Modified by gravityview on 21-September-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -59,7 +59,7 @@ class SiteAccess {
 		$encryption = new Encryption( $this->config, $remote, $logging );
 
 		if ( ! in_array( $action, self::$sync_actions, true ) ) {
-			return new WP_Error( 'param_error', __( 'Unexpected action value', 'gravityview' ) );
+			return new WP_Error( 'param_error', __( 'Unexpected action value', 'trustedlogin' ) );
 		}
 
 		$access_key = $this->get_access_key();
@@ -90,7 +90,7 @@ class SiteAccess {
 		}
 
 		if ( empty( $response_json['success'] ) ) {
-			return new WP_Error( 'sync_error', __( 'Could not sync to TrustedLogin server', 'gravityview' ) );
+			return new WP_Error( 'sync_error', __( 'Could not sync to TrustedLogin server', 'trustedlogin' ) );
 		}
 
 		do_action( 'trustedlogin/' . $this->config->ns() . '/secret/synced', array(
@@ -112,7 +112,7 @@ class SiteAccess {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return string|null $access_key, if exists. Either a hashed license key or a generated hash. If error occurs, returns null.
+	 * @return string|WP_Error $access_key, if exists. Either a hashed license key or a generated hash. If error occurs, returns null.
 	 */
 	public function get_access_key() {
 
@@ -123,13 +123,7 @@ class SiteAccess {
 			return $license_key;
 		}
 
-		$generated_access_key = $this->generate_access_key();
-
-		if ( ! $generated_access_key || is_wp_error( $generated_access_key ) ) {
-			return null;
-		}
-
-		return $generated_access_key;
+		return $this->generate_access_key();
 	}
 
 	/**
@@ -182,14 +176,7 @@ class SiteAccess {
 	 * @return  string|WP_Error  Access Key prepended with TL, or something went wrong.
 	 */
 	private function generate_access_key() {
-
-		$hash = Encryption::hash( get_current_blog_id() . get_site_url() . $this->config->get_setting( 'auth/api_key' ), 32 );
-
-		if ( is_wp_error( $hash ) ) {
-			return $hash;
-		}
-
-		return $hash;
+		return Encryption::hash( get_current_blog_id() . get_site_url() . $this->config->get_setting( 'auth/api_key' ), 32 );
 	}
 
 	/**

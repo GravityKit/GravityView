@@ -103,7 +103,7 @@ class GVCommon {
 
 		/**
 		 * @filter `gravityview/get_all_views/params` Modify the parameters sent to get all views.
-		 * @param[in,out]  array $params Array of parameters to pass to `get_posts()`
+		 * @param  array $params Array of parameters to pass to `get_posts()`
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
 
@@ -768,6 +768,16 @@ class GVCommon {
 			}
 
 			$val1 = in_array( gravityview_get_context(), $matching_contexts ) ? $val2 : false;
+		}
+
+		// Attempt to parse dates.
+		$timestamp_1 = gravityview_maybe_convert_date_string_to_timestamp( $val1 );
+		$timestamp_2 = gravityview_maybe_convert_date_string_to_timestamp( $val2 );
+
+		// If both are timestamps, cast to string so we can use the > and < comparisons below.
+		if ( $timestamp_1 && $timestamp_2 ) {
+			$val1 = (string) $timestamp_1;
+			$val2 = (string) $timestamp_2;
 		}
 
 		switch ( $operation ) {

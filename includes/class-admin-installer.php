@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class GravityView_Admin_Installer {
 
-	const EDD_API_URL = 'https://gravityview.co/edd-api/products/';
+	const EDD_API_URL = 'https://www.gravitykit.com/edd-api/products/';
 
 	const EDD_API_KEY = 'e4c7321c4dcf342c9cb078e27bf4ba97';
 
@@ -497,7 +497,7 @@ class GravityView_Admin_Installer {
 			$status_label = '';
 			$button_label = sprintf( __( 'Upgrade to %s for Access', 'gravityview' ), $required_license );
 			$button_class = 'button-primary button-large';
-			$href         = 'https://gravityview.co/pricing/?utm_source=admin-installer&utm_medium=admin&utm_campaign=Admin%20Notice&utm_content=' . $required_license;
+			$href         = 'https://www.gravitykit.com/pricing/?utm_source=admin-installer&utm_medium=admin&utm_campaign=Admin%20Notice&utm_content=' . $required_license;
 		}
 
         elseif ( ! empty( $download_info['coming_soon'] ) ) {
@@ -506,7 +506,7 @@ class GravityView_Admin_Installer {
 	        $status_label = __( 'Coming Soon', 'gravityview' );
 	        $button_label = __( 'Learn More', 'gravityview' );
 	        $button_class = 'button-primary button-large';
-	        $href         = \GV\Utils::get( $download_info, 'link', 'https://gravityview.co/extensions/' );
+	        $href         = \GV\Utils::get( $download_info, 'link', 'https://www.gravitykit.com/extensions/' );
         }
 
 		// Access but the plugin is not installed

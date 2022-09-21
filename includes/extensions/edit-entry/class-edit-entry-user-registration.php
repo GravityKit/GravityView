@@ -148,10 +148,10 @@ class GravityView_Edit_Entry_User_Registration {
 	    /**
 	     * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
 	     * @since 1.15
-	     * @param[in,out] boolean $preserve_role Preserve current user role Default: true
-	     * @param[in] array $config Gravity Forms User Registration feed configuration for the form
-	     * @param[in] array $form Gravity Forms form array
-	     * @param[in] array $entry Gravity Forms entry being edited
+	     * @param boolean $preserve_role Preserve current user role Default: true
+	     * @param array $config Gravity Forms User Registration feed configuration for the form
+	     * @param array $form Gravity Forms form array
+	     * @param array $entry Gravity Forms entry being edited
 	     */
 	    $preserve_role = apply_filters( 'gravityview/edit_entry/user_registration/preserve_role', true, $config, $form, $entry );
 
@@ -170,9 +170,9 @@ class GravityView_Edit_Entry_User_Registration {
 	    /**
 	     * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
 	     * @since 1.14
-	     * @param[in,out] array $config Gravity Forms User Registration feed configuration for the form
-	     * @param[in] array $form Gravity Forms form array
-	     * @param[in] array $entry Gravity Forms entry being edited
+	     * @param array $config Gravity Forms User Registration feed configuration for the form
+	     * @param array $form Gravity Forms form array
+	     * @param array $entry Gravity Forms entry being edited
 	     */
 	    $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 

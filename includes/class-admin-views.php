@@ -29,6 +29,8 @@ class GravityView_Admin_Views {
 		// Tooltips
 		add_filter( 'gform_tooltips', array( $this, 'tooltips') );
 
+		add_filter( 'admin_body_class', array( $this, 'add_gf_version_css_class' ) );
+
 		// adding styles and scripts
 		add_action( 'admin_enqueue_scripts', array( 'GravityView_Admin_Views', 'add_scripts_and_styles'), 999 );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_no_conflict') );
@@ -59,6 +61,35 @@ class GravityView_Admin_Views {
 		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts' ) );
 
 		add_filter( 'gravityview/support_port/localization_data', array( $this, 'suggest_support_articles' ) );
+	}
+
+	/**
+	 * Allow targeting different versions of Gravity Forms using CSS selectors.
+	 *
+	 * Adds specific version class: `.gf-version-2.6.1.3` as well as point updates: `.gf-minor-version-2.6`.
+	 *
+	 * @internal Do not rely on this remaining public.
+	 * @since 2.14.4
+	 *
+	 * @param string $class Existing body class for the WordPress admin.
+	 *
+	 * @return string Original with two classes added. If GFForms isn't available, returns original string.
+	 */
+	public function add_gf_version_css_class( $class ) {
+
+		if ( ! class_exists( 'GFForms' ) || empty( GFForms::$version ) ) {
+			return $class;
+		}
+
+		$class .= ' gf-version-' . str_replace( '.', '-', GFForms::$version );
+
+		$major_version = explode( '.', GFForms::$version );
+
+		if ( 2 <= sizeof( $major_version ) ) {
+			$class .= ' gf-minor-version-' . esc_attr( $major_version[0] . '-' . $major_version[1] );
+		}
+
+		return $class;
 	}
 
 	/**
@@ -204,7 +235,7 @@ class GravityView_Admin_Views {
 	 * @deprecated since 1.2
 	 * Start using GravityView_Render_Settings::render_field_option
 	 */
-	public static function render_field_option( $name = '', $option, $curr_value = NULL ) {
+	public static function render_field_option( $name = '', $option = array(), $curr_value = null ) {
 		_deprecated_function( 'GravityView_Admin_Views::render_field_option', '1.1.7', 'GravityView_Render_Settings::render_field_option' );
 		return GravityView_Render_Settings::render_field_option( $name, $option, $curr_value );
 	}
@@ -393,12 +424,12 @@ class GravityView_Admin_Views {
 	/**
 	 * Add the Data Source information
 	 *
-	 * @param null $column_name
-	 * @param $post_id
+	 * @param null $column_name Name of the column in the Views table.
+	 * @param int $post_id Post ID.
 	 *
 	 * @return void
 	 */
-	public function add_custom_column_content( $column_name = NULL, $post_id )	{
+	public function add_custom_column_content( $column_name = null, $post_id = 0 )	{
 
 		$output = '';
 
@@ -687,8 +718,8 @@ class GravityView_Admin_Views {
 
 		/**
 		 * @filter  `gravityview_blocklist_field_types` Modify the types of fields that shouldn't be shown in a View.
-		 * @param[in,out] array $blocklist_field_types Array of field types which are not proper to be shown for the $context.
-		 * @param[in] string $context View context ('single', 'directory', or 'edit').
+		 * @param array $blocklist_field_types Array of field types which are not proper to be shown for the $context.
+		 * @param string $context View context ('single', 'directory', or 'edit').
 		 * @since 2.9
 		 */
 		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', $blocklist_field_types, $context );
@@ -863,7 +894,7 @@ class GravityView_Admin_Views {
 
 		/**
 		 * @filter `gravityview/admin/available_fields` Modify the available fields that can be used in a View.
-		 * @param[in,out] array $fields The fields.
+		 * @param array $fields The fields.
 		 * @param  string|array $form form_ID or form object
 		 * @param  string $zone Either 'single', 'directory', 'header', 'footer'
 		 */
@@ -1099,7 +1130,7 @@ class GravityView_Admin_Views {
 
 				/**
 				 * @filter `gravityview/view/widgets/default` Modify the default widgets for new Views
-				 * @param[in,out] array $widgets A Widget configuration array
+				 * @param array $widgets A Widget configuration array
 				 * @param string $zone The widget zone that's being requested
 				 * @param int $post_id The auto-draft post ID
 				 */
@@ -1342,23 +1373,7 @@ class GravityView_Admin_Views {
 		if ( preg_match( '/script/ism', $filter ) ) {
 
 			$allowed_dependencies = array(
-				'jquery-ui-core',
-				'jquery-ui-dialog',
-				'jquery-ui-tabs',
-				'jquery-ui-draggable',
-				'jquery-ui-droppable',
-				'jquery-ui-sortable',
-				'jquery-ui-tooltip',
-				'gravityview_views_scripts',
-				'gravityview-support',
-				'gravityview-jquery-cookie',
-				'gravityview_views_datepicker',
-				'gravityview_gf_tooltip',
 				'sack',
-				'gform_gravityforms',
-				'gform_forms',
-				'gform_form_admin',
-				'jquery-ui-autocomplete',
 			);
 
 		} elseif ( preg_match( '/style/ism', $filter ) ) {
@@ -1366,10 +1381,6 @@ class GravityView_Admin_Views {
 			$allowed_dependencies = array(
 				'dashicons',
 				'wp-jquery-ui-dialog',
-				'gravityview_views_styles',
-				'gravityview_global',
-				'gravityview_views_datepicker',
-				'gravityview_gf_tooltip',
 			);
 		}
 

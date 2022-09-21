@@ -16,11 +16,13 @@ class View_Renderer extends Renderer {
 	/**
 	 * Renders a \GV\View instance.
 	 *
-	 * @param \GV\View $view The View instance to render.
-	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
+	 * @since 2.0
 	 *
 	 * @api
-	 * @since 2.0
+	 *
+	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
+	 *
+	 * @param View $view The View instance to render.
 	 *
 	 * @return string The rendered View.
 	 */
@@ -75,7 +77,10 @@ class View_Renderer extends Renderer {
 		 */
 		$override = new \GV\Legacy_Override_Template( $view, null, null, $request );
 		foreach ( array( 'header', 'body', 'footer' ) as $part ) {
-			if ( ( $path = $override->get_template_part( $template_slug, $part ) ) && strpos( $path, '/deprecated' ) === false ) {
+
+			$path = $override->get_template_part( $template_slug, $part );
+
+			if ( $path && strpos( $path, '/deprecated' ) === false ) {
 				/**
 				 * We have to bail and call the legacy renderer. Crap!
 				 */
@@ -94,7 +99,7 @@ class View_Renderer extends Renderer {
 		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
 		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
-		 * @param \GV\View $view The view about to be rendered.
+		 * @param View $view The view about to be rendered.
 		 * @param \GV\Request $request The associated request.
 		 */
 		$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view, $request );
@@ -102,7 +107,51 @@ class View_Renderer extends Renderer {
 			gravityview()->log->notice( '{template_class} not found, falling back to legacy', array( 'template_class' => $class ) );
 			$class = '\GV\View_Legacy_Template';
 		}
+
+		/** @var \GV\View_Table_Template|\GV\View_List_Template|\GV\View_Legacy_Template $template */
 		$template = new $class( $view, $entries, $request );
+
+		/**
+		 * @var [] $counter A counter incrementing each time a View is rendered.
+		 * @since 2.15
+		 * @usedby `gravityview/template/view/render` filter
+		 */
+		static $counter = array();
+
+		$counter[ $view->ID ] = isset( $counter[ $view->ID ] ) ? $counter[ $view->ID ] + 1 : 1;
+
+		/**
+		 * Updates the View anchor ID each time the View is rendered.
+		 * @since 2.15
+		 * @uses {@var $counter}
+		 * @param Template_Context $context
+		 */
+		add_action( 'gravityview/template/view/render', $add_anchor_id_filter = function ( $context ) use ( &$counter ) {
+			/** @see \GV\View::set_anchor_id() */
+			$context->view->set_anchor_id( $counter[ $context->view->ID ] );
+		} );
+
+		$add_search_action_filter = function ( $action ) use ( $view ) {
+			return $action . '#' . $view->get_anchor_id();
+		};
+
+		/**
+		 * @filter `gravityview/widget/search/set_view_id_anchor` Allow appending the View ID anchor to the search URL.
+		 * @since  2.15
+		 *
+		 * @param bool   $set_view_id_anchor
+		 */
+		if ( apply_filters( 'gravityview/widget/search/append_view_id_anchor', true ) ) {
+			/**
+			 * Append the View anchor ID to the search form action.
+			 * @since 2.15
+			 *
+			 * @param string $action The search form action URL.
+			 *
+			 * @uses  {@var View $view}
+			 */
+			add_filter( 'gravityview/widget/search/form/action', $add_search_action_filter );
+		}
 
 		/**
 		 * Remove multiple sorting before calling legacy filters.
@@ -142,6 +191,8 @@ class View_Renderer extends Renderer {
 		$template->render();
 
 		remove_action( 'gravityview/template/after', $view_id_output );
+		remove_filter( 'gravityview/template/view/render', $add_anchor_id_filter );
+		remove_filter( 'gravityview/widget/search/form/action', $add_search_action_filter );
 
 		\GV\Mocks\Legacy_Context::pop();
 		return ob_get_clean();

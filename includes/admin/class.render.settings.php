@@ -121,28 +121,28 @@ class GravityView_Render_Settings {
 
 		// Remove suffix ":" from the labels to standardize style. Using trim() instead of rtrim() for i18n.
 		foreach ( $field_options as $key => $field_option ) {
-			$field_options[ $key ]['label'] = trim( $field_options[ $key ]['label'], ':' );
+			$field_options[ $key ]['label'] = trim( $field_option['label'], ':' );
 		}
 
 		/**
 		 * @filter `gravityview_template_{$field_type}_options` Filter the field options by field type. Filter names: `gravityview_template_field_options` and `gravityview_template_widget_options`
-		 * @param[in,out] array    Array of field options with `label`, `value`, `type`, `default` keys
-		 * @param[in]  string      $template_id Table slug
-		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
-		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
-		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
-		 * @param[in]  int         $form_id     The form ID. {@since 2.5}
+		 * @param array    Array of field options with `label`, `value`, `type`, `default` keys
+		 * @param  string      $template_id Table slug
+		 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+		 * @param  string      $context     What context are we in? Example: `single` or `directory`
+		 * @param  string      $input_type  (textarea, list, select, etc.)
+		 * @param  int         $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
 		/**
 		 * @filter `gravityview_template_{$input_type}_options` Filter the field options by input type (`$input_type` examples: `textarea`, `list`, `select`, etc.)
-		 * @param[in,out] array    Array of field options with `label`, `value`, `type`, `default` keys
-		 * @param[in]  string      $template_id Table slug
-		 * @param[in]  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
-		 * @param[in]  string      $context     What context are we in? Example: `single` or `directory`
-		 * @param[in]  string      $input_type  (textarea, list, select, etc.)
-		 * @param[in]  int         $form_id     The form ID. {@since 2.5}
+		 * @param array    Array of field options with `label`, `value`, `type`, `default` keys
+		 * @param  string      $template_id Table slug
+		 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+		 * @param  string      $context     What context are we in? Example: `single` or `directory`
+		 * @param  string      $input_type  (textarea, list, select, etc.)
+		 * @param  int         $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
@@ -442,6 +442,9 @@ EOD;
 		);
 
 		foreach ( $replacements as $replacement ) {
+			if ( is_null( ${$replacement} ) ) {
+				continue;
+			}
 			$output = str_replace( '{{' . $replacement . '}}', ${$replacement}, $output );
 		}
 
@@ -459,7 +462,7 @@ EOD;
 	 * @param  mixed      $curr_value Current value of option
 	 * @return string     HTML output of option
 	 */
-	public static function render_field_option( $name = '', $option = array(), $curr_value = NULL ) {
+	public static function render_field_option( $name = '', $option = array(), $curr_value = null ) {
 
 		$output = '';
 
@@ -491,8 +494,8 @@ EOD;
 				/**
 				 * @filter `gravityview/option/output/{option_type}` Modify the output for a GravityView setting.\n
 				 * `$option_type` is the type of setting (`radio`, `text`, etc.)
-				 * @param[in,out] string $output field class name
-				 * @param[in] array $option  option field data
+				 * @param string $output field class name
+				 * @param array $option  option field data
 				 */
 				$output = apply_filters( "gravityview/option/output/{$option['type']}" , $output, $option );
 			}
@@ -719,7 +722,7 @@ EOD;
 	 * @param  string $current [current value]
 	 * @return string          [html tags]
 	 */
-	public static function render_select_option( $name = '', $id = '', $choices, $current = '' ) {
+	public static function render_select_option( $name = '', $id = '', $choices = array(), $current = '' ) {
 
 		_deprecated_function( __METHOD__, '1.2', 'GravityView_FieldType_select::render_input' );
 

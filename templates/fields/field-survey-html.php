@@ -102,7 +102,7 @@ switch ( $gravityview->field->field->inputType ) {
 		 * @filter `gravityview/template/field/survey/glue` The value used to separate multiple values in the Survey field output
 		 * @since 2.10.4
 		 *
-		 * @param[in,out] string The glue. Default: "; " (semicolon with a trailing space)
+		 * @param string The glue. Default: "; " (semicolon with a trailing space)
 		 * @param \GV\Template_Context The context.
 		 */
 		$glue = apply_filters( 'gravityview/template/field/survey/glue', '; ', $gravityview );

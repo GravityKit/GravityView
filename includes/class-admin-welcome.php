@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @author    Zack Katz <zack@gravityview.co>
- * @link      https://gravityview.co
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -255,34 +255,93 @@ class GravityView_Welcome {
 
 			<?php $this->tabs(); ?>
 
-			<div class="feature-section col two-col has-2-columns is-fullwidth">
-				<div class="column col col-2">
-					<div class='media-container'>
-						<a href="https://www.trustedlogin.com"><img alt='TrustedLogin Logo'
-										src="<?php echo plugins_url( 'assets/images/screenshots/trustedlogin-logo.png', GRAVITYVIEW_FILE ); ?>"
-										style='border: none'></a>
-					</div>
-					<h3>Integration with TrustedLogin</h3>
-					<p><a href="https://www.trustedlogin.com">TrustedLogin</a> is the best way for you to easily &amp; securely grant access to plugins, themes, agencies, and hosts.</p>
-					<p>TrustedLogin is easy, secure, and will result in faster support times! And it&rsquo;s brought to you by the creators of GravityView.</p>
-					<p><a href="https://www.trustedlogin.com/about/easy-and-safe/" class="button button-primary button-large" target="_blank">Learn More About TrustedLogin<span class="screen-reader-text"> (This link opens in a new window)</span></a></p>
-				</div>
-				<div class="column col col-2 last">
-					<div class='media-container'>
-						<a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=grant-gravityview-access' ) ); ?>"><img alt='TrustedLogin Grant Support Access page'
-							 src="<?php echo plugins_url( 'assets/images/screenshots/trustedlogin-auth-screen.png', GRAVITYVIEW_FILE ); ?>"
-							 style='border: none'></a>
-					</div>
-					<h3>New <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=grant-gravityview-access' ) ); ?>">Grant Support Access</a> Page</h3>
-					<p>If you reach out to GravityView support and we need access to your site in order to assist with a support ticket, we&rsquo;ll now ask you to click the new "Grant Support Access" link in the sidebar.</p>
-				</div>
-			</div>
-
 			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
 
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
+
+				<h3>2.14.7 on July 31, 2022</h3>
+
+				<ul>
+					<li>Fixed: GravityView plugin updates were not shown in the plugin update screen since version 2.14.4 (April 27, 2022)</li>
+				</ul>
+
+				<h3>2.14.6 on May 27, 2022</h3>
+
+				<ul>
+					<li><a href='https://www.gravitykit.com/rebrand/'>GravityView (the company) is now GravityKit!</a>
+					</li>
+					<li>Fixed: Embedding Edit Entry context directly in a page/post using the <code>[gventry
+							edit='1']</code> shortcode (<a
+								href='https://docs.gravitykit.com/article/463-gventry-shortcode'>learn more</a>)
+					</li>
+					<li>Fixed: Edit Entry link wasn't working in the Single Entry context of an embedded View</li>
+					<li>Fixed: Search Bar GravityView widget was not saving the chosen fields</li>
+					<li>Fixed: Gravity PDF shortcodes would not be processed when bulk-approving entries using
+						GravityView. Thanks, Jake!
+					</li>
+					<li>Fixed: Sometimes embedding a GravityView shortcode in the block editor could cause a fatal
+						error
+					</li>
+					<li>Fixed: Multiple PHP 8 warnings</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>redirect_url</code> parameter to the <code>gravityview/edit_entry/success</code>
+						filter
+					</li>
+					<li>Added <code>redirect_url</code> and <code>back_link</code> parameters to the <code>gravityview/shortcodes/gventry/edit/success</code>
+						filter
+					</li>
+				</ul>
+
+				<h3>2.14.5 on May 4, 2022</h3>
+
+				<ul>
+					<li>Added: A link that allows administrators to disable the "Show only approved entries" View setting from the front-end</li>
+					<li>Fixed: Configuring new Search Bar WordPress widgets wasn't working in WordPress 5.8+</li>
+					<li>Fixed: Styling of form settings dropdowns on the Gravity Forms "Forms" page</li>
+				</ul>
+
+				<h3>2.14.4 on April 27, 2022</h3>
+
+				<ul>
+					<li>Added: Search Bar support for the <a
+								href='https://www.gravityforms.com/add-ons/chained-selects/'>Chained Selects</a> field
+						type
+					</li>
+					<li>Improved: Plugin updater script now supports auto-updates and better supports multisite
+						installations
+					</li>
+					<li>Improved: If a View does not support joined forms, log as a notice, not an error</li>
+					<li>Fixed: Merge Tag picker behavior when using Gravity Forms 2.6</li>
+					<li>Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1
+						results in a server error
+					</li>
+					<li>Fixed: When The Events Calendar Pro plugin is active, Views became un-editable</li>
+					<li>Tweak: Additional translation strings related to View editing</li>
+				</ul>
+
+				<p>Note: We will be requiring Gravity Forms 2.5 and WordPress 5.3 in the near future; please upgrade!</p>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: Search URLs now support <code>input_{field ID}</code> formats as well as <code>filter_{field
+							ID}</code>; the following will both be treated the same:
+						<ul>
+							<li><code>/view/example/?filter_3=SEARCH</code></li>
+							<li><code>/view/example/?input_3=SEARCH</code></li>
+						</ul>
+					</li>
+					<li>Added: In the admin, CSS classes are now added to the <code>body</code> tag based on Gravity
+						Forms version. See <code>GravityView_Admin_Views::add_gf_version_css_class()</code></li>
+					<li>Modified: Allow non-admin users with 'edit entry' permissions to delete uploaded files</li>
+					<li>Updated: EDD<em>SL</em>Plugin_Updater script to version 1.9.1</li>
+				</ul>
 
 				<h3>2.14.3 on March 24, 2022</h3>
 
@@ -469,7 +528,7 @@ class GravityView_Welcome {
 				</ul>
 
 				<p style="text-align: center;">
-					<a href="https://gravityview.co/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
+					<a href="https://www.gravitykit.com/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
 				</p>
 
 				<div class="clear"></div>
@@ -564,7 +623,7 @@ class GravityView_Welcome {
 						<li class="wp-person">Russian translation by <a href="https://www.transifex.com/user/profile/gkovaleff/">@gkovaleff</a>, <a href="https://www.transifex.com/user/profile/awsswa59/">@awsswa59</a></li>
 						<li class="wp-person">Polish translation by <a href="https://www.transifex.com/user/profile/dariusz.zielonka/">@dariusz.zielonka</a></li>
 						<li class="wp-person">Accessibility contributions by <a href="https://github.com/RianRietveld">@RianRietveld</a></li>
-						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, and <a href="https://github.com/mrcasual">@mrcasual</a></li>
+						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, <a href='https://github.com/mrcasual'>@mrcasual</a> and <a href="https://github.com/rafaehlers">@rafaehlers</a></li>
 					</ul>
 
 					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
@@ -583,7 +642,7 @@ class GravityView_Welcome {
 					<li><a href="https://github.com/10up/flexibility">Flexibility</a> - Adds support for CSS flexbox to Internet Explorer 8 &amp; 9</li>
 					<li><a href="https://github.com/GaryJones/Gamajo-Template-Loader">Gamajo Template Loader</a> - makes it easy to load template files with user overrides</li>
 					<li><a href="https://github.com/carhartl/jquery-cookie">jQuery Cookie plugin</a> - Access and store cookie values with jQuery</li>
-					<li><a href="https://gravityview.co/gravityforms">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
+					<li><a href="https://www.gravitykit.com/gravityforms">Gravity Forms</a> - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!</li>
 					<li>GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from <a href="https://www.flaticon.com" title="Flaticon">www.flaticon.com</a></li>
 					<li>GravityView uses free vector art by <a href="https://www.vecteezy.com">vecteezy.com</a></li>
 					<li><a href="https://github.com/jnicol/standalone-phpenkoder">PHPEnkoder</a> script encodes the email addresses.</li>

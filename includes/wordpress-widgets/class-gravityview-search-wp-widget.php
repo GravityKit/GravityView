@@ -52,6 +52,10 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return false;
+		}
+
 		// Don't show unless a View ID has been set.
 		if( empty( $instance['view_id'] ) ) {
 
@@ -216,7 +220,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gravityview' ); ?></label>
 			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $post_id ); ?>" />
-			<span class="howto"><?php
+			<span class="howto gv-howto"><?php
 				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
 				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
 				?></span>
@@ -238,7 +242,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 				<input id="<?php echo $this->get_field_id('search_mode'); ?>_all" name="<?php echo $this->get_field_name('search_mode'); ?>" type="radio" class="radio" value="all" <?php checked( $search_mode, 'all', true ); ?>>
 				<?php esc_html_e( 'Match All Fields', 'gravityview' ); ?>
 			</label>
-			<span class="howto"><?php esc_html_e('Should search results match all search fields, or any?', 'gravityview' ); ?></span
+			<span class="howto gv-howto"><?php esc_html_e('Should search results match all search fields, or any?', 'gravityview' ); ?></span
 		</p>
 
 		<hr />

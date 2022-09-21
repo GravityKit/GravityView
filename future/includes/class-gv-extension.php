@@ -13,7 +13,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 abstract class Extension {
 	/**
-	 * @var string Name of the plugin in gravityview.co
+	 * @var string Name of the plugin in gravitykit.com
 	 */
 	protected $_title = NULL;
 
@@ -23,7 +23,7 @@ abstract class Extension {
 	protected $_version = NULL;
 
 	/**
-	 * @var int The ID of the download on gravityview.co
+	 * @var int The ID of the download on gravitykit.com
 	 * @since 1.1
 	 */
 	protected $_item_id = NULL;
@@ -51,7 +51,7 @@ abstract class Extension {
 	/**
 	 * @var string The URL to fetch license info from. Do not change unless you know what you're doing.
 	 */
-	protected $_remote_update_url = 'https://gravityview.co';
+	protected $_remote_update_url = 'https://www.gravitykit.com';
 
 	/**
 	 * @var string Author of plugin, sent when fetching license info.
@@ -290,8 +290,14 @@ abstract class Extension {
 	 */
 	public function settings() {
 
-		// If doing ajax, get outta here
+		// If doing ajax, get outta here.
 		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
+			return;
+		}
+
+		// To support auto-updates, this needs to run during the wp_version_check cron job for privileged users.
+		$doing_cron = defined( 'DOING_CRON' ) && DOING_CRON;
+		if ( ! current_user_can( 'manage_options' ) && ! $doing_cron ) {
 			return;
 		}
 
@@ -309,7 +315,11 @@ abstract class Extension {
             	'license'	=> \GV\Utils::get( $license, 'license_key', \GV\Utils::get( $license, 'license', null ) ),
 	            'item_id'   => $this->_item_id, // The ID of the download on _remote_update_url
             	'item_name' => $this->_title,  // name of this plugin
-            	'author' 	=> strip_tags( $this->_author )  // author of this plugin
+            	'author' 	=> strip_tags( $this->_author ),  // author of this plugin
+	            'php_version' => phpversion(),
+	            'wp_version' => get_bloginfo( 'version' ),
+	            'gv_version' => \GV\Plugin::$version,
+	            'environment' => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
           	)
         );
 	}

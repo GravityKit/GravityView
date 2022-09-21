@@ -160,6 +160,10 @@ class gventry extends \GV\Shortcode {
 			}
 		}
 
+		if ( \GV\Utils::get( $_GET, 'edit' ) && \GV\Utils::get( $_GET, 'gvid' ) ) {
+			$atts['edit'] = 1;
+		}
+
 		if ( $atts['edit'] ) {
 			/**
 			 * Based on code in our unit-tests.
@@ -185,21 +189,23 @@ class gventry extends \GV\Shortcode {
 				\GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
 			);
 
-			add_filter( 'gravityview/edit_entry/success', $callback = function( $message ) use ( $view, $entry, $atts ) {
-				$message = __( 'Entry Updated', 'gravityview' );
-
+			add_filter( 'gravityview/edit_entry/success', $callback = function ( $message, $_view_id, $_entry, $back_link, $redirect_url ) use ( $view, $entry, $atts ) {
 				/**
 				 * @filter `gravityview/shortcodes/gventry/edit/success` Modify the edit entry success message in [gventry].
-				 * @since develop
-				 * @param[in,out] string $message The message.
-				 * @param \GV\View $view The View.
-				 * @param \GV\Entry $entry The entry.
-				 * @param array $atts The attributes.
+				 *
+				 * @since  develop
+				 *
+				 * @param string      $message      The message.
+				 * @param \GV\View    $view         The View.
+				 * @param \GV\Entry   $entry        The entry.
+				 * @param array       $atts         The attributes.
+				 * @param string      $back_link    URL to return to the original entry. @since 2.14.6
+				 * @param string|null $redirect_url URL to return to after the update. @since 2.14.6
 				 */
-				return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts );
-			} );
+				return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts, $back_link, $redirect_url );
+			}, 10, 5 );
 
-			ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
+			ob_start() && $render->init( $data, \GV\GF_Entry::by_id( $entry['id'] ), $view );
 			$output = ob_get_clean(); // Render :)
 
 			remove_filter( 'gravityview/is_single_entry', '__return_true' );

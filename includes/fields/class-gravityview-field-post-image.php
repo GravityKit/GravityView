@@ -84,11 +84,11 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	 * @param array $form The Form Object currently being processed.
 	 * @param string|array $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
 	 * @param null|array $entry Null or the Entry Object currently being edited.
-	 * @param GF_Field_Post_Image $field
+	 * @param GF_Field_Post_Image $field The field being edited.
 	 *
 	 * @return string
 	 */
-	public function get_field_input( $form, $value = '', $entry = null, GF_Field_Post_Image $field ) {
+	public function get_field_input( $form, $value = '', $entry = null, GF_Field_Post_Image $field = null ) {
 
 		$id = (int) $field->id;
 		$form_id = $form['id'];

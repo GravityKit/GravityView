@@ -77,11 +77,16 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	 * @return array Array with key set to Form ID => Form Title, with `0` as default placeholder.
 	 */
 	private function _get_form_choices() {
+
 		$choices = array(
 			0 => '&mdash; ' . esc_html__( 'list of forms', 'gravityview' ) . '&mdash;',
 		);
 
 		if ( ! class_exists( 'GFAPI' ) ) {
+			return $choices;
+		}
+
+		if( gravityview()->request->is_frontend() ) {
 			return $choices;
 		}
 
