@@ -442,6 +442,9 @@ EOD;
 		);
 
 		foreach ( $replacements as $replacement ) {
+			if ( is_null( ${$replacement} ) ) {
+				continue;
+			}
 			$output = str_replace( '{{' . $replacement . '}}', ${$replacement}, $output );
 		}
 
