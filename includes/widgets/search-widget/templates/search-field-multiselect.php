@@ -16,6 +16,7 @@ if( empty( $search_field['choices'] ) ) {
 }
 
 $gf_field = GFAPI::get_field( $gravityview_view->getForm(), $search_field['key'] );
+$placeholder = \GV\Utils::get( $gf_field, 'placeholder', '' );
 
 /**
  * @filter `gravityview/extension/search/select_default` Define the text for the default option in a select (multi or single dropdown)
@@ -23,7 +24,7 @@ $gf_field = GFAPI::get_field( $gravityview_view->getForm(), $search_field['key']
  * @param string $default_option Default: `&mdash;` (—)
  * @param string $field_type Field type: "select" or "multiselect"
  */
-$default_option = apply_filters('gravityview/extension/search/select_default', \GV\Utils::get( $gf_field, 'placeholder', '&mdash;' ), 'multiselect' );
+$default_option = apply_filters('gravityview/extension/search/select_default', ( '' === $placeholder ? '&mdash;' : $placeholder ), 'multiselect' );
 
 ?>
 <div class="gv-search-box gv-search-field-multiselect">
