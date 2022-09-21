@@ -56,7 +56,7 @@ $form  = apply_filters( 'gravityview/fields/custom/form', $form, $entry, $gravit
  * @param stdClass The gravityview template context object.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_before', $gravityview->field->content, $gravityview );
-$content = trim( rtrim( $content ) );
+$content = trim( rtrim( (string) $content ) );
 
 // No custom content
 if ( empty( $content ) ) {
