@@ -600,7 +600,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$get = stripslashes_deep( $get );
 
-		$get = gv_map_deep( $get, 'rawurldecode' );
+		if ( ! is_null( $get ) ) {
+			$get = gv_map_deep( $get, 'rawurldecode' );
+		}
 
 		// Make sure array key is set up
 		$search_criteria['field_filters'] = \GV\Utils::get( $search_criteria, 'field_filters', array() );
@@ -1840,7 +1842,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$value = stripslashes_deep( $value );
 
-		$value = gv_map_deep( $value, 'rawurldecode' );
+		if ( ! is_null( $value ) ) {
+			$value = gv_map_deep( $value, 'rawurldecode' );
+		}
 
 		$value = gv_map_deep( $value, '_wp_specialchars' );
 
