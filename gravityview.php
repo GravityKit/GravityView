@@ -73,7 +73,7 @@ define( 'GV_MIN_PHP_VERSION', '5.6.30' );
  * @since 1.19.2
  * @var string|false
  */
-define( 'GV_FUTURE_MIN_PHP_VERSION', '7.2' );
+define( 'GV_FUTURE_MIN_PHP_VERSION', '7.2.0' );
 
 /**
  * The future is here and now.
