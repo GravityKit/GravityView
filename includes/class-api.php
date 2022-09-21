@@ -1607,6 +1607,10 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		 */
 		$value = apply_filters( 'gravityview/field_output/context/' . $tag, $value, $args, $context );
 
+		if ( is_null( $value ) ) {
+			continue;
+		}
+
 		// Finally do the replace
 		$html = str_replace( $search, $value, $html );
 	}
