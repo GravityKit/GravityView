@@ -128,6 +128,10 @@ class View_Renderer extends Renderer {
 			$context->view->set_anchor_id( $counter[ $context->view->ID ] );
 		} );
 
+		$add_search_action_filter = function ( $action ) use ( $view ) {
+			return $action . '#' . $view->get_anchor_id();
+		};
+
 		/**
 		 * @filter `gravityview/widget/search/set_view_id_anchor` Allow appending the View ID anchor to the search URL.
 		 * @since  2.15
@@ -143,9 +147,7 @@ class View_Renderer extends Renderer {
 			 *
 			 * @uses  {@var View $view}
 			 */
-			add_filter( 'gravityview/widget/search/form/action', $add_search_action_filter = function ( $action ) use ( $view ) {
-				return $action . '#' . $view->get_anchor_id();
-			} );
+			add_filter( 'gravityview/widget/search/form/action', $add_search_action_filter );
 		}
 
 		/**
