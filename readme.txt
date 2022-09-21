@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.0
+Tested up to: 6.0.2
 Requires PHP: 5.6.30
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,11 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.15 on September 21, 2022 =
 
-* Added: Ability to wrap the View in a custom container
-* Added: Ability to specify an anchor ID and navigate to the View when performing search
-* Fixed: The "entry approval is changed" notification, if configured, was being sent for new form submissions.
+* Added: Entire View contents are wrapped in a container, allowing for better styling
+* Added: When submitting a search form, the page will scroll to the search form
+* Improved: Date comparisons when using `[gvlogic]` with `greater_than` or `less_than` comparisons
+* Fixed: Reduced the number of database queries to render a View, especially when using Custom Content, Entry Link, Edit Link, and Delete Link fields
+* Fixed: Removed the Gravity Forms Partial Entries Add-On privacy notice when using Edit Entry because auto-saving in Edit Entry is not supported
+* Fixed: The "entry approval is changed" notification, if configured, was being sent for new form submissions
+* Fixed: Views would not render in PHP 8.1
+* Fixed: Multiple PHP 8 and PHP 8.1 warnings
 
 __Developer Updates:__
 
