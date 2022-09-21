@@ -72,6 +72,10 @@ class GravityView_Entry_Approval {
 	 * @return void
 	 */
 	public function _trigger_notifications( $entry_id = 0 ) {
+		if ( did_action( 'gform_entry_created' ) && 'gravityview/approve_entries/updated' === current_action() ) {
+			return;
+		}
+
 		$this->_send_notifications( $entry_id, current_action() );
 	}
 

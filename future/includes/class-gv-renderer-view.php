@@ -18,12 +18,13 @@ class View_Renderer extends Renderer {
 	 *
 	 * @since 2.0
 	 *
+	 * @api
+	 *
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
 	 * @param View $view The View instance to render.
 	 *
 	 * @return string The rendered View.
-	 *@api
 	 */
 	public function render( View $view, Request $request = null ) {
 		if ( is_null( $request ) ) {
@@ -104,6 +105,7 @@ class View_Renderer extends Renderer {
 			$class = '\GV\View_Legacy_Template';
 		}
 
+		/** @var \GV\View_Table_Template|\GV\View_List_Template|\GV\View_Legacy_Template $template */
 		$template = new $class( $view, $entries, $request );
 
 		/**

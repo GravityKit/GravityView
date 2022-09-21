@@ -21,10 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= dev =
+= develop =
 
 * Added: Ability to wrap the View in a custom container
 * Added: Ability to specify an anchor ID and navigate to the View when performing search
+* Fixed: The "entry approval is changed" notification, if configured, was being sent for new form submissions.
 
 __Developer Updates:__
 
