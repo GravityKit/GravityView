@@ -261,6 +261,44 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.15 on September 21, 2022</h3>
+
+				<ul>
+					<li>Added: Entire View contents are wrapped in a container, allowing for better styling (<a href='https://docs.gravitykit.com/article/867-modifying-the-view-container-div'>learn about, and how to modify, the container</a>)</li>
+					<li>Added: When submitting a search form, the page will scroll to the search form</li>
+					<li>Modified: Select and Multiselect search inputs will now use the connected field's "Placeholder" values, if defined in Gravity Forms (<a href="https://docs.gravitykit.com/article/866-search-bar-placeholder">read about Search Bar placeholders</a>)</li>
+					<li>Improved: Date comparisons when using <code>[gvlogic]</code> with <code>greater_than</code> or <code>less_than</code> comparisons</li>
+					<li>Fixed: Reduced the number of database queries to render a View, especially when using Custom Content, Entry Link, Edit Link, and Delete Link fields</li>
+					<li>Fixed: Removed the Gravity Forms Partial Entries Add-On privacy notice when using Edit Entry because auto-saving in Edit Entry is not supported</li>
+					<li>Fixed: The "entry approval is changed" notification, if configured, was being sent for new form submissions</li>
+					<li>Fixed: Views would not render in PHP 8.1</li>
+					<li>Fixed: Multiple PHP 8 and PHP 8.1 warnings</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/widget/search/append_view_id_anchor</code> filter to control appending the unique View anchor ID to the search URL (enabled by default)</li>
+					<li>Added: <code>gravityview/view/wrapper_container</code> filter to wrap to optionally wrap the View in a container (enabled by default) — <a href="https://docs.gravitykit.com/article/867-modifying-the-view-container-div">see examples of modifying the container</a></li>
+					<li>Added: <code>gravityview/view/anchor_id</code> filter to control the unique View anchor ID</li>
+					<li>Modified the following template files:
+						<ul>
+							<li><code>includes/widgets/search-widget/templates/search-field-multiselect.php</code></li>
+							<li><code>includes/widgets/search-widget/templates/search-field-select.php</code></li>
+							<li><code>templates/views/list.php</code></li>
+							<li><code>templates/views/table.php</code></li>
+							<li><code>templates/fields/field-custom.php</code></li>
+							<li><code>templates/fields/field-duplicate_link-html.php</code></li>
+							<li><code>templates/fields/field-delete_link-html.php</code></li>
+							<li><code>templates/fields/field-edit_link-html.php</code></li>
+							<li><code>templates/fields/field-entry_link-html.php</code></li>
+							<li><code>templates/fields/field-website-html.php</code></li>
+							<li><code>templates/deprecated/fields/custom.php</code></li>
+							<li><code>templates/deprecated/fields/website.php</code></li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3>2.14.7 on July 31, 2022</h3>
 
 				<ul>

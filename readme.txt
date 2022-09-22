@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.15 on September 21, 2022 =
 
-* Added: Entire View contents are wrapped in a container, allowing for better styling
+* Added: Entire View contents are wrapped in a container, allowing for better styling ([learn about, and how to modify, the container](https://docs.gravitykit.com/article/867-modifying-the-view-container-div))
 * Added: When submitting a search form, the page will scroll to the search form
 * Modified: Select and Multiselect search inputs will now use the connected field's "Placeholder" values, if defined in Gravity Forms ([read about Search Bar placeholders](https://docs.gravitykit.com/article/866-search-bar-placeholder))
 * Improved: Date comparisons when using `[gvlogic]` with `greater_than` or `less_than` comparisons
@@ -36,7 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 __Developer Updates:__
 
 * Added: `gravityview/widget/search/append_view_id_anchor` filter to control appending the unique View anchor ID to the search URL (enabled by default)
-* Added: `gravityview/view/wrapper_container` filter to wrap to optionally wrap the View in a container (enabled by default)
+* Added: `gravityview/view/wrapper_container` filter to wrap to optionally wrap the View in a container (enabled by default) — [see examples of modifying the container](https://docs.gravitykit.com/article/867-modifying-the-view-container-div)
 * Added: `gravityview/view/anchor_id` filter to control the unique View anchor ID
 * Modified the following template files:
 	- `includes/widgets/search-widget/templates/search-field-multiselect.php`
