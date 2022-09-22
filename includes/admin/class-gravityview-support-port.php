@@ -337,13 +337,13 @@ class GravityView_Support_Port {
 					<tr class="user-gravityview-support-button-wrap">
 						<th scope="row"><?php
 							/* translators: "Support Port" can be translated as "Support Portal" or "Support Window" */
-							_e( 'GravityView Support Port', 'gravityview' );
+							esc_html_e( 'GravityView Support Port', 'gravityview' );
 						?></th>
 						<td>
 							<fieldset>
 								<legend class="screen-reader-text"><span><?php
 										/* translators: "Support Port" can be translated as "Support Portal" or "Support Window" */
-										_e( 'GravityView Support Port', 'gravityview' );
+										esc_html_e( 'GravityView Support Port', 'gravityview' );
 								?></span></legend>
 								<label>
 									<input name="<?php echo esc_attr( self::user_pref_name ); ?>" type="hidden" value="0"/>

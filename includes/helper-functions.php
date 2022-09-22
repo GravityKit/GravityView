@@ -647,3 +647,72 @@ function _gravityview_process_posted_fields() {
 
 	return $fields;
 }
+
+/**
+ * Convert a string to a timestamp if it's a valid date or a relative date prefixed with "relative:".
+ *
+ * For example: "relative:-1 week" or "relative:tomorrow" will be converted to a timestamp.
+ *
+ * Note: This assumes the date is using a Gregorian calendar.
+ *
+ * @since 2.14.8
+ *
+ * @uses GFCommon::parse_date()
+ * @uses DateTimeImmutable::createFromFormat()
+ *
+ * @uses strtotime()
+ *
+ * @param string $value The string to convert to a timestamp. Supports relative dates and different date formats. Does its best to figure out the date format.
+ *
+ * @return false|int Timestamp if valid date, otherwise false.
+ */
+function gravityview_maybe_convert_date_string_to_timestamp( $value = '' ) {
+
+	if ( ! is_string( $value ) ) {
+		return false;
+	}
+
+	if( false !== strpos( strtolower( $value ), "relative:") ) {
+		$value = str_replace( 'relative:', '', $value );
+
+		$timestamp = strtotime( $value );
+
+		// It's a valid date/time.
+		if ( $timestamp ) {
+			return $timestamp;
+		}
+	}
+
+	// Attempt to parse dates.
+	$parsed_date = array_filter( \GFCommon::parse_date( $value ) );
+
+	// Should always have year/month/day.
+	if ( 3 !== sizeof( $parsed_date ) ) {
+		return false;
+	}
+
+	$year  = (int) rgar( $parsed_date, 'year' );
+	$month = (int) rgar( $parsed_date, 'month' );
+	$day   = (int) rgar( $parsed_date, 'day' );
+
+	// If the month is greater than 12, it's probably a day (in d/m/Y format). This may be why strtotime() failed.
+	// Let's correct this by swapping the day and month.
+	if ( ! checkdate( $month, $day, $year ) ) {
+		$day   = (int) rgar( $parsed_date, 'month' );
+		$month = (int) rgar( $parsed_date, 'day' );
+	}
+
+	// Still not valid. Perhaps not a date.
+	if ( ! checkdate( $month, $day, $year ) ) {
+		return false;
+	}
+
+	// Need to set time to midnight so date comparisons work properly.
+	$date = DateTimeImmutable::createFromFormat( 'Y-m-d H:i:s', "$year-$month-$day 00:00:00" );
+
+	if ( ! $date ) {
+		return false;
+	}
+
+	return $date->getTimestamp();
+}

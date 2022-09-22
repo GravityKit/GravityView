@@ -127,6 +127,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @since 2.0
 	 * @return bool Whether the offset exists or not.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
 		return isset( $this->entry[$offset] );
 	}
@@ -142,6 +143,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @return mixed The value of the requested entry data.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		return $this->entry[$offset];
 	}
@@ -155,6 +157,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
 		gravityview()->log->error( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
 	}
@@ -167,6 +170,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @since 2.0
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetUnset( $offset ) {
 		gravityview()->log->error( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
 	}

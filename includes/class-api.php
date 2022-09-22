@@ -1532,14 +1532,14 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	$placeholders['width'] = GravityView_API::field_width( $field );
 
 	// If replacing with CSS inline formatting, let's do it.
-	$placeholders['width:style'] = GravityView_API::field_width( $field, 'width:' . $placeholders['width'] . '%;' );
+	$placeholders['width:style'] = (string) GravityView_API::field_width( $field, 'width:' . $placeholders['width'] . '%;' );
 
 	// Grab the Class using `gv_class`
 	$placeholders['class'] = gv_class( $field, $form, $entry );
 	$placeholders['field_id'] = GravityView_API::field_html_attr_id( $field, $form, $entry );
 
 	if ( $context instanceof \GV\Template_Context ) {
-		$placeholders['label_value'] = \GV\Utils::get( $args, 'label' );
+		$placeholders['label_value'] = \GV\Utils::get( $args, 'label', '' );
 	} else {
 		// Default Label value
 		$placeholders['label_value'] = gv_label( $field, $entry );
@@ -1608,7 +1608,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		$value = apply_filters( 'gravityview/field_output/context/' . $tag, $value, $args, $context );
 
 		// Finally do the replace
-		$html = str_replace( $search, $value, $html );
+		$html = str_replace( $search, (string) $value, $html );
 	}
 
 	/**

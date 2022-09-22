@@ -624,7 +624,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		$add_note_html = str_replace( '{entry_slug}', $entry_slug, $add_note_html );
 		$add_note_html = str_replace( '{nonce_field}', $nonce_field, $add_note_html );
-		$add_note_html = str_replace( '{show_delete}', intval( empty( $visibility_settings['delete'] ) ? 0 : $visibility_settings['delete'] ), $add_note_html );
+		$add_note_html = str_replace( '{show_delete}', (string) intval( empty( $visibility_settings['delete'] ) ? 0 : $visibility_settings['delete'] ), $add_note_html );
 		$add_note_html   = str_replace( '{email_fields}', $email_fields, $add_note_html );
 		$add_note_html = str_replace( '{url}', esc_url_raw( add_query_arg( array() ) ), $add_note_html );
 

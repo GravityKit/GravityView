@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 31-July-2022 using Strauss.
+ * Modified by gravityview on 21-September-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -111,7 +111,7 @@ final class Admin {
 		}
 
 		return array(
-			'revoke' => "<a class='trustedlogin tl-revoke submitdelete' href='" . esc_url( $revoke_url ) . "'>" . esc_html__( 'Revoke Access', 'gravityview' ) . '</a>',
+			'revoke' => "<a class='trustedlogin tl-revoke submitdelete' href='" . esc_url( $revoke_url ) . "'>" . esc_html__( 'Revoke Access', 'trustedlogin' ) . '</a>',
 		);
 	}
 
@@ -183,7 +183,7 @@ final class Admin {
 
 		$admin_bar->add_menu( array(
 			'id'    => 'tl-' . $this->config->ns() . '-revoke',
-			'title' => $icon . esc_html__( 'Revoke TrustedLogin', 'gravityview' ),
+			'title' => $icon . esc_html__( 'Revoke TrustedLogin', 'trustedlogin' ),
 			'href'  => $this->support_user->get_revoke_url( 'all' ),
 			'meta'  => array(
 				'class' => 'tl-destroy-session',
@@ -213,7 +213,7 @@ final class Admin {
 
 		$menu_slug = apply_filters( 'trustedlogin/' . $this->config->ns() . '/admin/menu/menu_slug', 'grant-' . $ns . '-access' );
 
-		$menu_title = $this->config->get_setting( 'menu/title', esc_html__( 'Grant Support Access', 'gravityview' ) );
+		$menu_title = $this->config->get_setting( 'menu/title', esc_html__( 'Grant Support Access', 'trustedlogin' ) );
 
 		// If empty (null or empty string), add top-level menu
 		if ( empty( $parent_slug ) ) {
@@ -353,7 +353,7 @@ final class Admin {
 		$_user_creator_id = get_user_option( $this->support_user->created_by_meta_key, $support_user->ID );
 		$_user_creator    = $_user_creator_id ? get_user_by( 'id', $_user_creator_id ) : false;
 
-		$unknown_user_text = sprintf( esc_html__( 'Unknown (User #%d)', 'gravityview' ), $_user_creator_id );
+		$unknown_user_text = sprintf( esc_html__( 'Unknown (User #%d)', 'trustedlogin' ), $_user_creator_id );
 
 		$auth_meta = ( $_user_creator && $_user_creator->exists() ) ? esc_html( $_user_creator->display_name ) : $unknown_user_text;
 
@@ -366,7 +366,7 @@ final class Admin {
 
 		$content = array(
 			'display_name' => $support_user->display_name,
-			'revoke_access_button' => sprintf( '<a href="%s" class="button button-danger alignright">%s</a>', $revoke_url, esc_html__( 'Revoke Access', 'gravityview' ) ),
+			'revoke_access_button' => sprintf( '<a href="%s" class="button button-danger alignright">%s</a>', $revoke_url, esc_html__( 'Revoke Access', 'trustedlogin' ) ),
 			'auth_meta' => sprintf( 'Created 1 day ago by %s', $auth_meta ),
 		);
 
@@ -393,7 +393,7 @@ final class Admin {
 			'auth_header'      => $this->get_auth_header_html(),
 			'details'          => $this->get_details_html(),
 			'button'           => $this->generate_button( 'size=hero&class=authlink button-primary', false ),
-			'secured_by_trustedlogin' => '<span class="trustedlogin-logo-large"></span>' . esc_html__( 'Secured by TrustedLogin', 'gravityview' ),
+			'secured_by_trustedlogin' => '<span class="trustedlogin-logo-large"></span>' . esc_html__( 'Secured by TrustedLogin', 'trustedlogin' ),
 			'footer'           => $this->get_footer_html(),
 			'reference'        => $this->get_reference_html(),
 		);
@@ -458,13 +458,9 @@ final class Admin {
 	/**
 	 * Shows the current site URL and, if passed as $_GET['ref'], a support reference ID
 	 *
-	 * @return string
+	 * @return string Empty string if there is no reference or if the `trustedlogin/{ns}/template/auth/display_reference` filter returns false.
 	 */
 	private function get_reference_html() {
-
-		if ( ! $this->is_login_screen() ) {
-			return '';
-		}
 
 		$reference_id = Client::get_reference_id();
 
@@ -472,10 +468,27 @@ final class Admin {
 			return '';
 		}
 
+		/**
+		 * Filter trustedlogin/{ns}/template/auth/display_reference
+		 *
+		 * Used to hide or show the reference ID in the auth screen template.
+		 *
+		 * @since 1.3
+		 *
+		 * @param bool $display_reference Whether to display the reference ID on the auth screen. Default: true.
+		 * @param bool $is_login_screen Whether the auth form is being displayed on the login screen.
+		 * @param string $ref The reference ID.
+		 */
+		$display_reference = apply_filters( 'trustedlogin/' . $this->config->ns() . '/template/auth/display_reference', true, $this->is_login_screen(), $reference_id );
+
+		if ( ! $display_reference ) {
+			return '';
+		}
+
 		$template =  '<div class="tl-{{ns}}-auth__ref"><p><span class="tl-{{ns}}-auth_ref__id">{{reference_text}}</span></p></div>';
 
 		$content = array(
-			'reference_text' => sprintf( esc_html__( 'Reference #%s', 'gravityview' ), $reference_id ),
+			'reference_text' => sprintf( esc_html__( 'Reference #%s', 'trustedlogin' ), $reference_id ),
 			'ns' => $this->config->ns(),
 			'site_url' => esc_html( str_replace( array( 'https://', 'http://' ), '', get_site_url() ) ),
 		);
@@ -490,7 +503,7 @@ final class Admin {
 		if ( $has_access ) {
 			foreach ( $has_access as $access ) {
 				// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
-				$intro = sprintf( esc_html__( '%1$s has site access that expires in %2$s.', 'gravityview' ), '<a href="' . esc_url( $this->config->get_setting('vendor/website') ) . '" target="_blank" rel="noopener noreferrer">' . $this->config->get_setting( 'vendor/title' ) . '</a>', str_replace( ' ', '&nbsp;', $this->support_user->get_expiration( $access, true, false ) ) );
+				$intro = sprintf( esc_html__( '%1$s has site access that expires in %2$s.', 'trustedlogin' ), '<a href="' . esc_url( $this->config->get_setting('vendor/website') ) . '" target="_blank" rel="noopener noreferrer">' . $this->config->get_setting( 'vendor/title' ) . '</a>', str_replace( ' ', '&nbsp;', $this->support_user->get_expiration( $access, true, false ) ) );
 			}
 
 			return $intro;
@@ -498,10 +511,10 @@ final class Admin {
 
 		if ( $this->is_login_screen() ) {
 			// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
-			$intro = sprintf( esc_html__( '%1$s would like support access to this site.', 'gravityview' ), '<a href="'. esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
+			$intro = sprintf( esc_html__( '%1$s would like support access to this site.', 'trustedlogin' ), '<a href="'. esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
 		} else {
 			// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
-			$intro = sprintf( esc_html__( 'Grant %1$s access to this site.', 'gravityview' ), '<a href="' . esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
+			$intro = sprintf( esc_html__( 'Grant %1$s access to this site.', 'trustedlogin' ), '<a href="' . esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
 		}
 
 		return $intro;
@@ -534,17 +547,17 @@ final class Admin {
 		';
 
 		// translators: %1$s and %3$s are replaced with HTML tags. %2$s is the amount of time that the login will be active for (e.g. "1 week")
-		$expire_summary = sprintf( esc_html__( 'Access this site for %s.', 'gravityview' ), '<strong>' . human_time_diff( 0, $this->config->get_setting( 'decay' ) ) . '</strong>' );
-		$expire_desc    = '<small>' . sprintf( esc_html__( 'Access auto-expires in %s. You may revoke access at any time.', 'gravityview' ), human_time_diff( 0, $this->config->get_setting( 'decay' ) ) ) . '</small>';
+		$expire_summary = sprintf( esc_html__( 'Access this site for %s.', 'trustedlogin' ), '<strong>' . human_time_diff( 0, $this->config->get_setting( 'decay' ) ) . '</strong>' );
+		$expire_desc    = '<small>' . sprintf( esc_html__( 'Access auto-expires in %s. You may revoke access at any time.', 'trustedlogin' ), human_time_diff( 0, $this->config->get_setting( 'decay' ) ) ) . '</small>';
 
 		$ns          = $this->config->ns();
 		$cloned_role = translate_user_role( ucfirst( $this->config->get_setting( 'role' ) ) );
 
 		if ( array_filter( $this->config->get_setting( 'caps' ), array( $this->config, 'is_not_null' ) ) ) {
-			$roles_summary = sprintf( esc_html__( 'Create a user with a role similar to %s.', 'gravityview' ), '<strong>' . $cloned_role . '</strong>' );
-			$roles_summary .= sprintf( '<small class="tl-' . $ns . '-toggle" data-toggle=".tl-' . $ns . '-auth__role-container">%s <span class="dashicons dashicons--small dashicons-arrow-down-alt2"></span></small>', esc_html__( 'View role capabilities', 'gravityview' ) );
+			$roles_summary = sprintf( esc_html__( 'Create a user with a role similar to %s.', 'trustedlogin' ), '<strong>' . $cloned_role . '</strong>' );
+			$roles_summary .= sprintf( '<small class="tl-' . $ns . '-toggle" data-toggle=".tl-' . $ns . '-auth__role-container">%s <span class="dashicons dashicons--small dashicons-arrow-down-alt2"></span></small>', esc_html__( 'View role capabilities', 'trustedlogin' ) );
 		} else {
-			$roles_summary = sprintf( esc_html__( 'Create a user with a role of %s.', 'gravityview' ), '<strong>' . $cloned_role . '</strong>' );
+			$roles_summary = sprintf( esc_html__( 'Create a user with a role of %s.', 'trustedlogin' ), '<strong>' . $cloned_role . '</strong>' );
 		}
 
 		$content = array(
@@ -570,8 +583,8 @@ final class Admin {
 		$removed = $this->config->get_setting( 'caps/remove' );
 
 		$caps = '';
-		$caps .= $this->get_caps_section( $added, __( 'Additional capabilities:', 'gravityview' ), 'dashicons-yes-alt' );
-		$caps .= $this->get_caps_section( $removed, __( 'Removed capabilities:', 'gravityview' ), 'dashicons-dismiss' );
+		$caps .= $this->get_caps_section( $added, __( 'Additional capabilities:', 'trustedlogin' ), 'dashicons-yes-alt' );
+		$caps .= $this->get_caps_section( $removed, __( 'Removed capabilities:', 'trustedlogin' ), 'dashicons-dismiss' );
 
 		if ( empty( $caps ) ) {
 			return $caps;
@@ -639,10 +652,10 @@ final class Admin {
 		</div>';
 
 		$content = array(
-			'local_site' => sprintf( esc_html__( '%s support may not be able to access this site.', 'gravityview' ), $this->config->get_setting( 'vendor/title' ) ),
-			'need_access' => esc_html__( 'This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL.', 'gravityview' ),
+			'local_site' => sprintf( esc_html__( '%s support may not be able to access this site.', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ),
+			'need_access' => esc_html__( 'This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL.', 'trustedlogin' ),
 			'about_live_access_url' => esc_url( $this->config->get_setting( 'vendor/about_live_access_url', self::ABOUT_LIVE_ACCESS_URL ) ),
-			'learn_more' => esc_html__( 'Learn more.', 'gravityview' ),
+			'learn_more' => esc_html__( 'Learn more.', 'trustedlogin' ),
 		);
 
 		return $this->prepare_output( $notice_template, $content );
@@ -692,19 +705,19 @@ final class Admin {
 		}
 
 		$footer_links = array(
-			esc_html__( 'Learn about TrustedLogin', 'gravityview' )                   => self::ABOUT_TL_URL,
+			esc_html__( 'Learn about TrustedLogin', 'trustedlogin' )                   => self::ABOUT_TL_URL,
 			sprintf( 'Visit %s support', $this->config->get_setting( 'vendor/title' ) ) => $support_url,
 		);
 
 		/**
-		 * Filter trustedlogin/template/auth/footer_links
+		 * Filter trustedlogin/{ns}/template/auth/footer_links
 		 *
 		 * Used to add/remove Footer Links on grantlink page
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param array Array of links to show in auth footer (Key is anchor text; Value is URL)
-		 **/
+		 * @param array $footer_links Array of links to show in auth footer (Key is anchor text; Value is URL)
+		 */
 		$footer_links = apply_filters( 'trustedlogin/' . $this->config->ns() . '/template/auth/footer_links', $footer_links );
 
 		$footer_links_output = '';
@@ -888,8 +901,8 @@ final class Admin {
 	public function get_button( $atts = array() ) {
 
 		$defaults = array(
-			'text'        => sprintf( esc_html__( 'Grant %s Access', 'gravityview' ), $this->config->get_display_name() ),
-			'exists_text' => sprintf( esc_html__( 'Extend %s Access', 'gravityview' ), $this->config->get_display_name(), ucwords( human_time_diff( time(), time() + $this->config->get_setting( 'decay' ) ) ) ),
+			'text'        => sprintf( esc_html__( 'Grant %s Access', 'trustedlogin' ), $this->config->get_display_name() ),
+			'exists_text' => sprintf( esc_html__( 'Extend %s Access', 'trustedlogin' ), $this->config->get_display_name(), ucwords( human_time_diff( time(), time() + $this->config->get_setting( 'decay' ) ) ) ),
 			'size'        => 'hero',
 			'class'       => 'button-primary',
 			'tag'         => 'a', // "a", "button", "span"
@@ -947,7 +960,7 @@ final class Admin {
 		$powered_by = '';
 		if ( $atts['powered_by'] ) {
 			$powered_by = sprintf( '<small><span class="trustedlogin-logo"></span>%s</small>',
-				esc_html__( 'Secured by TrustedLogin', 'gravityview' )
+				esc_html__( 'Secured by TrustedLogin', 'trustedlogin' )
 			);
 		}
 
@@ -992,18 +1005,18 @@ final class Admin {
 		 * }
 		 */
 		$query_args = apply_filters( 'trustedlogin/' . $this->config->ns() . '/support_url/query_args', array(
-				'message' => __( 'Could not create TrustedLogin access.', 'gravityview' ),
+				'message' => __( 'Could not create TrustedLogin access.', 'trustedlogin' ),
 				'ref' => Client::get_reference_id(),
 			)
 		);
 
 		$error_content = sprintf( '<p>%s</p><p>%s</p>',
 			sprintf(
-				esc_html__( 'The user details could not be sent to %1$s automatically.', 'gravityview' ),
+				esc_html__( 'The user details could not be sent to %1$s automatically.', 'trustedlogin' ),
 				$vendor_title
 			),
 			sprintf(
-				__( 'Please <a href="%1$s" target="_blank">click here</a> to go to the %2$s support site', 'gravityview' ),
+				__( 'Please <a href="%1$s" target="_blank">click here</a> to go to the %2$s support site', 'trustedlogin' ),
 				esc_url( add_query_arg( $query_args, $this->config->get_setting( 'vendor/support_url' ) ) ),
 				$vendor_title
 			)
@@ -1011,38 +1024,38 @@ final class Admin {
 
 		$translations = array(
 			'buttons' => array(
-				'confirm'    => esc_html__( 'Confirm', 'gravityview' ),
-				'ok'         => esc_html__( 'Ok', 'gravityview' ),
-				'go_to_site' => sprintf( __( 'Go to %1$s support site', 'gravityview' ), $vendor_title ),
-				'close'      => esc_html__( 'Close', 'gravityview' ),
-				'cancel'     => esc_html__( 'Cancel', 'gravityview' ),
-				'revoke'     => sprintf( esc_html__( 'Revoke %1$s support access', 'gravityview' ), $vendor_title ),
-				'copy'       => esc_html__( 'Copy', 'gravityview' ),
-				'copied'     => esc_html__( 'Copied!', 'gravityview' ),
+				'confirm'    => esc_html__( 'Confirm', 'trustedlogin' ),
+				'ok'         => esc_html__( 'Ok', 'trustedlogin' ),
+				'go_to_site' => sprintf( __( 'Go to %1$s support site', 'trustedlogin' ), $vendor_title ),
+				'close'      => esc_html__( 'Close', 'trustedlogin' ),
+				'cancel'     => esc_html__( 'Cancel', 'trustedlogin' ),
+				'revoke'     => sprintf( esc_html__( 'Revoke %1$s support access', 'trustedlogin' ), $vendor_title ),
+				'copy'       => esc_html__( 'Copy', 'trustedlogin' ),
+				'copied'     => esc_html__( 'Copied!', 'trustedlogin' ),
 			),
 			'a11y' => array(
-				'opens_new_window' => esc_attr__( '(This link opens in a new window.)', 'gravityview' ),
-				'copied_text' =>  esc_html__( 'The access key has been copied to your clipboard.', 'gravityview' ),
+				'opens_new_window' => esc_attr__( '(This link opens in a new window.)', 'trustedlogin' ),
+				'copied_text' =>  esc_html__( 'The access key has been copied to your clipboard.', 'trustedlogin' ),
 			),
 			'status'  => array(
 				'synced'             => array(
-					'title'   => esc_html__( 'Support access granted', 'gravityview' ),
+					'title'   => esc_html__( 'Support access granted', 'trustedlogin' ),
 					'content' => sprintf(
-						__( 'A temporary support user has been created, and sent to %1$s support.', 'gravityview' ),
+						__( 'A temporary support user has been created, and sent to %1$s support.', 'trustedlogin' ),
 						$vendor_title
 					),
 				),
 				'pending'            => array(
-					'content' => sprintf( __( 'Generating & encrypting secure support access for %1$s', 'gravityview' ), $vendor_title ),
+					'content' => sprintf( __( 'Generating & encrypting secure support access for %1$s', 'trustedlogin' ), $vendor_title ),
 				),
 				'extending'          => array(
-					'content' => sprintf( __( 'Extending support access for %1$s by %2$s', 'gravityview' ), $vendor_title, human_time_diff( time(), time() + $this->config->get_setting( 'decay' ) ) ),
+					'content' => sprintf( __( 'Extending support access for %1$s by %2$s', 'trustedlogin' ), $vendor_title, human_time_diff( time(), time() + $this->config->get_setting( 'decay' ) ) ),
 				),
 				'syncing'            => array(
-					'content' => sprintf( __( 'Sending encrypted access to %1$s.', 'gravityview' ), $vendor_title ),
+					'content' => sprintf( __( 'Sending encrypted access to %1$s.', 'trustedlogin' ), $vendor_title ),
 				),
 				'error'              => array(
-					'title'   => sprintf( __( 'Error syncing support user to %1$s', 'gravityview' ), $vendor_title ),
+					'title'   => sprintf( __( 'Error syncing support user to %1$s', 'trustedlogin' ), $vendor_title ),
 					'content' => wp_kses( $error_content, array(
 						'a' => array(
 							'href'   => array(),
@@ -1053,39 +1066,39 @@ final class Admin {
 					) ),
 				),
 				'cancel'             => array(
-					'title'   => esc_html__( 'Action Cancelled', 'gravityview' ),
+					'title'   => esc_html__( 'Action Cancelled', 'trustedlogin' ),
 					'content' => sprintf(
-						__( 'A support account for %1$s was not created.', 'gravityview' ),
+						__( 'A support account for %1$s was not created.', 'trustedlogin' ),
 						$vendor_title
 					),
 				),
 				'failed'             => array(
-					'title'   => esc_html__( 'Support Access Was Not Granted', 'gravityview' ),
-					'content' => esc_html__( 'There was an error granting access: ', 'gravityview' ),
+					'title'   => esc_html__( 'Support Access Was Not Granted', 'trustedlogin' ),
+					'content' => esc_html__( 'There was an error granting access: ', 'trustedlogin' ),
 				),
 				'failed_permissions' => array(
-					'content' => esc_html__( 'Your authorized session has expired. Please refresh the page.', 'gravityview' ),
+					'content' => esc_html__( 'Your authorized session has expired. Please refresh the page.', 'trustedlogin' ),
 				),
 				'accesskey'          => array(
-					'title'       => esc_html__( 'TrustedLogin Key Created', 'gravityview' ),
+					'title'       => esc_html__( 'TrustedLogin Key Created', 'trustedlogin' ),
 					'content'     => sprintf(
-						__( 'Share this TrustedLogin Key with %1$s to give them secure access:', 'gravityview' ),
+						__( 'Share this TrustedLogin Key with %1$s to give them secure access:', 'trustedlogin' ),
 						$vendor_title
 					),
 					'revoke_link' => esc_url( add_query_arg( array( Endpoint::REVOKE_SUPPORT_QUERY_PARAM => $this->config->ns() ), admin_url() ) ),
 				),
 				'error404'           => array(
-					'title'   => esc_html__( 'The TrustedLogin vendor could not be found.', 'gravityview' ),
+					'title'   => esc_html__( 'The TrustedLogin vendor could not be found.', 'trustedlogin' ),
 					'content' => '',
 				),
 				'error409'           => array(
 					'title'   => sprintf(
-						__( '%1$s Support user already exists', 'gravityview' ),
+						__( '%1$s Support user already exists', 'trustedlogin' ),
 						$vendor_title
 					),
 					'content' => sprintf(
 						wp_kses(
-							__( 'A support user for %1$s already exists. You may revoke this support access from your <a href="%2$s" target="_blank">Users list</a>.', 'gravityview' ),
+							__( 'A support user for %1$s already exists. You may revoke this support access from your <a href="%2$s" target="_blank">Users list</a>.', 'trustedlogin' ),
 							array( 'a' => array( 'href' => array(), 'target' => array() ) )
 						),
 						$vendor_title,
@@ -1125,7 +1138,7 @@ final class Admin {
 
 		if ( empty( $support_users ) ) {
 
-			$return = '<h3>' . sprintf( esc_html__( 'No %s users exist.', 'gravityview' ), $this->config->get_setting( 'vendor/title' ) ) . '</h3>';
+			$return = '<h3>' . sprintf( esc_html__( 'No %s users exist.', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ) . '</h3>';
 
 			if ( $print ) {
 				echo $return;
@@ -1134,15 +1147,30 @@ final class Admin {
 			return $return;
 		}
 
-		$default_atts = array(
-			'current_url' => false,
-		);
-
-		$atts = wp_parse_args( $atts, $default_atts );
-
 		$return = '';
 
-		$access_key_template = <<<EOD
+		$access_key = $this->site_access->get_access_key();
+
+		if ( is_wp_error( $access_key ) ) {
+
+			$access_key_template = <<<EOD
+<%3\$s class="tl-%1\$s-auth__accesskey">
+	<h3>%2\$s</h3>
+	<p>%4\$s <samp>%5\$s</samp></p>
+</%3\$s>
+EOD;
+			$access_key_output   = sprintf(
+				$access_key_template,
+				/* %1$s */ sanitize_title( $this->config->ns() ),
+				/* %2$s */ esc_html__( 'Error', 'trustedlogin' ),
+				/* %3$s */ 'div',
+				/* %4$s */ esc_html__( 'There was an error returning the access key.', 'trustedlogin' ),
+				/* %5$s */ esc_html( $access_key->get_error_message() )
+			);
+
+		} else {
+
+			$access_key_template = <<<EOD
 <%6\$s class="tl-%1\$s-auth__accesskey">
 	<label for="tl-%1\$s-access-key"><h3>%2\$s</h3></label>
 	<p>%8\$s</p>
@@ -1153,26 +1181,27 @@ final class Admin {
 	</div>
 </%6\$s>
 EOD;
+			$access_key_output   = sprintf(
+				$access_key_template,
+				/* %1$s */ sanitize_title( $this->config->ns() ),
+				/* %2$s */ esc_html__( 'Site access key:', 'trustedlogin' ),
+				/* %3$s */ esc_html__( 'Access Key', 'trustedlogin' ),
+				/* %4$s */ esc_attr( $access_key ),
+				/* %5$s */ esc_html__( 'Copy', 'trustedlogin' ),
+				/* %6$s */ 'div',
+				/* %7$s */ esc_html__( 'Copy the access key to your clipboard', 'trustedlogin' ),
+				// translators: %s is the display name of the TrustedLogin support user.
+				/* %8$s */ sprintf( esc_html__( 'The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums.', 'trustedlogin' ), $this->support_user->get_first()->display_name )
+			);
 
+		}
 
-		$access_key_output = sprintf(
-			$access_key_template,
-			/* %1$s */ sanitize_title( $this->config->ns() ),
-			/* %2$s */ esc_html__( 'Site access key:', 'gravityview' ),
-			/* %3$s */ esc_html__( 'Access Key', 'gravityview' ),
-			/* %4$s */ esc_attr( $this->site_access->get_access_key() ),
-			/* %5$s */ esc_html__( 'Copy', 'gravityview' ),
-			/* %6$s */ 'div',
-			/* %7$s */ esc_html__( 'Copy the access key to your clipboard', 'gravityview' ),
-			sprintf( 'The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums.', $this->support_user->get_first()->display_name )
-		);
 
 		$return .= $access_key_output;
 
 		if ( $print ) {
 			echo $return;
 		}
-
 
 		return $return;
 	}
@@ -1202,9 +1231,9 @@ EOD;
 
 		?>
 		<div class="notice notice-success is-dismissible">
-			<h3><?php echo esc_html( sprintf( __( '%s access revoked.', 'gravityview' ), $this->config->get_setting( 'vendor/title' ) ) ); ?></h3>
+			<h3><?php echo esc_html( sprintf( __( '%s access revoked.', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ) ); ?></h3>
 			<?php if ( ! current_user_can( 'delete_users' ) ) { ?>
-				<p><?php echo esc_html__( 'You may safely close this window.', 'gravityview' ); ?></p>
+				<p><?php echo esc_html__( 'You may safely close this window.', 'trustedlogin' ); ?></p>
 			<?php } ?>
 		</div>
 		<?php

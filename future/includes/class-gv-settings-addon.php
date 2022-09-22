@@ -51,6 +51,18 @@ class Addon_Settings extends \GFAddOn {
 	protected $_capabilities_app_menu = 'gravityview_view_settings';
 
 	/**
+	 * @since 2.15
+	 * @var string Relative path to file from plugins directory.
+	 */
+	protected $_path = 'gravityview/future/includes/gv-settings-addon.php';
+
+	/**
+	 * @since 2.15
+	 * @var string Full path to this file.
+	 */
+	protected $_full_path = __FILE__;
+
+	/**
 	 * @var string The hook suffix for the app menu
 	 */
 	public $app_hook_suffix = 'gravityview';

@@ -600,7 +600,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$get = stripslashes_deep( $get );
 
-		$get = gv_map_deep( $get, 'rawurldecode' );
+		if ( ! is_null( $get ) ) {
+			$get = gv_map_deep( $get, 'rawurldecode' );
+		}
 
 		// Make sure array key is set up
 		$search_criteria['field_filters'] = \GV\Utils::get( $search_criteria, 'field_filters', array() );
@@ -1649,7 +1651,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		if ( 'created_by' === $field['field'] ) {
-			$filter['choices'] = self::get_created_by_choices( $context->view );
+			$filter['choices'] = self::get_created_by_choices( ( isset( $context->view ) ? $context->view : null ) );
 			$filter['type'] = 'created_by';
 		}
 
@@ -1756,7 +1758,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Calculate the search choices for the users
 	 *
-	 * @param \GV\View $view The view
+	 * @param \GV\View|null $view The View, if set.
 	 * @since develop
 	 *
 	 * @since 1.8
@@ -1778,7 +1780,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * @since develop
 			 * @param string[in,out] The text. Default: $user->display_name
 			 * @param \WP_User $user The user.
-			 * @param \GV\View $view The view.
+			 * @param \GV\View|null $view The view.
 			 */
 			$text = apply_filters( 'gravityview/search/created_by/text', $user->display_name, $user, $view );
 			$choices[] = array(
@@ -1840,7 +1842,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$value = stripslashes_deep( $value );
 
-		$value = gv_map_deep( $value, 'rawurldecode' );
+		if ( ! is_null( $value ) ) {
+			$value = gv_map_deep( $value, 'rawurldecode' );
+		}
 
 		$value = gv_map_deep( $value, '_wp_specialchars' );
 
