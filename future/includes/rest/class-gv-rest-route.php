@@ -38,6 +38,10 @@ abstract class Route extends \WP_REST_Controller {
 	 * Register the routes for the objects of the controller.
 	 */
 	public function register_routes() {
+
+		// Clear out all errors before we start. This prevents breaking responses when WP_DEBUG_DISPLAY is true.
+		ob_clean();
+
 		$namespace = \GV\REST\Core::get_namespace();
 		$base = $this->get_route_name();
 

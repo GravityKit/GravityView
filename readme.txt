@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Prevent any site PHP warnings from affecting REST API responses
+
 = 2.15 on September 21, 2022 =
 
 * Added: Entire View contents are wrapped in a container, allowing for better styling ([learn about, and how to modify, the container](https://docs.gravitykit.com/article/867-modifying-the-view-container-div))
