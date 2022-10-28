@@ -14,11 +14,6 @@
     },
 	{
 	  "type": "github",
-	  "url":  "https://github.com/trustedlogin/client.git",
-	  "no-api": true
-	},
-	{
-	  "type": "github",
 	  "url":  "https://github.com/BrianHenryIE/strauss.git",
 	  "no-api": true
 	}
@@ -26,8 +21,7 @@
   "require": {
     "php": ">=5.3",
     "ext-json": "*",
-    "ext-openssl": "*",
-	"trustedlogin/client": "dev-main"
+    "ext-openssl": "*"
   },
   "require-dev": {
 	"brianhenryie/strauss": "^0.8.10",
@@ -40,42 +34,5 @@
 	"codeception/module-cli": "^1.0",
 	"codeception/util-universalframework": "^1.0",
     "yoast/phpunit-polyfills": "^1.0"
-  },
-  "autoload": {
-	"classmap": [
-	  "vendor"
-	],
-	"psr-4": {
-	  "TrustedLogin\\": "src/",
-	  "KatzGrau\\KLogger\\": "src/"
-	}
-  },
-  "extra": {
-	"strauss": {
-	  "target_directory": "trustedlogin",
-	  "namespace_prefix": "GravityView\\",
-	  "classmap_prefix": "GV_",
-	  "packages": [
-		"trustedlogin/client"
-	  ],
-	  "exclude_from_prefix": {
-		"packages": [
-		  "paragonie/random_compat",
-		  "paragonie/sodium_compat"
-		]
-	  },
-	  "delete_vendor_files": false
-	}
-  },
-  "scripts": {
-	"strauss": [
-	  "@php strauss.phar"
-	],
-	"post-install-cmd": [
-	  "@strauss"
-	],
-	"post-update-cmd": [
-	  "@strauss"
-	]
   }
 }

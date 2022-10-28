@@ -116,6 +116,8 @@ class GravityView_Plugin_Hooks_TrustedLogin extends GravityView_Plugin_and_Theme
 	}
 
 	protected function add_hooks() {
+		return;
+
 		parent::add_hooks();
 
 		include_once( GRAVITYVIEW_DIR . 'trustedlogin/autoload.php' );

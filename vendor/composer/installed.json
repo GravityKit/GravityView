@@ -2,17 +2,17 @@
     "packages": [
         {
             "name": "katzgrau/klogger",
-            "version": "dev-master",
-            "version_normalized": "dev-master",
+            "version": "1.2.2",
+            "version_normalized": "1.2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/katzgrau/KLogger.git",
-                "reference": "de2d3ab6777a393a9879e0496ebb8e0644066e3f"
+                "reference": "36481c69db9305169a2ceadead25c2acaabd567c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/katzgrau/KLogger/zipball/de2d3ab6777a393a9879e0496ebb8e0644066e3f",
-                "reference": "de2d3ab6777a393a9879e0496ebb8e0644066e3f",
+                "url": "https://api.github.com/repos/katzgrau/KLogger/zipball/36481c69db9305169a2ceadead25c2acaabd567c",
+                "reference": "36481c69db9305169a2ceadead25c2acaabd567c",
                 "shasum": ""
             },
             "require": {
@@ -22,8 +22,7 @@
             "require-dev": {
                 "phpunit/phpunit": "^6.0.0"
             },
-            "time": "2017-12-01T19:46:35+00:00",
-            "default-branch": true,
+            "time": "2022-07-29T20:41:14+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -54,35 +53,35 @@
             ],
             "support": {
                 "issues": "https://github.com/katzgrau/KLogger/issues",
-                "source": "https://github.com/katzgrau/KLogger/tree/master"
+                "source": "https://github.com/katzgrau/KLogger/tree/1.2.2"
             },
             "install-path": "../katzgrau/klogger"
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.20",
-            "version_normalized": "2.0.20.0",
+            "version": "v2.0.21",
+            "version_normalized": "2.0.21.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "0f1f60250fccffeaf5dda91eea1c018aed1adc2a"
+                "reference": "96c132c7f2f7bc3230723b66e89f8f150b29d5ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/0f1f60250fccffeaf5dda91eea1c018aed1adc2a",
-                "reference": "0f1f60250fccffeaf5dda91eea1c018aed1adc2a",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/96c132c7f2f7bc3230723b66e89f8f150b29d5ae",
+                "reference": "96c132c7f2f7bc3230723b66e89f8f150b29d5ae",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*|5.*"
+                "phpunit/phpunit": "*"
             },
             "suggest": {
                 "ext-libsodium": "Provides a modern crypto API that can be used to generate random bytes."
             },
-            "time": "2021-04-17T09:33:01+00:00",
+            "time": "2022-02-16T17:07:03+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -117,17 +116,17 @@
         },
         {
             "name": "paragonie/sodium_compat",
-            "version": "v1.17.0",
-            "version_normalized": "1.17.0.0",
+            "version": "v1.18.0",
+            "version_normalized": "1.18.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "c59cac21abbcc0df06a3dd18076450ea4797b321"
+                "reference": "906e0b925895d3a5941eda25f371fbafb3cbc22f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/c59cac21abbcc0df06a3dd18076450ea4797b321",
-                "reference": "c59cac21abbcc0df06a3dd18076450ea4797b321",
+                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/906e0b925895d3a5941eda25f371fbafb3cbc22f",
+                "reference": "906e0b925895d3a5941eda25f371fbafb3cbc22f",
                 "shasum": ""
             },
             "require": {
@@ -141,7 +140,7 @@
                 "ext-libsodium": "PHP < 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security.",
                 "ext-sodium": "PHP >= 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security."
             },
-            "time": "2021-08-10T02:43:50+00:00",
+            "time": "2022-09-13T20:54:27+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -200,7 +199,7 @@
             ],
             "support": {
                 "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v1.17.0"
+                "source": "https://github.com/paragonie/sodium_compat/tree/v1.18.0"
             },
             "install-path": "../paragonie/sodium_compat"
         },
@@ -264,23 +263,23 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "8c0be03dac771f157625ee6029e3850a199f6310"
+                "reference": "7c4a9a2db27f136c66b452ab754d397060750901"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/8c0be03dac771f157625ee6029e3850a199f6310",
-                "reference": "8c0be03dac771f157625ee6029e3850a199f6310",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/7c4a9a2db27f136c66b452ab754d397060750901",
+                "reference": "7c4a9a2db27f136c66b452ab754d397060750901",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
-                "katzgrau/klogger": "dev-master",
+                "katzgrau/klogger": "^1.2",
                 "paragonie/random_compat": "<9.99",
                 "paragonie/sodium_compat": "^1.12",
                 "php": ">=5.3.0"
             },
-            "time": "2022-01-26T02:25:35+00:00",
+            "time": "2022-09-21T22:20:35+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
