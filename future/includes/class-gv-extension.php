@@ -46,7 +46,7 @@ abstract class Extension {
 	/**
 	 * @var string Minimum version of GravityView the Extension requires
 	 */
-	protected $_min_php_version = '5.3';
+	protected $_min_php_version = '5.6.4';
 
 	/**
 	 * @var string Author of plugin, sent when fetching license info.
