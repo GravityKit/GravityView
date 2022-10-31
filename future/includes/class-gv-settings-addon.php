@@ -68,11 +68,6 @@ class Addon_Settings extends \GFAddOn {
 	public $app_hook_suffix = 'gravityview';
 
 	/**
-	 * @var \GV\License_Handler Process license validation
-	 */
-	private $License_Handler;
-
-	/**
 	 * @var bool Whether we have initialized already or not.
 	 */
 	private static $initialized = false;
@@ -94,17 +89,10 @@ class Addon_Settings extends \GFAddOn {
 	/**
 	 * Run actions when initializing admin.
 	 *
-	 * Triggers the license key notice, etc.
-	 *
 	 * @return void
 	 */
 	public function init_admin() {
-
-		$this->_load_license_handler();
-
 		add_filter( 'admin_body_class', array( $this, 'body_class' ) );
-
-		add_action( 'admin_head', array( $this, 'license_key_notice' ) );
 
 		add_filter( 'gform_addon_app_settings_menu_gravityview', array( $this, 'modify_app_settings_menu_title' ) );
 
@@ -157,7 +145,6 @@ class Addon_Settings extends \GFAddOn {
 	public function register_no_conflict( $items ) {
 
 		$items[] = 'gform_settings';
-		$items[] = 'gv-admin-edd-license';
 
 		return $items;
 	}
@@ -256,29 +243,6 @@ class Addon_Settings extends \GFAddOn {
 		$setting_tabs[0]['icon']  = 'dashicons-admin-settings';
 
 		return $setting_tabs;
-	}
-
-	/**
-	 * Load license handler in admin-ajax.php
-	 *
-	 * @return void
-	 */
-	public function init_ajax() {
-
-		$this->_load_license_handler();
-	}
-
-	/**
-	 * Make sure the license handler is available
-	 *
-	 * @return void
-	 */
-	private function _load_license_handler() {
-
-		if ( ! empty( $this->License_Handler ) ) {
-			return;
-		}
-		$this->License_Handler = License_Handler::get( $this );
 	}
 
 	/**
@@ -590,21 +554,6 @@ HTML;
 	 */
 	public function get( $key, $default = null ) {
 
-		/**
-		 * Backward compatibility with Redux
-		 */
-		if ( $key === 'license' ) {
-			return array(
-					'license'  => $this->get( 'license_key' ),
-					'status'   => $this->get( 'license_key_status' ),
-					'response' => $this->get( 'license_key_response' ),
-			);
-		}
-
-		if ( 'license_key' === $key && defined( 'GRAVITYVIEW_LICENSE_KEY' ) ) {
-			return GRAVITYVIEW_LICENSE_KEY;
-		}
-
 		return Utils::get( $this->all(), $key, $default );
 	}
 
@@ -675,10 +624,6 @@ HTML;
 	private function defaults() {
 
 		$defaults = array(
-			// Set the default license in wp-config.php
-			'license_key'          => defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : '',
-			'license_key_response' => '',
-			'license_key_status'   => '',
 			'support-email'        => get_bloginfo( 'admin_email' ),
 			'no-conflict-mode'     => '1',
 			'support_port'         => '1',
@@ -757,107 +702,6 @@ HTML;
 	public function is_save_postback() {
 
 		return isset( $_POST['gform-settings-save'] ) && isset( $_POST['_gravityview_save_settings_nonce'] );
-	}
-
-	/**
-	 * Display a notice if the plugin is inactive.
-	 *
-	 * @return void
-	 */
-	public function license_key_notice() {
-
-		if ( 'uninstall' === rgget( 'view' ) ) {
-			return; // Do not display license notice on the uninstall page in GF 2.5
-		}
-
-		if ( $this->is_save_postback() ) {
-			$settings       = $this->get_posted_settings();
-			$license_key    = defined( 'GRAVITYVIEW_LICENSE_KEY' ) ? GRAVITYVIEW_LICENSE_KEY : \GV\Utils::get( $settings, 'license_key' );
-			$license_status = \GV\Utils::get( $settings, 'license_key_status', 'inactive' );
-		} else {
-			$license_status = $this->get( 'license_key_status', 'inactive' );
-			$license_key    = $this->get( 'license_key' );
-		}
-
-		if ( empty( $license_key ) ) {
-			$license_id = 'license';
-			$license_status = '';
-		} else {
-			$license_id = $license_key;
-		}
-
-		$message = esc_html__( 'Your GravityView license %s. This means you&rsquo;re missing out on updates and support! %sActivate your license%s or %sget a license here%s.', 'gravityview' );
-
-		/** @internal Do not use! Will change without notice (pun slightly intended). */
-		$message = apply_filters( 'gravityview/settings/license-key-notice', $message );
-
-		/**
-		 * I wanted to remove the period from after the buttons in the string,
-		 * but didn't want to mess up the translation strings for the translators.
-		 */
-		$message             = mb_substr( $message, 0, mb_strlen( $message ) - 1 );
-		$title               = __( 'Inactive License', 'gravityview' );
-		$status              = '';
-		$update_below        = false;
-		$primary_button_link = admin_url( 'edit.php?post_type=gravityview&amp;page=gravityview_settings' );
-
-		switch ( $license_status ) {
-			/** @since 1.17 */
-			case 'expired':
-				$title   = __( 'Expired License', 'gravityview' );
-				$status  = __( 'has expired', 'gravityview' );
-				$message = $this->get_license_handler()->strings( 'expired', $this->get( 'license_key_response' ) );
-				break;
-			case 'invalid':
-				$title  = __( 'Invalid License', 'gravityview' );
-				$status = __( 'is invalid', 'gravityview' );
-				break;
-			case 'deactivated':
-				$status       = __( 'is inactive', 'gravityview' );
-				$update_below = __( 'Activate your license key below.', 'gravityview' );
-				break;
-			/** @noinspection PhpMissingBreakStatementInspection */
-			case '':
-				$license_status = 'site_inactive';
-			// break intentionally left blank
-			case 'inactive':
-			case 'site_inactive':
-				$status       = __( 'has not been activated', 'gravityview' );
-				$update_below = __( 'Activate your license key below.', 'gravityview' );
-				break;
-		}
-		$url = 'https://www.gravitykit.com/pricing/?utm_source=admin_notice&utm_medium=admin&utm_content=' . $license_status . '&utm_campaign=Admin%20Notice';
-
-		// Show a different notice on settings page for inactive licenses (hide the buttons)
-		if ( $update_below && gravityview()->request->is_admin( '', 'settings' ) ) {
-			$message = sprintf( $message, $status, '<div class="hidden">', '', '', '</div><a href="#" onclick="jQuery(\'#license_key\').focus(); return false;">' . $update_below . '</a>' );
-		} else {
-			$message = sprintf( $message, $status, "\n\n" . '<a href="' . esc_url( $primary_button_link ) . '" class="button button-primary primary">', '</a>', '<a href="' . esc_url( $url ) . '" class="button button-secondary">', '</a>' );
-		}
-
-		if ( empty( $status ) ) {
-			return;
-		}
-
-		\GravityView_Admin_Notices::add_notice( array(
-				'message' => $message,
-				'class'   => 'notice notice-warning gv-license-warning',
-				'title'   => $title,
-				'cap'     => 'gravityview_edit_settings',
-				'dismiss' => sha1( $license_status . '_' . $license_id . '_' . date( 'z' ) ), // Show every day, instead of every 8 weeks (which is the default)
-		) );
-	}
-
-	/**
-	 * Allow public access to the GV\License_Handler class
-	 *
-	 * @since 1.7.4
-	 *
-	 * @return \GV\License_Handler
-	 */
-	public function get_license_handler() {
-
-		return $this->License_Handler;
 	}
 
 	/**
@@ -1137,58 +981,8 @@ HTML;
 			}
 		}
 
-		$license_fields = array(
-			array(
-					'name' => 'license_key',
-					'required' => ! defined( 'GRAVITYVIEW_LICENSE_KEY' ) || ! GRAVITYVIEW_LICENSE_KEY,
-					'label' => __( 'License Key', 'gravityview' ),
-					'description' => __( 'Enter the license key that was sent to you on purchase. This enables plugin updates &amp; support.', 'gravityview' ),
-					'type' => 'edd_license',
-					'data-pending-text' => __( 'Verifying license&hellip;', 'gravityview' ),
-					'default_value' => $default_settings['license_key'],
-					'class' => ( '' == $this->get( 'license_key' ) ) ? 'activate code regular-text edd-license-key' : 'deactivate code regular-text edd-license-key',
-			),
-			array(
-					'name' => 'license_key_response',
-					'default_value' => $default_settings['license_key_response'],
-					'type' => 'hidden',
-			),
-			array(
-					'name' => 'license_key_status',
-					'default_value' => $default_settings['license_key_status'],
-					'type' => 'hidden',
-			),
-		);
-
-		if ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ) {
-			$license_fields[0] = array_merge( $license_fields[0], array(
-				'disabled' => true,
-				'title'    => __( 'The license key is defined by your site\'s configuration file.', 'gravityview' ),
-			) );
-		}
-
 		$sections = array();
 		$version_info = '<span class="gv-version-info" title="' . sprintf( __( 'You are running GravityView version %s', 'gravityview' ), Plugin::$version ) . '">Version ' . esc_html( Plugin::$version ) . '</span>';
-
-		if ( \gravityview()->plugin->is_GF_25() ) {
-
-			$sections[] = array(
-					'title'       => __( 'GravityView License', 'gravityview' ),
-					'class'       => 'gform-settings-panel--full gv-settings-panel--license',
-					'description' => $version_info,
-					'fields'      => $license_fields,
-			);
-
-		} else {
-
-			$fields = array_merge( $license_fields, $fields );
-
-			array_unshift( $fields, array(
-					'name'  => 'gv_header',
-					'value' => $version_info,
-					'type'  => 'html',
-			) );
-		}
 
 		$sections[] = array(
 			'title' => ( gravityview()->plugin->is_GF_25() ? __( 'GravityView Settings', 'gravityview' ) : null ),
@@ -1268,35 +1062,6 @@ HTML;
 	public function update( $settings ) {
 
 		return update_option( 'gravityformsaddon_' . $this->_slug . '_app_settings', $settings );
-	}
-
-	/**
-	 * Register the settings field for the EDD License field type
-	 *
-	 * @param array $field
-	 * @param bool  $echo Whether to echo the
-	 *
-	 * @return string
-	 */
-	public function settings_edd_license( $field, $echo = true ) {
-
-		if ( defined( 'GRAVITYVIEW_LICENSE_KEY' ) && GRAVITYVIEW_LICENSE_KEY ) {
-			$field['input_type'] = 'password';
-		}
-
-		$text = $this->settings_text( $field, false );
-
-		$activation = $this->License_Handler->settings_edd_license_activation( $field, false );
-
-		$return = $text . $activation;
-
-		$return .= $this->get_license_handler()->license_details( \GV\Addon_Settings::get( 'license_key_response' ) );
-
-		if ( $echo ) {
-			echo $return;
-		}
-
-		return $return;
 	}
 
 	/**
@@ -1396,39 +1161,5 @@ HTML;
 			}
 		}
 		parent::maybe_save_app_settings();
-	}
-
-	/**
-	 * When the settings are saved, make sure the license key matches the previously activated key
-	 *
-	 * @return array settings from parent::get_posted_settings(), with `license_key_response` and `license_key_status` potentially unset
-	 */
-	public function get_posted_settings() {
-
-		$posted_settings = parent::get_posted_settings();
-
-		$local_key = Utils::get( $posted_settings, 'license_key' );
-
-		if ( ! $local_key && defined( 'GRAVITYVIEW_LICENSE_KEY' ) ) {
-			$local_key = GRAVITYVIEW_LICENSE_KEY;
-		}
-
-		$response_key = Utils::get( $posted_settings, 'license_key_response/license_key' );
-
-		static $added_message = false;
-
-		// If the posted key doesn't match the activated/deactivated key (set using the Activate License button, AJAX response),
-		// then we assume it's changed. If it's changed, unset the status and the previous response.
-		if ( ! $added_message && ( $local_key !== $response_key ) ) {
-
-			unset( $posted_settings['license_key_response'] );
-			unset( $posted_settings['license_key_status'] );
-
-			\GFCommon::add_error_message( __( 'The license key you entered has been saved, but not activated. Please activate the license.', 'gravityview' ) );
-
-			$added_message = true;
-		}
-
-		return $posted_settings;
 	}
 }

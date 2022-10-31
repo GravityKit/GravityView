@@ -123,14 +123,13 @@ final class Plugin {
 		add_action( 'gravityview/loaded', array( $this, 'include_legacy_frontend' ) );
 
 		/**
-		 * GFAddOn-backed settings, licensing.
+		 * GFAddOn-backed settings
 		 */
-		add_action( 'plugins_loaded', array( $this, 'load_license_settings' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_settings' ) );
 	}
 
-	public function load_license_settings() {
+	public function load_settings() {
 
-		require_once $this->dir( 'future/includes/class-gv-license-handler.php' );
 		require_once $this->dir( 'future/includes/class-gv-settings-addon.php' );
 		if ( class_exists( '\GV\Addon_Settings' ) ) {
 			$this->settings = new Addon_Settings();

@@ -16,6 +16,20 @@ $current_template = gravityview_get_template_id( $post->ID );
 
 $templates = gravityview_get_registered_templates();
 
+$wp_plugins = [];
+
+foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plugin ) {
+	if ( empty( $plugin['TextDomain'] ) ) {
+		continue;
+	}
+
+	$wp_plugins[ $plugin['TextDomain'] ] = array(
+		'path'      => $path,
+		'version'   => $plugin['Version'],
+		'activated' => is_plugin_active( $path )
+	);
+}
+
 // current input
 ?>
 <input type="hidden" id="gravityview_directory_template" name="gravityview_directory_template" value="<?php echo esc_attr( $current_template ); ?>" />
@@ -27,13 +41,14 @@ $templates = gravityview_get_registered_templates();
 <?php // list all the available templates (type= fresh or custom ) ?>
 <div class="gv-grid">
 	<?php foreach( $templates as $id => $template ) {
-		$selected     = ( $id == $current_template ) ? ' gv-selected' : '';
-		$placeholder  = ! empty( $template['buy_source'] );
-		$is_included  = ! empty( $template['included'] );
-		$plugin_data  = GravityView_Admin_Installer::get_wp_plugins_data( \GV\Utils::get( $template, 'textdomain', '' ) );
-		$button_text  = empty( $plugin_data ) ? esc_html__( 'Install Layout', 'gravityview' ) : esc_html__( 'Activate & Select Layout', 'gravityview' );
-		$button_class = 'gv-layout-' . ( empty( $plugin_data ) ? 'install' : 'activate' );
-		$template_path = isset($plugin_data['path']) ? $plugin_data['path'] : '';
+		$selected             = ( $id == $current_template ) ? ' gv-selected' : '';
+		$placeholder          = ! empty( $template['buy_source'] );
+		$is_included          = ! empty( $template['included'] );
+		$template_text_domain = GravityKitFoundation::helpers()->array->get( $template, 'textdomain', '' );
+		$plugin_data          = isset( $wp_plugins[ $template_text_domain ] ) ? $wp_plugins[ $template_text_domain ] : [];
+		$button_text          = empty( $plugin_data ) ? esc_html__( 'Install Layout', 'gravityview' ) : esc_html__( 'Activate & Select Layout', 'gravityview' );
+		$button_class         = 'gv-layout-' . ( empty( $plugin_data ) ? 'install' : 'activate' );
+		$template_path        = isset( $plugin_data['path'] ) ? $plugin_data['path'] : '';
 
 		?>
 		<div class="gv-grid-col-1-4">

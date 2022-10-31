@@ -137,7 +137,6 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/admin/class-gravityview-admin-view-widget.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/class-admin-installer.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-bulk-actions.php' );

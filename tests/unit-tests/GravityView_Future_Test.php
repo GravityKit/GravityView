@@ -5935,105 +5935,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'coder', \GV\Utils::get( $o, 'who/is/that' ) );
 	}
 
-	public function test_license_handler() {
-		require_once gravityview()->plugin->dir( 'includes/class-gv-license-handler.php' );
-
-		$settings = $this->getMockBuilder( '\GV\Addon_Settings' )
-			->setMethods( array( 'get', 'update' ) )->getMock();
-
-		$settings->method( 'get' )->will( $this->returnValueMap( array(
-			array( 'license_key', 'TEST123' ),
-		) ) );
-
-		$this->assertSame( \GV_License_Handler::get_instance( $settings ), $handler = \GV\License_Handler::get() );
-
-		$handler->setup_edd();
-
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array(
-				'license' => 'invalid',
-				'license_key' => 'TEST',
-			) ) );
-		} );
-
-		$result = json_decode( $handler->license_call(), true );
-		$this->assertEquals( $result['error'], 'capability' );
-		$result = json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true );
-		$this->assertEquals( $result['license'], 'invalid' );
-
-		remove_filter( 'pre_http_request', $callback );
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array(
-				'license' => 'valid',
-				'license_key' => 'TEST',
-				'license_name' => 'Test Suite License',
-				'upgrades' => array( 'one' => array( 'name' => 'what', 'price' => 10, 'price_id' => 1, 'url' => 'https://www.gravitykit.com', 'description' => 'testing' ) ),
-			) ) );
-		} );
-
-		$result = json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true );
-		$this->assertContains( 'Test Suite License', $result['details'] );
-
-		remove_filter( 'pre_http_request', $callback );
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array() ) );
-		} );
-
-		$this->assertEquals( array(), json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true ) );
-
-		remove_filter( 'pre_http_request', $callback );
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array(
-				'license' => 'valid',
-				'license_key' => 'TEST!THIS',
-			) ) );
-		} );
-		$handler->license_call( array( 'license' => 'TEST', 'field_id' => 1, 'update' => 1 ), false );
-
-		remove_filter( 'pre_http_request', $callback );
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array() ) );
-		} );
-
-		delete_transient( $handler::status_transient_key );
-		$handler->refresh_license_status();
-
-		delete_transient( $handler::status_transient_key );
-		delete_transient( 'gv_license_check' );
-		$handler->flush_related_plugins_transient();
-
-		$form = $this->factory->form->import_and_get( 'complete.json' );
-		$this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
-		$this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
-
-		remove_filter( 'pre_http_request', $callback );
-		$test = &$this;
-		add_filter( 'pre_http_request', $callback = function() use ( $test ) {
-			$args = func_get_args();
-			$args = $args[0]['body'];
-			$test->assertEquals( $args['item_name'], 'GravityView' );
-			$test->assertEquals( $args['site_data']['php_version'], phpversion() );
-			$test->assertEquals( $args['site_data']['view_count'], wp_count_posts( 'gravityview', 'readable' )->publish );
-			$form_counts = \GFFormsModel::get_form_count();
-			$test->assertEquals( $args['site_data']['forms_total'], $form_counts['total'] );
-			return array( 'body' => json_encode( array() ) );
-		} );
-
-		$handler->check_license();
-		remove_filter( 'pre_http_request', $callback );
-
-		if ( ! gravityview()->plugin->is_GF_25() ) {
-		    $this->assertContains( 'Verifying license', $handler->settings_edd_license_activation( false, false ) );
-		}
-
-		remove_all_filters( 'pre_http_request' );
-	}
-
 	public function test_addon_settings() {
 		$settings = gravityview()->plugin->settings;
 		$settings->update( array() );
 		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
-		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'lightbox', 'rest_api', 'beta', 'powered_by' ) );
+		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'lightbox', 'rest_api', 'beta', 'powered_by' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );
 		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );
@@ -6042,7 +5948,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$settings->set( 'beta', '1' );
 		$this->assertEquals( $settings->get( 'beta' ), '1' );
-		$this->assertEquals( $settings->get( 'license' ), array( 'license' => '', 'status' => '', 'response' => '' ) );
 
 		$settings->set( array(
 			'beta' => '3',
@@ -6116,11 +6021,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'requires GravityView Version', ob_get_clean() );
 
 		set_current_screen( 'dashboard' );
-		gravityview()->plugin->settings->set( 'license_key_status', 'valid' );
-		$ext->settings();
-		set_current_screen( 'front' );
 
-		$ext->load_plugin_textdomain();
 		$ext->tooltips();
 		$ext->add_metabox_tab();
 	}

@@ -82,9 +82,6 @@ class GravityView_Admin_No_Conflict {
 			'csslint',
 			'jsonlint',
 
-			// Settings
-			'gv-admin-edd-license',
-
 			// Common
 			'select2-js',
 			'qtip-js',

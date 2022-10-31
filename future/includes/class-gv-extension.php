@@ -49,11 +49,6 @@ abstract class Extension {
 	protected $_min_php_version = '5.3';
 
 	/**
-	 * @var string The URL to fetch license info from. Do not change unless you know what you're doing.
-	 */
-	protected $_remote_update_url = 'https://www.gravitykit.com';
-
-	/**
 	 * @var string Author of plugin, sent when fetching license info.
 	 */
 	protected $_author = 'Katz Web Services, Inc.';
@@ -233,61 +228,6 @@ abstract class Extension {
 		}
 
 		return self::is_compatible();
-	}
-
-	/**
-	 * Register the updater for the Extension using GravityView license information
-	 *
-	 * @return void
-	 */
-	public function settings() {
-
-		// If doing ajax, get outta here.
-		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
-			return;
-		}
-
-		// To support auto-updates, this needs to run during the wp_version_check cron job for privileged users.
-		$doing_cron = defined( 'DOING_CRON' ) && DOING_CRON;
-		if ( ! current_user_can( 'manage_options' ) && ! $doing_cron ) {
-			return;
-		}
-
-		$license = $this->get_license();
-
-		if ( ! class_exists( '\GV\EDD_SL_Plugin_Updater' ) ) {
-			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
-		}
-
-		new EDD_SL_Plugin_Updater(
-			$this->_remote_update_url,
-			$this->_path,
-			array(
-            	'version'	=> $this->_version, // current version number
-            	'license'	=> \GV\Utils::get( $license, 'license_key', \GV\Utils::get( $license, 'license', null ) ),
-	            'item_id'   => $this->_item_id, // The ID of the download on _remote_update_url
-            	'item_name' => $this->_title,  // name of this plugin
-            	'author' 	=> strip_tags( $this->_author ),  // author of this plugin
-	            'php_version' => phpversion(),
-	            'wp_version' => get_bloginfo( 'version' ),
-	            'gv_version' => \GV\Plugin::$version,
-	            'environment' => function_exists( 'wp_get_environment_type' ) ? wp_get_environment_type() : 'production',
-          	)
-        );
-	}
-
-	/**
-	 * Get license information from GravityView
-	 *
-	 * @since 1.8 (Extension version 1.0.7)
-	 *
-	 * @return bool|array False: \GV\Addon_Settings class does not exist. Array: array of GV license data.
-	 */
-	protected function get_license() {
-		if ( ! class_exists( '\GV\Addon_Settings' ) ) {
-			return false;
-		}
-		return gravityview()->plugin->settings->get( 'license' );
 	}
 
 	/**

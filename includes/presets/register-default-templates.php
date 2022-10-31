@@ -91,6 +91,8 @@ function gravityview_register_placeholder_templates() {
 		),
 	);
 
+	// @TODO: move to Foundation
+	return;
 	try {
 
 		$license = gravityview()->plugin->settings->get( 'license_key_response', array() );

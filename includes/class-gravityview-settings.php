@@ -5,7 +5,7 @@ if ( ! class_exists( '\GV\Addon_Settings' ) ) {
 }
 
 /**
- * GravityView Settings class (get/set/license validation) using the Gravity Forms App framework
+ * GravityView Settings class (get/set) using the Gravity Forms App framework
  * @since 1.7.4 (Before, used the Redux Framework)
  * @deprecated Use gravityview()->plugin->settings
  */

@@ -68,7 +68,6 @@ module.exports = function(grunt) {
 
 		jshint: [
 			"assets/js/admin-views.js",
-			"assets/js/admin-edd-license.js",
 			"assets/js/admin-post-edit.js",
 			"assets/js/admin-widgets.js",
 			"assets/js/admin-entries-list.js",
