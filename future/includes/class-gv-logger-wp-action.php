@@ -9,6 +9,8 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /**
  * The \GV\WP_Action_Logger implementation.
  *
+ * @TODO: (Foundation) Deprecate in future versions.
+ *
  * Uses the old logging stuff for now.
  */
 class WP_Action_Logger extends Logger {

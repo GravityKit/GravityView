@@ -848,17 +848,10 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		if ( 'error' === \GV\Utils::_GET( 'result' ) ) {
-
-			$is_logging_active = class_exists( 'GravityView_Logging' ) ? GravityView_Logging::is_logging_active() : true;
-
-			$check_logs_message = '';
-
-			if( $is_logging_active ) {
-				$check_logs_message = sprintf( ' <a href="%s">%s</a>',
-					esc_url( admin_url( 'admin.php?page=gf_settings&subview=gravityformslogging' ) ),
-					esc_html_x( 'Check the GravityView logs for more information.', 'Error message links to logging page', 'gravityview' )
-				);
-			}
+			$check_logs_message = sprintf( ' <a href="%s">%s</a>',
+				esc_url( admin_url( 'admin.php?page=gf_settings&subview=gravityformslogging' ) ),
+				esc_html_x( 'Check the GravityView logs for more information.', 'Error message links to logging page', 'gravityview' )
+			);
 
 			add_filter( 'gform_admin_error_messages', function( $messages ) use ( $check_logs_message ) {
 				$messages = (array) $messages;

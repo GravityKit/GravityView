@@ -1213,8 +1213,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\WP_Action_Logger::log()
 	 */
 	public function test_logging() {
-		$this->assertInstanceOf( '\GV\WP_Action_Logger', gravityview()->log );
-
 		$_this = &$this;
 
 		add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
