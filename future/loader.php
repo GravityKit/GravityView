@@ -33,6 +33,11 @@ function gravityview_lock_version() {
 	}
 }
 
+require_once GRAVITYVIEW_DIR . 'vendor/autoload.php';
+require_once GRAVITYVIEW_DIR . 'vendor_prefixed/autoload.php';
+
+\GravityKit\GravityView\Foundation\Core::register( GRAVITYVIEW_FILE );
+
 /** @define "GRAVITYVIEW_DIR" "../" */
 require GRAVITYVIEW_DIR . 'future/gravityview.php';
 
