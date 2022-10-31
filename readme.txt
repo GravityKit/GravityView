@@ -2,7 +2,7 @@
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
 Tested up to: 6.0.2
-Requires PHP: 5.6.30
+Requires PHP: 5.6.4
 Stable tag: trunk
 Contributors: The GravityKit Team
 License: GPL 3 or higher
