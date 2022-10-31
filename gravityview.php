@@ -9,7 +9,6 @@
  * Text Domain:       	gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
- * Domain Path:			/languages
  */
 
 /** If this file is called directly, abort. */
@@ -184,19 +183,6 @@ final class GravityView_Plugin {
 	 */
 	public static function include_widget_class() {
 		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-	}
-
-
-	/**
-	 * Loads the plugin's translated strings.
-	 *
-	 * @deprecated Use \GV\Plugin::load_textdomain()
-	 *
-	 * @return void
-	 */
-	public function load_plugin_textdomain() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		gravityview()->plugin->load_textdomain();
 	}
 
 	/**

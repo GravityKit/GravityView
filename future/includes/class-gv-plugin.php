@@ -117,12 +117,6 @@ final class Plugin {
 	}
 
 	private function __construct() {
-
-		/**
-		 * Load translations. Must be priority 1.
-		 */
-		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ), 1 );
-
 		/**
 		 * Load some frontend-related legacy files.
 		 */
@@ -266,46 +260,6 @@ final class Plugin {
 		if ( class_exists( '\GFFormsModel' ) ) {
 			include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
 		}
-	}
-
-	/**
-	 * Load the translations on `plugins_loaded`.
-	 *
-	 * Order of look-ups:
-	 *
-	 * 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
-	 * 2. /wp-content/mu-plugins/gravityview-{locale}.mo
-	 * 3. /wp-content/mu-plugins/languages/gravityview-{locale}.mo
-	 * 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
-	 *
-	 * @return void
-	 */
-	public function load_textdomain() {
-		$domain = 'gravityview';
-
-		// 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
-		if ( is_textdomain_loaded( $domain ) ) {
-			return;
-		}
-
-		// 2. /wp-content/languages/plugins/gravityview-{locale}.mo
-		// 3. /wp-content/mu-plugins/plugins/languages/gravityview-{locale}.mo
-		$loaded = load_muplugin_textdomain( $domain, '/languages/' );
-
-		if ( $loaded ) {
-			return;
-		}
-
-		// 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
-		$loaded = load_plugin_textdomain( $domain, false, $this->relpath( '/languages/' ) );
-
-		if ( $loaded ) {
-			return;
-		}
-
-		$locale = apply_filters( 'plugin_locale', ( ( function_exists('get_user_locale') && is_admin() ) ? get_user_locale() : get_locale() ), 'gravityview' );
-
-		gravityview()->log->error( sprintf( 'Unable to load textdomain for %s locale.', $locale ) );
 	}
 
 	/**
