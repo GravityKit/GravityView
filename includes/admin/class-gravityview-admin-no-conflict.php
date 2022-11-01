@@ -183,6 +183,7 @@ class GravityView_Admin_No_Conflict {
 		$allow_prefixes = array(
 			'gravityview',
 			'gf_',
+			'gk_',
 			'gravityforms',
 			'gform_',
 			'jquery-ui-',
