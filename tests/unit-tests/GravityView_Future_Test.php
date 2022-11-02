@@ -1070,15 +1070,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertTrue( gravityview()->request->is_admin( 'edit.php', 'settings' ) );
 		$this->assertFalse( gravityview()->request->is_admin( 'edit.php', 'zettingz' ) );
 
-		get_current_screen()->id = 'gravityview_page_gv-admin-installer';
-		get_current_screen()->post_type = 'gravityview';
-
-		$this->assertTrue( gravityview()->request->is_admin( '', 'downloads' ) );
-		$this->assertEquals( 'downloads', gravityview()->request->is_admin( 'gravityview_page_gv-admin-installer' ) );
-
-		get_current_screen()->post_type = 'not gravityview';
-		$this->assertFalse( gravityview()->request->is_admin( '', 'downloads' ) );
-
 		get_current_screen()->id = 'toplevel_page_gf_edit_forms';
 		get_current_screen()->post_type = '';
 		$this->assertFalse( gravityview()->request->is_admin( '', null ) );

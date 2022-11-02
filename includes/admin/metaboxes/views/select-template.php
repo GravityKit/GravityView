@@ -62,6 +62,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 					<div>
 						<?php
 						if( $is_included ) {
+							// @TODO: (Foundation) add link to template in Licenses/Products
 						?>
 							<p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>" class="button button-secondary button-hero <?php echo $button_class; ?>" rel="internal" data-template-path="<?php echo $template_path; ?>"><?php echo $button_text; ?></a></p>
 							<?php if( !empty( $template['license'] ) ) { ?>
