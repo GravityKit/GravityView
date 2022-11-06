@@ -448,9 +448,9 @@ class View implements \ArrayAccess {
 
 		if ( in_array( 'rest', $context ) ) {
 			// REST
-			if ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' && $this->settings->get( 'rest_disable' ) === '1' ) {
+			if ( gravityview()->plugin->settings->get( 'rest_api' ) && $this->settings->get( 'rest_disable' ) === '1' ) {
 				return new \WP_Error( 'gravityview/rest_disabled' );
-			} elseif ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' && $this->settings->get( 'rest_enable' ) !== '1' ) {
+			} elseif ( ! gravityview()->plugin->settings->get( 'rest_api' ) && $this->settings->get( 'rest_enable' ) !== '1' ) {
 				return new \WP_Error( 'gravityview/rest_disabled' );
 			}
 		}

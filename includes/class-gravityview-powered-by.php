@@ -30,7 +30,7 @@ class GravityView_Powered_By {
 	 */
 	public function maybe_add_link() {
 
-		$powered_by = gravityview()->plugin->settings->get( 'powered_by', '0' );
+		$powered_by = gravityview()->plugin->settings->get_gravitykit_setting( 'powered_by', 0 );
 
 		if( empty( $powered_by ) ) {
 			return;
@@ -61,7 +61,7 @@ class GravityView_Powered_By {
 
 		$url = sprintf( self::url, get_bloginfo('name' ) );
 
-		$affiliate_id = gravityview()->plugin->settings->get( 'affiliate_id', '' );
+		$affiliate_id = gravityview()->plugin->settings->get_gravitykit_setting( 'affiliate_id', '' );
 
 		if( $affiliate_id && is_numeric( $affiliate_id ) ) {
 			$url = add_query_arg( array( 'ref' => $affiliate_id ), $url );

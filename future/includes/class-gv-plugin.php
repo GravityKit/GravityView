@@ -77,7 +77,7 @@ final class Plugin {
 	/**
 	 * @since 2.0
 	 * @api
-	 * @var \GV\Addon_Settings The plugin "addon" settings.
+	 * @var \GV\Plugin_Settings The plugin settings.
 	 *
 	 */
 	public $settings;
@@ -129,14 +129,10 @@ final class Plugin {
 	}
 
 	public function load_settings() {
+		require_once $this->dir( 'future/includes/class-gv-settings-plugin.php' );
+		$this->settings = new Plugin_Settings();
 
-		require_once $this->dir( 'future/includes/class-gv-settings-addon.php' );
-		if ( class_exists( '\GV\Addon_Settings' ) ) {
-			$this->settings = new Addon_Settings();
-			include_once $this->dir( 'includes/class-gravityview-settings.php' );
-		} else {
-			gravityview()->log->notice( '\GV\Addon_Settings not loaded. Missing \GFAddOn.' );
-		}
+		include_once $this->dir( 'includes/class-gravityview-settings.php' );
 	}
 
 	/**

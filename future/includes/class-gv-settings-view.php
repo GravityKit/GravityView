@@ -513,7 +513,7 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 				),
 			),
-			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' ) ) ?
+			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?
 			array(
 				'rest_disable'          => array(
 					'label'             => __( 'Prevent REST Access', 'gravityview' ),
@@ -526,7 +526,7 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 				),
 			) : array(),
-			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' ) ) ?
+			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( ! gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?
 			array(
 				'rest_enable'           => array(
 					'label'             => __( 'Allow REST Access', 'gravityview' ),

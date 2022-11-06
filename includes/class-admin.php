@@ -48,8 +48,6 @@ class GravityView_Admin {
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 		add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );
 
-		add_filter( 'plugin_action_links_'. plugin_basename( GRAVITYVIEW_FILE ) , array( $this, 'plugin_action_links' ) );
-
 		add_action( 'plugins_loaded', array( $this, 'backend_actions' ), 100 );
 
 		add_action( 'gravityview/metaboxes/data-source/before', array( 'GravityView_Admin', 'connected_form_warning' ) );
@@ -147,29 +145,6 @@ class GravityView_Admin {
 		 * Nice place to insert extensions' backend stuff
 		 */
 		do_action('gravityview_include_backend_actions');
-	}
-
-	/**
-	 * Modify plugin action links at plugins screen
-	 *
-	 * @since 1.15 Added check for `gravityview_view_settings` and `gravityview_support_port` capabilities
-	 * @static
-	 * @param array $links Array of action links under GravityView on the plugin page
-	 * @return array Action links with Settings and Support included, if the user has the appropriate caps
-	 */
-	public static function plugin_action_links( $links ) {
-
-		$actions = array();
-
-		if( GVCommon::has_cap( 'gravityview_view_settings' ) ) {
-			$actions[] = sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) );
-		}
-
-		if( GVCommon::has_cap( 'gravityview_support_port' ) ) {
-			$actions[] = '<a href="https://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>';
-		}
-
-		return array_merge( $actions, $links );
 	}
 
 	/**

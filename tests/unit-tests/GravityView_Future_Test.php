@@ -1062,14 +1062,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_id = get_current_screen()->id;
 		$_post_type = get_current_screen()->post_type;
-		get_current_screen()->id = 'gravityview_page_gravityview_settings';
-		get_current_screen()->post_type = 'gravityview';
-
-		$this->assertEquals( 'settings', \GravityView_Admin::is_admin_page( 'edit.php', '' ) );
-
-		$this->assertTrue( gravityview()->request->is_admin( 'edit.php', 'settings' ) );
-		$this->assertFalse( gravityview()->request->is_admin( 'edit.php', 'zettingz' ) );
-
 		get_current_screen()->id = 'toplevel_page_gf_edit_forms';
 		get_current_screen()->post_type = '';
 		$this->assertFalse( gravityview()->request->is_admin( '', null ) );
@@ -5906,79 +5898,21 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'coder', \GV\Utils::get( $o, 'who/is/that' ) );
 	}
 
-	public function test_addon_settings() {
+	public function test_plugin_settings() {
 		$settings = gravityview()->plugin->settings;
 		$settings->update( array() );
+
 		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
-		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'lightbox', 'rest_api', 'beta', 'powered_by' ) );
+		$this->assertEquals( array_keys( $settings->defaults() ), array( 'rest_api' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );
 		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );
-		$this->assertEquals( $settings->get( 'beta' ), '0' );
 		$this->assertEquals( $settings->get_app_settings(), $settings->all() );
 
-		$settings->set( 'beta', '1' );
-		$this->assertEquals( $settings->get( 'beta' ), '1' );
-
-		$settings->set( array(
-			'beta' => '3',
-			'alpha' => '16'
-		) );
-
-		$this->assertEquals( $settings->get( 'beta' ), '3' );
-		$this->assertEquals( $settings->get( 'alpha' ), '16' );
-		$this->assertEquals( $settings->get( 'support-email' ), get_bloginfo( 'admin_email' ) );
-
 		$settings->update( $expected = array( 'wub' => 'dub' ) );
-		$this->assertEquals( $settings->all(), wp_parse_args( $expected, $settings->get_default_settings() ) );
+		$this->assertEquals( $settings->all(), wp_parse_args( $expected, $settings->defaults() ) );
 
 		$this->assertEquals( \GravityView_Settings::getSetting( 'wub' ), 'dub' );
-
-		$settings = new \GV\Addon_Settings();
-		$settings->init_admin();
-		$settings->init_ajax();
-		$settings->add_network_menu();
-
-		$this->assertEquals( $settings->modify_app_settings_menu_title( array( array() ) ), array( array( 'label' => 'GravityView Settings', 'icon' => 'dashicons-admin-settings' ) ) );
-		$this->assertFalse( $settings->current_user_can_any( array( 'oops' ) ) );
-
-		$this->assertContains( 'delete then', $settings->uninstall_warning_message() );
-		$this->assertContains( gravityview()->plugin->is_GF_25() ? 'gv-uninstall-feedback' : 'gv-uninstall-form-wrapper', $settings->uninstall_form() );
-
-		$administrator = $this->factory->user->create( array(
-			'user_login' => md5( microtime() ),
-			'user_email' => md5( microtime() ) . '@gravityview.tests',
-			'role' => 'administrator' )
-		);
-
-		if ( function_exists( 'grant_super_admin' ) ) {
-			grant_super_admin( $administrator );
-		}
-		wp_set_current_user( $administrator );
-
-		ob_start();
-		$settings->app_settings_uninstall_tab();
-		$this->assertContains( 'ALL GravityView settings will be deleted', ob_get_clean() );
-
-		ob_start();
-		set_current_screen( 'dashboard' );
-		$settings->app_settings_tab();
-		$this->assertContains( gravityview()->plugin->is_GF_25() ? 'gform_settings_save_nonce' : '_gravityview_save_settings_nonce', $tab = ob_get_clean() );
-		$this->assertContains( 'Uninstall GravityView', $tab );
-		$this->assertNull( $settings->app_settings_title() );
-		$this->assertEquals( $settings->app_settings_icon(), '&nbsp;' );
-
-		ob_start();
-		set_current_screen( 'front' );
-		$settings->app_settings_tab();
-		$this->assertNotContains( 'Uninstall GravityView', $tab = ob_get_clean() );
-
-		$settings->scripts();
-		$settings->styles();
-
-		$settings->create_app_menu();
-
-		wp_set_current_user( 0 );
 	}
 
 	public function test_extension_class() {
