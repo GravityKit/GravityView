@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:gravityview/Foundation.git",
-                "reference": "f6ed167716a12ce8248bbcd6d05d1470e030eb55"
+                "reference": "752c4cc3328146c1f8543b81a43684d65f128738"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/f6ed167716a12ce8248bbcd6d05d1470e030eb55",
-                "reference": "f6ed167716a12ce8248bbcd6d05d1470e030eb55",
+                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/752c4cc3328146c1f8543b81a43684d65f128738",
+                "reference": "752c4cc3328146c1f8543b81a43684d65f128738",
                 "shasum": ""
             },
             "require": {
@@ -317,7 +317,7 @@
                 "source": "https://github.com/gravityview/Foundation/tree/main",
                 "issues": "https://github.com/gravityview/Foundation/issues"
             },
-            "time": "2022-10-30T15:31:53+00:00"
+            "time": "2022-11-07T00:37:16+00:00"
         },
         {
             "name": "illuminate/container",

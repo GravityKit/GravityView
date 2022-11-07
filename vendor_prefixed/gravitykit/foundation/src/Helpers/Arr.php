@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 31-October-2022 using Strauss.
+ * Modified by gravityview on 07-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -70,6 +70,25 @@ class Arr extends IlluminateArr {
 	 */
 	public static function dot( $array, $prepend = '' ) {
 		return parent::dot( $array, $prepend );
+	}
+
+	/**
+	 * Convert a flattened "dot" notation array into an expanded array.
+	 *
+	 * @since 1.0.3
+	 *
+	 * @param iterable $array
+	 *
+	 * @return array
+	 */
+	public static function undot( $array ) {
+		$results = [];
+
+		foreach ( $array as $key => $value ) {
+			self::set( $results, $key, $value );
+		}
+
+		return $results;
 	}
 
 	/**

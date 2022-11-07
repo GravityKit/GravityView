@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 31-October-2022 using Strauss.
+ * Modified by gravityview on 07-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -83,12 +83,17 @@ class Framework {
 	 * @return void
 	 */
 	private function __construct( $logger_id, $logger_title ) {
+		global $initialized;
+
+		if ( ! $initialized ) {
+			add_filter( 'gk/foundation/settings/' . FoundationCore::ID . '/save/before', [ $this, 'save_settings' ] );
+			add_filter( 'gk/foundation/settings', [ $this, 'get_settings' ] );
+		}
+
 		$this->_settings = SettingsFramework::get_instance();
 
 		$this->_logger_id    = $logger_id;
 		$this->_logger_title = $logger_title;
-
-		add_filter( 'gk/foundation/settings/' . FoundationCore::ID . '/save/before', [ $this, 'save_settings' ] );
 
 		/**
 		 * @filter `gk/foundation/logger/log-path` Changes path where logs are stored.
@@ -101,13 +106,13 @@ class Framework {
 
 		$logger_handler = $this->get_logger_handler();
 
-		if ( ! $logger_handler ) {
-			return;
+		if ( $logger_handler ) {
+			$this->_logger = new MonologLogger( $logger_id );
+
+			$this->_logger->pushHandler( $logger_handler );
 		}
 
-		$this->_logger = new MonologLogger( $logger_id );
-
-		$this->_logger->pushHandler( $logger_handler );
+		$initialized = true;
 	}
 
 	/**
@@ -169,22 +174,30 @@ class Framework {
 	 * Returns UI settings for the logger.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.3 Added $gk_settings parameter.
+	 *
+	 * @param array $gk_settings GravityKit general settings object.
 	 *
 	 * @return array[]
 	 */
-	public function get_settings() {
-		$gk_settings = $this->_settings->get_plugin_settings( FoundationCore::ID );
+	public function get_settings( $gk_settings ) {
+		$saved_gk_settings_values = $this->_settings->get_plugin_settings( FoundationCore::ID );
 
 		// If multisite and not the main site, get default settings from the main site.
 		// This allows site admins to configure the default settings for all subsites.
 		// If no settings are found on the main site, default settings (set below) will be used.
-		if ( ! is_main_site() && empty( $gk_settings ) ) {
-			$gk_settings = $this->_settings->get_plugin_settings( FoundationCore::ID, get_main_site_id() );
+		if ( ! is_main_site() && empty( $saved_gk_settings_values ) ) {
+			$saved_gk_settings_values = $this->_settings->get_plugin_settings( FoundationCore::ID, get_main_site_id() );
 		}
 
+		$default_logger_settings = [
+			'logger'      => 0,
+			'logger_type' => 'file',
+		];
+
 		$log_file    = $this->get_log_file();
-		$logger      = Arr::get( $gk_settings, 'logger' );
-		$logger_type = Arr::get( $gk_settings, 'logger_type', 'file' );
+		$logger      = Arr::get( $saved_gk_settings_values, 'logger', $default_logger_settings['logger'] );
+		$logger_type = Arr::get( $saved_gk_settings_values, 'logger_type', $default_logger_settings['logger_type'] );
 
 		add_filter( 'gk/foundation/inline-styles', function ( $styles ) {
 			$css      = <<<CSS
@@ -286,10 +299,24 @@ HTML;
 </div>
 HTML;
 
-		$settings = [];
+		$logger_settings = [];
+
+		$_update_gk_settings = function () use ( &$logger_settings, &$gk_settings, $default_logger_settings ) {
+			// Add logging settings under the Technical section in GravityKit settings.
+			Arr::set( $gk_settings, 'gk_foundation.sections.2.settings', array_merge(
+				Arr::get( $gk_settings, 'gk_foundation.sections.2.settings' ),
+				$logger_settings
+			) );
+
+			// Update defaults.
+			Arr::set( $gk_settings, 'gk_foundation.defaults', array_merge(
+				Arr::get( $gk_settings, 'gk_foundation.defaults' ),
+				$default_logger_settings
+			) );
+		};
 
 		if ( ! $logger && class_exists( 'GFLogging' ) && get_option( 'gform_enable_logging' ) ) {
-			$settings[] = [
+			$logger_settings[] = [
 				'id'       => 'gravity_forms_logger_tip',
 				'html'     => strtr( $notice_template, [
 					'%color%'  => 'yellow',
@@ -304,7 +331,7 @@ HTML;
 			];
 		}
 
-		$settings = array_merge( $settings, [
+		$logger_settings = array_merge( $logger_settings, [
 			[
 				'id'    => 'logger',
 				'type'  => 'checkbox',
@@ -354,7 +381,7 @@ HTML;
 		] );
 
 		if ( ! class_exists( 'QueryMonitor' ) ) {
-			$settings[] = [
+			$logger_settings[] = [
 				'id'              => 'query_monitor_notice',
 				'html'            => strtr( $notice_template, [
 					'%color%'  => 'yellow',
@@ -371,7 +398,9 @@ HTML;
 		}
 
 		if ( ! $this->_logger || 'file' !== $logger_type || ! file_exists( $log_file ) ) {
-			return $settings;
+			$_update_gk_settings();
+
+			return $gk_settings;
 		}
 
 		$download_link = sprintf( '%s/%s/%s',
@@ -390,7 +419,7 @@ HTML;
 			]
 		);
 
-		$settings[] = [
+		$logger_settings[] = [
 			'id'       => 'log_file',
 			'html'     => strtr( $notice_template, [
 				'%color%'  => 'blue',
@@ -404,7 +433,9 @@ HTML;
 			],
 		];
 
-		return $settings;
+		$_update_gk_settings();
+
+		return $gk_settings;
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 31-October-2022 using Strauss.
+ * Modified by gravityview on 07-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -10,6 +10,7 @@ namespace GravityKit\GravityView\Foundation\Settings;
 
 use Exception;
 use GravityKit\GravityView\Foundation\Core as FoundationCore;
+use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GravityKit\GravityView\Foundation\Helpers\Core as CoreHelpers;
 use GravityKit\GravityView\Foundation\WP\AdminMenu;
 use GravityKit\GravityView\Foundation\Translations\Framework as TranslationsFramework;
@@ -48,7 +49,7 @@ class Framework {
 	 *
 	 * @var array Cached settings data.
 	 */
-	private $_settings_data;
+	private $_settings_data = [];
 
 	private function __construct() {
 		/**
@@ -139,7 +140,67 @@ class Framework {
 			$this->_settings_data[ $site_id ] = is_multisite() ? get_blog_option( $site_id, self::ID, [] ) : get_option( self::ID, [] );
 		}
 
+		if ( doing_action( 'gk/foundation/settings/data/plugins' ) ) {
+			// Avoid possible infinite loop if this method is called from within the `gk/foundation/settings/data/plugins` filter.
+			return $this->_settings_data[ $site_id ];
+		}
+
+		// Update cached settings data with default values for each plugin.
+		$plugins_settings = $this->get_plugins_settings_data();
+
+		foreach ( $plugins_settings as $plugin_id => $plugin_settings ) {
+			if ( ! isset( $this->_settings_data[ $site_id ][ $plugin_id ] ) ) {
+				$this->_settings_data[ $site_id ][ $plugin_id ] = $this->get_default_settings( $plugin_id );
+			} else {
+				$this->_settings_data[ $site_id ][ $plugin_id ] = wp_parse_args( $this->_settings_data[ $site_id ][ $plugin_id ], $this->get_default_settings( $plugin_id ) );
+			}
+		}
+
 		return $this->_settings_data[ $site_id ];
+	}
+
+	/**
+	 * Returns settings data object for all plugins.
+	 *
+	 * @since 1.0.3
+	 *
+	 * @return array
+	 */
+	public function get_plugins_settings_data() {
+		/**
+		 * @filter `gk/foundation/settings/data/plugins` Modifies plugins' settings.
+		 *
+		 * @since  1.0.0
+		 *
+		 * @param array $plugins_data Plugins data.
+		 */
+		return array_filter( apply_filters( 'gk/foundation/settings/data/plugins', [] ) );
+	}
+
+	/**
+	 * Returns default settings for a plugin all plugins.
+	 * Default settings are defined in the plugin's settings object under the `defaults` key.
+	 *
+	 * @since 1.0.3
+	 *
+	 * @param $plugin_id
+	 *
+	 * @return array|array[]
+	 */
+	public function get_default_settings( $plugin_id = null ) {
+		$plugins_data = $this->get_plugins_settings_data();
+
+		if ( empty( $plugins_data ) ) {
+			return [];
+		}
+
+		if ( ! $plugin_id ) {
+			return array_map( function ( $plugin_data ) {
+				return Arr::get( $plugin_data, 'defaults', [] );
+			}, $plugins_data );
+		}
+
+		return Arr::get( $plugins_data, "{$plugin_id}.defaults", [] );
 	}
 
 	/**
@@ -155,7 +216,7 @@ class Framework {
 	public function save_all_settings( array $settings, $site_id = null ) {
 		$site_id = $site_id ?: get_current_blog_id();
 
-		$this->_settings_data = $settings;
+		$this->_settings_data[ $site_id ] = $settings;
 
 		return is_multisite() ? update_blog_option( $site_id, self::ID, $settings ) : update_option( self::ID, $settings );
 	}
@@ -282,6 +343,22 @@ class Framework {
 	}
 
 	/**
+	 * Returns link to the plugin settings page.
+	 *
+	 * @since 1.0.3
+	 *
+	 * @param string $plugin_id
+	 *
+	 * @return string
+	 */
+	public function get_plugin_settings_url( $plugin_id ) {
+		return add_query_arg( [
+			'page' => self::ID,
+			'p'    => $plugin_id,
+		], admin_url( 'admin.php' ) );
+	}
+
+	/**
 	 * Enqueues UI assets.
 	 *
 	 * @since 1.0.0
@@ -291,14 +368,13 @@ class Framework {
 	 * @return void
 	 */
 	public function enqueue_assets( $page ) {
-		/**
-		 * @filter `gk/foundation/settings/data/plugins` Modifies plugins' settings.
-		 *
-		 * @since  1.0.0
-		 *
-		 * @param array $plugins_data Plugins data.
-		 */
-		$plugins_data = array_filter( apply_filters( 'gk/foundation/settings/data/plugins', [] ) );
+		$plugins_data = $this->get_plugins_settings_data();
+
+		foreach ( Arr::pluck( $plugins_data, 'id' ) as $plugin_id ) {
+			add_filter( "gk/foundation/settings/${plugin_id}/settings-url", function () use ( $plugin_id ) {
+				return $this->get_plugin_settings_url( $plugin_id );
+			} );
+		}
 
 		ksort( $plugins_data );
 
@@ -391,14 +467,7 @@ class Framework {
 		}
 
 		try {
-			/**
-			 * @filter `gk/foundation/settings/data/plugins` Modifies plugins' settings.
-			 *
-			 * @since  1.0.0
-			 *
-			 * @param array $plugins_data Plugins data.
-			 */
-			$plugins_data = array_values( apply_filters( 'gk/foundation/settings/data/plugins', [] ) );
+			$plugins_data = $this->get_plugins_settings_data();
 
 			$plugin_data = null;
 

@@ -46,6 +46,7 @@ __( 'Enter your license key to activate.', 'gk-foundation' );
 __( 'License is not valid for this product but was activated for others.', 'gk-foundation' );
 __( 'Product was installed.', 'gk-foundation' );
 __( 'This product is installed from a Git repository. Are you sure you want to update it?', 'gk-foundation' );
+__( 'Product was updated.', 'gk-foundation' );
 __( 'Product was activated.', 'gk-foundation' );
 __( 'Product was deactivated.', 'gk-foundation' );
 __( 'Settings', 'gk-foundation' );

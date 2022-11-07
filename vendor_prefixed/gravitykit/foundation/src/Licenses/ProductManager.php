@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 31-October-2022 using Strauss.
+ * Modified by gravityview on 07-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -62,7 +62,7 @@ class ProductManager {
 
 		add_filter( 'gk/foundation/ajax/' . Framework::AJAX_ROUTER . '/routes', [ $this, 'configure_ajax_routes' ] );
 
-		add_filter( 'plugin_action_links', [ $this, 'display_product_settings_link' ], 10, 2 );
+		add_filter( 'plugin_action_links', [ $this, 'display_product_action_links' ], 10, 2 );
 
 		$this->update_submenu_badge_count();
 
@@ -621,13 +621,13 @@ class ProductManager {
 				$installed_product = $this->get_installed_plugin_by_text_domain( $product_data['text_domain'] );
 
 				/**
-				 * @filter `gk/foundation/products/{$product_slug}/settings-url` Sets link to the product settings page.
+				 * @filter `gk/foundation/settings/{$product_slug}/settings-url` Sets link to the product settings page.
 				 *
-				 * @since  1.0.0
+				 * @since  1.0.3
 				 *
 				 * @param string $settings_url URL to the product settings page.
 				 */
-				$product_settings_url = apply_filters( 'gk/foundation/products/' . $product_data['slug'] . '/settings-url', '' );
+				$product_settings_url = apply_filters( "gk/foundation/settings/{$product_data['slug']}/settings-url", '' );
 
 				$product_data = array_merge( $product_data, [
 					'id'                         => $product_data['id'],
@@ -770,16 +770,16 @@ class ProductManager {
 	}
 
 	/**
-	 * Displays a link to the product settings page in the Plugins area.
+	 * Displays action links (e.g., Settings, Support, etc.) for each product in the Plugins page.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0.3
 	 *
 	 * @param array  $links        Links associated with the product.
 	 * @param string $product_path Product path.
 	 *
 	 * @return array
 	 */
-	public function display_product_settings_link( $links, $product_path ) {
+	public function display_product_action_links( $links, $product_path ) {
 		static $products_data;
 
 		if ( ! $products_data ) {
@@ -788,22 +788,43 @@ class ProductManager {
 			} catch ( Exception $e ) {
 				LoggerFramework::get_instance()->error( 'Unable to get products when linking to the settings page in the Plugins area.' );
 
-				return;
+				return $links;
 			}
 		}
 
-		if ( empty( $products_data[ $product_path ]['settings'] ) ) {
+		$product = isset( $products_data[ $product_path ] ) ? $products_data[ $product_path ] : null;
+
+		if ( ! $product ) {
 			return $links;
 		}
 
-		$product_settings_link = sprintf(
+		$gk_links = [];
+
+		if ( $product['settings'] ) {
+			$gk_links = [
+				'settings' => sprintf(
+					'<a href="%s">%s</a>',
+					$product['settings'],
+					esc_html__( 'Settings', 'gk-foundation' )
+				)
+			];
+		}
+
+		$gk_links['support'] = sprintf(
 			'<a href="%s">%s</a>',
-			$products_data[ $product_path ]['settings'],
-			esc_html__( 'Settings', 'gk-foundation' )
+			'https://docs.gravitykit.com',
+			esc_html__( 'Support', 'gk-foundation' )
 		);
 
-		array_unshift( $links, $product_settings_link );
-
-		return $links;
+		/**
+		 * @filter `gk/foundation/products/{$product_slug}/action-links` Sets product action links in the Plugins page.
+		 *
+		 * @since  1.0.3
+		 *
+		 * @param array $links    Combined GravityKit and original action links.
+		 * @param array $gk_links GravityKit-added action links.
+		 * @param array $link     Original action links.
+		 */
+		return apply_filters( "gk/foundation/products/{$product['slug']}/action-links", array_merge( $gk_links, $links ), $gk_links, $links );
 	}
 }

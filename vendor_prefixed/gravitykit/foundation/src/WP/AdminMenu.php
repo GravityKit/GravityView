@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 31-October-2022 using Strauss.
+ * Modified by gravityview on 07-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -87,7 +87,7 @@ class AdminMenu {
 
 		$_get_divider = function () {
 			// Divider is added to the menu title; because WP wraps it in <a>, we need to first close the tag, then add the divider.
-			return '</a> <hr style="margin: 10px 12px; border: none; height: 1px; background-color: white;" tabindex="-1" />';
+			return '</a> <hr style="margin: 10px 12px; border: none; height: 1px; background-color: hsla( 0, 0%, 100%, .2 );" tabindex="-1" />';
 		};
 
 		$total_badge_count = 0;

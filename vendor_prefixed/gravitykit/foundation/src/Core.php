@@ -2,12 +2,13 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 31-October-2022 using Strauss.
+ * Modified by gravityview on 07-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
 namespace GravityKit\GravityView\Foundation;
 
+use GravityKit\GravityView\Foundation\Integrations\GravityForms;
 use GravityKit\GravityView\Foundation\Integrations\HelpScout;
 use GravityKit\GravityView\Foundation\Integrations\TrustedLogin;
 use GravityKit\GravityView\Foundation\WP\AdminMenu;
@@ -22,7 +23,7 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 use Exception;
 
 class Core {
-	const VERSION = '1.0.1';
+	const VERSION = '1.0.2';
 
 	const ID = 'gk_foundation';
 
@@ -224,6 +225,7 @@ class Core {
 			'encryption'   => Encryption::get_instance(),
 			'trustedlogin' => TrustedLogin::get_instance(),
 			'helpscout'    => HelpScout::get_instance(),
+			'gravityforms' => GravityForms::get_instance(),
 		];
 
 		foreach ( $this->_components as $component => $instance ) {
@@ -232,17 +234,19 @@ class Core {
 			}
 		}
 
-		$this->plugin_activation_handler()->fire_activation_hook();
-
-		$this->configure_settings();
-
 		self::$_request_unique_string = $this->encryption()->get_random_nonce();
 
+		if ( is_admin() ) {
+			$this->plugin_activation_handler()->fire_activation_hook();
+
+			$this->configure_settings();
+
+			add_action( 'admin_enqueue_scripts', [ $this, 'inline_scripts_and_styles' ], 20 );
+
+			add_action( 'admin_footer', [ $this, 'display_foundation_information' ] );
+		}
+
 		class_alias( __CLASS__, 'GravityKitFoundation' );
-
-		add_action( 'admin_enqueue_scripts', [ $this, 'inline_scripts_and_styles' ], 20 );
-
-		add_action( 'admin_footer', [ $this, 'display_foundation_information' ] );
 
 		/**
 		 * Fires when the class has finished initializing.
@@ -276,10 +280,12 @@ class Core {
 					$gk_settings = $this->settings()->get_plugin_settings( self::ID, get_main_site_id() );
 				}
 
-				$setting_defaults = [
+				$default_settings = [
 					'support_email'    => get_bloginfo( 'admin_email' ),
 					'support_port'     => 1,
 					'no_conflict_mode' => 1,
+					'powered_by'       => 0,
+					'beta'             => 0,
 				];
 
 				$general_settings = [];
@@ -329,7 +335,7 @@ HTML;
 						[
 							'id'          => 'powered_by',
 							'type'        => 'checkbox',
-							'value'       => Arr::get( $gk_settings, 'powered_by' ),
+							'value'       => Arr::get( $gk_settings, 'powered_by', $default_settings['powered_by'] ),
 							'title'       => esc_html__( 'Display "Powered By" Link', 'gk-foundation' ),
 							'description' => esc_html__( 'A "Powered by GravityKit" link will be displayed below some GravityKit products. Help us spread the word!', 'gk-foundation' ),
 						],
@@ -354,7 +360,7 @@ HTML;
 						[
 							'id'          => 'beta',
 							'type'        => 'checkbox',
-							'value'       => Arr::get( $gk_settings, 'beta' ),
+							'value'       => Arr::get( $gk_settings, 'beta', $default_settings['beta'] ),
 							'title'       => esc_html__( 'Become a Beta Tester', 'gk-foundation' ),
 							'description' => esc_html__( 'You will have early access to the latest GravityKit products. There may be bugs! If you encounter an issue, report it to help make GravityKit products better!', 'gk-foundation' ),
 						],
@@ -366,7 +372,7 @@ HTML;
 						'id'          => 'support_email',
 						'type'        => 'text',
 						'required'    => true,
-						'value'       => Arr::get( $gk_settings, 'support_email', $setting_defaults['support_email'] ),
+						'value'       => Arr::get( $gk_settings, 'support_email', $default_settings['support_email'] ),
 						'title'       => esc_html__( 'Support Email', 'gk-foundation' ),
 						'description' => esc_html__( 'In order to provide responses to your support requests, please provide your email address.', 'gk-foundation' ),
 						'validation'  => [
@@ -383,7 +389,7 @@ HTML;
 					[
 						'id'          => 'support_port',
 						'type'        => 'checkbox',
-						'value'       => Arr::get( $gk_settings, 'support_port', $setting_defaults['support_port'] ),
+						'value'       => Arr::get( $gk_settings, 'support_port', $default_settings['support_port'] ),
 						'title'       => esc_html__( 'Show Support Port', 'gk-foundation' ),
 						'description' => ( esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gk-foundation' ) .
 						                   strtr(
@@ -397,23 +403,21 @@ HTML;
 					],
 				];
 
-				$technical_settings = array_merge(
+				$technical_settings = [
 					[
-						[
-							'id'          => 'no_conflict_mode',
-							'type'        => 'checkbox',
-							'value'       => Arr::get( $gk_settings, 'no_conflict_mode', $setting_defaults['no_conflict_mode'] ),
-							'title'       => esc_html__( 'Enable No-Conflict Mode', 'gk-foundation' ),
-							'description' => esc_html__( 'No-conflict mode prevents extraneous scripts and styles from being printed on GravityKit admin pages, reducing conflicts with other plugins and themes.', 'gk-foundation' ),
-						],
+						'id'          => 'no_conflict_mode',
+						'type'        => 'checkbox',
+						'value'       => Arr::get( $gk_settings, 'no_conflict_mode', $default_settings['no_conflict_mode'] ),
+						'title'       => esc_html__( 'Enable No-Conflict Mode', 'gk-foundation' ),
+						'description' => esc_html__( 'No-conflict mode prevents extraneous scripts and styles from being printed on GravityKit admin pages, reducing conflicts with other plugins and themes.', 'gk-foundation' ),
 					],
-					$this->logger()->get_settings()
-				);
+				];
 
 				$all_settings = [
 					self::ID => [
 						'id'       => self::ID,
 						'title'    => 'GravityKit',
+						'defaults' => $default_settings,
 						'icon'     => CoreHelpers::get_assets_url( 'gravitykit-icon.png' ),
 						'sections' => [
 							[

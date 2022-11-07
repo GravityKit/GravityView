@@ -23,6 +23,7 @@ return array(
    'GravityKit\GravityView\Foundation\Licenses\Framework' => $vendorprefixed . '/gravitykit/foundation/src/Licenses/Framework.php',
    'GravityKit\GravityView\Foundation\WP\AdminMenu' => $vendorprefixed . '/gravitykit/foundation/src/WP/AdminMenu.php',
    'GravityKit\GravityView\Foundation\WP\PluginActivationHandler' => $vendorprefixed . '/gravitykit/foundation/src/WP/PluginActivationHandler.php',
+   'GravityKit\GravityView\Foundation\Integrations\GravityForms' => $vendorprefixed . '/gravitykit/foundation/src/Integrations/GravityForms.php',
    'GravityKit\GravityView\Foundation\Integrations\TrustedLogin' => $vendorprefixed . '/gravitykit/foundation/src/Integrations/TrustedLogin.php',
    'GravityKit\GravityView\Foundation\Integrations\HelpScout' => $vendorprefixed . '/gravitykit/foundation/src/Integrations/HelpScout.php',
    'GravityKit\GravityView\Foundation\Helpers\Core' => $vendorprefixed . '/gravitykit/foundation/src/Helpers/Core.php',
