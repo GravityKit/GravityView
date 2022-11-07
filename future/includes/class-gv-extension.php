@@ -209,13 +209,13 @@ abstract class Extension {
 		self::$is_compatible = is_array( self::$is_compatible ) ? self::$is_compatible : array( get_called_class() => (bool) self::$is_compatible );
 
 		if ( ! function_exists( 'gravityview' ) ) {
-			$message = sprintf( __( 'Could not activate the %s Extension; GravityView is not active.', 'gravityview' ), esc_html( $this->_title ) );
+			$message = sprintf( __( 'Could not activate the %s Extension; GravityView is not active.', 'gk-gravityview' ), esc_html( $this->_title ) );
 		} else if ( false === version_compare( Plugin::$version, $this->_min_gravityview_version , ">=" ) ) {
-			$message = sprintf( __( 'The %s Extension requires GravityView Version %s or newer.', 'gravityview' ), esc_html( $this->_title ), '<tt>'.$this->_min_gravityview_version.'</tt>' );
+			$message = sprintf( __( 'The %s Extension requires GravityView Version %s or newer.', 'gk-gravityview' ), esc_html( $this->_title ), '<tt>'.$this->_min_gravityview_version.'</tt>' );
 		} else if ( isset( $this->_min_php_version ) && false === version_compare( phpversion(), $this->_min_php_version , ">=" ) ) {
-			$message = sprintf( __( 'The %s Extension requires PHP Version %s or newer. Please ask your host to upgrade your server\'s PHP.', 'gravityview' ), esc_html( $this->_title ), '<tt>'.$this->_min_php_version.'</tt>' );
+			$message = sprintf( __( 'The %s Extension requires PHP Version %s or newer. Please ask your host to upgrade your server\'s PHP.', 'gk-gravityview' ), esc_html( $this->_title ), '<tt>'.$this->_min_php_version.'</tt>' );
 		} else if ( ! empty( $this->_max_gravityview_version ) && false === version_compare( $this->_max_gravityview_version, Plugin::$version, ">" ) ) {
-			$message = sprintf( __( 'The %s Extension is not compatible with this version of GravityView. Please update the Extension to the latest version.', 'gravityview' ), esc_html( $this->_title ) );
+			$message = sprintf( __( 'The %s Extension is not compatible with this version of GravityView. Please update the Extension to the latest version.', 'gk-gravityview' ), esc_html( $this->_title ) );
 		} else {
 			$message = '';
 			self::$is_compatible[ get_called_class() ] = gravityview()->plugin->is_compatible();

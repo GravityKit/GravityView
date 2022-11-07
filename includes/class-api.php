@@ -311,7 +311,7 @@ class GravityView_API {
 
 		if ( $is_search ) {
 
-			$output = esc_html__( 'This search returned no results.', 'gravityview' );
+			$output = esc_html__( 'This search returned no results.', 'gk-gravityview' );
 
 			if( $context ) {
 				$setting = $context->view->settings->get( 'no_search_results_text', $output );
@@ -319,7 +319,7 @@ class GravityView_API {
 
 		} else {
 
-			$output = esc_html__( 'No entries match your request.', 'gravityview' );
+			$output = esc_html__( 'No entries match your request.', 'gk-gravityview' );
 
 			if( $context ) {
 				$setting = $context->view->settings->get( 'no_results_text', $output );
@@ -975,7 +975,7 @@ function gravityview_back_link( $context = null ) {
 	}
 
 	/** Default */
-	$label = $view_label ? $view_label : __( '&larr; Go back', 'gravityview' );
+	$label = $view_label ? $view_label : __( '&larr; Go back', 'gk-gravityview' );
 
 	/**
 	 * @filter `gravityview_go_back_label` Modify the back link text
@@ -1397,7 +1397,7 @@ function gravityview_get_map_link( $address, $atts = array() ) {
 
 	$url = "https://maps.google.com/maps?q={$address_qs}";
 
-	$link_text = esc_html__( 'Map It', 'gravityview' );
+	$link_text = esc_html__( 'Map It', 'gk-gravityview' );
 
 	$atts = array_merge(
 		array(

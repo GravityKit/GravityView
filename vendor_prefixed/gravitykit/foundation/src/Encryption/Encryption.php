@@ -49,7 +49,7 @@ class Encryption {
 		if ( strlen( $secret_key ) !== SODIUM_CRYPTO_SECRETBOX_KEYBYTES ) {
 			throw new Exception(
 				strtr(
-					esc_html__( 'Encyption key is not the correct size (must be [size] bytes).', 'gk-foundation' ),
+					esc_html__( 'Encyption key is not the correct size (must be [size] bytes).', 'gk-gravityview' ),
 					[ '[size]' => SODIUM_CRYPTO_SECRETBOX_KEYBYTES ]
 				)
 			);
@@ -102,7 +102,7 @@ class Encryption {
 
 			throw new Exception(
 				strtr(
-					esc_html__( 'Encyption nonce is not the correct size (must be [size] bytes).', 'gk-foundation' ),
+					esc_html__( 'Encyption nonce is not the correct size (must be [size] bytes).', 'gk-gravityview' ),
 					[ '[size]' => SODIUM_CRYPTO_SECRETBOX_NONCEBYTES ]
 				)
 			);

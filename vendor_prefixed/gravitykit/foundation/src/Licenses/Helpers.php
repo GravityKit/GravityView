@@ -48,7 +48,7 @@ class Helpers {
 		try {
 			$response = json_decode( $body, true );
 		} catch ( Exception $e ) {
-			throw new Exception( esc_html__( 'Unable to process remote request. Invalid response body.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Unable to process remote request. Invalid response body.', 'gk-gravityview' ) );
 		}
 
 		return $response;

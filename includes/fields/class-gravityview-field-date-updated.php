@@ -28,9 +28,9 @@ class GravityView_Field_Date_Updated extends GravityView_Field_Date_Created {
 
 		parent::__construct();
 
-		$this->label = esc_html__( 'Date Updated', 'gravityview' );
+		$this->label = esc_html__( 'Date Updated', 'gk-gravityview' );
 		$this->default_search_label = $this->label;
-		$this->description = esc_html__( 'The date the entry was last updated.', 'gravityview' );
+		$this->description = esc_html__( 'The date the entry was last updated.', 'gk-gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
 	}

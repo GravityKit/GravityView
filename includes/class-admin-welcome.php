@@ -51,8 +51,8 @@ class GravityView_Welcome {
 		// Add help page to GravityView menu
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__('GravityView: Getting Started', 'gravityview'),
-			__('Getting Started', 'gravityview'),
+			__('GravityView: Getting Started', 'gk-gravityview'),
+			__('Getting Started', 'gk-gravityview'),
 			$this->minimum_capability,
 			'gv-getting-started',
 			array( $this, 'getting_started_screen' )
@@ -61,8 +61,8 @@ class GravityView_Welcome {
 		// Changelog Page
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__( 'Changelog', 'gravityview' ),
-			__( 'Changelog', 'gravityview' ),
+			__( 'Changelog', 'gk-gravityview' ),
+			__( 'Changelog', 'gk-gravityview' ),
 			$this->minimum_capability,
 			'gv-changelog',
 			array( $this, 'changelog_screen' )
@@ -71,8 +71,8 @@ class GravityView_Welcome {
 		// Credits Page
 		add_submenu_page(
 			'edit.php?post_type=gravityview',
-			__( 'Credits', 'gravityview' ),
-			__( 'Credits', 'gravityview' ),
+			__( 'Credits', 'gk-gravityview' ),
+			__( 'Credits', 'gk-gravityview' ),
 			$this->minimum_capability,
 			'gv-credits',
 			array( $this, 'credits_screen' )
@@ -133,18 +133,18 @@ class GravityView_Welcome {
 		echo gravityview_get_floaty( 132 );
 		?>
 
-		<h1><?php printf( esc_html__( 'Welcome to GravityView %s', 'gravityview' ), $display_version ); ?></h1>
-		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gravityview' ); ?></div>
+		<h1><?php printf( esc_html__( 'Welcome to GravityView %s', 'gk-gravityview' ), $display_version ); ?></h1>
+		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gk-gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( "Getting Started", 'gravityview' ); ?>
+				<?php _e( "Getting Started", 'gk-gravityview' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( "List of Changes", 'gravityview' ); ?>
+				<?php _e( "List of Changes", 'gk-gravityview' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
-				<?php _e( 'Credits', 'gravityview' ); ?>
+				<?php _e( 'Credits', 'gk-gravityview' ); ?>
 			</a>
 		</h2>
 		<?php
@@ -258,7 +258,7 @@ class GravityView_Welcome {
 			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
 
 				<div class="headline-feature" style="max-width: 100%">
-					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gravityview' ); ?></h2>
+					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
 				<h3>2.15 on September 21, 2022</h3>
@@ -566,7 +566,7 @@ class GravityView_Welcome {
 				</ul>
 
 				<p style="text-align: center;">
-					<a href="https://www.gravitykit.com/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gravityview' ); ?></a>
+					<a href="https://www.gravitykit.com/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gk-gravityview' ); ?></a>
 				</p>
 
 				<div class="clear"></div>
@@ -586,7 +586,7 @@ class GravityView_Welcome {
 		<div class="wrap about-wrap">
 
 			<?php $this->tabs(); ?>
-			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gravityview' ); ?></p>
+			<p class="about-description"><?php _e( 'GravityView is brought to you by:', 'gk-gravityview' ); ?></p>
 
 			<style>
 				.feature-section h3 a {
@@ -637,7 +637,7 @@ class GravityView_Welcome {
 
 			<div class="feature-section">
 				<div>
-					<h2><?php esc_attr_e( 'Contributors', 'gravityview' ); ?></h2>
+					<h2><?php esc_attr_e( 'Contributors', 'gk-gravityview' ); ?></h2>
 
 					<ul class="wp-people-group">
 						<li class="wp-person">Core &amp; Extension development by <a href="http://tinygod.pt" class="block">Luis Godinho</a>, <a href="https://codeseekah.com" class="block">Gennady Kovshenin</a>, and <a href="https://mrcasual.com" class="block">Vlad K.</a></li>
@@ -664,8 +664,8 @@ class GravityView_Welcome {
 						<li class="wp-person">Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, <a href='https://github.com/mrcasual'>@mrcasual</a> and <a href="https://github.com/rafaehlers">@rafaehlers</a></li>
 					</ul>
 
-					<h4><?php esc_attr_e( 'Want to contribute?', 'gravityview' ); ?></h4>
-					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here.', 'gravityview'), '<a href="https://github.com/gravityview/GravityView">', '</a>' ); ?></p>
+					<h4><?php esc_attr_e( 'Want to contribute?', 'gk-gravityview' ); ?></h4>
+					<p><?php echo sprintf( esc_attr__( 'If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here.', 'gk-gravityview'), '<a href="https://github.com/gravityview/GravityView">', '</a>' ); ?></p>
 				</div>
 			</div>
 

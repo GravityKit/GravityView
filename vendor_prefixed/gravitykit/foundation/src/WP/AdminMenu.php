@@ -140,8 +140,8 @@ class AdminMenu {
 		}
 
 		// Add top-level menu.
-		$page_title = esc_html__( 'GravityKit', 'gk-foundation' );
-		$menu_title = esc_html__( 'GravityKit', 'gk-foundation' );
+		$page_title = esc_html__( 'GravityKit', 'gk-gravityview' );
+		$menu_title = esc_html__( 'GravityKit', 'gk-gravityview' );
 
 		/**
 		 * Controls the position of the top-level GravityKit admin menu.

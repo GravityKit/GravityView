@@ -249,7 +249,7 @@ CSS;
 		} );
 
 		$query_monitor_notice = strtr(
-			esc_html__( 'You must install [link]Query Monitor[/link] WordPress plugin to use this option.', 'gk-foundation' ),
+			esc_html__( 'You must install [link]Query Monitor[/link] WordPress plugin to use this option.', 'gk-gravityview' ),
 			[
 				'[link]'  => '<a href="https://wordpress.org/plugins/query-monitor/" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -257,7 +257,7 @@ CSS;
 		);
 
 		$chrome_logger_tip = strtr(
-			esc_html__( 'You must install [link]Chrome Logger[/link] browser extension to use this option.', 'gk-foundation' ),
+			esc_html__( 'You must install [link]Chrome Logger[/link] browser extension to use this option.', 'gk-gravityview' ),
 			[
 				'[link]'  => '<a href="https://craig.is/writing/chrome-logger" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -265,7 +265,7 @@ CSS;
 		);
 
 		$gravity_forms_logger_tip = strtr(
-			esc_html__( 'Logging is currently handled by [link]Gravity Forms[/link].', 'gk-foundation' ),
+			esc_html__( 'Logging is currently handled by [link]Gravity Forms[/link].', 'gk-gravityview' ),
 			[
 				'[link]'  => '<a href="' . admin_url( 'admin.php?page=gf_settings&subview=gravityformslogging' ) . '" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -335,26 +335,26 @@ HTML;
 			[
 				'id'    => 'logger',
 				'type'  => 'checkbox',
-				'title' => esc_html__( 'Enable Logging', 'gk-foundation' ),
+				'title' => esc_html__( 'Enable Logging', 'gk-gravityview' ),
 				'value' => $logger,
 			],
 			[
 				'id'          => 'logger_type',
 				'type'        => 'select',
-				'title'       => esc_html__( 'Log Type', 'gk-foundation' ),
-				'description' => esc_html__( 'Where to store log output', 'gk-foundation' ),
+				'title'       => esc_html__( 'Log Type', 'gk-gravityview' ),
+				'description' => esc_html__( 'Where to store log output', 'gk-gravityview' ),
 				'value'       => $logger_type,
 				'choices'     => [
 					[
-						'title' => esc_html__( 'File', 'gk-foundation' ),
+						'title' => esc_html__( 'File', 'gk-gravityview' ),
 						'value' => 'file',
 					],
 					[
-						'title' => esc_html__( 'Query Monitor', 'gk-foundation' ),
+						'title' => esc_html__( 'Query Monitor', 'gk-gravityview' ),
 						'value' => 'query_monitor',
 					],
 					[
-						'title' => esc_html__( 'Chrome Logger', 'gk-foundation' ),
+						'title' => esc_html__( 'Chrome Logger', 'gk-gravityview' ),
 						'value' => 'chrome_logger',
 					],
 				],
@@ -410,7 +410,7 @@ HTML;
 		);
 
 		$download_notice = strtr(
-			esc_html__( 'Download [link]log file[/link] ([size] / [date_modified]).', 'gk-foundation' ),
+			esc_html__( 'Download [link]log file[/link] ([size] / [date_modified]).', 'gk-gravityview' ),
 			[
 				'[link]'          => '<a href="' . $download_link . '" class="font-medium underline text-blue-700 hover:text-blue-600">',
 				'[/link]'         => '</a>',

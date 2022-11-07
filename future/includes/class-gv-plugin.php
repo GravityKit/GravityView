@@ -596,8 +596,8 @@ final class Plugin {
 			$tables[] = \GFFormsModel::get_lead_notes_table_name();
 		}
 
-		$disapproved = __( 'Disapproved the Entry for GravityView', 'gravityview' );
-		$approved    = __( 'Approved the Entry for GravityView', 'gravityview' );
+		$disapproved = __( 'Disapproved the Entry for GravityView', 'gk-gravityview' );
+		$approved    = __( 'Approved the Entry for GravityView', 'gk-gravityview' );
 
 		$suppress = $wpdb->suppress_errors();
 		foreach ( $tables as $notes_table ) {
@@ -648,8 +648,8 @@ final class Plugin {
 		$admin_menu = $foundation::admin_menu();
 
 		$admin_menu::add_submenu_item( [
-			'page_title' => __( 'All Views', 'gravityview' ),
-			'menu_title' => __( 'All Views', 'gravityview' ),
+			'page_title' => __( 'All Views', 'gk-gravityview' ),
+			'menu_title' => __( 'All Views', 'gk-gravityview' ),
 			'capability' => 'edit_gravityviews',
 			'id'         => 'gravityview_all_views',
 			'callback'   => function () {
@@ -664,8 +664,8 @@ final class Plugin {
 		], 'center' );
 
 		$admin_menu::add_submenu_item( [
-			'page_title' => __( 'New View', 'gravityview' ),
-			'menu_title' => __( 'New View', 'gravityview' ),
+			'page_title' => __( 'New View', 'gk-gravityview' ),
+			'menu_title' => __( 'New View', 'gk-gravityview' ),
 			'capability' => 'edit_gravityviews',
 			'id'         => 'gravityview_new_view',
 			'callback'   => function () {

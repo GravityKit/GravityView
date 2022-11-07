@@ -151,7 +151,7 @@ class SettingsValidator {
 
 			throw new ValidatorException(
 				strtr(
-					esc_html__( 'Missing settings: [settings].', 'gk-foundation' ),
+					esc_html__( 'Missing settings: [settings].', 'gk-gravityview' ),
 					[ '[settings]' => implode( ', ', $missing_settings_title ) ]
 				)
 			);
@@ -193,7 +193,7 @@ class SettingsValidator {
 				if ( empty( $validation_rule['rule'] ) ) {
 					throw new ValidatorException(
 						strtr(
-							esc_html__( 'Validation rule for setting [setting] is missing.', 'gk-foundation' ),
+							esc_html__( 'Validation rule for setting [setting] is missing.', 'gk-gravityview' ),
 							[ '[setting]' => $setting['id'] ]
 
 						)
@@ -209,7 +209,7 @@ class SettingsValidator {
 				} catch ( ValidatorException $e ) {
 					throw new ValidatorException(
 						strtr(
-							esc_html__( 'Validation for setting [setting] failed: [reason].', 'gk-foundation' ),
+							esc_html__( 'Validation for setting [setting] failed: [reason].', 'gk-gravityview' ),
 							[
 								'[setting]' => $setting['id'],
 								'[reason]'  => $e->getMessage()
@@ -229,7 +229,7 @@ class SettingsValidator {
 		if ( ! empty( $settings_failed_validation ) ) {
 			throw new ValidatorException(
 				strtr(
-					esc_html__( 'Settings that failed validation: [settings].', 'gk-foundation' ),
+					esc_html__( 'Settings that failed validation: [settings].', 'gk-gravityview' ),
 					[ '[settings]' => implode( ', ', $settings_failed_validation ) ]
 				)
 			);

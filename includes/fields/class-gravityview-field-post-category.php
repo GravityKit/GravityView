@@ -20,7 +20,7 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 	var $icon = 'dashicons-category';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Category', 'gravityview' );
+		$this->label = esc_html__( 'Post Category', 'gk-gravityview' );
 
 		add_action( 'gravityview/edit-entry/render/before', array( $this, 'add_edit_entry_post_category_choices_filter' ) );
 

@@ -21,8 +21,8 @@ class GravityView_Preset_Profiles extends GravityView_Default_Template_List {
 		$settings = array(
 			'slug'          => 'list',
 			'type'          => 'preset',
-			'label'         => __( 'People Profiles', 'gravityview' ),
-			'description'   => __( 'List people with individual profiles.', 'gravityview' ),
+			'label'         => __( 'People Profiles', 'gk-gravityview' ),
+			'description'   => __( 'List people with individual profiles.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/profiles/logo-profiles.png', GRAVITYVIEW_FILE ),
 			'preview'       => 'http://demo.gravityview.co/blog/view/people-profiles/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/profiles/form-profiles.xml',

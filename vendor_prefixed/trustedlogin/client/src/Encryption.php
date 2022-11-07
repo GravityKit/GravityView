@@ -258,7 +258,7 @@ final class Encryption {
 		if ( is_wp_error( $response_json ) ) {
 
 			if ( 'not_found' == $response_json->get_error_code() ){
-				return new WP_Error( 'not_found', __( 'Encryption key could not be fetched, Vendor site returned 404.', 'trustedlogin' ) );
+				return new WP_Error( 'not_found', __( 'Encryption key could not be fetched, Vendor site returned 404.', 'gk-gravityview' ) );
 			}
 
 			return $response_json;

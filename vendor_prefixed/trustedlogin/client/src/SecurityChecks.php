@@ -87,7 +87,7 @@ final class SecurityChecks {
 
 			$this->logging->log( 'Site is in lockdown mode, aborting login.', __METHOD__, 'error' );
 
-			return new WP_Error( 'in_lockdown', __( 'TrustedLogin temporarily disabled.' , 'trustedlogin') );
+			return new WP_Error( 'in_lockdown', __( 'TrustedLogin temporarily disabled.' , 'gk-gravityview') );
 		}
 
 		// When passed in the endpoint URL, the unique ID will be the raw value, not the hash.
@@ -116,7 +116,7 @@ final class SecurityChecks {
 			$this->logging->log(
 				sprintf(
 					// translators: %s is the error message
-					__( 'There was an issue verifying the user identifier with TrustedLogin, aborting login. (%s)', 'trustedlogin' ),
+					__( 'There was an issue verifying the user identifier with TrustedLogin, aborting login. (%s)', 'gk-gravityview' ),
 					$approved->get_error_message()
 				),
 				__METHOD__,

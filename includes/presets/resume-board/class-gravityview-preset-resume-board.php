@@ -21,8 +21,8 @@ class GravityView_Preset_Resume_Board extends GravityView_Default_Template_Table
 		$settings = array(
 			'slug'          => 'table',
 			'type'          => 'preset',
-			'label'         => __( 'Resume Board', 'gravityview' ),
-			'description'   => __( 'Allow job-seekers to post their resumes.', 'gravityview' ),
+			'label'         => __( 'Resume Board', 'gk-gravityview' ),
+			'description'   => __( 'Allow job-seekers to post their resumes.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/resume-board/logo-resume-board.png', GRAVITYVIEW_FILE ),
 			'preview'       => 'http://demo.gravityview.co/blog/view/resume-board/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/resume-board/form-resume-board.xml',

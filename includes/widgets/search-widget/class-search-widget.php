@@ -32,7 +32,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function __construct() {
 
 		$this->widget_id = 'search_bar';
-		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gravityview' );
+		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
 		$this->widget_subtitle = '';
 
 		self::$instance = &$this;
@@ -45,17 +45,17 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'search_layout' => array(
 				'type' => 'radio',
 				'full_width' => true,
-				'label' => esc_html__( 'Search Layout', 'gravityview' ),
+				'label' => esc_html__( 'Search Layout', 'gk-gravityview' ),
 				'value' => 'horizontal',
 				'options' => array(
-					'horizontal' => esc_html__( 'Horizontal', 'gravityview' ),
-					'vertical' => esc_html__( 'Vertical', 'gravityview' ),
+					'horizontal' => esc_html__( 'Horizontal', 'gk-gravityview' ),
+					'vertical' => esc_html__( 'Vertical', 'gk-gravityview' ),
 				),
 			),
 			'search_clear' => array(
 				'type'  => 'checkbox',
-				'label' => __( 'Show Clear button', 'gravityview' ),
-				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gravityview'),
+				'label' => __( 'Show Clear button', 'gk-gravityview' ),
+				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gk-gravityview'),
 				'value' => true,
 			),
 			'search_fields' => array(
@@ -67,13 +67,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'search_mode' => array(
 				'type' => 'radio',
 				'full_width' => true,
-				'label' => esc_html__( 'Search Mode', 'gravityview' ),
-				'desc' => __('Should search results match all search fields, or any?', 'gravityview'),
+				'label' => esc_html__( 'Search Mode', 'gk-gravityview' ),
+				'desc' => __('Should search results match all search fields, or any?', 'gk-gravityview'),
 				'value' => 'any',
 				'class' => 'hide-if-js',
 				'options' => array(
-					'any' => esc_html__( 'Match Any Fields', 'gravityview' ),
-					'all' => esc_html__( 'Match All Fields', 'gravityview' ),
+					'any' => esc_html__( 'Match Any Fields', 'gk-gravityview' ),
+					'all' => esc_html__( 'Match All Fields', 'gk-gravityview' ),
 				),
 			),
 		);
@@ -98,7 +98,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_args' ) );
 		}
 
-		parent::__construct( esc_html__( 'Search Bar', 'gravityview' ), null, $default_values, $settings );
+		parent::__construct( esc_html__( 'Search Bar', 'gk-gravityview' ), null, $default_values, $settings );
 
 		// calculate the search method (POST / GET)
 		$this->set_search_method();
@@ -218,15 +218,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @see admin-search-widget.js (getSelectInput)
 		 */
 		$input_labels = array(
-			'input_text' => esc_html__( 'Text', 'gravityview' ),
-			'date' => esc_html__( 'Date', 'gravityview' ),
-			'select' => esc_html__( 'Select', 'gravityview' ),
-			'multiselect' => esc_html__( 'Select (multiple values)', 'gravityview' ),
-			'radio' => esc_html__( 'Radio', 'gravityview' ),
-			'checkbox' => esc_html__( 'Checkbox', 'gravityview' ),
-			'single_checkbox' => esc_html__( 'Checkbox', 'gravityview' ),
-			'link' => esc_html__( 'Links', 'gravityview' ),
-			'date_range' => esc_html__( 'Date range', 'gravityview' ),
+			'input_text' => esc_html__( 'Text', 'gk-gravityview' ),
+			'date' => esc_html__( 'Date', 'gk-gravityview' ),
+			'select' => esc_html__( 'Select', 'gk-gravityview' ),
+			'multiselect' => esc_html__( 'Select (multiple values)', 'gk-gravityview' ),
+			'radio' => esc_html__( 'Radio', 'gk-gravityview' ),
+			'checkbox' => esc_html__( 'Checkbox', 'gk-gravityview' ),
+			'single_checkbox' => esc_html__( 'Checkbox', 'gk-gravityview' ),
+			'link' => esc_html__( 'Links', 'gk-gravityview' ),
+			'date_range' => esc_html__( 'Date range', 'gk-gravityview' ),
 		);
 
 		/**
@@ -263,12 +263,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		wp_localize_script( 'gravityview_searchwidget_admin', 'gvSearchVar', array(
 			'nonce' => wp_create_nonce( 'gravityview_ajaxsearchwidget' ),
-			'label_nofields' => esc_html__( 'No search fields configured yet.', 'gravityview' ),
-			'label_addfield' => esc_html__( 'Add Search Field', 'gravityview' ),
-			'label_label' => esc_html__( 'Label', 'gravityview' ),
-			'label_searchfield' => esc_html__( 'Search Field', 'gravityview' ),
-			'label_inputtype' => esc_html__( 'Input Type', 'gravityview' ),
-			'label_ajaxerror' => esc_html__( 'There was an error loading searchable fields. Save the View or refresh the page to fix this issue.', 'gravityview' ),
+			'label_nofields' => esc_html__( 'No search fields configured yet.', 'gk-gravityview' ),
+			'label_addfield' => esc_html__( 'Add Search Field', 'gk-gravityview' ),
+			'label_label' => esc_html__( 'Label', 'gk-gravityview' ),
+			'label_searchfield' => esc_html__( 'Search Field', 'gk-gravityview' ),
+			'label_inputtype' => esc_html__( 'Input Type', 'gk-gravityview' ),
+			'label_ajaxerror' => esc_html__( 'There was an error loading searchable fields. Save the View or refresh the page to fix this issue.', 'gk-gravityview' ),
 			'input_labels' => json_encode( self::get_search_input_labels() ),
 			'input_types' => json_encode( self::get_input_types_by_field_type() ),
 		) );
@@ -338,30 +338,30 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$custom_fields = array(
 			'search_all' => array(
-				'text' => esc_html__( 'Search Everything', 'gravityview' ),
+				'text' => esc_html__( 'Search Everything', 'gk-gravityview' ),
 				'type' => 'text',
 			),
 			'entry_date' => array(
-				'text' => esc_html__( 'Entry Date', 'gravityview' ),
+				'text' => esc_html__( 'Entry Date', 'gk-gravityview' ),
 				'type' => 'date',
 			),
 			'entry_id' => array(
-				'text' => esc_html__( 'Entry ID', 'gravityview' ),
+				'text' => esc_html__( 'Entry ID', 'gk-gravityview' ),
 				'type' => 'text',
 			),
 			'created_by' => array(
-				'text' => esc_html__( 'Entry Creator', 'gravityview' ),
+				'text' => esc_html__( 'Entry Creator', 'gk-gravityview' ),
 				'type' => 'created_by',
 			),
 			'is_starred' => array(
-				'text' => esc_html__( 'Is Starred', 'gravityview' ),
+				'text' => esc_html__( 'Is Starred', 'gk-gravityview' ),
 				'type' => 'boolean',
 			),
 		);
 
 		if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 			$custom_fields['is_approved'] = array(
-				'text' => esc_html__( 'Approval Status', 'gravityview' ),
+				'text' => esc_html__( 'Approval Status', 'gk-gravityview' ),
 				'type' => 'multi',
 			);
 		}
@@ -1566,13 +1566,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			switch( $field['field'] ) {
 				case 'search_all':
-					$label = __( 'Search Entries:', 'gravityview' );
+					$label = __( 'Search Entries:', 'gk-gravityview' );
 					break;
 				case 'entry_date':
-					$label = __( 'Filter by date:', 'gravityview' );
+					$label = __( 'Filter by date:', 'gk-gravityview' );
 					break;
 				case 'entry_id':
-					$label = __( 'Entry ID:', 'gravityview' );
+					$label = __( 'Entry ID:', 'gk-gravityview' );
 					break;
 				default:
 					// If this is a field input, not a field
@@ -1823,7 +1823,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$url = strtok( add_query_arg( array() ), '?' );
 
-			echo gravityview_get_link( $url, esc_html__( 'Clear', 'gravityview' ), 'class=button gv-search-clear' );
+			echo gravityview_get_link( $url, esc_html__( 'Clear', 'gk-gravityview' ), 'class=button gv-search-clear' );
 
 		}
 	}
@@ -1886,12 +1886,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'yearRange' => '-5:+5',
 			'changeMonth' => true,
 			'changeYear' => true,
-			'closeText' => esc_attr_x( 'Close', 'Close calendar', 'gravityview' ),
-			'prevText' => esc_attr_x( 'Prev', 'Previous month in calendar', 'gravityview' ),
-			'nextText' => esc_attr_x( 'Next', 'Next month in calendar', 'gravityview' ),
-			'currentText' => esc_attr_x( 'Today', 'Today in calendar', 'gravityview' ),
-			'weekHeader' => esc_attr_x( 'Week', 'Week in calendar', 'gravityview' ),
-			'monthStatus'       => __( 'Show a different month', 'gravityview' ),
+			'closeText' => esc_attr_x( 'Close', 'Close calendar', 'gk-gravityview' ),
+			'prevText' => esc_attr_x( 'Prev', 'Previous month in calendar', 'gk-gravityview' ),
+			'nextText' => esc_attr_x( 'Next', 'Next month in calendar', 'gk-gravityview' ),
+			'currentText' => esc_attr_x( 'Today', 'Today in calendar', 'gk-gravityview' ),
+			'weekHeader' => esc_attr_x( 'Week', 'Week in calendar', 'gk-gravityview' ),
+			'monthStatus'       => __( 'Show a different month', 'gk-gravityview' ),
 			'monthNames'        => array_values( $wp_locale->month ),
 			'monthNamesShort'   => array_values( $wp_locale->month_abbrev ),
 			'dayNames'          => array_values( $wp_locale->weekday ),

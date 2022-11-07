@@ -21,8 +21,8 @@ class GravityView_Preset_Business_Listings extends GravityView_Default_Template_
 		$settings = array(
 			'slug'          => 'list',
 			'type'          => 'preset',
-			'label'         => __( 'Business Listings', 'gravityview' ),
-			'description'   => __( 'Display business profiles.', 'gravityview' ),
+			'label'         => __( 'Business Listings', 'gk-gravityview' ),
+			'description'   => __( 'Display business profiles.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/business-listings/logo-business-listings.png', GRAVITYVIEW_FILE ),
 			'preview'       => 'http://demo.gravityview.co/blog/view/business-listings/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/business-listings/form-business-listings.xml',

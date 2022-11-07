@@ -26,7 +26,7 @@ class GravityView_Field_Transaction_ID extends GravityView_Field {
 	 * GravityView_Field_Payment_Amount constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Transaction ID', 'gravityview' );
+		$this->label = esc_html__( 'Transaction ID', 'gk-gravityview' );
 		parent::__construct();
 	}
 }

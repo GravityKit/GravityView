@@ -6,7 +6,7 @@
  * Version:             2.15
  * Author:            	GravityKit
  * Author URI:        	https://www.gravitykit.com
- * Text Domain:       	gravityview
+ * Text Domain:       	gk-gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
  */

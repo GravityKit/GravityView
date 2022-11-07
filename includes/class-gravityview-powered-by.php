@@ -47,7 +47,7 @@ class GravityView_Powered_By {
 		 * @filter `gravityview/powered_by/text` Modify the anchor text for the Powered By link
 		 * @param string $anchor_text Anchor text for the Powered By link. Default: "Powered by GravityView". Will be sanitized before display.
 		 */
-		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gravityview' ) );
+		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gk-gravityview' ) );
 
 		printf( '<span class="gv-powered-by"><a href="%s">%s</a></span>', esc_url( $url ), esc_html( $anchor_text ) );
 	}

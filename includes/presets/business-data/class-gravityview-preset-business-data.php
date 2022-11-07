@@ -21,8 +21,8 @@ class GravityView_Preset_Business_Data extends GravityView_Default_Template_Tabl
 		$settings = array(
 			'slug'          => 'table',
 			'type'          => 'preset',
-			'label'         => __( 'Business Data', 'gravityview' ),
-			'description'   => __( 'Display business information in a table.', 'gravityview' ),
+			'label'         => __( 'Business Data', 'gk-gravityview' ),
+			'description'   => __( 'Display business information in a table.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/business-data/logo-business-data.png', GRAVITYVIEW_FILE ),
 			'preview'       => 'http://demo.gravityview.co/blog/view/business-table/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.xml',

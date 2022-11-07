@@ -14,7 +14,7 @@ class GravityView_Field_Quiz extends GravityView_Field {
 	var $icon = 'dashicons-forms';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Quiz', 'gravityview' );
+		$this->label = esc_html__( 'Quiz', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -27,8 +27,8 @@ class GravityView_Field_Quiz extends GravityView_Field {
 		$new_fields = array(
 			'quiz_show_explanation' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Show Answer Explanation?', 'gravityview' ),
-				'desc' => __('If the field has an answer explanation, show it?', 'gravityview'),
+				'label' => __( 'Show Answer Explanation?', 'gk-gravityview' ),
+				'desc' => __('If the field has an answer explanation, show it?', 'gk-gravityview'),
 				'value' => false,
 				'merge_tags' => false,
 			),

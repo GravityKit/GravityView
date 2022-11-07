@@ -21,8 +21,8 @@ class GravityView_Preset_Website_Showcase extends GravityView_Default_Template_L
 		$settings = array(
 			'slug'          => 'list',
 			'type'          => 'preset',
-			'label'         => __( 'Website Showcase', 'gravityview' ),
-			'description'   => __( 'Feature submitted websites with screenshots.', 'gravityview' ),
+			'label'         => __( 'Website Showcase', 'gk-gravityview' ),
+			'description'   => __( 'Feature submitted websites with screenshots.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/website-showcase/logo-website-showcase.png', GRAVITYVIEW_FILE ),
 			'preview'       => 'http://demo.gravityview.co/blog/view/website-showcase/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/website-showcase/form-website-showcase.xml',

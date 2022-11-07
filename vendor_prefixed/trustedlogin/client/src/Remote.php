@@ -227,20 +227,20 @@ final class Remote {
 
 			case 400:
 			case 423:
-				return new WP_Error( 'unable_to_verify', esc_html__( 'Unable to verify Pause Mode.', 'trustedlogin' ), $api_response );
+				return new WP_Error( 'unable_to_verify', esc_html__( 'Unable to verify Pause Mode.', 'gk-gravityview' ), $api_response );
 
 			case 401:
-				return new WP_Error( 'unauthenticated', esc_html__( 'Authentication failed.', 'trustedlogin' ), $api_response );
+				return new WP_Error( 'unauthenticated', esc_html__( 'Authentication failed.', 'gk-gravityview' ), $api_response );
 
 			case 402:
-				return new WP_Error( 'account_error', esc_html__( 'TrustedLogin account issue.', 'trustedlogin' ), $api_response );
+				return new WP_Error( 'account_error', esc_html__( 'TrustedLogin account issue.', 'gk-gravityview' ), $api_response );
 
 			case 403:
-				return new WP_Error( 'invalid_token', esc_html__( 'Invalid tokens.', 'trustedlogin' ), $api_response );
+				return new WP_Error( 'invalid_token', esc_html__( 'Invalid tokens.', 'gk-gravityview' ), $api_response );
 
 			// the KV store was not found, possible issue with endpoint
 			case 404:
-				return new WP_Error( 'not_found', esc_html__( 'The TrustedLogin vendor was not found.', 'trustedlogin' ), $api_response );
+				return new WP_Error( 'not_found', esc_html__( 'The TrustedLogin vendor was not found.', 'gk-gravityview' ), $api_response );
 
 			// The site is a teapot.
 			case 418:
@@ -250,17 +250,17 @@ final class Remote {
 			case 500:
 			case 503:
 			case 'http_request_failed':
-				return new WP_Error( 'unavailable', esc_html__( 'The TrustedLogin site is not currently online.', 'trustedlogin' ), $api_response );
+				return new WP_Error( 'unavailable', esc_html__( 'The TrustedLogin site is not currently online.', 'gk-gravityview' ), $api_response );
 
 			// Server error
 			case 501:
 			case 502:
 			case 522:
-				return new WP_Error( 'server_error', esc_html__( 'The TrustedLogin site is not currently available.', 'trustedlogin' ), $api_response );
+				return new WP_Error( 'server_error', esc_html__( 'The TrustedLogin site is not currently available.', 'gk-gravityview' ), $api_response );
 
 			// wp_remote_retrieve_response_code() couldn't parse the $api_response
 			case '':
-				return new WP_Error( 'invalid_response', esc_html__( 'Invalid response.', 'trustedlogin' ), $api_response );
+				return new WP_Error( 'invalid_response', esc_html__( 'Invalid response.', 'gk-gravityview' ), $api_response );
 
 			default:
 				return (int) $response_code;
@@ -297,13 +297,13 @@ final class Remote {
 		if ( empty( $response_body ) ) {
 			$this->logging->log( "Response body not set: " . print_r( $response_body, true ), __METHOD__, 'error' );
 
-			return new WP_Error( 'missing_response_body', esc_html__( 'The response was invalid.', 'trustedlogin' ), $api_response );
+			return new WP_Error( 'missing_response_body', esc_html__( 'The response was invalid.', 'gk-gravityview' ), $api_response );
 		}
 
 		$response_json = json_decode( $response_body, true );
 
 		if ( empty( $response_json ) ) {
-			return new WP_Error( 'invalid_response', esc_html__( 'Invalid response.', 'trustedlogin' ), $response_body );
+			return new WP_Error( 'invalid_response', esc_html__( 'Invalid response.', 'gk-gravityview' ), $response_body );
 		}
 
 		if ( isset( $response_json['errors'] ) ) {
@@ -322,7 +322,7 @@ final class Remote {
 		foreach ( (array) $required_keys as $required_key ) {
 			if ( ! isset( $response_json[ $required_key ] ) ) {
 				// translators: %s is the name of the missing data from the server
-				return new WP_Error( 'missing_required_key', sprintf( esc_html__( 'Invalid response. Missing key: %s', 'trustedlogin' ), $required_key ), $response_body );
+				return new WP_Error( 'missing_required_key', sprintf( esc_html__( 'Invalid response. Missing key: %s', 'gk-gravityview' ), $required_key ), $response_body );
 			}
 		}
 

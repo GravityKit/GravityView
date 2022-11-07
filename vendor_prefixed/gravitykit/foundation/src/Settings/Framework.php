@@ -330,7 +330,7 @@ class Framework {
 	 * @return void
 	 */
 	public function add_gk_submenu_item() {
-		$page_title = $menu_title = esc_html__( 'Settings', 'gk-foundation' );
+		$page_title = $menu_title = esc_html__( 'Settings', 'gk-gravityview' );
 
 		AdminMenu::add_submenu_item( [
 			'page_title' => $page_title,
@@ -463,7 +463,7 @@ class Framework {
 		$ui_settings = ! empty( $settings_data['settings'] ) ? $settings_data['settings'] : null;
 
 		if ( ! $plugin_id || ! $ui_settings ) {
-			throw new Exception( esc_html__( 'Invalid request.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Invalid request.', 'gk-gravityview' ) );
 		}
 
 		try {
@@ -484,7 +484,7 @@ class Framework {
 			}
 
 			if ( empty( $plugin_data['sections'] ) ) {
-				throw new ValidatorException( esc_html__( 'Plugin settings data not found.', 'gk-foundation' ) );
+				throw new ValidatorException( esc_html__( 'Plugin settings data not found.', 'gk-gravityview' ) );
 			}
 
 			foreach ( $ui_settings as $id => $value ) {
@@ -515,7 +515,7 @@ class Framework {
 
 						throw new Exception(
 							strtr(
-								esc_html__( 'Setting [setting] has unmet requirements.', 'gk-foundation' ),
+								esc_html__( 'Setting [setting] has unmet requirements.', 'gk-gravityview' ),
 								[ '[setting]' => $plugin_setting['title'] ]
 							)
 						);
@@ -554,9 +554,9 @@ class Framework {
 
 			$this->save_plugin_settings( $plugin_id, $ui_settings );
 
-			return esc_html__( 'Settings were successfully saved.', 'gk-foundation' );
+			return esc_html__( 'Settings were successfully saved.', 'gk-gravityview' );
 		} catch ( ValidatorException $e ) {
-			throw new Exception( sprintf( '%s %s', esc_html__( 'Error saving settings.', 'gk-foundation' ), $e->getMessage() ) );
+			throw new Exception( sprintf( '%s %s', esc_html__( 'Error saving settings.', 'gk-gravityview' ), $e->getMessage() ) );
 		}
 	}
 

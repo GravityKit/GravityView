@@ -84,8 +84,8 @@ class GravityView_Support_Port {
 		}
 
 		$url = \GV\Utils::get( $article, 'url', '#' );
-		$anchor_text .= '<p class="description" style="font-size: 15px; text-align: center;"><strong>' . sprintf( esc_html__( 'Click %s icon for additional information.', 'gravityview' ), '<i class=\'fa fa-question-circle\'></i>' ) . '</strong></p>';
-		$link_text = esc_html__( 'Learn More', 'gravityview' );
+		$anchor_text .= '<p class="description" style="font-size: 15px; text-align: center;"><strong>' . sprintf( esc_html__( 'Click %s icon for additional information.', 'gk-gravityview' ), '<i class=\'fa fa-question-circle\'></i>' ) . '</strong></p>';
+		$link_text = esc_html__( 'Learn More', 'gk-gravityview' );
 
 		return sprintf( '<a href="%s" %s class="%s" title="%s" role="button">%s</a>',
 			esc_url( $url ),
@@ -240,18 +240,18 @@ class GravityView_Support_Port {
 					<tr class="user-gravityview-support-button-wrap">
 						<th scope="row"><?php
 							/* translators: "Support Port" can be translated as "Support Portal" or "Support Window" */
-							esc_html_e( 'GravityView Support Port', 'gravityview' );
+							esc_html_e( 'GravityView Support Port', 'gk-gravityview' );
 						?></th>
 						<td>
 							<fieldset>
 								<legend class="screen-reader-text"><span><?php
 										/* translators: "Support Port" can be translated as "Support Portal" or "Support Window" */
-										esc_html_e( 'GravityView Support Port', 'gravityview' );
+										esc_html_e( 'GravityView Support Port', 'gk-gravityview' );
 								?></span></legend>
 								<label>
 									<input name="<?php echo esc_attr( self::USER_PREF_NAME ); ?>" type="hidden" value="0"/>
 									<input name="<?php echo esc_attr( self::USER_PREF_NAME ); ?>" type="checkbox" value="1" <?php checked( self::show_for_user( $user->ID ) ); ?> />
-									<?php esc_html_e( 'Show GravityView Support Port when on a GravityView-related page', 'gravityview' ); ?>
+									<?php esc_html_e( 'Show GravityView Support Port when on a GravityView-related page', 'gk-gravityview' ); ?>
 								</label>
 							</fieldset>
 						</td>

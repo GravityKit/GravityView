@@ -121,14 +121,14 @@ class gravityview extends \GV\Shortcode {
 					 * ...apart from a nice message if the user can do anything about it.
 					 */
 					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return self::_return( sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) ) );
+						return self::_return( sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) ) );
 					}
 					break;
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
 				default:
-					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 			}
 		}
 
@@ -156,18 +156,18 @@ class gravityview extends \GV\Shortcode {
 
 			if ( $entry['status'] != 'active' ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+				return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 			}
 
 			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
-				return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+				return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 			}
 
 			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 				}
 			}
 
@@ -190,18 +190,18 @@ class gravityview extends \GV\Shortcode {
 			foreach ( $entryset as $e ) {
 				if ( $e['status'] != 'active' ) {
 					gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $e->ID ) );
-					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 				}
 
 				if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $e->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $e->ID ) );
-					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 				}
 
 				if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
 					if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $e->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 						gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $e->ID ) );
-						return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+						return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 					}
 				}
 
@@ -209,7 +209,7 @@ class gravityview extends \GV\Shortcode {
 
 				if ( is_wp_error( $error ) ) {
 					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing: {message}', array( 'entry_id' => $e->ID, 'message' => $error->get_error_message() ) );
-					return self::_return( __( 'You are not allowed to view this content.', 'gravityview' ) );
+					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 				}
 			}
 

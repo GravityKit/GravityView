@@ -20,7 +20,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	var $icon = 'dashicons-upload';
 
 	public function __construct() {
-		$this->label = esc_html__( 'File Upload', 'gravityview' );
+		$this->label = esc_html__( 'File Upload', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -34,16 +34,16 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 		$add_options['link_to_file'] = array(
 			'type' => 'checkbox',
-			'label' => __( 'Display as a Link:', 'gravityview' ),
-			'desc' => __('Display the uploaded files as links, rather than embedded content.', 'gravityview'),
+			'label' => __( 'Display as a Link:', 'gk-gravityview' ),
+			'desc' => __('Display the uploaded files as links, rather than embedded content.', 'gk-gravityview'),
 			'value' => false,
 			'merge_tags' => false,
 		);
 
 		$add_options['image_width'] = array(
 			'type' => 'text',
-			'label' => __( 'Custom Width:', 'gravityview' ),
-			'desc' => __( 'Override the default image width (250).', 'gravityview' ),
+			'label' => __( 'Custom Width:', 'gk-gravityview' ),
+			'desc' => __( 'Override the default image width (250).', 'gk-gravityview' ),
 			'value' => '250',
 			'merge_tags' => false,
 		);

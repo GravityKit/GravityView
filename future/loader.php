@@ -15,9 +15,9 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 if ( version_compare( phpversion(), GV_MIN_PHP_VERSION, '<' ) ) {
 	$php_notices = array(
-		esc_html__( 'GravityView requires PHP [php_required_version] or newer.', 'gravityview' ),
-		esc_html__( 'You are using version [php_installed_version].', 'gravityview' ),
-		esc_html__( 'Please ask your host to upgrade PHP on the server.', 'gravityview' ),
+		esc_html__( 'GravityView requires PHP [php_required_version] or newer.', 'gk-gravityview' ),
+		esc_html__( 'You are using version [php_installed_version].', 'gk-gravityview' ),
+		esc_html__( 'Please ask your host to upgrade PHP on the server.', 'gk-gravityview' ),
 	);
 
 	foreach ( $php_notices as &$notice ) {
@@ -35,7 +35,7 @@ if ( version_compare( phpversion(), GV_MIN_PHP_VERSION, '<' ) ) {
 	} else {
 		add_action( 'admin_notices', function () use ( $php_notices ) {
 			$floaty_image     = plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE );
-			$floaty_image_alt = esc_attr__( 'The GravityKit Astronaut Says:', 'gravityview' );
+			$floaty_image_alt = esc_attr__( 'The GravityKit Astronaut Says:', 'gk-gravityview' );
 
 			list( $requires, $installed, $call_to_action ) = $php_notices;
 

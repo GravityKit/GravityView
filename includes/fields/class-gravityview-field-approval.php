@@ -24,9 +24,9 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_attr__( 'Approve Entries', 'gravityview' );
+		$this->label = esc_attr__( 'Approve Entries', 'gk-gravityview' );
 
-		$this->description =  esc_attr__( 'Approve and reject entries from the View.', 'gravityview' );
+		$this->description =  esc_attr__( 'Approve and reject entries from the View.', 'gk-gravityview' );
 
 		$this->add_hooks();
 

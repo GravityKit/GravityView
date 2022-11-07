@@ -212,13 +212,13 @@ class Plugin_Settings {
 			'icon'     => 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="8" fill="%23FF1B67"/%3E%3Cg clip-path="url(%23clip0_16_27)"%3E%3Cpath fill-rule="evenodd" clip-rule="evenodd" d="M58.4105 54.6666H52.8824V56.4999C52.8824 59.5375 50.3902 61.9999 47.3544 61.9999H32.6134C29.5375 61.9999 27.0853 59.5375 27.0853 56.4999V29H21.5572C20.5144 29 19.7148 29.8207 19.7148 30.8333V49.1666C19.7148 50.1792 20.5144 51 21.5572 51H22.4788C22.9629 51 23.3997 51.4104 23.3997 51.9167V53.75C23.3997 54.2562 22.9629 54.6666 22.4788 54.6666H21.5572C18.4786 54.6666 16.0292 52.2042 16.0292 49.1666V30.8333C16.0292 27.7957 18.4786 25.3333 21.5572 25.3333H27.0853V23.5C27.0853 20.4624 29.5375 18 32.6134 18H47.3544C50.3902 18 52.8824 20.4624 52.8824 23.5V51H58.4105C59.4132 51 60.2529 50.1792 60.2529 49.1666V30.8333C60.2529 29.8207 59.4132 29 58.4105 29H57.4889C56.9647 29 56.5673 28.5896 56.5673 28.0833V26.2499C56.5673 25.7437 56.9647 25.3333 57.4889 25.3333H58.4105C61.449 25.3333 63.9378 27.7957 63.9378 30.8333V49.1666C63.9378 52.2042 61.449 54.6666 58.4105 54.6666ZM49.1968 23.5C49.1968 22.4874 48.3544 21.6667 47.3544 21.6667H32.6134C31.5733 21.6667 30.7709 22.4874 30.7709 23.5V56.4999C30.7709 57.5125 31.5733 58.3333 32.6134 58.3333H47.3544C48.3544 58.3333 49.1968 57.5125 49.1968 56.4999V23.5Z" fill="white"/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id="clip0_16_27"%3E%3Crect width="48" height="44" fill="white" transform="translate(16 18)"/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A',
 			'sections' => [
 				[
-					'title'    => esc_html__( 'General', 'gravityview' ),
+					'title'    => esc_html__( 'General', 'gk-gravityview' ),
 					'settings' => [
 						[
 							'id'          => 'rest_api',
 							'type'        => 'checkbox',
-							'title'       => esc_html__( 'REST API', 'gravityview' ),
-							'description' => esc_html__( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gravityview' ) . ' ' . esc_html__( 'If you are unsure, disable this setting.', 'gravityview' ),
+							'title'       => esc_html__( 'REST API', 'gk-gravityview' ),
+							'description' => esc_html__( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gk-gravityview' ) . ' ' . esc_html__( 'If you are unsure, disable this setting.', 'gk-gravityview' ),
 							'value'       => $this->get( 'rest_api', $default_settings['rest_api'] ),
 						],
 					],
@@ -281,7 +281,7 @@ class Plugin_Settings {
 		if ( $this->is_save_postback() ) {
 			if ( ! \GVCommon::has_cap( 'gravityview_edit_settings' ) ) {
 				$_POST = []; // If you don't reset the $_POST array, it *looks* like the settings were changed, but they weren't
-				\GFCommon::add_error_message( __( 'You don\'t have the ability to edit plugin settings.', 'gravityview' ) );
+				\GFCommon::add_error_message( __( 'You don\'t have the ability to edit plugin settings.', 'gk-gravityview' ) );
 
 				return;
 			}
@@ -292,8 +292,8 @@ class Plugin_Settings {
 	 * @TODO Reimplement elsewhere.
 	 */
 	private function _uninstall_warning_message() {
-		$heading = esc_html__( 'If you delete then re-install GravityView, it will be like installing GravityView for the first time.', 'gravityview' );
-		$message = esc_html__( 'Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings.', 'gravityview' );
+		$heading = esc_html__( 'If you delete then re-install GravityView, it will be like installing GravityView for the first time.', 'gk-gravityview' );
+		$message = esc_html__( 'Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings.', 'gk-gravityview' );
 
 		return sprintf( '<h4>%s</h4><p>%s</p>', $heading, $message );
 	}
@@ -304,20 +304,20 @@ class Plugin_Settings {
 	private function _get_uninstall_reasons() {
 		$reasons = [
 			'will-continue'  => [
-				'label' => esc_html__( 'I am going to continue using GravityView', 'gravityview' ),
+				'label' => esc_html__( 'I am going to continue using GravityView', 'gk-gravityview' ),
 			],
 			'no-longer-need' => [
-				'label' => esc_html__( 'I no longer need GravityView', 'gravityview' ),
+				'label' => esc_html__( 'I no longer need GravityView', 'gk-gravityview' ),
 			],
 			'doesnt-work'    => [
-				'label' => esc_html__( 'The plugin doesn\'t work', 'gravityview' ),
+				'label' => esc_html__( 'The plugin doesn\'t work', 'gk-gravityview' ),
 			],
 			'found-other'    => [
-				'label'    => esc_html__( 'I found a better plugin', 'gravityview' ),
-				'followup' => esc_attr__( 'What plugin you are using, and why?', 'gravityview' ),
+				'label'    => esc_html__( 'I found a better plugin', 'gk-gravityview' ),
+				'followup' => esc_attr__( 'What plugin you are using, and why?', 'gk-gravityview' ),
 			],
 			'other'          => [
-				'label' => esc_html__( 'Other', 'gravityview' ),
+				'label' => esc_html__( 'Other', 'gk-gravityview' ),
 			],
 		];
 
@@ -366,7 +366,7 @@ class Plugin_Settings {
 
 		<?php
 		if ( gravityview()->plugin->is_GF_25() ) {
-			$uninstall_title = esc_html__( 'Uninstall GravityView', 'gravityview' );
+			$uninstall_title = esc_html__( 'Uninstall GravityView', 'gk-gravityview' );
 
 			echo <<<HTML
 <div class="gform-settings-panel">
@@ -417,13 +417,13 @@ HTML;
 				} );
 
 				function gv_feedback_append_error_message() {
-					$( '#gv-uninstall-thanks' ).append( '<div class="notice error">' + <?php echo json_encode( esc_html( __( 'There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co', 'gravityview' ) ) ) ?> +'</div>' );
+					$( '#gv-uninstall-thanks' ).append( '<div class="notice error">' + <?php echo json_encode( esc_html( __( 'There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co', 'gk-gravityview' ) ) ) ?> +'</div>' );
 				}
 			} );
 		</script>
 
 		<form id="gv-uninstall-feedback" method="post" action="https://hooks.zapier.com/hooks/catch/28670/6haevn/">
-			<h2><?php esc_html_e( 'Why did you uninstall GravityView?', 'gravityview' ); ?></h2>
+			<h2><?php esc_html_e( 'Why did you uninstall GravityView?', 'gk-gravityview' ); ?></h2>
 			<ul>
 				<?php
 				$reasons = $this->get_uninstall_reasons();
@@ -433,11 +433,11 @@ HTML;
 				?>
 			</ul>
 			<div class="gv-followup widefat">
-				<p><strong><label for="gv-reason-details"><?php esc_html_e( 'Comments', 'gravityview' ); ?></label></strong></p>
-				<textarea id="gv-reason-details" name="reason_details" data-default="<?php esc_attr_e( 'Please share your thoughts about GravityView', 'gravityview' ) ?>" placeholder="<?php esc_attr_e( 'Please share your thoughts about GravityView', 'gravityview' ); ?>" class="large-text"></textarea>
+				<p><strong><label for="gv-reason-details"><?php esc_html_e( 'Comments', 'gk-gravityview' ); ?></label></strong></p>
+				<textarea id="gv-reason-details" name="reason_details" data-default="<?php esc_attr_e( 'Please share your thoughts about GravityView', 'gk-gravityview' ) ?>" placeholder="<?php esc_attr_e( 'Please share your thoughts about GravityView', 'gk-gravityview' ); ?>" class="large-text"></textarea>
 			</div>
 			<div class="scale-description">
-				<p><strong><?php esc_html_e( 'How likely are you to recommend GravityView?', 'gravityview' ); ?></strong></p>
+				<p><strong><?php esc_html_e( 'How likely are you to recommend GravityView?', 'gk-gravityview' ); ?></strong></p>
 				<ul class="inline">
 					<?php
 					$i = 0;
@@ -447,25 +447,25 @@ HTML;
 					}
 					?>
 				</ul>
-				<p class="description"><?php printf( esc_html_x( '%s ("Not at all likely") to %s ("Extremely likely")', 'A scale from 0 (bad) to 10 (good)', 'gravityview' ), '<label for="likely_to_refer_0"><code>0</code></label>', '<label for="likely_to_refer_10"><code>10</code></label>' ); ?></p>
+				<p class="description"><?php printf( esc_html_x( '%s ("Not at all likely") to %s ("Extremely likely")', 'A scale from 0 (bad) to 10 (good)', 'gk-gravityview' ), '<label for="likely_to_refer_0"><code>0</code></label>', '<label for="likely_to_refer_10"><code>10</code></label>' ); ?></p>
 			</div>
 
 			<div class="gv-form-field-wrapper">
-				<label><input type="checkbox" class="checkbox" name="follow_up_with_me" value="1" /> <?php esc_html_e( 'Please follow up with me about my feedback', 'gravityview' ); ?></label>
+				<label><input type="checkbox" class="checkbox" name="follow_up_with_me" value="1" /> <?php esc_html_e( 'Please follow up with me about my feedback', 'gk-gravityview' ); ?></label>
 			</div>
 
 			<div class="submit">
 				<input type="hidden" name="siteurl" value="<?php echo esc_url( get_bloginfo( 'url' ) ); ?>" />
 				<input type="hidden" name="email" value="<?php echo esc_attr( $user->user_email ); ?>" />
 				<input type="hidden" name="display_name" value="<?php echo esc_attr( $user->display_name ); ?>" />
-				<input type="submit" value="<?php esc_html_e( 'Send Us Your Feedback', 'gravityview' ); ?>" class="button button-primary primary button-hero" />
+				<input type="submit" value="<?php esc_html_e( 'Send Us Your Feedback', 'gk-gravityview' ); ?>" class="button button-primary primary button-hero" />
 			</div>
 		</form>
 
 		<div id="gv-uninstall-thanks" class="<?php echo ( gravityview()->plugin->is_GF_25() ) ? 'notice-large' : 'notice notice-large notice-updated below-h2'; ?>" style="display:none;">
-			<h3 class="notice-title"><?php esc_html_e( 'Thank you for using GravityView!', 'gravityview' ); ?></h3>
+			<h3 class="notice-title"><?php esc_html_e( 'Thank you for using GravityView!', 'gk-gravityview' ); ?></h3>
 			<p><?php echo gravityview_get_floaty(); ?>
-				<?php echo make_clickable( esc_html__( 'Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co', 'gravityview' ) ); ?>
+				<?php echo make_clickable( esc_html__( 'Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co', 'gk-gravityview' ) ); ?>
 			</p>
 			<div class="wp-clearfix"></div>
 		</div>

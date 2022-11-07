@@ -21,8 +21,8 @@ class GravityView_Preset_Job_Board extends GravityView_Default_Template_List {
 		$settings = array(
 			'slug'          => 'list',
 			'type'          => 'preset',
-			'label'         => __( 'Job Board', 'gravityview' ),
-			'description'   => __( 'Post available jobs in a simple job board.', 'gravityview' ),
+			'label'         => __( 'Job Board', 'gk-gravityview' ),
+			'description'   => __( 'Post available jobs in a simple job board.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/job-board/logo-job-board.png', GRAVITYVIEW_FILE ),
 			'preview'       => 'http://demo.gravityview.co/blog/view/job-board/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/job-board/form-job-board.xml',

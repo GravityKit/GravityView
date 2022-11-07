@@ -21,8 +21,8 @@ class GravityView_Preset_Event_Listings extends GravityView_Default_Template_Lis
 		$settings = array(
 			'slug'          => 'list',
 			'type'          => 'preset',
-			'label'         => __( 'Event Listings', 'gravityview' ),
-			'description'   => __( 'Present a list of your events.', 'gravityview' ),
+			'label'         => __( 'Event Listings', 'gk-gravityview' ),
+			'description'   => __( 'Present a list of your events.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/event-listings/logo-event-listings.png', GRAVITYVIEW_FILE ),
 			'preview'       => 'http://demo.gravityview.co/blog/view/event-listings/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/event-listings/form-event-listings.xml',

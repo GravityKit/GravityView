@@ -46,7 +46,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 		$is_included          = ! empty( $template['included'] );
 		$template_text_domain = GravityKitFoundation::helpers()->array->get( $template, 'textdomain', '' );
 		$plugin_data          = isset( $wp_plugins[ $template_text_domain ] ) ? $wp_plugins[ $template_text_domain ] : [];
-		$button_text          = empty( $plugin_data ) ? esc_html__( 'Install Layout', 'gravityview' ) : esc_html__( 'Activate & Select Layout', 'gravityview' );
+		$button_text          = empty( $plugin_data ) ? esc_html__( 'Install Layout', 'gk-gravityview' ) : esc_html__( 'Activate & Select Layout', 'gk-gravityview' );
 		$button_class         = 'gv-layout-' . ( empty( $plugin_data ) ? 'install' : 'activate' );
 		$template_path        = isset( $plugin_data['path'] ) ? $plugin_data['path'] : '';
 
@@ -66,28 +66,28 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 						?>
 							<p><a href="<?php echo esc_url( admin_url( 'edit.php?post_type=gravityview&page=gv-admin-installer' ) ); ?>" class="button button-secondary button-hero <?php echo $button_class; ?>" rel="internal" data-template-path="<?php echo $template_path; ?>"><?php echo $button_text; ?></a></p>
 							<?php if( !empty( $template['license'] ) ) { ?>
-								<p class="gv-included-in"><?php echo sprintf( esc_html__( 'This layout is included in the %s license.', 'gravityview' ), esc_html( str_replace( ' ', '&nbsp;', $template['license'] ) ) ); ?></p>
+								<p class="gv-included-in"><?php echo sprintf( esc_html__( 'This layout is included in the %s license.', 'gk-gravityview' ), esc_html( str_replace( ' ', '&nbsp;', $template['license'] ) ) ); ?></p>
 							<?php } ?>
 						<?php
 						} elseif( $placeholder ) {
 							$utm_string = '?utm_source=plugin&utm_medium=buy_now&utm_campaign=view_type&utm_term=' . urlencode( $template['license'] ) . '&utm_content=' . urlencode( $template['slug'] );
 							?>
-							<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button button-primary button-hero" rel="noreferrer noopener external"><?php esc_html_e( 'Buy Now', 'gravityview'); ?></a></p>
+							<p><a href="<?php echo esc_url( $template['buy_source'] ); ?>" class="button button-primary button-hero" rel="noreferrer noopener external"><?php esc_html_e( 'Buy Now', 'gk-gravityview'); ?></a></p>
 
 							<?php if( !empty( $template['preview'] ) ) { ?>
-								<p><a href="<?php echo esc_url( $template['preview'] ); ?>" rel="noreferrer noopener external" class="button button-secondary"><i class="dashicons dashicons-external" style="vertical-align: middle;" title="<?php esc_html_e( 'View a live demo of this layout', 'gravityview'); ?>"></i> <?php esc_html_e( 'Try a demo', 'gravityview' ); ?></a></p>
+								<p><a href="<?php echo esc_url( $template['preview'] ); ?>" rel="noreferrer noopener external" class="button button-secondary"><i class="dashicons dashicons-external" style="vertical-align: middle;" title="<?php esc_html_e( 'View a live demo of this layout', 'gk-gravityview'); ?>"></i> <?php esc_html_e( 'Try a demo', 'gk-gravityview' ); ?></a></p>
 							<?php } ?>
 
 							<?php if( ! empty( $template['license'] ) ) { ?>
-								<p class="gv-included-in"><?php echo sprintf( esc_html__( 'This layout is included in the %s license.', 'gravityview' ), '<a href="https://www.gravitykit.com/pricing/' . esc_attr( $utm_string ) . '" rel="noreferrer noopener external">' . esc_html( str_replace( ' ', '&nbsp;', $template['license'] ) ) . '</a>' ); ?></p>
+								<p class="gv-included-in"><?php echo sprintf( esc_html__( 'This layout is included in the %s license.', 'gk-gravityview' ), '<a href="https://www.gravitykit.com/pricing/' . esc_attr( $utm_string ) . '" rel="noreferrer noopener external">' . esc_html( str_replace( ' ', '&nbsp;', $template['license'] ) ) . '</a>' ); ?></p>
 							<?php } ?>
 						<?php }
 
 						if ($placeholder || $is_included) { ?> </div><div class="hidden"> <?php } ?>
 
-                        <p><a href="#gv_select_template" role="button" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gravityview'); ?></a></p>
+                        <p><a href="#gv_select_template" role="button" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gk-gravityview'); ?></a></p>
                         <?php if( !empty( $template['preview'] ) ) { ?>
-                            <a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-welcome-view-site" title="<?php esc_html_e( 'View a live demo of this preset', 'gravityview'); ?>"></i></a>
+                            <a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-welcome-view-site" title="<?php esc_html_e( 'View a live demo of this preset', 'gk-gravityview'); ?>"></i></a>
                         <?php } ?>
 					</div>
 				</div>

@@ -78,15 +78,15 @@ class GravityView_Admin_Metaboxes {
 		add_meta_box( 'gravityview_select_form', $this->get_data_source_header( $post->ID ), array( $this, 'render_data_source_metabox' ), 'gravityview', 'normal', 'high' );
 
 		// select view type/template
-		add_meta_box( 'gravityview_select_template', __( 'Choose a View Type', 'gravityview' ), array( $this, 'render_select_template_metabox' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_select_template', __( 'Choose a View Type', 'gk-gravityview' ), array( $this, 'render_select_template_metabox' ), 'gravityview', 'normal', 'high' );
 
 		// View Configuration box
-		add_meta_box( 'gravityview_view_config', __( 'Layout', 'gravityview' ), array( $this, 'render_view_configuration_metabox' ), 'gravityview', 'normal', 'high' );
+		add_meta_box( 'gravityview_view_config', __( 'Layout', 'gk-gravityview' ), array( $this, 'render_view_configuration_metabox' ), 'gravityview', 'normal', 'high' );
 
 		$this->add_settings_metabox_tabs();
 
 		// Other Settings box
-		add_meta_box( 'gravityview_settings', __( 'Settings', 'gravityview' ), array( $this, 'settings_metabox_render' ), 'gravityview', 'normal', 'core' );
+		add_meta_box( 'gravityview_settings', __( 'Settings', 'gk-gravityview' ), array( $this, 'settings_metabox_render' ), 'gravityview', 'normal', 'core' );
 
 	}
 
@@ -126,7 +126,7 @@ class GravityView_Admin_Metaboxes {
 		$metaboxes = array(
 			array(
 				'id' => 'template_settings',
-				'title' => __( 'View Settings', 'gravityview' ),
+				'title' => __( 'View Settings', 'gk-gravityview' ),
 				'file' => 'view-settings.php',
 				'icon-class' => 'dashicons-admin-generic',
 				'callback' => '',
@@ -134,7 +134,7 @@ class GravityView_Admin_Metaboxes {
 			),
 			array(
 				'id' => 'multiple_entries',
-				'title' => __( 'Multiple Entries', 'gravityview' ),
+				'title' => __( 'Multiple Entries', 'gk-gravityview' ),
 				'file' => 'multiple-entries.php',
 				'icon-class' => 'dashicons-admin-page',
 				'callback' => '',
@@ -142,7 +142,7 @@ class GravityView_Admin_Metaboxes {
 			),
 			array(
 				'id' => 'single_entry', // Use the same ID as View Settings for backward compatibility
-				'title' => __( 'Single Entry', 'gravityview' ),
+				'title' => __( 'Single Entry', 'gk-gravityview' ),
 				'file' => 'single-entry.php',
 				'icon-class' => 'dashicons-media-default',
 				'callback' => '',
@@ -150,7 +150,7 @@ class GravityView_Admin_Metaboxes {
 			),
 			array(
 				'id' => 'edit_entry', // Use the same ID as View Settings for backward compatibility
-				'title' => __( 'Edit Entry', 'gravityview' ),
+				'title' => __( 'Edit Entry', 'gk-gravityview' ),
 				'file' => 'edit-entry.php',
 				'icon-class' => 'dashicons-welcome-write-blog',
 				'callback' => '',
@@ -158,7 +158,7 @@ class GravityView_Admin_Metaboxes {
 			),
 			array(
 				'id' => 'delete_entry',
-				'title' => __( 'Delete Entry', 'gravityview' ),
+				'title' => __( 'Delete Entry', 'gk-gravityview' ),
 				'file' => 'delete-entry.php',
 				'icon-class' => 'dashicons-trash',
 				'callback' => '',
@@ -166,7 +166,7 @@ class GravityView_Admin_Metaboxes {
 			),
 			array(
 				'id' => 'sort_filter',
-				'title' => __( 'Filter &amp; Sort', 'gravityview' ),
+				'title' => __( 'Filter &amp; Sort', 'gk-gravityview' ),
 				'file' => 'sort-filter.php',
 				'icon-class' => 'dashicons-sort',
 				'callback' => '',
@@ -174,7 +174,7 @@ class GravityView_Admin_Metaboxes {
 			),
 			array(
 				'id' => 'permissions', // Use the same ID as View Settings for backward compatibility
-				'title' => __( 'Permissions', 'gravityview' ),
+				'title' => __( 'Permissions', 'gk-gravityview' ),
 				'file' => 'permissions.php',
 				'icon-class' => 'dashicons-lock',
 				'callback' => '',
@@ -217,7 +217,7 @@ class GravityView_Admin_Metaboxes {
 		 * @see https://github.com/gravityview/GravityView/issues/1684
 		 */
 		if ( ! class_exists( 'GravityView_Admin_Views' ) ) {
-			return __( 'Data Source', 'gravityview' );
+			return __( 'Data Source', 'gk-gravityview' );
 		}
 
 		//current value
@@ -229,7 +229,7 @@ class GravityView_Admin_Metaboxes {
 			$links = '<span class="alignright gv-form-links">' . $links . '</span>';
 		}
 
-		return __( 'Data Source', 'gravityview' ) . $links;
+		return __( 'Data Source', 'gk-gravityview' ) . $links;
 	}
 
 	/**

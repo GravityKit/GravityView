@@ -164,7 +164,7 @@ final class SupportRole {
 		 */
 		$role_display_name = apply_filters( 'trustedlogin/' . $this->config->ns() . '/support_role/display_name',
 			// translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-			sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) ),
+			sprintf( esc_html__( '%s Support', 'gk-gravityview' ), $this->config->get_setting( 'vendor/title' ) ),
 			$this
 		);
 

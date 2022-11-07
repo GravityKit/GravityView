@@ -349,7 +349,7 @@ class GVCommon {
 		 */
 		if ( $has_post_fields ) {
 			$fields['post_id'] = array(
-				'label' => __( 'Post ID', 'gravityview' ),
+				'label' => __( 'Post ID', 'gk-gravityview' ),
 				'type' => 'post_id',
 			);
 		}
@@ -1022,7 +1022,7 @@ class GVCommon {
 		// If we're using time diff, we want to have a different default format
 		if( empty( $format ) ) {
 			/* translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago" */
-			$format = $is_diff ? esc_html__( '%s ago', 'gravityview' ) : get_option( 'date_format' );
+			$format = $is_diff ? esc_html__( '%s ago', 'gk-gravityview' ) : get_option( 'date_format' );
 		}
 
 		// If raw was specified, don't modify the stored value
@@ -1376,7 +1376,7 @@ class GVCommon {
 	 * @return string         html
 	 */
 	public static function get_sortable_fields( $formid, $current = '' ) {
-		$output = '<option value="" ' . selected( '', $current, false ).'>' . esc_html__( 'Default (Entry ID)', 'gravityview' ) .'</option>';
+		$output = '<option value="" ' . selected( '', $current, false ).'>' . esc_html__( 'Default (Entry ID)', 'gk-gravityview' ) .'</option>';
 
 		if ( empty( $formid ) ) {
 			return $output;
@@ -1423,11 +1423,11 @@ class GVCommon {
 		$date_created = array(
 			'date_created' => array(
 				'type' => 'date_created',
-				'label' => __( 'Date Created', 'gravityview' ),
+				'label' => __( 'Date Created', 'gk-gravityview' ),
 			),
 			'date_updated' => array(
 				'type' => 'date_updated',
-				'label' => __( 'Date Updated', 'gravityview' ),
+				'label' => __( 'Date Updated', 'gk-gravityview' ),
 			),
 		);
 
@@ -1557,7 +1557,7 @@ class GVCommon {
 
 			$enkoder = new StandalonePHPEnkoder;
 
-			$message = empty( $message ) ? __( 'Email hidden; Javascript is required.', 'gravityview' ) : $message;
+			$message = empty( $message ) ? __( 'Email hidden; Javascript is required.', 'gk-gravityview' ) : $message;
 
 			/**
 			 * @filter `gravityview/phpenkoder/msg` Modify the message shown when Javascript is disabled and an encrypted email field is displayed

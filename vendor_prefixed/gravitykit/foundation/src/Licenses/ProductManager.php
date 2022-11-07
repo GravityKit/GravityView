@@ -109,7 +109,7 @@ class ProductManager {
 		] );
 
 		if ( ! Framework::get_instance()->current_user_can( 'install_products' ) ) {
-			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-gravityview' ) );
 		}
 
 		return $this->install_product( $payload );
@@ -128,7 +128,7 @@ class ProductManager {
 	 */
 	public function install_product( array $product ) {
 		if ( ! file_exists( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' ) ) {
-			throw new Exception( esc_html__( 'Unable to load core WordPress files required to install the product.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Unable to load core WordPress files required to install the product.', 'gk-gravityview' ) );
 		}
 
 		include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
@@ -166,7 +166,7 @@ class ProductManager {
 		}
 
 		if ( ! $product_download_link ) {
-			throw new Exception( esc_html__( 'Unable to locate product download link.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Unable to locate product download link.', 'gk-gravityview' ) );
 		}
 
 		$installer = new Plugin_Upgrader( new WPUpgraderSkin() );
@@ -175,7 +175,7 @@ class ProductManager {
 			$installer->install( $product_download_link );
 		} catch ( Exception $e ) {
 			$error = join( ' ', [
-				esc_html__( 'Installation failed.', 'gk-foundation' ),
+				esc_html__( 'Installation failed.', 'gk-gravityview' ),
 				$e->getMessage()
 			] );
 
@@ -183,7 +183,7 @@ class ProductManager {
 		}
 
 		if ( ! $installer->result ) {
-			throw new Exception( esc_html__( 'Installation failed.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Installation failed.', 'gk-gravityview' ) );
 		}
 
 		$product_path = $installer->plugin_info();
@@ -223,7 +223,7 @@ class ProductManager {
 		] );
 
 		if ( ! Framework::get_instance()->current_user_can( 'activate_products' ) ) {
-			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-gravityview' ) );
 		}
 
 		return $this->activate_product( $payload['path'] );
@@ -242,13 +242,13 @@ class ProductManager {
 	 */
 	public function activate_product( $product ) {
 		if ( $this->is_product_active_in_current_context( $product ) ) {
-			throw new Exception( esc_html__( 'Product is already active.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Product is already active.', 'gk-gravityview' ) );
 		}
 
 		$result = activate_plugin( $product, false, CoreHelpers::is_network_admin() );
 
 		if ( is_wp_error( $result ) || ! $this->is_product_active_in_current_context( $product ) ) {
-			throw new Exception( esc_html__( 'Could not activate the product.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Could not activate the product.', 'gk-gravityview' ) );
 		}
 
 		return [
@@ -274,7 +274,7 @@ class ProductManager {
 		] );
 
 		if ( ! Framework::get_instance()->current_user_can( 'deactivate_products' ) ) {
-			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-gravityview' ) );
 		}
 
 		return $this->deactivate_product( $payload['path'] );
@@ -293,13 +293,13 @@ class ProductManager {
 	 */
 	public function deactivate_product( $product ) {
 		if ( ! $this->is_product_active_in_current_context( $product ) ) {
-			throw new Exception( esc_html__( 'Product in not active.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Product in not active.', 'gk-gravityview' ) );
 		}
 
 		deactivate_plugins( $product, false, CoreHelpers::is_network_admin() );
 
 		if ( $this->is_product_active_in_current_context( $product ) ) {
-			throw new Exception( esc_html__( 'Could not deactivate the product.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Could not deactivate the product.', 'gk-gravityview' ) );
 		}
 
 		return [
@@ -325,7 +325,7 @@ class ProductManager {
 		] );
 
 		if ( ! Framework::get_instance()->current_user_can( 'activate_products' ) ) {
-			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-gravityview' ) );
 		}
 
 		return $this->update_product( $payload['path'] );
@@ -344,7 +344,7 @@ class ProductManager {
 	 */
 	public function update_product( $product_path ) {
 		if ( ! file_exists( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' ) ) {
-			throw new Exception( esc_html__( 'Unable to load core WordPress files required to install the product.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Unable to load core WordPress files required to install the product.', 'gk-gravityview' ) );
 		}
 
 		include_once( ABSPATH . 'wp-admin/includes/class-wp-upgrader.php' );
@@ -364,7 +364,7 @@ class ProductManager {
 			remove_filter( 'pre_site_transient_update_plugins', $update_plugins_transient_filter );
 		} catch ( Exception $e ) {
 			$error = join( ' ', [
-				esc_html__( 'Update failed.', 'gk-foundation' ),
+				esc_html__( 'Update failed.', 'gk-gravityview' ),
 				isset( $updater->strings[ $e->getMessage() ] ) ? $updater->strings[ $e->getMessage() ] : $e->getMessage(),
 			] );
 
@@ -372,7 +372,7 @@ class ProductManager {
 		}
 
 		if ( ! $updater->result ) {
-			throw new Exception( esc_html__( 'Installation failed.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Installation failed.', 'gk-gravityview' ) );
 		}
 
 		$activation_error = null;
@@ -472,7 +472,7 @@ class ProductManager {
 		$formatted_products = [];
 
 		if ( empty( $response ) ) {
-			throw new Exception( esc_html__( 'Invalid product information received from the API.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Invalid product information received from the API.', 'gk-gravityview' ) );
 		}
 
 		foreach ( $remote_products as $remote_product ) {
@@ -550,7 +550,7 @@ class ProductManager {
 	 */
 	public function ajax_get_products_data( array $payload ) {
 		if ( ! Framework::get_instance()->current_user_can( 'view_products' ) ) {
-			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-gravityview' ) );
 		}
 
 		$payload = wp_parse_args( $payload, [
@@ -805,7 +805,7 @@ class ProductManager {
 				'settings' => sprintf(
 					'<a href="%s">%s</a>',
 					$product['settings'],
-					esc_html__( 'Settings', 'gk-foundation' )
+					esc_html__( 'Settings', 'gk-gravityview' )
 				)
 			];
 		}
@@ -813,7 +813,7 @@ class ProductManager {
 		$gk_links['support'] = sprintf(
 			'<a href="%s">%s</a>',
 			'https://docs.gravitykit.com',
-			esc_html__( 'Support', 'gk-foundation' )
+			esc_html__( 'Support', 'gk-gravityview' )
 		);
 
 		/**
