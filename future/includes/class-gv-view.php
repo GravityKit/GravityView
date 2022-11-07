@@ -187,7 +187,7 @@ class View implements \ArrayAccess {
 			 */
 			'public'              => apply_filters( 'gravityview_direct_access', gravityview()->plugin->is_compatible(), 0 ),
 			'show_ui'             => gravityview()->plugin->is_compatible(),
-			'show_in_menu'        => gravityview()->plugin->is_compatible(),
+			'show_in_menu'        => false, // Menu items are added in \GV\Plugin::add_to_gravitykit_admin_menu()
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
 			'menu_position'       => 17,

@@ -126,6 +126,9 @@ final class Plugin {
 		 * GFAddOn-backed settings
 		 */
 		add_action( 'plugins_loaded', array( $this, 'load_settings' ) );
+
+		// Add "All Views" and "New View" as submenus to the GravityKit menu
+		add_action( 'gk/foundation/initialized', array( $this, 'add_to_gravitykit_admin_menu' ) );
 	}
 
 	public function load_settings() {
@@ -626,6 +629,54 @@ final class Plugin {
 		delete_transient( 'gravityview_edd-deactivate_valid' );
 		delete_transient( 'gravityview_dismissed_notices' );
 		delete_site_transient( 'gravityview_related_plugins' );
+	}
+
+	/**
+	 * Adds "All Views" and "New View" as submenus to the GravityKit menu.
+	 *
+	 * @since 2.16
+	 *
+	 * @param GravityKitFoundation $foundation Foundation instance.
+	 *
+	 * @return void
+	 */
+	public function add_to_gravitykit_admin_menu( $foundation ) {
+		if ( ! \GVCommon::has_cap( 'edit_gravityviews' ) ) {
+			return;
+		}
+
+		$admin_menu = $foundation::admin_menu();
+
+		$admin_menu::add_submenu_item( [
+			'page_title' => __( 'All Views', 'gravityview' ),
+			'menu_title' => __( 'All Views', 'gravityview' ),
+			'capability' => 'edit_gravityviews',
+			'id'         => 'gravityview_all_views',
+			'callback'   => function () {
+				wp_safe_redirect(
+					add_query_arg(
+						[ 'post_type' => 'gravityview' ],
+						admin_url( 'post-new.php' ) )
+				);
+
+			},
+			'order'      => 1,
+		], 'center' );
+
+		$admin_menu::add_submenu_item( [
+			'page_title' => __( 'New View', 'gravityview' ),
+			'menu_title' => __( 'New View', 'gravityview' ),
+			'capability' => 'edit_gravityviews',
+			'id'         => 'gravityview_new_view',
+			'callback'   => function () {
+				wp_safe_redirect(
+					add_query_arg(
+						[ 'post_type' => 'gravityview' ],
+						admin_url( 'edit.php' ) )
+				);
+			},
+			'order'      => 2,
+		], 'center' );
 	}
 
 	public function __clone() {
