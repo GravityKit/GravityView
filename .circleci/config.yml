@@ -71,6 +71,7 @@ jobs:
           command: |
             rm -rf vendor vendor_prefixed
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "remove gravitykit/foundation"
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o "remove --dev lucatume/wp-browser yoast/phpunit-polyfills"
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "config platform.php 5.6.4"
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "require yoast/phpunit-polyfills --dev"
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "require gravitykit/foundation"
