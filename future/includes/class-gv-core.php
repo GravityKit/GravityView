@@ -124,9 +124,8 @@ final class Core {
 		require_once $this->plugin->dir( 'includes/class-cache.php');
 
 		/**
-		 * GravityView extensions and widgets.
+		 * GravityView widgets.
 		 */
-		require_once $this->plugin->dir( 'future/includes/class-gv-extension.php' );
 		require_once $this->plugin->dir( 'future/includes/class-gv-widget.php' );
 
 		/** More legacy core. @todo Deprecate */
