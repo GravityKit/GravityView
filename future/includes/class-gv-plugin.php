@@ -645,20 +645,23 @@ final class Plugin {
 			return;
 		}
 
-		$admin_menu = $foundation::admin_menu();
+		$admin_menu   = $foundation::admin_menu();
+		$post_type    = 'gravityview';
+		$capability   = 'edit_gravityviews';
+		$all_views_menu_id = "{$post_type}_all_views";
+		$new_view_menu_id  = "{$post_type}_new_view";
 
 		$admin_menu::add_submenu_item( [
 			'page_title' => __( 'All Views', 'gk-gravityview' ),
 			'menu_title' => __( 'All Views', 'gk-gravityview' ),
-			'capability' => 'edit_gravityviews',
-			'id'         => 'gravityview_all_views',
-			'callback'   => function () {
+			'capability' => $capability,
+			'id'         => $all_views_menu_id,
+			'callback'   => function () use ( $post_type ) {
 				wp_safe_redirect(
 					add_query_arg(
-						[ 'post_type' => 'gravityview' ],
-						admin_url( 'post-new.php' ) )
+						[ 'post_type' => $post_type ],
+						admin_url( 'edit.php' ) )
 				);
-
 			},
 			'order'      => 1,
 		], 'center' );
@@ -666,17 +669,36 @@ final class Plugin {
 		$admin_menu::add_submenu_item( [
 			'page_title' => __( 'New View', 'gk-gravityview' ),
 			'menu_title' => __( 'New View', 'gk-gravityview' ),
-			'capability' => 'edit_gravityviews',
-			'id'         => 'gravityview_new_view',
-			'callback'   => function () {
+			'capability' => $capability,
+			'id'         => $post_type . '_new_view',
+			'callback'   => function () use ( $post_type ) {
 				wp_safe_redirect(
 					add_query_arg(
-						[ 'post_type' => 'gravityview' ],
-						admin_url( 'edit.php' ) )
+						[ 'post_type' => $post_type ],
+						admin_url( 'post-new.php' ) )
 				);
+
 			},
 			'order'      => 2,
 		], 'center' );
+
+		add_filter( 'parent_file', function ( $parent_file ) use ( $admin_menu, $post_type, $all_views_menu_id, $new_view_menu_id ) {
+			global $submenu_file;
+
+			if ( strpos( $submenu_file, "post_type={$post_type}" ) === false ) {
+				return $parent_file;
+			}
+
+			if ( strpos( $submenu_file, 'edit.php' ) !== false ) {
+				$submenu_file = $all_views_menu_id;
+			}
+
+			if ( strpos( $submenu_file, 'post-new.php' ) !== false ) {
+				$submenu_file = $new_view_menu_id;
+			}
+
+			return constant( get_class( $admin_menu ) . '::WP_ADMIN_MENU_SLUG' );
+		} );
 	}
 
 	public function __clone() {
