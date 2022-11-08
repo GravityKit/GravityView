@@ -91,16 +91,16 @@ jobs:
           command: |
             rm -rf vendor
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
+            /home/circleci/tooling/build-tools/build_tools.sh grunt
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
-              /home/circleci/tooling/build-tools/build_tools.sh grunt -o "exec:bower sass postcss uglify imagemin"
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
             else
-              /home/circleci/tooling/build-tools/build_tools.sh grunt
-              [[ $(git diff languages/gravityview.pot | grep +msgid) ]] && /home/circleci/tooling/build-tools/build_tools.sh tx -o "push -s"
-              /home/circleci/tooling/build-tools/build_tools.sh tx -o "pull -f -a --parallel --no-interactive"
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
             fi
-            git restore vendor
+            mkdir -p gravityview
+            cp -R vendor* build gravityview
+            rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php
+            zip -gr $(ls gravityview-*.zip) gravityview
             mkdir .release
             cp gravityview-*.zip .release
       - run:
