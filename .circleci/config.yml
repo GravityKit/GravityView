@@ -107,7 +107,7 @@ jobs:
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
             fi
             mkdir -p gravityview
-            cp -R vendor* build gravityview
+            cp -R vendor* gravityview
             rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php
             zip -gr $(ls gravityview-*.zip) gravityview
             mkdir .release
