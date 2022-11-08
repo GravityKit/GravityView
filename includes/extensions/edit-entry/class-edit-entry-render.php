@@ -1437,21 +1437,19 @@ class GravityView_Edit_Entry_Render {
         $message = null;
 
         // First, make sure they have the capability to edit the post.
-        if( false === current_user_can( 'edit_post', $this->entry['post_id'] ) ) {
-
-            /**
-             * @filter `gravityview/edit_entry/unsupported_post_field_text` Modify the message when someone isn't able to edit a post
-             * @param string $message The existing "You don't have permission..." text
-             */
-            $message = apply_filters('gravityview/edit_entry/unsupported_post_field_text', __('You don&rsquo;t have permission to edit this post.', 'gk-gravityview') );
-
-        } elseif( null === get_post( $this->entry['post_id'] ) ) {
+		if( null === get_post( $this->entry['post_id'] ) ) {
             /**
              * @filter `gravityview/edit_entry/no_post_text` Modify the message when someone is editing an entry attached to a post that no longer exists
              * @param string $message The existing "This field is not editable; the post no longer exists." text
              */
             $message = apply_filters('gravityview/edit_entry/no_post_text', __('This field is not editable; the post no longer exists.', 'gk-gravityview' ) );
-        }
+        } elseif( false === current_user_can( 'edit_post', $this->entry['post_id'] ) ) {
+			/**
+			 * @filter `gravityview/edit_entry/unsupported_post_field_text` Modify the message when someone isn't able to edit a post
+			 * @param string $message The existing "You don't have permission..." text
+			 */
+			$message = apply_filters('gravityview/edit_entry/unsupported_post_field_text', __('You don&rsquo;t have permission to edit this post.', 'gk-gravityview') );
+		}
 
         if( $message ) {
             $field_content = sprintf('<div class="ginput_container ginput_container_' . $field->type . '">%s</div>', wpautop( $message ) );
