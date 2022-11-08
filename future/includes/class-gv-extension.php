@@ -83,8 +83,6 @@ abstract class Extension {
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		add_action( 'admin_init', array( $this, 'settings' ) );
-
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
 
 		// Save the view configuration. Run at 14 so that View metadata is already saved (at 10)
@@ -95,6 +93,54 @@ abstract class Extension {
 		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
 
 		$this->add_hooks();
+	}
+
+	/**
+	 * Load translations for the extension
+	 *
+	 * 1. Check  `wp-content/languages/gravityview/` folder and load using `load_textdomain()`
+	 * 2. Check  `wp-content/plugins/gravityview/languages/` folder for `gravityview-[locale].mo` file and load using `load_textdomain()`
+	 * 3. Load default file using `load_plugin_textdomain()` from `wp-content/plugins/gravityview/languages/`
+	 *
+	 * @return void
+	 */
+	public function load_plugin_textdomain() {
+		if ( empty( $this->_text_domain ) ) {
+			gravityview()->log->debug( 'Extension translation cannot be loaded; the `_text_domain` variable is not defined', array( 'data' => $this ) );
+			return;
+		}
+
+		// Backward compat for Ratings & Reviews / Maps
+		$path = isset( $this->_path ) ? $this->_path : ( isset( $this->plugin_file ) ? $this->plugin_file : '' );
+
+		// Set filter for plugin's languages directory
+		$lang_dir = dirname( plugin_basename( $path ) ) . '/languages/';
+
+		$locale = get_locale();
+
+		if ( function_exists('get_user_locale') && is_admin() ) {
+			$locale = get_user_locale();
+		}
+
+		// Traditional WordPress plugin locale filter
+		$locale = apply_filters( 'plugin_locale',  $locale, $this->_text_domain );
+
+		$mofile = sprintf( '%1$s-%2$s.mo', $this->_text_domain, $locale );
+
+		// Setup paths to current locale file
+		$mofile_local  = $lang_dir . $mofile;
+		$mofile_global = WP_LANG_DIR . '/' . $this->_text_domain . '/' . $mofile;
+
+		if ( file_exists( $mofile_global ) ) {
+			// Look in global /wp-content/languages/[plugin-dir]/ folder
+			load_textdomain( $this->_text_domain, $mofile_global );
+		} elseif ( file_exists( $mofile_local ) ) {
+			// Look in local /wp-content/plugins/[plugin-dir]/languages/ folder
+			load_textdomain( $this->_text_domain, $mofile_local );
+		} else {
+			// Load the default language files
+			load_plugin_textdomain( $this->_text_domain, false, $lang_dir );
+		}
 	}
 
 	/**
