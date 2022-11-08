@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-07T17:08:08+00:00\n"
+"POT-Creation-Date: 2022-11-08T19:15:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -34,22 +34,6 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:143
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:144
 msgid "GravityKit"
-msgstr ""
-
-#: future/includes/class-gv-extension.php:212
-msgid "Could not activate the %s Extension; GravityView is not active."
-msgstr ""
-
-#: future/includes/class-gv-extension.php:214
-msgid "The %s Extension requires GravityView Version %s or newer."
-msgstr ""
-
-#: future/includes/class-gv-extension.php:216
-msgid "The %s Extension requires PHP Version %s or newer. Please ask your host to upgrade your server's PHP."
-msgstr ""
-
-#: future/includes/class-gv-extension.php:218
-msgid "The %s Extension is not compatible with this version of GravityView. Please update the Extension to the latest version."
 msgstr ""
 
 #: future/includes/class-gv-oembed.php:88
@@ -92,24 +76,24 @@ msgstr ""
 msgid "Styles don't get loaded when being previewed, so the content below will look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:599
+#: future/includes/class-gv-plugin.php:594
 #: includes/class-gravityview-entry-approval.php:460
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:600
+#: future/includes/class-gv-plugin.php:595
 #: includes/class-gravityview-entry-approval.php:454
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
+#: future/includes/class-gv-plugin.php:650
 #: future/includes/class-gv-plugin.php:651
-#: future/includes/class-gv-plugin.php:652
 #: future/includes/class-gv-view.php:155
 msgid "All Views"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:667
-#: future/includes/class-gv-plugin.php:668
+#: future/includes/class-gv-plugin.php:665
+#: future/includes/class-gv-plugin.php:666
 #: future/includes/class-gv-view.php:158
 msgid "New View"
 msgstr ""
@@ -641,7 +625,7 @@ msgid "Update Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:435
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2524
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2522
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
@@ -651,7 +635,7 @@ msgid "Cancel Link Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:443
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2523
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2521
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
@@ -1126,7 +1110,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
 #: includes/class-admin-views.php:526
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:808
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:810
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:333
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:52
 msgid "Settings"
@@ -2083,7 +2067,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:217
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2374
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2372
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2371,36 +2355,36 @@ msgstr ""
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1446
-msgid "You don&rsquo;t have permission to edit this post."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1453
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1445
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1785
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1451
+msgid "You don&rsquo;t have permission to edit this post."
+msgstr ""
+
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1783
 msgid "This field is required."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1821
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1819
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2368
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2366
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2378
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2376
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2394
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2392
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2418
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2416
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -4167,7 +4151,7 @@ msgid "No-conflict mode prevents extraneous scripts and styles from being printe
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:428
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:816
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:818
 msgid "Support"
 msgstr ""
 

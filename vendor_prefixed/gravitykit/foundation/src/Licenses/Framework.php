@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 07-November-2022 using Strauss.
+ * Modified by gravityview on 08-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -32,7 +32,7 @@ class Framework {
 	 *
 	 * @var array User permissions to manage licenses/products.
 	 */
-	private $_permissions = [];
+	private $_permissions;
 
 	private function __construct() {
 		$permissions = [

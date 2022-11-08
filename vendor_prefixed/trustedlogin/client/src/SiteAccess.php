@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-November-2022 using Strauss.
+ * Modified by gravityview on 08-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -59,7 +59,7 @@ class SiteAccess {
 		$encryption = new Encryption( $this->config, $remote, $logging );
 
 		if ( ! in_array( $action, self::$sync_actions, true ) ) {
-			return new WP_Error( 'param_error', __( 'Unexpected action value', 'gk-gravityview' ) );
+			return new \WP_Error( 'param_error', __( 'Unexpected action value', 'gk-gravityview' ) );
 		}
 
 		$access_key = $this->get_access_key();
@@ -90,7 +90,7 @@ class SiteAccess {
 		}
 
 		if ( empty( $response_json['success'] ) ) {
-			return new WP_Error( 'sync_error', __( 'Could not sync to TrustedLogin server', 'gk-gravityview' ) );
+			return new \WP_Error( 'sync_error', __( 'Could not sync to TrustedLogin server', 'gk-gravityview' ) );
 		}
 
 		do_action( 'trustedlogin/' . $this->config->ns() . '/secret/synced', array(
@@ -160,7 +160,7 @@ class SiteAccess {
 				'$license after filter: ' => $license_key,
 			) );
 
-			return new WP_Error( 'invalid_license_key', 'License key was not a string.' );
+			return new \WP_Error( 'invalid_license_key', 'License key was not a string.' );
 		}
 
 		if ( $hashed && $license_key ) {

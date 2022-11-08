@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 07-November-2022 using Strauss.
+ * Modified by gravityview on 08-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -557,7 +557,7 @@ final class Admin {
 		$ns          = $this->config->ns();
 		$cloned_role = translate_user_role( ucfirst( $this->config->get_setting( 'role' ) ) );
 
-		if ( array_filter( $this->config->get_setting( 'caps' ), array( $this->config, 'is_not_null' ) ) ) {
+		if ( $this->config->get_setting( 'caps/add' ) || $this->config->get_setting( 'caps/remove' ) ) {
 			// translators: %s is replaced with the name of the role being cloned (e.g. "Administrator")
 			$roles_summary = sprintf( esc_html__( 'Create a user with a role similar to %s.', 'gk-gravityview' ), '<strong>' . $cloned_role . '</strong>' );
 			$roles_summary .= sprintf( '<small class="tl-' . $ns . '-toggle" data-toggle=".tl-' . $ns . '-auth__role-container">%s <span class="dashicons dashicons--small dashicons-arrow-down-alt2"></span></small>', esc_html__( 'View role capabilities', 'gk-gravityview' ) );
@@ -950,7 +950,7 @@ final class Admin {
 		$data_atts = array();
 
 		if ( $this->support_user->get_all() ) {
-			$text                = '<span class="dashicons dashicons-update-alt"></span>' . esc_html( $atts['exists_text'] );
+			$text                = '<span class="dashicons dashicons-update-alt dashicons--small"></span> ' . esc_html( $atts['exists_text'] );
 			$href                = admin_url( 'users.php?role=' . $this->support_user->role->get_name() );
 			$data_atts['access'] = 'extend';
 		} else {

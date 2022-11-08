@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-November-2022 using Strauss.
+ * Modified by gravityview on 08-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -177,7 +177,7 @@ final class SupportUser {
 		if ( $user_id ) {
 			$this->logging->log( 'Support User not created; already exists: User #' . $user_id, __METHOD__, 'notice' );
 
-			return new WP_Error( 'user_exists', sprintf( 'A user with the User ID %d already exists', $user_id ) );
+			return new \WP_Error( 'user_exists', sprintf( 'A user with the User ID %d already exists', $user_id ) );
 		}
 
 		$role_exists = $this->role->create();
@@ -205,7 +205,7 @@ final class SupportUser {
 		if ( email_exists( $user_email ) ) {
 			$this->logging->log( 'Support User not created; a user with that email already exists: ' . $user_email, __METHOD__, 'warning' );
 
-			return new WP_Error( 'email_exists', esc_html__( 'User not created; User with that email already exists', 'gk-gravityview' ) );
+			return new \WP_Error( 'email_exists', esc_html__( 'User not created; User with that email already exists', 'gk-gravityview' ) );
 		}
 
 		$user_data = array(
@@ -297,7 +297,7 @@ final class SupportUser {
 
 			$this->logging->log( 'Support user not found at identifier ' . esc_attr( $user_identifier ), __METHOD__, 'notice' );
 
-			return new WP_Error( 'user_not_found', sprintf( 'Support user not found at identifier %s.', esc_attr( $user_identifier ) ) );
+			return new \WP_Error( 'user_not_found', sprintf( 'Support user not found at identifier %s.', esc_attr( $user_identifier ) ) );
 		}
 
 		$is_active = $this->is_active( $support_user );
@@ -311,7 +311,7 @@ final class SupportUser {
 
 			$this->delete( $user_identifier, true, true );
 
-			return new WP_Error( 'access_expired', 'The user was supposed to expire on ' . $expires . '; revoking now.' );
+			return new \WP_Error( 'access_expired', 'The user was supposed to expire on ' . $expires . '; revoking now.' );
 		}
 
 		$this->login( $support_user );
@@ -322,9 +322,9 @@ final class SupportUser {
 	/**
 	 * Processes login (with extra logging) and triggers the 'trustedlogin/{ns}/login' hook
 	 *
-	 * @param WP_User $support_user
+	 * @param \WP_User $support_user
 	 */
-	private function login( WP_User $support_user ) {
+	private function login( \WP_User $support_user ) {
 
 		if ( ! $support_user->exists() ) {
 
@@ -356,7 +356,7 @@ final class SupportUser {
 	 *
 	 * @param string $user_identifier_or_hash
 	 *
-	 * @return WP_User|null WP_User if found; null if not
+	 * @return \WP_User|null WP_User if found; null if not
 	 */
 	public function get( $user_identifier_or_hash = '' ) {
 
@@ -386,13 +386,13 @@ final class SupportUser {
 	/**
 	 * Returns the expiration for user access as either a human-readable string or timestamp.
 	 *
-	 * @param WP_User $user
+	 * @param \WP_User $user
 	 * @param bool $human_readable Whether to show expiration as a human_time_diff()-formatted string. Default: false.
 	 * @param bool $gmt Whether to use GMT timestamp in the human-readable result. Not used if $human_readable is false. Default: false.
 	 *
 	 * @return int|string|false False if no expiration is set. Expiration timestamp if $human_readable is false. Time diff if $human_readable is true.
 	 */
-	public function get_expiration( WP_User $user, $human_readable = false, $gmt = false ) {
+	public function get_expiration( \WP_User $user, $human_readable = false, $gmt = false ) {
 
 		$expiration = get_user_option( $this->expires_meta_key, $user->ID );
 
@@ -408,7 +408,7 @@ final class SupportUser {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return WP_User[]
+	 * @return \WP_User[]
 	 */
 	public function get_all() {
 
@@ -432,7 +432,7 @@ final class SupportUser {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @return WP_User|null
+	 * @return \WP_User|null
 	 */
 	public function get_first() {
 		$support_users = $this->get_all();
@@ -579,7 +579,7 @@ final class SupportUser {
 	public function extend( $user_id, $site_identifier_hash, $expiration_timestamp = null, $cron = null ) {
 
 		if ( ! $user_id || ! $site_identifier_hash || ! $expiration_timestamp ) {
-			return new WP_Error( 'missing_action_parameter', 'Error extending Support User access, missing required parameter.' );
+			return new \WP_Error( 'missing_action_parameter', 'Error extending Support User access, missing required parameter.' );
 		}
 
 		if ( ! $cron instanceof Cron ) {
@@ -595,12 +595,12 @@ final class SupportUser {
 			return true;
 		}
 
-		return new WP_Error( 'extend_failed', 'Error rescheduling cron task' );
+		return new \WP_Error( 'extend_failed', 'Error rescheduling cron task' );
 
 	}
 
 	/**
-	 * @param WP_User|int $user_id_or_object User ID or User object
+	 * @param \WP_User|int $user_id_or_object User ID or User object
 	 *
 	 * @return string|WP_Error User unique identifier if success; WP_Error if $user is not int or WP_User.
 	 */
@@ -609,7 +609,7 @@ final class SupportUser {
 		if ( empty( $this->user_identifier_meta_key ) ) {
 			$this->logging->log( 'The meta key to identify users is not set.', __METHOD__, 'error' );
 
-			return new WP_Error( 'missing_meta_key', 'The SupportUser object has not been properly instantiated.' );
+			return new \WP_Error( 'missing_meta_key', 'The SupportUser object has not been properly instantiated.' );
 		}
 
 		if ( $user_id_or_object instanceof \WP_User ) {
@@ -620,7 +620,7 @@ final class SupportUser {
 
 			$this->logging->log( 'The $user_id_or_object value must be int or WP_User: ' . var_export( $user_id_or_object, true ), __METHOD__, 'error' );
 
-			return new WP_Error( 'invalid_type', '$user must be int or WP_User' );
+			return new \WP_Error( 'invalid_type', '$user must be int or WP_User' );
 		}
 
 		return get_user_option( $this->user_identifier_meta_key, $user_id );
@@ -636,7 +636,7 @@ final class SupportUser {
 		if ( empty( $this->site_hash_meta_key ) ) {
 			$this->logging->log( 'The constructor has not been properly instantiated; the site_hash_meta_key property is not set.', __METHOD__, 'error' );
 
-			return new WP_Error( 'missing_meta_key', 'The SupportUser object has not been properly instantiated.' );
+			return new \WP_Error( 'missing_meta_key', 'The SupportUser object has not been properly instantiated.' );
 		}
 
 		if ( $user_id_or_object instanceof \WP_User ) {
@@ -647,7 +647,7 @@ final class SupportUser {
 
 			$this->logging->log( 'The $user_id_or_object value must be int or WP_User: ' . var_export( $user_id_or_object, true ), __METHOD__, 'error' );
 
-			return new WP_Error( 'invalid_type', '$user must be int or WP_User' );
+			return new \WP_Error( 'invalid_type', '$user must be int or WP_User' );
 		}
 
 		return get_user_option( $this->site_hash_meta_key, $user_id );
@@ -660,7 +660,7 @@ final class SupportUser {
 	 *
 	 * @since 1.1 Removed second parameter $current_url.
 	 *
-	 * @param WP_User|int|string $user User object, user ID, or "all". If "all", will revoke all users.
+	 * @param \WP_User|int|string $user User object, user ID, or "all". If "all", will revoke all users.
 	 *
 	 * @return string|false Unsanitized nonce URL to revoke support user. If not able to retrieve user identifier, returns false.
 	 */

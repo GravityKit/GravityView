@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 07-November-2022 using Strauss.
+ * Modified by gravityview on 08-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -608,7 +608,9 @@ class ProductManager {
 				throw new Exception( $e->getMessage() );
 			}
 
-			set_site_transient( $cache_id, $products, DAY_IN_SECONDS );
+			set_site_transient( $cache_id, json_encode( $products ), DAY_IN_SECONDS );
+		} else if ( ! is_array( $products ) ) {
+			$products = json_decode( $products, true );
 		}
 
 		$product_license_map = LicenseManager::get_instance()->get_product_license_map();

@@ -241,12 +241,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:gravityview/Foundation.git",
-                "reference": "752c4cc3328146c1f8543b81a43684d65f128738"
+                "reference": "b60d47c813d6652648f3cc681f188e1d7b60f56d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/752c4cc3328146c1f8543b81a43684d65f128738",
-                "reference": "752c4cc3328146c1f8543b81a43684d65f128738",
+                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/b60d47c813d6652648f3cc681f188e1d7b60f56d",
+                "reference": "b60d47c813d6652648f3cc681f188e1d7b60f56d",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +264,7 @@
                 "phpcompatibility/phpcompatibility-wp": "*",
                 "wp-coding-standards/wpcs": "^2.3"
             },
-            "time": "2022-11-07T00:37:16+00:00",
+            "time": "2022-11-08T19:10:50+00:00",
             "default-branch": true,
             "type": "library",
             "extra": {
@@ -1295,12 +1295,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "d19cc4da8483ad4360267ee3b695038f75bf46b4"
+                "reference": "4d75dfcc0dc2ea316a42137fd16269ad3eb2f7a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/d19cc4da8483ad4360267ee3b695038f75bf46b4",
-                "reference": "d19cc4da8483ad4360267ee3b695038f75bf46b4",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/4d75dfcc0dc2ea316a42137fd16269ad3eb2f7a0",
+                "reference": "4d75dfcc0dc2ea316a42137fd16269ad3eb2f7a0",
                 "shasum": ""
             },
             "require": {
@@ -1311,7 +1311,7 @@
                 "paragonie/sodium_compat": "^1.12",
                 "php": ">=5.3.0"
             },
-            "time": "2022-10-13T20:14:24+00:00",
+            "time": "2022-11-08T19:07:48+00:00",
             "default-branch": true,
             "type": "library",
             "installation-source": "dist",
@@ -1340,7 +1340,7 @@
             ],
             "support": {
                 "issues": "https://github.com/trustedlogin/client/issues",
-                "source": "https://github.com/trustedlogin/client/tree/v1.3.6"
+                "source": "https://github.com/trustedlogin/client/tree/v1.3.7"
             },
             "install-path": "../trustedlogin/client"
         }

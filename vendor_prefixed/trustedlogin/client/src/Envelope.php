@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-November-2022 using Strauss.
+ * Modified by gravityview on 08-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -64,19 +64,19 @@ final class Envelope {
 	public function get( $secret_id, $site_identifier_hash, $access_key = '' ) {
 
 		if ( ! is_string( $secret_id ) ) {
-			return new WP_Error( 'secret_not_string', 'The secret ID must be a string:' . print_r( $secret_id, true ) );
+			return new \WP_Error( 'secret_not_string', 'The secret ID must be a string:' . print_r( $secret_id, true ) );
 		}
 
 		if ( ! is_string( $site_identifier_hash ) ) {
-			return new WP_Error( 'site_identifier_not_string', 'The site identifier must be a string:' . print_r( $site_identifier_hash, true ) );
+			return new \WP_Error( 'site_identifier_not_string', 'The site identifier must be a string:' . print_r( $site_identifier_hash, true ) );
 		}
 
 		if ( ! is_string( $access_key ) ) {
-			return new WP_Error( 'access_key_not_string', 'The access key must be a string: ' . print_r( $access_key, true ) );
+			return new \WP_Error( 'access_key_not_string', 'The access key must be a string: ' . print_r( $access_key, true ) );
 		}
 
 		if ( ! function_exists( 'sodium_bin2hex' ) ) {
-			return new WP_Error( 'sodium_bin2hex_not_available', 'The sodium_bin2hex function is not available.' );
+			return new \WP_Error( 'sodium_bin2hex_not_available', 'The sodium_bin2hex function is not available.' );
 		}
 
 		$e_keys = $this->encryption->generate_keys();
@@ -98,9 +98,9 @@ final class Envelope {
 		}
 
 		/**
-		 * Adds custom meta data to be synced via TrustedLogin
+		 * Adds custom metadata to be synced via TrustedLogin
 		 *
-		 * WARNING: Meta data is transferred and stored in plain text, and **must not contain any sensitive or identifiable information**!
+		 * WARNING: Metadata is transferred and stored in plain text, and **must not contain any sensitive or identifiable information**!
 		 *
 		 * @since 1.0.0
 		 *

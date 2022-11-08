@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 07-November-2022 using Strauss.
+ * Modified by gravityview on 08-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -374,6 +374,7 @@ JS;
 			$locale = get_locale();
 		}
 
+		// en_EN = en_US; en_GB and en_CA can have their own "translations" due to differences in spelling.
 		return in_array( $locale, [ 'en_EN', 'en_US' ], true );
 	}
 }

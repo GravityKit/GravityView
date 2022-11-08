@@ -79,7 +79,7 @@ $color-red: #c0461e !default;
 	}
 
 	.tl-#{$namespace}-auth__actions {
-		margin-bottom: 0;
+		margin-bottom: $vertical-spacing;
 		padding-top: 0;
 		text-align: center;
 	}
@@ -248,7 +248,7 @@ $color-red: #c0461e !default;
 	}
 
 	&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__roles,
-	//&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__expire, // When the expiration has an expanding section, uncomment this line.
+		//&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__expire, // When the expiration has an expanding section, uncomment this line.
 	&.tl-#{$namespace}-has-access .tl-#{$namespace}-auth__content {
 		margin-top: $vertical-spacing / 2;
 		padding: ( $vertical-spacing / 2 ) $gutter-width;
@@ -327,7 +327,7 @@ $color-red: #c0461e !default;
 		text-align: center;
 		font-size: 1.25em;
 		word-spacing: -.1em;
-		margin: $vertical-spacing auto;
+		margin: ( $vertical-spacing / 2 ) auto $vertical-spacing;
 		line-height: 30px;
 		color: $color-555;
 	}

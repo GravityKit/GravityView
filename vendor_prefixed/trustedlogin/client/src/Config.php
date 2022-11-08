@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 07-November-2022 using Strauss.
+ * Modified by gravityview on 08-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -120,52 +120,55 @@ final class Config {
 		$errors = array();
 
 		if ( ! isset( $this->settings['auth']['api_key'] ) ) {
-			$errors[] = new WP_Error( 'missing_configuration', 'You need to set an API key. Get yours at https://app.trustedlogin.com' );
+			$errors[] = new \WP_Error( 'missing_configuration', 'You need to set an API key. Get yours at https://app.trustedlogin.com' );
 		}
 
 		if ( isset( $this->settings['vendor']['website'] ) && 'https://www.example.com' === $this->settings['vendor']['website'] && ! defined('TL_DOING_TESTS') ) {
-			$errors[] = new WP_Error( 'missing_configuration', 'You need to configure the "website" URL to point to the URL where the Vendor plugin is installed.' );
+			$errors[] = new \WP_Error( 'missing_configuration', 'You need to configure the "website" URL to point to the URL where the Vendor plugin is installed.' );
 		}
 
 		foreach ( array( 'namespace', 'title', 'website', 'support_url', 'email' ) as $required_vendor_field ) {
 			if ( ! isset( $this->settings['vendor'][ $required_vendor_field ] ) ) {
-				$errors[] = new WP_Error( 'missing_configuration', sprintf( 'Missing required configuration: `vendor/%s`', $required_vendor_field ) );
+				$errors[] = new \WP_Error( 'missing_configuration', sprintf( 'Missing required configuration: `vendor/%s`', $required_vendor_field ) );
 			}
 		}
 
 		if ( isset( $this->settings['decay'] ) ) {
 			if ( ! is_int( $this->settings['decay'] ) ) {
-				$errors[] = new WP_Error( 'invalid_configuration', 'Decay must be an integer (number of seconds).' );
+				$errors[] = new \WP_Error( 'invalid_configuration', 'Decay must be an integer (number of seconds).' );
 			} elseif ( $this->settings['decay'] > MONTH_IN_SECONDS ) {
-				$errors[] = new WP_Error( 'invalid_configuration', 'Decay must be less than or equal to 30 days.' );
+				$errors[] = new \WP_Error( 'invalid_configuration', 'Decay must be less than or equal to 30 days.' );
 			} elseif ( $this->settings['decay'] < DAY_IN_SECONDS ) {
-				$errors[] = new WP_Error( 'invalid_configuration', 'Decay must be greater than 1 day.' );
+				$errors[] = new \WP_Error( 'invalid_configuration', 'Decay must be greater than 1 day.' );
 			}
 		}
 
 		if ( isset( $this->settings['vendor']['namespace'] ) ) {
 
-			// This seems like a reasonable max limit on namespace length.
-			// @see https://developer.wordpress.org/reference/functions/set_transient/#more-information
+			/**
+			 * This seems like a reasonable max limit on the ns length.
+			 * @see https://developer.wordpress.org/reference/functions/set_transient/#more-information
+			 */
 			if ( strlen( $this->settings['vendor']['namespace'] ) > 96 ) {
-				$errors[] = new WP_Error( 'invalid_configuration', 'Namespace length must be shorter than 96 characters.' );
+				$errors[] = new \WP_Error( 'invalid_configuration', 'Namespace length must be shorter than 96 characters.' );
 			}
 
 			if ( in_array( strtolower( $this->settings['vendor']['namespace'] ), self::$reserved_namespaces, true ) ) {
-				$errors[] = new WP_Error( 'invalid_configuration', 'The defined namespace is reserved.' );
+				$errors[] = new \WP_Error( 'invalid_configuration', 'The defined namespace is reserved.' );
 			}
 		}
 
 		if ( isset( $this->settings['vendor'][ 'email' ] ) && ! filter_var( $this->settings['vendor'][ 'email' ], FILTER_VALIDATE_EMAIL ) ) {
-			$errors[] = new WP_Error( 'invalid_configuration', 'An invalid `vendor/email` setting was passed to the TrustedLogin Client.' );
+			$errors[] = new \WP_Error( 'invalid_configuration', 'An invalid `vendor/email` setting was passed to the TrustedLogin Client.' );
 		}
 
-		// TODO: Add namespace collision check?
+		// TODO: Add ns collision check?
+
 		foreach ( array( 'webhook_url', 'vendor/support_url', 'vendor/website' ) as $settings_key ) {
 			$value = $this->get_setting( $settings_key, '', $this->settings );
 			$url   = wp_kses_bad_protocol( $value, array( 'http', 'https' ) );
 			if ( $value && ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
-				$errors[] = new WP_Error(
+				$errors[] = new \WP_Error(
 					'invalid_configuration',
 					sprintf( 'An invalid `%s` setting was passed to the TrustedLogin Client: %s',
 						$settings_key,
@@ -179,7 +182,7 @@ final class Config {
 
 		foreach ( SupportRole::$prevented_caps as $invalid_cap ) {
 			if ( array_key_exists( $invalid_cap, $added_caps ) ) {
-				$errors[] = new WP_Error( 'invalid_configuration', 'TrustedLogin users cannot be allowed to: ' . $invalid_cap );
+				$errors[] = new \WP_Error( 'invalid_configuration', 'TrustedLogin users cannot be allowed to: ' . $invalid_cap );
 			}
 		}
 
@@ -248,7 +251,7 @@ final class Config {
 		}
 
 		if ( ! is_array( $config ) || empty( $config ) ) {
-			return array( new WP_Error( 'empty_configuration', 'Configuration array cannot be empty. See https://www.trustedlogin.com/configuration/ for more information.' ) );
+			return array( new \WP_Error( 'empty_configuration', 'Configuration array cannot be empty. See https://www.trustedlogin.com/configuration/ for more information.' ) );
 		}
 
 		$defaults = $this->get_default_settings();
