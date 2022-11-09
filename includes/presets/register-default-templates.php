@@ -97,7 +97,7 @@ function gravityview_register_placeholder_templates() {
 		return;
 	}
 
-	$product_manager = GravityKitFoundation::licenses()->product_manager();
+	$product_manager = GravityKitFoundation::licenses() ? GravityKitFoundation::licenses()->product_manager() : null;
 
 	if ( ! $product_manager ) {
 		return;
