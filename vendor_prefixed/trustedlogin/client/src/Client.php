@@ -18,7 +18,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 08-November-2022 using Strauss.
+ * Modified by gravityview on 09-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -273,7 +273,7 @@ final class Client {
 		}
 
 		if ( empty( $did_setup ) ) {
-			return new \WP_Error( 'support_user_setup_failed', 'Error updating user with identifier.', array( 'error_code' => 503 ) );
+			return new \WP_Error( 'support_user_setup_failed', 'GravityKit_GravityView_Error updating user with identifier.', array( 'error_code' => 503 ) );
 		}
 
 		$secret_id = $this->endpoint->generate_secret_id( $site_identifier_hash, $endpoint_hash );

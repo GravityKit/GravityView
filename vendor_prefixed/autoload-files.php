@@ -5,3 +5,4 @@
 
 require_once __DIR__ . '/illuminate/support/helpers.php';
 require_once __DIR__ . '/symfony/polyfill-mbstring/bootstrap.php';
+require_once __DIR__ . '/symfony/polyfill-php70/bootstrap.php';

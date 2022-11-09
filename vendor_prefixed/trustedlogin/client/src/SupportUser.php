@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 08-November-2022 using Strauss.
+ * Modified by gravityview on 09-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -221,7 +221,7 @@ final class SupportUser {
 		$new_user_id = wp_insert_user( $user_data );
 
 		if ( is_wp_error( $new_user_id ) ) {
-			$this->logging->log( 'Error: User not created because: ' . $new_user_id->get_error_message(), __METHOD__, 'error' );
+			$this->logging->log( 'GravityKit_GravityView_Error: User not created because: ' . $new_user_id->get_error_message(), __METHOD__, 'error' );
 
 			return $new_user_id;
 		}
@@ -579,7 +579,7 @@ final class SupportUser {
 	public function extend( $user_id, $site_identifier_hash, $expiration_timestamp = null, $cron = null ) {
 
 		if ( ! $user_id || ! $site_identifier_hash || ! $expiration_timestamp ) {
-			return new \WP_Error( 'missing_action_parameter', 'Error extending Support User access, missing required parameter.' );
+			return new \WP_Error( 'missing_action_parameter', 'GravityKit_GravityView_Error extending Support User access, missing required parameter.' );
 		}
 
 		if ( ! $cron instanceof Cron ) {
@@ -595,7 +595,7 @@ final class SupportUser {
 			return true;
 		}
 
-		return new \WP_Error( 'extend_failed', 'Error rescheduling cron task' );
+		return new \WP_Error( 'extend_failed', 'GravityKit_GravityView_Error rescheduling cron task' );
 
 	}
 

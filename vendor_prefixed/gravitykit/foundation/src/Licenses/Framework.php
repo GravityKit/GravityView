@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 08-November-2022 using Strauss.
+ * Modified by gravityview on 09-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -26,6 +26,20 @@ class Framework {
 	 * @var Framework Class instance.
 	 */
 	private static $_instance;
+
+	/**
+	 * @since 1.0.3
+	 *
+	 * @var LicenseManager Class instance.
+	 */
+	private $_license_manager;
+
+	/**
+	 * @since 1.0.3
+	 *
+	 * @var ProductManager Class instance.
+	 */
+	private $_product_manager;
 
 	/**
 	 * @since 1.0.0
@@ -109,9 +123,11 @@ class Framework {
 
 		add_filter( 'gk/foundation/ajax/' . self::AJAX_ROUTER . '/routes', [ $this, 'configure_ajax_routes' ] );
 
-		ProductManager::get_instance()->init();
+		$this->_product_manager = ProductManager::get_instance();
+		$this->_license_manager = LicenseManager::get_instance();
 
-		LicenseManager::get_instance()->init();
+		$this->_product_manager->init();
+		$this->_license_manager->init();
 
 		EDD::get_instance()->init();
 
@@ -291,7 +307,6 @@ class Framework {
 		TranslationsFramework::get_instance()->load_frontend_translations( $foundation_source_plugin_data['TextDomain'], '', 'gk-foundation' );
 	}
 
-
 	/**
 	 * Checks if the current user has a certain permission.
 	 *
@@ -301,5 +316,27 @@ class Framework {
 	 */
 	function current_user_can( $permission ) {
 		return isset( $this->_permissions[ $permission ] ) ? $this->_permissions[ $permission ] : false;
+	}
+
+	/**
+	 * Returns Product Manager class instance.
+	 *
+	 * @since 1.0.3
+	 *
+	 * @return ProductManager
+	 */
+	function product_manager() {
+		return $this->_product_manager;
+	}
+
+	/**
+	 * Returns License Manager class instance.
+	 *
+	 * @since 1.0.3
+	 *
+	 * @return LicenseManager
+	 */
+	function license_manager() {
+		return $this->_license_manager;
 	}
 }

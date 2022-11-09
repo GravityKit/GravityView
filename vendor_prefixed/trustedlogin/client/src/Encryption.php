@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 08-November-2022 using Strauss.
+ * Modified by gravityview on 09-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -102,9 +102,9 @@ final class Encryption {
 			try {
 				$bytes = random_bytes( $byte_length );
 				$hash  = bin2hex( $bytes );
-			} catch ( \TypeError $e ) {
+			} catch ( \GravityKit_GravityView_TypeError $e ) {
 				$logging->log( $e->getMessage(), __METHOD__, 'error' );
-			} catch ( \Error $e ) {
+			} catch ( \GravityKit_GravityView_Error $e ) {
 				$logging->log( $e->getMessage(), __METHOD__, 'error' );
 			} catch ( \Exception $e ) {
 				$logging->log( $e->getMessage(), __METHOD__, 'error' );
@@ -145,12 +145,12 @@ final class Encryption {
 		try {
 			$hash_bin = sodium_crypto_generichash( $string, '', (int) $length );
 			$hash     = sodium_bin2hex( $hash_bin );
-		} catch ( \TypeError $e ) {
+		} catch ( \GravityKit_GravityView_TypeError $e ) {
 			return new \WP_Error(
 				'encryption_failed_generichash_typeerror',
 				sprintf( 'Error while generating hash: %s (%s)', $e->getMessage(), $e->getCode() )
 			);
-		} catch ( \Error $e ) {
+		} catch ( \GravityKit_GravityView_Error $e ) {
 			return new \WP_Error(
 				'encryption_failed_generichash_error',
 				sprintf( 'Error while generating hash: %s (%s)', $e->getMessage(), $e->getCode() )
@@ -311,7 +311,7 @@ final class Encryption {
 				'encryption_failed_cryptobox_rangeexception',
 				sprintf( 'Error while encrypting the envelope: %s (%s)', $e->getMessage(), $e->getCode() )
 			);
-		} catch ( \TypeError $e ) {
+		} catch ( \GravityKit_GravityView_TypeError $e ) {
 			return new \WP_Error(
 				'encryption_failed_cryptobox_typeerror',
 				sprintf( 'Error while encrypting the envelope: %s (%s)', $e->getMessage(), $e->getCode() )

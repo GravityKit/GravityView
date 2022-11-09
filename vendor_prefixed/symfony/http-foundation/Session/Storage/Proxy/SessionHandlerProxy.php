@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 08-November-2022 using Strauss.
+ * Modified by gravityview on 09-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -17,7 +17,7 @@ namespace GravityKit\GravityView\Symfony\Component\HttpFoundation\Session\Storag
 /**
  * @author Drak <drak@zikula.org>
  */
-class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterface, \SessionUpdateTimestampHandlerInterface
+class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterface, \GravityKit_GravityView_SessionUpdateTimestampHandlerInterface
 {
     protected $handler;
 
@@ -91,7 +91,7 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
      */
     public function validateId($sessionId)
     {
-        return !$this->handler instanceof \SessionUpdateTimestampHandlerInterface || $this->handler->validateId($sessionId);
+        return !$this->handler instanceof \GravityKit_GravityView_SessionUpdateTimestampHandlerInterface || $this->handler->validateId($sessionId);
     }
 
     /**
@@ -99,6 +99,6 @@ class SessionHandlerProxy extends AbstractProxy implements \SessionHandlerInterf
      */
     public function updateTimestamp($sessionId, $data)
     {
-        return $this->handler instanceof \SessionUpdateTimestampHandlerInterface ? $this->handler->updateTimestamp($sessionId, $data) : $this->write($sessionId, $data);
+        return $this->handler instanceof \GravityKit_GravityView_SessionUpdateTimestampHandlerInterface ? $this->handler->updateTimestamp($sessionId, $data) : $this->write($sessionId, $data);
     }
 }
