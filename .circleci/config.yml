@@ -74,7 +74,7 @@ jobs:
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "remove --dev codeception/* lucatume/wp-browser yoast/phpunit-polyfills"
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "config platform.php 5.6.4"
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "require yoast/phpunit-polyfills --dev"
-            /home/circleci/tooling/build-tools/build_tools.sh composer -o "require gravitykit/foundation"
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o "require gravitykit/foundation:dev-main"
       - run:
           name: Running PHP 5.6 unit tests
           command: |
