@@ -1301,25 +1301,29 @@ class GravityView_Admin_Views {
         // Enqueue scripts
         wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), \GV\Plugin::$version );
 
-        wp_localize_script('gravityview_views_scripts', 'gvGlobals', array(
-            'cookiepath' => COOKIEPATH,
-            'admin_cookiepath' => ADMIN_COOKIE_PATH,
-            'passed_form_id' => (bool) \GV\Utils::_GET( 'form_id' ),
-            'nonce' => wp_create_nonce( 'gravityview_ajaxviews' ),
-            'label_viewname' => __( 'Enter View name here', 'gk-gravityview' ),
-            'label_reorder_search_fields' => __( 'Reorder Search Fields', 'gk-gravityview' ),
-            'label_add_search_field' => __( 'Add Search Field', 'gk-gravityview' ),
-            'label_remove_search_field' => __( 'Remove Search Field', 'gk-gravityview' ),
-            'label_close' => __( 'Close', 'gk-gravityview' ),
-            'label_cancel' => __( 'Cancel', 'gk-gravityview' ),
-            'label_continue' => __( 'Continue', 'gk-gravityview' ),
-            'label_ok' => __( 'Ok', 'gk-gravityview' ),
-            'label_publisherror' => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gk-gravityview' ),
-            'loading_text' => esc_html__( 'Loading&hellip;', 'gk-gravityview' ),
-            'loading_error' => esc_html__( 'There was an error loading dynamic content.', 'gk-gravityview' ),
-            'field_loaderror' => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gk-gravityview' ),
-            'remove_all_fields' => __( 'Would you like to remove all fields in this zone?', 'gk-gravityview' ),
-        ));
+		wp_localize_script( 'gravityview_views_scripts', 'gvGlobals', array(
+			'cookiepath'                  => COOKIEPATH,
+			'admin_cookiepath'            => ADMIN_COOKIE_PATH,
+			'passed_form_id'              => (bool) \GV\Utils::_GET( 'form_id' ),
+			'nonce'                       => wp_create_nonce( 'gravityview_ajaxviews' ),
+			'label_viewname'              => __( 'Enter View name here', 'gk-gravityview' ),
+			'label_reorder_search_fields' => __( 'Reorder Search Fields', 'gk-gravityview' ),
+			'label_add_search_field'      => __( 'Add Search Field', 'gk-gravityview' ),
+			'label_remove_search_field'   => __( 'Remove Search Field', 'gk-gravityview' ),
+			'label_close'                 => __( 'Close', 'gk-gravityview' ),
+			'label_cancel'                => __( 'Cancel', 'gk-gravityview' ),
+			'label_continue'              => __( 'Continue', 'gk-gravityview' ),
+			'label_ok'                    => __( 'Ok', 'gk-gravityview' ),
+			'label_publisherror'          => __( 'Error while creating the View for you. Check the settings or contact GravityView support.', 'gk-gravityview' ),
+			'loading_text'                => esc_html__( 'Loading&hellip;', 'gk-gravityview' ),
+			'loading_error'               => esc_html__( 'There was an error loading dynamic content.', 'gk-gravityview' ),
+			'field_loaderror'             => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gk-gravityview' ),
+			'remove_all_fields'           => __( 'Would you like to remove all fields in this zone?', 'gk-gravityview' ),
+			'foundation_licenses_router'  => array_merge(
+				GravityKitFoundation::get_ajax_params( 'licenses' ),
+				array( 'ajaxRoute' => 'activate_product' )
+			)
+		) );
 
 		wp_enqueue_style( 'gravityview_views_styles' );
 

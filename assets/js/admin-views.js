@@ -1310,64 +1310,98 @@
 		 * @param  {jQueryEvent}    e     jQuery event object
 		 */
 		selectTemplateHover: function ( e ) {
-			var vcfg = viewConfiguration;
-			var $link = $(e.target);
-			var $parent = $link.parents('.gv-view-types-module');
+			const vcfg = viewConfiguration;
+			const $link = $( e.target );
+			const $parent = $link.parents( '.gv-view-types-module' );
 
 			// If we're internally linking
-			if ($link.is('[rel=internal]') && !$link.hasClass('gv-layout-activate')) {
+			if ( $link.is( '[rel=internal]' ) && ( !$link.hasClass( 'gv-layout-activate' ) && !$link.hasClass( 'gv-layout-install' ) ) ) {
 				return true;
 			}
 
 			e.preventDefault();
 			e.stopImmediatePropagation();
 
-			// Activate layout if it's already installed
-			if ($link.hasClass('gv-layout-activate')) {
-				if (vcfg.performingAjaxAction) {
+			const server_request = ( ajaxRoute, payload ) => {
+				const defer = $.Deferred();
+
+				$link.addClass( 'disabled' );
+				vcfg.performingAjaxAction = true;
+				$( '.gv-view-template-notice' ).hide();
+
+				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter } = window.gvGlobals.foundation_licenses_router;
+
+				const request = {
+					nonce,
+					action,
+					ajaxRouter,
+					ajaxRoute,
+					payload
+				};
+
+				$.post( url, request ).done( response => {
+					if ( !response.success ) {
+						defer.reject( response.data );
+
+						return;
+					}
+
+					defer.resolve();
+				} ).fail( response => {
+					defer.reject( response.responseText );
+				} );
+
+				return defer.promise();
+			};
+
+			const on_fail = ( error ) => {
+				$( '.gv-view-template-notice' ).show().find( 'p' ).html( error );
+
+				document.querySelector( '.gv-view-template-notice' ).scrollIntoView( {
+					behavior: 'smooth'
+				} );
+			};
+
+			const do_always = () => {
+				vcfg.performingAjaxAction = false;
+				$link.removeClass( 'disabled' );
+			};
+
+			const on_success = () => {
+				$parent.find( '.gv-view-types-hover > div:eq(0)' ).hide();
+				$parent.find( '.gv-view-types-hover > div:eq(1)' ).removeClass( 'hidden' );
+				$parent.removeClass( 'gv-view-template-placeholder' );
+				$parent.find( '.gv-view-types-hover > div:eq(1) .gv_select_template' ).trigger( 'click' );
+			};
+
+			// Activate layout
+			if ( $link.hasClass( 'gv-layout-activate' ) ) {
+				if ( vcfg.performingAjaxAction ) {
 					return;
 				}
 
-				var activate = function () {
-					var defer = $.Deferred();
+				$.when( server_request( 'activate_product', {
+						path: $link.attr( 'data-template-path' ),
+					} ) )
+					.then( on_success )
+					.always( do_always )
+					.fail( on_fail );
 
-					$link.addClass('disabled');
-					vcfg.performingAjaxAction = true;
-					$('.gv-view-template-notice').hide();
+				return;
+			}
 
-					$.post(ajaxurl, {
-						'action': 'gravityview_admin_installer_activate',
-						'data': {path: $link.attr('data-template-path')}
-					}, function (response) {
-						if (!response.success) {
-							return defer.reject(response.data.error);
-						}
+			// Install layout
+			if ( $link.hasClass( 'gv-layout-install' ) ) {
+				if ( vcfg.performingAjaxAction ) {
+					return;
+				}
 
-						$parent.find('.gv-view-types-hover > div:eq(0)').hide();
-						$parent.find('.gv-view-types-hover > div:eq(1)').removeClass('hidden');
-						$parent.removeClass('gv-view-template-placeholder');
-						$parent.find('.gv-view-types-hover > div:eq(1) .gv_select_template').trigger('click');
-
-						defer.resolve();
-					}).fail(function () {
-						defer.reject(gvAdminInstaller.activateErrorLabel);
-					});
-
-					return defer.promise();
-				};
-
-				$.when(activate())
-					.always(function () {
-						vcfg.performingAjaxAction = false;
-						$link.removeClass('disabled');
-					})
-					.fail(function (error) {
-						$('.gv-view-template-notice').show().find('p').text(error);
-
-						document.querySelector('.gv-view-template-notice').scrollIntoView({
-							behavior: 'smooth'
-						});
-					});
+				$.when( server_request( 'install_product', {
+						id: $link.attr( 'data-template-id' ),
+					} ) )
+					.then( on_success )
+					.always( do_always )
+					.fail( on_fail );
 
 				return;
 			}
