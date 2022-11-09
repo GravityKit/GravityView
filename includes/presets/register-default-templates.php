@@ -93,7 +93,17 @@ function gravityview_register_placeholder_templates() {
 		],
 	];
 
-	$products_data = GravityKitFoundation::licenses()->product_manager()->get_products_data( [ 'key_by' => 'id' ] );
+	if ( ! class_exists( 'GravityKitFoundation' ) ) {
+		return;
+	}
+
+	$product_manager = GravityKitFoundation::licenses()->product_manager();
+
+	if ( ! $product_manager ) {
+		return;
+	}
+
+	$products_data = $product_manager->get_products_data( [ 'key_by' => 'id' ] );
 
 	// If product is included in the license, show placeholder. Otherwise, show Extensions page.
 	foreach ( $placeholders as $class_name => $placeholder ) {
