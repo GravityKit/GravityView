@@ -50,6 +50,9 @@ class gvlogic extends \GV\Shortcode {
 		$content = \GravityView_Merge_Tags::replace_get_variables( $content );
 		$atts = gv_map_deep( $atts, array( '\GravityView_Merge_Tags', 'replace_get_variables' ) );
 
+		$content = \GFCommon::replace_variables_prepopulate( $content );
+		$atts = gv_map_deep( $atts, array( '\GFCommon', 'replace_variables_prepopulate' ) );
+
 		// An invalid operation
 		if ( is_null( \GV\Utils::get( $atts, 'logged_in', null ) ) && false === \GV\Utils::get( $atts, 'if', false ) ) {
 			gravityview()->log->error( '$atts->if/logged_in is empty.', array( 'data' => $atts ) );
