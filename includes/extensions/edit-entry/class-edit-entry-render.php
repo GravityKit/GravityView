@@ -376,13 +376,7 @@ class GravityView_Edit_Entry_Render {
 			 */
 			unset( $_GET['page'] );
 
-			$date_created = $this->entry['date_created'];
-
-			/**
-			 * @hack to force Gravity Forms to use $read_value_from_post in GFFormsModel::save_lead()
-			 * @since 1.17.2
-			 */
-			unset( $this->entry['date_created'] );
+			add_filter( 'gform_use_post_value_for_conditional_logic_save_entry', '__return_true' );
 
 			/**
 			 * @action `gravityview/edit_entry/before_update` Perform an action before the entry has been updated using Edit Entry
@@ -398,8 +392,6 @@ class GravityView_Edit_Entry_Render {
 
 	        // Delete the values for hidden inputs
 	        $this->unset_hidden_field_values();
-
-			$this->entry['date_created'] = $date_created;
 
 			// Process calculation fields
 			$this->update_calculation_fields();
