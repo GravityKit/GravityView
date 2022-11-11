@@ -23,7 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Fixed: Prevent any site PHP warnings from affecting REST API responses
+* Added: New WordPress admin menu where you can now centrally manage all your GravityKit product licenses and settings ([learn more about the new GravityKit menu](https://www.gravitykit.com/foundation/))
+    - Go to the WordPress sidebar and check out the GravityKit menu!
+    - We have automatically migrated your existing licenses and settings, which were previously entered in the Views→Settings page
+    - Request support using the "Grant Support Access" menu item
+* Fixed: JavaScript error when creating a new View
 
 = 2.15 on September 21, 2022 =
 
