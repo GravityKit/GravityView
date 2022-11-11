@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
     - We have automatically migrated your existing licenses and settings, which were previously entered in the Views→Settings page
     - Request support using the "Grant Support Access" menu item
 * Fixed: JavaScript error when creating a new View
+* Fixed: Edit Entry may partially save changes if form fields have conditional logic; thanks, Jurriaan!
 
 = 2.15 on September 21, 2022 =
 
