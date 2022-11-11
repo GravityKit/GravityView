@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-08T19:15:07+00:00\n"
+"POT-Creation-Date: 2022-11-11T01:16:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -34,6 +34,22 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:143
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:144
 msgid "GravityKit"
+msgstr ""
+
+#: future/includes/class-gv-extension.php:258
+msgid "Could not activate the %s Extension; GravityView is not active."
+msgstr ""
+
+#: future/includes/class-gv-extension.php:260
+msgid "The %s Extension requires GravityView Version %s or newer."
+msgstr ""
+
+#: future/includes/class-gv-extension.php:262
+msgid "The %s Extension requires PHP Version %s or newer. Please ask your host to upgrade your server's PHP."
+msgstr ""
+
+#: future/includes/class-gv-extension.php:264
+msgid "The %s Extension is not compatible with this version of GravityView. Please update the Extension to the latest version."
 msgstr ""
 
 #: future/includes/class-gv-oembed.php:88
@@ -76,24 +92,24 @@ msgstr ""
 msgid "Styles don't get loaded when being previewed, so the content below will look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:594
+#: future/includes/class-gv-plugin.php:599
 #: includes/class-gravityview-entry-approval.php:460
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:595
+#: future/includes/class-gv-plugin.php:600
 #: includes/class-gravityview-entry-approval.php:454
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:650
-#: future/includes/class-gv-plugin.php:651
+#: future/includes/class-gv-plugin.php:655
+#: future/includes/class-gv-plugin.php:656
 #: future/includes/class-gv-view.php:155
 msgid "All Views"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:665
-#: future/includes/class-gv-plugin.php:666
+#: future/includes/class-gv-plugin.php:670
+#: future/includes/class-gv-plugin.php:671
 #: future/includes/class-gv-view.php:158
 msgid "New View"
 msgstr ""
@@ -167,7 +183,7 @@ msgstr ""
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:148
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1101
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1093
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
 msgid "Edit Entry"
@@ -211,7 +227,7 @@ msgid "Please <a href=\"%s\">read this article</a> for more information."
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:215
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:424
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:427
 msgid "General"
 msgstr ""
 
@@ -625,7 +641,7 @@ msgid "Update Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:435
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2522
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2514
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
@@ -635,7 +651,7 @@ msgid "Cancel Link Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:443
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2521
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2513
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
@@ -1110,7 +1126,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
 #: includes/class-admin-views.php:526
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:810
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:829
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:333
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:52
 msgid "Settings"
@@ -1196,31 +1212,31 @@ msgstr ""
 msgid "Activate & Select Layout"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:69
-#: includes/admin/metaboxes/views/select-template.php:82
+#: includes/admin/metaboxes/views/select-template.php:70
+#: includes/admin/metaboxes/views/select-template.php:83
 msgid "This layout is included in the %s license."
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:75
+#: includes/admin/metaboxes/views/select-template.php:76
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:67
 msgid "Buy Now"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:78
+#: includes/admin/metaboxes/views/select-template.php:79
 msgid "View a live demo of this layout"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:78
+#: includes/admin/metaboxes/views/select-template.php:79
 msgid "Try a demo"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:88
+#: includes/admin/metaboxes/views/select-template.php:89
 #: includes/fields/class-gravityview-field-select.php:27
 #: includes/widgets/search-widget/class-search-widget.php:223
 msgid "Select"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:90
+#: includes/admin/metaboxes/views/select-template.php:91
 msgid "View a live demo of this preset"
 msgstr ""
 
@@ -1329,8 +1345,8 @@ msgstr ""
 #: includes/class-admin-add-shortcode.php:135
 #: includes/class-admin-views.php:1314
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1162
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1291
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1154
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1283
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:74
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:1044
 msgid "Cancel"
@@ -2067,7 +2083,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:217
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2372
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2364
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2305,86 +2321,86 @@ msgstr ""
 msgid "Your request was rejected"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1163
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1292
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1155
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1284
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:68
 msgid "Update"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1164
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1293
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1156
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1285
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:250
 msgid "Next"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1165
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1294
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1157
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1286
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1186
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1178
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1186
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1178
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1193
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1185
 msgid "Entry Updated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1214
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1206
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1219
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1211
 msgctxt "Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1225
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1217
 msgctxt "Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1230
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1222
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1445
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1437
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1451
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1443
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1783
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1775
 msgid "This field is required."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1819
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1811
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2366
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2358
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2376
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2368
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2392
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2384
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2416
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2408
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3644,26 +3660,26 @@ msgstr ""
 msgid "List people with individual profiles."
 msgstr ""
 
-#: includes/presets/register-default-templates.php:62
+#: includes/presets/register-default-templates.php:63
 msgid "Display items in a dynamic table powered by DataTables."
 msgstr ""
 
-#: includes/presets/register-default-templates.php:66
-#: includes/presets/register-default-templates.php:77
-#: includes/presets/register-default-templates.php:88
+#: includes/presets/register-default-templates.php:67
+#: includes/presets/register-default-templates.php:79
+#: includes/presets/register-default-templates.php:91
 msgid "All Access"
 msgstr ""
 
-#: includes/presets/register-default-templates.php:73
+#: includes/presets/register-default-templates.php:75
 msgid "Display entries on a map."
 msgstr ""
 
-#: includes/presets/register-default-templates.php:83
+#: includes/presets/register-default-templates.php:86
 msgctxt "DIY means \"Do It Yourself\""
 msgid "DIY"
 msgstr ""
 
-#: includes/presets/register-default-templates.php:84
+#: includes/presets/register-default-templates.php:87
 msgid "A flexible, powerful layout for designers & developers."
 msgstr ""
 
@@ -4082,89 +4098,94 @@ msgstr ""
 msgid "Your browser does not support the video tag."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:295
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:298
 msgid "You are using a version of GravityView that does not yet support the new GravityKit settings framework."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:298
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:301
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "As such, the settings below will not apply to GravityView pages and you will have to continue using the [link]old settings[/link] until an updated version of the plugin is available. We apologize for the inconvenience as we work to update our products in a timely fashion."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:339
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:342
 msgid "Display \"Powered By\" Link"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:340
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:343
 msgid "A \"Powered by GravityKit\" link will be displayed below some GravityKit products. Help us spread the word!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:346
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:349
 msgid "Affiliate ID"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:348
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:351
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Earn money when people clicking your links become GravityKit customers. [link]Register as an affiliate[/link]!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:364
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:367
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:365
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:368
 msgid "You will have early access to the latest GravityKit products. There may be bugs! If you encounter an issue, report it to help make GravityKit products better!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:376
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:379
 msgid "Support Email"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:377
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:380
 msgid "In order to provide responses to your support requests, please provide your email address."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:381
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:384
 msgid "Support email is required"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:385
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:388
 msgid "Please provide a valid email address"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:393
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:396
 msgid "Show Support Port"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:394
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:397
 msgid "The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:396
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:399
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "[image]Support Port icon[/image]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:411
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:414
 msgid "Enable No-Conflict Mode"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:412
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:415
 msgid "No-conflict mode prevents extraneous scripts and styles from being printed on GravityKit admin pages, reducing conflicts with other plugins and themes."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:428
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:818
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:431
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:837
 msgid "Support"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:432
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:435
 msgid "Technical"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Encryption/Encryption.php:52
-msgid "Encyption key is not the correct size (must be [size] bytes)."
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Encryption key is not the correct size (must be [size] bytes)."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Encryption/Encryption.php:105
-msgid "Encyption nonce is not the correct size (must be [size] bytes)."
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Encryption nonce is not the correct size (must be [size] bytes)."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:199
@@ -4368,6 +4389,7 @@ msgid "There was a problem uploading your attachment. Please try again in a mome
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:259
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "The maximum file size is [size]"
 msgstr ""
 
@@ -4442,10 +4464,12 @@ msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:283
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:317
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "[name] ended the chat"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:287
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Connected to [name]"
 msgstr ""
 
@@ -4478,6 +4502,7 @@ msgid "Looks like you've entered an invalid email address. Want to try again?"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:298
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "[name] has disconnected from the chat. It's possible they lost their internet connection, so I'm looking for someone else to take over. Sorry for the delay!"
 msgstr ""
 
@@ -4486,10 +4511,12 @@ msgid "Our team's availability has changed and there's no longer anyone availabl
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:304
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Today's chat with [name]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:308
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Hey [name]"
 msgstr ""
 
@@ -4502,6 +4529,7 @@ msgid "If you've got any other questions, feel free to hit reply and continue th
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:313
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "[name] joined the chat"
 msgstr ""
 
@@ -4524,23 +4552,24 @@ msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:143
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:147
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "We don't need to see your [plugin] details to provide support (if [plugin] is enabled)."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:166
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:182
 msgid "You do not have permission to view this page."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:198
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:214
 msgid "Products"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:200
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:216
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:25
 msgid "Licenses"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:202
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:218
 msgid "Products & Licenses"
 msgstr ""
 
@@ -4625,6 +4654,7 @@ msgid "ago"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:902
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "This is an unlicensed product. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one."
 msgstr ""
 
@@ -4668,14 +4698,17 @@ msgid "Invalid product information received from the API."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:252
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "You must install [link]Query Monitor[/link] WordPress plugin to use this option."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:260
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "You must install [link]Chrome Logger[/link] browser extension to use this option."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:268
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Logging is currently handled by [link]Gravity Forms[/link]."
 msgstr ""
 
@@ -4704,6 +4737,7 @@ msgid "Chrome Logger"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:413
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Download [link]log file[/link] ([size] / [date_modified])."
 msgstr ""
 
@@ -4716,6 +4750,7 @@ msgid "Plugin settings data not found."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:518
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Setting [setting] has unmet requirements."
 msgstr ""
 
@@ -4728,18 +4763,22 @@ msgid "Error saving settings."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:154
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Missing settings: [settings]."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:196
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Validation rule for setting [setting] is missing."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:212
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Validation for setting [setting] failed: [reason]."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:232
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "Settings that failed validation: [settings]."
 msgstr ""
 
@@ -4913,7 +4952,8 @@ msgid "Available"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:56
-msgid "Learn more about "
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Learn more about [product_title]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:58
@@ -4950,7 +4990,8 @@ msgid "I have a license key"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:66
-msgid "Buy "
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Buy [product_title]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:69

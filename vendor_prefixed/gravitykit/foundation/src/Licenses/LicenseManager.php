@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -899,7 +899,7 @@ class LicenseManager {
 			);
 
 			$message = strtr(
-				esc_html__( 'This is an unlicensed product. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one.', 'gk-gravityview' ),
+				esc_html_x( 'This is an unlicensed product. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[
 					'[link]'  => '<a href="' . $url . '">',
 					'[/link]' => '</a>'

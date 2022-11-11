@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -515,7 +515,7 @@ class Framework {
 
 						throw new Exception(
 							strtr(
-								esc_html__( 'Setting [setting] has unmet requirements.', 'gk-gravityview' ),
+								esc_html_x( 'Setting [setting] has unmet requirements.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 								[ '[setting]' => $plugin_setting['title'] ]
 							)
 						);

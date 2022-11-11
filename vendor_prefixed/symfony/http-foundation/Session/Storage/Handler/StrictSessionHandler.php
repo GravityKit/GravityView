@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -26,7 +26,7 @@ class StrictSessionHandler extends AbstractSessionHandler
 
     public function __construct(\SessionHandlerInterface $handler)
     {
-        if ($handler instanceof \GravityKit_GravityView_SessionUpdateTimestampHandlerInterface) {
+        if ($handler instanceof \SessionUpdateTimestampHandlerInterface) {
             throw new \LogicException(sprintf('"%s" is already an instance of "SessionUpdateTimestampHandlerInterface", you cannot wrap it with "%s".', \get_class($handler), self::class));
         }
 

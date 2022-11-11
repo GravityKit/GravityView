@@ -53,7 +53,7 @@ __( 'Settings', 'gk-gravityview' );
 __( 'Go to the settings for this product.', 'gk-gravityview' );
 __( 'Unlicensed product', 'gk-gravityview' );
 _x( 'Available', 'Used in the "version X is available" context.', 'gk-gravityview' );
-__( 'Learn more about ' + product.title, 'gk-gravityview' );
+_x( 'Learn more about [product_title]', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' );
 __( 'Learn More', 'gk-gravityview' );
 __( 'View documentation for ' + product.title, 'gk-gravityview' );
 __( 'Documentation', 'gk-gravityview' );
@@ -63,7 +63,7 @@ _x( 'installed', 'Used in the context of "version x.x is installed".', 'gk-gravi
 __( 'This product requires the following plugins to be installed and activated:', 'gk-gravityview' );
 __( 'Enter License Key', 'gk-gravityview' );
 __( 'I have a license key', 'gk-gravityview' );
-__( 'Buy ' + product.title, 'gk-gravityview' );
+_x( 'Buy [product_title]', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' );
 __( 'Buy Now', 'gk-gravityview' );
 __( 'Update', 'gk-gravityview' );
 __( 'Activate/Deactivate', 'gk-gravityview' );

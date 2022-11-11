@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -608,9 +608,16 @@ class ProductManager {
 				throw new Exception( $e->getMessage() );
 			}
 
+			// json_encode() the object as serialize() may break due to unsupported characters.
 			set_site_transient( $cache_id, json_encode( $products ), DAY_IN_SECONDS );
-		} else if ( ! is_array( $products ) ) {
+		} else if ( ! is_array( $products ) ) { // Backward compatibility for serialized data (used in earlier Foundation versions).
 			$products = json_decode( $products, true );
+		}
+
+		if ( empty( $products ) ) {
+			LoggerFramework::get_instance()->warning( 'Products data is empty.' );
+
+			return [];
 		}
 
 		$product_license_map = LicenseManager::get_instance()->get_product_license_map();
@@ -656,7 +663,19 @@ class ProductManager {
 			}
 		}
 
-		return $args['group_by_category'] ? $products : $flattened_products;
+		$products = $args['group_by_category'] ? $products : $flattened_products;
+
+		/**
+		 * @filter `gk/foundation/products/data` Modifies products data object.
+		 *
+		 * @since  1.0.3
+		 *
+		 * @param array $products Products data.
+		 * @param array $args     Additional arguments passed to the get_products_data() method.
+		 */
+		$products = apply_filters( 'gk/foundation/products/data', $products, $args );
+
+		return $products;
 	}
 
 	/**

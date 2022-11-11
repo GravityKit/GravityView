@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -140,11 +140,11 @@ class TrustedLogin {
 			],
 			'remove' => [
 				'manage_woocommerce' => strtr(
-					esc_html__( "We don't need to see your [plugin] details to provide support (if [plugin] is enabled).", 'gk-gravityview' ),
+					esc_html_x( "We don't need to see your [plugin] details to provide support (if [plugin] is enabled).", 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 					[ 'plugin' => 'WooCommerce' ]
 				),
 				'view_shop_reports'  => strtr(
-					esc_html__( "We don't need to see your [plugin] details to provide support (if [plugin] is enabled).", 'gk-gravityview' ),
+					esc_html_x( "We don't need to see your [plugin] details to provide support (if [plugin] is enabled).", 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 					[ 'plugin' => 'Easy Digital Downloads' ]
 				),
 			],
@@ -190,7 +190,7 @@ class TrustedLogin {
 	 * @param string                     $message Message to log.
 	 * @param string                     $method  Method where the log was called.
 	 * @param string                     $level   PSR-3 log level {@see https://www.php-fig.org/psr/psr-3/#5-psrlogloglevel}.
-	 * @param \WP_Error|\Exception|mixed $data    (optional) GravityKit_GravityView_Error data. Ignored if $message is WP_Error.
+	 * @param \WP_Error|\Exception|mixed $data    (optional) Error data. Ignored if $message is WP_Error.
 	 *
 	 * @return void
 	 */

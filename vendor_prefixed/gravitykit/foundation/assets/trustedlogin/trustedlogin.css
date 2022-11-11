@@ -38,7 +38,7 @@
   font-family: Consolas, Monaco, monospace;
 }
 .tl-gk_foundation_trustedlogin-auth .tl-gk_foundation_trustedlogin-auth__actions {
-  margin-bottom: 0;
+  margin-bottom: 24px;
   padding-top: 0;
   text-align: center;
 }
@@ -240,7 +240,7 @@
   text-align: center;
   font-size: 1.25em;
   word-spacing: -0.1em;
-  margin: 24px auto;
+  margin: 12px auto 24px;
   line-height: 30px;
   color: #555D66;
 }

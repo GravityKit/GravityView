@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -249,7 +249,7 @@ CSS;
 		} );
 
 		$query_monitor_notice = strtr(
-			esc_html__( 'You must install [link]Query Monitor[/link] WordPress plugin to use this option.', 'gk-gravityview' ),
+			esc_html_x( 'You must install [link]Query Monitor[/link] WordPress plugin to use this option.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 			[
 				'[link]'  => '<a href="https://wordpress.org/plugins/query-monitor/" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -257,7 +257,7 @@ CSS;
 		);
 
 		$chrome_logger_tip = strtr(
-			esc_html__( 'You must install [link]Chrome Logger[/link] browser extension to use this option.', 'gk-gravityview' ),
+			esc_html_x( 'You must install [link]Chrome Logger[/link] browser extension to use this option.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 			[
 				'[link]'  => '<a href="https://craig.is/writing/chrome-logger" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -265,7 +265,7 @@ CSS;
 		);
 
 		$gravity_forms_logger_tip = strtr(
-			esc_html__( 'Logging is currently handled by [link]Gravity Forms[/link].', 'gk-gravityview' ),
+			esc_html_x( 'Logging is currently handled by [link]Gravity Forms[/link].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 			[
 				'[link]'  => '<a href="' . admin_url( 'admin.php?page=gf_settings&subview=gravityformslogging' ) . '" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -410,7 +410,7 @@ HTML;
 		);
 
 		$download_notice = strtr(
-			esc_html__( 'Download [link]log file[/link] ([size] / [date_modified]).', 'gk-gravityview' ),
+			esc_html_x( 'Download [link]log file[/link] ([size] / [date_modified]).', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 			[
 				'[link]'          => '<a href="' . $download_link . '" class="font-medium underline text-blue-700 hover:text-blue-600">',
 				'[/link]'         => '</a>',

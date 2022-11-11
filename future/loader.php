@@ -59,10 +59,16 @@ HTML;
 	return;
 }
 
+require_once __DIR__ . '/vendor_prefixed/gravitykit/Foundation/src/preflight_check.php';
+
+if ( ! GravityKit\GravityView\Foundation\should_load( GRAVITYVIEW_FILE ) ) {
+	return;
+}
+
 require_once GRAVITYVIEW_DIR . 'vendor/autoload.php';
 require_once GRAVITYVIEW_DIR . 'vendor_prefixed/autoload.php';
 
-\GravityKit\GravityView\Foundation\Core::register( GRAVITYVIEW_FILE );
+GravityKit\GravityView\Foundation\Core::register( GRAVITYVIEW_FILE );
 
 /** @define "GRAVITYVIEW_DIR" "../" */
 require GRAVITYVIEW_DIR . 'future/gravityview.php';

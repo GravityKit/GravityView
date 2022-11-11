@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -143,7 +143,7 @@ final class SupportRole {
 		$old_role = get_role( $clone_role_slug );
 
 		if ( empty( $old_role ) ) {
-			return new \WP_Error( 'role_does_not_exist', 'GravityKit_GravityView_Error: the role to clone does not exist: ' . $clone_role_slug );
+			return new \WP_Error( 'role_does_not_exist', 'Error: the role to clone does not exist: ' . $clone_role_slug );
 		}
 
 		$capabilities = $old_role->capabilities;
@@ -174,7 +174,7 @@ final class SupportRole {
 
 			return new \WP_Error(
 				'add_role_failed',
-				'GravityKit_GravityView_Error: the role was not created using add_role()', compact(
+				'Error: the role was not created using add_role()', compact(
 					"new_role_slug",
 					"capabilities",
 					"role_display_name"

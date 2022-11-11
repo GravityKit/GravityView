@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -256,7 +256,7 @@ JS;
 			'emailValidationLabel'            => __( 'Please enter a valid email address', 'gk-gravityview' ),
 			'attachmentErrorText'             => __( 'There was a problem uploading your attachment. Please try again in a moment.', 'gk-gravityview' ),
 			'attachmentSizeErrorText'         => strtr(
-				__( 'The maximum file size is [size]', 'gk-gravityview' ),
+				_x( 'The maximum file size is [size]', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[ '[size]' => size_format( 10485760 ) ] // 10MB in bytes.
 			),
 			//Previous messages
@@ -280,11 +280,11 @@ JS;
 			'ending'                          => __( 'Ending…', 'gk-gravityview' ),
 			'endChat'                         => __( 'End chat', 'gk-gravityview' ),
 			'chatEnded'                       => strtr(
-				__( '[name] ended the chat', 'gk-gravityview' ),
+				_x( '[name] ended the chat', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[ '[name]' => '' ] // HS has a blank space before the translation.
 			),
 			'chatConnected'                   => strtr(
-				__( 'Connected to [name]', 'gk-gravityview' ),
+				_x( 'Connected to [name]', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[ '[name]' => '' ] // HS has a blank space after the translation.
 			),
 			'chatbotName'                     => __( 'Help Bot', 'gk-gravityview' ),
@@ -295,26 +295,26 @@ JS;
 			'chatbotInactivityPrompt'         => __( 'Since the chat has gone idle, I\'ll end this chat in a few minutes.', 'gk-gravityview' ),
 			'chatbotInvalidEmailMessage'      => __( 'Looks like you\'ve entered an invalid email address. Want to try again?', 'gk-gravityview' ),
 			'chatbotAgentDisconnectedMessage' => strtr(
-				__( '[name] has disconnected from the chat. It\'s possible they lost their internet connection, so I\'m looking for someone else to take over. Sorry for the delay!', 'gk-gravityview' ),
+				_x( '[name] has disconnected from the chat. It\'s possible they lost their internet connection, so I\'m looking for someone else to take over. Sorry for the delay!', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[ '[name]' => '' ] // HS has a blank space before the translation.
 			),
 			'chatAvailabilityChangeMessage'   => __( 'Our team\'s availability has changed and there\'s no longer anyone available to chat. Send us a message instead and we\'ll get back to you.', 'gk-gravityview' ),
 			// Transcript Email
 			'emailHeading'                    => strtr(
-				__( 'Today\'s chat with [name]', 'gk-gravityview' ),
+				_x( 'Today\'s chat with [name]', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[ '[name]' => '' ] // HS has a blank space after the translation.
 			),
 			'emailGreeting'                   => strtr(
-				__( 'Hey [name]', 'gk-gravityview' ),
+				_x( 'Hey [name]', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[ '[name]' => '' ] // HS has a blank space after the translation.
 			),
 			'emailCopyOfDiscussion'           => __( 'Here\'s a copy of your discussion', 'gk-gravityview' ),
 			'emailContinueConversation'       => __( 'If you\'ve got any other questions, feel free to hit reply and continue the conversation.', 'gk-gravityview' ),
-			'emailJoinedLineItem'             => strtr( __( '[name] joined the chat', 'gk-gravityview' ),
+			'emailJoinedLineItem'             => strtr( _x( '[name] joined the chat', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[ '[name]' => '' ] // HS has a blank space before the translation.
 			),
 			'emailEndedLineItem'              => strtr(
-				__( '[name] ended the chat', 'gk-gravityview' ),
+				_x( '[name] ended the chat', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 				[ '[name]' => '' ] // HS has a blank space before the translation.
 			),
 			'emailYou'                        => __( 'You', 'gk-gravityview' ),

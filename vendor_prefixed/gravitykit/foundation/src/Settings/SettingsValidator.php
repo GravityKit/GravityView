@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -151,7 +151,7 @@ class SettingsValidator {
 
 			throw new ValidatorException(
 				strtr(
-					esc_html__( 'Missing settings: [settings].', 'gk-gravityview' ),
+					esc_html_x( 'Missing settings: [settings].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 					[ '[settings]' => implode( ', ', $missing_settings_title ) ]
 				)
 			);
@@ -193,7 +193,7 @@ class SettingsValidator {
 				if ( empty( $validation_rule['rule'] ) ) {
 					throw new ValidatorException(
 						strtr(
-							esc_html__( 'Validation rule for setting [setting] is missing.', 'gk-gravityview' ),
+							esc_html_x( 'Validation rule for setting [setting] is missing.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 							[ '[setting]' => $setting['id'] ]
 
 						)
@@ -209,7 +209,7 @@ class SettingsValidator {
 				} catch ( ValidatorException $e ) {
 					throw new ValidatorException(
 						strtr(
-							esc_html__( 'Validation for setting [setting] failed: [reason].', 'gk-gravityview' ),
+							esc_html_x( 'Validation for setting [setting] failed: [reason].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 							[
 								'[setting]' => $setting['id'],
 								'[reason]'  => $e->getMessage()
@@ -229,7 +229,7 @@ class SettingsValidator {
 		if ( ! empty( $settings_failed_validation ) ) {
 			throw new ValidatorException(
 				strtr(
-					esc_html__( 'Settings that failed validation: [settings].', 'gk-gravityview' ),
+					esc_html_x( 'Settings that failed validation: [settings].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 					[ '[settings]' => implode( ', ', $settings_failed_validation ) ]
 				)
 			);

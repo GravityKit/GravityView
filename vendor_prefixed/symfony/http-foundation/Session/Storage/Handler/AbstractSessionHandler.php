@@ -8,7 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -23,7 +23,7 @@ use GravityKit\GravityView\Symfony\Component\HttpFoundation\Session\SessionUtils
  *
  * @author Nicolas Grekas <p@tchwork.com>
  */
-abstract class AbstractSessionHandler implements \SessionHandlerInterface, \GravityKit_GravityView_SessionUpdateTimestampHandlerInterface
+abstract class AbstractSessionHandler implements \SessionHandlerInterface, \SessionUpdateTimestampHandlerInterface
 {
     private $sessionName;
     private $prefetchId;

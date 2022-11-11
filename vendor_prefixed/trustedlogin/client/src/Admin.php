@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -1073,7 +1073,7 @@ final class Admin {
 					'content' => sprintf( __( 'Sending encrypted access to %1$s.', 'gk-gravityview' ), $vendor_title ),
 				),
 				'error'              => array(
-					'title'   => sprintf( __( 'GravityKit_GravityView_Error syncing support user to %1$s', 'gk-gravityview' ), $vendor_title ),
+					'title'   => sprintf( __( 'Error syncing support user to %1$s', 'gk-gravityview' ), $vendor_title ),
 					'content' => wp_kses( $error_content, array(
 						'a' => array(
 							'href'   => array(),
@@ -1185,7 +1185,7 @@ EOD;
 			$access_key_output   = sprintf(
 				$access_key_template,
 				/* %1$s */ sanitize_title( $this->config->ns() ),
-				/* %2$s */ esc_html__( 'GravityKit_GravityView_Error', 'gk-gravityview' ),
+				/* %2$s */ esc_html__( 'Error', 'gk-gravityview' ),
 				/* %3$s */ 'div',
 				/* %4$s */ esc_html__( 'There was an error returning the access key.', 'gk-gravityview' ),
 				/* %5$s */ esc_html( $access_key->get_error_message() )

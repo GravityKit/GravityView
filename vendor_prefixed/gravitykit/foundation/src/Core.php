@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 09-November-2022 using Strauss.
+ * Modified by gravityview on 11-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -23,13 +23,15 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 use Exception;
 
 class Core {
-	const VERSION = '1.0.2';
+	const VERSION = '1.0.3';
 
 	const ID = 'gk_foundation';
 
 	const WP_AJAX_ACTION = 'gk_foundation_do_ajax';
 
 	const AJAX_ROUTER = 'core';
+
+	const INIT_PRIORITY = 100;
 
 	/**
 	 * Class instance.
@@ -135,7 +137,7 @@ class Core {
 		);
 
 		add_action(
-			'init',
+			'plugins_loaded',
 			function () {
 				if ( class_exists( 'GravityKitFoundation' ) ) {
 					return;
@@ -148,7 +150,8 @@ class Core {
 				}
 
 				$gk_foundation->init();
-			}
+			},
+			self::INIT_PRIORITY
 		);
 	}
 
@@ -295,7 +298,7 @@ class Core {
 					$notice_1 = esc_html__( 'You are using a version of GravityView that does not yet support the new GravityKit settings framework.', 'gk-gravityview' );
 
 					$notice_2 = strtr(
-						esc_html__( 'As such, the settings below will not apply to GravityView pages and you will have to continue using the [link]old settings[/link] until an updated version of the plugin is available. We apologize for the inconvenience as we work to update our products in a timely fashion.', 'gk-gravityview' ),
+						esc_html_x( 'As such, the settings below will not apply to GravityView pages and you will have to continue using the [link]old settings[/link] until an updated version of the plugin is available. We apologize for the inconvenience as we work to update our products in a timely fashion.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 						[
 							'[link]'  => '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) . '" class="text-blue-gv underline hover:text-gray-900 focus:text-gray-900 focus:no-underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">',
 							'[/link]' => '</a>',
@@ -345,7 +348,7 @@ HTML;
 							'value'       => Arr::get( $gk_settings, 'affiliate_id' ),
 							'title'       => esc_html__( 'Affiliate ID', 'gk-gravityview' ),
 							'description' => strtr(
-								esc_html__( 'Earn money when people clicking your links become GravityKit customers. [link]Register as an affiliate[/link]!', 'gk-gravityview' ),
+								esc_html_x( 'Earn money when people clicking your links become GravityKit customers. [link]Register as an affiliate[/link]!', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 								[
 									'[link]'  => '<a href="https://www.gravitykit.com/account/affiliates/?utm_source=in-plugin&utm_medium=setting&utm_content=Register%20as%20an%20affiliate" class="underline" rel="external">',
 									'[/link]' => '</a>',
@@ -393,7 +396,7 @@ HTML;
 						'title'       => esc_html__( 'Show Support Port', 'gk-gravityview' ),
 						'description' => ( esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gk-gravityview' ) .
 						                   strtr(
-							                   esc_html__( '[image]Support Port icon[/image]', 'gk-gravityview' ),
+							                   esc_html_x( '[image]Support Port icon[/image]', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 							                   [
 								                   '[image]'  => '<div style="margin-top: 1em; width: 7em;">![',
 								                   '[/image]' => '](' . CoreHelpers::get_assets_url( 'support-port-icon.jpg' ) . ')</div>',
@@ -520,10 +523,33 @@ HTML;
 		}
 
 		try {
+			/**
+			 * Fires before the route is called.
+			 *
+			 * @action gk/foundation/ajax/{$router}/{$route}/before
+			 *
+			 * @since  1.0.3
+			 *
+			 * @param array $payload
+			 */
+			do_action( "gk/foundation/ajax/{$router}/{$route}/before", $payload );
+
 			$result = call_user_func( $route_callback, $payload );
 		} catch ( Exception $e ) {
 			$result = new Exception( $e->getMessage() );
 		}
+
+		/**
+		 * Fires after the route is called.
+		 *
+		 * @action gk/foundation/ajax/{$router}/{$route}/after
+		 *
+		 * @since  1.0.3
+		 *
+		 * @param array $result
+		 * @param array $payload
+		 */
+		do_action( "gk/foundation/ajax/{$router}/{$route}/after", $result, $payload );
 
 		return CoreHelpers::process_return( $result );
 	}
