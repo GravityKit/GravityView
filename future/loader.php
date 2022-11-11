@@ -59,7 +59,15 @@ HTML;
 	return;
 }
 
-require_once __DIR__ . '/vendor_prefixed/gravitykit/Foundation/src/preflight_check.php';
+/**
+ * Do not allow activation if Gravity Forms version is lower than GV_MIN_PHP_VERSION
+ */
+if ( version_compare( phpversion(), GV_MIN_GF_VERSION, '<' ) ) {
+
+
+}
+
+require_once GRAVITYVIEW_DIR . '/vendor_prefixed/gravitykit/Foundation/src/preflight_check.php';
 
 if ( ! GravityKit\GravityView\Foundation\should_load( GRAVITYVIEW_FILE ) ) {
 	return;
