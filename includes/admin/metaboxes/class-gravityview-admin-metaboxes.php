@@ -211,7 +211,6 @@ class GravityView_Admin_Metaboxes {
 	 * @return string "Data Source", plus links if any
 	 */
 	private function get_data_source_header( $post_id ) {
-
 		/**
 		 * This method is running before GravityView's been fully set up; likely being called by another plugin.
 		 * @see https://github.com/gravityview/GravityView/issues/1684
@@ -220,8 +219,7 @@ class GravityView_Admin_Metaboxes {
 			return __( 'Data Source', 'gk-gravityview' );
 		}
 
-		//current value
-		$current_form = gravityview_get_form_id( $post_id );
+		$current_form = gravityview_get_form( gravityview_get_form_id( $post_id ) );
 
 		$links = GravityView_Admin_Views::get_connected_form_links( $current_form, false );
 
@@ -229,7 +227,24 @@ class GravityView_Admin_Metaboxes {
 			$links = '<span class="alignright gv-form-links">' . $links . '</span>';
 		}
 
-		return __( 'Data Source', 'gk-gravityview' ) . $links;
+		$output = $links;;
+
+		if ( ! $current_form ) {
+			// Starting from GF 2.6, GF's form_admin.js script requires window.form and window.gf_vars objects to be set when any element has a .merge-tag-support class.
+			// Since we don't yet have a form when creating a new View, we need to mock those objects.
+			$_id        = isset( $_GET['id'] ) ? $_GET['id'] : null;
+			$_GET['id'] = -1; // This is needed for GFCommon::gf_vars() to return the mergeTags property.
+
+			$output .= sprintf(
+				'<script type="text/javascript">var form = %s; %s</script>',
+				'{fields: []}',
+				GFCommon::gf_vars( false )
+			);
+
+			$_GET['id'] = $_id;
+		}
+
+		return __( 'Data Source', 'gk-gravityview' ) . $output;
 	}
 
 	/**
