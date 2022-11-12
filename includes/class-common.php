@@ -42,6 +42,26 @@ class GVCommon {
 	}
 
 	/**
+	 * Returns form object for existing form or a form template.
+	 *
+	 * @since 2.16
+	 *
+	 * @param int|string $form_id Gravity Forms form ID. Default: 0.
+	 *
+	 * @return array|false
+	 */
+	public static function get_form_or_form_template( $form_id = 0 ) {
+		// Determine if form is a preset and convert it to an array with fields
+		if ( is_string( $form_id ) && preg_match( '/^preset_/', $form_id ) ) {
+			$form = GravityView_Ajax::pre_get_form_fields( $form_id );
+		} else {
+			$form = self::get_form( $form_id );
+		}
+
+		return $form;
+	}
+
+	/**
 	 * Alias of GravityView_Roles_Capabilities::has_cap()
 	 *
 	 * @since 1.15
