@@ -279,7 +279,6 @@ class GravityView_Render_Settings {
 	 * @return string HTML of dialog box
 	 */
 	public static function render_field_options( $form_id, $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single', $item = array() ) {
-
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
 			$uniqid = uniqid('', false);
@@ -306,7 +305,7 @@ class GravityView_Render_Settings {
 		$form_title = '';
 		if ( $form_id ) {
 			$hidden_fields .= '<input type="hidden" class="field-form-id" name="'. $name_prefix .'[form_id]" value="'. esc_attr( $form_id ) .'">';
-			$form = GVCommon::get_form( $form_id );
+			$form = GVCommon::get_form_or_form_template( $form_id );
 			$form_title = $form['title'];
 		}
 
@@ -405,6 +404,7 @@ class GravityView_Render_Settings {
 						<span class="gv-field-detail--label">' . esc_html__( 'Form', 'gk-gravityview' ) .'</span><span class="gv-field-detail--value">{{form_title}} (#{{form_id}})</span>
 					</div>';
 				}
+
 				$item_details .= '
 				</section>
 			</div>';
@@ -445,6 +445,14 @@ EOD;
 			if ( is_null( ${$replacement} ) ) {
 				continue;
 			}
+
+			if ( $replacement === 'form_id' && strpos( $form_id, 'preset_' ) !== false ) {
+				// Form has not yet been created.
+				$output = str_replace( '#{{' . $replacement . '}}', esc_html__( 'Form Preset', $output, 'gk-gravityview' ), $output );
+
+				continue;
+			}
+
 			$output = str_replace( '{{' . $replacement . '}}', ${$replacement}, $output );
 		}
 

@@ -44,7 +44,12 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected $form_id;
 
-	function __construct( $title = '', $item_id = '', $item = array(), $settings = array(), $form_id = null) {
+	/**
+	 * @var array Form data, if available
+	 */
+	protected $form;
+
+	function __construct( $title = '', $item_id = '', $item = array(), $settings = array(), $form_id = null, $form = array() ) {
 
 		// Backward compat
 		if ( ! empty( $item['type'] ) ) {
@@ -75,6 +80,7 @@ abstract class GravityView_Admin_View_Item {
 		$this->item       = $item;
 		$this->id         = $item_id;
 		$this->form_id    = $form_id;
+		$this->form       = $form;
 		$this->settings   = $settings;
 		$this->label_type = $item['label_type'];
 	}
@@ -172,7 +178,9 @@ abstract class GravityView_Admin_View_Item {
 
 		$field_icon = '';
 
+		$form = ! empty( $this->form ) ? $this->form : false;
 		$form = ! empty( $this->form_id ) ? GVCommon::get_form( $this->form_id ) : false;
+
 		$nonexistent_form_field = $form && $this->id && preg_match('/^\d+\.\d+$|^\d+$/', $this->id) && ! gravityview_get_field( $form, $this->id );
 
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
@@ -206,8 +214,9 @@ abstract class GravityView_Admin_View_Item {
 		} else {
 			$output        = '';
 			$settings_link = '';
-			$label = '<span class="dashicons-warning dashicons"></span> ' . esc_html( sprintf( __( 'The field connected to "%s" was deleted from the form. The associated entry data no longer exists.', 'gk-gravityview' ), $label ) );
+			$label         = '<span class="dashicons-warning dashicons"></span> ' . esc_html( sprintf( __( 'The field connected to "%s" was deleted from the form. The associated entry data no longer exists.', 'gk-gravityview' ), $label ) );
 		}
+		$title .= "\n" . $this->get_item_info( false );
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 

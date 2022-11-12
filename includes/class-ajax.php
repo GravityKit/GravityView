@@ -310,9 +310,11 @@ class GravityView_Ajax {
 	}
 
 	/**
-	 * Get the the form fields for a preset (no form created yet)
+	 * Get the form fields for a preset (no form created yet)
+	 *
 	 * @param  string $template_id Preset template
 	 *
+	 * @return array|false
 	 */
 	static function pre_get_form_fields( $template_id = '') {
 
@@ -378,7 +380,6 @@ class GravityView_Ajax {
         gravityview()->log->debug( '[pre_get_available_fields] Importing Form Fields for preset [{template_id}]. (Form)', array( 'template_id' => $template_id, 'data' => $form ) );
 
         return $form;
-
 	}
 
 
