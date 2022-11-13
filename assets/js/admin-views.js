@@ -787,15 +787,17 @@
 			} else {
 				vcfg.templateFilter( 'custom' );
 
-				vcfg.getAvailableFields();
-				vcfg.getSortableFields();
-
-				if ( ! vcfg.currentFormId && ! vcfg.currentTemplateId ) {
-					vcfg.showViewTypeMetabox();
-					vcfg.gvSwitchView.fadeOut( 150 );
-				} else {
-					vcfg.gvSwitchView.show();
-				}
+				Promise.all( [
+					vcfg.getAvailableFields(),
+					vcfg.getSortableFields()
+				] ).then( function () {
+					if ( !vcfg.currentFormId && !vcfg.currentTemplateId ) {
+						vcfg.showViewTypeMetabox();
+						vcfg.gvSwitchView.fadeOut( 150 );
+					} else {
+						vcfg.gvSwitchView.show();
+					}
+				} );
 			}
 
 			vcfg.currentTemplateId = '';
@@ -1148,29 +1150,31 @@
 		 * @return {void}
 		 */
 		getSortableFields: function ( context, id ) {
+			return new Promise((resolve, reject) => {
+				var vcfg = viewConfiguration;
 
-			var vcfg = viewConfiguration;
+				// While it's loading, disable the field, remove previous options, and add loading message.
+				$( ".gravityview_sort_field" ).prop( 'disabled', 'disabled' ).empty().append( '<option>' + gvGlobals.loading_text + '</option>' );
 
-			// While it's loading, disable the field, remove previous options, and add loading message.
-			$( ".gravityview_sort_field" ).prop( 'disabled', 'disabled' ).empty().append( '<option>' + gvGlobals.loading_text + '</option>' );
+				var data = {
+					action: 'gv_sortable_fields_form',
+					nonce: gvGlobals.nonce
+				};
 
-			var data = {
-				action: 'gv_sortable_fields_form',
-				nonce: gvGlobals.nonce
-			};
-
-			if ( context !== undefined && 'preset' === context ) {
-				data.template_id = id;
-			} else {
-				data.form_id = vcfg.gvSelectForm.val(); // TODO: Update for Joins
-			}
-
-			$.post(ajaxurl, data, function (response) {
-				if (response !== 'false' && response !== '0') {
-					$(".gravityview_sort_field").empty().append(response).prop('disabled', null);
+				if ( context !== undefined && 'preset' === context ) {
+					data.template_id = id;
+				} else {
+					data.form_id = vcfg.gvSelectForm.val(); // TODO: Update for Joins
 				}
-			});
 
+				$.post( ajaxurl, data, function ( response ) {
+					if ( response !== 'false' && response !== '0' ) {
+						$( ".gravityview_sort_field" ).empty().append( response ).prop( 'disabled', null );
+					}
+
+					resolve();
+				} );
+			});
 		},
 
 		/**
@@ -1277,16 +1281,14 @@
 
 			// check for start fresh context
 			if ( vcfg.startFreshStatus ) {
-
-				//fetch the available fields of the preset-form
-				vcfg.getAvailableFields( 'preset', selectedTemplateId );
-
-				//fetch the fields template config of the preset view
-				vcfg.getPresetFields( selectedTemplateId );
-
-				//fetch Sortable fields
-				vcfg.getSortableFields( 'preset', selectedTemplateId );
-
+				Promise.all( [
+					// fetch preset form fields
+					vcfg.getAvailableFields( 'preset', selectedTemplateId ),
+					// fetch present View fields
+					vcfg.getPresetFields( selectedTemplateId ),
+					// fetch sortable fields
+					vcfg.getSortableFields( 'preset', selectedTemplateId ) ]
+				);
 			} else {
 
 				if( ! slugmatch ) {
@@ -1470,7 +1472,7 @@
 				nonce: gvGlobals.nonce
 			};
 
-			vcfg.updateViewConfig( data );
+			return vcfg.updateViewConfig( data );
 		},
 
 		/**
@@ -1487,7 +1489,7 @@
 				nonce: gvGlobals.nonce
 			};
 
-			vcfg.updateViewConfig( data );
+			return vcfg.updateViewConfig( data );
 		},
 
 		/**
@@ -1497,28 +1499,32 @@
 		 * @param {object} data `action`, `template_id` and `nonce` keys
 		 */
 		updateViewConfig: function ( data ) {
-			var vcfg = viewConfiguration;
+			return new Promise( ( resolve, reject ) => {
+				var vcfg = viewConfiguration;
 
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					var content = JSON.parse( response );
-					$( '#directory-header-widgets' ).html( content.header );
-					$( '#directory-footer-widgets' ).html( content.footer );
-					$( '#directory-active-fields' ).append( content.directory );
-					$( '#single-active-fields' ).append( content.single );
-					vcfg.showViewConfig();
-					vcfg.waiting('stop');
+				$.post( ajaxurl, data, function ( response ) {
+					if ( response ) {
+						var content = JSON.parse( response );
+						$( '#directory-header-widgets' ).html( content.header );
+						$( '#directory-footer-widgets' ).html( content.footer );
+						$( '#directory-active-fields' ).append( content.directory );
+						$( '#single-active-fields' ).append( content.single );
+						vcfg.showViewConfig();
+						vcfg.waiting( 'stop' );
 
-					/**
-					 * Triggers after the AJAX is loaded for the zone
-					 * @since 2.10
-					 * @param {object} JSON response with `header` `footer` (widgets) `directory` and `single` (contexts) properties
-					 */
-					$('body').trigger( 'gravityview/view-config-updated', content );
-				}
-			} );
+						/**
+						 * Triggers after the AJAX is loaded for the zone
+						 * @since 2.10
+						 * @param {object} JSON response with `header` `footer` (widgets) `directory` and `single` (contexts) properties
+						 */
+						$( 'body' ).trigger( 'gravityview/view-config-updated', content );
+					}
 
-			vcfg.hasUnsavedChanges = true;
+					resolve();
+				} );
+
+				vcfg.hasUnsavedChanges = true;
+			});
 		},
 
 		/**
@@ -1696,46 +1702,44 @@
 		 * @return void
 		 */
 		getAvailableFields: function( preset, templateid ) {
+			return new Promise( ( resolve, reject ) => {
+				var vcfg = viewConfiguration;
 
-			var vcfg = viewConfiguration;
+				vcfg.toggleDropMessage();
 
-			vcfg.toggleDropMessage();
+				vcfg.getConfiguredFields().remove();
 
-			vcfg.getConfiguredFields().remove();
+				var data = {
+					action: 'gv_available_fields',
+					nonce: gvGlobals.nonce,
+				};
 
-			var data = {
-				action: 'gv_available_fields',
-				nonce: gvGlobals.nonce,
-			};
+				if ( preset !== undefined && 'preset' === preset ) {
+					data.form_preset_ids = [ templateid ];
+				} else {
+					/**
+					 * TODO: Update to support multiple fields in Joins
+					 * @see GravityView_Ajax::gv_available_fields()
+					 * */
+					data.form_preset_ids = [ vcfg.gvSelectForm.val() ];
+				}
 
-			if ( preset !== undefined && 'preset' === preset ) {
-				data.form_preset_ids = [ templateid ];
-			} else {
-				/**
-				 * TODO: Update to support multiple fields in Joins
-				 * @see GravityView_Ajax::gv_available_fields()
-				 * */
-				data.form_preset_ids = [ vcfg.gvSelectForm.val() ];
-			}
+				// Do not fetch fields if we already have them for the given form or template
+				if ( $( '#directory-available-fields-' + data.form_preset_ids[ 0 ] ).length ) {
+					return;
+				}
 
-			// Do not fetch fields if we already have them for the given form or template
-			if ( $( '#directory-available-fields-' + data.form_preset_ids[ 0 ] ).length ) {
-				return;
-			}
-
-			$.ajax( {
-				type: 'post',
-				url: ajaxurl,
-				data: data,
-				success: function( response ) {
-					if ( ! response.success && ! response.data ) {
-						return;
+				$.post( ajaxurl, data, function ( response ) {
+					if ( !response.success && !response.data ) {
+						resolve();
 					}
 
-					$.each( response.data, function( context,markup ) {
+					$.each( response.data, function ( context, markup ) {
 						$( '#' + context + '-fields' ).append( markup );
 					} );
-				},
+
+					resolve();
+				} );
 			} );
 		},
 
