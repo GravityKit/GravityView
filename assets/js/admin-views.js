@@ -1292,6 +1292,8 @@
 					$( '.ui-tabs-panel' ).each( function () {
 						vcfg.init_droppables( this );
 					} );
+
+					vcfg.refresh_merge_tags();
 				} );
 			} else {
 
