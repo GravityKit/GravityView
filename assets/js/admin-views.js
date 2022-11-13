@@ -1288,7 +1288,11 @@
 					vcfg.getPresetFields( selectedTemplateId ),
 					// fetch sortable fields
 					vcfg.getSortableFields( 'preset', selectedTemplateId ) ]
-				);
+				).then( function () {
+					$( '.ui-tabs-panel' ).each( function () {
+						vcfg.init_droppables( this );
+					} );
+				} );
 			} else {
 
 				if( ! slugmatch ) {
