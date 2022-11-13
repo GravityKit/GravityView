@@ -1837,6 +1837,10 @@
 				// Add in the Options <div>
 				newField.append( response );
 
+				$( '.ui-tabs-panel' ).each( function () {
+					vcfg.init_droppables( this );
+				} );
+
 				// If there are field options, show the settings gear.
 				if ( $( '.gv-dialog-options', newField ).length > 0 ) {
 					$( '.gv-field-settings', newField ).removeClass( 'hide-if-js' );
@@ -1881,7 +1885,7 @@
 		 */
 		refresh_merge_tags: function() {
 			// GF 2.6+
-			if ( window.gform && window.gform.instances && window.gform.mergeTags ) {
+			if ( window.gform?.instances?.mergeTags ) {
 				// Remove existing merge tags, since otherwise GF will add another
 				$( '.all-merge-tags' ).remove();
 
