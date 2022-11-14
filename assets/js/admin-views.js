@@ -796,6 +796,7 @@
 						vcfg.gvSwitchView.fadeOut( 150 );
 					} else {
 						vcfg.gvSwitchView.show();
+						vcfg.gvSwitchView.click();
 					}
 				} );
 			}
