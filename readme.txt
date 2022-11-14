@@ -15,7 +15,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Installation ==
 
-1. Upload plugin files to your plugins folder, or install using WordPress' built-in Add New Plugin installer
+1. Upload plugin files to your plugins folder, or install using WordPress' built-i`n Add New Plugin installer
 2. Activate the plugin
 3. Follow the instructions
 
@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Merge Tag picker not initializing when changing View type for an existing View
 * Fixed: "Field connected to XYZ field was deleted from the form" notice when adding a new field to a View created from a form preset
 * Fixed: Edit Entry may partially save changes if form fields have conditional logic; thanks, Jurriaan!
+* Fixed: View presets not working
 
 = 2.15 on September 21, 2022 =
 
