@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-11T01:16:30+00:00\n"
+"POT-Creation-Date: 2022-11-14T23:57:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -485,7 +485,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:232
 #: future/includes/class-gv-settings-view.php:263
-#: includes/class-common.php:1426
+#: includes/class-common.php:1446
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -840,8 +840,8 @@ msgid "Create views based on a Gravity Forms form"
 msgstr ""
 
 #: future/includes/class-gv-view.php:312
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:220
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:232
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:219
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:247
 #: includes/class-admin-views.php:582
 msgid "Data Source"
 msgstr ""
@@ -940,39 +940,39 @@ msgstr ""
 msgid "Form ID: %s"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:152
+#: includes/admin/class-gravityview-admin-view-item.php:158
 msgid "Configure %s Settings"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:153
+#: includes/admin/class-gravityview-admin-view-item.php:159
 msgid "Remove %s"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:154
-#: includes/admin/class-gravityview-admin-view-item.php:256
+#: includes/admin/class-gravityview-admin-view-item.php:160
+#: includes/admin/class-gravityview-admin-view-item.php:265
 msgid "This field links to the Single Entry"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:155
-#: includes/admin/class-gravityview-admin-view-item.php:261
+#: includes/admin/class-gravityview-admin-view-item.php:161
+#: includes/admin/class-gravityview-admin-view-item.php:270
 msgid "This field has modified visibility"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:163
+#: includes/admin/class-gravityview-admin-view-item.php:169
 msgctxt "Label in field picker for empty label"
 msgid "Field #%s (No Label)"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:202
+#: includes/admin/class-gravityview-admin-view-item.php:210
 msgid "Add \"%s\""
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:203
+#: includes/admin/class-gravityview-admin-view-item.php:211
 #: includes/fields/class-gravityview-field-gravatar.php:173
 msgid "Field: %s"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:209
+#: includes/admin/class-gravityview-admin-view-item.php:217
 msgid "The field connected to \"%s\" was deleted from the form. The associated entry data no longer exists."
 msgstr ""
 
@@ -1087,24 +1087,24 @@ msgstr ""
 msgid "Multisite Super Admin"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:318
+#: includes/admin/class.render.settings.php:317
 msgid "%s Settings"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:387
+#: includes/admin/class.render.settings.php:386
 msgid "Field Details"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:393
+#: includes/admin/class.render.settings.php:392
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:399
+#: includes/admin/class.render.settings.php:398
 msgctxt "The type of field being configured (eg: \"Single Line Text\")"
 msgid "Type"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:405
+#: includes/admin/class.render.settings.php:404
 msgid "Form"
 msgstr ""
 
@@ -1205,11 +1205,11 @@ msgid "GravityView requires Javascript to be enabled."
 msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:49
-msgid "Install Layout"
+msgid "Install"
 msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:49
-msgid "Activate & Select Layout"
+msgid "Activate & Select"
 msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:70
@@ -1280,8 +1280,8 @@ msgstr ""
 
 #. translators: %1$s is the vendor title
 #: includes/admin/metaboxes/views/view-configuration.php:43
-#: includes/class-admin-views.php:1188
-#: includes/class-admin-views.php:1313
+#: includes/class-admin-views.php:1193
+#: includes/class-admin-views.php:1318
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:204
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:1043
@@ -1343,7 +1343,7 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:135
-#: includes/class-admin-views.php:1314
+#: includes/class-admin-views.php:1319
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1154
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1283
@@ -1353,7 +1353,7 @@ msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:179
-#: includes/class-admin-views.php:1318
+#: includes/class-admin-views.php:1323
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1505,85 +1505,85 @@ msgstr ""
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1008
+#: includes/class-admin-views.php:1011
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1102
+#: includes/class-admin-views.php:1107
 #: includes/widgets/search-widget/class-search-widget.php:101
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1112
+#: includes/class-admin-views.php:1117
 #: includes/widgets/class-gravityview-widget-pagination-info.php:30
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1118
-#: includes/class-admin-views.php:1125
+#: includes/class-admin-views.php:1123
+#: includes/class-admin-views.php:1130
 #: includes/widgets/class-gravityview-widget-page-links.php:25
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1191
+#: includes/class-admin-views.php:1196
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1192
+#: includes/class-admin-views.php:1197
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1203
+#: includes/class-admin-views.php:1208
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1236
+#: includes/class-admin-views.php:1241
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1237
+#: includes/class-admin-views.php:1242
 msgid "The data is not lost; re-activate the associated plugin and the configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1309
+#: includes/class-admin-views.php:1314
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1310
+#: includes/class-admin-views.php:1315
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1311
+#: includes/class-admin-views.php:1316
 #: includes/widgets/search-widget/class-search-widget.php:267
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1312
+#: includes/class-admin-views.php:1317
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1315
+#: includes/class-admin-views.php:1320
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1316
+#: includes/class-admin-views.php:1321
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:1040
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1317
+#: includes/class-admin-views.php:1322
 msgid "Error while creating the View for you. Check the settings or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1319
+#: includes/class-admin-views.php:1324
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1320
+#: includes/class-admin-views.php:1325
 msgid "Error while adding the field. Please try again or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1321
+#: includes/class-admin-views.php:1326
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -1765,26 +1765,26 @@ msgstr[1] ""
 msgid "Map It"
 msgstr ""
 
-#: includes/class-common.php:352
+#: includes/class-common.php:372
 #: includes/fields/class-gravityview-field-post-id.php:28
 msgid "Post ID"
 msgstr ""
 
 #. translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:1025
+#: includes/class-common.php:1045
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1379
+#: includes/class-common.php:1399
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1430
+#: includes/class-common.php:1450
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1560
+#: includes/class-common.php:1580
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -3538,19 +3538,19 @@ msgstr ""
 msgid "Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings."
 msgstr ""
 
-#: includes/presets/business-data/class-gravityview-preset-business-data.php:24
+#: includes/presets/business-data/class-gravityview-preset-business-data.php:22
 msgid "Business Data"
 msgstr ""
 
-#: includes/presets/business-data/class-gravityview-preset-business-data.php:25
+#: includes/presets/business-data/class-gravityview-preset-business-data.php:23
 msgid "Display business information in a table."
 msgstr ""
 
-#: includes/presets/business-listings/class-gravityview-preset-business-listings.php:24
-msgid "Business Listings"
+#: includes/presets/business-listings/class-gravityview-preset-business-listings.php:22
+msgid "Business Listing"
 msgstr ""
 
-#: includes/presets/business-listings/class-gravityview-preset-business-listings.php:25
+#: includes/presets/business-listings/class-gravityview-preset-business-listings.php:23
 msgid "Display business profiles."
 msgstr ""
 
@@ -3628,35 +3628,35 @@ msgstr ""
 msgid "Add Table Column"
 msgstr ""
 
-#: includes/presets/event-listings/class-gravityview-preset-event-listings.php:24
+#: includes/presets/event-listings/class-gravityview-preset-event-listings.php:22
 msgid "Event Listings"
 msgstr ""
 
-#: includes/presets/event-listings/class-gravityview-preset-event-listings.php:25
+#: includes/presets/event-listings/class-gravityview-preset-event-listings.php:23
 msgid "Present a list of your events."
 msgstr ""
 
-#: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:24
+#: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:22
 msgid "Issue Tracker"
 msgstr ""
 
-#: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:25
+#: includes/presets/issue-tracker/class-gravityview-preset-issue-tracker.php:23
 msgid "Manage issues and their statuses."
 msgstr ""
 
-#: includes/presets/job-board/class-gravityview-preset-job-board.php:24
+#: includes/presets/job-board/class-gravityview-preset-job-board.php:22
 msgid "Job Board"
 msgstr ""
 
-#: includes/presets/job-board/class-gravityview-preset-job-board.php:25
+#: includes/presets/job-board/class-gravityview-preset-job-board.php:23
 msgid "Post available jobs in a simple job board."
 msgstr ""
 
-#: includes/presets/profiles/class-gravityview-preset-profiles.php:24
+#: includes/presets/profiles/class-gravityview-preset-profiles.php:22
 msgid "People Profiles"
 msgstr ""
 
-#: includes/presets/profiles/class-gravityview-preset-profiles.php:25
+#: includes/presets/profiles/class-gravityview-preset-profiles.php:23
 msgid "List people with individual profiles."
 msgstr ""
 
@@ -3683,27 +3683,27 @@ msgstr ""
 msgid "A flexible, powerful layout for designers & developers."
 msgstr ""
 
-#: includes/presets/resume-board/class-gravityview-preset-resume-board.php:24
+#: includes/presets/resume-board/class-gravityview-preset-resume-board.php:22
 msgid "Resume Board"
 msgstr ""
 
-#: includes/presets/resume-board/class-gravityview-preset-resume-board.php:25
+#: includes/presets/resume-board/class-gravityview-preset-resume-board.php:23
 msgid "Allow job-seekers to post their resumes."
 msgstr ""
 
-#: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:24
+#: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:22
 msgid "Staff Profiles"
 msgstr ""
 
-#: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:25
+#: includes/presets/staff-profiles/class-gravityview-preset-staff-profiles.php:23
 msgid "List members of your team."
 msgstr ""
 
-#: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:24
+#: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:22
 msgid "Website Showcase"
 msgstr ""
 
-#: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:25
+#: includes/presets/website-showcase/class-gravityview-preset-website-showcase.php:23
 msgid "Feature submitted websites with screenshots."
 msgstr ""
 

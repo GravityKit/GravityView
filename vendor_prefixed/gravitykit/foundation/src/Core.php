@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 11-November-2022 using Strauss.
+ * Modified by gravityview on 14-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -524,15 +524,17 @@ HTML;
 
 		try {
 			/**
-			 * Fires before the route is called.
+			 * Modifies AJAX payload before the route is processed.
 			 *
-			 * @action gk/foundation/ajax/{$router}/{$route}/before
+			 * @filter gk/foundation/ajax/payload
 			 *
 			 * @since  1.0.3
 			 *
-			 * @param array $payload
+			 * @param array           $payload
+			 * @param string          $router
+			 * @param string          $route
 			 */
-			do_action( "gk/foundation/ajax/{$router}/{$route}/before", $payload );
+			$payload = apply_filters( 'gk/foundation/ajax/payload', $payload, $router, $route);
 
 			$result = call_user_func( $route_callback, $payload );
 		} catch ( Exception $e ) {
@@ -540,16 +542,18 @@ HTML;
 		}
 
 		/**
-		 * Fires after the route is called.
+		 * Modifies AJAX response after the route is processed.
 		 *
-		 * @action gk/foundation/ajax/{$router}/{$route}/after
+		 * @filter gk/foundation/ajax/result
 		 *
 		 * @since  1.0.3
 		 *
-		 * @param array $result
-		 * @param array $payload
+		 * @param mixed|Exception $result
+		 * @param string          $router
+		 * @param string          $route
+		 * @param array           $payload
 		 */
-		do_action( "gk/foundation/ajax/{$router}/{$route}/after", $result, $payload );
+		$result = apply_filters( 'gk/foundation/ajax/result', $result, $router, $route, $payload );
 
 		return CoreHelpers::process_return( $result );
 	}
