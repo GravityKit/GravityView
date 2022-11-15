@@ -1406,7 +1406,7 @@
 				}
 
 				$.when( server_request( 'install_product', {
-						id: $link.attr( 'data-template-id' ),
+						id: $link.attr( 'data-download-id' ),
 					} ) )
 					.then( on_success )
 					.always( do_always )

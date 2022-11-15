@@ -50,6 +50,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 		$button_class         = 'gv-layout-' . ( empty( $plugin_data ) ? 'install' : 'activate' );
 		$template_path        = isset( $plugin_data['path'] ) ? $plugin_data['path'] : '';
 		$template_id          = isset( $template['template_id'] ) ? $template['template_id'] : '';
+		$download_id          = isset( $template['download_id'] ) ? $template['download_id'] : '';
 
 		?>
 		<div class="gv-grid-col-1-4">
@@ -65,7 +66,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 						if( $is_included ) {
 							// @TODO: (Foundation) add link to template in Licenses/Products
 						?>
-							<p><button class="button button-secondary button-hero <?php echo $button_class; ?>" rel="internal" data-template-path="<?php echo $template_path; ?>" data-templateid="<?php echo $template_id; ?>"><?php echo $button_text; ?></button></p>
+							<p><button class="button button-secondary button-hero <?php echo esc_attr( $button_class ); ?>" rel="internal" data-template-path="<?php echo esc_attr( $template_path ); ?>" data-templateid="<?php echo esc_attr( $template_id ); ?>" data-download-id="<?php echo esc_attr( $download_id ); ?>"><?php echo $button_text; ?></button></p>
 							<?php if( !empty( $template['license'] ) ) { ?>
 								<p class="gv-included-in"><?php echo sprintf( esc_html__( 'This layout is included in the %s license.', 'gk-gravityview' ), esc_html( str_replace( ' ', '&nbsp;', $template['license'] ) ) ); ?></p>
 							<?php } ?>
