@@ -526,8 +526,15 @@ final class Plugin {
 	 */
 	public function supports( $feature ) {
 
-		if ( ! is_null( $supports = apply_filters( "gravityview/plugin/feature/$feature", null ) ) ) {
-			return $supports;
+		/**
+		 * @filter `gravityview/supports` Overrides whether GravityView supports a feature.
+		 * @since 2.0
+		 * @param boolean|null $supports Whether the feature is supported. Default: null.
+		 */
+		$supports = apply_filters( "gravityview/plugin/feature/$feature", null );
+
+		if ( ! is_null( $supports ) ) {
+			return (bool) $supports;
 		}
 
 		switch ( $feature ):
