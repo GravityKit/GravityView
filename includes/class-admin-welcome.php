@@ -142,13 +142,13 @@ class GravityView_Welcome {
 
 		<h2 class="nav-tab-wrapper clear">
 			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started' ), 'admin.php' ) ) ); ?>">
-				<?php _e( "Getting Started", 'gk-gravityview' ); ?>
+				<?php esc_html_e( "Getting Started", 'gk-gravityview' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog' ), 'admin.php' ) ) ); ?>">
-				<?php _e( "List of Changes", 'gk-gravityview' ); ?>
+				<?php esc_html_e( "List of Changes", 'gk-gravityview' ); ?>
 			</a>
 			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits' ), 'admin.php' ) ) ); ?>">
-				<?php _e( 'Credits', 'gk-gravityview' ); ?>
+				<?php esc_html_e( 'Credits', 'gk-gravityview' ); ?>
 			</a>
 		</h2>
 		<?php
