@@ -58,7 +58,8 @@ function gravityview_register_placeholder_templates() {
 	$placeholders = [
 		'GravityView_DataTables_Template'       => [
 			'slug'        => 'dt_placeholder',
-			'id'          => 268,
+			'template_id' => 'datatables_table',
+			'download_id' => 268,
 			'label'       => __( 'DataTables Table', 'gv-datatables', 'gk-gravityview' ),
 			'description' => __( 'Display items in a dynamic table powered by DataTables.', 'gk-gravityview' ),
 			'logo'        => plugins_url( 'assets/images/templates/logo-datatables.png', GRAVITYVIEW_FILE ),
@@ -70,7 +71,8 @@ function gravityview_register_placeholder_templates() {
 		],
 		'GravityView_Maps_Template_Map_Default' => [
 			'slug'        => 'map_placeholder',
-			'id'          => 27,
+			'template_id' => 'map',
+			'download_id' => 27,
 			'label'       => __( 'Map', 'gravityview-maps', 'gk-gravityview' ),
 			'description' => __( 'Display entries on a map.', 'gk-gravityview' ),
 			'logo'        => plugins_url( 'assets/images/templates/default-map.png', GRAVITYVIEW_FILE ),
@@ -82,7 +84,8 @@ function gravityview_register_placeholder_templates() {
 		],
 		'GravityView_DIY_Template'              => [
 			'slug'        => 'diy_placeholder',
-			'id'          => 550152,
+			'template_id' => 'diy',
+			'download_id' => 550152,
 			'label'       => _x( 'DIY', 'DIY means "Do It Yourself"', 'gk-gravityview' ),
 			'description' => esc_html__( 'A flexible, powerful layout for designers & developers.', 'gk-gravityview' ),
 			'buy_source'  => 'https://www.gravitykit.com/pricing/?utm_source=plugin&utm_medium=buy_now&utm_campaign=view_type&utm_term=diy',
@@ -112,7 +115,7 @@ function gravityview_register_placeholder_templates() {
 		}
 
 		$placeholder['type']     = 'custom';
-		$placeholder['included'] = ! empty( GravityKitFoundation::helpers()->array->get( $products_data, "{$placeholder['id']}.licenses" ) );
+		$placeholder['included'] = ! empty( GravityKitFoundation::helpers()->array->get( $products_data, "{$placeholder['download_id']}.licenses" ) );
 
 		new GravityView_Placeholder_Template( $placeholder['slug'], $placeholder );
 	}

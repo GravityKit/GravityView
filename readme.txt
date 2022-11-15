@@ -33,6 +33,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: "Field connected to XYZ field was deleted from the form" notice when adding a new field to a View created from a form preset
 * Fixed: Edit Entry may partially save changes if form fields have conditional logic; thanks, Jurriaan!
 * Fixed: View presets not working
+* Fixed: "This View is configured using the View type, which is disabled" notice when creating a new View after activating or installing a View type (e.g., Maps, DIY, DataTables)
+* Improved: When creating a new View, it is now possible to install a View type (if included in the license) straight from the View editor
 
 = 2.15 on September 21, 2022 =
 

@@ -1380,7 +1380,7 @@
 				$parent.find( '.gv-view-types-hover > div:eq(0)' ).hide();
 				$parent.find( '.gv-view-types-hover > div:eq(1)' ).removeClass( 'hidden' );
 				$parent.removeClass( 'gv-view-template-placeholder' );
-				$parent.find( '.gv-view-types-hover > div:eq(1) .gv_select_template' ).trigger( 'click' );
+				$parent.find( 'a.gv_select_template' ).attr( 'data-templateid', $link.data( 'templateid' ) ).trigger( 'click' );
 			};
 
 			// Activate layout
