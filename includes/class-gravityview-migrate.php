@@ -16,6 +16,8 @@ class GravityView_Migrate {
 
 	function __construct() {
 		add_action( 'admin_init', array( $this, 'update_settings' ), 1 );
+
+		add_action( 'admin_menu', array( $this, 'redirect_old_admin_pages' ) );
 	}
 
 	public function update_settings() {
@@ -26,6 +28,38 @@ class GravityView_Migrate {
 
 		$this->maybe_migrate_approved_meta();
 
+	}
+
+	/**
+	 * Redirects old GravityView admin pages to the new ones.
+	 *
+	 * @since 2.16
+	 *
+	 * @return void
+	 */
+	public function redirect_old_admin_pages() {
+		global $pagenow;
+
+		if ( ! $pagenow || ! is_admin() ) {
+			return;
+		}
+
+		// Provide redirect for old GravityView settings page.
+		if( 'edit.php' !== $pagenow ) {
+			return;
+		}
+
+		switch ( \GV\Utils::_GET( 'page' ) ) {
+			case 'gravityview_settings':
+				wp_safe_redirect( admin_url( 'admin.php?page=gk_settings&p=gravityview&s=0' ) );
+				die();
+			case 'grant-gravityview-access':
+				wp_safe_redirect( admin_url( 'admin.php?page=gk_foundation_trustedlogin' ) );
+				die();
+			case 'gv-admin-installer':
+				wp_safe_redirect( admin_url( 'admin.php?page=gk_licenses' ) );
+				die();
+		}
 	}
 
 	/**
