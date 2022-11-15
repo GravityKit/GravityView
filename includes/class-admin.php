@@ -20,22 +20,14 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	private function include_required_files() {
-
-		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-migrate.php' );
-
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
-
-		/** @since 1.15 **/
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-support-port.php' );
-
-		/** @since 1.6 */
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
-
-		/** @since 1.17 */
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-admin-no-conflict.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-admin-welcome.php' );
 	}
 
 	/**
