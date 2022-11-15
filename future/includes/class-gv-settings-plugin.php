@@ -120,14 +120,18 @@ class Plugin_Settings {
 			return [];
 		}
 
+		// Migrate legacy GravityView settings that are still part of GravityView.
 		$plugin_settings = [
 			'rest_api' => (int) Arr::get( $legacy_settings, 'rest_api' ),
 		];
 
 		$this->_foundation_settings->save_plugin_settings( self::SETTINGS_PLUGIN_ID, $plugin_settings );
 
+		// Migrate legacy GravityView settings that are now part of the GravityKit general settings.
 		$gk_settings_id = class_exists( 'GravityKitFoundation' ) ? GravityKitFoundation::ID : FoundationCore::ID;
 
+		// If there are no settings configured, this would typically return an array of default settings.
+		// However, because GV\Plugin_Settings is used before Foundation initializes and configures default settings, this will return an empty array indicating that migration should proceed.
 		$gk_settings = $this->_foundation_settings->get_plugin_settings( $gk_settings_id );
 
 		if ( empty( $gk_settings ) ) {
