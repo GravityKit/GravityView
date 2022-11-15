@@ -2,6 +2,8 @@
 
 namespace GV;
 
+use GravityKitFoundation;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -129,6 +131,8 @@ final class Plugin {
 
 		// Add "All Views" and "New View" as submenus to the GravityKit menu
 		add_action( 'gk/foundation/initialized', array( $this, 'add_to_gravitykit_admin_menu' ) );
+
+		add_action( 'admin_menu', array( $this, 'setup_gravitykit_admin_menu_redirects' ) );
 	}
 
 	public function load_settings() {
@@ -632,6 +636,43 @@ final class Plugin {
 	}
 
 	/**
+	 * Redirects GravityKit's GravityView submenu pages to the appropriate custom post endpoints.
+	 *
+	 * @since 2.16
+	 *
+	 * @return void
+	 */
+	public function setup_gravitykit_admin_menu_redirects() {
+		if ( ! \GVCommon::has_cap( 'edit_gravityviews' ) ) {
+			return;
+		}
+
+		global $pagenow;
+
+		if ( ! $pagenow || ! is_admin() ) {
+			return;
+		}
+
+		if ( 'admin.php' === $pagenow ) {
+			if ( 'gravityview_all_views' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect(
+					add_query_arg(
+						[ 'post_type' => 'gravityview' ],
+						admin_url( 'edit.php' ) )
+				);
+			}
+
+			if ( 'gravityview_new_view' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect(
+					add_query_arg(
+						[ 'post_type' => 'gravityview' ],
+						admin_url( 'post-new.php' ) )
+				);
+			}
+		}
+	}
+
+	/**
 	 * Adds "All Views" and "New View" as submenus to the GravityKit menu.
 	 *
 	 * @since 2.16
@@ -656,13 +697,7 @@ final class Plugin {
 			'menu_title' => __( 'All Views', 'gk-gravityview' ),
 			'capability' => $capability,
 			'id'         => $all_views_menu_id,
-			'callback'   => function () use ( $post_type ) {
-				wp_safe_redirect(
-					add_query_arg(
-						[ 'post_type' => $post_type ],
-						admin_url( 'edit.php' ) )
-				);
-			},
+			'callback'   => '__return_false', // We'll redirect this to edit.php?post_type=gravityview (@see Plugin::setup_gravitykit_admin_menu_redirects()).
 			'order'      => 1,
 		], 'center' );
 
@@ -670,15 +705,8 @@ final class Plugin {
 			'page_title' => __( 'New View', 'gk-gravityview' ),
 			'menu_title' => __( 'New View', 'gk-gravityview' ),
 			'capability' => $capability,
-			'id'         => $post_type . '_new_view',
-			'callback'   => function () use ( $post_type ) {
-				wp_safe_redirect(
-					add_query_arg(
-						[ 'post_type' => $post_type ],
-						admin_url( 'post-new.php' ) )
-				);
-
-			},
+			'id'         => $new_view_menu_id,
+			'callback'   => '__return_false', // We'll redirect this to post-new.php?post_type=gravityview (@see Plugin::setup_gravitykit_admin_menu_redirects()).
 			'order'      => 2,
 		], 'center' );
 
