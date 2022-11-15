@@ -33,7 +33,7 @@ class GravityView_Welcome {
 	 * @since 1.0
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'admin_menus'), 200 );
+		add_action( 'gk/foundation/initialized', array( $this, 'admin_menus' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
 		add_action( 'admin_init', array( $this, 'welcome'    ) );
 		add_filter( 'gravityview_is_admin_page', array( $this, 'is_dashboard_page'), 10, 2 );
@@ -44,40 +44,44 @@ class GravityView_Welcome {
 	 * are used to render the Welcome pages.
 	 *
 	 * @since 1.0
+	 *
 	 * @return void
+	 *
+	 * @param GravityKitFoundation $foundation
 	 */
-	public function admin_menus() {
+	public function admin_menus( $foundation ) {
+
+		$admin_menu = $foundation::admin_menu();
 
 		// Add help page to GravityView menu
-		add_submenu_page(
-			'edit.php?post_type=gravityview',
-			__('GravityView: Getting Started', 'gk-gravityview'),
-			__('Getting Started', 'gk-gravityview'),
-			$this->minimum_capability,
-			'gv-getting-started',
-			array( $this, 'getting_started_screen' )
-		);
+		$admin_menu::add_submenu_item( [
+			'page_title' => __( 'GravityView: Getting Started', 'gk-gravityview' ),
+			'menu_title' => __( 'Getting Started', 'gk-gravityview' ),
+			'capability' => $this->minimum_capability,
+			'id'         => 'gv-getting-started',
+			'callback'   => array( $this, 'getting_started_screen' ),
+			'order'      => 1000,
+		], 'center' );
 
 		// Changelog Page
-		add_submenu_page(
-			'edit.php?post_type=gravityview',
-			__( 'Changelog', 'gk-gravityview' ),
-			__( 'Changelog', 'gk-gravityview' ),
-			$this->minimum_capability,
-			'gv-changelog',
-			array( $this, 'changelog_screen' )
-		);
+		$admin_menu::add_submenu_item( [
+			'page_title' => __( 'Changelog', 'gk-gravityview' ),
+			'menu_title' => __( 'Changelog', 'gk-gravityview' ),
+			'capability' => $this->minimum_capability,
+			'id'         => 'gv-changelog',
+			'callback'   => array( $this, 'changelog_screen' ),
+			'order'      => 1010,
+		], 'center' );
 
-		// Credits Page
-		add_submenu_page(
-			'edit.php?post_type=gravityview',
-			__( 'Credits', 'gk-gravityview' ),
-			__( 'Credits', 'gk-gravityview' ),
-			$this->minimum_capability,
-			'gv-credits',
-			array( $this, 'credits_screen' )
-		);
-
+		// Changelog Page
+		$admin_menu::add_submenu_item( [
+			'page_title' => __( 'Credits', 'gk-gravityview' ),
+			'menu_title' => __( 'Credits', 'gk-gravityview' ),
+			'capability' => $this->minimum_capability,
+			'id'         => 'gv-credits',
+			'callback'   => array( $this, 'credits_screen' ),
+			'order'      => 1020,
+		], 'center' );
 	}
 
 	/**
@@ -137,13 +141,13 @@ class GravityView_Welcome {
 		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gk-gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
-			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
+			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started' ), 'admin.php' ) ) ); ?>">
 				<?php _e( "Getting Started", 'gk-gravityview' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
+			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog' ), 'admin.php' ) ) ); ?>">
 				<?php _e( "List of Changes", 'gk-gravityview' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits', 'post_type' => 'gravityview'), 'edit.php' ) ) ); ?>">
+			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits' ), 'admin.php' ) ) ); ?>">
 				<?php _e( 'Credits', 'gk-gravityview' ); ?>
 			</a>
 		</h2>
@@ -744,11 +748,11 @@ class GravityView_Welcome {
 
 		// First time install
 		if( ! $upgrade ) {
-			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) ); exit;
+			wp_safe_redirect( admin_url( 'admin.php?page=gv-getting-started' ) ); exit;
 		}
 		// Update
 		else {
-			wp_safe_redirect( admin_url( 'edit.php?post_type=gravityview&page=gv-changelog' ) ); exit;
+			wp_safe_redirect( admin_url( 'admin.php?page=gv-changelog' ) ); exit;
 		}
 	}
 }
