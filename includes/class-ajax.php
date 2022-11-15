@@ -329,7 +329,7 @@ class GravityView_Ajax {
 		}
 
 		// Import logic from https://github.com/gravityforms/gravityforms/blob/11dc114df56e7f5116d7df1adc54000007c13ec5/export.php#L96 & https://github.com/gravityforms/gravityforms/blob/11dc114df56e7f5116d7df1adc54000007c13ec5/export.php#L106
-		$forms_json = GFExport::sanitize_forms_json( file_get_contents( $form_file ) );
+		$forms_json = file_get_contents( $form_file );
 
 		$forms = json_decode( $forms_json, true );
 
