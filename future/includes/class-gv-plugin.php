@@ -635,10 +635,13 @@ final class Plugin {
 		 */
 		delete_option( 'gravityview_cache_blacklist' );
 		delete_option( 'gravityview_cache_blocklist' );
+		delete_option( 'gv_version' );
 		delete_option( 'gv_version_upgraded_from' );
 		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_transient( 'gravityview_edd-deactivate_valid' );
 		delete_transient( 'gravityview_dismissed_notices' );
+		delete_transient( '_gv_activation_redirect' );
+		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_site_transient( 'gravityview_related_plugins' );
 	}
 
