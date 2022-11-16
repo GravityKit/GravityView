@@ -59,12 +59,6 @@ HTML;
 	return;
 }
 
-require_once GRAVITYVIEW_DIR . 'vendor_prefixed/gravitykit/foundation/src/preflight_check.php';
-
-if ( ! GravityKit\GravityView\Foundation\should_load( GRAVITYVIEW_FILE ) ) {
-	return;
-}
-
 require_once GRAVITYVIEW_DIR . 'vendor/autoload.php';
 require_once GRAVITYVIEW_DIR . 'vendor_prefixed/autoload.php';
 

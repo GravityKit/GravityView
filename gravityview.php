@@ -16,6 +16,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+require_once __DIR__ . '/vendor_prefixed/gravitykit/foundation/src/preflight_check.php';
+
+if ( ! GravityKit\GravityView\Foundation\should_load( __FILE__ ) ) {
+	return;
+}
+
 /** Constants */
 
 /**
