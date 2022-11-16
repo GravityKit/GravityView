@@ -526,8 +526,15 @@ final class Plugin {
 	 */
 	public function supports( $feature ) {
 
-		if ( ! is_null( $supports = apply_filters( "gravityview/plugin/feature/$feature", null ) ) ) {
-			return $supports;
+		/**
+		 * @filter `gravityview/supports` Overrides whether GravityView supports a feature.
+		 * @since 2.0
+		 * @param boolean|null $supports Whether the feature is supported. Default: null.
+		 */
+		$supports = apply_filters( "gravityview/plugin/feature/$feature", null );
+
+		if ( ! is_null( $supports ) ) {
+			return (bool) $supports;
 		}
 
 		switch ( $feature ):
@@ -628,10 +635,13 @@ final class Plugin {
 		 */
 		delete_option( 'gravityview_cache_blacklist' );
 		delete_option( 'gravityview_cache_blocklist' );
+		delete_option( 'gv_version' );
 		delete_option( 'gv_version_upgraded_from' );
 		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_transient( 'gravityview_edd-deactivate_valid' );
 		delete_transient( 'gravityview_dismissed_notices' );
+		delete_transient( '_gv_activation_redirect' );
+		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_site_transient( 'gravityview_related_plugins' );
 	}
 
