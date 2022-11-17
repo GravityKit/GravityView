@@ -48,6 +48,22 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			'merge_tags' => false,
 		);
 
+		$field = \GV\GF_Field::by_id( \GV\GF_Form::by_id( $form_id), $field_id );
+
+		// Only allow alt text on single files currently.
+		if( empty( $field->field->multipleFiles ) ) {
+
+			$add_options['alt_text'] = array(
+				'type'       => 'text',
+				'label'      => __( 'Alternative text', 'gk-gravityview' ),
+				'desc'       => __( 'Define an alternative text description of a file. For supported file types only. By default, the field label is used.', 'gk-gravityview' ),
+				'value'      => false,
+				'merge_tags' => 'force',
+				'group'      => 'advanced',
+			);
+
+		}
+
 		return $add_options + $field_options;
 	}
 
@@ -196,6 +212,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$disable_lightbox   = false;
 			$text               = $basename;
 
+			$alt = \GV\Utils::get( $field_settings, 'alt_text' );
+			$alt = ( '' === $alt ) ? $field_settings['label'] : $alt;
+			$alt = GFCommon::replace_variables( $alt, GFAPI::get_form( $entry['form_id'] ), $entry );
 
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {
@@ -268,10 +287,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// Images
 			} else if ( in_array( $extension, GravityView_Image::get_image_extensions() ) ) {
 				$width = \GV\Utils::get( $field_settings, 'image_width', 250 );
+
 				$image_atts = array(
 					'src'   => $file_path,
 					'class' => 'gv-image gv-field-id-' . $field_settings['id'],
-					'alt'   => $field_settings['label'],
+					'alt'   => $alt,
 					'width' => ( $is_single ? null : ( $width ? $width: 250 ) )
 				);
 
