@@ -1034,8 +1034,17 @@ class GravityView_Admin_Views {
 												$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false ;
 											}
 
-											if ( !$original_item ) {
-												gravityview()->log->error( 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array(' data' => array('available_items' => $available_items, 'field' => $field ) ) );
+											if ( ! $original_item ) {
+
+												global $pagenow;
+												if ( 'post-new.php' !== $pagenow  ) {
+													gravityview()->log->error( 'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.', array(
+															' data' => array(
+																	'available_items' => $available_items,
+																	'field'           => $field
+															)
+													) );
+												}
 
 												$original_item = $field;
 											} else {

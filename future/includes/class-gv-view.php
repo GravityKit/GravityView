@@ -709,7 +709,8 @@ class View implements \ArrayAccess {
 
 		/** Get connected form. */
 		$view->form = GF_Form::by_id( $view->_gravityview_form_id );
-		if ( ! $view->form ) {
+		global $pagenow;
+		if ( ! $view->form && 'post-new.php' !== $pagenow  ) {
 			gravityview()->log->error( 'View #{view_id} tried attaching non-existent Form #{form_id} to it.', array(
 				'view_id' => $view->ID,
 				'form_id' => $view->_gravityview_form_id ? : 0,
