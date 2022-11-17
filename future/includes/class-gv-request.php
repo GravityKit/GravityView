@@ -97,12 +97,14 @@ abstract class Request {
 	 * @since 2.0
 	 * @todo tests
 	 *
+	 * @param string $return What to return. Either 'object' or 'bool'.
+	 *
 	 * @return \GV\View|false The view requested or false
 	 */
-	public function is_view() {
+	public function is_view( $return = 'view' ) {
 		global $post;
-		if ( $post && get_post_type( $post ) == 'gravityview' ) {
-			return \GV\View::from_post( $post );
+		if ( $post && 'gravityview' === get_post_type( $post ) ) {
+			return ( $return === 'view' ) ? \GV\View::from_post( $post ) : true;
 		}
 		return false;
 	}

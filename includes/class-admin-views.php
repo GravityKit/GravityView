@@ -101,7 +101,7 @@ class GravityView_Admin_Views {
 	 */
 	function suggest_support_articles( $localization_data = array() ) {
 
-	    if( ! gravityview()->request->is_view() ) {
+	    if( ! gravityview()->request->is_view( 'bool' ) ) {
 	        return $localization_data;
         }
 
