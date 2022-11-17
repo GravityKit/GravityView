@@ -929,13 +929,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 		$this->assertFalse( $request->is_view() );
-		$this->assertFalse( $request->is_view( 'bool' ) );
+		$this->assertFalse( $request->is_view( false ) );
 
 		$view = $this->factory->view->create_and_get();
 
 		$post = $view;
 		$this->assertInstanceOf( '\GV\View', $request->is_view() );
-		$this->assertTrue( $request->is_view( 'bool' ) );
+		$this->assertTrue( $request->is_view( false ) );
 
 		$_GET = array();
 		$this->assertFalse( $request->is_search() );

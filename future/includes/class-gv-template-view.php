@@ -107,7 +107,7 @@ abstract class View_Template extends Template {
 
 		global $post;
 
-		if ( ! $this->request->is_view( 'bool' ) && $post ) {
+		if ( ! $this->request->is_view( false ) && $post ) {
 			$specifics []= sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
 			$specifics []= sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
 		}

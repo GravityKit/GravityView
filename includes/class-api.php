@@ -1333,7 +1333,7 @@ function gravityview_get_context() {
 		return 'edit';
 	} else if ( gravityview()->request->is_entry() ) {
 		return 'single';
-	} else if ( gravityview()->request->is_view( 'bool' ) ) {
+	} else if ( gravityview()->request->is_view( false ) ) {
 		return 'directory';
 	}
 
