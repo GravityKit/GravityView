@@ -47,10 +47,11 @@ class GravityView_Welcome {
 	 *
 	 * @return void
 	 *
-	 * @param GravityKitFoundation $foundation
+	 * @param \GravityKit\GravityView\Foundation\Core|GravityKitFoundation $foundation
 	 */
 	public function admin_menus( $foundation ) {
 
+		/** @var \GravityKit\GravityView\Foundation\WP\AdminMenu $admin_menu */
 		$admin_menu = $foundation::admin_menu();
 
 		// Changelog Page
@@ -111,6 +112,7 @@ class GravityView_Welcome {
 	 */
 	public function admin_head() {
 
+		/** @var \GravityKit\GravityView\Foundation\WP\AdminMenu $admin_menu */
 		$admin_menu = GravityKitFoundation::admin_menu();
 
 		$admin_menu::remove_submenu_item( 'gv-credits' );
