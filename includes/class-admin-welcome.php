@@ -89,12 +89,18 @@ class GravityView_Welcome {
 	 *
 	 * @return boolean  $is_page   True: yep; false: nope
 	 */
-	public function is_dashboard_page($is_page = false, $hook = NULL) {
-		global $plugin_page;
+	public function is_dashboard_page( $is_page = false, $hook = NULL ) {
+		global $pagenow;
 
-		if($is_page) { return $is_page; }
+		if ( empty( $_GET['page'] ) ) {
+			return $is_page;
+		}
 
-		return in_array( $plugin_page, array( 'gv-about', 'gv-credits', 'gv-getting-started' ) );
+		if ( ! $pagenow ) {
+			return $is_page;
+		}
+
+		return 'admin.php' === $pagenow && in_array( $_GET['page'], array( 'gv-changelog', 'gv-credits', 'gv-getting-started' ), true );
 	}
 
 	/**
