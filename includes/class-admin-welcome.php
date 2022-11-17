@@ -53,34 +53,34 @@ class GravityView_Welcome {
 
 		$admin_menu = $foundation::admin_menu();
 
-		// Add help page to GravityView menu
-		$admin_menu::add_submenu_item( [
-			'page_title' => __( 'GravityView: Getting Started', 'gk-gravityview' ),
-			'menu_title' => __( 'Getting Started', 'gk-gravityview' ),
-			'capability' => $this->minimum_capability,
-			'id'         => 'gv-getting-started',
-			'callback'   => array( $this, 'getting_started_screen' ),
-			'order'      => 1000,
-		], 'center' );
-
 		// Changelog Page
 		$admin_menu::add_submenu_item( [
+			'id'         => 'gv-changelog',
 			'page_title' => __( 'Changelog', 'gk-gravityview' ),
 			'menu_title' => __( 'Changelog', 'gk-gravityview' ),
 			'capability' => $this->minimum_capability,
-			'id'         => 'gv-changelog',
 			'callback'   => array( $this, 'changelog_screen' ),
-			'order'      => 1010,
+			'order'      => 40,
 		], 'center' );
 
 		// Changelog Page
 		$admin_menu::add_submenu_item( [
+			'id'         => 'gv-credits',
 			'page_title' => __( 'Credits', 'gk-gravityview' ),
 			'menu_title' => __( 'Credits', 'gk-gravityview' ),
 			'capability' => $this->minimum_capability,
-			'id'         => 'gv-credits',
 			'callback'   => array( $this, 'credits_screen' ),
-			'order'      => 1020,
+			'order'      => 50,
+		], 'center' );
+
+		// Add Getting Started page to GravityView menu
+		$admin_menu::add_submenu_item( [
+			'id'         => 'gv-getting-started',
+			'page_title' => __( 'GravityView: Getting Started', 'gk-gravityview' ),
+			'menu_title' => __( 'Getting Started', 'gk-gravityview' ),
+			'capability' => $this->minimum_capability,
+			'callback'   => array( $this, 'getting_started_screen' ),
+			'order'      => 60, // Make it the last so that the border divider remains
 		], 'center' );
 	}
 
