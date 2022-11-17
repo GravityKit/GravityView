@@ -32,7 +32,34 @@ class WP_Action_Logger extends Logger {
 		$location = $this->interpolate( "{class}{type}{function}", $backtrace[2] );
 		$message = $this->interpolate( "[$level, $location] $message", $context );
 
-		/** @see \GravityKit\GravityView\Monolog\Logger */
-		\GravityKitFoundation::logger()->log( $level, $message, $context );
+		switch ( $level ):
+			case LogLevel::EMERGENCY:
+			case LogLevel::ALERT:
+			case LogLevel::CRITICAL:
+			case LogLevel::ERROR:
+				$action = 'error';
+				break;
+			case LogLevel::WARNING:
+			case LogLevel::NOTICE:
+			case LogLevel::INFO:
+			case LogLevel::DEBUG:
+				$action = 'debug';
+				break;
+		endswitch;
+
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			/** Let's make this testable! */
+			do_action(
+				sprintf( 'gravityview_log_%s_test', $action ),
+				$this->interpolate( $message, $context ),
+				empty( $context['data'] ) ? array() : $context['data']
+			);
+		}
+		
+		do_action(
+			sprintf( 'gravityview_log_%s', $action ),
+			$this->interpolate( $message, $context ),
+			empty( $context['data'] ) ? array() : $context['data']
+		);
 	}
 }
