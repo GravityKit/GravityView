@@ -131,7 +131,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			/** A compatibility array that's required by some of the deprecated filters. */
 			$field_compat = array(
-				'form' => $context->source->form,
+				'form' => (isset($context->source->form) ? $context->source->form : ''),
 				'field_id' => $context->field->ID,
 				'field' => $field,
 				'field_settings' => $field_settings,
@@ -140,7 +140,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				'format' => 'html',
 				'entry' => $entry,
 				'field_type' => $context->field->type,
-				'field_path' => $context->template->located_template,
+				'field_path' => (isset($context->template->located_template) ? $context->template->located_template : ''),
 			);
 		} else {
 
