@@ -123,10 +123,8 @@ class GravityView_Welcome {
 		}
 
 		?>
-		<style type="text/css" media="screen" xmlns="http://www.w3.org/1999/html">
-		/*<![CDATA[*/
+		<style>
 		.update-nag { display: none; }
-		/*]]>*/
 		</style>
 		<?php
 	}
