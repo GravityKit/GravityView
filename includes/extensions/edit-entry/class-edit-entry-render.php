@@ -335,7 +335,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Process edit entry form save
 	 *
-	 * @param array $gv_data The View data.
+	 * @param GravityView_View_Data $gv_data The View data.
 	 */
 	private function process_save( $gv_data ) {
 
