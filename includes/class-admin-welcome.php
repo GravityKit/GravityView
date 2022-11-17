@@ -110,12 +110,15 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function admin_head() {
-		global $plugin_page;
 
-		remove_submenu_page( 'edit.php?post_type=gravityview', 'gv-credits' );
-		remove_submenu_page( 'edit.php?post_type=gravityview', 'gv-changelog' );
+		$admin_menu = GravityKitFoundation::admin_menu();
 
-		if( !$this->is_dashboard_page() ) { return; }
+		$admin_menu::remove_submenu_item( 'gv-credits' );
+		$admin_menu::remove_submenu_item( 'gv-changelog' );
+
+		if( ! $this->is_dashboard_page() ) {
+			return;
+		}
 
 		?>
 		<style type="text/css" media="screen" xmlns="http://www.w3.org/1999/html">
