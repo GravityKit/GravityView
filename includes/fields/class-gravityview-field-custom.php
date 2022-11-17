@@ -142,7 +142,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 		$new_fields = array();
 		$i = 0;
 
-		$entry = gravityview()->request->is_edit_entry();
+		$entry = gravityview()->request->is_edit_entry( $form['id'] );
 
 		// Loop through the configured Edit Entry fields and add Custom Content fields if there are any
 		// TODO: Make this available to other custom GV field types
