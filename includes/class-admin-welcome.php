@@ -648,7 +648,7 @@ class GravityView_Welcome {
 				<div class="col">
 					<h3>Vlad K.</h3>
 					<h4>Core Developer</h4>
-					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad, while being the &ldquo;new kid on the block&rdquo; at GravityKit, is not new to WordPress, having previously worked on the top newsletter plugin. He&rsquo;s a full-stack developer who focuses on GravityKit&rsquo;s user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
+					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad is GravityKit&rsquo;s lead developer. He focuses on GravityKit&rsquo;s user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
 				</div>
 
 				<div class="col">
