@@ -1658,11 +1658,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( ! empty( $filter['choices'] ) ) {
 			/**
 			 * @filter `gravityview/search/sieve_choices` Only output used choices for this field.
-			 * @param bool Yes or no.
+			 * @since 2.16 Modified default value to `true`.
+			 * @param bool Yes or no. Default: true.
 			 * @param array $field The field configuration.
 			 * @param \GV\Context The context.
 			 */
-			if ( apply_filters( 'gravityview/search/sieve_choices', false, $field, $context ) ) {
+			if ( apply_filters( 'gravityview/search/sieve_choices', true, $field, $context ) ) {
 				$filter['choices'] = $this->sieve_filter_choices( $filter, $context );
 			}
 		}
@@ -1702,6 +1703,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		$form_id = $context->view->form->ID; // @todo Support multiple forms (joins)
+
+		$cache = new GravityView_Cache( $form_id, [ 'sieve', $filter['key'], $context->view->ID ] );
+
+		$filter_choices = $cache->get();
+
+		if( $filter_choices ) {
+			return $filter_choices;
+		}
 
 		global $wpdb;
 
@@ -1751,6 +1760,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$filter_choices[] = $choice;
 			}
 		}
+
+		$cache->set( $filter_choices, 'sieve_filter_choices', WEEK_IN_SECONDS );
 
 		return $filter_choices;
 	}
