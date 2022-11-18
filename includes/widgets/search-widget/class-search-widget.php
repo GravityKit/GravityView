@@ -1703,6 +1703,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$form_id = $context->view->form->ID; // @todo Support multiple forms (joins)
 
+		$cache = new GravityView_Cache( $form_id, [ 'sieve', $filter['key'], $context->view->ID ] );
+
+		$filter_choices = $cache->get();
+
+		if( $filter_choices ) {
+			return $filter_choices;
+		}
+
 		global $wpdb;
 
 		$entry_table_name = GFFormsModel::get_entry_table_name();
@@ -1751,6 +1759,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$filter_choices[] = $choice;
 			}
 		}
+
+		$cache->set( $filter_choices, 'sieve_filter_choices', WEEK_IN_SECONDS );
 
 		return $filter_choices;
 	}
