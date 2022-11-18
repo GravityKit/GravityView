@@ -558,7 +558,7 @@ class GravityView_Cache {
 	public function use_cache() {
 
 		// Exit early if debugging (unless running PHPUnit)
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && ! ( defined('DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) ) {
+		if ( defined( 'GRAVITYVIEW_DISABLE_CACHE' ) && GRAVITYVIEW_DISABLE_CACHE && ! ( defined('DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) ) {
 			return apply_filters( 'gravityview_use_cache', false, $this );
 		}
 
