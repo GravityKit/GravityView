@@ -409,10 +409,8 @@ class GravityView_Render_Settings {
 				</section>
 			</div>';
 		} else {
-			$widget_details_content = rgar( $item, 'description', '' );
-			if ( ! empty( $item['subtitle'] ) ) {
-				$widget_details_content .= ( '' !== $widget_details_content ) ? "\n\n" . $item['subtitle'] : $item['subtitle'];
-			}
+			$subtitle = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle']  . '</div>' : '';
+			$widget_details_content = \GV\Utils::get( $item, 'description', '' );
 
 			// Intentionally not escaping to allow HTML.
 			$item_details = '<div class="gv-field-details--container">' . wpautop( trim( $widget_details_content ) ) . '</div>';

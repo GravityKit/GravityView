@@ -32,8 +32,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function __construct() {
 
 		$this->widget_id = 'search_bar';
-		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
-		$this->widget_subtitle = '';
+		$this->widget_description = '';
+		$this->widget_subtitle = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
 
 		self::$instance = &$this;
 
@@ -74,6 +74,28 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'options' => array(
 					'any' => esc_html__( 'Match Any Fields', 'gk-gravityview' ),
 					'all' => esc_html__( 'Match All Fields', 'gk-gravityview' ),
+				),
+			),
+			'sieve_choices' => array(
+				'type' => 'radio',
+				'full_width' => true,
+				'label' => esc_html__( 'Pre-Filter Choices', 'gk-gravityview' ),
+				// translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
+				'desc' => strtr(
+					esc_html__( 'For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries.', 'gk-gravityview' ) .
+					'<p><strong>⚠️ ' . esc_html__('This setting affects security.', 'gk-gravityview' ) . '</strong> ' . esc_html__( '[link]Learn about the Pre-Filter Choices setting[/link] before enabling it.', 'gk-gravityview') . '</p>',
+					array(
+						'[b]' => '<strong>',
+						'[/b]' => '</strong>',
+						'[link]' => '<a href="https://docs.gravitykit.com/article/701-s" target="_blank" rel="external noopener nofollower" title="' . esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ) . '">',
+						'[/link]' => '</a>',
+					)
+				),
+				'value' => '0',
+				'class' => 'hide-if-js',
+				'options' => array(
+					'0' => esc_html__( 'Show all field choices', 'gk-gravityview' ),
+					'1' => esc_html__( 'Only show choices that exist in form entries', 'gk-gravityview' ),
 				),
 			),
 		);
@@ -1422,7 +1444,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$updated_field = $field;
 
-			$updated_field = $this->get_search_filter_details( $updated_field, $context );
+			$updated_field = $this->get_search_filter_details( $updated_field, $context, $widget_args );
 
 			switch ( $field['field'] ) {
 
@@ -1608,12 +1630,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Prepare search fields to frontend render with other details (label, field type, searched values)
 	 *
+	 * @since 2.16 Added $widget_args parameter.
+	 *
 	 * @param array $field
 	 * @param \GV\Context $context
+	 * @param array $widget_args
 	 *
 	 * @return array
 	 */
-	private function get_search_filter_details( $field, $context ) {
+	private function get_search_filter_details( $field, $context, $widget_args ) {
 
 		$gravityview_view = GravityView_View::getInstance();
 
@@ -1656,14 +1681,17 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		if ( ! empty( $filter['choices'] ) ) {
+
+			$sieve_choices = \GV\Utils::get( $widget_args, 'sieve_choices', false );
+
 			/**
 			 * @filter `gravityview/search/sieve_choices` Only output used choices for this field.
-			 * @since 2.16 Modified default value to `true`.
-			 * @param bool Yes or no. Default: true.
+			 * @since 2.16 Modified default value to the `sieve_choices` widget setting and added $widget_args parameter.
+			 * @param bool $sieve_choices True: Yes, filter choices based on whether the value exists in entries. False: show all choices in the original field. Default: false.
 			 * @param array $field The field configuration.
 			 * @param \GV\Context The context.
 			 */
-			if ( apply_filters( 'gravityview/search/sieve_choices', true, $field, $context ) ) {
+			if ( apply_filters( 'gravityview/search/sieve_choices', $sieve_choices, $field, $context, $widget_args ) ) {
 				$filter['choices'] = $this->sieve_filter_choices( $filter, $context );
 			}
 		}
