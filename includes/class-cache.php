@@ -420,8 +420,13 @@ class GravityView_Cache {
 
 			gravityview()->log->debug( 'Setting cache with transient key {key} for {expiration} seconds', array( 'key' => $this->key, 'expiration' => $expiration ) );
 
-			return set_transient( $this->key, $content, $cache_time );
+			$transient_was_set = set_transient( $this->key, $content, $expiration );
 
+			if ( ! $transient_was_set && $this->use_cache() ) {
+				gravityview()->log->error( 'Transient was not set for this key: ' . $this->key );
+			}
+
+			return $transient_was_set;
 		}
 
 		gravityview()->log->debug( 'Cache not set; content is empty' );
