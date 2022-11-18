@@ -395,25 +395,30 @@ class GravityView_Cache {
 	/**
 	 * Cache content as a transient.
 	 *
-	 * Cache time defaults to 1 week
+	 * Cache time defaults to 1 day.
 	 *
-	 * @param mixed $content     [description]
+	 * @since 2.16 Added $cache_time parameter to allow overriding the default cache time.
+	 *
+	 * @param mixed $content The content to cache.
 	 * @param string $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
+	 * @param int|null $expiration Cache time in seconds. If not set, DAYS_IN_SECONDS will be used.
 	 *
 	 * @return bool If $content is not set, false. Otherwise, returns true if transient was set and false if not.
 	 */
-	public function set( $content, $filter_name = '' ) {
+	public function set( $content, $filter_name = '', $expiration = null ) {
 
 		// Don't cache empty results
 		if ( ! empty( $content ) ) {
+
+			$expiration = ! is_int( $expiration ) ? DAY_IN_SECONDS : $expiration;
 
 			/**
 			 * @filter `gravityview_cache_time_{$filter_name}` Modify the cache time for a type of cache
 			 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
 			 */
-			$cache_time = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, DAY_IN_SECONDS );
+			$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
 
-			gravityview()->log->debug( 'Setting cache with transient key {key} for {cache_time} seconds', array( 'key' => $this->key, 'cache_time' => $cache_time ) );
+			gravityview()->log->debug( 'Setting cache with transient key {key} for {expiration} seconds', array( 'key' => $this->key, 'expiration' => $expiration ) );
 
 			return set_transient( $this->key, $content, $cache_time );
 
@@ -422,7 +427,6 @@ class GravityView_Cache {
 		gravityview()->log->debug( 'Cache not set; content is empty' );
 
 		return false;
-
 	}
 
 	/**
