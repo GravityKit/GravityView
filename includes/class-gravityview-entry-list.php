@@ -104,7 +104,7 @@ class GravityView_Entry_List {
 		$this->context = $context;
 		$this->template_context = $template_context;
 		$this->view_id = $view_id;
-		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results( $template_context ) : __( 'No entries match your request.', 'gravityview' );
+		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results( $template_context ) : __( 'No entries match your request.', 'gk-gravityview' );
 	}
 
 	/**

@@ -24,8 +24,8 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 		$table_settings = array(
 			'slug'        => 'table',
 			'type'        => 'custom',
-			'label'       => __( 'Table', 'gravityview' ),
-			'description' => __( 'Display items in a table view.', 'gravityview' ),
+			'label'       => __( 'Table', 'gk-gravityview' ),
+			'description' => __( 'Display items in a table view.', 'gk-gravityview' ),
 			'logo'        => plugins_url( 'includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE ),
 			'css_source'  => gravityview_css_url( $css_filename, GRAVITYVIEW_DIR . 'templates/css/' ),
 		);
@@ -39,7 +39,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 		$field_options = array(
 			'show_as_link' => array(
 				'type'     => 'checkbox',
-				'label'    => __( 'Link to single entry', 'gravityview' ),
+				'label'    => __( 'Link to single entry', 'gk-gravityview' ),
 				'value'    => false,
 				'context'  => 'directory',
 				'priority' => 1190,
@@ -52,8 +52,8 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 				'1-1' => array(
 					array(
 						'areaid'   => 'table-columns',
-						'title'    => __( 'Visible Table Columns', 'gravityview' ),
-						'subtitle' => __( 'Each field will be displayed as a column in the table.', 'gravityview' ),
+						'title'    => __( 'Visible Table Columns', 'gk-gravityview' ),
+						'subtitle' => __( 'Each field will be displayed as a column in the table.', 'gk-gravityview' ),
 					)
 				)
 			)
@@ -102,7 +102,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 			return $label;
 		}
 
-		return __( 'Add Table Column', 'gravityview' );
+		return __( 'Add Table Column', 'gk-gravityview' );
 	}
 }
 

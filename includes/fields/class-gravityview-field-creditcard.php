@@ -18,7 +18,7 @@ class GravityView_Field_CreditCard extends GravityView_Field {
 	var $icon = 'dashicons-cart';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Credit Card', 'gravityview' );
+		$this->label = esc_html__( 'Credit Card', 'gk-gravityview' );
 		parent::__construct();
 	}
 }

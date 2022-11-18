@@ -68,7 +68,7 @@ abstract class GravityView_Lightbox_Provider {
 			return false;
 		}
 
-		$provider = gravityview()->plugin->settings->get( 'lightbox' );
+		$provider = gravityview()->plugin->settings->get( 'lightbox', GravityView_Lightbox::DEFAULT_PROVIDER );
 
 		if ( static::$slug !== $provider ) {
 			return false;

@@ -30,7 +30,5 @@ class GravityView_Uninstall {
 	public function fire_everything() {
 		gravityview()->log->warning( '\GravityView_Uninstall::fire_everything is deprecated. Use \GV\Plugin::uninstall instead' );
 		gravityview()->plugin->uninstall();
-
-		$this->delete_entry_notes();
 	}
 }

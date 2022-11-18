@@ -17,8 +17,8 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	var $contexts = array( 'single', 'multiple' );
 
 	public function __construct() {
-		$this->label = esc_html__( 'Unsubscribe', 'gravityview' );
-		$this->description =  esc_attr__( 'Unsubscribe from a Payment-based entry.', 'gravityview' );
+		$this->label = esc_html__( 'Unsubscribe', 'gk-gravityview' );
+		$this->description =  esc_attr__( 'Unsubscribe from a Payment-based entry.', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -65,8 +65,8 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 
 		$add_options['unsub_all'] = array(
 			'type'       => 'checkbox',
-			'label'      => __( 'Allow admins to unsubscribe', 'gravityview' ),
-			'desc'       => __( 'Allow users with `gravityforms_edit_entries` to cancel subscriptions', 'gravityview' ),
+			'label'      => __( 'Allow admins to unsubscribe', 'gk-gravityview' ),
+			'desc'       => __( 'Allow users with `gravityforms_edit_entries` to cancel subscriptions', 'gk-gravityview' ),
 			'value'      => false,
 			'merge_tags' => false,
 		);
@@ -202,7 +202,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 		$link = add_query_arg( 'unsubscribe', wp_create_nonce( 'unsubscribe_' . $entry['id'] ), $current_url );
 		$link = add_query_arg( 'uid', $entry['id'], $link );
 
-		return sprintf( '<a href="%s">%s</a>', esc_url( $link ), esc_html__( 'Unsubscribe', 'gravityview' ) );
+		return sprintf( '<a href="%s">%s</a>', esc_url( $link ), esc_html__( 'Unsubscribe', 'gk-gravityview' ) );
 	}
 
 	/**

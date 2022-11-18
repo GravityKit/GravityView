@@ -29,13 +29,6 @@ node_modules/*
 .sass-cache
 *.codekit
 
-### Transifex ####
-.tx
-languages/gravityview-pt.mo
-languages/gravityview-pt.po
-languages/gravityview-de.mo
-languages/gravityview-de.po
-
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 

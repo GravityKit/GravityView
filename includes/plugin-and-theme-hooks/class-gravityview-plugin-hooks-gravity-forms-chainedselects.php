@@ -192,7 +192,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 
 	function add_input_label( $input_labels = array() ) {
 
-		$input_labels[ self::INPUT_TYPE ] = esc_html__( 'Chained Select', 'gravityview' );
+		$input_labels[ self::INPUT_TYPE ] = esc_html__( 'Chained Select', 'gk-gravityview' );
 
 		return $input_labels;
 	}

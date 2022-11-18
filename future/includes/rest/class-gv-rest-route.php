@@ -38,6 +38,10 @@ abstract class Route extends \WP_REST_Controller {
 	 * Register the routes for the objects of the controller.
 	 */
 	public function register_routes() {
+
+		// Clear out all errors before we start. This prevents breaking responses when WP_DEBUG_DISPLAY is true.
+		ob_clean();
+
 		$namespace = \GV\REST\Core::get_namespace();
 		$base = $this->get_route_name();
 
@@ -175,7 +179,7 @@ abstract class Route extends \WP_REST_Controller {
 		if ( is_string( $this->route_name ) ) {
 			return $this->route_name;
 		} else {
-			_doing_it_wrong( __METHOD__, __( 'Must set route name in subclass.', 'gravityview' ), '2.0' );
+			_doing_it_wrong( __METHOD__, __( 'Must set route name in subclass.', 'gk-gravityview' ), '2.0' );
 			return '';
 		}
 	}
@@ -193,7 +197,7 @@ abstract class Route extends \WP_REST_Controller {
 		if ( is_string( $this->sub_type ) ) {
 			return $this->sub_type;
 		} else {
-			_doing_it_wrong( __METHOD__, __( 'Must set route sub type in subclass.', 'gravityview' ), '2.0' );
+			_doing_it_wrong( __METHOD__, __( 'Must set route sub type in subclass.', 'gk-gravityview' ), '2.0' );
 			return '';
 		}
 	}
@@ -382,7 +386,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return \WP_REST_Response
 	 */
 	protected function not_implemented() {
-		$error = new \WP_Error( 'not-implemented-yet', __( 'Endpoint Not Yet Implemented.', 'gravityview' )  );
+		$error = new \WP_Error( 'not-implemented-yet', __( 'Endpoint Not Yet Implemented.', 'gk-gravityview' )  );
 		return new \WP_REST_Response( $error, 501 );
 	}
 

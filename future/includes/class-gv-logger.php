@@ -23,9 +23,7 @@ class LogLevel {
 /**
  * The \GV\Logger abstract class.
  *
- * Provides logging facilities in line with PSR-3 Standard.
- * @see https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-3-logger-interface.md
- * @see https://github.com/php-fig/log/blob/master/Psr/Log/AbstractLogger.php
+ * @TODO: (Foundation) Deprecate in future versions.
  */
 abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
     /**

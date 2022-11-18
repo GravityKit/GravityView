@@ -112,7 +112,7 @@ abstract class Entry_Template extends Template {
 
 		global $post;
 
-		if ( ! $this->request->is_view() && $post ) {
+		if ( ! $this->request->is_view( false ) && $post ) {
 			$specifics []= sprintf( '%spost-%d-view-%d-entry-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->entry->ID, $slug_name );
 			$specifics []= sprintf( '%spost-%d-entry-%d-%s.php', $slug_dir, $post->ID, $this->entry->ID, $slug_name );
 			$specifics []= sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );

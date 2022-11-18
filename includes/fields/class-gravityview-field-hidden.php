@@ -20,7 +20,7 @@ class GravityView_Field_Hidden extends GravityView_Field {
 	var $icon = 'dashicons-hidden';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Hidden', 'gravityview' );
+		$this->label = esc_html__( 'Hidden', 'gk-gravityview' );
 
 		$this->edit_entry_add_hooks();
 
