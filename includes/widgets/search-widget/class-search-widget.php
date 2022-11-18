@@ -1708,51 +1708,51 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$filter_choices = $cache->get();
 
-		if( $filter_choices ) {
+		if ( $filter_choices ) {
 			return $filter_choices;
 		}
 
 		global $wpdb;
 
-		$entry_table_name = GFFormsModel::get_entry_table_name();
+		$entry_table_name      = GFFormsModel::get_entry_table_name();
 		$entry_meta_table_name = GFFormsModel::get_entry_meta_table_name();
 
 		$key_like = $wpdb->esc_like( $filter['key'] ) . '.%';
 
-		switch ( \GV\Utils::get( $filter, 'type' ) ):
+		switch ( \GV\Utils::get( $filter, 'type' ) ) {
 			case 'post_category':
 				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT SUBSTRING_INDEX(meta_value, ':', 1) FROM $entry_meta_table_name WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
+					"SELECT DISTINCT SUBSTRING_INDEX( `meta_value`, ':', 1) FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %d) AND `form_id` = %d",
 					$key_like, $filter['key'], $form_id
 				) );
 				break;
 			case 'created_by':
 				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT created_by FROM $entry_table_name WHERE form_id = %d",
+					"SELECT DISTINCT `created_by` FROM $entry_table_name WHERE `form_id` = %d",
 					$form_id
 				) );
 				break;
 			default:
 				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT meta_value FROM $entry_meta_table_name WHERE (meta_key LIKE %s OR meta_key = %d) AND form_id = %d",
+					"SELECT DISTINCT `meta_value` FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %d) AND `form_id` = %d",
 					$key_like, $filter['key'], $form_id
 				) );
 
 				if ( ( $field = gravityview_get_field( $form_id, $filter['key'] ) ) && 'json' === $field->storageType ) {
-					$choices = array_map( 'json_decode', $choices );
+					$choices        = array_map( 'json_decode', $choices );
 					$_choices_array = array();
 					foreach ( $choices as $choice ) {
 						if ( is_array( $choice ) ) {
 							$_choices_array = array_merge( $_choices_array, $choice );
 						} else {
-							$_choices_array []= $choice;
+							$_choices_array [] = $choice;
 						}
 					}
 					$choices = array_unique( $_choices_array );
 				}
 
 				break;
-		endswitch;
+		}
 
 		$filter_choices = array();
 		foreach ( $filter['choices'] as $choice ) {
