@@ -32,6 +32,13 @@ class GravityView_Cache {
 	private $key = '';
 
 	/**
+	 * Whether to use the cache or not. Set in {@see use_cache()}.
+	 *
+	 * @var null|boolean $use_cache
+	 */
+	private $use_cache = null;
+
+	/**
 	 * @since 1.13.1
 	 * @var array Columns in the database for leads
 	 */
@@ -568,7 +575,12 @@ class GravityView_Cache {
 
 		// Exit early if debugging (unless running PHPUnit)
 		if ( defined( 'GRAVITYVIEW_DISABLE_CACHE' ) && GRAVITYVIEW_DISABLE_CACHE && ! ( defined('DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) ) {
-			return apply_filters( 'gravityview_use_cache', false, $this );
+			return (boolean) apply_filters( 'gravityview_use_cache', false, $this );
+		}
+
+		// Only run once per instance.
+		if ( ! is_null( $this->use_cache ) ) {
+			return $this->use_cache;
 		}
 
 		$use_cache = true;
@@ -592,7 +604,6 @@ class GravityView_Cache {
 
 			// Remove the form from
 			$this->blocklist_remove( $this->form_ids );
-
 		}
 
 		/**
@@ -600,9 +611,9 @@ class GravityView_Cache {
 		 * @param  boolean $use_cache Previous setting
 		 * @param GravityView_Cache $this The GravityView_Cache object
 		 */
-		$use_cache = apply_filters( 'gravityview_use_cache', $use_cache, $this );
+		$this->use_cache = (boolean) apply_filters( 'gravityview_use_cache', $use_cache, $this );
 
-		return (boolean) $use_cache;
+		return $this->use_cache;
 	}
 
 }
