@@ -1658,7 +1658,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( ! empty( $filter['choices'] ) ) {
 			/**
 			 * @filter `gravityview/search/sieve_choices` Only output used choices for this field.
-			 * @param bool Yes or no.
+			 * @since 2.16 Modified default value to `true`.
+			 * @param bool Yes or no. Default: true.
 			 * @param array $field The field configuration.
 			 * @param \GV\Context The context.
 			 */
