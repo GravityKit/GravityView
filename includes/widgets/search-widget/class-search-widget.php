@@ -1662,7 +1662,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * @param array $field The field configuration.
 			 * @param \GV\Context The context.
 			 */
-			if ( apply_filters( 'gravityview/search/sieve_choices', false, $field, $context ) ) {
+			if ( apply_filters( 'gravityview/search/sieve_choices', true, $field, $context ) ) {
 				$filter['choices'] = $this->sieve_filter_choices( $filter, $context );
 			}
 		}
