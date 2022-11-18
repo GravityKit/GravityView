@@ -132,20 +132,20 @@ class GravityView_Bulk_Actions {
 			return false;
 		}
 
-		$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
+		$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gk-gravityview' ), count( $entries ) ) : __( '1 entry', 'gk-gravityview' );
 
 		switch ( $approved_status ) {
 			case self::$bulk_action_prefixes['approve']:
 				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::APPROVED, $form_id );
-				self::$bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
+				self::$bulk_update_message = sprintf( __( '%s approved.', 'gk-gravityview' ), $entry_count );
 				break;
 			case self::$bulk_action_prefixes['unapprove']:
 				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::UNAPPROVED, $form_id );
-				self::$bulk_update_message = sprintf( __( '%s unapproved.', 'gravityview' ), $entry_count );
+				self::$bulk_update_message = sprintf( __( '%s unapproved.', 'gk-gravityview' ), $entry_count );
 				break;
 			case self::$bulk_action_prefixes['disapprove']:
 				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::DISAPPROVED, $form_id );
-				self::$bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
+				self::$bulk_update_message = sprintf( __( '%s disapproved.', 'gk-gravityview' ), $entry_count );
 				break;
 		}
 	}

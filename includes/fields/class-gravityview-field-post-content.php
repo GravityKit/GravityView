@@ -20,7 +20,7 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 	var $icon = 'dashicons-editor-alignleft';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Content', 'gravityview' );
+		$this->label = esc_html__( 'Post Content', 'gk-gravityview' );
 		parent::__construct();
 	}
 

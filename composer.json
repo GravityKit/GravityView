@@ -12,25 +12,18 @@
       "type": "vcs",
       "url": "https://github.com/katzwebservices/standalone-phpenkoder"
     },
-	{
-	  "type": "github",
-	  "url":  "https://github.com/trustedlogin/client.git",
-	  "no-api": true
-	},
-	{
-	  "type": "github",
-	  "url":  "https://github.com/BrianHenryIE/strauss.git",
-	  "no-api": true
-	}
+    {
+      "type": "vcs",
+      "url": "git@github.com:gravityview/Foundation.git"
+    }
   ],
   "require": {
-    "php": ">=5.3",
+    "php": ">=5.6.4",
     "ext-json": "*",
     "ext-openssl": "*",
-	"trustedlogin/client": "dev-main"
+    "gravitykit/foundation": "dev-main"
   },
   "require-dev": {
-	"brianhenryie/strauss": "^0.8.10",
 	"lucatume/wp-browser": "^2.4",
 	"codeception/module-asserts": "^1.0",
 	"codeception/module-phpbrowser": "^1.0",
@@ -41,41 +34,56 @@
 	"codeception/util-universalframework": "^1.0",
     "yoast/phpunit-polyfills": "^1.0"
   },
-  "autoload": {
-	"classmap": [
-	  "vendor"
-	],
-	"psr-4": {
-	  "TrustedLogin\\": "src/",
-	  "KatzGrau\\KLogger\\": "src/"
-	}
-  },
   "extra": {
-	"strauss": {
-	  "target_directory": "trustedlogin",
-	  "namespace_prefix": "GravityView\\",
-	  "classmap_prefix": "GV_",
-	  "packages": [
-		"trustedlogin/client"
-	  ],
-	  "exclude_from_prefix": {
-		"packages": [
-		  "paragonie/random_compat",
-		  "paragonie/sodium_compat"
-		]
-	  },
-	  "delete_vendor_files": false
-	}
+    "strauss": {
+      "target_directory": "vendor_prefixed",
+      "namespace_prefix": "GravityKit\\GravityView",
+      "classmap_prefix": "GravityKit_GravityView_",
+      "packages": [
+        "gravitykit/foundation"
+      ],
+      "namespace_replacement_patterns": {
+        "/^Illuminate/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Illuminate",
+        "/^TrustedLogin/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\TrustedLogin",
+        "/^GravityKit\\\\Foundation/": "GravityKit\\GravityView\\Foundation"
+      },
+      "override_autoload": {
+        "gravitykit/foundation": {
+          "psr-4": {
+            "GravityKit\\Foundation\\": "src"
+          },
+          "files": [
+            "assets"
+          ]
+        }
+      },
+      "exclude_from_prefix": {
+        "file_patterns": [
+          "/^psr.*$/"
+        ]
+      },
+      "exclude_from_copy": {
+        "packages": [
+          "paragonie/random_compat",
+          "paragonie/sodium_compat"
+        ]
+      },
+      "delete_vendor_files": false
+    }
   },
   "scripts": {
-	"strauss": [
-	  "@php strauss.phar"
-	],
-	"post-install-cmd": [
-	  "@strauss"
-	],
-	"post-update-cmd": [
-	  "@strauss"
-	]
+    "prefix_vendor": "@php strauss.phar",
+    "cleanup_foundation": "[ -d 'vendor/gravitykit/foundation' ] && rm -rf vendor/gravitykit/foundation || true",
+    "post-install-cmd": [
+      "@prefix_vendor",
+      "@cleanup_foundation"
+    ],
+    "post-update-cmd": [
+      "@prefix_vendor",
+      "@cleanup_foundation"
+    ]
+  },
+  "config": {
+    "platform-check": false
   }
 }

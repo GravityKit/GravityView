@@ -23,7 +23,7 @@ class GravityView_Field_Post_Tags extends GravityView_Field {
 	var $icon = 'dashicons-tag';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Tags', 'gravityview' );
+		$this->label = esc_html__( 'Post Tags', 'gk-gravityview' );
 		parent::__construct();
 	}
 

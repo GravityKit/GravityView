@@ -18,7 +18,7 @@ class GravityView_Field_Survey extends GravityView_Field {
 	var $icon = 'dashicons-forms';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Survey', 'gravityview' );
+		$this->label = esc_html__( 'Survey', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -69,19 +69,19 @@ class GravityView_Field_Survey extends GravityView_Field {
 		$add_options = array();
 
 		$glue = apply_filters( 'gravityview/template/field/survey/glue', '; ' );
-		$multiple_rows_suffix = sprintf( _x( ' (separated by %s)', 'text added to a label if multiple rows are enabled for the field)', 'gravityview' ), esc_html( trim( $glue ) ) );
+		$multiple_rows_suffix = sprintf( _x( ' (separated by %s)', 'text added to a label if multiple rows are enabled for the field)', 'gk-gravityview' ), esc_html( trim( $glue ) ) );
 
 		if ( 'likert' === $field->field->inputType ) {
 
 			$show_suffix = $input_id || empty( $field->field->gsurveyLikertEnableMultipleRows );
 
 			$likert_display_options = array(
-				'default' => __( 'A table (default Gravity Forms formatting)', 'gravityview' ),
-				'text' => __( 'Text value of the selected choice', 'gravityview' ) . ( $show_suffix ? '' : $multiple_rows_suffix ),
+				'default' => __( 'A table (default Gravity Forms formatting)', 'gk-gravityview' ),
+				'text' => __( 'Text value of the selected choice', 'gk-gravityview' ) . ( $show_suffix ? '' : $multiple_rows_suffix ),
 			);
 
 			if( $field->field->gsurveyLikertEnableScoring ) {
-				$likert_display_options['score'] = __( 'Score value of the selected choice', 'gravityview' ) . ( $show_suffix ? '' : $multiple_rows_suffix );
+				$likert_display_options['score'] = __( 'Score value of the selected choice', 'gk-gravityview' ) . ( $show_suffix ? '' : $multiple_rows_suffix );
 			}
 
 			// Maintain for back-compatibility
@@ -93,7 +93,7 @@ class GravityView_Field_Survey extends GravityView_Field {
 
 			$add_options['choice_display'] = array(
 				'type' => 'radio',
-				'label' => __( 'What should be displayed:', 'gravityview' ),
+				'label' => __( 'What should be displayed:', 'gk-gravityview' ),
 				'options' => $likert_display_options,
 				'desc' => '',
 				'group' => 'display',
@@ -107,12 +107,12 @@ class GravityView_Field_Survey extends GravityView_Field {
 			$field_options['choice_display'] = array(
 				'type'    => 'radio',
 				'class'   => 'vertical',
-				'label'   => __( 'What should be displayed:', 'gravityview' ),
+				'label'   => __( 'What should be displayed:', 'gk-gravityview' ),
 				'value'   => 'tick',
 				'desc'    => '',
 				'choices' => array(
-					'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
-					'text' => __( 'Text value of the selected choice', 'gravityview' ),
+					'tick' => __( 'A check mark, if the input is checked', 'gk-gravityview' ),
+					'text' => __( 'Text value of the selected choice', 'gk-gravityview' ),
 				),
 				'group'   => 'display',
 				'priority' => 100,
@@ -123,12 +123,12 @@ class GravityView_Field_Survey extends GravityView_Field {
 			$field_options['choice_display'] = array(
 				'type'    => 'radio',
 				'class'   => 'vertical',
-				'label'   => __( 'What should be displayed:', 'gravityview' ),
+				'label'   => __( 'What should be displayed:', 'gk-gravityview' ),
 				'value'   => 'default',
 				'desc'    => '',
 				'choices' => array(
-					'default' => __( 'Text value of the selected choice', 'gravityview' ),
-					'stars' => __( 'Stars (default Gravity Forms formatting)', 'gravityview' ),
+					'default' => __( 'Text value of the selected choice', 'gk-gravityview' ),
+					'stars' => __( 'Stars (default Gravity Forms formatting)', 'gk-gravityview' ),
 				),
 				'group'   => 'display',
 				'priority' => 100,

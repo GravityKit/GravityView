@@ -118,10 +118,10 @@ class GravityView_Entry_Approval {
 	 */
 	public static function add_approval_notification_events( $notification_events = array(), $form = array() ) {
 
-		$notification_events['gravityview/approve_entries/approved'] = 'GravityView - ' . esc_html_x( 'Entry is approved', 'The title for an event in a notifications drop down list.', 'gravityview' );
-		$notification_events['gravityview/approve_entries/disapproved'] = 'GravityView - ' . esc_html_x( 'Entry is disapproved', 'The title for an event in a notifications drop down list.', 'gravityview' );
-		$notification_events['gravityview/approve_entries/unapproved'] = 'GravityView - ' . esc_html_x( 'Entry approval is reset', 'The title for an event in a notifications drop down list.', 'gravityview' );
-		$notification_events['gravityview/approve_entries/updated'] = 'GravityView - ' . esc_html_x( 'Entry approval is changed', 'The title for an event in a notifications drop down list.', 'gravityview' );
+		$notification_events['gravityview/approve_entries/approved'] = 'GravityView - ' . esc_html_x( 'Entry is approved', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+		$notification_events['gravityview/approve_entries/disapproved'] = 'GravityView - ' . esc_html_x( 'Entry is disapproved', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+		$notification_events['gravityview/approve_entries/unapproved'] = 'GravityView - ' . esc_html_x( 'Entry approval is reset', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+		$notification_events['gravityview/approve_entries/updated'] = 'GravityView - ' . esc_html_x( 'Entry approval is changed', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
 
 		return $notification_events;
 	}
@@ -187,7 +187,7 @@ class GravityView_Entry_Approval {
 
 			gravityview()->log->error( 'Invalid approval status', array( 'data' => $_POST ) );
 
-			$result = new WP_Error( 'invalid_status', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+			$result = new WP_Error( 'invalid_status', __( 'The request was invalid. Refresh the page and try again.', 'gk-gravityview' ) );
 
 		}
 
@@ -196,7 +196,7 @@ class GravityView_Entry_Approval {
 
 			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $_POST ) );
 
-			$result = new WP_Error( 'empty_details', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+			$result = new WP_Error( 'empty_details', __( 'The request was invalid. Refresh the page and try again.', 'gk-gravityview' ) );
 
 		}
 
@@ -205,7 +205,7 @@ class GravityView_Entry_Approval {
 
 			gravityview()->log->error( 'Security check failed.', array( 'data' => $_POST ) );
 
-			$result = new WP_Error( 'invalid_nonce', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+			$result = new WP_Error( 'invalid_nonce', __( 'The request was invalid. Refresh the page and try again.', 'gk-gravityview' ) );
 
 		}
 
@@ -214,7 +214,7 @@ class GravityView_Entry_Approval {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
-			$result = new WP_Error( 'Missing Cap: gravityview_moderate_entries', __( 'You do not have permission to edit this entry.', 'gravityview') );
+			$result = new WP_Error( 'Missing Cap: gravityview_moderate_entries', __( 'You do not have permission to edit this entry.', 'gk-gravityview') );
 
 		}
 
@@ -451,13 +451,13 @@ class GravityView_Entry_Approval {
 
 		switch ( $approved ) {
 			case GravityView_Entry_Approval_Status::APPROVED:
-				$note = __( 'Approved the Entry for GravityView', 'gravityview' );
+				$note = __( 'Approved the Entry for GravityView', 'gk-gravityview' );
 				break;
 			case GravityView_Entry_Approval_Status::UNAPPROVED:
-				$note = __( 'Reset Entry approval for GravityView', 'gravityview' );
+				$note = __( 'Reset Entry approval for GravityView', 'gk-gravityview' );
 				break;
 			case GravityView_Entry_Approval_Status::DISAPPROVED:
-				$note = __( 'Disapproved the Entry for GravityView', 'gravityview' );
+				$note = __( 'Disapproved the Entry for GravityView', 'gk-gravityview' );
 				break;
 		}
 

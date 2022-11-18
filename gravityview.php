@@ -3,13 +3,12 @@
  * Plugin Name:       	GravityView
  * Plugin URI:        	https://www.gravitykit.com
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:             2.15
+ * Version:             2.16
  * Author:            	GravityKit
  * Author URI:        	https://www.gravitykit.com
- * Text Domain:       	gravityview
+ * Text Domain:       	gk-gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
- * Domain Path:			/languages
  */
 
 /** If this file is called directly, abort. */
@@ -17,12 +16,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+require_once __DIR__ . '/vendor_prefixed/gravitykit/foundation/src/preflight_check.php';
+
+if ( ! GravityKit\GravityView\Foundation\should_load( __FILE__ ) ) {
+	return;
+}
+
 /** Constants */
 
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.15' );
+define( 'GV_PLUGIN_VERSION', '2.16' );
 
 /**
  * Full path to the GravityView file
@@ -66,7 +71,7 @@ define( 'GV_FUTURE_MIN_WP_VERSION', '5.3' );
  * GravityView requires at least this version of PHP to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_PHP_VERSION', '5.6.30' );
+define( 'GV_MIN_PHP_VERSION', '5.6.4' );
 
 /**
  * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
@@ -184,19 +189,6 @@ final class GravityView_Plugin {
 	 */
 	public static function include_widget_class() {
 		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-	}
-
-
-	/**
-	 * Loads the plugin's translated strings.
-	 *
-	 * @deprecated Use \GV\Plugin::load_textdomain()
-	 *
-	 * @return void
-	 */
-	public function load_plugin_textdomain() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		gravityview()->plugin->load_textdomain();
 	}
 
 	/**

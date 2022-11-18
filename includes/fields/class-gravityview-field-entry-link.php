@@ -31,8 +31,8 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 	var $icon = 'dashicons-media-default';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Link to Single Entry', 'gravityview' );
-		$this->description = esc_html__('A dedicated link to the single entry with customizable text.', 'gravityview');
+		$this->label = esc_html__( 'Link to Single Entry', 'gk-gravityview' );
+		$this->description = esc_html__('A dedicated link to the single entry with customizable text.', 'gk-gravityview');
 		parent::__construct();
 	}
 
@@ -75,9 +75,9 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 		$add_options = array();
 		$add_options['entry_link_text'] = array(
 			'type' => 'text',
-			'label' => __( 'Link Text:', 'gravityview' ),
+			'label' => __( 'Link Text:', 'gk-gravityview' ),
 			'desc' => NULL,
-			'value' => __('View Details', 'gravityview'),
+			'value' => __('View Details', 'gk-gravityview'),
 			'merge_tags' => true,
 		);
 

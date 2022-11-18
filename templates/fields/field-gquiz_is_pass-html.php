@@ -29,6 +29,6 @@ if ( 'passfail' === $grading_type_enabled ) {
 	echo GFCommon::replace_variables( '{quiz_passfail}', $form, $entry );
 
 } elseif ( GVCommon::has_cap( 'gravityforms_edit_forms' ) ) {
-	$grade_type = __( 'Pass/Fail', 'gravityview' );
-	printf( esc_html_x( '%s grading is disabled for this form. %sChange the setting%s', '%s is the current Quiz field type ("Letter" or "Pass/Fail")', 'gravityview' ), $grade_type, '<a href="'. admin_url('admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=gravityformsquiz&amp;id='.$form['id'] ) . '">', '</a>' );
+	$grade_type = __( 'Pass/Fail', 'gk-gravityview' );
+	printf( esc_html_x( '%s grading is disabled for this form. %sChange the setting%s', '%s is the current Quiz field type ("Letter" or "Pass/Fail")', 'gk-gravityview' ), $grade_type, '<a href="'. admin_url('admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=gravityformsquiz&amp;id='.$form['id'] ) . '">', '</a>' );
 }

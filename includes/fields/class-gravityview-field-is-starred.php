@@ -26,9 +26,9 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
 	 */
 	public function __construct() {
 
-		$this->label = esc_html__( 'Entry Star', 'gravityview' );
-		$this->default_search_label = __( 'Is Starred', 'gravityview' );
-		$this->description = esc_html__( 'Display the entry\'s "star" status.', 'gravityview' );
+		$this->label = esc_html__( 'Entry Star', 'gk-gravityview' );
+		$this->default_search_label = __( 'Is Starred', 'gk-gravityview' );
+		$this->description = esc_html__( 'Display the entry\'s "star" status.', 'gk-gravityview' );
 
 
 		$this->add_hooks();
@@ -144,7 +144,7 @@ class GravityView_Field_Is_Starred extends GravityView_Field {
                     .data( 'is_starred', update );
 			})
             .fail(function() {
-                alert(<?php echo json_encode( __( 'There was an error updating the entry.', 'gravityview' ) ); ?>);
+                alert(<?php echo json_encode( __( 'There was an error updating the entry.', 'gk-gravityview' ) ); ?>);
             });
 		});
 	});

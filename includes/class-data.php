@@ -294,7 +294,7 @@ class GravityView_View_Data {
 				return true;
 			}
 
-			$message = esc_html__( 'The ID is required.', 'gravityview' );
+			$message = esc_html__( 'The ID is required.', 'gk-gravityview' );
 		}
 
 		if ( ! $message ) {
@@ -302,10 +302,10 @@ class GravityView_View_Data {
 
 			// Nothing exists with that post ID.
 			if ( ! is_numeric( $post_id ) ) {
-				$message = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gravityview' );
+				$message = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gk-gravityview' );
 
 				// @todo Convert to generic article about Embed IDs
-				$message .= ' ' . gravityview_get_link( 'https://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+				$message .= ' ' . gravityview_get_link( 'https://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
 			}
 		}
 
@@ -313,7 +313,7 @@ class GravityView_View_Data {
 
 			// Nothing exists with that post ID.
 			if ( empty( $status ) || in_array( $status, array( 'revision', 'attachment' ) ) ) {
-				$message = esc_html__( 'There is no post or page with that ID.', 'gravityview' );
+				$message = esc_html__( 'There is no post or page with that ID.', 'gk-gravityview' );
 			}
 
 		}
@@ -324,14 +324,14 @@ class GravityView_View_Data {
 
 			// The post or page specified does not contain the shortcode.
 			if ( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
-				$message = sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
+				$message = sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gk-gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
 			}
 		}
 
 		if ( ! $message ) {
 			// It's a View
 			if ( \GV\View::exists( $post_id ) ) {
-				$message = esc_html__( 'The ID is already a View.', 'gravityview' );;
+				$message = esc_html__( 'The ID is already a View.', 'gk-gravityview' );;
 			}
 		}
 

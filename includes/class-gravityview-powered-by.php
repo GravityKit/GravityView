@@ -30,7 +30,7 @@ class GravityView_Powered_By {
 	 */
 	public function maybe_add_link() {
 
-		$powered_by = gravityview()->plugin->settings->get( 'powered_by', '0' );
+		$powered_by = gravityview()->plugin->settings->get_gravitykit_setting( 'powered_by', 0 );
 
 		if( empty( $powered_by ) ) {
 			return;
@@ -47,7 +47,7 @@ class GravityView_Powered_By {
 		 * @filter `gravityview/powered_by/text` Modify the anchor text for the Powered By link
 		 * @param string $anchor_text Anchor text for the Powered By link. Default: "Powered by GravityView". Will be sanitized before display.
 		 */
-		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gravityview' ) );
+		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gk-gravityview' ) );
 
 		printf( '<span class="gv-powered-by"><a href="%s">%s</a></span>', esc_url( $url ), esc_html( $anchor_text ) );
 	}
@@ -61,7 +61,7 @@ class GravityView_Powered_By {
 
 		$url = sprintf( self::url, get_bloginfo('name' ) );
 
-		$affiliate_id = gravityview()->plugin->settings->get( 'affiliate_id', '' );
+		$affiliate_id = gravityview()->plugin->settings->get_gravitykit_setting( 'affiliate_id', '' );
 
 		if( $affiliate_id && is_numeric( $affiliate_id ) ) {
 			$url = add_query_arg( array( 'ref' => $affiliate_id ), $url );
