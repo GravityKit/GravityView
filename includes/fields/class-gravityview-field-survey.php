@@ -19,6 +19,9 @@ class GravityView_Field_Survey extends GravityView_Field {
 
 	public function __construct() {
 		$this->label = esc_html__( 'Survey', 'gk-gravityview' );
+
+		add_action( 'gravityview/template/field/survey/rating/before', array( __CLASS__, 'output_frontend_css' ) );
+
 		parent::__construct();
 	}
 
