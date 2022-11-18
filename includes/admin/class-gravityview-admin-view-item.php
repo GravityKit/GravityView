@@ -216,7 +216,6 @@ abstract class GravityView_Admin_View_Item {
 			$settings_link = '';
 			$label         = '<span class="dashicons-warning dashicons"></span> ' . esc_html( sprintf( __( 'The field connected to "%s" was deleted from the form. The associated entry data no longer exists.', 'gk-gravityview' ), $label ) );
 		}
-		$title .= "\n" . $this->get_item_info( false );
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
 
