@@ -365,7 +365,7 @@ class GravityView_Cache {
 	 *
 	 * @return mixed      False: Not using cache or cache was a WP_Error object; NULL: no results found; Mixed: cache value
 	 */
-	public function get( $key = NULL ) {
+	public function get( $key = null ) {
 
 		$key = is_null( $key ) ? $this->key : $key;
 
@@ -388,15 +388,14 @@ class GravityView_Cache {
 
 		} elseif ( $result ) {
 
-			gravityview()->log->debug( 'Cached results found for  transient key {key}', array( 'key' => $key ) );
+			gravityview()->log->debug( 'Cached results found for transient key {key}', array( 'key' => $key ) );
 
 			return $result;
 		}
 
-		gravityview()->log->debug( 'No cached results found for  transient key {key}', array( 'key' => $key ) );
+		gravityview()->log->debug( 'No cached results found for transient key {key}', array( 'key' => $key ) );
 
 		return NULL;
-
 	}
 
 	/**
@@ -597,7 +596,7 @@ class GravityView_Cache {
 		}
 
 		// Has the form been flagged as having changed items in it?
-		if ( $this->in_blocklist() || ! $use_cache ) {
+		if ( ! $use_cache || $this->in_blocklist() ) {
 
 			// Delete caches for all items with form IDs XYZ
 			$this->delete( $this->form_ids );
