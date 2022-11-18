@@ -339,7 +339,7 @@ class GravityView_Cache {
 
 		foreach ( (array) $form_ids as $form_id ) {
 
-			if ( in_array( $form_id, $blocklist ) ) {
+			if ( in_array( $form_id, $blocklist, true ) ) {
 
 				gravityview()->log->debug( 'Form #{form_id} is in the cache blocklist', array( 'form_id' => $form_id ) );
 
