@@ -139,11 +139,19 @@ class GravityView_Field_Survey extends GravityView_Field {
 	}
 
 
+	/**
+	 * Output CSS for star ratings.
+	 *
+	 * @since 2.16
+	 *
+	 * @return void
+	 */
 	static function output_frontend_css() {
 
-		static $output;
+		static $did_output;
 
-		if ( $output ) {
+		// Only output once.
+		if ( $did_output ) {
 			return;
 		}
 
@@ -191,7 +199,7 @@ class GravityView_Field_Survey extends GravityView_Field {
 		</style>
 		<?php
 
-		$output = true;
+		$did_output = true;
 	}
 }
 
