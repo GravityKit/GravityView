@@ -171,7 +171,7 @@ class GravityView_Field_Survey extends GravityView_Field {
 			.gv-field-survey-star-filled {
 				background-image: url( 'data:image/svg+xml;base64,<?php echo base64_encode( $star1 ); ?>');
 			}
-			.gv-field-survey-visuallhidden {
+			.gv-field-survey-screen-reader-text {
 				border: 0;
 				clip: rect(0 0 0 0);
 				clip-path: inset(50%);
@@ -183,9 +183,9 @@ class GravityView_Field_Survey extends GravityView_Field {
 				width: 1px;
 				white-space: nowrap;
 			}
-			.gv-field-survey-visuallhidden.focusable {
-			.gv-field-survey-visuallhidden:active,
-			.gv-field-survey-visuallhidden:focus {
+			.gv-field-survey-screen-reader-text.focusable {
+			.gv-field-survey-screen-reader-text:active,
+			.gv-field-survey-screen-reader-text:focus {
 				clip: auto;
 				clip-path: none;
 				height: auto;

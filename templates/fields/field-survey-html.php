@@ -127,7 +127,7 @@ switch ( $gravityview->field->field->inputType ) {
 
 		GravityView_Field_Survey::output_frontend_css();
 
-		echo '<span class="gv-field-survey-visuallhidden">' . esc_html( $star_a11y_label ) . '</span>';
+		echo '<span class="gv-field-survey-screen-reader-text">' . esc_html( $star_a11y_label ) . '</span>';
 		foreach ( $choices as $current_index => $choice_value ) {
 
 			// Have we already shown the last filled-in star?
