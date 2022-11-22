@@ -249,9 +249,13 @@
 				$open_dialog.dialog( 'option', 'width', window_width );
 			});
 
-			window.onbeforeunload = function() {
-				return vcfg.hasUnsavedChanges ? true : null;
-			};
+
+			// Make sure the user intends to leave the page before leaving.
+			window.addEventListener('beforeunload', ( event) => {
+				if ( vcfg.hasUnsavedChanges ) {
+					event.preventDefault();
+				}
+			} );
 
 			if( gvGlobals.passed_form_id ) {
 				vcfg.gvSelectForm.trigger( 'change' );
@@ -803,7 +807,7 @@
 
 			vcfg.currentTemplateId = '';
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
-			vcfg.hasUnsavedChanges = true;
+			vcfg.setUnsavedChanges( true );
 			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
@@ -1311,7 +1315,7 @@
 			}
 
 			vcfg.currentTemplateId = selectedTemplateId;
-			vcfg.hasUnsavedChanges = true;
+			vcfg.setUnsavedChanges( true );
 		},
 
 		/**
@@ -1530,7 +1534,7 @@
 					resolve();
 				} );
 
-				vcfg.hasUnsavedChanges = true;
+				vcfg.setUnsavedChanges( true );
 			});
 		},
 
@@ -1875,7 +1879,7 @@
 			} ).always( function () {
 
 				vcfg.toggleDropMessage();
-				vcfg.hasUnsavedChanges = true;
+				vcfg.setUnsavedChanges( true );
 
 			} );
 
@@ -1976,6 +1980,9 @@
 				stop: function( event, ui ) {
 					$( '#directory-fields, #single-fields' ).find( ".active-drop-container-widget" ).removeClass('is-receivable');
 				},
+				change: function( event, ui ) {
+					vcfg.setUnsavedChanges( true );
+				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
 
@@ -2003,6 +2010,9 @@
 				},
 				stop: function( event, ui ) {
 					$( panel ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+				},
+				change: function( event, ui ) {
+					vcfg.setUnsavedChanges( true );
 				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
@@ -2046,7 +2056,7 @@
 			var vcfg = viewConfiguration;
 			var area = $( e.currentTarget ).parents( ".active-drop" );
 
-			vcfg.hasUnsavedChanges = true;
+			vcfg.setUnsavedChanges( true );
 
 			// Nice little easter egg: when holding down control, get rid of all fields in the zone at once.
 			if ( e.altKey && $( area ).find( '.gv-fields' ).length > 1 ) {
@@ -2163,7 +2173,7 @@
 
 			$( 'input:checkbox', $parent ).attr( 'disabled', null );
 
-			vcfg.hasUnsavedChanges = true;
+			vcfg.setUnsavedChanges( true );
 		},
 
 		/**
@@ -2214,7 +2224,7 @@
 			// If the View isn't a Start Fresh view, we just return true
 			// so that the click on the Publish button can process.
 			if ( !vcfg.startFreshStatus || templateId === '' ) {
-				vcfg.hasUnsavedChanges = false;
+				vcfg.setUnsavedChanges( false );
 
 				// Serialize the inputs so that `max_input_vars`
 				return vcfg.serializeForm( e );
@@ -2222,6 +2232,14 @@
 
 			return false;
 
+		},
+
+		/**
+		 * @since {2.16}
+		 * @param {boolean} has_changes
+		 */
+		setUnsavedChanges( has_changes ) {
+			viewConfiguration.hasUnsavedChanges = has_changes;
 		},
 
 		/**
