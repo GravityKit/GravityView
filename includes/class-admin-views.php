@@ -1319,6 +1319,7 @@ class GravityView_Admin_Views {
 			'cookiepath'                  => COOKIEPATH,
 			'admin_cookiepath'            => ADMIN_COOKIE_PATH,
 			'passed_form_id'              => (bool) \GV\Utils::_GET( 'form_id' ),
+			'has_merge_tag_listener'      => (bool) version_compare( GFForms::$version, '2.6.4', '>=' ),
 			'nonce'                       => wp_create_nonce( 'gravityview_ajaxviews' ),
 			'label_viewname'              => __( 'Enter View name here', 'gk-gravityview' ),
 			'label_reorder_search_fields' => __( 'Reorder Search Fields', 'gk-gravityview' ),

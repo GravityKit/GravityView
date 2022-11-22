@@ -12,6 +12,7 @@
  *
  * @typedef {{
  *   passed_form_id: bool,
+ *   has_merge_tag_listener: bool,
  *   label_cancel: string
  *   label_continue: string,
  *   loading_text: string,
@@ -879,6 +880,7 @@
 					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
 					vcfg.setupCodeMirror( thisDialog );
+					vcfg.refresh_merge_tags( thisDialog );
 
 					$( '.ui-widget-content[aria-hidden="false"]' )
 						.find( ".active-drop-widget" ).sortable( 'disable' ).end()
@@ -1297,8 +1299,6 @@
 					$( '.ui-tabs-panel' ).each( function () {
 						vcfg.init_droppables( this );
 					} );
-
-					vcfg.refresh_merge_tags();
 				} );
 			} else {
 
@@ -1859,9 +1859,7 @@
 				$('body').trigger( 'gravityview/field-added', newField );
 
 				// Show the new field
-				newField.fadeIn( 100, function () {
-					vcfg.refresh_merge_tags();
-				} );
+				newField.fadeIn( 100 );
 
 				// refresh the little help tooltips
 				vcfg.refreshGFtooltips();
@@ -1890,24 +1888,33 @@
 		 *
 		 * @since 1.22.1
 		 */
-		refresh_merge_tags: function() {
-			// GF 2.6+
-			if ( window.gform?.instances?.mergeTags ) {
-				// Remove existing merge tags, since otherwise GF will add another
-				$( '.all-merge-tags' ).remove();
+		refresh_merge_tags: function( $source ) {
 
-				// Until GF provides access to a method to initialize merge tags, we need to re-trigger the DOMContentLoaded event
+			let $merge_tag_supported = $source ? $( '.gv-merge-tag-support', $source ) : $( '.gv-merge-tag-support:visible' );
+
+			$merge_tag_supported.removeClass( 'gv-merge-tag-support' ).addClass( 'merge-tag-support' );
+
+
+			// GF 2.6.4+
+			if ( window.gform?.instances?.mergeTags ) {
+
 				document.dispatchEvent( new Event( 'DOMContentLoaded' ) );
+
+				// This needs to be longer than the time it takes to perform the DOMContentLoaded event.
+				setTimeout( function() {
+					$merge_tag_supported.removeClass( 'merge-tag-support' ).addClass( 'gv-merge-tag-support' );
+				}, 250 );
 
 				return;
 			}
-
-			$merge_tag_supported = $('.merge-tag-support');
 
 			// Only init merge tags if the View has been saved and the form hasn't been changed.
 			if ( 'undefined' !== typeof( form ) && $( 'body' ).not( '.gv-form-changed' ) && $merge_tag_supported.length >= 0 ) {
 
 				if ( window.gfMergeTags ) {
+
+					// Remove existing merge tags, since otherwise GF will add another
+					$( '.all-merge-tags:visible' ).remove();
 
 					if ( gfMergeTags.hasOwnProperty( 'destroy' ) ) {
 
@@ -1923,6 +1930,8 @@
 
 					}
 				}
+
+				$merge_tag_supported.removeClass( 'merge-tag-support' ).addClass( 'gv-merge-tag-support' );
 			}
 		},
 
@@ -1994,7 +2003,6 @@
 					} );
 
 					vcfg.toggleDropMessage();
-
 				}
 			} );
 
@@ -2028,7 +2036,6 @@
 					}
 
 					vcfg.toggleDropMessage();
-
 				}
 			} );
 		},
@@ -2590,6 +2597,6 @@
 	window.gvAdminActions = {
 		initTooltips: viewConfiguration.init_tooltips,
 		removeTooltips: viewConfiguration.remove_tooltips,
-		showDialog: viewConfiguration.showDialog,
+		showDialog: viewConfiguration.showDialog
 	};
 }(jQuery));

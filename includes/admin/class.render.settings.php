@@ -572,6 +572,7 @@ EOD;
 			ob_start();
 			$render_type->render_setting( $override_input );
 			$output = ob_get_clean();
+			$output = str_replace( 'gv-merge-tag-support', 'merge-tag-support', $output );
 		}
 
 		// Check if setting is specific for a template
