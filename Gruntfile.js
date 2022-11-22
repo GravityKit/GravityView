@@ -66,15 +66,20 @@ module.exports = function(grunt) {
 			}
 		},
 
-		jshint: [
-			"assets/js/admin-views.js",
-			"assets/js/admin-post-edit.js",
-			"assets/js/admin-widgets.js",
-			"assets/js/admin-entries-list.js",
-			"assets/js/fe-views.js",
-			"includes/extensions/entry-notes/assets/js/entry-notes.js",
-			"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
-		],
+		jshint: {
+			options: {
+				esversion: 11
+			},
+			all: [
+				"assets/js/admin-views.js",
+				"assets/js/admin-post-edit.js",
+				"assets/js/admin-widgets.js",
+				"assets/js/admin-entries-list.js",
+				"assets/js/fe-views.js",
+				"includes/extensions/entry-notes/assets/js/entry-notes.js",
+				"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
+			]
+		},
 
         imagemin: {
             dynamic: {

@@ -7,7 +7,7 @@
     "autoprefixer": "^9.8.8",
     "grunt": "^1.4.1",
     "grunt-contrib-imagemin": "^1.0.1",
-    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-uglify": "^5.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-exec": "^0.4.6",
