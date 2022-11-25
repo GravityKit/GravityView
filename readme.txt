@@ -41,6 +41,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Edit Entry may partially save changes if form fields have conditional logic; thanks, Jurriaan!
 * Fixed: View presets not working
 * Fixed: "This View is configured using the View type, which is disabled" notice when creating a new View after activating or installing a View type (e.g., Maps, DIY, DataTables)
+* Fixed: Incorrect search mode is set when one of the View search widget fields uses a "date range" input type
 
 __Developer Updates:__
 
