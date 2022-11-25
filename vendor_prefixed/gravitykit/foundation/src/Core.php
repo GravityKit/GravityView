@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 14-November-2022 using Strauss.
+ * Modified by gravityview on 25-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -127,7 +127,7 @@ class Core {
 					// Reset the other instance's registered plugin keys so that there is only 1 "foundation source" plugin, which is that of the current instance.
 					$registered_plugins = array_merge( $this->_registered_plugins, array_values( $passed_instance->get_registered_plugins() ) );
 				} else {
-					$registered_plugins = array_merge( [ $plugin_file ], $instance_to_return->get_registered_plugins() );
+					$registered_plugins = array_merge( array_values( $this->_registered_plugins ), $instance_to_return->get_registered_plugins() );
 				}
 
 				$instance_to_return->set_registered_plugins( $registered_plugins );
@@ -167,6 +167,8 @@ class Core {
 	public static function register( $plugin_file ) {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_file );
+		} else if ( ! in_array( $plugin_file, self::$_instance->_registered_plugins ) ) {
+			self::$_instance->_registered_plugins[] = $plugin_file;
 		}
 	}
 

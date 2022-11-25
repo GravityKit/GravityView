@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 14-November-2022 using Strauss.
+ * Modified by gravityview on 25-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -91,6 +91,28 @@ class Core {
 		return ! wp_doing_ajax()
 			? is_network_admin()
 			: is_multisite() && strpos( wp_get_referer(), network_admin_url() ) !== false;
+	}
+
+	/**
+	 * Checks if the current page is a main network site, but not the network admin area.
+	 *
+	 * @since 1.0.4
+	 *
+	 * @return bool
+	 */
+	public static function is_main_network_site() {
+		return is_multisite() && is_main_site() && ! Core::is_network_admin();
+	}
+
+	/**
+	 * Checks if the current page is not a main network site.
+	 *
+	 * @since 1.0.4
+	 *
+	 * @return bool
+	 */
+	public static function is_not_main_network_site() {
+		return is_multisite() && ! is_main_site();
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 14-November-2022 using Strauss.
+ * Modified by gravityview on 25-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -238,7 +238,7 @@ class AdminMenu {
 		$submenus = self::get_submenus();
 
 		if ( ! isset( $submenu['order'] ) ) {
-			$order = array_column( $submenus[ $position ], '$order' );
+			$order = array_column( $submenus[ $position ], 'order' );
 
 			if ( empty( $order ) ) {
 				$submenu['order'] = 1;

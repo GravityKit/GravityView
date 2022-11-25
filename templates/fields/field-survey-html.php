@@ -123,7 +123,7 @@ switch ( $gravityview->field->field->inputType ) {
 		$choices = $field->field->choices;
 		$choice_values = wp_list_pluck( $choices, 'value', $gravityview->value );
 		$starred_index = array_search( $gravityview->value, $choice_values );
-		$star_a11y_label = sprintf( __( '%s (%d out of %d stars)', 'gravityview'), $choice_text, ( $starred_index + 1 ), sizeof( $choice_values ) );
+		$star_a11y_label = sprintf( __( '%s (%d out of %d stars)', 'gk-gravityview'), $choice_text, ( $starred_index + 1 ), sizeof( $choice_values ) );
 
 		/**
 		 * @action `gravityview/field/survey/rating-styles`
