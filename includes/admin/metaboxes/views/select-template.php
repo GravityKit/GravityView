@@ -64,7 +64,6 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 					<div>
 						<?php
 						if( $is_included ) {
-							// @TODO: (Foundation) add link to template in Licenses/Products
 						?>
 							<p><button class="button button-secondary button-hero <?php echo esc_attr( $button_class ); ?>" rel="internal" data-template-path="<?php echo esc_attr( $template_path ); ?>" data-templateid="<?php echo esc_attr( $template_id ); ?>" data-download-id="<?php echo esc_attr( $download_id ); ?>"><?php echo $button_text; ?></button></p>
 							<?php if( !empty( $template['license'] ) ) { ?>
