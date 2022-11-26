@@ -1411,6 +1411,7 @@
 
 				$.when( server_request( 'install_product', {
 						id: $link.attr( 'data-download-id' ),
+						activate: true,
 					} ) )
 					.then( on_success )
 					.always( do_always )
