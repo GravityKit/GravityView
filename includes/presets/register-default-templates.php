@@ -108,9 +108,9 @@ function gravityview_register_placeholder_templates() {
 
 	$products_data = $product_manager->get_products_data( [ 'key_by' => 'id' ] );
 
-	// If product is included in the license, show placeholder. Otherwise, show Extensions page.
-	foreach ( $placeholders as $class_name => $placeholder ) {
-		if ( class_exists( $class_name ) ) {
+	foreach ( $placeholders as $placeholder ) {
+		if ( GravityKit\GravityView\Foundation\Helpers\Arr::get( $products_data, "{$placeholder['download_id']}.active" ) ) {
+			// Template will be loaded by the extension.
 			continue;
 		}
 
