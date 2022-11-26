@@ -71,7 +71,7 @@ function gravityview_register_placeholder_templates() {
 		],
 		'GravityView_Maps_Template_Map_Default' => [
 			'slug'        => 'map_placeholder',
-			'template_id' => 'maps',
+			'template_id' => 'map',
 			'download_id' => 27,
 			'label'       => __( 'Map', 'gravityview-maps', 'gk-gravityview' ),
 			'description' => __( 'Display entries on a map.', 'gk-gravityview' ),
