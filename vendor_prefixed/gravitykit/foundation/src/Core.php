@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 25-November-2022 using Strauss.
+ * Modified by gravityview on 28-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -23,7 +23,7 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 use Exception;
 
 class Core {
-	const VERSION = '1.0.3';
+	const VERSION = '1.0.4';
 
 	const ID = 'gk_foundation';
 
@@ -167,7 +167,7 @@ class Core {
 	public static function register( $plugin_file ) {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_file );
-		} else if ( ! in_array( $plugin_file, self::$_instance->_registered_plugins ) ) {
+		} elseif ( ! in_array( $plugin_file, self::$_instance->_registered_plugins ) ) {
 			self::$_instance->_registered_plugins[] = $plugin_file;
 		}
 	}
@@ -532,11 +532,11 @@ HTML;
 			 *
 			 * @since  1.0.3
 			 *
-			 * @param array           $payload
-			 * @param string          $router
-			 * @param string          $route
+			 * @param array  $payload
+			 * @param string $router
+			 * @param string $route
 			 */
-			$payload = apply_filters( 'gk/foundation/ajax/payload', $payload, $router, $route);
+			$payload = apply_filters( 'gk/foundation/ajax/payload', $payload, $router, $route );
 
 			$result = call_user_func( $route_callback, $payload );
 		} catch ( Exception $e ) {

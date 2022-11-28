@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 25-November-2022 using Strauss.
+ * Modified by gravityview on 28-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -992,9 +992,9 @@ HTML;
 			$data['forms_trash']    = $form_data['trash'];
 		}
 
-		$plugins = ProductManager::get_instance()->get_installed_plugins();
-		foreach ( $plugins as & $plugin ) {
-			$plugin = Arr::only( $plugin, array( 'name', 'version', 'active', 'network_activated' ) );
+		$plugins = CoreHelpers::get_installed_plugins();
+		foreach ( $plugins as &$plugin ) {
+			$plugin = Arr::only( $plugin, [ 'name', 'version', 'active', 'network_activated' ] );
 			$plugin = array_filter( $plugin ); // Don't include active/network activated if false
 		}
 

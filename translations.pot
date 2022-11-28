@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-25T16:56:53+00:00\n"
+"POT-Creation-Date: 2022-11-28T22:17:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1128,7 +1128,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
 #: includes/class-admin-views.php:526
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:829
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:777
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:333
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:52
 msgid "Settings"
@@ -1214,31 +1214,31 @@ msgstr ""
 msgid "Activate & Select"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:71
-#: includes/admin/metaboxes/views/select-template.php:84
+#: includes/admin/metaboxes/views/select-template.php:69
+#: includes/admin/metaboxes/views/select-template.php:82
 msgid "This layout is included in the %s license."
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:77
+#: includes/admin/metaboxes/views/select-template.php:75
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:67
 msgid "Buy Now"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:80
+#: includes/admin/metaboxes/views/select-template.php:78
 msgid "View a live demo of this layout"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:80
+#: includes/admin/metaboxes/views/select-template.php:78
 msgid "Try a demo"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:90
+#: includes/admin/metaboxes/views/select-template.php:88
 #: includes/fields/class-gravityview-field-select.php:27
 #: includes/widgets/search-widget/class-search-widget.php:245
 msgid "Select"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:92
+#: includes/admin/metaboxes/views/select-template.php:90
 msgid "View a live demo of this preset"
 msgstr ""
 
@@ -4209,7 +4209,7 @@ msgid "No-conflict mode prevents extraneous scripts and styles from being printe
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:433
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:837
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:785
 msgid "Support"
 msgstr ""
 
@@ -4623,7 +4623,7 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:226
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:277
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:328
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:553
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:501
 msgid "You do not have a permission to perform this action."
 msgstr ""
 
@@ -4732,7 +4732,7 @@ msgstr ""
 msgid "Update failed."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:475
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:423
 msgid "Invalid product information received from the API."
 msgstr ""
 

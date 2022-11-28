@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 25-November-2022 using Strauss.
+ * Modified by gravityview on 28-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -130,6 +130,60 @@ class Core {
 		}
 
 		return get_plugins();
+	}
+
+	/**
+	 * Returns a list of installed products keyed by text domain.
+	 *
+	 * @since 1.0.0
+	 * @since 1.0.4 Moved from GravityKit\Foundation\Licenses\ProductManager to GravityKit\Foundation\Helpers\Core.
+	 *
+	 * @return array{name:string, path: string, plugin_file:string, version: string, text_domain: string, active: bool, network_active?: bool}
+	 */
+	public static function get_installed_plugins() {
+		$plugins = [];
+
+		foreach ( self::get_plugins() as $path => $plugin ) {
+			if ( empty( $plugin['TextDomain'] ) ) {
+				continue;
+			}
+
+			$plugins[ $plugin['TextDomain'] ] = array(
+				'name'              => $plugin['Name'],
+				'path'              => $path,
+				'plugin_file'       => file_exists( WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $path ) ? WP_PLUGIN_DIR . DIRECTORY_SEPARATOR . $path : null,
+				'version'           => $plugin['Version'],
+				'text_domain'       => $plugin['TextDomain'],
+				'active'            => is_plugin_active( $path ),
+				'network_activated' => is_plugin_active_for_network( $path ),
+			);
+		}
+
+		return $plugins;
+	}
+
+	/**
+	 * Searches installed plugin by text domain(s) and returns its data.
+	 *
+	 * @since 1.0.0
+	 * @since 1.0.4 Moved from GravityKit\Foundation\Licenses\ProductManager to GravityKit\Foundation\Helpers\Core.
+	 *
+	 * @param string $text_domains_str Text domain(s). Optionally pipe-separated (e.g. 'gravityview|gk-gravtiyview').
+	 *
+	 * @return array|null An array with plugin data or null if not installed.
+	 */
+	public static function get_installed_plugin_by_text_domain( $text_domains_str ) {
+		$installed_plugins = self::get_installed_plugins();
+
+		$text_domains_arr = explode( '|', $text_domains_str );
+
+		foreach ( $text_domains_arr as $text_domain ) {
+			if ( isset( $installed_plugins[ $text_domain ] ) ) {
+				return $installed_plugins[ $text_domain ];
+			}
+		}
+
+		return null;
 	}
 
 	/**
