@@ -45,13 +45,12 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 		$placeholder          = ! empty( $template['buy_source'] );
 		$is_included          = ! empty( $template['included'] );
 		$template_text_domain = GravityKitFoundation::helpers()->array->get( $template, 'textdomain', '' );
-		$plugin_data          = isset( $wp_plugins[ $template_text_domain ] ) ? $wp_plugins[ $template_text_domain ] : [];
+		$plugin_data          = GravityKitFoundation::licenses()->product_manager()->get_installed_plugin_by_text_domain( $template_text_domain ) ?: [];
 		$button_text          = empty( $plugin_data ) ? esc_html__( 'Install', 'gk-gravityview' ) : esc_html__( 'Activate & Select', 'gk-gravityview' );
 		$button_class         = 'gv-layout-' . ( empty( $plugin_data ) ? 'install' : 'activate' );
 		$template_path        = isset( $plugin_data['path'] ) ? $plugin_data['path'] : '';
 		$template_id          = isset( $template['template_id'] ) ? $template['template_id'] : '';
 		$download_id          = isset( $template['download_id'] ) ? $template['download_id'] : '';
-
 		?>
 		<div class="gv-grid-col-1-4">
 			<div class="gv-view-types-module<?php echo $selected; if( $placeholder ) { echo ' gv-view-template-placeholder'; } ?>" data-filter="<?php echo esc_attr( $template['type'] ); ?>">

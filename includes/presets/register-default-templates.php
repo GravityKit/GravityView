@@ -67,7 +67,7 @@ function gravityview_register_placeholder_templates() {
 			'preview'     => 'https://try.gravityview.co/demo/view/datatables/?utm_source=plugin&utm_medium=try_demo&utm_campaign=view_type&utm_term=datatables',
 			'license'     => esc_html__( 'All Access', 'gk-gravityview' ),
 			'price_id'    => 2,
-			'textdomain'  => 'gv-datatables',
+			'textdomain'  => 'gv-datatables|gk-datatables',
 		],
 		'GravityView_Maps_Template_Map_Default' => [
 			'slug'        => 'map_placeholder',
@@ -80,7 +80,7 @@ function gravityview_register_placeholder_templates() {
 			'preview'     => 'https://try.gravityview.co/demo/view/map/?utm_source=plugin&utm_medium=try_demo&utm_campaign=view_type&utm_term=map',
 			'license'     => esc_html__( 'All Access', 'gk-gravityview' ),
 			'price_id'    => 2,
-			'textdomain'  => 'gravityview-maps',
+			'textdomain'  => 'gravityview-maps|gk-gravitymaps',
 		],
 		'GravityView_DIY_Template'              => [
 			'slug'        => 'diy_placeholder',
@@ -92,7 +92,7 @@ function gravityview_register_placeholder_templates() {
 			'logo'        => plugins_url( 'assets/images/templates/logo-diy.png', GRAVITYVIEW_FILE ),
 			'preview'     => 'https://try.gravityview.co/demo/view/diy/?utm_source=plugin&utm_medium=try_demo&utm_campaign=view_type&utm_term=diy',
 			'license'     => esc_html__( 'All Access', 'gk-gravityview' ),
-			'textdomain'  => 'gravityview-diy',
+			'textdomain'  => 'gravityview-diy|gk-diy',
 		],
 	];
 
