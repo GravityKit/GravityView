@@ -24,7 +24,7 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 	var $icon = 'dashicons-yes';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Checkbox', 'gravityview' );
+		$this->label = esc_html__( 'Checkbox', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -53,26 +53,26 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 
 		if( $this->is_choice_value_enabled() ) {
 
-			$desc = esc_html__( 'This input has a label and a value. What should be displayed?', 'gravityview' );
+			$desc = esc_html__( 'This input has a label and a value. What should be displayed?', 'gk-gravityview' );
 			$default = 'value';
 			$choices = array(
-				'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
-				'value' => __( 'Value of the input', 'gravityview' ),
-				'label' => __( 'Label of the input', 'gravityview' ),
+				'tick' => __( 'A check mark, if the input is checked', 'gk-gravityview' ),
+				'value' => __( 'Value of the input', 'gk-gravityview' ),
+				'label' => __( 'Label of the input', 'gk-gravityview' ),
 			);
 		} else {
 			$desc = '';
 			$default = 'tick';
 			$choices = array(
-				'tick' => __( 'A check mark, if the input is checked', 'gravityview' ),
-				'label' => __( 'Label of the input', 'gravityview' ),
+				'tick' => __( 'A check mark, if the input is checked', 'gk-gravityview' ),
+				'label' => __( 'Label of the input', 'gk-gravityview' ),
 			);
 		}
 
 		$field_options['choice_display'] = array(
 			'type'    => 'radio',
 			'class'   => 'vertical',
-			'label'   => __( 'What should be displayed:', 'gravityview' ),
+			'label'   => __( 'What should be displayed:', 'gk-gravityview' ),
 			'value'   => $default,
 			'desc'    => $desc,
 			'choices' => $choices,

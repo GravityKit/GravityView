@@ -72,13 +72,20 @@ class GravityView_Edit_Entry_User_Registration {
      */
     public function update_user( $form = array(), $entry_id = 0 ) {
 
-        if( ! class_exists( 'GFAPI' ) || ! class_exists( 'GF_User_Registration' ) ) {
-	        gravityview()->log->error( 'GFAPI or User Registration class not found; not updating the user' );
-	        return;
-        } elseif( empty( $entry_id ) ) {
-        	gravityview()->log->error( 'Entry ID is empty [{entry_id}]; not updating the user', array( 'entry_id' => $entry_id ) );
+		// Only proceed if the registration class exists and is active.
+	    if ( ! class_exists( 'GF_User_Registration' ) ) {
+		    return;
+	    }
+
+        if( ! class_exists( 'GFAPI' ) ) {
+	        gravityview()->log->error( 'GFAPI class not found; not updating the user' );
 	        return;
         }
+
+		if( empty( $entry_id ) ) {
+			gravityview()->log->error( 'Entry ID is empty [{entry_id}]; not updating the user', array( 'entry_id' => $entry_id ) );
+			return;
+		}
 
         $gf_user_registration = GF_User_Registration::get_instance();
 

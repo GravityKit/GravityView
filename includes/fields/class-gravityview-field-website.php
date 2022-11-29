@@ -24,7 +24,7 @@ class GravityView_Field_Website extends GravityView_Field {
 	var $icon = 'dashicons-admin-links';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Website', 'gravityview' );
+		$this->label = esc_html__( 'Website', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -42,8 +42,8 @@ class GravityView_Field_Website extends GravityView_Field {
 		 */
 		$field_options['anchor_text'] = array(
 			'type' => 'text',
-			'label' => __( 'Link Text:', 'gravityview' ),
-			'desc' => __( 'Define custom link text. Leave blank to display the URL', 'gravityview' ),
+			'label' => __( 'Link Text:', 'gk-gravityview' ),
+			'desc' => __( 'Define custom link text. Leave blank to display the URL', 'gk-gravityview' ),
 			'value' => '',
 			'merge_tags' => 'force',
 			'priority' => 1000,
@@ -52,9 +52,9 @@ class GravityView_Field_Website extends GravityView_Field {
 		$field_options['truncatelink'] = array(
 			'type' => 'checkbox',
 			'value' => true,
-			'label' => __( 'Shorten Link Display', 'gravityview' ),
-			'tooltip' => __( 'Only show the domain for a URL instead of the whole link.', 'gravityview' ),
-			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gravityview' ),
+			'label' => __( 'Shorten Link Display', 'gk-gravityview' ),
+			'tooltip' => __( 'Only show the domain for a URL instead of the whole link.', 'gk-gravityview' ),
+			'desc' => __( 'Don&rsquo;t show the full URL, only show the domain.', 'gk-gravityview' ),
 			'priority' => 1500,
 		);
 

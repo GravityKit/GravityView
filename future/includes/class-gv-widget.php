@@ -167,8 +167,8 @@ abstract class Widget {
 		if ( $enable_custom_class ) {
 			$settings['custom_class'] = array(
 				'type'       => 'text',
-				'label'      => __( 'Custom CSS Class:', 'gravityview' ),
-				'desc'       => __( 'This class will be added to the widget container', 'gravityview' ),
+				'label'      => __( 'Custom CSS Class:', 'gk-gravityview' ),
+				'desc'       => __( 'This class will be added to the widget container', 'gk-gravityview' ),
 				'value'      => '',
 				'merge_tags' => true,
 				'class'      => 'widefat code',
@@ -223,7 +223,7 @@ abstract class Widget {
 				'1-1' => array(
 					   array(
 						   'areaid' => 'top',
-						   'title' => __( 'Top', 'gravityview' ) ,
+						   'title' => __( 'Top', 'gk-gravityview' ) ,
 						   'subtitle' => ''
 					   ),
 				   ),
@@ -232,14 +232,14 @@ abstract class Widget {
 				'1-2' => array(
 					array(
 						'areaid' => 'left',
-						'title' => __( 'Left', 'gravityview' ) ,
+						'title' => __( 'Left', 'gk-gravityview' ) ,
 						'subtitle' => ''
 					),
 				),
 				'2-2' => array(
 					array(
 						'areaid' => 'right',
-						'title' => __( 'Right', 'gravityview' ) ,
+						'title' => __( 'Right', 'gk-gravityview' ) ,
 						'subtitle' => ''
 					),
 				),

@@ -36,8 +36,8 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 	 * GravityView_Field_Transaction_Type constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Transaction Type', 'gravityview' );
-		$this->description = esc_html__( 'The type of the order: one-time payment or subscription', 'gravityview' );
+		$this->label = esc_html__( 'Transaction Type', 'gk-gravityview' );
+		$this->description = esc_html__( 'The type of the order: one-time payment or subscription', 'gk-gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
 		add_filter( 'gravityview/field/transaction_type/value', array( $this, 'get_value' ), 10 );
@@ -94,11 +94,11 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 		switch ( intval( $value ) ) {
 			case self::ONE_TIME_PAYMENT:
 			default:
-				$return = __('One-Time Payment', 'gravityview');
+				$return = __('One-Time Payment', 'gk-gravityview');
 				break;
 
 			case self::SUBSCRIPTION:
-				$return = __('Subscription', 'gravityview');
+				$return = __('Subscription', 'gk-gravityview');
 				break;
 		}
 

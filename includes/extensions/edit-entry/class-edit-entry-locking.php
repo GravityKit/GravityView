@@ -67,15 +67,15 @@ class GravityView_Edit_Entry_Locking {
 		$result = array();
 		if ( ! $lock_holder_user_id ) {
 			$this->set_lock( $object_id );
-			$result['html']   = __( 'You now have control', 'gravityview' );
+			$result['html']   = __( 'You now have control', 'gk-gravityview' );
 			$result['status'] = 'lock_obtained';
 		} else {
 
 			if( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
 				$user = get_userdata( $lock_holder_user_id );
-				$result['html']   = sprintf( __( 'Your request has been sent to %s.', 'gravityview' ), $user->display_name );
+				$result['html']   = sprintf( __( 'Your request has been sent to %s.', 'gk-gravityview' ), $user->display_name );
 			} else {
-				$result['html']   = __( 'Your request has been sent.', 'gravityview' );
+				$result['html']   = __( 'Your request has been sent.', 'gk-gravityview' );
 			}
 
 			$this->update_lock_request_meta( $object_id, $user_id );
@@ -221,7 +221,7 @@ class GravityView_Edit_Entry_Locking {
 			} else {
 				$current_user = wp_get_current_user();
 				$avatar = get_avatar( $current_user->ID, 64 );
-				$person_editing_text = _x( 'the person who is editing the entry', 'Referring to the user who is currently editing a locked entry', 'gravityview' );
+				$person_editing_text = _x( 'the person who is editing the entry', 'Referring to the user who is currently editing a locked entry', 'gk-gravityview' );
 			}
 
 			$message = '<div class="gform-locked-message">
@@ -229,8 +229,8 @@ class GravityView_Edit_Entry_Locking {
                             <p class="currently-editing" tabindex="0">' . esc_html( sprintf( $this->get_string( 'currently_locked' ), $person_editing_text ) ) . '</p>
                             <p>
 
-                                <a id="gform-take-over-button" style="display:none" class="button button-primary wp-tab-first" href="' . esc_url( add_query_arg( 'get-edit-lock', '1' ) ) . '">' . esc_html__( 'Take Over', 'gravityview' ) . '</a>
-                                <button id="gform-lock-request-button" class="button button-primary wp-tab-last">' . esc_html__( 'Request Control', 'gravityview' ) . '</button>
+                                <a id="gform-take-over-button" style="display:none" class="button button-primary wp-tab-first" href="' . esc_url( add_query_arg( 'get-edit-lock', '1' ) ) . '">' . esc_html__( 'Take Over', 'gk-gravityview' ) . '</a>
+                                <button id="gform-lock-request-button" class="button button-primary wp-tab-last">' . esc_html__( 'Request Control', 'gk-gravityview' ) . '</button>
                                 <a class="button" onclick="history.back(-1); return false;">' . esc_html( $this->get_string( 'cancel' ) ) . '</a>
                             </p>
                             <div id="gform-lock-request-status">
@@ -247,7 +247,7 @@ class GravityView_Edit_Entry_Locking {
                             </p>
                             <p>
                                 <a id="gform-release-lock-button" class="button button-primary wp-tab-last"  href="' . esc_url( add_query_arg( 'release-edit-lock', '1' ) ) . '">' . esc_html( $this->get_string( 'accept' ) ) . '</a>
-                                <button id="gform-reject-lock-request-button" style="display:none"  class="button button-primary wp-tab-last">' . esc_html__( 'Reject Request', 'gravityview' ) . '</button>
+                                <button id="gform-reject-lock-request-button" style="display:none"  class="button button-primary wp-tab-last">' . esc_html__( 'Reject Request', 'gk-gravityview' ) . '</button>
                             </p>
                         </div>';
 
@@ -274,18 +274,18 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	public function get_strings() {
 		$translations = array(
-			'currently_locked'  => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gravityview' ),
-			'currently_editing' => __( '%s is currently editing this entry', 'gravityview' ),
-			'taken_over'        => __( '%s has taken over and is currently editing this entry.', 'gravityview' ),
-			'lock_requested'    => __( '%s has requested permission to take over control of this entry.', 'gravityview' ),
-			'accept'            => __( 'Accept', 'gravityview' ),
-			'cancel'            => __( 'Cancel', 'gravityview' ),
-			'gained_control'    => __( 'You now have control', 'gravityview' ),
-			'request_pending'   => __( 'Pending', 'gravityview' ),
-			'no_response'       => __( 'No response', 'gravityview' ),
-			'request_again'     => __( 'Request again', 'gravityview' ),
-			'request_error'     => __( 'Error', 'gravityview' ),
-			'request_rejected'  => __( 'Your request was rejected', 'gravityview' ),
+			'currently_locked'  => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gk-gravityview' ),
+			'currently_editing' => __( '%s is currently editing this entry', 'gk-gravityview' ),
+			'taken_over'        => __( '%s has taken over and is currently editing this entry.', 'gk-gravityview' ),
+			'lock_requested'    => __( '%s has requested permission to take over control of this entry.', 'gk-gravityview' ),
+			'accept'            => __( 'Accept', 'gk-gravityview' ),
+			'cancel'            => __( 'Cancel', 'gk-gravityview' ),
+			'gained_control'    => __( 'You now have control', 'gk-gravityview' ),
+			'request_pending'   => __( 'Pending', 'gk-gravityview' ),
+			'no_response'       => __( 'No response', 'gk-gravityview' ),
+			'request_again'     => __( 'Request again', 'gk-gravityview' ),
+			'request_error'     => __( 'Error', 'gk-gravityview' ),
+			'request_rejected'  => __( 'Your request was rejected', 'gk-gravityview' ),
 		);
 
 		$translations = array_map( 'wp_strip_all_tags', $translations );

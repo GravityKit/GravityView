@@ -35,7 +35,7 @@ class GravityView_Field_Address extends GravityView_Field {
 	var $_gf_field_class_name = 'GF_Field_Address';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Address', 'gravityview' );
+		$this->label = esc_html__( 'Address', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -296,8 +296,8 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		$add_options['show_map_link'] = array(
 			'type'       => 'checkbox',
-			'label'      => __( 'Show Map Link:', 'gravityview' ),
-			'desc'       => __( 'Display a "Map It" link below the address', 'gravityview' ),
+			'label'      => __( 'Show Map Link:', 'gk-gravityview' ),
+			'desc'       => __( 'Display a "Map It" link below the address', 'gk-gravityview' ),
 			'value'      => true,
 			'merge_tags' => false,
 			'group'      => 'display',
@@ -306,7 +306,7 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		$add_options['show_map_link_new_window'] = array(
 			'type'       => 'checkbox',
-			'label'      => __( 'Open map link in a new tab or window?', 'gravityview' ),
+			'label'      => __( 'Open map link in a new tab or window?', 'gk-gravityview' ),
 			'value'      => false,
 			'merge_tags' => false,
 			'group'      => 'display',

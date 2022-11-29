@@ -38,8 +38,8 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_html__( 'Number Sequence', 'gravityview' );
-		$this->description = esc_html__( 'Display a sequential result number for each entry.', 'gravityview' );
+		$this->label = esc_html__( 'Number Sequence', 'gk-gravityview' );
+		$this->description = esc_html__( 'Display a sequential result number for each entry.', 'gk-gravityview' );
 
 		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'field_tooltips') );
 
@@ -66,7 +66,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		}
 
 		$entry_default_fields['sequence'] = array(
-			'label' => __( 'Result Number', 'gravityview' ),
+			'label' => __( 'Result Number', 'gk-gravityview' ),
 			'type'  => $this->name,
 			'desc'  => $this->description,
 			'icon'  => $this->icon,
@@ -86,8 +86,8 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$return = $tooltips;
 
 		$return['reverse_sequence'] = array(
-			'title' => __('Reverse the order of the result numbers', 'gravityview'),
-			'value' => __('Output the number sequence in descending order. If enabled, numbers will count down from high to low.', 'gravityview'),
+			'title' => __('Reverse the order of the result numbers', 'gk-gravityview'),
+			'value' => __('Output the number sequence in descending order. If enabled, numbers will count down from high to low.', 'gk-gravityview'),
 		);
 
 		return $return;
@@ -100,14 +100,14 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$new_fields = array(
 			'start' => array(
 				'type' => 'number',
-				'label' => __( 'First Number in the Sequence', 'gravityview' ),
-				'desc' => __('For each entry, the displayed number will increase by one. When displaying ten entries, the first entry will display "1", and the last entry will show "10".', 'gravityview'),
+				'label' => __( 'First Number in the Sequence', 'gk-gravityview' ),
+				'desc' => __('For each entry, the displayed number will increase by one. When displaying ten entries, the first entry will display "1", and the last entry will show "10".', 'gk-gravityview'),
 				'value' => '1',
 				'merge_tags' => false,
 			),
 			'reverse' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Reverse the order of the number sequence (high to low)', 'gravityview' ),
+				'label' => __( 'Reverse the order of the number sequence (high to low)', 'gk-gravityview' ),
 				'tooltip' => 'reverse_sequence',
 				'value' => '',
 			),

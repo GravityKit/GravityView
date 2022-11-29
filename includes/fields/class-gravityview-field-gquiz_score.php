@@ -18,7 +18,7 @@ class GravityView_Field_Quiz_Score extends GravityView_Field {
 	var $icon = 'dashicons-forms';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Quiz Score', 'gravityview' );
+		$this->label = esc_html__( 'Quiz Score', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -31,8 +31,8 @@ class GravityView_Field_Quiz_Score extends GravityView_Field {
 		$new_fields = array(
 			'quiz_use_max_score' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Show Max Score?', 'gravityview' ),
-				'desc' => __('Display score as the a fraction: "[score]/[max score]". If unchecked, will display score.', 'gravityview'),
+				'label' => __( 'Show Max Score?', 'gk-gravityview' ),
+				'desc' => __('Display score as the a fraction: "[score]/[max score]". If unchecked, will display score.', 'gk-gravityview'),
 				'value' => true,
 				'merge_tags' => false,
 			),

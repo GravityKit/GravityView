@@ -110,7 +110,7 @@ abstract class Field_Template extends Template {
 		$field_id   = null;
 		$view_id    = null;
 		$form_id    = null;
-		$is_view    = $template->request && $template->request->is_view();
+		$is_view    = $template->request && $template->request->is_view( false );
 
 		if ( $template->field ) {
 			$inputType  = $template->field->inputType;

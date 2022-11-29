@@ -44,7 +44,12 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected $form_id;
 
-	function __construct( $title = '', $item_id = '', $item = array(), $settings = array(), $form_id = null) {
+	/**
+	 * @var array Form data, if available
+	 */
+	protected $form;
+
+	function __construct( $title = '', $item_id = '', $item = array(), $settings = array(), $form_id = null, $form = array() ) {
 
 		// Backward compat
 		if ( ! empty( $item['type'] ) ) {
@@ -75,6 +80,7 @@ abstract class GravityView_Admin_View_Item {
 		$this->item       = $item;
 		$this->id         = $item_id;
 		$this->form_id    = $form_id;
+		$this->form       = $form;
 		$this->settings   = $settings;
 		$this->label_type = $item['label_type'];
 	}
@@ -149,10 +155,10 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	function getOutput() {
 
-		$settings_title    = sprintf( __( 'Configure %s Settings', 'gravityview' ), esc_html( rgar( $this->item, 'label', ucfirst( $this->label_type ) ) ) );
-		$delete_title      = sprintf( __( 'Remove %s', 'gravityview' ), ucfirst( $this->label_type ) );
-		$single_link_title = __( 'This field links to the Single Entry', 'gravityview' );
-		$visibility_title = __( 'This field has modified visibility', 'gravityview' );
+		$settings_title    = sprintf( __( 'Configure %s Settings', 'gk-gravityview' ), esc_html( rgar( $this->item, 'label', ucfirst( $this->label_type ) ) ) );
+		$delete_title      = sprintf( __( 'Remove %s', 'gk-gravityview' ), ucfirst( $this->label_type ) );
+		$single_link_title = __( 'This field links to the Single Entry', 'gk-gravityview' );
+		$visibility_title = __( 'This field has modified visibility', 'gk-gravityview' );
 
 		// $settings_html will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
@@ -160,7 +166,7 @@ abstract class GravityView_Admin_View_Item {
 		$settings_link      = sprintf( '<button class="gv-field-settings %2$s" title="%1$s" aria-label="%1$s"><span class="dashicons-admin-generic dashicons"></span></button>', esc_attr( $settings_title ), $hide_settings_link_class );
 
 		// When a field label is empty, use the Field ID
-		$label = empty( $this->title ) ? sprintf( _x( 'Field #%s (No Label)', 'Label in field picker for empty label', 'gravityview' ), $this->id ) : $this->title;
+		$label = empty( $this->title ) ? sprintf( _x( 'Field #%s (No Label)', 'Label in field picker for empty label', 'gk-gravityview' ), $this->id ) : $this->title;
 
 		// If there's a custom label, and show label is checked, use that as the field heading
 		if ( ! empty( $this->settings['custom_label'] ) && ! empty( $this->settings['show_label'] ) ) {
@@ -172,7 +178,9 @@ abstract class GravityView_Admin_View_Item {
 
 		$field_icon = '';
 
+		$form = ! empty( $this->form ) ? $this->form : false;
 		$form = ! empty( $this->form_id ) ? GVCommon::get_form( $this->form_id ) : false;
+
 		$nonexistent_form_field = $form && $this->id && preg_match('/^\d+\.\d+$|^\d+$/', $this->id) && ! gravityview_get_field( $form, $this->id );
 
 		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
@@ -199,14 +207,14 @@ abstract class GravityView_Admin_View_Item {
 			$field_icon = '<i class="gv-icon gv-icon-level-down"></i>' . ' ';
 		}
 
-		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gravityview' ), $label ) . '</button>';
-		$title = esc_attr( sprintf( __( 'Field: %s', 'gravityview' ), $label ) );
+		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gk-gravityview' ), $label ) . '</button>';
+		$title = esc_attr( sprintf( __( 'Field: %s', 'gk-gravityview' ), $label ) );
 		if ( ! $nonexistent_form_field ) {
 			$title .= "\n" . $this->get_item_info( false );
 		} else {
 			$output        = '';
 			$settings_link = '';
-			$label = '<span class="dashicons-warning dashicons"></span> ' . esc_html( sprintf( __( 'The field connected to "%s" was deleted from the form. The associated entry data no longer exists.', 'gravityview' ), $label ) );
+			$label         = '<span class="dashicons-warning dashicons"></span> ' . esc_html( sprintf( __( 'The field connected to "%s" was deleted from the form. The associated entry data no longer exists.', 'gk-gravityview' ), $label ) );
 		}
 
 		$output .= '<h5 class="selectable gfield field-id-' . esc_attr( $this->id ) . '">';
@@ -253,12 +261,12 @@ abstract class GravityView_Admin_View_Item {
 		$icons = array(
 			'show_as_link' => array(
 				'visible' => ( ! empty( $this->settings['show_as_link'] ) ),
-				'title' => __( 'This field links to the Single Entry', 'gravityview' ),
+				'title' => __( 'This field links to the Single Entry', 'gk-gravityview' ),
 				'css_class' => 'dashicons dashicons-media-default icon-link-to-single-entry',
 			),
 			'only_loggedin' => array(
 				'visible' => ( \GV\Utils::get( $this->settings, 'only_loggedin' ) || isset( $this->settings['allow_edit_cap'] ) && 'read' !== $this->settings['allow_edit_cap'] ),
-				'title' => __( 'This field has modified visibility', 'gravityview' ),
+				'title' => __( 'This field has modified visibility', 'gk-gravityview' ),
 				'css_class' => 'dashicons dashicons-lock icon-custom-visibility',
 			),
 		);

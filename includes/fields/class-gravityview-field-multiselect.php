@@ -25,7 +25,7 @@ class GravityView_Field_MultiSelect extends GravityView_Field {
 	var $icon = 'dashicons-editor-ul';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Multi Select', 'gravityview' );
+		$this->label = esc_html__( 'Multi Select', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -51,11 +51,11 @@ class GravityView_Field_MultiSelect extends GravityView_Field {
 			$field_options['choice_display'] = array(
 				'type'    => 'radio',
 				'value'   => 'value',
-				'label'   => __( 'What should be displayed:', 'gravityview' ),
-				'desc'    => __( 'This input has a label and a value. What should be displayed?', 'gravityview' ),
+				'label'   => __( 'What should be displayed:', 'gk-gravityview' ),
+				'desc'    => __( 'This input has a label and a value. What should be displayed?', 'gk-gravityview' ),
 				'choices' => array(
-					'value' => __( 'Value of the input', 'gravityview' ),
-					'label' => __( 'Label of the input', 'gravityview' ),
+					'value' => __( 'Value of the input', 'gk-gravityview' ),
+					'label' => __( 'Label of the input', 'gk-gravityview' ),
 				),
 				'group'   => 'display',
 			);

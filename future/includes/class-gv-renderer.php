@@ -216,8 +216,8 @@ class Renderer {
 EOD;
 
 		$notice_title = _n(
-			esc_html__( 'There is an unapproved entry that is not being shown.', 'gravityview' ),
-			sprintf( esc_html__( 'There are %s unapproved entries that are not being shown.', 'gravityview' ), number_format_i18n( $count ) ),
+			esc_html__( 'There is an unapproved entry that is not being shown.', 'gk-gravityview' ),
+			sprintf( esc_html__( 'There are %s unapproved entries that are not being shown.', 'gk-gravityview' ), number_format_i18n( $count ) ),
 			$count
 		);
 
@@ -233,20 +233,20 @@ EOD;
 			'{dom_id}'                      => sprintf( 'gv-notice-approve-entries-%d', $gravityview->view->ID ),
 			'{float_dir}'                   => $float_dir,
 			'{notice_title}'                => esc_html( $notice_title ),
-			'{title_new_window}'            => esc_attr__( 'This link opens in a new window.', 'gravityview' ),
-			'{hide_notice}'                 => esc_html__( 'Hide this notice', 'gravityview' ),
+			'{title_new_window}'            => esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ),
+			'{hide_notice}'                 => esc_html__( 'Hide this notice', 'gk-gravityview' ),
 			'{hide_notice_link}'            => esc_url( $dismiss_notice_link ),
-			'{message}'                     => esc_html( wptexturize( __( 'The "Show only approved entries" setting is enabled, so only entries that have been approved are displayed.', 'gravityview' ) ) ),
-			'{learn_more}'                  => esc_html__( 'Learn about entry approval.', 'gravityview' ),
+			'{message}'                     => esc_html( wptexturize( __( 'The "Show only approved entries" setting is enabled, so only entries that have been approved are displayed.', 'gk-gravityview' ) ) ),
+			'{learn_more}'                  => esc_html__( 'Learn about entry approval.', 'gk-gravityview' ),
 			'{learn_more_link}'             => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
-			'{disable_setting}'             => esc_html( wptexturize( __( 'Disable the "Show only approved entries" setting for this View', 'gravityview' ) ) ),
-			'{disable_setting_description}' => esc_html( wptexturize( __( 'Click to immediately disable the "Show only approved entries" setting. All entry statuses will be shown.', 'gravityview' ) ) ),
+			'{disable_setting}'             => esc_html( wptexturize( __( 'Disable the "Show only approved entries" setting for this View', 'gk-gravityview' ) ) ),
+			'{disable_setting_description}' => esc_html( wptexturize( __( 'Click to immediately disable the "Show only approved entries" setting. All entry statuses will be shown.', 'gk-gravityview' ) ) ),
 			'{disable_setting_link}'        => esc_url( $disable_setting_link ),
-			'{approve_entries}'             => esc_html__( 'Manage entry approval', 'gravityview' ),
-			'{approve_entries_description}' => esc_html__( 'Go to the Gravity Forms entries screen to moderate entry approval.', 'gravityview' ),
+			'{approve_entries}'             => esc_html__( 'Manage entry approval', 'gk-gravityview' ),
+			'{approve_entries_description}' => esc_html__( 'Go to the Gravity Forms entries screen to moderate entry approval.', 'gk-gravityview' ),
 			'{approve_entries_link}'        => esc_url( admin_url( 'admin.php?page=gf_entries&id=' . $gravityview->view->form->ID ) ),
-			'{screenshot}'                  => sprintf( '<img alt="%s" src="%s" />', esc_attr__( 'Show only approved entries', 'gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/entry-approval.png', GRAVITYVIEW_FILE ) ) ),
-			'{admin_message}'               => sprintf( esc_html__( 'Note: %s', 'gravityview' ), esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' ) ),
+			'{screenshot}'                  => sprintf( '<img alt="%s" src="%s" />', esc_attr__( 'Show only approved entries', 'gk-gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/entry-approval.png', GRAVITYVIEW_FILE ) ) ),
+			'{admin_message}'               => sprintf( esc_html__( 'Note: %s', 'gk-gravityview' ), esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' ) ),
 		);
 
 		$notice = strtr( $message_template, $placeholders );
@@ -270,15 +270,15 @@ EOD;
 
 		switch ( true ) {
 			case ( $gravityview->request->is_edit_entry() ):
-				$tab = __( 'Edit Entry', 'gravityview' );
+				$tab = __( 'Edit Entry', 'gk-gravityview' );
 				$context = 'edit';
 				break;
 			case ( $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
-				$tab = __( 'Single Entry', 'gravityview' );
+				$tab = __( 'Single Entry', 'gk-gravityview' );
 				$context = 'single';
 				break;
 			default:
-				$tab = __( 'Multiple Entries', 'gravityview' );
+				$tab = __( 'Multiple Entries', 'gk-gravityview' );
 				$context = 'directory';
 				break;
 		}
@@ -291,10 +291,10 @@ EOD;
 			return;
 		}
 
-		$title = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gravityview' ), $tab );
+		$title = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
 		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $gravityview->view->ID, $context ) );
-		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gravityview' ), $tab );
-		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gk-gravityview' ), $tab );
+		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
 
 		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url( plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
 		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
@@ -348,9 +348,9 @@ EOD;
 
 		gravityview()->log->error( '{slug} page URL is reserved.', array( 'slug' => $wp->request ) );
 
-		$title   = esc_html__( 'GravityView will not work correctly on this page because of the URL Slug.', 'gravityview' );
-		$message = __( 'Please <a href="%s">read this article</a> for more information.', 'gravityview' );
-		$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+		$title   = esc_html__( 'GravityView will not work correctly on this page because of the URL Slug.', 'gk-gravityview' );
+		$message = __( 'Please <a href="%s">read this article</a> for more information.', 'gk-gravityview' );
+		$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
 
 		$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://docs.gravityview.co/article/659-reserved-urls' ) );
 

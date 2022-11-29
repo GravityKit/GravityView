@@ -33,6 +33,7 @@
 }
 
 // Prevent borders on images in the Getting Started, What's New screens
+.gravitykit_page_gv-getting-started .about-wrap,
 .post-type-gravityview .about-wrap {
 
 	.feature-video {
@@ -48,6 +49,7 @@
 			height: auto;
 		}
 	}
+
 	.feature-section.three-col .col {
 		flex-basis: 30%;
 		max-width: 250px;

@@ -2,7 +2,7 @@
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
 Tested up to: 6.0.2
-Requires PHP: 5.6.30
+Requires PHP: 5.6.4
 Stable tag: trunk
 Contributors: The GravityKit Team
 License: GPL 3 or higher
@@ -15,7 +15,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Installation ==
 
-1. Upload plugin files to your plugins folder, or install using WordPress' built-in Add New Plugin installer
+1. Upload plugin files to your plugins folder, or install using WordPress' built-i`n Add New Plugin installer
 2. Activate the plugin
 3. Follow the instructions
 
@@ -23,7 +23,34 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Fixed: Prevent any site PHP warnings from affecting REST API responses
+* Added: New WordPress admin menu where you can now centrally manage all your GravityKit product licenses and settings ([learn more about the new GravityKit menu](https://www.gravitykit.com/foundation/))
+    - Go to the WordPress sidebar and check out the GravityKit menu!
+    - We have automatically migrated your existing licenses and settings, which were previously entered in the Views→Settings page
+    - Request support using the "Grant Support Access" menu item
+* Added: Support for defining `alt` text in File Upload fields
+* Added: "Pre-Filter Choices" Search Bar setting will only display choices that exist in submitted entries ([learn more about Pre-Filter Choices](https://docs.gravitykit.com/article/701-s))
+* Improved: When creating a new View, it is now possible to install a View type (if included in the license) straight from the View editor
+* Improved: Reduce the number of queries when displaying a View
+* Fixed: Merge Tags were not processed inside Custom Content fields when using the [`[gventry]` edit mode](https://docs.gravitykit.com/article/463-gventry-shortcode)
+* Fixed: Gravity Forms poll results was not being refreshed after editing a Poll field in GravityView Edit Entry
+* Fixed: Survey field "Rating" stars were not displaying properly in the frontend
+* Fixed: JavaScript error when creating a new View
+* Fixed: JavaScript error when opening field settings in a new View
+* Fixed: Merge Tag picker not initializing when changing View type for an existing View
+* Fixed: "Field connected to XYZ field was deleted from the form" notice when adding a new field to a View created from a form preset
+* Fixed: Edit Entry may partially save changes if form fields have conditional logic; thanks, Jurriaan!
+* Fixed: View presets not working
+* Fixed: "This View is configured using the View type, which is disabled" notice when creating a new View after activating or installing a View type (e.g., Maps, DIY, DataTables)
+* Fixed: Incorrect search mode is set when one of the View search widget fields uses a "date range" input type
+
+__Developer Updates:__
+
+* Added: `gravityview/template/field/survey/rating/before` filter that fires before the Survey field rating stars markup
+* Added: `$return_view` parameter to `\GV\Request::is_view()` method, reducing the need to build a \GV\View object when simply checking if a request is a View
+* Added: `$expiration` parameter to `GravityView_Cache::set()` method to allow for different cache lifetimes
+* Fixed: `GravityView_Cache` was not used when the `WP_DEBUG` constant was set to `true`. This resulted in the cache being effectively disabled on many sites.
+	- Improved: Only run `GravityView_Cache::use_cache()` once per request
+	- Added: `GRAVITYVIEW_DISABLE_CACHE` constant to disable the cache. Note: `gravityview_use_cache` filter will still be run.
 
 = 2.15 on September 21, 2022 =
 

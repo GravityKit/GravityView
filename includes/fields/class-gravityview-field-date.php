@@ -24,7 +24,7 @@ class GravityView_Field_Date extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_html__( 'Date', 'gravityview' );
+		$this->label = esc_html__( 'Date', 'gk-gravityview' );
 
 		add_filter( 'gravityview/merge_tags/modifiers/value', array( $this, 'apply_format_date_modifiers' ), 10, 6 );
 

@@ -17,7 +17,7 @@ class GravityView_Field_Password extends GravityView_Field {
 	var $group = 'advanced';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Password', 'gravityview' );
+		$this->label = esc_html__( 'Password', 'gk-gravityview' );
 
 		$this->add_hooks();
 
