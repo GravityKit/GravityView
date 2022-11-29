@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -140,8 +140,8 @@ class AdminMenu {
 		}
 
 		// Add top-level menu.
-		$page_title = esc_html__( 'GravityKit', 'gk-gravityview' );
-		$menu_title = esc_html__( 'GravityKit', 'gk-gravityview' );
+		$page_title = esc_html__( 'GravityKit', 'gk-foundation' );
+		$menu_title = esc_html__( 'GravityKit', 'gk-foundation' );
 
 		/**
 		 * Controls the position of the top-level GravityKit admin menu.

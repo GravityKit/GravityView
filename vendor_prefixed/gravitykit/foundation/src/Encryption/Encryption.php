@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -49,7 +49,7 @@ class Encryption {
 		if ( strlen( $secret_key ) !== SODIUM_CRYPTO_SECRETBOX_KEYBYTES ) {
 			throw new Exception(
 				strtr(
-					esc_html_x( 'Encryption key is not the correct size (must be [size] bytes).', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+					esc_html_x( 'Encryption key is not the correct size (must be [size] bytes).', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
 					[ '[size]' => SODIUM_CRYPTO_SECRETBOX_KEYBYTES ]
 				)
 			);
@@ -102,7 +102,7 @@ class Encryption {
 
 			throw new Exception(
 				strtr(
-					esc_html_x( 'Encryption nonce is not the correct size (must be [size] bytes).', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+					esc_html_x( 'Encryption nonce is not the correct size (must be [size] bytes).', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
 					[ '[size]' => SODIUM_CRYPTO_SECRETBOX_NONCEBYTES ]
 				)
 			);

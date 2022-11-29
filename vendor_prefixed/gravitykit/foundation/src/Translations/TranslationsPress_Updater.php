@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -410,7 +410,7 @@ class TranslationsPress_Updater {
 		// Follows is a workaround for T15S purging JS translations from the .po file included in the translation package.
 		// This is typically what happens when WP CLI's `i18n make-json` command is used to generate JS translation files (.json).
 		// The filenames contain a hash of the source JS file, which in many of our cases is not the actual file that we end up loading since we tend to bundle UI assets.
-		// As a result, WP is unable to automatically loa JS translations and what we do instead is manually create (and later load) a single .json file with all JS translations by extracting them from a .PO file.
+		// As a result, WP is unable to automatically load JS translations and what we do instead is manually create (and later load) a single .json file with all JS translations by extracting them from a .po file.
 		// Since the .po file in the translation package is missing some JS translations, we need to download an unprocessed .po file that's provided by T15S via an API endpoint.
 		$T15S_language_slug = $this->get_slug_from_locale( $translation['language'] );
 

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -249,7 +249,7 @@ CSS;
 		} );
 
 		$query_monitor_notice = strtr(
-			esc_html_x( 'You must install [link]Query Monitor[/link] WordPress plugin to use this option.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+			esc_html_x( 'You must install [link]Query Monitor[/link] WordPress plugin to use this option.', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
 			[
 				'[link]'  => '<a href="https://wordpress.org/plugins/query-monitor/" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -257,7 +257,7 @@ CSS;
 		);
 
 		$chrome_logger_tip = strtr(
-			esc_html_x( 'You must install [link]Chrome Logger[/link] browser extension to use this option.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+			esc_html_x( 'You must install [link]Chrome Logger[/link] browser extension to use this option.', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
 			[
 				'[link]'  => '<a href="https://craig.is/writing/chrome-logger" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -265,7 +265,7 @@ CSS;
 		);
 
 		$gravity_forms_logger_tip = strtr(
-			esc_html_x( 'Logging is currently handled by [link]Gravity Forms[/link].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+			esc_html_x( 'Logging is currently handled by [link]Gravity Forms[/link].', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
 			[
 				'[link]'  => '<a href="' . admin_url( 'admin.php?page=gf_settings&subview=gravityformslogging' ) . '" class="font-medium underline text-yellow-700 hover:text-yellow-600">',
 				'[/link]' => '</a>',
@@ -335,26 +335,26 @@ HTML;
 			[
 				'id'    => 'logger',
 				'type'  => 'checkbox',
-				'title' => esc_html__( 'Enable Logging', 'gk-gravityview' ),
+				'title' => esc_html__( 'Enable Logging', 'gk-foundation' ),
 				'value' => $logger,
 			],
 			[
 				'id'          => 'logger_type',
 				'type'        => 'select',
-				'title'       => esc_html__( 'Log Type', 'gk-gravityview' ),
-				'description' => esc_html__( 'Where to store log output', 'gk-gravityview' ),
+				'title'       => esc_html__( 'Log Type', 'gk-foundation' ),
+				'description' => esc_html__( 'Where to store log output', 'gk-foundation' ),
 				'value'       => $logger_type,
 				'choices'     => [
 					[
-						'title' => esc_html__( 'File', 'gk-gravityview' ),
+						'title' => esc_html__( 'File', 'gk-foundation' ),
 						'value' => 'file',
 					],
 					[
-						'title' => esc_html__( 'Query Monitor', 'gk-gravityview' ),
+						'title' => esc_html__( 'Query Monitor', 'gk-foundation' ),
 						'value' => 'query_monitor',
 					],
 					[
-						'title' => esc_html__( 'Chrome Logger', 'gk-gravityview' ),
+						'title' => esc_html__( 'Chrome Logger', 'gk-foundation' ),
 						'value' => 'chrome_logger',
 					],
 				],
@@ -410,7 +410,7 @@ HTML;
 		);
 
 		$download_notice = strtr(
-			esc_html_x( 'Download [link]log file[/link] ([size] / [date_modified]).', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+			esc_html_x( 'Download [link]log file[/link] ([size] / [date_modified]).', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
 			[
 				'[link]'          => '<a href="' . $download_link . '" class="font-medium underline text-blue-700 hover:text-blue-600">',
 				'[/link]'         => '</a>',

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -123,7 +123,7 @@ class LicenseManager {
 	 */
 	public function ajax_get_licenses_data( array $payload ) {
 		if ( ! Framework::get_instance()->current_user_can( 'view_licenses' ) ) {
-			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-foundation' ) );
 		}
 
 		$payload = wp_parse_args( $payload, [
@@ -260,21 +260,21 @@ class LicenseManager {
 	 */
 	public function get_license_key_status_message( $status ) {
 		$statuses = [
-			'site_inactive'       => esc_html__( 'The license key is valid, but it has not been activated for this site.', 'gk-gravityview' ),
-			'inactive'            => esc_html__( 'The license key is valid, but it has not been activated for this site.', 'gk-gravityview' ),
-			'no_activations_left' => esc_html__( 'This license has reached its activation limit.', 'gk-gravityview' ),
-			'deactivated'         => esc_html__( 'This license has been deactivated.', 'gk-gravityview' ),
-			'valid'               => esc_html__( 'This license key is valid and active.', 'gk-gravityview' ),
-			'invalid'             => esc_html__( 'This license key is invalid.', 'gk-gravityview' ),
-			'missing'             => esc_html__( 'This license key is invalid.', 'gk-gravityview' ),
-			'revoked'             => esc_html__( 'This license key has been revoked.', 'gk-gravityview' ),
-			'expired'             => esc_html__( 'This license key has expired.', 'gk-gravityview' ),
+			'site_inactive'       => esc_html__( 'The license key is valid, but it has not been activated for this site.', 'gk-foundation' ),
+			'inactive'            => esc_html__( 'The license key is valid, but it has not been activated for this site.', 'gk-foundation' ),
+			'no_activations_left' => esc_html__( 'This license has reached its activation limit.', 'gk-foundation' ),
+			'deactivated'         => esc_html__( 'This license has been deactivated.', 'gk-foundation' ),
+			'valid'               => esc_html__( 'This license key is valid and active.', 'gk-foundation' ),
+			'invalid'             => esc_html__( 'This license key is invalid.', 'gk-foundation' ),
+			'missing'             => esc_html__( 'This license key is invalid.', 'gk-foundation' ),
+			'revoked'             => esc_html__( 'This license key has been revoked.', 'gk-foundation' ),
+			'expired'             => esc_html__( 'This license key has expired.', 'gk-foundation' ),
 		];
 
 		if ( empty( $statuses[ $status ] ) ) {
 			LoggerFramework::get_instance()->warning( 'Unknown license status: ' . $status );
 
-			return esc_html__( 'License status could not be determined.', 'gk-gravityview' );
+			return esc_html__( 'License status could not be determined.', 'gk-foundation' );
 		}
 
 		return $statuses[ $status ];
@@ -329,7 +329,7 @@ class LicenseManager {
 
 		foreach ( (array) $response as $key => $data ) {
 			if ( ! isset( $data['success'] ) || ! isset( $data['license'] ) || ! isset( $data['checksum'] ) ) {
-				throw new Exception( esc_html__( 'License data received from the API is incomplete.', 'gk-gravityview' ) );
+				throw new Exception( esc_html__( 'License data received from the API is incomplete.', 'gk-foundation' ) );
 			}
 
 			$license_key = $multiple_licenses ? $key : $license;
@@ -432,11 +432,11 @@ class LicenseManager {
 	 */
 	public function ajax_activate_license( array $payload ) {
 		if ( ! Framework::get_instance()->current_user_can( 'manage_licenses' ) ) {
-			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-foundation' ) );
 		}
 
 		if ( empty( $payload['key'] ) ) {
-			throw new Exception( esc_html__( 'Missing license key.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'Missing license key.', 'gk-foundation' ) );
 		}
 
 		return $this->modify_license_data_for_frontend_output( $this->activate_license( $payload['key'] ) );
@@ -455,13 +455,13 @@ class LicenseManager {
 	 */
 	public function activate_license( $license_key ) {
 		if ( ! Framework::get_instance()->current_user_can( 'manage_licenses' ) ) {
-			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'You do not have a permission to perform this action.', 'gk-foundation' ) );
 		}
 
 		$licenses_data = $this->get_licenses_data();
 
 		if ( isset( $licenses_data[ $license_key ] ) ) {
-			throw new Exception( esc_html__( 'This license is already activated.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'This license is already activated.', 'gk-foundation' ) );
 		}
 
 		try {
@@ -472,7 +472,7 @@ class LicenseManager {
 			}
 
 			if ( ! $response['_raw']['success'] ) {
-				throw new Exception( esc_html__( 'Could not get information on products associated with this license.', 'gk-gravityview' ) );
+				throw new Exception( esc_html__( 'Could not get information on products associated with this license.', 'gk-foundation' ) );
 			}
 		} catch ( Exception $e ) {
 			throw new Exception( $e->getMessage() );
@@ -506,7 +506,7 @@ class LicenseManager {
 	 */
 	public function ajax_deactivate_license( array $payload ) {
 		if ( empty( $payload['key'] ) ) {
-			throw new Exception( esc_html__( 'Missing license key.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'Missing license key.', 'gk-foundation' ) );
 		}
 
 		$licenses_data = $this->get_licenses_data();
@@ -514,7 +514,7 @@ class LicenseManager {
 		$license_key = Encryption::get_instance()->decrypt( $payload['key'] );
 
 		if ( empty( $licenses_data[ $license_key ] ) ) {
-			throw new Exception( esc_html__( 'The license key is invalid.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'The license key is invalid.', 'gk-foundation' ) );
 		}
 
 		$this->deactivate_license( $license_key );
@@ -541,7 +541,7 @@ class LicenseManager {
 				// Unsuccessful deactivation can happen when the license has expired, in which case we should treat it as a "success" and remove from our list.
 				// If the license hasn't expired, then there is a problem deactivating it, and we should throw an exception.
 				if ( ! $response['expiry'] || $this->is_expired_license( $response['expiry'] ) ) {
-					throw new Exception( esc_html__( 'Failed to deactivate license.', 'gk-gravityview' ) );
+					throw new Exception( esc_html__( 'Failed to deactivate license.', 'gk-foundation' ) );
 				}
 			}
 		} catch ( Exception $e ) {
@@ -578,7 +578,7 @@ class LicenseManager {
 			$expired = $this->is_expired_license( $expiry );
 
 			$expiry = $expired
-				? human_time_diff( $expiry, current_time( 'timestamp' ) ) . ' ' . esc_html_x( 'ago', 'Indicates "time ago"', 'gk-gravityview' )
+				? human_time_diff( $expiry, current_time( 'timestamp' ) ) . ' ' . esc_html_x( 'ago', 'Indicates "time ago"', 'gk-foundation' )
 				: date_i18n( get_option( 'date_format' ), $expiry );
 
 		}
@@ -899,7 +899,7 @@ class LicenseManager {
 			);
 
 			$message = strtr(
-				esc_html_x( 'This is an unlicensed product. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+				esc_html_x( 'This is an unlicensed product. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one.', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
 				[
 					'[link]'  => '<a href="' . $url . '">',
 					'[/link]' => '</a>'

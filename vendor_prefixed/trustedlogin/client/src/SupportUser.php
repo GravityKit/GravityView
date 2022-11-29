@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -205,7 +205,7 @@ final class SupportUser {
 		if ( email_exists( $user_email ) ) {
 			$this->logging->log( 'Support User not created; a user with that email already exists: ' . $user_email, __METHOD__, 'warning' );
 
-			return new \WP_Error( 'email_exists', esc_html__( 'User not created; User with that email already exists', 'gk-gravityview' ) );
+			return new \WP_Error( 'email_exists', esc_html__( 'User not created; User with that email already exists', 'trustedlogin' ) );
 		}
 
 		$user_data = array(
@@ -239,7 +239,7 @@ final class SupportUser {
 	private function generate_unique_username() {
 
 		// translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-		$username = sprintf( esc_html__( '%s Support', 'gk-gravityview' ), $this->config->get_setting( 'vendor/title' ) );
+		$username = sprintf( esc_html__( '%s Support', 'trustedlogin' ), $this->config->get_setting( 'vendor/title' ) );
 
 		if ( ! username_exists( $username ) ) {
 			return $username;

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -330,7 +330,7 @@ class Framework {
 	 * @return void
 	 */
 	public function add_gk_submenu_item() {
-		$page_title = $menu_title = esc_html__( 'Settings', 'gk-gravityview' );
+		$page_title = $menu_title = esc_html__( 'Settings', 'gk-foundation' );
 
 		AdminMenu::add_submenu_item( [
 			'page_title' => $page_title,
@@ -463,7 +463,7 @@ class Framework {
 		$ui_settings = ! empty( $settings_data['settings'] ) ? $settings_data['settings'] : null;
 
 		if ( ! $plugin_id || ! $ui_settings ) {
-			throw new Exception( esc_html__( 'Invalid request.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'Invalid request.', 'gk-foundation' ) );
 		}
 
 		try {
@@ -484,7 +484,7 @@ class Framework {
 			}
 
 			if ( empty( $plugin_data['sections'] ) ) {
-				throw new ValidatorException( esc_html__( 'Plugin settings data not found.', 'gk-gravityview' ) );
+				throw new ValidatorException( esc_html__( 'Plugin settings data not found.', 'gk-foundation' ) );
 			}
 
 			foreach ( $ui_settings as $id => $value ) {
@@ -515,7 +515,7 @@ class Framework {
 
 						throw new Exception(
 							strtr(
-								esc_html_x( 'Setting [setting] has unmet requirements.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+								esc_html_x( 'Setting [setting] has unmet requirements.', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
 								[ '[setting]' => $plugin_setting['title'] ]
 							)
 						);
@@ -554,9 +554,9 @@ class Framework {
 
 			$this->save_plugin_settings( $plugin_id, $ui_settings );
 
-			return esc_html__( 'Settings were successfully saved.', 'gk-gravityview' );
+			return esc_html__( 'Settings were successfully saved.', 'gk-foundation' );
 		} catch ( ValidatorException $e ) {
-			throw new Exception( sprintf( '%s %s', esc_html__( 'Error saving settings.', 'gk-gravityview' ), $e->getMessage() ) );
+			throw new Exception( sprintf( '%s %s', esc_html__( 'Error saving settings.', 'gk-foundation' ), $e->getMessage() ) );
 		}
 	}
 

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -179,7 +179,7 @@ class Framework {
 		$response = [];
 
 		if ( ! $this->current_user_can( 'view_products' ) && ! $this->current_user_can( 'view_licenses' ) ) {
-			throw new Exception( esc_html__( 'You do not have permission to view this page.', 'gk-gravityview' ) );
+			throw new Exception( esc_html__( 'You do not have permission to view this page.', 'gk-foundation' ) );
 		}
 
 		// When skipping cache, we need to first refresh licenses and then products since the products data depends on the licenses data.
@@ -211,11 +211,11 @@ class Framework {
 		}
 
 		if ( ! $this->current_user_can( 'view_licenses' ) ) {
-			return esc_html__( 'Products', 'gk-gravityview' );
+			return esc_html__( 'Products', 'gk-foundation' );
 		} else if ( ! $this->current_user_can( 'view_products' ) ) {
-			return esc_html__( 'Licenses', 'gk-gravityview' );
+			return esc_html__( 'Licenses', 'gk-foundation' );
 		} else {
-			return esc_html__( 'Products & Licenses', 'gk-gravityview' );
+			return esc_html__( 'Products & Licenses', 'gk-foundation' );
 		}
 	}
 

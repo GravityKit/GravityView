@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 28-November-2022 using Strauss.
+ * Modified by gravityview on 29-November-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -101,7 +101,7 @@ class Core {
 	 * @return bool
 	 */
 	public static function is_main_network_site() {
-		return is_multisite() && is_main_site() && ! Core::is_network_admin();
+		return is_multisite() && is_main_site() && ! self::is_network_admin();
 	}
 
 	/**
@@ -141,6 +141,10 @@ class Core {
 	 * @return array{name:string, path: string, plugin_file:string, version: string, text_domain: string, active: bool, network_active?: bool}
 	 */
 	public static function get_installed_plugins() {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
 		$plugins = [];
 
 		foreach ( self::get_plugins() as $path => $plugin ) {
