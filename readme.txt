@@ -42,6 +42,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: View presets not working
 * Fixed: "This View is configured using the View type, which is disabled" notice when creating a new View after activating or installing a View type (e.g., Maps, DIY, DataTables)
 * Fixed: Incorrect search mode is set when one of the View search widget fields uses a "date range" input type
+* Fixed: Multiple files upload error (e.g., when editing an entry using GravityEdit)
 
 __Developer Updates:__
 
