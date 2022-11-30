@@ -181,7 +181,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		$output_arr = array();
 
 		// Get an array of file paths for the field.
-		$file_paths = (intval(\GV\Utils::get( $field , 'multipleFiles' )) !== 1 ? array($value)  : $value);
+		$file_paths = (int) \GV\Utils::get( $field, 'multipleFiles' ) !== 1 ? array( $value ) : $value;
 
 		// The $value JSON was probably truncated; let's check lead_detail_long.
 		if ( ! is_array( $file_paths ) ) {
