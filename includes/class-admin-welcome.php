@@ -277,6 +277,79 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.16 on December 1, 2022</h3>
+
+				<ul>
+					<li>Added: New WordPress admin menu where you can now centrally manage all your GravityKit product
+						licenses and settings (<a href='https://www.gravitykit.com/foundation/'>learn more about the new
+							GravityKit menu</a>)
+						<ul>
+							<li>Go to the WordPress sidebar and check out the GravityKit menu!</li>
+							<li>We have automatically migrated your existing licenses and settings, which were
+								previously entered in the Views→Settings page
+							</li>
+							<li>Request support using the 'Grant Support Access' menu item</li>
+						</ul>
+					</li>
+					<li>Added: Support for defining <code>alt</code> text in File Upload fields</li>
+					<li>Added: 'Pre-Filter Choices' Search Bar setting will only display choices that exist in submitted
+						entries (<a href='https://docs.gravitykit.com/article/701-s'>learn more about Pre-Filter
+							Choices</a>)
+					</li>
+					<li>Improved: When creating a new View, it is now possible to install a View type (if included in
+						the license) straight from the View editor
+					</li>
+					<li>Improved: Reduce the number of queries when displaying a View</li>
+					<li>Fixed: Merge Tags were not processed inside Custom Content fields when using the <a
+								href='https://docs.gravitykit.com/article/463-gventry-shortcode'><code>[gventry]</code>
+							edit mode</a></li>
+					<li>Fixed: Gravity Forms poll results was not being refreshed after editing a Poll field in
+						GravityView Edit Entry
+					</li>
+					<li>Fixed: Survey field 'Rating' stars were not displaying properly in the frontend</li>
+					<li>Fixed: JavaScript error when creating a new View</li>
+					<li>Fixed: JavaScript error when opening field settings in a new View</li>
+					<li>Fixed: Merge Tag picker not initializing when changing View type for an existing View</li>
+					<li>Fixed: 'Field connected to XYZ field was deleted from the form' notice when adding a new field
+						to a View created from a form preset
+					</li>
+					<li>Fixed: Edit Entry may partially save changes if form fields have conditional logic; thanks,
+						Jurriaan!
+					</li>
+					<li>Fixed: View presets not working</li>
+					<li>Fixed: 'This View is configured using the View type, which is disabled' notice when creating a
+						new View after activating or installing a View type (e.g., Maps, DIY, DataTables)
+					</li>
+					<li>Fixed: Incorrect search mode is set when one of the View search widget fields uses a 'date
+						range' input type
+					</li>
+					<li>Fixed: Multiple files upload error (e.g., when editing an entry using GravityEdit)</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gravityview/template/field/survey/rating/before</code> filter that fires before the
+						Survey field rating stars markup
+					</li>
+					<li>Added: <code>$return_view</code> parameter to <code>\GV\Request::is_view()</code> method,
+						reducing the need to build a \GV\View object when simply checking if a request is a View
+					</li>
+					<li>Added: <code>$expiration</code> parameter to <code>GravityView_Cache::set()</code> method to
+						allow for different cache lifetimes
+					</li>
+					<li>Fixed: <code>GravityView_Cache</code> was not used when the <code>WP_DEBUG</code> constant was
+						set to <code>true</code>. This resulted in the cache being effectively disabled on many sites.
+						<ul>
+							<li>Improved: Only run <code>GravityView_Cache::use_cache()</code> once per request</li>
+							<li>Added: <code>GRAVITYVIEW_DISABLE_CACHE</code> constant to disable the cache. Note:
+								<code>gravityview_use_cache</code> filter will still be run.
+							</li>
+						</ul>
+					</li>
+				</ul>
+
+
 				<h3>2.15 on September 21, 2022</h3>
 
 				<ul>
