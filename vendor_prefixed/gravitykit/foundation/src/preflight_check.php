@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 29-November-2022 using Strauss.
+ * Modified by gravityview on 01-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -101,7 +101,7 @@ function meets_min_php_version_requirement( $plugin_file, $min_php_version = '5.
 
 	if ( ! $meets_requirement ) {
 		$notice = strtr(
-			esc_html_x( '[plugin] requires PHP [version] or newer.', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
+			esc_html_x( '[plugin] requires PHP [version] or newer.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 			[
 				'[plugin]'  => $plugin_data['Name'],
 				'[version]' => $min_php_version

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 29-November-2022 using Strauss.
+ * Modified by gravityview on 01-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -23,7 +23,7 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 use Exception;
 
 class Core {
-	const VERSION = '1.0.4';
+	const VERSION = '1.0.5';
 
 	const ID = 'gk_foundation';
 
@@ -297,10 +297,10 @@ class Core {
 
 				// TODO: This is a temporary notice. To be removed once GravityView is updated to v2.16.
 				if ( defined( 'GV_PLUGIN_VERSION' ) && version_compare( GV_PLUGIN_VERSION, '2.16', '<' ) ) {
-					$notice_1 = esc_html__( 'You are using a version of GravityView that does not yet support the new GravityKit settings framework.', 'gk-foundation' );
+					$notice_1 = esc_html__( 'You are using a version of GravityView that does not yet support the new GravityKit settings framework.', 'gk-gravityview' );
 
 					$notice_2 = strtr(
-						esc_html_x( 'As such, the settings below will not apply to GravityView pages and you will have to continue using the [link]old settings[/link] until an updated version of the plugin is available. We apologize for the inconvenience as we work to update our products in a timely fashion.', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
+						esc_html_x( 'As such, the settings below will not apply to GravityView pages and you will have to continue using the [link]old settings[/link] until an updated version of the plugin is available. We apologize for the inconvenience as we work to update our products in a timely fashion.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 						[
 							'[link]'  => '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ) . '" class="text-blue-gv underline hover:text-gray-900 focus:text-gray-900 focus:no-underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900">',
 							'[/link]' => '</a>',
@@ -341,16 +341,16 @@ HTML;
 							'id'          => 'powered_by',
 							'type'        => 'checkbox',
 							'value'       => Arr::get( $gk_settings, 'powered_by', $default_settings['powered_by'] ),
-							'title'       => esc_html__( 'Display "Powered By" Link', 'gk-foundation' ),
-							'description' => esc_html__( 'A "Powered by GravityKit" link will be displayed below some GravityKit products. Help us spread the word!', 'gk-foundation' ),
+							'title'       => esc_html__( 'Display "Powered By" Link', 'gk-gravityview' ),
+							'description' => esc_html__( 'A "Powered by GravityKit" link will be displayed below some GravityKit products. Help us spread the word!', 'gk-gravityview' ),
 						],
 						[
 							'id'          => 'affiliate_id',
 							'type'        => 'number',
 							'value'       => Arr::get( $gk_settings, 'affiliate_id' ),
-							'title'       => esc_html__( 'Affiliate ID', 'gk-foundation' ),
+							'title'       => esc_html__( 'Affiliate ID', 'gk-gravityview' ),
 							'description' => strtr(
-								esc_html_x( 'Earn money when people clicking your links become GravityKit customers. [link]Register as an affiliate[/link]!', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
+								esc_html_x( 'Earn money when people clicking your links become GravityKit customers. [link]Register as an affiliate[/link]!', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 								[
 									'[link]'  => '<a href="https://www.gravitykit.com/account/affiliates/?utm_source=in-plugin&utm_medium=setting&utm_content=Register%20as%20an%20affiliate" class="underline" rel="external">',
 									'[/link]' => '</a>',
@@ -366,8 +366,8 @@ HTML;
 							'id'          => 'beta',
 							'type'        => 'checkbox',
 							'value'       => Arr::get( $gk_settings, 'beta', $default_settings['beta'] ),
-							'title'       => esc_html__( 'Become a Beta Tester', 'gk-foundation' ),
-							'description' => esc_html__( 'You will have early access to the latest GravityKit products. There may be bugs! If you encounter an issue, report it to help make GravityKit products better!', 'gk-foundation' ),
+							'title'       => esc_html__( 'Become a Beta Tester', 'gk-gravityview' ),
+							'description' => esc_html__( 'You will have early access to the latest GravityKit products. There may be bugs! If you encounter an issue, report it to help make GravityKit products better!', 'gk-gravityview' ),
 						],
 					]
 				);
@@ -378,16 +378,16 @@ HTML;
 						'type'        => 'text',
 						'required'    => true,
 						'value'       => Arr::get( $gk_settings, 'support_email', $default_settings['support_email'] ),
-						'title'       => esc_html__( 'Support Email', 'gk-foundation' ),
-						'description' => esc_html__( 'In order to provide responses to your support requests, please provide your email address.', 'gk-foundation' ),
+						'title'       => esc_html__( 'Support Email', 'gk-gravityview' ),
+						'description' => esc_html__( 'In order to provide responses to your support requests, please provide your email address.', 'gk-gravityview' ),
 						'validation'  => [
 							[
 								'rule'    => 'required',
-								'message' => esc_html__( 'Support email is required', 'gk-foundation' ),
+								'message' => esc_html__( 'Support email is required', 'gk-gravityview' ),
 							],
 							[
 								'rule'    => 'email',
-								'message' => esc_html__( 'Please provide a valid email address', 'gk-foundation' ),
+								'message' => esc_html__( 'Please provide a valid email address', 'gk-gravityview' ),
 							],
 						],
 					],
@@ -395,10 +395,10 @@ HTML;
 						'id'          => 'support_port',
 						'type'        => 'checkbox',
 						'value'       => Arr::get( $gk_settings, 'support_port', $default_settings['support_port'] ),
-						'title'       => esc_html__( 'Show Support Port', 'gk-foundation' ),
-						'description' => ( esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gk-foundation' ) .
+						'title'       => esc_html__( 'Show Support Port', 'gk-gravityview' ),
+						'description' => ( esc_html__( 'The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support.', 'gk-gravityview' ) .
 						                   strtr(
-							                   esc_html_x( '[image]Support Port icon[/image]', 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
+							                   esc_html_x( '[image]Support Port icon[/image]', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 							                   [
 								                   '[image]'  => '<div style="margin-top: 1em; width: 7em;">![',
 								                   '[/image]' => '](' . CoreHelpers::get_assets_url( 'support-port-icon.jpg' ) . ')</div>',
@@ -413,8 +413,8 @@ HTML;
 						'id'          => 'no_conflict_mode',
 						'type'        => 'checkbox',
 						'value'       => Arr::get( $gk_settings, 'no_conflict_mode', $default_settings['no_conflict_mode'] ),
-						'title'       => esc_html__( 'Enable No-Conflict Mode', 'gk-foundation' ),
-						'description' => esc_html__( 'No-conflict mode prevents extraneous scripts and styles from being printed on GravityKit admin pages, reducing conflicts with other plugins and themes.', 'gk-foundation' ),
+						'title'       => esc_html__( 'Enable No-Conflict Mode', 'gk-gravityview' ),
+						'description' => esc_html__( 'No-conflict mode prevents extraneous scripts and styles from being printed on GravityKit admin pages, reducing conflicts with other plugins and themes.', 'gk-gravityview' ),
 					],
 				];
 
@@ -426,15 +426,15 @@ HTML;
 						'icon'     => CoreHelpers::get_assets_url( 'gravitykit-icon.png' ),
 						'sections' => [
 							[
-								'title'    => esc_html__( 'General', 'gk-foundation' ),
+								'title'    => esc_html__( 'General', 'gk-gravityview' ),
 								'settings' => $general_settings,
 							],
 							[
-								'title'    => esc_html__( 'Support', 'gk-foundation' ),
+								'title'    => esc_html__( 'Support', 'gk-gravityview' ),
 								'settings' => $support_settings,
 							],
 							[
-								'title'    => esc_html__( 'Technical', 'gk-foundation' ),
+								'title'    => esc_html__( 'Technical', 'gk-gravityview' ),
 								'settings' => $technical_settings,
 							],
 						],

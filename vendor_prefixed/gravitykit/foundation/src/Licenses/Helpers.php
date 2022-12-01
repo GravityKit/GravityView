@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 29-November-2022 using Strauss.
+ * Modified by gravityview on 01-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -48,7 +48,7 @@ class Helpers {
 		try {
 			$response = json_decode( $body, true );
 		} catch ( Exception $e ) {
-			throw new Exception( esc_html__( 'Unable to process remote request. Invalid response body.', 'gk-foundation' ) );
+			throw new Exception( esc_html__( 'Unable to process remote request. Invalid response body.', 'gk-gravityview' ) );
 		}
 
 		return $response;

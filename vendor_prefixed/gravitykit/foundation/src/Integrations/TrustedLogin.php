@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 29-November-2022 using Strauss.
+ * Modified by gravityview on 01-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -102,7 +102,7 @@ class TrustedLogin {
 		$tl_config = new TrustedLoginConfig( $this->get_config() );
 		$tl_admin  = new TrustedLoginAdmin( $tl_config, new TrustedLoginLogging( $tl_config ) );
 
-		$page_title = $menu_title = esc_html__( 'Grant Support Access', 'gk-foundation' );
+		$page_title = $menu_title = esc_html__( 'Grant Support Access', 'gk-gravityview' );
 
 		AdminMenu::add_submenu_item( [
 			'page_title' => $page_title,
@@ -131,20 +131,20 @@ class TrustedLogin {
 		 */
 		$capabilities = apply_filters( 'gk/foundation/integrations/trustedlogin/capabilities', [
 			'add'    => [
-				'gravityview_full_access' => esc_html__( 'We need access to Views to provide great support.', 'gk-foundation' ),
-				'gform_full_access'       => esc_html__( 'We will need to see and edit the forms, entries, and Gravity Forms settings to debug issues.', 'gk-foundation' ),
-				'install_plugins'         => esc_html__( 'We may need to manage plugins in order to debug conflicts on your site and add related GravityView functionality.', 'gk-foundation' ),
+				'gravityview_full_access' => esc_html__( 'We need access to Views to provide great support.', 'gk-gravityview' ),
+				'gform_full_access'       => esc_html__( 'We will need to see and edit the forms, entries, and Gravity Forms settings to debug issues.', 'gk-gravityview' ),
+				'install_plugins'         => esc_html__( 'We may need to manage plugins in order to debug conflicts on your site and add related GravityView functionality.', 'gk-gravityview' ),
 				'update_plugins'          => '',
 				'deactivate_plugins'      => '',
 				'activate_plugins'        => '',
 			],
 			'remove' => [
 				'manage_woocommerce' => strtr(
-					esc_html_x( "We don't need to see your [plugin] details to provide support (if [plugin] is enabled).", 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
+					esc_html_x( "We don't need to see your [plugin] details to provide support (if [plugin] is enabled).", 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 					[ 'plugin' => 'WooCommerce' ]
 				),
 				'view_shop_reports'  => strtr(
-					esc_html_x( "We don't need to see your [plugin] details to provide support (if [plugin] is enabled).", 'Placeholders inside [] are not to be translated.', 'gk-foundation' ),
+					esc_html_x( "We don't need to see your [plugin] details to provide support (if [plugin] is enabled).", 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 					[ 'plugin' => 'Easy Digital Downloads' ]
 				),
 			],

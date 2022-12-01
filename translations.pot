@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-28T22:17:58+00:00\n"
+"POT-Creation-Date: 2022-12-01T18:30:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -123,7 +123,7 @@ msgid "There are %s unapproved entries that are not being shown."
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:236
-#: includes/class-admin-welcome.php:185
+#: includes/class-admin-welcome.php:188
 #: includes/widgets/search-widget/class-search-widget.php:90
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:15
 msgid "This link opens in a new window."
@@ -1589,59 +1589,59 @@ msgstr ""
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:60
-#: includes/class-admin-welcome.php:61
+#: includes/class-admin-welcome.php:63
+#: includes/class-admin-welcome.php:64
 msgid "Changelog"
 msgstr ""
 
-#: includes/class-admin-welcome.php:70
-#: includes/class-admin-welcome.php:71
-#: includes/class-admin-welcome.php:160
+#: includes/class-admin-welcome.php:73
+#: includes/class-admin-welcome.php:74
+#: includes/class-admin-welcome.php:163
 msgid "Credits"
 msgstr ""
 
-#: includes/class-admin-welcome.php:80
+#: includes/class-admin-welcome.php:83
 msgid "GravityView: Getting Started"
 msgstr ""
 
-#: includes/class-admin-welcome.php:81
-#: includes/class-admin-welcome.php:154
+#: includes/class-admin-welcome.php:84
+#: includes/class-admin-welcome.php:157
 msgid "Getting Started"
 msgstr ""
 
-#: includes/class-admin-welcome.php:149
+#: includes/class-admin-welcome.php:152
 msgid "Welcome to GravityView %s"
 msgstr ""
 
-#: includes/class-admin-welcome.php:150
+#: includes/class-admin-welcome.php:153
 msgid "Thank you for installing GravityView. Beautifully display your Gravity Forms entries."
 msgstr ""
 
-#: includes/class-admin-welcome.php:157
+#: includes/class-admin-welcome.php:160
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:274
+#: includes/class-admin-welcome.php:277
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:582
+#: includes/class-admin-welcome.php:585
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:632
+#: includes/class-admin-welcome.php:635
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:670
+#: includes/class-admin-welcome.php:673
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:702
+#: includes/class-admin-welcome.php:705
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:703
+#: includes/class-admin-welcome.php:706
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -3548,6 +3548,11 @@ msgstr ""
 msgid "Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings."
 msgstr ""
 
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:10
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update[/link] [plugin] to the latest version."
+msgstr ""
+
 #: includes/presets/business-data/class-gravityview-preset-business-data.php:22
 msgid "Business Data"
 msgstr ""
@@ -4617,8 +4622,8 @@ msgid "Unable to process remote request. Invalid response body."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:126
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:435
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:458
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:441
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:464
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:112
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:226
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:277
@@ -4627,72 +4632,72 @@ msgstr ""
 msgid "You do not have a permission to perform this action."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:263
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:264
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:269
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:270
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:265
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:271
 msgid "This license has reached its activation limit."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:266
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:272
 msgid "This license has been deactivated."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:267
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:273
 msgid "This license key is valid and active."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:268
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:269
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:274
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:275
 msgid "This license key is invalid."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:270
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:276
 msgid "This license key has been revoked."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:271
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:277
 msgid "This license key has expired."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:277
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:283
 msgid "License status could not be determined."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:332
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:338
 msgid "License data received from the API is incomplete."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:439
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:509
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:445
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:515
 msgid "Missing license key."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:464
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:470
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:22
 msgid "This license is already activated."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:475
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:481
 msgid "Could not get information on products associated with this license."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:517
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:523
 msgid "The license key is invalid."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:544
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:550
 msgid "Failed to deactivate license."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:581
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:587
 msgctxt "Indicates \"time ago\""
 msgid "ago"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:902
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:908
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "This is an unlicensed product. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one."
 msgstr ""
