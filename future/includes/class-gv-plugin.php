@@ -723,7 +723,7 @@ final class Plugin {
 		add_filter( 'parent_file', function ( $parent_file ) use ( $admin_menu, $post_type, $all_views_menu_id, $new_view_menu_id ) {
 			global $submenu_file;
 
-			if ( strpos( $submenu_file, "post_type={$post_type}" ) === false ) {
+			if ( ! $submenu_file || ! strpos( $submenu_file, "post_type={$post_type}" ) === false ) {
 				return $parent_file;
 			}
 
