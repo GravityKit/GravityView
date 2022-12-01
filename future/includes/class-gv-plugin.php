@@ -692,7 +692,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function add_to_gravitykit_admin_menu( $foundation ) {
-		if ( ! \GVCommon::has_cap( 'edit_gravityviews' ) ) {
+		if ( ! \GVCommon::has_cap( 'edit_gravityviews' ) || GravityKitFoundation::helpers()->core->is_network_admin() ) {
 			return;
 		}
 

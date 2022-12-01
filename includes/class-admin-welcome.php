@@ -50,6 +50,9 @@ class GravityView_Welcome {
 	 * @param \GravityKit\GravityView\Foundation\Core|GravityKitFoundation $foundation
 	 */
 	public function admin_menus( $foundation ) {
+		if ( $foundation::helpers()->core->is_network_admin() ) {
+			return;
+		}
 
 		/** @var \GravityKit\GravityView\Foundation\WP\AdminMenu $admin_menu */
 		$admin_menu = $foundation::admin_menu();
