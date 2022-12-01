@@ -230,7 +230,7 @@ class Plugin_Settings {
 			],
 		];
 
-		return array_merge( $plugins_data, [ self::SETTINGS_PLUGIN_ID => $settings ] );
+		return array_merge( (array) $plugins_data, [ self::SETTINGS_PLUGIN_ID => $settings ] );
 	}
 
 	/**
