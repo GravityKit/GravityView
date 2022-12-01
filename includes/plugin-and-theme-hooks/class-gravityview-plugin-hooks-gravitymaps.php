@@ -12,6 +12,22 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 		}
 
 		/**
+		 * Temporarily keep maps working on the front-end when running new GV and old Maps.
+		 *
+		 * @since 2.16
+		 */
+		add_filter( 'gravityview/maps/render/google_api_key', function( $api_key ) {
+
+			if ( ! empty( $api_key ) ) {
+				return $api_key;
+			}
+
+			$legacy_options = (array) get_option( 'gravityformsaddon_gravityview_app_settings' );
+
+			return \GV\Utils::get( $legacy_options, 'googlemaps-api-key', '' );
+		} );
+
+		/**
 		 * @since 2.16
 		 * @param array $notices
 		 * @return array $notices, with a new notice about Maps compatibility added.
