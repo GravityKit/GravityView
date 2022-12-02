@@ -6,11 +6,11 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Extractors;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Extractors;
 
 use Exception;
-use GravityKit\GravityView\Gettext\Translations;
-use GravityKit\GravityView\Gettext\Utils\StringReader;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\StringReader;
 
 /**
  * Class to get gettext strings from .mo files.
@@ -21,7 +21,7 @@ class Mo extends Extractor implements ExtractorInterface
     const MAGIC2 = -569244523;
     const MAGIC3 = 2500072158;
 
-    protected static $stringReaderClass = 'GravityKit\GravityView\Gettext\Utils\StringReader';
+    protected static $stringReaderClass = 'GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\StringReader';
 
     /**
      * {@inheritdoc}

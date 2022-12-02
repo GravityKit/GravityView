@@ -6,7 +6,7 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Languages;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages;
 
 use Exception;
 
@@ -60,7 +60,7 @@ class Language
     /**
      * The list of categories.
      *
-     * @var \GravityKit\GravityView\Gettext\Languages\Category[]
+     * @var \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Category[]
      */
     public $categories;
 
@@ -119,7 +119,7 @@ class Language
      *
      * @throws \Exception
      *
-     * @return \GravityKit\GravityView\Gettext\Languages\Language[]
+     * @return \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Language[]
      */
     public static function getAll()
     {
@@ -136,7 +136,7 @@ class Language
      *
      * @param string $id
      *
-     * @return \GravityKit\GravityView\Gettext\Languages\Language|null
+     * @return \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Language|null
      */
     public static function getById($id)
     {
@@ -152,7 +152,7 @@ class Language
     /**
      * Returns a clone of this instance with all the strings to US-ASCII.
      *
-     * @return \GravityKit\GravityView\Gettext\Languages\Language
+     * @return \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Language
      */
     public function getUSAsciiClone()
     {

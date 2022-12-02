@@ -6,14 +6,14 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Languages\Exporter;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter;
 
 class Docs extends Html
 {
     /**
      * {@inheritdoc}
      *
-     * @see \GravityKit\GravityView\Gettext\Languages\Exporter\Exporter::isForPublicUse()
+     * @see \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter\Exporter::isForPublicUse()
      */
     public static function isForPublicUse()
     {
@@ -23,7 +23,7 @@ class Docs extends Html
     /**
      * {@inheritdoc}
      *
-     * @see \GravityKit\GravityView\Gettext\Languages\Exporter\Exporter::getDescription()
+     * @see \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter\Exporter::getDescription()
      */
     public static function getDescription()
     {
@@ -33,7 +33,7 @@ class Docs extends Html
     /**
      * {@inheritdoc}
      *
-     * @see \GravityKit\GravityView\Gettext\Languages\Exporter\Exporter::toStringDo()
+     * @see \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter\Exporter::toStringDo()
      */
     protected static function toStringDo($languages)
     {

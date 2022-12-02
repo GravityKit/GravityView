@@ -5,15 +5,15 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Extractors;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Extractors;
 
 use DOMAttr;
 use DOMDocument;
 use DOMElement;
 use DOMNode;
 use Exception;
-use GravityKit\GravityView\Gettext\Translations;
-use GravityKit\GravityView\Gettext\Utils\FunctionsScanner;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\FunctionsScanner;
 
 /**
  * Class to get gettext strings from VueJS template files.
@@ -45,7 +45,7 @@ class VueJs extends Extractor implements ExtractorInterface, ExtractorMultiInter
         ],
     ];
 
-    protected static $functionsScannerClass = 'GravityKit\GravityView\Gettext\Utils\JsFunctionsScanner';
+    protected static $functionsScannerClass = 'GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\JsFunctionsScanner';
 
     /**
      * @inheritDoc

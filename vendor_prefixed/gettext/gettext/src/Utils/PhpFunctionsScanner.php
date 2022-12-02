@@ -6,9 +6,9 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Utils;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils;
 
-use GravityKit\GravityView\Gettext\Extractors\PhpCode;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Extractors\PhpCode;
 
 class PhpFunctionsScanner extends FunctionsScanner
 {

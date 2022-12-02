@@ -6,11 +6,11 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Extractors;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Extractors;
 
 use BadMethodCallException;
-use GravityKit\GravityView\Gettext\Translations;
-use GravityKit\GravityView\Gettext\Utils\MultidimensionalArrayTrait;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\MultidimensionalArrayTrait;
 
 /**
  * Class to get gettext strings from php files returning arrays.

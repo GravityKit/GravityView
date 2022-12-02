@@ -241,12 +241,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:gravityview/Foundation.git",
-                "reference": "bcd8c127fb38b83e5c49c7297495cc872782053e"
+                "reference": "43b67f6dea7cd7002f7cfd53b2f5104d3d753c63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/bcd8c127fb38b83e5c49c7297495cc872782053e",
-                "reference": "bcd8c127fb38b83e5c49c7297495cc872782053e",
+                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/43b67f6dea7cd7002f7cfd53b2f5104d3d753c63",
+                "reference": "43b67f6dea7cd7002f7cfd53b2f5104d3d753c63",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +264,7 @@
                 "phpcompatibility/phpcompatibility-wp": "*",
                 "wp-coding-standards/wpcs": "^2.3"
             },
-            "time": "2022-12-01T18:29:25+00:00",
+            "time": "2022-12-01T21:21:51+00:00",
             "default-branch": true,
             "type": "library",
             "extra": {
@@ -293,7 +293,7 @@
                     "delete_vendor_files": false
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "GravityKit\\Foundation\\": "src"
@@ -320,7 +320,7 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/gravityview/Foundation/tree/v1.0.5",
+                "source": "https://github.com/gravityview/Foundation/tree/main",
                 "issues": "https://github.com/gravityview/Foundation/issues"
             },
             "install-path": "../gravitykit/foundation"

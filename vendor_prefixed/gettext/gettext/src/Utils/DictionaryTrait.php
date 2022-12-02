@@ -6,9 +6,9 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Utils;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils;
 
-use GravityKit\GravityView\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
 
 /**
  * Trait used by all generators that exports the translations to plain dictionary (original => singular-translation).

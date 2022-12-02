@@ -6,7 +6,7 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Utils;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils;
 
 /**
  * Function parsed by PhpFunctionsScanner.

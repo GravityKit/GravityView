@@ -43,6 +43,7 @@
         "gravitykit/foundation"
       ],
       "namespace_replacement_patterns": {
+        "/^Gettext/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext",
         "/^Illuminate/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Illuminate",
         "/^TrustedLogin/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\TrustedLogin",
         "/^GravityKit\\\\Foundation/": "GravityKit\\GravityView\\Foundation"

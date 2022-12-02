@@ -6,7 +6,7 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext;
 
 class GettextTranslator extends BaseTranslator implements TranslatorInterface
 {

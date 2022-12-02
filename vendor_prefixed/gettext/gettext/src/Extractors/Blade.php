@@ -6,9 +6,9 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Extractors;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Extractors;
 
-use GravityKit\GravityView\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
 use GravityKit\GravityView\Foundation\ThirdParty\Illuminate\Filesystem\Filesystem;
 use Illuminate\View\Compilers\BladeCompiler;
 

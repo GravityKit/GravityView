@@ -6,9 +6,9 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext;
 
-use GravityKit\GravityView\Gettext\Generators\PhpArray;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Generators\PhpArray;
 
 class Translator extends BaseTranslator implements TranslatorInterface
 {

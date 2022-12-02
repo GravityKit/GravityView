@@ -6,9 +6,9 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext;
 
-use GravityKit\GravityView\Gettext\Languages\Language;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Language;
 use BadMethodCallException;
 use InvalidArgumentException;
 use ArrayObject;
@@ -137,7 +137,7 @@ class Translations extends ArrayObject
         $input = [],
         $flags = 0,
         $iterator_class = 'ArrayIterator',
-        $translationClass = 'GravityKit\GravityView\Gettext\Translation'
+        $translationClass = 'GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translation'
     ) {
         $this->headers = static::$options['defaultHeaders'];
 
@@ -181,7 +181,7 @@ class Translations extends ArrayObject
         }
 
         if ($matches[1] === 'addFrom') {
-            $extractor = 'GravityKit\\GravityView\\Gettext\\Extractors\\'.$matches[2].'::from'.$matches[3];
+            $extractor = 'GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext\\Extractors\\'.$matches[2].'::from'.$matches[3];
             $source = array_shift($arguments);
             $options = array_shift($arguments) ?: [];
 
@@ -190,7 +190,7 @@ class Translations extends ArrayObject
             return $this;
         }
 
-        $generator = 'GravityKit\\GravityView\\Gettext\\Generators\\'.$matches[2].'::to'.$matches[3];
+        $generator = 'GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext\\Generators\\'.$matches[2].'::to'.$matches[3];
 
         array_unshift($arguments, $this);
 

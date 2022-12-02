@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f5aa5abfce1befebc7061c02b8fbe3c",
+    "content-hash": "9dc8f6d55f897b3f56a779f3cecfe77b",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:gravityview/Foundation.git",
-                "reference": "bcd8c127fb38b83e5c49c7297495cc872782053e"
+                "reference": "43b67f6dea7cd7002f7cfd53b2f5104d3d753c63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/bcd8c127fb38b83e5c49c7297495cc872782053e",
-                "reference": "bcd8c127fb38b83e5c49c7297495cc872782053e",
+                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/43b67f6dea7cd7002f7cfd53b2f5104d3d753c63",
+                "reference": "43b67f6dea7cd7002f7cfd53b2f5104d3d753c63",
                 "shasum": ""
             },
             "require": {
@@ -314,10 +314,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/gravityview/Foundation/tree/v1.0.5",
+                "source": "https://github.com/gravityview/Foundation/tree/main",
                 "issues": "https://github.com/gravityview/Foundation/issues"
             },
-            "time": "2022-12-01T18:29:25+00:00"
+            "time": "2022-12-01T21:21:51+00:00"
         },
         {
             "name": "illuminate/container",
