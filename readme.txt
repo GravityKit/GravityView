@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.16.0.1 on December 1, 2022 =
+
+* Fixed: Admin menu not expanded when on a GravityView page
+
 = 2.16 on December 1, 2022 =
 
 * Added: New WordPress admin menu where you can now centrally manage all your GravityKit product licenses and settings ([learn more about the new GravityKit menu](https://www.gravitykit.com/foundation/))
