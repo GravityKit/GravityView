@@ -6,14 +6,14 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Languages\Exporter;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter;
 
 class Json extends Exporter
 {
     /**
      * {@inheritdoc}
      *
-     * @see \GravityKit\GravityView\Gettext\Languages\Exporter\Exporter::getDescription()
+     * @see \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter\Exporter::getDescription()
      */
     public static function getDescription()
     {
@@ -41,7 +41,7 @@ class Json extends Exporter
     /**
      * {@inheritdoc}
      *
-     * @see \GravityKit\GravityView\Gettext\Languages\Exporter\Exporter::toStringDo()
+     * @see \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter\Exporter::toStringDo()
      */
     protected static function toStringDo($languages)
     {

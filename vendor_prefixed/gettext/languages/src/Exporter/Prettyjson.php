@@ -6,7 +6,7 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Languages\Exporter;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter;
 
 use Exception;
 
@@ -15,7 +15,7 @@ class Prettyjson extends Json
     /**
      * {@inheritdoc}
      *
-     * @see \GravityKit\GravityView\Gettext\Languages\Exporter\Exporter::getDescription()
+     * @see \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter\Exporter::getDescription()
      */
     public static function getDescription()
     {
@@ -25,7 +25,7 @@ class Prettyjson extends Json
     /**
      * {@inheritdoc}
      *
-     * @see \GravityKit\GravityView\Gettext\Languages\Exporter\Json::getEncodeOptions()
+     * @see \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter\Json::getEncodeOptions()
      */
     protected static function getEncodeOptions()
     {

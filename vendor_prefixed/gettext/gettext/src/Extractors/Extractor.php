@@ -6,11 +6,11 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Extractors;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Extractors;
 
 use Exception;
 use InvalidArgumentException;
-use GravityKit\GravityView\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
 
 abstract class Extractor implements ExtractorInterface
 {

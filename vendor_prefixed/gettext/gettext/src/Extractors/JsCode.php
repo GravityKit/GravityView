@@ -6,11 +6,11 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Extractors;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Extractors;
 
 use Exception;
-use GravityKit\GravityView\Gettext\Translations;
-use GravityKit\GravityView\Gettext\Utils\FunctionsScanner;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\FunctionsScanner;
 
 /**
  * Class to get gettext strings from javascript files.
@@ -42,7 +42,7 @@ class JsCode extends Extractor implements ExtractorInterface, ExtractorMultiInte
         ],
     ];
 
-    protected static $functionsScannerClass = 'GravityKit\GravityView\Gettext\Utils\JsFunctionsScanner';
+    protected static $functionsScannerClass = 'GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\JsFunctionsScanner';
 
     /**
      * @inheritdoc

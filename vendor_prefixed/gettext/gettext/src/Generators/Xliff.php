@@ -6,10 +6,10 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Generators;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Generators;
 
-use GravityKit\GravityView\Gettext\Translation;
-use GravityKit\GravityView\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translation;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
 use DOMDocument;
 
 class Xliff extends Generator implements GeneratorInterface

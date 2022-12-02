@@ -6,11 +6,11 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Extractors;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Extractors;
 
 use Exception;
-use GravityKit\GravityView\Gettext\Translations;
-use GravityKit\GravityView\Gettext\Utils\FunctionsScanner;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\FunctionsScanner;
 
 /**
  * Class to get gettext strings from php files returning arrays.
@@ -48,7 +48,7 @@ class PhpCode extends Extractor implements ExtractorInterface, ExtractorMultiInt
         ],
     ];
 
-    protected static $functionsScannerClass = 'GravityKit\GravityView\Gettext\Utils\PhpFunctionsScanner';
+    protected static $functionsScannerClass = 'GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\PhpFunctionsScanner';
 
     /**
      * {@inheritdoc}

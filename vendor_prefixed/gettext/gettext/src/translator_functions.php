@@ -6,7 +6,7 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-use GravityKit\GravityView\Gettext\BaseTranslator;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\BaseTranslator;
 
 /**
  * Returns the translation of a string.

@@ -6,7 +6,7 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Languages\Exporter;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Exporter;
 
 use Exception;
 
@@ -89,7 +89,7 @@ abstract class Exporter
     /**
      * Convert a list of Language instances to string.
      *
-     * @param \GravityKit\GravityView\Gettext\Languages\Language[] $languages the Language instances to convert
+     * @param \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Language[] $languages the Language instances to convert
      * @param array|null $options
      *
      * @return string
@@ -112,7 +112,7 @@ abstract class Exporter
     /**
      * Save the Language instances to a file.
      *
-     * @param \GravityKit\GravityView\Gettext\Languages\Language[] $languages the Language instances to convert
+     * @param \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Language[] $languages the Language instances to convert
      * @param array|null $options
      *
      * @throws \Exception
@@ -148,7 +148,7 @@ abstract class Exporter
     /**
      * Convert a list of Language instances to string.
      *
-     * @param \GravityKit\GravityView\Gettext\Languages\Language[] $languages the Language instances to convert
+     * @param \GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages\Language[] $languages the Language instances to convert
      *
      * @return string
      */

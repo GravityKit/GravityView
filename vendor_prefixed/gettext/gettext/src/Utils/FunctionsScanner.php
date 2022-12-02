@@ -6,10 +6,10 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Utils;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils;
 
 use Exception;
-use GravityKit\GravityView\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
 
 abstract class FunctionsScanner
 {

@@ -6,9 +6,9 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Generators;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Generators;
 
-use GravityKit\GravityView\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
 
 abstract class Generator implements GeneratorInterface
 {

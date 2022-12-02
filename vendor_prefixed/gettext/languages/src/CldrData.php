@@ -6,7 +6,7 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Languages;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Languages;
 
 use Exception;
 

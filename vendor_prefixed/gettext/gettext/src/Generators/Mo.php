@@ -6,10 +6,10 @@
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Gettext\Generators;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Gettext\Generators;
 
-use GravityKit\GravityView\Gettext\Translations;
-use GravityKit\GravityView\Gettext\Utils\HeadersGeneratorTrait;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Translations;
+use GravityKit\GravityView\Foundation\ThirdParty\Gettext\Utils\HeadersGeneratorTrait;
 
 class Mo extends Generator implements GeneratorInterface
 {
