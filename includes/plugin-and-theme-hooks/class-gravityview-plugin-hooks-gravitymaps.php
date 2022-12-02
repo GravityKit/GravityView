@@ -7,7 +7,7 @@
 class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_Hooks {
 	public function __construct() {
 
-		if ( defined( 'GRAVITYVIEW_MAPS_VERSION' ) && version_compare( GRAVITYVIEW_MAPS_VERSION, '1.8', '>=' ) ) {
+		if ( ! defined( 'GRAVITYVIEW_MAPS_VERSION' ) || version_compare( GRAVITYVIEW_MAPS_VERSION, '1.8', '>=' ) ) {
 			return;
 		}
 

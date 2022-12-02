@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.16.0.2 on December 1, 2022 =
+
+* Fixed: Fatal error when Maps isn't installed
+
 = 2.16.0.1 on December 1, 2022 =
 
 * Fixed: Admin menu not expanded when on a GravityView page
