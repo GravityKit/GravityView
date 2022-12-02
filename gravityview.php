@@ -53,7 +53,7 @@ define( 'GV_MIN_GF_VERSION', '2.3' );
  * GravityView will soon require at least this version of Gravity Forms to function properly.
  * @since 1.19.4
  */
-define( 'GV_FUTURE_MIN_GF_VERSION', '2.5' );
+define( 'GV_FUTURE_MIN_GF_VERSION', '2.5.0' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
