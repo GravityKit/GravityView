@@ -40,7 +40,7 @@ abstract class Route extends \WP_REST_Controller {
 	public function register_routes() {
 
 		// Clear out all errors before we start. This prevents breaking responses when WP_DEBUG_DISPLAY is true.
-		ob_clean();
+		$output_buffer = ob_get_clean();
 
 		$namespace = \GV\REST\Core::get_namespace();
 		$base = $this->get_route_name();
@@ -164,6 +164,8 @@ abstract class Route extends \WP_REST_Controller {
 				),
 			),
 		) );
+
+		echo $output_buffer;
 	}
 
 	/**
