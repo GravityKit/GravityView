@@ -26,7 +26,7 @@ class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 	var $icon = 'dashicons-admin-generic';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Custom Field', 'gravityview' );
+		$this->label = esc_html__( 'Post Custom Field', 'gk-gravityview' );
 		parent::__construct();
 
 		$this->add_hooks();

@@ -20,7 +20,7 @@ class GravityView_Field_Calculation extends GravityView_Field {
 	 */
 	public function __construct() {
 
-		$this->label = esc_html__( 'Calculation', 'gravityview' );
+		$this->label = esc_html__( 'Calculation', 'gk-gravityview' );
 
 		add_filter( 'gravityview_blocklist_field_types', array( $this, 'blocklist_field_types' ), 10, 2 );
 

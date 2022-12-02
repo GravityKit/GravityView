@@ -1752,6 +1752,7 @@ $dialog-button-padding: 5px;
 .widgets-php {
 
 	// Make the dropdown icon fit on the same line as the text field
+	input.gv-merge-tag-support,
 	input.merge-tag-support {
 		width: 95%;
 	}
@@ -1813,6 +1814,7 @@ $dialog-button-padding: 5px;
 }
 
 // When CodeMirror is disabled, make sure the textarea is still the right size.
+.gv-label-textarea textarea.gv-merge-tag-support
 .gv-label-textarea textarea.merge-tag-support {
 	width: 95%;
 }

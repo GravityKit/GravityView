@@ -85,7 +85,7 @@ class oEmbed {
 
 		if ( ! $result || count( $result ) != 2 ) {
 			gravityview()->log->notice( 'View or entry could not be parsed in oEmbed url {url}', array( 'url' => $url, 'matches' => $matches ) );
-			return __( 'You are not allowed to view this content.', 'gravityview' );
+			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 		}
 
 		list( $view, $entry ) = $result;
@@ -170,9 +170,9 @@ class oEmbed {
 		// Floaty the astronaut
 		$image = \GravityView_Admin::get_floaty();
 
-		$embed_heading = sprintf( esc_html__( 'Embed Entry %d', 'gravityview' ), $entry->ID );
+		$embed_heading = sprintf( esc_html__( 'Embed Entry %d', 'gk-gravityview' ), $entry->ID );
 
-		$embed_text = sprintf( esc_html__( 'This entry will be displayed as it is configured in View %d', 'gravityview' ), $view->ID );
+		$embed_text = sprintf( esc_html__( 'This entry will be displayed as it is configured in View %d', 'gk-gravityview' ), $view->ID );
 
 		return '
 		<div class="loading-placeholder" style="background-color:#e6f0f5;">
@@ -191,8 +191,8 @@ class oEmbed {
 	 */
 	private static function render_preview_notice() {
 		$floaty = \GravityView_Admin::get_floaty();
-		$title = esc_html__( 'This will look better when it is embedded.', 'gravityview' );
-		$message = esc_html__( 'Styles don\'t get loaded when being previewed, so the content below will look strange. Don\'t be concerned!', 'gravityview');
+		$title = esc_html__( 'This will look better when it is embedded.', 'gk-gravityview' );
+		$message = esc_html__( 'Styles don\'t get loaded when being previewed, so the content below will look strange. Don\'t be concerned!', 'gk-gravityview');
 		return '<div class="updated notice">'.$floaty.'<h3>'.$title.'</h3><p>'.$message.'</p><br style="clear:both;" /></div>';
 	}
 
@@ -209,18 +209,18 @@ class oEmbed {
 		$public_states = get_post_stati( array( 'public' => true ) );
 		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
 			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $view->ID ) );
-			return __( 'You are not allowed to view this content.', 'gravityview' );
+			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 		}
 
 		if ( $entry && 'active' !== $entry['status'] ) {
 			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-			return __( 'You are not allowed to view this content.', 'gravityview' );
+			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 		}
 
 		if ( $view->settings->get( 'show_only_approved' ) ) {
 			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gravityview' );
+				return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 			}
 		}
 

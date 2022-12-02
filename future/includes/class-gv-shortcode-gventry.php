@@ -131,7 +131,7 @@ class gventry extends \GV\Shortcode {
 			 * ...apart from a nice message if the user can do anything about it.
 			 */
 			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-				$return = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+				$return = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
 				return apply_filters( 'gravityview/shortcodes/gventry/output', $return, $view, $entry, $atts );
 			}
 
@@ -170,7 +170,15 @@ class gventry extends \GV\Shortcode {
 			 * Mocks old context, etc.
 			 */
 			$loader = \GravityView_Edit_Entry::getInstance();
+			/** @var \GravityView_Edit_Entry_Render $render */
 			$render = $loader->instances['render'];
+
+			// Override the \GV\Request::is_entry() check for the query var.
+			$_entry_query_var_backup = get_query_var( \GV\Entry::get_endpoint_name() );
+			set_query_var( \GV\Entry::get_endpoint_name(), $entry['id'] );
+			add_filter( 'gravityview_is_edit_entry', $use_entry = function() use ( $entry ) {
+				return $entry;
+			} );
 
 			add_filter( 'gravityview/is_single_entry', '__return_true' );
 
@@ -208,6 +216,9 @@ class gventry extends \GV\Shortcode {
 			ob_start() && $render->init( $data, \GV\GF_Entry::by_id( $entry['id'] ), $view );
 			$output = ob_get_clean(); // Render :)
 
+			// Restore the \GV\Request::is_entry() check for the query var.
+			set_query_var( \GV\Entry::get_endpoint_name(), $_entry_query_var_backup );
+			remove_filter( 'gravityview_is_edit_entry', $use_entry );
 			remove_filter( 'gravityview/is_single_entry', '__return_true' );
 			remove_filter( 'gravityview/edit_entry/success', $callback );
 		} else {

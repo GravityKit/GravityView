@@ -24,7 +24,7 @@ class GravityView_Field_Currency extends GravityView_Field {
 	 * GravityView_Field_Currency constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Currency', 'gravityview' );
+		$this->label = esc_html__( 'Currency', 'gk-gravityview' );
 		parent::__construct();
 	}
 }

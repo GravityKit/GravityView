@@ -8,12 +8,6 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Joins_Test extends GV_UnitTestCase {
 	function setUp() {
-		/** The future branch of GravityView requires PHP 5.3+ namespaces. */
-		if ( version_compare( phpversion(), '5.3' , '<' ) ) {
-			$this->markTestSkipped( 'The future code requires PHP 5.3+' );
-			return;
-		}
-
 		$this->_reset_context();
 
 		parent::setUp();

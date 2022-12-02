@@ -32,6 +32,13 @@ class GravityView_Cache {
 	private $key = '';
 
 	/**
+	 * Whether to use the cache or not. Set in {@see use_cache()}.
+	 *
+	 * @var null|boolean $use_cache
+	 */
+	private $use_cache = null;
+
+	/**
 	 * @since 1.13.1
 	 * @var array Columns in the database for leads
 	 */
@@ -339,7 +346,7 @@ class GravityView_Cache {
 
 		foreach ( (array) $form_ids as $form_id ) {
 
-			if ( in_array( $form_id, $blocklist ) ) {
+			if ( in_array( $form_id, $blocklist, true ) ) {
 
 				gravityview()->log->debug( 'Form #{form_id} is in the cache blocklist', array( 'form_id' => $form_id ) );
 
@@ -358,7 +365,7 @@ class GravityView_Cache {
 	 *
 	 * @return mixed      False: Not using cache or cache was a WP_Error object; NULL: no results found; Mixed: cache value
 	 */
-	public function get( $key = NULL ) {
+	public function get( $key = null ) {
 
 		$key = is_null( $key ) ? $this->key : $key;
 
@@ -381,48 +388,56 @@ class GravityView_Cache {
 
 		} elseif ( $result ) {
 
-			gravityview()->log->debug( 'Cached results found for  transient key {key}', array( 'key' => $key ) );
+			gravityview()->log->debug( 'Cached results found for transient key {key}', array( 'key' => $key ) );
 
 			return $result;
 		}
 
-		gravityview()->log->debug( 'No cached results found for  transient key {key}', array( 'key' => $key ) );
+		gravityview()->log->debug( 'No cached results found for transient key {key}', array( 'key' => $key ) );
 
 		return NULL;
-
 	}
 
 	/**
 	 * Cache content as a transient.
 	 *
-	 * Cache time defaults to 1 week
+	 * Cache time defaults to 1 day.
 	 *
-	 * @param mixed $content     [description]
+	 * @since 2.16 Added $cache_time parameter to allow overriding the default cache time.
+	 *
+	 * @param mixed $content The content to cache.
 	 * @param string $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
+	 * @param int|null $expiration Cache time in seconds. If not set, DAYS_IN_SECONDS will be used.
 	 *
 	 * @return bool If $content is not set, false. Otherwise, returns true if transient was set and false if not.
 	 */
-	public function set( $content, $filter_name = '' ) {
+	public function set( $content, $filter_name = '', $expiration = null ) {
 
 		// Don't cache empty results
 		if ( ! empty( $content ) ) {
+
+			$expiration = ! is_int( $expiration ) ? DAY_IN_SECONDS : $expiration;
 
 			/**
 			 * @filter `gravityview_cache_time_{$filter_name}` Modify the cache time for a type of cache
 			 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
 			 */
-			$cache_time = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, DAY_IN_SECONDS );
+			$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
 
-			gravityview()->log->debug( 'Setting cache with transient key {key} for {cache_time} seconds', array( 'key' => $this->key, 'cache_time' => $cache_time ) );
+			gravityview()->log->debug( 'Setting cache with transient key {key} for {expiration} seconds', array( 'key' => $this->key, 'expiration' => $expiration ) );
 
-			return set_transient( $this->key, $content, $cache_time );
+			$transient_was_set = set_transient( $this->key, $content, $expiration );
 
+			if ( ! $transient_was_set && $this->use_cache() ) {
+				gravityview()->log->error( 'Transient was not set for this key: ' . $this->key );
+			}
+
+			return $transient_was_set;
 		}
 
 		gravityview()->log->debug( 'Cache not set; content is empty' );
 
 		return false;
-
 	}
 
 	/**
@@ -558,8 +573,13 @@ class GravityView_Cache {
 	public function use_cache() {
 
 		// Exit early if debugging (unless running PHPUnit)
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && ! ( defined('DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) ) {
-			return apply_filters( 'gravityview_use_cache', false, $this );
+		if ( defined( 'GRAVITYVIEW_DISABLE_CACHE' ) && GRAVITYVIEW_DISABLE_CACHE && ! ( defined('DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) ) {
+			return (boolean) apply_filters( 'gravityview_use_cache', false, $this );
+		}
+
+		// Only run once per instance.
+		if ( ! is_null( $this->use_cache ) ) {
+			return $this->use_cache;
 		}
 
 		$use_cache = true;
@@ -576,14 +596,13 @@ class GravityView_Cache {
 		}
 
 		// Has the form been flagged as having changed items in it?
-		if ( $this->in_blocklist() || ! $use_cache ) {
+		if ( ! $use_cache || $this->in_blocklist() ) {
 
 			// Delete caches for all items with form IDs XYZ
 			$this->delete( $this->form_ids );
 
 			// Remove the form from
 			$this->blocklist_remove( $this->form_ids );
-
 		}
 
 		/**
@@ -591,9 +610,9 @@ class GravityView_Cache {
 		 * @param  boolean $use_cache Previous setting
 		 * @param GravityView_Cache $this The GravityView_Cache object
 		 */
-		$use_cache = apply_filters( 'gravityview_use_cache', $use_cache, $this );
+		$this->use_cache = (boolean) apply_filters( 'gravityview_use_cache', $use_cache, $this );
 
-		return (boolean) $use_cache;
+		return $this->use_cache;
 	}
 
 }

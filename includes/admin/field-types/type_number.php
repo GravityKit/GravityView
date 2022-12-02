@@ -21,7 +21,7 @@ class GravityView_FieldType_number extends GravityView_FieldType_text {
 		$show_mt = $this->show_merge_tags();
 
 		if ( $show_mt && $this->field['merge_tags'] !== false || $this->field['merge_tags'] === 'force' ) {
-			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
+			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
 		$class .= \GV\Utils::get( $this->field, 'class', 'widefat' );

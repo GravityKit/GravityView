@@ -21,8 +21,8 @@ class GravityView_Field_ID extends GravityView_Field {
 	var $is_numeric = true;
 
 	public function __construct() {
-		$this->label       = esc_html__( 'Entry ID', 'gravityview' );
-		$this->description = __( 'The unique ID of the entry.', 'gravityview' );
+		$this->label       = esc_html__( 'Entry ID', 'gk-gravityview' );
+		$this->description = __( 'The unique ID of the entry.', 'gk-gravityview' );
 		parent::__construct();
 	}
 

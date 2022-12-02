@@ -20,7 +20,7 @@ class GravityView_Post_Excerpt extends GravityView_Field {
 	var $icon = 'dashicons-format-quote';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Excerpt', 'gravityview' );
+		$this->label = esc_html__( 'Post Excerpt', 'gk-gravityview' );
 		parent::__construct();
 	}
 

@@ -27,7 +27,7 @@ class GravityView_Field_Number extends GravityView_Field {
 	var $icon = 'dashicons-editor-ol';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Number', 'gravityview' );
+		$this->label = esc_html__( 'Number', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -35,16 +35,16 @@ class GravityView_Field_Number extends GravityView_Field {
 
 		$field_options['number_format'] = array(
 			'type' => 'checkbox',
-			'label' => __( 'Format number?', 'gravityview' ),
-			'desc' => __('Display numbers with thousands separators.', 'gravityview'),
+			'label' => __( 'Format number?', 'gk-gravityview' ),
+			'desc' => __('Display numbers with thousands separators.', 'gk-gravityview'),
 			'value' => false,
 			'group' => 'field',
 		);
 
 		$field_options['decimals'] = array(
 			'type' => 'number',
-			'label' => __( 'Decimals', 'gravityview' ),
-			'desc' => __('Precision of the number of decimal places. Leave blank to use existing precision.', 'gravityview'),
+			'label' => __( 'Decimals', 'gk-gravityview' ),
+			'desc' => __('Precision of the number of decimal places. Leave blank to use existing precision.', 'gk-gravityview'),
 			'value' => '',
 			'merge_tags' => false,
 			'group' => 'field',

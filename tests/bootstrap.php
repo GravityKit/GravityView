@@ -131,7 +131,7 @@ class GV_Unit_Tests_Bootstrap {
 
 		/** Enable the REST API */
 		add_action( 'gravityview/settings/defaults', function( $defaults ) {
-			$defaults['rest_api'] = '1';
+			$defaults['rest_api'] = 1;
 			return $defaults;
 		} );
 

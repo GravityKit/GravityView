@@ -66,17 +66,20 @@ module.exports = function(grunt) {
 			}
 		},
 
-		jshint: [
-			"assets/js/admin-views.js",
-			"assets/js/admin-edd-license.js",
-			"assets/js/admin-post-edit.js",
-			"assets/js/admin-widgets.js",
-			"assets/js/admin-entries-list.js",
-			"assets/js/admin-installer.js",
-			"assets/js/fe-views.js",
-			"includes/extensions/entry-notes/assets/js/entry-notes.js",
-			"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
-		],
+		jshint: {
+			options: {
+				esversion: 11
+			},
+			all: [
+				"assets/js/admin-views.js",
+				"assets/js/admin-post-edit.js",
+				"assets/js/admin-widgets.js",
+				"assets/js/admin-entries-list.js",
+				"assets/js/fe-views.js",
+				"includes/extensions/entry-notes/assets/js/entry-notes.js",
+				"includes/widgets/search-widget/assets/js/source/admin-widgets.js"
+			]
+		},
 
         imagemin: {
             dynamic: {
@@ -191,24 +194,28 @@ module.exports = function(grunt) {
 			}
 		},
 
-		// Pull in the latest translations
 		exec: {
-			transifex: 'tx pull -a --parallel',
+			// Generate POT file.
+			makepot: {
+				cmd: function () {
+					var fileComments = [
+						'Copyright (C) ' + new Date().getFullYear() + ' GravityKit',
+						'This file is distributed under the GPLv2 or later',
+					];
 
-			// Create a ZIP file
-			zip: {
-				cmd: function( version = '' ) {
+					var headers = {
+						'Last-Translator': 'GravityKit <support@gravitykit.com>',
+						'Language-Team': 'GravityKit <support@gravitykit.com>',
+						'Language': 'en_US',
+						'Plural-Forms': 'nplurals=2; plural=(n != 1);',
+						'Report-Msgid-Bugs-To': 'https://www.gravitykit.com/support',
+					};
 
-					var filename = ( version === '' ) ? 'gravityview' : 'gravityview-' + version;
+					var command = 'wp i18n make-pot . translations.pot';
 
-					// First, create the full archive
-					var command = 'git-archive-all gravityview.zip &&';
+					command += ' --file-comment="' + fileComments.join( '\n' ) + '"';
 
-					command += 'unzip -o gravityview.zip &&';
-
-					command += 'zip -r ../' + filename + '.zip gravityview &&';
-
-					command += 'rm -rf gravityview/ && rm -f gravityview.zip';
+					command += ' --headers=\'' + JSON.stringify( headers ) + '\'';
 
 					return command;
 				}
@@ -217,60 +224,21 @@ module.exports = function(grunt) {
 			bower: 'bower install'
 		},
 
-		// Build translations without POEdit
-		makepot: {
-			target: {
-				options: {
-					mainFile: 'gravityview.php',
-					type: 'wp-plugin',
-					domainPath: '/languages',
-					updateTimestamp: false,
-					exclude: ['node_modules/.*', 'assets/.*', 'tmp/.*', 'vendor/.*', 'includes/lib/xml-parsers/.*', 'includes/lib/jquery-cookie/.*' ],
-					potHeaders: {
-						poedit: true,
-						'x-poedit-keywordslist': true
-					},
-					processPot: function( pot, options ) {
-						pot.headers['language'] = 'en_US';
-						pot.headers['language-team'] = 'Katz Web Services, Inc. <support@katz.co>';
-						pot.headers['last-translator'] = 'Katz Web Services, Inc. <support@katz.co>';
-						pot.headers['report-msgid-bugs-to'] = 'https://gravityview.co/support/';
-
-						var translation,
-							excluded_meta = [
-								'GravityView',
-								'The best, easiest way to display Gravity Forms entries on your website.',
-								'https://gravityview.co',
-								'Katz Web Services, Inc.',
-								'https://www.katzwebservices.com'
-							];
-
-						for ( translation in pot.translations[''] ) {
-							if ( 'undefined' !== typeof pot.translations[''][ translation ].comments.extracted ) {
-								if ( excluded_meta.indexOf( pot.translations[''][ translation ].msgid ) >= 0 ) {
-									console.log( 'Excluded meta: ' + pot.translations[''][ translation ].msgid );
-									delete pot.translations[''][ translation ];
-								}
-							}
-						}
-
-						return pot;
-					}
-				}
-			}
-		},
-
-		// Add textdomain to all strings, and modify existing textdomains in included packages.
+		// Add text domain to all strings, and modify existing text domains in included packages.
 		addtextdomain: {
 			options: {
-				textdomain: 'gravityview',    // Project text domain.
-				updateDomains: [ 'gravityview', 'gravity-view', 'gravityforms', 'edd_sl', 'edd', 'easy-digital-downloads', 'trustedlogin' ]  // List of text domains to replace.
+				textdomain: 'gk-gravityview',    // Project text domain.
+				updateDomains: [ 'gravityview', 'gk-foundation', 'trustedlogin' ]  // List of text domains to replace.
 			},
 			target: {
 				files: {
 					src: [
 						'*.php',
-						'**/*.php',
+						'templates/**/*.php',
+						'future/**/*.php',
+						'includes/**/*.php',
+						'vendor_prefixed/gravitykit/**',
+						'vendor_prefixed/trustedlogin/**',
 						'!node_modules/**',
 						'!tests/**',
 						'!tmp/**',
@@ -281,7 +249,7 @@ module.exports = function(grunt) {
 					]
 				}
 			}
-		}
+		},
 	});
 
 	// Still have to manually add this one...
@@ -291,6 +259,6 @@ module.exports = function(grunt) {
 	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate' ] );
 
 	// Translation stuff
-	grunt.registerTask( 'translate', [ 'exec:transifex', 'potomo', 'addtextdomain', 'makepot' ] );
+	grunt.registerTask( 'translate', [ 'addtextdomain', 'exec:makepot' ] );
 
 };

@@ -19,7 +19,7 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	var $icon = 'dashicons-format-image';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Image', 'gravityview' );
+		$this->label = esc_html__( 'Post Image', 'gk-gravityview' );
 		parent::__construct();
 	}
 

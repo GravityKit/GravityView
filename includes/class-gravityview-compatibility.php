@@ -173,7 +173,7 @@ class GravityView_Compatibility {
 
 		$notices = self::get_notices();
 
-		$message = '<div style="border:1px solid red; padding: 15px;"><p style="text-align:center;"><em>' . esc_html__( 'You are seeing this notice because you are an administrator. Other users of the site will see nothing.', 'gravityview') . '</em></p>';
+		$message = '<div style="border:1px solid red; padding: 15px;"><p style="text-align:center;"><em>' . esc_html__( 'You are seeing this notice because you are an administrator. Other users of the site will see nothing.', 'gk-gravityview') . '</em></p>';
 		foreach( (array)$notices as $notice ) {
 			$message .= wpautop( $notice['message'] );
 		}
@@ -197,7 +197,7 @@ class GravityView_Compatibility {
 
 			self::$notices['php_version'] = array(
 				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires PHP Version %s or newer.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ), '<h3>', GV_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
+				'message' => sprintf( __( "%sGravityView requires PHP Version %s or newer.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '<h3>', GV_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
 				'cap' => 'manage_options',
 				'dismiss' => 'php_version',
 			);
@@ -212,7 +212,7 @@ class GravityView_Compatibility {
 
 			self::$notices[ $key ] = array(
 				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView will soon require PHP Version %s.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gravityview' ), '<h3>', GV_FUTURE_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
+				'message' => sprintf( __( "%sGravityView will soon require PHP Version %s.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '<h3>', GV_FUTURE_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
 				'cap' => 'manage_options',
 				'dismiss' => $key,
 			);
@@ -239,7 +239,7 @@ class GravityView_Compatibility {
 
 			self::$notices['wp_version'] = array(
 				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
+				'message' => sprintf( __( "%sGravityView requires WordPress %s or newer.%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gk-gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
 			    'cap' => 'update_core',
 				'dismiss' => 'wp_version',
 			);
@@ -252,7 +252,7 @@ class GravityView_Compatibility {
 
 		self::$notices[ $key ] = array(
 			'class' => 'notice-warning',
-			'message' => sprintf( __( "%sGravityView will soon require WordPress %s%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gravityview' ), '<h3>', GV_FUTURE_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
+			'message' => sprintf( __( "%sGravityView will soon require WordPress %s%s \n\nYou're using Version %s. Please upgrade your WordPress installation.", 'gk-gravityview' ), '<h3>', GV_FUTURE_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
 			'cap' => 'update_core',
 			'dismiss' => $key,
 		);
@@ -283,12 +283,12 @@ class GravityView_Compatibility {
 
 			if( $meets_minimum ) {
 				/* translators: first placeholder is the future required version of Gravity Forms. The second placeholder is the current version of Gravity Forms. */
-				$title = __( 'In the future, GravityView will require Gravity Forms Version %s or newer.', 'gravityview' );
+				$title = __( 'In the future, GravityView will require Gravity Forms Version %s or newer.', 'gk-gravityview' );
 				$version = GV_FUTURE_MIN_GF_VERSION;
 				$class = 'notice-warning';
 			} else {
 				/* translators: the placeholder is the required version of Gravity Forms. */
-				$title = __( 'GravityView requires Gravity Forms Version %s or newer.', 'gravityview' );
+				$title = __( 'GravityView requires Gravity Forms Version %s or newer.', 'gk-gravityview' );
 				$version = GV_MIN_GF_VERSION;
 				$class = 'error';
 			}
@@ -296,10 +296,10 @@ class GravityView_Compatibility {
 			$message = '<h3>' . esc_html( sprintf( $title, $version ) ) . '</h3>';
 
 			/* translators: the placeholder is the current version of Gravity Forms. */
-			$message .= '<p>' . sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gravityview' ), '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>' ) . '</p>';
+			$message .= '<p>' . sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gk-gravityview' ), '<span style="font-family: Consolas, Courier, monospace;">'.GFCommon::$version.'</span>' ) . '</p>';
 
 			/* translators: In this context, "get" means purchase */
-			$message .= '<p><a href="https://www.gravitykit.com/gravityforms/" class="button button-secondary button-large button-hero">' . esc_html__( 'Get the Latest Gravity Forms', 'gravityview' ) . '</a></p>';
+			$message .= '<p><a href="https://www.gravitykit.com/gravityforms/" class="button button-secondary button-large button-hero">' . esc_html__( 'Get the Latest Gravity Forms', 'gk-gravityview' ) . '</a></p>';
 
 
 			// Show the notice even if the future version requirements aren't met
@@ -347,7 +347,7 @@ class GravityView_Compatibility {
 
 				self::$notices['gf_inactive'] = array(
 					'class' => 'error',
-					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gravityview' ), '<h3>', "</h3>\n\n". $button, '</a></strong>' ),
+					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin.', 'gk-gravityview' ), '<h3>', "</h3>\n\n". $button, '</a></strong>' ),
 					'cap' => 'activate_plugins',
 					'dismiss' => 'gf_inactive',
 				);
@@ -356,7 +356,7 @@ class GravityView_Compatibility {
 			default:
 				self::$notices['gf_installed'] = array(
 					'class' => 'error',
-					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $59%s%s', 'gravityview' ), '<h3>', "</h3>\n\n".'<a href="https://www.gravitykit.com/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
+					'message' => sprintf( __( '%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $59%s%s', 'gk-gravityview' ), '<h3>', "</h3>\n\n".'<a href="https://www.gravitykit.com/gravityforms/" class="button button-secondary button-large button-hero">' , '<em>', '</em>', '</a>'),
 					'cap' => 'install_plugins',
 					'dismiss' => 'gf_installed',
 				);
@@ -376,8 +376,8 @@ class GravityView_Compatibility {
 		if( class_exists( 'GFDirectory' ) ) {
 			self::$notices['gf_directory'] = array(
 				'class' => 'error is-dismissible',
-				'title' => __('Potential Conflict', 'gravityview' ),
-				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gravityview' ),
+				'title' => __('Potential Conflict', 'gk-gravityview' ),
+				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gk-gravityview' ),
 				'dismiss' => 'gf_directory',
 				'cap' => 'activate_plugins',
 			);

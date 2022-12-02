@@ -35,7 +35,7 @@ class GravityView_HTML_Elements {
 			'class'       => '',
 			'multiple'    => false,
 			'selected'    => 0,
-			'show_option_none' => sprintf( '&mdash; %s &mdash;', esc_html__( 'list of forms', 'gravityview' ) ),
+			'show_option_none' => sprintf( '&mdash; %s &mdash;', esc_html__( 'list of forms', 'gk-gravityview' ) ),
 			'data'        => array( 'search-type' => 'form' ),
 		);
 
@@ -75,7 +75,7 @@ class GravityView_HTML_Elements {
 			'class'       => '',
 			'multiple'    => false,
 			'selected'    => 0,
-			'show_option_none' => __( 'Select a field', 'gravityview' ),
+			'show_option_none' => __( 'Select a field', 'gk-gravityview' ),
 			'data'        => array( 'search-type' => 'form' ),
 		);
 
@@ -117,8 +117,8 @@ class GravityView_HTML_Elements {
 			'placeholder'      => null,
 			'multiple'         => false,
 			'disabled'         => false,
-			'show_option_all'  => _x( 'All', 'all dropdown items', 'gravityview' ),
-			'show_option_none' => _x( 'None', 'no dropdown items', 'gravityview' ),
+			'show_option_all'  => _x( 'All', 'all dropdown items', 'gk-gravityview' ),
+			'show_option_none' => _x( 'None', 'no dropdown items', 'gk-gravityview' ),
 			'data'             => array(),
 		);
 

@@ -113,23 +113,37 @@ switch ( $gravityview->field->field->inputType ) {
 
 	case 'rating':
 
-		if( 'stars' === $choice_display ) {
+		$choice_text = RGFormsModel::get_choice_text( $field->field, $gravityview->value, $input_id );
 
-			// Don't use __return_true because other code may also be using it.
-			$return_true = function() { return true; };
-
-			// Disable the stars from being clickable
-			add_filter( 'gform_is_form_editor', $return_true, 10000 );
-
-			/** @see GF_Field_Rating::get_field_input() */
-			echo $field->field->get_field_input( array( 'id' => $field->form_id ), $gravityview->value );
-
-			remove_filter( 'gform_is_form_editor', $return_true );
-
-			return; // Return early
+		if( ! in_array( $choice_display, array( 'stars', 'dashicons', 'emoji' ), true ) ) {
+			echo $choice_text;
+			return;
 		}
 
-		echo RGFormsModel::get_choice_text( $field->field, $gravityview->value, $input_id );
+		$choices = $field->field->choices;
+		$choice_values = wp_list_pluck( $choices, 'value', $gravityview->value );
+		$starred_index = array_search( $gravityview->value, $choice_values );
+		$star_a11y_label = sprintf( __( '%s (%d out of %d stars)', 'gk-gravityview'), $choice_text, ( $starred_index + 1 ), sizeof( $choice_values ) );
+
+		/**
+		 * @action `gravityview/field/survey/rating-styles`
+		 * @usedby {@see GravityView_Field_Survey::output_frontend_css} to Enqueue styles for the Survey field.
+		 * @since 2.16
+		 * @param \GV\GF_Field $field The current field.
+		 * @param \GV\Template_Context $gravityview The context.
+		 */
+		do_action( 'gravityview/template/field/survey/rating/before', $field, $gravityview );
+
+		echo '<span class="gv-field-survey-screen-reader-text">' . esc_html( $star_a11y_label ) . '</span>';
+		foreach ( $choices as $current_index => $choice_value ) {
+
+			// Have we already shown the last filled-in star?
+			$empty = ( $current_index > $starred_index );
+			$css_class = 'gv-field-survey-star-' . ( $empty ? 'empty' : 'filled' );
+
+			echo sprintf( '<span class="%s" title="%s"></span>', esc_attr( $css_class ), esc_attr( $choice_value['text'] ) );
+		}
+
 
 		return;
 }

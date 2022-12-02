@@ -19,6 +19,7 @@ class GravityView_Placeholder_Template extends GravityView_Template {
 			'type'        => 'custom',
 			'buy_source'  => 'https://www.gravitykit.com/pricing/',
 			'slug'        => '',
+			'template_id' => '',
 			'label'       => '',
 			'description' => '',
 			'logo'        => '',

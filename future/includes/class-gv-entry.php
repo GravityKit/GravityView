@@ -118,7 +118,7 @@ abstract class Entry {
 		$permalink = null;
 
 		/** This is not a regular view. */
-		if ( ! $request->is_view() ) {
+		if ( ! $request->is_view( false ) ) {
 
 			/** Must be an embed of some sort. */
 			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
@@ -143,7 +143,7 @@ abstract class Entry {
 		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
 		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
 		 */
-		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view() ? $view_id : ( $post ? $post->ID : null ) );
+		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view( false ) ? $view_id : ( $post ? $post->ID : null ) );
 
 		$entry_endpoint_name = \GV\Entry::get_endpoint_name();
 

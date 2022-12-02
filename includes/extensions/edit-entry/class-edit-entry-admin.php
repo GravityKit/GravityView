@@ -84,9 +84,9 @@ class GravityView_Edit_Entry_Admin {
         if( $zone !== 'edit' ) {
 
             $entry_default_fields['edit_link'] = array(
-                'label' => __('Link to Edit Entry', 'gravityview'),
+                'label' => __('Link to Edit Entry', 'gk-gravityview'),
                 'type' => 'edit_link',
-                'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
+                'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gk-gravityview'),
                 'icon' => 'dashicons-welcome-write-blog',
             );
 
@@ -116,7 +116,7 @@ class GravityView_Edit_Entry_Admin {
             // Remove other built-in caps.
             unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['delete_others_posts'] );
 
-            $caps['read'] = _x('Entry Creator','User capability', 'gravityview');
+            $caps['read'] = _x('Entry Creator','User capability', 'gk-gravityview');
         }
 
         return $caps;
@@ -143,15 +143,15 @@ class GravityView_Edit_Entry_Admin {
 
         $add_option['edit_link'] = array(
             'type' => 'text',
-            'label' => __( 'Edit Link Text', 'gravityview' ),
+            'label' => __( 'Edit Link Text', 'gk-gravityview' ),
             'desc' => NULL,
-            'value' => __('Edit Entry', 'gravityview'),
+            'value' => __('Edit Entry', 'gk-gravityview'),
             'merge_tags' => true,
         );
 
 	    $add_option['new_window'] = array(
 		    'type' => 'checkbox',
-		    'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
+		    'label' => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
 		    'value' => false,
 		    'group' => 'display',
 		    'priority' => 1300,
@@ -170,8 +170,8 @@ class GravityView_Edit_Entry_Admin {
         $return = $tooltips;
 
         $return['allow_edit_cap'] = array(
-            'title' => __('Limiting Edit Access', 'gravityview'),
-            'value' => __('Change this setting if you don\'t want the user who created the entry to be able to edit this field.', 'gravityview'),
+            'title' => __('Limiting Edit Access', 'gk-gravityview'),
+            'value' => __('Change this setting if you don\'t want the user who created the entry to be able to edit this field.', 'gk-gravityview'),
         );
 
         return $return;
@@ -202,7 +202,7 @@ class GravityView_Edit_Entry_Admin {
         $add_options = array(
             'allow_edit_cap' => array(
                 'type' => 'select',
-                'label' => __( 'Make field editable to:', 'gravityview' ),
+                'label' => __( 'Make field editable to:', 'gk-gravityview' ),
                 'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
                 'tooltip' => 'allow_edit_cap',
                 'class' => 'widefat',

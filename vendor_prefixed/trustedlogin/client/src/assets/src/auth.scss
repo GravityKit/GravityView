@@ -1,0 +1,459 @@
+/**
+ * Variables
+ */
+$path: '../' !default; // Path to the assets directory. Can be overridden by plugin SCSS.
+
+$container-width-min: 300px;
+$container-width-max: 680px;
+$border-radius-base: 4px;
+$border-radius-small: 3px;
+$border-radius-large: 5px;
+$gutter-width: 10px !default;
+$large-icon-size: 32px !default;
+$medium-icon-size: 24px !default;
+$small-icon-size: 18px !default;
+$vertical-spacing: 24px !default;
+
+// Colors
+$color-111: #191E23 !default;
+$color-222: #23282D !default;
+$color-333: #32373C !default;
+$color-444: #40464D !default;
+$color-555: #555D66 !default;
+$color-666: #6C7781 !default;
+$color-777: #7E8993 !default;
+$color-888: #8F98A1 !default;
+$color-light-grey-900: #a2aab2 !default;
+$color-light-grey-800: #b5bcc2 !default;
+$color-light-grey-700: #ccd0d4 !default;
+$color-light-grey-600: #d7dade !default;
+$color-light-grey-500: #e2e4e7 !default;
+$color-light-grey-400: #e8eaeb !default;
+$color-light-grey-300: #edeff0 !default;
+$color-light-grey-200: #f3f4f5 !default;
+$color-light-grey-100: #fbfbfc !default;
+$color-green: #328540 !default;
+$color-red: #c0461e !default;
+
+.tl-#{$namespace}-auth {
+
+	min-width: $container-width-min;
+	max-width: $container-width-max;
+	display: block;
+	margin: ( $gutter-width * 3 ) auto;
+	font-size: 1em;
+	text-align: center;
+	zoom: 1;
+
+	section {
+		background: #fff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.13);
+		border-radius: $border-radius-base;
+		overflow: hidden;
+		padding: 40px 5% $gutter-width;
+		border-bottom: 1px solid $color-light-grey-900;
+
+		* {
+			text-align: left;
+		}
+	}
+
+	&.tl-#{$namespace}-grant-access section > div {
+		width: 90%;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.tl-#{$namespace}-auth__details {
+
+		box-sizing: border-box;
+
+		> div {
+			margin-bottom: $vertical-spacing;
+		}
+	}
+
+	.tl-#{$namespace}-auth__ref p {
+		text-align: center;
+		font-family: Consolas, Monaco, monospace; // WP .code CSS class
+	}
+
+	.tl-#{$namespace}-auth__actions {
+		margin-bottom: $vertical-spacing;
+		padding-top: 0;
+		text-align: center;
+	}
+
+	.dashicons--small {
+		height: $small-icon-size;
+		width: $small-icon-size;
+		font-size: $small-icon-size;
+		vertical-align: text-top;
+	}
+
+	.dashicons--large {
+		font-size: $large-icon-size;
+		height: $large-icon-size;
+		width: $large-icon-size;
+		vertical-align: bottom;
+	}
+
+	.dashicons--help {
+		color: $color-888;
+		cursor: help;
+	}
+
+	.tl-#{$namespace}-auth__response {
+		text-align: center;
+		font-size: 18px;
+		line-height: 1.375;
+		font-weight: bold;
+		transition: padding 1s;
+
+		/** Simulate a stroke */
+		text-shadow:
+			-1px -1px 0 $color-light-grey-200,
+			1px -1px 0 $color-light-grey-200,
+			-1px 1px 0 $color-light-grey-200,
+			1px 1px 0 $color-light-grey-200,
+			0 0 3px $color-light-grey-200;
+	}
+
+	.tl-#{$namespace}-auth__response_pending {
+		padding: 140px 40px ( $vertical-spacing / 2 ) 40px; // Related to the size of the progress indicator
+		vertical-align: top;
+		background: url("#{$path}loading.svg") center top no-repeat;
+		background-size: contain;
+
+		@media ( prefers-reduced-motion: reduce ) {
+			& {
+				background-image: url("#{$path}lock.svg");
+			}
+		}
+	}
+
+	.tl-#{$namespace}-auth__response_error {
+		padding: 20px;
+		margin-bottom: $vertical-spacing / 2;
+		color: #23282D;
+		font-weight: 500;
+		vertical-align: top;
+		border: 2px solid #f9a87e;
+		background-color: #fef1ea;
+		border-radius: $border-radius-large;
+	}
+
+	.tl-#{$namespace}-auth__roles {
+
+		padding: $vertical-spacing $gutter-width $vertical-spacing;
+
+		.tl-#{$namespace}-toggle {
+			cursor: pointer;
+
+			.dashicons {
+				margin-left: 0;
+				vertical-align: middle;
+			}
+		}
+
+		.tl-#{$namespace}-auth__role-container {
+			margin-top: $vertical-spacing/2;
+			margin-bottom: 0;
+			border-top: 1px solid $color-light-grey-500;
+			padding: 0 $gutter-width;
+			&.hidden {
+				display: none;
+			}
+
+			h3 {
+				margin-top: $vertical-spacing;
+			}
+		}
+
+		li {
+			color: $color-555;
+			margin-bottom: $vertical-spacing / 2;
+
+			.dashicons {
+				margin-right: $gutter-width;
+				vertical-align: middle;
+			}
+			.dashicons-yes-alt {
+				color: $color-green;
+			}
+			.dashicons-no {
+				color: $color-red;
+			}
+
+			.code {
+				display: inline-block;
+				margin-bottom: .25em;
+				font-size: 13px;
+			}
+			small {
+				display: block;
+				line-height: 1.375;
+				font-size: 14px;
+				margin-left: $small-icon-size + $gutter-width;
+			}
+		}
+
+		&:after {
+			content: '';
+			display: block;
+			clear: both;
+		}
+	}
+
+	h1, h2, h3, table {
+		color: $color-555;
+		border: 0;
+		clear: none;
+		margin: 0 0 $vertical-spacing;
+		padding: 0;
+	}
+
+	table {
+		margin-bottom: $vertical-spacing;
+	}
+
+	h1 {
+		font-size: 1.8em;
+		font-weight: 300;
+	}
+
+	h2 {
+		font-size: 1.25em;
+		line-height: 1.75;
+		font-weight: 400;
+		margin: 0;
+
+		.dashicons--large {
+			//margin-left: ( $large-icon-size + $gutter-width ) * -1;
+			padding-right: $gutter-width;
+		}
+		small {
+			display: block;
+			color: $color-666;
+			font-size: 14px;
+			padding-left: $large-icon-size + $gutter-width;
+		}
+
+		&.tl-#{$namespace}-auth__intro {
+			text-align: center;
+			font-size: 2em;
+			line-height: 1.4;
+			padding: $gutter-width $gutter-width * 3;
+		}
+	}
+
+	&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__roles,
+		//&.tl-#{$namespace}-grant-access .tl-#{$namespace}-auth__expire, // When the expiration has an expanding section, uncomment this line.
+	&.tl-#{$namespace}-has-access .tl-#{$namespace}-auth__content {
+		margin-top: $vertical-spacing / 2;
+		padding: ( $vertical-spacing / 2 ) $gutter-width;
+		border: 1px solid $color-light-grey-600;
+		border-radius: $border-radius-base;
+	}
+
+	&.tl-#{$namespace}-has-access .tl-#{$namespace}-auth__content {
+		padding: 0;
+	}
+
+	&.tl-#{$namespace}-has-access .tl-#{$namespace}-auth__header {
+		padding: $vertical-spacing ( $gutter-width * 2 );
+		margin-bottom: $vertical-spacing;
+		border-radius: $border-radius-small $border-radius-small 0 0;
+		background: $color-light-grey-100;
+		border-bottom: 1px solid $color-light-grey-600;
+
+		h3 {
+			text-transform: none;
+			font-size: 1.4em;
+		}
+
+		.tl-#{$namespace}-auth__meta {
+			color: $color-666;
+		}
+	}
+
+	.tl-#{$namespace}-auth__intro,
+	.tl-#{$namespace}-auth__details {
+		padding: ( $vertical-spacing / 2 ) $gutter-width * 2;
+	}
+
+	.button-danger {
+		border: 1px solid $color-light-grey-900;
+		background: #fff;
+		color: $color-red;
+		padding: ( $vertical-spacing / 4 ) $vertical-spacing;
+
+		&:active,
+		&:hover {
+			border: 1px solid $color-red;
+			background: $color-red;
+			color: #fff;
+			-webkit-box-shadow: inset 0 2px 5px -3px opacify( $color-red, .5 );
+			box-shadow: inset 0 2px 5px -3px opacify( $color-red, .5 );
+			text-shadow: none !important
+		}
+	}
+
+	h3 {
+		font-size: 1em;
+		text-transform: uppercase;
+		margin-bottom: $vertical-spacing / 2;
+		font-weight: 600;
+	}
+
+	p, ul {
+		color: $color-555;
+		font-size: 1.1em;
+		line-height: 1.7;
+		margin: 0 0 $vertical-spacing / 2;
+	}
+
+	input.code {
+		border: none;
+		padding: 0;
+		font-size: 11.5px;
+		width: 100%;
+		min-height: $large-icon-size; // copy button height
+		background: transparent;
+		margin: 0; // Override WP login screen issues
+	}
+
+	.tl-#{$namespace}-auth__secured_by {
+		text-align: center;
+		font-size: 1.25em;
+		word-spacing: -.1em;
+		margin: ( $vertical-spacing / 2 ) auto $vertical-spacing;
+		line-height: 30px;
+		color: $color-555;
+	}
+
+	.tl-#{$namespace}-auth__accesskey_wrapper {
+		padding: $gutter-width;
+		background: $color-light-grey-100;
+		border: 1px solid $color-light-grey-600;
+		border-radius: $border-radius-small;
+		position: relative;
+		box-sizing: border-box;
+		&:after {
+			display: block;
+			content: '';
+			clear: both;
+		}
+	}
+
+	.tl-#{$namespace}-auth__accesskey_copy.button {
+		position: absolute;
+		top: $gutter-width / 2;
+		right: $gutter-width;
+		height: $large-icon-size + $gutter-width;
+		color: $color-555;
+		font-size: 1.1em;
+		border: 1px solid transparent;
+		background: transparent;
+		padding: 0 $gutter-width 0 ( $gutter-width / 2 ); // The copy icon looks a bit skewed if centered exactly
+
+		&:hover,
+		&.tl-#{$namespace}-auth__copied {
+			background: $color-light-grey-100;
+			border: 1px solid $color-light-grey-900;
+		}
+
+		&:active {
+			border: 1px solid $color-555;
+			&:after {
+				color: $color-555;
+			}
+		}
+
+		&.tl-#{$namespace}-auth__copied {
+			padding-left: $gutter-width;
+			background: $color-light-grey-200;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.065);
+			font-weight: bold;
+		}
+
+		&:after {
+			color: $color-666;
+			text-decoration: none;
+			font-family: Dashicons;
+			font-size: $medium-icon-size;
+			height: $medium-icon-size;
+			width: $medium-icon-size;
+			line-height: $medium-icon-size;
+			padding-left: $medium-icon-size / 4;
+			margin-top: -3px;
+			display: inline-block;
+			content: "\f105";
+			vertical-align: middle;
+		}
+	}
+
+	p {
+		padding: 0;
+	}
+
+	a {
+		&:hover, &:focus {
+			color: $color-111;
+		}
+	}
+
+	.notice {
+		margin: 0 ( $gutter-width * 2 ) ( $vertical-spacing / 2 );
+		h3 {
+			font-size: 1.2em;
+			line-height: 1.4;
+			margin: 12px 0 $vertical-spacing / 2;
+		}
+
+		p {
+			font-size: 1em;
+			margin: 12px 0;
+		}
+	}
+
+	.tl-#{$namespace}-auth__logo {
+		border: 0;
+		margin: 0 0 $vertical-spacing;
+		padding: 0;
+		text-align: center;
+
+		img {
+			max-width: 50%;
+			max-height: 120px;
+		}
+
+		a:after {
+			content: ''; // Remove external icon
+		}
+	}
+
+	footer {
+		padding: $vertical-spacing / 2;
+
+		ul {
+			list-style: none;
+			text-align: center;
+		}
+
+		li {
+			display: inline-block;
+
+			&:after {
+				color: lighten( $color-555, 20% ); // #wp-footer color
+				content: '•';
+				padding: 0 .75rem;
+			}
+
+			&:last-child:after {
+				content: '';
+				padding: 0;
+			}
+		}
+	}
+}
