@@ -277,6 +277,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.16.0.1 on December 1, 2022</h3>
+
+				<ul>
+					<li>Fixed: Admin menu not expanded when on a GravityView page</li>
+				</ul>
+
 				<h3>2.16 on December 1, 2022</h3>
 
 				<ul>
