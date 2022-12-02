@@ -680,7 +680,7 @@ EOD;
 		$class = '';
 		// and $add_merge_tags is not false
 		if( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
-			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
+			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
 		$class .= !empty( $args['class'] ) ? $args['class'] : 'widefat';
@@ -712,7 +712,7 @@ EOD;
 		$class = '';
 		// and $add_merge_tags is not false
 		if( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
-			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
+			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
 		$class .= !empty( $args['class'] ) ? 'widefat '.$args['class'] : 'widefat';

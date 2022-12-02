@@ -902,6 +902,8 @@
 						$CodeMirror[0].CodeMirror.toTextArea();
 					} );
 
+					thisDialog.find( '.merge-tag-support' ).removeClass( 'merge-tag-support' ).addClass( 'gv-merge-tag-support' );
+
 					$( '.gv-field-settings.active', '#gravityview_view_config' ).removeClass( 'active' );
 
 					vcfg.setCustomLabel( thisDialog );
@@ -1891,20 +1893,26 @@
 		 */
 		refresh_merge_tags: function( $source ) {
 
-			let $merge_tag_supported = $source ? $( '.gv-merge-tag-support', $source ) : $( '.gv-merge-tag-support:visible' );
+			let $merge_tag_supported = $source ? $( '.gv-merge-tag-support,.merge-tag-support', $source ) : $( '.gv-merge-tag-support:visible' );
 
-			$merge_tag_supported.removeClass( 'gv-merge-tag-support' ).addClass( 'merge-tag-support' );
+			$merge_tag_supported
+				.removeClass( 'gv-merge-tag-support' )
+				.addClass( 'merge-tag-support' );
 
-
-			// GF 2.6.4+
+			// GF 2.6+
 			if ( window.gform?.instances?.mergeTags ) {
+
+				// Remove existing merge tags, since otherwise GF will add another
+				$( '.all-merge-tags' ).remove();
 
 				document.dispatchEvent( new Event( 'DOMContentLoaded' ) );
 
-				// This needs to be longer than the time it takes to perform the DOMContentLoaded event.
+				// Restore the namespaced classnames.
 				setTimeout( function() {
-					$merge_tag_supported.removeClass( 'merge-tag-support' ).addClass( 'gv-merge-tag-support' );
-				}, 250 );
+					$merge_tag_supported
+						.removeClass( 'merge-tag-support' )
+						.addClass( 'gv-merge-tag-support' );
+				}, 300 ); // This needs to be longer than the time it takes to perform the DOMContentLoaded event.
 
 				return;
 			}
@@ -1932,7 +1940,9 @@
 					}
 				}
 
-				$merge_tag_supported.removeClass( 'merge-tag-support' ).addClass( 'gv-merge-tag-support' );
+				$merge_tag_supported
+					.removeClass( 'merge-tag-support' )
+					.addClass( 'gv-merge-tag-support' );
 			}
 		},
 
