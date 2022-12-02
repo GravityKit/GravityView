@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Added: "Pre-Filter Choices" Search Bar setting will only display choices that exist in submitted entries ([learn more about Pre-Filter Choices](https://docs.gravitykit.com/article/701-s))
 * Improved: When creating a new View, it is now possible to install a View type (if included in the license) straight from the View editor
 * Improved: Reduce the number of queries when displaying a View
+* Improved: The Edit View screen loads faster
 * Fixed: Merge Tags were not processed inside Custom Content fields when using the [`[gventry]` edit mode](https://docs.gravitykit.com/article/463-gventry-shortcode)
 * Fixed: Gravity Forms poll results was not being refreshed after editing a Poll field in GravityView Edit Entry
 * Fixed: Survey field "Rating" stars were not displaying properly in the frontend
