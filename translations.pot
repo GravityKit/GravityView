@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-12-01T18:30:39+00:00\n"
+"POT-Creation-Date: 2022-12-02T03:56:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1625,23 +1625,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:585
+#: includes/class-admin-welcome.php:659
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:635
+#: includes/class-admin-welcome.php:709
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:673
+#: includes/class-admin-welcome.php:747
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:705
+#: includes/class-admin-welcome.php:779
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:706
+#: includes/class-admin-welcome.php:780
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -3548,9 +3548,13 @@ msgstr ""
 msgid "Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings."
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:10
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:37
+msgid "Plugin update required."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:38
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update[/link] [plugin] to the latest version."
+msgid "You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update [plugin][/link] to the latest version."
 msgstr ""
 
 #: includes/presets/business-data/class-gravityview-preset-business-data.php:22
