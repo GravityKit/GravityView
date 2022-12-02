@@ -300,6 +300,7 @@ class GravityView_Welcome {
 						the license) straight from the View editor
 					</li>
 					<li>Improved: Reduce the number of queries when displaying a View</li>
+					<li>Improved: The Edit View screen loads faster</li>
 					<li>Fixed: Merge Tags were not processed inside Custom Content fields when using the <a
 								href='https://docs.gravitykit.com/article/463-gventry-shortcode'><code>[gventry]</code>
 							edit mode</a></li>
