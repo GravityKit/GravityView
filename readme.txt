@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.16.0.4 on December 2, 2022 =
+
+* Fixed: Incompatibility with some plugins/themes that could result in a blank WordPress Dashboard
+
 = 2.16.0.3 on December 2, 2022 =
 
 * Fixed: Fatal error when downloading plugin translations
