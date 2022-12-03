@@ -248,8 +248,9 @@ class GV_Unit_Tests_Bootstrap {
 	 * @since 1.9
 	 */
 	public function install() {
-		$GV = GravityView_Plugin::getInstance();
-		$GV->frontend_actions();
+		$GV = \GV\Plugin::get();
+
+		$GV->include_legacy_frontend();
 	}
 
 	/**

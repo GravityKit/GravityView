@@ -142,7 +142,7 @@ class GravityView_Welcome {
 		global $plugin_page;
 
 		// Don't fetch -beta, etc.
-		list( $display_version ) = explode( '-', GravityView_Plugin::version );
+		list( $display_version ) = explode( '-', GV_PLUGIN_VERSION );
 
 		$selected = !empty( $plugin_page ) ? $plugin_page : 'gv-getting-started';
 
@@ -835,12 +835,12 @@ class GravityView_Welcome {
 		$upgrade = get_option( 'gv_version_upgraded_from' );
 
 		// Don't do anything if they've already seen the new version info
-		if( $upgrade === GravityView_Plugin::version ) {
+		if( $upgrade === GV_PLUGIN_VERSION ) {
 			return;
 		}
 
 		// Add "Upgraded From" Option
-		update_option( 'gv_version_upgraded_from', GravityView_Plugin::version );
+		update_option( 'gv_version_upgraded_from', GV_PLUGIN_VERSION );
 
 		// Bail if activating from network, or bulk
 		if ( is_network_admin() || isset( $_GET['activate-multi'] ) ) { return; }

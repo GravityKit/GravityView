@@ -245,7 +245,7 @@ abstract class GravityView_Template {
 	 */
 	public function register_styles() {
 		if ( ! empty( $this->settings['css_source'] ) ) {
-			wp_register_style( 'gravityview_style_' . $this->template_id, $this->settings['css_source'], array(), GravityView_Plugin::version, 'all' );
+			wp_register_style( 'gravityview_style_' . $this->template_id, $this->settings['css_source'], array(), GV_PLUGIN_VERSION, 'all' );
 		}
 	}
 

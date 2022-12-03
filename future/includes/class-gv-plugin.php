@@ -201,11 +201,6 @@ final class Plugin {
 	 * @return void
 	 */
 	public function include_legacy_core() {
-
-		if ( ! class_exists( '\GravityView_Extension' ) ) {
-			include_once $this->dir( 'includes/class-gravityview-extension.php' );
-		}
-
 		if ( ! gravityview()->plugin->is_compatible() ) {
 			return;
 		}

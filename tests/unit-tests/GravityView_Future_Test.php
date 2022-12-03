@@ -331,10 +331,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	public function test_plugin_activate() {
 		/** Trigger an activation. By default, during tests these are not triggered. */
-		GravityView_Plugin::activate();
-		gravityview()->plugin->activate(); /** Deprecated. */
+		gravityview()->plugin->activate();
 
-		$this->assertEquals( get_option( 'gv_version' ), GravityView_Plugin::version );
+		$this->assertEquals( get_option( 'gv_version' ), GV_PLUGIN_VERSION );
 	}
 
 	/**
@@ -874,11 +873,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( gravityview()->request->is_admin() );
 		$_SERVER['SCRIPT_NAME'] = $_script_name;
 		set_current_screen( 'front' );
-
-		/** Now make sure old code stubs behave in the same way. */
-		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );
-		set_current_screen( 'front' );
-		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );
 
 		/** \GravityView_frontend::parse_content returns immediately if is_admin() */
 		$fe = \GravityView_frontend::getInstance();
@@ -5917,22 +5911,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( \GravityView_Settings::getSetting( 'wub' ), 'dub' );
 	}
 
-	public function test_extension_class() {
-		$legacy_ext = new GVFutureTest_Extension_Test_BC();
-		$ext = new GVFutureTest_Extension_Test();
-
-		$this->assertFalse( $ext::is_compatible() );
-		$this->assertTrue( $legacy_ext::is_compatible() );
-
-		ob_start(); $legacy_ext->admin_notice();
-		$this->assertContains( 'requires GravityView Version', ob_get_clean() );
-
-		set_current_screen( 'dashboard' );
-
-		$ext->tooltips();
-		$ext->add_metabox_tab();
-	}
-
 	public function test_widget_class() {
 		add_filter( 'gravityview/widget/enable_custom_class', '__return_true' );
 
@@ -8664,14 +8642,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
-}
-
-class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
-	protected $_title = 'Legacy Test Extension';
-	protected $_version = '9.1.1-BC';
-	protected $_item_id = 911;
-	protected $_min_gravityview_version = '2.0-dev';
-	protected $_min_php_version = '5.3';
 }
 
 class GVFutureTest_Extension_Test extends \GV\Extension {

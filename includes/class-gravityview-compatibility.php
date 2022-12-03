@@ -208,7 +208,7 @@ class GravityView_Compatibility {
 		if ( ! gravityview()->plugin->is_compatible_future_php() ) {
 
 			// Show the notice on every update. Yes, annoying, but not as annoying as a plugin breaking.
-			$key = sprintf('php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GravityView_Plugin::version );
+			$key = sprintf('php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GV_PLUGIN_VERSION );
 
 			self::$notices[ $key ] = array(
 				'class' => 'error',

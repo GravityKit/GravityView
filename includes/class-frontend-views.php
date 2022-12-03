@@ -1460,16 +1460,16 @@ class GravityView_frontend {
 					$css_dependencies[] = 'dashicons';
 				}
 
-				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION, true );
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GV_PLUGIN_VERSION, true );
 
 				wp_enqueue_script( 'gravityview-fe-view' );
 
 				if ( ! empty( $data['atts']['sort_columns'] ) ) {
-					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GV_PLUGIN_VERSION, 'all' );
 				}
 
 				$this->enqueue_default_style( $css_dependencies );
@@ -1521,7 +1521,7 @@ class GravityView_frontend {
 
 		$path = gravityview_css_url( $css_file_base . $rtl . '.css' );
 
-		wp_enqueue_style( 'gravityview_default_style', $path, $css_dependencies, GravityView_Plugin::version, 'all' );
+		wp_enqueue_style( 'gravityview_default_style', $path, $css_dependencies, GV_PLUGIN_VERSION, 'all' );
 	}
 
 	/**

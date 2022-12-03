@@ -372,15 +372,15 @@ class GravityView_Admin_ApproveEntries {
 			return;
 		}
 
-		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
+		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GV_PLUGIN_VERSION );
 
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version );
+		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GV_PLUGIN_VERSION );
 
-		wp_enqueue_script( 'gravityview_entries_list-popper', plugins_url( 'assets/lib/tippy/popper.min.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
-		wp_enqueue_script( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.min.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
-		wp_enqueue_style( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.css', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
+		wp_enqueue_script( 'gravityview_entries_list-popper', plugins_url( 'assets/lib/tippy/popper.min.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_enqueue_script( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.min.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_enqueue_style( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 
 		wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 			'nonce' => wp_create_nonce( 'gravityview_entry_approval'),
