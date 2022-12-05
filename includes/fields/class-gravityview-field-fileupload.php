@@ -458,7 +458,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		$secure_file_path   = $field->get_download_url( $file_path );
 
 		if ( $secure_file_path !== $file_path ) {
-			$basename  = basename( $secure_file_path );
 			$file_path = $secure_file_path;
 			$is_secure = true;
 		}
