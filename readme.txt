@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.16.1 on December 5, 2022 =
 
 * Fixed: Secure download link for the file upload field was not showing the file name as the link text
 
