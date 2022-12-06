@@ -612,17 +612,20 @@
 			if ( '' === vcfg.currentFormId ) {
 				// if no form is selected, hide all the configs
 				vcfg.hideView();
-
 			} else {
 				// if both form and template were selected, show View Layout config
-				if ( $( "#gravityview_directory_template" ).length && $( "#gravityview_directory_template" ).val().length > 0 ) {
-					$( "#gravityview_select_template" ).slideUp( 150 );
+				if ( $( '#gravityview_directory_template' ).length && $( '#gravityview_directory_template' ).val().length > 0 ) {
+					$( '#gravityview_select_template' ).slideUp( 150 );
 					vcfg.showViewConfig();
 				} else {
 					// else show the template picker
 					vcfg.templateFilter( 'custom' );
 					vcfg.showViewTypeMetabox();
 				}
+			}
+
+			if ( vcfg.currentFormId && !vcfg.currentTemplateId ) {
+				vcfg.gvSwitchView.hide();
 			}
 
 			vcfg.togglePreviewButton();
@@ -692,20 +695,24 @@
 		 */
 		toggleViewTypeMetabox: function () {
 			var $templates = $( "#gravityview_select_template" );
+			var vcfg = viewConfiguration;
 
 			if ( $templates.is( ':visible' ) ) {
-
-				viewConfiguration.gvSwitchView.text( function () {
+				vcfg.gvSwitchView.text( function () {
 					return $( this ).attr( 'data-text-backup' );
 				} );
 
-				$templates.slideUp( 150 );
-
+				if ( vcfg.currentTemplateId ) {
+					$templates.slideUp( 150 );
+				}
 			} else {
-
-				viewConfiguration.gvSwitchView.attr( 'data-text-backup', function () {
-					return $( this ).text();
-				} ).text( gvGlobals.label_cancel );
+				if ( vcfg.currentTemplateId ) {
+					vcfg.gvSwitchView.attr( 'data-text-backup', function () {
+						return $( this ).text();
+					} ).text( gvGlobals.label_cancel );
+				} else {
+					vcfg.gvSwitchView.hide();
+				}
 
 				$templates.slideDown( 150 );
 			}
@@ -800,7 +807,9 @@
 						vcfg.showViewTypeMetabox();
 						vcfg.gvSwitchView.fadeOut( 150 );
 					} else {
-						vcfg.gvSwitchView.show();
+						if (vcfg.currentTemplateId && vcfg.currentTemplateId) {
+							vcfg.gvSwitchView.show();
+						}
 						vcfg.gvSwitchView.click();
 					}
 				} );
