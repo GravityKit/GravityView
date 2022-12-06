@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Fixed: CodeMirror editor initializing multiple times when opening the custom content field properties in the View
 * Fixed: Secure download link for the file upload field was not showing the file name as the link text
 
 = 2.16.0.4 on December 2, 2022 =

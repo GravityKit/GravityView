@@ -879,8 +879,11 @@
 
 					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
-					vcfg.setupCodeMirror( thisDialog );
-					vcfg.refresh_merge_tags( thisDialog );
+
+					vcfg.refresh_merge_tags( thisDialog, function() {
+						// Configure CodeMirror after merge tags are refreshed (300ms following the DOMContentLoaded event).
+						vcfg.setupCodeMirror( thisDialog );
+					} );
 
 					$( '.ui-widget-content[aria-hidden="false"]' )
 						.find( ".active-drop-widget" ).sortable( 'disable' ).end()
@@ -1891,8 +1894,7 @@
 		 *
 		 * @since 1.22.1
 		 */
-		refresh_merge_tags: function( $source ) {
-
+		refresh_merge_tags: function( $source, onRefresh ) {
 			let $merge_tag_supported = $source ? $( '.gv-merge-tag-support,.merge-tag-support', $source ) : $( '.gv-merge-tag-support:visible' );
 
 			$merge_tag_supported
@@ -1901,7 +1903,6 @@
 
 			// GF 2.6+
 			if ( window.gform?.instances?.mergeTags ) {
-
 				// Remove existing merge tags, since otherwise GF will add another
 				$( '.all-merge-tags' ).remove();
 
@@ -1912,6 +1913,10 @@
 					$merge_tag_supported
 						.removeClass( 'merge-tag-support' )
 						.addClass( 'gv-merge-tag-support' );
+
+					if ( onRefresh ) {
+						onRefresh();
+					}
 				}, 300 ); // This needs to be longer than the time it takes to perform the DOMContentLoaded event.
 
 				return;
@@ -1943,6 +1948,10 @@
 				$merge_tag_supported
 					.removeClass( 'merge-tag-support' )
 					.addClass( 'gv-merge-tag-support' );
+
+				if ( onRefresh ) {
+					onRefresh();
+				}
 			}
 		},
 
