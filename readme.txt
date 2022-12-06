@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Fixed: Date picker and other JavaScript not working on the Edit Entry screen
 * Fixed: JavaScript error preventing the Search Bar widget properties from opening when creating a new View
 * Fixed: CodeMirror editor initializing multiple times when opening the custom content field properties in the View
 * Fixed: Secure download link for the file upload field was not showing the file name as the link text

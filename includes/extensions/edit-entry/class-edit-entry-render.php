@@ -324,8 +324,9 @@ class GravityView_Edit_Entry_Render {
 
 		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', array( 'cookiepath' => COOKIEPATH ) );
 
-		// Sack is required for images
-		wp_print_scripts( array( 'sack', 'gform_gravityforms', 'gravityview-fe-view' ) );
+		wp_enqueue_script( 'sack'); // Sack is required for images.
+		wp_enqueue_script( 'gform_gravityforms');
+		wp_enqueue_script( 'gravityview-fe-view');
 
 		// File download/delete icons
 		wp_enqueue_style( 'gform_admin_icons' );
