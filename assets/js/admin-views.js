@@ -885,9 +885,17 @@
 						vcfg.setupCodeMirror( thisDialog );
 					} );
 
-					$( '.ui-widget-content[aria-hidden="false"]' )
-						.find( ".active-drop-widget" ).sortable( 'disable' ).end()
-						.find( ".active-drop-field" ).sortable('disable');
+					$sortableEls = $( '.ui-widget-content[aria-hidden="false"]' ).find( '.active-drop-widget, .active-drop-field' );
+
+					if ( $sortableEls.length ) {
+						$sortableEls.each( el => {
+							if ( !$( el ).hasClass( 'ui-sortable' ) ) {
+								return;
+							}
+
+							$( el ).sortable( 'disable' );
+						} );
+					}
 
 					return true;
 				},
@@ -915,9 +923,17 @@
 						$( this ).remove();
 					} );
 
-					$( '.ui-widget-content[aria-hidden="false"]' )
-						.find( ".active-drop-widget" ).sortable( 'enable' ).end()
-						.find( ".active-drop-field" ).sortable('enable');
+					$sortableEls = $( '.ui-widget-content[aria-hidden="false"]' ).find( '.active-drop-widget, .active-drop-field' );
+
+					if ( $sortableEls.length ) {
+						$sortableEls.each( el => {
+							if ( !$( el ).hasClass( 'ui-sortable' ) ) {
+								return;
+							}
+
+							$( el ).sortable( 'enable' );
+						} );
+					}
 
 					$( 'body' ).trigger( 'gravityview/dialog-closed', thisDialog );
 				},
