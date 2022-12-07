@@ -277,6 +277,33 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.16.1 on December 7, 2022</h3>
+
+				<ul>
+					<li>Fixed: Date picker and other JavaScript not working on the Edit Entry screen</li>
+					<li>Fixed: JavaScript error preventing the Search Bar widget properties from opening when creating a new View</li>
+					<li>Fixed: CodeMirror editor initializing multiple times when opening the custom content field properties in the View</li>
+					<li>Fixed: Secure download link for the file upload field was not showing the file name as the link text</li>
+				</ul>
+
+				<h3>2.16.0.4 on December 2, 2022</h3>
+
+				<ul>
+					<li>Fixed: Incompatibility with some plugins/themes that could result in a blank WordPress Dashboard</li>
+				</ul>
+
+				<h3>2.16.0.3 on December 2, 2022</h3>
+
+				<ul>
+					<li>Fixed: Fatal error when downloading plugin translations</li>
+				</ul>
+
+				<h3>2.16.0.2 on December 1, 2022</h3>
+
+				<ul>
+					<li>Fixed: Fatal error when Maps isn't installed</li>
+				</ul>
+
 				<h3>2.16.0.1 on December 1, 2022</h3>
 
 				<ul>

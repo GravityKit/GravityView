@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.16.1 on December 7, 2022 =
+
+* Fixed: Date picker and other JavaScript not working on the Edit Entry screen
+* Fixed: JavaScript error preventing the Search Bar widget properties from opening when creating a new View
+* Fixed: CodeMirror editor initializing multiple times when opening the custom content field properties in the View
+* Fixed: Secure download link for the file upload field was not showing the file name as the link text
+
 = 2.16.0.4 on December 2, 2022 =
 
 * Fixed: Incompatibility with some plugins/themes that could result in a blank WordPress Dashboard

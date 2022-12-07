@@ -612,17 +612,20 @@
 			if ( '' === vcfg.currentFormId ) {
 				// if no form is selected, hide all the configs
 				vcfg.hideView();
-
 			} else {
 				// if both form and template were selected, show View Layout config
-				if ( $( "#gravityview_directory_template" ).length && $( "#gravityview_directory_template" ).val().length > 0 ) {
-					$( "#gravityview_select_template" ).slideUp( 150 );
+				if ( $( '#gravityview_directory_template' ).length && $( '#gravityview_directory_template' ).val().length > 0 ) {
+					$( '#gravityview_select_template' ).slideUp( 150 );
 					vcfg.showViewConfig();
 				} else {
 					// else show the template picker
 					vcfg.templateFilter( 'custom' );
 					vcfg.showViewTypeMetabox();
 				}
+			}
+
+			if ( vcfg.currentFormId && !vcfg.currentTemplateId ) {
+				vcfg.gvSwitchView.hide();
 			}
 
 			vcfg.togglePreviewButton();
@@ -692,20 +695,24 @@
 		 */
 		toggleViewTypeMetabox: function () {
 			var $templates = $( "#gravityview_select_template" );
+			var vcfg = viewConfiguration;
 
 			if ( $templates.is( ':visible' ) ) {
-
-				viewConfiguration.gvSwitchView.text( function () {
+				vcfg.gvSwitchView.text( function () {
 					return $( this ).attr( 'data-text-backup' );
 				} );
 
-				$templates.slideUp( 150 );
-
+				if ( vcfg.currentTemplateId ) {
+					$templates.slideUp( 150 );
+				}
 			} else {
-
-				viewConfiguration.gvSwitchView.attr( 'data-text-backup', function () {
-					return $( this ).text();
-				} ).text( gvGlobals.label_cancel );
+				if ( vcfg.currentTemplateId ) {
+					vcfg.gvSwitchView.attr( 'data-text-backup', function () {
+						return $( this ).text();
+					} ).text( gvGlobals.label_cancel );
+				} else {
+					vcfg.gvSwitchView.hide();
+				}
 
 				$templates.slideDown( 150 );
 			}
@@ -800,7 +807,9 @@
 						vcfg.showViewTypeMetabox();
 						vcfg.gvSwitchView.fadeOut( 150 );
 					} else {
-						vcfg.gvSwitchView.show();
+						if (vcfg.currentTemplateId && vcfg.currentTemplateId) {
+							vcfg.gvSwitchView.show();
+						}
 						vcfg.gvSwitchView.click();
 					}
 				} );
@@ -879,12 +888,23 @@
 
 					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
-					vcfg.setupCodeMirror( thisDialog );
-					vcfg.refresh_merge_tags( thisDialog );
 
-					$( '.ui-widget-content[aria-hidden="false"]' )
-						.find( ".active-drop-widget" ).sortable( 'disable' ).end()
-						.find( ".active-drop-field" ).sortable('disable');
+					vcfg.refresh_merge_tags( thisDialog, function() {
+						// Configure CodeMirror after merge tags are refreshed (300ms following the DOMContentLoaded event).
+						vcfg.setupCodeMirror( thisDialog );
+					} );
+
+					$sortableEls = $( '.ui-widget-content[aria-hidden="false"]' ).find( '.active-drop-widget, .active-drop-field' );
+
+					if ( $sortableEls.length ) {
+						$sortableEls.each( el => {
+							if ( !$( el ).hasClass( 'ui-sortable' ) ) {
+								return;
+							}
+
+							$( el ).sortable( 'disable' );
+						} );
+					}
 
 					return true;
 				},
@@ -912,9 +932,17 @@
 						$( this ).remove();
 					} );
 
-					$( '.ui-widget-content[aria-hidden="false"]' )
-						.find( ".active-drop-widget" ).sortable( 'enable' ).end()
-						.find( ".active-drop-field" ).sortable('enable');
+					$sortableEls = $( '.ui-widget-content[aria-hidden="false"]' ).find( '.active-drop-widget, .active-drop-field' );
+
+					if ( $sortableEls.length ) {
+						$sortableEls.each( el => {
+							if ( !$( el ).hasClass( 'ui-sortable' ) ) {
+								return;
+							}
+
+							$( el ).sortable( 'enable' );
+						} );
+					}
 
 					$( 'body' ).trigger( 'gravityview/dialog-closed', thisDialog );
 				},
@@ -933,7 +961,7 @@
 		setupCodeMirror: function ( dialog ) {
 			var vcfg = viewConfiguration;
 
-			$( 'textarea.code', dialog ).each( function () {
+			$( 'textarea.code:visible', dialog ).each( function () {
 				var editor = wp.codeEditor.initialize( $( this ), {
 					undoDepth: 1000
 				} );
@@ -1891,19 +1919,17 @@
 		 *
 		 * @since 1.22.1
 		 */
-		refresh_merge_tags: function( $source ) {
-
+		refresh_merge_tags: function( $source, onRefresh ) {
 			let $merge_tag_supported = $source ? $( '.gv-merge-tag-support,.merge-tag-support', $source ) : $( '.gv-merge-tag-support:visible' );
 
 			$merge_tag_supported
-				.removeClass( 'gv-merge-tag-support' )
+				.removeClass( 'gv-merge-tag-support mt-initialized' )
 				.addClass( 'merge-tag-support' );
 
 			// GF 2.6+
 			if ( window.gform?.instances?.mergeTags ) {
-
 				// Remove existing merge tags, since otherwise GF will add another
-				$( '.all-merge-tags' ).remove();
+				$( '.all-merge-tags', $source ).remove();
 
 				document.dispatchEvent( new Event( 'DOMContentLoaded' ) );
 
@@ -1912,6 +1938,10 @@
 					$merge_tag_supported
 						.removeClass( 'merge-tag-support' )
 						.addClass( 'gv-merge-tag-support' );
+
+					if ( onRefresh ) {
+						onRefresh();
+					}
 				}, 300 ); // This needs to be longer than the time it takes to perform the DOMContentLoaded event.
 
 				return;
@@ -1943,6 +1973,10 @@
 				$merge_tag_supported
 					.removeClass( 'merge-tag-support' )
 					.addClass( 'gv-merge-tag-support' );
+
+				if ( onRefresh ) {
+					onRefresh();
+				}
 			}
 		},
 
