@@ -1510,7 +1510,7 @@ HTML;
 		 * @see GravityView_Template::assign_active_areas()
 		 * @param array $template_areas Empty array, to be filled in by the template class
 		 * @param string $template_id Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
-		 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
+		 * @param string $context Current View context: `directory`, `single`, `edit`, or `search` (default: 'single')
 		 */
 		$template_areas = apply_filters( 'gravityview_template_active_areas', array(), $template_id, $context );
 

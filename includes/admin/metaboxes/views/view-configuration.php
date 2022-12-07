@@ -93,6 +93,8 @@ function render_template_options( array $templates, ?string $selected_template )
 		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page tab-icon"></i> <?php printf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Multiple Entries', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
 		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default tab-icon"></i> <?php printf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Single Entry', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
 		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog tab-icon"></i> <?php printf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Edit Entry', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
+		<li><a href='#search-view' class='nav-tab'><i class='dashicons dashicons-search tab-icon'></i> <?php echo sprintf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Search', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span>
+			</a></li>
 	</ul>
 
 	<div id="directory-view">
@@ -229,6 +231,35 @@ function render_template_options( array $templates, ?string $selected_template )
 		</div>
 
 	</div> <?php // end edit view tab ?>
+
+	<div id='search-view'>
+
+		<div id='search-fields' class='gv-section'>
+
+			<div class='notice notice-warning inline is-dismissible'>
+				<h3><?php printf( esc_html__( 'Note: %s', 'gk-gravityview' ), esc_html__( 'No Search Bar exists in the layout.', 'gk-gravityview' ) ); ?></h3>
+				<p><a data-beacon-article-modal="54c67bb9e4b0512429885513"
+					  href="https://docs.gravityview.co/article/67-configuring-the-edit-entry-screen"><?php printf( esc_html__( 'Learn how to link to %s', 'gk-gravityview' ), esc_html__( 'Edit Entry', 'gk-gravityview' ) ); ?></a>
+				</p>
+			</div>
+
+			<h4><?php esc_html_e( 'Fields shown when editing an entry.', 'gk-gravityview' ); ?>
+				<span><?php esc_html_e( 'If not configured, all form fields will be displayed.', 'gk-gravityview' ); ?></span>
+			</h4>
+
+			<div id="edit-active-fields" class="gv-grid">
+				<?php
+				do_action( 'gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/search', 'search' ), 'search', $post->ID, true );
+				?>
+			</div>
+
+			<?php
+			do_action( 'gravityview_render_field_pickers', 'search' );
+			?>
+
+		</div>
+
+	</div> <?php // end search view tab ?>
 </div> <?php // end tabs ?>
 
 <input type="hidden" name="gv_fields_done" value="1" />

@@ -31,6 +31,7 @@ function gravityview_register_default_templates() {
 	include_once $path . 'default-table/class-gravityview-default-template-table.php';
 	include_once $path . 'default-list/class-gravityview-default-template-list.php';
 	include_once $path . 'default-edit/class-gravityview-default-template-edit.php';
+	include_once $path . 'default-search/class-gravityview-default-template-search.php';
 	include_once $path . 'business-listings/class-gravityview-preset-business-listings.php';
 	include_once $path . 'business-data/class-gravityview-preset-business-data.php';
 	include_once $path . 'profiles/class-gravityview-preset-profiles.php';
