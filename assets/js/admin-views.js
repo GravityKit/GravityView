@@ -961,7 +961,7 @@
 		setupCodeMirror: function ( dialog ) {
 			var vcfg = viewConfiguration;
 
-			$( 'textarea.code', dialog ).each( function () {
+			$( 'textarea.code:visible', dialog ).each( function () {
 				var editor = wp.codeEditor.initialize( $( this ), {
 					undoDepth: 1000
 				} );
