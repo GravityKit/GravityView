@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.16.1 on December 6, 2022 =
+= 2.16.1 on December 7, 2022 =
 
 * Fixed: Date picker and other JavaScript not working on the Edit Entry screen
 * Fixed: JavaScript error preventing the Search Bar widget properties from opening when creating a new View
