@@ -1923,7 +1923,7 @@
 			let $merge_tag_supported = $source ? $( '.gv-merge-tag-support,.merge-tag-support', $source ) : $( '.gv-merge-tag-support:visible' );
 
 			$merge_tag_supported
-				.removeClass( 'gv-merge-tag-support' )
+				.removeClass( 'gv-merge-tag-support mt-initialized' )
 				.addClass( 'merge-tag-support' );
 
 			// GF 2.6+
