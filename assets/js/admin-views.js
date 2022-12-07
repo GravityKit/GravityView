@@ -1929,7 +1929,7 @@
 			// GF 2.6+
 			if ( window.gform?.instances?.mergeTags ) {
 				// Remove existing merge tags, since otherwise GF will add another
-				$( '.all-merge-tags' ).remove();
+				$( '.all-merge-tags', $source ).remove();
 
 				document.dispatchEvent( new Event( 'DOMContentLoaded' ) );
 
