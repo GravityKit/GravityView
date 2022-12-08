@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: JavaScript error preventing the Search Bar widget properties from opening when creating a new View
 * Fixed: CodeMirror editor initializing multiple times when opening the custom content field properties in the View
 * Fixed: Secure download link for the file upload field was not showing the file name as the link text
+* Fixed: The saved View would not recognize fields added from a joined form when using the [Multiple Forms](https://www.gravitykit.com/extensions/multiple-forms/) extension
 
 = 2.16.0.4 on December 2, 2022 =
 
