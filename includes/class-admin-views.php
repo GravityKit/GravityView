@@ -1022,9 +1022,7 @@ class GravityView_Admin_Views {
 										foreach( $values[ $zone .'_'. $area['areaid'] ] as $uniqid => $field ) {
 
 											// Maybe has a form ID
-											if ( ! $view ) {
-												$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
-											}
+											$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
 
 											$input_type = NULL;
 
