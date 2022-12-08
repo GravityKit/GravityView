@@ -284,6 +284,7 @@ class GravityView_Welcome {
 					<li>Fixed: JavaScript error preventing the Search Bar widget properties from opening when creating a new View</li>
 					<li>Fixed: CodeMirror editor initializing multiple times when opening the custom content field properties in the View</li>
 					<li>Fixed: Secure download link for the file upload field was not showing the file name as the link text</li>
+					<li>Fixed: The saved View would not recognize fields added from a joined form when using the <a href="https://www.gravitykit.com/extensions/multiple-forms/">Multiple Forms</a> extension</li>
 				</ul>
 
 				<h3>2.16.0.4 on December 2, 2022</h3>
