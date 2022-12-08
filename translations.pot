@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.16.0.4\n"
+"Project-Id-Version: GravityView 2.16.1\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-12-02T21:29:00+00:00\n"
+"POT-Creation-Date: 2022-12-08T01:40:12+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -36,19 +36,19 @@ msgstr ""
 msgid "GravityKit"
 msgstr ""
 
-#: future/includes/class-gv-extension.php:258
+#: future/includes/class-gv-extension.php:262
 msgid "Could not activate the %s Extension; GravityView is not active."
 msgstr ""
 
-#: future/includes/class-gv-extension.php:260
+#: future/includes/class-gv-extension.php:264
 msgid "The %s Extension requires GravityView Version %s or newer."
 msgstr ""
 
-#: future/includes/class-gv-extension.php:262
+#: future/includes/class-gv-extension.php:266
 msgid "The %s Extension requires PHP Version %s or newer. Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: future/includes/class-gv-extension.php:264
+#: future/includes/class-gv-extension.php:268
 msgid "The %s Extension is not compatible with this version of GravityView. Please update the Extension to the latest version."
 msgstr ""
 
@@ -92,24 +92,24 @@ msgstr ""
 msgid "Styles don't get loaded when being previewed, so the content below will look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:610
+#: future/includes/class-gv-plugin.php:609
 #: includes/class-gravityview-entry-approval.php:460
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:611
+#: future/includes/class-gv-plugin.php:610
 #: includes/class-gravityview-entry-approval.php:454
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
+#: future/includes/class-gv-plugin.php:705
 #: future/includes/class-gv-plugin.php:706
-#: future/includes/class-gv-plugin.php:707
 #: future/includes/class-gv-view.php:155
 msgid "All Views"
 msgstr ""
 
+#: future/includes/class-gv-plugin.php:714
 #: future/includes/class-gv-plugin.php:715
-#: future/includes/class-gv-plugin.php:716
 #: future/includes/class-gv-view.php:158
 msgid "New View"
 msgstr ""
@@ -185,7 +185,7 @@ msgstr ""
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:148
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1093
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1094
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
 msgid "Edit Entry"
@@ -643,7 +643,7 @@ msgid "Update Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:435
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2514
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2515
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
@@ -653,7 +653,7 @@ msgid "Cancel Link Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:443
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2513
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2514
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
@@ -1282,8 +1282,8 @@ msgstr ""
 
 #. translators: %1$s is the vendor title
 #: includes/admin/metaboxes/views/view-configuration.php:43
-#: includes/class-admin-views.php:1202
-#: includes/class-admin-views.php:1328
+#: includes/class-admin-views.php:1200
+#: includes/class-admin-views.php:1326
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:204
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:1043
@@ -1345,17 +1345,17 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:135
-#: includes/class-admin-views.php:1329
+#: includes/class-admin-views.php:1327
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:282
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1154
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1283
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1155
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1284
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:74
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:1044
 msgid "Cancel"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:179
-#: includes/class-admin-views.php:1333
+#: includes/class-admin-views.php:1331
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1511,81 +1511,81 @@ msgstr ""
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1116
+#: includes/class-admin-views.php:1114
 #: includes/widgets/search-widget/class-search-widget.php:123
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1126
+#: includes/class-admin-views.php:1124
 #: includes/widgets/class-gravityview-widget-pagination-info.php:30
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1132
-#: includes/class-admin-views.php:1139
+#: includes/class-admin-views.php:1130
+#: includes/class-admin-views.php:1137
 #: includes/widgets/class-gravityview-widget-page-links.php:25
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1205
+#: includes/class-admin-views.php:1203
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1206
+#: includes/class-admin-views.php:1204
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1217
+#: includes/class-admin-views.php:1215
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1250
+#: includes/class-admin-views.php:1248
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1251
+#: includes/class-admin-views.php:1249
 msgid "The data is not lost; re-activate the associated plugin and the configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1324
+#: includes/class-admin-views.php:1322
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1325
+#: includes/class-admin-views.php:1323
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1326
+#: includes/class-admin-views.php:1324
 #: includes/widgets/search-widget/class-search-widget.php:289
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1327
+#: includes/class-admin-views.php:1325
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1330
+#: includes/class-admin-views.php:1328
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1331
+#: includes/class-admin-views.php:1329
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:1040
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1332
+#: includes/class-admin-views.php:1330
 msgid "Error while creating the View for you. Check the settings or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1334
+#: includes/class-admin-views.php:1332
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1335
+#: includes/class-admin-views.php:1333
 msgid "Error while adding the field. Please try again or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1336
+#: includes/class-admin-views.php:1334
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -1625,23 +1625,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:665
+#: includes/class-admin-welcome.php:693
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:715
+#: includes/class-admin-welcome.php:743
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:753
+#: includes/class-admin-welcome.php:781
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:785
+#: includes/class-admin-welcome.php:813
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:786
+#: includes/class-admin-welcome.php:814
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2085,7 +2085,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:217
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2364
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2365
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2323,86 +2323,86 @@ msgstr ""
 msgid "Your request was rejected"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1155
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1284
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1156
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1285
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:68
 msgid "Update"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1156
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1285
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1157
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1286
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:250
 msgid "Next"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1157
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1286
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1158
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1287
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1178
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1179
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1178
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1179
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1185
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1186
 msgid "Entry Updated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1206
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1207
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %sReturning to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1211
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1212
 msgctxt "Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sReturning to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1217
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1218
 msgctxt "Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %sRedirecting to %s%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1222
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1223
 msgid "Entry Updated. %sReturn to Entry%s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1437
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1438
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1443
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1444
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1775
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1776
 msgid "This field is required."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1811
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1812
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2358
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2359
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2368
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2369
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2384
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2385
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2408
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2409
 msgid "You do not have permission to edit this field."
 msgstr ""
 

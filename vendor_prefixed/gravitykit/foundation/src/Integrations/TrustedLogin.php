@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 02-December-2022 using Strauss.
+ * Modified by gravityview on 08-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -176,7 +176,7 @@ class TrustedLogin {
 			'paths'           => [
 				'css' => CoreHelpers::get_assets_url( 'trustedlogin/trustedlogin.css' ),
 			],
-			'webhook_url'     => null, // @TODO: add a webhook URL.
+			'webhook_url'     => 'https://hooks.zapier.com/hooks/catch/28670/bbyi3l4',
 		];
 	}
 

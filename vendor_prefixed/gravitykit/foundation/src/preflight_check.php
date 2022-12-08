@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 02-December-2022 using Strauss.
+ * Modified by gravityview on 08-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -47,7 +47,7 @@ function is_disabled_via_url( $plugin_file ) {
 	$cookie_expiry_time = MINUTE_IN_SECONDS;
 
 	$_is_disabled = function ( $plugin_text_domains ) use ( $plugin_data ) {
-		if ( '' === $plugin_text_domains ) {
+		if ( 'all' === $plugin_text_domains ) {
 			return true;
 		}
 
@@ -76,7 +76,7 @@ function is_disabled_via_url( $plugin_file ) {
 		return false;
 	}
 
-	setcookie( $cookie, $disable_loading, time() + $cookie_expiry_time );
+	setcookie( $cookie, $disable_loading ?: 'all', time() + $cookie_expiry_time );
 
 	return $_is_disabled( $disable_loading );
 }
