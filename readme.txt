@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.16.2 on December 14, 2022 =
 
-* Fixed: Views would take abnormally long time to load
+* Fixed: Views would take an abnormally long time to load
 * Fixed: Fatal error on some hosts that use weak security keys and salts
 
 = 2.16.1 on December 7, 2022 =
