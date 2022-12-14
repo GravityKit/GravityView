@@ -277,6 +277,13 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.16.2 on December 14, 2022</h3>
+
+				<ul>
+					<li>Fixed: The plugin would display a notice requiring Gravity Forms 2.5 even if it's already installed</li>
+					<li>Fixed: Fatal error on some hosts that use weak security keys and salts</li>
+				</ul>
+
 				<h3>2.16.1 on December 7, 2022</h3>
 
 				<ul>
