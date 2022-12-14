@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 08-December-2022 using Strauss.
+ * Modified by gravityview on 14-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -42,17 +42,14 @@ class Encryption {
 	private function __construct( $secret_key = '' ) {
 		if ( ! $secret_key ) {
 			$secret_key = wp_salt();
-
-			$secret_key = mb_substr( $secret_key, 0, SODIUM_CRYPTO_SECRETBOX_KEYBYTES, '8bit' );
 		}
 
-		if ( strlen( $secret_key ) !== SODIUM_CRYPTO_SECRETBOX_KEYBYTES ) {
-			throw new Exception(
-				strtr(
-					esc_html_x( 'Encryption key is not the correct size (must be [size] bytes).', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
-					[ '[size]' => SODIUM_CRYPTO_SECRETBOX_KEYBYTES ]
-				)
-			);
+		if ( strlen( $secret_key ) < SODIUM_CRYPTO_SECRETBOX_KEYBYTES ) {
+			$secret_key = hash_hmac( 'sha256', $secret_key, self::DEFAULT_NONCE );
+		}
+
+		if ( strlen( $secret_key ) > SODIUM_CRYPTO_SECRETBOX_KEYBYTES ) {
+			$secret_key = mb_substr( $secret_key, 0, SODIUM_CRYPTO_SECRETBOX_KEYBYTES, '8bit' );
 		}
 
 		$this->_secret_key = $secret_key;
@@ -89,31 +86,32 @@ class Encryption {
 	 * @return false|mixed|string
 	 */
 	public function encrypt( $data, $use_random_nonce = true, $custom_nonce = null ) {
-		if ( ! $use_random_nonce ) {
-			$nonce = $custom_nonce ? $custom_nonce : sodium_hex2bin( self::DEFAULT_NONCE );
-		} else {
-			$nonce = $this->get_random_nonce();
+		try {
+			if ( ! $use_random_nonce ) {
+				$nonce = $custom_nonce ? $custom_nonce : sodium_hex2bin( self::DEFAULT_NONCE );
+			} else {
+				$nonce = $this->get_random_nonce();
+			}
+		} catch ( Exception $e ) {
+			return false;
 		}
 
-		if ( strlen( $nonce ) !== SODIUM_CRYPTO_SECRETBOX_NONCEBYTES ) {
+		if ( strlen( $nonce ) < SODIUM_CRYPTO_SECRETBOX_NONCEBYTES ) {
+			$nonce = hash_hmac( 'sha256', $nonce, self::DEFAULT_NONCE );
+		}
+
+		if ( strlen( $nonce ) > SODIUM_CRYPTO_SECRETBOX_KEYBYTES ) {
+			$nonce = mb_substr( $nonce, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit' );
+		}
+
+		try {
+			$encrypted = sodium_crypto_secretbox( $data, $nonce, $this->_secret_key );
+			$encrypted = sodium_bin2base64( $nonce . $encrypted, SODIUM_BASE64_VARIANT_ORIGINAL );
 			if ( extension_loaded( 'sodium' ) || extension_loaded( 'libsodium' ) ) {
 				sodium_memzero( $nonce );
 			}
-
-			throw new Exception(
-				strtr(
-					esc_html_x( 'Encryption nonce is not the correct size (must be [size] bytes).', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
-					[ '[size]' => SODIUM_CRYPTO_SECRETBOX_NONCEBYTES ]
-				)
-			);
-		}
-
-		$encrypted = sodium_crypto_secretbox( $data, $nonce, $this->_secret_key );
-
-		$encrypted = sodium_bin2base64( $nonce . $encrypted, SODIUM_BASE64_VARIANT_ORIGINAL );
-
-		if ( extension_loaded( 'sodium' ) || extension_loaded( 'libsodium' ) ) {
-			sodium_memzero( $nonce );
+		} catch ( Exception $e ) {
+			return false;
 		}
 
 		return $encrypted;
@@ -133,12 +131,18 @@ class Encryption {
 	public function decrypt( $data ) {
 		try {
 			$encrypted = sodium_base642bin( $data, SODIUM_BASE64_VARIANT_ORIGINAL );
-		} catch ( \SodiumException $e ) {
+		} catch ( Exception $e ) {
 			return null;
 		}
+
 		$nonce     = mb_substr( $encrypted, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit' );
 		$encrypted = mb_substr( $encrypted, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit' );
-		$decrypted = sodium_crypto_secretbox_open( $encrypted, $nonce, $this->_secret_key );
+
+		try {
+			$decrypted = sodium_crypto_secretbox_open( $encrypted, $nonce, $this->_secret_key );
+		} catch ( Exception $e ) {
+			return null;
+		}
 
 		return $decrypted !== false ? $decrypted : null;
 	}
@@ -162,6 +166,8 @@ class Encryption {
 	 * Returns a random 24-byte nonce.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @throws Exception
 	 *
 	 * @return string
 	 */

@@ -241,12 +241,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:gravityview/Foundation.git",
-                "reference": "5cda45da50b526ae5fa9ab9247193de31aa93a0c"
+                "reference": "f9f964a622b6d6e00b8cd2376570e54a2e48596c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/5cda45da50b526ae5fa9ab9247193de31aa93a0c",
-                "reference": "5cda45da50b526ae5fa9ab9247193de31aa93a0c",
+                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/f9f964a622b6d6e00b8cd2376570e54a2e48596c",
+                "reference": "f9f964a622b6d6e00b8cd2376570e54a2e48596c",
                 "shasum": ""
             },
             "require": {
@@ -264,7 +264,7 @@
                 "phpcompatibility/phpcompatibility-wp": "*",
                 "wp-coding-standards/wpcs": "^2.3"
             },
-            "time": "2022-12-08T01:38:12+00:00",
+            "time": "2022-12-14T16:57:32+00:00",
             "default-branch": true,
             "type": "library",
             "extra": {
@@ -293,7 +293,7 @@
                     "delete_vendor_files": false
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "GravityKit\\Foundation\\": "src"

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-12-08T01:53:53+00:00\n"
+"POT-Creation-Date: 2022-12-14T17:04:05+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -92,24 +92,24 @@ msgstr ""
 msgid "Styles don't get loaded when being previewed, so the content below will look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:609
+#: future/includes/class-gv-plugin.php:610
 #: includes/class-gravityview-entry-approval.php:460
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:610
+#: future/includes/class-gv-plugin.php:611
 #: includes/class-gravityview-entry-approval.php:454
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:705
 #: future/includes/class-gv-plugin.php:706
+#: future/includes/class-gv-plugin.php:707
 #: future/includes/class-gv-view.php:155
 msgid "All Views"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:714
 #: future/includes/class-gv-plugin.php:715
+#: future/includes/class-gv-plugin.php:716
 #: future/includes/class-gv-view.php:158
 msgid "New View"
 msgstr ""
@@ -228,101 +228,101 @@ msgstr ""
 msgid "Please <a href=\"%s\">read this article</a> for more information."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:219
+#: future/includes/class-gv-settings-plugin.php:227
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:429
 msgid "General"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:224
+#: future/includes/class-gv-settings-plugin.php:232
 msgid "REST API"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:225
+#: future/includes/class-gv-settings-plugin.php:233
 msgid "Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.)."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:225
+#: future/includes/class-gv-settings-plugin.php:233
 msgid "If you are unsure, disable this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:288
+#: future/includes/class-gv-settings-plugin.php:296
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:299
+#: future/includes/class-gv-settings-plugin.php:307
 msgid "If you delete then re-install GravityView, it will be like installing GravityView for the first time."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:300
+#: future/includes/class-gv-settings-plugin.php:308
 msgid "Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:311
+#: future/includes/class-gv-settings-plugin.php:319
 msgid "I am going to continue using GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:314
+#: future/includes/class-gv-settings-plugin.php:322
 msgid "I no longer need GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:317
+#: future/includes/class-gv-settings-plugin.php:325
 msgid "The plugin doesn't work"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:320
+#: future/includes/class-gv-settings-plugin.php:328
 msgid "I found a better plugin"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:321
+#: future/includes/class-gv-settings-plugin.php:329
 msgid "What plugin you are using, and why?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:324
+#: future/includes/class-gv-settings-plugin.php:332
 msgid "Other"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:373
+#: future/includes/class-gv-settings-plugin.php:381
 msgid "Uninstall GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:424
+#: future/includes/class-gv-settings-plugin.php:432
 msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:430
+#: future/includes/class-gv-settings-plugin.php:438
 msgid "Why did you uninstall GravityView?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:440
+#: future/includes/class-gv-settings-plugin.php:448
 msgid "Comments"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:441
+#: future/includes/class-gv-settings-plugin.php:449
 msgid "Please share your thoughts about GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:444
+#: future/includes/class-gv-settings-plugin.php:452
 msgid "How likely are you to recommend GravityView?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:454
+#: future/includes/class-gv-settings-plugin.php:462
 msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:458
+#: future/includes/class-gv-settings-plugin.php:466
 msgid "Please follow up with me about my feedback"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:465
+#: future/includes/class-gv-settings-plugin.php:473
 msgid "Send Us Your Feedback"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:470
+#: future/includes/class-gv-settings-plugin.php:478
 msgid "Thank you for using GravityView!"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:472
+#: future/includes/class-gv-settings-plugin.php:480
 msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co"
 msgstr ""
 
@@ -1285,7 +1285,7 @@ msgstr ""
 #: includes/class-admin-views.php:1200
 #: includes/class-admin-views.php:1326
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:204
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:202
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:1043
 msgid "Close"
 msgstr ""
@@ -2332,7 +2332,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1157
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1286
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:250
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:248
 msgid "Next"
 msgstr ""
 
@@ -2492,7 +2492,7 @@ msgid "Other email address"
 msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:247
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:245
 msgid "Email address"
 msgstr ""
 
@@ -2502,7 +2502,7 @@ msgid "you@example.com"
 msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:246
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:244
 msgid "Subject"
 msgstr ""
 
@@ -2832,7 +2832,7 @@ msgid "Date"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-email.php:26
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:210
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:208
 msgid "Email"
 msgstr ""
 
@@ -4226,357 +4226,347 @@ msgstr ""
 msgid "Technical"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Encryption/Encryption.php:52
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Encryption key is not the correct size (must be [size] bytes)."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Encryption/Encryption.php:105
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Encryption nonce is not the correct size (must be [size] bytes)."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:199
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:197
 msgid "Instant Answers"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:200
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:198
 msgid "Get in touch"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:201
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:199
 msgid "Search GravityKit Docs"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:202
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:200
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:20
 msgid "Try again"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:203
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:201
 msgid "There was a problem sending your message. Please try again in a moment."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:205
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:203
 msgid "Minimize chat"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:206
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:204
 msgid "Open chat"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:208
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:206
 msgid "Answer"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:209
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:207
 msgid "Ask"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:211
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:209
 msgid "No time to wait around? We usually respond within a few hours"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:212
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:210
 msgid "Chat"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:213
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:211
 msgid "We're online right now, talk with our team in real-time"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:214
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:212
 msgid "Start a conversation"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:215
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:213
 msgid "What channel do you prefer?"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:216
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:214
 msgid "Previous Conversations"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:218
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:216
 msgid "Can't find the answer?"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:219
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:217
 msgid "Related Articles"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:220
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:218
 msgid "Hmm…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:221
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:219
 msgid "We couldn't find any articles that match your search."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:222
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:220
 msgid "Try a broader term, or"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:223
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:221
 msgid "There was a problem loading this article. Please double-check your internet connection and try again."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:224
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:222
 msgid "Your search timed out. Please double-check your internet connection and try again."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:225
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:223
 msgid "Did this answer your question?"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:226
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:224
 msgid "No"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:227
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:225
 msgid "Yes"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:228
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:226
 msgid "Browse our help docs for an answer to your question"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:229
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:227
 msgid "Keep searching"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:230
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:228
 msgid "Talk with a friendly member of our support team"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:231
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:229
 msgid "Talk to us"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:232
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:230
 msgid "Thanks for the feedback"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:233
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:231
 msgid "What next?"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:235
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:249
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:233
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:247
 msgid "Send a message"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:236
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:234
 msgid "Let's begin with a few questions"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:237
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:248
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:235
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:246
 msgid "How can we help?"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:238
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:236
 msgid "We usually respond in a few hours"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:239
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:237
 msgid "History"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:240
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:238
 msgid "Upload an image"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:241
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:239
 msgid "Attach a screenshot or file"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:242
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:240
 msgid "Continue writing…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:243
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:241
 msgid "Last updated"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:244
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:320
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:242
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:318
 msgid "You"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:245
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:243
 msgid "Your Name"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:251
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:249
 msgid "Message sent!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:252
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:250
 msgid "You'll receive an email reply within a few hours."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:253
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:251
 msgid "You can view and update your message in"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:254
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:252
 msgid "May not be empty"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:255
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:253
 msgid "Please complete all fields"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:256
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:254
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:257
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:255
 msgid "There was a problem uploading your attachment. Please try again in a moment."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:259
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:257
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "The maximum file size is [size]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:263
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:261
 msgid "Add a reply"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:264
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:262
 msgid "Add your message here…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:265
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:263
 msgid "Send message"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:266
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:264
 msgid "Received"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:267
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:265
 msgid "Waiting for an answer"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:268
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:266
 msgid "There was a problem retrieving your previous messages. Please double-check your Internet connection and try again."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:269
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:267
 msgid "Just Now"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:271
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:269
 msgid "Chat with our team"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:272
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:270
 msgid "We'll be with you soon"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:273
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:271
 msgid "All done!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:274
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:272
 msgid "A copy of this conversation will land in your inbox shortly."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:275
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:273
 msgid "Return home"
 msgstr ""
 
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:274
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:276
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:278
 msgid "Sorry about that"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:277
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:275
 msgid "It looks like nobody made it to your chat. We'll send you an email response as soon as possible."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:279
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:277
 msgid "Your question has been added to our email queue and we'll get back to you shortly."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:280
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:278
 msgid "Ending…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:281
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:279
 msgid "End chat"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:283
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:317
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:281
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:315
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[name] ended the chat"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:287
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:285
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Connected to [name]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:290
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:288
 msgid "Help Bot"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:291
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:289
 msgid "Hi there! You can begin by asking your question below. Someone will be with you shortly."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:292
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:290
 msgid "Got it. Real quick, what's your email address? We'll use it for any follow-up messages."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:293
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:291
 msgid "Thanks! Someone from our team will jump into the chat soon."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:294
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:292
 msgid "Something went wrong sending your message, please try again in a few minutes."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:295
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:293
 msgid "Since the chat has gone idle, I'll end this chat in a few minutes."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:296
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:294
 msgid "Looks like you've entered an invalid email address. Want to try again?"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:298
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:296
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[name] has disconnected from the chat. It's possible they lost their internet connection, so I'm looking for someone else to take over. Sorry for the delay!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:301
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:299
 msgid "Our team's availability has changed and there's no longer anyone available to chat. Send us a message instead and we'll get back to you."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:304
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:302
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Today's chat with [name]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:308
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:306
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Hey [name]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:311
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:309
 msgid "Here's a copy of your discussion"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:312
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:310
 msgid "If you've got any other questions, feel free to hit reply and continue the conversation."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:313
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:311
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[name] joined the chat"
 msgstr ""

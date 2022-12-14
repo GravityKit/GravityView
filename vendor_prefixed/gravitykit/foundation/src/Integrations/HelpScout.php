@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 08-December-2022 using Strauss.
+ * Modified by gravityview on 14-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -125,9 +125,7 @@ JS;
 	 * @return array
 	 */
 	public function get_beacon_configuration() {
-		$setting = function ( $key ) {
-			return SettingsFramework::get_instance()->get_plugin_setting( FoundationCore::ID, $key, '' );
-		};
+		$foundation_settings = SettingsFramework::get_instance()->get_plugin_settings( FoundationCore::ID );
 
 		$current_user = wp_get_current_user();
 
@@ -159,16 +157,16 @@ JS;
 				'email'                 => mb_substr( $current_user->user_email, 0, 80 ),
 				'name'                  => mb_substr( $current_user->display_name, 0, 80 ),
 				'signature'             => hash_hmac( 'sha256', mb_substr( $current_user->user_email, 0, 80 ), self::HASH_KEY ),
-				'affiliate_id'          => mb_substr( $setting( 'affiliate_id' ), 0, 255 ),
+				'affiliate_id'          => mb_substr( Arr::get( $foundation_settings, 'affiliate_id' ), 0, 255 ),
 				'is_super_admin'        => is_super_admin(),
-				'alt_emails'            => mb_substr( sprintf( 'Admin: %s / GV Support: %s', get_bloginfo( 'admin_email' ), $setting( 'support_email' ) ), 0, 255 ),
+				'alt_emails'            => mb_substr( sprintf( 'Admin: %s / GV Support: %s', get_bloginfo( 'admin_email' ), Arr::get( $foundation_settings, 'support_email' ) ), 0, 255 ),
 				'wordpress_version'     => mb_substr( get_bloginfo( 'version', 'display' ), 0, 255 ),
 				'php_version'           => mb_substr( PHP_VERSION . ' on ' . esc_html( $_SERVER['SERVER_SOFTWARE'] ), 0, 255 ),
-				'no_conflict_mode'      => $setting( 'no_conflict_mode' ) ? 'Disabled' : 'Enabled',
+				'no_conflict_mode'      => Arr::get( $foundation_settings, 'no_conflict_mode' ) ? 'Disabled' : 'Enabled',
 				'gravityview_version'   => mb_substr( class_exists( '\GV\Plugin' ) ? \GV\Plugin::$version : 'Not Installed', 0, 255 ),
 				'gravity_forms_version' => mb_substr( class_exists( '\GFForms' ) ? \GFForms::$version : 'Not Installed', 0, 255 ),
 				'locale'                => get_user_locale(),
-				'is_support_contact'    => ( $current_user->user_email === $setting( 'support_email' ) ),
+				'is_support_contact'    => ( $current_user->user_email === Arr::get( $foundation_settings, 'support_email' ) ),
 			],
 			'suggest'      => [],
 		];
