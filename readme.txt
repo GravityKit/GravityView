@@ -15,7 +15,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Installation ==
 
-1. Upload plugin files to your plugins folder, or install using WordPress' built-i`n Add New Plugin installer
+1. Upload plugin files to your plugins folder, or install using WordPress' built-in Add New Plugin installer
 2. Activate the plugin
 3. Follow the instructions
 
