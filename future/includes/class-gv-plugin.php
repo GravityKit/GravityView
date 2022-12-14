@@ -3,6 +3,7 @@
 namespace GV;
 
 use GravityKitFoundation;
+use GVCommon;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -652,7 +653,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function setup_gravitykit_admin_menu_redirects() {
-		if ( ! \GVCommon::has_cap( 'edit_gravityviews' ) ) {
+		if ( ! class_exists( 'GVCommon' ) || ! GVCommon::has_cap( 'edit_gravityviews' ) ) {
 			return;
 		}
 
@@ -691,7 +692,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function add_to_gravitykit_admin_menu( $foundation ) {
-		if ( ! \GVCommon::has_cap( 'edit_gravityviews' ) || GravityKitFoundation::helpers()->core->is_network_admin() ) {
+		if ( ! GVCommon::has_cap( 'edit_gravityviews' ) || GravityKitFoundation::helpers()->core->is_network_admin() ) {
 			return;
 		}
 
