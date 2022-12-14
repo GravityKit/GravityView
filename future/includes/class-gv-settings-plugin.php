@@ -88,6 +88,12 @@ class Plugin_Settings {
 	 * @return array The settings.
 	 */
 	public function all() {
+		static $plugin_settings;
+
+		if ( $plugin_settings ) {
+			return $plugin_settings;
+		}
+
 		$plugin_settings = $this->_foundation_settings->get_plugin_settings( self::SETTINGS_PLUGIN_ID );
 
 		// Migrate legacy settings
@@ -95,7 +101,9 @@ class Plugin_Settings {
 			$plugin_settings = $this->migrate_legacy_settings();
 		}
 
-		return wp_parse_args( $plugin_settings, $this->defaults() );
+		$plugin_settings = wp_parse_args( $plugin_settings, $this->defaults() );
+
+		return $plugin_settings;
 	}
 
 	/**
