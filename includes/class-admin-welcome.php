@@ -280,7 +280,7 @@ class GravityView_Welcome {
 				<h3>2.16.2 on December 14, 2022</h3>
 
 				<ul>
-					<li>Fixed: The plugin would display a notice requiring Gravity Forms 2.5 even if it's already installed</li>
+					<li>Fixed: Views would take an abnormally long time to load</li>
 					<li>Fixed: Fatal error on some hosts that use weak security keys and salts</li>
 				</ul>
 
