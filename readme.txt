@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: PHP 8.1 notices
+
 = 2.16.2 on December 14, 2022 =
 
 * Fixed: Views would take an abnormally long time to load
