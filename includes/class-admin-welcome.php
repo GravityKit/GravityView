@@ -277,6 +277,13 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.16.2 on December 14, 2022</h3>
+
+				<ul>
+					<li>Fixed: Views would take an abnormally long time to load</li>
+					<li>Fixed: Fatal error on some hosts that use weak security keys and salts</li>
+				</ul>
+
 				<h3>2.16.1 on December 7, 2022</h3>
 
 				<ul>

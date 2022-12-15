@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 08-December-2022 using Strauss.
+ * Modified by gravityview on 15-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -260,7 +260,7 @@ class Framework {
 	 * @param mixed    $plugin_setting_value
 	 * @param int|null $site_id (optional) Site ID for which to save settings. Default is null (i.e., current site ID).
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function save_plugin_setting( $plugin, $plugin_setting_name, $plugin_setting_value, $site_id = null ) {
 		$site_id = $site_id ?: get_current_blog_id();
@@ -269,7 +269,7 @@ class Framework {
 
 		$plugin_settings[ $plugin_setting_name ] = $plugin_setting_value;
 
-		$this->save_plugin_settings( $plugin, $plugin_settings, $site_id );
+		return $this->save_plugin_settings( $plugin, $plugin_settings, $site_id );
 	}
 
 	/**
@@ -299,7 +299,7 @@ class Framework {
 	 * @param array    $plugin_settings
 	 * @param int|null $site_id (optional) Site ID for which to save settings. Default is null (i.e, current site ID).
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function save_plugin_settings( $plugin, array $plugin_settings, $site_id = null ) {
 		$site_id = $site_id ?: get_current_blog_id();
@@ -319,7 +319,7 @@ class Framework {
 		 */
 		$settings_data[ $plugin ] = apply_filters( "gk/foundation/settings/${plugin}/save/before", $settings_data[ $plugin ] );
 
-		$this->save_all_settings( $settings_data, $site_id );
+		return $this->save_all_settings( $settings_data, $site_id );
 	}
 
 	/**
