@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-12-15T00:11:23+00:00\n"
+"POT-Creation-Date: 2022-12-15T01:45:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -228,101 +228,101 @@ msgstr ""
 msgid "Please <a href=\"%s\">read this article</a> for more information."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:227
+#: future/includes/class-gv-settings-plugin.php:234
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:429
 msgid "General"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:232
+#: future/includes/class-gv-settings-plugin.php:239
 msgid "REST API"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:233
+#: future/includes/class-gv-settings-plugin.php:240
 msgid "Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.)."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:233
+#: future/includes/class-gv-settings-plugin.php:240
 msgid "If you are unsure, disable this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:296
+#: future/includes/class-gv-settings-plugin.php:311
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:307
+#: future/includes/class-gv-settings-plugin.php:322
 msgid "If you delete then re-install GravityView, it will be like installing GravityView for the first time."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:308
+#: future/includes/class-gv-settings-plugin.php:323
 msgid "Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:319
+#: future/includes/class-gv-settings-plugin.php:334
 msgid "I am going to continue using GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:322
+#: future/includes/class-gv-settings-plugin.php:337
 msgid "I no longer need GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:325
+#: future/includes/class-gv-settings-plugin.php:340
 msgid "The plugin doesn't work"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:328
+#: future/includes/class-gv-settings-plugin.php:343
 msgid "I found a better plugin"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:329
+#: future/includes/class-gv-settings-plugin.php:344
 msgid "What plugin you are using, and why?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:332
+#: future/includes/class-gv-settings-plugin.php:347
 msgid "Other"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:381
+#: future/includes/class-gv-settings-plugin.php:396
 msgid "Uninstall GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:432
+#: future/includes/class-gv-settings-plugin.php:447
 msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:438
+#: future/includes/class-gv-settings-plugin.php:453
 msgid "Why did you uninstall GravityView?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:448
+#: future/includes/class-gv-settings-plugin.php:463
 msgid "Comments"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:449
+#: future/includes/class-gv-settings-plugin.php:464
 msgid "Please share your thoughts about GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:452
+#: future/includes/class-gv-settings-plugin.php:467
 msgid "How likely are you to recommend GravityView?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:462
+#: future/includes/class-gv-settings-plugin.php:477
 msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:466
+#: future/includes/class-gv-settings-plugin.php:481
 msgid "Please follow up with me about my feedback"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:473
+#: future/includes/class-gv-settings-plugin.php:488
 msgid "Send Us Your Feedback"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:478
+#: future/includes/class-gv-settings-plugin.php:493
 msgid "Thank you for using GravityView!"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:480
+#: future/includes/class-gv-settings-plugin.php:495
 msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co"
 msgstr ""
 

@@ -23,7 +23,7 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 use Exception;
 
 class Core {
-	const VERSION = '1.0.5';
+	const VERSION = '1.0.6';
 
 	const ID = 'gk_foundation';
 
