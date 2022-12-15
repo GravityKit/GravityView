@@ -23,6 +23,15 @@ class Plugin_Settings {
 	 */
 	private $_foundation_settings;
 
+	/**
+	 * Cached settings.
+	 *
+	 * @since 2.16.2
+	 *
+	 * @var array
+	 */
+	private $_plugin_settings = [];
+
 	public function __construct() {
 		// GravityKitFoundation may not yet be available when this class is instantiated, so let's temporarily use the Settings framework from Foundation that's included with GravityView and then possibly replace it with the latest version.
 		$this->_foundation_settings = SettingsFramework::get_instance();
@@ -88,22 +97,20 @@ class Plugin_Settings {
 	 * @return array The settings.
 	 */
 	public function all() {
-		static $plugin_settings;
-
-		if ( $plugin_settings ) {
-			return $plugin_settings;
+		if ( ! empty( $this->_plugin_settings ) ) {
+			return $this->_plugin_settings;
 		}
 
-		$plugin_settings = $this->_foundation_settings->get_plugin_settings( self::SETTINGS_PLUGIN_ID );
+		$this->_plugin_settings = $this->_foundation_settings->get_plugin_settings( self::SETTINGS_PLUGIN_ID );
 
 		// Migrate legacy settings
-		if ( ! $plugin_settings ) {
-			$plugin_settings = $this->migrate_legacy_settings();
+		if ( empty( $this->_plugin_settings ) ) {
+			$this->_plugin_settings = $this->migrate_legacy_settings();
 		}
 
-		$plugin_settings = wp_parse_args( $plugin_settings, $this->defaults() );
+		$this->_plugin_settings = wp_parse_args( $this->_plugin_settings, $this->defaults() );
 
-		return $plugin_settings;
+		return $this->_plugin_settings;
 	}
 
 	/**
@@ -279,7 +286,15 @@ class Plugin_Settings {
 	 * @return boolean False if value was not updated and true if value was updated.
 	 */
 	public function update( $settings ) {
-		return $this->_foundation_settings->save_plugin_settings( self::SETTINGS_PLUGIN_ID, $settings );
+		$result = $this->_foundation_settings->save_plugin_settings( self::SETTINGS_PLUGIN_ID, $settings );
+
+		if ( ! $result ) {
+			return false;
+		}
+
+		$this->_plugin_settings = $this->_foundation_settings->get_plugin_settings( self::SETTINGS_PLUGIN_ID );
+
+		return true;
 	}
 
 	/**
