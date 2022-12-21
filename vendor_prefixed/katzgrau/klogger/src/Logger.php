@@ -2,15 +2,15 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 15-December-2022 using Strauss.
+ * Modified by gravityview on 21-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Katzgrau\KLogger;
 
 use DateTime;
 use RuntimeException;
-use Psr\Log\AbstractLogger;
-use Psr\Log\LogLevel;
+use GravityKit\GravityView\Psr\Log\AbstractLogger;
+use GravityKit\GravityView\Psr\Log\LogLevel;
 
 /**
  * Finally, a light, permissions-checking logging class.
@@ -18,7 +18,7 @@ use Psr\Log\LogLevel;
  * Originally written for use with wpSearch
  *
  * Usage:
- * $log = new GravityKit\GravityView\Katzgrau\KLogger\Logger('/var/log/', Psr\Log\LogLevel::INFO);
+ * $log = new GravityKit\GravityView\Katzgrau\KLogger\Logger('/var/log/', GravityKit\GravityView\Psr\Log\LogLevel::INFO);
  * $log->info('Returned a million search results'); //Prints to the log file
  * $log->error('Oh dear.'); //Prints to the log file
  * $log->debug('x = 5'); //Prints nothing due to current severity threshhold

@@ -1,8 +1,14 @@
 <?php
+/**
+ * @license MIT
+ *
+ * Modified by gravityview on 21-December-2022 using Strauss.
+ * @see https://github.com/BrianHenryIE/strauss
+ */
 
-namespace Psr\Log\Test;
+namespace GravityKit\GravityView\Psr\Log\Test;
 
-use Psr\Log\AbstractLogger;
+use GravityKit\GravityView\Psr\Log\AbstractLogger;
 
 /**
  * Used for testing purposes.

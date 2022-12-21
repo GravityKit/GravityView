@@ -1,6 +1,12 @@
 <?php
+/**
+ * @license MIT
+ *
+ * Modified by gravityview on 21-December-2022 using Strauss.
+ * @see https://github.com/BrianHenryIE/strauss
+ */
 
-namespace Psr\Log;
+namespace GravityKit\GravityView\Psr\Log;
 
 /**
  * This is a simple Logger trait that classes unable to extend AbstractLogger
@@ -136,7 +142,7 @@ trait LoggerTrait
      *
      * @return void
      *
-     * @throws \Psr\Log\InvalidArgumentException
+     * @throws \GravityKit\GravityView\Psr\Log\InvalidArgumentException
      */
     abstract public function log($level, $message, array $context = array());
 }

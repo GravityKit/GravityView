@@ -1,9 +1,15 @@
 <?php
+/**
+ * @license MIT
+ *
+ * Modified by gravityview on 21-December-2022 using Strauss.
+ * @see https://github.com/BrianHenryIE/strauss
+ */
 
-namespace Psr\Log\Test;
+namespace GravityKit\GravityView\Psr\Log\Test;
 
-use Psr\Log\LoggerInterface;
-use Psr\Log\LogLevel;
+use GravityKit\GravityView\Psr\Log\LoggerInterface;
+use GravityKit\GravityView\Psr\Log\LogLevel;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -32,7 +38,7 @@ abstract class LoggerInterfaceTest extends TestCase
 
     public function testImplements()
     {
-        $this->assertInstanceOf('Psr\Log\LoggerInterface', $this->getLogger());
+        $this->assertInstanceOf('GravityKit\GravityView\Psr\Log\LoggerInterface', $this->getLogger());
     }
 
     /**
@@ -66,7 +72,7 @@ abstract class LoggerInterfaceTest extends TestCase
     }
 
     /**
-     * @expectedException \Psr\Log\InvalidArgumentException
+     * @expectedException \GravityKit\GravityView\Psr\Log\InvalidArgumentException
      */
     public function testThrowsOnInvalidLevel()
     {
@@ -86,9 +92,9 @@ abstract class LoggerInterfaceTest extends TestCase
     public function testObjectCastToString()
     {
         if (method_exists($this, 'createPartialMock')) {
-            $dummy = $this->createPartialMock('Psr\Log\Test\DummyTest', array('__toString'));
+            $dummy = $this->createPartialMock('GravityKit\GravityView\Psr\Log\Test\DummyTest', array('__toString'));
         } else {
-            $dummy = $this->getMock('Psr\Log\Test\DummyTest', array('__toString'));
+            $dummy = $this->getMock('GravityKit\GravityView\Psr\Log\Test\DummyTest', array('__toString'));
         }
         $dummy->expects($this->once())
             ->method('__toString')
