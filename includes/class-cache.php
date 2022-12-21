@@ -122,7 +122,7 @@ class GravityView_Cache {
 	 *
 	 * The `gform_delete_lead` action is called before the lead is deleted; we fetch the entry to find out the form ID so it can be added to the blocklist.
 	 *
-	 * @since  todo
+	 * @since  2.16.3
 	 *
 	 * @param int    $lead_id        The Entry ID.
 	 * @param string $property_name  The property that was updated.
