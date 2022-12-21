@@ -261,6 +261,19 @@ class GravityView_Cache {
 	}
 
 	/**
+	 * Get the blocklist array.
+	 *
+	 * @since 2.16.3
+	 *
+	 * @return array
+	 */
+	private function blocklist_get() {
+		$blocklist = get_option( self::BLOCKLIST_OPTION_NAME, array() );
+
+		return array_map( 'intval', (array) $blocklist );
+	}
+
+	/**
 	 * Add form IDs to a "blocklist" to force the cache to be refreshed
 	 *
 	 * @param  int|array $form_ids Form IDs to force to be updated
@@ -269,7 +282,7 @@ class GravityView_Cache {
 	 */
 	public function blocklist_add( $form_ids ) {
 
-		$blocklist = get_option( self::BLOCKLIST_OPTION_NAME, array() );
+		$blocklist = $this->blocklist_get();
 
 		$form_ids = is_array( $form_ids ) ? $form_ids : array( $form_ids );
 
@@ -363,7 +376,7 @@ class GravityView_Cache {
 	 */
 	public function in_blocklist( $form_ids = NULL ) {
 
-		$blocklist = get_option( self::BLOCKLIST_OPTION_NAME, array() );
+		$blocklist = $this->blocklist_get();
 
 		// Use object var if exists
 		$form_ids = is_null( $form_ids ) ? $this->form_ids : $form_ids;
