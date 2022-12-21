@@ -39,12 +39,6 @@ class GravityView_Cache {
 	private $use_cache = null;
 
 	/**
-	 * @since 1.13.1
-	 * @var array Columns in the database for leads
-	 */
-	private $lead_db_columns = array( 'id', 'form_id', 'post_id', 'date_created', 'is_starred', 'is_read', 'ip', 'source_url', 'user_agent', 'currency', 'payment_status', 'payment_date', 'payment_amount', 'transaction_id', 'is_fulfilled', 'created_by', 'transaction_type', 'status' );
-
-	/**
 	 *
 	 * @param array|int $form_ids Form ID or array of form IDs used in a request
 	 * @param array $args Extra request parameters used to generate the query. This is used to generate the unique transient key.
@@ -80,7 +74,7 @@ class GravityView_Cache {
 		/**
 		 * @since 1.14
 		 */
-		add_action( 'gravityview_clear_entry_cache', array( $this, 'entry_status_changed' ) );
+		add_action( 'gravityview_clear_entry_cache', array( $this, 'entry_property_changed' ) );
 
 		add_action( 'gform_after_update_entry', array( $this, 'entry_updated' ), 10, 2 );
 
@@ -88,14 +82,10 @@ class GravityView_Cache {
 
 		add_action( 'gform_post_add_entry', array( $this, 'entry_added' ), 10, 2 );
 
-		/**
-		 * @see RGFormsModel::update_lead_property() Trigger when any entry property changes
-		 */
-		foreach( $this->lead_db_columns as $column ) {
-			add_action( 'gform_update_' . $column, array( $this, 'entry_status_changed' ), 10, 3 );
-		}
+		add_action( 'gform_post_update_entry_property', array( $this, 'entry_property_changed' ), 10, 4 );
 
-		add_action( 'gform_delete_lead', array( $this, 'entry_status_changed' ), 10 );
+		add_action( 'gform_delete_lead', array( $this, 'entry_property_changed' ), 10 );
+
 	}
 
 	/**
@@ -123,6 +113,47 @@ class GravityView_Cache {
 		}
 
 		gravityview()->log->debug( 'adding form {form_id} to blocklist because entry #{lead_id} was deleted', array( 'form_id' => $entry['form_id'], 'entry_id' => $lead_id, 'data' => array( 'value' => $property_value, 'previous' => $previous_value ) ) );
+
+		$this->blocklist_add( $entry['form_id'] );
+	}
+
+	/**
+	 * Force refreshing a cache when an entry is deleted.
+	 *
+	 * The `gform_delete_lead` action is called before the lead is deleted; we fetch the entry to find out the form ID so it can be added to the blocklist.
+	 *
+	 * @since  todo
+	 *
+	 * @param int    $lead_id        The Entry ID.
+	 * @param string $property_name  The property that was updated.
+	 * @param string $property_value The new value of the property that was updated.
+	 * @param string $previous_value The previous property value before the update.
+	 *
+	 * @return void
+	 */
+	public function entry_property_changed( $lead_id, $property_name = '', $property_value = '', $previous_value = '' ) {
+
+		$entry = GFAPI::get_entry( $lead_id );
+
+		if ( is_wp_error( $entry ) ) {
+
+			gravityview()->log->error( 'Could not retrieve entry {entry_id} during cache clearing: {error}', array(
+				'entry_id' => $lead_id,
+				'error'    => $entry->get_error_message()
+			) );
+
+			return;
+		}
+
+		gravityview()->log->debug( 'adding form {form_id} to blocklist because the {property_name} property was updated for entry #{lead_id}', array(
+			'form_id'  => $entry['form_id'],
+			'entry_id' => $lead_id,
+			'data'     => array(
+				'value'    => $property_value,
+				'previous' => $previous_value,
+				'property_name' => $property_name,
+			)
+		) );
 
 		$this->blocklist_add( $entry['form_id'] );
 	}
