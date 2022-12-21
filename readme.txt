@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Fixed: Fatal error on some hosts due to a conflict with one of the plugin dependencies (psr/log)
 * Fixed: PHP 8.1 notices
 
 = 2.16.2 on December 14, 2022 =

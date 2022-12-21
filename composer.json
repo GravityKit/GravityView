@@ -59,9 +59,7 @@
         }
       },
       "exclude_from_prefix": {
-        "file_patterns": [
-          "/^psr.*$/"
-        ]
+        "file_patterns": []
       },
       "exclude_from_copy": {
         "packages": [
