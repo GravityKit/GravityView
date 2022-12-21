@@ -2,7 +2,7 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 15-December-2022 using Strauss.
+ * Modified by gravityview on 21-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */ declare(strict_types=1);
 

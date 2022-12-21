@@ -1,6 +1,12 @@
 <?php
+/**
+ * @license MIT
+ *
+ * Modified by gravityview on 21-December-2022 using Strauss.
+ * @see https://github.com/BrianHenryIE/strauss
+ */
 
-namespace Psr\Log;
+namespace GravityKit\GravityView\Psr\Log;
 
 /**
  * Describes a logger instance.
@@ -119,7 +125,7 @@ interface LoggerInterface
      *
      * @return void
      *
-     * @throws \Psr\Log\InvalidArgumentException
+     * @throws \GravityKit\GravityView\Psr\Log\InvalidArgumentException
      */
     public function log($level, $message, array $context = array());
 }

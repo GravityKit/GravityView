@@ -1,6 +1,12 @@
 <?php
+/**
+ * @license MIT
+ *
+ * Modified by gravityview on 21-December-2022 using Strauss.
+ * @see https://github.com/BrianHenryIE/strauss
+ */
 
-namespace Psr\Log\Test;
+namespace GravityKit\GravityView\Psr\Log\Test;
 
 /**
  * This class is internal and does not follow the BC promise.

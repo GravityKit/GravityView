@@ -1,6 +1,12 @@
 <?php
+/**
+ * @license MIT
+ *
+ * Modified by gravityview on 21-December-2022 using Strauss.
+ * @see https://github.com/BrianHenryIE/strauss
+ */
 
-namespace Psr\Log;
+namespace GravityKit\GravityView\Psr\Log;
 
 /**
  * This is a simple Logger implementation that other Loggers can inherit from.
