@@ -21,9 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.16.3 on December 21, 2022 =
 
 * Fixed: Fatal error on some hosts due to a conflict with one of the plugin dependencies (psr/log)
+* Fixed: PHP 8.1 notices
+* Fixed: View scripts and styles not loading for some logged-in users
 
 = 2.16.2 on December 14, 2022 =
 

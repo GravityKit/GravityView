@@ -155,8 +155,8 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	function getOutput() {
 
-		$settings_title    = sprintf( __( 'Configure %s Settings', 'gk-gravityview' ), esc_html( rgar( $this->item, 'label', ucfirst( $this->label_type ) ) ) );
-		$delete_title      = sprintf( __( 'Remove %s', 'gk-gravityview' ), ucfirst( $this->label_type ) );
+		$settings_title    = sprintf( __( 'Configure %s Settings', 'gk-gravityview' ), esc_html( rgar( $this->item, 'label', ucfirst( $this->label_type ?: '' ) ) ) );
+		$delete_title      = sprintf( __( 'Remove %s', 'gk-gravityview' ), ucfirst( $this->label_type ?: '' ) );
 		$single_link_title = __( 'This field links to the Single Entry', 'gk-gravityview' );
 		$visibility_title = __( 'This field has modified visibility', 'gk-gravityview' );
 

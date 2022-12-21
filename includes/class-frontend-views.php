@@ -1399,14 +1399,6 @@ class GravityView_frontend {
 				$template_id = gravityview_get_template_id( $view->ID );
 				$data = $view->as_data();
 
-				/**
-				 * Don't enqueue the scripts or styles if it's not going to be displayed.
-				 * @since 1.15
-				 */
-				if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
-					continue;
-				}
-
 				// By default, no thickbox
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();

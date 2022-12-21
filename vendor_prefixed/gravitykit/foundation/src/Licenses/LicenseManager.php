@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 15-December-2022 using Strauss.
+ * Modified by gravityview on 21-December-2022 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -511,7 +511,12 @@ class LicenseManager {
 	 * @return void
 	 */
 	public function ajax_deactivate_license( array $payload ) {
-		if ( empty( $payload['key'] ) ) {
+		$payload = wp_parse_args( $payload, [
+			'key'           => false,
+			'force_removal' => false,
+		] );
+
+		if ( ! $payload['key'] ) {
 			throw new Exception( esc_html__( 'Missing license key.', 'gk-gravityview' ) );
 		}
 
@@ -523,27 +528,29 @@ class LicenseManager {
 			throw new Exception( esc_html__( 'The license key is invalid.', 'gk-gravityview' ) );
 		}
 
-		$this->deactivate_license( $license_key );
+		$this->deactivate_license( $license_key, (bool) $payload['force_removal'] );
 	}
 
 	/**
 	 * Deactivates license.
 	 *
 	 * @since 1.0.0
+	 * @since 1.0.7 Added $force_removal parameter.
 	 *
 	 * @param string $license_key
+	 * @param bool   $force_removal (optional) Forces removal of license from the local licenses object even if deactivation request fails. Default: false.
 	 *
 	 * @throws Exception
 	 *
 	 * @return void
 	 */
-	public function deactivate_license( $license_key ) {
+	public function deactivate_license( $license_key, $force_removal = false ) {
 		$licenses_data = $this->get_licenses_data();
 
 		try {
 			$response = $this->perform_remote_license_call( $license_key, self::EDD_ACTION_DEACTIVATE_LICENSE );
 
-			if ( ! Arr::get( $response, '_raw.success' ) ) {
+			if ( ! $force_removal && ! Arr::get( $response, '_raw.success' ) ) {
 				// Unsuccessful deactivation can happen when the license has expired, in which case we should treat it as a "success" and remove from our list.
 				// If the license hasn't expired, then there is a problem deactivating it, and we should throw an exception.
 				if ( ! Arr::get( $response, 'expiry' ) || ! $this->is_expired_license( Arr::get( $response, 'expiry' ) ) ) {
@@ -551,7 +558,9 @@ class LicenseManager {
 				}
 			}
 		} catch ( Exception $e ) {
-			throw new Exception( $e->getMessage() );
+			if ( ! $force_removal ) {
+				throw new Exception( $e->getMessage() );
+			}
 		}
 
 		unset( $licenses_data[ $license_key ] );
