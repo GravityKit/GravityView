@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Prevent possible conflict in the View editor with themes/plugins that use Bootstrap's tooltip library
+
 = 2.16.3 on December 21, 2022 =
 
 * Fixed: Caching wouldn't always clear when an entry was added or modified

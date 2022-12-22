@@ -50,6 +50,8 @@
  */
 
 (function( $ ) {
+	// Alias jQuery UI's tooltip() function to gvTooltip() to prevent a conflict with Bootstrap that also register a global tooltip() function.
+	$.widget.bridge( 'gvTooltip', $.ui.tooltip );
 
 	var viewConfiguration, viewGeneralSettings;
 
@@ -538,7 +540,7 @@
 			if ( close ) {
 
 				// Close all open tooltips
-				activeTooltips.tooltip( "close" );
+				activeTooltips.gvTooltip( "close" );
 
 				// Close all open dialogs
 				$( ".ui-dialog:visible" ).find( '.ui-dialog-content' ).dialog( "close" );
@@ -1589,7 +1591,7 @@
 		// tooltips
 		remove_tooltips: function ( el ) {
 			if ( $( el || '.gv-add-field' ).is( ':ui-tooltip' ) ) {
-				$( '.gv-add-field' ).tooltip( 'destroy' ).off( 'click' );
+				$( '.gv-add-field' ).gvTooltip( 'destroy' ).off( 'click' );
 			}
 		},
 
@@ -1600,7 +1602,7 @@
 				return;
 			}
 
-			$( el || ".gv-add-field" ).tooltip( {
+			$( el || ".gv-add-field" ).gvTooltip( {
 				show:    150,
 				hide:    200,
 				content: function () {
@@ -1673,7 +1675,7 @@
 					e.preventDefault();
 					//e.stopImmediatePropagation();
 
-					$( this ).tooltip( "open" );
+					$( this ).gvTooltip( "open" );
 
 				} );
 
@@ -1718,7 +1720,7 @@
 		 * Refresh Gravity Forms tooltips (the real help tooltips)
 		 */
 		refreshGFtooltips: function () {
-			$( ".gf_tooltip" ).tooltip( {
+			$( ".gf_tooltip" ).gvTooltip( {
 				show: 500,
 				hide: 1000,
 				content: function () {
@@ -1821,7 +1823,7 @@
 			} );
 
 			// We just added all the fields. No reason to show the tooltip.
-			$( "a.gv-add-field[data-tooltip='active']" ).tooltip( "close" );
+			$( "a.gv-add-field[data-tooltip='active']" ).gvTooltip( "close" );
 
 		},
 
