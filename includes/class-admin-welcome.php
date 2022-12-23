@@ -277,6 +277,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.16.4 on December 22, 2022</h3>
+
+				<ul>
+					<li>Fixed: Prevent possible conflict in the View editor with themes/plugins that use Bootstrap's tooltip library</li>
+				</ul>
+
 				<h3>2.16.3 on December 21, 2022</h3>
 
 				<ul>
