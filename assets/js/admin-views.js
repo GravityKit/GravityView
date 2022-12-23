@@ -50,7 +50,7 @@
  */
 
 (function( $ ) {
-	// Alias jQuery UI's tooltip() function to gvTooltip() to prevent a conflict with Bootstrap that also register a global tooltip() function.
+	// Alias jQuery UI's tooltip() function to gvTooltip() to prevent a conflict with Bootstrap that also registers a global tooltip() function.
 	$.widget.bridge( 'gvTooltip', $.ui.tooltip );
 
 	var viewConfiguration, viewGeneralSettings;
