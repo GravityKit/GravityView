@@ -277,6 +277,21 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.16.4 on December 23, 2022</h3>
+
+				<ul>
+					<li>Fixed: Prevent possible conflict in the View editor with themes/plugins that use Bootstrap's tooltip library</li>
+				</ul>
+
+				<h3>2.16.3 on December 21, 2022</h3>
+
+				<ul>
+					<li>Fixed: Caching wouldn't always clear when an entry was added or modified</li>
+					<li>Fixed: Fatal error on some hosts due to a conflict with one of the plugin dependencies (psr/log)</li>
+					<li>Fixed: PHP 8.1 notices</li>
+					<li>Fixed: View scripts and styles not loading for some logged-in users</li>
+				</ul>
+
 				<h3>2.16.2 on December 14, 2022</h3>
 
 				<ul>
