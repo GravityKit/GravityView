@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Improved: Modified code to allow using Custom Content fields on the Edit Screen with the [DIY Layout](https://www.gravitykit.com/extensions/diy-layout/)
+
 = 2.16.4 on December 23, 2022 =
 
 * Fixed: Prevent possible conflict in the View editor with themes/plugins that use Bootstrap's tooltip library
