@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'gravityview/gravityview',
-        'pretty_version' => 'dev-develop',
-        'version' => 'dev-develop',
-        'reference' => '3f86b93d2f050e2b1d36642502cb23db8c6d2a1c',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'c75f6e30db90de5dd57961012342fc6d303d237e',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -49,9 +49,9 @@
             'dev_requirement' => false,
         ),
         'gravityview/gravityview' => array(
-            'pretty_version' => 'dev-develop',
-            'version' => 'dev-develop',
-            'reference' => '3f86b93d2f050e2b1d36642502cb23db8c6d2a1c',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'c75f6e30db90de5dd57961012342fc6d303d237e',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
