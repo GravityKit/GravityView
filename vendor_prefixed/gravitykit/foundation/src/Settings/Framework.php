@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 23-December-2022 using Strauss.
+ * Modified by gravityview on 06-January-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -167,6 +167,15 @@ class Framework {
 	 * @return array
 	 */
 	public function get_plugins_settings_data() {
+		$plugins_settings_data = apply_filters( 'gk/foundation/settings/data/plugins', [] );
+
+		if ( ! is_array( $plugins_settings_data ) ) {
+
+			LoggerFramework::get_instance()->error( 'Invalid settings data. Expected array, got ' . print_r( $plugins_settings_data, true ) );
+
+			return [];
+		}
+
 		/**
 		 * @filter `gk/foundation/settings/data/plugins` Modifies plugins' settings.
 		 *
@@ -174,7 +183,7 @@ class Framework {
 		 *
 		 * @param array $plugins_data Plugins data.
 		 */
-		return array_filter( apply_filters( 'gk/foundation/settings/data/plugins', [] ) );
+		return array_filter( $plugins_settings_data );
 	}
 
 	/**

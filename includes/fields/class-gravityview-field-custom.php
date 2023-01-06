@@ -146,14 +146,13 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		// Loop through the configured Edit Entry fields and add Custom Content fields if there are any
 		// TODO: Make this available to other custom GV field types
-		foreach ( (array) $edit_fields as $edit_field ) {
-
-			if( 'custom' === \GV\Utils::get( $edit_field, 'id') ) {
-
+		foreach ( (array) $edit_fields as $id => $edit_field ) {
+			if ( 'custom' === \GV\Utils::get( $edit_field, 'id' ) ) {
 				$field_data = array(
-					'label' => \GV\Utils::get( $edit_field, 'custom_label' ),
+					'custom_id'   => $id,
+					'label'       => \GV\Utils::get( $edit_field, 'custom_label' ),
 					'customLabel' => \GV\Utils::get( $edit_field, 'custom_label' ),
-				    'content' => \GV\Utils::get( $edit_field, 'content' ),
+					'content'     => \GV\Utils::get( $edit_field, 'content' ),
 				);
 
 				// Replace merge tags in the content

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 23-December-2022 using Strauss.
+ * Modified by gravityview on 06-January-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -10,6 +10,7 @@ namespace GravityKit\GravityView\Foundation\Integrations;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GravityKit\GravityView\Foundation\Helpers\Core as CoreHelpers;
+use GravityKit\GravityView\Foundation\Licenses\LicenseManager;
 use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Admin as TrustedLoginAdmin;
 use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Logging as TrustedLoginLogging;
 use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Config as TrustedLoginConfig;
@@ -150,7 +151,7 @@ class TrustedLogin {
 			],
 		] );
 
-		return [
+		$config = [
 			'auth'            => [
 				'api_key' => self::TL_API_KEY,
 			],
@@ -178,6 +179,18 @@ class TrustedLogin {
 			],
 			'webhook_url'     => 'https://hooks.zapier.com/hooks/catch/28670/bbyi3l4',
 		];
+
+		$license_manager = LicenseManager::get_instance();
+
+		foreach ( $license_manager->get_licenses_data() as $license_data ) {
+			if ( Arr::get( $license_data, 'products' ) && ! $license_manager->is_expired_license( Arr::get( $license_data, 'expiry' ) ) ) {
+				Arr::set( $config, 'auth.license_key', Arr::get( $license_data, 'key' ));
+
+				break;
+			}
+		}
+
+		return $config;
 	}
 
 	/**
