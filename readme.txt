@@ -21,9 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.16.5 on January 5, 2023 =
 
-* Improved: Modified code to allow using Custom Content fields on the Edit Screen with the [DIY Layout](https://www.gravitykit.com/extensions/diy-layout/)
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.8
+* Improved: Internal changes to allow using Custom Content fields on the Edit Screen with the [DIY Layout](https://www.gravitykit.com/extensions/diy-layout/)
 
 = 2.16.4 on December 23, 2022 =
 
