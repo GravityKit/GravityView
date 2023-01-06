@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 23-December-2022 using Strauss.
+ * Modified by gravityview on 06-January-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -354,14 +354,25 @@ class ProductManager {
 			return EDD::get_instance()->check_for_product_updates( new \stdClass() );
 		};
 
+		// Tampering with the user-agent header (e.g., done by the WordPress Classifieds Plugin) breaks the update process.
+		$lock_user_agent_header = function ( $args, $url ) {
+			if ( strpos( $url, 'gravitykit.com' ) !== false ) {
+				$args['user-agent'] = 'WordPress/' . get_bloginfo( 'version' ) . '; ' . home_url();
+			}
+
+			return $args;
+		};
+
 		$updater = new Plugin_Upgrader( new WPUpgraderSkin() );
 
 		try {
 			add_filter( 'pre_site_transient_update_plugins', $update_plugins_transient_filter );
+			add_filter( 'http_request_args', $lock_user_agent_header, 100, 2 );
 
 			$updater->upgrade( $product_path );
 
 			remove_filter( 'pre_site_transient_update_plugins', $update_plugins_transient_filter );
+			remove_filter( 'http_request_args', $lock_user_agent_header, 100 );
 		} catch ( Exception $e ) {
 			$error = join( ' ', [
 				esc_html__( 'Update failed.', 'gk-gravityview' ),

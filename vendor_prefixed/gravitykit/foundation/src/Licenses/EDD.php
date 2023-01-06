@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 23-December-2022 using Strauss.
+ * Modified by gravityview on 06-January-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -139,7 +139,7 @@ class EDD {
 				$transient_data->no_update[ $path ] = $wp_product_data;
 			}
 
-			$transient_data->checked[ $path ] = Arr::Get( $product, 'installed_version' );
+			$transient_data->checked[ $path ] = Arr::get( $product, 'installed_version' );
 		}
 
 		$transient_data->last_checked = time();
