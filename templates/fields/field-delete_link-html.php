@@ -11,9 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
-	$form = $gravityview->view->form->form;
-}
+/** @var \GV\GF_Form $gf_form */
+$gf_form = isset( $gravityview->field->form_id ) ? \GV\GF_Form::by_id( $gravityview->field->form_id ) : $gravityview->view->form;
+$form = $gf_form->form;
 
 if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry->from_field( $gravityview->field );
@@ -35,7 +35,7 @@ if ( ! GravityView_Delete_Entry::check_user_cap_delete_entry( $entry, $field_set
 	return;
 }
 
-$link_text = empty( $field_settings['delete_link'] ) ? __( 'Delete Entry', 'gravityview' ) : $field_settings['delete_link'];
+$link_text = empty( $field_settings['delete_link'] ) ? __( 'Delete Entry', 'gk-gravityview' ) : $field_settings['delete_link'];
 
 $link_text = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 

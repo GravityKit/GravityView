@@ -13,7 +13,7 @@ extract( $gravityview_view->getCurrentField() );
 // Don't show on single entry
 if( $gravityview_view->getContext() === 'single' ) { return; }
 
-$link_text = empty( $field_settings['entry_link_text'] ) ? __('View Details', 'gravityview') : $field_settings['entry_link_text'];
+$link_text = empty( $field_settings['entry_link_text'] ) ? __('View Details', 'gk-gravityview') : $field_settings['entry_link_text'];
 
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ) );
 

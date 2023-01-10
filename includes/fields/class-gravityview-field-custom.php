@@ -33,8 +33,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_html__( 'Custom Content', 'gravityview' );
-		$this->description = esc_html__( 'Insert custom text or HTML.', 'gravityview' );
+		$this->label = esc_html__( 'Custom Content', 'gk-gravityview' );
+		$this->description = esc_html__( 'Insert custom text or HTML.', 'gk-gravityview' );
 
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 4 );
 
@@ -74,8 +74,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 		$new_fields = array(
 			'content' => array(
 				'type' => 'textarea',
-				'label' => __( 'Custom Content', 'gravityview' ),
-				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravityview.co/article/252-gvlogic-shortcode" data-beacon-article-sidebar="552355bfe4b0221aadf2572b">', '</a>' ) . ' ' . sprintf( __( 'Click the arrow icon next to the content area to add %sMerge Tags%s.', 'gravityview' ), '<a href="https://docs.gravityview.co/article/76-merge-tags" data-beacon-article-inline="54c67bbbe4b051242988551d">', '</a>' ),
+				'label' => __( 'Custom Content', 'gk-gravityview' ),
+				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gk-gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravityview.co/article/252-gvlogic-shortcode" data-beacon-article-sidebar="552355bfe4b0221aadf2572b">', '</a>' ) . ' ' . sprintf( __( 'Click the arrow icon next to the content area to add %sMerge Tags%s.', 'gk-gravityview' ), '<a href="https://docs.gravityview.co/article/76-merge-tags" data-beacon-article-inline="54c67bbbe4b051242988551d">', '</a>' ),
 				'value' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',
@@ -86,16 +86,16 @@ class GravityView_Field_Custom extends GravityView_Field {
 			),
 			'wpautop' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Automatically add paragraphs to content', 'gravityview' ),
-				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gravityview' ),
+				'label' => __( 'Automatically add paragraphs to content', 'gk-gravityview' ),
+				'tooltip' => __( 'Wrap each block of text in an HTML paragraph tag (recommended for text).', 'gk-gravityview' ),
 				'value' => '',
 				'priority' => 950,
 				'group' => 'field',
 			),
 			'oembed' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Render oEmbeds', 'gravityview' ),
-				'desc' => sprintf( _x( 'Automatically convert oEmbed URLs into embedded content (%slearn more%s).', 'HTML link pointing to WordPress article on oEmbed', 'gravityview' ), '<a href="https://codex.wordpress.org/Embeds" rel="external noopener noreferrer">', '</a>' ),
+				'label' => __( 'Render oEmbeds', 'gk-gravityview' ),
+				'desc' => sprintf( _x( 'Automatically convert oEmbed URLs into embedded content (%slearn more%s).', 'HTML link pointing to WordPress article on oEmbed', 'gk-gravityview' ), '<a href="https://codex.wordpress.org/Embeds" rel="external noopener noreferrer">', '</a>' ),
 				'value' => '',
 				'priority' => 970,
 				'group' => 'field',
@@ -103,8 +103,8 @@ class GravityView_Field_Custom extends GravityView_Field {
 			'admin_label' => array(
 				'type' => 'text',
 				'class' => 'widefat',
-				'label' => __( 'Admin Label', 'gravityview' ),
-				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gravityview' ),
+				'label' => __( 'Admin Label', 'gk-gravityview' ),
+				'desc' => __( 'A label that is only shown in the GravityView View configuration screen.', 'gk-gravityview' ),
 				'value' => '',
 				'priority' => 2000,
 				'group' => 'label',
@@ -142,18 +142,17 @@ class GravityView_Field_Custom extends GravityView_Field {
 		$new_fields = array();
 		$i = 0;
 
-		$entry = gravityview()->request->is_edit_entry();
+		$entry = gravityview()->request->is_edit_entry( $form['id'] );
 
 		// Loop through the configured Edit Entry fields and add Custom Content fields if there are any
 		// TODO: Make this available to other custom GV field types
-		foreach ( (array) $edit_fields as $edit_field ) {
-
-			if( 'custom' === \GV\Utils::get( $edit_field, 'id') ) {
-
+		foreach ( (array) $edit_fields as $id => $edit_field ) {
+			if ( 'custom' === \GV\Utils::get( $edit_field, 'id' ) ) {
 				$field_data = array(
-					'label' => \GV\Utils::get( $edit_field, 'custom_label' ),
+					'custom_id'   => $id,
+					'label'       => \GV\Utils::get( $edit_field, 'custom_label' ),
 					'customLabel' => \GV\Utils::get( $edit_field, 'custom_label' ),
-				    'content' => \GV\Utils::get( $edit_field, 'content' ),
+					'content'     => \GV\Utils::get( $edit_field, 'content' ),
 				);
 
 				// Replace merge tags in the content

@@ -18,7 +18,7 @@ class GravityView_Widget_Pagination_Info extends \GV\Widget {
 
 	function __construct() {
 
-		$this->widget_description = __('Summary of the number of visible entries out of the total results.', 'gravityview' );
+		$this->widget_description = __('Summary of the number of visible entries out of the total results.', 'gk-gravityview' );
 
 		$default_values = array(
 			'header' => 1,
@@ -27,7 +27,7 @@ class GravityView_Widget_Pagination_Info extends \GV\Widget {
 
 		$settings = array();
 
-		parent::__construct( __( 'Show Pagination Info', 'gravityview' ) , 'page_info', $default_values, $settings );
+		parent::__construct( __( 'Show Pagination Info', 'gk-gravityview' ) , 'page_info', $default_values, $settings );
 	}
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
@@ -56,7 +56,7 @@ class GravityView_Widget_Pagination_Info extends \GV\Widget {
 			$class = !empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
 			$class = gravityview_sanitize_html_class( $class );
 
-			$output = '<div class="gv-widget-pagination '.$class.'"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gravityview' ), number_format_i18n( $first ), number_format_i18n( $last ), number_format_i18n( $total ) ) . '</p></div>';
+			$output = '<div class="gv-widget-pagination '.$class.'"><p>'. sprintf(__( 'Displaying %1$s - %2$s of %3$s', 'gk-gravityview' ), number_format_i18n( $first ), number_format_i18n( $last ), number_format_i18n( $total ) ) . '</p></div>';
 		}
 
 		/**

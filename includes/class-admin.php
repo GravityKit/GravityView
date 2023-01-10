@@ -20,22 +20,14 @@ class GravityView_Admin {
 	 * @return void
 	 */
 	private function include_required_files() {
-
-		// Migrate Class
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-migrate.php' );
-
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
-
-		/** @since 1.15 **/
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-support-port.php' );
-
-		/** @since 1.6 */
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
-
-		/** @since 1.17 */
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-admin-no-conflict.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/class-admin-welcome.php' );
 	}
 
 	/**
@@ -47,8 +39,6 @@ class GravityView_Admin {
 		// Filter Admin messages
 		add_filter( 'post_updated_messages', array( $this, 'post_updated_messages' ) );
 		add_filter( 'bulk_post_updated_messages', array( $this, 'post_updated_messages' ) );
-
-		add_filter( 'plugin_action_links_'. plugin_basename( GRAVITYVIEW_FILE ) , array( $this, 'plugin_action_links' ) );
 
 		add_action( 'plugins_loaded', array( $this, 'backend_actions' ), 100 );
 
@@ -65,18 +55,18 @@ class GravityView_Admin {
 	public static function no_views_text() {
 
 		if ( isset( $_REQUEST['post_status'] ) && 'trash' === $_REQUEST['post_status'] ) {
-			return esc_html__( 'No Views found in Trash', 'gravityview' );
+			return esc_html__( 'No Views found in Trash', 'gk-gravityview' );
 		} elseif( ! empty( $_GET['s'] ) ) {
-			return esc_html__( 'No Views found.', 'gravityview' );
+			return esc_html__( 'No Views found.', 'gk-gravityview' );
 		}
 
 		// Floaty the Astronaut says "oi"
 		$image = self::get_floaty();
 
 		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
-			$output = sprintf( esc_attr__( "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gravityview' ), '<h3>', '<a href="' . admin_url( 'post-new.php?post_type=gravityview' ) . '">', '</a>', '</h3>', '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) . '">', '</a>' );
+			$output = sprintf( esc_attr__( "%sYou don't have any active views. Let&rsquo;s go %screate one%s!%s\n\nIf you feel like you're lost in space and need help getting started, check out the %sGetting Started%s page.", 'gk-gravityview' ), '<h3>', '<a href="' . admin_url( 'post-new.php?post_type=gravityview' ) . '">', '</a>', '</h3>', '<a href="' . admin_url( 'edit.php?post_type=gravityview&page=gv-getting-started' ) . '">', '</a>' );
 		} else {
-			$output = esc_attr__( 'There are no active Views', 'gravityview' );
+			$output = esc_attr__( 'There are no active Views', 'gk-gravityview' );
 		}
 
 		return $image . wpautop( $output );
@@ -102,12 +92,12 @@ class GravityView_Admin {
 
 		$error = '';
 		if ( empty( $form_info ) ) {
-			$error = esc_html__( 'The form connected to this View no longer exists.', 'gravityview' );
-			$error .= ' ' . esc_html__( 'Select another form as the data source for this View.', 'gravityview' );
+			$error = esc_html__( 'The form connected to this View no longer exists.', 'gk-gravityview' );
+			$error .= ' ' . esc_html__( 'Select another form as the data source for this View.', 'gk-gravityview' );
 		} elseif ( $form_info->is_trash ) {
-			$error = esc_html__( 'The connected form is in the trash.', 'gravityview' );
-			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash&s=' . $form_info->title ), esc_html__( 'Restore the form from the trash', 'gravityview' ) );
-			$error .= ' ' . esc_html__( 'or select another form.', 'gravityview' );
+			$error = esc_html__( 'The connected form is in the trash.', 'gk-gravityview' );
+			$error .= ' ' . gravityview_get_link( admin_url( 'admin.php?page=gf_edit_forms&filter=trash&s=' . $form_info->title ), esc_html__( 'Restore the form from the trash', 'gk-gravityview' ) );
+			$error .= ' ' . esc_html__( 'or select another form.', 'gk-gravityview' );
 		}
 
 		if( $error ) {
@@ -137,7 +127,6 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/admin/class-gravityview-admin-view-widget.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-views.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-welcome.php' );
-		include_once( GRAVITYVIEW_DIR .'includes/class-admin-installer.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-add-shortcode.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-admin-approve-entries.php' );
 		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-bulk-actions.php' );
@@ -148,29 +137,6 @@ class GravityView_Admin {
 		 * Nice place to insert extensions' backend stuff
 		 */
 		do_action('gravityview_include_backend_actions');
-	}
-
-	/**
-	 * Modify plugin action links at plugins screen
-	 *
-	 * @since 1.15 Added check for `gravityview_view_settings` and `gravityview_support_port` capabilities
-	 * @static
-	 * @param array $links Array of action links under GravityView on the plugin page
-	 * @return array Action links with Settings and Support included, if the user has the appropriate caps
-	 */
-	public static function plugin_action_links( $links ) {
-
-		$actions = array();
-
-		if( GVCommon::has_cap( 'gravityview_view_settings' ) ) {
-			$actions[] = sprintf( '<a href="%s">%s</a>', admin_url( 'edit.php?post_type=gravityview&page=gravityview_settings' ), esc_html__( 'Settings', 'gravityview' ) );
-		}
-
-		if( GVCommon::has_cap( 'gravityview_support_port' ) ) {
-			$actions[] = '<a href="https://docs.gravityview.co">' . esc_html__( 'Support', 'gravityview' ) . '</a>';
-		}
-
-		return array_merge( $actions, $links );
 	}
 
 	/**
@@ -212,11 +178,11 @@ class GravityView_Admin {
 				$form = gravityview_get_form( $connected_form );
 				$form_name = esc_attr( $form['title'] );
 				$image = self::get_floaty();
-				$new_form_text .= '<h3>'.$image.sprintf( __( 'A new form was created for this View: "%s"', 'gravityview' ), $form_name ).'</h3>';
+				$new_form_text .= '<h3>'.$image.sprintf( __( 'A new form was created for this View: "%s"', 'gk-gravityview' ), $form_name ).'</h3>';
 				$new_form_text .=  sprintf( __( '%sThere are no entries for the new form, so the View will also be empty.%s To start collecting entries, you can add submissions through %sthe preview form%s and also embed the form on a post or page using this code: %s
 
 					You can %sedit the form%s in Gravity Forms and the updated fields will be available here. Don&rsquo;t forget to %scustomize the form settings%s.
-					', 'gravityview' ), '<strong>', '</strong>', '<a href="'.site_url( '?gf_page=preview&amp;id='.$connected_form ).'">', '</a>', '<code>[gravityform id="'.$connected_form.'" name="'.$form_name.'"]</code>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;id='.$connected_form ).'">', '</a>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id='.$connected_form ).'">', '</a>');
+					', 'gk-gravityview' ), '<strong>', '</strong>', '<a href="'.site_url( '?gf_page=preview&amp;id='.$connected_form ).'">', '</a>', '<code>[gravityform id="'.$connected_form.'" name="'.$form_name.'"]</code>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;id='.$connected_form ).'">', '</a>', '<a href="'.admin_url( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;id='.$connected_form ).'">', '</a>');
 				$new_form_text = wpautop( $new_form_text );
 
 				delete_post_meta( $post_id, '_gravityview_start_fresh' );
@@ -226,37 +192,37 @@ class GravityView_Admin {
 		$messages['gravityview'] = array(
 			0  => '', // Unused. Messages start at index 1.
 			/* translators: %s and %s are HTML tags linking to the View on the website */
-			1  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			1  => sprintf(__( 'View updated. %sView on website.%s', 'gk-gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			/* translators: %s and %s are HTML tags linking to the View on the website */
-			2  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
-			3  => __( 'View deleted.', 'gravityview' ),
+			2  => sprintf(__( 'View updated. %sView on website.%s', 'gk-gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			3  => __( 'View deleted.', 'gk-gravityview' ),
 			/* translators: %s and %s are HTML tags linking to the View on the website */
-			4  => sprintf(__( 'View updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
+			4  => sprintf(__( 'View updated. %sView on website.%s', 'gk-gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>'),
 			/* translators: %s: date and time of the revision */
-			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gravityview' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'View restored to revision from %s', 'gk-gravityview' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
 			/* translators: %s and %s are HTML tags linking to the View on the website */
-			6  => sprintf(__( 'View published. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
+			6  => sprintf(__( 'View published. %sView on website.%s', 'gk-gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
 			/* translators: %s and %s are HTML tags linking to the View on the website */
-			7  => sprintf(__( 'View saved. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
-			8  => __( 'View submitted.', 'gravityview' ),
+			7  => sprintf(__( 'View saved. %sView on website.%s', 'gk-gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
+			8  => __( 'View submitted.', 'gk-gravityview' ),
 			9  => sprintf(
 		        /* translators: Date and time the View is scheduled to be published */
-				__( 'View scheduled for: %1$s.', 'gravityview' ),
+				__( 'View scheduled for: %1$s.', 'gk-gravityview' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i', 'gravityview' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
+				date_i18n( __( 'M j, Y @ G:i', 'gk-gravityview' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
 			) . $new_form_text,
 			/* translators: %s and %s are HTML tags linking to the View on the website */
-			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
+			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gk-gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,
 
 			/**
 			 * These apply to `bulk_post_updated_messages`
 			 * @file wp-admin/edit.php
 			 */
-			'updated'   => _n( '%s View updated.', '%s Views updated.', $bulk_counts['updated'], 'gravityview' ),
-			'locked'    => _n( '%s View not updated, somebody is editing it.', '%s Views not updated, somebody is editing them.', $bulk_counts['locked'], 'gravityview' ),
-			'deleted'   => _n( '%s View permanently deleted.', '%s Views permanently deleted.', $bulk_counts['deleted'], 'gravityview' ),
-			'trashed'   => _n( '%s View moved to the Trash.', '%s Views moved to the Trash.', $bulk_counts['trashed'], 'gravityview' ),
-			'untrashed' => _n( '%s View restored from the Trash.', '%s Views restored from the Trash.', $bulk_counts['untrashed'], 'gravityview' ),
+			'updated'   => _n( '%s View updated.', '%s Views updated.', $bulk_counts['updated'], 'gk-gravityview' ),
+			'locked'    => _n( '%s View not updated, somebody is editing it.', '%s Views not updated, somebody is editing them.', $bulk_counts['locked'], 'gk-gravityview' ),
+			'deleted'   => _n( '%s View permanently deleted.', '%s Views permanently deleted.', $bulk_counts['deleted'], 'gk-gravityview' ),
+			'trashed'   => _n( '%s View moved to the Trash.', '%s Views moved to the Trash.', $bulk_counts['trashed'], 'gk-gravityview' ),
+			'untrashed' => _n( '%s View restored from the Trash.', '%s Views restored from the Trash.', $bulk_counts['untrashed'], 'gk-gravityview' ),
 		);
 
 		return $messages;

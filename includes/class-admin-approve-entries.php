@@ -146,8 +146,8 @@ class GravityView_Admin_ApproveEntries {
 	function tooltips( $tooltips ) {
 
 		$tooltips['form_gravityview_fields'] = array(
-			'title' => __('GravityView Fields', 'gravityview'),
-			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gravityview'),
+			'title' => __('GravityView Fields', 'gk-gravityview'),
+			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gk-gravityview'),
 		);
 
 		return $tooltips;
@@ -168,14 +168,14 @@ class GravityView_Admin_ApproveEntries {
 			'fields' => array(
 				array(
 					'class' => 'button',
-					'value' => __( 'Approve/Reject', 'gravityview' ),
+					'value' => __( 'Approve/Reject', 'gk-gravityview' ),
 					'onclick' => "StartAddField('gravityviewapproved_admin');",
 					'data-type' => 'gravityviewapproved_admin',
 					'data-icon' => 'dashicons-yes-alt'
 				),
 				array(
 					'class' => 'button',
-					'value' => __( 'User Opt-In', 'gravityview' ),
+					'value' => __( 'User Opt-In', 'gk-gravityview' ),
 					'onclick' => "StartAddField('gravityviewapproved');",
 					'data-type' => 'gravityviewapproved',
 					'data-icon' => 'dashicons-media-text',
@@ -199,9 +199,9 @@ class GravityView_Admin_ApproveEntries {
 	function set_defaults() {
 		?>
 		case 'gravityviewapproved_admin':
-			field.label = "<?php echo esc_js( __( 'Approved? (Admin-only)', 'gravityview' ) ); ?>";
+			field.label = "<?php echo esc_js( __( 'Approved? (Admin-only)', 'gk-gravityview' ) ); ?>";
 
-			field.adminLabel = "<?php echo esc_js( __( 'Approved?', 'gravityview' ) ); ?>";
+			field.adminLabel = "<?php echo esc_js( __( 'Approved?', 'gk-gravityview' ) ); ?>";
 			field.adminOnly = true;
 
 			field.choices = null;
@@ -221,9 +221,9 @@ class GravityView_Admin_ApproveEntries {
 
 			break;
 		case 'gravityviewapproved':
-			field.label = "<?php echo esc_js( __( 'Show Entry on Website', 'gravityview' ) ); ?>";
+			field.label = "<?php echo esc_js( __( 'Show Entry on Website', 'gk-gravityview' ) ); ?>";
 
-			field.adminLabel = "<?php echo esc_js( __( 'Opt-In', 'gravityview' ) ); ?>";
+			field.adminLabel = "<?php echo esc_js( __( 'Opt-In', 'gk-gravityview' ) ); ?>";
 			field.adminOnly = false;
 
 			field.choices = null;
@@ -231,7 +231,7 @@ class GravityView_Admin_ApproveEntries {
 
 			if( !field.choices ) {
 				field.choices = new Array(
-					new Choice("<?php echo esc_js( __( 'Yes, display my entry on the website', 'gravityview' ) ); ?>")
+					new Choice("<?php echo esc_js( __( 'Yes, display my entry on the website', 'gk-gravityview' ) ); ?>")
 				);
 			}
 
@@ -372,15 +372,15 @@ class GravityView_Admin_ApproveEntries {
 			return;
 		}
 
-		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
+		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GV_PLUGIN_VERSION );
 
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version );
+		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GV_PLUGIN_VERSION );
 
-		wp_enqueue_script( 'gravityview_entries_list-popper', plugins_url( 'assets/lib/tippy/popper.min.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
-		wp_enqueue_script( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.min.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
-		wp_enqueue_style( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.css', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
+		wp_enqueue_script( 'gravityview_entries_list-popper', plugins_url( 'assets/lib/tippy/popper.min.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_enqueue_script( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.min.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_enqueue_style( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 
 		wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 			'nonce' => wp_create_nonce( 'gravityview_entry_approval'),
@@ -396,7 +396,7 @@ class GravityView_Admin_ApproveEntries {
 			'unapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('unapproved'),
             'approve_title' => GravityView_Entry_Approval_Status::get_title_attr('disapproved'),
 			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
-			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
+			'column_title' => __( 'Show entry in directory view?', 'gk-gravityview'),
 			'column_link' => esc_url( $this->get_sort_link() ),
             'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
 			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),

@@ -25,7 +25,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			return;
 		}
 
-		$this->widget_description = __('Display a Gravity Forms form.', 'gravityview' );
+		$this->widget_description = __('Display a Gravity Forms form.', 'gk-gravityview' );
 
 		$default_values = array(
 			'header' => 1,
@@ -35,38 +35,38 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 		$settings = array(
 			'widget_form_id' => array(
 				'type' => 'select',
-				'label' => __( 'Form to display', 'gravityview' ),
+				'label' => __( 'Form to display', 'gk-gravityview' ),
 				'value' => '',
 				'options' => $this->_get_form_choices(),
 			),
 			'title' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Show form title?', 'gravityview' ),
+				'label' => __( 'Show form title?', 'gk-gravityview' ),
 				'value' => 1,
 			),
 			'description' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Show form description?', 'gravityview' ),
+				'label' => __( 'Show form description?', 'gk-gravityview' ),
 				'value' => 1,
 			),
 			'ajax' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Enable AJAX', 'gravityview' ),
+				'label' => __( 'Enable AJAX', 'gk-gravityview' ),
 				'desc' => '',
 				'value' => 1,
 			),
 			'field_values' => array(
 				'type' => 'text',
 				'class' => 'code widefat',
-				'label' => __( 'Field value parameters', 'gravityview' ),
-				'desc' => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gravityview' ) . '</a>',
+				'label' => __( 'Field value parameters', 'gk-gravityview' ),
+				'desc' => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gk-gravityview' ) . '</a>',
 				'value' => '',
 			),
 		);
 
 		add_filter( 'gravityview/widget/hide_until_searched/allowlist', array( $this, 'add_to_allowlist' ) );
 
-		parent::__construct( __( 'Gravity Forms', 'gravityview' ) , 'gravityforms', $default_values, $settings );
+		parent::__construct( __( 'Gravity Forms', 'gk-gravityview' ) , 'gravityforms', $default_values, $settings );
 	}
 
 	/**
@@ -77,11 +77,16 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	 * @return array Array with key set to Form ID => Form Title, with `0` as default placeholder.
 	 */
 	private function _get_form_choices() {
+
 		$choices = array(
-			0 => '&mdash; ' . esc_html__( 'list of forms', 'gravityview' ) . '&mdash;',
+			0 => '&mdash; ' . esc_html__( 'list of forms', 'gk-gravityview' ) . '&mdash;',
 		);
 
 		if ( ! class_exists( 'GFAPI' ) ) {
+			return $choices;
+		}
+
+		if( gravityview()->request->is_frontend() ) {
 			return $choices;
 		}
 

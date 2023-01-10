@@ -24,7 +24,7 @@ class GravityView_Field_Total extends GravityView_Field {
 	var $_gf_field_class_name = 'GF_Field_Total';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Total', 'gravityview' );
+		$this->label = esc_html__( 'Total', 'gk-gravityview' );
 
 		add_action( 'gravityview/edit_entry/after_update', array( $this, 'edit_entry_recalculate_totals' ), 10, 3 );
 

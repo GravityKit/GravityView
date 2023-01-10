@@ -55,7 +55,7 @@ class Views_Route extends Route {
 		) );
 
 		if ( empty( $items ) ) {
-			return new \WP_Error( 'gravityview-no-views', __( 'No Views found.', 'gravityview' ) ); //@todo message
+			return new \WP_Error( 'gravityview-no-views', __( 'No Views found.', 'gk-gravityview' ) ); //@todo message
 		}
 
 		$data = array(
@@ -271,7 +271,7 @@ class Views_Route extends Route {
 		$entries = $view->get_entries( new Request( $request ) );
 
 		if ( ! $entries->all() ) {
-			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gravityview' ) );
+			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gk-gravityview' ) );
 		}
 
 		if ( in_array( $format, array( 'csv', 'tsv' ), true ) ) {
@@ -368,7 +368,7 @@ class Views_Route extends Route {
 	public function prepare_view_for_response( $view_post, \WP_REST_Request $request ) {
 		if ( is_wp_error( $this->get_item_permissions_check( $request, $view_post->ID ) ) ) {
 			// Redacted out view.
-			return array( 'ID' => $view_post->ID, 'post_content' => __( 'You are not allowed to access this content.', 'gravityview' ) );
+			return array( 'ID' => $view_post->ID, 'post_content' => __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
 		}
 
 		$view = \GV\View::from_post( $view_post );
@@ -423,7 +423,7 @@ class Views_Route extends Route {
 		}
 
 		if ( ! $view = \GV\View::by_id( $view_id ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
 		}
 
 		while ( $error = $view->can_render( array( 'rest' ), $request ) ) {
@@ -438,11 +438,11 @@ class Views_Route extends Route {
 				case 'not_public':
 				case 'embed_only':
 				case 'no_direct_access':
-					return new \WP_Error( 'rest_forbidden_access_denied', __( 'You are not allowed to access this content.', 'gravityview' ) );
+					return new \WP_Error( 'rest_forbidden_access_denied', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
 				case 'no_form_attached':
-					return new \WP_Error( 'rest_forbidden_no_form_attached', __( 'This View is not configured properly.', 'gravityview' ) );
+					return new \WP_Error( 'rest_forbidden_no_form_attached', __( 'This View is not configured properly.', 'gk-gravityview' ) );
 				default:
-					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
 			}
 		}
 
@@ -452,7 +452,7 @@ class Views_Route extends Route {
 		 * @param \GV\View $view The view.
 		 */
 		if ( ! apply_filters( 'gravityview/view/output/rest', true, $view ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gravityview' ) );
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
 		}
 
 		return true;

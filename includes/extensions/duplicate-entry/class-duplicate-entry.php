@@ -203,15 +203,15 @@ final class GravityView_Duplicate_Entry {
 
 		$add_option['duplicate_link'] = array(
 			'type' => 'text',
-			'label' => __( 'Duplicate Link Text', 'gravityview' ),
+			'label' => __( 'Duplicate Link Text', 'gk-gravityview' ),
 			'desc' => NULL,
-			'value' => __( 'Duplicate Entry', 'gravityview' ),
+			'value' => __( 'Duplicate Entry', 'gk-gravityview' ),
 			'merge_tags' => true,
 		);
 
 		$field_options['allow_duplicate_cap'] = array(
 			'type' => 'select',
-			'label' => __( 'Allow the following users to duplicate the entry:', 'gravityview' ),
+			'label' => __( 'Allow the following users to duplicate the entry:', 'gk-gravityview' ),
 			'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 			'tooltip' => 'allow_duplicate_cap',
 			'class' => 'widefat',
@@ -237,9 +237,9 @@ final class GravityView_Duplicate_Entry {
 
 		if ( 'edit' !== $zone ) {
 			$entry_default_fields['duplicate_link'] = array(
-				'label' => __( 'Duplicate Entry', 'gravityview' ),
+				'label' => __( 'Duplicate Entry', 'gk-gravityview' ),
 				'type'  => 'duplicate_link',
-				'desc'  => __( 'A link to duplicate the entry. Respects the Duplicate Entry permissions.', 'gravityview' ),
+				'desc'  => __( 'A link to duplicate the entry. Respects the Duplicate Entry permissions.', 'gk-gravityview' ),
 				'icon'  => 'dashicons-controls-repeat',
 			);
 		}
@@ -259,7 +259,7 @@ final class GravityView_Duplicate_Entry {
 	public function add_available_field( $available_fields = array() ) {
 
 		$available_fields['duplicate_link'] = array(
-			'label_text' => __( 'Duplicate Entry', 'gravityview' ),
+			'label_text' => __( 'Duplicate Entry', 'gk-gravityview' ),
 			'field_id' => 'duplicate_link',
 			'label_type' => 'field',
 			'input_type' => 'duplicate_link',
@@ -293,7 +293,7 @@ final class GravityView_Duplicate_Entry {
 			// Remove other built-in caps.
 			unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['duplicate_others_posts'] );
 
-			$caps['read'] = _x( 'Entry Creator', 'User capability', 'gravityview' );
+			$caps['read'] = _x( 'Entry Creator', 'User capability', 'gk-gravityview' );
 		}
 
 		return $caps;
@@ -425,7 +425,7 @@ final class GravityView_Duplicate_Entry {
 			gravityview()->log->error( 'Duplicate entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
 
 			$messages = array(
-				'message' => urlencode( __( 'The entry does not exist.', 'gravityview' ) ),
+				'message' => urlencode( __( 'The entry does not exist.', 'gk-gravityview' ) ),
 				'status' => 'error',
 			);
 		}
@@ -456,7 +456,7 @@ final class GravityView_Duplicate_Entry {
 	private function duplicate_entry( $entry ) {
 
 		if ( ! $entry_id = \GV\Utils::get( $entry, 'id' ) ) {
-			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gravityview' ) );
+			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gk-gravityview' ) );
 		}
 
 		gravityview()->log->debug( 'Starting duplicate entry: {entry_id}', array( 'entry_id' => $entry_id ) );
@@ -467,7 +467,7 @@ final class GravityView_Duplicate_Entry {
 		$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
 
 		if ( ! $row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $entry_table WHERE ID = %d", $entry_id ), ARRAY_A ) ) {
-			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gravityview' ) );
+			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gk-gravityview' ) );
 		}
 
 		$form = GFAPI::get_form( $entry['form_id'] );
@@ -491,7 +491,7 @@ final class GravityView_Duplicate_Entry {
 		$row = apply_filters( 'gravityview/entry/duplicate/details', $row, $entry );
 
 		if ( ! $wpdb->insert( $entry_table, $row ) ) {
-			return new WP_Error( 'gravityview-duplicate-entry-db-details', __( 'There was an error duplicating the entry.', 'gravityview' ) );
+			return new WP_Error( 'gravityview-duplicate-entry-db-details', __( 'There was an error duplicating the entry.', 'gk-gravityview' ) );
 		}
 
 		$duplicated_id = $wpdb->insert_id;
@@ -531,7 +531,7 @@ final class GravityView_Duplicate_Entry {
 			$data['entry_id'] = $duplicated_id;
 
 			if ( ! $wpdb->insert( $entry_meta_table, $data ) ) {
-				return new WP_Error( 'gravityview-duplicate-entry-db-meta', __( 'There was an error duplicating the entry.', 'gravityview' ) );
+				return new WP_Error( 'gravityview-duplicate-entry-db-meta', __( 'There was an error duplicating the entry.', 'gk-gravityview' ) );
 			}
 		}
 
@@ -591,7 +591,7 @@ final class GravityView_Duplicate_Entry {
 	 */
 	public static function get_confirm_dialog() {
 
-		$confirm = __( 'Are you sure you want to duplicate this entry?', 'gravityview' );
+		$confirm = __( 'Are you sure you want to duplicate this entry?', 'gk-gravityview' );
 
 		/**
 		 * @filter `gravityview/duplicate-entry/confirm-text` Modify the Duplicate Entry Javascript confirmation text (will be sanitized when output)
@@ -626,11 +626,11 @@ final class GravityView_Duplicate_Entry {
 		$error = NULL;
 
 		if ( ! $this->verify_nonce() ) {
-			$error = __( 'The link to duplicate this entry is not valid; it may have expired.', 'gravityview' );
+			$error = __( 'The link to duplicate this entry is not valid; it may have expired.', 'gk-gravityview' );
 		}
 
 		if ( ! self::check_user_cap_duplicate_entry( $entry, array(), $view_id ) ) {
-			$error = __( 'You do not have permission to duplicate this entry.', 'gravityview' );
+			$error = __( 'You do not have permission to duplicate this entry.', 'gk-gravityview' );
 		}
 
 		// No errors; everything's fine here!
@@ -763,18 +763,18 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		$status = esc_attr( $_GET['status'] );
-		$message_from_url = \GV\Utils::_GET( 'message' );
+		$message_from_url = \GV\Utils::_GET( 'message', '' );
 		$message_from_url = rawurldecode( stripslashes_deep( $message_from_url ) );
 		$class = '';
 
 		switch ( $status ) {
 			case 'error':
 				$class = ' gv-error error';
-				$error_message = __( 'There was an error duplicating the entry: %s', 'gravityview' );
+				$error_message = __( 'There was an error duplicating the entry: %s', 'gk-gravityview' );
 				$message = sprintf( $error_message, $message_from_url );
 				break;
 			default:
-				$message = __( 'The entry was successfully duplicated.', 'gravityview' );
+				$message = __( 'The entry was successfully duplicated.', 'gk-gravityview' );
 				break;
 		}
 
@@ -818,7 +818,7 @@ final class GravityView_Duplicate_Entry {
 		?>
 		<span class="gv-duplicate">
 			|
-			<a href="<?php echo wp_nonce_url( add_query_arg( 'entry_id', $entry['id'] ), self::get_nonce_key( $entry['id'] ), 'duplicate' ); ?>"><?php esc_html_e( 'Duplicate', 'gravityview' ); ?></a>
+			<a href="<?php echo wp_nonce_url( add_query_arg( 'entry_id', $entry['id'] ), self::get_nonce_key( $entry['id'] ), 'duplicate' ); ?>"><?php esc_html_e( 'Duplicate', 'gk-gravityview' ); ?></a>
 		</span>
 		<?php
 	}
@@ -842,28 +842,21 @@ final class GravityView_Duplicate_Entry {
 			add_filter( 'gform_admin_messages', function( $messages ) {
 				$messages = (array) $messages;
 
-				$messages[] = esc_html__( 'Entry duplicated.', 'gravityview' );
+				$messages[] = esc_html__( 'Entry duplicated.', 'gk-gravityview' );
 				return $messages;
 			} );
 		}
 
 		if ( 'error' === \GV\Utils::_GET( 'result' ) ) {
-
-			$is_logging_active = class_exists( 'GravityView_Logging' ) ? GravityView_Logging::is_logging_active() : true;
-
-			$check_logs_message = '';
-
-			if( $is_logging_active ) {
-				$check_logs_message = sprintf( ' <a href="%s">%s</a>',
-					esc_url( admin_url( 'admin.php?page=gf_settings&subview=gravityformslogging' ) ),
-					esc_html_x( 'Check the GravityView logs for more information.', 'Error message links to logging page', 'gravityview' )
-				);
-			}
+			$check_logs_message = sprintf( ' <a href="%s">%s</a>',
+				esc_url( admin_url( 'admin.php?page=gf_settings&subview=gravityformslogging' ) ),
+				esc_html_x( 'Check the GravityView logs for more information.', 'Error message links to logging page', 'gk-gravityview' )
+			);
 
 			add_filter( 'gform_admin_error_messages', function( $messages ) use ( $check_logs_message ) {
 				$messages = (array) $messages;
 
-				$messages[] = esc_html__( 'There was an error duplicating the entry.', 'gravityview' ) . $check_logs_message;
+				$messages[] = esc_html__( 'There was an error duplicating the entry.', 'gk-gravityview' ) . $check_logs_message;
 
 				return $messages;
 			} );

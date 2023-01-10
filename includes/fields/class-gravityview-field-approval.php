@@ -24,9 +24,9 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_attr__( 'Approve Entries', 'gravityview' );
+		$this->label = esc_attr__( 'Approve Entries', 'gk-gravityview' );
 
-		$this->description =  esc_attr__( 'Approve and reject entries from the View.', 'gravityview' );
+		$this->description =  esc_attr__( 'Approve and reject entries from the View.', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -148,11 +148,11 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GravityView_Plugin::version, true );
+		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GV_PLUGIN_VERSION, true );
 
-		wp_register_script( 'gravityview-field-approval-popper', GRAVITYVIEW_URL . 'assets/lib/tippy/popper.min.js', array(), GravityView_Plugin::version, true );
-		wp_register_script( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.min.js', array(), GravityView_Plugin::version, true );
-		wp_register_style( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.css', array(), GravityView_Plugin::version, 'screen' );
+		wp_register_script( 'gravityview-field-approval-popper', GRAVITYVIEW_URL . 'assets/lib/tippy/popper.min.js', array(), GV_PLUGIN_VERSION, true );
+		wp_register_script( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.min.js', array(), GV_PLUGIN_VERSION, true );
+		wp_register_style( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.css', array(), GV_PLUGIN_VERSION, 'screen' );
 
 		$style_path = GRAVITYVIEW_DIR . 'templates/css/field-approval.css';
 
@@ -173,7 +173,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		$style_url = apply_filters( 'gravityview/field/approval/css_url', $style_url );
 
 		if( ! empty( $style_url ) ) {
-			wp_register_style( 'gravityview-field-approval', $style_url, array( 'dashicons' ), GravityView_Plugin::version, 'screen' );
+			wp_register_style( 'gravityview-field-approval', $style_url, array( 'dashicons' ), GV_PLUGIN_VERSION, 'screen' );
 		}
 
 		unset( $style_path, $style_url );

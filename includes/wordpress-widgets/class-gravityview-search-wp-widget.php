@@ -11,14 +11,14 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		$widget_ops = array(
 			'classname' => 'widget_gravityview_search',
-			'description' => __( 'A search form for a specific GravityView.', 'gravityview')
+			'description' => __( 'A search form for a specific GravityView.', 'gk-gravityview')
 		);
 
 		$widget_display = array(
 			'width' => 650
 		);
 
-		parent::__construct( 'gravityview_search', __( 'GravityView Search', 'gravityview' ), $widget_ops, $widget_display );
+		parent::__construct( 'gravityview_search', __( 'GravityView Search', 'gk-gravityview' ), $widget_ops, $widget_display );
 
 		$this->load_required_files();
 
@@ -144,7 +144,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		// @todo Make compatible with Customizer
 		if( $this->is_preview() ) {
 
-			$warning = sprintf( esc_html__( 'This widget is not configurable from this screen. Please configure it on the %sWidgets page%s.', 'gravityview' ), '<a href="'.admin_url('widgets.php').'">', '</a>' );
+			$warning = sprintf( esc_html__( 'This widget is not configurable from this screen. Please configure it on the %sWidgets page%s.', 'gk-gravityview' ), '<a href="'.admin_url('widgets.php').'">', '</a>' );
 
 			echo wpautop( GravityView_Admin::get_floaty() . $warning );
 
@@ -171,7 +171,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		}
 		?>
 
-		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'gravityview'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></label></p>
+		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:', 'gk-gravityview'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></label></p>
 
 		<?php
 		/**
@@ -181,7 +181,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		if( isset( $instance['updated'] ) && empty( $instance['view_id'] ) ) {
 			?>
 			<div class="error inline hide-on-view-change">
-				<p><?php esc_html_e('Please select a View to search.', 'gravityview'); ?></p>
+				<p><?php esc_html_e('Please select a View to search.', 'gk-gravityview'); ?></p>
 			</div>
 			<?php
 			unset ( $error );
@@ -189,12 +189,12 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		?>
 
 		<p>
-			<label for="gravityview_view_id"><?php _e( 'View:', 'gravityview' ); ?></label>
+			<label for="gravityview_view_id"><?php _e( 'View:', 'gk-gravityview' ); ?></label>
 			<select id="gravityview_view_id" name="<?php echo $this->get_field_name('view_id'); ?>" class="widefat">
-				<option value=""><?php esc_html_e( '&mdash; Select a View &mdash;', 'gravityview' ); ?></option>
+				<option value=""><?php esc_html_e( '&mdash; Select a View &mdash;', 'gk-gravityview' ); ?></option>
 				<?php
 				foreach( $views as $view_option ) {
-					$title = empty( $view_option->post_title ) ? __('(no title)', 'gravityview') : $view_option->post_title;
+					$title = empty( $view_option->post_title ) ? __('(no title)', 'gk-gravityview') : $view_option->post_title;
 					echo '<option value="'. $view_option->ID .'" ' . selected( esc_attr( $view_id ), $view_option->ID, false ) . '>'. esc_html( sprintf('%s #%d', $title, $view_option->ID ) ) .'</option>';
 				}
 				?>
@@ -218,39 +218,39 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 		?>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gravityview' ); ?></label>
+			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gk-gravityview' ); ?></label>
 			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $post_id ); ?>" />
 			<span class="howto gv-howto"><?php
-				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
-				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gk-gravityview' );
+				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
 				?></span>
 		</p>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('search_clear'); ?>"><?php esc_html_e( 'Show Clear button', 'gravityview' ); ?>:</label>
+			<label for="<?php echo $this->get_field_id('search_clear'); ?>"><?php esc_html_e( 'Show Clear button', 'gk-gravityview' ); ?>:</label>
 			<input name="<?php echo $this->get_field_name('search_clear'); ?>" type="hidden" value="0">
 			<input id="<?php echo $this->get_field_id('search_clear'); ?>" name="<?php echo $this->get_field_name('search_clear'); ?>" type="checkbox" class="checkbox" value="1" <?php checked( $search_clear, 1, true ); ?>>
 		</p>
 
 		<p>
-			<label><?php esc_html_e( 'Search Mode', 'gravityview' ); ?>:</label>
+			<label><?php esc_html_e( 'Search Mode', 'gk-gravityview' ); ?>:</label>
 			<label for="<?php echo $this->get_field_id('search_mode'); ?>_any">
 				<input id="<?php echo $this->get_field_id('search_mode'); ?>_any" name="<?php echo $this->get_field_name('search_mode'); ?>" type="radio" class="radio" value="any" <?php checked( $search_mode, 'any', true ); ?>>
-				<?php esc_html_e( 'Match Any Fields', 'gravityview' ); ?>
+				<?php esc_html_e( 'Match Any Fields', 'gk-gravityview' ); ?>
 			</label>
 			<label for="<?php echo $this->get_field_id('search_mode'); ?>_all">
 				<input id="<?php echo $this->get_field_id('search_mode'); ?>_all" name="<?php echo $this->get_field_name('search_mode'); ?>" type="radio" class="radio" value="all" <?php checked( $search_mode, 'all', true ); ?>>
-				<?php esc_html_e( 'Match All Fields', 'gravityview' ); ?>
+				<?php esc_html_e( 'Match All Fields', 'gk-gravityview' ); ?>
 			</label>
-			<span class="howto gv-howto"><?php esc_html_e('Should search results match all search fields, or any?', 'gravityview' ); ?></span
+			<span class="howto gv-howto"><?php esc_html_e('Should search results match all search fields, or any?', 'gk-gravityview' ); ?></span
 		</p>
 
 		<hr />
 
 		<?php // @todo: move style to CSS ?>
 		<div style="margin-bottom: 1em;">
-			<label class="screen-reader-text" for="<?php echo $this->get_field_id('search_fields'); ?>"><?php _e( 'Searchable fields:', 'gravityview' ); ?></label>
-			<div class="gv-widget-search-fields" title="<?php esc_html_e('Search Fields', 'gravityview'); ?>">
+			<label class="screen-reader-text" for="<?php echo $this->get_field_id('search_fields'); ?>"><?php _e( 'Searchable fields:', 'gk-gravityview' ); ?></label>
+			<div class="gv-widget-search-fields" title="<?php esc_html_e('Search Fields', 'gk-gravityview'); ?>">
 				<input id="<?php echo $this->get_field_id('search_fields'); ?>" name="<?php echo $this->get_field_name('search_fields'); ?>" type="hidden" value="<?php echo esc_attr( $search_fields ); ?>" class="gv-search-fields-value">
 			</div>
 

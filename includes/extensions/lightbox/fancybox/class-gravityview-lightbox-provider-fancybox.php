@@ -71,17 +71,17 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 				),
 				'i18n'            => array(
 					'en' => array(
-						'CLOSE'       => __( 'Close', 'gravityview' ),
-						'NEXT'        => __( 'Next', 'gravityview' ),
-						'PREV'        => __( 'Previous', 'gravityview' ),
-						'ERROR'       => __( 'The requested content cannot be loaded. Please try again later.', 'gravityview' ),
-						'PLAY_START'  => __( 'Start slideshow', 'gravityview' ),
-						'PLAY_STOP'   => __( 'Pause slideshow', 'gravityview' ),
-						'FULL_SCREEN' => __( 'Full screen', 'gravityview' ),
-						'THUMBS'      => __( 'Thumbnails', 'gravityview' ),
-						'DOWNLOAD'    => __( 'Download', 'gravityview' ),
-						'SHARE'       => __( 'Share', 'gravityview' ),
-						'ZOOM'        => __( 'Zoom', 'gravityview' ),
+						'CLOSE'       => __( 'Close', 'gk-gravityview' ),
+						'NEXT'        => __( 'Next', 'gk-gravityview' ),
+						'PREV'        => __( 'Previous', 'gk-gravityview' ),
+						'ERROR'       => __( 'The requested content cannot be loaded. Please try again later.', 'gk-gravityview' ),
+						'PLAY_START'  => __( 'Start slideshow', 'gk-gravityview' ),
+						'PLAY_STOP'   => __( 'Pause slideshow', 'gk-gravityview' ),
+						'FULL_SCREEN' => __( 'Full screen', 'gk-gravityview' ),
+						'THUMBS'      => __( 'Thumbnails', 'gk-gravityview' ),
+						'DOWNLOAD'    => __( 'Download', 'gk-gravityview' ),
+						'SHARE'       => __( 'Share', 'gk-gravityview' ),
+						'ZOOM'        => __( 'Zoom', 'gk-gravityview' ),
 					),
 				)
 		);

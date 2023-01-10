@@ -311,7 +311,7 @@ class GravityView_API {
 
 		if ( $is_search ) {
 
-			$output = esc_html__( 'This search returned no results.', 'gravityview' );
+			$output = esc_html__( 'This search returned no results.', 'gk-gravityview' );
 
 			if( $context ) {
 				$setting = $context->view->settings->get( 'no_search_results_text', $output );
@@ -319,7 +319,7 @@ class GravityView_API {
 
 		} else {
 
-			$output = esc_html__( 'No entries match your request.', 'gravityview' );
+			$output = esc_html__( 'No entries match your request.', 'gk-gravityview' );
 
 			if( $context ) {
 				$setting = $context->view->settings->get( 'no_results_text', $output );
@@ -975,7 +975,7 @@ function gravityview_back_link( $context = null ) {
 	}
 
 	/** Default */
-	$label = $view_label ? $view_label : __( '&larr; Go back', 'gravityview' );
+	$label = $view_label ? $view_label : __( '&larr; Go back', 'gk-gravityview' );
 
 	/**
 	 * @filter `gravityview_go_back_label` Modify the back link text
@@ -1333,7 +1333,7 @@ function gravityview_get_context() {
 		return 'edit';
 	} else if ( gravityview()->request->is_entry() ) {
 		return 'single';
-	} else if ( gravityview()->request->is_view() ) {
+	} else if ( gravityview()->request->is_view( false ) ) {
 		return 'directory';
 	}
 
@@ -1397,7 +1397,7 @@ function gravityview_get_map_link( $address, $atts = array() ) {
 
 	$url = "https://maps.google.com/maps?q={$address_qs}";
 
-	$link_text = esc_html__( 'Map It', 'gravityview' );
+	$link_text = esc_html__( 'Map It', 'gk-gravityview' );
 
 	$atts = array_merge(
 		array(
@@ -1532,14 +1532,14 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	$placeholders['width'] = GravityView_API::field_width( $field );
 
 	// If replacing with CSS inline formatting, let's do it.
-	$placeholders['width:style'] = GravityView_API::field_width( $field, 'width:' . $placeholders['width'] . '%;' );
+	$placeholders['width:style'] = (string) GravityView_API::field_width( $field, 'width:' . $placeholders['width'] . '%;' );
 
 	// Grab the Class using `gv_class`
 	$placeholders['class'] = gv_class( $field, $form, $entry );
 	$placeholders['field_id'] = GravityView_API::field_html_attr_id( $field, $form, $entry );
 
 	if ( $context instanceof \GV\Template_Context ) {
-		$placeholders['label_value'] = \GV\Utils::get( $args, 'label' );
+		$placeholders['label_value'] = \GV\Utils::get( $args, 'label', '' );
 	} else {
 		// Default Label value
 		$placeholders['label_value'] = gv_label( $field, $entry );
@@ -1608,7 +1608,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		$value = apply_filters( 'gravityview/field_output/context/' . $tag, $value, $args, $context );
 
 		// Finally do the replace
-		$html = str_replace( $search, $value, $html );
+		$html = str_replace( $search, (string) $value, $html );
 	}
 
 	/**

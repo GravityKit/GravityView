@@ -25,7 +25,7 @@ class GravityView_Field_Post_ID extends GravityView_Field {
 	 * GravityView_Field_Post_ID constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Post ID', 'gravityview' );
+		$this->label = esc_html__( 'Post ID', 'gk-gravityview' );
 		parent::__construct();
 	}
 

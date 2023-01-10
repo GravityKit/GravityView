@@ -418,7 +418,7 @@ class GravityView_Merge_Tags {
 			return $original_text;
 		}
 
-		return str_replace( '{is_starred}', rgar( $entry, 'is_starred' ), $original_text );
+		return str_replace( '{is_starred}', rgar( $entry, 'is_starred', '' ), $original_text );
 	}
 
 	/**

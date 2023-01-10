@@ -100,7 +100,7 @@ class GravityView_Delete_Entry_Admin {
 			// Remove other built-in caps.
 			unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['delete_others_posts'] );
 
-			$caps['read'] = _x( 'Entry Creator', 'User capability', 'gravityview' );
+			$caps['read'] = _x( 'Entry Creator', 'User capability', 'gk-gravityview' );
 		}
 
 		return $caps;
@@ -130,15 +130,15 @@ class GravityView_Delete_Entry_Admin {
 
 		$add_option['delete_link'] = array(
 			'type'       => 'text',
-			'label'      => __( 'Delete Link Text', 'gravityview' ),
+			'label'      => __( 'Delete Link Text', 'gk-gravityview' ),
 			'desc'       => null,
-			'value'      => __( 'Delete Entry', 'gravityview' ),
+			'value'      => __( 'Delete Entry', 'gk-gravityview' ),
 			'merge_tags' => true,
 		);
 
 		$field_options['allow_edit_cap'] = array(
 			'type'    => 'select',
-			'label'   => __( 'Allow the following users to delete the entry:', 'gravityview' ),
+			'label'   => __( 'Allow the following users to delete the entry:', 'gk-gravityview' ),
 			'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 			'tooltip' => 'allow_edit_cap',
 			'class'   => 'widefat',
@@ -164,7 +164,7 @@ class GravityView_Delete_Entry_Admin {
 	public function add_available_field( $available_fields = array() ) {
 
 		$available_fields['delete_link'] = array(
-			'label_text'    => __( 'Delete Entry', 'gravityview' ),
+			'label_text'    => __( 'Delete Entry', 'gk-gravityview' ),
 			'field_id'      => 'delete_link',
 			'label_type'    => 'field',
 			'input_type'    => 'delete_link',
@@ -206,9 +206,9 @@ class GravityView_Delete_Entry_Admin {
 
 		if ( 'edit' !== $zone ) {
 			$entry_default_fields['delete_link'] = array(
-				'label' => __( 'Delete Entry', 'gravityview' ),
+				'label' => __( 'Delete Entry', 'gk-gravityview' ),
 				'type'  => 'delete_link',
-				'desc'  => __( 'A link to delete the entry. Respects the Delete Entry permissions.', 'gravityview' ),
+				'desc'  => __( 'A link to delete the entry. Respects the Delete Entry permissions.', 'gk-gravityview' ),
 				'icon'  => 'dashicons-trash',
 			);
 		}

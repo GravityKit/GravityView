@@ -101,9 +101,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		if( in_array( $zone, array( 'directory', 'single' ) ) ) {
 			$entry_default_fields['notes'] = array(
-				'label' => __( 'Entry Notes', 'gravityview' ),
+				'label' => __( 'Entry Notes', 'gk-gravityview' ),
 				'type'  => 'notes',
-				'desc'  => __( 'Display, add, and delete notes for an entry.', 'gravityview' ),
+				'desc'  => __( 'Display, add, and delete notes for an entry.', 'gk-gravityview' ),
 				'icon'  => 'dashicons-admin-comments',
 			);
 		}
@@ -120,8 +120,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	public function register_scripts() {
 		$css_file = gravityview_css_url( 'entry-notes.css', GravityView_Field_Notes::$path . 'assets/css/' );
-		wp_register_style( 'gravityview-notes', $css_file, array(), GravityView_Plugin::version );
-		wp_register_script( 'gravityview-notes', plugins_url( '/assets/js/entry-notes.js', GravityView_Field_Notes::$file ), array( 'jquery' ), GravityView_Plugin::version, true );
+		wp_register_style( 'gravityview-notes', $css_file, array(), GV_PLUGIN_VERSION );
+		wp_register_script( 'gravityview-notes', plugins_url( '/assets/js/entry-notes.js', GravityView_Field_Notes::$file ), array( 'jquery' ), GV_PLUGIN_VERSION, true );
 	}
 
 	/**
@@ -369,25 +369,25 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$notes_options = array(
 			'notes' => array(
 				'type' => 'checkboxes',
-				'label' => __('Note Settings', 'gravityview'),
-				'desc' => sprintf( _x('Only users with specific capabilities will be able to view, add and delete notes. %sRead more%s.', '%s is opening and closing HTML link', 'gravityview' ), '<a href="https://docs.gravityview.co/article/311-gravityview-capabilities">', '</a>' ),
+				'label' => __('Note Settings', 'gk-gravityview'),
+				'desc' => sprintf( _x('Only users with specific capabilities will be able to view, add and delete notes. %sRead more%s.', '%s is opening and closing HTML link', 'gk-gravityview' ), '<a href="https://docs.gravityview.co/article/311-gravityview-capabilities">', '</a>' ),
 				'options' => array(
 					'view' => array(
-						'label' => __( 'Display notes?', 'gravityview' ),
+						'label' => __( 'Display notes?', 'gk-gravityview' ),
 					),
 					'view_loggedout' => array(
-						'label' => __( 'Display notes to users who are not logged-in?', 'gravityview' ),
+						'label' => __( 'Display notes to users who are not logged-in?', 'gk-gravityview' ),
 						'requires' => 'view',
 					),
 					'add' => array(
-						'label' => __( 'Enable adding notes?', 'gravityview' ),
+						'label' => __( 'Enable adding notes?', 'gk-gravityview' ),
 					),
 					'email' => array(
-						'label' => __( 'Allow emailing notes?', 'gravityview' ),
+						'label' => __( 'Allow emailing notes?', 'gk-gravityview' ),
 						'requires' => 'add',
 					),
 					'delete' => array(
-						'label' => __( 'Allow deleting notes?', 'gravityview' ),
+						'label' => __( 'Allow deleting notes?', 'gk-gravityview' ),
 					),
 				),
 				'value' => array( 'view' => 1, 'add' => 1, 'email' => 1 ),
@@ -411,28 +411,28 @@ class GravityView_Field_Notes extends GravityView_Field {
 	static public function strings( $key = '' ) {
 
 		$strings = array(
-			'add-note' => __( 'Add Note', 'gravityview' ),
-			'added-note' => __( 'Note added.', 'gravityview' ),
-			'content-label' => __( 'Note Content', 'gravityview' ),
-			'delete' => __( 'Delete', 'gravityview' ),
-			'delete-confirm' => __( 'Are you sure you want to delete the selected notes?', 'gravityview' ),
-			'caption' => __( 'Notes for this entry', 'gravityview' ),
-			'toggle-notes' => __( 'Toggle all notes', 'gravityview' ),
-			'no-notes' => __( 'There are no notes.', 'gravityview' ),
-			'processing' => __( 'Processing&hellip;', 'gravityview' ),
-			'other-email' => __( 'Other email address', 'gravityview' ),
-			'email-label' => __( 'Email address', 'gravityview' ),
-			'email-placeholder' => _x('you@example.com', 'Example email address used as a placeholder', 'gravityview'),
-			'subject-label' => __( 'Subject', 'gravityview' ),
-			'subject' => __( 'Email subject', 'gravityview' ),
-			'default-email-subject' => __( 'New entry note', 'gravityview' ),
-            'email-footer' => __( 'This note was sent from {url}', 'gravityview' ),
-			'also-email' => __( 'Also email this note to', 'gravityview' ),
-			'error-add-note' => __( 'There was an error adding the note.', 'gravityview' ),
-			'error-invalid' => __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ),
-			'error-empty-note' => _x( 'Note cannot be blank.', 'Message to display when submitting a note without content.', 'gravityview' ),
-			'error-cap-delete' => __( 'You don\'t have the ability to delete notes.', 'gravityview' ),
-			'error-cap-add' => __( 'You don\'t have the ability to add notes.', 'gravityview' ),
+			'add-note' => __( 'Add Note', 'gk-gravityview' ),
+			'added-note' => __( 'Note added.', 'gk-gravityview' ),
+			'content-label' => __( 'Note Content', 'gk-gravityview' ),
+			'delete' => __( 'Delete', 'gk-gravityview' ),
+			'delete-confirm' => __( 'Are you sure you want to delete the selected notes?', 'gk-gravityview' ),
+			'caption' => __( 'Notes for this entry', 'gk-gravityview' ),
+			'toggle-notes' => __( 'Toggle all notes', 'gk-gravityview' ),
+			'no-notes' => __( 'There are no notes.', 'gk-gravityview' ),
+			'processing' => __( 'Processing&hellip;', 'gk-gravityview' ),
+			'other-email' => __( 'Other email address', 'gk-gravityview' ),
+			'email-label' => __( 'Email address', 'gk-gravityview' ),
+			'email-placeholder' => _x('you@example.com', 'Example email address used as a placeholder', 'gk-gravityview'),
+			'subject-label' => __( 'Subject', 'gk-gravityview' ),
+			'subject' => __( 'Email subject', 'gk-gravityview' ),
+			'default-email-subject' => __( 'New entry note', 'gk-gravityview' ),
+            'email-footer' => __( 'This note was sent from {url}', 'gk-gravityview' ),
+			'also-email' => __( 'Also email this note to', 'gk-gravityview' ),
+			'error-add-note' => __( 'There was an error adding the note.', 'gk-gravityview' ),
+			'error-invalid' => __( 'The request was invalid. Refresh the page and try again.', 'gk-gravityview' ),
+			'error-empty-note' => _x( 'Note cannot be blank.', 'Message to display when submitting a note without content.', 'gk-gravityview' ),
+			'error-cap-delete' => __( 'You don\'t have the ability to delete notes.', 'gk-gravityview' ),
+			'error-cap-add' => __( 'You don\'t have the ability to add notes.', 'gk-gravityview' ),
 		);
 
 		/**
@@ -472,7 +472,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'avatar'                 => get_avatar( $note->user_id, 48 ),
 			'user_name'              => $note->user_name,
 			'user_email'             => $note->user_email,
-			'added_on'               => esc_html__( 'added on {date_created_formatted}', 'gravityview' ),
+			'added_on'               => esc_html__( 'added on {date_created_formatted}', 'gk-gravityview' ),
 			'value'                  => wpautop( esc_html( $note->value ) ),
 			'date_created'           => $note->date_created,
 			'date_created_formatted' => GFCommon::format_date( $note->date_created, false ),
@@ -554,7 +554,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$note_content = trim( $data['gv-note-content'] );
 
 		if( empty( $note_content ) ) {
-			return new WP_Error( 'gv-add-note-empty', __( 'The note is empty.', 'gravityview' ) );
+			return new WP_Error( 'gv-add-note-empty', __( 'The note is empty.', 'gk-gravityview' ) );
 		}
 
 		$return = GravityView_Entry_Notes::add_note( $entry['id'], $user_data->ID, $user_data->display_name, $note_content, 'gravityview/field/notes' );
@@ -624,7 +624,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		$add_note_html = str_replace( '{entry_slug}', $entry_slug, $add_note_html );
 		$add_note_html = str_replace( '{nonce_field}', $nonce_field, $add_note_html );
-		$add_note_html = str_replace( '{show_delete}', intval( empty( $visibility_settings['delete'] ) ? 0 : $visibility_settings['delete'] ), $add_note_html );
+		$add_note_html = str_replace( '{show_delete}', (string) intval( empty( $visibility_settings['delete'] ) ? 0 : $visibility_settings['delete'] ), $add_note_html );
 		$add_note_html   = str_replace( '{email_fields}', $email_fields, $add_note_html );
 		$add_note_html = str_replace( '{url}', esc_url_raw( add_query_arg( array() ) ), $add_note_html );
 

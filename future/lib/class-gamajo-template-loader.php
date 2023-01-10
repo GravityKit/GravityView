@@ -7,7 +7,7 @@
  * @link      http://github.com/GaryJones/Gamajo-Template-Loader
  * @copyright 2013 Gary Jones
  * @license   GPL-2.0-or-later
- * @version   1.3.1
+ * @version   1.3.2-gv-internal
  */
 
 namespace GV;
@@ -81,6 +81,13 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 * @var array
 		 */
 		private $template_data_var_names = array( 'data' );
+
+		/**
+		 * @var array $file_paths A list of file paths to check when generating template paths.
+		 *
+		 * @since 1.3.2-gv-internal
+		 */
+		private $file_paths = array();
 
 		/**
 		 * Clean up template data.
@@ -270,10 +277,9 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 * @return mixed|void
 		 */
 		protected function get_template_paths() {
-			static $file_paths;
 
-			if ( ! is_null( $file_paths ) ) {
-				return $file_paths;
+			if ( ! empty( $this->file_paths ) ) {
+				return $this->file_paths;
 			}
 
 			$theme_directory = trailingslashit( $this->theme_template_directory );
@@ -302,7 +308,9 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 
 			$file_paths = array_map( 'trailingslashit', $file_paths );
 
-			return $file_paths;
+			$this->file_paths = $file_paths;
+
+			return $this->file_paths;
 		}
 
 		/**

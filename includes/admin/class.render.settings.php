@@ -23,12 +23,12 @@ class GravityView_Render_Settings {
 	public static function get_field_groups() {
 
 		return array(
-			'field'      => _x( 'Field', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'display'    => _x( 'Display', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'label'      => _x( 'Label', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'visibility' => _x( 'Visibility', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'advanced'   => _x( 'Advanced', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
-			'default'    => _x( 'Default', 'Denotes the name under which certain field settings are grouped', 'gravityview' ),
+			'field'      => _x( 'Field', 'Denotes the name under which certain field settings are grouped', 'gk-gravityview' ),
+			'display'    => _x( 'Display', 'Denotes the name under which certain field settings are grouped', 'gk-gravityview' ),
+			'label'      => _x( 'Label', 'Denotes the name under which certain field settings are grouped', 'gk-gravityview' ),
+			'visibility' => _x( 'Visibility', 'Denotes the name under which certain field settings are grouped', 'gk-gravityview' ),
+			'advanced'   => _x( 'Advanced', 'Denotes the name under which certain field settings are grouped', 'gk-gravityview' ),
+			'default'    => _x( 'Default', 'Denotes the name under which certain field settings are grouped', 'gk-gravityview' ),
 		);
 	}
 
@@ -59,14 +59,14 @@ class GravityView_Render_Settings {
 			$field_options = array(
 				'show_label' => array(
 					'type' => 'checkbox',
-					'label' => __( 'Show Label', 'gravityview' ),
+					'label' => __( 'Show Label', 'gk-gravityview' ),
 					'value' => ! empty ( $is_table_layout ),
 					'priority' => 1000,
 					'group' => 'label',
 				),
 				'custom_label' => array(
 					'type' => 'text',
-					'label' => __( 'Custom Label:', 'gravityview' ),
+					'label' => __( 'Custom Label:', 'gk-gravityview' ),
 					'value' => '',
 					'merge_tags' => true,
 					'class'      => 'widefat',
@@ -76,8 +76,8 @@ class GravityView_Render_Settings {
 				),
 				'custom_class' => array(
 					'type'       => 'text',
-					'label'      => __( 'Custom CSS Class:', 'gravityview' ),
-					'desc'       => __( 'This class will be added to the field container', 'gravityview' ),
+					'label'      => __( 'Custom CSS Class:', 'gk-gravityview' ),
+					'desc'       => __( 'This class will be added to the field container', 'gk-gravityview' ),
 					'value'      => '',
 					'merge_tags' => true,
 					'tooltip'    => 'gv_css_merge_tags',
@@ -87,14 +87,14 @@ class GravityView_Render_Settings {
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
-					'label' => __( 'Make visible only to logged-in users?', 'gravityview' ),
+					'label' => __( 'Make visible only to logged-in users?', 'gk-gravityview' ),
 					'value' => '',
 					'priority' => 4000,
 					'group' => 'visibility',
 				),
 				'only_loggedin_cap' => array(
 					'type' => 'select',
-					'label' => __( 'Make visible for:', 'gravityview' ),
+					'label' => __( 'Make visible for:', 'gk-gravityview' ),
 					'options' => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
 					'class' => 'widefat',
 					'value' => 'read',
@@ -108,8 +108,8 @@ class GravityView_Render_Settings {
 			if( $is_table_layout && 'directory' === $context ) {
 				$field_options['width'] = array(
 					'type' => 'number',
-					'label' => __('Percent Width', 'gravityview'),
-					'desc' => __( 'Leave blank for column width to be based on the field content.', 'gravityview'),
+					'label' => __('Percent Width', 'gk-gravityview'),
+					'desc' => __( 'Leave blank for column width to be based on the field content.', 'gk-gravityview'),
 					'class' => 'code widefat',
 					'value' => '',
 					'priority' => 200,
@@ -149,7 +149,7 @@ class GravityView_Render_Settings {
 		if ( 'directory' === $context && isset( $field_options['show_as_link'] ) && ! isset( $field_options['new_window'] ) ) {
 			$field_options['new_window'] = array(
 				'type'     => 'checkbox',
-				'label'    => __( 'Open link in a new tab or window?', 'gravityview' ),
+				'label'    => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
 				'value'    => false,
 				'context'  => 'directory',
 				'requires' => 'show_as_link',
@@ -231,16 +231,16 @@ class GravityView_Render_Settings {
 	static public function get_cap_choices( $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
 		$select_cap_choices = array(
-			'read' => __( 'Any Logged-In User', 'gravityview' ),
-			'publish_posts' => __( 'Author Or Higher', 'gravityview' ),
-			'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gravityview' ),
-			'delete_others_posts' => __( 'Editor Or Higher', 'gravityview' ),
-			'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gravityview' ),
-			'manage_options' => __( 'Administrator', 'gravityview' ),
+			'read' => __( 'Any Logged-In User', 'gk-gravityview' ),
+			'publish_posts' => __( 'Author Or Higher', 'gk-gravityview' ),
+			'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gk-gravityview' ),
+			'delete_others_posts' => __( 'Editor Or Higher', 'gk-gravityview' ),
+			'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gk-gravityview' ),
+			'manage_options' => __( 'Administrator', 'gk-gravityview' ),
 		);
 
 		if( is_multisite() ) {
-			$select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gravityview' );
+			$select_cap_choices['manage_network'] = __('Multisite Super Admin', 'gk-gravityview' );
 		}
 
 		/**
@@ -279,7 +279,6 @@ class GravityView_Render_Settings {
 	 * @return string HTML of dialog box
 	 */
 	public static function render_field_options( $form_id, $field_type, $template_id, $field_id, $field_label, $area, $input_type = NULL, $uniqid = '', $current = '', $context = 'single', $item = array() ) {
-
 		if( empty( $uniqid ) ) {
 			//generate a unique field id
 			$uniqid = uniqid('', false);
@@ -306,7 +305,7 @@ class GravityView_Render_Settings {
 		$form_title = '';
 		if ( $form_id ) {
 			$hidden_fields .= '<input type="hidden" class="field-form-id" name="'. $name_prefix .'[form_id]" value="'. esc_attr( $form_id ) .'">';
-			$form = GVCommon::get_form( $form_id );
+			$form = GVCommon::get_form_or_form_template( $form_id );
 			$form_title = $form['title'];
 		}
 
@@ -315,7 +314,7 @@ class GravityView_Render_Settings {
 			return $hidden_fields . '<!-- No Options -->'; // The HTML comment is here for checking if the output is empty in render_label()
 		}
 
-		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) );
+		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gk-gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) );
 
 		$field_details = '';
 
@@ -384,35 +383,34 @@ class GravityView_Render_Settings {
 
 			$item_details .= '
 			<div class="gv-field-details--container">
-				<label class="gv-field-details--toggle">' . esc_html__( 'Field Details', 'gravityview' ) .' <i class="dashicons dashicons-arrow-right"></i></label>
+				<label class="gv-field-details--toggle">' . esc_html__( 'Field Details', 'gk-gravityview' ) .' <i class="dashicons dashicons-arrow-right"></i></label>
 				<section class="gv-field-details gv-field-details--closed">';
 
 				if ( $field_id && is_numeric( $field_id ) ) {
 				$item_details .= '
 					<div class="gv-field-detail gv-field-detail--field">
-						<span class="gv-field-detail--label">' . esc_html__( 'Field ID', 'gravityview' ) .'</span><span class="gv-field-detail--value">#{{field_id}}</span>
+						<span class="gv-field-detail--label">' . esc_html__( 'Field ID', 'gk-gravityview' ) .'</span><span class="gv-field-detail--value">#{{field_id}}</span>
 					</div>';
 			    }
 
 				$item_details .= '
 					<div class="gv-field-detail gv-field-detail--type">
-						<span class="gv-field-detail--label">' . esc_html_x( 'Type', 'The type of field being configured (eg: "Single Line Text")', 'gravityview' ) .'</span><span class="gv-field-detail--value">{{input_type_label}}</span>
+						<span class="gv-field-detail--label">' . esc_html_x( 'Type', 'The type of field being configured (eg: "Single Line Text")', 'gk-gravityview' ) .'</span><span class="gv-field-detail--value">{{input_type_label}}</span>
 					</div>';
 
 				if( $form_id ) {
 					$item_details .= '
 					<div class="gv-field-detail gv-field-detail--form">
-						<span class="gv-field-detail--label">' . esc_html__( 'Form', 'gravityview' ) .'</span><span class="gv-field-detail--value">{{form_title}} (#{{form_id}})</span>
+						<span class="gv-field-detail--label">' . esc_html__( 'Form', 'gk-gravityview' ) .'</span><span class="gv-field-detail--value">{{form_title}} (#{{form_id}})</span>
 					</div>';
 				}
+
 				$item_details .= '
 				</section>
 			</div>';
 		} else {
-			$widget_details_content = rgar( $item, 'description', '' );
-			if ( ! empty( $item['subtitle'] ) ) {
-				$widget_details_content .= ( '' !== $widget_details_content ) ? "\n\n" . $item['subtitle'] : $item['subtitle'];
-			}
+			$subtitle = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle']  . '</div>' : '';
+			$widget_details_content = \GV\Utils::get( $item, 'description', '' );
 
 			// Intentionally not escaping to allow HTML.
 			$item_details = '<div class="gv-field-details--container">' . wpautop( trim( $widget_details_content ) ) . '</div>';
@@ -442,6 +440,17 @@ EOD;
 		);
 
 		foreach ( $replacements as $replacement ) {
+			if ( is_null( ${$replacement} ) ) {
+				continue;
+			}
+
+			if ( $replacement === 'form_id' && strpos( $form_id, 'preset_' ) !== false ) {
+				// Form has not yet been created.
+				$output = str_replace( '#{{' . $replacement . '}}', esc_html__( 'Form Preset', $output, 'gk-gravityview' ), $output );
+
+				continue;
+			}
+
 			$output = str_replace( '{{' . $replacement . '}}', ${$replacement}, $output );
 		}
 
@@ -563,6 +572,7 @@ EOD;
 			ob_start();
 			$render_type->render_setting( $override_input );
 			$output = ob_get_clean();
+			$output = str_replace( 'gv-merge-tag-support', 'merge-tag-support', $output );
 		}
 
 		// Check if setting is specific for a template
@@ -670,7 +680,7 @@ EOD;
 		$class = '';
 		// and $add_merge_tags is not false
 		if( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
-			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
+			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
 		$class .= !empty( $args['class'] ) ? $args['class'] : 'widefat';
@@ -702,7 +712,7 @@ EOD;
 		$class = '';
 		// and $add_merge_tags is not false
 		if( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
-			$class = 'merge-tag-support mt-position-right mt-hide_all_fields ';
+			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
 		$class .= !empty( $args['class'] ) ? 'widefat '.$args['class'] : 'widefat';

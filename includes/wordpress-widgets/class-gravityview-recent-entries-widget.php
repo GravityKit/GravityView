@@ -12,10 +12,10 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 	function __construct( ) {
 
-		$name = __('GravityView Recent Entries', 'gravityview');
+		$name = __('GravityView Recent Entries', 'gk-gravityview');
 
 		$widget_options = array(
-			'description' => __( 'Display the most recent entries for a View', 'gravityview' ),
+			'description' => __( 'Display the most recent entries for a View', 'gk-gravityview' ),
 		);
 
 		parent::__construct( 'gv_recent_entries', $name, $widget_options );
@@ -72,13 +72,13 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-			wp_enqueue_script( 'gravityview_widgets', plugins_url('assets/js/admin-widgets'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'gform_gravityforms' ), GravityView_Plugin::version );
+			wp_enqueue_script( 'gravityview_widgets', plugins_url('assets/js/admin-widgets'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'gform_gravityforms' ), GV_PLUGIN_VERSION );
 
 			wp_localize_script( 'gravityview_widgets', 'GVWidgets', array(
 				'nonce' => wp_create_nonce( 'gravityview_ajax_widget' )
 			));
 
-			wp_enqueue_style( 'gravityview_views_styles', plugins_url('assets/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons' ), GravityView_Plugin::version );
+			wp_enqueue_style( 'gravityview_views_styles', plugins_url('assets/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons' ), GV_PLUGIN_VERSION );
 		}
 
 	}
@@ -247,11 +247,11 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		// Set up some default widget settings.
 		$defaults = array(
-			'title' 			=> __('Recent Entries', 'gravityview'),
+			'title' 			=> __('Recent Entries', 'gk-gravityview'),
 			'view_id'           => NULL,
 			'post_id'           => NULL,
 			'limit'            => 10,
-			'link_format'       => __('Entry #{entry_id}', 'gravityview'),
+			'link_format'       => __('Entry #{entry_id}', 'gk-gravityview'),
 			'after_link'        => ''
 		);
 
@@ -261,7 +261,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		<!-- Title -->
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'gravityview' ) ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'gk-gravityview' ) ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
 
@@ -290,7 +290,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		if( isset( $instance['updated'] ) && empty( $instance['view_id'] ) ) {
 			?>
 			<div class="error inline hide-on-view-change">
-				<p><?php esc_html_e('Please select a View to search.', 'gravityview'); ?></p>
+				<p><?php esc_html_e('Please select a View to search.', 'gk-gravityview'); ?></p>
 			</div>
 			<?php
 			unset ( $error );
@@ -298,13 +298,13 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		?>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'view_id' ) ); ?>"><?php esc_html_e('Select a View', 'gravityview'); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'view_id' ) ); ?>"><?php esc_html_e('Select a View', 'gk-gravityview'); ?></label>
 			<select class="widefat gv-recent-entries-select-view" name="<?php echo esc_attr( $this->get_field_name( 'view_id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'view_id' ) ); ?>">
-				<option value=""><?php esc_html_e( '&mdash; Select a View as Entries Source &mdash;', 'gravityview' ); ?></option>
+				<option value=""><?php esc_html_e( '&mdash; Select a View as Entries Source &mdash;', 'gk-gravityview' ); ?></option>
 				<?php
 
 				foreach( $views as $view ) {
-					$title = empty( $view->post_title ) ? __('(no title)', 'gravityview') : $view->post_title;
+					$title = empty( $view->post_title ) ? __('(no title)', 'gk-gravityview') : $view->post_title;
 					echo '<option value="'. $view->ID .'"'.selected( absint( $instance['view_id'] ), $view->ID ).'>'. esc_html( sprintf('%s #%d', $title, $view->ID ) ) .'</option>';
 				}
 
@@ -328,31 +328,31 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		?>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gravityview' ); ?></label>
+			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gk-gravityview' ); ?></label>
 			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $instance['post_id'] ); ?>" />
 			<span class="howto gv-howto"><?php
-				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gravityview' );
-				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gk-gravityview' );
+				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
 				?></span>
 		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'limit' ); ?>">
-				<span><?php _e( 'Number of entries to show:', 'gravityview' ); ?></span>
+				<span><?php _e( 'Number of entries to show:', 'gk-gravityview' ); ?></span>
 			</label>
 			<input class="code" id="<?php echo $this->get_field_id( 'limit' ); ?>" name="<?php echo $this->get_field_name( 'limit' ); ?>" type="number" value="<?php echo intval( $instance['limit'] ); ?>" size="3" />
 		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'link_format' ); ?>">
-				<span><?php _e( 'Entry link text (required)', 'gravityview' ); ?></span>
+				<span><?php _e( 'Entry link text (required)', 'gk-gravityview' ); ?></span>
 			</label>
 			<input id="<?php echo $this->get_field_id( 'link_format' ); ?>" name="<?php echo $this->get_field_name( 'link_format' ); ?>" type="text" value="<?php echo esc_attr( $instance['link_format'] ); ?>" class="widefat merge-tag-support mt-position-right mt-hide_all_fields" />
 		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'after_link' ); ?>">
-				<span><?php _e( 'Text or HTML to display after the link (optional)', 'gravityview' ); ?></span>
+				<span><?php _e( 'Text or HTML to display after the link (optional)', 'gk-gravityview' ); ?></span>
 			</label>
 			<textarea id="<?php echo $this->get_field_id( 'after_link' ); ?>" name="<?php echo $this->get_field_name( 'after_link' ); ?>" rows="5" class="widefat code merge-tag-support mt-position-right mt-hide_all_fields"><?php echo esc_textarea( $instance['after_link'] ); ?></textarea>
 		</p>

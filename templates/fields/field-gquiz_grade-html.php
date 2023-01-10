@@ -25,6 +25,6 @@ $grading_type_enabled = ! empty( $form['gravityformsquiz']['grading'] ) ? $form[
 if ( 'letter' === $grading_type_enabled ) {
 	echo $value;
 } elseif ( GVCommon::has_cap( 'gravityforms_edit_forms' ) ) {
-	$grade_type = __( 'Letter', 'gravityview' );
-	printf( esc_html_x( '%s grading is disabled for this form. %sChange the setting%s', '%s is the current Quiz field type ("Letter" or "Pass/Fail")', 'gravityview' ), $grade_type, '<a href="'. admin_url('admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=gravityformsquiz&amp;id='.$form['id'] ) . '">', '</a>' );
+	$grade_type = __( 'Letter', 'gk-gravityview' );
+	printf( esc_html_x( '%s grading is disabled for this form. %sChange the setting%s', '%s is the current Quiz field type ("Letter" or "Pass/Fail")', 'gk-gravityview' ), $grade_type, '<a href="'. admin_url('admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=gravityformsquiz&amp;id='.$form['id'] ) . '">', '</a>' );
 }
