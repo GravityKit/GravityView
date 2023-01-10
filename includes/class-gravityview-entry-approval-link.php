@@ -468,7 +468,7 @@ class GravityView_Entry_Approval_Link {
 	 *
 	 * @param string|bool $token
 	 *
-	 * @return array|object Original scopes or WP Error object
+	 * @return array|WP_Error Original scopes or WP Error object
 	 */
 	protected function decode_token( $token = false ) {
 
@@ -476,7 +476,9 @@ class GravityView_Entry_Approval_Link {
 			return false;
 		}
 
-		if ( ! $this->validate_token( $token ) ) {
+		$token_is_valid = $this->validate_token( $token );
+
+		if ( is_wp_error( $token_is_valid ) ) {
 
 			gravityview()->log->error( 'Security check failed.', array( 'data' => $token ) );
 
@@ -484,6 +486,7 @@ class GravityView_Entry_Approval_Link {
 		}
 
 		$parts = explode( '.', $token );
+
 		if ( count( $parts ) < 2 ) {
 			return false;
 		}
@@ -491,6 +494,7 @@ class GravityView_Entry_Approval_Link {
 		$body_64 = $parts[0];
 
 		$body_json = base64_decode( $body_64 );
+
 		if ( empty( $body_json ) ) {
 			return false;
 		}
@@ -510,7 +514,7 @@ class GravityView_Entry_Approval_Link {
 	 *
 	 * @param string|boold $token
 	 *
-	 * @return bool Token is valid or not
+	 * @return true|WP_Error Token is valid or there was an error.
 	 */
 	protected function validate_token( $token = false ) {
 
@@ -525,61 +529,61 @@ class GravityView_Entry_Approval_Link {
 
 		/**
 		 * @param string $body_64 $parts[0]
-		 * @param string $sig     $parts[1]
+		 * @param string $sig $parts[1]
 		 */
 		list( $body_64, $sig ) = $parts;
 
 		if ( empty( $sig ) ) {
-			return false;
+			return new WP_Error( 'approve_link_no_signature', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
 		$secret = get_option( 'gravityview_token_secret' );
-		if ( empty( $secret ) ) {
-			return false;
-		}
 
+		if ( empty( $secret ) ) {
+			return new WP_Error( 'approve_link_no_scopes', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+		}
 
 		$verification_sig  = hash_hmac( 'sha256', $body_64, $secret );
 		$verification_sig2 = hash_hmac( 'sha256', rawurlencode( $body_64 ), $secret );
 
 		if ( ! hash_equals( $sig, $verification_sig ) && ! hash_equals( $sig, $verification_sig2 ) ) {
-			return false;
+			return new WP_Error( 'approve_link_failed_signature_verification', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
 		$body_json = base64_decode( $body_64 );
 		if ( empty( $body_json ) || empty( json_decode( $body_json, true ) ) ) {
 			$body_json = base64_decode( urldecode( $body_64 ) );
 			if ( empty( $body_json ) ) {
-				return false;
+				return new WP_Error( 'approve_link_failed_base64_decode', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 			}
 		}
 
 		$token = json_decode( $body_json, true );
 
 		if ( ! isset( $token['jti'] ) ) {
-			return false;
+			return new WP_Error( 'approve_link_no_jti', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
 		if ( ! isset( $token['exp'] ) || $token['exp'] < time() ) {
-			return false;
+			return new WP_Error( 'approve_link_expired', esc_html__( 'The link has expired.', 'gk-gravityview' ) );
 		}
 
 		if ( ! isset( $token['scopes'] ) ) {
-			return false;
+			return new WP_Error( 'approve_link_no_scopes', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
 		if ( ! isset( $token['scopes']['expiration_hours'] ) ) {
-			return false;
+			return new WP_Error( 'approve_link_no_expiration', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
 		if ( self::EXPIRATION_HOURS > $token['scopes']['expiration_hours'] ) {
 
 			if ( ! isset( $_GET['nonce'] ) ) {
-				return false;
+				return new WP_Error( 'approve_link_no_nonce', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 			}
 
 			if ( ! wp_verify_nonce( GV\Utils::_GET( 'nonce' ), 'gv_token' ) ) {
-				return false;
+				return new WP_Error( 'approve_link_invalid_nonce', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 			}
 		}
 
