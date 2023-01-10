@@ -440,7 +440,10 @@ class GravityView_Entry_Approval_Link {
 	 */
 	protected function maybe_show_approval_notice() {
 
-		if ( GV\Utils::_GET( 'gv_approval_link_result' ) ) {
+		if ( ! GV\Utils::_GET( self::URL_ARG ) ) {
+			return;
+		}
+
 			$result = GV\Utils::_GET( 'gv_approval_link_result' );
 
 			if ( 'success' === $result ) {
