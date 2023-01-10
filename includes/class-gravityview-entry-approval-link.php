@@ -32,6 +32,8 @@ class GravityView_Entry_Approval_Link {
 	 */
 	const PRIVACY = 'private';
 
+	const URL_ARG = 'gv_approval_link_result';
+
 	/**
 	 * Initialization.
 	 */
@@ -368,7 +370,7 @@ class GravityView_Entry_Approval_Link {
 	 */
 	public function _filter_init() {
 
-		if ( ! GV\Utils::_GET( 'gv_token' ) && ! GV\Utils::_GET( 'gv_approval_link_result' ) ) {
+		if ( ! GV\Utils::_GET( 'gv_token' ) && ! GV\Utils::_GET( self::URL_ARG ) ) {
 			return;
 		}
 
@@ -444,7 +446,7 @@ class GravityView_Entry_Approval_Link {
 			return;
 		}
 
-			$result = GV\Utils::_GET( 'gv_approval_link_result' );
+		$result = GV\Utils::_GET( self::URL_ARG );
 
 			if ( 'success' === $result ) {
 				echo \GVCommon::generate_notice( __( 'Entry approval updated!', 'gravityview' ), 'gv-success' );
@@ -607,7 +609,7 @@ class GravityView_Entry_Approval_Link {
 
 			gravityview()->log->error( 'Invalid approval status', array( 'data' => $scopes ) );
 
-			wp_safe_redirect( add_query_arg( array( 'gv_approval_link_result' => 'error' ), $return_url ) );
+			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
 			exit;
 
 		}
@@ -617,7 +619,7 @@ class GravityView_Entry_Approval_Link {
 
 			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
 
-			wp_safe_redirect( add_query_arg( array( 'gv_approval_link_result' => 'error' ), $return_url ) );
+			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
 			exit;
 
 		}
@@ -627,14 +629,14 @@ class GravityView_Entry_Approval_Link {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
-			wp_safe_redirect( add_query_arg( array( 'gv_approval_link_result' => 'error' ), $return_url ) );
+			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
 			exit;
 
 		}
 
 		$result = GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form_id );
 
-		$return_url = add_query_arg( array( 'gv_approval_link_result' => $result ? 'success' : 'error' ), $return_url );
+		$return_url = add_query_arg( array( self::URL_ARG => $result ? 'success' : 'error' ), $return_url );
 
 		wp_safe_redirect( esc_url_raw( $return_url ) );
 		exit;
