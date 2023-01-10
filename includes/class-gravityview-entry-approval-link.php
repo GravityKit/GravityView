@@ -375,7 +375,9 @@ class GravityView_Entry_Approval_Link {
 		}
 
 		$this->maybe_update_approved();
-		$this->maybe_show_approval_notice();
+
+		add_action( 'admin_notices', array( $this, 'maybe_show_approval_notice' ) );
+		add_action( 'template_redirect', array( $this, 'maybe_show_approval_notice' ) );
 	}
 
 	/**
@@ -442,7 +444,7 @@ class GravityView_Entry_Approval_Link {
 	 *
 	 * @return void
 	 */
-	protected function maybe_show_approval_notice() {
+	public function maybe_show_approval_notice() {
 
 		if ( ! GV\Utils::_GET( self::URL_ARG ) ) {
 			return;
@@ -458,7 +460,12 @@ class GravityView_Entry_Approval_Link {
 			$message = \GVCommon::generate_notice( wpautop( esc_html__( 'Error updating approval.', 'gravityview' ) ), 'error' );
 		}
 
-		echo $message;
+		if ( is_admin() ) {
+			echo $message;
+		} else {
+			wp_die( $message );
+		}
+
 	}
 
 	/**
