@@ -448,14 +448,15 @@ class GravityView_Entry_Approval_Link {
 
 		$result = GV\Utils::_GET( self::URL_ARG );
 
-			if ( 'success' === $result ) {
-				echo \GVCommon::generate_notice( __( 'Entry approval updated!', 'gravityview' ), 'gv-success' );
-			}
-
-			elseif ( 'error' === $result ) {
-				echo \GVCommon::generate_notice( __( 'Error updating approval.', 'gravityview' ), 'gv-error' );
-			}
+		if ( 'success' === $result ) {
+			$message = \GVCommon::generate_notice( wpautop( esc_html__( 'Entry approval updated!', 'gravityview' ) ), 'updated' );
 		}
+
+		elseif ( 'error' === $result ) {
+			$message = \GVCommon::generate_notice( wpautop( esc_html__( 'Error updating approval.', 'gravityview' ) ), 'error' );
+		}
+
+		echo $message;
 	}
 
 	/**
