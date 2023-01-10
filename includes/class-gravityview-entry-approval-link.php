@@ -495,6 +495,7 @@ class GravityView_Entry_Approval_Link {
 			return false;
 		}
 
+		// TODO: Determine why/if this is necessary.
 		if ( empty( json_decode( $body_json, true ) ) ) {
 			$body_json = base64_decode( urldecode( $body_64 ) );
 		}
