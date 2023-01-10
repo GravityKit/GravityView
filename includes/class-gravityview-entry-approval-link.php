@@ -230,7 +230,7 @@ class GravityView_Entry_Approval_Link {
 				'unapprove'  => _x( 'Unapprove', 'Change entry approval status to unapproved.', 'gravityview' ),
 			);
 
-			$link = sprintf( '<a href="%s">%s</a>', esc_url( $link_url ), esc_html( $link_labels[ $action ] ) );
+			$link = sprintf( '<a href="%s">%s</a>', esc_url_raw( $link_url ), esc_html( $link_labels[ $action ] ) );
 
 			$text = str_replace( $full_tag, $link, $text );
 		}
@@ -633,7 +633,7 @@ class GravityView_Entry_Approval_Link {
 
 		$return_url = add_query_arg( array( 'gv_approval_link_result' => $result ? 'success' : 'error' ), $return_url );
 
-		wp_safe_redirect( esc_url( $return_url ) );
+		wp_safe_redirect( esc_url_raw( $return_url ) );
 		exit;
 	}
 }
