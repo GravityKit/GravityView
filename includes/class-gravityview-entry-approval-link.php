@@ -394,37 +394,39 @@ class GravityView_Entry_Approval_Link {
 	 */
 	protected function maybe_update_approved() {
 
-		if ( GV\Utils::_GET( 'gv_token' ) ) {
-			$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
-
-			if ( is_wp_error( $token_array ) ) {
-				echo \GVCommon::generate_notice( $token_array->get_error_message(), 'gv-error' );
-
-				return;
-			}
-
-			if ( empty( $token_array ) ) {
-				echo \GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
-
-				return;
-			}
-
-			$scopes = $token_array['scopes'];
-
-			if ( empty( $scopes['entry_id'] ) || empty( $scopes['approval_status'] ) || empty( $scopes['privacy'] ) ) {
-				echo \GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
-
-				return;
-			}
-
-			if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! is_user_logged_in() ) {
-				echo \GVCommon::generate_notice( __( 'You are not allowed to perform this operation.', 'gravityview' ) , 'gv-error' );
-
-				return;
-			}
-
-			$this->update_approved( $scopes );
+		if ( ! GV\Utils::_GET( 'gv_token' ) ) {
+			return;
 		}
+
+		$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
+
+		if ( is_wp_error( $token_array ) ) {
+			echo \GVCommon::generate_notice( $token_array->get_error_message(), 'gv-error' );
+
+			return;
+		}
+
+		if ( empty( $token_array ) ) {
+			echo \GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
+
+			return;
+		}
+
+		$scopes = $token_array['scopes'];
+
+		if ( empty( $scopes['entry_id'] ) || empty( $scopes['approval_status'] ) || empty( $scopes['privacy'] ) ) {
+			echo \GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
+
+			return;
+		}
+
+		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! is_user_logged_in() ) {
+			echo \GVCommon::generate_notice( __( 'You are not allowed to perform this operation.', 'gravityview' ) , 'gv-error' );
+
+			return;
+		}
+
+		$this->update_approved( $scopes );
 	}
 
 	/**
