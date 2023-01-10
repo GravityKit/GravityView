@@ -30,7 +30,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Default value for the privacy modifier.
 	 */
-	const PRIVACY = 'private';
+	const DEFAULT_PRIVACY = 'private';
 
 	const URL_ARG = 'gv_approval_link_result';
 
@@ -207,10 +207,10 @@ class GravityView_Entry_Approval_Link {
 			$full_tag         = $match[0];
 			$action           = $match[1];
 			$expiration_hours = isset( $match[2] ) ? (int) $match[2] : self::EXPIRATION_HOURS;
-			$privacy          = isset( $match[3] ) ? $match[3] : self::PRIVACY;
+			$privacy          = isset( $match[3] ) ? $match[3] : self::DEFAULT_PRIVACY;
 
 			if ( false === (bool) $form['publicApprovalLink'] ) {
-				$privacy = self::PRIVACY;
+				$privacy = self::DEFAULT_PRIVACY;
 			}
 
 			$token = $this->get_token( $action, $expiration_hours, $privacy, $entry );
@@ -263,7 +263,7 @@ class GravityView_Entry_Approval_Link {
 		}
 
 		if ( ! $privacy ) {
-			$privacy = self::PRIVACY;
+			$privacy = self::DEFAULT_PRIVACY;
 		}
 
 		$approval_status = $this->get_approval_status( $action );
@@ -417,7 +417,7 @@ class GravityView_Entry_Approval_Link {
 				return;
 			}
 
-			if ( self::PRIVACY === $scopes['privacy'] && ! is_user_logged_in() ) {
+			if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! is_user_logged_in() ) {
 				echo \GVCommon::generate_notice( __( 'You are not allowed to perform this operation.', 'gravityview' ) , 'gv-error' );
 
 				return;
@@ -603,7 +603,7 @@ class GravityView_Entry_Approval_Link {
 
 		$entry      = GFAPI::get_entry( $entry_id );
 		$form_id    = $entry['form_id'];
-		$return_url = self::PRIVACY === $scopes['privacy'] ? admin_url( '/admin.php?page=gf_entries&id=' . $form_id ) : home_url( '/' );
+		$return_url = self::DEFAULT_PRIVACY === $scopes['privacy'] ? admin_url( '/admin.php?page=gf_entries&id=' . $form_id ) : home_url( '/' );
 
 		// Valid status
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
@@ -626,7 +626,7 @@ class GravityView_Entry_Approval_Link {
 		}
 
 		// Has capability
-		elseif ( self::PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
+		elseif ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
