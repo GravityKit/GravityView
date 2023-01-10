@@ -98,7 +98,7 @@ class GravityView_Entry_Approval_Link {
 						'value' => '0',
 				),
 			),
-			'default_value' => gravityview()->plugin->settings->get( 'public-approval-link' ),
+			'default_value' => gravityview()->plugin->settings->get( 'public-approval-link', '0' ),
 		);
 
 		return $fields;
