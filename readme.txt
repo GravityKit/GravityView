@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: It was not possible to select any content inside the field settings window in the View editor
+
 = 2.16.5 on January 5, 2023 =
 
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.8
