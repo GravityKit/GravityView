@@ -55,7 +55,9 @@ class GravityView_Entry_Approval_Link {
 		add_filter( 'gform_form_settings_fields', array( $this, '_filter_gform_form_settings_fields' ), 10, 2 );
 		add_filter( 'gform_custom_merge_tags', array( $this, '_filter_gform_custom_merge_tags' ), 10, 4 );
 		add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
-		add_action( 'init', array( $this, '_action_init' ) );
+
+		add_action( 'init', array( $this, 'maybe_update_approved' ) );
+		add_action( 'init', array( $this, 'maybe_show_approval_notice' ) );
 	}
 
 	/**
@@ -378,32 +380,6 @@ class GravityView_Entry_Approval_Link {
 	}
 
 	/**
-	 * Checks page load for known parameters
-	 *
-	 * @since 2.14.8
-	 *
-	 * Expects a $_GET request with the following $_GET keys and values:
-	 *
-	 * @global array $_GET {
-	 * @type string $gv_token Approval link token
-	 * @type string $nonce (optional) Nonce hash to be validated. Only available if $expiration_hours is smaller than 24.
-	 * }
-	 *
-	 * @return void
-	 */
-	public function _action_init() {
-
-		if ( ! GV\Utils::_GET( 'gv_token' ) && ! GV\Utils::_GET( self::URL_ARG ) ) {
-			return;
-		}
-
-		$this->maybe_update_approved();
-
-		add_action( 'admin_notices', array( $this, 'maybe_show_approval_notice' ) );
-		add_action( 'template_redirect', array( $this, 'maybe_show_approval_notice' ) );
-	}
-
-	/**
 	 * Checks page load for approval link token then maybe process it
 	 *
 	 * @since 2.14.8
@@ -417,41 +393,58 @@ class GravityView_Entry_Approval_Link {
 	 *
 	 * @return void
 	 */
-	protected function maybe_update_approved() {
+	public function maybe_update_approved() {
 
-		if ( ! GV\Utils::_GET( 'gv_token' ) ) {
+		$token_string = GV\Utils::_GET( 'gv_token' );
+
+		if ( ! $token_string ) {
 			return;
 		}
 
-		$token_array = $this->decode_token( GV\Utils::_GET( 'gv_token' ) );
+		$token = $this->get_token_from_string( $token_string );
 
-		if ( is_wp_error( $token_array ) ) {
-			echo \GVCommon::generate_notice( $token_array->get_error_message(), 'gv-error' );
+		if ( is_wp_error( $token ) ) {
 
-			return;
+			$message = sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $token->get_error_message() );
+
+			wp_die( $message );
 		}
 
-		if ( empty( $token_array ) ) {
-			echo \GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
-
-			return;
-		}
-
-		$scopes = $token_array['scopes'];
-
-		if ( empty( $scopes['entry_id'] ) || empty( $scopes['approval_status'] ) || empty( $scopes['privacy'] ) ) {
-			echo \GVCommon::generate_notice( __( 'Invalid request.', 'gravityview' ) , 'gv-error' );
-
-			return;
-		}
+		$scopes = $token['scopes'];
 
 		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! is_user_logged_in() ) {
-			echo \GVCommon::generate_notice( __( 'You are not allowed to perform this operation.', 'gravityview' ) , 'gv-error' );
-
-			return;
+			wp_die( __( 'You are not allowed to perform this operation.', 'gravityview' ) );
 		}
 
 		$this->update_approved( $scopes );
+	}
+
+	/**
+	 * @param string $token_string
+	 *
+	 * @return array|WP_Error
+	 */
+	function get_token_from_string( $token_string ) {
+
+		$token = $this->decode_token( $token_string );
+
+		if ( is_wp_error( $token ) ) {
+
+			gravityview()->log->error( 'Decoding the entry approval token failed.', array( 'data' => $token ) );
+
+			return $token;
+		}
+
+		$is_valid_token = $this->validate_token( $token );
+
+		if ( is_wp_error( $is_valid_token ) ) {
+
+			gravityview()->log->error( 'Validating the entry approval token failed.', array( 'data' => $is_valid_token ) );
+
+			return $is_valid_token;
+		}
+
+		return $token;
 	}
 
 	/**
@@ -503,58 +496,13 @@ class GravityView_Entry_Approval_Link {
 	protected function decode_token( $token = false ) {
 
 		if ( ! $token ) {
-			return false;
-		}
-
-		$token_is_valid = $this->validate_token( $token );
-
-		if ( is_wp_error( $token_is_valid ) ) {
-
-			gravityview()->log->error( 'Security check failed.', array( 'data' => $token ) );
-
-			return new WP_Error( 'securiy_check_failed', __( 'Security check failed.', 'gravityview' ) );
+			return new WP_Error( 'missing_token', __( 'Invalid security token.', 'gk-gravityview' ) );
 		}
 
 		$parts = explode( '.', $token );
 
 		if ( count( $parts ) < 2 ) {
-			return false;
-		}
-
-		$body_64 = $parts[0];
-
-		$body_json = base64_decode( $body_64 );
-
-		if ( empty( $body_json ) ) {
-			return false;
-		}
-
-		// TODO: Determine why/if this is necessary.
-		if ( empty( json_decode( $body_json, true ) ) ) {
-			$body_json = base64_decode( urldecode( $body_64 ) );
-		}
-
-		return json_decode( $body_json, true );
-	}
-
-	/**
-	 * Validates an approval token
-	 *
-	 * @since 2.14.8
-	 *
-	 * @param string|boold $token
-	 *
-	 * @return true|WP_Error Token is valid or there was an error.
-	 */
-	protected function validate_token( $token = false ) {
-
-		if ( ! $token ) {
-			return false;
-		}
-
-		$parts = explode( '.', $token );
-		if ( count( $parts ) < 2 ) {
-			return false;
+			return new WP_Error( 'missing_period', __( 'Invalid security token.', 'gk-gravityview' ) );
 		}
 
 		/**
@@ -570,7 +518,7 @@ class GravityView_Entry_Approval_Link {
 		$secret = get_option( 'gravityview_token_secret' );
 
 		if ( empty( $secret ) ) {
-			return new WP_Error( 'approve_link_no_scopes', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+			return new WP_Error( 'approve_link_no_settings', esc_html__( 'Entry approval is not configured.', 'gk-gravityview' ) );
 		}
 
 		$verification_sig  = hash_hmac( 'sha256', $body_64, $secret );
@@ -581,14 +529,29 @@ class GravityView_Entry_Approval_Link {
 		}
 
 		$body_json = base64_decode( $body_64 );
-		if ( empty( $body_json ) || empty( json_decode( $body_json, true ) ) ) {
-			$body_json = base64_decode( urldecode( $body_64 ) );
-			if ( empty( $body_json ) ) {
-				return new WP_Error( 'approve_link_failed_base64_decode', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
-			}
+		$decoded_token = json_decode( $body_json, true );
+
+		if ( empty( $body_json ) || empty( $decoded_token ) ) {
+			$decoded_token = base64_decode( urldecode( $body_64 ) );
 		}
 
-		$token = json_decode( $body_json, true );
+		if ( empty( $decoded_token ) ) {
+			return new WP_Error( 'approve_link_failed_base64_decode', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+		}
+
+		return $decoded_token;
+	}
+
+	/**
+	 * Validates an approval token
+	 *
+	 * @since 2.14.8
+	 *
+	 * @param array $token
+	 *
+	 * @return true|WP_Error Token is valid or there was an error.
+	 */
+	protected function validate_token( array $token ) {
 
 		if ( ! isset( $token['jti'] ) ) {
 			return new WP_Error( 'approve_link_no_jti', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
@@ -604,6 +567,18 @@ class GravityView_Entry_Approval_Link {
 
 		if ( ! isset( $token['scopes']['expiration_hours'] ) ) {
 			return new WP_Error( 'approve_link_no_expiration', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+		}
+
+		if ( ! isset( $token['scopes']['privacy'] ) ) {
+			return new WP_Error( 'approve_link_no_privacy', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+		}
+
+		if ( empty( $token['scopes']['entry_id'] ) ) {
+			return new WP_Error( 'approve_link_no_entry_id', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+		}
+
+		if( empty( $token['scopes']['approval_status'] ) ) {
+			return new WP_Error( 'approve_link_no_approval_status', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
 		if ( self::EXPIRATION_HOURS > $token['scopes']['expiration_hours'] ) {
@@ -631,16 +606,27 @@ class GravityView_Entry_Approval_Link {
 	 */
 	protected function update_approved( $scopes = array() ) {
 
+		// Sanity check.
 		if ( empty( $scopes ) ) {
-			return false;
+			return;
 		}
 
 		$entry_id        = $scopes['entry_id'];
 		$approval_status = $scopes['approval_status'];
 
 		$entry      = GFAPI::get_entry( $entry_id );
+
+		if ( is_wp_error( $entry ) ) {
+			wp_die( $entry->get_error_message() );
+		}
+
 		$form_id    = $entry['form_id'];
-		$return_url = self::DEFAULT_PRIVACY === $scopes['privacy'] ? admin_url( '/admin.php?page=gf_entries&id=' . $form_id ) : home_url( '/' );
+
+		if( self::DEFAULT_PRIVACY === $scopes['privacy'] ) {
+			$return_url = admin_url( '/admin.php?page=gf_entries&s=' . $entry_id . '&field_id=entry_id&operator=is&id=' . $form_id );
+		} else {
+			$return_url = home_url( '/' );
+		}
 
 		// Valid status
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
@@ -648,8 +634,8 @@ class GravityView_Entry_Approval_Link {
 			gravityview()->log->error( 'Invalid approval status', array( 'data' => $scopes ) );
 
 			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
-			exit;
 
+			exit;
 		}
 
 		// Valid values
@@ -658,8 +644,8 @@ class GravityView_Entry_Approval_Link {
 			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
 
 			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
-			exit;
 
+			exit;
 		}
 
 		// Has capability
@@ -668,8 +654,8 @@ class GravityView_Entry_Approval_Link {
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
 			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
-			exit;
 
+			exit;
 		}
 
 		$result = GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form_id );
@@ -677,6 +663,7 @@ class GravityView_Entry_Approval_Link {
 		$return_url = add_query_arg( array( self::URL_ARG => $result ? 'success' : 'error' ), $return_url );
 
 		wp_safe_redirect( esc_url_raw( $return_url ) );
+
 		exit;
 	}
 }
