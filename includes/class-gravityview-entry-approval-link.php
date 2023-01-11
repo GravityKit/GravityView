@@ -55,7 +55,7 @@ class GravityView_Entry_Approval_Link {
 		add_filter( 'gform_form_settings_fields', array( $this, '_filter_gform_form_settings_fields' ), 10, 2 );
 		add_filter( 'gform_custom_merge_tags', array( $this, '_filter_gform_custom_merge_tags' ), 10, 4 );
 		add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
-		add_action( 'init', array( $this, '_filter_init' ) );
+		add_action( 'init', array( $this, '_action_init' ) );
 	}
 
 	/**
@@ -391,7 +391,7 @@ class GravityView_Entry_Approval_Link {
 	 *
 	 * @return void
 	 */
-	public function _filter_init() {
+	public function _action_init() {
 
 		if ( ! GV\Utils::_GET( 'gv_token' ) && ! GV\Utils::_GET( self::URL_ARG ) ) {
 			return;
