@@ -23,9 +23,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GravityView_Entry_Approval_Link {
 
 	/**
-	 * Default value for the expiration_hours modifier.
+	 * Default value for the expiration modifier.
 	 */
 	const EXPIRATION_HOURS = 24;
+
+	/**
+	 * Default value for the expiration_unit modifier.
+	 */
+	const EXPIRATION_UNIT = 'hours';
 
 	/**
 	 * Default value for the privacy modifier.
@@ -172,7 +177,7 @@ class GravityView_Entry_Approval_Link {
 	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
 
 		$matches = array();
-		preg_match_all( '/{gv_((?:dis|un)?approve)_entry:?(\d+)?:?(public)?}/', $text, $matches, PREG_SET_ORDER );
+		preg_match_all( '/{gv_((?:dis|un)?approve)_entry:?(?:(\d+)([d|h|m|s]))?:?(public)?}/', $text, $matches, PREG_SET_ORDER );
 
 		// If there are no matches, return original text
 		if ( empty( $matches ) ) {
@@ -206,14 +211,31 @@ class GravityView_Entry_Approval_Link {
 
 			$full_tag         = $match[0];
 			$action           = $match[1];
-			$expiration_hours = isset( $match[2] ) ? (int) $match[2] : self::EXPIRATION_HOURS;
-			$privacy          = isset( $match[3] ) ? $match[3] : self::DEFAULT_PRIVACY;
+			$expiration_value = ! empty( $match[2] ) ? (int) $match[2] : self::EXPIRATION_HOURS;
+			$expiration_unit = ! empty( $match[3] ) ? $match[3] : self::EXPIRATION_UNIT;
+			$privacy = isset( $match[4] ) ? $match[4] : self::DEFAULT_PRIVACY;
+
+			switch ( $expiration_unit ) {
+				case 'd':
+					$expiration_unit = 'days';
+					break;
+				case 'h':
+				default:
+					$expiration_unit = 'hours';
+					break;
+				case 'm':
+					$expiration_unit = 'minutes';
+					break;
+				case 's': // Seconds should really only be used for testing purposes :-) But it's here if you need it.
+					$expiration_unit = 'seconds';
+					break;
+			}
 
 			if ( false === (bool) $form['publicApprovalLink'] ) {
 				$privacy = self::DEFAULT_PRIVACY;
 			}
 
-			$token = $this->get_token( $action, $expiration_hours, $privacy, $entry );
+			$token = $this->get_token( $action, $expiration_value, $expiration_unit, $privacy, $entry );
 
 			if ( ! $token ) {
 				continue;
@@ -246,20 +268,21 @@ class GravityView_Entry_Approval_Link {
 	 * @since 2.14.8
 	 *
 	 * @param string|bool $action Action to be taken by the merge tag.
-	 * @param int         $expiration_hours Amount of hours the approval link is valid.
+	 * @param int         $expiration_value Amount of hours the approval link is valid.
+	 * @param string      $expiration_unit Unit of time for $expiration_value. Accepts time units allowed by {@see strtotime()} (`weeks`, `days`, `hours`, `minutes`, `seconds`).
 	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
 	 * @param array       $entry Entry array.
 	 *
 	 * @return array Encrypted hash
 	 */
-	protected function get_token( $action = false, $expiration_hours = 24, $privacy = 'private', $entry = array() ) {
+	protected function get_token( $action = false, $expiration_value = 24, $expiration_unit = 'hours', $privacy = 'private', $entry = array() ) {
 
 		if ( ! $action || ! $entry['id'] ) {
 			return false;
 		}
 
-		if ( ! $expiration_hours ) {
-			$expiration_hours = self::EXPIRATION_HOURS;
+		if ( ! $expiration_value ) {
+			$expiration_value = self::EXPIRATION_HOURS;
 		}
 
 		if ( ! $privacy ) {
@@ -275,12 +298,12 @@ class GravityView_Entry_Approval_Link {
 		$scopes = array(
 			'entry_id'         => $entry['id'],
 			'approval_status'  => $approval_status,
-			'expiration_hours' => $expiration_hours,
+			'expiration_hours' => $expiration_value,
 			'privacy'          => $privacy,
 		);
 
 		$jti                  = uniqid();
-		$expiration_timestamp = strtotime( '+' . (int) $expiration_hours . ' hours' );
+		$expiration_timestamp = strtotime( '+' . (int) $expiration_value . ' ' . $expiration_unit );
 
 		$token_array = array(
 			'iat'    => time(),
