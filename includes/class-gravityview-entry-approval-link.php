@@ -23,6 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 class GravityView_Entry_Approval_Link {
 
 	/**
+	 * The name of the query arg used to pass token information to the approval URL.
+	 * Example: ?gv_token=eyJpYXQiOjE2NzM0ODgw[...]
+	 */
+	const TOKEN_URL_ARG = 'gv_token';
+
+	/**
 	 * Default value for the expiration modifier.
 	 */
 	const EXPIRATION_HOURS = 24;
@@ -247,7 +253,7 @@ class GravityView_Entry_Approval_Link {
 
 
 			if ( self::EXPIRATION_HOURS > (int) $expiration_hours ) {
-				$link_url = add_query_arg( array( 'nonce' => wp_create_nonce( 'gv_token' ) ), $link_url );
+				$link_url = add_query_arg( array( 'nonce' => wp_create_nonce( self::TOKEN_URL_ARG ) ), $link_url );
 			}
 
 			$link_labels = array(
@@ -371,7 +377,7 @@ class GravityView_Entry_Approval_Link {
 		$query_args = array();
 
 		if ( ! empty( $token ) ) {
-			$query_args['gv_token'] = $token;
+			$query_args[ self::TOKEN_URL_ARG ] = $token;
 		}
 
 		$url = add_query_arg( $query_args, $base_url );
@@ -395,7 +401,7 @@ class GravityView_Entry_Approval_Link {
 	 */
 	public function maybe_update_approved() {
 
-		$token_string = GV\Utils::_GET( 'gv_token' );
+		$token_string = GV\Utils::_GET( self::TOKEN_URL_ARG );
 
 		if ( ! $token_string ) {
 			return;
@@ -415,7 +421,7 @@ class GravityView_Entry_Approval_Link {
 				wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), esc_html__( 'The link is invalid.', 'gk-gravityview' ) ) );
 			}
 
-			$nonce_validation = wp_verify_nonce( GV\Utils::_GET( 'nonce' ), 'gv_token' );
+			$nonce_validation = wp_verify_nonce( GV\Utils::_GET( 'nonce' ), self::TOKEN_URL_ARG );
 
 			if ( ! $nonce_validation ) {
 				gravityview()->log->error( 'Entry moderation failed: Nonce was invalid.', array( 'data' => $nonce_validation ) );
