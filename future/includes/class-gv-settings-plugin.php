@@ -189,6 +189,7 @@ class Plugin_Settings {
 	public function defaults() {
 		$defaults = [
 			'rest_api' => 0,
+			'public_entry_moderation' => 0,
 		];
 
 		/**
@@ -239,6 +240,18 @@ class Plugin_Settings {
 							'title'       => esc_html__( 'REST API', 'gk-gravityview' ),
 							'description' => esc_html__( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gk-gravityview' ) . ' ' . esc_html__( 'If you are unsure, disable this setting.', 'gk-gravityview' ),
 							'value'       => $this->get( 'rest_api', $default_settings['rest_api'] ),
+						],
+					],
+				],
+				[
+					'title'    => esc_html__( 'Permissions', 'gk-gravityview' ),
+					'settings' => [
+						[
+							'id'          => 'public_entry_moderation',
+							'type'        => 'checkbox',
+							'title'       => esc_html__( 'Public Entry Moderation Merge Tags', 'gk-gravityview' ),
+							'description' => esc_html__( 'Allow entry moderation to be performed by anyone with the link, even if they are not logged in.', 'gk-gravityview' ) . ' ' . esc_html__( 'If you are unsure, disable this setting.', 'gk-gravityview' ),
+							'value'       => $this->get( 'public_entry_moderation', $default_settings['rest_api'] ),
 						],
 					],
 				],

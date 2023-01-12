@@ -111,7 +111,7 @@ class GravityView_Entry_Approval_Link {
 						'value' => '0',
 				),
 			),
-			'default_value' => gravityview()->plugin->settings->get( 'public-approval-link', '0' ),
+			'default_value' => (string) gravityview()->plugin->settings->get( 'public_entry_moderation', '0' ),
 		);
 
 		return $fields;
@@ -193,7 +193,7 @@ class GravityView_Entry_Approval_Link {
 		}
 
 		if ( ! isset( $form['publicApprovalLink'] ) ) {
-			$form['publicApprovalLink'] = gravityview()->plugin->settings->get( 'public-approval-link' );
+			$form['publicApprovalLink'] = gravityview()->plugin->settings->get( 'public_entry_moderation' );
 		}
 
 		return $this->replace_merge_tag( $matches, $text, $form, $entry, $url_encode, $esc_html );
