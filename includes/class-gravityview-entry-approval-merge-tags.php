@@ -213,7 +213,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			}
 
 			$expiration_timestamp = strtotime( "+{$expiration_value} {$expiration_unit}" );
-			$expiration_seconds   = time() - $expiration_timestamp;
+			$expiration_seconds   = $expiration_timestamp - time();
 
 			$token = $this->get_token( $action, $expiration_timestamp, $privacy, $entry );
 
@@ -266,7 +266,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		}
 
 		$jti                = uniqid();
-		$expiration_seconds = time() - $expiration_timestamp;
+		$expiration_seconds = $expiration_timestamp - time();
 
 		$scopes = array(
 			'entry_id'           => $entry['id'],
