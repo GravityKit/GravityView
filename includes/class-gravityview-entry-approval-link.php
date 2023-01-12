@@ -480,22 +480,37 @@ class GravityView_Entry_Approval_Link {
 			return;
 		}
 
+		$approval_label = GravityView_Entry_Approval_Status::get_label( (int) \GV\Utils::_GET( 'approval_status' ) );
+		$approval_label = mb_strtolower( $approval_label );
+
 		$result = GV\Utils::_GET( self::URL_ARG );
 
 		if ( 'success' === $result ) {
-			$message = \GVCommon::generate_notice( wpautop( esc_html__( 'Entry approval updated!', 'gravityview' ) ), 'updated' );
+
+			// translators: Do not translate the words inside the {} curly brackets; they are replaced.
+			$message = esc_html__( 'Success: Entry #{entry_id} has been {approval_label}.', 'gk-gravityview' );
+
+			$css_class = 'updated';
+		} else {
+
+			// translators: Do not translate the words inside the {} curly brackets; they are replaced.
+			$message = esc_html__( 'There was an error updating entry #{entry_id}.', 'gk-gravityview' );
+
+			$css_class = 'error';
 		}
 
-		elseif ( 'error' === $result ) {
-			$message = \GVCommon::generate_notice( wpautop( esc_html__( 'Error updating approval.', 'gravityview' ) ), 'error' );
-		}
+		$message = strtr( $message, array(
+			'{entry_id}'       => esc_html( \GV\Utils::_GET( 'entry_id', '' ) ),
+			'{approval_label}' => esc_html( $approval_label ),
+		) );
+
+		$message = \GVCommon::generate_notice( wpautop( $message ), $css_class );
 
 		if ( is_admin() ) {
 			echo $message;
 		} else {
 			wp_die( $message );
 		}
-
 	}
 
 	/**
@@ -667,7 +682,11 @@ class GravityView_Entry_Approval_Link {
 
 		$result = GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form_id );
 
-		$return_url = add_query_arg( array( self::URL_ARG => $result ? 'success' : 'error' ), $return_url );
+		$query_args = $scopes;
+
+		$query_args[ self::URL_ARG ] = $result ? 'success' : 'error';
+
+		$return_url = add_query_arg( $query_args, $return_url );
 
 		wp_safe_redirect( esc_url_raw( $return_url ) );
 
