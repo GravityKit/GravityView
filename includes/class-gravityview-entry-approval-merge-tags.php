@@ -38,11 +38,6 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 */
 	const DEFAULT_EXPIRATION_UNIT = 'hours';
 
-	/**
-	 * Default value for the privacy modifier.
-	 */
-	const DEFAULT_PRIVACY = 'private';
-
 	const FORM_SETTINGS_KEY = 'gravityview_entry_moderation';
 
 	const NOTICE_URL_ARG = 'gv_approval_link_result';
@@ -190,7 +185,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			$action           = $match[1];
 			$expiration_value = ! empty( $match[2] ) ? (int) $match[2] : self::DEFAULT_EXPIRATION_VALUE;
 			$expiration_unit  = ! empty( $match[3] ) ? $match[3] : self::DEFAULT_EXPIRATION_UNIT;
-			$privacy          = isset( $match[4] ) ? $match[4] : self::DEFAULT_PRIVACY;
+			$privacy          = isset( $match[4] ) ? $match[4] : 'private';
 
 			switch ( $expiration_unit ) {
 				case 'd':
@@ -209,7 +204,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			}
 
 			if ( false === (bool) \GV\Utils::get( $form, self::FORM_SETTINGS_KEY, false ) ) {
-				$privacy = self::DEFAULT_PRIVACY;
+				$privacy = 'private';
 			}
 
 			$expiration_timestamp = strtotime( "+{$expiration_value} {$expiration_unit}" );
@@ -256,7 +251,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		}
 
 		if ( ! $privacy ) {
-			$privacy = self::DEFAULT_PRIVACY;
+			$privacy = 'private';
 		}
 
 		$approval_status = $this->get_approval_status( $action );
@@ -342,7 +337,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			$query_args[ self::TOKEN_URL_ARG ] = $token;
 		}
 
-		if ( self::DEFAULT_PRIVACY === $privacy && DAY_IN_SECONDS >= (int) $expiration_seconds ) {
+		if ( 'private' === $privacy && DAY_IN_SECONDS >= (int) $expiration_seconds ) {
 			$query_args['nonce'] = wp_create_nonce( self::TOKEN_URL_ARG );
 		}
 
@@ -414,7 +409,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 		$form_id = $entry['form_id'];
 
-		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] ) {
+		if ( 'private' === $scopes['privacy'] ) {
 			$return_url = admin_url( '/admin.php?page=gf_entries&s=' . $entry_id . '&field_id=entry_id&operator=is&id=' . $form_id );
 		} else {
 			$return_url = home_url( '/' );
@@ -439,7 +434,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			exit;
 		}
 
-		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
+		if ( 'private' === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
@@ -462,7 +457,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 */
 	protected function is_request_valid( $token ) {
 
-		if ( self::DEFAULT_PRIVACY === $token['scopes']['privacy'] && ! is_user_logged_in() ) {
+		if ( 'private' === $token['scopes']['privacy'] && ! is_user_logged_in() ) {
 			return new WP_Error( 'user_not_logged_in', __( 'You are not allowed to perform this operation.', 'gravityview' ) );
 		}
 
@@ -473,7 +468,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		}
 
 		// Since nonces are only valid for 24 hours, we only check the nonce if the token is valid for less than 24 hours.
-		if ( self::DEFAULT_PRIVACY === $token['scopes']['privacy'] && DAY_IN_SECONDS >= $token['scopes']['expiration_seconds'] ) {
+		if ( 'private' === $token['scopes']['privacy'] && DAY_IN_SECONDS >= $token['scopes']['expiration_seconds'] ) {
 
 			if ( ! isset( $_REQUEST['nonce'] ) ) {
 				gravityview()->log->error( 'Entry moderation failed: No nonce was set for entry approval.' );
