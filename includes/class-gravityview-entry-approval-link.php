@@ -80,40 +80,26 @@ class GravityView_Entry_Approval_Link {
 	 */
 	public function _filter_gform_form_settings_fields( $fields = array(), $form = array() ) {
 
-		$fields = $this->add_form_settings( $fields, $form );
-
-		return $fields;
-	}
-
-	/**
-	 * Adds new form settings
-	 *
-	 * @since 2.14.8
-	 *
-	 * @param array $fields Array of sections and settings fields
-	 * @param array $form GF Form
-	 *
-	 * @return array Modified array of sections and settings fields
-	 */
-	protected function add_form_settings( $fields = array(), $form = array() ) {
+		$global_default = gravityview()->plugin->settings->get( 'public_entry_moderation', '0' );
 
 		$fields['restrictions']['fields'][] = array(
-			'type'       => 'radio',
-			'horizontal' => true,
-			'label'      => __( 'Public Approval Link', 'gravityview' ),
-			'tooltip'    => __( 'Set this to ON to enable public modifier on approval merge tags.', 'gravityview' ),
-			'choices'    => array(
 			'name'          => self::FORM_SETTINGS_KEY,
+			'type'          => 'radio',
+			'horizontal'    => true,
+			'label'         => __( 'Public Entry Moderation Merge Tags', 'gk-gravityview' ),
+			'description'   => __( 'Enable logged-out users to approve or reject entries using {link}entry moderation merge tags{/link} in notifications.', 'gk-gravityview' ),
+			'tooltip'       => __( 'Enable public modifier on approval merge tags.', 'gk-gravityview' ),
+			'choices'       => array(
 				array(
-					'label' => _x( 'On', 'Setting: On or off', 'gravityview' ),
+					'label' => _x( 'Enable', 'Setting: On or off', 'gk-gravityview' ),
 					'value' => '1',
 				),
 				array(
-						'label' => _x( 'Off', 'Setting: On or off', 'gravityview' ),
-						'value' => '0',
+					'label' => _x( 'Disable', 'Setting: On or off', 'gk-gravityview' ),
+					'value' => '0',
 				),
 			),
-			'default_value' => (string) gravityview()->plugin->settings->get( 'public_entry_moderation', '0' ),
+			'default_value' => (string) $global_default,
 		);
 
 		return $fields;
