@@ -1,13 +1,13 @@
 <?php
 /**
- * @file class-gravityview-entry-approval-link.php
+ * @file class-gravityview-entry-moderation-merge-tags.php
  * @package   GravityView
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
- * @copyright Copyright 2016, Katz Web Services, Inc.
+ * @link      https://www.gravitykit.com
+ * @copyright Copyright 2023, Katz Web Services, Inc.
  *
- * @since 2.14.8
+ * @since 2.17
  */
 
 /** If this file is called directly, abort. */
@@ -18,9 +18,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Handles approval links
  *
- * @since 2.14.8
+ * @since 2.17
  */
-class GravityView_Entry_Approval_Link {
+class GravityView_Entry_Approval_Merge_Tags {
 
 	/**
 	 * The name of the query arg used to pass token information to the approval URL.
@@ -71,7 +71,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Filters existing GF Form Settings Fields
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param array $fields Array of sections and settings fields
 	 * @param array $form GF Form
@@ -108,7 +108,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Adds custom merge tags to merge tag options.
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param array $custom_merge_tags
 	 * @param int $form_id GF Form ID
@@ -119,41 +119,22 @@ class GravityView_Entry_Approval_Link {
 	 */
 	public function _filter_gform_custom_merge_tags( $custom_merge_tags = array(), $form_id = 0, $fields = array(), $element_id = '' ) {
 
-		$form = GVCommon::get_form( $form_id );
-
-		$field_merge_tags = $this->custom_merge_tags( $form, $fields );
-
-		return array_merge( $custom_merge_tags, $field_merge_tags );
-	}
-
-	/**
-	 * Adds custom Merge Tags to Merge Tag options, if custom Merge Tags exist
-	 *
-	 * @since 2.14.8
-	 *
-	 * @param array $form GF Form array
-	 * @param GF_Field[] $fields Array of fields in the form
-	 *
-	 * @return array Merge tag array with `label` and `tag` keys
-	 */
-	protected function custom_merge_tags( $form = array(), $fields = array() ) {
-
-		$merge_tags = array(
+		$entry_moderation_merge_tags = array(
 			array(
-				'label' => __( 'Link to approve an entry', 'gravityview' ),
+				'label' => __( 'Entry Moderation: Approve entry link', 'gravityview' ),
 				'tag' => '{gv_approve_entry}',
 			),
 			array(
-				'label' => __( 'Link to disapprove an entry', 'gravityview' ),
+				'label' => __( 'Entry Moderation: Disapprove entry link', 'gravityview' ),
 				'tag' => '{gv_disapprove_entry}',
 			),
 			array(
-				'label' => __( 'Link to unapprove an entry', 'gravityview' ),
+				'label' => __( 'Entry Moderation: Reset entry approval link', 'gravityview' ),
 				'tag' => '{gv_unapprove_entry}',
 			),
 		);
 
-		return $merge_tags;
+		return array_merge( $custom_merge_tags, $entry_moderation_merge_tags );
 	}
 
 	/**
@@ -161,7 +142,7 @@ class GravityView_Entry_Approval_Link {
 	 *
 	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param string $text Text to replace
 	 * @param array $form Gravity Forms form array
@@ -190,7 +171,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Replaces merge tags
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace
@@ -261,7 +242,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Generates token from merge tag parameters
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param string|bool $action Action to be taken by the merge tag.
 	 * @param int         $expiration_value Amount of hours the approval link is valid.
@@ -326,7 +307,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Returns an approval status based on the provided action
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param string|bool $action
 	 *
@@ -347,7 +328,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Generates an approval link URL
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param string|bool $token
 	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
@@ -376,7 +357,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Checks page load for approval link token then maybe process it
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * Expects a $_GET request with the following $_GET keys and values:
 	 *
@@ -465,7 +446,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Checks page load for approval link result then maybe show notice
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * Expects a $_GET request with the following $_GET keys and values:
 	 *
@@ -517,7 +498,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Decodes received token to its original form.
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param string|bool $token
 	 *
@@ -575,7 +556,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Validates an approval token
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param array $token
 	 *
@@ -614,7 +595,7 @@ class GravityView_Entry_Approval_Link {
 	/**
 	 * Updates approval status
 	 *
-	 * @since 2.14.8
+	 * @since 2.17
 	 *
 	 * @param array $scopes
 	 *
@@ -688,4 +669,4 @@ class GravityView_Entry_Approval_Link {
 	}
 }
 
-new GravityView_Entry_Approval_Link;
+new GravityView_Entry_Approval_Merge_Tags;

@@ -220,7 +220,7 @@ final class Plugin {
 		}
 
 		include_once $this->dir( 'includes/class-gravityview-entry-approval-status.php' );
-		include_once $this->dir( 'includes/class-gravityview-entry-approval-link.php' );
+		include_once $this->dir( 'includes/class-gravityview-entry-approval-merge-tags.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-approval.php' );
 
 		include_once $this->dir( 'includes/class-gravityview-entry-notes.php' );
