@@ -287,11 +287,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 		$token = rawurlencode( base64_encode( json_encode( $token_array ) ) );
 
-		$secret = get_option( 'gravityview_token_secret' );
-		if ( empty( $secret ) ) {
-			$secret = wp_salt( 'nonce' );
-			update_option( 'gravityview_token_secret', $secret, false );
-		}
+		$secret = wp_salt( 'nonce' );
 
 		$sig = hash_hmac( 'sha256', $token, $secret );
 
@@ -581,12 +577,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			return new WP_Error( 'approve_link_no_signature', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
-		$secret = get_option( 'gravityview_token_secret' );
-
-		if ( empty( $secret ) ) {
-			return new WP_Error( 'approve_link_no_settings', esc_html__( 'Entry approval is not configured.', 'gk-gravityview' ) );
-		}
-
+		$secret = wp_salt( 'nonce' );
 		$verification_sig  = hash_hmac( 'sha256', $body_64, $secret );
 		$verification_sig2 = hash_hmac( 'sha256', rawurlencode( $body_64 ), $secret );
 
