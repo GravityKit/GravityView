@@ -122,15 +122,15 @@ class GravityView_Entry_Approval_Merge_Tags {
 		$entry_moderation_merge_tags = array(
 			array(
 				'label' => __( 'Entry Moderation: Approve entry link', 'gravityview' ),
-				'tag' => '{gv_approve_entry}',
+				'tag'   => '{gv_approve_entry}',
 			),
 			array(
 				'label' => __( 'Entry Moderation: Disapprove entry link', 'gravityview' ),
-				'tag' => '{gv_disapprove_entry}',
+				'tag'   => '{gv_disapprove_entry}',
 			),
 			array(
 				'label' => __( 'Entry Moderation: Reset entry approval link', 'gravityview' ),
-				'tag' => '{gv_unapprove_entry}',
+				'tag'   => '{gv_unapprove_entry}',
 			),
 		);
 
@@ -140,9 +140,9 @@ class GravityView_Entry_Approval_Merge_Tags {
 	/**
 	 * Matches the merge tag in replacement text for the field.
 	 *
-	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
-	 *
 	 * @since 2.17
+	 *
+	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
 	 *
 	 * @param string $text Text to replace
 	 * @param array $form Gravity Forms form array
@@ -151,7 +151,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 *
 	 * @return string Original text if {_custom_merge_tag} isn't found. Otherwise, replaced text.
 	 */
-	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
+	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		$matches = array();
 		preg_match_all( '/{gv_((?:dis|un)?approve)_entry:?(?:(\d+)([d|h|m|s]))?:?(public)?}/', $text, $matches, PREG_SET_ORDER );
@@ -239,9 +239,9 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 * @since 2.17
 	 *
 	 * @param string|bool $action Action to be taken by the merge tag.
-	 * @param int         $expiration_timestamp Timestamp when the token expires.
-	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
-	 * @param array       $entry Entry array.
+	 * @param int $expiration_timestamp Timestamp when the token expires.
+	 * @param string $privacy Approval link privacy. Accepted values are 'private' or 'public'.
+	 * @param array $entry Entry array.
 	 *
 	 * @return string     Encrypted token.
 	 */
@@ -265,14 +265,14 @@ class GravityView_Entry_Approval_Merge_Tags {
 			return false;
 		}
 
-		$jti                  = uniqid();
-		$expiration_seconds   = time() - $expiration_timestamp;
+		$jti                = uniqid();
+		$expiration_seconds = time() - $expiration_timestamp;
 
 		$scopes = array(
-			'entry_id'         => $entry['id'],
-			'approval_status'  => $approval_status,
+			'entry_id'           => $entry['id'],
+			'approval_status'    => $approval_status,
 			'expiration_seconds' => $expiration_seconds,
-			'privacy'          => $privacy,
+			'privacy'            => $privacy,
 		);
 
 		$token_array = array(
@@ -324,7 +324,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 * @since 2.17
 	 *
 	 * @param string|bool $token
-	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
+	 * @param string $privacy Approval link privacy. Accepted values are 'private' or 'public'.
 	 *
 	 * @return string Approval link URL
 	 */
@@ -356,12 +356,12 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 *
 	 * Expects a $_GET request with the following $_GET keys and values:
 	 *
+	 * @return void
 	 * @global array $_GET {
 	 * @type string $gv_token Approval link token
 	 * @type string $nonce (optional) Nonce hash to be validated. Only available if $expiration_seconds is smaller than DAY_IN_SECONDS.
 	 * }
 	 *
-	 * @return void
 	 */
 	public function maybe_update_approved() {
 
@@ -445,11 +445,11 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 *
 	 * Expects a $_GET request with the following $_GET keys and values:
 	 *
+	 * @return void
 	 * @global array $_GET {
 	 * @type string $gv_approval_link_result Approval link result
 	 * }
 	 *
-	 * @return void
 	 */
 	public function maybe_show_approval_notice() {
 
@@ -534,7 +534,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			return new WP_Error( 'approve_link_failed_signature_verification', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
-		$body_json = base64_decode( $body_64 );
+		$body_json     = base64_decode( $body_64 );
 		$decoded_token = json_decode( $body_json, true );
 
 		if ( empty( $body_json ) || empty( $decoded_token ) ) {
@@ -565,7 +565,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			'scopes',
 		);
 
-		foreach( $required_keys as $required_key ) {
+		foreach ( $required_keys as $required_key ) {
 			if ( ! isset( $token[ $required_key ] ) ) {
 				return new WP_Error( 'approve_link_no_' . $required_key, esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 			}
@@ -578,7 +578,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			'approval_status',
 		);
 
-		foreach( $required_scopes as $required_scope ) {
+		foreach ( $required_scopes as $required_scope ) {
 			if ( ! isset( $token['scopes'][ $required_scope ] ) ) {
 				return new WP_Error( 'approve_link_no_' . $required_scope . '_scope', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 			}
@@ -606,15 +606,15 @@ class GravityView_Entry_Approval_Merge_Tags {
 		$entry_id        = $scopes['entry_id'];
 		$approval_status = $scopes['approval_status'];
 
-		$entry      = GFAPI::get_entry( $entry_id );
+		$entry = GFAPI::get_entry( $entry_id );
 
 		if ( is_wp_error( $entry ) ) {
 			wp_die( $entry->get_error_message() );
 		}
 
-		$form_id    = $entry['form_id'];
+		$form_id = $entry['form_id'];
 
-		if( self::DEFAULT_PRIVACY === $scopes['privacy'] ) {
+		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] ) {
 			$return_url = admin_url( '/admin.php?page=gf_entries&s=' . $entry_id . '&field_id=entry_id&operator=is&id=' . $form_id );
 		} else {
 			$return_url = home_url( '/' );
@@ -628,9 +628,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
 
 			exit;
-		}
-
-		// Valid values
+		} // Valid values
 		elseif ( empty( $entry_id ) || empty( $form_id ) ) {
 
 			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
@@ -638,9 +636,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
 
 			exit;
-		}
-
-		// Has capability
+		} // Has capability
 		elseif ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
