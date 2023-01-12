@@ -121,15 +121,15 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 		$entry_moderation_merge_tags = array(
 			array(
-				'label' => __( 'Entry Moderation: Approve entry link', 'gravityview' ),
+				'label' => __( 'Moderation: Approve entry link', 'gravityview' ),
 				'tag'   => '{gv_approve_entry}',
 			),
 			array(
-				'label' => __( 'Entry Moderation: Disapprove entry link', 'gravityview' ),
+				'label' => __( 'Moderation: Disapprove entry link', 'gravityview' ),
 				'tag'   => '{gv_disapprove_entry}',
 			),
 			array(
-				'label' => __( 'Entry Moderation: Reset entry approval link', 'gravityview' ),
+				'label' => __( 'Moderation: Reset entry approval link', 'gravityview' ),
 				'tag'   => '{gv_unapprove_entry}',
 			),
 		);
