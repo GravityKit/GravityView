@@ -399,7 +399,56 @@ class GravityView_Entry_Approval_Merge_Tags {
 			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $is_request_valid->get_error_message() ) );
 		}
 
-		$this->update_approved( $token['scopes'] );
+		$scopes = $token['scopes'];
+
+		$entry_id        = $scopes['entry_id'];
+		$approval_status = $scopes['approval_status'];
+
+		$entry = GFAPI::get_entry( $entry_id );
+
+		if ( is_wp_error( $entry ) ) {
+			gravityview()->log->error( 'Entry moderation failed: the entry was not found.', array( 'data' => $entry ) );
+
+			wp_die( $entry->get_error_message() );
+		}
+
+		$form_id = $entry['form_id'];
+
+		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] ) {
+			$return_url = admin_url( '/admin.php?page=gf_entries&s=' . $entry_id . '&field_id=entry_id&operator=is&id=' . $form_id );
+		} else {
+			$return_url = home_url( '/' );
+		}
+
+		// Valid status
+		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
+
+			gravityview()->log->error( 'Invalid approval status', array( 'data' => $scopes ) );
+
+			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
+
+			exit;
+		}
+
+		if ( empty( $entry_id ) || empty( $form_id ) ) {
+
+			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
+
+			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
+
+			exit;
+		}
+
+		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
+
+			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
+
+			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
+
+			exit;
+		}
+
+		$this->update_approved( $entry_id, $approval_status, $form_id, $scopes, $return_url );
 	}
 
 	/**
@@ -460,12 +509,14 @@ class GravityView_Entry_Approval_Merge_Tags {
 	public function maybe_show_approval_notice() {
 
 		$result = GV\Utils::_GET( self::NOTICE_URL_ARG );
+		$approval_status = \GV\Utils::_GET( 'approval_status' );
+		$entry_id = \GV\Utils::_GET( 'entry_id' );
 
-		if ( ! $result ) {
+		if ( ! $result || ! $approval_status || ! $entry_id ) {
 			return;
 		}
 
-		$approval_label = GravityView_Entry_Approval_Status::get_label( (int) \GV\Utils::_GET( 'approval_status' ) );
+		$approval_label = GravityView_Entry_Approval_Status::get_label( (int) $approval_status );
 		$approval_label = mb_strtolower( $approval_label );
 
 		if ( 'success' === $result ) {
@@ -483,7 +534,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		}
 
 		$message = strtr( $message, array(
-			'{entry_id}'       => esc_html( \GV\Utils::_GET( 'entry_id', '' ) ),
+			'{entry_id}'       => esc_html( $entry_id ),
 			'{approval_label}' => esc_html( $approval_label ),
 		) );
 
@@ -594,65 +645,17 @@ class GravityView_Entry_Approval_Merge_Tags {
 	}
 
 	/**
-	 * Updates approval status
+	 * Updates the entry approval status and redirects to $return_url.
 	 *
-	 * @since 2.17
+	 * @param int $entry_id Entry ID.
+	 * @param int $approval_status Approval status.
+	 * @param int $form_id Form ID.
+	 * @param array $scopes Token scopes to be passed to the return URL and used in {@see maybe_show_approval_notice()}.
+	 * @param string $return_url Url to redirect to once moderation happens.
 	 *
-	 * @param array $scopes
-	 *
-	 * @return void Output success or error messages to user on redirect.
+	 * @return void
 	 */
-	protected function update_approved( $scopes = array() ) {
-
-		// Sanity check.
-		if ( empty( $scopes ) ) {
-			return;
-		}
-
-		$entry_id        = $scopes['entry_id'];
-		$approval_status = $scopes['approval_status'];
-
-		$entry = GFAPI::get_entry( $entry_id );
-
-		if ( is_wp_error( $entry ) ) {
-			wp_die( $entry->get_error_message() );
-		}
-
-		$form_id = $entry['form_id'];
-
-		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] ) {
-			$return_url = admin_url( '/admin.php?page=gf_entries&s=' . $entry_id . '&field_id=entry_id&operator=is&id=' . $form_id );
-		} else {
-			$return_url = home_url( '/' );
-		}
-
-		// Valid status
-		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
-
-			gravityview()->log->error( 'Invalid approval status', array( 'data' => $scopes ) );
-
-			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
-
-			exit;
-		}
-
-		if ( empty( $entry_id ) || empty( $form_id ) ) {
-
-			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
-
-			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
-
-			exit;
-		}
-
-		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
-
-			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
-
-			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
-
-			exit;
-		}
+	protected function update_approved( $entry_id, $approval_status, $form_id, $scopes, $return_url ) {
 
 		$result = GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form_id );
 
