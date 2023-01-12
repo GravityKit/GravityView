@@ -225,13 +225,9 @@ class GravityView_Entry_Approval_Merge_Tags {
 				$link_url = add_query_arg( array( 'nonce' => wp_create_nonce( self::TOKEN_URL_ARG ) ), $link_url );
 			}
 
-			$link_labels = array(
-				'approve'    => _x( 'Approve', 'Change entry approval status to approved.', 'gravityview' ),
-				'disapprove' => _x( 'Disapprove', 'Change entry approval status to disapproved.', 'gravityview' ),
-				'unapprove'  => _x( 'Unapprove', 'Change entry approval status to unapproved.', 'gravityview' ),
-			);
+			$anchor_text = GravityView_Entry_Approval_Status::get_action( $action . 'd' );
 
-			$link = sprintf( '<a href="%s">%s</a>', esc_url_raw( $link_url ), esc_html( $link_labels[ $action ] ) );
+			$link = sprintf( '<a href="%s">%s</a>', esc_url_raw( $link_url ), esc_html( $anchor_text ) );
 
 			$text = str_replace( $full_tag, $link, $text );
 		}
