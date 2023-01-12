@@ -899,7 +899,7 @@
 					$sortableEls = $( '.ui-widget-content[aria-hidden="false"]' ).find( '.active-drop-widget, .active-drop-field' );
 
 					if ( $sortableEls.length ) {
-						$sortableEls.each( el => {
+						$sortableEls.each( ( i, el ) => {
 							if ( !$( el ).hasClass( 'ui-sortable' ) ) {
 								return;
 							}
@@ -937,7 +937,7 @@
 					$sortableEls = $( '.ui-widget-content[aria-hidden="false"]' ).find( '.active-drop-widget, .active-drop-field' );
 
 					if ( $sortableEls.length ) {
-						$sortableEls.each( el => {
+						$sortableEls.each( ( i, el ) => {
 							if ( !$( el ).hasClass( 'ui-sortable' ) ) {
 								return;
 							}
