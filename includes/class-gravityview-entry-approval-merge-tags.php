@@ -371,25 +371,65 @@ class GravityView_Entry_Approval_Merge_Tags {
 			return;
 		}
 
-		$token = $this->get_token_from_string( $token_string );
+		$token = $this->decode_token( $token_string );
 
 		if ( is_wp_error( $token ) ) {
+
+			gravityview()->log->error( 'Decoding the entry approval token failed.', array( 'data' => $token ) );
+
 			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $token->get_error_message() ) );
+		}
+
+		// Ensure the token is formatted properly.
+		$is_valid_token = $this->is_token_valid( $token );
+
+		if ( is_wp_error( $is_valid_token ) ) {
+
+			gravityview()->log->error( 'Validating the entry approval token failed.', array( 'data' => $is_valid_token ) );
+
+			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $is_valid_token->get_error_message() ) );
+		}
+
+		$is_request_valid = $this->is_request_valid( $token );
+
+		if ( is_wp_error( $is_request_valid ) ) {
+
+			gravityview()->log->error( 'Validating the entry approval token failed.', array( 'data' => $is_request_valid ) );
+
+			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $is_request_valid->get_error_message() ) );
+		}
+
+		$this->update_approved( $token['scopes'] );
+	}
+
+	/**
+	 * Verifies the token
+	 *
+	 * @since 2.17
+	 *
+	 * @param array $token
+	 *
+	 * @return bool|WP_Error
+	 */
+	protected function is_request_valid( $token ) {
+
+		if ( self::DEFAULT_PRIVACY === $token['scopes']['privacy'] && ! is_user_logged_in() ) {
+			return new WP_Error( 'user_not_logged_in', __( 'You are not allowed to perform this operation.', 'gravityview' ) );
 		}
 
 		if ( $token['exp'] < time() ) {
 			gravityview()->log->error( 'The entry moderation link expired.', array( 'data' => $is_valid_token ) );
 
-			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), esc_html__( 'The link has expired.', 'gk-gravityview' ) ) );
+			return new WP_Error( 'link_expired', esc_html__( 'The link has expired.', 'gk-gravityview' ) );
 		}
 
 		// Since nonces are only valid for 24 hours, we only check the nonce if the token is valid for less than 24 hours.
-		if ( DAY_IN_SECONDS > $token['scopes']['expiration_seconds'] ) {
+		if ( DAY_IN_SECONDS >= $token['scopes']['expiration_seconds'] ) {
 
 			if ( ! isset( $_REQUEST['nonce'] ) ) {
 				gravityview()->log->error( 'Entry moderation failed: No nonce was set for entry approval.' );
 
-				wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), esc_html__( 'The link is invalid.', 'gk-gravityview' ) ) );
+				return new WP_Error( 'missing_nonce', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 			}
 
 			$nonce_validation = wp_verify_nonce( GV\Utils::_GET( 'nonce' ), self::TOKEN_URL_ARG );
@@ -397,45 +437,11 @@ class GravityView_Entry_Approval_Merge_Tags {
 			if ( ! $nonce_validation ) {
 				gravityview()->log->error( 'Entry moderation failed: Nonce was invalid.', array( 'data' => $nonce_validation ) );
 
-				wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), esc_html__( 'The link has expired.', 'gk-gravityview' ) ) );
+				return new WP_Error( 'invalid_nonce', esc_html__( 'The link has expired.', 'gk-gravityview' ) );
 			}
 		}
 
-		$scopes = $token['scopes'];
-
-		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! is_user_logged_in() ) {
-			wp_die( __( 'You are not allowed to perform this operation.', 'gravityview' ) );
-		}
-
-		$this->update_approved( $scopes );
-	}
-
-	/**
-	 * @param string $token_string
-	 *
-	 * @return array|WP_Error
-	 */
-	function get_token_from_string( $token_string ) {
-
-		$token = $this->decode_token( $token_string );
-
-		if ( is_wp_error( $token ) ) {
-
-			gravityview()->log->error( 'Decoding the entry approval token failed.', array( 'data' => $token ) );
-
-			return $token;
-		}
-
-		$is_valid_token = $this->validate_token( $token );
-
-		if ( is_wp_error( $is_valid_token ) ) {
-
-			gravityview()->log->error( 'Validating the entry approval token failed.', array( 'data' => $is_valid_token ) );
-
-			return $is_valid_token;
-		}
-
-		return $token;
+		return true;
 	}
 
 	/**
@@ -557,7 +563,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 *
 	 * @return true|WP_Error Token is valid or there was an error.
 	 */
-	protected function validate_token( array $token ) {
+	protected function is_token_valid( array $token ) {
 
 		$required_keys = array(
 			'jti',
@@ -628,16 +634,18 @@ class GravityView_Entry_Approval_Merge_Tags {
 			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
 
 			exit;
-		} // Valid values
-		elseif ( empty( $entry_id ) || empty( $form_id ) ) {
+		}
+
+		if ( empty( $entry_id ) || empty( $form_id ) ) {
 
 			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
 
 			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
 
 			exit;
-		} // Has capability
-		elseif ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
+		}
+
+		if ( self::DEFAULT_PRIVACY === $scopes['privacy'] && ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry_id ) ) {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
