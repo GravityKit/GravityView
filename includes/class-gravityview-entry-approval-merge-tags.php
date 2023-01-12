@@ -31,12 +31,12 @@ class GravityView_Entry_Approval_Merge_Tags {
 	/**
 	 * Default value for the expiration modifier.
 	 */
-	const EXPIRATION_HOURS = 24;
+	const DEFAULT_EXPIRATION_VALUE = 24;
 
 	/**
 	 * Default value for the expiration_unit modifier.
 	 */
-	const EXPIRATION_UNIT = 'hours';
+	const DEFAULT_EXPIRATION_UNIT = 'hours';
 
 	/**
 	 * Default value for the privacy modifier.
@@ -45,7 +45,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 	const FORM_SETTINGS_KEY = 'gravityview_entry_moderation';
 
-	const URL_ARG = 'gv_approval_link_result';
+	const NOTICE_URL_ARG = 'gv_approval_link_result';
 
 	/**
 	 * Initialization.
@@ -188,9 +188,9 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 			$full_tag         = $match[0];
 			$action           = $match[1];
-			$expiration_value = ! empty( $match[2] ) ? (int) $match[2] : self::EXPIRATION_HOURS;
-			$expiration_unit = ! empty( $match[3] ) ? $match[3] : self::EXPIRATION_UNIT;
-			$privacy = isset( $match[4] ) ? $match[4] : self::DEFAULT_PRIVACY;
+			$expiration_value = ! empty( $match[2] ) ? (int) $match[2] : self::DEFAULT_EXPIRATION_VALUE;
+			$expiration_unit  = ! empty( $match[3] ) ? $match[3] : self::DEFAULT_EXPIRATION_UNIT;
+			$privacy          = isset( $match[4] ) ? $match[4] : self::DEFAULT_PRIVACY;
 
 			switch ( $expiration_unit ) {
 				case 'd':
@@ -454,14 +454,14 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 */
 	public function maybe_show_approval_notice() {
 
-		if ( ! GV\Utils::_GET( self::URL_ARG ) ) {
+		$result = GV\Utils::_GET( self::NOTICE_URL_ARG );
+
+		if ( ! $result ) {
 			return;
 		}
 
 		$approval_label = GravityView_Entry_Approval_Status::get_label( (int) \GV\Utils::_GET( 'approval_status' ) );
 		$approval_label = mb_strtolower( $approval_label );
-
-		$result = GV\Utils::_GET( self::URL_ARG );
 
 		if ( 'success' === $result ) {
 
@@ -626,7 +626,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 			gravityview()->log->error( 'Invalid approval status', array( 'data' => $scopes ) );
 
-			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
+			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
 
 			exit;
 		}
@@ -636,7 +636,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $scopes ) );
 
-			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
+			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
 
 			exit;
 		}
@@ -646,7 +646,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
-			wp_safe_redirect( add_query_arg( array( self::URL_ARG => 'error' ), $return_url ) );
+			wp_safe_redirect( add_query_arg( array( self::NOTICE_URL_ARG => 'error' ), $return_url ) );
 
 			exit;
 		}
@@ -655,7 +655,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 		$query_args = $scopes;
 
-		$query_args[ self::URL_ARG ] = $result ? 'success' : 'error';
+		$query_args[ self::NOTICE_URL_ARG ] = $result ? 'success' : 'error';
 
 		$return_url = add_query_arg( $query_args, $return_url );
 
