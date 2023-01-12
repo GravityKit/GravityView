@@ -184,7 +184,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 */
 	protected function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
-		foreach( $matches as $match ) {
+		foreach ( $matches as $match ) {
 
 			$full_tag         = $match[0];
 			$action           = $match[1];
@@ -212,18 +212,16 @@ class GravityView_Entry_Approval_Merge_Tags {
 				$privacy = self::DEFAULT_PRIVACY;
 			}
 
-			$token = $this->get_token( $action, $expiration_value, $expiration_unit, $privacy, $entry );
+			$expiration_timestamp = strtotime( "+{$expiration_value} {$expiration_unit}" );
+			$expiration_seconds   = time() - $expiration_timestamp;
+
+			$token = $this->get_token( $action, $expiration_timestamp, $privacy, $entry );
 
 			if ( ! $token ) {
 				continue;
 			}
 
-			$link_url = $this->get_link_url( $token, $privacy );
-
-
-			if ( self::EXPIRATION_HOURS > (int) $expiration_hours ) {
-				$link_url = add_query_arg( array( 'nonce' => wp_create_nonce( self::TOKEN_URL_ARG ) ), $link_url );
-			}
+			$link_url = $this->get_link_url( $token, $expiration_seconds, $privacy );
 
 			$anchor_text = GravityView_Entry_Approval_Status::get_action( $action . 'd' );
 
@@ -241,21 +239,20 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 * @since 2.17
 	 *
 	 * @param string|bool $action Action to be taken by the merge tag.
-	 * @param int         $expiration_value Amount of hours the approval link is valid.
-	 * @param string      $expiration_unit Unit of time for $expiration_value. Accepts time units allowed by {@see strtotime()} (`weeks`, `days`, `hours`, `minutes`, `seconds`).
+	 * @param int         $expiration_timestamp Timestamp when the token expires.
 	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
 	 * @param array       $entry Entry array.
 	 *
-	 * @return array Encrypted hash
+	 * @return string     Encrypted token.
 	 */
-	protected function get_token( $action = false, $expiration_value = 24, $expiration_unit = 'hours', $privacy = 'private', $entry = array() ) {
+	protected function get_token( $action = false, $expiration_timestamp = 0, $privacy = 'private', $entry = array() ) {
 
 		if ( ! $action || ! $entry['id'] ) {
 			return false;
 		}
 
-		if ( ! $expiration_value ) {
-			$expiration_value = self::EXPIRATION_HOURS;
+		if ( ! $expiration_timestamp ) {
+			return false;
 		}
 
 		if ( ! $privacy ) {
@@ -268,15 +265,15 @@ class GravityView_Entry_Approval_Merge_Tags {
 			return false;
 		}
 
+		$jti                  = uniqid();
+		$expiration_seconds   = time() - $expiration_timestamp;
+
 		$scopes = array(
 			'entry_id'         => $entry['id'],
 			'approval_status'  => $approval_status,
-			'expiration_hours' => $expiration_value,
+			'expiration_seconds' => $expiration_seconds,
 			'privacy'          => $privacy,
 		);
-
-		$jti                  = uniqid();
-		$expiration_timestamp = strtotime( '+' . (int) $expiration_value . ' ' . $expiration_unit );
 
 		$token_array = array(
 			'iat'    => time(),
@@ -331,7 +328,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 *
 	 * @return string Approval link URL
 	 */
-	protected function get_link_url( $token = false, $privacy = 'private' ) {
+	protected function get_link_url( $token = false, $expiration_seconds = DAY_IN_SECONDS, $privacy = 'private' ) {
 
 		if ( 'public' === $privacy ) {
 			$base_url = home_url( '/' );
@@ -345,9 +342,11 @@ class GravityView_Entry_Approval_Merge_Tags {
 			$query_args[ self::TOKEN_URL_ARG ] = $token;
 		}
 
-		$url = add_query_arg( $query_args, $base_url );
+		if ( DAY_IN_SECONDS >= (int) $expiration_seconds ) {
+			$query_args['nonce'] = wp_create_nonce( self::TOKEN_URL_ARG );
+		}
 
-		return $url;
+		return add_query_arg( $query_args, $base_url );
 	}
 
 	/**
@@ -359,7 +358,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 *
 	 * @global array $_GET {
 	 * @type string $gv_token Approval link token
-	 * @type string $nonce (optional) Nonce hash to be validated. Only available if $expiration_hours is smaller than 24.
+	 * @type string $nonce (optional) Nonce hash to be validated. Only available if $expiration_seconds is smaller than DAY_IN_SECONDS.
 	 * }
 	 *
 	 * @return void
@@ -385,7 +384,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		}
 
 		// Since nonces are only valid for 24 hours, we only check the nonce if the token is valid for less than 24 hours.
-		if ( self::EXPIRATION_HOURS > $token['scopes']['expiration_hours'] ) {
+		if ( DAY_IN_SECONDS > $token['scopes']['expiration_seconds'] ) {
 
 			if ( ! isset( $_REQUEST['nonce'] ) ) {
 				gravityview()->log->error( 'Entry moderation failed: No nonce was set for entry approval.' );
@@ -573,7 +572,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		}
 
 		$required_scopes = array(
-			'expiration_hours',
+			'expiration_seconds',
 			'privacy',
 			'entry_id',
 			'approval_status',
