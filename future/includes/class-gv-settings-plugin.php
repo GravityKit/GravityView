@@ -249,8 +249,16 @@ class Plugin_Settings {
 						[
 							'id'          => 'public_entry_moderation',
 							'type'        => 'checkbox',
-							'title'       => esc_html__( 'Public Entry Moderation Merge Tags', 'gk-gravityview' ),
-							'description' => esc_html__( 'Allow entry moderation to be performed by anyone with the link, even if they are not logged in.', 'gk-gravityview' ) . ' ' . esc_html__( 'If you are unsure, disable this setting.', 'gk-gravityview' ),
+							'title'       => esc_html__( 'Enable Public Entry Moderation', 'gk-gravityview' ),
+							'description'   => strtr(
+								// translators: Do not translate the words inside the {} curly brackets; they are replaced.
+								__( 'If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry.', 'gk-gravityview' ),
+								array(
+									'{public}' => '<code style="font-size: .9em">:public</code>',
+									'{link}' => '<a href="https://docs.gravitykit.com/article/904-entry-moderation-merge-tags" target="_blank" rel="noopener noreferrer">',
+									'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravitycalendar' ) . '</span></a>',
+								)
+							),
 							'value'       => $this->get( 'public_entry_moderation', $default_settings['rest_api'] ),
 						],
 					],

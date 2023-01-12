@@ -81,9 +81,17 @@ class GravityView_Entry_Approval_Merge_Tags {
 			'name'          => self::FORM_SETTINGS_KEY,
 			'type'          => 'radio',
 			'horizontal'    => true,
-			'label'         => __( 'Public Entry Moderation Merge Tags', 'gk-gravityview' ),
-			'description'   => __( 'Enable logged-out users to approve or reject entries using {link}entry moderation merge tags{/link} in notifications.', 'gk-gravityview' ),
-			'tooltip'       => __( 'Enable public modifier on approval merge tags.', 'gk-gravityview' ),
+			// translators: %s is replaced with a setting label
+			'label'         => sprintf( esc_html__( 'GravityView - %s', 'gk-gravityview' ), esc_html__( 'Enable Public Entry Moderation', 'gk-gravityview' ) ),
+			'description'   => strtr(
+				// translators: Do not translate the words inside the {} curly brackets; they are replaced.
+				__( 'If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry.', 'gk-gravityview' ),
+				array(
+					'{public}' => '<code style="font-size: .9em">:public</code>',
+					'{link}' => '<a href="https://docs.gravitykit.com/article/904-entry-moderation-merge-tags" target="_blank" rel="noopener noreferrer">',
+					'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravitycalendar' ) . '</span></a>',
+				)
+			),
 			'choices'       => array(
 				array(
 					'label' => _x( 'Enable', 'Setting: On or off', 'gk-gravityview' ),
