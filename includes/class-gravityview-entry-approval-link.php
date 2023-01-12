@@ -401,6 +401,13 @@ class GravityView_Entry_Approval_Link {
 			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $token->get_error_message() ) );
 		}
 
+		if ( $token['exp'] < time() ) {
+			gravityview()->log->error( 'The entry moderation link expired.', array( 'data' => $is_valid_token ) );
+
+			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), esc_html__( 'The link has expired.', 'gk-gravityview' ) ) );
+		}
+
+		// Since nonces are only valid for 24 hours, we only check the nonce if the token is valid for less than 24 hours.
 		if ( self::EXPIRATION_HOURS > $token['scopes']['expiration_hours'] ) {
 
 			if ( ! isset( $_REQUEST['nonce'] ) ) {
