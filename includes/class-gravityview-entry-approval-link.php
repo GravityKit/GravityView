@@ -588,36 +588,29 @@ class GravityView_Entry_Approval_Link {
 	 */
 	protected function validate_token( array $token ) {
 
-		if ( ! isset( $token['jti'] ) ) {
-			return new WP_Error( 'approve_link_no_jti', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+		$required_keys = array(
+			'jti',
+			'exp',
+			'scopes',
+		);
+
+		foreach( $required_keys as $required_key ) {
+			if ( ! isset( $token[ $required_key ] ) ) {
+				return new WP_Error( 'approve_link_no_' . $required_key, esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+			}
 		}
 
-		if ( ! isset( $token['exp'] ) || $token['exp'] < time() ) {
-			return new WP_Error( 'approve_link_expired', esc_html__( 'The link has expired.', 'gk-gravityview' ) );
-		}
+		$required_scopes = array(
+			'expiration_hours',
+			'privacy',
+			'entry_id',
+			'approval_status',
+		);
 
-		if ( ! isset( $token['scopes'] ) ) {
-			return new WP_Error( 'approve_link_no_scopes', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
-		}
-
-		if ( ! isset( $token['scopes']['expiration_hours'] ) ) {
-			return new WP_Error( 'approve_link_no_expiration', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
-		}
-
-		if ( ! isset( $token['scopes']['privacy'] ) ) {
-			return new WP_Error( 'approve_link_no_privacy', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
-		}
-
-		if ( empty( $token['scopes']['entry_id'] ) ) {
-			return new WP_Error( 'approve_link_no_entry_id', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
-		}
-
-		if( empty( $token['scopes']['approval_status'] ) ) {
-			return new WP_Error( 'approve_link_no_approval_status', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
-		}
-
-		if( empty( $token['scopes']['expiration_hours'] ) ) {
-			return new WP_Error( 'approve_link_no_approval_status', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+		foreach( $required_scopes as $required_scope ) {
+			if ( ! isset( $token['scopes'][ $required_scope ] ) ) {
+				return new WP_Error( 'approve_link_no_' . $required_scope . '_scope', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
+			}
 		}
 
 		return true;
