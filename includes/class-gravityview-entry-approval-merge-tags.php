@@ -342,7 +342,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			$query_args[ self::TOKEN_URL_ARG ] = $token;
 		}
 
-		if ( DAY_IN_SECONDS >= (int) $expiration_seconds ) {
+		if ( self::DEFAULT_PRIVACY === $privacy && DAY_IN_SECONDS >= (int) $expiration_seconds ) {
 			$query_args['nonce'] = wp_create_nonce( self::TOKEN_URL_ARG );
 		}
 
@@ -473,7 +473,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		}
 
 		// Since nonces are only valid for 24 hours, we only check the nonce if the token is valid for less than 24 hours.
-		if ( DAY_IN_SECONDS >= $token['scopes']['expiration_seconds'] ) {
+		if ( self::DEFAULT_PRIVACY === $token['scopes']['privacy'] && DAY_IN_SECONDS >= $token['scopes']['expiration_seconds'] ) {
 
 			if ( ! isset( $_REQUEST['nonce'] ) ) {
 				gravityview()->log->error( 'Entry moderation failed: No nonce was set for entry approval.' );
