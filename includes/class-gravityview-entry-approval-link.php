@@ -404,10 +404,24 @@ class GravityView_Entry_Approval_Link {
 		$token = $this->get_token_from_string( $token_string );
 
 		if ( is_wp_error( $token ) ) {
+			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $token->get_error_message() ) );
+		}
 
-			$message = sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $token->get_error_message() );
+		if ( self::EXPIRATION_HOURS > $token['scopes']['expiration_hours'] ) {
 
-			wp_die( $message );
+			if ( ! isset( $_REQUEST['nonce'] ) ) {
+				gravityview()->log->error( 'Entry moderation failed: No nonce was set for entry approval.' );
+
+				wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), esc_html__( 'The link is invalid.', 'gk-gravityview' ) ) );
+			}
+
+			$nonce_validation = wp_verify_nonce( GV\Utils::_GET( 'nonce' ), 'gv_token' );
+
+			if ( ! $nonce_validation ) {
+				gravityview()->log->error( 'Entry moderation failed: Nonce was invalid.', array( 'data' => $nonce_validation ) );
+
+				wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), esc_html__( 'The link has expired.', 'gk-gravityview' ) ) );
+			}
 		}
 
 		$scopes = $token['scopes'];
@@ -581,15 +595,8 @@ class GravityView_Entry_Approval_Link {
 			return new WP_Error( 'approve_link_no_approval_status', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
-		if ( self::EXPIRATION_HOURS > $token['scopes']['expiration_hours'] ) {
-
-			if ( ! isset( $_GET['nonce'] ) ) {
-				return new WP_Error( 'approve_link_no_nonce', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
-			}
-
-			if ( ! wp_verify_nonce( GV\Utils::_GET( 'nonce' ), 'gv_token' ) ) {
-				return new WP_Error( 'approve_link_invalid_nonce', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
-			}
+		if( empty( $token['scopes']['expiration_hours'] ) ) {
+			return new WP_Error( 'approve_link_no_approval_status', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
 		return true;
