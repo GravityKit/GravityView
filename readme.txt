@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.16.6 on January 12, 2023 =
 
 * Fixed: Fatal error due to an uncaught PHP exception
 * Fixed: It was not possible to select any content inside the field settings window in the View editor
