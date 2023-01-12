@@ -237,7 +237,9 @@ class GravityView_Entry_Approval_Merge_Tags {
 	}
 
 	/**
-	 * Generates token from merge tag parameters
+	 * Generates a JWT token based on the merge tag parameters.
+	 *
+	 * @see https://jwt.io
 	 *
 	 * @since 2.17
 	 *
