@@ -43,6 +43,8 @@ class GravityView_Entry_Approval_Link {
 	 */
 	const DEFAULT_PRIVACY = 'private';
 
+	const FORM_SETTINGS_KEY = 'gravityview_entry_moderation';
+
 	const URL_ARG = 'gv_approval_link_result';
 
 	/**
@@ -96,12 +98,12 @@ class GravityView_Entry_Approval_Link {
 	protected function add_form_settings( $fields = array(), $form = array() ) {
 
 		$fields['restrictions']['fields'][] = array(
-			'name'       => 'publicApprovalLink',
 			'type'       => 'radio',
 			'horizontal' => true,
 			'label'      => __( 'Public Approval Link', 'gravityview' ),
 			'tooltip'    => __( 'Set this to ON to enable public modifier on approval merge tags.', 'gravityview' ),
 			'choices'    => array(
+			'name'          => self::FORM_SETTINGS_KEY,
 				array(
 					'label' => _x( 'On', 'Setting: On or off', 'gravityview' ),
 					'value' => '1',
@@ -192,8 +194,8 @@ class GravityView_Entry_Approval_Link {
 			return $text;
 		}
 
-		if ( ! isset( $form['publicApprovalLink'] ) ) {
-			$form['publicApprovalLink'] = gravityview()->plugin->settings->get( 'public_entry_moderation' );
+		if ( ! isset( $form[ self::FORM_SETTINGS_KEY ] ) ) {
+			$form[ self::FORM_SETTINGS_KEY ] = gravityview()->plugin->settings->get( 'public_entry_moderation' );
 		}
 
 		return $this->replace_merge_tag( $matches, $text, $form, $entry, $url_encode, $esc_html );
@@ -239,7 +241,7 @@ class GravityView_Entry_Approval_Link {
 					break;
 			}
 
-			if ( false === (bool) $form['publicApprovalLink'] ) {
+			if ( false === (bool) \GV\Utils::get( $form, self::FORM_SETTINGS_KEY, false ) ) {
 				$privacy = self::DEFAULT_PRIVACY;
 			}
 
