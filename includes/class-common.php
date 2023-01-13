@@ -1103,16 +1103,10 @@ class GVCommon {
 	 * @return GF_Field|null Gravity Forms field object, or NULL: Gravity Forms GFFormsModel does not exist or field at $field_id doesn't exist.
 	 */
 	public static function get_field( $form, $field_id ) {
+		$field = GFAPI::get_field( $field_id, $field_id );
 
-		if ( is_numeric( $form ) ) {
-			$form = GFAPI::get_form( $form );
-		}
-
-		if ( class_exists( 'GFFormsModel' ) ){
-			return GFFormsModel::get_field( $form, $field_id );
-		} else {
-			return null;
-		}
+		// Maintain previous behavior by returning null instead of false.
+		return $field ? $field : null;
 	}
 
 
