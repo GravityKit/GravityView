@@ -1,0 +1,17 @@
+{
+  "name": "gk-gravityview-blocks",
+  "version": "1.0.0",
+  "author": "GravityKit",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "build": "wp-scripts build",
+    "start": "wp-scripts start",
+    "start:hot": "wp-scripts start --hot"
+  },
+  "devDependencies": {
+    "@wordpress/scripts": "^25.1.0",
+    "@wordpress/server-side-render": "^4.1.0",
+    "moment": "^2.29.4",
+    "react-datepicker": "^4.8.0"
+  }
+}

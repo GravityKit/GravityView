@@ -1,0 +1,35 @@
+import { __ } from '@wordpress/i18n';
+import Select from 'react-select';
+import { BaseControl } from '@wordpress/components';
+
+export default function ViewSelector( { viewId, onChange } ) {
+	const labels = {
+		selectView: __( 'Select a View', 'gk-gravityview' ),
+		view: __( 'View', 'gk-gravityview' )
+	};
+
+	const views = [
+		{
+			value: '',
+			label: labels.selectView
+		},
+		...gkGravityViewBlocks?.views,
+	];
+
+	const selectedView = views.filter( option => option.value === viewId ) || views[ 0 ];
+
+	return (
+		<BaseControl label={ labels.view }>
+			<Select
+				aria-label={ labels.view }
+				placeholder={ labels.selectView }
+				menuPortalTarget={ document.body }
+				styles={ { menuPortal: base => ( { ...base, zIndex: 10 } ) } } // A higher z-index is needed to ensure other editor elements don't overlap the dropdown.
+				className="gk-gravityview-block view-selector"
+				defaultValue={ selectedView }
+				options={ views }
+				onChange={ ( e ) => onChange( e.value ) }
+			/>
+		</BaseControl>
+	);
+}

@@ -1,0 +1,39 @@
+{
+  "apiVersion": 2,
+  "name": "gk-gravityview-blocks/view-details",
+  "version": "1.0.0",
+  "title": "GravityView View Details",
+  "category": "gk-gravityview-blocks",
+  "description": "Display specific information about a GravityView View.",
+  "keywords": [
+    "GravityView",
+    "form entry",
+    "entry"
+  ],
+  "supports": {
+    "html": false
+  },
+  "textdomain": "gk-gravityview",
+  "editorScript": "file:../../build/view-details.js",
+  "editorStyle": "file:../../build/view-details.css",
+  "style": "file:../../build/style-view-details.css",
+  "attributes": {
+    "view_id": {
+      "default": "",
+      "type": "string"
+    },
+    "detail": {
+      "default": "total_entries",
+      "type": "string"
+    },
+    "blockPreview": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "example": {
+    "attributes": {
+      "blockPreview": true
+    }
+  }
+}

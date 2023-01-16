@@ -144,6 +144,7 @@ class GravityView_Entry_Link_Shortcode {
 		if ( empty( $this->entry ) ) {
 			gravityview()->log->error( 'An Entry ID was not defined or found. Entry ID: {entry_id}', array( 'entry_id' => $this->settings['entry_id'] ) );
 
+
 			return null;
 		}
 
@@ -151,7 +152,6 @@ class GravityView_Entry_Link_Shortcode {
 
 		if ( ! $this->has_cap() ) {
 			gravityview()->log->error( 'User does not have the capability to {action} this entry: {entry_id}', array( 'action' => esc_attr( $this->settings['action'] ), 'entry_id' => $this->entry['id'] ) );
-
 			return null;
 		}
 
