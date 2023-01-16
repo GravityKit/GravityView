@@ -24,8 +24,8 @@ class GravityView_Field_Payment_Status extends GravityView_Field {
 	 * GravityView_Field_Payment_Status constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Payment Status', 'gravityview' );
-		$this->description = esc_html__('The current payment status of the entry (ie "Processing", "Failed", "Cancelled", "Approved").', 'gravityview' );
+		$this->label = esc_html__( 'Payment Status', 'gk-gravityview' );
+		$this->description = esc_html__('The current payment status of the entry (ie "Processing", "Failed", "Cancelled", "Approved").', 'gk-gravityview' );
 		parent::__construct();
 	}
 }

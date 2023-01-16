@@ -217,6 +217,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @since 2.0
 	 * @return bool Whether the offset exists or not.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
 		return isset( $this->form[$offset] );
 	}
@@ -232,6 +233,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 *
 	 * @return mixed The value of the requested form data.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		return $this->form[$offset];
 	}
@@ -245,6 +247,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 *
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
 		gravityview()->log->error( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
 	}
@@ -257,6 +260,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @since 2.0
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetUnset( $offset ) {
 		gravityview()->log->error( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
 	}

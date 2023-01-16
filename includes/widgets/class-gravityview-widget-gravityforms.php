@@ -1,11 +1,13 @@
 <?php
 
+use GV\View;
+
 /**
  * Widget to display a Gravity Forms form
  */
 class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
-	public $icon = 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTE0IiBoZWlnaHQ9IjEyMy42Ij48c3R5bGU-LnN0MHtmaWxsOm5vbmV9PC9zdHlsZT48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMzguOCA0NC44Yy0yLjMgMS00LjMgMi40LTYuMSA0LjMtNC4yIDQuNS02LjUgMTAtNi44IDE2LjQtLjMgNi40LS40IDkuOC0uMyAxMC4xbC40IDUuMWg2Mi41VjY0SDc3LjZ2NS44SDM2LjVjLjEtMS44LjQtNCAxLTYuN3MxLjYtNC45IDMuMS02LjZjLjgtLjcgMS42LTEuMiAyLjUtMS42LjktLjQgMi0uNiAzLjEtLjZoNDIuNnYtMTFINDYuNGMtMi44LjEtNS4zLjYtNy42IDEuNXoiLz48cGF0aCBkPSJNMTEwLjEgMzEuNmMtMS43LTMtMy44LTUuMS02LjItNi42TDY2IDMuMUM2My42IDEuNyA2MC42IDEgNTcuMiAxYy0zLjUgMC02LjQuNy04LjggMi4xTDEwLjUgMjVjLTIuNCAxLjQtNC41IDMuNi02LjIgNi42LTEuOCAzLTIuNiA1LjktMi42IDguN1Y4NGMwIDIuOC45IDUuNiAyLjYgOC42czMuOCA1LjIgNi4yIDYuNmwzNy45IDIxLjljMi40IDEuMyA1LjQgMiA4LjggMiAzLjUgMCA2LjQtLjcgOC44LTJsMzcuOS0yMS45YzIuNC0xLjQgNC41LTMuNiA2LjItNi42IDEuNy0zIDIuNi01LjkgMi42LTguNlY0MC4yYy0uMS0yLjgtLjktNS43LTIuNi04LjZ6TTg4LjkgNTQuNEg0Ni4yYy0xLjIgMC0yLjIuMi0zLjEuNi0uOS40LTEuOC45LTIuNSAxLjYtMS41IDEuNy0yLjUgMy45LTMuMSA2LjYtLjYgMi43LS45IDQuOS0xIDYuN2g0MS4xVjY0aDEwLjl2MTYuOEgyNmwtLjQtNS4xYy0uMS0uMyAwLTMuNy4zLTEwLjEuMy02LjQgMi42LTExLjkgNi44LTE2LjQgMS44LTEuOSAzLjgtMy40IDYuMS00LjMgMi4zLTEgNC44LTEuNCA3LjYtMS40aDQyLjV2MTAuOXoiLz48L3N2Zz4';
+	public $icon = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDguMyA1NTkuNSIgZm9jdXNhYmxlPSJmYWxzZSIgYXJpYS1oaWRkZW49InRydWUiIGNsYXNzPSJkYXNoaWNvbiBkYXNoaWNvbi1ncmF2aXR5Zm9ybXMiIHJvbGU9ImltZyI+PGc+PHBhdGggY2xhc3M9InN0MCIgZD0iTTQ2OCwxMDkuOEwyOTQuNCw5LjZjLTIyLjEtMTIuOC01OC40LTEyLjgtODAuNSwwTDQwLjMsMTA5LjhDMTguMiwxMjIuNiwwLDE1NCwwLDE3OS41VjM4MAljMCwyNS42LDE4LjEsNTYuOSw0MC4zLDY5LjdsMTczLjYsMTAwLjJjMjIuMSwxMi44LDU4LjQsMTIuOCw4MC41LDBMNDY4LDQ0OS44YzIyLjItMTIuOCw0MC4zLTQ0LjIsNDAuMy02OS43VjE3OS42CUM1MDguMywxNTQsNDkwLjIsMTIyLjYsNDY4LDEwOS44eiBNMzk5LjMsMjQ0LjRsLTE5NS4xLDBjLTExLDAtMTkuMiwzLjItMjUuNiwxMGMtMTQuMiwxNS4xLTE4LjIsNDQuNC0xOS4zLDYwLjdIMzQ4di0yNi40aDQ5LjkJdjc2LjNIMTExLjNsLTEuOC0yM2MtMC4zLTMuMy01LjktODAuNywzMi44LTEyMS45YzE2LjEtMTcuMSwzNy4xLTI1LjgsNjIuNC0yNS44aDE5NC43VjI0NC40eiI+PC9wYXRoPjwvZz48L3N2Zz4=';
 
 	/**
 	 * Does this get displayed on a single entry?
@@ -14,8 +16,16 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	protected $show_on_single = true;
 
 	function __construct() {
+		// Initialize widget in the frontend or when editing a View/performing widget AJAX action
+		$doing_ajax   = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
+		$editing_view = 'edit' === \GV\Utils::_GET( 'action' ) && 'gravityview' === get_post_type( \GV\Utils::_GET( 'post' ) );
+		$is_frontend  = gravityview()->request->is_frontend();
 
-		$this->widget_description = __('Display a Gravity Forms form.', 'gravityview' );
+		if ( ! $doing_ajax && ! $editing_view && ! $is_frontend ) {
+			return;
+		}
+
+		$this->widget_description = __('Display a Gravity Forms form.', 'gk-gravityview' );
 
 		$default_values = array(
 			'header' => 1,
@@ -25,38 +35,38 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 		$settings = array(
 			'widget_form_id' => array(
 				'type' => 'select',
-				'label' => __( 'Form to display', 'gravityview' ),
+				'label' => __( 'Form to display', 'gk-gravityview' ),
 				'value' => '',
 				'options' => $this->_get_form_choices(),
 			),
 			'title' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Show form title?', 'gravityview' ),
+				'label' => __( 'Show form title?', 'gk-gravityview' ),
 				'value' => 1,
 			),
 			'description' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Show form description?', 'gravityview' ),
+				'label' => __( 'Show form description?', 'gk-gravityview' ),
 				'value' => 1,
 			),
 			'ajax' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Enable AJAX', 'gravityview' ),
+				'label' => __( 'Enable AJAX', 'gk-gravityview' ),
 				'desc' => '',
 				'value' => 1,
 			),
 			'field_values' => array(
 				'type' => 'text',
 				'class' => 'code widefat',
-				'label' => __( 'Field value parameters', 'gravityview' ),
-				'desc' => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gravityview' ) . '</a>',
+				'label' => __( 'Field value parameters', 'gk-gravityview' ),
+				'desc' => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gk-gravityview' ) . '</a>',
 				'value' => '',
 			),
 		);
 
-		add_filter( 'gravityview/widget/hide_until_searched/whitelist', array( $this, 'add_to_allowlist' ) );
+		add_filter( 'gravityview/widget/hide_until_searched/allowlist', array( $this, 'add_to_allowlist' ) );
 
-		parent::__construct( __( 'Gravity Forms', 'gravityview' ) , 'gravityforms', $default_values, $settings );
+		parent::__construct( __( 'Gravity Forms', 'gk-gravityview' ) , 'gravityforms', $default_values, $settings );
 	}
 
 	/**
@@ -69,27 +79,26 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	private function _get_form_choices() {
 
 		$choices = array(
-			0 => '&mdash; ' . esc_html__( 'list of forms', 'gravityview' ) . '&mdash;',
+			0 => '&mdash; ' . esc_html__( 'list of forms', 'gk-gravityview' ) . '&mdash;',
 		);
 
 		if ( ! class_exists( 'GFAPI' ) ) {
 			return $choices;
 		}
 
-		// Inside GV's widget AJAX request
-		$doing_ajax = defined( 'DOING_AJAX' ) && 'gv_field_options' === \GV\Utils::_POST( 'action' );
+		if( gravityview()->request->is_frontend() ) {
+			return $choices;
+		}
 
-		/**
-		 * gravityview_get_forms() is currently running too early as widgets_init runs before init and
-		 * when most Gravity Forms plugins register their own fields like GP Terms of Service.
-		 */
-		if( $doing_ajax || ( \GV\Admin_Request::is_admin() && ! GFForms::is_gravity_page() ) ) {
+		global $wpdb;
 
-			// check for available gravity forms
-			$forms = gravityview_get_forms();
+		$table = GFFormsModel::get_form_table_name();
 
-			foreach ( $forms as $form ) {
-				$choices[ $form['id'] ] = $form['title'];
+		$results = $wpdb->get_results( "SELECT id, title FROM ${table} WHERE is_active = 1" );
+
+		if ( ! empty( $results ) ) {
+			foreach ( $results as $form ) {
+				$choices[ $form->id ] = $form->title;
 			}
 		}
 
@@ -139,7 +148,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
 			unset( GFFormDisplay::$submission[ $form_id ] );
 
-			gravity_form( $form_id, ! empty( $description ), ! empty( $title ) );
+			gravity_form( $form_id, ! empty( $title ), ! empty( $description ), false, $field_values, $ajax );
 		}
 	}
 

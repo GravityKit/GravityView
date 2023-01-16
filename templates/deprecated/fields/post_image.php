@@ -105,19 +105,19 @@ $image = new GravityView_Image( $image_atts );
  */
 $image_meta = apply_filters('gravityview_post_image_meta', array(
 	'title' => array(
-		'label' => esc_attr_x( 'Title:', 'Post Image field title heading', 'gravityview'),
+		'label' => esc_attr_x( 'Title:', 'Post Image field title heading', 'gk-gravityview'),
 		'value' => $title,
 		'tag_label' => 'span',
 		'tag_value' => 'div'
 	),
 	'caption' => array(
-		'label' => esc_attr_x( 'Caption:', 'Post Image field caption heading', 'gravityview'),
+		'label' => esc_attr_x( 'Caption:', 'Post Image field caption heading', 'gk-gravityview'),
 		'value' => $caption,
 		'tag_label' => 'span',
 		'tag_value' => GFFormsModel::is_html5_enabled() ? 'figcaption' : 'div',
 	),
 	'description' => array(
-		'label' => esc_attr_x( 'Description:', 'Post Image field description heading', 'gravityview'),
+		'label' => esc_attr_x( 'Description:', 'Post Image field description heading', 'gk-gravityview'),
 		'value' => $description,
 		'tag_label' => 'span',
 		'tag_value' => 'div'

@@ -84,7 +84,7 @@ abstract class Template extends \GV\Gamajo_Template_Loader {
 	 * @see \Gamajo_Template_Loader::set_template_data
 	 * @see \GV\Template::pop_template_data
 	 *
-	 * @return \Gamajo_Template_Loader The current instance.
+	 * @return \GV\Gamajo_Template_Loader The current instance.
 	 */
 	public function push_template_data( $data, $var_name = 'data' ) {
 		if ( ! isset( self::$data_stack[ $var_name ] ) ) {

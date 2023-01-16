@@ -50,8 +50,14 @@ if ( ! $is_single_input ) {
 	 * Add map link if it's not set (default, back compat) or if it's set to yes
 	 */
 	if ( $gravityview->field->show_map_link ) {
+		$atts = array();
+
+		if ( $gravityview->field->show_map_link_new_window ) {
+			$atts['target'] = '_blank';
+		}
+
 		/** Add the map link as another line. */
-		$value_with_newline = "$value_with_newline\n" . gravityview_get_map_link( $value_with_newline );
+		$value_with_newline = "$value_with_newline\n" . gravityview_get_map_link( $value_with_newline, $atts );
 	}
 
 	echo str_replace( "\n", '<br />', $value_with_newline );

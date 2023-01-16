@@ -39,9 +39,9 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_html__( 'Approval Status', 'gravityview' );
-		$this->description = esc_html__( 'Display the entry\'s current approval status.', 'gravityview' );
-		$this->default_search_label = __( 'Approval:', 'gravityview' );
+		$this->label = esc_html__( 'Approval Status', 'gk-gravityview' );
+		$this->description = esc_html__( 'Display the entry\'s current approval status.', 'gk-gravityview' );
+		$this->default_search_label = __( 'Approval:', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -122,7 +122,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 		$merge_tags = array(
 			array(
-				'label' => __('Approval Status', 'gravityview'),
+				'label' => __('Approval Status', 'gk-gravityview'),
 				'tag' => '{approval_status}'
 			),
 		);
@@ -175,22 +175,22 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 		$field_options['approved_label'] = array(
 			'type' => 'text',
-			'label' => __( 'Approved Label', 'gravityview' ),
-			'desc' => __( 'If the entry is approved, display this value', 'gravityview' ),
+			'label' => __( 'Approved Label', 'gk-gravityview' ),
+			'desc' => __( 'If the entry is approved, display this value', 'gk-gravityview' ),
 			'placeholder' => GravityView_Entry_Approval_Status::get_label('approved'),
 		);
 
 		$field_options['disapproved_label'] = array(
 			'type' => 'text',
-			'label' => __( 'Disapproved Label', 'gravityview' ),
-			'desc' => __( 'If the entry is not approved, display this value', 'gravityview' ),
+			'label' => __( 'Disapproved Label', 'gk-gravityview' ),
+			'desc' => __( 'If the entry is not approved, display this value', 'gk-gravityview' ),
 			'placeholder' => GravityView_Entry_Approval_Status::get_label('disapproved'),
 		);
 
 		$field_options['unapproved_label'] = array(
 			'type' => 'text',
-			'label' => __( 'Unapproved Label', 'gravityview' ),
-			'desc' => __( 'If the entry has not yet been approved or disapproved, display this value', 'gravityview' ),
+			'label' => __( 'Unapproved Label', 'gk-gravityview' ),
+			'desc' => __( 'If the entry has not yet been approved or disapproved, display this value', 'gk-gravityview' ),
 			'placeholder' => GravityView_Entry_Approval_Status::get_label('unapproved'),
 		);
 

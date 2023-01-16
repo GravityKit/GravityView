@@ -201,7 +201,7 @@ class GravityView_Admin_Notices {
 				$url = esc_url( add_query_arg( array( 'gv-dismiss' => wp_create_nonce( 'dismiss' ), 'notice' => $dismiss ) ) );
 
 				$align = is_rtl() ? 'alignleft' : 'alignright';
-				$message .= '<a href="'.$url.'" data-notice="'.$dismiss.'" class="' . $align . ' button button-link">'.esc_html__('Dismiss', 'gravityview' ).'</a></p>';
+				$message .= '<a href="'.$url.'" data-notice="'.$dismiss.'" class="' . $align . ' button button-link">'.esc_html__('Dismiss', 'gk-gravityview' ).'</a></p>';
 			}
 
 			$output .= wpautop( $message );

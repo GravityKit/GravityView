@@ -26,8 +26,8 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 	private $context;
 
 	public function __construct() {
-		$this->label = esc_html__( 'Other Entries', 'gravityview' );
-		$this->description = esc_html__('Display other entries created by the entry creator.', 'gravityview');
+		$this->label = esc_html__( 'Other Entries', 'gk-gravityview' );
+		$this->description = esc_html__('Display other entries created by the entry creator.', 'gk-gravityview');
 		parent::__construct();
 	}
 
@@ -48,16 +48,16 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 		$new_options['link_format'] = array(
 			'type'  => 'text',
-			'label' => __( 'Entry link text (required)', 'gravityview' ),
-			'value' => __('Entry #{entry_id}', 'gravityview'),
+			'label' => __( 'Entry link text (required)', 'gk-gravityview' ),
+			'value' => __('Entry #{entry_id}', 'gk-gravityview'),
 			'merge_tags' => 'force',
 			'group' => 'field',
 		);
 
 		$new_options['after_link'] = array(
 			'type'  => 'textarea',
-			'label' => __( 'Text or HTML to display after the link (optional)', 'gravityview' ),
-			'desc'  => __('This content will be displayed below each entry link.', 'gravityview'),
+			'label' => __( 'Text or HTML to display after the link (optional)', 'gk-gravityview' ),
+			'desc'  => __('This content will be displayed below each entry link.', 'gk-gravityview'),
 			'value' => '',
 			'merge_tags' => 'force',
 			'class' => 'widefat code',
@@ -66,8 +66,8 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 		$new_options['page_size'] = array(
 			'type'  => 'number',
-			'label' => __( 'Entries to Display', 'gravityview' ),
-			'desc'  => __( 'What is the maximum number of entries that should be shown?', 'gravityview' ) . ' ' . sprintf( _x( 'Set to %s for no maximum.', '%s replaced with a formatted 0', 'gravityview' ), '<code>0</code>' ),
+			'label' => __( 'Entries to Display', 'gk-gravityview' ),
+			'desc'  => __( 'What is the maximum number of entries that should be shown?', 'gk-gravityview' ) . ' ' . sprintf( _x( 'Set to %s for no maximum.', '%s replaced with a formatted 0', 'gk-gravityview' ), '<code>0</code>' ),
 			'value' => '10',
 			'merge_tags' => false,
 			'min'   => 0,
@@ -76,17 +76,17 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 		$new_options['no_entries_hide'] = array(
 			'type'  => 'checkbox',
-			'label' => __( 'Hide if no entries', 'gravityview' ),
-			'desc'  => __( 'Don\'t display this field if the entry creator has no other entries', 'gravityview' ),
+			'label' => __( 'Hide if no entries', 'gk-gravityview' ),
+			'desc'  => __( 'Don\'t display this field if the entry creator has no other entries', 'gk-gravityview' ),
 			'value' => false,
 			'group' => 'visibility',
 		);
 
 		$new_options['no_entries_text'] = array(
 			'type'  => 'text',
-			'label' => __( 'No Entries Text', 'gravityview' ),
-			'desc'  => __( 'The text that is shown if the entry creator has no other entries (and "Hide if no entries" is disabled).', 'gravityview' ),
-			'value' => __( 'This user has no other entries.', 'gravityview' ),
+			'label' => __( 'No Entries Text', 'gk-gravityview' ),
+			'desc'  => __( 'The text that is shown if the entry creator has no other entries (and "Hide if no entries" is disabled).', 'gk-gravityview' ),
+			'value' => __( 'This user has no other entries.', 'gk-gravityview' ),
 			'class' => 'widefat',
 			'requires' => 'no_entries_hide',
 			'group' => 'visibility',

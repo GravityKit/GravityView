@@ -43,9 +43,6 @@ class GravityView_Admin_ApproveEntries {
 
 		/** gf_entries page - entries table screen */
 
-		// capture bulk actions
-		add_action( 'gform_loaded', array( $this, 'process_bulk_action') );
-
 		// add hidden field with approve status
 		add_action( 'gform_entries_first_column_actions', array( $this, 'add_entry_approved_hidden_input' ), 1, 5 );
 
@@ -149,8 +146,8 @@ class GravityView_Admin_ApproveEntries {
 	function tooltips( $tooltips ) {
 
 		$tooltips['form_gravityview_fields'] = array(
-			'title' => __('GravityView Fields', 'gravityview'),
-			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gravityview'),
+			'title' => __('GravityView Fields', 'gk-gravityview'),
+			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gk-gravityview'),
 		);
 
 		return $tooltips;
@@ -171,14 +168,14 @@ class GravityView_Admin_ApproveEntries {
 			'fields' => array(
 				array(
 					'class' => 'button',
-					'value' => __( 'Approve/Reject', 'gravityview' ),
+					'value' => __( 'Approve/Reject', 'gk-gravityview' ),
 					'onclick' => "StartAddField('gravityviewapproved_admin');",
 					'data-type' => 'gravityviewapproved_admin',
 					'data-icon' => 'dashicons-yes-alt'
 				),
 				array(
 					'class' => 'button',
-					'value' => __( 'User Opt-In', 'gravityview' ),
+					'value' => __( 'User Opt-In', 'gk-gravityview' ),
 					'onclick' => "StartAddField('gravityviewapproved');",
 					'data-type' => 'gravityviewapproved',
 					'data-icon' => 'dashicons-media-text',
@@ -202,9 +199,9 @@ class GravityView_Admin_ApproveEntries {
 	function set_defaults() {
 		?>
 		case 'gravityviewapproved_admin':
-			field.label = "<?php echo esc_js( __( 'Approved? (Admin-only)', 'gravityview' ) ); ?>";
+			field.label = "<?php echo esc_js( __( 'Approved? (Admin-only)', 'gk-gravityview' ) ); ?>";
 
-			field.adminLabel = "<?php echo esc_js( __( 'Approved?', 'gravityview' ) ); ?>";
+			field.adminLabel = "<?php echo esc_js( __( 'Approved?', 'gk-gravityview' ) ); ?>";
 			field.adminOnly = true;
 
 			field.choices = null;
@@ -224,9 +221,9 @@ class GravityView_Admin_ApproveEntries {
 
 			break;
 		case 'gravityviewapproved':
-			field.label = "<?php echo esc_js( __( 'Show Entry on Website', 'gravityview' ) ); ?>";
+			field.label = "<?php echo esc_js( __( 'Show Entry on Website', 'gk-gravityview' ) ); ?>";
 
-			field.adminLabel = "<?php echo esc_js( __( 'Opt-In', 'gravityview' ) ); ?>";
+			field.adminLabel = "<?php echo esc_js( __( 'Opt-In', 'gk-gravityview' ) ); ?>";
 			field.adminOnly = false;
 
 			field.choices = null;
@@ -234,7 +231,7 @@ class GravityView_Admin_ApproveEntries {
 
 			if( !field.choices ) {
 				field.choices = new Array(
-					new Choice("<?php echo esc_js( __( 'Yes, display my entry on the website', 'gravityview' ) ); ?>")
+					new Choice("<?php echo esc_js( __( 'Yes, display my entry on the website', 'gk-gravityview' ) ); ?>")
 				);
 			}
 
@@ -249,113 +246,6 @@ class GravityView_Admin_ApproveEntries {
 			break;
 		<?php
 	}
-
-	/**
-	 * Get the Bulk Action submitted value if it is a GravityView Approve/Unapprove action
-	 *
-	 * @since 1.17.1
-	 *
-	 * @return string|false If the bulk action was GravityView Approve/Unapprove, return the full string (gvapprove-16, gvunapprove-16). Otherwise, return false.
-	 */
-	private function get_gv_bulk_action() {
-
-		$gv_bulk_action = false;
-
-		if( version_compare( GFForms::$version, '2.0', '>=' ) ) {
-			$bulk_action = ( '-1' !== \GV\Utils::_POST( 'action' ) ) ? \GV\Utils::_POST( 'action' ) : \GV\Utils::_POST( 'action2' );
-		} else {
-			// GF 1.9.x - Bulk action 2 is the bottom bulk action select form.
-			$bulk_action = \GV\Utils::_POST( 'bulk_action' ) ? \GV\Utils::_POST( 'bulk_action' ) : \GV\Utils::_POST( 'bulk_action2' );
-		}
-
-		// Check the $bulk_action value against GV actions, see if they're the same. I hate strpos().
-		if( ! empty( $bulk_action ) && preg_match( '/^('. implode( '|', $this->bulk_action_prefixes ) .')/ism', $bulk_action ) ) {
-			$gv_bulk_action = $bulk_action;
-		}
-
-		return $gv_bulk_action;
-	}
-
-	/**
-	 * Capture bulk actions - gf_entries table
-	 *
-	 * @uses  GravityView_frontend::get_search_criteria() Convert the $_POST search request into a properly formatted request.
-	 * @return void|boolean
-	 */
-	public function process_bulk_action() {
-
-		if ( ! is_admin() || ! class_exists( 'GFForms' ) || empty( $_POST ) ) {
-			return false;
-		}
-
-		// The action is formatted like: gvapprove-16 or gvunapprove-16, where the first word is the name of the action and the second is the ID of the form.
-		$bulk_action = $this->get_gv_bulk_action();
-
-		// gforms_entry_list is the nonce that confirms we're on the right page
-		// gforms_update_note is sent when bulk editing entry notes. We don't want to process then.
-		if ( $bulk_action && \GV\Utils::_POST( 'gforms_entry_list' ) && empty( $_POST['gforms_update_note'] ) ) {
-
-			check_admin_referer( 'gforms_entry_list', 'gforms_entry_list' );
-
-			/**
-			 * The extra '-' is to make sure that there are at *least* two items in array.
-			 * @see https://github.com/katzwebservices/GravityView/issues/370
-			 */
-			$bulk_action .= '-';
-
-			list( $approved_status, $form_id ) = explode( '-', $bulk_action );
-
-			if ( empty( $form_id ) ) {
-				gravityview()->log->error( 'Form ID is empty from parsing bulk action.', array( 'data' => $bulk_action ) );
-				return false;
-			}
-
-			// All entries are set to be updated, not just the visible ones
-			if ( ! empty( $_POST['all_entries'] ) ) {
-
-				// Convert the current entry search into GF-formatted search criteria
-				$search = array(
-					'search_field' => isset( $_POST['f'] ) ? $_POST['f'][0] : 0,
-					'search_value' => isset( $_POST['v'][0] ) ? $_POST['v'][0] : '',
-					'search_operator' => isset( $_POST['o'][0] ) ? $_POST['o'][0] : 'contains',
-				);
-
-				$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
-
-				// Get all the entry IDs for the form
-				$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
-
-			} else {
-
-				// Changed from 'lead' to 'entry' in 2.0
-				$entries = isset( $_POST['lead'] ) ? $_POST['lead'] : $_POST['entry'];
-
-			}
-
-			if ( empty( $entries ) ) {
-				gravityview()->log->error( 'Entries are empty' );
-				return false;
-			}
-
-			$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
-
-			switch ( $approved_status ) {
-				case $this->bulk_action_prefixes['approve']:
-					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::APPROVED, $form_id );
-					$this->bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
-					break;
-				case $this->bulk_action_prefixes['unapprove']:
-					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::UNAPPROVED, $form_id );
-					$this->bulk_update_message = sprintf( __( '%s unapproved.', 'gravityview' ), $entry_count );
-					break;
-				case $this->bulk_action_prefixes['disapprove']:
-					GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::DISAPPROVED, $form_id );
-					$this->bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
-					break;
-			}
-		}
-	}
-
 
 	/**
 	 * update_approved function.
@@ -482,15 +372,15 @@ class GravityView_Admin_ApproveEntries {
 			return;
 		}
 
-		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GravityView_Plugin::version );
+		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GV_PLUGIN_VERSION );
 
 		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
-		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GravityView_Plugin::version );
+		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GV_PLUGIN_VERSION );
 
-		wp_enqueue_script( 'gravityview_entries_list-popper', plugins_url( 'assets/lib/tippy/popper.min.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
-		wp_enqueue_script( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.min.js', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
-		wp_enqueue_style( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.css', GRAVITYVIEW_FILE ), array(), GravityView_Plugin::version );
+		wp_enqueue_script( 'gravityview_entries_list-popper', plugins_url( 'assets/lib/tippy/popper.min.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_enqueue_script( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.min.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_enqueue_style( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 
 		wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
 			'nonce' => wp_create_nonce( 'gravityview_entry_approval'),
@@ -501,12 +391,12 @@ class GravityView_Admin_ApproveEntries {
 			'status_approved' => GravityView_Entry_Approval_Status::APPROVED,
 			'status_disapproved' => GravityView_Entry_Approval_Status::DISAPPROVED,
 			'status_unapproved' => GravityView_Entry_Approval_Status::UNAPPROVED,
-			'bulk_actions' => $this->get_bulk_actions( $form_id ),
+			'bulk_actions' => GravityView_Bulk_Actions::get_bulk_actions( $form_id ),
 			'bulk_message' => $this->bulk_update_message,
 			'unapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('unapproved'),
             'approve_title' => GravityView_Entry_Approval_Status::get_title_attr('disapproved'),
 			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
-			'column_title' => __( 'Show entry in directory view?', 'gravityview'),
+			'column_title' => __( 'Show entry in directory view?', 'gk-gravityview'),
 			'column_link' => esc_url( $this->get_sort_link() ),
             'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
 			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
@@ -535,59 +425,6 @@ class GravityView_Admin_ApproveEntries {
 
 		return add_query_arg( $args );
     }
-
-	/**
-	 * Get an array of options to be added to the Gravity Forms "Bulk action" dropdown in a "GravityView" option group
-	 *
-	 * @since 1.16.3
-	 *
-	 * @param int $form_id  ID of the form currently being displayed
-	 *
-	 * @return array Array of actions to be added to the GravityView option group
-	 */
-	private function get_bulk_actions( $form_id ) {
-
-		$bulk_actions = array(
-			'GravityView' => array(
-				array(
-					'label' => GravityView_Entry_Approval_Status::get_string('approved', 'action'),
-					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['approve'], $form_id ),
-				),
-				array(
-					'label' => GravityView_Entry_Approval_Status::get_string('disapproved', 'action'),
-					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['disapprove'], $form_id ),
-				),
-				array(
-					'label' => GravityView_Entry_Approval_Status::get_string('unapproved', 'action'),
-					'value' => sprintf( '%s-%d', $this->bulk_action_prefixes['unapprove'], $form_id ),
-				),
-			),
-		);
-
-		/**
-		 * @filter `gravityview/approve_entries/bulk_actions` Modify the GravityView "Bulk action" dropdown list. Return an empty array to hide.
-		 * @see https://gist.github.com/zackkatz/82785402c996b51b4dc9 for an example of how to use this filter
-		 * @since 1.16.3
-		 * @param array $bulk_actions Associative array of actions to be added to "Bulk action" dropdown inside GravityView `<optgroup>`. Parent array key is the `<optgroup>` label, then each child array must have `label` (displayed text) and `value` (input value) keys
-		 * @param int $form_id ID of the form currently being displayed
-		 */
-		$bulk_actions = apply_filters( 'gravityview/approve_entries/bulk_actions', $bulk_actions, $form_id );
-
-		// Sanitize the values, just to be sure.
-		foreach ( $bulk_actions as $key => $group ) {
-
-		    if( empty( $group ) ) {
-		        continue;
-		    }
-
-			foreach ( $group as $i => $action ) {
-				$bulk_actions[ $key ][ $i ]['label'] = esc_html( $bulk_actions[ $key ][ $i ]['label'] );
-				$bulk_actions[ $key ][ $i ]['value'] = esc_attr( $bulk_actions[ $key ][ $i ]['value'] );
-			}
-		}
-
-		return $bulk_actions;
-	}
 
 	/**
 	 * Should the Approve/Reject Entry column be shown in the GF Entries page?

@@ -234,7 +234,7 @@ class View_Table_Template extends View_Template {
 		/**
 		 * @filter `gravityview/template/field/label` Override the field label.
 		 * @since 2.0
-		 * @param[in,out] string $column_label The label to override.
+		 * @param string $column_label The label to override.
 		 * @param \GV\Template_Context $context The context. Does not have entry set here.
 		 */
 		$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );

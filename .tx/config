@@ -7,4 +7,3 @@ lang_map = it: it_IT, bn: bn_BD, sv: sv_SE
 source_file = languages/gravityview.pot
 source_lang = en
 type = PO
-

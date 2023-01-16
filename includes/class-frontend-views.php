@@ -86,6 +86,7 @@ class GravityView_frontend {
 
 	private function initialize() {
 		add_action( 'wp', array( $this, 'parse_content'), 11 );
+		add_filter( 'render_block', array( $this, 'detect_views_in_block_content' ) );
 		add_filter( 'parse_query', array( $this, 'parse_query_fix_frontpage' ), 10 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
 
@@ -327,6 +328,37 @@ class GravityView_frontend {
 			// reset the is_singular flag after our updated code above
 			$query->is_singular = $query->is_single || $query->is_page || $query->is_attachment;
 		}
+	}
+
+	/**
+	 * Detect GV Views in parsed Gutenberg block content
+	 *
+	 * @since 2.13.4
+	 *
+	 * @see   \WP_Block::render()
+	 *
+	 * @param string $block_content Gutenberg block content
+	 *
+	 * @return false|string
+	 *
+	 * @todo Once we stop using the legacy `GravityView_frontend::parse_content()` method to detect Views in post content, this code should either be dropped or promoted to some core class given its applicability to other themes/plugins
+	 */
+	public function detect_views_in_block_content( $block_content ) {
+		if ( ! class_exists( 'GV\View_Collection' ) || ! class_exists( 'GV\View' ) ) {
+			return $block_content;
+		}
+
+		$gv_view_data = GravityView_View_Data::getInstance();
+
+		$views = \GV\View_Collection::from_content( $block_content );
+
+		foreach ( $views->all() as $view ) {
+			if ( ! $gv_view_data->views->contains( $view->ID ) ) {
+				$gv_view_data->views->add( $view );
+			}
+		}
+
+		return $block_content;
 	}
 
 	/**
@@ -572,7 +604,7 @@ class GravityView_frontend {
 	/**
 	 * In case View post is called directly, insert the view in the post content
 	 *
-	 * @deprecated Use \GV\View::content() instead.
+	 * @deprecated {@see \GV\View::content()} instead.
 	 *
 	 * @static
 	 * @param mixed $content
@@ -631,22 +663,22 @@ class GravityView_frontend {
 
 		switch( $context ) {
 			case 'directory':
-				$tab = __( 'Multiple Entries', 'gravityview' );
+				$tab = __( 'Multiple Entries', 'gk-gravityview' );
 				break;
 			case 'edit':
-				$tab = __( 'Edit Entry', 'gravityview' );
+				$tab = __( 'Edit Entry', 'gk-gravityview' );
 				break;
 			case 'single':
 			default:
-				$tab = __( 'Single Entry', 'gravityview' );
+				$tab = __( 'Single Entry', 'gk-gravityview' );
 				break;
 		}
 
 
-		$title = sprintf( esc_html_x('The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gravityview' ), $tab );
+		$title = sprintf( esc_html_x('The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
 		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $view_id, $context ) );
-		$action_text = sprintf( esc_html__('Add fields to %s', 'gravityview' ), $tab );
-		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gravityview' );
+		$action_text = sprintf( esc_html__('Add fields to %s', 'gk-gravityview' ), $tab );
+		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
 
 		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url(plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
 		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
@@ -696,7 +728,7 @@ class GravityView_frontend {
 		$embed_only = $view->settings->get( 'embed_only' );
 
 		if( ! $direct_access || ( $embed_only && ! GVCommon::has_cap( 'read_private_gravityviews' ) ) ) {
-			return __( 'You are not allowed to view this content.', 'gravityview' );
+			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 		}
 
 		$shortcode = new \GV\Shortcodes\gravityview();
@@ -1189,6 +1221,10 @@ class GravityView_frontend {
 			}
 		}
 
+		if ( ! class_exists( 'GravityView_View' ) ) {
+			gravityview()->plugin->include_legacy_frontend( true );
+		}
+
 		GravityView_View::getInstance()->setSorting( $sorting );
 
 		gravityview()->log->debug( '[updateViewSorting] Sort Criteria : ', array( 'data' => $sorting ) );
@@ -1277,9 +1313,9 @@ class GravityView_frontend {
 					/**
 					 * @filter `gravityview/sorting/full-name` Override how to sort when sorting full name.
 					 * @since 1.7.4
-					 * @param[in,out] string $name_part Sort by `first` or `last` (default: `first`)
-					 * @param[in] string $sort_field_id Field used for sorting
-					 * @param[in] int $form_id GF Form ID
+					 * @param string $name_part Sort by `first` or `last` (default: `first`)
+					 * @param string $sort_field_id Field used for sorting
+					 * @param int $form_id GF Form ID
 					 */
 					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
 
@@ -1299,8 +1335,8 @@ class GravityView_frontend {
 				 * @filter `gravityview/sorting/time` Override how to sort when sorting time
 				 * @see GravityView_Field_Time
 				 * @since 1.14
-				 * @param[in,out] string $name_part Field used for sorting
-				 * @param[in] int $form_id GF Form ID
+				 * @param string $name_part Field used for sorting
+				 * @param int $form_id GF Form ID
 				 */
 				$sort_field_id = apply_filters( 'gravityview/sorting/time', $sort_field_id, $form_id );
 				break;
@@ -1363,14 +1399,6 @@ class GravityView_frontend {
 				$template_id = gravityview_get_template_id( $view->ID );
 				$data = $view->as_data();
 
-				/**
-				 * Don't enqueue the scripts or styles if it's not going to be displayed.
-				 * @since 1.15
-				 */
-				if( is_user_logged_in() && false === GVCommon::has_cap( 'read_gravityview', $view_id ) ) {
-					continue;
-				}
-
 				// By default, no thickbox
 				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
@@ -1424,16 +1452,16 @@ class GravityView_frontend {
 					$css_dependencies[] = 'dashicons';
 				}
 
-				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION, true );
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GravityView_Plugin::version, true );
+				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GV_PLUGIN_VERSION, true );
 
 				wp_enqueue_script( 'gravityview-fe-view' );
 
 				if ( ! empty( $data['atts']['sort_columns'] ) ) {
-					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GravityView_Plugin::version, 'all' );
+					wp_enqueue_style( 'gravityview_font', plugins_url( 'assets/css/font.css', GRAVITYVIEW_FILE ), $css_dependencies, GV_PLUGIN_VERSION, 'all' );
 				}
 
 				$this->enqueue_default_style( $css_dependencies );
@@ -1445,8 +1473,8 @@ class GravityView_frontend {
 
 				$js_localization = array(
 					'cookiepath' => COOKIEPATH,
-					'clear' => _x( 'Clear', 'Clear all data from the form', 'gravityview' ),
-					'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gravityview' ),
+					'clear' => _x( 'Clear', 'Clear all data from the form', 'gk-gravityview' ),
+					'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gk-gravityview' ),
 				);
 
 				/**
@@ -1485,7 +1513,7 @@ class GravityView_frontend {
 
 		$path = gravityview_css_url( $css_file_base . $rtl . '.css' );
 
-		wp_enqueue_style( 'gravityview_default_style', $path, $css_dependencies, GravityView_Plugin::version, 'all' );
+		wp_enqueue_style( 'gravityview_default_style', $path, $css_dependencies, GV_PLUGIN_VERSION, 'all' );
 	}
 
 	/**
@@ -1514,13 +1542,13 @@ class GravityView_frontend {
 	 *
 	 * @since 1.7
 	 *
-	 * @param string $label Field label
-	 * @param array $field Field settings
-	 * @param array $form Form object
+	 * @param string $label Field label.
+	 * @param array $field Field settings.
+	 * @param array $form Form object.
 	 *
-	 * @return string Field Label
+	 * @return string Field Label.
 	 */
-	public function add_columns_sort_links( $label = '', $field, $form ) {
+	public function add_columns_sort_links( $label = '', $field = array(), $form = array() ) {
 
 		/**
 		 * Not a table-based template; don't add sort icons
@@ -1589,13 +1617,19 @@ class GravityView_frontend {
 		);
 
 		/**
-		 * @filter `gravityview/sortable/field_blacklist` Modify what fields should never be sortable.
+		 * @depecated 2.14
 		 * @since 1.7
-		 * @param[in,out] array $not_sortable Array of field types that aren't sortable
-		 * @param string $field_type Field type to check whether the field is sortable
-		 * @param array $form Gravity Forms form
 		 */
-		$not_sortable = apply_filters( 'gravityview/sortable/field_blacklist', $not_sortable, $field_type, $form );
+		$not_sortable = apply_filters_deprecated( 'gravityview/sortable/field_blacklist', array( $not_sortable, $field_type, $form ), '2.14', 'gravityview/sortable/field_blocklist' );
+
+		/**
+		 * @filter `gravityview/sortable/field_blocklist` Modify what fields should never be sortable.
+		 * @since 2.14
+		 * @param array $not_sortable Array of field types that aren't sortable.
+		 * @param string $field_type Field type to check whether the field is sortable.
+		 * @param array $form Gravity Forms form.
+		 */
+		$not_sortable = apply_filters( 'gravityview/sortable/field_blocklist', $not_sortable, $field_type, $form );
 
 		if ( in_array( $field_type, $not_sortable ) ) {
 			return false;

@@ -20,9 +20,9 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	var $icon = 'dashicons-admin-users';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Created By (User)', 'gravityview' );
-		$this->description = __('Details of the logged-in user who created the entry (if any).', 'gravityview');
-		$this->default_search_label = __( 'Submitted by:', 'gravityview' );
+		$this->label = esc_html__( 'Created By (User)', 'gk-gravityview' );
+		$this->description = __('Details of the logged-in user who created the entry (if any).', 'gk-gravityview');
+		$this->default_search_label = __( 'Submitted by:', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -40,23 +40,23 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 		$merge_tags = array(
 			array(
-				'label' => __('Entry Creator: Display Name', 'gravityview'),
+				'label' => __('Entry Creator: Display Name', 'gk-gravityview'),
 				'tag' => '{created_by:display_name}'
 			),
 			array(
-				'label' => __('Entry Creator: Email', 'gravityview'),
+				'label' => __('Entry Creator: Email', 'gk-gravityview'),
 				'tag' => '{created_by:user_email}'
 			),
 			array(
-				'label' => __('Entry Creator: Username', 'gravityview'),
+				'label' => __('Entry Creator: Username', 'gk-gravityview'),
 				'tag' => '{created_by:user_login}'
 			),
 			array(
-				'label' => __('Entry Creator: User ID', 'gravityview'),
+				'label' => __('Entry Creator: User ID', 'gk-gravityview'),
 				'tag' => '{created_by:ID}'
 			),
 			array(
-				'label' => __('Entry Creator: Roles', 'gravityview'),
+				'label' => __('Entry Creator: Roles', 'gk-gravityview'),
 				'tag' => '{created_by:roles}'
 			),
 		);
@@ -128,25 +128,25 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 		$field_options['name_display'] = array(
 			'type' => 'select',
-			'label' => __( 'User Format', 'gravityview' ),
-			'desc' => __( 'How should the User information be displayed?', 'gravityview' ),
+			'label' => __( 'User Format', 'gk-gravityview' ),
+			'desc' => __( 'How should the User information be displayed?', 'gk-gravityview' ),
 			'choices' => array(
 				// column
-				'ID' => __( 'User ID # (Example: 426)', 'gravityview' ),
-				'user_login' => __( 'Username (Example: "nostromo")', 'gravityview' ),
-				'display_name' => __( 'Display Name (Example: "Ellen Ripley")', 'gravityview' ),
-				'user_email' => __( 'User Email (Example: "ellen@gravityview.co")', 'gravityview' ),
-				'user_registered' => __( 'User Registered (Example: "2019-10-18 08:30:11")', 'gravityview' ),
+				'ID' => __( 'User ID # (Example: 426)', 'gk-gravityview' ),
+				'user_login' => __( 'Username (Example: "nostromo")', 'gk-gravityview' ),
+				'display_name' => __( 'Display Name (Example: "Ellen Ripley")', 'gk-gravityview' ),
+				'user_email' => __( 'User Email (Example: "ellen@gravityview.co")', 'gk-gravityview' ),
+				'user_registered' => __( 'User Registered (Example: "2019-10-18 08:30:11")', 'gk-gravityview' ),
 
 				// meta
-				'nickname' => ucwords( __( 'User nickname', 'gravityview' ) ),
-				'description' => __( 'Description', 'gravityview' ),
-				'first_name' => __( 'First Name', 'gravityview' ),
-				'last_name' => __( 'Last Name', 'gravityview' ),
+				'nickname' => ucwords( __( 'User nickname', 'gk-gravityview' ) ),
+				'description' => __( 'Description', 'gk-gravityview' ),
+				'first_name' => __( 'First Name', 'gk-gravityview' ),
+				'last_name' => __( 'Last Name', 'gk-gravityview' ),
 
 				// misc
-				'first_last_name' => __( 'First and Last Name', 'gravityview' ),
-				'last_first_name' => __( 'Last and First Name', 'gravityview' ),
+				'first_last_name' => __( 'First and Last Name', 'gk-gravityview' ),
+				'last_first_name' => __( 'Last and First Name', 'gk-gravityview' ),
 			),
 			'value' => 'display_name'
 		);

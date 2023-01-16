@@ -20,7 +20,7 @@ class Mock_Request extends Request {
 		'is_search' => false,
 	);
 
-	public function is_view() {
+	public function is_view( $return_view = true ) {
 		return $this->__call( __FUNCTION__, func_get_args() );
 	}
 

@@ -104,7 +104,7 @@ class GravityView_Entry_List {
 		$this->context = $context;
 		$this->template_context = $template_context;
 		$this->view_id = $view_id;
-		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results( $template_context ) : __( 'No entries match your request.', 'gravityview' );
+		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results( $template_context ) : __( 'No entries match your request.', 'gk-gravityview' );
 	}
 
 	/**
@@ -275,7 +275,7 @@ class GravityView_Entry_List {
 
 		/**
 		 * @filter `gravityview/entry-list/link` The link to this other entry now.
-		 * @param[in,out] string $link The link.
+		 * @param string $link The link.
 		 * @param array $entry The entry.
 		 * @param \GravityView_Entry_List $this The current entry list object.
 		 */

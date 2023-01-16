@@ -13,6 +13,7 @@ modules:
       dsn: 'mysql:host=%MYSQL_HOST%;dbname=%MYSQL_DATABASE%'
       user: '%MYSQL_USER%'
       password: '%MYSQL_PASSWORD%'
+      originalUrl: 'http://%WP_URL%'
       dump: 'tests/acceptance/_data/wordpress.sql'
       populate: true
       cleanup: true
@@ -22,6 +23,7 @@ modules:
     WPWebDriver:
       host: chrome
       url: 'http://%WP_URL%'
+      originalUrl: 'http://%WP_URL%'
       browser: chrome
       port: 4444
       window_size: '1024x768'
