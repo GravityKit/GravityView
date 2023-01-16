@@ -259,7 +259,7 @@ class Plugin_Settings {
 									'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravitycalendar' ) . '</span></a>',
 								)
 							),
-							'value'       => $this->get( 'public_entry_moderation', $default_settings['rest_api'] ),
+							'value'       => $this->get( 'public_entry_moderation', $default_settings['public_entry_moderation'] ),
 						],
 					],
 				],
