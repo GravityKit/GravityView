@@ -16,7 +16,7 @@ class ViewDetails {
 	 */
 	public function modify_block_meta( $block_meta ) {
 		return [
-			'title'           => __( 'GravityView Entry', 'gk-gravityview' ),
+			'title'           => __( 'GravityView View Details', 'gk-gravityview' ),
 			'render_callback' => [ $this, 'render' ],
 			'localization'    => [
 				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg'
@@ -35,8 +35,8 @@ class ViewDetails {
 	 */
 	static function render( $block_attributes = [] ) {
 		$block_to_shortcode_attributes_map = [
-			'view_id' => 'id',
-			'detail'  => 'detail',
+			'viewId' => 'id',
+			'detail' => 'detail',
 
 		];
 

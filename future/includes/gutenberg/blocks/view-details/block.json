@@ -18,7 +18,7 @@
   "editorStyle": "file:../../build/view-details.css",
   "style": "file:../../build/style-view-details.css",
   "attributes": {
-    "view_id": {
+    "viewId": {
       "default": "",
       "type": "string"
     },

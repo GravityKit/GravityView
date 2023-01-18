@@ -18,31 +18,31 @@
   "editorStyle": "file:../../build/entry-link.css",
   "style": "file:../../build/style-entry-link.css",
   "attributes": {
-    "view_id": {
+    "viewId": {
       "default": "",
       "type": "string"
     },
-    "entry_id": {
+    "entryId": {
       "default": "",
       "type": "string"
+    },
+    "postId": {
+      "default": 0,
+      "type": "number"
     },
     "action": {
       "default": "read",
       "type": "string"
     },
-    "post_id": {
-      "default": 0,
-      "type": "number"
-    },
-    "return_format": {
+    "returnFormat": {
       "default": "html",
       "type": "string"
     },
-    "link_atts": {
+    "linkAtts": {
       "default": "",
       "type": "string"
     },
-    "field_values": {
+    "fieldValues": {
       "default": "",
       "type": "string"
     },

@@ -17,55 +17,55 @@
   "editorStyle": "file:../../build/view.css",
   "style": "file:../../build/style-view.css",
   "attributes": {
-    "view_id": {
+    "viewId": {
       "default": "",
       "type": "string"
     },
-    "post_id": {
+    "postId": {
       "default": 0,
       "type": "number"
     },
-    "page_size": {
+    "pageSize": {
       "default": 0,
       "type": "number"
     },
-    "sort_field": {
+    "sortField": {
       "default": "",
       "type": "string"
     },
-    "sort_direction": {
+    "sortDirection": {
       "default": "",
       "type": "string"
     },
-    "search_field": {
+    "searchField": {
       "default": "",
       "type": "string"
     },
-    "search_value": {
+    "searchValue": {
       "default": "",
       "type": "string"
     },
-    "search_operator": {
+    "searchOperator": {
       "default": "contains",
       "type": "string"
     },
-    "start_date": {
+    "startDate": {
       "default": "",
       "type": "string"
     },
-    "start_date_type": {
+    "startDateType": {
       "default": "static",
       "type": "string"
     },
-    "end_date": {
+    "endDate": {
       "default": "",
       "type": "string"
     },
-    "end_date_type": {
+    "endDateType": {
       "default": "static",
       "type": "string"
     },
-    "class_value": {
+    "classValue": {
       "default": "",
       "type": "string"
     },
@@ -73,11 +73,11 @@
       "default": 0,
       "type": "number"
     },
-    "single_title": {
+    "singleTitle": {
       "default": "",
       "type": "string"
     },
-    "back_link_label": {
+    "backLinkLabel": {
       "default": "",
       "type": "string"
     },

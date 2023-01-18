@@ -10,12 +10,12 @@ import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const {
-		view_id: viewId,
-		entry_id: entryId,
-		post_id: postId,
-		return_format: returnFormat,
-		link_atts: linkAtts,
-		field_values: fieldValues,
+		viewId,
+		entryId,
+		postId,
+		returnFormat,
+		linkAtts,
+		fieldValues,
 		action,
 		content,
 		blockPreview
@@ -40,7 +40,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 					<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
 						<ViewSelector
 							id="gk-gravityview-block-view-selector"
-							onChange={ ( view_id ) => { setAttributes( { view_id, entry_id: '' } ); } }
+							onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
 						/>
 
 						{ viewId !== '' && <>
@@ -49,7 +49,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 								value={ entryId }
 								type="number"
 								min="1"
-								onChange={ ( entry_id ) => setAttributes( { entry_id } ) }
+								onChange={ ( entryId ) => setAttributes( { entryId } ) }
 							/>
 						</> }
 					</PanelBody>
@@ -84,21 +84,24 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									{ value: 'html', label: __( 'HTML', 'gk-gravityview' ) },
 									{ value: 'url', label: __( 'URL', 'gk-gravityview' ) },
 								] }
-								onChange={ ( return_format ) => setAttributes( { return_format } ) }
+								onChange={ ( returnFormat ) => setAttributes( { returnFormat } ) }
 							/>
 
-							<PostSelector postId={ postId } onChange={ ( post_id ) => { setAttributes( { post_id } );} } />
+							<PostSelector
+								postId={ postId }
+								onChange={ ( postId ) => { setAttributes( { postId } );} }
+							/>
 
 							<TextControl
 								label={ __( 'Link Attributes', 'gk-gravityview' ) }
 								value={ linkAtts }
-								onChange={ ( link_atts ) => setAttributes( { link_atts } ) }
+								onChange={ ( linkAtts ) => setAttributes( { linkAtts } ) }
 							/>
 
 							<TextControl
 								label={ __( 'Field Values', 'gk-gravityview' ) }
 								value={ fieldValues }
-								onChange={ ( field_values ) => setAttributes( { field_values } ) }
+								onChange={ ( fieldValues ) => setAttributes( { fieldValues } ) }
 							/>
 						</PanelBody>
 					</> }

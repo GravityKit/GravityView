@@ -9,10 +9,10 @@ import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const {
-		view_id: viewId,
-		entry_id: entryId,
-		field_id: fieldId,
-		field_setting_overrides: fieldSettingOverrides,
+		viewId,
+		entryId,
+		fieldId,
+		fieldSettingOverrides,
 		blockPreview
 	} = attributes;
 
@@ -37,7 +37,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 					<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
 						<ViewSelector
 							viewId={ viewId }
-							onChange={ ( view_id ) => { setAttributes( { view_id, entry_id: '' } ); } }
+							onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
 						/>
 
 						{ viewId && <>
@@ -45,21 +45,21 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 								<ButtonGroup className="gk-gravityview-block btn-group-triple">
 									<Button
 										isPrimary={ entryId !== 'first' && entryId !== 'last' }
-										onClick={ () => setAttributes( { entry_id: '' } ) }
+										onClick={ () => setAttributes( { entryId: '' } ) }
 									>
 										{ __( 'Entry ID', 'gk-gravityview' ) }
 									</Button>
 
 									<Button
 										isPrimary={ entryId === 'first' }
-										onClick={ () => setAttributes( { entry_id: 'first' } ) }
+										onClick={ () => setAttributes( { entryId: 'first' } ) }
 									>
 										{ __( 'First', 'gk-gravityview' ) }
 									</Button>
 
 									<Button
 										isPrimary={ entryId === 'last' }
-										onClick={ () => setAttributes( { entry_id: 'last' } ) }
+										onClick={ () => setAttributes( { entryId: 'last' } ) }
 									>
 										{ __( 'Last', 'gk-gravityview' ) }
 									</Button>
@@ -72,7 +72,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										value={ entryId }
 										type="number"
 										min="1"
-										onChange={ ( entry_id ) => setAttributes( { entry_id } ) }
+										onChange={ ( entryId ) => setAttributes( { entryId } ) }
 									/>
 								</> }
 
@@ -83,7 +83,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										value={ fieldId }
 										type="number"
 										min="1"
-										onChange={ ( field_id ) => setAttributes( { field_id } ) }
+										onChange={ ( fieldId ) => setAttributes( { fieldId } ) }
 									/>
 
 									<TextControl
@@ -91,7 +91,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										placeholder={ __( 'Field Setting Overrides', 'gk-gravityview' ) }
 										help={ RawHTML( { children: fieldSettingOverridesHelpLabel } ) }
 										value={ fieldSettingOverrides }
-										onChange={ ( field_setting_overrides ) => setAttributes( { field_setting_overrides } ) }
+										onChange={ ( fieldSettingOverrides ) => setAttributes( { fieldSettingOverrides } ) }
 									/>
 								</> }
 							</BaseControl>

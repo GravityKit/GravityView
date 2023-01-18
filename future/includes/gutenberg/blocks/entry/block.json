@@ -18,11 +18,11 @@
   "editorStyle": "file:../../build/entry.css",
   "style": "file:../../build/style-entry.css",
   "attributes": {
-    "view_id": {
+    "viewId": {
       "default": "",
       "type": "string"
     },
-    "entry_id": {
+    "entryId": {
       "default": "",
       "type": "string"
     },

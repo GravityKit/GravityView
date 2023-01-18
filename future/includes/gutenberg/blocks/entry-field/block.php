@@ -35,10 +35,10 @@ class EntryField {
 	 */
 	static function render( $block_attributes = [] ) {
 		$block_to_shortcode_attributes_map = [
-			'view_id'                 => 'view_id',
-			'entry_id'                => 'entry_id',
-			'field_id'                => 'field_id',
-			'field_setting_overrides' => 'field_setting_overrides',
+			'viewId'                => 'view_id',
+			'entryId'               => 'entry_id',
+			'fieldId'               => 'field_id',
+			'fieldSettingOverrides' => 'field_setting_overrides',
 		];
 
 		$shortcode_attributes = [];

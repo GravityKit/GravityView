@@ -24,9 +24,9 @@ registerBlockType(
 					type: 'shortcode',
 					tag: [ 'gravityview' ],
 					attributes: {
-						view_id: {
+						viewId: {
 							type: 'string',
-							shortcode: ( ref ) => ref.named.view_id
+							shortcode: ( ref ) => ref.named.viewId
 						},
 						detail: {
 							type: 'string',

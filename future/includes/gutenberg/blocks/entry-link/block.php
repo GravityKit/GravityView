@@ -35,14 +35,14 @@ class EntryLink {
 	 */
 	static function render( $block_attributes = [] ) {
 		$block_to_shortcode_attributes_map = [
-			'view_id'       => 'view_id',
-			'entry_id'      => 'entry_id',
-			'action'        => 'action',
-			'post_id'       => 'post_id',
-			'return_format' => 'return',
-			'link_atts'     => 'link_atts',
-			'field_values'  => 'field_values',
-			'content'       => 'content',
+			'viewId'       => 'view_id',
+			'entryId'      => 'entry_id',
+			'action'       => 'action',
+			'postId'       => 'post_id',
+			'returnFormat' => 'return',
+			'linkAtts'     => 'link_atts',
+			'fieldValues'  => 'field_values',
+			'content'      => 'content',
 		];
 
 		$shortcode_attributes = [];

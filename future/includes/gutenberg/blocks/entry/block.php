@@ -35,8 +35,8 @@ class Entry {
 	 */
 	static function render( $block_attributes = [] ) {
 		$block_to_shortcode_attributes_map = [
-			'entry_id' => 'id',
-			'view_id'  => 'view_id',
+			'entryId' => 'id',
+			'viewId'  => 'view_id',
 		];
 
 		$shortcode_attributes = [];
@@ -51,6 +51,6 @@ class Entry {
 
 		$shortcode = sprintf( '[gventry %s]', implode( ' ', $shortcode_attributes ) );
 
-		return do_shortcode( $shortcode ) ?: __( 'No entry found.', 'gk-gravityview' );
+		return do_shortcode( $shortcode );
 	}
 }

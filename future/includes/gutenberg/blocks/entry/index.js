@@ -23,13 +23,13 @@ registerBlockType(
 					type: 'shortcode',
 					tag: [ 'gventry' ],
 					attributes: {
-						view_id: {
+						viewId: {
 							type: 'string',
-							shortcode: ( { named: { view_id } } ) => view_id
+							shortcode: ( { named: { viewId } } ) => viewId
 						},
-						entry_id: {
+						entryId: {
 							type: 'string',
-							shortcode: ( { named: { entry_id } } ) => entry_id
+							shortcode: ( { named: { entryId } } ) => entryId
 						},
 					},
 				},

@@ -13,22 +13,22 @@ import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const {
-		view_id: viewId,
-		post_id: postId,
-		start_date: startDate,
-		start_date_type: startDateType,
-		end_date: endDate,
-		end_date_type: endDateType,
-		page_size: pageSize,
-		sort_field: sortField,
-		sort_direction: sortDirection,
-		search_field: searchField,
-		search_value: searchValue,
-		search_operator: searchOperator,
-		class_value: classValue,
+		viewId,
+		postId,
+		startDate,
+		startDateType,
+		endDate,
+		endDateType,
+		pageSize,
+		sortField,
+		sortDirection,
+		searchField,
+		searchValue,
+		searchOperator,
+		classValue,
 		offset,
-		single_title: singleTitle,
-		back_link_label: backLinkLabel,
+		singleTitle,
+		backLinkLabel,
 		blockPreview,
 	} = attributes;
 
@@ -53,7 +53,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 					<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
 						<ViewSelector
 							viewId={ viewId }
-							onChange={ ( view_id ) => { setAttributes( { view_id, entry_id: '' } ); } }
+							onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
 						/>
 
 						{ viewId && <>
@@ -62,7 +62,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									<Button
 										isSecondary={ startDateType !== 'static' }
 										isPrimary={ startDateType === 'static' }
-										onClick={ () => setAttributes( { start_date_type: 'static' } ) }
+										onClick={ () => setAttributes( { startDateType: 'static' } ) }
 									>
 										{ __( 'Static (Calendar)', 'gk-gravityview' ) }
 									</Button>
@@ -70,7 +70,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									<Button
 										isSecondary={ startDateType !== 'relative' }
 										isPrimary={ startDateType === 'relative' }
-										onClick={ () => setAttributes( { start_date_type: 'relative' } ) }
+										onClick={ () => setAttributes( { startDateType: 'relative' } ) }
 									>
 										{ __( 'Relative', 'gk-gravityview' ) }
 									</Button>
@@ -81,7 +81,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										<DatePicker
 											dateFormat="yyyy-MM-dd"
 											selected={ isStartDateValid ? moment( startDate ).toDate() : '' }
-											onChange={ ( start_date ) => setAttributes( { start_date: moment( start_date ).format( 'YYYY-MM-DD' ) } ) }
+											onChange={ ( startDate ) => setAttributes( { startDate: moment( startDate ).format( 'YYYY-MM-DD' ) } ) }
 										/>
 									</BaseControl>
 								</> }
@@ -91,7 +91,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										label={ __( 'Relative Date', 'gk-gravityview' ) }
 										placeholder={ __( 'Relative Date', 'gk-gravityview' ) }
 										value={ startDate }
-										onChange={ ( start_date ) => setAttributes( { start_date } ) }
+										onChange={ ( startDate ) => setAttributes( { startDate } ) }
 									/>
 								</> }
 							</BaseControl>
@@ -101,7 +101,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									<Button
 										isSecondary={ endDateType !== 'static' }
 										isPrimary={ endDateType === 'static' }
-										onClick={ () => setAttributes( { end_date_type: 'static' } ) }
+										onClick={ () => setAttributes( { endDateType: 'static' } ) }
 									>
 										{ __( 'Static (Calendar)', 'gk-gravityview' ) }
 									</Button>
@@ -109,7 +109,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									<Button
 										isSecondary={ endDateType !== 'relative' }
 										isPrimary={ endDateType === 'relative' }
-										onClick={ () => setAttributes( { end_date_type: 'relative' } ) }
+										onClick={ () => setAttributes( { endDateType: 'relative' } ) }
 									>
 										{ __( 'Relative', 'gk-gravityview' ) }
 									</Button>
@@ -120,7 +120,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										<DatePicker
 											dateFormat="yyyy-MM-dd"
 											selected={ isEndDateValid ? moment( endDate ).toDate() : '' }
-											onChange={ ( end_date ) => setAttributes( { end_date: moment( end_date ).format( 'YYYY-MM-DD' ) } ) }
+											onChange={ ( endDate ) => setAttributes( { endDate: moment( endDate ).format( 'YYYY-MM-DD' ) } ) }
 										/>
 									</BaseControl>
 								</> }
@@ -130,7 +130,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										label={ __( 'Relative Date', 'gk-gravityview' ) }
 										placeholder={ __( 'Relative Date', 'gk-gravityview' ) }
 										value={ endDate }
-										onChange={ ( end_date ) => setAttributes( { end_date } ) }
+										onChange={ ( endDate ) => setAttributes( { endDate } ) }
 									/>
 								</> }
 							</BaseControl>
@@ -144,7 +144,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 								value={ pageSize }
 								type="number"
 								min="0"
-								onChange={ ( page_size ) => setAttributes( { page_size } ) }
+								onChange={ ( pageSize ) => setAttributes( { pageSize } ) }
 							/>
 
 							<TextControl
@@ -152,7 +152,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 								value={ sortField }
 								type="number"
 								min="1"
-								onChange={ ( sort_field ) => setAttributes( { sort_field } ) }
+								onChange={ ( sortField ) => setAttributes( { sortField } ) }
 							/>
 
 							<SelectControl
@@ -162,19 +162,19 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									{ value: 'ASC', label: __( 'Ascending', 'gk-gravityview' ) },
 									{ value: 'DESC', label: __( 'Descending', 'gk-gravityview' ) },
 								] }
-								onChange={ ( sort_direction ) => setAttributes( { sort_direction } ) }
+								onChange={ ( sortDirection ) => setAttributes( { sortDirection } ) }
 							/>
 
 							<TextControl
 								label={ __( 'Search Field', 'gk-gravityview' ) }
 								value={ searchField }
-								onChange={ ( search_field ) => setAttributes( { search_field } ) }
+								onChange={ ( searchField ) => setAttributes( { searchField } ) }
 							/>
 
 							<TextControl
 								label={ __( 'Search Value', 'gk-gravityview' ) }
 								value={ searchValue }
-								onChange={ ( search_value ) => setAttributes( { search_value } ) }
+								onChange={ ( searchValue ) => setAttributes( { searchValue } ) }
 							/>
 
 							<SelectControl
@@ -195,13 +195,13 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									{ value: '>=', label: _x( 'Greater Or Equal', 'Denotes search operator ">=".', 'gk-gravityview' ) },
 									{ value: '<=', label: _x( 'Lesser Or Equal', 'Denotes search operator "<=".', 'gk-gravityview' ) },
 								] }
-								onChange={ ( search_operator ) => setAttributes( { search_operator } ) }
+								onChange={ ( searchOperator ) => setAttributes( { searchOperator } ) }
 							/>
 
 							<TextControl
 								label={ _x( 'Class', 'Denotes CSS class', 'gk-gravityview' ) }
 								value={ classValue }
-								onChange={ ( class_value ) => setAttributes( { class_value } ) }
+								onChange={ ( classValue ) => setAttributes( { classValue } ) }
 							/>
 
 							<TextControl
@@ -215,16 +215,19 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<TextControl
 								label={ __( 'Single Title', 'gk-gravityview' ) }
 								value={ singleTitle }
-								onChange={ ( single_title ) => setAttributes( { single_title } ) }
+								onChange={ ( singleTitle ) => setAttributes( { singleTitle } ) }
 							/>
 
 							<TextControl
 								label={ __( 'Back Link Label', 'gk-gravityview' ) }
 								value={ backLinkLabel }
-								onChange={ ( back_link_label ) => setAttributes( { back_link_label } ) }
+								onChange={ ( backLinkLabel ) => setAttributes( { backLinkLabel } ) }
 							/>
 
-							<PostSelector postId={ postId } onChange={ ( post_id ) => { setAttributes( { post_id } );} } />
+							<PostSelector
+								postId={ postId }
+								onChange={ ( postId ) => { setAttributes( { postId } );} }
+							/>
 						</PanelBody>
 					</> }
 				</Panel>

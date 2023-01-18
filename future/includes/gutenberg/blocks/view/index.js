@@ -24,62 +24,62 @@ registerBlockType(
 					type: 'shortcode',
 					tag: [ 'gravityview' ],
 					attributes: {
-						view_id: {
+						viewId: {
 							type: 'string',
-							shortcode: ( { named: { view_id } } ) => view_id
+							shortcode: ( { named: { viewId } } ) => viewId
 						},
-						post_id: {
+						postId: {
 							type: 'number',
-							shortcode: ( { named: { post_id } } ) => post_id
+							shortcode: ( { named: { postId } } ) => postId
 						},
-						page_size: {
+						pageSize: {
 							type: 'string',
-							shortcode: ( { named: { page_size } } ) => page_size
+							shortcode: ( { named: { pageSize } } ) => pageSize
 						},
-						sort_field: {
+						sortField: {
 							type: 'string',
-							shortcode: ( { named: { sort_field } } ) => sort_field
+							shortcode: ( { named: { sortField } } ) => sortField
 						},
-						sort_direction: {
+						sortDirection: {
 							type: 'string',
-							shortcode: ( { named: { sort_direction } } ) => sort_direction
+							shortcode: ( { named: { sortDirection } } ) => sortDirection
 						},
-						search_field: {
+						searchField: {
 							type: 'string',
-							shortcode: ( { named: { search_field } } ) => search_field
+							shortcode: ( { named: { searchField } } ) => searchField
 						},
-						search_value: {
+						searchValue: {
 							type: 'string',
-							shortcode: ( { named: { search_value } } ) => search_value
+							shortcode: ( { named: { searchValue } } ) => searchValue
 						},
-						search_operator: {
+						searchOperator: {
 							type: 'string',
-							shortcode: ( { named: { search_operator } } ) => search_operator
+							shortcode: ( { named: { searchOperator } } ) => searchOperator
 						},
-						start_date: {
+						startDate: {
 							type: 'string',
-							shortcode: ( { named: { start_date } } ) => start_date
+							shortcode: ( { named: { startDate } } ) => startDate
 						},
-						end_date: {
+						endDate: {
 							type: 'string',
-							shortcode: ( { named: { end_date } } ) => end_date
+							shortcode: ( { named: { endDate } } ) => endDate
 						},
 						class: {
 							type: 'string',
-							shortcode: ( { named: { class_value } } ) => class_value
+							shortcode: ( { named: { classValue } } ) => classValue
 						},
 						offset: {
 							type: 'string',
 							shortcode: ( { named: { offset } } ) => offset
 
 						},
-						single_title: {
+						singleTitle: {
 							type: 'string',
-							shortcode: ( { named: { single_title } } ) => single_title
+							shortcode: ( { named: { singleTitle } } ) => singleTitle
 						},
-						back_link_label: {
+						backLinkLabel: {
 							type: 'string',
-							shortcode: ( { named: { back_link_label } } ) => back_link_label
+							shortcode: ( { named: { backLinkLabel } } ) => backLinkLabel
 						},
 						detail: {
 							type: 'string',

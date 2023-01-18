@@ -18,19 +18,19 @@
   "editorStyle": "file:../../build/entry-field.css",
   "style": "file:../../build/style-entry-field.css",
   "attributes": {
-    "view_id": {
+    "viewId": {
       "default": "",
       "type": "string"
     },
-    "entry_id": {
+    "entryId": {
       "default": "",
       "type": "string"
     },
-    "field_id": {
+    "fieldId": {
       "default": "",
       "type": "string"
     },
-    "field_setting_overrides": {
+    "fieldSettingOverrides": {
       "default": "",
       "type": "string"
     },

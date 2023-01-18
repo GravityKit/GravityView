@@ -35,20 +35,20 @@ class View {
 	 */
 	static function render( $block_attributes = [] ) {
 		$block_to_shortcode_attributes_map = [
-			'view_id'         => 'id',
-			'page_size'       => 'page_size',
-			'sort_field'      => 'sort_field',
-			'sort_direction'  => 'sort_direction',
-			'search_field'    => 'search_field',
-			'search_value'    => 'search_value',
-			'search_operator' => 'search_operator',
-			'start_date'      => 'start_date',
-			'end_date'        => 'end_date',
-			'class_value'     => 'class',
-			'offset'          => 'offset',
-			'single_title'    => 'single_title',
-			'back_link_label' => 'back_link_label',
-			'post_id'         => 'post_id',
+			'viewId'         => 'id',
+			'postId'         => 'post_id',
+			'pageSize'       => 'page_size',
+			'sortField'      => 'sort_field',
+			'sortDirection'  => 'sort_direction',
+			'searchField'    => 'search_field',
+			'searchValue'    => 'search_value',
+			'searchOperator' => 'search_operator',
+			'startDate'      => 'start_date',
+			'endDate'        => 'end_date',
+			'classValue'     => 'class',
+			'offset'         => 'offset',
+			'singleTitle'    => 'single_title',
+			'backLinkLabel'  => 'back_link_label',
 		];
 
 		$shortcode_attributes = [];

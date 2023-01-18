@@ -7,7 +7,11 @@ import ViewSelector from 'shared/js/view-selector';
 import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
-	const { view_id: viewId, detail, blockPreview } = attributes;
+	const {
+		viewId,
+		detail,
+		blockPreview
+	} = attributes;
 
 	const selectFromBlockControlsLabel = _x( 'Please select [control] from the block controls.', '[control] placeholder should not be translated and will be replaced with "an Entry ID" or "a View ID" text.', 'gk-gravityview' );
 
@@ -26,7 +30,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 					<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
 						<ViewSelector
 							viewId={ viewId }
-							onChange={ ( view_id ) => { setAttributes( { view_id, entry_id: '' } ); } }
+							onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
 						/>
 
 						{ viewId && <>
@@ -37,7 +41,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									{ value: 'total_entries', label: __( 'Total Entries', 'gk-gravityview' ) },
 									{ value: 'first_entry', label: __( 'First Entry', 'gk-gravityview' ) },
 									{ value: 'last_entry', label: __( 'Last Entry', 'gk-gravityview' ) },
-									{ value: 'page_size', label: __( 'Page Size', 'gk-gravityview' ) },
+									{ value: 'pageSize', label: __( 'Page Size', 'gk-gravityview' ) },
 								] }
 								onChange={ ( value ) => setAttributes( { detail: value } ) }
 							/>

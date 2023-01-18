@@ -27,33 +27,33 @@ registerBlockType(
 					type: 'shortcode',
 					tag: [ 'gv_entry_link' ],
 					attributes: {
-						view_id: {
+						viewId: {
 							type: 'string',
-							shortcode: ( { named: { view_id } } ) => view_id
+							shortcode: ( { named: { viewId } } ) => viewId
 						},
-						entry_id: {
+						entryId: {
 							type: 'string',
-							shortcode: ( { named: { entry_id } } ) => entry_id
+							shortcode: ( { named: { entryId } } ) => entryId
 						},
 						action: {
 							type: 'string',
 							shortcode: ( { named: { action } } ) => action
 						},
-						post_id: {
+						postId: {
 							type: 'number',
-							shortcode: ( { named: { post_id } } ) => post_id
+							shortcode: ( { named: { postId } } ) => postId
 						},
 						return: {
 							type: 'string',
-							shortcode: ( { named: { return_format } } ) => return_format
+							shortcode: ( { named: { returnFormat } } ) => returnFormat
 						},
-						link_atts: {
+						linkAtts: {
 							type: 'string',
-							shortcode: ( { named: { link_atts } } ) => link_atts
+							shortcode: ( { named: { linkAtts } } ) => linkAtts
 						},
-						field_values: {
+						fieldValues: {
 							type: 'string',
-							shortcode: ( { named: { field_values } } ) => field_values
+							shortcode: ( { named: { fieldValues } } ) => fieldValues
 						},
 						content: {
 							type: 'string',

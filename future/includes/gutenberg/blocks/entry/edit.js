@@ -7,7 +7,11 @@ import ViewSelector from 'shared/js/view-selector';
 import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
-	const { view_id: viewId, entry_id: entryId, blockPreview } = attributes;
+	const {
+		viewId,
+		entryId,
+		blockPreview
+	} = attributes;
 
 	const shouldPreview = ( viewId && entryId );
 
@@ -28,7 +32,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 					<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
 						<ViewSelector
 							viewId={ viewId }
-							onChange={ ( view_id ) => { setAttributes( { view_id, entry_id: '' } ); } }
+							onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
 						/>
 
 						{ viewId && <>
@@ -36,21 +40,21 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 								<ButtonGroup className="gk-gravityview-block btn-group-triple">
 									<Button
 										isPrimary={ entryId !== 'first' && entryId !== 'last' }
-										onClick={ () => setAttributes( { entry_id: '' } ) }
+										onClick={ () => setAttributes( { entryId: '' } ) }
 									>
 										{ __( 'Entry ID', 'gk-gravityview' ) }
 									</Button>
 
 									<Button
 										isPrimary={ entryId === 'first' }
-										onClick={ () => setAttributes( { entry_id: 'first' } ) }
+										onClick={ () => setAttributes( { entryId: 'first' } ) }
 									>
 										{ __( 'First', 'gk-gravityview' ) }
 									</Button>
 
 									<Button
 										isPrimary={ entryId === 'last' }
-										onClick={ () => setAttributes( { entry_id: 'last' } ) }
+										onClick={ () => setAttributes( { entryId: 'last' } ) }
 									>
 										{ __( 'Last', 'gk-gravityview' ) }
 									</Button>
@@ -61,7 +65,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										label={ __( 'Entry ID', 'gk-gravityview' ) }
 										placeholder={ __( 'Entry ID', 'gk-gravityview' ) }
 										value={ entryId }
-										onChange={ ( entry_id ) => setAttributes( { entry_id } ) }
+										onChange={ ( entryId ) => setAttributes( { entryId } ) }
 									/>
 								</> }
 							</BaseControl>
