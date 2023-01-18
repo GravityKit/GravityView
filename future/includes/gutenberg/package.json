@@ -12,6 +12,7 @@
     "@wordpress/scripts": "^25.1.0",
     "@wordpress/server-side-render": "^4.1.0",
     "moment": "^2.29.4",
-    "react-datepicker": "^4.8.0"
+    "react-datepicker": "^4.8.0",
+    "react-select": "^5.7.0"
   }
 }
