@@ -1,9 +1,11 @@
 import { __, _x } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { BaseControl, Panel, PanelBody, ButtonGroup, Button, TextControl, Spinner } from '@wordpress/components';
+import { Panel, PanelBody, Spinner } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 
 import ViewSelector from 'shared/js/view-selector';
+import EntrySelector from 'shared/js/entry-selector';
+
 import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
@@ -36,39 +38,10 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 						/>
 
 						{ viewId && <>
-							<BaseControl label={ __( 'Entry Type', 'gk-gravityview' ) }>
-								<ButtonGroup className="gk-gravityview-block btn-group-triple">
-									<Button
-										isPrimary={ entryId !== 'first' && entryId !== 'last' }
-										onClick={ () => setAttributes( { entryId: '' } ) }
-									>
-										{ __( 'Entry ID', 'gk-gravityview' ) }
-									</Button>
-
-									<Button
-										isPrimary={ entryId === 'first' }
-										onClick={ () => setAttributes( { entryId: 'first' } ) }
-									>
-										{ __( 'First', 'gk-gravityview' ) }
-									</Button>
-
-									<Button
-										isPrimary={ entryId === 'last' }
-										onClick={ () => setAttributes( { entryId: 'last' } ) }
-									>
-										{ __( 'Last', 'gk-gravityview' ) }
-									</Button>
-								</ButtonGroup>
-
-								{ entryId !== 'first' && entryId !== 'last' && <>
-									<TextControl
-										label={ __( 'Entry ID', 'gk-gravityview' ) }
-										placeholder={ __( 'Entry ID', 'gk-gravityview' ) }
-										value={ entryId }
-										onChange={ ( entryId ) => setAttributes( { entryId } ) }
-									/>
-								</> }
-							</BaseControl>
+							<EntrySelector
+								entryId={ entryId }
+								onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
+							/>
 						</> }
 					</PanelBody>
 				</Panel>

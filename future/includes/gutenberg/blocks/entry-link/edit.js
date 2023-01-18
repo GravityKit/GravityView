@@ -4,6 +4,7 @@ import { Panel, PanelBody, SelectControl, TextControl, Spinner } from '@wordpres
 import ServerSideRender from '@wordpress/server-side-render';
 
 import ViewSelector from 'shared/js/view-selector';
+import EntrySelector from 'shared/js/entry-selector';
 import PostSelector from 'shared/js/post-selector';
 
 import './editor.scss';
@@ -44,12 +45,10 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 						/>
 
 						{ viewId !== '' && <>
-							<TextControl
-								label={ __( 'Entry ID', 'gk-gravityview' ) }
-								value={ entryId }
-								type="number"
-								min="1"
-								onChange={ ( entryId ) => setAttributes( { entryId } ) }
+							<EntrySelector
+								noButtonGroup={ true }
+								entryId={ entryId }
+								onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
 							/>
 						</> }
 					</PanelBody>
