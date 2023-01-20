@@ -7,9 +7,7 @@ use GVCommon;
 class Blocks {
 	const MIN_WP_VERSION = '6.0.0';
 
-	const ASSETS_HANDLE = 'gravityview-gutenberg-blocks';
-
-	const BLOCKS_CATEGORY = 'gk-gravityview-blocks';
+	const SLUG = 'gk-gravityview-blocks';
 
 	public function __construct() {
 		global $wp_version;
@@ -90,7 +88,7 @@ class Blocks {
 		return array_merge(
 			$categories,
 			[
-				[ 'slug' => self::BLOCKS_CATEGORY, 'title' => __( 'GravityView', 'gk-gravityview' ) ],
+				[ 'slug' => self::SLUG, 'title' => __( 'GravityView', 'gk-gravityview' ) ],
 			]
 		);
 	}
@@ -116,12 +114,12 @@ class Blocks {
 			'views'     => $this->get_views()
 		] );
 
-		wp_register_script( self::ASSETS_HANDLE, false, [] );
+		wp_register_script( self::SLUG, false, [] );
 
-		wp_enqueue_script( self::ASSETS_HANDLE );
+		wp_enqueue_script( self::SLUG );
 
 		wp_localize_script(
-			self::ASSETS_HANDLE,
+			self::SLUG,
 			'gkGravityViewBlocks',
 			$block_localization_data
 		);
