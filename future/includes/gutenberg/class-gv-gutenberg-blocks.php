@@ -24,7 +24,7 @@ class Blocks {
 	}
 
 	/**
-	 * Register block renderers
+	 * Registers block renderers.
 	 *
 	 * @since $ver$
 	 *
@@ -76,7 +76,7 @@ class Blocks {
 	}
 
 	/**
-	 * Add GravityView category to Gutenberg editor
+	 * Adds GravityView category to Gutenberg editor.
 	 *
 	 * @since $ver$
 	 *
@@ -127,6 +127,8 @@ class Blocks {
 
 	/**
 	 * Returns the list of views for the block editor.
+	 *
+	 * @since $ver$
 	 *
 	 * @return array|array[]
 	 */
