@@ -2,6 +2,7 @@
 
 namespace GravityKit\GravityView\Gutenberg;
 
+use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GVCommon;
 
 class Blocks {
@@ -20,7 +21,7 @@ class Blocks {
 
 		add_filter( 'enqueue_block_assets', [ $this, 'localize_block_assets' ] );
 
-		add_action( 'init', [ $this, 'load_blocks' ] );
+		add_action( 'init', [ $this, 'register_blocks' ] );
 	}
 
 	/**
@@ -30,7 +31,7 @@ class Blocks {
 	 *
 	 * @return void
 	 */
-	public function load_blocks() {
+	public function register_blocks() {
 		foreach ( glob( plugin_dir_path( __FILE__ ) . 'blocks/*' ) as $block_folder ) {
 			$block_meta_file = $block_folder . '/block.json';
 			$block_file      = $block_folder . '/block.php';
@@ -39,13 +40,7 @@ class Blocks {
 				continue;
 			}
 
-			$block_meta = wp_parse_args(
-				json_decode( file_get_contents( $block_meta_file ), true ),
-				[
-					'name'  => '',
-					'title' => '',
-				]
-			);
+			$block_meta = json_decode( file_get_contents( $block_meta_file ), true );
 
 			if ( file_exists( $block_file ) ) {
 				$declared_classes = get_declared_classes();
@@ -62,9 +57,12 @@ class Blocks {
 					}
 				}
 
-				if ( ! empty( $block_meta['localization'] ) ) {
-					add_filter( 'gk/gravityview/gutenberg/blocks/localization', function ( $localization ) use ( $block_meta ) {
-						$localization[ $block_meta['name'] ] = $block_meta['localization'];
+				$block_name        = Arr::get( $block_meta, 'name' );
+				$localization_data = Arr::get( $block_meta, 'localization' );
+
+				if ( $localization_data ) {
+					add_filter( 'gk/gravityview/gutenberg/blocks/localization', function ( $localization ) use ( $block_name, $localization_data ) {
+						$localization[ $block_name ] = $localization_data;
 
 						return $localization;
 					} );
