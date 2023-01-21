@@ -19,7 +19,7 @@ module.exports = ( async () => {
 			...defaultConfig.devServer,
 			allowedHosts: 'all',
 		},
-		entry: { ...entryPoints },
+		entry: entryPoints,
 		resolve: {
 			alias: {
 				...defaultConfig.resolve.alias,

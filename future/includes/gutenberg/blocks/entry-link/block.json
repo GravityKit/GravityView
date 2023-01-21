@@ -50,14 +50,14 @@
       "default": "",
       "type": "string"
     },
-    "blockPreview": {
+    "showPreviewImage": {
       "type": "boolean",
       "default": false
     }
   },
   "example": {
     "attributes": {
-      "blockPreview": true
+      "showPreviewImage": true
     }
   }
 }

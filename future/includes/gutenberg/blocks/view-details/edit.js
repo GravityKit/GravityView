@@ -1,69 +1,89 @@
 import { __, _x } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { Panel, PanelBody, SelectControl, Spinner } from '@wordpress/components';
+import { Panel, PanelBody, SelectControl, Spinner, Disabled } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 
 import ViewSelector from 'shared/js/view-selector';
+import PreviewControl from 'shared/js/preview-control';
+
 import './editor.scss';
 
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const {
 		viewId,
 		detail,
-		blockPreview
+		previewBlock,
+		showPreviewImage
 	} = attributes;
 
-	const selectFromBlockControlsLabel = _x( 'Please select [control] from the block controls.', '[control] placeholder should not be translated and will be replaced with "an Entry ID" or "a View ID" text.', 'gk-gravityview' );
+	const previewImage = gkGravityViewBlocks[ blockName ]?.previewImage && <img className="preview-image" src={ gkGravityViewBlocks[ blockName ]?.previewImage } alt={ __( 'Block preview image.', 'gk-gravityview' ) } />;
 
-	const previewImage = gkGravityViewBlocks[ blockName ]?.previewImage;
-
-	const showBlockPreviewImage = () => <img className="gk-gravityview-block block-preview" src={ previewImage } alt={ __( 'Block preview image.', 'gk-gravityview' ) } />;
-
-	if ( blockPreview && previewImage ) {
-		return showBlockPreviewImage();
+	if ( previewImage && showPreviewImage ) {
+		return previewImage;
 	}
+
+	const shouldPreview = ( previewBlock && viewId );
 
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<Panel>
-					<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
+				<div className="gk-gravityview-blocks">
+
+					<Panel>
+						<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
+							<ViewSelector
+								viewId={ viewId }
+								onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
+							/>
+
+							<Disabled isDisabled={ !viewId }>
+								<SelectControl
+									label={ __( 'Detail', 'gk-gravityview' ) }
+									value={ detail }
+									options={ [
+										{ value: 'total_entries', label: __( 'Total Entries', 'gk-gravityview' ) },
+										{ value: 'first_entry', label: __( 'First Entry', 'gk-gravityview' ) },
+										{ value: 'last_entry', label: __( 'Last Entry', 'gk-gravityview' ) },
+										{ value: 'pageSize', label: __( 'Page Size', 'gk-gravityview' ) },
+									] }
+									onChange={ ( value ) => setAttributes( { detail: value } ) }
+								/>
+
+								<PreviewControl
+									disabled={ !viewId }
+									preview={ previewBlock }
+									onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+								/>
+							</Disabled>
+						</PanelBody>
+					</Panel>
+				</div>
+			</InspectorControls>
+
+			{ !shouldPreview && <>
+				<div className="block-editor">
+					{ previewImage }
+
+					<div>
 						<ViewSelector
 							viewId={ viewId }
 							onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
 						/>
 
-						{ viewId && <>
-							<SelectControl
-								label={ __( 'Detail', 'gk-gravityview' ) }
-								value={ detail }
-								options={ [
-									{ value: 'total_entries', label: __( 'Total Entries', 'gk-gravityview' ) },
-									{ value: 'first_entry', label: __( 'First Entry', 'gk-gravityview' ) },
-									{ value: 'last_entry', label: __( 'Last Entry', 'gk-gravityview' ) },
-									{ value: 'pageSize', label: __( 'Page Size', 'gk-gravityview' ) },
-								] }
-								onChange={ ( value ) => setAttributes( { detail: value } ) }
-							/>
-						</> }
-					</PanelBody>
-				</Panel>
-			</InspectorControls>
-
-			{ !viewId && <>
-				<div className="gk-gravityview-block shortcode-preview">
-					{ previewImage && showBlockPreviewImage() }
-
-					<div className="field-container">
-						<p>{ selectFromBlockControlsLabel.replace( '[control]', __( 'a View ID', 'gk-gravityview' ) ) }</p>
+						<PreviewControl
+							disabled={ !viewId }
+							preview={ previewBlock }
+							onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+						/>
 					</div>
 				</div>
 			</> }
 
-			{ viewId && <>
+			{ shouldPreview && <>
 				<ServerSideRender
+					className="block-preview"
 					LoadingResponsePlaceholder={ () => <>
-						{ __( 'Rendering preview...', 'gk-gravityview' ) }
+						{ __( 'Previewing...', 'gk-gravityview' ) }
 						<Spinner />
 					</> }
 					block={ blockName }

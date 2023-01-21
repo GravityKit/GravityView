@@ -45,7 +45,7 @@ export default function PostSelector( { postId, onChange } ) {
 	};
 
 	return (
-		<>
+		<div className="post-selector">
 			<TextControl
 				label={ __( 'Post ID', 'gk-gravityview' ) }
 				value={ postId }
@@ -61,6 +61,6 @@ export default function PostSelector( { postId, onChange } ) {
 			<div className="gk-gravityview-block suggestion-list">
 				{ suggestPosts() }
 			</div>
-		</>
+		</div>
 	);
 }

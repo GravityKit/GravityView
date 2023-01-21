@@ -1,11 +1,12 @@
 import { __, _x } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { Panel, PanelBody, SelectControl, TextControl, Spinner } from '@wordpress/components';
+import { Panel, PanelBody, SelectControl, TextControl, Spinner, Disabled } from '@wordpress/components';
 import ServerSideRender from '@wordpress/server-side-render';
 
 import ViewSelector from 'shared/js/view-selector';
 import EntrySelector from 'shared/js/entry-selector';
 import PostSelector from 'shared/js/post-selector';
+import PreviewControl from 'shared/js/preview-control';
 
 import './editor.scss';
 
@@ -19,109 +20,128 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		fieldValues,
 		action,
 		content,
-		blockPreview
+		previewBlock,
+		showPreviewImage
 	} = attributes;
 
-	const shouldPreview = ( viewId && entryId );
+	const previewImage = gkGravityViewBlocks[ blockName ]?.previewImage && <img className="preview-image" src={ gkGravityViewBlocks[ blockName ]?.previewImage } alt={ __( 'Block preview image.', 'gk-gravityview' ) } />;
 
-	const selectFromBlockControlsLabel = _x( 'Please select [control] from the block controls.', '[control] placeholder should not be translated and will be replaced with "an Entry ID" or "a View ID" text.', 'gk-gravityview' );
-
-	const previewImage = gkGravityViewBlocks[ blockName ]?.previewImage;
-
-	const showBlockPreviewImage = () => <img className="gk-gravityview-block block-preview" src={ previewImage } alt={ __( 'Block preview image.', 'gk-gravityview' ) } />;
-
-	if ( blockPreview && previewImage ) {
-		return showBlockPreviewImage();
+	if ( previewImage && showPreviewImage ) {
+		return previewImage;
 	}
+
+	const shouldPreview = ( previewBlock && viewId && entryId );
 
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
-				<Panel>
-					<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
-						<ViewSelector
-							id="gk-gravityview-block-view-selector"
-							onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
-						/>
+				<div className="gk-gravityview-blocks">
+					<Panel>
+						<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
+							<ViewSelector
+								viewId={ viewId }
+								onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
+							/>
 
-						{ viewId !== '' && <>
 							<EntrySelector
-								noButtonGroup={ true }
+								disabled={ !viewId }
 								entryId={ entryId }
 								onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
 							/>
-						</> }
-					</PanelBody>
 
-					{ entryId !== '' && <>
-						<PanelBody title={ __( 'Link Settings', 'gk-gravityview' ) } initialOpen={ false }>
-							<SelectControl
-								label={ __( 'Link Action', 'gk-gravityview' ) }
-								value={ action }
-								options={
-									[
-										{ value: 'read', label: __( 'View Details', 'gk-gravityview' ) },
-										{ value: 'edit', label: __( 'Edit Entry', 'gk-gravityview' ) },
-										{ value: 'delete', label: __( 'Delete Entry', 'gk-gravityview' ) },
-									]
-								}
-								onChange={ ( val ) => setAttributes( { action: val } ) }
-							/>
-
-							<TextControl
-								label={ __( 'Link Text', 'gk-gravityview' ) }
-								value={ content }
-								onChange={ ( val ) => setAttributes( { content: val } ) }
+							<PreviewControl
+								disabled={ !viewId || !entryId }
+								preview={ previewBlock }
+								onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
 							/>
 						</PanelBody>
 
-						<PanelBody title={ __( 'Extra Settings', 'gk-gravityview' ) } initialOpen={ false }>
-							<SelectControl
-								label={ __( 'Return Format', 'gk-gravityview' ) }
-								value={ returnFormat }
-								options={ [
-									{ value: 'html', label: __( 'HTML', 'gk-gravityview' ) },
-									{ value: 'url', label: __( 'URL', 'gk-gravityview' ) },
-								] }
-								onChange={ ( returnFormat ) => setAttributes( { returnFormat } ) }
-							/>
+						<Disabled isDisabled={ !entryId }>
+							<PanelBody title={ __( 'Link Settings', 'gk-gravityview' ) } initialOpen={ false }>
+								<SelectControl
+									label={ __( 'Link Action', 'gk-gravityview' ) }
+									value={ action }
+									options={
+										[
+											{ value: 'read', label: __( 'View Details', 'gk-gravityview' ) },
+											{ value: 'edit', label: __( 'Edit Entry', 'gk-gravityview' ) },
+											{ value: 'delete', label: __( 'Delete Entry', 'gk-gravityview' ) },
+										]
+									}
+									onChange={ ( val ) => setAttributes( { action: val } ) }
+								/>
 
-							<PostSelector
-								postId={ postId }
-								onChange={ ( postId ) => { setAttributes( { postId } );} }
-							/>
+								<TextControl
+									label={ __( 'Link Text', 'gk-gravityview' ) }
+									value={ content }
+									onChange={ ( val ) => setAttributes( { content: val } ) }
+								/>
 
-							<TextControl
-								label={ __( 'Link Attributes', 'gk-gravityview' ) }
-								value={ linkAtts }
-								onChange={ ( linkAtts ) => setAttributes( { linkAtts } ) }
-							/>
+								<TextControl
+									label={ __( 'Link Attributes', 'gk-gravityview' ) }
+									value={ linkAtts }
+									onChange={ ( linkAtts ) => setAttributes( { linkAtts } ) }
+								/>
 
-							<TextControl
-								label={ __( 'Field Values', 'gk-gravityview' ) }
-								value={ fieldValues }
-								onChange={ ( fieldValues ) => setAttributes( { fieldValues } ) }
-							/>
-						</PanelBody>
-					</> }
-				</Panel>
+								<SelectControl
+									label={ __( 'Return Format', 'gk-gravityview' ) }
+									value={ returnFormat }
+									options={ [
+										{ value: 'html', label: __( 'HTML', 'gk-gravityview' ) },
+										{ value: 'url', label: __( 'URL', 'gk-gravityview' ) },
+									] }
+									onChange={ ( returnFormat ) => setAttributes( { returnFormat } ) }
+								/>
+							</PanelBody>
+
+							<PanelBody title={ __( 'Extra Settings', 'gk-gravityview' ) } initialOpen={ false }>
+								<PostSelector
+									postId={ postId }
+									onChange={ ( postId ) => { setAttributes( { postId } );} }
+								/>
+
+								<TextControl
+									label={ __( 'Field Values', 'gk-gravityview' ) }
+									value={ fieldValues }
+									onChange={ ( fieldValues ) => setAttributes( { fieldValues } ) }
+								/>
+							</PanelBody>
+						</Disabled>
+					</Panel>
+				</div>
 			</InspectorControls>
 
 			{ !shouldPreview && <>
-				<div className="gk-gravityview-block shortcode-preview">
-					{ previewImage && showBlockPreviewImage() }
+				<div className="block-editor">
+					{ previewImage }
 
-					<div className="field-container">
-						{ !viewId && <p>{ selectFromBlockControlsLabel.replace( '[control]', __( 'a View ID', 'gk-gravityview' ) ) }</p> }
-						{ ( viewId && !entryId ) && <p>{ selectFromBlockControlsLabel.replace( '[control]', __( 'an Entry ID', 'gk-gravityview' ) ) }</p> }
+					<div>
+						<ViewSelector
+							viewId={ viewId }
+							onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
+						/>
+
+						<EntrySelector
+							disabled={ !viewId }
+							noButtonGroup={ true }
+							entryId={ entryId }
+							onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
+						/>
+
+						<PreviewControl
+							disabled={ !viewId || !entryId }
+							preview={ previewBlock }
+							onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+						/>
 					</div>
 				</div>
 			</> }
 
 			{ shouldPreview && <>
 				<ServerSideRender
+					className="block-preview"
 					LoadingResponsePlaceholder={ () => <>
-						{ __( 'Rendering preview...', 'gk-gravityview' ) }
+						{ __( 'Previewing...', 'gk-gravityview' ) }
 						<Spinner />
 					</> }
 					block={ blockName }

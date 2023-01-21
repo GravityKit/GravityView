@@ -19,16 +19,16 @@ export default function ViewSelector( { viewId, onChange } ) {
 	const selectedView = views.filter( option => option.value === viewId ) || views[ 0 ];
 
 	return (
-		<BaseControl label={ labels.view }>
+		<BaseControl className="view-selector" label={ labels.view }>
 			<Select
 				aria-label={ labels.view }
 				placeholder={ labels.selectView }
 				menuPortalTarget={ document.body }
 				styles={ { menuPortal: base => ( { ...base, zIndex: 10 } ) } } // A higher z-index is needed to ensure other editor elements don't overlap the dropdown.
-				className="gk-gravityview-block view-selector"
-				defaultValue={ selectedView }
+				value={ selectedView }
 				options={ views }
 				onChange={ ( e ) => onChange( e.value ) }
+				noOptionsMessage={ () => __( 'No Views found', 'gk-gravityview' ) }
 			/>
 		</BaseControl>
 	);

@@ -26,14 +26,18 @@
       "default": "",
       "type": "string"
     },
-    "blockPreview": {
+    "previewBlock": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPreviewImage": {
       "type": "boolean",
       "default": false
     }
   },
   "example": {
     "attributes": {
-      "blockPreview": true
+      "showPreviewImage": true
     }
   }
 }

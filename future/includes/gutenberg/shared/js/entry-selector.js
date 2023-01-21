@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import { BaseControl, ButtonGroup, Button, TextControl } from '@wordpress/components';
+import { BaseControl, ButtonGroup, Button, TextControl, Disabled } from '@wordpress/components';
 
-export default function EntrySelector( { children, entryId, onChange, noButtonGroup } ) {
+export default function EntrySelector( { children, entryId, onChange, noButtonGroup, disabled, showInSidebar } ) {
 	const EntryInput = (
 		<TextControl
 			label={ __( 'Entry ID', 'gk-gravityview' ) }
@@ -11,40 +11,44 @@ export default function EntrySelector( { children, entryId, onChange, noButtonGr
 		/>
 	);
 
-	if ( noButtonGroup ) {
-		return EntryInput;
-	}
+	const noEntryInput = ( entryId === 'first' || entryId === 'last' );
 
 	return (
-		<BaseControl label={ __( 'Entry Type', 'gk-gravityview' ) }>
-			<ButtonGroup className="gk-gravityview-block btn-group-triple">
-				<Button
-					isPrimary={ entryId !== 'first' && entryId !== 'last' }
-					onClick={ () => onChange( '' ) }
-				>
-					{ __( 'Entry ID', 'gk-gravityview' ) }
-				</Button>
+		<Disabled isDisabled={ disabled }>
+			<div className={ `entry-selector ${ noEntryInput ? 'no-entry-input' : '' }` }>
+				{ noButtonGroup && EntryInput }
 
-				<Button
-					isPrimary={ entryId === 'first' }
-					onClick={ () => onChange( 'first' ) }
-				>
-					{ __( 'First', 'gk-gravityview' ) }
-				</Button>
+				{ !noButtonGroup && <>
+					<BaseControl label={ showInSidebar ? __( 'Entry Type', 'gk-gravityview' ) : '' }>
+						<ButtonGroup className="btn-group-triple">
+							<Button
+								isPrimary={ entryId !== 'first' && entryId !== 'last' }
+								onClick={ () => onChange( '' ) }
+							>
+								{ __( 'Entry ID', 'gk-gravityview' ) }
+							</Button>
 
-				<Button
-					isPrimary={ entryId === 'last' }
-					onClick={ () => onChange( 'last' ) }
-				>
-					{ __( 'Last', 'gk-gravityview' ) }
-				</Button>
-			</ButtonGroup>
+							<Button
+								isPrimary={ entryId === 'first' }
+								onClick={ () => onChange( 'first' ) }
+							>
+								{ __( 'First', 'gk-gravityview' ) }
+							</Button>
 
-			{ entryId !== 'first' && entryId !== 'last' && <>
-				{ EntryInput }
-			</> }
+							<Button
+								isPrimary={ entryId === 'last' }
+								onClick={ () => onChange( 'last' ) }
+							>
+								{ __( 'Last', 'gk-gravityview' ) }
+							</Button>
+						</ButtonGroup>
 
-			{ children }
-		</BaseControl>
+						{ !noEntryInput && EntryInput }
+
+						{ children }
+					</BaseControl>
+				</> }
+			</div>
+		</Disabled>
 	);
 }
