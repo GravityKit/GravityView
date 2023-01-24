@@ -81,6 +81,10 @@
       "default": "",
       "type": "string"
     },
+    "previewBlock": {
+      "type": "boolean",
+      "default": false
+    },
     "showPreviewImage": {
       "type": "boolean",
       "default": false
