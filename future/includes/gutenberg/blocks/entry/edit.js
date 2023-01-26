@@ -83,10 +83,6 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 			{ shouldPreview && <>
 				<ServerSideRender
 					className="block-preview"
-					LoadingResponsePlaceholder={ () => <>
-						{ __( 'Previewing...', 'gk-gravityview' ) }
-						<Spinner />
-					</> }
 					block={ blockName }
 					attributes={ attributes }
 				/>
