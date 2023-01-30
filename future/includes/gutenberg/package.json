@@ -9,8 +9,12 @@
     "start:hot": "wp-scripts start --hot"
   },
   "devDependencies": {
+    "@wordpress/api-fetch": "^6.22.0",
     "@wordpress/scripts": "^25.1.0",
-    "@wordpress/server-side-render": "^4.1.0",
+    "@wordpress/url": "^3.26.0",
+    "dangerously-set-html-content": "^1.0.13",
+    "jotai": "^1.13.1",
+    "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "react-datepicker": "^4.8.0",
     "react-select": "^5.7.0"
