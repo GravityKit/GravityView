@@ -6,6 +6,8 @@ $background-color: #fff;
 }
 
 [class*="gk-gravityview-blocks"] {
+  text-align: left;
+
   .entry-selector, .preview-control, .view-selector {
     width: 100%;
     display: inline-block;
@@ -38,6 +40,21 @@ $background-color: #fff;
 
     .preview-control span {
       display: flex;
+    }
+  }
+
+  /*
+  * Block preview
+  */
+  .block-preview {
+    .loading-state {
+      position: relative;
+
+      .loader {
+        position: absolute;
+        left: -10%;
+        top: 5%;
+      }
     }
   }
 
