@@ -143,6 +143,71 @@ class Blocks {
 			];
 		}, $views );
 	}
+
+	/**
+	 * Renders shortcode and returns rendered content along with newly enqueued scripts and styles.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $shortcode
+	 *
+	 * @return array{content: string, scripts: array, styles: array}
+	 */
+	static function render_shortcode( $shortcode ) {
+		global $wp_scripts, $wp_styles;
+
+		$scripts_before_shortcode = array_keys( $wp_scripts->registered );
+		$styles_before_shortcode  = array_keys( $wp_styles->registered );
+
+		$rendered_shortcode = do_shortcode( $shortcode );
+
+		do_action( 'wp_enqueue_scripts' );
+
+		$gravityview_frontend = \GravityView_frontend::getInstance();
+		$gravityview_frontend->setGvOutputData( \GravityView_View_Data::getInstance( $shortcode ) );
+		$gravityview_frontend->add_scripts_and_styles( 'fired from Block' );
+
+		$scripts_after_shortcode = array_keys( $wp_scripts->registered );
+		$styles_after_shortcode  = array_keys( $wp_styles->registered );
+
+		$newly_registered_scripts = array_diff( $scripts_after_shortcode, $scripts_before_shortcode );
+		$newly_registered_styles  = array_diff( $styles_after_shortcode, $styles_before_shortcode );
+
+		// This will return an array of all dependencies sorted in the order they should be loaded.
+		$get_dependencies = function ( $handle, $source, $dependencies = [] ) use ( &$get_dependencies ) {
+			if ( empty( $source->registered[ $handle ] ) ) {
+				return $dependencies;
+			}
+
+			array_unshift( $dependencies, $source->registered[ $handle ]->src );
+
+			if ( ! $source->registered[ $handle ]->deps ) {
+				return $dependencies;
+			}
+
+			foreach ( $source->registered[ $handle ]->deps as $dependency ) {
+				array_unshift( $dependencies, $get_dependencies( $dependency, $source ) );
+			}
+
+			return array_unique( array_flatten( $dependencies ) );
+		};
+
+		$script_dependencies = [];
+		foreach ( $newly_registered_scripts as $script ) {
+			$script_dependencies = array_merge( $script_dependencies, $get_dependencies( $script, $wp_scripts ) );
+		}
+
+		$style_dependencies = [];
+		foreach ( $newly_registered_styles as $style ) {
+			$style_dependencies = array_merge( $style_dependencies, $get_dependencies( $style, $wp_styles ) );
+		}
+
+		return [
+			'scripts' => array_filter( array_unique( $script_dependencies ) ),
+			'styles'  => array_filter( array_unique( $style_dependencies ) ),
+			'content' => $rendered_shortcode,
+		];
+	}
 }
 
 new Blocks();
