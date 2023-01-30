@@ -9,6 +9,7 @@ import DatePicker from 'react-datepicker';
 import ViewSelector from 'shared/js/view-selector';
 import PostSelector from 'shared/js/post-selector';
 import PreviewControl from 'shared/js/preview-control';
+import PreviewAsShortcodeControl from 'shared/js/preview-as-shortcode-control';
 
 import './editor.scss';
 
@@ -31,6 +32,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		singleTitle,
 		backLinkLabel,
 		previewBlock,
+		previewAsShortcode,
 		showPreviewImage
 	} = attributes;
 
@@ -244,6 +246,12 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 					</Panel>
 				</div>
 			</InspectorControls>
+
+			<PreviewAsShortcodeControl
+				previewAsShortcode={ previewAsShortcode }
+				disabled={ !previewBlock }
+				onChange={ ( previewAsShortcode ) => setAttributes( { previewAsShortcode } ) }
+			/>
 
 			{ !shouldPreview && <>
 				<div className="block-editor">

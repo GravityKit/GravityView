@@ -6,6 +6,7 @@ import ServerSideRender from '@wordpress/server-side-render';
 import ViewSelector from 'shared/js/view-selector';
 import EntrySelector from 'shared/js/entry-selector';
 import PreviewControl from 'shared/js/preview-control';
+import PreviewAsShortcodeControl from 'shared/js/preview-as-shortcode-control';
 
 import './editor.scss';
 
@@ -14,6 +15,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		viewId,
 		entryId,
 		previewBlock,
+		previewAsShortcode,
 		showPreviewImage
 	} = attributes;
 
@@ -51,6 +53,12 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 					</Panel>
 				</div>
 			</InspectorControls>
+
+			<PreviewAsShortcodeControl
+				previewAsShortcode={ previewAsShortcode }
+				disabled={ !previewBlock }
+				onChange={ ( previewAsShortcode ) => setAttributes( { previewAsShortcode } ) }
+			/>
 
 			{ !shouldPreview && <>
 				<div className="block-editor">
