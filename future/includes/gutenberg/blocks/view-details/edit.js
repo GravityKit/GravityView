@@ -1,11 +1,11 @@
-import { __, _x } from '@wordpress/i18n';
+import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { Panel, PanelBody, SelectControl, Spinner, Disabled } from '@wordpress/components';
-import ServerSideRender from '@wordpress/server-side-render';
+import { Panel, PanelBody, SelectControl, Disabled } from '@wordpress/components';
 
 import ViewSelector from 'shared/js/view-selector';
 import PreviewControl from 'shared/js/preview-control';
 import PreviewAsShortcodeControl from 'shared/js/preview-as-shortcode-control';
+import ServerSideRender from 'shared/js/server-side-render';
 
 import './editor.scss';
 
@@ -88,11 +88,14 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 			</> }
 
 			{ shouldPreview && <>
-				<ServerSideRender
-					className="block-preview"
-					block={ blockName }
-					attributes={ attributes }
-				/>
+				<div className="block-preview">
+					<Disabled>
+						<ServerSideRender
+							block={ blockName }
+							attributes={ attributes }
+						/>
+					</Disabled>
+				</div>
 			</> }
 		</div>
 	);

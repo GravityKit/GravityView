@@ -2,6 +2,8 @@
 
 namespace GravityKit\GravityView\Gutenberg\Blocks;
 
+use GravityKit\GravityView\Gutenberg\Blocks;
+
 class EntryLink {
 	/**
 	 * Modifies block meta.
@@ -69,6 +71,8 @@ class EntryLink {
 			add_filter( 'gravityview/entry_link/add_query_args', '__return_false' );
 		}
 
-		return do_shortcode( $shortcode );
+		$rendered_shortcode = Blocks::render_shortcode( $shortcode );
+
+		return $rendered_shortcode['content'];
 	}
 }

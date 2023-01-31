@@ -2,6 +2,8 @@
 
 namespace GravityKit\GravityView\Gutenberg\Blocks;
 
+use GravityKit\GravityView\Gutenberg\Blocks;
+
 class ViewDetails {
 	/**
 	 * Modifies block meta.
@@ -37,7 +39,6 @@ class ViewDetails {
 		$block_to_shortcode_attributes_map = [
 			'viewId' => 'id',
 			'detail' => 'detail',
-
 		];
 
 		$shortcode_attributes = [];
@@ -52,6 +53,8 @@ class ViewDetails {
 
 		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_attributes ) );
 
-		return do_shortcode( $shortcode );
+		$rendered_shortcode = Blocks::render_shortcode( $shortcode );
+
+		return $rendered_shortcode['content'];
 	}
 }

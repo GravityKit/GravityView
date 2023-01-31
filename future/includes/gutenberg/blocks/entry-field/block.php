@@ -2,6 +2,8 @@
 
 namespace GravityKit\GravityView\Gutenberg\Blocks;
 
+use GravityKit\GravityView\Gutenberg\Blocks;
+
 class EntryField {
 	/**
 	 * Modifies block meta.
@@ -57,6 +59,8 @@ class EntryField {
 
 		$shortcode = sprintf( '[gvfield %s]', implode( ' ', $shortcode_attributes ) );
 
-		return do_shortcode( $shortcode );
+		$rendered_shortcode = Blocks::render_shortcode( $shortcode );
+
+		return $rendered_shortcode['content'];
 	}
 }
