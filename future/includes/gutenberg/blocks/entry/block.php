@@ -3,6 +3,7 @@
 namespace GravityKit\GravityView\Gutenberg\Blocks;
 
 use GravityKit\GravityView\Gutenberg\Blocks;
+use GravityKit\GravityView\Foundation\Helpers\Arr;
 
 class Entry {
 	/**
@@ -52,6 +53,10 @@ class Entry {
 		}
 
 		$shortcode = sprintf( '[gventry %s]', implode( ' ', $shortcode_attributes ) );
+
+		if ( Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
+			return $shortcode;
+		}
 
 		$rendered_shortcode = Blocks::render_shortcode( $shortcode );
 
