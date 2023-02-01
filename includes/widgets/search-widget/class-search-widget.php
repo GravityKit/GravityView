@@ -1761,12 +1761,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 				) );
 				break;
 			default:
-				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT `meta_value` FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %d) AND `form_id` = %d",
+				$sql = $wpdb->prepare(
+					"SELECT DISTINCT `meta_value` FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %s ) AND `form_id` = %d",
 					$key_like, $filter['key'], $form_id
-				) );
+				);
 
-				if ( ( $field = gravityview_get_field( $form_id, $filter['key'] ) ) && 'json' === $field->storageType ) {
+				$choices = $wpdb->get_col( $sql );
+
+				$field = gravityview_get_field( $context->view->form->form, $filter['key'] );
+
+				if ( $field && 'json' === $field->storageType ) {
 					$choices        = array_map( 'json_decode', $choices );
 					$_choices_array = array();
 					foreach ( $choices as $choice ) {
