@@ -35,11 +35,11 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		<div { ...useBlockProps() }>
 			<InspectorControls>
 				<div className="gk-gravityview-blocks">
-
 					<Panel>
 						<PanelBody title={ __( 'Main Settings', 'gk-gravityview' ) } initialOpen={ true }>
 							<ViewSelector
 								viewId={ viewId }
+								isSidebar={ true }
 								onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
 							/>
 

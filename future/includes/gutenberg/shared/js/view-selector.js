@@ -2,11 +2,13 @@ import { __ } from '@wordpress/i18n';
 import Select from 'react-select';
 import { BaseControl } from '@wordpress/components';
 
-export default function ViewSelector( { viewId, onChange } ) {
+export default function ViewSelector( { viewId, isSidebar, onChange } ) {
 	const labels = {
 		selectView: __( 'Select a View', 'gk-gravityview' ),
 		view: __( 'View', 'gk-gravityview' )
 	};
+
+	const editViewNotice = __( 'Edit View', 'gk-gravityview' );
 
 	const views = [
 		{
@@ -30,6 +32,10 @@ export default function ViewSelector( { viewId, onChange } ) {
 				onChange={ ( e ) => onChange( e.value ) }
 				noOptionsMessage={ () => __( 'No Views found', 'gk-gravityview' ) }
 			/>
+
+			{ viewId && isSidebar && <>
+				<p style={ { marginTop: '10px' } } dangerouslySetInnerHTML={ { __html: `<a href="${ gkGravityViewBlocks?.edit_view_url.replace( '%s', viewId ) }">${ editViewNotice }</a>` } } />
+			</> }
 		</BaseControl>
 	);
 }
