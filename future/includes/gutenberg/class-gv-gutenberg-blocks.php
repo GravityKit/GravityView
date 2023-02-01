@@ -107,9 +107,10 @@ class Blocks {
 		 * @param array $block_localization_data
 		 */
 		$block_localization_data = apply_filters( 'gk/gravityview/gutenberg/blocks/localization', [
-			'home_page' => home_url(),
-			'ajax_url'  => admin_url( 'admin-ajax.php' ),
-			'views'     => $this->get_views()
+			'home_page'           => home_url(),
+			'ajax_url'            => admin_url( 'admin-ajax.php' ),
+			'create_new_view_url' => gravityview()->plugin->get_link_to_new_view(),
+			'views'               => $this->get_views()
 		] );
 
 		wp_register_script( self::SLUG, false, [] );

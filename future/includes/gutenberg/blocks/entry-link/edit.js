@@ -8,6 +8,7 @@ import PostSelector from 'shared/js/post-selector';
 import PreviewControl from 'shared/js/preview-control';
 import PreviewAsShortcodeControl from 'shared/js/preview-as-shortcode-control';
 import ServerSideRender from 'shared/js/server-side-render';
+import NoViewsNotice from 'shared/js/no-views-notice';
 
 import './editor.scss';
 
@@ -30,6 +31,10 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 	if ( previewImage && showPreviewImage ) {
 		return previewImage;
+	}
+
+	if ( !gkGravityViewBlocks?.views?.length ) {
+		return <NoViewsNotice blockPreviewImage={ previewImage } newViewUrl={ gkGravityViewBlocks?.create_new_view_url } />;
 	}
 
 	const shouldPreview = ( previewBlock && viewId && entryId );
