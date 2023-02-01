@@ -139,7 +139,7 @@ class Blocks {
 		return array_map( function ( $view ) {
 			return [
 				'value' => (string) $view->ID,
-				'label' => $view->post_title,
+				'label' => $view->post_title ?: strtr( _x( '#[view ID] (no title)', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ), [ '[view ID]' => $view->ID ] )
 			];
 		}, $views );
 	}
