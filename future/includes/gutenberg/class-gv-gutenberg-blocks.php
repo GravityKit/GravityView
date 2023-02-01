@@ -166,7 +166,7 @@ class Blocks {
 
 		$gravityview_frontend = \GravityView_frontend::getInstance();
 		$gravityview_frontend->setGvOutputData( \GravityView_View_Data::getInstance( $shortcode ) );
-		$gravityview_frontend->add_scripts_and_styles( 'fired from Block' );
+		$gravityview_frontend->add_scripts_and_styles();
 
 		$scripts_after_shortcode = array_keys( $wp_scripts->registered );
 		$styles_after_shortcode  = array_keys( $wp_styles->registered );
