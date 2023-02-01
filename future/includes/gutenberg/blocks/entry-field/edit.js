@@ -95,37 +95,35 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 				<div className="block-editor">
 					{ previewImage }
 
-					<div>
-						<ViewSelector
-							viewId={ viewId }
-							onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
-						/>
+					<ViewSelector
+						viewId={ viewId }
+						onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
+					/>
 
-						<EntrySelector
-							disabled={ !viewId }
-							noButtonGroup={ true }
-							entryId={ entryId }
-							onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
-						/>
+					<EntrySelector
+						disabled={ !viewId }
+						noButtonGroup={ true }
+						entryId={ entryId }
+						onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
+					/>
 
-						<Disabled isDisabled={ !entryId }>
-							<TextControl
-								className="field-selector"
-								label={ __( 'Field ID', 'gk-gravityview' ) }
-								placeholder={ __( 'Field ID', 'gk-gravityview' ) }
-								value={ fieldId }
-								type="number"
-								min="0"
-								onChange={ ( fieldId ) => setAttributes( { fieldId } ) }
-							/>
-						</Disabled>
-
-						<PreviewControl
-							disabled={ !viewId || !entryId }
-							preview={ previewBlock }
-							onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+					<Disabled isDisabled={ !entryId }>
+						<TextControl
+							className="field-selector"
+							label={ __( 'Field ID', 'gk-gravityview' ) }
+							placeholder={ __( 'Field ID', 'gk-gravityview' ) }
+							value={ fieldId }
+							type="number"
+							min="0"
+							onChange={ ( fieldId ) => setAttributes( { fieldId } ) }
 						/>
-					</div>
+					</Disabled>
+
+					<PreviewControl
+						disabled={ !viewId || !entryId }
+						preview={ previewBlock }
+						onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+					/>
 				</div>
 			</> }
 

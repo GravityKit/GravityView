@@ -262,18 +262,16 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 				<div className="block-editor">
 					{ previewImage }
 
-					<div>
-						<ViewSelector
-							viewId={ viewId }
-							onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
-						/>
+					<ViewSelector
+						viewId={ viewId }
+						onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
+					/>
 
-						<PreviewControl
-							disabled={ !viewId }
-							preview={ previewBlock }
-							onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
-						/>
-					</div>
+					<PreviewControl
+						disabled={ !viewId }
+						preview={ previewBlock }
+						onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+					/>
 				</div>
 			</> }
 

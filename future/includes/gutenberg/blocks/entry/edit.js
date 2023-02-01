@@ -69,27 +69,23 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 				<div className="block-editor">
 					{ previewImage }
 
-					<div>
-						<ViewSelector
-							viewId={ viewId }
-							onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
-						/>
+					<ViewSelector
+						viewId={ viewId }
+						onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
+					/>
 
-						<div>
-							<EntrySelector
-								disabled={ !viewId }
-								noButtonGroup={ true }
-								entryId={ entryId }
-								onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
-							/>
-						</div>
+					<EntrySelector
+						disabled={ !viewId }
+						noButtonGroup={ true }
+						entryId={ entryId }
+						onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
+					/>
 
-						<PreviewControl
-							disabled={ !viewId || !entryId }
-							preview={ previewBlock }
-							onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
-						/>
-					</div>
+					<PreviewControl
+						disabled={ !viewId || !entryId }
+						preview={ previewBlock }
+						onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+					/>
 				</div>
 			</> }
 
