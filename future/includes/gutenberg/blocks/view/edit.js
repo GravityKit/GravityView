@@ -1,6 +1,6 @@
 import { __, _x } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { BaseControl, TextControl, SelectControl, Panel, PanelBody, ButtonGroup, Button, Disabled } from '@wordpress/components';
+import { BaseControl, TextControl, SelectControl, Panel, PanelBody, ButtonGroup, Button } from '@wordpress/components';
 
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
@@ -11,6 +11,7 @@ import PreviewControl from 'shared/js/preview-control';
 import PreviewAsShortcodeControl from 'shared/js/preview-as-shortcode-control';
 import ServerSideRender from 'shared/js/server-side-render';
 import NoViewsNotice from 'shared/js/no-views-notice';
+import Disabled from 'shared/js/disabled';
 
 import './editor.scss';
 

@@ -1,5 +1,11 @@
 $background-color: #fff;
 
+@mixin disabled-element {
+  .disabled {
+    opacity: 0.2 !important;
+  }
+}
+
 .preview-image {
   margin: 0 auto;
   display: block;
@@ -7,6 +13,8 @@ $background-color: #fff;
 
 [class*="gk-gravityview-blocks"] {
   text-align: left;
+
+  @include disabled-element;
 
   .entry-selector, .preview-control, .view-selector {
     width: 100%;
@@ -111,4 +119,6 @@ $background-color: #fff;
 
 .gravityview-blocks-preview-as-shortcode {
   margin-bottom: 20px;
+
+  @include disabled-element;
 }

@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
-import { Panel, PanelBody, Disabled } from '@wordpress/components';
+import { Panel, PanelBody } from '@wordpress/components';
 
 import ViewSelector from 'shared/js/view-selector';
 import EntrySelector from 'shared/js/entry-selector';
@@ -8,6 +8,7 @@ import PreviewControl from 'shared/js/preview-control';
 import PreviewAsShortcodeControl from 'shared/js/preview-as-shortcode-control';
 import ServerSideRender from 'shared/js/server-side-render';
 import NoViewsNotice from 'shared/js/no-views-notice';
+import Disabled from 'shared/js/disabled';
 
 import './editor.scss';
 
