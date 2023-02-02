@@ -60,8 +60,6 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										label={ __( 'Field ID', 'gk-gravityview' ) }
 										placeholder={ __( 'Field ID', 'gk-gravityview' ) }
 										value={ fieldId }
-										type="number"
-										min="0"
 										onChange={ ( fieldId ) => setAttributes( { fieldId } ) }
 									/>
 								</Disabled>
@@ -115,8 +113,6 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							label={ __( 'Field ID', 'gk-gravityview' ) }
 							placeholder={ __( 'Field ID', 'gk-gravityview' ) }
 							value={ fieldId }
-							type="number"
-							min="0"
 							onChange={ ( fieldId ) => setAttributes( { fieldId } ) }
 						/>
 					</Disabled>
