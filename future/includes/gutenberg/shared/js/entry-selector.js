@@ -1,5 +1,7 @@
 import { __, _x } from '@wordpress/i18n';
-import { BaseControl, ButtonGroup, Button, TextControl, Disabled } from '@wordpress/components';
+import { BaseControl, ButtonGroup, Button, TextControl } from '@wordpress/components';
+
+import Disabled from './disabled';
 
 export default function EntrySelector( { children, entryId, onChange, noButtonGroup, disabled, showInSidebar } ) {
 	const EntryInput = (

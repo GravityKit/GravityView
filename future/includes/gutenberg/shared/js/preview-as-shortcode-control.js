@@ -1,19 +1,21 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorAdvancedControls } from '@wordpress/block-editor';
-import { ToggleControl, Disabled } from '@wordpress/components';
+import { ToggleControl } from '@wordpress/components';
+
+import Disabled from './disabled';
 
 export default function PreviewControl( { previewAsShortcode, disabled, onChange } ) {
 	return (
 		<InspectorAdvancedControls>
-			<Disabled isDisabled={ disabled }>
-				<div className="gravityview-blocks-preview-as-shortcode">
+			<div className="gravityview-blocks-preview-as-shortcode">
+				<Disabled isDisabled={ disabled }>
 					<ToggleControl
 						label={ __( 'Preview As Shortcode', 'gk-gravityview' ) }
 						checked={ previewAsShortcode }
 						onChange={ ( previewAsShortcode ) => onChange( previewAsShortcode ) }
 					/>
-				</div>
-			</Disabled>
+				</Disabled>
+			</div>
 		</InspectorAdvancedControls>
 	);
 }
