@@ -1,4 +1,4 @@
-import { __ } from '@wordpress/i18n';
+import { __, _x } from '@wordpress/i18n';
 import { BaseControl, ButtonGroup, Button, TextControl, Disabled } from '@wordpress/components';
 
 export default function EntrySelector( { children, entryId, onChange, noButtonGroup, disabled, showInSidebar } ) {
@@ -13,6 +13,12 @@ export default function EntrySelector( { children, entryId, onChange, noButtonGr
 
 	const noEntryInput = ( entryId === 'first' || entryId === 'last' );
 
+	const entryDisplayNotice = _x( 'Field data will be shown for the [position] entry in the View.', '[position] will be replaced with "first" or "last" and not to be translated.', 'gk-gravityview' )
+		.replace( '[position]', entryId === 'first'
+			? _x( 'first', 'Used to indicate "first entry"', 'gk_gravityview' )
+			: _x( 'last', 'Used to indicate "last entry"', 'gk_gravityview' )
+		);
+
 	return (
 		<Disabled isDisabled={ disabled }>
 			<div className={ `entry-selector ${ noEntryInput ? 'no-entry-input' : '' }` }>
@@ -22,7 +28,7 @@ export default function EntrySelector( { children, entryId, onChange, noButtonGr
 					<BaseControl label={ showInSidebar ? __( 'Entry Type', 'gk-gravityview' ) : '' }>
 						<ButtonGroup className="btn-group-triple">
 							<Button
-								isPrimary={ entryId !== 'first' && entryId !== 'last' }
+								isPrimary={ ![ 'first', 'last' ].includes( entryId ) }
 								onClick={ () => onChange( '' ) }
 							>
 								{ __( 'Entry ID', 'gk-gravityview' ) }
@@ -42,6 +48,8 @@ export default function EntrySelector( { children, entryId, onChange, noButtonGr
 								{ __( 'Last', 'gk-gravityview' ) }
 							</Button>
 						</ButtonGroup>
+
+						{ [ 'first', 'last' ].includes( entryId ) && <p>{ entryDisplayNotice }</p> }
 
 						{ !noEntryInput && EntryInput }
 
