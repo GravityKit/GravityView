@@ -102,7 +102,7 @@ class Blocks {
 		/**
 		 * @filter `gk/gravityview/gutenberg/blocks/localization` Modifies the global blocks localization data.
 		 *
-		 * @since  1.0.0
+		 * @since  $ver$
 		 *
 		 * @param array $block_localization_data
 		 */
@@ -141,12 +141,27 @@ class Blocks {
 			'order'   => 'ASC',
 		] );
 
-		return array_map( function ( $view ) {
+		$formatted_views = array_map( function ( $view ) {
 			return [
 				'value' => (string) $view->ID,
-				'label' => $view->post_title ?: strtr( _x( '#[view ID] (no title)', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ), [ '[view ID]' => $view->ID ] )
+				'label' => sprintf(
+					'%s (#%s)',
+					$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
+					$view->ID
+				)
 			];
 		}, $views );
+
+		/**
+		 * @filter `gk/gravityview/gutenberg/blocks/views` Modifies the Views object used in the UI.
+		 *
+		 * @since  $ver$
+		 *
+		 * @param array $formatted_views
+		 */
+		$formatted_views = apply_filters( 'gk/gravityview/gutenberg/blocks/views', $formatted_views );
+
+		return $formatted_views;
 	}
 
 	/**
