@@ -26,8 +26,8 @@
       "type": "number"
     },
     "pageSize": {
-      "default": 0,
-      "type": "number"
+      "default": "",
+      "type": "string"
     },
     "sortField": {
       "default": "",
