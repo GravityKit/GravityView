@@ -81,11 +81,11 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									<BaseControl label={ __( 'Start Date', 'gk-gravityview' ) }>
 										<ButtonGroup className="btn-group-double">
 											<Button
-												isSecondary={ startDateType !== 'static' }
-												isPrimary={ startDateType === 'static' }
-												onClick={ () => setAttributes( { startDateType: 'static' } ) }
+												isSecondary={ startDateType !== 'date' }
+												isPrimary={ startDateType === 'date' }
+												onClick={ () => setAttributes( { startDateType: 'date' } ) }
 											>
-												{ __( 'Static (Calendar)', 'gk-gravityview' ) }
+												{ __( 'Calendar Date', 'gk-gravityview' ) }
 											</Button>
 
 											<Button
@@ -93,11 +93,11 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 												isPrimary={ startDateType === 'relative' }
 												onClick={ () => setAttributes( { startDateType: 'relative' } ) }
 											>
-												{ __( 'Relative', 'gk-gravityview' ) }
+												{ __( 'Relative Date', 'gk-gravityview' ) }
 											</Button>
 										</ButtonGroup>
 
-										{ startDateType === 'static' && <>
+										{ startDateType === 'date' && <>
 											<BaseControl label={ __( 'Date', 'gk-gravityview' ) }>
 												<DatePicker
 													dateFormat="yyyy-MM-dd"
@@ -110,7 +110,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										{ startDateType === 'relative' && <>
 											<TextControl
 												label={ __( 'Relative Date', 'gk-gravityview' ) }
-												placeholder={ __( 'Relative Date', 'gk-gravityview' ) }
+												placeholder={ _x( 'now, today, +1 day', 'Examples of relative dates.', 'gk-gravityview' ) }
 												value={ startDate }
 												onChange={ ( startDate ) => setAttributes( { startDate } ) }
 											/>
@@ -120,11 +120,11 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									<BaseControl label={ __( 'End Date', 'gk-gravityview' ) }>
 										<ButtonGroup className="btn-group-double">
 											<Button
-												isSecondary={ endDateType !== 'static' }
-												isPrimary={ endDateType === 'static' }
-												onClick={ () => setAttributes( { endDateType: 'static' } ) }
+												isSecondary={ endDateType !== 'date' }
+												isPrimary={ endDateType === 'date' }
+												onClick={ () => setAttributes( { endDateType: 'date' } ) }
 											>
-												{ __( 'Static (Calendar)', 'gk-gravityview' ) }
+												{ __( 'Calendar Date', 'gk-gravityview' ) }
 											</Button>
 
 											<Button
@@ -132,11 +132,11 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 												isPrimary={ endDateType === 'relative' }
 												onClick={ () => setAttributes( { endDateType: 'relative' } ) }
 											>
-												{ __( 'Relative', 'gk-gravityview' ) }
+												{ __( 'Relative Date', 'gk-gravityview' ) }
 											</Button>
 										</ButtonGroup>
 
-										{ endDateType === 'static' && <>
+										{ endDateType === 'date' && <>
 											<BaseControl label={ __( 'Date', 'gk-gravityview' ) }>
 												<DatePicker
 													dateFormat="yyyy-MM-dd"
@@ -149,7 +149,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										{ endDateType === 'relative' && <>
 											<TextControl
 												label={ __( 'Relative Date', 'gk-gravityview' ) }
-												placeholder={ __( 'Relative Date', 'gk-gravityview' ) }
+												placeholder={ _x( 'now, today, +1 day', 'Examples of relative dates.', 'gk-gravityview' ) }
 												value={ endDate }
 												onChange={ ( endDate ) => setAttributes( { endDate } ) }
 											/>
