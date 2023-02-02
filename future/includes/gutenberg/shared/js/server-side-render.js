@@ -96,7 +96,7 @@ const ServerSideRender = ( props ) => {
 				} )
 				.catch( ( error ) => setError( error ) );
 		}, DEBOUNCE_FETCH ),
-		[]
+		[ attributes ]
 	);
 
 	if ( error ) {
