@@ -144,7 +144,6 @@ class GravityView_Entry_Link_Shortcode {
 		if ( empty( $this->entry ) ) {
 			gravityview()->log->error( 'An Entry ID was not defined or found. Entry ID: {entry_id}', array( 'entry_id' => $this->settings['entry_id'] ) );
 
-
 			return null;
 		}
 
@@ -152,6 +151,7 @@ class GravityView_Entry_Link_Shortcode {
 
 		if ( ! $this->has_cap() ) {
 			gravityview()->log->error( 'User does not have the capability to {action} this entry: {entry_id}', array( 'action' => esc_attr( $this->settings['action'] ), 'entry_id' => $this->entry['id'] ) );
+
 			return null;
 		}
 
@@ -310,6 +310,8 @@ class GravityView_Entry_Link_Shortcode {
 	 * @return array|bool Gravity Forms array, if found. Otherwise, false.
 	 */
 	private function get_entry( $entry_id = 0 ) {
+		static $entries = array();
+
 		$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getEntry() : GravityView_View::getInstance()->getCurrentEntry();
 
 		if ( empty( $entry_id ) ) {
@@ -328,25 +330,20 @@ class GravityView_Entry_Link_Shortcode {
 				return false;
 			}
 
-			$entry = wp_cache_get( "gv_entry_link_entry_{$this->view_id}_{$entry_id}", 'gravityview_entry_link_shortcode' );
-
-			if ( ! $entry ) {
+			if ( ! isset( $entry[ $entry_id ] ) ) {
 				$entry = 'last' === $entry_id ? $view->get_entries( null )->first() : $view->get_entries( null )->last();
 			}
 
 			if ( $entry ) {
 				$entry = $entry->as_entry();
 
-				wp_cache_add( "gv_entry_link_entry_{$this->view_id}_{$entry_id}", 'gravityview_entry_link_shortcode' );
+				$entries[ $entry_id ] = $entry;
 			}
 		} else {
-			$entry = wp_cache_get( 'gv_entry_link_entry_' . $entry_id, 'gravityview_entry_link_shortcode' );
-
-			if ( false === $entry ) {
-				$entry = GVCommon::get_entry( $entry_id, true, false );
-				wp_cache_add( 'gv_entry_link_entry_' . $entry_id, $entry, 'gravityview_entry_link_shortcode' );
-			}
+			$entry = isset( $entries[ $entry_id ] ) ? $entries[ $entry_id ] : GVCommon::get_entry( $entry_id, true, false );
 		}
+
+		$entries[ $entry_id ] = $entry;
 
 		// No search results
 		if ( false === $entry ) {

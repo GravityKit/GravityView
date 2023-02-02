@@ -48,7 +48,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			'merge_tags' => false,
 		);
 
-		$field = \GV\GF_Field::by_id( \GV\GF_Form::by_id( $form_id), $field_id );
+		$field = \GV\GF_Field::by_id( \GV\GF_Form::by_id( $form_id ), $field_id );
 
 		// Only allow alt text on single files currently.
 		if( empty( $field->field->multipleFiles ) ) {
@@ -179,6 +179,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		}
 
 		$output_arr = array();
+		$gf_form    = \GV\GF_Form::by_id( $context->field->field->formId );
 
 		// Get an array of file paths for the field.
 		$file_paths = (int) \GV\Utils::get( $field, 'multipleFiles' ) !== 1 ? array( $value ) : $value;
@@ -209,12 +210,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$secure_file_path = $file_info['secure_file_path'];
 			$is_secure = $file_info['is_secure'];
 
-			$disable_lightbox   = false;
-			$text               = $basename;
+			$disable_lightbox = false;
+			$text             = $basename;
 
 			$alt = \GV\Utils::get( $field_settings, 'alt_text' );
 			$alt = ( '' === $alt ) ? $field_settings['label'] : $alt;
-			$alt = GFCommon::replace_variables( $alt, GFAPI::get_form( $entry['form_id'] ), $entry );
+			$alt = GFCommon::replace_variables( $alt, $gf_form->form, $entry );
 
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {

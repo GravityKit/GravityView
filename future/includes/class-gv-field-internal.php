@@ -30,7 +30,7 @@ class Internal_Field extends Field {
 	public static function from_configuration( $configuration ) {
 
 		if ( empty( $configuration['id'] ) || ! is_string( $configuration['id'] ) ) {
-			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
+			gravityview()->log->error( 'Invalid configuration[id] supplied for internal field: {id}', array( 'data' => $configuration, 'id' => \GV\Utils::get( $configuration, 'id' ) ) );
 			return null;
 		}
 
@@ -118,7 +118,7 @@ class Internal_Field extends Field {
 		 * A TEMPLATE :)
 		 */
 		$value = Utils::get( $entry->as_entry(), $this->ID );
-		
+
 		/** Apply parent filters. */
 		return $this->get_value_filters( $value, $view, $source, $entry, $request );
 	}
