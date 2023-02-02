@@ -191,32 +191,36 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									onChange={ ( searchField ) => setAttributes( { searchField } ) }
 								/>
 
-								<TextControl
-									label={ __( 'Search Value', 'gk-gravityview' ) }
-									value={ searchValue }
-									onChange={ ( searchValue ) => setAttributes( { searchValue } ) }
-								/>
+								<Disabled isDisabled={ !searchField }>
+									<TextControl
+										label={ __( 'Search Value', 'gk-gravityview' ) }
+										value={ searchValue }
+										onChange={ ( searchValue ) => setAttributes( { searchValue } ) }
+									/>
+								</Disabled>
 
-								<SelectControl
-									label={ __( 'Search Operator', 'gk-gravityview' ) }
-									value={ searchOperator }
-									options={ [
-										{ value: 'is', label: _x( 'Is', 'Denotes search operator "is".', 'gk-gravityview' ) },
-										{ value: 'isnot', label: _x( 'Is Not', 'Denotes search operator "isnot".', 'gk-gravityview' ) },
-										{ value: '<>', label: _x( 'Not Equal', 'Denotes search operator "<>".', 'gk-gravityview' ) },
-										{ value: 'not in', label: _x( 'Not In', 'Denotes search operator "not in".', 'gk-gravityview' ) },
-										{ value: 'in', label: _x( 'In', 'Denotes search operator "in".', 'gk-gravityview' ) },
-										{ value: '>', label: _x( 'Greater', 'Denotes search operator ">".', 'gk-gravityview' ) },
-										{ value: '<', label: _x( 'Lesser', 'Denotes search operator "<".', 'gk-gravityview' ) },
-										{ value: 'contains', label: _x( 'Contains', 'Denotes search operator "contains".', 'gk-gravityview' ) },
-										{ value: 'starts_with', label: _x( 'Starts With', 'Denotes search operator "starts_with".', 'gk-gravityview' ) },
-										{ value: 'ends_with', label: _x( 'Ends With', 'Denotes search operator "ends_with".', 'gk-gravityview' ) },
-										{ value: 'like', label: _x( 'Like', 'Denotes search operator "like".', 'gk-gravityview' ) },
-										{ value: '>=', label: _x( 'Greater Or Equal', 'Denotes search operator ">=".', 'gk-gravityview' ) },
-										{ value: '<=', label: _x( 'Lesser Or Equal', 'Denotes search operator "<=".', 'gk-gravityview' ) },
-									] }
-									onChange={ ( searchOperator ) => setAttributes( { searchOperator } ) }
-								/>
+								<Disabled isDisabled={ !searchField || !searchValue }>
+									<SelectControl
+										label={ __( 'Search Operator', 'gk-gravityview' ) }
+										value={ searchOperator }
+										options={ [
+											{ value: 'is', label: _x( 'Is', 'Denotes search operator "is".', 'gk-gravityview' ) },
+											{ value: 'isnot', label: _x( 'Is Not', 'Denotes search operator "isnot".', 'gk-gravityview' ) },
+											{ value: '<>', label: _x( 'Not Equal', 'Denotes search operator "<>".', 'gk-gravityview' ) },
+											{ value: 'not in', label: _x( 'Not In', 'Denotes search operator "not in".', 'gk-gravityview' ) },
+											{ value: 'in', label: _x( 'In', 'Denotes search operator "in".', 'gk-gravityview' ) },
+											{ value: '>', label: _x( 'Greater', 'Denotes search operator ">".', 'gk-gravityview' ) },
+											{ value: '<', label: _x( 'Lesser', 'Denotes search operator "<".', 'gk-gravityview' ) },
+											{ value: 'contains', label: _x( 'Contains', 'Denotes search operator "contains".', 'gk-gravityview' ) },
+											{ value: 'starts_with', label: _x( 'Starts With', 'Denotes search operator "starts_with".', 'gk-gravityview' ) },
+											{ value: 'ends_with', label: _x( 'Ends With', 'Denotes search operator "ends_with".', 'gk-gravityview' ) },
+											{ value: 'like', label: _x( 'Like', 'Denotes search operator "like".', 'gk-gravityview' ) },
+											{ value: '>=', label: _x( 'Greater Or Equal', 'Denotes search operator ">=".', 'gk-gravityview' ) },
+											{ value: '<=', label: _x( 'Lesser Or Equal', 'Denotes search operator "<=".', 'gk-gravityview' ) },
+										] }
+										onChange={ ( searchOperator ) => setAttributes( { searchOperator } ) }
+									/>
+								</Disabled>
 
 								<TextControl
 									label={ _x( 'Class', 'Denotes CSS class', 'gk-gravityview' ) }
