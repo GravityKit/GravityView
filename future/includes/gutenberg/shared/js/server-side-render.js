@@ -33,10 +33,15 @@ export const loadAsset = ( { asset, type, onLoad } ) => {
 const ServerSideRender = ( props ) => {
 	const {
 		block,
+		blockPreviewImage,
 		dataType,
 		attributes,
 		loadScripts,
-		loadStyles
+		loadStyles,
+		onEmptyResponse,
+		onError,
+		onLoading,
+		onResponse
 	} = props;
 
 	const [ response, setResponse ] = useState( null );
@@ -114,30 +119,60 @@ const ServerSideRender = ( props ) => {
 	);
 
 	if ( error ) {
-		return <div>{ error.message }</div>;
+		return typeof onError === 'function'
+			? onError( error )
+			: (
+				<div className="error-state">
+					{
+						_x( 'The block could not be rendered due to an error: [error]', '[error] placeholder will be replaced with an error message and is not to be translated.', 'gk-gravitykit' )
+							.replace( '[error]', error.message )
+					}
+				</div>
+			);
 	}
 
-	// Do not clear existing response and just display the spinner; this prevents the unsightly content shift.
-	if ( response && isFetching ) {
-		return (
-			<div className="loading-state">
-				<div className="loader">
-					<Spinner />
+	// If the block was previously rendered, do not clear existing response and just display the spinner; this prevents the unsightly content shift.
+	if ( isFetching && response ) {
+		return typeof onLoading === 'function'
+			? onLoading( response )
+			: (
+				<div className="loading-state">
+					<div className="loader">
+						<Spinner />
+					</div>
+					<InnerHTML html={ response } />
 				</div>
-				<InnerHTML html={ response } />
-			</div>
-		);
+			);
 	}
 
 	if ( isFetching ) {
-		return (
-			<Placeholder>
-				<Spinner />
-			</Placeholder>
-		);
+		return typeof onLoading === 'function'
+			? onLoading()
+			: (
+				<div className="loading-state initial">
+					<div className="loader">
+						<Spinner />
+					</div>
+					{ blockPreviewImage }
+				</div>
+			);
 	}
 
-	return <InnerHTML html={ response } />;
+	if ( !response ) {
+		return typeof onEmptyResponse === 'function'
+			? onEmptyResponse()
+			: (
+				<div class="empty-response">
+					<p>
+						{ __( 'The block did not render any content.', 'gk-gravityview' ) }
+					</p>
+				</div>
+			);
+	}
+
+	return typeof onResponse === 'function'
+		? onResponse( response )
+		: <InnerHTML html={ response } />;
 };
 
 export default ServerSideRender;

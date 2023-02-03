@@ -58,6 +58,10 @@ $background-color: #fff;
     .loading-state {
       position: relative;
 
+      &.initial {
+        padding: 40px;
+      }
+
       .loader {
         position: absolute;
         left: -10%;
