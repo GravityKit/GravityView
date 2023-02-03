@@ -1026,7 +1026,7 @@ class GravityView_Admin_Views {
 											// Maybe has a form ID
 											$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
 
-											$input_type = NULL;
+											$input_type = null;
 
 											if ( $form_id ) {
 												$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false ;
@@ -1047,9 +1047,9 @@ class GravityView_Admin_Views {
 												}
 
 												$original_item = $field;
-											} else {
-												$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
 											}
+
+											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : null;
 
 											// Field options dialog box
 											$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
