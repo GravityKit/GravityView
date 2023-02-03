@@ -3,7 +3,7 @@ import { BaseControl, ButtonGroup, Button, TextControl } from '@wordpress/compon
 
 import Disabled from './disabled';
 
-export default function EntrySelector( { children, entryId, onChange, noButtonGroup, disabled = false, showInSidebar } ) {
+export default function EntrySelector( { children, entryId, onChange, minimalBottomMargin, noButtonGroup, disabled = false, showInSidebar } ) {
 	const EntryInput = (
 		<TextControl
 			label={ __( 'Entry ID', 'gk-gravityview' ) }
@@ -23,7 +23,7 @@ export default function EntrySelector( { children, entryId, onChange, noButtonGr
 
 	return (
 		<Disabled isDisabled={ disabled }>
-			<div className={ `entry-selector ${ noEntryInput ? 'no-entry-input' : '' }` }>
+			<div className={ `entry-selector ${ minimalBottomMargin || noEntryInput ? 'minimal-bottom-margin' : '' }` }>
 				{ noButtonGroup && EntryInput }
 
 				{ !noButtonGroup && <>
@@ -51,7 +51,7 @@ export default function EntrySelector( { children, entryId, onChange, noButtonGr
 							</Button>
 						</ButtonGroup>
 
-						{ [ 'first', 'last' ].includes( entryId ) && <p>{ entryDisplayNotice }</p> }
+						{ [ 'first', 'last' ].includes( entryId ) && <p className='first-last-entry-id-notice'>{ entryDisplayNotice }</p> }
 
 						{ !noEntryInput && EntryInput }
 

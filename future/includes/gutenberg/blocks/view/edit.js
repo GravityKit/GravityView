@@ -73,90 +73,90 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							/>
 						</PanelBody>
 
-						<Disabled isDisabled={ !viewId }>
-							<PanelBody title={ __( 'Entries Settings', 'gk-gravityview' ) } initialOpen={ false }>
-								<Disabled isDisabled={ !viewId }>
-									<BaseControl label={ __( 'Start Date', 'gk-gravityview' ) }>
-										<ButtonGroup className="btn-group-double">
-											<Button
-												isSecondary={ startDateType !== 'date' }
-												isPrimary={ startDateType === 'date' }
-												onClick={ () => setAttributes( { startDateType: 'date' } ) }
-											>
-												{ __( 'Calendar Date', 'gk-gravityview' ) }
-											</Button>
+						<PanelBody title={ __( 'Entries Settings', 'gk-gravityview' ) } initialOpen={ false }>
+							<Disabled isDisabled={ !viewId }>
+								<BaseControl label={ __( 'Start Date', 'gk-gravityview' ) }>
+									<ButtonGroup className="btn-group-double">
+										<Button
+											isSecondary={ startDateType !== 'date' }
+											isPrimary={ startDateType === 'date' }
+											onClick={ () => setAttributes( { startDateType: 'date' } ) }
+										>
+											{ __( 'Calendar Date', 'gk-gravityview' ) }
+										</Button>
 
-											<Button
-												isSecondary={ startDateType !== 'relative' }
-												isPrimary={ startDateType === 'relative' }
-												onClick={ () => setAttributes( { startDateType: 'relative' } ) }
-											>
-												{ __( 'Relative Date', 'gk-gravityview' ) }
-											</Button>
-										</ButtonGroup>
+										<Button
+											isSecondary={ startDateType !== 'relative' }
+											isPrimary={ startDateType === 'relative' }
+											onClick={ () => setAttributes( { startDateType: 'relative' } ) }
+										>
+											{ __( 'Relative Date', 'gk-gravityview' ) }
+										</Button>
+									</ButtonGroup>
 
-										{ startDateType === 'date' && <>
-											<BaseControl label={ __( 'Date', 'gk-gravityview' ) }>
-												<DatePicker
-													dateFormat="yyyy-MM-dd"
-													selected={ isStartDateValid ? moment( startDate ).toDate() : '' }
-													onChange={ ( startDate ) => setAttributes( { startDate: moment( startDate ).format( 'YYYY-MM-DD' ) } ) }
-												/>
-											</BaseControl>
-										</> }
-
-										{ startDateType === 'relative' && <>
-											<TextControl
-												label={ __( 'Relative Date', 'gk-gravityview' ) }
-												placeholder={ _x( 'now, today, +1 day', 'Examples of relative dates.', 'gk-gravityview' ) }
-												value={ startDate }
-												onChange={ ( startDate ) => setAttributes( { startDate } ) }
+									{ startDateType === 'date' && <>
+										<BaseControl label={ __( 'Date', 'gk-gravityview' ) }>
+											<DatePicker
+												dateFormat="yyyy-MM-dd"
+												selected={ isStartDateValid ? moment( startDate ).toDate() : '' }
+												onChange={ ( startDate ) => setAttributes( { startDate: moment( startDate ).format( 'YYYY-MM-DD' ) } ) }
 											/>
-										</> }
-									</BaseControl>
+										</BaseControl>
+									</> }
 
-									<BaseControl label={ __( 'End Date', 'gk-gravityview' ) }>
-										<ButtonGroup className="btn-group-double">
-											<Button
-												isSecondary={ endDateType !== 'date' }
-												isPrimary={ endDateType === 'date' }
-												onClick={ () => setAttributes( { endDateType: 'date' } ) }
-											>
-												{ __( 'Calendar Date', 'gk-gravityview' ) }
-											</Button>
+									{ startDateType === 'relative' && <>
+										<TextControl
+											label={ __( 'Relative Date', 'gk-gravityview' ) }
+											placeholder={ _x( 'now, today, +1 day', 'Examples of relative dates.', 'gk-gravityview' ) }
+											value={ startDate }
+											onChange={ ( startDate ) => setAttributes( { startDate } ) }
+										/>
+									</> }
+								</BaseControl>
 
-											<Button
-												isSecondary={ endDateType !== 'relative' }
-												isPrimary={ endDateType === 'relative' }
-												onClick={ () => setAttributes( { endDateType: 'relative' } ) }
-											>
-												{ __( 'Relative Date', 'gk-gravityview' ) }
-											</Button>
-										</ButtonGroup>
+								<BaseControl label={ __( 'End Date', 'gk-gravityview' ) }>
+									<ButtonGroup className="btn-group-double">
+										<Button
+											isSecondary={ endDateType !== 'date' }
+											isPrimary={ endDateType === 'date' }
+											onClick={ () => setAttributes( { endDateType: 'date' } ) }
+										>
+											{ __( 'Calendar Date', 'gk-gravityview' ) }
+										</Button>
 
-										{ endDateType === 'date' && <>
-											<BaseControl label={ __( 'Date', 'gk-gravityview' ) }>
-												<DatePicker
-													dateFormat="yyyy-MM-dd"
-													selected={ isEndDateValid ? moment( endDate ).toDate() : '' }
-													onChange={ ( endDate ) => setAttributes( { endDate: moment( endDate ).format( 'YYYY-MM-DD' ) } ) }
-												/>
-											</BaseControl>
-										</> }
+										<Button
+											isSecondary={ endDateType !== 'relative' }
+											isPrimary={ endDateType === 'relative' }
+											onClick={ () => setAttributes( { endDateType: 'relative' } ) }
+										>
+											{ __( 'Relative Date', 'gk-gravityview' ) }
+										</Button>
+									</ButtonGroup>
 
-										{ endDateType === 'relative' && <>
-											<TextControl
-												label={ __( 'Relative Date', 'gk-gravityview' ) }
-												placeholder={ _x( 'now, today, +1 day', 'Examples of relative dates.', 'gk-gravityview' ) }
-												value={ endDate }
-												onChange={ ( endDate ) => setAttributes( { endDate } ) }
+									{ endDateType === 'date' && <>
+										<BaseControl label={ __( 'Date', 'gk-gravityview' ) }>
+											<DatePicker
+												dateFormat="yyyy-MM-dd"
+												selected={ isEndDateValid ? moment( endDate ).toDate() : '' }
+												onChange={ ( endDate ) => setAttributes( { endDate: moment( endDate ).format( 'YYYY-MM-DD' ) } ) }
 											/>
-										</> }
-									</BaseControl>
-								</Disabled>
-							</PanelBody>
+										</BaseControl>
+									</> }
 
-							<PanelBody title={ __( 'Extra Settings', 'gk-gravityview' ) } initialOpen={ false }>
+									{ endDateType === 'relative' && <>
+										<TextControl
+											label={ __( 'Relative Date', 'gk-gravityview' ) }
+											placeholder={ _x( 'now, today, +1 day', 'Examples of relative dates.', 'gk-gravityview' ) }
+											value={ endDate }
+											onChange={ ( endDate ) => setAttributes( { endDate } ) }
+										/>
+									</> }
+								</BaseControl>
+							</Disabled>
+						</PanelBody>
+
+						<PanelBody title={ __( 'Extra Settings', 'gk-gravityview' ) } initialOpen={ false }>
+							<Disabled isDisabled={ !viewId }>
 								<TextControl
 									label={ __( 'Page Size', 'gk-gravityview' ) }
 									value={ pageSize }
@@ -188,16 +188,20 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									value={ searchField }
 									onChange={ ( searchField ) => setAttributes( { searchField } ) }
 								/>
+							</Disabled>
 
-								<Disabled isDisabled={ !searchField }>
+							<Disabled isDisabled={ !viewId || !searchField }>
+								<div style={ { marginBottom: '24px' } }>
 									<TextControl
 										label={ __( 'Search Value', 'gk-gravityview' ) }
 										value={ searchValue }
 										onChange={ ( searchValue ) => setAttributes( { searchValue } ) }
 									/>
-								</Disabled>
+								</div>
+							</Disabled>
 
-								<Disabled isDisabled={ !searchField || !searchValue }>
+							<Disabled isDisabled={ !viewId || !searchField || !searchValue }>
+								<div style={ { marginBottom: '24px' } }>
 									<SelectControl
 										label={ __( 'Search Operator', 'gk-gravityview' ) }
 										value={ searchOperator }
@@ -218,8 +222,10 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										] }
 										onChange={ ( searchOperator ) => setAttributes( { searchOperator } ) }
 									/>
-								</Disabled>
+								</div>
+							</Disabled>
 
+							<Disabled isDisabled={ !viewId }>
 								<TextControl
 									label={ _x( 'Class', 'Denotes CSS class', 'gk-gravityview' ) }
 									value={ classValue }
@@ -250,8 +256,8 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									postId={ postId }
 									onChange={ ( postId ) => setAttributes( { postId } ) }
 								/>
-							</PanelBody>
-						</Disabled>
+							</Disabled>
+						</PanelBody>
 					</Panel>
 				</div>
 			</InspectorControls>
@@ -268,25 +274,26 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 					<ViewSelector
 						viewId={ viewId }
-						onChange={ ( viewId ) => { setAttributes( { viewId, previewBlock: !!viewId } ); } }
+						onChange={ ( _viewId ) => setAttributes( { viewId: _viewId, previewBlock: previewBlock && !_viewId ? false : previewBlock } ) }
 					/>
 
 					<PreviewControl
 						disabled={ !viewId }
 						preview={ previewBlock }
-						onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+						onChange={ ( previewBlock ) => setAttributes( { previewBlock } ) }
 					/>
 				</div>
 			</> }
 
 			{ shouldPreview && <>
 				<div className="block-preview">
-					<Disabled>
+					<Disabled isDisabled={ true } toggleOpacity={ false }>
 						<ServerSideRender
 							block={ blockName }
 							attributes={ attributes }
 							dataType="json"
 							loadStyles={ true }
+							blockPreviewImage={ previewImage }
 						/>
 					</Disabled>
 				</div>

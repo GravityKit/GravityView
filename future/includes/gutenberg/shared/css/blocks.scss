@@ -75,20 +75,24 @@ $background-color: #fff;
    */
   .components-panel {
     .view-selector, .entry-selector:not(.no-entry-input) {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .view-selector.edit-view {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
 
       p {
         margin: 10px 0;
       }
     }
 
+    .entry-selector.minimal-bottom-margin {
+      margin-bottom: 12px;
+    }
+
     .btn-group-double, .btn-group-triple {
       width: 100%;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
 
       .components-button {
         justify-content: center;
@@ -130,7 +134,7 @@ $background-color: #fff;
 }
 
 .gravityview-blocks-preview-as-shortcode {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 
   @include disabled-element;
 }

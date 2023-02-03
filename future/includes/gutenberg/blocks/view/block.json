@@ -54,7 +54,7 @@
       "type": "string"
     },
     "startDateType": {
-      "default": "static",
+      "default": "date",
       "type": "string"
     },
     "endDate": {
@@ -62,7 +62,7 @@
       "type": "string"
     },
     "endDateType": {
-      "default": "static",
+      "default": "date",
       "type": "string"
     },
     "classValue": {

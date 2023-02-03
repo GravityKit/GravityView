@@ -65,8 +65,9 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							/>
 						</PanelBody>
 
-						<Disabled isDisabled={ !entryId }>
-							<PanelBody title={ __( 'Link Settings', 'gk-gravityview' ) } initialOpen={ false }>
+						<PanelBody title={ __( 'Link Settings', 'gk-gravityview' ) } initialOpen={ false }>
+							<Disabled isDisabled={ !entryId }>
+
 								<SelectControl
 									label={ __( 'Link Action', 'gk-gravityview' ) }
 									value={ action }
@@ -101,9 +102,11 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									] }
 									onChange={ ( returnFormat ) => setAttributes( { returnFormat } ) }
 								/>
-							</PanelBody>
+							</Disabled>
+						</PanelBody>
 
-							<PanelBody title={ __( 'Extra Settings', 'gk-gravityview' ) } initialOpen={ false }>
+						<PanelBody title={ __( 'Extra Settings', 'gk-gravityview' ) } initialOpen={ false }>
+							<Disabled isDisabled={ !entryId }>
 								<PostSelector
 									postId={ postId }
 									onChange={ ( postId ) => setAttributes( { postId } ) }
@@ -114,8 +117,8 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									value={ fieldValues }
 									onChange={ ( fieldValues ) => setAttributes( { fieldValues } ) }
 								/>
-							</PanelBody>
-						</Disabled>
+							</Disabled>
+						</PanelBody>
 					</Panel>
 				</div>
 			</InspectorControls>

@@ -10,12 +10,8 @@
   }
 
   .components-panel {
-    .field-selector {
-      margin-bottom: 20px;
-    }
-
-    .entry-selector {
-      margin-bottom: 0;
+    .field-selector, .first-last-entry-id-notice {
+      margin-bottom: 24px;
     }
   }
 }

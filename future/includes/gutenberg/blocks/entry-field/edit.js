@@ -52,6 +52,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<EntrySelector
 								disabled={ !viewId }
 								entryId={ entryId }
+								minimalBottomMargin={ true }
 								onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
 							>
 								<Disabled isDisabled={ !entryId }>
@@ -76,7 +77,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							</EntrySelector>
 
 							<PreviewControl
-								disabled={ !viewId || !entryId }
+								disabled={ !viewId || !entryId || !fieldId }
 								preview={ previewBlock }
 								onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
 							/>
@@ -118,7 +119,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 					</Disabled>
 
 					<PreviewControl
-						disabled={ !viewId || !entryId }
+						disabled={ !viewId || !entryId || !fieldId }
 						preview={ previewBlock }
 						onChange={ ( previewBlock ) => setAttributes( { previewBlock } ) }
 					/>
