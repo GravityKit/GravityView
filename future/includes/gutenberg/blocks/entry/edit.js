@@ -42,19 +42,19 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
+								onChange={ ( viewId ) => setAttributes( { viewId, previewBlock: false, entryId: '' } ) }
 							/>
 
 							<EntrySelector
 								disabled={ !viewId }
 								entryId={ entryId }
-								onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
+								onChange={ ( entryId ) => setAttributes( { entryId } ) }
 							/>
 
 							<PreviewControl
 								disabled={ !viewId || !entryId }
 								preview={ previewBlock }
-								onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+								onChange={ ( previewBlock ) => setAttributes( { previewBlock } ) }
 							/>
 						</PanelBody>
 					</Panel>
@@ -73,20 +73,20 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 					<ViewSelector
 						viewId={ viewId }
-						onChange={ ( viewId ) => { setAttributes( { viewId, entryId: '' } ); } }
+						onChange={ ( viewId ) => setAttributes( { viewId, previewBlock: false, entryId: '' } ) }
 					/>
 
 					<EntrySelector
 						disabled={ !viewId }
 						noButtonGroup={ true }
 						entryId={ entryId }
-						onChange={ ( entryId ) => { setAttributes( { entryId } ); } }
+						onChange={ ( entryId ) => setAttributes( { entryId } ) }
 					/>
 
 					<PreviewControl
 						disabled={ !viewId || !entryId }
 						preview={ previewBlock }
-						onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+						onChange={ ( previewBlock ) => setAttributes( { previewBlock } ) }
 					/>
 				</div>
 			</> }

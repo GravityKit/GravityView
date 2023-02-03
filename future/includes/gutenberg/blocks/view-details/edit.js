@@ -41,7 +41,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
+								onChange={ ( _viewId ) => setAttributes( { viewId, previewBlock: previewBlock && !_viewId ? false : previewBlock } ) }
 							/>
 
 							<Disabled isDisabled={ !viewId }>
@@ -59,7 +59,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 								<PreviewControl
 									preview={ previewBlock }
-									onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+									onChange={ ( previewBlock ) => setAttributes( { previewBlock } ) }
 								/>
 							</Disabled>
 						</PanelBody>
@@ -79,13 +79,13 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 					<ViewSelector
 						viewId={ viewId }
-						onChange={ ( viewId ) => { setAttributes( { viewId } ); } }
+						onChange={ ( _viewId ) => setAttributes( { viewId, previewBlock: previewBlock && !_viewId ? false : previewBlock } ) }
 					/>
 
 					<PreviewControl
 						disabled={ !viewId }
 						preview={ previewBlock }
-						onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
+						onChange={ ( previewBlock ) => setAttributes( { previewBlock } ) }
 					/>
 				</div>
 			</> }
