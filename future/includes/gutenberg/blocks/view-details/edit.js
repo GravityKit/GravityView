@@ -52,7 +52,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 										{ value: 'total_entries', label: __( 'Total Entries', 'gk-gravityview' ) },
 										{ value: 'first_entry', label: __( 'First Entry', 'gk-gravityview' ) },
 										{ value: 'last_entry', label: __( 'Last Entry', 'gk-gravityview' ) },
-										{ value: 'pageSize', label: __( 'Page Size', 'gk-gravityview' ) },
+										{ value: 'page_size', label: __( 'Page Size', 'gk-gravityview' ) },
 									] }
 									onChange={ ( value ) => setAttributes( { detail: value } ) }
 								/>
