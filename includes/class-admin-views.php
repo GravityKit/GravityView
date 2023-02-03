@@ -985,10 +985,12 @@ class GravityView_Admin_Views {
 			if ( 'field' === $type ) {
 				$available_items[ $form_id ] = $this->get_available_fields( $form, $zone );
 
-				$joined_forms = gravityview_get_joined_forms( $post->ID );
+				if ( ! empty( $post->ID ) ) {
+					$joined_forms = gravityview_get_joined_forms( $post->ID );
 
-				foreach ( $joined_forms as $joined_form ) {
-					$available_items[ $joined_form->ID ] = $this->get_available_fields( $joined_form->ID, $zone );
+					foreach ( $joined_forms as $joined_form ) {
+						$available_items[ $joined_form->ID ] = $this->get_available_fields( $joined_form->ID, $zone );
+					}
 				}
 			} else {
 				$available_items[ $form_id ] = \GV\Widget::registered();
