@@ -21,7 +21,7 @@ export default function ViewSelector( { viewId, isSidebar, onChange } ) {
 	const selectedView = views.filter( option => option.value === viewId ) || views[ 0 ];
 
 	return (
-		<BaseControl className="view-selector" label={ labels.view }>
+		<BaseControl className={`view-selector ${viewId && isSidebar ? 'edit-view' :''}`} label={ labels.view }>
 			<Select
 				aria-label={ labels.view }
 				placeholder={ labels.selectView }
@@ -34,7 +34,7 @@ export default function ViewSelector( { viewId, isSidebar, onChange } ) {
 			/>
 
 			{ viewId && isSidebar && <>
-				<p style={ { marginTop: '10px' } } dangerouslySetInnerHTML={ { __html: `<a href="${ gkGravityViewBlocks?.edit_view_url.replace( '%s', viewId ) }">${ editViewNotice }</a>` } } />
+				<p dangerouslySetInnerHTML={ { __html: `<a href="${ gkGravityViewBlocks?.edit_view_url.replace( '%s', viewId ) }">${ editViewNotice }</a>` } } />
 			</> }
 		</BaseControl>
 	);
