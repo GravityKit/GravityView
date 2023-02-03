@@ -78,21 +78,35 @@ const ServerSideRender = ( props ) => {
 
 						if ( loadScripts ) {
 							Object.values( response.scripts ).forEach( ( asset ) => {
-								if ( loadedScripts.has( asset ) ) {
+								let assetToLoad = asset;
+
+								if ( loadedScripts.has( asset ) || loadedScripts.has( asset?.src ) ) {
 									return;
 								}
 
-								loadAsset( { asset, type: 'js' } );
+								if ( asset?.src ) {
+									assetToLoad = asset.src;
+								}
 
-								setLoadedScripts( loadedScripts.add( asset ) );
+								if ( asset?.data ) {
+									eval( asset.data );
+								}
+
+								loadAsset( { assetToLoad, type: 'js' } );
+
+								setLoadedScripts( loadedScripts.add( assetToLoad ) );
 							} );
 						}
 
-						setResponse( response.content );
+						setTimeout( () => {
+							setResponse( response.content );
+							setIsFetching( false );
+
+						}, 1000 );
 					} else {
 						setResponse( res.rendered );
+						setIsFetching( false );
 					}
-					setIsFetching( false );
 				} )
 				.catch( ( error ) => setError( error ) );
 		}, DEBOUNCE_FETCH ),

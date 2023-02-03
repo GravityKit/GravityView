@@ -199,7 +199,11 @@ class Blocks {
 				return $dependencies;
 			}
 
-			array_unshift( $dependencies, $source->registered[ $handle ]->src );
+			if ( $source->registered[ $handle ]->extra && ! empty( $source->registered[ $handle ]->extra['data'] ) ) {
+				array_unshift( $dependencies, array_filter( [ 'src' => $source->registered[ $handle ]->src, 'data' => $source->registered[ $handle ]->extra['data'] ] ) );
+			} else if ( $source->registered[ $handle ]->src ) {
+				array_unshift( $dependencies, $source->registered[ $handle ]->src );
+			}
 
 			if ( ! $source->registered[ $handle ]->deps ) {
 				return $dependencies;
@@ -209,7 +213,7 @@ class Blocks {
 				array_unshift( $dependencies, $get_dependencies( $dependency, $source ) );
 			}
 
-			return array_unique( array_flatten( $dependencies ) );
+			return array_flatten( $dependencies );
 		};
 
 		$script_dependencies = [];
@@ -223,8 +227,8 @@ class Blocks {
 		}
 
 		return [
-			'scripts' => array_filter( array_unique( $script_dependencies ) ),
-			'styles'  => array_filter( array_unique( $style_dependencies ) ),
+			'scripts' => array_unique( $script_dependencies, SORT_REGULAR ),
+			'styles'  => array_unique( $style_dependencies, SORT_REGULAR ),
 			'content' => $rendered_shortcode,
 		];
 	}
