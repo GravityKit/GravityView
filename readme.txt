@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: [gventry] shortcode not working when using the Entry ID is "first" or "last"
+
 = 2.16.6 on January 12, 2023 =
 
 * Fixed: Fatal error due to an uncaught PHP exception
