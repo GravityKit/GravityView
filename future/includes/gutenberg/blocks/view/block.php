@@ -72,6 +72,10 @@ class View {
 
 		$rendered_shortcode = Blocks::render_shortcode( $shortcode );
 
+		if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
+			return $rendered_shortcode['content'];
+		}
+
 		return json_encode( $rendered_shortcode );
 	}
 }
