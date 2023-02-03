@@ -690,7 +690,7 @@ class GravityView_Edit_Entry_Render {
 
 
 		if ( ! empty( $this->fields_with_calculation ) ) {
-			$allowed_fields = $this->get_configured_edit_fields( $form );
+			$allowed_fields = $this->get_configured_edit_fields( $form, $this->view_id );
 			$allowed_fields = wp_list_pluck( $allowed_fields, 'id' );
 
 			foreach ( $this->fields_with_calculation as $field ) {
