@@ -58,7 +58,6 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 								/>
 
 								<PreviewControl
-									disabled={ !viewId }
 									preview={ previewBlock }
 									onChange={ ( previewBlock ) => { setAttributes( { previewBlock } ); } }
 								/>

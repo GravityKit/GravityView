@@ -3,7 +3,7 @@ import { BaseControl, ButtonGroup, Button, TextControl } from '@wordpress/compon
 
 import Disabled from './disabled';
 
-export default function EntrySelector( { children, entryId, onChange, noButtonGroup, disabled, showInSidebar } ) {
+export default function EntrySelector( { children, entryId, onChange, noButtonGroup, disabled = false, showInSidebar } ) {
 	const EntryInput = (
 		<TextControl
 			label={ __( 'Entry ID', 'gk-gravityview' ) }

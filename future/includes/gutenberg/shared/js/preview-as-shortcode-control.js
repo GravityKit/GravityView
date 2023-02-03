@@ -4,7 +4,7 @@ import { ToggleControl } from '@wordpress/components';
 
 import Disabled from './disabled';
 
-export default function PreviewControl( { previewAsShortcode, disabled, onChange } ) {
+export default function PreviewControl( { previewAsShortcode, disabled = false, onChange } ) {
 	return (
 		<InspectorAdvancedControls>
 			<div className="gravityview-blocks-preview-as-shortcode">
