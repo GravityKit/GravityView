@@ -5,7 +5,7 @@
   "devDependencies": {
     "@lodder/grunt-postcss": "^3.1.1",
     "autoprefixer": "^9.8.8",
-    "grunt": "^1.4.1",
+    "grunt": "^1.5.3",
     "grunt-contrib-imagemin": "^1.0.1",
     "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-uglify": "^5.0.1",
