@@ -44,7 +44,7 @@ class GravityView_Admin_Views {
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
-		add_filter( 'gravityview/view/fields/default', array( $this, 'set_default_view_fields'), 10, 5 );
+		add_filter( 'gravityview/view/configuration/fields', array( $this, 'set_default_view_fields'), 10, 3 );
 
 		// @todo check if this hook is needed..
 		//add_action( 'gravityview_render_field_options', array( $this, 'render_field_options'), 10, 9 );
@@ -1260,21 +1260,7 @@ class GravityView_Admin_Views {
 			$output .= '</div>';
 		} else {
 
-			$fields = array();
-
-			if ( ! empty( $post_id ) ) {
-				$fields = gravityview_get_directory_fields( $post_id );
-			} else {
-				/**
-				 * @filter `gravityview/view/fields/default` Modify the default fields for new Views.
-				 * @param array $fields A Widget configuration array.
-				 * @param string $template_id The selected View template ID.
-				 * @param array $template_areas The template areas of the layout being used.
-				 * @param int $post_id The auto-draft post ID.
-				 * @param int $form_id The form ID.
-				 */
-				$fields = apply_filters( 'gravityview/view/fields/default', $fields, $template_id, $template_areas, $post_id, $form_id );
-			}
+			$fields = gravityview_get_directory_fields( $post_id, true, $form_id );
 
 			ob_start();
 			$this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields );
@@ -1292,15 +1278,15 @@ class GravityView_Admin_Views {
 	/**
 	 * Set the default fields for new Views.
 	 *
+	 * @since 2.16.3
+	 *
 	 * @param array $fields A Widget configuration array.
-	 * @param string $template_id The selected View template ID.
-	 * @param array $template_areas The template areas of the layout being used.
-	 * @param int $post_id The auto-draft post ID.
+	 * @param \GV\View $view The View the fields are being pulled for. Unused in this method.
 	 * @param int $form_id The form ID.
 	 *
 	 * @return array
 	 */
-	function set_default_view_fields( $fields = array(), $template_id = '', $template_areas = array(), $post_id = 0, $form_id = 0 ) {
+	public function set_default_view_fields( $fields = array(), $view = null, $form_id = 0 ) {
 
 		if ( empty( $form_id ) ) {
 			return $fields;

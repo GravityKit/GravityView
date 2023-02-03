@@ -297,8 +297,8 @@ function gravityview_get_registered_templates() {
  * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
  * @return array          Multi-array of fields with first level being the field zones. See code comment.
  */
-function gravityview_get_directory_fields( $post_id, $apply_filter = true ) {
-	return GVCommon::get_directory_fields( $post_id, $apply_filter );
+function gravityview_get_directory_fields( $post_id, $apply_filter = true, $form_id = 0 ) {
+	return GVCommon::get_directory_fields( $post_id, $apply_filter, $form_id );
 }
 
 /**
