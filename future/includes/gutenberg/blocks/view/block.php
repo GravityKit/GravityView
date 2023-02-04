@@ -54,6 +54,10 @@ class View {
 			'backLinkLabel'  => 'back_link_label',
 		];
 
+		if ( isset( $block_attributes['searchOperator'] ) && empty( $block_attributes['searchValue'] ) ) {
+			unset( $block_attributes['searchOperator'] );
+		}
+
 		$shortcode_attributes = [];
 
 		foreach ( $block_attributes as $attribute => $value ) {
