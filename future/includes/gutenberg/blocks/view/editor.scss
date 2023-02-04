@@ -19,3 +19,32 @@
     }
   }
 }
+
+.gv-map-canvas {
+  height: 200px !important;
+  width: 100% !important;
+  background-color: #B4B9BE;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    height: 40px;
+    width: 40px;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+.gv-datatables {
+  height: 200px;
+  text-align: center;
+
+  tbody {
+    background-color: #B4B9BE;
+    font-size: 1rem;
+  }
+}
