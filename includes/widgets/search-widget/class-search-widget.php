@@ -1193,7 +1193,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				break;
 
 			case 'multiselect':
-
+			case 'workflow_multi_user':
 				if ( ! is_array( $value ) ) {
 					break;
 				}
