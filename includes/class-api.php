@@ -933,7 +933,7 @@ function gv_entry_link( $entry, $post_id = NULL ) {
 }
 
 function gv_no_results( $wpautop = true, $context = null ) {
-	return GravityView_API::no_results( $wpautop, $context );
+	return apply_filters('gravityview/template/no_entries',GravityView_API::no_results( $wpautop, $context ),$context);
 }
 
 /**

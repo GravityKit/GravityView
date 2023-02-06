@@ -26,6 +26,24 @@ class View_Settings extends Settings {
 	}
 
 	/**
+	 * Get All forms to use as options.
+	 *
+	 * @return array
+	 */
+	private function get_forms(){
+		$forms = \GFFormsModel::get_forms();
+		if(empty($forms)){
+			return [];
+		}
+		
+		$form_options = [];
+		foreach($forms as $form){
+			$form_options[$form->id] = $form->title;
+		}
+		return $form_options;
+	}
+
+	/**
 	 * Retrieve the default View settings.
 	 *
 	 * @param bool $detailed Whether to return detailed setting meta information or just the value.
@@ -45,7 +63,6 @@ class View_Settings extends Settings {
 	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
-
 		$default_settings = array_merge(
 			array(
 				'id' => array(
@@ -97,8 +114,46 @@ class View_Settings extends Settings {
 						'url' => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
 					),
 				),
+
+				'no_entries_options'    => array(
+					'label'             => __( 'No Entries Action', 'gk-gravityview' ),
+					'type'              => 'select',
+					'tooltip'              => __( 'Incase the forms has no entries, You can show message or form or redirect to a URL.', 'gk-gravityview' ),
+					'group'             => 'default',
+					'options'           => array(
+						'0'		=> __( 'Show Message', 'gk-gravityview' ),
+						'1' 			=> __( 'Show Form', 'gk-gravityview' ),
+						'2' 		=> __( 'Redirect to URL', 'gk-gravityview' ),
+					),
+					'value'             => '0',
+					'show_in_shortcode' => true,
+				),
+
+				'no_entries_form'    => array(
+					'label'             => __( '"No Entries" Show Form', 'gk-gravityview' ),
+					'type'              => 'select',
+					'tooltip'              => __( 'Show a Gravity form if there are no entries to show in the view.', 'gk-gravityview' ),
+					'group'             => 'default',
+					'requires'          => 'no_entries_options=1',
+					'options'           => (new self)->get_forms(),
+					'value'             => '',
+					'show_in_shortcode' => true,
+				),
+				
+				'no_entries_redirect'    => array(
+					'label'             => __( '"No Entries" Redirect URL', 'gk-gravityview' ),
+					'group'             => 'default',
+					'desc'              => __( 'If there are no entries, the user will be taken to this URL.', 'gk-gravityview' ),
+					'type'              => 'text',
+					'class'             => 'code widefat',
+					'value'             => '',
+					'placeholder'       => 'https://www.example.com/landing-page/',
+					'requires'          => 'no_entries_options=2',
+					'merge_tags'        => 'force',
+				),
+
 				'no_results_text'       => array(
-					'label'             => __( '"No Results" Text', 'gk-gravityview' ),
+					'label'             => __( '"No Entries" Text', 'gk-gravityview' ),
 					'type'              => 'text',
 					'group'             => 'default',
 					'desc'              => '',
@@ -107,6 +162,7 @@ class View_Settings extends Settings {
 					'placeholder'       => __( 'No entries match your request.', 'gk-gravityview' ),
 					'show_in_shortcode' => true,
 					'class'             => 'widefat',
+					'requires'          => 'no_entries_options=0',
 					'full_width'        => true,
 				),
 				'no_search_results_text' => array(

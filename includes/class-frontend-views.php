@@ -100,6 +100,38 @@ class GravityView_frontend {
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2 );
 
 		add_action( 'gravityview_after', array( $this, 'context_not_configured_warning' ) );
+
+		add_filter('gravityview/template/no_entries',array($this,'no_entries'),10,2);
+	}
+
+	/**
+	 * Fires when there are no entries in the view.
+	 *
+	 * @param string $no_entries_text
+	 * @param object $context
+	 */
+	public function no_entries($no_entries_text,$context){
+		if($context->request->is_search()){
+			return $no_entries_text;
+		}
+
+		$no_entries_option = intval($context->view->settings->get( 'no_entries_options'));
+		if($no_entries_option === 1){
+			$form_id = intval($context->view->settings->get( 'no_entries_form'));
+			if($form_id !== 0){
+				return \GFForms::get_form($form_id);
+			}
+		}elseif($no_entries_option === 2){
+			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect');
+			if($no_entries_redirect){
+				$redirect_url = GFCommon::replace_variables($no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
+				wp_safe_redirect($redirect_url);
+				die();
+			}
+		}
+		
+		return $no_entries_text;
+
 	}
 
 	/**
