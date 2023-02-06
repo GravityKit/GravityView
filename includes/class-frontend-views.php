@@ -16,6 +16,7 @@ class GravityView_frontend {
 
 	/**
 	 * Regex strings that are used to determine whether the current request is a GravityView search or not.
+	 *
 	 * @see GravityView_frontend::is_searching()
 	 * @since 1.7.4.1
 	 * @var array
@@ -24,18 +25,21 @@ class GravityView_frontend {
 
 	/**
 	 * Is the currently viewed post a `gravityview` post type?
+	 *
 	 * @var boolean
 	 */
 	var $is_gravityview_post_type = false;
 
 	/**
 	 * Does the current post have a `[gravityview]` shortcode?
+	 *
 	 * @var boolean
 	 */
 	var $post_has_shortcode = false;
 
 	/**
 	 * The Post ID of the currently viewed post. Not necessarily GV
+	 *
 	 * @var int
 	 */
 	var $post_id = null;
@@ -43,24 +47,28 @@ class GravityView_frontend {
 	/**
 	 * Are we currently viewing a single entry?
 	 * If so, the int value of the entry ID. Otherwise, false.
+	 *
 	 * @var int|boolean
 	 */
 	var $single_entry = false;
 
 	/**
 	 * If we are viewing a single entry, the entry data
+	 *
 	 * @var array|false
 	 */
 	var $entry = false;
 
 	/**
 	 * When displaying the single entry we should always know to which View it belongs (the context is everything!)
+	 *
 	 * @var null
 	 */
 	var $context_view_id = null;
 
 	/**
 	 * The View is showing search results
+	 *
 	 * @since 1.5.4
 	 * @var boolean
 	 */
@@ -85,10 +93,10 @@ class GravityView_frontend {
 	private function __construct() {}
 
 	private function initialize() {
-		add_action( 'wp', array( $this, 'parse_content'), 11 );
+		add_action( 'wp', array( $this, 'parse_content' ), 11 );
 		add_filter( 'render_block', array( $this, 'detect_views_in_block_content' ) );
 		add_filter( 'parse_query', array( $this, 'parse_query_fix_frontpage' ), 10 );
-		add_action( 'template_redirect', array( $this, 'set_entry_data'), 1 );
+		add_action( 'template_redirect', array( $this, 'set_entry_data' ), 1 );
 
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
@@ -101,7 +109,7 @@ class GravityView_frontend {
 
 		add_action( 'gravityview_after', array( $this, 'context_not_configured_warning' ) );
 
-		add_filter('gravityview/template/no_entries',array($this,'no_entries'),10,2);
+		add_filter( 'gravityview/template/no_entries', array( $this, 'no_entries' ), 10, 2 );
 	}
 
 	/**
@@ -110,38 +118,39 @@ class GravityView_frontend {
 	 * @param string $no_entries_text
 	 * @param object $context
 	 */
-	public function no_entries($no_entries_text,$context){
-		if($context->request->is_search()){
+	public function no_entries( $no_entries_text, $context ) {
+		if ( $context->request->is_search() ) {
 			return $no_entries_text;
 		}
 
-		$no_entries_option = intval($context->view->settings->get( 'no_entries_options'));
-		if($no_entries_option === 1){
-			$form_id = intval($context->view->settings->get( 'no_entries_form'));
-			if($form_id !== 0){
-				return \GFForms::get_form($form_id);
+		$no_entries_option = intval( $context->view->settings->get( 'no_entries_options' ) );
+		if ( $no_entries_option === 1 ) {
+			$form_id = intval( $context->view->settings->get( 'no_entries_form' ) );
+			if ( $form_id !== 0 ) {
+				return \GFForms::get_form( $form_id );
 			}
-		}elseif($no_entries_option === 2){
-			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect');
-			if($no_entries_redirect){
-				$redirect_url = GFCommon::replace_variables($no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
-				wp_safe_redirect($redirect_url);
+		} elseif ( $no_entries_option === 2 ) {
+			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect' );
+			if ( $no_entries_redirect ) {
+				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
+				wp_safe_redirect( $redirect_url );
 				die();
 			}
 		}
-		
+
 		return $no_entries_text;
 
 	}
 
 	/**
 	 * Get the one true instantiated self
+	 *
 	 * @return GravityView_frontend
 	 */
 	public static function getInstance() {
 
 		if ( empty( self::$instance ) ) {
-			self::$instance = new self;
+			self::$instance = new self();
 			self::$instance->initialize();
 		}
 
@@ -185,6 +194,7 @@ class GravityView_frontend {
 
 	/**
 	 * Sets the single entry ID and also the entry
+	 *
 	 * @param bool|int|string $single_entry
 	 */
 	public function setSingleEntry( $single_entry ) {
@@ -202,6 +212,7 @@ class GravityView_frontend {
 
 	/**
 	 * Set the current entry
+	 *
 	 * @param array|int $entry Entry array or entry slug or ID
 	 */
 	public function setEntry( $entry ) {
@@ -258,8 +269,6 @@ class GravityView_frontend {
 	/**
 	 * Set the context view ID used when page contains multiple embedded views or displaying the single entry view
 	 *
-	 *
-	 *
 	 * @param null $view_id
 	 */
 	public function set_context_view_id( $view_id = null ) {
@@ -272,12 +281,13 @@ class GravityView_frontend {
 		} elseif ( isset( $_GET['gvid'] ) && $multiple_views ) {
 			/**
 			 * used on a has_multiple_views context
+			 *
 			 * @see GravityView_API::entry_link
 			 */
 			$this->context_view_id = (int) $_GET['gvid'];
 
 		} elseif ( ! $multiple_views ) {
-			$array_keys = array_keys( $this->getGvOutputData()->get_views() );
+			$array_keys            = array_keys( $this->getGvOutputData()->get_views() );
 			$this->context_view_id = (int) array_pop( $array_keys );
 			unset( $array_keys );
 		}
@@ -311,10 +321,10 @@ class GravityView_frontend {
 		global $wp_rewrite;
 
 		$is_front_page = ( $query->is_home || $query->is_page );
-		$show_on_front = ( 'page' === get_option('show_on_front') );
-		$front_page_id = get_option('page_on_front');
+		$show_on_front = ( 'page' === get_option( 'show_on_front' ) );
+		$front_page_id = get_option( 'page_on_front' );
 
-		if (  $is_front_page && $show_on_front && $front_page_id ) {
+		if ( $is_front_page && $show_on_front && $front_page_id ) {
 
 			// Force to be an array, potentially a query string ( entry=16 )
 			$_query = wp_parse_args( $query->query );
@@ -324,9 +334,9 @@ class GravityView_frontend {
 				unset( $_query['pagename'] );
 			}
 
-			// this is where will break from core wordpress
+			// this is where will break from core WordPress
 			/** @internal Don't use this filter; it will be unnecessary soon - it's just a patch for specific use case */
-			$ignore = apply_filters( 'gravityview/internal/ignored_endpoints', array( 'preview', 'page', 'paged', 'cpage' ), $query );
+			$ignore    = apply_filters( 'gravityview/internal/ignored_endpoints', array( 'preview', 'page', 'paged', 'cpage' ), $query );
 			$endpoints = \GV\Utils::get( $wp_rewrite, 'endpoints' );
 			foreach ( (array) $endpoints as $endpoint ) {
 				$ignore[] = $endpoint[1];
@@ -342,7 +352,7 @@ class GravityView_frontend {
 				$qv =& $query->query_vars;
 
 				// Prevent redirect when on the single entry endpoint
-				if( self::is_single_entry() ) {
+				if ( self::is_single_entry() ) {
 					add_filter( 'redirect_canonical', '__return_false' );
 				}
 
@@ -395,7 +405,8 @@ class GravityView_frontend {
 
 	/**
 	 * Read the $post and process the View data inside
-	 * @param  array  $wp Passed in the `wp` hook. Not used.
+	 *
+	 * @param  array $wp Passed in the `wp` hook. Not used.
 	 * @return void
 	 */
 	public function parse_content( $wp = array() ) {
@@ -472,7 +483,7 @@ class GravityView_frontend {
 
 		$search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 
-		if( 'post' === $search_method ) {
+		if ( 'post' === $search_method ) {
 			$get = $_POST;
 		} else {
 			$get = $_GET;
@@ -510,7 +521,7 @@ class GravityView_frontend {
 	 * Filter the title for the single entry view
 	 *
 	 * @param  string $passed_title  Current title
-	 * @param  int $passed_post_id Post ID
+	 * @param  int    $passed_post_id Post ID
 	 * @return string (modified) title
 	 */
 	public function single_entry_title( $passed_title, $passed_post_id = null ) {
@@ -524,7 +535,7 @@ class GravityView_frontend {
 		$gventry = gravityview()->request->is_entry();
 
 		// If this is the directory view, return.
-		if( ! $gventry ) {
+		if ( ! $gventry ) {
 			return $passed_title;
 		}
 
@@ -542,7 +553,7 @@ class GravityView_frontend {
 		}
 
 		// WooCommerce doesn't $post_id
-		if ( empty( $passed_post_id ) )  {
+		if ( empty( $passed_post_id ) ) {
 			return $passed_title;
 		}
 
@@ -554,7 +565,7 @@ class GravityView_frontend {
 
 		$view = gravityview()->request->is_view();
 
-		if( $view ) {
+		if ( $view ) {
 			return $this->_get_single_entry_title( $view, $entry, $passed_title );
 		}
 
@@ -577,7 +588,7 @@ class GravityView_frontend {
 		$view_collection = \GV\View_Collection::from_post( $post );
 
 		// We have multiple Views, but no gvid...this isn't valid security
-		if( 1 < $view_collection->count() ) {
+		if ( 1 < $view_collection->count() ) {
 			return $passed_title;
 		}
 
@@ -590,8 +601,8 @@ class GravityView_frontend {
 	 * @since 2.7.2
 	 *
 	 * @param \GV\View|null $view
-	 * @param array $entry
-	 * @param string $passed_title
+	 * @param array         $entry
+	 * @param string        $passed_title
 	 *
 	 * @return string
 	 */
@@ -611,11 +622,11 @@ class GravityView_frontend {
 		 */
 		$check_entry_display = apply_filters( 'gravityview/single/title/check_entry_display', true, $entry, $view );
 
-		if( $check_entry_display ) {
+		if ( $check_entry_display ) {
 
 			$check_display = GVCommon::check_entry_display( $entry, $view );
 
-			if( is_wp_error( $check_display ) ) {
+			if ( is_wp_error( $check_display ) ) {
 				return $passed_title;
 			}
 		}
@@ -649,8 +660,9 @@ class GravityView_frontend {
 
 	/**
 	 * Disable comments on GravityView post types
+	 *
 	 * @param  boolean $open    existing status
-	 * @param  int $post_id Post ID
+	 * @param  int     $post_id Post ID
 	 * @return boolean
 	 */
 	public function comments_open( $open, $post_id ) {
@@ -693,7 +705,7 @@ class GravityView_frontend {
 
 		$context = GravityView_View::getInstance()->getContext();
 
-		switch( $context ) {
+		switch ( $context ) {
 			case 'directory':
 				$tab = __( 'Multiple Entries', 'gk-gravityview' );
 				break;
@@ -706,13 +718,12 @@ class GravityView_frontend {
 				break;
 		}
 
+		$title       = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
+		$edit_link   = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $view_id, $context ) );
+		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gk-gravityview' ), $tab );
+		$message     = esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
 
-		$title = sprintf( esc_html_x('The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
-		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $view_id, $context ) );
-		$action_text = sprintf( esc_html__('Add fields to %s', 'gk-gravityview' ), $tab );
-		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
-
-		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url(plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
+		$image  = sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url( plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
 		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
 
 		echo GVCommon::generate_notice( $output . $image, 'gv-error error', 'edit_gravityview', $view_id );
@@ -757,9 +768,9 @@ class GravityView_frontend {
 		$view->settings->update( $passed_args );
 
 		$direct_access = apply_filters( 'gravityview_direct_access', true, $view->ID );
-		$embed_only = $view->settings->get( 'embed_only' );
+		$embed_only    = $view->settings->get( 'embed_only' );
 
-		if( ! $direct_access || ( $embed_only && ! GVCommon::has_cap( 'read_private_gravityviews' ) ) ) {
+		if ( ! $direct_access || ( $embed_only && ! GVCommon::has_cap( 'read_private_gravityviews' ) ) ) {
 			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 		}
 
@@ -778,8 +789,8 @@ class GravityView_frontend {
 	 *
 	 * @see GFFormsModel::get_date_range_where
 	 *
-	 * @param  array      $args            View settings
-	 * @param  array      $search_criteria Search being performed, if any
+	 * @param  array $args            View settings
+	 * @param  array $search_criteria Search being performed, if any
 	 * @return array                       Modified `$search_criteria` array
 	 */
 	public static function process_search_dates( $args, $search_criteria = array() ) {
@@ -787,7 +798,6 @@ class GravityView_frontend {
 		$return_search_criteria = $search_criteria;
 
 		foreach ( array( 'start_date', 'end_date' ) as $key ) {
-
 
 			// Is the start date or end date set in the view or shortcode?
 			// If so, we want to make sure that the search doesn't go outside the bounds defined.
@@ -798,15 +808,21 @@ class GravityView_frontend {
 
 				// The date was invalid
 				if ( empty( $date ) ) {
-					gravityview()->log->error( ' Invalid {key} date format: {format}', array( 'key' => $key, 'format' => $args[ $key ] ) );
+					gravityview()->log->error(
+						' Invalid {key} date format: {format}',
+						array(
+							'key'    => $key,
+							'format' => $args[ $key ],
+						)
+					);
 					continue;
 				}
 
 				// The format that Gravity Forms expects for start_date and day-specific (not hour/second-specific) end_date
-				$datetime_format = 'Y-m-d H:i:s';
+				$datetime_format               = 'Y-m-d H:i:s';
 				$search_is_outside_view_bounds = false;
 
-				if( ! empty( $search_criteria[ $key ] ) ) {
+				if ( ! empty( $search_criteria[ $key ] ) ) {
 
 					$search_date = strtotime( $search_criteria[ $key ], GFCommon::get_local_timestamp() );
 
@@ -834,12 +850,12 @@ class GravityView_frontend {
 				if ( empty( $search_criteria[ $key ] ) || $search_is_outside_view_bounds ) {
 
 					// Then we override the search and re-set the start date
-					$return_search_criteria[ $key ] = date_i18n( $datetime_format , $date, true );
+					$return_search_criteria[ $key ] = date_i18n( $datetime_format, $date, true );
 				}
 			}
 		}
 
-		if( isset( $return_search_criteria['start_date'] ) && isset( $return_search_criteria['end_date'] ) ) {
+		if ( isset( $return_search_criteria['start_date'] ) && isset( $return_search_criteria['end_date'] ) ) {
 			// The start date is AFTER the end date. This will result in no results, but let's not force the issue.
 			if ( strtotime( $return_search_criteria['start_date'] ) > strtotime( $return_search_criteria['end_date'] ) ) {
 				gravityview()->log->error( 'Invalid search: the start date is after the end date.', array( 'data' => $return_search_criteria ) );
@@ -853,14 +869,14 @@ class GravityView_frontend {
 	/**
 	 * Process the approved only search criteria according to the View settings
 	 *
-	 * @param  array      $args            View settings
-	 * @param  array      $search_criteria Search being performed, if any
+	 * @param  array $args            View settings
+	 * @param  array $search_criteria Search being performed, if any
 	 * @return array                       Modified `$search_criteria` array
 	 */
 	public static function process_search_only_approved( $args, $search_criteria ) {
 
 		/** @since 1.19 */
-		if( ! empty( $args['admin_show_all_statuses'] ) && GVCommon::has_cap('gravityview_moderate_entries') ) {
+		if ( ! empty( $args['admin_show_all_statuses'] ) && GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			gravityview()->log->debug( 'User can moderate entries; showing all approval statuses' );
 			return $search_criteria;
 		}
@@ -868,8 +884,8 @@ class GravityView_frontend {
 		if ( ! empty( $args['show_only_approved'] ) ) {
 
 			$search_criteria['field_filters'][] = array(
-				'key' => GravityView_Entry_Approval::meta_key,
-				'value' => GravityView_Entry_Approval_Status::APPROVED
+				'key'   => GravityView_Entry_Approval::meta_key,
+				'value' => GravityView_Entry_Approval_Status::APPROVED,
 			);
 
 			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
@@ -905,7 +921,7 @@ class GravityView_frontend {
 		}
 
 		/** @since 1.19 */
-		if( ! empty( $args['admin_show_all_statuses'] ) && GVCommon::has_cap('gravityview_moderate_entries') ) {
+		if ( ! empty( $args['admin_show_all_statuses'] ) && GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			gravityview()->log->debug( 'User can moderate entries, so entry is approved for viewing' );
 			return true;
 		}
@@ -919,21 +935,21 @@ class GravityView_frontend {
 	 * Parse search criteria for a entries search.
 	 *
 	 * array(
-	 * 	'search_field' => 1, // ID of the field
+	 *  'search_field' => 1, // ID of the field
 	 *  'search_value' => '', // Value of the field to search
 	 *  'search_operator' => 'contains', // 'is', 'isnot', '>', '<', 'contains'
 	 *  'show_only_approved' => 0 or 1 // Boolean
 	 * )
 	 *
 	 * @param  array $args    Array of args
-	 * @param  int $form_id Gravity Forms form ID
+	 * @param  int   $form_id Gravity Forms form ID
 	 * @return array          Array of search parameters, formatted in Gravity Forms mode, using `status` key set to "active" by default, `field_filters` array with `key`, `value` and `operator` keys.
 	 */
 	public static function get_search_criteria( $args, $form_id ) {
 		/**
 		 * Compatibility with filters hooking in `gravityview_search_criteria` instead of `gravityview_fe_search_criteria`.
 		 */
-		$criteria = apply_filters( 'gravityview_search_criteria', array(), array( $form_id ), \GV\Utils::get( $args, 'id' ) );
+		$criteria        = apply_filters( 'gravityview_search_criteria', array(), array( $form_id ), \GV\Utils::get( $args, 'id' ) );
 		$search_criteria = isset( $criteria['search_criteria'] ) ? $criteria['search_criteria'] : array( 'field_filters' => array() );
 
 		/**
@@ -951,7 +967,7 @@ class GravityView_frontend {
 
 		$original_search_criteria = $search_criteria;
 
-		gravityview()->log->debug( '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', array( 'data' =>$search_criteria ) );
+		gravityview()->log->debug( '[get_search_criteria] Search Criteria after hook gravityview_fe_search_criteria: ', array( 'data' => $search_criteria ) );
 
 		// implicity search
 		if ( ! empty( $args['search_value'] ) ) {
@@ -960,8 +976,8 @@ class GravityView_frontend {
 			$operator = ! empty( $args['search_operator'] ) && in_array( $args['search_operator'], array( 'is', 'isnot', '>', '<', 'contains' ) ) ? $args['search_operator'] : 'contains';
 
 			$search_criteria['field_filters'][] = array(
-				'key' => \GV\Utils::_GET( 'search_field', \GV\Utils::get( $args, 'search_field' ) ), // The field ID to search
-				'value' => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
+				'key'      => \GV\Utils::_GET( 'search_field', \GV\Utils::get( $args, 'search_field' ) ), // The field ID to search
+				'value'    => _wp_specialchars( $args['search_value'] ), // The value to search. Encode ampersands but not quotes.
 				'operator' => $operator,
 			);
 
@@ -969,14 +985,14 @@ class GravityView_frontend {
 			$search_criteria['field_filters']['mode'] = 'all';
 		}
 
-		if( $search_criteria !== $original_search_criteria ) {
+		if ( $search_criteria !== $original_search_criteria ) {
 			gravityview()->log->debug( '[get_search_criteria] Search Criteria after implicity search: ', array( 'data' => $search_criteria ) );
 		}
 
 		// Handle setting date range
 		$search_criteria = self::process_search_dates( $args, $search_criteria );
 
-		if( $search_criteria !== $original_search_criteria ) {
+		if ( $search_criteria !== $original_search_criteria ) {
 			gravityview()->log->debug( '[get_search_criteria] Search Criteria after date params: ', array( 'data' => $search_criteria ) );
 		}
 
@@ -1005,8 +1021,6 @@ class GravityView_frontend {
 	 *   $class - assign a html class to the view
 	 *   $offset (optional) - This is the start point in the current data set (0 index based).
 	 *
-	 *
-	 *
 	 * @uses  gravityview_get_entries()
 	 * @param array $args\n
 	 *   - $id - View id
@@ -1017,7 +1031,7 @@ class GravityView_frontend {
 	 *   - $end_date - Ymd
 	 *   - $class - assign a html class to the view
 	 *   - $offset (optional) - This is the start point in the current data set (0 index based).
-	 * @param int $form_id Gravity Forms Form ID
+	 * @param int   $form_id Gravity Forms Form ID
 	 * @return array Associative array with `count`, `entries`, and `paging` keys. `count` has the total entries count, `entries` is an array with Gravity Forms full entry data, `paging` is an array with `offset` and `page_size` keys
 	 */
 	public static function get_view_entries( $args, $form_id ) {
@@ -1033,7 +1047,13 @@ class GravityView_frontend {
 		list( $entries, $paging, $count ) =
 			\GV\Mocks\GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $count );
 
-		gravityview()->log->debug( 'Get Entries. Found: {count} entries', array( 'count' => $count, 'data' => $entries ) );
+		gravityview()->log->debug(
+			'Get Entries. Found: {count} entries',
+			array(
+				'count' => $count,
+				'data'  => $entries,
+			)
+		);
 
 		/**
 		 * @filter `gravityview_view_entries` Filter the entries output to the View
@@ -1044,9 +1064,9 @@ class GravityView_frontend {
 		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
 
 		$return = array(
-			'count' => $count,
+			'count'   => $count,
 			'entries' => $entries,
-			'paging' => $paging,
+			'paging'  => $paging,
 		);
 
 		/**
@@ -1071,12 +1091,11 @@ class GravityView_frontend {
 	 * @see \GV\View_Settings::defaults For $args options
 	 *
 	 * @param array $args Array of View settings, as structured in \GV\View_Settings::defaults
-	 * @param int $form_id Gravity Forms form ID to search
+	 * @param int   $form_id Gravity Forms form ID to search
 	 *
 	 * @return array With `search_criteria`, `sorting`, `paging`, `cache` keys
 	 */
 	public static function get_view_entries_parameters( $args = array(), $form_id = 0 ) {
-
 
 		if ( ! is_array( $args ) || ! is_numeric( $form_id ) ) {
 
@@ -1089,6 +1108,7 @@ class GravityView_frontend {
 
 		/**
 		 * Process search parameters
+		 *
 		 * @var array
 		 */
 		$search_criteria = self::get_search_criteria( $args, $form_id );
@@ -1097,9 +1117,9 @@ class GravityView_frontend {
 
 		$parameters = array(
 			'search_criteria' => $search_criteria,
-			'sorting' => self::updateViewSorting( $args, $form_id ),
-			'paging' => $paging,
-			'cache' => isset( $args['cache'] ) ? $args['cache'] : true,
+			'sorting'         => self::updateViewSorting( $args, $form_id ),
+			'paging'          => $paging,
+			'cache'           => isset( $args['cache'] ) ? $args['cache'] : true,
 		);
 
 		/**
@@ -1124,7 +1144,7 @@ class GravityView_frontend {
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
 		 * @param array $args View configuration args.
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries_'.\GV\Utils::get( $args, 'id' ), $parameters, $args, $form_id );
+		$parameters = apply_filters( 'gravityview_get_entries_' . \GV\Utils::get( $args, 'id' ), $parameters, $args, $form_id );
 
 		gravityview()->log->debug( '$parameters passed to gravityview_get_entries(): ', array( 'data' => $parameters ) );
 
@@ -1137,7 +1157,7 @@ class GravityView_frontend {
 	 * @since 1.19.5
 	 *
 	 * @param $args
-	 * @param int $form_id
+	 * @param int  $form_id
 	 */
 	public static function get_search_criteria_paging( $args ) {
 
@@ -1156,14 +1176,14 @@ class GravityView_frontend {
 		}
 
 		$curr_page = empty( $_GET['pagenum'] ) ? 1 : intval( $_GET['pagenum'] );
-		$offset = ( $curr_page - 1 ) * $page_size;
+		$offset    = ( $curr_page - 1 ) * $page_size;
 
 		if ( ! empty( $args['offset'] ) ) {
 			$offset += intval( $args['offset'] );
 		}
 
 		$paging = array(
-			'offset' => $offset,
+			'offset'    => $offset,
 			'page_size' => $page_size,
 		);
 
@@ -1178,7 +1198,7 @@ class GravityView_frontend {
 	 * @since 1.7
 	 *
 	 * @param array $args View settings. Required to have `sort_field` and `sort_direction` keys
-	 * @param int $form_id The ID of the form used to sort
+	 * @param int   $form_id The ID of the form used to sort
 	 * @return array $sorting Array with `key`, `direction` and `is_numeric` keys
 	 */
 	public static function updateViewSorting( $args, $form_id ) {
@@ -1191,7 +1211,7 @@ class GravityView_frontend {
 			$dirs  = array_values( $_GET['sort'] );
 
 			if ( $has_values = array_filter( $dirs ) ) {
-				$sort_field_id = end( $sorts );
+				$sort_field_id  = end( $sorts );
 				$sort_direction = end( $dirs );
 			}
 		}
@@ -1215,17 +1235,17 @@ class GravityView_frontend {
 		if ( ! empty( $sort_field_id ) ) {
 			if ( is_array( $sort_field_id ) ) {
 				$sort_direction = array_values( $sort_field_id );
-				$sort_field_id = array_keys( $sort_field_id );
+				$sort_field_id  = array_keys( $sort_field_id );
 
-				$sort_field_id = reset( $sort_field_id );
+				$sort_field_id  = reset( $sort_field_id );
 				$sort_direction = reset( $sort_direction );
 			}
 
 			$sort_field_id = self::_override_sorting_id_by_field_type( $sort_field_id, $form_id );
-			$sorting = array(
-				'key' => $sort_field_id,
-				'direction' => strtolower( $sort_direction ),
-				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field_id )
+			$sorting       = array(
+				'key'        => $sort_field_id,
+				'direction'  => strtolower( $sort_direction ),
+				'is_numeric' => GVCommon::is_field_numeric( $form_id, $sort_field_id ),
 			);
 
 			if ( 'RAND' === $sort_direction ) {
@@ -1276,7 +1296,7 @@ class GravityView_frontend {
 	 * @internal Hi developer! Although this is public, don't call this method; we're going to replace it.
 	 *
 	 * @param int|string|array $sort_field_id Field used for sorting (`id` or `1.2`), or an array for multisorts
-	 * @param int $form_id GF Form ID
+	 * @param int              $form_id GF Form ID
 	 *
 	 * @return string|array Possibly modified sorting ID. Array if $sort_field_id is passed as array.
 	 */
@@ -1285,7 +1305,7 @@ class GravityView_frontend {
 		if ( is_array( $sort_field_id ) ) {
 			$modified_ids = array();
 			foreach ( $sort_field_id as $_sort_field_id ) {
-				$modified_ids []= self::_override_sorting_id_by_field_type( $_sort_field_id, $form_id );
+				$modified_ids [] = self::_override_sorting_id_by_field_type( $_sort_field_id, $form_id );
 			}
 			return $modified_ids;
 		}
@@ -1294,7 +1314,7 @@ class GravityView_frontend {
 
 		$sort_field = GFFormsModel::get_field( $form, $sort_field_id );
 
-		if( ! $sort_field ) {
+		if ( ! $sort_field ) {
 			return $sort_field_id;
 		}
 
@@ -1315,7 +1335,7 @@ class GravityView_frontend {
 					 */
 					$address_part = apply_filters( 'gravityview/sorting/address', 'city', $sort_field_id, $form_id );
 
-					switch( strtolower( $address_part ) ){
+					switch ( strtolower( $address_part ) ) {
 						case 'street':
 							$sort_field_id .= '.1';
 							break;
@@ -1336,7 +1356,6 @@ class GravityView_frontend {
 							$sort_field_id .= '.6';
 							break;
 					}
-
 				}
 				break;
 			case 'name':
@@ -1362,7 +1381,6 @@ class GravityView_frontend {
 				$sort_field_id = false;
 				break;
 			case 'time':
-
 				/**
 				 * @filter `gravityview/sorting/time` Override how to sort when sorting time
 				 * @see GravityView_Field_Time
@@ -1379,6 +1397,7 @@ class GravityView_frontend {
 
 	/**
 	 * Verify if user requested a single entry view
+	 *
 	 * @since 2.3.3 Added return null
 	 * @return boolean|string|null false if not, single entry slug if true, null if \GV\Entry doesn't exist yet
 	 */
@@ -1388,7 +1407,7 @@ class GravityView_frontend {
 		if ( ! class_exists( '\GV\Entry' ) ) {
 
 			// Not using gravityview()->log->error(), since that may not exist yet either!
-			do_action( 'gravityview_log_error', '\GV\Entry not defined yet. Backtrace: ' . wp_debug_backtrace_summary()  );
+			do_action( 'gravityview_log_error', '\GV\Entry not defined yet. Backtrace: ' . wp_debug_backtrace_summary() );
 
 			return null;
 		}
@@ -1405,7 +1424,7 @@ class GravityView_frontend {
 		 */
 		$single_entry = apply_filters( 'gravityview/is_single_entry', $single_entry );
 
-		if ( empty( $single_entry ) ){
+		if ( empty( $single_entry ) ) {
 			return false;
 		} else {
 			return $single_entry;
@@ -1426,13 +1445,13 @@ class GravityView_frontend {
 			$views = $this->getGvOutputData()->get_views();
 
 			foreach ( $views as $view_id => $data ) {
-				$view = \GV\View::by_id( $data['id'] );
-				$view_id = $view->ID;
+				$view        = \GV\View::by_id( $data['id'] );
+				$view_id     = $view->ID;
 				$template_id = gravityview_get_template_id( $view->ID );
-				$data = $view->as_data();
+				$data        = $view->as_data();
 
 				// By default, no thickbox
-				$js_dependencies = array( 'jquery', 'gravityview-jquery-cookie' );
+				$js_dependencies  = array( 'jquery', 'gravityview-jquery-cookie' );
 				$css_dependencies = array();
 
 				$lightbox = $view->settings->get( 'lightbox' );
@@ -1455,7 +1474,7 @@ class GravityView_frontend {
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @param \GV\View The View.
 					 */
-					$js_dependency = apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
+					$js_dependency     = apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
 					$js_dependencies[] = $js_dependency;
 
 					/**
@@ -1471,16 +1490,17 @@ class GravityView_frontend {
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @param \GV\View The View.
 					 */
-					$css_dependency = apply_filters( 'gravityview_lightbox_style', $css_dependency, $view );
+					$css_dependency     = apply_filters( 'gravityview_lightbox_style', $css_dependency, $view );
 					$css_dependencies[] = $css_dependency;
 				}
 
 				/**
 				 * If the form has checkbox fields, enqueue dashicons
+				 *
 				 * @see https://github.com/katzwebservices/GravityView/issues/536
 				 * @since 1.15
 				 */
-				if( gravityview_view_has_single_checkbox_or_radio( $data['form'], $data['fields'] ) ) {
+				if ( gravityview_view_has_single_checkbox_or_radio( $data['form'], $data['fields'] ) ) {
 					$css_dependencies[] = 'dashicons';
 				}
 
@@ -1488,7 +1508,7 @@ class GravityView_frontend {
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ) , GV_PLUGIN_VERSION, true );
+				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, true );
 
 				wp_enqueue_script( 'gravityview-fe-view' );
 
@@ -1505,8 +1525,8 @@ class GravityView_frontend {
 
 				$js_localization = array(
 					'cookiepath' => COOKIEPATH,
-					'clear' => _x( 'Clear', 'Clear all data from the form', 'gk-gravityview' ),
-					'reset' => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gk-gravityview' ),
+					'clear'      => _x( 'Clear', 'Clear all data from the form', 'gk-gravityview' ),
+					'reset'      => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gk-gravityview' ),
 				);
 
 				/**
@@ -1550,12 +1570,13 @@ class GravityView_frontend {
 
 	/**
 	 * Add template extra style if exists
+	 *
 	 * @param string $template_id
 	 */
 	public static function add_style( $template_id ) {
 
 		if ( ! empty( $template_id ) && wp_style_is( 'gravityview_style_' . $template_id, 'registered' ) ) {
-			gravityview()->log->debug(  'Adding extra template style for {template_id}', array( 'template_id' => $template_id ) );
+			gravityview()->log->debug( 'Adding extra template style for {template_id}', array( 'template_id' => $template_id ) );
 			wp_enqueue_style( 'gravityview_style_' . $template_id );
 		} elseif ( empty( $template_id ) ) {
 			gravityview()->log->error( 'Cannot add template style; template_id is empty' );
@@ -1570,13 +1591,14 @@ class GravityView_frontend {
 	 * Inject the sorting links on the table columns
 	 *
 	 * Callback function for hook 'gravityview/template/field_label'
+	 *
 	 * @see GravityView_API::field_label() (in includes/class-api.php)
 	 *
 	 * @since 1.7
 	 *
 	 * @param string $label Field label.
-	 * @param array $field Field settings.
-	 * @param array $form Form object.
+	 * @param array  $field Field settings.
+	 * @param array  $form Form object.
 	 *
 	 * @return string Field Label.
 	 */
@@ -1584,9 +1606,10 @@ class GravityView_frontend {
 
 		/**
 		 * Not a table-based template; don't add sort icons
+		 *
 		 * @since 1.12
 		 */
-		if( ! preg_match( '/table/ism', GravityView_View::getInstance()->getTemplatePartSlug() ) ) {
+		if ( ! preg_match( '/table/ism', GravityView_View::getInstance()->getTemplatePartSlug() ) ) {
 			return $label;
 		}
 
@@ -1602,25 +1625,25 @@ class GravityView_frontend {
 
 		$sort_args = array(
 			'sort' => $field['id'],
-			'dir' => 'asc',
+			'dir'  => 'asc',
 		);
 
 		if ( ! empty( $sorting['key'] ) && (string) $sort_field_id === (string) $sorting['key'] ) {
-			//toggle sorting direction.
+			// toggle sorting direction.
 			if ( 'asc' === $sorting['direction'] ) {
 				$sort_args['dir'] = 'desc';
-				$class .= ' gv-icon-sort-desc';
+				$class           .= ' gv-icon-sort-desc';
 			} else {
 				$sort_args['dir'] = 'asc';
-				$class .= ' gv-icon-sort-asc';
+				$class           .= ' gv-icon-sort-asc';
 			}
 		} else {
 			$class .= ' gv-icon-caret-up-down';
 		}
 
-		$url = add_query_arg( $sort_args, remove_query_arg( array('pagenum') ) );
+		$url = add_query_arg( $sort_args, remove_query_arg( array( 'pagenum' ) ) );
 
-		return '<a href="'. esc_url_raw( $url ) .'" class="'. $class .'" ></a>&nbsp;'. $label;
+		return '<a href="' . esc_url_raw( $url ) . '" class="' . $class . '" ></a>&nbsp;' . $label;
 
 	}
 
@@ -1628,7 +1651,7 @@ class GravityView_frontend {
 	 * Checks if field (column) is sortable
 	 *
 	 * @param string $field Field settings
-	 * @param array $form Gravity Forms form array
+	 * @param array  $form Gravity Forms form array
 	 *
 	 * @since 1.7
 	 *
@@ -1638,8 +1661,8 @@ class GravityView_frontend {
 
 		$field_type = $field_id;
 
-		if( is_numeric( $field_id ) ) {
-			$field = GFFormsModel::get_field( $form, $field_id );
+		if ( is_numeric( $field_id ) ) {
+			$field      = GFFormsModel::get_field( $form, $field_id );
 			$field_type = $field ? $field->type : $field_id;
 		}
 
