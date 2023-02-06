@@ -3,11 +3,11 @@
  * @file class-gravityview-field-quantity.php
  * @package GravityView
  * @subpackage includes\fields
- * @since 2.16.3
+ * @since 2.17
  */
 
 /**
- * @since 2.16.3
+ * @since 2.17
  */
 class GravityView_Field_Quantity extends GravityView_Field {
 
@@ -26,9 +26,6 @@ class GravityView_Field_Quantity extends GravityView_Field {
 	/** @see GF_Field_Quantity */
 	var $_gf_field_class_name = 'GF_Field_Quantity';
 
-	/**
-	 * @since 1.20
-	 */
 	public function __construct() {
 		$this->label       = esc_html__( 'Quantity', 'gk-gravityview' );
 		$this->description = esc_html__( 'The quantity of a specific product field.', 'gk-gravityview' );

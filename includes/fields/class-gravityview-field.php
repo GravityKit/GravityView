@@ -203,7 +203,7 @@ abstract class GravityView_Field {
 	/**
 	 * Returns the icon for a field
 	 *
-	 * @since 2.16.3
+	 * @since 2.17
 	 *
 	 * @return string The dashicon or gform-icon class name for a field.
 	 */

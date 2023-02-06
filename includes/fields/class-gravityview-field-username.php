@@ -1,7 +1,7 @@
 <?php
 /**
  * @file class-gravityview-field-username.php
- * @since 2.16.3
+ * @since 2.17
  * @subpackage includes\fields
  * @package GravityView
  */

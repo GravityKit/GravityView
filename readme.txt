@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Modified: The field picker now uses Gravity Forms field icons
 * Fixed: Fatal error when using the plugin with the Gravity Forms Survey add-on
 * Fixed: [gventry] shortcode not working when using the Entry ID is "first" or "last"
 
