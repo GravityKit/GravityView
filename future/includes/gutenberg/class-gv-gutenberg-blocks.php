@@ -112,7 +112,7 @@ class Blocks {
 			'create_new_view_url' => gravityview()->plugin->get_link_to_new_view(),
 			'edit_view_url'       => add_query_arg(
 				[ 'action' => 'edit', 'post' => '%s' ],
-				admin_url( 'post-new.php' )
+				admin_url( 'post.php' )
 			),
 			'views'               => $this->get_views()
 		] );
