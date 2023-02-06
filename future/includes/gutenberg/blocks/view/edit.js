@@ -55,30 +55,28 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const isEndDateValid = ( endDate || '' ).indexOf( '-' ) > 0 && moment( endDate ).isValid();
 
 	const displayPreviewContent = ( content ) => {
-		let processedContent = content;
+		const contentEl = document.createElement( 'div' );
+
+		contentEl.innerHTML = content;
+
+		[...contentEl.getElementsByTagName('script')].forEach(el => el.remove());
 
 		if ( /gv-map-container/.test( content ) ) {
-			const newDiv = document.createElement( 'div' );
-
-			newDiv.innerHTML = content;
-
-			[ ...newDiv.querySelectorAll( '.gv-map-canvas' ) ].forEach( el => {
+			[ ...contentEl.querySelectorAll( '.gv-map-canvas' ) ].forEach( el => {
 				el.innerHTML = `
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 232597 333333" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd"><path d="M151444 5419C140355 1916 128560 0 116311 0 80573 0 48591 16155 27269 41534l54942 46222 69232-82338z" fill="#1a73e8"/><path d="M27244 41534C10257 61747 0 87832 0 116286c0 21876 4360 39594 11517 55472l70669-84002-54942-46222z" fill="#ea4335"/><path d="M116311 71828c24573 0 44483 19910 44483 44483 0 10938-3957 20969-10509 28706 0 0 35133-41786 69232-82313-14089-27093-38510-47936-68048-57286L82186 87756c8166-9753 20415-15928 34125-15928z" fill="#4285f4"/><path d="M116311 160769c-24573 0-44483-19910-44483-44483 0-10863 3906-20818 10358-28555l-70669 84027c12072 26791 32159 48289 52851 75381l85891-102122c-8141 9628-20339 15752-33948 15752z" fill="#fbbc04"/><path d="M148571 275014c38787-60663 84026-88210 84026-158728 0-19331-4738-37552-13080-53581L64393 247140c6578 8620 13206 17793 19683 27900 23590 36444 17037 58294 32260 58294 15172 0 8644-21876 32235-58320z" fill="#34a853"/></svg>
 					<p>
 						${ __( 'Map is not available in the Block preview', 'gk-gravityview' ) }
 					</p>`;
 			} );
-
-			processedContent = newDiv.innerHTML;
 		}
 
 		if ( /gv-datatables/.test( content ) ) {
-			const newDiv = document.createElement( 'div' );
+			const contentEl = document.createElement( 'div' );
 
-			newDiv.innerHTML = content;
+			contentEl.innerHTML = content;
 
-			[ ...newDiv.querySelectorAll( 'table.gv-datatables' ) ].forEach( el => {
+			[ ...contentEl.querySelectorAll( 'table.gv-datatables' ) ].forEach( el => {
 				const tbody = document.createElement( 'tbody' );
 
 				tbody.innerHTML = `
@@ -90,11 +88,9 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 				el.querySelector( 'thead' ).appendChild( tbody );
 			} );
-
-			processedContent = newDiv.innerHTML;
 		}
 
-		return <div dangerouslySetInnerHTML={ { __html: processedContent } } />;
+		return <div dangerouslySetInnerHTML={ { __html: contentEl.innerHTML } } />;
 	};
 
 	return (
