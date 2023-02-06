@@ -1340,12 +1340,10 @@ class GravityView_Admin_Views {
 			)
 		) );
 
-		wp_enqueue_style( 'gform_admin_icons', GFCommon::get_base_url() . "/css/admin-icons.min.css", array( 'gform_admin_ie11' ) );
-
-		wp_enqueue_style( 'gravityview_views_styles' );
-
         // Enqueue scripts needed for merge tags
         self::enqueue_gravity_forms_scripts();
+
+		wp_enqueue_style( 'gravityview_views_styles' );
 
 		// 2.5 changed how Merge Tags are enqueued
 		if ( is_callable( array( 'GFCommon', 'output_hooks_javascript') ) ) {
@@ -1376,6 +1374,12 @@ class GravityView_Admin_Views {
 		}
 
 		wp_enqueue_script( $scripts );
+
+		$styles = array(
+			'gform_admin_icons',
+		);
+
+		wp_enqueue_style( $styles );
 	}
 
 	/**
