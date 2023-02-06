@@ -105,18 +105,18 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 				$step_id = sprintf( 'workflow_step_status_%d', $step->get_id() );
 
 				$fields[ $step_id ] = array(
-					'label' => sprintf( _x( 'Status: %s', 'Gravity Flow Workflow Step Status', 'gravityview' ), $step->get_name() ),
+					'label' => sprintf( _x( 'Status: %s', 'Gravity Flow Workflow Step Status', 'gk-gravityview' ), $step->get_name() ),
 					'type'  => 'select',
 				);
 			}
 
 			$fields['workflow_step'] = array(
-				'label' => esc_html__( 'Workflow Step', 'gravityview' ),
+				'label' => esc_html__( 'Workflow Step', 'gk-gravityview' ),
 				'type'  => 'select',
 			);
 
 			$fields['workflow_final_status'] = array(
-				'label' => esc_html__( 'Workflow Status', 'gravityview' ),
+				'label' => esc_html__( 'Workflow Status', 'gk-gravityview' ),
 				'type'  => 'select',
 			);
 		}
@@ -132,7 +132,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 			$fields_end = array_splice( $fields, $insert_at + 1 );
 
 			$fields[] = array(
-				'text' => __( 'Workflow Current Status Timestamp', 'gravityview' ),
+				'text' => __( 'Workflow Current Status Timestamp', 'gk-gravityview' ),
 				'operators' => array( '>', '<' ),
 				'placeholder' => 'yyyy-mm-dd',
 				'cssClass' => 'datepicker ymd_dash',
@@ -159,7 +159,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 				$keys[] = 'workflow_current_status_timestamp';
 				$values[] = array(
-					'label' => __( 'Workflow Current Status Timestamp', 'gravityview' ),
+					'label' => __( 'Workflow Current Status Timestamp', 'gk-gravityview' ),
 					'type' => 'workflow_current_status_timestamp',
 				);
 

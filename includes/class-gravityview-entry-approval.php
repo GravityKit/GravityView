@@ -72,6 +72,10 @@ class GravityView_Entry_Approval {
 	 * @return void
 	 */
 	public function _trigger_notifications( $entry_id = 0 ) {
+		if ( did_action( 'gform_entry_created' ) && 'gravityview/approve_entries/updated' === current_action() ) {
+			return;
+		}
+
 		$this->_send_notifications( $entry_id, current_action() );
 	}
 
@@ -114,10 +118,10 @@ class GravityView_Entry_Approval {
 	 */
 	public static function add_approval_notification_events( $notification_events = array(), $form = array() ) {
 
-		$notification_events['gravityview/approve_entries/approved'] = 'GravityView - ' . esc_html_x( 'Entry is approved', 'The title for an event in a notifications drop down list.', 'gravityview' );
-		$notification_events['gravityview/approve_entries/disapproved'] = 'GravityView - ' . esc_html_x( 'Entry is disapproved', 'The title for an event in a notifications drop down list.', 'gravityview' );
-		$notification_events['gravityview/approve_entries/unapproved'] = 'GravityView - ' . esc_html_x( 'Entry approval is reset', 'The title for an event in a notifications drop down list.', 'gravityview' );
-		$notification_events['gravityview/approve_entries/updated'] = 'GravityView - ' . esc_html_x( 'Entry approval is changed', 'The title for an event in a notifications drop down list.', 'gravityview' );
+		$notification_events['gravityview/approve_entries/approved'] = 'GravityView - ' . esc_html_x( 'Entry is approved', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+		$notification_events['gravityview/approve_entries/disapproved'] = 'GravityView - ' . esc_html_x( 'Entry is disapproved', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+		$notification_events['gravityview/approve_entries/unapproved'] = 'GravityView - ' . esc_html_x( 'Entry approval is reset', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+		$notification_events['gravityview/approve_entries/updated'] = 'GravityView - ' . esc_html_x( 'Entry approval is changed', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
 
 		return $notification_events;
 	}
@@ -183,7 +187,7 @@ class GravityView_Entry_Approval {
 
 			gravityview()->log->error( 'Invalid approval status', array( 'data' => $_POST ) );
 
-			$result = new WP_Error( 'invalid_status', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+			$result = new WP_Error( 'invalid_status', __( 'The request was invalid. Refresh the page and try again.', 'gk-gravityview' ) );
 
 		}
 
@@ -192,7 +196,7 @@ class GravityView_Entry_Approval {
 
 			gravityview()->log->error( 'entry_id or form_id are empty.', array( 'data' => $_POST ) );
 
-			$result = new WP_Error( 'empty_details', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+			$result = new WP_Error( 'empty_details', __( 'The request was invalid. Refresh the page and try again.', 'gk-gravityview' ) );
 
 		}
 
@@ -201,7 +205,7 @@ class GravityView_Entry_Approval {
 
 			gravityview()->log->error( 'Security check failed.', array( 'data' => $_POST ) );
 
-			$result = new WP_Error( 'invalid_nonce', __( 'The request was invalid. Refresh the page and try again.', 'gravityview' ) );
+			$result = new WP_Error( 'invalid_nonce', __( 'The request was invalid. Refresh the page and try again.', 'gk-gravityview' ) );
 
 		}
 
@@ -210,7 +214,7 @@ class GravityView_Entry_Approval {
 
 			gravityview()->log->error( 'User does not have the `gravityview_moderate_entries` capability.' );
 
-			$result = new WP_Error( 'Missing Cap: gravityview_moderate_entries', __( 'You do not have permission to edit this entry.', 'gravityview') );
+			$result = new WP_Error( 'Missing Cap: gravityview_moderate_entries', __( 'You do not have permission to edit this entry.', 'gk-gravityview') );
 
 		}
 
@@ -310,7 +314,7 @@ class GravityView_Entry_Approval {
 
 		/**
 		 * @filter `gravityview/approve_entries/update_unapproved_meta` Filter the approval status on entry update.
-		 * @param[in,out] string $value The approval status.
+		 * @param string $value The approval status.
 		 * @param array $form The form.
 		 * @param array $entry The entry.
 		 */
@@ -447,13 +451,13 @@ class GravityView_Entry_Approval {
 
 		switch ( $approved ) {
 			case GravityView_Entry_Approval_Status::APPROVED:
-				$note = __( 'Approved the Entry for GravityView', 'gravityview' );
+				$note = __( 'Approved the Entry for GravityView', 'gk-gravityview' );
 				break;
 			case GravityView_Entry_Approval_Status::UNAPPROVED:
-				$note = __( 'Reset Entry approval for GravityView', 'gravityview' );
+				$note = __( 'Reset Entry approval for GravityView', 'gk-gravityview' );
 				break;
 			case GravityView_Entry_Approval_Status::DISAPPROVED:
-				$note = __( 'Disapproved the Entry for GravityView', 'gravityview' );
+				$note = __( 'Disapproved the Entry for GravityView', 'gk-gravityview' );
 				break;
 		}
 
@@ -684,7 +688,7 @@ class GravityView_Entry_Approval {
 		/**
 		 * @filter `gravityview/approve_entries/autounapprove/status`
 		 * @since 2.2.2
-		 * @param[in,out] int|false $approval_status Approval status integer, or false if you want to not update status. Use GravityView_Entry_Approval_Status constants. Default: 3 (GravityView_Entry_Approval_Status::UNAPPROVED)
+		 * @param int|false $approval_status Approval status integer, or false if you want to not update status. Use GravityView_Entry_Approval_Status constants. Default: 3 (GravityView_Entry_Approval_Status::UNAPPROVED)
 		 * @param array $form Gravity Forms form array
 		 * @param string $entry_id Numeric ID of the entry that was updated
 		 * @param \GV\View $view Current View where the entry was edited

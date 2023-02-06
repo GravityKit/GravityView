@@ -3,22 +3,86 @@
   "type": "wordpress-plugin",
   "description": "The best way to display Gravity Forms entries on your website.",
   "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
-  "homepage": "https://gravityview.co/",
+  "homepage": "https://www.gravitykit.com/",
   "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "repositories": [
     {
       "type": "vcs",
       "url": "https://github.com/katzwebservices/standalone-phpenkoder"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:gravityview/Foundation.git"
     }
   ],
   "require": {
-    "php": ">=5.3",
-    "ext-json": "*"
+    "php": ">=5.6.4",
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "gravitykit/foundation": "dev-main"
   },
   "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-    "lucatume/wp-browser": "2.2.24",
-    "phpcompatibility/phpcompatibility-wp": "*",
-    "wp-coding-standards/wpcs": "*"
+	"lucatume/wp-browser": "^2.4",
+	"codeception/module-asserts": "^1.0",
+	"codeception/module-phpbrowser": "^1.0",
+	"codeception/module-webdriver": "^1.0",
+	"codeception/module-db": "^1.0",
+	"codeception/module-filesystem": "^1.0",
+	"codeception/module-cli": "^1.0",
+	"codeception/util-universalframework": "^1.0",
+    "yoast/phpunit-polyfills": "^1.0"
+  },
+  "extra": {
+    "strauss": {
+      "target_directory": "vendor_prefixed",
+      "namespace_prefix": "GravityKit\\GravityView",
+      "classmap_prefix": "GravityKit_GravityView_",
+      "packages": [
+        "gravitykit/foundation"
+      ],
+      "namespace_replacement_patterns": {
+        "/^Gettext/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext",
+        "/^Illuminate/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Illuminate",
+        "/^TrustedLogin/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\TrustedLogin",
+        "/^GravityKit\\\\Foundation/": "GravityKit\\GravityView\\Foundation"
+      },
+      "override_autoload": {
+        "gravitykit/foundation": {
+          "psr-4": {
+            "GravityKit\\Foundation\\": "src"
+          },
+          "files": [
+            "assets"
+          ]
+        }
+      },
+      "exclude_from_prefix": {
+        "file_patterns": []
+      },
+      "exclude_from_copy": {
+        "packages": [
+          "paragonie/random_compat",
+          "paragonie/sodium_compat"
+        ]
+      },
+      "delete_vendor_files": false
+    }
+  },
+  "scripts": {
+    "prefix_vendor": "@php strauss.phar",
+    "cleanup_foundation": "[ -d 'vendor/gravitykit/foundation' ] && rm -rf vendor/gravitykit/foundation || true",
+    "post-install-cmd": [
+      "@prefix_vendor",
+      "@cleanup_foundation"
+    ],
+    "post-update-cmd": [
+      "@prefix_vendor",
+      "@cleanup_foundation"
+    ]
+  },
+  "config": {
+    "platform-check": false
   }
 }

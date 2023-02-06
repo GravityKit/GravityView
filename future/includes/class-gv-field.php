@@ -199,11 +199,12 @@ class Field {
 
 		if ( ! class_exists( $field_class ) || ! method_exists( $field_class, 'from_configuration' ) ) {
 			$field = new self();
-			gravityview()->log->error( 'Class {field_class}::from_configuration does not exist.', array( 'field_class' => $field_class ) );
+			gravityview()->log->error( 'Class {field_class}::from_configuration does not exist.', array( 'field_class' => $field_class, 'data' => $configuration ) );
 			$field->update_configuration( $configuration );
 			return $field;
 		}
 
+		/** @type \GV\GF_Field|\GV\Internal_Field $field */
 		$field = $field_class::from_configuration( $configuration );
 
 		if ( ! $field ) {

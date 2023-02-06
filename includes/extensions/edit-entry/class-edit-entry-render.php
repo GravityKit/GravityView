@@ -225,27 +225,41 @@ class GravityView_Edit_Entry_Render {
 	}
 
 	/**
-	 * When Edit entry view is requested setup the vars
+	 * When Edit entry view is requested, set up key class variables
+	 *
+	 * @since 2.14.6 Added $view and $entry params
+	 *
+	 * @param \GV\View  $view  The View.
+	 * @param \GV\Entry $entry The Entry.
+	 *
+	 * @return void
 	 */
-	private function setup_vars() {
-        global $post;
+	private function setup_vars( $view, $entry ) {
+		global $post;
 
-		$gravityview_view = GravityView_View::getInstance();
-
-
-		$entries = $gravityview_view->getEntries();
-	    self::$original_entry = $entries[0];
-	    $this->entry = $entries[0];
+		if ( $entry ) {
+			self::$original_entry = $entry->as_entry();
+			$this->entry          = $entry->as_entry();
+		} else {
+			$gravityview_view     = GravityView_View::getInstance();
+			$entries              = $gravityview_view->getEntries();
+			self::$original_entry = $entries[0];
+			$this->entry          = $entries[0];
+		}
 
 		self::$original_form = GFAPI::get_form( $this->entry['form_id'] );
-		$this->form = $gravityview_view->getForm();
+		$this->form          = self::$original_form;
+
 		$this->form_id = $this->entry['form_id'];
-		$this->view_id = $gravityview_view->getViewId();
+
+		$this->view_id = $view ? $view->ID : $gravityview_view->getViewId();
+
+		$this->view = $view;
+
 		$this->post_id = \GV\Utils::get( $post, 'ID', null );
 
 		self::$nonce_key = GravityView_Edit_Entry::get_nonce_key( $this->view_id, $this->form_id, $this->entry['id'] );
 	}
-
 
 	/**
 	 * Load required files and trigger edit flow
@@ -266,10 +280,14 @@ class GravityView_Edit_Entry_Render {
 		require_once( GFCommon::get_base_path() . '/form_display.php' );
 		require_once( GFCommon::get_base_path() . '/entry_detail.php' );
 
-		$this->setup_vars();
+		$this->setup_vars( $view, $entry );
 
 		if ( ! $gv_data ) {
 			$gv_data = GravityView_View_Data::getInstance();
+		}
+
+		if ( $view && ! $gv_data->views->count() ) {
+			$gv_data->views->add( $view );
 		}
 
 		// Multiple Views embedded, don't proceed if nonce fails
@@ -283,8 +301,6 @@ class GravityView_Edit_Entry_Render {
 			gravityview()->log->error( 'User is not allowed to edit this entry; returning', array( 'data' => $this->entry ) );
 			return;
 		}
-
-		$this->view = $view;
 
 		$this->print_scripts();
 
@@ -304,19 +320,23 @@ class GravityView_Edit_Entry_Render {
 
 		wp_register_script( 'gform_gravityforms', GFCommon::get_base_url().'/js/gravityforms.js', array( 'jquery', 'gform_json', 'gform_placeholder', 'sack', 'plupload-all', 'gravityview-fe-view' ) );
 
-		GFFormDisplay::enqueue_form_scripts( $gravityview_view->getForm(), false);
+		GFFormDisplay::enqueue_form_scripts( $this->form ? $this->form : $gravityview_view->getForm(), false );
 
 		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', array( 'cookiepath' => COOKIEPATH ) );
 
-		// Sack is required for images
-		wp_print_scripts( array( 'sack', 'gform_gravityforms', 'gravityview-fe-view' ) );
+		wp_enqueue_script( 'sack'); // Sack is required for images.
+		wp_enqueue_script( 'gform_gravityforms');
+		wp_enqueue_script( 'gravityview-fe-view');
+
+		// File download/delete icons
+		wp_enqueue_style( 'gform_admin_icons' );
 	}
 
 
 	/**
 	 * Process edit entry form save
 	 *
-	 * @param array $gv_data The View data.
+	 * @param GravityView_View_Data $gv_data The View data.
 	 */
 	private function process_save( $gv_data ) {
 
@@ -357,13 +377,7 @@ class GravityView_Edit_Entry_Render {
 			 */
 			unset( $_GET['page'] );
 
-			$date_created = $this->entry['date_created'];
-
-			/**
-			 * @hack to force Gravity Forms to use $read_value_from_post in GFFormsModel::save_lead()
-			 * @since 1.17.2
-			 */
-			unset( $this->entry['date_created'] );
+			add_filter( 'gform_use_post_value_for_conditional_logic_save_entry', '__return_true' );
 
 			/**
 			 * @action `gravityview/edit_entry/before_update` Perform an action before the entry has been updated using Edit Entry
@@ -379,8 +393,6 @@ class GravityView_Edit_Entry_Render {
 
 	        // Delete the values for hidden inputs
 	        $this->unset_hidden_field_values();
-
-			$this->entry['date_created'] = $date_created;
 
 			// Process calculation fields
 			$this->update_calculation_fields();
@@ -1079,7 +1091,7 @@ class GravityView_Edit_Entry_Render {
 				     * @param string $edit_entry_title Modify the "Edit Entry" title
 				     * @param GravityView_Edit_Entry_Render $this This object
 				     */
-				    $edit_entry_title = apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gravityview'), $this );
+				    $edit_entry_title = apply_filters('gravityview_edit_entry_title', __('Edit Entry', 'gk-gravityview'), $this );
 
 				    echo esc_attr( $edit_entry_title );
 			?></span>
@@ -1125,99 +1137,111 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function maybe_print_message() {
 
-		if ( \GV\Utils::_POST( 'action' ) === 'update' ) {
+		if ( \GV\Utils::_POST( 'action' ) !== 'update' ) {
+			return;
+		}
 
-			if ( GFCommon::has_pages( $this->form ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
-				$labels = array(
-					'cancel'   => __( 'Cancel', 'gravityview' ),
-					'submit'   => __( 'Update', 'gravityview' ),
-					'next'     => __( 'Next', 'gravityview' ),
-					'previous' => __( 'Previous', 'gravityview' ),
-				);
+		/**
+		 * @filter `gravityview/features/paged-edit`
+		 * @since 2.5
+		 * @since 2.14 Added the $form argument
+		 * @param bool $enable_paged_edit Should paged editing be supported?
+		 * @param array $form The current form connected to the entry being edited
+		 */
+		$enable_paged_edit = apply_filters( 'gravityview/features/paged-edit', false, $this->form );
 
-				/**
-				* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
-				* @since 1.16.3
-				* @param array $labels Default button labels associative array
-				* @param array $form The Gravity Forms form
-				* @param array $entry The Gravity Forms entry
-				* @param int $view_id The current View ID
-				*/
-				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+		if ( GFCommon::has_pages( $this->form ) && $enable_paged_edit ) {
+			$labels = array(
+				'cancel'   => __( 'Cancel', 'gk-gravityview' ),
+				'submit'   => __( 'Update', 'gk-gravityview' ),
+				'next'     => __( 'Next', 'gk-gravityview' ),
+				'previous' => __( 'Previous', 'gk-gravityview' ),
+			);
 
-				$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
+			/**
+			* @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+			* @since 1.16.3
+			* @param array $labels Default button labels associative array
+			* @param array $form The Gravity Forms form
+			* @param array $entry The Gravity Forms entry
+			* @param int $view_id The current View ID
+			*/
+			$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+			$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
+		}
+
+		$back_link = remove_query_arg( array( 'page', 'view', 'edit', 'gvid' ) );
+
+		if( ! $this->is_valid ){
+
+			// Keeping this compatible with Gravity Forms.
+			$validation_message = "<div class='validation_error'>" . __('There was a problem with your submission.', 'gk-gravityview') . " " . __('Errors have been highlighted below.', 'gk-gravityview') . "</div>";
+			$message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
+
+			echo GVCommon::generate_notice( $message , 'gv-error' );
+
+		} elseif ( false === $this->is_paged_submitted ) {
+			// Paged form that hasn't been submitted on the last page yet
+			$entry_updated_message = sprintf( esc_attr__( 'Entry Updated.', 'gk-gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
+
+			/**
+			 * @filter `gravityview/edit_entry/page/success` Modify the edit entry success message on pages
+			 * @since develop
+			 * @param string $entry_updated_message Existing message
+			 * @param int $view_id View ID
+			 * @param array $entry Gravity Forms entry array
+			 */
+			$message = apply_filters( 'gravityview/edit_entry/page/success', $entry_updated_message , $this->view_id, $this->entry );
+
+			echo GVCommon::generate_notice( $message );
+		} else {
+			$view = \GV\View::by_id( $this->view_id );
+			$edit_redirect = $view->settings->get( 'edit_redirect' );
+			$edit_redirect_url = $view->settings->get( 'edit_redirect_url' );
+
+			switch ( $edit_redirect ) {
+
+				case '0':
+					$redirect_url = $back_link;
+					$entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to Entry%s', 'Replacements are HTML', 'gk-gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
+					break;
+
+				case '1':
+					$redirect_url = $directory_link = GravityView_API::directory_link();
+					$entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to %s%s', 'Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML.','gk-gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
+					break;
+
+				case '2':
+					$redirect_url = $edit_redirect_url;
+					$redirect_url = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
+					$entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sRedirecting to %s%s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.','gk-gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
+					break;
+
+				case '':
+				default:
+					$entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gk-gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
+					break;
 			}
 
-			$back_link = remove_query_arg( array( 'page', 'view', 'edit' ) );
-
-			if( ! $this->is_valid ){
-
-				// Keeping this compatible with Gravity Forms.
-				$validation_message = "<div class='validation_error'>" . __('There was a problem with your submission.', 'gravityview') . " " . __('Errors have been highlighted below.', 'gravityview') . "</div>";
-				$message = apply_filters("gform_validation_message_{$this->form['id']}", apply_filters("gform_validation_message", $validation_message, $this->form), $this->form);
-
-				echo GVCommon::generate_notice( $message , 'gv-error' );
-
-			} elseif ( false === $this->is_paged_submitted ) {
-				// Paged form that hasn't been submitted on the last page yet
-				$entry_updated_message = sprintf( esc_attr__( 'Entry Updated.', 'gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
-
-				/**
-				 * @filter `gravityview/edit_entry/page/success` Modify the edit entry success message on pages
-				 * @since develop
-				 * @param string $entry_updated_message Existing message
-				 * @param int $view_id View ID
-				 * @param array $entry Gravity Forms entry array
-				 */
-				$message = apply_filters( 'gravityview/edit_entry/page/success', $entry_updated_message , $this->view_id, $this->entry );
-
-				echo GVCommon::generate_notice( $message );
-			} else {
-				$view = \GV\View::by_id( $this->view_id );
-				$edit_redirect = $view->settings->get( 'edit_redirect' );
-				$edit_redirect_url = $view->settings->get( 'edit_redirect_url' );
-
-				switch ( $edit_redirect ) {
-
-                    case '0':
-	                    $redirect_url = $back_link;
-	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to Entry%s', 'Replacements are HTML', 'gravityview'), '<a href="'. esc_url( $redirect_url ) .'">', '</a>' );
-                        break;
-
-                    case '1':
-	                    $redirect_url = $directory_link = GravityView_API::directory_link();
-	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sReturning to %s%s', 'Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML.','gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
-	                    break;
-
-                    case '2':
-	                    $redirect_url = $edit_redirect_url;
-	                    $redirect_url = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
-	                    $entry_updated_message = sprintf( esc_attr_x('Entry Updated. %sRedirecting to %s%s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.','gravityview'), '<a href="'. esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
-                        break;
-
-                    case '':
-                    default:
-					    $entry_updated_message = sprintf( esc_attr__('Entry Updated. %sReturn to Entry%s', 'gravityview'), '<a href="'. esc_url( $back_link ) .'">', '</a>' );
-                        break;
-				}
-
-				if ( isset( $redirect_url ) ) {
-					$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;URL=%s" /></noscript>', json_encode( $redirect_url ), esc_attr( $redirect_url ) );
-				}
-
-				/**
-				 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
-				 * @since 1.5.4
-				 * @param string $entry_updated_message Existing message
-				 * @param int $view_id View ID
-				 * @param array $entry Gravity Forms entry array
-				 * @param string $back_link URL to return to the original entry. @since 1.6
-				 */
-				$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message , $this->view_id, $this->entry, $back_link );
-
-				echo GVCommon::generate_notice( $message );
+			if ( isset( $redirect_url ) ) {
+				$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;URL=%s" /></noscript>', json_encode( $redirect_url ), esc_attr( $redirect_url ) );
 			}
 
+			/**
+			 * @filter `gravityview/edit_entry/success` Modify the edit entry success message (including the anchor link)
+			 *
+			 * @since  1.5.4
+			 *
+			 * @param string      $entry_updated_message Existing message
+			 * @param int         $view_id               View ID
+			 * @param array       $entry                 Gravity Forms entry array
+			 * @param string      $back_link             URL to return to the original entry. @since 1.6
+			 * @param string|null $redirect_url          URL to return to after the update. @since 2.14.6
+			 */
+			$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message, $this->view_id, $this->entry, $back_link, isset( $redirect_url ) ? $redirect_url : null );
+
+			echo GVCommon::generate_notice( $message );
 		}
 	}
 
@@ -1257,10 +1281,10 @@ class GravityView_Edit_Entry_Render {
 			if ( intval( $page_number = \GV\Utils::_POST( 'gform_source_page_number_' . $this->form['id'], 0 ) ) ) {
 
 				$labels = array(
-					'cancel'   => __( 'Cancel', 'gravityview' ),
-					'submit'   => __( 'Update', 'gravityview' ),
-					'next'     => __( 'Next', 'gravityview' ),
-					'previous' => __( 'Previous', 'gravityview' ),
+					'cancel'   => __( 'Cancel', 'gk-gravityview' ),
+					'submit'   => __( 'Update', 'gk-gravityview' ),
+					'next'     => __( 'Next', 'gk-gravityview' ),
+					'previous' => __( 'Previous', 'gk-gravityview' ),
 				);
 
 				/**
@@ -1397,7 +1421,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @return string If error, the error message. If no error, blank string (modify_edit_field_input() runs next)
 	 */
-	public function verify_user_can_edit_post( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
+	public function verify_user_can_edit_post( $field_content = '', $field = null, $value = '', $lead_id = 0, $form_id = 0 ) {
 
 		if( ! GFCommon::is_post_field( $field ) ) {
 			return $field_content;
@@ -1406,21 +1430,19 @@ class GravityView_Edit_Entry_Render {
         $message = null;
 
         // First, make sure they have the capability to edit the post.
-        if( false === current_user_can( 'edit_post', $this->entry['post_id'] ) ) {
-
-            /**
-             * @filter `gravityview/edit_entry/unsupported_post_field_text` Modify the message when someone isn't able to edit a post
-             * @param string $message The existing "You don't have permission..." text
-             */
-            $message = apply_filters('gravityview/edit_entry/unsupported_post_field_text', __('You don&rsquo;t have permission to edit this post.', 'gravityview') );
-
-        } elseif( null === get_post( $this->entry['post_id'] ) ) {
+		if( null === get_post( $this->entry['post_id'] ) ) {
             /**
              * @filter `gravityview/edit_entry/no_post_text` Modify the message when someone is editing an entry attached to a post that no longer exists
              * @param string $message The existing "This field is not editable; the post no longer exists." text
              */
-            $message = apply_filters('gravityview/edit_entry/no_post_text', __('This field is not editable; the post no longer exists.', 'gravityview' ) );
-        }
+            $message = apply_filters('gravityview/edit_entry/no_post_text', __('This field is not editable; the post no longer exists.', 'gk-gravityview' ) );
+        } elseif( false === current_user_can( 'edit_post', $this->entry['post_id'] ) ) {
+			/**
+			 * @filter `gravityview/edit_entry/unsupported_post_field_text` Modify the message when someone isn't able to edit a post
+			 * @param string $message The existing "You don't have permission..." text
+			 */
+			$message = apply_filters('gravityview/edit_entry/unsupported_post_field_text', __('You don&rsquo;t have permission to edit this post.', 'gk-gravityview') );
+		}
 
         if( $message ) {
             $field_content = sprintf('<div class="ginput_container ginput_container_' . $field->type . '">%s</div>', wpautop( $message ) );
@@ -1441,7 +1463,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @return mixed
 	 */
-	public function modify_edit_field_input( $field_content = '', $field, $value, $lead_id = 0, $form_id ) {
+	public function modify_edit_field_input( $field_content = '', $field = null, $value = '', $lead_id = 0, $form_id = 0 ) {
 
 		$gv_field = GravityView_Fields::get_associated_field( $field );
 
@@ -1634,23 +1656,24 @@ class GravityView_Edit_Entry_Render {
 
 				    }
 
-				    if ( \GV\Utils::get( $field, "multipleFiles" ) ) {
+					if ( \GV\Utils::get( $field, 'multipleFiles' ) ) {
+						// If there are fresh uploads, process and merge them.
+						// Otherwise, use the passed values, which should be json-encoded array of URLs
+						if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
+							$value = empty( $value ) ? '[]' : $value;
+							$value = stripslashes_deep( $value );
+							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array() );
+						} else if ( GFCommon::is_json( $value ) ) {
+							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`)
+							global $_gf_uploaded_files;
 
-				        // If there are fresh uploads, process and merge them.
-				        // Otherwise, use the passed values, which should be json-encoded array of URLs
-				        if( isset( GFFormsModel::$uploaded_files[$form_id][$input_name] ) ) {
-				            $value = empty( $value ) ? '[]' : $value;
-				            $value = stripslashes_deep( $value );
-				            $value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array());
-				        }
-
-				    } else {
-
-				        // A file already exists when editing an entry
-				        // We set this to solve issue when file upload fields are required.
-				        GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
-
-				    }
+							$_gf_uploaded_files[ $input_name ] = $value;
+						}
+					} else {
+						// A file already exists when editing an entry
+						// We set this to solve issue when file upload fields are required.
+						GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
+					}
 
 				    $this->entry[ $input_name ] = $value;
 				    $_POST[ $input_name ] = $value;
@@ -1741,55 +1764,61 @@ class GravityView_Edit_Entry_Render {
 		$gv_valid = true;
 
 		foreach ( $validation_results['form']['fields'] as $key => &$field ) {
+			$value             = RGFormsModel::get_field_value( $field );
+			$field_type        = RGFormsModel::get_input_type( $field );
+			$is_required       = ! empty( $field->isRequired );
+			$failed_validation = ! empty( $field->failed_validation );
 
-			$value = RGFormsModel::get_field_value( $field );
-			$field_type = RGFormsModel::get_input_type( $field );
+			// Manually validate required fields as they can be skipped be skipped by GF's validation
+			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic
+			if ( $is_required && !$failed_validation && rgblank( $value ) ) {
+				$field->failed_validation  = true;
+				$field->validation_message = esc_html__( 'This field is required.', 'gk-gravityview' );
 
-			// Validate always
+				continue;
+			}
+
 			switch ( $field_type ) {
-
-
-				case 'fileupload' :
+				case 'fileupload':
 				case 'post_image':
+					// Clear "this field is required" validation result when no files were uploaded but already exist on the server
+					if ( $is_required && $failed_validation && ! empty( $value ) ) {
+						$field->failed_validation = false;
 
-				    // in case nothing is uploaded but there are already files saved
-				    if( !empty( $field->failed_validation ) && !empty( $field->isRequired ) && !empty( $value ) ) {
-				        $field->failed_validation = false;
-				        unset( $field->validation_message );
-				    }
+						unset( $field->validation_message );
+					}
 
-				    // validate if multi file upload reached max number of files [maxFiles] => 2
-				    if( \GV\Utils::get( $field, 'maxFiles') && \GV\Utils::get( $field, 'multipleFiles') ) {
+					// Re-validate the field
+					$field->validate( $field, $this->form );
 
-				        $input_name = 'input_' . $field->id;
-				        //uploaded
-				        $file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
+					// Validate if multi-file upload reached max number of files [maxFiles] => 2
+					if ( \GV\Utils::get( $field, 'maxFiles' ) && \GV\Utils::get( $field, 'multipleFiles' ) ) {
+						$input_name = 'input_' . $field->id;
+						//uploaded
+						$file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
 
-				        //existent
-				        $entry = $this->get_entry();
-				        $value = NULL;
-				        if( isset( $entry[ $field->id ] ) ) {
-				            $value = json_decode( $entry[ $field->id ], true );
-				        }
+						//existent
+						$entry = $this->get_entry();
+						$value = null;
+						if ( isset( $entry[ $field->id ] ) ) {
+							$value = json_decode( $entry[ $field->id ], true );
+						}
 
-				        // count uploaded files and existent entry files
-				        $count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
+						// count uploaded files and existent entry files
+						$count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
 						               ( is_array( $value ) ? count( $value ) : 0 );
 
-				        if( $count_files > $field->maxFiles ) {
-				            $field->validation_message = __( 'Maximum number of files reached', 'gravityview' );
-				            $field->failed_validation = 1;
-				            $gv_valid = false;
+						if ( $count_files > $field->maxFiles ) {
+							$field->validation_message = __( 'Maximum number of files reached', 'gk-gravityview' );
+							$field->failed_validation  = true;
+							$gv_valid                  = false;
 
-				            // in case of error make sure the newest upload files are removed from the upload input
-				            GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
-				        }
+							// in case of error make sure the newest upload files are removed from the upload input
+							GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
+						}
+					}
 
-				    }
-
-
-				    break;
-
+					break;
 			}
 
 			// This field has failed validation.
@@ -1940,13 +1969,13 @@ class GravityView_Edit_Entry_Render {
 
 		$edit_fields = array();
 
-		$field_type_blacklist = $this->loader->get_field_blacklist( $this->entry );
+		$field_type_blocklist = $this->loader->get_field_blocklist( $this->entry );
 
 		if ( empty( $configured_fields ) && apply_filters( 'gravityview/features/paged-edit', false ) ) {
-			$field_type_blacklist = array_diff( $field_type_blacklist, array( 'page' ) );
+			$field_type_blocklist = array_diff( $field_type_blocklist, array( 'page' ) );
 		}
 
-		// First, remove blacklist or calculation fields
+		// First, remove blocklist or calculation fields
 		foreach ( $fields as $key => $field ) {
 
 			// Remove the fields that have calculation properties and keep them to be used later
@@ -1956,7 +1985,7 @@ class GravityView_Edit_Entry_Render {
 				// don't remove the calculation fields on form render.
 			}
 
-			if( in_array( $field->type, $field_type_blacklist ) ) {
+			if( in_array( $field->type, $field_type_blocklist ) ) {
 				unset( $fields[ $key ] );
 			}
 		}
@@ -1973,7 +2002,7 @@ class GravityView_Edit_Entry_Render {
 				 * @filter `gravityview/edit_entry/render_hidden_field`
 				 * @see https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility
 				 * @since 2.7
-				 * @param[in,out] bool $render_hidden_field Whether to render this Hidden field in HTML. Default: true
+				 * @param bool $render_hidden_field Whether to render this Hidden field in HTML. Default: true
 				 * @param GF_Field $field The field to possibly remove
 				 */
 				$render_hidden_field = apply_filters( 'gravityview/edit_entry/render_hidden_field', true, $field );
@@ -2327,17 +2356,17 @@ class GravityView_Edit_Entry_Render {
 			if( GravityView_oEmbed::getInstance()->get_entry_id() ) {
 				$error = true;
 			} else {
-				$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gravityview');
+				$error = __( 'The link to edit this entry is not valid; it may have expired.', 'gk-gravityview');
 			}
 
 		}
 
-		if( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $this->entry ) ) {
-			$error = __( 'You do not have permission to edit this entry.', 'gravityview');
+		if( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $this->entry, $this->view ) ) {
+			$error = __( 'You do not have permission to edit this entry.', 'gk-gravityview');
 		}
 
 		if( $this->entry['status'] === 'trash' ) {
-			$error = __('You cannot edit the entry; it is in the trash.', 'gravityview' );
+			$error = __('You cannot edit the entry; it is in the trash.', 'gk-gravityview' );
 		}
 
 		// No errors; everything's fine here!
@@ -2353,7 +2382,7 @@ class GravityView_Edit_Entry_Render {
 	         * @since 1.9
 	         */
 	        if ( ! empty( $this->entry ) ) {
-		        $error .= ' ' . gravityview_get_link( '#', _x('Go back.', 'Link shown when invalid Edit Entry link is clicked', 'gravityview' ), array( 'onclick' => "window.history.go(-1); return false;" ) );
+		        $error .= ' ' . gravityview_get_link( '#', _x('Go back.', 'Link shown when invalid Edit Entry link is clicked', 'gk-gravityview' ), array( 'onclick' => "window.history.go(-1); return false;" ) );
 	        }
 
 			echo GVCommon::generate_notice( wpautop( $error ), 'gv-error error');
@@ -2377,7 +2406,7 @@ class GravityView_Edit_Entry_Render {
 		$error = NULL;
 
 		if( ! $this->check_user_cap_edit_field( $field ) ) {
-			$error = __( 'You do not have permission to edit this field.', 'gravityview');
+			$error = __( 'You do not have permission to edit this field.', 'gk-gravityview');
 		}
 
 		// No errors; everything's fine here!
@@ -2472,6 +2501,33 @@ class GravityView_Edit_Entry_Render {
 		return $field_value;
 	}
 
+	/**
+	 * Returns labels for the action links on Edit Entry
+	 *
+	 * @since 2.10.4
+	 *
+	 * @return array `cancel`, `submit`, `next`, `previous` array keys with associated labels.
+	 */
+	public function get_action_labels() {
 
+		$labels = array(
+			'cancel'   => $this->view->settings->get( 'action_label_cancel', _x( 'Cancel', 'Shown when the user decides not to edit an entry', 'gk-gravityview' ) ),
+			'submit'   => $this->view->settings->get( 'action_label_update', _x( 'Update', 'Button to update an entry the user is editing', 'gk-gravityview' ) ),
+			'next'     => $this->view->settings->get( 'action_label_next', __( 'Next', 'Show the next page in a multi-page form', 'gk-gravityview' ) ),
+			'previous' => $this->view->settings->get( 'action_label_previous', __( 'Previous', 'Show the previous page in a multi-page form', 'gk-gravityview' ) ),
+		);
+
+		/**
+		 * @filter `gravityview/edit_entry/button_labels` Modify the cancel/submit buttons' labels
+		 * @since 1.16.3
+		 * @param array $labels Default button labels associative array
+		 * @param array $form The Gravity Forms form
+		 * @param array $entry The Gravity Forms entry
+		 * @param int $view_id The current View ID
+		 */
+		$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
+
+		return (array) $labels;
+	}
 
 } //end class

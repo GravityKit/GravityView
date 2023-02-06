@@ -124,6 +124,10 @@ body .ui-tooltip {
 		background: transparent;
 		border: 1px solid white;
 
+		// Prevent text selection; speeds up clicks on mobile
+		// and also prevents selection when double-clicking
+		user-select: none;
+
 		&.trigger--hover,
 		&:hover {
 			border: 1px solid $color-777;

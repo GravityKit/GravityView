@@ -11,7 +11,7 @@ if( !GravityView_Edit_Entry::check_user_cap_edit_entry( $entry ) ) {
 	return;
 }
 
-$link_text = empty( $field_settings['edit_link'] ) ? __('Edit Entry', 'gravityview') : $field_settings['edit_link'];
+$link_text = empty( $field_settings['edit_link'] ) ? __('Edit Entry', 'gk-gravityview') : $field_settings['edit_link'];
 
 $link_atts = empty( $field_settings['new_window'] ) ? '' : 'target="_blank"';
 

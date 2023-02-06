@@ -133,7 +133,7 @@ class gvfield extends \GV\Shortcode {
 			 * ...apart from a nice message if the user can do anything about it.
 			 */
 			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-				$return = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+				$return = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
 				return apply_filters( 'gravityview/shortcodes/gvfield/output', $return, $view, $entry, $atts );
 			}
 

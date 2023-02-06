@@ -321,6 +321,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers GravityView_Field::replace_merge_tag
+	 * @covers GravityView_Merge_Tags::replace_is_starred
 	 * @covers GravityView_Field_Payment_Amount::replace_merge_tag
 	 * @covers GravityView_Field_Payment_Status::replace_merge_tag
 	 * @covers GravityView_Field_Payment_Method::replace_merge_tag
@@ -338,6 +339,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'payment_method' => 'Credit Card',
 			'transaction_type' => 1,
 			'is_fulfilled' => 1,
+			'is_starred' => 1,
 			'transaction_id' => 'apoaejt92983'
 		);
 
@@ -348,6 +350,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{payment_status}' => $entry_array['payment_status'],
 			'{payment_method}' => $entry_array['payment_method'],
 			'{transaction_id}' => $entry_array['transaction_id'],
+			'{is_starred}' => $entry_array['is_starred'],
 			'{payment_amount}' => GravityView_Fields::get('payment_amount')->get_content( $entry_array['transaction_type'], $entry_array ),
 			'{transaction_type}' => GravityView_Fields::get('transaction_type')->get_content( $entry_array['transaction_type'] ),
 			'{is_fulfilled}' => GravityView_Fields::get('is_fulfilled')->get_content( $entry_array['is_fulfilled'] ),
@@ -485,6 +488,23 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		remove_filter( 'gform_allowable_tags', $filter_tags );
 
 		wp_reset_postdata();
+	}
+
+	/**
+	 * We want to make sure that GravityView doesn't affect core Gravity Forms Merge Tags output
+	 * @covers GravityView_Merge_Tags::replace_site_url()
+	 * @group gf_merge_tags
+	 * @since 2.10.1
+	 */
+	function test_replace_site_url() {
+
+		$this->assertEquals( 'No merge tag', GravityView_Merge_Tags::replace_variables( 'No merge tag' ) );
+
+		$this->assertEquals( sprintf( 'URL: %s, then content', get_site_url() ), GravityView_Merge_Tags::replace_variables( 'URL: {site_url}, then content' ) );
+
+		$this->assertEquals( sprintf( 'URL: %s, then content', urlencode( get_site_url() ) ), GravityView_Merge_Tags::replace_variables( 'URL: {site_url}, then content', [], [], true, false ) );
+
+		$this->assertEquals( sprintf( 'URL: %s, then content', esc_html( get_site_url() ) ), GravityView_Merge_Tags::replace_variables( 'URL: {site_url}, then content', [], [], false, true ) );
 	}
 
 	/**

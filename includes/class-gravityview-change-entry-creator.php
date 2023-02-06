@@ -40,7 +40,7 @@ class GravityView_Change_Entry_Creator {
 
 		add_action( 'plugins_loaded', array( $this, 'prevent_conflicts' ) );
 
-		// Enqueue and whitelist selectWoo UI assets
+		// Enqueue and allow selectWoo UI assets
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_selectwoo_assets' ) );
 		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict' ) );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict' ) );
@@ -56,9 +56,11 @@ class GravityView_Change_Entry_Creator {
 	 */
 	function enqueue_selectwoo_assets() {
 
-		global $current_screen;
+		if ( ! class_exists( 'GFForms' ) ) {
+			return;
+		}
 
-		if ( ! $current_screen || 'forms_page_gf_entries' !== $current_screen->base ) {
+		if ( ! in_array( GFForms::get_page(), array( 'entry_detail_edit' ) ) ) {
 			return;
 		}
 
@@ -83,7 +85,7 @@ class GravityView_Change_Entry_Creator {
 				'action'   => 'entry_creator_get_users',
 				'gf25'    => (bool) gravityview()->plugin->is_GF_25(),
 				'language' => array(
-					'search_placeholder' => esc_html__( 'Search by ID, login, email, or name.', 'gravityview' ),
+					'search_placeholder' => esc_html__( 'Search by ID, login, email, or name.', 'gk-gravityview' ),
 				),
 			)
 		);
@@ -159,12 +161,12 @@ class GravityView_Change_Entry_Creator {
 		$result = RGFormsModel::update_entry_property( (int) $entry['id'], 'created_by', (int) $user_id, false, true );
 
 		if ( false === $result ) {
-			$status = __( 'Error', 'gravityview' );
+			$status = __( 'Error', 'gk-gravityview' );
 			global $wpdb;
 			$note = sprintf( '%s: Failed to assign User ID #%d as the entry creator (Last database error: "%s")', $status, $user_id, $wpdb->last_error );
 		} else {
-			$status = __( 'Success', 'gravityview' );
-			$note   = sprintf( _x( '%s: Assigned User ID #%d as the entry creator.', 'First parameter: Success or error of the action. Second: User ID number', 'gravityview' ), $status, $user_id );
+			$status = __( 'Success', 'gk-gravityview' );
+			$note   = sprintf( _x( '%s: Assigned User ID #%d as the entry creator.', 'First parameter: Success or error of the action. Second: User ID number', 'gk-gravityview' ), $status, $user_id );
 		}
 
 		gravityview()->log->debug( 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - {note}', array( 'note' => $note ) );
@@ -273,21 +275,27 @@ class GravityView_Change_Entry_Creator {
 
 			$user_data = get_userdata( $current_user->ID );
 
-			$user_format = _x( '%s (ID #%d)', 'The name and the ID of users who initiated changes to entry ownership', 'gravityview' );
+			$user_format = _x( '%s (ID #%d)', 'The name and the ID of users who initiated changes to entry ownership', 'gk-gravityview' );
 
-			$original_name = $created_by_name = esc_attr_x( 'No User', 'To show that the entry was unassigned from an actual user to no user.', 'gravityview' );
+			$original_name = $created_by_name = esc_attr_x( 'No User', 'To show that the entry was unassigned from an actual user to no user.', 'gk-gravityview' );
 
 			if ( ! empty( $originally_created_by ) ) {
 				$originally_created_by_user_data = get_userdata( $originally_created_by );
-				$original_name                   = sprintf( $user_format, $originally_created_by_user_data->display_name, $originally_created_by_user_data->ID );
+
+				$original_name = ! empty( $originally_created_by_user_data ) ?
+					sprintf( $user_format, $originally_created_by_user_data->display_name, $originally_created_by_user_data->ID ) :
+					esc_attr_x( 'Deleted User', 'To show that the entry was created by a no longer existing user.', 'gk-gravityview' );
 			}
 
 			if ( ! empty( $created_by ) ) {
 				$created_by_user_data = get_userdata( $created_by );
-				$created_by_name      = sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID );
+
+				$created_by_name = ! empty( $created_by_user_data ) ?
+					sprintf( $user_format, $created_by_user_data->display_name, $created_by_user_data->ID ) :
+					esc_attr_x( 'Deleted User', 'To show that the entry was created by a no longer existing user.', 'gk-gravityview' );
 			}
 
-			GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __( 'Changed entry creator from %s to %s', 'gravityview' ), $original_name, $created_by_name ), 'note' );
+			GravityView_Entry_Notes::add_note( $entry_id, $current_user->ID, $user_data->display_name, sprintf( __( 'Changed entry creator from %s to %s', 'gk-gravityview' ), $original_name, $created_by_name ), 'note' );
 		}
 
 	}
@@ -307,7 +315,7 @@ class GravityView_Change_Entry_Creator {
 		}
 
 		$output = '<label for="change_created_by">';
-		$output .= esc_html__( 'Change Entry Creator:', 'gravityview' );
+		$output .= esc_html__( 'Change Entry Creator:', 'gk-gravityview' );
 		$output .= '</label>';
 		$output .= '<select name="created_by" id="change_created_by" class="widefat">';
 
@@ -316,10 +324,11 @@ class GravityView_Change_Entry_Creator {
 		$entry_creator_user = GVCommon::get_users( 'change_entry_creator', array( 'include' => $entry_creator_user_id ) );
 		$entry_creator_user = isset( $entry_creator_user[0] ) ? $entry_creator_user[0] : array();
 
-		if ( empty( $entry_creator_user ) ) {
-			$output .= '<option value="0"> &mdash; ' . esc_attr_x( 'No User', 'No user assigned to the entry', 'gravityview' ) . ' &mdash; </option>';
-		} else {
-			$output .= '<option value="' . $entry_creator_user->ID . '" "selected">' . esc_attr( $entry_creator_user->display_name . ' (' . $entry_creator_user->user_nicename . ')' ) . '</option>';
+		$output .= '<option value="0" ' . selected( true, empty( $entry_creator_user_id ), false ) . '> &mdash; ' . esc_attr_x( 'No User', 'No user assigned to the entry', 'gk-gravityview' ) . ' &mdash; </option>';
+
+		// Always show the entry creator, even when the user isn't included within the pagination limits
+		if ( ! empty( $entry_creator_user_id ) && ! empty( $entry_creator_user ) ) {
+			$output .= '<option value="' . $entry_creator_user->ID . '" selected="selected">' . esc_attr( $entry_creator_user->display_name . ' (' . $entry_creator_user->user_nicename . ')' ) . '</option>';
 		}
 
 		$all_users = GVCommon::get_users( 'change_entry_creator', array( 'number' => self::DEFAULT_NUMBER_OF_USERS ) );
@@ -328,7 +337,7 @@ class GravityView_Change_Entry_Creator {
 				continue;
 			}
 
-			$output .= '<option value="' . $user->ID . '">' . esc_attr( $user->display_name . ' (' . $user->user_nicename . ')' ) . '</option>';
+			$output .= '<option value="' . esc_attr( $user->ID ) . '">' . esc_attr( $user->display_name . ' (' . $user->user_nicename . ')' ) . '</option>';
 		}
 
 		$user_count      = count_users();
@@ -336,8 +345,8 @@ class GravityView_Change_Entry_Creator {
 		$users_displayed = self::DEFAULT_NUMBER_OF_USERS + ( ! empty( $entry_creator_user ) ? 1 : 0 );
 		if ( $user_count > $users_displayed ) {
 			$remaining_users = $user_count - $users_displayed;
-			$user_users = _n( esc_html__('user', 'gravityview' ), esc_html__('users', 'gravityview' ), $remaining_users );
-			$message = esc_html_x( 'Use the input above to search the remaining %d %s.', '%d is replaced with user count %s is replaced with "user" or "users"', 'gravityview' );
+			$user_users = _n( esc_html__('user', 'gk-gravityview' ), esc_html__('users', 'gk-gravityview' ), $remaining_users );
+			$message = esc_html_x( 'Use the input above to search the remaining %d %s.', '%d is replaced with user count %s is replaced with "user" or "users"', 'gk-gravityview' );
 			$message = sprintf( $message, $remaining_users, $user_users );
 			$output  .= '<option value="_user_count" disabled="disabled">' . esc_html( $message ) . '</option>';
 		}
@@ -350,7 +359,7 @@ class GravityView_Change_Entry_Creator {
 	}
 
 	/**
-	 * Whitelist UI assets
+	 * Allow UI assets
 	 *
 	 * @param array $assets
 	 *

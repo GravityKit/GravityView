@@ -3,13 +3,13 @@
  * Add GeneratePress Theme compatibility to GravityView
  *
  * @file      class-gravityview-theme-hooks-generatepress.php
- * @package   GravityView
+ * @since     1.15.2
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.15.2
+ * @package   GravityView
  */
 
 /**

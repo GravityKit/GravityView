@@ -49,69 +49,71 @@ class GravityView_View_Data {
 	 *      - String of content that may include GravityView shortcode
 	 *      - Number representing the Post ID or View ID
 	 *
-	 * @param mixed $passed_post See method description
+	 * @param WP_Post|WP_Post[]|array|string|int|null $passed_post See method description
 	 *
 	 * @deprecated
 	 * @see \GV\View_Collection::from_post and \GV\Shortcode::parse
 	 *
 	 * @return int|null|array ID of the View. If there are multiple views in the content, array of IDs parsed.
 	 */
-	public function maybe_get_view_id( $passed_post ) {
+	public function maybe_get_view_id( $passed_post = null ) {
+
+		if ( empty( $passed_post ) ) {
+			return null;
+		}
+
 		$ids = array();
 
-		if ( ! empty( $passed_post ) ) {
+		if ( is_numeric( $passed_post ) ) {
+			$passed_post = get_post( $passed_post );
+		}
 
-			if ( is_numeric( $passed_post ) ) {
-				$passed_post = get_post( $passed_post );
+		// Convert WP_Posts into WP_Posts[] array
+		if ( $passed_post instanceof WP_Post ) {
+			$passed_post = array( $passed_post );
+		}
+
+		if ( is_array( $passed_post ) ) {
+
+			foreach ( $passed_post as &$post ) {
+				$views = \GV\View_Collection::from_post( $post );
+				foreach ( $views->all() as $view ) {
+					$ids []= $view->ID;
+
+					/** And as a side-effect... add each view to the global scope. */
+					if ( ! $this->views->contains( $view->ID ) ) {
+						$this->views->add( $view );
+					}
+				}
 			}
 
-			// Convert WP_Posts into WP_Posts[] array
-			if ( $passed_post instanceof WP_Post ) {
-				$passed_post = array( $passed_post );
-			}
+		} else {
 
-			if ( is_array( $passed_post ) ) {
-
-				foreach ( $passed_post as &$post ) {
-					$views = \GV\View_Collection::from_post( $post );
-					foreach ( $views->all() as $view ) {
-						$ids []= $view->ID;
+			if ( is_string( $passed_post ) ) {
+				$shortcodes = \GV\Shortcode::parse( $passed_post );
+				foreach ( $shortcodes as $shortcode ) {
+					if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
+						$ids []= $shortcode->atts['id'];
 
 						/** And as a side-effect... add each view to the global scope. */
-						if ( ! $this->views->contains( $view->ID ) ) {
-							$this->views->add( $view );
+						if ( ! $this->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
+							$this->views->add( $shortcode->atts['id'] );
 						}
 					}
 				}
-
 			} else {
-
-				if ( is_string( $passed_post ) ) {
-					$shortcodes = \GV\Shortcode::parse( $passed_post );
-					foreach ( $shortcodes as $shortcode ) {
-						if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
-							$ids []= $shortcode->atts['id'];
-
-							/** And as a side-effect... add each view to the global scope. */
-							if ( ! $this->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
-								$this->views->add( $shortcode->atts['id'] );
-							}
-						}
-					}
-				} else {
-					$id = $this->get_id_from_atts( $passed_post );
-					$ids[] = intval( $id );
-				}
+				$id = $this->get_id_from_atts( $passed_post );
+				$ids[] = intval( $id );
 			}
 		}
 
-		if( empty($ids) ) {
-			return NULL;
+		if ( empty( $ids ) ) {
+			return null;
 		}
 
 		// If it's just one ID, return that.
 		// Otherwise, return array of IDs
-		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
+		return ( count( $ids ) === 1 ) ? $ids[0] : $ids;
 	}
 
 	/**
@@ -159,6 +161,11 @@ class GravityView_View_Data {
 		} elseif ( $atts ) {
 			$view->settings->update( $atts );
 		}
+
+		if ( ! $view ) {
+			return false;
+		}
+
 		return $view->as_data();
 	}
 
@@ -287,7 +294,7 @@ class GravityView_View_Data {
 				return true;
 			}
 
-			$message = esc_html__( 'The ID is required.', 'gravityview' );
+			$message = esc_html__( 'The ID is required.', 'gk-gravityview' );
 		}
 
 		if ( ! $message ) {
@@ -295,10 +302,10 @@ class GravityView_View_Data {
 
 			// Nothing exists with that post ID.
 			if ( ! is_numeric( $post_id ) ) {
-				$message = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gravityview' );
+				$message = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gk-gravityview' );
 
 				// @todo Convert to generic article about Embed IDs
-				$message .= ' ' . gravityview_get_link( 'https://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+				$message .= ' ' . gravityview_get_link( 'https://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
 			}
 		}
 
@@ -306,7 +313,7 @@ class GravityView_View_Data {
 
 			// Nothing exists with that post ID.
 			if ( empty( $status ) || in_array( $status, array( 'revision', 'attachment' ) ) ) {
-				$message = esc_html__( 'There is no post or page with that ID.', 'gravityview' );
+				$message = esc_html__( 'There is no post or page with that ID.', 'gk-gravityview' );
 			}
 
 		}
@@ -317,14 +324,14 @@ class GravityView_View_Data {
 
 			// The post or page specified does not contain the shortcode.
 			if ( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
-				$message = sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
+				$message = sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gk-gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
 			}
 		}
 
 		if ( ! $message ) {
 			// It's a View
 			if ( \GV\View::exists( $post_id ) ) {
-				$message = esc_html__( 'The ID is already a View.', 'gravityview' );;
+				$message = esc_html__( 'The ID is already a View.', 'gk-gravityview' );;
 			}
 		}
 
@@ -359,14 +366,14 @@ class GravityView_View_Data {
 	 * @param string $group Only fetch
 	 *
 	 * @return array $args Associative array of default settings for a View
-	 *      @param[out] string $label Setting label shown in admin
-	 *      @param[out] string $type Gravity Forms field type
-	 *      @param[out] string $group The field group the setting is associated with. Default: "default"
-	 *      @param[out] mixed  $value The default value for the setting
-	 *      @param[out] string $tooltip Tooltip displayed for the setting
-	 *      @param[out] boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
-	 *      @param[out] array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
-	 *      @param[out] boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
+	 *      @param string $label Setting label shown in admin
+	 *      @param string $type Gravity Forms field type
+	 *      @param string $group The field group the setting is associated with. Default: "default"
+	 *      @param mixed  $value The default value for the setting
+	 *      @param string $tooltip Tooltip displayed for the setting
+	 *      @param boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
+	 *      @param array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
+	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 *
 	 * @deprecated
 	 * @see \GV\View_Settings::defaults()

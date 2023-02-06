@@ -2,6 +2,9 @@
 
 namespace GV;
 
+use GravityKitFoundation;
+use GVCommon;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -77,7 +80,7 @@ final class Plugin {
 	/**
 	 * @since 2.0
 	 * @api
-	 * @var \GV\Addon_Settings The plugin "addon" settings.
+	 * @var \GV\Plugin_Settings The plugin settings.
 	 *
 	 */
 	public $settings;
@@ -117,33 +120,27 @@ final class Plugin {
 	}
 
 	private function __construct() {
-
-		/**
-		 * Load translations.
-		 */
-		add_action( 'init', array( $this, 'load_textdomain' ) );
-
 		/**
 		 * Load some frontend-related legacy files.
 		 */
 		add_action( 'gravityview/loaded', array( $this, 'include_legacy_frontend' ) );
 
 		/**
-		 * GFAddOn-backed settings, licensing.
+		 * GFAddOn-backed settings
 		 */
-		add_action( 'plugins_loaded', array( $this, 'load_license_settings' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_settings' ) );
+
+		// Add "All Views" and "New View" as submenus to the GravityKit menu
+		add_action( 'gk/foundation/initialized', array( $this, 'add_to_gravitykit_admin_menu' ) );
+
+		add_action( 'admin_menu', array( $this, 'setup_gravitykit_admin_menu_redirects' ) );
 	}
 
-	public function load_license_settings() {
+	public function load_settings() {
+		require_once $this->dir( 'future/includes/class-gv-settings-plugin.php' );
+		$this->settings = new Plugin_Settings();
 
-		require_once $this->dir( 'future/includes/class-gv-license-handler.php' );
-		require_once $this->dir( 'future/includes/class-gv-settings-addon.php' );
-		if ( class_exists( '\GV\Addon_Settings' ) ) {
-			$this->settings = new Addon_Settings();
-			include_once $this->dir( 'includes/class-gravityview-settings.php' );
-		} else {
-			gravityview()->log->notice( '\GV\Addon_Settings not loaded. Missing \GFAddOn.' );
-		}
+		include_once $this->dir( 'includes/class-gravityview-settings.php' );
 	}
 
 	/**
@@ -205,7 +202,6 @@ final class Plugin {
 	 * @return void
 	 */
 	public function include_legacy_core() {
-
 		if ( ! class_exists( '\GravityView_Extension' ) ) {
 			include_once $this->dir( 'includes/class-gravityview-extension.php' );
 		}
@@ -266,45 +262,6 @@ final class Plugin {
 		if ( class_exists( '\GFFormsModel' ) ) {
 			include_once $this->dir( 'includes/class-gravityview-gfformsmodel.php' );
 		}
-	}
-
-	/**
-	 * Load the translations.
-	 *
-	 * Order of look-ups:
-	 *
-	 * 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
-	 * 2. /wp-content/mu-plugins/gravityview-{locale}.mo
-	 * 3. /wp-content/mu-plugins/languages/gravityview-{locale}.mo
-	 * 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
-	 *
-	 * @return void
-	 */
-	public function load_textdomain() {
-
-		$domain = 'gravityview';
-
-		// 1. /wp-content/languages/plugins/gravityview-{locale}.mo (loaded by WordPress Core)
-		if ( is_textdomain_loaded( $domain ) ) {
-			return;
-		}
-
-		// 2. /wp-content/languages/plugins/gravityview-{locale}.mo
-		// 3. /wp-content/mu-plugins/plugins/languages/gravityview-{locale}.mo
-		$loaded = load_muplugin_textdomain( $domain, '/languages/' );
-
-		if ( $loaded ) {
-			return;
-		}
-
-		// 4. /wp-content/plugins/gravityview/languages/gravityview-{locale}.mo
-		$loaded = load_plugin_textdomain( $domain, false, $this->relpath( '/languages/' ) );
-
-		if ( $loaded ) {
-			return;
-		}
-
-		gravityview()->log->error( sprintf( 'Unable to load textdomain for %s locale.', $locale ) );
 	}
 
 	/**
@@ -569,8 +526,15 @@ final class Plugin {
 	 */
 	public function supports( $feature ) {
 
-		if ( ! is_null( $supports = apply_filters( "gravityview/plugin/feature/$feature", null ) ) ) {
-			return $supports;
+		/**
+		 * @filter `gravityview/supports` Overrides whether GravityView supports a feature.
+		 * @since 2.0
+		 * @param boolean|null $supports Whether the feature is supported. Default: null.
+		 */
+		$supports = apply_filters( "gravityview/plugin/feature/$feature", null );
+
+		if ( ! is_null( $supports ) ) {
+			return (bool) $supports;
 		}
 
 		switch ( $feature ):
@@ -643,8 +607,8 @@ final class Plugin {
 			$tables[] = \GFFormsModel::get_lead_notes_table_name();
 		}
 
-		$disapproved = __( 'Disapproved the Entry for GravityView', 'gravityview' );
-		$approved    = __( 'Approved the Entry for GravityView', 'gravityview' );
+		$disapproved = __( 'Disapproved the Entry for GravityView', 'gk-gravityview' );
+		$approved    = __( 'Approved the Entry for GravityView', 'gk-gravityview' );
 
 		$suppress = $wpdb->suppress_errors();
 		foreach ( $tables as $notes_table ) {
@@ -670,11 +634,109 @@ final class Plugin {
 		 * Options.
 		 */
 		delete_option( 'gravityview_cache_blacklist' );
+		delete_option( 'gravityview_cache_blocklist' );
+		delete_option( 'gv_version' );
 		delete_option( 'gv_version_upgraded_from' );
 		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_transient( 'gravityview_edd-deactivate_valid' );
 		delete_transient( 'gravityview_dismissed_notices' );
+		delete_transient( '_gv_activation_redirect' );
+		delete_transient( 'gravityview_edd-activate_valid' );
 		delete_site_transient( 'gravityview_related_plugins' );
+	}
+
+	/**
+	 * Redirects GravityKit's GravityView submenu pages to the appropriate custom post endpoints.
+	 *
+	 * @since 2.16
+	 *
+	 * @return void
+	 */
+	public function setup_gravitykit_admin_menu_redirects() {
+		if ( ! class_exists( 'GVCommon' ) || ! GVCommon::has_cap( 'edit_gravityviews' ) ) {
+			return;
+		}
+
+		global $pagenow;
+
+		if ( ! $pagenow || ! is_admin() ) {
+			return;
+		}
+
+		if ( 'admin.php' === $pagenow ) {
+			if ( 'gravityview_all_views' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect(
+					add_query_arg(
+						[ 'post_type' => 'gravityview' ],
+						admin_url( 'edit.php' ) )
+				);
+			}
+
+			if ( 'gravityview_new_view' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect(
+					add_query_arg(
+						[ 'post_type' => 'gravityview' ],
+						admin_url( 'post-new.php' ) )
+				);
+			}
+		}
+	}
+
+	/**
+	 * Adds "All Views" and "New View" as submenus to the GravityKit menu.
+	 *
+	 * @since 2.16
+	 *
+	 * @param GravityKitFoundation $foundation Foundation instance.
+	 *
+	 * @return void
+	 */
+	public function add_to_gravitykit_admin_menu( $foundation ) {
+		if ( ! GVCommon::has_cap( 'edit_gravityviews' ) || GravityKitFoundation::helpers()->core->is_network_admin() ) {
+			return;
+		}
+
+		$admin_menu   = $foundation::admin_menu();
+		$post_type    = 'gravityview';
+		$capability   = 'edit_gravityviews';
+		$all_views_menu_id = "{$post_type}_all_views";
+		$new_view_menu_id  = "{$post_type}_new_view";
+
+		$admin_menu::add_submenu_item( [
+			'page_title' => __( 'All Views', 'gk-gravityview' ),
+			'menu_title' => __( 'All Views', 'gk-gravityview' ),
+			'capability' => $capability,
+			'id'         => $all_views_menu_id,
+			'callback'   => '__return_false', // We'll redirect this to edit.php?post_type=gravityview (@see Plugin::setup_gravitykit_admin_menu_redirects()).
+			'order'      => 1,
+		], 'center' );
+
+		$admin_menu::add_submenu_item( [
+			'page_title' => __( 'New View', 'gk-gravityview' ),
+			'menu_title' => __( 'New View', 'gk-gravityview' ),
+			'capability' => $capability,
+			'id'         => $new_view_menu_id,
+			'callback'   => '__return_false', // We'll redirect this to post-new.php?post_type=gravityview (@see Plugin::setup_gravitykit_admin_menu_redirects()).
+			'order'      => 2,
+		], 'center' );
+
+		add_filter( 'parent_file', function ( $parent_file ) use ( $admin_menu, $post_type, $all_views_menu_id, $new_view_menu_id ) {
+			global $submenu_file;
+
+			if ( ! $submenu_file || strpos( $submenu_file, "post_type={$post_type}" ) === false ) {
+				return $parent_file;
+			}
+
+			if ( strpos( $submenu_file, 'edit.php' ) !== false ) {
+				$submenu_file = $all_views_menu_id;
+			}
+
+			if ( strpos( $submenu_file, 'post-new.php' ) !== false ) {
+				$submenu_file = $new_view_menu_id;
+			}
+
+			return constant( get_class( $admin_menu ) . '::WP_ADMIN_MENU_SLUG' );
+		} );
 	}
 
 	public function __clone() {

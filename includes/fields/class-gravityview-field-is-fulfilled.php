@@ -34,8 +34,8 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 	 * GravityView_Field_Is_Fulfilled constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Is Fulfilled', 'gravityview' );
-		$this->description = esc_html__( 'Indicates if the entry or order has been fulfilled.', 'gravityview' );
+		$this->label = esc_html__( 'Is Fulfilled', 'gk-gravityview' );
+		$this->description = esc_html__( 'Indicates if the entry or order has been fulfilled.', 'gk-gravityview' );
 		$this->default_search_label = $this->label;
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
@@ -93,11 +93,11 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 		switch ( intval( $value ) ) {
 			case self::NOT_FULFILLED:
 			default:
-				$return = __('Not Fulfilled', 'gravityview');
+				$return = __('Not Fulfilled', 'gk-gravityview');
 				break;
 
 			case self::FULFILLED:
-				$return = __('Fulfilled', 'gravityview');
+				$return = __('Fulfilled', 'gk-gravityview');
 				break;
 		}
 

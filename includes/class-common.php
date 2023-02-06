@@ -42,6 +42,26 @@ class GVCommon {
 	}
 
 	/**
+	 * Returns form object for existing form or a form template.
+	 *
+	 * @since 2.16
+	 *
+	 * @param int|string $form_id Gravity Forms form ID. Default: 0.
+	 *
+	 * @return array|false
+	 */
+	public static function get_form_or_form_template( $form_id = 0 ) {
+		// Determine if form is a preset and convert it to an array with fields
+		if ( is_string( $form_id ) && preg_match( '/^preset_/', $form_id ) ) {
+			$form = GravityView_Ajax::pre_get_form_fields( $form_id );
+		} else {
+			$form = self::get_form( $form_id );
+		}
+
+		return $form;
+	}
+
+	/**
 	 * Alias of GravityView_Roles_Capabilities::has_cap()
 	 *
 	 * @since 1.15
@@ -103,7 +123,7 @@ class GVCommon {
 
 		/**
 		 * @filter `gravityview/get_all_views/params` Modify the parameters sent to get all views.
-		 * @param[in,out]  array $params Array of parameters to pass to `get_posts()`
+		 * @param  array $params Array of parameters to pass to `get_posts()`
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
 
@@ -349,7 +369,7 @@ class GVCommon {
 		 */
 		if ( $has_post_fields ) {
 			$fields['post_id'] = array(
-				'label' => __( 'Post ID', 'gravityview' ),
+				'label' => __( 'Post ID', 'gk-gravityview' ),
 				'type' => 'post_id',
 			);
 		}
@@ -647,17 +667,21 @@ class GVCommon {
 
 		/**
 		 * If we're using custom entry slugs, we do a meta value search
-		 * instead of doing a straightup ID search.
+		 * instead of doing a straight-up ID search.
 		 */
 		if ( $custom_slug ) {
 			// Search for IDs matching $entry_id_or_slug
 			$entry_id = self::get_entry_id_from_slug( $entry_id_or_slug );
 		}
 
+		// The custom slug search found something; return early.
+		if ( $entry_id ) {
+			return $entry_id;
+		}
+
 		// If custom slug is off, search using the entry ID
-		// ID allow ID access is on, also use entry ID as a backup
+		// If allow ID access is on, also use entry ID as a backup
 		if ( false === $custom_slug || true === $custom_slug_id_access ) {
-			// Search for IDs matching $entry_slug
 			$entry_id = $entry_id_or_slug;
 		}
 
@@ -764,6 +788,16 @@ class GVCommon {
 			}
 
 			$val1 = in_array( gravityview_get_context(), $matching_contexts ) ? $val2 : false;
+		}
+
+		// Attempt to parse dates.
+		$timestamp_1 = gravityview_maybe_convert_date_string_to_timestamp( $val1 );
+		$timestamp_2 = gravityview_maybe_convert_date_string_to_timestamp( $val2 );
+
+		// If both are timestamps, cast to string so we can use the > and < comparisons below.
+		if ( $timestamp_1 && $timestamp_2 ) {
+			$val1 = (string) $timestamp_1;
+			$val2 = (string) $timestamp_2;
 		}
 
 		switch ( $operation ) {
@@ -1008,7 +1042,7 @@ class GVCommon {
 		// If we're using time diff, we want to have a different default format
 		if( empty( $format ) ) {
 			/* translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago" */
-			$format = $is_diff ? esc_html__( '%s ago', 'gravityview' ) : get_option( 'date_format' );
+			$format = $is_diff ? esc_html__( '%s ago', 'gk-gravityview' ) : get_option( 'date_format' );
 		}
 
 		// If raw was specified, don't modify the stored value
@@ -1362,7 +1396,7 @@ class GVCommon {
 	 * @return string         html
 	 */
 	public static function get_sortable_fields( $formid, $current = '' ) {
-		$output = '<option value="" ' . selected( '', $current, false ).'>' . esc_html__( 'Default (Entry ID)', 'gravityview' ) .'</option>';
+		$output = '<option value="" ' . selected( '', $current, false ).'>' . esc_html__( 'Default (Entry ID)', 'gk-gravityview' ) .'</option>';
 
 		if ( empty( $formid ) ) {
 			return $output;
@@ -1372,10 +1406,14 @@ class GVCommon {
 
 		if ( ! empty( $fields ) ) {
 
-			$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', array( 'list', 'textarea' ), null );
+			$blocklist_field_types = array( 'list', 'textarea' );
+
+			$blocklist_field_types = apply_filters_deprecated( 'gravityview_blacklist_field_types', array( $blocklist_field_types, null ), '2.14', 'gravityview_blocklist_field_types' );
+
+			$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', $blocklist_field_types, null );
 
 			foreach ( $fields as $id => $field ) {
-				if ( in_array( $field['type'], $blacklist_field_types ) ) {
+				if ( in_array( $field['type'], $blocklist_field_types ) ) {
 					continue;
 				}
 
@@ -1389,7 +1427,7 @@ class GVCommon {
 	/**
 	 *
 	 * @param int $formid Gravity Forms form ID
-	 * @param array $blacklist Field types to exclude
+	 * @param array $blocklist Field types to exclude
 	 *
 	 * @since 1.8
 	 *
@@ -1397,7 +1435,7 @@ class GVCommon {
 	 *
 	 * @return array
 	 */
-	public static function get_sortable_fields_array( $formid, $blacklist = array( 'list', 'textarea' ) ) {
+	public static function get_sortable_fields_array( $formid, $blocklist = array( 'list', 'textarea' ) ) {
 
 		// Get fields with sub-inputs and no parent
 		$fields = self::get_form_fields( $formid, true, false );
@@ -1405,22 +1443,26 @@ class GVCommon {
 		$date_created = array(
 			'date_created' => array(
 				'type' => 'date_created',
-				'label' => __( 'Date Created', 'gravityview' ),
+				'label' => __( 'Date Created', 'gk-gravityview' ),
 			),
 			'date_updated' => array(
 				'type' => 'date_updated',
-				'label' => __( 'Date Updated', 'gravityview' ),
+				'label' => __( 'Date Updated', 'gk-gravityview' ),
 			),
 		);
 
         $fields = $date_created + $fields;
 
-		$blacklist_field_types = apply_filters( 'gravityview_blacklist_field_types', $blacklist, NULL );
+		$blocklist_field_types = $blocklist;
+
+		$blocklist_field_types = apply_filters_deprecated( 'gravityview_blacklist_field_types', array( $blocklist_field_types, null ), '2.14', 'gravityview_blocklist_field_types' );
+
+		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', $blocklist_field_types, null );
 
 		// TODO: Convert to using array_filter
 		foreach( $fields as $id => $field ) {
 
-			if( in_array( $field['type'], $blacklist_field_types ) ) {
+			if( in_array( $field['type'], $blocklist_field_types ) ) {
 				unset( $fields[ $id ] );
 			}
 
@@ -1535,7 +1577,7 @@ class GVCommon {
 
 			$enkoder = new StandalonePHPEnkoder;
 
-			$message = empty( $message ) ? __( 'Email hidden; Javascript is required.', 'gravityview' ) : $message;
+			$message = empty( $message ) ? __( 'Email hidden; Javascript is required.', 'gk-gravityview' ) : $message;
 
 			/**
 			 * @filter `gravityview/phpenkoder/msg` Modify the message shown when Javascript is disabled and an encrypted email field is displayed
@@ -1655,7 +1697,9 @@ class GVCommon {
 			$final_atts['href'] = $href;
 		}
 
-		$final_atts['href'] = esc_url_raw( $href );
+		if ( isset( $final_atts['href'] ) ) {
+			$final_atts['href'] = esc_url_raw( $final_atts['href'] );
+		}
 
 		/**
 		 * Fix potential security issue with target=_blank

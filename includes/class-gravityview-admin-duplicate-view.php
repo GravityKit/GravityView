@@ -238,14 +238,14 @@ class GravityView_Admin_Duplicate_View {
 		if ( get_post_type( $post ) === 'gravityview' && $this->current_user_can_copy( $post ) ) {
 
 			$clone_link = $this->get_clone_view_link( $post->ID, 'display', false );
-			$clone_text = __( 'Clone', 'gravityview' );
-			$clone_title = __( 'Clone this View', 'gravityview' );
+			$clone_text = __( 'Clone', 'gk-gravityview' );
+			$clone_title = __( 'Clone this View', 'gk-gravityview' );
 
 			$actions['clone'] = gravityview_get_link( $clone_link, $clone_text, 'title='.$clone_title );
 
 			$clone_draft_link = $this->get_clone_view_link( $post->ID );
-			$clone_draft_text = $this->is_all_views_page() ? __( 'New Draft', 'gravityview' ) : __( 'Clone View', 'gravityview' );
-			$clone_draft_title = __( 'Copy as a new draft View', 'gravityview' );
+			$clone_draft_text = $this->is_all_views_page() ? __( 'New Draft', 'gk-gravityview' ) : __( 'Clone View', 'gk-gravityview' );
+			$clone_draft_title = __( 'Copy as a new draft View', 'gk-gravityview' );
 
 			$actions['edit_as_new_draft'] = gravityview_get_link( $clone_draft_link, esc_html( $clone_draft_text ), 'title='.$clone_draft_title );
 		}
@@ -326,14 +326,14 @@ class GravityView_Admin_Duplicate_View {
 	public function save_as_new_view( $status = '' ) {
 
 		if ( ! ( isset( $_GET['post'] ) || isset( $_POST['post'] ) ) ) {
-			wp_die( __( 'No post to duplicate has been supplied!', 'gravityview' ) );
+			wp_die( __( 'No post to duplicate has been supplied!', 'gk-gravityview' ) );
 		}
 
 		// Get the original post
 		$id   = ( isset( $_GET['post'] ) ? $_GET['post'] : $_POST['post'] );
 
 		if( ! $this->current_user_can_copy( $id ) ) {
-			wp_die( __( 'You don\'t have permission to copy this View.', 'gravityview' ) );
+			wp_die( __( 'You don\'t have permission to copy this View.', 'gk-gravityview' ) );
 		}
 
 		$post = get_post( $id );
@@ -354,7 +354,7 @@ class GravityView_Admin_Duplicate_View {
 
 		} else {
 
-			wp_die( sprintf( esc_attr__( 'Copy creation failed, could not find original View with ID #%d', 'gravityview' ), $id ) );
+			wp_die( sprintf( esc_attr__( 'Copy creation failed, could not find original View with ID #%d', 'gk-gravityview' ), $id ) );
 
 		}
 	}

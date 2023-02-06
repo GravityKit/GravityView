@@ -24,9 +24,9 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_attr__( 'Approve Entries', 'gravityview' );
+		$this->label = esc_attr__( 'Approve Entries', 'gk-gravityview' );
 
-		$this->description =  esc_attr__( 'Approve and reject entries from the View.', 'gravityview' );
+		$this->description =  esc_attr__( 'Approve and reject entries from the View.', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -69,6 +69,9 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'filter_gravityview_entry_default_field' ), 10, 3 );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts_and_styles' ) );
+
+		// Make sure scripts are registered for FSE themes
+		add_action( 'gravityview/template/before', array( $this, 'register_scripts_and_styles' ) );
 
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
@@ -138,13 +141,18 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 * @return void
 	 */
 	function register_scripts_and_styles() {
+
+		if ( wp_script_is( 'gravityview-field-approval' ) ) {
+			return;
+		}
+
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GravityView_Plugin::version, true );
+		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GV_PLUGIN_VERSION, true );
 
-		wp_register_script( 'gravityview-field-approval-popper', GRAVITYVIEW_URL . 'assets/lib/tippy/popper.min.js', array(), GravityView_Plugin::version, true );
-		wp_register_script( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.min.js', array(), GravityView_Plugin::version, true );
-		wp_register_style( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.css', array(), GravityView_Plugin::version, 'screen' );
+		wp_register_script( 'gravityview-field-approval-popper', GRAVITYVIEW_URL . 'assets/lib/tippy/popper.min.js', array(), GV_PLUGIN_VERSION, true );
+		wp_register_script( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.min.js', array(), GV_PLUGIN_VERSION, true );
+		wp_register_style( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.css', array(), GV_PLUGIN_VERSION, 'screen' );
 
 		$style_path = GRAVITYVIEW_DIR . 'templates/css/field-approval.css';
 
@@ -165,7 +173,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		$style_url = apply_filters( 'gravityview/field/approval/css_url', $style_url );
 
 		if( ! empty( $style_url ) ) {
-			wp_register_style( 'gravityview-field-approval', $style_url, array( 'dashicons' ), GravityView_Plugin::version, 'screen' );
+			wp_register_style( 'gravityview-field-approval', $style_url, array( 'dashicons' ), GV_PLUGIN_VERSION, 'screen' );
 		}
 
 		unset( $style_path, $style_url );

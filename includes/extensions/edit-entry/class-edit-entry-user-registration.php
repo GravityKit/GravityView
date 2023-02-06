@@ -72,13 +72,20 @@ class GravityView_Edit_Entry_User_Registration {
      */
     public function update_user( $form = array(), $entry_id = 0 ) {
 
-        if( ! class_exists( 'GFAPI' ) || ! class_exists( 'GF_User_Registration' ) ) {
-	        gravityview()->log->error( 'GFAPI or User Registration class not found; not updating the user' );
-	        return;
-        } elseif( empty( $entry_id ) ) {
-        	gravityview()->log->error( 'Entry ID is empty [{entry_id}]; not updating the user', array( 'entry_id' => $entry_id ) );
+		// Only proceed if the registration class exists and is active.
+	    if ( ! class_exists( 'GF_User_Registration' ) ) {
+		    return;
+	    }
+
+        if( ! class_exists( 'GFAPI' ) ) {
+	        gravityview()->log->error( 'GFAPI class not found; not updating the user' );
 	        return;
         }
+
+		if( empty( $entry_id ) ) {
+			gravityview()->log->error( 'Entry ID is empty [{entry_id}]; not updating the user', array( 'entry_id' => $entry_id ) );
+			return;
+		}
 
         $gf_user_registration = GF_User_Registration::get_instance();
 
@@ -148,10 +155,10 @@ class GravityView_Edit_Entry_User_Registration {
 	    /**
 	     * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
 	     * @since 1.15
-	     * @param[in,out] boolean $preserve_role Preserve current user role Default: true
-	     * @param[in] array $config Gravity Forms User Registration feed configuration for the form
-	     * @param[in] array $form Gravity Forms form array
-	     * @param[in] array $entry Gravity Forms entry being edited
+	     * @param boolean $preserve_role Preserve current user role Default: true
+	     * @param array $config Gravity Forms User Registration feed configuration for the form
+	     * @param array $form Gravity Forms form array
+	     * @param array $entry Gravity Forms entry being edited
 	     */
 	    $preserve_role = apply_filters( 'gravityview/edit_entry/user_registration/preserve_role', true, $config, $form, $entry );
 
@@ -170,9 +177,9 @@ class GravityView_Edit_Entry_User_Registration {
 	    /**
 	     * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
 	     * @since 1.14
-	     * @param[in,out] array $config Gravity Forms User Registration feed configuration for the form
-	     * @param[in] array $form Gravity Forms form array
-	     * @param[in] array $entry Gravity Forms entry being edited
+	     * @param array $config Gravity Forms User Registration feed configuration for the form
+	     * @param array $form Gravity Forms form array
+	     * @param array $entry Gravity Forms entry being edited
 	     */
 	    $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 

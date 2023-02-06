@@ -38,7 +38,7 @@ class GravityView_Field_List extends GravityView_Field {
 
 	function __construct() {
 
-		$this->label = esc_html__( 'List', 'gravityview' );
+		$this->label = esc_html__( 'List', 'gk-gravityview' );
 
 		parent::__construct();
 

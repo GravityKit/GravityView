@@ -101,6 +101,8 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 		'yoast-seo-styled-components',
 		'yoast-seo-term-edit',
 		'yoast-seo-yoast-modal',
+		// Yoast 14.8
+		'yoast-seo-post-edit-classic',
 	);
 
 	/**

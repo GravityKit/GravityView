@@ -16,7 +16,7 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 		if( !empty( $this->item['adminLabel'] ) ) {
 			$field_info_items[] = array(
-				'value' => sprintf( __('Admin Label: %s', 'gravityview' ), $this->item['adminLabel'] ),
+				'value' => sprintf( __('Admin Label: %s', 'gk-gravityview' ), $this->item['adminLabel'] ),
 				'class'	=> 'gv-sublabel'
 			);
 		}
@@ -28,17 +28,17 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 			if ( ! empty( $this->item['parent'] ) ) {
 				$field_info_items[] = array(
-					'value' => sprintf( esc_html__( 'Parent: %s', 'gravityview' ), esc_attr( $this->item['parent']['label'] ) ),
+					'value' => sprintf( esc_html__( 'Parent: %s', 'gk-gravityview' ), esc_attr( $this->item['parent']['label'] ) ),
 				);
 			}
 
 			$field_info_items[] = array(
-				'value' => sprintf( __('Type: %s', 'gravityview'), $field_type_title ),
+				'value' => sprintf( __('Type: %s', 'gk-gravityview'), $field_type_title ),
 				'hide_in_picker' => ! empty( $this->item['parent'] ),
 			);
 
 			$field_info_items[] = array(
-				'value' => sprintf( __('Field ID: %s', 'gravityview'), $this->id ),
+				'value' => sprintf( __('Field ID: %s', 'gk-gravityview'), $this->id ),
 			);
 		}
 
@@ -49,7 +49,7 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 		}
 
 		$field_info_items[] = array(
-			'value'          => sprintf( __('Form ID: %s', 'gravityview' ), $this->form_id ),
+			'value'          => sprintf( __('Form ID: %s', 'gk-gravityview' ), $this->form_id ),
 			'hide_in_picker' => true,
 		);
 

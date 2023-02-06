@@ -23,7 +23,7 @@ class GravityView_Field_Textarea extends GravityView_Field {
 	var $icon = 'dashicons-editor-paragraph';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Paragraph Text', 'gravityview' );
+		$this->label = esc_html__( 'Paragraph Text', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -39,24 +39,24 @@ class GravityView_Field_Textarea extends GravityView_Field {
 			'type' => 'number',
 			'merge_tags' => false,
 			'value' => null,
-			'label' => __( 'Maximum words shown', 'gravityview' ),
-			'tooltip' => __( 'Enter the number of words to be shown. If specified it truncates the text. Leave it blank if you want to show the full text.', 'gravityview' ),
+			'label' => __( 'Maximum words shown', 'gk-gravityview' ),
+			'tooltip' => __( 'Enter the number of words to be shown. If specified it truncates the text. Leave it blank if you want to show the full text.', 'gk-gravityview' ),
 		);
 
         $field_options['make_clickable'] = array(
             'type' => 'checkbox',
             'merge_tags' => false,
             'value' => 0,
-            'label' => __( 'Convert text URLs to HTML links', 'gravityview' ),
-            'tooltip' => __( 'Converts URI, www, FTP, and email addresses in HTML links', 'gravityview' ),
+            'label' => __( 'Convert text URLs to HTML links', 'gk-gravityview' ),
+            'tooltip' => __( 'Converts URI, www, FTP, and email addresses in HTML links', 'gk-gravityview' ),
         );
 
 		$field_options['allow_html'] = array(
 			'type' => 'checkbox',
 			'merge_tags' => false,
 			'value' => 1,
-			'label' => __( 'Display as HTML', 'gravityview' ),
-			'tooltip' => esc_html__( 'If enabled, safe HTML will be displayed and unsafe or unrecognized HTML tags will be stripped. If disabled, the field value will be displayed as text.', 'gravityview' ),
+			'label' => __( 'Display as HTML', 'gk-gravityview' ),
+			'tooltip' => esc_html__( 'If enabled, safe HTML will be displayed and unsafe or unrecognized HTML tags will be stripped. If disabled, the field value will be displayed as text.', 'gk-gravityview' ),
 		);
 
 		return $field_options;

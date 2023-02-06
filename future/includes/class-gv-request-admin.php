@@ -45,27 +45,23 @@ class Admin_Request extends Request {
 		}
 
 		if ( $current_screen && $current_screen->post_type == 'gravityview' ) {
-			if ( $is_gv_edit_list = 'edit' === $current_screen->base ) {
+			if ( 'edit' === $current_screen->base ) {
 				$is_page = 'views';
-			} elseif ( $is_gv_edit_single = 'post' === $current_screen->base ) {
+			} elseif ( 'post' === $current_screen->base ) {
 				$is_page = 'single';
-			} elseif ( $is_gv_settings = 'gravityview_page_gravityview_settings' === $current_screen->id ) {
-				$is_page = 'settings';
-			} elseif( $is_extensions = 'gravityview_page_gv-admin-installer' === $current_screen->id ) {
-				$is_page = 'downloads';
-			} elseif( $is_changelog = 'gravityview_page_gv-changelog' === $current_screen->id ) {
+			} elseif( 'gravityview_page_gv-changelog' === $current_screen->id ) {
 				$is_page = 'changelog';
-			} elseif( $is_getting_started = 'gravityview_page_gv-getting-started' === $current_screen->id ) {
+			} elseif( 'gravityview_page_gv-getting-started' === $current_screen->id ) {
 				$is_page = 'getting-started';
-			} elseif( $is_credits = 'gravityview_page_gv-credits' === $current_screen->id ) {
+			} elseif( 'gravityview_page_gv-credits' === $current_screen->id ) {
 				$is_page = 'credits';
 			}
 		}
 
 		/**
 		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
-		 * @param[in,out] string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
-		 * @param[in] string $hook The name of the page to check against. Is passed to the method.
+		 * @param string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
+		 * @param string $hook The name of the page to check against. Is passed to the method.
 		 */
 		$is_page = apply_filters( 'gravityview_is_admin_page', $is_page, $hook );
 

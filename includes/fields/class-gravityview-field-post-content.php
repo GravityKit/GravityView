@@ -20,7 +20,7 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 	var $icon = 'dashicons-editor-alignleft';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Content', 'gravityview' );
+		$this->label = esc_html__( 'Post Content', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -43,10 +43,11 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 	 * @param array $form The Form Object currently being processed.
 	 * @param string|array $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
 	 * @param null|array $entry Null or the Entry Object currently being edited.
+	 * @param null|GF_Field_Post_Content The field being edited.
 	 *
 	 * @return string
 	 */
-	public function get_field_input( $form, $value = '', $entry = null, GF_Field_Post_Content $field ) {
+	public function get_field_input( $form, $value = '', $entry = null, GF_Field_Post_Content $field = null ) {
 
 		$id    = (int) $field->id;
 		$input_name = "input_{$id}";

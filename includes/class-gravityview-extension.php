@@ -11,6 +11,8 @@
  * Extend this class to create a GravityView extension that gets updates from GravityView.co
  *
  * @deprecated Use \GV\Extension instead
+ *
+ * @TODO Remove once all extensions have been updated to use Foundation.
  */
 abstract class GravityView_Extension extends \GV\Extension {
 	public function __construct() {

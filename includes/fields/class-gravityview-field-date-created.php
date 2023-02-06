@@ -26,9 +26,9 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	 */
 	public function __construct() {
 
-		$this->label = esc_html__( 'Date Created', 'gravityview' );
+		$this->label = esc_html__( 'Date Created', 'gk-gravityview' );
 		$this->default_search_label = $this->label;
-		$this->description = esc_html__( 'The date the entry was created.', 'gravityview' );
+		$this->description = esc_html__( 'The date the entry was created.', 'gk-gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
 

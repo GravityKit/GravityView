@@ -19,6 +19,39 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	public static $style_slug = 'gravityview-fancybox';
 
 	/**
+	 * @inheritDoc
+	 */
+	public function print_scripts( $gravityview ) {
+
+		parent::print_scripts( $gravityview );
+
+		if ( ! self::is_active( $gravityview ) ) {
+			return;
+		}
+
+		$settings = self::get_settings();
+
+		$settings = json_encode( $settings );
+		?>
+		<style>
+			.fancybox-container {
+				z-index: 100000; /** Divi is 99999 */
+			}
+
+			.admin-bar .fancybox-container {
+				margin-top: 32px;
+			}
+		</style>
+		<script>
+			if ( window.Fancybox ){
+				Fancybox.bind(".gravityview-fancybox", <?php echo $settings; ?>);
+			}
+		</script>
+		<?php
+
+	}
+
+	/**
 	 * Options to pass to Fancybox
 	 *
 	 * @see https://fancyapps.com/fancybox/3/docs/#options
@@ -38,17 +71,17 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 				),
 				'i18n'            => array(
 					'en' => array(
-						'CLOSE'       => __( 'Close', 'gravityview' ),
-						'NEXT'        => __( 'Next', 'gravityview' ),
-						'PREV'        => __( 'Previous', 'gravityview' ),
-						'ERROR'       => __( 'The requested content cannot be loaded. Please try again later.', 'gravityview' ),
-						'PLAY_START'  => __( 'Start slideshow', 'gravityview' ),
-						'PLAY_STOP'   => __( 'Pause slideshow', 'gravityview' ),
-						'FULL_SCREEN' => __( 'Full screen', 'gravityview' ),
-						'THUMBS'      => __( 'Thumbnails', 'gravityview' ),
-						'DOWNLOAD'    => __( 'Download', 'gravityview' ),
-						'SHARE'       => __( 'Share', 'gravityview' ),
-						'ZOOM'        => __( 'Zoom', 'gravityview' ),
+						'CLOSE'       => __( 'Close', 'gk-gravityview' ),
+						'NEXT'        => __( 'Next', 'gk-gravityview' ),
+						'PREV'        => __( 'Previous', 'gk-gravityview' ),
+						'ERROR'       => __( 'The requested content cannot be loaded. Please try again later.', 'gk-gravityview' ),
+						'PLAY_START'  => __( 'Start slideshow', 'gk-gravityview' ),
+						'PLAY_STOP'   => __( 'Pause slideshow', 'gk-gravityview' ),
+						'FULL_SCREEN' => __( 'Full screen', 'gk-gravityview' ),
+						'THUMBS'      => __( 'Thumbnails', 'gk-gravityview' ),
+						'DOWNLOAD'    => __( 'Download', 'gk-gravityview' ),
+						'SHARE'       => __( 'Share', 'gk-gravityview' ),
+						'ZOOM'        => __( 'Zoom', 'gk-gravityview' ),
 					),
 				)
 		);
@@ -59,42 +92,15 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	/**
 	 * @inheritDoc
 	 */
-	public function output_footer() {
-
-		$settings = self::get_settings();
-
-		$settings = json_encode( $settings );
-
-		?>
-		<style>
-			.fancybox-container {
-				z-index: 100000; /** Divi is 99999 */
-			}
-
-			.admin-bar .fancybox-container {
-				margin-top: 32px;
-			}
-		</style>
-		<script>
-			jQuery( '.gravityview-fancybox' ).fancybox(<?php echo $settings; ?>);
-		</script>
-		<?php
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public function enqueue_scripts() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION );
+		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.umd.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function enqueue_styles() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-		wp_enqueue_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/jquery.fancybox' . $min . '.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
+		wp_register_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
 	/**
@@ -120,21 +126,41 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	/**
 	 * @inheritDoc
 	 */
-	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null ) {
+	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null, $additional_details = null ) {
 
-		if ( ! $context->view->settings->get( 'lightbox', false ) ) {
+		if ( $context && ! $context->view->settings->get( 'lightbox', false ) ) {
+			return $link_atts;
+		}
+
+		// Prevent empty content from getting added to the lightbox gallery
+		if ( is_array( $additional_details ) && empty( $additional_details['file_path'] ) ) {
+			return $link_atts;
+		}
+
+		// Prevent empty content from getting added to the lightbox gallery
+		if ( is_array( $additional_details ) && ! empty( $additional_details['disable_lightbox'] ) ) {
 			return $link_atts;
 		}
 
 		$link_atts['class'] = \GV\Utils::get( $link_atts, 'class' ) . ' gravityview-fancybox';
 
-		$link_atts['class'] = sanitize_html_class( $link_atts['class'] );
+		$link_atts['class'] = gravityview_sanitize_html_class( $link_atts['class'] );
 
 		if ( $context && ! empty( $context->field->field ) ) {
 			if ( $context->field->field->multipleFiles ) {
 				$entry = $context->entry->as_entry();
 				$link_atts['data-fancybox'] = 'gallery-' . sprintf( "%s-%s-%s", $entry['form_id'], $context->field->ID, $context->entry->get_slug() );
 			}
+		}
+
+		$file_path = \GV\Utils::get( $additional_details, 'file_path' );
+
+		/**
+		 * For file types that require IFRAME, declare `pdf` media type.
+		 * @see https://fancyapps.com/docs/ui/fancybox#media-types
+		 */
+		if ( false !== strpos( $file_path, 'gv-iframe' ) ) {
+			$link_atts['data-type'] = 'pdf';
 		}
 
 		return $link_atts;

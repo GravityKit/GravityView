@@ -131,7 +131,7 @@ class gventry extends \GV\Shortcode {
 			 * ...apart from a nice message if the user can do anything about it.
 			 */
 			if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-				$return = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
+				$return = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
 				return apply_filters( 'gravityview/shortcodes/gventry/output', $return, $view, $entry, $atts );
 			}
 
@@ -160,13 +160,25 @@ class gventry extends \GV\Shortcode {
 			}
 		}
 
+		if ( \GV\Utils::get( $_GET, 'edit' ) && \GV\Utils::get( $_GET, 'gvid' ) ) {
+			$atts['edit'] = 1;
+		}
+
 		if ( $atts['edit'] ) {
 			/**
 			 * Based on code in our unit-tests.
 			 * Mocks old context, etc.
 			 */
 			$loader = \GravityView_Edit_Entry::getInstance();
+			/** @var \GravityView_Edit_Entry_Render $render */
 			$render = $loader->instances['render'];
+
+			// Override the \GV\Request::is_entry() check for the query var.
+			$_entry_query_var_backup = get_query_var( \GV\Entry::get_endpoint_name() );
+			set_query_var( \GV\Entry::get_endpoint_name(), $entry['id'] );
+			add_filter( 'gravityview_is_edit_entry', $use_entry = function() use ( $entry ) {
+				return $entry;
+			} );
 
 			add_filter( 'gravityview/is_single_entry', '__return_true' );
 
@@ -185,23 +197,28 @@ class gventry extends \GV\Shortcode {
 				\GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
 			);
 
-			add_filter( 'gravityview/edit_entry/success', $callback = function( $message ) use ( $view, $entry, $atts ) {
-				$message = __( 'Entry Updated', 'gravityview' );
-
+			add_filter( 'gravityview/edit_entry/success', $callback = function ( $message, $_view_id, $_entry, $back_link, $redirect_url ) use ( $view, $entry, $atts ) {
 				/**
 				 * @filter `gravityview/shortcodes/gventry/edit/success` Modify the edit entry success message in [gventry].
-				 * @since develop
-				 * @param[in,out] string $message The message.
-				 * @param \GV\View $view The View.
-				 * @param \GV\Entry $entry The entry.
-				 * @param array $atts The attributes.
+				 *
+				 * @since  develop
+				 *
+				 * @param string      $message      The message.
+				 * @param \GV\View    $view         The View.
+				 * @param \GV\Entry   $entry        The entry.
+				 * @param array       $atts         The attributes.
+				 * @param string      $back_link    URL to return to the original entry. @since 2.14.6
+				 * @param string|null $redirect_url URL to return to after the update. @since 2.14.6
 				 */
-				return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts );
-			} );
+				return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts, $back_link, $redirect_url );
+			}, 10, 5 );
 
-			ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
+			ob_start() && $render->init( $data, \GV\GF_Entry::by_id( $entry['id'] ), $view );
 			$output = ob_get_clean(); // Render :)
 
+			// Restore the \GV\Request::is_entry() check for the query var.
+			set_query_var( \GV\Entry::get_endpoint_name(), $_entry_query_var_backup );
+			remove_filter( 'gravityview_is_edit_entry', $use_entry );
 			remove_filter( 'gravityview/is_single_entry', '__return_true' );
 			remove_filter( 'gravityview/edit_entry/success', $callback );
 		} else {

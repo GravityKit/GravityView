@@ -13,16 +13,16 @@ class GravityView_Widget_Page_Links extends \GV\Widget {
 
 	function __construct() {
 
-		$this->widget_description = __('Links to multiple pages of results.', 'gravityview' );
+		$this->widget_description = __('Links to multiple pages of results.', 'gk-gravityview' );
 
 		$default_values = array( 'header' => 1, 'footer' => 1 );
 		$settings = array( 'show_all' => array(
 			'type' => 'checkbox',
-			'label' => __( 'Show each page number', 'gravityview' ),
-			'desc' => __('Show every page number instead of summary (eg: 1 2 3 ... 8 »)', 'gravityview'),
+			'label' => __( 'Show each page number', 'gk-gravityview' ),
+			'desc' => __('Show every page number instead of summary (eg: 1 2 3 ... 8 »)', 'gk-gravityview'),
 			'value' => false
 		));
-		parent::__construct( __( 'Page Links', 'gravityview' ) , 'page_links', $default_values, $settings );
+		parent::__construct( __( 'Page Links', 'gk-gravityview' ) , 'page_links', $default_values, $settings );
 
 	}
 

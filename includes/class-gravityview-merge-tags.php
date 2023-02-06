@@ -330,10 +330,10 @@ class GravityView_Merge_Tags {
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
 		 * @since 1.13
 		 *
-		 * @param[in,out] boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
-		 * @param[in] string $text       Text to replace variables in
-		 * @param[in]  array      $form        GF Form array
-		 * @param[in]  array      $entry        GF Entry array
+		 * @param boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
+		 * @param string $text       Text to replace variables in
+		 * @param  array      $form        GF Form array
+		 * @param  array      $entry        GF Entry array
 		 */
 		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
 
@@ -386,6 +386,10 @@ class GravityView_Merge_Tags {
 			return $text;
 		}
 
+		$text = self::replace_is_starred( $text, $form, $entry, $url_encode, $esc_html );
+
+		$text = self::replace_site_url( $text, $form, $entry, $url_encode, $esc_html );
+
 		$text = self::replace_get_variables( $text, $form, $entry, $url_encode );
 
 		$text = self::replace_current_post( $text, $form, $entry, $url_encode, $esc_html );
@@ -393,6 +397,60 @@ class GravityView_Merge_Tags {
 		$text = self::replace_entry_link( $text, $form, $entry, $url_encode, $esc_html );
 
 		return $text;
+	}
+
+	/**
+	 * Add a {is_starred} Merge Tag
+	 *
+	 * @since 2.14
+	 *
+	 * @param string $original_text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Indicates if the esc_html function should be applied.
+	 *
+	 * @return string Original text, if no {site_url} Merge Tags found, otherwise text with Merge Tag replaced
+	 */
+	public static function replace_is_starred( $original_text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		if ( false === strpos( $original_text, '{is_starred}' ) ) {
+			return $original_text;
+		}
+
+		return str_replace( '{is_starred}', rgar( $entry, 'is_starred', '' ), $original_text );
+	}
+
+	/**
+	 * Add a {site_url} Merge Tag
+	 *
+	 * @since 2.10.1
+	 *
+	 * @param string $original_text Text to replace
+	 * @param array $form Gravity Forms form array
+	 * @param array $entry Entry array
+	 * @param bool $url_encode Whether to URL-encode output
+	 * @param bool $esc_html Indicates if the esc_html function should be applied.
+	 *
+	 * @return string Original text, if no {site_url} Merge Tags found, otherwise text with Merge Tag replaced
+	 */
+	public static function replace_site_url( $original_text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
+
+		if ( false === strpos( $original_text, '{site_url}' ) ) {
+			return $original_text;
+		}
+
+		$site_url = get_site_url();
+
+		if( $url_encode ) {
+			$site_url = urlencode( $site_url );
+		}
+
+		if ( $esc_html ) {
+			$site_url = esc_html( $site_url );
+		}
+
+		return str_replace( '{site_url}', $site_url, $original_text );
 	}
 
 	/**
@@ -463,6 +521,7 @@ class GravityView_Merge_Tags {
 	 * @uses GVCommon::format_date()
 	 *
 	 * @see https://docs.gravityview.co/article/331-date-created-merge-tag for documentation
+	 * @todo Once Gravity Forms 2.5 becomes the minimum requirement, this is no longer needed.
 	 *
 	 * @param string $date_created The Gravity Forms date created format
 	 * @param string $property Any modifiers for the merge tag (`human`, `format:m/d/Y`)
@@ -630,8 +689,8 @@ class GravityView_Merge_Tags {
 			/**
 			 * @filter `gravityview/merge_tags/get/glue/` Modify the glue used to convert an array of `{get}` values from an array to string
 			 * @since 1.15
-			 * @param[in,out] string $glue String used to `implode()` $_GET values Default: ', '
-			 * @param[in] string $property The current name of the $_GET parameter being combined
+			 * @param string $glue String used to `implode()` $_GET values Default: ', '
+			 * @param string $property The current name of the $_GET parameter being combined
 			 */
 			$glue = apply_filters( 'gravityview/merge_tags/get/glue/', ', ', $property );
 
@@ -653,10 +712,10 @@ class GravityView_Merge_Tags {
 
 			/**
 			 * @filter `gravityview/merge_tags/get/esc_html/{url parameter name}` Modify the value of the `{get}` replacement before being used
-			 * @param[in,out] string $value Value that will replace `{get}`
-			 * @param[in] string $text Text that contains `{get}` (before replacement)
-			 * @param[in] array $form Gravity Forms form array
-			 * @param[in] array $entry Entry array
+			 * @param string $value Value that will replace `{get}`
+			 * @param string $text Text that contains `{get}` (before replacement)
+			 * @param array $form Gravity Forms form array
+			 * @param array $entry Entry array
 			 */
 			$value = apply_filters('gravityview/merge_tags/get/value/' . $property, $value, $text, $form, $entry );
 

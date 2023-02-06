@@ -77,8 +77,8 @@ class GravityView_API {
 
 			/**
 			 * @filter `gravityview_render_after_label` Append content to a field label
-			 * @param[in,out] string $appended_content Content you can add after a label. Empty by default.
-			 * @param[in] array $field GravityView field array
+			 * @param string $appended_content Content you can add after a label. Empty by default.
+			 * @param array $field GravityView field array
 			 */
 			$label .= apply_filters( 'gravityview_render_after_label', '', $field );
 
@@ -87,10 +87,10 @@ class GravityView_API {
 		/**
 		 * @filter `gravityview/template/field_label` Modify field label output
 		 * @since 1.7
-		 * @param[in,out] string $label Field label HTML
-		 * @param[in] array $field GravityView field array
-		 * @param[in] array $form Gravity Forms form array
-		 * @param[in] array $entry Gravity Forms entry array
+		 * @param string $label Field label HTML
+		 * @param array $field GravityView field array
+		 * @param array $form Gravity Forms form array
+		 * @param array $entry Gravity Forms entry array
 		 *
 		 * @deprecated Use the context-aware version `gravityview/template/field/label`
 		 */
@@ -311,7 +311,7 @@ class GravityView_API {
 
 		if ( $is_search ) {
 
-			$output = esc_html__( 'This search returned no results.', 'gravityview' );
+			$output = esc_html__( 'This search returned no results.', 'gk-gravityview' );
 
 			if( $context ) {
 				$setting = $context->view->settings->get( 'no_search_results_text', $output );
@@ -319,7 +319,7 @@ class GravityView_API {
 
 		} else {
 
-			$output = esc_html__( 'No entries match your request.', 'gravityview' );
+			$output = esc_html__( 'No entries match your request.', 'gk-gravityview' );
 
 			if( $context ) {
 				$setting = $context->view->settings->get( 'no_results_text', $output );
@@ -379,7 +379,7 @@ class GravityView_API {
 	/**
 	 * Generate a URL to the Directory context
 	 *
-	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.3) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
+	 * Uses local static variable to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
 	 * @param int $post_id Post ID
 	 * @param boolean $add_query_args Add pagination and sorting arguments
@@ -407,6 +407,11 @@ class GravityView_API {
 						$post_id = $context->view ? $context->view->ID : false;
 					}
 				} else {
+
+					if ( ! class_exists( 'GravityView_View' ) ) {
+						gravityview()->plugin->include_legacy_frontend( true );
+					}
+
 					/** @deprecated path of execution */
 					$gravityview_view = GravityView_View::getInstance();
 
@@ -437,9 +442,16 @@ class GravityView_API {
 			return null;
 		}
 
-		// If we've saved the permalink in memory, use it
-		// @since 1.3
-		$link = wp_cache_get( 'gv_directory_link_'.$post_id );
+		static $directory_links = array();
+
+		/**
+		 * If we've saved the permalink, use it. Reduces time spent on `get_permalink()`, which is heavy.
+		 * @since 1.3
+		 * @since 2.16.6 Changed from using wp_cache_set() to using a static variable.
+		 */
+		if ( isset( $directory_links[ 'gv_directory_link_' . $post_id ] ) ) {
+			$link = $directory_links[ 'gv_directory_link_' . $post_id ];
+		}
 
 		if ( (int) $post_id === (int) get_option( 'page_on_front' ) ) {
 			$link = home_url();
@@ -448,9 +460,7 @@ class GravityView_API {
 		if ( empty( $link ) ) {
 			$link = get_permalink( $post_id );
 
-			// If not yet saved, cache the permalink.
-			// @since 1.3
-			wp_cache_set( 'gv_directory_link_'.$post_id, $link );
+			$directory_links[ 'gv_directory_link_' . $post_id ] = $link;
 		}
 
 		// Deal with returning to proper pagination for embedded views
@@ -793,6 +803,7 @@ function gv_get_query_args() {
 		'action',
 		'view_id',
 		'entry_id',
+		'pagenum',
 	);
 
 	/**
@@ -880,7 +891,7 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 	/**
 	 * @filter `gravityview/render/container/class` Modify the CSS class to be added to the wrapper <div> of a View
 	 * @since 1.5.4
-	 * @param[in,out] string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`. If the View has no results, adds `gv-container-no-results`
+	 * @param string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`. If the View has no results, adds `gv-container-no-results`
 	 * @since 2.0
 	 * @param \GV\Template_Context $context The context.
 	 */
@@ -969,7 +980,7 @@ function gravityview_back_link( $context = null ) {
 	}
 
 	/** Default */
-	$label = $view_label ? $view_label : __( '&larr; Go back', 'gravityview' );
+	$label = $view_label ? $view_label : __( '&larr; Go back', 'gk-gravityview' );
 
 	/**
 	 * @filter `gravityview_go_back_label` Modify the back link text
@@ -1327,7 +1338,7 @@ function gravityview_get_context() {
 		return 'edit';
 	} else if ( gravityview()->request->is_entry() ) {
 		return 'single';
-	} else if ( gravityview()->request->is_view() ) {
+	} else if ( gravityview()->request->is_view( false ) ) {
 		return 'directory';
 	}
 
@@ -1377,28 +1388,36 @@ function gravityview_get_files_array( $value, $gv_class = '', $context = null ) 
  *
  * The address should be plain text with new line (`\n`) or `<br />` line breaks separating sections
  *
+ * @since 2.14.1 Added $atts parameter
+ *
  * @todo use GF's field get_export_value() instead
  *
- * @see https://gravityview.co/support/documentation/201608159 Read how to modify the link
+ * @see https://docs.gravitykit.com/article/59-modify-the-map-it-address-link Read how to modify the link
  * @param  string $address Address
  * @return string          URL of link to map of address
  */
-function gravityview_get_map_link( $address ) {
-
+function gravityview_get_map_link( $address, $atts = array() ) {
 	$address_qs = str_replace( array( '<br />', "\n" ), ' ', $address ); // Replace \n with spaces
 	$address_qs = urlencode( $address_qs );
 
 	$url = "https://maps.google.com/maps?q={$address_qs}";
 
-	$link_text = esc_html__( 'Map It', 'gravityview' );
+	$link_text = esc_html__( 'Map It', 'gk-gravityview' );
 
-	$link = gravityview_get_link( $url, $link_text, 'class=map-it-link' );
+	$atts = array_merge(
+		array(
+			'class' => 'map-it-link'
+		),
+		$atts
+	);
+
+	$link = gravityview_get_link( $url, $link_text, $atts );
 
 	/**
 	 * @filter `gravityview_map_link` Modify the map link generated. You can use a different mapping service, for example.
-	 * @param[in,out]  string $link Map link
-	 * @param[in] string $address Address to generate link for
-	 * @param[in] string $url URL generated by the function
+	 * @param  string $link Map link
+	 * @param string $address Address to generate link for
+	 * @param string $url URL generated by the function
 	 */
 	$link = apply_filters( 'gravityview_map_link', $link, $address, $url );
 
@@ -1451,7 +1470,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	/**
 	 * @filter `gravityview/template/field_output/context` Modify the context before generation begins.
 	 * @since 2.0
-	 * @param[in,out] \GV\Template_Context $context The context.
+	 * @param \GV\Template_Context $context The context.
 	 * @param array $args The sanitized arguments, these should not be trusted any longer.
 	 * @param array $passed_args The passed arguments, these should not be trusted any longer.
 	 */
@@ -1518,14 +1537,14 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	$placeholders['width'] = GravityView_API::field_width( $field );
 
 	// If replacing with CSS inline formatting, let's do it.
-	$placeholders['width:style'] = GravityView_API::field_width( $field, 'width:' . $placeholders['width'] . '%;' );
+	$placeholders['width:style'] = (string) GravityView_API::field_width( $field, 'width:' . $placeholders['width'] . '%;' );
 
 	// Grab the Class using `gv_class`
 	$placeholders['class'] = gv_class( $field, $form, $entry );
 	$placeholders['field_id'] = GravityView_API::field_html_attr_id( $field, $form, $entry );
 
 	if ( $context instanceof \GV\Template_Context ) {
-		$placeholders['label_value'] = \GV\Utils::get( $args, 'label' );
+		$placeholders['label_value'] = \GV\Utils::get( $args, 'label', '' );
 	} else {
 		// Default Label value
 		$placeholders['label_value'] = gv_label( $field, $entry );
@@ -1594,7 +1613,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		$value = apply_filters( 'gravityview/field_output/context/' . $tag, $value, $args, $context );
 
 		// Finally do the replace
-		$html = str_replace( $search, $value, $html );
+		$html = str_replace( $search, (string) $value, $html );
 	}
 
 	/**

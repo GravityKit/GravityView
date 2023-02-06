@@ -9,6 +9,7 @@
  * @internal
  */
 class GravityView_Lightbox {
+	const DEFAULT_PROVIDER = 'fancybox';
 
 	private static $providers = array();
 
@@ -18,11 +19,9 @@ class GravityView_Lightbox {
 	 * GravityView_Lightbox_Provider constructor.
 	 */
 	public function __construct() {
-
 		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/class-gravityview-lightbox-provider.php' );
 		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php' );
 
-		// Using plugins_loaded instead of gravityview/loaded because Addon_Settings waits for all plugins to load.
 		add_action( 'plugins_loaded', array( $this, 'set_provider' ), 11 );
 
 		add_action( 'gravityview/lightbox/provider', array( $this, 'set_provider' ) );
@@ -43,7 +42,7 @@ class GravityView_Lightbox {
 		}
 
 		if ( empty( $provider ) ) {
-			$provider = gravityview()->plugin->settings->get( 'lightbox' );
+			$provider = gravityview()->plugin->settings->get( 'lightbox', self::DEFAULT_PROVIDER );
 		}
 
 		if ( empty( self::$providers[ $provider ] ) || ! class_exists( self::$providers[ $provider ] ) ) {

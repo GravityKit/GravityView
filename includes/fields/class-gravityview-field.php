@@ -101,7 +101,16 @@ abstract class GravityView_Field {
 	public $contexts = array( 'single', 'multiple', 'edit', 'export' );
 
 	/**
-	 * @var string An icon that represents the field type in the field picker
+	 * @var string An icon that represents the field type in the field picker.
+	 *
+	 * Supports these icon formats:
+	 * - Gravity Forms icon class: The string starts with "gform-icon". Note: the site must be running GF 2.5+. No need to also pass "gform-icon".
+	 * - Dashicons: The string starts with "dashicons". No need to also pass "dashicons".
+	 * - Inline SVG: Starts with "data:"
+	 * - If not matching those formats, the value will be used as a CSS class in a `<i>` element.
+	 *
+	 * @since 2.8.1
+	 * @see GravityView_Admin_View_Item::getOutput
 	 */
 	public $icon = 'dashicons-admin-generic';
 
@@ -141,7 +150,7 @@ abstract class GravityView_Field {
 		 */
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 6 );
 
-		add_filter( 'gravityview/sortable/field_blacklist', array( $this, '_filter_sortable_fields' ), 1 );
+		add_filter( 'gravityview/sortable/field_blocklist', array( $this, '_filter_sortable_fields' ), 1 );
 
 		if( $this->entry_meta_key ) {
 			add_filter( 'gform_entry_meta', array( $this, 'add_entry_meta' ) );
@@ -344,7 +353,7 @@ abstract class GravityView_Field {
 	 *
 	 * @return array Modified merge tags
 	 */
-	public function _filter_gform_custom_merge_tags( $custom_merge_tags = array(), $form_id, $fields = array(), $element_id = '' ) {
+	public function _filter_gform_custom_merge_tags( $custom_merge_tags = array(), $form_id = 0, $fields = array(), $element_id = '' ) {
 
 		$form = GVCommon::get_form( $form_id );
 
@@ -433,35 +442,35 @@ abstract class GravityView_Field {
 		$options = array(
 			'link_to_post' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Link to the post', 'gravityview' ),
-				'desc' => __( 'Link to the post created by the entry.', 'gravityview' ),
+				'label' => __( 'Link to the post', 'gk-gravityview' ),
+				'desc' => __( 'Link to the post created by the entry.', 'gk-gravityview' ),
 				'value' => false,
 				'priority' => 1200,
 				'group' => 'display',
 			),
 			'link_to_term' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Link to the category or tag', 'gravityview' ),
-				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gravityview' ),
+				'label' => __( 'Link to the category or tag', 'gk-gravityview' ),
+				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gk-gravityview' ),
 				'value' => false,
 				'priority' => 1210,
 				'group' => 'display',
 			),
 			'dynamic_data' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Use the live post data', 'gravityview' ),
-				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gravityview' ),
+				'label' => __( 'Use the live post data', 'gk-gravityview' ),
+				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gk-gravityview' ),
 				'value' => true,
 				'priority' => 1100,
 				'group' => 'display',
 			),
 			'date_display' => array(
 				'type' => 'text',
-				'label' => __( 'Override Date Format', 'gravityview' ),
-				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gravityview'), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
+				'label' => __( 'Override Date Format', 'gk-gravityview' ),
+				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gk-gravityview'), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
 				/**
 				 * @filter `gravityview_date_format` Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
-				 * @param[in,out] null|string $date_format Date Format (default: null)
+				 * @param null|string $date_format Date Format (default: null)
 				 */
 				'value' => apply_filters( 'gravityview_date_format', null ),
 				'class' => 'code widefat',
@@ -470,7 +479,7 @@ abstract class GravityView_Field {
 			),
 			'new_window' => array(
 				'type' => 'checkbox',
-				'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
+				'label' => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
 				'value' => false,
 				'group' => 'display',
 				'priority' => 1300,
@@ -484,7 +493,13 @@ abstract class GravityView_Field {
 		return apply_filters( 'gravityview_field_support_options', $options );
 	}
 
-	function add_field_support( $key = '', &$field_options ) {
+	/**
+	 * @param string $key
+	 * @param array $field_options
+	 *
+	 * @return array
+	 */
+	function add_field_support( $key, &$field_options ) {
 
 		$options = $this->field_support_options();
 

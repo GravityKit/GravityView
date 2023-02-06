@@ -20,13 +20,61 @@ abstract class GravityView_Lightbox_Provider {
 		add_filter( 'gravityview_lightbox_script', array( $this, 'filter_lightbox_script' ), 1000 );
 		add_filter( 'gravityview_lightbox_style', array( $this, 'filter_lightbox_style' ), 1000 );
 
-		add_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10, 3 );
+		add_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10, 4 );
 		add_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles') );
 
+		add_action( 'gravityview/template/after', array( $this, 'print_scripts' ) );
+
 		add_action( 'wp_footer', array( $this, 'output_footer' ) );
+	}
+
+
+	/**
+	 * Prints scripts for lightbox after a View is rendered
+	 *
+	 * @since 2.10.1
+	 *
+	 * @param GV\Template_Context $gravityview
+	 *
+	 * @return void
+	 */
+	public function print_scripts( $gravityview ) {
+
+		if ( ! self::is_active( $gravityview ) ) {
+			return;
+		}
+
+		wp_print_scripts( static::$script_slug );
+		wp_print_styles( static::$script_slug );
+	}
+
+	/**
+	 * Returns whether the provider is active for this View
+	 *
+	 * @since 2.10.1
+	 *
+	 * @param GV\Template_Context $gravityview
+	 *
+	 * @return bool true: yes! false: no!
+	 */
+	protected static function is_active( $gravityview ) {
+
+		$lightbox = $gravityview->view->settings->get( 'lightbox' );
+
+		if ( ! $lightbox ) {
+			return false;
+		}
+
+		$provider = gravityview()->plugin->settings->get( 'lightbox', GravityView_Lightbox::DEFAULT_PROVIDER );
+
+		if ( static::$slug !== $provider ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -89,10 +137,9 @@ abstract class GravityView_Lightbox_Provider {
 	 * @return mixed|void
 	 */
 	protected function get_settings() {
-
 		$settings = static::default_settings();
 
-		return apply_filters( 'gravityview/lightbox/provider/' . self::$slug . '/settings', $settings );
+		return apply_filters( 'gravityview/lightbox/provider/' . static::$slug . '/settings', $settings );
 	}
 
 	/**
@@ -132,15 +179,20 @@ abstract class GravityView_Lightbox_Provider {
 	/**
 	 * Modified File Upload field links to use lightbox
 	 *
+	 * @since 2.10.1 Added $insecure_file_path
 	 * @internal
 	 *
 	 * @param array|string $link_atts Array or attributes string.
 	 * @param array $field_compat Current GravityView field.
 	 * @param \GV\Template_Context|null $context The context.
+	 * @param array $additional_details Array of additional details about the file. {
+	 * @type string $file_path URL to file.
+	 * @type string $insecure_file_path URL to insecure file.
+	 * }
 	 *
 	 * @return mixed
 	 */
-	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null ) {
+	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null, $additional_details = null ) {
 		return $link_atts;
 	}
 

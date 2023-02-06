@@ -50,6 +50,9 @@ class gvlogic extends \GV\Shortcode {
 		$content = \GravityView_Merge_Tags::replace_get_variables( $content );
 		$atts = gv_map_deep( $atts, array( '\GravityView_Merge_Tags', 'replace_get_variables' ) );
 
+		$content = \GFCommon::replace_variables_prepopulate( $content );
+		$atts = gv_map_deep( $atts, array( '\GFCommon', 'replace_variables_prepopulate' ) );
+
 		// An invalid operation
 		if ( is_null( \GV\Utils::get( $atts, 'logged_in', null ) ) && false === \GV\Utils::get( $atts, 'if', false ) ) {
 			gravityview()->log->error( '$atts->if/logged_in is empty.', array( 'data' => $atts ) );
@@ -66,11 +69,47 @@ class gvlogic extends \GV\Shortcode {
 			} else {
 				$match = $authed; // Just login test
 			}
+
+			$output = $this->get_output( $match, $atts, $content );
 		} else { // Regular test
-			$match = $authed && \GVCommon::matches_operation( $atts['if'], $value, $operator );
+
+			$output = $content;
+
+			// Allow checking against multiple values at once
+			$and_values = explode( '&&', $value );
+			$or_values = explode( '||', $value );
+
+			// Cannot combine AND and OR
+			if ( sizeof( $and_values ) > 1 ) {
+
+				// Need to match all AND
+				foreach ( $and_values as $and_value ) {
+					$match = $authed && \GVCommon::matches_operation( $atts['if'], $and_value, $operator );
+					if ( ! $match ) {
+						break;
+					}
+				}
+
+			} elseif ( sizeof( $or_values ) > 1 ) {
+
+				// Only need to match a single OR
+				foreach ( $or_values as $or_value ) {
+
+					$match = \GVCommon::matches_operation( $atts['if'], $or_value, $operator );
+
+					// Negate the negative operators
+					if ( ( $authed && $match ) || ( $authed && ( ! $match && in_array( $operator, array( 'isnot', 'not_contains', 'not_in' ) ) ) ) ) {
+						break;
+					}
+				}
+
+			} else {
+				$match = $authed && \GVCommon::matches_operation( $atts['if'], $value, $operator );
+			}
+
+			$output = $this->get_output( $match, $atts, $output );
 		}
 
-		$output = $this->get_output( $match, $atts, $content );
 
 		// Output and get recursive!
 		$output = do_shortcode( $output );
@@ -301,7 +340,7 @@ class gvlogic extends \GV\Shortcode {
 		 *
 		 * @since 2.5
 		 *
-		 * @param[in,out] array $atts The logic attributes.
+		 * @param array $atts The logic attributes.
 		 */
 		return apply_filters( 'gravityview/gvlogic/atts', $atts );
 	}
