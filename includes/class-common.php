@@ -1327,11 +1327,12 @@ class GVCommon {
 	 * 	[other zones]
 	 * )
 	 *
-	 * @since 1.17.4 Added $apply_filter parameter
+	 * @since 1.17.4 Added $apply_filter parameter.
+	 * @since 2.17   Added $form_id parameter.
 	 *
-	 * @param  int $post_id View ID
-	 * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
-	 * @return array          Multi-array of fields with first level being the field zones. See code comment.
+	 * @param  int   $post_id View ID.
+	 * @param  bool  $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
+	 * @return array Multi-array of fields with first level being the field zones. See code comment.
 	 */
 	public static function get_directory_fields( $post_id, $apply_filter = true, $form_id = 0 ) {
 		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );

@@ -1278,7 +1278,8 @@ class GravityView_Admin_Views {
 	/**
 	 * Set the default fields for new Views.
 	 *
-	 * @since 2.16.3
+	 * @since 2.17
+	 * @internal Do not use this method directly. Use the `gravityview/view/configuration/fields` filter instead.
 	 *
 	 * @param array $fields A Widget configuration array.
 	 * @param \GV\View $view The View the fields are being pulled for. Unused in this method.
