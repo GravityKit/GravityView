@@ -48,7 +48,11 @@ class Entry {
 			$value = esc_attr( sanitize_text_field( $value ) );
 
 			if ( isset( $block_to_shortcode_attributes_map[ $attribute ] ) && ! empty( $value ) ) {
-				$shortcode_attributes[] = sprintf( '%s="%s"', $block_to_shortcode_attributes_map[ $attribute ], $value );
+				$shortcode_attributes[] = sprintf(
+					'%s="%s"',
+					$block_to_shortcode_attributes_map[ $attribute ],
+					$value
+				);
 			}
 		}
 

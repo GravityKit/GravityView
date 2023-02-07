@@ -51,9 +51,13 @@ class EntryField {
 
 			if ( isset( $block_to_shortcode_attributes_map[ $attribute ] ) && ! empty( $value ) ) {
 				if ( 'field_setting_overrides' === $attribute ) {
-					$shortcode_attributes[] = "{$value}";
+					$shortcode_attributes[] = $value;
 				} else {
-					$shortcode_attributes[] = sprintf( '%s="%s"', $block_to_shortcode_attributes_map[ $attribute ], $value );
+					$shortcode_attributes[] = sprintf(
+						'%s="%s"',
+						$block_to_shortcode_attributes_map[ $attribute ],
+						$value
+					);
 				}
 			}
 		}
