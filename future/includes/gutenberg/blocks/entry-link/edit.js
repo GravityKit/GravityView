@@ -67,7 +67,6 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 						<PanelBody title={ __( 'Link Settings', 'gk-gravityview' ) } initialOpen={ false }>
 							<Disabled isDisabled={ !entryId }>
-
 								<SelectControl
 									label={ __( 'Link Action', 'gk-gravityview' ) }
 									value={ action }
@@ -81,6 +80,18 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									onChange={ ( val ) => setAttributes( { action: val } ) }
 								/>
 
+								<SelectControl
+									label={ __( 'Format', 'gk-gravityview' ) }
+									value={ returnFormat }
+									options={ [
+										{ value: 'html', label: __( 'HTML', 'gk-gravityview' ) },
+										{ value: 'url', label: __( 'URL', 'gk-gravityview' ) },
+									] }
+									onChange={ ( returnFormat ) => setAttributes( { returnFormat } ) }
+								/>
+							</Disabled>
+
+							<Disabled isDisabled={ !entryId || returnFormat === 'url' }>
 								<TextControl
 									label={ __( 'Link Text', 'gk-gravityview' ) }
 									value={ content }
@@ -91,16 +102,6 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									label={ __( 'Link Attributes', 'gk-gravityview' ) }
 									value={ linkAtts }
 									onChange={ ( linkAtts ) => setAttributes( { linkAtts } ) }
-								/>
-
-								<SelectControl
-									label={ __( 'Return Format', 'gk-gravityview' ) }
-									value={ returnFormat }
-									options={ [
-										{ value: 'html', label: __( 'HTML', 'gk-gravityview' ) },
-										{ value: 'url', label: __( 'URL', 'gk-gravityview' ) },
-									] }
-									onChange={ ( returnFormat ) => setAttributes( { returnFormat } ) }
 								/>
 							</Disabled>
 						</PanelBody>
