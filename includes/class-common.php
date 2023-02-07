@@ -1321,33 +1321,38 @@ class GVCommon {
 	 * 	[other zones]
 	 * )
 	 *
-	 * @since 1.17.4 Added $apply_filter parameter
+	 * @since 1.17.4 Added $apply_filter parameter.
+	 * @since 2.17   Added $form_id parameter.
 	 *
-	 * @param  int $post_id View ID
-	 * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
-	 * @return array          Multi-array of fields with first level being the field zones. See code comment.
+	 * @param  int   $post_id View ID.
+	 * @param  bool  $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
+	 * @return array Multi-array of fields with first level being the field zones. See code comment.
 	 */
-	public static function get_directory_fields( $post_id, $apply_filter = true ) {
+	public static function get_directory_fields( $post_id, $apply_filter = true, $form_id = 0 ) {
 		$fields = get_post_meta( $post_id, '_gravityview_directory_fields', true );
 
 		if ( $apply_filter ) {
 			/**
 			 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
 			 * @since 1.6.5
+			 * @since 2.16.3 Added the $form_id parameter.
 			 *
 			 * @param $fields array Multi-array of fields with first level being the field zones
 			 * @param $post_id int Post ID
+			 * @param int $form_id The main form ID for the View.
 			 */
-			$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id );
+			$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id, $form_id );
 
 			/**
 			 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
 			 * @since 2.0
+			 * @since 2.16.3 Added the $form_id parameter.
 			 *
 			 * @param array $fields Multi-array of fields with first level being the field zones.
 			 * @param \GV\View $view The View the fields are being pulled for.
+			 * @param int $form_id The main form ID for the View.
 			 */
-			$fields = apply_filters( 'gravityview/view/configuration/fields', $fields, \GV\View::by_id( $post_id ) );
+			$fields = apply_filters( 'gravityview/view/configuration/fields', $fields, \GV\View::by_id( $post_id ), $form_id );
 		}
 
 		return $fields;
