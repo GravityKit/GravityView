@@ -185,7 +185,6 @@ body .ui-tooltip {
 		}
 
 		.dashicons,
-		.gform-icon,
 		.material-icons {
 			display: block;
 			text-align: center;
@@ -218,7 +217,6 @@ body .ui-tooltip {
 		}
 
 		.dashicons,
-		.gform-icon,
 		.gv-icon {
 			display: inline-block;
 			margin: 0 .2em 0 0;
@@ -296,9 +294,7 @@ body .ui-tooltip {
 			}
 		}
 
-		.gform-icon,
 		.dashicons {
-			position: absolute;
 			margin: 0 8px 0 -36px;
 			.rtl & {
 				margin: 0 -36px 0 8px;
@@ -315,7 +311,6 @@ body .ui-tooltip {
 				text-align: center;
 			}
 
-			.gform-icon,
 			.dashicons {
 				display: block;
 				font-size: 30px;
@@ -426,8 +421,6 @@ body .ui-tooltip {
 			color: $color-888;
 			border-radius: 3px;
 			height: 35px;
-
-			.gform-icon,
 			.dashicons {
 				line-height: 35px;
 			}

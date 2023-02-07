@@ -44,10 +44,10 @@ class GravityView_Plugin_Hooks_All_In_One_SEO extends GravityView_Plugin_and_The
 
 	/**
 	 * @inheritDoc
-	 * @since 2.17
+	 * @since 2.10.3
 	 */
-	protected function add_hooks() {
-		parent::add_hooks();
+	public function __construct() {
+		parent::__construct();
 
 		add_filter( 'pre_do_shortcode_tag', array( $this, 'skip_shortcode_processing' ), 10, 4 );
 	}

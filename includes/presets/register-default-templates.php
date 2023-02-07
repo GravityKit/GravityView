@@ -106,11 +106,7 @@ function gravityview_register_placeholder_templates() {
 		return;
 	}
 
-	try {
-		$products_data = $product_manager->get_products_data( [ 'key_by' => 'id' ] );
-	} catch ( Exception $e ) {
-		$products_data = [];
-	}
+	$products_data = $product_manager->get_products_data( [ 'key_by' => 'id' ] );
 
 	foreach ( $placeholders as $placeholder ) {
 		if ( GravityKit\GravityView\Foundation\Helpers\Arr::get( $products_data, "{$placeholder['download_id']}.active" ) ) {
