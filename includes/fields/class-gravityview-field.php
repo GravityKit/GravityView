@@ -289,6 +289,11 @@ abstract class GravityView_Field {
 	 */
 	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
 
+		// Prevent potential errors coming from upstream/other add-ons.
+		if ( ! is_string( $text ) ) {
+			return $text;
+		}
+
 		// Is there is field merge tag? Strip whitespace off the ned, too.
 		preg_match_all( '/{' . preg_quote( $this->_custom_merge_tag ) . ':?(.*?)(?:\s)?}/ism', $text, $matches, PREG_SET_ORDER );
 
