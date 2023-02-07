@@ -96,6 +96,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 						<ServerSideRender
 							block={ blockName }
 							attributes={ attributes }
+							blockPreviewImage={ previewImage }
 						/>
 					</Disabled>
 				</div>
