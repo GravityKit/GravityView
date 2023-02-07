@@ -51,7 +51,7 @@ class Entry {
 				$shortcode_attributes[] = sprintf(
 					'%s="%s"',
 					$block_to_shortcode_attributes_map[ $attribute ],
-					$value
+					str_replace( '"', '\"', $value )
 				);
 			}
 		}
