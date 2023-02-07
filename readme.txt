@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 	- All form fields are added to the Single Entry layout
 	- An Edit Entry Link field is added to the bottom of the Single Entry layout
 * Fixed: `[gventry]` shortcode not working when using the Entry ID is "first" or "last"
+* Fixed: Fatal error when using the Gravity Forms Survey Add-On
 
 __Developer Updates:__
 
