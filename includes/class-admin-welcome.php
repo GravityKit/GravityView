@@ -272,23 +272,10 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
+
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
-
-				<h3>2.16.6 on January 12, 2023</h3>
-
-				<ul>
-					<li>Fixed: Fatal error due to an uncaught PHP exception</li>
-					<li>Fixed: It was not possible to select any content inside the field settings window in the View editor</li>
-				</ul>
-
-				<h3>2.16.5 on January 5, 2023</h3>
-
-				<ul>
-					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.0.8</li>
-					<li>Improved: Internal changes to allow using Custom Content fields on the Edit Screen with the <a href="https://www.gravitykit.com/extensions/diy-layout/">DIY Layout</a></li>
-				</ul>
 
 				<h3>2.16.4 on December 23, 2022</h3>
 

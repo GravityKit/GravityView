@@ -40,15 +40,17 @@ class GF_Form extends Form implements \ArrayAccess {
 	 */
 	public static function by_id( $form_id ) {
 
-		static $forms = array();
+		$form = wp_cache_get( 'gf_form_' . $form_id, 'gravityview' );
 
-		$form = isset( $forms[ $form_id ] ) ? $forms[ $form_id ] : \GFAPI::get_form( $form_id );
-
-		$forms[ $form_id ] = $form;
+		if ( ! $form ) {
+			$form = \GFAPI::get_form( $form_id );
+		}
 
 		if ( ! $form ) {
 			return null;
 		}
+
+		wp_cache_set( 'gf_form_' . $form_id, $form, 'gravityview' );
 
 		$self = new self();
 		$self->form = $form;

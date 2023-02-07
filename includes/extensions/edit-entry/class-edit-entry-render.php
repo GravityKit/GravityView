@@ -254,8 +254,6 @@ class GravityView_Edit_Entry_Render {
 
 		$this->view_id = $view ? $view->ID : $gravityview_view->getViewId();
 
-		$this->view = $view;
-
 		$this->post_id = \GV\Utils::get( $post, 'ID', null );
 
 		self::$nonce_key = GravityView_Edit_Entry::get_nonce_key( $this->view_id, $this->form_id, $this->entry['id'] );
@@ -301,6 +299,8 @@ class GravityView_Edit_Entry_Render {
 			gravityview()->log->error( 'User is not allowed to edit this entry; returning', array( 'data' => $this->entry ) );
 			return;
 		}
+
+		$this->view = $view;
 
 		$this->print_scripts();
 
@@ -2361,7 +2361,7 @@ class GravityView_Edit_Entry_Render {
 
 		}
 
-		if( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $this->entry, $this->view ) ) {
+		if( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $this->entry ) ) {
 			$error = __( 'You do not have permission to edit this entry.', 'gk-gravityview');
 		}
 

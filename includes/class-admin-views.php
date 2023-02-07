@@ -888,7 +888,7 @@ class GravityView_Admin_Views {
 		foreach ( $fields as &$field ) {
 			foreach ( $gv_fields as $gv_field ) {
 				if ( \GV\Utils::get( $field, 'type' ) === $gv_field->name ) {
-					$field['icon'] = $gv_field->get_icon();
+					$field['icon'] = \GV\Utils::get( $gv_field, 'icon' );
 				}
 			}
 		}
@@ -989,12 +989,10 @@ class GravityView_Admin_Views {
 			if ( 'field' === $type ) {
 				$available_items[ $form_id ] = $this->get_available_fields( $form, $zone );
 
-				if ( ! empty( $post->ID ) ) {
-					$joined_forms = gravityview_get_joined_forms( $post->ID );
+				$joined_forms = gravityview_get_joined_forms( $post->ID );
 
-					foreach ( $joined_forms as $joined_form ) {
-						$available_items[ $joined_form->ID ] = $this->get_available_fields( $joined_form->ID, $zone );
-					}
+				foreach ( $joined_forms as $joined_form ) {
+					$available_items[ $joined_form->ID ] = $this->get_available_fields( $joined_form->ID, $zone );
 				}
 			} else {
 				$available_items[ $form_id ] = \GV\Widget::registered();
@@ -1030,7 +1028,7 @@ class GravityView_Admin_Views {
 											// Maybe has a form ID
 											$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
 
-											$input_type = null;
+											$input_type = NULL;
 
 											if ( $form_id ) {
 												$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false ;
@@ -1051,9 +1049,9 @@ class GravityView_Admin_Views {
 												}
 
 												$original_item = $field;
+											} else {
+												$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
 											}
-
-											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : null;
 
 											// Field options dialog box
 											$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
@@ -1411,10 +1409,10 @@ class GravityView_Admin_Views {
 			)
 		) );
 
+		wp_enqueue_style( 'gravityview_views_styles' );
+
         // Enqueue scripts needed for merge tags
         self::enqueue_gravity_forms_scripts();
-
-		wp_enqueue_style( 'gravityview_views_styles' );
 
 		// 2.5 changed how Merge Tags are enqueued
 		if ( is_callable( array( 'GFCommon', 'output_hooks_javascript') ) ) {
@@ -1445,12 +1443,6 @@ class GravityView_Admin_Views {
 		}
 
 		wp_enqueue_script( $scripts );
-
-		$styles = array(
-			'gform_admin_icons',
-		);
-
-		wp_enqueue_style( $styles );
 	}
 
 	/**
