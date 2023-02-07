@@ -128,7 +128,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 			{ shouldPreview && <>
 				<div className="block-preview">
-					<Disabled>
+					<Disabled isDisabled={ true } toggleOpacity={ false }>
 						<ServerSideRender
 							block={ blockName }
 							attributes={ attributes }
