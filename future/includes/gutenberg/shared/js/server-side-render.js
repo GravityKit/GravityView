@@ -1,7 +1,8 @@
+import { __ } from '@wordpress/i18n';
 import { useState, useEffect, useCallback } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
-import { Placeholder, Spinner } from '@wordpress/components';
+import { Spinner } from '@wordpress/components';
 
 import InnerHTML from 'dangerously-set-html-content';
 import { debounce } from 'lodash';
