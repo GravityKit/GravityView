@@ -5,13 +5,20 @@ import { addQueryArgs } from '@wordpress/url';
 import { Spinner } from '@wordpress/components';
 
 import InnerHTML from 'dangerously-set-html-content';
-import { debounce } from 'lodash';
 import { useAtom } from 'jotai';
 
 import globalStore from './global-store';
 
 const API_PATH = '/wp/v2/block-renderer';
 const DEBOUNCE_FETCH = 500; // Debounce the fetch so that it only happens when the block's attributes haven't changed in 500ms.
+
+const useDebouncedEffect = ( effect, deps, delay ) => {
+	useEffect( () => {
+		const handler = setTimeout( () => effect(), delay );
+
+		return () => clearTimeout( handler );
+	}, [ ...( deps || [] ), delay ] );
+};
 
 export const loadAsset = ( { asset, type, onLoad } ) => {
 	const el = type === 'js'
@@ -53,16 +60,18 @@ const ServerSideRender = ( props ) => {
 	const [ loadedStyles, setLoadedStyles ] = useAtom( globalStore.loadedStyles );
 
 	useEffect( () => {
-		fetch();
+		const handler = setTimeout( () => fetch(), DEBOUNCE_FETCH );
+
+		return () => clearTimeout( handler );
 	}, [ attributes ] );
 
-	const fetch = debounce( () => {
-		setIsFetching( true );
-
+	const fetch = () => {
 		const path = addQueryArgs( `${ API_PATH }/${ block }`, {
 			context: 'edit',
 			attributes,
 		} );
+
+		setIsFetching( true );
 
 		apiFetch( { path } )
 			.then( ( res ) => {
@@ -105,16 +114,17 @@ const ServerSideRender = ( props ) => {
 
 					setTimeout( () => {
 						setResponse( response.content );
-						setIsFetching( false );
 
 					}, 1000 );
 				} else {
 					setResponse( res.rendered );
-					setIsFetching( false );
 				}
 			} )
-			.catch( ( error ) => setError( error ) );
-	}, DEBOUNCE_FETCH );
+			.catch( ( error ) => setError( error ) )
+			.finally( () => {
+				setIsFetching( false );
+			} );
+	};
 
 	if ( error ) {
 		return typeof onError === 'function'
