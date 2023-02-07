@@ -56,68 +56,65 @@ const ServerSideRender = ( props ) => {
 		fetch();
 	}, [ attributes ] );
 
-	const fetch = useCallback(
-		debounce( () => {
-			setIsFetching( true );
+	const fetch = debounce( () => {
+		setIsFetching( true );
 
-			const path = addQueryArgs( `${ API_PATH }/${ block }`, {
-				context: 'edit',
-				attributes,
-			} );
+		const path = addQueryArgs( `${ API_PATH }/${ block }`, {
+			context: 'edit',
+			attributes,
+		} );
 
-			apiFetch( { path } )
-				.then( ( res ) => {
-					if ( dataType === 'json' ) {
-						const response = JSON.parse( res.rendered );
+		apiFetch( { path } )
+			.then( ( res ) => {
+				if ( dataType === 'json' ) {
+					const response = JSON.parse( res.rendered );
 
-						if ( loadStyles ) {
-							Object.values( response.styles ).forEach( ( asset ) => {
-								if ( loadedStyles.has( asset ) ) {
-									return;
-								}
+					if ( loadStyles ) {
+						Object.values( response.styles ).forEach( ( asset ) => {
+							if ( loadedStyles.has( asset ) ) {
+								return;
+							}
 
-								loadAsset( { asset, type: 'css' } );
+							loadAsset( { asset, type: 'css' } );
 
-								setLoadedStyles( loadedStyles.add( asset ) );
-							} );
-						}
-
-						if ( loadScripts ) {
-							Object.values( response.scripts ).forEach( ( asset ) => {
-								let assetToLoad = asset;
-
-								if ( loadedScripts.has( asset ) || loadedScripts.has( asset?.src ) ) {
-									return;
-								}
-
-								if ( asset?.src ) {
-									assetToLoad = asset.src;
-								}
-
-								if ( asset?.data ) {
-									eval( asset.data );
-								}
-
-								loadAsset( { assetToLoad, type: 'js' } );
-
-								setLoadedScripts( loadedScripts.add( assetToLoad ) );
-							} );
-						}
-
-						setTimeout( () => {
-							setResponse( response.content );
-							setIsFetching( false );
-
-						}, 1000 );
-					} else {
-						setResponse( res.rendered );
-						setIsFetching( false );
+							setLoadedStyles( loadedStyles.add( asset ) );
+						} );
 					}
-				} )
-				.catch( ( error ) => setError( error ) );
-		}, DEBOUNCE_FETCH ),
-		[ attributes ]
-	);
+
+					if ( loadScripts ) {
+						Object.values( response.scripts ).forEach( ( asset ) => {
+							let assetToLoad = asset;
+
+							if ( loadedScripts.has( asset ) || loadedScripts.has( asset?.src ) ) {
+								return;
+							}
+
+							if ( asset?.src ) {
+								assetToLoad = asset.src;
+							}
+
+							if ( asset?.data ) {
+								eval( asset.data );
+							}
+
+							loadAsset( { assetToLoad, type: 'js' } );
+
+							setLoadedScripts( loadedScripts.add( assetToLoad ) );
+						} );
+					}
+
+					setTimeout( () => {
+						setResponse( response.content );
+						setIsFetching( false );
+
+					}, 1000 );
+				} else {
+					setResponse( res.rendered );
+					setIsFetching( false );
+				}
+			} )
+			.catch( ( error ) => setError( error ) );
+	}, DEBOUNCE_FETCH );
 
 	if ( error ) {
 		return typeof onError === 'function'
