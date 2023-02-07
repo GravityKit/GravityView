@@ -10,15 +10,7 @@ import { useAtom } from 'jotai';
 import globalStore from './global-store';
 
 const API_PATH = '/wp/v2/block-renderer';
-const DEBOUNCE_FETCH = 500; // Debounce the fetch so that it only happens when the block's attributes haven't changed in 500ms.
-
-const useDebouncedEffect = ( effect, deps, delay ) => {
-	useEffect( () => {
-		const handler = setTimeout( () => effect(), delay );
-
-		return () => clearTimeout( handler );
-	}, [ ...( deps || [] ), delay ] );
-};
+const DEBOUNCE_FETCH = 500; // Used to debounce fetch request so that it only happens when the block's attributes haven't changed in 500ms.
 
 export const loadAsset = ( { asset, type, onLoad } ) => {
 	const el = type === 'js'
