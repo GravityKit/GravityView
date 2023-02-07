@@ -201,6 +201,36 @@ abstract class GravityView_Field {
 	}
 
 	/**
+	 * Returns the icon for a field
+	 *
+	 * @since 2.17
+	 *
+	 * @return string The dashicon or gform-icon class name for a field.
+	 */
+	public function get_icon() {
+
+		// GF only has icons in 2.5+
+		if ( ! gravityview()->plugin->is_GF_25() ) {
+			return $this->icon;
+		}
+
+		// If the field doesn't have an associated GF field class, return the default icon.
+		if ( empty( $this->_gf_field_class_name ) || ! class_exists( $this->_gf_field_class_name ) ) {
+			return $this->icon;
+		}
+
+		/** @var GF_Field $gf_field */
+		$gf_field = GF_Fields::get( $this->name );
+
+		// If the field exists and is a GF_Field, return the icon.
+		if( $gf_field && $gf_field instanceof GF_Field ) {
+			return $gf_field->get_form_editor_field_icon();
+		}
+
+		return $this->icon;
+	}
+
+	/**
 	 * Add the field to the Filter & Sort available fields
 	 *
 	 * @since 1.19

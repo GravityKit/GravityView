@@ -3,11 +3,11 @@
  * @file class-gravityview-field-shipping.php
  * @package GravityView
  * @subpackage includes\fields
- * @since 2.16.3
+ * @since 2.17
  */
 
 /**
- * @since 2.16.3
+ * @since 2.17
  */
 class GravityView_Field_Shipping extends GravityView_Field {
 
@@ -26,9 +26,6 @@ class GravityView_Field_Shipping extends GravityView_Field {
 	/** @see GF_Field_Shipping */
 	var $_gf_field_class_name = 'GF_Field_Shipping';
 
-	/**
-	 * @since 1.20
-	 */
 	public function __construct() {
 		$this->label       = esc_html__( 'Shipping', 'gk-gravityview' );
 		$this->description = esc_html__( 'The shipping fee for the payment.', 'gk-gravityview' );
