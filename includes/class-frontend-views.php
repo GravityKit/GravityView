@@ -115,7 +115,7 @@ class GravityView_frontend {
 	/**
 	 * Fires when there are no entries in the View.
 	 *
-	 * @param string $no_entries_text
+	 * @param string               $no_entries_text
 	 * @param \GV\Template_Context $context
 	 */
 	public function no_entries( $no_entries_text, $context ) {
@@ -123,9 +123,9 @@ class GravityView_frontend {
 			return $no_entries_text;
 		}
 
-		$no_entries_option = (int)$context->view->settings->get( 'no_entries_options' );
+		$no_entries_option = (int) $context->view->settings->get( 'no_entries_options' );
 		if ( $no_entries_option === 1 ) {
-			$form_id = (int)$context->view->settings->get( 'no_entries_form' );
+			$form_id = (int) $context->view->settings->get( 'no_entries_form' );
 			if ( $form_id !== 0 ) {
 				return \GFForms::get_form( $form_id );
 			}
