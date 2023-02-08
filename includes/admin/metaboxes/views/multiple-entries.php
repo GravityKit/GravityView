@@ -18,6 +18,8 @@ $settings = [
 	'no_entries_options',
 	'no_results_text',
 	'no_entries_form',
+	'no_entries_form_title',
+	'no_entries_form_description',
 	'no_entries_redirect',
 	'no_search_results_text',
 ];

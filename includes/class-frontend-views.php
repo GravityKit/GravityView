@@ -119,20 +119,34 @@ class GravityView_frontend {
 	 * @param \GV\Template_Context $context
 	 */
 	public function no_entries( $no_entries_text, $context ) {
+
 		if ( $context->request->is_search() ) {
 			return $no_entries_text;
 		}
 
 		$no_entries_option = (int) $context->view->settings->get( 'no_entries_options' );
-		if ( $no_entries_option === 1 ) {
+
+		ray( $context->view->settings->get( 'no_entries_options' ), $no_entries_option );
+
+		if ( 1 === $no_entries_option ) {
 			$form_id = (int) $context->view->settings->get( 'no_entries_form' );
-			if ( $form_id !== 0 ) {
-				return \GFForms::get_form( $form_id );
+
+			if ( ! empty( $form_id ) ) {
+
+				$form_title = $context->view->settings->get( 'no_entries_form_title', true );
+				$form_desc = $context->view->settings->get( 'no_entries_form_description', true );
+
+				return \GFForms::get_form( $form_id, $form_title, $form_desc );
 			}
-		} elseif ( $no_entries_option === 2 ) {
+		}
+
+		if ( 2 === $no_entries_option ) {
+
 			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect' );
+
 			if ( $no_entries_redirect ) {
 				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
+
 				wp_redirect( $redirect_url );
 				exit;
 			}

@@ -125,6 +125,24 @@ class View_Settings extends Settings {
 
 				'no_entries_redirect'     => array(
 					'label'       => __( '"No Entries" Redirect URL', 'gk-gravityview' ),
+				'no_entries_form_title'       => array(
+					'label'             => __( 'Form Title', 'gk-gravityview' ),
+					'type'              => 'checkbox',
+					'group'             => 'default',
+					'requires'          => 'no_entries_options=1',
+					'requires_not'      => 'no_entries_form=',
+					'value'             => 1,
+					'show_in_shortcode' => true,
+				),
+				'no_entries_form_description' => array(
+					'label'             => __( 'Form Description', 'gk-gravityview' ),
+					'type'              => 'checkbox',
+					'group'             => 'default',
+					'requires'          => 'no_entries_options=1',
+					'requires_not'      => 'no_entries_form=',
+					'value'             => 1,
+					'show_in_shortcode' => true,
+				),
 					'group'       => 'default',
 					'desc'        => __( 'If there are no entries, the user will be taken to this URL.', 'gk-gravityview' ),
 					'type'        => 'text',
