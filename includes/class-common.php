@@ -288,10 +288,12 @@ class GVCommon {
 			return array();
 		}
 
-		$options = array();
+		$options = array(
+			'' => esc_html__( 'Select a Form', 'gk-gravityview' ),
+		);
 
 		foreach ( $forms as $form ) {
-			$options[ $form['id'] ] = $form['title'];
+			$options[ (int) $form['id'] ] = esc_html( $form['title'] );
 		}
 
 		return $options;
