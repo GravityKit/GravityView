@@ -133,8 +133,8 @@ class GravityView_frontend {
 			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect' );
 			if ( $no_entries_redirect ) {
 				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
-				wp_safe_redirect( $redirect_url );
-				exit();
+				wp_redirect( $redirect_url );
+				exit;
 			}
 		}
 
