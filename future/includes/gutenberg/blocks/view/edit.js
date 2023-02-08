@@ -72,10 +72,6 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		}
 
 		if ( /gv-datatables/.test( content ) ) {
-			const contentEl = document.createElement( 'div' );
-
-			contentEl.innerHTML = content;
-
 			[ ...contentEl.querySelectorAll( 'table.gv-datatables' ) ].forEach( el => {
 				const tbody = document.createElement( 'tbody' );
 
