@@ -266,22 +266,35 @@ class GVCommon {
 	}
 
 	/**
-	 * Get All forms to use as options in view settings.
+	 * Get all forms to use as options in View settings.
+	 *
+	 * @since 2.17
+	 *
+	 * @uses GFAPI::get_form()
+	 * @used-by \GV\View_Settings::defaults()
+	 *
+	 * @param bool   $active      True if active forms are returned. False to get inactive forms. Defaults to true.
+	 * @param bool   $trash       True if trashed forms are returned. False to exclude trash. Defaults to false.
+	 * @param string $sort_column The column to sort the results on.
+	 * @param string $sort_dir    The sort direction, ASC or DESC.
 	 *
 	 * @return array
 	 */
-	public static function get_forms_as_options() {
-		$forms = GFAPI::get_forms();
-	
+	public static function get_forms_as_options( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC' ) {
+
+		$forms = GFAPI::get_forms( $active, $trash, $sort_column, $sort_dir );
+
 		if ( empty( $forms ) ) {
 			return array();
 		}
 
-		$form_options = array();
+		$options = array();
+
 		foreach ( $forms as $form ) {
-			$form_options[ $form['id'] ] = $form['title'];
+			$options[ $form['id'] ] = $form['title'];
 		}
-		return $form_options;
+
+		return $options;
 	}
 
 	/**
