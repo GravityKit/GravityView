@@ -2,33 +2,22 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.16.6\n"
+"Project-Id-Version: GravityView 2.16.5\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-01-18T03:06:11+00:00\n"
+"POT-Creation-Date: 2023-01-06T01:23:56+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
-#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:93
-#: future/includes/_gutenberg/gutenberg/class-gv-gutenberg-blocks.php:73
-#: future/includes/_gutenberg/gutenberg/_class-gv-gutenberg-blocks.php:69
 #: includes/class-gravityview-admin-bar.php:52
 #: includes/class-gravityview-roles-capabilities.php:145
-#: includes/gutenberg/class-gv-gutenberg-blocks.php:74
-#: future/includes/_gutenberg/_blocks/entry-link/index.js:19
-#: future/includes/_gutenberg/_blocks/entry-link/index.js:97
-#: future/includes/_gutenberg/_blocks/field/index.js:19
-#: future/includes/_gutenberg/_blocks/field/index.js:72
-#: future/includes/_gutenberg/_blocks/view-details/index.js:60
-#: future/includes/_gutenberg/_blocks/_entry/index.js:19
-#: future/includes/_gutenberg/_blocks/_entry/index.js:65
 msgid "GravityView"
 msgstr ""
 
@@ -199,9 +188,6 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1094
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: templates/fields/field-edit_link-html.php:38
-#: future/includes/gutenberg/blocks/entry-link/edit.js:65
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:90
 msgid "Edit Entry"
 msgstr ""
 
@@ -565,9 +551,6 @@ msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:337
-#: future/includes/gutenberg/blocks/view/edit.js:175
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:255
 msgid "Search Value"
 msgstr ""
 
@@ -577,9 +560,6 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:345
 #: includes/widgets/search-widget/class-search-widget.php:291
-#: future/includes/gutenberg/blocks/view/edit.js:169
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:245
 msgid "Search Field"
 msgstr ""
 
@@ -588,9 +568,6 @@ msgid "If Search Value is set, you can define a specific field to search in. Oth
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:353
-#: future/includes/gutenberg/blocks/view/edit.js:181
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:265
 msgid "Search Operator"
 msgstr ""
 
@@ -603,9 +580,6 @@ msgid "When viewing a single entry, change the title of the page to this setting
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:373
-#: future/includes/gutenberg/blocks/view/edit.js:222
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:322
 msgid "Back Link Label"
 msgstr ""
 
@@ -899,29 +873,6 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/entry-field/block.php:19
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.php:19
-#: future/includes/_gutenberg/_blocks/entry-link/index.js:17
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.php:19
-#: future/includes/gutenberg/blocks/view-details/block.php:19
-#: future/includes/_gutenberg/_blocks/_entry/index.js:17
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.php:54
-msgid "No entry found."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.php:19
-msgid "GravityView View"
-msgstr ""
-
 #: future/includes/rest/class-gv-rest-route.php:184
 msgid "Must set route name in subclass."
 msgstr ""
@@ -1147,10 +1098,6 @@ msgid "Field Details"
 msgstr ""
 
 #: includes/admin/class.render.settings.php:392
-#: future/includes/gutenberg/blocks/entry-field/edit.js:81
-#: future/includes/gutenberg/blocks/entry-field/edit.js:82
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/_gutenberg/_blocks/field/inspector.js:119
 msgid "Field ID"
 msgstr ""
 
@@ -1189,9 +1136,6 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:129
 #: includes/class-admin-add-shortcode.php:117
-#: future/includes/_gutenberg/_blocks/view-details/inspector.js:24
-#: future/includes/_gutenberg/_blocks/view/inspector.js:53
-#: future/includes/_gutenberg/_blocks/_entry/inspector.js:33
 msgid "View Settings"
 msgstr ""
 
@@ -1203,9 +1147,6 @@ msgstr ""
 #: includes/extensions/delete-entry/fields/delete_link.php:19
 #: templates/fields/field-delete_link-html.php:38
 #: templates/fields/field-duplicate_link-html.php:38
-#: future/includes/gutenberg/blocks/entry-link/edit.js:66
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:91
 msgid "Delete Entry"
 msgstr ""
 
@@ -1390,20 +1331,6 @@ msgstr ""
 
 #: includes/class-admin-add-shortcode.php:102
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:301
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/gutenberg/shared/js/view-selector.js:7
-#: future/includes/_gutenberg/_blocks/entry-link/index.js:85
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:45
-#: future/includes/_gutenberg/_blocks/field/index.js:60
-#: future/includes/_gutenberg/_blocks/field/inspector.js:24
-#: future/includes/_gutenberg/_blocks/view-details/index.js:48
-#: future/includes/_gutenberg/_blocks/view-details/inspector.js:17
-#: future/includes/_gutenberg/_blocks/_entry/index.js:53
-#: future/includes/_gutenberg/_blocks/_entry/inspector.js:25
 msgid "Select a View"
 msgstr ""
 
@@ -1412,7 +1339,6 @@ msgid "&mdash; Select a View to Insert &mdash;"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:108
-#: includes/gutenberg/class-gv-gutenberg-blocks.php:114
 #: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:307
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:197
 msgid "(no title)"
@@ -1699,23 +1625,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:728
+#: includes/class-admin-welcome.php:721
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:778
+#: includes/class-admin-welcome.php:771
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:816
+#: includes/class-admin-welcome.php:809
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:848
+#: includes/class-admin-welcome.php:841
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:849
+#: includes/class-admin-welcome.php:842
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -1843,11 +1769,6 @@ msgstr ""
 
 #: includes/class-common.php:372
 #: includes/fields/class-gravityview-field-post-id.php:28
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/gutenberg/shared/js/post-selector.js:50
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:144
-#: future/includes/_gutenberg/_blocks/view/inspector.js:333
 msgid "Post ID"
 msgstr ""
 
@@ -2176,9 +2097,6 @@ msgstr ""
 #: includes/fields/class-gravityview-field-entry-link.php:80
 #: templates/deprecated/fields/entry_link.php:16
 #: templates/fields/field-entry_link-html.php:27
-#: future/includes/gutenberg/blocks/entry-link/edit.js:64
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:89
 msgid "View Details"
 msgstr ""
 
@@ -2910,9 +2828,6 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:27
 #: includes/widgets/search-widget/class-search-widget.php:244
-#: future/includes/gutenberg/blocks/view/edit.js:80
-#: future/includes/gutenberg/blocks/view/edit.js:119
-#: future/includes/gutenberg/build/view.js:1
 msgid "Date"
 msgstr ""
 
@@ -3073,30 +2988,11 @@ msgid "Hidden"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-html.php:26
-#: future/includes/gutenberg/blocks/entry-link/edit.js:84
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:132
 msgid "HTML"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-id.php:24
 #: includes/widgets/search-widget/class-search-widget.php:371
-#: future/includes/gutenberg/blocks/entry-field/edit.js:50
-#: future/includes/gutenberg/blocks/entry-field/edit.js:70
-#: future/includes/gutenberg/blocks/entry-field/edit.js:71
-#: future/includes/gutenberg/blocks/entry-link/edit.js:48
-#: future/includes/gutenberg/blocks/entry/edit.js:41
-#: future/includes/gutenberg/blocks/entry/edit.js:61
-#: future/includes/gutenberg/blocks/entry/edit.js:62
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/index.js:111
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:68
-#: future/includes/_gutenberg/_blocks/field/inspector.js:46
-#: future/includes/_gutenberg/_blocks/field/inspector.js:99
-#: future/includes/_gutenberg/_blocks/_entry/inspector.js:48
-#: future/includes/_gutenberg/_blocks/_entry/inspector.js:102
 msgid "Entry ID"
 msgstr ""
 
@@ -3888,12 +3784,6 @@ msgstr ""
 
 #: includes/widgets/class-gravityview-widget-page-size.php:37
 #: includes/widgets/class-gravityview-widget-page-size.php:95
-#: future/includes/gutenberg/blocks/view-details/edit.js:40
-#: future/includes/gutenberg/blocks/view/edit.js:143
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view-details/inspector.js:46
-#: future/includes/_gutenberg/_blocks/view/inspector.js:203
 msgid "Page Size"
 msgstr ""
 
@@ -5624,403 +5514,4 @@ msgstr ""
 
 #: vendor_prefixed/trustedlogin/client/src/SupportUser.php:208
 msgid "User not created; User with that email already exists"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:21
-#: future/includes/gutenberg/blocks/entry-link/edit.js:26
-#: future/includes/gutenberg/blocks/entry/edit.js:14
-#: future/includes/gutenberg/blocks/view-details/edit.js:12
-#: future/includes/gutenberg/blocks/view/edit.js:35
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "[control] placeholder should not be translated and will be replaced with \"an Entry ID\" or \"a View ID\" text."
-msgid "Please select [control] from the block controls."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:23
-#: future/includes/gutenberg/build/entry-field.js:1
-msgid "These are space-separated overrides for field settings (e.g., title, label, etc.) using the key=\"value\" format. See the [link]GravityView documentation[/link] for more information."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:27
-#: future/includes/gutenberg/blocks/entry-link/edit.js:30
-#: future/includes/gutenberg/blocks/entry/edit.js:18
-#: future/includes/gutenberg/blocks/view-details/edit.js:16
-#: future/includes/gutenberg/blocks/view/edit.js:39
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/gutenberg/build/view.js:1
-msgid "Block preview image."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:37
-#: future/includes/gutenberg/blocks/entry-link/edit.js:40
-#: future/includes/gutenberg/blocks/entry/edit.js:28
-#: future/includes/gutenberg/blocks/view-details/edit.js:26
-#: future/includes/gutenberg/blocks/view/edit.js:53
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:53
-#: future/includes/_gutenberg/_blocks/field/inspector.js:32
-msgid "Main Settings"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:44
-#: future/includes/gutenberg/blocks/entry/edit.js:35
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry.js:1
-msgid "Entry Type"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:57
-#: future/includes/gutenberg/blocks/entry/edit.js:48
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/_gutenberg/_blocks/field/inspector.js:77
-#: future/includes/_gutenberg/_blocks/_entry/inspector.js:80
-msgid "First"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:64
-#: future/includes/gutenberg/blocks/entry/edit.js:55
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/_gutenberg/_blocks/field/inspector.js:92
-#: future/includes/_gutenberg/_blocks/_entry/inspector.js:95
-msgid "Last"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:90
-#: future/includes/gutenberg/blocks/entry-field/edit.js:91
-#: future/includes/gutenberg/build/entry-field.js:1
-msgid "Field Setting Overrides"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:108
-#: future/includes/gutenberg/blocks/entry-link/edit.js:113
-#: future/includes/gutenberg/blocks/entry/edit.js:78
-#: future/includes/gutenberg/blocks/view-details/edit.js:54
-#: future/includes/gutenberg/blocks/view/edit.js:238
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/gutenberg/build/view.js:1
-msgid "a View ID"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:109
-#: future/includes/gutenberg/blocks/entry-link/edit.js:114
-#: future/includes/gutenberg/blocks/entry/edit.js:79
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-msgid "an Entry ID"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:110
-#: future/includes/gutenberg/build/entry-field.js:1
-msgid "a Field ID"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/edit.js:118
-#: future/includes/gutenberg/blocks/entry-link/edit.js:122
-#: future/includes/gutenberg/blocks/entry/edit.js:87
-#: future/includes/gutenberg/blocks/view-details/edit.js:62
-#: future/includes/gutenberg/blocks/view/edit.js:246
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/gutenberg/build/view.js:1
-msgid "Rendering preview..."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/edit.js:58
-#: future/includes/gutenberg/build/entry-link.js:1
-msgid "Link Settings"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/edit.js:60
-#: future/includes/gutenberg/build/entry-link.js:1
-msgid "Link Action"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/edit.js:73
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/index.js:125
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:102
-msgid "Link Text"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/edit.js:79
-#: future/includes/gutenberg/blocks/view/edit.js:141
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/view.js:1
-msgid "Extra Settings"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/edit.js:81
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:129
-msgid "Return Format"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/edit.js:85
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:133
-msgid "URL"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/edit.js:93
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:179
-msgid "Link Attributes"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/edit.js:99
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:189
-msgid "Field Values"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/edit.js:34
-#: future/includes/gutenberg/build/view-details.js:1
-msgid "Detail"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/edit.js:37
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/_gutenberg/_blocks/view-details/inspector.js:43
-msgid "Total Entries"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/edit.js:38
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/_gutenberg/_blocks/view-details/inspector.js:44
-msgid "First Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/edit.js:39
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/_gutenberg/_blocks/view-details/inspector.js:45
-msgid "Last Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:60
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:66
-msgid "Start Date"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:67
-#: future/includes/gutenberg/blocks/view/edit.js:106
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:80
-#: future/includes/_gutenberg/_blocks/view/inspector.js:142
-msgid "Static (Calendar)"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:75
-#: future/includes/gutenberg/blocks/view/edit.js:114
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:92
-#: future/includes/_gutenberg/_blocks/view/inspector.js:154
-msgid "Relative"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:91
-#: future/includes/gutenberg/blocks/view/edit.js:92
-#: future/includes/gutenberg/blocks/view/edit.js:130
-#: future/includes/gutenberg/blocks/view/edit.js:131
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:110
-#: future/includes/_gutenberg/_blocks/view/inspector.js:172
-msgid "Relative Date"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:99
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:128
-msgid "End Date"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:151
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:215
-msgid "Sort Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:159
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:225
-msgid "Sort Direction"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:162
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:230
-msgid "Ascending"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:163
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:234
-msgid "Descending"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:184
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"is\"."
-msgid "Is"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:185
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"isnot\"."
-msgid "Is Not"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:186
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"<>\"."
-msgid "Not Equal"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:187
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"not in\"."
-msgid "Not In"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:188
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"in\"."
-msgid "In"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:189
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \">\"."
-msgid "Greater"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:190
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"<\"."
-msgid "Lesser"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:191
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"contains\"."
-msgid "Contains"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:192
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"starts_with\"."
-msgid "Starts With"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:193
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"ends_with\"."
-msgid "Ends With"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:194
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"like\"."
-msgid "Like"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:195
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \">=\"."
-msgid "Greater Or Equal"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:196
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes search operator \"<=\"."
-msgid "Lesser Or Equal"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:202
-#: future/includes/gutenberg/build/view.js:1
-msgctxt "Denotes CSS class"
-msgid "Class"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:208
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:300
-msgid "Offset"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:216
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/_gutenberg/_blocks/view/inspector.js:312
-msgid "Single Title"
-msgstr ""
-
-#: future/includes/gutenberg/build/entry-field.js:1
-#: future/includes/gutenberg/build/entry-link.js:1
-#: future/includes/gutenberg/build/entry.js:1
-#: future/includes/gutenberg/build/view-details.js:1
-#: future/includes/gutenberg/build/view.js:1
-#: future/includes/gutenberg/shared/js/view-selector.js:8
-msgid "View"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:85
-msgid "Action"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:112
-#: future/includes/_gutenberg/_blocks/field/inspector.js:144
-#: future/includes/_gutenberg/_blocks/view-details/inspector.js:56
-#: future/includes/_gutenberg/_blocks/view/inspector.js:185
-#: future/includes/_gutenberg/_blocks/_entry/inspector.js:122
-msgid "Preview"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/entry-link/inspector.js:127
-#: future/includes/_gutenberg/_blocks/view/inspector.js:200
-msgid "More Settings"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/field/index.js:17
-msgid "GravityView Field"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/field/inspector.js:62
-#: future/includes/_gutenberg/_blocks/_entry/inspector.js:65
-msgid "ID"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/field/inspector.js:134
-msgid "Custom Label"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/view-details/index.js:17
-#: future/includes/_gutenberg/_blocks/view-details/index.js:19
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/view-details/inspector.js:40
-msgid "Details"
-msgstr ""
-
-#: future/includes/_gutenberg/_blocks/view/inspector.js:290
-msgid "Class"
 msgstr ""
