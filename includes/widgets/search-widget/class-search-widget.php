@@ -118,6 +118,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_action( 'gravityview_search_widget_fields_after', array( $this, 'add_preview_inputs' ) );
 
 			add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_args' ) );
+
+			// All other GravityView-added hooks for this filter run at the default 10.
+			add_filter( 'gravityview_widget_search_filters', array( $this, 'maybe_sieve_filter_choices' ), 1000, 4 );
 		}
 
 		parent::__construct( esc_html__( 'Search Bar', 'gk-gravityview' ), null, $default_values, $settings );
@@ -1680,13 +1683,49 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter['type'] = 'created_by';
 		}
 
-		if ( ! empty( $filter['choices'] ) ) {
+		/**
+		 * @filter `gravityview/search/filter_details` Filter the output filter details for the Search widget.
+		 * @since 2.5
+		 * @param array $filter The filter details
+		 * @param array $field The search field configuration
+		 * @param \GV\Context The context
+		 */
+		return apply_filters( 'gravityview/search/filter_details', $filter, $field, $context );
+	}
 
-			$sieve_choices = \GV\Utils::get( $widget_args, 'sieve_choices', false );
+	/**
+	 * If sieve choices is enabled, run it for each of the fields with choices.
+	 *
+	 * @since 2.16.6
+	 *
+	 * @uses sieve_filter_choices
+	 *
+	 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
+	 * @param GravityView_Widget_Search $widget Current widget object
+	 * @param array $widget_args Args passed to this method. {@since 1.8}
+	 * @param \GV\Template_Context $context
+	 *
+	 * @return array If the search field GF Field type is `address`, and there are choices to add, adds them and changes the input type. Otherwise, sets the input to text.
+	 */
+	public function maybe_sieve_filter_choices( $search_fields, $widget, $widget_args, $context ) {
+
+		$sieve_choices = \GV\Utils::get( $widget_args, 'sieve_choices', false );
+
+		if ( ! $sieve_choices ) {
+			return $search_fields;
+		}
+
+		foreach ( $search_fields as &$filter ) {
+			if ( empty( $filter['choices'] ) ) {
+				continue;
+			}
+
+			$field = gravityview_get_field( $context->view->form->form, $filter['key'] );  // @todo Support multiple forms (joins)
 
 			/**
 			 * @filter `gravityview/search/sieve_choices` Only output used choices for this field.
 			 * @since 2.16 Modified default value to the `sieve_choices` widget setting and added $widget_args parameter.
+			 *
 			 * @param bool $sieve_choices True: Yes, filter choices based on whether the value exists in entries. False: show all choices in the original field. Default: false.
 			 * @param array $field The field configuration.
 			 * @param \GV\Context The context.
@@ -1696,17 +1735,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 		}
 
-		/**
-		 * @filter `gravityview/search/filter_details` Filter the output filter details for the Search widget.
-		 * @param array $filter The filter details
-		 * @param array $field The search field configuration
-		 * @param \GV\Context The context
-		 * @since develop
-		 */
-		$filter = apply_filters( 'gravityview/search/filter_details', $filter, $field, $context );
-
-		return $filter;
-
+		return $search_fields;
 	}
 
 	/**
@@ -1715,7 +1744,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param array $filter The filter configuration.
 	 * @param \GV\Context $context The context
 	 *
-	 * @since develop
+	 * @since 2.5
 	 * @internal
 	 *
 	 * @return array The filter choices.
@@ -1761,12 +1790,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 				) );
 				break;
 			default:
-				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT `meta_value` FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %d) AND `form_id` = %d",
+				$sql = $wpdb->prepare(
+					"SELECT DISTINCT `meta_value` FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %s ) AND `form_id` = %d",
 					$key_like, $filter['key'], $form_id
-				) );
+				);
 
-				if ( ( $field = gravityview_get_field( $form_id, $filter['key'] ) ) && 'json' === $field->storageType ) {
+				$choices = $wpdb->get_col( $sql );
+
+				$field = gravityview_get_field( $context->view->form->form, $filter['key'] );
+
+				if ( $field && 'json' === $field->storageType ) {
 					$choices        = array_map( 'json_decode', $choices );
 					$_choices_array = array();
 					foreach ( $choices as $choice ) {
