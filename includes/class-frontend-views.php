@@ -113,19 +113,19 @@ class GravityView_frontend {
 	}
 
 	/**
-	 * Fires when there are no entries in the view.
+	 * Fires when there are no entries in the View.
 	 *
 	 * @param string $no_entries_text
-	 * @param object $context
+	 * @param \GV\Template_Context $context
 	 */
 	public function no_entries( $no_entries_text, $context ) {
 		if ( $context->request->is_search() ) {
 			return $no_entries_text;
 		}
 
-		$no_entries_option = intval( $context->view->settings->get( 'no_entries_options' ) );
+		$no_entries_option = (int)$context->view->settings->get( 'no_entries_options' );
 		if ( $no_entries_option === 1 ) {
-			$form_id = intval( $context->view->settings->get( 'no_entries_form' ) );
+			$form_id = (int)$context->view->settings->get( 'no_entries_form' );
 			if ( $form_id !== 0 ) {
 				return \GFForms::get_form( $form_id );
 			}
@@ -134,7 +134,7 @@ class GravityView_frontend {
 			if ( $no_entries_redirect ) {
 				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
 				wp_safe_redirect( $redirect_url );
-				die();
+				exit();
 			}
 		}
 

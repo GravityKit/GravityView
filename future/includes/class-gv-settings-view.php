@@ -27,24 +27,6 @@ class View_Settings extends Settings {
 	}
 
 	/**
-	 * Get All forms to use as options.
-	 *
-	 * @return array
-	 */
-	private function get_forms() {
-		$forms = \GFFormsModel::get_forms();
-		if ( empty( $forms ) ) {
-			return array();
-		}
-
-		$form_options = array();
-		foreach ( $forms as $form ) {
-			$form_options[ $form->id ] = $form->title;
-		}
-		return $form_options;
-	}
-
-	/**
 	 * Retrieve the default View settings.
 	 *
 	 * @param bool    $detailed Whether to return detailed setting meta information or just the value.
@@ -119,7 +101,7 @@ class View_Settings extends Settings {
 				'no_entries_options'      => array(
 					'label'             => __( 'No Entries Action', 'gk-gravityview' ),
 					'type'              => 'select',
-					'tooltip'           => __( 'Incase the forms has no entries, You can show message or form or redirect to a URL.', 'gk-gravityview' ),
+					'desc'           => __( 'Incase the forms has no entries, You can show message or form or redirect to a URL.', 'gk-gravityview' ),
 					'group'             => 'default',
 					'options'           => array(
 						'0' => __( 'Show Message', 'gk-gravityview' ),
@@ -136,7 +118,7 @@ class View_Settings extends Settings {
 					'tooltip'           => __( 'Show a Gravity form if there are no entries to show in the view.', 'gk-gravityview' ),
 					'group'             => 'default',
 					'requires'          => 'no_entries_options=1',
-					'options'           => ( new self() )->get_forms(),
+					'options'           => \GVCommon::get_forms_as_options(),
 					'value'             => '',
 					'show_in_shortcode' => true,
 				),

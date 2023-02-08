@@ -265,6 +265,28 @@ class GVCommon {
 	}
 
 	/**
+	 * Get All forms to use as options in view settings.
+	 *
+	 * @return array
+	 */
+	public static function get_forms_as_options() {
+		if ( ! class_exists( 'GFAPI' ) ) {
+			return array();
+		}
+
+		$forms = GFAPI::get_forms();
+		if ( empty( $forms ) ) {
+			return array();
+		}
+
+		$form_options = array();
+		foreach ( $forms as $form ) {
+			$form_options[ $form->id ] = $form->title;
+		}
+		return $form_options;
+	}
+
+	/**
 	 * Alias of GFAPI::get_forms()
 	 *
 	 * @see GFAPI::get_forms()
