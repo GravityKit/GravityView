@@ -265,40 +265,18 @@ function gravityview_get_registered_templates() {
 }
 
 /**
- * Get the field configuration for the View
+ * Get the field configuration for the View.
  *
- * array(
+ * @see GVCommon::get_directory_fields
+ * @since 1.17.4 Added $apply_filter parameter.
+ * @since 2.17   Added $form_id parameter.
  *
- * 	[other zones]
- *
- * 	'directory_list-title' => array(
- *
- *   	[other fields]
- *
- *  	'5372653f25d44' => array(
- *  		'id' => string '9' (length=1)
- *  		'label' => string 'Screenshots' (length=11)
- *			'show_label' => string '1' (length=1)
- *			'custom_label' => string '' (length=0)
- *			'custom_class' => string 'gv-gallery' (length=10)
- * 			'only_loggedin' => string '0' (length=1)
- *			'only_loggedin_cap' => string 'read' (length=4)
- *  	)
- *
- * 		[other fields]
- *  )
- *
- * 	[other zones]
- * )
- *
- * @since 1.17.4 Added $apply_filter parameter
- *
- * @param  int $post_id View ID
- * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
- * @return array          Multi-array of fields with first level being the field zones. See code comment.
+ * @param  int   $post_id View ID.
+ * @param  bool  $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
+ * @return array Multi-array of fields with first level being the field zones.
  */
-function gravityview_get_directory_fields( $post_id, $apply_filter = true ) {
-	return GVCommon::get_directory_fields( $post_id, $apply_filter );
+function gravityview_get_directory_fields( $post_id, $apply_filter = true, $form_id = 0 ) {
+	return GVCommon::get_directory_fields( $post_id, $apply_filter, $form_id );
 }
 
 /**

@@ -23,7 +23,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Fixed: [gventry] shortcode not working when using the Entry ID is "first" or "last"
+* It's faster than ever to create a new View! (Table and DataTables View types only)
+	- Fields configured in the [Gravity Forms Entry Columns](https://docs.gravityforms.com/entries/#h-entry-columns) are added to the Multiple Entries layout
+	- The first field in the Multiple Entries layout is linked to the Single Entry layout
+	- All form fields are added to the Single Entry layout
+	- An Edit Entry Link field is added to the bottom of the Single Entry layout
+* Fixed: ["Pre-filter choices"](https://docs.gravitykit.com/article/701-show-choices-that-exist) Search Bar setting not working for Address fields
+* Fixed: `[gventry]` shortcode not working the Entry ID is set to "first" or "last"
+* Fixed: Fatal error when using the Gravity Forms Survey Add-On
+* Tweak: The field picker in the View editor now uses Gravity Forms field icons
+
+__Developer Updates:__
+
+* Added: `$form_id` parameter to `gravityview_get_directory_fields()` function and `GVCommon::get_directory_fields()` method
 
 = 2.16.6 on January 12, 2023 =
 

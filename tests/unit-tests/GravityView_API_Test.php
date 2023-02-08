@@ -613,6 +613,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$add_pagination = true;
 		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link( $post_id, $add_pagination ) );
 
+		// Make sure the cache is working properly
+		$this->assertEquals( site_url( '?p=' . $post_id ), wp_cache_get( 'gv_directory_link_' . $post_id ) );
+
 		//
 		// Use $gravityview_view data
 		//

@@ -202,7 +202,7 @@
 					$( 'body' ).trigger( 'gravityview/tabs-ready' );
 				})
 
-				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabConfigurationWarnings )
+				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry gravityview/view-config-updated', vcfg.toggleTabConfigurationWarnings )
 
 				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry gravityview/view-config-updated', vcfg.toggleRemoveAllFields )
 
@@ -1306,7 +1306,9 @@
 
 		selectTemplateContinue: function ( slugmatch ) {
 
-			var vcfg = viewConfiguration, selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
+			var vcfg = viewConfiguration,
+				selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" ),
+				selectedFormId = vcfg.gvSelectForm.val();
 
 			// update template name
 			$( "#gravityview_directory_template" ).val( selectedTemplateId ).trigger('change');
@@ -1336,7 +1338,7 @@
 
 				if( ! slugmatch ) {
 					//change view configuration active areas
-					vcfg.updateActiveAreas( selectedTemplateId );
+					vcfg.updateActiveAreas( selectedTemplateId, ( selectedFormId * 1 ) );
 				} else {
 					vcfg.waiting('stop');
 				}
@@ -1503,9 +1505,10 @@
 		},
 
 		/**
-		 * @param {string} template The template ID
+		 * @param {string} template The selected template ID.
+		 * @param {int} form_id The selected form ID.
 		 */
-		updateActiveAreas: function ( template ) {
+		updateActiveAreas: function ( template, form_id ) {
 			var vcfg = viewConfiguration;
 
 			$( "#directory-active-fields, #single-active-fields" ).children().remove();
@@ -1513,6 +1516,7 @@
 			var data = {
 				action: 'gv_get_active_areas',
 				template_id: template,
+				form_id: form_id,
 				nonce: gvGlobals.nonce
 			};
 
