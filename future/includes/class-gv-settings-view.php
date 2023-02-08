@@ -115,7 +115,7 @@ class View_Settings extends Settings {
 				'no_entries_form'         => array(
 					'label'             => __( '"No Entries" Show Form', 'gk-gravityview' ),
 					'type'              => 'select',
-					'tooltip'           => __( 'Show a Gravity form if there are no entries to show in the view.', 'gk-gravityview' ),
+					'desc'           => __( 'Show a Gravity form if there are no entries to show in the view.', 'gk-gravityview' ),
 					'group'             => 'default',
 					'requires'          => 'no_entries_options=1',
 					'options'           => \GVCommon::get_forms_as_options(),
