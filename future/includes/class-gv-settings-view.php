@@ -97,34 +97,42 @@ class View_Settings extends Settings {
 						'url' => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
 					),
 				),
-
-				'no_entries_options'      => array(
-					'label'             => __( 'No Entries Action', 'gk-gravityview' ),
+				'no_entries_options' => array(
+					'label'             => __( 'No Entries Behavior', 'gk-gravityview' ),
 					'type'              => 'select',
-					'desc'           => __( 'Incase the forms has no entries, You can show message or form or redirect to a URL.', 'gk-gravityview' ),
+					'desc'              => __( 'Choose the behavior when a form has no entries visible to the current user.', 'gk-gravityview' ),
 					'group'             => 'default',
 					'options'           => array(
-						'0' => __( 'Show Message', 'gk-gravityview' ),
-						'1' => __( 'Show Form', 'gk-gravityview' ),
+						'0' => __( 'Show a Message', 'gk-gravityview' ),
+						'1' => __( 'Display a Form', 'gk-gravityview' ),
 						'2' => __( 'Redirect to URL', 'gk-gravityview' ),
 					),
 					'value'             => '0',
 					'show_in_shortcode' => true,
 				),
-
-				'no_entries_form'         => array(
-					'label'             => __( '"No Entries" Show Form', 'gk-gravityview' ),
+				'no_results_text'    => array(
+					'label'             => __( 'No Entries Message', 'gk-gravityview' ),
+					'type'              => 'text',
+					'group'             => 'default',
+					'desc'              => esc_html__( 'The text to display when there are no entries to show. HTML and shortcodes are allowed.', 'gk-gravityview' ),
+					'tooltip'           => false,
+					'value'             => '',
+					'placeholder'       => esc_html__( 'No entries match your request.', 'gk-gravityview' ),
+					'show_in_shortcode' => true,
+					'class'             => 'widefat',
+					'requires'          => 'no_entries_options=0',
+					'full_width'        => true,
+				),
+				'no_entries_form'    => array(
+					'label'             => __( 'No Entries Form', 'gk-gravityview' ),
 					'type'              => 'select',
-					'desc'           => __( 'Show a Gravity form if there are no entries to show in the view.', 'gk-gravityview' ),
+					'desc'              => __( 'Show a Gravity Forms form if there are no entries to show in the View.', 'gk-gravityview' ),
 					'group'             => 'default',
 					'requires'          => 'no_entries_options=1',
 					'options'           => \GVCommon::get_forms_as_options(),
 					'value'             => '',
 					'show_in_shortcode' => true,
 				),
-
-				'no_entries_redirect'     => array(
-					'label'       => __( '"No Entries" Redirect URL', 'gk-gravityview' ),
 				'no_entries_form_title'       => array(
 					'label'             => __( 'Form Title', 'gk-gravityview' ),
 					'type'              => 'checkbox',
@@ -143,28 +151,15 @@ class View_Settings extends Settings {
 					'value'             => 1,
 					'show_in_shortcode' => true,
 				),
+				'no_entries_redirect'         => array(
+					'label'       => __( 'No Entries Redirect URL', 'gk-gravityview' ),
 					'group'       => 'default',
-					'desc'        => __( 'If there are no entries, the user will be taken to this URL.', 'gk-gravityview' ),
+					'desc'        => __( 'If there are no entries to show, the user will be taken to this URL.', 'gk-gravityview' ),
 					'type'        => 'text',
 					'class'       => 'code widefat',
 					'value'       => '',
-					'placeholder' => 'https://www.example.com/landing-page/',
+					'placeholder' => 'https://www.example.com',
 					'requires'    => 'no_entries_options=2',
-					'merge_tags'  => 'force',
-				),
-
-				'no_results_text'         => array(
-					'label'             => __( '"No Entries" Text', 'gk-gravityview' ),
-					'type'              => 'text',
-					'group'             => 'default',
-					'desc'              => '',
-					'tooltip'           => false,
-					'value'             => '',
-					'placeholder'       => __( 'No entries match your request.', 'gk-gravityview' ),
-					'show_in_shortcode' => true,
-					'class'             => 'widefat',
-					'requires'          => 'no_entries_options=0',
-					'full_width'        => true,
 				),
 				'no_search_results_text'  => array(
 					'label'             => __( '"No Search Results" Text', 'gk-gravityview' ),
