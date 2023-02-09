@@ -107,13 +107,17 @@ const ServerSideRender = ( props ) => {
 					setTimeout( () => {
 						setResponse( response.content );
 
-					}, 1000 );
+						setIsFetching( false );
+					}, 250 ); // Wait for scripts/styles to load.
 				} else {
 					setResponse( res.rendered );
+
+					setIsFetching( false );
 				}
 			} )
-			.catch( ( error ) => setError( error ) )
-			.finally( () => {
+			.catch( ( error ) => {
+				setError( error );
+
 				setIsFetching( false );
 			} );
 	};
