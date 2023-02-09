@@ -120,7 +120,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 			// We need to run through each survey row until we find a match for expected values
 			foreach ( $entry as $field_id => $field_value ) {
 
-				if ( floor( $field_id ) !== floor( $field->id ) ) {
+				if ( (int) $field_id !== (int) $field->id ) {
 					continue;
 				}
 
