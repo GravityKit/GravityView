@@ -46,6 +46,7 @@ class View_Settings extends Settings {
 	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
+
 		$default_settings = array_merge(
 			array(
 				'id'                          => array(
@@ -138,7 +139,6 @@ class View_Settings extends Settings {
 					'type'              => 'checkbox',
 					'group'             => 'default',
 					'requires'          => 'no_entries_options=1',
-					'requires_not'      => 'no_entries_form=',
 					'value'             => 1,
 					'show_in_shortcode' => true,
 				),
@@ -147,7 +147,6 @@ class View_Settings extends Settings {
 					'type'              => 'checkbox',
 					'group'             => 'default',
 					'requires'          => 'no_entries_options=1',
-					'requires_not'      => 'no_entries_form=',
 					'value'             => 1,
 					'show_in_shortcode' => true,
 				),
