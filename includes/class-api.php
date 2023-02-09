@@ -289,7 +289,7 @@ class GravityView_API {
 	 * @since 2.0
 	 *
 	 * @param  boolean     $wpautop Apply wpautop() to the output?
-	 * @param \GV\Template_Context $context The context
+	 * @param \GV\Template_Context|null $context The context
 	 *
 	 * @return string               HTML of "no results" text
 	 */

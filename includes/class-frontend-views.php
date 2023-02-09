@@ -707,13 +707,14 @@ class GravityView_frontend {
 	 *
 	 * @param string $output The existing 'No Entries' text.
 	 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
-	 * @param \GV\Template_Context $context The context.
+	 * @param \GV\Template_Context|null $context The context, if available.
 	 *
 	 * @return string|void If search, existing text. If form,  new 'No Entries' text.
 	 */
-	public function filter_no_entries_output( $no_entries_text, $is_search, $context ) {
+	public function filter_no_entries_output( $no_entries_text, $is_search, $context = null ) {
 
-		if ( $is_search ) {
+		// Only proceed if the we aren't using legacy paths.
+		if ( $is_search || ! $context instanceof \GV\Template_Context ) {
 			return $no_entries_text;
 		}
 
