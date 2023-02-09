@@ -744,7 +744,12 @@ class GravityView_frontend {
 			if ( $no_entries_redirect ) {
 				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
 
-				wp_redirect( $redirect_url );
+				$redirected = wp_redirect( $redirect_url );
+
+				if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+					return $redirected;
+				}
+
 				exit;
 			}
 		}

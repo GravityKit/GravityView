@@ -450,7 +450,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> THIS SEARCH', GravityView_API::no_results( false, $context ) );
 		$this->assertEquals( '<p>NO ENTRIES <strong>IN</strong> THIS SEARCH</p>' . "\n", GravityView_API::no_results( true, $context ) );
 
-
 		$context->request->returns['is_search'] = false;
 		$context->view = new \GV\View();
 		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
@@ -475,6 +474,43 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		// Remove the filter for later
 		remove_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ) );
 
+		// Test form being rendered when there are no results.
+
+		// No form is set; still show the default message.
+		$context->view->settings->set( 'no_entries_options', 1 );
+		$context->view->settings->set( 'no_entries_form', '' );
+		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
+
+		$form = $this->factory->form->create_and_get();
+		$form['title'] = 'This is the form title.';
+		$form['description'] = 'This is the form description.';
+		GFAPI::update_form( $form );
+
+		$context->view->settings->set( 'no_entries_options', 1 );
+		$context->view->settings->set( 'no_entries_form', $form['id'] );
+		$output = GravityView_API::no_results( false );
+		$this->assertContains( 'id="gform_wrapper_' . $form['id'] .'"', $output, 'The Gravity Forms form was not rendered' );
+		$this->assertContains( $form['title'], $output, 'The title of the Gravity Forms form was not output' );
+		$this->assertContains( $form['description'], $output, 'The description of the Gravity Forms form was not output, but it should have been' );
+
+		$context->view->settings->set( 'no_entries_options', 1 );
+		$context->view->settings->set( 'no_entries_form', $form['id'] );
+		$context->view->settings->set( 'no_entries_form_title', '0' );
+		$context->view->settings->set( 'no_entries_form_description', '0' );
+		$output = GravityView_API::no_results( false );
+		$this->assertContains( 'id="gform_wrapper_' . $form['id'] .'"', $output, 'The Gravity Forms form was not rendered' );
+		$this->assertNotContains( $form['title'], $output, 'The title of the Gravity Forms form was rendered, but it should not have been.' );
+		$this->assertNotContains( $form['description'], $output, 'The description of the Gravity Forms form was rendered, but it should not have been.' );
+
+		// No redirect is set; show the default message.
+		$context->view->settings->set( 'no_entries_options', 2 );
+		$context->view->settings->set( 'no_entries_redirect', '' );
+		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
+
+		// No redirect is set; show the default message.
+		$context->view->settings->set( 'no_entries_options', 2 );
+		$context->view->settings->set( 'no_entries_redirect', 'https://www.example.com' );
+		$this->assertTrue( GravityView_API::no_results( false, $context ), 'Redirect did not return true. Probably redirected so the test did not work!' );
 	}
 
 	public function _override_no_entries_text_output( $previous, $is_search = false ) {
