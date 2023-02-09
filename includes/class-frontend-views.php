@@ -108,7 +108,7 @@ class GravityView_frontend {
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2 );
 
 		add_action( 'gravityview_after', array( $this, 'context_not_configured_warning' ) );
-		add_filter( 'gravityview/template/text/no_entries', array( $this, 'filter_no_entries_setting' ), 10, 3 );
+		add_filter( 'gravityview/template/text/no_entries', array( $this, 'filter_no_entries_output' ), 10, 3 );
 	}
 
 	/**
@@ -711,7 +711,7 @@ class GravityView_frontend {
 	 *
 	 * @return string|void If search, existing text. If form,  new 'No Entries' text.
 	 */
-	public function filter_no_entries_setting( $no_entries_text, $is_search, $context ) {
+	public function filter_no_entries_output( $no_entries_text, $is_search, $context ) {
 
 		if ( $is_search ) {
 			return $no_entries_text;
@@ -730,7 +730,7 @@ class GravityView_frontend {
 			if ( ! empty( $form_id ) ) {
 
 				$form_title = $context->view->settings->get( 'no_entries_form_title', true );
-				$form_desc = $context->view->settings->get( 'no_entries_form_description', true );
+				$form_desc  = $context->view->settings->get( 'no_entries_form_description', true );
 
 				return \GFForms::get_form( $form_id, $form_title, $form_desc );
 			}
