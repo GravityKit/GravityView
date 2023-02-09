@@ -270,15 +270,15 @@ EOD;
 
 		switch ( true ) {
 			case ( $gravityview->request->is_edit_entry() ):
-				$tab = __( 'Edit Entry', 'gk-gravityview' );
+				$tab = esc_html__( 'Edit Entry', 'gk-gravityview' );
 				$context = 'edit';
 				break;
 			case ( $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
-				$tab = __( 'Single Entry', 'gk-gravityview' );
+				$tab = esc_html__( 'Single Entry', 'gk-gravityview' );
 				$context = 'single';
 				break;
 			default:
-				$tab = __( 'Multiple Entries', 'gk-gravityview' );
+				$tab = esc_html__( 'Multiple Entries', 'gk-gravityview' );
 				$context = 'directory';
 				break;
 		}

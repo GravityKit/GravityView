@@ -728,14 +728,14 @@ class GravityView_frontend {
 
 		switch ( $context ) {
 			case 'directory':
-				$tab = __( 'Multiple Entries', 'gk-gravityview' );
+				$tab = esc_html__( 'Multiple Entries', 'gk-gravityview' );
 				break;
 			case 'edit':
-				$tab = __( 'Edit Entry', 'gk-gravityview' );
+				$tab = esc_html__( 'Edit Entry', 'gk-gravityview' );
 				break;
 			case 'single':
 			default:
-				$tab = __( 'Single Entry', 'gk-gravityview' );
+				$tab = esc_html__( 'Single Entry', 'gk-gravityview' );
 				break;
 		}
 
