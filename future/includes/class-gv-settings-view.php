@@ -131,7 +131,7 @@ class View_Settings extends Settings {
 					'group'             => 'default',
 					'requires'          => 'no_entries_options=1',
 					'options'           => \GVCommon::get_forms_as_options(),
-					'value'             => '',
+					'value'             => esc_attr( \GV\Utils::_POST( 'post' ) ? gravityview_get_form_id( \GV\Utils::_POST( 'post' ) ) : \GV\Utils::_GET( 'form_id', '' ) ),
 					'show_in_shortcode' => true,
 				),
 				'no_entries_form_title'       => array(
