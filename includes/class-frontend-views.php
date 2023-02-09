@@ -108,59 +108,7 @@ class GravityView_frontend {
 		add_filter( 'comments_open', array( $this, 'comments_open' ), 10, 2 );
 
 		add_action( 'gravityview_after', array( $this, 'context_not_configured_warning' ) );
-
-		add_filter( 'gravityview/template/text/no_entries', array( $this, 'no_entries' ), 10, 3 );
-	}
-
-	/**
-	 * Fires when there are no entries in the View.
-	 *
-	 * @since 2.17
-	 *
-	 * @param string $output The existing 'No Entries' text.
-	 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
-	 * @param \GV\Template_Context $context The context.
-	 *
-	 * @return string|void If search, existing text. If form,  new 'No Entries' text.
-	 */
-	public function no_entries( $no_entries_text, $is_search, $context ) {
-
-		if ( $is_search ) {
-			return $no_entries_text;
-		}
-
-		$no_entries_option = (int) $context->view->settings->get( 'no_entries_options', 0 );
-
-		// Default is to display the message.
-		if ( empty( $no_entries_option ) ) {
-			return $no_entries_text;
-		}
-
-		if ( 1 === $no_entries_option ) {
-			$form_id = (int) $context->view->settings->get( 'no_entries_form' );
-
-			if ( ! empty( $form_id ) ) {
-
-				$form_title = $context->view->settings->get( 'no_entries_form_title', true );
-				$form_desc = $context->view->settings->get( 'no_entries_form_description', true );
-
-				return \GFForms::get_form( $form_id, $form_title, $form_desc );
-			}
-		}
-
-		if ( 2 === $no_entries_option ) {
-
-			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect' );
-
-			if ( $no_entries_redirect ) {
-				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
-
-				wp_redirect( $redirect_url );
-				exit;
-			}
-		}
-
-		return $no_entries_text;
+		add_filter( 'gravityview/template/text/no_entries', array( $this, 'filter_no_entries_setting' ), 10, 3 );
 	}
 
 	/**
@@ -707,6 +655,8 @@ class GravityView_frontend {
 	 * Display a warning when a View has not been configured
 	 *
 	 * @since 1.19.2
+	 * @used-by \GV\Renderer::maybe_print_notices()
+	 * @depecated 2.0
 	 *
 	 * @param int $view_id The ID of the View currently being displayed
 	 *
@@ -748,6 +698,57 @@ class GravityView_frontend {
 		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
 
 		echo GVCommon::generate_notice( $output . $image, 'gv-error error', 'edit_gravityview', $view_id );
+	}
+
+	/**
+	 * Modify what happens when there are no entries in the View based on View settings.
+	 *
+	 * @since 2.17
+	 *
+	 * @param string $output The existing 'No Entries' text.
+	 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
+	 * @param \GV\Template_Context $context The context.
+	 *
+	 * @return string|void If search, existing text. If form,  new 'No Entries' text.
+	 */
+	public function filter_no_entries_setting( $no_entries_text, $is_search, $context ) {
+
+		if ( $is_search ) {
+			return $no_entries_text;
+		}
+
+		$no_entries_option = (int) $context->view->settings->get( 'no_entries_options', 0 );
+
+		// Default is to display the message.
+		if ( empty( $no_entries_option ) ) {
+			return $no_entries_text;
+		}
+
+		if ( 1 === $no_entries_option ) {
+			$form_id = (int) $context->view->settings->get( 'no_entries_form' );
+
+			if ( ! empty( $form_id ) ) {
+
+				$form_title = $context->view->settings->get( 'no_entries_form_title', true );
+				$form_desc = $context->view->settings->get( 'no_entries_form_description', true );
+
+				return \GFForms::get_form( $form_id, $form_title, $form_desc );
+			}
+		}
+
+		if ( 2 === $no_entries_option ) {
+
+			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect' );
+
+			if ( $no_entries_redirect ) {
+				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
+
+				wp_redirect( $redirect_url );
+				exit;
+			}
+		}
+
+		return $no_entries_text;
 	}
 
 
