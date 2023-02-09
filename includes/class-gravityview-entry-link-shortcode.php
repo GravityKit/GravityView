@@ -323,7 +323,7 @@ class GravityView_Entry_Link_Shortcode {
 
 			$entry = $backup_entry;
 		} else if ( in_array( $entry_id, [ 'first', 'last' ] ) ) {
-			$view = \GV\View::by_id( $this->view_id );
+			$view = GV\View::by_id( $this->view_id );
 
 			if ( ! $view ) {
 				gravityview()->log->error( "A View with ID {$this->view_id} was not found." );

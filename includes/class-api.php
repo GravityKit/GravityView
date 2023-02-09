@@ -379,7 +379,7 @@ class GravityView_API {
 	/**
 	 * Generate a URL to the Directory context
 	 *
-	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.3) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
+	 * Uses local static variable to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
 	 * @param int $post_id Post ID
 	 * @param boolean $add_query_args Add pagination and sorting arguments
@@ -442,9 +442,16 @@ class GravityView_API {
 			return null;
 		}
 
-		// If we've saved the permalink in memory, use it
-		// @since 1.3
-		$link = wp_cache_get( 'gv_directory_link_'.$post_id );
+		static $directory_links = array();
+
+		/**
+		 * If we've saved the permalink, use it. Reduces time spent on `get_permalink()`, which is heavy.
+		 * @since 1.3
+		 * @since 2.17 Changed from using wp_cache_set() to using a static variable.
+		 */
+		if ( isset( $directory_links[ 'gv_directory_link_' . $post_id ] ) ) {
+			$link = $directory_links[ 'gv_directory_link_' . $post_id ];
+		}
 
 		if ( (int) $post_id === (int) get_option( 'page_on_front' ) ) {
 			$link = home_url();
@@ -453,9 +460,7 @@ class GravityView_API {
 		if ( empty( $link ) ) {
 			$link = get_permalink( $post_id );
 
-			// If not yet saved, cache the permalink.
-			// @since 1.3
-			wp_cache_set( 'gv_directory_link_'.$post_id, $link );
+			$directory_links[ 'gv_directory_link_' . $post_id ] = $link;
 		}
 
 		// Deal with returning to proper pagination for embedded views
