@@ -109,24 +109,32 @@ class GravityView_frontend {
 
 		add_action( 'gravityview_after', array( $this, 'context_not_configured_warning' ) );
 
-		add_filter( 'gravityview/template/no_entries', array( $this, 'no_entries' ), 10, 2 );
+		add_filter( 'gravityview/template/text/no_entries', array( $this, 'no_entries' ), 10, 3 );
 	}
 
 	/**
 	 * Fires when there are no entries in the View.
 	 *
-	 * @param string               $no_entries_text
-	 * @param \GV\Template_Context $context
+	 * @since 2.17
+	 *
+	 * @param string $output The existing 'No Entries' text.
+	 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
+	 * @param \GV\Template_Context $context The context.
+	 *
+	 * @return string|void If search, existing text. If form,  new 'No Entries' text.
 	 */
-	public function no_entries( $no_entries_text, $context ) {
+	public function no_entries( $no_entries_text, $is_search, $context ) {
 
-		if ( $context->request->is_search() ) {
+		if ( $is_search ) {
 			return $no_entries_text;
 		}
 
-		$no_entries_option = (int) $context->view->settings->get( 'no_entries_options' );
+		$no_entries_option = (int) $context->view->settings->get( 'no_entries_options', 0 );
 
-		ray( $context->view->settings->get( 'no_entries_options' ), $no_entries_option );
+		// Default is to display the message.
+		if ( empty( $no_entries_option ) ) {
+			return $no_entries_text;
+		}
 
 		if ( 1 === $no_entries_option ) {
 			$form_id = (int) $context->view->settings->get( 'no_entries_form' );
@@ -153,7 +161,6 @@ class GravityView_frontend {
 		}
 
 		return $no_entries_text;
-
 	}
 
 	/**
