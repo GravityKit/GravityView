@@ -28,19 +28,19 @@ class GF_Field extends Field {
 	 */
 	public static function from_configuration( $configuration ) {
 		if ( empty( $configuration['id'] ) || ! is_numeric( $configuration['id'] ) ) {
-			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
+			gravityview()->log->error( 'Invalid configuration[id] supplied: {id}', array( 'data' => $configuration, 'id' => \GV\Utils::get( $configuration, 'id' ) ) );
 			return null;
 		}
 
 		if ( empty( $configuration['form_id'] ) || ! $form = \GV\GF_Form::by_id( $configuration['form_id'] )  ) {
-			gravityview()->log->error( 'Invalid configuration[form_id] supplied.' );
+			gravityview()->log->error( 'Invalid configuration[form_id] supplied: {form_id}', array( 'data' => $configuration, 'form_id' => \GV\Utils::get( $configuration, 'form_id' ) ) );
 			return null;
 		}
 
 		$field = self::by_id( $form, $configuration['id'] );
 
 		if ( ! $field ) {
-			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
+			gravityview()->log->error( 'Invalid configuration: Field not found by [id] supplied: {id}', array( 'data' => $configuration, 'id' => \GV\Utils::get( $configuration, 'id' ) ) );
 			return null;
 		}
 
@@ -59,7 +59,7 @@ class GF_Field extends Field {
 	public static function by_id( $form, $field_id ) {
 
 		if ( ! $form || ! is_object( $form ) || ! is_a( $form, '\GV\GF_Form' ) ) {
-			gravityview()->log->error( '$form is not a \GV\GF_Form instance' );
+			gravityview()->log->error( '$form is not a \GV\GF_Form instance', array( 'data' => $form ) );
 			return null;
 		}
 
@@ -72,7 +72,7 @@ class GF_Field extends Field {
 		$gv_field = \GFFormsModel::get_field( $form->form, $field_id );
 
 		if ( ! $gv_field ) {
-			gravityview()->log->error( 'Invalid $field_id #{field_id} for current source', array( 'field_id' => $field_id ) );
+			gravityview()->log->error( 'Invalid $field_id #{field_id} for current source', array( 'data' => $form, 'field_id' => $field_id ) );
 			return null;
 		}
 
@@ -106,7 +106,7 @@ class GF_Field extends Field {
 		}
 
 		if ( ! $source || ! is_object( $source ) || ! is_a( $source, '\GV\GF_Form' ) ) {
-			gravityview()->log->error( '$source is not a valid \GV\GF_Form instance' );
+			gravityview()->log->error( '$source is not a valid \GV\GF_Form instance', array( 'data' => $source ) );
 			return null;
 		}
 
@@ -139,7 +139,7 @@ class GF_Field extends Field {
 	 */
 	public function get_value( View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
 		if ( ! $entry || ! is_object( $entry ) || ! is_a( $entry, '\GV\GF_Entry' ) ) {
-			gravityview()->log->error( '$entry is not a valid \GV\GF_Entry instance' );
+			gravityview()->log->error( '$entry is not a valid \GV\GF_Entry instance', array( 'data' => $entry ) );
 			return null;
 		}
 

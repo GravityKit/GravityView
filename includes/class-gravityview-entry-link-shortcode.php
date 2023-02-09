@@ -311,6 +311,8 @@ class GravityView_Entry_Link_Shortcode {
 	 */
 	private function get_entry( $entry_id = 0 ) {
 
+		static $entries = array();
+
 		$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getEntry() : GravityView_View::getInstance()->getCurrentEntry();
 
 		if ( empty( $entry_id ) ) {
@@ -321,12 +323,10 @@ class GravityView_Entry_Link_Shortcode {
 			}
 			$entry = $backup_entry;
 		} else {
-			$entry = wp_cache_get( 'gv_entry_link_entry_' . $entry_id, 'gravityview_entry_link_shortcode' );
-			if ( false === $entry ) {
-				$entry = GVCommon::get_entry( $entry_id, true, false );
-				wp_cache_add( 'gv_entry_link_entry_' . $entry_id, $entry, 'gravityview_entry_link_shortcode' );
-			}
+			$entry = isset( $entries[ $entry_id ] ) ? $entries[ $entry_id ] : GVCommon::get_entry( $entry_id, true, false );
 		}
+
+		$entries[ $entry_id ] = $entry;
 
 		// No search results
 		if ( false === $entry ) {
