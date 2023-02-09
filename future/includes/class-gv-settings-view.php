@@ -100,7 +100,7 @@ class View_Settings extends Settings {
 				'no_entries_options' => array(
 					'label'             => __( 'No Entries Behavior', 'gk-gravityview' ),
 					'type'              => 'select',
-					'desc'              => __( 'Choose the behavior when a form has no entries visible to the current user.', 'gk-gravityview' ),
+					'desc'              => __( 'Choose the behavior when a View has no entries visible to the current user.', 'gk-gravityview' ),
 					'group'             => 'default',
 					'options'           => array(
 						'0' => __( 'Show a Message', 'gk-gravityview' ),
