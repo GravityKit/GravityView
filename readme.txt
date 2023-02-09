@@ -36,6 +36,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 __Developer Updates:__
 
+* Modified: If you use the `gravityview/template/text/no_entries` or `gravitview_no_entries_text` filters, the output is now passed through the `wpautop()` function prior to applying the filters, not after
+	* Added `$unformatted_output` parameter to the `gravityview/template/text/no_entries` filter to return the original value before being passed through `wpautop()`
 * Added: `$form_id` parameter to `gravityview_get_directory_fields()` function and `GVCommon::get_directory_fields()` method
 
 = 2.16.6 on January 12, 2023 =
