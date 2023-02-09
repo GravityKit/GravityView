@@ -1301,6 +1301,10 @@ class GravityView_Admin_Views {
 
 			$gv_field = GravityView_Fields::get_instance( $column['type'] );
 
+			if ( ! $gv_field ) {
+				continue;
+			}
+
 			$directory_fields[ uniqid( '', true ) ] = array(
 				'label' => \GV\Utils::get( $column, 'label' ),
 				'type' => $gv_field->name,
