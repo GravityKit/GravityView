@@ -888,7 +888,7 @@ class GravityView_Admin_Views {
 		foreach ( $fields as &$field ) {
 			foreach ( $gv_fields as $gv_field ) {
 				if ( \GV\Utils::get( $field, 'type' ) === $gv_field->name ) {
-					$field['icon'] = \GV\Utils::get( $gv_field, 'icon' );
+					$field['icon'] = $gv_field->get_icon();
 				}
 			}
 		}
@@ -1409,10 +1409,10 @@ class GravityView_Admin_Views {
 			)
 		) );
 
-		wp_enqueue_style( 'gravityview_views_styles' );
-
         // Enqueue scripts needed for merge tags
         self::enqueue_gravity_forms_scripts();
+
+		wp_enqueue_style( 'gravityview_views_styles' );
 
 		// 2.5 changed how Merge Tags are enqueued
 		if ( is_callable( array( 'GFCommon', 'output_hooks_javascript') ) ) {
@@ -1443,6 +1443,12 @@ class GravityView_Admin_Views {
 		}
 
 		wp_enqueue_script( $scripts );
+
+		$styles = array(
+			'gform_admin_icons',
+		);
+
+		wp_enqueue_style( $styles );
 	}
 
 	/**
