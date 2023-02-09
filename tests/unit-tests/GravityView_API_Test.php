@@ -479,6 +479,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		// No form is set; still show the default message.
 		$context->view->settings->set( 'no_entries_options', 1 );
 		$context->view->settings->set( 'no_entries_form', '' );
+		$context->view->settings->set( 'no_results_text', '' ); // When empty, use default
 		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
 
 		$form = $this->factory->form->create_and_get();
