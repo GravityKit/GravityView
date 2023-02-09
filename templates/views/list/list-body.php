@@ -18,10 +18,10 @@ $template::body_before( $gravityview );
 // There are no entries.
 if ( ! $gravityview->entries->count() ) {
 
-	$css_class = 'gv-no-results gv-no-results-text';
+	$no_results_css_class = 'gv-no-results gv-no-results-text';
 
 	if ( 1 === (int) $gravityview->view->settings->get( 'no_entries_options', '0' ) ) {
-		$css_class = 'gv-no-results gv-no-results-form';
+		$no_results_css_class = 'gv-no-results gv-no-results-form';
 	}
 
 	?>
