@@ -10,8 +10,12 @@ class Blocks {
 
 	const SLUG = 'gk-gravityview-blocks';
 
+	private $blocks_build_path;
+
 	public function __construct() {
 		global $wp_version;
+
+		$this->blocks_build_path = str_replace( GRAVITYVIEW_DIR, '', __DIR__ ) . '/build';
 
 		if ( version_compare( $wp_version, self::MIN_WP_VERSION, '<' ) ) {
 			return;
@@ -42,6 +46,8 @@ class Blocks {
 
 			$block_meta = json_decode( file_get_contents( $block_meta_file ), true );
 
+			$block_name = Arr::get( $block_meta, 'name' );
+
 			if ( file_exists( $block_file ) ) {
 				$declared_classes = get_declared_classes();
 
@@ -57,7 +63,6 @@ class Blocks {
 					}
 				}
 
-				$block_name        = Arr::get( $block_meta, 'name' );
 				$localization_data = Arr::get( $block_meta, 'localization' );
 
 				if ( $localization_data ) {
@@ -67,6 +72,48 @@ class Blocks {
 						return $localization;
 					} );
 				}
+			}
+
+			// Assets can be specified in the block.json file, but their paths must be relative to that file location.
+			// We store all build assets in ./build, and while we can use "file:../../build/filename.js' in the block.json,
+			// the MD5 hash will not match the translation file from translations.pot. Manually enqueuing assets fixes this.
+			$editor_script_handle = generate_block_asset_handle( $block_name, 'editorScript' );
+			$editor_script        = sprintf( '%s/%s.js', $this->blocks_build_path, basename( $block_folder ) );
+
+			$editor_style_handle = generate_block_asset_handle( $block_name, 'editorStyle' );
+			$editor_style        = sprintf( '%s/%s.css', $this->blocks_build_path, basename( $block_folder ) );
+
+			$global_style_handle = generate_block_asset_handle( $block_name, 'style' );
+			$global_style        = sprintf( '%s/style-%s.css', $this->blocks_build_path, basename( $block_folder ) );
+
+			if ( file_exists( GRAVITYVIEW_DIR . $editor_script ) ) {
+				wp_enqueue_script(
+					$editor_script_handle,
+					plugins_url( $editor_script, GRAVITYVIEW_FILE ),
+					[ 'wp-editor', 'wp-element' ],
+					filemtime( GRAVITYVIEW_DIR . $editor_script ),
+					true
+				);
+
+				wp_set_script_translations( $editor_script_handle, 'gk-gravityview' );
+			}
+
+			if ( file_exists( GRAVITYVIEW_DIR . $editor_style ) ) {
+				wp_enqueue_style(
+					$editor_style_handle,
+					plugins_url( $editor_style, GRAVITYVIEW_FILE ),
+					[],
+					filemtime( GRAVITYVIEW_DIR . $editor_style )
+				);
+			}
+
+			if ( file_exists( GRAVITYVIEW_DIR . $global_style ) ) {
+				wp_enqueue_style(
+					$global_style_handle,
+					plugins_url( $global_style, GRAVITYVIEW_FILE ),
+					[],
+					filemtime( GRAVITYVIEW_DIR . $global_style )
+				);
 			}
 
 			register_block_type_from_metadata( $block_meta_file, $block_meta );

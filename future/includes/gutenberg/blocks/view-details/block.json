@@ -14,9 +14,6 @@
     "html": false
   },
   "textdomain": "gk-gravityview",
-  "editorScript": "file:../../build/view-details.js",
-  "editorStyle": "file:../../build/view-details.css",
-  "style": "file:../../build/style-view-details.css",
   "attributes": {
     "viewId": {
       "default": "",

@@ -14,9 +14,6 @@
     "html": false
   },
   "textdomain": "gk-gravityview",
-  "editorScript": "file:../../build/entry-field.js",
-  "editorStyle": "file:../../build/entry-field.css",
-  "style": "file:../../build/style-entry-field.css",
   "attributes": {
     "viewId": {
       "default": "",
