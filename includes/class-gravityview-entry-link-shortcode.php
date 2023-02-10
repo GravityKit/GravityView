@@ -305,31 +305,47 @@ class GravityView_Entry_Link_Shortcode {
 	 * @uses GVCommon::get_entry
 	 * @uses GravityView_frontend::getSingleEntry
 	 *
-	 * @param int $entry_id Gravity Forms Entry ID. If not passed, current View's current entry ID will be used, if found.
+	 * @param int|string $entry_id Gravity Forms Entry ID. If not passed, current View's current entry ID will be used, if found.
 	 *
 	 * @return array|bool Gravity Forms array, if found. Otherwise, false.
 	 */
 	private function get_entry( $entry_id = 0 ) {
-
 		static $entries = array();
 
-		$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getEntry() : GravityView_View::getInstance()->getCurrentEntry();
-
 		if ( empty( $entry_id ) ) {
+			$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getEntry() : GravityView_View::getInstance()->getCurrentEntry();
+
 			if ( ! $backup_entry ) {
 				gravityview()->log->error( 'No entry defined (or entry id not valid number)', array( 'data' => $this->settings ) );
 
 				return false;
 			}
+
 			$entry = $backup_entry;
+		} else if ( in_array( $entry_id, [ 'first', 'last' ] ) ) {
+			$view = GV\View::by_id( $this->view_id );
+
+			if ( ! $view ) {
+				gravityview()->log->error( "A View with ID {$this->view_id} was not found." );
+
+				return false;
+			}
+
+			if ( ! isset( $entry[ $entry_id ] ) ) {
+				$entry = 'last' === $entry_id ? $view->get_entries( null )->first() : $view->get_entries( null )->last();
+			}
+
+			if ( $entry ) {
+				$entry = $entry->as_entry();
+			}
 		} else {
 			$entry = isset( $entries[ $entry_id ] ) ? $entries[ $entry_id ] : GVCommon::get_entry( $entry_id, true, false );
 		}
 
-		$entries[ $entry_id ] = $entry;
-
-		// No search results
-		if ( false === $entry ) {
+		if ( $entry ) {
+			$entries[ $entry_id ] = $entry;
+		} else {
+			// No search results
 			gravityview()->log->error( 'No entries match the entry ID defined: {entry_id}', array( 'entry_id' => $entry_id ) );
 
 			return false;

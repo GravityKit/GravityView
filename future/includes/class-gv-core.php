@@ -229,6 +229,8 @@ final class Core {
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
 
+		/** Gutenberg Blocks. */
+		require_once $this->plugin->dir( 'future/includes/gutenberg/class-gv-gutenberg-blocks.php' );
 
 		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
 
