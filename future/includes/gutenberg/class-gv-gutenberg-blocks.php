@@ -87,7 +87,7 @@ class Blocks {
 			$global_style        = sprintf( '%s/style-%s.css', $this->blocks_build_path, basename( $block_folder ) );
 
 			if ( file_exists( GRAVITYVIEW_DIR . $editor_script ) ) {
-				wp_enqueue_script(
+				wp_register_script(
 					$editor_script_handle,
 					plugins_url( $editor_script, GRAVITYVIEW_FILE ),
 					[ 'wp-editor', 'wp-element' ],
@@ -95,25 +95,37 @@ class Blocks {
 					true
 				);
 
-				wp_set_script_translations( $editor_script_handle, 'gk-gravityview' );
+				add_action( 'enqueue_block_editor_assets', function () use ( $editor_script_handle ) {
+					wp_enqueue_script( $editor_script_handle );
+
+					wp_set_script_translations( $editor_script_handle, 'gk-gravityview' );
+				} );
 			}
 
 			if ( file_exists( GRAVITYVIEW_DIR . $editor_style ) ) {
-				wp_enqueue_style(
+				wp_register_style(
 					$editor_style_handle,
 					plugins_url( $editor_style, GRAVITYVIEW_FILE ),
 					[],
 					filemtime( GRAVITYVIEW_DIR . $editor_style )
 				);
+
+				add_action( 'enqueue_block_editor_assets', function () use ( $editor_style_handle ) {
+					wp_enqueue_style( $editor_style_handle );
+				} );
 			}
 
 			if ( file_exists( GRAVITYVIEW_DIR . $global_style ) ) {
-				wp_enqueue_style(
+				wp_register_style(
 					$global_style_handle,
 					plugins_url( $global_style, GRAVITYVIEW_FILE ),
 					[],
 					filemtime( GRAVITYVIEW_DIR . $global_style )
 				);
+
+				add_action( 'enqueue_block_editor_assets', function () use ( $global_style_handle) {
+					wp_enqueue_style( $global_style_handle );
+				} );
 			}
 
 			register_block_type_from_metadata( $block_meta_file, $block_meta );
