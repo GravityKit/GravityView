@@ -124,15 +124,15 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 		$entry_moderation_merge_tags = array(
 			array(
-				'label' => __( 'Moderation: Approve entry link', 'gravityview' ),
+				'label' => __( 'Moderation: Approve entry link', 'gk-gravityview' ),
 				'tag'   => '{gv_approve_entry}',
 			),
 			array(
-				'label' => __( 'Moderation: Disapprove entry link', 'gravityview' ),
+				'label' => __( 'Moderation: Disapprove entry link', 'gk-gravityview' ),
 				'tag'   => '{gv_disapprove_entry}',
 			),
 			array(
-				'label' => __( 'Moderation: Reset entry approval link', 'gravityview' ),
+				'label' => __( 'Moderation: Reset entry approval link', 'gk-gravityview' ),
 				'tag'   => '{gv_unapprove_entry}',
 			),
 		);
@@ -378,7 +378,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 			gravityview()->log->error( 'Decoding the entry approval token failed.', array( 'data' => $token ) );
 
-			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $token->get_error_message() ) );
+			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gk-gravityview' ), $token->get_error_message() ) );
 		}
 
 		// Ensure the token is formatted properly.
@@ -388,7 +388,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 			gravityview()->log->error( 'Validating the entry approval token failed.', array( 'data' => $is_valid_token ) );
 
-			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $is_valid_token->get_error_message() ) );
+			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gk-gravityview' ), $is_valid_token->get_error_message() ) );
 		}
 
 		$is_request_valid = $this->is_request_valid( $token );
@@ -397,7 +397,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 			gravityview()->log->error( 'Validating the entry approval token failed.', array( 'data' => $is_request_valid ) );
 
-			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gravityview' ), $is_request_valid->get_error_message() ) );
+			wp_die( sprintf( __( 'Entry moderation failed: %s', 'gk-gravityview' ), $is_request_valid->get_error_message() ) );
 		}
 
 		$scopes = $token['scopes'];
@@ -464,7 +464,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	protected function is_request_valid( $token ) {
 
 		if ( 'private' === $token['scopes']['privacy'] && ! is_user_logged_in() ) {
-			return new WP_Error( 'user_not_logged_in', __( 'You are not allowed to perform this operation.', 'gravityview' ) );
+			return new WP_Error( 'user_not_logged_in', __( 'You are not allowed to perform this operation.', 'gk-gravityview' ) );
 		}
 
 		if ( $token['exp'] < time() ) {
