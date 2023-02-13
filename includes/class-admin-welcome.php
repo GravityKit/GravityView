@@ -272,18 +272,55 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
+
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
-				<h3>2.16.6 on January 12, 2023</h3>
+				<p>2.17 on February 13, 2023</p>
+
+				<p><strong>Note: GravityView now requires PHP 7.2 or newer</strong></p>
+
+				<ul>
+					<li>It's faster than ever to create a new View! (Table and DataTables View types only)
+						<ul>
+							<li>Fields configured in the <a href="https://docs.gravityforms.com/entries/#h-entry-columns">Gravity Forms Entry Columns</a> are added to the Multiple Entries layout</li>
+							<li>The first field in the Multiple Entries layout is linked to the Single Entry layout</li>
+							<li>All form fields are added to the Single Entry layout</li>
+							<li>An Edit Entry Link field is added to the bottom of the Single Entry layout</li>
+						</ul></li>
+					<li>Added: New "No Entries Behavior" setting: when a View has no entries visible to the current user, you can now choose to display a message, show a Gravity Forms form, or redirect to a URL</li>
+					<li>Modified: The field picker now uses Gravity Forms field icons</li>
+					<li>Fixed: <a href="https://docs.gravitykit.com/article/701-show-choices-that-exist">"Pre-filter choices"</a> Search Bar setting not working for Address fields</li>
+					<li>Fixed: <code>[gventry]</code> shortcode not working the Entry ID is set to "first" or "last"</li>
+					<li>Fixed: Fatal error when using the Gravity Forms Survey Add-On</li>
+					<li>Tweak: The field picker in the View editor now uses Gravity Forms field icons</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Modified: If you use the <code>gravityview/template/text/no_entries</code> or <code>gravitview_no_entries_text</code> filters, the output is now passed through the <code>wpautop()</code> function prior to applying the filters, not after
+						<ul>
+							<li>Added <code>$unformatted_output</code> parameter to the <code>gravityview/template/text/no_entries</code> filter to return the original value before being passed through <code>wpautop()</code></li>
+						</ul></li>
+					<li>Modified: Container classes for no results output change based on the "No Entries Behavior" setting:
+						<ul>
+							<li><code>.gv-no-results.gv-no-results-text</code> when set to "Show a Message"</li>
+							<li><code>.gv-no-results.gv-no-results-form</code> when set to "Display a Form"</li>
+							<li>Updated <code>templates/views/list/list-body.php</code>, <code>templates/views/table/table-body.php</code></li>
+						</ul></li>
+					<li>Added: <code>$form_id</code> parameter to <code>gravityview_get_directory_fields()</code> function and <code>GVCommon::get_directory_fields()</code> method</li>
+				</ul>
+
+				<p>2.16.6 on January 12, 2023</p>
 
 				<ul>
 					<li>Fixed: Fatal error due to an uncaught PHP exception</li>
 					<li>Fixed: It was not possible to select any content inside the field settings window in the View editor</li>
 				</ul>
 
-				<h3>2.16.5 on January 5, 2023</h3>
+				<p>2.16.5 on January 5, 2023</p>
 
 				<ul>
 					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.0.8</li>
@@ -643,86 +680,6 @@ class GravityView_Welcome {
 					<code>apply_filters_deprecated()</code> and <code>_deprecated_function()</code>. <a
 							href="https://docs.gravityview.co/article/816-renamed-filters-methods-in-2-14">See a
 						complete list of modified methods and filters</a>.</p>
-
-				<h3>2.13.4 on November 4, 2021</h3>
-
-				<ul>
-					<li>Fixed: View scripts and styles would not load when manually outputting the contents of the
-						<code>[gravityview]</code> shortcode
-					</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Added: <code>gravityview/shortcode/before-processing</code> action that runs before the
-						GravityView shortcode is processed
-					</li>
-					<li>Added: <code>gravityview/edit_entry/cancel_onclick</code> filter to modify the 'Back' link
-						<code>onclick</code> HTML attribute
-						<ul>
-							<li>Modified: <code>/includes/extensions/edit-entry/partials/form-buttons.php</code> file to
-								add the filter
-							</li>
-						</ul>
-					</li>
-				</ul>
-
-				<h3>2.13.3 on October 14, 2021</h3>
-
-				<ul>
-					<li>Fixed: Edit Entry would not accept zero as a value for a Number field marked as required</li>
-					<li>Modified: Refined the capabilities assigned to GravityView support when access is granted using
-						TrustedLogin. Now our support will be able to debug theme-related issues and use the <a
-								href='https://wordpress.org/plugins/code-snippets/'>Code Snippets</a> plugin.
-					</li>
-				</ul>
-
-				<h3>2.13.2 on October 7, 2021</h3>
-
-				<ul>
-					<li>Fixed: Entry Approval not working when using DataTables in responsive mode (requires DataTables
-						2.4.9 or newer).
-					</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Updated: Upgraded to <a href='https://fancyapps.com/docs/ui/fancybox'>Fancybox 4</a>.</li>
-					<li>Updated: <a href='https://github.com/trustedlogin/client'>TrustedLogin Client</a> to Version
-						1.0.2.
-					</li>
-					<li>Modified: Added Code Snippets CSS file to No Conflict allow list.</li>
-					<li>Modified: Moved internal (but public) method <code>GravityView_Admin_ApproveEntries::process_bulk_action</code>
-						to new <code>GravityView_Bulk_Actions</code> class.
-					</li>
-				</ul>
-
-				<h3>2.13.1 on September 27, 2021</h3>
-
-				<ul>
-					<li>Improved: Views now load faster due to improved template caching.</li>
-					<li>Added: Ability to configure an 'Admin Label' for Custom Content widgets. This makes it easier to
-						see your widget configuration a glance.
-					</li>
-					<li>Fixed: Issue where non-support users may see a 'Revoke TrustedLogin' admin bar link.</li>
-				</ul>
-
-				<h3>2.13 on September 23, 2021</h3>
-
-				<ul>
-					<li>Added: Integrated with TrustedLogin, the easiest
-						&amp; most secure way to grant access to your website. <a
-								href='https://www.trustedlogin.com/about/easy-and-safe/'>Learn more about
-							TrustedLogin</a>.
-						<ul>
-							<li>Need to share access with support? Click the new 'Grant Support Access' link in the
-								'Views' menu.
-							</li>
-						</ul>
-					</li>
-				</ul>
 
 				<p style="text-align: center;">
 					<a href="https://www.gravitykit.com/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gk-gravityview' ); ?></a>

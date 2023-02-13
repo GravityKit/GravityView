@@ -19,6 +19,9 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Accessible via gravityview()->plugin
  */
 final class Plugin {
+	const ALL_VIEWS_SLUG = 'gravityview_all_views';
+
+	const NEW_VIEW_SLUG = 'gravityview_new_view';
 
 	/**
 	 * @since 2.0
@@ -220,6 +223,7 @@ final class Plugin {
 		}
 
 		include_once $this->dir( 'includes/class-gravityview-entry-approval-status.php' );
+		include_once $this->dir( 'includes/class-gravityview-entry-approval-merge-tags.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-approval.php' );
 
 		include_once $this->dir( 'includes/class-gravityview-entry-notes.php' );
@@ -664,22 +668,46 @@ final class Plugin {
 		}
 
 		if ( 'admin.php' === $pagenow ) {
-			if ( 'gravityview_all_views' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
-				wp_safe_redirect(
-					add_query_arg(
-						[ 'post_type' => 'gravityview' ],
-						admin_url( 'edit.php' ) )
-				);
+			if ( self::ALL_VIEWS_SLUG === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect( $this->get_link_to_all_views() );
+
+				exit;
 			}
 
-			if ( 'gravityview_new_view' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
-				wp_safe_redirect(
-					add_query_arg(
-						[ 'post_type' => 'gravityview' ],
-						admin_url( 'post-new.php' ) )
-				);
+			if ( self::NEW_VIEW_SLUG === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect( $this->get_link_to_new_view() );
+
+				exit;
 			}
 		}
+	}
+
+	/**
+	 * Returns the URL to the "All Views" page.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	public function get_link_to_new_view() {
+		return add_query_arg(
+			[ 'post_type' => 'gravityview' ],
+			admin_url( 'post-new.php' )
+		);
+	}
+
+	/**
+	 * Returns the URL to the "New View" page.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	public function get_link_to_all_views() {
+		return add_query_arg(
+			[ 'post_type' => 'gravityview' ],
+			admin_url( 'edit.php' )
+		);
 	}
 
 	/**

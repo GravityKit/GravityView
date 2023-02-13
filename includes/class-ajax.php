@@ -116,11 +116,11 @@ class GravityView_Ajax {
 		}
 
 		ob_start();
-		do_action( 'gravityview_render_directory_active_areas', $_POST['template_id'], 'directory', '', true );
+		do_action( 'gravityview_render_directory_active_areas', \GV\Utils::_POST('template_id'), 'directory', '', true, \GV\Utils::_POST( 'form_id', 0 ) );
 		$response['directory'] = ob_get_clean();
 
 		ob_start();
-		do_action( 'gravityview_render_directory_active_areas',  $_POST['template_id'], 'single', '', true );
+		do_action( 'gravityview_render_directory_active_areas', \GV\Utils::_POST('template_id'), 'single', '', true, \GV\Utils::_POST( 'form_id', 0 ) );
 		$response['single'] = ob_get_clean();
 
 		$response = array_map( 'gravityview_strip_whitespace', $response );

@@ -171,7 +171,6 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			$this->{$key} = $value;
 		}
 
-
 		// Add granular overrides
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
 
@@ -684,7 +683,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 		if ( empty( $fields ) ) {
 
-			gravityview()->log->error( 'Empty zone configuration for {zone_id}.', array( 'zone_id' => $final_atts['zone_id'] ) );
+			gravityview()->log->warning( 'Empty zone configuration for {zone_id}.', array( 'zone_id' => $final_atts['zone_id'] ) );
 
 			return NULL;
 		}

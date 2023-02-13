@@ -2,7 +2,7 @@
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
 Tested up to: 6.1
-Requires PHP: 5.6.4
+Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
 License: GPL 3 or higher
@@ -20,6 +20,32 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.17 on February 13, 2023 =
+
+**Note: GravityView now requires PHP 7.2 or newer**
+
+* It's faster than ever to create a new View! (Table and DataTables View types only)
+	- Fields configured in the [Gravity Forms Entry Columns](https://docs.gravityforms.com/entries/#h-entry-columns) are added to the Multiple Entries layout
+	- The first field in the Multiple Entries layout is linked to the Single Entry layout
+	- All form fields are added to the Single Entry layout
+	- An Edit Entry Link field is added to the bottom of the Single Entry layout
+* Added: New "No Entries Behavior" setting: when a View has no entries visible to the current user, you can now choose to display a message, show a Gravity Forms form, or redirect to a URL
+* Modified: The field picker now uses Gravity Forms field icons
+* Fixed: ["Pre-filter choices"](https://docs.gravitykit.com/article/701-show-choices-that-exist) Search Bar setting not working for Address fields
+* Fixed: `[gventry]` shortcode not working the Entry ID is set to "first" or "last"
+* Fixed: Fatal error when using the Gravity Forms Survey Add-On
+* Tweak: The field picker in the View editor now uses Gravity Forms field icons
+
+__Developer Updates:__
+
+* Modified: If you use the `gravityview/template/text/no_entries` or `gravitview_no_entries_text` filters, the output is now passed through the `wpautop()` function prior to applying the filters, not after
+	* Added `$unformatted_output` parameter to the `gravityview/template/text/no_entries` filter to return the original value before being passed through `wpautop()`
+* Modified: Container classes for no results output change based on the "No Entries Behavior" setting:
+	- `.gv-no-results.gv-no-results-text` when set to "Show a Message"
+	- `.gv-no-results.gv-no-results-form` when set to "Display a Form"
+	- Updated `templates/views/list/list-body.php`, `templates/views/table/table-body.php`
+* Added: `$form_id` parameter to `gravityview_get_directory_fields()` function and `GVCommon::get_directory_fields()` method
 
 = 2.16.6 on January 12, 2023 =
 

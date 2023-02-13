@@ -189,6 +189,7 @@ class Plugin_Settings {
 	public function defaults() {
 		$defaults = [
 			'rest_api' => 0,
+			'public_entry_moderation' => 0,
 		];
 
 		/**
@@ -239,6 +240,26 @@ class Plugin_Settings {
 							'title'       => esc_html__( 'REST API', 'gk-gravityview' ),
 							'description' => esc_html__( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gk-gravityview' ) . ' ' . esc_html__( 'If you are unsure, disable this setting.', 'gk-gravityview' ),
 							'value'       => $this->get( 'rest_api', $default_settings['rest_api'] ),
+						],
+					],
+				],
+				[
+					'title'    => esc_html__( 'Permissions', 'gk-gravityview' ),
+					'settings' => [
+						[
+							'id'          => 'public_entry_moderation',
+							'type'        => 'checkbox',
+							'title'       => esc_html__( 'Enable Public Entry Moderation', 'gk-gravityview' ),
+							'description'   => strtr(
+								// translators: Do not translate the words inside the {} curly brackets; they are replaced.
+								__( 'If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry.', 'gk-gravityview' ),
+								array(
+									'{public}' => '<code style="font-size: .9em">:public</code>',
+									'{link}' => '<a href="https://docs.gravitykit.com/article/904-entry-moderation-merge-tags" target="_blank" rel="noopener noreferrer">',
+									'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
+								)
+							),
+							'value'       => $this->get( 'public_entry_moderation', $default_settings['public_entry_moderation'] ),
 						],
 					],
 				],

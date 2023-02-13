@@ -13,7 +13,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 */
 	public $widget;
 
-	function setUp() {
+	function setUp() : void {
 		parent::setUp();
 		$this->widget = new GravityView_Widget_Search;
 	}

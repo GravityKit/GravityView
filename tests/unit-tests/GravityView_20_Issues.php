@@ -6,13 +6,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * Issues uncovered in 2.0
  */
 class GV_20_Issues_Test extends GV_UnitTestCase {
-	function setUp() {
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 

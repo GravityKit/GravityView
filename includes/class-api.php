@@ -285,10 +285,11 @@ class GravityView_API {
 
 	/**
 	 * Get the "No Results" text depending on whether there were results.
-	 * @param  boolean     $wpautop Apply wpautop() to the output?
 	 *
 	 * @since 2.0
-	 * @param \GV\Template_Context $context The context
+	 *
+	 * @param  boolean     $wpautop Apply wpautop() to the output?
+	 * @param \GV\Template_Context|null $context The context
 	 *
 	 * @return string               HTML of "no results" text
 	 */
@@ -353,6 +354,10 @@ class GravityView_API {
 			)
 		);
 
+		$unformatted_output = $output;
+
+		$output = $wpautop ? wpautop( $output ) : $output;
+
 		/**
 		 * @filter `gravitview_no_entries_text` Modify the text displayed when there are no entries.
 		 * Note: this filter is, and always has been, misspelled. This will not be fixed, since the filter is deprecated.
@@ -366,20 +371,22 @@ class GravityView_API {
 		/**
 		 * @filter `gravityview/template/text/no_entries` Modify the text displayed when there are no entries.
 		 * @since 2.0
-		 * @param string $output The existing "No Entries" text
+		 * @since 2.17 Added $wpautop parameter.
+		 * @param string $output The existing "No Entries" text.
 		 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
 		 * @param \GV\Template_Context $context The context.
+		 * @param string $unformatted_output Output without `wpautop()`.
 		 * @return string The modified text.
 		 */
-		$output = apply_filters( 'gravityview/template/text/no_entries', $output, $is_search, $context );
+		$output = apply_filters( 'gravityview/template/text/no_entries', $output, $is_search, $context, $unformatted_output );
 
-		return $wpautop ? wpautop( $output ) : $output;
+		return $output;
 	}
 
 	/**
 	 * Generate a URL to the Directory context
 	 *
-	 * Uses `wp_cache_get` and `wp_cache_get` (since 1.3) to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
+	 * Uses local static variable to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
 	 * @param int $post_id Post ID
 	 * @param boolean $add_query_args Add pagination and sorting arguments
@@ -442,9 +449,16 @@ class GravityView_API {
 			return null;
 		}
 
-		// If we've saved the permalink in memory, use it
-		// @since 1.3
-		$link = wp_cache_get( 'gv_directory_link_'.$post_id );
+		static $directory_links = array();
+
+		/**
+		 * If we've saved the permalink, use it. Reduces time spent on `get_permalink()`, which is heavy.
+		 * @since 1.3
+		 * @since 2.17 Changed from using wp_cache_set() to using a static variable.
+		 */
+		if ( isset( $directory_links[ 'gv_directory_link_' . $post_id ] ) ) {
+			$link = $directory_links[ 'gv_directory_link_' . $post_id ];
+		}
 
 		if ( (int) $post_id === (int) get_option( 'page_on_front' ) ) {
 			$link = home_url();
@@ -453,9 +467,7 @@ class GravityView_API {
 		if ( empty( $link ) ) {
 			$link = get_permalink( $post_id );
 
-			// If not yet saved, cache the permalink.
-			// @since 1.3
-			wp_cache_set( 'gv_directory_link_'.$post_id, $link );
+			$directory_links[ 'gv_directory_link_' . $post_id ] = $link;
 		}
 
 		// Deal with returning to proper pagination for embedded views

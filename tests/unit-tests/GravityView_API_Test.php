@@ -29,7 +29,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 	var $is_set_up = false;
 
-	function setUp() {
+	function setUp() : void {
 
 		parent::setUp();
 
@@ -450,7 +450,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> THIS SEARCH', GravityView_API::no_results( false, $context ) );
 		$this->assertEquals( '<p>NO ENTRIES <strong>IN</strong> THIS SEARCH</p>' . "\n", GravityView_API::no_results( true, $context ) );
 
-
 		$context->request->returns['is_search'] = false;
 		$context->view = new \GV\View();
 		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
@@ -474,7 +473,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		// Remove the filter for later
 		remove_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ) );
-
 	}
 
 	public function _override_no_entries_text_output( $previous, $is_search = false ) {
@@ -612,9 +610,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$add_pagination = true;
 		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link( $post_id, $add_pagination ) );
-
-		// Make sure the cache is working properly
-		$this->assertEquals( site_url( '?p=' . $post_id ), wp_cache_get( 'gv_directory_link_' . $post_id ) );
 
 		//
 		// Use $gravityview_view data

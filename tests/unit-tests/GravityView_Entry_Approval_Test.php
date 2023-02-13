@@ -14,7 +14,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 
 	private $form_id = 0;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->form = $this->factory->form->create_and_get();

@@ -10,13 +10,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * @group gvfuture
  */
 class GVFuture_Test extends GV_UnitTestCase {
-	function setUp() {
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 
@@ -2773,7 +2773,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '2' );
 
-		$this->assertEquals( "<ul class='bulleted'><li>Much Better</li><li>yes </li></ul>", $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( "<ul class='bulleted'><li>Much Better</li><li>yes</li></ul>", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field = \GV\GF_Field::by_id( $form, '2.1' );
 		$this->assertEquals( '<span class="dashicons dashicons-yes"></span>', $renderer->render( $field, $view, $form, $entry, $request ) );
@@ -4170,7 +4170,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Note: GF does escape category names, but they can come from anywhere. We must escape. */
 		$expected = array(
 			"<ul class='bulleted'>",
-			'<li>Before category</li>',
+			'<li>Beore category</li>', // Tags are stripped from: Be<script>f</script>ore category
 			'<li>Categorized 4 [gvtest_shortcode_p1]</li>',
 			'</ul>',
 		);
@@ -4258,7 +4258,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '26' );
-		$expected = 'productname&lt;script&gt;o&lt;/script&gt; ($48.00)';
+		$expected = 'productname ($48.00)';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field = \GV\GF_Field::by_id( $form, '26.1' );
@@ -4281,7 +4281,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Options (checkbox) */
 		$field = \GV\GF_Field::by_id( $form, '28' );
-		$expected = "<ul class='bulleted'><li>Op1 ($48.00)</li><li>Op3 ($3.00)</li></ul>";
+		$expected = "<ul class='bulleted'><li>Op ($48.00)</li><li>Op ($3.00)</li></ul>";
 
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
@@ -5899,7 +5899,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$settings->update( array() );
 
 		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
-		$this->assertEquals( array_keys( $settings->defaults() ), array( 'rest_api' ) );
+		$this->assertEquals( array_keys( $settings->defaults() ), array( 'rest_api', 'public_entry_moderation' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );
 		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );

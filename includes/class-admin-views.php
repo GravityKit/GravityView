@@ -38,12 +38,13 @@ class GravityView_Admin_Views {
 		add_filter( 'gravityview_noconflict_styles', array( $this, 'register_no_conflict') );
 		add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict') );
 
-		add_action( 'gravityview_render_directory_active_areas', array( $this, 'render_directory_active_areas'), 10, 4 );
+		add_action( 'gravityview_render_directory_active_areas', array( $this, 'render_directory_active_areas'), 10, 5 );
 		add_action( 'gravityview_render_widgets_active_areas', array( $this, 'render_widgets_active_areas'), 10, 3 );
 		add_action( 'gravityview_render_field_pickers', array( $this, 'render_field_pickers'), 10, 2 );
 		add_action( 'gravityview_render_available_fields', array( $this, 'render_available_fields'), 10, 2 );
 		add_action( 'gravityview_render_available_widgets', array( $this, 'render_available_widgets') );
 		add_action( 'gravityview_render_active_areas', array( $this, 'render_active_areas'), 10, 5 );
+		add_filter( 'gravityview/view/configuration/fields', array( $this, 'set_default_view_fields'), 10, 3 );
 
 		// @todo check if this hook is needed..
 		//add_action( 'gravityview_render_field_options', array( $this, 'render_field_options'), 10, 9 );
@@ -887,7 +888,7 @@ class GravityView_Admin_Views {
 		foreach ( $fields as &$field ) {
 			foreach ( $gv_fields as $gv_field ) {
 				if ( \GV\Utils::get( $field, 'type' ) === $gv_field->name ) {
-					$field['icon'] = \GV\Utils::get( $gv_field, 'icon' );
+					$field['icon'] = $gv_field->get_icon();
 				}
 			}
 		}
@@ -972,10 +973,13 @@ class GravityView_Admin_Views {
 		$form = false;
 
 		// if saved values, get available fields to label everyone
-		if( !empty( $values ) && ( !empty( $post->ID ) || !empty( $_POST['template_id'] ) ) ) {
+		if( !empty( $values ) && ( !empty( $post->ID ) || ! empty( $_POST['template_id'] ) || ! empty( $_POST['form_id'] ) ) ) {
 
-			if( !empty( $_POST['template_id'] ) ) {
-				$form_id = $_POST['template_id'];
+			if ( ! empty( $_POST['form_id'] ) ) {
+				$form_id = (int) \GV\Utils::_POST( 'form_id', 0 );
+				$form = gravityview_get_form( $form_id );
+			} elseif( ! empty( $_POST['template_id'] ) ) {
+				$form_id = esc_attr( $_POST['template_id'] );
 				$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
 			} else {
 				$form_id = gravityview_get_form_id( $post->ID );
@@ -985,10 +989,12 @@ class GravityView_Admin_Views {
 			if ( 'field' === $type ) {
 				$available_items[ $form_id ] = $this->get_available_fields( $form, $zone );
 
-				$joined_forms = gravityview_get_joined_forms( $post->ID );
+				if ( ! empty( $post->ID ) ) {
+					$joined_forms = gravityview_get_joined_forms( $post->ID );
 
-				foreach ( $joined_forms as $joined_form ) {
-					$available_items[ $joined_form->ID ] = $this->get_available_fields( $joined_form->ID, $zone );
+					foreach ( $joined_forms as $joined_form ) {
+						$available_items[ $joined_form->ID ] = $this->get_available_fields( $joined_form->ID, $zone );
+					}
 				}
 			} else {
 				$available_items[ $form_id ] = \GV\Widget::registered();
@@ -1024,7 +1030,7 @@ class GravityView_Admin_Views {
 											// Maybe has a form ID
 											$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
 
-											$input_type = NULL;
+											$input_type = null;
 
 											if ( $form_id ) {
 												$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false ;
@@ -1045,9 +1051,9 @@ class GravityView_Admin_Views {
 												}
 
 												$original_item = $field;
-											} else {
-												$input_type = isset( $original_item['type'] ) ? $original_item['type'] : NULL;
 											}
+
+											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : null;
 
 											// Field options dialog box
 											$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone .'_'. $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
@@ -1222,11 +1228,14 @@ class GravityView_Admin_Views {
 	 * Render the Template Active Areas and configured active fields for a given template id and post id
 	 *
 	 * @param string $template_id (default: '') Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
+	 * @param string $context (default: 'single') Context of the template. `single` or `directory` (`edit` not implemented but valid).
 	 * @param string $post_id (default: '')
-	 * @param string $context (default: 'single')
+	 * @param bool   $echo (default: false) Whether to echo the output or return it. Default: `false`.
+	 * @param int    $form_id (default: 0) Main form ID for the View. Used to set default fields for a new View.
+	 *
 	 * @return string HTML of the active areas
 	 */
-	function render_directory_active_areas( $template_id = '', $context = 'single', $post_id = '', $echo = false ) {
+	function render_directory_active_areas( $template_id = '', $context = 'single', $post_id = 0, $echo = false, $form_id = 0 ) {
 		if( empty( $template_id ) ) {
 			gravityview()->log->debug( '[render_directory_active_areas] {template_id} is empty', array( 'template_id' => $template_id ) );
 			return '';
@@ -1243,17 +1252,15 @@ class GravityView_Admin_Views {
 
 		if( empty( $template_areas ) ) {
 
-			gravityview()->log->debug( '[render_directory_active_areas] No areas defined. Maybe template {template_id} is disabled.', array( 'data' => $template_id ) );
+			gravityview()->log->error( '[render_directory_active_areas] No areas defined. Maybe template {template_id} is disabled.', array( 'data' => $template_id ) );
+
 			$output = '<div>';
 			$output .= '<h2 class="description" style="font-size: 16px; margin:0">'. sprintf( esc_html__( 'This View is configured using the %s View type, which is disabled.', 'gk-gravityview' ), '<em>'.$template_id.'</em>' ) .'</h2>';
 			$output .= '<p class="description" style="font-size: 14px; margin:0 0 1em 0;padding:0">'.esc_html__('The data is not lost; re-activate the associated plugin and the configuration will re-appear.', 'gk-gravityview').'</p>';
 			$output .= '</div>';
 		} else {
 
-			$fields = '';
-			if ( ! empty( $post_id ) ) {
-				$fields = gravityview_get_directory_fields( $post_id );
-			}
+			$fields = gravityview_get_directory_fields( $post_id, true, $form_id );
 
 			ob_start();
 			$this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields );
@@ -1266,6 +1273,76 @@ class GravityView_Admin_Views {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Set the default fields for new Views.
+	 *
+	 * @since 2.17
+	 * @internal Do not use this method directly. Use the `gravityview/view/configuration/fields` filter instead.
+	 *
+	 * @param array $fields A Widget configuration array.
+	 * @param \GV\View $view The View the fields are being pulled for. Unused in this method.
+	 * @param int $form_id The form ID.
+	 *
+	 * @return array
+	 */
+	public function set_default_view_fields( $fields = array(), $view = null, $form_id = 0 ) {
+
+		if ( empty( $form_id ) ) {
+			return $fields;
+		}
+
+		$columns = GFFormsModel::get_grid_columns( $form_id );
+
+		$directory_fields = array();
+
+		foreach ( $columns as $column_id => $column ) {
+
+			$gv_field = GravityView_Fields::get_instance( $column['type'] );
+
+			if ( ! $gv_field ) {
+				continue;
+			}
+
+			$directory_fields[ uniqid( '', true ) ] = array(
+				'label' => \GV\Utils::get( $column, 'label' ),
+				'type' => $gv_field->name,
+				'id' => $column_id,
+				'form_id'  => $form_id,
+				'show_as_link' => empty( $directory_fields ),
+			);
+
+		}
+
+		$form = GV\GF_Form::by_id( $form_id );
+		$entry_fields = array();
+
+		foreach( $form->form['fields'] as $gv_field ) {
+
+			$entry_fields[ uniqid( '', true ) ] = array(
+				'label'   => $gv_field->label,
+				'type'    => $gv_field->type,
+				'id'      => $gv_field->id,
+				'form_id' => $form_id,
+			);
+
+		}
+
+		// Add Edit Entry to the bottom of the Single Entry configuration.
+		$entry_fields[ uniqid( '', true ) ] = array(
+			'label' => esc_html__( 'Edit Entry', 'gk-gravityview' ),
+			'admin_label' => esc_html__( 'Link to Edit Entry', 'gk-gravityview' ),
+			'type' => 'edit_link',
+			'id' => 'edit_link',
+			'form_id'  => $form_id,
+		);
+
+		// This is a new View, prefill the fields
+		return array(
+			'directory_table-columns' => $directory_fields,
+			'single_table-columns' => $entry_fields,
+		);
 	}
 
 	/**
@@ -1338,10 +1415,10 @@ class GravityView_Admin_Views {
 			)
 		) );
 
-		wp_enqueue_style( 'gravityview_views_styles' );
-
         // Enqueue scripts needed for merge tags
         self::enqueue_gravity_forms_scripts();
+
+		wp_enqueue_style( 'gravityview_views_styles' );
 
 		// 2.5 changed how Merge Tags are enqueued
 		if ( is_callable( array( 'GFCommon', 'output_hooks_javascript') ) ) {
@@ -1372,6 +1449,12 @@ class GravityView_Admin_Views {
 		}
 
 		wp_enqueue_script( $scripts );
+
+		$styles = array(
+			'gform_admin_icons',
+		);
+
+		wp_enqueue_style( $styles );
 	}
 
 	/**
