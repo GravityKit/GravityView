@@ -5,6 +5,16 @@
 
 @import "table-view-legacy";
 
+.gv-table-multiple-container:has( .gv-no-results-form ) {
+  thead, tfoot {
+    display: none;
+  }
+
+  th, td {
+    padding: 0;
+  }
+}
+
 /**
  * @see https://j.eremy.net/responsive-table/
  *
