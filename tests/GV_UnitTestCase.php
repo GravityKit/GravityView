@@ -31,7 +31,7 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	function tearDown() {
+	function tearDown() : void {
 		/** @see https://core.trac.wordpress.org/ticket/29712 */
 		wp_set_current_user( 0 );
 		parent::tearDown();
