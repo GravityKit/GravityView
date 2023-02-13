@@ -7,13 +7,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * @group multi
  */
 class GravityView_Joins_Test extends GV_UnitTestCase {
-	function setUp() {
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 

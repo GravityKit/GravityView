@@ -29,7 +29,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 	var $is_set_up = false;
 
-	function setUp() {
+	function setUp() : void {
 
 		parent::setUp();
 

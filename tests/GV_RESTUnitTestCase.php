@@ -15,7 +15,7 @@ abstract class GV_RESTUnitTestCase extends WP_Test_REST_Controller_Testcase {
 	/**
 	 * @inheritDoc
 	 */
-	function setUp() {
+	function setUp() : void {
 		parent::setUp();
 
 		/* Remove temporary tables which causes problems with GF */
@@ -36,7 +36,7 @@ abstract class GV_RESTUnitTestCase extends WP_Test_REST_Controller_Testcase {
 	/**
 	 * @inheritDoc
 	 */
-	function tearDown() {
+	function tearDown() : void {
 		/** @see https://core.trac.wordpress.org/ticket/29712 */
 		wp_set_current_user( 0 );
 		parent::tearDown();

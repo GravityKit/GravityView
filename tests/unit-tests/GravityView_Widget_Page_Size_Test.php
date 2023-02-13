@@ -6,13 +6,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * @covers \GV\Widgets\Page_Size
  */
 class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
-	function setUp() {
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 

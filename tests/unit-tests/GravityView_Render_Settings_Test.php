@@ -7,7 +7,7 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		// Include required files

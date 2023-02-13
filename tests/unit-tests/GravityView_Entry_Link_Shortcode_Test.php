@@ -12,7 +12,7 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 	/** @type  GravityView_Entry_Link_Shortcode */
 	var $object;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 		$this->object = new GravityView_Entry_Link_Shortcode;
 	}
