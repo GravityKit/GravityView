@@ -713,7 +713,7 @@ class GravityView_frontend {
 	 */
 	public function filter_no_entries_output( $no_entries_text, $is_search, $context = null ) {
 
-		// Only proceed if the we aren't using legacy paths.
+		// Only proceed if it's not a search and we aren't using legacy paths.
 		if ( $is_search || ! $context instanceof \GV\Template_Context ) {
 			return $no_entries_text;
 		}
@@ -730,10 +730,20 @@ class GravityView_frontend {
 
 			if ( ! empty( $form_id ) ) {
 
+				$output = '
+<style>
+	.gv-table-multiple-container:has( .gv-no-results-form ) thead,
+	.gv-table-multiple-container:has( .gv-no-results-form ) tfoot {
+		display: none;
+	}
+</style>';
+
 				$form_title = $context->view->settings->get( 'no_entries_form_title', true );
 				$form_desc  = $context->view->settings->get( 'no_entries_form_description', true );
 
-				return \GFForms::get_form( $form_id, $form_title, $form_desc );
+				$output .= \GFForms::get_form( $form_id, $form_title, $form_desc );
+
+				return $output;
 			}
 		}
 
