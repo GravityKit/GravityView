@@ -17,8 +17,15 @@ $template::body_before( $gravityview );
 
 // There are no entries.
 if ( ! $gravityview->entries->count() ) {
+
+	$no_results_css_class = 'gv-no-results gv-no-results-text';
+
+	if ( 1 === (int) $gravityview->view->settings->get( 'no_entries_options', '0' ) ) {
+		$no_results_css_class = 'gv-no-results gv-no-results-form';
+	}
+
 	?>
-	<div class="gv-list-view gv-no-results">
+	<div class="gv-list-view <?php echo esc_attr( $no_results_css_class ); ?>">
 		<div class="gv-list-view-title">
 			<h3><?php echo gv_no_results( true, $gravityview ); ?></h3>
 		</div>

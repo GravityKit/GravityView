@@ -450,7 +450,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> THIS SEARCH', GravityView_API::no_results( false, $context ) );
 		$this->assertEquals( '<p>NO ENTRIES <strong>IN</strong> THIS SEARCH</p>' . "\n", GravityView_API::no_results( true, $context ) );
 
-
 		$context->request->returns['is_search'] = false;
 		$context->view = new \GV\View();
 		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
@@ -474,7 +473,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		// Remove the filter for later
 		remove_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ) );
-
 	}
 
 	public function _override_no_entries_text_output( $previous, $is_search = false ) {

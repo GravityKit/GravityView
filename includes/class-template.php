@@ -171,7 +171,6 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			$this->{$key} = $value;
 		}
 
-
 		// Add granular overrides
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
 

@@ -12,6 +12,13 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 /** @type \GV\View_Table_Template $template */
 $template = $gravityview->template;
+
+if ( 1 === (int) $gravityview->view->settings->get( 'no_entries_options', '0' ) ) {
+	$no_results_css_class = 'gv-no-results gv-no-results-form';
+} else {
+	$no_results_css_class = 'gv-no-results gv-no-results-text';
+}
+
 ?>
 	<tbody>
 		<?php
@@ -28,7 +35,7 @@ $template = $gravityview->template;
 				$template::tr_before( $gravityview );
 
                 ?>
-				<td colspan="<?php echo $gravityview->fields->by_position( 'directory_table-columns' )->by_visible( $gravityview->view )->count() ? : ''; ?>" class="gv-no-results">
+				<td colspan="<?php echo $gravityview->fields->by_position( 'directory_table-columns' )->by_visible( $gravityview->view )->count() ? : ''; ?>" class="<?php echo esc_attr( $no_results_css_class ); ?>">
 					<?php echo gv_no_results( true, $gravityview ); ?>
 				</td>
 				<?php

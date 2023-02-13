@@ -285,10 +285,11 @@ class GravityView_API {
 
 	/**
 	 * Get the "No Results" text depending on whether there were results.
-	 * @param  boolean     $wpautop Apply wpautop() to the output?
 	 *
 	 * @since 2.0
-	 * @param \GV\Template_Context $context The context
+	 *
+	 * @param  boolean     $wpautop Apply wpautop() to the output?
+	 * @param \GV\Template_Context|null $context The context
 	 *
 	 * @return string               HTML of "no results" text
 	 */
@@ -353,6 +354,10 @@ class GravityView_API {
 			)
 		);
 
+		$unformatted_output = $output;
+
+		$output = $wpautop ? wpautop( $output ) : $output;
+
 		/**
 		 * @filter `gravitview_no_entries_text` Modify the text displayed when there are no entries.
 		 * Note: this filter is, and always has been, misspelled. This will not be fixed, since the filter is deprecated.
@@ -366,14 +371,16 @@ class GravityView_API {
 		/**
 		 * @filter `gravityview/template/text/no_entries` Modify the text displayed when there are no entries.
 		 * @since 2.0
-		 * @param string $output The existing "No Entries" text
+		 * @since 2.17 Added $wpautop parameter.
+		 * @param string $output The existing "No Entries" text.
 		 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
 		 * @param \GV\Template_Context $context The context.
+		 * @param string $unformatted_output Output without `wpautop()`.
 		 * @return string The modified text.
 		 */
-		$output = apply_filters( 'gravityview/template/text/no_entries', $output, $is_search, $context );
+		$output = apply_filters( 'gravityview/template/text/no_entries', $output, $is_search, $context, $unformatted_output );
 
-		return $wpautop ? wpautop( $output ) : $output;
+		return $output;
 	}
 
 	/**

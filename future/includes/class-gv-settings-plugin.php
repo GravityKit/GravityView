@@ -256,7 +256,7 @@ class Plugin_Settings {
 								array(
 									'{public}' => '<code style="font-size: .9em">:public</code>',
 									'{link}' => '<a href="https://docs.gravitykit.com/article/904-entry-moderation-merge-tags" target="_blank" rel="noopener noreferrer">',
-									'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravitycalendar' ) . '</span></a>',
+									'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
 								)
 							),
 							'value'       => $this->get( 'public_entry_moderation', $default_settings['public_entry_moderation'] ),
