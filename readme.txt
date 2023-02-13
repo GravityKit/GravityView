@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.17 on February 13, 2023 =
 
 **Note: GravityView now requires PHP 7.2 or newer**
 
