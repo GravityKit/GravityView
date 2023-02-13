@@ -10,7 +10,7 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 	/**
 	 * @inheritDoc
 	 */
-	function setUp() {
+	function setUp() : void {
 		parent::setUp();
 
 		/* Remove temporary tables which causes problems with GF */
