@@ -732,6 +732,10 @@ class GravityView_frontend {
 
 				$output = '
 <style>
+	.gv-table-multiple-container:has( .gv-no-results-form ) th,
+	.gv-table-multiple-container:has( .gv-no-results-form ) td {
+		padding: 0;
+	}
 	.gv-table-multiple-container:has( .gv-no-results-form ) thead,
 	.gv-table-multiple-container:has( .gv-no-results-form ) tfoot,
 	.gv-table-multiple-container:has( .gv-no-results-form ) + .gv-powered-by {
