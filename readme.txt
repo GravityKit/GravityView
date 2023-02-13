@@ -2,7 +2,7 @@
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
 Tested up to: 6.1
-Requires PHP: 5.6.4
+Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
 License: GPL 3 or higher
@@ -22,6 +22,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 == Changelog ==
 
 = develop =
+
+**Note: GravityView now requires PHP 7.2 or newer**
 
 * It's faster than ever to create a new View! (Table and DataTables View types only)
 	- Fields configured in the [Gravity Forms Entry Columns](https://docs.gravityforms.com/entries/#h-entry-columns) are added to the Multiple Entries layout
