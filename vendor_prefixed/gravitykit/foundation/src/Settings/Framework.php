@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 13-February-2023 using Strauss.
+ * Modified by gravityview on 17-February-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -174,6 +174,18 @@ class Framework {
 			LoggerFramework::get_instance()->error( 'Invalid settings data. Expected array, got ' . print_r( $plugins_settings_data, true ) );
 
 			return [];
+		}
+
+		foreach ( Arr::pluck( $plugins_settings_data, 'id' ) as $plugin_id ) {
+			$filter = "gk/foundation/settings/${plugin_id}/settings-url";
+
+			if ( has_filter( $filter ) ) {
+				continue;
+			}
+
+			add_filter( $filter, function () use ( $plugin_id ) {
+				return $this->get_plugin_settings_url( $plugin_id );
+			} );
 		}
 
 		/**
@@ -368,22 +380,25 @@ class Framework {
 	}
 
 	/**
+	 * Checks if the current page is a Settings page.
+	 *
+	 * @since 1.0.9
+	 *
+	 * @return bool
+	 */
+	public function is_settings_page() {
+		return Arr::get( $_REQUEST, 'page' ) === self::ID;
+	}
+
+	/**
 	 * Enqueues UI assets.
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param string $page Current page.
-	 *
 	 * @return void
 	 */
-	public function enqueue_assets( $page ) {
+	public function enqueue_assets() {
 		$plugins_data = $this->get_plugins_settings_data();
-
-		foreach ( Arr::pluck( $plugins_data, 'id' ) as $plugin_id ) {
-			add_filter( "gk/foundation/settings/${plugin_id}/settings-url", function () use ( $plugin_id ) {
-				return $this->get_plugin_settings_url( $plugin_id );
-			} );
-		}
 
 		ksort( $plugins_data );
 
@@ -396,7 +411,7 @@ class Framework {
 			return;
 		}
 
-		if ( strpos( $page, self::ID ) === false ) {
+		if ( !$this->is_settings_page() ) {
 			return;
 		}
 
@@ -445,6 +460,42 @@ class Framework {
 			[],
 			filemtime( CoreHelpers::get_assets_path( $style ) )
 		);
+
+		foreach ( $plugins_data as &$plugin_data ) {
+			$styles  = Arr::get( $plugin_data, 'assets.styles', [] );
+			$scripts = Arr::get( $plugin_data, 'assets.scripts', [] );
+
+			if ( empty( $styles ) || empty ( $scripts ) ) {
+				continue;
+			}
+
+			foreach ( $scripts as $script ) {
+				if ( ! is_file( Arr::get( $script, 'file' ) ) ) {
+					continue;
+				}
+
+				wp_enqueue_script(
+					self::ID . '-' . md5( Arr::get( $script, 'file' ), '' ),
+					plugin_dir_url( $script['file'] ) . basename( $script['file'] ),
+					Arr::get( $script, 'deps', [] ),
+					filemtime( Arr::get( $script, 'file' ) )
+				);
+			}
+			foreach ( $styles as $style ) {
+				if ( ! is_file( Arr::get( $style, 'file' ) ) ) {
+					continue;
+				}
+
+				wp_enqueue_style(
+					self::ID . '-' . md5( Arr::get( $style, 'file' ), '' ),
+					plugin_dir_url( $style['file'] ) . basename( $style['file'] ),
+					Arr::get( $style, 'deps', [] ),
+					filemtime( Arr::get( $style, 'file' ) )
+				);
+			}
+
+			unset( $plugin_data['assets'] );
+		}
 
 		// WP's forms.css interferes with our styles.
 		wp_deregister_style( 'forms' );
@@ -579,7 +630,7 @@ class Framework {
 	 *
 	 * @return bool
 	 */
-	function are_setting_requirements_met( $plugin_setting, $settings ) {
+	public function are_setting_requirements_met( $plugin_setting, $settings ) {
 		$requirements = is_array( array_values( $plugin_setting['requires'] )[0] ) ? $plugin_setting['requires'] : [ $plugin_setting['requires'] ]; // Make requirements an array of arrays.
 
 		foreach ( $requirements as $requirement ) {

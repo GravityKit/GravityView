@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7158acf8bf1deacce8497559cb228623",
+    "content-hash": "7730020d9e7de28fd029c4340bded853",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:gravityview/Foundation.git",
-                "reference": "d5afa0b164a8c18ad0ff32e0468624f168e0b5ef"
+                "reference": "aaece78685cd3fe56ecc2064e86a393dae7ade3c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/d5afa0b164a8c18ad0ff32e0468624f168e0b5ef",
-                "reference": "d5afa0b164a8c18ad0ff32e0468624f168e0b5ef",
+                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/aaece78685cd3fe56ecc2064e86a393dae7ade3c",
+                "reference": "aaece78685cd3fe56ecc2064e86a393dae7ade3c",
                 "shasum": ""
             },
             "require": {
@@ -253,6 +253,7 @@
                 "illuminate/validation": "5.4.*",
                 "monolog/monolog": "1.*",
                 "php": ">=5.6.4",
+                "psr/log": "^1.1",
                 "trustedlogin/client": "dev-main"
             },
             "require-dev": {
@@ -312,10 +313,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/gravityview/Foundation/tree/v1.0.8",
+                "source": "https://github.com/gravityview/Foundation/tree/v1.0.9",
                 "issues": "https://github.com/gravityview/Foundation/issues"
             },
-            "time": "2023-01-05T23:55:14+00:00"
+            "time": "2023-02-17T20:34:00+00:00"
         },
         {
             "name": "illuminate/container",
@@ -9412,7 +9413,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.4",
+        "php": ">=7.2.0",
         "ext-json": "*",
         "ext-openssl": "*"
     },

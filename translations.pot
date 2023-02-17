@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-02-13T20:32:30+00:00\n"
+"POT-Creation-Date: 2023-02-17T20:49:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1250,7 +1250,7 @@ msgstr ""
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
 #: includes/class-admin-views.php:527
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:788
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:342
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:354
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:52
 msgid "Settings"
 msgstr ""
@@ -4983,46 +4983,46 @@ msgstr ""
 msgid "Invalid product information received from the API."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:252
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:256
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "You must install [link]Query Monitor[/link] WordPress plugin to use this option."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:260
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:264
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "You must install [link]Chrome Logger[/link] browser extension to use this option."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:268
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:272
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Logging is currently handled by [link]Gravity Forms[/link]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:338
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:342
 msgid "Enable Logging"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:344
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:348
 msgid "Log Type"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:345
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:349
 msgid "Where to store log output"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:349
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:353
 msgid "File"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:353
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:357
 msgid "Query Monitor"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:357
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:361
 msgid "Chrome Logger"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:413
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:417
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Download [link]log file[/link] ([size] / [date_modified])."
 msgstr ""
@@ -5032,24 +5032,24 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "[plugin] requires PHP [version] or newer."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:475
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:526
 msgid "Invalid request."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:496
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:547
 msgid "Plugin settings data not found."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:527
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:578
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Setting [setting] has unmet requirements."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:566
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:617
 msgid "Settings were successfully saved."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:568
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:619
 msgid "Error saving settings."
 msgstr ""
 
@@ -6093,84 +6093,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""

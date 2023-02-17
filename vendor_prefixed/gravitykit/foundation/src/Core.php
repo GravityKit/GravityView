@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 13-February-2023 using Strauss.
+ * Modified by gravityview on 17-February-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -23,7 +23,7 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 use Exception;
 
 class Core {
-	const VERSION = '1.0.8';
+	const VERSION = '1.0.9';
 
 	const ID = 'gk_foundation';
 
