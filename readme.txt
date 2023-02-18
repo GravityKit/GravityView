@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.17.1 on February 20, 2023 =
 
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.9
 
