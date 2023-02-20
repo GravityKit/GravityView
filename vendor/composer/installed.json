@@ -292,7 +292,7 @@
                     "delete_vendor_files": false
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "GravityKit\\Foundation\\": "src"
