@@ -78,7 +78,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertTrue( gravityview()->plugin->is_compatible() );
 
 		/** Simulate various other conditions, including failure conditions. */
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '7.2';
+		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '7.2.0';
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '4.8-alpha-39901';
 		$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] = '2.3.3.10-alpha';
 		$this->assertTrue( gravityview()->plugin->is_compatible_php() );
