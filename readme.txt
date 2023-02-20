@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.17.1 on February 20, 2023 =
+
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.9
+
 = 2.17 on February 13, 2023 =
 
 **Note: GravityView now requires PHP 7.2 or newer**
