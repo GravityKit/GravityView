@@ -11,7 +11,7 @@ class EntryField {
 	 *
 	 * This method is called by class-gv-gutenberg.php before registering the block.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @param array $block_meta
 	 *
@@ -30,7 +30,7 @@ class EntryField {
 	/**
 	 * Renders [gvfield] shortcode.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @param array $block_attributes
 	 *
