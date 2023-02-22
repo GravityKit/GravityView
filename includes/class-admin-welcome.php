@@ -279,7 +279,9 @@ class GravityView_Welcome {
 
 				<p>2.17.1 on February 20, 2023</p>
 
-				<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.0.9</li>
+				<ul>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.0.9</li>
+				</ul>
 
 				<p>2.17 on February 13, 2023</p>
 
