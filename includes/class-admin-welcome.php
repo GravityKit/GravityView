@@ -277,6 +277,10 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<p>2.17.1 on February 20, 2023</p>
+
+				<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.0.9</li>
+
 				<p>2.17 on February 13, 2023</p>
 
 				<p><strong>Note: GravityView now requires PHP 7.2 or newer</strong></p>
