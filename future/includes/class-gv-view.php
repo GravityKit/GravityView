@@ -1146,38 +1146,22 @@ class View implements \ArrayAccess {
 						$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 					}
 
-					/**
-					 * This is a temporary stub filter, until GF_Query supports NULL conditions.
-					 * Do not use! This filter will be removed.
-					 */
-					if ( defined( 'GF_Query_Condition::NULL' ) ) {
-						$is_null_condition_native = true;
-					} else {
-						$is_null_condition_class = apply_filters( 'gravityview/query/is_null_condition', null );
-						$is_null_condition_native = false;
-					}
-
 					// Filter to active entries only
-					$condition = new \GF_Query_Condition(
-						new \GF_Query_Column( 'status', $join->join_on->ID ),
-						\GF_Query_Condition::EQ,
-						new \GF_Query_Literal( 'active' )
-					);
-
-					if ( $is_null_condition_native ) {
-						$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+					$status_conditions = \GF_Query_Condition::_or(
+						new \GF_Query_Condition(
+							new \GF_Query_Column( 'status', $join->join_on->ID ),
+							\GF_Query_Condition::EQ,
+							new \GF_Query_Literal( 'active' )
+						),
+						new \GF_Query_Condition(
 							new \GF_Query_Column( 'status', $join->join_on->ID ),
 							\GF_Query_Condition::IS,
 							\GF_Query_Condition::NULL
-						) );
-					} else if ( ! is_null( $is_null_condition_class ) ) {
-						$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
-							new \GF_Query_Column( 'status', $join->join_on->ID )
-						) );
-					}
+						)
+					);
 
 					$q = $query->_introspect();
-					$query->where( \GF_Query_Condition::_and( $q['where'], $condition ) );
+					$query->where( \GF_Query_Condition::_and( $q['where'], $status_conditions ) );
 
 					/**
 					 * Applies legacy modifications to Query for is_approved settings.
@@ -1661,17 +1645,6 @@ class View implements \ArrayAccess {
 			return;
 		}
 
-		/**
-		 * This is a temporary stub filter, until GF_Query supports NULL conditions.
-		 * Do not use! This filter will be removed.
-		 */
-		if ( defined( 'GF_Query_Condition::NULL' ) ) {
-			$is_null_condition_native = true;
-		} else {
-			$is_null_condition_class = apply_filters( 'gravityview/query/is_null_condition', null );
-			$is_null_condition_native = false;
-		}
-
 		// Show only approved joined entries
 		$condition = new \GF_Query_Condition(
 			new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
@@ -1679,17 +1652,11 @@ class View implements \ArrayAccess {
 			new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
 		);
 
-		if ( $is_null_condition_native ) {
-			$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
-				new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
-				\GF_Query_Condition::IS,
-				\GF_Query_Condition::NULL
-			) );
-		} else if ( ! is_null( $is_null_condition_class ) ) {
-			$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
-				new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID )
-			) );
-		}
+		$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+			new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+			\GF_Query_Condition::IS,
+			\GF_Query_Condition::NULL
+		) );
 
 		$query_parameters = $query->_introspect();
 
