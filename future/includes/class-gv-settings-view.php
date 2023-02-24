@@ -109,6 +109,7 @@ class View_Settings extends Settings {
 						'0' => __( 'Show a Message', 'gk-gravityview' ),
 						'1' => __( 'Display a Form', 'gk-gravityview' ),
 						'2' => __( 'Redirect to URL', 'gk-gravityview' ),
+						'3' => __( 'Hide the View', 'gk-gravityview' ),
 					),
 					'value'             => '0',
 					'show_in_shortcode' => true,

@@ -913,6 +913,10 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			$default_css_class .= ' gv-widgets-no-results';
 		}
 
+		if ( ! $total_entries && ! gravityview()->request->is_search() && 3 === (int) $view->settings->get( 'no_entries_options', '0' ) ) {
+			$default_css_class .= ' gv-hidden';
+		}
+
 		/**
 		 * @filter `gravityview/widgets/wrapper_css_class` The CSS class applied to the widget container `<div>`.
 		 * @since 1.16.2
