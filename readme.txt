@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Added: "No Entries Behavior" option to hide the View when there are no entries visible to the current user (not applied to search results)
+
+__Developer Updates:__
+
+* Updated: Use the `.gv-hidden` CSS class instead of `.hidden` to prevent potential conflicts with other plugins/themes
+
 = 2.17.1 on February 20, 2023 =
 
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.9
