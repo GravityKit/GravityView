@@ -148,9 +148,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$context->request->returns['is_search'] = false;
 
 		$classes = array(
-			'gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( '', false, $context ),
-			'with-passed-class gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( 'with-passed-class', false, $context ),
-			'with-passed-class and-whitespace gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( '   with-passed-class and-whitespace   ', false, $context ),
+			'gv-container gv-container-' . $view->ID .' gv-hidden' => gv_container_class( '', false, $context ),
+			'with-passed-class gv-container gv-container-' . $view->ID .' gv-hidden' => gv_container_class( 'with-passed-class', false, $context ),
+			'with-passed-class and-whitespace gv-container gv-container-' . $view->ID .' gv-hidden' => gv_container_class( '   with-passed-class and-whitespace   ', false, $context ),
 		);
 
 		foreach ( $classes as $expected => $formatted ) {
