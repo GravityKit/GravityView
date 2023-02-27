@@ -884,7 +884,11 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 	if ( 0 === $total_entries ) {
 		$default_css_class .= ' gv-container-no-results';
 
-		if ( ! gravityview()->request->is_search() && 3 === (int) $context->view->settings->get( 'no_entries_options', '0' ) ) {
+		if (
+			! gravityview()->request->is_search()
+			&& $context instanceof \GV\Template_Context
+			&& 3 === (int) $context->view->settings->get( 'no_entries_options', '0' )
+		) {
 			$hide = true;
 		}
 	}
