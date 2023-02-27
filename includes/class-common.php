@@ -293,6 +293,12 @@ class GVCommon {
 		);
 
 		foreach ( $forms as $form ) {
+
+			// Catch if the form is false, if GFFormsModel::get_form_ids() returns a form ID that doesn't exist.
+			if ( ! isset( $form['id'], $form['title'] ) ) {
+				continue;
+			}
+
 			$options[ (int) $form['id'] ] = esc_html( $form['title'] );
 		}
 
