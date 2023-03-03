@@ -288,9 +288,9 @@ class GravityView_Admin_Views {
 			$label = empty( $view->post_title ) ? sprintf( __('No Title (View #%d)', 'gk-gravityview' ), $view->ID ) : $view->post_title;
 
 			$sub_menu_items[] = array(
-				'label' => esc_attr( $label ),
-				'url' => admin_url( 'post.php?action=edit&post='.$view->ID ),
-				'icon' => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
+				'label' => str_replace( '%', '%%', esc_attr( $label ) ),
+				'url'   => admin_url( 'post.php?action=edit&post=' . $view->ID ),
+				'icon'  => '<i class="fa fa-lg gv-icon-astronaut-head gv-icon"></i>',
 			);
 		}
 
