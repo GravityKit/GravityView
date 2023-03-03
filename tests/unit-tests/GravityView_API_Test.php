@@ -135,9 +135,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		GravityView_View::getInstance()->setHideUntilSearched( true );
 
 		$classes = array(
-			'gv-container hidden' => gv_container_class(),
-			'with-passed-class gv-container hidden' => gv_container_class( 'with-passed-class' ),
-			'with-passed-class and-whitespace gv-container hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+			'gv-container gv-hidden' => gv_container_class(),
+			'with-passed-class gv-container gv-hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container gv-hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
 		);
 
 		foreach ( $classes as $expected => $formatted ) {
@@ -161,9 +161,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		GravityView_View::getInstance()->setViewId( 12 );
 
 		$classes = array(
-			'gv-container gv-container-12 hidden' => gv_container_class(),
-			'with-passed-class gv-container gv-container-12 hidden' => gv_container_class( 'with-passed-class' ),
-			'with-passed-class and-whitespace gv-container gv-container-12 hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+			'gv-container gv-container-12 gv-hidden' => gv_container_class(),
+			'with-passed-class gv-container gv-container-12 gv-hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container gv-container-12 gv-hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
 		);
 
 		foreach ( $classes as $expected => $formatted ) {
