@@ -230,13 +230,13 @@ class GravityView_Entry_Link_Shortcode {
 
 		switch ( $this->settings['action'] ) {
 			case 'edit':
-				$anchor_text = __( 'Edit Entry', 'gravityview' );
+				$anchor_text = __( 'Edit Entry', 'gk-gravityview' );
 				break;
 			case 'delete':
-				$anchor_text = __( 'Delete Entry', 'gravityview' );
+				$anchor_text = __( 'Delete Entry', 'gk-gravityview' );
 				break;
 			default:
-				$anchor_text = __( 'View Details', 'gravityview' );
+				$anchor_text = __( 'View Details', 'gk-gravityview' );
 		}
 
 		return $anchor_text;
@@ -305,31 +305,47 @@ class GravityView_Entry_Link_Shortcode {
 	 * @uses GVCommon::get_entry
 	 * @uses GravityView_frontend::getSingleEntry
 	 *
-	 * @param int $entry_id Gravity Forms Entry ID. If not passed, current View's current entry ID will be used, if found.
+	 * @param int|string $entry_id Gravity Forms Entry ID. If not passed, current View's current entry ID will be used, if found.
 	 *
 	 * @return array|bool Gravity Forms array, if found. Otherwise, false.
 	 */
 	private function get_entry( $entry_id = 0 ) {
-
-		$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getEntry() : GravityView_View::getInstance()->getCurrentEntry();
+		static $entries = array();
 
 		if ( empty( $entry_id ) ) {
+			$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getEntry() : GravityView_View::getInstance()->getCurrentEntry();
+
 			if ( ! $backup_entry ) {
 				gravityview()->log->error( 'No entry defined (or entry id not valid number)', array( 'data' => $this->settings ) );
 
 				return false;
 			}
+
 			$entry = $backup_entry;
-		} else {
-			$entry = wp_cache_get( 'gv_entry_link_entry_' . $entry_id, 'gravityview_entry_link_shortcode' );
-			if ( false === $entry ) {
-				$entry = GVCommon::get_entry( $entry_id, true, false );
-				wp_cache_add( 'gv_entry_link_entry_' . $entry_id, $entry, 'gravityview_entry_link_shortcode' );
+		} else if ( in_array( $entry_id, [ 'first', 'last' ] ) ) {
+			$view = GV\View::by_id( $this->view_id );
+
+			if ( ! $view ) {
+				gravityview()->log->error( "A View with ID {$this->view_id} was not found." );
+
+				return false;
 			}
+
+			if ( ! isset( $entry[ $entry_id ] ) ) {
+				$entry = 'last' === $entry_id ? $view->get_entries( null )->first() : $view->get_entries( null )->last();
+			}
+
+			if ( $entry ) {
+				$entry = $entry->as_entry();
+			}
+		} else {
+			$entry = isset( $entries[ $entry_id ] ) ? $entries[ $entry_id ] : GVCommon::get_entry( $entry_id, true, false );
 		}
 
-		// No search results
-		if ( false === $entry ) {
+		if ( $entry ) {
+			$entries[ $entry_id ] = $entry;
+		} else {
+			// No search results
 			gravityview()->log->error( 'No entries match the entry ID defined: {entry_id}', array( 'entry_id' => $entry_id ) );
 
 			return false;

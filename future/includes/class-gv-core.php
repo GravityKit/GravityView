@@ -112,6 +112,7 @@ final class Core {
 		}
 
 		/** Require critical legacy core files. @todo Deprecate */
+		require_once $this->plugin->dir( 'includes/import-functions.php' );
 		require_once $this->plugin->dir( 'includes/helper-functions.php' );
 		require_once $this->plugin->dir( 'includes/class-common.php');
 		require_once $this->plugin->dir( 'includes/connector-functions.php');
@@ -228,6 +229,8 @@ final class Core {
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
 
+		/** Gutenberg Blocks. */
+		require_once $this->plugin->dir( 'future/includes/gutenberg/class-gv-gutenberg-blocks.php' );
 
 		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
 

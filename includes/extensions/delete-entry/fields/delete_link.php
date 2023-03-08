@@ -16,7 +16,7 @@ if( !GravityView_Delete_Entry::check_user_cap_delete_entry( $entry, $field_setti
 	return;
 }
 
-$link_text = empty( $field_settings['delete_link'] ) ? __('Delete Entry', 'gravityview') : $field_settings['delete_link'];
+$link_text = empty( $field_settings['delete_link'] ) ? __('Delete Entry', 'gk-gravityview') : $field_settings['delete_link'];
 
 $link_text = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ) );
 

@@ -55,7 +55,7 @@ class GravityView_Admin_No_Conflict {
 			return;
 		}
 
-		$no_conflict_mode = gravityview()->plugin->settings->get( 'no-conflict-mode' );
+		$no_conflict_mode = gravityview()->plugin->settings->get( 'no_conflict_mode' );
 
 		if( empty( $no_conflict_mode ) ) {
 			return;
@@ -81,9 +81,6 @@ class GravityView_Admin_No_Conflict {
 			'jshint',
 			'csslint',
 			'jsonlint',
-
-			// Settings
-			'gv-admin-edd-license',
 
 			// Common
 			'select2-js',
@@ -130,7 +127,7 @@ class GravityView_Admin_No_Conflict {
 			}
 		}
 
-		$no_conflict_mode = gravityview()->plugin->settings->get( 'no-conflict-mode' );
+		$no_conflict_mode = gravityview()->plugin->settings->get( 'no_conflict_mode' );
 
 		// If no conflict is off, jQuery will suffice.
 		if( empty( $no_conflict_mode ) ) {
@@ -183,10 +180,21 @@ class GravityView_Admin_No_Conflict {
 		 */
 		$required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
 
+		$allow_prefixes = array(
+			'gravityview',
+			'gf_',
+			'gk_',
+			'gravityforms',
+			'gform_',
+			'jquery-ui-',
+		);
+
+		$allow_regex = '/^' . implode( '|', $allow_prefixes ) . '/ism';
+
 		//reset queue
 		$queue = array();
 		foreach( $wp_objects->queue as $object ) {
-			if( in_array( $object, $required_objects ) || preg_match('/gravityview|gf_|gravityforms/ism', $object ) ) {
+			if( in_array( $object, $required_objects ) || preg_match( $allow_regex, $object ) ) {
 				$queue[] = $object;
 			}
 		}
@@ -197,7 +205,7 @@ class GravityView_Admin_No_Conflict {
 		//unregistering scripts
 		$registered = array();
 		foreach( $wp_objects->registered as $handle => $script_registration ){
-			if( in_array( $handle, $required_objects ) ){
+			if( in_array( $handle, $required_objects ) || preg_match( $allow_regex, $handle ) ){
 				$registered[ $handle ] = $script_registration;
 			}
 		}

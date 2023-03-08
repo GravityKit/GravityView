@@ -53,22 +53,22 @@ final class GravityView_Entry_Approval_Status {
 		return array(
 			'disapproved' => array(
 				'value'  => self::DISAPPROVED,
-				'label'  => esc_html__( 'Disapproved', 'gravityview' ),
-				'action' => esc_html__( 'Disapprove', 'gravityview' ),
-				'title'  => esc_html__( 'Entry not approved for directory viewing. Click to approve this entry.', 'gravityview' ),
+				'label'  => esc_html__( 'Disapproved', 'gk-gravityview' ),
+				'action' => esc_html__( 'Disapprove', 'gk-gravityview' ),
+				'title'  => esc_html__( 'Entry not approved for directory viewing. Click to approve this entry.', 'gk-gravityview' ),
 			),
 			'approved'    => array(
 				'value'  => self::APPROVED,
-				'label'  => esc_html__( 'Approved', 'gravityview' ),
-				'action' => esc_html__( 'Approve', 'gravityview' ),
-				'title'  => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview' ),
-				'title_popover'  => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gravityview' ),
+				'label'  => esc_html__( 'Approved', 'gk-gravityview' ),
+				'action' => esc_html__( 'Approve', 'gk-gravityview' ),
+				'title'  => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
+				'title_popover'  => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
 			),
 			'unapproved'  => array(
 				'value'  => self::UNAPPROVED,
-				'label'  => esc_html__( 'Unapproved', 'gravityview' ),
-				'action' => esc_html__( 'Reset Approval', 'gravityview' ),
-				'title'  => esc_html__( 'Entry not yet reviewed. Click to approve this entry.', 'gravityview' ),
+				'label'  => esc_html__( 'Unapproved', 'gk-gravityview' ),
+				'action' => esc_html__( 'Reset Approval', 'gk-gravityview' ),
+				'title'  => esc_html__( 'Entry not yet reviewed. Click to approve this entry.', 'gk-gravityview' ),
 			),
 		);
 	}
@@ -250,7 +250,6 @@ final class GravityView_Entry_Approval_Status {
 
 			// Is the passed status value the same as the choice value or key?
 			if ( $status === $choice['value'] || $status === $key ) {
-
 				if( 'key' === $attr_key ) {
 					return $key;
 				} else {
@@ -273,6 +272,19 @@ final class GravityView_Entry_Approval_Status {
 	 */
 	public static function get_label( $value_or_key ) {
 		return self::choice_pluck( $value_or_key, 'label' );
+	}
+
+	/**
+	 * Get the label for a specific approval value
+	 *
+	 * @since 2.17
+	 *
+	 * @param int|string $value_or_key Valid status value or key (1 or "approved")
+	 *
+	 * @return string|false Action of value (eg: "Reset Approval"). If invalid value, return false.
+	 */
+	public static function get_action( $value_or_key ) {
+		return self::choice_pluck( $value_or_key, 'action' );
 	}
 
 	/**

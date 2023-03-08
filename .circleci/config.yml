@@ -7,7 +7,7 @@ anchors:
   default_job_config: &default_job_config
     working_directory: /home/circleci/plugin
     machine:
-      image: ubuntu-1604:202007-01
+      image: ubuntu-2004:202201-02
 
   test_job_config: &test_job_config
     <<: *context
@@ -47,6 +47,7 @@ jobs:
           name: Installing build dependencies
           command: |
             /home/circleci/tooling/build-tools/build_tools.sh npm -o install
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o install
       - run:
           name: Configuring tests environment
           command: |
@@ -60,56 +61,6 @@ jobs:
           paths:
             - .
 
-  run_php_54_unit_tests:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Running PHP 5.4 unit tests
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_54
-
-  run_php_55_unit_tests:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Running PHP 5.5 unit tests
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_55
-
-  run_php_56_unit_tests:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Running PHP 5.6 unit tests
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_56
-
-  run_php_70_unit_tests:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Running PHP 7.0 unit tests
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_70
-
-  run_php_71_unit_tests:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Running PHP 7.1 unit tests
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_71
-
   run_php_72_unit_tests:
     <<: *default_job_config
     steps:
@@ -120,25 +71,15 @@ jobs:
           command: |
             /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_72
 
-  run_php_73_unit_tests:
+  run_php_80_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Running PHP 7.3 unit tests
+          name: Running PHP 7.2 unit tests
           command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_73
-
-  run_php_74_unit_tests:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Running PHP 7.4 unit tests
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74
+            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80
 
   build_package_release:
     <<: *default_job_config
@@ -148,15 +89,18 @@ jobs:
       - run:
           name: Building and packaging
           command: |
+            rm -rf vendor
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
+            /home/circleci/tooling/build-tools/build_tools.sh grunt
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
-              /home/circleci/tooling/build-tools/build_tools.sh grunt -o "exec:bower sass postcss uglify imagemin"
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
             else
-              /home/circleci/tooling/build-tools/build_tools.sh grunt
-              [[ $(git diff languages/gravityview.pot | grep +msgid) ]] && /home/circleci/tooling/build-tools/build_tools.sh tx -o "push -s"
-              /home/circleci/tooling/build-tools/build_tools.sh tx -o "pull -f -a --parallel --no-interactive"
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
             fi
+            mkdir -p gravityview
+            cp -R vendor* gravityview
+            rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php
+            zip -gr $(ls gravityview-*.zip) gravityview
             mkdir .release
             cp gravityview-*.zip .release
       - run:
@@ -183,34 +127,16 @@ workflows:
     jobs:
       - prepare_test_and_build_environment:
           <<: *context
-#      - run_php_54_unit_tests:
-#          <<: *test_job_config
-#      - run_php_55_unit_tests:
-#          <<: *test_job_config
-      - run_php_56_unit_tests:
+      - run_php_72_unit_tests:
           <<: *test_job_config
-#      - run_php_70_unit_tests:
-#          <<: *test_job_config
-#      - run_php_71_unit_tests:
-#          <<: *test_job_config
-#      - run_php_72_unit_tests:
-#          <<: *test_job_config
-#      - run_php_73_unit_tests:
-#          <<: *test_job_config
-      - run_php_74_unit_tests:
+      - run_php_80_unit_tests:
           <<: *test_job_config
-      - run_acceptance_tests:
-          <<: *context
+#      - run_acceptance_tests:
+#          <<: *context
       - build_package_release:
           <<: *context
           requires:
-#            - run_php_54_unit_tests
-#            - run_php_55_unit_tests
-            - run_php_56_unit_tests
-#            - run_php_70_unit_tests
-#            - run_php_71_unit_tests
-#            - run_php_72_unit_tests
-#            - run_php_73_unit_tests
-            - run_php_74_unit_tests
-            - run_acceptance_tests
+            - run_php_72_unit_tests
+            - run_php_80_unit_tests
+#            - run_acceptance_tests
 

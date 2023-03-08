@@ -14,7 +14,7 @@
   text-align: $left;
 }
 
-.gv-no-results {
+.gv-no-results-text {
   text-align: center;
   vertical-align: middle;
   padding: .5em;
@@ -26,6 +26,7 @@ a.gv-sort {
 }
 
 // Used to hide elements (e.g. Hide View data until search is performed)
+.gv-hidden,
 .hidden {
   display: none;
 }

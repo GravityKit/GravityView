@@ -49,7 +49,7 @@ if ( ! $is_single_input ) {
 	/**
 	 * @filter `gravityview/template/field/address/csv/delimiter` The address parts delimiter.
 	 * @since develop
-	 * @param[in,out] string The delimiter. Default: newline
+	 * @param string The delimiter. Default: newline
 	 * @param \GV\Template_Context The context.
 	 */
 	$delimiter = apply_filters( 'gravityview/template/field/address/csv/delimiter', "\n", $gravityview );

@@ -53,6 +53,10 @@ class GV_Unit_Tests_Bootstrap {
 		$this->plugin_dir   = dirname( $this->tests_dir );
 		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
 
+		if ( ! defined( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) ) {
+			define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', $this->plugin_dir . '/vendor/yoast/phpunit-polyfills' );
+		}
+
 		// load test function so tests_add_filter() is available
 		require_once $this->wp_tests_dir . '/includes/functions.php';
 
@@ -127,7 +131,7 @@ class GV_Unit_Tests_Bootstrap {
 
 		/** Enable the REST API */
 		add_action( 'gravityview/settings/defaults', function( $defaults ) {
-			$defaults['rest_api'] = '1';
+			$defaults['rest_api'] = 1;
 			return $defaults;
 		} );
 
@@ -244,8 +248,9 @@ class GV_Unit_Tests_Bootstrap {
 	 * @since 1.9
 	 */
 	public function install() {
-		$GV = GravityView_Plugin::getInstance();
-		$GV->frontend_actions();
+		$GV = \GV\Plugin::get();
+
+		$GV->include_legacy_frontend();
 	}
 
 	/**

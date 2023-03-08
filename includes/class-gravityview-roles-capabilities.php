@@ -142,7 +142,7 @@ class GravityView_Roles_Capabilities {
 		if ( function_exists( 'members_register_cap_group' ) ) {
 
 			$args = array(
-				'label'         => __( 'GravityView', 'gravityview' ),
+				'label'         => __( 'GravityView', 'gk-gravityview' ),
 				'icon'          => 'gv-icon-astronaut-head',
 				'caps'          => self::all_caps(),
 				'merge_added'   => true,

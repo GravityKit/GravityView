@@ -13,15 +13,10 @@
 *.sublime-project
 *.sublime-workspace
 
-### Composer ###
-composer.lock
-
 ### Libraries ###
 vendor/.git
 vendor/*/.git
-vendor/composer/
 vendor/bin/
-vendor/autoload.php
 vendor/phpcompatibility/
 vendor/squizlabs/
 vendor/dealerdirect/
@@ -29,18 +24,10 @@ wpcs/
 
 ### Node ###
 node_modules/*
-package-lock.json
 
 ### CodeKit ####
 .sass-cache
 *.codekit
-
-### Transifex ####
-.tx
-languages/gravityview-pt.mo
-languages/gravityview-pt.po
-languages/gravityview-de.mo
-languages/gravityview-de.po
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
@@ -83,6 +70,7 @@ assets/lib/fancybox/*
 # Unit tests
 /tmp
 /tests/bin/tmp
+phpstan.neon
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -107,3 +95,6 @@ phpunit/
 wordpress-51-tests-lib/
 wordpress-latest-tests-lib/
 
+vendor/katzgrau/klogger/
+vendor/trustedlogin/trustedlogin-client/
+vendor/trustedlogin/client/

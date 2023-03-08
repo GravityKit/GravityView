@@ -6,19 +6,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * Issues uncovered in 2.0
  */
 class GV_20_Issues_Test extends GV_UnitTestCase {
-	function setUp() {
-		/** The future branch of GravityView requires PHP 5.3+ namespaces. */
-		if ( version_compare( phpversion(), '5.3' , '<' ) ) {
-			$this->markTestSkipped( 'The future code requires PHP 5.3+' );
-			return;
-		}
-
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 
@@ -374,6 +368,9 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
 		}
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+		add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 
@@ -385,6 +382,9 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'Search Entries', $future );
 		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
 	}
 
 	/**

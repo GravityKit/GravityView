@@ -10,14 +10,19 @@
  */
 class GravityView_Field_Address extends GravityView_Field {
 
+	/** @inheritDoc  */
 	var $name = 'address';
 
+	/** @inheritDoc  */
 	var $group = 'advanced';
 
+	/** @inheritDoc  */
 	var $is_numeric = false;
 
+	/** @inheritDoc  */
 	var $is_searchable = true;
 
+	/** @inheritDoc  */
 	var $search_operators = array( 'is', 'isnot', 'contains' );
 
 	/**
@@ -26,10 +31,11 @@ class GravityView_Field_Address extends GravityView_Field {
 	 */
 	var $icon = 'dashicons-location-alt';
 
+	/** @inheritDoc  */
 	var $_gf_field_class_name = 'GF_Field_Address';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Address', 'gravityview' );
+		$this->label = esc_html__( 'Address', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -261,7 +267,6 @@ class GravityView_Field_Address extends GravityView_Field {
 			case 3:
 				$input_type = 'city';
 				break;
-				break;
 			case 4:
 				$input_type = 'state';
 				break;
@@ -291,17 +296,23 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		$add_options['show_map_link'] = array(
 			'type'       => 'checkbox',
-			'label'      => __( 'Show Map Link:', 'gravityview' ),
-			'desc'       => __( 'Display a "Map It" link below the address', 'gravityview' ),
+			'label'      => __( 'Show Map Link:', 'gk-gravityview' ),
+			'desc'       => __( 'Display a "Map It" link below the address', 'gk-gravityview' ),
 			'value'      => true,
 			'merge_tags' => false,
 			'group'      => 'display',
-			'priority'   => 100,
+			'priority'   => 98,
 		);
 
-		$this->add_field_support( 'new_window', $add_options );
-
-		$add_options['new_window']['requires'] = 'show_map_link';
+		$add_options['show_map_link_new_window'] = array(
+			'type'       => 'checkbox',
+			'label'      => __( 'Open map link in a new tab or window?', 'gk-gravityview' ),
+			'value'      => false,
+			'merge_tags' => false,
+			'group'      => 'display',
+			'requires'   => 'show_map_link',
+			'priority'   => 99,
+		);
 
 		return $add_options + $field_options;
 	}

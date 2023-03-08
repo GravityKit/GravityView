@@ -4,18 +4,27 @@
  * @since 1.15
  */
 class GravityView_Support_Port {
-
 	/**
 	 * @var string The name of the User Meta option used to store whether a user wants to see the Support Port
 	 * @since 1.15
+	 * @since 2.16 Renamed from `user_pref_name` to `USER_PREF_NAME`
 	 */
-	const user_pref_name = 'gravityview_support_port';
+	const USER_PREF_NAME = 'gravityview_support_port';
+
+	/**
+	 * @var string Help Scout beacon key
+	 *
+	 * @since 2.16 Previous constant `beacon_key` was renamed to `HASH_KEY`
+	 */
+	const HS_BEACON_KEY = 'b4f6255a-91bc-436c-a5a2-4cca051ad00f';
 
 	/**
 	 * @var string The hash key used to generate secure message history
-     * @since 2.2.5
+	 *
+	 * @since 2.16
 	 */
-	const beacon_key = 'lCXlwbQR707kipR+J0MCqcxrhGOHjGF0ldD6yNbGM0w=';
+	const HASH_KEY = 'lCXlwbQR707kipR+J0MCqcxrhGOHjGF0ldD6yNbGM0w=';
+
 
 	public function __construct() {
 		$this->add_hooks();
@@ -25,11 +34,11 @@ class GravityView_Support_Port {
 	 * @since 1.15
 	 */
 	private function add_hooks() {
-		add_action( 'personal_options', array( $this, 'user_field' ) );
-		add_action( 'personal_options_update', array( $this, 'update_user_meta_value' ) );
-		add_action( 'edit_user_profile_update', array( $this, 'update_user_meta_value' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'maybe_enqueue_script' ), 1000 );
-		add_filter( 'gravityview/tooltips/tooltip', array( $this, 'maybe_add_article_to_tooltip' ), 10, 6 );
+		add_action( 'personal_options', [ $this, 'user_field' ] );
+		add_action( 'personal_options_update', [ $this, 'update_user_meta_value' ] );
+		add_action( 'edit_user_profile_update', [ $this, 'update_user_meta_value' ] );
+		add_filter( 'gk/foundation/integrations/helpscout/display', [ $this, 'maybe_display_helpscout_beacon' ] );
+		add_filter( 'gravityview/tooltips/tooltip', [ $this, 'maybe_add_article_to_tooltip' ], 10, 6 );
 	}
 
 	/**
@@ -51,8 +60,7 @@ class GravityView_Support_Port {
 	 *
 	 * @return string If no article information exists, original tooltip. Otherwise, modified!
 	 */
-	public function maybe_add_article_to_tooltip( $tooltip = '', $article = array(), $url = '', $atts = '', $css_class = '', $anchor_text = '' ) {
-
+	public function maybe_add_article_to_tooltip( $tooltip = '', $article = [], $url = '', $atts = '', $css_class = '', $anchor_text = '' ) {
 		if ( empty( $article['id'] ) ) {
 			return $tooltip;
 		}
@@ -76,8 +84,8 @@ class GravityView_Support_Port {
 		}
 
 		$url = \GV\Utils::get( $article, 'url', '#' );
-		$anchor_text .= '<p class="description" style="font-size: 15px; text-align: center;"><strong>' . sprintf( esc_html__( 'Click %s icon for additional information.', 'gravityview' ), '<i class=\'fa fa-question-circle\'></i>' ) . '</strong></p>';
-		$link_text = esc_html__( 'Learn More', 'gravityview' );
+		$anchor_text .= '<p class="description" style="font-size: 15px; text-align: center;"><strong>' . sprintf( esc_html__( 'Click %s icon for additional information.', 'gk-gravityview' ), '<i class=\'fa fa-question-circle\'></i>' ) . '</strong></p>';
+		$link_text = esc_html__( 'Learn More', 'gk-gravityview' );
 
 		return sprintf( '<a href="%s" %s class="%s" title="%s" role="button">%s</a>',
 			esc_url( $url ),
@@ -89,163 +97,60 @@ class GravityView_Support_Port {
 	}
 
 	/**
-	 * Enqueue Support Port script if user has it enabled and we're on a GravityView plugin page
+	 * Conditionally displays Help Scout beacon on certain pages
 	 *
-	 * @uses \GV\Admin_Request::is_admin()
-	 * @uses wp_enqueue_script()
-	 * @since 1.15
+	 * @since 2.16
 	 *
-	 * @return void
+	 * @param bool $display
+	 *
+	 * @return bool
 	 */
-	public static function maybe_enqueue_script( $hook ) {
-		global $pagenow;
+	public function maybe_display_helpscout_beacon( $display ) {
+		global $post;
 
-		// Don't show if not GravityView page, or if we're on the Widgets page
-		if ( ! gravityview()->request->is_admin( $hook ) || $pagenow === 'widgets.php' ) {
-			return;
+		if ( ! is_admin() || 'gravityview' !== get_post_type( $post ) ) {
+			return $display;
 		}
 
 		/**
 		 * @filter `gravityview/support_port/display` Whether to display Support Port
 		 * @since 1.15
-		 * @param boolean $display_beacon Default: `true`
+		 * @param boolean $display_support_port Default: `true`
 		 */
 		$display_support_port = apply_filters( 'gravityview/support_port/display', self::show_for_user() );
 
 		if ( empty( $display_support_port ) ) {
 			gravityview()->log->debug( 'Not showing Support Port' );
 
-			return;
+			return false;
 		}
 
-		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		add_filter( 'gk/foundation/integrations/helpscout/configuration', function ( $configuration ) {
+			$arr_helpers = GravityKitFoundation::helpers()->array;
 
-		wp_enqueue_script( 'gravityview-support', plugins_url( 'assets/js/support' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version, true );
+			$arr_helpers->set( $configuration, 'init', self::HS_BEACON_KEY );
+			$arr_helpers->set( $configuration, 'identify.signature', hash_hmac( 'sha256', $arr_helpers->get( $configuration, 'identify.email', '' ), self::HASH_KEY ) );
 
-		self::_localize_script();
-	}
+			/**
+			 * @filter `gravityview/support_port/localization_data` Filter data passed to the Support Port, before localize_script is run
+			 * @since  2.0
+			 * @since  2.16 Removed `contactEnabled`, `translation` and `data` keys
+			 *
+			 * @param array $configuration {
+			 *
+			 * @type array  $suggest       Article IDs to recommend to the user (per page in the admin)
+			 *                             }
+			 */
+			$localized_data = apply_filters( 'gravityview/support_port/localization_data', [
+				'suggest' => $arr_helpers->get( $configuration, 'suggest', [] ),
+			] );
 
-	/**
-	 * Localize the Support Port script
-	 *
-	 * @uses wp_localize_script()
-	 * @since 1.15
-	 * @return void
-	 */
-	private static function _localize_script() {
+			$arr_helpers->set( $configuration, 'suggest', $localized_data['suggest'] );
 
-		$translation = array(
-			'agentLabel'                => __( 'GravityView Support', 'gravityview' ),
-			'searchLabel'               => __( 'Search GravityView Docs', 'gravityview' ),
-			'docsSearchErrorText'       => __( 'Your search timed out. Please double-check your internet connection and try again.', 'gravityview' ),
-			'noResultsLabel'            => _x( 'No results found for', 'a support form search has returned empty for the following word', 'gravityview' ),
-			'contactLabel'              => __( 'Contact Support', 'gravityview' ),
-			'attachAFile'               => __( 'Attach a screenshot or file', 'gravityview' ),
-			'attachmentSizeErrorText'   => __( 'The maximum file size is 10 MB', 'gravityview' ),
-			'nameLabel'                 => __( 'Your Name', 'gravityview' ),
-			'nameError'                 => __( 'Please enter your name', 'gravityview' ),
-			'emailLabel'                => __( 'Email address', 'gravityview' ),
-			'emailValidationLabel'      => __( 'Please enter a valid email address', 'gravityview' ),
-			'subjectLabel'              => __( 'Subject', 'gravityview' ),
-			'subjectError'              => _x( 'Please enter a subject', 'Error shown when submitting support request and there is no subject provided', 'gravityview' ),
-			'messageLabel'              => __( 'How can we help you?', 'gravityview' ),
-			'messageError'              => _x( 'Please enter a message', 'Error shown when submitting support request and there is no message provided', 'gravityview' ),
-			'weAreOnIt'                 => __( 'Message sent!', 'gravityview' ),
-			'contactSuccessDescription' => __( 'Thanks for reaching out! Someone from the GravityView team will get back to you soon.', 'gravityview' ),
-			'needHelp'					=> __( 'Need Help?', 'gravityview' ),
-		);
+			return $configuration;
+		} );
 
-		$response = gravityview()->plugin->settings->get( 'license_key_response' );
-
-		$response = wp_parse_args( $response, array(
-			'license'          => '',
-			'message'          => '',
-			'license_key'      => '',
-			'license_limit'    => '',
-			'expires'          => '',
-			'activations_left' => '',
-			'site_count'       => '',
-			'payment_id'       => '',
-			'customer_name'    => '',
-			'customer_email'   => '',
-            'price_id'         => '0',
-		) );
-
-		// This is just HTML we don't need.
-		unset( $response['message'] );
-
-		switch ( intval( $response['price_id'] ) ) {
-			default:
-			case 1:
-				$package = 'Core';
-				break;
-			case 2:
-				$package = 'Extensions';
-				break;
-			case 3:
-				$package = 'All Access';
-				break;
-            case 4:
-                $package = 'Lifetime';
-                break;
-		}
-
-		$current_user = wp_get_current_user();
-		$no_conflict_mode = gravityview()->plugin->settings->get( 'no-conflict-mode' );
-
-		// Prevent any PHP warnings
-		ob_start();
-
-		$data = array(
-			'email'                 => $current_user->user_email,
-			'name'                  => mb_substr( $current_user->display_name, 0, 80 ),
-			'signature'             => hash_hmac( 'sha256', $current_user->user_email, self::beacon_key ),
-			'affiliate_id'          => gravityview()->plugin->settings->get( 'affiliate_id' ),
-			'is_super_admin'        => is_super_admin(),
-			'license_key'           => $response['license_key'] . ' (' . ucwords( $response['license'] ) . ')',
-			'license_level'         => $package,
-			'alt_emails'            => sprintf( 'Admin: %s, GV Support: %s', get_bloginfo( 'admin_email' ), gravityview()->plugin->settings->get( 'support-email' ) ),
-			'payment_details'       => $response['customer_name'] . ' ' . $response['customer_email'],
-			'wordpress_version'     => get_bloginfo( 'version', 'display' ),
-			'php_version'           => phpversion() . ' on ' . esc_html( $_SERVER['SERVER_SOFTWARE'] ),
-			'no_conflict_mode'      => empty( $no_conflict_mode ) ? 'Disabled' : 'Enabled',
-			'gravityview_version'   => \GV\Plugin::$version,
-			'gravity_forms_version' => GFForms::$version,
-		);
-
-		// End prevent any PHP warnings
-		ob_get_clean();
-
-		// Help Scout length limit is 200 characters
-		foreach( $data as $key => $value ) {
-			if ( ! is_string( $value ) ) {
-                continue;
-			}
-		    $data[ $key ] = mb_substr( $value, 0, 200 );
-        }
-
-		$localization_data = array(
-			'contactEnabled' => (int)GVCommon::has_cap( 'gravityview_contact_support' ),
-			'data' => $data,
-			'translation' => $translation,
-            'suggest' => array(),
-		);
-
-		/**
-         * @filter `gravityview/support_port/localization_data` Filter data passed to the Support Port, before localize_script is run
-		 * @since 2.0
-         * @param array $localization_data {
-         *   @type int $contactEnabled Can the user contact support?
-         *   @type array $data Support/license info
-         *   @type array $translation i18n strings
-         *   @type array $suggest Article IDs to recommend to the user (per page in the admin
-         * }
-		 */
-		$localization_data = apply_filters( 'gravityview/support_port/localization_data', $localization_data );
-
-		wp_localize_script( 'gravityview-support', 'gvSupport', $localization_data );
-
-		unset( $localization_data, $data, $translation, $response, $package );
+		return true;
 	}
 
 	/**
@@ -264,19 +169,18 @@ class GravityView_Support_Port {
 	 * @return bool Whether to show GravityView support port
 	 */
 	static public function show_for_user( $user = 0 ) {
-
 		if ( ! GVCommon::has_cap( 'gravityview_support_port' ) ) {
 			return false;
 		}
 
-		$global_setting = gravityview()->plugin->settings->get( 'support_port' );
+		$global_setting = GravityKitFoundation::settings()->get_plugin_setting( GravityKitFoundation::ID, 'support_port' );
 
 		if ( empty( $global_setting ) ) {
             return false;
 		}
 
 		// Get the per-user Support Port setting
-		$user_pref = get_user_option( self::user_pref_name, $user );
+		$user_pref = get_user_option( self::USER_PREF_NAME, $user );
 
 		// Not configured; default to global setting (which is true at this point)
 		if ( false === $user_pref ) {
@@ -297,8 +201,8 @@ class GravityView_Support_Port {
 	 * @return void
 	 */
 	public function update_user_meta_value( $user_id ) {
-		if ( current_user_can( 'edit_user', $user_id ) && isset( $_POST[ self::user_pref_name ] ) ) {
-			update_user_meta( $user_id, self::user_pref_name, intval( $_POST[ self::user_pref_name ] ) );
+		if ( current_user_can( 'edit_user', $user_id ) && isset( $_POST[ self::USER_PREF_NAME ] ) ) {
+			update_user_meta( $user_id, self::USER_PREF_NAME, intval( $_POST[ self::USER_PREF_NAME ] ) );
 		}
 	}
 
@@ -315,8 +219,7 @@ class GravityView_Support_Port {
 	 * @return void
 	 */
 	public function user_field( $user ) {
-
-		$global_setting = gravityview()->plugin->settings->get( 'support_port' );
+		$global_setting = GravityKitFoundation::settings()->get_plugin_setting( GravityKitFoundation::ID, 'support_port' );
 
 		if ( empty( $global_setting ) ) {
             return;
@@ -337,18 +240,18 @@ class GravityView_Support_Port {
 					<tr class="user-gravityview-support-button-wrap">
 						<th scope="row"><?php
 							/* translators: "Support Port" can be translated as "Support Portal" or "Support Window" */
-							_e( 'GravityView Support Port', 'gravityview' );
+							esc_html_e( 'GravityView Support Port', 'gk-gravityview' );
 						?></th>
 						<td>
 							<fieldset>
 								<legend class="screen-reader-text"><span><?php
 										/* translators: "Support Port" can be translated as "Support Portal" or "Support Window" */
-										_e( 'GravityView Support Port', 'gravityview' );
+										esc_html_e( 'GravityView Support Port', 'gk-gravityview' );
 								?></span></legend>
 								<label>
-									<input name="<?php echo esc_attr( self::user_pref_name ); ?>" type="hidden" value="0"/>
-									<input name="<?php echo esc_attr( self::user_pref_name ); ?>" type="checkbox" value="1" <?php checked( self::show_for_user( $user->ID ) ); ?> />
-									<?php esc_html_e( 'Show GravityView Support Port when on a GravityView-related page', 'gravityview' ); ?>
+									<input name="<?php echo esc_attr( self::USER_PREF_NAME ); ?>" type="hidden" value="0"/>
+									<input name="<?php echo esc_attr( self::USER_PREF_NAME ); ?>" type="checkbox" value="1" <?php checked( self::show_for_user( $user->ID ) ); ?> />
+									<?php esc_html_e( 'Show GravityView Support Port when on a GravityView-related page', 'gk-gravityview' ); ?>
 								</label>
 							</fieldset>
 						</td>

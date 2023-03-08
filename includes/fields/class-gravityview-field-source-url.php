@@ -21,8 +21,8 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 	var $icon = 'dashicons-admin-links';
 
 	public function __construct() {
-		$this->label       = esc_html__( 'Source URL', 'gravityview' );
-		$this->description = esc_html__( 'The URL of the page where the form was submitted.', 'gravityview' );
+		$this->label       = esc_html__( 'Source URL', 'gk-gravityview' );
+		$this->description = esc_html__( 'The URL of the page where the form was submitted.', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -38,15 +38,15 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 		$add_options = array();
 		$add_options['link_to_source'] = array(
 			'type' => 'checkbox',
-			'label' => __( 'Link to URL:', 'gravityview' ),
-			'desc' => __('Display as a link to the Source URL', 'gravityview'),
+			'label' => __( 'Link to URL:', 'gk-gravityview' ),
+			'desc' => __('Display as a link to the Source URL', 'gk-gravityview'),
 			'value' => false,
 			'merge_tags' => false,
 		);
 		$add_options['source_link_text'] = array(
 			'type' => 'text',
-			'label' => __( 'Link Text:', 'gravityview' ),
-			'desc' => __('Customize the link text. If empty, the link text will be the URL.', 'gravityview'),
+			'label' => __( 'Link Text:', 'gk-gravityview' ),
+			'desc' => __('Customize the link text. If empty, the link text will be the URL.', 'gk-gravityview'),
 			'value' => NULL,
 			'merge_tags' => true,
 			'requires' => 'link_to_source',

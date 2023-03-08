@@ -1,15 +1,14 @@
 <?php
 /**
  * Plugin Name:       	GravityView
- * Plugin URI:        	https://gravityview.co
+ * Plugin URI:        	https://www.gravitykit.com
  * Description:       	The best, easiest way to display Gravity Forms entries on your website.
- * Version:             2.10.3.2
- * Author:            	GravityView
- * Author URI:        	https://gravityview.co
- * Text Domain:       	gravityview
+ * Version:             2.17.1
+ * Author:            	GravityKit
+ * Author URI:        	https://www.gravitykit.com
+ * Text Domain:       	gk-gravityview
  * License:           	GPLv2 or later
  * License URI: 		http://www.gnu.org/licenses/gpl-2.0.html
- * Domain Path:			/languages
  */
 
 /** If this file is called directly, abort. */
@@ -17,12 +16,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
+require_once __DIR__ . '/vendor_prefixed/gravitykit/foundation/src/preflight_check.php';
+
+if ( ! GravityKit\GravityView\Foundation\should_load( __FILE__ ) ) {
+	return;
+}
+
+if ( ! GravityKit\GravityView\Foundation\meets_min_php_version_requirement( __FILE__, '7.2.0' ) ) {
+	return;
+}
+
 /** Constants */
 
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.10.3.2' );
+define( 'GV_PLUGIN_VERSION', '2.17.1' );
 
 /**
  * Full path to the GravityView file
@@ -42,13 +51,13 @@ define( 'GRAVITYVIEW_DIR', plugin_dir_path( __FILE__ ) );
 /**
  * GravityView requires at least this version of Gravity Forms to function properly.
  */
-define( 'GV_MIN_GF_VERSION', '2.3' );
+define( 'GV_MIN_GF_VERSION', '2.3.3.9' );
 
 /**
  * GravityView will soon require at least this version of Gravity Forms to function properly.
  * @since 1.19.4
  */
-define( 'GV_FUTURE_MIN_GF_VERSION', '2.4' );
+define( 'GV_FUTURE_MIN_GF_VERSION', '2.5.0' );
 
 /**
  * GravityView requires at least this version of WordPress to function properly.
@@ -60,205 +69,33 @@ define( 'GV_MIN_WP_VERSION', '4.7.0' );
  * GravityView will soon require at least this version of WordPress to function properly.
  * @since 2.9.3
  */
-define( 'GV_FUTURE_MIN_WP_VERSION', '4.9.16' );
+define( 'GV_FUTURE_MIN_WP_VERSION', '5.3' );
 
 /**
  * GravityView requires at least this version of PHP to function properly.
  * @since 1.12
  */
-define( 'GV_MIN_PHP_VERSION', '5.3.0' );
+define( 'GV_MIN_PHP_VERSION', '7.2.0' );
 
 /**
  * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
  * @since 1.19.2
  * @var string|false
  */
-define( 'GV_FUTURE_MIN_PHP_VERSION', '5.6.30' );
+define( 'GV_FUTURE_MIN_PHP_VERSION', '7.4.0' );
 
 /**
  * The future is here and now.
  */
 require GRAVITYVIEW_DIR . 'future/loader.php';
 
-/**
- * GravityView_Plugin main class.
- *
- * @deprecated see `gravityview()->plugin` and `\GV\Plugin`
- */
-final class GravityView_Plugin {
-
+add_action( 'plugins_loaded', function () {
 	/**
-	 * @deprecated Use \GV\Plugin::$version
-	 */
-	const version = GV_PLUGIN_VERSION;
-
-	private static $instance;
-
-	/**
-	 * Singleton instance
+	 * GravityView_Plugin is only used by the legacy class-gravityview-extension.php that's shipped with extensions.
 	 *
-	 * @deprecated See \GV\Plugin
-	 *
-	 * @return GravityView_Plugin GravityView_Plugin object
+	 * @TODO Remove once all extensions have been updated to use Foundation.
 	 */
-	public static function getInstance() {
-		if ( empty( self::$instance ) ) {
-			self::$instance = new self;
-		}
-
-		return self::$instance;
+	final class GravityView_Plugin {
+		const version = GV_PLUGIN_VERSION;
 	}
-
-	/**
-	 * @deprecated See \GV\Plugin
-	 */
-	private function __construct() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-	}
-
-	/**
-	 * Include global plugin files
-	 *
-	 * @deprecated Use gravityview()->plugin->include_legacy_core
-	 *
-	 * @since 1.12
-	 */
-	public function include_files() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		gravityview()->plugin->include_legacy_core();
-	}
-
-	/**
-	 * Check whether GravityView is network activated
-	 *
-	 * @deprecated See \GV\Plugin
-	 *
-	 * @since 1.7.6
-	 * @return bool
-	 */
-	public static function is_network_activated() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		return gravityview()->plugin->is_network_activated();
-	}
-
-
-	/**
-	 * Plugin activate function.
-	 *
-	 * @static
-	 * @return void
-	 */
-	public static function activate() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-	}
-
-
-	/**
-	 * Plugin deactivate function.
-	 *
-	 * @deprecated see \GV\Plugin::deactivate()
-	 * @return void
-	 */
-	public static function deactivate() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-	}
-
-	/**
-	 * Include the extension class
-	 *
-	 * @deprecated The extension framework is included by default now.
-	 *
-	 * @since 1.5.1
-	 * @return void
-	 */
-	public static function include_extension_framework() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-	}
-
-	/**
-	 * Load GravityView_Widget class
-	 *
-	 * @deprecated The widget class is loaded elsewhere in legacy core.
-	 *
-	 * @since 1.7.5.1
-	 */
-	public static function include_widget_class() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-	}
-
-
-	/**
-	 * Loads the plugin's translated strings.
-	 *
-	 * @deprecated Use \GV\Plugin::load_textdomain()
-	 *
-	 * @return void
-	 */
-	public function load_plugin_textdomain() {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		gravityview()->plugin->load_textdomain();
-	}
-
-	/**
-	 * Check if is_admin(), and make sure not DOING_AJAX
-	 * @since 1.7.5
-	 * @deprecated
-	 * @see \GV\Frontend_Request::is_admin via gravityview()->request->is_admin()
-	 * @return bool
-	 */
-	public static function is_admin() {
-		gravityview()->log->notice( '\GravityView_Plugin::is_admin() is deprecated. Use \GV\Request::is_admin() instead.' );
-		return gravityview()->request->is_admin();
-	}
-
-	/**
-	 * Function to launch frontend objects
-	 *
-	 * @since 1.17 Added $force param
-	 *
-	 *
-	 * @param bool $force Whether to force loading
-	 *
-	 * @return void
-	 */
-	public function frontend_actions( $force = false ) {
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		gravityview()->plugin->include_legacy_frontend( $force );
-	}
-
-	/**
-	 * Helper function to define the default widget areas.
-	 *
-	 * @deprecated Moved to GravityView_Widget::get_default_widget_areas()
-	 *
-	 * @return array definition for default widget areas
-	 */
-	public static function get_default_widget_areas() {
-		return GravityView_Widget::get_default_widget_areas();
-	}
-
-	/** DEBUG */
-
-    /**
-     * Logs messages using Gravity Forms logging add-on
-     * @param  string $message log message
-     * @param mixed $data Additional data to display
-	 * @deprecated use gravityview()->log
-     * @return void
-     */
-    public static function log_debug( $message, $data = null ){
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		gravityview()->log->debug( $message, $data );
-    }
-
-    /**
-     * Logs messages using Gravity Forms logging add-on
-     * @param  string $message log message
-	 * @deprecated use gravityview()->log
-     * @return void
-     */
-    public static function log_error( $message, $data = null ){
-		gravityview()->log->notice( '\GravityView_Plugin is deprecated. Use \GV\Plugin instead.' );
-		gravityview()->log->error( $message, $data );
-    }
-} // end class GravityView_Plugin
+}, 5 );

@@ -35,11 +35,15 @@ if( floor( $field_id ) === floatval( $field_id ) ) {
 	if( empty( $value_with_newline ) ) { return; }
 
 	// Add map link if it's not set (default, back compat) or if it's set to yes
-	if( !isset( $field_settings['show_map_link'] ) || !empty( $field_settings['show_map_link'] ) ){
+	if( !isset( $field_settings['show_map_link'] ) || !empty( $field_settings['show_map_link'] ) ) {
+		$atts = array();
+
+		if ( $field_settings['show_map_link_new_window'] ) {
+			$atts['target'] = '_blank';
+		}
 
 		// Add the map link as another line
-	    $value_with_newline .= "\n" . gravityview_get_map_link( $value_with_newline );
-
+		$value_with_newline .= "\n" . gravityview_get_map_link( $value_with_newline, $atts );
 	}
 
 	// Full address without the "Map It" link

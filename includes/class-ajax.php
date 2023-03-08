@@ -116,11 +116,11 @@ class GravityView_Ajax {
 		}
 
 		ob_start();
-		do_action( 'gravityview_render_directory_active_areas', $_POST['template_id'], 'directory', '', true );
+		do_action( 'gravityview_render_directory_active_areas', \GV\Utils::_POST('template_id'), 'directory', '', true, \GV\Utils::_POST( 'form_id', 0 ) );
 		$response['directory'] = ob_get_clean();
 
 		ob_start();
-		do_action( 'gravityview_render_directory_active_areas',  $_POST['template_id'], 'single', '', true );
+		do_action( 'gravityview_render_directory_active_areas', \GV\Utils::_POST('template_id'), 'single', '', true, \GV\Utils::_POST( 'form_id', 0 ) );
 		$response['single'] = ob_get_clean();
 
 		$response = array_map( 'gravityview_strip_whitespace', $response );
@@ -310,77 +310,42 @@ class GravityView_Ajax {
 	}
 
 	/**
-	 * Get the the form fields for a preset (no form created yet)
+	 * Get the form fields for a preset (no form created yet)
+	 *
 	 * @param  string $template_id Preset template
 	 *
+	 * @return array|false
 	 */
 	static function pre_get_form_fields( $template_id = '') {
-
 		if( empty( $template_id ) ) {
 			gravityview()->log->error( 'Template ID not set.' );
 			return false;
 		} else {
 			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
 			if( !file_exists( $form_file )  ) {
-				gravityview()->log->error( 'Importing Form Fields for preset [{template_id}]. File not found. file: {path}', array( 'template_id' => $template_id, 'path' => $form_file ) );
+				gravityview()->log->error( '[{template_id}] form file does not exist: {path}.', array( 'template_id' => $template_id, 'path' => $form_file ) );
 				return false;
 			}
 		}
 
-		// Load xml parser (from GravityForms)
-		if( class_exists( 'GFCommon' ) ) {
-			$xml_parser = GFCommon::get_base_path() . '/xml.php';
-		} else {
-			$xml_parser = trailingslashit( WP_PLUGIN_DIR ) . 'gravityforms/xml.php';
-		}
+		// Import logic from https://github.com/gravityforms/gravityforms/blob/11dc114df56e7f5116d7df1adc54000007c13ec5/export.php#L96 & https://github.com/gravityforms/gravityforms/blob/11dc114df56e7f5116d7df1adc54000007c13ec5/export.php#L106
+		$forms_json = file_get_contents( $form_file );
 
-		if( file_exists( $xml_parser ) ) {
-			require_once( $xml_parser );
-		} else {
-			gravityview()->log->debug( ' - Gravity Forms XML Parser not found {path}.', array( 'path' => $xml_parser ) );
+		$forms = json_decode( $forms_json, true );
+
+		if ( ! $forms ) {
+			gravityview()->log->error( 'Could not read the {path} template file.', array( 'path' => $form_file ) );
+
 			return false;
 		}
 
-		// load file
-		$xmlstr = file_get_contents( $form_file );
+		$form = GFFormsModel::convert_field_objects( $forms[0] );
+		$form = GFFormsModel::sanitize_settings( $form );
 
-        $options = array(
-            "page" => array("unserialize_as_array" => true),
-            "form"=> array("unserialize_as_array" => true),
-            "field"=> array("unserialize_as_array" => true),
-            "rule"=> array("unserialize_as_array" => true),
-            "choice"=> array("unserialize_as_array" => true),
-            "input"=> array("unserialize_as_array" => true),
-            "routing_item"=> array("unserialize_as_array" => true),
-            "creditCard"=> array("unserialize_as_array" => true),
-            "routin"=> array("unserialize_as_array" => true),
-            "confirmation" => array("unserialize_as_array" => true),
-            "notification" => array("unserialize_as_array" => true)
-        );
+		gravityview()->log->debug( '[pre_get_form_fields] Importing Form Fields for preset [{template_id}]. (Form)', array( 'template_id' => $template_id, 'data' => $form ) );
 
-		$xml = new RGXML($options);
-        $forms = $xml->unserialize($xmlstr);
-
-        if( !$forms ) {
-        	gravityview()->log->error( 'Importing Form Fields for preset [{template_id}]. Error importing file. (File) {path}', array( 'template_id' => $template_id, 'path' => $form_file ) );
-        	return false;
-        }
-
-        if( !empty( $forms[0] ) && is_array( $forms[0] ) ) {
-        	$form = $forms[0];
-        }
-
-        if( empty( $form ) ) {
-        	gravityview()->log->error( '$form not set.', array( 'data' => $forms ) );
-        	return false;
-        }
-
-        gravityview()->log->debug( '[pre_get_available_fields] Importing Form Fields for preset [{template_id}]. (Form)', array( 'template_id' => $template_id, 'data' => $form ) );
-
-        return $form;
-
+		return $form;
 	}
-
 
 	/**
 	 * Import fields configuration from an exported WordPress View preset

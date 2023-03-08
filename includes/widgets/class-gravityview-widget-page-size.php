@@ -21,7 +21,7 @@ class Page_Size extends \GV\Widget {
 
 	function __construct() {
 
-		$this->widget_description = __( 'Allow users to modify the number of results shown per page.', 'gravityview' );
+		$this->widget_description = __( 'Allow users to modify the number of results shown per page.', 'gk-gravityview' );
 
 		$default_values = array(
 			'header' => 1,
@@ -34,7 +34,7 @@ class Page_Size extends \GV\Widget {
 			add_action( 'gravityview/view/get', array( $this, 'override_view_page_size' ) );
 		}
 
-		parent::__construct( __( 'Page Size', 'gravityview' ), $this->widget_id, $default_values, $settings );
+		parent::__construct( __( 'Page Size', 'gk-gravityview' ), $this->widget_id, $default_values, $settings );
 	}
 
 	/**
@@ -68,7 +68,7 @@ class Page_Size extends \GV\Widget {
 
 		/**
 		 * @filter `gravityview/widget/page_size/page_sizes` Filter the available page sizes as needed
-		 * @param[in,out] array $sizes The sizes, with `value` and `text` keys. `text` key used as HTML option label.
+		 * @param array $sizes The sizes, with `value` and `text` keys. `text` key used as HTML option label.
 		 * @param \GV\Template_Context $context The context.
 		 */
 		$page_sizes = apply_filters( 'gravityview/widget/page_size/page_sizes', $page_sizes, $context );
@@ -92,9 +92,9 @@ class Page_Size extends \GV\Widget {
 		$page_size = (int) \GV\Utils::_GET( 'page_size', $context->view->settings->get( 'page_size' ) );
 
 		$settings = shortcode_atts( array(
-			'label'   => __( 'Page Size', 'gravityview' ),
+			'label'   => __( 'Page Size', 'gk-gravityview' ),
 			'choices' => self::get_page_sizes( $context ),
-			'default_choice_text' => __( 'Results Per Page', 'gravityview' ),
+			'default_choice_text' => __( 'Results Per Page', 'gk-gravityview' ),
 		), $widget_args, 'gravityview_widget_page_size' );
 
 		/**

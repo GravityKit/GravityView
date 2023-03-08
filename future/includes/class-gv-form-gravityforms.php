@@ -40,17 +40,15 @@ class GF_Form extends Form implements \ArrayAccess {
 	 */
 	public static function by_id( $form_id ) {
 
-		$form = wp_cache_get( 'gf_form_' . $form_id, 'gravityview' );
+		static $forms = array();
 
-		if ( ! $form ) {
-			$form = \GFAPI::get_form( $form_id );
-		}
+		$form = isset( $forms[ $form_id ] ) ? $forms[ $form_id ] : \GFAPI::get_form( $form_id );
+
+		$forms[ $form_id ] = $form;
 
 		if ( ! $form ) {
 			return null;
 		}
-
-		wp_cache_set( 'gf_form_' . $form_id, $form, 'gravityview' );
 
 		$self = new self();
 		$self->form = $form;
@@ -217,6 +215,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @since 2.0
 	 * @return bool Whether the offset exists or not.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
 		return isset( $this->form[$offset] );
 	}
@@ -232,6 +231,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 *
 	 * @return mixed The value of the requested form data.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		return $this->form[$offset];
 	}
@@ -245,6 +245,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 *
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
 		gravityview()->log->error( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
 	}
@@ -257,6 +258,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * @since 2.0
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetUnset( $offset ) {
 		gravityview()->log->error( 'The underlying Gravity Forms form is immutable. This is a \GV\Form object and should not be accessed as an array.' );
 	}

@@ -12,6 +12,7 @@
  *
  * @typedef {{
  *   passed_form_id: bool,
+ *   has_merge_tag_listener: bool,
  *   label_cancel: string
  *   label_continue: string,
  *   loading_text: string,
@@ -49,6 +50,8 @@
  */
 
 (function( $ ) {
+	// Alias jQuery UI's tooltip() function to gvTooltip() to prevent a conflict with Bootstrap that also registers a global tooltip() function.
+	$.widget.bridge( 'gvTooltip', $.ui.tooltip );
 
 	var viewConfiguration, viewGeneralSettings;
 
@@ -165,6 +168,8 @@
 				.on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
 
 				// Update checkbox visibility when having dependency checkboxes
+				.on( 'gravityview/loaded', vcfg.toggleCheckboxes )
+
 				.on( 'change', ".gv-setting-list, #gravityview_settings, .gv-dialog-options", vcfg.toggleCheckboxes )
 
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
@@ -175,7 +180,7 @@
 
 					var was_closed = $( '.gv-field-details', $dialog ).hasClass('gv-field-details--closed');
 
-					viewConfiguration.toggleFieldDetails( was_closed );
+					viewConfiguration.toggleFieldDetails( $dialog, was_closed );
 
 					// When toggled, set a new cookie
 					$.cookie( 'gv-field-details-expanded', was_closed, { path: gvGlobals.admin_cookiepath } );
@@ -197,7 +202,7 @@
 					$( 'body' ).trigger( 'gravityview/tabs-ready' );
 				})
 
-				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry', vcfg.toggleTabConfigurationWarnings )
+				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry gravityview/view-config-updated', vcfg.toggleTabConfigurationWarnings )
 
 				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry gravityview/view-config-updated', vcfg.toggleRemoveAllFields )
 
@@ -247,13 +252,34 @@
 				$open_dialog.dialog( 'option', 'width', window_width );
 			});
 
-			window.onbeforeunload = function() {
-				return vcfg.hasUnsavedChanges ? true : null;
-			};
+
+			// Make sure the user intends to leave the page before leaving.
+			window.addEventListener('beforeunload', ( event) => {
+				if ( vcfg.hasUnsavedChanges ) {
+					event.preventDefault();
+				}
+			} );
 
 			if( gvGlobals.passed_form_id ) {
 				vcfg.gvSelectForm.trigger( 'change' );
 			}
+
+			// Enable inserting GF merge tags into WP's CodeMirror
+			var _sendToEditor = window.send_to_editor;
+
+			window.send_to_editor = function ( val ) {
+				var $el = $( '#' + window.wpActiveEditor );
+
+				if ( !$el.hasClass( 'codemirror' ) && _sendToEditor ) {
+					return _sendToEditor( val );
+				}
+
+				var codeMirror = $el.next( '.CodeMirror' )[ 0 ].CodeMirror;
+				var cursorPosition = codeMirror.getCursor();
+				codeMirror.replaceRange( val, window.wp.CodeMirror.Pos( cursorPosition.line, cursorPosition.ch ) );
+			};
+
+			$( 'div .gform-dropdown__trigger' ).on( 'click.gravityforms', vcfg.sendMergeTagValueToCodemirrorEditor );
 		},
 
 		getCookieVal: function ( cookie ) {
@@ -514,7 +540,7 @@
 			if ( close ) {
 
 				// Close all open tooltips
-				activeTooltips.tooltip( "close" );
+				activeTooltips.gvTooltip( "close" );
 
 				// Close all open dialogs
 				$( ".ui-dialog:visible" ).find( '.ui-dialog-content' ).dialog( "close" );
@@ -588,17 +614,20 @@
 			if ( '' === vcfg.currentFormId ) {
 				// if no form is selected, hide all the configs
 				vcfg.hideView();
-
 			} else {
 				// if both form and template were selected, show View Layout config
-				if ( $( "#gravityview_directory_template" ).length && $( "#gravityview_directory_template" ).val().length > 0 ) {
-					$( "#gravityview_select_template" ).slideUp( 150 );
+				if ( $( '#gravityview_directory_template' ).length && $( '#gravityview_directory_template' ).val().length > 0 ) {
+					$( '#gravityview_select_template' ).slideUp( 150 );
 					vcfg.showViewConfig();
 				} else {
 					// else show the template picker
 					vcfg.templateFilter( 'custom' );
 					vcfg.showViewTypeMetabox();
 				}
+			}
+
+			if ( vcfg.currentFormId && !vcfg.currentTemplateId ) {
+				vcfg.gvSwitchView.hide();
 			}
 
 			vcfg.togglePreviewButton();
@@ -668,20 +697,24 @@
 		 */
 		toggleViewTypeMetabox: function () {
 			var $templates = $( "#gravityview_select_template" );
+			var vcfg = viewConfiguration;
 
 			if ( $templates.is( ':visible' ) ) {
-
-				viewConfiguration.gvSwitchView.text( function () {
+				vcfg.gvSwitchView.text( function () {
 					return $( this ).attr( 'data-text-backup' );
 				} );
 
-				$templates.slideUp( 150 );
-
+				if ( vcfg.currentTemplateId ) {
+					$templates.slideUp( 150 );
+				}
 			} else {
-
-				viewConfiguration.gvSwitchView.attr( 'data-text-backup', function () {
-					return $( this ).text();
-				} ).text( gvGlobals.label_cancel );
+				if ( vcfg.currentTemplateId ) {
+					vcfg.gvSwitchView.attr( 'data-text-backup', function () {
+						return $( this ).text();
+					} ).text( gvGlobals.label_cancel );
+				} else {
+					vcfg.gvSwitchView.hide();
+				}
 
 				$templates.slideDown( 150 );
 			}
@@ -768,20 +801,25 @@
 			} else {
 				vcfg.templateFilter( 'custom' );
 
-				vcfg.getAvailableFields();
-				vcfg.getSortableFields();
-
-				if ( ! vcfg.currentFormId && ! vcfg.currentTemplateId ) {
-					vcfg.showViewTypeMetabox();
-					vcfg.gvSwitchView.fadeOut( 150 );
-				} else {
-					vcfg.gvSwitchView.show();
-				}
+				Promise.all( [
+					vcfg.getAvailableFields(),
+					vcfg.getSortableFields()
+				] ).then( function () {
+					if ( !vcfg.currentFormId && !vcfg.currentTemplateId ) {
+						vcfg.showViewTypeMetabox();
+						vcfg.gvSwitchView.fadeOut( 150 );
+					} else {
+						if (vcfg.currentTemplateId && vcfg.currentTemplateId) {
+							vcfg.gvSwitchView.show();
+						}
+						vcfg.gvSwitchView.click();
+					}
+				} );
 			}
 
 			vcfg.currentTemplateId = '';
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
-			vcfg.hasUnsavedChanges = true;
+			vcfg.setUnsavedChanges( true );
 			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
@@ -852,10 +890,23 @@
 
 					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
-					vcfg.setupCodeMirror( thisDialog );
 
-					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( 'disable' );
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable('disable');
+					vcfg.refresh_merge_tags( thisDialog, function() {
+						// Configure CodeMirror after merge tags are refreshed (300ms following the DOMContentLoaded event).
+						vcfg.setupCodeMirror( thisDialog );
+					} );
+
+					$sortableEls = $( '.ui-widget-content[aria-hidden="false"]' ).find( '.active-drop-widget, .active-drop-field' );
+
+					if ( $sortableEls.length ) {
+						$sortableEls.each( ( i, el ) => {
+							if ( !$( el ).hasClass( 'ui-sortable' ) ) {
+								return;
+							}
+
+							$( el ).sortable( 'disable' );
+						} );
+					}
 
 					return true;
 				},
@@ -873,6 +924,8 @@
 						$CodeMirror[0].CodeMirror.toTextArea();
 					} );
 
+					thisDialog.find( '.merge-tag-support' ).removeClass( 'merge-tag-support' ).addClass( 'gv-merge-tag-support' );
+
 					$( '.gv-field-settings.active', '#gravityview_view_config' ).removeClass( 'active' );
 
 					vcfg.setCustomLabel( thisDialog );
@@ -881,8 +934,17 @@
 						$( this ).remove();
 					} );
 
-					$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( 'enable' );
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable('enable');
+					$sortableEls = $( '.ui-widget-content[aria-hidden="false"]' ).find( '.active-drop-widget, .active-drop-field' );
+
+					if ( $sortableEls.length ) {
+						$sortableEls.each( ( i, el ) => {
+							if ( !$( el ).hasClass( 'ui-sortable' ) ) {
+								return;
+							}
+
+							$( el ).sortable( 'enable' );
+						} );
+					}
 
 					$( 'body' ).trigger( 'gravityview/dialog-closed', thisDialog );
 				},
@@ -899,8 +961,9 @@
 		 * @param {jQuery} dialog
 		 */
 		setupCodeMirror: function ( dialog ) {
+			var vcfg = viewConfiguration;
 
-			$( 'textarea.code', dialog ).each( function () {
+			$( 'textarea.code:visible', dialog ).each( function () {
 				var editor = wp.codeEditor.initialize( $( this ), {
 					undoDepth: 1000
 				} );
@@ -914,7 +977,9 @@
 				var initialEditorCursorPos = editor.codemirror.getCursor();
 
 				// Move merge tag before before CodeMirror in DOM to fix floating issue
-				$textarea.parent().find( '.all-merge-tags' ).insertBefore( $textarea );
+				$textarea.parent().find( '.all-merge-tags' ).detach().insertBefore( $textarea );
+
+				$textarea.parent().find( 'div .gform-dropdown__trigger' ).on( 'click.gravityforms', vcfg.sendMergeTagValueToCodemirrorEditor );
 
 				// Set up Merge Tag autocomplete
 				$textarea.autocomplete( {
@@ -949,7 +1014,7 @@
 						closeAutocompletion();
 						$textarea.focus();
 					}
-				} )
+				} );
 
 				editor.codemirror.on( 'mousedown', function () {
 					closeAutocompletion();
@@ -995,6 +1060,27 @@
 		},
 
 		/**
+		 * Event handler that inserts the merge tag value (data-value property) to WP's CodeMirror
+		 *
+		 * @since 2.14.4
+		 * @param {jQueryEvent} e
+		 */
+		sendMergeTagValueToCodemirrorEditor: function ( e ) {
+			// Always make sure the active editor is set.
+			// This can also be overridden by other plugins (like Members), so make a backup.
+			var _activeEditorBackup = window.wpActiveEditor;
+
+			window.wpActiveEditor = $( e.currentTarget ).parentsUntil( '.gv-setting-container' ).find( 'textarea' ).attr( 'id' );
+
+			if ( window.wpActiveEditor ) {
+				window.send_to_editor( $( this ).data( 'value' ) );
+			}
+
+			// Restore prior active editor
+			window.wpActiveEditor = _activeEditorBackup;
+		},
+
+		/**
 		 * When opening a dialog, restore the Field Details visibility based on cookie
 		 * @since 2.10
 		 * @param {jQuery} dialog
@@ -1010,16 +1096,51 @@
 
 			var show_details = viewConfiguration.getCookieVal( show_details_cookie );
 
-			viewConfiguration.toggleFieldDetails( show_details );
+			viewConfiguration.toggleFieldDetails( dialog, show_details );
+
+			viewConfiguration.migrateSurveyScore( dialog );
+		},
+
+		/**
+		 * Migrate Likert fields with [score] to [choice_display]
+		 * @since 2.11
+		 * @param {jQuery} $dialog
+		 */
+		migrateSurveyScore: function ( $dialog ) {
+
+			// Only process on Survey fields
+			if ( 0 === $dialog.parents('[data-inputtype="survey"]').length ) {
+				return;
+			}
+
+			var $score = $dialog.find( '.gv-setting-container-score input' );
+
+			if ( ! $score ) {
+				return;
+			}
+
+			if ( 0 === $score.val() * 1 ) {
+				return;
+			}
+
+			$dialog
+				.find( '.gv-setting-container-choice_display input[value="score"]' )
+				.trigger('click') // Update the choice
+				.trigger('focus') // Highlight the selected choice
+			;
 		},
 
 		/**
 		 * Toggle visibility for field details
 		 * @since 2.10
-		 * @param {boolean} show_details Whether to show the field details or not
+		 * @param {jQuery}  $dialog The open dialog
+		 * @param {boolean|string} show_details Whether to show the field details or not
 		 */
-		toggleFieldDetails: function ( show_details ) {
-			$( '.gv-dialog:visible' )
+		toggleFieldDetails: function ( $dialog, show_details ) {
+
+			$parent = $dialog.parent();
+
+			$parent
 				.find( '.gv-field-details' ).toggleClass( 'gv-field-details--closed', ! show_details ).end()
 				.find( '.gv-field-details--toggle .dashicons' )
 				.toggleClass( 'dashicons-arrow-down', !! show_details )
@@ -1068,29 +1189,31 @@
 		 * @return {void}
 		 */
 		getSortableFields: function ( context, id ) {
+			return new Promise((resolve, reject) => {
+				var vcfg = viewConfiguration;
 
-			var vcfg = viewConfiguration;
+				// While it's loading, disable the field, remove previous options, and add loading message.
+				$( ".gravityview_sort_field" ).prop( 'disabled', 'disabled' ).empty().append( '<option>' + gvGlobals.loading_text + '</option>' );
 
-			// While it's loading, disable the field, remove previous options, and add loading message.
-			$( ".gravityview_sort_field" ).prop( 'disabled', 'disabled' ).empty().append( '<option>' + gvGlobals.loading_text + '</option>' );
+				var data = {
+					action: 'gv_sortable_fields_form',
+					nonce: gvGlobals.nonce
+				};
 
-			var data = {
-				action: 'gv_sortable_fields_form',
-				nonce: gvGlobals.nonce
-			};
-
-			if ( context !== undefined && 'preset' === context ) {
-				data.template_id = id;
-			} else {
-				data.form_id = vcfg.gvSelectForm.val(); // TODO: Update for Joins
-			}
-
-			$.post(ajaxurl, data, function (response) {
-				if (response !== 'false' && response !== '0') {
-					$(".gravityview_sort_field").empty().append(response).prop('disabled', null);
+				if ( context !== undefined && 'preset' === context ) {
+					data.template_id = id;
+				} else {
+					data.form_id = vcfg.gvSelectForm.val(); // TODO: Update for Joins
 				}
-			});
 
+				$.post( ajaxurl, data, function ( response ) {
+					if ( response !== 'false' && response !== '0' ) {
+						$( ".gravityview_sort_field" ).empty().append( response ).prop( 'disabled', null );
+					}
+
+					resolve();
+				} );
+			});
 		},
 
 		/**
@@ -1112,7 +1235,6 @@
 
 			viewGeneralSettings.metaboxObj.show();
 			viewConfiguration.toggleDropMessage();
-			viewConfiguration.init_droppables();
 			viewConfiguration.init_tooltips();
 
 			$( document ).trigger( 'gv_admin_views_showViewConfig' );
@@ -1184,7 +1306,9 @@
 
 		selectTemplateContinue: function ( slugmatch ) {
 
-			var vcfg = viewConfiguration, selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" );
+			var vcfg = viewConfiguration,
+				selectedTemplateId = vcfg.wantedTemplate.attr( "data-templateid" ),
+				selectedFormId = vcfg.gvSelectForm.val();
 
 			// update template name
 			$( "#gravityview_directory_template" ).val( selectedTemplateId ).trigger('change');
@@ -1198,21 +1322,23 @@
 
 			// check for start fresh context
 			if ( vcfg.startFreshStatus ) {
-
-				//fetch the available fields of the preset-form
-				vcfg.getAvailableFields( 'preset', selectedTemplateId );
-
-				//fetch the fields template config of the preset view
-				vcfg.getPresetFields( selectedTemplateId );
-
-				//fetch Sortable fields
-				vcfg.getSortableFields( 'preset', selectedTemplateId );
-
+				Promise.all( [
+					// fetch preset form fields
+					vcfg.getAvailableFields( 'preset', selectedTemplateId ),
+					// fetch present View fields
+					vcfg.getPresetFields( selectedTemplateId ),
+					// fetch sortable fields
+					vcfg.getSortableFields( 'preset', selectedTemplateId ) ]
+				).then( function () {
+					$( '.ui-tabs-panel' ).each( function () {
+						vcfg.init_droppables( this );
+					} );
+				} );
 			} else {
 
 				if( ! slugmatch ) {
 					//change view configuration active areas
-					vcfg.updateActiveAreas( selectedTemplateId );
+					vcfg.updateActiveAreas( selectedTemplateId, ( selectedFormId * 1 ) );
 				} else {
 					vcfg.waiting('stop');
 				}
@@ -1223,7 +1349,7 @@
 			}
 
 			vcfg.currentTemplateId = selectedTemplateId;
-			vcfg.hasUnsavedChanges = true;
+			vcfg.setUnsavedChanges( true );
 		},
 
 		/**
@@ -1231,64 +1357,99 @@
 		 * @param  {jQueryEvent}    e     jQuery event object
 		 */
 		selectTemplateHover: function ( e ) {
-			var vcfg = viewConfiguration;
-			var $link = $(e.target);
-			var $parent = $link.parents('.gv-view-types-module');
+			const vcfg = viewConfiguration;
+			const $link = $( e.target );
+			const $parent = $link.parents( '.gv-view-types-module' );
 
 			// If we're internally linking
-			if ($link.is('[rel=internal]') && !$link.hasClass('gv-layout-activate')) {
+			if ( $link.is( '[rel=internal]' ) && ( !$link.hasClass( 'gv-layout-activate' ) && !$link.hasClass( 'gv-layout-install' ) ) ) {
 				return true;
 			}
 
 			e.preventDefault();
 			e.stopImmediatePropagation();
 
-			// Activate layout if it's already installed
-			if ($link.hasClass('gv-layout-activate')) {
-				if (vcfg.performingAjaxAction) {
+			const server_request = ( ajaxRoute, payload ) => {
+				const defer = $.Deferred();
+
+				$link.addClass( 'disabled' );
+				vcfg.performingAjaxAction = true;
+				$( '.gv-view-template-notice' ).hide();
+
+				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter } = window.gvGlobals.foundation_licenses_router;
+
+				const request = {
+					nonce,
+					action,
+					ajaxRouter,
+					ajaxRoute,
+					payload
+				};
+
+				$.post( url, request ).done( response => {
+					if ( !response.success ) {
+						defer.reject( response.data );
+
+						return;
+					}
+
+					defer.resolve();
+				} ).fail( response => {
+					defer.reject( response.responseText );
+				} );
+
+				return defer.promise();
+			};
+
+			const on_fail = ( error ) => {
+				$( '.gv-view-template-notice' ).show().find( 'p' ).html( error );
+
+				document.querySelector( '.gv-view-template-notice' ).scrollIntoView( {
+					behavior: 'smooth'
+				} );
+			};
+
+			const do_always = () => {
+				vcfg.performingAjaxAction = false;
+				$link.removeClass( 'disabled' );
+			};
+
+			const on_success = () => {
+				$parent.find( '.gv-view-types-hover > div:eq(0)' ).hide();
+				$parent.find( '.gv-view-types-hover > div:eq(1)' ).removeClass( 'hidden' );
+				$parent.removeClass( 'gv-view-template-placeholder' );
+				$parent.find( 'a.gv_select_template' ).attr( 'data-templateid', $link.data( 'templateid' ) ).trigger( 'click' );
+			};
+
+			// Activate layout
+			if ( $link.hasClass( 'gv-layout-activate' ) ) {
+				if ( vcfg.performingAjaxAction ) {
 					return;
 				}
 
-				var activate = function () {
-					var defer = $.Deferred();
+				$.when( server_request( 'activate_product', {
+						path: $link.attr( 'data-template-path' ),
+					} ) )
+					.then( on_success )
+					.always( do_always )
+					.fail( on_fail );
 
-					$link.addClass('disabled');
-					vcfg.performingAjaxAction = true;
-					$('.gv-view-template-notice').hide();
+				return;
+			}
 
-					$.post(ajaxurl, {
-						'action': 'gravityview_admin_installer_activate',
-						'data': {path: $link.attr('data-template-path')}
-					}, function (response) {
-						if (!response.success) {
-							return defer.reject(response.data.error);
-						}
+			// Install layout
+			if ( $link.hasClass( 'gv-layout-install' ) ) {
+				if ( vcfg.performingAjaxAction ) {
+					return;
+				}
 
-						$parent.find('.gv-view-types-hover > div:eq(0)').hide();
-						$parent.find('.gv-view-types-hover > div:eq(1)').removeClass('hidden');
-						$parent.removeClass('gv-view-template-placeholder');
-						$parent.find('.gv-view-types-hover > div:eq(1) .gv_select_template').trigger('click');
-
-						defer.resolve();
-					}).fail(function () {
-						defer.reject(gvAdminInstaller.activateErrorLabel);
-					});
-
-					return defer.promise();
-				};
-
-				$.when(activate())
-					.always(function () {
-						vcfg.performingAjaxAction = false;
-						$link.removeClass('disabled');
-					})
-					.fail(function (error) {
-						$('.gv-view-template-notice').show().find('p').text(error);
-
-						document.querySelector('.gv-view-template-notice').scrollIntoView({
-							behavior: 'smooth'
-						});
-					});
+				$.when( server_request( 'install_product', {
+						id: $link.attr( 'data-download-id' ),
+						activate: true,
+					} ) )
+					.then( on_success )
+					.always( do_always )
+					.fail( on_fail );
 
 				return;
 			}
@@ -1344,9 +1505,10 @@
 		},
 
 		/**
-		 * @param {string} template The template ID
+		 * @param {string} template The selected template ID.
+		 * @param {int} form_id The selected form ID.
 		 */
-		updateActiveAreas: function ( template ) {
+		updateActiveAreas: function ( template, form_id ) {
 			var vcfg = viewConfiguration;
 
 			$( "#directory-active-fields, #single-active-fields" ).children().remove();
@@ -1354,10 +1516,11 @@
 			var data = {
 				action: 'gv_get_active_areas',
 				template_id: template,
+				form_id: form_id,
 				nonce: gvGlobals.nonce
 			};
 
-			vcfg.updateViewConfig( data );
+			return vcfg.updateViewConfig( data );
 		},
 
 		/**
@@ -1374,7 +1537,7 @@
 				nonce: gvGlobals.nonce
 			};
 
-			vcfg.updateViewConfig( data );
+			return vcfg.updateViewConfig( data );
 		},
 
 		/**
@@ -1384,28 +1547,32 @@
 		 * @param {object} data `action`, `template_id` and `nonce` keys
 		 */
 		updateViewConfig: function ( data ) {
-			var vcfg = viewConfiguration;
+			return new Promise( ( resolve, reject ) => {
+				var vcfg = viewConfiguration;
 
-			$.post( ajaxurl, data, function ( response ) {
-				if ( response ) {
-					var content = JSON.parse( response );
-					$( '#directory-header-widgets' ).html( content.header );
-					$( '#directory-footer-widgets' ).html( content.footer );
-					$( '#directory-active-fields' ).append( content.directory );
-					$( '#single-active-fields' ).append( content.single );
-					vcfg.showViewConfig();
-					vcfg.waiting('stop');
+				$.post( ajaxurl, data, function ( response ) {
+					if ( response ) {
+						var content = JSON.parse( response );
+						$( '#directory-header-widgets' ).html( content.header );
+						$( '#directory-footer-widgets' ).html( content.footer );
+						$( '#directory-active-fields' ).append( content.directory );
+						$( '#single-active-fields' ).append( content.single );
+						vcfg.showViewConfig();
+						vcfg.waiting( 'stop' );
 
-					/**
-					 * Triggers after the AJAX is loaded for the zone
-					 * @since 2.10
-					 * @param {object} JSON response with `header` `footer` (widgets) `directory` and `single` (contexts) properties
-					 */
-					$('body').trigger( 'gravityview/view-config-updated', content );
-				}
-			} );
+						/**
+						 * Triggers after the AJAX is loaded for the zone
+						 * @since 2.10
+						 * @param {object} JSON response with `header` `footer` (widgets) `directory` and `single` (contexts) properties
+						 */
+						$( 'body' ).trigger( 'gravityview/view-config-updated', content );
+					}
 
-			vcfg.hasUnsavedChanges = true;
+					resolve();
+				} );
+
+				vcfg.setUnsavedChanges( true );
+			});
 		},
 
 		/**
@@ -1428,13 +1595,18 @@
 		// tooltips
 		remove_tooltips: function ( el ) {
 			if ( $( el || '.gv-add-field' ).is( ':ui-tooltip' ) ) {
-				$( '.gv-add-field' ).tooltip( 'destroy' ).off( 'click' );
+				$( '.gv-add-field' ).gvTooltip( 'destroy' ).off( 'click' );
 			}
 		},
 
 		init_tooltips: function (el) {
 
-			$( el || ".gv-add-field" ).tooltip( {
+			// Already initialized.
+			if ( 0 === $( el || '.gv-add-field' ).not( ':ui-tooltip' ).length ) {
+				return;
+			}
+
+			$( el || ".gv-add-field" ).gvTooltip( {
 				show:    150,
 				hide:    200,
 				content: function () {
@@ -1507,7 +1679,7 @@
 					e.preventDefault();
 					//e.stopImmediatePropagation();
 
-					$( this ).tooltip( "open" );
+					$( this ).gvTooltip( "open" );
 
 				} );
 
@@ -1552,7 +1724,7 @@
 		 * Refresh Gravity Forms tooltips (the real help tooltips)
 		 */
 		refreshGFtooltips: function () {
-			$( ".gf_tooltip" ).tooltip( {
+			$( ".gf_tooltip" ).gvTooltip( {
 				show: 500,
 				hide: 1000,
 				content: function () {
@@ -1578,46 +1750,44 @@
 		 * @return void
 		 */
 		getAvailableFields: function( preset, templateid ) {
+			return new Promise( ( resolve, reject ) => {
+				var vcfg = viewConfiguration;
 
-			var vcfg = viewConfiguration;
+				vcfg.toggleDropMessage();
 
-			vcfg.toggleDropMessage();
+				vcfg.getConfiguredFields().remove();
 
-			vcfg.getConfiguredFields().remove();
+				var data = {
+					action: 'gv_available_fields',
+					nonce: gvGlobals.nonce,
+				};
 
-			var data = {
-				action: 'gv_available_fields',
-				nonce: gvGlobals.nonce,
-			};
+				if ( preset !== undefined && 'preset' === preset ) {
+					data.form_preset_ids = [ templateid ];
+				} else {
+					/**
+					 * TODO: Update to support multiple fields in Joins
+					 * @see GravityView_Ajax::gv_available_fields()
+					 * */
+					data.form_preset_ids = [ vcfg.gvSelectForm.val() ];
+				}
 
-			if ( preset !== undefined && 'preset' === preset ) {
-				data.form_preset_ids = [ templateid ];
-			} else {
-				/**
-				 * TODO: Update to support multiple fields in Joins
-				 * @see GravityView_Ajax::gv_available_fields()
-				 * */
-				data.form_preset_ids = [ vcfg.gvSelectForm.val() ];
-			}
+				// Do not fetch fields if we already have them for the given form or template
+				if ( $( '#directory-available-fields-' + data.form_preset_ids[ 0 ] ).length ) {
+					return;
+				}
 
-			// Do not fetch fields if we already have them for the given form or template
-			if ( $( '#directory-available-fields-' + data.form_preset_ids[ 0 ] ).length ) {
-				return;
-			}
-
-			$.ajax( {
-				type: 'post',
-				url: ajaxurl,
-				data: data,
-				success: function( response ) {
-					if ( ! response.success && ! response.data ) {
-						return;
+				$.post( ajaxurl, data, function ( response ) {
+					if ( !response.success && !response.data ) {
+						resolve();
 					}
 
-					$.each( response.data, function( context,markup ) {
+					$.each( response.data, function ( context, markup ) {
 						$( '#' + context + '-fields' ).append( markup );
 					} );
-				},
+
+					resolve();
+				} );
 			} );
 		},
 
@@ -1657,7 +1827,7 @@
 			} );
 
 			// We just added all the fields. No reason to show the tooltip.
-			$( "a.gv-add-field[data-tooltip='active']" ).tooltip( "close" );
+			$( "a.gv-add-field[data-tooltip='active']" ).gvTooltip( "close" );
 
 		},
 
@@ -1711,6 +1881,10 @@
 				// Add in the Options <div>
 				newField.append( response );
 
+				$( '.ui-tabs-panel' ).each( function () {
+					vcfg.init_droppables( this );
+				} );
+
 				// If there are field options, show the settings gear.
 				if ( $( '.gv-dialog-options', newField ).length > 0 ) {
 					$( '.gv-field-settings', newField ).removeClass( 'hide-if-js' );
@@ -1722,9 +1896,7 @@
 				$('body').trigger( 'gravityview/field-added', newField );
 
 				// Show the new field
-				newField.fadeIn( 100, function () {
-					vcfg.refresh_merge_tags();
-				} );
+				newField.fadeIn( 100 );
 
 				// refresh the little help tooltips
 				vcfg.refreshGFtooltips();
@@ -1742,7 +1914,7 @@
 			} ).always( function () {
 
 				vcfg.toggleDropMessage();
-				vcfg.hasUnsavedChanges = true;
+				vcfg.setUnsavedChanges( true );
 
 			} );
 
@@ -1753,24 +1925,48 @@
 		 *
 		 * @since 1.22.1
 		 */
-		refresh_merge_tags: function() {
+		refresh_merge_tags: function( $source, onRefresh ) {
+			let $merge_tag_supported = $source ? $( '.gv-merge-tag-support,.merge-tag-support', $source ) : $( '.gv-merge-tag-support:visible' );
 
-			// Remove existing merge tags, since otherwise GF will add another
-			$( '.all-merge-tags' ).remove();
+			$merge_tag_supported
+				.removeClass( 'gv-merge-tag-support mt-initialized' )
+				.addClass( 'merge-tag-support' );
 
-			$merge_tag_supported = $('.merge-tag-support');
+			// GF 2.6+
+			if ( window.gform?.instances?.mergeTags ) {
+				// Remove existing merge tags, since otherwise GF will add another
+				$( '.all-merge-tags', $source ).remove();
+
+				document.dispatchEvent( new Event( 'DOMContentLoaded' ) );
+
+				// Restore the namespaced classnames.
+				setTimeout( function() {
+					$merge_tag_supported
+						.removeClass( 'merge-tag-support' )
+						.addClass( 'gv-merge-tag-support' );
+
+					if ( onRefresh ) {
+						onRefresh();
+					}
+				}, 300 ); // This needs to be longer than the time it takes to perform the DOMContentLoaded event.
+
+				return;
+			}
 
 			// Only init merge tags if the View has been saved and the form hasn't been changed.
 			if ( 'undefined' !== typeof( form ) && $( 'body' ).not( '.gv-form-changed' ) && $merge_tag_supported.length >= 0 ) {
 
 				if ( window.gfMergeTags ) {
 
-					if ( gfMergeTags.hasOwnProperty('destroy') ) {
+					// Remove existing merge tags, since otherwise GF will add another
+					$( '.all-merge-tags:visible' ).remove();
+
+					if ( gfMergeTags.hasOwnProperty( 'destroy' ) ) {
 
 						// 2.3 re-init
 						$merge_tag_supported.each( function () {
 							new gfMergeTagsObj( form, $( this ) );
-						});
+						} );
 
 					} else {
 
@@ -1778,6 +1974,14 @@
 						window.gfMergeTags = new gfMergeTagsObj( form );
 
 					}
+				}
+
+				$merge_tag_supported
+					.removeClass( 'merge-tag-support' )
+					.addClass( 'gv-merge-tag-support' );
+
+				if ( onRefresh ) {
+					onRefresh();
 				}
 			}
 		},
@@ -1814,12 +2018,17 @@
 		},
 
 		// Sortables and droppables
-		init_droppables: function () {
+		init_droppables: function ( panel ) {
+
+			// Already initialized.
+			if( $( panel ).find( ".active-drop-field" ).sortable( 'instance' ) ) {
+				return;
+			}
 
 			var vcfg = viewConfiguration;
 
 			// widgets
-			$( '#directory-fields, #single-fields' ).find( ".active-drop-widget" ).sortable( {
+			$( panel ).find( ".active-drop-widget" ).sortable( {
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
 				distance: 2,
@@ -1830,6 +2039,9 @@
 				},
 				stop: function( event, ui ) {
 					$( '#directory-fields, #single-fields' ).find( ".active-drop-container-widget" ).removeClass('is-receivable');
+				},
+				change: function( event, ui ) {
+					vcfg.setUnsavedChanges( true );
 				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
@@ -1842,22 +2054,24 @@
 					} );
 
 					vcfg.toggleDropMessage();
-
 				}
 			} );
 
 			//fields
-			$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-field" ).sortable( {
+			$( panel ).find( ".active-drop-field" ).sortable( {
 				placeholder: "fields-placeholder",
 				items: '> .gv-fields',
 				distance: 2,
 				revert: 75,
 				connectWith: ".active-drop-field",
 				start: function( event, ui ) {
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-container-field" ).addClass('is-receivable');
+					$( panel ).find( ".active-drop-container-field" ).addClass('is-receivable');
 				},
 				stop: function( event, ui ) {
-					$( '#directory-fields, #single-fields, #edit-fields' ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+					$( panel ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+				},
+				change: function( event, ui ) {
+					vcfg.setUnsavedChanges( true );
 				},
 				receive: function ( event, ui ) {
 					// Check if field comes from another active area and if so, update name attributes.
@@ -1873,7 +2087,6 @@
 					}
 
 					vcfg.toggleDropMessage();
-
 				}
 			} );
 		},
@@ -1901,7 +2114,7 @@
 			var vcfg = viewConfiguration;
 			var area = $( e.currentTarget ).parents( ".active-drop" );
 
-			vcfg.hasUnsavedChanges = true;
+			vcfg.setUnsavedChanges( true );
 
 			// Nice little easter egg: when holding down control, get rid of all fields in the zone at once.
 			if ( e.altKey && $( area ).find( '.gv-fields' ).length > 1 ) {
@@ -2018,7 +2231,7 @@
 
 			$( 'input:checkbox', $parent ).attr( 'disabled', null );
 
-			vcfg.hasUnsavedChanges = true;
+			vcfg.setUnsavedChanges( true );
 		},
 
 		/**
@@ -2069,7 +2282,7 @@
 			// If the View isn't a Start Fresh view, we just return true
 			// so that the click on the Publish button can process.
 			if ( !vcfg.startFreshStatus || templateId === '' ) {
-				vcfg.hasUnsavedChanges = false;
+				vcfg.setUnsavedChanges( false );
 
 				// Serialize the inputs so that `max_input_vars`
 				return vcfg.serializeForm( e );
@@ -2077,6 +2290,14 @@
 
 			return false;
 
+		},
+
+		/**
+		 * @since {2.16}
+		 * @param {boolean} has_changes
+		 */
+		setUnsavedChanges( has_changes ) {
+			viewConfiguration.hasUnsavedChanges = has_changes;
 		},
 
 		/**
@@ -2102,7 +2323,7 @@
 			$post.data( 'gv-valid', false );
 
 			if ( $post.data( 'gv-serialized' ) ) {
-				// Guard against double seralization/remove attempts
+				// Guard against double serialization/remove attempts
 				serialized_data = $post.data( 'gv-serialized' );
 			} else {
 				// Get all the fields where the `name` attribute start with `fields`
@@ -2111,21 +2332,23 @@
 				// Serialize the data
 				serialized_data = $fields.serialize();
 
-				// Remove the fields from the $_POSTed data
-				$fields.remove();
+				// Don't include the fields in the $_POSTed data
+				$fields.prop( 'disabled', true );
 
 				$post.data( 'gv-serialized', serialized_data );
 			}
 
-			// Add a field to the form that contains all the data.
-			$post.find( ':input[name=gv_fields]' ).remove();
+			// Also exclude these fields from $_POST...
+			$post.find( ':input[name=gv_fields]' ).prop( 'disabled', true );
+
+			// ...instead, add a single field to the form that contains all the data.
 			$post.append( $( '<input/>', {
 				'name': 'gv_fields',
 				'value': serialized_data,
 				'type': 'hidden'
 			} ) );
 
-			// make sure the "slow" browsers did append all the serialized data to the form
+			// Make sure slow browsers did append all the serialized data to the form
 			setTimeout( function () {
 
 				$post.data( 'gv-valid', true );
@@ -2399,11 +2622,22 @@
 			active: activate_tab,
 			hide: false,
 			show: false,
+			create: function ( event, ui ) {
+				viewConfiguration.init_droppables( ui.panel );
+
+				/** @since 2.14.1 */
+				$( 'body' ).trigger( 'gravityview/tab-ready', ui.panel );
+
+				$( 'body' ).trigger( 'gravityview/tabs-ready' );
+			},
 			activate: function ( event, ui ) {
 				// When the tab is activated, set a new cookie
 				$.cookie( cookie_key, ui.newTab.index(), { path: gvGlobals.cookiepath } );
 
-				$( 'body' ).trigger( 'gravityview/tabs-ready' );
+				viewConfiguration.init_droppables( ui.newPanel );
+
+				/** @since 2.14.1 */
+				$( 'body' ).trigger( 'gravityview/tab-ready', ui.newPanel );
 			}
 		} );
 
@@ -2414,24 +2648,6 @@
 	window.gvAdminActions = {
 		initTooltips: viewConfiguration.init_tooltips,
 		removeTooltips: viewConfiguration.remove_tooltips,
-		showDialog: viewConfiguration.showDialog,
+		showDialog: viewConfiguration.showDialog
 	};
-
-	// Enable inserting GF merge tags into WP's CodeMirror
-	$( window ).load( function() {
-		var _sendToEditor = window.send_to_editor;
-
-		window.send_to_editor = function( val ) {
-			var $el = $( '#' + window.wpActiveEditor );
-
-			if ( ! $el.hasClass( 'codemirror' ) ) {
-				return _sendToEditor( val );
-			}
-
-			var codeMirror = $el.next( '.CodeMirror' )[ 0 ].CodeMirror;
-			var cursorPosition = codeMirror.getCursor();
-			codeMirror.replaceRange( val, window.wp.CodeMirror.Pos( cursorPosition.line, cursorPosition.ch ) );
-		};
-	} );
-
 }(jQuery));

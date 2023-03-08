@@ -294,7 +294,7 @@ class GravityView_View_Data {
 				return true;
 			}
 
-			$message = esc_html__( 'The ID is required.', 'gravityview' );
+			$message = esc_html__( 'The ID is required.', 'gk-gravityview' );
 		}
 
 		if ( ! $message ) {
@@ -302,10 +302,10 @@ class GravityView_View_Data {
 
 			// Nothing exists with that post ID.
 			if ( ! is_numeric( $post_id ) ) {
-				$message = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gravityview' );
+				$message = esc_html__( 'You did not enter a number. The value entered should be a number, representing the ID of the post or page the View is embedded on.', 'gk-gravityview' );
 
 				// @todo Convert to generic article about Embed IDs
-				$message .= ' ' . gravityview_get_link( 'https://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gravityview' ), 'target=_blank' );
+				$message .= ' ' . gravityview_get_link( 'https://docs.gravityview.co/article/222-the-search-widget', __( 'Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
 			}
 		}
 
@@ -313,7 +313,7 @@ class GravityView_View_Data {
 
 			// Nothing exists with that post ID.
 			if ( empty( $status ) || in_array( $status, array( 'revision', 'attachment' ) ) ) {
-				$message = esc_html__( 'There is no post or page with that ID.', 'gravityview' );
+				$message = esc_html__( 'There is no post or page with that ID.', 'gk-gravityview' );
 			}
 
 		}
@@ -324,14 +324,14 @@ class GravityView_View_Data {
 
 			// The post or page specified does not contain the shortcode.
 			if ( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
-				$message = sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
+				$message = sprintf( esc_html__( 'The Post ID entered is not valid. You may have entered a post or page that does not contain the selected View. Make sure the post contains the following shortcode: %s', 'gk-gravityview' ), '<br /><code>[gravityview id="' . intval( $view_id ) . '"]</code>' );
 			}
 		}
 
 		if ( ! $message ) {
 			// It's a View
 			if ( \GV\View::exists( $post_id ) ) {
-				$message = esc_html__( 'The ID is already a View.', 'gravityview' );;
+				$message = esc_html__( 'The ID is already a View.', 'gk-gravityview' );;
 			}
 		}
 
@@ -366,14 +366,14 @@ class GravityView_View_Data {
 	 * @param string $group Only fetch
 	 *
 	 * @return array $args Associative array of default settings for a View
-	 *      @param[out] string $label Setting label shown in admin
-	 *      @param[out] string $type Gravity Forms field type
-	 *      @param[out] string $group The field group the setting is associated with. Default: "default"
-	 *      @param[out] mixed  $value The default value for the setting
-	 *      @param[out] string $tooltip Tooltip displayed for the setting
-	 *      @param[out] boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
-	 *      @param[out] array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
-	 *      @param[out] boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
+	 *      @param string $label Setting label shown in admin
+	 *      @param string $type Gravity Forms field type
+	 *      @param string $group The field group the setting is associated with. Default: "default"
+	 *      @param mixed  $value The default value for the setting
+	 *      @param string $tooltip Tooltip displayed for the setting
+	 *      @param boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
+	 *      @param array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
+	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 *
 	 * @deprecated
 	 * @see \GV\View_Settings::defaults()

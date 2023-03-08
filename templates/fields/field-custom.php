@@ -11,9 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
-	$form = $gravityview->view->form->form;
-}
+/** @var \GV\GF_Form $gf_form */
+$gf_form = isset( $gravityview->field->form_id ) ? \GV\GF_Form::by_id( $gravityview->field->form_id ) : $gravityview->view->form;
+$form = $gf_form->form;
 
 if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry[ $form['id'] ];
@@ -56,7 +56,7 @@ $form  = apply_filters( 'gravityview/fields/custom/form', $form, $entry, $gravit
  * @param stdClass The gravityview template context object.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_before', $gravityview->field->content, $gravityview );
-$content = trim( rtrim( $content ) );
+$content = trim( rtrim( (string) $content ) );
 
 // No custom content
 if ( empty( $content ) ) {

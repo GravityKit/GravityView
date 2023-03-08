@@ -29,6 +29,15 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Partial_Entries extends GravityView
 	 */
 	protected function add_hooks() {
 
+		// Don't show "Please note that your information is saved on our server as you enter it." message.
+		add_action( 'gravityview/edit-entry/render/before', function() {
+			add_filter( 'gform_partialentries_warning_message', '__return_empty_string' );
+		} );
+
+		add_action( 'gravityview/edit-entry/render/after', function() {
+			remove_filter( 'gform_partialentries_warning_message', '__return_empty_string' );
+		} );
+
 		add_action( 'gravityview/edit_entry/after_update', array( $this, 'maybe_save_partial_entry' ), 10, 3 );
 
 		parent::add_hooks();

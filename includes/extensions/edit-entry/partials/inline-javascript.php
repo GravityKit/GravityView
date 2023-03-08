@@ -6,7 +6,7 @@
 ?><script type="text/javascript">
 
 	function DeleteFile(leadId, fieldId, deleteButton){
-		if(confirm('<?php echo esc_js( __("Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to delete", 'gravityview') ); ?>')){
+		if(confirm('<?php echo esc_js( __("Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to delete", 'gk-gravityview') ); ?>')){
 			var fileIndex = jQuery(deleteButton).parent().index();
 			var mysack = new sack("<?php echo admin_url("admin-ajax.php")?>");
 			mysack.execute = 1;
@@ -16,7 +16,7 @@
 			mysack.setVar( "lead_id", leadId );
 			mysack.setVar( "field_id", fieldId );
 			mysack.setVar( "file_index", fileIndex );
-			mysack.onError = function() { alert('<?php echo esc_js(__('Ajax error while deleting field.', 'gravityview')) ?>' )};
+			mysack.onError = function() { alert('<?php echo esc_js(__('Ajax error while deleting field.', 'gk-gravityview')) ?>' )};
 			mysack.runAJAX();
 
 			return true;
