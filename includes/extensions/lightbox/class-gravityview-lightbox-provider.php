@@ -21,6 +21,7 @@ abstract class GravityView_Lightbox_Provider {
 		add_filter( 'gravityview_lightbox_style', array( $this, 'filter_lightbox_style' ), 1000 );
 
 		add_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10, 4 );
+		add_filter( 'gravityview/entry_link/link_atts', array( $this, 'entry_link_link_atts' ), 10, 2 );
 		add_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
@@ -174,6 +175,17 @@ abstract class GravityView_Lightbox_Provider {
 	 */
 	public function allowed_atts( $atts = array() ) {
 		return $atts;
+	}
+
+	/**
+	 * @filter `gravityview/entry_link/link_atts` Modify attributes before being passed to {@see gravityview_get_link}
+	 * @since 2.14
+	 *
+	 * @param array $link_atts
+	 * @param \GV\Template_Context $context
+	 */
+	public function entry_link_link_atts( $link_atts, $context ) {
+		return static::fileupload_link_atts( $link_atts, array(), $context );
 	}
 
 	/**

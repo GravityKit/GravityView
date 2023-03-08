@@ -28,15 +28,17 @@ $link_text = empty( $field_settings['entry_link_text'] ) ? esc_html__( 'View Det
 
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 
-$tag_atts = array();
+$link_atts = array();
 
 if ( ! empty( $field_settings['new_window'] ) ) {
-	$tag_atts['target'] = '_blank';
+	$link_atts['target'] = '_blank';
 }
 
 global $post;
 
-$href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->request, $tag_atts );
+$href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->request );
+
+$href = 'https://gkdev.lndo.site/wp-json/gravityview/v1/views/872/entries/86.html';
 
 /**
  * @filter `gravityview/entry_link/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
@@ -49,7 +51,16 @@ if ( $add_query_args ) {
 	$href = add_query_arg( gv_get_query_args(), $href );
 }
 
-$link = gravityview_get_link( $href, $output, $tag_atts );
+/**
+ * @filter `gravityview/entry_link/link_atts` Modify attributes before being passed to {@see gravityview_get_link}
+ * @since 2.14
+ *
+ * @param array $link_atts
+ * @param \GV\Template_Context $gravityview
+ */
+$link_atts = (array) apply_filters( 'gravityview/entry_link/link_atts', $link_atts, $gravityview );
+
+$link = gravityview_get_link( $href, $output, $link_atts );
 
 /**
  * @filter `gravityview_field_entry_link` Modify the link HTML (here for backward compatibility)

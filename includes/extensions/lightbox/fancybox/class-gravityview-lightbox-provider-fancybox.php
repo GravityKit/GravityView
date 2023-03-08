@@ -123,6 +123,34 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		return $atts;
 	}
 
+	// TODO: Disable `infinite` (endless loop) when using entry link 'gravityview/lightbox/provider/' . static::$slug . '/settings'
+
+	public function entry_link_link_atts( $link_atts, $context ) {
+
+		$field = \GV\Utils::get( $context, 'field' );
+
+		if ( ! $context || ! $field ) {
+			return $link_atts;
+		}
+
+		if ( empty( $field->lightbox ) ) {
+			return $link_atts;
+		}
+
+		$link_atts['class'] = \GV\Utils::get( $link_atts, 'class' ) . ' gravityview-fancybox';
+
+		$link_atts['class'] = gravityview_sanitize_html_class( $link_atts['class'] );
+
+		if ( $context && ! empty( $context->field ) ) {
+			$entry = $context->entry->as_entry();
+			$link_atts['data-fancybox'] = 'gallery-' . sprintf( '%s-%s', $entry['form_id'], $context->field->ID );
+		}
+
+		$link_atts['data-type'] = 'iframe';
+
+		return $link_atts;
+	}
+
 	/**
 	 * @inheritDoc
 	 */
@@ -147,7 +175,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		$link_atts['class'] = gravityview_sanitize_html_class( $link_atts['class'] );
 
 		if ( $context && ! empty( $context->field->field ) ) {
-			if ( $context->field->field->multipleFiles ) {
+			if ( ! empty( $context->field->field->multipleFiles ) ) {
 				$entry = $context->entry->as_entry();
 				$link_atts['data-fancybox'] = 'gallery-' . sprintf( "%s-%s-%s", $entry['form_id'], $context->field->ID, $context->entry->get_slug() );
 			}

@@ -140,7 +140,7 @@ class Views_Route extends Route {
 		$return = array();
 
 		$renderer = new \GV\Field_Renderer();
-		
+
 		$used_ids = array();
 
 		foreach ( $allowed as $field ) {

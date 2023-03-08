@@ -72,6 +72,9 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 			return $field_options;
 		}
 
+		$this->add_field_support( 'lightbox', $field_options );
+		$this->add_field_support( 'new_window', $field_options );
+
 		$add_options = array();
 		$add_options['entry_link_text'] = array(
 			'type' => 'text',
@@ -80,8 +83,6 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 			'value' => __('View Details', 'gravityview'),
 			'merge_tags' => true,
 		);
-
-		$this->add_field_support( 'new_window', $field_options );
 
 		return $add_options + $field_options;
 	}

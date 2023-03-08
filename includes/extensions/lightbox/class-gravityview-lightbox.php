@@ -26,6 +26,24 @@ class GravityView_Lightbox {
 		add_action( 'plugins_loaded', array( $this, 'set_provider' ), 11 );
 
 		add_action( 'gravityview/lightbox/provider', array( $this, 'set_provider' ) );
+
+		/**
+		 * `gravityview/field_output/context/{$tag}` Allow users to filter content on context
+		 * @param string $value The content to be shown instead of the {{tag}} placeholder
+		 * @param array $args Arguments passed to the function
+		 * @param \GV\Template_Context $context The context.
+		 */
+		add_action( 'gravityview/field_output/context/class', function( $value, $args, $context ) {
+
+			/** @var \GV\Field $field */
+			$field = \GV\Utils::get( $context, 'field' );
+
+			if ( empty( $field ) ) {
+				return $value;
+			}
+
+			return $value . ' ADSDASDSAD';
+		}, 10, 3 );
 	}
 
 	/**

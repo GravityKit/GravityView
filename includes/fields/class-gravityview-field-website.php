@@ -58,6 +58,7 @@ class GravityView_Field_Website extends GravityView_Field {
 			'priority' => 1500,
 		);
 
+		$this->add_field_support( 'lightbox', $field_options );
 		$this->add_field_support( 'new_window', $field_options );
 
 		/**
