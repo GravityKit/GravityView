@@ -67,7 +67,7 @@
           "paragonie/sodium_compat"
         ]
       },
-      "delete_vendor_files": true
+      "delete_vendor_files": false
     }
   },
   "scripts": {

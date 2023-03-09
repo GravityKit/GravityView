@@ -89,6 +89,7 @@ jobs:
       - run:
           name: Building and packaging
           command: |
+            rm -rf vendor
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
             /home/circleci/tooling/build-tools/build_tools.sh grunt
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
@@ -97,8 +98,7 @@ jobs:
               /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
             fi
             mkdir -p gravityview
-            rm -rf vendor
-            cp -R vendor_prefixed gravityview
+            cp -R vendor* gravityview
             rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php
             zip -gr $(ls gravityview-*.zip) gravityview
             mkdir .release
