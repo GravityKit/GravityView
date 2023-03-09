@@ -19,7 +19,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	var $icon = 'dashicons-book-alt';
 
-	var $entry_meta_key = 'is_approved';
+	var $entry_meta_key = 'is_read';
 
 	var $entry_meta_is_default_column = true;
 
@@ -27,14 +27,17 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	var $is_sortable = true;
 
+	private static $is_read = false;
+	private static $is_read_label;
+
 	/**
-	 * GravityView_Field_Is_Starred constructor.
+	 * GravityView_Field_Is_Read constructor.
 	 */
 	public function __construct() {
 
-		$this->label = esc_html__( 'Read Status', 'gravityview' );
+		$this->label                = esc_html__( 'Read Status', 'gravityview' );
 		$this->default_search_label = __( 'Is Read', 'gravityview' );
-		$this->description = esc_html__( 'Display whether the entry has been read.', 'gravityview' );
+		$this->description          = esc_html__( 'Display whether the entry has been read.', 'gravityview' );
 
 		$this->add_hooks();
 
@@ -42,24 +45,25 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	}
 
 	private function add_hooks() {
-	    /** @see \GV\Field::get_value_filters */
+		/** @see \GV\Field::get_value_filters */
 		add_filter( "gravityview/field/{$this->name}/value", array( $this, 'get_value' ), 10, 6 );
+		add_action( 'gravityview/template/after', array( $this, 'print_script' ), 10, 1 );
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		$field_options['is_read_label'] = array(
-			'type' => 'text',
+			'type'  => 'text',
 			'label' => __( 'Read Label', 'gravityview' ),
-			'desc' => __( 'If the entry has been read, display this value', 'gravityview' ),
-			'placeholder' => __('Read', 'gravityview' ),
+			'desc'  => __( 'If the entry has been read, display this value', 'gravityview' ),
+			'value' => __( 'Read', 'gravityview' ),
 		);
 
 		$field_options['is_unread_label'] = array(
-			'type' => 'text',
+			'type'  => 'text',
 			'label' => __( 'Unread Label', 'gravityview' ),
-			'desc' => __( 'If the entry has not been read, display this value', 'gravityview' ),
-			'placeholder' => __('Unread', 'gravityview' ),
+			'desc'  => __( 'If the entry has not been read, display this value', 'gravityview' ),
+			'value' => __( 'Unread', 'gravityview' ),
 		);
 
 		return $field_options;
@@ -70,27 +74,29 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 *
 	 * @since 2.0
 	 *
-	 * @param string $value The value.
+	 * @param string                                   $value The value.
 	 * @param \GV\Field The field we're doing this for.
-	 * @param \GV\View $view The view for this context if applicable.
-	 * @param \GV\Source $source The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry The entry for this context if applicable.
-	 * @param \GV\Request $request The request for this context if applicable.
+	 * @param \GV\View                                 $view The view for this context if applicable.
+	 * @param \GV\Source                               $source The source (form) for this context if applicable.
+	 * @param \GV\Entry                                $entry The entry for this context if applicable.
+	 * @param \GV\Request                              $request The request for this context if applicable.
 	 *
-	 * @return string Image of the star
+	 * @return string Value of the field
 	 */
 	public function get_value( $value, $field, $view, $source, $entry, $request ) {
+		self::$is_read_label = \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gravityview' ) );
 
 		if ( empty( $value ) ) {
-			return \GV\Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gravityview') );
+			return \GV\Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gravityview' ) );
 		}
 
-		return \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gravityview') );
+		self::$is_read = true;
+		return self::$is_read_label;
 	}
 
 
 	/**
-	 * Add JS to the bottom of the View if there is a star field and user has `gravityview_edit_entries` cap
+	 * Add JS to the bottom of the View if there is a read field and user has `gravityview_edit_entries` cap
 	 *
 	 * @param \GV\Template_Context $context The template context
 	 * @since 2.0
@@ -98,36 +104,46 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return void
 	 */
 	public function print_script( $context ) {
-		return;
 		if ( ! GravityView_Roles_Capabilities::has_cap( 'gravityview_edit_entries' ) ) {
+			return;
+		}
+
+		if ( gravityview_get_context() !== 'single' ) {
+			return;
+		}
+
+		if ( self::$is_read ) {
 			return;
 		}
 
 		?>
 		<script>
 			jQuery( document ).ready( function ( $ ) {
-				var is_read = $(this).data('is_read'),
-						update = ( is_starred ? 0 : 1 ),
-						entry_id = $(this).data('entry-id'),
-						$star = $( this );
+				if(!$('[class*=is_read]').length > 0){
+					return;
+				}
+
+				var entry_id = <?php echo $context->entry->ID; ?>;
+					read_field = $('[class*=is_read]');
+					read_label = '<?php echo self::$is_read_label; ?>';
 
 				$.ajax({
 					type: "POST",
 					url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
 					data: {
 						action: 'rg_update_lead_property',
-						rg_update_lead_property: '<?php echo wp_create_nonce( 'rg_update_lead_property' ) ?>',
+						rg_update_lead_property: '<?php echo wp_create_nonce( 'rg_update_lead_property' ); ?>',
 						lead_id: entry_id,
 						name: 'is_read',
 						value: 1
 					}
 				})
-						.done(function() {
-							$star.data( 'is_read', update );
-						})
-						.fail(function() {
-							alert(<?php echo json_encode( __( 'There was an error updating the entry.', 'gravityview' ) ); ?>);
-						});
+					.done(function() {
+						read_field.find('td').text(read_label);
+					})
+					.fail(function() {
+						alert(<?php echo json_encode( __( 'There was an error updating the entry.', 'gravityview' ) ); ?>);
+					});
 			});
 		</script>
 		<?php
@@ -135,4 +151,4 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 }
 
-new GravityView_Field_Is_Read;
+new GravityView_Field_Is_Read();
