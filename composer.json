@@ -66,8 +66,7 @@
           "paragonie/random_compat",
           "paragonie/sodium_compat"
         ]
-      },
-      "delete_vendor_files": true
+      }
     }
   },
   "scripts": {
