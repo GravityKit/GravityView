@@ -123,9 +123,9 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 					return;
 				}
 
-				var entry_id = <?php echo $context->entry->ID; ?>;
+				var entry_id = <?php echo (int) $context->entry->ID; ?>;
 					read_field = $('[class*=is_read]');
-					read_label = '<?php echo self::$is_read_label; ?>';
+					read_label = '<?php echo esc_html( self::$is_read_label ); ?>';
 
 				$.ajax({
 					type: "POST",
@@ -139,7 +139,11 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 					}
 				})
 					.done(function() {
-						read_field.find('td').text(read_label);
+						if(read_field.parents('tbody').length > 0){
+							read_field.find('td').text(read_label);
+						}else{
+							read_field.text(read_label);
+						}
 					})
 					.fail(function() {
 						alert(<?php echo json_encode( __( 'There was an error updating the entry.', 'gravityview' ) ); ?>);
