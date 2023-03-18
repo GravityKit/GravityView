@@ -1497,6 +1497,21 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_approved' );
 					$updated_field['choices'] = self::get_is_approved_choices();
 					break;
+
+				case 'is_read':
+					$updated_field['key'] = 'is_read';
+					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_read' );
+					$updated_field['choices'] = [
+						[
+							'text'=>__('Unread','gravityview'),
+							'value'=>0,
+						],
+						[
+							'text'=>__('Read','gravityview'),
+							'value'=>1
+						]
+					];
+					break;
 			}
 
 			$search_fields[ $k ] = $updated_field;
