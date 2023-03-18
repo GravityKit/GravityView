@@ -24,6 +24,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * whether search method is GET or POST ( default: GET )
+	 *
 	 * @since 1.16.4
 	 * @var string $search_method
 	 */
@@ -31,69 +32,72 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	public function __construct() {
 
-		$this->widget_id = 'search_bar';
+		$this->widget_id          = 'search_bar';
 		$this->widget_description = '';
-		$this->widget_subtitle = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
+		$this->widget_subtitle    = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
 
 		self::$instance = &$this;
 
 		self::$file = plugin_dir_path( __FILE__ );
 
-		$default_values = array( 'header' => 0, 'footer' => 0 );
+		$default_values = array(
+			'header' => 0,
+			'footer' => 0,
+		);
 
 		$settings = array(
 			'search_layout' => array(
-				'type' => 'radio',
+				'type'       => 'radio',
 				'full_width' => true,
-				'label' => esc_html__( 'Search Layout', 'gk-gravityview' ),
-				'value' => 'horizontal',
-				'options' => array(
+				'label'      => esc_html__( 'Search Layout', 'gk-gravityview' ),
+				'value'      => 'horizontal',
+				'options'    => array(
 					'horizontal' => esc_html__( 'Horizontal', 'gk-gravityview' ),
-					'vertical' => esc_html__( 'Vertical', 'gk-gravityview' ),
+					'vertical'   => esc_html__( 'Vertical', 'gk-gravityview' ),
 				),
 			),
-			'search_clear' => array(
+			'search_clear'  => array(
 				'type'  => 'checkbox',
 				'label' => __( 'Show Clear button', 'gk-gravityview' ),
-				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gk-gravityview'),
+				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gk-gravityview' ),
 				'value' => true,
 			),
 			'search_fields' => array(
-				'type' => 'hidden',
+				'type'  => 'hidden',
 				'label' => '',
 				'class' => 'gv-search-fields-value',
 				'value' => '[{"field":"search_all","input":"input_text"}]', // Default: Search Everything text box
 			),
-			'search_mode' => array(
-				'type' => 'radio',
+			'search_mode'   => array(
+				'type'       => 'radio',
 				'full_width' => true,
-				'label' => esc_html__( 'Search Mode', 'gk-gravityview' ),
-				'desc' => __('Should search results match all search fields, or any?', 'gk-gravityview'),
-				'value' => 'any',
-				'class' => 'hide-if-js',
-				'options' => array(
+				'label'      => esc_html__( 'Search Mode', 'gk-gravityview' ),
+				'desc'       => __( 'Should search results match all search fields, or any?', 'gk-gravityview' ),
+				'value'      => 'any',
+				'class'      => 'hide-if-js',
+				'options'    => array(
 					'any' => esc_html__( 'Match Any Fields', 'gk-gravityview' ),
 					'all' => esc_html__( 'Match All Fields', 'gk-gravityview' ),
 				),
 			),
 			'sieve_choices' => array(
-				'type' => 'radio',
+				'type'       => 'radio',
 				'full_width' => true,
-				'label' => esc_html__( 'Pre-Filter Choices', 'gk-gravityview' ),
+				'label'      => esc_html__( 'Pre-Filter Choices', 'gk-gravityview' ),
 				// translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
-				'desc' => strtr(
+				'desc'       => strtr(
 					esc_html__( 'For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries.', 'gk-gravityview' ) .
-					'<p><strong>⚠️ ' . esc_html__('This setting affects security.', 'gk-gravityview' ) . '</strong> ' . esc_html__( '[link]Learn about the Pre-Filter Choices setting[/link] before enabling it.', 'gk-gravityview') . '</p>',
+					'<p><strong>⚠️ ' . esc_html__( 'This setting affects security.', 'gk-gravityview' ) . '</strong> ' . esc_html__( '[link]Learn about the Pre-Filter Choices setting[/link] before enabling it.', 'gk-gravityview' ) . '</p>',
 					array(
-						'[b]' => '<strong>',
-						'[/b]' => '</strong>',
-						'[link]' => '<a href="https://docs.gravitykit.com/article/701-s" target="_blank" rel="external noopener nofollower" title="' . esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ) . '">',
+						'[b]'     => '<strong>',
+						'[/b]'    => '</strong>',
+						'[link]'  => '<a href="https://docs.gravitykit.com/article/701-s" target="_blank" rel="external noopener nofollower" title="' . esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ) . '">',
 						'[/link]' => '</a>',
 					)
 				),
-				'value' => '0',
-				'class' => 'hide-if-js',
-				'options' => array(
+				'value'      => '0',
+				'class'      => 'hide-if-js',
+				'options'    => array(
 					'0' => esc_html__( 'Show all field choices', 'gk-gravityview' ),
 					'1' => esc_html__( 'Only show choices that exist in form entries', 'gk-gravityview' ),
 				),
@@ -109,7 +113,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
 			add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
-			add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
+			add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 			add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict' ) );
 
 			// ajax - get the searchable fields
@@ -134,7 +138,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	public static function getInstance() {
 		if ( empty( self::$instance ) ) {
-			self::$instance = new GravityView_Widget_Search;
+			self::$instance = new GravityView_Widget_Search();
 		}
 		return self::$instance;
 	}
@@ -169,6 +173,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Sets the search method to GET (default) or POST
+	 *
 	 * @since 1.16.4
 	 */
 	private function set_search_method() {
@@ -187,6 +192,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Returns the search method
+	 *
 	 * @since 1.16.4
 	 * @return string
 	 */
@@ -204,20 +210,21 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public static function get_input_types_by_field_type() {
 		/**
 		 * Input Type groups
+		 *
 		 * @see admin-search-widget.js (getSelectInput)
 		 */
 		$input_types = array(
-			'text' => array( 'input_text' ),
-			'address' => array( 'input_text' ),
-			'number' => array( 'input_text' ),
-			'date' => array( 'date', 'date_range' ),
-			'boolean' => array( 'single_checkbox' ),
-			'select' => array( 'select', 'radio', 'link' ),
-			'multi' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
+			'text'       => array( 'input_text' ),
+			'address'    => array( 'input_text' ),
+			'number'     => array( 'input_text' ),
+			'date'       => array( 'date', 'date_range' ),
+			'boolean'    => array( 'single_checkbox' ),
+			'select'     => array( 'select', 'radio', 'link' ),
+			'multi'      => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
 
 			// hybrids
 			'created_by' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
-			'product'   => array( 'select', 'radio', 'link', 'input_text' ),
+			'product'    => array( 'select', 'radio', 'link', 'input_text' ),
 		);
 
 		/**
@@ -240,18 +247,19 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public static function get_search_input_labels() {
 		/**
 		 * Input Type labels l10n
+		 *
 		 * @see admin-search-widget.js (getSelectInput)
 		 */
 		$input_labels = array(
-			'input_text' => esc_html__( 'Text', 'gk-gravityview' ),
-			'date' => esc_html__( 'Date', 'gk-gravityview' ),
-			'select' => esc_html__( 'Select', 'gk-gravityview' ),
-			'multiselect' => esc_html__( 'Select (multiple values)', 'gk-gravityview' ),
-			'radio' => esc_html__( 'Radio', 'gk-gravityview' ),
-			'checkbox' => esc_html__( 'Checkbox', 'gk-gravityview' ),
+			'input_text'      => esc_html__( 'Text', 'gk-gravityview' ),
+			'date'            => esc_html__( 'Date', 'gk-gravityview' ),
+			'select'          => esc_html__( 'Select', 'gk-gravityview' ),
+			'multiselect'     => esc_html__( 'Select (multiple values)', 'gk-gravityview' ),
+			'radio'           => esc_html__( 'Radio', 'gk-gravityview' ),
+			'checkbox'        => esc_html__( 'Checkbox', 'gk-gravityview' ),
 			'single_checkbox' => esc_html__( 'Checkbox', 'gk-gravityview' ),
-			'link' => esc_html__( 'Links', 'gk-gravityview' ),
-			'date_range' => esc_html__( 'Date range', 'gk-gravityview' ),
+			'link'            => esc_html__( 'Links', 'gk-gravityview' ),
+			'date_range'      => esc_html__( 'Date range', 'gk-gravityview' ),
 		);
 
 		/**
@@ -271,6 +279,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Add script to Views edit screen (admin)
+	 *
 	 * @param  mixed $hook
 	 */
 	public function add_scripts_and_styles( $hook ) {
@@ -281,27 +290,32 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return;
 		}
 
-		$script_min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$script_min    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$script_source = empty( $script_min ) ? '/source' : '';
 
-		wp_enqueue_script( 'gravityview_searchwidget_admin', plugins_url( 'assets/js'.$script_source.'/admin-search-widget'.$script_min.'.js', __FILE__ ), array( 'jquery', 'gravityview_views_scripts' ), \GV\Plugin::$version );
+		wp_enqueue_script( 'gravityview_searchwidget_admin', plugins_url( 'assets/js' . $script_source . '/admin-search-widget' . $script_min . '.js', __FILE__ ), array( 'jquery', 'gravityview_views_scripts' ), \GV\Plugin::$version );
 
-		wp_localize_script( 'gravityview_searchwidget_admin', 'gvSearchVar', array(
-			'nonce' => wp_create_nonce( 'gravityview_ajaxsearchwidget' ),
-			'label_nofields' => esc_html__( 'No search fields configured yet.', 'gk-gravityview' ),
-			'label_addfield' => esc_html__( 'Add Search Field', 'gk-gravityview' ),
-			'label_label' => esc_html__( 'Label', 'gk-gravityview' ),
-			'label_searchfield' => esc_html__( 'Search Field', 'gk-gravityview' ),
-			'label_inputtype' => esc_html__( 'Input Type', 'gk-gravityview' ),
-			'label_ajaxerror' => esc_html__( 'There was an error loading searchable fields. Save the View or refresh the page to fix this issue.', 'gk-gravityview' ),
-			'input_labels' => json_encode( self::get_search_input_labels() ),
-			'input_types' => json_encode( self::get_input_types_by_field_type() ),
-		) );
+		wp_localize_script(
+			'gravityview_searchwidget_admin',
+			'gvSearchVar',
+			array(
+				'nonce'             => wp_create_nonce( 'gravityview_ajaxsearchwidget' ),
+				'label_nofields'    => esc_html__( 'No search fields configured yet.', 'gk-gravityview' ),
+				'label_addfield'    => esc_html__( 'Add Search Field', 'gk-gravityview' ),
+				'label_label'       => esc_html__( 'Label', 'gk-gravityview' ),
+				'label_searchfield' => esc_html__( 'Search Field', 'gk-gravityview' ),
+				'label_inputtype'   => esc_html__( 'Input Type', 'gk-gravityview' ),
+				'label_ajaxerror'   => esc_html__( 'There was an error loading searchable fields. Save the View or refresh the page to fix this issue.', 'gk-gravityview' ),
+				'input_labels'      => json_encode( self::get_search_input_labels() ),
+				'input_types'       => json_encode( self::get_input_types_by_field_type() ),
+			)
+		);
 
 	}
 
 	/**
 	 * Add admin script to the no-conflict scripts allowlist
+	 *
 	 * @param array $allowed Scripts allowed in no-conflict mode
 	 * @return array Scripts allowed in no-conflict mode, plus the search widget script
 	 */
@@ -347,7 +361,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Generates html for the available Search Fields dropdown
-	 * @param  int $form_id
+	 *
+	 * @param  int    $form_id
 	 * @param  string $current (for future use)
 	 * @return string
 	 */
@@ -370,7 +385,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'text' => esc_html__( 'Entry Date', 'gk-gravityview' ),
 				'type' => 'date',
 			),
-			'entry_id' => array(
+			'entry_id'   => array(
 				'text' => esc_html__( 'Entry ID', 'gk-gravityview' ),
 				'type' => 'text',
 			),
@@ -382,16 +397,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'text' => esc_html__( 'Is Starred', 'gk-gravityview' ),
 				'type' => 'boolean',
 			),
-			'is_read' => array(
-				'text' => esc_html__( 'Is Read', 'gravityview' ),
-				'type' => 'select',
+			'is_read'    => array(
+				'text'    => esc_html__( 'Is Read', 'gravityview' ),
+				'type'    => 'select',
 				'choices' => array(
 					array(
-						'text' => __( 'Read', 'gravityview' ),
+						'text'  => __( 'Read', 'gravityview' ),
 						'value' => '1',
 					),
 					array(
-						'text' => __( 'Unread', 'gravityview' ),
+						'text'  => __( 'Unread', 'gravityview' ),
 						'value' => '0',
 					),
 				),
@@ -405,8 +420,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			);
 		}
 
-		foreach( $custom_fields as $custom_field_key => $custom_field ) {
-			$output .= sprintf( '<option value="%s" %s data-inputtypes="%s" data-placeholder="%s">%s</option>', $custom_field_key, selected( $custom_field_key, $current, false ), $custom_field['type'], self::get_field_label( array('field' => $custom_field_key ) ), $custom_field['text'] );
+		foreach ( $custom_fields as $custom_field_key => $custom_field ) {
+			$output .= sprintf( '<option value="%s" %s data-inputtypes="%s" data-placeholder="%s">%s</option>', $custom_field_key, selected( $custom_field_key, $current, false ), $custom_field['type'], self::get_field_label( array( 'field' => $custom_field_key ) ), $custom_field['text'] );
 		}
 
 		// Get fields with sub-inputs and no parent
@@ -434,7 +449,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 				$types = self::get_search_input_types( $id, $field['type'] );
 
-				$output .= '<option value="'. $id .'" '. selected( $id, $current, false ).'data-inputtypes="'. esc_attr( $types ) .'">'. esc_html( $field['label'] ) .'</option>';
+				$output .= '<option value="' . $id . '" ' . selected( $id, $current, false ) . 'data-inputtypes="' . esc_attr( $types ) . '">' . esc_html( $field['label'] ) . '</option>';
 			}
 		}
 
@@ -450,7 +465,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @see admin-search-widget.js
 	 *
 	 * @param string|int|float $field_id Gravity Forms field ID
-	 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
+	 * @param string           $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
 	 *
 	 * @return string GV field search input type ('multi', 'boolean', 'select', 'date', 'text')
 	 */
@@ -460,7 +475,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( false !== strpos( (string) $field_id, '.' ) && in_array( $field_type, array( 'checkbox' ) ) || in_array( $field_id, array( 'is_fulfilled' ) ) ) {
 			$input_type = 'boolean'; // on/off checkbox
 		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
-			$input_type = 'multi'; //multiselect
+			$input_type = 'multi'; // multiselect
 		} elseif ( in_array( $field_type, array( 'select', 'radio' ) ) ) {
 			$input_type = 'select';
 		} elseif ( in_array( $field_type, array( 'date' ) ) || in_array( $field_id, array( 'payment_date' ) ) ) {
@@ -507,7 +522,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$post_id = absint( $widget_args['post_id'] );
 			}
 			// We're in the WordPress Widget context, and the base View ID should be used
-			else if ( ! empty( $widget_args['view_id'] ) ) {
+			elseif ( ! empty( $widget_args['view_id'] ) ) {
 				$post_id = absint( $widget_args['view_id'] );
 			}
 
@@ -533,10 +548,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @since 2.0.9 Added $with_full_field parameter
 	 *
 	 * @param \GV\View|null $view
-	 * @param bool $with_full_field Return full field array, or just field ID? Default: false (just field ID)
+	 * @param bool          $with_full_field Return full field array, or just field ID? Default: false (just field ID)
 	 *
-	 * TODO: Move to \GV\View, perhaps? And return a Field_Collection
-	 * TODO: Use in gravityview()->request->is_search() to calculate whether a valid search
+	 *          TODO: Move to \GV\View, perhaps? And return a Field_Collection
+	 *          TODO: Use in gravityview()->request->is_search() to calculate whether a valid search
 	 *
 	 * @return array If no View, returns empty array. Otherwise, returns array of fields configured in widgets and Search Bar for a View
 	 */
@@ -558,7 +573,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		foreach ( $widgets as $widget ) {
 			if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) {
-				if( $_fields = json_decode( $widget['search_fields'], true ) ) {
+				if ( $_fields = json_decode( $widget['search_fields'], true ) ) {
 					foreach ( $_fields as $field ) {
 						if ( empty( $field['form_id'] ) ) {
 							$field['form_id'] = $view->form ? $view->form->ID : 0;
@@ -570,7 +585,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		foreach ( $view->widgets->by_id( $this->get_widget_id() )->all() as $widget ) {
-			if( $_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) ) {
+			if ( $_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) ) {
 				foreach ( $_fields as $field ) {
 					if ( empty( $field['form_id'] ) ) {
 						$field['form_id'] = $view->form ? $view->form->ID : 0;
@@ -603,11 +618,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Calculate the search criteria to filter entries
+	 *
 	 * @param array $search_criteria The search criteria
-	 * @param int $form_id The form ID
+	 * @param int   $form_id The form ID
 	 * @param array $args Some args
 	 *
-	 * @param bool $force_search_criteria Whether to suppress GF_Query filter, internally used in self::gf_query_filter
+	 * @param bool  $force_search_criteria Whether to suppress GF_Query filter, internally used in self::gf_query_filter
 	 *
 	 * @return array
 	 */
@@ -621,17 +637,23 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return $search_criteria; // Return the original criteria, GF_Query modification kicks in later
 		}
 
-		if( 'post' === $this->search_method ) {
+		if ( 'post' === $this->search_method ) {
 			$get = $_POST;
 		} else {
 			$get = $_GET;
 		}
 
-		$view = \GV\View::by_id( \GV\Utils::get( $args, 'id' ) );
+		$view    = \GV\View::by_id( \GV\Utils::get( $args, 'id' ) );
 		$view_id = $view ? $view->ID : null;
 		$form_id = $view ? $view->form->ID : null;
 
-		gravityview()->log->debug( 'Requested $_{method}: ', array( 'method' => $this->search_method, 'data' => $get ) );
+		gravityview()->log->debug(
+			'Requested $_{method}: ',
+			array(
+				'method' => $this->search_method,
+				'data'   => $get,
+			)
+		);
 
 		if ( empty( $get ) || ! is_array( $get ) ) {
 			return $search_criteria;
@@ -646,7 +668,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// Make sure array key is set up
 		$search_criteria['field_filters'] = \GV\Utils::get( $search_criteria, 'field_filters', array() );
 
-		$searchable_fields = $this->get_view_searchable_fields( $view );
+		$searchable_fields        = $this->get_view_searchable_fields( $view );
 		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
 
 		/**
@@ -683,8 +705,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			foreach ( $words as $word ) {
 				$search_criteria['field_filters'][] = array(
-					'key' => null, // The field ID to search
-					'value' => $word, // The value to search
+					'key'      => null, // The field ID to search
+					'value'    => $word, // The value to search
 					'operator' => 'contains', // What to search in. Options: `is` or `contains`
 				);
 			}
@@ -696,13 +718,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * Get and normalize the dates according to the input format.
 			 */
 			if ( $curr_start = ! empty( $get['gv_start'] ) ? $get['gv_start'] : '' ) {
-				if( $curr_start_date = date_create_from_format( $this->get_datepicker_format( true ), $curr_start ) ) {
+				if ( $curr_start_date = date_create_from_format( $this->get_datepicker_format( true ), $curr_start ) ) {
 					$curr_start = $curr_start_date->format( 'Y-m-d' );
 				}
 			}
 
 			if ( $curr_end = ! empty( $get['gv_start'] ) ? ( ! empty( $get['gv_end'] ) ? $get['gv_end'] : '' ) : '' ) {
-				if( $curr_end_date = date_create_from_format( $this->get_datepicker_format( true ), $curr_end ) ) {
+				if ( $curr_end_date = date_create_from_format( $this->get_datepicker_format( true ), $curr_end ) ) {
 					$curr_end = $curr_end_date->format( 'Y-m-d' );
 				}
 			}
@@ -737,13 +759,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * Don't set $search_criteria['start_date'] if start_date is empty as it may lead to bad query results (GFAPI::get_entries)
 			 */
 			if ( ! empty( $curr_start ) ) {
-				$curr_start = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
+				$curr_start                    = date( 'Y-m-d H:i:s', strtotime( $curr_start ) );
 				$search_criteria['start_date'] = $adjust_tz ? get_gmt_from_date( $curr_start ) : $curr_start;
 			}
 
 			if ( ! empty( $curr_end ) ) {
 				// Fast-forward 24 hour on the end time
-				$curr_end = date( 'Y-m-d H:i:s', strtotime( $curr_end ) + DAY_IN_SECONDS );
+				$curr_end                    = date( 'Y-m-d H:i:s', strtotime( $curr_end ) + DAY_IN_SECONDS );
 				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
 				if ( strpos( $search_criteria['end_date'], '00:00:00' ) ) { // See https://github.com/gravityview/GravityView/issues/1056
 					$search_criteria['end_date'] = date( 'Y-m-d H:i:s', strtotime( $search_criteria['end_date'] ) - 1 );
@@ -752,25 +774,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		// search for a specific entry ID
-		if ( ! empty( $get[ 'gv_id' ] ) && in_array( 'entry_id', $searchable_fields ) ) {
+		if ( ! empty( $get['gv_id'] ) && in_array( 'entry_id', $searchable_fields ) ) {
 			$search_criteria['field_filters'][] = array(
-				'key' => 'id',
-				'value' => absint( $get[ 'gv_id' ] ),
+				'key'      => 'id',
+				'value'    => absint( $get['gv_id'] ),
 				'operator' => $this->get_operator( $get, 'gv_id', array( '=' ), '=' ),
 			);
 		}
 
 		// search for a specific Created_by ID
-		if ( ! empty( $get[ 'gv_by' ] ) && in_array( 'created_by', $searchable_fields ) ) {
+		if ( ! empty( $get['gv_by'] ) && in_array( 'created_by', $searchable_fields ) ) {
 			$search_criteria['field_filters'][] = array(
-				'key' => 'created_by',
-				'value' => $get['gv_by'],
+				'key'      => 'created_by',
+				'value'    => $get['gv_by'],
 				'operator' => $this->get_operator( $get, 'gv_by', array( '=' ), '=' ),
 			);
 		}
 
 		// Get search mode passed in URL
-		$mode = isset( $get['mode'] ) && in_array( $get['mode'], array( 'any', 'all' ) ) ?  $get['mode'] : 'any';
+		$mode = isset( $get['mode'] ) && in_array( $get['mode'], array( 'any', 'all' ) ) ? $get['mode'] : 'any';
 
 		// get the other search filters
 		foreach ( $get as $key => $value ) {
@@ -832,7 +854,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				if ( ! empty( $filter[0]['operator'] ) && in_array( $filter[0]['operator'], array( '>=', '<=', '>', '<' ) ) ) {
 					$mode = 'all';
 				}
-			} elseif( !empty( $filter ) ) {
+			} elseif ( ! empty( $filter ) ) {
 				$search_criteria['field_filters'][] = $filter;
 			}
 		}
@@ -856,8 +878,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * Dropin for the legacy flat filters when \GF_Query is available.
 	 *
-	 * @param \GF_Query $query The current query object reference
-	 * @param \GV\View $this The current view object
+	 * @param \GF_Query   $query The current query object reference
+	 * @param \GV\View    $this The current view object
 	 * @param \GV\Request $request The request object
 	 */
 	public function gf_query_filter( &$query, $view, $request ) {
@@ -895,7 +917,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		$extra_conditions = array();
-		$mode = 'any';
+		$mode             = 'any';
 
 		foreach ( $search_criteria['field_filters'] as $key => &$filter ) {
 			if ( ! is_array( $filter ) ) {
@@ -907,21 +929,24 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// Construct a manual query for unapproved statuses
 			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, (array) $filter['value'] ) ) {
-				$_tmp_query       = new $query_class( $view->form->ID, array(
-					'field_filters' => array(
-						array(
-							'operator' => 'in',
-							'key'      => 'is_approved',
-							'value'    => (array) $filter['value'],
+				$_tmp_query       = new $query_class(
+					$view->form->ID,
+					array(
+						'field_filters' => array(
+							array(
+								'operator' => 'in',
+								'key'      => 'is_approved',
+								'value'    => (array) $filter['value'],
+							),
+							array(
+								'operator' => 'is',
+								'key'      => 'is_approved',
+								'value'    => '',
+							),
+							'mode' => 'any',
 						),
-						array(
-							'operator' => 'is',
-							'key'      => 'is_approved',
-							'value'    => '',
-						),
-						'mode' => 'any'
-					),
-				) );
+					)
+				);
 				$_tmp_query_parts = $_tmp_query->_introspect();
 
 				$extra_conditions[] = $_tmp_query_parts['where'];
@@ -933,7 +958,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			// Construct manual query for text mode creator search
 			if ( 'created_by' === $filter['key'] && ! empty( $created_by_text_mode ) ) {
 				$extra_conditions[] = new GravityView_Widget_Search_Author_GF_Query_Condition( $filter, $view );
-				$filter = false;
+				$filter             = false;
 				continue;
 			}
 
@@ -994,7 +1019,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 				 * code by reusing what's inside GF_Query already as they
 				 * take care of many small things like forcing numeric, etc.
 				 */
-				$_tmp_query       = new $query_class( $filter['form_id'], array( 'mode' => 'any', 'field_filters' => array( $filter ) ) );
+				$_tmp_query       = new $query_class(
+					$filter['form_id'],
+					array(
+						'mode'          => 'any',
+						'field_filters' => array( $filter ),
+					)
+				);
 				$_tmp_query_parts = $_tmp_query->_introspect();
 				$search_condition = $_tmp_query_parts['where'];
 
@@ -1025,7 +1056,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 					if ( $view->joins && $left->field_id == GF_Query_Column::META ) {
 						foreach ( $view->joins as $_join ) {
-							$on = $_join->join_on;
+							$on   = $_join->join_on;
 							$join = $_join->join;
 
 							$search_conditions[] = GF_Query_Condition::_or(
@@ -1089,7 +1120,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$field_id = str_replace( array( 'filter_', 'input_' ), '', $key );
 
 		// calculates field_id, removing 'filter_' and for '_' for advanced fields ( like name or checkbox )
-		if ( preg_match('/^[0-9_]+$/ism', $field_id ) ) {
+		if ( preg_match( '/^[0-9_]+$/ism', $field_id ) ) {
 			$field_id = str_replace( '_', '.', $field_id );
 		}
 
@@ -1103,10 +1134,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * Format searched values
 	 *
-	 * @param  string $filter_key ID of the field, or entry meta key
-	 * @param  string $value $_GET/$_POST search value
+	 * @param  string   $filter_key ID of the field, or entry meta key
+	 * @param  string   $value $_GET/$_POST search value
 	 * @param  \GV\View $view The view we're looking at
-	 * @param array[] $searchable_fields The searchable fields as configured by the widget.
+	 * @param array[]  $searchable_fields The searchable fields as configured by the widget.
 	 * @param string[] $get The $_GET/$_POST array.
 	 *
 	 * @since develop Added 5th $get parameter for operator overrides.
@@ -1115,7 +1146,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @return array|false 1 or 2 deph levels, false if not allowed
 	 */
 	public function prepare_field_filter( $filter_key, $value, $view, $searchable_fields, $get = array() ) {
-		$key = $filter_key;
+		$key        = $filter_key;
 		$filter_key = explode( ':', $filter_key ); // field_id, form_id
 
 		$form = null;
@@ -1156,7 +1187,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				return false;
 			}
 		} else {
-			$field_id = reset( $filter_key );
+			$field_id          = reset( $filter_key );
 			$searchable_fields = wp_list_pluck( $searchable_fields, 'field' );
 			if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $field_id, $searchable_fields ) ) {
 				return false;
@@ -1177,8 +1208,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// default filter array
 		$filter = array(
-			'key'   => $field_id,
-			'value' => $value,
+			'key'     => $field_id,
+			'value'   => $value,
 			'form_id' => $form->ID,
 		);
 
@@ -1190,7 +1221,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				break;
 
 			case 'post_category':
-
 				if ( ! is_array( $value ) ) {
 					$value = array( $value );
 				}
@@ -1199,7 +1229,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$filter = array();
 
 				foreach ( $value as $val ) {
-					$cat = get_term( $val, 'category' );
+					$cat      = get_term( $val, 'category' );
 					$filter[] = array(
 						'key'      => $field_id,
 						'value'    => esc_attr( $cat->name ) . ':' . $val,
@@ -1210,7 +1240,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				break;
 
 			case 'multiselect':
-
 				if ( ! is_array( $value ) ) {
 					break;
 				}
@@ -1219,7 +1248,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$filter = array();
 
 				foreach ( $value as $val ) {
-					$filter[] = array( 'key' => $field_id, 'value' => $val );
+					$filter[] = array(
+						'key'   => $field_id,
+						'value' => $val,
+					);
 				}
 
 				break;
@@ -1229,7 +1261,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				if ( false !== strpos( $field_id, '.' ) && ! empty( $form_field->inputs ) && ! empty( $form_field->choices ) ) {
 					foreach ( $form_field->inputs as $k => $input ) {
 						if ( $input['id'] == $field_id ) {
-							$filter['value'] = $form_field->choices[ $k ]['value'];
+							$filter['value']    = $form_field->choices[ $k ]['value'];
 							$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 							break;
 						}
@@ -1252,7 +1284,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			case 'name':
 			case 'address':
-
 				if ( false === strpos( $field_id, '.' ) ) {
 
 					$words = explode( ' ', $value );
@@ -1277,12 +1308,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 					foreach ( $searchable_fields as $searchable_field ) {
 
-						if( $form_field->ID !== $searchable_field['field'] ) {
+						if ( $form_field->ID !== $searchable_field['field'] ) {
 							continue;
 						}
 
 						// Only exact-match dropdowns, not text search
-						if( in_array( $searchable_field['input'], array( 'text', 'search' ), true ) ) {
+						if ( in_array( $searchable_field['input'], array( 'text', 'search' ), true ) ) {
 							continue;
 						}
 
@@ -1298,7 +1329,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			case 'payment_date':
 			case 'date':
-
 				$date_format = $this->get_datepicker_format( true );
 
 				if ( is_array( $value ) ) {
@@ -1317,9 +1347,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 						 * @since 1.16.3
 						 * Safeguard until GF implements '<=' operator
 						 */
-						if( !GFFormsModel::is_valid_operator( $operator ) && $operator === '<=' ) {
+						if ( ! GFFormsModel::is_valid_operator( $operator ) && $operator === '<=' ) {
 							$operator = '<';
-							$date = date( 'Y-m-d', strtotime( self::get_formatted_date( $date, 'Y-m-d', $date_format ) . ' +1 day' ) );
+							$date     = date( 'Y-m-d', strtotime( self::get_formatted_date( $date, 'Y-m-d', $date_format ) . ' +1 day' ) );
 						}
 
 						$filter[] = array(
@@ -1329,12 +1359,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 						);
 					}
 				} else {
-					$date = $value;
-					$filter['value'] = self::get_formatted_date( $date, 'Y-m-d', $date_format );
+					$date               = $value;
+					$filter['value']    = self::get_formatted_date( $date, 'Y-m-d', $date_format );
 					$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 				}
 
-				if ('payment_date' === $key) {
+				if ( 'payment_date' === $key ) {
 					$filter['operator'] = 'contains';
 				}
 
@@ -1353,18 +1383,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @return string Format of the date in the database
 	 */
 	public static function get_date_field_format( GF_Field_Date $field ) {
-		$format = 'm/d/Y';
+		$format     = 'm/d/Y';
 		$datepicker = array(
-			'mdy' => 'm/d/Y',
-			'dmy' => 'd/m/Y',
-			'dmy_dash' => 'd-m-Y',
-			'dmy_dot' => 'd.m.Y',
+			'mdy'       => 'm/d/Y',
+			'dmy'       => 'd/m/Y',
+			'dmy_dash'  => 'd-m-Y',
+			'dmy_dot'   => 'd.m.Y',
 			'ymd_slash' => 'Y/m/d',
-			'ymd_dash' => 'Y-m-d',
-			'ymd_dot' => 'Y.m.d',
+			'ymd_dash'  => 'Y-m-d',
+			'ymd_dot'   => 'Y.m.d',
 		);
 
-		if ( ! empty( $field->dateFormat ) && isset( $datepicker[ $field->dateFormat ] ) ){
+		if ( ! empty( $field->dateFormat ) && isset( $datepicker[ $field->dateFormat ] ) ) {
 			$format = $datepicker[ $field->dateFormat ];
 		}
 
@@ -1396,6 +1426,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Include this extension templates path
+	 *
 	 * @param array $file_paths List of template paths ordered
 	 */
 	public function add_template_path( $file_paths ) {
@@ -1431,8 +1462,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Renders the Search Widget
-	 * @param array $widget_args
-	 * @param string $content
+	 *
+	 * @param array                       $widget_args
+	 * @param string                      $content
 	 * @param string|\GV\Template_Context $context
 	 *
 	 * @return void
@@ -1466,51 +1498,51 @@ class GravityView_Widget_Search extends \GV\Widget {
 			switch ( $field['field'] ) {
 
 				case 'search_all':
-					$updated_field['key'] = 'search_all';
+					$updated_field['key']   = 'search_all';
 					$updated_field['input'] = 'search_all';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_search' );
 					break;
 
 				case 'entry_date':
-					$updated_field['key'] = 'entry_date';
+					$updated_field['key']   = 'entry_date';
 					$updated_field['input'] = 'entry_date';
 					$updated_field['value'] = array(
 						'start' => $this->rgget_or_rgpost( 'gv_start' ),
-						'end' => $this->rgget_or_rgpost( 'gv_end' ),
+						'end'   => $this->rgget_or_rgpost( 'gv_end' ),
 					);
 					break;
 
 				case 'entry_id':
-					$updated_field['key'] = 'entry_id';
+					$updated_field['key']   = 'entry_id';
 					$updated_field['input'] = 'entry_id';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_id' );
 					break;
 
 				case 'created_by':
-					$updated_field['key'] = 'created_by';
-					$updated_field['name'] = 'gv_by';
+					$updated_field['key']   = 'created_by';
+					$updated_field['name']  = 'gv_by';
 					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
 					break;
 
 				case 'is_approved':
-					$updated_field['key'] = 'is_approved';
-					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_approved' );
+					$updated_field['key']     = 'is_approved';
+					$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_approved' );
 					$updated_field['choices'] = self::get_is_approved_choices();
 					break;
 
 				case 'is_read':
-					$updated_field['key'] = 'is_read';
-					$updated_field['value'] = $this->rgget_or_rgpost( 'filter_is_read' );
-					$updated_field['choices'] = [
-						[
-							'text'=>__('Unread','gravityview'),
-							'value'=>0,
-						],
-						[
-							'text'=>__('Read','gravityview'),
-							'value'=>1
-						]
-					];
+					$updated_field['key']     = 'is_read';
+					$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_read' );
+					$updated_field['choices'] = array(
+						array(
+							'text'  => __( 'Unread', 'gravityview' ),
+							'value' => 0,
+						),
+						array(
+							'text'  => __( 'Read', 'gravityview' ),
+							'value' => 1,
+						),
+					);
 					break;
 			}
 
@@ -1562,10 +1594,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public static function get_search_class( $custom_class = '' ) {
 		$gravityview_view = GravityView_View::getInstance();
 
-		$search_class = 'gv-search-'.$gravityview_view->search_layout;
+		$search_class = 'gv-search-' . $gravityview_view->search_layout;
 
-		if ( ! empty( $custom_class )  ) {
-			$search_class .= ' '.$custom_class;
+		if ( ! empty( $custom_class ) ) {
+			$search_class .= ' ' . $custom_class;
 		}
 
 		/**
@@ -1583,6 +1615,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Calculate the search form action
+	 *
 	 * @since 1.6
 	 *
 	 * @return string
@@ -1606,6 +1639,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Get the label for a search form field
+	 *
 	 * @param  array $field      Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
 	 * @param  array $form_field Form field data, as fetched by `gravityview_get_field()`
 	 * @return string             Label for the search form
@@ -1618,7 +1652,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$label = isset( $form_field['label'] ) ? $form_field['label'] : '';
 
-			switch( $field['field'] ) {
+			switch ( $field['field'] ) {
 				case 'search_all':
 					$label = __( 'Search Entries:', 'gk-gravityview' );
 					break;
@@ -1664,9 +1698,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @since 2.16 Added $widget_args parameter.
 	 *
-	 * @param array $field
+	 * @param array       $field
 	 * @param \GV\Context $context
-	 * @param array $widget_args
+	 * @param array       $widget_args
 	 *
 	 * @return array
 	 */
@@ -1688,12 +1722,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$form_field_type = \GV\Utils::get( $form_field, 'type' );
 
 		$filter = array(
-			'key' => \GV\Utils::get( $field, 'field' ),
-			'name' => $name,
+			'key'   => \GV\Utils::get( $field, 'field' ),
+			'name'  => $name,
 			'label' => self::get_field_label( $field, $form_field ),
 			'input' => \GV\Utils::get( $field, 'input' ),
 			'value' => $value,
-			'type' => $form_field_type,
+			'type'  => $form_field_type,
 		);
 
 		// collect choices
@@ -1704,12 +1738,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		if ( 'date_range' === $field['input'] && empty( $value ) ) {
-			$filter['value'] = array( 'start' => '', 'end' => '' );
+			$filter['value'] = array(
+				'start' => '',
+				'end'   => '',
+			);
 		}
 
 		if ( 'created_by' === $field['field'] ) {
 			$filter['choices'] = self::get_created_by_choices( ( isset( $context->view ) ? $context->view : null ) );
-			$filter['type'] = 'created_by';
+			$filter['type']    = 'created_by';
 		}
 
 		/**
@@ -1729,10 +1766,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @uses sieve_filter_choices
 	 *
-	 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
+	 * @param array                     $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
 	 * @param GravityView_Widget_Search $widget Current widget object
-	 * @param array $widget_args Args passed to this method. {@since 1.8}
-	 * @param \GV\Template_Context $context
+	 * @param array                     $widget_args Args passed to this method. {@since 1.8}
+	 * @param \GV\Template_Context      $context
 	 *
 	 * @return array If the search field GF Field type is `address`, and there are choices to add, adds them and changes the input type. Otherwise, sets the input to text.
 	 */
@@ -1770,7 +1807,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Sieve filter choices to only ones that are used.
 	 *
-	 * @param array $filter The filter configuration.
+	 * @param array       $filter The filter configuration.
 	 * @param \GV\Context $context The context
 	 *
 	 * @since 2.5
@@ -1790,7 +1827,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$form_id = $context->view->form->ID; // @todo Support multiple forms (joins)
 
-		$cache = new GravityView_Cache( $form_id, [ 'sieve', $filter['key'], $context->view->ID ] );
+		$cache = new GravityView_Cache( $form_id, array( 'sieve', $filter['key'], $context->view->ID ) );
 
 		$filter_choices = $cache->get();
 
@@ -1807,21 +1844,29 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		switch ( \GV\Utils::get( $filter, 'type' ) ) {
 			case 'post_category':
-				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT SUBSTRING_INDEX( `meta_value`, ':', 1) FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %d) AND `form_id` = %d",
-					$key_like, $filter['key'], $form_id
-				) );
+				$choices = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT DISTINCT SUBSTRING_INDEX( `meta_value`, ':', 1) FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %d) AND `form_id` = %d",
+						$key_like,
+						$filter['key'],
+						$form_id
+					)
+				);
 				break;
 			case 'created_by':
-				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT `created_by` FROM $entry_table_name WHERE `form_id` = %d",
-					$form_id
-				) );
+				$choices = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT DISTINCT `created_by` FROM $entry_table_name WHERE `form_id` = %d",
+						$form_id
+					)
+				);
 				break;
 			default:
 				$sql = $wpdb->prepare(
 					"SELECT DISTINCT `meta_value` FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %s ) AND `form_id` = %d",
-					$key_like, $filter['key'], $form_id
+					$key_like,
+					$filter['key'],
+					$form_id
 				);
 
 				$choices = $wpdb->get_col( $sql );
@@ -1870,6 +1915,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		/**
 		 * filter gravityview/get_users/search_widget
+		 *
 		 * @see \GVCommon::get_users
 		 */
 		$users = GVCommon::get_users( 'search_widget', array( 'fields' => array( 'ID', 'display_name' ) ) );
@@ -1883,10 +1929,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * @param \WP_User $user The user.
 			 * @param \GV\View|null $view The view.
 			 */
-			$text = apply_filters( 'gravityview/search/created_by/text', $user->display_name, $user, $view );
+			$text      = apply_filters( 'gravityview/search/created_by/text', $user->display_name, $user, $view );
 			$choices[] = array(
 				'value' => $user->ID,
-				'text' => $text,
+				'text'  => $text,
 			);
 		}
 
@@ -1906,7 +1952,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		foreach ( GravityView_Entry_Approval_Status::get_all() as $status ) {
 			$choices[] = array(
 				'value' => $status['value'],
-				'text' => $status['label'],
+				'text'  => $status['label'],
 			);
 		}
 
@@ -1915,6 +1961,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Output the Clear Search Results button
+	 *
 	 * @since 1.5.4
 	 */
 	public static function the_clear_search_button() {
@@ -1955,6 +2002,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Require the datepicker script for the frontend GV script
+	 *
 	 * @param array $js_dependencies Array of existing required scripts for the fe-views.js script
 	 * @return array Array required scripts, with `jquery-ui-datepicker` added
 	 */
@@ -1983,26 +2031,30 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @param array $js_localization The data padded to the Javascript file
 		 * @param array $view_data View data array with View settings
 		 */
-		$datepicker_settings = apply_filters( 'gravityview_datepicker_settings', array(
-			'yearRange' => '-5:+5',
-			'changeMonth' => true,
-			'changeYear' => true,
-			'closeText' => esc_attr_x( 'Close', 'Close calendar', 'gk-gravityview' ),
-			'prevText' => esc_attr_x( 'Prev', 'Previous month in calendar', 'gk-gravityview' ),
-			'nextText' => esc_attr_x( 'Next', 'Next month in calendar', 'gk-gravityview' ),
-			'currentText' => esc_attr_x( 'Today', 'Today in calendar', 'gk-gravityview' ),
-			'weekHeader' => esc_attr_x( 'Week', 'Week in calendar', 'gk-gravityview' ),
-			'monthStatus'       => __( 'Show a different month', 'gk-gravityview' ),
-			'monthNames'        => array_values( $wp_locale->month ),
-			'monthNamesShort'   => array_values( $wp_locale->month_abbrev ),
-			'dayNames'          => array_values( $wp_locale->weekday ),
-			'dayNamesShort'     => array_values( $wp_locale->weekday_abbrev ),
-			'dayNamesMin'       => array_values( $wp_locale->weekday_initial ),
-			// get the start of week from WP general setting
-			'firstDay'          => get_option( 'start_of_week' ),
-			// is Right to left language? default is false
-			'isRTL'             => is_rtl(),
-		), $view_data );
+		$datepicker_settings = apply_filters(
+			'gravityview_datepicker_settings',
+			array(
+				'yearRange'       => '-5:+5',
+				'changeMonth'     => true,
+				'changeYear'      => true,
+				'closeText'       => esc_attr_x( 'Close', 'Close calendar', 'gk-gravityview' ),
+				'prevText'        => esc_attr_x( 'Prev', 'Previous month in calendar', 'gk-gravityview' ),
+				'nextText'        => esc_attr_x( 'Next', 'Next month in calendar', 'gk-gravityview' ),
+				'currentText'     => esc_attr_x( 'Today', 'Today in calendar', 'gk-gravityview' ),
+				'weekHeader'      => esc_attr_x( 'Week', 'Week in calendar', 'gk-gravityview' ),
+				'monthStatus'     => __( 'Show a different month', 'gk-gravityview' ),
+				'monthNames'      => array_values( $wp_locale->month ),
+				'monthNamesShort' => array_values( $wp_locale->month_abbrev ),
+				'dayNames'        => array_values( $wp_locale->weekday ),
+				'dayNamesShort'   => array_values( $wp_locale->weekday_abbrev ),
+				'dayNamesMin'     => array_values( $wp_locale->weekday_initial ),
+				// get the start of week from WP general setting
+				'firstDay'        => get_option( 'start_of_week' ),
+				// is Right to left language? default is false
+				'isRTL'           => is_rtl(),
+			),
+			$view_data
+		);
 
 		$localizations['datepicker'] = $datepicker_settings;
 
@@ -2053,7 +2105,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		add_filter( 'gravityview_js_localization', array( $this, 'add_datepicker_localization' ), 10, 2 );
 
 		$scheme = is_ssl() ? 'https://' : 'http://';
-		wp_enqueue_style( 'jquery-ui-datepicker', $scheme.'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
+		wp_enqueue_style( 'jquery-ui-datepicker', $scheme . 'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
 
 		/**
 		 * @filter `gravityview_search_datepicker_class`
@@ -2068,7 +2120,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * - `ymd_dash` (yyyy-mm-dd)
 		 * - `ymd_dot` (yyyy.mm.dd)
 		 */
-		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', "gv-datepicker datepicker " . $this->get_datepicker_format() );
+		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker ' . $this->get_datepicker_format() );
 
 		$gravityview_view->datepicker_class = $datepicker_class;
 	}
@@ -2102,15 +2154,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$format = apply_filters( 'gravityview/widgets/search/datepicker/format', $default_format );
 
 		$gf_date_formats = array(
-			'mdy' => 'm/d/Y',
+			'mdy'       => 'm/d/Y',
 
-			'dmy_dash' => 'd-m-Y',
-			'dmy_dot' => 'd.m.Y',
-			'dmy' => 'd/m/Y',
+			'dmy_dash'  => 'd-m-Y',
+			'dmy_dot'   => 'd.m.Y',
+			'dmy'       => 'd/m/Y',
 
 			'ymd_slash' => 'Y/m/d',
-			'ymd_dash' => 'Y-m-d',
-			'ymd_dot' => 'Y.m.d',
+			'ymd_dash'  => 'Y-m-d',
+			'ymd_dot'   => 'Y.m.d',
 		);
 
 		if ( ! $date_format ) {
@@ -2132,7 +2184,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function add_preview_inputs() {
 		global $wp;
 
-		if ( ! is_preview() || ! current_user_can( 'publish_gravityviews') ) {
+		if ( ! is_preview() || ! current_user_can( 'publish_gravityviews' ) ) {
 			return;
 		}
 
@@ -2179,7 +2231,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 } // end class
 
-new GravityView_Widget_Search;
+new GravityView_Widget_Search();
 
 if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 	return;
@@ -2191,14 +2243,16 @@ if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Condition {
 	public function __construct( $filter, $view ) {
 		$this->value = $filter['value'];
-		$this->view = $view;
+		$this->view  = $view;
 	}
 
 	public function sql( $query ) {
 		global $wpdb;
 
 		$user_meta_fields = array(
-			'nickname', 'first_name', 'last_name',
+			'nickname',
+			'first_name',
+			'last_name',
 		);
 
 		/**
@@ -2209,7 +2263,10 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields', $user_meta_fields, $this->view );
 
 		$user_fields = array(
-			'user_nicename', 'user_login', 'display_name', 'user_email',
+			'user_nicename',
+			'user_login',
+			'display_name',
+			'user_email',
 		);
 
 		/**
@@ -2222,11 +2279,11 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		$conditions = array();
 
 		foreach ( $user_fields as $user_field ) {
-			$conditions[] = $wpdb->prepare( "`u`.`$user_field` LIKE %s", '%' . $wpdb->esc_like( $this->value ) .  '%' );
+			$conditions[] = $wpdb->prepare( "`u`.`$user_field` LIKE %s", '%' . $wpdb->esc_like( $this->value ) . '%' );
 		}
 
 		foreach ( $user_meta_fields as $meta_field ) {
-			$conditions[] = $wpdb->prepare( "(`um`.`meta_key` = %s AND `um`.`meta_value` LIKE %s)", $meta_field, '%' . $wpdb->esc_like( $this->value ) .  '%' );
+			$conditions[] = $wpdb->prepare( '(`um`.`meta_key` = %s AND `um`.`meta_value` LIKE %s)', $meta_field, '%' . $wpdb->esc_like( $this->value ) . '%' );
 		}
 
 		$conditions = '(' . implode( ' OR ', $conditions ) . ')';
