@@ -238,7 +238,7 @@ class GravityView_Admin_Metaboxes {
 			$output .= sprintf(
 				'<script type="text/javascript">var form = %s; %s</script>',
 				'{fields: []}',
-				GFCommon::gf_vars( false )
+				@GFCommon::gf_vars( false ) // Need to silence errors because the form doesn't exist and GF doesn't expect that.
 			);
 
 			$_GET['id'] = $_id;
