@@ -227,7 +227,7 @@ class GravityView_Admin_Metaboxes {
 			$links = '<span class="alignright gv-form-links">' . $links . '</span>';
 		}
 
-		$output = $links;;
+		$output = $links;
 
 		if ( ! $current_form ) {
 			// Starting from GF 2.6, GF's form_admin.js script requires window.form and window.gf_vars objects to be set when any element has a .merge-tag-support class.
