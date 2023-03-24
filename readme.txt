@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Added: "No Entries Behavior" option to hide the View when there are no entries visible to the current user (not applied to search results)
 * Fixed: PHP 8+ fatal error when displaying connected Views in the Gravity Forms form editor or forms list
 * Fixed: PHP 8+ warning messages when creating a new View
+* Fixed: PHP warning when a View checks for the ability to edit an entry that has just been deleted using code
 
 __Developer Updates:__
 
