@@ -77,7 +77,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Running PHP 7.2 unit tests
+          name: Running PHP 8.0 unit tests
           command: |
             /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80
 
