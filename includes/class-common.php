@@ -328,7 +328,6 @@ class GVCommon {
 	 */
 	public static function get_forms_as_options( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC' ) {
 
-		$forms = GFAPI::get_forms( $active, $trash, $sort_column, $sort_dir );
 		// This is only used in the admin, so don't run on the front-end.
 		if ( ! gravityview()->request->is_admin() ) {
 			return array();
@@ -342,6 +341,7 @@ class GVCommon {
 			return $static_cache[ $static_cache_key ];
 		}
 
+		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, [ 'id', 'title' ] );
 
 		if ( empty( $forms ) ) {
 			return array();
