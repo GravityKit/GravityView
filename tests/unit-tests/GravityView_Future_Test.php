@@ -708,7 +708,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		 * Test block parsing
 		 * @since 2.17.2
 		 */
-		if( function_exists( 'has_block' ) ) {
+		if( gravityview()->plugin->is_compatible_wordpress( '5.0.0' ) ) {
 			$this->_reset_context();
 			$form  = $this->factory->form->create_and_get();
 			$view  = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
