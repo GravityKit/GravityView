@@ -1613,7 +1613,7 @@ class View implements \ArrayAccess {
 	 * On version 0.3.0 of Multiple Forms is_approved for joins is handled elsewhere, for backwards compatibility purposes
 	 * the goal here is to only apply this while Multiple Forms is still compatible with older versions of GravityView.
 	 *
-	 * @since TBD
+	 * @since 2.17.2
 	 *
 	 * @param \GF_Query $query
 	 * @param Join      $join
@@ -1623,7 +1623,7 @@ class View implements \ArrayAccess {
 		/**
 		 * Allows Multiple Forms and other plugins to deactivate this piece of functionality when loaded.
 		 *
-		 * @since TBD
+		 * @since 2.17.2
 		 *
 		 * @param bool      $should_apply Determines if legacy join condition should be applied.
 		 * @param \GF_Query $query        Which is being dealt with.
