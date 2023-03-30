@@ -358,7 +358,7 @@ class GVCommon {
 				continue;
 			}
 
-			$options[ (int) $form['id'] ] = esc_html( $form['title'] );
+			$options[ (int) $form['id'] ] = sprintf( '%s (#%d)', esc_html( $form['title'] ), (int) $form['id'] );
 		}
 
 		$static_cache[ $static_cache_key ] = $options;

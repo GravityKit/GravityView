@@ -204,7 +204,7 @@ class Blocks {
 			return [
 				'value' => (string) $view->ID,
 				'label' => sprintf(
-					'%s (#%s)',
+					'%s (#%d)',
 					$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
 					$view->ID
 				)
