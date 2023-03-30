@@ -328,9 +328,9 @@ class GVCommon {
 	 */
 	public static function get_forms_as_options( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC' ) {
 
-		// This is only used in the admin, so don't run on the front-end.
-		if ( ! gravityview()->request->is_admin() ) {
-			return array();
+		// This is only used in the admin and in ajax, so don't run on the front-end.
+		if( gravityview()->request->is_frontend() ) {
+			return $options;
 		}
 
 		static $static_cache;
