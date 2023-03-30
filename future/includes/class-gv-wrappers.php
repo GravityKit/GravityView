@@ -28,7 +28,7 @@ class views {
 	 *
 	 * @param string|int|array|\GV\View|\WP_Post|null Anything goes.
 	 *
-	 * @return \GV\View|null The detected View.
+	 * @return \GV\View|\GV\View_Collection|null The detected View, Views, or null.
 	 */
 	public function get( $view = null ) {
 
@@ -39,14 +39,14 @@ class views {
 			return $this->get( $view->ID );
 		}
 
-		/** 
+		/**
 		 * By View ID.
 		 */
 		if ( is_numeric( $view ) ) {
 			return \GV\View::by_id( $view );
 		}
 
-		/** 
+		/**
 		 * By post object.
 		 */
 		if ( $view instanceof \WP_Post ) {
@@ -70,8 +70,21 @@ class views {
 
 			global $post;
 
-			if ( $post instanceof \WP_Post && $post->post_type == 'gravityview' ) {
-				return $this->get( $post );
+			if ( $post instanceof \WP_Post ) {
+				$views = \GV\View_Collection::from_post( $post );
+
+				// When no Views are found, return null.
+				if ( 0 === $views->count() ) {
+					return $this->view;
+				}
+
+				// When only one View is found, return a \GV\View.
+				if( 1 === $views->count() ) {
+					return $views->first();
+				}
+
+				// Otherwise, return a \GV\View_Collection.
+				return $views;
 			}
 
 			/**

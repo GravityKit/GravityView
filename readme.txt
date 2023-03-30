@@ -35,6 +35,8 @@ __Developer Updates:__
 
 * Added: View blocks are also parsed when running `\GV\View_Collection::from_content()`
 * Added: New filter, to be used by Multiple Forms extension: `gravityview/view/get_entries/should_apply_legacy_join_is_approved_query_conditions`
+* Modified: `gravityview()->views->get()` now parses the content of the global `$post` object and will detect View shortcodes or blocks stored in the `$post->post_content`
+* Modified: `gravityview()->views->get()` now may return a `GV\View_Collection` object when it detects multiple Views in the content
 * Updated: HTML tags that had used `.hidden` now use the `.gv-hidden` CSS class to prevent potential conflicts with other plugins/themes
 
 = 2.17.1 on February 20, 2023 =
