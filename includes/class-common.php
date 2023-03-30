@@ -328,6 +328,10 @@ class GVCommon {
 	 */
 	public static function get_forms_as_options( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC' ) {
 
+		$options = array(
+			'' => esc_html__( 'Select a Form', 'gk-gravityview' ),
+		);
+
 		// This is only used in the admin and in ajax, so don't run on the front-end.
 		if( gravityview()->request->is_frontend() ) {
 			return $options;
@@ -344,12 +348,8 @@ class GVCommon {
 		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, [ 'id', 'title' ] );
 
 		if ( empty( $forms ) ) {
-			return array();
+			return $options;
 		}
-
-		$options = array(
-			'' => esc_html__( 'Select a Form', 'gk-gravityview' ),
-		);
 
 		foreach ( $forms as $form ) {
 
