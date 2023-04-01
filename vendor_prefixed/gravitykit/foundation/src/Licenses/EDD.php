@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 01-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -44,7 +44,7 @@ class EDD {
 	 */
 	public function init() {
 		add_filter( 'pre_set_site_transient_update_plugins', [ $this, 'check_for_product_updates' ] );
-		add_filter( 'plugins_api', [ $this, 'display_product_information' ], 10, 3 );
+		add_filter( 'plugins_api', [ $this, 'display_product_information' ], 999, 3 );
 		add_filter( 'admin_init', [ $this, 'disable_legacy_edd_updater' ], 999 );
 	}
 
@@ -201,7 +201,6 @@ class EDD {
 
 		return (object) $formatted_data;
 	}
-
 
 	/**
 	 * Returns product information for display on the Plugins page.

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-02-20T19:25:30+00:00\n"
+"POT-Creation-Date: 2023-04-01T14:24:11+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -32,8 +32,8 @@ msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
-#: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:143
-#: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:144
+#: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:146
+#: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:147
 msgid "GravityKit"
 msgstr ""
 
@@ -159,7 +159,7 @@ msgid "Go to the Gravity Forms entries screen to moderate entry approval."
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:248
-#: future/includes/class-gv-settings-view.php:89
+#: future/includes/class-gv-settings-view.php:91
 msgid "Show only approved entries"
 msgstr ""
 
@@ -196,7 +196,7 @@ msgid "Edit Entry"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:277
-#: future/includes/class-gv-settings-view.php:466
+#: future/includes/class-gv-settings-view.php:469
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:145
 #: includes/admin/metaboxes/views/view-configuration.php:10
 #: includes/admin/metaboxes/views/view-configuration.php:62
@@ -206,7 +206,7 @@ msgid "Single Entry"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:281
-#: future/includes/class-gv-settings-view.php:465
+#: future/includes/class-gv-settings-view.php:468
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
 #: includes/admin/metaboxes/views/view-configuration.php:9
 #: includes/class-frontend-views.php:681
@@ -361,466 +361,474 @@ msgstr ""
 msgid "Number of entries per page"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:69
+#: future/includes/class-gv-settings-view.php:62
+msgid "Enter the number of entries to display per page. Set to negative one (-1) to display all entries."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:71
 msgid "Offset entries starting from"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:77
+#: future/includes/class-gv-settings-view.php:79
 msgid "Enable lightbox for images"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:81
+#: future/includes/class-gv-settings-view.php:83
 msgid "If enabled, images will open full-size in a \"lightbox\". A lightbox displays images and videos by filling the screen and dimming out the rest of the web page."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:92
+#: future/includes/class-gv-settings-view.php:94
 msgid "By default, only approved entries are displayed in a View. When enabled, this setting prevents unapproved or disapproved entries from appearing in results. If disabled, entries with all approval statuses will be visible, including disapproved entries."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:102
+#: future/includes/class-gv-settings-view.php:104
 msgid "No Entries Behavior"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:104
+#: future/includes/class-gv-settings-view.php:106
 msgid "Choose what happens when a View has no entries visible to the current user."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:107
+#: future/includes/class-gv-settings-view.php:109
 msgid "Show a Message"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:108
+#: future/includes/class-gv-settings-view.php:110
 msgid "Display a Form"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:109
-#: future/includes/class-gv-settings-view.php:451
-#: future/includes/class-gv-settings-view.php:548
+#: future/includes/class-gv-settings-view.php:111
+#: future/includes/class-gv-settings-view.php:454
+#: future/includes/class-gv-settings-view.php:551
 msgid "Redirect to URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:115
-msgid "No Entries Message"
+#: future/includes/class-gv-settings-view.php:112
+msgid "Hide the View"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:118
-msgid "The text to display when there are no entries to show. HTML and shortcodes are allowed."
+msgid "No Entries Message"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:121
+msgid "The text to display when there are no entries to show. HTML and shortcodes are allowed."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:124
 #: includes/class-api.php:323
 #: includes/class-gravityview-entry-list.php:107
 msgid "No entries match your request."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:128
+#: future/includes/class-gv-settings-view.php:131
 msgid "No Entries Form"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:130
+#: future/includes/class-gv-settings-view.php:133
 msgid "Show a Gravity Forms form if there are no entries to show in the View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:138
+#: future/includes/class-gv-settings-view.php:141
 msgid "Form Title"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:146
+#: future/includes/class-gv-settings-view.php:149
 msgid "Form Description"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:154
+#: future/includes/class-gv-settings-view.php:157
 msgid "No Entries Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:156
+#: future/includes/class-gv-settings-view.php:159
 msgid "If there are no entries to show, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:164
+#: future/includes/class-gv-settings-view.php:167
 msgid "\"No Search Results\" Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:170
+#: future/includes/class-gv-settings-view.php:173
 #: includes/class-api.php:315
 msgid "This search returned no results."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:176
+#: future/includes/class-gv-settings-view.php:179
 msgid "Show all entries to administrators"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:177
+#: future/includes/class-gv-settings-view.php:180
 msgid "Administrators will be able to see entries with any approval status."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:178
+#: future/includes/class-gv-settings-view.php:181
 msgid "Logged-out visitors and non-administrators will only see approved entries, while administrators will see entries with all statuses. This makes it easier for administrators to moderate entries from a View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:186
+#: future/includes/class-gv-settings-view.php:189
 msgid "Hide View data until search is performed"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:189
+#: future/includes/class-gv-settings-view.php:192
 msgid "When enabled it will only show any View entries after a search is performed."
-msgstr ""
-
-#: future/includes/class-gv-settings-view.php:198
-#: future/includes/class-gv-settings-view.php:207
-msgid "Hide empty fields"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:201
 #: future/includes/class-gv-settings-view.php:210
+msgid "Hide empty fields"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:204
+#: future/includes/class-gv-settings-view.php:213
 msgid "When enabled, empty fields will be not be displayed. If disabled, fields and their labels will be displayed with no content."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:216
+#: future/includes/class-gv-settings-view.php:219
 msgid "Feeds"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:223
+#: future/includes/class-gv-settings-view.php:226
 msgid "Allow User Edit"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:225
+#: future/includes/class-gv-settings-view.php:228
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:225
-#: future/includes/class-gv-settings-view.php:252
-#: future/includes/class-gv-settings-view.php:265
+#: future/includes/class-gv-settings-view.php:228
+#: future/includes/class-gv-settings-view.php:255
+#: future/includes/class-gv-settings-view.php:268
 msgid "Administrators are able to %s regardless of this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:225
+#: future/includes/class-gv-settings-view.php:228
 msgctxt "an action that admins can perform"
 msgid "edit entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:227
+#: future/includes/class-gv-settings-view.php:230
 msgid "Display \"Edit Entry\" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:236
+#: future/includes/class-gv-settings-view.php:239
 msgid "Unapprove Entries After Edit"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:239
+#: future/includes/class-gv-settings-view.php:242
 msgid "When an entry is edited by a non-administrator, reset the approval status to \"Unapproved\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:240
+#: future/includes/class-gv-settings-view.php:243
 msgid "If the \"Show only approved entries\" setting is enabled, the entry will need to be re-approved by an administrator before it is shown in the View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:250
+#: future/includes/class-gv-settings-view.php:253
 msgid "Allow User Delete"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:252
+#: future/includes/class-gv-settings-view.php:255
 msgid "Allow logged-in users to delete entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:252
+#: future/includes/class-gv-settings-view.php:255
 msgctxt "an action that admins can perform"
 msgid "delete entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:254
+#: future/includes/class-gv-settings-view.php:257
 msgid "Display \"Delete Entry\" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:263
+#: future/includes/class-gv-settings-view.php:266
 msgid "Allow User Duplicate"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:265
+#: future/includes/class-gv-settings-view.php:268
 msgid "Allow logged-in users to duplicate entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:265
+#: future/includes/class-gv-settings-view.php:268
 msgctxt "an action that admins can perform"
 msgid "duplicate entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:267
+#: future/includes/class-gv-settings-view.php:270
 msgid "Display \"Duplicate Entry\" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:276
+#: future/includes/class-gv-settings-view.php:279
 msgid "Sort by field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:278
+#: future/includes/class-gv-settings-view.php:281
 msgid "By default, entries are sorted by Entry ID."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:282
-#: future/includes/class-gv-settings-view.php:313
+#: future/includes/class-gv-settings-view.php:285
+#: future/includes/class-gv-settings-view.php:316
 msgid "Default"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:283
-#: future/includes/class-gv-settings-view.php:314
-#: includes/class-common.php:1502
+#: future/includes/class-gv-settings-view.php:286
+#: future/includes/class-gv-settings-view.php:317
+#: includes/class-common.php:1569
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:292
+#: future/includes/class-gv-settings-view.php:295
 msgid "Sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:297
-#: future/includes/class-gv-settings-view.php:329
+#: future/includes/class-gv-settings-view.php:300
+#: future/includes/class-gv-settings-view.php:332
 msgid "ASC"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:298
-#: future/includes/class-gv-settings-view.php:330
+#: future/includes/class-gv-settings-view.php:301
+#: future/includes/class-gv-settings-view.php:333
 msgid "DESC"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:299
+#: future/includes/class-gv-settings-view.php:302
 msgid "Random"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:308
+#: future/includes/class-gv-settings-view.php:311
 msgid "Sort by secondary field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:324
+#: future/includes/class-gv-settings-view.php:327
 msgid "Secondary sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:340
+#: future/includes/class-gv-settings-view.php:343
 msgid "Enable sorting by column"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:341
+#: future/includes/class-gv-settings-view.php:344
 msgid "Column Sorting"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:360
+#: future/includes/class-gv-settings-view.php:363
 msgid "Filter by Start Date"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:362
+#: future/includes/class-gv-settings-view.php:365
 msgid "Show entries submitted after this date. Supports relative dates, such as \"-1 week\" or \"-1 month\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:373
+#: future/includes/class-gv-settings-view.php:376
 msgid "Filter by End Date"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:375
+#: future/includes/class-gv-settings-view.php:378
 msgid "Show entries submitted before this date. Supports relative dates, such as \"now\" or \"-3 days\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:386
+#: future/includes/class-gv-settings-view.php:389
 msgid "CSS Class"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:387
+#: future/includes/class-gv-settings-view.php:390
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:394
+#: future/includes/class-gv-settings-view.php:397
 #: future/includes/gutenberg/blocks/view/edit.js:231
 #: future/includes/gutenberg/build/view.js:1
 msgid "Search Value"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:395
+#: future/includes/class-gv-settings-view.php:398
 msgid "Define a default search value for the View"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:402
+#: future/includes/class-gv-settings-view.php:405
 #: includes/widgets/search-widget/class-search-widget.php:294
 #: future/includes/gutenberg/blocks/view/edit.js:222
 #: future/includes/gutenberg/build/view.js:1
 msgid "Search Field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:403
+#: future/includes/class-gv-settings-view.php:406
 msgid "If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:410
+#: future/includes/class-gv-settings-view.php:413
 #: future/includes/gutenberg/blocks/view/edit.js:241
 #: future/includes/gutenberg/build/view.js:1
 msgid "Search Operator"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:417
+#: future/includes/class-gv-settings-view.php:420
 msgid "Single Entry Title"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:419
+#: future/includes/class-gv-settings-view.php:422
 msgid "When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:430
+#: future/includes/class-gv-settings-view.php:433
 #: future/includes/gutenberg/blocks/view/edit.js:285
 #: future/includes/gutenberg/build/view.js:1
 msgid "Back Link Label"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:432
+#: future/includes/class-gv-settings-view.php:435
 msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:435
-#: includes/class-api.php:990
+#: future/includes/class-gv-settings-view.php:438
+#: includes/class-api.php:998
 msgid "&larr; Go back"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:442
+#: future/includes/class-gv-settings-view.php:445
 msgid "Redirect After Editing"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:444
+#: future/includes/class-gv-settings-view.php:447
 msgid "The page to redirect to after editing an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:448
+#: future/includes/class-gv-settings-view.php:451
 msgid "Stay on Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:449
+#: future/includes/class-gv-settings-view.php:452
 msgid "Redirect to Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:450
-#: future/includes/class-gv-settings-view.php:547
+#: future/includes/class-gv-settings-view.php:453
+#: future/includes/class-gv-settings-view.php:550
 msgid "Redirect to Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:459
+#: future/includes/class-gv-settings-view.php:462
 msgid "Editing Returns To&hellip;"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:461
+#: future/includes/class-gv-settings-view.php:464
 msgid "After editing an entry or clicking Cancel, where should the user be sent?"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:467
+#: future/includes/class-gv-settings-view.php:470
 msgid "Other URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:477
+#: future/includes/class-gv-settings-view.php:480
 msgid "Edit Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:479
+#: future/includes/class-gv-settings-view.php:482
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:488
+#: future/includes/class-gv-settings-view.php:491
 msgid "Update Button Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:492
+#: future/includes/class-gv-settings-view.php:495
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2515
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:496
+#: future/includes/class-gv-settings-view.php:499
 msgid "Cancel Link Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:500
+#: future/includes/class-gv-settings-view.php:503
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2514
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:504
+#: future/includes/class-gv-settings-view.php:507
 msgid "Next Page Button Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:506
-#: future/includes/class-gv-settings-view.php:514
+#: future/includes/class-gv-settings-view.php:509
+#: future/includes/class-gv-settings-view.php:517
 msgid "Only shown when multi-page forms are enabled."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:512
+#: future/includes/class-gv-settings-view.php:515
 msgid "Previous Page Button Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:520
+#: future/includes/class-gv-settings-view.php:523
 #: includes/extensions/delete-entry/class-delete-entry-admin.php:133
 msgid "Delete Link Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:528
+#: future/includes/class-gv-settings-view.php:531
 msgid "Enable Edit Locking"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:530
+#: future/includes/class-gv-settings-view.php:533
 msgid "Prevent multiple users from editing the same entry at the same time."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:541
+#: future/includes/class-gv-settings-view.php:544
 msgid "Redirect After Deleting"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:543
+#: future/includes/class-gv-settings-view.php:546
 msgid "The page to redirect to after deleting an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:552
+#: future/includes/class-gv-settings-view.php:555
 msgid "Delete Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:554
+#: future/includes/class-gv-settings-view.php:557
 msgid "After deleting an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:563
+#: future/includes/class-gv-settings-view.php:566
 msgid "Prevent Direct Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:565
+#: future/includes/class-gv-settings-view.php:568
 msgid "Only allow access to this View when embedded using the shortcode."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:576
+#: future/includes/class-gv-settings-view.php:579
 msgid "Prevent REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:578
+#: future/includes/class-gv-settings-view.php:581
 msgid "Disable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:589
+#: future/includes/class-gv-settings-view.php:592
 msgid "Allow REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:591
+#: future/includes/class-gv-settings-view.php:594
 msgid "Enable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:601
+#: future/includes/class-gv-settings-view.php:604
 msgid "Allow Export"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:603
+#: future/includes/class-gv-settings-view.php:606
 msgid "Enable users to download data as a CSV or TSV file."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:606
+#: future/includes/class-gv-settings-view.php:609
 msgid "If enabled, entries can be exported for this View by adding \"/csv/\" or \"/tsv/\" to the View URL. Each configured field will be a column in the exported file."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:617
+#: future/includes/class-gv-settings-view.php:620
 msgid "Show all in file"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:619
+#: future/includes/class-gv-settings-view.php:622
 msgid "Do not limit the number of entries output in the file."
 msgstr ""
 
@@ -1249,7 +1257,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
 #: includes/class-admin-views.php:527
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:788
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:831
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:354
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:52
 msgid "Settings"
@@ -1291,7 +1299,6 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:46
 #: includes/class-gravityview-html-elements.php:38
-#: includes/widgets/class-gravityview-widget-gravityforms.php:82
 msgid "list of forms"
 msgstr ""
 
@@ -1755,23 +1762,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:685
+#: includes/class-admin-welcome.php:691
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:735
+#: includes/class-admin-welcome.php:741
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:773
+#: includes/class-admin-welcome.php:779
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:805
+#: includes/class-admin-welcome.php:811
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:806
+#: includes/class-admin-welcome.php:812
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -1893,15 +1900,15 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-api.php:1412
+#: includes/class-api.php:1421
 msgid "Map It"
 msgstr ""
 
-#: includes/class-common.php:292
+#: includes/class-common.php:332
 msgid "Select a Form"
 msgstr ""
 
-#: includes/class-common.php:406
+#: includes/class-common.php:473
 #: includes/fields/class-gravityview-field-post-id.php:28
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/view.js:1
@@ -1910,20 +1917,20 @@ msgid "Post ID"
 msgstr ""
 
 #. translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:1101
+#: includes/class-common.php:1168
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1455
+#: includes/class-common.php:1522
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1506
+#: includes/class-common.php:1573
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1637
+#: includes/class-common.php:1704
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -2319,7 +2326,7 @@ msgctxt "no dropdown items"
 msgid "None"
 msgstr ""
 
-#: includes/class-gravityview-powered-by.php:50
+#: includes/class-gravityview-powered-by.php:58
 msgid "Powered by GravityView"
 msgstr ""
 
@@ -4466,7 +4473,7 @@ msgid "No-conflict mode prevents extraneous scripts and styles from being printe
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:433
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:796
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:839
 msgid "Support"
 msgstr ""
 
@@ -4870,7 +4877,7 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:226
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:277
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:328
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:512
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:555
 msgid "You do not have a permission to perform this action."
 msgstr ""
 
@@ -4983,6 +4990,10 @@ msgstr ""
 msgid "Invalid product information received from the API."
 msgstr ""
 
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:531
+msgid "View full changelog"
+msgstr ""
+
 #: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:256
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "You must install [link]Query Monitor[/link] WordPress plugin to use this option."
@@ -5027,7 +5038,7 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "Download [link]log file[/link] ([size] / [date_modified])."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/preflight_check.php:104
+#: vendor_prefixed/gravitykit/foundation/src/preflight_check.php:106
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[plugin] requires PHP [version] or newer."
 msgstr ""
@@ -6093,84 +6104,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""

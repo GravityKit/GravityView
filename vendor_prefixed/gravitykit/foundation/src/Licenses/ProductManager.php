@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 01-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -482,7 +482,10 @@ class ProductManager {
 					],
 					'sections'            => [
 						'description' => Arr::get( $sections, 'description' ),
-						'changelog'   => Arr::get( $sections, 'changelog' ),
+						'changelog'   => $this->truncate_product_changelog(
+							Arr::get( $sections, 'changelog' ),
+							esc_url( Arr::get( $remote_product, 'info.link', '' ) )
+						),
 					],
 					'server_version'      => Arr::get( $remote_product, 'licensing.version' ),
 					'modified_date'       => Arr::get( $remote_product, 'info.modified_date' ),
@@ -494,6 +497,46 @@ class ProductManager {
 		}
 
 		return $formatted_products;
+	}
+
+	/**
+	 * Truncates the product changelog to display only the specified number of most recent entries.
+	 *
+	 * @since 1.0.11
+	 *
+	 * @param string $changelog
+	 * @param string $product_url
+	 * @param int    $max_changelog_entries  (optional) Number of entries to display. Default: 3.
+	 * @param bool   $link_to_full_changelog (optional) Display a link to the full changelog on GravityKit's website. Default: true.
+	 *
+	 * @return string
+	 */
+	public function truncate_product_changelog( $changelog, $product_url, $max_changelog_entries = 3, $link_to_full_changelog = true ) {
+		$changelog_pattern = '~(<p><strong>\d+.*?on.*?(?=<p><strong>\d+.*?on|$))~s';
+
+		preg_match_all( $changelog_pattern, $changelog, $parsed_changelog );
+
+		if ( empty( $parsed_changelog[0] ) ) {
+			return $changelog;
+		}
+
+		$changelog = '';
+
+		$truncated_changelog = array_slice( $parsed_changelog[0], 0, $max_changelog_entries );
+
+		if ( count( $parsed_changelog[0] ) > count( $truncated_changelog ) && $link_to_full_changelog ) {
+			$truncated_changelog[] = sprintf(
+				'<p><a href="%s/changelog" target="_blank">%s</a></strong></p><br><br><br>', // 3 line breaks are required for this line to be displayed correctly above the fixed modal window footer.
+				$product_url,
+				esc_html__( 'View full changelog', 'gk-gravityview' )
+			);
+		}
+
+		foreach ( $truncated_changelog as $changelog_entry ) {
+			$changelog .= $changelog_entry;
+		}
+
+		return $changelog;
 	}
 
 	/**

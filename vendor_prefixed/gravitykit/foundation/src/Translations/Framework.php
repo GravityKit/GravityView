@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 01-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -95,8 +95,8 @@ class Framework {
 		}
 
 		add_action( 'update_option_WPLANG', [ $this, 'on_site_language_change' ], 10, 2 );
-		add_action( 'gk/foundation/plugin_activated', [ $this, 'on_plugin_activation' ] );
-		add_action( 'gk/foundation/plugin_deactivated', [ $this, 'on_plugin_deactivation' ] );
+		add_action( 'gk/foundation/plugin-activated', [ $this, 'on_plugin_activation' ] );
+		add_action( 'gk/foundation/plugin-deactivated', [ $this, 'on_plugin_deactivation' ] );
 
 		$this->_logger = LoggerFramework::get_instance();
 

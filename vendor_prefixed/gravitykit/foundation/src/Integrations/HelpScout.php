@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 01-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -157,7 +157,7 @@ JS;
 				'email'                 => mb_substr( $current_user->user_email, 0, 80 ),
 				'name'                  => mb_substr( $current_user->display_name, 0, 80 ),
 				'signature'             => hash_hmac( 'sha256', mb_substr( $current_user->user_email, 0, 80 ), self::HASH_KEY ),
-				'affiliate_id'          => mb_substr( Arr::get( $foundation_settings, 'affiliate_id', '' ), 0, 255 ),
+				'affiliate_id'          => mb_substr( Arr::get( $foundation_settings, 'affiliate_id', '' ) ?: '', 0, 255 ),
 				'is_super_admin'        => is_super_admin(),
 				'alt_emails'            => mb_substr( sprintf( 'Admin: %s / GV Support: %s', get_bloginfo( 'admin_email' ), Arr::get( $foundation_settings, 'support_email' ) ), 0, 255 ),
 				'wordpress_version'     => mb_substr( get_bloginfo( 'version', 'display' ), 0, 255 ),

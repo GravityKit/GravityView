@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 01-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -23,7 +23,7 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 use Exception;
 
 class Core {
-	const VERSION = '1.0.9';
+	const VERSION = '1.0.11';
 
 	const ID = 'gk_foundation';
 
@@ -167,7 +167,7 @@ class Core {
 	public static function register( $plugin_file ) {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self( $plugin_file );
-		} elseif ( ! in_array( $plugin_file, self::$_instance->_registered_plugins ) ) {
+		} elseif ( ! in_array( $plugin_file, self::$_instance->_registered_plugins, true ) ) {
 			self::$_instance->_registered_plugins[] = $plugin_file;
 		}
 	}
@@ -705,13 +705,13 @@ HTML;
 		/**
 		 * Controls the display of HTML comment with Foundation information.
 		 *
-		 * @filter gk/foundation/display_foundation_information
+		 * @filter gk/foundation/display-foundation-information
 		 *
 		 * @since  1.0.1
 		 *
 		 * @param bool $display_foundation_information Whether to display the information.
 		 */
-		$display_foundation_information = apply_filters( 'gk/foundation/display_foundation_information', true );
+		$display_foundation_information = apply_filters( 'gk/foundation/display-foundation-information', true );
 
 		if ( ! $display_foundation_information ) {
 			return;
