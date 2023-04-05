@@ -23,7 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.17.2 on April 5, 2023 =
 
-* Now requires Gravity Forms 2.5.1 or greater
+**Note: GravityView now requires Gravity Forms 2.5.1 or newer**
+
 * Added: "No Entries Behavior" option to hide the View when there are no entries visible to the current user (not applied to search results)
 * Fixed: Performance issue introduced in 2.17 that resulted in a large number of queries
 * Fixed: PHP 8+ fatal error when displaying connected Views in the Gravity Forms form editor or forms list
