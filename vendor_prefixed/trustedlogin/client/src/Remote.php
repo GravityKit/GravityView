@@ -59,23 +59,30 @@ final class Remote {
 	}
 
 	/**
-	 * POSTs to `webhook_url`, if defined in the configuration array
+	 * POSTs to `webhook/url`, if defined in the configuration array.
 	 *
 	 * @since 1.0.0
+	 * @since 1.4.0 $data now includes the `$access_key` and `$debug_data` keys.
 	 *
 	 * @param array $data {
-	 *
-	 *   @type string $url The site URL as returned by get_site_url()
-	 *   @type string $ns Namespace of the plugin
-	 *   @type string $action "created", "extended", "logged_in", or "revoked"
-	 *   @type string $ref (Optional) Support ticket Reference ID
+	 *   @type string $url The site URL as returned by get_site_url().
+	 *   @type string $ns Namespace of the plugin.
+	 *   @type string $action "created", "extended", "logged_in", or "revoked".
+	 *   @type string $access_key The access key.
+	 *   @type string $debug_data (Optional) Site debug data from {@see WP_Debug_Data::debug_data()}, sent if `webhook/debug_data` is true.
+	 *   @type string $ref (Optional) Support ticket Reference ID.
 	 * }
 	 *
 	 * @return bool|WP_Error False: webhook setting not defined; True: success; WP_Error: error!
 	 */
 	public function maybe_send_webhook( $data ) {
 
-		$webhook_url = $this->config->get_setting( 'webhook_url' );
+		$webhook_url = $this->config->get_setting( 'webhook/url' );
+
+		if ( ! $webhook_url ) {
+			// Back compatibility with v1–v1.3.4.
+			$webhook_url = $this->config->get_setting( 'webhook_url' );
+		}
 
 		if ( ! $webhook_url ) {
 			return false;
@@ -83,7 +90,7 @@ final class Remote {
 
 		if ( ! wp_http_validate_url( $webhook_url ) ) {
 
-			$error = new \WP_Error( 'invalid_webhook_url', 'An invalid `webhook_url` setting was passed to the TrustedLogin Client: ' . esc_attr( $webhook_url ) );
+			$error = new \WP_Error( 'invalid_webhook_url', 'An invalid `webhook/url` setting was passed to the TrustedLogin Client: ' . esc_attr( $webhook_url ) );
 
 			$this->logging->log( $error, __METHOD__, 'error' );
 

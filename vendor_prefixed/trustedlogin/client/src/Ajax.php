@@ -91,7 +91,9 @@ final class Ajax {
 
 		$client = new Client( $this->config, false );
 
-		$response = $client->grant_access();
+		$include_debug_data = ! empty( $_POST['debug_data_consent'] );
+
+		$response = $client->grant_access( $include_debug_data );
 
 		if ( is_wp_error( $response ) ) {
 

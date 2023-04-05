@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.17.1\n"
+"Project-Id-Version: GravityView 2.17.2\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-05T17:11:01+00:00\n"
+"POT-Creation-Date: 2023-04-05T21:42:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -268,7 +268,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:259
 #: includes/class-gravityview-entry-approval-merge-tags.php:92
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1051
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1084
 msgid "(This link opens in a new window.)"
 msgstr ""
 
@@ -1412,7 +1412,7 @@ msgstr ""
 #: includes/class-admin-views.php:1403
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:202
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1043
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1076
 msgid "Close"
 msgstr ""
 
@@ -1482,7 +1482,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1155
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1284
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:76
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1044
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1077
 msgid "Cancel"
 msgstr ""
 
@@ -1706,7 +1706,7 @@ msgid "Continue"
 msgstr ""
 
 #: includes/class-admin-views.php:1406
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1040
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1073
 msgid "Ok"
 msgstr ""
 
@@ -1762,23 +1762,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:691
+#: includes/class-admin-welcome.php:715
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:741
+#: includes/class-admin-welcome.php:765
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:779
+#: includes/class-admin-welcome.php:803
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:811
+#: includes/class-admin-welcome.php:835
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:812
+#: includes/class-admin-welcome.php:836
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2041,7 +2041,7 @@ msgstr ""
 
 #: includes/class-gravityview-change-entry-creator.php:164
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:287
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1188
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1222
 msgid "Error"
 msgstr ""
 
@@ -5441,7 +5441,7 @@ msgid "Select All"
 msgstr ""
 
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:114
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:369
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:370
 msgid "Revoke Access"
 msgstr ""
 
@@ -5449,302 +5449,309 @@ msgstr ""
 msgid "Revoke TrustedLogin"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:356
+#. translators: %s is the ID of the user who created the support session. The user can't be found; only the User ID is known.
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:357
 msgid "Unknown (User #%d)"
 msgstr ""
 
 #. translators: %s is the display name of the user who granted access
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:371
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:372
 msgid "Created %s ago by %s"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:397
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:973
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:398
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1006
 msgid "Secured by TrustedLogin"
 msgstr ""
 
 #. translators: %s is the reference ID
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:493
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:494
 msgid "Reference #%s"
 msgstr ""
 
 #. translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:508
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:509
 msgid "%1$s has site access that expires in %2$s."
 msgstr ""
 
 #. translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:516
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:517
 msgid "%1$s would like support access to this site."
 msgstr ""
 
 #. translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:519
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:520
 msgid "Grant %1$s access to this site."
 msgstr ""
 
 #. translators: %s is replaced with the of time that the login will be active for (e.g. "1 week")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:552
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:560
 msgid "Access this site for %s."
 msgstr ""
 
 #. translators: %s is replaced by the amount of time that the login will be active for (e.g. "1 week")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:555
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:563
 msgid "Access auto-expires in %s. You may revoke access at any time."
 msgstr ""
 
 #. translators: %s is replaced with the name of the role being cloned (e.g. "Administrator")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:562
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:570
 msgid "Create a user with a role similar to %s."
 msgstr ""
 
 #. translators: %s is replaced with the name of the role being cloned (e.g. "Administrator")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:563
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:571
 msgid "View role capabilities"
 msgstr ""
 
 #. translators: %s is replaced with the name of the role (e.g. "Administrator")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:566
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:574
 msgid "Create a user with a role of %s."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:592
+#. translators: [link] and [/link] are replaced with a link to the Site Health page. Do not translate.
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:602
+msgid "Include the [link]Site Health[/link] troubleshooting report"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:625
 msgid "Additional capabilities:"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:593
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:626
 msgid "Removed capabilities:"
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:662
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:695
 msgid "%s support may not be able to access this site."
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:663
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:696
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:665
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:698
 msgid "Learn more."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:715
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:748
 msgid "Learn about TrustedLogin"
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:913
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:946
 msgid "Grant %s Access"
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:915
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:948
 msgid "Extend %s Access"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1018
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1051
 msgid "Could not create TrustedLogin access."
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1026
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1059
 msgid "The user details could not be sent to %1$s automatically."
 msgstr ""
 
 #. translators: %1$s is the vendor support url and %2$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1031
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1064
 msgid "Please <a href=\"%1$s\" target=\"_blank\">click here</a> to go to the %2$s support site"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1039
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1072
 msgid "Confirm"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1042
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1075
 msgid "Go to %1$s support site"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1046
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1079
 msgid "Revoke %1$s support access"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1047
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1213
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1080
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1247
 msgid "Copy"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1048
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1081
 msgid "Copied!"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1052
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1085
 msgid "The access key has been copied to your clipboard."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1056
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1089
 msgid "Support access granted"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1059
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1092
 msgid "A temporary support user has been created, and sent to %1$s support."
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1065
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1098
 msgid "Generating & encrypting secure support access for %1$s"
 msgstr ""
 
 #. translators: %1$s is the vendor title and %2$s is the human-readable expiration time (for example, "1 week")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1069
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1102
 msgid "Extending support access for %1$s by %2$s"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1073
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1106
 msgid "Sending encrypted access to %1$s."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1076
+#. translators: %1$s is the vendor title
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1110
 msgid "Error syncing support user to %1$s"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1087
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1121
 msgid "Action Cancelled"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1090
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1124
 msgid "A support account for %1$s was not created."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1095
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1129
 msgid "Support Access Was Not Granted"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1096
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1130
 msgid "There was an error granting access: "
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1099
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1133
 msgid "Your authorized session has expired. Please refresh the page."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1102
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1136
 msgid "TrustedLogin Key Created"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1105
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1139
 msgid "Share this TrustedLogin Key with %1$s to give them secure access:"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1111
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1145
 msgid "The TrustedLogin vendor could not be found."
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1117
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1151
 msgid "%1$s Support user already exists"
 msgstr ""
 
 #. translators: %1$s is the vendor title, %2$s is the URL to the users list page
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1123
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1157
 msgid "A support user for %1$s already exists. You may revoke this support access from your <a href=\"%2$s\" target=\"_blank\">Users list</a>."
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1164
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1198
 msgid "No %s users exist."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1190
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1224
 msgid "There was an error returning the access key."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1210
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1244
 msgid "Site access key:"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1211
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1245
 msgid "Access Key"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1215
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1249
 msgid "Copy the access key to your clipboard"
 msgstr ""
 
 #. translators: %s is the display name of the TrustedLogin support user.
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1217
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1251
 msgid "The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums."
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1259
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1293
 msgid "%s access revoked."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1262
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:1296
 msgid "You may safely close this window."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Client.php:309
-#: vendor_prefixed/trustedlogin/client/src/Client.php:412
+#: vendor_prefixed/trustedlogin/client/src/Client.php:315
+#: vendor_prefixed/trustedlogin/client/src/Client.php:438
 msgid "TrustedLogin requires a secure connection using HTTPS."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Client.php:517
+#: vendor_prefixed/trustedlogin/client/src/Client.php:547
 msgid "The support user was not deleted."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Encryption.php:261
+#: vendor_prefixed/trustedlogin/client/src/Encryption.php:290
 msgid "Encryption key could not be fetched, Vendor site returned 404."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:230
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:237
 msgid "Unable to verify Pause Mode."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:233
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:240
 msgid "Authentication failed."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:236
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:243
 msgid "TrustedLogin account issue."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:239
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:246
 msgid "Invalid tokens."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:243
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:250
 msgid "The TrustedLogin vendor was not found."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:253
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:260
 msgid "The TrustedLogin site is not currently online."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:259
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:266
 msgid "The TrustedLogin site is not currently available."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:263
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:306
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:270
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:313
 msgid "Invalid response."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:300
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:307
 msgid "The response was invalid."
 msgstr ""
 
 #. translators: %s is the name of the missing data from the server
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:325
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:332
 msgid "Invalid response. Missing key: %s"
 msgstr ""
 

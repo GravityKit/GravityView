@@ -207,6 +207,7 @@ return array(
    'GravityKit\GravityView\Monolog\Utils' => $vendorprefixed . '/monolog/monolog/src/Monolog/Utils.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\SupportRole' => $vendorprefixed . '/trustedlogin/client/src/SupportRole.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\SupportUser' => $vendorprefixed . '/trustedlogin/client/src/SupportUser.php',
+   'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Logger' => $vendorprefixed . '/trustedlogin/client/src/Logger.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Encryption' => $vendorprefixed . '/trustedlogin/client/src/Encryption.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Envelope' => $vendorprefixed . '/trustedlogin/client/src/Envelope.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Ajax' => $vendorprefixed . '/trustedlogin/client/src/Ajax.php',

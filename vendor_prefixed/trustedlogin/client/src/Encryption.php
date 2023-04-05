@@ -78,6 +78,35 @@ final class Encryption {
 	}
 
 	/**
+	 * Returns true if the site supports encryption using the required Sodium functions.
+	 *
+	 * These functions are available by extension in PHP 7.0 & 7.1, built-in to PHP 7.2+ and WordPress 5.2+.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return bool True: supports encryption. False: does not support encryption.
+	 */
+	static public function meets_requirements() {
+
+		$required_functions = array(
+			'random_bytes',
+			'sodium_hex2bin',
+			'sodium_crypto_box',
+			'sodium_crypto_secretbox',
+			'sodium_crypto_generichash',
+			'sodium_crypto_box_keypair_from_secretkey_and_publickey',
+		);
+
+		foreach ( $required_functions as $function ) {
+			if ( ! function_exists( $function ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
 	 * Generates a random hash 64 characters long.
 	 *
 	 * If random_bytes() and openssl_random_pseudo_bytes() don't exist, returns WP_Error with code generate_hash_failed.

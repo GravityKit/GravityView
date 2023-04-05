@@ -21,7 +21,7 @@
 	/**
 	 * Adds a hidden <span> for screen readers alerting them that the link will open a new window.
 	 */
-	$( '.tl-' + namespace + '-auth' ).find( 'a[target=_blank]' ).each( function () {
+	$tl_container.find( 'a[target=_blank]' ).each( function () {
 		$( this ).append( $( '<span>', {
 			'class': 'screen-reader-text',
 			'text': tl_obj.lang.a11y.opens_new_window
@@ -79,6 +79,7 @@
 			'vendor': namespace,
 			'_nonce': tl_obj._nonce,
 			'reference_id': tl_obj.reference_id,
+			'debug_data_consent': $( '#tl-' + namespace + '-debug-data-consent:checked' ).length,
 		};
 
 		if ( tl_obj.debug ) {

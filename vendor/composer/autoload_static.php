@@ -10,7 +10,6 @@ class ComposerStaticInitf3742a7b1f85311889dff226b15a354c
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '72579e7bd17821bb1321b87411366eae' => __DIR__ . '/..' . '/illuminate/support/helpers.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '3109cb1a231dcd04bee1f9f620d46975' => __DIR__ . '/..' . '/paragonie/sodium_compat/autoload.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -31,10 +30,6 @@ class ComposerStaticInitf3742a7b1f85311889dff226b15a354c
         'M' => 
         array (
             'Monolog\\' => 8,
-        ),
-        'K' => 
-        array (
-            'Katzgrau\\KLogger\\' => 17,
         ),
         'I' => 
         array (
@@ -77,10 +72,6 @@ class ComposerStaticInitf3742a7b1f85311889dff226b15a354c
         'Monolog\\' => 
         array (
             0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
-        ),
-        'Katzgrau\\KLogger\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/katzgrau/klogger/src',
         ),
         'Illuminate\\Validation\\' => 
         array (
@@ -132,7 +123,6 @@ class ComposerStaticInitf3742a7b1f85311889dff226b15a354c
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Katzgrau\\KLogger\\Logger' => __DIR__ . '/..' . '/katzgrau/klogger/src/Logger.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

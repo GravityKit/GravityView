@@ -80,7 +80,10 @@ final class Config {
 			'logo_url' => null,
 			'about_live_access_url' => null,
 		),
-		'webhook_url' => null,
+		'webhook' => array(
+			'url' => null,
+			'debug_data' => false,
+		),
 	);
 
 	/**
@@ -164,7 +167,7 @@ final class Config {
 
 		// TODO: Add ns collision check?
 
-		foreach ( array( 'webhook_url', 'vendor/support_url', 'vendor/website' ) as $settings_key ) {
+		foreach ( array( 'webhook/url', 'webhook_url', 'vendor/support_url', 'vendor/website' ) as $settings_key ) {
 			$value = $this->get_setting( $settings_key, '', $this->settings );
 			$url   = wp_kses_bad_protocol( $value, array( 'http', 'https' ) );
 			if ( $value && ! filter_var( $url, FILTER_VALIDATE_URL ) ) {

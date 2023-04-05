@@ -12,7 +12,6 @@
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
 
-use GravityKit\GravityView\Katzgrau\KLogger\Logger;
 
 class Logging {
 
@@ -57,12 +56,6 @@ class Logging {
 	 */
 	private function setup_klogger( $config ) {
 
-		if ( ! class_exists( 'GravityKit\GravityView\Katzgrau\KLogger\Logger' ) ) {
-
-			$this->log( 'KLogger not found.', __METHOD__, 'error' );
-
-			return false;
-		}
 
 		$logging_directory = null;
 

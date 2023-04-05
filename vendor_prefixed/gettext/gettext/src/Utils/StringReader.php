@@ -21,6 +21,7 @@ class StringReader
      */
     public function __construct($str)
     {
+        $this->pos = 0;
         $this->str = $str;
         $this->strlen = strlen($this->str);
     }
