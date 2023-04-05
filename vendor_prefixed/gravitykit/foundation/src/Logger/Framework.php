@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 01-April-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -513,7 +513,7 @@ HTML;
 
     /**
      * @inheritDoc
-     * @since $ver$
+     * @since 1.0.0
      */
     public function log($level, $message, array $context = array())
     {

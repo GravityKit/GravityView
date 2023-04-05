@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 01-April-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -184,11 +184,9 @@ class AdminMenu {
 		 */
 		$total_badge_count = (int) apply_filters( 'gk/foundation/admin-menu/counter', $total_badge_count );
 
-		if ( $total_badge_count ) {
-			foreach ( $menu as &$menu_item ) {
-				if ( $menu_item[2] === self::WP_ADMIN_MENU_SLUG ) {
-					$menu_item[0] .= $this->get_badge_counter_markup( self::WP_ADMIN_MENU_SLUG, $total_badge_count );
-				}
+		foreach ( $menu as &$menu_item ) {
+			if ( $menu_item[2] === self::WP_ADMIN_MENU_SLUG ) {
+				$menu_item[0] .= $this->get_badge_counter_markup( self::WP_ADMIN_MENU_SLUG, $total_badge_count );
 			}
 		}
 

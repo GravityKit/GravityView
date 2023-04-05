@@ -241,12 +241,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "c234cea9a52ea6a43c8f805810d060cf70e188d4"
+                "reference": "5ee55e8e3289c9d27f8677ab0bdd3fad1e020496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/c234cea9a52ea6a43c8f805810d060cf70e188d4",
-                "reference": "c234cea9a52ea6a43c8f805810d060cf70e188d4",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/5ee55e8e3289c9d27f8677ab0bdd3fad1e020496",
+                "reference": "5ee55e8e3289c9d27f8677ab0bdd3fad1e020496",
                 "shasum": ""
             },
             "require": {
@@ -265,7 +265,7 @@
                 "phpcompatibility/phpcompatibility-wp": "*",
                 "wp-coding-standards/wpcs": "^2.3"
             },
-            "time": "2023-04-01T14:22:21+00:00",
+            "time": "2023-04-05T17:07:40+00:00",
             "default-branch": true,
             "type": "library",
             "extra": {
@@ -318,7 +318,7 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/main",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.0.11",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
             "install-path": "../gravitykit/foundation"

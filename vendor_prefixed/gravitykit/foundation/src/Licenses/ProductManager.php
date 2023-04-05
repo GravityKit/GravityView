@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 01-April-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -70,13 +70,13 @@ class ProductManager {
 	}
 
 	/**
-	 * Configures AJAX routes handled by this class.
+	 * Configures Ajax routes handled by this class.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @see   Core::process_ajax_request()
 	 *
-	 * @param array $routes AJAX action to class method map.
+	 * @param array $routes Ajax action to class method map.
 	 *
 	 * @return array
 	 */
@@ -91,7 +91,7 @@ class ProductManager {
 	}
 
 	/**
-	 * AJAX request wrapper for the install_product() method.
+	 * Ajax request wrapper for the install_product() method.
 	 *
 	 * @since 1.0.0
 	 *
@@ -207,7 +207,7 @@ class ProductManager {
 	}
 
 	/**
-	 * AJAX request wrapper for the activate_product() method.
+	 * Ajax request wrapper for the activate_product() method.
 	 *
 	 * @since 1.0.0
 	 *
@@ -258,7 +258,7 @@ class ProductManager {
 	}
 
 	/**
-	 * AJAX request wrapper for the deactivate_product() method.
+	 * Ajax request wrapper for the deactivate_product() method.
 	 *
 	 * @since 1.0.0
 	 *
@@ -309,7 +309,7 @@ class ProductManager {
 	}
 
 	/**
-	 * AJAX request wrapper for the update_product() method.
+	 * Ajax request wrapper for the update_product() method.
 	 *
 	 * @since 1.0.0
 	 *
@@ -526,7 +526,7 @@ class ProductManager {
 
 		if ( count( $parsed_changelog[0] ) > count( $truncated_changelog ) && $link_to_full_changelog ) {
 			$truncated_changelog[] = sprintf(
-				'<p><a href="%s/changelog" target="_blank">%s</a></strong></p><br><br><br>', // 3 line breaks are required for this line to be displayed correctly above the fixed modal window footer.
+				'<p><a href="%s#changelog" target="_blank">%s</a></strong></p><br><br><br>', // 3 line breaks are required for this line to be displayed correctly above the fixed modal window footer.
 				$product_url,
 				esc_html__( 'View full changelog', 'gk-gravityview' )
 			);
@@ -540,7 +540,7 @@ class ProductManager {
 	}
 
 	/**
-	 * AJAX request wrapper for the {@see get_products_data()} method.
+	 * Ajax request wrapper for the {@see get_products_data()} method.
 	 *
 	 * @since 1.0.0
 	 *

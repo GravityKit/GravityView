@@ -42,6 +42,9 @@
   padding-top: 0;
   text-align: center;
 }
+.tl-gk_foundation_trustedlogin-auth .tl-gk_foundation_trustedlogin-auth__checkbox--large {
+  transform: scale(1.2);
+}
 .tl-gk_foundation_trustedlogin-auth .dashicons--small {
   height: 18px;
   width: 18px;

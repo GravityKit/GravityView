@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 01-April-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -13,6 +13,7 @@ use GravityKit\GravityView\Foundation\Integrations\HelpScout;
 use GravityKit\GravityView\Foundation\Integrations\TrustedLogin;
 use GravityKit\GravityView\Foundation\WP\AdminMenu;
 use GravityKit\GravityView\Foundation\Logger\Framework as LoggerFramework;
+use GravityKit\GravityView\Foundation\WP\AjaxRouter;
 use GravityKit\GravityView\Foundation\WP\PluginActivationHandler;
 use GravityKit\GravityView\Foundation\Settings\Framework as SettingsFramework;
 use GravityKit\GravityView\Foundation\Licenses\Framework as LicensesFramework;
@@ -20,16 +21,12 @@ use GravityKit\GravityView\Foundation\Translations\Framework as TranslationsFram
 use GravityKit\GravityView\Foundation\Encryption\Encryption;
 use GravityKit\GravityView\Foundation\Helpers\Core as CoreHelpers;
 use GravityKit\GravityView\Foundation\Helpers\Arr;
-use Exception;
+use GravityKit\GravityView\Foundation\WP\RESTController;
 
 class Core {
 	const VERSION = '1.0.11';
 
 	const ID = 'gk_foundation';
-
-	const WP_AJAX_ACTION = 'gk_foundation_do_ajax';
-
-	const AJAX_ROUTER = 'core';
 
 	const INIT_PRIORITY = 100;
 
@@ -219,18 +216,18 @@ class Core {
 			return;
 		}
 
-		add_action( 'wp_ajax_' . self::WP_AJAX_ACTION, [ $this, 'process_ajax_request' ] );
-
 		$this->_components = [
-			'settings'     => SettingsFramework::get_instance(),
-			'licenses'     => LicensesFramework::get_instance(),
-			'translations' => TranslationsFramework::get_instance(),
-			'logger'       => LoggerFramework::get_instance(),
-			'admin_menu'   => AdminMenu::get_instance(),
-			'encryption'   => Encryption::get_instance(),
-			'trustedlogin' => TrustedLogin::get_instance(),
-			'helpscout'    => HelpScout::get_instance(),
-			'gravityforms' => GravityForms::get_instance(),
+			'settings'        => SettingsFramework::get_instance(),
+			'licenses'        => LicensesFramework::get_instance(),
+			'translations'    => TranslationsFramework::get_instance(),
+			'logger'          => LoggerFramework::get_instance(),
+			'admin_menu'      => AdminMenu::get_instance(),
+			'ajax_router'     => AjaxRouter::get_instance(),
+			'rest_controller' => RESTController::get_instance(),
+			'encryption'      => Encryption::get_instance(),
+			'trustedlogin'    => TrustedLogin::get_instance(),
+			'helpscout'       => HelpScout::get_instance(),
+			'gravityforms'    => GravityForms::get_instance(),
 		];
 
 		foreach ( $this->_components as $component => $instance ) {
@@ -458,109 +455,6 @@ HTML;
 	}
 
 	/**
-	 * Registers the GravityKit admin menu.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $router AJAX router that will be handling the request.
-	 *
-	 * @return array
-	 */
-	public static function get_ajax_params( $router ) {
-		return [
-			'_wpNonce'      => wp_create_nonce( self::ID ),
-			'_wpAjaxUrl'    => admin_url( 'admin-ajax.php' ),
-			'_wpAjaxAction' => self::WP_AJAX_ACTION,
-			'ajaxRouter'    => $router ?: self::AJAX_ROUTER,
-		];
-	}
-
-	/**
-	 * Processes AJAX request and routes it to the appropriate endpoint.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @throws Exception
-	 *
-	 * @return void|mixed Send JSON response if an AJAX request or return the response as is.
-	 */
-	public function process_ajax_request() {
-		$request = wp_parse_args(
-			$_POST, // phpcs:ignore WordPress.Security.NonceVerification.Missing
-			[
-				'nonce'      => null,
-				'payload'    => [],
-				'ajaxRouter' => null,
-				'ajaxRoute'  => null,
-			]
-		);
-
-		list ( $nonce, $payload, $router, $route ) = array_values( $request );
-
-		if ( ! is_array( $payload ) ) {
-			$payload = json_decode( stripslashes_deep( $payload ), true );
-		}
-
-		$is_valid_nonce = wp_verify_nonce( $nonce, self::ID );
-
-		if ( ! wp_doing_ajax() || ! $is_valid_nonce ) {
-			wp_die( false, false, [ 'response' => 403 ] );
-		}
-
-		/**
-		 * Modifies a list of AJAX routes that map to backend functions/class methods. $router groups routes to avoid a name collision (e.g., 'settings', 'licenses').
-		 *
-		 * @filter gk/foundation/ajax/{$router}/routes
-		 *
-		 * @since  1.0.0
-		 *
-		 * @param array[] $routes AJAX route to function/class method map.
-		 */
-		$ajax_route_to_class_method_map = apply_filters( "gk/foundation/ajax/{$router}/routes", [] );
-
-		$route_callback = Arr::get( $ajax_route_to_class_method_map, $route );
-
-		if ( ! CoreHelpers::is_callable_function( $route_callback ) && ! CoreHelpers::is_callable_class_method( $route_callback ) ) {
-			wp_die( false, false, [ 'response' => 404 ] );
-		}
-
-		try {
-			/**
-			 * Modifies AJAX payload before the route is processed.
-			 *
-			 * @filter gk/foundation/ajax/payload
-			 *
-			 * @since  1.0.3
-			 *
-			 * @param array  $payload
-			 * @param string $router
-			 * @param string $route
-			 */
-			$payload = apply_filters( 'gk/foundation/ajax/payload', $payload, $router, $route );
-
-			$result = call_user_func( $route_callback, $payload );
-		} catch ( Exception $e ) {
-			$result = new Exception( $e->getMessage() );
-		}
-
-		/**
-		 * Modifies AJAX response after the route is processed.
-		 *
-		 * @filter gk/foundation/ajax/result
-		 *
-		 * @since  1.0.3
-		 *
-		 * @param mixed|Exception $result
-		 * @param string          $router
-		 * @param string          $route
-		 * @param array           $payload
-		 */
-		$result = apply_filters( 'gk/foundation/ajax/result', $result, $router, $route, $payload );
-
-		return CoreHelpers::process_return( $result );
-	}
-
-	/**
 	 * Inlines scripts/styles.
 	 *
 	 * @since 1.0.0
@@ -649,6 +543,12 @@ HTML;
 				'core'  => new CoreHelpers(),
 				'array' => new Arr(),
 			];
+		}
+
+		// Ajax logic was moved to a GravityKit\Foundation\WP\AjaxRouter in 1.0.11
+		// TODO: remove when other plugins are updated not to use GravityKitFoundation::get_ajax_params().
+		if ( 'get_ajax_params' === $name ) {
+			return AjaxRouter::get_instance()->get_ajax_params( $arguments );
 		}
 
 		if ( ! isset( $this->_components[ $name ] ) ) {

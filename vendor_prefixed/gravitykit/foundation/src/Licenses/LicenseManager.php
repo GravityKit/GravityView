@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 01-April-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -92,13 +92,13 @@ class LicenseManager {
 	}
 
 	/**
-	 * Configures AJAX routes handled by this class.
+	 * Configures Ajax routes handled by this class.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @see   Core::process_ajax_request()
 	 *
-	 * @param array $routes AJAX route to class method map.
+	 * @param array $routes Ajax route to class method map.
 	 *
 	 * @return array
 	 */
@@ -111,7 +111,7 @@ class LicenseManager {
 	}
 
 	/**
-	 * AJAX request wrapper for the get_licenses_data() method.
+	 * Ajax request wrapper for the get_licenses_data() method.
 	 *
 	 * @since 1.0.0
 	 *
@@ -426,7 +426,7 @@ class LicenseManager {
 	}
 
 	/**
-	 * AJAX request wrapper for the activate_license() method.
+	 * Ajax request wrapper for the activate_license() method.
 	 *
 	 * @since 1.0.0
 	 *
@@ -500,7 +500,7 @@ class LicenseManager {
 	}
 
 	/**
-	 * AJAX request wrapper for the deactivate_license() method.
+	 * Ajax request wrapper for the deactivate_license() method.
 	 *
 	 * @since 1.0.0
 	 *

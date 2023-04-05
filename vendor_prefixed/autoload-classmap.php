@@ -21,6 +21,8 @@ return array(
    'GravityKit\GravityView\Foundation\Licenses\LicenseManager' => $vendorprefixed . '/gravitykit/foundation/src/Licenses/LicenseManager.php',
    'GravityKit\GravityView\Foundation\Licenses\Helpers' => $vendorprefixed . '/gravitykit/foundation/src/Licenses/Helpers.php',
    'GravityKit\GravityView\Foundation\Licenses\Framework' => $vendorprefixed . '/gravitykit/foundation/src/Licenses/Framework.php',
+   'GravityKit\GravityView\Foundation\WP\RESTController' => $vendorprefixed . '/gravitykit/foundation/src/WP/RESTController.php',
+   'GravityKit\GravityView\Foundation\WP\AjaxRouter' => $vendorprefixed . '/gravitykit/foundation/src/WP/AjaxRouter.php',
    'GravityKit\GravityView\Foundation\WP\AdminMenu' => $vendorprefixed . '/gravitykit/foundation/src/WP/AdminMenu.php',
    'GravityKit\GravityView\Foundation\WP\PluginActivationHandler' => $vendorprefixed . '/gravitykit/foundation/src/WP/PluginActivationHandler.php',
    'GravityKit\GravityView\Foundation\Integrations\GravityForms' => $vendorprefixed . '/gravitykit/foundation/src/Integrations/GravityForms.php',
