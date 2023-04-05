@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.17.2 on March 29, 2023 =
+= 2.17.2 on April 5, 2023 =
 
 * Now requires Gravity Forms 2.5.1 or greater
 * Added: "No Entries Behavior" option to hide the View when there are no entries visible to the current user (not applied to search results)
@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: PHP 8+ warning messages when creating a new View
 * Fixed: PHP warning when a View checks for the ability to edit an entry that has just been deleted using code
 * Fixed: On sites running the GiveWP plugin, the View Editor would look bad
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.11
 
 __Developer Updates:__
 
