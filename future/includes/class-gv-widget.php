@@ -368,14 +368,56 @@ abstract class Widget {
 	}
 
 	/**
+	 * Gets View considering the current context.
+	 *
+	 * @since 2.17.3
+	 *
+	 * @param string|\GV\Template_Context $context Context. Default: empty string.
+	 *
+	 * @return \GV\View|null
+	 */
+	public function get_view( $context = '' ) {
+
+		// $context should be passed to pre_render_frontend() and render_frontend().
+		if ( $context instanceof \GV\Template_Context && $context->view instanceof \GV\View ) {
+			return $context->view;
+		}
+
+		// If it's not passed, parse the $post content.
+		$views = gravityview()->views->get();
+
+		// No views are found.
+		if ( ! $views ) {
+			return null;
+		}
+
+		// If there's only one view, return it.
+		if ( $views instanceof \GV\View ) {
+			return $views;
+		}
+
+		// If there are multiple views, return the first one.
+		if ( $views instanceof \GV\View_Collection ) {
+			gravityview()->log->debug( 'The widget lacks $context and there are multiple Views on this page. Returning the first.' );
+
+			return $views->first();
+		}
+
+		return null;
+	}
+
+	/**
 	 * General validations when rendering the widget
 	 *
 	 * Always call this from your `render_frontend()` override!
 	 *
+	 * @since 2.17.3 Added $context param.
+	 *
+	 * @param string|\GV\Template_Context $context Context. Default: empty string.
+	 *
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
-	public function pre_render_frontend() {
-
+	public function pre_render_frontend( $context = '' ) {
 		/**
 		 * Assume shown regardless of hide_until_search setting.
 		 */
@@ -395,7 +437,9 @@ abstract class Widget {
 		 */
 		$allowlist = apply_filters( 'gravityview/widget/hide_until_searched/allowlist', $allowlist );
 
-		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $allowlist ) ) {
+		$view = $this->get_view( $context );
+
+		if ( $view && ! in_array( $this->get_widget_id(), $allowlist ) ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 		} else {
 			$hide_until_searched = false;

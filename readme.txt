@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.17.3 on April 6, 2023 =
+
+* Fixed: Fatal error rendering multiple Views on the same page/post introduced in 2.17.2
+
+__Developer Updates:__
+
+* Added: A `$context` argument of `\GV\Template_Context` is now passed to `\GV\Widget\pre_render_frontend()`
+
 = 2.17.2 on April 5, 2023 =
 
 **Note: GravityView now requires Gravity Forms 2.5.1 or newer**

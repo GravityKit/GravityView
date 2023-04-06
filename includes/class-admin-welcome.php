@@ -277,6 +277,18 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.17.3 on April 6, 2023</h3>
+
+				<ul>
+					<li>Fixed: Fatal error rendering multiple Views on the same page/post introduced in 2.17.2</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: A <code>$context</code> argument of <code>\GV\Template_Context</code> is now passed to <code>\GV\Widget\pre_render_frontend()</code></li>
+				</ul>
+
 				<h3>2.17.2 on April 5, 2023</h3>
 
 				<p><strong>Note: GravityView now requires Gravity Forms 2.5.1 or newer</strong></p>
