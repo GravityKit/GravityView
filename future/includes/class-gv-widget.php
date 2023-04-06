@@ -372,10 +372,13 @@ abstract class Widget {
 	 *
 	 * Always call this from your `render_frontend()` override!
 	 *
+	 * @since 2.17.2.1 Added $context param.
+	 *
+	 * @param string|GV\Template_Context $context Context. Default: empty string.
+	 *
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
-	public function pre_render_frontend() {
-
+	public function pre_render_frontend( $context = '' ) {
 		/**
 		 * Assume shown regardless of hide_until_search setting.
 		 */
@@ -395,7 +398,29 @@ abstract class Widget {
 		 */
 		$allowlist = apply_filters( 'gravityview/widget/hide_until_searched/allowlist', $allowlist );
 
-		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $allowlist ) ) {
+		$views = gravityview()->views->get();
+
+		if ( $views instanceof \GV\View_Collection ) {
+			if ( ! $context instanceof \GV\Template_Context || ! $context->view ) {
+				gravityview()->log->error( 'Page/post contains multiple Views but context is empty or does not have the current View information' );
+
+				return false;
+			}
+
+			$view_id = $context->view->__get( 'ID' );
+
+			$view = $views->get( $view_id );
+
+			if ( ! $view ) {
+				gravityview()->log->error( 'Page/post contains multiple Views that are not in the provided context' );
+
+				return false;
+			}
+		} else {
+			$view = $views;
+		}
+
+		if ( $view && ! in_array( $this->get_widget_id(), $allowlist ) ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 		} else {
 			$hide_until_searched = false;
