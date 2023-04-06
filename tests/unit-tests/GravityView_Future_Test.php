@@ -80,7 +80,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Simulate various other conditions, including failure conditions. */
 		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '7.2.0';
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '4.8-alpha-39901';
-		$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] = '2.3.3.10-alpha';
+		$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] = '2.5.2-alpha';
 		$this->assertTrue( gravityview()->plugin->is_compatible_php() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_wordpress() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_gravityforms() );
@@ -703,6 +703,38 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertInstanceOf( '\WP_Error', GravityView_View_Data::is_valid_embed_id( '', $view->ID ) );
 		$this->assertTrue( GravityView_View_Data::is_valid_embed_id( '', $view->ID, true ) );
 		$this->assertInstanceOf( '\WP_Error', GravityView_View_Data::is_valid_embed_id( $post->ID, $post->ID ) );
+
+		/**
+		 * Test block parsing
+		 * @since 2.17.2
+		 */
+		$this->_reset_context();
+		$form  = $this->factory->form->create_and_get();
+		$view  = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$post_with_view  = $this->factory->post->create_and_get( array( 'post_content' => sprintf( '<!-- wp:gk-gravityview-blocks/view {"viewId":"%d","previewBlock":true} /-->', $view->ID ) ) );
+
+		$view_collection = \GV\View_Collection::from_post( $post_with_view );
+		$this->assertEquals( 1, $view_collection->count() );
+		$this->assertNotNull( $view_collection->get( $view->ID ) );
+		$this->assertNull( $view_collection->get( -1 ) );
+		$this->assertTrue( $view_collection->contains( $view->ID ) );
+		$this->assertFalse( $view_collection->contains( -1 ) );
+
+		$another_view  = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$post_with_two_views  = $this->factory->post->create_and_get( array( 'post_content' => sprintf(
+			'<!-- wp:gk-gravityview-blocks/view {"viewId":"%d","previewBlock":true} /--><!-- wp:gk-gravityview-blocks/view {"viewId":"%d","previewBlock":true} /-->',
+			$view->ID,
+			$another_view->ID
+		) ) );
+
+		$view_collection = \GV\View_Collection::from_post( $post_with_two_views );
+		$this->assertEquals( 2, $view_collection->count() );
+		$this->assertNotNull( $view_collection->get( $view->ID ) );
+		$this->assertNotNull( $view_collection->get( $another_view->ID ) );
+		$this->assertNull( $view_collection->get( -1 ) );
+		$this->assertTrue( $view_collection->contains( $view->ID ) );
+		$this->assertTrue( $view_collection->contains( $another_view->ID ) );
+		$this->assertFalse( $view_collection->contains( -1 ) );
 
 		$this->_reset_context();
 

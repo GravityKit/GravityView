@@ -18,7 +18,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -37,10 +37,10 @@ use \WP_Error;
 final class Client {
 
 	/**
-	 * @var string The current drop-in file version
+	 * @var string The current SDK version.
 	 * @since 1.0.0
 	 */
-	const VERSION = '1.3.7';
+	const VERSION = '1.4.0';
 
 	/**
 	 * @var Config
@@ -108,8 +108,8 @@ final class Client {
 
 		$should_initialize = $this->should_init( $config );
 
-		if ( ! $should_initialize ) {
-			throw new \Exception( 'TrustedLogin was prevented from loading by constants defined on the site.', 403 );
+		if ( is_wp_error( $should_initialize ) ) {
+			throw new \Exception( $should_initialize->get_error_message(), 403 );
 		}
 
 		try {
@@ -147,25 +147,31 @@ final class Client {
 	 *
 	 * @param Config $config
 	 *
-	 * @return bool
+	 * @return true|WP_Error
 	 */
 	private function should_init( Config $config ) {
 
-		// Disables all TL clients.
+		// Disables all TL clients for the site.
 		if ( defined( 'TRUSTEDLOGIN_DISABLE' ) && TRUSTEDLOGIN_DISABLE ) {
-			return false;
+			return new WP_Error( 'disabled_globally', 'TrustedLogin has been disabled globally for this site using the TRUSTEDLOGIN_DISABLE constant.' );
 		}
 
 		$ns = $config->ns();
 
 		// Namespace isn't set; allow Config
-		if( empty( $ns ) ) {
+		if ( empty( $ns ) ) {
 			return true;
 		}
 
 		// Disables namespaced client if `TRUSTEDLOGIN_DISABLE_{NS}` is defined and truthy.
 		if ( defined( 'TRUSTEDLOGIN_DISABLE_' . strtoupper( $ns ) ) && constant( 'TRUSTEDLOGIN_DISABLE_' . strtoupper( $ns ) ) ) {
-			return false;
+			return new WP_Error( 'disabled_for_namespace', 'TrustedLogin has been disabled for this namespace using the TRUSTEDLOGIN_DISABLE_' . $ns .' constant.' );
+		}
+
+		$meets_requirements = Encryption::meets_requirements();
+
+		if ( ! $meets_requirements ) {
+			return new WP_Error( 'does_not_meet_requirements', 'TrustedLogin could not load: the site does not meet encryption requirements.' );
 		}
 
 		return true;
@@ -204,7 +210,7 @@ final class Client {
 	 *
 	 * @return array|WP_Error
 	 */
-	public function grant_access() {
+	public function grant_access( $include_debug_data = false ) {
 
 		if ( ! self::$valid_config ) {
 			return new \WP_Error( 'invalid_configuration', 'TrustedLogin has not been properly configured or instantiated.', array( 'error_code' => 424 ) );
@@ -292,14 +298,14 @@ final class Client {
 		$timing_local = timer_stop( 0, 5 );
 
 		$return_data = array(
-			'type'       => 'new',
-			'site_url'   => get_site_url(),
-			'endpoint'   => $endpoint_hash,
-			'identifier' => $site_identifier_hash,
-			'user_id'    => $support_user_id,
-			'expiry'     => $expiration_timestamp,
+			'type'         => 'new',
+			'site_url'     => get_site_url(),
+			'endpoint'     => $endpoint_hash,
+			'identifier'   => $site_identifier_hash,
+			'user_id'      => $support_user_id,
+			'expiry'       => $expiration_timestamp,
 			'reference_id' => $reference_id,
-			'timing'     => array(
+			'timing'       => array(
 				'local'  => $timing_local,
 				'remote' => null, // Updated later
 			),
@@ -313,11 +319,17 @@ final class Client {
 
 		try {
 
-			add_filter( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array( $this, 'add_meta_to_envelope' ) );
+			add_filter( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array(
+				$this,
+				'add_meta_to_envelope'
+			) );
 
 			$created = $this->site_access->sync_secret( $secret_id, $site_identifier_hash, 'create' );
 
-			remove_filter( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array( $this, 'add_meta_to_envelope' ) );
+			remove_filter( 'trustedlogin/' . $this->config->ns() . '/envelope/meta', array(
+				$this,
+				'add_meta_to_envelope'
+			) );
 
 		} catch ( Exception $e ) {
 
@@ -343,12 +355,26 @@ final class Client {
 
 		$return_data['timing']['remote'] = timer_stop( 0, 5 );
 
-		do_action( 'trustedlogin/' . $this->config->ns() . '/access/created', array(
-			'url'    => get_site_url(),
-			'ns' => $this->config->ns(),
-			'action' => 'created',
-			'ref' => $reference_id,
-		) );
+		timer_start();
+
+		$action_data = array(
+			'url'        => get_site_url(),
+			'ns'         => $this->config->ns(),
+			'action'     => 'created',
+			'ref'        => $reference_id,
+			'access_key' => $this->site_access->get_access_key(),
+		);
+
+		if ( $include_debug_data ) {
+			$action_data['debug_data'] = $this->get_debug_data();
+		}
+
+		/**
+		 * @usedby Remote::maybe_send_webhook()
+		 */
+		do_action( 'trustedlogin/' . $this->config->ns() . '/access/created', $action_data );
+
+		$return_data['timing']['access_created_action'] = timer_stop( 0, 5 );
 
 		return $return_data;
 	}
@@ -446,11 +472,15 @@ final class Client {
 
 		$return_data['timing']['remote'] = timer_stop( 0, 5 );
 
+		/**
+		 * @usedby Remote::maybe_send_webhook()
+		 */
 		do_action( 'trustedlogin/' . $this->config->ns() . '/access/extended', array(
 			'url'    => get_site_url(),
 			'ns' => $this->config->ns(),
 			'action' => 'extended',
 			'ref' => self::get_reference_id(),
+			'access_key' => $this->site_access->get_access_key(),
 		) );
 
 		return $return_data;
@@ -569,4 +599,48 @@ final class Client {
 		return null;
 	}
 
+	/**
+	 * Returns the debug data for the current website.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return string|false|null String: A text-formatted summary of WP Debug Data; false: the debug data setting wasn't enabled; null: there was an error.
+	 */
+	private function get_debug_data() {
+
+		if ( ! $this->config->get_setting( 'webhook/debug_data' ) ) {
+			return false;
+		}
+
+		if ( ! class_exists( 'WP_Debug_Data' ) ) {
+			include_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
+		}
+
+		if ( ! class_exists( 'WP_Debug_Data' ) ) {
+			$this->logging->log( 'WP_Debug_Data failed to be loaded.', __METHOD__, 'error' );
+
+			return null;
+		}
+
+		try {
+			$info = \WP_Debug_Data::debug_data();
+		} catch ( \ImagickException $exception ) {
+			return null;
+		} catch ( \Exception $exception ) {
+			return null;
+		}
+
+		$debug_data = \WP_Debug_Data::format( $info, 'info' );
+
+		// Remove backtick added by WP.
+		$debug_data = trim( $debug_data, '`' );
+
+		// Format Markdown in Zapier-friendly manner (`### Heading`, not `### Heading ###`).
+		$debug_data = str_replace( "###\n", "\n", $debug_data );
+
+		// Add two spaces to create line breaks in Markdown.
+		$debug_data = str_replace( "\n", "  \n", $debug_data );
+
+		return $debug_data;
+	}
 }

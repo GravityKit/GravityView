@@ -59,11 +59,13 @@ class View_Settings extends Settings {
 				),
 				'page_size'                   => array(
 					'label'             => __( 'Number of entries per page', 'gk-gravityview' ),
+					'tooltip'           => esc_html__( 'Enter the number of entries to display per page. Set to negative one (-1) to display all entries.', 'gk-gravityview' ),
 					'type'              => 'number',
 					'class'             => 'small-text',
 					'group'             => 'default',
 					'value'             => 25,
 					'show_in_shortcode' => true,
+					'min'               => -1,
 				),
 				'offset'                      => array(
 					'label'             => __( 'Offset entries starting from', 'gk-gravityview' ),
@@ -107,6 +109,7 @@ class View_Settings extends Settings {
 						'0' => __( 'Show a Message', 'gk-gravityview' ),
 						'1' => __( 'Display a Form', 'gk-gravityview' ),
 						'2' => __( 'Redirect to URL', 'gk-gravityview' ),
+						'3' => __( 'Hide the View', 'gk-gravityview' ),
 					),
 					'value'             => '0',
 					'show_in_shortcode' => true,

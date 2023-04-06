@@ -227,7 +227,7 @@ class GravityView_Admin_Metaboxes {
 			$links = '<span class="alignright gv-form-links">' . $links . '</span>';
 		}
 
-		$output = $links;;
+		$output = $links;
 
 		if ( ! $current_form ) {
 			// Starting from GF 2.6, GF's form_admin.js script requires window.form and window.gf_vars objects to be set when any element has a .merge-tag-support class.
@@ -238,7 +238,7 @@ class GravityView_Admin_Metaboxes {
 			$output .= sprintf(
 				'<script type="text/javascript">var form = %s; %s</script>',
 				'{fields: []}',
-				GFCommon::gf_vars( false )
+				@GFCommon::gf_vars( false ) // Need to silence errors because the form doesn't exist and GF doesn't expect that.
 			);
 
 			$_GET['id'] = $_id;

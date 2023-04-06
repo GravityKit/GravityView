@@ -553,7 +553,7 @@ class View implements \ArrayAccess {
 				continue;
 			}
 
-			list( $join, $join_column, $join_on, $join_on_column ) = $meta;
+			[ $join, $join_column, $join_on, $join_on_column ] = $meta;
 
 			$join    = GF_Form::by_id( $join );
 			$join_on = GF_Form::by_id( $join_on );
@@ -607,7 +607,7 @@ class View implements \ArrayAccess {
 				continue;
 			}
 
-			list( $join, $join_column, $join_on, $join_on_column ) = $meta;
+			[ $join, $join_column, $join_on, $join_on_column ] = $meta;
 
 			if ( $form = GF_Form::by_id( $join_on ) ) {
 				$forms[ $join_on ] = $form;
@@ -1129,9 +1129,6 @@ class View implements \ArrayAccess {
 			 * Any joins?
 			 */
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) && count( $this->joins ) ) {
-
-				$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
-
 				foreach ( $this->joins as $join ) {
 					$query = $join->as_query_join( $query );
 
@@ -1149,64 +1146,27 @@ class View implements \ArrayAccess {
 						$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 					}
 
-					/**
-					 * This is a temporary stub filter, until GF_Query supports NULL conditions.
-					 * Do not use! This filter will be removed.
-					 */
-					if ( defined( 'GF_Query_Condition::NULL' ) ) {
-						$is_null_condition_native = true;
-					} else {
-						$is_null_condition_class = apply_filters( 'gravityview/query/is_null_condition', null );
-						$is_null_condition_native = false;
-					}
-
 					// Filter to active entries only
-					$condition = new \GF_Query_Condition(
-						new \GF_Query_Column( 'status', $join->join_on->ID ),
-						\GF_Query_Condition::EQ,
-						new \GF_Query_Literal( 'active' )
-					);
-
-					if ( $is_null_condition_native ) {
-						$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+					$status_conditions = \GF_Query_Condition::_or(
+						new \GF_Query_Condition(
+							new \GF_Query_Column( 'status', $join->join_on->ID ),
+							\GF_Query_Condition::EQ,
+							new \GF_Query_Literal( 'active' )
+						),
+						new \GF_Query_Condition(
 							new \GF_Query_Column( 'status', $join->join_on->ID ),
 							\GF_Query_Condition::IS,
 							\GF_Query_Condition::NULL
-						) );
-					} else if ( ! is_null( $is_null_condition_class ) ) {
-						$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
-							new \GF_Query_Column( 'status', $join->join_on->ID )
-						) );
-					}
+						)
+					);
 
 					$q = $query->_introspect();
-					$query->where( \GF_Query_Condition::_and( $q['where'], $condition ) );
+					$query->where( \GF_Query_Condition::_and( $q['where'], $status_conditions ) );
 
-					if ( $this->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-
-						// Show only approved joined entries
-						$condition = new \GF_Query_Condition(
-							new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
-							\GF_Query_Condition::EQ,
-							new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
-						);
-
-						if ( $is_null_condition_native ) {
-							$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
-								new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
-								\GF_Query_Condition::IS,
-								\GF_Query_Condition::NULL
-							) );
-						} else if ( ! is_null( $is_null_condition_class ) ) {
-							$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
-								new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID )
-							) );
-						}
-
-						$query_parameters = $query->_introspect();
-
-						$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
-					}
+					/**
+					 * Applies legacy modifications to Query for is_approved settings.
+					 */
+					$this->apply_legacy_join_is_approved_query_conditions( $query, $join );
 				}
 
 			/**
@@ -1262,7 +1222,7 @@ class View implements \ArrayAccess {
 
 					// Copy the ORDER clause and substitute the field_ids to the respective ones
 					foreach ( $query_parameters['order'] as $order ) {
-						list( $column, $_order ) = $order;
+						[ $column, $_order ] = $order;
 
 						if ( $column && $column instanceof \GF_Query_Column ) {
 							if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
@@ -1647,5 +1607,59 @@ class View implements \ArrayAccess {
 	 */
 	public function get_post() {
 		return $this->post ? $this->post : null;
+	}
+
+	/**
+	 * On version 0.3.0 of Multiple Forms is_approved for joins is handled elsewhere, for backwards compatibility purposes
+	 * the goal here is to only apply this while Multiple Forms is still compatible with older versions of GravityView.
+	 *
+	 * @since 2.17.2
+	 *
+	 * @param \GF_Query $query
+	 * @param Join      $join
+	 *
+	 */
+	protected function apply_legacy_join_is_approved_query_conditions( \GF_Query $query, Join $join ): void {
+		/**
+		 * Allows Multiple Forms and other plugins to deactivate this piece of functionality when loaded.
+		 *
+		 * @since 2.17.2
+		 *
+		 * @param bool      $should_apply Determines if legacy join condition should be applied.
+		 * @param \GF_Query $query        Which is being dealt with.
+		 * @param Join      $join         Which join we are dealing with.
+		 * @param self      $view         Instance of the view we are dealing with.
+		 */
+		$should_apply = (bool) apply_filters( 'gravityview/view/get_entries/should_apply_legacy_join_is_approved_query_conditions', true, $query, $join, $this );
+		if ( ! $should_apply ) {
+			return;
+		}
+
+		if ( ! $this->settings->get( 'show_only_approved' ) ) {
+			return;
+		}
+
+		$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
+
+		if ( $is_admin_and_can_view ) {
+			return;
+		}
+
+		// Show only approved joined entries
+		$condition = new \GF_Query_Condition(
+			new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+			\GF_Query_Condition::EQ,
+			new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
+		);
+
+		$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+			new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+			\GF_Query_Condition::IS,
+			\GF_Query_Condition::NULL
+		) );
+
+		$query_parameters = $query->_introspect();
+
+		$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 	}
 }

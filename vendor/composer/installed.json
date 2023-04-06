@@ -75,17 +75,17 @@
         },
         {
             "name": "gettext/gettext",
-            "version": "v4.8.7",
-            "version_normalized": "4.8.7.0",
+            "version": "v4.8.8",
+            "version_normalized": "4.8.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-gettext/Gettext.git",
-                "reference": "3f7bc5ef23302a9059e64934f3d59e454516bec0"
+                "reference": "302a00aa9d6762c92c884d879c15d3ed05d6a37d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-gettext/Gettext/zipball/3f7bc5ef23302a9059e64934f3d59e454516bec0",
-                "reference": "3f7bc5ef23302a9059e64934f3d59e454516bec0",
+                "url": "https://api.github.com/repos/php-gettext/Gettext/zipball/302a00aa9d6762c92c884d879c15d3ed05d6a37d",
+                "reference": "302a00aa9d6762c92c884d879c15d3ed05d6a37d",
                 "shasum": ""
             },
             "require": {
@@ -106,7 +106,7 @@
                 "twig/extensions": "Is necessary if you want to use the Twig extractor",
                 "twig/twig": "Is necessary if you want to use the Twig extractor"
             },
-            "time": "2022-08-02T09:42:10+00:00",
+            "time": "2022-12-08T11:59:50+00:00",
             "type": "library",
             "installation-source": "dist",
             "autoload": {
@@ -139,7 +139,7 @@
             "support": {
                 "email": "oom@oscarotero.com",
                 "issues": "https://github.com/oscarotero/Gettext/issues",
-                "source": "https://github.com/php-gettext/Gettext/tree/v4.8.7"
+                "source": "https://github.com/php-gettext/Gettext/tree/v4.8.8"
             },
             "funding": [
                 {
@@ -240,13 +240,13 @@
             "version_normalized": "dev-main",
             "source": {
                 "type": "git",
-                "url": "git@github.com:gravityview/Foundation.git",
-                "reference": "aaece78685cd3fe56ecc2064e86a393dae7ade3c"
+                "url": "git@github.com:GravityKit/Foundation.git",
+                "reference": "5ee55e8e3289c9d27f8677ab0bdd3fad1e020496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gravityview/Foundation/zipball/aaece78685cd3fe56ecc2064e86a393dae7ade3c",
-                "reference": "aaece78685cd3fe56ecc2064e86a393dae7ade3c",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/5ee55e8e3289c9d27f8677ab0bdd3fad1e020496",
+                "reference": "5ee55e8e3289c9d27f8677ab0bdd3fad1e020496",
                 "shasum": ""
             },
             "require": {
@@ -256,7 +256,7 @@
                 "illuminate/translation": "5.4.*",
                 "illuminate/validation": "5.4.*",
                 "monolog/monolog": "1.*",
-                "php": ">=5.6.4",
+                "php": ">=7.2.0",
                 "psr/log": "^1.1",
                 "trustedlogin/client": "dev-main"
             },
@@ -265,7 +265,7 @@
                 "phpcompatibility/phpcompatibility-wp": "*",
                 "wp-coding-standards/wpcs": "^2.3"
             },
-            "time": "2023-02-17T20:34:00+00:00",
+            "time": "2023-04-05T17:07:40+00:00",
             "default-branch": true,
             "type": "library",
             "extra": {
@@ -285,14 +285,13 @@
                     },
                     "exclude_from_copy": {
                         "packages": [
-                            "paragonie/random_compat",
-                            "paragonie/sodium_compat"
+                            "paragonie/random_compat"
                         ]
                     },
                     "delete_vendor_files": false
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-4": {
                     "GravityKit\\Foundation\\": "src"
@@ -319,8 +318,8 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/gravityview/Foundation/tree/v1.0.9",
-                "issues": "https://github.com/gravityview/Foundation/issues"
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.0.11",
+                "issues": "https://github.com/GravityKit/Foundation/issues"
             },
             "install-path": "../gravitykit/foundation"
         },
@@ -654,63 +653,6 @@
             "install-path": "../illuminate/validation"
         },
         {
-            "name": "katzgrau/klogger",
-            "version": "1.2.2",
-            "version_normalized": "1.2.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/katzgrau/KLogger.git",
-                "reference": "36481c69db9305169a2ceadead25c2acaabd567c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/katzgrau/KLogger/zipball/36481c69db9305169a2ceadead25c2acaabd567c",
-                "reference": "36481c69db9305169a2ceadead25c2acaabd567c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3",
-                "psr/log": "^1.0.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.0.0"
-            },
-            "time": "2022-07-29T20:41:14+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "psr-4": {
-                    "Katzgrau\\KLogger\\": "src/"
-                },
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Kenny Katzgrau",
-                    "email": "katzgrau@gmail.com"
-                },
-                {
-                    "name": "Dan Horrigan",
-                    "email": "dan@dhorrigan.com"
-                }
-            ],
-            "description": "A Simple Logging Class",
-            "keywords": [
-                "logging"
-            ],
-            "support": {
-                "issues": "https://github.com/katzgrau/KLogger/issues",
-                "source": "https://github.com/katzgrau/KLogger/tree/1.2.2"
-            },
-            "install-path": "../katzgrau/klogger"
-        },
-        {
             "name": "monolog/monolog",
             "version": "1.27.1",
             "version_normalized": "1.27.1.0",
@@ -855,95 +797,6 @@
                 "source": "https://github.com/paragonie/random_compat"
             },
             "install-path": "../paragonie/random_compat"
-        },
-        {
-            "name": "paragonie/sodium_compat",
-            "version": "v1.19.0",
-            "version_normalized": "1.19.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/paragonie/sodium_compat.git",
-                "reference": "cb15e403ecbe6a6cc515f855c310eb6b1872a933"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/sodium_compat/zipball/cb15e403ecbe6a6cc515f855c310eb6b1872a933",
-                "reference": "cb15e403ecbe6a6cc515f855c310eb6b1872a933",
-                "shasum": ""
-            },
-            "require": {
-                "paragonie/random_compat": ">=1",
-                "php": "^5.2.4|^5.3|^5.4|^5.5|^5.6|^7|^8"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^3|^4|^5|^6|^7|^8|^9"
-            },
-            "suggest": {
-                "ext-libsodium": "PHP < 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security.",
-                "ext-sodium": "PHP >= 7.0: Better performance, password hashing (Argon2i), secure memory management (memzero), and better security."
-            },
-            "time": "2022-09-26T03:40:35+00:00",
-            "type": "library",
-            "installation-source": "dist",
-            "autoload": {
-                "files": [
-                    "autoload.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "ISC"
-            ],
-            "authors": [
-                {
-                    "name": "Paragon Initiative Enterprises",
-                    "email": "security@paragonie.com"
-                },
-                {
-                    "name": "Frank Denis",
-                    "email": "jedisct1@pureftpd.org"
-                }
-            ],
-            "description": "Pure PHP implementation of libsodium; uses the PHP extension if it exists",
-            "keywords": [
-                "Authentication",
-                "BLAKE2b",
-                "ChaCha20",
-                "ChaCha20-Poly1305",
-                "Chapoly",
-                "Curve25519",
-                "Ed25519",
-                "EdDSA",
-                "Edwards-curve Digital Signature Algorithm",
-                "Elliptic Curve Diffie-Hellman",
-                "Poly1305",
-                "Pure-PHP cryptography",
-                "RFC 7748",
-                "RFC 8032",
-                "Salpoly",
-                "Salsa20",
-                "X25519",
-                "XChaCha20-Poly1305",
-                "XSalsa20-Poly1305",
-                "Xchacha20",
-                "Xsalsa20",
-                "aead",
-                "cryptography",
-                "ecdh",
-                "elliptic curve",
-                "elliptic curve cryptography",
-                "encryption",
-                "libsodium",
-                "php",
-                "public-key cryptography",
-                "secret-key cryptography",
-                "side-channel resistant"
-            ],
-            "support": {
-                "issues": "https://github.com/paragonie/sodium_compat/issues",
-                "source": "https://github.com/paragonie/sodium_compat/tree/v1.19.0"
-            },
-            "install-path": "../paragonie/sodium_compat"
         },
         {
             "name": "psr/log",
@@ -1133,17 +986,17 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.26.0",
-            "version_normalized": "1.26.0.0",
+            "version": "v1.27.0",
+            "version_normalized": "1.27.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e"
+                "reference": "8ad114f6b39e2c98a8b0e3bd907732c207c2b534"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e",
-                "reference": "9344f9cb97f3b19424af1a21a3b0e75b0a7d8d7e",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/8ad114f6b39e2c98a8b0e3bd907732c207c2b534",
+                "reference": "8ad114f6b39e2c98a8b0e3bd907732c207c2b534",
                 "shasum": ""
             },
             "require": {
@@ -1155,11 +1008,11 @@
             "suggest": {
                 "ext-mbstring": "For best performance"
             },
-            "time": "2022-05-24T11:49:31+00:00",
+            "time": "2022-11-03T14:55:06+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "1.26-dev"
+                    "dev-main": "1.27-dev"
                 },
                 "thanks": {
                     "name": "symfony/polyfill",
@@ -1199,7 +1052,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.26.0"
+                "source": "https://github.com/symfony/polyfill-mbstring/tree/v1.27.0"
             },
             "funding": [
                 {
@@ -1294,23 +1147,20 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "4d75dfcc0dc2ea316a42137fd16269ad3eb2f7a0"
+                "reference": "cee119c6491e1281b3e5e94114f6f6ebd8da7a02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/4d75dfcc0dc2ea316a42137fd16269ad3eb2f7a0",
-                "reference": "4d75dfcc0dc2ea316a42137fd16269ad3eb2f7a0",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/cee119c6491e1281b3e5e94114f6f6ebd8da7a02",
+                "reference": "cee119c6491e1281b3e5e94114f6f6ebd8da7a02",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
                 "ext-json": "*",
-                "katzgrau/klogger": "^1.2",
-                "paragonie/random_compat": "<9.99",
-                "paragonie/sodium_compat": "^1.12",
                 "php": ">=5.3.0"
             },
-            "time": "2022-11-08T19:07:48+00:00",
+            "time": "2023-03-01T21:54:49+00:00",
             "default-branch": true,
             "type": "library",
             "installation-source": "dist",
@@ -1339,7 +1189,7 @@
             ],
             "support": {
                 "issues": "https://github.com/trustedlogin/client/issues",
-                "source": "https://github.com/trustedlogin/client/tree/v1.3.7"
+                "source": "https://github.com/trustedlogin/client/tree/v1.4.0"
             },
             "install-path": "../trustedlogin/client"
         }

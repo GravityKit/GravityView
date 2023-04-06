@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -141,13 +141,14 @@ class SiteAccess {
 		$license_key_config = $this->config->get_setting( 'auth/license_key', null );
 
 		/**
-		 * Filter: Allow for over-riding the 'accessKey' sent to SaaS platform
+		 * Filter: Allow for over-riding the 'accessKey' sent to SaaS platform.
 		 *
 		 * @since 1.0.0
+		 * @since 1.4.0 Fixed typo in filter name.
 		 *
 		 * @param string|null $license_key
 		 */
-		$license_key = apply_filters( 'trustedlogin/' . $this->config->ns() . '/licence_key', $license_key_config );
+		$license_key = apply_filters( 'trustedlogin/' . $this->config->ns() . '/license_key', $license_key_config );
 
 		if ( empty( $license_key ) ) {
 			return null;

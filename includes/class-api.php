@@ -856,13 +856,13 @@ function gv_class( $field, $form = NULL, $entry = array() ) {
  */
 function gv_container_class( $passed_css_class = '', $echo = true, $context = null ) {
 	if ( $context instanceof \GV\Template_Context ) {
-		$hide_until_searched = false;
+		$hide = false;
 		$total_entries = 0;
 		$view_id = 0;
 		if ( $context->view ) {
 			$view_id = $context->view->ID;
 			if( $context->view->settings->get( 'hide_until_searched' ) ) {
-				$hide_until_searched = ( empty( $context->entry ) && ! $context->request->is_search() );
+				$hide = ( empty( $context->entry ) && ! $context->request->is_search() );
 			}
 		}
 		if ( $context->entries ) {
@@ -873,7 +873,7 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 	} else {
 		/** @deprecated legacy execution path */
 		$view_id = GravityView_View::getInstance()->getViewId();
-		$hide_until_searched = GravityView_View::getInstance()->isHideUntilSearched();
+		$hide = GravityView_View::getInstance()->isHideUntilSearched();
 		$total_entries = GravityView_View::getInstance()->getTotalEntries();
 	}
 
@@ -881,12 +881,20 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 
 	$default_css_class = ! empty( $view_id ) ? sprintf( 'gv-container gv-container-%d', $view_id ) : 'gv-container';
 
-	if ( $hide_until_searched ) {
-		$default_css_class .= ' hidden';
-	}
-
 	if ( 0 === $total_entries ) {
 		$default_css_class .= ' gv-container-no-results';
+
+		if (
+			! gravityview()->request->is_search()
+			&& $context instanceof \GV\Template_Context
+			&& 3 === (int) $context->view->settings->get( 'no_entries_options', '0' )
+		) {
+			$hide = true;
+		}
+	}
+
+	if ( $hide ) {
+		$default_css_class .= ' gv-hidden';
 	}
 
 	if ( $context instanceof \GV\Template_Context && $context->view ) {
@@ -1278,6 +1286,7 @@ function gravityview_after() {
 			/**
 			 * @action `gravityview/template/after` Append content to the view.
 			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
+			 * @since 2.0
 			 */
 			do_action( 'gravityview/template/after', $gravityview );
 

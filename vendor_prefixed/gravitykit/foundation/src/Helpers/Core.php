@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -13,7 +13,7 @@ use Exception;
 
 class Core {
 	/**
-	 * Processes return object based on the request type (e.g., AJAX) and status.
+	 * Processes return object based on the request type (e.g., Ajax) and status.
 	 *
 	 * @since 1.0.0
 	 *
@@ -21,7 +21,7 @@ class Core {
 	 *
 	 * @throws Exception
 	 *
-	 * @return void|mixed Send JSON response if an AJAX request or return the response as is.
+	 * @return void|mixed Send JSON response if an Ajax request or return the response as is.
 	 */
 	public static function process_return( $return_object = true ) {
 		$is_error = $return_object instanceof Exception;
@@ -30,7 +30,7 @@ class Core {
 			$buffer = ob_get_clean();
 
 			if ( $buffer ) {
-				error_log( "[GravityKit] Buffer output before returning AJAX response: {$buffer}" );
+				error_log( "[GravityKit] Buffer output before returning Ajax response: {$buffer}" );
 
 				header( 'GravityKit: ' . json_encode( $buffer ) );
 			}
@@ -81,7 +81,7 @@ class Core {
 
 	/**
 	 * Checks if the current page is a network admin area.
-	 * The AJAX check is not to be fully relied upon as the referer can be changed.
+	 * The Ajax check is not to be fully relied upon as the referer can be changed.
 	 *
 	 * @since 1.0.0
 	 *

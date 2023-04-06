@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -177,7 +177,10 @@ class TrustedLogin {
 			'paths'           => [
 				'css' => CoreHelpers::get_assets_url( 'trustedlogin/trustedlogin.css' ),
 			],
-			'webhook_url'     => 'https://hooks.zapier.com/hooks/catch/28670/bbyi3l4',
+			'webhook' => [
+				'url' => 'https://hooks.zapier.com/hooks/catch/28670/bnwjww2/silent/',
+				'debug_data' => true,
+			],
 		];
 
 		$license_manager = LicenseManager::get_instance();

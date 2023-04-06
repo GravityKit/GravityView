@@ -342,8 +342,8 @@ class GravityView_Edit_Entry {
      *
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
-     * @param  array $entry Gravity Forms entry array
-     * @param \GV\View|int $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
+     * @param  array|\WP_Error $entry Gravity Forms entry array or WP_Error if the entry wasn't found.
+     * @param \GV\View|int $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0.
      * @return bool
      */
     public static function check_user_cap_edit_entry( $entry, $view = 0 ) {
@@ -367,22 +367,29 @@ class GravityView_Edit_Entry {
 			$user_edit = GVCommon::get_template_setting( $view_id, 'user_edit' );
 		}
 
-        // If they can edit any entries (as defined in Gravity Forms)
-        // Or if they can edit other people's entries
-        // Then we're good.
-        if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $entry['id'] ) ) {
+		// If the entry doesn't exist, they can't edit it, can they?
+	    if ( ! $entry || is_wp_error( $entry ) ) {
 
-            gravityview()->log->debug( 'User has ability to edit all entries.' );
+		    gravityview()->log->error( 'Entry doesn\'t exist.' );
 
-            $user_can_edit = true;
+		    $user_can_edit = false;
 
-        } else if( !isset( $entry['created_by'] ) ) {
+	    }
 
-            gravityview()->log->error( 'Entry `created_by` doesn\'t exist.');
+	    // If they can edit any entries (as defined in Gravity Forms) or if they can edit other people's entries, then we're good.
+		elseif ( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $entry['id'] ) ) {
 
-            $user_can_edit = false;
+		    gravityview()->log->debug( 'User has ability to edit all entries.' );
 
-        } else {
+		    $user_can_edit = true;
+
+	    } elseif ( ! isset( $entry['created_by'] ) ) {
+
+		    gravityview()->log->error( 'Entry `created_by` doesn\'t exist.' );
+
+		    $user_can_edit = false;
+
+	    } else {
 
             $current_user = wp_get_current_user();
 
@@ -395,16 +402,17 @@ class GravityView_Edit_Entry {
             }
 
             // User edit is enabled and the logged-in user is the same as the user who created the entry. We're good.
-            else if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+            elseif( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
 
                 gravityview()->log->debug( 'User {user_id} created the entry.', array( 'user_id', $current_user->ID ) );
 
                 $user_can_edit = true;
 
-            } else if( ! is_user_logged_in() ) {
+            } elseif( ! is_user_logged_in() ) {
 
                 gravityview()->log->debug( 'No user defined; edit entry requires logged in user' );
 
+	            /** @noinspection PhpConditionAlreadyCheckedInspection */
 	            $user_can_edit = false; // Here just for clarity
             }
 
@@ -414,7 +422,7 @@ class GravityView_Edit_Entry {
          * @filter `gravityview/edit_entry/user_can_edit_entry` Modify whether user can edit an entry.
          * @since 1.15 Added `$entry` and `$view_id` parameters
          * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
-         * @param array $entry Gravity Forms entry array {@since 1.15}
+         * @param array|\WP_Error $entry Gravity Forms entry array {@since 1.15}
          * @param int $view_id ID of the view you want to check visibility against {@since 1.15}
          */
         $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );

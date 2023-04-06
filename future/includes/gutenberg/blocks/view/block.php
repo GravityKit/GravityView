@@ -12,7 +12,7 @@ class View {
 	 *
 	 * This method is called by class-gv-gutenberg.php before registering the block.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @param array $block_meta
 	 *
@@ -31,46 +31,24 @@ class View {
 	/**
 	 * Renders [gravityview] shortcode.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @param array $block_attributes
 	 *
 	 * @return string $output
 	 */
 	static function render( $block_attributes = [] ) {
-		$block_to_shortcode_attributes_map = [
-			'viewId'         => 'id',
-			'postId'         => 'post_id',
-			'pageSize'       => 'page_size',
-			'sortField'      => 'sort_field',
-			'sortDirection'  => 'sort_direction',
-			'searchField'    => 'search_field',
-			'searchValue'    => 'search_value',
-			'searchOperator' => 'search_operator',
-			'startDate'      => 'start_date',
-			'endDate'        => 'end_date',
-			'classValue'     => 'class',
-			'offset'         => 'offset',
-			'singleTitle'    => 'single_title',
-			'backLinkLabel'  => 'back_link_label',
-		];
 
-		if ( isset( $block_attributes['searchOperator'] ) && empty( $block_attributes['searchValue'] ) ) {
-			unset( $block_attributes['searchOperator'] );
-		}
+		$shortcode_attributes = \GV\Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block_attributes );
 
-		$shortcode_attributes = [];
-
-		foreach ( $block_attributes as $attribute => $value ) {
+		foreach ( $shortcode_attributes as $attribute => $value ) {
 			$value = esc_attr( sanitize_text_field( $value ) );
 
-			if ( isset( $block_to_shortcode_attributes_map[ $attribute ] ) && ! empty( $value ) ) {
-				$shortcode_attributes[] = sprintf(
-					'%s="%s"',
-					$block_to_shortcode_attributes_map[ $attribute ],
-					str_replace( '"', '\"', $value )
-				);
-			}
+			$shortcode_attributes[] = sprintf(
+				'%s="%s"',
+				$attribute,
+				str_replace( '"', '\"', $value )
+			);
 		}
 
 		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_attributes ) );

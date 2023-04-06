@@ -132,7 +132,7 @@ class View_Renderer extends Renderer {
 		} );
 
 		$add_search_action_filter = function ( $action ) use ( $view ) {
-			return $action . '#' . $view->get_anchor_id();
+			return $action . '#' . esc_attr( $view->get_anchor_id() );
 		};
 
 		/**

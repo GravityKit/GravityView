@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 /**
@@ -353,6 +353,7 @@ final class Admin {
 		$_user_creator_id = get_user_option( $this->support_user->created_by_meta_key, $support_user->ID );
 		$_user_creator    = $_user_creator_id ? get_user_by( 'id', $_user_creator_id ) : false;
 
+		// translators: %s is the ID of the user who created the support session. The user can't be found; only the User ID is known.
 		$unknown_user_text = sprintf( esc_html__( 'Unknown (User #%d)', 'gk-gravityview' ), $_user_creator_id );
 
 		$auth_meta = ( $_user_creator && $_user_creator->exists() ) ? esc_html( $_user_creator->display_name ) : $unknown_user_text;
@@ -530,7 +531,7 @@ final class Admin {
 		if ( $has_access ) {
 			$output_template = '';
 			$output_template .= '{{users_table}}';
-			$content = array(
+			$content         = array(
 				'users_table' => $this->output_support_users( false, array( 'current_url' => true ) ),
 			);
 
@@ -548,11 +549,18 @@ final class Admin {
 			</div>
 		';
 
+		if ( $this->config->get_setting( 'webhook/url' ) && $this->config->get_setting( 'webhook/debug_data' ) ) {
+			$output_template .= '
+			<div class="tl-{{ns}}-auth__debug">
+				{{debug_data_consent}}
+			</div>';
+		}
+
 		// translators: %s is replaced with the of time that the login will be active for (e.g. "1 week")
 		$expire_summary = sprintf( esc_html__( 'Access this site for %s.', 'gk-gravityview' ), '<strong>' . human_time_diff( 0, $this->config->get_setting( 'decay' ) ) . '</strong>' );
 
 		// translators: %s is replaced by the amount of time that the login will be active for (e.g. "1 week")
-		$expire_desc    = '<small>' . sprintf( esc_html__( 'Access auto-expires in %s. You may revoke access at any time.', 'gk-gravityview' ), human_time_diff( 0, $this->config->get_setting( 'decay' ) ) ) . '</small>';
+		$expire_desc = '<small>' . sprintf( esc_html__( 'Access auto-expires in %s. You may revoke access at any time.', 'gk-gravityview' ), human_time_diff( 0, $this->config->get_setting( 'decay' ) ) ) . '</small>';
 
 		$ns          = $this->config->ns();
 		$cloned_role = translate_user_role( ucfirst( $this->config->get_setting( 'role' ) ) );
@@ -567,15 +575,40 @@ final class Admin {
 		}
 
 		$content = array(
-			'ns'             => $ns,
-			'name'           => $this->config->get_display_name(),
-			'expire_summary' => $expire_summary,
-			'expire_desc'    => $expire_desc,
-			'roles_summary'  => $roles_summary,
-			'caps'           => $this->get_caps_html(),
+			'ns'                 => $ns,
+			'name'               => $this->config->get_display_name(),
+			'expire_summary'     => $expire_summary,
+			'expire_desc'        => $expire_desc,
+			'debug_data_consent' => $this->get_debug_data_consent_html(),
+			'roles_summary'      => $roles_summary,
+			'caps'               => $this->get_caps_html(),
 		);
 
 		return $this->prepare_output( $output_template, $content );
+	}
+
+	/**
+	 * Get the HTML for the debug data consent checkbox.
+	 *
+	 * This is only shown if the webhook/url is defined and webhook/debug_data setting is true.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return string
+	 */
+	private function get_debug_data_consent_html() {
+
+		// translators: [link] and [/link] are replaced with a link to the Site Health page. Do not translate.
+		$output = sprintf( '<h2><label><input type="checkbox" id="tl-{{ns}}-debug-data-consent" class="tl-{{ns}}-auth__checkbox--large" /> %s</label></h2>', strtr( esc_html__( 'Include the [link]Site Health[/link] troubleshooting report', 'gk-gravityview' ), array(
+			'[link]'  => '<a href="' . esc_url( admin_url( 'site-health.php?tab=debug' ) ) . '">',
+			'[/link]' => '</a>',
+		) ) );
+
+		$content = array(
+			'ns' => $this->config->ns(),
+		);
+
+		return $this->prepare_output( $output, $content );
 	}
 
 	/**
@@ -1073,6 +1106,7 @@ final class Admin {
 					'content' => sprintf( __( 'Sending encrypted access to %1$s.', 'gk-gravityview' ), $vendor_title ),
 				),
 				'error'              => array(
+					// translators: %1$s is the vendor title
 					'title'   => sprintf( __( 'Error syncing support user to %1$s', 'gk-gravityview' ), $vendor_title ),
 					'content' => wp_kses( $error_content, array(
 						'a' => array(

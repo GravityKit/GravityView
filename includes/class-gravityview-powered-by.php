@@ -26,9 +26,11 @@ class GravityView_Powered_By {
 	/**
 	 * Prints a HTML link to GravityView's site if "Powered By" GravityView setting is enabled
 	 *
+	 * @param \GV\Template_Context $context The context.
+	 *
 	 * @return void
 	 */
-	public function maybe_add_link() {
+	public function maybe_add_link( \GV\Template_Context $context ) {
 
 		$powered_by = gravityview()->plugin->settings->get_gravitykit_setting( 'powered_by', 0 );
 
@@ -43,13 +45,19 @@ class GravityView_Powered_By {
 			return;
 		}
 
+		$css_class = 'gv-powered-by';
+
+		if ( ! $context->request->is_search() && isset( $context->entries ) && 0 === $context->entries->count() && 3 === (int) $context->view->settings->get( 'no_entries_options', '0' ) ) {
+			$css_class .= ' gv-hidden';
+		}
+
 		/**
 		 * @filter `gravityview/powered_by/text` Modify the anchor text for the Powered By link
 		 * @param string $anchor_text Anchor text for the Powered By link. Default: "Powered by GravityView". Will be sanitized before display.
 		 */
 		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gk-gravityview' ) );
 
-		printf( '<span class="gv-powered-by"><a href="%s">%s</a></span>', esc_url( $url ), esc_html( $anchor_text ) );
+		printf( '<span class="%s"><a href="%s">%s</a></span>', esc_attr( $css_class ), esc_url( $url ), esc_html( $anchor_text ) );
 	}
 
 	/**

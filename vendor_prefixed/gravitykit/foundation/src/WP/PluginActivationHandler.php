@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -82,7 +82,7 @@ class PluginActivationHandler {
 		}
 
 		$callback = function () use ( $plugin_file ) {
-			do_action( 'gk/foundation/plugin_deactivated', $plugin_file );
+			do_action( 'gk/foundation/plugin-deactivated', $plugin_file );
 		};
 
 		register_deactivation_hook( $plugin_file, $callback );
@@ -129,7 +129,7 @@ class PluginActivationHandler {
 		$plugin_activations = $this->get_plugin_activations();
 
 		foreach ( $plugin_activations as $i => $plugin_file ) {
-			do_action( 'gk/foundation/plugin_activated', $plugin_file );
+			do_action( 'gk/foundation/plugin-activated', $plugin_file );
 
 			unset( $plugin_activations[ $i ] );
 		}

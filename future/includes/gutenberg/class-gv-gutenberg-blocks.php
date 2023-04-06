@@ -31,7 +31,7 @@ class Blocks {
 	/**
 	 * Registers block renderers.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @return void
 	 */
@@ -135,7 +135,7 @@ class Blocks {
 	/**
 	 * Adds GravityView category to Gutenberg editor.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @param array $categories
 	 *
@@ -153,7 +153,7 @@ class Blocks {
 	/**
 	 * Localizes shared block assets that's made available to all blocks via the global window.gkGravityKitBlocks object.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @return void
 	 */
@@ -161,7 +161,7 @@ class Blocks {
 		/**
 		 * @filter `gk/gravityview/gutenberg/blocks/localization` Modifies the global blocks localization data.
 		 *
-		 * @since  $ver$
+		 * @since  2.17
 		 *
 		 * @param array $block_localization_data
 		 */
@@ -190,7 +190,7 @@ class Blocks {
 	/**
 	 * Returns the list of views for the block editor.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @return array|array[]
 	 */
@@ -204,7 +204,7 @@ class Blocks {
 			return [
 				'value' => (string) $view->ID,
 				'label' => sprintf(
-					'%s (#%s)',
+					'%s (#%d)',
 					$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
 					$view->ID
 				)
@@ -214,7 +214,7 @@ class Blocks {
 		/**
 		 * @filter `gk/gravityview/gutenberg/blocks/views` Modifies the Views object used in the UI.
 		 *
-		 * @since  $ver$
+		 * @since  2.17
 		 *
 		 * @param array $formatted_views
 		 */
@@ -226,7 +226,7 @@ class Blocks {
 	/**
 	 * Renders shortcode and returns rendered content along with newly enqueued scripts and styles.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @param string $shortcode
 	 *

@@ -266,6 +266,52 @@ class GVCommon {
 	}
 
 	/**
+	 * Alias of GFFormsModel::get_form_ids(), but allows for fetching other columns as well.
+	 *
+	 * @see GFFormsModel::get_form_ids()
+	 * @since 2.17.2
+	 *
+	 * @param bool   $active      True if active forms are returned. False to get inactive forms. Defaults to true.
+	 * @param bool   $trash       True if trashed forms are returned. False to exclude trash. Defaults to false.
+	 * @param string $sort_column The column to sort the results on.
+	 * @param string $sort_dir    The sort direction, ASC or DESC.
+	 * @param array  $columns     The columns to return. Defaults to ['id']. Other options are 'title', 'date_created', 'is_active', 'is_trash'. 'date_updated' may be supported, depending on the Gravity Forms version.
+	 *
+	 * @return array Forms indexed from 0 by SQL result row number. Each row is an associative array (column => value).
+	 */
+	public static function get_forms_columns( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC', $columns = [ 'id' ] ) {
+		global $wpdb;
+
+		// Only allow valid columns.
+		$columns = array_intersect( $columns, GFFormsModel::get_form_db_columns() );
+
+		$sql   = 'SELECT ' . implode( ', ', $columns ) . ' FROM ' . GFFormsModel::get_form_table_name();
+		$where = array();
+
+		if ( null !== $active ) {
+			$where[] = $wpdb->prepare( 'is_active=%d', $active );
+		}
+
+		if ( null !== $trash ) {
+			$where[] = $wpdb->prepare( 'is_trash=%d', $trash );
+		}
+
+		if ( ! empty( $where ) ) {
+			$sql .= ' WHERE ' . join( ' AND ', $where );
+		}
+
+		if ( ! in_array( strtolower( $sort_column ), GFFormsModel::get_form_db_columns() ) ) {
+			$sort_column = 'id';
+		}
+
+		if ( ! empty( $sort_column ) ) {
+			$sql .= " ORDER BY $sort_column " . ( $sort_dir == 'ASC' ? 'ASC' : 'DESC' );
+		}
+
+		return $wpdb->get_results( $sql, ARRAY_A );
+	}
+
+	/**
 	 * Get all forms to use as options in View settings.
 	 *
 	 * @since 2.17
@@ -282,19 +328,40 @@ class GVCommon {
 	 */
 	public static function get_forms_as_options( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC' ) {
 
-		$forms = GFAPI::get_forms( $active, $trash, $sort_column, $sort_dir );
-
-		if ( empty( $forms ) ) {
-			return array();
-		}
-
 		$options = array(
 			'' => esc_html__( 'Select a Form', 'gk-gravityview' ),
 		);
 
-		foreach ( $forms as $form ) {
-			$options[ (int) $form['id'] ] = esc_html( $form['title'] );
+		// This is only used in the admin and in ajax, so don't run on the front-end.
+		if( gravityview()->request->is_frontend() ) {
+			return $options;
 		}
+
+		static $static_cache;
+
+		$static_cache_key = md5( json_encode( func_get_args() ) );
+
+		if ( isset( $static_cache[ $static_cache_key ] ) ) {
+			return $static_cache[ $static_cache_key ];
+		}
+
+		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, [ 'id', 'title' ] );
+
+		if ( empty( $forms ) ) {
+			return $options;
+		}
+
+		foreach ( $forms as $form ) {
+
+			// Catch if the form is false, if GFFormsModel::get_form_ids() returns a form ID that doesn't exist.
+			if ( ! isset( $form['id'], $form['title'] ) ) {
+				continue;
+			}
+
+			$options[ (int) $form['id'] ] = sprintf( '%s (#%d)', esc_html( $form['title'] ), (int) $form['id'] );
+		}
+
+		$static_cache[ $static_cache_key ] = $options;
 
 		return $options;
 	}

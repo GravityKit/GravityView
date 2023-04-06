@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -20,6 +20,26 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.17.2 on April 5, 2023 =
+
+**Note: GravityView now requires Gravity Forms 2.5.1 or newer**
+
+* Added: "No Entries Behavior" option to hide the View when there are no entries visible to the current user (not applied to search results)
+* Fixed: Performance issue introduced in 2.17 that resulted in a large number of queries
+* Fixed: PHP 8+ fatal error when displaying connected Views in the Gravity Forms form editor or forms list
+* Fixed: PHP 8+ warning messages when creating a new View
+* Fixed: PHP warning when a View checks for the ability to edit an entry that has just been deleted using code
+* Fixed: On sites running the GiveWP plugin, the View Editor would look bad
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.11
+
+__Developer Updates:__
+
+* Added: View blocks are also parsed when running `\GV\View_Collection::from_content()`
+* Added: New filter, to be used by Multiple Forms extension: `gravityview/view/get_entries/should_apply_legacy_join_is_approved_query_conditions`
+* Modified: `gravityview()->views->get()` now parses the content of the global `$post` object and will detect View shortcodes or blocks stored in the `$post->post_content`
+* Modified: `gravityview()->views->get()` now may return a `GV\View_Collection` object when it detects multiple Views in the content
+* Updated: HTML tags that had used `.hidden` now use the `.gv-hidden` CSS class to prevent potential conflicts with other plugins/themes
 
 = 2.17.1 on February 20, 2023 =
 
