@@ -90,7 +90,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 
-		if ( ! $this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 

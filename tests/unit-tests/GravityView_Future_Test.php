@@ -8698,7 +8698,7 @@ class GVFutureTest_Widget_Test_BC extends GravityView_Widget {
 
 class GVFutureTest_Widget_Test_Merge_Tag extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
-		if ( ! $this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 
@@ -8708,7 +8708,7 @@ class GVFutureTest_Widget_Test_Merge_Tag extends \GV\Widget {
 
 class GVFutureTest_Widget_Test extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
-		if ( ! $this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 		?>

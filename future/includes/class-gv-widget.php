@@ -368,6 +368,41 @@ abstract class Widget {
 	}
 
 	/**
+	 * Gets View considering the current context.
+	 *
+	 * @since 2.17.2.1
+	 *
+	 * @param string|GV\Template_Context $context Context. Default: empty string.
+	 *
+	 * @return \GV\View|null
+	 */
+	public function get_view( $context = '' ) {
+		$views = gravityview()->views->get();
+
+		if ( $views instanceof \GV\View_Collection ) {
+			if ( ! $context instanceof \GV\Template_Context || ! $context->view ) {
+				gravityview()->log->error( 'Page/post contains multiple Views but context is empty or does not have the current View information' );
+
+				return null;
+			}
+
+			$view_id = $context->view->__get( 'ID' );
+
+			$view = $views->get( $view_id );
+
+			if ( ! $view ) {
+				gravityview()->log->error( 'Page/post contains multiple Views that are not in the provided context' );
+
+				return null;
+			}
+		} else {
+			$view = $views;
+		}
+
+		return $view;
+	}
+
+	/**
 	 * General validations when rendering the widget
 	 *
 	 * Always call this from your `render_frontend()` override!
@@ -398,27 +433,7 @@ abstract class Widget {
 		 */
 		$allowlist = apply_filters( 'gravityview/widget/hide_until_searched/allowlist', $allowlist );
 
-		$views = gravityview()->views->get();
-
-		if ( $views instanceof \GV\View_Collection ) {
-			if ( ! $context instanceof \GV\Template_Context || ! $context->view ) {
-				gravityview()->log->error( 'Page/post contains multiple Views but context is empty or does not have the current View information' );
-
-				return false;
-			}
-
-			$view_id = $context->view->__get( 'ID' );
-
-			$view = $views->get( $view_id );
-
-			if ( ! $view ) {
-				gravityview()->log->error( 'Page/post contains multiple Views that are not in the provided context' );
-
-				return false;
-			}
-		} else {
-			$view = $views;
-		}
+		$view = $this->get_view( $context );
 
 		if ( $view && ! in_array( $this->get_widget_id(), $allowlist ) ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
