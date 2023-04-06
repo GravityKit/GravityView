@@ -148,10 +148,16 @@ abstract class Request {
 			$view = gravityview()->views->get();
 		}
 
+		// If there are multiple Views on a page, the permalink _should_ include `gvid` to specify which View to use.
+		if( $view instanceof \GV\View_Collection ) {
+			$gvid  = \GV\Utils::_GET( 'gvid' );
+			$view  = $view->get( $gvid );
+		}
+
 		/**
 		 * A joined request.
 		 */
-		if ( $view && ( $joins = $view->joins ) ) {
+		if ( $view instanceof \GV\View && ( $joins = $view->joins ) ) {
 			$forms = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
 			$valid_forms = array_unique( wp_list_pluck( $forms, 'ID' ) );
 
