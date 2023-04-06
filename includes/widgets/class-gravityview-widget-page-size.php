@@ -85,7 +85,7 @@ class Page_Size extends \GV\Widget {
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = null ) {
 
-		if( ! $this->pre_render_frontend() ) {
+		if( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 
