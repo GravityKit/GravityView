@@ -370,36 +370,40 @@ abstract class Widget {
 	/**
 	 * Gets View considering the current context.
 	 *
-	 * @since 2.17.2.1
+	 * @since 2.17.3
 	 *
-	 * @param string|GV\Template_Context $context Context. Default: empty string.
+	 * @param string|\GV\Template_Context $context Context. Default: empty string.
 	 *
 	 * @return \GV\View|null
 	 */
 	public function get_view( $context = '' ) {
-		$views = gravityview()->views->get();
 
-		if ( $views instanceof \GV\View_Collection ) {
-			if ( ! $context instanceof \GV\Template_Context || ! $context->view ) {
-				gravityview()->log->error( 'Page/post contains multiple Views but context is empty or does not have the current View information' );
-
-				return null;
-			}
-
-			$view_id = $context->view->__get( 'ID' );
-
-			$view = $views->get( $view_id );
-
-			if ( ! $view ) {
-				gravityview()->log->error( 'Page/post contains multiple Views that are not in the provided context' );
-
-				return null;
-			}
-		} else {
-			$view = $views;
+		// $context should be passed to pre_render_frontend() and render_frontend().
+		if ( $context instanceof \GV\Template_Context && $context->view instanceof \GV\View ) {
+			return $context->view;
 		}
 
-		return $view;
+		// If it's not passed, parse the $post content.
+		$views = gravityview()->views->get();
+
+		// No views are found.
+		if ( ! $views ) {
+			return null;
+		}
+
+		// If there's only one view, return it.
+		if ( $views instanceof \GV\View ) {
+			return $views;
+		}
+
+		// If there are multiple views, return the first one.
+		if ( $views instanceof \GV\View_Collection ) {
+			gravityview()->log->debug( 'The widget lacks $context and there are multiple Views on this page. Returning the first.' );
+
+			return $views->first();
+		}
+
+		return null;
 	}
 
 	/**
@@ -407,9 +411,9 @@ abstract class Widget {
 	 *
 	 * Always call this from your `render_frontend()` override!
 	 *
-	 * @since 2.17.2.1 Added $context param.
+	 * @since 2.17.3 Added $context param.
 	 *
-	 * @param string|GV\Template_Context $context Context. Default: empty string.
+	 * @param string|\GV\Template_Context $context Context. Default: empty string.
 	 *
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
