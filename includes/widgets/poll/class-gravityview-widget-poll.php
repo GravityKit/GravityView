@@ -100,7 +100,7 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	 * @inheritDoc
 	 *
 	 * @since 1.8
-	 * @since 2.17.2.1 Added $context param
+	 * @since 2.17.3 Added $context param
 	 *
 	 * @param string|GV\Template_Context $context Context. Default: empty string.
 	 */
