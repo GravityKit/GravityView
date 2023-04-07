@@ -127,19 +127,21 @@ final class GravityView_Duplicate_Entry {
 
 		static $visibility_cache_for_view = array();
 
-		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $view->ID, null ) ) ) {
+		$anchor_id = $view->get_anchor_id();
+
+		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $anchor_id, null ) ) ) {
 			return $result;
 		}
 
 		foreach ( $view->get_entries()->all() as $entry ) {
 			if ( self::check_user_cap_duplicate_entry( $entry->as_entry(), $field->as_configuration() ) ) {
 				// At least one entry is duplicable for this user
-				$visibility_cache_for_view[ $view->ID ] = true;
+				$visibility_cache_for_view[ $anchor_id ] = true;
 				return true;
 			}
 		}
 
-		$visibility_cache_for_view[ $view->ID ] = false;
+		$visibility_cache_for_view[ $anchor_id ] = false;
 
 		return false;
 	}
