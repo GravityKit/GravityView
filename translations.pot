@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.17.3\n"
+"Project-Id-Version: GravityView 2.17.4\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-06T19:51:02+00:00\n"
+"POT-Creation-Date: 2023-04-07T21:01:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -170,8 +170,8 @@ msgid "Note: %s"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:249
-#: future/includes/class-gv-renderer.php:297
-#: future/includes/class-gv-renderer.php:353
+#: future/includes/class-gv-renderer.php:308
+#: future/includes/class-gv-renderer.php:364
 #: future/includes/class-gv-view.php:310
 #: includes/class-frontend-views.php:695
 msgid "You can only see this message because you are able to edit this View."
@@ -195,7 +195,7 @@ msgstr ""
 msgid "Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:277
+#: future/includes/class-gv-renderer.php:288
 #: future/includes/class-gv-settings-view.php:469
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:145
 #: includes/admin/metaboxes/views/view-configuration.php:10
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:281
+#: future/includes/class-gv-renderer.php:292
 #: future/includes/class-gv-settings-view.php:468
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
 #: includes/admin/metaboxes/views/view-configuration.php:9
@@ -213,22 +213,22 @@ msgstr ""
 msgid "Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:294
+#: future/includes/class-gv-renderer.php:305
 #: includes/class-frontend-views.php:692
 msgctxt "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:296
+#: future/includes/class-gv-renderer.php:307
 #: includes/class-frontend-views.php:694
 msgid "Add fields to %s"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:351
+#: future/includes/class-gv-renderer.php:362
 msgid "GravityView will not work correctly on this page because of the URL Slug."
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:352
+#: future/includes/class-gv-renderer.php:363
 msgid "Please <a href=\"%s\">read this article</a> for more information."
 msgstr ""
 
@@ -1762,23 +1762,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:727
+#: includes/class-admin-welcome.php:734
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:777
+#: includes/class-admin-welcome.php:784
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:815
+#: includes/class-admin-welcome.php:822
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:847
+#: includes/class-admin-welcome.php:854
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:848
+#: includes/class-admin-welcome.php:855
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2331,7 +2331,7 @@ msgid "Powered by GravityView"
 msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry-admin.php:103
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:296
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:298
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:119
 msgctxt "User capability"
 msgid "Entry Creator"
@@ -2345,102 +2345,102 @@ msgstr ""
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:373
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:428
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:459
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:470
+#: includes/extensions/delete-entry/class-delete-entry.php:375
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:430
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:461
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:472
 msgid "The entry does not exist."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:500
+#: includes/extensions/delete-entry/class-delete-entry.php:502
 msgid "Moving the entry to the trash failed."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:610
+#: includes/extensions/delete-entry/class-delete-entry.php:612
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:637
+#: includes/extensions/delete-entry/class-delete-entry.php:639
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:641
+#: includes/extensions/delete-entry/class-delete-entry.php:643
 msgid "You do not have permission to delete this entry."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:646
+#: includes/extensions/delete-entry/class-delete-entry.php:648
 msgid "The entry is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:648
+#: includes/extensions/delete-entry/class-delete-entry.php:650
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:790
+#: includes/extensions/delete-entry/class-delete-entry.php:792
 msgid "There was an error deleting the entry: %s"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:794
+#: includes/extensions/delete-entry/class-delete-entry.php:796
 msgid "The entry was successfully moved to the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:797
+#: includes/extensions/delete-entry/class-delete-entry.php:799
 msgid "The entry was successfully deleted."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:206
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:208
 msgid "Duplicate Link Text"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:208
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:240
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:262
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:210
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:242
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:264
 msgid "Duplicate Entry"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:216
 msgid "Allow the following users to duplicate the entry:"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:242
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:244
 msgid "A link to duplicate the entry. Respects the Duplicate Entry permissions."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:494
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:534
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:859
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:496
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:536
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:861
 msgid "There was an error duplicating the entry."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:594
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:596
 msgid "Are you sure you want to duplicate this entry?"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:629
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:631
 msgid "The link to duplicate this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:633
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:635
 msgid "You do not have permission to duplicate this entry."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:773
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:775
 msgid "There was an error duplicating the entry: %s"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:777
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:779
 msgid "The entry was successfully duplicated."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:821
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:823
 msgid "Duplicate"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:845
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:847
 msgid "Entry duplicated."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:853
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:855
 msgctxt "Error message links to logging page"
 msgid "Check the GravityView logs for more information."
 msgstr ""
