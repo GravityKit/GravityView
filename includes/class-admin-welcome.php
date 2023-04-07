@@ -277,6 +277,13 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.17.4 on April 7, 2023</h3>
+
+				<ul>
+					<li>Fixed: When a View is embedded multiple times on the same page, Edit Entry, Delete Entry, and Duplicate Entry links could be hidden after the first View</li>
+					<li>Fixed: Fatal error rendering some Maps Layout Views</li>
+				</ul>
+
 				<h3>2.17.3 on April 6, 2023</h3>
 
 				<ul>

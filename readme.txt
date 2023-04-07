@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.17.3 on April 7, 2023 =
+
+* Fixed: When a View is embedded multiple times on the same page, Edit Entry, Delete Entry, and Duplicate Entry links could be hidden after the first View
+* Fixed: Fatal error rendering some Maps Layout Views
+
 = 2.17.3 on April 6, 2023 =
 
 * Fixed: Fatal error rendering multiple Views on the same page/post introduced in 2.17.2
