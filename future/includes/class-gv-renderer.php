@@ -273,7 +273,18 @@ EOD;
 				$tab = esc_html__( 'Edit Entry', 'gk-gravityview' );
 				$context = 'edit';
 				break;
-			case ( $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
+			case ( $entry = $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
+
+				// When the entry is not found, we're probably inside a shortcode.
+				if ( ! $gravityview->entry ) {
+					return;
+				}
+
+				// Sanity check. Should be the same entry!
+				if ( $gravityview->entry->ID !== $entry->ID ) {
+					return;
+				}
+
 				$tab = esc_html__( 'Single Entry', 'gk-gravityview' );
 				$context = 'single';
 				break;
