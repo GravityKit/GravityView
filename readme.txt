@@ -21,7 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.17.3 on April 7, 2023 =
+= develop =
+
+* Fixed: Fatal error when performing a translations scan with the WPML plugin
+
+= 2.17.4 on April 7, 2023 =
 
 * Fixed: Fatal error rendering some Maps Layout Views introduced in 2.17.2
 * Fixed: When a View is embedded multiple times on the same page, Edit Entry, Delete Entry, and Duplicate Entry links could be hidden after the first View
