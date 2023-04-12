@@ -1002,6 +1002,11 @@ class GVCommon {
 	 */
 	public static function check_entry_display( $entry, $view = null ) {
 
+		// Check whether Embed Only is enabled. If we're on a CPT, the entry is not allowed to be displayed.
+		if ( gravityview()->request->is_view() && $view && $view->settings->get( 'embed_only' ) ) {
+			return new WP_Error( 'gravityview/embed_only' );
+		}
+
 		if ( ! $entry || is_wp_error( $entry ) ) {
 			return new WP_Error( 'entry_not_found', 'Entry was not found.', $entry );
 		}
