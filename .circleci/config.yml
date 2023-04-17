@@ -89,7 +89,6 @@ jobs:
       - run:
           name: Building and packaging
           command: |
-            rm -rf vendor
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
             /home/circleci/tooling/build-tools/build_tools.sh grunt
             if [ "${CIRCLE_BRANCH}" != "main" ]; then
