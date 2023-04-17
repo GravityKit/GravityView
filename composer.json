@@ -2,7 +2,12 @@
   "name": "gravityview/gravityview",
   "type": "wordpress-plugin",
   "description": "The best way to display Gravity Forms entries on your website.",
-  "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
+  "keywords": [
+    "gravityview",
+    "gravity view",
+    "gravity forms directory",
+    "gravity forms"
+  ],
   "homepage": "https://www.gravitykit.com/",
   "license": "GPL-2.0+",
   "minimum-stability": "dev",
@@ -24,14 +29,14 @@
     "gravitykit/foundation": "dev-main"
   },
   "require-dev": {
-	"lucatume/wp-browser": "^2.4",
-	"codeception/module-asserts": "^1.0",
-	"codeception/module-phpbrowser": "^1.0",
-	"codeception/module-webdriver": "^1.0",
-	"codeception/module-db": "^1.0",
-	"codeception/module-filesystem": "^1.0",
-	"codeception/module-cli": "^1.0",
-	"codeception/util-universalframework": "^1.0",
+    "lucatume/wp-browser": "^2.4",
+    "codeception/module-asserts": "^1.0",
+    "codeception/module-phpbrowser": "^1.0",
+    "codeception/module-webdriver": "^1.0",
+    "codeception/module-db": "^1.0",
+    "codeception/module-filesystem": "^1.0",
+    "codeception/module-cli": "^1.0",
+    "codeception/util-universalframework": "^1.0",
     "yoast/phpunit-polyfills": "^1.0"
   },
   "extra": {
@@ -66,20 +71,19 @@
           "paragonie/random_compat",
           "paragonie/sodium_compat"
         ]
-      },
-      "delete_vendor_files": false
+      }
     }
   },
   "scripts": {
     "prefix_vendor": "@php strauss.phar",
-    "cleanup_foundation": "[ -d 'vendor/gravitykit/foundation' ] && rm -rf vendor/gravitykit/foundation || true",
+    "post_update_install": "./composer_post_update_install.sh",
     "post-install-cmd": [
       "@prefix_vendor",
-      "@cleanup_foundation"
+      "@post_update_install"
     ],
     "post-update-cmd": [
       "@prefix_vendor",
-      "@cleanup_foundation"
+      "@post_update_install"
     ]
   },
   "config": {
