@@ -246,7 +246,7 @@ abstract class Request {
 
 		unset( $get['mode'] );
 
-		$get = array_filter( $get, 'gravityview_is_not_empty_string' );
+		$get = array_filter( (array) $get, 'gravityview_is_not_empty_string' );
 
 		if( $this->_has_field_key( $get ) ) {
 			return true;
