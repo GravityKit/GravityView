@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-12T19:29:59+00:00\n"
+"POT-Creation-Date: 2023-04-26T17:36:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -4831,25 +4831,25 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "[name] joined the chat"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:106
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:110
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:216
 msgid "Grant Support Access"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:135
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:139
 msgid "We need access to Views to provide great support."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:136
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:140
 msgid "We will need to see and edit the forms, entries, and Gravity Forms settings to debug issues."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:137
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:141
 msgid "We may need to manage plugins in order to debug conflicts on your site and add related GravityView functionality."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:144
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:148
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:152
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "We don't need to see your [plugin] details to provide support (if [plugin] is enabled)."
 msgstr ""
@@ -6120,84 +6120,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""

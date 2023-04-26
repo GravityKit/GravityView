@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7730020d9e7de28fd029c4340bded853",
+    "content-hash": "601001744759df84f07036b379ff537d",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "5ee55e8e3289c9d27f8677ab0bdd3fad1e020496"
+                "reference": "6303956c784c41d784f4c015a997b2a99d90036a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/5ee55e8e3289c9d27f8677ab0bdd3fad1e020496",
-                "reference": "5ee55e8e3289c9d27f8677ab0bdd3fad1e020496",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/6303956c784c41d784f4c015a997b2a99d90036a",
+                "reference": "6303956c784c41d784f4c015a997b2a99d90036a",
                 "shasum": ""
             },
             "require": {
@@ -312,10 +312,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.0.11",
+                "source": "https://github.com/GravityKit/Foundation/tree/main",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2023-04-05T17:07:40+00:00"
+            "time": "2023-04-20T16:30:07+00:00"
         },
         {
             "name": "illuminate/container",

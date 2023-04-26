@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 12-April-2023 using Strauss.
+ * Modified by gravityview on 26-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -12,6 +12,9 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GravityKit\GravityView\Foundation\Helpers\Core as CoreHelpers;
 use GravityKit\GravityView\Foundation\Licenses\LicenseManager;
 use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Admin as TrustedLoginAdmin;
+use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Form as TrustedLoginForm;
+use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\SupportUser as TrustedLoginSupportUser;
+use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\SiteAccess as TrustedLoginSiteAccess;
 use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Logging as TrustedLoginLogging;
 use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Config as TrustedLoginConfig;
 use GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Client as TrustedLoginClient;
@@ -101,7 +104,8 @@ class TrustedLogin {
 	 */
 	public function add_gk_submenu_item() {
 		$tl_config = new TrustedLoginConfig( $this->get_config() );
-		$tl_admin  = new TrustedLoginAdmin( $tl_config, new TrustedLoginLogging( $tl_config ) );
+		$tl_logging = new TrustedLoginLogging( $tl_config );
+		$tl_form   = new TrustedLoginForm( $tl_config, $tl_logging, new TrustedLoginSupportUser( $tl_config, $tl_logging ), new TrustedLoginSiteAccess( $tl_config, $tl_logging ) );
 
 		$page_title = $menu_title = esc_html__( 'Grant Support Access', 'gk-gravityview' );
 
@@ -110,7 +114,7 @@ class TrustedLogin {
 			'menu_title' => $menu_title,
 			'capability' => $this->_capability,
 			'id'         => self::ID,
-			'callback'   => [ $tl_admin, 'print_auth_screen' ],
+			'callback'   => [ $tl_form, 'print_auth_screen' ],
 			'order'      => 1,
 		], 'bottom' );
 	}
@@ -177,9 +181,10 @@ class TrustedLogin {
 			'paths'           => [
 				'css' => CoreHelpers::get_assets_url( 'trustedlogin/trustedlogin.css' ),
 			],
-			'webhook' => [
-				'url' => 'https://hooks.zapier.com/hooks/catch/28670/bnwjww2/silent/',
-				'debug_data' => true,
+			'webhook'         => [
+				'url'           => 'https://hooks.zapier.com/hooks/catch/28670/bnwjww2/silent/',
+				'debug_data'    => true,
+				'create_ticket' => true,
 			],
 		];
 

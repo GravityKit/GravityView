@@ -2,7 +2,7 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 12-April-2023 using Strauss.
+ * Modified by gravityview on 26-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -181,7 +181,7 @@ class Translations extends ArrayObject
         }
 
         if ($matches[1] === 'addFrom') {
-            $extractor = 'GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext\\Extractors\\'.$matches[2].'::from'.$matches[3];
+            $extractor = 'GravityKit\GravityView\Foundation\ThirdParty\Gettext\\Extractors\\'.$matches[2].'::from'.$matches[3];
             $source = array_shift($arguments);
             $options = array_shift($arguments) ?: [];
 
@@ -190,7 +190,7 @@ class Translations extends ArrayObject
             return $this;
         }
 
-        $generator = 'GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext\\Generators\\'.$matches[2].'::to'.$matches[3];
+        $generator = 'GravityKit\GravityView\Foundation\ThirdParty\Gettext\\Generators\\'.$matches[2].'::to'.$matches[3];
 
         array_unshift($arguments, $this);
 

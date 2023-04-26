@@ -12,7 +12,7 @@ if ( file_exists( __DIR__ . '/autoload-classmap.php' ) ) {
             }
         );
     }
-    unset( $class_map );
+    unset( $class_map, $strauss_src );
 }
 
 if ( file_exists( __DIR__ . '/autoload-files.php' ) ) {

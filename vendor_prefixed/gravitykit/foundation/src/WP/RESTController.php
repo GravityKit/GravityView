@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 12-April-2023 using Strauss.
+ * Modified by gravityview on 26-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -51,7 +51,7 @@ class RESTController {
 	 *
 	 * @return RESTController
 	 */
-	public static function get_instance() {
+	public static function get_instance(): RESTController {
 		if ( ! self::$_instance ) {
 			self::$_instance = new self();
 		}
@@ -68,7 +68,7 @@ class RESTController {
 	 *
 	 * @return void
 	 */
-	public function add_route( $route = [] ) {
+	public function add_route( array $route = [] ) {
 		$this->routes[] = $route;
 	}
 
@@ -107,7 +107,7 @@ class RESTController {
 	 *
 	 * @return void
 	 */
-	public function register_route( $route ) {
+	public function register_route( array $route ) {
 		$required_route_params = [
 			'endpoint',
 			'methods',
@@ -159,7 +159,7 @@ class RESTController {
 	 *
 	 * @return Closure Callback function that will be called by WP_REST_Server.
 	 */
-	public function process_route( $route ) {
+	public function process_route( array $route ): Closure {
 		return function () use ( $route ) {
 			/**
 			 * Fires before the REST API route is processed.
@@ -172,7 +172,7 @@ class RESTController {
 			 */
 			do_action( 'gk/foundation/rest/route/before', $route );
 
-			$response = call_user_func( $route['callback'] );
+			$response = call_user_func( $route['callback'], $route );
 
 			/**
 			 * Modifies the REST API route response.

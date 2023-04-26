@@ -1,8 +1,11 @@
 <?php
+
+namespace GravityKit\GravityView\Foundation\ThirdParty\Illuminate\Support;
+
 /**
  * @license MIT
  *
- * Modified by gravityview on 12-April-2023 using Strauss.
+ * Modified by gravityview on 26-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
