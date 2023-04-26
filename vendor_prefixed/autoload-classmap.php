@@ -216,6 +216,7 @@ return array(
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Cron' => $strauss_src . '/trustedlogin/client/src/Cron.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\SecurityChecks' => $strauss_src . '/trustedlogin/client/src/SecurityChecks.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Endpoint' => $strauss_src . '/trustedlogin/client/src/Endpoint.php',
+   'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Form' => $strauss_src . '/trustedlogin/client/src/Form.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Admin' => $strauss_src . '/trustedlogin/client/src/Admin.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Logging' => $strauss_src . '/trustedlogin/client/src/Logging.php',
    'GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Client' => $strauss_src . '/trustedlogin/client/src/Client.php',
