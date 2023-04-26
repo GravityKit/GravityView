@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 17-April-2023 using Strauss.
+ * Modified by gravityview on 26-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -271,7 +271,7 @@ class Framework {
 				'isNetworkAdmin' => CoreHelpers::is_network_admin(),
 				'permissions'    => $this->_permissions,
 			],
-			FoundationCore::get_ajax_params( self::AJAX_ROUTER )
+			FoundationCore::ajax_router()->get_ajax_params( self::AJAX_ROUTER )
 		);
 
 		if ( $this->_permissions['view_licenses'] ) {
