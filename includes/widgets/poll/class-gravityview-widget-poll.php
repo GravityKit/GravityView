@@ -93,7 +93,12 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 
 		$GFPolls->localize_scripts();
 
-		wp_enqueue_style('gpoll_css', $GFPolls->get_base_url() . '/css/gpoll.css', null, $GFPolls->_version);
+		if( version_compare( $GFPolls->_version, '4.0', '>=' ) ) {
+			wp_enqueue_style('gpoll_css', $GFPolls->get_base_url() . '/assets/css/dist/theme.css', null, $GFPolls->_version);
+		} else {
+			wp_enqueue_style('gpoll_css', $GFPolls->get_base_url() . '/css/gpoll.css', null, $GFPolls->_version);
+		}
+
 	}
 
 	/**
