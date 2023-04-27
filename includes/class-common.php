@@ -399,7 +399,7 @@ class GVCommon {
 		$forms = wp_list_sort( $forms, $order_by, $order, true );
 
 		/**
-		 * @filter `gravityview/common/get_forms` Modify the forms returned by GFAPI::get_forms()
+		 * @filter `gk/gravityview/common/get_forms` Modify the forms returned by GFAPI::get_forms()
 		 *
 		 * @since 2.17.6
 		 *
@@ -411,7 +411,7 @@ class GVCommon {
 		 *
 		 * @return array Modified array of forms.
 		 */
-		$forms = apply_filters( 'gravityview/common/get_forms', $forms, $active, $trash, $order_by, $order );
+		$forms = apply_filters( 'gk/gravityview/common/get_forms', $forms, $active, $trash, $order_by, $order );
 
 		return $forms;
 	}

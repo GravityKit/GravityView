@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Fixed: Incompatibility with some plugins/themes that use Laravel components
 
+__Developer Notes:__
+
+* Added: `gk/gravityview/common/get_forms` filter to modify the forms returned by `GVCommon::get_forms()`
+
 = 2.17.5 on April 12, 2023 =
 
 * Fixed: Do not modify the Single Entry title when the "Prevent Direct Access" setting is enabled for a View
