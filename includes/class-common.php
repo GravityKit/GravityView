@@ -558,11 +558,11 @@ class GVCommon {
 	 */
 	public static function get_entry_ids( $form_id, $search_criteria = array() ) {
 
-		if ( ! class_exists( 'GFFormsModel' ) ) {
+		if ( ! class_exists( 'GFAPI' ) ) {
 			return;
 		}
 
-		return GFFormsModel::search_lead_ids( $form_id, $search_criteria );
+		return GFAPI::get_entry_ids( $form_id, $search_criteria );
 	}
 
 	/**
