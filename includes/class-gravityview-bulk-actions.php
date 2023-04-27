@@ -117,8 +117,15 @@ class GravityView_Bulk_Actions {
 
 			$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
 
+			// Make sure the entry list class is loaded.
+			require_once( GFCommon::get_base_path() . '/entry_list.php' );
+
+			$GF_Entry_List_Table = new GF_Entry_List_Table();
+
+			$search_criteria = $GF_Entry_List_Table->get_search_criteria( $search_criteria );
+
 			// Get all the entry IDs for the form
-			$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
+			$entries = GVCommon::get_entry_ids( $form_id, $search_criteria );
 
 		} else {
 
