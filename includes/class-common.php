@@ -371,15 +371,16 @@ class GVCommon {
 	 *
 	 * @see GFAPI::get_forms()
 	 *
-	 * @since 1.19 Allow "any" $active status option
-	 * @since 2.7.2 Allow sorting forms using wp_list_sort()
+	 * @since 1.19 Allow "any" $active status option.
+	 * @since 2.7.2 Allow sorting forms using wp_list_sort().
+	 * @since 2.17.6 Added `gravityview/common/get_forms` filter.
 	 *
-	 * @param bool|string  $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
-	 * @param bool         $trash Include forms in trash? Default: `false`
+	 * @param bool|string  $active Status of forms. Use `any` to get array of forms with any status. Default: `true`.
+	 * @param bool         $trash Include forms in trash? Default: `false`.
 	 * @param string|array $order_by Optional. Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
 	 * @param string       $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
 	 *
-	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
+	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms.
 	 */
 	public static function get_forms( $active = true, $trash = false, $order_by = 'id', $order = 'ASC' ) {
 		$forms = array();
@@ -396,6 +397,21 @@ class GVCommon {
 		}
 
 		$forms = wp_list_sort( $forms, $order_by, $order, true );
+
+		/**
+		 * @filter `gravityview/common/get_forms` Modify the forms returned by GFAPI::get_forms()
+		 *
+		 * @since 2.17.6
+		 *
+		 * @param array $forms Array of forms, with form ID as the key.
+		 * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`.
+		 * @param bool $trash Include forms in trash? Default: `false`.
+		 * @param string|array $order_by Optional. Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
+		 * @param string $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
+		 *
+		 * @return array Modified array of forms.
+		 */
+		$forms = apply_filters( 'gravityview/common/get_forms', $forms, $active, $trash, $order_by, $order );
 
 		return $forms;
 	}
