@@ -233,13 +233,25 @@ class GravityView_Admin_Metaboxes {
 			// Starting from GF 2.6, GF's form_admin.js script requires window.form and window.gf_vars objects to be set when any element has a .merge-tag-support class.
 			// Since we don't yet have a form when creating a new View, we need to mock those objects.
 			$_id        = isset( $_GET['id'] ) ? $_GET['id'] : null;
-			$_GET['id'] = -1; // This is needed for GFCommon::gf_vars() to return the mergeTags property.
+			$_GET['id'] = - 1; // This is needed for GFCommon::gf_vars() to return the mergeTags property.
+
+			if ( function_exists( 'error_reporting' ) ) {
+				// Store the original error reporting level.
+				$original_error_reporting = error_reporting();
+
+				// Turn off warnings.
+				error_reporting( $original_error_reporting & ~E_WARNING );
+			}
 
 			$output .= sprintf(
 				'<script type="text/javascript">var form = %s; %s</script>',
 				'{fields: []}',
 				@GFCommon::gf_vars( false ) // Need to silence errors because the form doesn't exist and GF doesn't expect that.
 			);
+
+			if ( function_exists( 'error_reporting' ) ) {
+				error_reporting( $original_error_reporting );
+			}
 
 			$_GET['id'] = $_id;
 		}
