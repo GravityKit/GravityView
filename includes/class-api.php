@@ -1345,9 +1345,11 @@ function gravityview_get_context() {
 
 	if ( gravityview()->request->is_edit_entry() ) {
 		return 'edit';
-	} else if ( gravityview()->request->is_entry() ) {
+	} elseif ( gravityview()->request->is_entry() ) {
 		return 'single';
-	} else if ( gravityview()->request->is_view( false ) ) {
+	} elseif ( gravityview()->request->is_view( false ) ) {
+		return 'directory';
+	} elseif ( gravityview()->views->get() ) {
 		return 'directory';
 	}
 
