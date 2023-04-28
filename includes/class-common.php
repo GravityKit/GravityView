@@ -921,7 +921,7 @@ class GVCommon {
 					break;
 			}
 
-			$val1 = in_array( gravityview_get_context(), $matching_contexts ) ? $val2 : false;
+			$val1 = in_array( gravityview_get_context(), $matching_contexts, true ) ? $val2 : false;
 		}
 
 		// Attempt to parse dates.
