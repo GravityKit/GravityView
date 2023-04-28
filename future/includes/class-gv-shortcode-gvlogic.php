@@ -335,6 +335,11 @@ class gvlogic extends \GV\Shortcode {
 			}
 		}
 
+		// @see https://github.com/GravityKit/GravityView/issues/1846
+		$atts = array_map( function( $att ) {
+			return trim( $att, '&#8221;' );
+		}, $atts );
+
 		/**
 		 * @filter `gravityview/gvlogic/atts` The logic attributes.
 		 *
