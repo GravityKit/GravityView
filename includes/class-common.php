@@ -844,6 +844,11 @@ class GVCommon {
 		// fetch the entry
 		$entry = GFAPI::get_entry( $entry_id );
 
+		if ( is_wp_error( $entry ) ) {
+			gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
+			return false;
+		}
+
 		/**
 		 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
 		 * @since 1.16.2
