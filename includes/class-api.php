@@ -1343,14 +1343,7 @@ function gravityview_get_context() {
 		return '';
 	}
 
-	/**
-	 * @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
-	 * The Edit Entry functionality overrides this value.
-	 * @param boolean $is_edit_entry
-	 */
-	$is_edit_entry = apply_filters( 'gravityview_is_edit_entry', false );
-
-	if ( $is_edit_entry ) {
+	if ( gravityview()->request->is_edit_entry() ) {
 		return 'edit';
 	} else if ( gravityview()->request->is_entry() ) {
 		return 'single';
