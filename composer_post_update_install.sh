@@ -7,8 +7,9 @@ VENDOR_FOLDERS_TO_KEEP=("composer")
 if [ -f "vendor_prefixed/illuminate/support/helpers.php" ]; then
   insertion="${FOUNDATION_NAMESPACE}\Foundation\ThirdParty\Illuminate\Support"
   insertion="\nnamespace ${insertion//\\/\\\\\\};\n" # Escape backslashes for sed
+  [[ "$(uname)" = "Darwin" ]] && in_place_edit=(-i '') || in_place_edit=(-i)
 
-  sed -i ''$([ "$(uname)" = "Darwin" ] && echo '') \
+  sed "${in_place_edit[@]}" \
       -e "1s/^//p; 1s/^.*/${insertion}/" \
       vendor_prefixed/illuminate/support/helpers.php
 fi
@@ -17,5 +18,3 @@ fi
 if [[ -d "vendor" && "${COMPOSER_DEV_MODE}" -eq 0 ]]; then
   find ./vendor -mindepth 1 -maxdepth 1 -type d $(printf -- "-not -name %s " "${VENDOR_FOLDERS_TO_KEEP[@]}") -exec rm -rf '{}' \;
 fi
-
-composer dump-autoload -o

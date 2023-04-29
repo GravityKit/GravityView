@@ -79,11 +79,13 @@
     "post_update_install": "./composer_post_update_install.sh",
     "post-install-cmd": [
       "@prefix_vendor",
-      "@post_update_install"
+      "@post_update_install",
+      "composer dump-autoload -o"
     ],
     "post-update-cmd": [
       "@prefix_vendor",
-      "@post_update_install"
+      "@post_update_install",
+      "composer dump-autoload -o"
     ]
   },
   "config": {
