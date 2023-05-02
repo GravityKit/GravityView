@@ -26,7 +26,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Incompatibility with some plugins/themes that use Laravel components
 * Fixed: Appearance of Likert survey fields when using Gravity Forms Survey Add-On Version 3.8 or newer
 * Fixed: Appearance of the Poll widget when using Gravity Forms Poll Add-On Version 4.0 or newer
-* Fixed: `[gvlogic]` would sometimes not work when embedded in a Post or Page
+* Fixed: `[gvlogic]` not working when embedded in a Post or Page
+* Fixed: Consent field always showing checked status when there are two or more Consent fields in the form
 
 __Developer Notes:__
 
