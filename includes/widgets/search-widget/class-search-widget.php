@@ -217,6 +217,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// hybrids
 			'created_by' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
+			'multi_text' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
 			'product'   => array( 'select', 'radio', 'link', 'input_text' ),
 		);
 
@@ -447,6 +448,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$input_type = 'boolean'; // on/off checkbox
 		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
 			$input_type = 'multi'; //multiselect
+		} elseif ( in_array( $field_id, [ 'payment_status' ] ) ) {
+			$input_type = 'multi_text';
 		} elseif ( in_array( $field_type, array( 'select', 'radio' ) ) ) {
 			$input_type = 'select';
 		} elseif ( in_array( $field_type, array( 'date' ) ) || in_array( $field_id, array( 'payment_date' ) ) ) {
@@ -1683,6 +1686,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter['type'] = 'created_by';
 		}
 
+		if( 'payment_status' === $field['field'] ) {
+			$filter['type']    = 'entry_meta';
+			$filter['choices'] = GFCommon::get_entry_payment_statuses_as_choices();
+		}
+
 		/**
 		 * @filter `gravityview/search/filter_details` Filter the output filter details for the Search widget.
 		 * @since 2.5
@@ -1754,8 +1762,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return $filter; // @todo Populate plugins might give us empty choices
 		}
 
-		// Allow only created_by and field-ids to be sieved.
-		if ( 'created_by' !== $filter['key'] && ! is_numeric( $filter['key'] ) ) {
+		// Allow only specific entry meta and field-ids to be sieved.
+		if ( ! in_array( $filter['key'], [ 'created_by', 'payment_status' ], true ) && ! is_numeric( $filter['key'] ) ) {
 			return $filter;
 		}
 
@@ -1775,8 +1783,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$entry_meta_table_name = GFFormsModel::get_entry_meta_table_name();
 
 		$key_like = $wpdb->esc_like( $filter['key'] ) . '.%';
+		$filter_type = \GV\Utils::get( $filter, 'type' );
 
-		switch ( \GV\Utils::get( $filter, 'type' ) ) {
+		switch ( $filter_type ) {
 			case 'post_category':
 				$choices = $wpdb->get_col( $wpdb->prepare(
 					"SELECT DISTINCT SUBSTRING_INDEX( `meta_value`, ':', 1) FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %d) AND `form_id` = %d",
@@ -1784,8 +1793,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 				) );
 				break;
 			case 'created_by':
+			case 'entry_meta':
 				$choices = $wpdb->get_col( $wpdb->prepare(
-					"SELECT DISTINCT `created_by` FROM $entry_table_name WHERE `form_id` = %d",
+					"SELECT DISTINCT `{$filter['key']}` FROM $entry_table_name WHERE `form_id` = %d",
 					$form_id
 				) );
 				break;
