@@ -1831,9 +1831,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Calculate the search choices for the users
 	 *
 	 * @param \GV\View|null $view The View, if set.
-	 * @since develop
 	 *
 	 * @since 1.8
+	 * @since 2.3 Added $view parameter.
 	 *
 	 * @return array Array of user choices (value = ID, text = display name)
 	 */
@@ -1849,7 +1849,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		foreach ( $users as $user ) {
 			/**
 			 * @filter `gravityview/search/created_by/text` Filter the display text in created by search choices
-			 * @since develop
+			 * @since 2.3
 			 * @param string[in,out] The text. Default: $user->display_name
 			 * @param \WP_User $user The user.
 			 * @param \GV\View|null $view The view.
