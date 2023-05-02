@@ -26,10 +26,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Incompatibility with some plugins/themes that use Laravel components
 * Fixed: Appearance of Likert survey fields when using Gravity Forms Survey Add-On Version 3.8 or newer
 * Fixed: Appearance of the Poll widget when using Gravity Forms Poll Add-On Version 4.0 or newer
+* Fixed: `[gvlogic]` would sometimes not work when embedded in a Post or Page
 
 __Developer Notes:__
 
 * Added: `gk/gravityview/common/get_forms` filter to modify the forms returned by `GVCommon::get_forms()`
+* Modified: Added `gvlogic`-related shortcodes to the `no_texturize_shortcodes` array to prevent shortcode attributes from being encoding
 * Modified: Updated Gravity Forms CSS file locations for the Survey, Poll, and Quiz Add-Ons
 * Modified: Likert survey responses are now wrapped in `div.gform-settings__content.gform-settings-panel__content` to match the Gravity Forms Survey Add-On 3.8 appearance
 
