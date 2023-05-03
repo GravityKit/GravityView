@@ -27,6 +27,8 @@ class gvlogic extends \GV\Shortcode {
 		parent::add( 'gvlogic2' );
 		parent::add( 'gvlogic3' ); // This level of nesting is not supported by GravityView support...but go for it!
 		parent::add( 'gvlogicelse' );
+
+		add_filter( 'no_texturize_shortcodes', array( __CLASS__, 'filter_no_texturize_shortcodes' ) );
 	}
 
 	/**
@@ -343,5 +345,26 @@ class gvlogic extends \GV\Shortcode {
 		 * @param array $atts The logic attributes.
 		 */
 		return apply_filters( 'gravityview/gvlogic/atts', $atts );
+	}
+
+	/**
+	 * Fixes formatting issues when embedding in posts/pages.
+	 *
+	 * @see https://github.com/GravityKit/GravityView/issues/1846
+	 *
+	 * @since 2.17.6
+	 *
+	 * @param array $atts
+	 *
+	 * @return array
+	 */
+	public static function filter_no_texturize_shortcodes( $shortcodes = [] ) {
+
+		$shortcodes[] = 'gvlogic';
+		$shortcodes[] = 'gvlogic2';
+		$shortcodes[] = 'gvlogic3';
+		$shortcodes[] = 'gvlogicelse';
+
+		return $shortcodes;
 	}
 }

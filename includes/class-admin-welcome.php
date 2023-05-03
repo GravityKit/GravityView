@@ -277,6 +277,50 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.17.6 on May 3, 2023</h3>
+
+				<ul>
+					<li>Added: Filter entries by payment status using a drop-down, radio, multi-select, or checkbox inputs in the Search Bar (previously, only searchable using a text input)</li>
+					<li>Modified: Added '(Inactive)' suffix to inactive forms in the Data Source dropdown</li>
+					<li>Fixed: Incompatibility with some plugins/themes that use Laravel components</li>
+					<li>Fixed: Appearance of Likert survey fields when using Gravity Forms Survey Add-On Version 3.8 or
+						newer
+					</li>
+					<li>Fixed: Appearance of the Poll widget when using Gravity Forms Poll Add-On Version 4.0 or newer
+					</li>
+					<li>Fixed: <code>[gvlogic]</code> not working when embedded in a Post or Page</li>
+					<li>Fixed: <code>[gvlogic if='context' is='multiple']</code> not working when a View is embedded
+					</li>
+					<li>Fixed: Consent field always showing checked status when there are two or more Consent fields in
+						the form
+					</li>
+					<li>Fixed: Selecting all entries on the Entries page would not properly apply all the search
+						filters
+					</li>
+				</ul>
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Added: <code>gk/gravityview/common/get_forms</code> filter to modify the forms returned by
+						<code>GVCommon::get_forms()</code></li>
+					<li>Modified: Removed <code>.hidden</code> from compiled CSS files to prevent potential conflicts
+						with other plugins/themes (use <code>.gv-hidden</code> instead)
+					</li>
+					<li>Modified: Added <code>gvlogic</code>-related shortcodes to the
+						<code>no_texturize_shortcodes</code> array to prevent shortcode attributes from being encoding
+					</li>
+					<li>Modified: Updated Gravity Forms CSS file locations for the Survey, Poll, and Quiz Add-Ons</li>
+					<li>Modified: Likert survey responses are now wrapped in <code>div.gform-settings__content.gform-settings-panel__content</code>
+						to match the Gravity Forms Survey Add-On 3.8 appearance
+					</li>
+					<li>Fixed: Properly suppress PHP warnings when calling <code>GFCommon::gv_vars()</code> in the Edit
+						View screen
+					</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.0.12</li>
+					<li>Updated: TrustedLogin to version 1.5.1</li>
+				</ul>
+
 				<h3>2.17.5 on April 12, 2023</h3>
 
 				<ul>

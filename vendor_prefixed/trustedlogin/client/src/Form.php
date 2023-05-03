@@ -2,16 +2,18 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 03-May-2023 using Strauss.
+ * Modified by gravityview on 26-April-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
+
 /**
- * Class Admin
+ * Class Form
  *
  * @package GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin\Client
  *
  * @copyright 2021 Katz Web Services, Inc.
  */
+
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
 
 // Exit if accessed directly
@@ -20,9 +22,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use \WP_User;
-use \WP_Admin_Bar;
 
-final class Admin {
+
+/**
+ * Creates the TrustedLogin support user form.
+ *  - Makes the HTML
+ *  - Manages assets
+ * Does not
+ *  - Handle the form submission. {@see ./Ajax.php }
+ *  - Setup the menu {@see ./Admin.php}
+ *
+ * @since 1.5.0
+ */
+final class Form {
 
 	/**
 	 * URL pointing to the "About TrustedLogin" page, shown below the Grant Access dialog
@@ -56,63 +68,11 @@ final class Admin {
 	 *
 	 * @param Config $config
 	 */
-	public function __construct( Config $config, Logging $logging ) {
+	public function __construct( Config $config, Logging $logging, SupportUser $support_user, SiteAccess $site_access ) {
 		$this->config       = $config;
 		$this->logging      = $logging;
-		$this->site_access  = new SiteAccess( $config, $logging );
-		$this->support_user = new SupportUser( $config, $logging );
-	}
-
-
-	public function init() {
-		add_action( 'trustedlogin/' . $this->config->ns() . '/button', array( $this, 'generate_button' ), 10, 2 );
-		add_action( 'trustedlogin/' . $this->config->ns() . '/users_table', array(
-			$this,
-			'output_support_users'
-		), 20 );
-		add_action( 'trustedlogin/' . $this->config->ns() . '/auth_screen', array( $this, 'print_auth_screen' ), 20 );
-		add_action( 'login_form_trustedlogin', array( $this, 'maybe_print_request_screen' ), 20 );
-		add_filter( 'user_row_actions', array( $this, 'user_row_action_revoke' ), 10, 2 );
-		add_action( 'admin_bar_menu', array( $this, 'admin_bar_add_toolbar_items' ), 100 );
-
-		if ( $this->config->get_setting( 'menu' ) ) {
-			$menu_priority = $this->config->get_setting( 'menu/priority', 100 );
-			add_action( 'admin_menu', array( $this, 'admin_menu_auth_link_page' ), $menu_priority );
-		}
-
-		if ( $this->config->get_setting( 'register_assets', true ) ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'register_assets' ) );
-			add_action( 'login_enqueue_scripts', array( $this, 'register_assets' ) );
-		}
-
-		add_action( 'trustedlogin/' . $this->config->ns() . '/admin/access_revoked', array( $this, 'admin_notices' ) );
-	}
-
-	/**
-	 * Filter: Update the actions on the users.php list for our support users.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param array $actions
-	 * @param WP_User $user_object
-	 *
-	 * @return array
-	 */
-	public function user_row_action_revoke( $actions, $user_object ) {
-
-		if ( ! current_user_can( $this->support_user->role->get_name() ) && ! current_user_can( 'delete_users' ) ) {
-			return $actions;
-		}
-
-		$revoke_url = $this->support_user->get_revoke_url( $user_object );
-
-		if ( ! $revoke_url ) {
-			return $actions;
-		}
-
-		return array(
-			'revoke' => "<a class='trustedlogin tl-revoke submitdelete' href='" . esc_url( $revoke_url ) . "'>" . esc_html__( 'Revoke Access', 'gk-gravityview' ) . '</a>',
-		);
+		$this->support_user = $support_user;
+		$this->site_access  = $site_access;
 	}
 
 	/**
@@ -145,110 +105,6 @@ final class Admin {
 		if ( count( $registered ) !== count( $registered_filtered ) ) {
 			$this->logging->log( 'Not all scripts and styles were registered: ' . print_r( $registered_filtered, true ), __METHOD__, 'error' );
 		}
-
-	}
-
-	/**
-	 * Adds a "Revoke TrustedLogin" menu item to the admin toolbar
-	 *
-	 * @param WP_Admin_Bar $admin_bar
-	 *
-	 * @return void
-	 */
-	public function admin_bar_add_toolbar_items( $admin_bar ) {
-
-		if ( ! current_user_can( $this->support_user->role->get_name() ) ) {
-			return;
-		}
-
-		if ( ! $admin_bar instanceof WP_Admin_Bar ) {
-			return;
-		}
-
-		$is_user_active = $this->support_user->is_active();
-
-		if ( ! $is_user_active ) {
-			return;
-		}
-
-		$icon = '<span style="
-			height: 32px;
-			width: 23px;
-			margin: 0 1px;
-			display: inline-block;
-			vertical-align: top;
-			background: url(\'data:image/svg+xml;base64,PHN2ZyBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCAyNTAgMjUwIiB2aWV3Qm94PSIwIDAgMjUwIDI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJtLTQ0NC42IDE0LjdjLTI2LjUgMC00OC4xIDIxLjYtNDguMSA0OC4xdjM5LjhoMjAuNnYtMzkuOGMwLTE1LjIgMTIuMy0yNy41IDI3LjUtMjcuNSAxNS4xIDAgMjcuNSAxMi4zIDI3LjUgMjcuNXYzOS44aDIwLjZ2LTM5LjhjMC0yNi42LTIxLjYtNDguMS00OC4xLTQ4LjF6IiBmaWxsPSIjMTA5OWQ2Ii8+PHBhdGggZD0ibS00NDQuNiA5MGMtMzguNSAwLTY5LjcgNC44LTY5LjcgMTAuOHY3OS44YzAgMzguNSA0Ny41IDU0LjggNjkuNyA1NC44czY5LjctMTYuMyA2OS43LTU0Ljh2LTc5LjhjLS4xLTYtMzEuMy0xMC44LTY5LjctMTAuOHoiIGZpbGw9IiMxYjJiNTkiLz48cGF0aCBkPSJtLTQ0NC42IDExMC4yYy0yMyAwLTQyLjUgMTUuMy00OC45IDM2LjJoMTQuOGM1LjgtMTMuMSAxOC45LTIyLjMgMzQuMS0yMi4zIDIwLjUgMCAzNy4yIDE2LjcgMzcuMiAzNy4ycy0xNi43IDM3LjItMzcuMiAzNy4yYy0xNS4yIDAtMjguMy05LjItMzQuMS0yMi4zaC0xNC44YzYuNCAyMC45IDI1LjkgMzYuMiA0OC45IDM2LjIgMjguMiAwIDUxLjEtMjIuOSA1MS4xLTUxLjEtLjEtMjguMi0yMy01MS4xLTUxLjEtNTEuMXoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJtLTQyNSAxNTktMjguMy0xNi40Yy0yLjItMS4zLTQtLjItNCAyLjN2OS44aC01Ni45djEzaDU2Ljl2OS44YzAgMi41IDEuOCAzLjYgNCAyLjNsMjguMy0xNi40YzIuMi0xLjEgMi4yLTMuMSAwLTQuNHoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJtMTI1IDIuMWMtMjkuNSAwLTUzLjYgMjQtNTMuNiA1My42djQ0LjRoMjN2LTQ0LjRjMC0xNi45IDEzLjctMzAuNiAzMC42LTMwLjZzMzAuNiAxMy43IDMwLjYgMzAuNnY0NC40aDIzdi00NC40YzAtMjkuNS0yNC4xLTUzLjYtNTMuNi01My42eiIgZmlsbD0iIzEwOTlkNiIvPjxwYXRoIGQ9Im0xMjUgODZjLTQyLjggMC03Ny42IDUuNC03Ny42IDEydjg4LjhjMCA0Mi44IDUyLjkgNjEgNzcuNiA2MXM3Ny42LTE4LjIgNzcuNi02MXYtODguOGMwLTYuNi0zNC44LTEyLTc3LjYtMTJ6IiBmaWxsPSIjMWIyYjU5Ii8+PHBhdGggZD0ibTEyNSAxMDguNWMtMjUuNiAwLTQ3LjMgMTctNTQuNCA0MC4zaDE2LjRjNi40LTE0LjYgMjEtMjQuOSAzOC0yNC45IDIyLjggMCA0MS40IDE4LjYgNDEuNCA0MS40cy0xOC42IDQxLjQtNDEuNCA0MS40Yy0xNyAwLTMxLjYtMTAuMi0zOC0yNC45aC0xNi40YzcuMSAyMy4zIDI4LjggNDAuMyA1NC40IDQwLjMgMzEuNCAwIDU2LjktMjUuNSA1Ni45LTU2LjkgMC0zMS4xLTI1LjUtNTYuNy01Ni45LTU2Ljd6IiBmaWxsPSIjZmZmIi8+PHBhdGggZD0ibTE0Ni44IDE2Mi45LTMxLjYtMTguMmMtMi40LTEuNC00LjQtLjMtNC40IDIuNnYxMWgtNjMuNHYxNC41aDYzLjR2MTFjMCAyLjggMiA0IDQuNCAyLjZsMzEuNi0xOC4yYzIuNS0xLjYgMi41LTMuOSAwLTUuM3oiIGZpbGw9IiNmZmYiLz48dGV4dCB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtNjUxLjEwMjkgMzA5Ljk2MDMpIj48dHNwYW4gZmlsbD0iIzFiMmI1OSIgZm9udC1mYW1pbHk9Ik11c2VvU2Fucy05MDAiIGZvbnQtc2l6ZT0iNTIuODQ0NyIgeD0iMCIgeT0iMCI+VHJ1c3RlPC90c3Bhbj48dHNwYW4gZmlsbD0iIzFiMmI1OSIgZm9udC1mYW1pbHk9Ik11c2VvU2Fucy05MDAiIGZvbnQtc2l6ZT0iNTIuODQ0NyIgbGV0dGVyLXNwYWNpbmc9IjMiIHg9IjIwNS43IiB5PSIwIj5kPC90c3Bhbj48dHNwYW4gZmlsbD0iIzEwOTlkNiIgZm9udC1mYW1pbHk9Ik11c2VvU2Fucy01MDAiIGZvbnQtc2l6ZT0iNTIuODQ0NyIgbGV0dGVyLXNwYWNpbmc9Ii0zIiB4PSIyNDguOCIgeT0iMCI+TDwvdHNwYW4+PHRzcGFuIGZpbGw9IiMxMDk5ZDYiIGZvbnQtZmFtaWx5PSJNdXNlb1NhbnMtNTAwIiBmb250LXNpemU9IjUyLjg0NDciIHg9IjI3My40IiB5PSIwIj5vPC90c3Bhbj48dHNwYW4gZmlsbD0iIzEwOTlkNiIgZm9udC1mYW1pbHk9Ik11c2VvU2Fucy01MDAiIGZvbnQtc2l6ZT0iNTIuODQ0NyIgeD0iMzE2LjMiIHk9IjAiPmdpbjwvdHNwYW4+PC90ZXh0PjxwYXRoIGQ9Im0tNTQwLjcgNDcyLjZjLTI2LjUgMC00OC4xIDIxLjYtNDguMSA0OC4xdjM5LjhoMjAuNnYtMzkuOGMwLTE1LjIgMTIuMy0yNy41IDI3LjUtMjcuNSAxNS4xIDAgMjcuNSAxMi4zIDI3LjUgMjcuNXYzOS44aDIwLjZ2LTM5LjhjMC0yNi41LTIxLjYtNDguMS00OC4xLTQ4LjF6IiBmaWxsPSIjMTA5OWQ2Ii8+PHBhdGggZD0ibS01NDAuNyA1NDcuOWMtMzguNSAwLTY5LjcgNC44LTY5LjcgMTAuOHY3OS44YzAgMzguNSA0Ny41IDU0LjggNjkuNyA1NC44czY5LjctMTYuMyA2OS43LTU0Ljh2LTc5LjhjLS4xLTYtMzEuMy0xMC44LTY5LjctMTAuOHoiIGZpbGw9IiMxYjJiNTkiLz48cGF0aCBkPSJtLTU0MC43IDU2OC4xYy0yMyAwLTQyLjUgMTUuMy00OC45IDM2LjJoMTQuOGM1LjgtMTMuMSAxOC45LTIyLjMgMzQuMS0yMi4zIDIwLjUgMCAzNy4yIDE2LjcgMzcuMiAzNy4ycy0xNi43IDM3LjItMzcuMiAzNy4yYy0xNS4yIDAtMjguMy05LjItMzQuMS0yMi4zaC0xNC44YzYuNCAyMC45IDI1LjkgMzYuMiA0OC45IDM2LjIgMjguMiAwIDUxLjEtMjIuOSA1MS4xLTUxLjEtLjEtMjguMi0yMy01MS4xLTUxLjEtNTEuMXoiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJtLTUyMS4xIDYxNi45LTI4LjMtMTYuNGMtMi4yLTEuMy00LS4yLTQgMi4zdjkuOGgtNTYuOXYxM2g1Ni45djkuOGMwIDIuNSAxLjggMy42IDQgMi4zbDI4LjMtMTYuNGMyLjItMS4xIDIuMi0zLjEgMC00LjR6IiBmaWxsPSIjZmZmIi8+PHRleHQgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQyNi41OTQ1IDY0OC43NTIxKSI+PHRzcGFuIGZpbGw9IiMxYjJiNTkiIGZvbnQtZmFtaWx5PSJNdXNlb1NhbnMtOTAwIiBmb250LXNpemU9IjEyMS4xNzA5IiBsZXR0ZXItc3BhY2luZz0iMSIgeD0iMCIgeT0iMCI+VFJVU1RFPC90c3Bhbj48dHNwYW4gZmlsbD0iIzFiMmI1OSIgZm9udC1mYW1pbHk9Ik11c2VvU2Fucy05MDAiIGZvbnQtc2l6ZT0iMTIxLjE3MDkiIGxldHRlci1zcGFjaW5nPSI2IiB4PSI0NzEuNyIgeT0iMCI+RDwvdHNwYW4+PHRzcGFuIGZpbGw9IiMxMDk5ZDYiIGZvbnQtZmFtaWx5PSJNdXNlb1NhbnMtNTAwIiBmb250LXNpemU9IjEyMS4xNzA5IiBsZXR0ZXItc3BhY2luZz0iLTIiIHg9IjU2OC4yIiB5PSIwIj5MPC90c3Bhbj48dHNwYW4gZmlsbD0iIzEwOTlkNiIgZm9udC1mYW1pbHk9Ik11c2VvU2Fucy01MDAiIGZvbnQtc2l6ZT0iMTIxLjE3MDkiIGxldHRlci1zcGFjaW5nPSIxIiB4PSI2MjkuNiIgeT0iMCI+T0dJTjwvdHNwYW4+PC90ZXh0Pjwvc3ZnPg==\') left center no-repeat;
-			background-size: 22px 23px;
-		"></span>';
-
-		$admin_bar->add_menu( array(
-			'id'    => 'tl-' . $this->config->ns() . '-revoke',
-			'title' => $icon . esc_html__( 'Revoke TrustedLogin', 'gk-gravityview' ),
-			'href'  => $this->support_user->get_revoke_url( 'all' ),
-			'meta'  => array(
-				'class' => 'tl-destroy-session',
-			),
-		) );
-	}
-
-	/**
-	 * Generates the auth link page
-	 *
-	 * This simulates the addition of an admin submenu item with null as the menu location
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return void
-	 */
-	public function admin_menu_auth_link_page() {
-
-		$parent_slug = $this->config->get_setting( 'menu/slug', null );
-
-		// When false, there will be no menus added.
-		if ( false === $parent_slug ) {
-			return;
-		}
-
-		$ns = $this->config->ns();
-
-		$menu_slug = apply_filters( 'trustedlogin/' . $this->config->ns() . '/admin/menu/menu_slug', 'grant-' . $ns . '-access' );
-
-		$menu_title = $this->config->get_setting( 'menu/title', esc_html__( 'Grant Support Access', 'gk-gravityview' ) );
-
-		// If empty (null or empty string), add top-level menu
-		if ( empty( $parent_slug ) ) {
-
-			add_menu_page(
-				$menu_title,
-				$menu_title,
-				'create_users',
-				$menu_slug,
-				array( $this, 'print_auth_screen' ),
-				$this->config->get_setting( 'menu/icon_url', '' ),
-				$this->config->get_setting( 'menu/position', null )
-			);
-
-			return;
-		}
-
-		add_submenu_page(
-			$parent_slug,
-			$menu_title,
-			$menu_title,
-			'create_users',
-			$menu_slug,
-			array( $this, 'print_auth_screen' ),
-			$this->config->get_setting( 'menu/position', null )
-		);
-	}
-
-	/**
-	 * Is this a login screen and should TrustedLogin override the login screen for the current namespace?
-	 *
-	 * @return bool
-	 */
-	private function is_login_screen() {
-		return did_action( 'login_init' ) && isset( $_GET['ns'] ) && $_GET['ns'] === $this->config->ns();
 	}
 
 	/**
@@ -265,6 +121,7 @@ final class Admin {
 		// Once logged-in, take user back to auth request screen.
 		if ( ! is_user_logged_in() ) {
 			$_REQUEST['redirect_to'] = site_url( add_query_arg( array() ) );
+
 			return;
 		}
 
@@ -282,7 +139,7 @@ final class Admin {
 		$interim_login = true;
 
 		// The login_headertitle filter was deprecated in WP 5.2.0 for login_headertext
-		if( version_compare( $wp_version, '5.2.0', '<' ) ) {
+		if ( version_compare( $wp_version, '5.2.0', '<' ) ) {
 			add_filter( 'login_headertitle', '__return_empty_string' );
 		} else {
 			add_filter( 'login_headertext', '__return_empty_string' );
@@ -290,11 +147,11 @@ final class Admin {
 
 		add_filter( 'login_headerurl', function () {
 			return $this->config->get_setting( 'vendor/website' );
-		});
+		} );
 
 		login_header();
 
-		wp_enqueue_style( 'common');
+		wp_enqueue_style( 'common' );
 
 		wp_add_inline_style( 'common', $this->get_login_inline_css() );
 
@@ -314,20 +171,20 @@ final class Admin {
 	 */
 	private function get_login_inline_css() {
 		return '
-#login {
-	width: auto;
-}
-.login .button-primary {
-	float: none;
-}
-.login h1 {
-	margin-top: 36px;
-}
-.login h1 a {
-	background-image: url("' . $this->config->get_setting( 'vendor/logo_url' ). '")!important;
-	background-size: contain!important;
-}
-';
+	#login {
+		width: auto;
+	}
+	.login .button-primary {
+		float: none;
+	}
+	.login h1 {
+		margin-top: 36px;
+	}
+	.login h1 a {
+		background-image: url("' . $this->config->get_setting( 'vendor/logo_url' ) . '")!important;
+		background-size: contain!important;
+	}
+	';
 	}
 
 	/**
@@ -361,15 +218,15 @@ final class Admin {
 		$revoke_url = $this->support_user->get_revoke_url( $support_user );
 
 		$template = '
-		{{revoke_access_button}}
-		<h3>{{display_name}}</h3>
-		<span class="tl-{{ns}}-auth__meta">{{auth_meta}}</span>';
+			{{revoke_access_button}}
+			<h3>{{display_name}}</h3>
+			<span class="tl-{{ns}}-auth__meta">{{auth_meta}}</span>';
 
 		$content = array(
-			'display_name' => $support_user->display_name,
+			'display_name'         => $support_user->display_name,
 			'revoke_access_button' => sprintf( '<a href="%s" class="button button-danger alignright tl-client-revoke-button">%s</a>', $revoke_url, esc_html__( 'Revoke Access', 'gk-gravityview' ) ),
 			// translators: %s is the display name of the user who granted access
-			'auth_meta' => sprintf( esc_html__( 'Created %s ago by %s', 'gk-gravityview' ), human_time_diff( strtotime( $support_user->user_registered ) ), $auth_meta ),
+			'auth_meta'            => sprintf( esc_html__( 'Created %s ago by %s', 'gk-gravityview' ), human_time_diff( strtotime( $support_user->user_registered ) ), $auth_meta ),
 		);
 
 		return $this->prepare_output( $template, $content );
@@ -387,44 +244,46 @@ final class Admin {
 		wp_enqueue_style( 'trustedlogin-' . $this->config->ns() );
 
 		$content = array(
-			'ns'               => $this->config->ns(),
-			'has_access_class' => $this->support_user->get_all() ? 'has-access' : 'grant-access',
-			'notices'          => $this->get_notices_html(),
-			'header'           => $this->get_header_html(),
-			'intro'            => $this->get_intro(),
-			'auth_header'      => $this->get_auth_header_html(),
-			'details'          => $this->get_details_html(),
-			'button'           => $this->generate_button( 'size=hero&class=authlink button-primary tl-client-grant-button', false ),
+			'ns'                      => $this->config->ns(),
+			'has_access_class'        => $this->support_user->get_all() ? 'has-access' : 'grant-access',
+			'notices'                 => $this->get_notices_html(),
+			'header'                  => $this->get_header_html(),
+			'intro'                   => $this->get_intro(),
+			'auth_header'             => $this->get_auth_header_html(),
+			'details'                 => $this->get_details_html(),
+			'button'                  => $this->generate_button( 'size=hero&class=authlink button-primary tl-client-grant-button', false ),
 			'secured_by_trustedlogin' => '<span class="trustedlogin-logo-large"></span>' . esc_html__( 'Secured by TrustedLogin', 'gk-gravityview' ),
-			'footer'           => $this->get_footer_html(),
-			'reference'        => $this->get_reference_html(),
+			'footer'                  => $this->get_footer_html(),
+			'reference'               => $this->get_reference_html(),
+			'admin_debug'             => $this->get_admin_debug_html(),
 		);
 
 		$auth_screen_template = '
-		<div class="tl-{{ns}}-auth tl-{{ns}}-{{has_access_class}}">
-			{{header}}
-			<section class="tl-{{ns}}-auth__body">
-				<h2 class="tl-{{ns}}-auth__intro">{{intro}}</h2>
-				<div class="tl-{{ns}}-auth__content">
-					<header class="tl-{{ns}}-auth__header">
-						{{auth_header}}
-					</header>
-					<div class="tl-{{ns}}-auth__details">
-						{{details}}
+			<div class="tl-{{ns}}-auth tl-{{ns}}-{{has_access_class}}">
+				{{header}}
+				<section class="tl-{{ns}}-auth__body">
+					<h2 class="tl-{{ns}}-auth__intro">{{intro}}</h2>
+					<div class="tl-{{ns}}-auth__content">
+						<header class="tl-{{ns}}-auth__header">
+							{{auth_header}}
+						</header>
+						<div class="tl-{{ns}}-auth__details">
+							{{details}}
+						</div>
+						<div class="tl-{{ns}}-auth__response" aria-live="assertive"></div>
+						{{notices}}
+						<div class="tl-{{ns}}-auth__actions">
+							{{button}}
+						</div>
 					</div>
-					<div class="tl-{{ns}}-auth__response" aria-live="assertive"></div>
-					{{notices}}
-					<div class="tl-{{ns}}-auth__actions">
-						{{button}}
-					</div>
-				</div>
-				<div class="tl-{{ns}}-auth__secured_by">{{secured_by_trustedlogin}}</div>
-			</section>
-			<footer class="tl-{{ns}}-auth__footer">
-				{{footer}}
-				{{reference}}
-			</footer>
-		</div>';
+					<div class="tl-{{ns}}-auth__secured_by">{{secured_by_trustedlogin}}</div>
+				</section>
+				<footer class="tl-{{ns}}-auth__footer">
+					{{footer}}
+					{{reference}}
+				</footer>
+				{{admin_debug}}
+			</div>';
 
 		/**
 		 * Filter trustedlogin/{ns}/template/auth
@@ -445,9 +304,9 @@ final class Admin {
 		}
 
 		$header_template = '
-		<header class="tl-{{ns}}-auth__header__top">
-			<div class="tl-{{ns}}-auth__logo">{{logo}}</div>
-		</header>';
+			<header class="tl-{{ns}}-auth__header__top">
+				<div class="tl-{{ns}}-auth__logo">{{logo}}</div>
+			</header>';
 
 		$variables = array(
 			'ns'   => $this->config->ns(),
@@ -487,13 +346,13 @@ final class Admin {
 			return '';
 		}
 
-		$template =  '<div class="tl-{{ns}}-auth__ref"><p><span class="tl-{{ns}}-auth_ref__id">{{reference_text}}</span></p></div>';
+		$template = '<div class="tl-{{ns}}-auth__ref"><p><span class="tl-{{ns}}-auth_ref__id">{{reference_text}}</span></p></div>';
 
 		$content = array(
 			// translators: %s is the reference ID
 			'reference_text' => sprintf( esc_html__( 'Reference #%s', 'gk-gravityview' ), $reference_id ),
-			'ns' => $this->config->ns(),
-			'site_url' => esc_html( str_replace( array( 'https://', 'http://' ), '', get_site_url() ) ),
+			'ns'             => $this->config->ns(),
+			'site_url'       => esc_html( str_replace( array( 'https://', 'http://' ), '', get_site_url() ) ),
 		);
 
 		return $this->prepare_output( $template, $content );
@@ -501,12 +360,13 @@ final class Admin {
 
 	private function get_intro() {
 
+
 		$has_access = $this->support_user->get_all();
 
 		if ( $has_access ) {
 			foreach ( $has_access as $access ) {
 				// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
-				$intro = sprintf( esc_html__( '%1$s has site access that expires in %2$s.', 'gk-gravityview' ), '<a href="' . esc_url( $this->config->get_setting('vendor/website') ) . '" target="_blank" rel="noopener noreferrer">' . $this->config->get_setting( 'vendor/title' ) . '</a>', str_replace( ' ', '&nbsp;', $this->support_user->get_expiration( $access, true, false ) ) );
+				$intro = sprintf( esc_html__( '%1$s has site access that expires in %2$s.', 'gk-gravityview' ), '<a href="' . esc_url( $this->config->get_setting( 'vendor/website' ) ) . '" target="_blank" rel="noopener noreferrer">' . $this->config->get_setting( 'vendor/title' ) . '</a>', str_replace( ' ', '&nbsp;', $this->support_user->get_expiration( $access, true, false ) ) );
 			}
 
 			return $intro;
@@ -514,13 +374,39 @@ final class Admin {
 
 		if ( $this->is_login_screen() ) {
 			// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
-			$intro = sprintf( esc_html__( '%1$s would like support access to this site.', 'gk-gravityview' ), '<a href="'. esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
+			$intro = sprintf( esc_html__( '%1$s would like support access to this site.', 'gk-gravityview' ), '<a href="' . esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
 		} else {
 			// translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
 			$intro = sprintf( esc_html__( 'Grant %1$s access to this site.', 'gk-gravityview' ), '<a href="' . esc_url( $this->config->get_setting( 'vendor/website' ) ) . '">' . $this->config->get_display_name() . '</a>' );
 		}
 
 		return $intro;
+	}
+
+	/**
+	 * Returns whether sending support ticket to the vendor is enabled.
+	 *
+	 * @since 1.5.0
+	 * @return bool
+	 */
+	private function is_create_ticket_enabled() {
+
+		// There's already an existing ticket; no need to create another one.
+		if ( Client::get_reference_id() ) {
+			return false;
+		}
+
+		return $this->config->get_setting( 'webhook/url' ) && $this->config->get_setting( 'webhook/create_ticket', false );
+	}
+
+	/**
+	 * Returns whether sending debug data to the support vendor is enabled.
+	 *
+	 * @since 1.5.0
+	 * @return bool
+	 */
+	private function is_debug_data_enabled() {
+		return $this->config->get_setting( 'webhook/url' ) && $this->config->get_setting( 'webhook/debug_data', false );
 	}
 
 	private function get_details_html() {
@@ -538,22 +424,67 @@ final class Admin {
 			return $this->prepare_output( $output_template, $content, false );
 		}
 
-		$output_template = '
-			<p><span class="dashicons dashicons-info-outline dashicons--small"></span> This will allow <strong>{{name}}</strong> to:</p>
-			<div class="tl-{{ns}}-auth__roles">
-				<h2><span class="dashicons dashicons-admin-users dashicons--large"></span>{{roles_summary}}</h2>
-				{{caps}}
-			</div>
-			<div class="tl-{{ns}}-auth__expire">
-				<h2><span class="dashicons dashicons-clock dashicons--large"></span>{{expire_summary}}{{expire_desc}}</h2>
-			</div>
-		';
+		$ns = $this->config->ns();
 
-		if ( $this->config->get_setting( 'webhook/url' ) && $this->config->get_setting( 'webhook/debug_data' ) ) {
+		$output_template = '
+				<p><span class="dashicons dashicons-info-outline dashicons--small"></span> This will allow <strong>{{name}}</strong> to:</p>
+				<div class="tl-{{ns}}-auth__roles">
+					<h2>
+						<span class="dashicons dashicons-admin-users dashicons--large"></span>
+						{{roles_summary}}
+					</h2>
+					{{caps}}
+				</div>
+				<div class="tl-{{ns}}-auth__expire">
+					<h2>
+						<span class="dashicons dashicons-clock dashicons--large"></span>
+						{{expire_summary}}{{expire_desc}}
+					</h2>
+				</div>
+			';
+
+		if ( $this->is_create_ticket_enabled() ) {
+
+			$message_summary = sprintf(
+				'<span
+					class="tl-{{ns}}-toggle"
+					data-toggle=".tl-{{ns}}-ticket__fields">
+						%s <span class="dashicons dashicons--small dashicons-arrow-down-alt2"></span>
+				</span>',
+				esc_html__( 'Include a message for support?', 'gk-gravityview' )
+			);
+
+			$message_fields  = sprintf( '
+				<fieldset class="tl-{{ns}}-ticket__fields hidden">
+					<textarea
+						class="tl-{{ns}}-ticket-field__message large-text"
+						id="tl-{{ns}}-ticket-message"
+						placeholder="%s"
+						cols="50"
+						rows="8"
+					></textarea>
+				</fieldset>
+			', esc_html__( 'Please describe the issue you are having.', 'gk-gravityview' ) );
+
+			$output_template .= $this->prepare_output( '<div class="tl-{{ns}}-ticket">
+					<h2>
+						<span class="dashicons dashicons-format-chat dashicons--large"></span>
+						{{message_summary}}
+					</h2>
+					{{message_fields}}
+				</div>', array(
+					'ns'              => $ns,
+					'message_summary' => $this->prepare_output( $message_summary, array( 'ns' => $ns ) ),
+					'message_fields'  => $this->prepare_output( $message_fields, array( 'ns' => $ns ) ),
+				)
+			);
+		}
+
+		if ( $this->is_debug_data_enabled() ) {
 			$output_template .= '
-			<div class="tl-{{ns}}-auth__debug">
-				{{debug_data_consent}}
-			</div>';
+				<div class="tl-{{ns}}-auth__debug">
+					{{debug_data_consent}}
+				</div>';
 		}
 
 		// translators: %s is replaced with the of time that the login will be active for (e.g. "1 week")
@@ -561,10 +492,7 @@ final class Admin {
 
 		// translators: %s is replaced by the amount of time that the login will be active for (e.g. "1 week")
 		$expire_desc = '<small>' . sprintf( esc_html__( 'Access auto-expires in %s. You may revoke access at any time.', 'gk-gravityview' ), human_time_diff( 0, $this->config->get_setting( 'decay' ) ) ) . '</small>';
-
-		$ns          = $this->config->ns();
 		$cloned_role = translate_user_role( ucfirst( $this->config->get_setting( 'role' ) ) );
-
 		if ( $this->config->get_setting( 'caps/add' ) || $this->config->get_setting( 'caps/remove' ) ) {
 			// translators: %s is replaced with the name of the role being cloned (e.g. "Administrator")
 			$roles_summary = sprintf( esc_html__( 'Create a user with a role similar to %s.', 'gk-gravityview' ), '<strong>' . $cloned_role . '</strong>' );
@@ -668,6 +596,7 @@ final class Admin {
 
 	/**
 	 * Generates HTML for notices about current server environment perhaps not being accessible.
+	 *
 	 * @return string
 	 */
 	private function get_notices_html() {
@@ -685,17 +614,17 @@ final class Admin {
 		}
 
 		$notice_template = '
-		<div class="inline notice notice-alt notice-warning">
-			<h3>{{local_site}}</h3>
-			<p>{{need_access}} <a href="{{about_live_access_url}}" target="_blank" rel="noopener noreferrer">{{learn_more}}</a></p>
-		</div>';
+			<div class="inline notice notice-alt notice-warning">
+				<h3>{{local_site}}</h3>
+				<p>{{need_access}} <a href="{{about_live_access_url}}" target="_blank" rel="noopener noreferrer">{{learn_more}}</a></p>
+			</div>';
 
 		$content = array(
 			// translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-			'local_site' => sprintf( esc_html__( '%s support may not be able to access this site.', 'gk-gravityview' ), $this->config->get_setting( 'vendor/title' ) ),
-			'need_access' => esc_html__( 'This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL.', 'gk-gravityview' ),
+			'local_site'            => sprintf( esc_html__( '%s support may not be able to access this site.', 'gk-gravityview' ), $this->config->get_setting( 'vendor/title' ) ),
+			'need_access'           => esc_html__( 'This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL.', 'gk-gravityview' ),
 			'about_live_access_url' => esc_url( $this->config->get_setting( 'vendor/about_live_access_url', self::ABOUT_LIVE_ACCESS_URL ) ),
-			'learn_more' => esc_html__( 'Learn more.', 'gk-gravityview' ),
+			'learn_more'            => esc_html__( 'Learn more.', 'gk-gravityview' ),
 		);
 
 		return $this->prepare_output( $notice_template, $content );
@@ -745,7 +674,7 @@ final class Admin {
 		}
 
 		$footer_links = array(
-			esc_html__( 'Learn about TrustedLogin', 'gk-gravityview' )                   => self::ABOUT_TL_URL,
+			esc_html__( 'Learn about TrustedLogin', 'gk-gravityview' )                    => self::ABOUT_TL_URL,
 			// translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
 			sprintf( 'Visit %s support', $this->config->get_setting( 'vendor/title' ) ) => $support_url,
 		);
@@ -763,7 +692,8 @@ final class Admin {
 
 		$footer_links_output = '';
 		foreach ( $footer_links as $text => $link ) {
-			$footer_links_output .= sprintf( '<li><a href="%1$s" target="_blank">%2$s</a></li>',
+			$footer_links_output .= sprintf(
+				'<li><a href="%1$s" target="_blank">%2$s</a></li>',
 				esc_url( $link ),
 				esc_html( $text )
 			);
@@ -775,6 +705,60 @@ final class Admin {
 		}
 
 		return $footer_output;
+	}
+
+	/**
+	 * Returns the HTML for helpful debug info in the Auth form.
+	 *
+	 * Only shown if ?debug is present in the URL and the user has `manage_options` capability.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return string
+	 */
+	private function get_admin_debug_html() {
+
+		if ( ! isset( $_GET['debug'] ) ) {
+			return '';
+		}
+
+		if(  ! current_user_can( 'manage_options' ) ) {
+			return '';
+		}
+
+		$remote = new Remote( $this->config, $this->logging );
+		$encryption = new Encryption( $this->config, $remote, $this->logging );
+
+		$items = array(
+			esc_html__( 'TrustedLogin Status', 'gk-gravityview' ) => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', 'https://status.trustedlogin.com', is_wp_error( wp_remote_request( 'https://app.trustedlogin.com/api/status' ) ) ? esc_html__( 'Offline', 'gk-gravityview' ) : esc_html__( 'Online', 'gk-gravityview' ) ),
+			esc_html__( 'API Key', 'gk-gravityview' ) => sprintf( '<code>%s</code>', $this->config->get_setting( 'auth/api_key' ) ),
+			esc_html__( 'License Key', 'gk-gravityview' ) => sprintf( '<code>%s</code>', $this->config->get_setting( 'auth/license_key' ) ),
+			esc_html__( 'Log URL', 'gk-gravityview' ) => sprintf( '<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', str_replace( ABSPATH, get_site_url() . '/', $this->logging->get_log_file_path() ), esc_html__( 'Download the log', 'gk-gravityview' ) ),
+			esc_html__( 'Log Level', 'gk-gravityview' ) => $this->config->get_setting( 'logging/threshold', esc_html__( '(Default)', 'gk-gravityview' ) ),
+			esc_html__( 'Webhook URL', 'gk-gravityview' ) => sprintf( '<code>%s</code>', $this->config->get_setting( 'webhook/url', '(Empty)' ) ),
+			esc_html__( 'Vendor Public Key', 'gk-gravityview' ) => sprintf( '<code>%s</code> (<a href="%s" target="_blank">%s</a>)', $encryption->get_vendor_public_key(), $encryption->get_remote_encryption_key_url(), esc_html__( 'Verify key', 'gk-gravityview' ) ),
+		);
+
+		$debugging_info = '';
+		foreach( $items as $label => $value ) {
+			$debugging_info .= sprintf( '<p><strong>%s</strong>: %s</p>', $label, $value );
+		}
+
+		$debugging_output = '<div class="tl-{{ns}}-auth__admin_debugging">
+            <h3>{{debugging_label}}</h3>
+            {{debugging_info}}
+
+            <h3>{{tl_config_label}}</h3>
+            {{tl_config}}
+        </div>';
+
+		return $this->prepare_output( $debugging_output, array(
+			'ns' => $this->config->ns(),
+			'debugging_label' => esc_html__( 'Debugging Info', 'gk-gravityview' ),
+			'debugging_info' => $debugging_info,
+			'tl_config_label' => esc_html__( 'TrustedLogin Config', 'gk-gravityview' ),
+			'tl_config' => '<pre>' . print_r( $this->config->get_settings(), true ) . '</pre>',
+		) );
 	}
 
 	private function prepare_output( $template, $content, $wp_kses = true ) {
@@ -791,80 +775,100 @@ final class Admin {
 			$allowed_protocols   = wp_allowed_protocols();
 			$allowed_protocols[] = 'data';
 
-			$output_html = wp_kses( $output_html, array(
-				'a'       => array(
-					'class'       => array(),
-					'id'          => array(),
-					'href'        => array(),
-					'title'       => array(),
-					'rel'         => array(),
-					'target'      => array(),
-					'data-toggle' => array(),
-					'data-access' => array(),
+			$output_html = wp_kses(
+				$output_html,
+				array(
+					'a'        => array(
+						'class'       => array(),
+						'id'          => array(),
+						'href'        => array(),
+						'title'       => array(),
+						'rel'         => array(),
+						'target'      => array(),
+						'data-toggle' => array(),
+						'data-access' => array(),
+					),
+					'img'      => array(
+						'class' => array(),
+						'id'    => array(),
+						'src'   => array(),
+						'href'  => array(),
+						'alt'   => array(),
+						'title' => array(),
+					),
+					'span'     => array(
+						'class'       => array(),
+						'id'          => array(),
+						'title'       => array(),
+						'data-toggle' => array(),
+						'style'       => array(),
+					),
+					'label'    => array( 'class' => array(), 'id' => array(), 'for' => array() ),
+					'code'     => array( 'class' => array(), 'id' => array() ),
+					'tt'       => array( 'class' => array(), 'id' => array() ),
+					'pre'      => array( 'class' => array(), 'id' => array() ),
+					'table'    => array( 'class' => array(), 'id' => array() ),
+					'thead'    => array(),
+					'tfoot'    => array(),
+					'td'       => array( 'class' => array(), 'id' => array(), 'colspan' => array() ),
+					'th'       => array(
+						'class'   => array(),
+						'id'      => array(),
+						'colspan' => array(),
+						'scope'   => array(),
+					),
+					'ul'       => array( 'class' => array(), 'id' => array() ),
+					'li'       => array( 'class' => array(), 'id' => array() ),
+					'p'        => array( 'class' => array(), 'id' => array() ),
+					'h1'       => array( 'class' => array(), 'id' => array() ),
+					'h2'       => array( 'class' => array(), 'id' => array() ),
+					'h3'       => array( 'class' => array(), 'id' => array(), 'style' => array(), ),
+					'h4'       => array( 'class' => array(), 'id' => array() ),
+					'h5'       => array( 'class' => array(), 'id' => array() ),
+					'div'      => array(
+						'class'     => array(),
+						'id'        => array(),
+						'aria-live' => array(),
+						'style'     => array(),
+					),
+					'small'    => array( 'class' => array(), 'id' => array(), 'data-toggle' => array() ),
+					'header'   => array( 'class' => array(), 'id' => array() ),
+					'footer'   => array( 'class' => array(), 'id' => array() ),
+					'section'  => array( 'class' => array(), 'id' => array() ),
+					'br'       => array(),
+					'strong'   => array(),
+					'em'       => array(),
+					'fieldset' => array( 'class' => array(), 'id' => array() ),
+					'input'    => array(
+						'class'      => array(),
+						'id'         => array(),
+						'type'       => array( 'text' ),
+						'value'      => array(),
+						'size'       => array(),
+						'aria-live'  => array(),
+						'aria-label' => array(),
+						'style'      => array(),
+					),
+					'textarea' => array(
+						'class'       => array(),
+						'id'          => array(),
+						'rows'        => array(),
+						'cols'        => array(),
+						'placeholder' => array(),
+					),
+					'button'   => array(
+						'class'     => array(),
+						'id'        => array(),
+						'aria-live' => array(),
+						'style'     => array(),
+						'title'     => array(),
+					),
 				),
-				'img'     => array(
-					'class' => array(),
-					'id'    => array(),
-					'src'   => array(),
-					'href'  => array(),
-					'alt'   => array(),
-					'title' => array(),
-				),
-				'span'    => array(
-					'class'       => array(),
-					'id'          => array(),
-					'title'       => array(),
-					'data-toggle' => array(),
-					'style'       => array(),
-				),
-				'label'   => array( 'class' => array(), 'id' => array(), 'for' => array() ),
-				'code'    => array( 'class' => array(), 'id' => array() ),
-				'tt'      => array( 'class' => array(), 'id' => array() ),
-				'pre'     => array( 'class' => array(), 'id' => array() ),
-				'table'   => array( 'class' => array(), 'id' => array() ),
-				'thead'   => array(),
-				'tfoot'   => array(),
-				'td'      => array( 'class' => array(), 'id' => array(), 'colspan' => array() ),
-				'th'      => array( 'class' => array(), 'id' => array(), 'colspan' => array(), 'scope' => array() ),
-				'ul'      => array( 'class' => array(), 'id' => array() ),
-				'li'      => array( 'class' => array(), 'id' => array() ),
-				'p'       => array( 'class' => array(), 'id' => array() ),
-				'h1'      => array( 'class' => array(), 'id' => array() ),
-				'h2'      => array( 'class' => array(), 'id' => array() ),
-				'h3'      => array( 'class' => array(), 'id' => array(), 'style'       => array(), ),
-				'h4'      => array( 'class' => array(), 'id' => array() ),
-				'h5'      => array( 'class' => array(), 'id' => array() ),
-				'div'     => array( 'class' => array(), 'id' => array(), 'aria-live' => array(), 'style' => array(), ),
-				'small'   => array( 'class' => array(), 'id' => array(), 'data-toggle' => array() ),
-				'header'  => array( 'class' => array(), 'id' => array() ),
-				'footer'  => array( 'class' => array(), 'id' => array() ),
-				'section' => array( 'class' => array(), 'id' => array() ),
-				'br'      => array(),
-				'strong'  => array(),
-				'em'      => array(),
-				'input'  => array(
-					'class'     => array(),
-					'id'        => array(),
-					'type'      => array( 'text' ),
-					'value'     => array(),
-					'size'      => array(),
-					'aria-live' => array(),
-					'aria-label' => array(),
-					'style'     => array(),
-				),
-				'button' => array(
-					'class'     => array(),
-					'id'        => array(),
-					'aria-live' => array(),
-					'style'     => array(),
-					'title'     => array(),
-				),
-			),
 				$allowed_protocols
 			);
 		}
 
-		return normalize_whitespace( $output_html );
+		return $output_html;
 	}
 
 	/**
@@ -894,17 +898,18 @@ final class Admin {
 		wp_enqueue_style( 'trustedlogin-' . $this->config->ns() );
 
 		$button_settings = array(
-			'vendor'       => $this->config->get_setting( 'vendor' ),
-			'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-			'_nonce'       => wp_create_nonce( 'tl_nonce-' . get_current_user_id() ),
-			'lang'         => $this->translations(),
-			'debug'        => $this->logging->is_enabled(),
-			'selector'     => '.button-trustedlogin-' . $this->config->ns(),
-			'reference_id' => Client::get_reference_id(),
-			'query_string' => esc_url( remove_query_arg( array(
+			'vendor'        => $this->config->get_setting( 'vendor' ),
+			'ajaxurl'       => admin_url( 'admin-ajax.php' ),
+			'_nonce'        => wp_create_nonce( 'tl_nonce-' . get_current_user_id() ),
+			'lang'          => $this->translations(),
+			'debug'         => $this->logging->is_enabled(),
+			'selector'      => '.button-trustedlogin-' . $this->config->ns(),
+			'reference_id'  => Client::get_reference_id(),
+			'query_string'  => esc_url( remove_query_arg( array(
 				Endpoint::REVOKE_SUPPORT_QUERY_PARAM,
-				'_wpnonce'
+				'_wpnonce',
 			) ) ),
+			'create_ticket' => $this->is_create_ticket_enabled(),
 		);
 
 		// TODO: Add data to tl_obj when detecting that it's already been localized by another vendor
@@ -925,15 +930,16 @@ final class Admin {
 	 * Generates HTML for a TrustedLogin Grant Access button
 	 *
 	 * @param array $atts {
-	 *   @type string $text Button text to grant access. Sanitized using esc_html(). Default: "Grant %s Access"
+	 *
+	 * @type string $text Button text to grant access. Sanitized using esc_html(). Default: "Grant %s Access"
 	 *                      (%s replaced with vendor/title setting)
-	 *   @type string $exists_text Button text when vendor already has a support account. Sanitized using esc_html().
+	 * @type string $exists_text Button text when vendor already has a support account. Sanitized using esc_html().
 	 *                      Default: "Extend %s Access" (%s replaced with vendor/title setting)
-	 *   @type string $size WordPress CSS button size. Options: 'small', 'normal', 'large', 'hero'. Default: "hero"
-	 *   @type string $class CSS class added to the button. Default: "button-primary"
-	 *   @type string $tag Tag used to display the button. Options: 'a', 'button', 'span'. Default: "a"
-	 *   @type bool   $powered_by Whether to display the TrustedLogin badge on the button. Default: true
-	 *   @type string $support_url The URL to use as a backup if JavaScript fails or isn't available. Sanitized using
+	 * @type string $size WordPress CSS button size. Options: 'small', 'normal', 'large', 'hero'. Default: "hero"
+	 * @type string $class CSS class added to the button. Default: "button-primary"
+	 * @type string $tag Tag used to display the button. Options: 'a', 'button', 'span'. Default: "a"
+	 * @type bool $powered_by Whether to display the TrustedLogin badge on the button. Default: true
+	 * @type string $support_url The URL to use as a backup if JavaScript fails or isn't available. Sanitized using
 	 *                      esc_url(). Default: `vendor/support_url` configuration setting URL.
 	 * }
 	 *
@@ -1002,7 +1008,8 @@ final class Admin {
 
 		$powered_by = '';
 		if ( $atts['powered_by'] ) {
-			$powered_by = sprintf( '<small><span class="trustedlogin-logo"></span>%s</small>',
+			$powered_by = sprintf(
+				'<small><span class="trustedlogin-logo"></span>%s</small>',
 				esc_html__( 'Secured by TrustedLogin', 'gk-gravityview' )
 			);
 		}
@@ -1011,12 +1018,18 @@ final class Admin {
 
 		return sprintf(
 			'<%1$s href="%2$s" class="%3$s button-trustedlogin-%4$s" aria-role="button" %5$s>%6$s</%1$s>',
-			/* %1$s */ $tag,
-			/* %2$s */ esc_url( $href ),
-			/* %3$s */ esc_attr( $css_class ),
-			/* %4$s */ $this->config->ns(),
-			/* %5$s */ $data_string,
-			/* %6$s */ $anchor_html
+			/* %1$s */
+			$tag,
+			/* %2$s */
+			esc_url( $href ),
+			/* %3$s */
+			esc_attr( $css_class ),
+			/* %4$s */
+			$this->config->ns(),
+			/* %5$s */
+			$data_string,
+			/* %6$s */
+			$anchor_html
 		);
 	}
 
@@ -1043,24 +1056,28 @@ final class Admin {
 		 * ```
 		 *
 		 * @param array $url_query_args {
+		 *
 		 * @type string $message What error should be sent to the support system.
 		 * @type string|null $ref A sanitized reference ID, if passed. Otherwise, null.
 		 * }
 		 */
-		$query_args = apply_filters( 'trustedlogin/' . $this->config->ns() . '/support_url/query_args', array(
+		$query_args = apply_filters(
+			'trustedlogin/' . $this->config->ns() . '/support_url/query_args',
+			array(
 				'message' => __( 'Could not create TrustedLogin access.', 'gk-gravityview' ),
-				'ref' => Client::get_reference_id(),
+				'ref'     => Client::get_reference_id(),
 			)
 		);
 
-		$error_content = sprintf( '<p>%s</p><p>%s</p>',
+		$error_content = sprintf(
+			'<p>%s</p><p>%s</p>',
 			sprintf(
-				// translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
+			// translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
 				esc_html__( 'The user details could not be sent to %1$s automatically.', 'gk-gravityview' ),
 				$vendor_title
 			),
 			sprintf(
-				// translators: %1$s is the vendor support url and %2$s is the vendor title
+			// translators: %1$s is the vendor support url and %2$s is the vendor title
 				__( 'Please <a href="%1$s" target="_blank">click here</a> to go to the %2$s support site', 'gk-gravityview' ),
 				esc_url( add_query_arg( $query_args, $this->config->get_setting( 'vendor/support_url' ) ) ),
 				$vendor_title
@@ -1080,9 +1097,9 @@ final class Admin {
 				'copy'       => esc_html__( 'Copy', 'gk-gravityview' ),
 				'copied'     => esc_html__( 'Copied!', 'gk-gravityview' ),
 			),
-			'a11y' => array(
+			'a11y'    => array(
 				'opens_new_window' => esc_attr__( '(This link opens in a new window.)', 'gk-gravityview' ),
-				'copied_text' =>  esc_html__( 'The access key has been copied to your clipboard.', 'gk-gravityview' ),
+				'copied_text'      => esc_html__( 'The access key has been copied to your clipboard.', 'gk-gravityview' ),
 			),
 			'status'  => array(
 				'synced'             => array(
@@ -1112,15 +1129,15 @@ final class Admin {
 						'a' => array(
 							'href'   => array(),
 							'rel'    => array(),
-							'target' => array()
+							'target' => array(),
 						),
-						'p' => array()
+						'p' => array(),
 					) ),
 				),
 				'cancel'             => array(
 					'title'   => esc_html__( 'Action Cancelled', 'gk-gravityview' ),
 					'content' => sprintf(
-						// translators: %1$s is the vendor title
+					// translators: %1$s is the vendor title
 						__( 'A support account for %1$s was not created.', 'gk-gravityview' ),
 						$vendor_title
 					),
@@ -1135,7 +1152,7 @@ final class Admin {
 				'accesskey'          => array(
 					'title'       => esc_html__( 'TrustedLogin Key Created', 'gk-gravityview' ),
 					'content'     => sprintf(
-						// translators: %1$s is the vendor title
+					// translators: %1$s is the vendor title
 						__( 'Share this TrustedLogin Key with %1$s to give them secure access:', 'gk-gravityview' ),
 						$vendor_title
 					),
@@ -1147,13 +1164,13 @@ final class Admin {
 				),
 				'error409'           => array(
 					'title'   => sprintf(
-						// translators: %1$s is the vendor title
+					// translators: %1$s is the vendor title
 						__( '%1$s Support user already exists', 'gk-gravityview' ),
 						$vendor_title
 					),
 					'content' => sprintf(
 						wp_kses(
-							// translators: %1$s is the vendor title, %2$s is the URL to the users list page
+						// translators: %1$s is the vendor title, %2$s is the URL to the users list page
 							__( 'A support user for %1$s already exists. You may revoke this support access from your <a href="%2$s" target="_blank">Users list</a>.', 'gk-gravityview' ),
 							array( 'a' => array( 'href' => array(), 'target' => array() ) )
 						),
@@ -1174,7 +1191,8 @@ final class Admin {
 	 *
 	 * @param bool $print Whether to print and return (true) or return (false) the results. Default: true
 	 * @param array $atts Settings for the table. {
-	 *   @type bool $current_url Whether to generate Revoke links based on the current URL. Default: false.
+	 *
+	 * @type bool $current_url Whether to generate Revoke links based on the current URL. Default: false.
 	 * }
 	 *
 	 * @return string HTML table of active support users for vendor. Empty string if current user can't `create_users`
@@ -1211,46 +1229,57 @@ final class Admin {
 		if ( is_wp_error( $access_key ) ) {
 
 			$access_key_template = <<<EOD
-<%3\$s class="tl-%1\$s-auth__accesskey">
-	<h3>%2\$s</h3>
-	<p>%4\$s <samp>%5\$s</samp></p>
-</%3\$s>
+	<%3\$s class="tl-%1\$s-auth__accesskey">
+		<h3>%2\$s</h3>
+		<p>%4\$s <samp>%5\$s</samp></p>
+	</%3\$s>
 EOD;
 			$access_key_output   = sprintf(
 				$access_key_template,
-				/* %1$s */ sanitize_title( $this->config->ns() ),
-				/* %2$s */ esc_html__( 'Error', 'gk-gravityview' ),
-				/* %3$s */ 'div',
-				/* %4$s */ esc_html__( 'There was an error returning the access key.', 'gk-gravityview' ),
-				/* %5$s */ esc_html( $access_key->get_error_message() )
+				/* %1$s */
+				sanitize_title( $this->config->ns() ),
+				/* %2$s */
+				esc_html__( 'Error', 'gk-gravityview' ),
+				/* %3$s */
+				'div',
+				/* %4$s */
+				esc_html__( 'There was an error returning the access key.', 'gk-gravityview' ),
+				/* %5$s */
+				esc_html( $access_key->get_error_message() )
 			);
-
 		} else {
 
 			$access_key_template = <<<EOD
-<%6\$s class="tl-%1\$s-auth__accesskey">
-	<label for="tl-%1\$s-access-key"><h3>%2\$s</h3></label>
-	<p>%8\$s</p>
+	<%6\$s class="tl-%1\$s-auth__accesskey">
+		<label for="tl-%1\$s-access-key"><h3>%2\$s</h3></label>
+		<p>%8\$s</p>
 
-	<div class="tl-%1\$s-auth__accesskey_wrapper">
-		<input id="tl-%1\$s-access-key" type="text" value="%4\$s" size="64" class="tl-%1\$s-auth__accesskey_field code" aria-label="%3\$s">
-		<button id="tl-%1\$s-copy" class="tl-%1\$s-auth__accesskey_copy button" aria-live="off" title="%7\$s"><span class="screen-reader-text">%5\$s</span></button>
-	</div>
-</%6\$s>
+		<div class="tl-%1\$s-auth__accesskey_wrapper">
+			<input id="tl-%1\$s-access-key" type="text" value="%4\$s" size="64" class="tl-%1\$s-auth__accesskey_field code" aria-label="%3\$s">
+			<button id="tl-%1\$s-copy" class="tl-%1\$s-auth__accesskey_copy button" aria-live="off" title="%7\$s"><span class="screen-reader-text">%5\$s</span></button>
+		</div>
+	</%6\$s>
 EOD;
 			$access_key_output   = sprintf(
 				$access_key_template,
-				/* %1$s */ sanitize_title( $this->config->ns() ),
-				/* %2$s */ esc_html__( 'Site access key:', 'gk-gravityview' ),
-				/* %3$s */ esc_html__( 'Access Key', 'gk-gravityview' ),
-				/* %4$s */ esc_attr( $access_key ),
-				/* %5$s */ esc_html__( 'Copy', 'gk-gravityview' ),
-				/* %6$s */ 'div',
-				/* %7$s */ esc_html__( 'Copy the access key to your clipboard', 'gk-gravityview' ),
+				/* %1$s */
+				sanitize_title( $this->config->ns() ),
+				/* %2$s */
+				esc_html__( 'Site access key:', 'gk-gravityview' ),
+				/* %3$s */
+				esc_html__( 'Access Key', 'gk-gravityview' ),
+				/* %4$s */
+				esc_attr( $access_key ),
+				/* %5$s */
+				esc_html__( 'Copy', 'gk-gravityview' ),
+				/* %6$s */
+				'div',
+				/* %7$s */
+				esc_html__( 'Copy the access key to your clipboard', 'gk-gravityview' ),
 				// translators: %s is the display name of the TrustedLogin support user.
-				/* %8$s */ sprintf( esc_html__( 'The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums.', 'gk-gravityview' ), $this->support_user->get_first()->display_name )
+				/* %8$s */
+				sprintf( esc_html__( 'The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums.', 'gk-gravityview' ), $this->support_user->get_first()->display_name )
 			);
-
 		}
 
 
@@ -1263,14 +1292,6 @@ EOD;
 		return $return;
 	}
 
-	/**
-	 * Add admin_notices hooks
-	 *
-	 * @return void
-	 */
-	public function admin_notices() {
-		add_action( 'admin_notices', array( $this, 'admin_notice_revoked' ) );
-	}
 
 	/**
 	 * Notice: Shown when a support user is manually revoked by admin;
@@ -1299,5 +1320,14 @@ EOD;
 		<?php
 
 		$displayed_notice = true;
+	}
+
+	/**
+	 * Is this a login screen and should TrustedLogin override the login screen for the current namespace?
+	 *
+	 * @return bool
+	 */
+	private function is_login_screen() {
+		return did_action( 'login_init' ) && isset( $_GET['ns'] ) && $_GET['ns'] === $this->config->ns();
 	}
 }

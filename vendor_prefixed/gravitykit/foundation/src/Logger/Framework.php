@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 26-April-2023 using Strauss.
+ * Modified by gravityview on 03-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -11,14 +11,14 @@ namespace GravityKit\GravityView\Foundation\Logger;
 use GravityKit\GravityView\Foundation\Core as FoundationCore;
 use GravityKit\GravityView\Foundation\Helpers\Core as CoreHelpers;
 use GravityKit\GravityView\Foundation\Helpers\Arr;
-use GravityKit\GravityView\Monolog\Handler\ChromePHPHandler;
-use GravityKit\GravityView\Monolog\Handler\StreamHandler;
-use GravityKit\GravityView\Monolog\Logger as MonologLogger;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\ChromePHPHandler;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\StreamHandler;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Logger as MonologLogger;
 use GravityKit\GravityView\Foundation\Settings\Framework as SettingsFramework;
 use GravityKit\GravityView\Foundation\Encryption\Encryption;
 use Exception;
-use GravityKit\GravityView\Psr\Log\LoggerInterface;
-use GravityKit\GravityView\Psr\Log\LoggerTrait;
+use GravityKit\GravityView\Foundation\ThirdParty\Psr\Log\LoggerInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Psr\Log\LoggerTrait;
 
 /**
  * Logging framework for GravityKit.

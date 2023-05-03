@@ -210,18 +210,24 @@ abstract class Request {
 	 * @return \GV\Entry|false The entry requested or false.
 	 */
 	public function is_edit_entry( $form_id = 0 ) {
+
+		$entry = $this->is_entry( $form_id );
+
 		/**
-		* @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
-		* The Edit Entry functionality overrides this value.
-		* @param boolean $is_edit_entry
-		*/
-		if ( ( $entry = $this->is_entry( $form_id ) ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		 * @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
+		 * The Edit Entry functionality overrides this value.
+		 *
+		 * @param boolean $is_edit_entry
+		 */
+		if ( $entry && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+
 			if ( $entry->is_multi() ) {
 				return array_pop( $entry->entries );
 			}
 
 			return $entry;
 		}
+
 		return false;
 	}
 
@@ -246,7 +252,7 @@ abstract class Request {
 
 		unset( $get['mode'] );
 
-		$get = array_filter( $get, 'gravityview_is_not_empty_string' );
+		$get = array_filter( (array) $get, 'gravityview_is_not_empty_string' );
 
 		if( $this->_has_field_key( $get ) ) {
 			return true;

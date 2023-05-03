@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "601001744759df84f07036b379ff537d",
+    "content-hash": "5bdb269f5e8e338ecccfddf65a22b129",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "6303956c784c41d784f4c015a997b2a99d90036a"
+                "reference": "ba5647b8a31250271df545c04734fa934a07d5ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/6303956c784c41d784f4c015a997b2a99d90036a",
-                "reference": "6303956c784c41d784f4c015a997b2a99d90036a",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/ba5647b8a31250271df545c04734fa934a07d5ac",
+                "reference": "ba5647b8a31250271df545c04734fa934a07d5ac",
                 "shasum": ""
             },
             "require": {
@@ -272,6 +272,8 @@
                         "illuminate/support",
                         "illuminate/validation",
                         "illuminate/translation",
+                        "monolog/monolog",
+                        "psr/log",
                         "gettext/gettext",
                         "trustedlogin/client"
                     ],
@@ -295,11 +297,18 @@
                 "prefix_vendor": [
                     "@php strauss.phar"
                 ],
+                "post_update_install": [
+                    "./composer_post_update_install.sh"
+                ],
                 "post-install-cmd": [
-                    "@prefix_vendor"
+                    "@prefix_vendor",
+                    "@post_update_install",
+                    "composer dump-autoload -o"
                 ],
                 "post-update-cmd": [
-                    "@prefix_vendor"
+                    "@prefix_vendor",
+                    "@post_update_install",
+                    "composer dump-autoload -o"
                 ]
             },
             "license": [
@@ -312,10 +321,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/main",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.0.12",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2023-04-20T16:30:07+00:00"
+            "time": "2023-05-03T13:55:16+00:00"
         },
         {
             "name": "illuminate/container",

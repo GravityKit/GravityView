@@ -15,13 +15,17 @@ if( empty( $search_field['choices'] ) ) {
 	return;
 }
 
+ray( 'in ' . __FILE__, $search_field );
 ?>
 <div class="gv-search-box gv-search-field-radio">
 	<?php if( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 	<label for=search-box-<?php echo esc_attr( $search_field['name'] ); ?>><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>
 	<p>
-	<?php foreach( $search_field['choices'] as $choice ) { ?>
+	<?php foreach( $search_field['choices'] as $choice ) {
+
+		ray( $choice );
+		?>
 
 		<label for="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" class="gv-check-radio">
 			<input type="radio" name="<?php echo esc_attr( $search_field['name'] ); ?>" value="<?php echo esc_attr( $choice['value'] ); ?>" id="search-box-<?php echo sanitize_html_class( $search_field['name'].$choice['value'].$choice['text'] ); ?>" <?php checked( $choice['value'], $search_field['value'], true ); ?>>

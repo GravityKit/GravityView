@@ -85,7 +85,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
 	/**
 	 * @param array $widget_args
-	 * @param string $content
+	 * @param string|\GV\Template_Context $content
 	 * @param string $context
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '') {

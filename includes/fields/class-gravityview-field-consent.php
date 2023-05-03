@@ -42,6 +42,10 @@ class GravityView_Field_Consent extends GravityView_Field {
 	 */
 	public function field_output( $output, $context ) {
 
+		if ( empty( $output ) ) {
+			return '';
+		}
+
 		$configuration = $context->field->as_configuration();
 
 		/** @var GF_Field_Consent $consent_field */
