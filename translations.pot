@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.17.5\n"
+"Project-Id-Version: GravityView 2.17.6\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-05-03T13:59:17+00:00\n"
+"POT-Creation-Date: 2023-05-03T18:22:19+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -647,7 +647,7 @@ msgid "Define a default search value for the View"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:405
-#: includes/widgets/search-widget/class-search-widget.php:294
+#: includes/widgets/search-widget/class-search-widget.php:295
 #: future/includes/gutenberg/blocks/view/edit.js:222
 #: future/includes/gutenberg/build/view.js:1
 msgid "Search Field"
@@ -1366,7 +1366,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:88
 #: includes/fields/class-gravityview-field-select.php:27
-#: includes/widgets/search-widget/class-search-widget.php:248
+#: includes/widgets/search-widget/class-search-widget.php:249
 msgid "Select"
 msgstr ""
 
@@ -1701,7 +1701,7 @@ msgid "Reorder Search Fields"
 msgstr ""
 
 #: includes/class-admin-views.php:1401
-#: includes/widgets/search-widget/class-search-widget.php:292
+#: includes/widgets/search-widget/class-search-widget.php:293
 msgid "Add Search Field"
 msgstr ""
 
@@ -1771,23 +1771,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:743
+#: includes/class-admin-welcome.php:787
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:793
+#: includes/class-admin-welcome.php:837
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:831
+#: includes/class-admin-welcome.php:875
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:863
+#: includes/class-admin-welcome.php:907
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:864
+#: includes/class-admin-welcome.php:908
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2840,8 +2840,8 @@ msgid "Chained Select"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-checkbox.php:27
-#: includes/widgets/search-widget/class-search-widget.php:251
 #: includes/widgets/search-widget/class-search-widget.php:252
+#: includes/widgets/search-widget/class-search-widget.php:253
 msgid "Checkbox"
 msgstr ""
 
@@ -3050,7 +3050,7 @@ msgid "The date the entry was last updated."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:27
-#: includes/widgets/search-widget/class-search-widget.php:247
+#: includes/widgets/search-widget/class-search-widget.php:248
 #: future/includes/gutenberg/blocks/view/edit.js:133
 #: future/includes/gutenberg/blocks/view/edit.js:172
 #: future/includes/gutenberg/build/view.js:1
@@ -3220,7 +3220,7 @@ msgid "HTML"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-id.php:24
-#: includes/widgets/search-widget/class-search-widget.php:374
+#: includes/widgets/search-widget/class-search-widget.php:375
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/entry.js:1
@@ -3244,7 +3244,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-is-approved.php:42
 #: includes/fields/class-gravityview-field-is-approved.php:125
-#: includes/widgets/search-widget/class-search-widget.php:389
+#: includes/widgets/search-widget/class-search-widget.php:390
 msgid "Approval Status"
 msgstr ""
 
@@ -3301,7 +3301,7 @@ msgid "Entry Star"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-starred.php:30
-#: includes/widgets/search-widget/class-search-widget.php:382
+#: includes/widgets/search-widget/class-search-widget.php:383
 msgid "Is Starred"
 msgstr ""
 
@@ -4192,96 +4192,96 @@ msgstr ""
 msgid "Only show choices that exist in form entries"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:246
+#: includes/widgets/search-widget/class-search-widget.php:247
 msgid "Text"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:249
+#: includes/widgets/search-widget/class-search-widget.php:250
 msgid "Select (multiple values)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:250
+#: includes/widgets/search-widget/class-search-widget.php:251
 msgid "Radio"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:253
+#: includes/widgets/search-widget/class-search-widget.php:254
 msgid "Links"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:254
+#: includes/widgets/search-widget/class-search-widget.php:255
 msgid "Date range"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:291
+#: includes/widgets/search-widget/class-search-widget.php:292
 msgid "No search fields configured yet."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:293
+#: includes/widgets/search-widget/class-search-widget.php:294
 msgid "Label"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:295
+#: includes/widgets/search-widget/class-search-widget.php:296
 msgid "Input Type"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:296
+#: includes/widgets/search-widget/class-search-widget.php:297
 msgid "There was an error loading searchable fields. Save the View or refresh the page to fix this issue."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:366
+#: includes/widgets/search-widget/class-search-widget.php:367
 msgid "Search Everything"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:370
+#: includes/widgets/search-widget/class-search-widget.php:371
 msgid "Entry Date"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:378
+#: includes/widgets/search-widget/class-search-widget.php:379
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1594
+#: includes/widgets/search-widget/class-search-widget.php:1597
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1597
+#: includes/widgets/search-widget/class-search-widget.php:1600
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1600
+#: includes/widgets/search-widget/class-search-widget.php:1603
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1898
+#: includes/widgets/search-widget/class-search-widget.php:1908
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1961
+#: includes/widgets/search-widget/class-search-widget.php:1971
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1962
+#: includes/widgets/search-widget/class-search-widget.php:1972
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1963
+#: includes/widgets/search-widget/class-search-widget.php:1973
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1964
+#: includes/widgets/search-widget/class-search-widget.php:1974
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1965
+#: includes/widgets/search-widget/class-search-widget.php:1975
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1966
+#: includes/widgets/search-widget/class-search-widget.php:1976
 msgid "Show a different month"
 msgstr ""
 
@@ -6251,4 +6251,84 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""
