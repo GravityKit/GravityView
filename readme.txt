@@ -21,21 +21,27 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.17.6 =
+= 2.17.6 on May 3, 2023 =
 
+* Modified: Added "(Inactive)" suffix to inactive forms in the Data Source dropdown
 * Fixed: Incompatibility with some plugins/themes that use Laravel components
 * Fixed: Appearance of Likert survey fields when using Gravity Forms Survey Add-On Version 3.8 or newer
 * Fixed: Appearance of the Poll widget when using Gravity Forms Poll Add-On Version 4.0 or newer
 * Fixed: `[gvlogic]` not working when embedded in a Post or Page
+* Fixed: `[gvlogic if="context" is="multiple"]` not working when a View is embedded
 * Fixed: Consent field always showing checked status when there are two or more Consent fields in the form
-* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.12
+* Fixed: Selecting all entries on the Entries page would not properly apply all the search filters
 
 __Developer Notes:__
 
 * Added: `gk/gravityview/common/get_forms` filter to modify the forms returned by `GVCommon::get_forms()`
+* Modified: Removed `.hidden` from compiled CSS files to prevent potential conflicts with other plugins/themes (use `.gv-hidden` instead)
 * Modified: Added `gvlogic`-related shortcodes to the `no_texturize_shortcodes` array to prevent shortcode attributes from being encoding
 * Modified: Updated Gravity Forms CSS file locations for the Survey, Poll, and Quiz Add-Ons
 * Modified: Likert survey responses are now wrapped in `div.gform-settings__content.gform-settings-panel__content` to match the Gravity Forms Survey Add-On 3.8 appearance
+* Fixed: Properly suppress PHP warnings when calling `GFCommon::gv_vars()` in the Edit View screen
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.0.12
+* Updated: TrustedLogin to version 1.5.1
 
 = 2.17.5 on April 12, 2023 =
 
