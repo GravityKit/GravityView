@@ -8,17 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 26-April-2023 using Strauss.
+ * Modified by gravityview on 03-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Monolog\Handler;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler;
 
-use GravityKit\GravityView\Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
-use GravityKit\GravityView\Monolog\Handler\FingersCrossed\ActivationStrategyInterface;
-use GravityKit\GravityView\Monolog\Logger;
-use GravityKit\GravityView\Monolog\ResettableInterface;
-use GravityKit\GravityView\Monolog\Formatter\FormatterInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\FingersCrossed\ActivationStrategyInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Logger;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\ResettableInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Formatter\FormatterInterface;
 
 /**
  * Buffers all records until a certain level is reached

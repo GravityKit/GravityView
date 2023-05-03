@@ -8,16 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 26-April-2023 using Strauss.
+ * Modified by gravityview on 03-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Monolog;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog;
 
-use GravityKit\GravityView\Monolog\Handler\HandlerInterface;
-use GravityKit\GravityView\Monolog\Handler\StreamHandler;
-use GravityKit\GravityView\Psr\Log\LoggerInterface;
-use GravityKit\GravityView\Psr\Log\InvalidArgumentException;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\HandlerInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\StreamHandler;
+use GravityKit\GravityView\Foundation\ThirdParty\Psr\Log\LoggerInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Psr\Log\InvalidArgumentException;
 use Exception;
 
 /**

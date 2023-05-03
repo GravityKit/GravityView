@@ -2,11 +2,11 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 26-April-2023 using Strauss.
+ * Modified by gravityview on 03-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Psr\Log;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Psr\Log;
 
 /**
  * Basic Implementation of LoggerAwareInterface.

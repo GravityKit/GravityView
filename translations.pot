@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-04-26T17:57:49+00:00\n"
+"POT-Creation-Date: 2023-05-03T13:59:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -573,7 +573,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:286
 #: future/includes/class-gv-settings-view.php:317
-#: includes/class-common.php:1574
+#: includes/class-common.php:1595
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -938,7 +938,7 @@ msgstr ""
 
 #: future/includes/class-gv-view.php:312
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:219
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:247
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:259
 #: includes/class-admin-views.php:583
 msgid "Data Source"
 msgstr ""
@@ -1303,33 +1303,38 @@ msgstr ""
 msgid "list of forms"
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:55
-msgid "Switch View"
-msgstr ""
-
-#: includes/admin/metaboxes/views/data-source.php:55
-msgid "Switch View Type"
-msgstr ""
-
-#: includes/admin/metaboxes/views/data-source.php:59
-#: includes/admin/metaboxes/views/data-source.php:64
-#: includes/admin/metaboxes/views/data-source.php:69
-msgid "Attention"
+#: includes/admin/metaboxes/views/data-source.php:51
+msgctxt "Indicates that a form is inactive."
+msgid "Inactive"
 msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:60
-msgid "Changing the form will reset your field configuration. Changes will be permanent once you save the View."
+msgid "Switch View"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:60
+msgid "Switch View Type"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:64
+#: includes/admin/metaboxes/views/data-source.php:69
+#: includes/admin/metaboxes/views/data-source.php:74
+msgid "Attention"
 msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:65
-msgid "Changing the View Type will reset your field configuration. Changes will be permanent once you save the View."
+msgid "Changing the form will reset your field configuration. Changes will be permanent once you save the View."
 msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:70
-msgid "Using a preset will reset your field configuration. Changes will be permanent once you save the View."
+msgid "Changing the View Type will reset your field configuration. Changes will be permanent once you save the View."
 msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:75
+msgid "Using a preset will reset your field configuration. Changes will be permanent once you save the View."
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:80
 msgid "GravityView requires Javascript to be enabled."
 msgstr ""
 
@@ -1904,7 +1909,7 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-api.php:1421
+#: includes/class-api.php:1416
 msgid "Map It"
 msgstr ""
 
@@ -1912,7 +1917,7 @@ msgstr ""
 msgid "Select a Form"
 msgstr ""
 
-#: includes/class-common.php:473
+#: includes/class-common.php:489
 #: includes/fields/class-gravityview-field-post-id.php:28
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/view.js:1
@@ -1921,20 +1926,20 @@ msgid "Post ID"
 msgstr ""
 
 #. translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:1173
+#: includes/class-common.php:1194
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1527
+#: includes/class-common.php:1548
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1578
+#: includes/class-common.php:1599
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1709
+#: includes/class-common.php:1730
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -2024,23 +2029,23 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:135
+#: includes/class-gravityview-bulk-actions.php:142
 msgid "%d entries"
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:135
+#: includes/class-gravityview-bulk-actions.php:142
 msgid "1 entry"
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:140
+#: includes/class-gravityview-bulk-actions.php:147
 msgid "%s approved."
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:144
+#: includes/class-gravityview-bulk-actions.php:151
 msgid "%s unapproved."
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:148
+#: includes/class-gravityview-bulk-actions.php:155
 msgid "%s disapproved."
 msgstr ""
 
@@ -2869,7 +2874,7 @@ msgid "Label of the input"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-checkbox.php:75
-#: includes/fields/class-gravityview-field-consent.php:109
+#: includes/fields/class-gravityview-field-consent.php:113
 #: includes/fields/class-gravityview-field-multiselect.php:54
 #: includes/fields/class-gravityview-field-radio.php:49
 #: includes/fields/class-gravityview-field-select.php:53
@@ -2883,15 +2888,15 @@ msgstr ""
 msgid "Consent"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-consent.php:113
+#: includes/fields/class-gravityview-field-consent.php:117
 msgid "Consent image with description"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-consent.php:114
+#: includes/fields/class-gravityview-field-consent.php:118
 msgid "Consent image"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-consent.php:115
+#: includes/fields/class-gravityview-field-consent.php:119
 msgid "Consent description"
 msgstr ""
 
@@ -4407,7 +4412,7 @@ msgstr ""
 msgid "Your browser does not support the video tag."
 msgstr ""
 
-#: templates/fields/field-survey-html.php:126
+#: templates/fields/field-survey-html.php:150
 msgid "%s (%d out of %d stars)"
 msgstr ""
 
