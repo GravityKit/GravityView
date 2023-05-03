@@ -280,6 +280,7 @@ class GravityView_Welcome {
 				<h3>2.17.6 on May 3, 2023</h3>
 
 				<ul>
+					<li>Added: Filter entries by payment status using a drop-down, radio, multi-select, or checkbox inputs in the Search Bar (previously, only searchable using a text input)</li>
 					<li>Modified: Added '(Inactive)' suffix to inactive forms in the Data Source dropdown</li>
 					<li>Fixed: Incompatibility with some plugins/themes that use Laravel components</li>
 					<li>Fixed: Appearance of Likert survey fields when using Gravity Forms Survey Add-On Version 3.8 or
