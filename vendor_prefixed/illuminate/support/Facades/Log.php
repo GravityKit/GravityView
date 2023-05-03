@@ -2,13 +2,13 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 26-April-2023 using Strauss.
+ * Modified by gravityview on 03-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
 namespace GravityKit\GravityView\Foundation\ThirdParty\Illuminate\Support\Facades;
 
-use GravityKit\GravityView\Psr\Log\LoggerInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Psr\Log\LoggerInterface;
 
 /**
  * @see \Illuminate\Log\Writer

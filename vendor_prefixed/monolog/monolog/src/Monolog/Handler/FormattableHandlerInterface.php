@@ -2,7 +2,7 @@
 /**
  * @license MIT
  *
- * Modified by gravityview on 26-April-2023 using Strauss.
+ * Modified by gravityview on 03-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */ declare(strict_types=1);
 
@@ -15,9 +15,9 @@
  * file that was distributed with this source code.
  */
 
-namespace GravityKit\GravityView\Monolog\Handler;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler;
 
-use GravityKit\GravityView\Monolog\Formatter\FormatterInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Formatter\FormatterInterface;
 
 /**
  * Interface to describe loggers that have a formatter

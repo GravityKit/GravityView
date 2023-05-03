@@ -8,14 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 26-April-2023 using Strauss.
+ * Modified by gravityview on 03-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Monolog\Handler;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler;
 
-use GravityKit\GravityView\Monolog\Formatter\LineFormatter;
-use GravityKit\GravityView\Monolog\Logger;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Formatter\LineFormatter;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Logger;
 
 /**
  * Stores to PHP error_log() handler.

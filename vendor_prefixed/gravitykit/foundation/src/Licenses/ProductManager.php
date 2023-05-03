@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 26-April-2023 using Strauss.
+ * Modified by gravityview on 03-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -469,7 +469,7 @@ class ProductManager {
 					'coming_soon'         => Arr::get( $remote_product, 'info.coming_soon' ),
 					'title'               => Arr::get( $remote_product, 'info.title' ),
 					'excerpt'             => Arr::get( $remote_product, 'info.excerpt' ),
-					'buy_link'            => Arr::get( $remote_product, 'info.buy_url' ),
+					'buy_link'            => esc_url( Arr::get( $remote_product, 'info.buy_url', '' ) ),
 					'link'                => esc_url( Arr::get( $remote_product, 'info.link', '' ) ),
 					'icon'                => esc_url( Arr::get( $remote_product, 'info.icon', '' ) ),
 					'icons'               => [

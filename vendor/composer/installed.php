@@ -5,7 +5,7 @@
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '3a7c9a5fb6268e6f8e0610fc24450a6ac38d5c60',
+        'reference' => '8e37fb49a64c478648adf015b7de314a1aec00ac',
         'name' => 'gravityview/gravityview',
         'dev' => false,
     ),
@@ -45,7 +45,7 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
-            'reference' => '6303956c784c41d784f4c015a997b2a99d90036a',
+            'reference' => 'ba5647b8a31250271df545c04734fa934a07d5ac',
             'dev_requirement' => false,
         ),
         'gravityview/gravityview' => array(
@@ -54,7 +54,7 @@
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '3a7c9a5fb6268e6f8e0610fc24450a6ac38d5c60',
+            'reference' => '8e37fb49a64c478648adf015b7de314a1aec00ac',
             'dev_requirement' => false,
         ),
         'illuminate/container' => array(
