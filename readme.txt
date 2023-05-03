@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.17.6 on May 3, 2023 =
 
+* Added: Filter entries by payment status using a drop-down, radio, multi-select, or checkbox inputs in the Search Bar (previously, only searchable using a text input)
 * Modified: Added "(Inactive)" suffix to inactive forms in the Data Source dropdown
 * Fixed: Incompatibility with some plugins/themes that use Laravel components
 * Fixed: Appearance of Likert survey fields when using Gravity Forms Survey Add-On Version 3.8 or newer
