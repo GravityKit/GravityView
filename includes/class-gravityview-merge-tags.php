@@ -376,16 +376,6 @@ class GravityView_Merge_Tags {
 			return $text;
 		}
 
-		/**
-		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
-		 * @see GFCommon::replace_variables()
-		 * @see GFCommon::replace_variables_prepopulate()
-		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
-		 */
-		if ( false === $form ) {
-			return $text;
-		}
-
 		$text = self::replace_is_starred( $text, $form, $entry, $url_encode, $esc_html );
 
 		$text = self::replace_site_url( $text, $form, $entry, $url_encode, $esc_html );
