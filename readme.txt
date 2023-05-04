@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.17.7 on May 4, 2023 =
+
+* Fixed: Fatal error when using the Radio input types in the Search Bar (introduced in 2.17.6)
+
 = 2.17.6 on May 3, 2023 =
 
 * Added: Filter entries by payment status using a drop-down, radio, multi-select, or checkbox inputs in the Search Bar (previously, only searchable using a text input)
