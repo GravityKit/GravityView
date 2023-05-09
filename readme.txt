@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Fatal error when adding a GravityView block in Guternberg editor
+
 = 2.17.7 on May 4, 2023 =
 
 * Fixed: Fatal error when using the Radio input types in the Search Bar (introduced in 2.17.6)
