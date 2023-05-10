@@ -193,6 +193,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection This collection, now hydrated.
 	 */
 	public function fetch() {
+
 		if ( $this->fetched >= 0 ) {
 			return $this;
 		}
@@ -210,6 +211,7 @@ class Entry_Collection extends Collection {
 				continue;
 			}
 
+			/** Adds entries found in the callback to the collection using {@see \GV\Entry_Collection::add()}. */
 			$this->merge( $callback[1]( $this->filters, $this->sorts, $offset ) );
 		}
 
