@@ -358,14 +358,11 @@ class GravityView_Edit_Entry {
 			// @deprecated path
 			$view_id = GravityView_View::getInstance()->getViewId();
 			$user_edit = GravityView_View::getInstance()->getAtts( 'user_edit' );
+		} elseif ( $view instanceof \GV\View ) {
+			$view_id = $view->ID;
+			$user_edit = $view->settings->get( 'user_edit' );
 		} else {
-			if ( $view instanceof \GV\View ) {
-				$view_id = $view->ID;
-			} else {
-				$view_id = $view;
-			}
-
-			// in case is specified and not the current view
+			$view_id = $view;
 			$user_edit = GVCommon::get_template_setting( $view_id, 'user_edit' );
 		}
 
