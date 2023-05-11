@@ -707,7 +707,6 @@ class GravityView_frontend {
 			return;
 		}
 
-
 		$title       = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
 		$edit_link   = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $view_id, $context ) );
 		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gk-gravityview' ), $tab );
