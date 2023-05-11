@@ -98,7 +98,7 @@ class GravityView_Entry_Approval {
 			return;
 		}
 
-		$form = GFAPI::get_form( $entry['form_id'] );
+		$form = GVCommon::get_form( $entry['form_id'] );
 
 		if ( ! $form ) {
 			gravityview()->log->error( 'Form not found at ID #{form_id} for entry #{entry_id}', array( 'form_id' => $entry['form_id'], 'entry_id' => $entry_id ) );

@@ -182,7 +182,7 @@ class gventry extends \GV\Shortcode {
 
 			add_filter( 'gravityview/is_single_entry', '__return_true' );
 
-			$form = \GFAPI::get_form( $entry['form_id'] );
+			$form = \GVCommon::get_form( $entry['form_id'] );
 
 			$data = \GravityView_View_Data::getInstance( $view );
 			$template = \GravityView_View::getInstance( array(

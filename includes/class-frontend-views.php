@@ -1293,7 +1293,7 @@ class GravityView_frontend {
 
 			if ( 'RAND' === $sort_direction ) {
 
-				$form = GFAPI::get_form( $form_id );
+				$form = GVCommon::get_form( $form_id );
 
 				// Get the first GF_Field field ID, set as the key for entry randomization
 				if ( ! empty( $form['fields'] ) ) {

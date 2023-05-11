@@ -76,7 +76,7 @@ class GravityView_Field_Total extends GravityView_Field {
 	 */
 	function edit_entry_recalculate_totals( $form = array(), $entry_id = 0, $Edit_Entry_Render = null ) {
 
-		$original_form = GFAPI::get_form( $form['id'] );
+		$original_form = GVCommon::get_form( $form['id'] );
 
 		$total_fields = GFCommon::get_fields_by_type( $original_form, 'total' );
 

@@ -472,7 +472,7 @@ final class GravityView_Duplicate_Entry {
 			return new WP_Error( 'gravityview-duplicate-entry-missing', __( 'The entry does not exist.', 'gk-gravityview' ) );
 		}
 
-		$form = GFAPI::get_form( $entry['form_id'] );
+		$form = GVCommon::get_form( $entry['form_id'] );
 
 		$row['id'] = null;
 		$row['date_created'] = date( 'Y-m-d H:i:s', time() );

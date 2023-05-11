@@ -390,7 +390,7 @@ final class GravityView_Delete_Entry {
 
 		if ( (int) $view->settings->get( 'delete_redirect' ) === self::REDIRECT_TO_URL_VALUE ) {
 
-			$form                 = GFAPI::get_form( $entry['form_id'] );
+			$form                 = GVCommon::get_form( $entry['form_id'] );
 			$redirect_url_setting = $view->settings->get( 'delete_redirect_url' );
 			$redirect_url         = GFCommon::replace_variables( $redirect_url_setting, $form, $entry, false, false, false, 'text' );
 
