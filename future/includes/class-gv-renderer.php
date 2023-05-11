@@ -314,6 +314,7 @@ EOD;
 		 * @param string               $context        The context of the notice. Possible values: `directory`, `single`, `edit`.
 		 */
 		$should_display = apply_filters( 'gk/gravityview/renderer/should_display_configuration_notice', true, $gravityview, $context );
+
 		if ( ! $should_display ) {
 			return;
 		}
