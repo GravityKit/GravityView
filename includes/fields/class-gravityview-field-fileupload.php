@@ -198,6 +198,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		// Process each file path
 		foreach ( $file_paths as $index => $file_path ) {
 
+			// If the file path is not a valid URL, skip it. This is the same check that Gravity Forms does.
+			if ( ! GFCommon::is_valid_url( $file_path ) ) {
+				continue;
+			}
+
 			$rendered = null;
 
 			$file_info = self::get_file_info( $file_path, $field, $field_settings, $context, $index );
