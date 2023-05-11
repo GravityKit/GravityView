@@ -302,6 +302,23 @@ EOD;
 			return;
 		}
 
+		/**
+		 * Includes a way to disable the configuration notice.
+		 *
+		 * @since TBD
+		 *
+		 * @filter `gk/gravityview/renderer/should_display_configuration_notice`
+		 *
+		 * @param bool                 $should_display Whether to display the notice. Default: true.
+		 * @param \GV\Template_Context $gravityview    The $gravityview template object.
+		 * @param string               $context        The context of the notice. Possible values: `directory`, `single`, `edit`.
+		 */
+		$should_display = apply_filters( 'gk/gravityview/renderer/should_display_configuration_notice', true, $gravityview, $context );
+
+		if ( ! $should_display ) {
+			return;
+		}
+
 		$title = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
 		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $gravityview->view->ID, $context ) );
 		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gk-gravityview' ), $tab );
