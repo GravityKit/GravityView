@@ -689,6 +689,25 @@ class GravityView_frontend {
 				break;
 		}
 
+
+		/**
+		 * Includes a way to disable the configuration notice.
+		 *
+		 * @since TBD
+		 *
+		 * @filter `gk/gravityview/frontend_views/should_display_configuration_notice`
+		 *
+		 * @param bool    $should_display Whether to display the notice. Default: true.
+		 * @param int     $view_id        The ID of the View currently being displayed
+		 * @param string  $context        The context of the notice. Possible values: `directory`, `single`, `edit`.
+		 */
+		$should_display = apply_filters( 'gk/gravityview/frontend_views/should_display_configuration_notice', true, $view_id, $context );
+
+		if ( ! $should_display ) {
+			return;
+		}
+
+
 		$title       = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
 		$edit_link   = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $view_id, $context ) );
 		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gk-gravityview' ), $tab );
