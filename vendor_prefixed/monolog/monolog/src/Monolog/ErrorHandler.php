@@ -8,15 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Monolog;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog;
 
-use GravityKit\GravityView\Psr\Log\LoggerInterface;
-use GravityKit\GravityView\Psr\Log\LogLevel;
-use GravityKit\GravityView\Monolog\Handler\AbstractHandler;
+use GravityKit\GravityView\Foundation\ThirdParty\Psr\Log\LoggerInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Psr\Log\LogLevel;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\AbstractHandler;
 
 /**
  * Monolog error handler
@@ -63,7 +63,7 @@ class ErrorHandler
     public static function register(LoggerInterface $logger, $errorLevelMap = array(), $exceptionLevel = null, $fatalLevel = null)
     {
         //Forces the autoloader to run for LogLevel. Fixes an autoload issue at compile-time on PHP5.3. See https://github.com/Seldaek/monolog/pull/929
-        class_exists('\\GravityKit\\GravityView\\Psr\\Log\\LogLevel', true);
+        class_exists('\\GravityKit\\GravityView\\Foundation\\ThirdParty\\Psr\\Log\\LogLevel', true);
 
         /** @phpstan-ignore-next-line */
         $handler = new static($logger);

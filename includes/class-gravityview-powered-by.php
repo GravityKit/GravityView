@@ -47,7 +47,7 @@ class GravityView_Powered_By {
 
 		$css_class = 'gv-powered-by';
 
-		if ( ! $context->request->is_search() && 0 === $context->entries->count() && 3 === (int) $context->view->settings->get( 'no_entries_options', '0' ) ) {
+		if ( ! $context->request->is_search() && isset( $context->entries ) && 0 === $context->entries->count() && 3 === (int) $context->view->settings->get( 'no_entries_options', '0' ) ) {
 			$css_class .= ' gv-hidden';
 		}
 

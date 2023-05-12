@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -144,13 +144,13 @@ class Framework {
 	}
 
 	/**
-	 * Configures AJAX routes handled by this class.
+	 * Configures Ajax routes handled by this class.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @see   FoundationCore::process_ajax_request()
 	 *
-	 * @param array $routes AJAX route to class method map.
+	 * @param array $routes Ajax route to class method map.
 	 *
 	 * @return array
 	 */
@@ -161,7 +161,7 @@ class Framework {
 	}
 
 	/**
-	 * AJAX request to get products and/or licenses data.
+	 * Ajax request to get products and/or licenses data.
 	 *
 	 * @since 1.0.0
 	 *
@@ -210,13 +210,7 @@ class Framework {
 			return '';
 		}
 
-		if ( ! $this->current_user_can( 'view_licenses' ) ) {
-			return esc_html__( 'Products', 'gk-gravityview' );
-		} else if ( ! $this->current_user_can( 'view_products' ) ) {
-			return esc_html__( 'Licenses', 'gk-gravityview' );
-		} else {
-			return esc_html__( 'Products & Licenses', 'gk-gravityview' );
-		}
+		return esc_html__( 'Manage Your Kit', 'gk-gravityview' );
 	}
 
 	/**
@@ -277,7 +271,7 @@ class Framework {
 				'isNetworkAdmin' => CoreHelpers::is_network_admin(),
 				'permissions'    => $this->_permissions,
 			],
-			FoundationCore::get_ajax_params( self::AJAX_ROUTER )
+			FoundationCore::ajax_router()->get_ajax_params( self::AJAX_ROUTER )
 		);
 
 		if ( $this->_permissions['view_licenses'] ) {

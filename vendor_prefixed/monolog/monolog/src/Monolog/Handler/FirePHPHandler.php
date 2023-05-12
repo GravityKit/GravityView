@@ -8,13 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Monolog\Handler;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler;
 
-use GravityKit\GravityView\Monolog\Formatter\WildfireFormatter;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Formatter\WildfireFormatter;
 
 /**
  * Simple FirePHP Handler (http://www.firephp.org/), which uses the Wildfire protocol.

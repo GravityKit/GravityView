@@ -25,20 +25,26 @@ class GVCommon {
 	 * @return array|false Array: Form object returned from Gravity Forms; False: no form ID specified or Gravity Forms isn't active.
 	 */
 	public static function get_form( $form_id ) {
+
 		if ( empty( $form_id ) ) {
 			return false;
 		}
 
-		// Only get_form_meta is cached. ::facepalm::
-		if ( class_exists( 'GFFormsModel' ) ) {
-			return GFFormsModel::get_form_meta( $form_id );
+		if ( ! class_exists( 'GFAPI' ) ) {
+			return false;
 		}
 
-		if ( class_exists( 'GFAPI' ) ) {
-			return GFAPI::get_form( $form_id );
+		static $forms = array();
+
+		if ( isset( $forms[ $form_id ] ) ) {
+			return $forms[ $form_id ];
 		}
 
-		return false;
+		$form = \GFAPI::get_form( $form_id );
+
+		$forms[ $form_id ] = $form;
+
+		return $form;
 	}
 
 	/**
@@ -146,7 +152,7 @@ class GVCommon {
 		$form = false;
 
 		if ( $entry ) {
-			$form = GFAPI::get_form( $entry['form_id'] );
+			$form = GVCommon::get_form( $entry['form_id'] );
 		}
 
 		return $form;
@@ -266,11 +272,56 @@ class GVCommon {
 	}
 
 	/**
+	 * Alias of GFFormsModel::get_form_ids(), but allows for fetching other columns as well.
+	 *
+	 * @see GFFormsModel::get_form_ids()
+	 * @since 2.17.2
+	 *
+	 * @param bool   $active      True if active forms are returned. False to get inactive forms. Defaults to true.
+	 * @param bool   $trash       True if trashed forms are returned. False to exclude trash. Defaults to false.
+	 * @param string $sort_column The column to sort the results on.
+	 * @param string $sort_dir    The sort direction, ASC or DESC.
+	 * @param array  $columns     The columns to return. Defaults to ['id']. Other options are 'title', 'date_created', 'is_active', 'is_trash'. 'date_updated' may be supported, depending on the Gravity Forms version.
+	 *
+	 * @return array Forms indexed from 0 by SQL result row number. Each row is an associative array (column => value).
+	 */
+	public static function get_forms_columns( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC', $columns = [ 'id' ] ) {
+		global $wpdb;
+
+		// Only allow valid columns.
+		$columns = array_intersect( $columns, GFFormsModel::get_form_db_columns() );
+
+		$sql   = 'SELECT ' . implode( ', ', $columns ) . ' FROM ' . GFFormsModel::get_form_table_name();
+		$where = array();
+
+		if ( null !== $active ) {
+			$where[] = $wpdb->prepare( 'is_active=%d', $active );
+		}
+
+		if ( null !== $trash ) {
+			$where[] = $wpdb->prepare( 'is_trash=%d', $trash );
+		}
+
+		if ( ! empty( $where ) ) {
+			$sql .= ' WHERE ' . join( ' AND ', $where );
+		}
+
+		if ( ! in_array( strtolower( $sort_column ), GFFormsModel::get_form_db_columns() ) ) {
+			$sort_column = 'id';
+		}
+
+		if ( ! empty( $sort_column ) ) {
+			$sql .= " ORDER BY $sort_column " . ( $sort_dir == 'ASC' ? 'ASC' : 'DESC' );
+		}
+
+		return $wpdb->get_results( $sql, ARRAY_A );
+	}
+
+	/**
 	 * Get all forms to use as options in View settings.
 	 *
 	 * @since 2.17
 	 *
-	 * @uses GFAPI::get_form()
 	 * @used-by \GV\View_Settings::defaults()
 	 *
 	 * @param bool   $active      True if active forms are returned. False to get inactive forms. Defaults to true.
@@ -282,15 +333,28 @@ class GVCommon {
 	 */
 	public static function get_forms_as_options( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC' ) {
 
-		$forms = GFAPI::get_forms( $active, $trash, $sort_column, $sort_dir );
-
-		if ( empty( $forms ) ) {
-			return array();
-		}
-
 		$options = array(
 			'' => esc_html__( 'Select a Form', 'gk-gravityview' ),
 		);
+
+		// This is only used in the admin and in ajax, so don't run on the front-end.
+		if( gravityview()->request->is_frontend() ) {
+			return $options;
+		}
+
+		static $static_cache;
+
+		$static_cache_key = md5( json_encode( func_get_args() ) );
+
+		if ( isset( $static_cache[ $static_cache_key ] ) ) {
+			return $static_cache[ $static_cache_key ];
+		}
+
+		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, [ 'id', 'title' ] );
+
+		if ( empty( $forms ) ) {
+			return $options;
+		}
 
 		foreach ( $forms as $form ) {
 
@@ -299,8 +363,10 @@ class GVCommon {
 				continue;
 			}
 
-			$options[ (int) $form['id'] ] = esc_html( $form['title'] );
+			$options[ (int) $form['id'] ] = sprintf( '%s (#%d)', esc_html( $form['title'] ), (int) $form['id'] );
 		}
+
+		$static_cache[ $static_cache_key ] = $options;
 
 		return $options;
 	}
@@ -310,15 +376,16 @@ class GVCommon {
 	 *
 	 * @see GFAPI::get_forms()
 	 *
-	 * @since 1.19 Allow "any" $active status option
-	 * @since 2.7.2 Allow sorting forms using wp_list_sort()
+	 * @since 1.19 Allow "any" $active status option.
+	 * @since 2.7.2 Allow sorting forms using wp_list_sort().
+	 * @since 2.17.6 Added `gravityview/common/get_forms` filter.
 	 *
-	 * @param bool|string  $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
-	 * @param bool         $trash Include forms in trash? Default: `false`
+	 * @param bool|string  $active Status of forms. Use `any` to get array of forms with any status. Default: `true`.
+	 * @param bool         $trash Include forms in trash? Default: `false`.
 	 * @param string|array $order_by Optional. Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
 	 * @param string       $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
 	 *
-	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
+	 * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms.
 	 */
 	public static function get_forms( $active = true, $trash = false, $order_by = 'id', $order = 'ASC' ) {
 		$forms = array();
@@ -335,6 +402,21 @@ class GVCommon {
 		}
 
 		$forms = wp_list_sort( $forms, $order_by, $order, true );
+
+		/**
+		 * @filter `gk/gravityview/common/get_forms` Modify the forms returned by GFAPI::get_forms()
+		 *
+		 * @since 2.17.6
+		 *
+		 * @param array $forms Array of forms, with form ID as the key.
+		 * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`.
+		 * @param bool $trash Include forms in trash? Default: `false`.
+		 * @param string|array $order_by Optional. Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
+		 * @param string $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
+		 *
+		 * @return array Modified array of forms.
+		 */
+		$forms = apply_filters( 'gk/gravityview/common/get_forms', $forms, $active, $trash, $order_by, $order );
 
 		return $forms;
 	}
@@ -481,11 +563,11 @@ class GVCommon {
 	 */
 	public static function get_entry_ids( $form_id, $search_criteria = array() ) {
 
-		if ( ! class_exists( 'GFFormsModel' ) ) {
+		if ( ! class_exists( 'GFAPI' ) ) {
 			return;
 		}
 
-		return GFFormsModel::search_lead_ids( $form_id, $search_criteria );
+		return GFAPI::get_entry_ids( $form_id, $search_criteria );
 	}
 
 	/**
@@ -767,6 +849,11 @@ class GVCommon {
 		// fetch the entry
 		$entry = GFAPI::get_entry( $entry_id );
 
+		if ( is_wp_error( $entry ) ) {
+			gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
+			return false;
+		}
+
 		/**
 		 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
 		 * @since 1.16.2
@@ -839,7 +926,7 @@ class GVCommon {
 					break;
 			}
 
-			$val1 = in_array( gravityview_get_context(), $matching_contexts ) ? $val2 : false;
+			$val1 = in_array( gravityview_get_context(), $matching_contexts, true ) ? $val2 : false;
 		}
 
 		// Attempt to parse dates.
@@ -940,6 +1027,11 @@ class GVCommon {
 	 * @return WP_Error|array Returns WP_Error if entry is not valid according to the view search filters (Adv Filter). Returns original $entry value if passes.
 	 */
 	public static function check_entry_display( $entry, $view = null ) {
+
+		// Check whether Embed Only is enabled. If we're on a CPT, the entry is not allowed to be displayed.
+		if ( gravityview()->request->is_view() && $view && $view->settings->get( 'embed_only' ) ) {
+			return new WP_Error( 'gravityview/embed_only' );
+		}
 
 		if ( ! $entry || is_wp_error( $entry ) ) {
 			return new WP_Error( 'entry_not_found', 'Entry was not found.', $entry );

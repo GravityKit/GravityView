@@ -198,6 +198,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		// Process each file path
 		foreach ( $file_paths as $index => $file_path ) {
 
+			// If the file path is not a valid URL, skip it. This is the same check that Gravity Forms does.
+			if ( ! GFCommon::is_valid_url( $file_path ) ) {
+				continue;
+			}
+
 			$rendered = null;
 
 			$file_info = self::get_file_info( $file_path, $field, $field_settings, $context, $index );
@@ -214,7 +219,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			$alt = \GV\Utils::get( $field_settings, 'alt_text' );
 			$alt = ( '' === $alt ) ? $field_settings['label'] : $alt;
-			$alt = GFCommon::replace_variables( $alt, GFAPI::get_form( $entry['form_id'] ), $entry );
+			$alt = GFCommon::replace_variables( $alt, GVCommon::get_form( $entry['form_id'] ), $entry );
 
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {

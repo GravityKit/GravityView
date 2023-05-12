@@ -273,7 +273,18 @@ EOD;
 				$tab = esc_html__( 'Edit Entry', 'gk-gravityview' );
 				$context = 'edit';
 				break;
-			case ( $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
+			case ( $entry = $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
+
+				// When the entry is not found, we're probably inside a shortcode.
+				if ( ! $gravityview->entry ) {
+					return;
+				}
+
+				// Sanity check. Should be the same entry!
+				if ( $gravityview->entry->ID !== $entry->ID ) {
+					return;
+				}
+
 				$tab = esc_html__( 'Single Entry', 'gk-gravityview' );
 				$context = 'single';
 				break;
@@ -288,6 +299,23 @@ EOD;
 
 		// If the zone has been configured, don't display notice.
 		if ( $gravityview->fields->by_position( sprintf( '%s_%s-*', $context, $slug ) )->by_visible( $gravityview->view )->count() ) {
+			return;
+		}
+
+		/**
+		 * Includes a way to disable the configuration notice.
+		 *
+		 * @since TBD
+		 *
+		 * @filter `gk/gravityview/renderer/should_display_configuration_notice`
+		 *
+		 * @param bool                 $should_display Whether to display the notice. Default: true.
+		 * @param \GV\Template_Context $gravityview    The $gravityview template object.
+		 * @param string               $context        The context of the notice. Possible values: `directory`, `single`, `edit`.
+		 */
+		$should_display = apply_filters( 'gk/gravityview/renderer/should_display_configuration_notice', true, $gravityview, $context );
+
+		if ( ! $should_display ) {
 			return;
 		}
 

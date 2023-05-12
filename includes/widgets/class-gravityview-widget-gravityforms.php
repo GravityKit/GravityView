@@ -37,7 +37,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 				'type' => 'select',
 				'label' => __( 'Form to display', 'gk-gravityview' ),
 				'value' => '',
-				'options' => $this->_get_form_choices(),
+				'options' => GVCommon::get_forms_as_options(),
 			),
 			'title' => array(
 				'type' => 'checkbox',
@@ -70,42 +70,6 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	}
 
 	/**
-	 * Returns an array of active forms to show as choices for the widget
-	 *
-	 * @since 2.9.0.1
-	 *
-	 * @return array Array with key set to Form ID => Form Title, with `0` as default placeholder.
-	 */
-	private function _get_form_choices() {
-
-		$choices = array(
-			0 => '&mdash; ' . esc_html__( 'list of forms', 'gk-gravityview' ) . '&mdash;',
-		);
-
-		if ( ! class_exists( 'GFAPI' ) ) {
-			return $choices;
-		}
-
-		if( gravityview()->request->is_frontend() ) {
-			return $choices;
-		}
-
-		global $wpdb;
-
-		$table = GFFormsModel::get_form_table_name();
-
-		$results = $wpdb->get_results( "SELECT id, title FROM ${table} WHERE is_active = 1" );
-
-		if ( ! empty( $results ) ) {
-			foreach ( $results as $form ) {
-				$choices[ $form->id ] = $form->title;
-			}
-		}
-
-		return $choices;
-	}
-
-	/**
 	 * Add widget to a list of allowed "Hide Until Searched" items
 	 *
 	 * @param array $allowlist Array of widgets to show before a search is performed, if the setting is enabled.
@@ -121,12 +85,12 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
 	/**
 	 * @param array $widget_args
-	 * @param string $content
+	 * @param string|\GV\Template_Context $content
 	 * @param string $context
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 
-		if ( ! $this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 

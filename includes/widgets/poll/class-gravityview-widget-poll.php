@@ -93,15 +93,23 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 
 		$GFPolls->localize_scripts();
 
-		wp_enqueue_style('gpoll_css', $GFPolls->get_base_url() . '/css/gpoll.css', null, $GFPolls->_version);
+		if( version_compare( $GFPolls->_version, '4.0', '>=' ) ) {
+			wp_enqueue_style('gpoll_css', $GFPolls->get_base_url() . '/assets/css/dist/theme.css', null, $GFPolls->_version);
+		} else {
+			wp_enqueue_style('gpoll_css', $GFPolls->get_base_url() . '/css/gpoll.css', null, $GFPolls->_version);
+		}
+
 	}
 
 	/**
 	 * @inheritDoc
 	 *
 	 * @since 1.8
+	 * @since 2.17.3 Added $context param
+	 *
+	 * @param string|GV\Template_Context $context Context. Default: empty string.
 	 */
-	public function pre_render_frontend() {
+	public function pre_render_frontend( $context = '' ) {
 
 		if( ! class_exists('GFPolls') ) {
 
@@ -110,7 +118,7 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 			return false;
 		}
 
-		$view = gravityview()->views->get();
+		$view = $this->get_view( $context );
 
 		$poll_fields = array( $view->form->form['id'] => GFCommon::get_fields_by_type( $view->form, array( 'poll' ) ) );
 
@@ -127,7 +135,7 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 
 		$this->poll_fields = $poll_fields;
 
-		return parent::pre_render_frontend();
+		return parent::pre_render_frontend( $context );
 	}
 
 	/**
@@ -167,7 +175,7 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 
-		if( ! $this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 

@@ -8,11 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Monolog\Handler;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler;
 
 /**
  * Used for testing purposes.
@@ -167,7 +167,7 @@ class TestHandler extends AbstractProcessingHandler
     {
         if (preg_match('/(.*)(Debug|Info|Notice|Warning|Error|Critical|Alert|Emergency)(.*)/', $method, $matches) > 0) {
             $genericMethod = $matches[1] . ('Records' !== $matches[3] ? 'Record' : '') . $matches[3];
-            $level = constant('GravityKit\GravityView\Monolog\Logger::' . strtoupper($matches[2]));
+            $level = constant('GravityKit\GravityView\Foundation\ThirdParty\Monolog\Logger::' . strtoupper($matches[2]));
             if (method_exists($this, $genericMethod)) {
                 $args[] = $level;
 

@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -438,7 +438,7 @@ class Framework {
 				'config'  => $config,
 				'plugins' => array_values( $plugins_data ),
 			],
-			FoundationCore::get_ajax_params( self::AJAX_ROUTER )
+			FoundationCore::ajax_router()->get_ajax_params( self::AJAX_ROUTER )
 		);
 
 		wp_enqueue_script(

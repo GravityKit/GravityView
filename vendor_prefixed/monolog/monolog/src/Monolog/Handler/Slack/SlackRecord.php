@@ -8,16 +8,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Monolog\Handler\Slack;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\Slack;
 
-use GravityKit\GravityView\Monolog\Logger;
-use GravityKit\GravityView\Monolog\Utils;
-use GravityKit\GravityView\Monolog\Formatter\NormalizerFormatter;
-use GravityKit\GravityView\Monolog\Formatter\FormatterInterface;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Logger;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Utils;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Formatter\NormalizerFormatter;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Formatter\FormatterInterface;
 
 /**
  * Slack record utility helping to log to Slack webhooks or API.

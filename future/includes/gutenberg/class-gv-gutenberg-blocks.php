@@ -204,7 +204,7 @@ class Blocks {
 			return [
 				'value' => (string) $view->ID,
 				'label' => sprintf(
-					'%s (#%s)',
+					'%s (#%d)',
 					$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
 					$view->ID
 				)
@@ -272,7 +272,7 @@ class Blocks {
 				array_unshift( $dependencies, $get_dependencies( $dependency, $source ) );
 			}
 
-			return array_flatten( $dependencies );
+			return Arr::flatten( $dependencies );
 		};
 
 		$script_dependencies = [];

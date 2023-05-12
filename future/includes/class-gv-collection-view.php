@@ -183,6 +183,32 @@ class View_Collection extends Collection {
 			}
 		}
 
+		if ( function_exists( 'has_block' ) && has_block( 'gk-gravityview-blocks/view', $content ) ) {
+			$blocks = parse_blocks( $content );
+
+			foreach ( $blocks as $block ) {
+				if ( empty( $block['attrs']['viewId'] ) ) {
+					continue;
+				}
+
+				if ( ! is_numeric( $block['attrs']['viewId'] ) ) {
+					continue;
+				}
+
+				$view = View::by_id( $block['attrs']['viewId'] );
+
+				if ( ! $view ) {
+					gravityview()->log->error( 'Could not find View #{view_id} associated with the block.', array( 'view_id' => $block['attrs']['viewId'] ) );
+					continue;
+				}
+
+				$atts = Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block['attrs'] );
+
+				$view->settings->update( $atts );
+				$views->add( $view );
+			}
+		}
+
 		return $views;
 	}
 }

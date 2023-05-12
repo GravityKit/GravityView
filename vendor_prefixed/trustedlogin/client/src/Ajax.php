@@ -2,7 +2,7 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
@@ -91,7 +91,9 @@ final class Ajax {
 
 		$client = new Client( $this->config, false );
 
-		$response = $client->grant_access();
+		$include_debug_data = ! empty( $_POST['debug_data_consent'] );
+
+		$response = $client->grant_access( $include_debug_data );
 
 		if ( is_wp_error( $response ) ) {
 

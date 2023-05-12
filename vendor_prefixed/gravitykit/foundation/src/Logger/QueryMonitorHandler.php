@@ -2,14 +2,14 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
 namespace GravityKit\GravityView\Foundation\Logger;
 
-use GravityKit\GravityView\Monolog\Logger as MonologLogger;
-use GravityKit\GravityView\Monolog\Handler\AbstractProcessingHandler;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Logger as MonologLogger;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\AbstractProcessingHandler;
 
 /**
  * Handler for the Query Monitor plugin.

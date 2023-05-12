@@ -8,13 +8,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
-namespace GravityKit\GravityView\Monolog\Formatter;
+namespace GravityKit\GravityView\Foundation\ThirdParty\Monolog\Formatter;
 
-use GravityKit\GravityView\Monolog\Utils;
+use GravityKit\GravityView\Foundation\ThirdParty\Monolog\Utils;
 
 /**
  * Class FluentdFormatter
@@ -30,9 +30,9 @@ use GravityKit\GravityView\Monolog\Utils;
  *
  * Monolog setup:
  *
- * $logger = new GravityKit\GravityView\Monolog\Logger('fluent.tag');
- * $fluentHandler = new GravityKit\GravityView\Monolog\Handler\SocketHandler('unix:///var/run/td-agent/td-agent.sock');
- * $fluentHandler->setFormatter(new GravityKit\GravityView\Monolog\Formatter\FluentdFormatter());
+ * $logger = new GravityKit\GravityView\Foundation\ThirdParty\Monolog\Logger('fluent.tag');
+ * $fluentHandler = new GravityKit\GravityView\Foundation\ThirdParty\Monolog\Handler\SocketHandler('unix:///var/run/td-agent/td-agent.sock');
+ * $fluentHandler->setFormatter(new GravityKit\GravityView\Foundation\ThirdParty\Monolog\Formatter\FluentdFormatter());
  * $logger->pushHandler($fluentHandler);
  *
  * @author Andrius Putna <fordnox@gmail.com>
@@ -47,7 +47,7 @@ class FluentdFormatter implements FormatterInterface
     public function __construct($levelTag = false)
     {
         if (!function_exists('json_encode')) {
-            throw new \RuntimeException('PHP\'s json extension is required to use GravityKit\GravityView\Monolog\'s FluentdUnixFormatter');
+            throw new \RuntimeException('PHP\'s json extension is required to use GravityKit\GravityView\Foundation\ThirdParty\Monolog\'s FluentdUnixFormatter');
         }
 
         $this->levelTag = (bool) $levelTag;

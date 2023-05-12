@@ -238,6 +238,53 @@ class gravityview extends \GV\Shortcode {
 	}
 
 	/**
+	 * Converts block attributes array to shortcode attributes array.
+	 *
+	 * @since 2.17.2
+	 * @internal
+	 *
+	 * @param array $block_attributes Block attributes array.
+	 *
+	 * @return array Shortcode attributes array.
+	 */
+	public static function map_block_atts_to_shortcode_atts( $block_attributes = [] ) {
+		$block_to_shortcode_attributes_map = [
+			'viewId'         => 'id',
+			'postId'         => 'post_id',
+			'pageSize'       => 'page_size',
+			'sortField'      => 'sort_field',
+			'sortDirection'  => 'sort_direction',
+			'searchField'    => 'search_field',
+			'searchValue'    => 'search_value',
+			'searchOperator' => 'search_operator',
+			'startDate'      => 'start_date',
+			'endDate'        => 'end_date',
+			'classValue'     => 'class',
+			'offset'         => 'offset',
+			'singleTitle'    => 'single_title',
+			'backLinkLabel'  => 'back_link_label',
+		];
+
+		if ( isset( $block_attributes['searchOperator'] ) && isset( $block_attributes['searchValue'] ) && '' === trim( $block_attributes['searchValue'] ) ) {
+			unset( $block_attributes['searchOperator'] );
+		}
+
+		foreach ( $block_attributes as $attribute => $value ) {
+			if ( ! isset( $block_to_shortcode_attributes_map[ $attribute ] ) ) {
+				continue;
+			}
+
+			if( '' === $value ) {
+				continue;
+			}
+
+			$shortcode_attributes[ $block_to_shortcode_attributes_map[ $attribute ] ] = $value;
+		}
+
+		return $shortcode_attributes;
+	}
+
+	/**
 	 * Validate attributes passed to the [gravityview] shortcode. Supports {get} Merge Tags values.
 	 *
 	 * Attributes passed to the shortcode are compared to registered attributes {@see \GV\View_Settings::defaults}

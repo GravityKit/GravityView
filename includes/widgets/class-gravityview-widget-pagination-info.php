@@ -33,7 +33,7 @@ class GravityView_Widget_Pagination_Info extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 		$gravityview_view = GravityView_View::getInstance();
 
-		if( !$this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 

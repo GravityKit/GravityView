@@ -7,7 +7,7 @@
  * @copyright 2021 Katz Web Services, Inc.
  *
  * @license GPL-2.0-or-later
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 namespace GravityKit\GravityView\Foundation\ThirdParty\TrustedLogin;
@@ -75,6 +75,35 @@ final class Encryption {
 			'tl_' . $this->config->ns() . '_vendor_public_key',
 			$this->config
 		);
+	}
+
+	/**
+	 * Returns true if the site supports encryption using the required Sodium functions.
+	 *
+	 * These functions are available by extension in PHP 7.0 & 7.1, built-in to PHP 7.2+ and WordPress 5.2+.
+	 *
+	 * @since 1.4.0
+	 *
+	 * @return bool True: supports encryption. False: does not support encryption.
+	 */
+	static public function meets_requirements() {
+
+		$required_functions = array(
+			'random_bytes',
+			'sodium_hex2bin',
+			'sodium_crypto_box',
+			'sodium_crypto_secretbox',
+			'sodium_crypto_generichash',
+			'sodium_crypto_box_keypair_from_secretkey_and_publickey',
+		);
+
+		foreach ( $required_functions as $function ) {
+			if ( ! function_exists( $function ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

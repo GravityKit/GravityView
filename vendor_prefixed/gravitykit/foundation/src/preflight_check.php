@@ -2,11 +2,13 @@
 /**
  * @license GPL-2.0-or-later
  *
- * Modified by gravityview on 20-February-2023 using Strauss.
+ * Modified by gravityview on 05-May-2023 using Strauss.
  * @see https://github.com/BrianHenryIE/strauss
  */
 
 namespace GravityKit\GravityView\Foundation;
+
+const MIN_PHP_VERSION = '7.2.0';
 
 require_once __DIR__ . '/Helpers/Core.php';
 
@@ -21,7 +23,7 @@ require_once __DIR__ . '/Helpers/Core.php';
  * @return bool
  */
 function should_load( $plugin_file ) {
-	return ! is_disabled_via_url( $plugin_file ) || ! meets_min_php_version_requirement( $plugin_file );
+	return ! is_disabled_via_url( $plugin_file ) && meets_min_php_version_requirement( $plugin_file );
 }
 
 /**
@@ -61,7 +63,7 @@ function is_disabled_via_url( $plugin_file ) {
 	};
 
 	if ( isset( $_COOKIE[ $cookie ] ) ) {
-		if ( isset( $_GET['gk_enable_loading'] ) ) {
+		if ( isset( $_GET['gk_enable_loading'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			setcookie( $cookie, false, time() - $cookie_expiry_time );
 
 			return false;
@@ -70,7 +72,7 @@ function is_disabled_via_url( $plugin_file ) {
 		return $_is_disabled( $_COOKIE[ $cookie ] );
 	}
 
-	$disable_loading = isset( $_GET['gk_disable_loading'] ) ? $_GET['gk_disable_loading'] : null;
+	$disable_loading = isset( $_GET['gk_disable_loading'] ) ? $_GET['gk_disable_loading'] : null; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 	if ( is_null( $disable_loading ) ) {
 		return false;
@@ -85,12 +87,12 @@ function is_disabled_via_url( $plugin_file ) {
  * Checks if the minimum PHP version requirement is met.
  *
  * @param string $plugin_file     Absolute path to the main plugin file.
- * @param string $min_php_version (optional) Minimum PHP version. Default: 5.6.4.
+ * @param string $min_php_version (optional) Minimum PHP version. Default: MIN_PHP_VERSION.
  * @param bool   $show_notice     (optional) Display error notice. Default: true.
  *
  * @return bool
  */
-function meets_min_php_version_requirement( $plugin_file, $min_php_version = '5.6.4', $show_notice = true ) {
+function meets_min_php_version_requirement( $plugin_file, $min_php_version = MIN_PHP_VERSION, $show_notice = true ) {
 	$plugin_data = Helpers\Core::get_plugin_data( $plugin_file );
 
 	$meets_requirement = (bool) version_compare( phpversion(), $min_php_version, '>=' );
@@ -104,16 +106,19 @@ function meets_min_php_version_requirement( $plugin_file, $min_php_version = '5.
 			esc_html_x( '[plugin] requires PHP [version] or newer.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 			[
 				'[plugin]'  => $plugin_data['Name'],
-				'[version]' => $min_php_version
+				'[version]' => $min_php_version,
 			]
 		);
 
 		if ( 'cli' === php_sapi_name() ) {
-			printf( $notice );
+			printf( $notice ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		} else {
-			add_action( 'admin_notices', function () use ( $notice ) {
-				echo "<div class='error' style='padding: 1.25em 0 1.25em 1em;'>$notice</div>";
-			} );
+			add_action(
+                'admin_notices',
+                function () use ( $notice ) {
+					echo "<div class='error' style='padding: 1.25em 0 1.25em 1em;'>$notice</div>"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				}
+            );
 		}
 	}
 

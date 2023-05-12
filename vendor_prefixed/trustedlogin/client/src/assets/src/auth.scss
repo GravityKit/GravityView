@@ -84,6 +84,10 @@ $color-red: #c0461e !default;
 		text-align: center;
 	}
 
+	.tl-#{$namespace}-auth__checkbox--large {
+		transform: scale( 1.2 );
+	}
+
 	.dashicons--small {
 		height: $small-icon-size;
 		width: $small-icon-size;
