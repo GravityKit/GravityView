@@ -46,7 +46,7 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 			<option value="" <?php selected( '', $current_form, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gk-gravityview' ); ?> &mdash;</option>
 			<?php foreach( $forms as $form ) { ?>
 				<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php
-					echo esc_html( $form['title'] );
+					echo esc_html( sprintf( '%s &ndash; #%d', $form['title'], $form['id'] ) );
 					if ( empty( $form['is_active'] ) ) {
 						printf( ' (%s)', esc_html_x( 'Inactive', 'Indicates that a form is inactive.', 'gk-gravityview' ) );
 					}
