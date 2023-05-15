@@ -35,6 +35,7 @@ assets/lib/fancybox/*
 ## Node & Composer
 node_modules
 vendor
+vendor_prefixed
 
 # JIRA plugin
 atlassian-ide-plugin.xml
