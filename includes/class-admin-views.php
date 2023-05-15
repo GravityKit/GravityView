@@ -1410,7 +1410,7 @@ class GravityView_Admin_Views {
 			'field_loaderror'             => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gk-gravityview' ),
 			'remove_all_fields'           => __( 'Would you like to remove all fields in this zone?', 'gk-gravityview' ),
 			'foundation_licenses_router'  => array_merge(
-				GravityKitFoundation::get_ajax_params( 'licenses' ),
+				GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
 				array( 'ajaxRoute' => 'activate_product' )
 			)
 		) );

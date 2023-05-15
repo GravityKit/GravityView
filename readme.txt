@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Fixed: Fatal error when adding a GravityView block in Guternberg editor
+* Fixed: Error when activating an installed but not yet activated View type from within the View editor
 
 = 2.17.7 on May 4, 2023 =
 
