@@ -280,7 +280,7 @@ class GravityView_Welcome {
 				<h3>2.17.8 on May 16, 2023</h3>
 
 				<ul>
-					<li>Fixed: Fatal error when adding a GravityView block in Guternberg editor</li>
+					<li>Fixed: Fatal error when adding a GravityView block in Gutenberg editor</li>
 					<li>Fixed: Error when activating an installed but deactivated View type (e.g., Maps) from within the View editor</li>
 				</ul>
 
