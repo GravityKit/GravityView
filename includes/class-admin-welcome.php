@@ -277,6 +277,13 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.17.8 on May 16, 2023</h3>
+
+				<ul>
+					<li>Fixed: Fatal error when adding a GravityView block in Guternberg editor</li>
+					<li>Fixed: Error when activating an installed but deactivated View type (e.g., Maps) from within the View editor</li>
+				</ul>
+
 				<h3>2.17.7 on May 4, 2023</h3>
 
 				<ul>
