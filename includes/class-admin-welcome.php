@@ -277,6 +277,23 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.17.8 on May 16, 2023</h3>
+
+				<ul>
+					<li>Improved: Performance when using Gravity Forms 2.6.9 or older</li>
+					<li>Improved: Form ID now appears beside the form title for easier data source selection in the View editor</li>
+					<li>Fixed: Fatal error when adding a GravityView block in Gutenberg editor</li>
+					<li>Fixed: Error when activating an installed but deactivated View type (e.g., Maps) from within the View editor</li>
+					<li>Fixed: File Upload fields may incorrectly show empty values</li>
+				</ul>
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Added: <code>gk/gravityview/metaboxes/data-source/order-by</code> filter to modify the default sorting order of forms in the View editor's data source dropdown menu (default: <code>title</code>)</li>
+					<li>Added: <code>gk/gravityview/renderer/should-display-configuration-notice</code> filter to control the display of View configuration notices (default: <code>true</code>)</li>
+				</ul>
+
 				<h3>2.17.7 on May 4, 2023</h3>
 
 				<ul>

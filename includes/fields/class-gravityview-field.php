@@ -582,7 +582,7 @@ abstract class GravityView_Field {
 			return false;
 		}
 
-		$form = GFAPI::get_form( $connected_form );
+		$form = GVCommon::get_form( $connected_form );
 
 		if ( ! $form ) {
 			gravityview()->log->error( 'Form not found for field ID of "{field_id}", when checking for a form with ID of "{form_id}"', array( 'field_id' => $this->_field_id, 'form_id' => $connected_form ) );

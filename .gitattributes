@@ -13,6 +13,7 @@ bower.json export-ignore
 codeception.dist.yml export-ignore
 composer.json export-ignore
 composer.lock export-ignore
+composer_post_update_install.sh export-ignore
 Gruntfile.js export-ignore
 package.json export-ignore
 package-lock.json export-ignore

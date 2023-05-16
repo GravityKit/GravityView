@@ -247,7 +247,7 @@ class GravityView_Edit_Entry_Render {
 			$this->entry          = $entries[0];
 		}
 
-		self::$original_form = GFAPI::get_form( $this->entry['form_id'] );
+		self::$original_form = GVCommon::get_form( $this->entry['form_id'] );
 		$this->form          = self::$original_form;
 
 		$this->form_id = $this->entry['form_id'];
@@ -2222,7 +2222,7 @@ class GravityView_Edit_Entry_Render {
 		 * @see https://github.com/gravityview/GravityView/issues/840
 		 * @since develop
 		 */
-		$the_form = GFAPI::get_form( $form['id'] );
+		$the_form = GVCommon::get_form( $form['id'] );
 		$editable_ids = array();
 		foreach ( $form['fields'] as $field ) {
 			$editable_ids[] = $field['id']; // wp_list_pluck is destructive in this context

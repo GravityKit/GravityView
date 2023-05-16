@@ -1111,20 +1111,24 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "cee119c6491e1281b3e5e94114f6f6ebd8da7a02"
+                "reference": "6062085585489c018bc6e9b6daefd654582b97a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/cee119c6491e1281b3e5e94114f6f6ebd8da7a02",
-                "reference": "cee119c6491e1281b3e5e94114f6f6ebd8da7a02",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/6062085585489c018bc6e9b6daefd654582b97a0",
+                "reference": "6062085585489c018bc6e9b6daefd654582b97a0",
                 "shasum": ""
             },
-            "require": {
+            "require-dev": {
                 "ext-curl": "*",
                 "ext-json": "*",
-                "php": ">=5.3.0"
+                "php": ">=5.3.0",
+                "yoast/phpunit-polyfills": "^1.0"
             },
             "default-branch": true,
+            "bin": [
+                "bin/build-sass"
+            ],
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -1151,9 +1155,9 @@
             ],
             "support": {
                 "issues": "https://github.com/trustedlogin/client/issues",
-                "source": "https://github.com/trustedlogin/client/tree/v1.4.0"
+                "source": "https://github.com/trustedlogin/client/tree/main"
             },
-            "time": "2023-03-01T21:54:49+00:00"
+            "time": "2023-04-26T15:13:15+00:00"
         }
     ],
     "packages-dev": [

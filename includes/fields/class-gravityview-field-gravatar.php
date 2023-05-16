@@ -159,7 +159,7 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 			'created_by_email' => __( 'Entry Creator: Email', 'gk-gravityview' ),
 		);
 
-		$form = GFAPI::get_form( $form_id );
+		$form = GVCommon::get_form( $form_id );
 
 		if ( ! $form ) {
 			return $field_choices;

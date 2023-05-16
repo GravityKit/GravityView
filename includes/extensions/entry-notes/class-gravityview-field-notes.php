@@ -823,7 +823,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			GVCommon::send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, '', $entry, false );
 
-			$form  = isset( $entry['form_id'] ) ? GFAPI::get_form( $entry['form_id'] ) : array();
+			$form  = isset( $entry['form_id'] ) ? GVCommon::get_form( $entry['form_id'] ) : array();
 
 			/**
 			 * @see https://www.gravityhelp.com/documentation/article/10146-2/ It's here for compatibility with Gravity Forms

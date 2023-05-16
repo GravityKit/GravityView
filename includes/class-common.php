@@ -25,20 +25,26 @@ class GVCommon {
 	 * @return array|false Array: Form object returned from Gravity Forms; False: no form ID specified or Gravity Forms isn't active.
 	 */
 	public static function get_form( $form_id ) {
+
 		if ( empty( $form_id ) ) {
 			return false;
 		}
 
-		// Only get_form_meta is cached. ::facepalm::
-		if ( class_exists( 'GFFormsModel' ) ) {
-			return GFFormsModel::get_form_meta( $form_id );
+		if ( ! class_exists( 'GFAPI' ) ) {
+			return false;
 		}
 
-		if ( class_exists( 'GFAPI' ) ) {
-			return GFAPI::get_form( $form_id );
+		static $forms = array();
+
+		if ( isset( $forms[ $form_id ] ) ) {
+			return $forms[ $form_id ];
 		}
 
-		return false;
+		$form = \GFAPI::get_form( $form_id );
+
+		$forms[ $form_id ] = $form;
+
+		return $form;
 	}
 
 	/**
@@ -146,7 +152,7 @@ class GVCommon {
 		$form = false;
 
 		if ( $entry ) {
-			$form = GFAPI::get_form( $entry['form_id'] );
+			$form = GVCommon::get_form( $entry['form_id'] );
 		}
 
 		return $form;
@@ -316,7 +322,6 @@ class GVCommon {
 	 *
 	 * @since 2.17
 	 *
-	 * @uses GFAPI::get_form()
 	 * @used-by \GV\View_Settings::defaults()
 	 *
 	 * @param bool   $active      True if active forms are returned. False to get inactive forms. Defaults to true.

@@ -251,7 +251,7 @@ class oEmbed {
 			$loader = \GravityView_Edit_Entry::getInstance();
 			$render = $loader->instances['render'];
 
-			$form = \GFAPI::get_form( $entry['form_id'] );
+			$form = \GVCommon::get_form( $entry['form_id'] );
 
 			// @todo We really need to rewrite Edit Entry soon
 			\GravityView_View::$instance = null;

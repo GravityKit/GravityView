@@ -21,6 +21,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.17.8 on May 16, 2023 =
+
+* Improved: Performance when using Gravity Forms 2.6.9 or older
+* Improved: Form ID now appears beside the form title for easier data source selection in the View editor
+* Fixed: Fatal error when adding a GravityView block in Gutenberg editor
+* Fixed: Error when activating an installed but deactivated View type (e.g., Maps) from within the View editor
+* Fixed: File Upload fields may incorrectly show empty values
+
+__Developer Notes:__
+
+* Added: `gk/gravityview/metaboxes/data-source/order-by` filter to modify the default sorting order of forms in the View editor's data source dropdown menu (default: `title`)
+* Added: `gk/gravityview/renderer/should-display-configuration-notice` filter to control the display of View configuration notices (default: `true`)
+
 = 2.17.7 on May 4, 2023 =
 
 * Fixed: Fatal error when using the Radio input types in the Search Bar (introduced in 2.17.6)
