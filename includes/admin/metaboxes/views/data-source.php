@@ -16,11 +16,11 @@ $current_form = (int) \GV\Utils::_GET( 'form_id', gravityview_get_form_id( $post
 GravityView_Admin::connected_form_warning( $current_form );
 
 /**
- * @filter `gravityview/metaboxes/data-source/order_by` Modify the default orderby field for the Data Source dropdown.
+ * @filter `gk/gravityview/metaboxes/data-source/order-by` Modify the default orderby field for the Data Source dropdown.
  * @since 2.17.8
  * @param mixed $order_by Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
  */
-$order_by = apply_filters( 'gravityview/metaboxes/data-source/order_by', 'title' );
+$order_by = apply_filters( 'gk/gravityview/metaboxes/data-source/order-by', 'title' );
 
 // check for available gravity forms
 $forms = gravityview_get_forms( 'any', false, $order_by );

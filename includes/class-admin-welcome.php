@@ -290,8 +290,8 @@ class GravityView_Welcome {
 				<p><strong>Developer Notes:</strong></p>
 
 				<ul>
-					<li>Added: <code>gravityview/metaboxes/data-source/order_by</code> filter to modify the default sorting order of forms in the View editor's data source dropdown menu (default: <code>title</code>)</li>
-					<li>Added: <code>gk/gravityview/renderer/should_display_configuration_notice</code> filter to control the display of View configuration notices (default: <code>true</code>)</li>
+					<li>Added: <code>gk/gravityview/metaboxes/data-source/order-by</code> filter to modify the default sorting order of forms in the View editor's data source dropdown menu (default: <code>title</code>)</li>
+					<li>Added: <code>gk/gravityview/renderer/should-display-configuration-notice</code> filter to control the display of View configuration notices (default: <code>true</code>)</li>
 				</ul>
 
 				<h3>2.17.7 on May 4, 2023</h3>

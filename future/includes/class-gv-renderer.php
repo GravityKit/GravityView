@@ -307,13 +307,13 @@ EOD;
 		 *
 		 * @since 2.17.8
 		 *
-		 * @filter `gk/gravityview/renderer/should_display_configuration_notice`
+		 * @filter `gk/gravityview/renderer/should-display-configuration-notice`
 		 *
 		 * @param bool                 $should_display Whether to display the notice. Default: true.
 		 * @param \GV\Template_Context $gravityview    The $gravityview template object.
 		 * @param string               $context        The context of the notice. Possible values: `directory`, `single`, `edit`.
 		 */
-		$should_display = apply_filters( 'gk/gravityview/renderer/should_display_configuration_notice', true, $gravityview, $context );
+		$should_display = apply_filters( 'gk/gravityview/renderer/should-display-configuration-notice', true, $gravityview, $context );
 
 		if ( ! $should_display ) {
 			return;

@@ -31,8 +31,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 __Developer Notes:__
 
-* Added: `gravityview/metaboxes/data-source/order_by` filter to modify the default sorting order of forms in the View editor's data source dropdown menu (default: `title`)
-* Added: `gk/gravityview/renderer/should_display_configuration_notice` filter to control the display of View configuration notices (default: `true`)
+* Added: `gk/gravityview/metaboxes/data-source/order-by` filter to modify the default sorting order of forms in the View editor's data source dropdown menu (default: `title`)
+* Added: `gk/gravityview/renderer/should-display-configuration-notice` filter to control the display of View configuration notices (default: `true`)
 
 = 2.17.7 on May 4, 2023 =
 
