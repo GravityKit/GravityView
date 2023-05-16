@@ -305,7 +305,7 @@ EOD;
 		/**
 		 * Includes a way to disable the configuration notice.
 		 *
-		 * @since TBD
+		 * @since 2.17.8
 		 *
 		 * @filter `gk/gravityview/renderer/should_display_configuration_notice`
 		 *
