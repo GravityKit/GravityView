@@ -23,8 +23,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.17.8 on May 16, 2023 =
 
+* Improved: Added the form ID to the Data Source form dropdown
+* Improved: Performance when using Gravity Forms 2.6.9 or older
 * Fixed: Fatal error when adding a GravityView block in Gutenberg editor
 * Fixed: Error when activating an installed but deactivated View type (e.g., Maps) from within the View editor
+* Fixed: File Upload fields may incorrectly show empty values
+
+__Developer Notes:__
+
+* Added: Filter to modify Data Source form default sorting `gravityview/metaboxes/data-source/order_by` (default: `title`)
+* Added: Filter to allow disabling View configuration notices `gk/gravityview/renderer/should_display_configuration_notice`
 
 = 2.17.7 on May 4, 2023 =
 
