@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.17.9 on TBD, 2023 =
+
+* Fixed: REST API response breaking GravityMaps 2.0 functionality
+
 = 2.17.8 on May 16, 2023 =
 
 * Improved: Performance when using Gravity Forms 2.6.9 or older
