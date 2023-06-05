@@ -280,7 +280,7 @@ class GravityView_Welcome {
 				<h3>2.17.9 on TBD, 2023</h3>
 
 				<ul>
-					<li>Fixed: REST API response breaking GravityMaps 2.0 functionality</li>
+					<li>Fixed: REST API response breaking the functionality of Maps Layout 2.0</li>
 				</ul>
 
 				<h3>2.17.8 on May 16, 2023</h3>
