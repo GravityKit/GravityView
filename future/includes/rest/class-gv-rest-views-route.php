@@ -209,14 +209,13 @@ class Views_Route extends Route {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_sub_items( $request ) {
+		global $post;
 
 		$url     = $request->get_url_params();
 		$view_id = intval( $url['id'] );
 		$format  = \GV\Utils::get( $url, 'format', 'json' );
 
 		if( $post_id = $request->get_param('post_id') ) {
-			global $post;
-
 			$post = get_post( $post_id );
 
 			if ( ! $post || is_wp_error( $post ) ) {
@@ -231,6 +230,10 @@ class Views_Route extends Route {
 		}
 
 		$view = \GV\View::by_id( $view_id );
+
+		if ( null !== $view ) {
+			$post = $view->get_post();
+		}
 
 		if ( 'html' === $format ) {
 

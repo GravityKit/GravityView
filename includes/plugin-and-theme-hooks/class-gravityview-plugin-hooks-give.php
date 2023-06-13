@@ -14,22 +14,27 @@
 
 /**
  * @inheritDoc
- * @since 2.16
  */
 class GravityView_Plugin_Hooks_Give extends GravityView_Plugin_and_Theme_Hooks {
-
 	/**
 	 * @type string Optional. Constant that should be defined by plugin or theme. Used to check whether plugin is active.
 	 * @since 2.17.2
 	 */
 	protected $constant_name = 'GIVE_VERSION';
 
+	public function __construct() {
+		parent::__construct();
+
+		add_action( 'add_meta_boxes', [ $this, 'block_styles' ] );
+	}
+
 	/**
-	 * Prevent Give from displaying styles that conflict with GravityView.
+	 * Prevent Give from loading styles that conflict with GravityView.
+	 *
 	 * @return void
 	 */
-	protected function add_hooks() {
-		if( gravityview()->request->is_admin() ) {
+	public function block_styles() {
+		if ( gravityview()->request->is_admin() && gravityview()->request->is_view() ) {
 			add_filter( 'give_load_admin_styles', '__return_false' );
 		}
 	}

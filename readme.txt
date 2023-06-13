@@ -21,7 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.17.9 on TBD, 2023 =
+
+* Fixed: REST API response breaking the functionality of Maps Layout 2.0
 
 __Developer Notes:__
 
