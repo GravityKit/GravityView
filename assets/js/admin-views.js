@@ -1298,7 +1298,7 @@
 					vcfg.selectTemplateContinue( slugmatch );
 				}
 			} else {
-				// revert back to how things before before clicking "use a form preset"
+				// revert back to how things were before clicking "use a form preset"
 				vcfg.toggleViewTypeMetabox();
 				vcfg.showViewConfig();
 			}
