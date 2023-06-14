@@ -22,10 +22,6 @@ if ( ! GravityKit\GravityView\Foundation\should_load( __FILE__ ) ) {
 	return;
 }
 
-if ( ! GravityKit\GravityView\Foundation\meets_min_php_version_requirement( __FILE__, '7.2.0' ) ) {
-	return;
-}
-
 /** Constants */
 
 /**
@@ -70,12 +66,6 @@ define( 'GV_MIN_WP_VERSION', '4.7.0' );
  * @since 2.9.3
  */
 define( 'GV_FUTURE_MIN_WP_VERSION', '5.3' );
-
-/**
- * GravityView requires at least this version of PHP to function properly.
- * @since 1.12
- */
-define( 'GV_MIN_PHP_VERSION', '7.2.0' );
 
 /**
  * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.

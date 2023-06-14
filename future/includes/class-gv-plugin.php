@@ -55,13 +55,6 @@ final class Plugin {
 	public static $min_gf_version = GV_MIN_GF_VERSION;
 
 	/**
-	 * @var string Minimum PHP version.
-	 *
-	 * GravityView requires at least this version of PHP to function properly.
-	 */
-	private static $min_php_version = GV_MIN_PHP_VERSION;
-
-	/**
 	 * @var string|bool Minimum future PHP version.
 	 *
 	 * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
@@ -380,23 +373,7 @@ final class Plugin {
 	 */
 	public function is_compatible() {
 
-		return
-			$this->is_compatible_php()
-			&& $this->is_compatible_wordpress()
-			&& $this->is_compatible_gravityforms();
-	}
-
-	/**
-	 * Is this version of GravityView compatible with the current version of PHP?
-	 *
-	 * @since 2.0
-	 *
-	 * @return bool true if compatible, false otherwise.
-	 * @api
-	 */
-	public function is_compatible_php() {
-
-		return version_compare( $this->get_php_version(), self::$min_php_version, '>=' );
+		return $this->is_compatible_wordpress() && $this->is_compatible_gravityforms();
 	}
 
 	/**
@@ -407,9 +384,8 @@ final class Plugin {
 	 * @return bool true if compatible, false otherwise.
 	 * @api
 	 */
-	public function is_compatible_future_php() {
-
-		return version_compare( $this->get_php_version(), self::$future_min_php_version, '>=' );
+	public function is_compatible_future_php(): bool {
+		return version_compare( phpversion(), self::$future_min_php_version, '>=' );
 	}
 
 	/**
@@ -474,19 +450,6 @@ final class Plugin {
 		$version = $this->get_gravityforms_version();
 
 		return $version ? version_compare( $version, self::$future_min_gf_version, '>=' ) : false;
-	}
-
-	/**
-	 * Retrieve the current PHP version.
-	 *
-	 * Overridable with GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE during testing.
-	 *
-	 * @return string The version of PHP.
-	 */
-	private function get_php_version() {
-
-		return ! empty( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] ) ?
-			$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] : phpversion();
 	}
 
 	/**
