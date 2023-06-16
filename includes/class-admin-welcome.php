@@ -65,6 +65,7 @@ class GravityView_Welcome {
 			'capability' => $this->minimum_capability,
 			'callback'   => array( $this, 'changelog_screen' ),
 			'order'      => 40,
+			'hide'       => true,
 		], 'center' );
 
 		// Changelog Page
@@ -75,16 +76,18 @@ class GravityView_Welcome {
 			'capability' => $this->minimum_capability,
 			'callback'   => array( $this, 'credits_screen' ),
 			'order'      => 50,
+			'hide'       => true,
 		], 'center' );
 
 		// Add Getting Started page to GravityView menu
 		$admin_menu::add_submenu_item( [
-			'id'         => 'gv-getting-started',
-			'page_title' => __( 'GravityView: Getting Started', 'gk-gravityview' ),
-			'menu_title' => __( 'Getting Started', 'gk-gravityview' ),
-			'capability' => $this->minimum_capability,
-			'callback'   => array( $this, 'getting_started_screen' ),
-			'order'      => 60, // Make it the last so that the border divider remains
+			'id'                                 => 'gv-getting-started',
+			'page_title'                         => __( 'GravityView: Getting Started', 'gk-gravityview' ),
+			'menu_title'                         => __( 'Getting Started', 'gk-gravityview' ),
+			'capability'                         => $this->minimum_capability,
+			'callback'                           => array( $this, 'getting_started_screen' ),
+			'order'                              => 60, // Make it the last so that the border divider remains
+			'exclude_from_top_level_menu_action' => true,
 		], 'center' );
 	}
 
@@ -114,13 +117,6 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function admin_head() {
-
-		/** @var \GravityKit\GravityView\Foundation\WP\AdminMenu $admin_menu */
-		$admin_menu = GravityKitFoundation::admin_menu();
-
-		$admin_menu::remove_submenu_item( 'gv-credits' );
-		$admin_menu::remove_submenu_item( 'gv-changelog' );
-
 		if( ! $this->is_dashboard_page() ) {
 			return;
 		}
