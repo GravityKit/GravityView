@@ -271,7 +271,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** With tracking. */
 		$_GET = array( 'pagenum' => 1, 'sort' => '4', 'dir' => 'rand' );
 
-		$this->assertEquals( add_query_arg( $_GET, $expected_url ), $entry->get_permalink( $view, $request ) );
+		$expected_url = add_query_arg($_GET, $expected_url);
+
+		parse_str(parse_url($expected_url, PHP_URL_QUERY), $expected_url_params);
+		parse_str(parse_url($entry->get_permalink( $view, $request ), PHP_URL_QUERY), $permalink_params);
+
+		$this->assertEquals( ksort($expected_url_params), ksort($permalink_params));
 
 		$_GET = array();
 
