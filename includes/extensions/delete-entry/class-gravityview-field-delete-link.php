@@ -72,6 +72,7 @@ class GravityView_Field_Delete_Link extends GravityView_Field {
 			'type'  => $this->name,
 			'desc'  => $this->description,
 			'icon'  => $this->icon,
+			'group' => 'gravityview',
 		);
 
 		return $entry_default_fields;
