@@ -21,9 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.17.9 on TBD, 2023 =
+= 2.18 on June 20, 2023 =
 
+* Fixed: Issue where "Edit Entry" link was not appearing under the Single Entry layout when the View was filtered using the "Created By" criterion with the "{user:ID}" merge tag
 * Fixed: REST API response breaking the functionality of Maps Layout 2.0
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.1
+
+__Developer Notes:__
+
+* Deprecated: `get_gravityview()` and the `the_gravityview()` global functions
 
 __Developer Notes:__
 

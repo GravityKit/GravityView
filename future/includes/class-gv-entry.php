@@ -132,7 +132,7 @@ abstract class Entry {
 		if ( ! $request->is_view( false ) ) {
 
 			/** Must be an embed of some sort. */
-			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
+			if ( $post instanceof \WP_Post && is_numeric( $post->ID ) ) {
 				$permalink = get_permalink( $post->ID );
 
 				$view_collection = View_Collection::from_post( $post );
