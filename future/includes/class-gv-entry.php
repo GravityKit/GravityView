@@ -113,6 +113,17 @@ abstract class Entry {
 
 		$args = array();
 
+		/**
+		 * @filter `gravityview/entry_link/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+		 * @since 2.10
+		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: true.
+		 */
+		$add_query_args = apply_filters( 'gravityview/entry_link/add_query_args', true );
+
+		if ( $add_query_args ) {
+			$args = gv_get_query_args();
+		}
+
 		$view_id = is_null ( $view ) ? null : $view->ID;
 
 		$permalink = null;
@@ -121,7 +132,7 @@ abstract class Entry {
 		if ( ! $request->is_view( false ) ) {
 
 			/** Must be an embed of some sort. */
-			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
+			if ( $post instanceof \WP_Post && is_numeric( $post->ID ) ) {
 				$permalink = get_permalink( $post->ID );
 
 				$view_collection = View_Collection::from_post( $post );

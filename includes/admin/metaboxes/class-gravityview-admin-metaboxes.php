@@ -16,11 +16,6 @@ class GravityView_Admin_Metaboxes {
 	 *
 	 */
 	function __construct() {
-
-		if ( ! GravityView_Compatibility::is_valid() ) {
-			return;
-		}
-
 		self::$metaboxes_dir = GRAVITYVIEW_DIR . 'includes/admin/metaboxes/';
 
 		include_once self::$metaboxes_dir . 'class-gravityview-metabox-tab.php';
@@ -28,7 +23,6 @@ class GravityView_Admin_Metaboxes {
 		include_once self::$metaboxes_dir . 'class-gravityview-metabox-tabs.php';
 
 		$this->initialize();
-
 	}
 
 	/**

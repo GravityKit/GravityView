@@ -21,6 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.18 on June 20, 2023 =
+
+* Fixed: Issue where "Edit Entry" link was not appearing under the Single Entry layout when the View was filtered using the "Created By" criterion with the "{user:ID}" merge tag
+* Fixed: REST API response breaking the functionality of Maps Layout 2.0
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.1
+
+__Developer Notes:__
+
+* Deprecated: `get_gravityview()` and the `the_gravityview()` global functions
+* Added: `GravityView_Field_Delete_Link` class to render the Delete Entry link instead of relying on filtering
+	- `delete_link` will now be properly returned in the `GravityView_Fields::get_all('gravityview');` response
+
 = 2.17.8 on May 16, 2023 =
 
 * Improved: Performance when using Gravity Forms 2.6.9 or older

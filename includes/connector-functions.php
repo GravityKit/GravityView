@@ -337,6 +337,9 @@ function gravityview_get_field_type(  $form = null , $field_id = '' ) {
  * @return string HTML of the output. Empty string if $view_id is empty.
  */
 function get_gravityview( $view_id = '', $atts = array() ) {
+
+	_deprecated_function( __FUNCTION__, '2.18', '$view = gravityview()->views->get( $view_id ); if ( $view ) { $view->settings->update( $atts ); $renderer = new \GV\View_Renderer(); $renderer->render( $view, new \GV\Frontend_Request() ); }');
+
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
 		$args = wp_parse_args( $atts, \GV\View_Settings::defaults() );
@@ -357,6 +360,9 @@ function get_gravityview( $view_id = '', $atts = array() ) {
  * @return void
  */
 function the_gravityview( $view_id = '', $atts = array() ) {
+
+	_deprecated_function( __FUNCTION__, '2.18', '$view = gravityview()->views->get( $view_id ); if ( $view ) { $view->settings->update( $atts ); $renderer = new \GV\View_Renderer(); echo $renderer->render( $view, new \GV\Frontend_Request() ); }');
+
 	echo get_gravityview( $view_id, $atts );
 }
 

@@ -55,6 +55,8 @@ final class GravityView_Delete_Entry {
 			$this->load_components( 'admin' );
 		}
 
+		require_once trailingslashit( self::$file ) . 'class-gravityview-field-delete-link.php';
+
 		$this->add_hooks();
 	}
 

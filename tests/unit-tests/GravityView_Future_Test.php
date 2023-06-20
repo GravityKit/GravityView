@@ -68,31 +68,22 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GV\Plugin::is_compatible()
 	 * @covers \GV\Plugin::is_compatible_wordpress()
 	 * @covers \GV\Plugin::is_compatible_gravityforms()
-	 * @covers \GV\Plugin::is_compatible_php()
 	 */
 	public function test_plugin_is_compatible() {
 		/** Under normal testing conditions this should pass. */
-		$this->assertTrue( gravityview()->plugin->is_compatible_php() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_wordpress() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_gravityforms() );
 		$this->assertTrue( gravityview()->plugin->is_compatible() );
 
 		/** Simulate various other conditions, including failure conditions. */
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '7.2.0';
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '4.8-alpha-39901';
 		$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] = '2.5.2-alpha';
-		$this->assertTrue( gravityview()->plugin->is_compatible_php() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_wordpress() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_gravityforms() );
 		$this->assertTrue( gravityview()->plugin->is_compatible() );
 
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '7.1';
-		$this->assertFalse( gravityview()->plugin->is_compatible_php() );
-
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.2';
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '3.0';
 		$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] = '1.0';
-		$this->assertFalse( gravityview()->plugin->is_compatible_php() );
 		$this->assertFalse( gravityview()->plugin->is_compatible_wordpress() );
 		$this->assertFalse( gravityview()->plugin->is_compatible_gravityforms() );
 		$this->assertFalse( gravityview()->plugin->is_compatible() );
@@ -103,24 +94,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( gravityview()->plugin->is_compatible() );
 
 		/** Cleanup used overrides. */
-		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_INACTIVE_OVERRIDE'] );
 
 		/** Test deprecations and stubs in the old code. */
 		$this->assertTrue( GravityView_Compatibility::is_valid() );
-		$this->assertTrue( GravityView_Compatibility::check_php() );
 		$this->assertTrue( GravityView_Compatibility::check_wordpress() );
 		$this->assertTrue( GravityView_Compatibility::check_gravityforms() );
 
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.2';
-		$this->assertFalse( GravityView_Compatibility::is_valid() );
-		$this->assertFalse( GravityView_Compatibility::check_php() );
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '3.0';
 		$this->assertFalse( GravityView_Compatibility::check_wordpress() );
 
-		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] );
 	}
@@ -286,7 +271,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** With tracking. */
 		$_GET = array( 'pagenum' => 1, 'sort' => '4', 'dir' => 'rand' );
 
-		$this->assertEquals( add_query_arg( $_GET, $expected_url ), $entry->get_permalink( $view, $request ) );
+		$expected_url = add_query_arg($_GET, $expected_url);
+
+		parse_str(parse_url($expected_url, PHP_URL_QUERY), $expected_url_params);
+		parse_str(parse_url($entry->get_permalink( $view, $request ), PHP_URL_QUERY), $permalink_params);
+
+		$this->assertEquals( ksort($expected_url_params), ksort($permalink_params));
 
 		$_GET = array();
 

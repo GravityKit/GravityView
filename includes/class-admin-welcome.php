@@ -65,6 +65,7 @@ class GravityView_Welcome {
 			'capability' => $this->minimum_capability,
 			'callback'   => array( $this, 'changelog_screen' ),
 			'order'      => 40,
+			'hide'       => true,
 		], 'center' );
 
 		// Changelog Page
@@ -75,16 +76,18 @@ class GravityView_Welcome {
 			'capability' => $this->minimum_capability,
 			'callback'   => array( $this, 'credits_screen' ),
 			'order'      => 50,
+			'hide'       => true,
 		], 'center' );
 
 		// Add Getting Started page to GravityView menu
 		$admin_menu::add_submenu_item( [
-			'id'         => 'gv-getting-started',
-			'page_title' => __( 'GravityView: Getting Started', 'gk-gravityview' ),
-			'menu_title' => __( 'Getting Started', 'gk-gravityview' ),
-			'capability' => $this->minimum_capability,
-			'callback'   => array( $this, 'getting_started_screen' ),
-			'order'      => 60, // Make it the last so that the border divider remains
+			'id'                                 => 'gv-getting-started',
+			'page_title'                         => __( 'GravityView: Getting Started', 'gk-gravityview' ),
+			'menu_title'                         => __( 'Getting Started', 'gk-gravityview' ),
+			'capability'                         => $this->minimum_capability,
+			'callback'                           => array( $this, 'getting_started_screen' ),
+			'order'                              => 60, // Make it the last so that the border divider remains
+			'exclude_from_top_level_menu_action' => true,
 		], 'center' );
 	}
 
@@ -114,13 +117,6 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function admin_head() {
-
-		/** @var \GravityKit\GravityView\Foundation\WP\AdminMenu $admin_menu */
-		$admin_menu = GravityKitFoundation::admin_menu();
-
-		$admin_menu::remove_submenu_item( 'gv-credits' );
-		$admin_menu::remove_submenu_item( 'gv-changelog' );
-
 		if( ! $this->is_dashboard_page() ) {
 			return;
 		}
@@ -185,7 +181,7 @@ class GravityView_Welcome {
 			<div class="feature-video"  style="text-align:center;">
 				<iframe height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
 
-				<p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravityview.co/category/24-category" rel="noopener noreferrer external" target="_blank">Read more: Setting Up Your First View<span class='screen-reader-text'> <?php esc_attr_e( 'This link opens in a new window.', 'gk-gravityview' ); ?></span></a></p>
+				<p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravitykit.com/article/380-how-to-setup-your-first-view" rel="noopener noreferrer external" target="_blank">Read more: Setting Up Your First View<span class='screen-reader-text'> <?php esc_attr_e( 'This link opens in a new window.', 'gk-gravityview' ); ?></span></a></p>
 			</div>
 
 			<div class="feature-section two-col has-2-columns is-fullwidth">
@@ -276,6 +272,25 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
+
+				<h3>2.18 on June 20, 2023</h3>
+
+				<ul>
+					<li>Fixed: Issue where "Edit Entry" link was not appearing under the Single Entry layout when the View was filtered using the "Created By" criterion with the "{user:ID}" merge tag</li>
+					<li>Fixed: REST API response breaking the functionality of Maps Layout 2.0</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.1</li>
+				</ul>
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Deprecated: <code>get_gravityview()</code> and the <code>the_gravityview()</code> global functions</li>
+					<li>Added: <code>GravityView_Field_Delete_Link</code> class to render the Delete Entry link instead of relying on filtering
+						<ul>
+							<li><code>delete_link</code> will now be properly returned in the <code>GravityView_Fields::get_all('gravityview');</code> response</li>
+						</ul>
+					</li>
+				</ul>
 
 				<h3>2.17.8 on May 16, 2023</h3>
 
@@ -876,7 +891,7 @@ class GravityView_Welcome {
 				<div class="col">
 					<h3>Vlad K.</h3>
 					<h4>Core Developer</h4>
-					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad is GravityKit&rsquo;s lead developer. He focuses on GravityKit&rsquo;s user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
+					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad is GravityKit&rsquo;s lead developer. Known for his versatility, Vlad handles both front-end and back-end programming, as well as testing and DevOps. He lives in Ottawa, Canada, and frequently travels the world in pursuit of unique experiences that fuel his creativity and broaden his worldview.</p>
 				</div>
 
 				<div class="col">
