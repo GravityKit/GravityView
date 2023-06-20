@@ -273,10 +273,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
-				<h3>2.17.9 on TBD, 2023</h3>
+				<h3>2.17.9 on June 20, 2023</h3>
 
 				<ul>
+					<li>Fixed: Issue where "Edit Entry" link was not appearing under the Single Entry layout when the View was filtered using the "Created By" criterion with the "{user:ID}" merge tag</li>
 					<li>Fixed: REST API response breaking the functionality of Maps Layout 2.0</li>
+					<li>Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.1</li>
 				</ul>
 
 				<h3>2.17.8 on May 16, 2023</h3>
