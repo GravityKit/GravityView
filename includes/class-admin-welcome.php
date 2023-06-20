@@ -285,6 +285,11 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Deprecated: <code>get_gravityview()</code> and the <code>the_gravityview()</code> global functions</li>
+					<li>Added: <code>GravityView_Field_Delete_Link</code> class to render the Delete Entry link instead of relying on filtering
+						<ul>
+							<li><code>delete_link</code> will now be properly returned in the <code>GravityView_Fields::get_all('gravityview');</code> response</li>
+						</ul>
+					</li>
 				</ul>
 
 				<h3>2.17.8 on May 16, 2023</h3>
