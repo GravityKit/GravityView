@@ -281,7 +281,7 @@ class GravityView_Welcome {
 					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.1</li>
 				</ul>
 
-				<p><strong>Developer Updates:</strong></p>
+				<p><strong>Developer Notes:</strong></p>
 
 				<ul>
 					<li>Deprecated: <code>get_gravityview()</code> and the <code>the_gravityview()</code> global functions</li>
