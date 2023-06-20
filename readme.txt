@@ -31,6 +31,11 @@ __Developer Notes:__
 
 * Deprecated: `get_gravityview()` and the `the_gravityview()` global functions
 
+__Developer Notes:__
+
+* Added: `GravityView_Field_Delete_Link` class to render the Delete Entry link instead of relying on filtering
+	- `delete_link` will now be properly returned in the `GravityView_Fields::get_all('gravityview');` response
+
 = 2.17.8 on May 16, 2023 =
 
 * Improved: Performance when using Gravity Forms 2.6.9 or older
