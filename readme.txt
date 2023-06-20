@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.18.1 on June 20, 2023 =
+
+* Fixed: PHP warning message that appeared when attempting to edit a View
+
 = 2.18 on June 20, 2023 =
 
 * Fixed: Issue where "Edit Entry" link was not appearing under the Single Entry layout when the View was filtered using the "Created By" criterion with the "{user:ID}" merge tag
