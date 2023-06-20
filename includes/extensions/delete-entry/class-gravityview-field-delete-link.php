@@ -46,8 +46,35 @@ class GravityView_Field_Delete_Link extends GravityView_Field {
 		// For the Delete Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps' ), 10, 5 );
 
-		// Add Delete Link as a default field, outside those set in the Gravity Form form
+		// Add Delete Link as a default field, outside those set in the Gravity Forms form
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
+	}
+
+	/**
+	 * Add as a default field, outside those set in the Gravity Form form
+	 *
+	 * @since 2.18.1
+	 *
+	 * @param array        $entry_default_fields Existing fields
+	 * @param string|array $form                 form_ID or form object
+	 * @param string       $zone                 Either 'single', 'directory', 'edit', 'header', 'footer'
+	 *
+	 * @return array
+	 */
+	public function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
+
+		if ( 'directory' !== $zone ) {
+			return $entry_default_fields;
+		}
+
+		$entry_default_fields[ $this->name ] = array(
+			'label' => $this->label,
+			'type'  => $this->name,
+			'desc'  => $this->description,
+			'icon'  => $this->icon,
+		);
+
+		return $entry_default_fields;
 	}
 
 	/**
