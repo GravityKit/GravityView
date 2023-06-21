@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.18\n"
+"Project-Id-Version: GravityView 2.18.1\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-20T19:11:24+00:00\n"
+"POT-Creation-Date: 2023-06-21T00:00:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -760,7 +760,7 @@ msgid "Previous Page Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:523
-#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:109
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:137
 msgid "Delete Link Text"
 msgstr ""
 
@@ -1256,7 +1256,7 @@ msgstr ""
 #: includes/class-gravityview-entry-link-shortcode.php:236
 #: includes/extensions/delete-entry/class-delete-entry-admin.php:83
 #: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:32
-#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:111
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:139
 #: includes/extensions/delete-entry/fields/delete_link.php:19
 #: templates/fields/field-delete_link-html.php:38
 #: templates/fields/field-duplicate_link-html.php:38
@@ -2364,14 +2364,14 @@ msgstr ""
 msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:79
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:107
 #: includes/extensions/duplicate-entry/class-duplicate-entry.php:298
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:119
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:117
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:145
 msgid "Allow the following users to delete the entry:"
 msgstr ""
 
