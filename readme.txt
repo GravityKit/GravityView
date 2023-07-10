@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.18.2 [unreleased] =
+
+* Fixed: Performance issue introduced in 2.18.1
+
+__Developer Notes:__
+
+* Added: `gk/gravityview/view/entries/cache` filter to provide control over the caching of DB queries
+
 = 2.18.1 on June 20, 2023 =
 
 * Fixed: PHP warning message that appeared when attempting to edit a View
