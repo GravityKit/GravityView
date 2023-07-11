@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-06-21T00:00:40+00:00\n"
+"POT-Creation-Date: 2023-07-11T18:37:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -65,14 +65,14 @@ msgstr ""
 #: future/includes/class-gv-shortcode-gravityview.php:198
 #: future/includes/class-gv-shortcode-gravityview.php:204
 #: future/includes/class-gv-shortcode-gravityview.php:212
-#: future/includes/class-gv-view.php:332
-#: future/includes/class-gv-view.php:346
-#: future/includes/class-gv-view.php:351
-#: future/includes/class-gv-view.php:357
-#: future/includes/class-gv-view.php:380
-#: future/includes/class-gv-view.php:385
-#: future/includes/class-gv-view.php:391
-#: future/includes/class-gv-view.php:399
+#: future/includes/class-gv-view.php:336
+#: future/includes/class-gv-view.php:350
+#: future/includes/class-gv-view.php:355
+#: future/includes/class-gv-view.php:361
+#: future/includes/class-gv-view.php:384
+#: future/includes/class-gv-view.php:389
+#: future/includes/class-gv-view.php:395
+#: future/includes/class-gv-view.php:403
 #: includes/class-frontend-views.php:817
 msgid "You are not allowed to view this content."
 msgstr ""
@@ -105,13 +105,13 @@ msgstr ""
 
 #: future/includes/class-gv-plugin.php:697
 #: future/includes/class-gv-plugin.php:698
-#: future/includes/class-gv-view.php:155
+#: future/includes/class-gv-view.php:159
 msgid "All Views"
 msgstr ""
 
 #: future/includes/class-gv-plugin.php:706
 #: future/includes/class-gv-plugin.php:707
-#: future/includes/class-gv-view.php:158
+#: future/includes/class-gv-view.php:162
 msgid "New View"
 msgstr ""
 
@@ -172,7 +172,7 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:249
 #: future/includes/class-gv-renderer.php:325
 #: future/includes/class-gv-renderer.php:381
-#: future/includes/class-gv-view.php:310
+#: future/includes/class-gv-view.php:314
 #: includes/class-frontend-views.php:695
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
@@ -835,39 +835,39 @@ msgstr ""
 #: future/includes/class-gv-shortcode-gravityview.php:124
 #: future/includes/class-gv-shortcode-gventry.php:134
 #: future/includes/class-gv-shortcode-gvfield.php:136
-#: future/includes/class-gv-view.php:308
+#: future/includes/class-gv-view.php:312
 msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a form</a>."
 msgstr ""
 
-#: future/includes/class-gv-view.php:151
+#: future/includes/class-gv-view.php:155
 msgctxt "Post Type General Name"
 msgid "Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:152
+#: future/includes/class-gv-view.php:156
 msgctxt "Post Type Singular Name"
 msgid "View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:153
+#: future/includes/class-gv-view.php:157
 msgctxt "Menu name"
 msgid "Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:154
+#: future/includes/class-gv-view.php:158
 msgid "Parent View:"
 msgstr ""
 
-#: future/includes/class-gv-view.php:156
+#: future/includes/class-gv-view.php:160
 msgctxt "View Item"
 msgid "View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:157
+#: future/includes/class-gv-view.php:161
 msgid "Add New View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:159
+#: future/includes/class-gv-view.php:163
 #: includes/class-gravityview-admin-bar.php:138
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
@@ -878,71 +878,71 @@ msgstr ""
 msgid "Edit View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:160
+#: future/includes/class-gv-view.php:164
 msgid "Update View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:161
+#: future/includes/class-gv-view.php:165
 msgid "Search Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:163
+#: future/includes/class-gv-view.php:167
 #: includes/class-admin.php:58
 msgid "No Views found in Trash"
 msgstr ""
 
-#: future/includes/class-gv-view.php:164
+#: future/includes/class-gv-view.php:168
 msgid "Filter Views list"
 msgstr ""
 
-#: future/includes/class-gv-view.php:165
+#: future/includes/class-gv-view.php:169
 msgid "Views list navigation"
 msgstr ""
 
-#: future/includes/class-gv-view.php:166
+#: future/includes/class-gv-view.php:170
 msgid "Views list"
 msgstr ""
 
-#: future/includes/class-gv-view.php:167
+#: future/includes/class-gv-view.php:171
 msgid "See Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:168
+#: future/includes/class-gv-view.php:172
 msgid "View Attributes"
 msgstr ""
 
-#: future/includes/class-gv-view.php:169
+#: future/includes/class-gv-view.php:173
 msgid "View updated."
 msgstr ""
 
-#: future/includes/class-gv-view.php:170
+#: future/includes/class-gv-view.php:174
 msgid "View published."
 msgstr ""
 
-#: future/includes/class-gv-view.php:171
+#: future/includes/class-gv-view.php:175
 msgid "View reverted to draft."
 msgstr ""
 
-#: future/includes/class-gv-view.php:172
+#: future/includes/class-gv-view.php:176
 msgid "View scheduled."
 msgstr ""
 
-#: future/includes/class-gv-view.php:176
+#: future/includes/class-gv-view.php:180
 msgid "view"
 msgstr ""
 
-#: future/includes/class-gv-view.php:177
+#: future/includes/class-gv-view.php:181
 msgid "Create views based on a Gravity Forms form"
 msgstr ""
 
-#: future/includes/class-gv-view.php:312
+#: future/includes/class-gv-view.php:316
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:213
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:253
 #: includes/class-admin-views.php:583
 msgid "Data Source"
 msgstr ""
 
-#: future/includes/class-gv-view.php:320
+#: future/includes/class-gv-view.php:324
 msgid "This View is in the Trash. You can <a href=\"%s\">restore the View here</a>."
 msgstr ""
 
@@ -1241,7 +1241,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:83
 #: includes/class-admin-views.php:527
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:863
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:1000
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:354
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:53
 msgid "Settings"
@@ -4042,56 +4042,56 @@ msgstr ""
 msgid "Displaying %1$s - %2$s of %3$s"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:25
+#: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgid "Displays the results of Poll Fields that exist in the form."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:26
+#: includes/widgets/poll/class-gravityview-widget-poll.php:27
 msgctxt "The string placeholders are for emphasis HTML"
 msgid "Note: this will display poll results for %sall form entries%s, not only the entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:35
+#: includes/widgets/poll/class-gravityview-widget-poll.php:36
 msgid "Display Percentages"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:38
+#: includes/widgets/poll/class-gravityview-widget-poll.php:39
 msgid "Display results percentages as part of results? Supported values are: true, false. Defaults to \"true\"."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:41
+#: includes/widgets/poll/class-gravityview-widget-poll.php:42
 msgid "Display Counts"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:44
+#: includes/widgets/poll/class-gravityview-widget-poll.php:45
 msgid "Display number of times each choice has been selected when displaying results? Supported values are: true, false. Defaults to \"true\"."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:48
+#: includes/widgets/poll/class-gravityview-widget-poll.php:49
 msgid "Style"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:49
+#: includes/widgets/poll/class-gravityview-widget-poll.php:50
 msgid "The Polls Add-On currently supports 4 built in styles: red, green, orange, blue. Defaults to \"green\"."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:52
+#: includes/widgets/poll/class-gravityview-widget-poll.php:53
 msgid "Green"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:53
+#: includes/widgets/poll/class-gravityview-widget-poll.php:54
 msgid "Blue"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:54
+#: includes/widgets/poll/class-gravityview-widget-poll.php:55
 msgid "Red"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:55
+#: includes/widgets/poll/class-gravityview-widget-poll.php:56
 msgid "Orange"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:65
+#: includes/widgets/poll/class-gravityview-widget-poll.php:66
 msgid "Poll Results"
 msgstr ""
 
@@ -4469,7 +4469,7 @@ msgid "No-conflict mode prevents extraneous scripts and styles from being printe
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:457
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:871
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:1008
 msgid "Support"
 msgstr ""
 
@@ -4845,11 +4845,11 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "We don't need to see your [plugin] details to provide support (if [plugin] is enabled)."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:182
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:188
 msgid "You do not have permission to view this page."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:213
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:219
 msgid "Manage Your Kit"
 msgstr ""
 
@@ -4864,7 +4864,7 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:234
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:292
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:350
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:587
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:629
 msgid "You do not have a permission to perform this action."
 msgstr ""
 
@@ -4977,7 +4977,7 @@ msgstr ""
 msgid "Invalid product information received from the API."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:563
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:605
 msgid "View full changelog"
 msgstr ""
 
@@ -6244,84 +6244,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""
