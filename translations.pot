@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-07-11T18:37:46+00:00\n"
+"POT-Creation-Date: 2023-07-11T19:09:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1241,7 +1241,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:83
 #: includes/class-admin-views.php:527
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:1000
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:863
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:354
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:53
 msgid "Settings"
@@ -4469,7 +4469,7 @@ msgid "No-conflict mode prevents extraneous scripts and styles from being printe
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:457
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:1008
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:871
 msgid "Support"
 msgstr ""
 
@@ -4864,7 +4864,7 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:234
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:292
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:350
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:629
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:587
 msgid "You do not have a permission to perform this action."
 msgstr ""
 
@@ -4977,7 +4977,7 @@ msgstr ""
 msgid "Invalid product information received from the API."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:605
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:563
 msgid "View full changelog"
 msgstr ""
 
