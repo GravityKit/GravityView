@@ -273,6 +273,26 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.18.2 on July 12, 2023</h3>
+
+				<ul>
+					<li>Fixed: Performance issue</li>
+					<li>Fixed: [WP-CLI](https://wp-cli.org/) not displaying available GravityKit product updates</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.1.1</li>
+				</ul>
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Added: <code>gk/gravityview/view/entries/cache</code> filter to provide control over the caching of View entries (default: <code>true</code>)</li>
+				</ul>
+
+				<h3>2.18.1 on June 20, 2023</h3>
+
+				<ul>
+					<li>Fixed: Fixed: PHP warning message that appeared when attempting to edit a View</li>
+				</ul>
+
 				<h3>2.18 on June 20, 2023</h3>
 
 				<ul>

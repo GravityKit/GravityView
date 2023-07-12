@@ -22,6 +22,7 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 	function __construct() {
 
 		$this->widget_id = 'poll';
+		$this->icon = 'dashicons-chart-bar';
 		$this->widget_description = __('Displays the results of Poll Fields that exist in the form.', 'gk-gravityview' );
 		$this->widget_subtitle = sprintf( _x('Note: this will display poll results for %sall form entries%s, not only the entries displayed in the View.', 'The string placeholders are for emphasis HTML', 'gk-gravityview' ), '<em>', '</em>' );
 
