@@ -273,7 +273,7 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
-				<h3>2.18.2 [unreleased]</h3>
+				<h3>2.18.2 on July 12, 2023</h3>
 
 				<ul>
 					<li>Fixed: Performance issue</li>

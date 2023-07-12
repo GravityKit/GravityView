@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.18.2 [unreleased] =
+= 2.18.2 on July 12, 2023 =
 
 * Fixed: Performance issue
 * Fixed: [WP-CLI](https://wp-cli.org/) not displaying available GravityKit product updates
