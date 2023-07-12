@@ -70,7 +70,13 @@ class Utils {
 	 * @return mixed  The value or $default if not found.
 	 */
 	public static function get( $array, $key, $default = null ) {
+
 		if ( ! is_array( $array ) && ! is_object( $array ) ) {
+			return $default;
+		}
+
+		// Only allow string or integer keys. No null, array, etc.
+		if ( ! is_string( $key ) && ! is_int( $key ) ) {
 			return $default;
 		}
 
