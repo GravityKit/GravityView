@@ -1316,7 +1316,9 @@ class View implements \ArrayAccess {
 
 			gravityview()->log->debug( 'GF_Query parameters: ', array( 'data' => Utils::gf_query_debug( $query ) ) );
 
-			$db_entries = $this->run_db_query( $query );
+			$result = $this->run_db_query( $query );
+
+			list ( $db_entries, $query ) = $result;
 
 			/**
 			 * Map from Gravity Forms entries arrays to an Entry_Collection.
@@ -1381,7 +1383,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @param GF_Query $query
 	 *
-	 * @return array
+	 * @return array{0: array, 1: GF_Query} Array of entries and the query object. The latter may be needed as it is modified during the query.
 	 */
 	private function run_db_query( GF_Query $query ) {
 		/**
@@ -1394,13 +1396,23 @@ class View implements \ArrayAccess {
 		 * @param bool $enable_caching Default: true.
 		 */
 		if ( ! apply_filters( 'gk/gravityview/view/entries/cache', true ) ) {
-			return $query->get();
+			$db_entries = $query->get();
+
+			return [
+				$db_entries,
+				$query,
+			];
 		}
 
 		$query_hash = md5( serialize( $query->_introspect() ) );
 
 		if ( ! Arr::get( self::$cache, $query_hash ) ) {
-			self::$cache[ $query_hash ] = $query->get();
+			$db_entries = $query->get();
+
+			self::$cache[ $query_hash ] = [
+				$db_entries,
+				$query,
+			];
 		}
 
 		return self::$cache[ $query_hash ];

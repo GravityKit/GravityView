@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.18.3 [unreleased] =
+
+* Fixed: Incorrect number of total entries is displayed and pagination is hidden if the View has an Entry Edit field
+
 = 2.18.2 on July 12, 2023 =
 
 * Fixed: Performance issue
