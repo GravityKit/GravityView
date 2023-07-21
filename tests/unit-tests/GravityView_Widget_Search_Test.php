@@ -876,10 +876,6 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	}
 
 	public function test_created_by_text_search() {
-		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
-			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
-		}
-
 		$alpha = $this->factory->user->create( array(
 			'user_login' => 'alpha',
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
@@ -960,6 +956,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET = array( 'gv_by' => 'custom' );
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+
 		update_user_meta( $gamma, 'custom_meta', 'custom' );
 		add_filter( 'gravityview/widgets/search/created_by/user_meta_fields', function() {
 			return array( 'custom_meta' );
@@ -967,6 +965,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 1, $view->get_entries()->count() );
 
 		remove_all_filters( 'gravityview/widgets/search/created_by/user_meta_fields' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 
 		$_GET = array();
 	}

@@ -1697,6 +1697,10 @@ class GVFuture_Test extends GV_UnitTestCase {
         $this->assertEquals( $legacy, $future );
         $this->assertContains( 'No entries match your request', $future );
 
+
+		// Disable caching as we'll be running the same query but after creating new entries.
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+
 		/** Some more */
 		foreach ( range( 1, 25 ) as $i ) {
 
@@ -1736,6 +1740,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview/view/anchor_id' );
 		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 	}
 
     /**
@@ -2958,6 +2963,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'no_entries_hide' => true ) );
 		$this->assertEmpty( $renderer->render( $field, $view, null, $entry, $request ) );
 
+		// Disable caching as we'll be running the same query but after creating new entries.
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+
 		$entry_2 = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'created_by' => $user_1,
@@ -2981,6 +2989,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
 
 		unset( $GLOBALS['post'] );
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 	}
 
 	/**
