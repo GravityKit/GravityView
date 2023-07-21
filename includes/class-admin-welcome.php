@@ -268,10 +268,15 @@ class GravityView_Welcome {
 			<?php $this->tabs(); ?>
 
 			<div class="changelog point-releases" style="margin-top: 3em; border-bottom: 0">
-
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
+
+				<h3>2.18.3 on July 20, 2023</h3>
+
+				<ul>
+					<li>Fixed: Incorrect total entry count and hidden pagination when View contains an Entry Edit field</li>
+				</ul>
 
 				<h3>2.18.2 on July 12, 2023</h3>
 
