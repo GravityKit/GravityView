@@ -230,7 +230,7 @@ class GravityView_View_Data {
 	 */
 	function get_id_from_atts( $atts ) {
 		$settings = \GV\View_Settings::with_defaults();
-		$settings->update( shortcode_parse_atts( $atts ) );
+		$settings->update( $atts );
 		$view_id = $settings->get( 'view_id' );
 		$view_id = empty( $view_id ) ? $settings->get( 'id' ) : $view_id;
 		return empty( $view_id ) ? null : $view_id;

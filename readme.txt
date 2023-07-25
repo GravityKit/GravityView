@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.18.4 [unreleased] =
+
+* Fixed: Resolved a fatal error that occurred under certain circumstances due to passing the wrong parameter type to a WordPress function
+
 = 2.18.3 on July 20, 2023 =
 
 * Fixed: Incorrect total entry count and hidden pagination when View contains an Entry Edit field

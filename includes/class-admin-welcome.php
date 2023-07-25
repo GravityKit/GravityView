@@ -272,6 +272,12 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.18.4 [unreleased]</h3>
+
+				<ul>
+					<li>Fixed: Resolved a fatal error that occurred under certain circumstances due to passing the wrong parameter type to a WordPress function</li>
+				</ul>
+
 				<h3>2.18.3 on July 20, 2023</h3>
 
 				<ul>
