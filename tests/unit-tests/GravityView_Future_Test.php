@@ -1201,16 +1201,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_default_args' );
 		remove_all_filters( 'gravityview/view/settings/defaults' );
-
-		/** Dead get_id_from_atts() test assumptions, no actual live code is present in our core... */
-		add_filter( 'gravityview/view/settings/defaults', function( $defaults ) {
-			$defaults['view_id'] = array( 'value' => '39' );
-			return $defaults;
-		} );
-		$this->assertEquals( 39, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40"' ) );
-		remove_all_filters( 'gravityview/view/settings/defaults' );
-		$this->assertEquals( 40, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40"' ) );
-		$this->assertEquals( 50, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40" view_id="50"' ) );
 	}
 
 	/**
