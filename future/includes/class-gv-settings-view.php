@@ -565,7 +565,7 @@ class View_Settings extends Settings {
 				'embed_only'                  => array(
 					'label'             => __( 'Prevent Direct Access', 'gk-gravityview' ),
 					'group'             => 'default',
-					'desc'              => __( 'Only allow access to this View when embedded using the shortcode.', 'gk-gravityview' ),
+					'desc'              => __( 'Only allow access to this View when embedded using the block or shortcode.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
 					'tooltip'           => false,
