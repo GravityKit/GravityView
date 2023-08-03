@@ -36,6 +36,7 @@ class GravityView_Admin_Metaboxes {
 		add_action( 'add_meta_boxes_gravityview', array( $this, 'update_priority' ) );
 
 		// information box
+		add_action( 'post_submitbox_misc_actions', array( $this, 'render_direct_access_status' ), 9 );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
 	}
 
@@ -349,8 +350,6 @@ class GravityView_Admin_Metaboxes {
 
 	}
 
-
-
 	/**
 	 * Render shortcode hint in the Publish metabox
 	 *
@@ -370,6 +369,29 @@ class GravityView_Admin_Metaboxes {
 		}
 
 		include self::$metaboxes_dir . 'views/shortcode-hint.php';
+	}
+
+	/**
+	 * Render Direct Access setting in the Publish metabox.
+	 *
+	 * @since TODO
+	 *
+	 * @return void
+	 */
+	function render_direct_access_status() {
+		global $post;
+
+		// Only show this on GravityView post types.
+		if ( false === gravityview()->request->is_admin( '', null ) ) {
+			return;
+		}
+
+		// If the View hasn't been configured yet, don't show embed shortcode
+		if ( ! gravityview_get_directory_fields( $post->ID ) && ! gravityview_get_directory_widgets( $post->ID ) ) {
+			return;
+		}
+
+		include self::$metaboxes_dir . 'views/direct-access-status.php';
 	}
 
 }
