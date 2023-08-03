@@ -54,10 +54,10 @@ if ( ! empty( $embed_only_view_status ) ) {
 	?>
 
 	<span id="gv-direct-access-display">
-		<strong data-initial-value="<?php echo esc_attr( $direct_access_text );	?>"><?php echo esc_html( $direct_access_text );	?></strong>
+		<strong data-initial-label="<?php echo esc_attr( $direct_access_text );	?>"><?php echo esc_html( $direct_access_text );	?></strong>
 
 		<?php
-		echo gv_get_direct_access_tooltip();
+			echo gv_get_direct_access_tooltip();
 		?>
 	</span>
 

@@ -646,7 +646,7 @@
 			viewConfiguration.directAccessSelect.slideUp( 'fast' );
 
 			$( '#gv-direct-access-display strong' ).text( function () {
-				return $( this ).data( 'initial-value' );
+				return $( this ).data( 'initial-label' );
 			} );
 
 			$( '#gv-direct-access .edit-direct-access' ).show().trigger( 'focus' );
