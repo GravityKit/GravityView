@@ -571,6 +571,11 @@ class View_Settings extends Settings {
 					'tooltip'           => false,
 					'show_in_shortcode' => false,
 					'full_width'        => true,
+					'article'           => array(
+						'id'  => '5590376ce4b027e1978eb8d0',
+						'type' => 'modal',
+						'url' => 'https://docs.gravitykit.com/article/288-how-gravityview-security-works',
+					),
 				),
 			),
 			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?
