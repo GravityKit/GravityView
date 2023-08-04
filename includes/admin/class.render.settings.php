@@ -67,14 +67,22 @@ class GravityView_Render_Settings {
 		if ( isset( $field_options['lightbox'] ) ) {
 			$field_options['lightbox'] = array_merge(
 				$field_options['lightbox'],
-				[ 'requires' => 'show_as_link', 'priority' => 101 ]
+				[
+					'requires' => 'show_as_link',
+					'priority' => 101,
+					'context'  => [ 'multiple' ],
+				]
 			);
 		}
 
 		if ( isset( $field_options['new_window'] ) ) {
 			$field_options['new_window'] = array_merge(
 				$field_options['new_window'],
-				[ 'requires' => 'show_as_link', 'priority' => 102 ]
+				[
+					'requires' => 'show_as_link',
+					'priority' => 102,
+					'context'  => [ 'multiple' ],
+				]
 			);
 		}
 
@@ -183,6 +191,7 @@ class GravityView_Render_Settings {
 					'priority'     => 1000,
 					'group'        => 'label',
 					'requires_not' => 'full_width=1',
+					'contexts'     => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 				'custom_label'      => [
 					'type'         => 'text',
@@ -194,6 +203,7 @@ class GravityView_Render_Settings {
 					'requires'     => 'show_label',
 					'requires_not' => 'full_width=1',
 					'group'        => 'label',
+					'contexts'     => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 				'custom_class'      => [
 					'type'       => 'text',
@@ -205,6 +215,7 @@ class GravityView_Render_Settings {
 					'class'      => 'widefat code',
 					'priority'   => 5000,
 					'group'      => 'advanced',
+					'contexts'   => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 				'only_loggedin'     => [
 					'type'     => 'checkbox',
@@ -212,6 +223,7 @@ class GravityView_Render_Settings {
 					'value'    => '',
 					'priority' => 4000,
 					'group'    => 'visibility',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 				'only_loggedin_cap' => [
 					'type'     => 'select',
@@ -222,11 +234,12 @@ class GravityView_Render_Settings {
 					'priority' => 4100,
 					'requires' => 'only_loggedin',
 					'group'    => 'visibility',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 			];
 
 			// Match Table as well as DataTables
-			if ( $is_table_layout && 'directory' === $context ) {
+			if ( $is_table_layout ) {
 				$field_options['width'] = [
 					'type'     => 'number',
 					'label'    => __( 'Percent Width', 'gk-gravityview' ),
@@ -236,6 +249,7 @@ class GravityView_Render_Settings {
 					'value'    => '',
 					'priority' => 200,
 					'group'    => 'display',
+					'contexts' => [ 'multiple' ],
 				];
 			}
 		}
@@ -807,7 +821,7 @@ EOD;
 
 		$class = '';
 		// and $add_merge_tags is not false
-		if ( $show && false !== $add_merge_tags || 'force' === $add_merge_tags ) {
+		if ( $show && ( false !== $add_merge_tags || 'force' === $add_merge_tags ) ) {
 			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
