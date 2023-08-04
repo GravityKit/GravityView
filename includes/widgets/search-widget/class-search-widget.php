@@ -224,6 +224,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'boolean'      => array( 'single_checkbox' ),
 			'select'       => array( 'select', 'radio', 'link' ),
 			'multi'        => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
+			'multiselect' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
+			'checkbox' => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
 
 			// hybrids
 			'created_by'   => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
@@ -240,6 +242,24 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$input_types = apply_filters( 'gravityview/search/input_types', $input_types );
 
 		return $input_types;
+	}
+
+	public static function get_input_types_by_gf_field( $gf_field ) {
+
+		if( ! $gf_field instanceof GF_Field ) {
+			return ['input_text'];
+		}
+
+		$field_type = $gf_field->get_input_type();
+
+		$input_types = self::get_input_types_by_field_type();
+
+		// If the field type is not in the array, use the default input type
+		if ( ! isset( $input_types[ $field_type ] ) ) {
+			$field_type = 'input_text';
+		}
+
+		return $input_types[ $field_type ] ?? [ 'input_text' ];
 	}
 
 	/**
@@ -1705,13 +1725,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// get configured search fields
 		$search_fields = ! empty( $widget_args['search_fields'] ) ? json_decode( $widget_args['search_fields'], true ) : '';
 
+		$search_fields = $view->fields->by_position( 'search_search-fields' )->as_configuration();
+
 		if ( empty( $search_fields ) || ! is_array( $search_fields ) ) {
 			gravityview()->log->debug( 'No search fields configured for widget:', array( 'data' => $widget_args ) );
 			return;
 		}
 
 		// prepare fields
-		foreach ( $search_fields as $k => $field ) {
+		foreach ( $search_fields['search_search-fields'] as $k => $field ) {
 
 			$updated_field = $field;
 
@@ -1932,26 +1954,24 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function get_search_filter_details( $field, $context, $widget_args ) {
 
-		$gravityview_view = GravityView_View::getInstance();
-
-		$form = $gravityview_view->getForm();
+		$form = GFAPI::get_form( $field['form_id'] );
 
 		// for advanced field ids (eg, first name / last name )
-		$name = 'filter_' . str_replace( '.', '_', $field['field'] );
+		$name = 'filter_' . $field['id'];
 
 		// get searched value from $_GET/$_POST (string or array)
 		$value = $this->rgget_or_rgpost( $name );
 
 		// get form field details
-		$form_field = gravityview_get_field( $form, $field['field'] );
+		$form_field = GFAPI::get_field( $form, $field['id'] );
 
 		$form_field_type = \GV\Utils::get( $form_field, 'type' );
 
 		$filter = array(
-			'key'   => \GV\Utils::get( $field, 'field' ),
+			'key' => \GV\Utils::get( $field, 'id' ),
 			'name'  => $name,
-			'label' => self::get_field_label( $field, $form_field ),
-			'input' => \GV\Utils::get( $field, 'input' ),
+			'label' => \GV\Utils::get( $field, 'label' ),
+			'input' => self::get_input_types_by_gf_field( $form_field )[0],
 			'value' => $value,
 			'type'  => $form_field_type,
 		);
@@ -1959,8 +1979,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// collect choices
 		if ( 'post_category' === $form_field_type && ! empty( $form_field['displayAllCategories'] ) && empty( $form_field['choices'] ) ) {
 			$filter['choices'] = gravityview_get_terms_choices();
-		} elseif ( ! empty( $form_field['choices'] ) ) {
-			$filter['choices'] = $form_field['choices'];
+		} elseif ( ! empty( $form_field->choices ) ) {
+			$filter['choices'] = $form_field->choices;
 		}
 
 		if ( 'date_range' === $field['input'] && empty( $value ) ) {
