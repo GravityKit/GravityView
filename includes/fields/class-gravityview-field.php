@@ -98,7 +98,7 @@ abstract class GravityView_Field {
 	 * @type array
 	 * @since 1.15.2
 	 */
-	public $contexts = array( 'single', 'multiple', 'edit', 'export' );
+	public $contexts = array( 'single', 'multiple', 'edit', 'export', 'search' );
 
 	/**
 	 * @var string An icon that represents the field type in the field picker.
@@ -423,6 +423,7 @@ abstract class GravityView_Field {
 				'value' => false,
 				'priority' => 1200,
 				'group' => 'display',
+				'contexts' => [ 'multiple', 'single', 'edit' ],
 			),
 			'link_to_term' => array(
 				'type' => 'checkbox',
@@ -431,6 +432,7 @@ abstract class GravityView_Field {
 				'value' => false,
 				'priority' => 1210,
 				'group' => 'display',
+				'contexts' => [ 'multiple', 'single', 'edit' ],
 			),
 			'dynamic_data' => array(
 				'type' => 'checkbox',
@@ -439,6 +441,7 @@ abstract class GravityView_Field {
 				'value' => true,
 				'priority' => 1100,
 				'group' => 'display',
+				'contexts' => [ 'multiple', 'single', 'edit' ],
 			),
 			'date_display' => array(
 				'type' => 'text',
@@ -517,6 +520,21 @@ abstract class GravityView_Field {
 	 * @return array                     [description]
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
+
+		foreach( $field_options as $key => $field_option ) {
+
+			$_context = $context;
+
+			if ( 'directory' === $context ) {
+				$_context = 'multiple';
+			}
+
+			if( isset( $field_option['contexts'] ) && ! in_array( $_context, $field_option['contexts'], true ) ) {
+				unset( $field_options[ $key ] );
+			} elseif ( ! isset( $field_option['contexts'] ) && 'search' === $_context ) {
+				unset( $field_options[ $key ] );
+			}
+		}
 
 		$this->_field_options = $field_options;
 		$this->_field_id = $field_id;

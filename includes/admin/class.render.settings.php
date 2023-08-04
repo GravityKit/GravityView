@@ -63,6 +63,7 @@ class GravityView_Render_Settings {
 					'value' => ! empty ( $is_table_layout ),
 					'priority' => 1000,
 					'group' => 'label',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				),
 				'custom_label' => array(
 					'type' => 'text',
@@ -73,6 +74,7 @@ class GravityView_Render_Settings {
 					'priority' => 1100,
 					'requires' => 'show_label',
 					'group' => 'label',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				),
 				'custom_class' => array(
 					'type'       => 'text',
@@ -84,6 +86,7 @@ class GravityView_Render_Settings {
 					'class'      => 'widefat code',
 					'priority' => 5000,
 					'group' => 'advanced',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				),
 				'only_loggedin' => array(
 					'type' => 'checkbox',
@@ -91,6 +94,7 @@ class GravityView_Render_Settings {
 					'value' => '',
 					'priority' => 4000,
 					'group' => 'visibility',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				),
 				'only_loggedin_cap' => array(
 					'type' => 'select',
@@ -101,11 +105,12 @@ class GravityView_Render_Settings {
 					'priority' => 4100,
 					'requires' => 'only_loggedin',
 					'group' => 'visibility',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				),
 			);
 
 			// Match Table as well as DataTables
-			if( $is_table_layout && 'directory' === $context ) {
+			if( $is_table_layout ) {
 				$field_options['width'] = array(
 					'type' => 'number',
 					'label' => __('Percent Width', 'gk-gravityview'),
@@ -114,6 +119,7 @@ class GravityView_Render_Settings {
 					'value' => '',
 					'priority' => 200,
 					'group' => 'display',
+					'contexts' => [ 'multiple' ],
 				);
 			}
 
@@ -146,15 +152,15 @@ class GravityView_Render_Settings {
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		if ( 'directory' === $context && isset( $field_options['show_as_link'] ) && ! isset( $field_options['new_window'] ) ) {
+		if ( isset( $field_options['show_as_link'] ) && ! isset( $field_options['new_window'] ) ) {
 			$field_options['new_window'] = array(
 				'type'     => 'checkbox',
 				'label'    => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
 				'value'    => false,
-				'context'  => 'directory',
 				'requires' => 'show_as_link',
 				'priority' => 101,
 				'group'    => 'display',
+				'context'  => [ 'multiple' ],
 			);
 		}
 
