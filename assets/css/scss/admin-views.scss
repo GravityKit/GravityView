@@ -559,6 +559,10 @@ $gv-overlay-index: 10000;
 	max-width: 690px!important;
 }
 
+.gform-admin .gform-dropdown--merge-tags .gform-dropdown__container {
+	z-index: $gv-overlay-index + 2;
+}
+
 /** View configuration tabs */
 .post-type-gravityview .ui-tabs {
 	position: relative;
