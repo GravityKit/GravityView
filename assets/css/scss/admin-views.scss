@@ -556,6 +556,7 @@ $gv-overlay-index: 10000;
 
 .post-type-gravityview .CodeMirror {
 	height: 15.75em; // 10 visible rows
+	max-width: 690px!important;
 }
 
 /** View configuration tabs */
