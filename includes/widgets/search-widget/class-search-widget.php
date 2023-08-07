@@ -114,7 +114,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
 			add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
-			add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 			add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict' ) );
 
 			// ajax - get the searchable fields
@@ -179,8 +178,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function set_search_method() {
 		/**
-		 * Modify the search form method (GET / POST).
-		 *
+		 * @filter `gravityview/search/method` Modify the search form method (GET / POST).
 		 * @since 1.16.4
 		 * @param string $search_method Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
 		 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
@@ -637,7 +635,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_fields = apply_filters_deprecated( 'gravityview/search/searchable_fields/whitelist', array( $searchable_fields, $view, $with_full_field ), '2.14', 'gravityview/search/searchable_fields/allowlist' );
 
 		/**
-		 * Modifies the fields able to be searched using the Search Bar.
+		 * @filter `gravityview/search/searchable_fields/allowlist` Modifies the fields able to be searched using the Search Bar
 		 *
 		 * @since 2.14
 		 *
@@ -708,10 +706,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
 
 		/**
-		 * Search for each word separately or the whole phrase?
+		 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
 		 *
 		 * @since 1.20.2
-		 * @since TODO Added $view parameter
+		 * @since 2.19.6 Added $view parameter
 		 *
 		 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
 		 * @param \GV\View $view The View being searched
@@ -719,10 +717,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$split_words = apply_filters( 'gravityview/search-all-split-words', true, $view );
 
 		/**
-		 * Remove leading/trailing whitespaces from search value.
+		 * @filter `gravityview/search-trim-input` Remove leading/trailing whitespaces from search value
 		 *
 		 * @since 2.9.3
-		 * @since TODO Added $view parameter
+		 * @since 2.19.6 Added $view parameter
 		 *
 		 * @param bool $trim_search_value True: remove whitespace; False: keep as is [Default: true]
 		 * @param \GV\View $view The View being searched
@@ -938,7 +936,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Returns a list of quotation marks.
 	 *
-	 * @since TODO
+	 * @since 2.21.1
 	 *
 	 * @return array List of quotation marks with `opening` and `closing` keys.
 	 */
@@ -964,7 +962,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Filters the \GF_Query with advanced logic.
 	 *
-	 * Dropin for the legacy flat filters when \GF_Query is available.
+	 * Drop-in for the legacy flat filters when \GF_Query is available.
 	 *
 	 * @param \GF_Query   $query The current query object reference
 	 * @param \GV\View    $this The current view object
@@ -976,6 +974,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * We feed these into an new GF_Query and tack them onto the current object.
 		 */
 		$search_criteria = $this->filter_entries( array(), null, array( 'id' => $view->ID ), true /** force search_criteria */ );
+
 		/**
 		 * Call any userland filters that they might have.
 		 */
@@ -1004,7 +1003,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				unset( $search_criteria['field_filters'][ $i ] );
 			}
 		}
-
 
 		$widgets = $view->widgets->by_id( $this->widget_id );
 		if ( $widgets->count() ) {
@@ -1080,9 +1078,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			/**
-			 * Modify the search operator for the field (contains, is, isnot, etc).
+			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
 			 *
 			 * @since 2.0 Added $view parameter
+			 *
 			 * @param string $operator Existing search operator
 			 * @param array $filter array with `key`, `value`, `operator`, `type` keys
 			 * @param \GV\View $view The View we're operating on.
@@ -1379,7 +1378,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		if ( count( $filter_key ) > 1 ) {
 			// form is specified
-			list( $field_id, $form_id ) = $filter_key;
+			[ $field_id, $form_id ] = $filter_key;
 
 			if ( $forms = \GV\View::get_joined_forms( $view->ID ) ) {
 				if ( ! $form = \GV\GF_Form::by_id( $form_id ) ) {
@@ -1823,8 +1822,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			// enqueue datepicker stuff only if needed!
 			$this->enqueue_datepicker();
 		}
-
-		$this->maybe_enqueue_flexibility();
 
 		$gravityview_view->render( 'widget', 'search', false );
 	}
@@ -2355,32 +2352,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 	}
 
 	/**
-	 * Register search widget scripts, including Flexibility
-	 *
-	 * @see https://github.com/10up/flexibility
-	 *
-	 * @since 1.17
-	 *
-	 * @return void
-	 */
-	public function register_scripts() {
-		wp_register_script( 'gv-flexibility', plugins_url( 'assets/lib/flexibility/flexibility.js', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version, true );
-	}
-
-	/**
-	 * If the current visitor is running IE 8 or 9, enqueue Flexibility
-	 *
-	 * @since 1.17
-	 *
-	 * @return void
-	 */
-	private function maybe_enqueue_flexibility() {
-		if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/MSIE [8-9]/', $_SERVER['HTTP_USER_AGENT'] ) ) {
-			wp_enqueue_script( 'gv-flexibility' );
-		}
-	}
-
-	/**
 	 * Enqueue the datepicker script
 	 *
 	 * It sets the $gravityview->atts['datepicker_class'] parameter
@@ -2528,7 +2499,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Quotes values for a regex.
 	 *
-	 * @since TODO
+	 * @since 2.21.1
 	 *
 	 * @param array[] $words The words to quote.
 	 * @param string   $delimiter The delimiter.
@@ -2544,7 +2515,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Retrieves the words in with its operator for querying.
 	 *
-	 * @since TODO
+	 * @since v2.21.1
 	 *
 	 * @param string $query The search query.
 	 * @param bool   $split_words Whether to split the words.
