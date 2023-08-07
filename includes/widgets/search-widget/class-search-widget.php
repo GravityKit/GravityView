@@ -109,7 +109,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// admin - add scripts - run at 1100 to make sure GravityView_Admin_Views::add_scripts_and_styles() runs first at 999
 			add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 1100 );
-			add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts') );
 			add_filter( 'gravityview_noconflict_scripts', array( $this, 'register_no_conflict' ) );
 
 			// ajax - get the searchable fields
@@ -1537,8 +1536,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$this->enqueue_datepicker();
 		}
 
-		$this->maybe_enqueue_flexibility();
-
 		$gravityview_view->render( 'widget', 'search', false );
 	}
 
@@ -1966,32 +1963,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		return $localizations;
 
-	}
-
-	/**
-	 * Register search widget scripts, including Flexibility
-	 *
-	 * @see https://github.com/10up/flexibility
-	 *
-	 * @since 1.17
-	 *
-	 * @return void
-	 */
-	public function register_scripts() {
-		wp_register_script( 'gv-flexibility', plugins_url( 'assets/lib/flexibility/flexibility.js', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version, true );
-	}
-
-	/**
-	 * If the current visitor is running IE 8 or 9, enqueue Flexibility
-	 *
-	 * @since 1.17
-	 *
-	 * @return void
-	 */
-	private function maybe_enqueue_flexibility() {
-		if ( isset( $_SERVER['HTTP_USER_AGENT'] ) && preg_match( '/MSIE [8-9]/', $_SERVER['HTTP_USER_AGENT'] ) ) {
-			wp_enqueue_script( 'gv-flexibility' );
-		}
 	}
 
 	/**
