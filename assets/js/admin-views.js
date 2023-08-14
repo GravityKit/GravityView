@@ -2614,7 +2614,6 @@
 				.tabs( {
 					active: active_settings_tab,
 					activate: function ( event, ui ) {
-						console.log( ui.newTab.index() );
 						// When the tab is activated, set a new cookie
 						$.cookie( cookie_key, ui.newTab.index(), {
 							path: gvGlobals.admin_cookiepath
