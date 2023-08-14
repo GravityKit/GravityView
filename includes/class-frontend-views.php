@@ -1489,7 +1489,6 @@ class GravityView_frontend {
 
 			foreach ( $views as $view_id => $data ) {
 				$view        = \GV\View::by_id( $data['id'] );
-				$view_id     = $view->ID;
 				$template_id = gravityview_get_template_id( $view->ID );
 				$data        = $view->as_data();
 
@@ -1553,6 +1552,9 @@ class GravityView_frontend {
 
 				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, true );
 
+				// TODO: Add filter for script position ("after").
+				wp_add_inline_script( 'gravityview-fe-view', $view->settings->get('custom_javascript' ), 'after' );
+
 				wp_enqueue_script( 'gravityview-fe-view' );
 
 				if ( ! empty( $data['atts']['sort_columns'] ) ) {
@@ -1562,6 +1564,10 @@ class GravityView_frontend {
 				$this->enqueue_default_style( $css_dependencies );
 
 				self::add_style( $template_id );
+
+				if( $custom_css = $view->settings->get( 'custom_css', null ) ) {
+					wp_add_inline_style( 'gravityview_default_style', $custom_css );
+				}
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
