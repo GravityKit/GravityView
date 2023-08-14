@@ -1863,6 +1863,7 @@ $dialog-button-padding: 5px;
 	}
 }
 
+/** The "Embed Shortcode" section in the Publish metabox */
 .gv-shortcode {
 	.dashicons-editor-code {
 		color: #888;
@@ -1877,6 +1878,26 @@ $dialog-button-padding: 5px;
 	.rtl & .code.widefat {
 		text-align: right;
 	}
+}
+
+/** The "Direct Access" section in the Publish metabox */
+#gv-direct-access:before {
+	font: normal 20px/1 Dashicons;
+	speak: never;
+	display: inline-block;
+	margin-left: -1px;
+	padding-right: 3px;
+	vertical-align: top;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+#gv-direct-access:before {
+	content: "\f528";
+	color: $color-yellow-40;
+}
+#gv-direct-access.embed-only:before {
+	content: "\f160";
+	color: $color-green-40;
 }
 
 .button.button-link.gv-add-field {
