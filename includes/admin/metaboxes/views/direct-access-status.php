@@ -18,11 +18,12 @@ $embed_only_view_status = gravityview_get_template_setting( $post->ID, 'embed_on
  * @return string Tooltip HTML.
  */
 function gv_get_direct_access_tooltip() {
+
 	add_filter( 'gform_tooltips', function( $tooltips ) {
 
 		$tooltip = '<h6>' . esc_html__( 'Direct Access', 'gk-gravityview' ) . '</h6>';
-		$tooltip .= wpautop( esc_html__( 'Public: If Visibility is set to Public, anyone with the link can access the View, including search engines and logged-out users.', 'gk-gravityview' ) );
-		$tooltip .= wpautop( esc_html__( 'Embed-Only: The View can only be seen when embedded in other content; it cannot be accessed directly.', 'gk-gravityview' ) );
+		$tooltip .= wpautop( esc_html__( 'Publicly Accessible: If Visibility is set to Publicly Accessible, anyone with the link can access the View, including search engines and logged-out users.', 'gk-gravityview' ) );
+		$tooltip .= wpautop( esc_html__( 'Embedded-Only: The View can only be seen when embedded in other content (such as a Page); it cannot be accessed directly.', 'gk-gravityview' ) );
 
 		$tooltips['direct_access_metabox'] = $tooltip;
 
