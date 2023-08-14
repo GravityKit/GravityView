@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = 2.18.4 [unreleased] =
 
 * Added: A "Direct Access" summary in the Publish box in the View editor that makes it easy to see and modify whether a View is accessible directly
+* Improved: Views will now remember the Settings tab you are on after you save a View
 * Updated: The video on the Getting Started page
 * Fixed: Resolved a fatal error that occurred under certain circumstances due to passing the wrong parameter type to a WordPress function
 

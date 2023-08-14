@@ -2593,6 +2593,16 @@
 		 */
 		initTabs: function() {
 
+			// Save the state on a per-post basis
+			let cookie_key = 'gv-active-setting-tab-' + $( '#post_ID' ).val();
+
+			// The default tab is the first (0)
+			let active_settings_tab = $.cookie( cookie_key );
+
+			if ( false === viewConfiguration.getCookieVal( active_settings_tab ) ) {
+				active_settings_tab = 0;
+			}
+
 			viewGeneralSettings.metaboxObj
 				// What happens after tabs are generated
 				.on( 'tabscreate', viewGeneralSettings.tabsCreate )
@@ -2600,8 +2610,17 @@
 				// Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
 				.insertAfter( $('#gravityview_view_config') )
 
-				// Make vertical tabs
-				.tabs()
+				// Make tabs
+				.tabs( {
+					active: active_settings_tab,
+					activate: function ( event, ui ) {
+						console.log( ui.newTab.index() );
+						// When the tab is activated, set a new cookie
+						$.cookie( cookie_key, ui.newTab.index(), {
+							path: gvGlobals.admin_cookiepath
+						} );
+					}
+				} )
 				.addClass( "ui-tabs-vertical ui-helper-clearfix" )
 				.find('li')
 				.removeClass( "ui-corner-top" );
