@@ -556,6 +556,11 @@ $gv-overlay-index: 10000;
 
 .post-type-gravityview .CodeMirror {
 	height: 15.75em; // 10 visible rows
+	max-width: 690px!important;
+}
+
+.gform-admin .gform-dropdown--merge-tags .gform-dropdown__container {
+	z-index: $gv-overlay-index + 2;
 }
 
 /** View configuration tabs */
