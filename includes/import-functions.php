@@ -59,6 +59,7 @@ function gravityview_import_helper_fix_line_breaks( $postmeta = array(), $post_i
 	$keys_to_fix = array(
 		'_gravityview_directory_fields',
 		'_gravityview_directory_widgets',
+		'_gravityview_template_settings',
 	);
 
 	$performed_fix = false;
@@ -111,6 +112,7 @@ function gravityview_import_helper_restore_line_breaks( $post_id, $key, $value )
 	$keys_to_fix = array(
 		'_gravityview_directory_fields',
 		'_gravityview_directory_widgets',
+		'_gravityview_template_settings',
 	);
 
 	if ( ! in_array( $key, $keys_to_fix, true ) ) {
