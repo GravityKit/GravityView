@@ -47,7 +47,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Dropbox extends GravityView_Plugin_
 
 		$image_source = rgar( $image_atts, 'src', '' );
 
-		if ( false === strpos( $image_source, '?raw=1' ) ) {
+		if ( false === strpos( $image_source, 'raw=1' ) ) {
 			return $image_atts;
 		}
 
@@ -67,8 +67,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Dropbox extends GravityView_Plugin_
 	 * @return string File path or extension, with Dropbox URLs modified.
 	 */
 	function filter_file_extension( $string = '' ) {
-
-		$extension = str_replace( '?dl=0', '', $string );
+		$extension = explode('?',$string)[0];
 
 		if ( in_array( $extension, GravityView_Image::get_image_extensions(), true ) ) {
 			return $extension;
@@ -87,7 +86,11 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Dropbox extends GravityView_Plugin_
 	 * @return string File path or extension, with Dropbox URLs modified
 	 */
 	function filter_file_path( $string = '' ) {
-		return str_replace( '?dl=0', '?raw=1', $string );
+		if ( false !== strpos( $string, 'dropbox.com' ) ) {
+			$string = add_query_arg( 'raw', '1', $string );
+		}
+		
+		return $string;
 	}
 }
 
