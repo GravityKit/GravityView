@@ -25,6 +25,14 @@
 	}
 }
 
+.gk-large-icon {
+	font-size: 24px;
+	height: 24px;
+	width: 24px;
+	vertical-align: top;
+	overflow: hidden;
+}
+
 $dismiss-red: #C62D2D;
 
 /**
@@ -568,8 +576,12 @@ $gv-overlay-index: 10000;
 	position: relative;
 	float: right;
 	top: 1em;
+	margin-left: .5em;
+	margin-right: 0;
 
 	html[dir=rtl] & {
+		margin-right: .5em;
+		margin-left: 0;
 		float: left;
 	}
 	background-color: transparent;
@@ -587,6 +599,11 @@ $gv-overlay-index: 10000;
 	}
 	&:active {
 		color: $color-222;
+	}
+
+	@media (max-width: 850px) {
+		display: block;
+		top: auto;
 	}
 }
 
@@ -681,12 +698,7 @@ $gv-overlay-index: 10000;
 		  [class^='gv-icon-'],
 		  [class^='gv-icon-']:before {
 				color: $color-aaa;
-
-				font-size: 24px;
-				height: 24px;
-				width: 24px;
-				vertical-align: top;
-				overflow: hidden;
+			    @extend .gk-large-icon;
 			}
 
 			&.tab-not-configured .dashicons {
