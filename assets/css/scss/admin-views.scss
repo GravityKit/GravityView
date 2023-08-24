@@ -243,7 +243,7 @@ $gv-overlay-index: 10000;
 			padding: .5em;
 			margin-bottom: 0;
 
-			.rtl & {
+			html[dir=rtl] & {
 				right: 0;
 				left: auto;
 			}
@@ -490,7 +490,7 @@ $gv-overlay-index: 10000;
 	padding: 6px .5em 6px 1em; // Align the text to the gv-field edge and the button to the container edge
 	cursor: pointer;
 
-	.rtl & {
+	html[dir=rtl] & {
 		padding: 6px 1em 6px .5em;
 	}
 
@@ -563,6 +563,35 @@ $gv-overlay-index: 10000;
 	z-index: $gv-overlay-index + 2;
 }
 
+#gk-settings-link {
+	color: $color-aaa;
+	position: relative;
+	float: right;
+	top: 1em;
+
+	html[dir=rtl] & {
+		float: left;
+	}
+	background-color: transparent;
+	text-decoration: none;
+	border: none;
+
+	.dashicons {
+		@extend .gk-large-icon;
+	}
+	&:visited {
+		color: $color-aaa;
+	}
+	&:hover {
+		color: $color-444;
+	}
+	&:active {
+		color: $color-222;
+	}
+}
+
+
+
 /** View configuration tabs */
 .post-type-gravityview .ui-tabs {
 	position: relative;
@@ -574,7 +603,7 @@ $gv-overlay-index: 10000;
 	#gv-view-configuration-tabs-tooltip {
 		position: absolute;
 		right: 0;
-		.rtl & {
+		html[dir=rtl] & {
 			right: auto;
 			left: 0;
 		}
@@ -601,7 +630,7 @@ $gv-overlay-index: 10000;
 			top: 2px;
 			margin: 0 .5em 1px 0;
 
-			.rtl & {
+			[dir=rtl] & {
 				float: right;
 				margin: 0 0 1px .5em;
 			}
@@ -623,7 +652,7 @@ $gv-overlay-index: 10000;
 				padding: .666em 1.333em;
 				margin: 0 5px 0 0;
 
-				.rtl & {
+				html[dir=rtl] & {
 					float: right;
 					margin: 0 0 0 5px;
 				}
@@ -731,7 +760,7 @@ $gv-overlay-index: 10000;
 			.configuration-status-icons {
 				display: inline-block;
 				padding-left: .666em;
-				.rtl & {
+				html[dir=rtl] & {
 					padding-right: .666em;
 				}
 				.gform-icon,
@@ -745,7 +774,7 @@ $gv-overlay-index: 10000;
 
 					padding-right: 0;
 
-					.rtl & {
+					html[dir=rtl] & {
 						padding-left: 0;
 					}
 
@@ -855,7 +884,7 @@ hr {
 		text-align: left;
 
 		margin: 0 12px 6px 0;
-		.rtl & {
+		html[dir=rtl] & {
 			margin: 0 0 6px 12px;
 			text-align: right;
 		}
@@ -988,7 +1017,7 @@ hr {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
 
-			.rtl & {
+			html[dir=rtl] & {
 				margin: -2px 0 0 6px;
 			}
 		}
@@ -1004,7 +1033,7 @@ hr {
 		.gv-indicator-icon {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
-			.rtl & {
+			html[dir=rtl] & {
 				margin: -2px 0 0 6px;
 			}
 		}
@@ -1027,7 +1056,7 @@ hr {
 		text-align: left;
 		position: relative;
 
-		.rtl & {
+		html[dir=rtl] & {
 			float: right;
 			text-align: right;
 		}
@@ -1091,7 +1120,7 @@ hr {
 
 		transition: all 200ms;
 
-		.rtl & {
+		html[dir=rtl] & {
 			margin: 0 0 0 8px;
 			border-right: 1px solid transparent;
 			border-left: 1px solid $color-ddd;
@@ -1130,7 +1159,7 @@ hr {
 			margin: 0;
 			background-color: transparent;
 
-			.rtl & {
+			html[dir=rtl] & {
 				left: -3px;
 				right: auto;
 			}
@@ -1142,7 +1171,7 @@ hr {
 				border-right-color: transparent;
 				border-left: 1px solid $color-ddd;
 
-				.rtl & {
+				html[dir=rtl] & {
 					border-left: none;
 					border-right: 1px solid $color-ddd;
 				}
@@ -1192,7 +1221,7 @@ hr {
 		display: none;
 		text-align: left;
 
-		.rtl & {
+		html[dir=rtl] & {
 			text-align: right;
 		}
 
@@ -1293,7 +1322,7 @@ $dialog-button-padding: 5px;
 		font-weight: 300;
 		font-size: 1.5rem;
 
-		.rtl & {
+		html[dir=rtl] & {
 			text-align: right;
 		}
 	}
@@ -1345,7 +1374,7 @@ $dialog-button-padding: 5px;
 			align-self: flex-start;
 			flex-shrink: 1;
 
-			.rtl & {
+			html[dir=rtl] & {
 				padding-left: 2%;
 				padding-right: 0;
 			}
@@ -1364,7 +1393,7 @@ $dialog-button-padding: 5px;
 			}
 
 			padding-right: .33rem;
-			.rtl & {
+			html[dir=rtl] & {
 				padding-left: .33rem;
 			}
 		}
@@ -1393,7 +1422,7 @@ $dialog-button-padding: 5px;
 		border-radius: 3px;
 		text-indent: -99999px;
 
-		.rtl & {
+		html[dir=rtl] & {
 			right: auto;
 			left: $dialog-button-padding;
 		}
@@ -1438,7 +1467,7 @@ $dialog-button-padding: 5px;
 		margin-left: -$dialog-padding;
 		margin-right: -$dialog-padding;
 
-		.rtl & {
+		html[dir=rtl] & {
 			padding-left: 15px;
 			padding-right: $gutter-width;
 		}
@@ -1469,7 +1498,7 @@ $dialog-button-padding: 5px;
 			color: $color-222;
 			font-weight: 200;
 
-			.rtl & {
+			html[dir=rtl] & {
 				right: $dialog-padding;
 				left: auto;
 			}
@@ -1505,7 +1534,7 @@ $dialog-button-padding: 5px;
 	padding: 10px 0 !important;
 	text-align: left;
 
-	.rtl & {
+	html[dir=rtl] & {
 		text-align: right;
 	}
 
@@ -1531,7 +1560,7 @@ $dialog-button-padding: 5px;
 		text-align: right;
 		color: $color-ddd;
 
-		.rtl & {
+		html[dir=rtl] & {
 			text-align: left;
 			float: left;
 		}
@@ -1664,7 +1693,7 @@ $dialog-button-padding: 5px;
 		td, th {
 			text-align: left;
 
-			.rtl & {
+			html[dir=rtl] & {
 				text-align: right;
 			}
 
@@ -1870,12 +1899,12 @@ $dialog-button-padding: 5px;
 		left: -1px;
 		font-size: 20px;
 		line-height: 1;
-		.rtl & {
+		html[dir=rtl] & {
 			left: auto;
 			right: -1px;
 		}
 	}
-	.rtl & .code.widefat {
+	html[dir=rtl] & .code.widefat {
 		text-align: right;
 	}
 }
