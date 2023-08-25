@@ -67,7 +67,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Dropbox extends GravityView_Plugin_
 	 * @return string File path or extension, with Dropbox URLs modified.
 	 */
 	function filter_file_extension( $string = '' ) {
-		$extension = explode('?',$string)[0];
+		$extension = explode( '?', $string )[0];
 
 		if ( in_array( $extension, GravityView_Image::get_image_extensions(), true ) ) {
 			return $extension;
@@ -89,9 +89,9 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Dropbox extends GravityView_Plugin_
 		if ( false !== strpos( $string, 'dropbox.com' ) ) {
 			$string = add_query_arg( 'raw', '1', $string );
 		}
-		
+
 		return $string;
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Dropbox;
+new GravityView_Plugin_Hooks_Gravity_Forms_Dropbox();
