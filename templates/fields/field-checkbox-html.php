@@ -29,7 +29,7 @@ if ( ! $is_single_input ) {
 	$display_type = \GV\Utils::get( $field_settings, 'choice_display' );
 
 	$field_value = gravityview_get_field_value( $entry, $field_id, $display_value );
-	// 
+
 	switch ( $display_type ) {
 		case 'value':
 			$output = $field_value;

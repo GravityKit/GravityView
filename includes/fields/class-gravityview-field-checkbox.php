@@ -47,9 +47,9 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
 		// It's the parent field, not an input
-		// if( floor( $field_id ) === floatval( $field_id ) ) {
-		// 	return $field_options;
-		// }
+		if( floor( $field_id ) === floatval( $field_id ) ) {
+			return $field_options;
+		}
 
 		if( $this->is_choice_value_enabled() ) {
 
