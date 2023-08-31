@@ -22,8 +22,13 @@ $is_single_input = floor( $field_id ) !== floatval( $field_id );
 
 $output = '';
 
+// It's the parent field, not an input
 if ( ! $is_single_input ) {
-	$output = gravityview_get_field_value( $entry, $field_id, $display_value );
+	if($field_settings['choice_display'] === 'label'){
+		$output = $field->get_value_entry_detail($value,'',true);
+	}else{
+		$output = gravityview_get_field_value( $entry, $field_id, $display_value );
+	}
 } else {
 
 	$display_type = \GV\Utils::get( $field_settings, 'choice_display' );

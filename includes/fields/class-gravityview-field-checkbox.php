@@ -46,11 +46,6 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 		// Set the $_field_id var
 		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		// It's the parent field, not an input
-		if( floor( $field_id ) === floatval( $field_id ) ) {
-			return $field_options;
-		}
-
 		if( $this->is_choice_value_enabled() ) {
 
 			$desc = esc_html__( 'This input has a label and a value. What should be displayed?', 'gk-gravityview' );
@@ -67,6 +62,11 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 				'tick' => __( 'A check mark, if the input is checked', 'gk-gravityview' ),
 				'label' => __( 'Label of the input', 'gk-gravityview' ),
 			);
+		}
+
+		// It's the parent field, not an input.
+		if( floor( $field_id ) === floatval( $field_id ) ) {
+			unset($choices['tick']);
 		}
 
 		$field_options['choice_display'] = array(
