@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "0e13c9ead3c556ca56a832276ece77332701a7f0"
+                "reference": "fa8ba788e60611e935831281b6656b763c1e2166"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/0e13c9ead3c556ca56a832276ece77332701a7f0",
-                "reference": "0e13c9ead3c556ca56a832276ece77332701a7f0",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/fa8ba788e60611e935831281b6656b763c1e2166",
+                "reference": "fa8ba788e60611e935831281b6656b763c1e2166",
                 "shasum": ""
             },
             "require": {
@@ -258,6 +258,7 @@
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+                "dingo-d/wp-pest": "^1.6",
                 "phpcompatibility/phpcompatibility-wp": "*",
                 "wp-coding-standards/wpcs": "^2.3"
             },
@@ -321,10 +322,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.1.1",
+                "source": "https://github.com/GravityKit/Foundation/tree/main",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2023-07-11T18:59:47+00:00"
+            "time": "2023-09-01T00:59:59+00:00"
         },
         {
             "name": "illuminate/container",
