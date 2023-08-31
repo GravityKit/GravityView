@@ -10,12 +10,12 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
-$form = $gravityview->view->form->form;
-$display_value = $gravityview->display_value;
-$entry = $gravityview->entry->as_entry();
+$field_id       = $gravityview->field->ID;
+$field          = $gravityview->field->field;
+$value          = $gravityview->value;
+$form           = $gravityview->view->form->form;
+$display_value  = $gravityview->display_value;
+$entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
 $is_single_input = floor( $field_id ) !== floatval( $field_id );
@@ -24,9 +24,9 @@ $output = '';
 
 // It's the parent field, not an input
 if ( ! $is_single_input ) {
-	if($field_settings['choice_display'] === 'label'){
-		$output = $field->get_value_entry_detail($value,'',true);
-	}else{
+	if ( $field_settings['choice_display'] === 'label' ) {
+		$output = $field->get_value_entry_detail( $value, '', true );
+	} else {
 		$output = gravityview_get_field_value( $entry, $field_id, $display_value );
 	}
 } else {
@@ -60,7 +60,6 @@ if ( ! $is_single_input ) {
 			}
 			break;
 	}
-
 }
 
 echo $output;
