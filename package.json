@@ -18,7 +18,8 @@
     "grunt-wp-readme-to-markdown": "^2.1.0",
     "load-grunt-tasks": "^3.5.2",
     "node-sass": "^6.0.1",
-    "postcss": "^8.4.5"
+    "postcss": "^8.4.5",
+    "shelljs": "^0.8.5"
   },
   "repository": {
     "type": "git",
