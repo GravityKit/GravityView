@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.18.5 on September 1, 2023 =
+
+* Fixed: Fatal error caused by GravityView version 2.18.4
+
 = 2.18.4 on August 31, 2023 =
 
 * Added: A "Direct Access" summary in the Publish box in the View editor that makes it easy to see and modify whether a View is accessible directly
