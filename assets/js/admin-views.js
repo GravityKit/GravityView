@@ -98,6 +98,8 @@
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
 			vcfg.currentTemplateId = $("#gravityview_directory_template").val();
 
+			vcfg.directAccessSelect = $( '#gv-direct-access-select' );
+
 			// Start by showing/hiding on load
 			vcfg.toggleInitialVisibility( vcfg );
 
@@ -144,6 +146,15 @@
 
 				// When user clicks into the shortcode example field, select the example.
 				.on( 'click', ".gv-shortcode input", vcfg.selectText )
+
+				// Show the direct access options and hide the toggle button when opened.
+				.on( 'click', "#gv-direct-access .edit-direct-access", vcfg.editDirectAccess )
+
+				// Cancel direct access selection area and hide it from view.
+				.on( 'click', "#gv-direct-access-select .cancel-direct-access", vcfg.cancelDirectAccess )
+
+				// Set the selected direct access setting as current.
+				.on( 'click', "#gv-direct-access-select .save-direct-access", vcfg.updateDirectAccess )
 
 				// When changing forms, update the form info helper links
 				.on( 'gravityview_form_change', vcfg.updateFormLinks )
@@ -603,6 +614,77 @@
 			return false;
 		},
 
+		/**
+		 * @param  {jQueryEvent} e jQuery event object.
+		 * @since TODO
+		 * @return {void}
+		 */
+		editDirectAccess: function ( e ) {
+			var vcfg = viewConfiguration;
+
+			e.preventDefault();
+
+			if ( vcfg.directAccessSelect.is( ':visible' ) ) {
+				return;
+			}
+
+			vcfg.directAccessSelect.slideDown( 'fast', function () {
+				vcfg.directAccessSelect.find( 'input[type="radio"]' ).first().trigger( 'focus' );
+			} );
+
+			$( this ).hide();
+		},
+
+		/**
+		 * Cancel direct access selection area and hide it from view.
+		 *
+		 * @param  {jQueryEvent} e jQuery event object.
+		 * @since TODO
+		 * @return {void}
+		 */
+		cancelDirectAccess: function ( e ) {
+			viewConfiguration.directAccessSelect.slideUp( 'fast' );
+
+			$( '#gv-direct-access-display strong' ).text( function () {
+				return $( this ).data( 'initial-label' );
+			} );
+
+			$( '#gv-direct-access .edit-direct-access' ).show().trigger( 'focus' );
+
+			e.preventDefault();
+		},
+
+		/**
+		 * Set the selected direct access setting as current.
+		 * @since TODO
+		 * @param {jQueryEvent} e jQuery event object.
+		 */
+		updateDirectAccess: function ( e ) {
+			let checked = false,
+				selectedDirectAccess = viewConfiguration.directAccessSelect.find( 'input:radio:checked' );
+
+			viewConfiguration.directAccessSelect.slideUp('fast');
+
+			$('#gv-direct-access .edit-direct-access').show().trigger( 'focus' );
+
+			checked = 'embed' === selectedDirectAccess.val();
+
+			// Update the _actual_ setting in the Permissions tab.
+			$( '#gravityview_se_embed_only' ).prop( 'checked', checked );
+
+			// Update the display label.
+			$('#gv-direct-access-display strong').text( selectedDirectAccess.data( 'display-label' ) );
+
+			// Update the class on the container to reflect the current setting.
+			$('#gv-direct-access').toggleClass('embed-only', checked );
+
+			e.preventDefault();
+		},
+
+		/**
+		 * @param  {jQueryEvent} e jQuery event object.
+		 * @param {viewConfiguration} vcfg
+		 */
 		toggleInitialVisibility: function ( vcfg ) {
 
 			// There are no Gravity Forms forms
@@ -2511,6 +2593,16 @@
 		 */
 		initTabs: function() {
 
+			// Save the state on a per-post basis
+			let cookie_key = 'gv-active-setting-tab-' + $( '#post_ID' ).val();
+
+			// The default tab is the first (0)
+			let active_settings_tab = $.cookie( cookie_key );
+
+			if ( false === viewConfiguration.getCookieVal( active_settings_tab ) ) {
+				active_settings_tab = 0;
+			}
+
 			viewGeneralSettings.metaboxObj
 				// What happens after tabs are generated
 				.on( 'tabscreate', viewGeneralSettings.tabsCreate )
@@ -2518,8 +2610,16 @@
 				// Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
 				.insertAfter( $('#gravityview_view_config') )
 
-				// Make vertical tabs
-				.tabs()
+				// Make tabs
+				.tabs( {
+					active: active_settings_tab,
+					activate: function ( event, ui ) {
+						// When the tab is activated, set a new cookie
+						$.cookie( cookie_key, ui.newTab.index(), {
+							path: gvGlobals.admin_cookiepath
+						} );
+					}
+				} )
 				.addClass( "ui-tabs-vertical ui-helper-clearfix" )
 				.find('li')
 				.removeClass( "ui-corner-top" );

@@ -556,6 +556,11 @@ $gv-overlay-index: 10000;
 
 .post-type-gravityview .CodeMirror {
 	height: 15.75em; // 10 visible rows
+	max-width: 690px!important;
+}
+
+.gform-admin .gform-dropdown--merge-tags .gform-dropdown__container {
+	z-index: $gv-overlay-index + 2;
 }
 
 /** View configuration tabs */
@@ -1858,6 +1863,7 @@ $dialog-button-padding: 5px;
 	}
 }
 
+/** The "Embed Shortcode" section in the Publish metabox */
 .gv-shortcode {
 	.dashicons-editor-code {
 		color: #888;
@@ -1872,6 +1878,26 @@ $dialog-button-padding: 5px;
 	.rtl & .code.widefat {
 		text-align: right;
 	}
+}
+
+/** The "Direct Access" section in the Publish metabox */
+#gv-direct-access:before {
+	font: normal 20px/1 Dashicons;
+	speak: never;
+	display: inline-block;
+	margin-left: -1px;
+	padding-right: 3px;
+	vertical-align: top;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+#gv-direct-access:before {
+	content: "\f528";
+	color: $color-yellow-40;
+}
+#gv-direct-access.embed-only:before {
+	content: "\f160";
+	color: $color-green-40;
 }
 
 .button.button-link.gv-add-field {
@@ -1912,6 +1938,7 @@ $dialog-button-padding: 5px;
 	.dashicons-editor-code,
 	.dashicons-lock,
 	.dashicons-warning,
+	.dashicons-search,
 	.dashicons-media-default {
 		display: inline-block;
 	}

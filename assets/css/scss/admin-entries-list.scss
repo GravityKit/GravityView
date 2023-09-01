@@ -27,6 +27,14 @@
 	// Floaty's got a kinda big head. Change 8px top/bottom to better balanced
 	thead th.gv-approve-column {
 
+		a {
+			height: 40px;
+			display: table-cell;
+			vertical-align: middle;
+			text-align: center;
+			width: 40px;
+		}
+
 		// Add Floaty's head
 		*:before {
 			padding: 0;

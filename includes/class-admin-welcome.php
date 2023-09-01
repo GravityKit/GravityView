@@ -179,7 +179,11 @@ class GravityView_Welcome {
 			<h2 class="about-headline-callout">Configuring a View</h2>
 
 			<div class="feature-video"  style="text-align:center;">
-				<iframe height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+				<iframe width='560' height='315'
+						src='https://www.youtube-nocookie.com/embed/videoseries?list=PLuSpaefk_eAP_OXQVWQVtX0fQ17J8cn09'
+						frameborder='0'
+						allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+						allowfullscreen></iframe>
 
 				<p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravitykit.com/article/380-how-to-setup-your-first-view" rel="noopener noreferrer external" target="_blank">Read more: Setting Up Your First View<span class='screen-reader-text'> <?php esc_attr_e( 'This link opens in a new window.', 'gk-gravityview' ); ?></span></a></p>
 			</div>
@@ -271,6 +275,16 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
+
+				<h3>2.18.4 on August 31, 2023</h3>
+
+				<ul>
+					<li>Added: A "Direct Access" summary in the Publish box in the View editor that makes it easy to see and modify whether a View is accessible directly</li>
+					<li>Improved: Views will now remember the Settings tab you are on after you save a View</li>
+					<li>Fixed: Resolved a fatal error that occurred under certain circumstances due to passing the wrong parameter type to a WordPress function</li>
+					<li>Updated: The video on the Getting Started page</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2</li>
+				</ul>
 
 				<h3>2.18.3 on July 20, 2023</h3>
 

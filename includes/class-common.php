@@ -676,7 +676,7 @@ class GVCommon {
 	 * @param mixed     $passed_criteria (default: null)
 	 * @param mixed     &$total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate the total count. (default: null)
 	 *
-	 * @deprecated See \GV\View::get_entries.
+	 * @deprecated {@see \GV\View::get_entries}
 	 *
 	 * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
 	 */
