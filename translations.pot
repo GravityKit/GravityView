@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.18.4\n"
+"Project-Id-Version: GravityView 2.18.5\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-01T01:24:09+00:00\n"
+"POT-Creation-Date: 2023-09-01T14:28:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -234,7 +234,7 @@ msgid "Please <a href=\"%s\">read this article</a> for more information."
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:235
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:514
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:522
 msgid "General"
 msgstr ""
 
@@ -1800,23 +1800,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:864
+#: includes/class-admin-welcome.php:870
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:914
+#: includes/class-admin-welcome.php:920
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:952
+#: includes/class-admin-welcome.php:958
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:984
+#: includes/class-admin-welcome.php:990
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:985
+#: includes/class-admin-welcome.php:991
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -4443,108 +4443,108 @@ msgstr ""
 msgid "%s (%d out of %d stars)"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:369
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:377
 msgid "You are using a version of GravityView that does not yet support the new GravityKit settings framework."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:372
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:380
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "As such, the settings below will not apply to GravityView pages and you will have to continue using the [link]old settings[/link] until an updated version of the plugin is available. We apologize for the inconvenience as we work to update our products in a timely fashion."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:414
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:422
 msgid "Group GravityKit Products"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:415
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:423
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:294
 msgid "Aggregate all GravityKit products into a single entry on the Plugins page for a cleaner view and easier management."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:422
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:430
 msgid "GravityKit Menu Item Action"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:423
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:431
 msgid "Open the selected page when clicking the GravityKit menu item."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:429
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:437
 msgid "Display \"Powered By\" Link"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:430
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:438
 msgid "A \"Powered by GravityKit\" link will be displayed below some GravityKit products. Help us spread the word!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:436
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:444
 msgid "Affiliate ID"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:438
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:446
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Earn money when people clicking your links become GravityKit customers. [link]Register as an affiliate[/link]!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:454
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:462
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:455
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:463
 msgid "You will have early access to the latest GravityKit products. There may be bugs! If you encounter an issue, report it to help make GravityKit products better!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:466
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:474
 msgid "Support Email"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:467
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:475
 msgid "In order to provide responses to your support requests, please provide your email address."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:471
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:479
 msgid "Support email is required"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:475
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:483
 msgid "Please provide a valid email address"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:483
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:491
 msgid "Show Support Port"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:484
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:492
 msgid "The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:486
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:494
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[image]Support Port icon[/image]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:501
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:509
 msgid "Enable No-Conflict Mode"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:502
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:510
 msgid "No-conflict mode prevents extraneous scripts and styles from being printed on GravityKit admin pages, reducing conflicts with other plugins and themes."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:518
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:526
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:284
 msgid "Support"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:522
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:530
 msgid "Technical"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:717
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:725
 msgid "Unknown Plugin"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:719
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:727
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "GravityKit Foundation [version] (loaded by [plugin])."
 msgstr ""
