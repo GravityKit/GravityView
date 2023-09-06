@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox
+
 = 2.18.5 on September 1, 2023 =
 
 * Fixed: Fatal error caused by GravityView version 2.18.4
