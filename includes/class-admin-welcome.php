@@ -276,10 +276,20 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
-				<h3>2.18.4 [unreleased]</h3>
+				<h3>2.18.5 on September 1, 2023</h3>
 
 				<ul>
+					<li>Fixed: Fatal error caused by GravityView version 2.18.4</li>
+				</ul>
+
+				<h3>2.18.4 on August 31, 2023</h3>
+
+				<ul>
+					<li>Added: A "Direct Access" summary in the Publish box in the View editor that makes it easy to see and modify whether a View is accessible directly</li>
+					<li>Improved: Views will now remember the Settings tab you are on after you save a View</li>
 					<li>Fixed: Resolved a fatal error that occurred under certain circumstances due to passing the wrong parameter type to a WordPress function</li>
+					<li>Updated: The video on the Getting Started page</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2</li>
 				</ul>
 
 				<h3>2.18.3 on July 20, 2023</h3>

@@ -21,13 +21,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.18.4 on August 24, 2023 =
+= develop =
 
-* Added: A "Direct Access" summary in the Publish box in the View editor, making it easy to see and modify whether a View is directly accessible
 * Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox
-* Improved: After saving, Views now remember the last active tab in the Settings metabox
+
+= 2.18.5 on September 1, 2023 =
+
+* Fixed: Fatal error caused by GravityView version 2.18.4
+
+= 2.18.4 on August 31, 2023 =
+
+* Added: A "Direct Access" summary in the Publish box in the View editor that makes it easy to see and modify whether a View is accessible directly
+* Improved: Views will now remember the Settings tab you are on after you save a View
+* Fixed: Resolved a fatal error that occurred under certain circumstances due to passing the wrong parameter type to a WordPress function
 * Updated: The video on the Getting Started page
-* Fixed: Addressed a fatal error caused by providing an incorrect parameter type to a WordPress function
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2
 
 = 2.18.3 on July 20, 2023 =
 
