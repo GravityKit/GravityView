@@ -106,6 +106,9 @@ final class Core {
 		/** Request. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-request.php' );
 
+		/** Onboarding / Guided Tour */
+		require_once $this->plugin->dir( 'future/includes/class-gv-onboarding.php' );
+
 		if ( Request::is_admin() ) {
 			$this->request = new Admin_Request();
 		} else {
