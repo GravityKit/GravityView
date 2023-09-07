@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -20,6 +20,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.18.6 on September 7, 2023 =
+
+* Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox
+* Improved: Support for RTL languages
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.2
 
 = 2.18.5 on September 1, 2023 =
 
