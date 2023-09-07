@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "f808e6ec4174fb2622a0105ed76875999190b26a"
+                "reference": "77b662681223db0da43c5d4545de0e8f6d0ba17b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/f808e6ec4174fb2622a0105ed76875999190b26a",
-                "reference": "f808e6ec4174fb2622a0105ed76875999190b26a",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/77b662681223db0da43c5d4545de0e8f6d0ba17b",
+                "reference": "77b662681223db0da43c5d4545de0e8f6d0ba17b",
                 "shasum": ""
             },
             "require": {
@@ -322,10 +322,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.1",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.2",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2023-09-01T14:08:45+00:00"
+            "time": "2023-09-07T21:24:52+00:00"
         },
         {
             "name": "illuminate/container",
@@ -1112,12 +1112,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "6062085585489c018bc6e9b6daefd654582b97a0"
+                "reference": "3aecfa088ee2f864b516c1abef7229264a9e472a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/6062085585489c018bc6e9b6daefd654582b97a0",
-                "reference": "6062085585489c018bc6e9b6daefd654582b97a0",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/3aecfa088ee2f864b516c1abef7229264a9e472a",
+                "reference": "3aecfa088ee2f864b516c1abef7229264a9e472a",
                 "shasum": ""
             },
             "require-dev": {
@@ -1158,7 +1158,7 @@
                 "issues": "https://github.com/trustedlogin/client/issues",
                 "source": "https://github.com/trustedlogin/client/tree/main"
             },
-            "time": "2023-04-26T15:13:15+00:00"
+            "time": "2023-09-07T19:06:21+00:00"
         }
     ],
     "packages-dev": [
