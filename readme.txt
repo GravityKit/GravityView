@@ -21,6 +21,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+* Fixed: The Recent Entries widget results would be affected when browsing a View: the search query, page number, and sorting would affect the displayed entries
+
 = 2.18.6 on September 7, 2023 =
 
 * Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox

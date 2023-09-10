@@ -190,7 +190,13 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		$view->settings->set( 'page_size', $limit );
 
+		// Don't let the pagination override the View's settings.
+		$_get_placeholder = $_GET;
+		$_GET = [];
+
 		$entries = $view->get_entries();
+
+		$_GET = $_get_placeholder;
 
 		return $entries->all();
 	}
