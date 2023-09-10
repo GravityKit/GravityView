@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.19 [in development] =
+
+* Added: Embed a Gravity Forms form using a field in the View editor
+
 = 2.18.7 on September 21, 2023 =
 
 * Added: Support for embedding Views inside [WooCommerce Account Pages](https://iconicwp.com/products/woocommerce-account-pages/)

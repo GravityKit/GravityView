@@ -1976,11 +1976,15 @@ $dialog-button-padding: 5px;
 	.dashicons-admin-comments,
 	.dashicons-yes-alt,
 	.dashicons-editor-code,
+	&[data-original-title="Gravity Forms"] .background-icon,
 	.dashicons-lock,
 	.dashicons-warning,
 	.dashicons-search,
 	.dashicons-media-default {
 		display: inline-block;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center center;
 	}
 }
 
