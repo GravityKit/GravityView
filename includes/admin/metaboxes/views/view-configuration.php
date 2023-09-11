@@ -5,6 +5,8 @@
 
 <div id="gv-view-configuration-tabs">
 
+	<a href="#gravityview_settings" class="alignright" id="gk-settings-link" title="<?php esc_html_e( 'Scroll to View Settings', 'gk-gravityview' ); ?>"><i class='dashicons dashicons-admin-generic'></i><span class="screen-reader-text"><?php esc_html_e( 'Settings', 'gk-gravityview' ); ?></span></a>
+
 	<ul class="nav-tab-wrapper">
 		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page tab-icon"></i> <?php echo sprintf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Multiple Entries', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
 		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default tab-icon"></i> <?php echo sprintf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Single Entry', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
