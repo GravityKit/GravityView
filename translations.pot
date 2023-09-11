@@ -6700,3 +6700,7 @@ msgstr ""
 msgctxt "block keyword"
 msgid "view"
 msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+msgid "Testing TranslationsPress."
+msgstr ""
