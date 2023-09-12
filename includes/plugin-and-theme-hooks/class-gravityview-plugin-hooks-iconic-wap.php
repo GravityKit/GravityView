@@ -54,9 +54,60 @@ class GravityView_Plugin_Hooks_Iconic_WAP extends GravityView_Plugin_and_Theme_H
 		// Open up the allowed tags to default Post items.
 		$allowed_tags = array_merge( wp_kses_allowed_html( 'post' ), $allowed_tags );
 
+		$attributes = [
+			'multiple' => true,
+			'value' => true,
+			'selected' => true,
+			'id' => true,
+			'name' => true,
+			'aria-invalid' => true,
+			'aria-required' => true,
+			'class' => true,
+			'for' => true,
+			'data-js-reload' => true,
+			'onclick' => true,
+			'type' => true,
+			'src' => true,
+			'style' => true,
+			'placeholder' => true,
+			'title' => true,
+		];
+
+		$allowed_tags['div'][] = [
+			'data-js-reload' => true,
+		];
+
 		// And GravityView needs a few more.
-		$allowed_tags['style']  = [];
-		$allowed_tags['script'] = [];
+		$allowed_tags['style']  = [
+			'nonce' => true,
+			'title' => true,
+			'media' => true,
+			'blocking' => true,
+			'type' => true,
+		];
+		$allowed_tags['script'] = [
+			'src' => true,
+			'async' => true,
+			'charset' => true,
+			'crossorigin' => true,
+			'defer' => true,
+			'fetchpriority' => true,
+			'integrity' => true,
+			'nomodule' => true,
+			'nonce' => true,
+			'referrerpolicy' => true,
+			'language' => true,
+			'type' => true,
+		];
+		$allowed_tags['fieldset'] = $attributes;
+		$allowed_tags['textarea'] = $attributes;
+		$allowed_tags['button'] = $attributes;
+		$allowed_tags['label'] = $attributes;
+		$allowed_tags['legend'] = $attributes;
+		$allowed_tags['iframe'] = $attributes;
+		$allowed_tags['input'] = $attributes;
+		$allowed_tags['select'] = $attributes;
+		$allowed_tags['option'] = $attributes;
 		$allowed_tags['a']['onclick'] = true;
 		$allowed_tags['a']['title']   = true;
 
