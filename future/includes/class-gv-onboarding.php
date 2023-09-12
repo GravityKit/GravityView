@@ -10,6 +10,10 @@ class Onboarding {
 	private $plugin = GRAVITYVIEW_FILE;
 
 	public function __construct() {
+		add_action( 'admin_enqueue_scripts', [ $this, 'init' ] );
+	}
+
+	public function init() {
 
 		// Define Steps.
 
@@ -18,14 +22,24 @@ class Onboarding {
 		$title       = __( 'Start by giving your View a name.', 'gk-gravityview' );
 		$description = __( 'Depending on your website, the name may display publicly on the front end.', 'gk-gravityview' );
 
-		$step_1 = new Step( [ 'element' => $element, 'title' => $title, 'description' => $description ] );
+		$step_1 = new Step( [
+			'element'     => $element,
+			'title'       => $title,
+			'description' => $description,
+			'screen'      => 'gravityview',
+		] );
 
 		// Step 2.
 		$element     = '#gravityview_form_id';
 		$title       = __( 'Start by giving your View a name.', 'gk-gravityview' );
 		$description = __( 'Depending on your website, the name may display publicly on the front end.', 'gk-gravityview' );
 
-		$step_2 = new Step( [ 'element' => $element, 'title' => $title, 'description' => $description ] );
+		$step_2 = new Step( [
+			'element'     => $element,
+			'title'       => $title,
+			'description' => $description,
+			'screen'      => 'gravityview',
+		] );
 
 		// Step 3.
 		$element     = '#gravityview_select_template';
@@ -36,7 +50,8 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Step 4.
@@ -48,7 +63,8 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Step 5.
@@ -60,7 +76,8 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Step 6.
@@ -72,7 +89,8 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Step 7.
@@ -84,7 +102,8 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Step 8.
@@ -96,7 +115,8 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Step 9.
@@ -108,7 +128,8 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Step 10.
@@ -120,7 +141,8 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Step 11.
@@ -132,11 +154,12 @@ class Onboarding {
 			'element'     => $element,
 			'title'       => $title,
 			'description' => $description,
-			'side'        => 'top'
+			'side'        => 'top',
+			'screen'      => 'gravityview',
 		] );
 
 		// Initialise onboarding.
-		$onboarding = new OnboardingFramework( $this->plugin );
+		$onboarding = OnboardingFramework::get_instance( $this->plugin );
 
 		$onboarding->steps->add( $step_1 )
 		                  ->add( $step_2 )
