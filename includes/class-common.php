@@ -878,6 +878,7 @@ class GVCommon {
 
 		if ( is_wp_error( $entry ) ) {
 			gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
+
 			return false;
 		}
 
@@ -1038,7 +1039,7 @@ class GVCommon {
 		}
 
 		if ( empty( $entry['form_id'] ) ) {
-			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
+			return new WP_Error( 'form_id_not_set', '[check_entry_display] Form ID is not set for the entry.', $entry );
 		}
 
 		if ( is_null( $view ) ) {
