@@ -188,7 +188,7 @@ class Onboarding {
 		                  ->add( $step_10 )
 		                  ->add( $step_11 );
 
-		$onboarding->init_onboarding( true );
+		$onboarding->init_onboarding();
 	}
 }
 
