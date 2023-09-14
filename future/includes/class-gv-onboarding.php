@@ -2,6 +2,7 @@
 
 namespace GV;
 
+use GravityKit\Foundation\Helpers\Core as CoreHelpers;
 use GravityKit\Foundation\Onboarding\Framework as OnboardingFramework;
 use GravityKit\Foundation\Onboarding\Step;
 
@@ -106,6 +107,7 @@ class Onboarding {
 			'screen'      => 'gravityview',
 		] );
 
+
 		// Step 8.
 		$element     = '.ui-dialog';
 		$title       = __( '', 'gk-gravityview' );
@@ -119,10 +121,23 @@ class Onboarding {
 			'screen'      => 'gravityview',
 		] );
 
+		/*
+		$step_8->setOnHighlightStartedCallback( 'function(element, step, options) {
+		console.log(jQuery(document).find(".gv-field-controls .gv-field-settings"));
+			jQuery(document).find("#directory-active-fields > span.gv-field-controls > button.gv-field-settings").eq(0).click();
+		}' );
+
+		$step_8->setOnHighlightedCallback( 'function(element, step, options) {
+			jQuery(".ui-dialog").hide();
+		}' );
+		*/
+
 		// Step 9.
-		$element     = 'ul.ui-tabs-nav li.ui-tabs-tab a[href="#single-view"]';
-		$title       = __( '', 'gk-gravityview' );
-		$description = __( "<img src='https://i.imgur.com/EAQhHu5.gif' style='height: 202.5px; width: 270px;' />Here you can configure the Single Entry Layout, which is the screen that users will see when they click to view more details about a specific entry.", 'gk-gravityview' );
+		$element = 'ul.ui-tabs-nav li.ui-tabs-tab a[href="#single-view"]';
+		$title   = __( '', 'gk-gravityview' );
+
+		$img_url     = esc_url( plugins_url( 'assets/images/click-to-single-entry.gif', GRAVITYVIEW_FILE ) );
+		$description = sprintf( __( "<img src='%s' style='height: 202.5px; width: 270px;' />Here you can configure the Single Entry Layout, which is the screen that users will see when they click to view more details about a specific entry.", 'gk-gravityview' ), $img_url );
 
 		$step_9 = new Step( [
 			'element'     => $element,
@@ -173,7 +188,7 @@ class Onboarding {
 		                  ->add( $step_10 )
 		                  ->add( $step_11 );
 
-		$onboarding->init_onboarding();
+		$onboarding->init_onboarding( true );
 	}
 }
 
