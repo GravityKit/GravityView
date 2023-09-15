@@ -30,10 +30,19 @@ class Onboarding {
 			'screen'      => 'gravityview',
 		] );
 
+
 		// Step 2.
-		$element     = '#gravityview_form_id';
-		$title       = __( 'Next, select what form submissions to show.', 'gk-gravityview' );
-		$description = __( 'Choose a Gravity Form with the entry data that you want to display on the front end of your website.', 'gk-gravityview' );
+
+		$forms = gravityview_get_forms( 'any', false );
+		if ( empty( $forms ) ) {
+			$element     = '#gravityview_select_form a[href="#gv_start_fresh"]';
+			$title       = __( 'There are no existing forms.', 'gk-gravityview' );
+			$description = __( 'You can click "Use a Form Preset" and we will create one for you. Or you can create a new form and return to this step.', 'gk-gravityview' );
+		} else {
+			$element     = '#gravityview_form_id';
+			$title       = __( 'Next, select what form submissions to show.', 'gk-gravityview' );
+			$description = __( 'Choose a Gravity Form with the entry data that you want to display on the front end of your website.', 'gk-gravityview' );
+		}
 
 		$step_2 = new Step( [
 			'element'     => $element,
@@ -43,7 +52,6 @@ class Onboarding {
 		] );
 
 		$step_2->setOnHighlightStartedCallback( 'function(element, step, options) {
-				console.log("Clicking");
 				jQuery("#gravityview_select_form .inside").show();
 		}' );
 
@@ -61,8 +69,8 @@ class Onboarding {
 		] );
 
 		$step_3->setOnHighlightStartedCallback( 'function(element, step, options) {
-				let a = jQuery("select#gravityview_form_id option:nth-child(2)").val();
-				jQuery("select#gravityview_form_id").val(a);
+				let formVal = jQuery("select#gravityview_form_id option:nth-child(2)").val();
+				jQuery("select#gravityview_form_id").val(formVal);
 				jQuery("select#gravityview_form_id").trigger("change");
 				jQuery("#gravityview_select_template").show();
 		}' );
@@ -128,9 +136,8 @@ class Onboarding {
 		] );
 
 		// Step 8.
-		//$element     = '.ui-dialog';
 		$element     = '#directory-active-fields > div > div > div > div.active-drop.active-drop-field > div.gv-fields.gv-child-field.has-single-entry-link > h5 > span.gv-field-controls > button.gv-field-settings:first-child';
-		$title       = __( '', 'gk-gravityview' );
+		$title       = '';
 		$description = __( 'Here you can set custom labels, modify visibility settings, add css classes, and more. As you can see, GravityView has made this field a link to the single entry.', 'gk-gravityview' );
 
 		$step_8 = new Step( [
@@ -141,19 +148,9 @@ class Onboarding {
 			'screen'      => 'gravityview',
 		] );
 
-		/*
-		$step_8->setOnHighlightStartedCallback( 'function(element, step, options) {
-			jQuery("#directory-active-fields > div > div > div > div.active-drop.active-drop-field > div.gv-fields.gv-child-field.has-single-entry-link > h5 > span.gv-field-controls > button.gv-field-settings:first-child").click();
-		}');
-		$step_8->setPopoverOnNextClickCallback( 'function(element, step, options) {
-			jQuery(".ui-dialog").hide();
-			driverObj.moveNext();
-		}' );
-		*/
-
 		// Step 9.
 		$element = 'ul.ui-tabs-nav li.ui-tabs-tab a[href="#single-view"]';
-		$title   = __( '', 'gk-gravityview' );
+		$title   = '';
 
 		$img_url     = esc_url( plugins_url( 'assets/images/click-to-single-entry.gif', GRAVITYVIEW_FILE ) );
 		$description = sprintf( __( "<img src='%s' style='height: 202.5px; width: 270px;' />Here you can configure the Single Entry Layout, which is the screen that users will see when they click to view more details about a specific entry.", 'gk-gravityview' ), $img_url );
@@ -171,7 +168,7 @@ class Onboarding {
 		}' );
 		// Step 10.
 		$element     = 'ul.ui-tabs-nav li.ui-tabs-tab a[href="#edit-view"]';
-		$title       = __( '', 'gk-gravityview' );
+		$title       = '';
 		$description = __( '(Optional) Configure the Edit Entry Layout to choose which fields are editable by users from the front end.', 'gk-gravityview' );
 
 		$step_10 = new Step( [
@@ -184,7 +181,7 @@ class Onboarding {
 
 		// Step 11.
 		$element     = '#gravityview_settings';
-		$title       = __( '', 'gk-gravityview' );
+		$title       = '';
 		$description = __( 'In settings you will find a range of options for customizing your View. Click on tabs to see available options.', 'gk-gravityview' );
 
 		$step_11 = new Step( [
@@ -210,7 +207,7 @@ class Onboarding {
 		                  ->add( $step_10 )
 		                  ->add( $step_11 );
 
-		$onboarding->init_onboarding( true );
+		$onboarding->init_onboarding();
 	}
 }
 
