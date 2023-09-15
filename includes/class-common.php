@@ -1332,15 +1332,17 @@ class GVCommon {
 	 * Get the views for a particular form
 	 *
 	 * @since 1.15.2 Add $args array and limit posts_per_page to 500
+	 * @since 2.19   Added $include_joins param
 	 *
 	 * @uses get_posts()
 	 *
 	 * @param  int   $form_id Gravity Forms form ID
 	 * @param  array $args Pass args sent to get_posts()
+	 * @param  bool  $include_joins Whether to include forms that are joined to the View
 	 *
 	 * @return array          Array with view details, as returned by get_posts()
 	 */
-	public static function get_connected_views( $form_id, $args = array() ) {
+	public static function get_connected_views( $form_id, $args = array(), $include_joins = true ) {
 
 		global $wpdb;
 
@@ -1352,6 +1354,10 @@ class GVCommon {
 		);
 		$args     = wp_parse_args( $args, $defaults );
 		$views    = get_posts( $args );
+
+		if( ! $include_joins ) {
+			return $views;
+		}
 
 		$views_with_joins = $wpdb->get_results( "SELECT `post_id`, `meta_value` FROM $wpdb->postmeta WHERE `meta_key` = '_gravityview_form_joins'" );
 
@@ -1371,14 +1377,17 @@ class GVCommon {
 			}
 		}
 
-		if ( $joined_forms ) {
-			$joined_args = array(
-				'post_type'      => 'gravityview',
-				'posts_per_page' => $args['posts_per_page'],
-				'post__in'       => $joined_forms,
-			);
-			$views       = array_merge( $views, get_posts( $joined_args ) );
+		if ( ! $joined_forms ) {
+			return $views;
 		}
+
+		$joined_args = array(
+			'post_type'      => 'gravityview',
+			'posts_per_page' => $args['posts_per_page'],
+			'post__in'       => $joined_forms,
+		);
+
+		$views = array_merge( $views, get_posts( $joined_args ) );
 
 		return $views;
 	}

@@ -448,7 +448,7 @@ class GravityView_Admin_ApproveEntries {
 
 		if( $hide_if_no_connections ) {
 
-			$connected_views = gravityview_get_connected_views( $form_id );
+			$connected_views = gravityview_get_connected_views( $form_id, ['posts_per_page' => 1 ], false );
 
 			if( empty( $connected_views ) ) {
 				$show_approve_column = false;
