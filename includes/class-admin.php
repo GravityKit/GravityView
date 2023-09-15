@@ -23,6 +23,7 @@ class GravityView_Admin {
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-migrate.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/entry-list.php' );
+		require_once( GRAVITYVIEW_DIR . 'includes/admin/form-list.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-change-entry-creator.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-support-port.php' );
 		require_once( GRAVITYVIEW_DIR . 'includes/class-gravityview-admin-duplicate-view.php' );
