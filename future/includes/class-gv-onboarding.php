@@ -32,8 +32,8 @@ class Onboarding {
 
 		// Step 2.
 		$element     = '#gravityview_form_id';
-		$title       = __( 'Start by giving your View a name.', 'gk-gravityview' );
-		$description = __( 'Depending on your website, the name may display publicly on the front end.', 'gk-gravityview' );
+		$title       = __( 'Next, select what form submissions to show.', 'gk-gravityview' );
+		$description = __( 'Choose a Gravity Form with the entry data that you want to display on the front end of your website.', 'gk-gravityview' );
 
 		$step_2 = new Step( [
 			'element'     => $element,
@@ -41,6 +41,11 @@ class Onboarding {
 			'description' => $description,
 			'screen'      => 'gravityview',
 		] );
+
+		$step_2->setOnHighlightStartedCallback( 'function(element, step, options) {
+				console.log("Clicking");
+				jQuery("#gravityview_select_form .inside").show();
+		}' );
 
 		// Step 3.
 		$element     = '#gravityview_select_template';
@@ -54,6 +59,21 @@ class Onboarding {
 			'side'        => 'top',
 			'screen'      => 'gravityview',
 		] );
+
+		$step_3->setOnHighlightStartedCallback( 'function(element, step, options) {
+				let a = jQuery("select#gravityview_form_id option:nth-child(2)").val();
+				jQuery("select#gravityview_form_id").val(a);
+				jQuery("select#gravityview_form_id").trigger("change");
+				jQuery("#gravityview_select_template").show();
+		}' );
+
+		$step_3->setPopoverOnNextClickCallback( 'function(element, step, options) {
+				jQuery("#gravityview_select_template > div.inside > div.gv-grid > div:nth-child(1) > div > div.gv-view-types-hover > div > p > a").click();
+
+				setTimeout(function() {
+                    driverObj.moveNext();
+                }, 1000);
+		}' );
 
 		// Step 4.
 		$element     = 'ul.ui-tabs-nav li.ui-tabs-tab a[href="#directory-view"]';
@@ -107,9 +127,9 @@ class Onboarding {
 			'screen'      => 'gravityview',
 		] );
 
-
 		// Step 8.
-		$element     = '.ui-dialog';
+		//$element     = '.ui-dialog';
+		$element     = '#directory-active-fields > div > div > div > div.active-drop.active-drop-field > div.gv-fields.gv-child-field.has-single-entry-link > h5 > span.gv-field-controls > button.gv-field-settings:first-child';
 		$title       = __( '', 'gk-gravityview' );
 		$description = __( 'Here you can set custom labels, modify visibility settings, add css classes, and more. As you can see, GravityView has made this field a link to the single entry.', 'gk-gravityview' );
 
@@ -123,12 +143,11 @@ class Onboarding {
 
 		/*
 		$step_8->setOnHighlightStartedCallback( 'function(element, step, options) {
-		console.log(jQuery(document).find(".gv-field-controls .gv-field-settings"));
-			jQuery(document).find("#directory-active-fields > span.gv-field-controls > button.gv-field-settings").eq(0).click();
-		}' );
-
-		$step_8->setOnHighlightedCallback( 'function(element, step, options) {
+			jQuery("#directory-active-fields > div > div > div > div.active-drop.active-drop-field > div.gv-fields.gv-child-field.has-single-entry-link > h5 > span.gv-field-controls > button.gv-field-settings:first-child").click();
+		}');
+		$step_8->setPopoverOnNextClickCallback( 'function(element, step, options) {
 			jQuery(".ui-dialog").hide();
+			driverObj.moveNext();
 		}' );
 		*/
 
@@ -147,6 +166,9 @@ class Onboarding {
 			'screen'      => 'gravityview',
 		] );
 
+		$step_9->setOnHighlightStartedCallback( 'function(element, step, options) {
+			jQuery(".ui-dialog").hide();
+		}' );
 		// Step 10.
 		$element     = 'ul.ui-tabs-nav li.ui-tabs-tab a[href="#edit-view"]';
 		$title       = __( '', 'gk-gravityview' );
@@ -188,7 +210,7 @@ class Onboarding {
 		                  ->add( $step_10 )
 		                  ->add( $step_11 );
 
-		$onboarding->init_onboarding();
+		$onboarding->init_onboarding( true );
 	}
 }
 
