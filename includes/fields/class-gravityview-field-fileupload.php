@@ -217,10 +217,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$disable_lightbox   = false;
 			$text               = $basename;
 
-			$filename = (isset(parse_url($basename)['path']) ? parse_url($basename)['path'] : $basename);
-
-			$alt = \GV\Utils::get( $field_settings, 'alt_text' );
-			$alt = ( '' === $alt ) ? $filename : $alt;
+			$alt = \GV\Utils::get( $field_settings, 'alt_text', '' );
 			$alt = GFCommon::replace_variables( $alt, GVCommon::get_form( $entry['form_id'] ), $entry );
 
 			// Audio
