@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-07T22:23:23+00:00\n"
+"POT-Creation-Date: 2023-09-18T16:18:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.7.1\n"
+"X-Generator: WP-CLI 2.8.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
@@ -573,7 +573,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:286
 #: future/includes/class-gv-settings-view.php:317
-#: includes/class-common.php:1600
+#: includes/class-common.php:1609
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -682,7 +682,7 @@ msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:438
-#: includes/class-api.php:998
+#: includes/class-api.php:1006
 msgid "&larr; Go back"
 msgstr ""
 
@@ -1509,7 +1509,7 @@ msgid "Use this form to embed a View into this %s. %sLearn more about using shor
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:102
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:301
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:307
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/entry.js:1
@@ -1524,7 +1524,7 @@ msgid "&mdash; Select a View to Insert &mdash;"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:108
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:307
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:313
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:197
 msgid "(no title)"
 msgstr ""
@@ -1943,7 +1943,7 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-api.php:1416
+#: includes/class-api.php:1424
 msgid "Map It"
 msgstr ""
 
@@ -1964,16 +1964,16 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1553
+#: includes/class-common.php:1562
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1604
+#: includes/class-common.php:1613
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1735
+#: includes/class-common.php:1744
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1986,7 +1986,7 @@ msgid "You did not enter a number. The value entered should be a number, represe
 msgstr ""
 
 #: includes/class-data.php:308
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:335
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:341
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:225
 msgid "Learn more&hellip;"
 msgstr ""
@@ -3237,6 +3237,46 @@ msgstr ""
 msgid "Size in Pixels"
 msgstr ""
 
+#: includes/fields/class-gravityview-field-gravity_forms.php:28
+#: includes/widgets/class-gravityview-widget-gravityforms.php:69
+msgid "Gravity Forms"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity_forms.php:29
+#: includes/widgets/class-gravityview-widget-gravityforms.php:28
+msgid "Display a Gravity Forms form."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity_forms.php:41
+#: includes/widgets/class-gravityview-widget-gravityforms.php:38
+msgid "Form to display"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity_forms.php:47
+#: includes/widgets/class-gravityview-widget-gravityforms.php:44
+msgid "Show form title?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity_forms.php:52
+#: includes/widgets/class-gravityview-widget-gravityforms.php:49
+msgid "Show form description?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity_forms.php:57
+#: includes/widgets/class-gravityview-widget-gravityforms.php:54
+msgid "Enable AJAX"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity_forms.php:64
+#: includes/widgets/class-gravityview-widget-gravityforms.php:61
+msgid "Field value parameters"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity_forms.php:65
+#: includes/widgets/class-gravityview-widget-gravityforms.php:62
+msgid "Learn how to dynamically populate a field."
+msgstr ""
+
 #: includes/fields/class-gravityview-field-hidden.php:23
 msgid "Hidden"
 msgstr ""
@@ -3392,17 +3432,17 @@ msgid "Display other entries created by the entry creator."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:51
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:348
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:354
 msgid "Entry link text (required)"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:52
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:254
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:260
 msgid "Entry #{entry_id}"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:59
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:355
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:361
 msgid "Text or HTML to display after the link (optional)"
 msgstr ""
 
@@ -4028,38 +4068,6 @@ msgstr ""
 msgid "Enter text or HTML. Also supports shortcodes."
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:28
-msgid "Display a Gravity Forms form."
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:38
-msgid "Form to display"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:44
-msgid "Show form title?"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:49
-msgid "Show form description?"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:54
-msgid "Enable AJAX"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:61
-msgid "Field value parameters"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:62
-msgid "Learn how to dynamically populate a field."
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:69
-msgid "Gravity Forms"
-msgstr ""
-
 #: includes/widgets/class-gravityview-widget-page-links.php:16
 msgid "Links to multiple pages of results."
 msgstr ""
@@ -4344,35 +4352,35 @@ msgstr ""
 msgid "Display the most recent entries for a View"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:250
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:256
 msgid "Recent Entries"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:264
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:270
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
 msgid "Title:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:293
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:299
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:184
 msgid "Please select a View to search."
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:303
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:309
 msgid "&mdash; Select a View as Entries Source &mdash;"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:331
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:337
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
 msgid "If Embedded, Page ID:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:334
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:340
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:224
 msgid "To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded."
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:341
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:347
 msgid "Number of entries to show:"
 msgstr ""
 
@@ -4922,11 +4930,11 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "We don't need to see your [plugin] details to provide support (if [plugin] is enabled)."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:200
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:195
 msgid "You do not have permission to view this page."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:242
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:237
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:182
 msgid "Manage Your Kit"
 msgstr ""
@@ -6619,84 +6627,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""
