@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.2
+Tested up to: 6.3
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,12 +21,34 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.18.4 [unreleased] =
+= develop =
+
+* Added: Embed a Gravity Forms form using a field in the View editor
+* Added: Support for embedding Views inside [WooCommerce Account Pages](https://iconicwp.com/products/woocommerce-account-pages/)
+* Fixed: The Recent Entries widget results would be affected when browsing a View: the search query, page number, and sorting would affect the displayed entries
+
+__Developer Updates:__
+
+* Added: `gk/gravityview/approve_link/return_url` filter to modify the return URL after entry approval
+* Improved: Added third argument to `gravityview_get_connected_views()` to prevent including joined forms in the search
+
+= 2.18.6 on September 7, 2023 =
+
+* Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox
+* Improved: Support for RTL languages
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.2
+
+= 2.18.5 on September 1, 2023 =
+
+* Fixed: Fatal error caused by GravityView version 2.18.4
+
+= 2.18.4 on August 31, 2023 =
 
 * Added: A "Direct Access" summary in the Publish box in the View editor that makes it easy to see and modify whether a View is accessible directly
 * Improved: Views will now remember the Settings tab you are on after you save a View
-* Updated: The video on the Getting Started page
 * Fixed: Resolved a fatal error that occurred under certain circumstances due to passing the wrong parameter type to a WordPress function
+* Updated: The video on the Getting Started page
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2
 
 = 2.18.3 on July 20, 2023 =
 
