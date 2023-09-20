@@ -2558,7 +2558,7 @@ __Developer Notes:__
 	- If you're using the plugin downloaded from [the how-to page](https://www.gravitykit.com/support/documentation/201991205/), you can de-activate it
 * Modified: Changed translation textdomain to `gravityview` instead of `gravity-view`
 * Modified: Always show label by default, regardless of whether in List or Table View type
-* Modified: It's now possible to override templates on a Form ID, Post ID, and View ID basis. This allows custom layouts for a specific View, rather than site-wide. See "Template File Hierarchy" in [the override documentation](http://gravitykit.com/support/documentation/202551113/) to learn more.
+* Modified: It's now possible to override templates on a Form ID, Post ID, and View ID basis. This allows custom layouts for a specific View, rather than site-wide. See "Template File Hierarchy" in [the override documentation](http://www.gravitykit.com/support/documentation/202551113/) to learn more.
 * Modified: File Upload field output no longer run through `wpautop()` function
 * Modified: Audio and Video file uploads are now displayed using WordPress' built-in [audio](http://codex.wordpress.org/Audio_Shortcode) and [video](http://codex.wordpress.org/Video_Shortcode) shortcodes (requires WordPress 3.6 or higher)
 	- Additional file type support

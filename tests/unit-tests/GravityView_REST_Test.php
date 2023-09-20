@@ -10,7 +10,7 @@ if ( ! class_exists( 'GV_RESTUnitTestCase' ) ) {
  * @package   GravityView
  * @license   GPL2+
  * @author    Josh Pollock <josh@joshpress.net>
- * @link      http://gravitykit.com
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 2.0

@@ -3154,7 +3154,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://gravitykit.com/ <b>beep, I allow it!</b>',
+			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://www.gravitykit.com/ <b>beep, I allow it!</b>',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -3167,7 +3167,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '16' );
 
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() http://gravitykit.com/ <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() http://www.gravitykit.com/ <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => 4 ) );
@@ -3180,28 +3180,28 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => false, 'make_clickable' => true, 'new_window' => false ) );
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravitykit.com/" rel="nofollow">http://gravitykit.com/</a> <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://www.gravitykit.com/" rel="nofollow">http://www.gravitykit.com/</a> <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'new_window' => true ) );
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravitykit.com/" rel="nofollow" target="_blank">http://gravitykit.com/</a> <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://www.gravitykit.com/" rel="nofollow" target="_blank">http://www.gravitykit.com/</a> <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		add_filter( 'gravityview/fields/textarea/allowed_kses', function( $kses ) {
 			return array( 'so' => array() );
 		} );
 
-		$expected = '<p>okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravitykit.com/" rel="nofollow" target="_blank">http://gravitykit.com/</a> beep, I allow it!</p>' . "\n";
+		$expected = '<p>okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://www.gravitykit.com/" rel="nofollow" target="_blank">http://www.gravitykit.com/</a> beep, I allow it!</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		remove_all_filters( 'gravityview/fields/textarea/allowed_kses' );
 
 		$field->update_configuration( array( 'allow_html' => false, 'new_window' => false, 'make_clickable' => true ) );
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravitykit.com/" rel="nofollow">http://gravitykit.com/</a> &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://www.gravitykit.com/" rel="nofollow">http://www.gravitykit.com/</a> &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'allow_html' => false, 'new_window' => false, 'make_clickable' => false ) );
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://gravitykit.com/ &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://www.gravitykit.com/ &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 

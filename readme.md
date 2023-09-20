@@ -1,10 +1,10 @@
-<img src="https://gravitykit.com/wp-content/themes/Website/images/GravityView-262x80@2x.png" width="262" height="80" alt="GravityView (Floaty loves you!)" />
+<img src="https://www.gravitykit.com/wp-content/themes/Website/images/GravityView-262x80@2x.png" width="262" height="80" alt="GravityView (Floaty loves you!)" />
 
 ![CircleCI](https://circleci.com/gh/gravityview/GravityView/tree/develop.svg?style=svg&circle-token=19fbfae4c960858b2e08be4f7e993df41df5f367)
 
-[GravityView](https://gravitykit.com/?utm_source=github&utm_medium=readme&utm_campaign=readme) is a commercial plugin available from [https://gravitykit.com](http://gravitykit.com?utm_source=github&utm_medium=readme&utm_campaign=readme). The plugin is hosted here on a public GitHub repository to better facilitate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
+[GravityView](https://www.gravitykit.com/?utm_source=github&utm_medium=readme&utm_campaign=readme) is a commercial plugin available from [https://www.gravitykit.com](http://www.gravitykit.com?utm_source=github&utm_medium=readme&utm_campaign=readme). The plugin is hosted here on a public GitHub repository to better facilitate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
 
-If you are using the plugin on a live site, please purchase a valid license from the [website](https://gravitykit.com/?utm_source=github&utm_medium=readme&utm_campaign=readme). We cannot provide support to anyone that does not hold a valid license key.
+If you are using the plugin on a live site, please purchase a valid license from the [website](https://www.gravitykit.com/?utm_source=github&utm_medium=readme&utm_campaign=readme). We cannot provide support to anyone that does not hold a valid license key.
 
 ----------
 ### Installation Instructions
