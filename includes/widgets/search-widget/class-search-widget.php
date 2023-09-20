@@ -4,8 +4,8 @@
  *
  * @package   GravityView-DataTables-Ext
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
@@ -2059,7 +2059,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @param bool $date_format Whether to return the PHP date format or the datpicker class name. Default: false.
 	 *
-	 * @see https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker
+	 * @see https://docs.gravitykit.com/article/115-changing-the-format-of-the-search-widgets-date-picker
 	 *
 	 * @return string The datepicker format placeholder, or the PHP date format.
 	 */

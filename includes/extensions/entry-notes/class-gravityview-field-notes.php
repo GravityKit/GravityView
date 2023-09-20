@@ -6,7 +6,7 @@
  * @license     GPL2+
  * @since       1.17
  * @author      Katz Web Services, Inc.
- * @link        https://gravityview.co
+ * @link        https://gravitykit.com
  * @copyright   Copyright 2016, Katz Web Services, Inc.
  */
 
@@ -370,7 +370,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'notes' => array(
 				'type' => 'checkboxes',
 				'label' => __('Note Settings', 'gk-gravityview'),
-				'desc' => sprintf( _x('Only users with specific capabilities will be able to view, add and delete notes. %sRead more%s.', '%s is opening and closing HTML link', 'gk-gravityview' ), '<a href="https://docs.gravityview.co/article/311-gravityview-capabilities">', '</a>' ),
+				'desc' => sprintf( _x('Only users with specific capabilities will be able to view, add and delete notes. %sRead more%s.', '%s is opening and closing HTML link', 'gk-gravityview' ), '<a href="https://docs.gravitykit.com/article/311-gravityview-capabilities">', '</a>' ),
 				'options' => array(
 					'view' => array(
 						'label' => __( 'Display notes?', 'gk-gravityview' ),

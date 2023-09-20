@@ -4,7 +4,7 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @link      https://gravityview.co
+ * @link      https://gravitykit.com
  * @copyright Copyright 2020, Katz Web Services, Inc.
  */
 

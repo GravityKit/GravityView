@@ -3,7 +3,7 @@
  * Welcome Page Class
  *
  * @package   GravityView
- * @author    Zack Katz <zack@gravityview.co>
+ * @author    Zack Katz <zack@gravitykit.com>
  * @link      https://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -217,7 +217,7 @@ class GravityView_Welcome {
 			<div class="feature-section two-col has-2-columns is-fullwidth">
 				<div class="col column">
 					<h3>Embed Views in the Block Editor</h3>
-					<p>Embed Views using the "Add Shortcode" button above your content editor. <a href="https://docs.gravityview.co/article/73-using-the-shortcode">Learn how to use the <code>[gravityview]</code> shortcode.</a></p>
+					<p>Embed Views using the "Add Shortcode" button above your content editor. <a href="https://docs.gravitykit.com/article/73-using-the-shortcode">Learn how to use the <code>[gravityview]</code> shortcode.</a></p>
 				</div>
 				<div class="col column">
 					<img src="<?php echo plugins_url( 'assets/images/screenshots/shortcode-block.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of the Shortcode block" />
@@ -847,7 +847,7 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Added: <code>{is_starred}</code> Merge Tag. <a
-								href='https://docs.gravityview.co/article/820-the-isstarred-merge-tag'>Learn more about
+								href='https://docs.gravitykit.com/article/820-the-isstarred-merge-tag'>Learn more about
 							using <code>{is_starred}</code></a></li>
 					<li>Fixed: Media files uploaded to Dropbox were not properly embedded</li>
 					<li>Fixed: JavaScript error when trying to edit entry's creator</li>
@@ -863,7 +863,7 @@ class GravityView_Welcome {
 				<p>We renamed all instances of <code>blacklist</code> to <code>blocklist</code> and
 					<code>whitelist</code> to <code>allowlist</code>. All methods and filters have been deprecated using
 					<code>apply_filters_deprecated()</code> and <code>_deprecated_function()</code>. <a
-							href="https://docs.gravityview.co/article/816-renamed-filters-methods-in-2-14">See a
+							href="https://docs.gravitykit.com/article/816-renamed-filters-methods-in-2-14">See a
 						complete list of modified methods and filters</a>.</p>
 
 				<p style="text-align: center;">

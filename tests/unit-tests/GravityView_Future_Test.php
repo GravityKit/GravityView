@@ -3154,7 +3154,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://gravityview.co/ <b>beep, I allow it!</b>',
+			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://gravitykit.com/ <b>beep, I allow it!</b>',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -3167,7 +3167,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '16' );
 
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() http://gravityview.co/ <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() http://gravitykit.com/ <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => 4 ) );
@@ -3180,28 +3180,28 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => false, 'make_clickable' => true, 'new_window' => false ) );
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow">http://gravityview.co/</a> <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravitykit.com/" rel="nofollow">http://gravitykit.com/</a> <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'new_window' => true ) );
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow" target="_blank">http://gravityview.co/</a> <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravitykit.com/" rel="nofollow" target="_blank">http://gravitykit.com/</a> <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		add_filter( 'gravityview/fields/textarea/allowed_kses', function( $kses ) {
 			return array( 'so' => array() );
 		} );
 
-		$expected = '<p>okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow" target="_blank">http://gravityview.co/</a> beep, I allow it!</p>' . "\n";
+		$expected = '<p>okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravitykit.com/" rel="nofollow" target="_blank">http://gravitykit.com/</a> beep, I allow it!</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		remove_all_filters( 'gravityview/fields/textarea/allowed_kses' );
 
 		$field->update_configuration( array( 'allow_html' => false, 'new_window' => false, 'make_clickable' => true ) );
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravityview.co/" rel="nofollow">http://gravityview.co/</a> &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravitykit.com/" rel="nofollow">http://gravitykit.com/</a> &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'allow_html' => false, 'new_window' => false, 'make_clickable' => false ) );
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://gravityview.co/ &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://gravitykit.com/ &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
@@ -3454,7 +3454,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -3470,21 +3470,21 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 
 		$field = \GV\GF_Field::by_id( $form, '4' );
-		$this->assertEquals( '<a href="mailto:support@gravityview.co">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( '<a href="mailto:support@gravitykit.com">support@gravitykit.com</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'emailsubject' => 'su<script>bject[gvtest_filters_e1]' ) );
-		$this->assertEquals( '<a href="mailto:support@gravityview.co?subject=subjectshort">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( '<a href="mailto:support@gravitykit.com?subject=subjectshort">support@gravitykit.com</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'emailbody' => 'su<script>bject[gvtest_filters_e1] space' ) );
-		$this->assertEquals( '<a href="mailto:support@gravityview.co?subject=subjectshort&amp;body=subjectshort%20space">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( '<a href="mailto:support@gravitykit.com?subject=subjectshort&amp;body=subjectshort%20space">support@gravitykit.com</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'emailmailto' => false ) );
-		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( 'support@gravitykit.com', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		add_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
 
 		$field->update_configuration( array( 'emailencrypt' => true ) );
-		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( 'support@gravitykit.com', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		remove_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
 	}
@@ -7392,36 +7392,36 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'gennady@gravityview.co',
+			'4' => 'gennady@gravitykit.com',
 			'16' => 'Backend',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'vlad@gravityview.co',
+			'4' => 'vlad@gravitykit.com',
 			'16' => 'Frontend',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'rafael@gravityview.co',
+			'4' => 'rafael@gravitykit.com',
 			'16' => 'Support',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'zack@gravityview.co',
+			'4' => 'zack@gravitykit.com',
 			'16' => 'Backend', // and frontend, but we need the same values here for testing :)
 		) );
 
 		$entries = $view->get_entries()->all();
 
 		/** Ascending skill/role, descending e-mail address: */
-		$this->assertEquals( 'Backend',  $entries[0]['16'] ); $this->assertEquals( 'zack@gravityview.co',    $entries[0]['4'] );
-		$this->assertEquals( 'Backend',  $entries[1]['16'] ); $this->assertEquals( 'gennady@gravityview.co', $entries[1]['4'] );
+		$this->assertEquals( 'Backend',  $entries[0]['16'] ); $this->assertEquals( 'zack@gravitykit.com',    $entries[0]['4'] );
+		$this->assertEquals( 'Backend',  $entries[1]['16'] ); $this->assertEquals( 'gennady@gravitykit.com', $entries[1]['4'] );
 		$this->assertEquals( 'Frontend', $entries[2]['16'] );
 		$this->assertEquals( 'Support',  $entries[3]['16'] );
 
@@ -7865,7 +7865,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 			'7' => serialize( array(
 				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
@@ -7907,7 +7907,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$expected = array(
 			'Email,"A List",File,Checkbox,Textarea,Website',
-			sprintf( 'support@gravityview.co,"%s",%s,"%s","%s",%s', $list, $file, $checkbox, $textarea, $website ),
+			sprintf( 'support@gravitykit.com,"%s",%s,"%s","%s",%s', $list, $file, $checkbox, $textarea, $website ),
 		);
 
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
@@ -7936,7 +7936,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$expected         = array(
 			'Email,"A List",File,Checkbox,Textarea,Website',
-			sprintf( 'support@gravityview.co,"%s","%s","%s","%s",%s', $list_newline, $file_newline, $checkbox_newline, $textarea, $website ),
+			sprintf( 'support@gravitykit.com,"%s","%s","%s","%s",%s', $list_newline, $file_newline, $checkbox_newline, $textarea, $website ),
 		);
 
 		remove_all_filters( 'gravityview/template/field/csv/glue' );
@@ -7951,7 +7951,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$view::template_redirect();
 		$expected = array(
 			'Email,"A List",File,Checkbox,Textarea,Website',
-			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s","%s","<a href=\'https://example.com?query=vars\' target=\'_blank\'>https://example.com?query=vars</a>"', $list, $file, $checkbox, $textarea ),
+			sprintf( '"<a href=\'mailto:support@gravitykit.com\'>support@gravitykit.com</a>","%s",%s,"%s","%s","<a href=\'https://example.com?query=vars\' target=\'_blank\'>https://example.com?query=vars</a>"', $list, $file, $checkbox, $textarea ),
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
@@ -7994,7 +7994,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -8050,7 +8050,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$entry = $this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => $_ . 'support@gravityview.co',
+				'4' => $_ . 'support@gravitykit.com',
 			) );
 		}
 
@@ -8418,7 +8418,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'gennady@gravityview.co',
+			'4' => 'gennady@gravitykit.com',
 		) );
 
 		register_post_type( $post_type = 'test_' . wp_generate_password( 4, false ), array(
@@ -8542,25 +8542,25 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'gennady@gravityview.co',
+			'4' => 'gennady@gravitykit.com',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'vlad@gravityview.co',
+			'4' => 'vlad@gravitykit.com',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'rafael@gravityview.co',
+			'4' => 'rafael@gravitykit.com',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'zack@gravityview.co',
+			'4' => 'zack@gravitykit.com',
 		) );
 
 		$renderer = new \GV\View_Renderer();
@@ -8629,25 +8629,25 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => 'gennady@gravityview.co',
+				'4' => 'gennady@gravitykit.com',
 			) ),
 
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => 'vlad@gravityview.co',
+				'4' => 'vlad@gravitykit.com',
 			) ),
 
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => 'rafael@gravityview.co',
+				'4' => 'rafael@gravitykit.com',
 			) ),
 
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => 'zack@gravityview.co',
+				'4' => 'zack@gravitykit.com',
 			) ),
 		);
 

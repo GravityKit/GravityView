@@ -3,7 +3,7 @@
  * @file class-gravityview-entry-moderation-merge-tags.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
+ * @author    GravityKit <hello@gravitykit.com>
  * @link      https://www.gravitykit.com
  * @copyright Copyright 2023, Katz Web Services, Inc.
  *

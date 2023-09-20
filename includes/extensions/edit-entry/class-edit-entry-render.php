@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
@@ -2000,7 +2000,7 @@ class GravityView_Edit_Entry_Render {
 
 				/**
 				 * @filter `gravityview/edit_entry/render_hidden_field`
-				 * @see https://docs.gravityview.co/article/678-edit-entry-hidden-fields-field-visibility
+				 * @see https://docs.gravitykit.com/article/678-edit-entry-hidden-fields-field-visibility
 				 * @since 2.7
 				 * @param bool $render_hidden_field Whether to render this Hidden field in HTML. Default: true
 				 * @param GF_Field $field The field to possibly remove
