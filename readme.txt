@@ -21,13 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.18.7 on September 21, 2023 =
 
 * Added: Support for embedding Views inside [WooCommerce Account Pages](https://iconicwp.com/products/woocommerce-account-pages/)
 * Improved: `[gvlogic]` shortcode now works with the [Dashboard Views](https://github.com/GravityKit/Dashboard-Views) add-on in the WordPress admin area
 * Fixed: The Recent Entries widget results would be affected when browsing a View: the search query, page number, and sorting would affect the displayed entries
 * Fixed: Activation of View types (e.g., Maps, DataTables) would fail in the View editor
 * Fixed: Image preview (file upload field) not working if the file is uploaded to Dropbox using the Gravity Forms Dropbox add-on
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.4
 
 __Developer Updates:__
 

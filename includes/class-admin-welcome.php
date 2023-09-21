@@ -276,6 +276,25 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3>2.18.7 on September 21, 2023</h3>
+
+				<ul>
+					<li>Added: Support for embedding Views inside <a href="https://iconicwp.com/products/woocommerce-account-pages">WooCommerce Account Pages</a></li>
+					<li>Improved: <code>[gvlogic]</code> shortcode now works with the <a href="https://github.com/GravityKit/Dashboard-Views">Dashboard Views</a> add-on</li>
+					<li>Fixed: The Recent Entries widget results would be affected when browsing a View: the search query, page number, and sorting would affect the displayed entries</li>
+					<li>Fixed: Activation of View types (e.g., Maps, DataTables) would fail in the View editor</li>
+					<li>Fixed: Image preview (file upload field) not working if the file is uploaded to Dropbox using the Gravity Forms Dropbox add-on</li>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.4</li>
+				</ul>
+
+				<h3>2.18.6 on September 7, 2023</h3>
+
+				<ul>
+					<li>Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox</li>
+					<li>Improved: Support for RTL languages</li>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.2</li>
+				</ul>
+
 				<h3>2.18.5 on September 1, 2023</h3>
 
 				<ul>
