@@ -1411,7 +1411,10 @@ class GravityView_Admin_Views {
 			'remove_all_fields'           => __( 'Would you like to remove all fields in this zone?', 'gk-gravityview' ),
 			'foundation_licenses_router'  => array_merge(
 				GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
-				array( 'ajaxRoute' => 'activate_product' )
+				[
+					'ajaxRoute' => 'activate_product',
+					'frontendFoundationVersion' => GravityKitFoundation::VERSION,
+				]
 			)
 		) );
 

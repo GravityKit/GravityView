@@ -1458,13 +1458,14 @@
 				vcfg.performingAjaxAction = true;
 				$( '.gv-view-template-notice' ).hide();
 
-				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter } = window.gvGlobals.foundation_licenses_router;
+				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter, frontendFoundationVersion } = window.gvGlobals.foundation_licenses_router;
 
 				const request = {
 					nonce,
 					action,
 					ajaxRouter,
 					ajaxRoute,
+					frontendFoundationVersion,
 					payload
 				};
 
@@ -1510,7 +1511,7 @@
 				}
 
 				$.when( server_request( 'activate_product', {
-						path: $link.attr( 'data-template-path' ),
+						text_domain: $link.attr( 'data-template-text-domain' ),
 					} ) )
 					.then( on_success )
 					.always( do_always )

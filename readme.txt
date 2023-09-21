@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Added: Support for embedding Views inside [WooCommerce Account Pages](https://iconicwp.com/products/woocommerce-account-pages/)
 * Improved: `[gvlogic]` shortcode now works with the [Dashboard Views](https://github.com/GravityKit/Dashboard-Views) add-on in the WordPress admin area
 * Fixed: The Recent Entries widget results would be affected when browsing a View: the search query, page number, and sorting would affect the displayed entries
+* Fixed: Activation of View types (e.g., Maps, DataTables) would fail in the View editor
 
 __Developer Updates:__
 
