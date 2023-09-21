@@ -2,16 +2,16 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.18.6\n"
+"Project-Id-Version: GravityView 2.18.7\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-19T19:27:36+00:00\n"
+"POT-Creation-Date: 2023-09-21T23:48:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.8.1\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
@@ -314,7 +314,7 @@ msgid "Uninstall GravityView"
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:468
-msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co"
+msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravitykit.com"
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:474
@@ -351,7 +351,7 @@ msgid "Thank you for using GravityView!"
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:516
-msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co"
+msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravitykit.com"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:53
@@ -1805,23 +1805,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:870
+#: includes/class-admin-welcome.php:889
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:920
+#: includes/class-admin-welcome.php:939
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:958
+#: includes/class-admin-welcome.php:977
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:990
+#: includes/class-admin-welcome.php:1009
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:991
+#: includes/class-admin-welcome.php:1010
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2982,7 +2982,7 @@ msgid "Display Name (Example: \"Ellen Ripley\")"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:138
-msgid "User Email (Example: \"ellen@gravityview.co\")"
+msgid "User Email (Example: \"ellen@gravitykit.com\")"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:139
@@ -3235,46 +3235,6 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-gravatar.php:138
 msgid "Size in Pixels"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-gravity_forms.php:28
-#: includes/widgets/class-gravityview-widget-gravityforms.php:69
-msgid "Gravity Forms"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-gravity_forms.php:29
-#: includes/widgets/class-gravityview-widget-gravityforms.php:28
-msgid "Display a Gravity Forms form."
-msgstr ""
-
-#: includes/fields/class-gravityview-field-gravity_forms.php:41
-#: includes/widgets/class-gravityview-widget-gravityforms.php:38
-msgid "Form to display"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-gravity_forms.php:47
-#: includes/widgets/class-gravityview-widget-gravityforms.php:44
-msgid "Show form title?"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-gravity_forms.php:52
-#: includes/widgets/class-gravityview-widget-gravityforms.php:49
-msgid "Show form description?"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-gravity_forms.php:57
-#: includes/widgets/class-gravityview-widget-gravityforms.php:54
-msgid "Enable AJAX"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-gravity_forms.php:64
-#: includes/widgets/class-gravityview-widget-gravityforms.php:61
-msgid "Field value parameters"
-msgstr ""
-
-#: includes/fields/class-gravityview-field-gravity_forms.php:65
-#: includes/widgets/class-gravityview-widget-gravityforms.php:62
-msgid "Learn how to dynamically populate a field."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-hidden.php:23
@@ -4065,6 +4025,38 @@ msgstr ""
 
 #: includes/widgets/class-gravityview-widget-custom-content.php:33
 msgid "Enter text or HTML. Also supports shortcodes."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:28
+msgid "Display a Gravity Forms form."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:38
+msgid "Form to display"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:44
+msgid "Show form title?"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:49
+msgid "Show form description?"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:54
+msgid "Enable AJAX"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:61
+msgid "Field value parameters"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:62
+msgid "Learn how to dynamically populate a field."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-gravityforms.php:69
+msgid "Gravity Forms"
 msgstr ""
 
 #: includes/widgets/class-gravityview-widget-page-links.php:16
@@ -6546,4 +6538,84 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""
