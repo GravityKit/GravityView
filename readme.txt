@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Improved: `[gvlogic]` shortcode now works with the [Dashboard Views](https://github.com/GravityKit/Dashboard-Views) add-on in the WordPress admin area
 * Fixed: The Recent Entries widget results would be affected when browsing a View: the search query, page number, and sorting would affect the displayed entries
 * Fixed: Activation of View types (e.g., Maps, DataTables) would fail in the View editor
+* Fixed: Image preview (file upload field) not working if the file is uploaded to Dropbox using the Gravity Forms Dropbox add-on
 
 __Developer Updates:__
 
