@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-members.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2022, Katz Web Services, Inc.
  *
  * @since 2.14.1

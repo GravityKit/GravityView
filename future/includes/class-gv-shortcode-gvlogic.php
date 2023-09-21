@@ -43,10 +43,6 @@ class gvlogic extends \GV\Shortcode {
 	public function callback( $atts, $content = '', $tag = '' ) {
 		$request = gravityview()->request;
 
-		if ( $request->is_admin() ) {
-			return apply_filters( 'gravityview/shortcodes/gvlogic/output', '', $atts );
-		}
-
 		$atts = $this->parse_atts( $atts, $content, $tag );
 
 		$content = \GravityView_Merge_Tags::replace_get_variables( $content );
