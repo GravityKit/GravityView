@@ -5,8 +5,8 @@
  * @file      class-gravityview-preset-business-data.php
  * @since     1.15
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @package   GravityView
@@ -22,7 +22,7 @@ class GravityView_Preset_Business_Data extends GravityView_Default_Template_Tabl
 			'label'         => __( 'Business Data', 'gk-gravityview' ),
 			'description'   => __( 'Display business information in a table.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/business-data/logo-business-data.png', GRAVITYVIEW_FILE ),
-			//'preview'       => 'http://demo.gravityview.co/blog/view/business-table/',
+			//'preview'       => 'http://demo.gravitykit.com/blog/view/business-table/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.json',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-business-data.xml'
 		);

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-18T16:18:10+00:00\n"
+"POT-Creation-Date: 2023-09-19T19:27:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.8.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -3596,7 +3596,6 @@ msgid "Radio Buttons"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-section.php:24
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:160
 msgid "Section"
 msgstr ""
 
@@ -5126,7 +5125,6 @@ msgid "[product] is required by other products to be active. Click this link to 
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:260
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:148
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[product] is required by [products] to be active. Are you sure you want to deactivate it?"
 msgstr ""
@@ -5797,85 +5795,6 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:144
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Updating [product]"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:145
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Updating [current] of [total]"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:146
-msgid "Cancelling…"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:147
-msgid "Incorrect data received from the server."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:149
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "[product] is installed from a Git repository. Are you sure you want to continue?"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:151
-msgid "Reloading the UI…"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:152
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Changes to [product] require reloading the UI."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:153
-msgid "Required"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:154
-msgid "Are you sure you want to clear unsaved changes?"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:155
-msgid "plugin icon"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:156
-msgid "Close Navigation"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:157
-msgid "Open Navigation"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:158
-msgid "Quick search..."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:159
-msgid "Product Navigation"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:161
-msgid "Save Settings"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:162
-msgid "Saving..."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:163
-msgid "Floaty logo"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:164
-msgid "The settings data couldn't be loaded."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:165
-msgid "Please [link]contact support[/link]."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:166
-msgid "Select All"
 msgstr ""
 
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:127

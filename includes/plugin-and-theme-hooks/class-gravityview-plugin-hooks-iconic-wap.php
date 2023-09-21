@@ -5,7 +5,7 @@
  * @file      class-gravityview-plugin-hooks-iconic-wap.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravitykit.com>
+ * @author    GravityKit <hello@gravitykit.com>
  * @link      https://www.gravitykit.com
  * @copyright Copyright 2023, Katz Web Services, Inc.
  *

@@ -10,7 +10,7 @@ if ( ! class_exists( 'GV_RESTUnitTestCase' ) ) {
  * @package   GravityView
  * @license   GPL2+
  * @author    Josh Pollock <josh@joshpress.net>
- * @link      http://gravityview.co
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 2.0
@@ -767,7 +767,7 @@ return;
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 			'7' => serialize( array(
 				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
@@ -824,7 +824,7 @@ return;
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 			'7' => serialize( array(
 				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
@@ -840,7 +840,7 @@ return;
 
 		$data = $response->get_data();
 
-		$this->assertEquals( 'support@gravityview.co', $data[4] );
+		$this->assertEquals( 'support@gravitykit.com', $data[4] );
 		$this->assertEquals( array(
 			array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 			array( 'Column 1' => 'three', 'Column 2' => 'four' ),
