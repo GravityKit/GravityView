@@ -10,7 +10,7 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 		<label for="<?php echo $this->get_field_id(); ?>" class="<?php echo $this->get_label_class(); ?>"><?php
 
 			echo '<span class="gv-label">'.$this->get_field_label().'</span>';
-			echo $this->get_tooltip() . $this->get_field_desc();
+			echo $this->get_tooltip();
 		?><div>
 				<?php $this->render_input(); ?>
 			</div>
@@ -50,6 +50,7 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 
 		$rows = rgar( $this->field, 'rows', $default_rows );
 
+		echo $this->get_field_desc();
 		?>
 		<textarea name="<?php echo esc_attr( $this->name ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>"
 				  id="<?php echo $this->get_field_id(); ?>"
