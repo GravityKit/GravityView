@@ -101,7 +101,7 @@ class GravityView_frontend {
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
 
-		// Enqueue and print styles in the footer. Added 1 priorty so stuff gets printed at 10 priority.
+		// Enqueue and print styles in the footer. Added 1 priority so stuff gets printed at 10 priority.
 		add_action( 'wp_print_footer_scripts', array( $this, 'add_scripts_and_styles' ), 1 );
 
 		add_filter( 'the_title', array( $this, 'single_entry_title' ), 1, 2 );
@@ -1552,8 +1552,10 @@ class GravityView_frontend {
 
 				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, true );
 
-				// TODO: Add filter for script position ("after").
-				wp_add_inline_script( 'gravityview-fe-view', $view->settings->get('custom_javascript' ), 'after' );
+				// Only print once.
+				if ( 'wp_print_footer_scripts' !== current_filter() ) {
+					wp_add_inline_script( 'gravityview-fe-view', $view->settings->get('custom_javascript' ), 'after' );
+				}
 
 				wp_enqueue_script( 'gravityview-fe-view' );
 
@@ -1565,8 +1567,13 @@ class GravityView_frontend {
 
 				self::add_style( $template_id );
 
-				if( $custom_css = $view->settings->get( 'custom_css', null ) ) {
-					wp_add_inline_style( 'gravityview_default_style', $custom_css );
+				// Only print once.
+				if ( 'wp_print_footer_scripts' !== current_filter() ) {
+					$custom_css = $view->settings->get( 'custom_css', null );
+
+					if ( $custom_css ) {
+						wp_add_inline_style( 'gravityview_default_style', $custom_css );
+					}
 				}
 			}
 
