@@ -580,7 +580,7 @@ class View_Settings extends Settings {
 				'custom_css'        => array(
 					'label'             => __( 'Custom CSS', 'gk-gravityview' ),
 					'group'             => 'default',
-					'desc'              => '',
+					'desc'              => esc_html__( 'CSS will be added to the header after GravityView styles have been enqueued.', 'gk-gravityview' ),
 					'type'              => 'textarea',
 					'rows'              => 15,
 					'class'             => 'code widefat',
@@ -596,7 +596,7 @@ class View_Settings extends Settings {
 				'custom_javascript' => array(
 					'label'             => __( 'Custom JavaScript', 'gk-gravityview' ),
 					'group'             => 'default',
-					'desc'              => '',
+					'desc'              => esc_html__( 'JavaScript added here will be processed in the header after GravityView scripts have been enqueued.', 'gk-gravityview' ),
 					'type'              => 'textarea',
 					'rows'              => 15,
 					'class'             => 'code widefat',
