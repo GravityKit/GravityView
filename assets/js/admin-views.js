@@ -1050,6 +1050,11 @@
 					undoDepth: 1000
 				} );
 
+				// If Merge Tags aren't enabled, don't continue.
+				if ( ! $( this ).hasClass( 'merge-tag-support' ) ) {
+					return;
+				}
+
 				// Leave room for
 				editor.codemirror.setSize( '95%' );
 				var $textarea = $( this );
