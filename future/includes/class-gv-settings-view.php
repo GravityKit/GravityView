@@ -584,7 +584,9 @@ class View_Settings extends Settings {
 					'type'              => 'textarea',
 					'rows'              => 15,
 					'class'             => 'code widefat',
-					'lang'              => 'css',
+					'codemirror'        => [
+						'mode' => 'css',
+					],
 					'value'             => '',
 					'tooltip'           => false,
 					'merge_tags'        => false,
@@ -598,7 +600,9 @@ class View_Settings extends Settings {
 					'type'              => 'textarea',
 					'rows'              => 15,
 					'class'             => 'code widefat',
-					'lang'              => 'javascript',
+					'codemirror'        => [
+						'mode' => 'javascript',
+					],
 					'merge_tags'        => false,
 					'value'             => '',
 					'tooltip'           => false,
