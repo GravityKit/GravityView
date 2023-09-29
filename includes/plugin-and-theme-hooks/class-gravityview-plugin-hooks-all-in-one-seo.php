@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-all-in-one-seo.php
  * @since     2.10.3
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2021, Katz Web Services, Inc.
  *
  * @package   GravityView

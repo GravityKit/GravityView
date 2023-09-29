@@ -6,8 +6,8 @@
  * @file      abstract-gravityview-plugin-and-theme-hooks.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.15.2
@@ -99,22 +99,36 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	}
 
 	/**
+	 * Returns whether the plugin/theme exists based on the class, function, or constant name.
+	 *
+	 * @since 2.18.7
+	 *
+	 * @return bool Whether the plugin or theme is active.
+	 */
+	protected function is_active() {
+		$class_exists = $this->class_name && class_exists( $this->class_name );
+		$function_exists = $this->function_name && function_exists( $this->function_name );
+		$constant_defined = $this->constant_name && defined("{$this->constant_name}");
+
+		return ( $class_exists || $function_exists || $constant_defined );
+	}
+
+	/**
 	 * Check whether plugin or theme exists. If so, add hooks.
 	 * This is to reduce load time, since `apply_filters()` isn't free.
 	 * If the class name or function name or constant exists for a plugin or theme, add hooks
-	 * If the class/function/definition aren't speicifed add the hooks
+	 * If the class/function/definition aren't specified, return.
 	 *
 	 * @since 1.15.2
 	 * @return void
 	 */
 	private function maybe_add_hooks() {
-		$class_exists = $this->class_name && class_exists( $this->class_name );
-		$function_exists = $this->function_name && function_exists( $this->function_name );
-		$constant_defined = $this->constant_name && defined("{$this->constant_name}");
 
-		if( $class_exists || $function_exists || $constant_defined ) {
-			$this->add_hooks();
+		if( ! $this->is_active() ) {
+			return;
 		}
+
+		$this->add_hooks();
 	}
 
 	/**

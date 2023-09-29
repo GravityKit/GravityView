@@ -465,7 +465,7 @@ HTML;
 				} );
 
 				function gv_feedback_append_error_message() {
-					$( '#gv-uninstall-thanks' ).append( '<div class="notice error">' + <?php echo json_encode( esc_html( __( 'There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co', 'gk-gravityview' ) ) ) ?> +'</div>' );
+					$( '#gv-uninstall-thanks' ).append( '<div class="notice error">' + <?php echo json_encode( esc_html( __( 'There was an error sharing your feedback. Sorry! Please email us at support@gravitykit.com', 'gk-gravityview' ) ) ) ?> +'</div>' );
 				}
 			} );
 		</script>
@@ -513,7 +513,7 @@ HTML;
 		<div id="gv-uninstall-thanks" class="<?php echo ( gravityview()->plugin->is_GF_25() ) ? 'notice-large' : 'notice notice-large notice-updated below-h2'; ?>" style="display:none;">
 			<h3 class="notice-title"><?php esc_html_e( 'Thank you for using GravityView!', 'gk-gravityview' ); ?></h3>
 			<p><?php echo gravityview_get_floaty(); ?>
-				<?php echo make_clickable( esc_html__( 'Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co', 'gk-gravityview' ) ); ?>
+				<?php echo make_clickable( esc_html__( 'Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravitykit.com', 'gk-gravityview' ) ); ?>
 			</p>
 			<div class="wp-clearfix"></div>
 		</div>

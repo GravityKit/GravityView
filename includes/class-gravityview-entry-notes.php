@@ -4,7 +4,7 @@
  * @license     GPL2+
  * @since       1.15
  * @author      Katz Web Services, Inc.
- * @link        http://gravityview.co
+ * @link        http://www.gravitykit.com
  * @copyright   Copyright 2016, Katz Web Services, Inc.
  */
 

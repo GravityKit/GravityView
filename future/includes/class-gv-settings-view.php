@@ -84,7 +84,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5e9a1f8904286364bc98931f',
-						'url' => 'https://docs.gravityview.co/article/705-view-settings-enable-lightbox-for-images',
+						'url' => 'https://docs.gravitykit.com/article/705-view-settings-enable-lightbox-for-images',
 					),
 				),
 				'show_only_approved'          => array(
@@ -97,7 +97,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5bad1a33042863158cc6d396',
-						'url' => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
+						'url' => 'https://docs.gravitykit.com/article/490-entry-approval-gravity-forms',
 					),
 				),
 				'no_entries_options'          => array(
@@ -194,7 +194,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => false,
 					'article'           => array(
 						'id'  => '5c772fa02c7d3a0cb9320a84',
-						'url' => 'https://docs.gravityview.co/article/536-how-to-hide-results-and-only-display-them-if-a-search-is-performed',
+						'url' => 'https://docs.gravitykit.com/article/536-how-to-hide-results-and-only-display-them-if-a-search-is-performed',
 					),
 				),
 				'hide_empty'                  => array(
@@ -232,7 +232,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b07997ea3f3f6b',
-						'url' => 'https://docs.gravityview.co/article/77-user-edit-allow-users-to-edit-their-own-entries',
+						'url' => 'https://docs.gravitykit.com/article/77-user-edit-allow-users-to-edit-their-own-entries',
 					),
 				),
 				'unapprove_edit'              => array(
@@ -246,7 +246,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5ddd81d504286364bc923957',
-						'url' => 'https://docs.gravityview.co/article/657-unapproving-edited-entries-automatically',
+						'url' => 'https://docs.gravitykit.com/article/657-unapproving-edited-entries-automatically',
 					),
 				),
 				'user_delete'                 => array(
@@ -259,7 +259,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bb9e4b0512429885512',
-						'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
+						'url' => 'https://docs.gravitykit.com/article/66-configuring-delete-entry',
 					),
 				),
 				'user_duplicate'              => array(
@@ -270,7 +270,7 @@ class View_Settings extends Settings {
 					'tooltip'           => __( 'Display "Duplicate Entry" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators.', 'gk-gravityview' ),
 					'article'           => array(
 						'id'  => '5df11eb704286364bc92bf36',
-						'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
+						'url' => 'https://docs.gravitykit.com/article/66-configuring-delete-entry',
 					),
 					'type'              => 'checkbox',
 					'show_in_shortcode' => true,
@@ -288,7 +288,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b051242988551a',
-						'url' => 'https://docs.gravityview.co/article/74-sorting-results-by-field-value',
+						'url' => 'https://docs.gravitykit.com/article/74-sorting-results-by-field-value',
 					),
 				),
 				'sort_direction'              => array(
@@ -304,7 +304,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5c9d338a2c7d3a1544617f9b',
-						'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+						'url' => 'https://docs.gravitykit.com/article/570-sorting-by-multiple-columns',
 					),
 				),
 				'sort_field_2'                => array(
@@ -320,7 +320,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5c9d338a2c7d3a1544617f9b',
-						'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+						'url' => 'https://docs.gravitykit.com/article/570-sorting-by-multiple-columns',
 					),
 				),
 				'sort_direction_2'            => array(
@@ -336,7 +336,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5c9d338a2c7d3a1544617f9b',
-						'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+						'url' => 'https://docs.gravitykit.com/article/570-sorting-by-multiple-columns',
 					),
 				),
 				'sort_columns'                => array(
@@ -356,7 +356,7 @@ class View_Settings extends Settings {
 					),
 					'article'           => array(
 						'id'  => '54ee1246e4b034c37ea91c11',
-						'url' => 'https://docs.gravityview.co/article/230-enabling-the-table-column-sorting-feature',
+						'url' => 'https://docs.gravitykit.com/article/230-enabling-the-table-column-sorting-feature',
 					),
 				),
 				'start_date'                  => array(
@@ -369,7 +369,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b0512429885520',
-						'url' => 'https://docs.gravityview.co/article/79-using-relative-start-dates-and-end-dates',
+						'url' => 'https://docs.gravitykit.com/article/79-using-relative-start-dates-and-end-dates',
 					),
 				),
 				'end_date'                    => array(
@@ -382,7 +382,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b0512429885520',
-						'url' => 'https://docs.gravityview.co/article/79-using-relative-start-dates-and-end-dates',
+						'url' => 'https://docs.gravitykit.com/article/79-using-relative-start-dates-and-end-dates',
 					),
 				),
 				'class'                       => array(
@@ -426,7 +426,7 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 					'article'           => array(
 						'id'  => '54c67bcee4b07997ea3f3f9a',
-						'url' => 'https://docs.gravityview.co/article/121-changing-the-single-entry-page-title',
+						'url' => 'https://docs.gravitykit.com/article/121-changing-the-single-entry-page-title',
 					),
 				),
 				'back_link_label'             => array(
@@ -455,7 +455,7 @@ class View_Settings extends Settings {
 					),
 					'article' => array(
 						'id'  => '5e9a3e0c2c7d3a7e9aeb2efb',
-						'url' => 'https://docs.gravityview.co/article/707-view-settings-redirect-after-editing',
+						'url' => 'https://docs.gravitykit.com/article/707-view-settings-redirect-after-editing',
 					),
 				),
 				'edit_return_context'         => array(
@@ -473,7 +473,7 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 					'article'           => array(
 						'id'  => '5e9a3e0c2c7d3a7e9aeb2efb',
-						'url' => 'https://docs.gravityview.co/article/707-view-settings-redirect-after-editing',
+						'url' => 'https://docs.gravitykit.com/article/707-view-settings-redirect-after-editing',
 					),
 				),
 				'edit_redirect_url'           => array(
@@ -537,7 +537,7 @@ class View_Settings extends Settings {
 					'value'      => true,
 					'article'    => array(
 						'id'  => '5e4449d72c7d3a7e9ae7a54c',
-						'url' => 'https://docs.gravityview.co/article/676-entry-locking',
+						'url' => 'https://docs.gravitykit.com/article/676-entry-locking',
 					),
 				),
 				'delete_redirect'             => array(
@@ -644,7 +644,7 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 					'article'           => array(
 						'id'  => '5bad2a0c042863158cc6d4ac',
-						'url' => 'https://docs.gravityview.co/article/491-csv-export',
+						'url' => 'https://docs.gravitykit.com/article/491-csv-export',
 					),
 				),
 			),

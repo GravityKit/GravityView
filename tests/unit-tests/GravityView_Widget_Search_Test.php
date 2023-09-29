@@ -504,7 +504,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker
+	 * https://docs.gravitykit.com/article/115-changing-the-format-of-the-search-widgets-date-picker
 	 */
 	public function get_gv_start_end_formats() {
 		return array(
@@ -639,7 +639,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'support@gravityview.co',
+			'4'  => 'support@gravitykit.com',
 			'16' => 'Contact us if you have any questions.',
 		) );
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
@@ -649,7 +649,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'gravityview.co',
+			'4'  => 'gravitykit.com',
 			'16' => 'Our website.',
 		) );
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
@@ -659,7 +659,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'support@gravityview.co',
+			'4'  => 'support@gravitykit.com',
 			'16' => 'Contact us if you have any questions.',
 		) );
 

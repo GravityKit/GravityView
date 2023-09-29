@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -388,6 +388,9 @@ class GravityView_API {
 	 *
 	 * Uses local static variable to speed up repeated requests to get permalink, which improves load time. Since we may be doing this hundreds of times per request, it adds up!
 	 *
+	 * @used-by GravityView_API::entry_link()
+	 * @used-by GravityView_Widget_Page_Links::render_frontend()
+	 *
 	 * @param int $post_id Post ID
 	 * @param boolean $add_query_args Add pagination and sorting arguments
 	 *
@@ -645,6 +648,11 @@ class GravityView_API {
 	 * @since 1.7.3 Added $add_directory_args parameter
 	 * @since 2.7.2 Added $view_id parameter
 	 * @since 2.10  Added $_GET args to links by default. Use `gravityview/entry_link/add_query_args` filter to override.
+	 *
+	 * @used-by GravityView_Entry_List::get_output()
+	 * @used-by GravityView_Delete_Entry::get_delete_link()
+	 * @used-by GravityView_Edit_Entry::get_edit_link()
+	 * @used-by GravityView_Entry_Link_Shortcode::shortcode()
 	 *
 	 * @param  array|int $entry   Entry array or entry ID.
 	 * @param  int|null $post_id If wanting to define the parent post, pass a post ID.
