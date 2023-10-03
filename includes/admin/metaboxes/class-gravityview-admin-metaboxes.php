@@ -175,6 +175,14 @@ class GravityView_Admin_Metaboxes {
 				'callback' => '',
 				'callback_args' => '',
 			),
+			array(
+				'id' => 'advanced',
+				'title' => __( 'Custom Code', 'gk-gravityview' ),
+				'file' => 'custom-code.php',
+				'icon-class' => 'dashicons-editor-code',
+				'callback' => '',
+				'callback_args' => '',
+			),
 		);
 
 		/**

@@ -3,8 +3,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -439,6 +439,11 @@ $gv-overlay-index: 10000;
 		.wp-picker-input-wrap label {
 			display: inline-block;
 		}
+	}
+
+	.howto {
+		margin: .25em 0 .5em;
+		font-weight: normal;
 	}
 
 	li .nav-tab {
@@ -2005,7 +2010,7 @@ $dialog-button-padding: 5px;
 
 /**
  * Hidden labels in the merge tag picker end up not breaking the flow.
- * @see https://i.gravityview.co/R1oaj9+
+ * @see https://i.gravitykit.com/R1oaj9+
  */
 .gform-admin .gform-visually-hidden,
 #gv-view-configuration-tabs .gform-visually-hidden {

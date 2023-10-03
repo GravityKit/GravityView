@@ -238,7 +238,7 @@ EOD;
 			'{hide_notice_link}'            => esc_url( $dismiss_notice_link ),
 			'{message}'                     => esc_html( wptexturize( __( 'The "Show only approved entries" setting is enabled, so only entries that have been approved are displayed.', 'gk-gravityview' ) ) ),
 			'{learn_more}'                  => esc_html__( 'Learn about entry approval.', 'gk-gravityview' ),
-			'{learn_more_link}'             => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
+			'{learn_more_link}'             => 'https://docs.gravitykit.com/article/490-entry-approval-gravity-forms',
 			'{disable_setting}'             => esc_html( wptexturize( __( 'Disable the "Show only approved entries" setting for this View', 'gk-gravityview' ) ) ),
 			'{disable_setting_description}' => esc_html( wptexturize( __( 'Click to immediately disable the "Show only approved entries" setting. All entry statuses will be shown.', 'gk-gravityview' ) ) ),
 			'{disable_setting_link}'        => esc_url( $disable_setting_link ),
@@ -380,7 +380,7 @@ EOD;
 		$message = __( 'Please <a href="%s">read this article</a> for more information.', 'gk-gravityview' );
 		$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
 
-		$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://docs.gravityview.co/article/659-reserved-urls' ) );
+		$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://docs.gravitykit.com/article/659-reserved-urls' ) );
 
 		echo \GVCommon::generate_notice( $output, 'gv-error error', 'edit_gravityview', $gravityview->view->ID );
 	}

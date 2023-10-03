@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -1046,12 +1046,26 @@
 			var vcfg = viewConfiguration;
 
 			$( 'textarea.code:visible', dialog ).each( function () {
-				var editor = wp.codeEditor.initialize( $( this ), {
-					undoDepth: 1000
-				} );
 
-				// Leave room for
+				// Define a default configuration
+				const codemirrorConfig = $.extend( true, {}, wp.codeEditor.defaultSettings );
+
+				let attributeValue = $( this ).data( 'codemirror' );
+				if ( attributeValue ) {
+					codemirrorConfig.codemirror = $.extend( {}, codemirrorConfig.codemirror, attributeValue );
+				}
+
+				// And then instantiate CodeMirror using those settings, which will then extend the WP defaults.
+				let editor = wp.codeEditor.initialize( $( this ), codemirrorConfig );
+
+				// If Merge Tags aren't enabled, don't continue.
+				if ( ! $( this ).hasClass( 'merge-tag-support' ) ) {
+					return;
+				}
+
+				// Leave room for Merge Tags icon.
 				editor.codemirror.setSize( '95%' );
+
 				var $textarea = $( this );
 				var editorId = $textarea.attr( 'id' );
 				var mergeTags = window.gfMergeTags.getAutoCompleteMergeTags( $textarea );
@@ -1458,13 +1472,14 @@
 				vcfg.performingAjaxAction = true;
 				$( '.gv-view-template-notice' ).hide();
 
-				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter } = window.gvGlobals.foundation_licenses_router;
+				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter, frontendFoundationVersion } = window.gvGlobals.foundation_licenses_router;
 
 				const request = {
 					nonce,
 					action,
 					ajaxRouter,
 					ajaxRoute,
+					frontendFoundationVersion,
 					payload
 				};
 
@@ -1510,7 +1525,7 @@
 				}
 
 				$.when( server_request( 'activate_product', {
-						path: $link.attr( 'data-template-path' ),
+						text_domain: $link.attr( 'data-template-text-domain' ),
 					} ) )
 					.then( on_success )
 					.always( do_always )
@@ -2613,11 +2628,20 @@
 				// Make tabs
 				.tabs( {
 					active: active_settings_tab,
+					create: function ( event, ui ) {
+						// When the Custom Code tab is active on-load, we need a small amount of
+						// time before instantiating CodeMirror.
+						setTimeout( function() {
+							viewConfiguration.setupCodeMirror( ui.panel );
+						}, 50 );
+					},
 					activate: function ( event, ui ) {
 						// When the tab is activated, set a new cookie
 						$.cookie( cookie_key, ui.newTab.index(), {
 							path: gvGlobals.admin_cookiepath
 						} );
+
+						viewConfiguration.setupCodeMirror( ui.newPanel );
 					}
 				} )
 				.addClass( "ui-tabs-vertical ui-helper-clearfix" )

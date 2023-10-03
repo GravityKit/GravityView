@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -1411,7 +1411,10 @@ class GravityView_Admin_Views {
 			'remove_all_fields'           => __( 'Would you like to remove all fields in this zone?', 'gk-gravityview' ),
 			'foundation_licenses_router'  => array_merge(
 				GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
-				array( 'ajaxRoute' => 'activate_product' )
+				[
+					'ajaxRoute' => 'activate_product',
+					'frontendFoundationVersion' => GravityKitFoundation::VERSION,
+				]
 			)
 		) );
 

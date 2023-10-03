@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.18.6\n"
+"Project-Id-Version: GravityView 2.18.7\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-09-07T22:23:23+00:00\n"
+"POT-Creation-Date: 2023-09-21T23:48:07+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -314,7 +314,7 @@ msgid "Uninstall GravityView"
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:468
-msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co"
+msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravitykit.com"
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:474
@@ -351,7 +351,7 @@ msgid "Thank you for using GravityView!"
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:516
-msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co"
+msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravitykit.com"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:53
@@ -573,7 +573,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:286
 #: future/includes/class-gv-settings-view.php:317
-#: includes/class-common.php:1600
+#: includes/class-common.php:1609
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -682,7 +682,7 @@ msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:438
-#: includes/class-api.php:998
+#: includes/class-api.php:1006
 msgid "&larr; Go back"
 msgstr ""
 
@@ -1509,7 +1509,7 @@ msgid "Use this form to embed a View into this %s. %sLearn more about using shor
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:102
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:301
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:307
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/entry.js:1
@@ -1524,7 +1524,7 @@ msgid "&mdash; Select a View to Insert &mdash;"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:108
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:307
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:313
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:197
 msgid "(no title)"
 msgstr ""
@@ -1805,23 +1805,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:870
+#: includes/class-admin-welcome.php:889
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:920
+#: includes/class-admin-welcome.php:939
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:958
+#: includes/class-admin-welcome.php:977
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:990
+#: includes/class-admin-welcome.php:1009
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:991
+#: includes/class-admin-welcome.php:1010
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -1943,7 +1943,7 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-api.php:1416
+#: includes/class-api.php:1424
 msgid "Map It"
 msgstr ""
 
@@ -1964,16 +1964,16 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1553
+#: includes/class-common.php:1562
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1604
+#: includes/class-common.php:1613
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1735
+#: includes/class-common.php:1744
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1986,7 +1986,7 @@ msgid "You did not enter a number. The value entered should be a number, represe
 msgstr ""
 
 #: includes/class-data.php:308
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:335
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:341
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:225
 msgid "Learn more&hellip;"
 msgstr ""
@@ -2982,7 +2982,7 @@ msgid "Display Name (Example: \"Ellen Ripley\")"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:138
-msgid "User Email (Example: \"ellen@gravityview.co\")"
+msgid "User Email (Example: \"ellen@gravitykit.com\")"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:139
@@ -3392,17 +3392,17 @@ msgid "Display other entries created by the entry creator."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:51
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:348
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:354
 msgid "Entry link text (required)"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:52
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:254
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:260
 msgid "Entry #{entry_id}"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:59
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:355
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:361
 msgid "Text or HTML to display after the link (optional)"
 msgstr ""
 
@@ -3556,7 +3556,6 @@ msgid "Radio Buttons"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-section.php:24
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:160
 msgid "Section"
 msgstr ""
 
@@ -4344,35 +4343,35 @@ msgstr ""
 msgid "Display the most recent entries for a View"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:250
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:256
 msgid "Recent Entries"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:264
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:270
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
 msgid "Title:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:293
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:299
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:184
 msgid "Please select a View to search."
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:303
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:309
 msgid "&mdash; Select a View as Entries Source &mdash;"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:331
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:337
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
 msgid "If Embedded, Page ID:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:334
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:340
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:224
 msgid "To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded."
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:341
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:347
 msgid "Number of entries to show:"
 msgstr ""
 
@@ -4922,11 +4921,11 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "We don't need to see your [plugin] details to provide support (if [plugin] is enabled)."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:200
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:195
 msgid "You do not have permission to view this page."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:242
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:237
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:182
 msgid "Manage Your Kit"
 msgstr ""
@@ -5118,7 +5117,6 @@ msgid "[product] is required by other products to be active. Click this link to 
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:260
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:148
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[product] is required by [products] to be active. Are you sure you want to deactivate it?"
 msgstr ""
@@ -5789,85 +5787,6 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:144
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Updating [product]"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:145
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Updating [current] of [total]"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:146
-msgid "Cancelling…"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:147
-msgid "Incorrect data received from the server."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:149
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "[product] is installed from a Git repository. Are you sure you want to continue?"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:151
-msgid "Reloading the UI…"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:152
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Changes to [product] require reloading the UI."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:153
-msgid "Required"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:154
-msgid "Are you sure you want to clear unsaved changes?"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:155
-msgid "plugin icon"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:156
-msgid "Close Navigation"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:157
-msgid "Open Navigation"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:158
-msgid "Quick search..."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:159
-msgid "Product Navigation"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:161
-msgid "Save Settings"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:162
-msgid "Saving..."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:163
-msgid "Floaty logo"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:164
-msgid "The settings data couldn't be loaded."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:165
-msgid "Please [link]contact support[/link]."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:166
-msgid "Select All"
 msgstr ""
 
 #: vendor_prefixed/trustedlogin/client/src/Admin.php:127

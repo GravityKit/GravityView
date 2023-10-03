@@ -4,8 +4,8 @@
  *
  * @since 2.12.1
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2021, Katz Web Services, Inc.
  * @package   GravityView
  */

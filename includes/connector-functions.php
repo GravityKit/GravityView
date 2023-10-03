@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -175,14 +175,16 @@ function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
  * Get the views for a particular form
  *
  * @since 1.22.1 Added $args param
+ * @since 2.19   Added $include_joins param
  *
  * @param  int $form_id Gravity Forms form ID
  * @param  array $args Pass args sent to get_posts()
+ * @param  bool  $include_joins Whether to include forms that are joined to the View
  *
  * @return array          Array with view details
  */
-function gravityview_get_connected_views( $form_id, $args = array() ) {
-	return GVCommon::get_connected_views( $form_id, $args );
+function gravityview_get_connected_views( $form_id, $args = array(), $include_joins = true ) {
+	return GVCommon::get_connected_views( $form_id, $args, $include_joins );
 }
 
 /**

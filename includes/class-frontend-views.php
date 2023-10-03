@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -101,7 +101,7 @@ class GravityView_frontend {
 		// Enqueue scripts and styles after GravityView_Template::register_styles()
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
 
-		// Enqueue and print styles in the footer. Added 1 priorty so stuff gets printed at 10 priority.
+		// Enqueue and print styles in the footer. Added 1 priority so stuff gets printed at 10 priority.
 		add_action( 'wp_print_footer_scripts', array( $this, 'add_scripts_and_styles' ), 1 );
 
 		add_filter( 'the_title', array( $this, 'single_entry_title' ), 1, 2 );
@@ -1489,7 +1489,6 @@ class GravityView_frontend {
 
 			foreach ( $views as $view_id => $data ) {
 				$view        = \GV\View::by_id( $data['id'] );
-				$view_id     = $view->ID;
 				$template_id = gravityview_get_template_id( $view->ID );
 				$data        = $view->as_data();
 
@@ -1553,6 +1552,11 @@ class GravityView_frontend {
 
 				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, true );
 
+				// Only print once.
+				if ( 'wp_print_footer_scripts' !== current_filter() ) {
+					wp_add_inline_script( 'gravityview-fe-view', $view->settings->get('custom_javascript' ), 'after' );
+				}
+
 				wp_enqueue_script( 'gravityview-fe-view' );
 
 				if ( ! empty( $data['atts']['sort_columns'] ) ) {
@@ -1562,6 +1566,15 @@ class GravityView_frontend {
 				$this->enqueue_default_style( $css_dependencies );
 
 				self::add_style( $template_id );
+
+				// Only print once.
+				if ( 'wp_print_footer_scripts' !== current_filter() ) {
+					$custom_css = $view->settings->get( 'custom_css', null );
+
+					if ( $custom_css ) {
+						wp_add_inline_style( 'gravityview_default_style', $custom_css );
+					}
+				}
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {

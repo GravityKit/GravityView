@@ -3,7 +3,7 @@
  * Welcome Page Class
  *
  * @package   GravityView
- * @author    Zack Katz <zack@gravityview.co>
+ * @author    Zack Katz <zack@gravitykit.com>
  * @link      https://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -217,7 +217,7 @@ class GravityView_Welcome {
 			<div class="feature-section two-col has-2-columns is-fullwidth">
 				<div class="col column">
 					<h3>Embed Views in the Block Editor</h3>
-					<p>Embed Views using the "Add Shortcode" button above your content editor. <a href="https://docs.gravityview.co/article/73-using-the-shortcode">Learn how to use the <code>[gravityview]</code> shortcode.</a></p>
+					<p>Embed Views using the "Add Shortcode" button above your content editor. <a href="https://docs.gravitykit.com/article/73-using-the-shortcode">Learn how to use the <code>[gravityview]</code> shortcode.</a></p>
 				</div>
 				<div class="col column">
 					<img src="<?php echo plugins_url( 'assets/images/screenshots/shortcode-block.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of the Shortcode block" />
@@ -275,6 +275,25 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
+
+				<h3>2.18.7 on September 21, 2023</h3>
+
+				<ul>
+					<li>Added: Support for embedding Views inside <a href="https://iconicwp.com/products/woocommerce-account-pages">WooCommerce Account Pages</a></li>
+					<li>Improved: <code>[gvlogic]</code> shortcode now works with the <a href="https://github.com/GravityKit/Dashboard-Views">Dashboard Views</a> add-on</li>
+					<li>Fixed: The Recent Entries widget results would be affected when browsing a View: the search query, page number, and sorting would affect the displayed entries</li>
+					<li>Fixed: Activation of View types (e.g., Maps, DataTables) would fail in the View editor</li>
+					<li>Fixed: Image preview (file upload field) not working if the file is uploaded to Dropbox using the Gravity Forms Dropbox add-on</li>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.4</li>
+				</ul>
+
+				<h3>2.18.6 on September 7, 2023</h3>
+
+				<ul>
+					<li>Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox</li>
+					<li>Improved: Support for RTL languages</li>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.2</li>
+				</ul>
 
 				<h3>2.18.5 on September 1, 2023</h3>
 
@@ -847,7 +866,7 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Added: <code>{is_starred}</code> Merge Tag. <a
-								href='https://docs.gravityview.co/article/820-the-isstarred-merge-tag'>Learn more about
+								href='https://docs.gravitykit.com/article/820-the-isstarred-merge-tag'>Learn more about
 							using <code>{is_starred}</code></a></li>
 					<li>Fixed: Media files uploaded to Dropbox were not properly embedded</li>
 					<li>Fixed: JavaScript error when trying to edit entry's creator</li>
@@ -863,7 +882,7 @@ class GravityView_Welcome {
 				<p>We renamed all instances of <code>blacklist</code> to <code>blocklist</code> and
 					<code>whitelist</code> to <code>allowlist</code>. All methods and filters have been deprecated using
 					<code>apply_filters_deprecated()</code> and <code>_deprecated_function()</code>. <a
-							href="https://docs.gravityview.co/article/816-renamed-filters-methods-in-2-14">See a
+							href="https://docs.gravitykit.com/article/816-renamed-filters-methods-in-2-14">See a
 						complete list of modified methods and filters</a>.</p>
 
 				<p style="text-align: center;">

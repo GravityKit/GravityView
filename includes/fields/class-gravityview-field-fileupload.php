@@ -218,7 +218,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$text               = $basename;
 
 			$alt = \GV\Utils::get( $field_settings, 'alt_text' );
-			$alt = ( '' === $alt ) ? $field_settings['label'] : $alt;
+			if ( '' === $alt ) {
+				$alt = $field_settings['custom_label'] ?: $field_settings['label'];
+			}
 			$alt = GFCommon::replace_variables( $alt, GVCommon::get_form( $entry['form_id'] ), $entry );
 
 			// Audio
