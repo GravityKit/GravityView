@@ -22,5 +22,10 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	 * @since  2.5
 	 */
 	GravityView_Render_Settings::render_setting_row( 'custom_javascript', $current_settings );
+
+	/**
+	 * @since 2.19
+	 */
+	GravityView_Render_Settings::render_setting_row( 'where_to_embed_js_css', $current_settings );
 ?>
 </table>

@@ -609,6 +609,19 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => false,
 					'full_width'        => true,
 				),
+				'where_to_embed_js_css' => array(
+					'label'             => __( 'Where to embed above Javascript & CSS?', 'gk-gravityview' ),
+					'type'              => 'radio',
+					'tooltip'           => esc_html__( 'If Header is selected, above added JavaScript & CSS will be processed in the header after GravityView scripts have been enqueued else will be processed in the footer.', 'gk-gravityview' ),
+					'group'             => 'default',
+					'value'             => 'header',
+					'options'           => array(
+						'header' => __( 'Header', 'gk-gravityview' ),
+						'single' => __( 'Footer', 'gk-gravityview' ),
+					),
+					'show_in_shortcode' => false,
+					'full_width'        => true,
+				),
 			),
 			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?
 				array(
