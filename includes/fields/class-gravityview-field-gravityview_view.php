@@ -31,6 +31,9 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 		parent::__construct();
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset ( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
@@ -45,7 +48,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 			0 => esc_html__( 'Select a View', 'gk-gravityview' ),
 		];
 
-		foreach( $view_cpts as $view_cpt ) {
+		foreach ( $view_cpts as $view_cpt ) {
 			$formatted_views[ $view_cpt->ID ] = sprintf(
 				'%s (#%d)',
 				$view_cpt->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
@@ -54,27 +57,12 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 		}
 
 		$new_fields = [
-
-			'view_id' => [
-				'type' => 'select', // TODO: Use Select2 instead.
-				'label' => __( 'View to embed', 'gk-gravityview' ),
-				'value' => '',
+			'view_id'         => [
+				'type'    => 'select',
+				'label'   => __( 'View to embed', 'gk-gravityview' ),
+				'value'   => '',
 				'options' => $formatted_views,
 			],
-			/*'search_field' => [
-				'type' => 'select',
-				'label' => __( 'Search field', 'gk-gravityview' ),
-				'value' => '',
-				'options' => GravityView_Widget_Search::render_searchable_fields( $form_id ), // TODO: Make this render the fields for the selected form.
-			],*/
-			],
-			'search_value' => [
-				'type' => 'text',
-				'class' => 'code widefat',
-				'label' => __( 'Search value', 'gk-gravityview' ),
-				'value' => '',
-				'placeholder' => __( 'Example: {user:ID}', 'gk-gravityview' ),
-				'merge_tags' => 'force',
 			'search_field'    => [
 				'type'        => 'text',
 				'label'       => __( 'Search field', 'gk-gravityview' ),
@@ -88,46 +76,59 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 				),
 				'class'       => 'widefat',
 				'placeholder' => esc_html__( 'Example: created_by or 1.3', 'gk-gravityview' ),
+				'group'       => 'advanced',
 			],
 			'search_operator' => [
-				'type' => 'select',
-				'label' => __( 'Search operator', 'gk-gravityview' ),
-				'value' => 'is',
+				'type'    => 'select',
+				'label'   => __( 'Search operator', 'gk-gravityview' ),
+				'value'   => 'is',
 				'options' => [
-					'is' => __( 'is', 'gk-gravityview' ),
-					'contains' => __( 'contains', 'gk-gravityview' ),
-					'isnot' => __( 'is not', 'gk-gravityview' ),
-					'like' => __( 'like', 'gk-gravityview' ),
-					'in' => __( 'in', 'gk-gravityview' ),
+					'is'          => __( 'is', 'gk-gravityview' ),
+					'contains'    => __( 'contains', 'gk-gravityview' ),
+					'isnot'       => __( 'is not', 'gk-gravityview' ),
+					'like'        => __( 'like', 'gk-gravityview' ),
+					'in'          => __( 'in', 'gk-gravityview' ),
 					'starts_with' => __( 'starts with', 'gk-gravityview' ),
-					'ends_with' => __( 'ends with', 'gk-gravityview' ),
+					'ends_with'   => __( 'ends with', 'gk-gravityview' ),
 				],
+				'group'   => 'advanced',
 			],
-			'start_date' => [
-				'type' => 'text',
-				'label' => __( 'Override start date', 'gk-gravityview' ),
-				'value' => '',
+			'search_value'    => [
+				'type'        => 'text',
+				'class'       => 'code widefat',
+				'label'       => __( 'Search value', 'gk-gravityview' ),
+				'value'       => '',
+				'placeholder' => __( 'Example: {user:ID}', 'gk-gravityview' ),
+				'merge_tags'  => 'force',
+				'group'       => 'advanced',
+			],
+			'start_date'      => [
+				'type'        => 'text',
+				'label'       => __( 'Override start date', 'gk-gravityview' ),
+				'value'       => '',
+				'group'       => 'advanced',
 				'placeholder' => esc_html__( 'Example: -1 week', 'gk-gravityview' ),
 			],
-			'end_date' => [
-				'type' => 'text',
-				'label' => __( 'Override end date', 'gk-gravityview' ),
-				'value' => '',
+			'end_date'        => [
+				'type'        => 'text',
+				'label'       => __( 'Override end date', 'gk-gravityview' ),
+				'value'       => '',
+				'group'       => 'advanced',
 				'placeholder' => esc_html__( 'Example: tomorrow', 'gk-gravityview' ),
 			],
-			'page_size' => [
-				'type' => 'select',
-				'label' => __( 'Page size', 'gk-gravityview' ),
-				'value' => 'default',
+			'page_size'       => [
+				'type'    => 'select',
+				'label'   => __( 'Override page size', 'gk-gravityview' ),
+				'value'   => 'default',
+				'group'   => 'advanced',
 				'options' => [
 					'default' => esc_html__( 'Use View setting', 'gk-gravityview' ),
-					10               => 10,
-					25               => 25,
-					50               => 50,
-					100              => 100,
+					10        => 10,
+					25        => 25,
+					50        => 50,
+					100       => 100,
 				],
 			],
-			// TODO: sort_field, sort_direction
 		];
 
 		return $new_fields + $field_options;
