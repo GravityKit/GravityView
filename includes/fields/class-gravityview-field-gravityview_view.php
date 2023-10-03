@@ -67,11 +67,6 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 				'value' => '',
 				'options' => GravityView_Widget_Search::render_searchable_fields( $form_id ), // TODO: Make this render the fields for the selected form.
 			],*/
-			'search_field' => [
-				'type' => 'text',
-				'label' => __( 'Search field', 'gk-gravityview' ),
-				'value' => '',
-				'placeholder' => esc_html__( 'Example: created_by', 'gk-gravityview' ),
 			],
 			'search_value' => [
 				'type' => 'text',
@@ -80,6 +75,19 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 				'value' => '',
 				'placeholder' => __( 'Example: {user:ID}', 'gk-gravityview' ),
 				'merge_tags' => 'force',
+			'search_field'    => [
+				'type'        => 'text',
+				'label'       => __( 'Search field', 'gk-gravityview' ),
+				'value'       => '',
+				'desc'        => strtr(
+					__( 'Pre-filter a View by the values of a field or entry meta. [link]Learn more about pre-filtering Views.[/link]', 'gk-gravityview' ),
+					[
+						'[link]'  => '<a href="https://docs.gravitykit.com/article/73-using-the-shortcode#advanced-use-cases" target="_blank">',
+						'[/link]' => '<span class="screen-reader-text">(' . esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ) . ')</span></a>',
+					]
+				),
+				'class'       => 'widefat',
+				'placeholder' => esc_html__( 'Example: created_by or 1.3', 'gk-gravityview' ),
 			],
 			'search_operator' => [
 				'type' => 'select',
