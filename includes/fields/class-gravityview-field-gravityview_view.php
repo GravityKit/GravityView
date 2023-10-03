@@ -7,19 +7,21 @@
  */
 
 /**
- * Widget to display a Gravity Forms form
+ * Widget to display a GravityView View.
+ *
+ * @since 2.19
  */
 class GravityView_Field_GravityView_View extends GravityView_Field {
 
-	var $name = 'gravityview_view';
+	public $name = 'gravityview_view';
 
-	var $contexts = array( 'single' );
+	public $contexts = [ 'single' ];
 
-	var $group = 'gravityview';
+	public $group = 'gravityview';
 
-	var $is_searchable = false;
+	public $is_searchable = false;
 
-	var $is_sortable = false;
+	public $is_sortable = false;
 
 	public $icon = 'data:image/svg+xml,%3Csvg%20fill=%22none%22%20height=%2280%22%20viewBox=%220%200%2080%2080%22%20width=%2280%22%20xmlns=%22http://www.w3.org/2000/svg%22%20xmlns:xlink=%22http://www.w3.org/1999/xlink%22%3E%3Cpath%20clip-rule=%22evenodd%22%20d=%22m70.6842%2063.9999h-9.2135v3c0%204.9706-4.1537%209-9.2134%209h-24.5683c-5.1266%200-9.2135-4.0294-9.2135-9v-44.9999h-9.21341c-1.73812%200-3.07072%201.343-3.07072%202.9999v30c0%201.657%201.3326%203.0001%203.07072%203.0001h1.53601c.8068%200%201.5347.6715%201.5347%201.5v3c0%20.8284-.7279%201.4999-1.5347%201.4999h-1.53601c-5.13114%200-9.213445-4.0294-9.213445-9v-30c0-4.9705%204.082305-9%209.213445-9h9.21341v-2.9999c0-4.97062%204.0869-9%209.2135-9h24.5683c5.0597%200%209.2134%204.02938%209.2134%209v45h9.2135c1.6711%200%203.0707-1.3431%203.0707-3.0001v-30c0-1.6569-1.3996-2.9999-3.0707-2.9999h-1.536c-.8736%200-1.536-.6716-1.536-1.5v-3.0001c0-.8284.6624-1.5%201.536-1.5h1.536c5.0642%200%209.2121%204.0295%209.2121%209v30c0%204.9706-4.1479%209-9.2121%209zm-15.3562-50.9999c0-1.657-1.404-3-3.0707-3h-24.5683c-1.7335%200-3.0708%201.343-3.0708%203v53.9999c0%201.6568%201.3373%203.0001%203.0708%203.0001h24.5683c1.6667%200%203.0707-1.3433%203.0707-3.0001z%22%20fill=%22%2340464d%22%20fill-rule=%22evenodd%22/%3E%3C/svg%3E%0A';
 
