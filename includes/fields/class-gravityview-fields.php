@@ -45,7 +45,7 @@ final class GravityView_Fields {
 		$type = isset( $properties['type'] ) ? $properties['type'] : '';
 		$type = empty( $properties['inputType'] ) ? $type : $properties['inputType'];
 		if ( empty( $type ) || ! isset( self::$_fields[ $type ] ) ) {
-			return new GravityView_Field( $properties );
+			return false;
 		}
 		$class      = self::$_fields[ $type ];
 		$class_name = get_class( $class );
