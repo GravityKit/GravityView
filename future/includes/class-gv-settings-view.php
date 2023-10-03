@@ -577,6 +577,38 @@ class View_Settings extends Settings {
 						'url' => 'https://docs.gravitykit.com/article/288-how-gravityview-security-works',
 					),
 				),
+				'custom_css'        => array(
+					'label'             => __( 'Custom CSS', 'gk-gravityview' ),
+					'group'             => 'default',
+					'desc'              => esc_html__( 'CSS will be added to the header after GravityView styles have been enqueued.', 'gk-gravityview' ),
+					'type'              => 'textarea',
+					'rows'              => 15,
+					'class'             => 'code widefat',
+					'codemirror'        => [
+						'mode' => 'css',
+					],
+					'value'             => '',
+					'tooltip'           => false,
+					'merge_tags'        => false,
+					'show_in_shortcode' => false,
+					'full_width'        => true,
+				),
+				'custom_javascript' => array(
+					'label'             => __( 'Custom JavaScript', 'gk-gravityview' ),
+					'group'             => 'default',
+					'desc'              => esc_html__( 'JavaScript added here will be processed in the header after GravityView scripts have been enqueued.', 'gk-gravityview' ),
+					'type'              => 'textarea',
+					'rows'              => 15,
+					'class'             => 'code widefat',
+					'codemirror'        => [
+						'mode' => 'javascript',
+					],
+					'merge_tags'        => false,
+					'value'             => '',
+					'tooltip'           => false,
+					'show_in_shortcode' => false,
+					'full_width'        => true,
+				),
 			),
 			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?
 				array(

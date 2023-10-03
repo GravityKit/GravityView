@@ -10,7 +10,7 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 		<label for="<?php echo $this->get_field_id(); ?>" class="<?php echo $this->get_label_class(); ?>"><?php
 
 			echo '<span class="gv-label">'.$this->get_field_label().'</span>';
-			echo $this->get_tooltip() . $this->get_field_desc();
+			echo $this->get_tooltip();
 		?><div>
 				<?php $this->render_input(); ?>
 			</div>
@@ -24,7 +24,11 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 			return;
 		}
 
-		$class = 'widefat mt-wp_editor codemirror ';
+		$class = 'widefat mt-wp_editor ';
+
+		if ( rgar( $this->field, 'codemirror', false ) ) {
+			$class .= 'codemirror ';
+		}
 
 		$show_mt = $this->show_merge_tags();
 
@@ -46,29 +50,26 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 
 		$rows = rgar( $this->field, 'rows', $default_rows );
 
-#		$this->codemirror( $this->get_field_id() );
-
+		echo $this->get_field_desc();
 		?>
-		<textarea name="<?php echo esc_attr( $this->name ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" id="<?php echo $this->get_field_id(); ?>" class="<?php echo gravityview_sanitize_html_class( $class ); ?>" rows="<?php echo absint( $rows ); ?>"><?php echo esc_textarea(  $this->value ); ?></textarea>
+		<textarea name="<?php echo esc_attr( $this->name ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>"
+				  id="<?php echo $this->get_field_id(); ?>"
+				  class="<?php echo gravityview_sanitize_html_class( $class ); ?>"
+				  rows="<?php echo absint( $rows ); ?>"
+				  data-codemirror="<?php echo esc_attr( $this->get_codemirror_config() ); ?>"
+		><?php echo esc_textarea( $this->value ); ?></textarea>
        	<?php
 	}
 
-	function codemirror( $field_id = '' ) {
-
-        // Enqueue code editor and settings for manipulating HTML.
-        $settings = wp_enqueue_code_editor( array( 'type' => 'text/html' ) );
-
-        // Bail if user disabled CodeMirror.
-        if ( false === $settings ) {
-            return;
-        }
-
-        ?>
-
-        <script>
-	        wp.codeEditor.initialize( "<?php echo $field_id;?>", {});
-        </script>
-    <?php
-    }
+	/**
+	 * Returns a JSON-encoded value of the field's `codemirror` setting.
+	 *
+	 * @since 2.19
+	 *
+	 * @return string JSON value of `codemirror` setting.
+	 */
+	function get_codemirror_config() {
+		return json_encode( rgar( $this->field, 'codemirror', '' ) );
+	}
 
 }
