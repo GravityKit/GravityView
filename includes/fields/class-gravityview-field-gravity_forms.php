@@ -36,7 +36,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		unset ( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
 
 		$new_fields = array(
-			'form_id' => array(
+			'field_form_id' => array(
 				'type' => 'select',
 				'label' => __( 'Form to display', 'gk-gravityview' ),
 				'value' => '',
@@ -79,7 +79,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	 */
 	static public function render_frontend( $field_settings, $form, $entry ) {
 
-		$form_id = \GV\Utils::get( $field_settings, 'form_id', \GV\Utils::get( $field_settings, 'form_id' ) );
+		$form_id = \GV\Utils::get( $field_settings, 'field_form_id' );
 
 		if ( empty( $form_id ) ) {
 			return;
