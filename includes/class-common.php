@@ -119,11 +119,12 @@ class GVCommon {
 	 */
 	public static function get_all_views( $args = array() ) {
 
-		$default_params = array(
+		$default_params = [
 			'post_type'      => 'gravityview',
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
-		);
+			'exclude'        => [],
+		];
 
 		$params = wp_parse_args( $args, $default_params );
 

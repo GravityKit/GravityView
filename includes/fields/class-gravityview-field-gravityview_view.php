@@ -38,6 +38,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 		$view_cpts = GVCommon::get_all_views( [
 			'orderby' => 'post_title',
 			'order'   => 'ASC',
+			'exclude' => [ get_the_ID() ],
 		] );
 
 		$formatted_views = [
