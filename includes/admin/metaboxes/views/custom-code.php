@@ -26,6 +26,6 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	/**
 	 * @since 2.19
 	 */
-	GravityView_Render_Settings::render_setting_row( 'where_to_embed_js_css', $current_settings );
+	GravityView_Render_Settings::render_setting_row( 'embed_js_in_footer', $current_settings );
 ?>
 </table>

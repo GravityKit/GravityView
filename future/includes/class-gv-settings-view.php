@@ -609,16 +609,13 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => false,
 					'full_width'        => true,
 				),
-				'where_to_embed_js_css' => array(
-					'label'             => __( 'Where to embed above Javascript & CSS?', 'gk-gravityview' ),
-					'type'              => 'radio',
-					'tooltip'           => esc_html__( 'If Header is selected, above added JavaScript & CSS will be processed in the header after GravityView scripts have been enqueued else will be processed in the footer.', 'gk-gravityview' ),
+				'embed_js_in_footer'    => array(
+					'label'             => __( 'Embed custom Javascript code in Footer?', 'gk-gravityview' ),
 					'group'             => 'default',
-					'value'             => 'header',
-					'options'           => array(
-						'header' => __( 'Header', 'gk-gravityview' ),
-						'footer' => __( 'Footer', 'gk-gravityview' ),
-					),
+					'desc'              => __( 'Embedding JavaScript in the footer of a website is a common practice to improve website performance and ensure that your content loads quickly. Do you want to embed above custom javascript code in Footer?', 'gk-gravityview' ),
+					'type'              => 'checkbox',
+					'value'             => '',
+					'tooltip'           => false,
 					'show_in_shortcode' => false,
 					'full_width'        => true,
 				),
