@@ -111,13 +111,15 @@ final class GravityView_Fields {
 	 * @since 1.16 Added $group parameter
 	 *
 	 * @param string|array $groups Optional. If defined, fetch all fields in a group or array of groups.
+	 * @param string $context Optional. If defined, limit returned fields to those that support the defined context.
 	 *
 	 * @return GravityView_Field[]
 	 */
-	public static function get_all( $groups = '' ) {
+	public static function get_all( $groups = '', $context = '' ) {
+
+		$return_fields = self::$_fields;
 
 		if( '' !== $groups ) {
-			$return_fields = self::$_fields;
 
 			$groups = (array) $groups;
 
@@ -126,10 +128,33 @@ final class GravityView_Fields {
 					unset( $return_fields[ $key ] );
 				}
 			}
-			return $return_fields;
-		} else {
-			return self::$_fields;
 		}
+
+		if ( '' === $context ) {
+			return $return_fields;
+		}
+
+		/**
+		 * Now check to see which fields support the passed context.
+		 */
+
+		// "directory" is the old name for the "multiple entries" context.
+		if ( 'directory' === $context ) {
+			$context = 'multiple';
+		}
+
+		foreach ( $return_fields as $key => $field ) {
+
+			if ( empty( $field->contexts ) || ! is_array( $field->contexts ) ) {
+				continue;
+			}
+
+			if( ! in_array( $context, $field->contexts, true ) ) {
+				unset( $return_fields[ $key ] );
+			}
+		}
+
+		return $return_fields;
 	}
 
 }

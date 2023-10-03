@@ -7,7 +7,7 @@
  */
 
 /**
- * Widget to display a GravityView View.
+ * Field to display a GravityView View.
  *
  * @since 2.19
  */
