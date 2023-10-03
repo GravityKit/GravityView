@@ -617,7 +617,7 @@ class View_Settings extends Settings {
 					'value'             => 'header',
 					'options'           => array(
 						'header' => __( 'Header', 'gk-gravityview' ),
-						'single' => __( 'Footer', 'gk-gravityview' ),
+						'footer' => __( 'Footer', 'gk-gravityview' ),
 					),
 					'show_in_shortcode' => false,
 					'full_width'        => true,
