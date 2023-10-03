@@ -1550,9 +1550,7 @@ class GravityView_frontend {
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-				$embed_js_in_footer = 1 == $view->settings->get( 'embed_js_in_footer', 0 );
-
-				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, $embed_js_in_footer );
+				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, true );
 
 				// Only print once.
 				if ( 'wp_print_footer_scripts' !== current_filter() ) {

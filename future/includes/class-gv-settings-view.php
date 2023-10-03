@@ -609,16 +609,6 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => false,
 					'full_width'        => true,
 				),
-				'embed_js_in_footer'    => array(
-					'label'             => __( 'Embed custom JavaScript in footer?', 'gk-gravityview' ),
-					'group'             => 'default',
-					'desc'              => __( 'Embedding JavaScript in the footer of a website is a common practice to improve website performance and ensure that your content loads quickly. Do you want to embed above custom JavaScript code in Footer?', 'gk-gravityview' ),
-					'type'              => 'checkbox',
-					'value'             => '',
-					'tooltip'           => false,
-					'show_in_shortcode' => false,
-					'full_width'        => true,
-				),
 			),
 			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?
 				array(
