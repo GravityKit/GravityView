@@ -13,4 +13,4 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 $field_settings = $gravityview->field->as_configuration();
 
-GravityView_Field_GravityView_View::render_frontend( $field_settings );
+GravityView_Field_GravityView_View::render_frontend( $field_settings, $gravityview );
