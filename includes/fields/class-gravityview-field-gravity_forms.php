@@ -91,6 +91,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$ajax = \GV\Utils::get( $field_settings, 'ajax' );
 
 		// Prepare field values.
+		$field_values_array = [];
 		if ( ! empty( $field_values ) ) {
 			parse_str( \GV\Utils::get( $field_settings, 'field_values' ), $field_values_array );
 
