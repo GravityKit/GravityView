@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = 2.19 [in development] =
 
 * Added: Embed a Gravity Forms form using a field in the View editor
+* Added: Embed a GravityView View using a field in the View editor
 
 = 2.18.7 on September 21, 2023 =
 
