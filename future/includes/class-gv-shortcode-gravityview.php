@@ -56,31 +56,6 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
-		static $rendered_views = [];
-		$rendered_views[] = $view_id;
-
-		// Prevent infinite loops
-		if ( in_array( $view_id, $rendered_views, true ) ) {
-
-			gravityview()->log->error( 'Infinite loop detected: View #{view_id} is being rendered inside itself.', array( 'view_id' => $view_id ) );
-
-			$title = sprintf( __( 'Error: The View #%d is being rendered inside itself.', 'gk-gravityview' ), $view_id );
-
-			$message = strtr(
-			// translators: Do not translate [shortcode], [link], or [/link]; they are placeholders for HTML and links to documentation.
-				esc_html__( 'This error occurs when a [shortcode] shortcode is embedded inside a Custom Content field. [link]Learn more about this error.[/link]', 'gk-gravityview' ),
-				[
-					'[shortcode]' => '<code>[gravityview]</code>',
-					'[link]'      => '<a href="https://docs.gravitykit.com/article/960-infinite-loop" target="_blank">',
-					'[/link]'     => '<span class="screen-reader-text"> ' . esc_html__( 'This link opens in a new window.', 'gk-gravityview' ) . '</span></a>',
-				]
-			);
-
-			$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
-
-			return \GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message ), 'notice' );
-		}
-
 		$post = get_post( $view->ID );
 
 		$gv_view_data = \GravityView_View_Data::getInstance();
