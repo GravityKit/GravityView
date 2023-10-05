@@ -110,8 +110,8 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$_post       = $_POST;
 
 		if ( rgpost( 'gform_submit' ) && rgpost( 'gv_view_entry_id' ) !== $entry['id'] ) {
-			GFFormDisplay::$submission = []; // Prevents GF from thinking the form was submitted.
-			$_POST                     = []; // Prevents GF from populating fields with $_POST data when displaying the form.
+			GFFormDisplay::$submission = []; // Prevent GF from thinking the form was submitted.
+			$_POST                     = []; // Prevent GF from populating fields with $_POST data when displaying the form.
 		}
 
 		$form = gravity_form( $form_id, ! empty( $title ), ! empty( $description ), false, $field_values_array, $ajax, 0, false );
@@ -119,15 +119,15 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		GFFormDisplay::$submission = $_submission;
 		$_POST                     = $_post;
 
-		// This adds a hidden field that lets us later identify the entry for which the form was submitted.
+		// Add a hidden field that lets us later identify the entry for which the form was submitted.
 		$form = preg_replace(
 			'/(<input[^>]*name=\'gform_field_values\'[^>]*?>)(?=[^<]*<)/',
 			"$1 <input type='hidden' name='gv_view_entry_id' value='${entry['id']}'",
 			$form
 		);
 
-		// Set unique ID for iframe that handles GF's form Ajax logic and allows us to have multiple forms on the same page.
-		$form = str_replace( 'gform_ajax_frame_2', "gform_ajax_frame_{$form_count}", $form );
+		// Set unique ID for iframe that handles GF's form Ajax logic, which allows us to have multiple forms on the same page.
+		$form = str_replace( "gform_ajax_frame_${form_id}", "gform_ajax_frame_{$form_count}", $form );
 
 		echo $form;
 	}
