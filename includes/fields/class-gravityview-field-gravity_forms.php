@@ -29,11 +29,12 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$this->label       = __( 'Gravity Forms', 'gk-gravityview' );
 		$this->description = __( 'Display a Gravity Forms form.', 'gk-gravityview' );
 
+		add_action( 'gform_after_submission', array( $this, 'add_new_entry_meta' ), 10, 2 );
+
 		parent::__construct();
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-
 		unset ( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
 
 		$new_fields = array(
@@ -72,7 +73,6 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		return $new_fields + $field_options;
 	}
 
-
 	/**
 	 * @param array                       $widget_args
 	 * @param string|\GV\Template_Context $content
@@ -109,7 +109,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$_submission = GFFormDisplay::$submission;
 		$_post       = $_POST;
 
-		if ( rgpost( 'gform_submit' ) && rgpost( 'gv_view_entry_id' ) !== $entry['id'] ) {
+		if ( rgpost( 'gform_submit' ) && rgpost( 'gk_parent_entry_id' ) !== $entry['id'] ) {
 			GFFormDisplay::$submission = []; // Prevent GF from thinking the form was submitted.
 			$_POST                     = []; // Prevent GF from populating fields with $_POST data when displaying the form.
 		}
@@ -122,7 +122,11 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		// Add a hidden field that lets us later identify the entry for which the form was submitted.
 		$form = preg_replace(
 			'/(<input[^>]*name=\'gform_field_values\'[^>]*?>)(?=[^<]*<)/',
-			"$1 <input type='hidden' name='gv_view_entry_id' value='${entry['id']}'",
+			<<<HTML
+				$1
+				<input type="hidden" name="gk_parent_entry_id" value="${entry['id']}">
+				<input type="hidden" name="gk_parent_form_id" value="${form['id']}">
+HTML,
 			$form
 		);
 
@@ -130,6 +134,23 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$form = str_replace( "gform_ajax_frame_${form_id}", "gform_ajax_frame_{$form_count}", $form );
 
 		echo $form;
+	}
+
+	/**
+	 * Adds the parent entry ID and form ID to the new entry's meta.
+	 *
+	 * @param $entry
+	 * @param $form
+	 *
+	 * @return void
+	 */
+	public function add_new_entry_meta( $entry, $form ) {
+		if ( ! rgpost( 'gk_parent_entry_id' ) && ! rgpost( 'gk_parent_form_id' ) ) {
+			return;
+		}
+
+		gform_update_meta( $entry['id'], 'gk_parent_entry_id', rgpost( 'gk_parent_entry_id' ), $form['id'] );
+		gform_update_meta( $entry['id'], 'gk_parent_form_id', rgpost( 'gk_parent_form_id' ), $form['id'] );
 	}
 }
 
