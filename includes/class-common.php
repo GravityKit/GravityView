@@ -119,12 +119,11 @@ class GVCommon {
 	 */
 	public static function get_all_views( $args = array() ) {
 
-		$default_params = [
+		$default_params = array(
 			'post_type'      => 'gravityview',
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
-			'exclude'        => [],
-		];
+		);
 
 		$params = wp_parse_args( $args, $default_params );
 
@@ -879,7 +878,6 @@ class GVCommon {
 
 		if ( is_wp_error( $entry ) ) {
 			gravityview()->log->error( '{error}', array( 'error' => $entry->get_error_message() ) );
-
 			return false;
 		}
 
@@ -1040,7 +1038,7 @@ class GVCommon {
 		}
 
 		if ( empty( $entry['form_id'] ) ) {
-			return new WP_Error( 'form_id_not_set', '[check_entry_display] Form ID is not set for the entry.', $entry );
+			return new WP_Error( 'form_id_not_set', '[apply_filters_to_entry] Entry is empty!', $entry );
 		}
 
 		if ( is_null( $view ) ) {
