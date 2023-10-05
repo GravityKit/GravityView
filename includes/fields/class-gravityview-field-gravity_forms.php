@@ -1,8 +1,8 @@
 <?php
 /**
- * @file class-gravityview-field-gravity_forms.php
- * @since 2.19
- * @package GravityView
+ * @file       class-gravityview-field-gravity_forms.php
+ * @since      2.19
+ * @package    GravityView
  * @subpackage includes\fields
  */
 
@@ -28,8 +28,8 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	 */
 	function __construct() {
 
-		$this->label = __( 'Gravity Forms', 'gk-gravityview' );
-		$this->description = __('Display a Gravity Forms form.', 'gk-gravityview' );
+		$this->label       = __( 'Gravity Forms', 'gk-gravityview' );
+		$this->description = __( 'Display a Gravity Forms form.', 'gk-gravityview' );
 
 		parent::__construct();
 	}
@@ -43,33 +43,33 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 
 		$new_fields = array(
 			'field_form_id' => array(
-				'type' => 'select',
-				'label' => __( 'Form to display', 'gk-gravityview' ),
-				'value' => '',
+				'type'    => 'select',
+				'label'   => __( 'Form to display', 'gk-gravityview' ),
+				'value'   => '',
 				'options' => GVCommon::get_forms_as_options(),
 			),
-			'title' => array(
-				'type' => 'checkbox',
+			'title'         => array(
+				'type'  => 'checkbox',
 				'label' => __( 'Show form title?', 'gk-gravityview' ),
 				'value' => 1,
 			),
-			'description' => array(
-				'type' => 'checkbox',
+			'description'   => array(
+				'type'  => 'checkbox',
 				'label' => __( 'Show form description?', 'gk-gravityview' ),
 				'value' => 1,
 			),
-			'ajax' => array(
-				'type' => 'checkbox',
+			'ajax'          => array(
+				'type'  => 'checkbox',
 				'label' => __( 'Enable AJAX', 'gk-gravityview' ),
-				'desc' => '',
+				'desc'  => '',
 				'value' => 1,
 			),
-			'field_values' => array(
-				'type' => 'text',
-				'class' => 'code widefat',
-				'label' => __( 'Field value parameters', 'gk-gravityview' ),
-				'desc' => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gk-gravityview' ) . '</a>',
-				'value' => '',
+			'field_values'  => array(
+				'type'       => 'text',
+				'class'      => 'code widefat',
+				'label'      => __( 'Field value parameters', 'gk-gravityview' ),
+				'desc'       => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gk-gravityview' ) . '</a>',
+				'value'      => '',
 				'merge_tags' => 'force',
 			),
 		);
@@ -97,17 +97,18 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 			return;
 		}
 
-		$title       = \GV\Utils::get( $field_settings, 'title' );
-		$description = \GV\Utils::get( $field_settings, 'description' );
-		$field_values = \GV\Utils::get( $field_settings, 'field_values' );
-		$ajax = \GV\Utils::get( $field_settings, 'ajax' );
-
+		$title              = \GV\Utils::get( $field_settings, 'title' );
+		$description        = \GV\Utils::get( $field_settings, 'description' );
+		$field_values       = \GV\Utils::get( $field_settings, 'field_values' );
+		$ajax               = \GV\Utils::get( $field_settings, 'ajax' );
+		$field_values_array = [];
+		
 		// Prepare field values.
 		$field_values_array = [];
 		if ( ! empty( $field_values ) ) {
 			parse_str( \GV\Utils::get( $field_settings, 'field_values' ), $field_values_array );
 
-			foreach( $field_values_array as & $field_value ) {
+			foreach ( $field_values_array as & $field_value ) {
 				$field_value = GFCommon::replace_variables( $field_value, $form, $entry );
 			}
 
