@@ -49,6 +49,15 @@ class gravityview extends \GV\Shortcode {
 			}
 		}
 
+		static $rendered_views = [];
+		$rendered_views[] = $view_id;
+
+		// Prevent infinite loops
+		if ( in_array( $view_id, $rendered_views, true ) ) {
+			gravityview()->log->error( 'Infinite loop detected: View #{view_id} is being rendered inside itself.', array( 'view_id' => $view_id ) );
+			return '';
+		}
+
 		$view = \GV\View::by_id( $view_id );
 
 		if ( ! $view ) {
