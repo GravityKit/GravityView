@@ -831,7 +831,7 @@ class GravityView_Admin_Views {
 		// if in zone directory or single
 		if( in_array( $zone, array( 'directory', 'single' ), true ) ) {
 
-			$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview', 'add-ons' ), $zone );
+			$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview', 'add-ons' ) );
 
 			$entry_default_fields = array();
 
@@ -883,7 +883,7 @@ class GravityView_Admin_Views {
 			$fields = array( 'custom' => $fields['custom'] ) + $fields;
 		}
 
-		$gv_fields = GravityView_Fields::get_all( '', $zone );
+		$gv_fields = GravityView_Fields::get_all();
 
 		foreach ( $fields as &$field ) {
 			foreach ( $gv_fields as $gv_field ) {
