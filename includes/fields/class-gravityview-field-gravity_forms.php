@@ -24,6 +24,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	public $icon = 'data:image/svg+xml,%3Csvg%20enable-background%3D%22new%200%200%20391.6%20431.1%22%20viewBox%3D%220%200%20391.6%20431.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22m391.6%20292.8c0%2019.7-14%2043.9-31%2053.7l-133.8%2077.2c-17.1%209.9-45%209.9-62%200l-133.8-77.2c-17.1-9.9-31-34-31-53.7v-154.5c0-19.7%2013.9-43.9%2031-53.7l133.8-77.2c17.1-9.9%2045-9.9%2062%200l133.7%2077.2c17.1%209.8%2031%2034%2031%2053.7z%22%20fill%3D%22%2340464D%22%2F%3E%3Cpath%20d%3D%22m157.8%20179.8h177.2v-49.8h-176.8c-25.3%200-46.3%208.7-62.3%2025.7-38.6%2041.1-39.6%20144.6-39.6%20144.6h277.4v-93.6h-49.8v43.8h-174.4c1.1-16.3%208.6-45.5%2022.8-60.6%206.4-6.9%2014.5-10.1%2025.5-10.1z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E';
 
 	function __construct() {
+		require_once GFCommon::get_base_path() . '/form_display.php';
 
 		$this->label       = __( 'Gravity Forms', 'gk-gravityview' );
 		$this->description = __( 'Display a Gravity Forms form.', 'gk-gravityview' );
@@ -78,19 +79,22 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	 * @param string                      $context
 	 */
 	static public function render_frontend( $field_settings, $form, $entry ) {
-
 		$form_id = \GV\Utils::get( $field_settings, 'field_form_id' );
 
 		if ( empty( $form_id ) ) {
 			return;
 		}
 
+		static $form_count;
+
+		++$form_count;
+
 		$title              = \GV\Utils::get( $field_settings, 'title' );
 		$description        = \GV\Utils::get( $field_settings, 'description' );
 		$field_values       = \GV\Utils::get( $field_settings, 'field_values' );
 		$ajax               = \GV\Utils::get( $field_settings, 'ajax' );
 		$field_values_array = [];
-		
+
 		// Prepare field values.
 		if ( ! empty( $field_values ) ) {
 			parse_str( \GV\Utils::get( $field_settings, 'field_values' ), $field_values_array );
@@ -102,9 +106,31 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 			$field_values_array = array_map( 'esc_attr', $field_values_array );
 		}
 
-		gravity_form( $form_id, ! empty( $title ), ! empty( $description ), false, $field_values_array, $ajax );
-	}
+		$_submission = GFFormDisplay::$submission;
+		$_post       = $_POST;
 
+		if ( rgpost( 'gform_submit' ) && rgpost( 'gv_view_entry_id' ) !== $entry['id'] ) {
+			GFFormDisplay::$submission = []; // Prevents GF from thinking the form was submitted.
+			$_POST                     = []; // Prevents GF from populating fields with $_POST data when displaying the form.
+		}
+
+		$form = gravity_form( $form_id, ! empty( $title ), ! empty( $description ), false, $field_values_array, $ajax, 0, false );
+
+		GFFormDisplay::$submission = $_submission;
+		$_POST                     = $_post;
+
+		// This adds a hidden field that lets us later identify the entry for which the form was submitted.
+		$form = preg_replace(
+			'/(<input[^>]*name=\'gform_field_values\'[^>]*?>)(?=[^<]*<)/',
+			"$1 <input type='hidden' name='gv_view_entry_id' value='${entry['id']}'",
+			$form
+		);
+
+		// Set unique ID for iframe that handles GF's form Ajax logic and allows us to have multiple forms on the same page.
+		$form = str_replace( 'gform_ajax_frame_2', "gform_ajax_frame_{$form_count}", $form );
+
+		echo $form;
+	}
 }
 
 new GravityView_Field_Gravity_Forms;
