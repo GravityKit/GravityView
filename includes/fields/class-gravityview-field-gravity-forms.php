@@ -151,27 +151,27 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 			'/(<input[^>]*name=\'gform_field_values\'[^>]*?>)(?=[^<]*<)/',
 			<<<HTML
 				$1
-				<input type="hidden" name="gk_parent_entry_id" value="${view_entry['id']}">
-				<input type="hidden" name="gk_parent_form_id" value="${view_form['id']}">
 HTML,
+				<input type="hidden" name="gk_parent_entry_id" value="{$view_entry['id']}">
+				<input type="hidden" name="gk_parent_form_id" value="{$view_form['id']}">
 			$rendered_form
 		);
 
 		// Set unique ID for iframe that handles GF's form Ajax logic, which allows us to have multiple forms on the same page.
 		$strings_to_replace = [
-			"gform_ajax_frame_${embed_form_id}"               => "gform_ajax_frame_{$form_count}",
-			"gform_wrapper_${embed_form_id}"                  => "gform_wrapper_{$form_count}",
-			"gform_confirmation_wrapper_${embed_form_id}"     => "gform_confirmation_wrapper_{$form_count}",
-			"gforms_confirmation_message_${embed_form_id}"    => "gforms_confirmation_message_{$form_count}",
-			"gform_confirmation_message_${embed_form_id}"     => "gform_confirmation_message_{$form_count}",
-			"gformInitSpinner( ${embed_form_id},"             => "gformInitSpinner( {$form_count},",
-			"trigger('gform_page_loaded', [${embed_form_id}"  => "trigger('gform_page_loaded', [{$form_count}",
-			"'gform_confirmation_loaded', [${embed_form_id}]" => "'gform_confirmation_loaded', [{$form_count}]",
-			"gform_submit_button_${embed_form_id}"            => "gform_submit_button_${form_count}",
-			"gf_submitting_${embed_form_id}"                  => "gf_submitting_${form_count}",
-			"gform_${embed_form_id}"                          => "gform_${form_count}",
-			"gform_${embed_form_id}_validation_container"  => "gform_${form_count}_validation_container",
-			"validation_message_${embed_form_id}"             => "validation_message_${form_count}",
+			"gform_ajax_frame_{$embed_form_id}"               => "gform_ajax_frame_{$form_count}",
+			"gform_wrapper_{$embed_form_id}"                  => "gform_wrapper_{$form_count}",
+			"gform_confirmation_wrapper_{$embed_form_id}"     => "gform_confirmation_wrapper_{$form_count}",
+			"gforms_confirmation_message_{$embed_form_id}"    => "gforms_confirmation_message_{$form_count}",
+			"gform_confirmation_message_{$embed_form_id}"     => "gform_confirmation_message_{$form_count}",
+			"gformInitSpinner( {$embed_form_id},"             => "gformInitSpinner( {$form_count},",
+			"trigger('gform_page_loaded', [{$embed_form_id}"  => "trigger('gform_page_loaded', [{$form_count}",
+			"'gform_confirmation_loaded', [{$embed_form_id}]" => "'gform_confirmation_loaded', [{$form_count}]",
+			"gform_submit_button_{$embed_form_id}"            => "gform_submit_button_${form_count}",
+			"gf_submitting_{$embed_form_id}"                  => "gf_submitting_${form_count}",
+			"gform_{$embed_form_id}"                          => "gform_${form_count}",
+			"gform_{$embed_form_id}_validation_container"     => "gform_${form_count}_validation_container",
+			"validation_message_{$embed_form_id}"             => "validation_message_${form_count}",
 		];
 
 		$rendered_form = str_replace( array_keys( $strings_to_replace ), array_values( $strings_to_replace ), $rendered_form );
