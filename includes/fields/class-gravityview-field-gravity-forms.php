@@ -174,9 +174,7 @@ HTML,
 			"validation_message_${embed_form_id}"             => "validation_message_${form_count}",
 		];
 
-		foreach ( $strings_to_replace as $find => $replace ) {
-			$rendered_form = str_replace( $find, $replace, $rendered_form );
-		}
+		$rendered_form = str_replace( array_keys( $strings_to_replace ), array_values( $strings_to_replace ), $rendered_form );
 
 		echo $rendered_form;
 	}
