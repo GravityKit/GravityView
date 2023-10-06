@@ -168,11 +168,11 @@ HTML
 			"gformInitSpinner( {$embed_form_id},"             => "gformInitSpinner( {$form_count},",
 			"trigger('gform_page_loaded', [{$embed_form_id}"  => "trigger('gform_page_loaded', [{$form_count}",
 			"'gform_confirmation_loaded', [{$embed_form_id}]" => "'gform_confirmation_loaded', [{$form_count}]",
-			"gform_submit_button_{$embed_form_id}"            => "gform_submit_button_${form_count}",
-			"gf_submitting_{$embed_form_id}"                  => "gf_submitting_${form_count}",
-			"gform_{$embed_form_id}"                          => "gform_${form_count}",
-			"gform_{$embed_form_id}_validation_container"     => "gform_${form_count}_validation_container",
-			"validation_message_{$embed_form_id}"             => "validation_message_${form_count}",
+			"gform_submit_button_{$embed_form_id}"            => "gform_submit_button_{$form_count}",
+			"gf_submitting_{$embed_form_id}"                  => "gf_submitting_{$form_count}",
+			"gform_{$embed_form_id}"                          => "gform_{$form_count}",
+			"gform_{$embed_form_id}_validation_container"     => "gform_{$form_count}_validation_container",
+			"validation_message_{$embed_form_id}"             => "validation_message_{$form_count}",
 		];
 
 		$rendered_form = str_replace( array_keys( $strings_to_replace ), array_values( $strings_to_replace ), $rendered_form );
