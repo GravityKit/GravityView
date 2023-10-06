@@ -83,6 +83,21 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	}
 
 	/**
+	 * Get the highest-number form ID.
+	 *
+	 * @since 2.19
+	 *
+	 * @return int Form ID.
+	 */
+	private static function get_latest_form_id() {
+		global $wpdb;
+
+		$form_table_name = GFFormsModel::get_form_table_name();
+
+		return $wpdb->get_var("SELECT id FROM {$form_table_name} ORDER BY id DESC LIMIT 1");
+	}
+
+	/**
 	 * {@inheritdoc}
 	 *
 	 * @since 2.19
@@ -95,6 +110,9 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		}
 
 		static $form_count;
+
+		// Start the form count at the highest-number form ID to prevent collisions.
+		$form_count = $form_count ?? self::get_latest_form_id();
 
 		++$form_count;
 
