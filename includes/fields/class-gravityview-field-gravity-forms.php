@@ -151,9 +151,10 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 			'/(<input[^>]*name=\'gform_field_values\'[^>]*?>)(?=[^<]*<)/',
 			<<<HTML
 				$1
-HTML,
 				<input type="hidden" name="gk_parent_entry_id" value="{$view_entry['id']}">
 				<input type="hidden" name="gk_parent_form_id" value="{$view_form['id']}">
+HTML
+			,
 			$rendered_form
 		);
 
