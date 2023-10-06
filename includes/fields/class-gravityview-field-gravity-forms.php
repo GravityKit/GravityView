@@ -7,7 +7,7 @@
  */
 
 /**
- * View field to embed a \Gravity Forms form
+ * View field to embed a Gravity Forms form.
  */
 class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	var $name = 'gravity_forms';
@@ -34,6 +34,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$this->description = __( 'Display a Gravity Forms form.', 'gk-gravityview' );
 
 		add_action( 'gform_after_submission', [ $this, 'add_new_entry_meta' ], 10, 2 );
+		add_action( 'gform_ajax_iframe_content', [ $this, 'modify_form_ajax_postback_content' ] );
 
 		parent::__construct();
 	}
@@ -94,7 +95,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 
 		$form_table_name = GFFormsModel::get_form_table_name();
 
-		return $wpdb->get_var("SELECT id FROM {$form_table_name} ORDER BY id DESC LIMIT 1");
+		return $wpdb->get_var( "SELECT id FROM {$form_table_name} ORDER BY id DESC LIMIT 1" );
 	}
 
 	/**
@@ -110,11 +111,6 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		}
 
 		static $form_count;
-
-		// Start the form count at the highest-number form ID to prevent collisions.
-		$form_count = $form_count ?? self::get_latest_form_id();
-
-		++$form_count;
 
 		$title              = \GV\Utils::get( $field_settings, 'title' );
 		$description        = \GV\Utils::get( $field_settings, 'description' );
@@ -146,38 +142,94 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		GFFormDisplay::$submission = $_submission;
 		$_POST                     = $_post;
 
-		// Add hidden fields that let us later identify the parent (View) form and entry.
-		$rendered_form = preg_replace(
-			'/(<input[^>]*name=\'gform_field_values\'[^>]*?>)(?=[^<]*<)/',
-			<<<HTML
-				$1
-				<input type="hidden" name="gk_parent_entry_id" value="{$view_entry['id']}">
-				<input type="hidden" name="gk_parent_form_id" value="{$view_form['id']}">
-HTML
-			,
-			$rendered_form
+		$rendered_form = self::modify_form_content( $rendered_form, (int) $embed_form_id, 0, (int) $view_form['id'], (int) $view_entry['id'] );
+
+		echo $rendered_form;
+	}
+
+	/**
+	 * Modifies form postback content sent via an iframe submission.
+	 * Since GF recreates the form object, we need to ensure that the same IDs are used as set in {@see self::render_frontend()} so that errors and other messages are scoped to the correct form in the View.
+	 *
+	 * @since 2.19
+	 *
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+	public function modify_form_ajax_postback_content( $content ) {
+		$required_post_data = [ 'gk_parent_entry_id', 'gk_parent_form_id', 'gk_unique_id' ];
+
+		foreach ( $required_post_data as $key ) {
+			if ( ! rgpost( $key ) ) {
+				return $content;
+			}
+		}
+
+		$content = self::modify_form_content(
+			$content,
+			(int) rgpost( 'gform_submit' ),
+			(int) rgpost( 'gk_unique_id' ),
+			(int) rgpost( 'gk_parent_form_id' ),
+			(int) rgpost( 'gk_parent_entry_id' )
 		);
+
+		return $content;
+	}
+
+	/**
+	 * Updates the form content with extra data and also prevents collisions when multiple forms are embedded on the same page.
+	 *
+	 * @param string $content
+	 * @param int    $form_id
+	 * @param int    $form_count
+	 * @param int    $view_form_id
+	 * @param init   $view_entry_id
+	 *
+	 * @return string
+	 */
+	static public function modify_form_content( $content, $form_id, $form_count, $view_form_id, $view_entry_id ) {
+		static $unique_id;
+
+		// Start the form count at the highest-number form ID to prevent collisions.
+		$unique_id = ( $form_count ?? $unique_id ) ?? self::get_latest_form_id();
+
+		if ( $view_form_id && $view_entry_id ) {
+			// Add hidden fields that let us later identify the parent (View) form and entry.
+			$content = preg_replace(
+				'/(<input[^>]*name=\'gform_field_values\'[^>]*?>)(?=[^<]*<)/',
+				<<<HTML
+				$1
+				<input type="hidden" name="gk_parent_entry_id" value="{$view_entry_id}">
+				<input type="hidden" name="gk_parent_form_id" value="{$view_form_id}">
+				<input type="hidden" name="gk_unique_id" value="{$unique_id}">
+HTML,
+				$content
+			);
+		}
 
 		// Set unique ID for iframe that handles GF's form Ajax logic, which allows us to have multiple forms on the same page.
 		$strings_to_replace = [
-			"gform_ajax_frame_{$embed_form_id}"               => "gform_ajax_frame_{$form_count}",
-			"gform_wrapper_{$embed_form_id}"                  => "gform_wrapper_{$form_count}",
-			"gform_confirmation_wrapper_{$embed_form_id}"     => "gform_confirmation_wrapper_{$form_count}",
-			"gforms_confirmation_message_{$embed_form_id}"    => "gforms_confirmation_message_{$form_count}",
-			"gform_confirmation_message_{$embed_form_id}"     => "gform_confirmation_message_{$form_count}",
-			"gformInitSpinner( {$embed_form_id},"             => "gformInitSpinner( {$form_count},",
-			"trigger('gform_page_loaded', [{$embed_form_id}"  => "trigger('gform_page_loaded', [{$form_count}",
-			"'gform_confirmation_loaded', [{$embed_form_id}]" => "'gform_confirmation_loaded', [{$form_count}]",
-			"gform_submit_button_{$embed_form_id}"            => "gform_submit_button_{$form_count}",
-			"gf_submitting_{$embed_form_id}"                  => "gf_submitting_{$form_count}",
-			"gform_{$embed_form_id}"                          => "gform_{$form_count}",
-			"gform_{$embed_form_id}_validation_container"     => "gform_{$form_count}_validation_container",
-			"validation_message_{$embed_form_id}"             => "validation_message_{$form_count}",
+			"gform_ajax_frame_{$form_id}"               => "gform_ajax_frame_{$unique_id}",
+			"gform_wrapper_{$form_id}"                  => "gform_wrapper_{$unique_id}",
+			"gform_confirmation_wrapper_{$form_id}"     => "gform_confirmation_wrapper_{$unique_id}",
+			"gforms_confirmation_message_{$form_id}"    => "gforms_confirmation_message_{$unique_id}",
+			"gform_confirmation_message_{$form_id}"     => "gform_confirmation_message_{$unique_id}",
+			"gformInitSpinner( {$form_id},"             => "gformInitSpinner( {$unique_id},",
+			"trigger('gform_page_loaded', [{$form_id}"  => "trigger('gform_page_loaded', [{$unique_id}",
+			"'gform_confirmation_loaded', [{$form_id}]" => "'gform_confirmation_loaded', [{$unique_id}]",
+			"gform_submit_button_{$form_id}"            => "gform_submit_button_{$unique_id}",
+			"gf_submitting_{$form_id}"                  => "gf_submitting_{$unique_id}",
+			"gform_{$form_id}"                          => "gform_{$unique_id}",
+			"gform_{$form_id}_validation_container"     => "gform_{$unique_id}_validation_container",
+			"validation_message_{$form_id}"             => "validation_message_{$unique_id}",
 		];
 
-		$rendered_form = str_replace( array_keys( $strings_to_replace ), array_values( $strings_to_replace ), $rendered_form );
+		$content = str_replace( array_keys( $strings_to_replace ), array_values( $strings_to_replace ), $content );
 
-		echo $rendered_form;
+		++$unique_id;
+
+		return $content;
 	}
 
 	/**
