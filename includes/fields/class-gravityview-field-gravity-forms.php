@@ -142,7 +142,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		GFFormDisplay::$submission = $_submission;
 		$_POST                     = $_post;
 
-		$rendered_form = self::modify_form_content( $rendered_form, (int) $embed_form_id, 0, (int) $view_form['id'], (int) $view_entry['id'] );
+		$rendered_form = self::modify_form_content( $rendered_form, (int) $embed_form_id, (int) $view_form['id'], (int) $view_entry['id'] );
 
 		echo $rendered_form;
 	}
@@ -169,9 +169,9 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$content = self::modify_form_content(
 			$content,
 			(int) rgpost( 'gform_submit' ),
-			(int) rgpost( 'gk_unique_id' ),
 			(int) rgpost( 'gk_parent_form_id' ),
-			(int) rgpost( 'gk_parent_entry_id' )
+			(int) rgpost( 'gk_parent_entry_id' ),
+			(int) rgpost( 'gk_unique_id' )
 		);
 
 		return $content;
@@ -180,15 +180,15 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	/**
 	 * Updates the form content with extra data and also prevents collisions when multiple forms are embedded on the same page.
 	 *
-	 * @param string $content
-	 * @param int    $form_id
-	 * @param int    $form_count
-	 * @param int    $view_form_id
-	 * @param init   $view_entry_id
+	 * @param string   $content
+	 * @param int      $form_id
+	 * @param int      $view_form_id
+	 * @param init     $view_entry_id
+	 * @param null|int $form_count (optional) Sequential number for each form instance in the View. Used to prevent collisions when multiple forms are embedded on the same page. Default: null and will be set to the highest-number form ID in the database.
 	 *
 	 * @return string
 	 */
-	static public function modify_form_content( $content, $form_id, $form_count, $view_form_id, $view_entry_id ) {
+	static public function modify_form_content( $content, $form_id, $view_form_id, $view_entry_id, $form_count = null ) {
 		static $unique_id;
 
 		// Start the form count at the highest-number form ID to prevent collisions.
