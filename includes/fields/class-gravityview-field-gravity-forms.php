@@ -6,6 +6,8 @@
  * @subpackage includes\fields
  */
 
+use GV\Utils;
+
 /**
  * View field to embed a Gravity Forms form.
  */
@@ -104,21 +106,21 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	 * @since 2.19
 	 */
 	static public function render_frontend( $field_settings, $view_form, $view_entry ) {
-		$embed_form_id = \GV\Utils::get( $field_settings, 'field_form_id' );
+		$embed_form_id = Utils::get( $field_settings, 'field_form_id' );
 
 		if ( empty( $embed_form_id ) ) {
 			return;
 		}
 
-		$title              = \GV\Utils::get( $field_settings, 'title' );
-		$description        = \GV\Utils::get( $field_settings, 'description' );
-		$field_values       = \GV\Utils::get( $field_settings, 'field_values' );
-		$ajax               = \GV\Utils::get( $field_settings, 'ajax' );
+		$title              = Utils::get( $field_settings, 'title' );
+		$description        = Utils::get( $field_settings, 'description' );
+		$field_values       = Utils::get( $field_settings, 'field_values' );
+		$ajax               = Utils::get( $field_settings, 'ajax' );
 		$field_values_array = [];
 
 		// Prepare field values.
 		if ( ! empty( $field_values ) ) {
-			parse_str( \GV\Utils::get( $field_settings, 'field_values' ), $field_values_array );
+			parse_str( Utils::get( $field_settings, 'field_values' ), $field_values_array );
 
 			foreach ( $field_values_array as & $field_value ) {
 				$field_value = GFCommon::replace_variables( $field_value, $view_form, $view_entry );
