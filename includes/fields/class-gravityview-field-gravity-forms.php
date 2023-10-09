@@ -136,11 +136,11 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 			// GF sets validation errors on the form object and caches it.
 			// As a result, subsequent form retrievals by gravity_form() will get the processed/validated form rather than a fresh object and will display errors for the wrong form instance.
 			GFFormsModel::flush_current_form( GFFormsModel::get_form_cache_key( $embed_form_id ) );
-		}
 
-		if ( rgpost( 'gform_submit' ) && rgpost( 'gk_parent_entry_id' ) !== $view_entry['id'] ) {
-			GFFormDisplay::$submission = []; // Prevent GF from thinking the form was submitted.
-			$_POST                     = []; // Prevent GF from populating fields with $_POST data when displaying the form.
+			if ( rgpost( 'gk_parent_entry_id' ) !== $view_entry['id'] ) {
+				GFFormDisplay::$submission = []; // Prevent GF from thinking the form was submitted.
+				$_POST                     = []; // Prevent GF from populating fields with $_POST data when displaying the form.
+			}
 		}
 
 		$rendered_form = gravity_form( $embed_form_id, ! empty( $title ), ! empty( $description ), false, $field_values_array, $ajax, 0, false );
