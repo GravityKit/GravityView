@@ -40,6 +40,11 @@ __Developer Updates:__
 * Added: `gk/gravityview/approve_link/return_url` filter to modify the return URL after entry approval
 * Improved: Added third argument to `gravityview_get_connected_views()` to prevent including joined forms in the search
 
+__Developer Updates:__
+
+* Added: Second parameter to the `GravityView_Fields::get_all()` method to allow for filtering by context
+* Implemented: The `GravityView_Field::$contexts` property is now respected; if defined, fields that are not in a supported context will not render
+
 = 2.18.6 on September 7, 2023 =
 
 * Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox
