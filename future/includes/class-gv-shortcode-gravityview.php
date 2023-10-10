@@ -57,7 +57,6 @@ class gravityview extends \GV\Shortcode {
 		}
 
 		static $rendered_views = [];
-		$rendered_views[] = $view_id;
 
 		// Prevent infinite loops
 		if ( in_array( $view_id, $rendered_views, true ) ) {
@@ -80,6 +79,8 @@ class gravityview extends \GV\Shortcode {
 
 			return \GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message ), 'notice' );
 		}
+
+		$rendered_views[] = $view_id;
 
 		$post = get_post( $view->ID );
 
