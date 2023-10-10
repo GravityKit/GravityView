@@ -205,12 +205,12 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 			$content = preg_replace(
 				'/(<input[^>]*name=\'gform_field_values\'[^>]*?>)(?=[^<]*<)/',
 				<<<HTML
-				$1
-				<input type="hidden" name="gk_parent_entry_id" value="{$view_entry_id}">
-				<input type="hidden" name="gk_parent_form_id" value="{$view_form_id}">
-				<input type="hidden" name="gk_unique_id" value="{$unique_id}">
-HTML,
-				$content
+					$1
+					<input type="hidden" name="gk_parent_entry_id" value="{$view_entry_id}">
+					<input type="hidden" name="gk_parent_form_id" value="{$view_form_id}">
+					<input type="hidden" name="gk_unique_id" value="{$unique_id}">
+HTML
+				, $content
 			);
 		}
 
