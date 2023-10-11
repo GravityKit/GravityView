@@ -70,7 +70,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 				'label'       => __( 'Search field', 'gk-gravityview' ),
 				'value'       => '',
 				'desc'        => strtr(
-					__( 'Pre-filter a View by the values of a field or entry meta. [link]Learn more about pre-filtering Views.[/link]', 'gk-gravityview' ),
+					__( 'Accepts a Field ID or entry meta name. [link]Learn more about pre-filtering Views.[/link]', 'gk-gravityview' ),
 					[
 						'[link]'  => '<a href="https://docs.gravitykit.com/article/73-using-the-shortcode#advanced-use-cases" target="_blank">',
 						'[/link]' => '<span class="screen-reader-text">(' . esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ) . ')</span></a>',
@@ -100,6 +100,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 				'class'       => 'code widefat',
 				'label'       => __( 'Search value', 'gk-gravityview' ),
 				'value'       => '',
+				'desc'        => esc_html__( 'Pre-filter a View by the values of an entry. ', 'gk-gravityview' ),
 				'placeholder' => __( 'Example: {user:ID}', 'gk-gravityview' ),
 				'merge_tags'  => 'force',
 				'group'       => 'advanced',
