@@ -21,11 +21,10 @@
 }
 
 .gv-table-view-content {
-
 	table-layout: fixed;
 
 	// The single entry view left column
-	th {
+	> tbody > tr > th {
 		width: 35%;
 		vertical-align: top;
 	}
