@@ -22,8 +22,13 @@ if ( $value !== '' ) {
 	if ( empty( $field_settings['number_format'] ) && $gravityview->field->field->numberFormat === 'currency' ) {
 		echo $display_value;
 	} else {
-		$value =  gravityview_number_format( $value, $decimals, $gravityview->field->field->numberFormat );
-		echo $field->get_value_entry_list( $value, $gravityview->entry, $gravityview->field->id, [], $form );
+		$value =  gravityview_number_format( $value, $decimals, ! empty( $field_settings['number_format'] ) );
+		if(!$field_settings['number_format']){
+			echo $value;
+		}else{
+			echo $field->get_value_entry_list( $value, $gravityview->entry, $gravityview->field->id, [], $form );
+		}
+
 	}
 } else {
 	echo $display_value;
