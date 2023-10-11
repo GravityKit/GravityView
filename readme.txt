@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Added: Embed a Gravity Forms form using a field in the View editor
 * Added: Embed a GravityView View using a field in the View editor
 * Fixed: Appearance of HTML tables nested within View fields
+* Fixed: Clicking the "?" tooltip icon would not go to the article if the Support Port is disabled
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.5
 
 = 2.18.7 on September 21, 2023 =

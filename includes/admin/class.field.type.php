@@ -137,7 +137,7 @@ abstract class GravityView_FieldType {
 		}
 
 		$url = isset( $article['url'] ) ? $article['url'] : '#';
-	    $atts = 'onclick="return !! window.Beacon;" onkeypress="return !! window.Beacon;"';
+	    $atts = 'onclick="return window.Beacon === \'undefined\' || typeof window.Beacon === \'undefined\';" onkeypress="return window.Beacon === \'undefined\' || typeof window.Beacon === \'undefined\';"';
 	    $anchor_text = '<i class=\'fa fa-question-circle\'></i>';
 		$css_class = gravityview_sanitize_html_class( 'gf_tooltip ' . $css_class . ' ' . $tooltip_class );
 
