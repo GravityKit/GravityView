@@ -100,7 +100,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 				'class'       => 'code widefat',
 				'label'       => __( 'Search value', 'gk-gravityview' ),
 				'value'       => '',
-				'desc'        => esc_html__( 'Pre-filter a View by the values of an entry. ', 'gk-gravityview' ),
+				'desc'        => esc_html__( 'Pre-filter a View by the values of an entry.', 'gk-gravityview' ),
 				'placeholder' => __( 'Example: {user:ID}', 'gk-gravityview' ),
 				'merge_tags'  => 'force',
 				'group'       => 'advanced',
