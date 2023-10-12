@@ -21,6 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.19 on October 12, 2023 =
+
+* Added: Embed a Gravity Forms form using a field in the View editor
+* Added: Embed a GravityView View using a field in the View editor
+* Added: New Custom Code tab in the View Setting metabox to add custom CSS and JavaScript to the View
+* Fixed: Appearance of HTML tables nested within View fields, including Gravity Forms Survey Add-On fields
+* Fixed: Clicking the "?" tooltip icon would not go to the article if the Support Port is disabled
+* Tweak: Improved Chained Select field output when the Chained Select Add-On is disabled
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.5
+
+__Developer Updates:__
+
+* Added: Entries submitted using the new Gravity Forms Field will have `gk_parent_entry_id` and `gk_parent_form_id` entry meta added to them to better support connecting Views
+
 = 2.18.7 on September 21, 2023 =
 
 * Added: Support for embedding Views inside [WooCommerce Account Pages](https://iconicwp.com/products/woocommerce-account-pages/)
@@ -32,8 +46,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 __Developer Updates:__
 
-* Added: `gk/gravityview/approve_link/return_url` filter to modify the return URL after entry approval
+* Added: `gk/gravityview/approve-link/return-url` filter to modify the return URL after entry approval
+* Added: Second parameter to the `GravityView_Fields::get_all()` method to allow for filtering by context
 * Improved: Added third argument to `gravityview_get_connected_views()` to prevent including joined forms in the search
+* Implemented: The `GravityView_Field::$contexts` property is now respected; if defined, fields that are not in a supported context will not render
 
 = 2.18.6 on September 7, 2023 =
 

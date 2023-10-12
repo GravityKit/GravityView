@@ -441,6 +441,11 @@ $gv-overlay-index: 10000;
 		}
 	}
 
+	.howto {
+		margin: .25em 0 .5em;
+		font-weight: normal;
+	}
+
 	li .nav-tab {
 		border-radius: 0;
 	}
@@ -1976,11 +1981,16 @@ $dialog-button-padding: 5px;
 	.dashicons-admin-comments,
 	.dashicons-yes-alt,
 	.dashicons-editor-code,
+	&[data-original-title="Gravity Forms"] .background-icon,
+	&[data-original-title="GravityView View"] .background-icon,
 	.dashicons-lock,
 	.dashicons-warning,
 	.dashicons-search,
 	.dashicons-media-default {
-		display: inline-block;
+		display: inline-block !important;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center center;
 	}
 }
 
