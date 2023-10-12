@@ -276,6 +276,33 @@ class GravityView_Welcome {
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
 
+				<h3> 2.19 on October 12, 2023</h3>
+
+				<ul>
+					<li>Added: Embed a Gravity Forms form using a field in the View editor</li>
+					<li>Added: Embed a GravityView View using a field in the View editor</li>
+					<li>Added: New Custom Code tab in the View Setting metabox to add custom CSS and JavaScript to the
+						View
+					</li>
+					<li>Fixed: Appearance of HTML tables nested within View fields, including Gravity Forms Survey
+						Add-On fields
+					</li>
+					<li>Fixed: Clicking the '?' tooltip icon would not go to the article if the Support Port is
+						disabled
+					</li>
+					<li>Tweak: Improved Chained Select field output when the Chained Select Add-On is disabled</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2.5</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: Entries submitted using the new Gravity Forms Field will have
+						<code>gk_parent_entry_id</code> and <code>gk_parent_form_id</code> entry meta added to them to
+						better support connecting Views
+					</li>
+				</ul>
+
 				<h3>2.18.7 on September 21, 2023</h3>
 
 				<ul>

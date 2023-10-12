@@ -21,13 +21,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.19 on October 11, 2023 =
+= 2.19 on October 12, 2023 =
 
 * Added: Embed a Gravity Forms form using a field in the View editor
 * Added: Embed a GravityView View using a field in the View editor
-* Fixed: Appearance of HTML tables nested within View fields
+* Added: New Custom Code tab in the View Setting metabox to add custom CSS and JavaScript to the View
+* Fixed: Appearance of HTML tables nested within View fields, including Gravity Forms Survey Add-On fields
 * Fixed: Clicking the "?" tooltip icon would not go to the article if the Support Port is disabled
+* Tweak: Improved Chained Select field output when the Chained Select Add-On is disabled
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.5
+
+__Developer Updates:__
+
+* Added: Entries submitted using the new Gravity Forms Field will have `gk_parent_entry_id` and `gk_parent_form_id` entry meta added to them to better support connecting Views
 
 = 2.18.7 on September 21, 2023 =
 
