@@ -545,7 +545,7 @@ class GravityView_Welcome {
 					<li>Tweak: The field picker in the View editor now uses Gravity Forms field icons</li>
 				</ul>
 
-				<h3><strong>Developer Updates:</strong></h3>
+				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
 					<li>Modified: If you use the <code>gravityview/template/text/no_entries</code> or <code>gravitview_no_entries_text</code> filters, the output is now passed through the <code>wpautop()</code> function prior to applying the filters, not after
