@@ -46,7 +46,7 @@ __Developer Updates:__
 
 __Developer Updates:__
 
-* Added: `gk/gravityview/approve_link/return_url` filter to modify the return URL after entry approval
+* Added: `gk/gravityview/approve-link/return-url` filter to modify the return URL after entry approval
 * Added: Second parameter to the `GravityView_Fields::get_all()` method to allow for filtering by context
 * Improved: Added third argument to `gravityview_get_connected_views()` to prevent including joined forms in the search
 * Implemented: The `GravityView_Field::$contexts` property is now respected; if defined, fields that are not in a supported context will not render

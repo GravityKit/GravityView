@@ -325,7 +325,7 @@ class GravityView_Welcome {
 				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
-					<li>Added: <code>gk/gravityview/approve_link/return_url</code> filter to modify the return URL after entry approval</li>
+					<li>Added: <code>gk/gravityview/approve-link/return-url</code> filter to modify the return URL after entry approval</li>
 					<li>Added: Second parameter to the <code>GravityView_Fields::get_all()</code> method to allow for filtering by context</li>
 					<li>Improved: Added third argument to <code>gravityview_get_connected_views()</code> to prevent including joined forms in the search</li>
 					<li>Implemented: The <code>GravityView_Field::$contexts</code> property is now respected; if defined, fields that are not in a supported context will not render</li>

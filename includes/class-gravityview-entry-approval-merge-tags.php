@@ -662,7 +662,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		$return_url = add_query_arg( $query_args, $return_url );
 
 		/**
-		 * @filter `gk/gravityview/approve_link/return_url` Modify the return URL after entry approval.
+		 * @filter `gk/gravityview/approve-link/return-url` Modify the return URL after entry approval.
 		 * @since 2.18.7
 		 * @param int $entry_id Entry ID.
 		 * @param int $approval_status Approval status.
@@ -670,7 +670,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		 * @param array $scopes Token scopes to be passed to the return URL and used in {@see maybe_show_approval_notice()}.
 		 * @param string $return_url Url to redirect to once moderation happens.
 		 */
-		$return_url = apply_filters( 'gk/gravityview/approve_link/return_url', $return_url, $entry_id, $approval_status, $form_id, $scopes );
+		$return_url = apply_filters( 'gk/gravityview/approve-link/return-url', $return_url, $entry_id, $approval_status, $form_id, $scopes );
 
 		wp_safe_redirect( esc_url_raw( $return_url ) );
 
