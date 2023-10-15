@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: PHP 8 deprecation notice appearing on 404 pages
+
 = 2.19 on October 12, 2023 =
 
 * Added: Embed a Gravity Forms form using a field in the View editor
