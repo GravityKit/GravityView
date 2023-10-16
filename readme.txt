@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Fixed: PHP 8 deprecation notice appearing on 404 pages
+* Improved: PHP 8.1 compatibility
 
 = 2.19 on October 12, 2023 =
 
