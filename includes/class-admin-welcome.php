@@ -284,6 +284,14 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
  				 */
 				?>
+				<h3>2.19.1 on October 17, 2023</h3>
+
+				<ul>
+					<li>Fixed: PHP 8+ deprecation notice appearing on 404 pages</li>
+					<li>Fixed: Merge tags not working in the Custom Content field</li>
+					<li>Improved: PHP 8.1 compatibility</li>
+				</ul>
+
 				<h3>2.19 on October 12, 2023</h3>
 
 				<ul>

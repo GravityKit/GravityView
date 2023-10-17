@@ -21,9 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.19.1 on October 27, 2023 =
 
-* Fixed: PHP 8 deprecation notice appearing on 404 pages
+* Fixed: PHP 8+ deprecation notice appearing on 404 pages
 * Fixed: Merge tags not working in the Custom Content field
 * Improved: PHP 8.1 compatibility
 
