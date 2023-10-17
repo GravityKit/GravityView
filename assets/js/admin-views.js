@@ -1059,7 +1059,7 @@
 				let editor = wp.codeEditor.initialize( $( this ), codemirrorConfig );
 
 				// If Merge Tags aren't enabled, don't continue.
-				if ( ! $( this ).hasClass( 'merge-tag-support' ) ) {
+				if ( ! $( this ).hasClass( 'merge-tag-support' ) && ! $( this ).hasClass( 'gv-merge-tag-support' ) ) {
 					return;
 				}
 

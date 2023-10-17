@@ -379,7 +379,6 @@ $gv-overlay-index: 10000;
  */
 
 #gravityview_settings {
-
 	th {
 		white-space: nowrap;
 		width: 30%;
@@ -387,6 +386,10 @@ $gv-overlay-index: 10000;
 		max-width: 200px; // Default th width in forms.css
 		padding: 16px 10px;
 	}
+
+    #gravityview_advanced th {
+      white-space: normal;
+    }
 
 	// Stack label and values in smaller viewport
 	@media (max-width: 1199px) {

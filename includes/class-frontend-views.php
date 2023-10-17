@@ -386,12 +386,12 @@ class GravityView_frontend {
 			return;
 		}
 
-		$is_GV_post_type = 'gravityview' === get_post_type( $post );
+		$is_gv_post_type = 'gravityview' === get_post_type( $post );
 
 		// Calculate requested Views
 		$post_content = ! empty( $post->post_content ) ? $post->post_content : null;
 
-		if ( ! $is_GV_post_type && function_exists( 'parse_blocks' ) && preg_match_all( '/"ref":\d+/', $post_content ) ) {
+		if ( $post_content && ! $is_gv_post_type && function_exists( 'parse_blocks' ) && preg_match_all( '/"ref":\d+/', $post_content ) ) {
 			$blocks = parse_blocks( $post_content );
 
 			foreach ( $blocks as $block ) {
@@ -414,7 +414,7 @@ class GravityView_frontend {
 		// !important: we need to run this before getting single entry (to kick the advanced filter)
 		$this->set_context_view_id();
 
-		$this->setIsGravityviewPostType( $is_GV_post_type );
+		$this->setIsGravityviewPostType( $is_gv_post_type );
 
 		$post_id = $this->getPostId() ? $this->getPostId() : ( isset( $post ) ? $post->ID : null );
 		$this->setPostId( $post_id );
