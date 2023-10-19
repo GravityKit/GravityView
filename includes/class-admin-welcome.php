@@ -284,6 +284,12 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
  				 */
 				?>
+				<h3>2.19.2 on October 19, 2023</h3>
+
+				<ul>
+					<li>Fixed: Merge tags were still not working in the Custom Content field after the fix in 2.19.1</li>
+				</ul>
+
 				<h3>2.19.1 on October 17, 2023</h3>
 
 				<ul>

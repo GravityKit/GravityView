@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.19.2 on October 19, 2023 =
 
 * Fixed: Merge tags were still not working in the Custom Content field after the fix in 2.19.1
 
