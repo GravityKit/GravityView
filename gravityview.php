@@ -27,7 +27,7 @@ if ( ! GravityKit\GravityView\Foundation\should_load( __FILE__ ) ) {
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.19.2 );
+define( 'GV_PLUGIN_VERSION', '2.19.2' );
 
 /**
  * Full path to the GravityView file
