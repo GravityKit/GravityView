@@ -26,13 +26,15 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 
 		$class = 'widefat mt-wp_editor ';
 
-		if ( rgar( $this->field, 'codemirror', false ) ) {
+		$field_support_merge_tags = false !== rgar( $this->field, 'merge_tags', false ) || 'force' === rgar( $this->field, 'merge_tags', false );
+
+		if ( rgar( $this->field, 'codemirror', false ) || $field_support_merge_tags ) {
 			$class .= 'codemirror ';
 		}
 
 		$show_mt = $this->show_merge_tags();
 
-        if( $show_mt && $this->field['merge_tags'] !== false || $this->field['merge_tags'] === 'force' ) {
+        if( $show_mt || $field_support_merge_tags ) {
             $class .= ' merge-tag-support mt-position-right ';
 
             if( empty( $this->field['show_all_fields'] ) ) {
