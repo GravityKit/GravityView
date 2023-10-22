@@ -18,7 +18,7 @@
       "url": "https://github.com/katzwebservices/standalone-phpenkoder"
     },
     {
-      "type": "vcs",
+      "type": "git",
       "url": "git@github.com:gravityview/Foundation.git"
     }
   ],
