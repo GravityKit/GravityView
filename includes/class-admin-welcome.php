@@ -284,6 +284,13 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
  				 */
 				?>
+				<h3>2.19.3 on October 25, 2023</h3>
+
+				<ul>
+					<li>Fixed: Using merge tags as values for search and start/end date override settings was not working in Views embedded as a field</li>
+					<li>Fixed: Deprecation notice in PHP 8.2+</li>
+				</ul>
+
 				<h3>2.19.2 on October 19, 2023</h3>
 
 				<ul>

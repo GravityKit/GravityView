@@ -155,16 +155,17 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 	static public function render_frontend( $field_settings, $context ) {
 		global $post;
 
-		$view_id = \GV\Utils::get( $field_settings, 'view_id', \GV\Utils::get( $field_settings, 'view_id' ) );
+		$view_id = $field_settings['view_id'] ?? null;
+		$form    = $context->views->form->form ?? GFAPI::get_form( $field_settings['form_id'] ?? 0 );
 
-		if ( empty( $view_id ) ) {
+		if ( ! $view_id || ! $form ) {
 			return;
 		}
 
 		$attributes = '';
 
 		$page_size_value = \GV\Utils::get( $field_settings, 'page_size', 'default' );
-		$attributes .= ( 'default' === $page_size_value ) ? '' : sprintf( ' page_size="%d"', $page_size_value );
+		$attributes      .= ( 'default' === $page_size_value ) ? '' : sprintf( ' page_size="%d"', $page_size_value );
 
 		// Prepare search field.
 		$search_field = \GV\Utils::get( $field_settings, 'search_field' );
@@ -174,8 +175,8 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 
 		$search_value = \GV\Utils::get( $field_settings, 'search_value' );
 		if ( ! is_null( $search_value ) ) {
-			$search_value = GFCommon::replace_variables( $search_value, $context->form->form, $context->entry->as_entry() );
-			$attributes .= sprintf( ' search_value="%s"', esc_attr( $search_value ) );
+			$search_value = GFCommon::replace_variables( $search_value, $form, $context->entry->as_entry() );
+			$attributes   .= sprintf( ' search_value="%s"', esc_attr( $search_value ) );
 		}
 
 		// Prepare search operator.
@@ -187,14 +188,14 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 		// Start date
 		$start_date = \GV\Utils::get( $field_settings, 'start_date' );
 		if ( ! empty( $start_date ) ) {
-			$start_date = GFCommon::replace_variables( $start_date, $context->form->form, $context->entry->as_entry() );
+			$start_date = GFCommon::replace_variables( $start_date, $form, $context->entry->as_entry() );
 			$attributes .= sprintf( ' start_date="%s"', esc_attr( $start_date ) );
 		}
 
 		// End date
 		$end_date = \GV\Utils::get( $field_settings, 'end_date' );
 		if ( ! empty( $end_date ) ) {
-			$end_date = GFCommon::replace_variables( $end_date, $context->form->form, $context->entry->as_entry() );
+			$end_date   = GFCommon::replace_variables( $end_date, $form, $context->entry->as_entry() );
 			$attributes .= sprintf( ' end_date="%s"', esc_attr( $end_date ) );
 		}
 
@@ -202,7 +203,6 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 
 		echo do_shortcode( $shortcode );
 	}
-
 }
 
 new GravityView_Field_GravityView_View;
