@@ -49,21 +49,15 @@ class GravityView_Field_Edit_Link extends GravityView_Field {
 		// Edit Entry link should only appear to visitors capable of editing entries
 		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
 
-		$add_option['edit_link'] = array(
+		$add_option['edit_link'] = [
 			'type' => 'text',
 			'label' => __( 'Edit Link Text', 'gk-gravityview' ),
 			'desc' => NULL,
 			'value' => __('Edit Entry', 'gk-gravityview'),
 			'merge_tags' => true,
-		);
+		];
 
-		$add_option['new_window'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
-			'value' => false,
-			'group' => 'display',
-			'priority' => 1300,
-		);
+		$this->add_field_support( 'new_window', $field_options );
 
 		return array_merge( $add_option, $field_options );
 	}
