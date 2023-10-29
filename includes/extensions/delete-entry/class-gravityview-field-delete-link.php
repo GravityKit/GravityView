@@ -23,7 +23,7 @@ class GravityView_Field_Delete_Link extends GravityView_Field {
 	var $is_searchable = false;
 
 	/** @inheritDoc  */
-	var $group = 'gravityview';
+	var $group = 'featured';
 
 	/** @inheritDoc  */
 	var $icon = 'dashicons-trash';

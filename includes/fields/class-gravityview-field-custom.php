@@ -27,7 +27,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 */
 	var $is_searchable = false;
 
-	var $group = 'gravityview';
+	var $group = 'featured';
 
 	var $icon = 'dashicons-editor-code';
 

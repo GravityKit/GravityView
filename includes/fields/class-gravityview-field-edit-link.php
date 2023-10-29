@@ -26,7 +26,7 @@ class GravityView_Field_Edit_Link extends GravityView_Field {
 	 */
 	var $is_searchable = false;
 
-	var $group = 'gravityview';
+	public $group = 'featured';
 
 	var $icon = 'dashicons-welcome-write-blog';
 

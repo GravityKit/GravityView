@@ -26,7 +26,7 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 	 */
 	var $is_searchable = false;
 
-	var $group = 'gravityview';
+	public $group = 'featured';
 
 	var $icon = 'dashicons-media-default';
 
@@ -58,6 +58,7 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 			'type'  => $this->name,
 			'desc'  => $this->description,
 			'icon'  => $this->icon,
+			'group'  => $this->group,
 		);
 
 		return $entry_default_fields;
