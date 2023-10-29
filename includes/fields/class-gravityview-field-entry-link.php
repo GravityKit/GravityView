@@ -10,25 +10,25 @@
  */
 class GravityView_Field_Entry_Link extends GravityView_Field {
 
-	var $name = 'entry_link';
+	public $name = 'entry_link';
 
-	var $contexts = array( 'multiple' );
-
-	/**
-	 * @var bool
-	 * @since 1.15.3
-	 */
-	var $is_sortable = false;
+	public $contexts = array( 'multiple' );
 
 	/**
 	 * @var bool
 	 * @since 1.15.3
 	 */
-	var $is_searchable = false;
+	public $is_sortable = false;
+
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	public $is_searchable = false;
 
 	public $group = 'featured';
 
-	var $icon = 'dashicons-media-default';
+	public $icon = 'dashicons-media-default';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Link to Single Entry', 'gk-gravityview' );

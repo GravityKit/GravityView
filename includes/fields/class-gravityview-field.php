@@ -83,13 +83,13 @@ abstract class GravityView_Field {
 	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
 	 * @since 1.19
 	 */
-	var $entry_meta_update_callback = null;
+	public $entry_meta_update_callback = null;
 
 	/**
 	 * @var bool Whether to show meta when set to true automatically adds the column to the entry list, without having to edit and add the column for display
 	 * @since 1.19
 	 */
-	var $entry_meta_is_default_column = false;
+	public $entry_meta_is_default_column = false;
 
 	/**
 	 * @internal Not yet implemented

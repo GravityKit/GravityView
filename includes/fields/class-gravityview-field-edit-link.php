@@ -10,25 +10,25 @@
  */
 class GravityView_Field_Edit_Link extends GravityView_Field {
 
-	var $name = 'edit_link';
+	public $name = 'edit_link';
 
-	var $contexts = array( 'single', 'multiple' );
-
-	/**
-	 * @var bool
-	 * @since 1.15.3
-	 */
-	var $is_sortable = false;
+	public $contexts = [ 'single', 'multiple' ];
 
 	/**
 	 * @var bool
 	 * @since 1.15.3
 	 */
-	var $is_searchable = false;
+	public $is_sortable = false;
+
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	public $is_searchable = false;
 
 	public $group = 'featured';
 
-	var $icon = 'dashicons-welcome-write-blog';
+	public $icon = 'dashicons-welcome-write-blog';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Link to Edit Entry', 'gk-gravityview' );
