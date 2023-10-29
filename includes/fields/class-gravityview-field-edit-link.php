@@ -6,7 +6,7 @@
  */
 
 /**
- * Add custom options for entry_link fields
+ * Add custom options for edit_link fields
  */
 class GravityView_Field_Edit_Link extends GravityView_Field {
 
@@ -16,13 +16,11 @@ class GravityView_Field_Edit_Link extends GravityView_Field {
 
 	/**
 	 * @var bool
-	 * @since 1.15.3
 	 */
 	public $is_sortable = false;
 
 	/**
 	 * @var bool
-	 * @since 1.15.3
 	 */
 	public $is_searchable = false;
 
