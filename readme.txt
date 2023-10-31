@@ -21,8 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.19.3 [unreleased] =
+= develop =
 
+* Fixed: PHP 8.1+ deprecation notice
+
+= 2.19.3 on October 25, 2023 =
+
+* Fixed: Using merge tags as values for search and start/end date override settings was not working in Views embedded as a field
 * Fixed: Deprecation notice in PHP 8.2+
 
 = 2.19.2 on October 19, 2023 =
