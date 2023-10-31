@@ -181,8 +181,6 @@
 				// Update checkbox visibility when having dependency checkboxes
 				.on( 'gravityview/loaded', vcfg.toggleCheckboxes )
 
-				.on( 'change', ".gv-setting-list, #gravityview_settings, .gv-dialog-options", vcfg.toggleCheckboxes )
-
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
 				.on( 'click', '.gv-field-details--toggle', function( e ) {
@@ -218,6 +216,11 @@
 				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry gravityview/view-config-updated', vcfg.toggleRemoveAllFields )
 
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
+
+				// Only start tracking changes after the View is loaded to prevent this from being run multiple times.
+				.on( 'gravityview/loaded', function() {
+					$(".gv-setting-list, #gravityview_settings, .gv-dialog-options").on('change', vcfg.toggleCheckboxes );
+				})
 
 				.on( 'focus', '.gv-add-field', function( e ) {
 					$( this ).parent('.gv-fields').addClass( 'trigger--hover' );
