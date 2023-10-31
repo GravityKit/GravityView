@@ -178,9 +178,6 @@
 				// Double-clicking a field/widget label opens settings
 				.on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
 
-				// Update checkbox visibility when having dependency checkboxes
-				.on( 'gravityview/loaded', vcfg.toggleCheckboxes )
-
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
 				.on( 'click', '.gv-field-details--toggle', function( e ) {
