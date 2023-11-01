@@ -216,7 +216,7 @@
 
 				// Only start tracking changes after the View is loaded to prevent this from being run multiple times.
 				.on( 'gravityview/loaded', function() {
-					$("#gravityview_settings").on('change', vcfg.toggleCheckboxes );
+					$(".gv-setting-list, #gravityview_settings, .gv-dialog-options", '#post' ).on('change', vcfg.toggleCheckboxes );
 				})
 
 				.on( 'focus', '.gv-add-field', function( e ) {
