@@ -396,11 +396,11 @@
 		toggleDisabled: function ( $one, $two ) {
 
 			if ( $one.is( ':checked' ) ) {
-				$two.attr( 'disabled', true );
+				$two.prop( 'disabled', true );
 			}
 
-			if ( $two.filter(':checked').length > 0 ) {
-				$one.attr( 'disabled', true );
+			if ( $two.is(':checked').length > 0 ) {
+				$one.prop( 'disabled', true );
 			}
 		},
 
