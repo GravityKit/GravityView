@@ -426,7 +426,7 @@
 						requires_name = requires_array[0],
 						requires_value = requires_array[1];
 
-					var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
+					var $input = $parent.find('[name$="[' + requires_name + ']"]').filter(':input');
 
 					if ( $input.is(':checkbox') ) {
 						if ( reverse_logic ) {
@@ -2425,7 +2425,7 @@
 				serialized_data = $post.data( 'gv-serialized' );
 			} else {
 				// Get all the fields where the `name` attribute start with `fields`
-				$fields = $post.find( ':input[name^=fields]' );
+				$fields = $post.find( '[name^=fields]' ).filter(':input');
 
 				// Serialize the data
 				serialized_data = $fields.serialize();
@@ -2437,7 +2437,7 @@
 			}
 
 			// Also exclude these fields from $_POST...
-			$post.find( ':input[name=gv_fields]' ).prop( 'disabled', true );
+			$post.find( '[name=gv_fields]' ).filter(':input').prop( 'disabled', true );
 
 			// ...instead, add a single field to the form that contains all the data.
 			$post.append( $( '<input/>', {
