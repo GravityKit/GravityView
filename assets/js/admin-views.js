@@ -405,6 +405,7 @@
 
 			if ( $one.is( ':checked' ) ) {
 				$two.prop( 'disabled', true );
+				return;
 			}
 
 			if ( $two.is(':checked').length > 0 ) {
