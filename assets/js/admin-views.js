@@ -216,8 +216,10 @@
 
 				// Only start tracking changes after the View is loaded to prevent this from being run multiple times.
 				.on( 'gravityview/loaded', function() {
-					$(".gv-setting-list, #gravityview_settings, .gv-dialog-options", '#post' ).on('change', vcfg.toggleCheckboxes );
+					$(".gv-setting-list, #gravityview_settings" ).on('change', vcfg.toggleCheckboxes );
 				})
+
+				.on( 'change', ".gv-dialog-options", vcfg.toggleCheckboxes )
 
 				.on( 'focus', '.gv-add-field', function( e ) {
 					$( this ).parent('.gv-fields').addClass( 'trigger--hover' );
@@ -408,7 +410,7 @@
 				return;
 			}
 
-			if ( $two.is(':checked').length > 0 ) {
+			if ( $two.is(':checked') ) {
 				$one.prop( 'disabled', true );
 			}
 		},
