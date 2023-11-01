@@ -378,6 +378,10 @@
 
 			var $parent = $( target ).is( '.gv-fields' ) ? $( target ) : $( target ).parents( '.gv-fields' );
 
+			if ( ! $parent.length ) {
+				return;
+			}
+
 			// "Link to Post" should hide when "Link to single entry" is checked
 			viewConfiguration.toggleDisabled( $( 'input[type=checkbox][name*=link_to_]', $parent ), $( 'input[type=checkbox][name*=show_as_link]', $parent ) );
 
