@@ -2710,7 +2710,7 @@
 
 	};  // end viewGeneralSettings object
 
-	jQuery(function ( $ ) {
+	jQuery( function ( $ ) {
 
 		// title placeholder
 		$( '#title-prompt-text' ).text( gvGlobals.label_viewname );
@@ -2765,13 +2765,14 @@
 			}
 		} );
 
+		// Expose globally methods to initialize/destroy tooltips and to display dialog window
+		window.gvAdminActions = {
+			initTooltips: viewConfiguration.init_tooltips,
+			removeTooltips: viewConfiguration.remove_tooltips,
+			showDialog: viewConfiguration.showDialog
+		};
+
 		$( 'body' ).trigger( 'gravityview/loaded' );
 	} );
 
-	// Expose globally methods to initialize/destroy tooltips and to display dialog window
-	window.gvAdminActions = {
-		initTooltips: viewConfiguration.init_tooltips,
-		removeTooltips: viewConfiguration.remove_tooltips,
-		showDialog: viewConfiguration.showDialog
-	};
 }(jQuery));
