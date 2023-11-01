@@ -395,6 +395,10 @@
 		 */
 		toggleDisabled: function ( $one, $two ) {
 
+			if ( $one.length === 0 || $two.length === 0 ) {
+				return;
+			}
+
 			if ( $one.is( ':checked' ) ) {
 				$two.prop( 'disabled', true );
 			}
