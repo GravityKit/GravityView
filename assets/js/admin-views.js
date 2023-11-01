@@ -2750,9 +2750,9 @@
 				viewConfiguration.init_droppables( ui.panel );
 
 				/** @since 2.14.1 */
-				$( 'body' ).trigger( 'gravityview/tab-ready', ui.panel );
-
-				$( 'body' ).trigger( 'gravityview/tabs-ready' );
+				$( 'body' )
+					.trigger( 'gravityview/tab-ready', ui.panel )
+					.trigger( 'gravityview/tabs-ready' );
 			},
 			activate: function ( event, ui ) {
 				// When the tab is activated, set a new cookie
