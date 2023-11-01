@@ -415,7 +415,7 @@
 		 */
 		toggleRequired: function( currentTarget, data_attr, reverse_logic ) {
 
-			var $parent = $( currentTarget );
+			var $parent = $( currentTarget, '#post' );
 
 			$parent
 				.find( '[data-' + data_attr + ']' )
