@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Improved: View editor performance, especially with Views with a large number of fields
 * Fixed: PHP 8.1+ deprecation notice
 
 = 2.19.3 on October 25, 2023 =
