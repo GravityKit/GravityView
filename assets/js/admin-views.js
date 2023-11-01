@@ -420,7 +420,8 @@
 			$parent
 				.find( '[data-' + data_attr + ']' )
 				.each( function ()  {
-					var requires = $( this ).data( data_attr ),
+					var $this = $( this ),
+						requires = $this.data( data_attr ),
 						requires_array = requires.split('='),
 						requires_name = requires_array[0],
 						requires_value = requires_array[1];
@@ -429,15 +430,15 @@
 
 					if ( $input.is(':checkbox') ) {
 						if ( reverse_logic ) {
-							$(this).toggle( $input.not(':checked') );
+							$this.toggle( $input.not(':checked') );
 						} else {
-							$(this).toggle( $input.is(':checked') );
+							$this.toggle( $input.is(':checked') );
 						}
 					} else if ( requires_value !== undefined ) {
 						if ( reverse_logic ) {
-							$(this).toggle( $input.val() !== requires_value );
+							$this.toggle( $input.val() !== requires_value );
 						} else {
-							$(this).toggle( $input.val() === requires_value );
+							$this.toggle( $input.val() === requires_value );
 						}
 					}
 				});
