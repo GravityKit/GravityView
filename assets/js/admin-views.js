@@ -1699,11 +1699,11 @@
 		init_tooltips: function (el) {
 
 			// Already initialized.
-			if ( 0 === $( el || '.gv-add-field' ).not( ':ui-tooltip' ).length ) {
+			if ( 0 === $( el || '.gv-add-field', '#post' ).not( ':ui-tooltip' ).length ) {
 				return;
 			}
 
-			$( el || ".gv-add-field" ).gvTooltip( {
+			$( el || ".gv-add-field", '#post' ).gvTooltip( {
 				show:    150,
 				hide:    200,
 				content: function () {
