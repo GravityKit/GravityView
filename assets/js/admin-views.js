@@ -379,10 +379,10 @@
 			var $parent = $( target ).is( '.gv-fields' ) ? $( target ) : $( target ).parents( '.gv-fields' );
 
 			// "Link to Post" should hide when "Link to single entry" is checked
-			viewConfiguration.toggleDisabled( $( 'input:checkbox[name*=link_to_]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
+			viewConfiguration.toggleDisabled( $( 'input[type=checkbox][name*=link_to_]', $parent ), $( 'input[type=checkbox][name*=show_as_link]', $parent ) );
 
 			// "Make Phone Number Clickable" should hide when "Link to single entry" is checked
-			viewConfiguration.toggleDisabled( $( 'input:checkbox[name*=link_phone]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
+			viewConfiguration.toggleDisabled( $( 'input[type=checkbox][name*=link_phone]', $parent ), $( 'input[type=checkbox][name*=show_as_link]', $parent ) );
 		},
 
 		/**
@@ -428,7 +428,7 @@
 
 					var $input = $parent.find('[name$="[' + requires_name + ']"]').filter(':input');
 
-					if ( $input.is(':checkbox') ) {
+					if ( $input.is('[type=checkbox]') ) {
 						if ( reverse_logic ) {
 							$this.toggle( $input.not(':checked') );
 						} else {
@@ -2295,7 +2295,7 @@
 			vcfg.updateVisibilitySettings( e, true );
 
 			// Toggle checkbox when changing field visibility
-			$( 'body' ).on( 'change', '.gv-fields input:checkbox', vcfg.updateVisibilitySettings );
+			$( 'body' ).on( 'change', '.gv-fields input[type=checkbox]', vcfg.updateVisibilitySettings );
 
 			var buttons = [
 				{
@@ -2327,7 +2327,7 @@
 
 			$( ".gv-setting-list", $parent ).trigger( 'change' );
 
-			$( 'input:checkbox', $parent ).attr( 'disabled', null );
+			$( 'input[type=checkbox]', $parent ).attr( 'disabled', null );
 
 			vcfg.setUnsavedChanges( true );
 		},
