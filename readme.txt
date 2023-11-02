@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.19.4 on November 2, 2023 =
 
 * Improved: View editor performance, especially with Views with a large number of fields
 * Improved: "Link to Edit Entry," "Link to Single Entry," and "Delete Entry" fields are now more easily accessible at the top of the field picker in the View editor

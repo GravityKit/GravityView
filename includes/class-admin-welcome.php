@@ -284,7 +284,7 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
  				 */
 				?>
-				<h3>develop</h3>
+				<h3>2.19.4 on November 2, 2023</h3>
 
 				<ul>
 					<li>Improved: View editor performance, especially with Views with a large number of fields</li>
