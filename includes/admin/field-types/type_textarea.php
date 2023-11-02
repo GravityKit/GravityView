@@ -35,7 +35,7 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 		$show_mt = $this->show_merge_tags();
 
         if( $show_mt || $field_support_merge_tags ) {
-            $class .= ' merge-tag-support mt-position-right ';
+            $class .= ' gv-merge-tag-support mt-position-right ';
 
             if( empty( $this->field['show_all_fields'] ) ) {
             	$class .= ' mt-hide_all_fields ';
