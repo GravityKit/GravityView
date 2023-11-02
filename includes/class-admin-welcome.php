@@ -284,6 +284,14 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
  				 */
 				?>
+				<h3>develop</h3>
+
+				<ul>
+					<li>Improved: View editor performance, especially with Views with a large number of fields</li>
+					<li>Improved: "Link to Edit Entry," "Link to Single Entry," and "Delete Entry" fields are now more easily accessible at the top of the field picker in the View editor</li>
+					<li>Fixed: PHP 8.1+ deprecation notice</li>
+				</ul>
+
 				<h3>2.19.3 on October 25, 2023</h3>
 
 				<ul>
