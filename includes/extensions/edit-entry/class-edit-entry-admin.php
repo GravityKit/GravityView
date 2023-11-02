@@ -28,14 +28,8 @@ class GravityView_Edit_Entry_Admin {
             return;
         }
 
-        // Add Edit Link as a default field, outside those set in the Gravity Form form
-        add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
-
         // For the Edit Entry Link, you don't want visible to all users.
         add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps' ), 10, 5 );
-
-        // Modify the field options based on the name of the field type
-        add_filter( 'gravityview_template_edit_link_options', array( $this, 'edit_link_field_options' ), 10, 5 );
 
         // add tooltips
         add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips') );
@@ -74,28 +68,6 @@ class GravityView_Edit_Entry_Admin {
 	}
 
     /**
-     * Add Edit Link as a default field, outside those set in the Gravity Form form
-     * @param array $entry_default_fields Existing fields
-     * @param  string|array $form form_ID or form object
-     * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
-     */
-    function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
-
-        if( $zone !== 'edit' ) {
-
-            $entry_default_fields['edit_link'] = array(
-                'label' => __('Link to Edit Entry', 'gk-gravityview'),
-                'type' => 'edit_link',
-                'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gk-gravityview'),
-                'icon' => 'dashicons-welcome-write-blog',
-            );
-
-        }
-
-        return $entry_default_fields;
-    }
-
-    /**
      * Change wording for the Edit context to read Entry Creator
      *
      * @param  array 	   $visibility_caps        Array of capabilities to display in field dropdown.
@@ -108,56 +80,19 @@ class GravityView_Edit_Entry_Admin {
      */
     function modify_visibility_caps( $visibility_caps = array(), $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
-        $caps = $visibility_caps;
-
-        // If we're configuring fields in the edit context, we want a limited selection
-        if( $context === 'edit' ) {
-
-            // Remove other built-in caps.
-            unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['delete_others_posts'] );
-
-            $caps['read'] = _x('Entry Creator','User capability', 'gk-gravityview');
+        if( $context !== 'edit' ) {
+	        return $visibility_caps;
         }
 
+		// If we're configuring fields in the edit context, we want a limited selection.
+        $caps = $visibility_caps;
+
+        // Remove other built-in caps.
+        unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['delete_others_posts'] );
+
+        $caps['read'] = _x('Entry Creator','User capability', 'gk-gravityview');
+
         return $caps;
-    }
-
-    /**
-     * Add "Edit Link Text" setting to the edit_link field settings
-     *
-     * @param array  $field_options
-     * @param string $template_id
-     * @param string $field_id
-     * @param string $context
-     * @param string $input_type
-     *
-     * @return array $field_options, with "Edit Link Text" field option
-     */
-    function edit_link_field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
-
-        // Always a link, never a filter
-        unset( $field_options['show_as_link'], $field_options['search_filter'] );
-
-        // Edit Entry link should only appear to visitors capable of editing entries
-        unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
-
-        $add_option['edit_link'] = array(
-            'type' => 'text',
-            'label' => __( 'Edit Link Text', 'gk-gravityview' ),
-            'desc' => NULL,
-            'value' => __('Edit Entry', 'gk-gravityview'),
-            'merge_tags' => true,
-        );
-
-	    $add_option['new_window'] = array(
-		    'type' => 'checkbox',
-		    'label' => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
-		    'value' => false,
-		    'group' => 'display',
-		    'priority' => 1300,
-	    );
-
-        return array_merge( $add_option, $field_options );
     }
 
     /**
