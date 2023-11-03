@@ -2,7 +2,9 @@ name: Auto-Add Pull Requests
 
 on:
   workflow_call:
-
+    secrets:
+      ADD_TO_PROJECT_PAT:
+        required: true
   pull_request:
     types:
       - opened
