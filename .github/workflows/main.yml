@@ -2,10 +2,6 @@ name: Auto-Add Pull Requests
 
 on:
   workflow_call:
-    inputs:
-      github-token:
-        required: true
-        type: string
     secrets:
       ADD_TO_PROJECT_PAT:
         required: true
