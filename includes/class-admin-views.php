@@ -872,18 +872,22 @@ class GravityView_Admin_Views {
 			$meta_fields = array();
 		}
 
-		// get default fields
-		$default_fields = $this->get_entry_default_fields( $form, $zone );
+		$gv_fields = GravityView_Fields::get_all( '', $zone );
 
-		//merge without loosing the keys
-		$fields = $fields + $meta_fields + $default_fields;
+		$featured_fields = wp_list_filter( $gv_fields, array( 'group' => 'featured' ) );
 
-		// Move Custom Content to top
-		if ( isset( $fields['custom'] ) ) {
-			$fields = array( 'custom' => $fields['custom'] ) + $fields;
+		// Convert from GravityView field into array.
+		/** @var GravityView_Field $featured_field */
+		foreach ( $featured_fields as &$featured_field ) {
+			$_as_array = $featured_field->as_array();
+			$featured_field = reset( $_as_array );
 		}
 
-		$gv_fields = GravityView_Fields::get_all( '', $zone );
+		// get default fields.
+		$default_fields = $this->get_entry_default_fields( $form, $zone );
+
+		//merge without losing the keys.
+		$fields = $featured_fields + $fields + $meta_fields + $default_fields;
 
 		foreach ( $fields as &$field ) {
 			foreach ( $gv_fields as $gv_field ) {
