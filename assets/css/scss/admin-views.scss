@@ -1595,7 +1595,8 @@ $dialog-button-padding: 5px;
 		font-size: 1.1em;
 		clear: left;
 
-		// Hide search mode by default
+		// Hide hidden containers and search mode by default
+		&.hidden,
 		&.gv-setting-container-search_mode {
 		  display: none;
 		}
