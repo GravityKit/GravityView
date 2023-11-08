@@ -13,6 +13,12 @@
  */
 class GravityView_Placeholder_Template extends GravityView_Template {
 
+	/**
+	 * @since
+	 * @var mixed|string The template ID.
+	 */
+	private $id;
+
 	function __construct( $id = 'template_placeholder', $settings = array() ) {
 
 		$default_template_settings = array(

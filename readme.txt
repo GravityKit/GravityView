@@ -21,9 +21,26 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.19.4 on November 2, 2023 =
 
-* Fixed: PHP 8 deprecation notice appearing on 404 pages
+* Improved: View editor performance, especially with Views with a large number of fields
+* Improved: "Link to Edit Entry," "Link to Single Entry," and "Delete Entry" fields are now more easily accessible at the top of the field picker in the View editor
+* Fixed: PHP 8.1+ deprecation notice
+
+= 2.19.3 on October 25, 2023 =
+
+* Fixed: Using merge tags as values for search and start/end date override settings was not working in Views embedded as a field
+* Fixed: Deprecation notice in PHP 8.2+
+
+= 2.19.2 on October 19, 2023 =
+
+* Fixed: Merge tags were still not working in the Custom Content field after the fix in 2.19.1
+
+= 2.19.1 on October 17, 2023 =
+
+* Fixed: PHP 8+ deprecation notice appearing on 404 pages
+* Fixed: Merge tags not working in the Custom Content field
+* Improved: PHP 8.1 compatibility
 
 = 2.19 on October 12, 2023 =
 

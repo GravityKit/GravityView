@@ -314,7 +314,7 @@ class GravityView_Render_Settings {
 			return $hidden_fields . '<!-- No Options -->'; // The HTML comment is here for checking if the output is empty in render_label()
 		}
 
-		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gk-gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) );
+		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gk-gravityview' ) , wp_strip_all_tags( html_entity_decode( $field_label ) ) ) );
 
 		$field_details = '';
 

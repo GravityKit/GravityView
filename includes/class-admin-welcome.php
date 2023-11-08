@@ -284,6 +284,35 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
  				 */
 				?>
+				<h3>2.19.4 on November 2, 2023</h3>
+
+				<ul>
+					<li>Improved: View editor performance, especially with Views with a large number of fields</li>
+					<li>Improved: "Link to Edit Entry," "Link to Single Entry," and "Delete Entry" fields are now more easily accessible at the top of the field picker in the View editor</li>
+					<li>Fixed: PHP 8.1+ deprecation notice</li>
+				</ul>
+
+				<h3>2.19.3 on October 25, 2023</h3>
+
+				<ul>
+					<li>Fixed: Using merge tags as values for search and start/end date override settings was not working in Views embedded as a field</li>
+					<li>Fixed: Deprecation notice in PHP 8.2+</li>
+				</ul>
+
+				<h3>2.19.2 on October 19, 2023</h3>
+
+				<ul>
+					<li>Fixed: Merge tags were still not working in the Custom Content field after the fix in 2.19.1</li>
+				</ul>
+
+				<h3>2.19.1 on October 17, 2023</h3>
+
+				<ul>
+					<li>Fixed: PHP 8+ deprecation notice appearing on 404 pages</li>
+					<li>Fixed: Merge tags not working in the Custom Content field</li>
+					<li>Improved: PHP 8.1 compatibility</li>
+				</ul>
+
 				<h3>2.19 on October 12, 2023</h3>
 
 				<ul>

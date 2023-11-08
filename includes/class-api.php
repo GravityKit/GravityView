@@ -1133,7 +1133,7 @@ function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'pos
 	$output = get_the_term_list( $post_id, $taxonomy, NULL, ', ' );
 
 	if( empty( $link ) ) {
-		return strip_tags( $output);
+		return wp_strip_all_tags( $output);
 	}
 
 	return $output;

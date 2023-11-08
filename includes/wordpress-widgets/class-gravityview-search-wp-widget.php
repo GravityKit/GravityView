@@ -118,7 +118,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		$new_instance = wp_parse_args( (array) $new_instance, self::get_defaults() );
 
-		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['title'] = wp_strip_all_tags( $new_instance['title'] );
 		$instance['view_id'] = absint( $new_instance['view_id'] );
 		$instance['search_fields'] = $new_instance['search_fields'];
 		$instance['post_id'] = $new_instance['post_id'];
