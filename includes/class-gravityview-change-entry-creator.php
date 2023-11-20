@@ -192,7 +192,7 @@ class GravityView_Change_Entry_Creator {
 	function prevent_conflicts() {
 
 		// Plugin that was provided here:
-		// @link https://gravityview.co/support/documentation/201991205/
+		// @link https://www.gravitykit.com/support/documentation/201991205/
 		remove_action( "gform_entry_info", 'gravityview_change_entry_creator_form', 10 );
 		remove_action( "gform_after_update_entry", 'gravityview_update_entry_creator', 10 );
 

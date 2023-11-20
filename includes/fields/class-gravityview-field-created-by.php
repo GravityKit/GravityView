@@ -68,7 +68,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	 * Exactly like Gravity Forms' User Meta functionality, but instead shows information on the user who created the entry
 	 * instead of the currently logged-in user.
 	 *
-	 * @see https://docs.gravityview.co/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
+	 * @see https://docs.gravitykit.com/article/281-the-createdby-merge-tag Read how to use the `{created_by}` merge tag
 	 *
 	 * @since 1.16
 	 *
@@ -135,7 +135,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 				'ID' => __( 'User ID # (Example: 426)', 'gk-gravityview' ),
 				'user_login' => __( 'Username (Example: "nostromo")', 'gk-gravityview' ),
 				'display_name' => __( 'Display Name (Example: "Ellen Ripley")', 'gk-gravityview' ),
-				'user_email' => __( 'User Email (Example: "ellen@gravityview.co")', 'gk-gravityview' ),
+				'user_email' => __( 'User Email (Example: "ellen@gravitykit.com")', 'gk-gravityview' ),
 				'user_registered' => __( 'User Registered (Example: "2019-10-18 08:30:11")', 'gk-gravityview' ),
 
 				// meta

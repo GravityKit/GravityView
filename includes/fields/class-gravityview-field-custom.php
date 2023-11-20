@@ -27,7 +27,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 	 */
 	var $is_searchable = false;
 
-	var $group = 'gravityview';
+	var $group = 'featured';
 
 	var $icon = 'dashicons-editor-code';
 
@@ -38,33 +38,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 4 );
 
-		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 100, 3 );
-
 		parent::__construct();
-	}
-
-	/**
-	 * Add as a default field, outside those set in the Gravity Form form
-	 *
-	 * @since 2.10 Moved here from GravityView_Admin_Views::get_entry_default_fields
-	 *
-	 * @param array $entry_default_fields Existing fields
-	 * @param string|array $form form_ID or form object
-	 * @param string $zone Either 'single', 'directory', 'edit', 'header', 'footer'
-	 *
-	 * @return array
-	 */
-	public function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
-
-		$entry_default_fields['custom']	= array(
-			'label'	=> $this->label,
-			'type'	=> $this->name,
-			'desc'	=> $this->description,
-			'icon'  => $this->icon,
-			'group' => $this->group,
-		);
-
-		return $entry_default_fields;
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
@@ -75,7 +49,7 @@ class GravityView_Field_Custom extends GravityView_Field {
 			'content' => array(
 				'type' => 'textarea',
 				'label' => __( 'Custom Content', 'gk-gravityview' ),
-				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gk-gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravityview.co/article/252-gvlogic-shortcode" data-beacon-article-sidebar="552355bfe4b0221aadf2572b">', '</a>' ) . ' ' . sprintf( __( 'Click the arrow icon next to the content area to add %sMerge Tags%s.', 'gk-gravityview' ), '<a href="https://docs.gravityview.co/article/76-merge-tags" data-beacon-article-inline="54c67bbbe4b051242988551d">', '</a>' ),
+				'desc' => sprintf( __( 'Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s).', 'gk-gravityview' ), '<code>[gvlogic]</code>', '<a href="https://docs.gravitykit.com/article/252-gvlogic-shortcode" data-beacon-article-sidebar="552355bfe4b0221aadf2572b">', '</a>' ) . ' ' . sprintf( __( 'Click the arrow icon next to the content area to add %sMerge Tags%s.', 'gk-gravityview' ), '<a href="https://docs.gravitykit.com/article/76-merge-tags" data-beacon-article-inline="54c67bbbe4b051242988551d">', '</a>' ),
 				'value' => '',
 				'class'	=> 'code',
 				'merge_tags' => 'force',

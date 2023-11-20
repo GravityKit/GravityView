@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "77b662681223db0da43c5d4545de0e8f6d0ba17b"
+                "reference": "9cad077d601802f727dd37a17850fbabb7ef7c28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/77b662681223db0da43c5d4545de0e8f6d0ba17b",
-                "reference": "77b662681223db0da43c5d4545de0e8f6d0ba17b",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/9cad077d601802f727dd37a17850fbabb7ef7c28",
+                "reference": "9cad077d601802f727dd37a17850fbabb7ef7c28",
                 "shasum": ""
             },
             "require": {
@@ -322,10 +322,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.2",
+                "source": "https://github.com/GravityKit/Foundation/tree/main",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2023-09-07T21:24:52+00:00"
+            "time": "2023-10-23T13:29:34+00:00"
         },
         {
             "name": "illuminate/container",
@@ -1112,12 +1112,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "3aecfa088ee2f864b516c1abef7229264a9e472a"
+                "reference": "1c924f8dee1b10624223741b72e5ce83f1e45ce3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/3aecfa088ee2f864b516c1abef7229264a9e472a",
-                "reference": "3aecfa088ee2f864b516c1abef7229264a9e472a",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/1c924f8dee1b10624223741b72e5ce83f1e45ce3",
+                "reference": "1c924f8dee1b10624223741b72e5ce83f1e45ce3",
                 "shasum": ""
             },
             "require-dev": {
@@ -1156,9 +1156,9 @@
             ],
             "support": {
                 "issues": "https://github.com/trustedlogin/client/issues",
-                "source": "https://github.com/trustedlogin/client/tree/main"
+                "source": "https://github.com/trustedlogin/client/tree/v1.6.1"
             },
-            "time": "2023-09-07T19:06:21+00:00"
+            "time": "2023-09-22T17:54:18+00:00"
         }
     ],
     "packages-dev": [
@@ -9169,16 +9169,16 @@
         },
         {
             "name": "yoast/phpunit-polyfills",
-            "version": "1.0.5",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Yoast/PHPUnit-Polyfills.git",
-                "reference": "3b59adeef77fb1c03ff5381dbb9d68b0aaff3171"
+                "reference": "224e4a1329c03d8bad520e3fc4ec980034a4b212"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Yoast/PHPUnit-Polyfills/zipball/3b59adeef77fb1c03ff5381dbb9d68b0aaff3171",
-                "reference": "3b59adeef77fb1c03ff5381dbb9d68b0aaff3171",
+                "url": "https://api.github.com/repos/Yoast/PHPUnit-Polyfills/zipball/224e4a1329c03d8bad520e3fc4ec980034a4b212",
+                "reference": "224e4a1329c03d8bad520e3fc4ec980034a4b212",
                 "shasum": ""
             },
             "require": {
@@ -9225,7 +9225,7 @@
                 "issues": "https://github.com/Yoast/PHPUnit-Polyfills/issues",
                 "source": "https://github.com/Yoast/PHPUnit-Polyfills"
             },
-            "time": "2023-03-30T23:39:05+00:00"
+            "time": "2023-08-19T14:25:08+00:00"
         },
         {
             "name": "zordius/lightncandy",

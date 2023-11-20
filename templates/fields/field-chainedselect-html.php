@@ -15,6 +15,8 @@ $field_value = gravityview_get_field_value( $gravityview->entry->as_entry(), $gr
 
 // The Chained Selects add-on is not active. This is a rudimentary fallback.
 if ( is_array( $field_value ) ) {
+	$field_value = array_filter( $field_value, 'gravityview_is_not_empty_string' );
+
 	echo implode( '; ', $field_value );
 } else {
 	echo $field_value;

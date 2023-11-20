@@ -3,8 +3,8 @@
  * @file class-admin-approve-entries.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -448,7 +448,7 @@ class GravityView_Admin_ApproveEntries {
 
 		if( $hide_if_no_connections ) {
 
-			$connected_views = gravityview_get_connected_views( $form_id );
+			$connected_views = gravityview_get_connected_views( $form_id, ['posts_per_page' => 1 ], false );
 
 			if( empty( $connected_views ) ) {
 				$show_approve_column = false;

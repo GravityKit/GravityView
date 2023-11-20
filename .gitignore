@@ -53,3 +53,7 @@ docker-unit-tests.sh
 phpunit
 wordpress-51-tests-lib
 wordpress-latest-tests-lib
+
+.coveralls.yml
+.scrutinizer.yml
+.tx

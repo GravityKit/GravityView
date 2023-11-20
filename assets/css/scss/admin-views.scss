@@ -3,8 +3,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -379,7 +379,6 @@ $gv-overlay-index: 10000;
  */
 
 #gravityview_settings {
-
 	th {
 		white-space: nowrap;
 		width: 30%;
@@ -387,6 +386,10 @@ $gv-overlay-index: 10000;
 		max-width: 200px; // Default th width in forms.css
 		padding: 16px 10px;
 	}
+
+    #gravityview_advanced th {
+      white-space: normal;
+    }
 
 	// Stack label and values in smaller viewport
 	@media (max-width: 1199px) {
@@ -439,6 +442,11 @@ $gv-overlay-index: 10000;
 		.wp-picker-input-wrap label {
 			display: inline-block;
 		}
+	}
+
+	.howto {
+		margin: .25em 0 .5em;
+		font-weight: normal;
 	}
 
 	li .nav-tab {
@@ -1587,7 +1595,8 @@ $dialog-button-padding: 5px;
 		font-size: 1.1em;
 		clear: left;
 
-		// Hide search mode by default
+		// Hide hidden containers and search mode by default
+		&.hidden,
 		&.gv-setting-container-search_mode {
 		  display: none;
 		}
@@ -1977,11 +1986,12 @@ $dialog-button-padding: 5px;
 	.dashicons-yes-alt,
 	.dashicons-editor-code,
 	&[data-original-title="Gravity Forms"] .background-icon,
+	&[data-original-title="GravityView View"] .background-icon,
 	.dashicons-lock,
 	.dashicons-warning,
 	.dashicons-search,
 	.dashicons-media-default {
-		display: inline-block;
+		display: inline-block !important;
 		background-repeat: no-repeat;
 		background-size: contain;
 		background-position: center center;
@@ -2004,7 +2014,7 @@ $dialog-button-padding: 5px;
 
 /**
  * Hidden labels in the merge tag picker end up not breaking the flow.
- * @see https://i.gravityview.co/R1oaj9+
+ * @see https://i.gravitykit.com/R1oaj9+
  */
 .gform-admin .gform-visually-hidden,
 #gv-view-configuration-tabs .gform-visually-hidden {

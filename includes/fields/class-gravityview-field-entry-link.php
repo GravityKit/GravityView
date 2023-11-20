@@ -10,25 +10,25 @@
  */
 class GravityView_Field_Entry_Link extends GravityView_Field {
 
-	var $name = 'entry_link';
+	public $name = 'entry_link';
 
-	var $contexts = array( 'multiple' );
-
-	/**
-	 * @var bool
-	 * @since 1.15.3
-	 */
-	var $is_sortable = false;
+	public $contexts = array( 'multiple' );
 
 	/**
 	 * @var bool
 	 * @since 1.15.3
 	 */
-	var $is_searchable = false;
+	public $is_sortable = false;
 
-	var $group = 'gravityview';
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	public $is_searchable = false;
 
-	var $icon = 'dashicons-media-default';
+	public $group = 'featured';
+
+	public $icon = 'dashicons-media-default';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Link to Single Entry', 'gk-gravityview' );
@@ -58,6 +58,7 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 			'type'  => $this->name,
 			'desc'  => $this->description,
 			'icon'  => $this->icon,
+			'group'  => $this->group,
 		);
 
 		return $entry_default_fields;

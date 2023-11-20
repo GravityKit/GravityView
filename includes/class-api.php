@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -1133,7 +1133,7 @@ function gravityview_get_the_term_list( $post_id, $link = true, $taxonomy = 'pos
 	$output = get_the_term_list( $post_id, $taxonomy, NULL, ', ' );
 
 	if( empty( $link ) ) {
-		return strip_tags( $output);
+		return wp_strip_all_tags( $output);
 	}
 
 	return $output;

@@ -31,7 +31,7 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 	/**
 	 * Add `choice_display` setting to the field
 	 *
-	 * @param array $field_options
+	 * @param array  $field_options
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $context
@@ -46,37 +46,37 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 		// Set the $_field_id var
 		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		// It's the parent field, not an input
-		if( floor( $field_id ) === floatval( $field_id ) ) {
-			return $field_options;
-		}
+		if ( $this->is_choice_value_enabled() ) {
 
-		if( $this->is_choice_value_enabled() ) {
-
-			$desc = esc_html__( 'This input has a label and a value. What should be displayed?', 'gk-gravityview' );
+			$desc    = esc_html__( 'This input has a label and a value. What should be displayed?', 'gk-gravityview' );
 			$default = 'value';
 			$choices = array(
-				'tick' => __( 'A check mark, if the input is checked', 'gk-gravityview' ),
+				'tick'  => __( 'A check mark, if the input is checked', 'gk-gravityview' ),
 				'value' => __( 'Value of the input', 'gk-gravityview' ),
 				'label' => __( 'Label of the input', 'gk-gravityview' ),
 			);
 		} else {
-			$desc = '';
+			$desc    = '';
 			$default = 'tick';
 			$choices = array(
-				'tick' => __( 'A check mark, if the input is checked', 'gk-gravityview' ),
+				'tick'  => __( 'A check mark, if the input is checked', 'gk-gravityview' ),
 				'label' => __( 'Label of the input', 'gk-gravityview' ),
 			);
 		}
 
+		// It's the parent field, not an input.
+		if ( floor( $field_id ) === floatval( $field_id ) ) {
+			unset( $choices['tick'] );
+		}
+
 		$field_options['choice_display'] = array(
-			'type'    => 'radio',
-			'class'   => 'vertical',
-			'label'   => __( 'What should be displayed:', 'gk-gravityview' ),
-			'value'   => $default,
-			'desc'    => $desc,
-			'choices' => $choices,
-			'group'   => 'display',
+			'type'     => 'radio',
+			'class'    => 'vertical',
+			'label'    => __( 'What should be displayed:', 'gk-gravityview' ),
+			'value'    => $default,
+			'desc'     => $desc,
+			'choices'  => $choices,
+			'group'    => 'display',
 			'priority' => 100,
 		);
 
@@ -84,4 +84,4 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Checkbox;
+new GravityView_Field_Checkbox();

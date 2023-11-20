@@ -118,7 +118,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 		$new_instance = wp_parse_args( (array) $new_instance, self::get_defaults() );
 
-		$instance['title'] = strip_tags( $new_instance['title'] );
+		$instance['title'] = wp_strip_all_tags( $new_instance['title'] );
 		$instance['view_id'] = absint( $new_instance['view_id'] );
 		$instance['search_fields'] = $new_instance['search_fields'];
 		$instance['post_id'] = $new_instance['post_id'];
@@ -222,7 +222,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $post_id ); ?>" />
 			<span class="howto gv-howto"><?php
 				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gk-gravityview' );
-				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
+				echo ' '.gravityview_get_link('https://docs.gravitykit.com/article/222-the-search-widget', __('Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
 				?></span>
 		</p>
 

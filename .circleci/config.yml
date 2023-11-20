@@ -106,7 +106,7 @@ jobs:
           name: Creating a Github release
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              git config user.email "support@gravityview.co"
+              git config user.email "support@gravitykit.com"
               git config user.name "GravityView - CI"
               /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
             fi

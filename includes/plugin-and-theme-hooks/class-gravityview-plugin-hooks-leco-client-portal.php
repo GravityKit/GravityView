@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-leco-client-portal.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2018, Katz Web Services, Inc.
  *
  * @since 2.1

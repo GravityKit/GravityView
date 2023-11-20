@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-generatepress.php
  * @since     1.15.2
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @package   GravityView

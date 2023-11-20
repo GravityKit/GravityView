@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -96,7 +96,7 @@ class GravityView_Admin_Add_Shortcode {
 				<div class="wrap">
 
 					<h2 class=""><?php esc_html_e( 'Embed a View', 'gk-gravityview' ); ?></h2>
-					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gk-gravityview') ), $post_type->labels->singular_name, '<a href="https://docs.gravityview.co/article/73-using-the-shortcode" target="_blank" rel="noopener noreferrer">', '</a>' ); ?></p>
+					<p class="subtitle"><?php printf( esc_attr ( __( 'Use this form to embed a View into this %s. %sLearn more about using shortcodes.%s', 'gk-gravityview') ), $post_type->labels->singular_name, '<a href="https://docs.gravitykit.com/article/73-using-the-shortcode" target="_blank" rel="noopener noreferrer">', '</a>' ); ?></p>
 
 					<div>
 						<h3><label for="gravityview_id"><?php esc_html_e( 'Select a View', 'gk-gravityview' ); ?></label></h3>

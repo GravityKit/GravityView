@@ -510,7 +510,7 @@ class GravityView_Merge_Tags {
 	 *
 	 * @uses GVCommon::format_date()
 	 *
-	 * @see https://docs.gravityview.co/article/331-date-created-merge-tag for documentation
+	 * @see https://docs.gravitykit.com/article/331-date-created-merge-tag for documentation
 	 * @todo Once Gravity Forms 2.5 becomes the minimum requirement, this is no longer needed.
 	 *
 	 * @param string $date_created The Gravity Forms date created format

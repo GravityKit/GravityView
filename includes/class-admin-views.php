@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -831,7 +831,7 @@ class GravityView_Admin_Views {
 		// if in zone directory or single
 		if( in_array( $zone, array( 'directory', 'single' ), true ) ) {
 
-			$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview', 'add-ons' ) );
+			$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview', 'add-ons' ), $zone );
 
 			$entry_default_fields = array();
 
@@ -872,18 +872,22 @@ class GravityView_Admin_Views {
 			$meta_fields = array();
 		}
 
-		// get default fields
-		$default_fields = $this->get_entry_default_fields( $form, $zone );
+		$gv_fields = GravityView_Fields::get_all( '', $zone );
 
-		//merge without loosing the keys
-		$fields = $fields + $meta_fields + $default_fields;
+		$featured_fields = wp_list_filter( $gv_fields, array( 'group' => 'featured' ) );
 
-		// Move Custom Content to top
-		if ( isset( $fields['custom'] ) ) {
-			$fields = array( 'custom' => $fields['custom'] ) + $fields;
+		// Convert from GravityView field into array.
+		/** @var GravityView_Field $featured_field */
+		foreach ( $featured_fields as &$featured_field ) {
+			$_as_array = $featured_field->as_array();
+			$featured_field = reset( $_as_array );
 		}
 
-		$gv_fields = GravityView_Fields::get_all();
+		// get default fields.
+		$default_fields = $this->get_entry_default_fields( $form, $zone );
+
+		//merge without losing the keys.
+		$fields = $featured_fields + $fields + $meta_fields + $default_fields;
 
 		foreach ( $fields as &$field ) {
 			foreach ( $gv_fields as $gv_field ) {
@@ -1411,7 +1415,10 @@ class GravityView_Admin_Views {
 			'remove_all_fields'           => __( 'Would you like to remove all fields in this zone?', 'gk-gravityview' ),
 			'foundation_licenses_router'  => array_merge(
 				GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
-				array( 'ajaxRoute' => 'activate_product' )
+				[
+					'ajaxRoute' => 'activate_product',
+					'frontendFoundationVersion' => GravityKitFoundation::VERSION,
+				]
 			)
 		) );
 

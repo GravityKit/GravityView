@@ -133,7 +133,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	/**
 	 * Display the approval status of an entry
 	 *
-	 * @see https://docs.gravityview.co/article/389-approvalstatus-merge-tag Read how to use the `{approval_status}` merge tag
+	 * @see https://docs.gravitykit.com/article/389-approvalstatus-merge-tag Read how to use the `{approval_status}` merge tag
 	 *
 	 * @since 1.18
 	 *

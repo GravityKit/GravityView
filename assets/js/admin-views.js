@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -178,11 +178,6 @@
 				// Double-clicking a field/widget label opens settings
 				.on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
 
-				// Update checkbox visibility when having dependency checkboxes
-				.on( 'gravityview/loaded', vcfg.toggleCheckboxes )
-
-				.on( 'change', ".gv-setting-list, #gravityview_settings, .gv-dialog-options", vcfg.toggleCheckboxes )
-
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
 				.on( 'click', '.gv-field-details--toggle', function( e ) {
@@ -218,6 +213,13 @@
 				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry gravityview/view-config-updated', vcfg.toggleRemoveAllFields )
 
 				.on( 'search keydown keyup', '.gv-field-filter-form input:visible', vcfg.setupFieldFilters )
+
+				// Only start tracking changes after the View is loaded to prevent this from being run multiple times.
+				.on( 'gravityview/loaded', function() {
+					$(".gv-setting-list, #gravityview_settings" ).on('change', vcfg.toggleCheckboxes );
+				})
+
+				.on( 'change', ".gv-dialog-options", vcfg.toggleCheckboxes )
 
 				.on( 'focus', '.gv-add-field', function( e ) {
 					$( this ).parent('.gv-fields').addClass( 'trigger--hover' );
@@ -378,11 +380,15 @@
 
 			var $parent = $( target ).is( '.gv-fields' ) ? $( target ) : $( target ).parents( '.gv-fields' );
 
+			if ( ! $parent.length ) {
+				return;
+			}
+
 			// "Link to Post" should hide when "Link to single entry" is checked
-			viewConfiguration.toggleDisabled( $( 'input:checkbox[name*=link_to_]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
+			viewConfiguration.toggleDisabled( $( 'input[type=checkbox][name*=link_to_]', $parent ), $( 'input[type=checkbox][name*=show_as_link]', $parent ) );
 
 			// "Make Phone Number Clickable" should hide when "Link to single entry" is checked
-			viewConfiguration.toggleDisabled( $( 'input:checkbox[name*=link_phone]', $parent ), $( 'input:checkbox[name*=show_as_link]', $parent ) );
+			viewConfiguration.toggleDisabled( $( 'input[type=checkbox][name*=link_phone]', $parent ), $( 'input[type=checkbox][name*=show_as_link]', $parent ) );
 		},
 
 		/**
@@ -395,12 +401,17 @@
 		 */
 		toggleDisabled: function ( $one, $two ) {
 
-			if ( $one.is( ':checked' ) ) {
-				$two.attr( 'disabled', true );
+			if ( $one.length === 0 || $two.length === 0 ) {
+				return;
 			}
 
-			if ( $two.filter(':checked').length > 0 ) {
-				$one.attr( 'disabled', true );
+			if ( $one.is( ':checked' ) ) {
+				$two.prop( 'disabled', true );
+				return;
+			}
+
+			if ( $two.is(':checked') ) {
+				$one.prop( 'disabled', true );
 			}
 		},
 
@@ -415,29 +426,30 @@
 		 */
 		toggleRequired: function( currentTarget, data_attr, reverse_logic ) {
 
-			var $parent = $( currentTarget );
+			var $parent = $( currentTarget, '#post' );
 
 			$parent
 				.find( '[data-' + data_attr + ']' )
 				.each( function ()  {
-					var requires = $( this ).data( data_attr ),
+					var $this = $( this ),
+						requires = $this.data( data_attr ),
 						requires_array = requires.split('='),
 						requires_name = requires_array[0],
 						requires_value = requires_array[1];
 
-					var $input = $parent.find(':input[name$="[' + requires_name + ']"]');
+					var $input = $parent.find('[name$="[' + requires_name + ']"]').filter(':input');
 
-					if ( $input.is(':checkbox') ) {
+					if ( $input.is('[type=checkbox]') ) {
 						if ( reverse_logic ) {
-							$(this).toggle( $input.not(':checked') );
+							$this.toggle( $input.not(':checked') );
 						} else {
-							$(this).toggle( $input.is(':checked') );
+							$this.toggle( $input.is(':checked') );
 						}
 					} else if ( requires_value !== undefined ) {
 						if ( reverse_logic ) {
-							$(this).toggle( $input.val() !== requires_value );
+							$this.toggle( $input.val() !== requires_value );
 						} else {
-							$(this).toggle( $input.val() === requires_value );
+							$this.toggle( $input.val() === requires_value );
 						}
 					}
 				});
@@ -1046,12 +1058,26 @@
 			var vcfg = viewConfiguration;
 
 			$( 'textarea.code:visible', dialog ).each( function () {
-				var editor = wp.codeEditor.initialize( $( this ), {
-					undoDepth: 1000
-				} );
 
-				// Leave room for
+				// Define a default configuration
+				const codemirrorConfig = $.extend( true, {}, wp.codeEditor.defaultSettings );
+
+				let attributeValue = $( this ).data( 'codemirror' );
+				if ( attributeValue ) {
+					codemirrorConfig.codemirror = $.extend( {}, codemirrorConfig.codemirror, attributeValue );
+				}
+
+				// And then instantiate CodeMirror using those settings, which will then extend the WP defaults.
+				let editor = wp.codeEditor.initialize( $( this ), codemirrorConfig );
+
+				// If Merge Tags aren't enabled, don't continue.
+				if ( ! $( this ).hasClass( 'merge-tag-support' ) && ! $( this ).hasClass( 'gv-merge-tag-support' ) ) {
+					return;
+				}
+
+				// Leave room for Merge Tags icon.
 				editor.codemirror.setSize( '95%' );
+
 				var $textarea = $( this );
 				var editorId = $textarea.attr( 'id' );
 				var mergeTags = window.gfMergeTags.getAutoCompleteMergeTags( $textarea );
@@ -1458,13 +1484,14 @@
 				vcfg.performingAjaxAction = true;
 				$( '.gv-view-template-notice' ).hide();
 
-				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter } = window.gvGlobals.foundation_licenses_router;
+				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter, frontendFoundationVersion } = window.gvGlobals.foundation_licenses_router;
 
 				const request = {
 					nonce,
 					action,
 					ajaxRouter,
 					ajaxRoute,
+					frontendFoundationVersion,
 					payload
 				};
 
@@ -1510,7 +1537,7 @@
 				}
 
 				$.when( server_request( 'activate_product', {
-						path: $link.attr( 'data-template-path' ),
+						text_domain: $link.attr( 'data-template-text-domain' ),
 					} ) )
 					.then( on_success )
 					.always( do_always )
@@ -1684,11 +1711,11 @@
 		init_tooltips: function (el) {
 
 			// Already initialized.
-			if ( 0 === $( el || '.gv-add-field' ).not( ':ui-tooltip' ).length ) {
+			if ( 0 === $( el || '.gv-add-field', '#post' ).not( ':ui-tooltip' ).length ) {
 				return;
 			}
 
-			$( el || ".gv-add-field" ).gvTooltip( {
+			$( el || ".gv-add-field", '#post' ).gvTooltip( {
 				show:    150,
 				hide:    200,
 				content: function () {
@@ -2279,7 +2306,7 @@
 			vcfg.updateVisibilitySettings( e, true );
 
 			// Toggle checkbox when changing field visibility
-			$( 'body' ).on( 'change', '.gv-fields input:checkbox', vcfg.updateVisibilitySettings );
+			$( 'body' ).on( 'change', '.gv-fields input[type=checkbox]', vcfg.updateVisibilitySettings );
 
 			var buttons = [
 				{
@@ -2311,7 +2338,7 @@
 
 			$( ".gv-setting-list", $parent ).trigger( 'change' );
 
-			$( 'input:checkbox', $parent ).attr( 'disabled', null );
+			$( 'input[type=checkbox]', $parent ).attr( 'disabled', null );
 
 			vcfg.setUnsavedChanges( true );
 		},
@@ -2409,7 +2436,7 @@
 				serialized_data = $post.data( 'gv-serialized' );
 			} else {
 				// Get all the fields where the `name` attribute start with `fields`
-				$fields = $post.find( ':input[name^=fields]' );
+				$fields = $post.find( '[name^=fields]' ).filter(':input');
 
 				// Serialize the data
 				serialized_data = $fields.serialize();
@@ -2421,7 +2448,7 @@
 			}
 
 			// Also exclude these fields from $_POST...
-			$post.find( ':input[name=gv_fields]' ).prop( 'disabled', true );
+			$post.find( '[name=gv_fields]' ).filter(':input').prop( 'disabled', true );
 
 			// ...instead, add a single field to the form that contains all the data.
 			$post.append( $( '<input/>', {
@@ -2613,11 +2640,20 @@
 				// Make tabs
 				.tabs( {
 					active: active_settings_tab,
+					create: function ( event, ui ) {
+						// When the Custom Code tab is active on-load, we need a small amount of
+						// time before instantiating CodeMirror.
+						setTimeout( function() {
+							viewConfiguration.setupCodeMirror( ui.panel );
+						}, 50 );
+					},
 					activate: function ( event, ui ) {
 						// When the tab is activated, set a new cookie
 						$.cookie( cookie_key, ui.newTab.index(), {
 							path: gvGlobals.admin_cookiepath
 						} );
+
+						viewConfiguration.setupCodeMirror( ui.newPanel );
 					}
 				} )
 				.addClass( "ui-tabs-vertical ui-helper-clearfix" )
@@ -2686,7 +2722,22 @@
 
 	};  // end viewGeneralSettings object
 
-	jQuery(function ( $ ) {
+
+	/**
+	 * This nested function is necessary, otherwise, View editor tabs aren't properly initialized.
+	 *
+	 * I tried moving the code out of this function; it didn't work.
+	 *
+	 * I tried setTimeout; it didn't work.
+	 *
+	 * I tried moving window.gvAdminActions and $( 'body' ).trigger( 'gravityview/loaded' );
+	 * outside of this function; it didn't work.
+	 *
+	 * This probably needs to stay here until we rewrite this beast.
+	 *
+	 * - Zack
+	 */
+	jQuery( function ( $ ) {
 
 		// title placeholder
 		$( '#title-prompt-text' ).text( gvGlobals.label_viewname );
@@ -2726,9 +2777,9 @@
 				viewConfiguration.init_droppables( ui.panel );
 
 				/** @since 2.14.1 */
-				$( 'body' ).trigger( 'gravityview/tab-ready', ui.panel );
-
-				$( 'body' ).trigger( 'gravityview/tabs-ready' );
+				$( 'body' )
+					.trigger( 'gravityview/tab-ready', ui.panel )
+					.trigger( 'gravityview/tabs-ready' );
 			},
 			activate: function ( event, ui ) {
 				// When the tab is activated, set a new cookie
@@ -2741,13 +2792,14 @@
 			}
 		} );
 
+		// Expose globally methods to initialize/destroy tooltips and to display dialog window
+		window.gvAdminActions = {
+			initTooltips: viewConfiguration.init_tooltips,
+			removeTooltips: viewConfiguration.remove_tooltips,
+			showDialog: viewConfiguration.showDialog
+		};
+
 		$( 'body' ).trigger( 'gravityview/loaded' );
 	} );
 
-	// Expose globally methods to initialize/destroy tooltips and to display dialog window
-	window.gvAdminActions = {
-		initTooltips: viewConfiguration.init_tooltips,
-		removeTooltips: viewConfiguration.remove_tooltips,
-		showDialog: viewConfiguration.showDialog
-	};
 }(jQuery));

@@ -6,12 +6,18 @@
  * @package   GravityView
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2021, Katz Web Services, Inc.
  *
  * @since 2.10
  */
 class GravityView_Placeholder_Template extends GravityView_Template {
+
+	/**
+	 * @since
+	 * @var mixed|string The template ID.
+	 */
+	private $id;
 
 	function __construct( $id = 'template_placeholder', $settings = array() ) {
 

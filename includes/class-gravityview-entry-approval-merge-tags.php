@@ -3,7 +3,7 @@
  * @file class-gravityview-entry-moderation-merge-tags.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
+ * @author    GravityKit <hello@gravitykit.com>
  * @link      https://www.gravitykit.com
  * @copyright Copyright 2023, Katz Web Services, Inc.
  *
@@ -660,6 +660,17 @@ class GravityView_Entry_Approval_Merge_Tags {
 		$query_args[ self::NOTICE_URL_ARG ] = $result ? 'success' : 'error';
 
 		$return_url = add_query_arg( $query_args, $return_url );
+
+		/**
+		 * @filter `gk/gravityview/approve-link/return-url` Modify the return URL after entry approval.
+		 * @since 2.18.7
+		 * @param int $entry_id Entry ID.
+		 * @param int $approval_status Approval status.
+		 * @param int $form_id Form ID.
+		 * @param array $scopes Token scopes to be passed to the return URL and used in {@see maybe_show_approval_notice()}.
+		 * @param string $return_url Url to redirect to once moderation happens.
+		 */
+		$return_url = apply_filters( 'gk/gravityview/approve-link/return-url', $return_url, $entry_id, $approval_status, $form_id, $scopes );
 
 		wp_safe_redirect( esc_url_raw( $return_url ) );
 
