@@ -12,6 +12,27 @@ class Onboarding {
 
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'init' ] );
+		add_action( 'admin_init', [ $this, 'handle_restart_product_tour' ] );
+	}
+
+	public function handle_restart_product_tour() {
+		if ( ! isset( $_GET['restart_product_tour'] ) ) {
+			return;
+		}
+
+		// Check nonce.
+		if ( ! wp_verify_nonce( $_GET['restart_product_tour'], 'restart_product_tour' ) ) {
+			return;
+		}
+
+		if ( ! OnboardingFramework::is_enabled() ) {
+			return;
+		}
+
+		// Restart onboarding
+		$onboarding = OnboardingFramework::get_instance( $this->plugin );
+
+		$onboarding->restart_onboarding();
 	}
 
 	public function init() {
@@ -32,7 +53,6 @@ class Onboarding {
 
 
 		// Step 2.
-
 		$forms = gravityview_get_forms( 'any', false );
 		if ( empty( $forms ) ) {
 			$element     = '#gravityview_select_form a[href="#gv_start_fresh"]';
