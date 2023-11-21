@@ -2,43 +2,77 @@
 
 namespace GV;
 
-use GravityKit\Foundation\Helpers\Core as CoreHelpers;
 use GravityKit\Foundation\Onboarding\Framework as OnboardingFramework;
 use GravityKit\Foundation\Onboarding\Step;
 
 class Onboarding {
-
+	/**
+	 * @var string Plugin Identifier.
+	 */
 	private $plugin = GRAVITYVIEW_FILE;
 
+	/**
+	 * Onboarding constructor.
+	 */
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', [ $this, 'init' ] );
 		add_action( 'admin_init', [ $this, 'handle_restart_product_tour' ] );
 	}
 
+	/**
+	 * Restart product tour on request.
+	 *
+	 * @return void
+	 */
 	public function handle_restart_product_tour() {
-		if ( ! isset( $_GET['restart_product_tour'] ) ) {
+		if ( ! $this->should_restart_onboarding() ) {
 			return;
 		}
 
-		// Check nonce.
-		if ( ! wp_verify_nonce( $_GET['restart_product_tour'], 'restart_product_tour' ) ) {
-			return;
-		}
+		$this->restart_onboarding();
 
-		if ( ! OnboardingFramework::is_enabled() ) {
-			return;
-		}
+		$this->redirect_after_restart();
+	}
 
-		// Restart onboarding
+	/**
+	 * Allow to restart onboarding request?
+	 *
+	 * @return bool
+	 */
+	private function should_restart_onboarding() {
+		return isset( $_GET['restart_product_tour'] )
+		       && wp_verify_nonce( $_GET['restart_product_tour'], 'restart_product_tour' )
+		       && OnboardingFramework::is_enabled();
+	}
+
+	/**
+	 * Restart onboarding.
+	 *
+	 * @return void
+	 */
+	private function restart_onboarding() {
 		$onboarding = OnboardingFramework::get_instance( $this->plugin );
-
 		$onboarding->restart_onboarding();
 	}
 
+	/**
+	 * Remove restart product tour query args from URL to avoid infinite loop.
+	 *
+	 * @return void
+	 */
+	private function redirect_after_restart() {
+		$url = remove_query_arg( 'restart_product_tour' );
+		wp_safe_redirect( $url );
+	}
+
+	/**
+	 * Initialise onboarding.
+	 *
+	 * @return void
+	 */
 	public function init() {
 
 		// Define Steps.
-
 		// Step 1.
 		$element     = '#titlewrap';
 		$title       = __( 'Start by giving your View a name.', 'gk-gravityview' );
