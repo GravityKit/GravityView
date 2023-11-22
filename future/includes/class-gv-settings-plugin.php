@@ -275,7 +275,7 @@ class Plugin_Settings {
 							'id'               => 'restart_product_tour',
 							'type'             => 'button',
 							'title'            => esc_html__( 'Restart Product Tour', 'gk-gravityview' ),
-							'url'              => esc_url( $link ),
+							'url'              => $link,
 							'btnText'          => __( 'Restart', 'gk-gravityview' ),
 							'screenReaderText' => esc_html__( 'This link opens in a new window', 'gk-gravityview' ),
 							'description'      => esc_html__( 'Restart the GravityView product tour by clicking the button.', 'gk-gravityview' ),
