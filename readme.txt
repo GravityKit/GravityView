@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.6
+
 = 2.19.4 on November 2, 2023 =
 
 * Improved: View editor performance, especially with Views with a large number of fields
