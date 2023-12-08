@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.19.5 on December 7, 2023 =
 
+* Fixed: PHP 8.1+ deprecation notice when editing an entry with the Gravity Forms User Registration add-on enabled
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.6
 
 = 2.19.4 on November 2, 2023 =
