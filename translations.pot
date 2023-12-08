@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-12-08T00:10:14+00:00\n"
+"POT-Creation-Date: 2023-12-08T00:26:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1822,23 +1822,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:594
+#: includes/class-admin-welcome.php:601
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:644
+#: includes/class-admin-welcome.php:651
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:682
+#: includes/class-admin-welcome.php:689
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:714
+#: includes/class-admin-welcome.php:721
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:715
+#: includes/class-admin-welcome.php:722
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
