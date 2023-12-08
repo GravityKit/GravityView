@@ -148,9 +148,16 @@ class GravityView_Edit_Entry_User_Registration {
 	 */
     public function get_feed_configuration( $entry, $form ) {
 
+	    /** @var \GF_User_Registration $gf_user_registration */
 	    $gf_user_registration = GF_User_Registration::get_instance();
 
 	    $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
+
+	    // Return empty array if no feed found, but still allow filtering.
+	    if ( empty( $config ) ) {
+		    // Filter is documented below.
+		    return apply_filters( 'gravityview/edit_entry/user_registration/config', [], $form, $entry );
+	    }
 
 	    /**
 	     * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed

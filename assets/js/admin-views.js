@@ -2722,6 +2722,21 @@
 
 	};  // end viewGeneralSettings object
 
+
+	/**
+	 * This nested function is necessary, otherwise, View editor tabs aren't properly initialized.
+	 *
+	 * I tried moving the code out of this function; it didn't work.
+	 *
+	 * I tried setTimeout; it didn't work.
+	 *
+	 * I tried moving window.gvAdminActions and $( 'body' ).trigger( 'gravityview/loaded' );
+	 * outside of this function; it didn't work.
+	 *
+	 * This probably needs to stay here until we rewrite this beast.
+	 *
+	 * - Zack
+	 */
 	jQuery( function ( $ ) {
 
 		// title placeholder
