@@ -1557,11 +1557,13 @@ class GVCommon {
 	/**
 	 * Render dropdown (select) with the list of sortable fields from a form ID
 	 *
-	 * @param  int $formid Form ID
+	 * @param int    $formid  Form ID
+	 * @param string $current Current selected field ID
+	 *
 	 * @return string         html
 	 */
-	public static function get_sortable_fields( $formid, $current = '' ) {
-		$output = '<option value="" ' . selected( '', $current, false ) . '>' . esc_html__( 'Default (Entry ID)', 'gk-gravityview' ) . '</option>';
+	public static function get_sortable_fields( $formid, $current = 'id' ) {
+		$output = '<option value="id" ' . selected( '', $current, false ) . '>' . esc_html__( 'Default (Entry ID)', 'gk-gravityview' ) . '</option>';
 
 		if ( empty( $formid ) ) {
 			return $output;

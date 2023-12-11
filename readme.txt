@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+Fixed: Sorting the View by entry ID in ascending and descending order would yield the same result
+
 = 2.19.5 on December 7, 2023 =
 
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.6
