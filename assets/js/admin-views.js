@@ -104,7 +104,7 @@
 			vcfg.toggleInitialVisibility( vcfg );
 
 			// Start bind to $('body')
-			$( 'body' )
+			$( document.body )
 
 				// Track modifier keys being clicked
 				.on( 'keydown keyup', vcfg.altKeyListener )
@@ -242,7 +242,7 @@
 					}
 					$( this ).parent( '.gv-fields' ).removeClass( 'trigger--active' );
 				});
-			// End bind to $('body')
+			// End bind to $( document.body )
 
 			$( window ).resize( function() {
 
@@ -2002,7 +2002,7 @@
 				// append the new field to the active drop
 				$( '[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
 
-				$('body').trigger( 'gravityview/field-added', newField );
+				$( document.body ).trigger( 'gravityview/field-added', newField );
 
 				// Show the new field
 				newField.fadeIn( 100 );
@@ -2236,7 +2236,7 @@
 
 				$( this ).remove();
 
-				$('body').trigger( 'gravityview/field-removed', $( this ) );
+				$( document.body ).trigger( 'gravityview/field-removed', $( this ) );
 
 				vcfg.toggleDropMessage();
 			} );
@@ -2271,7 +2271,7 @@
 
 			$( area ).find( '.gv-fields' ).remove();
 
-			$('body').trigger( 'gravityview/all-fields-removed' );
+			$( document.body ).trigger( 'gravityview/all-fields-removed' );
 
 			viewConfiguration.toggleDropMessage();
 		},
@@ -2571,7 +2571,7 @@
 				.on('change', viewGeneralSettings.updateSettingsDisplay )
 				.trigger('change');
 
-			$('body')
+			$( document.body )
 				// Enable a setting tab (since 1.8)
 				.on('gravityview/settings/tab/enable', viewGeneralSettings.enableSettingTab )
 
