@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+This release makes it easier to customize search results per-View instead of globally using code.
+
+__Developer Updates:__
+
+* Added: The current View object as the second parameter for the `gravityview/search-all-split-words` and `gravityview/search-trim-input` filters
+
 = 2.19.5 on December 7, 2023 =
 
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.6
