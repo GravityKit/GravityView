@@ -46,6 +46,8 @@ This release enhances security, introduces support for LifterLMS, adds a new CSV
   - GravityKit product updates are now showing on the Plugins page.
   - Database options that are no longer used are now automatically removed.
 
+* Added: You can now search exact-match phrases by wrapping a search term in quotes (e.g., `"blue motorcycle"`). This will search for text exactly matching `"blue motorcycle"`)
+
 __Developer Updates:__
 
 * Added: `gk/gravityview/widget/search/clear-button/params` filter to modify the parameters of the Clear button in the search widget.

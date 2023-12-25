@@ -689,15 +689,33 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
+			$operator = 'contains';
+			$replace_multiple_spaces = true;
+			$is_quoted_search = $this->is_quoted_search( $search_all_value );
+
+			if ( $is_quoted_search ) {
+				$split_words = false;
+				$replace_multiple_spaces = false; // Don't modify the search value if it's quoted.
+
+				// Remove the wrapping quotes from the search value.
+				if ( function_exists( 'mb_substr' ) ) {
+					$search_all_value = mb_substr( $search_all_value, 1, - 1 );
+				} else {
+					$search_all_value = substr( $search_all_value, 1, - 1 );
+				}
+			}
+
 			if ( $split_words ) {
 				// Search for a piece
 				$words = explode( ' ', $search_all_value );
 
 				$words = array_filter( $words );
-
 			} else {
-				// Replace multiple spaces with one space
-				$search_all_value = preg_replace( '/\s+/ism', ' ', $search_all_value );
+
+				if( $replace_multiple_spaces ) {
+					// Replace multiple spaces with one space
+					$search_all_value = preg_replace( '/\s+/ism', ' ', $search_all_value );
+				}
 
 				$words = array( $search_all_value );
 			}
@@ -706,7 +724,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$search_criteria['field_filters'][] = array(
 					'key'      => null, // The field ID to search
 					'value'    => $word, // The value to search
-					'operator' => 'contains', // What to search in. Options: `is` or `contains`
+					'operator' => $operator, // What to search in. Options: `is` or `contains`
 				);
 			}
 		}
@@ -872,6 +890,56 @@ class GravityView_Widget_Search extends \GV\Widget {
 		unset( $get );
 
 		return $search_criteria;
+	}
+
+	/**
+	 * Returns whether the search value is quoted.
+	 *
+	 * @since TODO
+	 *
+	 * @param string $search_all_value The search value
+	 *
+	 * @return bool
+	 */
+	private function is_quoted_search( $search_all_value ) {
+
+		if ( function_exists( 'mb_substr' ) ) {
+			$first_char = mb_substr( $search_all_value, 0, 1 );
+			$last_char  = mb_substr( $search_all_value, - 1 );
+		} else {
+			$first_char = substr( $search_all_value, 0, 1 );
+			$last_char  = substr( $search_all_value, - 1 );
+			gravityview()->log->warning( 'mb_substr is not installed on the server. Using substr instead. This may cause issues with non-English characters.' );
+		}
+
+		$quotation_marks = $this->get_quotation_marks();
+
+		return in_array( $first_char, $quotation_marks['opening'], true ) && in_array( $last_char, $quotation_marks['closing'], true );
+	}
+
+	/**
+	 * Returns a list of quotation marks.
+	 *
+	 * @since TODO
+	 *
+	 * @return array List of quotation marks with `opening` and `closing` keys.
+	 */
+	private function get_quotation_marks() {
+
+		$quotations_marks = [
+			'opening' => [ '"', "'", '“', '‘', '«', '‹', '「', '『', '【', '〖', '〝', '〟', '｢' ],
+			'closing' => [ '"', "'", '”', '’', '»', '›', '」', '』', '】', '〗', '〞', '〟', '｣' ],
+		];
+
+		/**
+		 * @filter `gk/gravityview/common/quotation-marks` Modify the quotation marks used to detect quoted searches.
+		 * @since TODO
+		 *
+		 * @param array $quotations_marks List of quotation marks with `opening` and `closing` keys.
+		 */
+		$quotations_marks = apply_filters( 'gk/gravityview/common/quotation-marks', $quotations_marks );
+
+		return $quotations_marks;
 	}
 
 	/**
