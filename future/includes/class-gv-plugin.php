@@ -648,7 +648,7 @@ final class Plugin {
 	/**
 	 * Returns the URL to the "All Views" page.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @return string
 	 */
@@ -662,7 +662,7 @@ final class Plugin {
 	/**
 	 * Returns the URL to the "New View" page.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @return string
 	 */
