@@ -8655,7 +8655,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$args = array(
 			'id' => $view->ID,
-			'sort_field' => 'id'
+			'sort_field' => 'id',
+			'sort_direction' => 'DESC'
 		);
 
 		preg_match_all( '#data-label="Entry ID">(\d+)</td>#', $shortcode->callback( $args ), $matches );

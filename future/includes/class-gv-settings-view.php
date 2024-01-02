@@ -282,7 +282,7 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'group'             => 'sort',
 					'options'           => array(
-						''             => __( 'Default', 'gk-gravityview' ),
+						'id'           => __( 'Default', 'gk-gravityview' ),
 						'date_created' => __( 'Date Created', 'gk-gravityview' ),
 					),
 					'show_in_shortcode' => true,
@@ -313,7 +313,7 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'group'             => 'sort',
 					'options'           => array(
-						''             => __( 'Default', 'gk-gravityview' ),
+						'id'           => __( 'Default', 'gk-gravityview' ),
 						'date_created' => __( 'Date Created', 'gk-gravityview' ),
 					),
 					'requires_not'      => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
