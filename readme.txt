@@ -23,7 +23,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-Fixed: Sorting the View by entry ID in ascending and descending order would yield the same result
+This release makes it easier to customize search results per-View instead of globally using code.
+
+* Fixed: Sorting the View by entry ID in ascending and descending order would yield the same result
+
+__Developer Updates:__
+
+* Added: The current View object as the second parameter for the `gravityview/search-all-split-words` and `gravityview/search-trim-input` filters
+* Modified: Attach listeners in the View editor to `$( document.body )` instead of `$('body')` for speed improvements
 
 = 2.19.5 on December 7, 2023 =
 

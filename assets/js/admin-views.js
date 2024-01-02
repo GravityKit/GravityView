@@ -103,8 +103,8 @@
 			// Start by showing/hiding on load
 			vcfg.toggleInitialVisibility( vcfg );
 
-			// Start bind to $('body')
-			$( 'body' )
+			// Start bind to $( document.body )
+			$( document.body )
 
 				// Track modifier keys being clicked
 				.on( 'keydown keyup', vcfg.altKeyListener )
@@ -205,7 +205,7 @@
 
 					$.cookie( 'warning-dismissed-' + warning_name, 1, { path: gvGlobals.admin_cookiepath } );
 
-					$( 'body' ).trigger( 'gravityview/tabs-ready' );
+					$( document.body ).trigger( 'gravityview/tabs-ready' );
 				})
 
 				.on( 'gravityview/loaded gravityview/tabs-ready gravityview/field-added gravityview/field-removed gravityview/all-fields-removed gravityview/show-as-entry gravityview/view-config-updated', vcfg.toggleTabConfigurationWarnings )
@@ -242,7 +242,7 @@
 					}
 					$( this ).parent( '.gv-fields' ).removeClass( 'trigger--active' );
 				});
-			// End bind to $('body')
+			// End bind to $( document.body )
 
 			$( window ).resize( function() {
 
@@ -588,7 +588,7 @@
 
 			parent.find( '.gv-field-controls .dashicons-media-default' ).toggleClass( 'hide-if-js', $( e.target ).not( ':checked' ) );
 
-			$( 'body' ).trigger( 'gravityview/show-as-entry', $( e.target ).is( ':checked' ) );
+			$( document.body ).trigger( 'gravityview/show-as-entry', $( e.target ).is( ':checked' ) );
 		},
 
 		/**
@@ -914,7 +914,7 @@
 			vcfg.currentTemplateId = '';
 			vcfg.currentFormId = vcfg.gvSelectForm.val();
 			vcfg.setUnsavedChanges( true );
-			$( 'body' ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
+			$( document.body ).trigger( 'gravityview_form_change' ).addClass( 'gv-form-changed' );
 		},
 
 		showDialog: function ( dialogSelector, buttons ) {
@@ -1040,7 +1040,7 @@
 						} );
 					}
 
-					$( 'body' ).trigger( 'gravityview/dialog-closed', thisDialog );
+					$( document.body ).trigger( 'gravityview/dialog-closed', thisDialog );
 				},
 				closeOnEscape: true,
 				buttons: buttons
@@ -1116,7 +1116,7 @@
 					$( '#' + editorId ).autocomplete( 'close' );
 				};
 
-				$( 'body' ).on( 'keyup', function ( e ) {
+				$( document.body ).on( 'keyup', function ( e ) {
 					if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
 						e.preventDefault();
 						closeAutocompletion();
@@ -1674,7 +1674,7 @@
 						 * @since 2.10
 						 * @param {object} JSON response with `header` `footer` (widgets) `directory` and `single` (contexts) properties
 						 */
-						$( 'body' ).trigger( 'gravityview/view-config-updated', content );
+						$( document.body ).trigger( 'gravityview/view-config-updated', content );
 					}
 
 					resolve();
@@ -2002,7 +2002,7 @@
 				// append the new field to the active drop
 				$( '[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
 
-				$('body').trigger( 'gravityview/field-added', newField );
+				$( document.body ).trigger( 'gravityview/field-added', newField );
 
 				// Show the new field
 				newField.fadeIn( 100 );
@@ -2063,7 +2063,7 @@
 			}
 
 			// Only init merge tags if the View has been saved and the form hasn't been changed.
-			if ( 'undefined' !== typeof( form ) && $( 'body' ).not( '.gv-form-changed' ) && $merge_tag_supported.length >= 0 ) {
+			if ( 'undefined' !== typeof( form ) && $( document.body ).not( '.gv-form-changed' ) && $merge_tag_supported.length >= 0 ) {
 
 				if ( window.gfMergeTags ) {
 
@@ -2236,7 +2236,7 @@
 
 				$( this ).remove();
 
-				$('body').trigger( 'gravityview/field-removed', $( this ) );
+				$( document.body ).trigger( 'gravityview/field-removed', $( this ) );
 
 				vcfg.toggleDropMessage();
 			} );
@@ -2271,7 +2271,7 @@
 
 			$( area ).find( '.gv-fields' ).remove();
 
-			$('body').trigger( 'gravityview/all-fields-removed' );
+			$( document.body ).trigger( 'gravityview/all-fields-removed' );
 
 			viewConfiguration.toggleDropMessage();
 		},
@@ -2306,7 +2306,7 @@
 			vcfg.updateVisibilitySettings( e, true );
 
 			// Toggle checkbox when changing field visibility
-			$( 'body' ).on( 'change', '.gv-fields input[type=checkbox]', vcfg.updateVisibilitySettings );
+			$( document.body ).on( 'change', '.gv-fields input[type=checkbox]', vcfg.updateVisibilitySettings );
 
 			var buttons = [
 				{
@@ -2571,7 +2571,7 @@
 				.on('change', viewGeneralSettings.updateSettingsDisplay )
 				.trigger('change');
 
-			$('body')
+			$( document.body )
 				// Enable a setting tab (since 1.8)
 				.on('gravityview/settings/tab/enable', viewGeneralSettings.enableSettingTab )
 
@@ -2730,7 +2730,7 @@
 	 *
 	 * I tried setTimeout; it didn't work.
 	 *
-	 * I tried moving window.gvAdminActions and $( 'body' ).trigger( 'gravityview/loaded' );
+	 * I tried moving window.gvAdminActions and $( document.body ).trigger( 'gravityview/loaded' );
 	 * outside of this function; it didn't work.
 	 *
 	 * This probably needs to stay here until we rewrite this beast.
@@ -2777,7 +2777,7 @@
 				viewConfiguration.init_droppables( ui.panel );
 
 				/** @since 2.14.1 */
-				$( 'body' )
+				$( document.body )
 					.trigger( 'gravityview/tab-ready', ui.panel )
 					.trigger( 'gravityview/tabs-ready' );
 			},
@@ -2788,7 +2788,7 @@
 				viewConfiguration.init_droppables( ui.newPanel );
 
 				/** @since 2.14.1 */
-				$( 'body' ).trigger( 'gravityview/tab-ready', ui.newPanel );
+				$( document.body ).trigger( 'gravityview/tab-ready', ui.newPanel );
 			}
 		} );
 
@@ -2799,7 +2799,7 @@
 			showDialog: viewConfiguration.showDialog
 		};
 
-		$( 'body' ).trigger( 'gravityview/loaded' );
+		$( document.body ).trigger( 'gravityview/loaded' );
 	} );
 
 }(jQuery));

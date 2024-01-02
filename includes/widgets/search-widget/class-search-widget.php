@@ -641,16 +641,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
 		 * @since 1.20.2
+		 * @since TODO Added $view parameter
 		 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
+		 * @param \GV\View $view The View being searched
 		 */
-		$split_words = apply_filters( 'gravityview/search-all-split-words', true );
+		$split_words = apply_filters( 'gravityview/search-all-split-words', true, $view );
 
 		/**
 		 * @filter `gravityview/search-trim-input` Remove leading/trailing whitespaces from search value
 		 * @since 2.9.3
+		 * @since TODO Added $view parameter
 		 * @param bool $trim_search_value True: remove whitespace; False: keep as is [Default: true]
+		 * @param \GV\View $view The View being searched
 		 */
-		$trim_search_value = apply_filters( 'gravityview/search-trim-input', true );
+		$trim_search_value = apply_filters( 'gravityview/search-trim-input', true, $view );
 
 		// add free search
 		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
