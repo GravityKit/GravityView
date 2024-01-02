@@ -28,7 +28,7 @@ if ( ! class_exists( 'GFFormDisplay' ) ) {
 }
 
 /**
- * @filter `gravityview/fields/custom/entry` Modify entry being displayed
+ * Modify entry being displayed.
  *
  * @param array $entry The current entry being displayed.
  * @param array $form The current form the custom content is using.
@@ -37,7 +37,7 @@ if ( ! class_exists( 'GFFormDisplay' ) ) {
 $entry = apply_filters( 'gravityview/fields/custom/entry', $entry, $form, $gravityview );
 
 /**
- * @filter `gravityview/fields/custom/form` Modify form that content is being pulled from
+ * Modify form that content is being pulled from.
  *
  * @param array $form The current form the custom content is using.
  * @param array $entry The current entry being displayed.
@@ -46,7 +46,7 @@ $entry = apply_filters( 'gravityview/fields/custom/entry', $entry, $form, $gravi
 $form  = apply_filters( 'gravityview/fields/custom/form', $form, $entry, $gravityview );
 
 /**
- * @filter `gravityview/fields/custom/content_before` Modify Custom Content field output before Merge Tag processing
+ * Modify Custom Content field output before Merge Tag processing.
  * @since 1.6.2
  * @param string $content HTML content of field
  *
@@ -67,7 +67,7 @@ if ( empty( $content ) ) {
 $content = GravityView_API::replace_variables( $content, $form, $entry, false, true, false );
 
 /**
- * @filter `gravityview/fields/custom/decode_shortcodes` Decode brackets in shortcodes, rendering them inert (escape brackets).
+ * Decode brackets in shortcodes, rendering them inert (escape brackets).
  * @since 1.16.5
  * @param boolean $decode Enable/Disable decoding of brackets in the content (default: false)
  * @param string $content HTML content of field
@@ -90,7 +90,7 @@ if ( ! empty( $gravityview->field->wpautop ) ) {
 }
 
 /**
- * @filter `gravityview/fields/custom/content_after` Modify Custom Content field output after Merge Tag variables get replaced, before shortcodes get processed
+ * Modify Custom Content field output after Merge Tag variables get replaced, before shortcodes get processed.
  * @since 1.6.2
  * @param string $content HTML content of field
  *

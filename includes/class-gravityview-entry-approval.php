@@ -250,7 +250,7 @@ class GravityView_Entry_Approval {
 	public function after_submission( $entry, $form ) {
 
 		/**
-		 * @filter `gravityview/approve_entries/after_submission` Modify whether to run the after_submission process
+		 * Modify whether to run the after_submission process.
 		 * @since 2.3
 		 * @param bool $process_after_submission default: true
 		 */
@@ -263,7 +263,7 @@ class GravityView_Entry_Approval {
 		$default_status = GravityView_Entry_Approval_Status::UNAPPROVED;
 
 		/**
-		 * @filter `gravityview/approve_entries/after_submission/default_status` Modify the default approval status for newly submitted entries
+		 * Modify the default approval status for newly submitted entries.
 		 * @since 2.0.14
 		 * @param int $default_status See GravityView_Entry_Approval_Status() for valid statuses.
 		 */
@@ -313,7 +313,7 @@ class GravityView_Entry_Approval {
 		}
 
 		/**
-		 * @filter `gravityview/approve_entries/update_unapproved_meta` Filter the approval status on entry update.
+		 * Filter the approval status on entry update.
 		 * @param string $value The approval status.
 		 * @param array $form The form.
 		 * @param array $entry The entry.
@@ -462,7 +462,7 @@ class GravityView_Entry_Approval {
 		}
 
 		/**
-		 * @filter `gravityview/approve_entries/add-note` Add a note when the entry has been approved or disapproved?
+		 * Add a note when the entry has been approved or disapproved?
 		 * @since 1.16.3
 		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
 		 */
@@ -592,7 +592,7 @@ class GravityView_Entry_Approval {
 		gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
 
 		/**
-		 * @action `gravityview/approve_entries/updated` Triggered when an entry approval is updated
+		 * Triggered when an entry approval is updated.
 		 * @since 1.7.6.1
 		 * @param  int $entry_id ID of the Gravity Forms entry
 		 * @param  string|int $status String whether entry is approved or not. See GravityView_Entry_Approval_Status for valid statuses.
@@ -602,7 +602,7 @@ class GravityView_Entry_Approval {
 		$action = GravityView_Entry_Approval_Status::get_key( $status );
 
 		/**
-		 * @action `gravityview/approve_entries/{$action}` Triggered when an entry approval is set. {$action} can be 'approved', 'unapproved', or 'disapproved'
+		 * Triggered when an entry approval is set. {$action} can be 'approved', 'unapproved', or 'disapproved'.
 		 * Note: If you want this to work with Bulk Actions, run in a plugin rather than a theme; the bulk updates hook runs before themes are loaded.
 		 * @since 1.7.6.1
 		 * @since 1.18 Added "unapproved"
@@ -719,7 +719,7 @@ class GravityView_Entry_Approval {
 		$placement = is_rtl() ? 'left' : 'right';
 
 		/**
-		 * @filter `gravityview/approve_entries/popover_placement` Where should the popover be placed?
+		 * Where should the popover be placed?
 		 * @since 2.3.1
 		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
 		 */

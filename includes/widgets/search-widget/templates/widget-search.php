@@ -21,7 +21,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 	<?php
 
 	/**
-	 * @action `gravityview_search_widget_fields_before` Inside the `<form>` tag of the GravityView search form, before inputs are rendered
+	 * tag of the GravityView search form, before inputs are rendered.
 	 * @param GravityView_Widget_Search $this GravityView Widget instance
 	 */
 	do_action( 'gravityview_search_widget_fields_before', $this );
@@ -29,7 +29,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 	foreach( array_merge( $this->search_fields, $this->permalink_fields ) as $search_field ) {
 
 		/**
-		 * @action `gravityview_search_widget_field_before` Before each search input is rendered (other than the submit button)
+		 * Before each search input is rendered (other than the submit button).
 		 * @param GravityView_Widget_Search $this GravityView Widget instance
          * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
 		 */
@@ -44,7 +44,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 		}
 
 		/**
-		 * @action `gravityview_search_widget_field_after` After each search input is rendered (other than the submit button)
+		 * After each search input is rendered (other than the submit button).
 		 * @param GravityView_Widget_Search $this GravityView Widget instance
          * @param array $search_field
 		 */
@@ -52,7 +52,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 	}
 
 	/**
-	 * @action `gravityview_search_widget_fields_after` Inside the `<form>` tag of the GravityView search form, after inputs are rendered
+	 * tag of the GravityView search form, after inputs are rendered.
 	 * @param GravityView_Widget_Search $this GravityView Widget instance
 	 */
 	do_action( 'gravityview_search_widget_fields_after', $this );

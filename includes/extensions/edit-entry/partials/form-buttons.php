@@ -21,7 +21,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	<?php
 
     /**
-     * @filter `gravityview/edit_entry/cancel_link` Modify the cancel button link URL
+     * Modify the cancel button link URL.
      * @since 1.11.1
      * @since 2.11 The cancel link now uses history.back() so the $back_link URL matters less.
      * @param string $back_link Existing URL of the Cancel link
@@ -32,7 +32,7 @@ if ( current_filter() === 'gform_next_button' ) {
     $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', remove_query_arg( array( 'page', 'view', 'edit' ) ), $object->form, $object->entry, $object->view_id );
 
 	/**
-	 * @action `gravityview/edit-entry/publishing-action/before` Triggered before the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
+	 * container.
 	 * @since 1.5.1
 	 * @param array $form The Gravity Forms form
 	 * @param array $entry The Gravity Forms entry
@@ -75,7 +75,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	$update_count = (int) \GV\Utils::_POST( 'update_count', 0 );
 
 	/**
-	 * @filter `gravityview/edit_entry/cancel_onclick` Modify the `onclick` attribute for the back link. To remove `onclick` altogether, return an empty string.
+	 * altogether, return an empty string.
 	 * @since 2.13.4
 	 * @param string $back_link Existing "back" of the Cancel link.
 	 * @param array $form The Gravity Forms form.
@@ -91,7 +91,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	<?php
 
 	/**
-	 * @action `gravityview/edit-entry/publishing-action/after` Triggered after the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
+	 * container.
 	 *
 	 * @used-by GravityView_Delete_Entry::add_delete_button()
 	 *

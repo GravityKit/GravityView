@@ -73,7 +73,7 @@ class GravityView_Admin_ApproveEntries {
 	public function filter_links_entry_list( $filter_links = array(), $form = array(), $include_counts = true ) {
 
 		/**
-		 * @filter `gravityview/approve_entries/show_filter_links_entry_list` Disable filter links
+		 * Disable filter links.
 		 * @since 1.17.1
 		 * @param bool $show_filter_links True: show the "approved"/"disapproved" filter links. False: hide them.
 		 * @param array $form GF Form object of current form
@@ -440,7 +440,7 @@ class GravityView_Admin_ApproveEntries {
 		$show_approve_column = GVCommon::has_cap( 'gravityview_moderate_entries' );
 
 		/**
-		 * @filter `gravityview/approve_entries/hide-if-no-connections` Return true to hide reject/approve if there are no connected Views
+		 * Return true to hide reject/approve if there are no connected Views.
 		 * @since 1.7.2
 		 * @param boolean $hide_if_no_connections
 		 */
@@ -456,7 +456,7 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 		/**
-		 * @filter `gravityview/approve_entries/show-column` Override whether the column is shown
+		 * Override whether the column is shown.
 		 * @param boolean $show_approve_column Whether the column will be shown
 		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
 		 */

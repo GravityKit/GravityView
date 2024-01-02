@@ -662,7 +662,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 		$return_url = add_query_arg( $query_args, $return_url );
 
 		/**
-		 * @filter `gk/gravityview/approve-link/return-url` Modify the return URL after entry approval.
+		 * Modify the return URL after entry approval.
 		 * @since 2.18.7
 		 * @param int $entry_id Entry ID.
 		 * @param int $approval_status Approval status.

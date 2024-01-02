@@ -494,7 +494,7 @@ final class Plugin {
 	public function supports( $feature ) {
 
 		/**
-		 * @filter `gravityview/supports` Overrides whether GravityView supports a feature.
+		 * Overrides whether GravityView supports a feature.
 		 * @since 2.0
 		 * @param boolean|null $supports Whether the feature is supported. Default: null.
 		 */

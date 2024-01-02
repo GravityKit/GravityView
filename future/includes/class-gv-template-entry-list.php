@@ -47,7 +47,7 @@ class Entry_List_Template extends Entry_Template {
 		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), is_numeric( $field->ID ) ? ( $source->form ? $source->form : null ) : null, $entry->as_entry() );
 
 		/**
-		 * @filter `gravityview/template/field/label` Override the field label.
+		 * Override the field label.
 		 * @since 2.0
 		 * @param string $label The label to override.
 		 * @param \GV\Template_Context $context The context.

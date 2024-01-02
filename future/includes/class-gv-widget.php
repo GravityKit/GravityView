@@ -158,7 +158,7 @@ abstract class Widget {
 		$settings = array();
 
 		/**
-		 * @filter `gravityview/widget/enable_custom_class` Enable custom CSS class settings for widgets
+		 * Enable custom CSS class settings for widgets.
 		 * @param boolean $enable_custom_class False by default. Return true if you want to enable.
 		 * @param \GV\Widget $this Current instance of \GV\Widget.
 		 */
@@ -247,14 +247,14 @@ abstract class Widget {
 		);
 
 		/**
-		 * @filter `gravityview_widget_active_areas` Array of zones available for widgets to be dropped into
+		 * Array of zones available for widgets to be dropped into.
 		 * @deprecated 2.0: Use gravityview/widget/active_areas instead
 		 * @param array $default_areas Definition for default widget areas
 		 */
 		$default_areas = apply_filters( 'gravityview_widget_active_areas', $default_areas );
 
 		/**
-		 * @filter `gravityview/widget/active_areas` Array of zones available for widgets to be dropped into
+		 * Array of zones available for widgets to be dropped into.
 		 * @since 2.0
 		 * @param array $default_areas Definition for default widget areas
 		 */
@@ -431,7 +431,7 @@ abstract class Widget {
 		$allowlist = apply_filters_deprecated( 'gravityview/widget/hide_until_searched/whitelist', array( $allowlist ), '2.14', 'gravityview/widget/hide_until_searched/allowlist' );
 
 		/**
-		 * @filter `gravityview/widget/hide_until_searched/allowlist` Some widgets have got to stay shown.
+		 * Some widgets have got to stay shown.
 		 * @since 2.14
 		 * @param string[] $allowlist The widget IDs that have to be shown by default.
 		 */
@@ -446,7 +446,7 @@ abstract class Widget {
 		}
 
 		/**
-		 * @filter `gravityview/widget/hide_until_searched` Modify whether to hide content until search
+		 * Modify whether to hide content until search.
 		 * @param boolean $hide_until_searched Hide until search?
 		 * @param \GV\Widget $this Widget instance
 		 */
@@ -533,14 +533,14 @@ abstract class Widget {
 	 */
 	public static function registered() {
 		/**
-		 * @filter `gravityview_register_directory_widgets` Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+		 * Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object.
 		 * @deprecated Use `gravityview/widgets/register`
 		 * @param array $registered_widgets Empty array
 		 */
 		$registered_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
 
 		/**
-		 * @filter `gravityview/widgets/register` Each item is used to instantiate a GravityView_Admin_View_Widget object
+		 * Each item is used to instantiate a GravityView_Admin_View_Widget object.
 		 * @param array $registered_widgets Empty array
 		 */
 		return apply_filters( 'gravityview/widgets/register', $registered_widgets );

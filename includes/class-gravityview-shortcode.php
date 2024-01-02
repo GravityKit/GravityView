@@ -172,7 +172,7 @@ class GravityView_Shortcode {
 		}
 
 		/**
-		 * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail="$detail"]`
+		 * Filter the detail output returned from `[gravityview detail="$detail"]`.
 		 * @since 1.13
 		 * @param string $return Existing output
 		 */

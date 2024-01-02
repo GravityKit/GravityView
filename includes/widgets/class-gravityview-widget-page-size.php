@@ -67,7 +67,7 @@ class Page_Size extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview/widget/page_size/page_sizes` Filter the available page sizes as needed
+		 * Filter the available page sizes as needed.
 		 * @param array $sizes The sizes, with `value` and `text` keys. `text` key used as HTML option label.
 		 * @param \GV\Template_Context $context The context.
 		 */
@@ -98,7 +98,7 @@ class Page_Size extends \GV\Widget {
 		), $widget_args, 'gravityview_widget_page_size' );
 
 		/**
-		 * @filter `gravityview/widget/page_size/settings` Filter the settings for the widget
+		 * Filter the settings for the widget.
 		 * @param array $settings Configuration for how output will display, with `label`, `choices`, `default_choice_text` keys
 		 * @param \GV\Template_Context $context The context.
 		 */

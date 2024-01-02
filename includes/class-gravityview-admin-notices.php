@@ -155,7 +155,7 @@ class GravityView_Admin_Notices {
 	public function admin_notice() {
 
 		/**
-		 * @filter `gravityview/admin/notices` Modify the notices displayed in the admin
+		 * Modify the notices displayed in the admin.
 		 * @since 1.12
 		 */
 		$notices = apply_filters( 'gravityview/admin/notices', self::$admin_notices );

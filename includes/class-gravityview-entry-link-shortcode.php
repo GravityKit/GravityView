@@ -175,7 +175,7 @@ class GravityView_Entry_Link_Shortcode {
 		$return = gravityview_get_link( $url, $link_text, $link_atts );
 
 		/**
-		 * @filter `gravityview/shortcodes/gv_entry_link/output` Modify the output of the [gv_entry_link] shortcode
+		 * Modify the output of the [gv_entry_link] shortcode.
 		 * @since 2.0.15
 		 * @param string $return The HTML link output
 		 * @param array {

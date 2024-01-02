@@ -238,7 +238,7 @@ class GravityView_Edit_Entry {
 	    }
 
 	    /**
-	     * @filter `gravityview/edit/link` Filter the edit URL link.
+	     * Filter the edit URL link.
 	     *
 	     * @since  2.14.6 Added $post param.
 	     *
@@ -328,7 +328,7 @@ class GravityView_Edit_Entry {
 		$fields = apply_filters_deprecated( 'gravityview/edit_entry/field_blacklist', array( $fields, $entry ), '2.14', 'gravityview/edit_entry/field_blocklist' );
 
 		/**
-		 * @filter `gravityview/edit_entry/field_blocklist` Array of fields that should not be displayed in Edit Entry
+		 * Array of fields that should not be displayed in Edit Entry.
 		 * @since 1.20
 		 * @param string[] $fields Array of field type or meta key names (eg: `[ "captcha", "payment_status" ]` ).
 		 * @param array $entry Gravity Forms entry array.
@@ -418,7 +418,7 @@ class GravityView_Edit_Entry {
         }
 
         /**
-         * @filter `gravityview/edit_entry/user_can_edit_entry` Modify whether user can edit an entry.
+         * Modify whether user can edit an entry.
          * @since 1.15 Added `$entry` and `$view_id` parameters
          * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
          * @param array|\WP_Error $entry Gravity Forms entry array {@since 1.15}
