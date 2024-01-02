@@ -137,8 +137,8 @@ class GravityView_Support_Port {
 			 * @since  2.16 Removed `contactEnabled`, `translation` and `data` keys
 			 *
 			 * @param array $configuration {
-			 *
-			 * @type array  $suggest       Article IDs to recommend to the user (per page in the admin)
+			 *   @type array  $suggest       Article IDs to recommend to the user (per page in the admin)
+			 * }
 			 *                             }
 			 */
 			$localized_data = apply_filters( 'gravityview/support_port/localization_data', [

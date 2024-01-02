@@ -1148,6 +1148,7 @@ class GravityView_frontend {
 		}
 
 		$form_id = intval( $form_id );
+		$view_id = \GV\Utils::get( $args, 'id' );
 
 		/**
 		 * Process search parameters
@@ -1183,11 +1184,11 @@ class GravityView_frontend {
 		$parameters = apply_filters( 'gravityview_get_entries', $parameters, $args, $form_id );
 
 		/**
-		 * Filter get entries criteria.
+		 * Filter get entries criteria for a specific View.
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
 		 * @param array $args View configuration args.
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries_' . \GV\Utils::get( $args, 'id' ), $parameters, $args, $form_id );
+		$parameters = apply_filters( "gravityview_get_entries_{$view_id}", $parameters, $args, $form_id );
 
 		gravityview()->log->debug( '$parameters passed to gravityview_get_entries(): ', array( 'data' => $parameters ) );
 

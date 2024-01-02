@@ -247,7 +247,7 @@ class GravityView_Render_Settings {
 		 * Modify the capabilities shown in the field dropdown.
 		 * @see https://docs.gravitykit.com/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
 		 * @since  1.0.1
-		 * @param  array $select_cap_choices Associative rray of role slugs with labels ( `manage_options` => `Administrator` )
+		 * @param  array $select_cap_choices Associative array of role slugs with labels ( `manage_options` => `Administrator` )
 		 * @param  string $template_id Optional. View slug
 		 * @param  string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param  string $context     Optional. What context are we in? Example: `single` or `directory`
@@ -497,13 +497,15 @@ EOD;
 
 				$output = ob_get_clean();
 
+				$option_type = $option['type'];
+
 				/**
-				 * Modify the output for a GravityView setting.\n.
-				 * `$option_type` is the type of setting (`radio`, `text`, etc.)
+				 * Modify the output for a GravityView setting.
+				 * `$option_type` is the type of setting (`radio`, `text`, etc.).
 				 * @param string $output field class name
 				 * @param array $option  option field data
 				 */
-				$output = apply_filters( "gravityview/option/output/{$option['type']}" , $output, $option );
+				$output = apply_filters( "gravityview/option/output/{$option_type}" , $output, $option );
 			}
 
 		} // isset option[type]
@@ -610,23 +612,25 @@ EOD;
 			return NULL;
 		}
 
+		$field_type = sanitize_file_name( $field['type'] );
+
 		/**
-		 * @filter `gravityview/setting/class/{field_type}`
+		 * Modifies the field type class name to be loaded for a given field.
 		 * @param string $class_suffix  field class suffix; `GravityView_FieldType_{$class_suffix}`
 		 * @param array $field   field data
 		 */
-		$type_class = apply_filters( "gravityview/setting/class/{$field['type']}", 'GravityView_FieldType_' . $field['type'], $field );
+		$type_class = apply_filters( "gravityview/setting/class/{$field_type}", 'GravityView_FieldType_' . $field_type, $field );
 
 		if( class_exists( $type_class ) ) {
 			return $type_class;
 		}
 
 		/**
-		 * @filter `gravityview/setting/class_file/{field_type}`
+		 * Modifies file path to be loaded for a given field.
 		 * @param string  $field_type_include_path field class file path
 		 * @param array $field  field data
 		 */
-		$class_file = apply_filters( "gravityview/setting/class_file/{$field['type']}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field['type']}.php", $field );
+		$class_file = apply_filters( "gravityview/setting/class_file/{$field_type}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field_type}.php", $field );
 
 		if( $class_file && file_exists( $class_file ) ) {
 			require_once( $class_file );
