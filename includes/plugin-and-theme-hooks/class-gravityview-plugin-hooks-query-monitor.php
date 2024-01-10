@@ -27,16 +27,15 @@ class GravityView_Plugin_Hooks_Query_Monitor extends GravityView_Plugin_and_Them
 	 * @since 2.0
 	 */
 	protected $script_handles = array(
-		'query-monitor'
+		'query-monitor',
 	);
 
 	/**
 	 * @since 2.0
 	 */
 	protected $style_handles = array(
-		'query-monitor'
+		'query-monitor',
 	);
-
 }
 
-new GravityView_Plugin_Hooks_Query_Monitor;
+new GravityView_Plugin_Hooks_Query_Monitor();

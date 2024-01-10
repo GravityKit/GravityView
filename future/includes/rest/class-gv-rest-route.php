@@ -43,127 +43,143 @@ abstract class Route extends \WP_REST_Controller {
 		$output_buffer = ob_get_clean();
 
 		$namespace = \GV\REST\Core::get_namespace();
-		$base = $this->get_route_name();
+		$base      = $this->get_route_name();
 
-		register_rest_route( $namespace, '/' . $base, array(
+		register_rest_route(
+			$namespace,
+			'/' . $base,
 			array(
-				'methods'         => \WP_REST_Server::READABLE,
-				'callback'        => array( $this, 'get_items' ),
-				'permission_callback' => array( $this, 'get_items_permissions_check' ),
-				'args'            => array(
-					'page' => array(
-						'default' => 1,
-						'sanitize_callback' => 'absint'
-					),
-					'limit' => array(
-						'default' => 10,
-						'sanitize_callback' => 'absint'
-					),
-					'post_id' => array(
-						'default' => null,
-						'sanitize_callback' => 'absint'
-					)
-				)
-			),
-			array(
-				'methods'         => \WP_REST_Server::CREATABLE,
-				'callback'        => array( $this, 'create_item' ),
-				'permission_callback' => array( $this, 'create_item_permissions_check' ),
-				'args'            => $this->create_item_args()
-
-			),
-		) );
-		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)', array(
-			array(
-				'methods'         => \WP_REST_Server::READABLE,
-				'callback'        => array( $this, 'get_item' ),
-				'permission_callback' => array( $this, 'get_item_permissions_check' ),
-				'args'            => array(
-					'context'          => array(
-						'default'      => 'view',
+				array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_items' ),
+					'permission_callback' => array( $this, 'get_items_permissions_check' ),
+					'args'                => array(
+						'page'    => array(
+							'default'           => 1,
+							'sanitize_callback' => 'absint',
+						),
+						'limit'   => array(
+							'default'           => 10,
+							'sanitize_callback' => 'absint',
+						),
+						'post_id' => array(
+							'default'           => null,
+							'sanitize_callback' => 'absint',
+						),
 					),
 				),
-			),
+				array(
+					'methods'             => \WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'create_item' ),
+					'permission_callback' => array( $this, 'create_item_permissions_check' ),
+					'args'                => $this->create_item_args(),
+
+				),
+			)
+		);
+		register_rest_route(
+			$namespace,
+			'/' . $base . '/(?P<id>[\d]+)',
 			array(
-				'methods'         => \WP_REST_Server::EDITABLE,
-				'callback'        => array( $this, 'update_item' ),
-				'permission_callback' => array( $this, 'update_item_permissions_check' ),
-				'args'              => $this->update_item_args(),
-			),
-			array(
-				'methods'  => \WP_REST_Server::DELETABLE,
-				'callback' => array( $this, 'delete_item' ),
-				'permission_callback' => array( $this, 'delete_item_permissions_check' ),
-				'args'     => array(
-					'force'    => array(
-						'default'      => false,
+				array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_item' ),
+					'permission_callback' => array( $this, 'get_item_permissions_check' ),
+					'args'                => array(
+						'context' => array(
+							'default' => 'view',
+						),
 					),
 				),
-			),
-		) );
+				array(
+					'methods'             => \WP_REST_Server::EDITABLE,
+					'callback'            => array( $this, 'update_item' ),
+					'permission_callback' => array( $this, 'update_item_permissions_check' ),
+					'args'                => $this->update_item_args(),
+				),
+				array(
+					'methods'             => \WP_REST_Server::DELETABLE,
+					'callback'            => array( $this, 'delete_item' ),
+					'permission_callback' => array( $this, 'delete_item_permissions_check' ),
+					'args'                => array(
+						'force' => array(
+							'default' => false,
+						),
+					),
+				),
+			)
+		);
 
 		$sub_type = $this->get_sub_type();
 
 		$format = '(?:\.(?P<format>html|json|csv|tsv))?';
 
-		register_rest_route( $namespace, '/' . $base . '/(?P<id>[\d]+)' . '/' . $sub_type . $format, array(
+		register_rest_route(
+			$namespace,
+			'/' . $base . '/(?P<id>[\d]+)' . '/' . $sub_type . $format,
 			array(
-				'methods'         => \WP_REST_Server::READABLE,
-				'callback'        => array( $this, 'get_sub_items' ),
-				'permission_callback' => array( $this, 'get_sub_items_permissions_check' ),
-				'args'            => array(
-					'page' => array(
-						'default' => 1,
-						'sanitize_callback' => 'absint'
+				array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_sub_items' ),
+					'permission_callback' => array( $this, 'get_sub_items_permissions_check' ),
+					'args'                => array(
+						'page'    => array(
+							'default'           => 1,
+							'sanitize_callback' => 'absint',
+						),
+						'limit'   => array(
+							'default'           => 10,
+							'sanitize_callback' => 'absint',
+						),
+						'post_id' => array(
+							'default'           => null,
+							'sanitize_callback' => 'absint',
+						),
 					),
-					'limit' => array(
-						'default' => 10,
-						'sanitize_callback' => 'absint'
-					),
-					'post_id' => array(
-						'default' => null,
-						'sanitize_callback' => 'absint'
-					)
-				)
-			),
-			array(
-				'methods'         => \WP_REST_Server::CREATABLE,
-				'callback'        => array( $this, 'create_sub_item' ),
-				'permission_callback' => array( $this, 'create_sub_item_permissions_check' ),
-				'args'     => $this->create_sub_item_args()
-			),
-		) );
+				),
+				array(
+					'methods'             => \WP_REST_Server::CREATABLE,
+					'callback'            => array( $this, 'create_sub_item' ),
+					'permission_callback' => array( $this, 'create_sub_item_permissions_check' ),
+					'args'                => $this->create_sub_item_args(),
+				),
+			)
+		);
 
 		$format = '(?:\.(?P<format>html|json))?';
 
-		register_rest_route( $namespace, sprintf( '/%s/(?P<id>[\d]+)/%s/(?P<s_id>[\w-]+)%s', $base, $sub_type, $format ) , array(
+		register_rest_route(
+			$namespace,
+			sprintf( '/%s/(?P<id>[\d]+)/%s/(?P<s_id>[\w-]+)%s', $base, $sub_type, $format ),
 			array(
-				'methods'         => \WP_REST_Server::READABLE,
-				'callback'        => array( $this, 'get_sub_item' ),
-				'permission_callback' => array( $this, 'get_sub_item_permissions_check' ),
-				'args'            => array(
-					'context'          => array(
-						'default'      => 'view',
+				array(
+					'methods'             => \WP_REST_Server::READABLE,
+					'callback'            => array( $this, 'get_sub_item' ),
+					'permission_callback' => array( $this, 'get_sub_item_permissions_check' ),
+					'args'                => array(
+						'context' => array(
+							'default' => 'view',
+						),
 					),
 				),
-			),
-			array(
-				'methods'         => \WP_REST_Server::EDITABLE,
-				'callback'        => array( $this, 'update_sub_item' ),
-				'permission_callback' => array( $this, 'update_sub_item_permissions_check' ),
-				'args'     => $this->update_sub_item_args()
-			),
-			array(
-				'methods'  => \WP_REST_Server::DELETABLE,
-				'callback' => array( $this, 'delete_sub_item' ),
-				'permission_callback' => array( $this, 'delete_sub_item_permissions_check' ),
-				'args'     => array(
-					'force'    => array(
-						'default'      => false,
+				array(
+					'methods'             => \WP_REST_Server::EDITABLE,
+					'callback'            => array( $this, 'update_sub_item' ),
+					'permission_callback' => array( $this, 'update_sub_item_permissions_check' ),
+					'args'                => $this->update_sub_item_args(),
+				),
+				array(
+					'methods'             => \WP_REST_Server::DELETABLE,
+					'callback'            => array( $this, 'delete_sub_item' ),
+					'permission_callback' => array( $this, 'delete_sub_item_permissions_check' ),
+					'args'                => array(
+						'force' => array(
+							'default' => false,
+						),
 					),
 				),
-			),
-		) );
+			)
+		);
 
 		echo $output_buffer;
 	}
@@ -263,7 +279,6 @@ abstract class Route extends \WP_REST_Controller {
 	 */
 	public function get_sub_items( $request ) {
 		return $this->not_implemented();
-
 	}
 
 	/**
@@ -373,7 +388,7 @@ abstract class Route extends \WP_REST_Controller {
 	 *  @todo ZACK - Use this as generic prepare for response or remove from usage
 	 *
 	 * @since 2.0
-	 * @param mixed $item WordPress representation of the item.
+	 * @param mixed            $item WordPress representation of the item.
 	 * @param \WP_REST_Request $request Request object.
 	 * @return \WP_REST_Response
 	 */
@@ -388,7 +403,7 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return \WP_REST_Response
 	 */
 	protected function not_implemented() {
-		$error = new \WP_Error( 'not-implemented-yet', __( 'Endpoint Not Yet Implemented.', 'gk-gravityview' )  );
+		$error = new \WP_Error( 'not-implemented-yet', __( 'Endpoint Not Yet Implemented.', 'gk-gravityview' ) );
 		return new \WP_REST_Response( $error, 501 );
 	}
 
@@ -402,12 +417,15 @@ abstract class Route extends \WP_REST_Controller {
 	 * @return array
 	 */
 	public function __call( $method, $args ) {
-		if ( in_array( $method, array(
-			'create_item_args',
-			'update_item_args',
-			'create_sub_item_args',
-			'update_sub_item_args'
-		) ) ) {
+		if ( in_array(
+			$method,
+			array(
+				'create_item_args',
+				'update_item_args',
+				'create_sub_item_args',
+				'update_sub_item_args',
+			)
+		) ) {
 			return array();
 		}
 	}

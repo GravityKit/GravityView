@@ -4,7 +4,7 @@
  */
 
 $gravityview_view = GravityView_View::getInstance();
-$view_id = $gravityview_view->getViewId();
+$view_id          = $gravityview_view->getViewId();
 ?>
 <div class="gv-search-box gv-search-box-submit">
 	<?php
@@ -17,14 +17,14 @@ $view_id = $gravityview_view->getViewId();
 	foreach ( $args as $key => $value ) {
 		if ( is_array( $value ) ) {
 			foreach ( $value as $k => $v ) {
-			?>
+				?>
 			<input type="hidden" name="<?php echo esc_attr( sprintf( '%s[%s]', $key, $k ) ); ?>" value="<?php echo esc_attr( $v ); ?>" />
-			<?php
+				<?php
 			}
 		} else {
-		?>
+			?>
 		<input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
-		<?php
+			<?php
 		}
 	}
 

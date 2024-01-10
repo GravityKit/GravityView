@@ -13,7 +13,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 /** @var \GV\GF_Form $gf_form */
 $gf_form = isset( $gravityview->field->form_id ) ? \GV\GF_Form::by_id( $gravityview->field->form_id ) : $gravityview->view->form->form;
-$form = ! empty( $gf_form->form ) ? $gf_form->form : $gf_form;
+$form    = ! empty( $gf_form->form ) ? $gf_form->form : $gf_form;
 
 if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry[ $form['id'] ];

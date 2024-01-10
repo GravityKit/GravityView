@@ -66,7 +66,7 @@ class Template_Context extends Context {
 	 * Create a context from a Template
 	 *
 	 * @param \GV\Template|array $template The template or array with values expected in a template
-	 * @param array $data Additional data not tied to the template object.
+	 * @param array              $data Additional data not tied to the template object.
 	 *
 	 * @return \GV\Template_Context The context holder.
 	 */
@@ -79,19 +79,19 @@ class Template_Context extends Context {
 		 * Data.
 		 */
 		$context->display_value = Utils::get( $data, 'display_value' );
-		$context->value = Utils::get( $data, 'value' );
+		$context->value         = Utils::get( $data, 'value' );
 
 		/**
 		 * Shortcuts.
 		 */
-		$context->view = Utils::get( $template, 'view' );
-		$context->source = Utils::get( $template, 'source' );
-		$context->field = Utils::get( $template, 'field' ) ? : Utils::get( $data, 'field' );
-		$context->entry = Utils::get( $template, 'entry' ) ? : Utils::get( $data, 'entry' );
+		$context->view    = Utils::get( $template, 'view' );
+		$context->source  = Utils::get( $template, 'source' );
+		$context->field   = Utils::get( $template, 'field' ) ? : Utils::get( $data, 'field' );
+		$context->entry   = Utils::get( $template, 'entry' ) ? : Utils::get( $data, 'entry' );
 		$context->request = Utils::get( $template, 'request' );
 
 		$context->entries = Utils::get( $template, 'entries' ) ? $template->entries : null;
-		$context->fields = $context->view ? $context->view->fields : null;
+		$context->fields  = $context->view ? $context->view->fields : null;
 
 		return $context;
 	}

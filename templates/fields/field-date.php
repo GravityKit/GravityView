@@ -11,13 +11,14 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
+$field_id       = $gravityview->field->ID;
+$field          = $gravityview->field->field;
+$value          = $gravityview->value;
 $field_settings = $gravityview->field->as_configuration();
 
 /**
  * Unix Epoch probably isn't what you're looking for.
+ *
  * @since 1.7
  */
 if ( $value === '1970-01-01' ) {
@@ -45,7 +46,7 @@ if ( ! empty( $field_settings ) && ! empty( $field_settings['date_display'] ) &&
 
 } else {
 
-	$output = GravityView_Field_Date::date_display( $value, \GV\Utils::get( $field, "dateFormat" ), $field_id );
+	$output = GravityView_Field_Date::date_display( $value, \GV\Utils::get( $field, 'dateFormat' ), $field_id );
 
 }
 

@@ -30,13 +30,19 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Partial_Entries extends GravityView
 	protected function add_hooks() {
 
 		// Don't show "Please note that your information is saved on our server as you enter it." message.
-		add_action( 'gravityview/edit-entry/render/before', function() {
-			add_filter( 'gform_partialentries_warning_message', '__return_empty_string' );
-		} );
+		add_action(
+			'gravityview/edit-entry/render/before',
+			function () {
+				add_filter( 'gform_partialentries_warning_message', '__return_empty_string' );
+			}
+		);
 
-		add_action( 'gravityview/edit-entry/render/after', function() {
-			remove_filter( 'gform_partialentries_warning_message', '__return_empty_string' );
-		} );
+		add_action(
+			'gravityview/edit-entry/render/after',
+			function () {
+				remove_filter( 'gform_partialentries_warning_message', '__return_empty_string' );
+			}
+		);
 
 		add_action( 'gravityview/edit_entry/after_update', array( $this, 'maybe_save_partial_entry' ), 10, 3 );
 
@@ -48,8 +54,8 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Partial_Entries extends GravityView
 	 *
 	 * @since 2.8
 	 *
-	 * @param array $form Gravity Forms form array
-	 * @param string $entry_id Numeric ID of the entry that was updated
+	 * @param array                         $form Gravity Forms form array
+	 * @param string                        $entry_id Numeric ID of the entry that was updated
 	 * @param GravityView_Edit_Entry_Render $edit_entry_render This object
 	 *
 	 * @return void
@@ -81,13 +87,16 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Partial_Entries extends GravityView
 		// Set the expected $_POST key for the Add-On to use
 		$_POST['partial_entry_id'] = $partial_entry_id;
 
-		gravityview()->log->debug( 'Saving partial entry (ID #{partial_entry_id}) for Entry #{entry_id}', array(
-			'partial_entry_id' => $partial_entry_id,
-			'entry_id'         => $entry_id
-		) );
+		gravityview()->log->debug(
+			'Saving partial entry (ID #{partial_entry_id}) for Entry #{entry_id}',
+			array(
+				'partial_entry_id' => $partial_entry_id,
+				'entry_id'         => $entry_id,
+			)
+		);
 
 		$partial_entries_addon->maybe_save_partial_entry( $form['id'] );
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Partial_Entries;
+new GravityView_Plugin_Hooks_Gravity_Forms_Partial_Entries();

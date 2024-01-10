@@ -11,9 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$value = $gravityview->value;
-$form = $gravityview->view->form->form;
-$display_value = $gravityview->display_value;
+$value          = $gravityview->value;
+$form           = $gravityview->view->form->form;
+$display_value  = $gravityview->display_value;
 $field_settings = $gravityview->field->as_configuration();
 
 if ( $value !== '' ) {

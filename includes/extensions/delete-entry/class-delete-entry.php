@@ -30,6 +30,7 @@ final class GravityView_Delete_Entry {
 
 	/**
 	 * Component instances.
+	 *
 	 * @var array
 	 * @since 2.9.2
 	 */
@@ -37,12 +38,14 @@ final class GravityView_Delete_Entry {
 
 	/**
 	 * The value of the `delete_redirect` option when the setting is to redirect to Multiple Entries after delete
+	 *
 	 * @since 2.9.2
 	 */
 	const REDIRECT_TO_MULTIPLE_ENTRIES_VALUE = 1;
 
 	/**
 	 * The value of the `delete_redirect` option when the setting is to redirect to URL
+	 *
 	 * @since 2.9.2
 	 */
 	const REDIRECT_TO_URL_VALUE = 2;
@@ -140,9 +143,9 @@ final class GravityView_Delete_Entry {
 	 * For non-logged in users.
 	 * For users that have no delete rights on any of the current entries.
 	 *
-	 * @param bool $visible Visible or not.
+	 * @param bool      $visible Visible or not.
 	 * @param \GV\Field $field The field.
-	 * @param \GV\View $view The View context.
+	 * @param \GV\View  $view The View context.
 	 *
 	 * @return bool
 	 */
@@ -218,8 +221,8 @@ final class GravityView_Delete_Entry {
 	 * We don't want to link to the single entry, because when deleted, there would be nothing to return to.
 	 *
 	 * @since 1.5.1
-	 * @param  array       $entry Gravity Forms entry array
-	 * @param  int         $view_id The View id. Not optional since 2.0
+	 * @param  array $entry Gravity Forms entry array
+	 * @param  int   $view_id The View id. Not optional since 2.0
 	 * @return string|null If directory link is valid, the URL to process the delete request. Otherwise, `NULL`.
 	 */
 	public static function get_delete_link( $entry, $view_id = 0, $post_id = null ) {
@@ -276,8 +279,8 @@ final class GravityView_Delete_Entry {
 	 *
 	 * @param array $form    Gravity Forms form array
 	 * @param array $entry   Gravity Forms entry array
-	 * @param int $view_id GravityView View ID
-	 * @param int $post_id Current post ID. May be same as View ID.
+	 * @param int   $view_id GravityView View ID
+	 * @param int   $post_id Current post ID. May be same as View ID.
 	 *
 	 * @return void
 	 */
@@ -300,9 +303,9 @@ final class GravityView_Delete_Entry {
 		}
 
 		$attributes = array(
-			'class' => 'btn btn-sm button button-small alignright pull-right btn-danger gv-button-delete',
-			'tabindex' => ( GFCommon::$tab_index ++ ),
-			'onclick' => self::get_confirm_dialog(),
+			'class'    => 'btn btn-sm button button-small alignright pull-right btn-danger gv-button-delete',
+			'tabindex' => ( GFCommon::$tab_index++ ),
+			'onclick'  => self::get_confirm_dialog(),
 		);
 
 		$View = \GV\View::by_id( $view_id );
@@ -526,7 +529,7 @@ final class GravityView_Delete_Entry {
 	 *
 	 * @since 1.17
 	 *
-	 * @param int $entry_id ID of entry being deleted/trashed
+	 * @param int   $entry_id ID of entry being deleted/trashed
 	 * @param array $entry Array of the entry being deleted/trashed
 	 */
 	public function process_connected_posts( $entry_id = 0, $entry = array() ) {
@@ -560,7 +563,7 @@ final class GravityView_Delete_Entry {
 				'(called by {action}): Error processing the Post connected to the entry.',
 				array(
 					'action' => $action,
-					'data' => $entry,
+					'data'   => $entry,
 				)
 			);
 		} else {
@@ -568,7 +571,7 @@ final class GravityView_Delete_Entry {
 				'(called by {action}): Successfully processed Post connected to the entry.',
 				array(
 					'action' => $action,
-					'data' => $entry,
+					'data'   => $entry,
 				)
 			);
 		}
@@ -670,8 +673,8 @@ final class GravityView_Delete_Entry {
 	 * @since 1.5.1
 	 * @since 1.15 Added `$view_id` param
 	 *
-	 * @param  array $entry Gravity Forms entry array
-	 * @param array $field Field settings (optional)
+	 * @param  array        $entry Gravity Forms entry array
+	 * @param array        $field Field settings (optional)
 	 * @param int|\GV\View $view Pass a View ID to check caps against. If not set, check against current View (@deprecated no longer optional)
 	 * @return bool
 	 */
@@ -679,7 +682,7 @@ final class GravityView_Delete_Entry {
 		if ( ! $view ) {
 			/** @deprecated path */
 			$view_id = GravityView_View::getInstance()->getViewId();
-			$view = \GV\View::by_id( $view_id );
+			$view    = \GV\View::by_id( $view_id );
 		} else {
 			if ( ! $view instanceof \GV\View ) {
 				$view = \GV\View::by_id( $view );
@@ -783,16 +786,16 @@ final class GravityView_Delete_Entry {
 			return;
 		}
 
-		$status = esc_attr( $_GET['status'] );
+		$status           = esc_attr( $_GET['status'] );
 		$message_from_url = \GV\Utils::_GET( 'message', '' );
 		$message_from_url = rawurldecode( stripslashes_deep( $message_from_url ) );
-		$class = '';
+		$class            = '';
 
 		switch ( $status ) {
 			case 'error':
-				$class = ' gv-error error';
+				$class         = ' gv-error error';
 				$error_message = __( 'There was an error deleting the entry: %s', 'gk-gravityview' );
-				$message = sprintf( $error_message, $message_from_url );
+				$message       = sprintf( $error_message, $message_from_url );
 				break;
 			case 'trashed':
 				$message = __( 'The entry was successfully moved to the trash.', 'gk-gravityview' );
@@ -813,9 +816,6 @@ final class GravityView_Delete_Entry {
 
 		echo GVCommon::generate_notice( $message, $class );
 	}
-
-
 } // end class
 
 GravityView_Delete_Entry::getInstance();
-

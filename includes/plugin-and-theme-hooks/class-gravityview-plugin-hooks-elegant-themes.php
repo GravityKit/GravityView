@@ -92,7 +92,7 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 				strpos( $widgets, 'gv_recent_entries' ) === 0
 			) {
 
-					$shortcodes []= 'et_pb_sidebar';
+					$shortcodes [] = 'et_pb_sidebar';
 					break;
 			}
 		}
@@ -101,4 +101,4 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 	}
 }
 
-new GravityView_Theme_Hooks_Elegant_Themes;
+new GravityView_Theme_Hooks_Elegant_Themes();

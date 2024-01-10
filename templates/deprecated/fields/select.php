@@ -19,7 +19,7 @@ extract( $gravityview_view->getCurrentField() );
  */
 $show_label = apply_filters( 'gravityview/fields/select/output_label', ( 'label' === \GV\Utils::get( $field_settings, 'choice_display' ) ), $entry, $field );
 
-if( $show_label && !empty( $field->choices ) && is_array( $field->choices ) && '' !== $display_value ) {
+if ( $show_label && ! empty( $field->choices ) && is_array( $field->choices ) && '' !== $display_value ) {
 	$output = RGFormsModel::get_choice_text( $field, $display_value );
 } else {
 	$output = $display_value;

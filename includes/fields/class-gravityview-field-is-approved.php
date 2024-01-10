@@ -39,8 +39,8 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_html__( 'Approval Status', 'gk-gravityview' );
-		$this->description = esc_html__( 'Display the entry\'s current approval status.', 'gk-gravityview' );
+		$this->label                = esc_html__( 'Approval Status', 'gk-gravityview' );
+		$this->description          = esc_html__( 'Display the entry\'s current approval status.', 'gk-gravityview' );
 		$this->default_search_label = __( 'Approval:', 'gk-gravityview' );
 
 		$this->add_hooks();
@@ -64,7 +64,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	 */
 	public static function get_output( $approval_status = '', $field_settings = array(), $html = false ) {
 
-		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $approval_status );
+		$status     = GravityView_Entry_Approval_Status::maybe_convert_status( $approval_status );
 		$status_key = GravityView_Entry_Approval_Status::get_key( $status );
 
 		// "approved_label", "unapproved_label", "disapproved_label" setting keys
@@ -89,15 +89,15 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	 *
 	 * @filter `gravityview_entry_default_fields`
 	 *
-	 * @param  array $entry_default_fields Array of fields shown by default
+	 * @param  array        $entry_default_fields Array of fields shown by default
 	 * @param  string|array $form form_ID or form object
-	 * @param  string $zone Either 'single', 'directory', 'header', 'footer'
+	 * @param  string       $zone Either 'single', 'directory', 'header', 'footer'
 	 *
 	 * @return array
 	 */
 	function add_default_field( $entry_default_fields, $form, $zone ) {
 
-		if( 'edit' !== $zone ) {
+		if ( 'edit' !== $zone ) {
 			$entry_default_fields[ $this->name ] = array(
 				'label' => $this->label,
 				'desc'  => $this->description,
@@ -113,7 +113,7 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	 *
 	 * @since 1.16
 	 *
-	 * @param array $form GF Form array
+	 * @param array      $form GF Form array
 	 * @param GF_Field[] $fields Array of fields in the form
 	 *
 	 * @return array Modified merge tags
@@ -122,8 +122,8 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 
 		$merge_tags = array(
 			array(
-				'label' => __('Approval Status', 'gk-gravityview'),
-				'tag' => '{approval_status}'
+				'label' => __( 'Approval Status', 'gk-gravityview' ),
+				'tag'   => '{approval_status}',
 			),
 		);
 
@@ -137,12 +137,12 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	 *
 	 * @since 1.18
 	 *
-	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
+	 * @param array  $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
-	 * @param bool $esc_html Whether to apply `esc_html()` to output
+	 * @param array  $form Gravity Forms form array
+	 * @param array  $entry Entry array
+	 * @param bool   $url_encode Whether to URL-encode output
+	 * @param bool   $esc_html Whether to apply `esc_html()` to output
 	 *
 	 * @return string Text, with user variables replaced, if they existed
 	 */
@@ -174,29 +174,28 @@ class GravityView_Field_Is_Approved extends GravityView_Field {
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		$field_options['approved_label'] = array(
-			'type' => 'text',
-			'label' => __( 'Approved Label', 'gk-gravityview' ),
-			'desc' => __( 'If the entry is approved, display this value', 'gk-gravityview' ),
-			'placeholder' => GravityView_Entry_Approval_Status::get_label('approved'),
+			'type'        => 'text',
+			'label'       => __( 'Approved Label', 'gk-gravityview' ),
+			'desc'        => __( 'If the entry is approved, display this value', 'gk-gravityview' ),
+			'placeholder' => GravityView_Entry_Approval_Status::get_label( 'approved' ),
 		);
 
 		$field_options['disapproved_label'] = array(
-			'type' => 'text',
-			'label' => __( 'Disapproved Label', 'gk-gravityview' ),
-			'desc' => __( 'If the entry is not approved, display this value', 'gk-gravityview' ),
-			'placeholder' => GravityView_Entry_Approval_Status::get_label('disapproved'),
+			'type'        => 'text',
+			'label'       => __( 'Disapproved Label', 'gk-gravityview' ),
+			'desc'        => __( 'If the entry is not approved, display this value', 'gk-gravityview' ),
+			'placeholder' => GravityView_Entry_Approval_Status::get_label( 'disapproved' ),
 		);
 
 		$field_options['unapproved_label'] = array(
-			'type' => 'text',
-			'label' => __( 'Unapproved Label', 'gk-gravityview' ),
-			'desc' => __( 'If the entry has not yet been approved or disapproved, display this value', 'gk-gravityview' ),
-			'placeholder' => GravityView_Entry_Approval_Status::get_label('unapproved'),
+			'type'        => 'text',
+			'label'       => __( 'Unapproved Label', 'gk-gravityview' ),
+			'desc'        => __( 'If the entry has not yet been approved or disapproved, display this value', 'gk-gravityview' ),
+			'placeholder' => GravityView_Entry_Approval_Status::get_label( 'unapproved' ),
 		);
 
 		return $field_options;
 	}
-
 }
 
-new GravityView_Field_Is_Approved;
+new GravityView_Field_Is_Approved();

@@ -131,7 +131,7 @@ class View_Collection extends Collection {
 	 * @since 2.1
 	 *
 	 * @param \GV\View_Collection $views Existing View Collection to merge with
-	 * @param string|array $meta_value Value to parse. Normally the value of $post->{$meta_key}.
+	 * @param string|array        $meta_value Value to parse. Normally the value of $post->{$meta_key}.
 	 *
 	 * @return \GV\View_Collection $views View Collection containing any additional Views found
 	 */

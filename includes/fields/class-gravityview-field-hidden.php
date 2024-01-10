@@ -51,7 +51,7 @@ class GravityView_Field_Hidden extends GravityView_Field {
 	function edit_entry_fix_hidden_fields( $fields ) {
 
 		/** @type GF_Field $field */
-		foreach( $fields as &$field ) {
+		foreach ( $fields as &$field ) {
 
 			if ( 'hidden' === $field->type ) {
 
@@ -64,7 +64,7 @@ class GravityView_Field_Hidden extends GravityView_Field {
 				 */
 				$reveal_hidden_field = apply_filters( 'gravityview/edit_entry/reveal_hidden_field', false, $field );
 
-				if( ! $reveal_hidden_field ) {
+				if ( ! $reveal_hidden_field ) {
 					continue;
 				}
 
@@ -78,7 +78,6 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 		return $fields;
 	}
-
 }
 
-new GravityView_Field_Hidden;
+new GravityView_Field_Hidden();

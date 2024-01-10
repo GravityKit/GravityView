@@ -54,15 +54,14 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 						'areaid'   => 'table-columns',
 						'title'    => __( 'Visible Table Columns', 'gk-gravityview' ),
 						'subtitle' => __( 'Each field will be displayed as a column in the table.', 'gk-gravityview' ),
-					)
-				)
-			)
+					),
+				),
+			),
 		);
 
 		$this->add_hooks();
 
 		parent::__construct( $id, $settings, $field_options, $areas );
-
 	}
 
 	/**
@@ -80,7 +79,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 	 * @internal
 	 *
 	 * @param string $label Text for button: "Add Widget" or "Add Field"
-	 * @param array $atts {
+	 * @param array  $atts {
 	 *   @type string $type 'widget' or 'field'
 	 *   @type string $template_id The current slug of the selected View template
 	 *   @type string $zone Where is this button being shown? Either 'single', 'directory', 'edit', 'header', 'footer'
@@ -90,15 +89,15 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 	 */
 	public function maybe_modify_button_label( $label = '', $atts = array() ) {
 
-		if( $this->template_id !== \GV\Utils::get( $atts, 'template_id' ) ) {
+		if ( $this->template_id !== \GV\Utils::get( $atts, 'template_id' ) ) {
 			return $label;
 		}
 
-		if( 'field' !== \GV\Utils::get( $atts, 'type' ) ) {
+		if ( 'field' !== \GV\Utils::get( $atts, 'type' ) ) {
 			return $label;
 		}
 
-		if( 'edit' === \GV\Utils::get( $atts, 'zone' ) ) {
+		if ( 'edit' === \GV\Utils::get( $atts, 'zone' ) ) {
 			return $label;
 		}
 
@@ -106,4 +105,4 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 	}
 }
 
-new GravityView_Default_Template_Table;
+new GravityView_Default_Template_Table();

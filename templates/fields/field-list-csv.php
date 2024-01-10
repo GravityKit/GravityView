@@ -11,9 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
+$field_id      = $gravityview->field->ID;
+$field         = $gravityview->field->field;
+$value         = $gravityview->value;
 $display_value = $gravityview->display_value;
 
 $column_id = gravityview_get_input_id_from_id( $field_id );
@@ -40,7 +40,7 @@ if ( $field->enableColumns && false !== $column_id ) {
 	 * @param string The glue. Default: ";" (semicolon)
 	 * @param \GV\Template_Context The context.
 	 */
-	$glue = apply_filters( 'gravityview/template/field/csv/glue', ";", $gravityview );
+	$glue = apply_filters( 'gravityview/template/field/csv/glue', ';', $gravityview );
 
 	$value = unserialize( $value );
 	if ( $field->enableColumns ) {
@@ -50,7 +50,7 @@ if ( $field->enableColumns && false !== $column_id ) {
 
 	$output = array();
 	foreach ( $value as $column ) {
-		$output[] = is_array($column) ? implode( ',', $column ) : $column;
+		$output[] = is_array( $column ) ? implode( ',', $column ) : $column;
 	}
 
 	echo implode( $glue, $output );

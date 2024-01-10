@@ -25,6 +25,6 @@ if ( gv_empty( $display_value, false, false ) ) {
  * @since 2.0
  * @param \GV\Template_Context $gravityview The context.
  */
-$format = apply_filters('gravityview/field/quiz_percent/format', '%d%%', $gravityview );
+$format = apply_filters( 'gravityview/field/quiz_percent/format', '%d%%', $gravityview );
 
 printf( $format, $display_value );

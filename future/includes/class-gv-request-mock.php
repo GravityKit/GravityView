@@ -14,10 +14,10 @@ class Mock_Request extends Request {
 	 * @var array The return values.
 	 */
 	public $returns = array(
-		'is_view' => false,
-		'is_entry' => false,
+		'is_view'       => false,
+		'is_entry'      => false,
 		'is_edit_entry' => false,
-		'is_search' => false,
+		'is_search'     => false,
 	);
 
 	public function is_view( $return_view = true ) {

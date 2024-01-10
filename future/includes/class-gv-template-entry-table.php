@@ -26,7 +26,7 @@ class Entry_Table_Template extends Entry_Template {
 	 */
 	public function the_field( \GV\Field $field ) {
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
+		$source   = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
 
 		return $renderer->render( $field, $this->view, $source, $this->entry->from_field( $field ), $this->request );
 	}
@@ -63,7 +63,7 @@ class Entry_Table_Template extends Entry_Template {
 		foreach ( $fields->all() as $field ) {
 			$context = Template_Context::from_template( $this, compact( 'field' ) );
 
-			$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
+			$form  = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
 			$entry = $this->entry->from_field( $field );
 
 			if ( ! $entry ) {
@@ -91,15 +91,18 @@ class Entry_Table_Template extends Entry_Template {
 			 */
 			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty_single', false ), $context );
 
-			echo \gravityview_field_output( array(
-				'entry' => $this->entry->as_entry(),
-				'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
-				'label' => $column_label,
-				'value' => $this->the_field( $field ),
-				'markup' => '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>',
-				'hide_empty' => $hide_empty,
-				'zone_id' => 'single_table-columns',
-			), $context );
+			echo \gravityview_field_output(
+				array(
+					'entry'      => $this->entry->as_entry(),
+					'field'      => is_numeric( $field->ID ) ? $field->as_configuration() : null,
+					'label'      => $column_label,
+					'value'      => $this->the_field( $field ),
+					'markup'     => '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>',
+					'hide_empty' => $hide_empty,
+					'zone_id'    => 'single_table-columns',
+				),
+				$context
+			);
 		}
 	}
 }

@@ -169,7 +169,6 @@ class GravityView_frontend {
 	public function setSingleEntry( $single_entry ) {
 
 		$this->single_entry = $single_entry;
-
 	}
 
 	/**
@@ -260,7 +259,6 @@ class GravityView_frontend {
 			$this->context_view_id = (int) array_pop( $array_keys );
 			unset( $array_keys );
 		}
-
 	}
 
 	/**
@@ -705,8 +703,8 @@ class GravityView_frontend {
 	 *
 	 * @since 2.17
 	 *
-	 * @param string $output The existing 'No Entries' text.
-	 * @param boolean $is_search Is the current page a search result, or just a multiple entries screen?
+	 * @param string                    $output The existing 'No Entries' text.
+	 * @param boolean                   $is_search Is the current page a search result, or just a multiple entries screen?
 	 * @param \GV\Template_Context|null $context The context, if available.
 	 *
 	 * @return string|void If search, existing text. If form,  new 'No Entries' text.
@@ -1325,7 +1323,6 @@ class GravityView_frontend {
 		gravityview()->log->debug( '[updateViewSorting] Sort Criteria : ', array( 'data' => $sorting ) );
 
 		return $sorting;
-
 	}
 
 	/**
@@ -1554,7 +1551,7 @@ class GravityView_frontend {
 
 				// Only print once.
 				if ( 'wp_print_footer_scripts' !== current_filter() ) {
-					wp_add_inline_script( 'gravityview-fe-view', $view->settings->get('custom_javascript' ), 'after' );
+					wp_add_inline_script( 'gravityview-fe-view', $view->settings->get( 'custom_javascript' ), 'after' );
 				}
 
 				wp_enqueue_script( 'gravityview-fe-view' );
@@ -1639,7 +1636,6 @@ class GravityView_frontend {
 		} else {
 			gravityview()->log->error( 'Cannot add template style; {template_id} is not registered', array( 'template_id' => 'gravityview_style_' . $template_id ) );
 		}
-
 	}
 
 
@@ -1700,7 +1696,6 @@ class GravityView_frontend {
 		$url = add_query_arg( $sort_args, remove_query_arg( array( 'pagenum' ) ) );
 
 		return '<a href="' . esc_url_raw( $url ) . '" class="' . $class . '" ></a>&nbsp;' . $label;
-
 	}
 
 	/**
@@ -1747,12 +1742,7 @@ class GravityView_frontend {
 		}
 
 		return apply_filters( "gravityview/sortable/formfield_{$form['id']}_{$field_id}", apply_filters( "gravityview/sortable/field_{$field_id}", true, $form ) );
-
 	}
-
 }
 
 GravityView_frontend::getInstance();
-
-
-

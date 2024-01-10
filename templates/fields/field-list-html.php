@@ -11,9 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
+$field_id      = $gravityview->field->ID;
+$field         = $gravityview->field->field;
+$value         = $gravityview->value;
 $display_value = $gravityview->display_value;
 
 $column_id = gravityview_get_input_id_from_id( $field_id );

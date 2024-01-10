@@ -15,7 +15,7 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 	public $icon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS43IDExLjIiPjxwYXRoIGQ9Ik0xNC43IDUuOWwtNy00Yy0xLjItLjctMi41LS44LTMuNy0uMy0xLjcuNy0yLjYgMS45LTIuNyAzLjYtLjEgMS41LjQgMi43IDEuNCAzLjcgMS4xIDEuMSAyLjYgMS40IDQuMy45LjIgMCAuNS0uMiAxLjEtLjQuMi0uMS4zLS4xLjQtLjEuMyAwIC41LjEuNi40LjEuMyAwIC41LS4zLjctMS4yLjctMi40LjktMy44LjgtMS4zLS4yLTIuNS0uNy0zLjQtMS42Qy41IDguNS0uMSA3LjEgMCA1LjVjLjEtMi40IDEuMi00IDMuMy01QzQuNS0uMSA1LjgtLjIgNy4yLjJjLjIuMS42LjIgMS4yLjZsNyAzLjkuNC0uNi44IDIuMS0yLjIuMy4zLS42em0tNy44LS41bDcgNGMxLjIuNyAyLjUuOCAzLjcuMyAxLjctLjcgMi42LTEuOSAyLjgtMy42LjEtMS40LS40LTIuNi0xLjUtMy43cy0yLjUtMS40LTQuMy0xYy0uNC4xLS44LjMtMS4xLjRsLS40LjFjLS4zIDAtLjUtLjEtLjYtLjQtLjEtLjMgMC0uNS4zLS43IDEuMS0uNyAyLjQtLjkgMy44LS44IDEuNC4yIDIuNS43IDMuNCAxLjcgMS4yIDEuMiAxLjcgMi41IDEuNiA0LjEtLjEgMi4zLTEuMiA0LTMuMyA1LTEuNC42LTIuNy42LTMuOS4yLS4zLS4xLS43LS4zLTEuMS0uNWwtNy0zLjktLjQuNUw1LjEgNWwyLjItLjMtLjQuN3oiLz48L3N2Zz4=';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Workflow Step', 'gk-gravityview' );
+		$this->label                = esc_html__( 'Workflow Step', 'gk-gravityview' );
 		$this->default_search_label = $this->label;
 
 		$this->add_hooks();
@@ -39,8 +39,8 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 	 *
 	 * @param string $output HTML value output
 	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field
-	 * @param array $field Current field being displayed
+	 * @param  array  $field_settings Settings for the particular GV field
+	 * @param array  $field Current field being displayed
 	 *
 	 * @since 1.17
 	 *
@@ -51,7 +51,7 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 		// If not set, the entry hasn't started a workflow
 		$has_workflow_step = isset( $entry['workflow_step'] );
 
-		if( $has_workflow_step ) {
+		if ( $has_workflow_step ) {
 
 			$GFlow = new Gravity_Flow_API( $entry['form_id'] );
 
@@ -90,9 +90,9 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 	/**
 	 * @since 1.17.3
 	 *
-	 * @param string $label Existing label text, sanitized.
+	 * @param string        $label Existing label text, sanitized.
 	 * @param null|GF_Field $gf_field If search field is connected to a Gravity Forms field, the field object.
-	 * @param array $field Array with the following keys: `field` ID of the meta key or field ID to be searched, `input` the type of search input to be shown, `label` the existing label. Same as $label parameter.
+	 * @param array         $field Array with the following keys: `field` ID of the meta key or field ID to be searched, `input` the type of search input to be shown, `label` the existing label. Same as $label parameter.
 	 *
 	 * @return string If showing a search field for a Step, show the step label.
 	 */
@@ -130,7 +130,7 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 
 		$workflow_step = $GFlow->get_step( $workflow_step_id );
 
-		if( ! $GFlow || ! $workflow_step ) {
+		if ( ! $GFlow || ! $workflow_step ) {
 			return false;
 		}
 
@@ -142,9 +142,9 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 	 *
 	 * @since 1.17.3
 	 *
-	 * @param array $search_fields
+	 * @param array                     $search_fields
 	 * @param GravityView_Widget_Search $widget
-	 * @param array $widget_args
+	 * @param array                     $widget_args
 	 *
 	 * @return array
 	 */
@@ -162,8 +162,8 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 
 				foreach ( $workflow_steps as $step ) {
 					$choices[] = array(
-						'text'   => $step->get_name(),
-						'value'   => $step->get_id(),
+						'text'  => $step->get_name(),
+						'value' => $step->get_id(),
 					);
 				}
 
@@ -171,7 +171,7 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 			}
 
 			// Workflow Step Statuses
-			else if ( $workflow_step_id = $this->get_step_id_from_key( $search_field['key'] ) ) {
+			elseif ( $workflow_step_id = $this->get_step_id_from_key( $search_field['key'] ) ) {
 
 				$status_key = sprintf( 'workflow_step_status_%d', $workflow_step_id );
 
@@ -181,7 +181,6 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 
 		return $search_fields;
 	}
-
 }
 
-new GravityView_Field_Workflow_Step;
+new GravityView_Field_Workflow_Step();

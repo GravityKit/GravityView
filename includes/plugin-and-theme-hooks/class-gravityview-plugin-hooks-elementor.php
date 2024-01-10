@@ -25,7 +25,6 @@ class GravityView_Theme_Hooks_Elementor extends GravityView_Plugin_and_Theme_Hoo
 	protected $constant_name = 'ELEMENTOR_VERSION';
 
 	protected $content_meta_keys = array( '_elementor_data' );
-
 }
 
-new GravityView_Theme_Hooks_Elementor;
+new GravityView_Theme_Hooks_Elementor();

@@ -18,13 +18,13 @@ class ViewDetails {
 	 * @return array
 	 */
 	public function modify_block_meta( $block_meta ) {
-		return [
+		return array(
 			'title'           => __( 'GravityView View Details', 'gk-gravityview' ),
-			'render_callback' => [ $this, 'render' ],
-			'localization'    => [
-				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg'
-			]
-		];
+			'render_callback' => array( $this, 'render' ),
+			'localization'    => array(
+				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg',
+			),
+		);
 	}
 
 	/**
@@ -36,13 +36,13 @@ class ViewDetails {
 	 *
 	 * @return string $output
 	 */
-	static function render( $block_attributes = [] ) {
-		$block_to_shortcode_attributes_map = [
+	static function render( $block_attributes = array() ) {
+		$block_to_shortcode_attributes_map = array(
 			'viewId' => 'id',
 			'detail' => 'detail',
-		];
+		);
 
-		$shortcode_attributes = [];
+		$shortcode_attributes = array();
 
 		foreach ( $block_attributes as $attribute => $value ) {
 			$value = esc_attr( sanitize_text_field( $value ) );

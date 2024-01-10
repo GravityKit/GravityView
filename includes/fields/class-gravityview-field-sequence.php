@@ -7,6 +7,7 @@
 
 /**
  * Add a sequence field.
+ *
  * @since 2.3.3
  */
 class GravityView_Field_Sequence extends GravityView_Field {
@@ -38,10 +39,10 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 	public function __construct() {
 
-		$this->label = esc_html__( 'Number Sequence', 'gk-gravityview' );
+		$this->label       = esc_html__( 'Number Sequence', 'gk-gravityview' );
 		$this->description = esc_html__( 'Display a sequential result number for each entry.', 'gk-gravityview' );
 
-		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'field_tooltips') );
+		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'field_tooltips' ) );
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
 
@@ -53,9 +54,9 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	 *
 	 * @since 2.10 Moved here from GravityView_Admin_Views::get_entry_default_fields
 	 *
-	 * @param array $entry_default_fields Existing fields
+	 * @param array        $entry_default_fields Existing fields
 	 * @param string|array $form form_ID or form object
-	 * @param string $zone Either 'single', 'directory', 'edit', 'header', 'footer'
+	 * @param string       $zone Either 'single', 'directory', 'edit', 'header', 'footer'
 	 *
 	 * @return array
 	 */
@@ -78,6 +79,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 	/**
 	 * Add tooltips
+	 *
 	 * @param  array $tooltips Existing tooltips
 	 * @return array           Modified tooltips
 	 */
@@ -86,8 +88,8 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$return = $tooltips;
 
 		$return['reverse_sequence'] = array(
-			'title' => __('Reverse the order of the result numbers', 'gk-gravityview'),
-			'value' => __('Output the number sequence in descending order. If enabled, numbers will count down from high to low.', 'gk-gravityview'),
+			'title' => __( 'Reverse the order of the result numbers', 'gk-gravityview' ),
+			'value' => __( 'Output the number sequence in descending order. If enabled, numbers will count down from high to low.', 'gk-gravityview' ),
 		);
 
 		return $return;
@@ -95,21 +97,21 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		unset ( $field_options['search_filter'] );
+		unset( $field_options['search_filter'] );
 
 		$new_fields = array(
-			'start' => array(
-				'type' => 'number',
-				'label' => __( 'First Number in the Sequence', 'gk-gravityview' ),
-				'desc' => __('For each entry, the displayed number will increase by one. When displaying ten entries, the first entry will display "1", and the last entry will show "10".', 'gk-gravityview'),
-				'value' => '1',
+			'start'   => array(
+				'type'       => 'number',
+				'label'      => __( 'First Number in the Sequence', 'gk-gravityview' ),
+				'desc'       => __( 'For each entry, the displayed number will increase by one. When displaying ten entries, the first entry will display "1", and the last entry will show "10".', 'gk-gravityview' ),
+				'value'      => '1',
 				'merge_tags' => false,
 			),
 			'reverse' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Reverse the order of the number sequence (high to low)', 'gk-gravityview' ),
+				'type'    => 'checkbox',
+				'label'   => __( 'Reverse the order of the number sequence (high to low)', 'gk-gravityview' ),
 				'tooltip' => 'reverse_sequence',
-				'value' => '',
+				'value'   => '',
 			),
 		);
 
@@ -122,12 +124,12 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	 * TODO:
 	 * - Find a better way to infer current View data (without using legacy code)
 	 *
-	 * @param array $matches
+	 * @param array  $matches
 	 * @param string $text
-	 * @param array $form
-	 * @param array $entry
-	 * @param bool $url_encode
-	 * @param bool $esc_html
+	 * @param array  $form
+	 * @param array  $entry
+	 * @param bool   $url_encode
+	 * @param bool   $esc_html
 	 *
 	 * @return string
 	 */
@@ -156,11 +158,11 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 		$return = $text;
 
-		$context = new \GV\Template_Context();
-		$context->view = \GV\View::by_id( $view_data['view_id'] );
+		$context        = new \GV\Template_Context();
+		$context->view  = \GV\View::by_id( $view_data['view_id'] );
 		$context->entry = \GV\GF_Entry::from_entry( $entry );
 
-		$gv_field = \GV\Internal_Field::by_id( 'sequence' );
+		$gv_field          = \GV\Internal_Field::by_id( 'sequence' );
 		$merge_tag_context = \GV\Utils::get( $legacy_field, 'UID' );
 		$merge_tag_context = $entry['id'] . "/{$merge_tag_context}";
 
@@ -170,7 +172,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 			$property = $match[1];
 
 			$gv_field->reverse = false;
-			$gv_field->start = 1;
+			$gv_field->start   = 1;
 
 			$modifiers = explode( ',', trim( $property ) );
 
@@ -186,7 +188,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 				// If there is a field with the ID of the start number, the merge tag won't work.
 				// In that case, you can use "=" instead: `{sequence start=10}`
-				if( 1 === sizeof( $maybe_start ) ) {
+				if ( 1 === sizeof( $maybe_start ) ) {
 					$maybe_start = explode( '=', $modifier );
 				}
 
@@ -202,9 +204,9 @@ class GravityView_Field_Sequence extends GravityView_Field {
 			$merge_tag_context_modifiers = $merge_tag_context . '/' . var_export( $gv_field->reverse, true ) . '/' . $gv_field->start;
 
 			if ( ! isset( $merge_tag_sequences[ $merge_tag_context_modifiers ] ) ) {
-				$gv_field->UID = $legacy_field['UID'] . '/' . var_export( $gv_field->reverse, true ) . '/' . $gv_field->start;
+				$gv_field->UID  = $legacy_field['UID'] . '/' . var_export( $gv_field->reverse, true ) . '/' . $gv_field->start;
 				$context->field = $gv_field;
-				$sequence = $merge_tag_sequences[ $merge_tag_context_modifiers ] = $this->get_sequence( $context );
+				$sequence       = $merge_tag_sequences[ $merge_tag_context_modifiers ] = $this->get_sequence( $context );
 			} else {
 				$sequence = $merge_tag_sequences[ $merge_tag_context_modifiers ];
 			}
@@ -225,12 +227,14 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	public function get_sequence( $context ) {
 		static $startlines = array();
 
-		$context_key = md5( json_encode(
-			array(
-				$context->view->ID,
-				\GV\Utils::get( $context, 'field/UID' ),
+		$context_key = md5(
+			json_encode(
+				array(
+					$context->view->ID,
+					\GV\Utils::get( $context, 'field/UID' ),
+				)
 			)
-		) );
+		);
 
 		/**
 		 * Figure out the starting number.
@@ -239,10 +243,13 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 			$sql_query = array();
 
-			add_filter( 'gform_gf_query_sql', $callback = function( $sql ) use ( &$sql_query ) {
-				$sql_query = $sql;
-				return $sql;
-			} );
+			add_filter(
+				'gform_gf_query_sql',
+				$callback = function ( $sql ) use ( &$sql_query ) {
+					$sql_query = $sql;
+					return $sql;
+				}
+			);
 
 			$total = $context->view->get_entries()->total();
 			remove_filter( 'gform_gf_query_sql', $callback );
@@ -263,7 +270,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 			$pagesize = $context->view->settings->get( 'page_size', 25 );
 
 			if ( $context->field->reverse ) {
-				$startlines[ $context_key ] = $context->view->get_entries()->total() - ( $pagenum * $pagesize );
+				$startlines[ $context_key ]  = $context->view->get_entries()->total() - ( $pagenum * $pagesize );
 				$startlines[ $context_key ] += $context->field->start - 1;
 			} else {
 				$startlines[ $context_key ] = ( $pagenum * $pagesize ) + $context->field->start;
@@ -274,4 +281,4 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Sequence;
+new GravityView_Field_Sequence();

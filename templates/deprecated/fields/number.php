@@ -16,7 +16,7 @@ $gravityview_view = GravityView_View::getInstance();
  */
 extract( $gravityview_view->getCurrentField() );
 
-if( $value !== '' && !empty( $field_settings['number_format'] ) ) {
+if ( $value !== '' && ! empty( $field_settings['number_format'] ) ) {
 	$decimals = ( isset( $field_settings['decimals'] ) && $field_settings['decimals'] !== '' ) ? $field_settings['decimals'] : '';
 	echo gravityview_number_format( $value, $decimals );
 } else {

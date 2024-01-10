@@ -12,7 +12,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Data that comes from within the View itself (like custom content).
  */
 class Internal_Source extends Source {
-	
+
 	/**
 	 * @var string The identifier of the backend used for this source.
 	 *

@@ -99,8 +99,8 @@ abstract class Entry {
 	 * @since 2.0
 	 *
 	 * @param \GV\View|null $view The View context.
-	 * @param \GV\Request $request The Request (current if null).
-	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
+	 * @param \GV\Request   $request The Request (current if null).
+	 * @param boolean       $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
 	 *
 	 * @return string The permalink to this entry.
 	 */
@@ -124,7 +124,7 @@ abstract class Entry {
 			$args = gv_get_query_args();
 		}
 
-		$view_id = is_null ( $view ) ? null : $view->ID;
+		$view_id = is_null( $view ) ? null : $view->ID;
 
 		$permalink = null;
 
@@ -137,7 +137,7 @@ abstract class Entry {
 
 				$view_collection = View_Collection::from_post( $post );
 
-				if( 1 < $view_collection->count() ) {
+				if ( 1 < $view_collection->count() ) {
 					$args['gvid'] = $view_id;
 				}
 			}
@@ -156,7 +156,7 @@ abstract class Entry {
 		 */
 		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view( false ) ? $view_id : ( $post ? $post->ID : null ) );
 
-		$entry_endpoint_name = \GV\Entry::get_endpoint_name();
+		$entry_endpoint_name = self::get_endpoint_name();
 
 		$entry_slug = $this->get_slug( true, $view, $request, $track_directory );
 
@@ -164,13 +164,14 @@ abstract class Entry {
 		if ( get_option( 'permalink_structure' ) && ! is_preview() ) {
 			/**
 			 * Make sure the $directory_link doesn't contain any query otherwise it will break when adding the entry slug.
+			 *
 			 * @since 1.16.5
 			 */
 			$link_parts = explode( '?', $permalink );
 
 			$query = ! empty( $link_parts[1] ) ? '?' . $link_parts[1] : '';
 
-			$permalink = trailingslashit( $link_parts[0] ) . $entry_endpoint_name . '/'. $entry_slug .'/' . $query;
+			$permalink = trailingslashit( $link_parts[0] ) . $entry_endpoint_name . '/' . $entry_slug . '/' . $query;
 		} else {
 			$args[ $entry_endpoint_name ] = $entry_slug;
 		}
@@ -182,7 +183,7 @@ abstract class Entry {
 
 			if ( $sort = Utils::_GET( 'sort' ) ) {
 				$args['sort'] = $sort;
-				$args['dir'] = Utils::_GET( 'dir' );
+				$args['dir']  = Utils::_GET( 'dir' );
 			}
 		}
 
@@ -209,10 +210,10 @@ abstract class Entry {
 	 *
 	 * @uses \GravityView_API::get_entry_slug
 	 *
-	 * @param bool $apply_filter Whether to apply the `gravityview/entry/slug` filter. Default: false.
+	 * @param bool          $apply_filter Whether to apply the `gravityview/entry/slug` filter. Default: false.
 	 * @param \GV\View|null $view The View context.
-	 * @param \GV\Request $request The Request (current if null).
-	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
+	 * @param \GV\Request   $request The Request (current if null).
+	 * @param boolean       $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
 	 *
 	 * @return string Unique slug ID, passed through `sanitize_title()`, with `gravityview/entry/slug` filter applied
 	 */
@@ -220,7 +221,7 @@ abstract class Entry {
 
 		$entry_slug = \GravityView_API::get_entry_slug( $this->ID, $this->as_entry() );
 
-		if( ! $apply_filter ) {
+		if ( ! $apply_filter ) {
 			return $entry_slug;
 		}
 
@@ -255,7 +256,7 @@ abstract class Entry {
 	 * @since 2.2
 	 *
 	 * @param \GV\Field $field The field to filter by.
-	 * @param int $fallback A fallback form_id if the field supplied is invalid.
+	 * @param int       $fallback A fallback form_id if the field supplied is invalid.
 	 *
 	 * @return \GV\Entry|null A \GV\Entry or null if not found.
 	 */

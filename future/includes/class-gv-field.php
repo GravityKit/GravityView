@@ -101,17 +101,17 @@ class Field {
 	/**
 	 * Return an array of the old format as used by callers of `GVCommon:get_directory_fields()` for example.
 	 *
-	 *  		'id' => string '9' (length=1)
-	 *  		'label' => string 'Screenshots' (length=11)
-	 *			'show_label' => string '1' (length=1)
-	 *			'custom_label' => string '' (length=0)
-	 *			'custom_class' => string 'gv-gallery' (length=10)
-	 * 			'only_loggedin' => string '0' (length=1)
-	 *			'only_loggedin_cap' => string 'read' (length=4)
-	 *			'search_filter' => string '0'
-	 *			'show_as_link' => string '0'
+	 *          'id' => string '9' (length=1)
+	 *          'label' => string 'Screenshots' (length=11)
+	 *          'show_label' => string '1' (length=1)
+	 *          'custom_label' => string '' (length=0)
+	 *          'custom_class' => string 'gv-gallery' (length=10)
+	 *          'only_loggedin' => string '0' (length=1)
+	 *          'only_loggedin_cap' => string 'read' (length=4)
+	 *          'search_filter' => string '0'
+	 *          'show_as_link' => string '0'
 	 *
-	 *			+ whatever else specific field types may have
+	 *          + whatever else specific field types may have
 	 *
 	 * @internal
 	 * @since 2.0
@@ -119,17 +119,20 @@ class Field {
 	 * @return array
 	 */
 	public function as_configuration() {
-		return array_merge( array(
-			'id' => $this->ID,
-			'label' => $this->label,
-			'show_label' => $this->show_label ? '1' : '0',
-			'custom_label' => $this->custom_label,
-			'custom_class' => $this->custom_class,
-			'only_loggedin' => $this->cap ? '1' : '0',
-			'only_loggedin_cap' => $this->cap,
-			'search_filter' => $this->search_filter ? '1' : '0',
-			'show_as_link' => $this->show_as_link ? '1' : '0',
-		), $this->configuration );
+		return array_merge(
+			array(
+				'id'                => $this->ID,
+				'label'             => $this->label,
+				'show_label'        => $this->show_label ? '1' : '0',
+				'custom_label'      => $this->custom_label,
+				'custom_class'      => $this->custom_class,
+				'only_loggedin'     => $this->cap ? '1' : '0',
+				'only_loggedin_cap' => $this->cap,
+				'search_filter'     => $this->search_filter ? '1' : '0',
+				'show_as_link'      => $this->show_as_link ? '1' : '0',
+			),
+			$this->configuration
+		);
 	}
 
 	/**
@@ -137,7 +140,7 @@ class Field {
 	 *
 	 * @see \GV\Source::get_field()
 	 * @param string $source A \GV\Source class as string this field is tied to.
-	 * @param array $args The arguments required for the backend to fetch the field (usually just the ID).
+	 * @param array  $args The arguments required for the backend to fetch the field (usually just the ID).
 	 *
 	 * @return \GV\Field|null A \GV\Field instance or null if not found.
 	 */
@@ -199,7 +202,13 @@ class Field {
 
 		if ( ! class_exists( $field_class ) || ! method_exists( $field_class, 'from_configuration' ) ) {
 			$field = new self();
-			gravityview()->log->error( 'Class {field_class}::from_configuration does not exist.', array( 'field_class' => $field_class, 'data' => $configuration ) );
+			gravityview()->log->error(
+				'Class {field_class}::from_configuration does not exist.',
+				array(
+					'field_class' => $field_class,
+					'data'        => $configuration,
+				)
+			);
 			$field->update_configuration( $configuration );
 			return $field;
 		}
@@ -209,7 +218,13 @@ class Field {
 
 		if ( ! $field ) {
 			$field = new self();
-			gravityview()->log->error( 'Could not configure {field_class} with given configuration.', array( 'field_class' => __CLASS__, 'data' => $configuration ) );
+			gravityview()->log->error(
+				'Could not configure {field_class} with given configuration.',
+				array(
+					'field_class' => __CLASS__,
+					'data'        => $configuration,
+				)
+			);
 			$field->update_configuration( $configuration );
 		}
 
@@ -233,19 +248,26 @@ class Field {
 			gravityview()->log->warning( 'ID is being changed for {field_class} instance, but implementation is not. Use ::from_configuration instead', array( 'field_class', __CLASS__ ) );
 		}
 
-		$this->ID = $configuration['id'];
-		$this->label = $configuration['label'];
-		$this->show_label = $configuration['show_label'] == '1';
-		$this->custom_label = $configuration['custom_label'];
-		$this->custom_class = $configuration['custom_class'];
-		$this->cap = $configuration['only_loggedin'] == '1' ? $configuration['only_loggedin_cap'] : '';
+		$this->ID            = $configuration['id'];
+		$this->label         = $configuration['label'];
+		$this->show_label    = $configuration['show_label'] == '1';
+		$this->custom_label  = $configuration['custom_label'];
+		$this->custom_class  = $configuration['custom_class'];
+		$this->cap           = $configuration['only_loggedin'] == '1' ? $configuration['only_loggedin_cap'] : '';
 		$this->search_filter = $configuration['search_filter'] == '1';
-		$this->show_as_link = $configuration['show_as_link'] == '1';
+		$this->show_as_link  = $configuration['show_as_link'] == '1';
 
 		/** Shared among all field types (sort of). */
 		$shared_configuration_keys = array(
-			'id', 'label', 'show_label', 'custom_label', 'custom_class',
-			'only_loggedin' ,'only_loggedin_cap', 'search_filter', 'show_as_link',
+			'id',
+			'label',
+			'show_label',
+			'custom_label',
+			'custom_class',
+			'only_loggedin',
+			'only_loggedin_cap',
+			'search_filter',
+			'show_as_link',
 		);
 
 		/** Everything else goes into the properties for now. @todo subclasses! */
@@ -259,9 +281,9 @@ class Field {
 	/**
 	 * Retrieve the label for this field.
 	 *
-	 * @param \GV\View $view The view for this context if applicable.
-	 * @param \GV\Source $source The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\View    $view The view for this context if applicable.
+	 * @param \GV\Source  $source The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @return string The label for this field. Nothing here.
@@ -285,9 +307,9 @@ class Field {
 	 *
 	 * Returns null in this implementation (or, rather, lack thereof).
 	 *
-	 * @param \GV\View $view The view for this context if applicable.
-	 * @param \GV\Source $source The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\View    $view The view for this context if applicable.
+	 * @param \GV\Source  $source The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @return mixed The value for this field.
@@ -299,10 +321,10 @@ class Field {
 	/**
 	 * Apply all the required filters after get_value() was called.
 	 *
-	 * @param mixed $value The value that will be filtered.
-	 * @param \GV\View $view The view for this context if applicable.
-	 * @param \GV\Source $source The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param mixed       $value The value that will be filtered.
+	 * @param \GV\View    $view The view for this context if applicable.
+	 * @param \GV\Source  $source The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * This is in its own function since \GV\Field subclasses have to call it.
@@ -360,7 +382,7 @@ class Field {
 	 * @return mixed|null The value for the given configuration key, null if doesn't exist.
 	 */
 	public function __get( $key ) {
-		switch( $key ) {
+		switch ( $key ) {
 			default:
 				if ( isset( $this->configuration[ $key ] ) ) {
 					return $this->configuration[ $key ];
@@ -378,7 +400,7 @@ class Field {
 	 * @return boolean Whether this $key is set or not.
 	 */
 	public function __isset( $key ) {
-		switch( $key ) {
+		switch ( $key ) {
 			default:
 				return isset( $this->configuration[ $key ] );
 		}

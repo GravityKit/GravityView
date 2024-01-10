@@ -15,18 +15,21 @@ abstract class Widget {
 
 	/**
 	 * Widget admin label
+	 *
 	 * @var string
 	 */
 	protected $widget_label = '';
 
 	/**
 	 * Widget description, shown on the "+ Add Widget" picker
+	 *
 	 * @var  string
 	 */
 	protected $widget_description = '';
 
 	/**
 	 * Widget details, shown in the widget modal
+	 *
 	 * @since 1.8
 	 * @var  string
 	 */
@@ -34,36 +37,42 @@ abstract class Widget {
 
 	/**
 	 * Widget admin ID
+	 *
 	 * @var string
 	 */
 	protected $widget_id = '';
 
 	/**
 	 * Default configuration for header and footer
+	 *
 	 * @var array
 	 */
 	protected $defaults = array();
 
 	/**
 	 * Widget admin advanced settings
+	 *
 	 * @var array
 	 */
 	protected $settings = array();
 
 	/**
 	 * Allow class to automatically add widget_text filter for you in shortcode
+	 *
 	 * @var string
 	 */
 	protected $shortcode_name;
 
 	/**
 	 * Hold the widget options.
+	 *
 	 * @var array()
 	 */
 	private $widget_options = array();
 
 	/**
 	 * The position of the widget.
+	 *
 	 * @api
 	 * @since 2.0
 	 * @var string
@@ -72,6 +81,7 @@ abstract class Widget {
 
 	/**
 	 * A unique ID for this widget.
+	 *
 	 * @api
 	 * @since 2.0
 	 * @var string
@@ -105,14 +115,15 @@ abstract class Widget {
 	 *
 	 * @param string $label The Widget label as shown in the admin.
 	 * @param string $id The Widget ID, make this something unique.
-	 * @param array $defaults Default footer/header Widget configuration.
-	 * @param array $settings Advanced Widget settings.
+	 * @param array  $defaults Default footer/header Widget configuration.
+	 * @param array  $settings Advanced Widget settings.
 	 *
 	 * @return \GV\Widget
 	 */
 	public function __construct( $label, $id, $defaults = array(), $settings = array() ) {
 		/**
 		 * The shortcode name is set to the lowercase name of the widget class, unless overridden by the class specifying a different value for $shortcode_name
+		 *
 		 * @var string
 		 */
 		$this->shortcode_name = empty( $this->shortcode_name ) ? strtolower( get_called_class() ) : $this->shortcode_name;
@@ -122,7 +133,13 @@ abstract class Widget {
 		}
 
 		$this->widget_label = $label;
-		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
+		$this->defaults     = array_merge(
+			array(
+				'header' => 0,
+				'footer' => 0,
+			),
+			$defaults
+		);
 
 		// Make sure every widget has a title, even if empty
 		$this->settings = wp_parse_args( $settings, $this->get_default_settings() );
@@ -151,6 +168,7 @@ abstract class Widget {
 
 	/**
 	 * Define general widget settings
+	 *
 	 * @since 1.5.4
 	 * @return array $settings Default settings
 	 */
@@ -178,14 +196,14 @@ abstract class Widget {
 		return $settings;
 	}
 
-    /**
+	/**
 	 * Get the Widget ID.
 	 *
-     * @return string The Widget ID.
-     */
-    public function get_widget_id() {
-        return $this->widget_id;
-    }
+	 * @return string The Widget ID.
+	 */
+	public function get_widget_id() {
+		return $this->widget_id;
+	}
 
 	/**
 	 * Get the widget settings
@@ -221,26 +239,26 @@ abstract class Widget {
 		$default_areas = array(
 			array(
 				'1-1' => array(
-					   array(
-						   'areaid' => 'top',
-						   'title' => __( 'Top', 'gk-gravityview' ) ,
-						   'subtitle' => ''
-					   ),
-				   ),
+					array(
+						'areaid'   => 'top',
+						'title'    => __( 'Top', 'gk-gravityview' ),
+						'subtitle' => '',
+					),
 				),
+			),
 			array(
 				'1-2' => array(
 					array(
-						'areaid' => 'left',
-						'title' => __( 'Left', 'gk-gravityview' ) ,
-						'subtitle' => ''
+						'areaid'   => 'left',
+						'title'    => __( 'Left', 'gk-gravityview' ),
+						'subtitle' => '',
 					),
 				),
 				'2-2' => array(
 					array(
-						'areaid' => 'right',
-						'title' => __( 'Right', 'gk-gravityview' ) ,
-						'subtitle' => ''
+						'areaid'   => 'right',
+						'title'    => __( 'Right', 'gk-gravityview' ),
+						'subtitle' => '',
 					),
 				),
 			),
@@ -274,11 +292,11 @@ abstract class Widget {
 		}
 
 		$widgets[ $this->get_widget_id() ] = array(
-			'label' => $this->widget_label ,
+			'label'       => $this->widget_label,
 			'description' => $this->widget_description,
-			'subtitle' => $this->widget_subtitle,
-			'icon' => $this->icon,
-			'class' => get_called_class(),
+			'subtitle'    => $this->widget_subtitle,
+			'icon'        => $this->icon,
+			'class'       => get_called_class(),
 		);
 
 		return $widgets;
@@ -289,14 +307,14 @@ abstract class Widget {
 	 *
 	 * @access protected
 	 *
-	 * @param array $options (default: array())
+	 * @param array  $options (default: array())
 	 * @param string $template (default: '')
 	 *
 	 * @return array
 	 */
 	public function assign_widget_options( $options = array(), $template = '', $widget = '' ) {
 		if ( $this->get_widget_id() === $widget ) {
-			if( $settings = $this->get_settings() ) {
+			if ( $settings = $this->get_settings() ) {
 				$options = array_merge( $options, $settings );
 			}
 		}
@@ -306,7 +324,7 @@ abstract class Widget {
 	/**
 	 * Do shortcode if the Widget's shortcode exists.
 	 *
-	 * @param  string $text   Widget text to check
+	 * @param  string                                                                    $text   Widget text to check
 	 * @param  null|\WP_Widget Empty if not called by WP_Widget, or a WP_Widget instance
 	 *
 	 * @return string         Widget text
@@ -350,7 +368,7 @@ abstract class Widget {
 			return;
 		}
 
-		add_shortcode( $this->shortcode_name, array( $this, 'render_shortcode') );
+		add_shortcode( $this->shortcode_name, array( $this, 'render_shortcode' ) );
 	}
 
 	/**
@@ -358,8 +376,8 @@ abstract class Widget {
 	 *
 	 * Override in child class.
 	 *
-	 * @param array $widget_args The Widget shortcode args.
-	 * @param string $content The content.
+	 * @param array                       $widget_args The Widget shortcode args.
+	 * @param string                      $content The content.
 	 * @param string|\GV\Template_Context $context The context, if available.
 	 *
 	 * @return void
@@ -463,8 +481,8 @@ abstract class Widget {
 	/**
 	 * Shortcode.
 	 *
-	 * @param array $atts The Widget shortcode args.
-	 * @param string $content The content.
+	 * @param array                       $atts The Widget shortcode args.
+	 * @param string                      $content The content.
 	 * @param string|\GV\Template_Context $context The context, if available.
 	 *
 	 * @return string Whatever the widget echoed.
@@ -500,7 +518,7 @@ abstract class Widget {
 			return null;
 		}
 
-		$w = new $class( Utils::get( $widget, 'label' ), $id );
+		$w                = new $class( Utils::get( $widget, 'label' ), $id );
 		$w->configuration = new Settings( $configuration );
 
 		return $w;
@@ -509,8 +527,8 @@ abstract class Widget {
 	/**
 	 * Return an array of the old format.
 	 *
-	 *  		'id' => string
-	 *			+ whatever else specific fields may have
+	 *          'id' => string
+	 *          + whatever else specific fields may have
 	 *
 	 * @internal
 	 * @since 2.0
@@ -518,9 +536,12 @@ abstract class Widget {
 	 * @return array
 	 */
 	public function as_configuration() {
-		return array_merge( array(
-			'id' => $this->get_widget_id(),
-		), $this->configuration->all() );
+		return array_merge(
+			array(
+				'id' => $this->get_widget_id(),
+			),
+			$this->configuration->all()
+		);
 	}
 
 	/**

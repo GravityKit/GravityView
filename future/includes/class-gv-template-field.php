@@ -23,18 +23,21 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 abstract class Field_Template extends Template {
 	/**
 	 * Prefix for filter names.
+	 *
 	 * @var string
 	 */
 	protected $filter_prefix = 'gravityview/template/fields';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
+	 *
 	 * @var string
 	 */
 	protected $theme_template_directory = 'gravityview/fields/';
 
 	/**
 	 * Directory name where the default templates for this plugin are found.
+	 *
 	 * @var string
 	 */
 	protected $plugin_template_directory = 'templates/fields/';
@@ -72,17 +75,17 @@ abstract class Field_Template extends Template {
 	/**
 	 * Initializer.
 	 *
-	 * @param \GV\Field $field The field about to be rendered.
-	 * @param \GV\View $view The view in this context, if applicable.
-	 * @param \GV\Source $source The source (form) in this context, if applicable.
-	 * @param \GV\Entry $entry The entry in this context, if applicable.
+	 * @param \GV\Field   $field The field about to be rendered.
+	 * @param \GV\View    $view The view in this context, if applicable.
+	 * @param \GV\Source  $source The source (form) in this context, if applicable.
+	 * @param \GV\Entry   $entry The entry in this context, if applicable.
 	 * @param \GV\Request $request The request in this context, if applicable.
 	 */
 	public function __construct( Field $field, View $view = null, Source $source = null, Entry $entry = null, Request $request = null ) {
-		$this->field = $field;
-		$this->view = $view;
-		$this->source = $source;
-		$this->entry = $entry;
+		$this->field   = $field;
+		$this->view    = $view;
+		$this->source  = $source;
+		$this->entry   = $entry;
 		$this->request = $request;
 
 		/** Add granular overrides. */
@@ -92,7 +95,7 @@ abstract class Field_Template extends Template {
 	}
 
 	public function __destruct() {
-		remove_filter( $this->filter_prefix . '_get_template_part', $this->_add_id_specific_templates_callback );;
+		remove_filter( $this->filter_prefix . '_get_template_part', $this->_add_id_specific_templates_callback );
 	}
 
 	/**
@@ -166,7 +169,7 @@ abstract class Field_Template extends Template {
 		 *
 		 * @return array $templates Modified template array, merged with existing $templates values
 		 */
-		return function( $templates, $slug, $name ) use ( $class, $inputType, $field_type, $view_id, $is_view, $form_id, $field_id ) {
+		return function ( $templates, $slug, $name ) use ( $class, $inputType, $field_type, $view_id, $is_view, $form_id, $field_id ) {
 			$specifics = array();
 
 			list( $slug_dir, $slug_name ) = $class::split_slug( $slug, $name );
@@ -175,59 +178,59 @@ abstract class Field_Template extends Template {
 
 			if ( $is_view && $post ) {
 				if ( $field_type ) {
-					$specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $field_type, $slug_name );
-					$inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $inputType, $slug_name );
-					$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $field_type );
-					$inputType && $specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $inputType );
-					$specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $field_type, $slug_name );
-					$inputType && $specifics []= sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $inputType, $slug_name );
-					$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $field_type );
-					$inputType &&  $specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $inputType );
+					$specifics []               = sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $field_type, $slug_name );
+					$inputType && $specifics [] = sprintf( '%spost-%d-view-%d-field-%s-%s.php', $slug_dir, $post->ID, $view_id, $inputType, $slug_name );
+					$specifics []               = sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $field_type );
+					$inputType && $specifics [] = sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $inputType );
+					$specifics []               = sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $field_type, $slug_name );
+					$inputType && $specifics [] = sprintf( '%spost-%d-field-%s-%s.php', $slug_dir, $post->ID, $inputType, $slug_name );
+					$specifics []               = sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $field_type );
+					$inputType && $specifics [] = sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $inputType );
 				}
 
-				$specifics []= sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $slug_name );
-				$specifics []= sprintf( '%spost-%d-view-%d-field.php', $slug_dir, $post->ID, $view_id );
-				$specifics []= sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
-				$specifics []= sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
+				$specifics [] = sprintf( '%spost-%d-view-%d-field-%s.php', $slug_dir, $post->ID, $view_id, $slug_name );
+				$specifics [] = sprintf( '%spost-%d-view-%d-field.php', $slug_dir, $post->ID, $view_id );
+				$specifics [] = sprintf( '%spost-%d-field-%s.php', $slug_dir, $post->ID, $slug_name );
+				$specifics [] = sprintf( '%spost-%d-field.php', $slug_dir, $post->ID );
 			}
 
 			/** Field-specific */
 			if ( $field_id && $form_id ) {
 
 				if ( $field_id ) {
-					$specifics []= sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $form_id, $field_id, $slug_name );
-					$specifics []= sprintf( '%sform-%d-field-%d.php', $slug_dir, $form_id, $field_id );
+					$specifics [] = sprintf( '%sform-%d-field-%d-%s.php', $slug_dir, $form_id, $field_id, $slug_name );
+					$specifics [] = sprintf( '%sform-%d-field-%d.php', $slug_dir, $form_id, $field_id );
 
 					if ( $view_id ) {
-						$specifics []= sprintf( '%sview-%d-field-%d.php', $slug_dir, $view_id, $field_id );
+						$specifics [] = sprintf( '%sview-%d-field-%d.php', $slug_dir, $view_id, $field_id );
 					}
 				}
 
 				if ( $field_type ) {
-					$specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $form_id, $field_type, $slug_name );
-					$inputType && $specifics []= sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $form_id, $inputType, $slug_name );
-					$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $field_type );
-					$inputType && $specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $inputType );
+					$specifics []               = sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $form_id, $field_type, $slug_name );
+					$inputType && $specifics [] = sprintf( '%sform-%d-field-%s-%s.php', $slug_dir, $form_id, $inputType, $slug_name );
+					$specifics []               = sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $field_type );
+					$inputType && $specifics [] = sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $inputType );
 
-					$specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $field_type, $slug_name );
-					$inputType && $specifics []= sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $inputType, $slug_name );
-					$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $field_type );
-					$inputType && $specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $inputType );
+					$specifics []               = sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $field_type, $slug_name );
+					$inputType && $specifics [] = sprintf( '%sview-%d-field-%s-%s.php', $slug_dir, $view_id, $inputType, $slug_name );
+					$specifics []               = sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $field_type );
+					$inputType && $specifics [] = sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $inputType );
 
-					$specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $field_type, $slug_name );
-					$inputType && $specifics []= sprintf( '%sfield-%s-%s.php', $slug_dir, $inputType, $slug_name );
-					$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $field_type );
-					$inputType && $specifics []= sprintf( '%sfield-%s.php', $slug_dir, $inputType );
+					$specifics []               = sprintf( '%sfield-%s-%s.php', $slug_dir, $field_type, $slug_name );
+					$inputType && $specifics [] = sprintf( '%sfield-%s-%s.php', $slug_dir, $inputType, $slug_name );
+					$specifics []               = sprintf( '%sfield-%s.php', $slug_dir, $field_type );
+					$inputType && $specifics [] = sprintf( '%sfield-%s.php', $slug_dir, $inputType );
 				}
 			}
 
 			if ( $form_id ) {
 				/** Generic field templates */
-				$specifics []= sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $slug_name );
-				$specifics []= sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $slug_name );
+				$specifics [] = sprintf( '%sview-%d-field-%s.php', $slug_dir, $view_id, $slug_name );
+				$specifics [] = sprintf( '%sform-%d-field-%s.php', $slug_dir, $form_id, $slug_name );
 
-				$specifics []= sprintf( '%sview-%d-field.php', $slug_dir, $view_id );
-				$specifics []= sprintf( '%sform-%d-field.php', $slug_dir, $form_id );
+				$specifics [] = sprintf( '%sview-%d-field.php', $slug_dir, $view_id );
+				$specifics [] = sprintf( '%sform-%d-field.php', $slug_dir, $form_id );
 			}
 
 			/**
@@ -235,12 +238,12 @@ abstract class Field_Template extends Template {
 			 * Ignore some types that conflict.
 			 */
 			if ( ! in_array( $field_type, array( 'notes' ) ) ) {
-				$specifics []= sprintf( '%s.php', $field_type );
-				$specifics []= sprintf( 'fields/%s.php', $field_type );
+				$specifics [] = sprintf( '%s.php', $field_type );
+				$specifics [] = sprintf( 'fields/%s.php', $field_type );
 			}
 
-			$specifics []= sprintf( '%sfield-%s.php', $slug_dir, $slug_name );
-			$specifics []= sprintf( '%sfield.php', $slug_dir );
+			$specifics [] = sprintf( '%sfield-%s.php', $slug_dir, $slug_name );
+			$specifics [] = sprintf( '%sfield.php', $slug_dir );
 
 			return array_merge( $specifics, $templates );
 		};
@@ -262,12 +265,14 @@ abstract class Field_Template extends Template {
 		/** Retrieve the value. */
 		$display_value = $value = $this->field->get_value( $this->view, $this->source, $entry );
 
-		$source = $this->source;
+		$source         = $this->source;
 		$source_backend = $source ? $source::$backend : null;
 
-		\GV\Mocks\Legacy_Context::load( array(
-			'field' => $this->field,
-		) );
+		\GV\Mocks\Legacy_Context::load(
+			array(
+				'field' => $this->field,
+			)
+		);
 
 		/** Alter the display value according to Gravity Forms. */
 		if ( \GV\Source::BACKEND_GRAVITYFORMS === $source_backend && ! $this->field instanceof Internal_Field ) {
@@ -312,7 +317,7 @@ abstract class Field_Template extends Template {
 		/** Bake the template. */
 		ob_start();
 		$this->located_template = $this->get_template_part( static::$slug );
-		$output = ob_get_clean();
+		$output                 = ob_get_clean();
 
 		if ( empty( $output ) ) {
 			/**
@@ -332,22 +337,28 @@ abstract class Field_Template extends Template {
 			$context = Template_Context::from_template( $this, compact( 'display_value', 'value' ) );
 		}
 
-		gravityview()->log->info( 'Field template for field #{field_id} loaded: {located_template}', array( 'field_id' => $this->field->ID, 'located_template' => $this->located_template ) );
+		gravityview()->log->info(
+			'Field template for field #{field_id} loaded: {located_template}',
+			array(
+				'field_id'         => $this->field->ID,
+				'located_template' => $this->located_template,
+			)
+		);
 
 		$this->pop_template_data( 'gravityview' );
 
 		/** A compatibility array that's required by some of the deprecated filters. */
 		$field_compat = array(
-			'form' => $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ? $this->source->form : ( $this->view->form ? $this->view->form->form : null ),
-			'field_id' => $this->field->ID,
-			'field' => $this->field->field,
+			'form'           => $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ? $this->source->form : ( $this->view->form ? $this->view->form->form : null ),
+			'field_id'       => $this->field->ID,
+			'field'          => $this->field->field,
 			'field_settings' => $this->field->as_configuration(),
-			'value' => $value,
-			'display_value' => $display_value,
-			'format' => 'html',
-			'entry' => $entry->as_entry(),
-			'field_type' => $this->field->type,
-			'field_path' => $this->located_template,
+			'value'          => $value,
+			'display_value'  => $display_value,
+			'format'         => 'html',
+			'entry'          => $entry->as_entry(),
+			'field_type'     => $this->field->type,
+			'field_path'     => $this->located_template,
 		);
 
 		/**
@@ -360,7 +371,7 @@ abstract class Field_Template extends Template {
 		 *
 		 * @return mixed|string|void
 		 */
-		$pre_link_compat_callback = function( $output, $context ) use ( $field_compat ) {
+		$pre_link_compat_callback = function ( $output, $context ) use ( $field_compat ) {
 			$field = $context->field;
 
 			/**
@@ -386,7 +397,7 @@ abstract class Field_Template extends Template {
 				$link_atts = empty( $field->new_window ) ? array() : array( 'target' => '_blank' );
 
 				$permalink = $context->entry->get_permalink( $context->view, $context->request );
-				$output = \gravityview_get_link( $permalink, $output, $link_atts );
+				$output    = \gravityview_get_link( $permalink, $output, $link_atts );
 
 				/**
 				 * @filter `gravityview_field_entry_link` Modify the link HTML
@@ -412,7 +423,7 @@ abstract class Field_Template extends Template {
 		};
 
 		// TODO Cleanup
-		$post_link_compat_callback = function( $output, $context ) use ( $field_compat ) {
+		$post_link_compat_callback = function ( $output, $context ) use ( $field_compat ) {
 			$field = $context->field;
 
 			/**
@@ -476,7 +487,7 @@ abstract class Field_Template extends Template {
 		 * @param string $output The current output.
 		 * @param \GV\Template_Context The template this is being called from.
 		 */
-		echo apply_filters( "gravityview/template/field/output", $output, $context );
+		echo apply_filters( 'gravityview/template/field/output', $output, $context );
 
 		remove_filter( 'gravityview/template/field/output', $pre_link_compat_callback, 5 );
 		remove_filter( 'gravityview/template/field/output', $post_link_compat_callback, 9 );

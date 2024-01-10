@@ -29,4 +29,4 @@ class GravityView_Field_Currency extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Currency;
+new GravityView_Field_Currency();

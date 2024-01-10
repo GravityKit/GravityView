@@ -35,8 +35,8 @@ class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Fi
 	 *
 	 * @param string $output HTML value output
 	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field,
-	 * @param array $field Current field being displayed
+	 * @param  array  $field_settings Settings for the particular GV field,
+	 * @param array  $field Current field being displayed
 	 *
 	 * @since 1.17
 	 *
@@ -63,4 +63,4 @@ class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Fi
 	}
 }
 
-new GravityView_Field_Workflow_Current_Status_Timestamp;
+new GravityView_Field_Workflow_Current_Status_Timestamp();

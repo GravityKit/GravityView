@@ -11,7 +11,7 @@ class GravityView_Field_Radio extends GravityView_Field {
 
 	var $is_searchable = true;
 
-	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains');
+	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains' );
 
 	var $_gf_field_class_name = 'GF_Field_Radio';
 
@@ -27,7 +27,7 @@ class GravityView_Field_Radio extends GravityView_Field {
 	/**
 	 * Add `choice_display` setting to the field
 	 *
-	 * @param array $field_options
+	 * @param array  $field_options
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $context
@@ -42,7 +42,7 @@ class GravityView_Field_Radio extends GravityView_Field {
 		// Set the $_field_id var
 		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		if( $this->is_choice_value_enabled() ) {
+		if ( $this->is_choice_value_enabled() ) {
 			$field_options['choice_display'] = array(
 				'type'    => 'radio',
 				'value'   => 'value',
@@ -60,4 +60,4 @@ class GravityView_Field_Radio extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Radio;
+new GravityView_Field_Radio();

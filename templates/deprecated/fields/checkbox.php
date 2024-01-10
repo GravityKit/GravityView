@@ -4,7 +4,6 @@
  *
  * @package GravityView
  * @subpackage GravityView/templates/fields
- *
  */
 
 $gravityview_view = GravityView_View::getInstance();
@@ -15,7 +14,7 @@ $is_single_input = floor( $field_id ) !== floatval( $field_id );
 
 $output = '';
 
-if( ! $is_single_input ) {
+if ( ! $is_single_input ) {
 	$output = gravityview_get_field_value( $entry, $field_id, $display_value );
 } else {
 
@@ -23,7 +22,7 @@ if( ! $is_single_input ) {
 
 	$field_value = gravityview_get_field_value( $entry, $field_id, $display_value );
 
-	switch( $display_type ) {
+	switch ( $display_type ) {
 		case 'value':
 			$output = $field_value;
 			break;
@@ -32,7 +31,7 @@ if( ! $is_single_input ) {
 			break;
 		case 'tick':
 		default: // Backward compatibility
-			if( '' !== $field_value ) {
+			if ( '' !== $field_value ) {
 				/**
 				 * @filter `gravityview_field_tick` Change the output for a checkbox "check" symbol. Default is the "dashicons-yes" icon
 				 * @see https://developer.wordpress.org/resource/dashicons/#yes
@@ -45,7 +44,6 @@ if( ! $is_single_input ) {
 			}
 			break;
 	}
-
 }
 
 echo $output;

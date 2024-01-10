@@ -11,10 +11,10 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$display_value = $gravityview->display_value;
-$entry = $gravityview->entry->as_entry();
+$field_id       = $gravityview->field->ID;
+$field          = $gravityview->field->field;
+$display_value  = $gravityview->display_value;
+$entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
 $display_type = isset( $field_settings['choice_display'] ) ? $field_settings['choice_display'] : 'value';
@@ -32,9 +32,9 @@ if ( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
 } else {
 	// For part of the field value
 	$entry_keys = array_keys( $entry );
-	foreach( $entry_keys as $input_key ) {
-		if( is_numeric( $input_key ) && floatval( $input_key ) === floatval( $field_id ) ) {
-			if( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && !empty( $entry[ $input_key ] ) ) {
+	foreach ( $entry_keys as $input_key ) {
+		if ( is_numeric( $input_key ) && floatval( $input_key ) === floatval( $field_id ) ) {
+			if ( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && ! empty( $entry[ $input_key ] ) ) {
 				$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field, $gravityview );
 			} else {
 				$output = $entry[ $input_key ];

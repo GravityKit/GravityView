@@ -11,8 +11,8 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$value = $gravityview->value;
+$field_id      = $gravityview->field->ID;
+$value         = $gravityview->value;
 $display_value = $gravityview->display_value;
 if ( '' == $display_value ) {
 	$display_value = $value;

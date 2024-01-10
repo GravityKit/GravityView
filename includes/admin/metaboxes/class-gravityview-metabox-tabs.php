@@ -2,6 +2,7 @@
 
 /**
  * Stores each GravityView_Metabox_Tab instance
+ *
  * @since 1.8
  * @see https://gist.github.com/zackkatz/6cc381bcf54849f2ed41 For example of adding a metabox
  * @see https://github.com/WebDevStudios/CMB2/blob/master/includes/CMB2_Boxes.php Thanks for the inspiration
@@ -10,6 +11,7 @@ class GravityView_Metabox_Tabs {
 
 	/**
 	 * Array of all GravityView_Metabox_Tab objects
+	 *
 	 * @var   array
 	 * @since 1.8
 	 */
@@ -68,5 +70,4 @@ class GravityView_Metabox_Tabs {
 	public static function get_all() {
 		return self::$meta_boxes;
 	}
-
 }

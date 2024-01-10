@@ -16,12 +16,12 @@ class Field_Renderer extends Renderer {
 	/**
 	 * Renders a \GV\Field instance.
 	 *
-	 * @param \GV\Field $request   The field.
-	 * @param \GV\View $view       The view for this context if applicable.
-	 * @param \GV\Source $source   The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry     The entry for this context if applicable.
+	 * @param \GV\Field   $request   The field.
+	 * @param \GV\View    $view       The view for this context if applicable.
+	 * @param \GV\Source  $source   The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry     The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
-	 * @param string $class        The field template class. Default: \GV\Field_HTML_Template'.
+	 * @param string      $class        The field template class. Default: \GV\Field_HTML_Template'.
 	 *
 	 * @api
 	 * @since 2.0

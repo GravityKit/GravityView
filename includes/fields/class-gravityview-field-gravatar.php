@@ -21,7 +21,7 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 	var $icon = 'dashicons-id';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Gravatar', 'gk-gravityview' );
+		$this->label       = esc_html__( 'Gravatar', 'gk-gravityview' );
 		$this->description = esc_html__( 'A Gravatar is an image that represents a person online based on their email. Powered by gravatar.com.', 'gk-gravityview' );
 
 		$this->add_hooks();
@@ -39,9 +39,9 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 	/**
 	 * Add this field to the default fields in the GV field picker
 	 *
-	 * @param array $entry_default_fields Array of fields shown by default
+	 * @param array        $entry_default_fields Array of fields shown by default
 	 * @param string|array $form form_ID or form object
-	 * @param string $zone Either 'single', 'directory', 'edit', 'header', 'footer'
+	 * @param string       $zone Either 'single', 'directory', 'edit', 'header', 'footer'
 	 *
 	 * @return array
 	 */
@@ -71,12 +71,11 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 	 *
 	 * @return string Email address from field or from entry creator
 	 */
-	static public function get_email( $field_settings, $entry ) {
+	public static function get_email( $field_settings, $entry ) {
 
 		// There was no logged in user.
 		switch ( $field_settings['email_field'] ) {
 			case 'created_by_email':
-
 				$created_by = \GV\Utils::get( $entry, 'created_by', null );
 
 				if ( empty( $created_by ) ) {
@@ -113,7 +112,7 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 			'value'   => 'created_by_email',
 			'desc'    => __( 'Which email should be used to generate the Gravatar?', 'gk-gravityview' ),
 			'choices' => $this->_get_email_field_choices( $form_id ),
-			'group' => 'display',
+			'group'   => 'display',
 		);
 
 		$field_options['default'] = array(
@@ -130,17 +129,17 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 				'robohash'         => __( 'Robot Faces', 'gk-gravityview' ),
 				'blank'            => __( 'Transparent Image', 'gk-gravityview' ),
 			),
-			'group' => 'display',
+			'group'   => 'display',
 		);
 
 		$field_options['size'] = array(
-			'type'  => 'number',
-			'label' => __( 'Size in Pixels', 'gk-gravityview' ),
-			'value' => 80,
-			'max'   => 2048,
-			'min'   => 1,
+			'type'       => 'number',
+			'label'      => __( 'Size in Pixels', 'gk-gravityview' ),
+			'value'      => 80,
+			'max'        => 2048,
+			'min'        => 1,
 			'merge_tags' => false,
-			'group' => 'display',
+			'group'      => 'display',
 		);
 
 		return $field_options;
@@ -176,7 +175,6 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 
 		return $field_choices;
 	}
-
 }
 
-new GravityView_Field_Gravatar;
+new GravityView_Field_Gravatar();

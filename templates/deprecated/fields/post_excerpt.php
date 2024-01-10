@@ -10,7 +10,7 @@ $gravityview_view = GravityView_View::getInstance();
 
 extract( $gravityview_view->getCurrentField() );
 
-if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
+if ( ! empty( $field_settings['dynamic_data'] ) && ! empty( $entry['post_id'] ) ) {
 
 	global $post;
 
@@ -19,8 +19,8 @@ if( !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) ) {
 
 	$post = get_post( $entry['post_id'] );
 
-	if( empty( $post ) ) {
-		do_action('gravityview_log_debug', 'Dynamic data for post #'.$entry['post_id'].' doesnt exist.' );
+	if ( empty( $post ) ) {
+		do_action( 'gravityview_log_debug', 'Dynamic data for post #' . $entry['post_id'] . ' doesnt exist.' );
 		wp_reset_postdata();
 		return;
 	}

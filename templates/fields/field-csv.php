@@ -11,10 +11,10 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
+$field_id      = $gravityview->field->ID;
 $display_value = $gravityview->display_value;
-$value = $gravityview->value;
-$entry = $gravityview->entry->as_entry();
+$value         = $gravityview->value;
+$entry         = $gravityview->entry->as_entry();
 
 /**
  * Fields that will output as raw data in CSV mode.

@@ -38,7 +38,7 @@ class Admin_Request extends Request {
 		 */
 		$is_page = false;
 
-		if( function_exists( '\get_current_screen' ) || function_exists( 'get_current_screen' ) ) {
+		if ( function_exists( '\get_current_screen' ) || function_exists( 'get_current_screen' ) ) {
 			$current_screen = \get_current_screen();
 		} else {
 			$current_screen = false;
@@ -49,11 +49,11 @@ class Admin_Request extends Request {
 				$is_page = 'views';
 			} elseif ( 'post' === $current_screen->base ) {
 				$is_page = 'single';
-			} elseif( 'gravityview_page_gv-changelog' === $current_screen->id ) {
+			} elseif ( 'gravityview_page_gv-changelog' === $current_screen->id ) {
 				$is_page = 'changelog';
-			} elseif( 'gravityview_page_gv-getting-started' === $current_screen->id ) {
+			} elseif ( 'gravityview_page_gv-getting-started' === $current_screen->id ) {
 				$is_page = 'getting-started';
-			} elseif( 'gravityview_page_gv-credits' === $current_screen->id ) {
+			} elseif ( 'gravityview_page_gv-credits' === $current_screen->id ) {
 				$is_page = 'credits';
 			}
 		}

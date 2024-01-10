@@ -119,12 +119,12 @@ class GVCommon {
 	 */
 	public static function get_all_views( $args = array() ) {
 
-		$default_params = [
+		$default_params = array(
 			'post_type'      => 'gravityview',
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
-			'exclude'        => [],
-		];
+			'exclude'        => array(),
+		);
 
 		$params = wp_parse_args( $args, $default_params );
 
@@ -153,7 +153,7 @@ class GVCommon {
 		$form = false;
 
 		if ( $entry ) {
-			$form = GVCommon::get_form( $entry['form_id'] );
+			$form = self::get_form( $entry['form_id'] );
 		}
 
 		return $form;
@@ -286,7 +286,7 @@ class GVCommon {
 	 *
 	 * @return array Forms indexed from 0 by SQL result row number. Each row is an associative array (column => value).
 	 */
-	public static function get_forms_columns( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC', $columns = [ 'id' ] ) {
+	public static function get_forms_columns( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC', $columns = array( 'id' ) ) {
 		global $wpdb;
 
 		// Only allow valid columns.
@@ -339,7 +339,7 @@ class GVCommon {
 		);
 
 		// This is only used in the admin and in ajax, so don't run on the front-end.
-		if( gravityview()->request->is_frontend() ) {
+		if ( gravityview()->request->is_frontend() ) {
 			return $options;
 		}
 
@@ -351,7 +351,7 @@ class GVCommon {
 			return $static_cache[ $static_cache_key ];
 		}
 
-		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, [ 'id', 'title' ] );
+		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, array( 'id', 'title' ) );
 
 		if ( empty( $forms ) ) {
 			return $options;
@@ -526,7 +526,6 @@ class GVCommon {
 		$fields = apply_filters( 'gravityview/common/get_form_fields', $fields, $form, $include_parent_field );
 
 		return $fields;
-
 	}
 
 	/**
@@ -1075,7 +1074,7 @@ class GVCommon {
 		 */
 		add_action(
 			'gravityview/view/query',
-			$entry_subset_callback = function( &$query, $view, $request ) use ( $entry, $view_form_id ) {
+			$entry_subset_callback = function ( &$query, $view, $request ) use ( $entry, $view_form_id ) {
 				$_tmp_query = new \GF_Query(
 					$view_form_id,
 					array(
@@ -1096,7 +1095,6 @@ class GVCommon {
 				$query_parts = $query->_introspect();
 
 				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
-
 			},
 			10,
 			3
@@ -1105,7 +1103,7 @@ class GVCommon {
 		// Prevent page offset from being applied to the single entry query; it's used to return to the referring page number
 		add_filter(
 			'gravityview_search_criteria',
-			$remove_pagenum = function( $criteria ) {
+			$remove_pagenum = function ( $criteria ) {
 
 				$criteria['paging'] = array(
 					'offset'    => 0,
@@ -1285,7 +1283,6 @@ class GVCommon {
 		}
 
 		return self::has_shortcode_r( $post->post_content, 'gravityview' ) ? true : false;
-
 	}
 
 
@@ -1357,7 +1354,7 @@ class GVCommon {
 		$args     = wp_parse_args( $args, $defaults );
 		$views    = get_posts( $args );
 
-		if( ! $include_joins ) {
+		if ( ! $include_joins ) {
 			return $views;
 		}
 
@@ -1490,8 +1487,8 @@ class GVCommon {
 	 * @since 1.17.4 Added $apply_filter parameter.
 	 * @since 2.17   Added $form_id parameter.
 	 *
-	 * @param  int   $post_id View ID.
-	 * @param  bool  $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
+	 * @param  int  $post_id View ID.
+	 * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
 	 * @return array Multi-array of fields with first level being the field zones. See code comment.
 	 */
 	public static function get_directory_fields( $post_id, $apply_filter = true, $form_id = 0 ) {
@@ -1674,7 +1671,6 @@ class GVCommon {
 		}
 
 		return class_exists( 'RGFormsModel' ) ? RGFormsModel::get_input_type( $field ) : '';
-
 	}
 
 
@@ -2019,8 +2015,6 @@ class GVCommon {
 		// Optional: $from_name, $message_format, $attachments, $lead, $notification
 		$SendEmail->invoke( new GFCommon(), $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
 	}
-
-
 }//end class
 
 

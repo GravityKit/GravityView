@@ -13,7 +13,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 $field = $gravityview->field->field;
 $value = $gravityview->value;
-$form = $gravityview->view->form->form;
+$form  = $gravityview->view->form->form;
 $entry = $gravityview->entry->as_entry();
 
 if ( ! empty( $value ) ) {
@@ -26,7 +26,7 @@ if ( ! empty( $value ) ) {
 	 * @param string The glue. Default: ";" (semicolon)
 	 * @param \GV\Template_Context The context.
 	 */
-	$glue = apply_filters( 'gravityview/template/field/csv/glue', ";", $gravityview );
+	$glue = apply_filters( 'gravityview/template/field/csv/glue', ';', $gravityview );
 
 	echo implode( $glue, wp_list_pluck( $output_arr, 'file_path' ) );
 }

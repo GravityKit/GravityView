@@ -13,6 +13,7 @@ abstract class GravityView_Field {
 	/**
 	 * The name of the GravityView field type
 	 * Example: `created_by`, `text`, `fileupload`, `address`, `entry_link`
+	 *
 	 * @var string
 	 */
 	public $name;
@@ -148,31 +149,33 @@ abstract class GravityView_Field {
 
 		/**
 		 * Modify the field options based on the name of the field type
+		 *
 		 * @see GravityView_Render_Settings::get_default_field_options
 		 */
 		add_filter( sprintf( 'gravityview_template_%s_options', $this->name ), array( &$this, 'field_options' ), 10, 6 );
 
 		add_filter( 'gravityview/sortable/field_blocklist', array( $this, '_filter_sortable_fields' ), 1 );
 
-		if( $this->entry_meta_key ) {
+		if ( $this->entry_meta_key ) {
 			add_filter( 'gform_entry_meta', array( $this, 'add_entry_meta' ) );
 			add_filter( 'gravityview/common/sortable_fields', array( $this, 'add_sortable_field' ), 10, 2 );
 		}
 
-		if( $this->_custom_merge_tag ) {
+		if ( $this->_custom_merge_tag ) {
 			add_filter( 'gform_custom_merge_tags', array( $this, '_filter_gform_custom_merge_tags' ), 10, 4 );
 			add_filter( 'gform_replace_merge_tags', array( $this, '_filter_gform_replace_merge_tags' ), 10, 7 );
 		}
 
-		if( 'meta' === $this->group || '' !== $this->default_search_label ) {
+		if ( 'meta' === $this->group || '' !== $this->default_search_label ) {
 			add_filter( 'gravityview_search_field_label', array( $this, 'set_default_search_label' ), 10, 3 );
 		}
 
 		/**
 		 * Auto-assign label from Gravity Forms label, if exists
+		 *
 		 * @since 1.20
 		 */
-		if( empty( $this->label ) && ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) ) {
+		if ( empty( $this->label ) && ! empty( $this->_gf_field_class_name ) && class_exists( $this->_gf_field_class_name ) ) {
 			$this->label = ucfirst( GF_Fields::get( $this->name )->get_form_editor_field_title() );
 		}
 
@@ -225,7 +228,7 @@ abstract class GravityView_Field {
 		$gf_field = GF_Fields::get( $this->name );
 
 		// If the field exists and is a GF_Field, return the icon.
-		if( $gf_field && $gf_field instanceof GF_Field ) {
+		if ( $gf_field && $gf_field instanceof GF_Field ) {
 			return $gf_field->get_form_editor_field_icon();
 		}
 
@@ -245,10 +248,10 @@ abstract class GravityView_Field {
 
 		$added_field = array(
 			'label' => $this->label,
-			'type'  => $this->name
+			'type'  => $this->name,
 		);
 
-		$fields["{$this->entry_meta_key}"] = $added_field;
+		$fields[ "{$this->entry_meta_key}" ] = $added_field;
 
 		return $fields;
 	}
@@ -261,14 +264,14 @@ abstract class GravityView_Field {
 	 * @since 1.17.3
 	 *
 	 * @param string $label Existing label text, sanitized.
-	 * @param array $gf_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
-	 * @param array $field Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
+	 * @param array  $gf_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
+	 * @param array  $field Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
 	 *
 	 * @return string
 	 */
 	function set_default_search_label( $label = '', $gf_field = null, $field = array() ) {
 
-		if( $this->name === $field['field'] && '' === $label ) {
+		if ( $this->name === $field['field'] && '' === $label ) {
 			$label = esc_html( $this->default_search_label );
 		}
 
@@ -283,13 +286,13 @@ abstract class GravityView_Field {
 	 * @since 1.16
 	 *
 	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
+	 * @param array  $form Gravity Forms form array
+	 * @param array  $entry Entry array
+	 * @param bool   $url_encode Whether to URL-encode output
 	 *
 	 * @return string Original text if {_custom_merge_tag} isn't found. Otherwise, replaced text.
 	 */
-	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
+	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		// Is there is field merge tag? Strip whitespace off the ned, too.
 		preg_match_all( '/{' . preg_quote( $this->_custom_merge_tag ) . ':?(.*?)(?:\s)?}/ism', $text, $matches, PREG_SET_ORDER );
@@ -311,30 +314,30 @@ abstract class GravityView_Field {
 	 *
 	 * @see GFCommon::replace_variables()
 	 *
-	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
-	 * @param string $text Text to replace
+	 * @param array      $matches Array of Merge Tag matches found in text by preg_match_all
+	 * @param string     $text Text to replace
 	 * @param array|bool $form Gravity Forms form array. When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`
 	 * @param array|bool $entry Entry array.  When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`
-	 * @param bool $url_encode Whether to URL-encode output
-	 * @param bool $esc_html Whether to apply `esc_html()` to output
+	 * @param bool       $url_encode Whether to URL-encode output
+	 * @param bool       $esc_html Whether to apply `esc_html()` to output
 	 *
 	 * @return mixed
 	 */
 	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
-		foreach( $matches as $match ) {
+		foreach ( $matches as $match ) {
 
 			$full_tag = $match[0];
 
 			// Strip the Merge Tags
-			$tag = str_replace( array( '{', '}'), '', $full_tag );
+			$tag = str_replace( array( '{', '}' ), '', $full_tag );
 
 			// Replace the value from the entry, if exists
-			if( isset( $entry[ $tag ] ) ) {
+			if ( isset( $entry[ $tag ] ) ) {
 
 				$value = $entry[ $tag ];
 
-				if( is_callable( array( $this, 'get_content') ) ) {
+				if ( is_callable( array( $this, 'get_content' ) ) ) {
 					$value = $this->get_content( $value );
 				}
 
@@ -354,10 +357,10 @@ abstract class GravityView_Field {
 	 *
 	 * @since 1.8.4
 	 *
-	 * @param array $custom_merge_tags
-	 * @param int $form_id GF Form ID
+	 * @param array      $custom_merge_tags
+	 * @param int        $form_id GF Form ID
 	 * @param GF_Field[] $fields Array of fields in the form
-	 * @param string $element_id The ID of the input that Merge Tags are being used on
+	 * @param string     $element_id The ID of the input that Merge Tags are being used on
 	 *
 	 * @return array Modified merge tags
 	 */
@@ -377,7 +380,7 @@ abstract class GravityView_Field {
 	 *
 	 * @since 1.16
 	 *
-	 * @param array $form GF Form array
+	 * @param array      $form GF Form array
 	 * @param GF_Field[] $fields Array of fields in the form
 	 *
 	 * @return array Merge tag array with `label` and `tag` keys based on class `label` and `_custom_merge_tag` variables
@@ -388,7 +391,7 @@ abstract class GravityView_Field {
 		$merge_tags = array(
 			array(
 				'label' => $this->label,
-				'tag' => '{' . $this->_custom_merge_tag . '}',
+				'tag'   => '{' . $this->_custom_merge_tag . '}',
 			),
 		);
 
@@ -407,7 +410,7 @@ abstract class GravityView_Field {
 	 */
 	public function _filter_sortable_fields( $not_sortable ) {
 
-		if( ! $this->is_sortable ) {
+		if ( ! $this->is_sortable ) {
 			$not_sortable[] = $this->name;
 		}
 
@@ -425,7 +428,7 @@ abstract class GravityView_Field {
 	 */
 	function add_entry_meta( $entry_meta ) {
 
-		if( ! isset( $entry_meta["{$this->entry_meta_key}"] ) ) {
+		if ( ! isset( $entry_meta[ "{$this->entry_meta_key}" ] ) ) {
 
 			$added_meta = array(
 				'label'             => $this->label,
@@ -437,10 +440,16 @@ abstract class GravityView_Field {
 				$added_meta['update_entry_meta_callback'] = $this->entry_meta_update_callback;
 			}
 
-			$entry_meta["{$this->entry_meta_key}"] = $added_meta;
+			$entry_meta[ "{$this->entry_meta_key}" ] = $added_meta;
 
 		} else {
-			gravityview()->log->error( 'Entry meta already set: {meta_key}', array( 'meta_key' => $this->entry_meta_key, 'data' =>  $entry_meta["{$this->entry_meta_key}"] ) );
+			gravityview()->log->error(
+				'Entry meta already set: {meta_key}',
+				array(
+					'meta_key' => $this->entry_meta_key,
+					'data'     => $entry_meta[ "{$this->entry_meta_key}" ],
+				)
+			);
 		}
 
 		return $entry_meta;
@@ -449,47 +458,47 @@ abstract class GravityView_Field {
 	private function field_support_options() {
 		$options = array(
 			'link_to_post' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Link to the post', 'gk-gravityview' ),
-				'desc' => __( 'Link to the post created by the entry.', 'gk-gravityview' ),
-				'value' => false,
+				'type'     => 'checkbox',
+				'label'    => __( 'Link to the post', 'gk-gravityview' ),
+				'desc'     => __( 'Link to the post created by the entry.', 'gk-gravityview' ),
+				'value'    => false,
 				'priority' => 1200,
-				'group' => 'display',
+				'group'    => 'display',
 			),
 			'link_to_term' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Link to the category or tag', 'gk-gravityview' ),
-				'desc' => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gk-gravityview' ),
-				'value' => false,
+				'type'     => 'checkbox',
+				'label'    => __( 'Link to the category or tag', 'gk-gravityview' ),
+				'desc'     => __( 'Link to the current category or tag. "Link to single entry" must be unchecked.', 'gk-gravityview' ),
+				'value'    => false,
 				'priority' => 1210,
-				'group' => 'display',
+				'group'    => 'display',
 			),
 			'dynamic_data' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Use the live post data', 'gk-gravityview' ),
-				'desc' => __( 'Instead of using the entry data, instead use the current post data.', 'gk-gravityview' ),
-				'value' => true,
+				'type'     => 'checkbox',
+				'label'    => __( 'Use the live post data', 'gk-gravityview' ),
+				'desc'     => __( 'Instead of using the entry data, instead use the current post data.', 'gk-gravityview' ),
+				'value'    => true,
 				'priority' => 1100,
-				'group' => 'display',
+				'group'    => 'display',
 			),
 			'date_display' => array(
-				'type' => 'text',
-				'label' => __( 'Override Date Format', 'gk-gravityview' ),
-				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gk-gravityview'), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
+				'type'     => 'text',
+				'label'    => __( 'Override Date Format', 'gk-gravityview' ),
+				'desc'     => sprintf( __( 'Define how the date is displayed (using %1$sthe PHP date format%2$s)', 'gk-gravityview' ), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
 				/**
 				 * @filter `gravityview_date_format` Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
 				 * @param null|string $date_format Date Format (default: null)
 				 */
-				'value' => apply_filters( 'gravityview_date_format', null ),
-				'class' => 'code widefat',
+				'value'    => apply_filters( 'gravityview_date_format', null ),
+				'class'    => 'code widefat',
 				'priority' => 1500,
-				'group' => 'display',
+				'group'    => 'display',
 			),
-			'new_window' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
-				'value' => false,
-				'group' => 'display',
+			'new_window'   => array(
+				'type'     => 'checkbox',
+				'label'    => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
+				'value'    => false,
+				'group'    => 'display',
 				'priority' => 1300,
 			),
 		);
@@ -503,7 +512,7 @@ abstract class GravityView_Field {
 
 	/**
 	 * @param string $key
-	 * @param array $field_options
+	 * @param array  $field_options
 	 *
 	 * @return array
 	 */
@@ -511,7 +520,7 @@ abstract class GravityView_Field {
 
 		$options = $this->field_support_options();
 
-		if( isset( $options[ $key ] ) ) {
+		if ( isset( $options[ $key ] ) ) {
 			$field_options[ $key ] = $options[ $key ];
 		}
 
@@ -525,33 +534,33 @@ abstract class GravityView_Field {
 	 *
 	 * <pre>
 	 * $field_options['name_display'] = array(
-	 * 	'type' => 'select',
-	 * 	'label' => __( 'User Format', 'gravityview' ),
-	 * 	'desc' => __( 'How should the User information be displayed?', 'gravityview'),
-	 * 	'choices' => array(
-	 * 		array(
-	 *		 	'value' => 'display_name',
-	 *		  	'label' => __('Display Name (Example: "Ellen Ripley")', 'gravityview'),
-	 *		),
-	 *  	array(
-	 *			'value' => 'user_login',
-	 *			'label' => __('Username (Example: "nostromo")', 'gravityview')
-	 *		),
-	 * 	 'value' => 'display_name'
+	 *  'type' => 'select',
+	 *  'label' => __( 'User Format', 'gravityview' ),
+	 *  'desc' => __( 'How should the User information be displayed?', 'gravityview'),
+	 *  'choices' => array(
+	 *      array(
+	 *          'value' => 'display_name',
+	 *          'label' => __('Display Name (Example: "Ellen Ripley")', 'gravityview'),
+	 *      ),
+	 *      array(
+	 *          'value' => 'user_login',
+	 *          'label' => __('Username (Example: "nostromo")', 'gravityview')
+	 *      ),
+	 *   'value' => 'display_name'
 	 * );
 	 * </pre>
 	 *
-	 * @param  array      $field_options [description]
-	 * @param  string      $template_id   [description]
-	 * @param  string      $field_id      [description]
-	 * @param  string      $context       [description]
-	 * @param  string      $input_type    [description]
+	 * @param  array  $field_options [description]
+	 * @param  string $template_id   [description]
+	 * @param  string $field_id      [description]
+	 * @param  string $context       [description]
+	 * @param  string $input_type    [description]
 	 * @return array                     [description]
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		$this->_field_options = $field_options;
-		$this->_field_id = $field_id;
+		$this->_field_id      = $field_id;
 
 		return $field_options;
 	}
@@ -575,11 +584,11 @@ abstract class GravityView_Field {
 		$connected_form = \GV\Utils::_POST( 'form_id' );
 
 		// Otherwise, get the Form ID from the Post page
-		if( empty( $connected_form ) ) {
+		if ( empty( $connected_form ) ) {
 			$connected_form = gravityview_get_form_id( get_the_ID() );
 		}
 
-		if( empty( $connected_form ) ) {
+		if ( empty( $connected_form ) ) {
 			gravityview()->log->error( 'Form not found for form ID "{form_id}"', array( 'form_id' => $connected_form ) );
 			return false;
 		}
@@ -587,7 +596,13 @@ abstract class GravityView_Field {
 		$form = GVCommon::get_form( $connected_form );
 
 		if ( ! $form ) {
-			gravityview()->log->error( 'Form not found for field ID of "{field_id}", when checking for a form with ID of "{form_id}"', array( 'field_id' => $this->_field_id, 'form_id' => $connected_form ) );
+			gravityview()->log->error(
+				'Form not found for field ID of "{field_id}", when checking for a form with ID of "{form_id}"',
+				array(
+					'field_id' => $this->_field_id,
+					'form_id'  => $connected_form,
+				)
+			);
 			return false;
 		}
 
@@ -595,5 +610,4 @@ abstract class GravityView_Field {
 
 		return ! empty( $field->enableChoiceValue );
 	}
-
 }

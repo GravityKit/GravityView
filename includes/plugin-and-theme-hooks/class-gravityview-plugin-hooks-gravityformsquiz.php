@@ -82,4 +82,4 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Quiz extends GravityView_Plugin_and
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Quiz;
+new GravityView_Plugin_Hooks_Gravity_Forms_Quiz();

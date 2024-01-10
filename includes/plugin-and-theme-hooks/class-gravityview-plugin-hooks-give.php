@@ -25,7 +25,7 @@ class GravityView_Plugin_Hooks_Give extends GravityView_Plugin_and_Theme_Hooks {
 	public function __construct() {
 		parent::__construct();
 
-		add_action( 'add_meta_boxes', [ $this, 'block_styles' ] );
+		add_action( 'add_meta_boxes', array( $this, 'block_styles' ) );
 	}
 
 	/**
@@ -40,4 +40,4 @@ class GravityView_Plugin_Hooks_Give extends GravityView_Plugin_and_Theme_Hooks {
 	}
 }
 
-new GravityView_Plugin_Hooks_Give;
+new GravityView_Plugin_Hooks_Give();

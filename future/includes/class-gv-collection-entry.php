@@ -74,7 +74,7 @@ class Entry_Collection extends Collection {
 	/**
 	 * Get a \GV\Entry from this list.
 	 *
-	 * @param int $entry_id The ID of the entry to get.
+	 * @param int    $entry_id The ID of the entry to get.
 	 * @param string $backend The form backend identifier, allows for multiple form backends in the future. Unused until then.
 	 *
 	 * @api
@@ -147,7 +147,7 @@ class Entry_Collection extends Collection {
 		$result = array();
 
 		foreach ( $this->all() as $entry ) {
-			$entry = $entry->as_entry();
+			$entry    = $entry->as_entry();
 			$result[] = Utils::get( $entry, $key, null );
 		}
 
@@ -201,8 +201,8 @@ class Entry_Collection extends Collection {
 		$this->clear();
 
 		/** Calculate the offsets. */
-		$offset = new \GV\Entry_Offset();
-		$offset->limit = $this->limit;
+		$offset         = new \GV\Entry_Offset();
+		$offset->limit  = $this->limit;
 		$offset->offset = ( $this->limit * ( $this->current_page - 1 ) ) + $this->offset;
 
 		/** Call all lazy callbacks. */
@@ -368,7 +368,7 @@ class Entry_Collection extends Collection {
 			return;
 		}
 
-		$this->callbacks []= array( $type, $callback );
+		$this->callbacks [] = array( $type, $callback );
 	}
 
 	/**

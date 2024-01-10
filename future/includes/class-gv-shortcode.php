@@ -35,14 +35,20 @@ class Shortcode {
 	/**
 	 * The WordPress Shortcode API callback for this shortcode.
 	 *
-	 * @param array $atts The attributes passed.
+	 * @param array  $atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
 	 * @param string $tag The tag.
 	 *
 	 * @return string The output.
 	 */
 	public function callback( $atts, $content = '', $tag = '' ) {
-		gravityview()->log->error( '[{shortcode}] shortcode {class}::callback method not implemented.', array( 'shortcode' => $this->name, 'class' => get_class( $this ) ) );
+		gravityview()->log->error(
+			'[{shortcode}] shortcode {class}::callback method not implemented.',
+			array(
+				'shortcode' => $this->name,
+				'class'     => get_class( $this ),
+			)
+		);
 		return '';
 	}
 
@@ -58,7 +64,7 @@ class Shortcode {
 	 */
 	public static function add( $name = null ) {
 		$shortcode = new static();
-		$name = $name ? $name : $shortcode->name;
+		$name      = $name ? $name : $shortcode->name;
 		if ( shortcode_exists( $name ) ) {
 			if ( empty( self::$shortcodes[ $name ] ) ) {
 				gravityview()->log->error( 'Shortcode [{shortcode}] has already been registered elsewhere.', array( 'shortcode' => $name ) );
@@ -81,7 +87,7 @@ class Shortcode {
 	 */
 	public static function remove() {
 		$shortcode = new static();
-		unset( self::$shortcodes[$shortcode->name] );
+		unset( self::$shortcodes[ $shortcode->name ] );
 		remove_shortcode( $shortcode->name );
 	}
 
@@ -115,19 +121,19 @@ class Shortcode {
 		foreach ( $matches as $shortcode ) {
 			$shortcode_name = $shortcode[2];
 
-			$shortcode_atts = shortcode_parse_atts( $shortcode[3] );
+			$shortcode_atts    = shortcode_parse_atts( $shortcode[3] );
 			$shortcode_content = $shortcode[5];
 
 			/** This is a registered GravityView shortcode. */
-			if ( !empty( self::$shortcodes[$shortcode_name] ) ) {
-				$shortcode = clone self::$shortcodes[$shortcode_name];
+			if ( ! empty( self::$shortcodes[ $shortcode_name ] ) ) {
+				$shortcode = clone self::$shortcodes[ $shortcode_name ];
 			} else {
 				/** This is some generic shortcode. */
-				$shortcode = new self;
+				$shortcode       = new self();
 				$shortcode->name = $shortcode_name;
 			}
 
-			$shortcode->atts = $shortcode_atts;
+			$shortcode->atts    = $shortcode_atts;
 			$shortcode->content = $shortcode_content;
 
 			/** Merge inner shortcodes. */
