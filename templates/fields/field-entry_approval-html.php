@@ -21,6 +21,7 @@ $entry = $gravityview->entry->as_entry();
 
 /**
  * Trigger loading the field approval javascript.
+ *
  * @see GravityView_Field_Approval::enqueue_and_localize_script
  * @since 1.19
  * @since 2.0 Updated second param to use \GV\Template_Context

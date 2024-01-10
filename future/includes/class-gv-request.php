@@ -36,6 +36,7 @@ abstract class Request {
 
 		/**
 		 * Is this request renderable?
+         *
 		 * @since 2.5.2
 		 * @param boolean $is_renderable Huh?
 		 * @param \GV\Request $this This.

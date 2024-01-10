@@ -105,6 +105,7 @@ $image = new GravityView_Image( $image_atts );
 
 /**
  * Modify the values used for the image meta.
+ *
  * @see https://www.gravitykit.com/support/documentation/201606759 Read more about the filter
  * @var array $image_meta Associative array with `title`, `caption`, and `description` keys, each an array with `label`, `value`, `tag_label` and `tag_value` keys
  */
@@ -137,6 +138,7 @@ $wrappertag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
 
 /**
  * Whether to show labels for the image meta.
+ *
  * @see https://www.gravitykit.com/support/documentation/201606759 Read more about the filter
  * @var boolean $showlabels True: Show labels; False: hide labels
  */

@@ -24,6 +24,7 @@ if ( $value = json_decode( $value ) ) {
 
 	/**
 	 * The value used to separate multiple values in the CSV export.
+     *
 	 * @since 2.4.2
 	 *
 	 * @param string The glue. Default: ";" (semicolon)

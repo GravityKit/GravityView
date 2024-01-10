@@ -12,6 +12,7 @@
 
 /**
  * Tap in before the entry loop has been displayed.
+ *
  * @param \GravityView_View $this The GravityView_View instance
  */
 do_action( 'gravityview_list_body_before', $this );
@@ -43,6 +44,7 @@ if ( ! $this->getTotalEntries() ) {
 
 		/**
 		 * Tap in before the the entry is displayed, inside the entry container.
+         *
 		 * @param array $entry Gravity Forms Entry array
 		 * @param \GravityView_View $this The GravityView_View instance
 		 */
@@ -56,6 +58,7 @@ if ( ! $this->getTotalEntries() ) {
 
 			/**
 			 * Tap in before the the entry title is displayed.
+             *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -104,6 +107,7 @@ if ( ! $this->getTotalEntries() ) {
 
 			/**
 			 * Tap in after the title block.
+             *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -171,6 +175,7 @@ if ( ! $this->getTotalEntries() ) {
 
 			/**
 			 * Tap in before the footer wrapper.
+             *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -192,6 +197,7 @@ if ( ! $this->getTotalEntries() ) {
 
 			/**
 			 * Tap in after the footer wrapper.
+             *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -202,6 +208,7 @@ if ( ! $this->getTotalEntries() ) {
 
 		/**
 		 * Tap in after the entry has been displayed, but before the container is closed.
+         *
 		 * @param array $entry Gravity Forms Entry array
 		 * @param \GravityView_View $this The GravityView_View instance
 		 */
@@ -217,6 +224,7 @@ if ( ! $this->getTotalEntries() ) {
 
 /**
  * Tap in after the entry loop has been displayed.
+ *
  * @param \GravityView_View $this The GravityView_View instance
  */
 do_action( 'gravityview_list_body_after', $this );

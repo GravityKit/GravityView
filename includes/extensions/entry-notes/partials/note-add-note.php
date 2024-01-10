@@ -7,6 +7,7 @@
 
 /**
  * Print scripts and styles required for the Notes field.
+ *
  * @see GravityView_Field_Notes::enqueue_scripts
  * @since 1.17
  */

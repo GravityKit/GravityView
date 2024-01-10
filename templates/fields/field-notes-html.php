@@ -29,6 +29,7 @@ require_once GFCommon::get_base_path() . '/entry_detail.php';
 
 /**
  * Print scripts and styles required for the Notes field.
+ *
  * @see GravityView_Field_Notes::enqueue_scripts
  * @since 1.17
  * @since 2.0

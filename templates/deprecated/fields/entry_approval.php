@@ -11,6 +11,7 @@
 
 /**
  * Trigger loading the field approval javascript.
+ *
  * @see GravityView_Field_Approval::enqueue_and_localize_script
  * @since 1.19
  */

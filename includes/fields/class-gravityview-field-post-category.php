@@ -71,6 +71,7 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 			/**
 			 * Should post categories be added to or replaced?
+             *
 			 * @since 1.17
 			 * @param bool $append If `true`, don't delete existing categories, just add on. If `false`, replace the categories with the submitted categories. Default: `false`
 			 */

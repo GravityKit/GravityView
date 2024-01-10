@@ -20,6 +20,7 @@ $placeholder = \GV\Utils::get( $gf_field, 'placeholder', '' );
 
 /**
  * Define the text for the default option in a select (multi or single dropdown).
+ *
  * @since 1.16.4
  * @param string $default_option Default: `&mdash;` (—)
  * @param string $field_type Field type: "select" or "multiselect"

@@ -22,6 +22,7 @@ $links_label = empty( $search_field['label'] ) ? __( 'Show only:', 'gk-gravityvi
 
 /**
  * Change the label for the "Link" search bar input type.
+ *
  * @since 1.17 Use search field label as default value, if set. Before that, it was hard-coded to "Show only:"
  * @param string $links_label Default: `Show only:` if search field label is not set. Otherwise, search field label.
  */
@@ -29,6 +30,7 @@ $links_label = apply_filters( 'gravityview/extension/search/links_label', $links
 
 /**
  * Change what separates search bar "Link" input type links.
+ *
  * @param string $links_sep Default: `&nbsp;|&nbsp;` Used to connect multiple links
  */
 $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&nbsp;' );

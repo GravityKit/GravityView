@@ -25,6 +25,7 @@ if ( $value === '1970-01-01' ) {
 
 	/**
 	 * callback.
+     *
 	 * @param bool $hide_epoch True: hide values that are 1970-01-01. False: show the value.
 	 *
 	 * @since 2.0

@@ -17,6 +17,7 @@ GravityView_Admin::connected_form_warning( $current_form );
 
 /**
  * Modify the default orderby field for the Data Source dropdown.
+ *
  * @since 2.17.8
  * @param mixed $order_by Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
  */

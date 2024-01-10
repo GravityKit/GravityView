@@ -160,6 +160,7 @@ class GravityView_Widget_Poll extends GravityView_Widget {
 
 		/**
 		 * Modify display settings for the poll widget.
+         *
 		 * @since 1.8
 		 * @param array $settings Settings with `field`, `style`, `percentages` and `counts` keys
 		 */

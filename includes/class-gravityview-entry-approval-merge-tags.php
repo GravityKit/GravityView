@@ -664,6 +664,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 		/**
 		 * Modify the return URL after entry approval.
+         *
 		 * @since 2.18.7
 		 * @param int $entry_id Entry ID.
 		 * @param int $approval_status Approval status.

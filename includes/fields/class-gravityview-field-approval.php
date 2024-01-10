@@ -168,6 +168,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		/**
 		 * URL to the Approval field CSS file.
+         *
 		 * @since 1.19
 		 * @param string $style_url Override to use your own CSS file, or return empty string to disable loading.
 		 */

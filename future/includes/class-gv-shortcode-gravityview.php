@@ -432,6 +432,7 @@ class gravityview extends \GV\Shortcode {
 
 		/**
 		 * Filter the detail output returned from `[gravityview detail="$detail"]`.
+         *
 		 * @since 1.13
 		 * @param string[in,out] $output Existing output
 		 *

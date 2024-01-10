@@ -109,6 +109,7 @@ class GravityView_Merge_Tags {
 
 		/**
 		 * Modify the merge tag modifier output.
+         *
 		 * @since 2.0
 		 * @param string $return The current merge tag value to be filtered.
 		 * @param string $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
@@ -333,6 +334,7 @@ class GravityView_Merge_Tags {
 		/**
 		 * Turn off merge tag variable replacements.\n.
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
+         *
 		 * @since 1.13
 		 *
 		 * @param boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
@@ -683,6 +685,7 @@ class GravityView_Merge_Tags {
 
 			/**
 			 * values from an array to string.
+             *
 			 * @since 1.15
 			 * @param string $glue String used to `implode()` $_GET values Default: ', '
 			 * @param string $property The current name of the $_GET parameter being combined
@@ -698,6 +701,7 @@ class GravityView_Merge_Tags {
 			 * By default, all values passed through URLs will be escaped for security reasons. If for some reason you want to
 			 * pass HTML in the URL, for example, you will need to return false on this filter. It is strongly recommended that you do
 			 * not disable this filter.
+             *
 			 * @since 1.15
 			 * @param bool $esc_html Whether to esc_html() the value. Default: `true`
 			 */
@@ -707,6 +711,7 @@ class GravityView_Merge_Tags {
 
 			/**
 			 * replacement before being used.
+             *
 			 * @param string $value Value that will replace `{get}`
 			 * @param string $text Text that contains `{get}` (before replacement)
 			 * @param array $form Gravity Forms form array

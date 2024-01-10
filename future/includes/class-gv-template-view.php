@@ -142,6 +142,7 @@ abstract class View_Template extends Template {
 
 		/**
 		 * Before rendering.
+         *
 		 * @param \GV\View_Template $template The current template.
 		 * @since 2.0
 		 */

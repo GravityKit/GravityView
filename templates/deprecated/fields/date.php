@@ -19,6 +19,7 @@ if ( $value === '1970-01-01' ) {
 
 	/**
 	 * callback.
+     *
 	 * @param bool $hide_epoch True: hide values that are 1970-01-01. False: show the value.
 	 */
 	$hide_epoch = apply_filters( 'gravityview/fields/date/hide_epoch', true );

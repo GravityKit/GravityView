@@ -130,6 +130,7 @@ class View implements \ArrayAccess {
 		/**
 		 * Make GravityView Views hierarchical by returning TRUE.
 		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
+         *
 		 * @since 1.13
 		 * @param boolean $is_hierarchical Default: false
 		 */
@@ -184,6 +185,7 @@ class View implements \ArrayAccess {
 			'hierarchical'        => $is_hierarchical,
 			/**
 			 * Should Views be directly accessible, or only visible using the shortcode?
+             *
 			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
 			 * @since 1.15.2
 			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
@@ -199,6 +201,7 @@ class View implements \ArrayAccess {
 			'can_export'          => true,
 			/**
 			 * Enable Custom Post Type archive?
+             *
 			 * @since 1.7.3
 			 * @param boolean False: don't have frontend archive; True: yes, have archive. Default: false
 			 */
@@ -207,6 +210,7 @@ class View implements \ArrayAccess {
 			'rewrite'             => array(
 				/**
 				 * Modify the url part for a View.
+                 *
 				 * @see https://docs.gravitykit.com/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
@@ -217,6 +221,7 @@ class View implements \ArrayAccess {
 				 *  be prepended with the front base.
 				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
 				 *  Defaults to true.
+                 *
 				 * @see https://codex.wordpress.org/Function_Reference/register_post_type
 				 * @since 2.0
 				 * @param bool $with_front
@@ -461,6 +466,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Whether the view can be rendered or not.
+         *
 		 * @param bool|\WP_Error $result  The result. Default: null.
 		 * @param \GV\View       $view  The view.
 		 * @param string[]       $context See \GV\View::can_render
@@ -507,6 +513,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * Should Views be directly accessible, or only visible using the shortcode?
+             *
 			 * @deprecated
 			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
@@ -515,6 +522,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * Should this View be directly accessbile?
+             *
 			 * @since 2.0
 			 * @param boolean Accessible or not. Default: accessbile.
 			 * @param \GV\View $view The View we're trying to directly render here.
@@ -718,6 +726,7 @@ class View implements \ArrayAccess {
 		if ( $view = Utils::get( self::$cache, "View::from_post:{$post->ID}" ) ) {
 			/**
 			 * Override View.
+             *
 			 * @param \GV\View $view The View instance pointer.
 			 * @since 2.1
 			 */
@@ -748,6 +757,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the View fields' configuration array.
+         *
 		 * @since 1.6.5
 		 *
 		 * @deprecated Use `gravityview/view/configuration/fields` or `gravityview/view/fields` filters.
@@ -759,6 +769,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the View fields' configuration array.
+         *
 		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of fields with first level being the field zones.
@@ -768,6 +779,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the Field Collection for this View.
+         *
 		 * @since 2.0
 		 *
 		 * @param \GV\Field_Collection $fields A collection of fields.
@@ -777,6 +789,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the View widgets' configuration array.
+         *
 		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of widgets with first level being the field zones.
@@ -786,6 +799,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the Widget Collection for this View.
+         *
 		 * @since 2.0
 		 *
 		 * @param \GV\Widget_Collection $widgets A collection of widgets.
@@ -810,6 +824,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Override View.
+         *
 		 * @param \GV\View $view The View instance pointer.
 		 * @since 2.1
 		 */
@@ -1345,6 +1360,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * Override the \GF_Query before the get() call.
+             *
 			 * @param \GF_Query $query The current query object reference
 			 * @param \GV\View $this The current view object
 			 * @param \GV\Request $request The request object
@@ -1408,6 +1424,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Modify the entry fetching filters, sorts, offsets, limits.
+         *
 		 * @param \GV\Entry_Collection $entries The entries for this view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Request $request The request.
@@ -1493,6 +1510,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Modify the name of the generated CSV or TSV file. Name will be sanitized using sanitize_file_name() before output.
+         *
 		 * @see sanitize_file_name()
 		 * @since 2.1
 		 * @param string   $filename File name used when downloading a CSV or TSV. Default is "{View title}.csv" or "{View title}.tsv"
@@ -1539,6 +1557,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * Allowlist more entry fields by ID that are output in CSV requests.
+             *
 			 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.
@@ -1618,6 +1637,7 @@ class View implements \ArrayAccess {
 	public static function restrict( $caps, $cap, $user_id, $args ) {
 		/**
 		 * Bypass restrictions on Views that require `unfiltered_html`.
+         *
 		 * @param boolean
 		 *
 		 * @since develop
@@ -1674,6 +1694,7 @@ class View implements \ArrayAccess {
 	public function get_anchor_id() {
 		/**
 		 * Modify the anchor ID.
+         *
 		 * @since 2.15
 		 * @param string $anchor_id The anchor ID.
 		 * @param \GV\View $this The View.

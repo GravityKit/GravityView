@@ -286,6 +286,7 @@ function gravityview_format_link( $value = null ) {
 
 	/**
 	 * Strip scheme from the displayed URL?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to strip the scheme. Return false to show scheme. (default: true)\n
 	 * If true: `http://example.com => example.com`
@@ -302,6 +303,7 @@ function gravityview_format_link( $value = null ) {
 
 	/**
 	 * Strip www from the domain?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to strip www. Return false to show www. (default: true)\n
 	 * If true: `www.example.com => example.com`
@@ -314,6 +316,7 @@ function gravityview_format_link( $value = null ) {
 
 	/**
 	 * Strip subdomains from the domain?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to strip subdomains. Return false to show subdomains. (default: true)\n
 	 * If true: `http://demo.example.com => example.com` \n
@@ -332,6 +335,7 @@ function gravityview_format_link( $value = null ) {
 
 	/**
 	 * Display link path going only to the base directory, not a sub-directory or file?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to enable "root only". Return false to show full path. (default: true)\n
 	 * If true: `http://example.com/sub/directory/page.html => example.com`  \n
@@ -348,6 +352,7 @@ function gravityview_format_link( $value = null ) {
 
 	/**
 	 * Strip the query string from the end of the URL?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to enable "root only". Return false to show full path. (default: true)\n
 	 * If true: `http://example.com/?query=example => example.com`
@@ -592,6 +597,7 @@ function gravityview_get_terms_choices( $args = array() ) {
 
 	/**
 	 * Modify the arguments passed to `get_terms()`.
+     *
 	 * @see get_terms()
 	 * @since 1.15.3
 	 */

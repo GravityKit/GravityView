@@ -38,6 +38,7 @@ class View_Renderer extends Renderer {
 
 		/**
 		 * Modify the template slug about to be loaded in directory views.
+         *
 		 * @since 1.6
 		 * @deprecated
 		 * @see The `gravityview_get_template_id` filter
@@ -52,6 +53,7 @@ class View_Renderer extends Renderer {
 		 * Some contexts don't need initial entries, like the DataTables directory type.
 		 *
 		 * Whether to get the entries or not.
+         *
 		 * @param boolean $get_entries Get entries or not, default: true.
 		 */
 		$get_entries = apply_filters( 'gravityview_get_view_entries_' . $template_slug, true );
@@ -97,6 +99,7 @@ class View_Renderer extends Renderer {
 
 		/**
 		 * Filter the template class that is about to be used to render the view.
+         *
 		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
 		 * @param View $view The view about to be rendered.
@@ -141,6 +144,7 @@ class View_Renderer extends Renderer {
 
 		/**
 		 * Allow appending the View ID anchor to the search URL.
+         *
 		 * @since  2.15
 		 *
 		 * @param bool   $set_view_id_anchor

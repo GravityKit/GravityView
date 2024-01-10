@@ -24,6 +24,7 @@ class GravityView_Change_Entry_Creator {
 
 		/**
 		 * Disable the Change Entry Creator functionality.
+         *
 		 * @since  1.7.4
 		 * @param boolean $disable Disable the Change Entry Creator functionality. Default: false.
 		 */
@@ -172,6 +173,7 @@ class GravityView_Change_Entry_Creator {
 
 		/**
 		 * Disable adding a note when changing the entry creator.
+         *
 		 * @since  1.21.5
 		 * @param boolean $disable Disable the Change Entry Creator note. Default: false.
 		 */
