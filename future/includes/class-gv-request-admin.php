@@ -59,7 +59,7 @@ class Admin_Request extends Request {
 		}
 
 		/**
-		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
+		 * Is the current admin page a GravityView-related page?
 		 * @param string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
 		 * @param string $hook The name of the page to check against. Is passed to the method.
 		 */

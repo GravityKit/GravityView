@@ -51,7 +51,7 @@ class GravityView_Powered_By {
 		}
 
 		/**
-		 * @filter `gravityview/powered_by/text` Modify the anchor text for the Powered By link
+		 * Modify the anchor text for the Powered By link.
 		 * @param string $anchor_text Anchor text for the Powered By link. Default: "Powered by GravityView". Will be sanitized before display.
 		 */
 		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gk-gravityview' ) );
@@ -83,7 +83,7 @@ class GravityView_Powered_By {
 		);
 
 		/**
-		 * @filter `gravityview/powered_by/url` Modify the URL returned by the Powered By link
+		 * Modify the URL returned by the Powered By link.
 		 * @param $url string The URL passed to the Powered By link
 		 */
 		$url = apply_filters( 'gravityview/powered_by/url', $url );

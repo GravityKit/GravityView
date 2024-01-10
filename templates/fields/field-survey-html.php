@@ -119,7 +119,7 @@ switch ( $gravityview->field->field->inputType ) {
 		remove_filter( 'gform_is_entry_detail', $return_true );
 
 		/**
-		 * @filter `gravityview/template/field/survey/glue` The value used to separate multiple values in the Survey field output
+		 * The value used to separate multiple values in the Survey field output.
 		 * @since 2.10.4
 		 *
 		 * @param string The glue. Default: "; " (semicolon with a trailing space)

@@ -282,7 +282,7 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'group'             => 'sort',
 					'options'           => array(
-						''             => __( 'Default', 'gk-gravityview' ),
+						'id'           => __( 'Default', 'gk-gravityview' ),
 						'date_created' => __( 'Date Created', 'gk-gravityview' ),
 					),
 					'show_in_shortcode' => true,
@@ -313,7 +313,7 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'group'             => 'sort',
 					'options'           => array(
-						''             => __( 'Default', 'gk-gravityview' ),
+						'id'           => __( 'Default', 'gk-gravityview' ),
 						'date_created' => __( 'Date Created', 'gk-gravityview' ),
 					),
 					'requires_not'      => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
@@ -699,7 +699,7 @@ class View_Settings extends Settings {
 		);
 
 		/**
-		 * @filter `gravityview_default_args` Modify the default settings for new Views
+		 * Modify the default settings for new Views.
 		 * @deprecated
 		 * @see filter `gravityview/view/settings/defaults`
 		 *
@@ -708,7 +708,7 @@ class View_Settings extends Settings {
 		$default_settings = apply_filters( 'gravityview_default_args', $default_settings );
 
 		/**
-		 * @filter `gravityview/view/defaults` Modify the default settings for new Views
+		 * Modify the default settings for new Views.
 		 *
 		 * @param array $default_settings Array of default settings.
 		 */

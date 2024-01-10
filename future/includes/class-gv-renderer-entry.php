@@ -43,7 +43,7 @@ class Entry_Renderer extends Renderer {
 		}
 
 		/**
-		 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
+		 * Before rendering a single entry for a specific View ID.
 		 * @since 1.17
 		 *
 		 * @since 2.0
@@ -84,7 +84,7 @@ class Entry_Renderer extends Renderer {
 		}
 
 		/**
-		 * @filter `gravityview_template_slug_{$template_id}` Modify the template slug about to be loaded in directory views.
+		 * Modify the template slug about to be loaded in directory views.
 		 * @since 1.6
 		 * @param deprecated
 		 * @see The `gravityview_get_template_id` filter
@@ -114,7 +114,7 @@ class Entry_Renderer extends Renderer {
 		}
 
 		/**
-		 * @filter `gravityview/template/entry/class` Filter the template class that is about to be used to render the entry.
+		 * Filter the template class that is about to be used to render the entry.
 		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\Entry_Table_Template.
 		 * @param \GV\Entry $entry The entry about to be rendered.

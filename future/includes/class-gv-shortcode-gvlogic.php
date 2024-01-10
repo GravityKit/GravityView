@@ -351,7 +351,7 @@ class gvlogic extends \GV\Shortcode {
 		}
 
 		/**
-		 * @filter `gravityview/gvlogic/atts` The logic attributes.
+		 * The logic attributes.
 		 *
 		 * @since 2.5
 		 *

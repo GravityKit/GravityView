@@ -133,7 +133,7 @@ class GravityView_Admin {
 		include_once GRAVITYVIEW_DIR . 'includes/class-gravityview-bulk-actions.php';
 
 		/**
-		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded
+		 * Triggered after all GravityView admin files are loaded.
 		 *
 		 * Nice place to insert extensions' backend stuff
 		 */

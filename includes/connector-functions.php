@@ -262,7 +262,7 @@ function gravityview_get_template_setting( $post_id, $key ) {
 function gravityview_get_registered_templates() {
 
 	/**
-	 * @filter `gravityview_register_directory_template` Fetch available View templates
+	 * Fetch available View templates.
 	 * @param array $templates Templates to show
 	 */
 	$templates = apply_filters( 'gravityview_register_directory_template', array() );

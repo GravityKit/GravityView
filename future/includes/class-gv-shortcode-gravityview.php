@@ -94,7 +94,7 @@ class gravityview extends \GV\Shortcode {
 		}
 
 		/**
-		 * @action `gravityview/shortcode/before-processing` Runs before the GV shortcode is processed; can be used to load additional scripts/styles
+		 * Runs before the GV shortcode is processed; can be used to load additional scripts/styles.
 		 *
 		 * @since  2.13.4
 		 *
@@ -431,7 +431,7 @@ class gravityview extends \GV\Shortcode {
 		endswitch;
 
 		/**
-		 * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail="$detail"]`
+		 * Filter the detail output returned from `[gravityview detail="$detail"]`.
 		 * @since 1.13
 		 * @param string[in,out] $output Existing output
 		 *

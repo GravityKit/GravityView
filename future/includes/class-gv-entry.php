@@ -62,7 +62,7 @@ abstract class Entry {
 	 */
 	public static function get_endpoint_name() {
 		/**
-		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
+		 * Change the slug used for single entries.
 		 * @param string $endpoint Slug to use when accessing single entry. Default: `entry`
 		 */
 		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
@@ -114,7 +114,7 @@ abstract class Entry {
 		$args = array();
 
 		/**
-		 * @filter `gravityview/entry_link/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+		 * Modify whether to include passed $_GET parameters to the end of the url.
 		 * @since 2.10
 		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: true.
 		 */
@@ -149,7 +149,7 @@ abstract class Entry {
 		}
 
 		/**
-		 * @filter `gravityview_directory_link` Modify the URL to the View "directory" context
+		 * Modify the URL to the View "directory" context.
 		 * @since 1.19.4
 		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
 		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
@@ -190,7 +190,7 @@ abstract class Entry {
 		$permalink = add_query_arg( $args, $permalink );
 
 		/**
-		 * @filter `gravityview/entry/permalink` The permalink of this entry.
+		 * The permalink of this entry.
 		 * @since 2.0
 		 * @param string $permalink The permalink.
 		 * @param \GV\Entry $entry The entry we're retrieving it for.
@@ -226,7 +226,7 @@ abstract class Entry {
 		}
 
 		/**
-		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
+		 * Modify the entry URL slug as needed.
 		 * @since 2.2.1
 		 * @param string $entry_slug The slug, sanitized with sanitize_title()
 		 * @param null|\GV\Entry $this The entry object.

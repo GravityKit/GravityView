@@ -35,7 +35,7 @@ abstract class Request {
 		);
 
 		/**
-		 * @filter `gravityview/request/is_renderable` Is this request renderable?
+		 * Is this request renderable?
 		 * @since 2.5.2
 		 * @param boolean $is_renderable Huh?
 		 * @param \GV\Request $this This.
@@ -218,7 +218,7 @@ abstract class Request {
 		$entry = $this->is_entry( $form_id );
 
 		/**
-		 * @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
+		 * Whether we're currently on the Edit Entry screen \n.
 		 * The Edit Entry functionality overrides this value.
 		 *
 		 * @param boolean $is_edit_entry

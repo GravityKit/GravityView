@@ -116,7 +116,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		}
 
 		/**
-		 * @action `gravityview/widget/recent-entries/before_widget` Before recent entries are displayed in the WordPress widget
+		 * Before recent entries are displayed in the WordPress widget.
 		 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
 		 * @param array $instance The settings for the particular instance of the widget.
 		 */
@@ -126,7 +126,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		echo $this->get_output( $instance );
 
 		/**
-		 * @action `gravityview/widget/recent-entries/after_widget` After recent entries are displayed in the WordPress widget
+		 * After recent entries are displayed in the WordPress widget.
 		 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
 		 * @param array $instance The settings for the particular instance of the widget.
 		 */
@@ -375,7 +375,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		<?php
 
 		/**
-		 * @action `gravityview_recent_entries_widget_form` Displayed at the bottom of the Recent Entries widget admin form
+		 * Displayed at the bottom of the Recent Entries widget admin form.
 		 * @param GravityView_Recent_Entries_Widget $this WP_Widget object
 		 * @param array $instance Current widget instance
 		 */

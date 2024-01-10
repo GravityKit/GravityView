@@ -513,7 +513,7 @@ class GravityView_Cache {
 			$expiration = ! is_int( $expiration ) ? DAY_IN_SECONDS : $expiration;
 
 			/**
-			 * @filter `gravityview_cache_time_{$filter_name}` Modify the cache time for a type of cache
+			 * Modify the cache time for a type of cache.
 			 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
 			 */
 			$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
@@ -602,7 +602,7 @@ class GravityView_Cache {
 	public function schedule_transient_cleanup() {
 
 		/**
-		 * @filter `gravityview_cleanup_transients` Override GravityView cleanup of transients by setting this to false
+		 * Override GravityView cleanup of transients by setting this to false.
 		 * @param boolean $cleanup Whether to run the GravityView auto-cleanup of transients. Default: `true`
 		 */
 		$cleanup = apply_filters( 'gravityview_cleanup_transients', true );
@@ -710,7 +710,7 @@ class GravityView_Cache {
 		}
 
 		/**
-		 * @filter `gravityview_use_cache` Modify whether to use the cache or not
+		 * Modify whether to use the cache or not.
 		 * @param  boolean $use_cache Previous setting
 		 * @param GravityView_Cache $this The GravityView_Cache object
 		 */

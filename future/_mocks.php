@@ -248,7 +248,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 			}
 
 			/**
-			 * @filter `gravityview_render_after_label` Append content to a field label
+			 * Append content to a field label.
 			 * @param string $appended_content Content you can add after a label. Empty by default.
 			 * @param array $field GravityView field array
 			 */
@@ -256,7 +256,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 		}
 
 		/**
-		 * @filter `gravityview/template/field_label` Modify field label output
+		 * Modify field label output.
 		 * @since 1.7
 		 * @param string $label Field label HTML
 		 * @param array $field GravityView field array
@@ -348,7 +348,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 		$label = $field->get_label( null, isset( $gf_form ) ? $gf_form : null, $entry );
 
 		/**
-		 * @filter `gravityview_render_after_label` Append content to a field label
+		 * Append content to a field label.
 		 * @param string $appended_content Content you can add after a label. Empty by default.
 		 * @param array $field GravityView field array
 		 */
@@ -357,7 +357,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 	}
 
 	/**
-	 * @filter `gravityview/template/field_label` Modify field label output
+	 * Modify field label output.
 	 * @since 1.7
 	 * @param string $label Field label HTML
 	 * @param array $field GravityView field array

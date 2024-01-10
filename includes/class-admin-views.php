@@ -408,14 +408,14 @@ class GravityView_Admin_Views {
 		);
 
 		/**
-		 * @filter `gravityview_tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
+		 * The tooltips GravityView adds to the Gravity Forms tooltip array.
 		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
 		 * @deprecated Renamed to `gravityview/metaboxes/tooltips`
 		 */
 		$gv_tooltips = apply_filters( 'gravityview_tooltips', $gv_tooltips );
 
 		/**
-		 * @filter `gravityview/metaboxes/tooltips` The tooltips GravityView adds to the Gravity Forms tooltip array
+		 * The tooltips GravityView adds to the Gravity Forms tooltip array.
 		 * @param array $gv_tooltips Associative array with unique keys containing array of `title` and `value` keys, as expected by `gform_tooltips` filter
 		 */
 		$gv_tooltips = apply_filters( 'gravityview/metaboxes/tooltips', $gv_tooltips );
@@ -546,7 +546,7 @@ class GravityView_Admin_Views {
 		}
 
 		/**
-		 * @filter `gravityview_connected_form_links` Modify the links shown in the Connected Form links
+		 * Modify the links shown in the Connected Form links.
 		 * @since 1.6
 		 * @param array $links Links to show
 		 * @param array $form Gravity Forms form array
@@ -693,7 +693,7 @@ class GravityView_Admin_Views {
 		} // end save view configuration
 
 		/**
-		 * @action `gravityview_view_saved` After a View has been saved in the admin
+		 * After a View has been saved in the admin.
 		 * @param int $post_id ID of the View that has been saved
 		 * @param array $statii Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (`directory_widgets` => `124`). If failed (or didn't change), the value will be false.
 		 * @since 1.17.2
@@ -800,7 +800,7 @@ class GravityView_Admin_Views {
 		);
 
 		/**
-		 * @filter `gravityview_additional_fields` non-standard Fields to show at the bottom of the field picker
+		 * non-standard Fields to show at the bottom of the field picker.
 		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
 		 */
 		$additional_fields = apply_filters( 'gravityview_additional_fields', $additional_fields );
@@ -857,7 +857,7 @@ class GravityView_Admin_Views {
 		}
 
 		/**
-		 * @filter `gravityview_entry_default_fields` Modify the default fields for each zone and context
+		 * Modify the default fields for each zone and context.
 		 * @param array $entry_default_fields Array of fields shown by default
 		 * @param  string|array $form form_ID or form object
 		 * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
@@ -915,7 +915,7 @@ class GravityView_Admin_Views {
 		}
 
 		/**
-		 * @filter `gravityview/admin/available_fields` Modify the available fields that can be used in a View.
+		 * Modify the available fields that can be used in a View.
 		 * @param array $fields The fields.
 		 * @param  string|array $form form_ID or form object
 		 * @param  string $zone Either 'single', 'directory', 'header', 'footer'
@@ -1196,7 +1196,7 @@ class GravityView_Admin_Views {
 				);
 
 				/**
-				 * @filter `gravityview/view/widgets/default` Modify the default widgets for new Views
+				 * Modify the default widgets for new Views.
 				 * @param array $widgets A Widget configuration array
 				 * @param string $zone The widget zone that's being requested
 				 * @param int $post_id The auto-draft post ID

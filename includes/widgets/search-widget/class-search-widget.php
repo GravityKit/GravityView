@@ -178,7 +178,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function set_search_method() {
 		/**
-		 * @filter `gravityview/search/method` Modify the search form method (GET / POST)
+		 * Modify the search form method (GET / POST).
 		 * @since 1.16.4
 		 * @param string $search_method Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
 		 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
@@ -229,7 +229,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		);
 
 		/**
-		 * @filter `gravityview/search/input_types` Change the types of search fields available to a field type
+		 * Change the types of search fields available to a field type.
 		 * @see GravityView_Widget_Search::get_search_input_labels() for the available input types
 		 * @param array $input_types Associative array: key is field `name`, value is array of GravityView input types (note: use `input_text` for `text`)
 		 */
@@ -264,7 +264,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		);
 
 		/**
-		 * @filter `gravityview/search/input_types` Change the label of search field input types
+		 * Change the label of search field input types.
 		 * @param array $input_types Associative array: key is input type name, value is label
 		 */
 		$input_labels = apply_filters( 'gravityview/search/input_labels', $input_labels );
@@ -414,7 +414,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$fields = gravityview_get_form_fields( $form_id, true, true );
 
 		/**
-		 * @filter `gravityview/search/searchable_fields` Modify the fields that are displayed as searchable in the Search Bar dropdown\n
+		 * Modify the fields that are displayed as searchable in the Search Bar dropdown\n.
 		 * @since 1.17
 		 * @see gravityview_get_form_fields() Used to fetch the fields
 		 * @see GravityView_Widget_Search::get_search_input_types See this method to modify the type of input types allowed for a field
@@ -476,7 +476,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview/extension/search/input_type` Modify the search form input type based on field type
+		 * Modify the search form input type based on field type.
 		 * @since 1.2
 		 * @since 1.19.2 Added $field_id parameter
 		 * @param string $input_type Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
@@ -589,7 +589,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_fields = apply_filters_deprecated( 'gravityview/search/searchable_fields/whitelist', array( $searchable_fields, $view, $with_full_field ), '2.14', 'gravityview/search/searchable_fields/allowlist' );
 
 		/**
-		 * @filter `gravityview/search/searchable_fields/allowlist` Modifies the fields able to be searched using the Search Bar
+		 * Modifies the fields able to be searched using the Search Bar.
 		 * @since 2.14
 		 *
 		 * @param array $searchable_fields Array of GravityView-formatted fields or only the field ID? Example: [ '1.2', 'created_by' ]
@@ -659,18 +659,22 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
 
 		/**
-		 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
+		 * Search for each word separately or the whole phrase?
 		 * @since 1.20.2
+		 * @since TODO Added $view parameter
 		 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
+		 * @param \GV\View $view The View being searched
 		 */
-		$split_words = apply_filters( 'gravityview/search-all-split-words', true );
+		$split_words = apply_filters( 'gravityview/search-all-split-words', true, $view );
 
 		/**
-		 * @filter `gravityview/search-trim-input` Remove leading/trailing whitespaces from search value
+		 * Remove leading/trailing whitespaces from search value.
 		 * @since 2.9.3
+		 * @since TODO Added $view parameter
 		 * @param bool $trim_search_value True: remove whitespace; False: keep as is [Default: true]
+		 * @param \GV\View $view The View being searched
 		 */
-		$trim_search_value = apply_filters( 'gravityview/search-trim-input', true );
+		$trim_search_value = apply_filters( 'gravityview/search-trim-input', true, $view );
 
 		// add free search
 		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
@@ -733,7 +737,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			/**
-			 * @filter `gravityview_date_created_adjust_timezone` Whether to adjust the timezone for entries. \n
+			 * Whether to adjust the timezone for entries. \n.
 			 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php). \n
 			 * This is for backward compatibility before \GF_Query started to automatically apply the timezone offset.
 			 * @since 1.12
@@ -799,7 +803,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
 				/**
-				 * @filter `gravityview/search/ignore-empty-values` Filter to control if empty field values should be ignored or strictly matched (default: true)
+				 * Filter to control if empty field values should be ignored or strictly matched (default: true).
 				 * @since  2.14.2.1
 				 * @param bool $ignore_empty_values
 				 * @param int|null $filter_key
@@ -847,7 +851,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview/search/mode` Set the Search Mode (`all` or `any`)
+		 * or `any`).
 		 * @since 1.5.1
 		 * @param string $mode Search mode (`any` vs `all`)
 		 */
@@ -963,7 +967,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			/**
-			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
+			 * Modify the search operator for the field (contains, is, isnot, etc).
 			 * @since 2.0 Added $view parameter
 			 * @param string $operator Existing search operator
 			 * @param array $filter array with `key`, `value`, `operator`, `type` keys
@@ -1524,7 +1528,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		gravityview()->log->debug( 'Calculated Search Fields: ', array( 'data' => $search_fields ) );
 
 		/**
-		 * @filter `gravityview_widget_search_filters` Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
+		 * Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
 		 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type`, `choices` keys
 		 * @param GravityView_Widget_Search $this Current widget object
 		 * @param array $widget_args Args passed to this method. {@since 1.8}
@@ -1573,7 +1577,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview_search_class` Modify the CSS class for the search form
+		 * Modify the CSS class for the search form.
 		 * @param string $search_class The CSS class for the search form
 		 */
 		$search_class = apply_filters( 'gravityview_search_class', $search_class );
@@ -1600,7 +1604,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$url = add_query_arg( array(), get_permalink( $post_id ) );
 
 		/**
-		 * @filter `gravityview/widget/search/form/action` Override the search URL.
+		 * Override the search URL.
 		 * @param string $action Where the form submits to.
 		 *
 		 * Further parameters will be added once adhoc context is added.
@@ -1654,7 +1658,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview_search_field_label` Modify the label for a search field. Supports returning HTML
+		 * Modify the label for a search field. Supports returning HTML.
 		 * @since 1.17.3 Added $field parameter
 		 * @param string $label Existing label text, sanitized.
 		 * @param array $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
@@ -1727,7 +1731,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview/search/filter_details` Filter the output filter details for the Search widget.
+		 * Filter the output filter details for the Search widget.
 		 * @since 2.5
 		 * @param array $filter The filter details
 		 * @param array $field The search field configuration
@@ -1766,7 +1770,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$field = gravityview_get_field( $context->view->form->form, $filter['key'] );  // @todo Support multiple forms (joins)
 
 			/**
-			 * @filter `gravityview/search/sieve_choices` Only output used choices for this field.
+			 * Only output used choices for this field.
 			 * @since 2.16 Modified default value to the `sieve_choices` widget setting and added $widget_args parameter.
 			 *
 			 * @param bool $sieve_choices True: Yes, filter choices based on whether the value exists in entries. False: show all choices in the original field. Default: false.
@@ -1902,7 +1906,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$choices = array();
 		foreach ( $users as $user ) {
 			/**
-			 * @filter `gravityview/search/created_by/text` Filter the display text in created by search choices
+			 * Filter the display text in created by search choices.
 			 * @since 2.3
 			 * @param string[in,out] The text. Default: $user->display_name
 			 * @param \WP_User $user The user.
@@ -2004,7 +2008,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		global $wp_locale;
 
 		/**
-		 * @filter `gravityview_datepicker_settings` Modify the datepicker settings
+		 * Modify the datepicker settings.
 		 * @see http://api.jqueryui.com/datepicker/ Learn what settings are available
 		 * @see http://www.renegadetechconsulting.com/tutorials/jquery-datepicker-and-wordpress-i18n Thanks for the helpful information on $wp_locale
 		 * @param array $js_localization The data padded to the Javascript file
@@ -2191,7 +2195,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$allowed = apply_filters_deprecated( 'gravityview/search/operator_whitelist', array( $allowed, $key ), '2.14', 'gravityview/search/operator_allowlist' );
 
 		/**
-		 * @filter `gravityview/search/operator_allowlist` An array of allowed operators for a field.
+		 * An array of allowed operators for a field.
 		 * @since 2.14
 		 * @param string[] An allowlist of operators.
 		 * @param string The filter name.
@@ -2231,7 +2235,7 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		);
 
 		/**
-		 * @filter `gravityview/widgets/search/created_by/user_meta_fields` Filter the user meta fields to search.
+		 * Filter the user meta fields to search.
 		 * @param array The user meta fields.
 		 * @param \GV\View $view The view.
 		 */
@@ -2245,7 +2249,7 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		);
 
 		/**
-		 * @filter `gravityview/widgets/search/created_by/user_fields` Filter the user fields to search.
+		 * Filter the user fields to search.
 		 * @param array The user fields.
 		 * @param \GV\View $view The view.
 		 */

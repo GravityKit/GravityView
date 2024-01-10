@@ -509,7 +509,7 @@ class GravityView_frontend {
 		$entry = $gventry->as_entry();
 
 		/**
-		 * @filter `gravityview/single/title/out_loop` Apply the Single Entry Title filter outside the WordPress loop?
+		 * Apply the Single Entry Title filter outside the WordPress loop?
 		 * @param boolean $in_the_loop Whether to apply the filter to the menu title and the meta tag <title> - outside the loop
 		 * @param array $entry Current entry
 		 */
@@ -580,7 +580,7 @@ class GravityView_frontend {
 		}
 
 		/**
-		 * @filter `gravityview/single/title/check_entry_display` Override whether to check entry display rules against filters
+		 * Override whether to check entry display rules against filters.
 		 * @internal This might change in the future! Don't rely on it.
 		 * @since 2.7.2
 		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
@@ -639,7 +639,7 @@ class GravityView_frontend {
 		}
 
 		/**
-		 * @filter `gravityview/comments_open` Whether to set comments to open or closed.
+		 * Whether to set comments to open or closed.
 		 * @since  1.5.4
 		 * @param  boolean $open Open or closed status
 		 * @param  int $post_id Post ID to set comment status for
@@ -994,7 +994,7 @@ class GravityView_frontend {
 		$search_criteria = isset( $criteria['search_criteria'] ) ? $criteria['search_criteria'] : array( 'field_filters' => array() );
 
 		/**
-		 * @filter `gravityview_fe_search_criteria` Modify the search criteria
+		 * Modify the search criteria.
 		 * @see GravityView_Widget_Search::filter_entries Adds the default search criteria
 		 * @param array $search_criteria Empty `field_filters` key
 		 * @param int $form_id ID of the Gravity Forms form that is being searched
@@ -1041,7 +1041,7 @@ class GravityView_frontend {
 		$search_criteria = self::process_search_only_approved( $args, $search_criteria );
 
 		/**
-		 * @filter `gravityview_status` Modify entry status requirements to be included in search results.
+		 * Modify entry status requirements to be included in search results.
 		 * @param string $status Default: `active`. Accepts all Gravity Forms entry statuses, including `spam` and `trash`
 		 */
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
@@ -1097,7 +1097,7 @@ class GravityView_frontend {
 		);
 
 		/**
-		 * @filter `gravityview_view_entries` Filter the entries output to the View
+		 * Filter the entries output to the View.
 		 * @deprecated since 1.5.2
 		 * @param array $args View settings associative array
 		 * @var array
@@ -1111,7 +1111,7 @@ class GravityView_frontend {
 		);
 
 		/**
-		 * @filter `gravityview/view/entries` Filter the entries output to the View
+		 * Filter the entries output to the View.
 		 * @param array $criteria associative array containing count, entries & paging
 		 * @param array $args View settings associative array
 		 * @since 1.5.2
@@ -1146,6 +1146,7 @@ class GravityView_frontend {
 		}
 
 		$form_id = intval( $form_id );
+		$view_id = \GV\Utils::get( $args, 'id' );
 
 		/**
 		 * Process search parameters
@@ -1164,7 +1165,7 @@ class GravityView_frontend {
 		);
 
 		/**
-		 * @filter `gravityview_get_entries` Filter get entries criteria
+		 * Filter get entries criteria.
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
 		 * @param array $args View configuration args. {
 		 *      @type int $id View id
@@ -1181,11 +1182,11 @@ class GravityView_frontend {
 		$parameters = apply_filters( 'gravityview_get_entries', $parameters, $args, $form_id );
 
 		/**
-		 * @filter `gravityview_get_entries_{View ID}` Filter get entries criteria
+		 * Filter get entries criteria for a specific View.
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
 		 * @param array $args View configuration args.
 		 */
-		$parameters = apply_filters( 'gravityview_get_entries_' . \GV\Utils::get( $args, 'id' ), $parameters, $args, $form_id );
+		$parameters = apply_filters( "gravityview_get_entries_{$view_id}", $parameters, $args, $form_id );
 
 		gravityview()->log->debug( '$parameters passed to gravityview_get_entries(): ', array( 'data' => $parameters ) );
 
@@ -1203,7 +1204,7 @@ class GravityView_frontend {
 	public static function get_search_criteria_paging( $args ) {
 
 		/**
-		 * @filter `gravityview_default_page_size` The default number of entries displayed in a View
+		 * The default number of entries displayed in a View.
 		 * @since 1.1.6
 		 * @param int $default_page_size Default: 25
 		 */
@@ -1402,7 +1403,7 @@ class GravityView_frontend {
 				// Sorting by full name, not first, last, etc.
 				if ( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
 					/**
-					 * @filter `gravityview/sorting/full-name` Override how to sort when sorting full name.
+					 * Override how to sort when sorting full name.
 					 * @since 1.7.4
 					 * @param string $name_part Sort by `first` or `last` (default: `first`)
 					 * @param string $sort_field_id Field used for sorting
@@ -1422,7 +1423,7 @@ class GravityView_frontend {
 				break;
 			case 'time':
 				/**
-				 * @filter `gravityview/sorting/time` Override how to sort when sorting time
+				 * Override how to sort when sorting time.
 				 * @see GravityView_Field_Time
 				 * @since 1.14
 				 * @param string $name_part Field used for sorting
@@ -1501,14 +1502,14 @@ class GravityView_frontend {
 					global $wp_filter;
 
 					/**
-					 * @filter `gravity_view_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * Override the lightbox script to enqueue. Default: `thickbox`.
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_script` instead.
 					 */
 					$js_dependency = apply_filters_deprecated( 'gravity_view_lightbox_script', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_script' );
 
 					/**
-					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * Override the lightbox script to enqueue. Default: `thickbox`.
 					 * @since 2.5.1
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @param \GV\View The View.
@@ -1517,14 +1518,14 @@ class GravityView_frontend {
 					$js_dependencies[] = $js_dependency;
 
 					/**
-					 * @filter `gravity_view_lightbox_style` Modify the lightbox CSS slug. Default: `thickbox`
+					 * Modify the lightbox CSS slug. Default: `thickbox`.
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
 					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_style` instead.
 					 */
 					$css_dependency = apply_filters_deprecated( 'gravity_view_lightbox_style', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_style' );
 
 					/**
-					 * @filter `gravityview_lightbox_script` Override the lightbox script to enqueue. Default: `thickbox`
+					 * Override the lightbox script to enqueue. Default: `thickbox`.
 					 * @since 2.5.1
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @param \GV\View The View.
@@ -1583,7 +1584,7 @@ class GravityView_frontend {
 				);
 
 				/**
-				 * @filter `gravityview_js_localization` Modify the array passed to wp_localize_script()
+				 * Modify the array passed to wp_localize_script().
 				 * @param array $js_localization The data padded to the Javascript file
 				 * @param array $views Array of View data arrays with View settings
 				 */
@@ -1606,7 +1607,7 @@ class GravityView_frontend {
 	private function enqueue_default_style( $css_dependencies = array() ) {
 
 		/**
-		 * @filter `gravityview_use_legacy_search_css` Should GravityView use the legacy Search Bar stylesheet (from before Version 1.17)?
+		 * Should GravityView use the legacy Search Bar stylesheet (from before Version 1.17)?
 		 * @since 1.17
 		 * @param bool $use_legacy_search_style If true, loads `gv-legacy-search(-rtl).css`. If false, loads `gv-default-styles(-rtl).css`. `-rtl` is added on RTL websites. Default: `false`
 		 */
@@ -1729,7 +1730,7 @@ class GravityView_frontend {
 		$not_sortable = apply_filters_deprecated( 'gravityview/sortable/field_blacklist', array( $not_sortable, $field_type, $form ), '2.14', 'gravityview/sortable/field_blocklist' );
 
 		/**
-		 * @filter `gravityview/sortable/field_blocklist` Modify what fields should never be sortable.
+		 * Modify what fields should never be sortable.
 		 * @since 2.14
 		 * @param array $not_sortable Array of field types that aren't sortable.
 		 * @param string $field_type Field type to check whether the field is sortable.

@@ -491,7 +491,7 @@ final class Plugin {
 	public function supports( $feature ) {
 
 		/**
-		 * @filter `gravityview/supports` Overrides whether GravityView supports a feature.
+		 * Overrides whether GravityView supports a feature.
 		 * @since 2.0
 		 * @param boolean|null $supports Whether the feature is supported. Default: null.
 		 */
@@ -651,7 +651,7 @@ final class Plugin {
 	/**
 	 * Returns the URL to the "All Views" page.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @return string
 	 */
@@ -665,7 +665,7 @@ final class Plugin {
 	/**
 	 * Returns the URL to the "New View" page.
 	 *
-	 * @since $ver$
+	 * @since 2.17
 	 *
 	 * @return string
 	 */

@@ -489,7 +489,7 @@ final class GravityView_Duplicate_Entry {
 		$row['created_by']   = wp_get_current_user()->ID;
 
 		/**
-		 * @filter `gravityview/entry/duplicate/details` Modify the new entry details before it's created.
+		 * Modify the new entry details before it's created.
 		 * @since 2.5
 		 * @param array $row The entry details
 		 * @param array $entry The original entry
@@ -525,7 +525,7 @@ final class GravityView_Duplicate_Entry {
 		$row['id'] = $duplicated_id;
 
 		/**
-		 * @filter `gravityview/entry/duplicate/meta` Modify the new entry meta details.
+		 * Modify the new entry meta details.
 		 * @param array $save_this_meta The duplicate meta. Use/add meta_key, meta_value, item_index.
 		 * @param array $row The duplicated entry
 		 * @param array $entry The original entry
@@ -546,7 +546,7 @@ final class GravityView_Duplicate_Entry {
 		$duplicate_response = 'duplicated';
 
 		/**
-		 * @action `gravityview/duplicate-entry/duplicated` Triggered when an entry is duplicated
+		 * Triggered when an entry is duplicated.
 		 * @since 2.5
 		 * @param  array $duplicated_entry The duplicated entry
 		 * @param  array $entry The original entry
@@ -577,7 +577,7 @@ final class GravityView_Duplicate_Entry {
 		$valid = wp_verify_nonce( $_GET['duplicate'], $nonce_key );
 
 		/**
-		 * @filter `gravityview/duplicate-entry/verify_nonce` Override Duplicate Entry nonce validation. Return true to declare nonce valid.
+		 * Override Duplicate Entry nonce validation. Return true to declare nonce valid.
 		 * @since 2.5
 		 * @see wp_verify_nonce()
 		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
@@ -600,7 +600,7 @@ final class GravityView_Duplicate_Entry {
 		$confirm = __( 'Are you sure you want to duplicate this entry?', 'gk-gravityview' );
 
 		/**
-		 * @filter `gravityview/duplicate-entry/confirm-text` Modify the Duplicate Entry Javascript confirmation text (will be sanitized when output)
+		 * Modify the Duplicate Entry Javascript confirmation text (will be sanitized when output).
 		 *
 		 * @param string $confirm Default: "Are you sure you want to duplicate this entry?". If empty, disable confirmation dialog.
 		 */
@@ -782,7 +782,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		/**
-		 * @filter `gravityview/duplicate-entry/message` Modify the Duplicate Entry messages. Allows HTML; will not be further sanitized.
+		 * Modify the Duplicate Entry messages. Allows HTML; will not be further sanitized.
 		 * @since 2.5
 		 * @param string $message Message to be displayed, sanitized using esc_attr()
 		 * @param string $status Message status (`error` or `success`)
@@ -810,7 +810,7 @@ final class GravityView_Duplicate_Entry {
 	public function make_duplicate_link_row( $form_id, $field_id, $value, $entry, $query_string ) {
 
 		/**
-		 * @filter `gravityview/duplicate/backend/enable` Disables the duplicate link on the backend.
+		 * Disables the duplicate link on the backend.
 		 * @param boolean $enable True by default. Enabled.
 		 * @param int $form_id The form ID.
 		 */

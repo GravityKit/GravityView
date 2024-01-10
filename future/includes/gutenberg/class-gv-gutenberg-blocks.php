@@ -174,7 +174,7 @@ class Blocks {
 	 */
 	public function localize_block_assets() {
 		/**
-		 * @filter `gk/gravityview/gutenberg/blocks/localization` Modifies the global blocks localization data.
+		 * Modifies the global blocks localization data.
 		 *
 		 * @since  2.17
 		 *
@@ -238,7 +238,7 @@ class Blocks {
 		);
 
 		/**
-		 * @filter `gk/gravityview/gutenberg/blocks/views` Modifies the Views object used in the UI.
+		 * Modifies the Views object used in the UI.
 		 *
 		 * @since  2.17
 		 *
