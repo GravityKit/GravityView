@@ -364,7 +364,7 @@ class View implements \ArrayAccess {
 		 * Editing a single entry.
 		 */
 		if ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) {
-			if ( $entry['status'] != 'active' ) {
+			if ( 'active' != $entry['status'] ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 			}
@@ -478,15 +478,15 @@ class View implements \ArrayAccess {
 
 		if ( in_array( 'rest', $context ) ) {
 			// REST
-			if ( gravityview()->plugin->settings->get( 'rest_api' ) && $this->settings->get( 'rest_disable' ) === '1' ) {
+			if ( gravityview()->plugin->settings->get( 'rest_api' ) && '1' === $this->settings->get( 'rest_disable' ) ) {
 				return new \WP_Error( 'gravityview/rest_disabled' );
-			} elseif ( ! gravityview()->plugin->settings->get( 'rest_api' ) && $this->settings->get( 'rest_enable' ) !== '1' ) {
+			} elseif ( ! gravityview()->plugin->settings->get( 'rest_api' ) && '1' !== $this->settings->get( 'rest_enable' ) ) {
 				return new \WP_Error( 'gravityview/rest_disabled' );
 			}
 		}
 
 		if ( in_array( 'csv', $context ) ) {
-			if ( $this->settings->get( 'csv_enable' ) !== '1' ) {
+			if ( '1' !== $this->settings->get( 'csv_enable' ) ) {
 				return new \WP_Error( 'gravityview/csv_disabled', 'The CSV endpoint is not enabled for this View' );
 			}
 		}
@@ -580,7 +580,7 @@ class View implements \ArrayAccess {
 		}
 
 		foreach ( $joins_meta as $meta ) {
-			if ( ! is_array( $meta ) || count( $meta ) != 4 ) {
+			if ( ! is_array( $meta ) || 4 != count( $meta ) ) {
 				continue;
 			}
 
@@ -633,7 +633,7 @@ class View implements \ArrayAccess {
 		}
 
 		foreach ( $joins_meta  as $meta ) {
-			if ( ! is_array( $meta ) || count( $meta ) != 4 ) {
+			if ( ! is_array( $meta ) || 4 != count( $meta ) ) {
 				continue;
 			}
 
@@ -676,7 +676,7 @@ class View implements \ArrayAccess {
 		}
 
 		foreach ( $fields as $location => $_fields ) {
-			if ( strpos( $location, 'directory_' ) !== 0 ) {
+			if ( 0 !== strpos( $location, 'directory_' ) ) {
 				continue;
 			}
 
@@ -874,7 +874,7 @@ class View implements \ArrayAccess {
 	 * @return bool Whether the post exists or not.
 	 */
 	public static function exists( $view ) {
-		return get_post_type( $view ) == 'gravityview';
+		return 'gravityview' == get_post_type( $view );
 	}
 
 	/**
@@ -1133,14 +1133,14 @@ class View implements \ArrayAccess {
 						if ( $order[0] instanceof \GF_Query_Column ) {
 							$column = $order[0];
 						} elseif ( $order[0] instanceof \GF_Query_Call ) {
-							if ( count( $order[0]->columns ) != 1 || ! $order[0]->columns[0] instanceof \GF_Query_Column ) {
+							if ( 1 != count( $order[0]->columns ) || ! $order[0]->columns[0] instanceof \GF_Query_Column ) {
 								$orders[ $oid ] = $order;
 								continue; // Need something that resembles a single sort
 							}
 							$column = $order[0]->columns[0];
 						}
 
-						if ( ! $column || ( ! $field = \GFAPI::get_field( $column->source, $column->field_id ) ) || $field->type !== 'time' ) {
+						if ( ! $column || ( ! $field = \GFAPI::get_field( $column->source, $column->field_id ) ) || 'time' !== $field->type ) {
 							$orders[ $oid ] = $order;
 							continue; // Not a time field
 						}
@@ -1241,7 +1241,7 @@ class View implements \ArrayAccess {
 						}
 
 						return call_user_func_array(
-							array( '\GF_Query_Condition', $condition->operator == 'AND' ? '_and' : '_or' ),
+							array( '\GF_Query_Condition', 'AND' == $condition->operator ? '_and' : '_or' ),
 							$conditions
 						);
 					}
@@ -1417,7 +1417,7 @@ class View implements \ArrayAccess {
 			if ( ! empty( $parameters['sorting'] ) && ! empty( $parameters['sorting']['key'] ) ) {
 				$field     = new \GV\Field();
 				$field->ID = $parameters['sorting']['key'];
-				$direction = strtolower( $parameters['sorting']['direction'] ) == 'asc' ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
+				$direction = 'asc' == strtolower( $parameters['sorting']['direction'] ) ? \GV\Entry_Sort::ASC : \GV\Entry_Sort::DESC;
 				$entries   = $entries->sort( new \GV\Entry_Sort( $field, $direction ) );
 			}
 		}

@@ -385,7 +385,7 @@ class GravityView_Admin_ApproveEntries {
 
 		// enqueue styles & scripts gf_entries
 		// But only if we're on the main Entries page, not on reports pages
-		if ( GFForms::get_page() !== 'entry_list' ) {
+		if ( 'entry_list' !== GFForms::get_page() ) {
 			return;
 		}
 

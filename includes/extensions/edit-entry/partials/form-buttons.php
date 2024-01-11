@@ -4,13 +4,13 @@
  * @global GravityView_Edit_Entry_Render $object
  */
 
-if ( current_filter() === 'gform_previous_button' ) {
+if ( 'gform_previous_button' === current_filter() ) {
 	if ( $object->show_previous_button || $object->show_update_button ) {
 		return; // Will be called later once more
 	}
 }
 
-if ( current_filter() === 'gform_next_button' ) {
+if ( 'gform_next_button' === current_filter() ) {
 	if ( $object->show_update_button ) {
 		return; // Will be called later once more
 	}

@@ -156,7 +156,7 @@ class GF_Patched_Query extends GF_Query {
 				$field = GFAPI::get_field( $form_id, $sort_field );
 
 				if ( $field instanceof GF_Field ) {
-					$force_order_numeric = $field->get_input_type() == 'number';
+					$force_order_numeric = 'number' == $field->get_input_type();
 				} else {
 					$entry_meta          = GFFormsModel::get_entry_meta( $form_id );
 					$force_order_numeric = rgars( $entry_meta, $sort_field . '/is_numeric' );
@@ -170,7 +170,7 @@ class GF_Patched_Query extends GF_Query {
 
 		$this->from( $from );
 
-		if ( $sort_dir_query == 'RAND' ) {
+		if ( 'RAND' == $sort_dir_query ) {
 			$this->order( GF_Query_Call::RAND() );
 		} else {
 			$this->order( $order, $sort_dir_query );
@@ -303,7 +303,7 @@ class GF_Patched_Query extends GF_Query {
 
 				$form = GFFormsModel::get_form_meta( $form_id );
 				$field = GFFormsModel::get_field( $form, $key );
-				if ( $field && $operator != GF_Query_Condition::LIKE && ( $field->get_input_type() == 'number' || rgar( $filter, 'is_numeric' ) ) ) {
+				if ( $field && GF_Query_Condition::LIKE != $operator && ( 'number' == $field->get_input_type() || rgar( $filter, 'is_numeric' ) ) ) {
 					if ( ! is_numeric( $value ) ) {
 						$value = floatval( $value );
 					}
@@ -317,7 +317,7 @@ class GF_Patched_Query extends GF_Query {
 
 				if ( is_array( $value ) ) {
 					foreach ( $value as &$v ) {
-						$v = $field && $field->storageType == 'json' ? new GF_Query_JSON_Literal( (string) $v ) : new GF_Query_Literal( $v );
+						$v = $field && 'json' == $field->storageType ? new GF_Query_JSON_Literal( (string) $v ) : new GF_Query_Literal( $v );
 					}
 					$value = new GF_Query_Series( $value );
 
@@ -330,7 +330,7 @@ class GF_Patched_Query extends GF_Query {
 					continue;
 				}
 
-				if ( $key == 'date_created' && $operator == GF_Query_Condition::EQ ) {
+				if ( 'date_created' == $key && GF_Query_Condition::EQ == $operator ) {
 					$search_date           = new DateTime( $value );
 					$search_date_str       = $search_date->format( 'Y-m-d' );
 					$date_created_start    = $search_date_str . ' 00:00:00';
@@ -349,7 +349,7 @@ class GF_Patched_Query extends GF_Query {
 					continue;
 				}
 
-				$literal = $field && $field->storageType == 'json' ? new GF_Query_JSON_Literal( (string) $value ) : new GF_Query_Literal( (string) $value );
+				$literal = $field && 'json' == $field->storageType ? new GF_Query_JSON_Literal( (string) $value ) : new GF_Query_Literal( (string) $value );
 
 				$column = count( $from ) > 1 ? new GF_Query_Column( $key ) : new GF_Query_Column( $key, $form_id );
 				$filters[] = new GF_Query_Condition(
@@ -360,7 +360,7 @@ class GF_Patched_Query extends GF_Query {
 
 			}
 
-			$condition_mode = strtolower( $search_mode ) == 'any' ? '_or' : '_and';
+			$condition_mode = 'any' == strtolower( $search_mode ) ? '_or' : '_and';
 			if ( count( $filters ) > 1 ) {
 				$filters_condition = call_user_func_array( array( 'GF_Query_Condition', $condition_mode ), $filters );
 			} elseif ( $filters ) {
@@ -390,7 +390,7 @@ class GF_Patched_Query extends GF_Query {
 
 		// include choice text
 		$forms = array();
-		if ( $form_ids == 0 ) {
+		if ( 0 == $form_ids ) {
 			$forms = GFAPI::get_forms();
 		} elseif ( is_array( $form_ids ) ) {
 			foreach ( $form_ids as $id ) {
@@ -438,7 +438,7 @@ class GF_Patched_Query extends GF_Query {
 					/* @var GF_Field $field */
 					if ( is_array( $field->choices ) ) {
 						foreach ( $field->choices as $choice ) {
-							if ( ( $operator == '=' && strtolower( $choice['text'] ) == strtolower( $val ) ) || ( $operator == 'LIKE' && ! empty( $val ) && strpos( strtolower( $choice['text'] ), strtolower( $val ) ) !== false ) ) {
+							if ( ( '=' == $operator && strtolower( $choice['text'] ) == strtolower( $val ) ) || ( 'LIKE' == $operator && ! empty( $val ) && false !== strpos( strtolower( $choice['text'] ), strtolower( $val ) ) ) ) {
 								if ( $field->gsurveyLikertEnableMultipleRows ) {
 									$choice_value           = $choice['value'];
 									$choice_search_operator = 'like';
@@ -471,7 +471,7 @@ class GF_Patched_Query extends GF_Query {
 				$val
 			);
 		} else {
-			if ( $original_operator == 'CONTAINS' ) {
+			if ( 'CONTAINS' == $original_operator ) {
 				$val = '%' . $val . '%';
 			}
 			$choice_filters[] = new GF_Query_Condition(
@@ -1017,7 +1017,7 @@ class GF_Patched_Query extends GF_Query {
 				/**
 				 * On meta joins, the joined entry table is missing. It has to be added.
 				 */
-				if ( ! $column->alias && ( $this->_alias( null, $column->source ) !== 't1' ) ) {
+				if ( ! $column->alias && ( 't1' !== $this->_alias( null, $column->source ) ) ) {
 					$this->_inferred_joins []= sprintf( '`%s` AS `%d` ON `%%s`.`id` = `%%s`.`entry_id`', // the rest is filled in during _priming
 						GFFormsModel::get_entry_table_name(), $column->source
 					);
@@ -1027,7 +1027,7 @@ class GF_Patched_Query extends GF_Query {
 
 			$alias = $column->alias ? $column->alias : $this->_alias( $column->field_id, $column->source, 'm' );
 
-			if ( ! $column->is_meta_column() && $column->field_id != GF_Query_Column::META ) {
+			if ( ! $column->is_meta_column() && GF_Query_Column::META != $column->field_id ) {
 				if ( $column->field_id == intval( $column->field_id ) && ( $field = GFFormsModel::get_field( GFAPI::get_form( $column->source ? $column->source : reset( $this->from ) ), $column->field_id ) ) && $field->get_entry_inputs() ) {
 					/**
 					 * Multi-input across all inputs.
@@ -1150,7 +1150,7 @@ class GF_Patched_Query extends GF_Query {
 				if ( ! in_array( $matches[1], $explicit_join_aliases ) ) {
 					if ( ( $key = array_search( $matches[1], $this->aliases, true ) ) !== false ) {
 						list( $form_id, $field_id ) = explode( '_', $key );
-						if ( isset( $explicit_join_aliases[ $form_id ] ) && strpos( $explicit_join_aliases[ $form_id ], 't' ) !== 0 ) {
+						if ( isset( $explicit_join_aliases[ $form_id ] ) && 0 !== strpos( $explicit_join_aliases[ $form_id ], 't' ) ) {
 							list( $table, $on ) = explode( ' ON ', $join );
 							$join = implode( ' ON ', array( $table, sprintf( '`%s`.`entry_id` = `%s`.`entry_id`', $matches[1], $explicit_join_aliases[ $form_id ] ) ) );
 						}
@@ -1287,7 +1287,7 @@ class GF_Patched_Query extends GF_Query {
 			$conditions = array_filter( array_map( array( $this, __FUNCTION__ ), $condition->expressions ), 'strlen' );
 
 			if ( count( $conditions ) ) {
-				return count( $conditions ) == 1 ? current( $conditions ) : '(' . implode( " {$condition->operator} ", $conditions ) . ')';
+				return 1 == count( $conditions ) ? current( $conditions ) : '(' . implode( " {$condition->operator} ", $conditions ) . ')';
 			}
 
 			return '';
@@ -1531,7 +1531,7 @@ AND ( meta_key REGEXP '^[0-9|.]+$'
 					$joined_entries[ $entries[ $id ][ 'form_id' ] ] = &$entries[ $id ];
 				}
 				$results[] = $joined_entries;
-			} elseif ( count( $entry_id ) == 1 ) {
+			} elseif ( 1 == count( $entry_id ) ) {
 				if ( ! isset( $entries[ $entry_id[0] ] ) ) {
 					continue;
 				}

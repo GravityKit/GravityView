@@ -74,7 +74,7 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 		 */
 		preg_match( '#\[et_pb_sidebar .*area="(.*?)"#', $post->post_content, $matches );
 
-		if ( count( $matches ) != 2 ) {
+		if ( 2 != count( $matches ) ) {
 			return $shortcodes;
 		}
 
@@ -88,8 +88,8 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 				/**
 				 * Blocklisted widgets.
 				 */
-				strpos( $widgets, 'gravityview_search' ) === 0 ||
-				strpos( $widgets, 'gv_recent_entries' ) === 0
+				0 === strpos( $widgets, 'gravityview_search' ) ||
+				0 === strpos( $widgets, 'gv_recent_entries' )
 			) {
 
 					$shortcodes [] = 'et_pb_sidebar';

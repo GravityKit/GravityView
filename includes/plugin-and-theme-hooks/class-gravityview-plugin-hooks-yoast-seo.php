@@ -159,7 +159,7 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 		global $pagenow;
 
 		// New View page
-		if ( $pagenow === 'post-new.php' ) {
+		if ( 'post-new.php' === $pagenow ) {
 			$options['hideeditbox-gravityview'] = true;
 		}
 

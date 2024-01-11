@@ -190,7 +190,7 @@ class gravityview extends \GV\Shortcode {
 				return self::_return( '' );
 			}
 
-			if ( $entry['status'] != 'active' ) {
+			if ( 'active' != $entry['status'] ) {
 				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 				return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 			}
@@ -224,7 +224,7 @@ class gravityview extends \GV\Shortcode {
 			$entryset = $entry->is_multi() ? $entry->entries : array( $entry );
 
 			foreach ( $entryset as $e ) {
-				if ( $e['status'] != 'active' ) {
+				if ( 'active' != $e['status'] ) {
 					gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $e->ID ) );
 					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
 				}

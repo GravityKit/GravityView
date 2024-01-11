@@ -115,7 +115,7 @@ class Utils {
 	 */
 	public static function strip_excel_formulas( $value ) {
 
-		if ( strpos( $value, '=' ) === 0 ) {
+		if ( 0 === strpos( $value, '=' ) ) {
 			$value = "'" . $value;
 		}
 
@@ -177,7 +177,7 @@ class Utils {
 				$conditions[] = self::gf_query_strip_condition_column_aliases( $expression );
 			}
 			return call_user_func_array(
-				array( '\GF_Query_Condition', $condition->operator == 'AND' ? '_and' : '_or' ),
+				array( '\GF_Query_Condition', 'AND' == $condition->operator ? '_and' : '_or' ),
 				$conditions
 			);
 		} elseif ( $condition->left instanceof \GF_Query_Column ) {

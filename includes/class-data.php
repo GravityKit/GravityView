@@ -89,7 +89,7 @@ class GravityView_View_Data {
 
 				$shortcodes = \GV\Shortcode::parse( $passed_post );
 			foreach ( $shortcodes as $shortcode ) {
-				if ( $shortcode->name == 'gravityview' && ! empty( $shortcode->atts['id'] ) ) {
+				if ( 'gravityview' == $shortcode->name && ! empty( $shortcode->atts['id'] ) ) {
 					$ids [] = $shortcode->atts['id'];
 
 					/** And as a side-effect... add each view to the global scope. */
@@ -109,7 +109,7 @@ class GravityView_View_Data {
 
 		// If it's just one ID, return that.
 		// Otherwise, return array of IDs
-		return ( count( $ids ) === 1 ) ? $ids[0] : $ids;
+		return ( 1 === count( $ids ) ) ? $ids[0] : $ids;
 	}
 
 	/**
@@ -257,7 +257,7 @@ class GravityView_View_Data {
 	public function parse_post_content( $content ) {
 		$ids = array();
 		foreach ( \GV\Shortcode::parse( $content ) as $shortcode ) {
-			if ( $shortcode->name == 'gravityview' && is_numeric( $shortcode->atts['id'] ) ) {
+			if ( 'gravityview' == $shortcode->name && is_numeric( $shortcode->atts['id'] ) ) {
 				if ( \GV\View::exists( $shortcode->atts['id'] ) && ! $this->views->contains( $shortcode->atts['id'] ) ) {
 					$this->views->add( \GV\View::by_id( $shortcode->atts['id'] ) );
 				}
@@ -272,7 +272,7 @@ class GravityView_View_Data {
 		if ( empty( $ids ) ) {
 			return null;
 		}
-		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
+		return ( 1 === sizeof( $ids ) ) ? $ids[0] : $ids;
 	}
 
 	/**

@@ -800,7 +800,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				continue;
 			}
 
-			if ( strpos( $key, '|op' ) !== false ) {
+			if ( false !== strpos( $key, '|op' ) ) {
 				continue; // This is an operator
 			}
 
@@ -810,7 +810,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$value = is_array( $value ) ? array_map( 'trim', $value ) : trim( $value );
 			}
 
-			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && count( $value ) === 1 && gv_empty( $value[0], false, false ) ) ) {
+			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && 1 === count( $value ) && gv_empty( $value[0], false, false ) ) ) {
 				/**
 				 * Filter to control if empty field values should be ignored or strictly matched (default: true).
                  *
@@ -1057,7 +1057,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 					$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
 
-					if ( $view->joins && $left->field_id == GF_Query_Column::META ) {
+					if ( $view->joins && GF_Query_Column::META == $left->field_id ) {
 						foreach ( $view->joins as $_join ) {
 							$on   = $_join->join_on;
 							$join = $_join->join;
@@ -1088,7 +1088,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			if ( $search_conditions ) {
-				$search_conditions = array( call_user_func_array( '\GF_Query_Condition::' . ( $mode == 'all' ? '_and' : '_or' ), $search_conditions ) );
+				$search_conditions = array( call_user_func_array( '\GF_Query_Condition::' . ( 'all' == $mode ? '_and' : '_or' ), $search_conditions ) );
 			}
 		}
 
@@ -1350,7 +1350,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						 * @since 1.16.3
 						 * Safeguard until GF implements '<=' operator
 						 */
-						if ( ! GFFormsModel::is_valid_operator( $operator ) && $operator === '<=' ) {
+						if ( ! GFFormsModel::is_valid_operator( $operator ) && '<=' === $operator ) {
 							$operator = '<';
 							$date     = date( 'Y-m-d', strtotime( self::get_formatted_date( $date, 'Y-m-d', $date_format ) . ' +1 day' ) );
 						}

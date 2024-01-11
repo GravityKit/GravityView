@@ -131,12 +131,12 @@ class GravityView_Roles_Capabilities_Test extends GV_UnitTestCase {
 		// editor can edit only drafts (no unfiltered cap), view, and trash
 		$this->assertFalse( $editor->has_cap( 'edit_gravityview', $post ) );
 		$this->assertTrue( $editor->has_cap( 'delete_gravityview', $post ) );
-		$this->assertEquals( $status !== 'draft', $editor->has_cap( 'read_gravityview', $post ) );
+		$this->assertEquals( 'draft' !== $status, $editor->has_cap( 'read_gravityview', $post ) );
 
 		// a contributor cannot (except read a published post)
 		$this->assertFalse( $contributor->has_cap( 'edit_gravityview', $post ) );
 		$this->assertFalse( $contributor->has_cap( 'delete_gravityview', $post ) );
-		$this->assertEquals( $status === 'publish', $contributor->has_cap( 'read_gravityview', $post ) );
+		$this->assertEquals( 'publish' === $status, $contributor->has_cap( 'read_gravityview', $post ) );
 	}
 
 	/**

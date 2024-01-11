@@ -348,7 +348,7 @@ class GravityView_Entry_Approval {
 	 */
 	public static function update_bulk( $entries = array(), $approved = 0, $form_id = 0 ) {
 
-		if ( empty( $entries ) || ( $entries !== true && ! is_array( $entries ) ) ) {
+		if ( empty( $entries ) || ( true !== $entries && ! is_array( $entries ) ) ) {
 			gravityview()->log->error( 'Entries were empty or malformed.', array( 'data' => $entries ) );
 			return null;
 		}

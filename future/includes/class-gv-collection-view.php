@@ -168,7 +168,7 @@ class View_Collection extends Collection {
 
 		/** Let's find us some [gravityview] shortcodes perhaps. */
 		foreach ( Shortcode::parse( $content ) as $shortcode ) {
-			if ( $shortcode->name != 'gravityview' || empty( $shortcode->atts['id'] ) ) {
+			if ( 'gravityview' != $shortcode->name || empty( $shortcode->atts['id'] ) ) {
 				continue;
 			}
 

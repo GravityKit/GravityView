@@ -82,7 +82,7 @@ class View_Renderer extends Renderer {
 
 			$path = $override->get_template_part( $template_slug, $part );
 
-			if ( $path && strpos( $path, '/deprecated' ) === false ) {
+			if ( $path && false === strpos( $path, '/deprecated' ) ) {
 				/**
 				 * We have to bail and call the legacy renderer. Crap!
 				 */

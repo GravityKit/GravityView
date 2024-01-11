@@ -74,7 +74,7 @@ abstract class Request {
 	 */
 	public static function is_add_oembed_preview() {
 		/** The preview request is a parse-embed AJAX call without a type set. */
-		return ( self::is_ajax() && ! empty( $_POST['action'] ) && $_POST['action'] == 'parse-embed' && ! isset( $_POST['type'] ) );
+		return ( self::is_ajax() && ! empty( $_POST['action'] ) && 'parse-embed' == $_POST['action'] && ! isset( $_POST['type'] ) );
 	}
 
 	/**

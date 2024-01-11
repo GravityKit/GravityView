@@ -53,7 +53,7 @@ class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Fi
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-		if ( $context == 'edit' ) {
+		if ( 'edit' == $context ) {
 			return $field_options;
 		}
 

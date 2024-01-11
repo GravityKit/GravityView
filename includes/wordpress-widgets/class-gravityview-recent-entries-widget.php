@@ -68,7 +68,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	function admin_enqueue_scripts() {
 		global $pagenow;
 
-		if ( $pagenow === 'widgets.php' ) {
+		if ( 'widgets.php' === $pagenow ) {
 
 			$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 

@@ -79,7 +79,7 @@ class GravityView_Admin_Duplicate_View {
 	private function is_all_views_page() {
 		global $pagenow;
 
-		return $pagenow === 'edit.php';
+		return 'edit.php' === $pagenow;
 	}
 
 	/**
@@ -109,7 +109,7 @@ class GravityView_Admin_Duplicate_View {
 	private function create_duplicate( $post, $status = '' ) {
 
 		// We only want to clone Views
-		if ( $post->post_type !== 'gravityview' ) {
+		if ( 'gravityview' !== $post->post_type ) {
 			return;
 		}
 
@@ -166,7 +166,7 @@ class GravityView_Admin_Duplicate_View {
 		$new_view_id = wp_insert_post( $new_view );
 
 		// If the copy is published or scheduled, we have to set a proper slug.
-		if ( $new_view_status == 'publish' || $new_view_status == 'future' ) {
+		if ( 'publish' == $new_view_status || 'future' == $new_view_status ) {
 
 			$view_name = wp_unique_post_slug( $post->post_name, $new_view_id, $new_view_status, $post->post_type, $post->post_parent );
 
@@ -237,7 +237,7 @@ class GravityView_Admin_Duplicate_View {
 	public function make_duplicate_link_row( $actions, $post ) {
 
 		// Only process on GravityView Views
-		if ( get_post_type( $post ) === 'gravityview' && $this->current_user_can_copy( $post ) ) {
+		if ( 'gravityview' === get_post_type( $post ) && $this->current_user_can_copy( $post ) ) {
 
 			$clone_link  = $this->get_clone_view_link( $post->ID, 'display', false );
 			$clone_text  = __( 'Clone', 'gk-gravityview' );
@@ -342,11 +342,11 @@ class GravityView_Admin_Duplicate_View {
 		$post = get_post( $id );
 
 		// Copy the post and insert it
-		if ( isset( $post ) && $post != null ) {
+		if ( isset( $post ) && null != $post ) {
 
 			$new_id = $this->create_duplicate( $post, $status );
 
-			if ( $status == '' ) {
+			if ( '' == $status ) {
 				// Redirect to the post list screen
 				wp_redirect( admin_url( 'edit.php?post_type=' . $post->post_type ) );
 			} else {

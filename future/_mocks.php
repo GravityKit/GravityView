@@ -220,7 +220,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 		return null;
 	}
 
-	return $renderer->render( $field, $view, $source == \GV\Source::BACKEND_GRAVITYFORMS ? $form : null, isset( $multientry ) ? $multientry : $entry, gravityview()->request );
+	return $renderer->render( $field, $view, \GV\Source::BACKEND_GRAVITYFORMS == $source ? $form : null, isset( $multientry ) ? $multientry : $entry, gravityview()->request );
 }
 
 /**
@@ -607,7 +607,7 @@ final class Legacy_Context {
 				case 'post':
 					$has_shortcode = false;
 					foreach ( \GV\Shortcode::parse( $value->post_content ) as $shortcode ) {
-						if ( $shortcode->name == 'gravityview' ) {
+						if ( 'gravityview' == $shortcode->name ) {
 							$has_shortcode = true;
 							break;
 						}
@@ -616,7 +616,7 @@ final class Legacy_Context {
 						array(
 							'\GravityView_View::post_id' => $value->ID,
 							'\GravityView_frontend::post_id' => $value->ID,
-							'\GravityView_frontend::is_gravityview_post_type' => $value->post_type == 'gravityview',
+							'\GravityView_frontend::is_gravityview_post_type' => 'gravityview' == $value->post_type,
 							'\GravityView_frontend::post_has_shortcode' => $has_shortcode,
 						)
 					);
@@ -787,7 +787,7 @@ add_filter(
 					continue;
 				}
 				/** If we do not require login, we don't require a cap. */
-				$_field['only_loggedin'] != '1' && ( $_field['only_loggedin_cap'] = '' );
+				'1' != $_field['only_loggedin'] && ( $_field['only_loggedin_cap'] = '' );
 			}
 		}
 		return $fields;

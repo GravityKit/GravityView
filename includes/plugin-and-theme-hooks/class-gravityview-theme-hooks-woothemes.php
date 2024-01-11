@@ -79,7 +79,7 @@ class GravityView_Theme_Hooks_WooThemes extends GravityView_Plugin_and_Theme_Hoo
 		$gv_page = gravityview()->request->is_admin( '', 'single' );
 
 		// New View or Edit View page
-		if ( $gv_page && $pagenow === 'post-new.php' ) {
+		if ( $gv_page && 'post-new.php' === $pagenow ) {
 			remove_meta_box( 'woothemes-settings', 'gravityview', 'normal' );
 		}
 	}

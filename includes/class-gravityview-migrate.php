@@ -209,7 +209,7 @@ class GravityView_Migrate {
 
 			foreach ( $widgets as $area => $ws ) {
 				foreach ( $ws as $k => $widget ) {
-					if ( $widget['id'] !== 'search_bar' ) {
+					if ( 'search_bar' !== $widget['id'] ) {
 						continue; }
 
 					if ( is_null( $search_fields ) ) {

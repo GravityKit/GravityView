@@ -46,7 +46,7 @@ class GravityView_Plugin_Hooks_Iconic_WAP extends GravityView_Plugin_and_Theme_H
 
 		$endpoint_views = self::get_current_endpoint_views();
 
-		if ( is_null( $endpoint_views ) || \sizeof( $endpoint_views->all() ) === 0 ) {
+		if ( is_null( $endpoint_views ) || 0 === \sizeof( $endpoint_views->all() ) ) {
 			return $allowed_tags;
 		}
 

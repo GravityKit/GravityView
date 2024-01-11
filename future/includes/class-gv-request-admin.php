@@ -44,7 +44,7 @@ class Admin_Request extends Request {
 			$current_screen = false;
 		}
 
-		if ( $current_screen && $current_screen->post_type == 'gravityview' ) {
+		if ( $current_screen && 'gravityview' == $current_screen->post_type ) {
 			if ( 'edit' === $current_screen->base ) {
 				$is_page = 'views';
 			} elseif ( 'post' === $current_screen->base ) {

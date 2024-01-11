@@ -445,7 +445,7 @@ EOD;
 				continue;
 			}
 
-			if ( $replacement === 'form_id' && strpos( $form_id, 'preset_' ) !== false ) {
+			if ( 'form_id' === $replacement && false !== strpos( $form_id, 'preset_' ) ) {
 				// Form has not yet been created.
 				$output = str_replace( '#{{' . $replacement . '}}', esc_html__( 'Form Preset', $output, 'gk-gravityview' ), $output );
 
@@ -558,7 +558,7 @@ EOD;
 
 		// merge tags
 		if ( ! isset( $setting['merge_tags'] ) ) {
-			if ( $setting['type'] === 'text' ) {
+			if ( 'text' === $setting['type'] ) {
 				$setting['merge_tags'] = true;
 			} else {
 				$setting['merge_tags'] = false;
@@ -686,7 +686,7 @@ EOD;
 
 		$class = '';
 		// and $add_merge_tags is not false
-		if ( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
+		if ( $show && false !== $add_merge_tags || 'force' === $add_merge_tags ) {
 			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
@@ -718,7 +718,7 @@ EOD;
 
 		$class = '';
 		// and $add_merge_tags is not false
-		if ( $show && $add_merge_tags !== false || $add_merge_tags === 'force' ) {
+		if ( $show && false !== $add_merge_tags || 'force' === $add_merge_tags ) {
 			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 

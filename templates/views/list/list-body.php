@@ -68,7 +68,7 @@ if ( ! $gravityview->entries->count() ) {
 					$did_main = 0;
 				foreach ( $title->all() as $i => $field ) {
 					// The first field in the title zone is the main
-					if ( $did_main == 0 ) {
+					if ( 0 == $did_main ) {
 						$did_main = 1;
 						$extras   = array(
 							'wpautop' => false,
@@ -89,7 +89,7 @@ if ( ! $gravityview->entries->count() ) {
 						$did_main = 0;
 						foreach ( $subtitle->all() as $i => $field ) {
 							// The first field in the subtitle zone is the main
-							if ( $did_main == 0 ) {
+							if ( 0 == $did_main ) {
 								$did_main = 1;
 								$extras   = array( 'markup' => '<h4 id="{{ field_id }}" class="{{ class }}">{{ label }}{{ value }}</h4>' );
 							}

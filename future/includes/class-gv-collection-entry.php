@@ -104,7 +104,7 @@ class Entry_Collection extends Collection {
 
 		/** Call all lazy callbacks. */
 		foreach ( $this->callbacks as $callback ) {
-			if ( $callback[0] != 'count' ) {
+			if ( 'count' != $callback[0] ) {
 				continue;
 			}
 
@@ -207,7 +207,7 @@ class Entry_Collection extends Collection {
 
 		/** Call all lazy callbacks. */
 		foreach ( $this->callbacks as $i => $callback ) {
-			if ( $callback[0] != 'fetch' ) {
+			if ( 'fetch' != $callback[0] ) {
 				continue;
 			}
 

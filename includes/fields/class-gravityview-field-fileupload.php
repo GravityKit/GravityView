@@ -173,7 +173,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$field_value    = \GV\Utils::get( $gv_field_array, 'value' );
 			$base_id        = null;
 
-			$is_single    = gravityview_get_context() === 'single';
+			$is_single    = 'single' === gravityview_get_context();
 			$lightbox     = ! empty( $gravityview_view->atts['lightbox'] );
 			$field_compat = $gravityview_view->getCurrentField();
 		}
@@ -181,7 +181,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		$output_arr = array();
 
 		// Get an array of file paths for the field.
-		$file_paths = (int) \GV\Utils::get( $field, 'multipleFiles' ) !== 1 ? array( $value ) : $value;
+		$file_paths = 1 !== (int) \GV\Utils::get( $field, 'multipleFiles' ) ? array( $value ) : $value;
 
 		// The $value JSON was probably truncated; let's check lead_detail_long.
 		if ( ! is_array( $file_paths ) ) {

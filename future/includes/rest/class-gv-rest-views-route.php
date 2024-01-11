@@ -369,7 +369,7 @@ class Views_Route extends Route {
 		$view  = \GV\View::by_id( $view_id );
 		$entry = \GV\GF_Entry::by_id( $entry_id );
 
-		if ( $format === 'html' ) {
+		if ( 'html' === $format ) {
 			$renderer = new \GV\Entry_Renderer();
 			return $renderer->render( $entry, $view, new Request( $request ) );
 		}
@@ -438,7 +438,7 @@ class Views_Route extends Route {
 	 * @return bool|\WP_Error
 	 */
 	public function get_item_permissions_check( $request ) {
-		if ( func_num_args() === 2 ) {
+		if ( 2 === func_num_args() ) {
 			$view_id = func_get_arg( 1 ); // $view_id override
 		} else {
 			$url     = $request->get_url_params();
@@ -502,7 +502,7 @@ class Views_Route extends Route {
 			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
 		}
 
-		if ( $entry['status'] != 'active' ) {
+		if ( 'active' != $entry['status'] ) {
 			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
 		}
 

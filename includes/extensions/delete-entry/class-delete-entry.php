@@ -395,7 +395,7 @@ final class GravityView_Delete_Entry {
 			$this->_redirect_and_exit( $delete_redirect_base, $delete_response->get_error_message(), 'error' );
 		}
 
-		if ( (int) $view->settings->get( 'delete_redirect' ) === self::REDIRECT_TO_URL_VALUE ) {
+		if ( self::REDIRECT_TO_URL_VALUE === (int) $view->settings->get( 'delete_redirect' ) ) {
 
 			$form                 = GVCommon::get_form( $entry['form_id'] );
 			$redirect_url_setting = $view->settings->get( 'delete_redirect_url' );
@@ -657,7 +657,7 @@ final class GravityView_Delete_Entry {
 			$error = __( 'You do not have permission to delete this entry.', 'gk-gravityview' );
 		}
 
-		if ( $entry['status'] === 'trash' ) {
+		if ( 'trash' === $entry['status'] ) {
 			if ( 'trash' === $this->get_delete_mode() ) {
 				$error = __( 'The entry is already in the trash.', 'gk-gravityview' );
 			} else {
@@ -725,7 +725,7 @@ final class GravityView_Delete_Entry {
 			if ( GVCommon::has_cap( $field['allow_edit_cap'] ) ) {
 
 				// Do not return true if cap is read, as we need to check if the current user created the entry
-				if ( $field['allow_edit_cap'] !== 'read' ) {
+				if ( 'read' !== $field['allow_edit_cap'] ) {
 					return true;
 				}
 			} else {

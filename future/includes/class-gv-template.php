@@ -65,7 +65,7 @@ abstract class Template extends \GV\Gamajo_Template_Loader {
 	 */
 	public static function split_slug( $slug, $name = null ) {
 
-		$dir_name  = ( dirname( $slug ) != '.' ) ? trailingslashit( dirname( $slug ) ) : '';
+		$dir_name  = ( '.' != dirname( $slug ) ) ? trailingslashit( dirname( $slug ) ) : '';
 		$slug_name = basename( $slug ) . ( $name ? "-$name" : '' );
 
 		return array( $dir_name, $slug_name );

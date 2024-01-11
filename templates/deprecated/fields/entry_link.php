@@ -11,7 +11,7 @@ $gravityview_view = GravityView_View::getInstance();
 extract( $gravityview_view->getCurrentField() );
 
 // Don't show on single entry
-if ( $gravityview_view->getContext() === 'single' ) {
+if ( 'single' === $gravityview_view->getContext() ) {
 	return; }
 
 $link_text = empty( $field_settings['entry_link_text'] ) ? __( 'View Details', 'gk-gravityview' ) : $field_settings['entry_link_text'];

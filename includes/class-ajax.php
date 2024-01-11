@@ -240,7 +240,7 @@ class GravityView_Ajax {
 		gravityview()->log->debug( '[import_form] Importing form (Result) {count}', array( 'count' => $count ) );
 		gravityview()->log->debug( '[import_form] Importing form (Form) ', array( 'data' => $forms ) );
 
-		if ( $count != 1 || empty( $forms[0]['id'] ) ) {
+		if ( 1 != $count || empty( $forms[0]['id'] ) ) {
 			gravityview()->log->error( 'Form Import Failed!' );
 			return false;
 		}

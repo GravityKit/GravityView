@@ -344,7 +344,7 @@ class GravityView_Merge_Tags {
 		 */
 		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
 
-		if ( strpos( $text, '{' ) === false || ! $do_replace_variables ) {
+		if ( false === strpos( $text, '{' ) || ! $do_replace_variables ) {
 			return $text;
 		}
 

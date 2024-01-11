@@ -53,7 +53,7 @@ class oEmbed {
 		/** Parse the URL to an entry and a view */
 		preg_match( self::get_entry_regex(), $url, $matches );
 		$result = self::parse_matches( $matches, $url );
-		if ( ! $result || count( $result ) != 2 ) {
+		if ( ! $result || 2 != count( $result ) ) {
 			header( 'HTTP/1.0 404 Not Found' );
 			exit;
 		}
@@ -85,7 +85,7 @@ class oEmbed {
 
 		$result = self::parse_matches( $matches, $url );
 
-		if ( ! $result || count( $result ) != 2 ) {
+		if ( ! $result || 2 != count( $result ) ) {
 			gravityview()->log->notice(
 				'View or entry could not be parsed in oEmbed url {url}',
 				array(
@@ -339,7 +339,7 @@ class oEmbed {
 		}
 
 		$view_entry = self::parse_matches( $matches, $url );
-		if ( ! $view_entry || count( $view_entry ) != 2 ) {
+		if ( ! $view_entry || 2 != count( $view_entry ) ) {
 			return $result;
 		}
 

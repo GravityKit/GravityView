@@ -47,7 +47,7 @@ if ( ! empty( $value ) ) {
 		$quantity_found = false;
 
 		foreach ( $gravityview->fields->all() as $_field ) {
-			if ( $_field->type == 'quantity' ) {
+			if ( 'quantity' == $_field->type ) {
 				if ( $_field->productField == $_field_id ) {
 					$quantity_found = ! empty( $entry[ $_field->ID ] );
 					break;

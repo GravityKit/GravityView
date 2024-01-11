@@ -183,7 +183,7 @@ class Field {
 			$trace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
 		}
 		$trace = $trace[1];
-		if ( $trace['function'] == 'from_configuration' && $trace['class'] == __CLASS__ ) {
+		if ( 'from_configuration' == $trace['function'] && __CLASS__ == $trace['class'] ) {
 			$field = new self();
 			gravityview()->log->error( 'Infinite loop protection tripped. Returning default class here.' );
 			$field->update_configuration( $configuration );
@@ -251,12 +251,12 @@ class Field {
 
 		$this->ID            = $configuration['id'];
 		$this->label         = $configuration['label'];
-		$this->show_label    = $configuration['show_label'] == '1';
+		$this->show_label    = '1' == $configuration['show_label'];
 		$this->custom_label  = $configuration['custom_label'];
 		$this->custom_class  = $configuration['custom_class'];
-		$this->cap           = $configuration['only_loggedin'] == '1' ? $configuration['only_loggedin_cap'] : '';
-		$this->search_filter = $configuration['search_filter'] == '1';
-		$this->show_as_link  = $configuration['show_as_link'] == '1';
+		$this->cap           = '1' == $configuration['only_loggedin'] ? $configuration['only_loggedin_cap'] : '';
+		$this->search_filter = '1' == $configuration['search_filter'];
+		$this->show_as_link  = '1' == $configuration['show_as_link'];
 
 		/** Shared among all field types (sort of). */
 		$shared_configuration_keys = array(

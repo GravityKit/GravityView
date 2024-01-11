@@ -861,7 +861,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		 */
 		if ( is_numeric( $view_id_or_context ) ) {
 			$view          = \GV\View::by_id( $view_id_or_context );
-			$is_single     = gravityview_get_context() == 'single';
+			$is_single     = 'single' == gravityview_get_context();
 			$total_entries = self::getInstance()->getTotalEntries();
 
 			/**
@@ -957,7 +957,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			<?php
 			foreach ( $rows as $row ) {
 				foreach ( $row as $col => $areas ) {
-					$column = ( $col == '2-2' ) ? '1-2 gv-right' : "$col gv-left";
+					$column = ( '2-2' == $col ) ? '1-2 gv-right' : "$col gv-left";
 					?>
 					<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 						<?php

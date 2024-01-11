@@ -25,7 +25,7 @@ if ( ! empty( $value ) ) {
 	$output_arr = gravityview_get_files_array( $value, $gv_class, $gravityview );
 
 	// If the output array is just one item, let's not show a list.
-	if ( sizeof( $output_arr ) === 1 ) {
+	if ( 1 === sizeof( $output_arr ) ) {
 		$output = $output_arr[0]['content'];
 	}
 

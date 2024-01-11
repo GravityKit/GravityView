@@ -108,7 +108,7 @@ class GF_Form extends Form implements \ArrayAccess {
 					$sorting = array(
 						'key'        => $sort->field->ID,
 						'direction'  => $sort->direction,
-						'is_numeric' => $sort->mode == Entry_Sort::NUMERIC,
+						'is_numeric' => Entry_Sort::NUMERIC == $sort->mode,
 					);
 				}
 
@@ -159,7 +159,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	public static function get_field( /** varargs */ ) {
 		$args = func_get_args();
 
-		if ( ! is_array( $args ) || count( $args ) != 2 ) {
+		if ( ! is_array( $args ) || 2 != count( $args ) ) {
 			gravityview()->log->error( '{source} expects 2 arguments for ::get_field ($form, $field_id)', array( 'source' => __CLASS__ ) );
 			return null;
 		}

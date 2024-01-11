@@ -280,7 +280,7 @@ class GravityView_Edit_Entry {
 	 */
 	public function modify_field_blocklist( $fields = array(), $context = null ) {
 
-		if ( empty( $context ) || $context !== 'edit' ) {
+		if ( empty( $context ) || 'edit' !== $context ) {
 			return $fields;
 		}
 

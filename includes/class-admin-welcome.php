@@ -160,13 +160,13 @@ class GravityView_Welcome {
 		<div class="about-text"><?php esc_html_e( 'Thank you for installing GravityView. Beautifully display your Gravity Forms entries.', 'gk-gravityview' ); ?></div>
 
 		<h2 class="nav-tab-wrapper clear">
-			<a class="nav-tab <?php echo $selected == 'gv-getting-started' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started' ), 'admin.php' ) ) ); ?>">
+			<a class="nav-tab <?php echo 'gv-getting-started' == $selected ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-getting-started' ), 'admin.php' ) ) ); ?>">
 				<?php esc_html_e( 'Getting Started', 'gk-gravityview' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'gv-changelog' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog' ), 'admin.php' ) ) ); ?>">
+			<a class="nav-tab <?php echo 'gv-changelog' == $selected ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-changelog' ), 'admin.php' ) ) ); ?>">
 				<?php esc_html_e( 'List of Changes', 'gk-gravityview' ); ?>
 			</a>
-			<a class="nav-tab <?php echo $selected == 'gv-credits' ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits' ), 'admin.php' ) ) ); ?>">
+			<a class="nav-tab <?php echo 'gv-credits' == $selected ? 'nav-tab-active' : ''; ?>" href="<?php echo esc_url( admin_url( add_query_arg( array( 'page' => 'gv-credits' ), 'admin.php' ) ) ); ?>">
 				<?php esc_html_e( 'Credits', 'gk-gravityview' ); ?>
 			</a>
 		</h2>
@@ -766,7 +766,7 @@ class GravityView_Welcome {
 		global $plugin_page;
 
 		// Bail if we're just editing the plugin
-		if ( $plugin_page === 'plugin-editor.php' ) {
+		if ( 'plugin-editor.php' === $plugin_page ) {
 			return; }
 
 		// Bail if no activation redirect
@@ -779,7 +779,7 @@ class GravityView_Welcome {
 		$upgrade = get_option( 'gv_version_upgraded_from' );
 
 		// Don't do anything if they've already seen the new version info
-		if ( $upgrade === GV_PLUGIN_VERSION ) {
+		if ( GV_PLUGIN_VERSION === $upgrade ) {
 			return;
 		}
 

@@ -351,7 +351,7 @@ abstract class Field_Template extends Template {
 
 		/** A compatibility array that's required by some of the deprecated filters. */
 		$field_compat = array(
-			'form'           => $source_backend == \GV\Source::BACKEND_GRAVITYFORMS ? $this->source->form : ( $this->view->form ? $this->view->form->form : null ),
+			'form'           => \GV\Source::BACKEND_GRAVITYFORMS == $source_backend ? $this->source->form : ( $this->view->form ? $this->view->form->form : null ),
 			'field_id'       => $this->field->ID,
 			'field'          => $this->field->field,
 			'field_settings' => $this->field->as_configuration(),

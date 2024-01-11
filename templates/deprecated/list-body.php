@@ -80,7 +80,7 @@ if ( ! $this->getTotalEntries() ) {
 						$title_args['field'] = $field;
 
 						// The first field in the title zone is the main
-						if ( $i == 0 ) {
+						if ( 0 == $i ) {
 							$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
 							echo gravityview_field_output( $title_args );
 							unset( $title_args['markup'] );

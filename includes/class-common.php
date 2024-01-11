@@ -314,7 +314,7 @@ class GVCommon {
 		}
 
 		if ( ! empty( $sort_column ) ) {
-			$sql .= " ORDER BY $sort_column " . ( $sort_dir == 'ASC' ? 'ASC' : 'DESC' );
+			$sql .= " ORDER BY $sort_column " . ( 'ASC' == $sort_dir ? 'ASC' : 'DESC' );
 		}
 
 		return $wpdb->get_results( $sql, ARRAY_A );
@@ -614,7 +614,7 @@ class GVCommon {
 			}
 
 			// don't send just the [mode] without any field filter.
-			if ( count( $criteria['search_criteria']['field_filters'] ) === 1 && array_key_exists( 'mode', $criteria['search_criteria']['field_filters'] ) ) {
+			if ( 1 === count( $criteria['search_criteria']['field_filters'] ) && array_key_exists( 'mode', $criteria['search_criteria']['field_filters'] ) ) {
 				unset( $criteria['search_criteria']['field_filters']['mode'] );
 			}
 		}
@@ -995,7 +995,7 @@ class GVCommon {
 						}
 					}
 
-					$value = ( $operation === 'in' ) ? $json_in : ! $json_in;
+					$value = ( 'in' === $operation ) ? $json_in : ! $json_in;
 				}
 				break;
 

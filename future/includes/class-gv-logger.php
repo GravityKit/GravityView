@@ -143,7 +143,7 @@ abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
 	 */
 	protected function interpolate( $message, $context ) {
 		foreach ( $context as $key => $val ) {
-			if ( strpos( $message, "{{$key}}" ) !== false ) {
+			if ( false !== strpos( $message, "{{$key}}" ) ) {
 				$message = str_replace( "{{$key}}", (string) $val, $message );
 			}
 		}

@@ -76,7 +76,7 @@ class gventry extends \GV\Shortcode {
 								 * Reverse existing sorts.
 								 */
 								$sort              = &$parameters['sorting'];
-								$sort['direction'] = $sort['direction'] == 'RAND' ? : ( $sort['direction'] == 'ASC' ? 'DESC' : 'ASC' );
+								$sort['direction'] = 'RAND' == $sort['direction'] ? : ( 'ASC' == $sort['direction'] ? 'DESC' : 'ASC' );
 							} else {
 								/**
 								 * Otherwise, sort by date_created.
@@ -99,7 +99,7 @@ class gventry extends \GV\Shortcode {
 
 					/** If a sort already exists, reverse it. */
 					if ( $sort = end( $entries->sorts ) ) {
-						$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, $sort->direction == \GV\Entry_Sort::RAND ? : ( $sort->direction == \GV\Entry_Sort::ASC ? \GV\Entry_Sort::DESC : \GV\Entry_Sort::ASC ) ), $sort->mode );
+						$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, \GV\Entry_Sort::RAND == $sort->direction ? : ( \GV\Entry_Sort::ASC == $sort->direction ? \GV\Entry_Sort::DESC : \GV\Entry_Sort::ASC ) ), $sort->mode );
 					} else {
 						/** Otherwise, sort by date_created */
 						$entries = $entries->sort( new \GV\Entry_Sort( \GV\Internal_Field::by_id( 'id' ), \GV\Entry_Sort::ASC ), \GV\Entry_Sort::NUMERIC );
@@ -155,7 +155,7 @@ class gventry extends \GV\Shortcode {
 		}
 
 		/** Unapproved entries. */
-		if ( $entry['status'] != 'active' ) {
+		if ( 'active' != $entry['status'] ) {
 			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 			return apply_filters( 'gravityview/shortcodes/gventry/output', '', $view, $entry, $atts );
 		}

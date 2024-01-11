@@ -552,8 +552,8 @@ class WXR_Parser_Regex {
 	function get_tag( $string, $tag ) {
 		preg_match( "|<$tag.*?>(.*?)</$tag>|is", $string, $return );
 		if ( isset( $return[1] ) ) {
-			if ( substr( $return[1], 0, 9 ) == '<![CDATA[' ) {
-				if ( strpos( $return[1], ']]]]><![CDATA[>' ) !== false ) {
+			if ( '<![CDATA[' == substr( $return[1], 0, 9 ) ) {
+				if ( false !== strpos( $return[1], ']]]]><![CDATA[>' ) ) {
 					preg_match_all( '|<!\[CDATA\[(.*?)\]\]>|s', $return[1], $matches );
 					$return = '';
 					foreach ( $matches[1] as $match ) {

@@ -20,7 +20,7 @@ class GravityView_FieldType_number extends GravityView_FieldType_text {
 
 		$show_mt = $this->show_merge_tags();
 
-		if ( $show_mt && $this->field['merge_tags'] !== false || $this->field['merge_tags'] === 'force' ) {
+		if ( $show_mt && false !== $this->field['merge_tags'] || 'force' === $this->field['merge_tags'] ) {
 			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 

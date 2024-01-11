@@ -124,7 +124,7 @@ abstract class GravityView_FieldType {
 		$__gf_tooltips = apply_filters( 'gform_tooltips', $__gf_tooltips );
 
 		// AC: the $name parameter is a key when it has only one word. Maybe try to improve this later.
-		$parameter_is_key = count( explode( ' ', $name ) ) == 1;
+		$parameter_is_key = 1 == count( explode( ' ', $name ) );
 
 		$tooltip_text  = $parameter_is_key ? rgar( $__gf_tooltips, $name ) : $name;
 		$tooltip_class = isset( $__gf_tooltips[ $name ] ) ? "tooltip_{$name}" : '';

@@ -21,7 +21,7 @@ $field_settings = $gravityview->field->as_configuration();
  *
  * @since 1.7
  */
-if ( $value === '1970-01-01' ) {
+if ( '1970-01-01' === $value ) {
 
 	/**
 	 * callback.

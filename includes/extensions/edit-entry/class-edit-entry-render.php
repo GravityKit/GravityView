@@ -610,7 +610,7 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function save_field_value( $value = '', $entry = array(), $field = null, $form = array(), $input_id = '' ) {
 
-		if ( ! $field || $field->type != 'fileupload' ) {
+		if ( ! $field || 'fileupload' != $field->type ) {
 			return $value;
 		}
 
@@ -723,7 +723,7 @@ class GravityView_Edit_Entry_Render {
 							$input_name = 'input_' . str_replace( '.', '_', $input['id'] );
 
 							// Only allow quantity to be set if it's allowed to be edited
-							if ( in_array( $field_id, $allowed_fields ) && $input_id == 3 ) {
+							if ( in_array( $field_id, $allowed_fields ) && 3 == $input_id ) {
 							} else { // otherwise set to what it previously was
 								$_POST[ $input_name ] = $entry[ $input['id'] ];
 							}
@@ -1169,7 +1169,7 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function maybe_print_message() {
 
-		if ( \GV\Utils::_POST( 'action' ) !== 'update' ) {
+		if ( 'update' !== \GV\Utils::_POST( 'action' ) ) {
 			return;
 		}
 
@@ -2425,7 +2425,7 @@ class GravityView_Edit_Entry_Render {
 			$error = __( 'You do not have permission to edit this entry.', 'gk-gravityview' );
 		}
 
-		if ( $this->entry['status'] === 'trash' ) {
+		if ( 'trash' === $this->entry['status'] ) {
 			$error = __( 'You cannot edit the entry; it is in the trash.', 'gk-gravityview' );
 		}
 
@@ -2434,7 +2434,7 @@ class GravityView_Edit_Entry_Render {
 			return true;
 		}
 
-		if ( $echo && $error !== true ) {
+		if ( $echo && true !== $error ) {
 
 	        $error = esc_html( $error );
 
@@ -2548,7 +2548,7 @@ class GravityView_Edit_Entry_Render {
 	 * As a hack for now we'll implode it back.
 	 */
 	public function fix_multiselect_value_serialization( $field_value, $field, $_this ) {
-		if ( empty( $field->storageType ) || $field->storageType != 'json' ) {
+		if ( empty( $field->storageType ) || 'json' != $field->storageType ) {
 			return $field_value;
 		}
 

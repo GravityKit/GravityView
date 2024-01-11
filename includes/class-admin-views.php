@@ -350,7 +350,7 @@ class GravityView_Admin_Views {
 		$add = array( 'captcha', 'page' );
 
 		// Don't allowing editing the following values:
-		if ( $context === 'edit' ) {
+		if ( 'edit' === $context ) {
 			$add[] = 'post_id';
 		}
 
@@ -760,7 +760,7 @@ class GravityView_Admin_Views {
 				}
 
 				// Edit mode only allows editing the parent fields, not single inputs.
-				if ( $context === 'edit' && ! empty( $details['parent'] ) ) {
+				if ( 'edit' === $context && ! empty( $details['parent'] ) ) {
 					continue;
 				}
 
@@ -772,7 +772,7 @@ class GravityView_Admin_Views {
 		echo $output;
 
 		// For the EDIT view we only want to allow the form fields.
-		if ( $context === 'edit' ) {
+		if ( 'edit' === $context ) {
 			return;
 		}
 
@@ -976,7 +976,7 @@ class GravityView_Admin_Views {
 	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
 		global $post;
 
-		if ( $type === 'widget' ) {
+		if ( 'widget' === $type ) {
 			$button_label = __( 'Add Widget', 'gk-gravityview' );
 		} else {
 			$button_label = __( 'Add Field', 'gk-gravityview' );
@@ -1041,7 +1041,7 @@ class GravityView_Admin_Views {
 
 		foreach ( $rows as $row ) :
 			foreach ( $row as $col => $areas ) :
-				$column = ( $col == '2-2' ) ? '1-2' : $col;
+				$column = ( '2-2' == $col ) ? '1-2' : $col;
 				?>
 
 				<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
@@ -1412,7 +1412,7 @@ class GravityView_Admin_Views {
 		global $plugin_page, $pagenow;
 
 		$script_debug    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		$is_widgets_page = ( $pagenow === 'widgets.php' );
+		$is_widgets_page = ( 'widgets.php' === $pagenow );
 
 		// Add legacy (2.4 and older) Gravity Forms tooltip script/style
 		if ( gravityview()->plugin->is_GF_25() && gravityview()->request->is_admin( '', 'single' ) ) {
@@ -1428,7 +1428,7 @@ class GravityView_Admin_Views {
 
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), \GV\Plugin::$version, true );
 
-		if ( GFForms::get_page() === 'form_list' ) {
+		if ( 'form_list' === GFForms::get_page() ) {
 			wp_enqueue_style( 'gravityview_views_styles' );
 			return;
 		}

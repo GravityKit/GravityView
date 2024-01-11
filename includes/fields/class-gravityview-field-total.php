@@ -54,7 +54,7 @@ class GravityView_Field_Total extends GravityView_Field {
 	 */
 	public function add_to_blocklist( $blocklist = array(), $context = null ) {
 
-		if ( empty( $context ) || $context !== 'edit' ) {
+		if ( empty( $context ) || 'edit' !== $context ) {
 			return $blocklist;
 		}
 

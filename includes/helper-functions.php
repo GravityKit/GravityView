@@ -63,7 +63,7 @@ function gravityview_css_url( $css_file = '', $dir_path = '' ) {
  * @return bool true: $mixed is *not* an empty string; false: $mixed *is* an empty string
  */
 function gravityview_is_not_empty_string( $mixed = '' ) {
-	return ( $mixed !== '' );
+	return ( '' !== $mixed );
 }
 
 /**

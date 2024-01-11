@@ -507,7 +507,7 @@ final class Plugin {
 				return class_exists( '\GF_Query' );
 			case self::FEATURE_JOINS:
 			case self::FEATURE_UNIONS:
-				return apply_filters( 'gravityview/query/class', false ) === '\GF_Patched_Query';
+				return '\GF_Patched_Query' === apply_filters( 'gravityview/query/class', false );
 			case self::FEATURE_REST:
 				return class_exists( '\WP_REST_Controller' );
 			default:
@@ -726,15 +726,15 @@ final class Plugin {
 			function ( $parent_file ) use ( $admin_menu, $post_type, $all_views_menu_id, $new_view_menu_id ) {
 				global $submenu_file;
 
-				if ( ! $submenu_file || strpos( $submenu_file, "post_type={$post_type}" ) === false ) {
+				if ( ! $submenu_file || false === strpos( $submenu_file, "post_type={$post_type}" ) ) {
 					return $parent_file;
 				}
 
-				if ( strpos( $submenu_file, 'edit.php' ) !== false ) {
+				if ( false !== strpos( $submenu_file, 'edit.php' ) ) {
 					$submenu_file = $all_views_menu_id;
 				}
 
-				if ( strpos( $submenu_file, 'post-new.php' ) !== false ) {
+				if ( false !== strpos( $submenu_file, 'post-new.php' ) ) {
 					$submenu_file = $new_view_menu_id;
 				}
 

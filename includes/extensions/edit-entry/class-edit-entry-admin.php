@@ -80,7 +80,7 @@ class GravityView_Edit_Entry_Admin {
 	 */
 	function modify_visibility_caps( $visibility_caps = array(), $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
-		if ( $context !== 'edit' ) {
+		if ( 'edit' !== $context ) {
 			return $visibility_caps;
 		}
 

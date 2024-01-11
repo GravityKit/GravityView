@@ -994,7 +994,7 @@ function gv_value( $entry, $field ) {
 
 	$value = GravityView_API::field_value( $entry, $field );
 
-	if ( $value === '' ) {
+	if ( '' === $value ) {
 		/**
 		 * What to display when a field is empty.
          *
@@ -1150,7 +1150,7 @@ function gravityview_convert_value_to_term_list( $value, $taxonomy = 'post_tag' 
 	foreach ( $terms as $term_name ) {
 
 		// If we're processing a category,
-		if ( $taxonomy === 'category' ) {
+		if ( 'category' === $taxonomy ) {
 
 			// Use rgexplode to prevent errors if : doesn't exist
 			list( $term_name, $term_id ) = rgexplode( ':', $term_name, 2 );
@@ -1623,11 +1623,11 @@ function gravityview_field_output( $passed_args, $context = null ) {
 	}
 
 	// If the value is empty and we're hiding empty, return empty.
-	if ( $placeholders['value'] === '' && ! empty( $args['hide_empty'] ) ) {
+	if ( '' === $placeholders['value'] && ! empty( $args['hide_empty'] ) ) {
 		return '';
 	}
 
-	if ( $placeholders['value'] !== '' && ! empty( $args['wpautop'] ) ) {
+	if ( '' !== $placeholders['value'] && ! empty( $args['wpautop'] ) ) {
 		$placeholders['value'] = wpautop( $placeholders['value'] );
 	}
 

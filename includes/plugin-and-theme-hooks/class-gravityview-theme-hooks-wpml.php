@@ -112,7 +112,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			gravityview()->log->error( 'WPML missing remove_global_hooks method. Needs version 3.6.2+.' );
 		}
 
-		if ( $wpml_url_filters->frontend_uses_root() === true ) {
+		if ( true === $wpml_url_filters->frontend_uses_root() ) {
 			remove_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter_root' ), 1 );
 		} else {
 			remove_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter' ), 1 );
@@ -140,7 +140,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			gravityview()->log->error( 'WPML missing add_global_hooks method. Needs version 3.6.2+.' );
 		}
 
-		if ( $wpml_url_filters->frontend_uses_root() === true ) {
+		if ( true === $wpml_url_filters->frontend_uses_root() ) {
 			add_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter_root' ), 1, 2 );
 		} else {
 			add_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter' ), 1, 2 );

@@ -159,7 +159,7 @@ class GravityView_Field_Time extends GravityView_Field {
 		 */
 		if ( strpos( $query, self::GF_SORTING_SQL ) > 0 ) {
 
-			if ( $this->_time_format === '24' ) {
+			if ( '24' === $this->_time_format ) {
 				$sql_str_to_date = "STR_TO_DATE( `value`, '%H:%i' )";
 			} else {
 				$sql_str_to_date = "STR_TO_DATE( `value`, '%h:%i %p' )";
@@ -300,7 +300,7 @@ class GravityView_Field_Time extends GravityView_Field {
 		switch ( $field_input_id ) {
 			// Hours
 			case 1:
-				return ( $time_format === '12' ) ? 'h' : 'H';
+				return ( '12' === $time_format ) ? 'h' : 'H';
 				break;
 			// Minutes
 			case 2:
@@ -312,7 +312,7 @@ class GravityView_Field_Time extends GravityView_Field {
 				break;
 			// Full time field
 			case 0:
-				return ( $time_format === '12' ) ? $default : 'H:i';
+				return ( '12' === $time_format ) ? $default : 'H:i';
 				break;
 		}
 
