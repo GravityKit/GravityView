@@ -100,7 +100,8 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		$year_and_one_day_ago = (int) date( 'L' ) ? '367 days' : '366 days';
+		$year_and_one_day_ago = '366 days';
+
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
