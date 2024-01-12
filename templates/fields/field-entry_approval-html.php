@@ -36,5 +36,5 @@ $anchor         = GravityView_Field_Entry_Approval::get_anchor_text( $current_st
 $title          = GravityView_Field_Entry_Approval::get_title_attr( $current_status );
 $class          = GravityView_Field_Entry_Approval::get_css_class( $current_status );
 
-?><a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle selected <?php echo $class; ?>" title="<?php echo esc_attr( $title ); ?>" data-current-status="<?php echo esc_attr( $current_status ); ?>" data-entry-slug="<?php echo esc_attr( $entry_slug ); ?>" data-form-id="<?php echo esc_attr( $entry['form_id'] ); ?>"><span class="screen-reader-text"><?php echo $anchor; ?></span></a>
-																													<?php
+?>
+<a href="#" aria-role="button" aria-live="polite" aria-busy="false" class="gv-approval-toggle selected <?php echo $class; ?>" title="<?php echo esc_attr( $title ); ?>" data-current-status="<?php echo esc_attr( $current_status ); ?>" data-entry-slug="<?php echo esc_attr( $entry_slug ); ?>" data-form-id="<?php echo esc_attr( $entry['form_id'] ); ?>"><span class="screen-reader-text"><?php echo $anchor; ?></span></a>
