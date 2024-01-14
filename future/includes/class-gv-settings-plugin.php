@@ -2,6 +2,7 @@
 
 namespace GV;
 
+use GravityKit\Foundation\Helpers\Core as CoreHelpers;
 use GravityKitFoundation;
 use GravityKit\GravityView\Foundation\Settings\Framework as SettingsFramework;
 use GravityKit\GravityView\Foundation\Core as FoundationCore;
@@ -225,6 +226,10 @@ class Plugin_Settings {
 
 		$default_settings = $this->defaults();
 
+		$link = add_query_arg( [
+			'restart_product_tour' => wp_create_nonce( 'restart_product_tour' ),
+		], admin_url( 'post-new.php?post_type=gravityview' ) );
+
 		$settings = [
 			'id'       => self::SETTINGS_PLUGIN_ID,
 			'title'    => 'GravityView',
@@ -260,6 +265,20 @@ class Plugin_Settings {
 								)
 							),
 							'value'       => $this->get( 'public_entry_moderation', $default_settings['public_entry_moderation'] ),
+						],
+					],
+				],
+				[
+					'title'    => esc_html__( 'Product Tour', 'gk-gravityview' ),
+					'settings' => [
+						[
+							'id'               => 'restart_product_tour',
+							'type'             => 'button',
+							'title'            => esc_html__( 'Restart Product Tour', 'gk-gravityview' ),
+							'url'              => $link,
+							'btnText'          => __( 'Restart', 'gk-gravityview' ),
+							'screenReaderText' => esc_html__( 'This link opens in a new window', 'gk-gravityview' ),
+							'description'      => esc_html__( 'Restart the GravityView product tour by clicking the button.', 'gk-gravityview' ),
 						],
 					],
 				],
