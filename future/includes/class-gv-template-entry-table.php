@@ -80,7 +80,7 @@ class Entry_Table_Template extends Entry_Template {
 
 			/**
 			 * Override the field label.
-             *
+			 *
 			 * @since 2.0
 			 * @param string $column_label The label to override.
 			 * @param \GV\Template_Context $context The context.

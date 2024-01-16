@@ -299,7 +299,7 @@ class GravityView_Entry_List {
 
 			/**
 			 * Modify the content displayed after the entry link in an entry list.
-             *
+			 *
 			 * @since 1.7.2
 			 * @param string $item_output The HTML output for the after_link content
 			 * @param array $entry Gravity Forms entry array

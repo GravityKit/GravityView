@@ -786,7 +786,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			/**
 			 * Documented in get_note_email_fields
-             *
+			 *
 			 * @see get_note_email_fields
 			 */
 			$include_custom = apply_filters( 'gravityview/field/notes/custom-email', true );
@@ -820,7 +820,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			/**
 			 * Modify the values passed when sending a note email.
-             *
+			 *
 			 * @see GVCommon::send_email
 			 * @since 1.17
 			 * @param array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
@@ -835,10 +835,10 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$message .= $this->get_email_footer( $email_footer, $is_html, $email_data );
 
 			/**
-             * Should the message content have paragraphs added automatically, if using HTML message format.
-             *
+			 * Should the message content have paragraphs added automatically, if using HTML message format.
+			 *
 			 * @since 1.18
-             * @param bool $wpautop_email True: Apply wpautop() to the email message if using; False: Leave as entered (Default: true)
+			 * @param bool $wpautop_email True: Apply wpautop() to the email message if using; False: Leave as entered (Default: true)
 			 */
 			$wpautop_email = apply_filters( 'gravityview/field/notes/wpautop_email', true );
 

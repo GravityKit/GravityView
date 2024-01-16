@@ -149,7 +149,7 @@ class GravityView_Image {
 
 				/**
 				 * Modify the image size presets used by GravityView_Image class.
-                 *
+    				 *
 				 * @param array $image_sizes Array of image sizes with the key being the size slug, and the value being an array with `width` and `height` defined, in pixels
 				 */
 				$image_sizes = apply_filters(

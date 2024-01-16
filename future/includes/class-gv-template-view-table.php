@@ -306,20 +306,22 @@ class View_Table_Template extends View_Template {
 
 				/**
 				 * while rendering each entry in the loop. Can be used to insert additional table cells.
-                 *
+				 *
 				 * @since 2.0
+				 *
 				 * @param \GV\Template_Context The context.
 				 */
 				do_action( 'gravityview/template/table/cells/before', $context );
 
-                /**
-                 * while rendering each entry in the loop. Can be used to insert additional table cells.
-                 *
-                 * @since 1.0.7
-				 * @param \GravityView_View $this Current GravityView_View object
+				/**
+				 * while rendering each entry in the loop. Can be used to insert additional table cells.
+				 *
 				 * @deprecated Use `gravityview/template/table/cells/before`
-                 */
-                do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
+				 * @since 1.0.7
+				 *
+				 * @param \GravityView_View $this Current GravityView_View object
+				 */
+				do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
 
                 foreach ( $fields->all() as $field ) {
 					if ( isset( $this->view->unions[ $entry['form_id'] ] ) ) {
@@ -334,20 +336,22 @@ class View_Table_Template extends View_Template {
 
 				/**
 				 * while rendering each entry in the loop. Can be used to insert additional table cells.
-                 *
+				 *
 				 * @since 2.0
+				 *
 				 * @param \GV\Template_Context The context.
 				 */
 				do_action( 'gravityview/template/table/cells/after', $context );
 
-                /**
-                 * while rendering each entry in the loop. Can be used to insert additional table cells.
-                 *
-                 * @since 1.0.7
-				 * @param \GravityView_View $this Current GravityView_View object
+				/**
+				 * while rendering each entry in the loop. Can be used to insert additional table cells.
+				 *
 				 * @deprecated Use `gravityview/template/table/cells/after`
-                 */
-                do_action( 'gravityview_table_cells_after', \GravityView_View::getInstance() );
+				 * @since 1.0.7
+				 *
+				 * @param \GravityView_View $this Current GravityView_View object
+				 */
+				do_action( 'gravityview_table_cells_after', \GravityView_View::getInstance() );
 
 				?>
 			</tr>

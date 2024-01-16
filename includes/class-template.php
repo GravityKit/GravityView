@@ -685,7 +685,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		if ( 'table' === $this->getTemplatePartSlug() ) {
 			/**
 			 * Modify the fields displayed in a table.
-             *
+			 *
 			 * @param array $fields
 			 * @param \GravityView_View $this
 			 * @deprecated Use `gravityview/template/table/fields`

@@ -322,7 +322,7 @@ abstract class Field_Template extends Template {
 		if ( empty( $output ) ) {
 			/**
 			 * What to display when a field is empty.
-             *
+			 *
 			 * @deprecated Use the `gravityview/field/value/empty` filter instead
 			 * @param string $value (empty string)
 			 */
@@ -330,7 +330,7 @@ abstract class Field_Template extends Template {
 
 			/**
 			 * What to display when this field is empty.
-             *
+			 *
 			 * @param string $value The value to display (Default: empty string)
 			 * @param \GV\Template_Context The template context this is being called from.
 			 */
@@ -378,7 +378,7 @@ abstract class Field_Template extends Template {
 
 			/**
 			 * Modify the field value output for a field type before Show As Link setting is applied. Example: `gravityview_field_entry_value_number_pre_link`.
-             *
+			 *
 			 * @since 1.16
 			 * @param string $output HTML value output
 			 * @param array  $entry The GF entry array
@@ -404,7 +404,7 @@ abstract class Field_Template extends Template {
 
 				/**
 				 * Modify the link HTML.
-                 *
+    			 *
 				 * @param string $link HTML output of the link
 				 * @param string $href URL of the link
 				 * @param array  $entry The GF entry array
@@ -415,7 +415,7 @@ abstract class Field_Template extends Template {
 
 				/**
 				 * Modify the link HTML.
-                 *
+    			 *
 				 * @since 2.0
 				 * @param string $link HTML output of the link
 				 * @param string $href URL of the link
@@ -433,7 +433,7 @@ abstract class Field_Template extends Template {
 
 			/**
 			 * Modify the field value output for a field type. Example: `gravityview_field_entry_value_number`.
-             *
+			 *
 			 * @since 1.6
 			 * @param string $output HTML value output
 			 * @param array  $entry The GF entry array
@@ -446,7 +446,7 @@ abstract class Field_Template extends Template {
 
 			/**
 			 * Modify the field value output for all field types.
-             *
+			 *
 			 * @param string $output HTML value output
 			 * @param array  $entry The GF entry array
 			 * @param  array $field_settings Settings for the particular GV field

@@ -34,7 +34,7 @@ if ( ! $is_single_input ) {
 			if ( '' !== $field_value ) {
 				/**
 				 * Change the output for a checkbox "check" symbol. Default is the "dashicons-yes" icon.
-                 *
+				 *
 				 * @see https://developer.wordpress.org/resource/dashicons/#yes
 				 *
 				 * @param string $output HTML span with `dashicons dashicons-yes` class

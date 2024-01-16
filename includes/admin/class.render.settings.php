@@ -502,7 +502,7 @@ EOD;
 				/**
 				 * Modify the output for a GravityView setting.
 				 * `$option_type` is the type of setting (`radio`, `text`, etc.).
-                 *
+				 *
 				 * @param string $output field class name
 				 * @param array $option  option field data
 				 */

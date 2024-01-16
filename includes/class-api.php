@@ -75,7 +75,7 @@ class GravityView_API {
 
 			/**
 			 * Append content to a field label.
-             *
+			 *
 			 * @param string $appended_content Content you can add after a label. Empty by default.
 			 * @param array $field GravityView field array
 			 */
@@ -792,7 +792,7 @@ class GravityView_API {
 
 			/**
 			 * Make sure the $directory_link doesn't contain any query otherwise it will break when adding the entry slug.
-             *
+			 *
 			 * @since 1.16.5
 			 */
 			$link_parts = explode( '?', $directory_link );
@@ -1274,8 +1274,8 @@ function gravityview_before() {
 		$gravityview = reset( $args );
 		if ( $gravityview instanceof \GV\Template_Context ) {
 			/**
-			 * Prepend content to the view.
-             *
+			 * Prepend content to the View.
+			 *
 			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
 			 */
 			do_action( 'gravityview/template/before', $gravityview );
@@ -1306,8 +1306,8 @@ function gravityview_header() {
 		$gravityview = reset( $args );
 		if ( $gravityview instanceof \GV\Template_Context ) {
 			/**
-			 * Prepend content to the view container <div>.
-             *
+			 * Prepend content to the View container <div>.
+			 *
 			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
 			 */
 			do_action( 'gravityview/template/header', $gravityview );
@@ -1338,8 +1338,8 @@ function gravityview_footer() {
 		$gravityview = reset( $args );
 		if ( $gravityview instanceof \GV\Template_Context ) {
 			/**
-			 * Prepend outside of the view container <div>.
-             *
+			 * Prepend outside the View container <div>.
+			 *
 			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
 			 */
 			do_action( 'gravityview/template/footer', $gravityview );
@@ -1365,8 +1365,8 @@ function gravityview_after() {
 		$gravityview = reset( $args );
 		if ( $gravityview instanceof \GV\Template_Context ) {
 			/**
-			 * Append content to the view.
-             *
+			 * Append content to the View.
+			 *
 			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
 			 * @since 2.0
 			 */

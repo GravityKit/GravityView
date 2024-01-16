@@ -334,7 +334,7 @@ class Field {
 		if ( $this->type ) {
 			/**
 			 * Override the displayed value here.
-             *
+			 *
 			 * @param string $value The value.
 			 * @param \GV\Field The field we're doing this for.
 			 * @param \GV\View $view The view for this context if applicable.

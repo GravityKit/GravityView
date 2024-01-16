@@ -185,7 +185,7 @@ class View implements \ArrayAccess {
 			'hierarchical'        => $is_hierarchical,
 			/**
 			 * Should Views be directly accessible, or only visible using the shortcode?
-             *
+			 *
 			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
 			 * @since 1.15.2
 			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
@@ -201,7 +201,7 @@ class View implements \ArrayAccess {
 			'can_export'          => true,
 			/**
 			 * Enable Custom Post Type archive?
-             *
+			 *
 			 * @since 1.7.3
 			 * @param boolean False: don't have frontend archive; True: yes, have archive. Default: false
 			 */
@@ -210,7 +210,7 @@ class View implements \ArrayAccess {
 			'rewrite'             => array(
 				/**
 				 * Modify the url part for a View.
-                 *
+				 *
 				 * @see https://docs.gravitykit.com/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
@@ -221,7 +221,7 @@ class View implements \ArrayAccess {
 				 *  be prepended with the front base.
 				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
 				 *  Defaults to true.
-                 *
+				 *
 				 * @see https://codex.wordpress.org/Function_Reference/register_post_type
 				 * @since 2.0
 				 * @param bool $with_front
@@ -513,7 +513,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * Should Views be directly accessible, or only visible using the shortcode?
-             *
+			 *
 			 * @deprecated
 			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
@@ -522,7 +522,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * Should this View be directly accessbile?
-             *
+			 *
 			 * @since 2.0
 			 * @param boolean Accessible or not. Default: accessbile.
 			 * @param \GV\View $view The View we're trying to directly render here.
@@ -726,7 +726,7 @@ class View implements \ArrayAccess {
 		if ( $view = Utils::get( self::$cache, "View::from_post:{$post->ID}" ) ) {
 			/**
 			 * Override View.
-             *
+			 *
 			 * @param \GV\View $view The View instance pointer.
 			 * @since 2.1
 			 */
@@ -1360,7 +1360,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * Override the \GF_Query before the get() call.
-             *
+			 *
 			 * @param \GF_Query $query The current query object reference
 			 * @param \GV\View $this The current view object
 			 * @param \GV\Request $request The request object
@@ -1557,7 +1557,7 @@ class View implements \ArrayAccess {
 
 			/**
 			 * Allowlist more entry fields by ID that are output in CSV requests.
-             *
+			 *
 			 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.

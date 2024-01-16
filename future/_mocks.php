@@ -249,7 +249,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 
 			/**
 			 * Append content to a field label.
-             *
+			 *
 			 * @param string $appended_content Content you can add after a label. Empty by default.
 			 * @param array $field GravityView field array
 			 */

@@ -170,7 +170,7 @@ class Views_Route extends Route {
 
 			/**
 			 * Filter the key name in the results for JSON output.
-             *
+			 *
 			 * @param string $field_id The ID. Should be unique or keys will be gobbled up.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry The entry.
@@ -260,7 +260,7 @@ class Views_Route extends Route {
 
 			/**
 			 * meta tags in the HTML output describing the data.
-             *
+			 *
 			 * @since 2.0
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
 			 * @param int $count The number of entries being rendered

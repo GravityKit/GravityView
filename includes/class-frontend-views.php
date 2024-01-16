@@ -1414,8 +1414,9 @@ class GravityView_frontend {
 				if ( floatval( $sort_field_id ) === floor( $sort_field_id ) ) {
 					/**
 					 * Override how to sort when sorting full name.
-                     *
+					 *
 					 * @since 1.7.4
+					 *
 					 * @param string $name_part Sort by `first` or `last` (default: `first`)
 					 * @param string $sort_field_id Field used for sorting
 					 * @param int $form_id GF Form ID
@@ -1435,7 +1436,7 @@ class GravityView_frontend {
 			case 'time':
 				/**
 				 * Override how to sort when sorting time.
-                 *
+				 *
 				 * @see GravityView_Field_Time
 				 * @since 1.14
 				 * @param string $name_part Field used for sorting
@@ -1515,16 +1516,18 @@ class GravityView_frontend {
 
 					/**
 					 * Override the lightbox script to enqueue. Default: `thickbox`.
-                     *
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
+					 *
 					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_script` instead.
+					 *
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 */
 					$js_dependency = apply_filters_deprecated( 'gravity_view_lightbox_script', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_script' );
 
 					/**
 					 * Override the lightbox script to enqueue. Default: `thickbox`.
-                     *
+					 *
 					 * @since 2.5.1
+					 *
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @param \GV\View The View.
 					 */
@@ -1533,16 +1536,18 @@ class GravityView_frontend {
 
 					/**
 					 * Modify the lightbox CSS slug. Default: `thickbox`.
-                     *
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
+					 *
 					 * @deprecated 2.5.1 Naming. See `gravityview_lightbox_style` instead.
+					 *
+					 * @param string $script_slug If you want to use a different lightbox script, return the name of its CSS file here.
 					 */
 					$css_dependency = apply_filters_deprecated( 'gravity_view_lightbox_style', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_style' );
 
 					/**
 					 * Override the lightbox script to enqueue. Default: `thickbox`.
-                     *
+					 *
 					 * @since 2.5.1
+					 *
 					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
 					 * @param \GV\View The View.
 					 */
@@ -1601,7 +1606,7 @@ class GravityView_frontend {
 
 				/**
 				 * Modify the array passed to wp_localize_script().
-                 *
+				 *
 				 * @param array $js_localization The data padded to the Javascript file
 				 * @param array $views Array of View data arrays with View settings
 				 */

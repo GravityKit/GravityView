@@ -487,7 +487,7 @@ abstract class GravityView_Field {
 				'desc'     => sprintf( __( 'Define how the date is displayed (using %1$sthe PHP date format%2$s)', 'gk-gravityview' ), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
 				/**
 				 * Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time).
-                 *
+				 *
 				 * @param null|string $date_format Date Format (default: null)
 				 */
 				'value'    => apply_filters( 'gravityview_date_format', null ),

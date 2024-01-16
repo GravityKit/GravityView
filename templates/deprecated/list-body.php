@@ -58,7 +58,7 @@ if ( ! $this->getTotalEntries() ) {
 
 			/**
 			 * Tap in before the the entry title is displayed.
-             *
+			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -107,7 +107,7 @@ if ( ! $this->getTotalEntries() ) {
 
 			/**
 			 * Tap in after the title block.
-             *
+			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -175,7 +175,7 @@ if ( ! $this->getTotalEntries() ) {
 
 			/**
 			 * Tap in before the footer wrapper.
-             *
+			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -197,7 +197,7 @@ if ( ! $this->getTotalEntries() ) {
 
 			/**
 			 * Tap in after the footer wrapper.
-             *
+			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */

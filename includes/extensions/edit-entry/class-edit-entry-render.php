@@ -388,7 +388,7 @@ class GravityView_Edit_Entry_Render {
 
 			/**
 			 * Perform an action before the entry has been updated using Edit Entry.
-             *
+			 *
 			 * @since 2.1
 			 * @param array $form Gravity Forms form array
 			 * @param string $entry_id Numeric ID of the entry that is being updated
@@ -413,15 +413,15 @@ class GravityView_Edit_Entry_Render {
 
 	        /**
 			 * Must be AFTER after_update()!
-             *
+			 *
 			 * @see https://github.com/gravityview/GravityView/issues/764
 			 */
 			$this->maybe_update_post_fields( $form );
 
 			/**
 			 * Perform an action after the entry has been updated using Edit Entry.
-             *
-             * @since 2.1 Added $gv_data parameter
+			 *
+			 * @since 2.1 Added $gv_data parameter
 			 * @param array $form Gravity Forms form array
 			 * @param string $entry_id Numeric ID of the entry that was updated
 			 * @param GravityView_Edit_Entry_Render $this This object
@@ -666,7 +666,7 @@ class GravityView_Edit_Entry_Render {
 
 			/**
 			 * Remove the fields with calculation formulas before save to avoid conflicts with GF logic
-             *
+			 *
 			 * @since 1.16.3
 			 */
 			if ( $field->has_calculation() ) {
@@ -1106,27 +1106,25 @@ class GravityView_Edit_Entry_Render {
 
 			/**
 			 * Fixes weird wpautop() issue
-             *
+			 *
 			 * @see https://github.com/katzwebservices/GravityView/issues/451
 			 */
 			echo gravityview_strip_whitespace( $javascript );
 
 		?>
-            <h2 class="gv-edit-entry-title">
-				<span>
-                <?php
+			<h2 class="gv-edit-entry-title">
+				<span><?php
 
-				    /**
-				     * Modify the edit entry title.
-                     *
-				     * @param string $edit_entry_title Modify the "Edit Entry" title
-				     * @param GravityView_Edit_Entry_Render $this This object
-				     */
-				    $edit_entry_title = apply_filters( 'gravityview_edit_entry_title', __( 'Edit Entry', 'gk-gravityview' ), $this );
+					/**
+					 * Modify the edit entry title.
+					 *
+					 * @param string $edit_entry_title Modify the "Edit Entry" title
+					 * @param GravityView_Edit_Entry_Render $this This object
+					 */
+					$edit_entry_title = apply_filters( 'gravityview_edit_entry_title', __( 'Edit Entry', 'gk-gravityview' ), $this );
 
-				    echo esc_attr( $edit_entry_title );
-				?>
-            </span>
+					echo esc_attr( $edit_entry_title );
+					?></span>
 			</h2>
 
 			<?php $this->maybe_print_message(); ?>
@@ -1191,14 +1189,15 @@ class GravityView_Edit_Entry_Render {
 			);
 
 			/**
-			* Modify the cancel/submit buttons' labels.
-             *
-			* @since 1.16.3
-			* @param array $labels Default button labels associative array
-			* @param array $form The Gravity Forms form
-			* @param array $entry The Gravity Forms entry
-			* @param int $view_id The current View ID
-			*/
+			 * Modify the cancel/submit buttons' labels.
+			 *
+			 * @since 1.16.3
+			 *
+			 * @param array $labels Default button labels associative array
+			 * @param array $form The Gravity Forms form
+			 * @param array $entry The Gravity Forms entry
+			 * @param int $view_id The current View ID
+			 */
 			$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
 
 			$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
@@ -1220,7 +1219,7 @@ class GravityView_Edit_Entry_Render {
 
 			/**
 			 * Modify the edit entry success message on pages.
-             *
+			 *
 			 * @since develop
 			 * @param string $entry_updated_message Existing message
 			 * @param int $view_id View ID
@@ -1323,14 +1322,15 @@ class GravityView_Edit_Entry_Render {
 				);
 
 				/**
-				* Modify the cancel/submit buttons' labels.
-                 *
-				* @since 1.16.3
-				* @param array $labels Default button labels associative array
-				* @param array $form The Gravity Forms form
-				* @param array $entry The Gravity Forms entry
-				* @param int $view_id The current View ID
-				*/
+				 * Modify the cancel/submit buttons' labels.
+				 *
+				 * @since 1.16.3
+				 *
+				 * @param array $labels Default button labels associative array
+				 * @param array $form The Gravity Forms form
+				 * @param array $entry The Gravity Forms entry
+				 * @param int $view_id The current View ID
+				 */
 				$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
 
 				GFFormDisplay::$submission[ $this->form['id'] ]['form']     = $this->form;
@@ -1469,16 +1469,16 @@ class GravityView_Edit_Entry_Render {
 
         // First, make sure they have the capability to edit the post.
 		if ( null === get_post( $this->entry['post_id'] ) ) {
-            /**
-             * Modify the message when someone is editing an entry attached to a post that no longer exists.
-             *
-             * @param string $message The existing "This field is not editable; the post no longer exists." text
-             */
-            $message = apply_filters( 'gravityview/edit_entry/no_post_text', __( 'This field is not editable; the post no longer exists.', 'gk-gravityview' ) );
+			/**
+			 * Modify the message when someone is editing an entry attached to a post that no longer exists.
+			 *
+			 * @param string $message The existing "This field is not editable; the post no longer exists." text
+			 */
+			$message = apply_filters( 'gravityview/edit_entry/no_post_text', __( 'This field is not editable; the post no longer exists.', 'gk-gravityview' ) );
         } elseif ( false === current_user_can( 'edit_post', $this->entry['post_id'] ) ) {
 			/**
 			 * Modify the message when someone isn't able to edit a post.
-             *
+			 *
 			 * @param string $message The existing "You don't have permission..." text
 			 */
 			$message = apply_filters( 'gravityview/edit_entry/unsupported_post_field_text', __( 'You don&rsquo;t have permission to edit this post.', 'gk-gravityview' ) );

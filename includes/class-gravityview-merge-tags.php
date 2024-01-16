@@ -685,7 +685,7 @@ class GravityView_Merge_Tags {
 
 			/**
 			 * values from an array to string.
-             *
+			 *
 			 * @since 1.15
 			 * @param string $glue String used to `implode()` $_GET values Default: ', '
 			 * @param string $property The current name of the $_GET parameter being combined
@@ -701,7 +701,7 @@ class GravityView_Merge_Tags {
 			 * By default, all values passed through URLs will be escaped for security reasons. If for some reason you want to
 			 * pass HTML in the URL, for example, you will need to return false on this filter. It is strongly recommended that you do
 			 * not disable this filter.
-             *
+			 *
 			 * @since 1.15
 			 * @param bool $esc_html Whether to esc_html() the value. Default: `true`
 			 */
@@ -711,7 +711,7 @@ class GravityView_Merge_Tags {
 
 			/**
 			 * replacement before being used.
-             *
+			 *
 			 * @param string $value Value that will replace `{get}`
 			 * @param string $text Text that contains `{get}` (before replacement)
 			 * @param array $form Gravity Forms form array

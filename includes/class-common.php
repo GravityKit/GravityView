@@ -606,7 +606,7 @@ class GVCommon {
 
 				/**
 				 * Modify the search operator for the field (contains, is, isnot, etc).
-                 *
+				 *
 				 * @param string $operator Existing search operator
 				 * @param array $filter array with `key`, `value`, `operator`, `type` keys
 				 */
@@ -719,7 +719,7 @@ class GVCommon {
 
 			/**
 			 * Define entries to be used before GFAPI::get_entries() is called.
-             *
+			 *
 			 * @since 1.14
 			 * @param  null $return If you want to override GFAPI::get_entries() and define entries yourself, tap in here.
 			 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
@@ -1507,7 +1507,7 @@ class GVCommon {
 		if ( $apply_filter ) {
 			/**
 			 * Filter the View fields' configuration array.
-             *
+			 *
 			 * @since 1.6.5
 			 * @since 2.16.3 Added the $form_id parameter.
 			 *
@@ -1519,7 +1519,7 @@ class GVCommon {
 
 			/**
 			 * Filter the View fields' configuration array.
-             *
+			 *
 			 * @since 2.0
 			 * @since 2.16.3 Added the $form_id parameter.
 			 *
@@ -1759,7 +1759,7 @@ class GVCommon {
 
 			/**
 			 * Modify the message shown when Javascript is disabled and an encrypted email field is displayed.
-             *
+			 *
 			 * @since 1.7
 			 * @param string $message Existing message
 			 * @param string $content Content to encrypt

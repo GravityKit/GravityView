@@ -748,7 +748,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 * Whether to adjust the timezone for entries. \n.
 			 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php). \n
 			 * This is for backward compatibility before \GF_Query started to automatically apply the timezone offset.
-             *
+			 *
 			 * @since 1.12
 			 * @param boolean $adjust_tz  Use timezone-adjusted datetime? If true, adjusts date based on blog's timezone setting. If false, uses UTC setting. Default is `false`.
 			 * @param string $context Where the filter is being called from. `search` in this case.
@@ -813,7 +813,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && 1 === count( $value ) && gv_empty( $value[0], false, false ) ) ) {
 				/**
 				 * Filter to control if empty field values should be ignored or strictly matched (default: true).
-                 *
+    			 *
 				 * @since  2.14.2.1
 				 * @param bool $ignore_empty_values
 				 * @param int|null $filter_key
@@ -979,7 +979,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			/**
 			 * Modify the search operator for the field (contains, is, isnot, etc).
-             *
+			 *
 			 * @since 2.0 Added $view parameter
 			 * @param string $operator Existing search operator
 			 * @param array $filter array with `key`, `value`, `operator`, `type` keys
@@ -1788,7 +1788,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			/**
 			 * Only output used choices for this field.
-             *
+			 *
 			 * @since 2.16 Modified default value to the `sieve_choices` widget setting and added $widget_args parameter.
 			 *
 			 * @param bool $sieve_choices True: Yes, filter choices based on whether the value exists in entries. False: show all choices in the original field. Default: false.
@@ -1925,7 +1925,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		foreach ( $users as $user ) {
 			/**
 			 * Filter the display text in created by search choices.
-             *
+			 *
 			 * @since 2.3
 			 * @param string[in,out] The text. Default: $user->display_name
 			 * @param \WP_User $user The user.

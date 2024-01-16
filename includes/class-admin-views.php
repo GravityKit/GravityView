@@ -1049,13 +1049,13 @@ class GravityView_Admin_Views {
 					<?php foreach ( $areas as $area ) : ?>
 
 						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>">
-							<p class="gv-droppable-area-title" 
+							<p class="gv-droppable-area-title"
 							<?php
 							if ( 'widget' === $type && empty( $area['subtitle'] ) ) {
 								echo ' style="margin: 0; padding: 0;"'; }
 							?>
 							>
-								<strong 
+								<strong
 								<?php
 								if ( 'widget' === $type ) {
 									echo 'class="screen-reader-text"'; }
@@ -1204,7 +1204,7 @@ class GravityView_Admin_Views {
 
 				/**
 				 * Modify the default widgets for new Views.
-                 *
+				 *
 				 * @param array $widgets A Widget configuration array
 				 * @param string $zone The widget zone that's being requested
 				 * @param int $post_id The auto-draft post ID

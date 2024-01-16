@@ -514,7 +514,7 @@ class GravityView_Cache {
 
 			/**
 			 * Modify the cache time for a type of cache.
-             *
+			 *
 			 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
 			 */
 			$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );

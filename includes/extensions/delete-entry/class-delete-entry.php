@@ -491,11 +491,11 @@ final class GravityView_Delete_Entry {
 
 				/**
 				 * Triggered when an entry is deleted.
-                 *
+				 *
 				 * @since 1.16.4
 				 * @param  int $entry_id ID of the Gravity Forms entry
 				 * @param  array $entry Deleted entry array
-				*/
+				 */
 				do_action( 'gravityview/delete-entry/deleted', $entry_id, $entry );
 			}
 
@@ -514,7 +514,7 @@ final class GravityView_Delete_Entry {
 
 				/**
 				 * Triggered when an entry is trashed.
-                 *
+				 *
 				 * @since 1.16.4
 				 * @param  int $entry_id ID of the Gravity Forms entry
 				 * @param  array $entry Deleted entry array

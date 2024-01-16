@@ -236,11 +236,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				if ( shortcode_exists( 'audio' ) ) {
 
 					/**
-					 * function.
-                     *
-					 * @since  1.2
-					 * @param array $audio_settings Array with `src` and `class` keys
-					 * @since 2.0
+					 * Modify the default attributes that will be passed to the wp_audio_shortcode() function.
+					 *
+					 * @since 1.2
+					 * @since 2.0 Added $context parameter.
+					 *
+					 * @param array $audio_settings Array with `src` and `class` keys.
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$audio_settings = apply_filters(
@@ -253,7 +254,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					);
 
 					/**
-					 * Generate the audio shortcode
+					 * Generate the audio shortcode.
 					 *
 					 * @see http://codex.wordpress.org/Audio_Shortcode
 					 * @see https://developer.wordpress.org/reference/functions/wp_audio_shortcode/
@@ -271,11 +272,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				if ( shortcode_exists( 'video' ) ) {
 
 					/**
-					 * function.
-                     *
-					 * @since  1.2
+					 * Modify the default attributes that will be passed to the wp_video_shortcode() function.
+					 *
+					 * @since 1.2
+					 * @since 2.0 Added $context parameter.
+					 *
 					 * @param array $video_settings Array with `src` and `class` keys
-					 * @since 2.0
 					 * @param \GV\Template_Context $context The context.
 					 */
 					$video_settings = apply_filters(
@@ -327,10 +329,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				}
 
 				/**
-				 * Modify the default image attributes for uploaded images
+				 * Modify the default image attributes for uploaded images.
 				 *
 				 * @since 2.0
-				 * @see GravityView_Image For the available attributes
+				 * @see GravityView_Image For the available attributes.
 				 *
 				 * @param array $image_atts
 				 */
@@ -371,7 +373,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			/**
 			 * Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object.
-             *
+			 *
 			 * @since 1.5.1
 			 * @param bool $disable_wrapped_link whether to wrap the content with a link to the content object.
 			 * @param array $field_compat Current GravityView field array
@@ -384,12 +386,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			// Output textualized content where
 			if ( ! $disable_wrapped_link && ( ! empty( $field_settings['link_to_file'] ) || ! empty( $field_settings['show_as_link'] ) ) ) {
 				/**
-				 * Modify the link text (defaults to the file name)
+				 * Modify the link text (defaults to the file name).
 				 *
 				 * @since 1.7
 				 *
-				 * @param string $content The existing anchor content. Could be `<img>` tag, audio/video embed or the file name
-				 * @param array $field_compat Current GravityView field array
+				 * @param string $content The existing anchor content. Could be `<img>` tag, audio/video embed or the file name.
+				 * @param array $field_compat Current GravityView field array.
 				 * @since 2.0
 				 * @param \GV\Template_Context $context The context.
 				 */
@@ -398,7 +400,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				if ( empty( $field_settings['show_as_link'] ) ) {
 					/**
 					 * Modify the link attributes for a file upload field.
-                     *
+					 *
 					 * @since 2.0 Added $context
 					 * @since 2.11 Added $additional_details
 					 * @param array|string $link_atts Array or attributes string
