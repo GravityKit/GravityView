@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 This release makes it easier to customize search results per-View instead of globally using code.
 
 * Fixed: Sorting the View by entry ID in ascending and descending order would yield the same result
+* Fixed: Survey fields without a rating would show a 1-star rating
 
 __Developer Updates:__
 

@@ -147,7 +147,9 @@ switch ( $gravityview->field->field->inputType ) {
 		$choices = $field->field->choices;
 		$choice_values = wp_list_pluck( $choices, 'value', $gravityview->value );
 		$starred_index = array_search( $gravityview->value, $choice_values );
-		$star_a11y_label = sprintf( __( '%s (%d out of %d stars)', 'gk-gravityview'), $choice_text, ( $starred_index + 1 ), sizeof( $choice_values ) );
+		$star_a11y_label = $starred_index !== false
+			?sprintf( __( '%s (%d out of %d stars)', 'gk-gravityview'), $choice_text, $starred_index + 1, count( $choice_values ) )
+			: '';
 
 		/**
 		 * @action `gravityview/field/survey/rating-styles`
@@ -162,7 +164,7 @@ switch ( $gravityview->field->field->inputType ) {
 		foreach ( $choices as $current_index => $choice_value ) {
 
 			// Have we already shown the last filled-in star?
-			$empty = ( $current_index > $starred_index );
+			$empty = ( $starred_index === false || $current_index > $starred_index );
 			$css_class = 'gv-field-survey-star-' . ( $empty ? 'empty' : 'filled' );
 
 			echo sprintf( '<span class="%s" title="%s"></span>', esc_attr( $css_class ), esc_attr( $choice_value['text'] ) );
