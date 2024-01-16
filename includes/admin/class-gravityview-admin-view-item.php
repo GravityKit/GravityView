@@ -279,7 +279,7 @@ abstract class GravityView_Admin_View_Item {
 
 		/**
 		 * Modify the icon output to add additional indicator icons.
-         *
+		 *
 		 * @internal This is currently internally used. Consider not relying on it until further notice :-)
 		 * @param array $icons Array of icons to be shown, with `visible`, `title`, `css_class` keys.
 		 * @param array $item_settings Settings for the current item (widget or field)

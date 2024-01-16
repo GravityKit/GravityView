@@ -226,8 +226,8 @@ class GravityView_Edit_Entry {
 	    }
 
 	    /**
-	     * Allow passing params to dynamically populate entry with values
-         *
+	     * Allow passing params to dynamically populate entry with values.
+	     *
 	     * @since 1.9.2
 	     */
 	    if ( ! empty( $field_values ) ) {
@@ -334,7 +334,7 @@ class GravityView_Edit_Entry {
 
 		/**
 		 * Array of fields that should not be displayed in Edit Entry.
-         *
+		 *
 		 * @since 1.20
 		 * @param string[] $fields Array of field type or meta key names (eg: `[ "captcha", "payment_status" ]` ).
 		 * @param array $entry Gravity Forms entry array.
@@ -422,17 +422,18 @@ class GravityView_Edit_Entry {
             }
 		}
 
-        /**
-         * Modify whether user can edit an entry.
-         *
-         * @since 1.15 Added `$entry` and `$view_id` parameters
-         * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
-         * @param array|\WP_Error $entry Gravity Forms entry array {@since 1.15}
-         * @param int $view_id ID of the view you want to check visibility against {@since 1.15}
-         */
-        $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );
+		/**
+		 * Modify whether user can edit an entry.
+		 *
+		 * @since 1.15 Added `$entry` and `$view_id` parameters
+		 *
+		 * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
+		 * @param array|\WP_Error $entry Gravity Forms entry array {@since 1.15}
+		 * @param int $view_id ID of the view you want to check visibility against {@since 1.15}
+		 */
+		$user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );
 
-        return (bool) $user_can_edit;
+		return (bool) $user_can_edit;
     }
 
 	/**

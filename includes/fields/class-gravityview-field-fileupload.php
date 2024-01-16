@@ -429,7 +429,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 		/**
 		 * Modify the files array.
-         *
+		 *
 		 * @since 1.7
 		 * @since 2.0 Added $context
 		 * @param array $output_arr Associative array of files. {
@@ -475,7 +475,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 		/**
 		 * Modify the file extension before it's used in display logic.
-         *
+		 *
 		 * @since 2.13.5
 		 *
 		 * @param string $extension The extension of the file, as parsed by `pathinfo()`.
@@ -497,7 +497,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 		/**
 		 * Modify the file path before generating a link to it.
-         *
+		 *
 		 * @since 1.22.3
 		 * @since 2.0 Added $context parameter
 		 * @since 2.8.2

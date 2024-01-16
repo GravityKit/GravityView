@@ -370,7 +370,7 @@ EOD;
 
 		/**
 		 * Modify the reserved embed slugs that trigger a warning.
-         *
+		 *
 		 * @since 2.5
 		 * @param array $reserved_slugs An array of strings, reserved slugs.
 		 * @param \GV\Template_Context $gravityview The context.

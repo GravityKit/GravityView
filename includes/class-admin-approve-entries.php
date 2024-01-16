@@ -73,7 +73,7 @@ class GravityView_Admin_ApproveEntries {
 
 		/**
 		 * Disable filter links.
-         *
+		 *
 		 * @since 1.17.1
 		 * @param bool $show_filter_links True: show the "approved"/"disapproved" filter links. False: hide them.
 		 * @param array $form GF Form object of current form
@@ -468,7 +468,7 @@ class GravityView_Admin_ApproveEntries {
 
 		/**
 		 * Return true to hide reject/approve if there are no connected Views.
-         *
+		 *
 		 * @since 1.7.2
 		 * @param boolean $hide_if_no_connections
 		 */
@@ -485,7 +485,7 @@ class GravityView_Admin_ApproveEntries {
 
 		/**
 		 * Override whether the column is shown.
-         *
+		 *
 		 * @param boolean $show_approve_column Whether the column will be shown
 		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
 		 */

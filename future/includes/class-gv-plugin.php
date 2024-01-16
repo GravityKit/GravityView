@@ -492,7 +492,7 @@ final class Plugin {
 
 		/**
 		 * Overrides whether GravityView supports a feature.
-         *
+		 *
 		 * @since 2.0
 		 * @param boolean|null $supports Whether the feature is supported. Default: null.
 		 */

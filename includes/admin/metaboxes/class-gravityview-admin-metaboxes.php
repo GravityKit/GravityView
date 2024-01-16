@@ -96,7 +96,7 @@ class GravityView_Admin_Metaboxes {
 
 		/**
 		 * Before rendering GravityView metaboxes.
-         *
+		 *
 		 * @since 1.8
 		 * @param WP_Post $post
 		 */
@@ -109,7 +109,7 @@ class GravityView_Admin_Metaboxes {
 
 		/**
 		 * After rendering GravityView metaboxes.
-         *
+		 *
 		 * @since 1.8
 		 * @param WP_Post $post
 		 */
@@ -192,7 +192,7 @@ class GravityView_Admin_Metaboxes {
 
 		/**
 		 * Modify the default settings metabox tabs.
-         *
+		 *
 		 * @param array $metaboxes
 		 * @since 1.8
 		 */

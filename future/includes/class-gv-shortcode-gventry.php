@@ -45,7 +45,7 @@ class gventry extends \GV\Shortcode {
 
 		/**
 		 * Filter the [gventry] shortcode attributes.
-         *
+		 *
 		 * @param array $atts The initial attributes.
 		 * @since 2.0
 		 */
@@ -256,7 +256,7 @@ class gventry extends \GV\Shortcode {
 
 		/**
 		 * Filter the [gventry] output.
-         *
+		 *
 		 * @param string $output The output.
 		 * @param \GV\View|null $view The View detected or null.
 		 * @param \GV\Entry|null $entry The Entry or null.

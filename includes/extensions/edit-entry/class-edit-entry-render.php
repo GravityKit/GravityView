@@ -448,7 +448,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Whether to delete values of fields hidden by conditional logic.
-         *
+		 *
 		 * @since 1.22.2
 		 * @param bool $unset_hidden_field_values Default: true
 		 * @param GravityView_Edit_Entry_Render $this This object
@@ -585,7 +585,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Make sure the fileuploads are not overwritten if no such request was done.
-         *
+		 *
 		 * @since 1.20.1
 		 */
 		add_filter( "gform_save_field_value_$form_id", array( $this, 'save_field_value' ), 99, 5 );
@@ -1289,7 +1289,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Before rendering the Edit Entry form.
-         *
+		 *
 		 * @since 1.17
 		 * @param GravityView_Edit_Entry_Render $this
 		 */
@@ -1388,7 +1388,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * After rendering the Edit Entry form.
-         *
+		 *
 		 * @since 1.17
 		 * @param GravityView_Edit_Entry_Render $this
 		 */
@@ -1563,7 +1563,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Allow the pre-populated value to override saved value in Edit Entry form. By default, pre-populate mechanism only kicks on empty fields.
-         *
+		 *
 		 * @param boolean True: override saved values; False: don't override (default)
 		 * @param $field GF_Field object Gravity Forms field object
 		 * @since 1.13
@@ -1618,7 +1618,7 @@ class GravityView_Edit_Entry_Render {
 
 	    /**
 	     * Change the value of an Edit Entry field, if needed.
-         *
+		 *
 	     * @since 1.11
 	     * @since 1.20 Added third param
 	     * @param mixed $field_value field value used to populate the input
@@ -1629,7 +1629,7 @@ class GravityView_Edit_Entry_Render {
 
 	    /**
 	     * Change the value of an Edit Entry field for a specific field type.
-         *
+		 *
 	     * @since 1.17
 	     * @since 1.20 Added third param
 	     * @param mixed $field_value field value used to populate the input
@@ -1754,7 +1754,7 @@ class GravityView_Edit_Entry_Render {
 		/**
 		 * If using GF User Registration Add-on, remove the validation step, otherwise generates error when updating the entry
 		 * GF User Registration Add-on version > 3.x has a different class name
-         *
+		 *
 		 * @since 1.16.2
 		 */
 		if ( class_exists( 'GF_User_Registration' ) ) {
@@ -1992,7 +1992,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Modify the fields displayed in Edit Entry form.
-         *
+		 *
 		 * @since 1.17
 		 * @param GF_Field[] $fields Gravity Forms form fields
 		 * @param array|null $edit_fields Fields for the Edit Entry tab configured in the View Configuration
@@ -2116,7 +2116,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Normalize page numbers - avoid conflicts with page validation
-         *
+		 *
 		 * @since 1.6
 		 */
 		$return_field->pageNumber = 1;
@@ -2138,17 +2138,18 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function filter_admin_only_fields( $fields = array(), $edit_fields = null, $form = array(), $view_id = 0 ) {
 
-	    /**
+		/**
 		 * When Edit tab isn't configured, should the Gravity Forms "Admin Only" field settings be used to control field display to non-admins? Default: true.
-	     * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
-	     * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
-         *
-	     * @since 1.9.1
-	     * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
-	     * @param array $form GF Form array
-	     * @param int $view_id View ID
-	     */
-	    $use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
+		 * If the Edit Entry tab is not configured, adminOnly fields will not be shown to non-administrators.
+		 * If the Edit Entry tab *is* configured, adminOnly fields will be shown to non-administrators, using the configured GV permissions
+		 *
+		 * @since 1.9.1
+		 *
+		 * @param boolean $use_gf_adminonly_setting True: Hide field if set to Admin Only in GF and the user is not an admin. False: show field based on GV permissions, ignoring GF permissions.
+		 * @param array $form GF Form array
+		 * @param int $view_id View ID
+		 */
+		$use_gf_adminonly_setting = apply_filters( 'gravityview/edit_entry/use_gf_admin_only_setting', empty( $edit_fields ), $form, $view_id );
 
 	    if ( $use_gf_adminonly_setting && false === GVCommon::has_cap( 'gravityforms_edit_entries', $this->entry['id'] ) ) {
 			foreach ( $fields as $k => $field ) {
@@ -2334,7 +2335,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Should the Edit Entry form use Gravity Forms conditional logic showing/hiding of fields?
-         *
+		 *
 		 * @since 1.9
 		 * @param bool $use_conditional_logic True: Gravity Forms will show/hide fields just like in the original form; False: conditional logic will be disabled and fields will be shown based on configuration. Default: true
 		 * @param array $form Gravity Forms form
@@ -2436,14 +2437,14 @@ class GravityView_Edit_Entry_Render {
 
 		if ( $echo && true !== $error ) {
 
-	        $error = esc_html( $error );
+			$error = esc_html( $error );
 
-	        /**
-	         * @since 1.9
-	         */
-	        if ( ! empty( $this->entry ) ) {
-		        $error .= ' ' . gravityview_get_link( '#', _x( 'Go back.', 'Link shown when invalid Edit Entry link is clicked', 'gk-gravityview' ), array( 'onclick' => 'window.history.go(-1); return false;' ) );
-	        }
+			/**
+			 * @since 1.9
+			 */
+			if ( ! empty( $this->entry ) ) {
+				$error .= ' ' . gravityview_get_link( '#', _x( 'Go back.', 'Link shown when invalid Edit Entry link is clicked', 'gk-gravityview' ), array( 'onclick' => 'window.history.go(-1); return false;' ) );
+			}
 
 			echo GVCommon::generate_notice( wpautop( $error ), 'gv-error error' );
 		}
@@ -2531,7 +2532,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Override Edit Entry nonce validation. Return true to declare nonce valid.
-         *
+		 *
 		 * @since 1.13
 		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
 		 * @param string $nonce_field Key used when validating submissions. Default: is_gv_edit_entry
@@ -2579,7 +2580,7 @@ class GravityView_Edit_Entry_Render {
 
 		/**
 		 * Modify the cancel/submit buttons' labels.
-         *
+		 *
 		 * @since 1.16.3
 		 * @param array $labels Default button labels associative array
 		 * @param array $form The Gravity Forms form

@@ -89,7 +89,7 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
 		/**
 		 * Filter the logger instance being used for logging.
-         *
+		 *
 		 * @param \GV\Logger $logger The logger instance.
 		 */
 		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );

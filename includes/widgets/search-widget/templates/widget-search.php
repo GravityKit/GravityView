@@ -31,7 +31,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 
 		/**
 		 * Before each search input is rendered (other than the submit button).
-         *
+		 *
 		 * @param GravityView_Widget_Search $this GravityView Widget instance
 		 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
 		 */
@@ -47,7 +47,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 
 		/**
 		 * After each search input is rendered (other than the submit button).
-         *
+		 *
 		 * @param GravityView_Widget_Search $this GravityView Widget instance
 		 * @param array $search_field
 		 */

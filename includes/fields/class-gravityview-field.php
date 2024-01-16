@@ -506,7 +506,7 @@ abstract class GravityView_Field {
 
 		/**
 		 * Modify the settings that a field supports.
-         *
+		 *
 		 * @param array $options Options multidimensional array with each key being the input name, with each array setting having `type`, `label`, `desc` and `value` (default values) keys
 		 */
 		return apply_filters( 'gravityview_field_support_options', $options );

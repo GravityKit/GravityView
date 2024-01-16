@@ -10,7 +10,7 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 
 		/**
 		 * Should GravityView use the legacy Table layout stylesheet (from before Version 2.1)?
-         *
+		 *
 		 * @since 2.1.1
 		 * @param bool $use_legacy_table_style If true, loads `table-view-legacy.css`. If false, loads `table-view.css`. Default: `false`
 		 */

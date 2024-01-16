@@ -177,7 +177,7 @@ class GravityView_Admin_No_Conflict {
 		/**
 		 * Modify the list of no conflict scripts or styles\n.
 		 * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`
-         *
+		 *
 		 * @param array $required_objects
 		 */
 		$required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );

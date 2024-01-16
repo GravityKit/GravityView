@@ -246,7 +246,7 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Modify whether to include passed $_GET parameters to the end of the url.
-         *
+		 *
 		 * @since 2.10
 		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Delete Link URL. Default: true.
 		 */
@@ -294,7 +294,7 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Should the Delete button be shown in the Edit Entry screen?
-         *
+		 *
 		 * @param boolean $show_entry Default: true
 		 */
 		$show_delete_button = apply_filters( 'gravityview/delete-entry/show-delete-button', true );
@@ -429,7 +429,7 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Modify the query args added to the delete entry redirect.
-         *
+		 *
 		 * @since 2.9.2
 		 *
 		 * @param array $delete_redirect_args Array with `_delete_nonce`, `message` and `status` keys
@@ -456,7 +456,7 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Delete mode: permanently delete, or move to trash?
-         *
+		 *
 		 * @since 1.13.1
 		 * @param string $delete_mode Delete mode: `trash` or `delete`. Default: `delete`
 		 */
@@ -547,7 +547,7 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Should posts connected to an entry be deleted when the entry is deleted?
-         *
+		 *
 		 * @since 1.17
 		 * @param boolean $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true
 		 */
@@ -603,7 +603,7 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Override Delete Entry nonce validation. Return true to declare nonce valid.
-         *
+		 *
 		 * @since 1.15.2
 		 * @see wp_verify_nonce()
 		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
@@ -626,7 +626,7 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Modify the Delete Entry Javascript confirmation text.
-         *
+		 *
 		 * @param string $confirm Default: "Are you sure you want to delete this entry? This cannot be undone."
 		 */
 		$confirm = apply_filters( 'gravityview/delete-entry/confirm-text', $confirm );
@@ -816,7 +816,7 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Modify the Delete Entry messages.
-         *
+		 *
 		 * @since 1.13.1
 		 * @param string $message Message to be displayed
 		 * @param string $status Message status (`error` or `success`)

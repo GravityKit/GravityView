@@ -188,7 +188,7 @@ class GravityView_Entry_Link_Shortcode {
 
 		/**
 		 * Modify the output of the [gv_entry_link] shortcode.
-         *
+		 *
 		 * @since 2.0.15
 		 * @param string $return The HTML link output
 		 * @param array {

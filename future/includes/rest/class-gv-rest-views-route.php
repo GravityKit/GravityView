@@ -121,7 +121,7 @@ class Views_Route extends Route {
 
 		/**
 		 * Allow more entry fields that are output in regular REST requests.
-         *
+		 *
 		 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Entry $entry The entry.
@@ -471,7 +471,7 @@ class Views_Route extends Route {
 
 		/**
 		 * Disable rest output. Final chance.
-         *
+		 *
 		 * @param bool Enable or not.
 		 * @param \GV\View $view The view.
 		 */

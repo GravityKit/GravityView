@@ -700,7 +700,7 @@ class View_Settings extends Settings {
 
 		/**
 		 * Modify the default settings for new Views.
-         *
+		 *
 		 * @deprecated
 		 * @see filter `gravityview/view/settings/defaults`
 		 *

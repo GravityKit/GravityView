@@ -259,7 +259,7 @@ class GravityView_Entry_Approval {
 
 		/**
 		 * Modify whether to run the after_submission process.
-         *
+		 *
 		 * @since 2.3
 		 * @param bool $process_after_submission default: true
 		 */
@@ -273,7 +273,7 @@ class GravityView_Entry_Approval {
 
 		/**
 		 * Modify the default approval status for newly submitted entries.
-         *
+		 *
 		 * @since 2.0.14
 		 * @param int $default_status See GravityView_Entry_Approval_Status() for valid statuses.
 		 */
@@ -324,7 +324,7 @@ class GravityView_Entry_Approval {
 
 		/**
 		 * Filter the approval status on entry update.
-         *
+		 *
 		 * @param string $value The approval status.
 		 * @param array $form The form.
 		 * @param array $entry The entry.
@@ -474,7 +474,7 @@ class GravityView_Entry_Approval {
 
 		/**
 		 * Add a note when the entry has been approved or disapproved?
-         *
+		 *
 		 * @since 1.16.3
 		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
 		 */
@@ -606,7 +606,7 @@ class GravityView_Entry_Approval {
 
 		/**
 		 * Triggered when an entry approval is updated.
-         *
+		 *
 		 * @since 1.7.6.1
 		 * @param  int $entry_id ID of the Gravity Forms entry
 		 * @param  string|int $status String whether entry is approved or not. See GravityView_Entry_Approval_Status for valid statuses.
@@ -618,7 +618,7 @@ class GravityView_Entry_Approval {
 		/**
 		 * Triggered when an entry approval is set. {$action} can be 'approved', 'unapproved', or 'disapproved'.
 		 * Note: If you want this to work with Bulk Actions, run in a plugin rather than a theme; the bulk updates hook runs before themes are loaded.
-         *
+		 *
 		 * @since 1.7.6.1
 		 * @since 1.18 Added "unapproved"
 		 * @param  int $entry_id ID of the Gravity Forms entry
@@ -735,7 +735,7 @@ class GravityView_Entry_Approval {
 
 		/**
 		 * Where should the popover be placed?
-         *
+		 *
 		 * @since 2.3.1
 		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
 		 */

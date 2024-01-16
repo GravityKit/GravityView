@@ -195,7 +195,7 @@ class Field {
 
 		/**
 		 * Filter the field class about to be created from the configuration.
-         *
+		 *
 		 * @param string $field_class The field class about to be used.
 		 * @param array $configuration The configuration as per \GV\Field::as_configuration()
 		 */
@@ -347,7 +347,7 @@ class Field {
 
 		/**
 		 * Override the displayed value here.
-         *
+		 *
 		 * @param string $value The value.
 		 * @param \GV\Field The field we're doing this for.
 		 * @param \GV\View $view The view for this context if applicable.

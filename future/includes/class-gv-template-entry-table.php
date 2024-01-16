@@ -45,7 +45,7 @@ class Entry_Table_Template extends Entry_Template {
 
 		/**
 		 * Modify the fields displayed in a table.
-         *
+		 *
 		 * @param array $fields
 		 * @param \GravityView_View $this
 		 * @deprecated Use `gravityview/template/table/fields`
@@ -55,7 +55,7 @@ class Entry_Table_Template extends Entry_Template {
 
 		/**
 		 * Modify the fields displayed in this tables.
-         *
+		 *
 		 * @param \GV\Field_Collection $fields The fields.
 		 * @param \GV\Template_Context $context The context.
 		 * @since 2.0

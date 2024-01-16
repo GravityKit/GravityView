@@ -505,7 +505,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 		/**
 		 * Modify the displayed pagination numbers.
-         *
+		 *
 		 * @since 1.13
 		 * @param array $counts Array with $first, $last, $total numbers in that order
 		 */
@@ -941,7 +941,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 		/**
 		 * The CSS class applied to the widget container `<div>`.
-         *
+		 *
 		 * @since 1.16.2
 		 * @param string $css_class Default: `gv-grid gv-widgets-{zone}` where `{zone}` is replaced by the current `$zone` value. If the View has no results, adds ` gv-widgets-no-results`
 		 * @param string $zone Current widget zone, either `header` or `footer`

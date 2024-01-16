@@ -130,7 +130,7 @@ class View implements \ArrayAccess {
 		/**
 		 * Make GravityView Views hierarchical by returning TRUE.
 		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
-         *
+		 *
 		 * @since 1.13
 		 * @param boolean $is_hierarchical Default: false
 		 */
@@ -466,7 +466,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Whether the view can be rendered or not.
-         *
+		 *
 		 * @param bool|\WP_Error $result  The result. Default: null.
 		 * @param \GV\View       $view  The view.
 		 * @param string[]       $context See \GV\View::can_render
@@ -757,7 +757,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the View fields' configuration array.
-         *
+		 *
 		 * @since 1.6.5
 		 *
 		 * @deprecated Use `gravityview/view/configuration/fields` or `gravityview/view/fields` filters.
@@ -769,7 +769,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the View fields' configuration array.
-         *
+		 *
 		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of fields with first level being the field zones.
@@ -779,7 +779,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the Field Collection for this View.
-         *
+		 *
 		 * @since 2.0
 		 *
 		 * @param \GV\Field_Collection $fields A collection of fields.
@@ -789,7 +789,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the View widgets' configuration array.
-         *
+		 *
 		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of widgets with first level being the field zones.
@@ -799,7 +799,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Filter the Widget Collection for this View.
-         *
+		 *
 		 * @since 2.0
 		 *
 		 * @param \GV\Widget_Collection $widgets A collection of widgets.
@@ -824,7 +824,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Override View.
-         *
+		 *
 		 * @param \GV\View $view The View instance pointer.
 		 * @since 2.1
 		 */
@@ -1424,7 +1424,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Modify the entry fetching filters, sorts, offsets, limits.
-         *
+		 *
 		 * @param \GV\Entry_Collection $entries The entries for this view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Request $request The request.
@@ -1510,7 +1510,7 @@ class View implements \ArrayAccess {
 
 		/**
 		 * Modify the name of the generated CSV or TSV file. Name will be sanitized using sanitize_file_name() before output.
-         *
+		 *
 		 * @see sanitize_file_name()
 		 * @since 2.1
 		 * @param string   $filename File name used when downloading a CSV or TSV. Default is "{View title}.csv" or "{View title}.tsv"
@@ -1637,7 +1637,7 @@ class View implements \ArrayAccess {
 	public static function restrict( $caps, $cap, $user_id, $args ) {
 		/**
 		 * Bypass restrictions on Views that require `unfiltered_html`.
-         *
+		 *
 		 * @param boolean
 		 *
 		 * @since develop
@@ -1694,7 +1694,7 @@ class View implements \ArrayAccess {
 	public function get_anchor_id() {
 		/**
 		 * Modify the anchor ID.
-         *
+		 *
 		 * @since 2.15
 		 * @param string $anchor_id The anchor ID.
 		 * @param \GV\View $this The View.

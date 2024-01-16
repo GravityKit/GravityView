@@ -109,7 +109,7 @@ class GravityView_Merge_Tags {
 
 		/**
 		 * Modify the merge tag modifier output.
-         *
+		 *
 		 * @since 2.0
 		 * @param string $return The current merge tag value to be filtered.
 		 * @param string $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
@@ -334,7 +334,7 @@ class GravityView_Merge_Tags {
 		/**
 		 * Turn off merge tag variable replacements.\n.
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
-         *
+		 *
 		 * @since 1.13
 		 *
 		 * @param boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.

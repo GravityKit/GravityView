@@ -177,7 +177,7 @@ abstract class Widget {
 
 		/**
 		 * Enable custom CSS class settings for widgets.
-         *
+		 *
 		 * @param boolean $enable_custom_class False by default. Return true if you want to enable.
 		 * @param \GV\Widget $this Current instance of \GV\Widget.
 		 */
@@ -267,7 +267,7 @@ abstract class Widget {
 
 		/**
 		 * Array of zones available for widgets to be dropped into.
-         *
+		 *
 		 * @deprecated 2.0: Use gravityview/widget/active_areas instead
 		 * @param array $default_areas Definition for default widget areas
 		 */
@@ -275,7 +275,7 @@ abstract class Widget {
 
 		/**
 		 * Array of zones available for widgets to be dropped into.
-         *
+		 *
 		 * @since 2.0
 		 * @param array $default_areas Definition for default widget areas
 		 */
@@ -453,7 +453,7 @@ abstract class Widget {
 
 		/**
 		 * Some widgets have got to stay shown.
-         *
+		 *
 		 * @since 2.14
 		 * @param string[] $allowlist The widget IDs that have to be shown by default.
 		 */
@@ -469,7 +469,7 @@ abstract class Widget {
 
 		/**
 		 * Modify whether to hide content until search.
-         *
+		 *
 		 * @param boolean $hide_until_searched Hide until search?
 		 * @param \GV\Widget $this Widget instance
 		 */
@@ -560,7 +560,7 @@ abstract class Widget {
 	public static function registered() {
 		/**
 		 * Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object.
-         *
+		 *
 		 * @deprecated Use `gravityview/widgets/register`
 		 * @param array $registered_widgets Empty array
 		 */
@@ -568,7 +568,7 @@ abstract class Widget {
 
 		/**
 		 * Each item is used to instantiate a GravityView_Admin_View_Widget object.
-         *
+		 *
 		 * @param array $registered_widgets Empty array
 		 */
 		return apply_filters( 'gravityview/widgets/register', $registered_widgets );

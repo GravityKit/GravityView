@@ -490,7 +490,7 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * Modify the new entry details before it's created.
-         *
+		 *
 		 * @since 2.5
 		 * @param array $row The entry details
 		 * @param array $entry The original entry
@@ -527,7 +527,7 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * Modify the new entry meta details.
-         *
+		 *
 		 * @param array $save_this_meta The duplicate meta. Use/add meta_key, meta_value, item_index.
 		 * @param array $row The duplicated entry
 		 * @param array $entry The original entry
@@ -549,7 +549,7 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * Triggered when an entry is duplicated.
-         *
+		 *
 		 * @since 2.5
 		 * @param  array $duplicated_entry The duplicated entry
 		 * @param  array $entry The original entry
@@ -581,7 +581,7 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * Override Duplicate Entry nonce validation. Return true to declare nonce valid.
-         *
+		 *
 		 * @since 2.5
 		 * @see wp_verify_nonce()
 		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
@@ -787,7 +787,7 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * Modify the Duplicate Entry messages. Allows HTML; will not be further sanitized.
-         *
+		 *
 		 * @since 2.5
 		 * @param string $message Message to be displayed, sanitized using esc_attr()
 		 * @param string $status Message status (`error` or `success`)
@@ -816,7 +816,7 @@ final class GravityView_Duplicate_Entry {
 
 		/**
 		 * Disables the duplicate link on the backend.
-         *
+		 *
 		 * @param boolean $enable True by default. Enabled.
 		 * @param int $form_id The form ID.
 		 */

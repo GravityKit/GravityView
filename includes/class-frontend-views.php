@@ -510,7 +510,7 @@ class GravityView_frontend {
 
 		/**
 		 * Apply the Single Entry Title filter outside the WordPress loop?
-         *
+		 *
 		 * @param boolean $in_the_loop Whether to apply the filter to the menu title and the meta tag <title> - outside the loop
 		 * @param array $entry Current entry
 		 */
@@ -582,7 +582,7 @@ class GravityView_frontend {
 
 		/**
 		 * Override whether to check entry display rules against filters.
-         *
+		 *
 		 * @internal This might change in the future! Don't rely on it.
 		 * @since 2.7.2
 		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
@@ -642,7 +642,7 @@ class GravityView_frontend {
 
 		/**
 		 * Whether to set comments to open or closed.
-         *
+		 *
 		 * @since  1.5.4
 		 * @param  boolean $open Open or closed status
 		 * @param  int $post_id Post ID to set comment status for
@@ -998,7 +998,7 @@ class GravityView_frontend {
 
 		/**
 		 * Modify the search criteria.
-         *
+		 *
 		 * @see GravityView_Widget_Search::filter_entries Adds the default search criteria
 		 * @param array $search_criteria Empty `field_filters` key
 		 * @param int $form_id ID of the Gravity Forms form that is being searched
@@ -1046,7 +1046,7 @@ class GravityView_frontend {
 
 		/**
 		 * Modify entry status requirements to be included in search results.
-         *
+		 *
 		 * @param string $status Default: `active`. Accepts all Gravity Forms entry statuses, including `spam` and `trash`
 		 */
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
@@ -1103,7 +1103,7 @@ class GravityView_frontend {
 
 		/**
 		 * Filter the entries output to the View.
-         *
+		 *
 		 * @deprecated since 1.5.2
 		 * @param array $args View settings associative array
 		 * @var array
@@ -1118,7 +1118,7 @@ class GravityView_frontend {
 
 		/**
 		 * Filter the entries output to the View.
-         *
+		 *
 		 * @param array $criteria associative array containing count, entries & paging
 		 * @param array $args View settings associative array
 		 * @since 1.5.2
@@ -1173,7 +1173,7 @@ class GravityView_frontend {
 
 		/**
 		 * Filter get entries criteria.
-         *
+		 *
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
 		 * @param array $args View configuration args. {
 		 *      @type int $id View id
@@ -1191,7 +1191,7 @@ class GravityView_frontend {
 
 		/**
 		 * Filter get entries criteria for a specific View.
-         *
+		 *
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
 		 * @param array $args View configuration args.
 		 */
@@ -1214,7 +1214,7 @@ class GravityView_frontend {
 
 		/**
 		 * The default number of entries displayed in a View.
-         *
+		 *
 		 * @since 1.1.6
 		 * @param int $default_page_size Default: 25
 		 */
@@ -1630,7 +1630,7 @@ class GravityView_frontend {
 
 		/**
 		 * Should GravityView use the legacy Search Bar stylesheet (from before Version 1.17)?
-         *
+		 *
 		 * @since 1.17
 		 * @param bool $use_legacy_search_style If true, loads `gv-legacy-search(-rtl).css`. If false, loads `gv-default-styles(-rtl).css`. `-rtl` is added on RTL websites. Default: `false`
 		 */
@@ -1754,7 +1754,7 @@ class GravityView_frontend {
 
 		/**
 		 * Modify what fields should never be sortable.
-         *
+		 *
 		 * @since 2.14
 		 * @param array $not_sortable Array of field types that aren't sortable.
 		 * @param string $field_type Field type to check whether the field is sortable.

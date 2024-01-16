@@ -115,7 +115,7 @@ class GravityView_Support_Port {
 
 		/**
 		 * Whether to display Support Port.
-         *
+		 *
 		 * @since 1.15
 		 * @param boolean $display_support_port Default: `true`
 		 */
@@ -236,7 +236,7 @@ class GravityView_Support_Port {
 
 		/**
 		 * Should the "GravityView Support Port" setting be shown on user profiles?
-         *
+		 *
 		 * @since 1.15
 		 * @param boolean $allow_profile_setting Default: `true`, if the user has the `gravityview_support_port` capability, which defaults to true for Contributors and higher
 		 * @param WP_User $user Current user object

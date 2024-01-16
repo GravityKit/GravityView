@@ -230,7 +230,7 @@ class View_Table_Template extends View_Template {
 
 		/**
 		 * Override the field label.
-         *
+		 *
 		 * @since 2.0
 		 * @param string $column_label The label to override.
 		 * @param \GV\Template_Context $context The context. Does not have entry set here.
@@ -265,7 +265,7 @@ class View_Table_Template extends View_Template {
 
 		/**
 		 * Modify the fields displayed in a table.
-         *
+		 *
 		 * @param array $fields
 		 * @param \GravityView_View $this
 		 * @deprecated Use `gravityview/template/table/fields`
@@ -275,7 +275,7 @@ class View_Table_Template extends View_Template {
 
 		/**
 		 * Modify the fields displayed in this tables.
-         *
+		 *
 		 * @param \GV\Field_Collection $fields The fields.
 		 * @param \GV\Template_Context $context The context.
 		 * @since 2.0
@@ -422,7 +422,7 @@ class View_Table_Template extends View_Template {
 	public static function body_before( $context ) {
 		/**
 		 * of the table.
-         *
+		 *
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
@@ -430,7 +430,7 @@ class View_Table_Template extends View_Template {
 
 		/**
 		* Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
-         *
+		 *
 		* @deprecated Use `gravityview/template/table/body/before`
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
@@ -450,7 +450,7 @@ class View_Table_Template extends View_Template {
 	public static function body_after( $context ) {
 		/**
 		 * of the table at the end.
-         *
+		 *
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
@@ -458,7 +458,7 @@ class View_Table_Template extends View_Template {
 
 		/**
 		* Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
-         *
+		 *
 		* @deprecated Use `gravityview/template/table/body/after`
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
@@ -478,7 +478,7 @@ class View_Table_Template extends View_Template {
 	public static function tr_before( $context ) {
 		/**
 		 * of the table when there are no results.
-         *
+		 *
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
@@ -486,7 +486,7 @@ class View_Table_Template extends View_Template {
 
 		/**
 		 * while rendering each entry in the loop. Can be used to insert additional table rows.
-         *
+		 *
 		 * @since 1.0.7
 		 * @deprecated USe `gravityview/template/table/tr/before`
 		 * @param \GravityView_View $gravityview_view Current GraivtyView_View object.
@@ -506,7 +506,7 @@ class View_Table_Template extends View_Template {
 	public static function tr_after( $context ) {
 		/**
 		 * of the table when there are no results.
-         *
+		 *
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
@@ -514,7 +514,7 @@ class View_Table_Template extends View_Template {
 
 		/**
 		 * while rendering each entry in the loop. Can be used to insert additional table cells.
-         *
+		 *
 		 * @since 1.0.7
 		 * @deprecated USe `gravityview/template/table/tr/after`
 		 * @param \GravityView_View $gravityview_view Current GravityView_View object.
@@ -536,7 +536,7 @@ class View_Table_Template extends View_Template {
 	public static function entry_class( $class, $entry, $context ) {
 		/**
 		 * Modify the class applied to the entry row.
-         *
+		 *
 		 * @param string $class Existing class.
 		 * @param array $entry Current entry being displayed
 		 * @param \GravityView_View $this Current GravityView_View object
@@ -547,7 +547,7 @@ class View_Table_Template extends View_Template {
 
 		/**
 		 * Modify the class aplied to the entry row.
-         *
+		 *
 		 * @param string $class The existing class.
 		 * @param \GV\Template_Context The context.
 		 * @return string The modified class.

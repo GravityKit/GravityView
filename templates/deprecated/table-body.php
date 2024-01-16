@@ -13,9 +13,9 @@
 
 		/**
 		 * Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
-         *
-         * @since 1.0.7
-         * @param \GravityView_View $this Current GravityView_View object
+		 *
+		 * @since 1.0.7
+		 * @param \GravityView_View $this Current GravityView_View object
 		 */
 		do_action( 'gravityview_table_body_before', $this );
 
@@ -84,7 +84,7 @@
 
 		/**
 		 * Inside the `tbody`, after all rows are rendered. Can be used to insert additional rows.
-         *
+		 *
 		 * @since 1.0.7
 		 */
 		do_action( 'gravityview_table_body_after', $this );

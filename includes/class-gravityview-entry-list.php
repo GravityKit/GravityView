@@ -231,7 +231,7 @@ class GravityView_Entry_List {
 
 		/**
 		 * Modify the HTML of the Recent Entries widget output.
-         *
+		 *
 		 * @param string $output HTML to be displayed
 		 * @param GravityView_Entry_List $this The current class instance
 		 */
@@ -286,7 +286,7 @@ class GravityView_Entry_List {
 
 		/**
 		 * The link to this other entry now.
-         *
+		 *
 		 * @param string $link The link.
 		 * @param array $entry The entry.
 		 * @param \GravityView_Entry_List $this The current entry list object.
@@ -316,7 +316,7 @@ class GravityView_Entry_List {
 
 		/**
 		 * Modify each item's output in an entry list.
-         *
+		 *
 		 * @since 1.7.2
 		 * @param string $item_output The HTML output for the item
 		 * @param array $entry Gravity Forms entry array

@@ -446,7 +446,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		/**
 		 * after return.
-         *
+		 *
 		 * @since 1.17
 		 * @param array $strings Text in key => value pairs
 		 */
@@ -493,7 +493,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		/**
 		 * Modify the note content before rendering in the template.
-         *
+		 *
 		 * @since 1.17
 		 * @param array $note_content Array of note content that will be replaced in template files
 		 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
@@ -667,7 +667,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		/**
 		 * Modify the dropdown values displayed in the "Also email note to" dropdown.
-         *
+		 *
 		 * @since 1.17
 		 * @param array $note_emails Array of email addresses connected to the entry
 		 * @param array $entry Current entry
@@ -703,7 +703,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		/**
 		 * Whether to include a Custom Email option for users to define a custom email to mail notes to.
-         *
+		 *
 		 * @since 1.17
 		 * @param bool $include_custom Default: true
 		 */

@@ -125,7 +125,7 @@ class GravityView_Render_Settings {
 
 		/**
 		 * and `gravityview_template_widget_options`.
-         *
+		 *
 		 * @param array    Array of field options with `label`, `value`, `type`, `default` keys
 		 * @param  string      $template_id Table slug
 		 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
@@ -137,7 +137,7 @@ class GravityView_Render_Settings {
 
 		/**
 		 * examples: `textarea`, `list`, `select`, etc.).
-         *
+		 *
 		 * @param array    Array of field options with `label`, `value`, `type`, `default` keys
 		 * @param  string      $template_id Table slug
 		 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
@@ -245,7 +245,7 @@ class GravityView_Render_Settings {
 
 		/**
 		 * Modify the capabilities shown in the field dropdown.
-         *
+		 *
 		 * @see https://docs.gravitykit.com/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
 		 * @since  1.0.1
 		 * @param  array $select_cap_choices Associative array of role slugs with labels ( `manage_options` => `Administrator` )
@@ -617,7 +617,7 @@ EOD;
 
 		/**
 		 * Modifies the field type class name to be loaded for a given field.
-         *
+		 *
 		 * @param string $class_suffix  field class suffix; `GravityView_FieldType_{$class_suffix}`
 		 * @param array $field   field data
 		 */
@@ -629,7 +629,7 @@ EOD;
 
 		/**
 		 * Modifies file path to be loaded for a given field.
-         *
+		 *
 		 * @param string  $field_type_include_path field class file path
 		 * @param array $field  field data
 		 */

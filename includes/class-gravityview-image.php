@@ -111,7 +111,7 @@ class GravityView_Image {
 
 		/**
 		 * tag.
-         *
+		 *
 		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp']`
 		 */
 		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp' ) );
@@ -227,7 +227,7 @@ class GravityView_Image {
 
 		/**
 		 * Filter the HTML image output.
-         *
+		 *
 		 * @param string $html the generated image html
 		 * @param GravityView_Image $this The current image object
 		 */
