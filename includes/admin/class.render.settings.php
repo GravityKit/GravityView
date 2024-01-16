@@ -613,7 +613,7 @@ EOD;
 			return null;
 		}
 
-		$field_type = sanitize_file_name( $field['type'] );
+		$field_type = sanitize_title_with_dashes( $field['type'] );
 
 		/**
 		 * Modifies the field type class name to be loaded for a given field.
