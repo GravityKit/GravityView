@@ -18,9 +18,9 @@ extract( $gravityview_view->getCurrentField() );
 if ( '1970-01-01' === $value ) {
 
 	/**
-	 * callback.
-     *
-	 * @param bool $hide_epoch True: hide values that are 1970-01-01. False: show the value.
+	 * Whether to hide values that match the Unix Epoch date (1970-01-01) from the output.
+	 *
+	 * @param bool $hide_epoch True: hide values that are 1970-01-01. False: show the value. Default: true.
 	 */
 	$hide_epoch = apply_filters( 'gravityview/fields/date/hide_epoch', true );
 

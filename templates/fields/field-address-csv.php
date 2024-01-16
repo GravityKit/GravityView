@@ -48,7 +48,7 @@ if ( ! $is_single_input ) {
 
 	/**
 	 * The address parts delimiter.
-     *
+	 *
 	 * @since develop
 	 * @param string The delimiter. Default: newline
 	 * @param \GV\Template_Context The context.

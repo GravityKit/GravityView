@@ -22,7 +22,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 
 	/**
 	 * tag of the GravityView search form, before inputs are rendered.
-     *
+	 *
 	 * @param GravityView_Widget_Search $this GravityView Widget instance
 	 */
 	do_action( 'gravityview_search_widget_fields_before', $this );
@@ -56,7 +56,7 @@ $search_method = GravityView_Widget_Search::getInstance()->get_search_method();
 
 	/**
 	 * tag of the GravityView search form, after inputs are rendered.
-     *
+	 *
 	 * @param GravityView_Widget_Search $this GravityView Widget instance
 	 */
 	do_action( 'gravityview_search_widget_fields_after', $this );

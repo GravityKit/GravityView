@@ -33,7 +33,7 @@ if ( ! empty( $field_settings['trim_words'] ) ) {
 
 	/**
 	 * Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated.
-     *
+	 *
 	 * @since 1.16.1
 	 * @param string $excerpt_more Default: ` ...`
 	 */
