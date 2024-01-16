@@ -596,7 +596,7 @@ class GravityView_Edit_Entry_Render {
 	 */
 	public function save_field_value( $value = '', $entry = array(), $field = null, $form = array(), $input_id = '' ) {
 
-		if ( ! $field || $field->type != 'fileupload' ) {
+		if ( ! $field || $field->get_input_type() !== 'fileupload' ) {
 			return $value;
 		}
 
@@ -901,13 +901,17 @@ class GravityView_Edit_Entry_Render {
 				    case 'post_category':
 				        break;
 				    case 'post_custom_field':
-						if ( is_array( $value ) && ( floatval( $field_id ) !== floatval( $field->id ) ) ) {
+						if ($field->get_input_type() === 'fileupload') {
+							break;
+						}
+
+						if ( is_array( $value ) && ( (float) $field_id !== (float) $field->id ) ) {
 							$value = $value[ $field_id ];
 						}
 
-				        if( ! empty( $field->customFieldTemplateEnabled ) ) {
-				            $value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
-				        }
+						if( ! empty( $field->customFieldTemplateEnabled ) ) {
+							$value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
+						}
 
 						$value = $field->get_value_save_entry( $value, $form, '', $this->entry['id'], $this->entry );
 
@@ -1470,7 +1474,7 @@ class GravityView_Edit_Entry_Render {
 		// If the form has been submitted, then we don't need to pre-fill the values,
 		// Except for fileupload type and when a field input is overridden- run always!!
 		if(
-			( $this->is_edit_entry_submission() && !in_array( $field->type, array( 'fileupload', 'post_image' ) ) )
+			( $this->is_edit_entry_submission() && !in_array( $field->get_input_type(), array( 'fileupload', 'post_image' ) ) )
 			&& false === ( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) )
 			&& ! GFCommon::is_product_field( $field->type )
 			|| ! empty( $field_content )

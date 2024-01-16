@@ -27,6 +27,7 @@ This release makes it easier to customize search results per-View instead of glo
 
 * Fixed: Sorting the View by entry ID in ascending and descending order would yield the same result
 * Fixed: Survey fields without a rating would show a 1-star rating
+* Fixed: Custom Post Field acting as File Uploads can now be edited on the Edit Entry page
 
 __Developer Updates:__
 
