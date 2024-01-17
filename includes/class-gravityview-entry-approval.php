@@ -61,51 +61,23 @@ class GravityView_Entry_Approval {
 	/**
 	 * Passes approval notification and action hook to the send_notifications method
 	 *
-	 * @see GravityView_Entry_Approval::send_notifications()
-	 *
 	 * @internal Developers, do not use!
 	 *
-	 * @since 2.1
+	 * @since    2.1
 	 *
-	 * @param int $entry_id ID of entry being updated
+	 * @see      GravityView_Notifications::send_notifications()
+	 *
+	 * @param int   $entry_id ID of entry being updated
+	 * @param array $entry    The entry object.
 	 *
 	 * @return void
 	 */
-	public function _trigger_notifications( $entry_id = 0 ) {
+	public function _trigger_notifications( $entry_id = 0, $entry = [] ) {
 		if ( did_action( 'gform_entry_created' ) && 'gravityview/approve_entries/updated' === current_action() ) {
 			return;
 		}
 
-		$this->_send_notifications( $entry_id, current_action() );
-	}
-
-	/**
-	 * Passes along notification triggers to GFAPI::send_notifications()
-	 *
-	 * @since 2.1
-	 *
-	 * @param int $entry_id ID of entry being updated
-	 * @param string $event Hook that triggered the notification. This is used as the key in the GF notifications array.
-	 *
-	 * @return void
-	 */
-	private function _send_notifications( $entry_id = '', $event = '' ) {
-
-		$entry = GFAPI::get_entry( $entry_id );
-
-		if ( ! $entry || is_wp_error( $entry ) ) {
-			gravityview()->log->error( 'Entry not found at ID #{entry_id}', array( 'entry_id' => $entry_id ) );
-			return;
-		}
-
-		$form = GVCommon::get_form( $entry['form_id'] );
-
-		if ( ! $form ) {
-			gravityview()->log->error( 'Form not found at ID #{form_id} for entry #{entry_id}', array( 'form_id' => $entry['form_id'], 'entry_id' => $entry_id ) );
-			return;
-		}
-
-		GFAPI::send_notifications( $form, $entry, $event );
+		GravityView_Notifications::send_notifications( (int) $entry_id, (string) current_action(), $entry );
 	}
 
 	/**
