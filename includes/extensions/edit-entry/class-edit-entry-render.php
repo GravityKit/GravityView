@@ -901,7 +901,7 @@ class GravityView_Edit_Entry_Render {
 				    case 'post_category':
 				        break;
 				    case 'post_custom_field':
-						if ($field->get_input_type() === 'fileupload') {
+						if ( $field->get_input_type() === 'fileupload' ) {
 							break;
 						}
 
