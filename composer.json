@@ -91,6 +91,9 @@
     ]
   },
   "config": {
+    "platform": {
+      "php": "7.2"
+    },
     "platform-check": false
   }
 }
