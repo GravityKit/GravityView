@@ -30,7 +30,7 @@ class GravityView_Field_Phone extends GravityView_Field {
 	 *
 	 * @since 1.17
 	 *
-	 * @param array $field_options
+	 * @param array  $field_options
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $context
@@ -40,21 +40,21 @@ class GravityView_Field_Phone extends GravityView_Field {
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
 		$field_options['link_phone'] = array(
-	        'type' => 'checkbox',
-	        'label' => __( 'Make Phone Number Clickable', 'gk-gravityview' ),
-	        'desc' => __( 'Allow dialing a number by clicking it?', 'gk-gravityview'),
-	        'value' => true,
-	        'group' => 'display',
-	        'priority' => 100,
-        );
+			'type'     => 'checkbox',
+			'label'    => __( 'Make Phone Number Clickable', 'gk-gravityview' ),
+			'desc'     => __( 'Allow dialing a number by clicking it?', 'gk-gravityview' ),
+			'value'    => true,
+			'group'    => 'display',
+			'priority' => 100,
+		);
 
 		return $field_options;
 	}
 }
 
-new GravityView_Field_Phone;
+new GravityView_Field_Phone();

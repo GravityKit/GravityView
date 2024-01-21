@@ -49,4 +49,4 @@ class GravityView_Plugin_Hooks_Debug_Bar extends GravityView_Plugin_and_Theme_Ho
 	);
 }
 
-new GravityView_Plugin_Hooks_Debug_Bar;
+new GravityView_Plugin_Hooks_Debug_Bar();

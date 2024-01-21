@@ -11,10 +11,10 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
+$field_id      = $gravityview->field->ID;
 $display_value = $gravityview->display_value;
-$value = $gravityview->value;
-$entry = $gravityview->entry->as_entry();
+$value         = $gravityview->value;
+$entry         = $gravityview->entry->as_entry();
 
 /**
  * Fields that will output as raw data in CSV mode.
@@ -27,6 +27,7 @@ $raw_types = array(
 
 /**
  * Filters field types to output by value instead of display_value.
+ *
  * @since 2.5
  * @param bool $raw Raw or not. By default, outputs raw for $raw_types.
  * @param \GV\Template_Context The context.

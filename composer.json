@@ -37,7 +37,10 @@
     "codeception/module-filesystem": "^1.0",
     "codeception/module-cli": "^1.0",
     "codeception/util-universalframework": "^1.0",
-    "yoast/phpunit-polyfills": "^1.0"
+    "yoast/phpunit-polyfills": "^1.0",
+    "squizlabs/php_codesniffer": "*",
+    "wp-coding-standards/wpcs": "^3.0",
+    "phpcompatibility/phpcompatibility-wp": "^2.1"
   },
   "extra": {
     "strauss": {
@@ -91,6 +94,9 @@
     ]
   },
   "config": {
-    "platform-check": false
+    "platform-check": false,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

@@ -736,7 +736,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					continue;
 				}
 
-				gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, $status === 'approved' ? \GravityView_Entry_Approval_Status::APPROVED : \GravityView_Entry_Approval_Status::DISAPPROVED );
+				gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, 'approved' === $status ? \GravityView_Entry_Approval_Status::APPROVED : \GravityView_Entry_Approval_Status::DISAPPROVED );
 			}
 		}
 
@@ -1093,7 +1093,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview_fe_search_criteria', $callback );
 
 		add_filter( 'gravityview_search_operator', $callback = function( $operator, $field ) {
-			if ( $field['key'] == '16' ) {
+			if ( '16' == $field['key'] ) {
 				return 'is';
 			}
 			return $operator;

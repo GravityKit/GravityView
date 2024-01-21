@@ -13,7 +13,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 /** @var \GV\GF_Form $gf_form */
 $gf_form = isset( $gravityview->field->form_id ) ? \GV\GF_Form::by_id( $gravityview->field->form_id ) : $gravityview->view->form;
-$form = $gf_form->form;
+$form    = $gf_form->form;
 
 if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry[ $form['id'] ];
@@ -43,10 +43,11 @@ $entry = apply_filters( 'gravityview/fields/custom/entry', $entry, $form, $gravi
  * @param array $entry The current entry being displayed.
  * @param \GV\Template_Context The GravityView template context instance.
  */
-$form  = apply_filters( 'gravityview/fields/custom/form', $form, $entry, $gravityview );
+$form = apply_filters( 'gravityview/fields/custom/form', $form, $entry, $gravityview );
 
 /**
  * Modify Custom Content field output before Merge Tag processing.
+ *
  * @since 1.6.2
  * @param string $content HTML content of field
  *
@@ -68,6 +69,7 @@ $content = GravityView_API::replace_variables( $content, $form, $entry, false, t
 
 /**
  * Decode brackets in shortcodes, rendering them inert (escape brackets).
+ *
  * @since 1.16.5
  * @param boolean $decode Enable/Disable decoding of brackets in the content (default: false)
  * @param string $content HTML content of field
@@ -91,6 +93,7 @@ if ( ! empty( $gravityview->field->wpautop ) ) {
 
 /**
  * Modify Custom Content field output after Merge Tag variables get replaced, before shortcodes get processed.
+ *
  * @since 1.6.2
  * @param string $content HTML content of field
  *

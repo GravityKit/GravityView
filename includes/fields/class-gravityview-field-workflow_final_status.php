@@ -15,7 +15,7 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 	public $icon = 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMS43IDExLjIiPjxwYXRoIGQ9Ik0xNC43IDUuOWwtNy00Yy0xLjItLjctMi41LS44LTMuNy0uMy0xLjcuNy0yLjYgMS45LTIuNyAzLjYtLjEgMS41LjQgMi43IDEuNCAzLjcgMS4xIDEuMSAyLjYgMS40IDQuMy45LjIgMCAuNS0uMiAxLjEtLjQuMi0uMS4zLS4xLjQtLjEuMyAwIC41LjEuNi40LjEuMyAwIC41LS4zLjctMS4yLjctMi40LjktMy44LjgtMS4zLS4yLTIuNS0uNy0zLjQtMS42Qy41IDguNS0uMSA3LjEgMCA1LjVjLjEtMi40IDEuMi00IDMuMy01QzQuNS0uMSA1LjgtLjIgNy4yLjJjLjIuMS42LjIgMS4yLjZsNyAzLjkuNC0uNi44IDIuMS0yLjIuMy4zLS42em0tNy44LS41bDcgNGMxLjIuNyAyLjUuOCAzLjcuMyAxLjctLjcgMi42LTEuOSAyLjgtMy42LjEtMS40LS40LTIuNi0xLjUtMy43cy0yLjUtMS40LTQuMy0xYy0uNC4xLS44LjMtMS4xLjRsLS40LjFjLS4zIDAtLjUtLjEtLjYtLjQtLjEtLjMgMC0uNS4zLS43IDEuMS0uNyAyLjQtLjkgMy44LS44IDEuNC4yIDIuNS43IDMuNCAxLjcgMS4yIDEuMiAxLjcgMi41IDEuNiA0LjEtLjEgMi4zLTEuMiA0LTMuMyA1LTEuNC42LTIuNy42LTMuOS4yLS4zLS4xLS43LS4zLTEuMS0uNWwtNy0zLjktLjQuNUw1LjEgNWwyLjItLjMtLjQuN3oiLz48L3N2Zz4=';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Workflow Status', 'gk-gravityview' );
+		$this->label                = esc_html__( 'Workflow Status', 'gk-gravityview' );
 		$this->default_search_label = $this->label;
 		$this->add_hooks();
 		parent::__construct();
@@ -34,8 +34,8 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 	 *
 	 * @param string $output HTML value output
 	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field
-	 * @param array $field Current field being displayed
+	 * @param  array  $field_settings Settings for the particular GV field
+	 * @param array  $field Current field being displayed
 	 *
 	 * @since 1.17
 	 *
@@ -43,7 +43,7 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 	 */
 	function modify_entry_value_workflow_final_status( $output, $entry, $field_settings, $field ) {
 
-		if( ! empty( $output ) ) {
+		if ( ! empty( $output ) ) {
 			$output = gravity_flow()->translate_status_label( $output );
 		}
 
@@ -56,9 +56,9 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 	 *
 	 * @since 1.17.3
 	 *
-	 * @param array $search_fields
+	 * @param array                          $search_fields
 	 * @param GravityView_Widget_Search|null $widget
-	 * @param array $widget_args
+	 * @param array                          $widget_args
 	 *
 	 * @return array
 	 */
@@ -72,7 +72,6 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 
 		return $search_fields;
 	}
-
 }
 
-new GravityView_Field_Workflow_Final_Status;
+new GravityView_Field_Workflow_Final_Status();

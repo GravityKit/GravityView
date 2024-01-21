@@ -42,7 +42,7 @@ class GravityView_Plugin_Hooks_Pageviews extends GravityView_Plugin_and_Theme_Ho
 
 		parent::add_hooks();
 
-		add_shortcode( 'gv_pageviews', array( $this, 'pageviews') );
+		add_shortcode( 'gv_pageviews', array( $this, 'pageviews' ) );
 
 		add_filter( 'gravityview/fields/custom/decode_shortcodes', array( $this, 'inject_entry_id' ), 10, 3 );
 
@@ -92,10 +92,13 @@ class GravityView_Plugin_Hooks_Pageviews extends GravityView_Plugin_and_Theme_Ho
 	 * @return string The content
 	 */
 	public function pageviews( $atts ) {
-		$this->atts = shortcode_atts( array(
-			'preload'   => '...',
-			'id'        => $this->next_id,
-		), $atts );
+		$this->atts = shortcode_atts(
+			array(
+				'preload' => '...',
+				'id'      => $this->next_id,
+			),
+			$atts
+		);
 
 		if ( ! $this->atts['id'] ) {
 			return; // The ID was not set
@@ -130,4 +133,4 @@ class GravityView_Plugin_Hooks_Pageviews extends GravityView_Plugin_and_Theme_Ho
 	}
 }
 
-new GravityView_Plugin_Hooks_Pageviews;
+new GravityView_Plugin_Hooks_Pageviews();

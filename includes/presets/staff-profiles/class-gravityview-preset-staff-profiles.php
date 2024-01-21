@@ -22,7 +22,7 @@ class GravityView_Preset_Staff_Profiles extends GravityView_Default_Template_Lis
 			'label'         => __( 'Staff Profiles', 'gk-gravityview' ),
 			'description'   => __( 'List members of your team.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/staff-profiles/logo-staff-profiles.png', GRAVITYVIEW_FILE ),
-			//'preview'       => 'https://site.try.gravitykit.com/view/staff-profiles/',
+			// 'preview'       => 'https://site.try.gravitykit.com/view/staff-profiles/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/staff-profiles/form-staff-profiles.json',
 			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/staff-profiles/fields-staff-profiles.xml',
 		);
@@ -31,4 +31,4 @@ class GravityView_Preset_Staff_Profiles extends GravityView_Default_Template_Lis
 	}
 }
 
-new GravityView_Preset_Staff_Profiles;
+new GravityView_Preset_Staff_Profiles();

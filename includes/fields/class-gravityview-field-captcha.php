@@ -21,7 +21,6 @@ class GravityView_Field_Captcha extends GravityView_Field {
 		$this->label = esc_html__( 'CAPTCHA', 'gk-gravityview' );
 		parent::__construct();
 	}
-
 }
 
-new GravityView_Field_Captcha;
+new GravityView_Field_Captcha();

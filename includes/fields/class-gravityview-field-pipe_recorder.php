@@ -29,10 +29,10 @@ class GravityView_Field_Pipe_Recorder extends GravityView_Field {
 		}
 
 		$add_options['embed'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Display as embedded', 'gk-gravityview' ),
-			'desc' => __( 'Display the video in a player, rather than a direct link to the video.', 'gk-gravityview' ),
-			'value' => true,
+			'type'       => 'checkbox',
+			'label'      => __( 'Display as embedded', 'gk-gravityview' ),
+			'desc'       => __( 'Display the video in a player, rather than a direct link to the video.', 'gk-gravityview' ),
+			'value'      => true,
 			'merge_tags' => false,
 		);
 
@@ -40,4 +40,4 @@ class GravityView_Field_Pipe_Recorder extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Pipe_Recorder;
+new GravityView_Field_Pipe_Recorder();

@@ -13,9 +13,10 @@ class GravityView_FieldType_checkbox extends GravityView_FieldType {
 		<?php
 	}
 
-	function render_setting( $override_input = NULL ) {
+	function render_setting( $override_input = null ) {
 
-		if( $this->get_field_left_label() ) { ?>
+		if ( $this->get_field_left_label() ) {
+			?>
 
 			<td scope="row">
 				<label for="<?php echo $this->get_field_id(); ?>">
@@ -38,19 +39,19 @@ class GravityView_FieldType_checkbox extends GravityView_FieldType {
 				</label>
 			</td>
 
-		<?php }
+			<?php
+		}
 	}
 
-	function render_input( $override_input = NULL ) {
-		if( isset( $override_input ) ) {
+	function render_input( $override_input = null ) {
+		if ( isset( $override_input ) ) {
 			echo $override_input;
 			return;
 		}
 
 		?>
 		<input name="<?php echo esc_attr( $this->name ); ?>" type="hidden" value="0" />
-       	<input name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" type="checkbox" value="1" <?php checked( $this->value, '1', true ); ?> />
-       	<?php
+			<input name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" type="checkbox" value="1" <?php checked( $this->value, '1', true ); ?> />
+		<?php
 	}
-
 }

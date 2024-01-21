@@ -13,7 +13,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 /** @var \GV\GF_Form $gf_form */
 $gf_form = isset( $gravityview->field->form_id ) ? \GV\GF_Form::by_id( $gravityview->field->form_id ) : $gravityview->view->form;
-$form = $gf_form->form;
+$form    = $gf_form->form;
 
 if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry->from_field( $gravityview->field );
@@ -42,7 +42,7 @@ $link_text = apply_filters( 'gravityview_entry_link', GravityView_API::replace_v
 $href = GravityView_Duplicate_Entry::get_duplicate_link( $entry, $gravityview->view->ID, $post ? $post->ID : null );
 
 $attributes = array(
-	'onclick' => GravityView_Duplicate_Entry::get_confirm_dialog()
+	'onclick' => GravityView_Duplicate_Entry::get_confirm_dialog(),
 );
 
 echo gravityview_get_link( $href, $link_text, $attributes );

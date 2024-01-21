@@ -11,9 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$value = $gravityview->value;
-$form = $gravityview->view->form->form;
-$entry = $gravityview->entry->as_entry();
+$value          = $gravityview->value;
+$form           = $gravityview->view->form->form;
+$entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
 // If linking to the source URL

@@ -5,4 +5,4 @@
  * @deprecated 1.7.5
  */
 
-include_once( GRAVITYVIEW_DIR .'includes/widgets/class-gravityview-widget.php' );
+require_once GRAVITYVIEW_DIR . 'includes/widgets/class-gravityview-widget.php';

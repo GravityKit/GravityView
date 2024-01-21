@@ -33,4 +33,4 @@ class GravityView_Field_Shipping extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Shipping;
+new GravityView_Field_Shipping();

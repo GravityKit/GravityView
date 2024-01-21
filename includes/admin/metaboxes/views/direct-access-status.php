@@ -19,32 +19,41 @@ $embed_only_view_status = gravityview_get_template_setting( $post->ID, 'embed_on
  */
 function gv_get_direct_access_tooltip() {
 
-	add_filter( 'gform_tooltips', function( $tooltips ) {
+	add_filter(
+		'gform_tooltips',
+		function ( $tooltips ) {
 
-		$tooltip = '<h6>' . esc_html__( 'Direct Access', 'gk-gravityview' ) . '</h6>';
-		$tooltip .= wpautop( esc_html__( 'Publicly Accessible: If Visibility is set to Publicly Accessible, anyone with the link can access the View, including search engines and logged-out users.', 'gk-gravityview' ) );
-		$tooltip .= wpautop( esc_html__( 'Embedded-Only: The View can only be seen when embedded in other content (such as a Page); it cannot be accessed directly.', 'gk-gravityview' ) );
+			$tooltip  = '<h6>' . esc_html__( 'Direct Access', 'gk-gravityview' ) . '</h6>';
+			$tooltip .= wpautop( esc_html__( 'Publicly Accessible: If Visibility is set to Publicly Accessible, anyone with the link can access the View, including search engines and logged-out users.', 'gk-gravityview' ) );
+			$tooltip .= wpautop( esc_html__( 'Embedded-Only: The View can only be seen when embedded in other content (such as a Page); it cannot be accessed directly.', 'gk-gravityview' ) );
 
-		$tooltips['direct_access_metabox'] = $tooltip;
+			$tooltips['direct_access_metabox'] = $tooltip;
 
-		return $tooltips;
-	}, 500 );
+			return $tooltips;
+		},
+		500
+	);
 
-	include_once( GRAVITYVIEW_DIR . 'includes/admin/field-types/type_text.php' );
-	$field = new GravityView_FieldType_text( '', [], '' );
-	$tooltip = $field->tooltip( 'direct_access_metabox', '', true, [
-		'id' => '5590376ce4b027e1978eb8d0',
-		'type' => 'modal',
-	] );
+	include_once GRAVITYVIEW_DIR . 'includes/admin/field-types/type_text.php';
+	$field   = new GravityView_FieldType_text( '', array(), '' );
+	$tooltip = $field->tooltip(
+		'direct_access_metabox',
+		'',
+		true,
+		array(
+			'id'   => '5590376ce4b027e1978eb8d0',
+			'type' => 'modal',
+		)
+	);
 
 	return $tooltip;
 }
 
 if ( ! empty( $embed_only_view_status ) ) {
-	$direct_access          = 'embed';
-	$direct_access_text    = __( 'Embed-Only', 'gk-gravityview' );
+	$direct_access      = 'embed';
+	$direct_access_text = __( 'Embed-Only', 'gk-gravityview' );
 } else {
-	$direct_access       = 'public';
+	$direct_access      = 'public';
 	$direct_access_text = __( 'Public', 'gk-gravityview' );
 }
 
@@ -55,7 +64,7 @@ if ( ! empty( $embed_only_view_status ) ) {
 	?>
 
 	<span id="gv-direct-access-display">
-		<strong data-initial-label="<?php echo esc_attr( $direct_access_text );	?>"><?php echo esc_html( $direct_access_text );	?></strong>
+		<strong data-initial-label="<?php echo esc_attr( $direct_access_text ); ?>"><?php echo esc_html( $direct_access_text ); ?></strong>
 
 		<?php
 			echo gv_get_direct_access_tooltip();
@@ -64,9 +73,11 @@ if ( ! empty( $embed_only_view_status ) ) {
 
 	<a href="#gv-direct-access" class="edit-direct-access hide-if-no-js" role="button">
 		<span aria-hidden="true"><?php esc_html_e( 'Edit', 'gk-gravityview' ); ?></span>
-		<span class="screen-reader-text"><?php
+		<span class="screen-reader-text">
+		<?php
 			/* translators: Hidden accessibility text. */
-			esc_html_e( 'Edit the Direct Access setting', 'gk-gravityview' ); ?>
+			esc_html_e( 'Edit the Direct Access setting', 'gk-gravityview' );
+		?>
 		</span>
 	</a>
 

@@ -35,10 +35,9 @@ class GravityView_Placeholder_Template extends GravityView_Template {
 
 		$settings = wp_parse_args( $settings, $default_template_settings );
 
-		$this->id = $id;
+		$this->id       = $id;
 		$this->settings = $settings;
 
 		parent::__construct( $id, $settings, array(), array() );
 	}
-
 }

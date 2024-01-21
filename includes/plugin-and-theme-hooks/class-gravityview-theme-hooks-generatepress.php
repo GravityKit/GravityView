@@ -34,4 +34,4 @@ class GravityView_Theme_Hooks_GeneratePress extends GravityView_Plugin_and_Theme
 	);
 }
 
-new GravityView_Theme_Hooks_GeneratePress;
+new GravityView_Theme_Hooks_GeneratePress();
