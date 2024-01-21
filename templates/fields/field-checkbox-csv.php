@@ -17,7 +17,7 @@ $value = $gravityview->value;
 $entry = $gravityview->entry->as_entry();
 
 /**
- * @filter `gravityview/template/field/csv/glue` The value used to separate multiple values in the CSV export
+ * The value used to separate multiple values in the CSV export.
  * @since 2.4.2
  *
  * @param string The glue. Default: ";" (semicolon)

@@ -23,7 +23,7 @@ class GravityView_Change_Entry_Creator {
 		}
 
 		/**
-		 * @filter `gravityview_disable_change_entry_creator` Disable the Change Entry Creator functionality
+		 * Disable the Change Entry Creator functionality.
 		 * @since  1.7.4
 		 * @param boolean $disable Disable the Change Entry Creator functionality. Default: false.
 		 */
@@ -172,7 +172,7 @@ class GravityView_Change_Entry_Creator {
 		gravityview()->log->debug( 'GravityView_Change_Entry_Creator[assign_new_user_to_lead] - {note}', array( 'note' => $note ) );
 
 		/**
-		 * @filter `gravityview_disable_change_entry_creator_note` Disable adding a note when changing the entry creator
+		 * Disable adding a note when changing the entry creator.
 		 * @since  1.21.5
 		 * @param boolean $disable Disable the Change Entry Creator note. Default: false.
 		 */
@@ -192,7 +192,7 @@ class GravityView_Change_Entry_Creator {
 	function prevent_conflicts() {
 
 		// Plugin that was provided here:
-		// @link https://gravityview.co/support/documentation/201991205/
+		// @link https://www.gravitykit.com/support/documentation/201991205/
 		remove_action( "gform_entry_info", 'gravityview_change_entry_creator_form', 10 );
 		remove_action( "gform_after_update_entry", 'gravityview_update_entry_creator', 10 );
 

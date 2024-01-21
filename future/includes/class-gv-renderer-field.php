@@ -40,7 +40,7 @@ class Field_Renderer extends Renderer {
 		}
 
 		/**
-		 * @filter `gravityview/template/field/class` Filter the template class that is about to be used to render the view.
+		 * Filter the template class that is about to be used to render the view.
 		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\Field_HTML_Template.
 		 * @param \GV\Field $field The field about to be rendered.

@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravity-forms-survey.php
  * @package   GravityView
  * @license   GPL2
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @since 1.17
@@ -120,7 +120,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 			// We need to run through each survey row until we find a match for expected values
 			foreach ( $entry as $field_id => $field_value ) {
 
-				if ( floor( (float) $field_id ) !== floor( (float) $field->id ) ) {
+				if ( (int) $field_id !== (int) $field->id ) {
 					continue;
 				}
 

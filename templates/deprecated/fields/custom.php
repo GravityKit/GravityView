@@ -20,7 +20,7 @@ if( !class_exists( 'GFFormDisplay' ) ) {
 $gravityview_view->setCurrentFieldSetting('show_as_link', false);
 
 /**
- * @filter `gravityview/fields/custom/content_before` Modify Custom Content field output before Merge Tag processing
+ * Modify Custom Content field output before Merge Tag processing.
  * @since 1.6.2
  * @param string $content HTML content of field
  */
@@ -37,7 +37,7 @@ if( empty( $field_settings['content'] ) ) {
 $content = GravityView_API::replace_variables( $field_settings['content'], $form, $entry, false, true, false );
 
 /**
- * @filter `gravityview/fields/custom/decode_shortcodes` Decode brackets in shortcodes
+ * Decode brackets in shortcodes.
  * @since 1.16.5
  * @param boolean $decode Enable/Disable decoding of brackets in the content (default: false)
  * @param string $content HTML content of field
@@ -52,7 +52,7 @@ if( !empty( $field_settings['wpautop'] ) ) {
 }
 
 /**
- * @filter `gravityview/fields/custom/content_after` Modify Custom Content field output after Merge Tag variables get replaced, before shortcodes get processed
+ * Modify Custom Content field output after Merge Tag variables get replaced, before shortcodes get processed.
  * @since 1.6.2
  * @param string $content HTML content of field
  */

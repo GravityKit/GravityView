@@ -15,8 +15,15 @@ $current_form = (int) \GV\Utils::_GET( 'form_id', gravityview_get_form_id( $post
 // If form is in trash or not existing, show error
 GravityView_Admin::connected_form_warning( $current_form );
 
+/**
+ * Modify the default orderby field for the Data Source dropdown.
+ * @since 2.17.8
+ * @param mixed $order_by Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
+ */
+$order_by = apply_filters( 'gk/gravityview/metaboxes/data-source/order-by', 'title' );
+
 // check for available gravity forms
-$forms = gravityview_get_forms('any', false, 'title' );
+$forms = gravityview_get_forms( 'any', false, $order_by );
 
 /**
  * @param int $current_form Form currently selected in the View (0 if none selected)
@@ -45,7 +52,12 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 		<select name="gravityview_form_id" id="gravityview_form_id">
 			<option value="" <?php selected( '', $current_form, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gk-gravityview' ); ?> &mdash;</option>
 			<?php foreach( $forms as $form ) { ?>
-				<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php echo esc_html( $form['title'] ); ?></option>
+				<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php
+					echo esc_html( sprintf( '%s &ndash; #%d', $form['title'], $form['id'] ) );
+					if ( empty( $form['is_active'] ) ) {
+						printf( ' (%s)', esc_html_x( 'Inactive', 'Indicates that a form is inactive.', 'gk-gravityview' ) );
+					}
+				?></option>
 			<?php } ?>
 		</select>
 	<?php } else { ?>

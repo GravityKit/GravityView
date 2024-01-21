@@ -31,7 +31,7 @@ abstract class Request {
 		), true );
 
 		/**
-		 * @filter `gravityview/request/is_renderable` Is this request renderable?
+		 * Is this request renderable?
 		 * @since 2.5.2
 		 * @param boolean $is_renderable Huh?
 		 * @param \GV\Request $this This.
@@ -148,10 +148,16 @@ abstract class Request {
 			$view = gravityview()->views->get();
 		}
 
+		// If there are multiple Views on a page, the permalink _should_ include `gvid` to specify which View to use.
+		if( $view instanceof \GV\View_Collection ) {
+			$gvid  = \GV\Utils::_GET( 'gvid' );
+			$view  = $view->get( $gvid );
+		}
+
 		/**
 		 * A joined request.
 		 */
-		if ( $view && ( $joins = $view->joins ) ) {
+		if ( $view instanceof \GV\View && ( $joins = $view->joins ) ) {
 			$forms = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
 			$valid_forms = array_unique( wp_list_pluck( $forms, 'ID' ) );
 
@@ -204,18 +210,24 @@ abstract class Request {
 	 * @return \GV\Entry|false The entry requested or false.
 	 */
 	public function is_edit_entry( $form_id = 0 ) {
+
+		$entry = $this->is_entry( $form_id );
+
 		/**
-		* @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
-		* The Edit Entry functionality overrides this value.
-		* @param boolean $is_edit_entry
-		*/
-		if ( ( $entry = $this->is_entry( $form_id ) ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		 * Whether we're currently on the Edit Entry screen \n.
+		 * The Edit Entry functionality overrides this value.
+		 *
+		 * @param boolean $is_edit_entry
+		 */
+		if ( $entry && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+
 			if ( $entry->is_multi() ) {
 				return array_pop( $entry->entries );
 			}
 
 			return $entry;
 		}
+
 		return false;
 	}
 
@@ -240,7 +252,7 @@ abstract class Request {
 
 		unset( $get['mode'] );
 
-		$get = array_filter( $get, 'gravityview_is_not_empty_string' );
+		$get = array_filter( (array) $get, 'gravityview_is_not_empty_string' );
 
 		if( $this->_has_field_key( $get ) ) {
 			return true;

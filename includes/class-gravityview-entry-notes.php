@@ -4,7 +4,7 @@
  * @license     GPL2+
  * @since       1.15
  * @author      Katz Web Services, Inc.
- * @link        http://gravityview.co
+ * @link        http://www.gravitykit.com
  * @copyright   Copyright 2016, Katz Web Services, Inc.
  */
 
@@ -57,7 +57,7 @@ class GravityView_Entry_Notes {
 		);
 
 		/**
-		 * @filter `gravityview/entry_notes/add_note` Modify note values before added using GFFormsModel::add_note()
+		 * Modify note values before added using GFFormsModel::add_note().
 		 * @see GFFormsModel::add_note
 		 * @since 1.15.2
 		 * @param array $note Array with `lead_id`, `user_id`, `user_name`, `note`, and `note_type` key value pairs
@@ -119,7 +119,7 @@ class GravityView_Entry_Notes {
 		$notes = GFFormsModel::get_lead_notes( $entry_id );
 
 		/**
-		 * @filter `gravityview/entry_notes/get_notes` Modify the notes array for an entry
+		 * Modify the notes array for an entry.
 		 * @since 1.15
 		 * @param stdClass[]|null $notes Integer-keyed array of note objects
 		 * @param int $entry_id Entry to get notes for

@@ -16,11 +16,6 @@ class GravityView_Admin_Metaboxes {
 	 *
 	 */
 	function __construct() {
-
-		if ( ! GravityView_Compatibility::is_valid() ) {
-			return;
-		}
-
 		self::$metaboxes_dir = GRAVITYVIEW_DIR . 'includes/admin/metaboxes/';
 
 		include_once self::$metaboxes_dir . 'class-gravityview-metabox-tab.php';
@@ -28,7 +23,6 @@ class GravityView_Admin_Metaboxes {
 		include_once self::$metaboxes_dir . 'class-gravityview-metabox-tabs.php';
 
 		$this->initialize();
-
 	}
 
 	/**
@@ -42,6 +36,7 @@ class GravityView_Admin_Metaboxes {
 		add_action( 'add_meta_boxes_gravityview', array( $this, 'update_priority' ) );
 
 		// information box
+		add_action( 'post_submitbox_misc_actions', array( $this, 'render_direct_access_status' ), 9 );
 		add_action( 'post_submitbox_misc_actions', array( $this, 'render_shortcode_hint' ) );
 	}
 
@@ -98,7 +93,7 @@ class GravityView_Admin_Metaboxes {
 	function settings_metabox_render( $post ) {
 
 		/**
-		 * @action `gravityview/metaboxes/before_render` Before rendering GravityView metaboxes
+		 * Before rendering GravityView metaboxes.
 		 * @since 1.8
 		 * @param WP_Post $post
 		 */
@@ -110,7 +105,7 @@ class GravityView_Admin_Metaboxes {
 		include self::$metaboxes_dir . 'views/gravityview-content.php';
 
 		/**
-		 * @action `gravityview/metaboxes/after_render` After rendering GravityView metaboxes
+		 * After rendering GravityView metaboxes.
 		 * @since 1.8
 		 * @param WP_Post $post
 		 */
@@ -180,10 +175,18 @@ class GravityView_Admin_Metaboxes {
 				'callback' => '',
 				'callback_args' => '',
 			),
+			array(
+				'id' => 'advanced',
+				'title' => __( 'Custom Code', 'gk-gravityview' ),
+				'file' => 'custom-code.php',
+				'icon-class' => 'dashicons-editor-code',
+				'callback' => '',
+				'callback_args' => '',
+			),
 		);
 
 		/**
-		 * @filter `gravityview/metaboxes/default` Modify the default settings metabox tabs
+		 * Modify the default settings metabox tabs.
 		 * @param array $metaboxes
 		 * @since 1.8
 		 */
@@ -227,19 +230,31 @@ class GravityView_Admin_Metaboxes {
 			$links = '<span class="alignright gv-form-links">' . $links . '</span>';
 		}
 
-		$output = $links;;
+		$output = $links;
 
 		if ( ! $current_form ) {
 			// Starting from GF 2.6, GF's form_admin.js script requires window.form and window.gf_vars objects to be set when any element has a .merge-tag-support class.
 			// Since we don't yet have a form when creating a new View, we need to mock those objects.
 			$_id        = isset( $_GET['id'] ) ? $_GET['id'] : null;
-			$_GET['id'] = -1; // This is needed for GFCommon::gf_vars() to return the mergeTags property.
+			$_GET['id'] = - 1; // This is needed for GFCommon::gf_vars() to return the mergeTags property.
+
+			if ( function_exists( 'error_reporting' ) ) {
+				// Store the original error reporting level.
+				$original_error_reporting = error_reporting();
+
+				// Turn off warnings.
+				error_reporting( $original_error_reporting & ~E_WARNING );
+			}
 
 			$output .= sprintf(
 				'<script type="text/javascript">var form = %s; %s</script>',
 				'{fields: []}',
-				GFCommon::gf_vars( false )
+				@GFCommon::gf_vars( false ) // Need to silence errors because the form doesn't exist and GF doesn't expect that.
 			);
+
+			if ( function_exists( 'error_reporting' ) ) {
+				error_reporting( $original_error_reporting );
+			}
 
 			$_GET['id'] = $_id;
 		}
@@ -343,8 +358,6 @@ class GravityView_Admin_Metaboxes {
 
 	}
 
-
-
 	/**
 	 * Render shortcode hint in the Publish metabox
 	 *
@@ -364,6 +377,29 @@ class GravityView_Admin_Metaboxes {
 		}
 
 		include self::$metaboxes_dir . 'views/shortcode-hint.php';
+	}
+
+	/**
+	 * Render Direct Access setting in the Publish metabox.
+	 *
+	 * @since TODO
+	 *
+	 * @return void
+	 */
+	function render_direct_access_status() {
+		global $post;
+
+		// Only show this on GravityView post types.
+		if ( false === gravityview()->request->is_admin( '', null ) ) {
+			return;
+		}
+
+		// If the View hasn't been configured yet, don't show embed shortcode
+		if ( ! gravityview_get_directory_fields( $post->ID ) && ! gravityview_get_directory_widgets( $post->ID ) ) {
+			return;
+		}
+
+		include self::$metaboxes_dir . 'views/direct-access-status.php';
 	}
 
 }

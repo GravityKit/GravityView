@@ -1,5 +1,9 @@
 <?php
+
 namespace GV;
+
+use GravityKit\GravityView\Foundation\Helpers\Arr;
+use GF_Query;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -30,7 +34,7 @@ class View implements \ArrayAccess {
 	public $settings;
 
 	/**
-	 * @var \GV\Widget_Collection The widets attached here.
+	 * @var \GV\Widget_Collection The widgets attached here.
 	 *
 	 * @api
 	 * @since 2.0
@@ -124,7 +128,7 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		 * @filter `gravityview_is_hierarchical` Make GravityView Views hierarchical by returning TRUE
+		 * Make GravityView Views hierarchical by returning TRUE.
 		 * This will allow for Views to be nested with Parents and also allows for menu order to be set in the Page Attributes metabox
 		 * @since 1.13
 		 * @param boolean $is_hierarchical Default: false
@@ -179,7 +183,7 @@ class View implements \ArrayAccess {
 			'supports'            => $supports,
 			'hierarchical'        => $is_hierarchical,
 			/**
-			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
+			 * Should Views be directly accessible, or only visible using the shortcode?
 			 * @see https://codex.wordpress.org/Function_Reference/register_post_type#public
 			 * @since 1.15.2
 			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded via shortcode. Default: `true`
@@ -194,7 +198,7 @@ class View implements \ArrayAccess {
 			'menu_icon'           => '',
 			'can_export'          => true,
 			/**
-			 * @filter `gravityview_has_archive` Enable Custom Post Type archive?
+			 * Enable Custom Post Type archive?
 			 * @since 1.7.3
 			 * @param boolean False: don't have frontend archive; True: yes, have archive. Default: false
 			 */
@@ -202,14 +206,14 @@ class View implements \ArrayAccess {
 			'exclude_from_search' => true,
 			'rewrite'             => array(
 				/**
-				 * @filter `gravityview_slug` Modify the url part for a View.
-				 * @see https://docs.gravityview.co/article/62-changing-the-view-slug
+				 * Modify the url part for a View.
+				 * @see https://docs.gravitykit.com/article/62-changing-the-view-slug
 				 * @param string $slug The slug shown in the URL
 				 */
 				'slug' => apply_filters( 'gravityview_slug', 'view' ),
 
 				/**
-				 * @filter `gravityview/post_type/with_front` Should the permalink structure
+				 * Should the permalink structure.
 				 *  be prepended with the front base.
 				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
 				 *  Defaults to true.
@@ -436,7 +440,7 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		 * @filter `gravityview/view/can_render` Whether the view can be rendered or not.
+		 * Whether the view can be rendered or not.
 		 * @param bool|\WP_Error $result  The result. Default: null.
 		 * @param \GV\View       $view	The view.
 		 * @param string[]       $context See \GV\View::can_render
@@ -482,7 +486,7 @@ class View implements \ArrayAccess {
 			 */
 
 			/**
-			 * @filter `gravityview_direct_access` Should Views be directly accessible, or only visible using the shortcode?
+			 * Should Views be directly accessible, or only visible using the shortcode?
 			 * @deprecated
 			 * @param boolean `true`: allow Views to be accessible directly. `false`: Only allow Views to be embedded. Default: `true`
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
@@ -490,7 +494,7 @@ class View implements \ArrayAccess {
 			$direct_access = apply_filters( 'gravityview_direct_access', true, $this->ID );
 
 			/**
-			 * @filter `gravityview/request/output/direct` Should this View be directly accessbile?
+			 * Should this View be directly accessbile?
 			 * @since 2.0
 			 * @param boolean Accessible or not. Default: accessbile.
 			 * @param \GV\View $view The View we're trying to directly render here.
@@ -533,7 +537,6 @@ class View implements \ArrayAccess {
 		$joins = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			gravityview()->log->info( 'Cannot get joined forms; joins feature not supported.' );
 			return $joins;
 		}
 
@@ -553,7 +556,7 @@ class View implements \ArrayAccess {
 				continue;
 			}
 
-			list( $join, $join_column, $join_on, $join_on_column ) = $meta;
+			[ $join, $join_column, $join_on, $join_on_column ] = $meta;
 
 			$join    = GF_Form::by_id( $join );
 			$join_on = GF_Form::by_id( $join_on );
@@ -583,7 +586,6 @@ class View implements \ArrayAccess {
 		$forms = array();
 
 		if ( ! gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) ) {
-			gravityview()->log->info( 'Cannot get joined forms; joins feature not supported.' );
 			return $forms;
 		}
 
@@ -607,7 +609,7 @@ class View implements \ArrayAccess {
 				continue;
 			}
 
-			list( $join, $join_column, $join_on, $join_on_column ) = $meta;
+			[ $join, $join_column, $join_on, $join_on_column ] = $meta;
 
 			if ( $form = GF_Form::by_id( $join_on ) ) {
 				$forms[ $join_on ] = $form;
@@ -695,7 +697,7 @@ class View implements \ArrayAccess {
 
 		if ( $view = Utils::get( self::$cache, "View::from_post:{$post->ID}" ) ) {
 			/**
-			 * @filter `gravityview/view/get` Override View.
+			 * Override View.
 			 * @param \GV\View $view The View instance pointer.
 			 * @since 2.1
 			 */
@@ -722,7 +724,7 @@ class View implements \ArrayAccess {
 		$view->unions = $view::get_unions( $post );
 
 		/**
-		 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array.
+		 * Filter the View fields' configuration array.
 		 * @since 1.6.5
 		 *
 		 * @deprecated Use `gravityview/view/configuration/fields` or `gravityview/view/fields` filters.
@@ -733,7 +735,7 @@ class View implements \ArrayAccess {
 		$configuration = apply_filters( 'gravityview/configuration/fields', (array)$view->_gravityview_directory_fields, $view->ID );
 
 		/**
-		 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
+		 * Filter the View fields' configuration array.
 		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of fields with first level being the field zones.
@@ -742,7 +744,7 @@ class View implements \ArrayAccess {
 		$configuration = apply_filters( 'gravityview/view/configuration/fields', $configuration, $view );
 
 		/**
-		 * @filter `gravityview/view/fields` Filter the Field Collection for this View.
+		 * Filter the Field Collection for this View.
 		 * @since 2.0
 		 *
 		 * @param \GV\Field_Collection $fields A collection of fields.
@@ -751,7 +753,7 @@ class View implements \ArrayAccess {
 		$view->fields = apply_filters( 'gravityview/view/fields', Field_Collection::from_configuration( $configuration ), $view );
 
 		/**
-		 * @filter `gravityview/view/configuration/widgets` Filter the View widgets' configuration array.
+		 * Filter the View widgets' configuration array.
 		 * @since 2.0
 		 *
 		 * @param array $fields Multi-array of widgets with first level being the field zones.
@@ -760,7 +762,7 @@ class View implements \ArrayAccess {
 		$configuration = apply_filters( 'gravityview/view/configuration/widgets', (array)$view->_gravityview_directory_widgets, $view );
 
 		/**
-		 * @filter `gravityview/view/widgets` Filter the Widget Collection for this View.
+		 * Filter the Widget Collection for this View.
 		 * @since 2.0
 		 *
 		 * @param \GV\Widget_Collection $widgets A collection of widgets.
@@ -782,7 +784,7 @@ class View implements \ArrayAccess {
 		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
 
 		/**
-		 * @filter `gravityview/view/get` Override View.
+		 * Override View.
 		 * @param \GV\View $view The View instance pointer.
 		 * @since 2.1
 		 */
@@ -1129,9 +1131,6 @@ class View implements \ArrayAccess {
 			 * Any joins?
 			 */
 			if ( gravityview()->plugin->supports( Plugin::FEATURE_JOINS ) && count( $this->joins ) ) {
-
-				$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
-
 				foreach ( $this->joins as $join ) {
 					$query = $join->as_query_join( $query );
 
@@ -1149,64 +1148,27 @@ class View implements \ArrayAccess {
 						$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 					}
 
-					/**
-					 * This is a temporary stub filter, until GF_Query supports NULL conditions.
-					 * Do not use! This filter will be removed.
-					 */
-					if ( defined( 'GF_Query_Condition::NULL' ) ) {
-						$is_null_condition_native = true;
-					} else {
-						$is_null_condition_class = apply_filters( 'gravityview/query/is_null_condition', null );
-						$is_null_condition_native = false;
-					}
-
 					// Filter to active entries only
-					$condition = new \GF_Query_Condition(
-						new \GF_Query_Column( 'status', $join->join_on->ID ),
-						\GF_Query_Condition::EQ,
-						new \GF_Query_Literal( 'active' )
-					);
-
-					if ( $is_null_condition_native ) {
-						$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+					$status_conditions = \GF_Query_Condition::_or(
+						new \GF_Query_Condition(
+							new \GF_Query_Column( 'status', $join->join_on->ID ),
+							\GF_Query_Condition::EQ,
+							new \GF_Query_Literal( 'active' )
+						),
+						new \GF_Query_Condition(
 							new \GF_Query_Column( 'status', $join->join_on->ID ),
 							\GF_Query_Condition::IS,
 							\GF_Query_Condition::NULL
-						) );
-					} else if ( ! is_null( $is_null_condition_class ) ) {
-						$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
-							new \GF_Query_Column( 'status', $join->join_on->ID )
-						) );
-					}
+						)
+					);
 
 					$q = $query->_introspect();
-					$query->where( \GF_Query_Condition::_and( $q['where'], $condition ) );
+					$query->where( \GF_Query_Condition::_and( $q['where'], $status_conditions ) );
 
-					if ( $this->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-
-						// Show only approved joined entries
-						$condition = new \GF_Query_Condition(
-							new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
-							\GF_Query_Condition::EQ,
-							new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
-						);
-
-						if ( $is_null_condition_native ) {
-							$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
-								new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
-								\GF_Query_Condition::IS,
-								\GF_Query_Condition::NULL
-							) );
-						} else if ( ! is_null( $is_null_condition_class ) ) {
-							$condition = \GF_Query_Condition::_or( $condition, new $is_null_condition_class(
-								new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID )
-							) );
-						}
-
-						$query_parameters = $query->_introspect();
-
-						$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
-					}
+					/**
+					 * Applies legacy modifications to Query for is_approved settings.
+					 */
+					$this->apply_legacy_join_is_approved_query_conditions( $query, $join );
 				}
 
 			/**
@@ -1262,7 +1224,7 @@ class View implements \ArrayAccess {
 
 					// Copy the ORDER clause and substitute the field_ids to the respective ones
 					foreach ( $query_parameters['order'] as $order ) {
-						list( $column, $_order ) = $order;
+						[ $column, $_order ] = $order;
 
 						if ( $column && $column instanceof \GF_Query_Column ) {
 							if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
@@ -1345,7 +1307,7 @@ class View implements \ArrayAccess {
 			}
 
 			/**
-			 * @action `gravityview/view/query` Override the \GF_Query before the get() call.
+			 * Override the \GF_Query before the get() call.
 			 * @param \GF_Query $query The current query object reference
 			 * @param \GV\View $this The current view object
 			 * @param \GV\Request $request The request object
@@ -1354,17 +1316,21 @@ class View implements \ArrayAccess {
 
 			gravityview()->log->debug( 'GF_Query parameters: ', array( 'data' => Utils::gf_query_debug( $query ) ) );
 
+			$result = $this->run_db_query( $query );
+
+			list ( $db_entries, $query ) = $result;
+
 			/**
 			 * Map from Gravity Forms entries arrays to an Entry_Collection.
 			 */
 			if ( count( $this->joins ) ) {
-				foreach ( $query->get() as $entry ) {
+				foreach ( $db_entries as $entry ) {
 					$entries->add(
 						Multi_Entry::from_entries( array_map( '\GV\GF_Entry::from_entry', $entry ) )
 					);
 				}
 			} else {
-				array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $query->get() ) );
+				array_map( array( $entries, 'add' ), array_map( '\GV\GF_Entry::from_entry', $db_entries ) );
 			}
 
 			if ( isset( $gf_query_sql_callback ) ) {
@@ -1402,12 +1368,54 @@ class View implements \ArrayAccess {
 		}
 
 		/**
-		 * @filter `gravityview/view/entries` Modify the entry fetching filters, sorts, offsets, limits.
+		 * Modify the entry fetching filters, sorts, offsets, limits.
 		 * @param \GV\Entry_Collection $entries The entries for this view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Request $request The request.
 		 */
 		return apply_filters( 'gravityview/view/entries', $entries, $this, $request );
+	}
+
+	/**
+	 * Queries database and conditionally caches results.
+	 *
+	 * @since 2.18.2
+	 *
+	 * @param GF_Query $query
+	 *
+	 * @return array{0: array, 1: GF_Query} Array of entries and the query object. The latter may be needed as it is modified during the query.
+	 */
+	private function run_db_query( GF_Query $query ) {
+		/**
+		 * Controls whether the query is cached.
+		 *
+		 * @filter gk/gravityview/view/entries/cache
+		 *
+		 * @since  2.18.2
+		 *
+		 * @param bool $enable_caching Default: true.
+		 */
+		if ( ! apply_filters( 'gk/gravityview/view/entries/cache', true ) ) {
+			$db_entries = $query->get();
+
+			return [
+				$db_entries,
+				$query,
+			];
+		}
+
+		$query_hash = md5( serialize( $query->_introspect() ) );
+
+		if ( ! Arr::get( self::$cache, $query_hash ) ) {
+			$db_entries = $query->get();
+
+			self::$cache[ $query_hash ] = [
+				$db_entries,
+				$query,
+			];
+		}
+
+		return self::$cache[ $query_hash ];
 	}
 
 	/**
@@ -1445,7 +1453,7 @@ class View implements \ArrayAccess {
 		$file_type = $is_csv ? 'csv' : 'tsv';
 
 		/**
-		 * @filter `gravityview/output/{csv|tsv}/filename` Modify the name of the generated CSV or TSV file. Name will be sanitized using sanitize_file_name() before output.
+		 * Modify the name of the generated CSV or TSV file. Name will be sanitized using sanitize_file_name() before output.
 		 * @see sanitize_file_name()
 		 * @since 2.1
 		 * @param string   $filename File name used when downloading a CSV or TSV. Default is "{View title}.csv" or "{View title}.tsv"
@@ -1490,7 +1498,7 @@ class View implements \ArrayAccess {
 			$return = array();
 
 			/**
-			 * @filter `gravityview/csv/entry/fields` Allowlist more entry fields by ID that are output in CSV requests.
+			 * Allowlist more entry fields by ID that are output in CSV requests.
 			 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the View.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry WordPress representation of the item.
@@ -1566,7 +1574,7 @@ class View implements \ArrayAccess {
 	 */
 	public static function restrict( $caps, $cap, $user_id, $args ) {
 		/**
-		 * @filter `gravityview/security/require_unfiltered_html` Bypass restrictions on Views that require `unfiltered_html`.
+		 * Bypass restrictions on Views that require `unfiltered_html`.
 		 * @param boolean
 		 *
 		 * @since develop
@@ -1622,7 +1630,7 @@ class View implements \ArrayAccess {
 	 */
 	public function get_anchor_id() {
 		/**
-		 * @filter `gravityview/view/anchor_id` Modify the anchor ID.
+		 * Modify the anchor ID.
 		 * @since 2.15
 		 * @param string $anchor_id The anchor ID.
 		 * @param \GV\View $this The View.
@@ -1647,5 +1655,59 @@ class View implements \ArrayAccess {
 	 */
 	public function get_post() {
 		return $this->post ? $this->post : null;
+	}
+
+	/**
+	 * On version 0.3.0 of Multiple Forms is_approved for joins is handled elsewhere, for backwards compatibility purposes
+	 * the goal here is to only apply this while Multiple Forms is still compatible with older versions of GravityView.
+	 *
+	 * @since 2.17.2
+	 *
+	 * @param \GF_Query $query
+	 * @param Join      $join
+	 *
+	 */
+	protected function apply_legacy_join_is_approved_query_conditions( \GF_Query $query, Join $join ): void {
+		/**
+		 * Allows Multiple Forms and other plugins to deactivate this piece of functionality when loaded.
+		 *
+		 * @since 2.17.2
+		 *
+		 * @param bool      $should_apply Determines if legacy join condition should be applied.
+		 * @param \GF_Query $query        Which is being dealt with.
+		 * @param Join      $join         Which join we are dealing with.
+		 * @param self      $view         Instance of the view we are dealing with.
+		 */
+		$should_apply = (bool) apply_filters( 'gravityview/view/get_entries/should_apply_legacy_join_is_approved_query_conditions', true, $query, $join, $this );
+		if ( ! $should_apply ) {
+			return;
+		}
+
+		if ( ! $this->settings->get( 'show_only_approved' ) ) {
+			return;
+		}
+
+		$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
+
+		if ( $is_admin_and_can_view ) {
+			return;
+		}
+
+		// Show only approved joined entries
+		$condition = new \GF_Query_Condition(
+			new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+			\GF_Query_Condition::EQ,
+			new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
+		);
+
+		$condition = \GF_Query_Condition::_or( $condition, new \GF_Query_Condition(
+			new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+			\GF_Query_Condition::IS,
+			\GF_Query_Condition::NULL
+		) );
+
+		$query_parameters = $query->_introspect();
+
+		$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 	}
 }

@@ -3,8 +3,8 @@
  * @file class-admin-approve-entries.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -73,7 +73,7 @@ class GravityView_Admin_ApproveEntries {
 	public function filter_links_entry_list( $filter_links = array(), $form = array(), $include_counts = true ) {
 
 		/**
-		 * @filter `gravityview/approve_entries/show_filter_links_entry_list` Disable filter links
+		 * Disable filter links.
 		 * @since 1.17.1
 		 * @param bool $show_filter_links True: show the "approved"/"disapproved" filter links. False: hide them.
 		 * @param array $form GF Form object of current form
@@ -396,7 +396,7 @@ class GravityView_Admin_ApproveEntries {
 			'unapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('unapproved'),
             'approve_title' => GravityView_Entry_Approval_Status::get_title_attr('disapproved'),
 			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
-			'column_title' => __( 'Show entry in directory view?', 'gk-gravityview'),
+			'column_title' => esc_html__( 'GravityView entry approval status', 'gk-gravityview'),
 			'column_link' => esc_url( $this->get_sort_link() ),
             'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
 			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
@@ -440,7 +440,7 @@ class GravityView_Admin_ApproveEntries {
 		$show_approve_column = GVCommon::has_cap( 'gravityview_moderate_entries' );
 
 		/**
-		 * @filter `gravityview/approve_entries/hide-if-no-connections` Return true to hide reject/approve if there are no connected Views
+		 * Return true to hide reject/approve if there are no connected Views.
 		 * @since 1.7.2
 		 * @param boolean $hide_if_no_connections
 		 */
@@ -448,7 +448,7 @@ class GravityView_Admin_ApproveEntries {
 
 		if( $hide_if_no_connections ) {
 
-			$connected_views = gravityview_get_connected_views( $form_id );
+			$connected_views = gravityview_get_connected_views( $form_id, ['posts_per_page' => 1 ], false );
 
 			if( empty( $connected_views ) ) {
 				$show_approve_column = false;
@@ -456,7 +456,7 @@ class GravityView_Admin_ApproveEntries {
 		}
 
 		/**
-		 * @filter `gravityview/approve_entries/show-column` Override whether the column is shown
+		 * Override whether the column is shown.
 		 * @param boolean $show_approve_column Whether the column will be shown
 		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
 		 */

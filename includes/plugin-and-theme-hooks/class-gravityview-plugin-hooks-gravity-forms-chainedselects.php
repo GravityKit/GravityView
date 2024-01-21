@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravity-forms-chainedselects.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2022, Katz Web Services, Inc.
  */
 
@@ -95,7 +95,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 
 		/**
 		 * Prevent Chained Select Search Bar input fields from outputting styles.
-		 * @since TODO
+		 * @since 2.14.4
 		 * @param bool $should_print_styles True: Output styles; False: don't.
 		 * @param GravityView_Widget_Search $this GravityView Widget instance.
 		 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field

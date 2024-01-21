@@ -198,6 +198,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		// Process each file path
 		foreach ( $file_paths as $index => $file_path ) {
 
+			// If the file path is not a valid URL, skip it. This is the same check that Gravity Forms does.
+			if ( ! GFCommon::is_valid_url( $file_path ) ) {
+				continue;
+			}
+
 			$rendered = null;
 
 			$file_info = self::get_file_info( $file_path, $field, $field_settings, $context, $index );
@@ -213,15 +218,17 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$text               = $basename;
 
 			$alt = \GV\Utils::get( $field_settings, 'alt_text' );
-			$alt = ( '' === $alt ) ? $field_settings['label'] : $alt;
-			$alt = GFCommon::replace_variables( $alt, GFAPI::get_form( $entry['form_id'] ), $entry );
+			if ( '' === $alt ) {
+				$alt = $field_settings['custom_label'] ?: $field_settings['label'];
+			}
+			$alt = GFCommon::replace_variables( $alt, GVCommon::get_form( $entry['form_id'] ), $entry );
 
 			// Audio
 			if ( in_array( $extension, wp_get_audio_extensions() ) ) {
 				if ( shortcode_exists( 'audio' ) ) {
 
 					/**
-					 * @filter `gravityview_audio_settings` Modify the settings passed to the `wp_video_shortcode()` function
+					 * function.
 					 * @since  1.2
 					 * @param array $audio_settings Array with `src` and `class` keys
 					 * @since 2.0
@@ -250,7 +257,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				if ( shortcode_exists( 'video' ) ) {
 
 					/**
-					 * @filter `gravityview_video_settings` Modify the settings passed to the `wp_video_shortcode()` function
+					 * function.
 					 * @since  1.2
 					 * @param array $video_settings Array with `src` and `class` keys
 					 * @since 2.0
@@ -343,7 +350,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			}
 
 			/**
-			 * @filter `gravityview/fields/fileupload/disable_link` Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object
+			 * Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object.
 			 * @since 1.5.1
 			 * @param bool $disable_wrapped_link whether to wrap the content with a link to the content object.
 			 * @param array $field_compat Current GravityView field array
@@ -369,7 +376,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 				if ( empty( $field_settings['show_as_link'] ) ) {
 					/**
-					 * @filter `gravityview/fields/fileupload/link_atts` Modify the link attributes for a file upload field
+					 * Modify the link attributes for a file upload field.
 					 * @since 2.0 Added $context
 					 * @since 2.11 Added $additional_details
 					 * @param array|string $link_atts Array or attributes string
@@ -397,7 +404,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		} // End foreach loop
 
 		/**
-		 * @filter `gravityview/fields/fileupload/files_array` Modify the files array
+		 * Modify the files array.
 		 * @since 1.7
 		 * @since 2.0 Added $context
 		 * @param array $output_arr Associative array of files. {
@@ -442,7 +449,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		$extension = empty( $file_path_info['extension'] ) ? null : strtolower( $file_path_info['extension'] );
 
 		/**
-		 * @filter `gravityview/fields/fileupload/extension` Modify the file extension before it's used in display logic
+		 * Modify the file extension before it's used in display logic.
 		 * @since 2.13.5
 		 *
 		 * @param string $extension The extension of the file, as parsed by `pathinfo()`.
@@ -463,7 +470,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		}
 
 		/**
-		 * @filter `gravityview/fields/fileupload/file_path` Modify the file path before generating a link to it
+		 * Modify the file path before generating a link to it.
 		 * @since 1.22.3
 		 * @since 2.0 Added $context parameter
 		 * @since 2.8.2

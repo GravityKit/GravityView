@@ -113,7 +113,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		}
 
 		/**
-		 * @action `gravityview/widget/recent-entries/before_widget` Before recent entries are displayed in the WordPress widget
+		 * Before recent entries are displayed in the WordPress widget.
 		 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
 		 * @param array $instance The settings for the particular instance of the widget.
 		 */
@@ -123,7 +123,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		echo $this->get_output( $instance );
 
 		/**
-		 * @action `gravityview/widget/recent-entries/after_widget` After recent entries are displayed in the WordPress widget
+		 * After recent entries are displayed in the WordPress widget.
 		 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
 		 * @param array $instance The settings for the particular instance of the widget.
 		 */
@@ -190,7 +190,13 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		$view->settings->set( 'page_size', $limit );
 
+		// Don't let the pagination override the View's settings.
+		$_get_placeholder = $_GET;
+		$_GET = [];
+
 		$entries = $view->get_entries();
+
+		$_GET = $_get_placeholder;
 
 		return $entries->all();
 	}
@@ -332,7 +338,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $instance['post_id'] ); ?>" />
 			<span class="howto gv-howto"><?php
 				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gk-gravityview' );
-				echo ' '.gravityview_get_link('https://docs.gravityview.co/article/222-the-search-widget', __('Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
+				echo ' '.gravityview_get_link('https://docs.gravitykit.com/article/222-the-search-widget', __('Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
 				?></span>
 		</p>
 
@@ -360,7 +366,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		<?php
 
 		/**
-		 * @action `gravityview_recent_entries_widget_form` Displayed at the bottom of the Recent Entries widget admin form
+		 * Displayed at the bottom of the Recent Entries widget admin form.
 		 * @param GravityView_Recent_Entries_Widget $this WP_Widget object
 		 * @param array $instance Current widget instance
 		 */

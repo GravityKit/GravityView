@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-all-in-one-seo.php
  * @since     2.10.3
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2021, Katz Web Services, Inc.
  *
  * @package   GravityView
@@ -44,11 +44,9 @@ class GravityView_Plugin_Hooks_All_In_One_SEO extends GravityView_Plugin_and_The
 
 	/**
 	 * @inheritDoc
-	 * @since 2.10.3
+	 * @since 2.17
 	 */
-	public function __construct() {
-		parent::__construct();
-
+	protected function add_hooks() {
 		add_filter( 'pre_do_shortcode_tag', array( $this, 'skip_shortcode_processing' ), 10, 4 );
 	}
 

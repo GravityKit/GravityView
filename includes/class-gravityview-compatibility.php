@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.12
@@ -33,11 +33,6 @@ class GravityView_Compatibility {
 	static public $valid_wordpress = false;
 
 	/**
-	 * @var bool Is the server's PHP version compatible?
-	 */
-	static public $valid_php = false;
-
-	/**
 	 * @var array Holder for notices to be displayed in frontend shortcodes if not valid GF
 	 */
 	static private $notices = array();
@@ -48,7 +43,7 @@ class GravityView_Compatibility {
 
 		self::$valid_wordpress = self::check_wordpress();
 
-		self::$valid_php = self::check_php();
+		self::check_php();
 
 		self::check_gf_directory();
 
@@ -119,18 +114,6 @@ class GravityView_Compatibility {
 
 	/**
 	 * @since 1.12
-	 *
-	 * @deprecated 1.19.4
-	 * @see \GV\Plugin::is_compatible_php() accessible via gravityview()->plugin->is_compatible_php()
-	 *
-	 * @return bool
-	 */
-	private static function is_valid_php() {
-		return gravityview()->plugin->is_compatible_php();
-	}
-
-	/**
-	 * @since 1.12
 	 * @return bool
 	 */
 	private function add_fallback_shortcode() {
@@ -138,7 +121,7 @@ class GravityView_Compatibility {
 		// If Gravity Forms doesn't exist or is outdated, load the admin view class to
 		// show the notice, but not load any post types or process shortcodes.
 		// Without Gravity Forms, there is no GravityView. Beautiful, really.
-		if( ! self::is_valid() ) {
+		if( ! gravityview()->plugin->is_compatible() ) {
 
 			// If the plugin's not loaded, might as well hide the shortcode for people.
 			add_shortcode( 'gravityview', array( $this, '_shortcode_gf_notice') );
@@ -189,34 +172,20 @@ class GravityView_Compatibility {
 	 * @since 1.12
 	 * @since 1.19.2 Shows a notice if it's compatible with future PHP version requirements
 	 *
-	 * @return boolean
+	 * @return void
 	 */
 	public static function check_php() {
-
-		if ( ! gravityview()->plugin->is_compatible_php() ) {
-
-			self::$notices['php_version'] = array(
-				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView requires PHP Version %s or newer.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '<h3>', GV_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
-				'cap' => 'manage_options',
-				'dismiss' => 'php_version',
-			);
-
-			return false;
-		}
-
 		if ( ! gravityview()->plugin->is_compatible_future_php() ) {
 
 			// Show the notice on every update. Yes, annoying, but not as annoying as a plugin breaking.
-			$key = sprintf('php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GV_PLUGIN_VERSION );
+			$key = sprintf( 'php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GV_PLUGIN_VERSION );
 
 			self::$notices[ $key ] = array(
-				'class' => 'error',
-				'message' => sprintf( __( "%sGravityView will soon require PHP Version %s.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '<h3>', GV_FUTURE_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">'.phpversion().'</span>' ),
-				'cap' => 'manage_options',
+				'class'   => 'error',
+				'message' => sprintf( __( "%sGravityView will soon require PHP Version %s.%s \n\nYou're using Version %s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '<h3>', GV_FUTURE_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . phpversion() . '</span>' ),
+				'cap'     => 'manage_options',
 				'dismiss' => $key,
 			);
-
 		}
 
 		return true;

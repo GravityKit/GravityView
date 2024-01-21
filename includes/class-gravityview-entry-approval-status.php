@@ -3,8 +3,8 @@
  * @file class-gravityview-entry-approval-status.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @since 1.18
@@ -250,7 +250,6 @@ final class GravityView_Entry_Approval_Status {
 
 			// Is the passed status value the same as the choice value or key?
 			if ( $status === $choice['value'] || $status === $key ) {
-
 				if( 'key' === $attr_key ) {
 					return $key;
 				} else {
@@ -273,6 +272,19 @@ final class GravityView_Entry_Approval_Status {
 	 */
 	public static function get_label( $value_or_key ) {
 		return self::choice_pluck( $value_or_key, 'label' );
+	}
+
+	/**
+	 * Get the label for a specific approval value
+	 *
+	 * @since 2.17
+	 *
+	 * @param int|string $value_or_key Valid status value or key (1 or "approved")
+	 *
+	 * @return string|false Action of value (eg: "Reset Approval"). If invalid value, return false.
+	 */
+	public static function get_action( $value_or_key ) {
+		return self::choice_pluck( $value_or_key, 'action' );
 	}
 
 	/**

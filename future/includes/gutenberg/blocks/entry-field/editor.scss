@@ -1,0 +1,17 @@
+/* Editor styles */
+
+@import "../../shared/css/blocks";
+
+[class*="gk-gravityview-blocks"] {
+  .field-selector {
+    width: 70%;
+    display: inline-block;
+    text-align: left;
+  }
+
+  .components-panel {
+    .field-selector, .first-last-entry-id-notice {
+      margin-bottom: 24px;
+    }
+  }
+}

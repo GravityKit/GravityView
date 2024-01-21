@@ -3,8 +3,8 @@
  * @file      class-gravityview-admin-bulk-actions.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2021, Katz Web Services, Inc.
  *
  * @since 2.13.2
@@ -117,8 +117,15 @@ class GravityView_Bulk_Actions {
 
 			$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
 
+			// Make sure the entry list class is loaded.
+			require_once( GFCommon::get_base_path() . '/entry_list.php' );
+
+			$GF_Entry_List_Table = new GF_Entry_List_Table();
+
+			$search_criteria = $GF_Entry_List_Table->get_search_criteria( $search_criteria );
+
 			// Get all the entry IDs for the form
-			$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
+			$entries = GVCommon::get_entry_ids( $form_id, $search_criteria );
 
 		} else {
 
@@ -180,7 +187,7 @@ class GravityView_Bulk_Actions {
 		);
 
 		/**
-		 * @filter `gravityview/approve_entries/bulk_actions` Modify the GravityView "Bulk action" dropdown list. Return an empty array to hide.
+		 * Modify the GravityView "Bulk action" dropdown list. Return an empty array to hide.
 		 * @see https://gist.github.com/zackkatz/82785402c996b51b4dc9 for an example of how to use this filter
 		 * @since 1.16.3
 		 * @param array $bulk_actions Associative array of actions to be added to "Bulk action" dropdown inside GravityView `<optgroup>`. Parent array key is the `<optgroup>` label, then each child array must have `label` (displayed text) and `value` (input value) keys

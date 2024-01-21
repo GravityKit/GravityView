@@ -88,7 +88,7 @@ final class Core {
 		/** Enable logging. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
 		/**
-		 * @filter `gravityview/logger` Filter the logger instance being used for logging.
+		 * Filter the logger instance being used for logging.
 		 * @param \GV\Logger $logger The logger instance.
 		 */
 		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
@@ -229,6 +229,8 @@ final class Core {
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
 
+		/** Gutenberg Blocks. */
+		require_once $this->plugin->dir( 'future/includes/gutenberg/class-gv-gutenberg-blocks.php' );
 
 		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
 
@@ -236,7 +238,7 @@ final class Core {
 		add_action( 'clean_post_cache', '\GV\View::_flush_cache' );
 
 		/**
-		 * @action `gravityview/loaded` The core has been loaded.
+		 * The core has been loaded.
 		 *
 		 * Note: this is a very early load hook, not all of WordPress core has been loaded here.
 		 *  `init` hasn't been called yet.

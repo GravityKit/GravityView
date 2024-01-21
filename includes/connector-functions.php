@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -175,14 +175,16 @@ function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
  * Get the views for a particular form
  *
  * @since 1.22.1 Added $args param
+ * @since 2.19   Added $include_joins param
  *
  * @param  int $form_id Gravity Forms form ID
  * @param  array $args Pass args sent to get_posts()
+ * @param  bool  $include_joins Whether to include forms that are joined to the View
  *
  * @return array          Array with view details
  */
-function gravityview_get_connected_views( $form_id, $args = array() ) {
-	return GVCommon::get_connected_views( $form_id, $args );
+function gravityview_get_connected_views( $form_id, $args = array(), $include_joins = true ) {
+	return GVCommon::get_connected_views( $form_id, $args, $include_joins );
 }
 
 /**
@@ -256,7 +258,7 @@ function gravityview_get_template_setting( $post_id, $key ) {
 function gravityview_get_registered_templates() {
 
 	/**
-	 * @filter `gravityview_register_directory_template` Fetch available View templates
+	 * Fetch available View templates.
 	 * @param array $templates Templates to show
 	 */
 	$templates = apply_filters( 'gravityview_register_directory_template', array() );
@@ -265,40 +267,18 @@ function gravityview_get_registered_templates() {
 }
 
 /**
- * Get the field configuration for the View
+ * Get the field configuration for the View.
  *
- * array(
+ * @see GVCommon::get_directory_fields
+ * @since 1.17.4 Added $apply_filter parameter.
+ * @since 2.17   Added $form_id parameter.
  *
- * 	[other zones]
- *
- * 	'directory_list-title' => array(
- *
- *   	[other fields]
- *
- *  	'5372653f25d44' => array(
- *  		'id' => string '9' (length=1)
- *  		'label' => string 'Screenshots' (length=11)
- *			'show_label' => string '1' (length=1)
- *			'custom_label' => string '' (length=0)
- *			'custom_class' => string 'gv-gallery' (length=10)
- * 			'only_loggedin' => string '0' (length=1)
- *			'only_loggedin_cap' => string 'read' (length=4)
- *  	)
- *
- * 		[other fields]
- *  )
- *
- * 	[other zones]
- * )
- *
- * @since 1.17.4 Added $apply_filter parameter
- *
- * @param  int $post_id View ID
- * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
- * @return array          Multi-array of fields with first level being the field zones. See code comment.
+ * @param  int   $post_id View ID.
+ * @param  bool  $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
+ * @return array Multi-array of fields with first level being the field zones.
  */
-function gravityview_get_directory_fields( $post_id, $apply_filter = true ) {
-	return GVCommon::get_directory_fields( $post_id, $apply_filter );
+function gravityview_get_directory_fields( $post_id, $apply_filter = true, $form_id = 0 ) {
+	return GVCommon::get_directory_fields( $post_id, $apply_filter, $form_id );
 }
 
 /**
@@ -359,6 +339,9 @@ function gravityview_get_field_type(  $form = null , $field_id = '' ) {
  * @return string HTML of the output. Empty string if $view_id is empty.
  */
 function get_gravityview( $view_id = '', $atts = array() ) {
+
+	_deprecated_function( __FUNCTION__, '2.18', '$view = gravityview()->views->get( $view_id ); if ( $view ) { $view->settings->update( $atts ); $renderer = new \GV\View_Renderer(); $renderer->render( $view, new \GV\Frontend_Request() ); }');
+
 	if( !empty( $view_id ) ) {
 		$atts['id'] = $view_id;
 		$args = wp_parse_args( $atts, \GV\View_Settings::defaults() );
@@ -379,6 +362,9 @@ function get_gravityview( $view_id = '', $atts = array() ) {
  * @return void
  */
 function the_gravityview( $view_id = '', $atts = array() ) {
+
+	_deprecated_function( __FUNCTION__, '2.18', '$view = gravityview()->views->get( $view_id ); if ( $view ) { $view->settings->update( $atts ); $renderer = new \GV\View_Renderer(); echo $renderer->render( $view, new \GV\Frontend_Request() ); }');
+
 	echo get_gravityview( $view_id, $atts );
 }
 

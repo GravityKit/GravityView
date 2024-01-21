@@ -41,7 +41,7 @@ class gventry extends \GV\Shortcode {
 		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );
 
 		/**
-		 * @filter `gravityview/shortcodes/gventry/atts` Filter the [gventry] shortcode attributes.
+		 * Filter the [gventry] shortcode attributes.
 		 * @param array $atts The initial attributes.
 		 * @since 2.0
 		 */
@@ -182,7 +182,7 @@ class gventry extends \GV\Shortcode {
 
 			add_filter( 'gravityview/is_single_entry', '__return_true' );
 
-			$form = \GFAPI::get_form( $entry['form_id'] );
+			$form = \GVCommon::get_form( $entry['form_id'] );
 
 			$data = \GravityView_View_Data::getInstance( $view );
 			$template = \GravityView_View::getInstance( array(
@@ -199,7 +199,7 @@ class gventry extends \GV\Shortcode {
 
 			add_filter( 'gravityview/edit_entry/success', $callback = function ( $message, $_view_id, $_entry, $back_link, $redirect_url ) use ( $view, $entry, $atts ) {
 				/**
-				 * @filter `gravityview/shortcodes/gventry/edit/success` Modify the edit entry success message in [gventry].
+				 * Modify the edit entry success message in [gventry].
 				 *
 				 * @since  develop
 				 *
@@ -236,7 +236,7 @@ class gventry extends \GV\Shortcode {
 		}
 
 		/**
-		 * @filter `gravityview/shortcodes/gventry/output` Filter the [gventry] output.
+		 * Filter the [gventry] output.
 		 * @param string $output The output.
 		 * @param \GV\View|null $view The View detected or null.
 		 * @param \GV\Entry|null $entry The Entry or null.

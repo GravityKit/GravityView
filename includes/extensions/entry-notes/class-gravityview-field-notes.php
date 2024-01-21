@@ -6,7 +6,7 @@
  * @license     GPL2+
  * @since       1.17
  * @author      Katz Web Services, Inc.
- * @link        https://gravityview.co
+ * @link        https://www.gravitykit.com
  * @copyright   Copyright 2016, Katz Web Services, Inc.
  */
 
@@ -370,7 +370,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'notes' => array(
 				'type' => 'checkboxes',
 				'label' => __('Note Settings', 'gk-gravityview'),
-				'desc' => sprintf( _x('Only users with specific capabilities will be able to view, add and delete notes. %sRead more%s.', '%s is opening and closing HTML link', 'gk-gravityview' ), '<a href="https://docs.gravityview.co/article/311-gravityview-capabilities">', '</a>' ),
+				'desc' => sprintf( _x('Only users with specific capabilities will be able to view, add and delete notes. %sRead more%s.', '%s is opening and closing HTML link', 'gk-gravityview' ), '<a href="https://docs.gravitykit.com/article/311-gravityview-capabilities">', '</a>' ),
 				'options' => array(
 					'view' => array(
 						'label' => __( 'Display notes?', 'gk-gravityview' ),
@@ -436,7 +436,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		);
 
 		/**
-		 * @filter `gravityview/field/notes/strings` Modify the text used in the Entry Notes field. Sanitized by `esc_html` after return.
+		 * after return.
 		 * @since 1.17
 		 * @param array $strings Text in key => value pairs
 		 */
@@ -482,7 +482,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		);
 
 		/**
-		 * @filter `gravityview/field/notes/content` Modify the note content before rendering in the template
+		 * Modify the note content before rendering in the template.
 		 * @since 1.17
 		 * @param array $note_content Array of note content that will be replaced in template files
 		 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
@@ -656,7 +656,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		/**
-		 * @filter `gravityview/field/notes/emails` Modify the dropdown values displayed in the "Also email note to" dropdown
+		 * Modify the dropdown values displayed in the "Also email note to" dropdown.
 		 * @since 1.17
 		 * @param array $note_emails Array of email addresses connected to the entry
 		 * @param array $entry Current entry
@@ -691,7 +691,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$strings = self::strings();
 
 		/**
-		 * @filter `gravityview/field/notes/custom-email` Whether to include a Custom Email option for users to define a custom email to mail notes to
+		 * Whether to include a Custom Email option for users to define a custom email to mail notes to.
 		 * @since 1.17
 		 * @param bool $include_custom Default: true
 		 */
@@ -796,7 +796,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$message_format = 'html';
 
 			/**
-			 * @filter `gravityview/field/notes/email_content` Modify the values passed when sending a note email
+			 * Modify the values passed when sending a note email.
 			 * @see GVCommon::send_email
 			 * @since 1.17
 			 * @param array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
@@ -811,7 +811,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$message .= $this->get_email_footer( $email_footer, $is_html, $email_data );
 
 			/**
-             * @filter `gravityview/field/notes/wpautop_email` Should the message content have paragraphs added automatically, if using HTML message format
+             * Should the message content have paragraphs added automatically, if using HTML message format.
 			 * @since 1.18
              * @param bool $wpautop_email True: Apply wpautop() to the email message if using; False: Leave as entered (Default: true)
 			 */
@@ -823,7 +823,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			GVCommon::send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, '', $entry, false );
 
-			$form  = isset( $entry['form_id'] ) ? GFAPI::get_form( $entry['form_id'] ) : array();
+			$form  = isset( $entry['form_id'] ) ? GVCommon::get_form( $entry['form_id'] ) : array();
 
 			/**
 			 * @see https://www.gravityhelp.com/documentation/article/10146-2/ It's here for compatibility with Gravity Forms

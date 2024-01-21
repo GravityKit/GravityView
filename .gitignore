@@ -1,61 +1,26 @@
-# Help from https://www.gitignore.io
-
-### Mac ###
+## Mac
 .DS_Store
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
 
-### SublimeText ###
+## PhpStorm
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/.name
+.idea/**/codeStyles
+.idea/**/php.xml
+
+## Sass
+.sass-cache
+
+## Phan/PHPStan
+.phan
+phpstan.neon
+
+## Sublime
 *.sublime-project
 *.sublime-workspace
-
-### Libraries ###
-vendor/.git
-vendor/*/.git
-vendor/bin/
-vendor/phpcompatibility/
-vendor/squizlabs/
-vendor/dealerdirect/
-wpcs/
-
-### Node ###
-node_modules/*
-
-### CodeKit ####
-.sass-cache
-*.codekit
-
-### PhpStorm ###
-# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
-
-*.iml
-
-# User-specific stuff:
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/dictionaries
-.idea/deployment.xml
-.idea/modules.xml
-
-.idea/php.xml
-
-# Sensitive or high-churn files:
-.idea/dataSources.ids
-.idea/dataSources.xml
-.idea/sqlDataSources.xml
-.idea/dynamic.xml
-.idea/uiDesigner.xml
-.idea/encodings.xml
-
-## File-based project format:
-*.ipr
-*.iws
-
-## Plugin-specific files:
 
 ## Bower
 assets/lib/flexibility/*
@@ -67,13 +32,10 @@ assets/lib/fancybox/*
 !assets/lib/fancybox/dist/*.js
 !assets/lib/fancybox/dist/*.css
 
-# Unit tests
-/tmp
-/tests/bin/tmp
-phpstan.neon
-
-# mpeltonen/sbt-idea plugin
-.idea_modules/
+## Node & Composer
+node_modules
+vendor
+vendor_prefixed
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -82,19 +44,16 @@ atlassian-ide-plugin.xml
 docs/config.doxygen
 docs/html
 
-# VIM
-*.swp
-
-# environment file (used for local unit tests)
+# Environment file (used for local unit tests)
 .env
 
-# docker files and folders used for local unit tests
+# Docker files and folders used for local unit tests
 docker-compose.yml
 docker-unit-tests.sh
-phpunit/
-wordpress-51-tests-lib/
-wordpress-latest-tests-lib/
+phpunit
+wordpress-51-tests-lib
+wordpress-latest-tests-lib
 
-vendor/katzgrau/klogger/
-vendor/trustedlogin/trustedlogin-client/
-vendor/trustedlogin/client/
+.coveralls.yml
+.scrutinizer.yml
+.tx

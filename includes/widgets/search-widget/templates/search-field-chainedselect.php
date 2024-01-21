@@ -33,7 +33,7 @@ $gf_field = $field->field;
 
 /**
  * Prevent Chained Select Search Bar input fields from outputting styles.
- * @since TODO
+ * @since 2.14.4
  * @param GravityView_Widget_Search $this GravityView Widget instance
  * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
  */
@@ -41,7 +41,7 @@ $alignment = apply_filters( 'gravityview/search/chained_selects/alignment', $gra
 
 /**
  * Choose whether to hide inactive dropdowns in the chain.
- * @since TODO
+ * @since 2.14.4
  * @param bool $hide_inactive Whether to hide drop-downs that aren't available yet.
  * @param GravityView_Widget_Search $this GravityView Widget instance
  * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field

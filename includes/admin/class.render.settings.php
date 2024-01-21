@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.2
@@ -125,7 +125,7 @@ class GravityView_Render_Settings {
 		}
 
 		/**
-		 * @filter `gravityview_template_{$field_type}_options` Filter the field options by field type. Filter names: `gravityview_template_field_options` and `gravityview_template_widget_options`
+		 * and `gravityview_template_widget_options`.
 		 * @param array    Array of field options with `label`, `value`, `type`, `default` keys
 		 * @param  string      $template_id Table slug
 		 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
@@ -136,7 +136,7 @@ class GravityView_Render_Settings {
 		$field_options = apply_filters( "gravityview_template_{$field_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
 		/**
-		 * @filter `gravityview_template_{$input_type}_options` Filter the field options by input type (`$input_type` examples: `textarea`, `list`, `select`, etc.)
+		 * examples: `textarea`, `list`, `select`, etc.).
 		 * @param array    Array of field options with `label`, `value`, `type`, `default` keys
 		 * @param  string      $template_id Table slug
 		 * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
@@ -244,10 +244,10 @@ class GravityView_Render_Settings {
 		}
 
 		/**
-		 * @filter `gravityview_field_visibility_caps` Modify the capabilities shown in the field dropdown
-		 * @see https://docs.gravityview.co/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
+		 * Modify the capabilities shown in the field dropdown.
+		 * @see https://docs.gravitykit.com/article/96-how-to-modify-capabilities-shown-in-the-field-only-visible-to-dropdown
 		 * @since  1.0.1
-		 * @param  array $select_cap_choices Associative rray of role slugs with labels ( `manage_options` => `Administrator` )
+		 * @param  array $select_cap_choices Associative array of role slugs with labels ( `manage_options` => `Administrator` )
 		 * @param  string $template_id Optional. View slug
 		 * @param  string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 		 * @param  string $context     Optional. What context are we in? Example: `single` or `directory`
@@ -314,7 +314,7 @@ class GravityView_Render_Settings {
 			return $hidden_fields . '<!-- No Options -->'; // The HTML comment is here for checking if the output is empty in render_label()
 		}
 
-		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gk-gravityview' ) , strip_tags( html_entity_decode( $field_label ) ) ) );
+		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gk-gravityview' ) , wp_strip_all_tags( html_entity_decode( $field_label ) ) ) );
 
 		$field_details = '';
 
@@ -497,13 +497,15 @@ EOD;
 
 				$output = ob_get_clean();
 
+				$option_type = $option['type'];
+
 				/**
-				 * @filter `gravityview/option/output/{option_type}` Modify the output for a GravityView setting.\n
-				 * `$option_type` is the type of setting (`radio`, `text`, etc.)
+				 * Modify the output for a GravityView setting.
+				 * `$option_type` is the type of setting (`radio`, `text`, etc.).
 				 * @param string $output field class name
 				 * @param array $option  option field data
 				 */
-				$output = apply_filters( "gravityview/option/output/{$option['type']}" , $output, $option );
+				$output = apply_filters( "gravityview/option/output/{$option_type}" , $output, $option );
 			}
 
 		} // isset option[type]
@@ -610,23 +612,25 @@ EOD;
 			return NULL;
 		}
 
+		$field_type = sanitize_title_with_dashes( $field['type'] );
+
 		/**
-		 * @filter `gravityview/setting/class/{field_type}`
+		 * Modifies the field type class name to be loaded for a given field.
 		 * @param string $class_suffix  field class suffix; `GravityView_FieldType_{$class_suffix}`
 		 * @param array $field   field data
 		 */
-		$type_class = apply_filters( "gravityview/setting/class/{$field['type']}", 'GravityView_FieldType_' . $field['type'], $field );
+		$type_class = apply_filters( "gravityview/setting/class/{$field_type}", 'GravityView_FieldType_' . $field_type, $field );
 
 		if( class_exists( $type_class ) ) {
 			return $type_class;
 		}
 
 		/**
-		 * @filter `gravityview/setting/class_file/{field_type}`
+		 * Modifies file path to be loaded for a given field.
 		 * @param string  $field_type_include_path field class file path
 		 * @param array $field  field data
 		 */
-		$class_file = apply_filters( "gravityview/setting/class_file/{$field['type']}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field['type']}.php", $field );
+		$class_file = apply_filters( "gravityview/setting/class_file/{$field_type}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field_type}.php", $field );
 
 		if( $class_file && file_exists( $class_file ) ) {
 			require_once( $class_file );

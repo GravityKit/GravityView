@@ -382,6 +382,44 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( $result ? 'CORRECT' : '', do_shortcode( $content ) );
 	}
 
+	/**
+	 * @covers \GV\Shortcodes\gvlogic::parse_atts()
+	 * @see https://github.com/GravityKit/GravityView/issues/1846
+	 * @return void
+	 */
+	function test_gv_shortcode_texturized_quotes_in_attributes() {
+
+		$content = <<<EOD
+[gvlogic if="1" is="2"]{wrong}[else if="context" is=""]{correct}[else]{um}[/gvlogic]
+EOD;
+
+		$content = strtr( $content, array(
+			'{wrong}' => 'That\'s WRONG!',
+			'{correct}' => 'That\'s CORRECT!',
+			'{um}' => 'Something went wrong!',
+		) );
+
+		$content = apply_filters( 'the_content', $content );
+
+		$this->assertContains( 'CORRECT!', $content );
+
+		// Now test single quotes.
+		$content = <<<EOD
+[gvlogic if='1' is='2']{wrong}[else if='context' is='']{correct}[else]{um}[/gvlogic]
+EOD;
+
+		$content = apply_filters( 'the_content', $content );
+
+		$content = strtr( $content, array(
+			'{wrong}' => 'That\'s WRONG!',
+			'{correct}' => 'That\'s CORRECT!',
+			'{um}' => 'Something went wrong!',
+		) );
+
+		$content = do_shortcode( $content );
+
+		$this->assertContains( 'CORRECT!', $content );
+	}
 
 	function get_test_gv_shortcode_date_comparison() {
 

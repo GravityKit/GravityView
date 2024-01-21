@@ -3,7 +3,7 @@
  * @package   GravityView
  * @license   GPL2+
  * @author    Josh Pollock <josh@joshpress.net>
- * @link      http://gravityview.co
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 2.0
@@ -118,7 +118,7 @@ class Views_Route extends Route {
 		}
 
 		/**
-		 * @filter `gravityview/rest/entry/fields` Allow more entry fields that are output in regular REST requests.
+		 * Allow more entry fields that are output in regular REST requests.
 		 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
 		 * @param \GV\View $view The view.
 		 * @param \GV\Entry $entry The entry.
@@ -163,7 +163,7 @@ class Views_Route extends Route {
 			}
 
 			/**
-			 * @filter `gravityview/api/field/key` Filter the key name in the results for JSON output.
+			 * Filter the key name in the results for JSON output.
 			 * @param string $field_id The ID. Should be unique or keys will be gobbled up.
 			 * @param \GV\View $view The view.
 			 * @param \GV\Entry $entry The entry.
@@ -209,14 +209,13 @@ class Views_Route extends Route {
 	 * @return \WP_Error|\WP_REST_Response
 	 */
 	public function get_sub_items( $request ) {
+		global $post;
 
 		$url     = $request->get_url_params();
 		$view_id = intval( $url['id'] );
 		$format  = \GV\Utils::get( $url, 'format', 'json' );
 
 		if( $post_id = $request->get_param('post_id') ) {
-			global $post;
-
 			$post = get_post( $post_id );
 
 			if ( ! $post || is_wp_error( $post ) ) {
@@ -232,6 +231,10 @@ class Views_Route extends Route {
 
 		$view = \GV\View::by_id( $view_id );
 
+		if ( null !== $view ) {
+			$post = $view->get_post();
+		}
+
 		if ( 'html' === $format ) {
 
 			$renderer = new \GV\View_Renderer();
@@ -246,7 +249,7 @@ class Views_Route extends Route {
 			$output = $renderer->render( $view, new Request( $request ) );
 
 			/**
-			 * @filter `gravityview/rest/entries/html/insert_meta` Whether to include `http-equiv` meta tags in the HTML output describing the data
+			 * meta tags in the HTML output describing the data.
 			 * @since 2.0
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
 			 * @param int $count The number of entries being rendered
@@ -447,7 +450,7 @@ class Views_Route extends Route {
 		}
 
 		/**
-		 * @filter `gravityview/view/output/rest` Disable rest output. Final chance.
+		 * Disable rest output. Final chance.
 		 * @param bool Enable or not.
 		 * @param \GV\View $view The view.
 		 */

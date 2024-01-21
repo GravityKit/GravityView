@@ -12,7 +12,7 @@
 		<?php
 
 		/**
-		 * @action `gravityview_table_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
+		 * Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
          * @since 1.0.7
          * @param \GravityView_View $this Current GravityView_View object
 		 */
@@ -40,7 +40,7 @@
 				$alt = empty( $alt ) ? 'alt' : '';
 
 				/**
-				 * @filter `gravityview_entry_class` Modify the class applied to the entry row
+				 * Modify the class applied to the entry row.
 				 * @param string $alt Existing class. Default: if odd row, `alt`, otherwise empty string.
 				 * @param array $entry Current entry being displayed
 				 * @param \GravityView_View $this Current GravityView_View object
@@ -50,7 +50,7 @@
 				<tr<?php echo ' class="'.esc_attr( $class ).'"'; ?>>
 		<?php
                     /**
-                     * @action `gravityview_table_cells_before` Inside the `tr` while rendering each entry in the loop. Can be used to insert additional table cells.
+                     * while rendering each entry in the loop. Can be used to insert additional table cells.
                      * @since 1.0.7
                      * @param \GravityView_View $this Current GravityView_View object
                      */
@@ -77,7 +77,7 @@
 		}
 
 		/**
-		 * @action `gravityview_table_body_after` Inside the `tbody`, after all rows are rendered. Can be used to insert additional rows.
+		 * Inside the `tbody`, after all rows are rendered. Can be used to insert additional rows.
 		 * @since 1.0.7
 		 */
 		do_action('gravityview_table_body_after', $this );

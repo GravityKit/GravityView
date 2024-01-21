@@ -248,7 +248,7 @@ class GravityView_Field_Time extends GravityView_Field {
 		$time_format = '12';
 
 		if( $form_id ) {
-			$form = GFAPI::get_form( $form_id );
+			$form = GVCommon::get_form( $form_id );
 
 			if ( $form ) {
 				$field = GFFormsModel::get_field( $form, floor( $field_id ) );

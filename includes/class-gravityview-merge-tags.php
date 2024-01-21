@@ -104,7 +104,7 @@ class GravityView_Merge_Tags {
 		}
 
 		/**
-		 * @filter `gravityview/merge_tags/modifiers/value` Modify the merge tag modifier output
+		 * Modify the merge tag modifier output.
 		 * @since 2.0
 		 * @param string $return The current merge tag value to be filtered.
 		 * @param string $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
@@ -326,7 +326,7 @@ class GravityView_Merge_Tags {
 		}
 
 		/**
-		 * @filter `gravityview_do_replace_variables` Turn off merge tag variable replacements.\n
+		 * Turn off merge tag variable replacements.\n.
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
 		 * @since 1.13
 		 *
@@ -373,16 +373,6 @@ class GravityView_Merge_Tags {
 	public static function replace_gv_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		if ( '' === $text ) {
-			return $text;
-		}
-
-		/**
-		 * This prevents the gform_replace_merge_tags filter from being called twice, as defined in:
-		 * @see GFCommon::replace_variables()
-		 * @see GFCommon::replace_variables_prepopulate()
-		 * @todo Remove eventually: Gravity Forms fixed this issue in 1.9.14
-		 */
-		if ( false === $form ) {
 			return $text;
 		}
 
@@ -520,7 +510,7 @@ class GravityView_Merge_Tags {
 	 *
 	 * @uses GVCommon::format_date()
 	 *
-	 * @see https://docs.gravityview.co/article/331-date-created-merge-tag for documentation
+	 * @see https://docs.gravitykit.com/article/331-date-created-merge-tag for documentation
 	 * @todo Once Gravity Forms 2.5 becomes the minimum requirement, this is no longer needed.
 	 *
 	 * @param string $date_created The Gravity Forms date created format
@@ -687,7 +677,7 @@ class GravityView_Merge_Tags {
 			$value = stripslashes_deep( \GV\Utils::_GET( $property ) );
 
 			/**
-			 * @filter `gravityview/merge_tags/get/glue/` Modify the glue used to convert an array of `{get}` values from an array to string
+			 * values from an array to string.
 			 * @since 1.15
 			 * @param string $glue String used to `implode()` $_GET values Default: ', '
 			 * @param string $property The current name of the $_GET parameter being combined
@@ -699,7 +689,7 @@ class GravityView_Merge_Tags {
 			$value = $url_encode ? urlencode( $value ) : $value;
 
 			/**
-			 * @filter `gravityview/merge_tags/get/esc_html/{url parameter name}` Disable esc_html() from running on `{get}` merge tag
+			 * merge tag.
 			 * By default, all values passed through URLs will be escaped for security reasons. If for some reason you want to
 			 * pass HTML in the URL, for example, you will need to return false on this filter. It is strongly recommended that you do
 			 * not disable this filter.
@@ -711,7 +701,7 @@ class GravityView_Merge_Tags {
 			$value = $esc_html ? esc_html( $value ) : $value;
 
 			/**
-			 * @filter `gravityview/merge_tags/get/esc_html/{url parameter name}` Modify the value of the `{get}` replacement before being used
+			 * replacement before being used.
 			 * @param string $value Value that will replace `{get}`
 			 * @param string $text Text that contains `{get}` (before replacement)
 			 * @param array $form Gravity Forms form array

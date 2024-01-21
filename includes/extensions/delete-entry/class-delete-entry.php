@@ -7,8 +7,8 @@
  * @since     1.5.1
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
@@ -54,6 +54,8 @@ final class GravityView_Delete_Entry {
 		if ( is_admin() ) {
 			$this->load_components( 'admin' );
 		}
+
+		require_once trailingslashit( self::$file ) . 'class-gravityview-field-delete-link.php';
 
 		$this->add_hooks();
 	}
@@ -155,19 +157,21 @@ final class GravityView_Delete_Entry {
 
 		static $visibility_cache_for_view = array();
 
-		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $view->ID, null ) ) ) {
+		$anchor_id = $view->get_anchor_id();
+
+		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $anchor_id, null ) ) ) {
 			return $result;
 		}
 
 		foreach ( $view->get_entries()->all() as $entry ) {
 			if ( self::check_user_cap_delete_entry( $entry->as_entry(), $field->as_configuration(), $view ) ) {
 				// At least one entry is deletable for this user
-				$visibility_cache_for_view[ $view->ID ] = true;
+				$visibility_cache_for_view[ $anchor_id ] = true;
 				return true;
 			}
 		}
 
-		$visibility_cache_for_view[ $view->ID ] = false;
+		$visibility_cache_for_view[ $anchor_id ] = false;
 
 		return false;
 	}
@@ -238,7 +242,7 @@ final class GravityView_Delete_Entry {
 		$entry_slug = $gv_entry->get_slug();
 
 		/**
-		 * @filter `gravityview/delete-entry/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+		 * Modify whether to include passed $_GET parameters to the end of the url.
 		 * @since 2.10
 		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Delete Link URL. Default: true.
 		 */
@@ -285,7 +289,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		/**
-		 * @filter `gravityview/delete-entry/show-delete-button` Should the Delete button be shown in the Edit Entry screen?
+		 * Should the Delete button be shown in the Edit Entry screen?
 		 * @param boolean $show_entry Default: true
 		 */
 		$show_delete_button = apply_filters( 'gravityview/delete-entry/show-delete-button', true );
@@ -388,7 +392,7 @@ final class GravityView_Delete_Entry {
 
 		if ( (int) $view->settings->get( 'delete_redirect' ) === self::REDIRECT_TO_URL_VALUE ) {
 
-			$form                 = GFAPI::get_form( $entry['form_id'] );
+			$form                 = GVCommon::get_form( $entry['form_id'] );
 			$redirect_url_setting = $view->settings->get( 'delete_redirect_url' );
 			$redirect_url         = GFCommon::replace_variables( $redirect_url_setting, $form, $entry, false, false, false, 'text' );
 
@@ -419,7 +423,7 @@ final class GravityView_Delete_Entry {
 		$delete_redirect_args = array_filter( $delete_redirect_args );
 
 		/**
-		 * @filter `gravityview/delete-entry/redirect-args` Modify the query args added to the delete entry redirect
+		 * Modify the query args added to the delete entry redirect.
 		 * @since 2.9.2
 		 *
 		 * @param array $delete_redirect_args Array with `_delete_nonce`, `message` and `status` keys
@@ -445,7 +449,7 @@ final class GravityView_Delete_Entry {
 	private function get_delete_mode() {
 
 		/**
-		 * @filter `gravityview/delete-entry/mode` Delete mode: permanently delete, or move to trash?
+		 * Delete mode: permanently delete, or move to trash?
 		 * @since 1.13.1
 		 * @param string $delete_mode Delete mode: `trash` or `delete`. Default: `delete`
 		 */
@@ -479,7 +483,7 @@ final class GravityView_Delete_Entry {
 				$delete_response = 'deleted';
 
 				/**
-				 * @action `gravityview/delete-entry/deleted` Triggered when an entry is deleted
+				 * Triggered when an entry is deleted.
 				 * @since 1.16.4
 				 * @param  int $entry_id ID of the Gravity Forms entry
 				 * @param  array $entry Deleted entry array
@@ -501,7 +505,7 @@ final class GravityView_Delete_Entry {
 			} else {
 
 				/**
-				 * @action `gravityview/delete-entry/trashed` Triggered when an entry is trashed
+				 * Triggered when an entry is trashed.
 				 * @since 1.16.4
 				 * @param  int $entry_id ID of the Gravity Forms entry
 				 * @param  array $entry Deleted entry array
@@ -533,7 +537,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		/**
-		 * @filter `gravityview/delete-entry/delete-connected-post` Should posts connected to an entry be deleted when the entry is deleted?
+		 * Should posts connected to an entry be deleted when the entry is deleted?
 		 * @since 1.17
 		 * @param boolean $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true
 		 */
@@ -588,7 +592,7 @@ final class GravityView_Delete_Entry {
 		$valid = wp_verify_nonce( $_GET['delete'], $nonce_key );
 
 		/**
-		 * @filter `gravityview/delete-entry/verify_nonce` Override Delete Entry nonce validation. Return true to declare nonce valid.
+		 * Override Delete Entry nonce validation. Return true to declare nonce valid.
 		 * @since 1.15.2
 		 * @see wp_verify_nonce()
 		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
@@ -610,7 +614,7 @@ final class GravityView_Delete_Entry {
 		$confirm = __( 'Are you sure you want to delete this entry? This cannot be undone.', 'gk-gravityview' );
 
 		/**
-		 * @filter `gravityview/delete-entry/confirm-text` Modify the Delete Entry Javascript confirmation text
+		 * Modify the Delete Entry Javascript confirmation text.
 		 * @param string $confirm Default: "Are you sure you want to delete this entry? This cannot be undone."
 		 */
 		$confirm = apply_filters( 'gravityview/delete-entry/confirm-text', $confirm );
@@ -799,7 +803,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		/**
-		 * @filter `gravityview/delete-entry/message` Modify the Delete Entry messages
+		 * Modify the Delete Entry messages.
 		 * @since 1.13.1
 		 * @param string $message Message to be displayed
 		 * @param string $status Message status (`error` or `success`)

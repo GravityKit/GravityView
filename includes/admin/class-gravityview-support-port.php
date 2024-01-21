@@ -113,7 +113,7 @@ class GravityView_Support_Port {
 		}
 
 		/**
-		 * @filter `gravityview/support_port/display` Whether to display Support Port
+		 * Whether to display Support Port.
 		 * @since 1.15
 		 * @param boolean $display_support_port Default: `true`
 		 */
@@ -132,13 +132,13 @@ class GravityView_Support_Port {
 			$arr_helpers->set( $configuration, 'identify.signature', hash_hmac( 'sha256', $arr_helpers->get( $configuration, 'identify.email', '' ), self::HASH_KEY ) );
 
 			/**
-			 * @filter `gravityview/support_port/localization_data` Filter data passed to the Support Port, before localize_script is run
+			 * Filter data passed to the Support Port, before localize_script is run.
 			 * @since  2.0
 			 * @since  2.16 Removed `contactEnabled`, `translation` and `data` keys
 			 *
 			 * @param array $configuration {
-			 *
-			 * @type array  $suggest       Article IDs to recommend to the user (per page in the admin)
+			 *   @type array  $suggest       Article IDs to recommend to the user (per page in the admin)
+			 * }
 			 *                             }
 			 */
 			$localized_data = apply_filters( 'gravityview/support_port/localization_data', [
@@ -226,7 +226,7 @@ class GravityView_Support_Port {
 		}
 
 		/**
-		 * @filter `gravityview/support_port/show_profile_setting` Should the "GravityView Support Port" setting be shown on user profiles?
+		 * Should the "GravityView Support Port" setting be shown on user profiles?
 		 * @since 1.15
 		 * @param boolean $allow_profile_setting Default: `true`, if the user has the `gravityview_support_port` capability, which defaults to true for Contributors and higher
 		 * @param WP_User $user Current user object

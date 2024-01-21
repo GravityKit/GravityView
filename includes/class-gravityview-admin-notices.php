@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.12
@@ -155,7 +155,7 @@ class GravityView_Admin_Notices {
 	public function admin_notice() {
 
 		/**
-		 * @filter `gravityview/admin/notices` Modify the notices displayed in the admin
+		 * Modify the notices displayed in the admin.
 		 * @since 1.12
 		 */
 		$notices = apply_filters( 'gravityview/admin/notices', self::$admin_notices );

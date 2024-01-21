@@ -251,7 +251,7 @@ class oEmbed {
 			$loader = \GravityView_Edit_Entry::getInstance();
 			$render = $loader->instances['render'];
 
-			$form = \GFAPI::get_form( $entry['form_id'] );
+			$form = \GVCommon::get_form( $entry['form_id'] );
 
 			// @todo We really need to rewrite Edit Entry soon
 			\GravityView_View::$instance = null;
@@ -293,7 +293,7 @@ class oEmbed {
 		$entry_var_name = \GV\Entry::get_endpoint_name();
 
 		/**
-		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](https://docs.gravityview.co/article/62-changing-the-view-slug)
+		 * Modify the url part for a View. [Read the doc](https://docs.gravitykit.com/article/62-changing-the-view-slug).
 		 * @param string $rewrite_slug The slug shown in the URL
 		 */
 		$rewrite_slug = apply_filters( 'gravityview_slug', 'view' );

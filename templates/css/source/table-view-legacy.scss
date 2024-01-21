@@ -1,6 +1,6 @@
 // ================================================
 // Table View Template Styles for GravityView
-// https://gravityview.co
+// https://www.gravitykit.com
 // ================================================
 
 // 1. Variables
@@ -21,14 +21,17 @@
 }
 
 .gv-table-view-content {
-
 	table-layout: fixed;
 
 	// The single entry view left column
-	th {
+	> tbody > tr > th {
 		width: 35%;
 		vertical-align: top;
 	}
+
+    & th.gsurvey-likert-choice-label {
+        border: inherit;
+    }
 }
 
 // 2. Sorting links

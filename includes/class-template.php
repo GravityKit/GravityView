@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -170,7 +170,6 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			}
 			$this->{$key} = $value;
 		}
-
 
 		// Add granular overrides
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
@@ -500,7 +499,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		$last = ( $offset + $page_size > $total ) ? $total : $offset + $page_size;
 
 		/**
-		 * @filter `gravityview_pagination_counts` Modify the displayed pagination numbers
+		 * Modify the displayed pagination numbers.
 		 * @since 1.13
 		 * @param array $counts Array with $first, $last, $total numbers in that order
 		 */
@@ -674,7 +673,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		// Backward compatibility
 		if ( 'table' === $this->getTemplatePartSlug() ) {
 			/**
-			 * @filter `gravityview_table_cells` Modify the fields displayed in a table
+			 * Modify the fields displayed in a table.
 			 * @param array $fields
 			 * @param \GravityView_View $this
 			 * @deprecated Use `gravityview/template/table/fields`
@@ -684,7 +683,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 		if ( empty( $fields ) ) {
 
-			gravityview()->log->error( 'Empty zone configuration for {zone_id}.', array( 'zone_id' => $final_atts['zone_id'] ) );
+			gravityview()->log->warning( 'Empty zone configuration for {zone_id}.', array( 'zone_id' => $final_atts['zone_id'] ) );
 
 			return NULL;
 		}
@@ -914,8 +913,12 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			$default_css_class .= ' gv-widgets-no-results';
 		}
 
+		if ( ! $total_entries && ! gravityview()->request->is_search() && 3 === (int) $view->settings->get( 'no_entries_options', '0' ) ) {
+			$default_css_class .= ' gv-hidden';
+		}
+
 		/**
-		 * @filter `gravityview/widgets/wrapper_css_class` The CSS class applied to the widget container `<div>`.
+		 * The CSS class applied to the widget container `<div>`.
 		 * @since 1.16.2
 		 * @param string $css_class Default: `gv-grid gv-widgets-{zone}` where `{zone}` is replaced by the current `$zone` value. If the View has no results, adds ` gv-widgets-no-results`
 		 * @param string $zone Current widget zone, either `header` or `footer`

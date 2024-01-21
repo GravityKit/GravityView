@@ -62,7 +62,7 @@ abstract class Entry {
 	 */
 	public static function get_endpoint_name() {
 		/**
-		 * @filter `gravityview_directory_endpoint` Change the slug used for single entries
+		 * Change the slug used for single entries.
 		 * @param string $endpoint Slug to use when accessing single entry. Default: `entry`
 		 */
 		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
@@ -113,6 +113,17 @@ abstract class Entry {
 
 		$args = array();
 
+		/**
+		 * Modify whether to include passed $_GET parameters to the end of the url.
+		 * @since 2.10
+		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: true.
+		 */
+		$add_query_args = apply_filters( 'gravityview/entry_link/add_query_args', true );
+
+		if ( $add_query_args ) {
+			$args = gv_get_query_args();
+		}
+
 		$view_id = is_null ( $view ) ? null : $view->ID;
 
 		$permalink = null;
@@ -121,7 +132,7 @@ abstract class Entry {
 		if ( ! $request->is_view( false ) ) {
 
 			/** Must be an embed of some sort. */
-			if ( is_object( $post ) && is_numeric( $post->ID ) ) {
+			if ( $post instanceof \WP_Post && is_numeric( $post->ID ) ) {
 				$permalink = get_permalink( $post->ID );
 
 				$view_collection = View_Collection::from_post( $post );
@@ -138,7 +149,7 @@ abstract class Entry {
 		}
 
 		/**
-		 * @filter `gravityview_directory_link` Modify the URL to the View "directory" context
+		 * Modify the URL to the View "directory" context.
 		 * @since 1.19.4
 		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
 		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
@@ -178,7 +189,7 @@ abstract class Entry {
 		$permalink = add_query_arg( $args, $permalink );
 
 		/**
-		 * @filter `gravityview/entry/permalink` The permalink of this entry.
+		 * The permalink of this entry.
 		 * @since 2.0
 		 * @param string $permalink The permalink.
 		 * @param \GV\Entry $entry The entry we're retrieving it for.
@@ -214,7 +225,7 @@ abstract class Entry {
 		}
 
 		/**
-		 * @filter `gravityview/entry/slug` Modify the entry URL slug as needed.
+		 * Modify the entry URL slug as needed.
 		 * @since 2.2.1
 		 * @param string $entry_slug The slug, sanitized with sanitize_title()
 		 * @param null|\GV\Entry $this The entry object.

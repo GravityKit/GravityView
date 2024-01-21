@@ -33,7 +33,7 @@ class GravityView_Widget_Pagination_Info extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 		$gravityview_view = GravityView_View::getInstance();
 
-		if( !$this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 
@@ -60,7 +60,7 @@ class GravityView_Widget_Pagination_Info extends \GV\Widget {
 		}
 
 		/**
-		 * @filter `gravityview_pagination_output` Modify the pagination widget output
+		 * Modify the pagination widget output.
 		 * @param string $output HTML output
 		 * @param int $first First entry #
 		 * @param int $last Last entry #

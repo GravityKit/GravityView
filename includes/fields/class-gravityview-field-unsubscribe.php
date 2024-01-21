@@ -10,11 +10,13 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 
 	var $name = 'unsubscribe';
 
-	var $group = 'gravityview';
+	var $group = 'pricing';
 
 	var $is_searchable = false;
 
 	var $contexts = array( 'single', 'multiple' );
+
+	var $icon = 'dashicons-cart';
 
 	public function __construct() {
 		$this->label = esc_html__( 'Unsubscribe', 'gk-gravityview' );

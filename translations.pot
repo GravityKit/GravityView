@@ -2,20 +2,21 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.16.6\n"
+"Project-Id-Version: GravityView 2.19.5\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2023-01-13T00:06:24+00:00\n"
+"POT-Creation-Date: 2023-12-08T00:26:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
+#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:148
 #: includes/class-gravityview-admin-bar.php:52
 #: includes/class-gravityview-roles-capabilities.php:145
 msgid "GravityView"
@@ -31,8 +32,9 @@ msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
-#: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:143
-#: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:144
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:356
+#: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:158
+#: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:159
 msgid "GravityKit"
 msgstr ""
 
@@ -56,23 +58,23 @@ msgstr ""
 #: future/includes/class-gv-oembed.php:212
 #: future/includes/class-gv-oembed.php:217
 #: future/includes/class-gv-oembed.php:223
-#: future/includes/class-gv-shortcode-gravityview.php:131
-#: future/includes/class-gv-shortcode-gravityview.php:159
-#: future/includes/class-gv-shortcode-gravityview.php:164
-#: future/includes/class-gv-shortcode-gravityview.php:170
-#: future/includes/class-gv-shortcode-gravityview.php:193
-#: future/includes/class-gv-shortcode-gravityview.php:198
-#: future/includes/class-gv-shortcode-gravityview.php:204
-#: future/includes/class-gv-shortcode-gravityview.php:212
-#: future/includes/class-gv-view.php:332
-#: future/includes/class-gv-view.php:346
-#: future/includes/class-gv-view.php:351
-#: future/includes/class-gv-view.php:357
-#: future/includes/class-gv-view.php:380
-#: future/includes/class-gv-view.php:385
-#: future/includes/class-gv-view.php:391
-#: future/includes/class-gv-view.php:399
-#: includes/class-frontend-views.php:731
+#: future/includes/class-gv-shortcode-gravityview.php:156
+#: future/includes/class-gv-shortcode-gravityview.php:184
+#: future/includes/class-gv-shortcode-gravityview.php:189
+#: future/includes/class-gv-shortcode-gravityview.php:195
+#: future/includes/class-gv-shortcode-gravityview.php:218
+#: future/includes/class-gv-shortcode-gravityview.php:223
+#: future/includes/class-gv-shortcode-gravityview.php:229
+#: future/includes/class-gv-shortcode-gravityview.php:237
+#: future/includes/class-gv-view.php:336
+#: future/includes/class-gv-view.php:350
+#: future/includes/class-gv-view.php:355
+#: future/includes/class-gv-view.php:361
+#: future/includes/class-gv-view.php:384
+#: future/includes/class-gv-view.php:389
+#: future/includes/class-gv-view.php:395
+#: future/includes/class-gv-view.php:403
+#: includes/class-frontend-views.php:817
 msgid "You are not allowed to view this content."
 msgstr ""
 
@@ -92,25 +94,25 @@ msgstr ""
 msgid "Styles don't get loaded when being previewed, so the content below will look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:610
+#: future/includes/class-gv-plugin.php:577
 #: includes/class-gravityview-entry-approval.php:460
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:611
+#: future/includes/class-gv-plugin.php:578
 #: includes/class-gravityview-entry-approval.php:454
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:706
-#: future/includes/class-gv-plugin.php:707
-#: future/includes/class-gv-view.php:155
+#: future/includes/class-gv-plugin.php:697
+#: future/includes/class-gv-plugin.php:698
+#: future/includes/class-gv-view.php:159
 msgid "All Views"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:715
-#: future/includes/class-gv-plugin.php:716
-#: future/includes/class-gv-view.php:158
+#: future/includes/class-gv-plugin.php:706
+#: future/includes/class-gv-plugin.php:707
+#: future/includes/class-gv-view.php:162
 msgid "New View"
 msgstr ""
 
@@ -124,6 +126,7 @@ msgstr ""
 
 #: future/includes/class-gv-renderer.php:236
 #: includes/class-admin-welcome.php:188
+#: includes/fields/class-gravityview-field-gravityview_view.php:76
 #: includes/widgets/search-widget/class-search-widget.php:90
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:15
 msgid "This link opens in a new window."
@@ -158,697 +161,800 @@ msgid "Go to the Gravity Forms entries screen to moderate entry approval."
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:248
-#: future/includes/class-gv-settings-view.php:88
+#: future/includes/class-gv-settings-view.php:91
 msgid "Show only approved entries"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:249
-#: includes/admin/metaboxes/views/view-configuration.php:62
-#: includes/admin/metaboxes/views/view-configuration.php:87
+#: includes/admin/metaboxes/views/view-configuration.php:64
+#: includes/admin/metaboxes/views/view-configuration.php:89
 msgid "Note: %s"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:249
-#: future/includes/class-gv-renderer.php:297
-#: future/includes/class-gv-renderer.php:353
-#: future/includes/class-gv-view.php:310
-#: includes/class-frontend-views.php:681
+#: future/includes/class-gv-renderer.php:325
+#: future/includes/class-gv-renderer.php:381
+#: future/includes/class-gv-view.php:314
+#: includes/class-frontend-views.php:695
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:273
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:153
-#: includes/admin/metaboxes/views/view-configuration.php:11
-#: includes/admin/metaboxes/views/view-configuration.php:87
-#: includes/admin/metaboxes/views/view-configuration.php:88
-#: includes/class-frontend-views.php:669
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:148
+#: includes/admin/metaboxes/views/view-configuration.php:13
+#: includes/admin/metaboxes/views/view-configuration.php:89
+#: includes/admin/metaboxes/views/view-configuration.php:90
+#: includes/class-admin-views.php:1338
+#: includes/class-frontend-views.php:684
 #: includes/class-gravityview-admin-bar.php:102
 #: includes/class-gravityview-entry-link-shortcode.php:233
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:148
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1094
 #: includes/extensions/edit-entry/fields/edit_link.php:14
+#: includes/fields/class-gravityview-field-edit-link.php:54
 #: templates/fields/field-edit_link-html.php:38
+#: future/includes/gutenberg/blocks/entry-link/edit.js:76
+#: future/includes/gutenberg/build/entry-link.js:1
 msgid "Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:277
-#: future/includes/class-gv-settings-view.php:409
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:145
-#: includes/admin/metaboxes/views/view-configuration.php:10
-#: includes/admin/metaboxes/views/view-configuration.php:62
-#: includes/admin/metaboxes/views/view-configuration.php:63
-#: includes/class-frontend-views.php:673
+#: future/includes/class-gv-renderer.php:288
+#: future/includes/class-gv-settings-view.php:469
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:140
+#: includes/admin/metaboxes/views/view-configuration.php:12
+#: includes/admin/metaboxes/views/view-configuration.php:64
+#: includes/admin/metaboxes/views/view-configuration.php:65
+#: includes/class-frontend-views.php:688
 msgid "Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:281
-#: future/includes/class-gv-settings-view.php:408
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
-#: includes/admin/metaboxes/views/view-configuration.php:9
-#: includes/class-frontend-views.php:666
+#: future/includes/class-gv-renderer.php:292
+#: future/includes/class-gv-settings-view.php:468
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:132
+#: includes/admin/metaboxes/views/view-configuration.php:11
+#: includes/class-frontend-views.php:681
 msgid "Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:294
-#: includes/class-frontend-views.php:678
+#: future/includes/class-gv-renderer.php:322
+#: includes/class-frontend-views.php:692
 msgctxt "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:296
-#: includes/class-frontend-views.php:680
+#: future/includes/class-gv-renderer.php:324
+#: includes/class-frontend-views.php:694
 msgid "Add fields to %s"
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:351
+#: future/includes/class-gv-renderer.php:379
 msgid "GravityView will not work correctly on this page because of the URL Slug."
 msgstr ""
 
-#: future/includes/class-gv-renderer.php:352
+#: future/includes/class-gv-renderer.php:380
 msgid "Please <a href=\"%s\">read this article</a> for more information."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:234
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:429
+#: future/includes/class-gv-settings-plugin.php:235
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:522
 msgid "General"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:239
+#: future/includes/class-gv-settings-plugin.php:240
 msgid "REST API"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:240
+#: future/includes/class-gv-settings-plugin.php:241
 msgid "Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.)."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:240
+#: future/includes/class-gv-settings-plugin.php:241
 msgid "If you are unsure, disable this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:311
+#: future/includes/class-gv-settings-plugin.php:247
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:172
+msgid "Permissions"
+msgstr ""
+
+#. translators: %s is replaced with a setting label
+#: future/includes/class-gv-settings-plugin.php:252
+#: includes/class-gravityview-entry-approval-merge-tags.php:85
+msgid "Enable Public Entry Moderation"
+msgstr ""
+
+#. translators: Do not translate the words inside the {} curly brackets; they are replaced.
+#: future/includes/class-gv-settings-plugin.php:255
+#: includes/class-gravityview-entry-approval-merge-tags.php:88
+msgid "If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry."
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:259
+#: includes/class-gravityview-entry-approval-merge-tags.php:92
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1161
+msgid "(This link opens in a new window.)"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:338
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:322
-msgid "If you delete then re-install GravityView, it will be like installing GravityView for the first time."
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:323
-msgid "Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings."
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:334
-msgid "I am going to continue using GravityView"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:337
-msgid "I no longer need GravityView"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:340
-msgid "The plugin doesn't work"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:343
-msgid "I found a better plugin"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:344
-msgid "What plugin you are using, and why?"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:347
-msgid "Other"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:396
+#: future/includes/class-gv-settings-plugin.php:346
 msgid "Uninstall GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:447
-msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravityview.co"
+#: future/includes/class-gv-settings-plugin.php:347
+msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravitykit.com"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:453
-msgid "Why did you uninstall GravityView?"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:463
-msgid "Comments"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:464
+#: future/includes/class-gv-settings-plugin.php:348
 msgid "Please share your thoughts about GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:467
+#: future/includes/class-gv-settings-plugin.php:349
+msgid "Please follow up with me about my feedback"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:350
 msgid "How likely are you to recommend GravityView?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:477
+#: future/includes/class-gv-settings-plugin.php:351
+msgid "Send Us Your Feedback"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:352
+msgid "Thank you for using GravityView!"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:353
+msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravitykit.com"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:354
+msgid "If you delete then re-install GravityView, it will be like installing GravityView for the first time."
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:355
+msgid "Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings."
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:356
+msgid "I am going to continue using GravityView"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:357
+msgid "I no longer need GravityView"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:358
+msgid "The plugin doesn't work"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:359
+msgid "I found a better plugin"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:360
+msgid "What plugin you are using, and why?"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:361
+msgid "Other"
+msgstr ""
+
+#: future/includes/class-gv-settings-plugin.php:362
 msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%s (\"Not at all likely\") to %s (\"Extremely likely\")"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:481
-msgid "Please follow up with me about my feedback"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:488
-msgid "Send Us Your Feedback"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:493
-msgid "Thank you for using GravityView!"
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:495
-msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravityview.co"
-msgstr ""
-
-#: future/includes/class-gv-settings-view.php:52
+#: future/includes/class-gv-settings-view.php:53
 msgid "View ID"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:60
+#: future/includes/class-gv-settings-view.php:61
 msgid "Number of entries per page"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:68
+#: future/includes/class-gv-settings-view.php:62
+msgid "Enter the number of entries to display per page. Set to negative one (-1) to display all entries."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:71
 msgid "Offset entries starting from"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:76
+#: future/includes/class-gv-settings-view.php:79
 msgid "Enable lightbox for images"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:80
+#: future/includes/class-gv-settings-view.php:83
 msgid "If enabled, images will open full-size in a \"lightbox\". A lightbox displays images and videos by filling the screen and dimming out the rest of the web page."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:91
+#: future/includes/class-gv-settings-view.php:94
 msgid "By default, only approved entries are displayed in a View. When enabled, this setting prevents unapproved or disapproved entries from appearing in results. If disabled, entries with all approval statuses will be visible, including disapproved entries."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:101
-msgid "\"No Results\" Text"
+#: future/includes/class-gv-settings-view.php:104
+msgid "No Entries Behavior"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:107
-#: includes/class-api.php:322
+#: future/includes/class-gv-settings-view.php:106
+msgid "Choose what happens when a View has no entries visible to the current user."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:109
+msgid "Show a Message"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:110
+msgid "Display a Form"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:111
+#: future/includes/class-gv-settings-view.php:454
+#: future/includes/class-gv-settings-view.php:551
+msgid "Redirect to URL"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:112
+msgid "Hide the View"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:118
+msgid "No Entries Message"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:121
+msgid "The text to display when there are no entries to show. HTML and shortcodes are allowed."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:124
+#: includes/class-api.php:323
 #: includes/class-gravityview-entry-list.php:107
 msgid "No entries match your request."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:113
+#: future/includes/class-gv-settings-view.php:131
+msgid "No Entries Form"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:133
+msgid "Show a Gravity Forms form if there are no entries to show in the View."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:141
+msgid "Form Title"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:149
+msgid "Form Description"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:157
+msgid "No Entries Redirect URL"
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:159
+msgid "If there are no entries to show, the user will be taken to this URL."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:167
 msgid "\"No Search Results\" Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:119
-#: includes/class-api.php:314
+#: future/includes/class-gv-settings-view.php:173
+#: includes/class-api.php:315
 msgid "This search returned no results."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:125
+#: future/includes/class-gv-settings-view.php:179
 msgid "Show all entries to administrators"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:126
+#: future/includes/class-gv-settings-view.php:180
 msgid "Administrators will be able to see entries with any approval status."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:127
+#: future/includes/class-gv-settings-view.php:181
 msgid "Logged-out visitors and non-administrators will only see approved entries, while administrators will see entries with all statuses. This makes it easier for administrators to moderate entries from a View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:135
+#: future/includes/class-gv-settings-view.php:189
 msgid "Hide View data until search is performed"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:138
+#: future/includes/class-gv-settings-view.php:192
 msgid "When enabled it will only show any View entries after a search is performed."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:147
-#: future/includes/class-gv-settings-view.php:156
+#: future/includes/class-gv-settings-view.php:201
+#: future/includes/class-gv-settings-view.php:210
 msgid "Hide empty fields"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:150
-#: future/includes/class-gv-settings-view.php:159
+#: future/includes/class-gv-settings-view.php:204
+#: future/includes/class-gv-settings-view.php:213
 msgid "When enabled, empty fields will be not be displayed. If disabled, fields and their labels will be displayed with no content."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:165
+#: future/includes/class-gv-settings-view.php:219
 msgid "Feeds"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:172
+#: future/includes/class-gv-settings-view.php:226
 msgid "Allow User Edit"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:174
+#: future/includes/class-gv-settings-view.php:228
 msgid "Allow logged-in users to edit entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:174
-#: future/includes/class-gv-settings-view.php:201
-#: future/includes/class-gv-settings-view.php:214
+#: future/includes/class-gv-settings-view.php:228
+#: future/includes/class-gv-settings-view.php:255
+#: future/includes/class-gv-settings-view.php:268
 msgid "Administrators are able to %s regardless of this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:174
+#: future/includes/class-gv-settings-view.php:228
 msgctxt "an action that admins can perform"
 msgid "edit entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:176
+#: future/includes/class-gv-settings-view.php:230
 msgid "Display \"Edit Entry\" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:185
+#: future/includes/class-gv-settings-view.php:239
 msgid "Unapprove Entries After Edit"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:188
+#: future/includes/class-gv-settings-view.php:242
 msgid "When an entry is edited by a non-administrator, reset the approval status to \"Unapproved\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:189
+#: future/includes/class-gv-settings-view.php:243
 msgid "If the \"Show only approved entries\" setting is enabled, the entry will need to be re-approved by an administrator before it is shown in the View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:199
+#: future/includes/class-gv-settings-view.php:253
 msgid "Allow User Delete"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:201
+#: future/includes/class-gv-settings-view.php:255
 msgid "Allow logged-in users to delete entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:201
+#: future/includes/class-gv-settings-view.php:255
 msgctxt "an action that admins can perform"
 msgid "delete entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:203
+#: future/includes/class-gv-settings-view.php:257
 msgid "Display \"Delete Entry\" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:212
+#: future/includes/class-gv-settings-view.php:266
 msgid "Allow User Duplicate"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:214
+#: future/includes/class-gv-settings-view.php:268
 msgid "Allow logged-in users to duplicate entries they created."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:214
+#: future/includes/class-gv-settings-view.php:268
 msgctxt "an action that admins can perform"
 msgid "duplicate entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:216
+#: future/includes/class-gv-settings-view.php:270
 msgid "Display \"Duplicate Entry\" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:225
+#: future/includes/class-gv-settings-view.php:279
 msgid "Sort by field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:227
+#: future/includes/class-gv-settings-view.php:281
 msgid "By default, entries are sorted by Entry ID."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:231
-#: future/includes/class-gv-settings-view.php:262
+#: future/includes/class-gv-settings-view.php:285
+#: future/includes/class-gv-settings-view.php:316
 msgid "Default"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:232
-#: future/includes/class-gv-settings-view.php:263
-#: includes/class-common.php:1446
+#: future/includes/class-gv-settings-view.php:286
+#: future/includes/class-gv-settings-view.php:317
+#: includes/class-common.php:1611
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:241
+#: future/includes/class-gv-settings-view.php:295
 msgid "Sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:246
-#: future/includes/class-gv-settings-view.php:278
+#: future/includes/class-gv-settings-view.php:300
+#: future/includes/class-gv-settings-view.php:332
 msgid "ASC"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:247
-#: future/includes/class-gv-settings-view.php:279
+#: future/includes/class-gv-settings-view.php:301
+#: future/includes/class-gv-settings-view.php:333
 msgid "DESC"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:248
+#: future/includes/class-gv-settings-view.php:302
 msgid "Random"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:257
+#: future/includes/class-gv-settings-view.php:311
 msgid "Sort by secondary field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:273
+#: future/includes/class-gv-settings-view.php:327
 msgid "Secondary sort direction"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:289
+#: future/includes/class-gv-settings-view.php:343
 msgid "Enable sorting by column"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:290
+#: future/includes/class-gv-settings-view.php:344
 msgid "Column Sorting"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:303
+#: future/includes/class-gv-settings-view.php:363
 msgid "Filter by Start Date"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:305
+#: future/includes/class-gv-settings-view.php:365
 msgid "Show entries submitted after this date. Supports relative dates, such as \"-1 week\" or \"-1 month\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:316
+#: future/includes/class-gv-settings-view.php:376
 msgid "Filter by End Date"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:318
+#: future/includes/class-gv-settings-view.php:378
 msgid "Show entries submitted before this date. Supports relative dates, such as \"now\" or \"-3 days\"."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:329
+#: future/includes/class-gv-settings-view.php:389
 msgid "CSS Class"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:330
+#: future/includes/class-gv-settings-view.php:390
 msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:337
+#: future/includes/class-gv-settings-view.php:397
+#: future/includes/gutenberg/blocks/view/edit.js:231
+#: future/includes/gutenberg/build/view.js:1
 msgid "Search Value"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:338
+#: future/includes/class-gv-settings-view.php:398
 msgid "Define a default search value for the View"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:345
-#: includes/widgets/search-widget/class-search-widget.php:291
+#: future/includes/class-gv-settings-view.php:405
+#: includes/widgets/search-widget/class-search-widget.php:295
+#: future/includes/gutenberg/blocks/view/edit.js:222
+#: future/includes/gutenberg/build/view.js:1
 msgid "Search Field"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:346
+#: future/includes/class-gv-settings-view.php:406
 msgid "If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:353
+#: future/includes/class-gv-settings-view.php:413
+#: future/includes/gutenberg/blocks/view/edit.js:241
+#: future/includes/gutenberg/build/view.js:1
 msgid "Search Operator"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:360
+#: future/includes/class-gv-settings-view.php:420
 msgid "Single Entry Title"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:362
+#: future/includes/class-gv-settings-view.php:422
 msgid "When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:373
+#: future/includes/class-gv-settings-view.php:433
+#: future/includes/gutenberg/blocks/view/edit.js:285
+#: future/includes/gutenberg/build/view.js:1
 msgid "Back Link Label"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:375
+#: future/includes/class-gv-settings-view.php:435
 msgid "The text of the link that returns to the multiple entries view."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:378
-#: includes/class-api.php:978
+#: future/includes/class-gv-settings-view.php:438
+#: includes/class-api.php:1006
 msgid "&larr; Go back"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:385
+#: future/includes/class-gv-settings-view.php:445
 msgid "Redirect After Editing"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:387
+#: future/includes/class-gv-settings-view.php:447
 msgid "The page to redirect to after editing an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:391
+#: future/includes/class-gv-settings-view.php:451
 msgid "Stay on Edit Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:392
+#: future/includes/class-gv-settings-view.php:452
 msgid "Redirect to Single Entry"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:393
-#: future/includes/class-gv-settings-view.php:490
+#: future/includes/class-gv-settings-view.php:453
+#: future/includes/class-gv-settings-view.php:550
 msgid "Redirect to Multiple Entries"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:394
-#: future/includes/class-gv-settings-view.php:491
-msgid "Redirect to URL"
-msgstr ""
-
-#: future/includes/class-gv-settings-view.php:402
+#: future/includes/class-gv-settings-view.php:462
 msgid "Editing Returns To&hellip;"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:404
+#: future/includes/class-gv-settings-view.php:464
 msgid "After editing an entry or clicking Cancel, where should the user be sent?"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:410
+#: future/includes/class-gv-settings-view.php:470
 msgid "Other URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:420
+#: future/includes/class-gv-settings-view.php:480
 msgid "Edit Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:422
+#: future/includes/class-gv-settings-view.php:482
 msgid "After editing an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:431
+#: future/includes/class-gv-settings-view.php:491
 msgid "Update Button Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:435
+#: future/includes/class-gv-settings-view.php:495
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2515
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:439
+#: future/includes/class-gv-settings-view.php:499
 msgid "Cancel Link Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:443
+#: future/includes/class-gv-settings-view.php:503
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2514
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:447
+#: future/includes/class-gv-settings-view.php:507
 msgid "Next Page Button Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:449
-#: future/includes/class-gv-settings-view.php:457
+#: future/includes/class-gv-settings-view.php:509
+#: future/includes/class-gv-settings-view.php:517
 msgid "Only shown when multi-page forms are enabled."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:455
+#: future/includes/class-gv-settings-view.php:515
 msgid "Previous Page Button Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:463
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:133
+#: future/includes/class-gv-settings-view.php:523
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:106
 msgid "Delete Link Text"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:471
+#: future/includes/class-gv-settings-view.php:531
 msgid "Enable Edit Locking"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:473
+#: future/includes/class-gv-settings-view.php:533
 msgid "Prevent multiple users from editing the same entry at the same time."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:484
+#: future/includes/class-gv-settings-view.php:544
 msgid "Redirect After Deleting"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:486
+#: future/includes/class-gv-settings-view.php:546
 msgid "The page to redirect to after deleting an entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:495
+#: future/includes/class-gv-settings-view.php:555
 msgid "Delete Entry Redirect URL"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:497
+#: future/includes/class-gv-settings-view.php:557
 msgid "After deleting an entry, the user will be taken to this URL."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:506
+#: future/includes/class-gv-settings-view.php:566
 msgid "Prevent Direct Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:508
-msgid "Only allow access to this View when embedded using the shortcode."
+#: future/includes/class-gv-settings-view.php:568
+msgid "Only allow access to this View when embedded using the block or shortcode."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:519
+#: future/includes/class-gv-settings-view.php:581
+msgid "Custom CSS"
+msgstr ""
+
+#. translators: Do not translate the words inside the square brackets ([]); they are replaced.
+#: future/includes/class-gv-settings-view.php:586
+msgid "CSS added here will be placed inside [style] tags in the page&rsquo;s [head], after GravityView styles."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:610
+msgid "Custom JavaScript"
+msgstr ""
+
+#. translators: Do not translate the words inside the square brackets ([]); they are replaced.
+#: future/includes/class-gv-settings-view.php:614
+msgid "JavaScript added here will be placed inside [script] tags in the page&rsquo;s footer, after GravityView scripts."
+msgstr ""
+
+#: future/includes/class-gv-settings-view.php:640
 msgid "Prevent REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:521
+#: future/includes/class-gv-settings-view.php:642
 msgid "Disable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:532
+#: future/includes/class-gv-settings-view.php:653
 msgid "Allow REST Access"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:534
+#: future/includes/class-gv-settings-view.php:655
 msgid "Enable REST access to this View."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:544
+#: future/includes/class-gv-settings-view.php:665
 msgid "Allow Export"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:546
+#: future/includes/class-gv-settings-view.php:667
 msgid "Enable users to download data as a CSV or TSV file."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:549
+#: future/includes/class-gv-settings-view.php:670
 msgid "If enabled, entries can be exported for this View by adding \"/csv/\" or \"/tsv/\" to the View URL. Each configured field will be a column in the exported file."
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:560
+#: future/includes/class-gv-settings-view.php:681
 msgid "Show all in file"
 msgstr ""
 
-#: future/includes/class-gv-settings-view.php:562
+#: future/includes/class-gv-settings-view.php:683
 msgid "Do not limit the number of entries output in the file."
 msgstr ""
 
-#: future/includes/class-gv-shortcode-gravityview.php:124
+#: future/includes/class-gv-shortcode-gravityview.php:149
 #: future/includes/class-gv-shortcode-gventry.php:134
 #: future/includes/class-gv-shortcode-gvfield.php:136
-#: future/includes/class-gv-view.php:308
+#: future/includes/class-gv-view.php:312
 msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a form</a>."
 msgstr ""
 
-#: future/includes/class-gv-view.php:151
+#: future/includes/class-gv-view.php:155
 msgctxt "Post Type General Name"
 msgid "Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:152
+#: future/includes/class-gv-view.php:156
 msgctxt "Post Type Singular Name"
 msgid "View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:153
+#: future/includes/class-gv-view.php:157
 msgctxt "Menu name"
 msgid "Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:154
+#: future/includes/class-gv-view.php:158
 msgid "Parent View:"
 msgstr ""
 
-#: future/includes/class-gv-view.php:156
+#: future/includes/class-gv-view.php:160
 msgctxt "View Item"
 msgid "View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:157
+#: future/includes/class-gv-view.php:161
 msgid "Add New View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:159
+#: future/includes/class-gv-view.php:163
 #: includes/class-gravityview-admin-bar.php:138
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/view-selector.js:11
 msgid "Edit View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:160
+#: future/includes/class-gv-view.php:164
 msgid "Update View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:161
+#: future/includes/class-gv-view.php:165
 msgid "Search Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:163
+#: future/includes/class-gv-view.php:167
 #: includes/class-admin.php:58
 msgid "No Views found in Trash"
 msgstr ""
 
-#: future/includes/class-gv-view.php:164
+#: future/includes/class-gv-view.php:168
 msgid "Filter Views list"
 msgstr ""
 
-#: future/includes/class-gv-view.php:165
+#: future/includes/class-gv-view.php:169
 msgid "Views list navigation"
 msgstr ""
 
-#: future/includes/class-gv-view.php:166
+#: future/includes/class-gv-view.php:170
 msgid "Views list"
 msgstr ""
 
-#: future/includes/class-gv-view.php:167
+#: future/includes/class-gv-view.php:171
 msgid "See Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:168
+#: future/includes/class-gv-view.php:172
 msgid "View Attributes"
 msgstr ""
 
-#: future/includes/class-gv-view.php:169
+#: future/includes/class-gv-view.php:173
 msgid "View updated."
 msgstr ""
 
-#: future/includes/class-gv-view.php:170
+#: future/includes/class-gv-view.php:174
 msgid "View published."
 msgstr ""
 
-#: future/includes/class-gv-view.php:171
+#: future/includes/class-gv-view.php:175
 msgid "View reverted to draft."
 msgstr ""
 
-#: future/includes/class-gv-view.php:172
+#: future/includes/class-gv-view.php:176
 msgid "View scheduled."
 msgstr ""
 
-#: future/includes/class-gv-view.php:176
+#: future/includes/class-gv-view.php:180
 msgid "view"
 msgstr ""
 
-#: future/includes/class-gv-view.php:177
+#: future/includes/class-gv-view.php:181
 msgid "Create views based on a Gravity Forms form"
 msgstr ""
 
-#: future/includes/class-gv-view.php:312
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:219
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:247
-#: includes/class-admin-views.php:582
+#: future/includes/class-gv-view.php:316
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:222
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:262
+#: includes/class-admin-views.php:583
 msgid "Data Source"
 msgstr ""
 
-#: future/includes/class-gv-view.php:320
+#: future/includes/class-gv-view.php:324
 msgid "This View is in the Trash. You can <a href=\"%s\">restore the View here</a>."
 msgstr ""
 
@@ -873,6 +979,38 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
+#: future/includes/gutenberg/blocks/entry-field/block.php:22
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.php:22
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.php:22
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.php:22
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.php:23
+#: includes/fields/class-gravityview-field-gravityview_view.php:30
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:208
+#: includes/fields/class-gravityview-field-gravityview_view.php:56
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/view-selector.js:8
+msgid "View"
+msgstr ""
+
 #: future/includes/rest/class-gv-rest-route.php:184
 msgid "Must set route name in subclass."
 msgstr ""
@@ -890,36 +1028,20 @@ msgstr ""
 msgid "No Views found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:274
+#: future/includes/rest/class-gv-rest-views-route.php:277
 msgid "No Entries found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:371
-#: future/includes/rest/class-gv-rest-views-route.php:426
-#: future/includes/rest/class-gv-rest-views-route.php:441
-#: future/includes/rest/class-gv-rest-views-route.php:445
-#: future/includes/rest/class-gv-rest-views-route.php:455
+#: future/includes/rest/class-gv-rest-views-route.php:374
+#: future/includes/rest/class-gv-rest-views-route.php:429
+#: future/includes/rest/class-gv-rest-views-route.php:444
+#: future/includes/rest/class-gv-rest-views-route.php:448
+#: future/includes/rest/class-gv-rest-views-route.php:458
 msgid "You are not allowed to access this content."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:443
+#: future/includes/rest/class-gv-rest-views-route.php:446
 msgid "This View is not configured properly."
-msgstr ""
-
-#: future/loader.php:18
-msgid "GravityView requires PHP [php_required_version] or newer."
-msgstr ""
-
-#: future/loader.php:19
-msgid "You are using version [php_installed_version]."
-msgstr ""
-
-#: future/loader.php:20
-msgid "Please ask your host to upgrade PHP on the server."
-msgstr ""
-
-#: future/loader.php:38
-msgid "The GravityKit Astronaut Says:"
 msgstr ""
 
 #: includes/admin/class-gravityview-admin-view-field.php:19
@@ -983,7 +1105,7 @@ msgid "Click %s icon for additional information."
 msgstr ""
 
 #: includes/admin/class-gravityview-support-port.php:88
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:57
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:102
 msgid "Learn More"
 msgstr ""
 
@@ -1056,8 +1178,7 @@ msgid "Leave blank for column width to be based on the field content."
 msgstr ""
 
 #: includes/admin/class.render.settings.php:152
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:154
-#: includes/fields/class-gravityview-field.php:458
+#: includes/fields/class-gravityview-field.php:490
 msgid "Open link in a new tab or window?"
 msgstr ""
 
@@ -1098,6 +1219,11 @@ msgid "Field Details"
 msgstr ""
 
 #: includes/admin/class.render.settings.php:392
+#: future/includes/gutenberg/blocks/entry-field/edit.js:61
+#: future/includes/gutenberg/blocks/entry-field/edit.js:62
+#: future/includes/gutenberg/blocks/entry-field/edit.js:114
+#: future/includes/gutenberg/blocks/entry-field/edit.js:115
+#: future/includes/gutenberg/build/entry-field.js:1
 msgid "Field ID"
 msgstr ""
 
@@ -1115,98 +1241,162 @@ msgid "Edit this entry"
 msgstr ""
 
 #: includes/admin/entry-list.php:70
+#: includes/admin/metaboxes/views/direct-access-status.php:66
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:81
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:76
 msgid "Choose a View Type"
 msgstr ""
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:84
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:79
 msgid "Layout"
 msgstr ""
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:89
-#: includes/class-admin-views.php:526
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:788
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:342
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:52
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:84
+#: includes/admin/metaboxes/views/view-configuration.php:8
+#: includes/class-admin-views.php:527
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:187
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:269
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:354
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:96
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:129
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:124
 #: includes/class-admin-add-shortcode.php:117
 msgid "View Settings"
 msgstr ""
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:161
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:156
 #: includes/class-gravityview-entry-link-shortcode.php:236
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:135
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:167
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:209
+#: includes/extensions/delete-entry/class-delete-entry-admin.php:83
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:32
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:108
 #: includes/extensions/delete-entry/fields/delete_link.php:19
 #: templates/fields/field-delete_link-html.php:38
 #: templates/fields/field-duplicate_link-html.php:38
+#: future/includes/gutenberg/blocks/entry-link/edit.js:77
+#: future/includes/gutenberg/build/entry-link.js:1
 msgid "Delete Entry"
 msgstr ""
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:169
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:164
 msgid "Filter &amp; Sort"
 msgstr ""
 
-#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:177
-msgid "Permissions"
-msgstr ""
-
-#: includes/admin/metaboxes/views/data-source.php:29
-msgid "Where would you like the data to come from for this View?"
+#: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:180
+msgid "Custom Code"
 msgstr ""
 
 #: includes/admin/metaboxes/views/data-source.php:36
+msgid "Where would you like the data to come from for this View?"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:43
 msgid "Use a Form Preset"
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:39
+#: includes/admin/metaboxes/views/data-source.php:46
 msgid "or use an existing form"
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:46
+#: includes/admin/metaboxes/views/data-source.php:53
 #: includes/class-gravityview-html-elements.php:38
-#: includes/widgets/class-gravityview-widget-gravityforms.php:82
 msgid "list of forms"
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:55
+#: includes/admin/metaboxes/views/data-source.php:58
+msgctxt "Indicates that a form is inactive."
+msgid "Inactive"
+msgstr ""
+
+#: includes/admin/metaboxes/views/data-source.php:67
 msgid "Switch View"
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:55
+#: includes/admin/metaboxes/views/data-source.php:67
 msgid "Switch View Type"
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:59
-#: includes/admin/metaboxes/views/data-source.php:64
-#: includes/admin/metaboxes/views/data-source.php:69
+#: includes/admin/metaboxes/views/data-source.php:71
+#: includes/admin/metaboxes/views/data-source.php:76
+#: includes/admin/metaboxes/views/data-source.php:81
 msgid "Attention"
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:60
+#: includes/admin/metaboxes/views/data-source.php:72
 msgid "Changing the form will reset your field configuration. Changes will be permanent once you save the View."
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:65
+#: includes/admin/metaboxes/views/data-source.php:77
 msgid "Changing the View Type will reset your field configuration. Changes will be permanent once you save the View."
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:70
+#: includes/admin/metaboxes/views/data-source.php:82
 msgid "Using a preset will reset your field configuration. Changes will be permanent once you save the View."
 msgstr ""
 
-#: includes/admin/metaboxes/views/data-source.php:75
+#: includes/admin/metaboxes/views/data-source.php:87
 msgid "GravityView requires Javascript to be enabled."
 msgstr ""
 
+#: includes/admin/metaboxes/views/direct-access-status.php:24
+msgid "Direct Access"
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:25
+msgid "Publicly Accessible: If Visibility is set to Publicly Accessible, anyone with the link can access the View, including search engines and logged-out users."
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:26
+msgid "Embedded-Only: The View can only be seen when embedded in other content (such as a Page); it cannot be accessed directly."
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:45
+#: includes/admin/metaboxes/views/direct-access-status.php:80
+msgid "Embed-Only"
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:48
+#: includes/admin/metaboxes/views/direct-access-status.php:75
+msgid "Public"
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:54
+msgid "Direct Access:"
+msgstr ""
+
+#. translators: Hidden accessibility text.
+#: includes/admin/metaboxes/views/direct-access-status.php:69
+msgid "Edit the Direct Access setting"
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:76
+msgid "Publicly Accessible"
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:81
+msgid "Embedded-Only"
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:86
+msgid "OK"
+msgstr ""
+
+#: includes/admin/metaboxes/views/direct-access-status.php:87
+#: includes/class-admin-add-shortcode.php:135
+#: includes/class-admin-views.php:1408
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:282
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1155
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1284
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:91
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1154
+msgid "Cancel"
+msgstr ""
+
 #: includes/admin/metaboxes/views/select-template.php:49
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:122
 msgid "Install"
 msgstr ""
 
@@ -1220,7 +1410,7 @@ msgid "This layout is included in the %s license."
 msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:75
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:67
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:111
 msgid "Buy Now"
 msgstr ""
 
@@ -1234,7 +1424,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:88
 #: includes/fields/class-gravityview-field-select.php:27
-#: includes/widgets/search-widget/class-search-widget.php:245
+#: includes/widgets/search-widget/class-search-widget.php:249
 msgid "Select"
 msgstr ""
 
@@ -1250,65 +1440,70 @@ msgstr ""
 msgid "Add this shortcode to a post or page to embed this view."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:9
-#: includes/admin/metaboxes/views/view-configuration.php:10
+#: includes/admin/metaboxes/views/view-configuration.php:8
+msgid "Scroll to View Settings"
+msgstr ""
+
 #: includes/admin/metaboxes/views/view-configuration.php:11
+#: includes/admin/metaboxes/views/view-configuration.php:12
+#: includes/admin/metaboxes/views/view-configuration.php:13
 msgid "%s Layout"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:18
+#: includes/admin/metaboxes/views/view-configuration.php:20
 msgid "Top Widgets"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:18
+#: includes/admin/metaboxes/views/view-configuration.php:20
 msgid "These widgets will be shown above entries."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:22
+#: includes/admin/metaboxes/views/view-configuration.php:24
 msgid "Entries Fields"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:22
+#: includes/admin/metaboxes/views/view-configuration.php:24
 msgid "These fields will be shown for each entry."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:30
+#: includes/admin/metaboxes/views/view-configuration.php:32
 msgid "Bottom Widgets"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:30
+#: includes/admin/metaboxes/views/view-configuration.php:32
 msgid "These widgets will be shown below entries."
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: includes/admin/metaboxes/views/view-configuration.php:43
-#: includes/class-admin-views.php:1200
-#: includes/class-admin-views.php:1326
+#: includes/admin/metaboxes/views/view-configuration.php:45
+#: includes/class-admin-views.php:1210
+#: includes/class-admin-views.php:1407
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:202
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1043
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:23
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1153
 msgid "Close"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:62
-#: includes/admin/metaboxes/views/view-configuration.php:87
+#: includes/admin/metaboxes/views/view-configuration.php:64
+#: includes/admin/metaboxes/views/view-configuration.php:89
 msgid "No fields link to the %s layout."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:63
-#: includes/admin/metaboxes/views/view-configuration.php:88
+#: includes/admin/metaboxes/views/view-configuration.php:65
+#: includes/admin/metaboxes/views/view-configuration.php:90
 msgid "Learn how to link to %s"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:66
+#: includes/admin/metaboxes/views/view-configuration.php:68
 msgid "These fields will be shown in Single Entry layout."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:91
+#: includes/admin/metaboxes/views/view-configuration.php:93
 msgid "Fields shown when editing an entry."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:91
+#: includes/admin/metaboxes/views/view-configuration.php:93
 msgid "If not configured, all form fields will be displayed."
 msgstr ""
 
@@ -1330,7 +1525,14 @@ msgid "Use this form to embed a View into this %s. %sLearn more about using shor
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:102
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:301
+#: includes/fields/class-gravityview-field-gravityview_view.php:50
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:307
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/view-selector.js:7
 msgid "Select a View"
 msgstr ""
 
@@ -1339,23 +1541,13 @@ msgid "&mdash; Select a View to Insert &mdash;"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:108
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:307
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:313
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:197
 msgid "(no title)"
 msgstr ""
 
-#: includes/class-admin-add-shortcode.php:135
-#: includes/class-admin-views.php:1327
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:282
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1155
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1284
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:74
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1044
-msgid "Cancel"
-msgstr ""
-
 #: includes/class-admin-add-shortcode.php:179
-#: includes/class-admin-views.php:1331
+#: includes/class-admin-views.php:1412
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1400,192 +1592,197 @@ msgid "Yes, display my entry on the website"
 msgstr ""
 
 #: includes/class-admin-approve-entries.php:399
-msgid "Show entry in directory view?"
+msgid "GravityView entry approval status"
 msgstr ""
 
-#: includes/class-admin-views.php:185
+#: includes/class-admin-views.php:186
 msgid "Filter Views by form"
 msgstr ""
 
-#: includes/class-admin-views.php:187
+#: includes/class-admin-views.php:188
 msgid "All forms"
 msgstr ""
 
-#: includes/class-admin-views.php:199
+#: includes/class-admin-views.php:200
 msgid "Filter Views by layout"
 msgstr ""
 
-#: includes/class-admin-views.php:201
+#: includes/class-admin-views.php:202
 msgid "All layouts"
 msgstr ""
 
-#: includes/class-admin-views.php:202
+#: includes/class-admin-views.php:203
 msgid "Layouts"
 msgstr ""
 
-#: includes/class-admin-views.php:211
+#: includes/class-admin-views.php:212
 msgid "Form Presets"
 msgstr ""
 
-#: includes/class-admin-views.php:268
-#: includes/class-admin-views.php:300
+#: includes/class-admin-views.php:269
+#: includes/class-admin-views.php:301
 msgid "Create a View"
 msgstr ""
 
-#: includes/class-admin-views.php:270
-#: includes/class-admin-views.php:302
+#: includes/class-admin-views.php:271
+#: includes/class-admin-views.php:303
 msgid "Create a View using this form as a data source"
 msgstr ""
 
-#: includes/class-admin-views.php:287
+#: includes/class-admin-views.php:288
 msgid "No Title (View #%d)"
 msgstr ""
 
-#: includes/class-admin-views.php:316
+#: includes/class-admin-views.php:317
 msgid "Connected Views"
 msgstr ""
 
-#: includes/class-admin-views.php:318
+#: includes/class-admin-views.php:319
 msgid "GravityView Views using this form as a data source"
 msgstr ""
 
-#: includes/class-admin-views.php:397
+#: includes/class-admin-views.php:398
 msgid "CSS Merge Tags"
 msgstr ""
 
-#: includes/class-admin-views.php:398
+#: includes/class-admin-views.php:399
 msgid "Developers: The CSS classes will be sanitized using the %ssanitize_title_with_dashes()%s function."
 msgstr ""
 
-#: includes/class-admin-views.php:465
+#: includes/class-admin-views.php:466
 msgid "Not connected."
 msgstr ""
 
-#: includes/class-admin-views.php:474
+#: includes/class-admin-views.php:475
 msgid "The connected form can not be found; it may no longer exist."
 msgstr ""
 
-#: includes/class-admin-views.php:514
+#: includes/class-admin-views.php:515
 #: includes/class-gravityview-admin-bar.php:139
 msgid "Edit Form"
 msgstr ""
 
-#: includes/class-admin-views.php:521
+#: includes/class-admin-views.php:522
 msgid "Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:526
+#: includes/class-admin-views.php:527
 msgid "Edit settings for this form"
 msgstr ""
 
-#: includes/class-admin-views.php:531
+#: includes/class-admin-views.php:532
 msgid "Preview Form"
 msgstr ""
 
-#: includes/class-admin-views.php:531
+#: includes/class-admin-views.php:532
 msgid "Preview this form"
 msgstr ""
 
-#: includes/class-admin-views.php:585
+#: includes/class-admin-views.php:586
 msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr ""
 
-#: includes/class-admin-views.php:777
+#: includes/class-admin-views.php:778
 msgid "Add All Form Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:778
+#: includes/class-admin-views.php:779
 msgid "Insert all the form fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:949
+#: includes/class-admin-views.php:954
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:951
+#: includes/class-admin-views.php:956
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1011
+#: includes/class-admin-views.php:1021
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1114
-#: includes/widgets/search-widget/class-search-widget.php:123
+#: includes/class-admin-views.php:1124
+#: includes/widgets/search-widget/class-search-widget.php:126
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1124
+#: includes/class-admin-views.php:1134
 #: includes/widgets/class-gravityview-widget-pagination-info.php:30
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1130
-#: includes/class-admin-views.php:1137
+#: includes/class-admin-views.php:1140
+#: includes/class-admin-views.php:1147
 #: includes/widgets/class-gravityview-widget-page-links.php:25
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1203
+#: includes/class-admin-views.php:1213
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1204
+#: includes/class-admin-views.php:1214
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1215
+#: includes/class-admin-views.php:1225
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1248
+#: includes/class-admin-views.php:1262
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1249
+#: includes/class-admin-views.php:1263
 msgid "The data is not lost; re-activate the associated plugin and the configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1322
+#: includes/class-admin-views.php:1339
+#: includes/fields/class-gravityview-field-edit-link.php:32
+msgid "Link to Edit Entry"
+msgstr ""
+
+#: includes/class-admin-views.php:1403
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1323
+#: includes/class-admin-views.php:1404
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1324
-#: includes/widgets/search-widget/class-search-widget.php:289
+#: includes/class-admin-views.php:1405
+#: includes/widgets/search-widget/class-search-widget.php:293
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1325
+#: includes/class-admin-views.php:1406
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1328
+#: includes/class-admin-views.php:1409
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1329
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1040
+#: includes/class-admin-views.php:1410
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1150
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1330
+#: includes/class-admin-views.php:1411
 msgid "Error while creating the View for you. Check the settings or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1332
+#: includes/class-admin-views.php:1413
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1333
+#: includes/class-admin-views.php:1414
 msgid "Error while adding the field. Please try again or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1334
+#: includes/class-admin-views.php:1415
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -1594,30 +1791,30 @@ msgstr ""
 msgid "Changelog"
 msgstr ""
 
-#: includes/class-admin-welcome.php:73
 #: includes/class-admin-welcome.php:74
-#: includes/class-admin-welcome.php:163
+#: includes/class-admin-welcome.php:75
+#: includes/class-admin-welcome.php:159
 msgid "Credits"
 msgstr ""
 
-#: includes/class-admin-welcome.php:83
+#: includes/class-admin-welcome.php:85
 msgid "GravityView: Getting Started"
 msgstr ""
 
-#: includes/class-admin-welcome.php:84
-#: includes/class-admin-welcome.php:157
+#: includes/class-admin-welcome.php:86
+#: includes/class-admin-welcome.php:153
 msgid "Getting Started"
 msgstr ""
 
-#: includes/class-admin-welcome.php:152
+#: includes/class-admin-welcome.php:148
 msgid "Welcome to GravityView %s"
 msgstr ""
 
-#: includes/class-admin-welcome.php:153
+#: includes/class-admin-welcome.php:149
 msgid "Thank you for installing GravityView. Beautifully display your Gravity Forms entries."
 msgstr ""
 
-#: includes/class-admin-welcome.php:160
+#: includes/class-admin-welcome.php:156
 msgid "List of Changes"
 msgstr ""
 
@@ -1625,23 +1822,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:728
+#: includes/class-admin-welcome.php:601
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:778
+#: includes/class-admin-welcome.php:651
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:816
+#: includes/class-admin-welcome.php:689
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:848
+#: includes/class-admin-welcome.php:721
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:849
+#: includes/class-admin-welcome.php:722
 msgid "If you want to contribute to the code, %syou can on Github%s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -1763,30 +1960,37 @@ msgid_plural "%s Views restored from the Trash."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-api.php:1400
+#: includes/class-api.php:1424
 msgid "Map It"
 msgstr ""
 
-#: includes/class-common.php:372
+#: includes/class-common.php:338
+msgid "Select a Form"
+msgstr ""
+
+#: includes/class-common.php:495
 #: includes/fields/class-gravityview-field-post-id.php:28
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/post-selector.js:50
 msgid "Post ID"
 msgstr ""
 
 #. translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:1045
+#: includes/class-common.php:1201
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1399
+#: includes/class-common.php:1564
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1450
+#: includes/class-common.php:1615
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1580
+#: includes/class-common.php:1746
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -1799,7 +2003,7 @@ msgid "You did not enter a number. The value entered should be a number, represe
 msgstr ""
 
 #: includes/class-data.php:308
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:335
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:341
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:225
 msgid "Learn more&hellip;"
 msgstr ""
@@ -1816,12 +2020,12 @@ msgstr ""
 msgid "The ID is already a View."
 msgstr ""
 
-#: includes/class-frontend-views.php:1476
+#: includes/class-frontend-views.php:1584
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1477
+#: includes/class-frontend-views.php:1585
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -1833,6 +2037,11 @@ msgstr ""
 #: includes/class-gravityview-admin-bar.php:142
 msgctxt "Edit View with the ID of %d"
 msgid "Edit View #%d"
+msgstr ""
+
+#: includes/class-gravityview-admin-bar.php:143
+msgctxt "Edit Form with the ID of %d"
+msgid "Edit Form #%d"
 msgstr ""
 
 #: includes/class-gravityview-admin-duplicate-view.php:241
@@ -1871,23 +2080,23 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:135
+#: includes/class-gravityview-bulk-actions.php:142
 msgid "%d entries"
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:135
+#: includes/class-gravityview-bulk-actions.php:142
 msgid "1 entry"
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:140
+#: includes/class-gravityview-bulk-actions.php:147
 msgid "%s approved."
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:144
+#: includes/class-gravityview-bulk-actions.php:151
 msgid "%s unapproved."
 msgstr ""
 
-#: includes/class-gravityview-bulk-actions.php:148
+#: includes/class-gravityview-bulk-actions.php:155
 msgid "%s disapproved."
 msgstr ""
 
@@ -1897,7 +2106,7 @@ msgstr ""
 
 #: includes/class-gravityview-change-entry-creator.php:164
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:287
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1188
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1302
 msgid "Error"
 msgstr ""
 
@@ -1952,32 +2161,25 @@ msgctxt "%d is replaced with user count %s is replaced with \"user\" or \"users\
 msgid "Use the input above to search the remaining %d %s."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:176
+#: includes/class-gravityview-compatibility.php:159
 msgid "You are seeing this notice because you are an administrator. Other users of the site will see nothing."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:200
-msgid ""
-"%sGravityView requires PHP Version %s or newer.%s \n"
-"\n"
-"You're using Version %s. Please ask your host to upgrade your server's PHP."
-msgstr ""
-
-#: includes/class-gravityview-compatibility.php:215
+#: includes/class-gravityview-compatibility.php:185
 msgid ""
 "%sGravityView will soon require PHP Version %s.%s \n"
 "\n"
 "You're using Version %s. Please ask your host to upgrade your server's PHP."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:242
+#: includes/class-gravityview-compatibility.php:211
 msgid ""
 "%sGravityView requires WordPress %s or newer.%s \n"
 "\n"
 "You're using Version %s. Please upgrade your WordPress installation."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:255
+#: includes/class-gravityview-compatibility.php:224
 msgid ""
 "%sGravityView will soon require WordPress %s%s \n"
 "\n"
@@ -1985,39 +2187,105 @@ msgid ""
 msgstr ""
 
 #. translators: first placeholder is the future required version of Gravity Forms. The second placeholder is the current version of Gravity Forms.
-#: includes/class-gravityview-compatibility.php:286
+#: includes/class-gravityview-compatibility.php:255
 msgid "In the future, GravityView will require Gravity Forms Version %s or newer."
 msgstr ""
 
 #. translators: the placeholder is the required version of Gravity Forms.
-#: includes/class-gravityview-compatibility.php:291
+#: includes/class-gravityview-compatibility.php:260
 msgid "GravityView requires Gravity Forms Version %s or newer."
 msgstr ""
 
 #. translators: the placeholder is the current version of Gravity Forms.
-#: includes/class-gravityview-compatibility.php:299
+#: includes/class-gravityview-compatibility.php:268
 msgid "You're using Version %s. Please update your Gravity Forms or purchase a license."
 msgstr ""
 
 #. translators: In this context, "get" means purchase
-#: includes/class-gravityview-compatibility.php:302
+#: includes/class-gravityview-compatibility.php:271
 msgid "Get the Latest Gravity Forms"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:350
+#: includes/class-gravityview-compatibility.php:319
 msgid "%sGravityView requires Gravity Forms to be active. %sActivate Gravity Forms%s to use the GravityView plugin."
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:359
+#: includes/class-gravityview-compatibility.php:328
 msgid "%sGravityView requires Gravity Forms to be installed in order to run properly. %sGet Gravity Forms%s - starting at $59%s%s"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:379
+#: includes/class-gravityview-compatibility.php:348
 msgid "Potential Conflict"
 msgstr ""
 
-#: includes/class-gravityview-compatibility.php:380
+#: includes/class-gravityview-compatibility.php:349
 msgid "GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin."
+msgstr ""
+
+#. translators: %s is replaced with a setting label
+#: includes/class-gravityview-entry-approval-merge-tags.php:85
+msgid "GravityView - %s"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:97
+msgctxt "Setting: On or off"
+msgid "Enable"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:101
+msgctxt "Setting: On or off"
+msgid "Disable"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:127
+msgid "Moderation: Approve entry link"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:131
+msgid "Moderation: Disapprove entry link"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:135
+msgid "Moderation: Reset entry approval link"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:381
+#: includes/class-gravityview-entry-approval-merge-tags.php:391
+#: includes/class-gravityview-entry-approval-merge-tags.php:400
+msgid "Entry moderation failed: %s"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:467
+msgid "You are not allowed to perform this operation."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:473
+#: includes/class-gravityview-entry-approval-merge-tags.php:490
+msgid "The link has expired."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:482
+#: includes/class-gravityview-entry-approval-merge-tags.php:579
+#: includes/class-gravityview-entry-approval-merge-tags.php:587
+#: includes/class-gravityview-entry-approval-merge-tags.php:598
+#: includes/class-gravityview-entry-approval-merge-tags.php:623
+#: includes/class-gravityview-entry-approval-merge-tags.php:636
+msgid "The link is invalid."
+msgstr ""
+
+#. translators: Do not translate the words inside the {} curly brackets; they are replaced.
+#: includes/class-gravityview-entry-approval-merge-tags.php:526
+msgid "Success: Entry #{entry_id} has been {approval_label}."
+msgstr ""
+
+#. translators: Do not translate the words inside the {} curly brackets; they are replaced.
+#: includes/class-gravityview-entry-approval-merge-tags.php:532
+msgid "There was an error updating entry #{entry_id}."
+msgstr ""
+
+#: includes/class-gravityview-entry-approval-merge-tags.php:563
+#: includes/class-gravityview-entry-approval-merge-tags.php:569
+msgid "Invalid security token."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:56
@@ -2094,9 +2362,11 @@ msgid "Reset Entry approval for GravityView"
 msgstr ""
 
 #: includes/class-gravityview-entry-link-shortcode.php:239
-#: includes/fields/class-gravityview-field-entry-link.php:80
+#: includes/fields/class-gravityview-field-entry-link.php:81
 #: templates/deprecated/fields/entry_link.php:16
 #: templates/fields/field-entry_link-html.php:27
+#: future/includes/gutenberg/blocks/entry-link/edit.js:75
+#: future/includes/gutenberg/build/entry-link.js:1
 msgid "View Details"
 msgstr ""
 
@@ -2114,146 +2384,134 @@ msgctxt "no dropdown items"
 msgid "None"
 msgstr ""
 
-#: includes/class-gravityview-powered-by.php:50
+#: includes/class-gravityview-powered-by.php:58
 msgid "Powered by GravityView"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:103
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:296
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:119
+#: includes/extensions/delete-entry/class-delete-entry.php:377
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:430
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:461
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:472
+msgid "The entry does not exist."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:504
+msgid "Moving the entry to the trash failed."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:614
+msgid "Are you sure you want to delete this entry? This cannot be undone."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:641
+msgid "The link to delete this entry is not valid; it may have expired."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:645
+msgid "You do not have permission to delete this entry."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:650
+msgid "The entry is already in the trash."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:652
+msgid "You cannot delete the entry; it is already in the trash."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:794
+msgid "There was an error deleting the entry: %s"
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:798
+msgid "The entry was successfully moved to the trash."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-delete-entry.php:801
+msgid "The entry was successfully deleted."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:33
+msgid "A link to delete the entry. Respects the Delete Entry permissions."
+msgstr ""
+
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:76
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:298
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:93
 msgctxt "User capability"
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:141
+#: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:114
 msgid "Allow the following users to delete the entry:"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry-admin.php:211
-msgid "A link to delete the entry. Respects the Delete Entry permissions."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:373
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:428
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:459
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:470
-msgid "The entry does not exist."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:500
-msgid "Moving the entry to the trash failed."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:610
-msgid "Are you sure you want to delete this entry? This cannot be undone."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:637
-msgid "The link to delete this entry is not valid; it may have expired."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:641
-msgid "You do not have permission to delete this entry."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:646
-msgid "The entry is already in the trash."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:648
-msgid "You cannot delete the entry; it is already in the trash."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:790
-msgid "There was an error deleting the entry: %s"
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:794
-msgid "The entry was successfully moved to the trash."
-msgstr ""
-
-#: includes/extensions/delete-entry/class-delete-entry.php:797
-msgid "The entry was successfully deleted."
-msgstr ""
-
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:206
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:208
 msgid "Duplicate Link Text"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:208
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:240
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:262
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:210
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:242
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:264
 msgid "Duplicate Entry"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:216
 msgid "Allow the following users to duplicate the entry:"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:242
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:244
 msgid "A link to duplicate the entry. Respects the Duplicate Entry permissions."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:494
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:534
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:859
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:496
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:536
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:861
 msgid "There was an error duplicating the entry."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:594
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:596
 msgid "Are you sure you want to duplicate this entry?"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:629
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:631
 msgid "The link to duplicate this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:633
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:635
 msgid "You do not have permission to duplicate this entry."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:773
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:775
 msgid "There was an error duplicating the entry: %s"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:777
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:779
 msgid "The entry was successfully duplicated."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:821
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:823
 msgid "Duplicate"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:845
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:847
 msgid "Entry duplicated."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:853
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:855
 msgctxt "Error message links to logging page"
 msgid "Check the GravityView logs for more information."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:87
-msgid "Link to Edit Entry"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:89
-msgid "A link to edit the entry. Visible based on View settings."
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:146
-msgid "Edit Link Text"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:173
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:108
 msgid "Limiting Edit Access"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:174
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:109
 msgid "Change this setting if you don't want the user who created the entry to be able to edit this field."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-admin.php:205
+#: includes/extensions/edit-entry/class-edit-entry-admin.php:140
 msgid "Make field editable to:"
 msgstr ""
 
@@ -2325,7 +2583,8 @@ msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1156
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1285
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:68
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:62
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:143
 msgid "Update"
 msgstr ""
 
@@ -2464,6 +2723,7 @@ msgid "Note Content"
 msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:417
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:113
 msgid "Delete"
 msgstr ""
 
@@ -2617,33 +2877,33 @@ msgid "Chained Select"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-checkbox.php:27
-#: includes/widgets/search-widget/class-search-widget.php:248
-#: includes/widgets/search-widget/class-search-widget.php:249
+#: includes/widgets/search-widget/class-search-widget.php:252
+#: includes/widgets/search-widget/class-search-widget.php:253
 msgid "Checkbox"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:56
+#: includes/fields/class-gravityview-field-checkbox.php:51
 #: includes/fields/class-gravityview-field-multiselect.php:55
 #: includes/fields/class-gravityview-field-radio.php:50
 #: includes/fields/class-gravityview-field-select.php:54
 msgid "This input has a label and a value. What should be displayed?"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:59
-#: includes/fields/class-gravityview-field-checkbox.php:67
+#: includes/fields/class-gravityview-field-checkbox.php:54
+#: includes/fields/class-gravityview-field-checkbox.php:62
 #: includes/fields/class-gravityview-field-survey.php:117
 msgid "A check mark, if the input is checked"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:60
+#: includes/fields/class-gravityview-field-checkbox.php:55
 #: includes/fields/class-gravityview-field-multiselect.php:57
 #: includes/fields/class-gravityview-field-radio.php:52
 #: includes/fields/class-gravityview-field-select.php:56
 msgid "Value of the input"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:61
-#: includes/fields/class-gravityview-field-checkbox.php:68
+#: includes/fields/class-gravityview-field-checkbox.php:56
+#: includes/fields/class-gravityview-field-checkbox.php:63
 #: includes/fields/class-gravityview-field-multiselect.php:58
 #: includes/fields/class-gravityview-field-radio.php:53
 #: includes/fields/class-gravityview-field-select.php:57
@@ -2651,7 +2911,7 @@ msgid "Label of the input"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-checkbox.php:75
-#: includes/fields/class-gravityview-field-consent.php:109
+#: includes/fields/class-gravityview-field-consent.php:113
 #: includes/fields/class-gravityview-field-multiselect.php:54
 #: includes/fields/class-gravityview-field-radio.php:49
 #: includes/fields/class-gravityview-field-select.php:53
@@ -2665,15 +2925,15 @@ msgstr ""
 msgid "Consent"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-consent.php:113
+#: includes/fields/class-gravityview-field-consent.php:117
 msgid "Consent image with description"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-consent.php:114
+#: includes/fields/class-gravityview-field-consent.php:118
 msgid "Consent image"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-consent.php:115
+#: includes/fields/class-gravityview-field-consent.php:119
 msgid "Consent description"
 msgstr ""
 
@@ -2731,7 +2991,7 @@ msgid "Display Name (Example: \"Ellen Ripley\")"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:138
-msgid "User Email (Example: \"ellen@gravityview.co\")"
+msgid "User Email (Example: \"ellen@gravitykit.com\")"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-created-by.php:139
@@ -2771,7 +3031,7 @@ msgid "Currency"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-custom.php:36
-#: includes/fields/class-gravityview-field-custom.php:77
+#: includes/fields/class-gravityview-field-custom.php:51
 #: includes/widgets/class-gravityview-widget-custom-content.php:32
 #: includes/widgets/class-gravityview-widget-custom-content.php:54
 msgid "Custom Content"
@@ -2781,39 +3041,39 @@ msgstr ""
 msgid "Insert custom text or HTML."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:78
+#: includes/fields/class-gravityview-field-custom.php:52
 msgid "Enter text or HTML. Also supports shortcodes. You can show or hide data using the %s shortcode (%slearn more%s)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:78
+#: includes/fields/class-gravityview-field-custom.php:52
 msgid "Click the arrow icon next to the content area to add %sMerge Tags%s."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:89
+#: includes/fields/class-gravityview-field-custom.php:63
 #: includes/widgets/class-gravityview-widget-custom-content.php:41
 msgid "Automatically add paragraphs to content"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:90
+#: includes/fields/class-gravityview-field-custom.php:64
 #: includes/widgets/class-gravityview-widget-custom-content.php:42
 msgid "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:97
+#: includes/fields/class-gravityview-field-custom.php:71
 msgid "Render oEmbeds"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:98
+#: includes/fields/class-gravityview-field-custom.php:72
 msgctxt "HTML link pointing to WordPress article on oEmbed"
 msgid "Automatically convert oEmbed URLs into embedded content (%slearn more%s)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:106
+#: includes/fields/class-gravityview-field-custom.php:80
 #: includes/widgets/class-gravityview-widget-custom-content.php:48
 msgid "Admin Label"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:107
+#: includes/fields/class-gravityview-field-custom.php:81
 #: includes/widgets/class-gravityview-widget-custom-content.php:49
 msgid "A label that is only shown in the GravityView View configuration screen."
 msgstr ""
@@ -2827,8 +3087,19 @@ msgid "The date the entry was last updated."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:27
-#: includes/widgets/search-widget/class-search-widget.php:244
+#: includes/widgets/search-widget/class-search-widget.php:248
+#: future/includes/gutenberg/blocks/view/edit.js:133
+#: future/includes/gutenberg/blocks/view/edit.js:172
+#: future/includes/gutenberg/build/view.js:1
 msgid "Date"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-edit-link.php:33
+msgid "A link to edit the entry. Visible based on View settings."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-edit-link.php:52
+msgid "Edit Link Text"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-email.php:26
@@ -2876,7 +3147,7 @@ msgstr ""
 msgid "A dedicated link to the single entry with customizable text."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-entry-link.php:78
+#: includes/fields/class-gravityview-field-entry-link.php:79
 #: includes/fields/class-gravityview-field-source-url.php:48
 #: includes/fields/class-gravityview-field-website.php:45
 msgid "Link Text:"
@@ -2983,16 +3254,152 @@ msgstr ""
 msgid "Size in Pixels"
 msgstr ""
 
+#: includes/fields/class-gravityview-field-gravity-forms.php:35
+#: includes/widgets/class-gravityview-widget-gravityforms.php:69
+msgid "Gravity Forms"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity-forms.php:36
+#: includes/widgets/class-gravityview-widget-gravityforms.php:28
+msgid "Display a Gravity Forms form."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity-forms.php:55
+#: includes/widgets/class-gravityview-widget-gravityforms.php:38
+msgid "Form to display"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity-forms.php:61
+#: includes/widgets/class-gravityview-widget-gravityforms.php:44
+msgid "Show form title?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity-forms.php:66
+#: includes/widgets/class-gravityview-widget-gravityforms.php:49
+msgid "Show form description?"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity-forms.php:71
+#: includes/widgets/class-gravityview-widget-gravityforms.php:54
+msgid "Enable AJAX"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity-forms.php:78
+#: includes/widgets/class-gravityview-widget-gravityforms.php:61
+msgid "Field value parameters"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravity-forms.php:79
+#: includes/widgets/class-gravityview-widget-gravityforms.php:62
+msgid "Learn how to dynamically populate a field."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:31
+msgid "Embed a View inside a View!"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:64
+msgid "View to embed"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:70
+msgid "Search field"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:73
+msgid "Accepts a Field ID or entry meta name. [link]Learn more about pre-filtering Views.[/link]"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:80
+msgid "Example: created_by or 1.3"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:85
+msgid "Search operator"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:88
+msgid "is"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:89
+msgid "contains"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:90
+msgid "is not"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:91
+msgid "like"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:92
+msgid "in"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:93
+msgid "starts with"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:94
+msgid "ends with"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:101
+msgid "Search value"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:103
+msgid "Pre-filter a View by the values of an entry."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:104
+msgid "Example: {user:ID}"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:110
+msgid "Override start date"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:114
+msgid "Example: -1 week"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:118
+msgid "Override end date"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:122
+msgid "Example: tomorrow"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:126
+msgid "Override page size"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-gravityview_view.php:130
+msgid "Use View setting"
+msgstr ""
+
 #: includes/fields/class-gravityview-field-hidden.php:23
 msgid "Hidden"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-html.php:26
+#: future/includes/gutenberg/blocks/entry-link/edit.js:87
+#: future/includes/gutenberg/build/entry-link.js:1
 msgid "HTML"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-id.php:24
-#: includes/widgets/search-widget/class-search-widget.php:371
+#: includes/widgets/search-widget/class-search-widget.php:375
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/shared/js/entry-selector.js:9
+#: future/includes/gutenberg/shared/js/entry-selector.js:10
+#: future/includes/gutenberg/shared/js/entry-selector.js:36
 msgid "Entry ID"
 msgstr ""
 
@@ -3010,7 +3417,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-is-approved.php:42
 #: includes/fields/class-gravityview-field-is-approved.php:125
-#: includes/widgets/search-widget/class-search-widget.php:386
+#: includes/widgets/search-widget/class-search-widget.php:390
 msgid "Approval Status"
 msgstr ""
 
@@ -3067,7 +3474,7 @@ msgid "Entry Star"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-starred.php:30
-#: includes/widgets/search-widget/class-search-widget.php:379
+#: includes/widgets/search-widget/class-search-widget.php:383
 msgid "Is Starred"
 msgstr ""
 
@@ -3089,7 +3496,7 @@ msgid "Multi Select"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-name.php:24
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:29
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:35
 msgid "Name"
 msgstr ""
 
@@ -3113,6 +3520,14 @@ msgstr ""
 msgid "Precision of the number of decimal places. Leave blank to use existing precision."
 msgstr ""
 
+#: includes/fields/class-gravityview-field-option.php:30
+msgid "Option"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-option.php:31
+msgid "Options for a specific product field."
+msgstr ""
+
 #: includes/fields/class-gravityview-field-other-entries.php:29
 msgid "Other Entries"
 msgstr ""
@@ -3122,17 +3537,17 @@ msgid "Display other entries created by the entry creator."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:51
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:348
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:354
 msgid "Entry link text (required)"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:52
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:254
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:260
 msgid "Entry #{entry_id}"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-other-entries.php:59
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:355
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:361
 msgid "Text or HTML to display after the link (optional)"
 msgstr ""
 
@@ -3261,6 +3676,14 @@ msgstr ""
 msgid "Post Title"
 msgstr ""
 
+#: includes/fields/class-gravityview-field-quantity.php:30
+msgid "Quantity"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-quantity.php:31
+msgid "The quantity of a specific product field."
+msgstr ""
+
 #: includes/fields/class-gravityview-field-quiz.php:17
 msgid "Quiz"
 msgstr ""
@@ -3278,7 +3701,7 @@ msgid "Radio Buttons"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-section.php:24
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:100
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:163
 msgid "Section"
 msgstr ""
 
@@ -3312,6 +3735,14 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-sequence.php:110
 msgid "Reverse the order of the number sequence (high to low)"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-shipping.php:30
+msgid "Shipping"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-shipping.php:31
+msgid "The shipping fee for the payment."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-source-url.php:24
@@ -3421,21 +3852,29 @@ msgstr ""
 msgid "Subscription"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-unsubscribe.php:20
-#: includes/fields/class-gravityview-field-unsubscribe.php:205
+#: includes/fields/class-gravityview-field-unsubscribe.php:22
+#: includes/fields/class-gravityview-field-unsubscribe.php:207
 msgid "Unsubscribe"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-unsubscribe.php:21
+#: includes/fields/class-gravityview-field-unsubscribe.php:23
 msgid "Unsubscribe from a Payment-based entry."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-unsubscribe.php:68
+#: includes/fields/class-gravityview-field-unsubscribe.php:70
 msgid "Allow admins to unsubscribe"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-unsubscribe.php:69
+#: includes/fields/class-gravityview-field-unsubscribe.php:71
 msgid "Allow users with `gravityforms_edit_entries` to cancel subscriptions"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-username.php:27
+msgid "Username"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-username.php:28
+msgid "The username of the user who created the entry."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-website.php:27
@@ -3478,35 +3917,35 @@ msgstr ""
 msgid "Workflow Complete"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:421
+#: includes/fields/class-gravityview-field.php:453
 msgid "Link to the post"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:422
+#: includes/fields/class-gravityview-field.php:454
 msgid "Link to the post created by the entry."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:429
+#: includes/fields/class-gravityview-field.php:461
 msgid "Link to the category or tag"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:430
+#: includes/fields/class-gravityview-field.php:462
 msgid "Link to the current category or tag. \"Link to single entry\" must be unchecked."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:437
+#: includes/fields/class-gravityview-field.php:469
 msgid "Use the live post data"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:438
+#: includes/fields/class-gravityview-field.php:470
 msgid "Instead of using the entry data, instead use the current post data."
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:445
+#: includes/fields/class-gravityview-field.php:477
 msgid "Override Date Format"
 msgstr ""
 
-#: includes/fields/class-gravityview-field.php:446
+#: includes/fields/class-gravityview-field.php:478
 msgid "Define how the date is displayed (using %sthe PHP date format%s)"
 msgstr ""
 
@@ -3734,38 +4173,6 @@ msgstr ""
 msgid "Enter text or HTML. Also supports shortcodes."
 msgstr ""
 
-#: includes/widgets/class-gravityview-widget-gravityforms.php:28
-msgid "Display a Gravity Forms form."
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:38
-msgid "Form to display"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:44
-msgid "Show form title?"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:49
-msgid "Show form description?"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:54
-msgid "Enable AJAX"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:61
-msgid "Field value parameters"
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:62
-msgid "Learn how to dynamically populate a field."
-msgstr ""
-
-#: includes/widgets/class-gravityview-widget-gravityforms.php:69
-msgid "Gravity Forms"
-msgstr ""
-
 #: includes/widgets/class-gravityview-widget-page-links.php:16
 msgid "Links to multiple pages of results."
 msgstr ""
@@ -3784,6 +4191,10 @@ msgstr ""
 
 #: includes/widgets/class-gravityview-widget-page-size.php:37
 #: includes/widgets/class-gravityview-widget-page-size.php:95
+#: future/includes/gutenberg/blocks/view-details/edit.js:55
+#: future/includes/gutenberg/blocks/view/edit.js:196
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
 msgid "Page Size"
 msgstr ""
 
@@ -3799,57 +4210,61 @@ msgstr ""
 msgid "Displaying %1$s - %2$s of %3$s"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:25
+#: includes/widgets/poll/class-gravityview-widget-poll.php:26
 msgid "Displays the results of Poll Fields that exist in the form."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:26
+#: includes/widgets/poll/class-gravityview-widget-poll.php:27
 msgctxt "The string placeholders are for emphasis HTML"
 msgid "Note: this will display poll results for %sall form entries%s, not only the entries displayed in the View."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:35
+#: includes/widgets/poll/class-gravityview-widget-poll.php:36
 msgid "Display Percentages"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:38
+#: includes/widgets/poll/class-gravityview-widget-poll.php:39
 msgid "Display results percentages as part of results? Supported values are: true, false. Defaults to \"true\"."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:41
+#: includes/widgets/poll/class-gravityview-widget-poll.php:42
 msgid "Display Counts"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:44
+#: includes/widgets/poll/class-gravityview-widget-poll.php:45
 msgid "Display number of times each choice has been selected when displaying results? Supported values are: true, false. Defaults to \"true\"."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:48
+#: includes/widgets/poll/class-gravityview-widget-poll.php:49
 msgid "Style"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:49
+#: includes/widgets/poll/class-gravityview-widget-poll.php:50
 msgid "The Polls Add-On currently supports 4 built in styles: red, green, orange, blue. Defaults to \"green\"."
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:52
+#: includes/widgets/poll/class-gravityview-widget-poll.php:53
 msgid "Green"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:53
+#: includes/widgets/poll/class-gravityview-widget-poll.php:54
 msgid "Blue"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:54
+#: includes/widgets/poll/class-gravityview-widget-poll.php:55
 msgid "Red"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:55
+#: includes/widgets/poll/class-gravityview-widget-poll.php:56
 msgid "Orange"
 msgstr ""
 
-#: includes/widgets/poll/class-gravityview-widget-poll.php:65
+#: includes/widgets/poll/class-gravityview-widget-poll.php:66
 msgid "Poll Results"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:35
+msgid "Display a search form for users to search a View's entries."
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:36
@@ -3922,96 +4337,96 @@ msgstr ""
 msgid "Only show choices that exist in form entries"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:243
+#: includes/widgets/search-widget/class-search-widget.php:247
 msgid "Text"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:246
+#: includes/widgets/search-widget/class-search-widget.php:250
 msgid "Select (multiple values)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:247
+#: includes/widgets/search-widget/class-search-widget.php:251
 msgid "Radio"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:250
+#: includes/widgets/search-widget/class-search-widget.php:254
 msgid "Links"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:251
+#: includes/widgets/search-widget/class-search-widget.php:255
 msgid "Date range"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:288
+#: includes/widgets/search-widget/class-search-widget.php:292
 msgid "No search fields configured yet."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:290
+#: includes/widgets/search-widget/class-search-widget.php:294
 msgid "Label"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:292
+#: includes/widgets/search-widget/class-search-widget.php:296
 msgid "Input Type"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:293
+#: includes/widgets/search-widget/class-search-widget.php:297
 msgid "There was an error loading searchable fields. Save the View or refresh the page to fix this issue."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:363
+#: includes/widgets/search-widget/class-search-widget.php:367
 msgid "Search Everything"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:367
+#: includes/widgets/search-widget/class-search-widget.php:371
 msgid "Entry Date"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:375
+#: includes/widgets/search-widget/class-search-widget.php:379
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1591
+#: includes/widgets/search-widget/class-search-widget.php:1597
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1594
+#: includes/widgets/search-widget/class-search-widget.php:1600
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1597
+#: includes/widgets/search-widget/class-search-widget.php:1603
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1865
+#: includes/widgets/search-widget/class-search-widget.php:1908
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1928
+#: includes/widgets/search-widget/class-search-widget.php:1971
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1929
+#: includes/widgets/search-widget/class-search-widget.php:1972
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1930
+#: includes/widgets/search-widget/class-search-widget.php:1973
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1931
+#: includes/widgets/search-widget/class-search-widget.php:1974
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1932
+#: includes/widgets/search-widget/class-search-widget.php:1975
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1933
+#: includes/widgets/search-widget/class-search-widget.php:1976
 msgid "Show a different month"
 msgstr ""
 
@@ -4030,7 +4445,7 @@ msgid "Show only:"
 msgstr ""
 
 #: includes/widgets/search-widget/templates/search-field-submit.php:33
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:87
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:135
 msgid "Search"
 msgstr ""
 
@@ -4042,35 +4457,35 @@ msgstr ""
 msgid "Display the most recent entries for a View"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:250
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:256
 msgid "Recent Entries"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:264
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:270
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:174
 msgid "Title:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:293
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:299
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:184
 msgid "Please select a View to search."
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:303
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:309
 msgid "&mdash; Select a View as Entries Source &mdash;"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:331
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:337
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:221
 msgid "If Embedded, Page ID:"
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:334
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:340
 #: includes/wordpress-widgets/class-gravityview-search-wp-widget.php:224
 msgid "To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded."
 msgstr ""
 
-#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:341
+#: includes/wordpress-widgets/class-gravityview-recent-entries-widget.php:347
 msgid "Number of entries to show:"
 msgstr ""
 
@@ -4142,88 +4557,114 @@ msgstr ""
 msgid "Your browser does not support the video tag."
 msgstr ""
 
-#: templates/fields/field-survey-html.php:126
+#: templates/fields/field-survey-html.php:150
 msgid "%s (%d out of %d stars)"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:300
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:377
 msgid "You are using a version of GravityView that does not yet support the new GravityKit settings framework."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:303
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:380
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "As such, the settings below will not apply to GravityView pages and you will have to continue using the [link]old settings[/link] until an updated version of the plugin is available. We apologize for the inconvenience as we work to update our products in a timely fashion."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:344
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:422
+msgid "Group GravityKit Products"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:423
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:287
+msgid "Aggregate all GravityKit products into a single entry on the Plugins page for a cleaner view and easier management."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:430
+msgid "GravityKit Menu Item Action"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:431
+msgid "Open the selected page when clicking the GravityKit menu item."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:437
 msgid "Display \"Powered By\" Link"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:345
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:438
 msgid "A \"Powered by GravityKit\" link will be displayed below some GravityKit products. Help us spread the word!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:351
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:444
 msgid "Affiliate ID"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:353
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:446
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Earn money when people clicking your links become GravityKit customers. [link]Register as an affiliate[/link]!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:369
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:462
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:370
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:463
 msgid "You will have early access to the latest GravityKit products. There may be bugs! If you encounter an issue, report it to help make GravityKit products better!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:381
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:474
 msgid "Support Email"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:382
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:475
 msgid "In order to provide responses to your support requests, please provide your email address."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:386
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:479
 msgid "Support email is required"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:390
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:483
 msgid "Please provide a valid email address"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:398
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:491
 msgid "Show Support Port"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:399
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:492
 msgid "The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:401
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:494
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[image]Support Port icon[/image]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:416
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:509
 msgid "Enable No-Conflict Mode"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:417
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:510
 msgid "No-conflict mode prevents extraneous scripts and styles from being printed on GravityKit admin pages, reducing conflicts with other plugins and themes."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:433
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:796
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:526
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:277
 msgid "Support"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:437
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:530
 msgid "Technical"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:725
+msgid "Unknown Plugin"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:727
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "GravityKit Foundation [version] (loaded by [plugin])."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:197
@@ -4239,7 +4680,7 @@ msgid "Search GravityKit Docs"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:200
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:20
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:21
 msgid "Try again"
 msgstr ""
 
@@ -4571,256 +5012,354 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "[name] joined the chat"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:106
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:216
+#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:109
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:199
 msgid "Grant Support Access"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:135
-msgid "We need access to Views to provide great support."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:136
-msgid "We will need to see and edit the forms, entries, and Gravity Forms settings to debug issues."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:137
-msgid "We may need to manage plugins in order to debug conflicts on your site and add related GravityView functionality."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:144
-#: vendor_prefixed/gravitykit/foundation/src/Integrations/TrustedLogin.php:148
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "We don't need to see your [plugin] details to provide support (if [plugin] is enabled)."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:182
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:199
 msgid "You do not have permission to view this page."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:214
-msgid "Products"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:216
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:25
-msgid "Licenses"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:218
-msgid "Products & Licenses"
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Framework.php:241
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:182
+msgid "Manage Your Kit"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/Helpers.php:51
 msgid "Unable to process remote request. Invalid response body."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:126
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:441
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:464
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:112
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:226
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:277
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:328
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:512
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:133
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:436
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:461
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:140
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:275
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:391
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:470
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:547
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:737
 msgid "You do not have a permission to perform this action."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:269
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:270
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:261
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:262
 msgid "The license key is valid, but it has not been activated for this site."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:271
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:263
 msgid "This license has reached its activation limit."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:272
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:264
 msgid "This license has been deactivated."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:273
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:265
 msgid "This license key is valid and active."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:274
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:275
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:266
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:267
 msgid "This license key is invalid."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:276
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:268
 msgid "This license key has been revoked."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:277
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:269
 msgid "This license key has expired."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:283
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:275
 msgid "License status could not be determined."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:338
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:330
 msgid "License data received from the API is incomplete."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:445
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:520
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:440
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:513
 msgid "Missing license key."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:470
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:22
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:467
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:26
 msgid "This license is already activated."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:481
-msgid "Could not get information on products associated with this license."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:528
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:521
 msgid "The license key is invalid."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:557
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:552
 msgid "Failed to deactivate license."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:596
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:592
 msgctxt "Indicates \"time ago\""
 msgid "ago"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:917
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductDependencyChecker.php:234
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Product with '[text_domain]' text domain"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:148
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:283
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:399
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:478
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:555
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Product with '[text_domain]' text domain not found."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:200
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:331
+msgid "Unable to load core WordPress files required to install the product."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:237
+msgid "Unable to locate product download link."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:246
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:254
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:370
+msgid "Installation failed."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:362
+msgid "Update failed."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:407
+msgid "Product must be deactivation before it can be deleted."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:449
+msgid "Could not delete the product due to missing filesystem credentials."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:515
+msgid "Product is already active."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:523
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Could not activate the product. [error]"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:583
+msgid "Product in not active."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:589
+msgid "Could not deactivate the product."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:621
+msgid "Invalid product information received from the API."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:710
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:60
+msgid "View full changelog"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:192
+msgid "Disable the grouping of GravityKit products"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:193
+msgid "Ungroup"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:209
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:488
+msgid "This product has unmet dependencies. Click this link to see see what they are."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:210
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:117
+msgid "Activate…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:223
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] is installed from a Git repository. Click this link to confirm deletion."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:227
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] is installed from a Git repository. Are you sure you want to delete it?"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:230
+msgid "Delete…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:249
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] is required by other products to be active. Click this link to see which ones and to confirm deactivation."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:253
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:151
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] is required by [products] to be active. Are you sure you want to deactivate it?"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:259
+msgid "Deactivate…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:288
+msgid "Group"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:361
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "1 installed GravityKit product: [products]."
+msgid_plural "A suite of [number] installed GravityKit products: [products]."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:395
+msgid "Visit GravityKit.com"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:449
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[products_with_updates] product has a newer version available. Please visit the [link]Manage Your Kit[/link] page to update it."
+msgid_plural "[products_with_updates] products have newer versions available. Please visit the [link]Manage Your Kit[/link] page to update them."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:473
+msgid "There is a new version [version] of [product] available."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:481
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "There is a new version [version] of [product] available. [link]Update now…[/link]."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:553
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[unlicensed] product is unlicensed. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one."
+msgid_plural "[unlicensed] products are unlicensed. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one."
+msgstr[0] ""
+msgstr[1] ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:568
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "This is an unlicensed product. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:131
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:347
-msgid "Unable to load core WordPress files required to install the product."
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/UpdatesPage.php:81
+msgid "[product] logo"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:169
-msgid "Unable to locate product download link."
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/UpdatesPage.php:88
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "You have version [current_version] installed. Before updating to [new_version], please [link]review the requirements[/link]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:178
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:186
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:386
-msgid "Installation failed."
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/UpdatesPage.php:154
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "This product has unmet dependencies. [link]Review the requirements[/link] and try updating again."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:245
-msgid "Product is already active."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:251
-msgid "Could not activate the product."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:296
-msgid "Product in not active."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:302
-msgid "Could not deactivate the product."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:378
-msgid "Update failed."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:434
-msgid "Invalid product information received from the API."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:252
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:256
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "You must install [link]Query Monitor[/link] WordPress plugin to use this option."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:260
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:264
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "You must install [link]Chrome Logger[/link] browser extension to use this option."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:268
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:272
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Logging is currently handled by [link]Gravity Forms[/link]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:338
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:342
 msgid "Enable Logging"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:344
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:348
 msgid "Log Type"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:345
-msgid "Where to store log output"
-msgstr ""
-
 #: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:349
-msgid "File"
+msgid "Where to store log output."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:353
-msgid "Query Monitor"
+msgid "File"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:357
+msgid "Query Monitor"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:361
 msgid "Chrome Logger"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:413
+#: vendor_prefixed/gravitykit/foundation/src/Logger/Framework.php:417
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Download [link]log file[/link] ([size] / [date_modified])."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/preflight_check.php:104
+#: vendor_prefixed/gravitykit/foundation/src/preflight_check.php:106
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[plugin] requires PHP [version] or newer."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:475
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:529
 msgid "Invalid request."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:496
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:550
 msgid "Plugin settings data not found."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:527
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:581
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Setting [setting] has unmet requirements."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:566
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:620
 msgid "Settings were successfully saved."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:568
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:622
 msgid "Error saving settings."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:154
+#: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:155
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Missing settings: [settings]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:196
+#: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:197
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Validation rule for setting [setting] is missing."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:212
+#: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:213
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Validation for setting [setting] failed: [reason]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:232
+#: vendor_prefixed/gravitykit/foundation/src/Settings/SettingsValidator.php:233
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Settings that failed validation: [settings]."
 msgstr ""
@@ -4842,7 +5381,7 @@ msgid "Application could not start."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:12
-msgid "Loading..."
+msgid "Loading…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:13
@@ -4854,638 +5393,979 @@ msgid "Need Help?"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:16
-msgid "Refresh"
+msgid "Refresh product and license data"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:17
-msgid "Oops, we hit a snag somewhere."
+msgid "Refresh"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:18
-msgid "Looks like we ran into an issue talking to our servers."
+msgid "Oops, we hit a snag somewhere."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:19
+msgid "Looks like we ran into an issue talking to our servers."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:20
 msgid "Please try again or [link]contact support[/link]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:21
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:22
 msgid "Loading indicator"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:23
-msgid "License was activated."
-msgstr ""
-
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:24
-msgid "License was deactivated."
+msgid "Unknown server error."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:26
-msgid "Purchase Another License"
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:25
+msgid "The server returned an invalid response."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:27
-msgid "Manage Licenses"
+msgid "License was activated."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:28
-msgid "Toggle License Box"
+msgid "Operation failed."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:29
+msgid "License was deactivated."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:30
-msgid "Key"
+msgid "License key was copied to clipboard."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:31
-msgid "Status"
+msgid "Licenses"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:32
-msgid "Expiration"
+msgid "Purchase Another License"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:33
-msgid "Deactivate"
+msgid "Manage Licenses"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:34
-msgid "Expired"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:35
-msgid "Active"
+msgid "Toggle License Box"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:36
-msgid "Lifetime, never expires!"
+msgid "Key"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:37
-msgid "Hardcoded license."
+msgid "Status"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:38
-msgid "Deactivate License"
+msgid "Expiration"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:39
-msgid "Remove"
+msgid "Deactivate"
 msgstr ""
 
+#. translators: %1$s is the vendor title
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:40
-msgid "key starting with [key]"
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1157
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1334
+msgid "Copy"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:41
-msgid "Enter your license key"
+msgid "Expired"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:42
-msgid "Activate License"
+msgid "Active"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:43
-msgid "No Licenses Activated"
+msgid "Lifetime, never expires!"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:44
-msgid "Purchase License"
+msgid "Hardcoded license."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:45
-msgid "Enter your license key to activate."
+msgid "Deactivate License"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:46
-msgid "License is not valid for this product but was activated for others."
+msgid "Removing…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:47
-msgid "Product was installed."
+msgid "Deactivating…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:48
-msgid "This product is installed from a Git repository. Are you sure you want to update it?"
+msgid "Remove"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:49
-msgid "Product was updated."
+msgid "key starting with [key]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:50
-msgid "Product was activated."
+msgid "Enter your license key"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:51
-msgid "Product was deactivated."
+msgid "Activate License"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:52
+msgid "Activating…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:53
-msgid "Go to the settings for this product."
+msgid "Licensing data is inaccessible"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:54
-msgid "Unlicensed product"
+msgid "We are unable to decrypt your licensing data. Please consult [help_guide_link]this guide[/help_guide_link] or [contact_support_link]contact support[/contact_support_link] for further assistance. Re-adding licenses will make this notice disappear."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:55
-msgctxt "Used in the \"version X is available\" context."
-msgid "Available"
+msgid "No Licenses Activated"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:56
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Learn more about [product_title]"
+msgid "Purchase License"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:57
+msgid "Enter your license key to activate."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:58
-msgid "View documentation for "
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] changelog"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:59
-msgid "Documentation"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:60
-msgid "Open Docs in a new window."
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] logo"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:61
-msgid "This product does not meet the minimum system requirements:"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:62
-msgctxt "Used in the context of \"version x.x is installed\"."
-msgid "installed"
+msgid "Update…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:63
-msgid "This product requires the following plugins to be installed and activated:"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] was installed."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:64
-msgid "Enter License Key"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] was activated."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:65
-msgid "I have a license key"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] was updated."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:66
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "Buy [product_title]"
+msgid "Information about [product] dependencies"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:67
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Please note the following actions that will be performed before installing [product]:"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:68
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Before installing [product], the following has to be done:"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:69
-msgid "Activate/Deactivate"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Please note the following actions that will be performed before activating [product]:"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:70
-msgid "Network Deactivate"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Before activating [product], the following has to be done:"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:71
-msgid "Network Activate"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Please note the following actions that will be performed before updating [product]:"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:72
-msgid "Activate"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Before updating [product], the following has to be done:"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:73
-msgid "Install Now"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[dependency] needs to be updated to [version]"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:74
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[dependency] will be updated [old_version] to [new_version]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:75
-msgid "This product has been been network-activated and only the network administrator can change its status"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[dependency] will be activated"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:76
-msgid "Network Active"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[dependency] [version] will be installed and activated"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:77
-msgid "Hmm…no products found."
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[dependency] needs to be activated"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:78
-msgid "Sorry, no products match your filter criteria."
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[dependency] needs to be licensed"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:79
-msgid "Show all products"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "GravityKit must provide dependency information for [dependency] [version]. Please [link]contact support[/link]."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:80
-msgid "Select a product filter or search or products"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "GravityKit must indicate a version number for [dependency]. Please [link]contact support[/link]."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:81
-msgid "Filters"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[dependency] [version] needs to be installed and activated"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:82
-msgid "All"
+msgid "Installing…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:83
-msgid "Unlicensed"
+msgid "Updating…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:84
-msgid "Update Available"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Installing [product]…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:85
-msgid "Inactive"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Activating [product]…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:86
-msgid "Not Installed"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Updating [product]…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:87
+msgid "Resolving Dependencies…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:88
-msgid "Search Products"
+msgid "Continue With Installation"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:89
-msgid "Search all GravityKit products using a keyword"
+msgid "Continue With Activation"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:90
-msgid "Search products by title or description"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:91
-msgid "Clear Search"
+msgid "Continue With Update"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:92
-msgid "Tabs"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] was deleted."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:93
-msgid "Required"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] was deactivated."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:94
-msgid "Are you sure you want to clear unsaved changes?"
+msgid "Redirecting to the Plugins page…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:95
-msgid "plugin icon"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:96
-msgid "Close Navigation"
+msgid "Manage Your Kit functionality is no longer available."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:97
-msgid "Open Navigation"
+msgid "Go to the settings for this product."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:98
-msgid "Quick search..."
+msgid "Unlicensed product"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:99
-msgid "Product Navigation"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "View changelog for [product_title]"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:100
+msgctxt "Used in the \"version X is available\" context. Placeholders inside [] are not to be translated."
+msgid "[version] Available"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:101
-msgid "Save Settings"
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:102
-msgid "Saving..."
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Learn more about [product_title]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:103
-msgid "Floaty logo"
+msgid "View Changelog"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:104
-msgid "The settings data couldn't be loaded."
+msgid "View documentation for [product]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:105
-msgid "Please [link]contact support[/link]."
+msgid "Documentation"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:106
+msgid "Open Docs in a new window."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:107
+msgid "Coming soon!"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:108
+msgid "Enter License Key"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:109
+msgid "I have a license key"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:110
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Buy [product_title]"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:112
+msgid "Deleting…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:114
+msgid "Activate/Deactivate"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:115
+msgid "Network Deactivate"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:116
+msgid "Network Activate…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:118
+msgid "Network Activate"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:119
+msgid "Activate"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:120
+msgid "Download is not available"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:121
+msgid "Install…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:123
+msgid "This product has been been network-activated and only the network administrator can change its status"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:124
+msgid "Network Active"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:125
+msgid "Hmm… no products found."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:126
+msgid "Sorry, no products match your filter criteria."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:127
+msgid "Show all products"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:128
+msgid "Select a product filter or search for products"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:129
+msgid "Filters"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:130
+msgid "All"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:131
+msgid "Unlicensed"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:132
+msgid "Update Available"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:133
+msgid "Inactive"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:134
+msgid "Not Installed"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:136
+msgid "Search Products"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:137
+msgid "Search all GravityKit products using a keyword"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:138
+msgid "Search products by title or description"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:139
+msgid "Clear Search"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:140
+msgid "Tabs"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:141
+msgid "Some products are installed from a Git repository. Are you sure you want to update them?"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:142
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Updated [updated] out of [total] products."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:144
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Update [product]"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:145
+msgid "Update All"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:146
+msgid "Spinning wheel animation"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:147
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Updating [product]"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:148
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Updating [product] ([current] of [total])"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:149
+msgid "Cancelling…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:150
+msgid "Incorrect data received from the server."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:152
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] is installed from a Git repository. Are you sure you want to continue?"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:153
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Deleting [product] can't be undone. Are you sure you want to continue?"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:154
+msgid "Reloading the UI…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:155
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Changes to [product] require reloading the UI."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:156
+msgid "Required"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:157
+msgid "Are you sure you want to clear unsaved changes?"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:158
+msgid "plugin icon"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:159
+msgid "Close Navigation"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:160
+msgid "Open Navigation"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:161
+msgid "Quick search..."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:162
+msgid "Product Navigation"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:164
+msgid "Save Settings"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:165
+msgid "Saving..."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:166
+msgid "Floaty logo"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:167
+msgid "The settings data couldn't be loaded."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:168
+msgid "Please [link]contact support[/link]."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:169
 msgid "Select All"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:114
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:369
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:127
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:167
+#: vendor_prefixed/trustedlogin/client/src/Form.php:236
 msgid "Revoke Access"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:186
-msgid "Revoke TrustedLogin"
+#: vendor_prefixed/trustedlogin/client/src/Admin.php:172
+msgid "You are logged in as a support user. Click to permanently revoke access."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:356
+#: vendor_prefixed/trustedlogin/client/src/Ajax.php:98
+msgid "Verification issue: Request could not be verified. Please reload the page."
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Ajax.php:105
+msgid "You do not have the ability to create users."
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Client.php:325
+#: vendor_prefixed/trustedlogin/client/src/Client.php:455
+msgid "TrustedLogin requires a secure connection using HTTPS."
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Client.php:571
+msgid "The support user was not deleted."
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Encryption.php:306
+msgid "Encryption key could not be fetched, Vendor site returned 404."
+msgstr ""
+
+#. translators: %s is the ID of the user who created the support session. The user can't be found; only the User ID is known.
+#: vendor_prefixed/trustedlogin/client/src/Form.php:223
 msgid "Unknown (User #%d)"
 msgstr ""
 
 #. translators: %s is the display name of the user who granted access
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:371
+#: vendor_prefixed/trustedlogin/client/src/Form.php:238
 msgid "Created %s ago by %s"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:397
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:973
+#: vendor_prefixed/trustedlogin/client/src/Form.php:264
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1073
 msgid "Secured by TrustedLogin"
 msgstr ""
 
+#: vendor_prefixed/trustedlogin/client/src/Form.php:350
+msgid "Terms of Service"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:366
+msgid "By granting access, you agree to the {{tos_link}}."
+msgstr ""
+
 #. translators: %s is the reference ID
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:493
+#: vendor_prefixed/trustedlogin/client/src/Form.php:407
 msgid "Reference #%s"
 msgstr ""
 
 #. translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets"). %2$s is the amount of time remaining for access ("1 week")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:508
+#: vendor_prefixed/trustedlogin/client/src/Form.php:423
 msgid "%1$s has site access that expires in %2$s."
 msgstr ""
 
 #. translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:516
+#: vendor_prefixed/trustedlogin/client/src/Form.php:431
 msgid "%1$s would like support access to this site."
 msgstr ""
 
 #. translators: %1$s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:519
+#: vendor_prefixed/trustedlogin/client/src/Form.php:434
 msgid "Grant %1$s access to this site."
 msgstr ""
 
+#: vendor_prefixed/trustedlogin/client/src/Form.php:506
+msgid "Include a message for support?"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:519
+msgid "Please describe the issue you are having."
+msgstr ""
+
 #. translators: %s is replaced with the of time that the login will be active for (e.g. "1 week")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:552
+#: vendor_prefixed/trustedlogin/client/src/Form.php:543
 msgid "Access this site for %s."
 msgstr ""
 
 #. translators: %s is replaced by the amount of time that the login will be active for (e.g. "1 week")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:555
+#: vendor_prefixed/trustedlogin/client/src/Form.php:546
 msgid "Access auto-expires in %s. You may revoke access at any time."
 msgstr ""
 
-#. translators: %s is replaced with the name of the role being cloned (e.g. "Administrator")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:562
-msgid "Create a user with a role similar to %s."
+#. translators: %s is replaced with the name of the role (e.g. "Administrator")
+#: vendor_prefixed/trustedlogin/client/src/Form.php:553
+msgid "Create a user with a role based on %s."
 msgstr ""
 
-#. translators: %s is replaced with the name of the role being cloned (e.g. "Administrator")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:563
-msgid "View role capabilities"
+#: vendor_prefixed/trustedlogin/client/src/Form.php:556
+msgid "View modified role capabilities"
 msgstr ""
 
 #. translators: %s is replaced with the name of the role (e.g. "Administrator")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:566
+#: vendor_prefixed/trustedlogin/client/src/Form.php:562
 msgid "Create a user with a role of %s."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:592
+#. translators: [link] and [/link] are replaced with a link to the Site Health page. Do not translate.
+#: vendor_prefixed/trustedlogin/client/src/Form.php:590
+msgid "Include the [link]Site Health[/link] troubleshooting report"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:613
 msgid "Additional capabilities:"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:593
+#: vendor_prefixed/trustedlogin/client/src/Form.php:614
 msgid "Removed capabilities:"
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:662
+#: vendor_prefixed/trustedlogin/client/src/Form.php:684
 msgid "%s support may not be able to access this site."
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:663
+#: vendor_prefixed/trustedlogin/client/src/Form.php:685
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:665
+#: vendor_prefixed/trustedlogin/client/src/Form.php:687
 msgid "Learn more."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:715
+#: vendor_prefixed/trustedlogin/client/src/Form.php:737
 msgid "Learn about TrustedLogin"
 msgstr ""
 
+#: vendor_prefixed/trustedlogin/client/src/Form.php:793
+msgid "TrustedLogin Status"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:793
+msgid "Offline"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:793
+msgid "Online"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:794
+msgid "API Key"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:795
+msgid "License Key"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:796
+msgid "Log URL"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:796
+msgid "Download the log"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:797
+msgid "Log Level"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:797
+msgid "(Default)"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:798
+msgid "Webhook URL"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:799
+msgid "Vendor Public Key"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:799
+msgid "Verify key"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:817
+msgid "Debugging Info"
+msgstr ""
+
+#: vendor_prefixed/trustedlogin/client/src/Form.php:819
+msgid "TrustedLogin Config"
+msgstr ""
+
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:913
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1012
 msgid "Grant %s Access"
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:915
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1014
 msgid "Extend %s Access"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1018
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1127
 msgid "Could not create TrustedLogin access."
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1026
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1136
 msgid "The user details could not be sent to %1$s automatically."
 msgstr ""
 
 #. translators: %1$s is the vendor support url and %2$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1031
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1141
 msgid "Please <a href=\"%1$s\" target=\"_blank\">click here</a> to go to the %2$s support site"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1039
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1149
 msgid "Confirm"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1042
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1152
 msgid "Go to %1$s support site"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1046
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1156
 msgid "Revoke %1$s support access"
 msgstr ""
 
-#. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1047
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1213
-msgid "Copy"
-msgstr ""
-
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1048
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1158
 msgid "Copied!"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1051
-msgid "(This link opens in a new window.)"
-msgstr ""
-
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1052
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1162
 msgid "The access key has been copied to your clipboard."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1056
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1166
 msgid "Support access granted"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1059
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1169
 msgid "A temporary support user has been created, and sent to %1$s support."
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1065
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1175
 msgid "Generating & encrypting secure support access for %1$s"
 msgstr ""
 
 #. translators: %1$s is the vendor title and %2$s is the human-readable expiration time (for example, "1 week")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1069
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1179
 msgid "Extending support access for %1$s by %2$s"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1073
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1183
 msgid "Sending encrypted access to %1$s."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1076
+#. translators: %1$s is the vendor title
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1187
 msgid "Error syncing support user to %1$s"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1087
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1198
 msgid "Action Cancelled"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1090
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1201
 msgid "A support account for %1$s was not created."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1095
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1206
 msgid "Support Access Was Not Granted"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1096
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1207
 msgid "There was an error granting access: "
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1099
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1210
 msgid "Your authorized session has expired. Please refresh the page."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1102
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1213
 msgid "TrustedLogin Key Created"
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1105
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1216
 msgid "Share this TrustedLogin Key with %1$s to give them secure access:"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1111
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1222
 msgid "The TrustedLogin vendor could not be found."
 msgstr ""
 
 #. translators: %1$s is the vendor title
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1117
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1228
 msgid "%1$s Support user already exists"
 msgstr ""
 
 #. translators: %1$s is the vendor title, %2$s is the URL to the users list page
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1123
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1234
 msgid "A support user for %1$s already exists. You may revoke this support access from your <a href=\"%2$s\" target=\"_blank\">Users list</a>."
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1164
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1276
 msgid "No %s users exist."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1190
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1306
 msgid "There was an error returning the access key."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1210
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1328
 msgid "Site access key:"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1211
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1330
 msgid "Access Key"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1215
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1338
 msgid "Copy the access key to your clipboard"
 msgstr ""
 
 #. translators: %s is the display name of the TrustedLogin support user.
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1217
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1341
 msgid "The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums."
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1259
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1374
 msgid "%s access revoked."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Admin.php:1262
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1377
 msgid "You may safely close this window."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Client.php:309
-#: vendor_prefixed/trustedlogin/client/src/Client.php:412
-msgid "TrustedLogin requires a secure connection using HTTPS."
-msgstr ""
-
-#: vendor_prefixed/trustedlogin/client/src/Client.php:517
-msgid "The support user was not deleted."
-msgstr ""
-
-#: vendor_prefixed/trustedlogin/client/src/Encryption.php:261
-msgid "Encryption key could not be fetched, Vendor site returned 404."
-msgstr ""
-
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:230
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:249
 msgid "Unable to verify Pause Mode."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:233
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:252
 msgid "Authentication failed."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:236
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:255
 msgid "TrustedLogin account issue."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:239
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:258
 msgid "Invalid tokens."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:243
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:262
 msgid "The TrustedLogin vendor was not found."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:253
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:272
 msgid "The TrustedLogin site is not currently online."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:259
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:278
 msgid "The TrustedLogin site is not currently available."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:263
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:306
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:282
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:325
 msgid "Invalid response."
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:300
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:319
 msgid "The response was invalid."
 msgstr ""
 
 #. translators: %s is the name of the missing data from the server
-#: vendor_prefixed/trustedlogin/client/src/Remote.php:325
+#: vendor_prefixed/trustedlogin/client/src/Remote.php:344
 msgid "Invalid response. Missing key: %s"
 msgstr ""
 
@@ -5507,11 +6387,426 @@ msgid "Could not sync to TrustedLogin server"
 msgstr ""
 
 #. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
-#: vendor_prefixed/trustedlogin/client/src/SupportRole.php:167
+#: vendor_prefixed/trustedlogin/client/src/SupportRole.php:246
 #: vendor_prefixed/trustedlogin/client/src/SupportUser.php:242
 msgid "%s Support"
 msgstr ""
 
-#: vendor_prefixed/trustedlogin/client/src/SupportUser.php:208
+#: vendor_prefixed/trustedlogin/client/src/SupportUser.php:205
 msgid "User not created; User with that email already exists"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/edit.js:26
+#: future/includes/gutenberg/blocks/entry-link/edit.js:31
+#: future/includes/gutenberg/blocks/entry/edit.js:26
+#: future/includes/gutenberg/blocks/view-details/edit.js:23
+#: future/includes/gutenberg/blocks/view/edit.js:41
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+msgid "Block preview image."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/edit.js:38
+#: future/includes/gutenberg/build/entry-field.js:1
+msgid "These are space-separated overrides for field settings (e.g., title, label, etc.) using the key=\"value\" format. See the [link]GravityView documentation[/link] for more information."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/edit.js:45
+#: future/includes/gutenberg/blocks/entry-link/edit.js:48
+#: future/includes/gutenberg/blocks/entry/edit.js:41
+#: future/includes/gutenberg/blocks/view-details/edit.js:40
+#: future/includes/gutenberg/blocks/view/edit.js:97
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/no-views-notice.js:17
+msgid "Main Settings"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/edit.js:70
+#: future/includes/gutenberg/blocks/entry-field/edit.js:71
+#: future/includes/gutenberg/build/entry-field.js:1
+msgid "Field Setting Overrides"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/edit.js:68
+#: future/includes/gutenberg/build/entry-link.js:1
+msgid "Link Settings"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/edit.js:71
+#: future/includes/gutenberg/build/entry-link.js:1
+msgid "Link Action"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/edit.js:84
+#: future/includes/gutenberg/build/entry-link.js:1
+msgid "Format"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/edit.js:88
+#: future/includes/gutenberg/build/entry-link.js:1
+msgid "URL"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/edit.js:96
+#: future/includes/gutenberg/build/entry-link.js:1
+msgid "Link Text"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/edit.js:102
+#: future/includes/gutenberg/build/entry-link.js:1
+msgid "Link Attributes"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/edit.js:109
+#: future/includes/gutenberg/blocks/view/edit.js:193
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/view.js:1
+msgid "Extra Settings"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/edit.js:117
+#: future/includes/gutenberg/build/entry-link.js:1
+msgid "Field Values"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/edit.js:49
+#: future/includes/gutenberg/build/view-details.js:1
+msgid "Detail"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/edit.js:52
+#: future/includes/gutenberg/build/view-details.js:1
+msgid "Total Entries"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/edit.js:53
+#: future/includes/gutenberg/build/view-details.js:1
+msgid "First Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/edit.js:54
+#: future/includes/gutenberg/build/view-details.js:1
+msgid "Last Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:69
+#: future/includes/gutenberg/build/view.js:1
+msgid "Map is not available in the Block preview"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:81
+#: future/includes/gutenberg/build/view.js:1
+msgid "Entries from the DataTables layout are not available in the Block preview"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:111
+#: future/includes/gutenberg/build/view.js:1
+msgid "Entries Settings"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:113
+#: future/includes/gutenberg/build/view.js:1
+msgid "Start Date"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:120
+#: future/includes/gutenberg/blocks/view/edit.js:159
+#: future/includes/gutenberg/build/view.js:1
+msgid "Calendar Date"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:128
+#: future/includes/gutenberg/blocks/view/edit.js:144
+#: future/includes/gutenberg/blocks/view/edit.js:167
+#: future/includes/gutenberg/blocks/view/edit.js:183
+#: future/includes/gutenberg/build/view.js:1
+msgid "Relative Date"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:145
+#: future/includes/gutenberg/blocks/view/edit.js:184
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Examples of relative dates."
+msgid "now, today, +1 day"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:152
+#: future/includes/gutenberg/build/view.js:1
+msgid "End Date"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:204
+#: future/includes/gutenberg/build/view.js:1
+msgid "Sort Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:212
+#: future/includes/gutenberg/build/view.js:1
+msgid "Sort Direction"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:215
+#: future/includes/gutenberg/build/view.js:1
+msgid "Ascending"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:216
+#: future/includes/gutenberg/build/view.js:1
+msgid "Descending"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:244
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"is\"."
+msgid "Is"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:245
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"isnot\"."
+msgid "Is Not"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:246
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"<>\"."
+msgid "Not Equal"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:247
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"not in\"."
+msgid "Not In"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:248
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"in\"."
+msgid "In"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:249
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \">\"."
+msgid "Greater"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:250
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"<\"."
+msgid "Lesser"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:251
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"contains\"."
+msgid "Contains"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:252
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"starts_with\"."
+msgid "Starts With"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:253
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"ends_with\"."
+msgid "Ends With"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:254
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"like\"."
+msgid "Like"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:255
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \">=\"."
+msgid "Greater Or Equal"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:256
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes search operator \"<=\"."
+msgid "Lesser Or Equal"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:265
+#: future/includes/gutenberg/build/view.js:1
+msgctxt "Denotes CSS class"
+msgid "Class"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:271
+#: future/includes/gutenberg/build/view.js:1
+msgid "Offset"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/edit.js:279
+#: future/includes/gutenberg/build/view.js:1
+msgid "Single Title"
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/view-selector.js:33
+msgid "No Views found"
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/shared/js/entry-selector.js:18
+msgctxt "[position] will be replaced with \"first\" or \"last\" and not to be translated."
+msgid "Field data will be shown for the [position] entry in the View."
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/shared/js/entry-selector.js:30
+msgid "Entry Type"
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/shared/js/entry-selector.js:43
+msgid "First"
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/shared/js/entry-selector.js:50
+msgid "Last"
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/preview-control.js:11
+msgid "Preview"
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/preview-as-shortcode-control.js:13
+msgid "Preview As Shortcode"
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/no-views-notice.js:6
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "You must [url]create a View[/url] before using this block."
+msgstr ""
+
+#: future/includes/gutenberg/build/entry-field.js:1
+#: future/includes/gutenberg/build/entry-link.js:1
+#: future/includes/gutenberg/build/entry.js:1
+#: future/includes/gutenberg/build/view-details.js:1
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/server-side-render.js:171
+msgid "The block did not render any content."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""

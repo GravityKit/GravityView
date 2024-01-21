@@ -132,7 +132,7 @@ class GravityView_Admin {
 		include_once( GRAVITYVIEW_DIR .'includes/class-gravityview-bulk-actions.php' );
 
 		/**
-		 * @action `gravityview_include_backend_actions` Triggered after all GravityView admin files are loaded
+		 * Triggered after all GravityView admin files are loaded.
 		 *
 		 * Nice place to insert extensions' backend stuff
 		 */
@@ -209,7 +209,7 @@ class GravityView_Admin {
 		        /* translators: Date and time the View is scheduled to be published */
 				__( 'View scheduled for: %1$s.', 'gk-gravityview' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i', 'gk-gravityview' ), strtotime( ( isset( $post->post_date ) ? $post->post_date : NULL )  ) )
+			    date_i18n( __( 'M j, Y @ G:i', 'gk-gravityview' ), strtotime( $post->post_date ?? '' ) )
 			) . $new_form_text,
 			/* translators: %s and %s are HTML tags linking to the View on the website */
 			10  => sprintf(__( 'View draft updated. %sView on website.%s', 'gk-gravityview' ), '<a href="'.get_permalink( $post_id ).'">', '</a>') . $new_form_text,

@@ -85,7 +85,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	}
 
 	/**
-	 * @filter `gravityview/template/field_label` Modify field label output
+	 * Modify field label output.
 	 *
 	 * @since 1.19
 	 *
@@ -166,7 +166,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		$style_url = plugins_url( 'css/field-approval.css', trailingslashit( dirname( $style_path ) )  );
 
 		/**
-		 * @filter `gravityview/field/approval/css_url` URL to the Approval field CSS file.
+		 * URL to the Approval field CSS file.
 		 * @since 1.19
 		 * @param string $style_url Override to use your own CSS file, or return empty string to disable loading.
 		 */

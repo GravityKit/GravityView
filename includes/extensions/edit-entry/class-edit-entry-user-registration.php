@@ -5,8 +5,8 @@
  * @since 1.11
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  */
 
@@ -48,7 +48,7 @@ class GravityView_Edit_Entry_User_Registration {
     public function add_hooks() {
 
 	    /**
-	     * @filter `gravityview/edit_entry/user_registration/trigger_update` Choose whether to update user information via User Registration add-on when an entry is updated?
+	     * Choose whether to update user information via User Registration add-on when an entry is updated?
 	     * @since 1.11
 	     * @param boolean $boolean Whether to trigger update on user registration (default: true)
 	     */
@@ -92,7 +92,7 @@ class GravityView_Edit_Entry_User_Registration {
         $entry = GFAPI::get_entry( $entry_id );
 
 	    /**
-	     * @filter `gravityview/edit_entry/user_registration/entry` Modify entry details before updating the user via User Registration add-on
+	     * Modify entry details before updating the user via User Registration add-on.
 	     * @since 1.11
 	     * @param array $entry Gravity Forms entry
 	     * @param array $form Gravity Forms form
@@ -148,12 +148,19 @@ class GravityView_Edit_Entry_User_Registration {
 	 */
     public function get_feed_configuration( $entry, $form ) {
 
+	    /** @var \GF_User_Registration $gf_user_registration */
 	    $gf_user_registration = GF_User_Registration::get_instance();
 
 	    $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
 
+	    // Return empty array if no feed found, but still allow filtering.
+	    if ( empty( $config ) ) {
+		    // Filter is documented below.
+		    return apply_filters( 'gravityview/edit_entry/user_registration/config', [], $form, $entry );
+	    }
+
 	    /**
-	     * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
+	     * Keep the current user role or override with the role defined in the Create feed.
 	     * @since 1.15
 	     * @param boolean $preserve_role Preserve current user role Default: true
 	     * @param array $config Gravity Forms User Registration feed configuration for the form
@@ -175,7 +182,7 @@ class GravityView_Edit_Entry_User_Registration {
 	    $config['meta']['displayname'] = $displayname ? $displayname : $config['meta']['displayname'];
 
 	    /**
-	     * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
+	     * Modify the User Registration Addon feed configuration.
 	     * @since 1.14
 	     * @param array $config Gravity Forms User Registration feed configuration for the form
 	     * @param array $form Gravity Forms form array
@@ -265,7 +272,7 @@ class GravityView_Edit_Entry_User_Registration {
     public function restore_display_name( $user_id = 0, $config = array(), $entry = array(), $password = '' ) {
 
         /**
-         * @filter `gravityview/edit_entry/restore_display_name` Whether display names should be restored to before updating an entry.
+         * Whether display names should be restored to before updating an entry.
          * Otherwise, display names will be reset to the format specified in Gravity Forms User Registration "Update" feed
          * @since 1.14.4
          * @param boolean $restore_display_name Restore Display Name? Default: true

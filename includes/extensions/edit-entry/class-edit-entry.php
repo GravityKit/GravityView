@@ -6,8 +6,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
@@ -149,19 +149,21 @@ class GravityView_Edit_Entry {
 
 		static $visibility_cache_for_view = array();
 
-		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $view->ID, null ) ) ) {
+		$anchor_id = $view->get_anchor_id();
+
+		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $anchor_id, null ) ) ) {
 			return $result;
 		}
 
 		foreach ( $view->get_entries()->all() as $entry ) {
 			if ( self::check_user_cap_edit_entry( $entry->as_entry(), $view ) ) {
 				// At least one entry is deletable for this user
-				$visibility_cache_for_view[ $view->ID ] = true;
+				$visibility_cache_for_view[ $anchor_id ] = true;
 				return true;
 			}
 		}
 
-		$visibility_cache_for_view[ $view->ID ] = false;
+		$visibility_cache_for_view[ $anchor_id ] = false;
 
 		return false;
 	}
@@ -236,7 +238,7 @@ class GravityView_Edit_Entry {
 	    }
 
 	    /**
-	     * @filter `gravityview/edit/link` Filter the edit URL link.
+	     * Filter the edit URL link.
 	     *
 	     * @since  2.14.6 Added $post param.
 	     *
@@ -326,7 +328,7 @@ class GravityView_Edit_Entry {
 		$fields = apply_filters_deprecated( 'gravityview/edit_entry/field_blacklist', array( $fields, $entry ), '2.14', 'gravityview/edit_entry/field_blocklist' );
 
 		/**
-		 * @filter `gravityview/edit_entry/field_blocklist` Array of fields that should not be displayed in Edit Entry
+		 * Array of fields that should not be displayed in Edit Entry.
 		 * @since 1.20
 		 * @param string[] $fields Array of field type or meta key names (eg: `[ "captcha", "payment_status" ]` ).
 		 * @param array $entry Gravity Forms entry array.
@@ -342,8 +344,8 @@ class GravityView_Edit_Entry {
      *
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
-     * @param  array $entry Gravity Forms entry array
-     * @param \GV\View|int $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0
+     * @param  array|\WP_Error $entry Gravity Forms entry array or WP_Error if the entry wasn't found.
+     * @param \GV\View|int $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0.
      * @return bool
      */
     public static function check_user_cap_edit_entry( $entry, $view = 0 ) {
@@ -356,33 +358,37 @@ class GravityView_Edit_Entry {
 			// @deprecated path
 			$view_id = GravityView_View::getInstance()->getViewId();
 			$user_edit = GravityView_View::getInstance()->getAtts( 'user_edit' );
+		} elseif ( $view instanceof \GV\View ) {
+			$view_id = $view->ID;
+			$user_edit = $view->settings->get( 'user_edit' );
 		} else {
-			if ( $view instanceof \GV\View ) {
-				$view_id = $view->ID;
-			} else {
-				$view_id = $view;
-			}
-
-			// in case is specified and not the current view
+			$view_id = $view;
 			$user_edit = GVCommon::get_template_setting( $view_id, 'user_edit' );
 		}
 
-        // If they can edit any entries (as defined in Gravity Forms)
-        // Or if they can edit other people's entries
-        // Then we're good.
-        if( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $entry['id'] ) ) {
+		// If the entry doesn't exist, they can't edit it, can they?
+	    if ( ! $entry || is_wp_error( $entry ) ) {
 
-            gravityview()->log->debug( 'User has ability to edit all entries.' );
+		    gravityview()->log->error( 'Entry doesn\'t exist.' );
 
-            $user_can_edit = true;
+		    $user_can_edit = false;
 
-        } else if( !isset( $entry['created_by'] ) ) {
+	    }
 
-            gravityview()->log->error( 'Entry `created_by` doesn\'t exist.');
+	    // If they can edit any entries (as defined in Gravity Forms) or if they can edit other people's entries, then we're good.
+		elseif ( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ), $entry['id'] ) ) {
 
-            $user_can_edit = false;
+		    gravityview()->log->debug( 'User has ability to edit all entries.' );
 
-        } else {
+		    $user_can_edit = true;
+
+	    } elseif ( ! isset( $entry['created_by'] ) ) {
+
+		    gravityview()->log->error( 'Entry `created_by` doesn\'t exist.' );
+
+		    $user_can_edit = false;
+
+	    } else {
 
             $current_user = wp_get_current_user();
 
@@ -395,26 +401,27 @@ class GravityView_Edit_Entry {
             }
 
             // User edit is enabled and the logged-in user is the same as the user who created the entry. We're good.
-            else if( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+            elseif( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
 
                 gravityview()->log->debug( 'User {user_id} created the entry.', array( 'user_id', $current_user->ID ) );
 
                 $user_can_edit = true;
 
-            } else if( ! is_user_logged_in() ) {
+            } elseif( ! is_user_logged_in() ) {
 
                 gravityview()->log->debug( 'No user defined; edit entry requires logged in user' );
 
+	            /** @noinspection PhpConditionAlreadyCheckedInspection */
 	            $user_can_edit = false; // Here just for clarity
             }
 
         }
 
         /**
-         * @filter `gravityview/edit_entry/user_can_edit_entry` Modify whether user can edit an entry.
+         * Modify whether user can edit an entry.
          * @since 1.15 Added `$entry` and `$view_id` parameters
          * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
-         * @param array $entry Gravity Forms entry array {@since 1.15}
+         * @param array|\WP_Error $entry Gravity Forms entry array {@since 1.15}
          * @param int $view_id ID of the view you want to check visibility against {@since 1.15}
          */
         $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );

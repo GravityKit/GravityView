@@ -3,7 +3,7 @@
  * Welcome Page Class
  *
  * @package   GravityView
- * @author    Zack Katz <zack@gravityview.co>
+ * @author    Zack Katz <zack@gravitykit.com>
  * @link      https://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
@@ -65,6 +65,7 @@ class GravityView_Welcome {
 			'capability' => $this->minimum_capability,
 			'callback'   => array( $this, 'changelog_screen' ),
 			'order'      => 40,
+			'hide'       => true,
 		], 'center' );
 
 		// Changelog Page
@@ -75,16 +76,18 @@ class GravityView_Welcome {
 			'capability' => $this->minimum_capability,
 			'callback'   => array( $this, 'credits_screen' ),
 			'order'      => 50,
+			'hide'       => true,
 		], 'center' );
 
 		// Add Getting Started page to GravityView menu
 		$admin_menu::add_submenu_item( [
-			'id'         => 'gv-getting-started',
-			'page_title' => __( 'GravityView: Getting Started', 'gk-gravityview' ),
-			'menu_title' => __( 'Getting Started', 'gk-gravityview' ),
-			'capability' => $this->minimum_capability,
-			'callback'   => array( $this, 'getting_started_screen' ),
-			'order'      => 60, // Make it the last so that the border divider remains
+			'id'                                 => 'gv-getting-started',
+			'page_title'                         => __( 'GravityView: Getting Started', 'gk-gravityview' ),
+			'menu_title'                         => __( 'Getting Started', 'gk-gravityview' ),
+			'capability'                         => $this->minimum_capability,
+			'callback'                           => array( $this, 'getting_started_screen' ),
+			'order'                              => 60, // Make it the last so that the border divider remains
+			'exclude_from_top_level_menu_action' => true,
 		], 'center' );
 	}
 
@@ -114,13 +117,6 @@ class GravityView_Welcome {
 	 * @return void
 	 */
 	public function admin_head() {
-
-		/** @var \GravityKit\GravityView\Foundation\WP\AdminMenu $admin_menu */
-		$admin_menu = GravityKitFoundation::admin_menu();
-
-		$admin_menu::remove_submenu_item( 'gv-credits' );
-		$admin_menu::remove_submenu_item( 'gv-changelog' );
-
 		if( ! $this->is_dashboard_page() ) {
 			return;
 		}
@@ -183,9 +179,13 @@ class GravityView_Welcome {
 			<h2 class="about-headline-callout">Configuring a View</h2>
 
 			<div class="feature-video"  style="text-align:center;">
-				<iframe height="315" src="https://www.youtube-nocookie.com/embed/WrXsZhqKRY8?rel=0&amp;showinfo=0" frameborder="0" allowfullscreen></iframe>
+				<iframe width='560' height='315'
+						src='https://www.youtube-nocookie.com/embed/videoseries?list=PLuSpaefk_eAP_OXQVWQVtX0fQ17J8cn09'
+						frameborder='0'
+						allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+						allowfullscreen></iframe>
 
-				<p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravityview.co/category/24-category" rel="noopener noreferrer external" target="_blank">Read more: Setting Up Your First View<span class='screen-reader-text'> <?php esc_attr_e( 'This link opens in a new window.', 'gk-gravityview' ); ?></span></a></p>
+				<p style="text-align:center; padding-top: 1em;"><a class="button button-primary button-hero" href="https://docs.gravitykit.com/article/380-how-to-setup-your-first-view" rel="noopener noreferrer external" target="_blank">Read more: Setting Up Your First View<span class='screen-reader-text'> <?php esc_attr_e( 'This link opens in a new window.', 'gk-gravityview' ); ?></span></a></p>
 			</div>
 
 			<div class="feature-section two-col has-2-columns is-fullwidth">
@@ -217,7 +217,7 @@ class GravityView_Welcome {
 			<div class="feature-section two-col has-2-columns is-fullwidth">
 				<div class="col column">
 					<h3>Embed Views in the Block Editor</h3>
-					<p>Embed Views using the "Add Shortcode" button above your content editor. <a href="https://docs.gravityview.co/article/73-using-the-shortcode">Learn how to use the <code>[gravityview]</code> shortcode.</a></p>
+					<p>Embed Views using the "Add Shortcode" button above your content editor. <a href="https://docs.gravitykit.com/article/73-using-the-shortcode">Learn how to use the <code>[gravityview]</code> shortcode.</a></p>
 				</div>
 				<div class="col column">
 					<img src="<?php echo plugins_url( 'assets/images/screenshots/shortcode-block.png', GRAVITYVIEW_FILE ); ?>" alt="Screenshot of the Shortcode block" />
@@ -275,453 +275,319 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
-
-				<h3>2.16.6 on January 12, 2023</h3>
+				<?php
+				/**
+ 				 * Include changelog entries for two MINOR versions. Prune beyond that.
+				 *
+				 * Examples:
+				 * 	- If 4.28.3, include to 4.26.
+				 *  - If 4.28, include to 4.26.
+ 				 */
+				?>
+				<h3>2.19.4 on November 2, 2023</h3>
 
 				<ul>
-					<li>Fixed: Fatal error due to an uncaught PHP exception</li>
-					<li>Fixed: It was not possible to select any content inside the field settings window in the View editor</li>
+					<li>Improved: View editor performance, especially with Views with a large number of fields</li>
+					<li>Improved: "Link to Edit Entry," "Link to Single Entry," and "Delete Entry" fields are now more easily accessible at the top of the field picker in the View editor</li>
+					<li>Fixed: PHP 8.1+ deprecation notice</li>
 				</ul>
 
-				<h3>2.16.5 on January 5, 2023</h3>
+				<h3>2.19.3 on October 25, 2023</h3>
 
 				<ul>
-					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.0.8</li>
-					<li>Improved: Internal changes to allow using Custom Content fields on the Edit Screen with the <a href="https://www.gravitykit.com/extensions/diy-layout/">DIY Layout</a></li>
+					<li>Fixed: Using merge tags as values for search and start/end date override settings was not working in Views embedded as a field</li>
+					<li>Fixed: Deprecation notice in PHP 8.2+</li>
 				</ul>
 
-				<h3>2.16.4 on December 23, 2022</h3>
+				<h3>2.19.2 on October 19, 2023</h3>
 
 				<ul>
-					<li>Fixed: Prevent possible conflict in the View editor with themes/plugins that use Bootstrap's tooltip library</li>
+					<li>Fixed: Merge tags were still not working in the Custom Content field after the fix in 2.19.1</li>
 				</ul>
 
-				<h3>2.16.3 on December 21, 2022</h3>
+				<h3>2.19.1 on October 17, 2023</h3>
 
 				<ul>
-					<li>Fixed: Caching wouldn't always clear when an entry was added or modified</li>
-					<li>Fixed: Fatal error on some hosts due to a conflict with one of the plugin dependencies (psr/log)</li>
-					<li>Fixed: PHP 8.1 notices</li>
-					<li>Fixed: View scripts and styles not loading for some logged-in users</li>
+					<li>Fixed: PHP 8+ deprecation notice appearing on 404 pages</li>
+					<li>Fixed: Merge tags not working in the Custom Content field</li>
+					<li>Improved: PHP 8.1 compatibility</li>
 				</ul>
 
-				<h3>2.16.2 on December 14, 2022</h3>
+				<h3>2.19 on October 12, 2023</h3>
 
 				<ul>
-					<li>Fixed: Views would take an abnormally long time to load</li>
-					<li>Fixed: Fatal error on some hosts that use weak security keys and salts</li>
-				</ul>
-
-				<h3>2.16.1 on December 7, 2022</h3>
-
-				<ul>
-					<li>Fixed: Date picker and other JavaScript not working on the Edit Entry screen</li>
-					<li>Fixed: JavaScript error preventing the Search Bar widget properties from opening when creating a new View</li>
-					<li>Fixed: CodeMirror editor initializing multiple times when opening the custom content field properties in the View</li>
-					<li>Fixed: Secure download link for the file upload field was not showing the file name as the link text</li>
-					<li>Fixed: The saved View would not recognize fields added from a joined form when using the <a href="https://www.gravitykit.com/extensions/multiple-forms/">Multiple Forms</a> extension</li>
-				</ul>
-
-				<h3>2.16.0.4 on December 2, 2022</h3>
-
-				<ul>
-					<li>Fixed: Incompatibility with some plugins/themes that could result in a blank WordPress Dashboard</li>
-				</ul>
-
-				<h3>2.16.0.3 on December 2, 2022</h3>
-
-				<ul>
-					<li>Fixed: Fatal error when downloading plugin translations</li>
-				</ul>
-
-				<h3>2.16.0.2 on December 1, 2022</h3>
-
-				<ul>
-					<li>Fixed: Fatal error when Maps isn't installed</li>
-				</ul>
-
-				<h3>2.16.0.1 on December 1, 2022</h3>
-
-				<ul>
-					<li>Fixed: Admin menu not expanded when on a GravityView page</li>
-				</ul>
-
-				<h3>2.16 on December 1, 2022</h3>
-
-				<ul>
-					<li>Added: New WordPress admin menu where you can now centrally manage all your GravityKit product
-						licenses and settings (<a href='https://www.gravitykit.com/foundation/'>learn more about the new
-							GravityKit menu</a>)
-						<ul>
-							<li>Go to the WordPress sidebar and check out the GravityKit menu!</li>
-							<li>We have automatically migrated your existing licenses and settings, which were
-								previously entered in the Views→Settings page
-							</li>
-							<li>Request support using the 'Grant Support Access' menu item</li>
-						</ul>
+					<li>Added: Embed a Gravity Forms form using a field in the View editor</li>
+					<li>Added: Embed a GravityView View using a field in the View editor</li>
+					<li>Added: New Custom Code tab in the View Setting metabox to add custom CSS and JavaScript to the
+						View
 					</li>
-					<li>Added: Support for defining <code>alt</code> text in File Upload fields</li>
-					<li>Added: 'Pre-Filter Choices' Search Bar setting will only display choices that exist in submitted
-						entries (<a href='https://docs.gravitykit.com/article/701-s'>learn more about Pre-Filter
-							Choices</a>)
+					<li>Fixed: Appearance of HTML tables nested within View fields, including Gravity Forms Survey
+						Add-On fields
 					</li>
-					<li>Improved: When creating a new View, it is now possible to install a View type (if included in
-						the license) straight from the View editor
+					<li>Fixed: Clicking the '?' tooltip icon would not go to the article if the Support Port is
+						disabled
 					</li>
-					<li>Improved: Reduce the number of queries when displaying a View</li>
-					<li>Improved: The Edit View screen loads faster</li>
-					<li>Fixed: Merge Tags were not processed inside Custom Content fields when using the <a
-								href='https://docs.gravitykit.com/article/463-gventry-shortcode'><code>[gventry]</code>
-							edit mode</a></li>
-					<li>Fixed: Gravity Forms poll results was not being refreshed after editing a Poll field in
-						GravityView Edit Entry
-					</li>
-					<li>Fixed: Survey field 'Rating' stars were not displaying properly in the frontend</li>
-					<li>Fixed: JavaScript error when creating a new View</li>
-					<li>Fixed: JavaScript error when opening field settings in a new View</li>
-					<li>Fixed: Merge Tag picker not initializing when changing View type for an existing View</li>
-					<li>Fixed: 'Field connected to XYZ field was deleted from the form' notice when adding a new field
-						to a View created from a form preset
-					</li>
-					<li>Fixed: Edit Entry may partially save changes if form fields have conditional logic; thanks,
-						Jurriaan!
-					</li>
-					<li>Fixed: View presets not working</li>
-					<li>Fixed: 'This View is configured using the View type, which is disabled' notice when creating a
-						new View after activating or installing a View type (e.g., Maps, DIY, DataTables)
-					</li>
-					<li>Fixed: Incorrect search mode is set when one of the View search widget fields uses a 'date
-						range' input type
-					</li>
-					<li>Fixed: Multiple files upload error (e.g., when editing an entry using GravityEdit)</li>
+					<li>Tweak: Improved Chained Select field output when the Chained Select Add-On is disabled</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2.5</li>
 				</ul>
 
 				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
-					<li>Added: <code>gravityview/template/field/survey/rating/before</code> filter that fires before the
-						Survey field rating stars markup
-					</li>
-					<li>Added: <code>$return_view</code> parameter to <code>\GV\Request::is_view()</code> method,
-						reducing the need to build a \GV\View object when simply checking if a request is a View
-					</li>
-					<li>Added: <code>$expiration</code> parameter to <code>GravityView_Cache::set()</code> method to
-						allow for different cache lifetimes
-					</li>
-					<li>Fixed: <code>GravityView_Cache</code> was not used when the <code>WP_DEBUG</code> constant was
-						set to <code>true</code>. This resulted in the cache being effectively disabled on many sites.
-						<ul>
-							<li>Improved: Only run <code>GravityView_Cache::use_cache()</code> once per request</li>
-							<li>Added: <code>GRAVITYVIEW_DISABLE_CACHE</code> constant to disable the cache. Note:
-								<code>gravityview_use_cache</code> filter will still be run.
-							</li>
-						</ul>
+					<li>Added: Entries submitted using the new Gravity Forms Field will have
+						<code>gk_parent_entry_id</code> and <code>gk_parent_form_id</code> entry meta added to them to
+						better support connecting Views
 					</li>
 				</ul>
 
-
-				<h3>2.15 on September 21, 2022</h3>
+				<h3>2.18.7 on September 21, 2023</h3>
 
 				<ul>
-					<li>Added: Entire View contents are wrapped in a container, allowing for better styling (<a href='https://docs.gravitykit.com/article/867-modifying-the-view-container-div'>learn about, and how to modify, the container</a>)</li>
-					<li>Added: When submitting a search form, the page will scroll to the search form</li>
-					<li>Modified: Select and Multiselect search inputs will now use the connected field's "Placeholder" values, if defined in Gravity Forms (<a href="https://docs.gravitykit.com/article/866-search-bar-placeholder">read about Search Bar placeholders</a>)</li>
-					<li>Improved: Date comparisons when using <code>[gvlogic]</code> with <code>greater_than</code> or <code>less_than</code> comparisons</li>
-					<li>Fixed: Reduced the number of database queries to render a View, especially when using Custom Content, Entry Link, Edit Link, and Delete Link fields</li>
-					<li>Fixed: Removed the Gravity Forms Partial Entries Add-On privacy notice when using Edit Entry because auto-saving in Edit Entry is not supported</li>
-					<li>Fixed: The "entry approval is changed" notification, if configured, was being sent for new form submissions</li>
-					<li>Fixed: Views would not render in PHP 8.1</li>
-					<li>Fixed: Multiple PHP 8 and PHP 8.1 warnings</li>
+					<li>Added: Support for embedding Views inside <a href="https://iconicwp.com/products/woocommerce-account-pages">WooCommerce Account Pages</a></li>
+					<li>Improved: <code>[gvlogic]</code> shortcode now works with the <a href="https://github.com/GravityKit/Dashboard-Views">Dashboard Views</a> add-on</li>
+					<li>Fixed: The Recent Entries widget results would be affected when browsing a View: the search query, page number, and sorting would affect the displayed entries</li>
+					<li>Fixed: Activation of View types (e.g., Maps, DataTables) would fail in the View editor</li>
+					<li>Fixed: Image preview (file upload field) not working if the file is uploaded to Dropbox using the Gravity Forms Dropbox add-on</li>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.4</li>
 				</ul>
 
 				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
-					<li>Added: <code>gravityview/widget/search/append_view_id_anchor</code> filter to control appending the unique View anchor ID to the search URL (enabled by default)</li>
-					<li>Added: <code>gravityview/view/wrapper_container</code> filter to wrap to optionally wrap the View in a container (enabled by default) — <a href="https://docs.gravitykit.com/article/867-modifying-the-view-container-div">see examples of modifying the container</a></li>
-					<li>Added: <code>gravityview/view/anchor_id</code> filter to control the unique View anchor ID</li>
-					<li>Modified the following template files:
+					<li>Added: <code>gk/gravityview/approve-link/return-url</code> filter to modify the return URL after entry approval</li>
+					<li>Added: Second parameter to the <code>GravityView_Fields::get_all()</code> method to allow for filtering by context</li>
+					<li>Improved: Added third argument to <code>gravityview_get_connected_views()</code> to prevent including joined forms in the search</li>
+					<li>Implemented: The <code>GravityView_Field::$contexts</code> property is now respected; if defined, fields that are not in a supported context will not render</li>
+				</ul>
+
+				<h3>2.18.6 on September 7, 2023</h3>
+
+				<ul>
+					<li>Improved: Introduced a gear icon to the editor tabs that brings you directly to the Settings metabox</li>
+					<li>Improved: Support for RTL languages</li>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.2</li>
+				</ul>
+
+				<h3>2.18.5 on September 1, 2023</h3>
+
+				<ul>
+					<li>Fixed: Fatal error caused by GravityView version 2.18.4</li>
+				</ul>
+
+				<h3>2.18.4 on August 31, 2023</h3>
+
+				<ul>
+					<li>Added: A "Direct Access" summary in the Publish box in the View editor that makes it easy to see and modify whether a View is accessible directly</li>
+					<li>Improved: Views will now remember the Settings tab you are on after you save a View</li>
+					<li>Fixed: Resolved a fatal error that occurred under certain circumstances due to passing the wrong parameter type to a WordPress function</li>
+					<li>Updated: The video on the Getting Started page</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2</li>
+				</ul>
+
+				<h3>2.18.3 on July 20, 2023</h3>
+
+				<ul>
+					<li>Fixed: Incorrect total entry count and hidden pagination when View contains an Entry Edit field</li>
+				</ul>
+
+				<h3>2.18.2 on July 12, 2023</h3>
+
+				<ul>
+					<li>Fixed: Performance issue</li>
+					<li>Fixed: [WP-CLI](https://wp-cli.org/) not displaying available GravityKit product updates</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.1.1</li>
+				</ul>
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Added: <code>gk/gravityview/view/entries/cache</code> filter to provide control over the caching of View entries (default: <code>true</code>)</li>
+				</ul>
+
+				<h3>2.18.1 on June 20, 2023</h3>
+
+				<ul>
+					<li>Fixed: Fixed: PHP warning message that appeared when attempting to edit a View</li>
+				</ul>
+
+				<h3>2.18 on June 20, 2023</h3>
+
+				<ul>
+					<li>Fixed: Issue where "Edit Entry" link was not appearing under the Single Entry layout when the View was filtered using the "Created By" criterion with the "{user:ID}" merge tag</li>
+					<li>Fixed: REST API response breaking the functionality of Maps Layout 2.0</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.1</li>
+				</ul>
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Deprecated: <code>get_gravityview()</code> and the <code>the_gravityview()</code> global functions</li>
+					<li>Added: <code>GravityView_Field_Delete_Link</code> class to render the Delete Entry link instead of relying on filtering
 						<ul>
-							<li><code>includes/widgets/search-widget/templates/search-field-multiselect.php</code></li>
-							<li><code>includes/widgets/search-widget/templates/search-field-select.php</code></li>
-							<li><code>templates/views/list.php</code></li>
-							<li><code>templates/views/table.php</code></li>
-							<li><code>templates/fields/field-custom.php</code></li>
-							<li><code>templates/fields/field-duplicate_link-html.php</code></li>
-							<li><code>templates/fields/field-delete_link-html.php</code></li>
-							<li><code>templates/fields/field-edit_link-html.php</code></li>
-							<li><code>templates/fields/field-entry_link-html.php</code></li>
-							<li><code>templates/fields/field-website-html.php</code></li>
-							<li><code>templates/deprecated/fields/custom.php</code></li>
-							<li><code>templates/deprecated/fields/website.php</code></li>
+							<li><code>delete_link</code> will now be properly returned in the <code>GravityView_Fields::get_all('gravityview');</code> response</li>
 						</ul>
 					</li>
 				</ul>
 
-				<h3>2.14.7 on July 31, 2022</h3>
+				<h3>2.17.8 on May 16, 2023</h3>
 
 				<ul>
-					<li>Fixed: GravityView plugin updates were not shown in the plugin update screen since version 2.14.4 (April 27, 2022)</li>
+					<li>Improved: Performance when using Gravity Forms 2.6.9 or older</li>
+					<li>Improved: Form ID now appears beside the form title for easier data source selection in the View editor</li>
+					<li>Fixed: Fatal error when adding a GravityView block in Gutenberg editor</li>
+					<li>Fixed: Error when activating an installed but deactivated View type (e.g., Maps) from within the View editor</li>
+					<li>Fixed: File Upload fields may incorrectly show empty values</li>
 				</ul>
 
-				<h3>2.14.6 on May 27, 2022</h3>
+				<p><strong>Developer Notes:</strong></p>
 
 				<ul>
-					<li><a href='https://www.gravitykit.com/rebrand/'>GravityView (the company) is now GravityKit!</a>
+					<li>Added: <code>gk/gravityview/metaboxes/data-source/order-by</code> filter to modify the default sorting order of forms in the View editor's data source dropdown menu (default: <code>title</code>)</li>
+					<li>Added: <code>gk/gravityview/renderer/should-display-configuration-notice</code> filter to control the display of View configuration notices (default: <code>true</code>)</li>
+				</ul>
+
+				<h3>2.17.7 on May 4, 2023</h3>
+
+				<ul>
+					<li>Fixed: Fatal error when using the Radio input types in the Search Bar (introduced in 2.17.6)</li>
+				</ul>
+
+				<h3>2.17.6 on May 3, 2023</h3>
+
+				<ul>
+					<li>Added: Filter entries by payment status using a drop-down, radio, multi-select, or checkbox inputs in the Search Bar (previously, only searchable using a text input)</li>
+					<li>Modified: Added '(Inactive)' suffix to inactive forms in the Data Source dropdown</li>
+					<li>Fixed: Incompatibility with some plugins/themes that use Laravel components</li>
+					<li>Fixed: Appearance of Likert survey fields when using Gravity Forms Survey Add-On Version 3.8 or
+						newer
 					</li>
-					<li>Fixed: Embedding Edit Entry context directly in a page/post using the <code>[gventry
-							edit='1']</code> shortcode (<a
-								href='https://docs.gravitykit.com/article/463-gventry-shortcode'>learn more</a>)
+					<li>Fixed: Appearance of the Poll widget when using Gravity Forms Poll Add-On Version 4.0 or newer
 					</li>
-					<li>Fixed: Edit Entry link wasn't working in the Single Entry context of an embedded View</li>
-					<li>Fixed: Search Bar GravityView widget was not saving the chosen fields</li>
-					<li>Fixed: Gravity PDF shortcodes would not be processed when bulk-approving entries using
-						GravityView. Thanks, Jake!
+					<li>Fixed: <code>[gvlogic]</code> not working when embedded in a Post or Page</li>
+					<li>Fixed: <code>[gvlogic if='context' is='multiple']</code> not working when a View is embedded
 					</li>
-					<li>Fixed: Sometimes embedding a GravityView shortcode in the block editor could cause a fatal
-						error
+					<li>Fixed: Consent field always showing checked status when there are two or more Consent fields in
+						the form
 					</li>
-					<li>Fixed: Multiple PHP 8 warnings</li>
+					<li>Fixed: Selecting all entries on the Entries page would not properly apply all the search
+						filters
+					</li>
+				</ul>
+
+				<p><strong>Developer Notes:</strong></p>
+
+				<ul>
+					<li>Added: <code>gk/gravityview/common/get_forms</code> filter to modify the forms returned by
+						<code>GVCommon::get_forms()</code></li>
+					<li>Modified: Removed <code>.hidden</code> from compiled CSS files to prevent potential conflicts
+						with other plugins/themes (use <code>.gv-hidden</code> instead)
+					</li>
+					<li>Modified: Added <code>gvlogic</code>-related shortcodes to the
+						<code>no_texturize_shortcodes</code> array to prevent shortcode attributes from being encoding
+					</li>
+					<li>Modified: Updated Gravity Forms CSS file locations for the Survey, Poll, and Quiz Add-Ons</li>
+					<li>Modified: Likert survey responses are now wrapped in <code>div.gform-settings__content.gform-settings-panel__content</code>
+						to match the Gravity Forms Survey Add-On 3.8 appearance
+					</li>
+					<li>Fixed: Properly suppress PHP warnings when calling <code>GFCommon::gv_vars()</code> in the Edit
+						View screen
+					</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.0.12</li>
+					<li>Updated: TrustedLogin to version 1.5.1</li>
+				</ul>
+
+				<h3>2.17.5 on April 12, 2023</h3>
+
+				<ul>
+					<li>Fixed: Do not modify the Single Entry title when the 'Prevent Direct Access' setting is enabled
+						for a View
+					</li>
+					<li>Fixed: Fatal error when performing a translations scan with the WPML plugin</li>
+				</ul>
+
+				<h3>2.17.4 on April 7, 2023</h3>
+
+				<ul>
+					<li>Fixed: When a View is embedded multiple times on the same page, Edit Entry, Delete Entry, and Duplicate Entry links could be hidden after the first View</li>
+					<li>Fixed: Fatal error rendering some Maps Layout Views</li>
+				</ul>
+
+				<h3>2.17.3 on April 6, 2023</h3>
+
+				<ul>
+					<li>Fixed: Fatal error rendering multiple Views on the same page/post introduced in 2.17.2</li>
 				</ul>
 
 				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
-					<li>Added: <code>redirect_url</code> parameter to the <code>gravityview/edit_entry/success</code>
-						filter
-					</li>
-					<li>Added <code>redirect_url</code> and <code>back_link</code> parameters to the <code>gravityview/shortcodes/gventry/edit/success</code>
-						filter
-					</li>
+					<li>Added: A <code>$context</code> argument of <code>\GV\Template_Context</code> is now passed to <code>\GV\Widget\pre_render_frontend()</code></li>
 				</ul>
 
-				<h3>2.14.5 on May 4, 2022</h3>
+				<h3>2.17.2 on April 5, 2023</h3>
+
+				<p><strong>Note: GravityView now requires Gravity Forms 2.5.1 or newer</strong></p>
 
 				<ul>
-					<li>Added: A link that allows administrators to disable the "Show only approved entries" View setting from the front-end</li>
-					<li>Fixed: Configuring new Search Bar WordPress widgets wasn't working in WordPress 5.8+</li>
-					<li>Fixed: Styling of form settings dropdowns on the Gravity Forms "Forms" page</li>
+					<li>Added: "No Entries Behavior" option to hide the View when there are no entries visible to the current user (not applied to search results)</li>
+					<li>Fixed: Performance issue introduced in 2.17 that resulted in a large number of queries</li>
+					<li>Fixed: PHP 8+ fatal error when displaying connected Views in the Gravity Forms form editor or forms list</li>
+					<li>Fixed: PHP 8+ warning messages when creating a new View</li>
+					<li>Fixed: PHP warning when a View checks for the ability to edit an entry that has just been deleted using code</li>
+					<li>Fixed: On sites running the GiveWP plugin, the View Editor would look bad</li>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.0.11</li>
 				</ul>
-
-				<h3>2.14.4 on April 27, 2022</h3>
-
-				<ul>
-					<li>Added: Search Bar support for the <a
-								href='https://www.gravityforms.com/add-ons/chained-selects/'>Chained Selects</a> field
-						type
-					</li>
-					<li>Improved: Plugin updater script now supports auto-updates and better supports multisite
-						installations
-					</li>
-					<li>Improved: If a View does not support joined forms, log as a notice, not an error</li>
-					<li>Fixed: Merge Tag picker behavior when using Gravity Forms 2.6</li>
-					<li>Fixed: Deleting a file when editing an entry as a non-administrator user on Gravity Forms 2.6.1
-						results in a server error
-					</li>
-					<li>Fixed: When The Events Calendar Pro plugin is active, Views became un-editable</li>
-					<li>Tweak: Additional translation strings related to View editing</li>
-				</ul>
-
-				<p>Note: We will be requiring Gravity Forms 2.5 and WordPress 5.3 in the near future; please upgrade!</p>
 
 				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
-					<li>Added: Search URLs now support <code>input_{field ID}</code> formats as well as <code>filter_{field
-							ID}</code>; the following will both be treated the same:
+					<li>Added: View blocks are also parsed when running <code>\GV\View_Collection::from_content()</code></li>
+					<li>Added: New filter, to be used by Multiple Forms extension: <code>gravityview/view/get_entries/should_apply_legacy_join_is_approved_query_conditions</code></li>
+					<li>Modified: <code>gravityview()->views->get()</code> now parses the content of the global <code>$post</code> object and will detect View shortcodes or blocks stored in the <code>$post->post_content</code></li>
+					<li>Modified: <code>gravityview()->views->get()</code> now may return a <code>GV\View_Collection</code> object when it detects multiple Views in the content</li>
+					<li>Updated: HTML tags that had used <code>.hidden</code> now use the <code>.gv-hidden</code> CSS class to prevent potential conflicts with other plugins/themes</li>
+				</ul>
+
+				<h3>2.17.1 on February 20, 2023</h3>
+
+				<ul>
+					<li>Updated: <a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.0.9</li>
+				</ul>
+
+				<h3>2.17 on February 13, 2023</h3>
+
+				<p><strong>Note: GravityView now requires PHP 7.2 or newer</strong></p>
+
+				<ul>
+					<li>It's faster than ever to create a new View! (Table and DataTables View types only)
 						<ul>
-							<li><code>/view/example/?filter_3=SEARCH</code></li>
-							<li><code>/view/example/?input_3=SEARCH</code></li>
-						</ul>
-					</li>
-					<li>Added: In the admin, CSS classes are now added to the <code>body</code> tag based on Gravity
-						Forms version. See <code>GravityView_Admin_Views::add_gf_version_css_class()</code></li>
-					<li>Modified: Allow non-admin users with 'edit entry' permissions to delete uploaded files</li>
-					<li>Updated: EDD<em>SL</em>Plugin_Updater script to version 1.9.1</li>
-				</ul>
-
-				<h3>2.14.3 on March 24, 2022</h3>
-
-				<ul>
-					<li>Added: Support for displaying WebP images</li>
-					<li>Improved: Internal logging of notices and errors</li>
-					<li>Fixed: Images hosted on Dropbox sometimes would not display properly on the Safari browser. Thanks, Kevin M. Dean!</li>
+							<li>Fields configured in the <a href="https://docs.gravityforms.com/entries/#h-entry-columns">Gravity Forms Entry Columns</a> are added to the Multiple Entries layout</li>
+							<li>The first field in the Multiple Entries layout is linked to the Single Entry layout</li>
+							<li>All form fields are added to the Single Entry layout</li>
+							<li>An Edit Entry Link field is added to the bottom of the Single Entry layout</li>
+						</ul></li>
+					<li>Added: New "No Entries Behavior" setting: when a View has no entries visible to the current user, you can now choose to display a message, show a Gravity Forms form, or redirect to a URL</li>
+					<li>Modified: The field picker now uses Gravity Forms field icons</li>
+					<li>Fixed: <a href="https://docs.gravitykit.com/article/701-show-choices-that-exist">"Pre-filter choices"</a> Search Bar setting not working for Address fields</li>
+					<li>Fixed: <code>[gventry]</code> shortcode not working the Entry ID is set to "first" or "last"</li>
+					<li>Fixed: Fatal error when using the Gravity Forms Survey Add-On</li>
+					<li>Tweak: The field picker in the View editor now uses Gravity Forms field icons</li>
 				</ul>
 
 				<p><strong>Developer Updates:</strong></p>
 
 				<ul>
-					<li>Added: <code>GravityView_Image::get_image_extensions()</code> static method to fetch full list of extension types interpreted as images by GravityView.</li>
-					<li>Added: <code>webp</code> as a valid image extension</li>
-				</ul>
-
-				<h3>2.14.2.1 on March 11, 2022</h3>
-
-				<ul>
-					<li>Fixed: Empty values in search widget fields may return incorrect results</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>
-						Added: <code>gravityview/search/ignore-empty-values</code> filter to control strict matching of empty field values
-					</li>
-
-				</ul>
-
-				<h3>2.14.2 on March 10, 2022</h3>
-
-				<ul>
-					<li>Fixed: Potential fatal error on PHP 8 when exporting View entries in CSV and TSV formats</li>
-					<li>Fixed: Search widget would cause a fatal error when the Number field is used with the "is" operator</li>
-					<li>Fixed: Search widget returning incorrect results when a field value is blank and the operator is set to "is"</li>
-					<li>Fixed: Gravity Forms widget icon not showing</li>
-					<li>Fixed: Gravity Forms widget not displaying available forms when the View is saved</li>
-				</ul>
-
-				<h3>2.14.1 on January 25, 2022</h3>
-
-				<ul>
-					<li>Tested with WordPress 5.9</li>
-					<li>Improved: The <a href='https://wordpress.org/plugins/members/'>Members plugin</a> now works with
-						No-Conflict Mode enabled
-					</li>
-					<li>Improved: Performance when saving Views with many fields</li>
-					<li>Improved: Performance when loading the Edit View screen when a View has many fields</li>
-					<li>Fixed: Gravity Forms widget used in the View editor would initialize on all admin pages</li>
-					<li>Fixed: PHP notice when editing an entry in Gravity Forms that was created by user that no longer
-						exists
-					</li>
-					<li>Fixed: Error activating on sites that use the Danish language</li>
-					<li>Fixed: Entry approval scripts not loading properly when using Full Site Editing themes in
-						WordPress 5.9
-					</li>
-					<li>Updated: TrustedLogin client to Version 1.2, which now supports logins for WordPress Multisite
-						installations
-					</li>
-					<li>Updated: Polish translation. Thanks, Dariusz!</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Modified: Refactored drag &amp; drop in the View editor to improve performance: we only
-						initialize drag &amp; drop on the active tab instead of globally.
+					<li>Modified: If you use the <code>gravityview/template/text/no_entries</code> or <code>gravitview_no_entries_text</code> filters, the output is now passed through the <code>wpautop()</code> function prior to applying the filters, not after
 						<ul>
-							<li>Added: <code>gravityview/tab-ready</code> jQuery trigger to <code>body</code> when each
-								GravityView tab is ready (drag &amp; drop initialized). <a
-										href='https://gist.github.com/zackkatz/a2844e9f6b68879e79ba7d6f66ba0850'>See
-									example of binding to this event</a>.
-							</li>
-						</ul>
-					</li>
-				</ul>
-
-				<h3>2.14 on December 21, 2021</h3>
-
-				<p>This would be a minor version update (2.13.5), except that we renamed many functions. See 'Developer
-					Updates' for this release below.</p>
-
-				<ul>
-					<li>Added: <code>{is_starred}</code> Merge Tag. <a
-								href='https://docs.gravityview.co/article/820-the-isstarred-merge-tag'>Learn more about
-							using <code>{is_starred}</code></a></li>
-					<li>Fixed: Media files uploaded to Dropbox were not properly embedded</li>
-					<li>Fixed: JavaScript error when trying to edit entry's creator</li>
-					<li>Fixed: Recent Entries widget would cause a fatal error on WP 5.8 or newer</li>
-					<li>Fixed: When using Multiple Forms, editing an entry in a joined form now works properly if the
-						"Edit Entry" tab has not been configured
-					</li>
-					<li>Fixed: View settings not hiding automatically on page load</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<p>We renamed all instances of <code>blacklist</code> to <code>blocklist</code> and
-					<code>whitelist</code> to <code>allowlist</code>. All methods and filters have been deprecated using
-					<code>apply_filters_deprecated()</code> and <code>_deprecated_function()</code>. <a
-							href="https://docs.gravityview.co/article/816-renamed-filters-methods-in-2-14">See a
-						complete list of modified methods and filters</a>.</p>
-
-				<h3>2.13.4 on November 4, 2021</h3>
-
-				<ul>
-					<li>Fixed: View scripts and styles would not load when manually outputting the contents of the
-						<code>[gravityview]</code> shortcode
-					</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Added: <code>gravityview/shortcode/before-processing</code> action that runs before the
-						GravityView shortcode is processed
-					</li>
-					<li>Added: <code>gravityview/edit_entry/cancel_onclick</code> filter to modify the 'Back' link
-						<code>onclick</code> HTML attribute
+							<li>Added <code>$unformatted_output</code> parameter to the <code>gravityview/template/text/no_entries</code> filter to return the original value before being passed through <code>wpautop()</code></li>
+						</ul></li>
+					<li>Modified: Container classes for no results output change based on the "No Entries Behavior" setting:
 						<ul>
-							<li>Modified: <code>/includes/extensions/edit-entry/partials/form-buttons.php</code> file to
-								add the filter
-							</li>
-						</ul>
-					</li>
-				</ul>
-
-				<h3>2.13.3 on October 14, 2021</h3>
-
-				<ul>
-					<li>Fixed: Edit Entry would not accept zero as a value for a Number field marked as required</li>
-					<li>Modified: Refined the capabilities assigned to GravityView support when access is granted using
-						TrustedLogin. Now our support will be able to debug theme-related issues and use the <a
-								href='https://wordpress.org/plugins/code-snippets/'>Code Snippets</a> plugin.
-					</li>
-				</ul>
-
-				<h3>2.13.2 on October 7, 2021</h3>
-
-				<ul>
-					<li>Fixed: Entry Approval not working when using DataTables in responsive mode (requires DataTables
-						2.4.9 or newer).
-					</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Updated: Upgraded to <a href='https://fancyapps.com/docs/ui/fancybox'>Fancybox 4</a>.</li>
-					<li>Updated: <a href='https://github.com/trustedlogin/client'>TrustedLogin Client</a> to Version
-						1.0.2.
-					</li>
-					<li>Modified: Added Code Snippets CSS file to No Conflict allow list.</li>
-					<li>Modified: Moved internal (but public) method <code>GravityView_Admin_ApproveEntries::process_bulk_action</code>
-						to new <code>GravityView_Bulk_Actions</code> class.
-					</li>
-				</ul>
-
-				<h3>2.13.1 on September 27, 2021</h3>
-
-				<ul>
-					<li>Improved: Views now load faster due to improved template caching.</li>
-					<li>Added: Ability to configure an 'Admin Label' for Custom Content widgets. This makes it easier to
-						see your widget configuration a glance.
-					</li>
-					<li>Fixed: Issue where non-support users may see a 'Revoke TrustedLogin' admin bar link.</li>
-				</ul>
-
-				<h3>2.13 on September 23, 2021</h3>
-
-				<ul>
-					<li>Added: Integrated with TrustedLogin, the easiest
-						&amp; most secure way to grant access to your website. <a
-								href='https://www.trustedlogin.com/about/easy-and-safe/'>Learn more about
-							TrustedLogin</a>.
-						<ul>
-							<li>Need to share access with support? Click the new 'Grant Support Access' link in the
-								'Views' menu.
-							</li>
-						</ul>
-					</li>
+							<li><code>.gv-no-results.gv-no-results-text</code> when set to "Show a Message"</li>
+							<li><code>.gv-no-results.gv-no-results-form</code> when set to "Display a Form"</li>
+							<li>Updated <code>templates/views/list/list-body.php</code>, <code>templates/views/table/table-body.php</code></li>
+						</ul></li>
+					<li>Added: <code>$form_id</code> parameter to <code>gravityview_get_directory_fields()</code> function and <code>GVCommon::get_directory_fields()</code> method</li>
 				</ul>
 
 				<p style="text-align: center;">
@@ -794,7 +660,7 @@ class GravityView_Welcome {
 				<div class="col">
 					<h3>Vlad K.</h3>
 					<h4>Core Developer</h4>
-					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad is GravityKit&rsquo;s lead developer. He focuses on GravityKit&rsquo;s user-facing code in the Dashboard and front end. Vlad comes from Russia and lives in Canada.</p>
+					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad is GravityKit&rsquo;s lead developer. Known for his versatility, Vlad handles both front-end and back-end programming, as well as testing and DevOps. He lives in Ottawa, Canada, and frequently travels the world in pursuit of unique experiences that fuel his creativity and broaden his worldview.</p>
 				</div>
 
 				<div class="col">
@@ -817,7 +683,7 @@ class GravityView_Welcome {
 
 				<h4>Development</h4>
 				<ul class="ul-disc">
-					<li>Core &amp; Add-On development by <a href='https://mrcasual.com' class='block'>Vlad K.</a>, <a href='https://katz.co' class='block'>Zack Katz</a>, <a href="https://codeseekah.com" class="block">Gennady Kovshenin</a>, <a href='https://tinygod.pt' class='block'>Luis Godinho</a></li>
+					<li>Core &amp; Add-On development by <a href='https://mrcasual.com' class='block'>Vlad K.</a>, <a href='https://malayladu.com' class='block'>Malay Ladu</a>, <a href='https://katz.co' class='block'>Zack Katz</a>, <a href="https://codeseekah.com" class="block">Gennady Kovshenin</a>, <a href='https://tinygod.pt' class='block'>Luis Godinho</a></li>
 					<li>Code contributions by <a href="https://github.com/ryanduff">@ryanduff</a>, <a href="https://github.com/dmlinn">@dmlinn</a>, <a href="https://github.com/mgratch">@mgratch</a>, <a href="https://github.com/ViewFromTheBox">@ViewFromTheBox</a>, <a href="https://github.com/stevehenty">@stevehenty</a>, <a href="https://github.com/naomicbush">@naomicbush</a>, <a href='https://github.com/mrcasual'>@mrcasual</a> and <a href="https://github.com/rafaehlers">@rafaehlers</a></li>
 					<li>Accessibility contributions by <a href="https://github.com/RianRietveld">@RianRietveld</a></li>
 				</ul>

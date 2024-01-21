@@ -56,6 +56,31 @@ class gravityview extends \GV\Shortcode {
 			return '';
 		}
 
+		/* @TODO: implement infinite loop check
+		 * @see https://github.com/GravityKit/GravityView/pull/1911#commits-pushed-343168f
+		 *
+		 *
+		 *	static $rendered_views = [];
+		 *	// Prevent infinite loops
+		 *	if ( in_array( $view_id, $rendered_views, true ) ) {
+		 *		gravityview()->log->error( 'Infinite loop detected: View #{view_id} is being rendered inside itself.', array( 'view_id' => $view_id ) );
+		 *		$title = sprintf( __( 'Error: The View #%d is being rendered inside itself.', 'gk-gravityview' ), $view_id );
+		 *		$message = strtr(
+		 *		// translators: Do not translate [shortcode], [link], or [/link]; they are placeholders for HTML and links to documentation.
+		 *			esc_html__( 'This error occurs when a [shortcode] shortcode is embedded inside a Custom Content field. [link]Learn more about this error.[/link]', 'gk-gravityview' ),
+		 *			[
+		 *				'[shortcode]' => '<code>[gravityview]</code>',
+		 *				'[link]'      => '<a href="https://docs.gravitykit.com/article/960-infinite-loop" target="_blank">',
+		 *				'[/link]'     => '<span class="screen-reader-text"> ' . esc_html__( 'This link opens in a new window.', 'gk-gravityview' ) . '</span></a>',
+		 *			]
+		 *		);
+		 *		$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
+		 *		return \GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message ), 'notice' );
+		 *	}
+		 */
+
+		$rendered_views[] = $view_id;
+
 		$post = get_post( $view->ID );
 
 		$gv_view_data = \GravityView_View_Data::getInstance();
@@ -65,7 +90,7 @@ class gravityview extends \GV\Shortcode {
 		}
 
 		/**
-		 * @action `gravityview/shortcode/before-processing` Runs before the GV shortcode is processed; can be used to load additional scripts/styles
+		 * Runs before the GV shortcode is processed; can be used to load additional scripts/styles.
 		 *
 		 * @since  2.13.4
 		 *
@@ -238,6 +263,53 @@ class gravityview extends \GV\Shortcode {
 	}
 
 	/**
+	 * Converts block attributes array to shortcode attributes array.
+	 *
+	 * @since 2.17.2
+	 * @internal
+	 *
+	 * @param array $block_attributes Block attributes array.
+	 *
+	 * @return array Shortcode attributes array.
+	 */
+	public static function map_block_atts_to_shortcode_atts( $block_attributes = [] ) {
+		$block_to_shortcode_attributes_map = [
+			'viewId'         => 'id',
+			'postId'         => 'post_id',
+			'pageSize'       => 'page_size',
+			'sortField'      => 'sort_field',
+			'sortDirection'  => 'sort_direction',
+			'searchField'    => 'search_field',
+			'searchValue'    => 'search_value',
+			'searchOperator' => 'search_operator',
+			'startDate'      => 'start_date',
+			'endDate'        => 'end_date',
+			'classValue'     => 'class',
+			'offset'         => 'offset',
+			'singleTitle'    => 'single_title',
+			'backLinkLabel'  => 'back_link_label',
+		];
+
+		if ( isset( $block_attributes['searchOperator'] ) && isset( $block_attributes['searchValue'] ) && '' === trim( $block_attributes['searchValue'] ) ) {
+			unset( $block_attributes['searchOperator'] );
+		}
+
+		foreach ( $block_attributes as $attribute => $value ) {
+			if ( ! isset( $block_to_shortcode_attributes_map[ $attribute ] ) ) {
+				continue;
+			}
+
+			if( '' === $value ) {
+				continue;
+			}
+
+			$shortcode_attributes[ $block_to_shortcode_attributes_map[ $attribute ] ] = $value;
+		}
+
+		return $shortcode_attributes;
+	}
+
+	/**
 	 * Validate attributes passed to the [gravityview] shortcode. Supports {get} Merge Tags values.
 	 *
 	 * Attributes passed to the shortcode are compared to registered attributes {@see \GV\View_Settings::defaults}
@@ -341,7 +413,7 @@ class gravityview extends \GV\Shortcode {
 		endswitch;
 
 		/**
-		 * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail="$detail"]`
+		 * Filter the detail output returned from `[gravityview detail="$detail"]`.
 		 * @since 1.13
 		 * @param string[in,out] $output Existing output
 		 *

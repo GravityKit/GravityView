@@ -56,7 +56,7 @@ class GravityView_Widget_Custom_Content extends \GV\Widget {
 
 	public function render_frontend( $widget_args, $content = '', $context = '') {
 
-		if( !$this->pre_render_frontend() ) {
+		if( !$this->pre_render_frontend( $context ) ) {
 			return;
 		}
 

@@ -36,7 +36,9 @@ abstract class GravityView_Field {
 	public $default_search_label;
 
 	/**
-	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`, or `add-ons`
+	 * `standard`, `advanced`, `post`, `pricing`, `meta`, `gravityview`, or `add-ons`, or `featured`.
+	 *
+	 * Featured are moved to the top of the field picker.
 	 *
 	 * @since 1.15.2
 	 * @type string The group belongs to this field in the field picker
@@ -81,13 +83,13 @@ abstract class GravityView_Field {
 	 * @see https://www.gravityhelp.com/documentation/article/gform_entry_meta/
 	 * @since 1.19
 	 */
-	var $entry_meta_update_callback = null;
+	public $entry_meta_update_callback = null;
 
 	/**
 	 * @var bool Whether to show meta when set to true automatically adds the column to the entry list, without having to edit and add the column for display
 	 * @since 1.19
 	 */
-	var $entry_meta_is_default_column = false;
+	public $entry_meta_is_default_column = false;
 
 	/**
 	 * @internal Not yet implemented
@@ -198,6 +200,36 @@ abstract class GravityView_Field {
 				'group' => $this->group,
 			),
 		);
+	}
+
+	/**
+	 * Returns the icon for a field
+	 *
+	 * @since 2.17
+	 *
+	 * @return string The dashicon or gform-icon class name for a field.
+	 */
+	public function get_icon() {
+
+		// GF only has icons in 2.5+
+		if ( ! gravityview()->plugin->is_GF_25() ) {
+			return $this->icon;
+		}
+
+		// If the field doesn't have an associated GF field class, return the default icon.
+		if ( empty( $this->_gf_field_class_name ) || ! class_exists( $this->_gf_field_class_name ) ) {
+			return $this->icon;
+		}
+
+		/** @var GF_Field $gf_field */
+		$gf_field = GF_Fields::get( $this->name );
+
+		// If the field exists and is a GF_Field, return the icon.
+		if( $gf_field && $gf_field instanceof GF_Field ) {
+			return $gf_field->get_form_editor_field_icon();
+		}
+
+		return $this->icon;
 	}
 
 	/**
@@ -445,7 +477,7 @@ abstract class GravityView_Field {
 				'label' => __( 'Override Date Format', 'gk-gravityview' ),
 				'desc' => sprintf( __( 'Define how the date is displayed (using %sthe PHP date format%s)', 'gk-gravityview'), '<a href="https://wordpress.org/support/article/formatting-date-and-time/" rel="external">', '</a>' ),
 				/**
-				 * @filter `gravityview_date_format` Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time)
+				 * Override the date format with a [PHP date format](https://codex.wordpress.org/Formatting_Date_and_Time).
 				 * @param null|string $date_format Date Format (default: null)
 				 */
 				'value' => apply_filters( 'gravityview_date_format', null ),
@@ -463,7 +495,7 @@ abstract class GravityView_Field {
 		);
 
 		/**
-		 * @filter `gravityview_field_support_options` Modify the settings that a field supports
+		 * Modify the settings that a field supports.
 		 * @param array $options Options multidimensional array with each key being the input name, with each array setting having `type`, `label`, `desc` and `value` (default values) keys
 		 */
 		return apply_filters( 'gravityview_field_support_options', $options );
@@ -552,7 +584,7 @@ abstract class GravityView_Field {
 			return false;
 		}
 
-		$form = GFAPI::get_form( $connected_form );
+		$form = GVCommon::get_form( $connected_form );
 
 		if ( ! $form ) {
 			gravityview()->log->error( 'Form not found for field ID of "{field_id}", when checking for a form with ID of "{form_id}"', array( 'field_id' => $this->_field_id, 'form_id' => $connected_form ) );

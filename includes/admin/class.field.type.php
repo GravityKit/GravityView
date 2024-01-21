@@ -136,8 +136,8 @@ abstract class GravityView_FieldType {
 			return '';
 		}
 
-		$url = '#';
-	    $atts = 'onclick="return false;" onkeypress="return false;"';
+		$url = isset( $article['url'] ) ? $article['url'] : '#';
+	    $atts = 'onclick="return window.Beacon === undefined || typeof window.Beacon === \'undefined\';" onkeypress="return window.Beacon === undefined || typeof window.Beacon === \'undefined\';"';
 	    $anchor_text = '<i class=\'fa fa-question-circle\'></i>';
 		$css_class = gravityview_sanitize_html_class( 'gf_tooltip ' . $css_class . ' ' . $tooltip_class );
 
@@ -216,13 +216,18 @@ abstract class GravityView_FieldType {
      * @return boolean
      */
     function show_merge_tags() {
-        // Show the merge tags if the field is a list view
-        $is_list = preg_match( '/_list-/ism', $this->name );
-        // Or is a single entry view
-        $is_single = preg_match( '/single_/ism', $this->name );
 
-        return ( $is_single || $is_list );
-    }
+		// Show the merge tags if the field is a list view
+		$is_list = preg_match( '/_list-/ism', $this->name );
+
+		// Or is a single entry view
+		$is_single = preg_match( '/single_/ism', $this->name );
+
+		// And the field settings don't say not to show merge tags.
+		$not_false = false !== rgar( $this->field, 'show_merge_tags', null );
+
+		return ( $is_single || $is_list ) && $not_false;
+	}
 
 
 

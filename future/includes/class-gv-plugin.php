@@ -19,6 +19,9 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Accessible via gravityview()->plugin
  */
 final class Plugin {
+	const ALL_VIEWS_SLUG = 'gravityview_all_views';
+
+	const NEW_VIEW_SLUG = 'gravityview_new_view';
 
 	/**
 	 * @since 2.0
@@ -50,13 +53,6 @@ final class Plugin {
 	 * GravityView requires at least this version of Gravity Forms to function properly.
 	 */
 	public static $min_gf_version = GV_MIN_GF_VERSION;
-
-	/**
-	 * @var string Minimum PHP version.
-	 *
-	 * GravityView requires at least this version of PHP to function properly.
-	 */
-	private static $min_php_version = GV_MIN_PHP_VERSION;
 
 	/**
 	 * @var string|bool Minimum future PHP version.
@@ -220,6 +216,7 @@ final class Plugin {
 		}
 
 		include_once $this->dir( 'includes/class-gravityview-entry-approval-status.php' );
+		include_once $this->dir( 'includes/class-gravityview-entry-approval-merge-tags.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-approval.php' );
 
 		include_once $this->dir( 'includes/class-gravityview-entry-notes.php' );
@@ -376,23 +373,7 @@ final class Plugin {
 	 */
 	public function is_compatible() {
 
-		return
-			$this->is_compatible_php()
-			&& $this->is_compatible_wordpress()
-			&& $this->is_compatible_gravityforms();
-	}
-
-	/**
-	 * Is this version of GravityView compatible with the current version of PHP?
-	 *
-	 * @since 2.0
-	 *
-	 * @return bool true if compatible, false otherwise.
-	 * @api
-	 */
-	public function is_compatible_php() {
-
-		return version_compare( $this->get_php_version(), self::$min_php_version, '>=' );
+		return $this->is_compatible_wordpress() && $this->is_compatible_gravityforms();
 	}
 
 	/**
@@ -403,9 +384,8 @@ final class Plugin {
 	 * @return bool true if compatible, false otherwise.
 	 * @api
 	 */
-	public function is_compatible_future_php() {
-
-		return version_compare( $this->get_php_version(), self::$future_min_php_version, '>=' );
+	public function is_compatible_future_php(): bool {
+		return version_compare( phpversion(), self::$future_min_php_version, '>=' );
 	}
 
 	/**
@@ -473,19 +453,6 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve the current PHP version.
-	 *
-	 * Overridable with GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE during testing.
-	 *
-	 * @return string The version of PHP.
-	 */
-	private function get_php_version() {
-
-		return ! empty( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] ) ?
-			$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] : phpversion();
-	}
-
-	/**
 	 * Retrieve the current WordPress version.
 	 *
 	 * Overridable with GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE during testing.
@@ -527,7 +494,7 @@ final class Plugin {
 	public function supports( $feature ) {
 
 		/**
-		 * @filter `gravityview/supports` Overrides whether GravityView supports a feature.
+		 * Overrides whether GravityView supports a feature.
 		 * @since 2.0
 		 * @param boolean|null $supports Whether the feature is supported. Default: null.
 		 */
@@ -664,22 +631,46 @@ final class Plugin {
 		}
 
 		if ( 'admin.php' === $pagenow ) {
-			if ( 'gravityview_all_views' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
-				wp_safe_redirect(
-					add_query_arg(
-						[ 'post_type' => 'gravityview' ],
-						admin_url( 'edit.php' ) )
-				);
+			if ( self::ALL_VIEWS_SLUG === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect( $this->get_link_to_all_views() );
+
+				exit;
 			}
 
-			if ( 'gravityview_new_view' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
-				wp_safe_redirect(
-					add_query_arg(
-						[ 'post_type' => 'gravityview' ],
-						admin_url( 'post-new.php' ) )
-				);
+			if ( self::NEW_VIEW_SLUG === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect( $this->get_link_to_new_view() );
+
+				exit;
 			}
 		}
+	}
+
+	/**
+	 * Returns the URL to the "All Views" page.
+	 *
+	 * @since 2.17
+	 *
+	 * @return string
+	 */
+	public function get_link_to_new_view() {
+		return add_query_arg(
+			[ 'post_type' => 'gravityview' ],
+			admin_url( 'post-new.php' )
+		);
+	}
+
+	/**
+	 * Returns the URL to the "New View" page.
+	 *
+	 * @since 2.17
+	 *
+	 * @return string
+	 */
+	public function get_link_to_all_views() {
+		return add_query_arg(
+			[ 'post_type' => 'gravityview' ],
+			admin_url( 'edit.php' )
+		);
 	}
 
 	/**

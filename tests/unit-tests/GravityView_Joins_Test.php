@@ -7,13 +7,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * @group multi
  */
 class GravityView_Joins_Test extends GV_UnitTestCase {
-	function setUp() {
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 
@@ -286,6 +286,8 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 	}
 
 	public function test_joins_with_approves() {
+		add_filter('gk/gravityview/view/entries/cache', '__return_false');
+
 		$this->_reset_context();
 
 		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_JOINS ) ) {
@@ -372,6 +374,8 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->assertCount( 0, $entries->all() );
 
 		$this->_reset_context();
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 	}
 
 	public function test_legacy_template_table_joins() {
@@ -959,14 +963,14 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$form_1 = $this->factory->form->import_and_get( 'simple.json' );
 		$form_2 = $this->factory->form->import_and_get( 'complete.json' );
 
-		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'neptune@gravityview.co' ) );
-		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'earth@gravityview.co' ) );
-		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'saturn@gravityview.co' ) );
-		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'venus@gravityview.co' ) );
-		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'mars@gravityview.co' ) );
-		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'uranus@gravityview.co' ) );
-		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'jupiter@gravityview.co' ) );
-		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'mercury@gravityview.co' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'neptune@gravitykit.com' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'earth@gravitykit.com' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'saturn@gravitykit.com' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'venus@gravitykit.com' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'mars@gravitykit.com' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_1['id'], 'status' => 'active', '1'  => 'uranus@gravitykit.com' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'jupiter@gravitykit.com' ) );
+		$this->factory->entry->create_and_get( array( 'form_id' => $form_2['id'], 'status' => 'active', '16' => 'mercury@gravitykit.com' ) );
 
 		$settings = \GV\View_Settings::defaults();
 		$settings['show_only_approved'] = 0;

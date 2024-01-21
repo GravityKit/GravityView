@@ -6,7 +6,7 @@
  * @license     GPL2+
  * @since       1.14
  * @author      Katz Web Services, Inc.
- * @link        http://gravityview.co
+ * @link        http://www.gravitykit.com
  * @copyright   Copyright 2015, Katz Web Services, Inc.
  */
 
@@ -336,7 +336,7 @@ class GravityView_Roles_Capabilities {
 	public static function has_cap( $caps_to_check = '', $object_id = null, $user_id = null ) {
 
 		/**
-		 * @filter `gravityview/capabilities/allow_logged_out` Shall we allow a cap check for non-logged in users? USE WITH CAUTION!
+		 * Shall we allow a cap check for non-logged in users? USE WITH CAUTION!
 		 *
 		 * WARNING: This allows anyone to edit and delete entries, add notes, delete notes, etc!
 		 *
