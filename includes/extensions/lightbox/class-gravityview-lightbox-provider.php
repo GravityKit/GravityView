@@ -23,8 +23,8 @@ abstract class GravityView_Lightbox_Provider {
 		add_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10, 4 );
 		add_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles') );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
 		add_action( 'gravityview/template/after', array( $this, 'print_scripts' ) );
 
@@ -79,6 +79,7 @@ abstract class GravityView_Lightbox_Provider {
 
 	/**
 	 * Removes actions that were added by {@see GravityView_Lightbox_Provider::add_hooks}
+	 *
 	 * @internal Do not call directly. Instead, use:
 	 *
 	 * <code>
@@ -92,8 +93,8 @@ abstract class GravityView_Lightbox_Provider {
 		remove_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10 );
 		remove_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
 
-		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts') );
-		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles') );
+		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
 		remove_action( 'wp_footer', array( $this, 'output_footer' ) );
 	}
@@ -182,10 +183,10 @@ abstract class GravityView_Lightbox_Provider {
 	 * @since 2.10.1 Added $insecure_file_path
 	 * @internal
 	 *
-	 * @param array|string $link_atts Array or attributes string.
-	 * @param array $field_compat Current GravityView field.
+	 * @param array|string              $link_atts Array or attributes string.
+	 * @param array                     $field_compat Current GravityView field.
 	 * @param \GV\Template_Context|null $context The context.
-	 * @param array $additional_details Array of additional details about the file. {
+	 * @param array                     $additional_details Array of additional details about the file. {
 	 * @type string $file_path URL to file.
 	 * @type string $insecure_file_path URL to insecure file.
 	 * }
@@ -195,5 +196,4 @@ abstract class GravityView_Lightbox_Provider {
 	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null, $additional_details = null ) {
 		return $link_atts;
 	}
-
 }

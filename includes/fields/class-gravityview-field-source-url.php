@@ -31,30 +31,29 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 		// Don't link to entry; doesn't make sense.
 		unset( $field_options['show_as_link'] );
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$add_options = array();
-		$add_options['link_to_source'] = array(
-			'type' => 'checkbox',
-			'label' => __( 'Link to URL:', 'gk-gravityview' ),
-			'desc' => __('Display as a link to the Source URL', 'gk-gravityview'),
-			'value' => false,
+		$add_options                     = array();
+		$add_options['link_to_source']   = array(
+			'type'       => 'checkbox',
+			'label'      => __( 'Link to URL:', 'gk-gravityview' ),
+			'desc'       => __( 'Display as a link to the Source URL', 'gk-gravityview' ),
+			'value'      => false,
 			'merge_tags' => false,
 		);
 		$add_options['source_link_text'] = array(
-			'type' => 'text',
-			'label' => __( 'Link Text:', 'gk-gravityview' ),
-			'desc' => __('Customize the link text. If empty, the link text will be the URL.', 'gk-gravityview'),
-			'value' => NULL,
+			'type'       => 'text',
+			'label'      => __( 'Link Text:', 'gk-gravityview' ),
+			'desc'       => __( 'Customize the link text. If empty, the link text will be the URL.', 'gk-gravityview' ),
+			'value'      => null,
 			'merge_tags' => true,
-			'requires' => 'link_to_source',
+			'requires'   => 'link_to_source',
 		);
 
 		return $add_options + $field_options;
 	}
-
 }
 
-new GravityView_Field_Source_URL;
+new GravityView_Field_Source_URL();

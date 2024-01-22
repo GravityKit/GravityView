@@ -62,7 +62,7 @@ final class GravityView_Fields {
 	 * @return bool True: yes, it exists; False: nope
 	 */
 	public static function exists( $field_name ) {
-		return isset( self::$_fields["{$field_name}"] );
+		return isset( self::$_fields[ "{$field_name}" ] );
 	}
 
 	/**
@@ -96,8 +96,8 @@ final class GravityView_Fields {
 
 		$field_type = is_a( $gf_field, 'GF_Field' ) ? get_class( $gf_field ) : $gf_field;
 
-		foreach( self::$_fields as $field ) {
-			if( $field_type === $field->_gf_field_class_name ) {
+		foreach ( self::$_fields as $field ) {
+			if ( $field_type === $field->_gf_field_class_name ) {
 				return $field;
 			}
 		}
@@ -111,7 +111,7 @@ final class GravityView_Fields {
 	 * @since 1.16 Added $group parameter
 	 *
 	 * @param string|array $groups Optional. If defined, fetch all fields in a group or array of groups.
-	 * @param string $context Optional. If defined, limit returned fields to those that support the defined context.
+	 * @param string       $context Optional. If defined, limit returned fields to those that support the defined context.
 	 *
 	 * @return GravityView_Field[]
 	 */
@@ -119,12 +119,12 @@ final class GravityView_Fields {
 
 		$return_fields = self::$_fields;
 
-		if( '' !== $groups ) {
+		if ( '' !== $groups ) {
 
 			$groups = (array) $groups;
 
 			foreach ( $return_fields as $key => $field ) {
-				if( ! in_array( $field->group, $groups, true ) ) {
+				if ( ! in_array( $field->group, $groups, true ) ) {
 					unset( $return_fields[ $key ] );
 				}
 			}
@@ -149,12 +149,11 @@ final class GravityView_Fields {
 				continue;
 			}
 
-			if( ! in_array( $context, $field->contexts, true ) ) {
+			if ( ! in_array( $context, $field->contexts, true ) ) {
 				unset( $return_fields[ $key ] );
 			}
 		}
 
 		return $return_fields;
 	}
-
 }

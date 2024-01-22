@@ -47,4 +47,4 @@ class GravityView_Theme_Hooks_Avada extends GravityView_Plugin_and_Theme_Hooks {
 	);
 }
 
-new GravityView_Theme_Hooks_Avada;
+new GravityView_Theme_Hooks_Avada();

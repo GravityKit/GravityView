@@ -46,14 +46,14 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Signature extends GravityView_Plugi
 	 * @see GFSignature::signature_input
 	 *
 	 * @param array $form GF form array
-	 * @param int $entry_id Entry ID being edited
+	 * @param int   $entry_id Entry ID being edited
 	 */
 	function after_edit_entry( $form, $entry_id ) {
 
 		$signature_fields = GFAPI::get_fields_by_type( $form, 'signature' );
 
 		foreach ( $signature_fields as $field ) {
-			unset( $_POST["input_{$field->id}"] );
+			unset( $_POST[ "input_{$field->id}" ] );
 		}
 	}
 
@@ -62,32 +62,32 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Signature extends GravityView_Plugi
 	 *
 	 * @since 1.17
 	 *
-	 * @param string $field_content Always empty. Returning not-empty overrides the input.
-	 * @param GF_Field $field
+	 * @param string       $field_content Always empty. Returning not-empty overrides the input.
+	 * @param GF_Field     $field
 	 * @param string|array $value If array, it's a field with multiple inputs. If string, single input.
-	 * @param int $lead_id Lead ID. Always 0 for the `gform_field_input` filter.
-	 * @param int $form_id Form ID
+	 * @param int          $lead_id Lead ID. Always 0 for the `gform_field_input` filter.
+	 * @param int          $form_id Form ID
 	 *
 	 * @return string Empty string forces Gravity Forms to use the $_POST values
 	 */
 	function edit_entry_field_input( $field_content = '', $field = null, $value = '', $lead_id = 0, $form_id = 0 ) {
 
-		$context = function_exists('gravityview_get_context') ? gravityview_get_context() : '';
+		$context = function_exists( 'gravityview_get_context' ) ? gravityview_get_context() : '';
 
-		if( 'signature' !== $field->type || 'edit' !== $context ) {
+		if ( 'signature' !== $field->type || 'edit' !== $context ) {
 			return $field_content;
 		}
 
 		// We need to fetch a fresh version of the entry, since the saved entry hasn't refreshed in GV yet.
-		$entry = GravityView_View::getInstance()->getCurrentEntry();
-		$entry = GFAPI::get_entry( $entry['id'] );
+		$entry       = GravityView_View::getInstance()->getCurrentEntry();
+		$entry       = GFAPI::get_entry( $entry['id'] );
 		$entry_value = \GV\Utils::get( $entry, $field->id );
 
-		$_POST["input_{$field->id}"] = $entry_value; // Used when Edit Entry form *is* submitted
-		$_POST["input_{$form_id}_{$field->id}_signature_filename"] = $entry_value; // Used when Edit Entry form *is not* submitted
+		$_POST[ "input_{$field->id}" ]                               = $entry_value; // Used when Edit Entry form *is* submitted
+		$_POST[ "input_{$form_id}_{$field->id}_signature_filename" ] = $entry_value; // Used when Edit Entry form *is not* submitted
 
 		return ''; // Return empty string to force using $_POST values instead
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Signature;
+new GravityView_Plugin_Hooks_Gravity_Forms_Signature();

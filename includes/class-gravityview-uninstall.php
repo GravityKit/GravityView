@@ -20,6 +20,7 @@ class GravityView_Uninstall {
 
 	/**
 	 * Delete GravityView Views, settings, roles, caps, etc.
+	 *
 	 * @see https://youtu.be/FXy_DO6IZOA?t=35s
 	 * @since 1.15
 	 *

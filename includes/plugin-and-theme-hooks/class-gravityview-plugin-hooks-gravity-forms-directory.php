@@ -26,16 +26,15 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Directory extends GravityView_Plugi
 
 	protected function add_hooks() {
 
-		$KWS_GF_Change_Lead_Creator = new KWS_GF_Change_Lead_Creator;
+		$KWS_GF_Change_Lead_Creator = new KWS_GF_Change_Lead_Creator();
 
 		// Now, no validation is required in the methods; let's hook in.
-		remove_action('admin_init', array( $KWS_GF_Change_Lead_Creator, 'set_screen_mode' ) );
+		remove_action( 'admin_init', array( $KWS_GF_Change_Lead_Creator, 'set_screen_mode' ) );
 
-		remove_action("gform_entry_info", array( $KWS_GF_Change_Lead_Creator, 'add_select' ), 10 );
+		remove_action( 'gform_entry_info', array( $KWS_GF_Change_Lead_Creator, 'add_select' ), 10 );
 
-		remove_action("gform_after_update_entry", array( $KWS_GF_Change_Lead_Creator, 'update_entry_creator' ), 10 );
-
+		remove_action( 'gform_after_update_entry', array( $KWS_GF_Change_Lead_Creator, 'update_entry_creator' ), 10 );
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Directory;
+new GravityView_Plugin_Hooks_Gravity_Forms_Directory();

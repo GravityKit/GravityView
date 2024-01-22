@@ -26,9 +26,9 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	 */
 	public function __construct() {
 
-		$this->label = esc_html__( 'Date Created', 'gk-gravityview' );
+		$this->label                = esc_html__( 'Date Created', 'gk-gravityview' );
 		$this->default_search_label = $this->label;
-		$this->description = esc_html__( 'The date the entry was created.', 'gk-gravityview' );
+		$this->description          = esc_html__( 'The date the entry was created.', 'gk-gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
 
@@ -37,11 +37,11 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$this->add_field_support('date_display', $field_options );
+		$this->add_field_support( 'date_display', $field_options );
 
 		return $field_options;
 	}
@@ -63,7 +63,8 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	public function get_content( $output = '', $entry = array(), $field_settings = array(), $field = array() ) {
 
 		/** Overridden by a template. */
-		if( ! empty( $field['field_path'] ) ) { return $output; }
+		if ( ! empty( $field['field_path'] ) ) {
+			return $output; }
 
 		return GVCommon::format_date( $field['value'], 'format=' . \GV\Utils::get( $field_settings, 'date_display' ) );
 	}
@@ -75,15 +76,15 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 	 *
 	 * @see https://docs.gravitykit.com/article/331-date-created-merge-tag for usage information
 	 *
-	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
+	 * @param array  $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
+	 * @param array  $form Gravity Forms form array
+	 * @param array  $entry Entry array
+	 * @param bool   $url_encode Whether to URL-encode output
 	 *
 	 * @return string Original text if {date_created} isn't found. Otherwise, replaced text.
 	 */
-	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
+	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		$return = $text;
 
@@ -92,8 +93,8 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 
 		foreach ( $matches as $match ) {
 
-			$full_tag          = $match[0];
-			$property          = $match[1];
+			$full_tag = $match[0];
+			$property = $match[1];
 
 			$formatted_date = GravityView_Merge_Tags::format_date( $date_created, $property );
 
@@ -102,7 +103,6 @@ class GravityView_Field_Date_Created extends GravityView_Field {
 
 		return $return;
 	}
-
 }
 
-new GravityView_Field_Date_Created;
+new GravityView_Field_Date_Created();

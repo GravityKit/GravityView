@@ -30,7 +30,7 @@ class Form_Collection extends Collection {
 	/**
 	 * Get a \GV\Form from this list.
 	 *
-	 * @param int $form_id The ID of the form to get.
+	 * @param int    $form_id The ID of the form to get.
 	 * @param string $backend The form backend identifier, allows for multiple form backends in the future. Unused until then.
 	 *
 	 * @api

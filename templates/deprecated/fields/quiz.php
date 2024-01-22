@@ -11,12 +11,12 @@ $gravityview_view = GravityView_View::getInstance();
 $field = $gravityview_view->getCurrentField();
 
 // If there's no grade, don't continue
-if( gv_empty( $field['value'], false, false ) ) {
+if ( gv_empty( $field['value'], false, false ) ) {
 	return;
 }
 
-if( ! class_exists('GFQuiz') ) {
-	do_action('gravityview_log_error', __FILE__ . ': GFQuiz class does not exist.' );
+if ( ! class_exists( 'GFQuiz' ) ) {
+	do_action( 'gravityview_log_error', __FILE__ . ': GFQuiz class does not exist.' );
 	return;
 }
 

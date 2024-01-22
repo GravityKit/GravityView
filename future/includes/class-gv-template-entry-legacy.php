@@ -24,10 +24,10 @@ class Entry_Legacy_Template extends Entry_Template {
 		$entries->add( $this->entry );
 
 		$context = array(
-			'view' => $this->view,
-			'fields' => $this->view->fields->by_visible( $this->view ),
+			'view'    => $this->view,
+			'fields'  => $this->view->fields->by_visible( $this->view ),
 			'entries' => $entries,
-			'entry' => $this->entry,
+			'entry'   => $this->entry,
 			'request' => $this->request,
 		);
 

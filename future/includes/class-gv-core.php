@@ -50,7 +50,7 @@ final class Core {
 	 */
 	public static function get() {
 		if ( ! self::$__instance instanceof self ) {
-			self::$__instance = new self;
+			self::$__instance = new self();
 		}
 		return self::$__instance;
 	}
@@ -61,7 +61,7 @@ final class Core {
 	 * Activation handlers, rewrites, post type registration.
 	 */
 	public static function bootstrap() {
-		require_once dirname( __FILE__ ) . '/class-gv-plugin.php';
+		require_once __DIR__ . '/class-gv-plugin.php';
 		Plugin::get()->register_activation_hooks();
 	}
 
@@ -89,6 +89,7 @@ final class Core {
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
 		/**
 		 * Filter the logger instance being used for logging.
+		 *
 		 * @param \GV\Logger $logger The logger instance.
 		 */
 		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
@@ -114,14 +115,14 @@ final class Core {
 		/** Require critical legacy core files. @todo Deprecate */
 		require_once $this->plugin->dir( 'includes/import-functions.php' );
 		require_once $this->plugin->dir( 'includes/helper-functions.php' );
-		require_once $this->plugin->dir( 'includes/class-common.php');
-		require_once $this->plugin->dir( 'includes/connector-functions.php');
+		require_once $this->plugin->dir( 'includes/class-common.php' );
+		require_once $this->plugin->dir( 'includes/connector-functions.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-compatibility.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-roles-capabilities.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-admin-notices.php' );
 		require_once $this->plugin->dir( 'includes/class-admin.php' );
-		require_once $this->plugin->dir( 'includes/class-post-types.php');
-		require_once $this->plugin->dir( 'includes/class-cache.php');
+		require_once $this->plugin->dir( 'includes/class-post-types.php' );
+		require_once $this->plugin->dir( 'includes/class-cache.php' );
 
 		/**
 		 * GravityView extensions and widgets.

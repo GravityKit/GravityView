@@ -22,7 +22,7 @@ class GravityView_Field_Password extends GravityView_Field {
 		$this->add_hooks();
 
 		parent::__construct();
-	
+
 		add_filter( 'gravityview/field/password/value', array( $this, 'get_value' ), 10, 6 );
 	}
 
@@ -31,12 +31,12 @@ class GravityView_Field_Password extends GravityView_Field {
 	 *
 	 * @since 2.0
 	 *
-	 * @param mixed			$value	The value of the field.
-	 * @param \GV\Field		$field	The field as seen by future.
-	 * @param \GV\View		$view	The view requested in.
-	 * @param \GV\Source	$source The data source (form).
-	 * @param \GV\Entry		$entry	The entry.
-	 * @param \GV\Request	$request The request context.
+	 * @param mixed       $value  The value of the field.
+	 * @param \GV\Field   $field  The field as seen by future.
+	 * @param \GV\View    $view   The view requested in.
+	 * @param \GV\Source  $source The data source (form).
+	 * @param \GV\Entry   $entry  The entry.
+	 * @param \GV\Request $request The request context.
 	 *
 	 * @return mixed $value The filtered value.
 	 */
@@ -65,22 +65,22 @@ class GravityView_Field_Password extends GravityView_Field {
 	 * @since 1.17
 	 *
 	 * @param string $label Field label HTML
-	 * @param array $field GravityView field array
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Gravity Forms entry array
+	 * @param array  $field GravityView field array
+	 * @param array  $form Gravity Forms form array
+	 * @param array  $entry Gravity Forms entry array
 	 *
 	 * @return string If a custom field label isn't set, return the field label for the password field
 	 */
-	function field_label( $label = '', $field = array(), $form = array(), $entry = array() ){
+	function field_label( $label = '', $field = array(), $form = array(), $entry = array() ) {
 
 		// If using a custom label, no need to fetch the parent label
-		if( ! is_numeric( $field['id'] ) || ! empty( $field['custom_label'] ) ) {
+		if ( ! is_numeric( $field['id'] ) || ! empty( $field['custom_label'] ) ) {
 			return $label;
 		}
 
 		$field_object = GFFormsModel::get_field( $form, $field['id'] );
 
-		if( $field_object && 'password' === $field_object->type ) {
+		if ( $field_object && 'password' === $field_object->type ) {
 			$label = $field['label'];
 		}
 
@@ -94,19 +94,19 @@ class GravityView_Field_Password extends GravityView_Field {
 	 *
 	 * @param array $fields Associative array of fields, with keys as field type
 	 * @param array $form GF Form array
-	 * @param bool $include_parent_field Whether to include the parent field when getting a field with inputs
+	 * @param bool  $include_parent_field Whether to include the parent field when getting a field with inputs
 	 *
 	 * @return array $fields with list field columns added, if exist. Unmodified if form has no list fields.
 	 */
 	function add_form_fields( $fields = array(), $form = array(), $include_parent_field = true ) {
 
 		foreach ( $fields as $key => $field ) {
-			if( 'password' === $field['type'] ) {
+			if ( 'password' === $field['type'] ) {
 
 				// The Enter Password input
-				if( floor( $key ) === floatval( $key ) ) {
+				if ( floor( $key ) === floatval( $key ) ) {
 
-					if( ! empty( $field['parent'] ) ) {
+					if ( ! empty( $field['parent'] ) ) {
 						$field['label']      = $field['parent']->label;
 						$field['adminOnly']  = $field['parent']->adminOnly;
 						$field['adminLabel'] = $field['parent']->adminLabel;
@@ -124,7 +124,6 @@ class GravityView_Field_Password extends GravityView_Field {
 
 		return $fields;
 	}
-
 }
 
-new GravityView_Field_Password;
+new GravityView_Field_Password();

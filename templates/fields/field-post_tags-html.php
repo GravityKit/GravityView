@@ -11,8 +11,8 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$display_value = $gravityview->display_value;
-$entry = $gravityview->entry->as_entry();
+$display_value  = $gravityview->display_value;
+$entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
 if ( ! empty( $field_settings['dynamic_data'] ) && ! empty( $entry['post_id'] ) ) {
@@ -25,14 +25,12 @@ if ( ! empty( $field_settings['dynamic_data'] ) && ! empty( $entry['post_id'] ) 
 
 	echo $term_list;
 
-} else {
+} elseif ( empty( $field_settings['link_to_term'] ) ) {
 
-	if ( empty( $field_settings['link_to_term'] ) ) {
 
 		echo esc_html( $display_value );
 
-	} else {
+} else {
 
-		echo gravityview_convert_value_to_term_list( $display_value );
-	}
+	echo gravityview_convert_value_to_term_list( $display_value );
 }
