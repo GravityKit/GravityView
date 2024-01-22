@@ -831,6 +831,39 @@ final class GravityView_Delete_Entry {
 		echo GVCommon::generate_notice( $message, $class );
 	}
 
+	/**
+	 * Passes approval notification and action hook to the send_notifications method
+	 *
+	 * @since    $ver$
+	 * @see      GravityView_Entry_Approval::send_notifications()
+	 *
+	 * @param int   $entry_id ID of entry being updated
+	 * @param array $entry    The entry object.
+	 */
+	public function trigger_notifications( $entry_id = 0, $entry = [] ): void {
+		$event = (string) current_action();
+
+		// If the delete mode is set to `trash` still trigger the notification.
+		if ( 'gravityview/delete-entry/trashed' === $event ) {
+			$event = 'gravityview/delete-entry/deleted';
+		}
+
+		GravityView_Notifications::send_notifications( (int) $entry_id, $event, $entry );
+	}
+
+	/**
+	 * Adds entry deleted status to notification events
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $notification_events The notification events.
+	 */
+	public function add_delete_notification_events( array $notification_events ): array {
+		$notification_events['gravityview/delete-entry/deleted'] = 'GravityView - ' . esc_html_x( 'Entry is deleted', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+
+		return $notification_events;
+	}
+
 } // end class
 
 GravityView_Delete_Entry::getInstance();
