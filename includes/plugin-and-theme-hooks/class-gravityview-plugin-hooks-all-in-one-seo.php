@@ -71,4 +71,4 @@ class GravityView_Plugin_Hooks_All_In_One_SEO extends GravityView_Plugin_and_The
 	}
 }
 
-new GravityView_Plugin_Hooks_All_In_One_SEO;
+new GravityView_Plugin_Hooks_All_In_One_SEO();

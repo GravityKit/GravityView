@@ -11,7 +11,8 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 ?>
 
-<table class="form-table striped"><?php
+<table class="form-table striped">
+<?php
 
 	/**
 	 * @since 1.15.2

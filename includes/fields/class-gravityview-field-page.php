@@ -24,4 +24,4 @@ class GravityView_Field_Page extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Page;
+new GravityView_Field_Page();

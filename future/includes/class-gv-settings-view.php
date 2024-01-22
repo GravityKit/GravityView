@@ -352,7 +352,7 @@ class View_Settings extends Settings {
 						'preset_business_data',
 						'preset_issue_tracker',
 						'preset_resume_board',
-						'preset_job_board'
+						'preset_job_board',
 					),
 					'article'           => array(
 						'id'  => '54ee1246e4b034c37ea91c11',
@@ -572,65 +572,65 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => false,
 					'full_width'        => true,
 					'article'           => array(
-						'id'  => '5590376ce4b027e1978eb8d0',
+						'id'   => '5590376ce4b027e1978eb8d0',
 						'type' => 'modal',
-						'url' => 'https://docs.gravitykit.com/article/288-how-gravityview-security-works',
+						'url'  => 'https://docs.gravitykit.com/article/288-how-gravityview-security-works',
 					),
 				),
-				'custom_css'        => array(
+				'custom_css'                  => array(
 					'label'             => __( 'Custom CSS', 'gk-gravityview' ),
 					'group'             => 'default',
 					// translators: Do not translate the words inside the square brackets ([]); they are replaced.
 					'desc'              => strtr(
 					// translators: Do not translate the words inside the square brackets ([]); they are replaced.
 						esc_html__( 'CSS added here will be placed inside [style] tags in the page&rsquo;s [head], after GravityView styles.', 'gk-gravityview' ),
-						[
+						array(
 							'[style]' => '<code>' . esc_html( '<style>' ) . '</code>',
-							'[head]' => '<code>' . esc_html( '<head>' ) . '</code>',
-						]
+							'[head]'  => '<code>' . esc_html( '<head>' ) . '</code>',
+						)
 					),
 					'type'              => 'textarea',
 					'rows'              => 15,
 					'class'             => 'code widefat',
-					'codemirror'        => [
+					'codemirror'        => array(
 						'mode' => 'css',
-					],
+					),
 					'value'             => '',
 					'tooltip'           => false,
 					'merge_tags'        => false,
 					'show_in_shortcode' => false,
 					'full_width'        => true,
 					'article'           => array(
-						'id'  => '6527426e44252e4a513e9d35',
+						'id'   => '6527426e44252e4a513e9d35',
 						'type' => 'modal',
-						'url' => 'https://docs.gravitykit.com/article/962-view-settings-custom-code',
+						'url'  => 'https://docs.gravitykit.com/article/962-view-settings-custom-code',
 					),
 				),
-				'custom_javascript' => array(
+				'custom_javascript'           => array(
 					'label'             => __( 'Custom JavaScript', 'gk-gravityview' ),
 					'group'             => 'default',
 					'desc'              => strtr(
 						// translators: Do not translate the words inside the square brackets ([]); they are replaced.
 						esc_html__( 'JavaScript added here will be placed inside [script] tags in the page&rsquo;s footer, after GravityView scripts.', 'gk-gravityview' ),
-						[
+						array(
 							'[script]' => '<code>' . esc_html( '<script>' ) . '</code>',
-						]
+						)
 					),
 					'type'              => 'textarea',
 					'rows'              => 15,
 					'class'             => 'code widefat',
-					'codemirror'        => [
+					'codemirror'        => array(
 						'mode' => 'javascript',
-					],
+					),
 					'merge_tags'        => false,
 					'value'             => '',
 					'tooltip'           => false,
 					'show_in_shortcode' => false,
 					'full_width'        => true,
 					'article'           => array(
-						'id'  => '6527426e44252e4a513e9d35',
+						'id'   => '6527426e44252e4a513e9d35',
 						'type' => 'modal',
-						'url' => 'https://docs.gravitykit.com/article/962-view-settings-custom-code',
+						'url'  => 'https://docs.gravitykit.com/article/962-view-settings-custom-code',
 					),
 				),
 			),
@@ -700,6 +700,7 @@ class View_Settings extends Settings {
 
 		/**
 		 * Modify the default settings for new Views.
+		 *
 		 * @deprecated
 		 * @see filter `gravityview/view/settings/defaults`
 		 *
@@ -754,7 +755,7 @@ class View_Settings extends Settings {
 		return array_combine(
 			$defaults,
 			array_map(
-				function( $key ) use ( $_this ) {
+				function ( $key ) use ( $_this ) {
 					return $_this->get( $key );
 				},
 				$defaults

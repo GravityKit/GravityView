@@ -28,9 +28,9 @@ class GravityView_Field_Date_Updated extends GravityView_Field_Date_Created {
 
 		parent::__construct();
 
-		$this->label = esc_html__( 'Date Updated', 'gk-gravityview' );
+		$this->label                = esc_html__( 'Date Updated', 'gk-gravityview' );
 		$this->default_search_label = $this->label;
-		$this->description = esc_html__( 'The date the entry was last updated.', 'gk-gravityview' );
+		$this->description          = esc_html__( 'The date the entry was last updated.', 'gk-gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
 	}
@@ -38,22 +38,22 @@ class GravityView_Field_Date_Updated extends GravityView_Field_Date_Created {
 	/**
 	 * Adds support for date_display setting for the field
 	 *
-	 * @param array $field_options
-	 * @param string $template_id
-	 * @param string $field_id
-	 * @param string $context
-	 * @param string $input_type
+	 * @param array   $field_options
+	 * @param string  $template_id
+	 * @param string  $field_id
+	 * @param string  $context
+	 * @param string  $input_type
 	 * @param $form_id
 	 *
 	 * @return array
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$this->add_field_support('date_display', $field_options );
+		$this->add_field_support( 'date_display', $field_options );
 
 		return $field_options;
 	}
@@ -73,7 +73,7 @@ class GravityView_Field_Date_Updated extends GravityView_Field_Date_Created {
 	public function get_content( $output = '', $entry = array(), $field_settings = array(), $field = array() ) {
 
 		/** Overridden by a template. */
-		if( \GV\Utils::get( $field, 'field_path' ) !== gravityview()->plugin->dir( 'templates/fields/field-html.php' ) ) {
+		if ( \GV\Utils::get( $field, 'field_path' ) !== gravityview()->plugin->dir( 'templates/fields/field-html.php' ) ) {
 			return $output;
 		}
 
@@ -81,4 +81,4 @@ class GravityView_Field_Date_Updated extends GravityView_Field_Date_Created {
 	}
 }
 
-new GravityView_Field_Date_Updated;
+new GravityView_Field_Date_Updated();

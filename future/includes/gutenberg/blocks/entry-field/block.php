@@ -18,13 +18,13 @@ class EntryField {
 	 * @return array
 	 */
 	public function modify_block_meta( $block_meta ) {
-		return [
+		return array(
 			'title'           => __( 'GravityView Entry Field', 'gk-gravityview' ),
-			'render_callback' => [ $this, 'render' ],
-			'localization'    => [
-				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg'
-			]
-		];
+			'render_callback' => array( $this, 'render' ),
+			'localization'    => array(
+				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg',
+			),
+		);
 	}
 
 	/**
@@ -36,15 +36,15 @@ class EntryField {
 	 *
 	 * @return string $output
 	 */
-	static function render( $block_attributes = [] ) {
-		$block_to_shortcode_attributes_map = [
+	static function render( $block_attributes = array() ) {
+		$block_to_shortcode_attributes_map = array(
 			'viewId'                => 'view_id',
 			'entryId'               => 'entry_id',
 			'fieldId'               => 'field_id',
 			'fieldSettingOverrides' => 'field_setting_overrides',
-		];
+		);
 
-		$shortcode_attributes = [];
+		$shortcode_attributes = array();
 
 		foreach ( $block_attributes as $attribute => $value ) {
 			$value = esc_attr( sanitize_text_field( $value ) );

@@ -16,7 +16,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *  fields are sourced from \GV\Entry instances.
  */
 abstract class Source {
-	
+
 	/**
 	 * @var string BACKEND_INTERNAL The backend identifier for special GravityView data sources
 	 *  like custom content and the like. Not really a form, but a source nevertheless.

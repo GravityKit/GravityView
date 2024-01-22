@@ -27,7 +27,7 @@ class GF_Entry_Filter extends Entry_Filter {
 	 * @return \GV\GF_Entry_Filter The filter.
 	 */
 	public static function from_search_criteria( $search_criteria ) {
-		$filter = new self();
+		$filter                  = new self();
 		$filter->search_criteria = $search_criteria;
 		return $filter;
 	}
@@ -48,7 +48,7 @@ class GF_Entry_Filter extends Entry_Filter {
 		$search_criteria = array();
 
 		foreach ( array( 'field_filters', 'start_date', 'end_date', 'status' ) as $key ) {
-			switch ( $key ):
+			switch ( $key ) :
 				case 'field_filters':
 					$field_filters = array_merge( empty( $a[ $key ] ) ? array() : $a[ $key ], empty( $b[ $key ] ) ? array() : $b[ $key ] );
 					if ( ! empty( $field_filters ) ) {
@@ -56,9 +56,9 @@ class GF_Entry_Filter extends Entry_Filter {
 					}
 
 					if ( ! empty( $b[ $key ]['mode'] ) ) {
-						$search_criteria[ $key ]['mode' ] = $b[ $key ]['mode'];
-					} else if ( ! empty( $a[ $key ]['mode'] ) ) {
-						$search_criteria[ $key ]['mode' ] = $a[ $key ]['mode'];
+						$search_criteria[ $key ]['mode'] = $b[ $key ]['mode'];
+					} elseif ( ! empty( $a[ $key ]['mode'] ) ) {
+						$search_criteria[ $key ]['mode'] = $a[ $key ]['mode'];
 					}
 					break;
 				case 'start_date':
@@ -66,7 +66,7 @@ class GF_Entry_Filter extends Entry_Filter {
 				case 'status':
 					if ( isset( $b[ $key ] ) ) {
 						$search_criteria[ $key ] = $b[ $key ];
-					} else if ( isset( $a[ $key ] ) ) {
+					} elseif ( isset( $a[ $key ] ) ) {
 						$search_criteria[ $key ] = $a[ $key ];
 					}
 					break;

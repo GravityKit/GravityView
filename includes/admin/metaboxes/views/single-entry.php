@@ -11,7 +11,8 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 ?>
 
-<table class="form-table"><?php
+<table class="form-table">
+<?php
 
 	GravityView_Render_Settings::render_setting_row( 'single_title', $current_settings );
 
@@ -19,5 +20,5 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	GravityView_Render_Settings::render_setting_row( 'hide_empty_single', $current_settings );
 
-	?>
+?>
 </table>

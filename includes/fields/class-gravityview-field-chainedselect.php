@@ -25,4 +25,4 @@ class GravityView_Field_Chained_Select extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Chained_Select;
+new GravityView_Field_Chained_Select();

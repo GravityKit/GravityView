@@ -3,6 +3,7 @@
  * GravityView HTML elements that are commonly used
  *
  * Thanks to EDD
+ *
  * @see https://github.com/easydigitaldownloads/easy-digital-downloads/blob/master/includes/class-edd-html-elements.php
  *
  * @package   GravityView
@@ -26,24 +27,24 @@ class GravityView_HTML_Elements {
 	public function form_dropdown( $args = array() ) {
 
 		$defaults = array(
-			'active'      => true,
-			'trash'       => false,
-			'options'     => array(),
-			'exclude'     => array(),
-			'name'        => 'gravityview_form_id',
-			'id'          => 'gravityview_form_id',
-			'class'       => '',
-			'multiple'    => false,
-			'selected'    => 0,
+			'active'           => true,
+			'trash'            => false,
+			'options'          => array(),
+			'exclude'          => array(),
+			'name'             => 'gravityview_form_id',
+			'id'               => 'gravityview_form_id',
+			'class'            => '',
+			'multiple'         => false,
+			'selected'         => 0,
 			'show_option_none' => sprintf( '&mdash; %s &mdash;', esc_html__( 'list of forms', 'gk-gravityview' ) ),
-			'data'        => array( 'search-type' => 'form' ),
+			'data'             => array( 'search-type' => 'form' ),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
 		$forms = gravityview_get_forms( (bool) $args['active'], (bool) $args['trash'] );
 
-		if( array() === $args['options'] ) {
+		if ( array() === $args['options'] ) {
 			foreach ( $forms as $form ) {
 
 				if ( in_array( $form['id'], $args['exclude'] ) ) {
@@ -68,26 +69,26 @@ class GravityView_HTML_Elements {
 	public function field_dropdown( $args = array() ) {
 
 		$defaults = array(
-			'form_id'     => 0,
-			'options'     => array(),
-			'name'        => 'gravityview_form_fields',
-			'id'          => 'gravityview_form_fields',
-			'class'       => '',
-			'multiple'    => false,
-			'selected'    => 0,
+			'form_id'          => 0,
+			'options'          => array(),
+			'name'             => 'gravityview_form_fields',
+			'id'               => 'gravityview_form_fields',
+			'class'            => '',
+			'multiple'         => false,
+			'selected'         => 0,
 			'show_option_none' => __( 'Select a field', 'gk-gravityview' ),
-			'data'        => array( 'search-type' => 'form' ),
+			'data'             => array( 'search-type' => 'form' ),
 		);
 
 		$args = wp_parse_args( $args, $defaults );
 
-		if( empty( $args['form_id'] ) ) {
+		if ( empty( $args['form_id'] ) ) {
 			return '';
 		}
 
 		$fields = GVCommon::get_sortable_fields_array( $args['form_id'] );
 
-		if( array() === $args['options'] ) {
+		if ( array() === $args['options'] ) {
 			foreach ( $fields as $field_id => $field ) {
 				$args['options'][ $field_id ] = esc_html( $field['label'] );
 			}
@@ -129,26 +130,26 @@ class GravityView_HTML_Elements {
 			$data_elements .= ' data-' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
 		}
 
-		if( $args['multiple'] ) {
+		if ( $args['multiple'] ) {
 			$multiple = ' MULTIPLE';
 		} else {
 			$multiple = '';
 		}
 
-		if( $args['placeholder'] ) {
+		if ( $args['placeholder'] ) {
 			$placeholder = $args['placeholder'];
 		} else {
 			$placeholder = '';
 		}
 
 		$disabled = $args['disabled'] ? ' disabled="disabled"' : '';
-		$class  = implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $args['class'] ) ) );
-		$output = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( str_replace( '-', '_', $args['id'] ) ) . '" class="gravityview-select ' . $class . '"' . $multiple . $disabled . ' data-placeholder="' . $placeholder . '"'. $data_elements . '>';
+		$class    = implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $args['class'] ) ) );
+		$output   = '<select name="' . esc_attr( $args['name'] ) . '" id="' . esc_attr( str_replace( '-', '_', $args['id'] ) ) . '" class="gravityview-select ' . $class . '"' . $multiple . $disabled . ' data-placeholder="' . $placeholder . '"' . $data_elements . '>';
 
 		if ( ! empty( $args['options'] ) ) {
 
 			if ( $args['show_option_none'] ) {
-				if( $args['multiple'] ) {
+				if ( $args['multiple'] ) {
 					$selected = selected( true, in_array( -1, $args['selected'] ), false );
 				} else {
 					$selected = selected( $args['selected'], -1, false );
@@ -156,9 +157,9 @@ class GravityView_HTML_Elements {
 				$output .= '<option value="-1"' . $selected . '>' . esc_html( $args['show_option_none'] ) . '</option>';
 			}
 
-			foreach( $args['options'] as $key => $option ) {
+			foreach ( $args['options'] as $key => $option ) {
 
-				if( $args['multiple'] && is_array( $args['selected'] ) ) {
+				if ( $args['multiple'] && is_array( $args['selected'] ) ) {
 					$selected = selected( true, in_array( $key, $args['selected'], true ), false );
 				} else {
 					$selected = selected( $args['selected'], $key, false );

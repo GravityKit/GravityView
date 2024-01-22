@@ -50,4 +50,4 @@ class GravityView_Plugin_Hooks_Members extends GravityView_Plugin_and_Theme_Hook
 	);
 }
 
-new GravityView_Plugin_Hooks_Members;
+new GravityView_Plugin_Hooks_Members();

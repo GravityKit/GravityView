@@ -20,6 +20,7 @@ $content = ob_get_clean();
 
 /**
  * Modify the wrapper container.
+ *
  * @since  2.15
  *
  * @param string   $wrapper_container Wrapper container HTML markup

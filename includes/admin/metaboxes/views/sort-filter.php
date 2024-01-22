@@ -29,7 +29,7 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	$sort_fields_input = '<select name="template_settings[sort_field][]" class="gravityview_sort_field" id="gravityview_sort_field_%d">%s</select>';
 
 	if ( is_array( $current_settings['sort_field'] ) ) {
-		$primary_sort_fields = gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'][0] );
+		$primary_sort_fields   = gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'][0] );
 		$secondary_sort_fields = gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'][1] );
 	} else {
 		$primary_sort_fields = $secondary_sort_fields = gravityview_get_sortable_fields( $curr_form, $current_settings['sort_field'] );
@@ -37,7 +37,7 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	// Splice the sort direction
 	$_directions = array();
-	foreach ( (array)\GV\Utils::get( $current_settings, 'sort_direction', array() ) as $i => $direction ) {
+	foreach ( (array) \GV\Utils::get( $current_settings, 'sort_direction', array() ) as $i => $direction ) {
 		if ( ! $i ) {
 			$_directions['sort_direction'] = $direction;
 		} else {

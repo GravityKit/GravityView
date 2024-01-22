@@ -23,7 +23,7 @@ class GravityView_Theme_Hooks_SiteOrigin extends GravityView_Plugin_and_Theme_Ho
 	protected $class_name = 'SiteOrigin_Panels';
 
 	protected $content_meta_keys = array(
-		'panels_data'
+		'panels_data',
 	);
 
 	/**
@@ -31,15 +31,15 @@ class GravityView_Theme_Hooks_SiteOrigin extends GravityView_Plugin_and_Theme_Ho
 	 *
 	 * @since 2.0.7
 	 *
-	 * @param array $meta_keys
-	 * @param null $post
+	 * @param array               $meta_keys
+	 * @param null                $post
 	 * @param \GV\View_Collection $views
 	 *
 	 * @return array
 	 */
-	function merge_content_meta_keys( $meta_keys = array(), $post = null, & $views = null ) {
+	function merge_content_meta_keys( $meta_keys = array(), $post = null, &$views = null ) {
 
-		if( empty( $post->panels_data ) || empty( $post->panels_data['widgets'] ) ) {
+		if ( empty( $post->panels_data ) || empty( $post->panels_data['widgets'] ) ) {
 			return $meta_keys;
 		}
 
@@ -59,7 +59,7 @@ class GravityView_Theme_Hooks_SiteOrigin extends GravityView_Plugin_and_Theme_Ho
 				// SiteOrigin Tabs
 				$content = \GV\Utils::get( $tab, 'content_text', $backup );
 
-				if( $content ) {
+				if ( $content ) {
 					$views->merge( \GV\View_Collection::from_content( $content ) );
 				}
 			}
@@ -67,7 +67,6 @@ class GravityView_Theme_Hooks_SiteOrigin extends GravityView_Plugin_and_Theme_Ho
 
 		return $meta_keys;
 	}
-
 }
 
-new GravityView_Theme_Hooks_SiteOrigin;
+new GravityView_Theme_Hooks_SiteOrigin();

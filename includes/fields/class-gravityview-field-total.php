@@ -47,14 +47,14 @@ class GravityView_Field_Total extends GravityView_Field {
 	 *
 	 * @todo Support Total fields in Edit Entry configuration
 	 *
-	 * @param array $blocklist Array of field types not able to be added to Edit Entry
+	 * @param array       $blocklist Array of field types not able to be added to Edit Entry
 	 * @param  string|null $context Context
 	 *
 	 * @return array Blocklist, with "total" added. If not edit context, original field blocklist. Otherwise, blocklist including total.
 	 */
-	public function add_to_blocklist( $blocklist = array(), $context = NULL  ){
+	public function add_to_blocklist( $blocklist = array(), $context = null ) {
 
-		if( empty( $context ) || $context !== 'edit' ) {
+		if ( empty( $context ) || 'edit' !== $context ) {
 			return $blocklist;
 		}
 
@@ -68,8 +68,8 @@ class GravityView_Field_Total extends GravityView_Field {
 	 *
 	 * @since 1.20
 	 *
-	 * @param array $form Gravity Forms form array
-	 * @param int $entry_id Gravity Forms Entry ID
+	 * @param array                         $form Gravity Forms form array
+	 * @param int                           $entry_id Gravity Forms Entry ID
 	 * @param GravityView_Edit_Entry_Render $Edit_Entry_Render
 	 *
 	 * @return void
@@ -80,19 +80,19 @@ class GravityView_Field_Total extends GravityView_Field {
 
 		$total_fields = GFCommon::get_fields_by_type( $original_form, 'total' );
 
-		//saving total field as the last field of the form.
+		// saving total field as the last field of the form.
 		if ( ! empty( $total_fields ) ) {
 
 			$entry = GFAPI::get_entry( $entry_id );
 
 			/** @type GF_Field_Total $total_field */
 			foreach ( $total_fields as $total_field ) {
-				$entry["{$total_field->id}"] = GFCommon::get_order_total( $original_form, $entry );
+				$entry[ "{$total_field->id}" ] = GFCommon::get_order_total( $original_form, $entry );
 			}
 
 			$return_entry = GFAPI::update_entry( $entry );
 
-			if( is_wp_error( $return_entry ) ) {
+			if ( is_wp_error( $return_entry ) ) {
 				gravityview()->log->error( 'Updating the entry total fields failed', array( 'data' => $return_entry ) );
 			} else {
 				gravityview()->log->debug( 'Updating the entry total fields succeeded' );
@@ -101,4 +101,4 @@ class GravityView_Field_Total extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Total;
+new GravityView_Field_Total();

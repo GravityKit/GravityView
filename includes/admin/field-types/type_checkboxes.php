@@ -2,6 +2,7 @@
 /**
  * Checkboxes input type - show a group of checkboxes
  * Supports a "requires", which is the name of another checkbox in the same setting. If set, the checkbox will be shown only if "requires" checkbox is checked as well.
+ *
  * @since 1.17
  */
 class GravityView_FieldType_checkboxes extends GravityView_FieldType {
@@ -22,7 +23,7 @@ class GravityView_FieldType_checkboxes extends GravityView_FieldType {
 	}
 
 	function render_input( $override_input = null ) {
-		if( isset( $override_input ) ) {
+		if ( isset( $override_input ) ) {
 			echo $override_input;
 			return;
 		}
@@ -30,17 +31,24 @@ class GravityView_FieldType_checkboxes extends GravityView_FieldType {
 		?>
 		<ul class="gv-setting-list">
 		<?php
-		foreach( $this->field['options'] as $value => $label ) { ?>
-			<li <?php if( isset( $label['requires'] ) ) { printf( 'class="gv-sub-setting" data-requires="%s"', $label['requires'] ); } ?>>
+		foreach ( $this->field['options'] as $value => $label ) {
+			?>
+			<li 
+			<?php
+			if ( isset( $label['requires'] ) ) {
+				printf( 'class="gv-sub-setting" data-requires="%s"', $label['requires'] ); }
+			?>
+			>
 				<label>
 				<input name="<?php printf( '%s[%s]', esc_attr( $this->name ), esc_attr( $value ) ); ?>" type="hidden"
-				       value="0"/>
+						value="0"/>
 				<input name="<?php printf( '%s[%s]', esc_attr( $this->name ), esc_attr( $value ) ); ?>"
-				       id="<?php echo $this->get_field_id(); ?>" type="checkbox"
-				       value="1" <?php checked( ! empty( $this->value[ $value ] ) ); ?> />
+						id="<?php echo $this->get_field_id(); ?>" type="checkbox"
+						value="1" <?php checked( ! empty( $this->value[ $value ] ) ); ?> />
 				<?php echo esc_html( $label['label'] ); ?>
 				</label>
-				<?php if( ! empty( $label['desc'] ) ) {
+				<?php
+				if ( ! empty( $label['desc'] ) ) {
 					printf( '<span class="howto">%s</span>', $label['desc'] );
 				}
 				?>
@@ -51,5 +59,4 @@ class GravityView_FieldType_checkboxes extends GravityView_FieldType {
 		</ul>
 		<?php
 	}
-
 }

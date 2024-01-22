@@ -3,8 +3,8 @@
  * number input type
  */
 
-if( !class_exists('GravityView_FieldType_text') ) {
-	include_once( GRAVITYVIEW_DIR . 'includes/admin/field-types/type_text.php' );
+if ( ! class_exists( 'GravityView_FieldType_text' ) ) {
+	include_once GRAVITYVIEW_DIR . 'includes/admin/field-types/type_text.php';
 }
 
 class GravityView_FieldType_number extends GravityView_FieldType_text {
@@ -20,7 +20,7 @@ class GravityView_FieldType_number extends GravityView_FieldType_text {
 
 		$show_mt = $this->show_merge_tags();
 
-		if ( $show_mt && $this->field['merge_tags'] !== false || $this->field['merge_tags'] === 'force' ) {
+		if ( $show_mt && false !== $this->field['merge_tags'] || 'force' === $this->field['merge_tags'] ) {
 			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 
@@ -30,15 +30,14 @@ class GravityView_FieldType_number extends GravityView_FieldType_text {
 		$min  = \GV\Utils::get( $this->field, 'min', null );
 		$step = \GV\Utils::get( $this->field, 'step', null );
 
-		$atts = '';
+		$atts  = '';
 		$atts .= isset( $max ) ? ' max="' . (int) $max . '"' : '';
 		$atts .= isset( $min ) ? ' min="' . (int) $min . '"' : '';
 		$atts .= isset( $step ) ? ' step="' . (int) $step . '"' : '';
 		?>
 		<input name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" type="number"
-		       value="<?php echo esc_attr( $this->value ); ?>"
-		       class="<?php echo esc_attr( $class ); ?>"<?php echo $atts; ?>>
+				value="<?php echo esc_attr( $this->value ); ?>"
+				class="<?php echo esc_attr( $class ); ?>"<?php echo $atts; ?>>
 		<?php
 	}
-
 }

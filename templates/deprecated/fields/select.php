@@ -12,6 +12,7 @@ extract( $gravityview_view->getCurrentField() );
 
 /**
  * Override whether to show the value or the label of a Select field.
+ *
  * @since 1.5.2
  * @param bool $show_label True: Show the label of the Choice; False: show the value of the Choice. Default: `false`
  * @param array $entry GF Entry
@@ -19,7 +20,7 @@ extract( $gravityview_view->getCurrentField() );
  */
 $show_label = apply_filters( 'gravityview/fields/select/output_label', ( 'label' === \GV\Utils::get( $field_settings, 'choice_display' ) ), $entry, $field );
 
-if( $show_label && !empty( $field->choices ) && is_array( $field->choices ) && '' !== $display_value ) {
+if ( $show_label && ! empty( $field->choices ) && is_array( $field->choices ) && '' !== $display_value ) {
 	$output = RGFormsModel::get_choice_text( $field, $display_value );
 } else {
 	$output = $display_value;

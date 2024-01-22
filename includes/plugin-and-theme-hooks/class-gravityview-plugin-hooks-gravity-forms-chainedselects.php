@@ -43,9 +43,9 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 	/**
 	 * Allow all inputs of a Chained Select field to be searched, even though only the parent is added to the widget.
 	 *
-	 * @param array $searchable_fields Array of GravityView-formatted fields or only the field ID? Example: [ '1.2', 'created_by' ]
+	 * @param array    $searchable_fields Array of GravityView-formatted fields or only the field ID? Example: [ '1.2', 'created_by' ]
 	 * @param \GV\View $view Object of View being searched.
-	 * @param bool $with_full_field Does $searchable_fields contain the full field array or just field ID? Default: false (just field ID)
+	 * @param bool     $with_full_field Does $searchable_fields contain the full field array or just field ID? Default: false (just field ID)
 	 *
 	 * @return array If chainedselect search type,
 	 */
@@ -53,13 +53,14 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 
 		/**
 		 * The first time through, it's just field IDs. We want the full details that include input type.
+		 *
 		 * @see GravityView_Widget_Search::filter_entries()
 		 */
 		if ( ! $with_full_field ) {
 			return $searchable_fields;
 		}
 
-		foreach( $searchable_fields as $searchable_field ) {
+		foreach ( $searchable_fields as $searchable_field ) {
 
 			if ( self::INPUT_TYPE !== \GV\Utils::get( $searchable_field, 'input' ) ) {
 				continue;
@@ -67,7 +68,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 
 			$field = GFAPI::get_field( $searchable_field['form_id'], $searchable_field['field'] );
 
-			foreach( $field->get_entry_inputs() as $input ) {
+			foreach ( $field->get_entry_inputs() as $input ) {
 				$searchable_fields[] = array(
 					'field' => $input['id'],
 				);
@@ -80,14 +81,14 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 	/**
 	 * Outputs inline style for vertical display
 	 *
-	 * @param GravityView_Widget_Search $this GravityView Widget instance
+	 * @param GravityView_Widget_Search                                             $this GravityView Widget instance
 	 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
 	 *
 	 * @return void
 	 */
 	public function print_styles( $search_widget, $search_field ) {
 
-		if( self::INPUT_TYPE !== \GV\Utils::get( $search_field, 'type' ) ) {
+		if ( self::INPUT_TYPE !== \GV\Utils::get( $search_field, 'type' ) ) {
 			return;
 		}
 
@@ -95,6 +96,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 
 		/**
 		 * Prevent Chained Select Search Bar input fields from outputting styles.
+		 *
 		 * @since 2.14.4
 		 * @param bool $should_print_styles True: Output styles; False: don't.
 		 * @param GravityView_Widget_Search $this GravityView Widget instance.
@@ -132,13 +134,13 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 	 * Enqueues and prints the required scripts for
 	 *
 	 * @param GravityView_Widget_Search $this GravityView Widget instance
-	 * @param array $search_field
+	 * @param array                     $search_field
 	 *
 	 * @return void
 	 */
 	public function print_scripts( $search_widget, $search_field ) {
 
-		if( self::INPUT_TYPE !== \GV\Utils::get( $search_field, 'type' ) ) {
+		if ( self::INPUT_TYPE !== \GV\Utils::get( $search_field, 'type' ) ) {
 			return;
 		}
 
@@ -158,10 +160,15 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 		}
 
 		if ( ! wp_script_is( 'gform_chained_selects' ) ) {
-			wp_enqueue_script( 'gform_chained_selects', gf_chained_selects()->get_base_url() . '/js/frontend.js', array(
-				'jquery',
-				'gform_gravityforms'
-			), gf_chained_selects()->get_version() );
+			wp_enqueue_script(
+				'gform_chained_selects',
+				gf_chained_selects()->get_base_url() . '/js/frontend.js',
+				array(
+					'jquery',
+					'gform_gravityforms',
+				),
+				gf_chained_selects()->get_version()
+			);
 		}
 
 		// Print the required JS var that includes the ajaxURL.
@@ -175,7 +182,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 	 *
 	 * @return array
 	 */
-	static public function get_field_values( $gf_field ) {
+	public static function get_field_values( $gf_field ) {
 
 		$field_values = array();
 
@@ -203,14 +210,14 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 	 * @see gravityview_get_form_fields() Used to fetch the fields
 	 * @see GravityView_Widget_Search::get_search_input_types See this method to modify the type of input types allowed for a field
 	 * @param array $fields Array of searchable fields, as fetched by gravityview_get_form_fields()
-	 * @param  int $form_id
+	 * @param  int   $form_id
 	 *
 	 * @return array
 	 */
 	function modify_searchable_fields( $fields, $form_id ) {
 
-		foreach( $fields as $key => $field ) {
-			if( 'chainedselect' === $field['type'] && ! empty( $field['parent'] ) ) {
+		foreach ( $fields as $key => $field ) {
+			if ( 'chainedselect' === $field['type'] && ! empty( $field['parent'] ) ) {
 				unset( $fields[ $key ] );
 			}
 		}
@@ -239,7 +246,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 	 *
 	 * @return string
 	 */
-	public function set_input_type( $input_type, $field_type, $field_id  ) {
+	public function set_input_type( $input_type, $field_type, $field_id ) {
 
 		if ( ! in_array( $field_type, array( 'chainedselect' ) ) ) {
 			return $input_type;
@@ -247,7 +254,6 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 
 		return self::INPUT_TYPE;
 	}
-
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects;
+new GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects();

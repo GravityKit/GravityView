@@ -15,7 +15,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 
 	public $name = 'gravityview_view';
 
-	public $contexts = [ 'single' ];
+	public $contexts = array( 'single' );
 
 	public $group = 'gravityview';
 
@@ -27,8 +27,8 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 
 	function __construct() {
 
-		$this->label = __( 'GravityView View', 'gk-gravityview' );
-		$this->description = __('Embed a View inside a View!', 'gk-gravityview' );
+		$this->label       = __( 'GravityView View', 'gk-gravityview' );
+		$this->description = __( 'Embed a View inside a View!', 'gk-gravityview' );
 
 		parent::__construct();
 	}
@@ -38,17 +38,19 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		unset ( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
+		unset( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
 
-		$view_cpts = GVCommon::get_all_views( [
-			'orderby' => 'post_title',
-			'order'   => 'ASC',
-			'exclude' => [ get_the_ID() ],
-		] );
+		$view_cpts = GVCommon::get_all_views(
+			array(
+				'orderby' => 'post_title',
+				'order'   => 'ASC',
+				'exclude' => array( get_the_ID() ),
+			)
+		);
 
-		$formatted_views = [
+		$formatted_views = array(
 			0 => esc_html__( 'Select a View', 'gk-gravityview' ),
-		];
+		);
 
 		foreach ( $view_cpts as $view_cpt ) {
 			$formatted_views[ $view_cpt->ID ] = sprintf(
@@ -58,33 +60,33 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 			);
 		}
 
-		$new_fields = [
-			'view_id'         => [
+		$new_fields = array(
+			'view_id'         => array(
 				'type'    => 'select',
 				'label'   => __( 'View to embed', 'gk-gravityview' ),
 				'value'   => '',
 				'options' => $formatted_views,
-			],
-			'search_field'    => [
+			),
+			'search_field'    => array(
 				'type'        => 'text',
 				'label'       => __( 'Search field', 'gk-gravityview' ),
 				'value'       => '',
 				'desc'        => strtr(
 					__( 'Accepts a Field ID or entry meta name. [link]Learn more about pre-filtering Views.[/link]', 'gk-gravityview' ),
-					[
+					array(
 						'[link]'  => '<a href="https://docs.gravitykit.com/article/73-using-the-shortcode#advanced-use-cases" target="_blank">',
 						'[/link]' => '<span class="screen-reader-text">(' . esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ) . ')</span></a>',
-					]
+					)
 				),
 				'class'       => 'widefat',
 				'placeholder' => esc_html__( 'Example: created_by or 1.3', 'gk-gravityview' ),
 				'group'       => 'advanced',
-			],
-			'search_operator' => [
+			),
+			'search_operator' => array(
 				'type'    => 'select',
 				'label'   => __( 'Search operator', 'gk-gravityview' ),
 				'value'   => 'is',
-				'options' => [
+				'options' => array(
 					'is'          => __( 'is', 'gk-gravityview' ),
 					'contains'    => __( 'contains', 'gk-gravityview' ),
 					'isnot'       => __( 'is not', 'gk-gravityview' ),
@@ -92,10 +94,10 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 					'in'          => __( 'in', 'gk-gravityview' ),
 					'starts_with' => __( 'starts with', 'gk-gravityview' ),
 					'ends_with'   => __( 'ends with', 'gk-gravityview' ),
-				],
+				),
 				'group'   => 'advanced',
-			],
-			'search_value'    => [
+			),
+			'search_value'    => array(
 				'type'        => 'text',
 				'class'       => 'code widefat',
 				'label'       => __( 'Search value', 'gk-gravityview' ),
@@ -104,37 +106,37 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 				'placeholder' => __( 'Example: {user:ID}', 'gk-gravityview' ),
 				'merge_tags'  => 'force',
 				'group'       => 'advanced',
-			],
-			'start_date'      => [
+			),
+			'start_date'      => array(
 				'type'        => 'text',
 				'label'       => __( 'Override start date', 'gk-gravityview' ),
 				'value'       => '',
 				'merge_tags'  => 'force',
 				'group'       => 'advanced',
 				'placeholder' => esc_html__( 'Example: -1 week', 'gk-gravityview' ),
-			],
-			'end_date'        => [
+			),
+			'end_date'        => array(
 				'type'        => 'text',
 				'label'       => __( 'Override end date', 'gk-gravityview' ),
 				'value'       => '',
 				'merge_tags'  => 'force',
 				'group'       => 'advanced',
 				'placeholder' => esc_html__( 'Example: tomorrow', 'gk-gravityview' ),
-			],
-			'page_size'       => [
+			),
+			'page_size'       => array(
 				'type'    => 'select',
 				'label'   => __( 'Override page size', 'gk-gravityview' ),
 				'value'   => 'default',
 				'group'   => 'advanced',
-				'options' => [
+				'options' => array(
 					'default' => esc_html__( 'Use View setting', 'gk-gravityview' ),
 					10        => 10,
 					25        => 25,
 					50        => 50,
 					100       => 100,
-				],
-			],
-		];
+				),
+			),
+		);
 
 		return $new_fields + $field_options;
 	}
@@ -147,12 +149,12 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 	 *
 	 * @used-by ../../templates/fields/field-gravityview_view-html.php
 	 *
-	 * @param array $field_settings
+	 * @param array                $field_settings
 	 * @param \GV\Template_Context $context
 	 *
 	 * @return void
 	 */
-	static public function render_frontend( $field_settings, $context ) {
+	public static function render_frontend( $field_settings, $context ) {
 		global $post;
 
 		$view_id = $field_settings['view_id'] ?? null;
@@ -165,7 +167,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 		$attributes = '';
 
 		$page_size_value = \GV\Utils::get( $field_settings, 'page_size', 'default' );
-		$attributes      .= ( 'default' === $page_size_value ) ? '' : sprintf( ' page_size="%d"', $page_size_value );
+		$attributes     .= ( 'default' === $page_size_value ) ? '' : sprintf( ' page_size="%d"', $page_size_value );
 
 		// Prepare search field.
 		$search_field = \GV\Utils::get( $field_settings, 'search_field' );
@@ -176,7 +178,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 		$search_value = \GV\Utils::get( $field_settings, 'search_value' );
 		if ( ! is_null( $search_value ) ) {
 			$search_value = GFCommon::replace_variables( $search_value, $form, $context->entry->as_entry() );
-			$attributes   .= sprintf( ' search_value="%s"', esc_attr( $search_value ) );
+			$attributes  .= sprintf( ' search_value="%s"', esc_attr( $search_value ) );
 		}
 
 		// Prepare search operator.
@@ -188,14 +190,14 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 		// Start date
 		$start_date = \GV\Utils::get( $field_settings, 'start_date' );
 		if ( ! empty( $start_date ) ) {
-			$start_date = GFCommon::replace_variables( $start_date, $form, $context->entry->as_entry() );
+			$start_date  = GFCommon::replace_variables( $start_date, $form, $context->entry->as_entry() );
 			$attributes .= sprintf( ' start_date="%s"', esc_attr( $start_date ) );
 		}
 
 		// End date
 		$end_date = \GV\Utils::get( $field_settings, 'end_date' );
 		if ( ! empty( $end_date ) ) {
-			$end_date   = GFCommon::replace_variables( $end_date, $form, $context->entry->as_entry() );
+			$end_date    = GFCommon::replace_variables( $end_date, $form, $context->entry->as_entry() );
 			$attributes .= sprintf( ' end_date="%s"', esc_attr( $end_date ) );
 		}
 
@@ -205,4 +207,4 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_GravityView_View;
+new GravityView_Field_GravityView_View();
