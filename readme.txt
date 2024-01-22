@@ -25,11 +25,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 This release makes it easier to customize search results per-View instead of globally using code.
 
+* Added: Ability to send notifications using Gravity Forms when an entry is deleted by selecting the "GravityView - Entry is deleted" event from the event dropdown in Gravity Forms notifications settings
 * Fixed: Sorting the View by entry ID in ascending and descending order would yield the same result
 * Fixed: Survey fields without a rating would show a 1-star rating
 
 __Developer Updates:__
 
+* Added: `GravityView_Notifications` class as a wrapper for Gravity Forms notifications
 * Added: The current View object as the second parameter for the `gravityview/search-all-split-words` and `gravityview/search-trim-input` filters
 * Modified: Attach listeners in the View editor to `$( document.body )` instead of `$('body')` for speed improvements
 

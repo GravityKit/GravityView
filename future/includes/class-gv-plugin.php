@@ -237,6 +237,9 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-api.php' );
 		include_once $this->dir( 'includes/class-oembed.php' );
 
+		// Add notification
+		include_once $this->dir( 'includes/class-gravityview-notifications.php' );
+
 		// Add logging
 		include_once $this->dir( 'includes/class-gravityview-logging.php' );
 

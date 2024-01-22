@@ -104,6 +104,10 @@ final class GravityView_Delete_Entry {
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 
 		add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_arg' ) );
+
+		add_filter( 'gform_notification_events', [ $this, 'add_delete_notification_events' ], 10, 2 );
+		add_action( 'gravityview/delete-entry/trashed', [ $this, 'trigger_notifications' ], 10, 2 );
+		add_action( 'gravityview/delete-entry/deleted', [ $this, 'trigger_notifications' ], 10, 2 );
 	}
 
 	/**
@@ -826,6 +830,7 @@ final class GravityView_Delete_Entry {
 
 		echo GVCommon::generate_notice( $message, $class );
 	}
+
 } // end class
 
 GravityView_Delete_Entry::getInstance();
