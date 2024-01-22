@@ -829,8 +829,9 @@ final class GravityView_Delete_Entry {
 	 */
 	public function trigger_notifications( $entry_id = 0, $entry = [] ): void {
 		$event = (string) current_action();
-		// If the delete mode is set to `trash` still trigger the notification.
-		if ( $event === 'gravityview/delete-entry/trashed' ) {
+
+		// If the delete mode is set to `trash`, still trigger the notification.
+		if ( 'gravityview/delete-entry/trashed' === $event ) {
 			$event = 'gravityview/delete-entry/deleted';
 		}
 
