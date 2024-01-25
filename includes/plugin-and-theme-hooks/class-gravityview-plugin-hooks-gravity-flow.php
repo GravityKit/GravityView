@@ -54,11 +54,11 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	 * @return string
 	 */
 	public function add_workflow_user_fields_to_search( $input_type, $field_type, $field_id ) {
-		if ( $field_type === 'workflow_multi_user') {
+		if ( $field_type === 'workflow_multi_user' ) {
 			$input_type = 'multi';
 		}
 
-		if ($field_type === 'workflow_user' ) {
+		if ( $field_type === 'workflow_user' ) {
 			$input_type = 'select';
 		}
 
@@ -193,7 +193,6 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		return $fields;
 	}
-
 }
 
 new GravityView_Plugin_Hooks_Gravity_Flow();
