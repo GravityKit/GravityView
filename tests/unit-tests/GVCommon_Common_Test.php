@@ -581,7 +581,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$cat_2 = wp_create_category( 'Category 2' );
 
 		foreach ( $form['fields'] as &$field ) {
-			if ( $field->type == 'post_category' ) {
+			if ( 'post_category' == $field->type ) {
 				$field = GFCommon::add_categories_as_choices( $field, '' );
 			}
 		}

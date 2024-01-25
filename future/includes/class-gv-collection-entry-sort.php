@@ -55,8 +55,8 @@ class Entry_Sort {
 	 * Instantiate a sort for a field.
 	 *
 	 * @param \GV\Field $field The field we're sorting by.
-	 * @param string $direction The direction of this sort (\GV\Entry_Sort::ASC, \GV\Entry_Sort::DESC, etc.). Default: self::ASC.
-	 * @param string $mode The sort mode (self::NUMERIC). Default: self::ALPHA.
+	 * @param string    $direction The direction of this sort (\GV\Entry_Sort::ASC, \GV\Entry_Sort::DESC, etc.). Default: self::ASC.
+	 * @param string    $mode The sort mode (self::NUMERIC). Default: self::ALPHA.
 	 *
 	 * @api
 	 * @since 2.0
@@ -64,9 +64,9 @@ class Entry_Sort {
 	 * @return \GV\Entry_Sort An instance of this class, pass to \GV\Entry_Collection::sort()
 	 */
 	public function __construct( \GV\Field $field, $direction = self::ASC, $mode = self::ALPHA ) {
-		$this->field = $field;
+		$this->field     = $field;
 		$this->direction = $direction;
-		$this->mode = $mode;
+		$this->mode      = $mode;
 	}
 
 	/**
@@ -77,8 +77,8 @@ class Entry_Sort {
 	public function to_sorting() {
 		if ( $this->field ) {
 			return array(
-				'key' => $this->field->ID,
-				'direction' => $this->direction ? : self::ASC,
+				'key'        => $this->field->ID,
+				'direction'  => $this->direction ? : self::ASC,
 				'is_numeric' => self::ALPHA ? true : false,
 			);
 		}

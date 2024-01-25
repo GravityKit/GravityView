@@ -4,7 +4,7 @@ class GravityView_Ajax {
 
 	function __construct() {
 
-		//get field options
+		// get field options
 		add_action( 'wp_ajax_gv_field_options', array( $this, 'get_field_options' ) );
 
 		// get available fields
@@ -30,13 +30,14 @@ class GravityView_Ajax {
 	 *
 	 * @return bool
 	 */
-	private function _exit( $mixed = NULL ) {
+	private function _exit( $mixed = null ) {
 
 		/**
 		 * Don't exit if we're running test suite.
+		 *
 		 * @since 1.15
 		 */
-		if( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
 			return $mixed;
 		}
 
@@ -47,6 +48,7 @@ class GravityView_Ajax {
 
 	/**
 	 * Verify the nonce. Exit if not verified.
+	 *
 	 * @return void
 	 */
 	function check_ajax_nonce() {
@@ -68,15 +70,15 @@ class GravityView_Ajax {
 		$context = rgpost( 'context' );
 
 		// Return markup for a single or multiple contexts
-		if( $context ) {
+		if ( $context ) {
 			$data = array(
-				esc_attr( $context ) => ''
+				esc_attr( $context ) => '',
 			);
 		} else {
 			$data = array(
 				'directory' => '',
-				'edit' => '',
-				'single' => ''
+				'edit'      => '',
+				'single'    => '',
 			);
 		}
 
@@ -111,16 +113,16 @@ class GravityView_Ajax {
 	function get_active_areas() {
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['template_id'] ) ) {
+		if ( empty( $_POST['template_id'] ) ) {
 			$this->_exit( false );
 		}
 
 		ob_start();
-		do_action( 'gravityview_render_directory_active_areas', \GV\Utils::_POST('template_id'), 'directory', '', true, \GV\Utils::_POST( 'form_id', 0 ) );
+		do_action( 'gravityview_render_directory_active_areas', \GV\Utils::_POST( 'template_id' ), 'directory', '', true, \GV\Utils::_POST( 'form_id', 0 ) );
 		$response['directory'] = ob_get_clean();
 
 		ob_start();
-		do_action( 'gravityview_render_directory_active_areas', \GV\Utils::_POST('template_id'), 'single', '', true, \GV\Utils::_POST( 'form_id', 0 ) );
+		do_action( 'gravityview_render_directory_active_areas', \GV\Utils::_POST( 'template_id' ), 'single', '', true, \GV\Utils::_POST( 'form_id', 0 ) );
 		$response['single'] = ob_get_clean();
 
 		$response = array_map( 'gravityview_strip_whitespace', $response );
@@ -130,48 +132,52 @@ class GravityView_Ajax {
 
 	/**
 	 * Fill in active areas with preset configuration according to the template selected
+	 *
 	 * @return void
 	 */
 	function get_preset_fields_config() {
 
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['template_id'] ) ) {
+		if ( empty( $_POST['template_id'] ) ) {
 			$this->_exit( false );
 		}
 
 		// get the fields xml config file for this specific preset
 		$preset_fields_path = apply_filters( 'gravityview_template_fieldsxml', array(), $_POST['template_id'] );
 		// import fields
-		if( !empty( $preset_fields_path ) ) {
+		if ( ! empty( $preset_fields_path ) ) {
 			$presets = $this->import_fields( $preset_fields_path );
 		} else {
-			$presets = array( 'widgets' => array(), 'fields' => array() );
+			$presets = array(
+				'widgets' => array(),
+				'fields'  => array(),
+			);
 		}
 
 		$template_id = esc_attr( $_POST['template_id'] );
 
 		// template areas
 		$template_areas_directory = apply_filters( 'gravityview_template_active_areas', array(), $template_id, 'directory' );
-        $template_areas_single = apply_filters( 'gravityview_template_active_areas', array(), $template_id, 'single' );
+		$template_areas_single    = apply_filters( 'gravityview_template_active_areas', array(), $template_id, 'single' );
 
 		// widget areas
 		$default_widget_areas = \GV\Widget::get_default_widget_areas();
 
 		ob_start();
-		do_action('gravityview_render_active_areas', $template_id, 'widget', 'header', $default_widget_areas, $presets['widgets'] );
+		do_action( 'gravityview_render_active_areas', $template_id, 'widget', 'header', $default_widget_areas, $presets['widgets'] );
 		$response['header'] = ob_get_clean();
 
 		ob_start();
-		do_action('gravityview_render_active_areas', $template_id, 'widget', 'footer', $default_widget_areas, $presets['widgets'] );
+		do_action( 'gravityview_render_active_areas', $template_id, 'widget', 'footer', $default_widget_areas, $presets['widgets'] );
 		$response['footer'] = ob_get_clean();
 
 		ob_start();
-		do_action('gravityview_render_active_areas', $template_id, 'field', 'directory', $template_areas_directory, $presets['fields'] );
+		do_action( 'gravityview_render_active_areas', $template_id, 'field', 'directory', $template_areas_directory, $presets['fields'] );
 		$response['directory'] = ob_get_clean();
 
 		ob_start();
-		do_action('gravityview_render_active_areas', $template_id, 'field', 'single', $template_areas_single, $presets['fields'] );
+		do_action( 'gravityview_render_active_areas', $template_id, 'field', 'single', $template_areas_single, $presets['fields'] );
 		$response['single'] = ob_get_clean();
 
 		$response = array_map( 'gravityview_strip_whitespace', $response );
@@ -190,7 +196,7 @@ class GravityView_Ajax {
 
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['template_id'] ) ) {
+		if ( empty( $_POST['template_id'] ) ) {
 			gravityview()->log->error( 'Cannot create preset form; the template_id is empty.' );
 			$this->_exit( false );
 		}
@@ -202,15 +208,14 @@ class GravityView_Ajax {
 		$form = $this->import_form( $preset_form_xml_path );
 
 		// get the form ID
-		if( false === $form ) {
+		if ( false === $form ) {
 			// send error to user
 			gravityview()->log->error( 'Error importing form for template id: {template_id}', array( 'template_id' => (int) $_POST['template_id'] ) );
 
 			$this->_exit( false );
 		}
 
-		$this->_exit( '<option value="'.esc_attr( $form['id'] ).'" selected="selected">'.esc_html( $form['title'] ).'</option>' );
-
+		$this->_exit( '<option value="' . esc_attr( $form['id'] ) . '" selected="selected">' . esc_html( $form['title'] ) . '</option>' );
 	}
 
 	/**
@@ -223,7 +228,7 @@ class GravityView_Ajax {
 
 		gravityview()->log->debug( '[import_form] Import Preset Form. (File) {path}', array( 'path' => $xml_or_json_path ) );
 
-		if( empty( $xml_or_json_path ) || !class_exists('GFExport') || !file_exists( $xml_or_json_path ) ) {
+		if ( empty( $xml_or_json_path ) || ! class_exists( 'GFExport' ) || ! file_exists( $xml_or_json_path ) ) {
 			gravityview()->log->error( 'Class GFExport or file not found. file: {path}', array( 'path' => $xml_or_json_path ) );
 			return false;
 		}
@@ -235,7 +240,7 @@ class GravityView_Ajax {
 		gravityview()->log->debug( '[import_form] Importing form (Result) {count}', array( 'count' => $count ) );
 		gravityview()->log->debug( '[import_form] Importing form (Form) ', array( 'data' => $forms ) );
 
-		if( $count != 1 || empty( $forms[0]['id'] ) ) {
+		if ( 1 != $count || empty( $forms[0]['id'] ) ) {
 			gravityview()->log->error( 'Form Import Failed!' );
 			return false;
 		}
@@ -254,7 +259,7 @@ class GravityView_Ajax {
 	function get_field_options() {
 		$this->check_ajax_nonce();
 
-		if( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
+		if ( empty( $_POST['template'] ) || empty( $_POST['area'] ) || empty( $_POST['field_id'] ) || empty( $_POST['field_type'] ) ) {
 			gravityview()->log->error( 'Required fields were not set in the $_POST request. ' );
 			$this->_exit( false );
 		}
@@ -266,11 +271,11 @@ class GravityView_Ajax {
 		$_post = array_map( 'esc_attr', $_post );
 
 		// The GF type of field: `product`, `name`, `creditcard`, `id`, `text`
-		$input_type = isset($_post['input_type']) ? esc_attr( $_post['input_type'] ) : NULL;
-		$context = isset($_post['context']) ? esc_attr( $_post['context'] ) : NULL;
+		$input_type = isset( $_post['input_type'] ) ? esc_attr( $_post['input_type'] ) : null;
+		$context    = isset( $_post['context'] ) ? esc_attr( $_post['context'] ) : null;
 
-		$form_id = empty( $_post['form_id'] ) ? null : $_post['form_id'];
-		$response = GravityView_Render_Settings::render_field_options( $form_id, $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context  );
+		$form_id  = empty( $_post['form_id'] ) ? null : $_post['form_id'];
+		$response = GravityView_Render_Settings::render_field_options( $form_id, $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context );
 
 		$response = gravityview_strip_whitespace( $response );
 
@@ -281,7 +286,6 @@ class GravityView_Ajax {
 	 * Given a View id, calculates the assigned form, and returns the form fields (only the sortable ones )
 	 * AJAX callback
 	 *
-	 *
 	 * @return void
 	 */
 	function get_sortable_fields() {
@@ -290,15 +294,15 @@ class GravityView_Ajax {
 		$form = '';
 
 		// if form id is set, use it, else, get form from preset
-		if( !empty( $_POST['form_id'] ) ) {
+		if ( ! empty( $_POST['form_id'] ) ) {
 
 			$form = (int) $_POST['form_id'];
 
 		}
 		// get form from preset
-		elseif( !empty( $_POST['template_id'] ) ) {
+		elseif ( ! empty( $_POST['template_id'] ) ) {
 
-			$form = GravityView_Ajax::pre_get_form_fields( $_POST['template_id'] );
+			$form = self::pre_get_form_fields( $_POST['template_id'] );
 
 		}
 
@@ -316,14 +320,20 @@ class GravityView_Ajax {
 	 *
 	 * @return array|false
 	 */
-	static function pre_get_form_fields( $template_id = '') {
-		if( empty( $template_id ) ) {
+	static function pre_get_form_fields( $template_id = '' ) {
+		if ( empty( $template_id ) ) {
 			gravityview()->log->error( 'Template ID not set.' );
 			return false;
 		} else {
 			$form_file = apply_filters( 'gravityview_template_formxml', '', $template_id );
-			if( !file_exists( $form_file )  ) {
-				gravityview()->log->error( '[{template_id}] form file does not exist: {path}.', array( 'template_id' => $template_id, 'path' => $form_file ) );
+			if ( ! file_exists( $form_file ) ) {
+				gravityview()->log->error(
+					'[{template_id}] form file does not exist: {path}.',
+					array(
+						'template_id' => $template_id,
+						'path'        => $form_file,
+					)
+				);
 				return false;
 			}
 		}
@@ -342,36 +352,43 @@ class GravityView_Ajax {
 		$form = GFFormsModel::convert_field_objects( $forms[0] );
 		$form = GFFormsModel::sanitize_settings( $form );
 
-		gravityview()->log->debug( '[pre_get_form_fields] Importing Form Fields for preset [{template_id}]. (Form)', array( 'template_id' => $template_id, 'data' => $form ) );
+		gravityview()->log->debug(
+			'[pre_get_form_fields] Importing Form Fields for preset [{template_id}]. (Form)',
+			array(
+				'template_id' => $template_id,
+				'data'        => $form,
+			)
+		);
 
 		return $form;
 	}
 
 	/**
 	 * Import fields configuration from an exported WordPress View preset
+	 *
 	 * @param  string $file path to file
 	 * @return array       Fields config array (unserialized)
 	 */
 	function import_fields( $file ) {
 
-		if( empty( $file ) || !file_exists(  $file ) ) {
+		if ( empty( $file ) || ! file_exists( $file ) ) {
 			gravityview()->log->error( 'Importing Preset Fields. File not found. (File) {path}', array( 'path' => $file ) );
 			return false;
 		}
 
-		if( !class_exists('WXR_Parser') ) {
+		if ( ! class_exists( 'WXR_Parser' ) ) {
 			include_once GRAVITYVIEW_DIR . 'includes/lib/xml-parsers/parsers.php';
 		}
 
-		$parser = new WXR_Parser();
+		$parser  = new WXR_Parser();
 		$presets = $parser->parse( $file );
 
-		if(is_wp_error( $presets )) {
+		if ( is_wp_error( $presets ) ) {
 			gravityview()->log->error( 'Importing Preset Fields failed. Threw WP_Error.', array( 'data' => $presets ) );
 			return false;
 		}
 
-		if( empty( $presets['posts'][0]['postmeta'] ) && !is_array( $presets['posts'][0]['postmeta'] ) ) {
+		if ( empty( $presets['posts'][0]['postmeta'] ) && ! is_array( $presets['posts'][0]['postmeta'] ) ) {
 			gravityview()->log->error( 'Importing Preset Fields failed. Meta not found in file. {path}', array( 'path' => $file ) );
 			return false;
 		}
@@ -379,8 +396,8 @@ class GravityView_Ajax {
 		gravityview()->log->debug( '[import_fields] postmeta', array( 'data' => $presets['posts'][0]['postmeta'] ) );
 
 		$fields = $widgets = array();
-		foreach( $presets['posts'][0]['postmeta'] as $meta ) {
-			switch ($meta['key']) {
+		foreach ( $presets['posts'][0]['postmeta'] as $meta ) {
+			switch ( $meta['key'] ) {
 				case '_gravityview_directory_fields':
 					$fields = maybe_unserialize( $meta['value'] );
 					break;
@@ -394,10 +411,10 @@ class GravityView_Ajax {
 		gravityview()->log->debug( '[import_fields] Imported Preset (Widgets)', array( 'data' => $widgets ) );
 
 		return array(
-			'fields' => $fields,
-			'widgets' => $widgets
+			'fields'  => $fields,
+			'widgets' => $widgets,
 		);
 	}
 }
 
-new GravityView_Ajax;
+new GravityView_Ajax();

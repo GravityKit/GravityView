@@ -47,7 +47,7 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	}
 
 	/**
-	 * @param array $meta_keys Existing meta keys to parse for [gravityview] shortcode
+	 * @param array    $meta_keys Existing meta keys to parse for [gravityview] shortcode
 	 * @param \WP_Post $post Current post ID
 	 *
 	 * @return array
@@ -61,7 +61,7 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 
 		$acf_keys = get_field_objects( $post->ID, array( 'load_value' => false ) );
 
-		if( $acf_keys ) {
+		if ( $acf_keys ) {
 			return array_merge( array_keys( $acf_keys ), $meta_keys );
 		}
 
@@ -76,12 +76,12 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	 * @return void
 	 */
 	private function fix_posted_fields() {
-		if( is_admin() && isset( $_POST['action'] ) && isset( $_POST['post_type'] ) ) {
-			if( 'editpost' === $_POST['action'] && 'gravityview' === $_POST['post_type'] ) {
+		if ( is_admin() && isset( $_POST['action'] ) && isset( $_POST['post_type'] ) ) {
+			if ( 'editpost' === $_POST['action'] && 'gravityview' === $_POST['post_type'] ) {
 				$_POST['fields'] = _gravityview_process_posted_fields();
 			}
 		}
 	}
 }
 
-new GravityView_Plugin_Hooks_ACF;
+new GravityView_Plugin_Hooks_ACF();

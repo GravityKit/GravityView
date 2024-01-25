@@ -41,6 +41,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Define the keys to be parsed by the `gravityview/view_collection/from_post/meta_keys` hook
+	 *
 	 * @see View_Collection::from_post
 	 * @since 2.0
 	 * @type array
@@ -49,6 +50,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Define the keys to be parsed by the `gravityview/data/parse/meta_keys` hook
+	 *
 	 * @see GravityView_View_Data::parse_post_meta
 	 * @deprecated 2.0
 	 * @since 1.15.2
@@ -58,6 +60,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Define script handles used by the theme or plugin to be added to allowed no-conflict scripts
+	 *
 	 * @see GravityView_Admin::remove_conflicts
 	 * @since 1.15.2
 	 * @type array
@@ -66,6 +69,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Define style handles used by the theme or plugin to be added to allowed no-conflict styles
+	 *
 	 * @see GravityView_Admin::remove_conflicts
 	 * @since 1.15.2
 	 * @type array
@@ -74,6 +78,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Define features in the admin editor used by the theme or plugin to be used when registering the GravityView post type
+	 *
 	 * @see \GV\Entry::get_endpoint_name
 	 * @since 1.15.2
 	 * @type array
@@ -82,6 +87,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * GravityView_Theme_Support constructor.
+	 *
 	 * @return void
 	 */
 	public function __construct() {
@@ -91,6 +97,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	/**
 	 * Fired when all themes and plugins have been loaded.
 	 * This makes sure we can reliably detect functions and classes.
+	 *
 	 * @internal
 	 * @return void
 	 */
@@ -106,9 +113,9 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 * @return bool Whether the plugin or theme is active.
 	 */
 	protected function is_active() {
-		$class_exists = $this->class_name && class_exists( $this->class_name );
-		$function_exists = $this->function_name && function_exists( $this->function_name );
-		$constant_defined = $this->constant_name && defined("{$this->constant_name}");
+		$class_exists     = $this->class_name && class_exists( $this->class_name );
+		$function_exists  = $this->function_name && function_exists( $this->function_name );
+		$constant_defined = $this->constant_name && defined( "{$this->constant_name}" );
 
 		return ( $class_exists || $function_exists || $constant_defined );
 	}
@@ -124,7 +131,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 */
 	private function maybe_add_hooks() {
 
-		if( ! $this->is_active() ) {
+		if ( ! $this->is_active() ) {
 			return;
 		}
 
@@ -133,28 +140,29 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * Add filters for meta key and script/style handles, if defined.
+	 *
 	 * @since 1.15.2
 	 * @return void
 	 */
 	protected function add_hooks() {
 
-		if( $this->meta_keys ) {
+		if ( $this->meta_keys ) {
 			add_filter( 'gravityview/data/parse/meta_keys', array( $this, 'merge_meta_keys' ), 10, 2 );
 		}
 
-		if( $this->content_meta_keys ) {
+		if ( $this->content_meta_keys ) {
 			add_filter( 'gravityview/view_collection/from_post/meta_keys', array( $this, 'merge_content_meta_keys' ), 10, 3 );
 		}
 
-		if( $this->script_handles ) {
+		if ( $this->script_handles ) {
 			add_filter( 'gravityview_noconflict_scripts', array( $this, 'merge_noconflict_scripts' ) );
 		}
 
-		if( $this->style_handles ) {
+		if ( $this->style_handles ) {
 			add_filter( 'gravityview_noconflict_styles', array( $this, 'merge_noconflict_styles' ) );
 		}
 
-		if( $this->post_type_support ) {
+		if ( $this->post_type_support ) {
 			add_filter( 'gravityview_post_type_support', array( $this, 'merge_post_type_support' ), 10, 2 );
 		}
 	}
@@ -164,7 +172,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 *
 	 * @since 1.15.2
 	 *
-	 * @param array $supports Array of features associated with a functional area of the edit screen.
+	 * @param array   $supports Array of features associated with a functional area of the edit screen.
 	 * @param boolean $is_hierarchical Do Views support parent/child relationships? See `gravityview_is_hierarchical` filter.
 	 *
 	 * @return array Array of features associated with a functional area of the edit screen, merged with existing values
@@ -210,7 +218,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 * @deprecated 2.0.7
 	 *
 	 * @param array $handles Array of meta keys to check for existence of shortcodes
-	 * @param int $post_id The ID being checked by GravityView
+	 * @param int   $post_id The ID being checked by GravityView
 	 *
 	 * @return array Meta key array, merged with existing meta keys
 	 */
@@ -223,13 +231,12 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 *
 	 * @since 2.0.7
 	 *
-	 * @param array $handles Array of meta keys to check for existence of shortcodes
+	 * @param array    $handles Array of meta keys to check for existence of shortcodes
 	 * @param \WP_Post $post The ID being checked by GravityView
 	 *
 	 * @return array Meta key array, merged with existing meta keys
 	 */
-	public function merge_content_meta_keys( $meta_keys = array(), $post = null, & $views = null ) {
+	public function merge_content_meta_keys( $meta_keys = array(), $post = null, &$views = null ) {
 		return array_merge( $this->content_meta_keys, $meta_keys );
 	}
-
 }

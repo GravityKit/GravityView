@@ -51,4 +51,4 @@ class GravityView_Post_Types {
 	}
 }
 
-new GravityView_Post_Types;
+new GravityView_Post_Types();

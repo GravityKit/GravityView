@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GravityView_View_Data {
 
-	static $instance = NULL;
+	static $instance = null;
 
 	public $views = array();
 
@@ -15,18 +15,17 @@ class GravityView_View_Data {
 	 *
 	 * @param null $passed_post
 	 */
-	private function __construct( $passed_post = NULL ) {
+	private function __construct( $passed_post = null ) {
 		$this->views = new \GV\View_Collection();
 
 		if ( ! empty( $passed_post ) ) {
 			$id_or_id_array = $this->maybe_get_view_id( $passed_post );
-			foreach( is_array( $id_or_id_array ) ? $id_or_id_array : array( $id_or_id_array ) as $view_id ) {
+			foreach ( is_array( $id_or_id_array ) ? $id_or_id_array : array( $id_or_id_array ) as $view_id ) {
 				if ( \GV\View::exists( $view_id ) && ! $this->views->contains( $view_id ) ) {
 					$this->views->add( \GV\View::by_id( $view_id ) );
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -78,7 +77,7 @@ class GravityView_View_Data {
 			foreach ( $passed_post as &$post ) {
 				$views = \GV\View_Collection::from_post( $post );
 				foreach ( $views->all() as $view ) {
-					$ids []= $view->ID;
+					$ids [] = $view->ID;
 
 					/** And as a side-effect... add each view to the global scope. */
 					if ( ! $this->views->contains( $view->ID ) ) {
@@ -86,25 +85,22 @@ class GravityView_View_Data {
 					}
 				}
 			}
+		} elseif ( is_string( $passed_post ) ) {
 
-		} else {
-
-			if ( is_string( $passed_post ) ) {
 				$shortcodes = \GV\Shortcode::parse( $passed_post );
-				foreach ( $shortcodes as $shortcode ) {
-					if ( $shortcode->name == 'gravityview' && !empty( $shortcode->atts['id'] ) ) {
-						$ids []= $shortcode->atts['id'];
+			foreach ( $shortcodes as $shortcode ) {
+				if ( 'gravityview' == $shortcode->name && ! empty( $shortcode->atts['id'] ) ) {
+					$ids [] = $shortcode->atts['id'];
 
-						/** And as a side-effect... add each view to the global scope. */
-						if ( ! $this->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
-							$this->views->add( $shortcode->atts['id'] );
-						}
+					/** And as a side-effect... add each view to the global scope. */
+					if ( ! $this->views->contains( $shortcode->atts['id'] ) && \GV\View::exists( $shortcode->atts['id'] ) ) {
+						$this->views->add( $shortcode->atts['id'] );
 					}
 				}
-			} else {
-				$id = $this->get_id_from_atts( $passed_post );
-				$ids[] = intval( $id );
 			}
+		} else {
+			$id    = $this->get_id_from_atts( $passed_post );
+			$ids[] = intval( $id );
 		}
 
 		if ( empty( $ids ) ) {
@@ -113,15 +109,15 @@ class GravityView_View_Data {
 
 		// If it's just one ID, return that.
 		// Otherwise, return array of IDs
-		return ( count( $ids ) === 1 ) ? $ids[0] : $ids;
+		return ( 1 === count( $ids ) ) ? $ids[0] : $ids;
 	}
 
 	/**
 	 * @return GravityView_View_Data
 	 */
-	public static function getInstance( $passed_post = NULL ) {
+	public static function getInstance( $passed_post = null ) {
 
-		if( empty( self::$instance ) ) {
+		if ( empty( self::$instance ) ) {
 			self::$instance = new GravityView_View_Data( $passed_post );
 		}
 
@@ -137,8 +133,16 @@ class GravityView_View_Data {
 			return array();
 		}
 		return array_combine(
-			array_map( function ( $view ) { return $view->ID; }, $this->views->all() ),
-			array_map( function ( $view ) { return $view->as_data(); }, $this->views->all() )
+			array_map(
+				function ( $view ) {
+					return $view->ID; },
+				$this->views->all()
+			),
+			array_map(
+				function ( $view ) {
+					return $view->as_data(); },
+				$this->views->all()
+			)
 		);
 	}
 
@@ -146,7 +150,7 @@ class GravityView_View_Data {
 	 * @deprecated
 	 * @see \GV\View_Collection::get()
 	 */
-	function get_view( $view_id, $atts = NULL ) {
+	function get_view( $view_id, $atts = null ) {
 		if ( ! $view = $this->views->get( $view_id ) ) {
 			if ( ! \GV\View::exists( $view_id ) ) {
 				return false;
@@ -174,7 +178,7 @@ class GravityView_View_Data {
 	 * within the WordPress database.
 	 *
 	 * @see http://tommcfarlin.com/wordpress-post-exists-by-id/ Fastest check available
-	 * @param    int    $view_id    The ID of the post to check
+	 * @param    int $view_id    The ID of the post to check
 	 *
 	 * @deprecated
 	 * @see \GV\View::exists()
@@ -190,7 +194,7 @@ class GravityView_View_Data {
 	 *
 	 * Add a view to the views array
 	 *
-	 * @param int|array $view_id View ID or array of View IDs
+	 * @param int|array    $view_id View ID or array of View IDs
 	 * @param array|string $atts Combine other attributes (eg. from shortcode) with the view settings (optional)
 	 *
 	 * @deprecated
@@ -198,12 +202,13 @@ class GravityView_View_Data {
 	 *
 	 * @return array|false All views if $view_id is array, a view data array if $view_id is an int, false on errors.
 	 */
-	function add_view( $view_id, $atts = NULL ) {
+	function add_view( $view_id, $atts = null ) {
 		return \GV\Mocks\GravityView_View_Data_add_view( $view_id, $atts, $this );
 	}
 
 	/**
 	 * Get the visible fields for a View
+	 *
 	 * @uses  gravityview_get_directory_fields() Fetch the configured fields for a View
 	 * @uses  GravityView_View_Data::filter_fields() Only show visible fields
 	 * @param  int $view_id View ID
@@ -252,7 +257,7 @@ class GravityView_View_Data {
 	public function parse_post_content( $content ) {
 		$ids = array();
 		foreach ( \GV\Shortcode::parse( $content ) as $shortcode ) {
-			if ( $shortcode->name == 'gravityview' && is_numeric( $shortcode->atts['id'] ) ) {
+			if ( 'gravityview' == $shortcode->name && is_numeric( $shortcode->atts['id'] ) ) {
 				if ( \GV\View::exists( $shortcode->atts['id'] ) && ! $this->views->contains( $shortcode->atts['id'] ) ) {
 					$this->views->add( \GV\View::by_id( $shortcode->atts['id'] ) );
 				}
@@ -261,13 +266,13 @@ class GravityView_View_Data {
 				 * Wether this is a bug or not remains a mystery. But we need to emulate this behavior
 				 * until better times.
 				 */
-				$ids []= $shortcode->atts['id'];
+				$ids [] = $shortcode->atts['id'];
 			}
 		}
-		if ( empty ( $ids ) ) {
+		if ( empty( $ids ) ) {
 			return null;
 		}
-		return ( sizeof( $ids ) === 1 ) ? $ids[0] : $ids;
+		return ( 1 === sizeof( $ids ) ) ? $ids[0] : $ids;
 	}
 
 	/**
@@ -285,12 +290,12 @@ class GravityView_View_Data {
 	 */
 	public static function is_valid_embed_id( $post_id = '', $view_id = '', $empty_is_valid = false ) {
 
-		$message = NULL;
+		$message = null;
 
 		// Not invalid if not set!
 		if ( empty( $post_id ) || empty( $view_id ) ) {
 
-			if( $empty_is_valid ) {
+			if ( $empty_is_valid ) {
 				return true;
 			}
 
@@ -315,12 +320,16 @@ class GravityView_View_Data {
 			if ( empty( $status ) || in_array( $status, array( 'revision', 'attachment' ) ) ) {
 				$message = esc_html__( 'There is no post or page with that ID.', 'gk-gravityview' );
 			}
-
 		}
 
 		if ( ! $message && $post = get_post( $post_id ) ) {
-			$views = GV\View_Collection::from_post( $post );
-			$view_ids_in_post = array_map( function( $view ) { return $view->ID; }, $views->all() );
+			$views            = GV\View_Collection::from_post( $post );
+			$view_ids_in_post = array_map(
+				function ( $view ) {
+					return $view->ID;
+				},
+				$views->all()
+			);
 
 			// The post or page specified does not contain the shortcode.
 			if ( false === in_array( $view_id, (array) $view_ids_in_post ) ) {
@@ -331,7 +340,8 @@ class GravityView_View_Data {
 		if ( ! $message ) {
 			// It's a View
 			if ( \GV\View::exists( $post_id ) ) {
-				$message = esc_html__( 'The ID is already a View.', 'gk-gravityview' );;
+				$message = esc_html__( 'The ID is already a View.', 'gk-gravityview' );
+
 			}
 		}
 
@@ -344,6 +354,7 @@ class GravityView_View_Data {
 
 	/**
 	 * Get a specific default setting
+	 *
 	 * @param  string  $key          The key of the setting array item
 	 * @param  boolean $with_details Include details
 	 * @return mixed|array                If using $with_details, return array. Otherwise, mixed.
@@ -353,7 +364,7 @@ class GravityView_View_Data {
 		$args = \GV\View_Settings::defaults( $with_details );
 
 		if ( ! isset( $args[ $key ] ) ) {
-			return NULL;
+			return null;
 		}
 
 		return $args[ $key ];
@@ -363,22 +374,22 @@ class GravityView_View_Data {
 	 * Retrieve the default args for shortcode and theme function
 	 *
 	 * @param boolean $with_details True: Return array with full default settings information, including description, name, etc. False: Return an array with only key => value pairs.
-	 * @param string $group Only fetch
+	 * @param string  $group Only fetch
 	 *
 	 * @return array $args Associative array of default settings for a View
-	 *      @param string $label Setting label shown in admin
-	 *      @param string $type Gravity Forms field type
-	 *      @param string $group The field group the setting is associated with. Default: "default"
-	 *      @param mixed  $value The default value for the setting
-	 *      @param string $tooltip Tooltip displayed for the setting
+	 *      @param string  $label Setting label shown in admin
+	 *      @param string  $type Gravity Forms field type
+	 *      @param string  $group The field group the setting is associated with. Default: "default"
+	 *      @param mixed   $value The default value for the setting
+	 *      @param string  $tooltip Tooltip displayed for the setting
 	 *      @param boolean $show_in_shortcode Whether to show the setting in the shortcode configuration modal
-	 *      @param array  $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
+	 *      @param array   $options Array of values to use when generating select, multiselect, radio, or checkboxes fields
 	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 *
 	 * @deprecated
 	 * @see \GV\View_Settings::defaults()
 	 */
-	public static function get_default_args( $with_details = false, $group = NULL ) {
+	public static function get_default_args( $with_details = false, $group = null ) {
 		return \GV\View_Settings::defaults( $with_details, $group );
 	}
 }

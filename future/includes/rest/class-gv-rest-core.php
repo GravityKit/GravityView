@@ -33,7 +33,6 @@ class Core {
 	 */
 	public static function get_namespace() {
 		return 'gravityview/v1';
-
 	}
 
 	/**

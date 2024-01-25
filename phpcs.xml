@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<ruleset name="GravityView">
+    <!-- General -->
+    <config name="testVersion" value="7.2-"/>
+
+    <arg name="colors"/>
+    <arg value="sp"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="20"/>
+
+    <file>.</file>
+
+    <rule ref="WordPress-Core">
+        <exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores"/>
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+        <exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
+        <exclude name="WordPress.WhiteSpace.PrecisionAlignment.Found"/>
+        <exclude name="WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents"/>
+        <exclude name="WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents"/>
+        <exclude name="WordPress.WP.CapitalPDangit.DeprecatedWhitelistCommentFound"/>
+
+        <exclude name="Squiz.Commenting.FunctionComment.EmptyThrows"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.ClassComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+
+        <exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed"/>
+        <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+
+        <exclude name="PEAR.Functions.FunctionCallSignature.OpeningIndent"/>
+        <exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+    </rule>
+
+    <rule ref="WordPress-Docs"/>
+
+    <rule ref="WordPress-Extra"/>
+
+    <rule ref="PHPCompatibility"/>
+
+    <rule ref="PHPCompatibilityWP">
+        <exclude-pattern>bin/*</exclude-pattern>
+    </rule>
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="gk-gravityview"/>
+            </property>
+        </properties>
+    </rule>
+
+    <exclude-pattern>*/tests/*</exclude-pattern>
+    <exclude-pattern>*/docs/*</exclude-pattern>
+    <exclude-pattern>*/assets/*</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/vendor_prefixed/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+</ruleset>

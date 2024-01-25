@@ -11,6 +11,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
 	/**
 	 * Does this get displayed on a single entry?
+	 *
 	 * @var boolean
 	 */
 	protected $show_on_single = true;
@@ -25,7 +26,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			return;
 		}
 
-		$this->widget_description = __('Display a Gravity Forms form.', 'gk-gravityview' );
+		$this->widget_description = __( 'Display a Gravity Forms form.', 'gk-gravityview' );
 
 		$default_values = array(
 			'header' => 1,
@@ -34,39 +35,39 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
 		$settings = array(
 			'widget_form_id' => array(
-				'type' => 'select',
-				'label' => __( 'Form to display', 'gk-gravityview' ),
-				'value' => '',
+				'type'    => 'select',
+				'label'   => __( 'Form to display', 'gk-gravityview' ),
+				'value'   => '',
 				'options' => GVCommon::get_forms_as_options(),
 			),
-			'title' => array(
-				'type' => 'checkbox',
+			'title'          => array(
+				'type'  => 'checkbox',
 				'label' => __( 'Show form title?', 'gk-gravityview' ),
 				'value' => 1,
 			),
-			'description' => array(
-				'type' => 'checkbox',
+			'description'    => array(
+				'type'  => 'checkbox',
 				'label' => __( 'Show form description?', 'gk-gravityview' ),
 				'value' => 1,
 			),
-			'ajax' => array(
-				'type' => 'checkbox',
+			'ajax'           => array(
+				'type'  => 'checkbox',
 				'label' => __( 'Enable AJAX', 'gk-gravityview' ),
-				'desc' => '',
+				'desc'  => '',
 				'value' => 1,
 			),
-			'field_values' => array(
-				'type' => 'text',
+			'field_values'   => array(
+				'type'  => 'text',
 				'class' => 'code widefat',
 				'label' => __( 'Field value parameters', 'gk-gravityview' ),
-				'desc' => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gk-gravityview' ) . '</a>',
+				'desc'  => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gk-gravityview' ) . '</a>',
 				'value' => '',
 			),
 		);
 
 		add_filter( 'gravityview/widget/hide_until_searched/allowlist', array( $this, 'add_to_allowlist' ) );
 
-		parent::__construct( __( 'Gravity Forms', 'gk-gravityview' ) , 'gravityforms', $default_values, $settings );
+		parent::__construct( __( 'Gravity Forms', 'gk-gravityview' ), 'gravityforms', $default_values, $settings );
 	}
 
 	/**
@@ -84,11 +85,11 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	}
 
 	/**
-	 * @param array $widget_args
+	 * @param array                       $widget_args
 	 * @param string|\GV\Template_Context $content
-	 * @param string $context
+	 * @param string                      $context
 	 */
-	public function render_frontend( $widget_args, $content = '', $context = '') {
+	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 
 		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
@@ -100,10 +101,10 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			return;
 		}
 
-		$title       = \GV\Utils::get( $widget_args, 'title' );
-		$description = \GV\Utils::get( $widget_args, 'description' );
+		$title        = \GV\Utils::get( $widget_args, 'title' );
+		$description  = \GV\Utils::get( $widget_args, 'description' );
 		$field_values = \GV\Utils::get( $widget_args, 'field_values' );
-		$ajax = \GV\Utils::get( $widget_args, 'ajax' );
+		$ajax         = \GV\Utils::get( $widget_args, 'ajax' );
 
 		gravity_form( $form_id, ! empty( $title ), ! empty( $description ), false, $field_values, $ajax );
 
@@ -115,7 +116,6 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 			gravity_form( $form_id, ! empty( $title ), ! empty( $description ), false, $field_values, $ajax );
 		}
 	}
-
 }
 
-new GravityView_Widget_Gravity_Forms;
+new GravityView_Widget_Gravity_Forms();

@@ -34,25 +34,24 @@ class GravityView_Field_Number extends GravityView_Field {
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		$field_options['number_format'] = array(
-			'type' => 'checkbox',
+			'type'  => 'checkbox',
 			'label' => __( 'Format number?', 'gk-gravityview' ),
-			'desc' => __('Display numbers with thousands separators.', 'gk-gravityview'),
+			'desc'  => __( 'Display numbers with thousands separators.', 'gk-gravityview' ),
 			'value' => false,
 			'group' => 'field',
 		);
 
 		$field_options['decimals'] = array(
-			'type' => 'number',
-			'label' => __( 'Decimals', 'gk-gravityview' ),
-			'desc' => __('Precision of the number of decimal places. Leave blank to use existing precision.', 'gk-gravityview'),
-			'value' => '',
+			'type'       => 'number',
+			'label'      => __( 'Decimals', 'gk-gravityview' ),
+			'desc'       => __( 'Precision of the number of decimal places. Leave blank to use existing precision.', 'gk-gravityview' ),
+			'value'      => '',
 			'merge_tags' => false,
-			'group' => 'field',
+			'group'      => 'field',
 		);
 
 		return $field_options;
 	}
-
 }
 
-new GravityView_Field_Number;
+new GravityView_Field_Number();

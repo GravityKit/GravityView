@@ -16,6 +16,7 @@ class GravityView_Edit_Entry_Locking {
 	 * Load extension entry point.
 	 *
 	 * DO NOT RENAME this method. Required by the class-edit-entry.php component loader.
+	 *
 	 * @see GravityView_Edit_Entry::load_components()
 	 *
 	 * @since 2.5.2
@@ -71,11 +72,11 @@ class GravityView_Edit_Entry_Locking {
 			$result['status'] = 'lock_obtained';
 		} else {
 
-			if( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
-				$user = get_userdata( $lock_holder_user_id );
-				$result['html']   = sprintf( __( 'Your request has been sent to %s.', 'gk-gravityview' ), $user->display_name );
+			if ( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
+				$user           = get_userdata( $lock_holder_user_id );
+				$result['html'] = sprintf( __( 'Your request has been sent to %s.', 'gk-gravityview' ), $user->display_name );
 			} else {
-				$result['html']   = __( 'Your request has been sent.', 'gk-gravityview' );
+				$result['html'] = __( 'Your request has been sent.', 'gk-gravityview' );
 			}
 
 			$this->update_lock_request_meta( $object_id, $user_id );
@@ -122,10 +123,10 @@ class GravityView_Edit_Entry_Locking {
 		$continue_enqueuing = false;
 
 		// If any Views being loaded have entry locking, enqueue the scripts
-		foreach( $views->all() as $view ) {
+		foreach ( $views->all() as $view ) {
 
 			// Make sure the View has edit locking enabled
-			if( ! $view->settings->get( 'edit_locking' ) ) {
+			if ( ! $view->settings->get( 'edit_locking' ) ) {
 				continue;
 			}
 
@@ -134,7 +135,7 @@ class GravityView_Edit_Entry_Locking {
 
 			$entry_form_id = $entry_array['form_id'];
 
-			if( ! isset( $joined_forms[ $entry_form_id ] ) ) {
+			if ( ! isset( $joined_forms[ $entry_form_id ] ) ) {
 				continue;
 			}
 
@@ -143,7 +144,7 @@ class GravityView_Edit_Entry_Locking {
 			break;
 		}
 
-		if( ! $continue_enqueuing ) {
+		if ( ! $continue_enqueuing ) {
 			return;
 		}
 
@@ -163,7 +164,7 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	protected function enqueue_scripts( $entry ) {
 
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+		$min          = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 		$locking_path = GFCommon::get_base_url() . '/includes/locking/';
 
 		wp_enqueue_script( 'gforms_locking', $locking_path . "js/locking{$min}.js", array( 'jquery', 'heartbeat' ), GFCommon::$version );
@@ -215,12 +216,12 @@ class GravityView_Edit_Entry_Locking {
 		$hidden = $locked ? '' : ' hidden';
 		if ( $locked ) {
 
-			if( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
-				$avatar = get_avatar( $user->ID, 64 );
+			if ( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
+				$avatar              = get_avatar( $user->ID, 64 );
 				$person_editing_text = $user->display_name;
 			} else {
-				$current_user = wp_get_current_user();
-				$avatar = get_avatar( $current_user->ID, 64 );
+				$current_user        = wp_get_current_user();
+				$avatar              = get_avatar( $current_user->ID, 64 );
 				$person_editing_text = _x( 'the person who is editing the entry', 'Referring to the user who is currently editing a locked entry', 'gk-gravityview' );
 			}
 
@@ -252,7 +253,7 @@ class GravityView_Edit_Entry_Locking {
                         </div>';
 
 		}
-		$html = '<div id="gform-lock-dialog" class="notification-dialog-wrap' . $hidden . '">
+		$html  = '<div id="gform-lock-dialog" class="notification-dialog-wrap' . $hidden . '">
                     <div class="notification-dialog-background"></div>
                     <div class="notification-dialog">';
 		$html .= $message;
@@ -326,15 +327,13 @@ class GravityView_Edit_Entry_Locking {
 			$this->set_lock( $entry_id );
 			echo '<script>window.location = ' . json_encode( remove_query_arg( 'get-edit-lock', $current_url ) ) . ';</script>';
 			exit();
-		} else if ( isset( $_GET['release-edit-lock'] ) ) {
+		} elseif ( isset( $_GET['release-edit-lock'] ) ) {
 			$this->delete_lock_meta( $entry_id );
 			$current_url = remove_query_arg( 'edit', $current_url );
 			echo '<script>window.location = ' . json_encode( remove_query_arg( 'release-edit-lock', $current_url ) ) . ';</script>';
 			exit();
-		} else {
-			if ( ! $user_id = $this->check_lock( $entry_id ) ) {
+		} elseif ( ! $user_id = $this->check_lock( $entry_id ) ) {
 				$this->set_lock( $entry_id );
-			}
 		}
 	}
 

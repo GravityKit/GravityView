@@ -67,4 +67,4 @@ class GravityView_Plugin_Hooks_Gravity_PDF extends GravityView_Plugin_and_Theme_
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_PDF;
+new GravityView_Plugin_Hooks_Gravity_PDF();

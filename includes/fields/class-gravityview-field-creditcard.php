@@ -23,4 +23,4 @@ class GravityView_Field_CreditCard extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_CreditCard;
+new GravityView_Field_CreditCard();

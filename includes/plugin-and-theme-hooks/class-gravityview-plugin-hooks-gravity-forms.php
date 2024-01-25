@@ -39,7 +39,6 @@ class GravityView_Plugin_Hooks_Gravity_Forms extends GravityView_Plugin_and_Them
 		'gform_field_filter',
 		'gform_forms',
 	);
-
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms;
+new GravityView_Plugin_Hooks_Gravity_Forms();

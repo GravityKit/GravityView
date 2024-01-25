@@ -11,7 +11,7 @@ $curr_form = gravityview_get_form_id( $post->ID );
 // View template settings
 $current_settings = gravityview_get_template_settings( $post->ID );
 
-$settings = [
+$settings = array(
 	'page_size',
 	'hide_until_searched',
 	'hide_empty',
@@ -22,7 +22,7 @@ $settings = [
 	'no_entries_form_description',
 	'no_entries_redirect',
 	'no_search_results_text',
-];
+);
 
 ?>
 

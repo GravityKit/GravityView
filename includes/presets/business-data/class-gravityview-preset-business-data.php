@@ -22,13 +22,13 @@ class GravityView_Preset_Business_Data extends GravityView_Default_Template_Tabl
 			'label'         => __( 'Business Data', 'gk-gravityview' ),
 			'description'   => __( 'Display business information in a table.', 'gk-gravityview' ),
 			'logo'          => plugins_url( 'includes/presets/business-data/logo-business-data.png', GRAVITYVIEW_FILE ),
-			//'preview'       => 'http://demo.gravitykit.com/blog/view/business-table/',
+			// 'preview'       => 'http://demo.gravitykit.com/blog/view/business-table/',
 			'preset_form'   => GRAVITYVIEW_DIR . 'includes/presets/business-data/form-business-data.json',
-			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-business-data.xml'
+			'preset_fields' => GRAVITYVIEW_DIR . 'includes/presets/business-data/fields-business-data.xml',
 		);
 
 		parent::__construct( self::ID, $settings );
 	}
 }
 
-new GravityView_Preset_Business_Data;
+new GravityView_Preset_Business_Data();

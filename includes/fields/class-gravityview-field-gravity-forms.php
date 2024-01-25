@@ -14,7 +14,7 @@ use GV\Utils;
 class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	var $name = 'gravity_forms';
 
-	var $contexts = [ 'single', 'multiple' ];
+	var $contexts = array( 'single', 'multiple' );
 
 	var $group = 'gravityview';
 
@@ -35,8 +35,8 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$this->label       = __( 'Gravity Forms', 'gk-gravityview' );
 		$this->description = __( 'Display a Gravity Forms form.', 'gk-gravityview' );
 
-		add_action( 'gform_after_submission', [ $this, 'add_new_entry_meta' ], 10, 2 );
-		add_action( 'gform_ajax_iframe_content', [ $this, 'modify_form_ajax_postback_content' ] );
+		add_action( 'gform_after_submission', array( $this, 'add_new_entry_meta' ), 10, 2 );
+		add_action( 'gform_ajax_iframe_content', array( $this, 'modify_form_ajax_postback_content' ) );
 
 		parent::__construct();
 	}
@@ -47,40 +47,40 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	 * @since 2.19
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-		unset ( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
+		unset( $field_options['search_filter'], $field_options['show_as_link'], $field_options['new_window'] );
 
-		$new_fields = [
-			'field_form_id' => [
+		$new_fields = array(
+			'field_form_id' => array(
 				'type'    => 'select',
 				'label'   => __( 'Form to display', 'gk-gravityview' ),
 				'value'   => '',
 				'options' => GVCommon::get_forms_as_options(),
-			],
-			'title'         => [
+			),
+			'title'         => array(
 				'type'  => 'checkbox',
 				'label' => __( 'Show form title?', 'gk-gravityview' ),
 				'value' => 1,
-			],
-			'description'   => [
+			),
+			'description'   => array(
 				'type'  => 'checkbox',
 				'label' => __( 'Show form description?', 'gk-gravityview' ),
 				'value' => 1,
-			],
-			'ajax'          => [
+			),
+			'ajax'          => array(
 				'type'  => 'checkbox',
 				'label' => __( 'Enable AJAX', 'gk-gravityview' ),
 				'desc'  => '',
 				'value' => 1,
-			],
-			'field_values'  => [
+			),
+			'field_values'  => array(
 				'type'       => 'text',
 				'class'      => 'code widefat',
 				'label'      => __( 'Field value parameters', 'gk-gravityview' ),
 				'desc'       => '<a href="https://docs.gravityforms.com/using-dynamic-population/" rel="external">' . esc_html__( 'Learn how to dynamically populate a field.', 'gk-gravityview' ) . '</a>',
 				'value'      => '',
 				'merge_tags' => 'force',
-			],
-		];
+			),
+		);
 
 		return $new_fields + $field_options;
 	}
@@ -105,7 +105,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	 *
 	 * @since 2.19
 	 */
-	static public function render_frontend( $field_settings, $view_form, $view_entry ) {
+	public static function render_frontend( $field_settings, $view_form, $view_entry ) {
 		$embed_form_id = Utils::get( $field_settings, 'field_form_id' );
 
 		if ( empty( $embed_form_id ) ) {
@@ -116,7 +116,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 		$description        = Utils::get( $field_settings, 'description' );
 		$field_values       = Utils::get( $field_settings, 'field_values' );
 		$ajax               = Utils::get( $field_settings, 'ajax' );
-		$field_values_array = [];
+		$field_values_array = array();
 
 		// Prepare field values.
 		if ( ! empty( $field_values ) ) {
@@ -138,8 +138,8 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 			GFFormsModel::flush_current_form( GFFormsModel::get_form_cache_key( $embed_form_id ) );
 
 			if ( rgpost( 'gk_parent_entry_id' ) !== $view_entry['id'] ) {
-				GFFormDisplay::$submission = []; // Prevent GF from thinking the form was submitted.
-				$_POST                     = []; // Prevent GF from populating fields with $_POST data when displaying the form.
+				GFFormDisplay::$submission = array(); // Prevent GF from thinking the form was submitted.
+				$_POST                     = array(); // Prevent GF from populating fields with $_POST data when displaying the form.
 			}
 		}
 
@@ -164,7 +164,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	 * @return string
 	 */
 	public function modify_form_ajax_postback_content( $content ) {
-		$required_post_data = [ 'gk_parent_entry_id', 'gk_parent_form_id', 'gk_unique_id' ];
+		$required_post_data = array( 'gk_parent_entry_id', 'gk_parent_form_id', 'gk_unique_id' );
 
 		foreach ( $required_post_data as $key ) {
 			if ( ! rgpost( $key ) ) {
@@ -194,7 +194,7 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 	 *
 	 * @return string
 	 */
-	static public function modify_form_content( $content, $form_id, $view_form_id, $view_entry_id, $form_count = null ) {
+	public static function modify_form_content( $content, $form_id, $view_form_id, $view_entry_id, $form_count = null ) {
 		static $unique_id;
 
 		// Start the form count at the highest-number form ID to prevent collisions.
@@ -210,12 +210,13 @@ class GravityView_Field_Gravity_Forms extends GravityView_Field {
 					<input type="hidden" name="gk_parent_form_id" value="{$view_form_id}">
 					<input type="hidden" name="gk_unique_id" value="{$unique_id}">
 HTML
-				, $content
+				,
+				$content
 			);
 		}
 
 		// Set unique ID for iframe that handles GF's form Ajax logic, which allows us to have multiple forms on the same page.
-		$strings_to_replace = [
+		$strings_to_replace = array(
 			"gform_ajax_frame_{$form_id}"               => "gform_ajax_frame_{$unique_id}",
 			"gform_wrapper_{$form_id}"                  => "gform_wrapper_{$unique_id}",
 			"gform_confirmation_wrapper_{$form_id}"     => "gform_confirmation_wrapper_{$unique_id}",
@@ -229,7 +230,7 @@ HTML
 			"gform_{$form_id}"                          => "gform_{$unique_id}",
 			"gform_{$form_id}_validation_container"     => "gform_{$unique_id}_validation_container",
 			"validation_message_{$form_id}"             => "validation_message_{$unique_id}",
-		];
+		);
 
 		$content = str_replace( array_keys( $strings_to_replace ), array_values( $strings_to_replace ), $content );
 
@@ -258,4 +259,4 @@ HTML
 	}
 }
 
-new GravityView_Field_Gravity_Forms;
+new GravityView_Field_Gravity_Forms();

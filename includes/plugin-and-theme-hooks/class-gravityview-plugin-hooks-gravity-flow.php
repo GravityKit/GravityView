@@ -173,7 +173,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	 * Add the current status timestamp field to available View configuration fields.
 	 */
 	public function maybe_add_non_default_fields( $fields, $form, $zone ) {
-		if ( strpos( implode( ' ', array_keys( $fields ) ), 'workflow' ) !== false ) {
+		if ( false !== strpos( implode( ' ', array_keys( $fields ) ), 'workflow' ) ) {
 			$keys   = array_keys( $fields );
 			$values = array_values( $fields );
 

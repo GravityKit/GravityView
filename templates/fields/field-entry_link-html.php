@@ -13,7 +13,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 /** @var \GV\GF_Form $gf_form */
 $gf_form = isset( $gravityview->field->form_id ) ? \GV\GF_Form::by_id( $gravityview->field->form_id ) : $gravityview->view->form->form;
-$form = ! empty( $gf_form->form ) ? $gf_form->form : $gf_form;
+$form    = ! empty( $gf_form->form ) ? $gf_form->form : $gf_form;
 
 if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry[ $form['id'] ];
@@ -40,6 +40,7 @@ $href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->re
 
 /**
  * Modify whether to include passed $_GET parameters to the end of the url.
+ *
  * @since 2.10
  * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: true.
  */
@@ -53,6 +54,7 @@ $link = gravityview_get_link( $href, $output, $tag_atts );
 
 /**
  * Modify the link HTML (here for backward compatibility).
+ *
  * @param string $link HTML output of the link
  * @param string $href URL of the link
  * @param array  $entry The GF entry array

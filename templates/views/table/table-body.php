@@ -34,7 +34,7 @@ if ( 1 === (int) $gravityview->view->settings->get( 'no_entries_options', '0' ) 
 				/** @action `gravityview/template/table/tr/before` */
 				$template::tr_before( $gravityview );
 
-                ?>
+				?>
 				<td colspan="<?php echo $gravityview->fields->by_position( 'directory_table-columns' )->by_visible( $gravityview->view )->count() ? : ''; ?>" class="<?php echo esc_attr( $no_results_css_class ); ?>">
 					<?php echo gv_no_results( true, $gravityview ); ?>
 				</td>
@@ -43,9 +43,9 @@ if ( 1 === (int) $gravityview->view->settings->get( 'no_entries_options', '0' ) 
 				/** @action `gravityview/template/table/tr/after` */
 				$template::tr_after( $gravityview );
 
-                ?>
+				?>
 			</tr>
-		<?php
+			<?php
 		} else {
 			foreach ( $gravityview->entries->all() as $entry ) {
 

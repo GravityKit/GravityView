@@ -28,12 +28,11 @@ class GravityView_Plugin_Hooks_Iconic_WAP extends GravityView_Plugin_and_Theme_H
 			return;
 		}
 
-		add_filter( 'gravityview_directory_link', [ $this, 'modify_directory_permalink' ] );
+		add_filter( 'gravityview_directory_link', array( $this, 'modify_directory_permalink' ) );
 
-		add_filter( 'gravityview/entry/permalink', [ $this, 'modify_entry_permalink' ], 10, 4 );
+		add_filter( 'gravityview/entry/permalink', array( $this, 'modify_entry_permalink' ), 10, 4 );
 
-		add_filter( 'iconic_wap_content_kses_allowed_tags', [ $this, 'modify_allowed_tags' ] );
-
+		add_filter( 'iconic_wap_content_kses_allowed_tags', array( $this, 'modify_allowed_tags' ) );
 	}
 
 	/**
@@ -47,67 +46,67 @@ class GravityView_Plugin_Hooks_Iconic_WAP extends GravityView_Plugin_and_Theme_H
 
 		$endpoint_views = self::get_current_endpoint_views();
 
-		if ( is_null( $endpoint_views ) || \sizeof( $endpoint_views->all() ) === 0 ) {
+		if ( is_null( $endpoint_views ) || 0 === \sizeof( $endpoint_views->all() ) ) {
 			return $allowed_tags;
 		}
 
 		// Open up the allowed tags to default Post items.
 		$allowed_tags = array_merge( wp_kses_allowed_html( 'post' ), $allowed_tags );
 
-		$attributes = [
-			'multiple' => true,
-			'value' => true,
-			'selected' => true,
-			'id' => true,
-			'name' => true,
-			'aria-invalid' => true,
-			'aria-required' => true,
-			'class' => true,
-			'for' => true,
+		$attributes = array(
+			'multiple'       => true,
+			'value'          => true,
+			'selected'       => true,
+			'id'             => true,
+			'name'           => true,
+			'aria-invalid'   => true,
+			'aria-required'  => true,
+			'class'          => true,
+			'for'            => true,
 			'data-js-reload' => true,
-			'onclick' => true,
-			'type' => true,
-			'src' => true,
-			'style' => true,
-			'placeholder' => true,
-			'title' => true,
-		];
+			'onclick'        => true,
+			'type'           => true,
+			'src'            => true,
+			'style'          => true,
+			'placeholder'    => true,
+			'title'          => true,
+		);
 
-		$allowed_tags['div'][] = [
+		$allowed_tags['div'][] = array(
 			'data-js-reload' => true,
-		];
+		);
 
 		// And GravityView needs a few more.
-		$allowed_tags['style']  = [
-			'nonce' => true,
-			'title' => true,
-			'media' => true,
+		$allowed_tags['style']        = array(
+			'nonce'    => true,
+			'title'    => true,
+			'media'    => true,
 			'blocking' => true,
-			'type' => true,
-		];
-		$allowed_tags['script'] = [
-			'src' => true,
-			'async' => true,
-			'charset' => true,
-			'crossorigin' => true,
-			'defer' => true,
-			'fetchpriority' => true,
-			'integrity' => true,
-			'nomodule' => true,
-			'nonce' => true,
+			'type'     => true,
+		);
+		$allowed_tags['script']       = array(
+			'src'            => true,
+			'async'          => true,
+			'charset'        => true,
+			'crossorigin'    => true,
+			'defer'          => true,
+			'fetchpriority'  => true,
+			'integrity'      => true,
+			'nomodule'       => true,
+			'nonce'          => true,
 			'referrerpolicy' => true,
-			'language' => true,
-			'type' => true,
-		];
-		$allowed_tags['fieldset'] = $attributes;
-		$allowed_tags['textarea'] = $attributes;
-		$allowed_tags['button'] = $attributes;
-		$allowed_tags['label'] = $attributes;
-		$allowed_tags['legend'] = $attributes;
-		$allowed_tags['iframe'] = $attributes;
-		$allowed_tags['input'] = $attributes;
-		$allowed_tags['select'] = $attributes;
-		$allowed_tags['option'] = $attributes;
+			'language'       => true,
+			'type'           => true,
+		);
+		$allowed_tags['fieldset']     = $attributes;
+		$allowed_tags['textarea']     = $attributes;
+		$allowed_tags['button']       = $attributes;
+		$allowed_tags['label']        = $attributes;
+		$allowed_tags['legend']       = $attributes;
+		$allowed_tags['iframe']       = $attributes;
+		$allowed_tags['input']        = $attributes;
+		$allowed_tags['select']       = $attributes;
+		$allowed_tags['option']       = $attributes;
 		$allowed_tags['a']['onclick'] = true;
 		$allowed_tags['a']['title']   = true;
 
@@ -119,18 +118,18 @@ class GravityView_Plugin_Hooks_Iconic_WAP extends GravityView_Plugin_and_Theme_H
 	 * There _may_ be a way to do this via {@see add_rewrite_endpoint()}, but it wasn't working.
 	 * For now, adding the endpoint via query arg works.
 	 *
-	 * @param string $permalink The permalink.
-	 * @param \GV\Entry $entry The entry we're retrieving it for.
+	 * @param string        $permalink The permalink.
+	 * @param \GV\Entry     $entry The entry we're retrieving it for.
 	 * @param \GV\View|null $view The view context.
-	 * @param \GV\Request $request The request context.
+	 * @param \GV\Request   $request The request context.
 	 *
 	 * @return string
 	 */
 	public function modify_entry_permalink( $permalink, $entry, $view = null, $request = null ) {
 
-		$entry_query_arg = [
+		$entry_query_arg = array(
 			GV\Entry::get_endpoint_name() => $entry->get_slug( true, $view, $request ),
-		];
+		);
 
 		return add_query_arg( $entry_query_arg, $permalink );
 	}
@@ -202,14 +201,13 @@ class GravityView_Plugin_Hooks_Iconic_WAP extends GravityView_Plugin_and_Theme_H
 		 */
 		$url = wp_parse_url( $link );
 
-		$query = [];
+		$query = array();
 		if ( isset( $url['query'] ) ) {
 			parse_str( $url['query'], $query );
 		}
 
 		return add_query_arg( $query, $site_url );
 	}
-
 }
 
-new GravityView_Plugin_Hooks_Iconic_WAP;
+new GravityView_Plugin_Hooks_Iconic_WAP();

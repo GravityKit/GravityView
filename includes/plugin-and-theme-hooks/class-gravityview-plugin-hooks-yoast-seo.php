@@ -114,7 +114,7 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 
 		parent::add_hooks();
 
-		if( gravityview()->request->is_admin( '', null ) ) {
+		if ( gravityview()->request->is_admin( '', null ) ) {
 
 				// Make Yoast metabox go down to the bottom please.
 			add_filter( 'wpseo_metabox_prio', array( $this, 'return_low' ) );
@@ -152,14 +152,14 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	 *
 	 * @since 1.15.2 Moved from class-gravityview-admin-metaboxes.php
 	 *
-	 * @param  array       $options WP SEO options array
+	 * @param  array $options WP SEO options array
 	 * @return array               Modified array if on post-new.php
 	 */
 	public function hide_wordpress_seo_metabox( $options = array() ) {
 		global $pagenow;
 
 		// New View page
-		if( $pagenow === 'post-new.php' ) {
+		if ( 'post-new.php' === $pagenow ) {
 			$options['hideeditbox-gravityview'] = true;
 		}
 
@@ -180,4 +180,4 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	}
 }
 
-new GravityView_Plugin_Hooks_Yoast_SEO;
+new GravityView_Plugin_Hooks_Yoast_SEO();
