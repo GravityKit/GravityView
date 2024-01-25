@@ -41,40 +41,30 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		add_action( 'gravityflow_post_process_workflow', array( $this, 'clear_cache_after_workflow' ), 10, 4 );
 
-		add_filter( 'gravityview/search/input_types', array( $this, 'modify_multi_user_type' ) );
-
-		add_filter( 'gravityview/extension/search/input_type', array( $this, 'add_multi_user_to_search_fields' ), 10, 3 );
+		add_filter( 'gravityview/extension/search/input_type', array( $this, 'add_workflow_user_fields_to_search' ), 10, 3 );
 	}
 
 
 	/**
-	 * Add multi user to search fields.
+	 * Add workflow user fields to search.
 	 *
 	 * @param string $input_type
 	 * @param string $field_type
 	 * @param string $field_id
 	 * @return string
 	 */
-	public function add_multi_user_to_search_fields( $input_type, $field_type, $field_id ) {
-		if ( $field_type === 'workflow_multi_user' ) {
+	public function add_workflow_user_fields_to_search( $input_type, $field_type, $field_id ) {
+		if ( $field_type === 'workflow_multi_user') {
 			$input_type = 'multi';
+		}
+
+		if ($field_type === 'workflow_user' ) {
+			$input_type = 'select';
 		}
 
 		return $input_type;
 	}
 
-	/**
-	 * Modify multi user input type.
-	 *
-	 * @param array $types
-	 * @return array
-	 */
-	public function modify_multi_user_type( $types ) {
-		if ( ! empty( $types['multi'] ) ) {
-			array_push( $types['multi'], 'workflow_multi_user' );
-		}
-		return $types;
-	}
 
 	/**
 	 * Clears GravityView entry cache after running a Gravity Flow Workflow

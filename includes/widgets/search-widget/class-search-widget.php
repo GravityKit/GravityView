@@ -1178,6 +1178,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		switch ( $form_field->type ) {
 
 			case 'select':
+			case 'workflow_user':
 			case 'radio':
 				$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 				break;
