@@ -5,12 +5,72 @@
  * @since 2.16
  */
 class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_Hooks {
+
+	protected $class_name = 'GravityView_Plugin_and_Theme_Hooks'; // Always true!
+
 	public function __construct() {
+		parent::__construct();
+	}
 
-		if ( ! defined( 'GRAVITYVIEW_MAPS_VERSION' ) || version_compare( GRAVITYVIEW_MAPS_VERSION, '1.8', '>=' ) ) {
-			return;
+	/**
+	 * @inheritDoc
+	 */
+	public function add_hooks() {
+		if ( defined( 'GRAVITYVIEW_MAPS_VERSION' ) ) {
+			$this->add_hooks_maps_enabled();
+		} else {
+			$this->add_hooks_maps_disabled();
 		}
+	}
 
+	/**
+	 * Add hooks for when Maps is disabled.
+	 */
+	private function add_hooks_maps_disabled() {
+		add_action( 'add_meta_boxes', [ $this, 'register_metabox' ] );
+	}
+
+	/**
+	 * Register the Maps placeholder metabox.
+	 *
+	 * @since TODO
+	 */
+	function register_metabox() {
+
+		$m = [
+			'id'            => 'maps_settings',
+			'title'         => __( 'Maps', 'gk-gravitymaps' ),
+			'callback'      => array( $this, 'render_metabox_placeholder' ),
+			'icon-class'    => 'dashicons-location-alt',
+			'file'          => '',
+			'callback_args' => '',
+			'screen'        => 'gravityview',
+			'context'       => 'side',
+			'priority'      => 'default',
+		];
+
+		$metabox = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback'], $m['callback_args'] );
+
+		GravityView_Metabox_Tabs::add( $metabox );
+	}
+
+	/**
+	 * Render placeholder HTML.
+	 *
+	 * @access public
+	 * @param WP_Post $post
+	 * @return void
+	 */
+	function render_metabox_placeholder( $post ) {
+		echo 'Maps placeholder!';
+	}
+
+	/**
+	 * Add hooks for when Maps is enabled.
+	 *
+	 * @since TODO
+	 */
+	private function add_hooks_maps_enabled() {
 		/**
 		 * Temporarily keep maps working on the front-end when running new GV and old Maps.
 		 *
