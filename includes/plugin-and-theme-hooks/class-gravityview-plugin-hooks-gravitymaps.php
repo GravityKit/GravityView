@@ -62,7 +62,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 	 * @return void
 	 */
 	function render_metabox_placeholder( $post ) {
-		echo 'Maps placeholder!';
+		echo '<img src="https://i.gravitykit.com/i/OqvjU7+" alt="PLACEHOLDER" style="max-width:100%; height: auto;" />';
 	}
 
 	/**
