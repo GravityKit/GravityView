@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 This release makes it easier to customize search results per-View instead of globally using code.
 
 * Added: Ability to send notifications using Gravity Forms when an entry is deleted by selecting the "GravityView - Entry is deleted" event from the event dropdown in Gravity Forms notifications settings
+* Added: Support for editing with the Advanced Post Creation add-on
 * Fixed: Sorting the View by entry ID in ascending and descending order would yield the same result
 * Fixed: Survey fields without a rating would show a 1-star rating
 * Fixed: Custom Post Field acting as File Uploads can now be edited on the Edit Entry page

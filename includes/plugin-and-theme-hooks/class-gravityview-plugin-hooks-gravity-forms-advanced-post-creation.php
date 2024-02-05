@@ -95,9 +95,15 @@ HTML;
 
 		$notification = sprintf(
 			$notification_html,
-			esc_html__( 'Caution: Advanced Post Creation is active for this form', 'gk-gravityview' ),
+			esc_html__( 'Caution: [link]Advanced Post Creation[/link] is active for this form', 'gk-gravityview' ),
 			__( 'Editing one of these entries might update a connected post as well. ', 'gk-gravityview' )
 		);
+
+		$apc_feed_link = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=%s&amp;id=%d', $apc->get_slug(), $form->ID ) );
+		$notification  = strtr( $notification, [
+			'[link]'  => '<a style="font-size: inherit;" href="' . $apc_feed_link . '" target="_blank">',
+			'[/link]' => '</a>',
+		] );
 
 		if ( $echo ) {
 			echo $notification;
