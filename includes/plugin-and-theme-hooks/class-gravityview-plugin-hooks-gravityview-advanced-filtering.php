@@ -48,6 +48,10 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 						align-items: center;
 						display: inline-flex
 					}
+					#gk-placeholder-advanced-filtering .gk-placeholder-container svg {
+						height: 60px;
+						width: 60px;
+					}
 					#gk-placeholder-advanced-filtering .gk-placeholder-content {
 						flex: 1 1 0;
 						min-height: 48px;
@@ -99,20 +103,14 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 				</style>
 				<div class="gk-placeholder-container">
 					<div class='gk-placeholder-content'>
-						<svg width='48' height='48' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg'>
-							<rect width='48' height='48' rx='8' fill='#FF1B67'/>
-							<path d='M12.3 21.9L15.6 12.3H16.8L20.1 21.9' stroke='white' stroke-width='2'
-							      stroke-miterlimit='10'
-							      stroke-linecap='round' stroke-linejoin='round'/>
-							<path d='M13.125 19.5H19.275' stroke='white' stroke-width='2' stroke-miterlimit='10'
-							      stroke-linecap='round' stroke-linejoin='round'/>
-							<path d='M24.3 30.3L30.3 36.3L36.3 30.3' stroke='white' stroke-width='2'
-							      stroke-miterlimit='10'
-							      stroke-linecap='round' stroke-linejoin='round'/>
-							<path d='M30.3 36.3V11.7' stroke='white' stroke-width='2' stroke-linecap='round'
-							      stroke-linejoin='round'/>
-							<path d='M12.9 26.7H19.5V27.3L12.9 35.7V36.3H19.5' stroke='white' stroke-width='2'
-							      stroke-miterlimit='10' stroke-linecap='round' stroke-linejoin='round'/>
+						<svg width='80' height='80' viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'>
+							<rect x='1.5' y='1.5' width='77' height='77' rx='6.5' fill='white'/>
+							<rect x='1.5' y='1.5' width='77' height='77' rx='6.5' stroke='#FF1B67' stroke-width='3'/>
+							<path d='M61.877 26.923L44.5 47.5V62.5H36.5V47.5L19.123 26.923' stroke='#FF1B67'
+							      stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/>
+							<path
+								d='M40.5 31.5C52.6503 31.5 62.5 28.8137 62.5 25.5C62.5 22.1863 52.6503 19.5 40.5 19.5C28.3497 19.5 18.5 22.1863 18.5 25.5C18.5 28.8137 28.3497 31.5 40.5 31.5Z'
+								stroke='#FF1B67' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/>
 						</svg>
 
 						<div class="gk-placeholder-summary">
