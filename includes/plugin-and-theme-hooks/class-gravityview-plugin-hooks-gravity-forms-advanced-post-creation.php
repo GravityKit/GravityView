@@ -1,5 +1,7 @@
 <?php
 
+use GV\View;
+
 /**
  * Add Gravity Forms Advanced Post Creation compatibility.
  * @since $ver$
@@ -54,6 +56,57 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 	}
 
 	/**
+	 * Adds a notice if the form contains a feed for Advanced Post Creation.
+	 * @since $ver$
+	 *
+	 * @param mixed      $_       unused template name.
+	 * @param string     $context The context.
+	 * @param int|string $view_id The view post ID.
+	 * @param bool       $echo    Whether to print the HTML directly instead of returning.
+	 *
+	 * @return string|null The output.
+	 */
+	public function add_view_notification( $_, string $context, $view_id, bool $echo = false ): ?string {
+		if ( 'edit' !== $context ) {
+			return null;
+		}
+
+		$view = View::by_id( $view_id );
+		if ( ! $view ) {
+			return null;
+		}
+
+		$form  = $view->form;
+		$apc   = GF_Advanced_Post_Creation::get_instance();
+		$feeds = $apc->get_active_feeds( $form->ID );
+
+		if ( ! $feeds ) {
+			return null;
+		}
+
+		$notification_html = <<<HTML
+<div class="gv-grid-col-1-1">
+	<div class="notice notice-warning inline">
+		<p><strong>%s</strong></p>
+		<p>%s</p>
+	</div>
+</div>
+HTML;
+
+		$notification = sprintf(
+			$notification_html,
+			esc_html__( 'Caution: Advanced Post Creation is active for this form', 'gk-gravityview' ),
+			__( 'Editing one of these entries might update a connected post as well. ', 'gk-gravityview' )
+		);
+
+		if ( $echo ) {
+			echo $notification;
+		}
+
+		return $notification;
+	}
+
+	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -61,6 +114,7 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 		parent::add_hooks();
 
 		add_action( 'gravityview/edit_entry/after_update', [ $this, 'update_post_on_entry_edit' ], 10, 3 );
+		add_action( 'gravityview_render_directory_active_areas', [ $this, 'add_view_notification' ], 5, 4 );
 	}
 }
 

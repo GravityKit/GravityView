@@ -24,7 +24,7 @@ abstract class Form extends Source {
 	/**
 	 * @var array The backing form.
 	 */
-	private $form;
+	protected $form;
 
 	/**
 	 * Construct a \GV\Form instance by ID.

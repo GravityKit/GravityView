@@ -329,7 +329,7 @@
 
 				var show_warning = ! dismissed_warning && value.configured === 0;
 
-				$( '#' + index + '-fields' ).find( '.notice-warning' ).toggle( show_warning );
+				$( '#' + index + '-fields' ).find( '.notice-no-link' ).toggle( show_warning );
 				$( 'li[aria-controls="' + index + '-view"]' )
 					.toggleClass( 'tab-not-configured', show_warning )
 					.find( '.tab-icon' )
