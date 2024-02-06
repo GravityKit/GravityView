@@ -22,5 +22,6 @@ $shortcode = sprintf( '[gravityview %s]', implode( ' ', $atts ) );
 	<div>
 		<input type="text" readonly="readonly" value="<?php echo esc_attr($shortcode) ?>" class="code widefat" />
 		<span class="howto"><?php esc_html_e( 'Add this shortcode to a post or page to embed this view.', 'gk-gravityview' ); ?></span>
+		<span class="copied"><?php esc_html_e( 'Copied!', 'gk-gravityview' ); ?></span>
 	</div>
 </div>

@@ -2802,4 +2802,19 @@
 		$( document.body ).trigger( 'gravityview/loaded' );
 	} );
 
+	$( document ).on( 'ready', function () {
+		new ClipboardJS( '.gv-shortcode input.code', {
+			text: function ( trigger ) {
+				return $( trigger ).val();
+			}
+		} );
+
+		$('.gv-shortcode input.code').on('click', function () {
+			var $el = $(this).closest('.gv-shortcode').find('.copied');
+			$el.show();
+			setTimeout(function () {
+				$el.fadeOut();
+			}, 1000);
+		});
+	} );
 }(jQuery));

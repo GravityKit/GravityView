@@ -1445,7 +1445,23 @@ class GravityView_Admin_Views {
 		wp_enqueue_style( 'gravityview_views_datepicker', plugins_url( 'assets/css/admin-datepicker.css', GRAVITYVIEW_FILE ), \GV\Plugin::$version );
 
 		// Enqueue scripts
-		wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), \GV\Plugin::$version );
+		wp_enqueue_script(
+			'gravityview_views_scripts',
+			plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ),
+			[
+				'jquery-ui-tabs',
+				'jquery-ui-draggable',
+				'jquery-ui-droppable',
+				'jquery-ui-sortable',
+				'jquery-ui-tooltip',
+				'jquery-ui-dialog',
+				'gravityview-jquery-cookie',
+				'jquery-ui-datepicker',
+				'underscore',
+				'clipboard'
+			],
+			\GV\Plugin::$version
+		);
 
 		wp_localize_script(
 			'gravityview_views_scripts',
