@@ -352,43 +352,7 @@ class Views_Route extends Route {
 		if ( $format === 'html' ) {
 			$renderer = new \GV\Entry_Renderer();
 
-			$rendered = $renderer->render( $entry, $view, new Request( $request ) );
-
-			/**
-			 * Don't format the HTML as JSON, just return it.
-			 */
-			if ( 'raw' === $request->get_param( 'output' ) ) {
-
-				$response = new \WP_REST_Response( '', 200 );
-				$response->header( 'Content-Type', 'text/' . $format );
-
-				/**
-				 * Filters whether the REST API request has already been served.
-				 *
-				 * Allow sending the request manually - by returning true, the API result
-				 * will not be sent to the client.
-				 *
-				 * @since 4.4.0
-				 *
-				 * @param bool             $served  Whether the request has already been served.
-				 *                                           Default false.
-				 * @param \WP_HTTP_Response $result  Result to send to the client. Usually a `WP_REST_Response`.
-				 * @param \WP_REST_Request  $request Request used to generate the response.
-				 * @param \WP_REST_Server   $server  Server instance.
-				 */
-				add_filter( 'rest_pre_serve_request', function( $served, $result, $request, $server ) use ( $rendered ) {
-
-					$rendered = apply_filters( 'gk/gravityview/rest/entry/html', $rendered, $result, $request, $server );
-
-					echo $rendered;
-
-					return true;
-				}, 10, 4 );
-
-				return $response;
-			}
-
-			return $rendered;
+			return $renderer->render( $entry, $view, new Request( $request ) );
 		}
 
 		return $this->prepare_entry_for_response( $view, $entry, $request, 'single' );

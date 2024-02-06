@@ -1,17 +1,132 @@
 <?php
 
 /**
+ *
  * - [ ] Allow for Next/Previous and Single Entry navigation options.
  * - [ ] Remove single entry widget header hooks `add_action( 'gravityview/template/before', array( $this, 'render_widget_hooks' ) );`
+ * - [ ] When "open in lightbox" is enabled, disable "open in new window" option.
+ * - [ ] Add setting to enable/disable indexing of single entry pages when opening in a lightbox.
+ * - [ ] Make sure to embed Custom CSS and Custom JS output.
+ * - [ ] Edit Entry isn't working.
+ * - [ ] Enable galleries inside modal
  */
 
-add_filter( 'gk/gravityview/rest/entry/html', function( $rendered ) {
+function gravityview_is_request_lightbox( \WP_REST_Request $request ) {
+
+	if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
+		return false;
+	}
+
+	/**
+	 * Don't format the HTML as JSON, just return it.
+	 */
+	if ( 'raw' !== $request->get_param( 'output' ) ) {
+		return false;
+	}
+
+	if ( '1' !== $request->get_param( 'lightbox' ) ) {
+		return false;
+	}
+
+	return true;
+}
+
+add_filter( 'rest_post_dispatch', function ( $response, $server, $request ) {
+
+	if ( ! $response instanceof \WP_REST_Response ) {
+		return $response;
+	}
+
+	if ( false === strpos( $response->get_matched_route(), 'gravityview' ) ) {
+		return $response;
+	}
+
+	if ( ! gravityview_is_request_lightbox( $request ) ) {
+		return $response;
+	}
+
+	// Define the content type as being HTML instead of JSON.
+	$response->header( 'Content-Type', 'text/html' );
+
+	return $response;
+}, 20, 3 );
+
+/**
+ * Filters whether the REST API request has already been served.
+ *
+ * Allow sending the request manually - by returning true, the API result
+ * will not be sent to the client.
+ *
+ * @since 4.4.0
+ *
+ * @param bool             $served  Whether the request has already been served.
+ *                                           Default false.
+ * @param \WP_HTTP_Response $result  Result to send to the client. Usually a `WP_REST_Response`.
+ * @param \WP_REST_Request  $request Request used to generate the response.
+ * @param \WP_REST_Server   $server  Server instance.
+ */
+add_filter( 'rest_pre_serve_request', function( $served, $result, $request, $server ) {
+
+	if ( ! gravityview_is_request_lightbox( $request ) ) {
+		return $served;
+	}
+
+	$entry_id = $request->get_params()['s_id'];
+	$view_id = $request->get_params()['id'];
+
+	$rendered = apply_filters( 'gk/gravityview/rest/entry/html', $result->get_data(), $result, $request, $entry_id, $view_id );
+
+	echo $rendered;
+
+	return true;
+}, 10, 4 );
+
+/**
+ * Wrap the rendered HTML snippet inside a full HTML page.
+ *
+ * @internal
+ * @return void
+ */
+add_filter( 'gk/gravityview/rest/entry/html', function( $rendered, $result, $request, $entry_id, $view_id ) {
+
+	$view = \GV\View::by_id( $view_id );
+	$entry = \GV\GF_Entry::by_id( $entry_id );
+
+	$title = $view->settings->get( 'single_title', '' );
+
+	$form = GVCommon::get_form( $entry['form_id'] );
+
+	// We are allowing HTML in the fields, so no escaping the output
+	$title = GravityView_API::replace_variables( $title, $form, $entry );
+
+	$title = do_shortcode( $title );
+
+	ob_start();
+
 	?>
 <html lang="<?php echo get_bloginfo( 'language' ); ?>">
 	<head>
-		<title>Test</title>
+		<title>{{title}}</title>
 		<meta name="robots" content="noindex, nofollow" /> <!-- Prevent search engines from indexing the page -->
-		<link rel='stylesheet' href='https://cdn.simplecss.org/simple.min.css'>
+		<!--<link rel='stylesheet' href='https://cdn.simplecss.org/simple.min.css'>-->
+		<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css'>
+		<!--<link rel='stylesheet' href='https://unpkg.com/marx-css/css/marx.min.css'>-->
+		<!--<link rel='stylesheet' href='https://classless.de/classless.css'>-->
+
+		<style>
+			th,
+			tr:nth-child(even) {
+				background-color: var( --bg );
+			}
+		</style>
+
+		<style>
+			th,
+			tr:nth-child(even) {
+				background-color: var( --bg );
+			}
+		</style>
+
 		<style>
 			body {
 				grid-template-columns: none;
@@ -21,11 +136,17 @@ add_filter( 'gk/gravityview/rest/entry/html', function( $rendered ) {
 		</style>
 	</head>
 	<body>
-	<?php echo $rendered; ?>
+		{{content}}
 	</body>
 </html>
 <?php
-} );
+	$template = ob_get_clean();
+
+	$rendered = str_replace( '{{content}}', $rendered, $template );
+	$rendered = str_replace( '{{title}}', $title, $rendered );
+
+	echo $rendered;
+}, 10, 5 );
 
 /**
  * Edit the Edit Link URL.
