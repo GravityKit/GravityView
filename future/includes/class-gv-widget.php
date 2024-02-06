@@ -15,18 +15,21 @@ abstract class Widget {
 
 	/**
 	 * Widget admin label
+	 *
 	 * @var string
 	 */
 	protected $widget_label = '';
 
 	/**
 	 * Widget description, shown on the "+ Add Widget" picker
+	 *
 	 * @var  string
 	 */
 	protected $widget_description = '';
 
 	/**
 	 * Widget details, shown in the widget modal
+	 *
 	 * @since 1.8
 	 * @var  string
 	 */
@@ -34,36 +37,42 @@ abstract class Widget {
 
 	/**
 	 * Widget admin ID
+	 *
 	 * @var string
 	 */
 	protected $widget_id = '';
 
 	/**
 	 * Default configuration for header and footer
+	 *
 	 * @var array
 	 */
 	protected $defaults = array();
 
 	/**
 	 * Widget admin advanced settings
+	 *
 	 * @var array
 	 */
 	protected $settings = array();
 
 	/**
 	 * Allow class to automatically add widget_text filter for you in shortcode
+	 *
 	 * @var string
 	 */
 	protected $shortcode_name;
 
 	/**
 	 * Hold the widget options.
+	 *
 	 * @var array()
 	 */
 	private $widget_options = array();
 
 	/**
 	 * The position of the widget.
+	 *
 	 * @api
 	 * @since 2.0
 	 * @var string
@@ -72,6 +81,7 @@ abstract class Widget {
 
 	/**
 	 * A unique ID for this widget.
+	 *
 	 * @api
 	 * @since 2.0
 	 * @var string
@@ -87,6 +97,17 @@ abstract class Widget {
 	 */
 	public $configuration;
 
+	/**
+	 * @var string An icon that represents the widget type in the widget picker.
+	 *
+	 * Supports these icon formats:
+	 * - Gravity Forms icon class: The string starts with "gform-icon". Note: the site must be running GF 2.5+. No need to also pass "gform-icon".
+	 * - Dashicons: The string starts with "dashicons". No need to also pass "dashicons".
+	 * - Inline SVG: Starts with "data:". Note: No single quotes are allowed!
+	 * - If not matching those formats, the value will be used as a CSS class in a `<i>` element.
+	 *
+	 * @see GravityView_Admin_View_Item::getOutput
+	 */
 	public $icon;
 
 	/**
@@ -94,14 +115,15 @@ abstract class Widget {
 	 *
 	 * @param string $label The Widget label as shown in the admin.
 	 * @param string $id The Widget ID, make this something unique.
-	 * @param array $defaults Default footer/header Widget configuration.
-	 * @param array $settings Advanced Widget settings.
+	 * @param array  $defaults Default footer/header Widget configuration.
+	 * @param array  $settings Advanced Widget settings.
 	 *
 	 * @return \GV\Widget
 	 */
 	public function __construct( $label, $id, $defaults = array(), $settings = array() ) {
 		/**
 		 * The shortcode name is set to the lowercase name of the widget class, unless overridden by the class specifying a different value for $shortcode_name
+		 *
 		 * @var string
 		 */
 		$this->shortcode_name = empty( $this->shortcode_name ) ? strtolower( get_called_class() ) : $this->shortcode_name;
@@ -111,7 +133,13 @@ abstract class Widget {
 		}
 
 		$this->widget_label = $label;
-		$this->defaults = array_merge( array( 'header' => 0, 'footer' => 0 ), $defaults );
+		$this->defaults     = array_merge(
+			array(
+				'header' => 0,
+				'footer' => 0,
+			),
+			$defaults
+		);
 
 		// Make sure every widget has a title, even if empty
 		$this->settings = wp_parse_args( $settings, $this->get_default_settings() );
@@ -140,6 +168,7 @@ abstract class Widget {
 
 	/**
 	 * Define general widget settings
+	 *
 	 * @since 1.5.4
 	 * @return array $settings Default settings
 	 */
@@ -147,7 +176,8 @@ abstract class Widget {
 		$settings = array();
 
 		/**
-		 * @filter `gravityview/widget/enable_custom_class` Enable custom CSS class settings for widgets
+		 * Enable custom CSS class settings for widgets.
+		 *
 		 * @param boolean $enable_custom_class False by default. Return true if you want to enable.
 		 * @param \GV\Widget $this Current instance of \GV\Widget.
 		 */
@@ -156,8 +186,8 @@ abstract class Widget {
 		if ( $enable_custom_class ) {
 			$settings['custom_class'] = array(
 				'type'       => 'text',
-				'label'      => __( 'Custom CSS Class:', 'gravityview' ),
-				'desc'       => __( 'This class will be added to the widget container', 'gravityview' ),
+				'label'      => __( 'Custom CSS Class:', 'gk-gravityview' ),
+				'desc'       => __( 'This class will be added to the widget container', 'gk-gravityview' ),
 				'value'      => '',
 				'merge_tags' => true,
 				'class'      => 'widefat code',
@@ -167,14 +197,14 @@ abstract class Widget {
 		return $settings;
 	}
 
-    /**
+	/**
 	 * Get the Widget ID.
 	 *
-     * @return string The Widget ID.
-     */
-    public function get_widget_id() {
-        return $this->widget_id;
-    }
+	 * @return string The Widget ID.
+	 */
+	public function get_widget_id() {
+		return $this->widget_id;
+	}
 
 	/**
 	 * Get the widget settings
@@ -206,20 +236,46 @@ abstract class Widget {
 	 * @return array The default areas where widgets can be rendered.
 	 */
 	public static function get_default_widget_areas() {
+
 		$default_areas = array(
-			array( '1-1' => array( array( 'areaid' => 'top', 'title' => __( 'Top', 'gravityview' ) , 'subtitle' => '' ) ) ),
-			array( '1-2' => array( array( 'areaid' => 'left', 'title' => __( 'Left', 'gravityview' ) , 'subtitle' => '' ) ), '2-2' => array( array( 'areaid' => 'right', 'title' => __( 'Right', 'gravityview' ) , 'subtitle' => '' ) ) ),
+			array(
+				'1-1' => array(
+					array(
+						'areaid'   => 'top',
+						'title'    => __( 'Top', 'gk-gravityview' ),
+						'subtitle' => '',
+					),
+				),
+			),
+			array(
+				'1-2' => array(
+					array(
+						'areaid'   => 'left',
+						'title'    => __( 'Left', 'gk-gravityview' ),
+						'subtitle' => '',
+					),
+				),
+				'2-2' => array(
+					array(
+						'areaid'   => 'right',
+						'title'    => __( 'Right', 'gk-gravityview' ),
+						'subtitle' => '',
+					),
+				),
+			),
 		);
 
 		/**
-		 * @filter `gravityview_widget_active_areas` Array of zones available for widgets to be dropped into
+		 * Array of zones available for widgets to be dropped into.
+		 *
 		 * @deprecated 2.0: Use gravityview/widget/active_areas instead
 		 * @param array $default_areas Definition for default widget areas
 		 */
 		$default_areas = apply_filters( 'gravityview_widget_active_areas', $default_areas );
 
 		/**
-		 * @filter `gravityview/widget/active_areas` Array of zones available for widgets to be dropped into
+		 * Array of zones available for widgets to be dropped into.
+		 *
 		 * @since 2.0
 		 * @param array $default_areas Definition for default widget areas
 		 */
@@ -239,11 +295,11 @@ abstract class Widget {
 		}
 
 		$widgets[ $this->get_widget_id() ] = array(
-			'label' => $this->widget_label ,
+			'label'       => $this->widget_label,
 			'description' => $this->widget_description,
-			'subtitle' => $this->widget_subtitle,
-			'icon' => $this->icon,
-			'class' => get_called_class(),
+			'subtitle'    => $this->widget_subtitle,
+			'icon'        => $this->icon,
+			'class'       => get_called_class(),
 		);
 
 		return $widgets;
@@ -254,14 +310,14 @@ abstract class Widget {
 	 *
 	 * @access protected
 	 *
-	 * @param array $options (default: array())
+	 * @param array  $options (default: array())
 	 * @param string $template (default: '')
 	 *
 	 * @return array
 	 */
 	public function assign_widget_options( $options = array(), $template = '', $widget = '' ) {
 		if ( $this->get_widget_id() === $widget ) {
-			if( $settings = $this->get_settings() ) {
+			if ( $settings = $this->get_settings() ) {
 				$options = array_merge( $options, $settings );
 			}
 		}
@@ -271,7 +327,7 @@ abstract class Widget {
 	/**
 	 * Do shortcode if the Widget's shortcode exists.
 	 *
-	 * @param  string $text   Widget text to check
+	 * @param  string                                                                    $text   Widget text to check
 	 * @param  null|\WP_Widget Empty if not called by WP_Widget, or a WP_Widget instance
 	 *
 	 * @return string         Widget text
@@ -315,7 +371,7 @@ abstract class Widget {
 			return;
 		}
 
-		add_shortcode( $this->shortcode_name, array( $this, 'render_shortcode') );
+		add_shortcode( $this->shortcode_name, array( $this, 'render_shortcode' ) );
 	}
 
 	/**
@@ -323,8 +379,8 @@ abstract class Widget {
 	 *
 	 * Override in child class.
 	 *
-	 * @param array $widget_args The Widget shortcode args.
-	 * @param string $content The content.
+	 * @param array                       $widget_args The Widget shortcode args.
+	 * @param string                      $content The content.
 	 * @param string|\GV\Template_Context $context The context, if available.
 	 *
 	 * @return void
@@ -333,34 +389,87 @@ abstract class Widget {
 	}
 
 	/**
+	 * Gets View considering the current context.
+	 *
+	 * @since 2.17.3
+	 *
+	 * @param string|\GV\Template_Context $context Context. Default: empty string.
+	 *
+	 * @return \GV\View|null
+	 */
+	public function get_view( $context = '' ) {
+
+		// $context should be passed to pre_render_frontend() and render_frontend().
+		if ( $context instanceof \GV\Template_Context && $context->view instanceof \GV\View ) {
+			return $context->view;
+		}
+
+		// If it's not passed, parse the $post content.
+		$views = gravityview()->views->get();
+
+		// No views are found.
+		if ( ! $views ) {
+			return null;
+		}
+
+		// If there's only one view, return it.
+		if ( $views instanceof \GV\View ) {
+			return $views;
+		}
+
+		// If there are multiple views, return the first one.
+		if ( $views instanceof \GV\View_Collection ) {
+			gravityview()->log->debug( 'The widget lacks $context and there are multiple Views on this page. Returning the first.' );
+
+			return $views->first();
+		}
+
+		return null;
+	}
+
+	/**
 	 * General validations when rendering the widget
 	 *
 	 * Always call this from your `render_frontend()` override!
 	 *
+	 * @since 2.17.3 Added $context param.
+	 *
+	 * @param string|\GV\Template_Context $context Context. Default: empty string.
+	 *
 	 * @return boolean True: render frontend; False: don't render frontend
 	 */
-	public function pre_render_frontend() {
+	public function pre_render_frontend( $context = '' ) {
 		/**
 		 * Assume shown regardless of hide_until_search setting.
 		 */
-		$whitelist = array(
+		$allowlist = array(
 			'custom_content',
 		);
 
 		/**
-		 * @filter `gravityview/widget/hide_until_searched/whitelist` Some widgets have got to stay shown.
-		 * @param[in,out] string[] $whitelist The widget IDs that have to be shown by default.
+		 * @deprecated 2.14 In favor of allowlist.
 		 */
-		$whitelist = apply_filters( 'gravityview/widget/hide_until_searched/whitelist', $whitelist );
+		$allowlist = apply_filters_deprecated( 'gravityview/widget/hide_until_searched/whitelist', array( $allowlist ), '2.14', 'gravityview/widget/hide_until_searched/allowlist' );
 
-		if ( ( $view = gravityview()->views->get() ) && ! in_array( $this->get_widget_id(), $whitelist ) ) {
+		/**
+		 * Some widgets have got to stay shown.
+		 *
+		 * @since 2.14
+		 * @param string[] $allowlist The widget IDs that have to be shown by default.
+		 */
+		$allowlist = apply_filters( 'gravityview/widget/hide_until_searched/allowlist', $allowlist );
+
+		$view = $this->get_view( $context );
+
+		if ( $view && ! in_array( $this->get_widget_id(), $allowlist ) ) {
 			$hide_until_searched = $view->settings->get( 'hide_until_searched' );
 		} else {
 			$hide_until_searched = false;
 		}
 
 		/**
-		 * @filter `gravityview/widget/hide_until_searched` Modify whether to hide content until search
+		 * Modify whether to hide content until search.
+		 *
 		 * @param boolean $hide_until_searched Hide until search?
 		 * @param \GV\Widget $this Widget instance
 		 */
@@ -377,8 +486,8 @@ abstract class Widget {
 	/**
 	 * Shortcode.
 	 *
-	 * @param array $atts The Widget shortcode args.
-	 * @param string $content The content.
+	 * @param array                       $atts The Widget shortcode args.
+	 * @param string                      $content The content.
 	 * @param string|\GV\Template_Context $context The context, if available.
 	 *
 	 * @return string Whatever the widget echoed.
@@ -414,7 +523,7 @@ abstract class Widget {
 			return null;
 		}
 
-		$w = new $class( Utils::get( $widget, 'label' ), $id );
+		$w                = new $class( Utils::get( $widget, 'label' ), $id );
 		$w->configuration = new Settings( $configuration );
 
 		return $w;
@@ -423,8 +532,8 @@ abstract class Widget {
 	/**
 	 * Return an array of the old format.
 	 *
-	 *  		'id' => string
-	 *			+ whatever else specific fields may have
+	 *          'id' => string
+	 *          + whatever else specific fields may have
 	 *
 	 * @internal
 	 * @since 2.0
@@ -432,9 +541,12 @@ abstract class Widget {
 	 * @return array
 	 */
 	public function as_configuration() {
-		return array_merge( array(
-			'id' => $this->get_widget_id(),
-		), $this->configuration->all() );
+		return array_merge(
+			array(
+				'id' => $this->get_widget_id(),
+			),
+			$this->configuration->all()
+		);
 	}
 
 	/**
@@ -447,14 +559,16 @@ abstract class Widget {
 	 */
 	public static function registered() {
 		/**
-		 * @filter `gravityview_register_directory_widgets` Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
+		 * Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object.
+		 *
 		 * @deprecated Use `gravityview/widgets/register`
 		 * @param array $registered_widgets Empty array
 		 */
 		$registered_widgets = apply_filters( 'gravityview_register_directory_widgets', array() );
 
 		/**
-		 * @filter `gravityview/widgets/register` Each item is used to instantiate a GravityView_Admin_View_Widget object
+		 * Each item is used to instantiate a GravityView_Admin_View_Widget object.
+		 *
 		 * @param array $registered_widgets Empty array
 		 */
 		return apply_filters( 'gravityview/widgets/register', $registered_widgets );

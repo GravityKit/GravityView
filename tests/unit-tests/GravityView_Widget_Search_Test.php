@@ -13,7 +13,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 */
 	public $widget;
 
-	function setUp() {
+	function setUp() : void {
 		parent::setUp();
 		$this->widget = new GravityView_Widget_Search;
 	}
@@ -392,6 +392,16 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
+		$_GET = array( 'input_1_2' => '_' );
+
+		$search_criteria = array(
+			'field_filters' => array(
+				'mode' => 'any',
+			),
+		);
+
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
+
 		$_GET = array();
 
 		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
@@ -494,7 +504,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker
+	 * https://docs.gravitykit.com/article/115-changing-the-format-of-the-search-widgets-date-picker
 	 */
 	public function get_gv_start_end_formats() {
 		return array(
@@ -575,6 +585,17 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			array( 'dd/mm/yyyy', array( 'filter_3' => '01/02/2018' ), 'dmy' ),
 			array( 'dd-mm-yyyy', array( 'filter_3' => '01-02-2018' ), 'dmy_dash' ),
 			array( 'dd.mm.yyyy', array( 'filter_3' => '01.02.2018' ), 'dmy_dot' ),
+
+			array( 'mm/dd/yyyy', array( 'input_3' => '02/01/2018' ), 'mdy' ),
+			array( 'mm/dd/yyyy', array( 'input_3' => '02/01/2018' ), 'invalid! This should result in mdy.' ),
+
+			array( 'yyyy-mm-dd', array( 'input_3' => '2018-02-01' ), 'ymd_dash' ),
+			array( 'yyyy/mm/dd', array( 'input_3' => '2018/02/01' ), 'ymd_slash' ),
+			array( 'yyyy.mm.dd', array( 'input_3' => '2018.02.01' ), 'ymd_dot' ),
+
+			array( 'dd/mm/yyyy', array( 'input_3' => '01/02/2018' ), 'dmy' ),
+			array( 'dd-mm-yyyy', array( 'input_3' => '01-02-2018' ), 'dmy_dash' ),
+			array( 'dd.mm.yyyy', array( 'input_3' => '01.02.2018' ), 'dmy_dot' ),
 		);
 	}
 
@@ -618,7 +639,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'support@gravityview.co',
+			'4'  => 'support@gravitykit.com',
 			'16' => 'Contact us if you have any questions.',
 		) );
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
@@ -628,7 +649,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'gravityview.co',
+			'4'  => 'gravitykit.com',
 			'16' => 'Our website.',
 		) );
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
@@ -638,13 +659,20 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'support@gravityview.co',
+			'4'  => 'support@gravitykit.com',
 			'16' => 'Contact us if you have any questions.',
 		) );
 
 		$_GET = array(
 			'filter_4'  => 'support',
 			'filter_16' => 'support', // In mode "any" this should be ignored
+		);
+
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array(
+			'input_4'  => 'support',
+			'input_16' => 'support', // In mode "any" this should be ignored
 		);
 
 		$this->assertEquals( 1, $view->get_entries()->count() );
@@ -687,6 +715,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				),
 			),
 		) );
+
 		$view = \GV\View::from_post( $post );
 
 		$did_unapproved_meta = false;
@@ -707,7 +736,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					continue;
 				}
 
-				gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, $status === 'approved' ? \GravityView_Entry_Approval_Status::APPROVED : \GravityView_Entry_Approval_Status::DISAPPROVED );
+				gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, 'approved' === $status ? \GravityView_Entry_Approval_Status::APPROVED : \GravityView_Entry_Approval_Status::DISAPPROVED );
 			}
 		}
 
@@ -721,6 +750,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 	}
+
 
 	public function get_test_approval_status_search() {
 		return array(
@@ -846,10 +876,6 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	}
 
 	public function test_created_by_text_search() {
-		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
-			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
-		}
-
 		$alpha = $this->factory->user->create( array(
 			'user_login' => 'alpha',
 			'user_email' => md5( microtime() ) . '@gravityview.tests',
@@ -930,6 +956,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET = array( 'gv_by' => 'custom' );
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+
 		update_user_meta( $gamma, 'custom_meta', 'custom' );
 		add_filter( 'gravityview/widgets/search/created_by/user_meta_fields', function() {
 			return array( 'custom_meta' );
@@ -937,6 +965,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 1, $view->get_entries()->count() );
 
 		remove_all_filters( 'gravityview/widgets/search/created_by/user_meta_fields' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 
 		$_GET = array();
 	}
@@ -992,16 +1021,31 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET = array();
 		$this->assertEquals( 3, $view->get_entries()->fetch()->count() );
 
+		$_GET = array( 'input_16' => 'hello' );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
+
 		$_GET = array( 'filter_16' => 'hello' );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'hello' );
 		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'world' );
 		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
 
+		$_GET = array( 'input_16' => 'world' );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count() );
+
 		$_GET = array( 'filter_16' => 'hello world, goodbye moon' );
 		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
+		$_GET = array( 'input_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
 		$_GET = array( 'filter_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'hello world' );
 		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		add_filter( 'gravityview_fe_search_criteria', $callback = function( $search_criteria ) {
@@ -1034,10 +1078,22 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET = array( 'filter_16' => 'hello world' );
 		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
+		$_GET = array( 'input_16' => 'hello' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
 		remove_filter( 'gravityview_fe_search_criteria', $callback );
 
 		add_filter( 'gravityview_search_operator', $callback = function( $operator, $field ) {
-			if ( $field['key'] == '16' ) {
+			if ( '16' == $field['key'] ) {
 				return 'is';
 			}
 			return $operator;
@@ -1056,6 +1112,21 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
 
 		$_GET = array( 'filter_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'hello' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'hello world, goodbye moon' );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'hello world' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
+
+		$_GET = array( 'input_16' => 'hello world' );
 		$this->assertEquals( 1, $view->get_entries()->fetch()->count() );
 
 		remove_filter( 'gravityview_search_operator', $callback );
@@ -1229,14 +1300,25 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$entries = $view->get_entries()->fetch()->all();
 		$this->assertCount( 2, $entries );
 
+		$_GET['input_16'] = 'hello';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+
 		$_GET['filter_16'] = 'hello';
-		$_GET['filter_16|op'] = '!='; // Override doesn't work, as '!=' is not in whitelist
+		$_GET['filter_16|op'] = '!='; // Override doesn't work, as '!=' is not in allowlist
 		$entries = $view->get_entries()->fetch()->all();
 		$this->assertCount( 2, $entries );
 		$this->assertEquals( $hello['id'], $entries[0]['id'] );
 		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
 
-		add_filter( 'gravityview/search/operator_whitelist', $callback = function() {
+		$_GET['input_16'] = 'hello';
+		$_GET['input_16|op'] = '!='; // Override doesn't work, as '!=' is not in allowlist
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertEquals( $hello['id'], $entries[0]['id'] );
+		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
+
+		add_filter( 'gravityview/search/operator_allowlist', $callback = function() {
 			return array( '!=' );
 		} );
 
@@ -1245,7 +1327,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( $world['id'], $entries[0]['id'] );
 		$this->assertEquals( $hello_world['id'], $entries[1]['id'] );
 
-		remove_filter( 'gravityview/search/operator_whitelist', $callback );
+		remove_filter( 'gravityview/search/operator_allowlist', $callback );
 
 		$_GET = array();
 	}
@@ -1400,7 +1482,28 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
 
-		add_filter( $filter = 'gravityview/search/searchable_fields/whitelist', $callback = function( $fields, $view, $with_full ) {
+		$_GET = array(
+			'gv_start' => '2017-01-01',
+			'gv_end' => '2017-12-31',
+			'input_1_1' => 'hello',
+			'input_16' => 'world',
+		);
+
+		$search_criteria = array(
+			'field_filters' => array(
+				'mode' => 'any',
+				array(
+					'key' => '1.1',
+					'value' => 'hello',
+					'form_id' => $view->form->ID,
+					'operator' => 'contains'
+				),
+			),
+		);
+
+		$this->assertEquals( $search_criteria, $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true ) );
+
+		add_filter( $filter = 'gravityview/search/searchable_fields/allowlist', $callback = function( $fields, $view, $with_full ) {
 			if ( $with_full ) {
 				return array(
 					array(
@@ -1412,8 +1515,6 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			} else {
 				return array( '16' );
 			}
-
-			return $fields;
 		}, 10, 3 );
 
 		$search_criteria = array(
@@ -1478,6 +1579,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		// Whitespaces are trimmed by default
 		$_GET = array( 'filter_16' => 'Text ' );
 		$this->assertEquals( 2, $view->get_entries()->count() );
+		$_GET = array( 'input_16' => 'Text ' );
+		$this->assertEquals( 2, $view->get_entries()->count() );
 		$_GET = array( 'gv_search' => 'Text ' );
 		$this->assertEquals( 2, $view->get_entries()->count() );
 
@@ -1486,10 +1589,178 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		add_filter( 'gravityview/search-all-split-words', '__return_false' ); // This is to ensure that "Text " is not split to ["Text", ""]
 		$_GET = array( 'filter_16' => 'Text ' );
 		$this->assertEquals( 1, $view->get_entries()->count() );
+		$_GET = array( 'input_16' => 'Text ' );
+		$this->assertEquals( 1, $view->get_entries()->count() );
 		$_GET = array( 'gv_search' => 'Text ' );
 		$this->assertEquals( 1, $view->get_entries()->count() );
 		remove_filter( 'gravityview/search-trim-input', '__return_false' );
 		remove_filter( 'gravityview/search-all-split-words', '__return_false' );
+
+		$_GET = array();
+	}
+
+	public function test_search_with_strict_empty_value_matching() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false )  => array(
+						'id'    => '8.3',
+						'label' => 'First',
+					),
+					wp_generate_password( 16, false ) => array(
+						'id'    => '8.6',
+						'label' => 'Last',
+					),
+				),
+			),
+			'settings'    => array(
+				'show_only_approved' => false,
+			),
+			'widgets'     => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'            => 'search_bar',
+						'search_fields' => json_encode( array(
+								array(
+									'field' => '8.3',
+								),
+								array(
+									'field' => '8.6',
+								)
+							)
+						),
+					),
+				)
+			),
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		$data = array(
+			array( 'Alice', 'Alice' ),
+			array( 'Alice', 'Bob' ),
+			array( 'Alice', 'Alice' ),
+		);
+
+		foreach ( $data as $name ) {
+			$this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status'  => 'active',
+				'8.3'     => $name[0],
+				'8.6'     => $name[1],
+			) );
+		}
+
+		// Default "contains" operator
+		$_GET = array( 'filter_8_3' => 'Alice', 'filter_8_6' => '', 'mode' => 'all' );
+
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		// Default "contains" operator
+		$_GET = array( 'input_8_3' => 'Alice', 'input_8_6' => '', 'mode' => 'all' );
+
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		// "is" operator
+		add_filter( 'gravityview_search_operator', function () {
+			return 'is';
+		} );
+
+		// do not ignore empty values
+		add_filter( 'gravityview/search/ignore-empty-values', '__return_false');
+
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_8_3' => 'Alice', 'filter_8_6' => 'Alice', 'mode' => 'all' );
+
+		$this->assertEquals( 2, $view->get_entries()->count() );
+
+		$_GET = array( 'input_8_3' => 'Alice', 'input_8_6' => 'Alice', 'mode' => 'all' );
+
+		$this->assertEquals( 2, $view->get_entries()->count() );
+
+		remove_all_filters('gravityview_search_operator');
+
+		$_GET = array();
+	}
+
+	public function test_search_with_number_field() {
+		if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
+			$this->markTestSkipped( 'Requires \GF_Query from Gravity Forms 2.3' );
+		}
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$post = $this->factory->view->create_and_get( array(
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false )  => array(
+						'id'    => '9',
+						'label' => 'Number',
+					),
+				),
+			),
+			'settings'    => array(
+				'show_only_approved' => false,
+			),
+			'widgets'     => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'            => 'search_bar',
+						'search_fields' => json_encode( array(
+								array(
+									'field' => '9',
+								),
+							)
+						),
+					),
+				)
+			),
+		) );
+
+		$view = \GV\View::from_post( $post );
+
+		foreach ( array(1,5,7,10) as $number ) {
+			$this->factory->entry->create_and_get( array(
+				'form_id' => $form['id'],
+				'status'  => 'active',
+				'9'     => $number,
+			) );
+		}
+
+		// "is" operator
+		add_filter( 'gravityview_search_operator', function () {
+			return 'is';
+		} );
+
+		// do not ignore empty values
+		add_filter( 'gravityview/search/ignore-empty-values', '__return_false');
+
+		$_GET = array( 'filter_9' => '5', 'mode' => 'all' );
+
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'filter_9' => '', 'mode' => 'all' );
+
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
+		$_GET = array( 'input_9' => '5', 'mode' => 'all' );
+
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
+		$_GET = array( 'input_9' => '', 'mode' => 'all' );
+
+		$this->assertEquals( 0, $view->get_entries()->count() );
+
+		remove_all_filters('gravityview_search_operator');
 
 		$_GET = array();
 	}

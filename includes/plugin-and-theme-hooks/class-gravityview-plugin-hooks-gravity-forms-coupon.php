@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravity-forms-coupon.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2017, Katz Web Services, Inc.
  *
  * @since 1.20
@@ -29,7 +29,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 	protected function add_hooks() {
 		parent::add_hooks();
 
-		add_filter( 'gravityview/edit_entry/field_blacklist', array( $this, 'edit_entry_field_blacklist' ), 10, 2 );
+		add_filter( 'gravityview/edit_entry/field_blocklist', array( $this, 'edit_entry_field_blocklist' ), 10, 2 );
 		add_filter( 'gravityview/edit_entry/field_value_coupon', array( $this, 'edit_entry_field_value' ), 10, 3 );
 	}
 
@@ -47,7 +47,8 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 		$has_transaction_data = GVCommon::entry_has_transaction_data( $entry );
 
 		/**
-		 * @filter `gravityview/edit_entry/hide-coupon-fields` Should Coupon fields be hidden in Edit Entry?
+		 * Should Coupon fields be hidden in Edit Entry?
+		 *
 		 * @since 1.20
 		 * @param bool $has_transaction_data If true (the Entry has transaction data), hide the fields. Otherwise (false), show the Coupon field
 		 */
@@ -57,22 +58,31 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 	}
 
 	/**
-	 * Adds Coupon fields to Edit Entry field blacklist
+	 * @depecated 2.14
+	 * @since 1.20
+	 */
+	public function edit_entry_field_blacklist( $blocklist = array(), $entry = array() ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Plugin_Hooks_Gravity_Forms_Coupon::edit_entry_field_blocklist' );
+		return $this->edit_entry_field_blocklist( $blocklist, $entry );
+	}
+
+	/**
+	 * Adds Coupon fields to Edit Entry field blocklist
 	 *
 	 * @since 1.20
 	 *
-	 * @param array $blacklist Array of field types
+	 * @param array $blocklist Array of field types
 	 * @param array $entry Entry array of entry being edited in Edit Entry
 	 *
-	 * @return array Blacklist array, with coupon possibly added
+	 * @return array Blocklist array, with coupon possibly added
 	 */
-	public function edit_entry_field_blacklist( $blacklist = array(), $entry = array() ) {
+	public function edit_entry_field_blocklist( $blocklist = array(), $entry = array() ) {
 
 		if ( $this->should_hide_coupon_fields( $entry ) ) {
-			$blacklist[] = 'coupon';
+			$blocklist[] = 'coupon';
 		}
 
-		return $blacklist;
+		return $blocklist;
 	}
 
 	/**
@@ -82,8 +92,8 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 	 *
 	 * @since 1.20
 	 *
-	 * @param string $value
-	 * @param GF_Field_Coupon $field
+	 * @param string                        $value
+	 * @param GF_Field_Coupon               $field
 	 * @param GravityView_Edit_Entry_Render $Edit_Entry_Render
 	 *
 	 * @return string $value is returned unmodified. Only $_POST is modified.
@@ -107,7 +117,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 		// No coupons match the codes provided
 		$discounts = gf_coupons()->get_coupons_by_codes( $coupon_codes, $form );
 
-		if( ! $discounts ) {
+		if ( ! $discounts ) {
 			return $value;
 		}
 
@@ -115,13 +125,12 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 		 * @hack Fake POST data so that the data gets pre-filled. Both are needed.
 		 * @see GF_Field_Coupon::get_field_input
 		 */
-		$_POST = ! isset( $_POST ) ? array() : $_POST;
+		$_POST                                = ! isset( $_POST ) ? array() : $_POST;
 		$_POST[ 'gf_coupons_' . $form['id'] ] = json_encode( (array) $discounts );
-		$_POST[ 'input_' . $field->id ] = implode( ',', $coupon_codes );
+		$_POST[ 'input_' . $field->id ]       = implode( ',', $coupon_codes );
 
 		return $value;
 	}
-
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Coupon;
+new GravityView_Plugin_Hooks_Gravity_Forms_Coupon();

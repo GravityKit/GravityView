@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravity-perks.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @since 1.17.5
@@ -34,7 +34,6 @@ class GravityView_Plugin_Hooks_Gravity_Perks extends GravityView_Plugin_and_Them
 		parent::add_hooks();
 
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'edit_entry_fix_uid_fields' ) );
-
 	}
 
 
@@ -50,7 +49,7 @@ class GravityView_Plugin_Hooks_Gravity_Perks extends GravityView_Plugin_and_Them
 	public function edit_entry_fix_uid_fields( $fields ) {
 
 		/** @type \GF_Field $field */
-		foreach( $fields as &$field ) {
+		foreach ( $fields as &$field ) {
 			if ( 'uid' === $field->type ) {
 
 				// Replace GF_Field with GF_Field_Text, copying all the data from $field
@@ -63,7 +62,6 @@ class GravityView_Plugin_Hooks_Gravity_Perks extends GravityView_Plugin_and_Them
 
 		return $fields;
 	}
-
 }
 
-new GravityView_Plugin_Hooks_Gravity_Perks;
+new GravityView_Plugin_Hooks_Gravity_Perks();

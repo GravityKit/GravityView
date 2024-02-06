@@ -20,7 +20,7 @@ class GravityView_Post_Excerpt extends GravityView_Field {
 	var $icon = 'dashicons-format-quote';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Excerpt', 'gravityview' );
+		$this->label = esc_html__( 'Post Excerpt', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -28,14 +28,14 @@ class GravityView_Post_Excerpt extends GravityView_Field {
 
 		unset( $field_options['show_as_link'] );
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$this->add_field_support('dynamic_data', $field_options );
+		$this->add_field_support( 'dynamic_data', $field_options );
 
 		return $field_options;
 	}
 }
 
-new GravityView_Post_Excerpt;
+new GravityView_Post_Excerpt();

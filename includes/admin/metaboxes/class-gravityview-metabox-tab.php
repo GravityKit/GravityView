@@ -11,6 +11,7 @@ class GravityView_Metabox_Tab {
 
 	/**
 	 * String prepended to the $id when registering the metabox
+	 *
 	 * @since 1.8
 	 * @var string
 	 */
@@ -18,6 +19,7 @@ class GravityView_Metabox_Tab {
 
 	/**
 	 * String for use in the 'id' attribute of tags.
+	 *
 	 * @since 1.8
 	 * @param string
 	 */
@@ -25,6 +27,7 @@ class GravityView_Metabox_Tab {
 
 	/**
 	 * Title of the meta box.
+	 *
 	 * @since 1.8
 	 * @param string
 	 */
@@ -32,6 +35,7 @@ class GravityView_Metabox_Tab {
 
 	/**
 	 * Function that fills the box with the desired content. The function should echo its output.
+	 *
 	 * @since 1.8
 	 * @param callback
 	 */
@@ -58,6 +62,7 @@ class GravityView_Metabox_Tab {
 
 	/**
 	 * Optional. The priority within the context where the boxes should show ('high', 'low'). Default 'default'.
+	 *
 	 * @since 1.8
 	 * @param string
 	 */
@@ -65,6 +70,7 @@ class GravityView_Metabox_Tab {
 
 	/**
 	 * Optional. Data that should be set as the $args property of the box array (which is the second parameter passed to your callback). Default null.
+	 *
 	 * @since 1.8
 	 * @param array
 	 */
@@ -72,6 +78,7 @@ class GravityView_Metabox_Tab {
 
 	/**
 	 * Define a file stored in the partials directory to render the output
+	 *
 	 * @since 1.8
 	 * @var string
 	 */
@@ -79,6 +86,7 @@ class GravityView_Metabox_Tab {
 
 	/**
 	 * CSS class for the tab icon
+	 *
 	 * @since 1.8
 	 * @var string
 	 */
@@ -90,21 +98,21 @@ class GravityView_Metabox_Tab {
 	 *
 	 * @since 1.8
 	 * @param $id string Metabox HTML ID, without `gravityview_` prefix
-	 * @param string $title Name of the metabox. Shown in the tab.
-	 * @param string $file The file name of a file stored in the /gravityview/includes/admin/metaboxes/views/ directory to render the metabox output, or the full path to a file. If defined, `callback` is not used.
-	 * @param string $icon_class_name Icon class used in vertical tabs. Supports non-dashicon. If dashicons, no need for `dashicons ` prefix
-	 * @param string $callback Function to render the metabox, if $file is not defined.
-	 * @param array $callback_args Arguments passed to the callback
+	 * @param string                                                   $title Name of the metabox. Shown in the tab.
+	 * @param string                                                   $file The file name of a file stored in the /gravityview/includes/admin/metaboxes/views/ directory to render the metabox output, or the full path to a file. If defined, `callback` is not used.
+	 * @param string                                                   $icon_class_name Icon class used in vertical tabs. Supports non-dashicon. If dashicons, no need for `dashicons ` prefix
+	 * @param string                                                   $callback Function to render the metabox, if $file is not defined.
+	 * @param array                                                    $callback_args Arguments passed to the callback
 	 * @return void
 	 */
-	function __construct( $id, $title = '', $file = '', $icon_class_name = '', $callback = '', $callback_args = array()  ) {
+	function __construct( $id, $title = '', $file = '', $icon_class_name = '', $callback = '', $callback_args = array() ) {
 
-		$this->id = $this->prefix.$id;
-		$this->title = $title;
+		$this->id                   = $this->prefix . $id;
+		$this->title                = $title;
 		$this->render_template_file = $file;
-		$this->callback = $callback;
-		$this->callback_args = $callback_args;
-		$this->icon_class_name = $this->parse_icon_class_name( $icon_class_name );
+		$this->callback             = $callback;
+		$this->callback_args        = $callback_args;
+		$this->icon_class_name      = $this->parse_icon_class_name( $icon_class_name );
 	}
 
 	/**
@@ -118,7 +126,7 @@ class GravityView_Metabox_Tab {
 	 */
 	function parse_icon_class_name( $icon_class_name = '' ) {
 
-		if( preg_match( '/dashicon/i', $icon_class_name ) ) {
+		if ( preg_match( '/dashicon/i', $icon_class_name ) ) {
 			$icon_class_name = 'dashicons ' . $icon_class_name;
 		}
 
@@ -142,26 +150,25 @@ class GravityView_Metabox_Tab {
 	 */
 	function render( $post ) {
 
-		if( !empty( $this->render_template_file ) ) {
+		if ( ! empty( $this->render_template_file ) ) {
 
 			$file = $this->render_template_file;
 
 			// If the full path exists, use it
-			if( file_exists( $file ) ) {
+			if ( file_exists( $file ) ) {
 				$path = $file;
 			} else {
-				$path = GRAVITYVIEW_DIR .'includes/admin/metaboxes/views/'.$file;
+				$path = GRAVITYVIEW_DIR . 'includes/admin/metaboxes/views/' . $file;
 			}
 
-			if( file_exists( $path ) ) {
+			if ( file_exists( $path ) ) {
 				include $path;
 			} else {
 				gravityview()->log->error( 'Metabox template file not found', array( 'data' => $this ) );
 			}
+		} elseif ( ! empty( $this->callback ) ) {
 
-		} else if( !empty( $this->callback ) ) {
-
-			if( is_callable( $this->callback ) ) {
+			if ( is_callable( $this->callback ) ) {
 
 				/** @see do_accordion_sections() */
 				call_user_func( $this->callback, $post, (array) $this );
@@ -169,10 +176,8 @@ class GravityView_Metabox_Tab {
 			} else {
 				gravityview()->log->error( 'Metabox callback was not callable', array( 'data' => $this ) );
 			}
-
 		} else {
 			gravityview()->log->error( 'Metabox file and callback were not found', array( 'data' => $this ) );
 		}
 	}
-
 }

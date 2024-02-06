@@ -21,10 +21,10 @@ class GravityView_Field_IP extends GravityView_Field {
 	var $is_numeric = true;
 
 	public function __construct() {
-		$this->label       = __( 'User IP', 'gravityview' );
-		$this->description = __( 'The IP Address of the user who created the entry.', 'gravityview' );
+		$this->label       = __( 'User IP', 'gk-gravityview' );
+		$this->description = __( 'The IP Address of the user who created the entry.', 'gk-gravityview' );
 		parent::__construct();
 	}
 }
 
-new GravityView_Field_IP;
+new GravityView_Field_IP();

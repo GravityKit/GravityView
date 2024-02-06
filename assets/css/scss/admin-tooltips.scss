@@ -44,6 +44,11 @@ body .ui-tooltip {
 	padding: 0;
 	position:absolute;
 	width: 460px;
+
+	&:has(.gv-widget-picker-container) {
+		width: 640px;
+	}
+
 	max-width: 100%; // Resize for responsive, if necessary
 	z-index: 999999!important; // Gravity Forms tooltips - need to make sure they're higher z-index to be above the field settings
 	background: white; //$tooltip_background;
@@ -124,6 +129,10 @@ body .ui-tooltip {
 		background: transparent;
 		border: 1px solid white;
 
+		// Prevent text selection; speeds up clicks on mobile
+		// and also prevents selection when double-clicking
+		user-select: none;
+
 		&.trigger--hover,
 		&:hover {
 			border: 1px solid $color-777;
@@ -145,17 +154,13 @@ body .ui-tooltip {
 		margin-bottom: 10px;
 		width: 50%;
 
-		text-align: center;
-
 		h5 {
 			float: none;
 			width: 100%;
 			font-weight: normal;
-			text-align: center;
 		}
 
 		.gv-field-info {
-			text-align: center;
 			display: block;
 			font-weight: normal;
 			color: #999;
@@ -177,13 +182,12 @@ body .ui-tooltip {
 			display: block;
 			width: 100%;
 			margin-bottom: 0;
-			text-align: center;
 		}
 
 		.dashicons,
+		.gform-icon,
 		.material-icons {
-			display: block;
-			text-align: center;
+			display: table-cell;
 			margin: 0 auto 10px;
 			font-size: 24px;
 			width: 24px;
@@ -196,9 +200,6 @@ body .ui-tooltip {
 			.rtl & {
 				padding-right: 12px!important;
 				padding-left: 0!important;
-			}
-			* {
-				text-align: center!important;
 			}
 		}
 	}
@@ -213,6 +214,7 @@ body .ui-tooltip {
 		}
 
 		.dashicons,
+		.gform-icon,
 		.gv-icon {
 			display: inline-block;
 			margin: 0 .2em 0 0;
@@ -225,7 +227,7 @@ body .ui-tooltip {
 
 			&.background-icon {
 				transition: opacity 0.1s ease-in;
-				background-repeat: no-repeat;
+				background-repeat: no-repeat!important;
 				background-size: contain;
 				background-position: center center;
 				opacity: .566;
@@ -290,7 +292,10 @@ body .ui-tooltip {
 			}
 		}
 
+		.gform-icon,
 		.dashicons {
+			display: inline-block;
+
 			margin: 0 8px 0 -36px;
 			.rtl & {
 				margin: 0 -36px 0 8px;
@@ -300,36 +305,47 @@ body .ui-tooltip {
 		.gv-field-info {
 			display: none;
 		}
+	}
 
-		&.gv-widget-picker-container {
+	.gv-items-picker-container.gv-widget-picker-container {
 
-			* {
-				text-align: center;
-			}
+		.gv-icon,
+		.gform-icon,
+		.dashicons {
+			padding: 17px;
+			border-radius: 5px;
+			background-color: $color-light-grey-150;
+			background-size: 24px!important;
+			background-position: center center;
+			display: table-cell;
+			float: left;
+			font-size: 24px!important;
+			width: 24px!important;
+			height: 24px!important;
+			line-height: 24px!important;
+			margin: 0 10px 6px 0!important;
+		}
 
-			.dashicons {
-				display: block;
-				font-size: 30px;
-				width: 28px;
-				height: 32px;
-				line-height: 32px;
-				float: none;
-				margin: 0 auto 6px auto!important;
-				padding: 0;
+		.gv-fields {
+			display: block;
+			width: 50%;
+			padding: 16px 12px;
+			line-height: 1.25em;
+			h5 {
+				font-weight: 500;
+				color: $color-222;
 			}
+		}
+		.gv-field-info {
+			margin: .25em 0 0 0;
+			display: table-row;
+			color: $color-666;
+		}
+	}
 
-			.gv-fields {
-				width: 50%;
-				padding: 16px 12px;
-				line-height: 1.25em;
-				h5 {
-					font-weight: 500;
-				}
-			}
-			.gv-field-info {
-				display: block;
-				margin: .25em 0 0 0;
-			}
+	[data-fieldid="all-fields"] {
+		* {
+			text-align: center!important;
 		}
 	}
 
@@ -417,6 +433,8 @@ body .ui-tooltip {
 			color: $color-888;
 			border-radius: 3px;
 			height: 35px;
+
+			.gform-icon,
 			.dashicons {
 				line-height: 35px;
 			}

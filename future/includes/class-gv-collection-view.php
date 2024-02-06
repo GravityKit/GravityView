@@ -96,15 +96,15 @@ class View_Collection extends Collection {
 			$views->merge( self::from_content( $post->post_content ) );
 
 			/**
-			 * @filter `gravityview/view_collection/from_post/meta_keys` Define meta keys to parse to check for GravityView shortcode content.
+			 * Define meta keys to parse to check for GravityView shortcode content.
 			 *
 			 * This is useful when using themes that store content that may contain shortcodes in custom post meta.
 			 *
 			 * @since 2.0
 			 * @since 2.0.7 Added $views parameter, passed by reference
 			 *
-			 * @param[in,out] array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
-			 * @param[in] \WP_Post $post The post that is being checked
+			 * @param array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
+			 * @param \WP_Post $post The post that is being checked
 			 * @param \GV\View_Collection $views The current View Collection object, passed as reference
 			 */
 			$meta_keys = apply_filters_ref_array( 'gravityview/view_collection/from_post/meta_keys', array( array(), $post, &$views ) );
@@ -131,7 +131,7 @@ class View_Collection extends Collection {
 	 * @since 2.1
 	 *
 	 * @param \GV\View_Collection $views Existing View Collection to merge with
-	 * @param string|array $meta_value Value to parse. Normally the value of $post->{$meta_key}.
+	 * @param string|array        $meta_value Value to parse. Normally the value of $post->{$meta_key}.
 	 *
 	 * @return \GV\View_Collection $views View Collection containing any additional Views found
 	 */
@@ -168,7 +168,7 @@ class View_Collection extends Collection {
 
 		/** Let's find us some [gravityview] shortcodes perhaps. */
 		foreach ( Shortcode::parse( $content ) as $shortcode ) {
-			if ( $shortcode->name != 'gravityview' || empty( $shortcode->atts['id'] ) ) {
+			if ( 'gravityview' != $shortcode->name || empty( $shortcode->atts['id'] ) ) {
 				continue;
 			}
 
@@ -179,6 +179,32 @@ class View_Collection extends Collection {
 				}
 
 				$view->settings->update( $shortcode->atts );
+				$views->add( $view );
+			}
+		}
+
+		if ( function_exists( 'has_block' ) && has_block( 'gk-gravityview-blocks/view', $content ) ) {
+			$blocks = parse_blocks( $content );
+
+			foreach ( $blocks as $block ) {
+				if ( empty( $block['attrs']['viewId'] ) ) {
+					continue;
+				}
+
+				if ( ! is_numeric( $block['attrs']['viewId'] ) ) {
+					continue;
+				}
+
+				$view = View::by_id( $block['attrs']['viewId'] );
+
+				if ( ! $view ) {
+					gravityview()->log->error( 'Could not find View #{view_id} associated with the block.', array( 'view_id' => $block['attrs']['viewId'] ) );
+					continue;
+				}
+
+				$atts = Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block['attrs'] );
+
+				$view->settings->update( $atts );
 				$views->add( $view );
 			}
 		}

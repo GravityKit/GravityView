@@ -23,12 +23,14 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 	/**
 	 * Prefix for filter names.
+	 *
 	 * @var string
 	 */
 	protected $filter_prefix = 'gravityview';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
+	 *
 	 * @var string
 	 */
 	protected $theme_template_directory = 'gravityview';
@@ -46,9 +48,9 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 	/**
 	 * Catch deprecated template loads.
 	 *
-	 * @param \GV\View $view The View.
-	 * @param \GV\Entry $entry The Entry.
-	 * @param \GV\Field $field The Field.
+	 * @param \GV\View    $view The View.
+	 * @param \GV\Entry   $entry The Entry.
+	 * @param \GV\Field   $field The Field.
 	 * @param \GV\Request $request The request.
 	 *
 	 * @return void
@@ -56,10 +58,10 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 	public function __construct( \GV\View $view, \GV\Entry $entry = null, \GV\Field $field = null, \GV\Request $request = null ) {
 		add_filter( $this->filter_prefix . '_get_template_part', array( $this, 'add_id_specific_templates' ), 10, 3 );
 
-		$this->view = $view;
+		$this->view  = $view;
 		$this->entry = $entry;
 
-		$this->plugin_directory = gravityview()->plugin->dir();
+		$this->plugin_directory          = gravityview()->plugin->dir();
 		$this->plugin_template_directory = 'templates/deprecated/';
 	}
 
@@ -87,7 +89,7 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 	 * - table-footer.php
 	 *
 	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
-	 * @param array $templates Existing list of templates.
+	 * @param array  $templates Existing list of templates.
 	 * @param string $slug      Name of the template base, example: `table`, `list`, `datatables`, `map`
 	 * @param string $name      Name of the template part, example: `body`, `footer`, `head`, `single`
 	 *
@@ -123,13 +125,16 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 	 * @return string The output.
 	 */
 	public function render( $slug ) {
-		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
-			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
-		} );
+		add_action(
+			'gravityview/template/after',
+			$view_id_output = function ( $context ) {
+				printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
+			}
+		);
 
 		ob_start();
 
-		$request = new Mock_Request();
+		$request                     = new Mock_Request();
 		$request->returns['is_view'] = $this->view;
 
 		/**
@@ -161,14 +166,16 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 			$entries = new Entry_Collection();
 			$entries->add( $this->entry );
 
-			\GV\Mocks\Legacy_Context::push( array(
-				'view' => $this->view,
-				'entry' => $this->entry,
-				'entries' => $entries,
-				'request' => $request,
-				'fields' => $this->view->fields->by_visible( $this->view ),
-				'in_the_loop' => true,
-			) );
+			\GV\Mocks\Legacy_Context::push(
+				array(
+					'view'        => $this->view,
+					'entry'       => $this->entry,
+					'entries'     => $entries,
+					'request'     => $request,
+					'fields'      => $this->view->fields->by_visible( $this->view ),
+					'in_the_loop' => true,
+				)
+			);
 
 			\GravityView_View::getInstance()->setTemplatePartSlug( $slug );
 			\GravityView_View::getInstance()->setTemplatePartName( 'single' );
@@ -177,9 +184,9 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 
 			Mocks\Legacy_Context::pop();
 
-		/**
-		 * Directory view.
-		 */
+			/**
+			 * Directory view.
+			 */
 		} else {
 			$entries = $this->view->get_entries( $request );
 
@@ -189,7 +196,7 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 			 */
 			$parameters = $this->view->settings->as_atts();
 			if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
-				$has_multisort = true;
+				$has_multisort            = true;
 				$parameters['sort_field'] = reset( $parameters['sort_field'] );
 				if ( ! empty( $parameters['sort_direction'] ) && is_array( $parameters['sort_direction'] ) ) {
 					$parameters['sort_direction'] = reset( $parameters['sort_direction'] );
@@ -204,18 +211,24 @@ class Legacy_Override_Template extends \GV\Gamajo_Template_Loader {
 			add_action( 'gravityview_after', array( \GravityView_View::getInstance(), 'render_widget_hooks' ) );
 
 			foreach ( array( 'header', 'body', 'footer' ) as $part ) {
-				\GV\Mocks\Legacy_Context::push( array_merge( array(
-					'view' => $this->view,
-					'entries' => $entries,
-					'request' => $request,
-					'fields' => $this->view->fields->by_visible( $this->view ),
-					'in_the_loop' => true,
-				), empty( $parameters ) ? array() : array(
-					'paging' => $parameters['paging'],
-					'sorting' => $parameters['sorting'],
-				), $post ? array(
-					'post' => $post,
-				) : array() ) );
+				\GV\Mocks\Legacy_Context::push(
+					array_merge(
+						array(
+							'view'        => $this->view,
+							'entries'     => $entries,
+							'request'     => $request,
+							'fields'      => $this->view->fields->by_visible( $this->view ),
+							'in_the_loop' => true,
+						),
+						empty( $parameters ) ? array() : array(
+							'paging'  => $parameters['paging'],
+							'sorting' => $parameters['sorting'],
+						),
+						$post ? array(
+							'post' => $post,
+						) : array()
+					)
+				);
 
 				\GravityView_View::getInstance()->setTemplatePartSlug( $slug );
 

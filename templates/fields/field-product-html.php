@@ -11,8 +11,8 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$value = $gravityview->value;
+$field_id      = $gravityview->field->ID;
+$value         = $gravityview->value;
 $display_value = $gravityview->display_value;
 if ( '' == $display_value ) {
 	$display_value = $value;
@@ -47,7 +47,7 @@ if ( ! empty( $value ) ) {
 		$quantity_found = false;
 
 		foreach ( $gravityview->fields->all() as $_field ) {
-			if ( $_field->type == 'quantity' ) {
+			if ( 'quantity' == $_field->type ) {
 				if ( $_field->productField == $_field_id ) {
 					$quantity_found = ! empty( $entry[ $_field->ID ] );
 					break;

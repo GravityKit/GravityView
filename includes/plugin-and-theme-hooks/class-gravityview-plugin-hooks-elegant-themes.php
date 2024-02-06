@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-elegant-themes.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2016', Katz Web Services, Inc.
  *
  * @since 1.17.2
@@ -74,7 +74,7 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 		 */
 		preg_match( '#\[et_pb_sidebar .*area="(.*?)"#', $post->post_content, $matches );
 
-		if ( count( $matches ) != 2 ) {
+		if ( 2 != count( $matches ) ) {
 			return $shortcodes;
 		}
 
@@ -86,13 +86,13 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 		foreach ( $sidebars_widgets[ $matches[1] ] as $widgets ) {
 			if (
 				/**
-				 * Blacklisted widgets.
+				 * Blocklisted widgets.
 				 */
-				strpos( $widgets, 'gravityview_search' ) === 0 ||
-				strpos( $widgets, 'gv_recent_entries' ) === 0
+				0 === strpos( $widgets, 'gravityview_search' ) ||
+				0 === strpos( $widgets, 'gv_recent_entries' )
 			) {
 
-					$shortcodes []= 'et_pb_sidebar';
+					$shortcodes [] = 'et_pb_sidebar';
 					break;
 			}
 		}
@@ -101,4 +101,4 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 	}
 }
 
-new GravityView_Theme_Hooks_Elegant_Themes;
+new GravityView_Theme_Hooks_Elegant_Themes();

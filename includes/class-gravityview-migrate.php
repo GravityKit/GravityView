@@ -16,6 +16,8 @@ class GravityView_Migrate {
 
 	function __construct() {
 		add_action( 'admin_init', array( $this, 'update_settings' ), 1 );
+
+		add_action( 'admin_menu', array( $this, 'redirect_old_admin_pages' ) );
 	}
 
 	public function update_settings() {
@@ -25,7 +27,38 @@ class GravityView_Migrate {
 		$this->migrate_redux_settings();
 
 		$this->maybe_migrate_approved_meta();
+	}
 
+	/**
+	 * Redirects old GravityView admin pages to the new ones.
+	 *
+	 * @since 2.16
+	 *
+	 * @return void
+	 */
+	public function redirect_old_admin_pages() {
+		global $pagenow;
+
+		if ( ! $pagenow || ! is_admin() ) {
+			return;
+		}
+
+		// Provide redirect for old GravityView settings page.
+		if ( 'edit.php' !== $pagenow ) {
+			return;
+		}
+
+		switch ( \GV\Utils::_GET( 'page' ) ) {
+			case 'gravityview_settings':
+				wp_safe_redirect( admin_url( 'admin.php?page=gk_settings&p=gravityview&s=0' ) );
+				die();
+			case 'grant-gravityview-access':
+				wp_safe_redirect( admin_url( 'admin.php?page=gk_foundation_trustedlogin' ) );
+				die();
+			case 'gv-admin-installer':
+				wp_safe_redirect( admin_url( 'admin.php?page=gk_licenses' ) );
+				die();
+		}
 	}
 
 	/**
@@ -72,7 +105,7 @@ class GravityView_Migrate {
 
 		$disapproved_result = $wpdb->query( $wpdb->prepare( $sql, GravityView_Entry_Approval_Status::DISAPPROVED, '0' ) );
 
-		if( false === $approved_result || false === $disapproved_result ) {
+		if ( false === $approved_result || false === $disapproved_result ) {
 			gravityview()->log->error( 'There was an error processing the query. {error}', array( 'error' => $wpdb->last_error ) );
 		} else {
 			// All done: Meta values are migrated
@@ -105,12 +138,8 @@ class GravityView_Migrate {
 		$redux_settings = $this->get_redux_settings();
 
 		// No need to process
-		if( false === $redux_settings ) {
+		if ( false === $redux_settings ) {
 			return;
-		}
-
-		if( empty(  $redux_settings['license_key_status'] ) ) {
-			$redux_settings = $this->get_redux_license_status( $redux_settings );
 		}
 
 		// Get the current app settings (just defaults)
@@ -123,77 +152,30 @@ class GravityView_Migrate {
 		gravityview()->plugin->settings->update( $updated_settings );
 
 		// And now remove the previous option, so this is a one-time thing.
-		delete_option('gravityview_settings');
-		delete_option('gravityview_settings-transients');
-	}
-
-	/**
-	 * If the settings transient wasn't set, we need to set the default status for the license
-	 *
-	 * @since 1.7.4
-	 *
-	 * @param array $redux_settings
-	 *
-	 * @return array
-	 */
-	function get_redux_license_status( $redux_settings = array() ) {
-
-		$data = array(
-			'edd_action' => 'check_license',
-			'license' => \GV\Utils::_GET( 'license_key', \GV\Utils::get( $redux_settings, 'license_key' ) ),
-			'update' => false,
-			'format' => 'object',
-		);
-
-		$license_call = \GV\License_Handler::get()->license_call( $data );
-
-		if( is_object( $license_call ) && isset( $license_call->license ) ) {
-			$redux_settings['license_key_status'] = $license_call->license;
-			$redux_settings['license_key_response'] = json_encode( $license_call );
-		}
-
-		return $redux_settings;
+		delete_option( 'gravityview_settings' );
+		delete_option( 'gravityview_settings-transients' );
 	}
 
 	/**
 	 * Get Redux settings, if they exist
+	 *
 	 * @since 1.7.4
 	 * @return array|bool
 	 */
 	function get_redux_settings() {
 
 		// Previous settings set by Redux
-		$redux_option = get_option('gravityview_settings');
+		$redux_option = get_option( 'gravityview_settings' );
 
 		// No Redux settings? Don't proceed.
-		if( false === $redux_option ) {
+		if ( false === $redux_option ) {
 			return false;
 		}
 
-
 		$redux_settings = array(
-			'support-email' => \GV\Utils::get( $redux_option, 'support-email' ),
+			'support-email'    => \GV\Utils::get( $redux_option, 'support-email' ),
 			'no-conflict-mode' => \GV\Utils::get( $redux_option, 'no-conflict-mode' ) ? '1' : '0',
 		);
-
-		if ( $license_array = \GV\Utils::get( $redux_option, 'license' ) ) {
-
-			$redux_settings['license_key'] = $license_key = \GV\Utils::get( $license_array, 'license' );
-
-			$redux_last_changed_values = get_option('gravityview_settings-transients');
-
-			// This contains the last response for license validation
-			if( !empty( $redux_last_changed_values ) && $saved_values = \GV\Utils::get( $redux_last_changed_values, 'changed_values' ) ) {
-
-				$saved_license = \GV\Utils::get( $saved_values, 'license' );
-
-				// Only use the last-saved values if they are for the same license
-				if( $saved_license && \GV\Utils::get( $saved_license, 'license' ) === $license_key ) {
-					$redux_settings['license_key_status'] = \GV\Utils::get( $saved_license, 'status' );
-					$redux_settings['license_key_response'] = \GV\Utils::get( $saved_license, 'response' );
-				}
-			}
-		}
 
 		return $redux_settings;
 	}
@@ -202,51 +184,59 @@ class GravityView_Migrate {
 	/** ----  Migrate from old search widget to new search widget  ---- */
 	function update_search_on_views() {
 
-		if( !class_exists('GravityView_Widget_Search') ) {
-			include_once( GRAVITYVIEW_DIR .'includes/extensions/search-widget/class-search-widget.php' );
+		if ( ! class_exists( 'GravityView_Widget_Search' ) ) {
+			include_once GRAVITYVIEW_DIR . 'includes/extensions/search-widget/class-search-widget.php';
 		}
 
 		// Loop through all the views
 		$query_args = array(
-			'post_type' => 'gravityview',
-			'post_status' => 'any',
+			'post_type'      => 'gravityview',
+			'post_status'    => 'any',
 			'posts_per_page' => -1,
 		);
 
 		$views = get_posts( $query_args );
 
-		foreach( $views as $view ) {
+		foreach ( $views as $view ) {
 
-			$widgets = gravityview_get_directory_widgets( $view->ID );
+			$widgets       = gravityview_get_directory_widgets( $view->ID );
 			$search_fields = null;
 
-			if( empty( $widgets ) || !is_array( $widgets ) ) { continue; }
+			if ( empty( $widgets ) || ! is_array( $widgets ) ) {
+				continue; }
 
 			gravityview()->log->debug( '[GravityView_Migrate/update_search_on_views] Loading View ID: {view_id}', array( 'view_id' => $view->ID ) );
 
-			foreach( $widgets as $area => $ws ) {
-				foreach( $ws as $k => $widget ) {
-					if( $widget['id'] !== 'search_bar' ) { continue; }
+			foreach ( $widgets as $area => $ws ) {
+				foreach ( $ws as $k => $widget ) {
+					if ( 'search_bar' !== $widget['id'] ) {
+						continue; }
 
-					if( is_null( $search_fields ) ) {
+					if ( is_null( $search_fields ) ) {
 						$search_fields = $this->get_search_fields( $view->ID );
 					}
 
 					// check widget settings:
-					//  [search_free] => 1
-			        //  [search_date] => 1
-			        $search_generic = array();
-					if( !empty( $widget['search_free'] ) ) {
-						$search_generic[] = array( 'field' => 'search_all', 'input' => 'input_text' );
+					// [search_free] => 1
+					// [search_date] => 1
+					$search_generic = array();
+					if ( ! empty( $widget['search_free'] ) ) {
+						$search_generic[] = array(
+							'field' => 'search_all',
+							'input' => 'input_text',
+						);
 					}
-					if( !empty( $widget['search_date'] ) ) {
-						$search_generic[] = array( 'field' => 'entry_date', 'input' => 'date' );
+					if ( ! empty( $widget['search_date'] ) ) {
+						$search_generic[] = array(
+							'field' => 'entry_date',
+							'input' => 'date',
+						);
 					}
 
 					$search_config = array_merge( $search_generic, $search_fields );
 
 					// don't throw '[]' when json_encode an empty array
-					if( empty( $search_config ) ) {
+					if ( empty( $search_config ) ) {
 						$search_config = '';
 					} else {
 						$search_config = json_encode( $search_config );
@@ -274,25 +264,26 @@ class GravityView_Migrate {
 	function get_search_fields( $view_id ) {
 
 		$form_id = gravityview_get_form_id( $view_id );
-		$form = gravityview_get_form( $form_id );
+		$form    = gravityview_get_form( $form_id );
 
 		$search_fields = array();
 
 		// check view fields' settings
 		$fields = gravityview_get_directory_fields( $view_id, false );
 
-		if( !empty( $fields ) && is_array( $fields ) ) {
+		if ( ! empty( $fields ) && is_array( $fields ) ) {
 
-			foreach( $fields as $t => $fs ) {
+			foreach ( $fields as $t => $fs ) {
 
-				foreach( $fs as $k => $field ) {
+				foreach ( $fs as $k => $field ) {
 					// is field a search_filter ?
-					if( empty( $field['search_filter'] ) ) { continue; }
+					if ( empty( $field['search_filter'] ) ) {
+						continue; }
 
 					// get field type & calculate the input type (by default)
 					$form_field = gravityview_get_field( $form, $field['id'] );
 
-					if( empty( $form_field['type'] ) ) {
+					if ( empty( $form_field['type'] ) ) {
 						continue;
 					}
 
@@ -300,7 +291,10 @@ class GravityView_Migrate {
 					$type = GravityView_Widget_Search::get_search_input_types( $field['id'], $form_field['type'] );
 
 					// add field to config
-					$search_fields[] = array( 'field' => $field['id'], 'input' => $type );
+					$search_fields[] = array(
+						'field' => $field['id'],
+						'input' => $type,
+					);
 
 				}
 			}
@@ -308,9 +302,6 @@ class GravityView_Migrate {
 
 		return $search_fields;
 	}
-
-
-
 } // end class
 
-new GravityView_Migrate;
+new GravityView_Migrate();

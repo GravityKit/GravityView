@@ -5,7 +5,10 @@
  */
 class GravityView_Cache {
 
-	const BLACKLIST_OPTION_NAME = 'gravityview_cache_blacklist';
+	/** @deprecated 2.14 - use BLOCKLIST_OPTION_NAME instead! */
+	const BLACKLIST_OPTION_NAME = 'gravityview_cache_blocklist';
+
+	const BLOCKLIST_OPTION_NAME = 'gravityview_cache_blocklist';
 
 	/**
 	 * Form ID, or array of Form IDs
@@ -29,17 +32,18 @@ class GravityView_Cache {
 	private $key = '';
 
 	/**
-	 * @since 1.13.1
-	 * @var array Columns in the database for leads
+	 * Whether to use the cache or not. Set in {@see use_cache()}.
+	 *
+	 * @var null|boolean $use_cache
 	 */
-	private $lead_db_columns = array( 'id', 'form_id', 'post_id', 'date_created', 'is_starred', 'is_read', 'ip', 'source_url', 'user_agent', 'currency', 'payment_status', 'payment_date', 'payment_amount', 'transaction_id', 'is_fulfilled', 'created_by', 'transaction_type', 'status' );
+	private $use_cache = null;
 
 	/**
 	 *
 	 * @param array|int $form_ids Form ID or array of form IDs used in a request
-	 * @param array $args Extra request parameters used to generate the query. This is used to generate the unique transient key.
+	 * @param array     $args Extra request parameters used to generate the query. This is used to generate the unique transient key.
 	 */
-	function __construct( $form_ids = NULL, $args = array() ) {
+	function __construct( $form_ids = null, $args = array() ) {
 
 		$this->add_hooks();
 
@@ -65,12 +69,12 @@ class GravityView_Cache {
 		add_action( 'gravityview-expired-transients', array( $this, 'delete_expired_transients' ) );
 
 		// Trigger this when you need to prevent any results from being cached with forms that have been modified
-		add_action( 'gravityview_clear_form_cache', array( $this, 'blacklist_add' ) );
+		add_action( 'gravityview_clear_form_cache', array( $this, 'blocklist_add' ) );
 
 		/**
 		 * @since 1.14
 		 */
-		add_action( 'gravityview_clear_entry_cache', array( $this, 'entry_status_changed' ) );
+		add_action( 'gravityview_clear_entry_cache', array( $this, 'entry_property_changed' ) );
 
 		add_action( 'gform_after_update_entry', array( $this, 'entry_updated' ), 10, 2 );
 
@@ -78,24 +82,19 @@ class GravityView_Cache {
 
 		add_action( 'gform_post_add_entry', array( $this, 'entry_added' ), 10, 2 );
 
-		/**
-		 * @see RGFormsModel::update_lead_property() Trigger when any entry property changes
-		 */
-		foreach( $this->lead_db_columns as $column ) {
-			add_action( 'gform_update_' . $column, array( $this, 'entry_status_changed' ), 10, 3 );
-		}
+		add_action( 'gform_post_update_entry_property', array( $this, 'entry_property_changed' ), 10, 4 );
 
-		add_action( 'gform_delete_lead', array( $this, 'entry_status_changed' ), 10 );
+		add_action( 'gform_delete_lead', array( $this, 'entry_property_changed' ), 10 );
 	}
 
 	/**
 	 * Force refreshing a cache when an entry is deleted.
 	 *
-	 * The `gform_delete_lead` action is called before the lead is deleted; we fetch the entry to find out the form ID so it can be added to the blacklist.
+	 * The `gform_delete_lead` action is called before the lead is deleted; we fetch the entry to find out the form ID so it can be added to the blocklist.
 	 *
 	 * @since  1.5.1
 	 *
-	 * @param  int $lead_id Entry ID
+	 * @param  int    $lead_id Entry ID
 	 * @param  string $property_value Previous value of the lead status passed by gform_update_status hook
 	 * @param  string $previous_value Previous value of the lead status passed by gform_update_status hook
 	 *
@@ -107,33 +106,102 @@ class GravityView_Cache {
 
 		if ( is_wp_error( $entry ) ) {
 
-			gravityview()->log->error( 'Could not retrieve entry {entry_id} to delete it: {error}', array( 'entry_id' => $lead_id, 'error' => $entry->get_error_message() ) );
+			gravityview()->log->error(
+				'Could not retrieve entry {entry_id} to delete it: {error}',
+				array(
+					'entry_id' => $lead_id,
+					'error'    => $entry->get_error_message(),
+				)
+			);
 
 			return;
 		}
 
-		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{lead_id} was deleted', array( 'form_id' => $entry['form_id'], 'entry_id' => $lead_id, 'data' => array( 'value' => $property_value, 'previous' => $previous_value ) ) );
+		gravityview()->log->debug(
+			'adding form {form_id} to blocklist because entry #{lead_id} was deleted',
+			array(
+				'form_id'  => $entry['form_id'],
+				'entry_id' => $lead_id,
+				'data'     => array(
+					'value'    => $property_value,
+					'previous' => $previous_value,
+				),
+			)
+		);
 
-		$this->blacklist_add( $entry['form_id'] );
+		$this->blocklist_add( $entry['form_id'] );
 	}
 
 	/**
-	 * When an entry is updated, add the entry's form to the cache blacklist
+	 * Force refreshing a cache when an entry is deleted.
+	 *
+	 * The `gform_delete_lead` action is called before the lead is deleted; we fetch the entry to find out the form ID so it can be added to the blocklist.
+	 *
+	 * @since  2.16.3
+	 *
+	 * @param int    $lead_id        The Entry ID.
+	 * @param string $property_name  The property that was updated.
+	 * @param string $property_value The new value of the property that was updated.
+	 * @param string $previous_value The previous property value before the update.
+	 *
+	 * @return void
+	 */
+	public function entry_property_changed( $lead_id, $property_name = '', $property_value = '', $previous_value = '' ) {
+
+		$entry = GFAPI::get_entry( $lead_id );
+
+		if ( is_wp_error( $entry ) ) {
+
+			gravityview()->log->error(
+				'Could not retrieve entry {entry_id} during cache clearing: {error}',
+				array(
+					'entry_id' => $lead_id,
+					'error'    => $entry->get_error_message(),
+				)
+			);
+
+			return;
+		}
+
+		gravityview()->log->debug(
+			'adding form {form_id} to blocklist because the {property_name} property was updated for entry #{lead_id}',
+			array(
+				'form_id'  => $entry['form_id'],
+				'entry_id' => $lead_id,
+				'data'     => array(
+					'value'         => $property_value,
+					'previous'      => $previous_value,
+					'property_name' => $property_name,
+				),
+			)
+		);
+
+		$this->blocklist_add( $entry['form_id'] );
+	}
+
+	/**
+	 * When an entry is updated, add the entry's form to the cache blocklist
 	 *
 	 * @param  array $form GF form array
-	 * @param  int $lead_id Entry ID
+	 * @param  int   $lead_id Entry ID
 	 *
 	 * @return void
 	 */
 	public function entry_updated( $form, $lead_id ) {
 
-		gravityview()->log->debug(' adding form {form_id} to blacklist because entry #{entry_id} was updated', array( 'form_id' => $form['id'], 'entry_id' => $lead_id ) );
+		gravityview()->log->debug(
+			' adding form {form_id} to blocklist because entry #{entry_id} was updated',
+			array(
+				'form_id'  => $form['id'],
+				'entry_id' => $lead_id,
+			)
+		);
 
-		$this->blacklist_add( $form['id'] );
+		$this->blocklist_add( $form['id'] );
 	}
 
 	/**
-	 * When an entry is created, add the entry's form to the cache blacklist
+	 * When an entry is created, add the entry's form to the cache blocklist
 	 *
 	 * We don't want old caches; when an entry is added, we want to clear the cache.
 	 *
@@ -144,9 +212,15 @@ class GravityView_Cache {
 	 */
 	public function entry_created( $entry, $form ) {
 
-		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{entry_id} was created', array( 'form_id' => $form['id'], 'entry_id' => $entry['id'] ) );
+		gravityview()->log->debug(
+			'adding form {form_id} to blocklist because entry #{entry_id} was created',
+			array(
+				'form_id'  => $form['id'],
+				'entry_id' => $entry['id'],
+			)
+		);
 
-		$this->blacklist_add( $form['id'] );
+		$this->blocklist_add( $form['id'] );
 	}
 
 	/**
@@ -162,9 +236,15 @@ class GravityView_Cache {
 			return;
 		}
 
-		gravityview()->log->debug( 'adding form {form_id} to blacklist because entry #{entry_id} was added', array( 'form_id' => $form['id'], 'entry_id' => $entry['id'] ) );
+		gravityview()->log->debug(
+			'adding form {form_id} to blocklist because entry #{entry_id} was added',
+			array(
+				'form_id'  => $form['id'],
+				'entry_id' => $entry['id'],
+			)
+		);
 
-		$this->blacklist_add( $form['id'] );
+		$this->blocklist_add( $form['id'] );
 	}
 
 	/**
@@ -174,7 +254,7 @@ class GravityView_Cache {
 	 *
 	 * @return string           Prefix for the cache string used in set_key()
 	 */
-	protected function get_cache_key_prefix( $form_ids = NULL ) {
+	protected function get_cache_key_prefix( $form_ids = null ) {
 
 		if ( is_null( $form_ids ) ) {
 			$form_ids = $this->form_ids;
@@ -188,7 +268,6 @@ class GravityView_Cache {
 		// Prefix for transient keys
 		// Now the prefix would be: `gv-cache-f:12-f:5-f:14-`
 		return 'gv-cache-' . $forms . '-';
-
 	}
 
 	/**
@@ -220,90 +299,150 @@ class GravityView_Cache {
 	}
 
 	/**
-	 * Add form IDs to a "blacklist" to force the cache to be refreshed
+	 * Get the blocklist array.
 	 *
+	 * @since 2.16.3
 	 *
+	 * @return array
+	 */
+	private function blocklist_get() {
+		$blocklist = get_option( self::BLOCKLIST_OPTION_NAME, array() );
+
+		return array_map( 'intval', (array) $blocklist );
+	}
+
+	/**
+	 * Add form IDs to a "blocklist" to force the cache to be refreshed
 	 *
 	 * @param  int|array $form_ids Form IDs to force to be updated
 	 *
 	 * @return boolean           False if value was not updated and true if value was updated.
 	 */
-	public function blacklist_add( $form_ids ) {
+	public function blocklist_add( $form_ids ) {
 
-		$blacklist = get_option( self::BLACKLIST_OPTION_NAME, array() );
+		$blocklist = $this->blocklist_get();
 
 		$form_ids = is_array( $form_ids ) ? $form_ids : array( $form_ids );
 
+		$form_ids = array_map( 'intval', $form_ids );
+
 		// Add the passed form IDs
-		$blacklist = array_merge( (array) $blacklist, $form_ids );
+		$blocklist = array_merge( (array) $blocklist, $form_ids );
 
 		// Don't duplicate
-		$blacklist = array_unique( $blacklist );
+		$blocklist = array_unique( $blocklist );
 
-		// Remove empty items from blacklist
-		$blacklist = array_filter( $blacklist );
+		// Remove empty items from blocklist
+		$blocklist = array_filter( $blocklist );
 
-		$updated = update_option( self::BLACKLIST_OPTION_NAME, $blacklist );
+		$updated = update_option( self::BLOCKLIST_OPTION_NAME, $blocklist );
 
 		if ( false !== $updated ) {
-			gravityview()->log->debug( 'Added form IDs to cache blacklist', array( 'data' => array(
-				'$form_ids'  => $form_ids,
-				'$blacklist' => $blacklist
-			) ) );
+			gravityview()->log->debug(
+				'Added form IDs to cache blocklist',
+				array(
+					'data' => array(
+						'$form_ids'  => $form_ids,
+						'$blocklist' => $blocklist,
+					),
+				)
+			);
 		}
 
 		return $updated;
 	}
 
 	/**
-	 * Remove Form IDs from blacklist
+	 * @deprecated 2.14 {@see GravityView_Cache::blocklist_add()}
+	 *
+	 * @param  int|array $form_ids Form IDs to force to be updated
+	 *
+	 * @return bool Whether the removal was successful
+	 */
+	public function blacklist_add( $form_ids ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::blocklist_add()' );
+		return $this->blocklist_remove( $form_ids );
+	}
+
+	/**
+	 * Remove Form IDs from blocklist
+	 *
+	 * @param  int|array $form_ids Form IDs to remove
+	 *
+	 * @return bool Whether the removal was successful
+	 */
+	public function blocklist_remove( $form_ids ) {
+
+		$blocklist = get_option( self::BLOCKLIST_OPTION_NAME, array() );
+
+		$updated_list = array_diff( $blocklist, (array) $form_ids );
+
+		gravityview()->log->debug(
+			'Removing form IDs from cache blocklist',
+			array(
+				'data' => array(
+					'$form_ids'     => $form_ids,
+					'$blocklist'    => $blocklist,
+					'$updated_list' => $updated_list,
+				),
+			)
+		);
+
+		return update_option( self::BLOCKLIST_OPTION_NAME, $updated_list );
+	}
+
+	/**
+	 * @deprecated 2.14 {@see GravityView_Cache::blocklist_remove()}
 	 *
 	 * @param  int|array $form_ids Form IDs to add
 	 *
-	 * @return boolean           Whether the removal was successful
+	 * @return bool Whether the removal was successful
 	 */
 	public function blacklist_remove( $form_ids ) {
-
-		$blacklist = get_option( self::BLACKLIST_OPTION_NAME, array() );
-
-		$updated_list = array_diff( $blacklist, (array) $form_ids );
-
-		gravityview()->log->debug( 'Removing form IDs from cache blacklist', array( 'data' => array(
-			'$form_ids'     => $form_ids,
-			'$blacklist'    => $blacklist,
-			'$updated_list' => $updated_list
-		) ) );
-
-		return update_option( self::BLACKLIST_OPTION_NAME, $updated_list );
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::blocklist_remove()' );
+		return $this->blocklist_remove( $form_ids );
 	}
 
-
 	/**
-	 * Is a form ID in the cache blacklist
+	 * Is a form ID in the cache blocklist?
 	 *
-	 * @param  int|array $form_ids Form IDs to check if in blacklist
+	 * @param  int|array $form_ids Form IDs to check if in blocklist
+	 *
+	 * @deprecated 2.14 Use {@see GravityView_Cache::in_blocklist()}
 	 *
 	 * @return bool
 	 */
-	function in_blacklist( $form_ids = NULL ) {
+	public function in_blacklist( $form_ids = null ) {
+		_deprecated_function( __METHOD__, '2.14', 'GravityView_Cache::in_blocklist()' );
+		return $this->in_blocklist( $form_ids );
+	}
 
-		$blacklist = get_option( self::BLACKLIST_OPTION_NAME, array() );
+	/**
+	 * Is a form ID in the cache blocklist
+	 *
+	 * @param  int|array $form_ids Form IDs to check if in blocklist
+	 *
+	 * @return bool
+	 */
+	public function in_blocklist( $form_ids = null ) {
+
+		$blocklist = $this->blocklist_get();
 
 		// Use object var if exists
 		$form_ids = is_null( $form_ids ) ? $this->form_ids : $form_ids;
 
 		if ( empty( $form_ids ) ) {
 
-			gravityview()->log->debug( 'Did not add form to blacklist; empty form ID', array( 'data' => $form_ids ) );
+			gravityview()->log->debug( 'Did not add form to blocklist; empty form ID', array( 'data' => $form_ids ) );
 
 			return false;
 		}
 
 		foreach ( (array) $form_ids as $form_id ) {
 
-			if ( in_array( $form_id, $blacklist ) ) {
+			if ( in_array( (int) $form_id, $blocklist, true ) ) {
 
-				gravityview()->log->debug( 'Form #{form_id} is in the cache blacklist', array( 'form_id' => $form_id ) );
+				gravityview()->log->debug( 'Form #{form_id} is in the cache blocklist', array( 'form_id' => $form_id ) );
 
 				return true;
 			}
@@ -320,7 +459,7 @@ class GravityView_Cache {
 	 *
 	 * @return mixed      False: Not using cache or cache was a WP_Error object; NULL: no results found; Mixed: cache value
 	 */
-	public function get( $key = NULL ) {
+	public function get( $key = null ) {
 
 		$key = is_null( $key ) ? $this->key : $key;
 
@@ -343,48 +482,63 @@ class GravityView_Cache {
 
 		} elseif ( $result ) {
 
-			gravityview()->log->debug( 'Cached results found for  transient key {key}', array( 'key' => $key ) );
+			gravityview()->log->debug( 'Cached results found for transient key {key}', array( 'key' => $key ) );
 
 			return $result;
 		}
 
-		gravityview()->log->debug( 'No cached results found for  transient key {key}', array( 'key' => $key ) );
+		gravityview()->log->debug( 'No cached results found for transient key {key}', array( 'key' => $key ) );
 
-		return NULL;
-
+		return null;
 	}
 
 	/**
 	 * Cache content as a transient.
 	 *
-	 * Cache time defaults to 1 week
+	 * Cache time defaults to 1 day.
 	 *
-	 * @param mixed $content     [description]
-	 * @param string $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
+	 * @since 2.16 Added $cache_time parameter to allow overriding the default cache time.
+	 *
+	 * @param mixed    $content The content to cache.
+	 * @param string   $filter_name Name used to modify the cache time. Will be set to `gravityview_cache_time_{$filter_name}`.
+	 * @param int|null $expiration Cache time in seconds. If not set, DAYS_IN_SECONDS will be used.
 	 *
 	 * @return bool If $content is not set, false. Otherwise, returns true if transient was set and false if not.
 	 */
-	public function set( $content, $filter_name = '' ) {
+	public function set( $content, $filter_name = '', $expiration = null ) {
 
 		// Don't cache empty results
 		if ( ! empty( $content ) ) {
 
+			$expiration = ! is_int( $expiration ) ? DAY_IN_SECONDS : $expiration;
+
 			/**
-			 * @filter `gravityview_cache_time_{$filter_name}` Modify the cache time for a type of cache
+			 * Modify the cache time for a type of cache.
+			 *
 			 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
 			 */
-			$cache_time = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, DAY_IN_SECONDS );
+			$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
 
-			gravityview()->log->debug( 'Setting cache with transient key {key} for {cache_time} seconds', array( 'key' => $this->key, 'cache_time' => $cache_time ) );
+			gravityview()->log->debug(
+				'Setting cache with transient key {key} for {expiration} seconds',
+				array(
+					'key'        => $this->key,
+					'expiration' => $expiration,
+				)
+			);
 
-			return set_transient( $this->key, $content, $cache_time );
+			$transient_was_set = set_transient( $this->key, $content, $expiration );
 
+			if ( ! $transient_was_set && $this->use_cache() ) {
+				gravityview()->log->error( 'Transient was not set for this key: ' . $this->key );
+			}
+
+			return $transient_was_set;
 		}
 
 		gravityview()->log->debug( 'Cache not set; content is empty' );
 
 		return false;
-
 	}
 
 	/**
@@ -397,7 +551,7 @@ class GravityView_Cache {
 	 *
 	 * @return void
 	 */
-	public function delete( $form_ids = NULL ) {
+	public function delete( $form_ids = null ) {
 		global $wpdb;
 
 		// Use object var if exists
@@ -426,12 +580,17 @@ class GravityView_Cache {
 				delete_transient( preg_replace( '#^_transient_#', '', $transient ) );
 			}
 
-			gravityview()->log->debug( 'Deleting cache for form #{form_id}', array( 'form_id' => $form_id, 'data' => array(
-				$sql,
-				sprintf( 'Deleted results: %d', count( $transients ) )
-			) ) );
+			gravityview()->log->debug(
+				'Deleting cache for form #{form_id}',
+				array(
+					'form_id' => $form_id,
+					'data'    => array(
+						$sql,
+						sprintf( 'Deleted results: %d', count( $transients ) ),
+					),
+				)
+			);
 		}
-
 	}
 
 	/**
@@ -444,7 +603,8 @@ class GravityView_Cache {
 	public function schedule_transient_cleanup() {
 
 		/**
-		 * @filter `gravityview_cleanup_transients` Override GravityView cleanup of transients by setting this to false
+		 * Override GravityView cleanup of transients by setting this to false.
+		 *
 		 * @param boolean $cleanup Whether to run the GravityView auto-cleanup of transients. Default: `true`
 		 */
 		$cleanup = apply_filters( 'gravityview_cleanup_transients', true );
@@ -520,8 +680,13 @@ class GravityView_Cache {
 	public function use_cache() {
 
 		// Exit early if debugging (unless running PHPUnit)
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG && ! ( defined('DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) ) {
-			return apply_filters( 'gravityview_use_cache', false, $this );
+		if ( defined( 'GRAVITYVIEW_DISABLE_CACHE' ) && GRAVITYVIEW_DISABLE_CACHE && ! ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) ) {
+			return (bool) apply_filters( 'gravityview_use_cache', false, $this );
+		}
+
+		// Only run once per instance.
+		if ( ! is_null( $this->use_cache ) ) {
+			return $this->use_cache;
 		}
 
 		$use_cache = true;
@@ -534,30 +699,28 @@ class GravityView_Cache {
 
 				$use_cache = false;
 			}
-
 		}
 
 		// Has the form been flagged as having changed items in it?
-		if ( $this->in_blacklist() || ! $use_cache ) {
+		if ( ! $use_cache || $this->in_blocklist() ) {
 
 			// Delete caches for all items with form IDs XYZ
 			$this->delete( $this->form_ids );
 
 			// Remove the form from
-			$this->blacklist_remove( $this->form_ids );
-
+			$this->blocklist_remove( $this->form_ids );
 		}
 
 		/**
-		 * @filter `gravityview_use_cache` Modify whether to use the cache or not
-		 * @param[out,in]  boolean $use_cache Previous setting
-		 * @param[out] GravityView_Cache $this The GravityView_Cache object
+		 * Modify whether to use the cache or not.
+		 *
+		 * @param  boolean $use_cache Previous setting
+		 * @param GravityView_Cache $this The GravityView_Cache object
 		 */
-		$use_cache = apply_filters( 'gravityview_use_cache', $use_cache, $this );
+		$this->use_cache = (bool) apply_filters( 'gravityview_use_cache', $use_cache, $this );
 
-		return (boolean) $use_cache;
+		return $this->use_cache;
 	}
-
 }
 
-new GravityView_Cache;
+new GravityView_Cache();

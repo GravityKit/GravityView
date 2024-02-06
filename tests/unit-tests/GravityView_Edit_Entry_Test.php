@@ -86,10 +86,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( add_query_arg( $args, get_permalink( $view->ID ) ), $edit_link_no_post );
 
 		$args = array(
-			'p' => $post_id,
+			'p'     => $post_id,
 			'entry' => $entry['id'],
-			'edit' => $nonce,
-			'gvid' => $view->ID,
+			'edit'  => $nonce,
+			'gvid'  => $view->ID,
 		);
 
 		// When running all tests, this test thinks we have multiple Views. Correct that.
@@ -635,7 +635,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		foreach ( $form['fields'] as $field ) {
 			/** Emulate a $_POST */
 			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
-				if ( $field->type == 'time' ) { /** An old incompatibility in the time field. */
+				if ( 'time' == $field->type ) { /** An old incompatibility in the time field. */
 					$_POST["input_{$field->id}"] = $entry[$field->id];
 				} else {
 					$_POST["input_{$field->id}"] = $entry[strval($input['id'])];
@@ -772,7 +772,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 */
 	public function _fake_move_uploaded_file( $value, $lead, $field, $form, $input_id ) {
 
-		if ( $value == 'FAILED (Temporary file could not be copied.)' ) {
+		if ( 'FAILED (Temporary file could not be copied.)' == $value ) {
 			$target = GFFormsModel::get_file_upload_path( $form['id'], 'tiny.jpg' );
 			$this->_target = $target;
 			return $target['url'];
@@ -1714,7 +1714,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertContains( 'Entry Updated', $output );
 
-		if ( $location !== false ) {
+		if ( false !== $location ) {
 			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
 			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
 
@@ -1729,7 +1729,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 	function get_redirect_after_edit_data() {
 
-		$custom_url = 'https://gravityview.co/floaty-loves-you/?with=<>&wild[]=! &characters=",';
+		$custom_url = 'https://www.gravitykit.com/floaty-loves-you/?with=<>&wild[]=! &characters=",';
 
 		return array(
 			array( '', false ),

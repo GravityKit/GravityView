@@ -10,14 +10,19 @@
  */
 class GravityView_Field_Address extends GravityView_Field {
 
+	/** @inheritDoc  */
 	var $name = 'address';
 
+	/** @inheritDoc  */
 	var $group = 'advanced';
 
+	/** @inheritDoc  */
 	var $is_numeric = false;
 
+	/** @inheritDoc  */
 	var $is_searchable = true;
 
+	/** @inheritDoc  */
 	var $search_operators = array( 'is', 'isnot', 'contains' );
 
 	/**
@@ -26,10 +31,11 @@ class GravityView_Field_Address extends GravityView_Field {
 	 */
 	var $icon = 'dashicons-location-alt';
 
+	/** @inheritDoc  */
 	var $_gf_field_class_name = 'GF_Field_Address';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Address', 'gravityview' );
+		$this->label = esc_html__( 'Address', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -54,9 +60,9 @@ class GravityView_Field_Address extends GravityView_Field {
 	 *
 	 * @since 1.19.2
 	 *
-	 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
+	 * @param array                     $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
 	 * @param GravityView_Widget_Search $widget Current widget object
-	 * @param array $widget_args Args passed to this method. {@since 1.8}
+	 * @param array                     $widget_args Args passed to this method. {@since 1.8}
 	 *
 	 * @return array If the search field GF Field type is `address`, and there are choices to add, adds them and changes the input type. Otherwise, sets the input to text.
 	 */
@@ -70,7 +76,7 @@ class GravityView_Field_Address extends GravityView_Field {
 
 			$field_id = intval( floor( $search_field['key'] ) );
 			$input_id = gravityview_get_input_id_from_id( $search_field['key'] );
-			$form = GravityView_View::getInstance()->getForm();
+			$form     = GravityView_View::getInstance()->getForm();
 
 			/** @type GF_Field_Address $address_field */
 			$address_field = GFFormsModel::get_field( $form, $field_id );
@@ -78,7 +84,7 @@ class GravityView_Field_Address extends GravityView_Field {
 			$choices = array();
 
 			$method_name = 'get_choices_' . self::get_input_type_from_input_id( $input_id );
-			if( method_exists( $this, $method_name ) ) {
+			if ( method_exists( $this, $method_name ) ) {
 				/**
 				 * @uses GravityView_Field_Address::get_choices_country()
 				 * @uses GravityView_Field_Address::get_choices_state()
@@ -86,11 +92,11 @@ class GravityView_Field_Address extends GravityView_Field {
 				$choices = $this->{$method_name}( $address_field, $form );
 			}
 
-			if( ! empty( $choices ) ) {
+			if ( ! empty( $choices ) ) {
 				$search_field['choices'] = $choices;
-				$search_field['type'] = \GV\Utils::get( $search_field, 'input');
+				$search_field['type']    = \GV\Utils::get( $search_field, 'input' );
 			} else {
-				$search_field['type'] = 'text';
+				$search_field['type']  = 'text';
 				$search_field['input'] = 'input_text';
 			}
 		}
@@ -118,7 +124,7 @@ class GravityView_Field_Address extends GravityView_Field {
 		foreach ( $countries as $key => $country ) {
 			$country_choices[] = array(
 				'value' => $country,
-				'text' => $country,
+				'text'  => $country,
 			);
 		}
 
@@ -154,7 +160,7 @@ class GravityView_Field_Address extends GravityView_Field {
 				break;
 			default:
 				$address_types = $address_field->get_address_types( $form['id'] );
-				$states = empty( $address_types[ $address_type ]['states'] ) ? array() : $address_types[ $address_type ]['states'];
+				$states        = empty( $address_types[ $address_type ]['states'] ) ? array() : $address_types[ $address_type ]['states'];
 				break;
 		}
 
@@ -165,19 +171,19 @@ class GravityView_Field_Address extends GravityView_Field {
 				foreach ( $state as $key => $substate ) {
 					$state_subchoices[] = array(
 						'value' => is_numeric( $key ) ? $substate : $key,
-						'text' => $substate,
+						'text'  => $substate,
 					);
 				}
 
 				$state_choices[] = array(
-					'text' => $key,
+					'text'  => $key,
 					'value' => $state_subchoices,
 				);
 
 			} else {
 				$state_choices[] = array(
 					'value' => is_numeric( $key ) ? $state : $key,
-					'text' => $state,
+					'text'  => $state,
 				);
 			}
 		}
@@ -199,12 +205,12 @@ class GravityView_Field_Address extends GravityView_Field {
 		// Use the same inputs as the "text" input type allows
 		$text_inputs = \GV\Utils::get( $input_types, 'text' );
 
-		$input_types['street'] = $text_inputs;
+		$input_types['street']  = $text_inputs;
 		$input_types['street2'] = $text_inputs;
-		$input_types['city'] = $text_inputs;
+		$input_types['city']    = $text_inputs;
 
-		$input_types['state'] = array( 'select', 'radio', 'link' ) + $text_inputs;
-		$input_types['zip'] = array( 'input_text' );
+		$input_types['state']   = array( 'select', 'radio', 'link' ) + $text_inputs;
+		$input_types['zip']     = array( 'input_text' );
 		$input_types['country'] = array( 'select', 'radio', 'link' ) + $text_inputs;
 
 		return $input_types;
@@ -215,8 +221,8 @@ class GravityView_Field_Address extends GravityView_Field {
 	 *
 	 * @since 1.19.2
 	 *
-	 * @param string $input_type Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
-	 * @param string $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
+	 * @param string           $input_type Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
+	 * @param string           $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
 	 * @param string|int|float $field_id ID of the field being processed
 	 *
 	 * @return string If the field ID matches an address field input, return those options {@see GravityView_Field_Address::input_types() }. Otherwise, original value is used.
@@ -226,12 +232,12 @@ class GravityView_Field_Address extends GravityView_Field {
 		// Is this search field for an input (eg: 4.2) or the whole address field (eg: 4)?
 		$input_id = gravityview_get_input_id_from_id( $field_id );
 
-		if( 'address' !== $field_type && $input_id ) {
+		if ( 'address' !== $field_type && $input_id ) {
 			return $input_type;
 		}
 
 		// If the input ID matches an expected address input, set to that. Otherwise, keep existing input type.
-		if( $address_field_name = self::get_input_type_from_input_id( $input_id ) ) {
+		if ( $address_field_name = self::get_input_type_from_input_id( $input_id ) ) {
 			$input_type = $address_field_name;
 		}
 
@@ -261,7 +267,6 @@ class GravityView_Field_Address extends GravityView_Field {
 			case 3:
 				$input_type = 'city';
 				break;
-				break;
 			case 4:
 				$input_type = 'state';
 				break;
@@ -279,11 +284,11 @@ class GravityView_Field_Address extends GravityView_Field {
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		// If this is NOT the full address field, return default options.
-		if( floor( $field_id ) !== floatval( $field_id ) ) {
+		if ( floor( $field_id ) !== floatval( $field_id ) ) {
 			return $field_options;
 		}
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
@@ -291,21 +296,26 @@ class GravityView_Field_Address extends GravityView_Field {
 
 		$add_options['show_map_link'] = array(
 			'type'       => 'checkbox',
-			'label'      => __( 'Show Map Link:', 'gravityview' ),
-			'desc'       => __( 'Display a "Map It" link below the address', 'gravityview' ),
+			'label'      => __( 'Show Map Link:', 'gk-gravityview' ),
+			'desc'       => __( 'Display a "Map It" link below the address', 'gk-gravityview' ),
 			'value'      => true,
 			'merge_tags' => false,
 			'group'      => 'display',
-			'priority'   => 100,
+			'priority'   => 98,
 		);
 
-		$this->add_field_support( 'new_window', $add_options );
-
-		$add_options['new_window']['requires'] = 'show_map_link';
+		$add_options['show_map_link_new_window'] = array(
+			'type'       => 'checkbox',
+			'label'      => __( 'Open map link in a new tab or window?', 'gk-gravityview' ),
+			'value'      => false,
+			'merge_tags' => false,
+			'group'      => 'display',
+			'requires'   => 'show_map_link',
+			'priority'   => 99,
+		);
 
 		return $add_options + $field_options;
 	}
-
 }
 
-new GravityView_Field_Address;
+new GravityView_Field_Address();

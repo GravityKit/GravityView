@@ -20,9 +20,9 @@ class GravityView_Field_Text extends GravityView_Field {
 	var $icon = 'dashicons-editor-textcolor';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Single Line Text', 'gravityview' );
+		$this->label = esc_html__( 'Single Line Text', 'gk-gravityview' );
 		parent::__construct();
 	}
 }
 
-new GravityView_Field_Text;
+new GravityView_Field_Text();

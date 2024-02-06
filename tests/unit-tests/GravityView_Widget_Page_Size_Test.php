@@ -6,19 +6,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * @covers \GV\Widgets\Page_Size
  */
 class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
-	function setUp() {
-		/** The future branch of GravityView requires PHP 5.3+ namespaces. */
-		if ( version_compare( phpversion(), '5.3' , '<' ) ) {
-			$this->markTestSkipped( 'The future code requires PHP 5.3+' );
-			return;
-		}
-
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 
