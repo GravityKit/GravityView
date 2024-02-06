@@ -4,6 +4,7 @@ namespace GV;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GF_Query;
+use GravityKitFoundation;
 use GravityView_Compatibility;
 use GravityView_Cache;
 
@@ -1826,5 +1827,46 @@ class View implements \ArrayAccess {
 		$query_parameters = $query->_introspect();
 
 		$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+	}
+
+	/**
+	 * Calculates and returns the view's validation secret.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string|null The view's secret.
+	 */
+	final public function get_validation_secret(): ?string {
+		// Cannot use the setting variable because it can be overwritten from the short code.
+		$settings  = get_post_meta( $this->ID, '_gravityview_template_settings', true );
+		$is_secure = (bool) rgar( $settings, 'is_secure', false );
+
+		if ( ! $is_secure || ! class_exists( GravityKitFoundation::class ) ) {
+			return null;
+		}
+
+		$foundation = GravityKitFoundation::get_instance();
+		$encryption = $foundation->encryption();
+		$hash       = $encryption->hash( $this->ID );
+
+		return substr( $hash, 0, 12 );
+	}
+
+	/**
+	 * Returns whether the provided secret validates for this view.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $secret The provided secret.
+	 *
+	 * @return bool
+	 */
+	final public function validate_secret( string $secret ): bool {
+		$view_secret = $this->get_validation_secret();
+		if ( ! $view_secret ) {
+			return true;
+		}
+
+		return $secret === $view_secret;
 	}
 }

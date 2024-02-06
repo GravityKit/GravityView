@@ -52,7 +52,8 @@ class gravityview extends \GV\Shortcode {
 			}
 		}
 
-		$view = \GV\View::by_id( $view_id );
+		$atts['view_id'] = $view_id;
+		$view            = $this->get_view_by_atts( $atts );
 
 		if ( ! $view ) {
 			gravityview()->log->error( 'View does not exist #{view_id}', array( 'view_id' => $view_id ) );
