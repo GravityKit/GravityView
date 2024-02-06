@@ -21,6 +21,7 @@ class GravityView_Lightbox {
 
 		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/class-gravityview-lightbox-provider.php' );
 		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php' );
+		require_once gravityview()->plugin->dir( 'includes/extensions/lightbox/class-gravityview-lightbox-entry.php' );
 
 		// Using plugins_loaded instead of gravityview/loaded because Addon_Settings waits for all plugins to load.
 		add_action( 'plugins_loaded', array( $this, 'set_provider' ), 11 );

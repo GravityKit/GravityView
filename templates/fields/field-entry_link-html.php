@@ -38,8 +38,6 @@ global $post;
 
 $href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->request );
 
-$href = 'https://gkdev.lndo.site/wp-json/gravityview/v1/views/872/entries/86.html';
-
 /**
  * @filter `gravityview/entry_link/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
  * @since 2.10

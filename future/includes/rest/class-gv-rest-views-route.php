@@ -378,6 +378,8 @@ class Views_Route extends Route {
 				 */
 				add_filter( 'rest_pre_serve_request', function( $served, $result, $request, $server ) use ( $rendered ) {
 
+					$rendered = apply_filters( 'gk/gravityview/rest/entry/html', $rendered, $result, $request, $server );
+
 					echo $rendered;
 
 					return true;

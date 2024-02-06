@@ -37,13 +37,21 @@ if ( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $gravityview->
 
 $link_text = empty( $field_settings['edit_link'] ) ? __( 'Edit Entry', 'gravityview' ) : $field_settings['edit_link'];
 
-$link_atts = array();
-if ( ! empty( $field_settings['new_window'] ) ) {
-	$link_atts['target'] = '_blank';
-}
-
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 
 $href = GravityView_Edit_Entry::get_edit_link( $entry, $gravityview->view->ID, $post ? $post->ID : null );
 
-echo gravityview_get_link( $href, $output, $link_atts );
+$tag_atts = [];
+if ( ! empty( $field_settings['new_window'] ) ) {
+	$tag_atts['target'] = '_blank';
+}
+
+/**
+ * Modify the edit link HTML attributes before output.
+ * @since TODO
+ * @param array $tag_atts The link attributes.
+ * @param \GV\Template_Context $gravityview The context.
+ */
+$tag_atts = apply_filters( 'gk/gravityview/field/edit_link/atts', $tag_atts, $gravityview );
+
+echo gravityview_get_link( $href, $output, $tag_atts );
