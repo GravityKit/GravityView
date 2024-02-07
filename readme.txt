@@ -30,6 +30,12 @@ This release makes it easier to customize search results per-View instead of glo
 * Fixed: Survey fields without a rating would show a 1-star rating
 * Fixed: Custom Post Field acting as File Uploads can now be edited on the Edit Entry page
 
+#### 🔄 Updated
+[Foundation](https://www.gravitykit.com/foundation/) and [TrustedLogin](https://www.trustedlogin.com/) were updated to versions 1.2.8 and 1.7.0, respectively:
+* Transients are now set and retrieved correctly when using object cache plugins.
+* Fixed a JavaScript warning that occurred when deactivating license keys and when viewing products without the necessary permissions.
+* Resolved PHP warning messages on the Plugins page.
+
 __Developer Updates:__
 
 * Added: `GravityView_Notifications` class as a wrapper for Gravity Forms notifications
