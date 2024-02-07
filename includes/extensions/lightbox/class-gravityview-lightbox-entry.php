@@ -107,33 +107,15 @@ add_filter( 'gk/gravityview/rest/entry/html', function( $rendered, $result, $req
 <html lang="<?php echo get_bloginfo( 'language' ); ?>">
 	<head>
 		<title>{{title}}</title>
-		<meta name="robots" content="noindex, nofollow" /> <!-- Prevent search engines from indexing the page -->
-		<!--<link rel='stylesheet' href='https://cdn.simplecss.org/simple.min.css'>-->
-		<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css'>
-		<!--<link rel='stylesheet' href='https://unpkg.com/marx-css/css/marx.min.css'>-->
-		<!--<link rel='stylesheet' href='https://classless.de/classless.css'>-->
-
+		<?php wp_head(); ?>
 		<style>
-			th,
-			tr:nth-child(even) {
-				background-color: var( --bg );
-			}
+			<?php echo $view->settings->get( 'custom_css', '' ); ?>
 		</style>
 
-		<style>
-			th,
-			tr:nth-child(even) {
-				background-color: var( --bg );
-			}
-		</style>
+		<script type="text/javascript">
+			<?php echo $view->settings->get( 'custom_javascript', '' ); ?>
+		</script>
 
-		<style>
-			body {
-				grid-template-columns: none;
-			}
-			.gv-widgets-header {display: none;}
-			.gv-back-link {display: none;}
-		</style>
 	</head>
 	<body>
 		{{content}}
