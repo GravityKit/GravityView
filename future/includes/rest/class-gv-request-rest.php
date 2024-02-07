@@ -19,6 +19,13 @@ class Request extends \GV\Request {
 		$this->request = $request;
 	}
 
+	public function is_view( $return_view = true ) {
+	}
+
+	public function is_entry( $form_id = 0 ) {
+		die('asd');
+	}
+
 	/**
 	 * Retrieve paging parameters if any.
 	 *

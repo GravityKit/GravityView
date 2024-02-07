@@ -111,7 +111,17 @@ abstract class Request {
 		if ( $post && 'gravityview' === get_post_type( $post ) ) {
 			return ( $return_view ) ? \GV\View::from_post( $post ) : true;
 		}
-		return false;
+
+		/**
+		 * Allow filtering the View object.
+		 * @since TODO
+		 *
+		 * @param \GV\View|bool $view The View object returned or false.
+		 */
+		$is_view = apply_filters( 'gk/gravityview/request/is_view', false );
+
+		return $is_view instanceof \GV\View ? $is_view : false;
+	}
 	}
 
 	/**
@@ -134,7 +144,14 @@ abstract class Request {
 
 		$id = get_query_var( Entry::get_endpoint_name() );
 
-		if ( ! $id ) {
+		/**
+		 * Allow filtering the entry ID.
+		 * @since TODO
+		 * @param int|string $id The entry ID integer or empty string.
+		 */
+		$id = apply_filters( 'gk/gravityview/request/is_entry/id', $id );
+
+		if ( ! $id || ! is_numeric( $id ) ) {
 			return false;
 		}
 
