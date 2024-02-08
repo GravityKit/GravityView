@@ -3,6 +3,7 @@
 namespace GravityKit\GravityView\Gutenberg;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
+use GravityView_Roles_Capabilities;
 use GV\View;
 use GVCommon;
 
@@ -19,6 +20,11 @@ class Blocks {
 		$this->blocks_build_path = str_replace( GRAVITYVIEW_DIR, '', __DIR__ ) . '/build';
 
 		if ( version_compare( $wp_version, self::MIN_WP_VERSION, '<' ) ) {
+			return;
+		}
+
+		// Only show blocks for a user with `publish_gravityviews` capabilities.
+		if ( ! GravityView_Roles_Capabilities::has_cap( 'publish_gravityviews' ) ) {
 			return;
 		}
 
