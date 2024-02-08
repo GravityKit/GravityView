@@ -30,6 +30,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
     - GravityKit product updates are now showing on the Plugins page.
     - Database options that are no longer used are now automatically removed.
 
+#### 🔐 Security
+* Views can now choose to "Enable security" that forces the use of a `secret` attribute on short codes.
+* Blocks are updated to include the `secret` when necessary (*note that this requires an update of the block*).
+
+#### 🚀 Added
+* A view short code can now be copied
+
 = 2.20.2 on March 4, 2024 =
 
 This release enhances performance by optimizing caching and managing transients more effectively.
