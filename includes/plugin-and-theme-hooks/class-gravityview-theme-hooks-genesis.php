@@ -50,4 +50,4 @@ class GravityView_Theme_Hooks_Genesis extends GravityView_Plugin_and_Theme_Hooks
 	);
 }
 
-new GravityView_Theme_Hooks_Genesis;
+new GravityView_Theme_Hooks_Genesis();

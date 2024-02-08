@@ -35,4 +35,4 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Polls extends GravityView_Plugin_an
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Polls;
+new GravityView_Plugin_Hooks_Gravity_Forms_Polls();

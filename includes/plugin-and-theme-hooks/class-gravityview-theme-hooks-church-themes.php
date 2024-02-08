@@ -50,7 +50,7 @@ class GravityView_Theme_Hooks_Church_Themes extends GravityView_Plugin_and_Theme
 	 */
 	public function if_gravityview_return_true( $has_content = false ) {
 
-		if( ! class_exists( 'GravityView_frontend' ) ) {
+		if ( ! class_exists( 'GravityView_frontend' ) ) {
 			return $has_content;
 		}
 
@@ -60,4 +60,4 @@ class GravityView_Theme_Hooks_Church_Themes extends GravityView_Plugin_and_Theme
 	}
 }
 
-new GravityView_Theme_Hooks_Church_Themes;
+new GravityView_Theme_Hooks_Church_Themes();

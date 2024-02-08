@@ -58,11 +58,11 @@ final class GravityView_Entry_Approval_Status {
 				'title'  => esc_html__( 'Entry not approved for directory viewing. Click to approve this entry.', 'gk-gravityview' ),
 			),
 			'approved'    => array(
-				'value'  => self::APPROVED,
-				'label'  => esc_html__( 'Approved', 'gk-gravityview' ),
-				'action' => esc_html__( 'Approve', 'gk-gravityview' ),
-				'title'  => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
-				'title_popover'  => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
+				'value'         => self::APPROVED,
+				'label'         => esc_html__( 'Approved', 'gk-gravityview' ),
+				'action'        => esc_html__( 'Approve', 'gk-gravityview' ),
+				'title'         => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
+				'title_popover' => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
 			),
 			'unapproved'  => array(
 				'value'  => self::UNAPPROVED,
@@ -114,12 +114,12 @@ final class GravityView_Entry_Approval_Status {
 		$new_value = $old_value;
 
 		// Meta value does not exist yet
-		if( false === $old_value ) {
+		if ( false === $old_value ) {
 			return self::UNAPPROVED;
 		}
 
 		// Meta value does not exist yet
-		if( true === $old_value ) {
+		if ( true === $old_value ) {
 			return self::APPROVED;
 		}
 
@@ -131,7 +131,7 @@ final class GravityView_Entry_Approval_Status {
 				$new_value = self::APPROVED;
 				break;
 
-			//Disapproved values
+			// Disapproved values
 			case '0':
 			case '2':
 				$new_value = self::DISAPPROVED;
@@ -156,7 +156,7 @@ final class GravityView_Entry_Approval_Status {
 	 *
 	 * @return bool True: value is valid; false: value is not valid
 	 */
-	public static function is_valid( $value = NULL ) {
+	public static function is_valid( $value = null ) {
 
 		if ( ! is_scalar( $value ) || is_null( $value ) ) {
 			return false;
@@ -239,7 +239,7 @@ final class GravityView_Entry_Approval_Status {
 	 * @since 1.18
 	 *
 	 * @param int|string $status Valid status value or key (1 or "approved")
-	 * @param string $attr_key Key name for the "value", "label", "action", "title". If "key", returns the matched key instead of value.
+	 * @param string     $attr_key Key name for the "value", "label", "action", "title". If "key", returns the matched key instead of value.
 	 *
 	 * @return false|string False if match isn't not found
 	 */
@@ -250,7 +250,7 @@ final class GravityView_Entry_Approval_Status {
 
 			// Is the passed status value the same as the choice value or key?
 			if ( $status === $choice['value'] || $status === $key ) {
-				if( 'key' === $attr_key ) {
+				if ( 'key' === $attr_key ) {
 					return $key;
 				} else {
 					return \GV\Utils::get( $choice, $attr_key, false );
@@ -323,5 +323,4 @@ final class GravityView_Entry_Approval_Status {
 	public static function get_key( $value ) {
 		return self::choice_pluck( $value, 'key' );
 	}
-
 }

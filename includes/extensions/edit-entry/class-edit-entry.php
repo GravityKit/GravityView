@@ -27,6 +27,7 @@ class GravityView_Edit_Entry {
 
     /**
      * Component instances.
+     *
      * @var array
      */
     public $instances = array();
@@ -36,7 +37,7 @@ class GravityView_Edit_Entry {
 
         self::$file = plugin_dir_path( __FILE__ );
 
-        if( is_admin() ) {
+        if ( is_admin() ) {
             $this->load_components( 'admin' );
         }
 
@@ -56,8 +57,8 @@ class GravityView_Edit_Entry {
 
     static function getInstance() {
 
-        if( empty( self::$instance ) ) {
-            self::$instance = new GravityView_Edit_Entry;
+        if ( empty( self::$instance ) ) {
+            self::$instance = new GravityView_Edit_Entry();
         }
 
         return self::$instance;
@@ -76,16 +77,15 @@ class GravityView_Edit_Entry {
         require_once $filename;
         $this->instances[ $component ] = new $classname( $this );
         $this->instances[ $component ]->load();
-
     }
 
     private function add_hooks() {
 
         // Add front-end access to Gravity Forms delete file action
-        add_action( 'wp_ajax_nopriv_rg_delete_file', array( $this, 'delete_file') );
+        add_action( 'wp_ajax_nopriv_rg_delete_file', array( $this, 'delete_file' ) );
 
         // Make sure this hook is run for non-admins
-        add_action( 'wp_ajax_rg_delete_file', array( $this, 'delete_file') );
+        add_action( 'wp_ajax_rg_delete_file', array( $this, 'delete_file' ) );
 
         add_filter( 'gravityview_blocklist_field_types', array( $this, 'modify_field_blocklist' ), 10, 2 );
 
@@ -115,14 +115,14 @@ class GravityView_Edit_Entry {
 
 	/**
 	 * Trigger hooks that are normally run in the admin for Addons, but need to be triggered manually because we're not in the admin
+     *
 	 * @return void
 	 */
 	private function addon_specific_hooks() {
 
-		if( class_exists( 'GFSignature' ) && is_callable( array( 'GFSignature', 'get_instance' ) ) ) {
-			add_filter('gform_admin_pre_render', array( GFSignature::get_instance(), 'edit_lead_script'));
+		if ( class_exists( 'GFSignature' ) && is_callable( array( 'GFSignature', 'get_instance' ) ) ) {
+			add_filter( 'gform_admin_pre_render', array( GFSignature::get_instance(), 'edit_lead_script' ) );
 		}
-
 	}
 
 	/**
@@ -131,9 +131,9 @@ class GravityView_Edit_Entry {
 	 * For non-logged in users.
 	 * For users that have no edit rights on any of the current entries.
 	 *
-	 * @param bool $visible Visible or not.
+	 * @param bool      $visible Visible or not.
 	 * @param \GV\Field $field The field.
-	 * @param \GV\View $view The View context.
+	 * @param \GV\View  $view The View context.
 	 *
 	 * @return bool
 	 */
@@ -170,12 +170,13 @@ class GravityView_Edit_Entry {
 
     /**
      * Include this extension templates path
+     *
      * @param array $file_paths List of template paths ordered
      */
     public function add_template_path( $file_paths ) {
 
         // Index 100 is the default GravityView template path.
-        $file_paths[ 110 ] = self::$file;
+        $file_paths[110] = self::$file;
 
         return $file_paths;
     }
@@ -204,30 +205,34 @@ class GravityView_Edit_Entry {
      * @param $entry array Gravity Forms entry object
      * @param $view_id int GravityView view id
      * @param $post_id int GravityView Post ID where View may be embedded {@since 1.9.2}
-     * @param string|array $field_values Parameters to pass in to the Edit Entry form to prefill data. Uses the same format as Gravity Forms "Allow field to be populated dynamically" {@since 1.9.2} {@see https://www.gravityhelp.com/documentation/article/allow-field-to-be-populated-dynamically/ }
+     * @param string|array                                                         $field_values Parameters to pass in to the Edit Entry form to prefill data. Uses the same format as Gravity Forms "Allow field to be populated dynamically" {@since 1.9.2} {@see https://www.gravityhelp.com/documentation/article/allow-field-to-be-populated-dynamically/ }
      * @return string
      */
     public static function get_edit_link( $entry, $view_id, $post_id = null, $field_values = '' ) {
 
-        $nonce_key = self::get_nonce_key( $view_id, $entry['form_id'], $entry['id']  );
+        $nonce_key = self::get_nonce_key( $view_id, $entry['form_id'], $entry['id'] );
 
-        $base = gv_entry_link( $entry, $post_id ? : $view_id  );
+        $base = gv_entry_link( $entry, $post_id ? : $view_id );
 
-        $url = add_query_arg( array(
-            'edit' => wp_create_nonce( $nonce_key )
-        ), $base );
+        $url = add_query_arg(
+            array(
+				'edit' => wp_create_nonce( $nonce_key ),
+            ),
+            $base
+        );
 
 	    if ( $post_id ) {
 		    $url = add_query_arg( array( 'gvid' => $view_id ), $url );
 	    }
 
 	    /**
-	     * Allow passing params to dynamically populate entry with values
+	     * Allow passing params to dynamically populate entry with values.
+	     *
 	     * @since 1.9.2
 	     */
-	    if( !empty( $field_values ) ) {
+	    if ( ! empty( $field_values ) ) {
 
-		    if( is_array( $field_values ) ) {
+		    if ( is_array( $field_values ) ) {
 			    // If already an array, no parse_str() needed
 			    $params = $field_values;
 		    } else {
@@ -238,7 +243,7 @@ class GravityView_Edit_Entry {
 	    }
 
 	    /**
-	     * @filter `gravityview/edit/link` Filter the edit URL link.
+	     * Filter the edit URL link.
 	     *
 	     * @since  2.14.6 Added $post param.
 	     *
@@ -253,12 +258,12 @@ class GravityView_Edit_Entry {
 	/**
 	 * @depecated 2.14 Use {@see GravityView_Edit_Entry::modify_field_blocklist()}
 	 *
-	 * @param  array $fields  Existing blocklist fields
+	 * @param  array       $fields  Existing blocklist fields
 	 * @param  string|null $context Context
 	 *
 	 * @return array          If not edit context, original field blocklist. Otherwise, blocklist including post fields.
 	 */
-	public function modify_field_blacklist( $fields = array(), $context = NULL ) {
+	public function modify_field_blacklist( $fields = array(), $context = null ) {
 		_deprecated_function( __METHOD__, '2.14', 'GravityView_Edit_Entry::modify_field_blocklist()' );
 		return $this->modify_field_blocklist( $fields, $context );
 	}
@@ -268,14 +273,14 @@ class GravityView_Edit_Entry {
 	 *
 	 * @since 2.14
 	 *
-	 * @param  array $fields  Existing blocklist fields
+	 * @param  array       $fields  Existing blocklist fields
 	 * @param  string|null $context Context
 	 *
 	 * @return array          If not edit context, original field blocklist. Otherwise, blocklist including post fields.
 	 */
-	public function modify_field_blocklist( $fields = array(), $context = NULL ) {
+	public function modify_field_blocklist( $fields = array(), $context = null ) {
 
-		if( empty( $context ) || $context !== 'edit' ) {
+		if ( empty( $context ) || 'edit' !== $context ) {
 			return $fields;
 		}
 
@@ -328,7 +333,8 @@ class GravityView_Edit_Entry {
 		$fields = apply_filters_deprecated( 'gravityview/edit_entry/field_blacklist', array( $fields, $entry ), '2.14', 'gravityview/edit_entry/field_blocklist' );
 
 		/**
-		 * @filter `gravityview/edit_entry/field_blocklist` Array of fields that should not be displayed in Edit Entry
+		 * Array of fields that should not be displayed in Edit Entry.
+		 *
 		 * @since 1.20
 		 * @param string[] $fields Array of field type or meta key names (eg: `[ "captcha", "payment_status" ]` ).
 		 * @param array $entry Gravity Forms entry array.
@@ -345,7 +351,7 @@ class GravityView_Edit_Entry {
      * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
      *
      * @param  array|\WP_Error $entry Gravity Forms entry array or WP_Error if the entry wasn't found.
-     * @param \GV\View|int $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0.
+     * @param \GV\View|int    $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0.
      * @return bool
      */
     public static function check_user_cap_edit_entry( $entry, $view = 0 ) {
@@ -356,13 +362,13 @@ class GravityView_Edit_Entry {
 		// get user_edit setting
 		if ( empty( $view ) ) {
 			// @deprecated path
-			$view_id = GravityView_View::getInstance()->getViewId();
+			$view_id   = GravityView_View::getInstance()->getViewId();
 			$user_edit = GravityView_View::getInstance()->getAtts( 'user_edit' );
 		} elseif ( $view instanceof \GV\View ) {
-			$view_id = $view->ID;
+			$view_id   = $view->ID;
 			$user_edit = $view->settings->get( 'user_edit' );
 		} else {
-			$view_id = $view;
+			$view_id   = $view;
 			$user_edit = GVCommon::get_template_setting( $view_id, 'user_edit' );
 		}
 
@@ -393,7 +399,7 @@ class GravityView_Edit_Entry {
             $current_user = wp_get_current_user();
 
             // User edit is disabled
-            if( empty( $user_edit ) ) {
+            if ( empty( $user_edit ) ) {
 
                 gravityview()->log->debug( 'User Edit is disabled. Returning false.' );
 
@@ -401,32 +407,33 @@ class GravityView_Edit_Entry {
             }
 
             // User edit is enabled and the logged-in user is the same as the user who created the entry. We're good.
-            elseif( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
+            elseif ( is_user_logged_in() && intval( $current_user->ID ) === intval( $entry['created_by'] ) ) {
 
                 gravityview()->log->debug( 'User {user_id} created the entry.', array( 'user_id', $current_user->ID ) );
 
                 $user_can_edit = true;
 
-            } elseif( ! is_user_logged_in() ) {
+            } elseif ( ! is_user_logged_in() ) {
 
                 gravityview()->log->debug( 'No user defined; edit entry requires logged in user' );
 
 	            /** @noinspection PhpConditionAlreadyCheckedInspection */
 	            $user_can_edit = false; // Here just for clarity
             }
+		}
 
-        }
+		/**
+		 * Modify whether user can edit an entry.
+		 *
+		 * @since 1.15 Added `$entry` and `$view_id` parameters
+		 *
+		 * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
+		 * @param array|\WP_Error $entry Gravity Forms entry array {@since 1.15}
+		 * @param int $view_id ID of the view you want to check visibility against {@since 1.15}
+		 */
+		$user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );
 
-        /**
-         * @filter `gravityview/edit_entry/user_can_edit_entry` Modify whether user can edit an entry.
-         * @since 1.15 Added `$entry` and `$view_id` parameters
-         * @param boolean $user_can_edit Can the current user edit the current entry? (Default: false)
-         * @param array|\WP_Error $entry Gravity Forms entry array {@since 1.15}
-         * @param int $view_id ID of the view you want to check visibility against {@since 1.15}
-         */
-        $user_can_edit = apply_filters( 'gravityview/edit_entry/user_can_edit_entry', $user_can_edit, $entry, $view_id );
-
-        return (bool) $user_can_edit;
+		return (bool) $user_can_edit;
     }
 
 	/**
@@ -437,17 +444,18 @@ class GravityView_Edit_Entry {
 	 * @uses   GFForms::delete_file()
 	 */
 	public function delete_file() {
-		add_filter( 'user_has_cap', function ( $caps ) {
-			$caps['gravityforms_delete_entries'] = true;
+		add_filter(
+            'user_has_cap',
+            function ( $caps ) {
+				$caps['gravityforms_delete_entries'] = true;
 
-			return $caps;
-
-		} );
+				return $caps;
+			}
+        );
 
 		GFForms::delete_file();
 	}
 } // end class
 
-//add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
+// add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
 GravityView_Edit_Entry::getInstance();
-

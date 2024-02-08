@@ -493,7 +493,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$wp_admin_bar->expects( $this->exactly( 4 ) )->method( 'add_menu' )
 				->withConsecutive(
 					array( $this->callback( function ( $subject ) {
-						return $subject['id'] == 'gravityview'; /** The GravityView button. */
+						return 'gravityview' == $subject['id']; /** The GravityView button. */
 					} ) ),
 					array( $this->callback( function ( $subject ) use ( $view ) {
 						return $subject['id'] == 'edit-view-' . $view->ID; /** Edit the first view. */
@@ -1168,7 +1168,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Group. */
 		$group = \GV\View_Settings::defaults( true, 'sort' );
-		$this->assertEmpty( array_filter( $group, function( $setting ) { return !empty( $setting['group'] ) && $setting['group'] != 'sort'; } ) );
+		$this->assertEmpty( array_filter( $group, function( $setting ) { return !empty( $setting['group'] ) && 'sort' != $setting['group']; } ) );
 
 		/** Test old filter. */
 		add_filter( 'gravityview_default_args', function( $defaults ) {
@@ -1398,7 +1398,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotNull( $visible->get( '000b' ) );
 
 		add_filter( 'gravityview/field/is_visible', function( $visible, $field ) {
-			if ( $field->UID == '000c' )
+			if ( '000c' == $field->UID )
 				return false;
 			return $visible;
 		}, 10, 2 );
@@ -1419,7 +1419,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/configuration/fields', function( $fields ) {
 			foreach ( $fields['directory_table-columns'] as &$field ) {
-				if ( $field['label'] == 'Business Name' ) {
+				if ( 'Business Name' == $field['label'] ) {
 					/** Custom parameters */
 					$field['sentinel'] = '9148';
 				}
@@ -1434,7 +1434,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Test custom getters */
 		foreach( $view->fields->by_position( 'directory_table-columns' )->all() as $field ) {
-			if ( $field->label == 'Business Name' ) {
+			if ( 'Business Name' == $field->label ) {
 				$this->assertEquals( '9148', $field->sentinel );
 			}
 		}
@@ -1447,7 +1447,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Visible/hidden fields */
 		add_filter( 'gravityview/configuration/fields', function( $fields ) {
 			foreach ( $fields['directory_table-columns'] as &$field ) {
-				if ( $field['label'] == 'Business Name' ) {
+				if ( 'Business Name' == $field['label'] ) {
 					$field['only_loggedin'] = 1;
 					$field['only_loggedin_cap'] = 'read';
 				}
@@ -1747,7 +1747,7 @@ class GVFuture_Test extends GV_UnitTestCase {
         $return = new \GV\Entry_Collection();
 
         foreach ( $entries->all() as $i => $entry ) {
-            if ( $i % 2 === 0 ) {
+            if ( 0 === $i % 2 ) {
                 $return->add( $entry );
             }
         }
@@ -4018,7 +4018,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		foreach ( $form['fields'] as &$field ) {
 			/** The post categories is a multi-select thing that needs inputs set. */
-			if ( $field->type == 'post_category' ) {
+			if ( 'post_category' == $field->type ) {
 				$field = GFCommon::add_categories_as_choices( $field, '' );
 			}
 		}
@@ -6559,7 +6559,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $mode == 'single' && is_callable( $save_callback ) ) {
+		if ( 'single' == $mode && is_callable( $save_callback ) ) {
 			$save_callback( $view, \GV\GF_Entry::by_id( $entry['id'] ) );
 		}
 
@@ -6748,7 +6748,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/template/field_label', $callbacks []= function( $label, $field, $form, $_entry ) use ( $view, $entry, $test, $mode ) {
 			$test->assertEquals( $form['id'], $view->form->ID );
-			if ( $mode == 'single' ) {
+			if ( 'single' == $mode ) {
 				$test->assertEquals( $_entry['id'], $entry['id'] );
 			}
 			return "$label{{ gravityview/template/field_label }}";
@@ -6756,7 +6756,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/template/field/label', $callbacks []= function( $label, $context ) use ( $view, $entry, $test, $mode ) {
 			$test->assertSame( $view, $context->view );
-			if ( $mode == 'single' ) {
+			if ( 'single' == $mode ) {
 				$test->assertEquals( $entry->ID, $context->entry->ID );
 			}
 			return "$label{{ gravityview/template/field/label }}";
@@ -6766,7 +6766,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter('gravityview/view/wrapper_container', '__return_false');
 
-		if ( $mode == 'directory' ) {
+		if ( 'directory' == $mode ) {
 			$renderer = new \GV\View_Renderer();
 			gravityview()->request->returns['is_view'] = $view;
 			$out = $renderer->render( $view );
@@ -6781,7 +6781,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertStringEndsWith( '{{ gravityview/template/after }}{{ gravityview_after }}', $out );
 
 
-		if ( $mode == 'directory' ) {
+		if ( 'directory' == $mode ) {
 			$this->assertContains( '{{ gravityview/template/header }}{{ gravityview_header }}', $out );
 			$this->assertContains( '{{ gravityview/template/footer }}{{ gravityview_footer }}', $out );
 
@@ -6844,7 +6844,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
 
-		if ( $mode == 'single' ) {
+		if ( 'single' == $mode ) {
 			return $out;
 		}
 
@@ -8655,7 +8655,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$args = array(
 			'id' => $view->ID,
-			'sort_field' => 'id'
+			'sort_field' => 'id',
+			'sort_direction' => 'DESC'
 		);
 
 		preg_match_all( '#data-label="Entry ID">(\d+)</td>#', $shortcode->callback( $args ), $matches );

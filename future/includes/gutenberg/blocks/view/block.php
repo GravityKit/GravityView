@@ -19,13 +19,13 @@ class View {
 	 * @return array
 	 */
 	public function modify_block_meta( $block_meta ) {
-		return [
+		return array(
 			'title'           => __( 'GravityView View', 'gk-gravityview' ),
-			'render_callback' => [ $this, 'render' ],
-			'localization'    => [
-				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg'
-			]
-		];
+			'render_callback' => array( $this, 'render' ),
+			'localization'    => array(
+				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg',
+			),
+		);
 	}
 
 	/**
@@ -37,7 +37,7 @@ class View {
 	 *
 	 * @return string $output
 	 */
-	static function render( $block_attributes = [] ) {
+	static function render( $block_attributes = array() ) {
 
 		$shortcode_attributes = \GV\Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block_attributes );
 
@@ -54,7 +54,13 @@ class View {
 		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_attributes ) );
 
 		if ( Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
-			return json_encode( [ 'content' => $shortcode, 'script' => '', 'styles' => '' ] );
+			return json_encode(
+				array(
+					'content' => $shortcode,
+					'script'  => '',
+					'styles'  => '',
+				)
+			);
 		}
 
 		// Gravity Forms outputs JS not wrapped in <script> tags that's then displayed in the block preview.

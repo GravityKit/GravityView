@@ -11,22 +11,24 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$value = $gravityview->value;
-$entry = $gravityview->entry->as_entry();
+$value          = $gravityview->value;
+$entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
 /**
- * @filter `gravityview/fields/textarea/allow_html` Allow the following HTML tags and strip everything else.
+ * Allow the following HTML tags and strip everything else.
+ *
  * @since 2.8
  * @param bool $allow_html Whether to allow rendering HTML submitted in the textarea field. If disabled, output will be escaped with esc_html(). Default: true.
  * @param \GV\Template_Context $gravityview The context
  */
 $allow_html = apply_filters( 'gravityview/fields/textarea/allow_html', \GV\Utils::get( $field_settings, 'allow_html', true ), $gravityview );
 
-if( $allow_html ) {
+if ( $allow_html ) {
 
 	/**
-	 * @filter `gravityview/fields/textarea/allowed_kses` Allow the following HTML tags and strip everything else.
+	 * Allow the following HTML tags and strip everything else.
+	 *
 	 * @since 1.21.5.1
 	 * @since 2.0
 	 * @see wp_kses_allowed_html() For allowed contexts
@@ -46,7 +48,8 @@ if( $allow_html ) {
 if ( ! empty( $field_settings['trim_words'] ) ) {
 
 	/**
-	 * @filter `gravityview_excerpt_more` Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated
+	 * Modify the "Read more" link used when "Maximum Words" setting is enabled and the output is truncated.
+	 *
 	 * @since 1.16.1
 	 * @param string $excerpt_more Default: ` ...`
 	 */
@@ -55,12 +58,12 @@ if ( ! empty( $field_settings['trim_words'] ) ) {
 	global $post;
 
 	$entry_link = GravityView_API::entry_link_html( $entry, $excerpt_more, array(), $field_settings, $post ? $post->ID : $gravityview->view->ID );
-	$value = wp_trim_words( $value, $field_settings['trim_words'], $entry_link );
+	$value      = wp_trim_words( $value, $field_settings['trim_words'], $entry_link );
 	unset( $entry_link, $excerpt_more );
 }
 
 if ( ! empty( $field_settings['make_clickable'] ) ) {
-    $value = make_clickable( $value );
+	$value = make_clickable( $value );
 }
 
 if ( ! empty( $field_settings['new_window'] ) ) {

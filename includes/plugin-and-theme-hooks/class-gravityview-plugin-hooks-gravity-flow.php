@@ -33,7 +33,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		parent::add_hooks();
 
-		add_filter( 'gravityview/search/searchable_fields', array( $this, 'modify_search_bar_fields_dropdown'), 10, 2 );
+		add_filter( 'gravityview/search/searchable_fields', array( $this, 'modify_search_bar_fields_dropdown' ), 10, 2 );
 
 		add_filter( 'gravityview/admin/available_fields', array( $this, 'maybe_add_non_default_fields' ), 10, 3 );
 
@@ -46,9 +46,9 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	 * Clears GravityView entry cache after running a Gravity Flow Workflow
 	 *
 	 * @param array $form
-	 * @param int $entry_id
-	 * @param int $step_id
-	 * @param int $starting_step_id
+	 * @param int   $entry_id
+	 * @param int   $step_id
+	 * @param int   $starting_step_id
 	 *
 	 * @return void
 	 */
@@ -63,14 +63,14 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	 *
 	 * @since 1.17.3
 	 *
-	 * @param int $form_id
+	 * @param int    $form_id
 	 * @param string $status_key By default, get all statuses
 	 *
 	 * @return array
 	 */
 	public static function get_status_options( $form_id = 0, $status_key = 'workflow_final_status' ) {
 
-		if( empty( $form_id ) ) {
+		if ( empty( $form_id ) ) {
 			$form_id = GravityView_View::getInstance()->getFormId();
 		}
 
@@ -88,7 +88,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	 * @uses Gravity_Flow_API::get_current_step
 	 *
 	 * @param array $fields Array of searchable fields
-	 * @param  int $form_id
+	 * @param  int   $form_id
 	 *
 	 * @return array Updated Array of searchable fields
 	 */
@@ -98,7 +98,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		$workflow_steps = $GFlow->get_steps();
 
-		if( $workflow_steps ) {
+		if ( $workflow_steps ) {
 
 			foreach ( $workflow_steps as $step ) {
 
@@ -132,11 +132,11 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 			$fields_end = array_splice( $fields, $insert_at + 1 );
 
 			$fields[] = array(
-				'text' => __( 'Workflow Current Status Timestamp', 'gk-gravityview' ),
-				'operators' => array( '>', '<' ),
-				'placeholder' => 'yyyy-mm-dd',
-				'cssClass' => 'datepicker ymd_dash',
-				'key' => 'workflow_current_status_timestamp',
+				'text'            => __( 'Workflow Current Status Timestamp', 'gk-gravityview' ),
+				'operators'       => array( '>', '<' ),
+				'placeholder'     => 'yyyy-mm-dd',
+				'cssClass'        => 'datepicker ymd_dash',
+				'key'             => 'workflow_current_status_timestamp',
 				'preventMultiple' => false,
 			);
 
@@ -149,18 +149,18 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	 * Add the current status timestamp field to available View configuration fields.
 	 */
 	public function maybe_add_non_default_fields( $fields, $form, $zone ) {
-		if ( strpos( implode( ' ', array_keys( $fields ) ), 'workflow' ) !== false ) {
+		if ( false !== strpos( implode( ' ', array_keys( $fields ) ), 'workflow' ) ) {
 			$keys   = array_keys( $fields );
 			$values = array_values( $fields );
 
 			if ( ( $insert_at = array_search( 'workflow_final_status', $keys ) ) !== false ) {
-				$keys_end = array_splice( $keys, $insert_at + 1 );
+				$keys_end   = array_splice( $keys, $insert_at + 1 );
 				$values_end = array_splice( $values, $insert_at + 1 );
 
-				$keys[] = 'workflow_current_status_timestamp';
+				$keys[]   = 'workflow_current_status_timestamp';
 				$values[] = array(
 					'label' => __( 'Workflow Current Status Timestamp', 'gk-gravityview' ),
-					'type' => 'workflow_current_status_timestamp',
+					'type'  => 'workflow_current_status_timestamp',
 				);
 
 				$fields = array_combine( $keys, $values ) + array_combine( $keys_end, $values_end );
@@ -169,7 +169,6 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		return $fields;
 	}
-
 }
 
-new GravityView_Plugin_Hooks_Gravity_Flow;
+new GravityView_Plugin_Hooks_Gravity_Flow();

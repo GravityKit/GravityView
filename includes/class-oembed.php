@@ -20,9 +20,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.6
  */
 class GravityView_oEmbed {
-	protected $entry_id = NULL;
+	protected $entry_id = null;
 
-	static $instance = NULL;
+	static $instance = null;
 
 	private function __construct() {}
 
@@ -42,8 +42,8 @@ class GravityView_oEmbed {
 	static function getInstance() {
 		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
 
-		if( empty( self::$instance ) ) {
-			self::$instance = new self;
+		if ( empty( self::$instance ) ) {
+			self::$instance = new self();
 			self::$instance->initialize();
 		}
 
@@ -59,7 +59,6 @@ class GravityView_oEmbed {
 	 */
 	function register_handler() {
 		gravityview()->log->notice( '\GravityView_oEmbed is deprecated. Use \GV\oEmbed instead.' );
-
 	}
 
 	/**
@@ -110,10 +109,10 @@ class GravityView_oEmbed {
 	 * @since 1.6
 	 * @see GravityView_oEmbed::add_providers() for the regex
 	 *
-	 * @param array $matches The regex matches from the provided regex when calling wp_embed_register_handler()
-	 * @param array $attr Embed attributes.
+	 * @param array  $matches The regex matches from the provided regex when calling wp_embed_register_handler()
+	 * @param array  $attr Embed attributes.
 	 * @param string $url The original URL that was matched by the regex.
-	 * @param array $rawattr The original unmodified attributes.
+	 * @param array  $rawattr The original unmodified attributes.
 	 * @return string The embed HTML.
 	 */
 	public function render_handler( $matches, $attr, $url, $rawattr ) {

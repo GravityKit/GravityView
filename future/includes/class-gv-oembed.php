@@ -53,29 +53,31 @@ class oEmbed {
 		/** Parse the URL to an entry and a view */
 		preg_match( self::get_entry_regex(), $url, $matches );
 		$result = self::parse_matches( $matches, $url );
-		if ( ! $result || count( $result ) != 2 ) {
+		if ( ! $result || 2 != count( $result ) ) {
 			header( 'HTTP/1.0 404 Not Found' );
 			exit;
 		}
 
 		list( $view, $entry ) = $result;
 
-		echo json_encode( array(
-			'version' => '1.0',
-			'provider_name' => 'gravityview',
-			'provider_url' => self::$provider_url,
-			'html' => self::render_preview_notice() . self::render_frontend( $view, $entry ),
-		) );
+		echo json_encode(
+			array(
+				'version'       => '1.0',
+				'provider_name' => 'gravityview',
+				'provider_url'  => self::$provider_url,
+				'html'          => self::render_preview_notice() . self::render_frontend( $view, $entry ),
+			)
+		);
 		exit;
 	}
 
 	/**
 	 * Output the embed HTML.
 	 *
-	 * @param array $matches The regex matches from the provided regex when calling wp_embed_register_handler()
-	 * @param array $attr Embed attributes.
+	 * @param array  $matches The regex matches from the provided regex when calling wp_embed_register_handler()
+	 * @param array  $attr Embed attributes.
 	 * @param string $url The original URL that was matched by the regex.
-	 * @param array $rawattr The original unmodified attributes.
+	 * @param array  $rawattr The original unmodified attributes.
 	 *
 	 * @return string The embed HTML.
 	 */
@@ -83,8 +85,14 @@ class oEmbed {
 
 		$result = self::parse_matches( $matches, $url );
 
-		if ( ! $result || count( $result ) != 2 ) {
-			gravityview()->log->notice( 'View or entry could not be parsed in oEmbed url {url}', array( 'url' => $url, 'matches' => $matches ) );
+		if ( ! $result || 2 != count( $result ) ) {
+			gravityview()->log->notice(
+				'View or entry could not be parsed in oEmbed url {url}',
+				array(
+					'url'     => $url,
+					'matches' => $matches,
+				)
+			);
 			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 		}
 
@@ -93,7 +101,7 @@ class oEmbed {
 		if ( Request::is_ajax() && ! Request::is_add_oembed_preview() ) {
 			/** Render a nice placeholder in the Visual mode. */
 			return self::render_admin( $view, $entry );
-		} else if ( Request::is_add_oembed_preview() ) {
+		} elseif ( Request::is_add_oembed_preview() ) {
 			/** Prepend a preview notice in Add Media / From URL screen */
 			return self::render_preview_notice() . self::render_frontend( $view, $entry );
 		}
@@ -104,7 +112,7 @@ class oEmbed {
 	/**
 	 * Parse oEmbed regex matches and return View and Entry.
 	 *
-	 * @param array $matches The regex matches.
+	 * @param array  $matches The regex matches.
 	 * @param string $url The URL of the embed.
 	 *
 	 * @return array (\GV\View, \GV\Entry)
@@ -112,8 +120,8 @@ class oEmbed {
 	private static function parse_matches( $matches, $url ) {
 		// If not using permalinks, re-assign values for matching groups
 		if ( ! empty( $matches['entry_slug2'] ) ) {
-			$matches['is_cpt'] = $matches['is_cpt2'];
-			$matches['slug'] = $matches['slug2'];
+			$matches['is_cpt']     = $matches['is_cpt2'];
+			$matches['slug']       = $matches['slug2'];
 			$matches['entry_slug'] = $matches['entry_slug2'];
 			unset( $matches['is_cpt2'], $matches['slug2'], $matches['entry_slug2'] );
 		}
@@ -140,17 +148,23 @@ class oEmbed {
 		if ( ! $view ) {
 
 			// If the slug doesn't work, maybe using Plain permalinks and not the slug, only ID
-			if( is_numeric( $matches['slug'] ) ) {
+			if ( is_numeric( $matches['slug'] ) ) {
 				$view = \GV\View::by_id( $matches['slug'] );
 			}
 
-			if( ! $view ) {
+			if ( ! $view ) {
 				$view = \GV\View::from_post( get_page_by_path( $matches['slug'], OBJECT, 'gravityview' ) );
 			}
 		}
 
 		if ( ! $view ) {
-			gravityview()->log->error( 'Could not detect View from URL {url}', array( 'url' => $url, 'data' => $matches ) );
+			gravityview()->log->error(
+				'Could not detect View from URL {url}',
+				array(
+					'url'  => $url,
+					'data' => $matches,
+				)
+			);
 			return null;
 		}
 
@@ -160,7 +174,7 @@ class oEmbed {
 	/**
 	 * Display a nice placeholder in the admin for the entry.
 	 *
-	 * @param \GV\View $view The View.
+	 * @param \GV\View  $view The View.
 	 * @param \GV\Entry $entry The Entry.
 	 *
 	 * @return string A placeholder, with Mr. Floaty :)
@@ -176,9 +190,9 @@ class oEmbed {
 
 		return '
 		<div class="loading-placeholder" style="background-color:#e6f0f5;">
-			<h3 style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Oxygen-Sans, Ubuntu, Cantarell, \'Helvetica Neue\', sans-serif;">'.$image.$embed_heading.'</h3>
+			<h3 style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Oxygen-Sans, Ubuntu, Cantarell, \'Helvetica Neue\', sans-serif;">' . $image . $embed_heading . '</h3>
 			<p style="margin:0; padding:0; font-family: -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Oxygen-Sans, Ubuntu, Cantarell, \'Helvetica Neue\', sans-serif;">
-				'.$embed_text.'
+				' . $embed_text . '
 			</p>
 			<br style="clear: both;">
 		</div>';
@@ -190,16 +204,16 @@ class oEmbed {
 	 * @return string HTML notice
 	 */
 	private static function render_preview_notice() {
-		$floaty = \GravityView_Admin::get_floaty();
-		$title = esc_html__( 'This will look better when it is embedded.', 'gk-gravityview' );
-		$message = esc_html__( 'Styles don\'t get loaded when being previewed, so the content below will look strange. Don\'t be concerned!', 'gk-gravityview');
-		return '<div class="updated notice">'.$floaty.'<h3>'.$title.'</h3><p>'.$message.'</p><br style="clear:both;" /></div>';
+		$floaty  = \GravityView_Admin::get_floaty();
+		$title   = esc_html__( 'This will look better when it is embedded.', 'gk-gravityview' );
+		$message = esc_html__( 'Styles don\'t get loaded when being previewed, so the content below will look strange. Don\'t be concerned!', 'gk-gravityview' );
+		return '<div class="updated notice">' . $floaty . '<h3>' . $title . '</h3><p>' . $message . '</p><br style="clear:both;" /></div>';
 	}
 
 	/**
 	 * Render the entry as an oEmbed.
 	 *
-	 * @param \GV\View $view The View.
+	 * @param \GV\View  $view The View.
 	 * @param \GV\Entry $entry The Entry.
 	 *
 	 * @return string The rendered oEmbed.
@@ -218,7 +232,7 @@ class oEmbed {
 		}
 
 		if ( $view->settings->get( 'show_only_approved' ) ) {
-			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 				return __( 'You are not allowed to view this content.', 'gk-gravityview' );
 			}
@@ -227,7 +241,7 @@ class oEmbed {
 		/**
 		 * When this is embedded inside a view we should not display the widgets.
 		 */
-		$request = gravityview()->request;
+		$request       = gravityview()->request;
 		$is_reembedded = false; // Assume not embedded unless detected otherwise.
 		if ( in_array( get_class( $request ), array( 'GV\Frontend_Request', 'GV\Mock_Request' ) ) ) {
 			if ( ( $_view = $request->is_view() ) && $_view->ID !== $view->ID ) {
@@ -254,17 +268,19 @@ class oEmbed {
 			$form = \GVCommon::get_form( $entry['form_id'] );
 
 			// @todo We really need to rewrite Edit Entry soon
-			\GravityView_View::$instance = null;
+			\GravityView_View::$instance      = null;
 			\GravityView_View_Data::$instance = null;
 
-			$data = \GravityView_View_Data::getInstance( get_post( $view->ID ) );
-			$template = \GravityView_View::getInstance( array(
-				'form' => $form,
-				'form_id' => $form['id'],
-				'view_id' => $view->ID,
-				'entries' => array( $entry->as_entry() ),
-				'atts' => \GVCommon::get_template_settings( $view->ID ),
-			) );
+			$data     = \GravityView_View_Data::getInstance( get_post( $view->ID ) );
+			$template = \GravityView_View::getInstance(
+				array(
+					'form'    => $form,
+					'form_id' => $form['id'],
+					'view_id' => $view->ID,
+					'entries' => array( $entry->as_entry() ),
+					'atts'    => \GVCommon::get_template_settings( $view->ID ),
+				)
+			);
 
 			ob_start() && $render->init( $data, \GV\Entry::by_id( $entry['id'] ), $view );
 			$output = ob_get_clean(); // Render :)
@@ -273,8 +289,8 @@ class oEmbed {
 			add_filter( 'gravityview/template/links/back/url', '__return_false' );
 
 			$renderer = new \GV\Entry_Renderer();
-			$output = $renderer->render( $entry, $view, gravityview()->request );
-			$output = sprintf( '<div class="gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-%d">%s</div>', $entry->ID, $output );
+			$output   = $renderer->render( $entry, $view, gravityview()->request );
+			$output   = sprintf( '<div class="gravityview-oembed gravityview-oembed-entry gravityview-oembed-entry-%d">%s</div>', $entry->ID, $output );
 
 			remove_filter( 'gravityview/template/links/back/url', '__return_false' );
 		}
@@ -293,7 +309,8 @@ class oEmbed {
 		$entry_var_name = \GV\Entry::get_endpoint_name();
 
 		/**
-		 * @filter `gravityview_slug` Modify the url part for a View. [Read the doc](https://docs.gravitykit.com/article/62-changing-the-view-slug)
+		 * Modify the url part for a View. [Read the doc](https://docs.gravitykit.com/article/62-changing-the-view-slug).
+		 *
 		 * @param string $rewrite_slug The slug shown in the URL
 		 */
 		$rewrite_slug = apply_filters( 'gravityview_slug', 'view' );
@@ -305,12 +322,12 @@ class oEmbed {
 		$using_permalinks = $prefix . "(?P<is_cpt>{$rewrite_slug})?/?(?P<slug>.+?)/{$entry_var_name}/(?P<entry_slug>.+?)/?\$";
 
 		// Not using permalinks
-		$not_using_permalinks = $prefix . "(?:index.php)?\?(?P<is_cpt2>[^=]+)=(?P<slug2>[^&]+)&entry=(?P<entry_slug2>[^&]+)\$";
+		$not_using_permalinks = $prefix . '(?:index.php)?\?(?P<is_cpt2>[^=]+)=(?P<slug2>[^&]+)&entry=(?P<entry_slug2>[^&]+)$';
 
 		// Catch either
 		$match_regex = "(?:{$using_permalinks}|{$not_using_permalinks})";
 
-		return '#'.$match_regex.'#i';
+		return '#' . $match_regex . '#i';
 	}
 
 	/**
@@ -322,7 +339,7 @@ class oEmbed {
 		}
 
 		$view_entry = self::parse_matches( $matches, $url );
-		if ( ! $view_entry || count( $view_entry ) != 2 ) {
+		if ( ! $view_entry || 2 != count( $view_entry ) ) {
 			return $result;
 		}
 

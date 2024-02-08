@@ -33,8 +33,8 @@ class GravityView_Roles_Capabilities {
 	 */
 	public static function get_instance() {
 
-		if( ! self::$instance ) {
-			self::$instance = new self;
+		if ( ! self::$instance ) {
+			self::$instance = new self();
 		}
 
 		return self::$instance;
@@ -56,7 +56,7 @@ class GravityView_Roles_Capabilities {
 		add_filter( 'members_get_capabilities', array( 'GravityView_Roles_Capabilities', 'merge_with_all_caps' ) );
 		add_action( 'members_register_cap_groups', array( $this, 'members_register_cap_group' ), 20 );
 		add_filter( 'user_has_cap', array( $this, 'filter_user_has_cap' ), 10, 4 );
-        add_action( 'admin_init', array( $this, 'add_caps') );
+		add_action( 'admin_init', array( $this, 'add_caps' ) );
 	}
 
 
@@ -67,28 +67,28 @@ class GravityView_Roles_Capabilities {
 	 *
 	 * @since 1.15
 	 *
-	 * @param array   $allcaps An array of all the user's capabilities.
-	 * @param array   $caps    Actual capabilities for meta capability.
-	 * @param array   $args    Optional parameters passed to has_cap(), typically object ID.
+	 * @param array        $allcaps An array of all the user's capabilities.
+	 * @param array        $caps    Actual capabilities for meta capability.
+	 * @param array        $args    Optional parameters passed to has_cap(), typically object ID.
 	 * @param WP_User|null $user    The user object, in WordPress 3.7.0 or higher
 	 *
 	 * @return mixed
 	 */
-	public function filter_user_has_cap( $usercaps = array(), $caps = array(), $args = array(), $user = NULL ) {
+	public function filter_user_has_cap( $usercaps = array(), $caps = array(), $args = array(), $user = null ) {
 
 		// Empty caps_to_check array
-		if( ! $usercaps || ! $caps ) {
+		if ( ! $usercaps || ! $caps ) {
 			return $usercaps;
 		}
 
 		/**
 		 * Enable all GravityView caps_to_check if `gravityview_full_access` is enabled
 		 */
-		if( ! empty( $usercaps['gravityview_full_access'] ) ) {
+		if ( ! empty( $usercaps['gravityview_full_access'] ) ) {
 
 			$all_gravityview_caps = self::all_caps();
 
-			foreach( $all_gravityview_caps as $gv_cap ) {
+			foreach ( $all_gravityview_caps as $gv_cap ) {
 				$usercaps[ $gv_cap ] = true;
 			}
 
@@ -134,6 +134,7 @@ class GravityView_Roles_Capabilities {
 
 	/**
 	 * Add GravityView group to Members 1.x plugin management screen
+	 *
 	 * @see members_register_cap_group()
 	 * @since 1.15
 	 * @return void
@@ -142,11 +143,11 @@ class GravityView_Roles_Capabilities {
 		if ( function_exists( 'members_register_cap_group' ) ) {
 
 			$args = array(
-				'label'         => __( 'GravityView', 'gk-gravityview' ),
-				'icon'          => 'gv-icon-astronaut-head',
-				'caps'          => self::all_caps(),
-				'merge_added'   => true,
-				'diff_added'    => false,
+				'label'       => __( 'GravityView', 'gk-gravityview' ),
+				'icon'        => 'gv-icon-astronaut-head',
+				'caps'        => self::all_caps(),
+				'merge_added' => true,
+				'diff_added'  => false,
 			);
 
 			members_register_cap_group( 'gravityview', $args );
@@ -236,7 +237,7 @@ class GravityView_Roles_Capabilities {
 	 *
 	 * @since 1.15
 	 *
-	 * @param string $single_role If set, get the caps_to_check for a specific role. Pass 'all' to get all caps_to_check in a flat array. Default: `all`
+	 * @param string  $single_role If set, get the caps_to_check for a specific role. Pass 'all' to get all caps_to_check in a flat array. Default: `all`
 	 * @param boolean $flat_array True: return all caps in a one-dimensional array. False: a multi-dimensional array with `$single_role` as keys and the caps as the values
 	 *
 	 * @return array If $role is set, flat array of caps_to_check. Otherwise, a multi-dimensional array of roles and their caps_to_check with the following keys: 'administrator', 'editor', 'author', 'contributor', 'subscriber'
@@ -299,15 +300,15 @@ class GravityView_Roles_Capabilities {
 			'gravityview_view_others_entries',
 		);
 
-		$subscriber = $subscriber_caps;
-		$contributor = array_merge( $contributor_caps, $subscriber_caps );
-		$author = array_merge( $author_caps, $contributor_caps, $subscriber_caps );
-		$editor = array_merge( $editor_caps, $author_caps, $contributor_caps, $subscriber_caps );
+		$subscriber    = $subscriber_caps;
+		$contributor   = array_merge( $contributor_caps, $subscriber_caps );
+		$author        = array_merge( $author_caps, $contributor_caps, $subscriber_caps );
+		$editor        = array_merge( $editor_caps, $author_caps, $contributor_caps, $subscriber_caps );
 		$administrator = array_merge( $administrator_caps, $editor_caps, $author_caps, $contributor_caps, $subscriber_caps );
-		$all = $administrator;
+		$all           = $administrator;
 
 		// If role is set, return caps_to_check for just that role.
-		if( $single_role ) {
+		if ( $single_role ) {
 			$caps = isset( ${$single_role} ) ? ${$single_role} : false;
 			return $flat_array ? $caps : array( $single_role => $caps );
 		}
@@ -328,15 +329,15 @@ class GravityView_Roles_Capabilities {
 	 * @uses GFCommon::current_user_can_any
 	 *
 	 * @param string|array $caps_to_check Single capability or array of capabilities
-	 * @param int|null $object_id (optional) Parameter can be used to check for capabilities against a specific object, such as a post or us
-	 * @param int|null $user_id (optional) Check the capabilities for a user who is not necessarily the currently logged-in user
+	 * @param int|null     $object_id (optional) Parameter can be used to check for capabilities against a specific object, such as a post or us
+	 * @param int|null     $user_id (optional) Check the capabilities for a user who is not necessarily the currently logged-in user
 	 *
 	 * @return bool True: user has at least one passed capability; False: user does not have any defined capabilities
 	 */
 	public static function has_cap( $caps_to_check = '', $object_id = null, $user_id = null ) {
 
 		/**
-		 * @filter `gravityview/capabilities/allow_logged_out` Shall we allow a cap check for non-logged in users? USE WITH CAUTION!
+		 * Shall we allow a cap check for non-logged in users? USE WITH CAUTION!
 		 *
 		 * WARNING: This allows anyone to edit and delete entries, add notes, delete notes, etc!
 		 *
@@ -356,9 +357,9 @@ class GravityView_Roles_Capabilities {
 
 		if ( true === $allow_logged_out ) {
 
-			$all_caps = self::all_caps('editor');
+			$all_caps = self::all_caps( 'editor' );
 
-			if( array_intersect( $all_caps, (array) $caps_to_check ) ) {
+			if ( array_intersect( $all_caps, (array) $caps_to_check ) ) {
 				return true;
 			}
 		}
@@ -379,13 +380,13 @@ class GravityView_Roles_Capabilities {
 		$caps_to_check = self::maybe_add_full_access_caps( $caps_to_check );
 
 		foreach ( $caps_to_check as $cap ) {
-			if( ! is_null( $object_id ) ) {
+			if ( ! is_null( $object_id ) ) {
 				$has_cap = $user_id ? user_can( $user_id, $cap, $object_id ) : current_user_can( $cap, $object_id );
 			} else {
 				$has_cap = $user_id ? user_can( $user_id, $cap ) : current_user_can( $cap );
 			}
 			// At the first successful response, stop checking
-			if( $has_cap ) {
+			if ( $has_cap ) {
 				break;
 			}
 		}
@@ -404,19 +405,19 @@ class GravityView_Roles_Capabilities {
 	 */
 	public static function maybe_add_full_access_caps( $caps_to_check = array() ) {
 
-		$caps_to_check = (array)$caps_to_check;
+		$caps_to_check = (array) $caps_to_check;
 
 		$all_gravityview_caps = self::all_caps();
 
 		// Are there any $caps_to_check that are from GravityView?
-		if( $has_gravityview_caps = array_intersect( $caps_to_check, $all_gravityview_caps ) ) {
+		if ( $has_gravityview_caps = array_intersect( $caps_to_check, $all_gravityview_caps ) ) {
 			$caps_to_check[] = 'gravityview_full_access';
 		}
 
 		$all_gravity_forms_caps = class_exists( 'GFCommon' ) ? GFCommon::all_caps() : array();
 
 		// Are there any $caps_to_check that are from Gravity Forms?
-		if( $all_gravity_forms_caps = array_intersect( $caps_to_check, $all_gravity_forms_caps ) ) {
+		if ( $all_gravity_forms_caps = array_intersect( $caps_to_check, $all_gravity_forms_caps ) ) {
 			$caps_to_check[] = 'gform_full_access';
 		}
 
@@ -439,7 +440,7 @@ class GravityView_Roles_Capabilities {
 			$capabilities = self::all_caps();
 
 			// Loop through each role and remove GV caps_to_check
-			foreach( $wp_roles->get_names() as $role_slug => $role_name ) {
+			foreach ( $wp_roles->get_names() as $role_slug => $role_name ) {
 				foreach ( $capabilities as $cap ) {
 					$wp_roles->remove_cap( $role_slug, $cap );
 				}

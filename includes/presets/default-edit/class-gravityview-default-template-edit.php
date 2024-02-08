@@ -21,12 +21,12 @@ class GravityView_Default_Template_Edit extends GravityView_Template {
 	function __construct( $id = 'default_table_edit', $settings = array(), $field_options = array(), $areas = array() ) {
 
 		$edit_settings = array(
-			'slug' => 'edit',
-			'type' => 'internal',
-			'label' =>  __( 'Edit Table', 'gk-gravityview' ),
-			'description' => __('Display items in a table view.', 'gk-gravityview'),
-			'logo' => plugins_url('includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE),
-			'css_source' => gravityview_css_url( 'table-view.css', GRAVITYVIEW_DIR . 'templates/css/' ),
+			'slug'        => 'edit',
+			'type'        => 'internal',
+			'label'       => __( 'Edit Table', 'gk-gravityview' ),
+			'description' => __( 'Display items in a table view.', 'gk-gravityview' ),
+			'logo'        => plugins_url( 'includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE ),
+			'css_source'  => gravityview_css_url( 'table-view.css', GRAVITYVIEW_DIR . 'templates/css/' ),
 		);
 
 		$settings = wp_parse_args( $settings, $edit_settings );
@@ -42,17 +42,14 @@ class GravityView_Default_Template_Edit extends GravityView_Template {
 				'1-1' => array(
 					array(
 						'areaid' => 'edit-fields',
-						'title' => __('Visible Edit Fields', 'gk-gravityview' )
-					)
-				)
-			)
+						'title'  => __( 'Visible Edit Fields', 'gk-gravityview' ),
+					),
+				),
+			),
 		);
 
-
 		parent::__construct( $id, $settings, $field_options, $areas );
-
 	}
-
 }
 
-new GravityView_Default_Template_Edit;
+new GravityView_Default_Template_Edit();

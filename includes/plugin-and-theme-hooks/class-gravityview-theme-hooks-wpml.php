@@ -64,7 +64,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 
 		add_filter( 'icl_ls_languages', array( $this, 'wpml_ls_filter' ) );
 
-		add_filter( 'gravityview_directory_link', array( $this, 'filter_gravityview_back_link') );
+		add_filter( 'gravityview_directory_link', array( $this, 'filter_gravityview_back_link' ) );
 	}
 
 	/**
@@ -84,7 +84,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	function filter_gravityview_back_link( $link ) {
 		global $wpml_url_filters;
 
-		if( $wpml_url_filters ) {
+		if ( $wpml_url_filters ) {
 			$link = $wpml_url_filters->permalink_filter( $link, GravityView_frontend::getInstance()->getPostId() );
 		}
 
@@ -101,7 +101,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	private function remove_url_hooks() {
 		global $wpml_url_filters;
 
-		if( ! $wpml_url_filters ) {
+		if ( ! $wpml_url_filters ) {
 			return;
 		}
 
@@ -112,7 +112,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			gravityview()->log->error( 'WPML missing remove_global_hooks method. Needs version 3.6.2+.' );
 		}
 
-		if ( $wpml_url_filters->frontend_uses_root() === true ) {
+		if ( true === $wpml_url_filters->frontend_uses_root() ) {
 			remove_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter_root' ), 1 );
 		} else {
 			remove_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter' ), 1 );
@@ -129,7 +129,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	private function add_url_hooks() {
 		global $wpml_url_filters;
 
-		if( ! $wpml_url_filters ) {
+		if ( ! $wpml_url_filters ) {
 			return;
 		}
 
@@ -140,7 +140,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			gravityview()->log->error( 'WPML missing add_global_hooks method. Needs version 3.6.2+.' );
 		}
 
-		if ( $wpml_url_filters->frontend_uses_root() === true ) {
+		if ( true === $wpml_url_filters->frontend_uses_root() ) {
 			add_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter_root' ), 1, 2 );
 		} else {
 			add_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter' ), 1, 2 );
@@ -233,7 +233,6 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 
 		return $languages;
 	}
-
 }
 
-new GravityView_Theme_Hooks_WPML;
+new GravityView_Theme_Hooks_WPML();

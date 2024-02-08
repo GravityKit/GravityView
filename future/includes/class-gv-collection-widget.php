@@ -98,20 +98,20 @@ class Widget_Collection extends Collection {
 	 *
 	 * array(
 	 *
-	 * 	[other zones]
+	 *  [other zones]
 	 *
-	 * 	'footer_right' => array(
+	 *  'footer_right' => array(
 	 *
-	 *   	[other widgets]
+	 *      [other widgets]
 	 *
-	 *  	'5372653f25d44' => array(
-	 *			@see \GV\Widget::as_configuration() for structure
-	 *  	)
+	 *      '5372653f25d44' => array(
+	 *          @see \GV\Widget::as_configuration() for structure
+	 *      )
 	 *
-	 * 		[other widgets]
+	 *      [other widgets]
 	 *  )
 	 *
-	 * 	[other zones]
+	 *  [other zones]
 	 * )
 	 *
 	 * @return \GV\Widget_Collection A collection of widgets.
@@ -129,7 +129,7 @@ class Widget_Collection extends Collection {
 					continue;
 				}
 
-				$widget->UID = $uid;
+				$widget->UID      = $uid;
 				$widget->position = $position;
 
 				$widgets->add( $widget );

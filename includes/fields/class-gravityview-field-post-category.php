@@ -11,7 +11,7 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 	var $is_searchable = true;
 
-	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains');
+	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains' );
 
 	var $_gf_field_class_name = 'GF_Field_Post_Category';
 
@@ -37,16 +37,16 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 	 * @since 1.17
 	 *
 	 * @param array $form Gravity Forms form array
-	 * @param int $entry_id Numeric ID of the entry that was updated
+	 * @param int   $entry_id Numeric ID of the entry that was updated
 	 *
 	 * @return array|false|WP_Error Array of term taxonomy IDs of affected categories. WP_Error or false on failure. false if there are no post category fields or connected post.
 	 */
 	public function set_post_categories( $form = array(), $entry_id = 0 ) {
 
-		$entry = GFAPI::get_entry( $entry_id );
+		$entry   = GFAPI::get_entry( $entry_id );
 		$post_id = \GV\Utils::get( $entry, 'post_id' );
 
-		if( empty( $post_id ) ) {
+		if ( empty( $post_id ) ) {
 			return false;
 		}
 
@@ -54,15 +54,15 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 		$post_category_fields = GFAPI::get_fields_by_type( $form, 'post_category' );
 
-		if( $post_category_fields ) {
+		if ( $post_category_fields ) {
 
 			$updated_categories = array();
 
 			foreach ( $post_category_fields as $field ) {
 				// Get the value of the field, including $_POSTed value
-				$field_cats = RGFormsModel::get_field_value( $field );
-				$field_cats = is_array( $field_cats ) ? array_values( $field_cats ) : (array)$field_cats;
-				$field_cats = gv_map_deep( $field_cats, 'intval' );
+				$field_cats         = RGFormsModel::get_field_value( $field );
+				$field_cats         = is_array( $field_cats ) ? array_values( $field_cats ) : (array) $field_cats;
+				$field_cats         = gv_map_deep( $field_cats, 'intval' );
 				$updated_categories = array_merge( $updated_categories, array_values( $field_cats ) );
 			}
 
@@ -70,7 +70,8 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 			$updated_categories = array_filter( $updated_categories );
 
 			/**
-			 * @filter `gravityview/edit_entry/post_categories/append` Should post categories be added to or replaced?
+			 * Should post categories be added to or replaced?
+			 *
 			 * @since 1.17
 			 * @param bool $append If `true`, don't delete existing categories, just add on. If `false`, replace the categories with the submitted categories. Default: `false`
 			 */
@@ -121,12 +122,12 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 	 *
 	 * @return mixed
 	 */
-	function edit_entry_post_category_choices( $choices, $field, $form_id  ) {
+	function edit_entry_post_category_choices( $choices, $field, $form_id ) {
 
 		$entry = GravityView_Edit_Entry::getInstance()->instances['render']->get_entry();
 
 		// $entry['post_id'] should always be set, but we check to make sure.
-		if( $entry && isset( $entry['post_id'] ) && $post_id = $entry['post_id'] ) {
+		if ( $entry && isset( $entry['post_id'] ) && $post_id = $entry['post_id'] ) {
 
 			$post_categories = wp_get_post_categories( $post_id, array( 'fields' => 'ids' ) );
 
@@ -141,19 +142,18 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$this->add_field_support('dynamic_data', $field_options );
-		$this->add_field_support('link_to_term', $field_options );
-		$this->add_field_support('new_window', $field_options );
+		$this->add_field_support( 'dynamic_data', $field_options );
+		$this->add_field_support( 'link_to_term', $field_options );
+		$this->add_field_support( 'new_window', $field_options );
 
 		$field_options['new_window']['requires'] = 'link_to_term';
 
 		return $field_options;
 	}
-
 }
 
-new GravityView_Field_Post_Category;
+new GravityView_Field_Post_Category();

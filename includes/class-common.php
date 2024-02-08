@@ -119,17 +119,18 @@ class GVCommon {
 	 */
 	public static function get_all_views( $args = array() ) {
 
-		$default_params = [
+		$default_params = array(
 			'post_type'      => 'gravityview',
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
-			'exclude'        => [],
-		];
+			'exclude'        => array(),
+		);
 
 		$params = wp_parse_args( $args, $default_params );
 
 		/**
-		 * @filter `gravityview/get_all_views/params` Modify the parameters sent to get all views.
+		 * Modify the parameters sent to get all views.
+		 *
 		 * @param  array $params Array of parameters to pass to `get_posts()`
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
@@ -153,7 +154,7 @@ class GVCommon {
 		$form = false;
 
 		if ( $entry ) {
-			$form = GVCommon::get_form( $entry['form_id'] );
+			$form = self::get_form( $entry['form_id'] );
 		}
 
 		return $form;
@@ -259,7 +260,8 @@ class GVCommon {
 		);
 
 		/**
-		 * @filter `gravityview/common/get_entry_id_from_slug/form_id` The form ID used to get the custom entry ID. Change this to avoid collisions with data from other forms with the same values and the same field ID.
+		 * The form ID used to get the custom entry ID. Change this to avoid collisions with data from other forms with the same values and the same field ID.
+		 *
 		 * @since 1.17.2
 		 * @param int $form_id ID of the form to search. Default: `0` (searches all forms)
 		 */
@@ -286,7 +288,7 @@ class GVCommon {
 	 *
 	 * @return array Forms indexed from 0 by SQL result row number. Each row is an associative array (column => value).
 	 */
-	public static function get_forms_columns( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC', $columns = [ 'id' ] ) {
+	public static function get_forms_columns( $active = true, $trash = false, $sort_column = 'id', $sort_dir = 'ASC', $columns = array( 'id' ) ) {
 		global $wpdb;
 
 		// Only allow valid columns.
@@ -312,7 +314,7 @@ class GVCommon {
 		}
 
 		if ( ! empty( $sort_column ) ) {
-			$sql .= " ORDER BY $sort_column " . ( $sort_dir == 'ASC' ? 'ASC' : 'DESC' );
+			$sql .= " ORDER BY $sort_column " . ( 'ASC' == $sort_dir ? 'ASC' : 'DESC' );
 		}
 
 		return $wpdb->get_results( $sql, ARRAY_A );
@@ -339,7 +341,7 @@ class GVCommon {
 		);
 
 		// This is only used in the admin and in ajax, so don't run on the front-end.
-		if( gravityview()->request->is_frontend() ) {
+		if ( gravityview()->request->is_frontend() ) {
 			return $options;
 		}
 
@@ -351,7 +353,7 @@ class GVCommon {
 			return $static_cache[ $static_cache_key ];
 		}
 
-		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, [ 'id', 'title' ] );
+		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, array( 'id', 'title' ) );
 
 		if ( empty( $forms ) ) {
 			return $options;
@@ -405,7 +407,7 @@ class GVCommon {
 		$forms = wp_list_sort( $forms, $order_by, $order, true );
 
 		/**
-		 * @filter `gk/gravityview/common/get_forms` Modify the forms returned by GFAPI::get_forms()
+		 * Modify the forms returned by GFAPI::get_forms().
 		 *
 		 * @since 2.17.6
 		 *
@@ -517,7 +519,8 @@ class GVCommon {
 		}
 
 		/**
-		 * @filter `gravityview/common/get_form_fields` Modify the form fields shown in the Add Field field picker.
+		 * Modify the form fields shown in the Add Field field picker.
+		 *
 		 * @since 1.17
 		 * @param array $fields Associative array of fields, with keys as field type, values an array with the following keys: (string) `label` (required), (string) `type` (required), `desc`, (string) `customLabel`, (GF_Field) `parent`, (string) `adminLabel`, (bool)`adminOnly`
 		 * @param array $form GF Form array
@@ -526,7 +529,6 @@ class GVCommon {
 		$fields = apply_filters( 'gravityview/common/get_form_fields', $fields, $form, $include_parent_field );
 
 		return $fields;
-
 	}
 
 	/**
@@ -603,7 +605,8 @@ class GVCommon {
 				$filter['operator'] = empty( $filter['operator'] ) ? 'contains' : $filter['operator'];
 
 				/**
-				 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
+				 * Modify the search operator for the field (contains, is, isnot, etc).
+				 *
 				 * @param string $operator Existing search operator
 				 * @param array $filter array with `key`, `value`, `operator`, `type` keys
 				 */
@@ -611,7 +614,7 @@ class GVCommon {
 			}
 
 			// don't send just the [mode] without any field filter.
-			if ( count( $criteria['search_criteria']['field_filters'] ) === 1 && array_key_exists( 'mode', $criteria['search_criteria']['field_filters'] ) ) {
+			if ( 1 === count( $criteria['search_criteria']['field_filters'] ) && array_key_exists( 'mode', $criteria['search_criteria']['field_filters'] ) ) {
 				unset( $criteria['search_criteria']['field_filters']['mode'] );
 			}
 		}
@@ -657,7 +660,8 @@ class GVCommon {
 		}
 
 		/**
-		 * @filter `gravityview_search_criteria` Apply final criteria filter (Used by the Advanced Filter extension)
+		 * Apply final criteria filter (Used by the Advanced Filter extension).
+		 *
 		 * @param array $criteria Search criteria used by GravityView
 		 * @param array $form_ids Forms to search
 		 * @param int $view_id ID of the view being used to search
@@ -714,7 +718,8 @@ class GVCommon {
 		if ( is_null( $return ) && class_exists( 'GFAPI' ) && ( is_numeric( $form_ids ) || is_array( $form_ids ) ) ) {
 
 			/**
-			 * @filter `gravityview_pre_get_entries` Define entries to be used before GFAPI::get_entries() is called
+			 * Define entries to be used before GFAPI::get_entries() is called.
+			 *
 			 * @since 1.14
 			 * @param  null $return If you want to override GFAPI::get_entries() and define entries yourself, tap in here.
 			 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
@@ -759,7 +764,8 @@ class GVCommon {
 		remove_filter( 'gform_is_encrypted_field', '__return_false' );
 
 		/**
-		 * @filter `gravityview_entries` Modify the array of entries returned to GravityView after it has been fetched from the cache or from `GFAPI::get_entries()`.
+		 * Modify the array of entries returned to GravityView after it has been fetched from the cache or from `GFAPI::get_entries()`.
+		 *
 		 * @param  array|null $entries Array of entries as returned by the cache or by `GFAPI::get_entries()`
 		 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
 		 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
@@ -788,15 +794,17 @@ class GVCommon {
 		$entry_id = false;
 
 		/**
-		 * @filter `gravityview_custom_entry_slug` Whether to enable and use custom entry slugs.
+		 * Whether to enable and use custom entry slugs.
+		 *
 		 * @param boolean True: Allow for slugs based on entry values. False: always use entry IDs (default)
 		 */
 		$custom_slug = apply_filters( 'gravityview_custom_entry_slug', false );
 
 		/**
-		 * @filter `gravityview_custom_entry_slug_allow_id` When using a custom slug, allow access to the entry using the original slug (the Entry ID).
+		 * When using a custom slug, allow access to the entry using the original slug (the Entry ID).
 		 * - If disabled (default), only allow access to an entry using the custom slug value.  (example: `/entry/custom-slug/` NOT `/entry/123/`)
 		 * - If enabled, you could access using the custom slug OR the entry id (example: `/entry/custom-slug/` OR `/entry/123/`)
+		 *
 		 * @param boolean $custom_slug_id_access True: allow accessing the slug by ID; False: only use the slug passed to the method.
 		 */
 		$custom_slug_id_access = $force_allow_ids || apply_filters( 'gravityview_custom_entry_slug_allow_id', false );
@@ -856,7 +864,8 @@ class GVCommon {
 		}
 
 		/**
-		 * @filter `gravityview/common/get_entry/check_entry_display` Override whether to check entry display rules against filters
+		 * Override whether to check entry display rules against filters.
+		 *
 		 * @since 1.16.2
 		 * @since 2.6 Added $view parameter
 		 * @param bool $check_entry_display Check whether the entry is visible for the current View configuration. Default: true.
@@ -986,7 +995,7 @@ class GVCommon {
 						}
 					}
 
-					$value = ( $operation === 'in' ) ? $json_in : ! $json_in;
+					$value = ( 'in' === $operation ) ? $json_in : ! $json_in;
 				}
 				break;
 
@@ -1075,7 +1084,7 @@ class GVCommon {
 		 */
 		add_action(
 			'gravityview/view/query',
-			$entry_subset_callback = function( &$query, $view, $request ) use ( $entry, $view_form_id ) {
+			$entry_subset_callback = function ( &$query, $view, $request ) use ( $entry, $view_form_id ) {
 				$_tmp_query = new \GF_Query(
 					$view_form_id,
 					array(
@@ -1096,7 +1105,6 @@ class GVCommon {
 				$query_parts = $query->_introspect();
 
 				$query->where( \GF_Query_Condition::_and( $_tmp_query_parts['where'], $query_parts['where'] ) );
-
 			},
 			10,
 			3
@@ -1105,7 +1113,7 @@ class GVCommon {
 		// Prevent page offset from being applied to the single entry query; it's used to return to the referring page number
 		add_filter(
 			'gravityview_search_criteria',
-			$remove_pagenum = function( $criteria ) {
+			$remove_pagenum = function ( $criteria ) {
 
 				$criteria['paging'] = array(
 					'offset'    => 0,
@@ -1285,7 +1293,6 @@ class GVCommon {
 		}
 
 		return self::has_shortcode_r( $post->post_content, 'gravityview' ) ? true : false;
-
 	}
 
 
@@ -1357,7 +1364,7 @@ class GVCommon {
 		$args     = wp_parse_args( $args, $defaults );
 		$views    = get_posts( $args );
 
-		if( ! $include_joins ) {
+		if ( ! $include_joins ) {
 			return $views;
 		}
 
@@ -1490,8 +1497,8 @@ class GVCommon {
 	 * @since 1.17.4 Added $apply_filter parameter.
 	 * @since 2.17   Added $form_id parameter.
 	 *
-	 * @param  int   $post_id View ID.
-	 * @param  bool  $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
+	 * @param  int  $post_id View ID.
+	 * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
 	 * @return array Multi-array of fields with first level being the field zones. See code comment.
 	 */
 	public static function get_directory_fields( $post_id, $apply_filter = true, $form_id = 0 ) {
@@ -1499,7 +1506,8 @@ class GVCommon {
 
 		if ( $apply_filter ) {
 			/**
-			 * @filter `gravityview/configuration/fields` Filter the View fields' configuration array
+			 * Filter the View fields' configuration array.
+			 *
 			 * @since 1.6.5
 			 * @since 2.16.3 Added the $form_id parameter.
 			 *
@@ -1510,7 +1518,8 @@ class GVCommon {
 			$fields = apply_filters( 'gravityview/configuration/fields', $fields, $post_id, $form_id );
 
 			/**
-			 * @filter `gravityview/view/configuration/fields` Filter the View fields' configuration array.
+			 * Filter the View fields' configuration array.
+			 *
 			 * @since 2.0
 			 * @since 2.16.3 Added the $form_id parameter.
 			 *
@@ -1557,11 +1566,13 @@ class GVCommon {
 	/**
 	 * Render dropdown (select) with the list of sortable fields from a form ID
 	 *
-	 * @param  int $formid Form ID
+	 * @param int    $formid  Form ID
+	 * @param string $current Current selected field ID
+	 *
 	 * @return string         html
 	 */
-	public static function get_sortable_fields( $formid, $current = '' ) {
-		$output = '<option value="" ' . selected( '', $current, false ) . '>' . esc_html__( 'Default (Entry ID)', 'gk-gravityview' ) . '</option>';
+	public static function get_sortable_fields( $formid, $current = 'id' ) {
+		$output = '<option value="id" ' . selected( '', $current, false ) . '>' . esc_html__( 'Default (Entry ID)', 'gk-gravityview' ) . '</option>';
 
 		if ( empty( $formid ) ) {
 			return $output;
@@ -1648,7 +1659,8 @@ class GVCommon {
 		}
 
 		/**
-		 * @filter `gravityview/common/sortable_fields` Filter the sortable fields
+		 * Filter the sortable fields.
+		 *
 		 * @since 1.12
 		 * @param array $fields Sub-set of GF form fields that are sortable
 		 * @param int $formid The Gravity Forms form ID that the fields are from
@@ -1674,7 +1686,6 @@ class GVCommon {
 		}
 
 		return class_exists( 'RGFormsModel' ) ? RGFormsModel::get_input_type( $field ) : '';
-
 	}
 
 
@@ -1699,7 +1710,8 @@ class GVCommon {
 		}
 
 		/**
-		 * @filter `gravityview/common/numeric_types` What types of fields are numeric?
+		 * What types of fields are numeric?
+		 *
 		 * @since 1.5.2
 		 * @param array $numeric_types Fields that are numeric. Default: `[ number, time ]`
 		 */
@@ -1746,7 +1758,8 @@ class GVCommon {
 			$message = empty( $message ) ? __( 'Email hidden; Javascript is required.', 'gk-gravityview' ) : $message;
 
 			/**
-			 * @filter `gravityview/phpenkoder/msg` Modify the message shown when Javascript is disabled and an encrypted email field is displayed
+			 * Modify the message shown when Javascript is disabled and an encrypted email field is displayed.
+			 *
 			 * @since 1.7
 			 * @param string $message Existing message
 			 * @param string $content Content to encrypt
@@ -1844,7 +1857,8 @@ class GVCommon {
 		);
 
 		/**
-		 * @filter `gravityview/get_link/allowed_atts` Modify the attributes that are allowed to be used in generating links
+		 * Modify the attributes that are allowed to be used in generating links.
+		 *
 		 * @since 1.6
 		 * @param array $allowed_atts Array of attributes allowed
 		 */
@@ -1942,8 +1956,9 @@ class GVCommon {
 		$get_users_settings = wp_parse_args( $args, $default_args );
 
 		/**
-		 * @filter `gravityview/get_users/{$context}` There are issues with too many users using [get_users()](http://codex.wordpress.org/Function_Reference/get_users) where it breaks the select. We try to keep it at a reasonable number. \n
+		 * There are issues with too many users using [get_users()](http://codex.wordpress.org/Function_Reference/get_users) where it breaks the select. We try to keep it at a reasonable number. \n.
 		 * `$context` is where are we using this information (e.g. change_entry_creator, search_widget ..)
+		 *
 		 * @param array $settings Settings array, with `number` key defining the # of users to display
 		 */
 		$get_users_settings = apply_filters( 'gravityview/get_users/' . $context, apply_filters( 'gravityview_change_entry_creator_user_parameters', $get_users_settings ) );
@@ -2019,8 +2034,6 @@ class GVCommon {
 		// Optional: $from_name, $message_format, $attachments, $lead, $notification
 		$SendEmail->invoke( new GFCommon(), $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
 	}
-
-
 }//end class
 
 

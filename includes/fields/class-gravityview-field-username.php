@@ -30,4 +30,4 @@ class GravityView_Field_Username extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Username;
+new GravityView_Field_Username();

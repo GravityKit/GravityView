@@ -47,7 +47,8 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 		$has_transaction_data = GVCommon::entry_has_transaction_data( $entry );
 
 		/**
-		 * @filter `gravityview/edit_entry/hide-coupon-fields` Should Coupon fields be hidden in Edit Entry?
+		 * Should Coupon fields be hidden in Edit Entry?
+		 *
 		 * @since 1.20
 		 * @param bool $has_transaction_data If true (the Entry has transaction data), hide the fields. Otherwise (false), show the Coupon field
 		 */
@@ -91,8 +92,8 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 	 *
 	 * @since 1.20
 	 *
-	 * @param string $value
-	 * @param GF_Field_Coupon $field
+	 * @param string                        $value
+	 * @param GF_Field_Coupon               $field
 	 * @param GravityView_Edit_Entry_Render $Edit_Entry_Render
 	 *
 	 * @return string $value is returned unmodified. Only $_POST is modified.
@@ -116,7 +117,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 		// No coupons match the codes provided
 		$discounts = gf_coupons()->get_coupons_by_codes( $coupon_codes, $form );
 
-		if( ! $discounts ) {
+		if ( ! $discounts ) {
 			return $value;
 		}
 
@@ -124,13 +125,12 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Coupon extends GravityView_Plugin_a
 		 * @hack Fake POST data so that the data gets pre-filled. Both are needed.
 		 * @see GF_Field_Coupon::get_field_input
 		 */
-		$_POST = ! isset( $_POST ) ? array() : $_POST;
+		$_POST                                = ! isset( $_POST ) ? array() : $_POST;
 		$_POST[ 'gf_coupons_' . $form['id'] ] = json_encode( (array) $discounts );
-		$_POST[ 'input_' . $field->id ] = implode( ',', $coupon_codes );
+		$_POST[ 'input_' . $field->id ]       = implode( ',', $coupon_codes );
 
 		return $value;
 	}
-
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Coupon;
+new GravityView_Plugin_Hooks_Gravity_Forms_Coupon();

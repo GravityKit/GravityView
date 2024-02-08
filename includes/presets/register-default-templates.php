@@ -17,6 +17,7 @@ add_action( 'init', 'gravityview_register_default_templates', 11 );
 
 /**
  * Registers the default templates
+ *
  * @return void
  */
 function gravityview_register_default_templates() {
@@ -55,8 +56,8 @@ function gravityview_register_placeholder_templates() {
 
 	require_once GRAVITYVIEW_DIR . 'includes/class-gravityview-placeholder-template.php';
 
-	$placeholders = [
-		'GravityView_DataTables_Template'       => [
+	$placeholders = array(
+		'GravityView_DataTables_Template'       => array(
 			'slug'        => 'dt_placeholder',
 			'template_id' => 'datatables_table',
 			'download_id' => 268,
@@ -68,8 +69,8 @@ function gravityview_register_placeholder_templates() {
 			'license'     => esc_html__( 'All Access', 'gk-gravityview' ),
 			'price_id'    => 2,
 			'textdomain'  => 'gv-datatables|gk-datatables',
-		],
-		'GravityView_Maps_Template_Map_Default' => [
+		),
+		'GravityView_Maps_Template_Map_Default' => array(
 			'slug'        => 'map_placeholder',
 			'template_id' => 'map',
 			'download_id' => 27,
@@ -81,8 +82,8 @@ function gravityview_register_placeholder_templates() {
 			'license'     => esc_html__( 'All Access', 'gk-gravityview' ),
 			'price_id'    => 2,
 			'textdomain'  => 'gravityview-maps|gk-gravitymaps',
-		],
-		'GravityView_DIY_Template'              => [
+		),
+		'GravityView_DIY_Template'              => array(
 			'slug'        => 'diy_placeholder',
 			'template_id' => 'diy',
 			'download_id' => 550152,
@@ -93,8 +94,8 @@ function gravityview_register_placeholder_templates() {
 			'preview'     => 'https://try.gravitykit.com/demo/view/diy/?utm_source=plugin&utm_medium=try_demo&utm_campaign=view_type&utm_term=diy',
 			'license'     => esc_html__( 'All Access', 'gk-gravityview' ),
 			'textdomain'  => 'gravityview-diy|gk-diy',
-		],
-	];
+		),
+	);
 
 	if ( ! class_exists( 'GravityKitFoundation' ) ) {
 		return;
@@ -107,9 +108,9 @@ function gravityview_register_placeholder_templates() {
 	}
 
 	try {
-		$products_data = $product_manager->get_products_data( [ 'key_by' => 'id' ] );
+		$products_data = $product_manager->get_products_data( array( 'key_by' => 'id' ) );
 	} catch ( Exception $e ) {
-		$products_data = [];
+		$products_data = array();
 	}
 
 	foreach ( $placeholders as $placeholder ) {

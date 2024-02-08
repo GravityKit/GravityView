@@ -18,7 +18,7 @@ class gventry extends \GV\Shortcode {
 	/**
 	 * Process and output the [gventry] shortcode.
 	 *
-	 * @param array $passed_atts The attributes passed.
+	 * @param array  $passed_atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
 	 * @param string $tag The shortcode tag.
 	 *
@@ -31,17 +31,21 @@ class gventry extends \GV\Shortcode {
 			return apply_filters( 'gravityview/shortcodes/gventry/output', '', null, null, $atts );
 		}
 
-		$atts = wp_parse_args( $atts, array(
-			'id'        => 0,
-			'entry_id'  => 0,
-			'view_id'   => 0,
-			'edit'      => 0,
-		) );
+		$atts = wp_parse_args(
+            $atts,
+            array(
+				'id'       => 0,
+				'entry_id' => 0,
+				'view_id'  => 0,
+				'edit'     => 0,
+            )
+        );
 
 		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );
 
 		/**
-		 * @filter `gravityview/shortcodes/gventry/atts` Filter the [gventry] shortcode attributes.
+		 * Filter the [gventry] shortcode attributes.
+		 *
 		 * @param array $atts The initial attributes.
 		 * @since 2.0
 		 */
@@ -56,7 +60,7 @@ class gventry extends \GV\Shortcode {
 
 		$entry_id = ! empty( $atts['entry_id'] ) ? $atts['entry_id'] : $atts['id'];
 
-		switch( $entry_id ):
+		switch ( $entry_id ) :
 			case 'last':
 				if ( class_exists( '\GF_Query' ) ) {
 					/**
@@ -64,25 +68,30 @@ class gventry extends \GV\Shortcode {
 					 *
 					 * Since we're using \GF_Query shorthand initialization we have to reverse the order parameters here.
 					 */
-					add_filter( 'gravityview_get_entries', $filter = function( $parameters, $args, $form_id ) {
-						if ( ! empty( $parameters['sorting'] ) ) {
-							/**
-							 * Reverse existing sorts.
-							 */
-							$sort = &$parameters['sorting'];
-							$sort['direction'] = $sort['direction'] == 'RAND' ? : ( $sort['direction'] == 'ASC' ? 'DESC' : 'ASC' );
-						} else {
-							/**
-							 * Otherwise, sort by date_created.
-							 */
-							$parameters['sorting'] = array(
-								'key' => 'id',
-								'direction' => 'ASC',
-								'is_numeric' => true
-							);
-						}
-						return $parameters;
-					}, 10, 3 );
+					add_filter(
+                        'gravityview_get_entries',
+                        $filter = function ( $parameters, $args, $form_id ) {
+							if ( ! empty( $parameters['sorting'] ) ) {
+								/**
+								 * Reverse existing sorts.
+								 */
+								$sort              = &$parameters['sorting'];
+								$sort['direction'] = 'RAND' == $sort['direction'] ? : ( 'ASC' == $sort['direction'] ? 'DESC' : 'ASC' );
+							} else {
+								/**
+								 * Otherwise, sort by date_created.
+								 */
+								$parameters['sorting'] = array(
+									'key'        => 'id',
+									'direction'  => 'ASC',
+									'is_numeric' => true,
+								);
+							}
+							return $parameters;
+						},
+                        10,
+                        3
+                    );
 					$entries = $view->get_entries( null );
 					remove_filter( 'gravityview_get_entries', $filter );
 				} else {
@@ -90,7 +99,7 @@ class gventry extends \GV\Shortcode {
 
 					/** If a sort already exists, reverse it. */
 					if ( $sort = end( $entries->sorts ) ) {
-						$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, $sort->direction == \GV\Entry_Sort::RAND ? : ( $sort->direction == \GV\Entry_Sort::ASC ? \GV\Entry_Sort::DESC : \GV\Entry_Sort::ASC ) ), $sort->mode );
+						$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, \GV\Entry_Sort::RAND == $sort->direction ? : ( \GV\Entry_Sort::ASC == $sort->direction ? \GV\Entry_Sort::DESC : \GV\Entry_Sort::ASC ) ), $sort->mode );
 					} else {
 						/** Otherwise, sort by date_created */
 						$entries = $entries->sort( new \GV\Entry_Sort( \GV\Internal_Field::by_id( 'id' ), \GV\Entry_Sort::ASC ), \GV\Entry_Sort::NUMERIC );
@@ -123,7 +132,7 @@ class gventry extends \GV\Shortcode {
 			return apply_filters( 'gravityview/shortcodes/gventry/output', get_the_password_form( $view->ID ), $view, $entry, $atts );
 		}
 
-		if ( ! $view->form  ) {
+		if ( ! $view->form ) {
 			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $view->ID ) );
 
 			/**
@@ -146,15 +155,15 @@ class gventry extends \GV\Shortcode {
 		}
 
 		/** Unapproved entries. */
-		if ( $entry['status'] != 'active' ) {
+		if ( 'active' != $entry['status'] ) {
 			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 			return apply_filters( 'gravityview/shortcodes/gventry/output', '', $view, $entry, $atts );
 		}
 
-		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap('gravityview_moderate_entries', $view->ID );
+		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $view->ID );
 
 		if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 				return apply_filters( 'gravityview/shortcodes/gventry/output', '', $view, $entry, $atts );
 			}
@@ -176,42 +185,52 @@ class gventry extends \GV\Shortcode {
 			// Override the \GV\Request::is_entry() check for the query var.
 			$_entry_query_var_backup = get_query_var( \GV\Entry::get_endpoint_name() );
 			set_query_var( \GV\Entry::get_endpoint_name(), $entry['id'] );
-			add_filter( 'gravityview_is_edit_entry', $use_entry = function() use ( $entry ) {
-				return $entry;
-			} );
+			add_filter(
+                'gravityview_is_edit_entry',
+                $use_entry = function () use ( $entry ) {
+					return $entry;
+				}
+            );
 
 			add_filter( 'gravityview/is_single_entry', '__return_true' );
 
 			$form = \GVCommon::get_form( $entry['form_id'] );
 
-			$data = \GravityView_View_Data::getInstance( $view );
-			$template = \GravityView_View::getInstance( array(
-				'form' => $form,
-				'form_id' => $form['id'],
-				'view_id' => $view->ID,
-				'entries' => array( $entry ),
-				'atts' => \GVCommon::get_template_settings( $view->ID ),
-			) );
+			$data     = \GravityView_View_Data::getInstance( $view );
+			$template = \GravityView_View::getInstance(
+                array(
+					'form'    => $form,
+					'form_id' => $form['id'],
+					'view_id' => $view->ID,
+					'entries' => array( $entry ),
+					'atts'    => \GVCommon::get_template_settings( $view->ID ),
+                )
+            );
 
 			$_GET['edit'] = wp_create_nonce(
 				\GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry['id'] )
 			);
 
-			add_filter( 'gravityview/edit_entry/success', $callback = function ( $message, $_view_id, $_entry, $back_link, $redirect_url ) use ( $view, $entry, $atts ) {
-				/**
-				 * @filter `gravityview/shortcodes/gventry/edit/success` Modify the edit entry success message in [gventry].
-				 *
-				 * @since  develop
-				 *
-				 * @param string      $message      The message.
-				 * @param \GV\View    $view         The View.
-				 * @param \GV\Entry   $entry        The entry.
-				 * @param array       $atts         The attributes.
-				 * @param string      $back_link    URL to return to the original entry. @since 2.14.6
-				 * @param string|null $redirect_url URL to return to after the update. @since 2.14.6
-				 */
-				return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts, $back_link, $redirect_url );
-			}, 10, 5 );
+			add_filter(
+                'gravityview/edit_entry/success',
+                $callback = function ( $message, $_view_id, $_entry, $back_link, $redirect_url ) use ( $view, $entry, $atts ) {
+					/**
+					 * Modify the edit entry success message in [gventry].
+					 *
+					 * @since  develop
+					 *
+					 * @param string      $message      The message.
+					 * @param \GV\View    $view         The View.
+					 * @param \GV\Entry   $entry        The entry.
+					 * @param array       $atts         The attributes.
+					 * @param string      $back_link    URL to return to the original entry. @since 2.14.6
+					 * @param string|null $redirect_url URL to return to after the update. @since 2.14.6
+					 */
+					return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts, $back_link, $redirect_url );
+				},
+                10,
+                5
+            );
 
 			ob_start() && $render->init( $data, \GV\GF_Entry::by_id( $entry['id'] ), $view );
 			$output = ob_get_clean(); // Render :)
@@ -227,7 +246,7 @@ class gventry extends \GV\Shortcode {
 
 			$renderer = new \GV\Entry_Renderer();
 
-			$request = new \GV\Mock_Request();
+			$request                      = new \GV\Mock_Request();
 			$request->returns['is_entry'] = $entry;
 
 			$output = $renderer->render( $entry, $view, $request );
@@ -236,7 +255,8 @@ class gventry extends \GV\Shortcode {
 		}
 
 		/**
-		 * @filter `gravityview/shortcodes/gventry/output` Filter the [gventry] output.
+		 * Filter the [gventry] output.
+		 *
 		 * @param string $output The output.
 		 * @param \GV\View|null $view The View detected or null.
 		 * @param \GV\Entry|null $entry The Entry or null.

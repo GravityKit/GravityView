@@ -66,7 +66,7 @@ class Renderer {
 
 		$settings['show_only_approved'] = 0;
 
-		$updated = update_post_meta( $gravityview->view->ID, '_gravityview_template_settings',  $settings );
+		$updated = update_post_meta( $gravityview->view->ID, '_gravityview_template_settings', $settings );
 
 		if ( ! $updated ) {
 			gravityview()->log->error( 'Could not update View settings => Show only approved' );
@@ -136,16 +136,19 @@ class Renderer {
 			return;
 		}
 
-		$count = \GFAPI::count_entries( $gravityview->view->form->ID, array(
-			'status'        => 'active',
-			'field_filters' => array(
-				array(
-					'key'      => 'is_approved',
-					'operator' => 'isnot',
-					'value'    => \GravityView_Entry_Approval_Status::APPROVED,
+		$count = \GFAPI::count_entries(
+			$gravityview->view->form->ID,
+			array(
+				'status'        => 'active',
+				'field_filters' => array(
+					array(
+						'key'      => 'is_approved',
+						'operator' => 'isnot',
+						'value'    => \GravityView_Entry_Approval_Status::APPROVED,
+					),
 				),
-			),
-		) );
+			)
+		);
 
 		// There aren't any entries to show!
 		if ( empty( $count ) ) {
@@ -225,9 +228,15 @@ EOD;
 
 		$dismiss_notice_link = wp_nonce_url( add_query_arg( array() ), $dismiss_nonce_action, $dismiss_nonce_name );
 
-		$disable_setting_link = wp_nonce_url( add_query_arg( array(
-			'disable_setting' => 'show_only_approved_' . $gravityview->view->ID
-		) ), 'setting', 'gv-setting' );
+		$disable_setting_link = wp_nonce_url(
+			add_query_arg(
+				array(
+					'disable_setting' => 'show_only_approved_' . $gravityview->view->ID,
+				)
+			),
+			'setting',
+			'gv-setting'
+		);
 
 		$placeholders = array(
 			'{dom_id}'                      => sprintf( 'gv-notice-approve-entries-%d', $gravityview->view->ID ),
@@ -270,11 +279,10 @@ EOD;
 
 		switch ( true ) {
 			case ( $gravityview->request->is_edit_entry() ):
-				$tab = esc_html__( 'Edit Entry', 'gk-gravityview' );
+				$tab     = esc_html__( 'Edit Entry', 'gk-gravityview' );
 				$context = 'edit';
 				break;
 			case ( $entry = $gravityview->request->is_entry( $gravityview->view->form ? $gravityview->view->form->ID : 0 ) ):
-
 				// When the entry is not found, we're probably inside a shortcode.
 				if ( ! $gravityview->entry ) {
 					return;
@@ -285,16 +293,16 @@ EOD;
 					return;
 				}
 
-				$tab = esc_html__( 'Single Entry', 'gk-gravityview' );
+				$tab     = esc_html__( 'Single Entry', 'gk-gravityview' );
 				$context = 'single';
 				break;
 			default:
-				$tab = esc_html__( 'Multiple Entries', 'gk-gravityview' );
+				$tab     = esc_html__( 'Multiple Entries', 'gk-gravityview' );
 				$context = 'directory';
 				break;
 		}
 
-		$cls = $gravityview->template;
+		$cls  = $gravityview->template;
 		$slug = property_exists( $cls, '_configuration_slug' ) ? $cls::$_configuration_slug : $cls::$slug;
 
 		// If the zone has been configured, don't display notice.
@@ -319,12 +327,12 @@ EOD;
 			return;
 		}
 
-		$title = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
-		$edit_link = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $gravityview->view->ID, $context ) );
+		$title       = sprintf( esc_html_x( 'The %s layout has not been configured.', 'Displayed when a View is not configured. %s is replaced by the tab label', 'gk-gravityview' ), $tab );
+		$edit_link   = admin_url( sprintf( 'post.php?post=%d&action=edit#%s-view', $gravityview->view->ID, $context ) );
 		$action_text = sprintf( esc_html__( 'Add fields to %s', 'gk-gravityview' ), $tab );
-		$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
+		$message     = esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
 
-		$image =  sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url( plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
+		$image  = sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', $tab, esc_url( plugins_url( sprintf( 'assets/images/tab-%s.png', $context ), GRAVITYVIEW_FILE ) ) );
 		$output = sprintf( '<h3>%s <strong><a href="%s">%s</a></strong></h3><p>%s</p>', $title, esc_url( $edit_link ), $action_text, $message );
 
 		echo \GVCommon::generate_notice( $output . $image, 'gv-warning warning', 'edit_gravityview', $gravityview->view->ID );
@@ -350,7 +358,7 @@ EOD;
 
 		$post_types = get_post_types();
 
-		foreach( $post_types as $post_type ) {
+		foreach ( $post_types as $post_type ) {
 			$post_type_rewrite = get_post_type_object( $post_type )->rewrite;
 
 			if ( $slug = \GV\Utils::get( $post_type_rewrite, 'slug' ) ) {
@@ -361,7 +369,8 @@ EOD;
 		unset( $post_types, $post_type_rewrite );
 
 		/**
-		 * @filter `gravityview/rewrite/reserved_slugs` Modify the reserved embed slugs that trigger a warning.
+		 * Modify the reserved embed slugs that trigger a warning.
+		 *
 		 * @since 2.5
 		 * @param array $reserved_slugs An array of strings, reserved slugs.
 		 * @param \GV\Template_Context $gravityview The context.
@@ -376,8 +385,8 @@ EOD;
 
 		gravityview()->log->error( '{slug} page URL is reserved.', array( 'slug' => $wp->request ) );
 
-		$title   = esc_html__( 'GravityView will not work correctly on this page because of the URL Slug.', 'gk-gravityview' );
-		$message = __( 'Please <a href="%s">read this article</a> for more information.', 'gk-gravityview' );
+		$title    = esc_html__( 'GravityView will not work correctly on this page because of the URL Slug.', 'gk-gravityview' );
+		$message  = __( 'Please <a href="%s">read this article</a> for more information.', 'gk-gravityview' );
 		$message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
 
 		$output = sprintf( '<h3>%s</h3><p>%s</p>', $title, sprintf( $message, 'https://docs.gravitykit.com/article/659-reserved-urls' ) );
@@ -392,12 +401,12 @@ EOD;
 	 * Used in gravityview_before.
 	 *
 	 * @param \GV\View $view The view we're looking at.
-	 * @param string $path The path of the offending template.
+	 * @param string   $path The path of the offending template.
 	 *
 	 * @return \Callable A closure used in the filter.
 	 */
 	public function legacy_template_warning( $view, $path ) {
-		return function() use ( $view, $path ) {
+		return function () use ( $view, $path ) {
 			// Do not panic for now...
 		};
 	}

@@ -19,18 +19,18 @@ abstract class Extension {
 	/**
 	 * @var string Name of the plugin in gravitykit.com
 	 */
-	protected $_title = NULL;
+	protected $_title = null;
 
 	/**
 	 * @var string Version number of the plugin
 	 */
-	protected $_version = NULL;
+	protected $_version = null;
 
 	/**
 	 * @var int The ID of the download on gravitykit.com
 	 * @since 1.1
 	 */
-	protected $_item_id = NULL;
+	protected $_item_id = null;
 
 	/**
 	 * @var string Translation textdomain
@@ -65,13 +65,13 @@ abstract class Extension {
 	/**
 	 * @var array Admin notices to display
 	 */
-	static protected $admin_notices = array();
+	protected static $admin_notices = array();
 
 	/**
 	 * @var boolean[] An array of extension compatibility.
 	 * @since 2.0 This is an array of classes instead.
 	 */
-	static public $is_compatible = array();
+	public static $is_compatible = array();
 
 	/**
 	 * Generic initialization.
@@ -122,12 +122,12 @@ abstract class Extension {
 
 		$locale = get_locale();
 
-		if ( function_exists('get_user_locale') && is_admin() ) {
+		if ( function_exists( 'get_user_locale' ) && is_admin() ) {
 			$locale = get_user_locale();
 		}
 
 		// Traditional WordPress plugin locale filter
-		$locale = apply_filters( 'plugin_locale',  $locale, $this->_text_domain );
+		$locale = apply_filters( 'plugin_locale', $locale, $this->_text_domain );
 
 		$mofile = sprintf( '%1$s-%2$s.mo', $this->_text_domain, $locale );
 
@@ -171,8 +171,8 @@ abstract class Extension {
 	 *
 	 * <code>
 	 * $tooltips['gv_example_extension_setting'] = array(
-	 * 	'title'	=> 'About Example Extension Setting',
-	 *  'value'	=> 'When you do [x] with [y], [z] happens.'
+	 *  'title' => 'About Example Extension Setting',
+	 *  'value' => 'When you do [x] with [y], [z] happens.'
 	 * );
 	 * </code>
 	 *
@@ -212,14 +212,14 @@ abstract class Extension {
 		}
 
 		$tab_defaults = array(
-			'id' => '',
-			'title' => '',
-			'callback' => '',
-			'icon-class' => '',
-			'file' => '',
+			'id'            => '',
+			'title'         => '',
+			'callback'      => '',
+			'icon-class'    => '',
+			'file'          => '',
 			'callback_args' => '',
-			'context' => 'side',
-			'priority' => 'default',
+			'context'       => 'side',
+			'priority'      => 'default',
 		);
 
 		$tab = wp_parse_args( $tab_settings, $tab_defaults );
@@ -260,14 +260,14 @@ abstract class Extension {
 
 		if ( ! function_exists( 'gravityview' ) ) {
 			$message = sprintf( __( 'Could not activate the %s Extension; GravityView is not active.', 'gk-gravityview' ), esc_html( $this->_title ) );
-		} else if ( false === version_compare( Plugin::$version, $this->_min_gravityview_version , ">=" ) ) {
-			$message = sprintf( __( 'The %s Extension requires GravityView Version %s or newer.', 'gk-gravityview' ), esc_html( $this->_title ), '<tt>'.$this->_min_gravityview_version.'</tt>' );
-		} else if ( isset( $this->_min_php_version ) && false === version_compare( phpversion(), $this->_min_php_version , ">=" ) ) {
-			$message = sprintf( __( 'The %s Extension requires PHP Version %s or newer. Please ask your host to upgrade your server\'s PHP.', 'gk-gravityview' ), esc_html( $this->_title ), '<tt>'.$this->_min_php_version.'</tt>' );
-		} else if ( ! empty( $this->_max_gravityview_version ) && false === version_compare( $this->_max_gravityview_version, Plugin::$version, ">" ) ) {
+		} elseif ( false === version_compare( Plugin::$version, $this->_min_gravityview_version, '>=' ) ) {
+			$message = sprintf( __( 'The %1$s Extension requires GravityView Version %2$s or newer.', 'gk-gravityview' ), esc_html( $this->_title ), '<tt>' . $this->_min_gravityview_version . '</tt>' );
+		} elseif ( isset( $this->_min_php_version ) && false === version_compare( phpversion(), $this->_min_php_version, '>=' ) ) {
+			$message = sprintf( __( 'The %1$s Extension requires PHP Version %2$s or newer. Please ask your host to upgrade your server\'s PHP.', 'gk-gravityview' ), esc_html( $this->_title ), '<tt>' . $this->_min_php_version . '</tt>' );
+		} elseif ( ! empty( $this->_max_gravityview_version ) && false === version_compare( $this->_max_gravityview_version, Plugin::$version, '>' ) ) {
 			$message = sprintf( __( 'The %s Extension is not compatible with this version of GravityView. Please update the Extension to the latest version.', 'gk-gravityview' ), esc_html( $this->_title ) );
 		} else {
-			$message = '';
+			$message                                   = '';
 			self::$is_compatible[ get_called_class() ] = gravityview()->plugin->is_compatible();
 		}
 
@@ -292,13 +292,13 @@ abstract class Extension {
 		if ( is_array( $notice ) && empty( $notice['message'] ) ) {
 			gravityview()->log->error( 'Notice not set', array( 'data' => $notice ) );
 			return;
-		} else if ( is_string( $notice ) ) {
+		} elseif ( is_string( $notice ) ) {
 			$notice = array( 'message' => $notice );
 		}
 
 		$notice['class'] = empty( $notice['class'] ) ? 'error' : $notice['class'];
 
-		self::$admin_notices []= $notice;
+		self::$admin_notices [] = $notice;
 	}
 
 	/**
@@ -312,13 +312,13 @@ abstract class Extension {
 		}
 
 		foreach ( self::$admin_notices as $key => $notice ) {
-			echo '<div id="message" class="'. esc_attr( $notice['class'] ).'">';
+			echo '<div id="message" class="' . esc_attr( $notice['class'] ) . '">';
 			echo wpautop( $notice['message'] );
 			echo '<div class="clear"></div>';
 			echo '</div>';
 		}
 
-		//reset the notices handler
+		// reset the notices handler
 		self::$admin_notices = array();
 	}
 }

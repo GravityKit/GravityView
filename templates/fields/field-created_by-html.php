@@ -11,7 +11,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$value = $gravityview->value;
+$value          = $gravityview->value;
 $field_settings = $gravityview->field->as_configuration();
 
 // There was no logged in user.
@@ -29,7 +29,7 @@ if ( ! $user ) {
 // Display the user data, based on the settings `id`, `username`, or `display_name`
 $name_display = empty( $field_settings['name_display'] ) ? 'display_name' : $field_settings['name_display'];
 
-switch ( true ):
+switch ( true ) :
 	// column
 	case in_array( $name_display, array( 'ID', 'user_login', 'display_name', 'user_email', 'user_registered' ), true ):
 		echo esc_html( $user->$name_display );

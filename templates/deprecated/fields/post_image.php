@@ -11,7 +11,7 @@ $gravityview_view = GravityView_View::getInstance();
 extract( $gravityview_view->getCurrentField() );
 
 // Tell the renderer not to wrap this field in an anchor tag.
-$gravityview_view->setCurrentFieldSetting('show_as_link', false);
+$gravityview_view->setCurrentFieldSetting( 'show_as_link', false );
 
 /**
  * Parse the stored value of the post image
@@ -21,11 +21,11 @@ $gravityview_view->setCurrentFieldSetting('show_as_link', false);
  * @see GFCommon::get_lead_field_display()
  * @var array
  */
-$ary = explode("|:|", $value);
-$url = count($ary) > 0 ? $ary[0] : "";
-$title = count($ary) > 1 ? $ary[1] : "";
-$caption = count($ary) > 2 ? $ary[2] : "";
-$description = count($ary) > 3 ? $ary[3] : "";
+$ary         = explode( '|:|', $value );
+$url         = count( $ary ) > 0 ? $ary[0] : '';
+$title       = count( $ary ) > 1 ? $ary[1] : '';
+$caption     = count( $ary ) > 2 ? $ary[2] : '';
+$description = count( $ary ) > 3 ? $ary[3] : '';
 
 $link_atts = array();
 
@@ -37,33 +37,34 @@ $link_atts = array();
  *
  * Dynamic data (get post featured image instead of GF entry field)
  */
-if( !empty( $field['postFeaturedImage'] ) && !empty( $field_settings['dynamic_data'] ) && !empty( $entry['post_id'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
+if ( ! empty( $field['postFeaturedImage'] ) && ! empty( $field_settings['dynamic_data'] ) && ! empty( $entry['post_id'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
 
 	/**
 	 * Modify what size is fetched for the post's Featured Image
+	 *
 	 * @param string $size The size to be fetched using `wp_get_attachment_image_src()` (default: 'large')
 	 * @param array $entry Gravity Forms entry array
 	 */
 	$image_size = apply_filters( 'gravityview/fields/post_image/size', 'large', $entry );
-	$image_url = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), $image_size );
+	$image_url  = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), $image_size );
 
-	if( empty( $image_url[0] ) ) {
-		do_action('gravityview_log_debug', 'Dynamic featured image for post #'.$entry['post_id'].' doesnt exist (size: '.$image_size.').' );
+	if ( empty( $image_url[0] ) ) {
+		do_action( 'gravityview_log_debug', 'Dynamic featured image for post #' . $entry['post_id'] . ' doesnt exist (size: ' . $image_size . ').' );
 	} else {
 		$url = $image_url[0];
 	}
 }
 
-##
-## Get the link URL
-##
+//
+// Get the link URL
+//
 
 // Link to the post created by the entry
-if( !empty( $field_settings['link_to_post'] ) ) {
+if ( ! empty( $field_settings['link_to_post'] ) ) {
 	$href = get_permalink( $entry['post_id'] );
 }
 // Link to the single entry
-else if ( !empty( $field_settings['show_as_link'] ) ) {
+elseif ( ! empty( $field_settings['show_as_link'] ) ) {
 	$href = gv_entry_link( $entry );
 }
 // Link to the file itself
@@ -72,10 +73,9 @@ else {
 	$href = $url;
 
 	// Only show the lightbox if linking to the file itself
-	if( $gravityview_view->getAtts('lightbox') ) {
+	if ( $gravityview_view->getAtts( 'lightbox' ) ) {
 		$link_atts['class'] = apply_filters( 'gravityview_lightbox_script', 'thickbox' );
 	}
-
 }
 
 
@@ -86,83 +86,87 @@ $link_atts['href'] = $href;
 $link_atts['title'] = $title;
 
 
-##
-## Get the image
-##
+//
+// Get the image
+//
 $image_atts = array(
-	'src'	=> $url,
-	'alt'	=> ( !empty( $caption ) ? $caption : $title ),
-	'validate_src'	=> false, // Already validated by GF
+	'src'          => $url,
+	'alt'          => ( ! empty( $caption ) ? $caption : $title ),
+	'validate_src' => false, // Already validated by GF
 );
 
 $image = new GravityView_Image( $image_atts );
 
 
 /**
- * @filter `gravityview_post_image_meta` Modify the values used for the image meta.
+ * Modify the values used for the image meta.
+ *
  * @see https://www.gravitykit.com/support/documentation/201606759 Read more about the filter
  * @var array $image_meta Associative array with `title`, `caption`, and `description` keys, each an array with `label`, `value`, `tag_label` and `tag_value` keys
  */
-$image_meta = apply_filters('gravityview_post_image_meta', array(
-	'title' => array(
-		'label' => esc_attr_x( 'Title:', 'Post Image field title heading', 'gk-gravityview'),
-		'value' => $title,
-		'tag_label' => 'span',
-		'tag_value' => 'div'
-	),
-	'caption' => array(
-		'label' => esc_attr_x( 'Caption:', 'Post Image field caption heading', 'gk-gravityview'),
-		'value' => $caption,
-		'tag_label' => 'span',
-		'tag_value' => GFFormsModel::is_html5_enabled() ? 'figcaption' : 'div',
-	),
-	'description' => array(
-		'label' => esc_attr_x( 'Description:', 'Post Image field description heading', 'gk-gravityview'),
-		'value' => $description,
-		'tag_label' => 'span',
-		'tag_value' => 'div'
-	),
-));
+$image_meta = apply_filters(
+	'gravityview_post_image_meta',
+	array(
+		'title'       => array(
+			'label'     => esc_attr_x( 'Title:', 'Post Image field title heading', 'gk-gravityview' ),
+			'value'     => $title,
+			'tag_label' => 'span',
+			'tag_value' => 'div',
+		),
+		'caption'     => array(
+			'label'     => esc_attr_x( 'Caption:', 'Post Image field caption heading', 'gk-gravityview' ),
+			'value'     => $caption,
+			'tag_label' => 'span',
+			'tag_value' => GFFormsModel::is_html5_enabled() ? 'figcaption' : 'div',
+		),
+		'description' => array(
+			'label'     => esc_attr_x( 'Description:', 'Post Image field description heading', 'gk-gravityview' ),
+			'value'     => $description,
+			'tag_label' => 'span',
+			'tag_value' => 'div',
+		),
+	)
+);
 
 // If HTML5 output is enabled, support the `figure` and `figcaption` tags
 $wrappertag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
 
 /**
- * @filter `gravityview_post_image_meta_show_labels` Whether to show labels for the image meta.
+ * Whether to show labels for the image meta.
+ *
  * @see https://www.gravitykit.com/support/documentation/201606759 Read more about the filter
  * @var boolean $showlabels True: Show labels; False: hide labels
  */
 $showlabels = apply_filters( 'gravityview_post_image_meta_show_labels', true );
 
 // Wrapper tag
-$output = '<'.$wrappertag.' class="gv-image">';
+$output = '<' . $wrappertag . ' class="gv-image">';
 
 // Image with link tag
 $output .= gravityview_get_link( $href, $image, $link_atts );
 
-foreach ( (array)$image_meta as $key => $meta ) {
+foreach ( (array) $image_meta as $key => $meta ) {
 
-	if( !empty( $meta['value'] ) ) {
+	if ( ! empty( $meta['value'] ) ) {
 
-		$output .= '<div class="gv-image-'.esc_attr( $key ).'">';
+		$output .= '<div class="gv-image-' . esc_attr( $key ) . '">';
 
 		// Display the label if the label's not empty
-		if( !empty( $showlabels ) && !empty( $meta['label'] ) ) {
-			$output .= '<'.esc_attr( $meta['tag_label'] ).' class="gv-image-label">';
+		if ( ! empty( $showlabels ) && ! empty( $meta['label'] ) ) {
+			$output .= '<' . esc_attr( $meta['tag_label'] ) . ' class="gv-image-label">';
 			$output .= esc_html( $meta['label'] );
-			$output .= '</'.esc_attr( $meta['tag_label'] ).'> ';
+			$output .= '</' . esc_attr( $meta['tag_label'] ) . '> ';
 		}
 
 		// Display the value
-		$output .= '<'.esc_attr( $meta['tag_value'] ).' class="gv-image-value">';
+		$output .= '<' . esc_attr( $meta['tag_value'] ) . ' class="gv-image-value">';
 		$output .= esc_html( $meta['value'] );
-		$output .= '</'.esc_attr( $meta['tag_value'] ).'>';
+		$output .= '</' . esc_attr( $meta['tag_value'] ) . '>';
 
 		$output .= '</div>';
 	}
-
 }
 
-$output .= '</'.$wrappertag.'>';
+$output .= '</' . $wrappertag . '>';
 
 echo $output;

@@ -14,7 +14,7 @@ class Utils {
 	 * Grab a value from the _GET superglobal or default.
 	 *
 	 * @param string $name The key name (will be prefixed).
-	 * @param mixed $default The default value if not found (Default: null)
+	 * @param mixed  $default The default value if not found (Default: null)
 	 *
 	 * @return mixed The value or $default if not found.
 	 */
@@ -26,7 +26,7 @@ class Utils {
 	 * Grab a value from the _POST superglobal or default.
 	 *
 	 * @param string $name The key name (will be prefixed).
-	 * @param mixed $default The default value if not found (Default: null)
+	 * @param mixed  $default The default value if not found (Default: null)
 	 *
 	 * @return mixed The value or $default if not found.
 	 */
@@ -38,7 +38,7 @@ class Utils {
 	 * Grab a value from the _REQUEST superglobal or default.
 	 *
 	 * @param string $name The key name (will be prefixed).
-	 * @param mixed $default The default value if not found (Default: null)
+	 * @param mixed  $default The default value if not found (Default: null)
 	 *
 	 * @return mixed The value or $default if not found.
 	 */
@@ -50,7 +50,7 @@ class Utils {
 	 * Grab a value from the _SERVER superglobal or default.
 	 *
 	 * @param string $name The key name (will be prefixed).
-	 * @param mixed $default The default value if not found (Default: null)
+	 * @param mixed  $default The default value if not found (Default: null)
 	 *
 	 * @return mixed The value or $default if not found.
 	 */
@@ -64,8 +64,8 @@ class Utils {
 	 * Supports nested arrays, objects via / key delimiters.
 	 *
 	 * @param array|object|mixed $array The array (or object). If not array or object, returns $default.
-	 * @param string $key The key.
-	 * @param mixed $default The default value. Default: null
+	 * @param string             $key The key.
+	 * @param mixed              $default The default value. Default: null
 	 *
 	 * @return mixed  The value or $default if not found.
 	 */
@@ -87,7 +87,7 @@ class Utils {
 			if ( isset( $array[ $key ] ) ) {
 				return $array[ $key ];
 			}
-		} else if ( is_object( $array ) ) {
+		} elseif ( is_object( $array ) ) {
 			if ( isset( $array->$key ) ) {
 				return $array->$key;
 			}
@@ -115,7 +115,7 @@ class Utils {
 	 */
 	public static function strip_excel_formulas( $value ) {
 
-		if ( strpos( $value, '=' ) === 0 ) {
+		if ( 0 === strpos( $value, '=' ) ) {
 			$value = "'" . $value;
 		}
 
@@ -135,7 +135,9 @@ class Utils {
 	 * @return Closure The closure with the $value bound.
 	 */
 	public static function _return( $value ) {
-		return function() use ( $value ) { return $value; };
+		return function () use ( $value ) {
+			return $value;
+		};
 	}
 
 	/**
@@ -151,7 +153,7 @@ class Utils {
 	public static function gf_query_debug( $query ) {
 		$introspect = $query->_introspect();
 		return array(
-			'where' => $query->_where_unwrap( $introspect['where'] )
+			'where' => $query->_where_unwrap( $introspect['where'] ),
 		);
 	}
 
@@ -175,17 +177,15 @@ class Utils {
 				$conditions[] = self::gf_query_strip_condition_column_aliases( $expression );
 			}
 			return call_user_func_array(
-				array( '\GF_Query_Condition', $condition->operator == 'AND' ? '_and' : '_or' ),
+				array( '\GF_Query_Condition', 'AND' == $condition->operator ? '_and' : '_or' ),
 				$conditions
 			);
-		} else {
-			if ( $condition->left instanceof \GF_Query_Column ) {
+		} elseif ( $condition->left instanceof \GF_Query_Column ) {
 				return new \GF_Query_Condition(
 					new \GF_Query_Column( $condition->left->field_id ),
 					$condition->operator,
 					$condition->right
 				);
-			}
 		}
 
 		return $condition;

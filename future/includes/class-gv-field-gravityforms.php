@@ -28,19 +28,37 @@ class GF_Field extends Field {
 	 */
 	public static function from_configuration( $configuration ) {
 		if ( empty( $configuration['id'] ) || ! is_numeric( $configuration['id'] ) ) {
-			gravityview()->log->error( 'Invalid configuration[id] supplied: {id}', array( 'data' => $configuration, 'id' => \GV\Utils::get( $configuration, 'id' ) ) );
+			gravityview()->log->error(
+				'Invalid configuration[id] supplied: {id}',
+				array(
+					'data' => $configuration,
+					'id'   => \GV\Utils::get( $configuration, 'id' ),
+				)
+			);
 			return null;
 		}
 
-		if ( empty( $configuration['form_id'] ) || ! $form = \GV\GF_Form::by_id( $configuration['form_id'] )  ) {
-			gravityview()->log->error( 'Invalid configuration[form_id] supplied: {form_id}', array( 'data' => $configuration, 'form_id' => \GV\Utils::get( $configuration, 'form_id' ) ) );
+		if ( empty( $configuration['form_id'] ) || ! $form = \GV\GF_Form::by_id( $configuration['form_id'] ) ) {
+			gravityview()->log->error(
+				'Invalid configuration[form_id] supplied: {form_id}',
+				array(
+					'data'    => $configuration,
+					'form_id' => \GV\Utils::get( $configuration, 'form_id' ),
+				)
+			);
 			return null;
 		}
 
 		$field = self::by_id( $form, $configuration['id'] );
 
 		if ( ! $field ) {
-			gravityview()->log->error( 'Invalid configuration: Field not found by [id] supplied: {id}', array( 'data' => $configuration, 'id' => \GV\Utils::get( $configuration, 'id' ) ) );
+			gravityview()->log->error(
+				'Invalid configuration: Field not found by [id] supplied: {id}',
+				array(
+					'data' => $configuration,
+					'id'   => \GV\Utils::get( $configuration, 'id' ),
+				)
+			);
 			return null;
 		}
 
@@ -52,7 +70,7 @@ class GF_Field extends Field {
 	 * Get a \GV\GF_Field by \GV\GF_Form and Field ID.
 	 *
 	 * @param \GV\GF_Form $form The Gravity Form form.
-	 * @param int $field_id The Gravity Form field ID for the $form.
+	 * @param int         $field_id The Gravity Form field ID for the $form.
 	 *
 	 * @return \GV\Field|null The requested field or null if not found.
 	 */
@@ -68,16 +86,21 @@ class GF_Field extends Field {
 			return null;
 		}
 
-
 		$gv_field = \GFFormsModel::get_field( $form->form, $field_id );
 
 		if ( ! $gv_field ) {
-			gravityview()->log->error( 'Invalid $field_id #{field_id} for current source', array( 'data' => $form, 'field_id' => $field_id ) );
+			gravityview()->log->error(
+				'Invalid $field_id #{field_id} for current source',
+				array(
+					'data'     => $form,
+					'field_id' => $field_id,
+				)
+			);
 			return null;
 		}
 
-		$field = new self();
-		$field->ID = $field_id;
+		$field        = new self();
+		$field->ID    = $field_id;
 		$field->field = $gv_field;
 
 		return $field;
@@ -88,9 +111,9 @@ class GF_Field extends Field {
 	 *
 	 * Requires a \GV\GF_Form in this implementation.
 	 *
-	 * @param \GV\View $view The view for this context if applicable.
-	 * @param \GV\Source $source The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\View    $view The view for this context if applicable.
+	 * @param \GV\Source  $source The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @return string The label for this Gravity Forms field.
@@ -130,9 +153,9 @@ class GF_Field extends Field {
 	 *
 	 * Requires a \GV\GF_Entry in this implementation.
 	 *
-	 * @param \GV\View $view The view for this context if applicable.
-	 * @param \GV\Source $source The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\View    $view The view for this context if applicable.
+	 * @param \GV\Source  $source The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @return mixed The value for this field.

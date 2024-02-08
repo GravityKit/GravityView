@@ -35,7 +35,7 @@ class GravityView_Field_Consent extends GravityView_Field {
 	/**
 	 * Returns the value of the consent field based on the field settings.
 	 *
-	 * @param string $output Existing default $display_value for the field
+	 * @param string               $output Existing default $display_value for the field
 	 * @param \GV\Template_Context $context
 	 *
 	 * @return string
@@ -55,13 +55,12 @@ class GravityView_Field_Consent extends GravityView_Field {
 			case 'tick':
 				return $consent_field->checked_indicator_markup;
 			case 'label':
-
 				$revision_id = absint( trim( $context->value[ $context->field->ID . '.3' ] ) );
 
 				// Gravity Forms performs a DB query for consent output. Let's reduce queries
 				// and cache each version we find.
 				static $_consent_field_cache = array();
-				$_cache_key = "{$consent_field->formId}_{$consent_field->ID}_{$revision_id}";
+				$_cache_key                  = "{$consent_field->formId}_{$consent_field->ID}_{$revision_id}";
 
 				// We have a cache hit!
 				if ( ! empty( $_consent_field_cache[ $_cache_key ] ) ) {
@@ -86,7 +85,7 @@ class GravityView_Field_Consent extends GravityView_Field {
 	/**
 	 * Add `choice_display` setting to the field
 	 *
-	 * @param array $field_options
+	 * @param array  $field_options
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $context
@@ -101,7 +100,7 @@ class GravityView_Field_Consent extends GravityView_Field {
 		// Set the $_field_id var
 		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		if( floor( $field_id ) !== floatval( $field_id ) ) {
+		if ( floor( $field_id ) !== floatval( $field_id ) ) {
 			$default = 'tick';
 		} else {
 			$default = 'both';
@@ -126,4 +125,4 @@ class GravityView_Field_Consent extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Consent;
+new GravityView_Field_Consent();

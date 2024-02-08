@@ -88,8 +88,8 @@ class GravityView_Entry_Approval_Merge_Tags {
 				__( 'If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry.', 'gk-gravityview' ),
 				array(
 					'{public}' => '<code style="font-size: .9em">:public</code>',
-					'{link}' => '<a href="https://docs.gravitykit.com/article/904-entry-moderation-merge-tags" target="_blank" rel="noopener noreferrer">',
-					'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
+					'{link}'   => '<a href="https://docs.gravitykit.com/article/904-entry-moderation-merge-tags" target="_blank" rel="noopener noreferrer">',
+					'{/link}'  => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
 				)
 			),
 			'choices'       => array(
@@ -113,10 +113,10 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 *
 	 * @since 2.17
 	 *
-	 * @param array $custom_merge_tags
-	 * @param int $form_id GF Form ID
+	 * @param array      $custom_merge_tags
+	 * @param int        $form_id GF Form ID
 	 * @param GF_Field[] $fields Array of fields in the form
-	 * @param string $element_id The ID of the input that Merge Tags are being used on
+	 * @param string     $element_id The ID of the input that Merge Tags are being used on
 	 *
 	 * @return array Modified merge tags
 	 */
@@ -148,9 +148,9 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 * @see replace_merge_tag Override replace_merge_tag() to handle any matches
 	 *
 	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
+	 * @param array  $form Gravity Forms form array
+	 * @param array  $entry Entry array
+	 * @param bool   $url_encode Whether to URL-encode output
 	 *
 	 * @return string Original text if {_custom_merge_tag} isn't found. Otherwise, replaced text.
 	 */
@@ -176,12 +176,12 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 *
 	 * @since 2.17
 	 *
-	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
-	 * @param string $text Text to replace
+	 * @param array      $matches Array of Merge Tag matches found in text by preg_match_all
+	 * @param string     $text Text to replace
 	 * @param array|bool $form Gravity Forms form array. When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`
 	 * @param array|bool $entry Entry array.  When called inside {@see GFCommon::replace_variables()} (now deprecated), `false`
-	 * @param bool $url_encode Whether to URL-encode output
-	 * @param bool $esc_html Whether to apply `esc_html()` to output
+	 * @param bool       $url_encode Whether to URL-encode output
+	 * @param bool       $esc_html Whether to apply `esc_html()` to output
 	 *
 	 * @return mixed
 	 */
@@ -244,9 +244,9 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 * @since 2.17
 	 *
 	 * @param string|bool $action Action to be taken by the merge tag.
-	 * @param int $expiration_timestamp Timestamp when the token expires.
-	 * @param string $privacy Approval link privacy. Accepted values are 'private' or 'public'.
-	 * @param array $entry Entry array.
+	 * @param int         $expiration_timestamp Timestamp when the token expires.
+	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
+	 * @param array       $entry Entry array.
 	 *
 	 * @return string     Encrypted token.
 	 */
@@ -325,7 +325,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 * @since 2.17
 	 *
 	 * @param string|bool $token
-	 * @param string $privacy Approval link privacy. Accepted values are 'private' or 'public'.
+	 * @param string      $privacy Approval link privacy. Accepted values are 'private' or 'public'.
 	 *
 	 * @return string Approval link URL
 	 */
@@ -362,7 +362,6 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 * @type string $gv_token Approval link token
 	 * @type string $nonce (optional) Nonce hash to be validated. Only available if $expiration_seconds is smaller than DAY_IN_SECONDS.
 	 * }
-	 *
 	 */
 	public function maybe_update_approved() {
 
@@ -505,13 +504,12 @@ class GravityView_Entry_Approval_Merge_Tags {
 	 * @global array $_GET {
 	 * @type string $gv_approval_link_result Approval link result
 	 * }
-	 *
 	 */
 	public function maybe_show_approval_notice() {
 
-		$result = GV\Utils::_GET( self::NOTICE_URL_ARG );
+		$result          = GV\Utils::_GET( self::NOTICE_URL_ARG );
 		$approval_status = \GV\Utils::_GET( 'approval_status' );
-		$entry_id = \GV\Utils::_GET( 'entry_id' );
+		$entry_id        = \GV\Utils::_GET( 'entry_id' );
 
 		if ( ! $result || ! $approval_status || ! $entry_id ) {
 			return;
@@ -534,10 +532,13 @@ class GravityView_Entry_Approval_Merge_Tags {
 			$css_class = 'error';
 		}
 
-		$message = strtr( $message, array(
-			'{entry_id}'       => esc_html( $entry_id ),
-			'{approval_label}' => esc_html( $approval_label ),
-		) );
+		$message = strtr(
+			$message,
+			array(
+				'{entry_id}'       => esc_html( $entry_id ),
+				'{approval_label}' => esc_html( $approval_label ),
+			)
+		);
 
 		$message = \GVCommon::generate_notice( wpautop( $message ), $css_class );
 
@@ -579,7 +580,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 			return new WP_Error( 'approve_link_no_signature', esc_html__( 'The link is invalid.', 'gk-gravityview' ) );
 		}
 
-		$secret = wp_salt( 'nonce' );
+		$secret            = wp_salt( 'nonce' );
 		$verification_sig  = hash_hmac( 'sha256', $body_64, $secret );
 		$verification_sig2 = hash_hmac( 'sha256', rawurlencode( $body_64 ), $secret );
 
@@ -643,10 +644,10 @@ class GravityView_Entry_Approval_Merge_Tags {
 	/**
 	 * Updates the entry approval status and redirects to $return_url.
 	 *
-	 * @param int $entry_id Entry ID.
-	 * @param int $approval_status Approval status.
-	 * @param int $form_id Form ID.
-	 * @param array $scopes Token scopes to be passed to the return URL and used in {@see maybe_show_approval_notice()}.
+	 * @param int    $entry_id Entry ID.
+	 * @param int    $approval_status Approval status.
+	 * @param int    $form_id Form ID.
+	 * @param array  $scopes Token scopes to be passed to the return URL and used in {@see maybe_show_approval_notice()}.
 	 * @param string $return_url Url to redirect to once moderation happens.
 	 *
 	 * @return void
@@ -662,7 +663,8 @@ class GravityView_Entry_Approval_Merge_Tags {
 		$return_url = add_query_arg( $query_args, $return_url );
 
 		/**
-		 * @filter `gk/gravityview/approve-link/return-url` Modify the return URL after entry approval.
+		 * Modify the return URL after entry approval.
+		 *
 		 * @since 2.18.7
 		 * @param int $entry_id Entry ID.
 		 * @param int $approval_status Approval status.
@@ -678,4 +680,4 @@ class GravityView_Entry_Approval_Merge_Tags {
 	}
 }
 
-new GravityView_Entry_Approval_Merge_Tags;
+new GravityView_Entry_Approval_Merge_Tags();

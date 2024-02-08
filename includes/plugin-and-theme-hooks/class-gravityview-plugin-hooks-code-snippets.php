@@ -28,7 +28,6 @@ class GravityView_Plugin_Hooks_Code_Snippets extends GravityView_Plugin_and_Them
 	 * @var array
 	 */
 	protected $style_handles = array( 'menu-icon-snippets' );
-
 }
 
-new GravityView_Plugin_Hooks_Code_Snippets;
+new GravityView_Plugin_Hooks_Code_Snippets();

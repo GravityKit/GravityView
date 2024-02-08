@@ -21,6 +21,30 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.19.6 on February 7, 2024 =
+
+This update introduces the ability to send notifications using Gravity Forms when an entry is deleted, improves sorting and survey field ratings, and updates key components for better performance and compatibility.
+
+#### 🚀 Added
+* Ability to send notifications using Gravity Forms when an entry is deleted by selecting the "GravityView - Entry is deleted" event from the event dropdown in Gravity Forms notifications settings.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) and [TrustedLogin](https://www.trustedlogin.com/) to versions 1.2.8 and 1.7.0, respectively.
+  - Transients are now set and retrieved correctly when using object cache plugins.
+  - Fixed a JavaScript warning that occurred when deactivating license keys and when viewing products without the necessary permissions.
+  - Resolved PHP warning messages on the Plugins page.
+
+#### 🐛 Fixed
+* Sorting the View by entry ID in ascending and descending order would yield the same result.
+* Survey fields without a rating would show a 1-star rating.
+* Editing Gravity Forms [Custom Post Fields](https://docs.gravityforms.com/post-custom/#h-general-settings) with a Field Type set to "File Uploads" inside in Edit Entry.
+
+__Developer Updates:__
+
+* Added: `GravityView_Notifications` class as a wrapper for Gravity Forms notifications.
+* Modified: Added the current `\GV\View` object as a second parameter for the `gravityview/search-all-split-words` and `gravityview/search-trim-input` filters.
+* Modified: Attach listeners in the View editor to `$( document.body )` instead of `$('body')` for speed improvements.
+
 = 2.19.5 on December 7, 2023 =
 
 * Fixed: PHP 8.1+ deprecation notice when editing an entry with the Gravity Forms User Registration add-on enabled

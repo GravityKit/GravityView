@@ -18,6 +18,7 @@ Gruntfile.js export-ignore
 package.json export-ignore
 package-lock.json export-ignore
 phpcs.ruleset.xml export-ignore
+phpcs.xml export-ignore
 phpcs.xml.dist export-ignore
 phpunit.xml export-ignore
 phpunit.xml.dist export-ignore
@@ -29,6 +30,7 @@ translations.pot export-ignore
 # Folders
 /.circleci export-ignore
 /.github export-ignore
+/.husky export-ignore
 /.idea export-ignore
 /.tx export-ignore
 /assets/css/scss export-ignore

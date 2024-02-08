@@ -6,12 +6,12 @@
  */
 
 $gravityview_view = GravityView_View::getInstance();
-$search_field = $gravityview_view->search_field;
+$search_field     = $gravityview_view->search_field;
 
 ?>
 
 <div class="gv-search-box gv-search-date">
-	<?php if( ! gv_empty( $search_field['label'], false, false ) ) { ?>
+	<?php if ( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 	<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>
 	<p>

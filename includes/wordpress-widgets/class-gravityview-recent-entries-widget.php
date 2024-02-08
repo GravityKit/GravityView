@@ -5,14 +5,15 @@
 
 /**
  * Class GravityView_Recent_Entries_Widget
+ *
  * @since 1.6
  */
 class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 
-	function __construct( ) {
+	function __construct() {
 
-		$name = __('GravityView Recent Entries', 'gk-gravityview');
+		$name = __( 'GravityView Recent Entries', 'gk-gravityview' );
 
 		$widget_options = array(
 			'description' => __( 'Display the most recent entries for a View', 'gk-gravityview' ),
@@ -25,10 +26,9 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 	private function initialize() {
 
-		add_action('admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		add_action( 'wp_ajax_gv_get_view_merge_tag_data', array( $this, 'ajax_get_view_merge_tag_data' ) );
-
 	}
 
 	/**
@@ -42,14 +42,14 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 			exit( false );
 		}
 
-		$form_id  = gravityview_get_form_id( $_POST['view_id'] );
+		$form_id = gravityview_get_form_id( $_POST['view_id'] );
 
 		$form = RGFormsModel::get_form_meta( $form_id );
 
 		$output = array(
-			'form' => array(
-				'id' => $form['id'],
-				'title' => $form['title'],
+			'form'      => array(
+				'id'     => $form['id'],
+				'title'  => $form['title'],
 				'fields' => $form['fields'],
 			),
 			'mergeTags' => GFCommon::get_merge_tags( $form['fields'], '', false ),
@@ -68,19 +68,22 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	function admin_enqueue_scripts() {
 		global $pagenow;
 
-		if( $pagenow === 'widgets.php' ) {
+		if ( 'widgets.php' === $pagenow ) {
 
-			$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+			$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-			wp_enqueue_script( 'gravityview_widgets', plugins_url('assets/js/admin-widgets'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery', 'gform_gravityforms' ), GV_PLUGIN_VERSION );
+			wp_enqueue_script( 'gravityview_widgets', plugins_url( 'assets/js/admin-widgets' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery', 'gform_gravityforms' ), GV_PLUGIN_VERSION );
 
-			wp_localize_script( 'gravityview_widgets', 'GVWidgets', array(
-				'nonce' => wp_create_nonce( 'gravityview_ajax_widget' )
-			));
+			wp_localize_script(
+				'gravityview_widgets',
+				'GVWidgets',
+				array(
+					'nonce' => wp_create_nonce( 'gravityview_ajax_widget' ),
+				)
+			);
 
-			wp_enqueue_style( 'gravityview_views_styles', plugins_url('assets/css/admin-views.css', GRAVITYVIEW_FILE), array('dashicons' ), GV_PLUGIN_VERSION );
+			wp_enqueue_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array( 'dashicons' ), GV_PLUGIN_VERSION );
 		}
-
 	}
 
 	/**
@@ -93,7 +96,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	function widget( $args, $instance ) {
 
 		// Don't have the Customizer render too soon.
-		if( empty( $instance['view_id'] ) ) {
+		if ( empty( $instance['view_id'] ) ) {
 			return;
 		}
 
@@ -104,16 +107,17 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$args['id']        = ( isset( $args['id'] ) ) ? $args['id'] : 'gv_recent_entries';
 		$instance['title'] = ( isset( $instance['title'] ) ) ? $instance['title'] : '';
 
-		$title = apply_filters( 'widget_title', $instance[ 'title' ], $instance, $args['id'] );
+		$title = apply_filters( 'widget_title', $instance['title'], $instance, $args['id'] );
 
 		echo $args['before_widget'];
 
-		if ( !empty( $title ) ) {
+		if ( ! empty( $title ) ) {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
 		/**
-		 * @action `gravityview/widget/recent-entries/before_widget` Before recent entries are displayed in the WordPress widget
+		 * Before recent entries are displayed in the WordPress widget.
+		 *
 		 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
 		 * @param array $instance The settings for the particular instance of the widget.
 		 */
@@ -123,7 +127,8 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		echo $this->get_output( $instance );
 
 		/**
-		 * @action `gravityview/widget/recent-entries/after_widget` After recent entries are displayed in the WordPress widget
+		 * After recent entries are displayed in the WordPress widget.
+		 *
 		 * @param array $args     Display arguments including before_title, after_title, before_widget, and after_widget.
 		 * @param array $instance The settings for the particular instance of the widget.
 		 */
@@ -153,10 +158,11 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		 * @since 1.6.1
 		 * @var int $entry_link_post_id The ID to use as the parent post for the entry
 		 */
-		$entry_link_post_id = ( empty( $instance['error_post_id'] ) && !empty( $instance['post_id'] ) ) ? $instance['post_id'] : $instance['view_id'];
+		$entry_link_post_id = ( empty( $instance['error_post_id'] ) && ! empty( $instance['post_id'] ) ) ? $instance['post_id'] : $instance['view_id'];
 
 		/**
 		 * Generate list output
+		 *
 		 * @since 1.7.2
 		 */
 		$List = new GravityView_Entry_List( $entries, $entry_link_post_id, $form, $instance['link_format'], $instance['after_link'], 'recent-entries-widget', null, $instance['view_id'] );
@@ -165,6 +171,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		/**
 		 * Modify the HTML before it's echo'd
+		 *
 		 * @param string $output HTML to be displayed
 		 * @param array $instance Widget settings
 		 */
@@ -177,7 +184,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 	/**
 	 * Get the entries that will be shown in the current widget
 	 *
-	 * @param  array $instance Settings for the current widget
+	 * @param  array  $instance Settings for the current widget
 	 * @param  string $form_id Form ID int, as string
 	 *
 	 * @return array|GV\Entry[] $entries Multidimensional array of Gravity Forms entries or GravityView Entry objects
@@ -192,7 +199,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		// Don't let the pagination override the View's settings.
 		$_get_placeholder = $_GET;
-		$_GET = [];
+		$_GET             = array();
 
 		$entries = $view->get_entries();
 
@@ -227,11 +234,11 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		$is_valid_embed_id = GravityView_View_Data::is_valid_embed_id( $instance['post_id'], $instance['view_id'], true );
 
-		//check if post_id is a valid post with embedded View
-		$instance['error_post_id'] = is_wp_error( $is_valid_embed_id ) ? $is_valid_embed_id->get_error_message() : NULL;
+		// check if post_id is a valid post with embedded View
+		$instance['error_post_id'] = is_wp_error( $is_valid_embed_id ) ? $is_valid_embed_id->get_error_message() : null;
 
 		// Share that the widget isn't brand new
-		$instance['updated']  = 1;
+		$instance['updated'] = 1;
 
 		/**
 		 * Modify the updated instance. This will allow for validating any added instance settings externally.
@@ -253,12 +260,12 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		// Set up some default widget settings.
 		$defaults = array(
-			'title' 			=> __('Recent Entries', 'gk-gravityview'),
-			'view_id'           => NULL,
-			'post_id'           => NULL,
-			'limit'            => 10,
-			'link_format'       => __('Entry #{entry_id}', 'gk-gravityview'),
-			'after_link'        => ''
+			'title'       => __( 'Recent Entries', 'gk-gravityview' ),
+			'view_id'     => null,
+			'post_id'     => null,
+			'limit'       => 10,
+			'link_format' => __( 'Entry #{entry_id}', 'gk-gravityview' ),
+			'after_link'  => '',
 		);
 
 		$instance = wp_parse_args( (array) $instance, $defaults );
@@ -267,13 +274,13 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 
 		<!-- Title -->
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'gk-gravityview' ) ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php _e( 'Title:', 'gk-gravityview' ); ?></label>
 			<input class="widefat" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" type="text" value="<?php echo esc_attr( $instance['title'] ); ?>" />
 		</p>
 
 		<!-- Download -->
 		<?php
-		$args = array(
+		$args  = array(
 			'post_type'      => 'gravityview',
 			'posts_per_page' => -1,
 			'post_status'    => 'publish',
@@ -281,7 +288,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		$views = get_posts( $args );
 
 		// If there are no views set up yet, we get outta here.
-		if( empty( $views ) ) {
+		if ( empty( $views ) ) {
 			echo '<div id="select_gravityview_view"><div class="wrap">' . GravityView_Admin::no_views_text() . '</div></div>';
 			return;
 		}
@@ -291,27 +298,28 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		<?php
 		/**
 		 * Display errors generated for invalid embed IDs
+		 *
 		 * @see GravityView_View_Data::is_valid_embed_id
 		 */
-		if( isset( $instance['updated'] ) && empty( $instance['view_id'] ) ) {
+		if ( isset( $instance['updated'] ) && empty( $instance['view_id'] ) ) {
 			?>
 			<div class="error inline hide-on-view-change">
-				<p><?php esc_html_e('Please select a View to search.', 'gk-gravityview'); ?></p>
+				<p><?php esc_html_e( 'Please select a View to search.', 'gk-gravityview' ); ?></p>
 			</div>
 			<?php
-			unset ( $error );
+			unset( $error );
 		}
 		?>
 
 		<p>
-			<label for="<?php echo esc_attr( $this->get_field_id( 'view_id' ) ); ?>"><?php esc_html_e('Select a View', 'gk-gravityview'); ?></label>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'view_id' ) ); ?>"><?php esc_html_e( 'Select a View', 'gk-gravityview' ); ?></label>
 			<select class="widefat gv-recent-entries-select-view" name="<?php echo esc_attr( $this->get_field_name( 'view_id' ) ); ?>" id="<?php echo esc_attr( $this->get_field_id( 'view_id' ) ); ?>">
 				<option value=""><?php esc_html_e( '&mdash; Select a View as Entries Source &mdash;', 'gk-gravityview' ); ?></option>
 				<?php
 
-				foreach( $views as $view ) {
-					$title = empty( $view->post_title ) ? __('(no title)', 'gk-gravityview') : $view->post_title;
-					echo '<option value="'. $view->ID .'"'.selected( absint( $instance['view_id'] ), $view->ID ).'>'. esc_html( sprintf('%s #%d', $title, $view->ID ) ) .'</option>';
+				foreach ( $views as $view ) {
+					$title = empty( $view->post_title ) ? __( '(no title)', 'gk-gravityview' ) : $view->post_title;
+					echo '<option value="' . $view->ID . '"' . selected( absint( $instance['view_id'] ), $view->ID ) . '>' . esc_html( sprintf( '%s #%d', $title, $view->ID ) ) . '</option>';
 				}
 
 				?>
@@ -321,25 +329,28 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		<?php
 		/**
 		 * Display errors generated for invalid embed IDs
+		 *
 		 * @see GravityView_View_Data::is_valid_embed_id
 		 */
-		if( !empty( $instance['error_post_id'] ) ) {
+		if ( ! empty( $instance['error_post_id'] ) ) {
 			?>
 			<div class="error inline">
 				<p><?php echo $instance['error_post_id']; ?></p>
 			</div>
 			<?php
-			unset ( $error );
+			unset( $error );
 		}
 		?>
 
 		<p>
-			<label for="<?php echo $this->get_field_id('post_id'); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gk-gravityview' ); ?></label>
-			<input class="code" size="3" id="<?php echo $this->get_field_id('post_id'); ?>" name="<?php echo $this->get_field_name('post_id'); ?>" type="text" value="<?php echo esc_attr( $instance['post_id'] ); ?>" />
-			<span class="howto gv-howto"><?php
-				esc_html_e('To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gk-gravityview' );
-				echo ' '.gravityview_get_link('https://docs.gravitykit.com/article/222-the-search-widget', __('Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
-				?></span>
+			<label for="<?php echo $this->get_field_id( 'post_id' ); ?>"><?php esc_html_e( 'If Embedded, Page ID:', 'gk-gravityview' ); ?></label>
+			<input class="code" size="3" id="<?php echo $this->get_field_id( 'post_id' ); ?>" name="<?php echo $this->get_field_name( 'post_id' ); ?>" type="text" value="<?php echo esc_attr( $instance['post_id'] ); ?>" />
+			<span class="howto gv-howto">
+			<?php
+				esc_html_e( 'To have a search performed on an embedded View, enter the ID of the post or page where the View is embedded.', 'gk-gravityview' );
+				echo ' ' . gravityview_get_link( 'https://docs.gravitykit.com/article/222-the-search-widget', __( 'Learn more&hellip;', 'gk-gravityview' ), 'target=_blank' );
+			?>
+				</span>
 		</p>
 
 		<p>
@@ -366,11 +377,12 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 		<?php
 
 		/**
-		 * @action `gravityview_recent_entries_widget_form` Displayed at the bottom of the Recent Entries widget admin form
+		 * Displayed at the bottom of the Recent Entries widget admin form.
+		 *
 		 * @param GravityView_Recent_Entries_Widget $this WP_Widget object
 		 * @param array $instance Current widget instance
 		 */
-		do_action( 'gravityview_recent_entries_widget_form' , $this, $instance );
+		do_action( 'gravityview_recent_entries_widget_form', $this, $instance );
 
 		?>
 
@@ -379,6 +391,6 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 			// WordPress 3.9 added widget-added and widget-updated actions
 			jQuery('#<?php echo $this->get_field_id( 'view_id' ); ?>').trigger( 'change' );
 		</script>
-	<?php }
-
+		<?php
+	}
 }

@@ -33,4 +33,4 @@ class GravityView_Field_Option extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Option;
+new GravityView_Field_Option();

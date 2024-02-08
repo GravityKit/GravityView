@@ -26,7 +26,7 @@ class Entry_Table_Template extends Entry_Template {
 	 */
 	public function the_field( \GV\Field $field ) {
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
+		$source   = is_numeric( $field->ID ) ? ( GF_Form::by_id( $field->form_id ) ? : $this->view->form ) : new Internal_Source();
 
 		return $renderer->render( $field, $this->view, $source, $this->entry->from_field( $field ), $this->request );
 	}
@@ -44,7 +44,8 @@ class Entry_Table_Template extends Entry_Template {
 		$context = Template_Context::from_template( $this, compact( 'fields' ) );
 
 		/**
-		 * @filter `gravityview_table_cells` Modify the fields displayed in a table
+		 * Modify the fields displayed in a table.
+		 *
 		 * @param array $fields
 		 * @param \GravityView_View $this
 		 * @deprecated Use `gravityview/template/table/fields`
@@ -53,7 +54,8 @@ class Entry_Table_Template extends Entry_Template {
 		$fields = Field_Collection::from_configuration( $fields );
 
 		/**
-		 * @filter `gravityview/template/table/fields` Modify the fields displayed in this tables.
+		 * Modify the fields displayed in this tables.
+		 *
 		 * @param \GV\Field_Collection $fields The fields.
 		 * @param \GV\Template_Context $context The context.
 		 * @since 2.0
@@ -63,7 +65,7 @@ class Entry_Table_Template extends Entry_Template {
 		foreach ( $fields->all() as $field ) {
 			$context = Template_Context::from_template( $this, compact( 'field' ) );
 
-			$form = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
+			$form  = \GV\GF_Form::by_id( $field->form_id ) ? : $this->view->form;
 			$entry = $this->entry->from_field( $field );
 
 			if ( ! $entry ) {
@@ -77,7 +79,8 @@ class Entry_Table_Template extends Entry_Template {
 			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $entry->as_entry() );
 
 			/**
-			 * @filter `gravityview/template/field/label` Override the field label.
+			 * Override the field label.
+			 *
 			 * @since 2.0
 			 * @param string $column_label The label to override.
 			 * @param \GV\Template_Context $context The context.
@@ -91,15 +94,18 @@ class Entry_Table_Template extends Entry_Template {
 			 */
 			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty_single', false ), $context );
 
-			echo \gravityview_field_output( array(
-				'entry' => $this->entry->as_entry(),
-				'field' => is_numeric( $field->ID ) ? $field->as_configuration() : null,
-				'label' => $column_label,
-				'value' => $this->the_field( $field ),
-				'markup' => '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>',
-				'hide_empty' => $hide_empty,
-				'zone_id' => 'single_table-columns',
-			), $context );
+			echo \gravityview_field_output(
+				array(
+					'entry'      => $this->entry->as_entry(),
+					'field'      => is_numeric( $field->ID ) ? $field->as_configuration() : null,
+					'label'      => $column_label,
+					'value'      => $this->the_field( $field ),
+					'markup'     => '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>',
+					'hide_empty' => $hide_empty,
+					'zone_id'    => 'single_table-columns',
+				),
+				$context
+			);
 		}
 	}
 }

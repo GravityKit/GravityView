@@ -12,7 +12,7 @@ class GravityView_Field_Edit_Link extends GravityView_Field {
 
 	public $name = 'edit_link';
 
-	public $contexts = [ 'single', 'multiple' ];
+	public $contexts = array( 'single', 'multiple' );
 
 	/**
 	 * @var bool
@@ -29,15 +29,15 @@ class GravityView_Field_Edit_Link extends GravityView_Field {
 	public $icon = 'dashicons-welcome-write-blog';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Link to Edit Entry', 'gk-gravityview' );
-		$this->description = esc_html__('A link to edit the entry. Visible based on View settings.', 'gk-gravityview');
+		$this->label       = esc_html__( 'Link to Edit Entry', 'gk-gravityview' );
+		$this->description = esc_html__( 'A link to edit the entry. Visible based on View settings.', 'gk-gravityview' );
 
 		parent::__construct();
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
@@ -47,19 +47,18 @@ class GravityView_Field_Edit_Link extends GravityView_Field {
 		// Edit Entry link should only appear to visitors capable of editing entries
 		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
 
-		$add_option['edit_link'] = [
-			'type' => 'text',
-			'label' => __( 'Edit Link Text', 'gk-gravityview' ),
-			'desc' => NULL,
-			'value' => __('Edit Entry', 'gk-gravityview'),
+		$add_option['edit_link'] = array(
+			'type'       => 'text',
+			'label'      => __( 'Edit Link Text', 'gk-gravityview' ),
+			'desc'       => null,
+			'value'      => __( 'Edit Entry', 'gk-gravityview' ),
 			'merge_tags' => true,
-		];
+		);
 
 		$this->add_field_support( 'new_window', $field_options );
 
 		return array_merge( $add_option, $field_options );
 	}
-
 }
 
-new GravityView_Field_Edit_Link;
+new GravityView_Field_Edit_Link();

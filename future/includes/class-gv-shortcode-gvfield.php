@@ -18,7 +18,7 @@ class gvfield extends \GV\Shortcode {
 	/**
 	 * Process and output the [gvfield] shortcode.
 	 *
-	 * @param array $passed_atts The attributes passed.
+	 * @param array  $passed_atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
 	 * @param string $tag The shortcode tag.
 	 *
@@ -31,16 +31,20 @@ class gvfield extends \GV\Shortcode {
 			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', null, null, $atts );
 		}
 
-		$atts = wp_parse_args( $atts, array(
-			'view_id' => null,
-			'entry_id' => null,
-			'field_id' => null,
-		) );
+		$atts = wp_parse_args(
+			$atts,
+			array(
+				'view_id'  => null,
+				'entry_id' => null,
+				'field_id' => null,
+			)
+		);
 
 		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );
 
 		/**
-		 * @filter `gravityview/shortcodes/gvfield/atts` Filter the [gvfield] shortcode attributes.
+		 * Filter the [gvfield] shortcode attributes.
+		 *
 		 * @param array $atts The initial attributes.
 		 * @since 2.0
 		 */
@@ -51,7 +55,7 @@ class gvfield extends \GV\Shortcode {
 			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, null, null, $atts );
 		}
 
-		switch( $atts['entry_id'] ):
+		switch ( $atts['entry_id'] ) :
 			case 'last':
 				if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
 					/**
@@ -59,25 +63,30 @@ class gvfield extends \GV\Shortcode {
 					 *
 					 * Since we're using \GF_Query shorthand initialization we have to reverse the order parameters here.
 					 */
-					add_filter( 'gravityview_get_entries', $filter = function( $parameters, $args, $form_id ) {
-						if ( ! empty( $parameters['sorting'] ) ) {
-							/**
-							 * Reverse existing sorts.
-							 */
-							$sort = &$parameters['sorting'];
-							$sort['direction'] = $sort['direction'] == 'RAND' ? : ( $sort['direction'] == 'ASC' ? 'DESC' : 'ASC' );
-						} else {
-							/**
-							 * Otherwise, sort by date_created.
-							 */
-							$parameters['sorting'] = array(
-								'key' => 'id',
-								'direction' => 'ASC',
-								'is_numeric' => true
-							);
-						}
-						return $parameters;
-					}, 10, 3 );
+					add_filter(
+						'gravityview_get_entries',
+						$filter = function ( $parameters, $args, $form_id ) {
+							if ( ! empty( $parameters['sorting'] ) ) {
+								/**
+								 * Reverse existing sorts.
+								 */
+								$sort              = &$parameters['sorting'];
+								$sort['direction'] = 'RAND' == $sort['direction'] ? : ( 'ASC' == $sort['direction'] ? 'DESC' : 'ASC' );
+							} else {
+								/**
+								 * Otherwise, sort by date_created.
+								 */
+								$parameters['sorting'] = array(
+									'key'        => 'id',
+									'direction'  => 'ASC',
+									'is_numeric' => true,
+								);
+							}
+							return $parameters;
+						},
+						10,
+						3
+					);
 					$entries = $view->get_entries( null );
 					remove_filter( 'gravityview_get_entries', $filter );
 				} else {
@@ -85,7 +94,7 @@ class gvfield extends \GV\Shortcode {
 
 					/** If a sort already exists, reverse it. */
 					if ( $sort = end( $entries->sorts ) ) {
-						$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, $sort->direction == \GV\Entry_Sort::RAND ? : ( $sort->direction == \GV\Entry_Sort::ASC ? \GV\Entry_Sort::DESC : \GV\Entry_Sort::ASC ) ), $sort->mode );
+						$entries = $entries->sort( new \GV\Entry_Sort( $sort->field, \GV\Entry_Sort::RAND == $sort->direction ? : ( \GV\Entry_Sort::ASC == $sort->direction ? \GV\Entry_Sort::DESC : \GV\Entry_Sort::ASC ) ), $sort->mode );
 					} else {
 						/** Otherwise, sort by date_created */
 						$entries = $entries->sort( new \GV\Entry_Sort( \GV\Internal_Field::by_id( 'id' ), \GV\Entry_Sort::ASC ), \GV\Entry_Sort::NUMERIC );
@@ -125,7 +134,7 @@ class gvfield extends \GV\Shortcode {
 			return apply_filters( 'gravityview/shortcodes/gvfield/output', get_the_password_form( $view->ID ), $view, $entry, $atts );
 		}
 
-		if ( ! $view->form  ) {
+		if ( ! $view->form ) {
 			gravityview()->log->notice( 'View #{id} has no form attached to it.', array( 'id' => $view->ID ) );
 
 			/**
@@ -148,13 +157,13 @@ class gvfield extends \GV\Shortcode {
 		}
 
 		/** Unapproved entries. */
-		if ( $entry['status'] != 'active' ) {
+		if ( 'active' != $entry['status'] ) {
 			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
 			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $atts );
 		}
 
 		if ( $view->settings->get( 'show_only_approved' ) ) {
-			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) )  ) {
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
 				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
 				return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, $entry, $atts );
 			}
@@ -163,10 +172,11 @@ class gvfield extends \GV\Shortcode {
 		$field->update_configuration( $atts );
 
 		$renderer = new \GV\Field_Renderer();
-		$output = $renderer->render( $field, $view, is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source(), $entry, gravityview()->request );
+		$output   = $renderer->render( $field, $view, is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source(), $entry, gravityview()->request );
 
 		/**
-		 * @filter `gravityview/shortcodes/gvfield/output` Filter the [gvfield] output.
+		 * Filter the [gvfield] output.
+		 *
 		 * @param string $output The output.
 		 * @param \GV\View|null $view The View detected or null.
 		 * @param \GV\Entry|null $entry The Entry or null.

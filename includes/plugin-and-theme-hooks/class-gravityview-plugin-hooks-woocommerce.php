@@ -24,7 +24,6 @@ class GravityView_Plugin_Hooks_WooCommerce extends GravityView_Plugin_and_Theme_
 		'woocommerce_admin_menu_styles',
 		'woocommerce_admin_styles',
 	);
-
 }
 
-new GravityView_Plugin_Hooks_WooCommerce;
+new GravityView_Plugin_Hooks_WooCommerce();

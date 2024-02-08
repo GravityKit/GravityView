@@ -10,6 +10,7 @@
 
 /**
  * Class GravityView_Entry_Notes
+ *
  * @since 1.15
  */
 class GravityView_Entry_Notes {
@@ -37,8 +38,8 @@ class GravityView_Entry_Notes {
 	 * @since 1.15
 	 * @since 1.17 Added return value
 	 *
-	 * @param int $lead_id ID of the Entry
-	 * @param int $user_id ID of the user creating the note
+	 * @param int    $lead_id ID of the Entry
+	 * @param int    $user_id ID of the user creating the note
 	 * @param string $user_name User name of the user creating the note
 	 * @param string $note Note content.
 	 * @param string $note_type Type of note. Default: `gravityview`
@@ -49,15 +50,16 @@ class GravityView_Entry_Notes {
 		global $wpdb;
 
 		$default_note = array(
-			'lead_id' => 0,
-			'user_id' => 0,
+			'lead_id'   => 0,
+			'user_id'   => 0,
 			'user_name' => '',
-			'note' => '',
+			'note'      => '',
 			'note_type' => 'gravityview',
 		);
 
 		/**
-		 * @filter `gravityview/entry_notes/add_note` Modify note values before added using GFFormsModel::add_note()
+		 * Modify note values before added using GFFormsModel::add_note().
+		 *
 		 * @see GFFormsModel::add_note
 		 * @since 1.15.2
 		 * @param array $note Array with `lead_id`, `user_id`, `user_name`, `note`, and `note_type` key value pairs
@@ -70,7 +72,7 @@ class GravityView_Entry_Notes {
 		GFFormsModel::add_note( intval( $note['lead_id'] ), intval( $note['user_id'] ), esc_attr( $note['user_name'] ), $note['note'], esc_attr( $note['note_type'] ) );
 
 		// If last_error is empty string, there was no error.
-		if( empty( $wpdb->last_error ) ) {
+		if ( empty( $wpdb->last_error ) ) {
 			$return = $wpdb->insert_id;
 		} else {
 			$return = new WP_Error( 'gravityview-add-note', $wpdb->last_error );
@@ -81,6 +83,7 @@ class GravityView_Entry_Notes {
 
 	/**
 	 * Alias for GFFormsModel::delete_note()
+	 *
 	 * @see GFFormsModel::delete_note()
 	 * @param int $note_id Entry note ID
 	 */
@@ -91,12 +94,13 @@ class GravityView_Entry_Notes {
 	/**
 	 * Delete an array of notes
 	 * Alias for GFFormsModel::delete_notes()
+	 *
 	 * @todo Write more efficient delete note method using SQL
 	 * @param int[] $note_ids Array of entry note ids
 	 */
 	public static function delete_notes( $note_ids = array() ) {
 
-		if( !is_array( $note_ids ) ) {
+		if ( ! is_array( $note_ids ) ) {
 
 			gravityview()->log->error( 'Note IDs not an array. Not processing delete request.', array( 'data' => $note_ids ) );
 
@@ -119,7 +123,8 @@ class GravityView_Entry_Notes {
 		$notes = GFFormsModel::get_lead_notes( $entry_id );
 
 		/**
-		 * @filter `gravityview/entry_notes/get_notes` Modify the notes array for an entry
+		 * Modify the notes array for an entry.
+		 *
 		 * @since 1.15
 		 * @param stdClass[]|null $notes Integer-keyed array of note objects
 		 * @param int $entry_id Entry to get notes for
@@ -142,7 +147,7 @@ class GravityView_Entry_Notes {
 		global $wpdb;
 
 		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' )
-		     && method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
+			&& method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
 			$notes_table = GFFormsModel::get_entry_notes_table_name();
 		} else {
 			$notes_table = GFFormsModel::get_lead_notes_table_name();
@@ -153,7 +158,8 @@ class GravityView_Entry_Notes {
 				" SELECT n.id, n.user_id, n.date_created, n.value, n.note_type, ifnull(u.display_name,n.user_name) as user_name, u.user_email
 	              FROM $notes_table n
 	              LEFT OUTER JOIN $wpdb->users u ON n.user_id = u.id
-	              WHERE n.id=%d", $note_id
+	              WHERE n.id=%d",
+				$note_id
 			)
 		);
 
@@ -163,6 +169,7 @@ class GravityView_Entry_Notes {
 	/**
 	 * Use the GravityView avatar for notes created by GravityView
 	 * Note: The function is static so that it's easier to remove the filter: `remove_filter( 'gform_notes_avatar', array( 'GravityView_Entry_Notes', 'filter_avatar' ) );`
+	 *
 	 * @since 1.15
 	 * @param string $avatar Avatar image, if available. 48px x 48px by default.
 	 * @param object $note Note object with id, user_id, date_created, value, note_type, user_name, user_email vars.
@@ -170,13 +177,12 @@ class GravityView_Entry_Notes {
 	 */
 	public static function filter_avatar( $avatar = '', $note = null ) {
 
-		if( 'gravityview' === $note->note_type && -1 === (int)$note->user_id ) {
-			$avatar =  sprintf( '<img src="%s" width="48" height="48" alt="GravityView" class="avatar avatar-48 gravityview-avatar" />', esc_url_raw( plugins_url( 'assets/images/floaty-avatar.png', GRAVITYVIEW_FILE ) ) );
+		if ( 'gravityview' === $note->note_type && -1 === (int) $note->user_id ) {
+			$avatar = sprintf( '<img src="%s" width="48" height="48" alt="GravityView" class="avatar avatar-48 gravityview-avatar" />', esc_url_raw( plugins_url( 'assets/images/floaty-avatar.png', GRAVITYVIEW_FILE ) ) );
 		}
 
 		return $avatar;
 	}
-
 }
 
-new GravityView_Entry_Notes;
+new GravityView_Entry_Notes();

@@ -23,7 +23,7 @@ class GravityView_Theme_Hooks_RCP extends GravityView_Plugin_and_Theme_Hooks {
 	 */
 	protected $script_handles = array(
 		'rcp-admin-scripts',
-	    'bbq',
+		'bbq',
 	);
 
 	/**
@@ -31,7 +31,6 @@ class GravityView_Theme_Hooks_RCP extends GravityView_Plugin_and_Theme_Hooks {
 	 * @since 1.21.5
 	 */
 	protected $constant_name = 'RCP_PLUGIN_VERSION';
-
 }
 
-new GravityView_Theme_Hooks_RCP;
+new GravityView_Theme_Hooks_RCP();

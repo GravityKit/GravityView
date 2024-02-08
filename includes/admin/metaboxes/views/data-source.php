@@ -9,14 +9,15 @@
 // Use nonce for verification
 wp_nonce_field( 'gravityview_select_form', 'gravityview_select_form_nonce' );
 
-//current value
+// current value
 $current_form = (int) \GV\Utils::_GET( 'form_id', gravityview_get_form_id( $post->ID ) );
 
 // If form is in trash or not existing, show error
 GravityView_Admin::connected_form_warning( $current_form );
 
 /**
- * @filter `gk/gravityview/metaboxes/data-source/order-by` Modify the default orderby field for the Data Source dropdown.
+ * Modify the default orderby field for the Data Source dropdown.
+ *
  * @since 2.17.8
  * @param mixed $order_by Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
  */
@@ -42,29 +43,38 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 		?>
 		<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Use a Form Preset', 'gk-gravityview' ); ?>"><?php esc_html_e( 'Use a Form Preset', 'gk-gravityview' ); ?></a>
 
-		<?php if( !empty( $forms ) ) { ?>
+		<?php if ( ! empty( $forms ) ) { ?>
 			<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gk-gravityview' ); ?>&nbsp;</span>
-		<?php }
+			<?php
+		}
 	}
 
 	// If there are no forms to select, show no forms.
-	if( !empty( $forms ) ) { ?>
+	if ( ! empty( $forms ) ) {
+		?>
 		<select name="gravityview_form_id" id="gravityview_form_id">
 			<option value="" <?php selected( '', $current_form, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gk-gravityview' ); ?> &mdash;</option>
-			<?php foreach( $forms as $form ) { ?>
-				<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>><?php
-					echo esc_html( sprintf( '%s &ndash; #%d', $form['title'], $form['id'] ) );
-					if ( empty( $form['is_active'] ) ) {
-						printf( ' (%s)', esc_html_x( 'Inactive', 'Indicates that a form is inactive.', 'gk-gravityview' ) );
-					}
-				?></option>
+			<?php foreach ( $forms as $form ) { ?>
+				<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>>
+											<?php
+											echo esc_html( sprintf( '%s &ndash; #%d', $form['title'], $form['id'] ) );
+											if ( empty( $form['is_active'] ) ) {
+												printf( ' (%s)', esc_html_x( 'Inactive', 'Indicates that a form is inactive.', 'gk-gravityview' ) );
+											}
+											?>
+				</option>
 			<?php } ?>
 		</select>
 	<?php } else { ?>
 		<select name="gravityview_form_id" id="gravityview_form_id" class="hidden"><option selected="selected" value=""></option></select>
 	<?php } ?>
 
-	&nbsp;<button class="button button-primary" <?php if( empty( $current_form ) ) { echo 'style="display:none;"'; } ?> id="gv_switch_view_button" title="<?php esc_attr_e( 'Switch View', 'gk-gravityview' ); ?>"><?php esc_html_e( 'Switch View Type', 'gk-gravityview' ); ?></button>
+	&nbsp;<button class="button button-primary" 
+	<?php
+	if ( empty( $current_form ) ) {
+		echo 'style="display:none;"'; }
+	?>
+	id="gv_switch_view_button" title="<?php esc_attr_e( 'Switch View', 'gk-gravityview' ); ?>"><?php esc_html_e( 'Switch View Type', 'gk-gravityview' ); ?></button>
 </p>
 
 <?php // confirm dialog box ?>
@@ -78,9 +88,9 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 </div>
 
 <?php // confirm template dialog box ?>
-    <div id="gravityview_select_preset_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gk-gravityview' ); ?>">
-        <p><?php esc_html_e( 'Using a preset will reset your field configuration. Changes will be permanent once you save the View.', 'gk-gravityview' ); ?></p>
-    </div>
+	<div id="gravityview_select_preset_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gk-gravityview' ); ?>">
+		<p><?php esc_html_e( 'Using a preset will reset your field configuration. Changes will be permanent once you save the View.', 'gk-gravityview' ); ?></p>
+	</div>
 
 <?php // no js notice ?>
 <div class="error hide-if-js">
@@ -88,7 +98,8 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 </div>
 
 <?php
-// hidden field to keep track of start fresh state ?>
+// hidden field to keep track of start fresh state
+?>
 <input type="hidden" id="gravityview_form_id_start_fresh" name="gravityview_form_id_start_fresh" value="0" />
 
 <?php

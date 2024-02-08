@@ -26,8 +26,8 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 	private $context;
 
 	public function __construct() {
-		$this->label = esc_html__( 'Other Entries', 'gk-gravityview' );
-		$this->description = esc_html__('Display other entries created by the entry creator.', 'gk-gravityview');
+		$this->label       = esc_html__( 'Other Entries', 'gk-gravityview' );
+		$this->description = esc_html__( 'Display other entries created by the entry creator.', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -37,7 +37,7 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
@@ -47,31 +47,31 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 		$new_options = array();
 
 		$new_options['link_format'] = array(
-			'type'  => 'text',
-			'label' => __( 'Entry link text (required)', 'gk-gravityview' ),
-			'value' => __('Entry #{entry_id}', 'gk-gravityview'),
+			'type'       => 'text',
+			'label'      => __( 'Entry link text (required)', 'gk-gravityview' ),
+			'value'      => __( 'Entry #{entry_id}', 'gk-gravityview' ),
 			'merge_tags' => 'force',
-			'group' => 'field',
+			'group'      => 'field',
 		);
 
 		$new_options['after_link'] = array(
-			'type'  => 'textarea',
-			'label' => __( 'Text or HTML to display after the link (optional)', 'gk-gravityview' ),
-			'desc'  => __('This content will be displayed below each entry link.', 'gk-gravityview'),
-			'value' => '',
+			'type'       => 'textarea',
+			'label'      => __( 'Text or HTML to display after the link (optional)', 'gk-gravityview' ),
+			'desc'       => __( 'This content will be displayed below each entry link.', 'gk-gravityview' ),
+			'value'      => '',
 			'merge_tags' => 'force',
-			'class' => 'widefat code',
-			'group' => 'field',
+			'class'      => 'widefat code',
+			'group'      => 'field',
 		);
 
 		$new_options['page_size'] = array(
-			'type'  => 'number',
-			'label' => __( 'Entries to Display', 'gk-gravityview' ),
-			'desc'  => __( 'What is the maximum number of entries that should be shown?', 'gk-gravityview' ) . ' ' . sprintf( _x( 'Set to %s for no maximum.', '%s replaced with a formatted 0', 'gk-gravityview' ), '<code>0</code>' ),
-			'value' => '10',
+			'type'       => 'number',
+			'label'      => __( 'Entries to Display', 'gk-gravityview' ),
+			'desc'       => __( 'What is the maximum number of entries that should be shown?', 'gk-gravityview' ) . ' ' . sprintf( _x( 'Set to %s for no maximum.', '%s replaced with a formatted 0', 'gk-gravityview' ), '<code>0</code>' ),
+			'value'      => '10',
 			'merge_tags' => false,
-			'min'   => 0,
-			'group' => 'field',
+			'min'        => 0,
+			'group'      => 'field',
 		);
 
 		$new_options['no_entries_hide'] = array(
@@ -83,13 +83,13 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 		);
 
 		$new_options['no_entries_text'] = array(
-			'type'  => 'text',
-			'label' => __( 'No Entries Text', 'gk-gravityview' ),
-			'desc'  => __( 'The text that is shown if the entry creator has no other entries (and "Hide if no entries" is disabled).', 'gk-gravityview' ),
-			'value' => __( 'This user has no other entries.', 'gk-gravityview' ),
-			'class' => 'widefat',
+			'type'     => 'text',
+			'label'    => __( 'No Entries Text', 'gk-gravityview' ),
+			'desc'     => __( 'The text that is shown if the entry creator has no other entries (and "Hide if no entries" is disabled).', 'gk-gravityview' ),
+			'value'    => __( 'This user has no other entries.', 'gk-gravityview' ),
+			'class'    => 'widefat',
 			'requires' => 'no_entries_hide',
-			'group' => 'visibility',
+			'group'    => 'visibility',
 		);
 
 		return $new_options + $field_options;
@@ -129,7 +129,7 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 		foreach ( $remove as $r ) {
 			list( $filter, $priority, $id ) = $r;
-			$removed[] = array( $filter, $priority, $id, $wp_filter[ $filter ]->callbacks[ $priority ][ $id ] );
+			$removed[]                      = array( $filter, $priority, $id, $wp_filter[ $filter ]->callbacks[ $priority ][ $id ] );
 			unset( $wp_filter[ $filter ]->callbacks[ $priority ][ $id ] );
 		}
 
@@ -138,7 +138,7 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 		$entries = $context->view->get_entries()->all();
 
 		foreach ( $removed as $r ) {
-			list( $filter, $priority, $id, $function ) = $r;
+			list( $filter, $priority, $id, $function )           = $r;
 			$wp_filter[ $filter ]->callbacks[ $priority ][ $id ] = $function;
 		}
 
@@ -157,13 +157,13 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 		/** Filter entries by approved and created_by. */
 		$search_criteria['field_filters'][] = array(
-			'key' => 'created_by',
-			'value' => $created_by,
-			'operator' => 'is'
+			'key'      => 'created_by',
+			'value'    => $created_by,
+			'operator' => 'is',
 		);
 
 		/**
-		 * @filter `gravityview/field/other_entries/criteria` Modify the search parameters before the entries are fetched.
+		 * Modify the search parameters before the entries are fetched.
 		 *
 		 * @since 1.11
 		 *
@@ -177,10 +177,10 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 
 		/** Force mode all and filter out our own entry. */
 		$search_criteria['field_filters']['mode'] = 'all';
-		$search_criteria['field_filters'][] = array(
-			'key' => 'id',
-			'value' => $context->entry->ID,
-			'operator' => 'isnot'
+		$search_criteria['field_filters'][]       = array(
+			'key'      => 'id',
+			'value'    => $context->entry->ID,
+			'operator' => 'isnot',
 		);
 
 		$search_criteria['paging']['page_size'] = $context->field->page_size ? : 10;
@@ -194,4 +194,4 @@ class GravityView_Field_Other_Entries extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Other_Entries;
+new GravityView_Field_Other_Entries();

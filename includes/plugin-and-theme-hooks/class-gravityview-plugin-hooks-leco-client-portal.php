@@ -26,6 +26,7 @@ class GravityView_Plugin_Hooks_Leco_Client_Portal extends GravityView_Plugin_and
 
 	/**
 	 * Define the keys to be parsed by the `gravityview/view_collection/from_post/meta_keys` hook
+	 *
 	 * @see View_Collection::from_post
 	 * @since 2.0
 	 * @type array
@@ -44,7 +45,6 @@ class GravityView_Plugin_Hooks_Leco_Client_Portal extends GravityView_Plugin_and
 		'leco_cp_part_9_module',
 		'leco_cp_part_10_module',
 	);
-
 }
 
-new GravityView_Plugin_Hooks_Leco_Client_Portal;
+new GravityView_Plugin_Hooks_Leco_Client_Portal();

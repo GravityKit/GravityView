@@ -16,8 +16,8 @@ class Edit_Entry_Renderer extends Entry_Renderer {
 	/**
 	 * Renders a an editable \GV\Entry instance.
 	 *
-	 * @param \GV\Entry $entry The Entry instance to render.
-	 * @param \GV\View $view The View connected to the entry.
+	 * @param \GV\Entry   $entry The Entry instance to render.
+	 * @param \GV\View    $view The View connected to the entry.
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
 	 * @todo Just a wrapper around the old code. Cheating. Needs rewrite :)
@@ -31,10 +31,12 @@ class Edit_Entry_Renderer extends Entry_Renderer {
 		$entries = new \GV\Entry_Collection();
 		$entries->add( $entry );
 
-		\GV\Mocks\Legacy_Context::push( array(
-			'view' => $view,
-			'entries' => $entries,
-		) );
+		\GV\Mocks\Legacy_Context::push(
+			array(
+				'view'    => $view,
+				'entries' => $entries,
+			)
+		);
 
 		ob_start();
 		do_action( 'gravityview_edit_entry', null, $entry, $view, $request );

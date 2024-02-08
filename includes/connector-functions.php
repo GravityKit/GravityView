@@ -15,6 +15,7 @@ use GV\View;
 
 /**
  * Returns the form object for a given Form ID.
+ *
  * @see GVCommon::get_form()
  * @param mixed $form_id
  * @return mixed False: no form ID specified or Gravity Forms isn't active. Array: Form returned from Gravity Forms
@@ -26,6 +27,7 @@ function gravityview_get_form( $form_id ) {
 
 /**
  * Get the form array for an entry based only on the entry ID
+ *
  * @see GVCommon::get_form_from_entry_id
  * @param  int|string $entry_slug Entry slug
  * @return array           Gravity Forms form array
@@ -43,10 +45,10 @@ function gravityview_get_form_from_entry_id( $entry_slug ) {
  * @since 1.19 Allow "any" $active status option
  * @since 2.7.2 Allow sorting forms using wp_list_sort()
  *
- * @param bool|string $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
- * @param bool $trash Include forms in trash? Default: `false`
+ * @param bool|string  $active Status of forms. Use `any` to get array of forms with any status. Default: `true`
+ * @param bool         $trash Include forms in trash? Default: `false`
  * @param string|array $order_by Optional. Either the field name to order by or an array of multiple orderby fields as $orderby => $order.
- * @param string $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
+ * @param string       $order Optional. Either 'ASC' or 'DESC'. Only used if $orderby is a string.
  *
  * @return array Empty array if GFAPI class isn't available or no forms. Otherwise, the array of Forms
  */
@@ -67,6 +69,7 @@ function gravityview_get_form_fields( $form = '', $add_default_properties = fals
 
 /**
  * get extra fields from entry meta
+ *
  * @param  string $form_id (default: '')
  * @return array
  */
@@ -93,8 +96,8 @@ function gravityview_get_entry_ids( $form_id, $search_criteria = array() ) {
  * @see  GFAPI::get_entries()
  * @see GFFormsModel::get_field_filters_where()
  * @param int|array $form_ids The ID of the form or an array IDs of the Forms. Zero for all forms.
- * @param mixed $passed_criteria (default: null)
- * @param mixed &$total (default: null)
+ * @param mixed     $passed_criteria (default: null)
+ * @param mixed     &$total (default: null)
  * @return mixed False: Error fetching entries. Array: Multi-dimensional array of Gravity Forms entry arrays
  */
 function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$total = null ) {
@@ -106,14 +109,13 @@ function gravityview_get_entries( $form_ids = null, $passed_criteria = null, &$t
  *
  * Since 1.4, supports custom entry slugs. The way that GravityView fetches an entry based on the custom slug is by searching `gravityview_unique_id` meta. The `$entry_slug` is fetched by getting the current query var set by `is_single_entry()`
  *
- *
  * @since 1.4 Supports custom entry slugs
  * @since 2.6 Added $view parameter
  *
  * @param int|string $entry_slug Entry ID or slug
- * @param boolean $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
- * @param boolean $check_entry_display Check whether the entry is visible for the current View configuration. Default: true {@since 1.14}
- * @param \GV\View $view The View if $check_entry_display is set to true. {@since develop}
+ * @param boolean    $force_allow_ids Force the get_entry() method to allow passed entry IDs, even if the `gravityview_custom_entry_slug_allow_id` filter returns false.
+ * @param boolean    $check_entry_display Check whether the entry is visible for the current View configuration. Default: true {@since 1.14}
+ * @param \GV\View   $view The View if $check_entry_display is set to true. {@since develop}
  * @return array|boolean
  */
 function gravityview_get_entry( $entry_slug, $force_allow_ids = false, $check_entry_display = true, $view = null ) {
@@ -141,7 +143,7 @@ function gravityview_get_field_label( $form, $field_id, $field_value = '' ) {
  *
  * @uses GVCommon::get_field
  * @see GFFormsModel::get_field
- * @param array|int $form Form array or ID
+ * @param array|int  $form Form array or ID
  * @param string|int $field_id
  * @return GF_Field|null Returns NULL if field with ID $field_id doesn't exist.
  */
@@ -156,15 +158,16 @@ function gravityview_get_field( $form, $field_id ) {
  * - Check post type. Is it `gravityview`?
  * - Check shortcode
  *
- * @param  WP_Post      $post WordPress post object
+ * @param  WP_Post $post WordPress post object
  * @return boolean           True: yep, GravityView; No: not!
  */
-function has_gravityview_shortcode( $post = NULL ) {
+function has_gravityview_shortcode( $post = null ) {
 	return GVCommon::has_gravityview_shortcode( $post );
 }
 
 /**
  * Placeholder until the recursive has_shortcode() patch is merged
+ *
  * @see https://core.trac.wordpress.org/ticket/26343#comment:10
  */
 function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
@@ -177,7 +180,7 @@ function gravityview_has_shortcode_r( $content, $tag = 'gravityview' ) {
  * @since 1.22.1 Added $args param
  * @since 2.19   Added $include_joins param
  *
- * @param  int $form_id Gravity Forms form ID
+ * @param  int   $form_id Gravity Forms form ID
  * @param  array $args Pass args sent to get_posts()
  * @param  bool  $include_joins Whether to include forms that are joined to the View
  *
@@ -242,7 +245,7 @@ function gravityview_get_template_settings( $post_id ) {
  *
  * If the setting isn't set by the View, it returns the plugin default.
  *
- * @param  int $post_id View ID
+ * @param  int    $post_id View ID
  * @param  string $key     Key for the setting
  * @return mixed|null          Setting value, or NULL if not set.
  */
@@ -252,13 +255,15 @@ function gravityview_get_template_setting( $post_id, $key ) {
 
 /**
  * Get all available preset templates
+ *
  * @since 1.13.2
  * @return array Templates
  */
 function gravityview_get_registered_templates() {
 
 	/**
-	 * @filter `gravityview_register_directory_template` Fetch available View templates
+	 * Fetch available View templates.
+     *
 	 * @param array $templates Templates to show
 	 */
 	$templates = apply_filters( 'gravityview_register_directory_template', array() );
@@ -273,8 +278,8 @@ function gravityview_get_registered_templates() {
  * @since 1.17.4 Added $apply_filter parameter.
  * @since 2.17   Added $form_id parameter.
  *
- * @param  int   $post_id View ID.
- * @param  bool  $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
+ * @param  int  $post_id View ID.
+ * @param  bool $apply_filter Whether to apply the `gravityview/configuration/fields` filter [Default: true]
  * @return array Multi-array of fields with first level being the field zones.
  */
 function gravityview_get_directory_fields( $post_id, $apply_filter = true, $form_id = 0 ) {
@@ -299,7 +304,7 @@ function gravityview_get_directory_widgets( $post_id ) {
  *
  * @since 1.17.4
  *
- * @param int $post_id
+ * @param int   $post_id
  * @param array $widgets array of widgets
  *
  * @return int|bool
@@ -311,7 +316,7 @@ function gravityview_set_directory_widgets( $post_id, $widgets = array() ) {
 /**
  * Render dropdown (select) with the list of sortable fields from a form ID
  *
- * @param  int $formid Form ID
+ * @param  int    $formid Form ID
  * @param string $current Field ID of field used to sort
  * @return string         html
  */
@@ -322,12 +327,13 @@ function gravityview_get_sortable_fields( $formid, $current = '' ) {
 
 /**
  * Returns the GF Form field type for a certain field(id) of a form
+ *
  * @param  object $form     Gravity Forms form
- * @param  mixed $field_id Field ID or Field array
+ * @param  mixed  $field_id Field ID or Field array
  * @return string field type
  */
-function gravityview_get_field_type(  $form = null , $field_id = '' ) {
-	return GVCommon::get_field_type(  $form, $field_id );
+function gravityview_get_field_type( $form = null, $field_id = '' ) {
+	return GVCommon::get_field_type( $form, $field_id );
 }
 
 
@@ -335,16 +341,16 @@ function gravityview_get_field_type(  $form = null , $field_id = '' ) {
  * Theme function to get a GravityView view
  *
  * @param string $view_id (default: '')
- * @param array $atts (default: array())
+ * @param array  $atts (default: array())
  * @return string HTML of the output. Empty string if $view_id is empty.
  */
 function get_gravityview( $view_id = '', $atts = array() ) {
 
-	_deprecated_function( __FUNCTION__, '2.18', '$view = gravityview()->views->get( $view_id ); if ( $view ) { $view->settings->update( $atts ); $renderer = new \GV\View_Renderer(); $renderer->render( $view, new \GV\Frontend_Request() ); }');
+	_deprecated_function( __FUNCTION__, '2.18', '$view = gravityview()->views->get( $view_id ); if ( $view ) { $view->settings->update( $atts ); $renderer = new \GV\View_Renderer(); $renderer->render( $view, new \GV\Frontend_Request() ); }' );
 
-	if( !empty( $view_id ) ) {
-		$atts['id'] = $view_id;
-		$args = wp_parse_args( $atts, \GV\View_Settings::defaults() );
+	if ( ! empty( $view_id ) ) {
+		$atts['id']           = $view_id;
+		$args                 = wp_parse_args( $atts, \GV\View_Settings::defaults() );
 		$GravityView_frontend = GravityView_frontend::getInstance();
 		$GravityView_frontend->setGvOutputData( GravityView_View_Data::getInstance( $view_id ) );
 		$GravityView_frontend->set_context_view_id( $view_id );
@@ -358,12 +364,12 @@ function get_gravityview( $view_id = '', $atts = array() ) {
  * Theme function to render a GravityView view
  *
  * @param string $view_id (default: '')
- * @param array $atts (default: array())
+ * @param array  $atts (default: array())
  * @return void
  */
 function the_gravityview( $view_id = '', $atts = array() ) {
 
-	_deprecated_function( __FUNCTION__, '2.18', '$view = gravityview()->views->get( $view_id ); if ( $view ) { $view->settings->update( $atts ); $renderer = new \GV\View_Renderer(); echo $renderer->render( $view, new \GV\Frontend_Request() ); }');
+	_deprecated_function( __FUNCTION__, '2.18', '$view = gravityview()->views->get( $view_id ); if ( $view ) { $view->settings->update( $atts ); $renderer = new \GV\View_Renderer(); echo $renderer->render( $view, new \GV\Frontend_Request() ); }' );
 
 	echo get_gravityview( $view_id, $atts );
 }
@@ -381,6 +387,7 @@ function gravityview_is_single_entry() {
 
 /**
  * Determine whether a View has a single checkbox or single radio input
+ *
  * @see GravityView_frontend::add_scripts_and_styles()
  * @since 1.15
  * @param array $form Gravity Forms form
@@ -388,19 +395,20 @@ function gravityview_is_single_entry() {
  */
 function gravityview_view_has_single_checkbox_or_radio( $form, $view_fields ) {
 
-	if( class_exists('GFFormsModel') && $form_fields = GFFormsModel::get_fields_by_type( $form, array( 'checkbox', 'radio' ) ) ) {
+	if ( class_exists( 'GFFormsModel' ) && $form_fields = GFFormsModel::get_fields_by_type( $form, array( 'checkbox', 'radio' ) ) ) {
 
 		/** @var GF_Field_Radio|GF_Field_Checkbox $form_field */
-		foreach( $form_fields as $form_field ) {
+		foreach ( $form_fields as $form_field ) {
 			$field_id = $form_field->id;
-			foreach( $view_fields as $zone ) {
+			foreach ( $view_fields as $zone ) {
 
 				// ACF compatibility; ACF-added fields aren't arrays
-				if ( ! is_array( $zone ) ) { continue; }
+				if ( ! is_array( $zone ) ) {
+					continue; }
 
-				foreach( $zone as $field ) {
+				foreach ( $zone as $field ) {
 					// If it's an input, not the parent and the parent ID matches a checkbox or radio
-					if( ( strpos( $field['id'], '.' ) > 0 ) && floor( $field['id'] ) === floor( $field_id ) ) {
+					if ( ( strpos( $field['id'], '.' ) > 0 ) && floor( $field['id'] ) === floor( $field_id ) ) {
 						return true;
 					}
 				}

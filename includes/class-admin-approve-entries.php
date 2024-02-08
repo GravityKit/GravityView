@@ -22,15 +22,14 @@ class GravityView_Admin_ApproveEntries {
 	 * @since 1.17
 	 */
 	private $bulk_action_prefixes = array(
-		'approve' => 'gvapprove',
+		'approve'    => 'gvapprove',
 		'disapprove' => 'gvdisapprove',
-		'unapprove' => 'gvunapprove',
+		'unapprove'  => 'gvunapprove',
 	);
 
 	function __construct() {
 
 		$this->add_hooks();
-
 	}
 
 	private function add_hooks() {
@@ -49,7 +48,7 @@ class GravityView_Admin_ApproveEntries {
 		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
 
 		// adding styles and scripts
-		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles') );
+		add_action( 'admin_enqueue_scripts', array( $this, 'add_scripts_and_styles' ) );
 		// bypass Gravity Forms no-conflict mode
 		add_filter( 'gform_noconflict_scripts', array( $this, 'register_gform_noconflict_script' ) );
 		add_filter( 'gform_noconflict_styles', array( $this, 'register_gform_noconflict_style' ) );
@@ -66,50 +65,75 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @param array $filter_links Array of links to include in the subsubsub filter list. Includes `id`, `field_filters`, `count`, and `label` keys
 	 * @param array $form GF Form object of current form
-	 * @param bool $include_counts Whether to include counts in the output
+	 * @param bool  $include_counts Whether to include counts in the output
 	 *
 	 * @return array Filter links, with GravityView approved/disapproved links added
 	 */
 	public function filter_links_entry_list( $filter_links = array(), $form = array(), $include_counts = true ) {
 
 		/**
-		 * @filter `gravityview/approve_entries/show_filter_links_entry_list` Disable filter links
+		 * Disable filter links.
+		 *
 		 * @since 1.17.1
 		 * @param bool $show_filter_links True: show the "approved"/"disapproved" filter links. False: hide them.
 		 * @param array $form GF Form object of current form
 		 */
-		if( false === apply_filters( 'gravityview/approve_entries/show_filter_links_entry_list', true, $form ) ) {
+		if ( false === apply_filters( 'gravityview/approve_entries/show_filter_links_entry_list', true, $form ) ) {
 			return $filter_links;
 		}
 
 		$field_filters_approved = array(
 			array(
-				'key' => GravityView_Entry_Approval::meta_key,
-				'value' => GravityView_Entry_Approval_Status::APPROVED
+				'key'   => GravityView_Entry_Approval::meta_key,
+				'value' => GravityView_Entry_Approval_Status::APPROVED,
 			),
 		);
 
 		$field_filters_disapproved = array(
 			array(
-				'key'      => GravityView_Entry_Approval::meta_key,
-				'value'    => GravityView_Entry_Approval_Status::DISAPPROVED,
+				'key'   => GravityView_Entry_Approval::meta_key,
+				'value' => GravityView_Entry_Approval_Status::DISAPPROVED,
 			),
 		);
 
 		$field_filters_unapproved = array(
 			array(
-				'key'      => GravityView_Entry_Approval::meta_key,
-				'value'    => GravityView_Entry_Approval_Status::UNAPPROVED,
+				'key'   => GravityView_Entry_Approval::meta_key,
+				'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
 			),
 		);
 
 		$approved_count = $disapproved_count = $unapproved_count = 0;
 
 		// Only count if necessary
-		if( $include_counts ) {
-			$approved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_approved ) ) );
-			$disapproved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_disapproved ) ) );
-			$unapproved_count = count( gravityview_get_entry_ids( $form['id'], array( 'status' => 'active', 'field_filters' => $field_filters_unapproved ) ) );
+		if ( $include_counts ) {
+			$approved_count    = count(
+				gravityview_get_entry_ids(
+					$form['id'],
+					array(
+						'status'        => 'active',
+						'field_filters' => $field_filters_approved,
+					)
+				)
+			);
+			$disapproved_count = count(
+				gravityview_get_entry_ids(
+					$form['id'],
+					array(
+						'status'        => 'active',
+						'field_filters' => $field_filters_disapproved,
+					)
+				)
+			);
+			$unapproved_count  = count(
+				gravityview_get_entry_ids(
+					$form['id'],
+					array(
+						'status'        => 'active',
+						'field_filters' => $field_filters_unapproved,
+					)
+				)
+			);
 		}
 
 		$filter_links[] = array(
@@ -146,8 +170,8 @@ class GravityView_Admin_ApproveEntries {
 	function tooltips( $tooltips ) {
 
 		$tooltips['form_gravityview_fields'] = array(
-			'title' => __('GravityView Fields', 'gk-gravityview'),
-			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gk-gravityview'),
+			'title' => __( 'GravityView Fields', 'gk-gravityview' ),
+			'value' => __( 'Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed.', 'gk-gravityview' ),
 		);
 
 		return $tooltips;
@@ -163,24 +187,24 @@ class GravityView_Admin_ApproveEntries {
 	function add_field_buttons( $field_groups ) {
 
 		$gravityview_fields = array(
-			'name' => 'gravityview_fields',
-			'label' => 'GravityView',
+			'name'   => 'gravityview_fields',
+			'label'  => 'GravityView',
 			'fields' => array(
 				array(
-					'class' => 'button',
-					'value' => __( 'Approve/Reject', 'gk-gravityview' ),
-					'onclick' => "StartAddField('gravityviewapproved_admin');",
+					'class'     => 'button',
+					'value'     => __( 'Approve/Reject', 'gk-gravityview' ),
+					'onclick'   => "StartAddField('gravityviewapproved_admin');",
 					'data-type' => 'gravityviewapproved_admin',
-					'data-icon' => 'dashicons-yes-alt'
+					'data-icon' => 'dashicons-yes-alt',
 				),
 				array(
-					'class' => 'button',
-					'value' => __( 'User Opt-In', 'gk-gravityview' ),
-					'onclick' => "StartAddField('gravityviewapproved');",
+					'class'     => 'button',
+					'value'     => __( 'User Opt-In', 'gk-gravityview' ),
+					'onclick'   => "StartAddField('gravityviewapproved');",
 					'data-type' => 'gravityviewapproved',
 					'data-icon' => 'dashicons-media-text',
 				),
-			)
+			),
 		);
 
 		array_push( $field_groups, $gravityview_fields );
@@ -250,30 +274,30 @@ class GravityView_Admin_ApproveEntries {
 	/**
 	 * update_approved function.
 	 *
-     * @since 1.18 Moved to GravityView_Entry_Approval::update_approved
+	 * @since 1.18 Moved to GravityView_Entry_Approval::update_approved
 	 * @see GravityView_Entry_Approval::update_approved
-     *
+	 *
 	 * @param int $entry_id (default: 0)
 	 * @param int $approved (default: 0)
 	 * @param int $form_id (default: 0)
 	 * @param int $approvedcolumn (default: 0)
-     *
+	 *
 	 * @return boolean True: It worked; False: it failed
 	 */
-	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0) {
+	public static function update_approved( $entry_id = 0, $approved = 0, $form_id = 0, $approvedcolumn = 0 ) {
 		return GravityView_Entry_Approval::update_approved( $entry_id, $approved, $form_id, $approvedcolumn );
 	}
 
 	/**
 	 * Calculate the approve field.input id
 	 *
-     * @since 1.18 Moved to GravityView_Entry_Approval::get_approved_column
-     * @see GravityView_Entry_Approval::get_approved_column
-     *
+	 * @since 1.18 Moved to GravityView_Entry_Approval::get_approved_column
+	 * @see GravityView_Entry_Approval::get_approved_column
+	 *
 	 * @param mixed $form GF Form or Form ID
 	 * @return false|null|string Returns the input ID of the approved field. Returns NULL if no approved fields were found. Returns false if $form_id wasn't set.
 	 */
-	static public function get_approved_column( $form ) {
+	public static function get_approved_column( $form ) {
 		return GravityView_Entry_Approval::get_approved_column( $form );
 	}
 
@@ -290,20 +314,20 @@ class GravityView_Admin_ApproveEntries {
 	 *
 	 * @return void
 	 */
-	static public function add_entry_approved_hidden_input(  $form_id, $field_id, $value, $entry, $query_string ) {
+	public static function add_entry_approved_hidden_input( $form_id, $field_id, $value, $entry, $query_string ) {
 
-		if( ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry['id'] ) ) {
+		if ( ! GVCommon::has_cap( 'gravityview_moderate_entries', $entry['id'] ) ) {
 			return;
 		}
 
-		if( empty( $entry['id'] ) ) {
+		if ( empty( $entry['id'] ) ) {
 			return;
 		}
 
 		$status_value = GravityView_Entry_Approval::get_entry_status( $entry, 'value' );
 
-		if( $status_value ) {
-			echo '<input type="hidden" class="entry_approval" id="entry_approved_'. $entry['id'] .'" value="' . esc_attr( $status_value ) . '" />';
+		if ( $status_value ) {
+			echo '<input type="hidden" class="entry_approval" id="entry_approved_' . $entry['id'] . '" value="' . esc_attr( $status_value ) . '" />';
 		}
 	}
 
@@ -316,10 +340,10 @@ class GravityView_Admin_ApproveEntries {
 	 */
 	private function get_form_id() {
 
-		$form_id = GFForms::get('id');
+		$form_id = GFForms::get( 'id' );
 
 		// If there are no forms identified, use the first form. That's how GF does it.
-		if( empty( $form_id ) && class_exists('RGFormsModel') ) {
+		if ( empty( $form_id ) && class_exists( 'RGFormsModel' ) ) {
 			$form_id = $this->get_first_form_id();
 		}
 
@@ -339,7 +363,7 @@ class GravityView_Admin_ApproveEntries {
 
 		$forms = RGFormsModel::get_forms( null, 'title' );
 
-		if( ! isset( $forms[0] ) ) {
+		if ( ! isset( $forms[0] ) ) {
 			gravityview()->log->error( 'No forms were found' );
 			return 0;
 		}
@@ -354,77 +378,80 @@ class GravityView_Admin_ApproveEntries {
 
 	function add_scripts_and_styles( $hook ) {
 
-		if( ! class_exists( 'GFForms' ) ) {
+		if ( ! class_exists( 'GFForms' ) ) {
 			gravityview()->log->error( 'GFForms does not exist.' );
 			return;
 		}
 
 		// enqueue styles & scripts gf_entries
 		// But only if we're on the main Entries page, not on reports pages
-		if( GFForms::get_page() !== 'entry_list' ) {
+		if ( 'entry_list' !== GFForms::get_page() ) {
 			return;
 		}
 
 		$form_id = $this->get_form_id();
 
 		// Things are broken; no forms were found
-		if( empty( $form_id ) ) {
+		if ( empty( $form_id ) ) {
 			return;
 		}
 
-		wp_enqueue_style( 'gravityview_entries_list', plugins_url('assets/css/admin-entries-list.css', GRAVITYVIEW_FILE), array(), GV_PLUGIN_VERSION );
+		wp_enqueue_style( 'gravityview_entries_list', plugins_url( 'assets/css/admin-entries-list.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 
-		$script_debug = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url('assets/js/admin-entries-list'.$script_debug.'.js', GRAVITYVIEW_FILE), array( 'jquery' ), GV_PLUGIN_VERSION );
+		wp_enqueue_script( 'gravityview_gf_entries_scripts', plugins_url( 'assets/js/admin-entries-list' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery' ), GV_PLUGIN_VERSION );
 
 		wp_enqueue_script( 'gravityview_entries_list-popper', plugins_url( 'assets/lib/tippy/popper.min.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 		wp_enqueue_script( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.min.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 		wp_enqueue_style( 'gravityview_entries_list-tippy', plugins_url( 'assets/lib/tippy/tippy.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 
-		wp_localize_script( 'gravityview_gf_entries_scripts', 'gvGlobals', array(
-			'nonce' => wp_create_nonce( 'gravityview_entry_approval'),
-			'admin_nonce' => wp_create_nonce( 'gravityview_admin_entry_approval'),
-			'form_id' => $form_id,
-			'show_column' => (int)$this->show_approve_entry_column( $form_id ),
-			'add_bulk_action' => (int)GVCommon::has_cap( 'gravityview_moderate_entries' ),
-			'status_approved' => GravityView_Entry_Approval_Status::APPROVED,
-			'status_disapproved' => GravityView_Entry_Approval_Status::DISAPPROVED,
-			'status_unapproved' => GravityView_Entry_Approval_Status::UNAPPROVED,
-			'bulk_actions' => GravityView_Bulk_Actions::get_bulk_actions( $form_id ),
-			'bulk_message' => $this->bulk_update_message,
-			'unapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('unapproved'),
-            'approve_title' => GravityView_Entry_Approval_Status::get_title_attr('disapproved'),
-			'disapprove_title' => GravityView_Entry_Approval_Status::get_title_attr('approved'),
-			'column_title' => esc_html__( 'GravityView entry approval status', 'gk-gravityview'),
-			'column_link' => esc_url( $this->get_sort_link() ),
-            'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
-			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
-		) );
-
+		wp_localize_script(
+			'gravityview_gf_entries_scripts',
+			'gvGlobals',
+			array(
+				'nonce'                    => wp_create_nonce( 'gravityview_entry_approval' ),
+				'admin_nonce'              => wp_create_nonce( 'gravityview_admin_entry_approval' ),
+				'form_id'                  => $form_id,
+				'show_column'              => (int) $this->show_approve_entry_column( $form_id ),
+				'add_bulk_action'          => (int) GVCommon::has_cap( 'gravityview_moderate_entries' ),
+				'status_approved'          => GravityView_Entry_Approval_Status::APPROVED,
+				'status_disapproved'       => GravityView_Entry_Approval_Status::DISAPPROVED,
+				'status_unapproved'        => GravityView_Entry_Approval_Status::UNAPPROVED,
+				'bulk_actions'             => GravityView_Bulk_Actions::get_bulk_actions( $form_id ),
+				'bulk_message'             => $this->bulk_update_message,
+				'unapprove_title'          => GravityView_Entry_Approval_Status::get_title_attr( 'unapproved' ),
+				'approve_title'            => GravityView_Entry_Approval_Status::get_title_attr( 'disapproved' ),
+				'disapprove_title'         => GravityView_Entry_Approval_Status::get_title_attr( 'approved' ),
+				'column_title'             => esc_html__( 'GravityView entry approval status', 'gk-gravityview' ),
+				'column_link'              => esc_url( $this->get_sort_link() ),
+				'status_popover_template'  => GravityView_Entry_Approval::get_popover_template(),
+				'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
+			)
+		);
 	}
 
 	/**
-     * Generate a link to sort by approval status
-     *
-     * Note: Sorting by approval will never be great because it's not possible currently to declare the sorting as
-     * numeric, but it does group the approved entries together.
-     *
-     * @since 2.0.14 Remove need for approval field for sorting by approval status
-     *
+	 * Generate a link to sort by approval status
+	 *
+	 * Note: Sorting by approval will never be great because it's not possible currently to declare the sorting as
+	 * numeric, but it does group the approved entries together.
+	 *
+	 * @since 2.0.14 Remove need for approval field for sorting by approval status
+	 *
 	 * @param int $form_id [NO LONGER USED]
 	 *
 	 * @return string Sorting link
 	 */
 	private function get_sort_link( $form_id = 0 ) {
 
-	    $args = array(
-		    'orderby' => 'is_approved',
-            'order' => ( 'desc' === \GV\Utils::_GET( 'order' ) ) ? 'asc' : 'desc',
-        );
+		$args = array(
+			'orderby' => 'is_approved',
+			'order'   => ( 'desc' === \GV\Utils::_GET( 'order' ) ) ? 'asc' : 'desc',
+		);
 
 		return add_query_arg( $args );
-    }
+	}
 
 	/**
 	 * Should the Approve/Reject Entry column be shown in the GF Entries page?
@@ -440,27 +467,29 @@ class GravityView_Admin_ApproveEntries {
 		$show_approve_column = GVCommon::has_cap( 'gravityview_moderate_entries' );
 
 		/**
-		 * @filter `gravityview/approve_entries/hide-if-no-connections` Return true to hide reject/approve if there are no connected Views
+		 * Return true to hide reject/approve if there are no connected Views.
+		 *
 		 * @since 1.7.2
 		 * @param boolean $hide_if_no_connections
 		 */
-		$hide_if_no_connections = apply_filters('gravityview/approve_entries/hide-if-no-connections', false );
+		$hide_if_no_connections = apply_filters( 'gravityview/approve_entries/hide-if-no-connections', false );
 
-		if( $hide_if_no_connections ) {
+		if ( $hide_if_no_connections ) {
 
-			$connected_views = gravityview_get_connected_views( $form_id, ['posts_per_page' => 1 ], false );
+			$connected_views = gravityview_get_connected_views( $form_id, array( 'posts_per_page' => 1 ), false );
 
-			if( empty( $connected_views ) ) {
+			if ( empty( $connected_views ) ) {
 				$show_approve_column = false;
 			}
 		}
 
 		/**
-		 * @filter `gravityview/approve_entries/show-column` Override whether the column is shown
+		 * Override whether the column is shown.
+		 *
 		 * @param boolean $show_approve_column Whether the column will be shown
 		 * @param int $form_id The ID of the Gravity Forms form for which entries are being shown
 		 */
-		$show_approve_column = apply_filters('gravityview/approve_entries/show-column', $show_approve_column, $form_id );
+		$show_approve_column = apply_filters( 'gravityview/approve_entries/show-column', $show_approve_column, $form_id );
 
 		return $show_approve_column;
 	}
@@ -477,7 +506,6 @@ class GravityView_Admin_ApproveEntries {
 		$styles[] = 'gravityview_entries_list-tippy';
 		return $styles;
 	}
-
 }
 
-new GravityView_Admin_ApproveEntries;
+new GravityView_Admin_ApproveEntries();

@@ -16,8 +16,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
 
-if( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
-	require( GRAVITYVIEW_DIR . 'future/lib/class-gamajo-template-loader.php' );
+if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
+	require GRAVITYVIEW_DIR . 'future/lib/class-gamajo-template-loader.php';
 }
 
 class GravityView_View extends \GV\Gamajo_Template_Loader {
@@ -146,26 +146,30 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	/**
 	 * @var GravityView_View $instance
 	 */
-	static $instance = NULL;
+	static $instance = null;
 
 	/**
 	 * Construct the view object
-	 * @param  array       $atts Associative array to set the data of
+	 *
+	 * @param  array $atts Associative array to set the data of
 	 */
 	function __construct( $atts = array() ) {
 
-		$atts = wp_parse_args( $atts, array(
-			'form_id' => NULL,
-			'view_id' => NULL,
-			'fields'  => NULL,
-			'context' => NULL,
-			'post_id' => NULL,
-			'form'    => NULL,
-			'atts'	  => NULL,
-		) );
+		$atts = wp_parse_args(
+			$atts,
+			array(
+				'form_id' => null,
+				'view_id' => null,
+				'fields'  => null,
+				'context' => null,
+				'post_id' => null,
+				'form'    => null,
+				'atts'    => null,
+			)
+		);
 
-		foreach ($atts as $key => $value) {
-			if( is_null( $value ) ) {
+		foreach ( $atts as $key => $value ) {
+			if ( is_null( $value ) ) {
 				continue;
 			}
 			$this->{$key} = $value;
@@ -180,6 +184,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 		/**
 		 * Clear the current entry after the loop is done
+		 *
 		 * @since 1.7.3
 		 */
 		add_action( 'gravityview_footer', array( $this, 'clearCurrentEntry' ), 500 );
@@ -192,9 +197,9 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 *
 	 * @return GravityView_View
 	 */
-	static function getInstance( $passed_post = NULL ) {
+	static function getInstance( $passed_post = null ) {
 
-		if( empty( self::$instance ) ) {
+		if ( empty( self::$instance ) ) {
 			self::$instance = new self( $passed_post );
 		}
 
@@ -205,13 +210,13 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 * @param string|null $key The key to a specific attribute of the current field
 	 * @return array|mixed|null If $key is set and attribute exists at $key, return that. If not set, return NULL. Otherwise, return current field array
 	 */
-	public function getCurrentField( $key = NULL ) {
+	public function getCurrentField( $key = null ) {
 
-		if( !empty( $key ) ) {
-			if( isset( $this->_current_field[ $key ] ) ) {
+		if ( ! empty( $key ) ) {
+			if ( isset( $this->_current_field[ $key ] ) ) {
 				return $this->_current_field[ $key ];
 			}
-			return NULL;
+			return null;
 		}
 
 		return $this->_current_field;
@@ -219,20 +224,19 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 	public function setCurrentFieldSetting( $key, $value ) {
 
-		if( !empty( $this->_current_field ) ) {
+		if ( ! empty( $this->_current_field ) ) {
 			$this->_current_field['field_settings'][ $key ] = $value;
 		}
-
 	}
 
 	public function getCurrentFieldSetting( $key ) {
-		$settings = $this->getCurrentField('field_settings');
+		$settings = $this->getCurrentField( 'field_settings' );
 
-		if( $settings && !empty( $settings[ $key ] ) ) {
+		if ( $settings && ! empty( $settings[ $key ] ) ) {
 			return $settings[ $key ];
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
@@ -248,6 +252,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 		/**
 		 * Backward compatibility
+		 *
 		 * @deprecated 1.6.2
 		 */
 		$this->field_data = $set_field;
@@ -257,13 +262,13 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 * @param string|null $key The key to a specific field in the fields array
 	 * @return array|mixed|null If $key is set and field exists at $key, return that. If not set, return NULL. Otherwise, return array of fields.
 	 */
-	public function getAtts( $key = NULL ) {
+	public function getAtts( $key = null ) {
 
-		if( !empty( $key ) ) {
-			if( isset( $this->atts[ $key ] ) ) {
+		if ( ! empty( $key ) ) {
+			if ( isset( $this->atts[ $key ] ) ) {
 				return $this->atts[ $key ];
 			}
-			return NULL;
+			return null;
 		}
 
 		return $this->atts;
@@ -324,44 +329,44 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 */
 	public function getFields( $key = null ) {
 
-		$fields = empty( $this->fields ) ? NULL : $this->fields;
+		$fields = empty( $this->fields ) ? null : $this->fields;
 
-		if( $fields && !empty( $key ) ) {
-			$fields = isset( $fields[ $key ] ) ? $fields[ $key ] : NULL;
+		if ( $fields && ! empty( $key ) ) {
+			$fields = isset( $fields[ $key ] ) ? $fields[ $key ] : null;
 		}
 
 		return $fields;
 	}
 
 	/**
-     * Get the fields for a specific context
-     *
-     * @since 1.19.2
-     *
+	 * Get the fields for a specific context
+	 *
+	 * @since 1.19.2
+	 *
 	 * @param string $context [Optional] "directory", "single", or "edit"
 	 *
 	 * @return array Array of GravityView field layout configurations
 	 */
 	public function getContextFields( $context = '' ) {
 
-	    if( '' === $context ) {
-	        $context = $this->getContext();
-        }
+		if ( '' === $context ) {
+			$context = $this->getContext();
+		}
 
 		$fields = $this->getFields();
 
-        foreach ( (array) $fields as $key => $context_fields ) {
+		foreach ( (array) $fields as $key => $context_fields ) {
 
-            // Formatted as `{context}_{template id}-{zone name}`, so we want just the $context to match against
-            $matches = explode( '_', $key );
+			// Formatted as `{context}_{template id}-{zone name}`, so we want just the $context to match against
+			$matches = explode( '_', $key );
 
-            if( isset( $matches[0] ) && $matches[0] === $context ) {
-                return $context_fields;
-            }
-        }
+			if ( isset( $matches[0] ) && $matches[0] === $context ) {
+				return $context_fields;
+			}
+		}
 
 		return array();
-    }
+	}
 
 	/**
 	 * @param array $fields
@@ -376,18 +381,18 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 */
 	public function getField( $key ) {
 
-		if( !empty( $key ) ) {
-			if( isset( $this->fields[ $key ] ) ) {
+		if ( ! empty( $key ) ) {
+			if ( isset( $this->fields[ $key ] ) ) {
 				return $this->fields[ $key ];
 			}
 		}
 
-		return NULL;
+		return null;
 	}
 
 	/**
 	 * @param string $key The key to a specific field in the fields array
-	 * @param mixed $value The value to set for the field
+	 * @param mixed  $value The value to set for the field
 	 */
 	public function setField( $key, $value ) {
 		$this->fields[ $key ] = $value;
@@ -439,7 +444,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 * @return int
 	 */
 	public function getTotalEntries() {
-		return (int)$this->total_entries;
+		return (int) $this->total_entries;
 	}
 
 	/**
@@ -454,10 +459,10 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 */
 	public function getPaging() {
 
-	    $default_params = array(
-            'offset' => 0,
-            'page_size' => 20,
-        );
+		$default_params = array(
+			'offset'    => 0,
+			'page_size' => 20,
+		);
 
 		return wp_parse_args( $this->paging, $default_params );
 	}
@@ -482,10 +487,10 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 */
 	public function getPaginationCounts() {
 
-		$paging = $this->getPaging();
-		$offset = $paging['offset'];
+		$paging    = $this->getPaging();
+		$offset    = $paging['offset'];
 		$page_size = $paging['page_size'];
-		$total = $this->getTotalEntries();
+		$total     = $this->getTotalEntries();
 
 		if ( empty( $total ) ) {
 			gravityview()->log->debug( 'No entries. Returning empty array.' );
@@ -499,13 +504,18 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		$last = ( $offset + $page_size > $total ) ? $total : $offset + $page_size;
 
 		/**
-		 * @filter `gravityview_pagination_counts` Modify the displayed pagination numbers
+		 * Modify the displayed pagination numbers.
+		 *
 		 * @since 1.13
 		 * @param array $counts Array with $first, $last, $total numbers in that order
 		 */
 		list( $first, $last, $total ) = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
 
-		return array( 'first' => (int) $first, 'last' => (int) $last, 'total' => (int) $total );
+		return array(
+			'first' => (int) $first,
+			'last'  => (int) $last,
+			'total' => (int) $total,
+		);
 	}
 
 	/**
@@ -514,10 +524,10 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	public function getSorting() {
 
 		$defaults_params = array(
-            'sort_field' => 'date_created',
-            'sort_direction' => 'ASC',
-            'is_numeric' => false,
-        );
+			'sort_field'     => 'date_created',
+			'sort_direction' => 'ASC',
+			'is_numeric'     => false,
+		);
 
 		return wp_parse_args( $this->sorting, $defaults_params );
 	}
@@ -597,13 +607,14 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 	/**
 	 * Return the current entry. If in the loop, the current entry. If single entry, the currently viewed entry.
+	 *
 	 * @return array
 	 */
 	public function getCurrentEntry() {
 
-		if( in_array( $this->getContext(), array( 'edit', 'single') ) ) {
+		if ( in_array( $this->getContext(), array( 'edit', 'single' ) ) ) {
 			$entries = $this->getEntries();
-			$entry = $entries[0];
+			$entry   = $entries[0];
 		} else {
 			$entry = $this->_current_entry;
 		}
@@ -631,7 +642,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 * @return void
 	 */
 	public function clearCurrentEntry() {
-		$this->_current_entry = NULL;
+		$this->_current_entry = null;
 	}
 
 	/**
@@ -640,8 +651,8 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 * @since 1.16.4 Added $echo parameter
 	 *
 	 * @param string $zone The zone name, like 'footer-left'
-	 * @param array $atts
-	 * @param bool $echo Whether to print the output
+	 * @param array  $atts
+	 * @param bool   $echo Whether to print the output
 	 *
 	 * @deprecated This will never get called in new templates.
 	 *
@@ -650,16 +661,16 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	public function renderZone( $zone = '', $atts = array(), $echo = true ) {
 
 		if ( empty( $zone ) ) {
-			gravityview()->log->error( 'No zone defined.');
-			return NULL;
+			gravityview()->log->error( 'No zone defined.' );
+			return null;
 		}
 
 		$defaults = array(
-			'slug' => $this->getTemplatePartSlug(),
-			'context' => $this->getContext(),
-			'entry' => $this->getCurrentEntry(),
-			'form' => $this->getForm(),
-			'hide_empty' => $this->getAtts('hide_empty'),
+			'slug'       => $this->getTemplatePartSlug(),
+			'context'    => $this->getContext(),
+			'entry'      => $this->getCurrentEntry(),
+			'form'       => $this->getForm(),
+			'hide_empty' => $this->getAtts( 'hide_empty' ),
 		);
 
 		$final_atts = wp_parse_args( $atts, $defaults );
@@ -673,19 +684,20 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		// Backward compatibility
 		if ( 'table' === $this->getTemplatePartSlug() ) {
 			/**
-			 * @filter `gravityview_table_cells` Modify the fields displayed in a table
+			 * Modify the fields displayed in a table.
+			 *
 			 * @param array $fields
 			 * @param \GravityView_View $this
 			 * @deprecated Use `gravityview/template/table/fields`
 			 */
-			$fields = apply_filters("gravityview_table_cells", $fields, $this );
+			$fields = apply_filters( 'gravityview_table_cells', $fields, $this );
 		}
 
 		if ( empty( $fields ) ) {
 
 			gravityview()->log->warning( 'Empty zone configuration for {zone_id}.', array( 'zone_id' => $final_atts['zone_id'] ) );
 
-			return NULL;
+			return null;
 		}
 
 		$field_output = '';
@@ -698,26 +710,27 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		/**
 		 * If a zone has no field output, choose whether to show wrapper
 		 * False by default to keep backward compatibility
+		 *
 		 * @since 1.7.6
 		 * @param boolean $hide_empty_zone Default: false
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The context. Null here. Since this path is deprecated.
 		 */
 		if ( empty( $field_output ) && apply_filters( 'gravityview/render/hide-empty-zone', false, null ) ) {
-			return NULL;
+			return null;
 		}
 
-		if( !empty( $final_atts['wrapper_class'] ) ) {
-			$output .= '<div class="'.gravityview_sanitize_html_class( $final_atts['wrapper_class'] ).'">';
+		if ( ! empty( $final_atts['wrapper_class'] ) ) {
+			$output .= '<div class="' . gravityview_sanitize_html_class( $final_atts['wrapper_class'] ) . '">';
 		}
 
 		$output .= $field_output;
 
-		if( !empty( $final_atts['wrapper_class'] ) ) {
+		if ( ! empty( $final_atts['wrapper_class'] ) ) {
 			$output .= '</div>';
 		}
 
-		if( $echo ) {
+		if ( $echo ) {
 			echo $output;
 		}
 
@@ -735,7 +748,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 */
 	function locate_template( $template_names, $load = false, $require_once = true ) {
 
-		if( is_string( $template_names ) && isset( $this->located_templates[ $template_names ] ) ) {
+		if ( is_string( $template_names ) && isset( $this->located_templates[ $template_names ] ) ) {
 
 			$located = $this->located_templates[ $template_names ];
 
@@ -744,7 +757,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			// Set $load to always false so we handle it here.
 			$located = parent::locate_template( $template_names, false, $require_once );
 
-			if( is_string( $template_names ) ) {
+			if ( is_string( $template_names ) ) {
 				$this->located_templates[ $template_names ] = $located;
 			}
 		}
@@ -758,14 +771,15 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 	/**
 	 * Magic Method: Instead of throwing an error when a variable isn't set, return null.
-	 * @param  string      $name Key for the data retrieval.
+	 *
+	 * @param  string $name Key for the data retrieval.
 	 * @return mixed|null    The stored data.
 	 */
 	public function __get( $name ) {
-		if( isset( $this->{$name} ) ) {
+		if ( isset( $this->{$name} ) ) {
 			return $this->{$name};
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -780,7 +794,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 * - table-footer.php
 	 *
 	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
-	 * @param array $templates Existing list of templates.
+	 * @param array  $templates Existing list of templates.
 	 * @param string $slug      Name of the template base, example: `table`, `list`, `datatables`, `map`
 	 * @param string $name      Name of the template part, example: `body`, `footer`, `head`, `single`
 	 *
@@ -793,12 +807,12 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		// form-19-table-body.php
 		$additional[] = sprintf( 'form-%d-%s-%s.php', $this->getFormId(), $slug, $name );
 
-		if( $view_id = $this->getViewId() ) {
+		if ( $view_id = $this->getViewId() ) {
 			// view-3-table-body.php
 			$additional[] = sprintf( 'view-%d-%s-%s.php', $view_id, $slug, $name );
 		}
 
-		if( $this->getPostId() ) {
+		if ( $this->getPostId() ) {
 
 			// page-19-table-body.php
 			$additional[] = sprintf( 'page-%d-%s-%s.php', $this->getPostId(), $slug, $name );
@@ -823,14 +837,13 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 		gravityview()->log->debug( 'Rendering Template File: {path}', array( 'path' => $template_file ) );
 
-		if( !empty( $template_file) ) {
+		if ( ! empty( $template_file ) ) {
 
 			if ( $require_once ) {
-				require_once( $template_file );
+				require_once $template_file;
 			} else {
-				require( $template_file );
+				require $template_file;
 			}
-
 		}
 	}
 
@@ -843,24 +856,26 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 */
 	public function render_widget_hooks( $view_id_or_context ) {
 
-	    /**
+		/**
 		 * @deprecated Numeric argument is deprecated. Pass a \GV\Template_Context instead.
 		 */
 		if ( is_numeric( $view_id_or_context ) ) {
-			$view = \GV\View::by_id( $view_id_or_context );
-			$is_single = gravityview_get_context() == 'single';
-			$total_entries = GravityView_View::getInstance()->getTotalEntries();
+			$view          = \GV\View::by_id( $view_id_or_context );
+			$is_single     = 'single' == gravityview_get_context();
+			$total_entries = self::getInstance()->getTotalEntries();
 
 			/**
 			 * Fake new context for legacy template code.
 			 */
-			$view_id_or_context = \GV\Template_Context::from_template( array(
-				'view' => $view,
-			) );
+			$view_id_or_context = \GV\Template_Context::from_template(
+				array(
+					'view' => $view,
+				)
+			);
 
-		} else if ( $view_id_or_context instanceof \GV\Template_Context ) {
-			$view = $view_id_or_context->view;
-			$is_single = (boolean)$view_id_or_context->request->is_entry();
+		} elseif ( $view_id_or_context instanceof \GV\Template_Context ) {
+			$view          = $view_id_or_context->view;
+			$is_single     = (bool) $view_id_or_context->request->is_entry();
 			$total_entries = $view_id_or_context->entries ? $view_id_or_context->entries->count() : 0;
 
 		} else {
@@ -889,16 +904,23 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 		/**
 		 * Prevent output if no widgets to show.
+		 *
 		 * @since 1.16
 		 */
 		if ( ! $widgets->count() ) {
-			gravityview()->log->debug( 'No widgets for View #{view_id} in zone {zone}', array( 'view_id' => $view->ID, 'zone' => $zone ) );
+			gravityview()->log->debug(
+				'No widgets for View #{view_id} in zone {zone}',
+				array(
+					'view_id' => $view->ID,
+					'zone'    => $zone,
+				)
+			);
 			return;
 		}
 
 		// Prevent being called twice
 		if ( did_action( "gravityview/widgets/$zone/{$view->ID}/rendered" ) ) {
-			gravityview()->log->debug( 'Not rendering {zone}; already rendered', array( 'zone' => $zone.'_'.$view->ID.'_widgets' ) );
+			gravityview()->log->debug( 'Not rendering {zone}; already rendered', array( 'zone' => $zone . '_' . $view->ID . '_widgets' ) );
 			return;
 		}
 
@@ -918,13 +940,14 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		}
 
 		/**
-		 * @filter `gravityview/widgets/wrapper_css_class` The CSS class applied to the widget container `<div>`.
+		 * The CSS class applied to the widget container `<div>`.
+		 *
 		 * @since 1.16.2
 		 * @param string $css_class Default: `gv-grid gv-widgets-{zone}` where `{zone}` is replaced by the current `$zone` value. If the View has no results, adds ` gv-widgets-no-results`
 		 * @param string $zone Current widget zone, either `header` or `footer`
 		 * @param array $widgets Array of widget configurations for the current zone, as set by `gravityview_get_current_view_data()['widgets']`
 		 */
-		$css_class = apply_filters('gravityview/widgets/wrapper_css_class', $default_css_class, $zone, $widgets->as_configuration() );
+		$css_class = apply_filters( 'gravityview/widgets/wrapper_css_class', $default_css_class, $zone, $widgets->as_configuration() );
 
 		$css_class = gravityview_sanitize_html_class( $css_class );
 
@@ -932,10 +955,10 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		?>
 		<div class="<?php echo $css_class; ?>">
 			<?php
-			foreach( $rows as $row ) {
-				foreach( $row as $col => $areas ) {
-					$column = ( $col == '2-2' ) ? '1-2 gv-right' : "$col gv-left";
-				?>
+			foreach ( $rows as $row ) {
+				foreach ( $row as $col => $areas ) {
+					$column = ( '2-2' == $col ) ? '1-2 gv-right' : "$col gv-left";
+					?>
 					<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 						<?php
 						if ( ! empty( $areas ) ) {
@@ -944,7 +967,8 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 									do_action( sprintf( 'gravityview/widgets/%s/render', $widget->get_widget_id() ), $widget->configuration->all(), null, $view_id_or_context );
 								}
 							}
-						} ?>
+						}
+						?>
 					</div>
 				<?php } // $row ?>
 			<?php } // $rows ?>
@@ -973,6 +997,5 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			include $path;
 		}
 	}
-
 }
 
