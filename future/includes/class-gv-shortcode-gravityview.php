@@ -294,6 +294,7 @@ class gravityview extends \GV\Shortcode {
 		$block_to_shortcode_attributes_map = array(
 			'viewId'         => 'id',
 			'postId'         => 'post_id',
+			'secret'         => 'secret',
 			'pageSize'       => 'page_size',
 			'sortField'      => 'sort_field',
 			'sortDirection'  => 'sort_direction',
