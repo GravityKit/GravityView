@@ -144,9 +144,6 @@
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
 
-				// When user clicks into the shortcode example field, select the example.
-				.on( 'click', ".gv-shortcode input", vcfg.selectText )
-
 				// Show the direct access options and hide the toggle button when opened.
 				.on( 'click', "#gv-direct-access .edit-direct-access", vcfg.editDirectAccess )
 
@@ -2809,7 +2806,8 @@
 			}
 		} );
 
-		$('.gv-shortcode input.code').on('click', function () {
+		$('.gv-shortcode input.code').on('click', function (e) {
+			e.preventDefault();
 			var $el = $(this).closest('.gv-shortcode').find('.copied');
 			$el.show();
 			setTimeout(function () {
