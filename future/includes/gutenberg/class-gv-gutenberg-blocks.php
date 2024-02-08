@@ -231,18 +231,20 @@ class Blocks {
 		);
 
 		$formatted_views = array_map(
-			function ( $post ) {
+			static function ( $post ) {
 				$view = View::from_post( $post );
 
-				return [
-					'value'  => (string) $view->ID,
-					'label'  => sprintf(
-						'%s (#%d)',
-						$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
-						$view->ID
-					),
-					'secret' => $view->get_validation_secret(),
-				];
+				return array_filter(
+					[
+						'value'  => (string) $view->ID,
+						'label'  => sprintf(
+							'%s (#%d)',
+							$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
+							$view->ID
+						),
+						'secret' => $view->get_validation_secret(),
+					]
+				);
 			},
 			$views
 		);
