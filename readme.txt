@@ -77,6 +77,9 @@ This release introduces new settings for better control over View caching, adds 
   - GravityKit products that are already installed can now be activated without a valid license.
   - Fixed PHP warning messages that appeared when deactivating the last active product with Foundation installed.
 
+#### 🐛 Fixed
+* The GravityView capabilities for a specific role were overwritten on every admin request.
+
 = 2.19.6 on February 7, 2024 =
 
 This update introduces the ability to send notifications using Gravity Forms when an entry is deleted, improves sorting and survey field ratings, and updates key components for better performance and compatibility.
