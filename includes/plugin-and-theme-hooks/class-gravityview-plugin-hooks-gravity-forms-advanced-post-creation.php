@@ -101,8 +101,8 @@ HTML;
 
 		$apc_feed_link = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=%s&amp;id=%d', $apc->get_slug(), $form->ID ) );
 		$notification  = strtr( $notification, [
-			'[/link]' => '</a>',
 			'[link]'  => '<a style="font-size: inherit;" href="' . esc_url( $apc_feed_link ) . '" target="_blank">',
+			'[/link]' =>  '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
 		] );
 
 		if ( $echo ) {
