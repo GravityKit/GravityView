@@ -39,16 +39,16 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 			return;
 		}
 
-		// Todo: disable if setting is not activated in Foundation.
-
 		$apc = GF_Advanced_Post_Creation::get_instance();
 
 		$created_posts = gform_get_meta( $entry_id, $apc->get_slug() . '_post_id' );
+
 		if ( ! $created_posts ) {
 			return;
 		}
 
 		$feeds = $apc->get_active_feeds( rgar( $form, 'id' ) );
+
 		if ( ! $feeds ) {
 			return;
 		}
