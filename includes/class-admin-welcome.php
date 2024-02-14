@@ -295,6 +295,13 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.19.5 on December 7, 2023</h3>
+
+				<ul>
+					<li>Fixed: PHP 8.1+ deprecation notice when editing an entry with the Gravity Forms User Registration add-on enabled</li>
+					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2.6</li>
+				</ul>
+
 				<h3>2.19.4 on November 2, 2023</h3>
 
 				<ul>
