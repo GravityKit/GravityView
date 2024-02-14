@@ -109,7 +109,7 @@ HTML;
 			$notification_html,
 			// translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
 			esc_html__( 'Caution: [link]Advanced Post Creation[/link] is active for this form.', 'gk-gravityview' ),
-			__( 'Editing entries in GravityView may also update a connected post.', 'gk-gravityview' )
+			esc_html__( 'Editing entries in GravityView may also update a connected post.', 'gk-gravityview' )
 		);
 
 		$apc_feed_link = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=%s&amp;id=%d', $apc->get_slug(), $form->ID ) );
