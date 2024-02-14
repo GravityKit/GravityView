@@ -95,11 +95,13 @@ HTML;
 
 		$notification = sprintf(
 			$notification_html,
-			esc_html__( 'Caution: [link]Advanced Post Creation[/link] is active for this form', 'gk-gravityview' ),
-			__( 'Editing one of these entries might update a connected post as well. ', 'gk-gravityview' )
+			// translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
+			esc_html__( 'Caution: [link]Advanced Post Creation[/link] is active for this form.', 'gk-gravityview' ),
+			__( 'Editing entries in GravityView may also update a connected post.', 'gk-gravityview' )
 		);
 
 		$apc_feed_link = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=%s&amp;id=%d', $apc->get_slug(), $form->ID ) );
+
 		$notification  = strtr( $notification, [
 			'[link]'  => '<a style="font-size: inherit;" href="' . esc_url( $apc_feed_link ) . '" target="_blank">',
 			'[/link]' =>  '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
