@@ -101,8 +101,8 @@ HTML;
 
 		$apc_feed_link = admin_url( sprintf( 'admin.php?page=gf_edit_forms&amp;view=settings&amp;subview=%s&amp;id=%d', $apc->get_slug(), $form->ID ) );
 		$notification  = strtr( $notification, [
-			'[link]'  => '<a style="font-size: inherit;" href="' . $apc_feed_link . '" target="_blank">',
 			'[/link]' => '</a>',
+			'[link]'  => '<a style="font-size: inherit;" href="' . esc_url( $apc_feed_link ) . '" target="_blank">',
 		] );
 
 		if ( $echo ) {
