@@ -62,7 +62,7 @@
 
 		<div id="single-fields" class="gv-section">
 
-			<div class="notice notice-warning inline is-dismissible">
+			<div class="notice notice-warning notice-no-link inline is-dismissible">
 				<h3><?php printf( esc_html__( 'Note: %s', 'gk-gravityview' ), sprintf( esc_html__( 'No fields link to the %s layout.', 'gk-gravityview' ), esc_html__( 'Single Entry', 'gk-gravityview' ) ) ); ?></h3>
 				<p><a data-beacon-article-modal="54c67bbae4b0512429885516" href="https://docs.gravitykit.com/article/70-linking-to-a-single-entry"><?php printf( esc_html__( 'Learn how to link to %s', 'gk-gravityview' ), esc_html__( 'Single Entry', 'gk-gravityview' ) ); ?></a></p>
 			</div>
@@ -87,7 +87,7 @@
 
 		<div id="edit-fields" class="gv-section">
 
-			<div class="notice notice-warning inline is-dismissible">
+			<div class="notice notice-warning notice-no-link inline is-dismissible">
 				<h3><?php printf( esc_html__( 'Note: %s', 'gk-gravityview' ), sprintf( esc_html__( 'No fields link to the %s layout.', 'gk-gravityview' ), esc_html__( 'Edit Entry', 'gk-gravityview' ) ) ); ?></h3>
 				<p><a data-beacon-article-modal="54c67bb9e4b0512429885513" href="https://docs.gravitykit.com/article/67-configuring-the-edit-entry-screen"><?php printf( esc_html__( 'Learn how to link to %s', 'gk-gravityview' ), esc_html__( 'Edit Entry', 'gk-gravityview' ) ); ?></a></p>
 			</div>
