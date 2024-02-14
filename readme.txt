@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Added: Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode
+
+
 = 2.19.6 on February 7, 2024 =
 
 This update introduces the ability to send notifications using Gravity Forms when an entry is deleted, improves sorting and survey field ratings, and updates key components for better performance and compatibility.
