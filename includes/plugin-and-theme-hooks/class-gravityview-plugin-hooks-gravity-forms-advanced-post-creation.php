@@ -1,4 +1,16 @@
 <?php
+/**
+ * Add Advanced Post Creation customizations.
+ *
+ * @file      class-gravityview-plugin-hooks-code-snippets.php
+ * @package   GravityView
+ * @license   GPL2+
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
+ * @copyright Copyright 2024, Katz Web Services, Inc.
+ *
+ * @since $ver$
+ */
 
 use GV\View;
 
@@ -27,7 +39,7 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 			return;
 		}
 
-		// Todo: disable if setting is not activated in Foudation.
+		// Todo: disable if setting is not activated in Foundation.
 
 		$apc = GF_Advanced_Post_Creation::get_instance();
 
