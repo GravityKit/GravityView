@@ -1791,7 +1791,7 @@ class View implements \ArrayAccess {
 	private static function override_post_pages_when_compatibility_fails() {
 		global $pagenow;
 
-		if ( ! in_array( $pagenow, array( 'edit.php', 'post-new.php' ) ) && 'gravityview' !== ( $_GET['post_type'] ?? '' ) ) {
+		if ( ! in_array( $pagenow, array( 'post.php', 'edit.php', 'post-new.php' ) ) ) {
 			return;
 		}
 
