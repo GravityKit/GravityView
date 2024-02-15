@@ -180,6 +180,11 @@ class Blocks {
 	 * @return void
 	 */
 	public function localize_block_assets() {
+		// Prevent leaking information on front-end.
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		/**
 		 * Modifies the global blocks localization data.
 		 *
