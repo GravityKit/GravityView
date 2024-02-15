@@ -24,7 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added: Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode
-
+* Fixed: Deprecation notice in PHP 8.1+ when displaying a View with file upload fields
 
 = 2.19.6 on February 7, 2024 =
 
