@@ -1822,7 +1822,7 @@ class View implements \ArrayAccess {
 
 		// Override the All Views (i.e., edit post) page.
 		add_filter( 'bulk_post_updated_messages', function ( $bulk_messages ) use ( $display_notices ) {
-			if ( get_current_screen()->id != 'edit-gravityview' ) {
+			if ( 'edit-gravityview' !== get_current_screen()->id ) {
 				return $bulk_messages;
 			}
 
