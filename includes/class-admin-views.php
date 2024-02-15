@@ -502,7 +502,7 @@ HTML;
 				$output = sprintf(
 					$html,
 					esc_attr( $view->get_shortcode() ),
-					esc_html__( 'Copied!', 'gk-gravityview' ),
+					esc_html__( 'Copied!', 'gk-gravityview' )
 				);
 				break;
 		}
