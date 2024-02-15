@@ -486,6 +486,25 @@ class GravityView_Admin_Views {
 				}
 
 				break;
+			case 'shortcode':
+				$view = \GV\View::by_id( $post_id );
+				if ( ! $view ) {
+					break;
+				}
+
+				$html = <<<HTML
+<div class="gv-shortcode">
+		<input type="text" readonly="readonly" value="%s" class="code shortcode widefat" />
+		<span class="copied">%s</span>
+	</div>
+HTML;
+
+				$output = sprintf(
+					$html,
+					esc_attr( $view->get_shortcode() ),
+					esc_html__( 'Copied!', 'gk-gravityview' ),
+				);
+				break;
 		}
 
 		echo $output;
@@ -595,6 +614,8 @@ class GravityView_Admin_Views {
 		}
 
 		$columns['gv_template'] = _x( 'Template', 'Column title that shows what template is being used for Views', 'gk-gravityview' );
+
+		$columns['shortcode'] = esc_html__( 'Shortcode', 'gk-gravityview' ) . sprintf( ' <small>(%s)</small>', esc_html__( 'Click to copy', 'gk-gravityview' ) );
 
 		// Add the date back in.
 		$columns['date'] = $date;
@@ -1427,6 +1448,16 @@ class GravityView_Admin_Views {
 		wp_register_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array( 'dashicons', 'wp-jquery-ui-dialog' ), \GV\Plugin::$version );
 
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), \GV\Plugin::$version, true );
+		wp_enqueue_script(
+			'gravityview-shortcode',
+			plugins_url( 'assets/js/admin-shortcode' . $script_debug . '.js', GRAVITYVIEW_FILE ),
+			[
+				'jquery',
+				'clipboard',
+			],
+			\GV\Plugin::$version,
+			true
+		);
 
 		if ( 'form_list' === GFForms::get_page() ) {
 			wp_enqueue_style( 'gravityview_views_styles' );

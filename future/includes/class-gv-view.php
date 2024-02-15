@@ -1869,4 +1869,20 @@ class View implements \ArrayAccess {
 
 		return $secret === $view_secret;
 	}
+
+	/**
+	 * Returns the shortcode for this view.
+	 *
+	 * @since $ver$
+	 * @return string
+	 */
+	final public function get_shortcode(): string {
+		$secret = $this->get_validation_secret();
+		$atts   = [ sprintf( 'id="%d"', $this->post->ID ) ];
+		if ( $secret ) {
+			$atts[] = sprintf( 'secret="%s"', $secret );
+		}
+
+		return sprintf( '[gravityview %s]', implode( ' ', $atts ) );
+	}
 }

@@ -171,3 +171,47 @@
 		margin: -1px;
 	}
 }
+
+
+/** The "Embed Shortcode" section in the Publish metabox */
+.gv-shortcode {
+	.dashicons-editor-code {
+		color: #888;
+		left: -1px;
+		font-size: 20px;
+		line-height: 1;
+
+		html[dir=rtl] & {
+			left: auto;
+			right: -1px;
+		}
+	}
+
+	html[dir=rtl] & .code.widefat {
+		text-align: right;
+	}
+
+	position: relative;
+
+	input.code {
+		cursor: pointer;
+	}
+
+	span.copied {
+		display: none;
+		position: absolute;
+		top: 30px;
+		right: 15px;
+		background-color: #000;
+		color: #FFF;
+		padding: 2px 5px;
+		border-radius: 5px;
+	}
+
+	.wp-list-table & {
+		span.copied {
+			top: 3px;
+			right: 3px;
+		}
+	}
+}
