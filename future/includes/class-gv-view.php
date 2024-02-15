@@ -4,6 +4,8 @@ namespace GV;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GF_Query;
+use GravityView_Admin_Notices;
+use GravityView_Compatibility;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -121,10 +123,13 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public static function register_post_type() {
-
 		/** Register only once */
 		if ( post_type_exists( 'gravityview' ) ) {
 			return;
+		}
+
+		if ( ! gravityview()->plugin->is_compatible() ) {
+			self::override_post_pages_when_compatibility_fails();
 		}
 
 		/**
@@ -192,7 +197,7 @@ class View implements \ArrayAccess {
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
 			'public'              => apply_filters( 'gravityview_direct_access', gravityview()->plugin->is_compatible(), 0 ),
-			'show_ui'             => gravityview()->plugin->is_compatible(),
+			'show_ui'             => true,
 			'show_in_menu'        => false, // Menu items are added in \GV\Plugin::add_to_gravitykit_admin_menu()
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
@@ -1482,7 +1487,6 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public static function template_redirect() {
-
 		$is_csv = get_query_var( 'csv' );
 		$is_tsv = get_query_var( 'tsv' );
 
@@ -1775,5 +1779,63 @@ class View implements \ArrayAccess {
 		$query_parameters = $query->_introspect();
 
 		$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+	}
+
+	/**
+	 * Displays a notice on the All Views or New View page when the compatibility requirements for the plugin are not met.
+	 *
+	 * @since 2.19.7
+	 *
+	 * @return void
+	 */
+	private static function override_post_pages_when_compatibility_fails() {
+		global $pagenow;
+
+		if ( ! in_array( $pagenow, array( 'edit.php', 'post-new.php' ) ) && 'gravityview' !== ( $_GET['post_type'] ?? '' ) ) {
+			return;
+		}
+
+		$display_notices = function () {
+			remove_all_actions( 'admin_notices' );
+
+			$compat_notices = GravityView_Compatibility::get_notices();
+
+			foreach ( $compat_notices as &$notice ) {
+				unset( $notice['dismiss'] ); // Make sure the notice is always displayed and is not dismissible.
+				unset( $notice['cap'] ); // Display the notice to everyone.
+			}
+
+			new GravityView_Admin_Notices();
+
+			add_filter( 'gravityview/admin/notices', function ( $notices ) use ( $compat_notices ) {
+				return array_merge( $notices, $compat_notices );
+			} );
+
+			require_once ABSPATH . 'wp-admin/admin-header.php';
+
+			echo '<style>#screen-meta-links{ display: none !important; }</style>';
+
+			require_once ABSPATH . 'wp-admin/admin-footer.php';
+
+			exit;
+		};
+
+		// Override the All Views (i.e., edit post) page.
+		add_filter( 'bulk_post_updated_messages', function ( $bulk_messages ) use ( $display_notices ) {
+			if ( get_current_screen()->id != 'edit-gravityview' ) {
+				return $bulk_messages;
+			}
+
+			$display_notices();
+		} );
+
+		// Override the New View (i.e., new post) page.
+		add_filter( 'replace_editor', function ( $replace_editor ) use ( $display_notices ) {
+			if ( 'gravityview' !== get_current_screen()->id ) {
+				return $replace_editor;
+			}
+
+			$display_notices();
+		} );
 	}
 }
