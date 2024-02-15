@@ -1795,23 +1795,31 @@ class View implements \ArrayAccess {
 			return;
 		}
 
-		$display_notices = function () {
-			remove_all_actions( 'admin_notices' );
+		$display_notices = function ( $hook_data ) {
+			global $post;
 
-			$compat_notices = GravityView_Compatibility::get_notices();
-
-			foreach ( $compat_notices as &$notice ) {
-				unset( $notice['dismiss'] ); // Make sure the notice is always displayed and is not dismissible.
-				unset( $notice['cap'] ); // Display the notice to everyone.
+			if ( ! $post || 'gravityview' !== $post->post_type ) {
+				return $hook_data;
 			}
+
+			// We only care about GravityView notices :)
+			remove_all_actions( 'admin_notices' );
+			remove_all_actions( 'network_admin_notices' );
 
 			new GravityView_Admin_Notices();
 
-			add_filter( 'gravityview/admin/notices', function ( $notices ) use ( $compat_notices ) {
+			add_filter( 'gravityview/admin/notices', function ( $notices ) {
+				$compat_notices = GravityView_Compatibility::get_notices();
+
+				foreach ( $compat_notices as &$notice ) {
+					unset( $notice['dismiss'] ); // Make sure the notice is always displayed and is not dismissible.
+					unset( $notice['cap'] ); // Display the notice to everyone.
+				}
+
 				return array_merge( $notices, $compat_notices );
 			} );
 
-			add_filter( 'screen_options_show_screen', '__return_false');
+			add_filter( 'screen_options_show_screen', '__return_false' );
 
 			require_once ABSPATH . 'wp-admin/admin-header.php';
 			require_once ABSPATH . 'wp-admin/admin-footer.php';
@@ -1819,22 +1827,7 @@ class View implements \ArrayAccess {
 			exit;
 		};
 
-		// Override the All Views (i.e., edit post) page.
-		add_filter( 'bulk_post_updated_messages', function ( $bulk_messages ) use ( $display_notices ) {
-			if ( 'edit-gravityview' !== get_current_screen()->id ) {
-				return $bulk_messages;
-			}
-
-			$display_notices();
-		} );
-
-		// Override the New View (i.e., new post) page.
-		add_filter( 'replace_editor', function ( $replace_editor ) use ( $display_notices ) {
-			if ( 'gravityview' !== get_current_screen()->id ) {
-				return $replace_editor;
-			}
-
-			$display_notices();
-		} );
+		add_filter( 'bulk_post_updated_messages', $display_notices ); // Fired on All Views page.
+		add_filter( 'replace_editor', $display_notices ); // Fired on New View and edit View pages.
 	}
 }
