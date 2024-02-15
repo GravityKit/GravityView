@@ -1811,10 +1811,9 @@ class View implements \ArrayAccess {
 				return array_merge( $notices, $compat_notices );
 			} );
 
+			add_filter( 'screen_options_show_screen', '__return_false');
+
 			require_once ABSPATH . 'wp-admin/admin-header.php';
-
-			echo '<style>#screen-meta-links{ display: none !important; }</style>';
-
 			require_once ABSPATH . 'wp-admin/admin-footer.php';
 
 			exit;
