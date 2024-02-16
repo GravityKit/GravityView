@@ -11,6 +11,10 @@ trait GravityView_Functionality_Placeholder {
 		add_action( 'add_meta_boxes', [ $this, 'register_metabox_placeholder' ] );
 	}
 
+	protected function render_placeholder_before() {}
+
+	protected function render_placeholder_after() {}
+
 	/**
 	 * Register the Maps placeholder metabox.
 	 *
@@ -42,7 +46,7 @@ trait GravityView_Functionality_Placeholder {
 	 * @access public
 	 * @return void
 	 */
-	function render_metabox_placeholder() {
+	public function render_metabox_placeholder() {
 
 		$plugin_basename = $this->get_plugin_basename();
 
@@ -66,6 +70,7 @@ trait GravityView_Functionality_Placeholder {
 				break;
 		}
 
+		$this->render_placeholder_before();
 		?>
 		<div class='gk-gravityview-placeholder-container'>
 			<div class='gk-gravityview-placeholder-content'>
@@ -93,5 +98,6 @@ trait GravityView_Functionality_Placeholder {
 					?><span class="screen-reader-text"> <?php esc_html_e( 'This link opens in a new window.', 'gk-gravityview' );?></span></a></p>
 		</div>
 		<?php
+		$this->render_placeholder_after();
 	}
 }
