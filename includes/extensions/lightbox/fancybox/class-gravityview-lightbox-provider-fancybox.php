@@ -153,7 +153,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			}
 		}
 
-		$file_path = \GV\Utils::get( $additional_details, 'file_path' );
+		$file_path = \GV\Utils::get( $additional_details, 'file_path', '' );
 
 		/**
 		 * For file types that require IFRAME, declare `pdf` media type.
