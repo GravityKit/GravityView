@@ -132,6 +132,11 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	private function maybe_add_hooks() {
 
 		if ( ! $this->is_active() ) {
+
+			if ( is_callable( [ $this, 'add_placeholder_hooks' ] ) ) {
+				$this->add_placeholder_hooks();
+			}
+
 			return;
 		}
 

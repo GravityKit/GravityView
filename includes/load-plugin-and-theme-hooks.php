@@ -17,6 +17,7 @@ $include_path = GRAVITYVIEW_DIR . 'includes/plugin-and-theme-hooks/';
 
 // Abstract class
 require $include_path . 'abstract-gravityview-plugin-and-theme-hooks.php';
+require $include_path . 'trait-gravityview-functionality-placeholder.php';
 
 $plugin_hooks_files = glob( $include_path . 'class-gravityview-plugin-hooks-*.php' );
 
