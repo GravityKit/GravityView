@@ -54,12 +54,14 @@ trait GravityView_Functionality_Placeholder {
 				break;
 			case false:
 
-				if( true ) { // TODO: Add check to see if user has access to the plugin.
+				if( true ) { // TODO: Add check to see if license includes the plugin.
 					$caps = 'install_plugins';
 					$button_text = __( 'Install & Activate', 'gk-gravityview' );
+					$button_href = '#'; // TODO Add link to install & activate the plugin. Should we just link to Foundation?
 				} else {
 					$caps = 'read';
 					$button_text = __( 'Buy Now', 'gk-gravityview' );
+					$button_href = $this->get_buy_now_link();
 				}
 				break;
 		}
