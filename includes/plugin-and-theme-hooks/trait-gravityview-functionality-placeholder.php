@@ -33,14 +33,37 @@ trait GravityView_Functionality_Placeholder {
 	 */
 	abstract function get_buy_now_link();
 
+	abstract function get_plugin_basename();
+
+
 	/**
 	 * Render placeholder HTML.
 	 *
 	 * @access public
-	 * @param WP_Post $post
 	 * @return void
 	 */
-	function render_metabox_placeholder( $post ) {
+	function render_metabox_placeholder() {
+
+		$plugin_basename = $this->get_plugin_basename();
+
+		switch( GravityView_Compatibility::get_plugin_status( $plugin_basename ) ) {
+			case 'inactive':
+				$caps = 'activate_plugins';
+				$button_text = __( 'Activate Now', 'gk-gravityview' );
+				$button_href = wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=' . $plugin_basename ), 'activate-plugin_' . $plugin_basename );
+				break;
+			case false:
+
+				if( true ) { // TODO: Add check to see if user has access to the plugin.
+					$caps = 'install_plugins';
+					$button_text = __( 'Install & Activate', 'gk-gravityview' );
+				} else {
+					$caps = 'read';
+					$button_text = __( 'Buy Now', 'gk-gravityview' );
+				}
+				break;
+		}
+
 		?>
 		<div class='gk-gravityview-placeholder-container'>
 			<div class='gk-gravityview-placeholder-content'>
@@ -53,16 +76,17 @@ trait GravityView_Functionality_Placeholder {
 					</div>
 				</div>
 			</div>
-			<button class="gk-placeholder-button button button-primary button-hero"><?php
+			<?php
 
-				esc_html_e( 'Activate Now', 'gk-gravityview' );
-
-				// TODO: Enable logic to check if the plugin is installed/activated.
-				# esc_html_e( 'Buy Now', 'gk-gravityview' );
-				#esc_html_e( 'Install & Activate', 'gk-gravityview' );
-
-				?></button>
-			<p><a class="gk-placeholder-learn-more" href="<?php echo esc_url( $this->get_buy_now_link() ); ?>" rel="external noopener noreferrer" target="_blank"><?php
+			// Only show the button if the user has ability to take action with the plugin.
+			if ( current_user_can( $caps ) ) {
+				echo sprintf( '<a href="%1$s" class="gk-placeholder-button button button-primary button-hero">%2$s</a>', esc_url( $button_href ), esc_html( $button_text ) );
+				$learn_more_class = ''; // Learn more link is just a link if the user has the ability to install/activate.
+			} else {
+				$learn_more_class = 'button button-primary button-hero';
+			}
+			?>
+			<p><a class="gk-placeholder-learn-more <?php echo gravityview_sanitize_html_class( $learn_more_class ); ?>" href="<?php echo esc_url( $this->get_buy_now_link() ); ?>" rel="external noopener noreferrer" target="_blank"><?php
 					echo esc_html( sprintf( __( 'Learn more about %s…', 'gk-gravityview' ), $this->get_placeholder_title() ) );
 					?><span class="screen-reader-text"> <?php esc_html_e( 'This link opens in a new window.', 'gk-gravityview' );?></span></a></p>
 		</div>

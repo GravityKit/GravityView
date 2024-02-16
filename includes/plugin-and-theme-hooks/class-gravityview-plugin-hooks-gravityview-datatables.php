@@ -2,30 +2,69 @@
 
 /**
  * @inheritDoc
+ *
  * @since TODO
  */
 class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin_and_Theme_Hooks {
 
 	use GravityView_Functionality_Placeholder;
 
+	/**
+	 * @inheritDoc
+	 */
 	public $constant_name = 'GV_DT_VERSION';
 
+	/**
+	 * @inheritDoc
+	 *
+	 * @since TODO
+	 *
+	 * @return string
+	 */
 	public function get_placeholder_title() {
 		return __( 'DataTables Layout', 'gk-gravityview' );
 	}
 
+	/**
+	 * @inheritDoc
+	 *
+	 * @since TODO
+	 *
+	 * @return string
+	 */
 	public function get_placeholder_description() {
 		return __( 'Display Gravity Forms data in a live-updating table with extended sorting, filtering and exporting capabilities.', 'gk-gravityview' );
 	}
 
 	/**
 	 * @inheritDoc
+	 *
+	 * @since TODO
+	 *
 	 * @return string
 	 */
 	protected function get_buy_now_link() {
 		return 'https://www.gravitykit.com/products/datatables/';
 	}
 
+	/**
+	 * @inheritDoc
+	 *
+	 * @since TODO
+	 *
+	 * @return string
+	 */
+	protected function get_plugin_basename() {
+		return defined( 'GV_DT_FILE' ) ? plugin_basename( GV_DT_FILE ) : 'gravityview-datatables/gravityview-datatables.php';
+	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * @since TODO
+	 *
+	 * @return string
+	 */
 	public function get_placeholder_icon() {
 		$icon = <<<ICON
 	<svg width='80' height='80' viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'>
@@ -61,21 +100,25 @@ ICON;
 	}
 
 	/**
-	 * Add DataTables Extension settings
+	 * @inheritDoc
+	 *
+	 * @since TODO
+	 *
+	 * @return void
 	 */
 	public function register_metabox_placeholder() {
 
-		$m = array(
+		$m = [
 			'id' => 'datatables_settings',
 			'title' => __( 'DataTables', 'gv-datatables' ),
-			'callback' => array( $this, 'render_metabox_placeholder' ),
-			'callback_args' => array(),
+			'callback' => [ $this, 'render_metabox_placeholder' ],
+			'callback_args' => [],
 			'screen' => 'gravityview',
 			'file' => '',
 			'icon-class' => 'gv-icon-datatables-icon',
 			'context' => 'side',
 			'priority' => 'default',
-		);
+		];
 
 		$metabox = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback'], $m['callback_args'] );
 

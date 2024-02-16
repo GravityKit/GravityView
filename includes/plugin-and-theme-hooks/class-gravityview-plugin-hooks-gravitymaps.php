@@ -116,6 +116,17 @@ ICON;
 	}
 
 	/**
+	 * @inheritDoc
+	 *
+	 * @since TODO
+	 *
+	 * @return string
+	 */
+	protected function get_plugin_basename() {
+		return defined( 'GRAVITYVIEW_MAPS_FILE' ) ? plugin_basename( GRAVITYVIEW_MAPS_FILE ) : 'gravityview-maps/gravityview-maps.php';
+	}
+
+	/**
 	 * Register the Maps placeholder metabox.
 	 *
 	 * @since TODO
