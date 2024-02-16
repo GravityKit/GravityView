@@ -1,0 +1,63 @@
+@import "_mixins";
+@import "variables";
+
+.gk-gravityview-placeholder-container {
+	margin: 15px auto;
+
+	box-sizing: border-box;
+	padding: 30px 15px;
+	background: white;
+	border-radius: 7px;
+	max-width: 80%;
+	border: 1px #DDDDE5 solid;
+	text-align: center;
+
+	.gk-gravityview-placeholder-icon {
+		display: block;
+		svg {
+			margin-bottom: 30px;
+		}
+	}
+
+	.button {
+		display: block;
+		padding: 0 16px;
+		text-align: center;
+		margin: 1.5em auto 1em;
+	}
+
+	.gk-placeholder-content {
+		min-height: 48px;
+		border-radius: 4px;
+		text-align: center;
+	}
+
+	.gk-placeholder-learn-more {
+		display: block;
+		text-align: center;
+		margin: 1.5em auto 0;
+		font-size: 1.1em;
+	}
+
+	.gk-placeholder-summary {
+		max-width: 800px;
+		margin: 0 auto;
+
+		.gk-h3 {
+			display: block;
+			position: relative;
+			font-weight: 500;
+			line-height: 24px;
+			vertical-align: middle;
+			color: #23282D;
+			font-size: 18px;
+			margin: 0;
+			padding: 0;
+		}
+
+		.howto p {
+			font-size: 1.3em;
+			line-height: 1.7;
+		}
+	}
+}
