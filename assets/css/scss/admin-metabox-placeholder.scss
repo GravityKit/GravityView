@@ -2,15 +2,15 @@
 @import "variables";
 
 .gk-gravityview-placeholder-container {
-	margin: 15px auto;
-
-	box-sizing: border-box;
+	margin: 15px;
 	padding: 30px 15px;
 	background: white;
 	border-radius: 7px;
-	max-width: 80%;
 	border: 1px #DDDDE5 solid;
 	text-align: center;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
 
 	.gk-gravityview-placeholder-icon {
 		display: block;
@@ -20,34 +20,33 @@
 	}
 
 	.button {
-		display: inline-block;
-		padding: 0 16px;
-		text-align: center;
 		margin: 1.5em auto 1em;
 	}
 
-	.gk-placeholder-content {
-		min-height: 48px;
-		border-radius: 4px;
+	.gk-gravityview-placeholder-content {
 		text-align: center;
+		flex-wrap: wrap;
 	}
 
-	.gk-placeholder-learn-more {
-		display: inline-block;
+	.gk-gravityview-placeholder-learn-more {
 		text-align: center;
-		margin: 1.5em auto 0;
+		margin: 1.5em auto;
 		font-size: 1.1em;
+
+		a {
+			display: inline-block;
+		}
 	}
 
-	.gk-placeholder-summary {
+	.gk-gravityview-placeholder-summary {
 		max-width: 800px;
 		margin: 0 auto;
 
-		.gk-h3 {
+		h3 {
 			display: block;
 			position: relative;
 			font-weight: 500;
-			line-height: 24px;
+			line-height: 1.333;
 			vertical-align: middle;
 			color: #23282D;
 			font-size: 18px;
@@ -58,6 +57,78 @@
 		.howto p {
 			font-size: 1.3em;
 			line-height: 1.7;
+		}
+	}
+}
+
+tr .gk-gravityview-placeholder-container {
+	margin: 8px 10px;
+	padding: 15px;
+
+	.gk-gravityview-placeholder-content {
+		flex: 1 1 0;
+		width: 100%;
+		border-radius: 4px;
+		justify-content: flex-start;
+		gap: 16px;
+		display: flex;
+		text-align: left;
+	}
+
+	.gk-gravityview-placeholder-icon svg {
+		width: 60px;
+		height: 60px;
+	}
+
+	.gk-gravityview-placeholder-summary {
+		flex: 1 1 0;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: flex-start;
+		gap: 8px;
+
+		h3 {
+			align-self: stretch;
+			font-size: 15px;
+		}
+
+		.howto p {
+			font-size: 1em;
+			line-height: 1.3333;
+		}
+	}
+
+	.gk-gravityview-placeholder-button.button {
+		flex: 0 0 0;
+		margin: 0;
+		display: inline-flex;
+		flex-direction: column;
+		height: 3.14285714rem;
+	}
+
+	.gk-gravityview-placeholder-learn-more {
+		flex-basis: 100%;
+		line-height: 1.3333;
+		font-size: 1em;
+		padding: 0;
+		margin: 0!important;
+	}
+
+	@media (max-width: 1199px) {
+		.gk-gravityview-placeholder-container {
+			margin: 0;
+			width: 100%;
+		}
+		.gk-gravityview-placeholder-content {
+			gap: 0;
+			flex-direction: column;
+			flex-basis: 100%;
+		}
+		svg {
+			display: none;
+		}
+		.button {
+			text-align: center;
 		}
 	}
 }

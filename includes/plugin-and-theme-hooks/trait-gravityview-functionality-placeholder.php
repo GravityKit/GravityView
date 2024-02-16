@@ -76,26 +76,31 @@ trait GravityView_Functionality_Placeholder {
 			<div class='gk-gravityview-placeholder-content'>
 				<div class="gk-gravityview-placeholder-icon"><?php echo $this->get_placeholder_icon(); ?></div>
 
-				<div class='gk-placeholder-summary'>
-					<h3 class='gk-h3'><?php echo esc_html( $this->get_placeholder_title() ); ?></h3>
+				<div class='gk-gravityview-placeholder-summary'>
+					<h3><?php echo esc_html( $this->get_placeholder_title() ); ?></h3>
 					<div class="howto">
 						<p><?php echo esc_html( $this->get_placeholder_description() ); ?></p>
 					</div>
 				</div>
-			</div>
-			<?php
+				<?php
 
-			// Only show the button if the user has ability to take action with the plugin.
-			if ( current_user_can( $caps ) ) {
-				echo sprintf( '<a href="%1$s" class="gk-placeholder-button button button-primary button-hero">%2$s</a>', esc_url( $button_href ), esc_html( $button_text ) );
-				$learn_more_class = ''; // Learn more link is just a link if the user has the ability to install/activate.
-			} else {
-				$learn_more_class = 'button button-primary button-hero';
-			}
-			?>
-			<p><a class="gk-placeholder-learn-more <?php echo gravityview_sanitize_html_class( $learn_more_class ); ?>" href="<?php echo esc_url( $this->get_buy_now_link() ); ?>" rel="external noopener noreferrer" target="_blank"><?php
-					echo esc_html( sprintf( __( 'Learn more about %s…', 'gk-gravityview' ), $this->get_placeholder_title() ) );
-					?><span class="screen-reader-text"> <?php esc_html_e( 'This link opens in a new window.', 'gk-gravityview' );?></span></a></p>
+				// Only show the button if the user has ability to take action with the plugin.
+				if ( current_user_can( $caps ) ) {
+					echo sprintf( '<a href="%1$s" class="gk-gravityview-placeholder-button button button-primary button-hero">%2$s</a>', esc_url( $button_href ), esc_html( $button_text ) );
+					$learn_more_class = ''; // Learn more link is just a link if the user has the ability to install/activate.
+				} else {
+					$learn_more_class = 'button button-primary button-hero';
+				}
+				?>
+				<p class='gk-gravityview-placeholder-learn-more'><a
+						class="<?php echo gravityview_sanitize_html_class( $learn_more_class ); ?>"
+						href="<?php echo esc_url( $this->get_buy_now_link() ); ?>" rel='external noopener noreferrer'
+						target='_blank'><?php
+						echo esc_html( sprintf( __( 'Learn more about %s…', 'gk-gravityview' ), $this->get_placeholder_title() ) );
+						?><span
+							class="screen-reader-text"> <?php esc_html_e( 'This link opens in a new window.', 'gk-gravityview' ); ?></span></a>
+				</p>
+			</div>
 		</div>
 		<?php
 		$this->render_placeholder_after();
