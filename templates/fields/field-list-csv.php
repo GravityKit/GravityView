@@ -45,6 +45,11 @@ if ( $field->enableColumns && false !== $column_id ) {
 	$glue = apply_filters( 'gravityview/template/field/csv/glue', ';', $gravityview );
 
 	$value = unserialize( $value );
+
+	if ( ! is_array( $value ) ) {
+		return;
+	}
+
 	if ( $field->enableColumns ) {
 		$columns = array_keys( current( $value ) );
 		echo implode( ',', $columns ) . $glue;
