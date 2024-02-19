@@ -506,39 +506,45 @@ class GravityView_Cache {
 	 * @return bool If $content is not set, false. Otherwise, returns true if transient was set and false if not.
 	 */
 	public function set( $content, $filter_name = '', $expiration = null ) {
-
 		// Don't cache empty results
-		if ( ! empty( $content ) ) {
+		if ( empty( $content ) ) {
+			gravityview()->log->debug( 'Cache not set; content is empty' );
 
-			$expiration = ! is_int( $expiration ) ? gravityview()->plugin->settings->get( "caching_{$filter_name}", DAY_IN_SECONDS ) : $expiration;
-
-			/**
-			 * Modify the cache time for a type of cache.
-			 *
-			 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
-			 */
-			$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
-
-			gravityview()->log->debug(
-				'Setting cache with transient key {key} for {expiration} seconds',
-				array(
-					'key'        => $this->key,
-					'expiration' => $expiration,
-				)
-			);
-
-			$transient_was_set = set_transient( $this->key, $content, $expiration );
-
-			if ( ! $transient_was_set && $this->use_cache() ) {
-				gravityview()->log->error( 'Transient was not set for this key: ' . $this->key );
-			}
-
-			return $transient_was_set;
+			return false;
 		}
 
-		gravityview()->log->debug( 'Cache not set; content is empty' );
+		if ( ! is_int( $expiration ) ) {
+			// Global cache duration setting.
+			$expiration = gravityview()->plugin->settings->get( "caching_{$filter_name}", DAY_IN_SECONDS );
 
-		return false;
+			// View-specific cache duration setting.
+			if ( is_array( $this->args ) && array_key_exists( "caching_{$filter_name}", $this->args ) ) {
+				$expiration = $this->args["caching_{$filter_name}"];
+			}
+		}
+
+		/**
+		 * Modify the cache time for a type of cache.
+		 *
+		 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
+		 */
+		$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
+
+		gravityview()->log->debug(
+			'Setting cache with transient key {key} for {expiration} seconds',
+			array(
+				'key'        => $this->key,
+				'expiration' => $expiration,
+			)
+		);
+
+		$transient_was_set = set_transient( $this->key, $content, $expiration );
+
+		if ( ! $transient_was_set && $this->use_cache() ) {
+			gravityview()->log->error( 'Transient was not set for this key: ' . $this->key );
+		}
+
+		return $transient_was_set;
 	}
 
 	/**
@@ -689,7 +695,13 @@ class GravityView_Cache {
 			return $this->use_cache;
 		}
 
+		// Global cache setting.
 		$use_cache = (bool) gravityview()->plugin->settings->get( 'caching' );
+
+		// View-specific cache setting.
+		if ( is_array( $this->args ) && array_key_exists( 'caching', $this->args ) ) {
+			$use_cache = $this->args['caching'];
+		}
 
 		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
 
