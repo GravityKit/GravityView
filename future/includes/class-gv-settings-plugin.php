@@ -191,8 +191,11 @@ class Plugin_Settings {
 	 */
 	public function defaults() {
 		$defaults = array(
-			'rest_api'                => 0,
-			'public_entry_moderation' => 0,
+			'rest_api'                  => 0,
+			'public_entry_moderation'   => 0,
+			'caching'                   => 1,
+			'caching_entries'           => DAY_IN_SECONDS,
+			'caching_datatables_output' => DAY_IN_SECONDS,
 		);
 
 		/**
@@ -228,6 +231,52 @@ class Plugin_Settings {
 
 		$default_settings = $this->defaults();
 
+		$cache_settings = array(
+			array(
+				'id'          => 'caching',
+				'type'        => 'checkbox',
+				'title'       => esc_html__( 'Enable Caching', 'gk-gravityview' ),
+				'description' => esc_html__( 'Enabling caching improves performance by reducing the number of queries during page loads. When enabled, you can also specify cache duration for entries and DataTables output.', 'gk-gravityview' ),
+				'value'       => $this->get( 'caching', $default_settings['caching'] ),
+			),
+			array(
+				'id'          => 'caching_entries',
+				'type'        => 'number',
+				'requires'    => array(
+					'id'       => 'caching',
+					'operator' => '==',
+					'value'    => 1,
+				),
+				'validation'  => array(
+					array(
+						'rule'    => 'min:1',
+						'message' => esc_html__( 'The cache duration must be at least 1 second.', 'gk-gravityview' ),
+					),
+				),
+				'title'       => esc_html__( 'Entry Cache Duration', 'gk-gravityview' ),
+				'description' => esc_html__( 'Specify the duration in seconds that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance.', 'gk-gravityview' ),
+				'value'       => $this->get( 'caching_entries', $default_settings['caching_entries'] ),
+			),
+			array(
+				'id'          => 'caching_datatables_output',
+				'type'        => 'number',
+				'requires'    => array(
+					'id'       => 'caching',
+					'operator' => '==',
+					'value'    => 1,
+				),
+				'validation'  => array(
+					array(
+						'rule'    => 'min:1',
+						'message' => esc_html__( 'The cache duration must be at least 1 second.', 'gk-gravityview' ),
+					),
+				),
+				'title'       => esc_html__( 'DataTables Cache Duration', 'gk-gravityview' ),
+				'description' => esc_html__( 'Define the cache lifetime in seconds for DataTables output. Adjusting this setting can balance between performance gains and data currency for your DataTables Views.', 'gk-gravityview' ),
+				'value'       => $this->get( 'caching_datatables_output', $default_settings['caching_datatables_output'] ),
+			),
+		);
+
 		$settings = array(
 			'id'       => self::SETTINGS_PLUGIN_ID,
 			'title'    => 'GravityView',
@@ -245,6 +294,10 @@ class Plugin_Settings {
 							'value'       => $this->get( 'rest_api', $default_settings['rest_api'] ),
 						),
 					),
+				),
+				array(
+					'title'    => esc_html__( 'Caching', 'gk-gravityview' ),
+					'settings' => $cache_settings,
 				),
 				array(
 					'title'    => esc_html__( 'Permissions', 'gk-gravityview' ),

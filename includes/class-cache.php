@@ -510,7 +510,7 @@ class GravityView_Cache {
 		// Don't cache empty results
 		if ( ! empty( $content ) ) {
 
-			$expiration = ! is_int( $expiration ) ? DAY_IN_SECONDS : $expiration;
+			$expiration = ! is_int( $expiration ) ? gravityview()->plugin->settings->get( "caching_{$filter_name}", DAY_IN_SECONDS ) : $expiration;
 
 			/**
 			 * Modify the cache time for a type of cache.
@@ -689,7 +689,7 @@ class GravityView_Cache {
 			return $this->use_cache;
 		}
 
-		$use_cache = true;
+		$use_cache = (bool) gravityview()->plugin->settings->get( 'caching' );
 
 		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
 
