@@ -52,6 +52,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		// Disable caching as we'll be running the same query but after creating new entries.
 		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		foreach ( range( 1, 50 ) as $i ) {
 			$entry = $this->factory->entry->create_and_get( array(
@@ -71,6 +72,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertEquals( '10', $value );
 
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 
 		$view->settings->update( array(
 			'offset' => 20,
@@ -131,6 +133,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		// Disable caching as we'll be running the same query but after creating new entries.
 		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		foreach ( range( 1, 1050 ) as $i ) {
 			$entry = $this->factory->entry->create_and_get( array(
@@ -151,6 +154,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		gravityview()->request = new \GV\Frontend_Request();
 
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**

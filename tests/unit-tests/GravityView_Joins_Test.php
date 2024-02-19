@@ -287,6 +287,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 	public function test_joins_with_approves() {
 		add_filter('gk/gravityview/view/entries/cache', '__return_false');
+		add_filter('gravityview_use_cache', '__return_false');
 
 		$this->_reset_context();
 
@@ -376,6 +377,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	public function test_legacy_template_table_joins() {

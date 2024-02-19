@@ -1690,6 +1690,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		// Disable caching as we'll be running the same query but after creating new entries.
 		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		/** Some more */
 		foreach ( range( 1, 25 ) as $i ) {
@@ -1731,6 +1732,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/view/anchor_id' );
 		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
     /**
@@ -1807,6 +1809,7 @@ class GVFuture_Test extends GV_UnitTestCase {
         add_filter( 'gravityview/view/anchor_id', '__return_false' );
         add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
 		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
@@ -1985,6 +1988,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/view/anchor_id' );
 		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
@@ -2166,6 +2170,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 
 		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		global $post;
 
@@ -2244,6 +2249,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/view/anchor_id' );
 		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
@@ -2955,6 +2961,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		// Disable caching as we'll be running the same query but after creating new entries.
 		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		$entry_2 = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -2981,6 +2988,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		unset( $GLOBALS['post'] );
 
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
@@ -5213,6 +5221,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_Shortcode::shortcode()
 	 */
 	public function test_shortcodes_gravityview() {
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 
 		$post = $this->factory->view->create_and_get( array(
@@ -5332,6 +5343,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview/view/anchor_id' );
 		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
