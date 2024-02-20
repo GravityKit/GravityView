@@ -1417,12 +1417,34 @@ class GVCommon {
 	 *
 	 * @see GravityView_Template::template_id
 	 *
-	 * @param int $view_id The ID of the View to get the layout of
+	 * @param int    $view_id The ID of the View to get the layout of.
+	 * @param string $section The view section.
 	 *
 	 * @return string GravityView_Template::template_id value. Empty string if not.
 	 */
-	public static function get_meta_template_id( $view_id ) {
-		return get_post_meta( $view_id, '_gravityview_directory_template', true );
+	public static function get_meta_template_id( $view_id, string $section = 'directory' ) {
+		$section_key = [
+			'directory' => '_gravityview_directory_template',
+			'single'    => '_gravityview_single_template',
+		];
+
+		if ( ! isset( $section_key[ $section ] ) ) {
+			gravityview()->log->error(
+				'{section} Not a valid section:',
+				compact( 'view_id', 'section' )
+			);
+
+			return '';
+		}
+
+		$result = get_post_meta( $view_id, $section_key[ $section ], true );
+
+		// Fall back to the template of `directory` in case a different section has no value.
+		if ( ! $result && 'directory' !== $section ) {
+			return self::get_meta_template_id( $view_id, 'directory' );
+		}
+
+		return $result;
 	}
 
 

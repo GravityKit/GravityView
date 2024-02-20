@@ -340,8 +340,15 @@ class GravityView_Admin_Metaboxes {
 
 		$view = \GV\View::from_post( $post );
 
-		// Selected template
-		$curr_template = gravityview_get_template_id( $post->ID );
+		/**
+		 * Selected templates
+		 *
+		 * @deprecated $curr_template since $ver$
+		 *             Use $multiple_entries_template instead.
+		 */
+		$curr_template              = gravityview_get_directory_entries_template_id( $post->ID );
+		$directory_entries_template = gravityview_get_directory_entries_template_id( $post->ID );
+		$single_entry_template      = gravityview_get_single_entry_template_id( $post->ID );
 
 		echo self::render_merge_tags_scripts( $curr_form );
 

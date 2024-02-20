@@ -446,7 +446,7 @@ class GravityView_Admin_Views {
 
 		switch ( $column_name ) {
 			case 'gv_template':
-				$template_id = gravityview_get_template_id( $post_id );
+				$template_id = gravityview_get_directory_entries_template_id( $post_id );
 
 				// All Views should have a connected form. If it doesn't, that's not right.
 				if ( empty( $template_id ) ) {
@@ -659,10 +659,12 @@ class GravityView_Admin_Views {
 		// Check if we have a template id
 		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
 
-			$template_id = ! empty( $_POST['gravityview_directory_template'] ) ? $_POST['gravityview_directory_template'] : '';
+			$directory_template_id = rgpost( 'gravityview_directory_template' );
+			$single_template_id    = rgpost( 'gravityview_single_template' );
 
-			// now save template id
-			$statii['directory_template'] = update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
+			// now save template ids
+			$statii['directory_template'] = update_post_meta( $post_id, '_gravityview_directory_template', $directory_template_id );
+			$statii['single_template']    = update_post_meta( $post_id, '_gravityview_single_template', $single_template_id );
 		}
 
 		// save View Configuration metabox
@@ -1446,6 +1448,7 @@ class GravityView_Admin_Views {
 
 		// Enqueue scripts
 		wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), \GV\Plugin::$version );
+		wp_enqueue_script( 'gravityview_view_dropdown', plugins_url( 'assets/js/admin-view-dropdown' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], \GV\Plugin::$version );
 
 		wp_localize_script(
 			'gravityview_views_scripts',
