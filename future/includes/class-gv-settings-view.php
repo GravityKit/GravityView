@@ -116,7 +116,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => false,
 					'article'           => array(
 						'id'  => '54c67bb6e4b051242988550a',
-						'url' => 'https://docs.gravitykit.com/article/58-about-gravityview-cachinghttps://docs.gravitykit.com/article/58-about-gravityview-caching',
+						'url' => 'https://docs.gravitykit.com/article/58-about-gravityview-caching',
 					),
 				),
 				'caching_entries'             => array(
