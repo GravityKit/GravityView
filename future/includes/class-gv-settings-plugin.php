@@ -244,8 +244,8 @@ class Plugin_Settings {
 
 		if ( ! empty( $cache_filters_in_use ) ) {
 			$notice = 1 === count( $cache_filters_in_use )
-				? esc_html__( 'Caching settings are being manually overridden by the [filter] filter.', 'gk-gravityview' )
-				: esc_html_x( 'Caching settings are being manually overridden by the following filters: [filters].', 'gk-gravityview' );
+				? esc_html_x( 'The [filter] active filter could be overriding cache settings.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' )
+				: esc_html_x( 'The following active filters could be overriding cache settings: [filters].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' );
 
 			$notice = strtr(
 				$notice,
