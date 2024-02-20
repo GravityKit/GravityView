@@ -12,7 +12,7 @@ global $post;
 wp_nonce_field( 'gravityview_select_template', 'gravityview_select_template_nonce' );
 
 // current value
-$current_template = gravityview_get_template_id( $post->ID );
+$directory_template = gravityview_get_directory_entries_template_id( $post->ID );
 
 $templates = gravityview_get_registered_templates();
 
@@ -32,8 +32,6 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 
 // current input
 ?>
-<input type="hidden" id="gravityview_directory_template" name="gravityview_directory_template" value="<?php echo esc_attr( $current_template ); ?>" />
-
 <div class="gv-view-template-notice notice inline error hidden">
 	<p><!-- Contents will be replaced by JavaScript if there is an error --></p>
 </div>
@@ -42,7 +40,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 <div class="gv-grid">
 	<?php
 	foreach ( $templates as $id => $template ) {
-		$selected           = ( $id == $current_template ) ? ' gv-selected' : '';
+		$selected           = ( $id == $directory_template ) ? ' gv-selected' : '';
 		$placeholder        = ! empty( $template['buy_source'] );
 		$is_included        = ! empty( $template['included'] );
 		$plugin_data        = GravityKit\GravityView\Foundation\Helpers\Core::get_installed_plugin_by_text_domain( $template['textdomain'] ?? '' ) ?: array();
