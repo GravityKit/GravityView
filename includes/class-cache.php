@@ -476,7 +476,7 @@ class GravityView_Cache {
 
 		gravityview()->log->debug( 'Fetching request with transient key {key}', array( 'key' => $key ) );
 
-		$result = WPHelper::get_site_transient( $key );
+		$result = WPHelper::get_transient( $key );
 
 		if ( is_wp_error( $result ) ) {
 
@@ -542,7 +542,7 @@ class GravityView_Cache {
 			)
 		);
 
-		$transient_was_set = WPHelper::set_site_transient( $this->key, $content, $expiration );
+		$transient_was_set = WPHelper::set_transient( $this->key, $content, $expiration );
 
 		if ( ! $transient_was_set && $this->use_cache() ) {
 			gravityview()->log->error( 'Transient was not set for this key: ' . $this->key );
