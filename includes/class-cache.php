@@ -586,8 +586,7 @@ class GravityView_Cache {
 			$sql = $wpdb->prepare( "SELECT option_name FROM {$wpdb->options} WHERE `option_name` LIKE %s", $key );
 
 			foreach ( ( $transients = $wpdb->get_col( $sql ) ) as $transient ) {
-				// We have to delete it via the API to make sure the object cache is updated appropriately
-				delete_transient( preg_replace( '#^_transient_#', '', $transient ) );
+				WPHelper::delete_transient( $transient );
 			}
 
 			gravityview()->log->debug(
