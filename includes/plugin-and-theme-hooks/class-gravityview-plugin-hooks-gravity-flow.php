@@ -41,25 +41,26 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		add_action( 'gravityflow_post_process_workflow', array( $this, 'clear_cache_after_workflow' ), 10, 4 );
 
-		add_filter( 'gravityview/extension/search/input_type', array( $this, 'add_workflow_user_fields_to_search' ), 10, 3 );
+		add_filter( 'gravityview/extension/search/input_type', array( $this, 'add_workflow_user_fields_to_search' ), 10, 2 );
 	}
 
 
 	/**
-	 * Add workflow user fields to search.
+	 * Add Gravity Flow Workflow User fields to search.
 	 *
-	 * @param string $input_type
-	 * @param string $field_type
-	 * @param string $field_id
-	 * @return string
+	 * @param string $input_type The input type, for example, 'text', 'select', 'date', etc. {@see GravityView_Widget_Search::get_search_input_types()}.
+	 * @param string $field_type The field type, for example, 'workflow_user', 'workflow_multi_user', etc.
+	 *
+	 * @return string The input type to use for the field.
 	 */
-	public function add_workflow_user_fields_to_search( $input_type, $field_type, $field_id ) {
-		if ( $field_type === 'workflow_multi_user' ) {
-			$input_type = 'multi';
+	public function add_workflow_user_fields_to_search( $input_type, $field_type ) {
+
+		if ( 'workflow_multi_user' === $field_type ) {
+			return 'multi';
 		}
 
-		if ( $field_type === 'workflow_user' ) {
-			$input_type = 'select';
+		if ( 'workflow_user' === $field_type ) {
+			return 'select';
 		}
 
 		return $input_type;
