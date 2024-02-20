@@ -109,7 +109,7 @@ class View_Settings extends Settings {
 					'desc'              => strtr(
 						esc_html_x( 'Caching is enabled by default in the global [url]GravityView settings[/url]. Adjusting the settings here will allow you to manage caching on a per-View basis.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 						[
-							'[url]'  => '<a href="' . SettingsFramework::get_instance()->get_plugin_settings_url( Plugin_Settings::SETTINGS_PLUGIN_ID ) . '&s=1">',
+							'[url]'  => '<a href="' . esc_url( SettingsFramework::get_instance()->get_plugin_settings_url( Plugin_Settings::SETTINGS_PLUGIN_ID ) . '&s=1' ) . '">',
 							'[/url]' => '</a>',
 						]
 					),
