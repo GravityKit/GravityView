@@ -288,7 +288,7 @@ HTML;
 					'description' => strtr(
 						esc_html_x( '[url]Enabling caching[/url] improves performance by reducing the number of queries during page loads. When enabled, you can also specify cache duration for entries.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 						[
-							'[url]'  => '<a class="underline" href="https://docs.gravitykit.com/article/58-about-gravityview-caching" rel="noopener noreferrer">',
+							'[url]'  => '<a class="underline" href="https://docs.gravitykit.com/article/58-about-gravityview-caching" rel="noopener noreferrer" target="_blank">',
 							'[/url]' => '</a>',
 						]
 					),
