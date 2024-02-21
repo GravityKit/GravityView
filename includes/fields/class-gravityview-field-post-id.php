@@ -25,17 +25,16 @@ class GravityView_Field_Post_ID extends GravityView_Field {
 	 * GravityView_Field_Post_ID constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Post ID', 'gravityview' );
+		$this->label = esc_html__( 'Post ID', 'gk-gravityview' );
 		parent::__construct();
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		$this->add_field_support('link_to_post', $field_options );
+		$this->add_field_support( 'link_to_post', $field_options );
 
 		return $field_options;
 	}
-
 }
 
-new GravityView_Field_Post_ID;
+new GravityView_Field_Post_ID();

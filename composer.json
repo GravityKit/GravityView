@@ -2,7 +2,12 @@
   "name": "gravityview/gravityview",
   "type": "wordpress-plugin",
   "description": "The best way to display Gravity Forms entries on your website.",
-  "keywords": ["gravityview", "gravity view", "gravity forms directory", "gravity forms"],
+  "keywords": [
+    "gravityview",
+    "gravity view",
+    "gravity forms directory",
+    "gravity forms"
+  ],
   "homepage": "https://www.gravitykit.com/",
   "license": "GPL-2.0+",
   "minimum-stability": "dev",
@@ -12,70 +17,86 @@
       "type": "vcs",
       "url": "https://github.com/katzwebservices/standalone-phpenkoder"
     },
-	{
-	  "type": "github",
-	  "url":  "https://github.com/trustedlogin/client.git",
-	  "no-api": true
-	},
-	{
-	  "type": "github",
-	  "url":  "https://github.com/BrianHenryIE/strauss.git",
-	  "no-api": true
-	}
+    {
+      "type": "vcs",
+      "url": "git@github.com:gravityview/Foundation.git"
+    }
   ],
   "require": {
-    "php": ">=5.3",
+    "php": ">=7.2.0",
     "ext-json": "*",
     "ext-openssl": "*",
-	"trustedlogin/client": "dev-main"
+    "gravitykit/foundation": "dev-main"
   },
   "require-dev": {
-	"brianhenryie/strauss": "^0.8.10",
-	"lucatume/wp-browser": "^2.4",
-	"codeception/module-asserts": "^1.0",
-	"codeception/module-phpbrowser": "^1.0",
-	"codeception/module-webdriver": "^1.0",
-	"codeception/module-db": "^1.0",
-	"codeception/module-filesystem": "^1.0",
-	"codeception/module-cli": "^1.0",
-	"codeception/util-universalframework": "^1.0",
-    "yoast/phpunit-polyfills": "^1.0"
-  },
-  "autoload": {
-	"classmap": [
-	  "vendor"
-	],
-	"psr-4": {
-	  "TrustedLogin\\": "src/",
-	  "KatzGrau\\KLogger\\": "src/"
-	}
+    "lucatume/wp-browser": "^2.4",
+    "codeception/module-asserts": "^1.0",
+    "codeception/module-phpbrowser": "^1.0",
+    "codeception/module-webdriver": "^1.0",
+    "codeception/module-db": "^1.0",
+    "codeception/module-filesystem": "^1.0",
+    "codeception/module-cli": "^1.0",
+    "codeception/util-universalframework": "^1.0",
+    "yoast/phpunit-polyfills": "^1.0",
+    "squizlabs/php_codesniffer": "*",
+    "wp-coding-standards/wpcs": "^3.0",
+    "phpcompatibility/phpcompatibility-wp": "^2.1"
   },
   "extra": {
-	"strauss": {
-	  "target_directory": "trustedlogin",
-	  "namespace_prefix": "GravityView\\",
-	  "classmap_prefix": "GV_",
-	  "packages": [
-		"trustedlogin/client"
-	  ],
-	  "exclude_from_prefix": {
-		"packages": [
-		  "paragonie/random_compat",
-		  "paragonie/sodium_compat"
-		]
-	  },
-	  "delete_vendor_files": false
-	}
+    "strauss": {
+      "target_directory": "vendor_prefixed",
+      "namespace_prefix": "GravityKit\\GravityView",
+      "classmap_prefix": "GravityKit_GravityView_",
+      "packages": [
+        "gravitykit/foundation"
+      ],
+      "namespace_replacement_patterns": {
+        "/^Gettext/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext",
+        "/^Illuminate/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Illuminate",
+        "/^Psr/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Psr",
+        "/^Monolog/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Monolog",
+        "/^TrustedLogin/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\TrustedLogin",
+        "/^GravityKit\\\\Foundation/": "GravityKit\\GravityView\\Foundation"
+      },
+      "override_autoload": {
+        "gravitykit/foundation": {
+          "psr-4": {
+            "GravityKit\\Foundation\\": "src"
+          },
+          "files": [
+            "assets"
+          ]
+        }
+      },
+      "exclude_from_prefix": {
+        "file_patterns": []
+      },
+      "exclude_from_copy": {
+        "packages": [
+          "paragonie/random_compat",
+          "paragonie/sodium_compat"
+        ]
+      }
+    }
   },
   "scripts": {
-	"strauss": [
-	  "@php strauss.phar"
-	],
-	"post-install-cmd": [
-	  "@strauss"
-	],
-	"post-update-cmd": [
-	  "@strauss"
-	]
+    "prefix_vendor": "@php strauss.phar",
+    "post_update_install": "./composer_post_update_install.sh",
+    "post-install-cmd": [
+      "@prefix_vendor",
+      "@post_update_install",
+      "composer dump-autoload -o"
+    ],
+    "post-update-cmd": [
+      "@prefix_vendor",
+      "@post_update_install",
+      "composer dump-autoload -o"
+    ]
+  },
+  "config": {
+    "platform-check": false,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
   }
 }

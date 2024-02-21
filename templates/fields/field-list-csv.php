@@ -11,9 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
+$field_id      = $gravityview->field->ID;
+$field         = $gravityview->field->field;
+$value         = $gravityview->value;
 $display_value = $gravityview->display_value;
 
 $column_id = gravityview_get_input_id_from_id( $field_id );
@@ -21,7 +21,8 @@ $column_id = gravityview_get_input_id_from_id( $field_id );
 if ( $field->enableColumns && false !== $column_id ) {
 
 	/**
-	 * @filter `gravityview/fields/list/column-format` Format of single list column output of a List field with Multiple Columns enabled
+	 * Format of single list column output of a List field with Multiple Columns enabled.
+	 *
 	 * @since 1.14
 	 * @param string $format `html` (for <ul> list), `text` (for CSV output)
 	 * @since 2.0
@@ -34,15 +35,21 @@ if ( $field->enableColumns && false !== $column_id ) {
 } else {
 
 	/**
-	 * @filter `gravityview/template/field/csv/glue` The value used to separate multiple values in the CSV export
+	 * The value used to separate multiple values in the CSV export.
+	 *
 	 * @since 2.4.2
 	 *
 	 * @param string The glue. Default: ";" (semicolon)
 	 * @param \GV\Template_Context The context.
 	 */
-	$glue = apply_filters( 'gravityview/template/field/csv/glue', ";", $gravityview );
+	$glue = apply_filters( 'gravityview/template/field/csv/glue', ';', $gravityview );
 
 	$value = unserialize( $value );
+
+	if ( ! is_array( $value ) ) {
+		return;
+	}
+
 	if ( $field->enableColumns ) {
 		$columns = array_keys( current( $value ) );
 		echo implode( ',', $columns ) . $glue;
@@ -50,7 +57,7 @@ if ( $field->enableColumns && false !== $column_id ) {
 
 	$output = array();
 	foreach ( $value as $column ) {
-		$output[] = is_array($column) ? implode( ',', $column ) : $column;
+		$output[] = is_array( $column ) ? implode( ',', $column ) : $column;
 	}
 
 	echo implode( $glue, $output );

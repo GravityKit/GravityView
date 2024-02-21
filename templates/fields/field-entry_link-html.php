@@ -11,9 +11,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-if ( ! $gravityview->field->form_id || ! ( $form = GFAPI::get_form( $gravityview->field->form_id ) ) ) {
-	$form = $gravityview->view->form->form;
-}
+/** @var \GV\GF_Form $gf_form */
+$gf_form = isset( $gravityview->field->form_id ) ? \GV\GF_Form::by_id( $gravityview->field->form_id ) : $gravityview->view->form->form;
+$form    = ! empty( $gf_form->form ) ? $gf_form->form : $gf_form;
 
 if ( $gravityview->entry->is_multi() ) {
 	$entry = $gravityview->entry[ $form['id'] ];
@@ -24,7 +24,7 @@ if ( $gravityview->entry->is_multi() ) {
 
 $field_settings = $gravityview->field->as_configuration();
 
-$link_text = empty( $field_settings['entry_link_text'] ) ? esc_html__( 'View Details', 'gravityview' ) : $field_settings['entry_link_text'];
+$link_text = empty( $field_settings['entry_link_text'] ) ? esc_html__( 'View Details', 'gk-gravityview' ) : $field_settings['entry_link_text'];
 
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 
@@ -39,7 +39,8 @@ global $post;
 $href = $gravityview->entry->get_permalink( $gravityview->view, $gravityview->request, $tag_atts );
 
 /**
- * @filter `gravityview/entry_link/add_query_args` Modify whether to include passed $_GET parameters to the end of the url
+ * Modify whether to include passed $_GET parameters to the end of the url.
+ *
  * @since 2.10
  * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Entry Link URL. Default: true.
  */
@@ -52,7 +53,8 @@ if ( $add_query_args ) {
 $link = gravityview_get_link( $href, $output, $tag_atts );
 
 /**
- * @filter `gravityview_field_entry_link` Modify the link HTML (here for backward compatibility)
+ * Modify the link HTML (here for backward compatibility).
+ *
  * @param string $link HTML output of the link
  * @param string $href URL of the link
  * @param array  $entry The GF entry array

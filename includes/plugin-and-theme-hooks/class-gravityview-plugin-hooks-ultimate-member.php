@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-ultimate-member.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2016', Katz Web Services, Inc.
  *
  * @since 1.17.2
@@ -43,12 +43,12 @@ class GravityView_Theme_Hooks_Ultimate_Member extends GravityView_Plugin_and_The
 	function parse_um_profile_post_content( $args = array() ) {
 		global $ultimatemember;
 
-		if( ! $ultimatemember || ! is_object( $ultimatemember ) || ! class_exists( 'GravityView_View_Data' ) ) {
+		if ( ! $ultimatemember || ! is_object( $ultimatemember ) || ! class_exists( 'GravityView_View_Data' ) ) {
 			return;
 		}
 
 		// @todo Support Ultimate Member 2.0 - for now, prevent fatal error
-		if( ! isset( $ultimatemember->profile ) ) {
+		if ( ! isset( $ultimatemember->profile ) ) {
 			return;
 		}
 
@@ -68,7 +68,6 @@ class GravityView_Theme_Hooks_Ultimate_Member extends GravityView_Plugin_and_The
 
 		wp_reset_postdata();
 	}
-
 }
 
-new GravityView_Theme_Hooks_Ultimate_Member;
+new GravityView_Theme_Hooks_Ultimate_Member();

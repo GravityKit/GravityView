@@ -44,7 +44,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 			if ( ! $entry instanceof Entry ) {
 				continue;
 			}
-			$_entry->entries[ $entry['form_id'] ]  = &$entry;
+			$_entry->entries[ $entry['form_id'] ] = &$entry;
 		}
 		return $_entry;
 	}
@@ -64,7 +64,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 			$_entry = $entry->as_entry();
 
 			foreach ( $this->entries as $entry ) {
-				$entry = $entry->as_entry();
+				$entry                                 = $entry->as_entry();
 				$_entry['_multi'][ $entry['form_id'] ] = $entry;
 			}
 		}
@@ -79,17 +79,22 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 * @since 2.2
 	 *
 	 * @param \GV\View|null $view The View context.
-	 * @param \GV\Request $request The Request (current if null).
-	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
+	 * @param \GV\Request   $request The Request (current if null).
+	 * @param boolean       $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
 	 *
 	 * @return string The permalink to this entry.
 	 */
 	public function get_permalink( \GV\View $view = null, \GV\Request $request = null, $track_directory = true ) {
-		$slugs = array();
-		add_filter( 'gravityview/entry/slug', $callback = function( $slug ) use ( &$slugs ) {
-			$slugs[] = $slug;
-			return implode( ',', $slugs );
-		}, 10, 1 );
+		$slugs        = array();
+		add_filter(
+			'gravityview/entry/slug',
+			$callback = function ( $slug ) use ( &$slugs ) {
+				$slugs[] = $slug;
+				return implode( ',', $slugs );
+			},
+			10,
+			1
+		);
 
 		foreach ( $this->entries as $entry ) {
 			$permalink = call_user_func_array( array( $entry, __FUNCTION__ ), func_get_args() );
@@ -108,6 +113,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 * @since 2.0
 	 * @return bool Whether the offset exists or not.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
 		return isset( $this->entries[ $offset ] );
 	}
@@ -123,6 +129,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @return mixed The value of the requested entry data.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
 		if ( ! $this->offsetExists( $offset ) ) {
 			return null;
@@ -139,6 +146,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
 		gravityview()->log->error( 'The underlying multi entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
 	}
@@ -151,6 +159,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 * @since 2.0
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetUnset( $offset ) {
 		gravityview()->log->error( 'The underlying multi entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
 	}

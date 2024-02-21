@@ -15,14 +15,14 @@ class GravityView_Field_Chained_Select extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_ChainedSelect';
 
-	var $group = 'add-ons';
+	var $group = 'advanced';
 
 	var $icon = 'dashicons-admin-links';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Chained Select', 'gravityview' );
+		$this->label = esc_html__( 'Chained Select', 'gk-gravityview' );
 		parent::__construct();
 	}
 }
 
-new GravityView_Field_Chained_Select;
+new GravityView_Field_Chained_Select();

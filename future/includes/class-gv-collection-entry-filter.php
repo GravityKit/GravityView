@@ -13,11 +13,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *  similar to the new-school ORMs out there.
  *
  * new Entry_Filter(
- *	Field::by_id( 3 )->eq( 99 )->and(
- *		Field::by_id( 4 )->neq( null )->or( Field::by_id( 4 )->lte( 0 ) )
- *	)->and(
- *		Field::by_id( 5 )->like( "%search%" )->and( Field::by_id( 6 )->between( $t, $f ) )
- *	)
+ *  Field::by_id( 3 )->eq( 99 )->and(
+ *      Field::by_id( 4 )->neq( null )->or( Field::by_id( 4 )->lte( 0 ) )
+ *  )->and(
+ *      Field::by_id( 5 )->like( "%search%" )->and( Field::by_id( 6 )->between( $t, $f ) )
+ *  )
  * );
  *
  * Very flexible in code, but unserialization could be a pain in the neck.

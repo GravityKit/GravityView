@@ -63,6 +63,11 @@ class GV_Unit_Tests_Bootstrap {
 		// stub remote HTTP calls
 		tests_add_filter( 'pre_http_request', array( $this, 'mock_http' ), 10, 3 );
 
+		// mock response for Foundation's product check
+		tests_add_filter( 'gravityview/tests/mock_http', function ( $args, $url ) {
+			return preg_match( '/edd-api\/products/', $url ) ? '' : $args;
+		}, 10, 2 );
+
 		// In WordPress 4.0 this is not being set, so let's just set it to localhost
 		$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
 
@@ -131,7 +136,7 @@ class GV_Unit_Tests_Bootstrap {
 
 		/** Enable the REST API */
 		add_action( 'gravityview/settings/defaults', function( $defaults ) {
-			$defaults['rest_api'] = '1';
+			$defaults['rest_api'] = 1;
 			return $defaults;
 		} );
 
@@ -248,8 +253,9 @@ class GV_Unit_Tests_Bootstrap {
 	 * @since 1.9
 	 */
 	public function install() {
-		$GV = GravityView_Plugin::getInstance();
-		$GV->frontend_actions();
+		$GV = \GV\Plugin::get();
+
+		$GV->include_legacy_frontend();
 	}
 
 	/**

@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravityformsquiz.php
  * @since     1.17
  * @license   GPL2
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @package   GravityView
@@ -51,28 +51,28 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Quiz extends GravityView_Plugin_and
 		if ( ! empty( $quiz_fields ) ) {
 
 			$fields['gquiz_score']   = array(
-				'label' => __( 'Quiz Score Total', 'gravityview' ),
+				'label' => __( 'Quiz Score Total', 'gk-gravityview' ),
 				'type'  => 'quiz_score',
-				'desc'  => __( 'Displays the number of correct Quiz answers the user submitted.', 'gravityview' ),
+				'desc'  => __( 'Displays the number of correct Quiz answers the user submitted.', 'gk-gravityview' ),
 				'icon'  => 'dashicons-forms',
 			);
 			$fields['gquiz_percent'] = array(
-				'label' => __( 'Quiz Percentage Grade', 'gravityview' ),
+				'label' => __( 'Quiz Percentage Grade', 'gk-gravityview' ),
 				'type'  => 'quiz_percent',
-				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gravityview' ),
+				'desc'  => __( 'Displays the percentage of correct Quiz answers the user submitted.', 'gk-gravityview' ),
 				'icon'  => 'dashicons-forms',
 			);
 			$fields['gquiz_grade']   = array(
 				/* translators: This is a field type used by the Gravity Forms Quiz Addon. "A" is 100-90, "B" is 89-80, "C" is 79-70, etc.  */
-				'label' => __( 'Quiz Letter Grade', 'gravityview' ),
+				'label' => __( 'Quiz Letter Grade', 'gk-gravityview' ),
 				'type'  => 'quiz_grade',
-				'desc'  => __( 'Displays the Grade the user achieved based on Letter Grading configured in the Quiz Settings.', 'gravityview' ),
+				'desc'  => __( 'Displays the Grade the user achieved based on Letter Grading configured in the Quiz Settings.', 'gk-gravityview' ),
 				'icon'  => 'dashicons-forms',
 			);
 			$fields['gquiz_is_pass'] = array(
-				'label' => __( 'Quiz Pass/Fail', 'gravityview' ),
+				'label' => __( 'Quiz Pass/Fail', 'gk-gravityview' ),
 				'type'  => 'quiz_is_pass',
-				'desc'  => __( 'Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings.', 'gravityview' ),
+				'desc'  => __( 'Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings.', 'gk-gravityview' ),
 				'icon'  => 'dashicons-forms',
 			);
 
@@ -82,4 +82,4 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Quiz extends GravityView_Plugin_and
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Quiz;
+new GravityView_Plugin_Hooks_Gravity_Forms_Quiz();

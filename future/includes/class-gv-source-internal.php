@@ -12,7 +12,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Data that comes from within the View itself (like custom content).
  */
 class Internal_Source extends Source {
-	
+
 	/**
 	 * @var string The identifier of the backend used for this source.
 	 *
@@ -31,7 +31,7 @@ class Internal_Source extends Source {
 	public static function get_field( /** varargs */ ) {
 		$args = func_get_args();
 
-		if ( ! is_array( $args ) || count( $args ) != 1 ) {
+		if ( ! is_array( $args ) || 1 != count( $args ) ) {
 			gravityview()->log->error( '{source} expects 1 arguments for ::get_field ($field_id)', array( 'source' => __CLASS__ ) );
 			return null;
 		}

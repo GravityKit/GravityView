@@ -11,22 +11,24 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
+$field_id       = $gravityview->field->ID;
+$field          = $gravityview->field->field;
+$value          = $gravityview->value;
 $field_settings = $gravityview->field->as_configuration();
 
 /**
  * Unix Epoch probably isn't what you're looking for.
+ *
  * @since 1.7
  */
-if ( $value === '1970-01-01' ) {
+if ( '1970-01-01' === $value ) {
 
 	/**
-	 * @filter `gravityview/fields/date/hide_epoch` Whether to hide `1970-01-01` dates; that is normally an erroneous date. Return false to show value. Use `__return_false` callback.
-	 * @param bool $hide_epoch True: hide values that are 1970-01-01. False: show the value.
+	 * Whether to hide values that match the Unix Epoch date (1970-01-01) from the output.
 	 *
-	 * @since 2.0
+	 * @since 2.0 Added $gravityview parameter.
+	 *
+	 * @param bool $hide_epoch True: hide values that are 1970-01-01. False: show the value. Default: true.
 	 * @param \GV\Template_Context $gravityview The $gravityview context object.
 	 */
 	$hide_epoch = apply_filters( 'gravityview/fields/date/hide_epoch', true, $gravityview );
@@ -45,7 +47,7 @@ if ( ! empty( $field_settings ) && ! empty( $field_settings['date_display'] ) &&
 
 } else {
 
-	$output = GravityView_Field_Date::date_display( $value, \GV\Utils::get( $field, "dateFormat" ), $field_id );
+	$output = GravityView_Field_Date::date_display( $value, \GV\Utils::get( $field, 'dateFormat' ), $field_id );
 
 }
 

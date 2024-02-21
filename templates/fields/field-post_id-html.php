@@ -12,7 +12,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 }
 
 $display_value = $gravityview->display_value;
-$entry = $gravityview->entry->as_entry();
+$entry         = $gravityview->entry->as_entry();
 
 // Link to the post URL?
 if ( $gravityview->field->link_to_post && ! empty( $entry['post_id'] ) ) {

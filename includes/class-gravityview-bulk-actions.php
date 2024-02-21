@@ -3,8 +3,8 @@
  * @file      class-gravityview-admin-bulk-actions.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2021, Katz Web Services, Inc.
  *
  * @since 2.13.2
@@ -24,9 +24,9 @@ class GravityView_Bulk_Actions {
 	 * @var array Set the prefixes here instead of spread across the class
 	 */
 	private static $bulk_action_prefixes = array(
-		'approve' => 'gvapprove',
+		'approve'    => 'gvapprove',
 		'disapprove' => 'gvdisapprove',
-		'unapprove' => 'gvunapprove',
+		'unapprove'  => 'gvunapprove',
 	);
 
 	/**
@@ -54,7 +54,7 @@ class GravityView_Bulk_Actions {
 
 		$gv_bulk_action = false;
 
-		if( version_compare( GFForms::$version, '2.0', '>=' ) ) {
+		if ( version_compare( GFForms::$version, '2.0', '>=' ) ) {
 			$bulk_action = ( '-1' !== \GV\Utils::_POST( 'action' ) ) ? \GV\Utils::_POST( 'action' ) : \GV\Utils::_POST( 'action2' );
 		} else {
 			// GF 1.9.x - Bulk action 2 is the bottom bulk action select form.
@@ -62,7 +62,7 @@ class GravityView_Bulk_Actions {
 		}
 
 		// Check the $bulk_action value against GV actions, see if they're the same. I hate strpos().
-		if( ! empty( $bulk_action ) && preg_match( '/^('. implode( '|', self::$bulk_action_prefixes ) .')/ism', $bulk_action ) ) {
+		if ( ! empty( $bulk_action ) && preg_match( '/^(' . implode( '|', self::$bulk_action_prefixes ) . ')/ism', $bulk_action ) ) {
 			$gv_bulk_action = $bulk_action;
 		}
 
@@ -94,6 +94,7 @@ class GravityView_Bulk_Actions {
 
 		/**
 		 * The extra '-' is to make sure that there are at *least* two items in array.
+		 *
 		 * @see https://github.com/katzwebservices/GravityView/issues/370
 		 */
 		$bulk_action .= '-';
@@ -110,15 +111,22 @@ class GravityView_Bulk_Actions {
 
 			// Convert the current entry search into GF-formatted search criteria
 			$search = array(
-				'search_field' => isset( $_POST['f'] ) ? $_POST['f'][0] : 0,
-				'search_value' => isset( $_POST['v'][0] ) ? $_POST['v'][0] : '',
+				'search_field'    => isset( $_POST['f'] ) ? $_POST['f'][0] : 0,
+				'search_value'    => isset( $_POST['v'][0] ) ? $_POST['v'][0] : '',
 				'search_operator' => isset( $_POST['o'][0] ) ? $_POST['o'][0] : 'contains',
 			);
 
 			$search_criteria = GravityView_frontend::get_search_criteria( $search, $form_id );
 
+			// Make sure the entry list class is loaded.
+			require_once GFCommon::get_base_path() . '/entry_list.php';
+
+			$GF_Entry_List_Table = new GF_Entry_List_Table();
+
+			$search_criteria = $GF_Entry_List_Table->get_search_criteria( $search_criteria );
+
 			// Get all the entry IDs for the form
-			$entries = gravityview_get_entry_ids( $form_id, $search_criteria );
+			$entries = GVCommon::get_entry_ids( $form_id, $search_criteria );
 
 		} else {
 
@@ -132,20 +140,20 @@ class GravityView_Bulk_Actions {
 			return false;
 		}
 
-		$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gravityview' ), count( $entries ) ) : __( '1 entry', 'gravityview' );
+		$entry_count = count( $entries ) > 1 ? sprintf( __( '%d entries', 'gk-gravityview' ), count( $entries ) ) : __( '1 entry', 'gk-gravityview' );
 
 		switch ( $approved_status ) {
 			case self::$bulk_action_prefixes['approve']:
 				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::APPROVED, $form_id );
-				self::$bulk_update_message = sprintf( __( '%s approved.', 'gravityview' ), $entry_count );
+				self::$bulk_update_message = sprintf( __( '%s approved.', 'gk-gravityview' ), $entry_count );
 				break;
 			case self::$bulk_action_prefixes['unapprove']:
 				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::UNAPPROVED, $form_id );
-				self::$bulk_update_message = sprintf( __( '%s unapproved.', 'gravityview' ), $entry_count );
+				self::$bulk_update_message = sprintf( __( '%s unapproved.', 'gk-gravityview' ), $entry_count );
 				break;
 			case self::$bulk_action_prefixes['disapprove']:
 				GravityView_Entry_Approval::update_bulk( $entries, GravityView_Entry_Approval_Status::DISAPPROVED, $form_id );
-				self::$bulk_update_message = sprintf( __( '%s disapproved.', 'gravityview' ), $entry_count );
+				self::$bulk_update_message = sprintf( __( '%s disapproved.', 'gk-gravityview' ), $entry_count );
 				break;
 		}
 	}
@@ -165,22 +173,23 @@ class GravityView_Bulk_Actions {
 		$bulk_actions = array(
 			'GravityView' => array(
 				array(
-					'label' => GravityView_Entry_Approval_Status::get_string('approved', 'action'),
+					'label' => GravityView_Entry_Approval_Status::get_string( 'approved', 'action' ),
 					'value' => sprintf( '%s-%d', self::$bulk_action_prefixes['approve'], $form_id ),
 				),
 				array(
-					'label' => GravityView_Entry_Approval_Status::get_string('disapproved', 'action'),
+					'label' => GravityView_Entry_Approval_Status::get_string( 'disapproved', 'action' ),
 					'value' => sprintf( '%s-%d', self::$bulk_action_prefixes['disapprove'], $form_id ),
 				),
 				array(
-					'label' => GravityView_Entry_Approval_Status::get_string('unapproved', 'action'),
+					'label' => GravityView_Entry_Approval_Status::get_string( 'unapproved', 'action' ),
 					'value' => sprintf( '%s-%d', self::$bulk_action_prefixes['unapprove'], $form_id ),
 				),
 			),
 		);
 
 		/**
-		 * @filter `gravityview/approve_entries/bulk_actions` Modify the GravityView "Bulk action" dropdown list. Return an empty array to hide.
+		 * Modify the GravityView "Bulk action" dropdown list. Return an empty array to hide.
+		 *
 		 * @see https://gist.github.com/zackkatz/82785402c996b51b4dc9 for an example of how to use this filter
 		 * @since 1.16.3
 		 * @param array $bulk_actions Associative array of actions to be added to "Bulk action" dropdown inside GravityView `<optgroup>`. Parent array key is the `<optgroup>` label, then each child array must have `label` (displayed text) and `value` (input value) keys
@@ -191,7 +200,7 @@ class GravityView_Bulk_Actions {
 		// Sanitize the values, just to be sure.
 		foreach ( $bulk_actions as $key => $group ) {
 
-			if( empty( $group ) ) {
+			if ( empty( $group ) ) {
 				continue;
 			}
 
@@ -203,7 +212,6 @@ class GravityView_Bulk_Actions {
 
 		return $bulk_actions;
 	}
-
 }
 
 new GravityView_Bulk_Actions();
