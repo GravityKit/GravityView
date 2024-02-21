@@ -107,7 +107,7 @@ class View_Settings extends Settings {
 					'group'             => 'default',
 					'value'             => gravityview()->plugin->settings->get( 'caching' ),
 					'desc'              => strtr(
-						esc_html_x( 'Caching is enabled by default in the global [url]GravityView settings[/url]. Adjusting the settings here will allow you to manage caching on a per-View basis.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+						esc_html_x( 'Turn caching on or off to improve performance. Default settings are configured in [url]GravityView Caching Settings[/url].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
 						[
 							'[url]'  => '<a href="' . esc_url( SettingsFramework::get_instance()->get_plugin_settings_url( Plugin_Settings::SETTINGS_PLUGIN_ID ) . '&s=1' ) . '">',
 							'[/url]' => '</a>',
@@ -121,7 +121,7 @@ class View_Settings extends Settings {
 				),
 				'caching_entries'             => array(
 					'label'             => __( 'Entry Cache Duration', 'gk-gravityview' ),
-					'tooltip'           => esc_html__( 'Specify the duration in seconds that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance.', 'gk-gravityview' ),
+					'tooltip'           => esc_html__( 'Specify the duration, in seconds, that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance.', 'gk-gravityview' ),
 					'type'              => 'number',
 					'group'             => 'default',
 					'value'             => gravityview()->plugin->settings->get( 'caching_entries' ),
