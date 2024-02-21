@@ -4,6 +4,7 @@ namespace GV;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GF_Query;
+use GravityView_Cache;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -1434,6 +1435,7 @@ class View implements \ArrayAccess {
 
 	/**
 	 * Queries database and conditionally caches results.
+	 * First, checks if the long-lived cache is enabled and if the query is cached. If not, it checks if the short-lived cache is enabled and if the query is cached.
 	 *
 	 * @since 2.18.2
 	 *
@@ -1442,8 +1444,38 @@ class View implements \ArrayAccess {
 	 * @return array{0: array, 1: GF_Query} Array of entries and the query object. The latter may be needed as it is modified during the query.
 	 */
 	private function run_db_query( GF_Query $query ) {
+		$db_entries = null;
+
+		$query_hash = md5( serialize( $query->_introspect() ) );
+
+		$atts = $this->settings->all();
+
+		$atts['query_hash'] = $query_hash;
+
+		$long_lived_cache = new GravityView_Cache( $this->form->ID, $atts );
+
+		if ( $long_lived_cache->use_cache() ) {
+			$cached_entries = $long_lived_cache->get();
+
+			if ( $cached_entries ) {
+				return [
+					$cached_entries,
+					$query,
+				];
+			}
+
+			$db_entries = $query->get();
+
+			if ( $long_lived_cache->set( $db_entries, 'entries' ) ) {
+				return [
+					$db_entries,
+					$query,
+				];
+			}
+		}
+
 		/**
-		 * Controls whether the query is cached.
+		 * Controls whether the query is cached per request. This is a short-lived cache.
 		 *
 		 * @filter gk/gravityview/view/entries/cache
 		 *
@@ -1454,16 +1486,14 @@ class View implements \ArrayAccess {
 		if ( ! apply_filters( 'gk/gravityview/view/entries/cache', true ) ) {
 			$db_entries = $query->get();
 
-			return array(
+			return [
 				$db_entries,
 				$query,
-			);
+			];
 		}
 
-		$query_hash = md5( serialize( $query->_introspect() ) );
-
 		if ( ! Arr::get( self::$cache, $query_hash ) ) {
-			$db_entries = $query->get();
+			$db_entries = $db_entries ?? $query->get();
 
 			self::$cache[ $query_hash ] = array(
 				$db_entries,
