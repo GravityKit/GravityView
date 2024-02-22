@@ -84,6 +84,27 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 
 		add_filter( 'llms_get_student_dashboard_tabs', [ $this, 'filter_student_dashboard_tabs' ], 1 );
 		add_action( 'lifterlms_student_dashboard_index', [ $this, 'add_student_dashboard_my_forms' ] );
+		add_action( 'lifterlms_settings_save_integrations', [ $this, 'save' ], 30 );
+	}
+
+	/**
+	 * When the GravityView integration is saved, flush the rewrite rules.
+	 *
+	 * Even before adding the slug setting, the LifterLMS settings had to be saved twice before permalinks were flushed.
+	 *
+	 * @return void
+	 */
+	public function save() {
+
+		if ( ! 'gravityview' === \GV\Utils::_REQUEST( 'section' ) ) {
+			return;
+		}
+
+		/**
+		 * Always flush the rewrite rules when saving the GravityView settings.
+		 */
+		$settings_page = new LLMS_Settings_Page();
+		$settings_page->flush_rewrite_rules();
 	}
 
 	/**
@@ -97,10 +118,12 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 
 	public function filter_student_dashboard_tabs( $tabs = [] ) {
 
+		$slug_name = $this->get_option( 'slug', 'my-forms' );
+
 		$new_tab = [
 			'gravityview' => [
 				'content'  => [ $this, 'dashboard_content' ],
-				'endpoint' => 'entry',
+				'endpoint' => sanitize_title_with_dashes( $slug_name ),
 				'nav_item' => true,
 				'title'    => $this->get_option( 'label', __( 'My Forms', 'gk-gravityview' ) ),
 			],
@@ -224,6 +247,13 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 				'desc'    => __( 'Navigation label', 'gk-gravityview' ),
 				'default' => __( 'My Forms', 'gk-gravityview' ),
 				'id'      => $this->get_option_name( 'label' ),
+				'type'    => 'text',
+			],
+			[
+				'title'   => __( 'Endpoint slug:', 'gk-gravityview' ),
+				'desc'    => __( 'The end of the URL to display when accessing this tab from the Student Dashboard. This value will be converted to lowercase spaces and special characters replaced by dashes.', 'gk-gravityview' ),
+				'default' => __( 'my-forms', 'gk-gravityview' ),
+				'id'      => $this->get_option_name( 'slug' ),
 				'type'    => 'text',
 			],
 			[
