@@ -9,26 +9,26 @@
  * @link      http://www.gravitykit.com
  * @copyright Copyright 2024, Katz Web Services, Inc.
  *
- * @since $ver$
+ * @since 2.20
  */
 
 use GV\View;
 
 /**
  * Add Gravity Forms Advanced Post Creation compatibility.
- * @since $ver$
+ * @since 2.20
  * @link  https://www.gravityforms.com/add-ons/advanced-post-creation/
  */
 final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extends GravityView_Plugin_and_Theme_Hooks {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.20
 	 */
 	protected $class_name = 'GF_Advanced_Post_Creation';
 
 	/**
 	 * Updates the connected post.
-	 * @since $ver$
+	 * @since 2.20
 	 *
 	 * @param array                         $form     Gravity Forms form array.
 	 * @param string                        $entry_id Numeric ID of the entry that was updated.
@@ -69,7 +69,7 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 
 	/**
 	 * Adds a notice if the form contains a feed for Advanced Post Creation.
-	 * @since $ver$
+	 * @since 2.20
 	 *
 	 * @param mixed      $_       unused template name.
 	 * @param string     $context The context.
@@ -132,7 +132,7 @@ HTML;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.20
 	 */
 	protected function add_hooks(): void {
 		parent::add_hooks();
