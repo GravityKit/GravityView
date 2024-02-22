@@ -73,7 +73,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	protected function configure() {
 
 		$this->title       = __( 'GravityView', 'lifterlms' );
-		$this->description = sprintf( __( 'Display Gravity Forms entries for the current student using %sGravityView%s', 'lifterlms' ), '<a href="https://lifterlms.com/docs/lifterlms-and-gravityview/" target="_blank">', '</a>' );
+		$this->description = sprintf( __( 'Display Gravity Forms entries for the current student using %sGravityView%s', 'lifterlms' ), '<a href="https://lifterlms.com/docs/lifterlms-and-gravityview/" target="_blank" rel="noopener noreferrer">',  '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>' );
 
 		if ( ! $this->is_available() ) {
 			return;
