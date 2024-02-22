@@ -129,7 +129,7 @@ class View implements \ArrayAccess {
 		}
 
 		if ( ! gravityview()->plugin->is_compatible() ) {
-			self::override_post_pages_when_compatibility_fails();
+			GravityView_Compatibility::override_post_pages_when_compatibility_fails();
 		}
 
 		/**
@@ -1779,67 +1779,5 @@ class View implements \ArrayAccess {
 		$query_parameters = $query->_introspect();
 
 		$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
-	}
-
-	/**
-	 * Displays a notice on the All Views or New View page when the compatibility requirements for the plugin are not met.
-	 *
-	 * @since 2.19.7
-	 *
-	 * @return void
-	 */
-	private static function override_post_pages_when_compatibility_fails() {
-		global $pagenow;
-
-		if ( ! in_array( $pagenow, array( 'post.php', 'edit.php', 'post-new.php' ) ) ) {
-			return;
-		}
-
-		$display_notices = function ( $hook_data ) {
-			global $post;
-
-			if ( ! $post instanceof \WP_Post || 'gravityview' !== $post->post_type ) {
-				return $hook_data;
-			}
-
-			// We only care about GravityView notices :)
-			remove_all_actions( 'admin_notices' );
-			remove_all_actions( 'network_admin_notices' );
-
-			new GravityView_Admin_Notices();
-
-			/**
-			 * Make GravityView notices non-dismissible and display them to all users.
-			 *
-			 * @param array $notices Array of notices to display.
-			 */
-			add_filter( 'gravityview/admin/notices', function ( $notices ) {
-				$compat_notices = GravityView_Compatibility::get_notices();
-
-				foreach ( $compat_notices as &$notice ) {
-					unset( $notice['dismiss'] ); // Make sure the notice is always displayed and is not dismissible.
-					unset( $notice['cap'] ); // Display the notice to everyone.
-				}
-
-				return array_merge( $notices, $compat_notices );
-			} );
-
-			// Hide the "Screen Options" tab.
-			add_filter( 'screen_options_show_screen', '__return_false' );
-
-			// Render the wrapper for the page, which will include the notices.
-			require_once ABSPATH . 'wp-admin/admin-header.php';
-			require_once ABSPATH . 'wp-admin/admin-footer.php';
-
-			exit;
-		};
-
-		add_filter( 'bulk_post_updated_messages', $display_notices ); // Fired on All Views page.
-
-		/**
-		 * Fired on New View and Edit View pages.
-		 * Without this in place, other notices, the Post Title, and the Publish metabox will continue to be displayed.
-		 */
-		add_filter( 'replace_editor', $display_notices );
 	}
 }
