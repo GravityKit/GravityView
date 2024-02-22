@@ -45,11 +45,9 @@ abstract class Form extends Source {
 	 * @api
 	 * @since 2.0
 	 *
-	 * @param \GV\View $view The View context.
-	 *
 	 * @return \GV\Entry_Collection The \GV\Entry_Collection
 	 */
-	abstract public function get_entries( $view );
+	abstract public function get_entries();
 
 	/**
 	 * Magic shortcuts.
@@ -57,7 +55,7 @@ abstract class Form extends Source {
 	 * - `entries` -> `$this->get_entries()`
 	 */
 	public function __get( $key ) {
-		switch ( $key ):
+		switch ( $key ) :
 			case 'entries':
 				return $this->get_entries();
 		endswitch;

@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-wpml.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.19.2
@@ -64,7 +64,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 
 		add_filter( 'icl_ls_languages', array( $this, 'wpml_ls_filter' ) );
 
-		add_filter( 'gravityview_directory_link', array( $this, 'filter_gravityview_back_link') );
+		add_filter( 'gravityview_directory_link', array( $this, 'filter_gravityview_back_link' ) );
 	}
 
 	/**
@@ -84,7 +84,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	function filter_gravityview_back_link( $link ) {
 		global $wpml_url_filters;
 
-		if( $wpml_url_filters ) {
+		if ( $wpml_url_filters ) {
 			$link = $wpml_url_filters->permalink_filter( $link, GravityView_frontend::getInstance()->getPostId() );
 		}
 
@@ -101,7 +101,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	private function remove_url_hooks() {
 		global $wpml_url_filters;
 
-		if( ! $wpml_url_filters ) {
+		if ( ! $wpml_url_filters ) {
 			return;
 		}
 
@@ -112,7 +112,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			gravityview()->log->error( 'WPML missing remove_global_hooks method. Needs version 3.6.2+.' );
 		}
 
-		if ( $wpml_url_filters->frontend_uses_root() === true ) {
+		if ( true === $wpml_url_filters->frontend_uses_root() ) {
 			remove_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter_root' ), 1 );
 		} else {
 			remove_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter' ), 1 );
@@ -129,7 +129,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 	private function add_url_hooks() {
 		global $wpml_url_filters;
 
-		if( ! $wpml_url_filters ) {
+		if ( ! $wpml_url_filters ) {
 			return;
 		}
 
@@ -140,7 +140,7 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 			gravityview()->log->error( 'WPML missing add_global_hooks method. Needs version 3.6.2+.' );
 		}
 
-		if ( $wpml_url_filters->frontend_uses_root() === true ) {
+		if ( true === $wpml_url_filters->frontend_uses_root() ) {
 			add_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter_root' ), 1, 2 );
 		} else {
 			add_filter( 'page_link', array( $wpml_url_filters, 'page_link_filter' ), 1, 2 );
@@ -165,66 +165,74 @@ class GravityView_Theme_Hooks_WPML extends GravityView_Plugin_and_Theme_Hooks {
 		 */
 		global $sitepress, $post, $wpml_url_converter;
 
-		if ( $entry_slug = GravityView_frontend::getInstance()->getSingleEntry() ) {
+		if ( ! method_exists( $sitepress, 'get_setting' ) ) {
+			gravityview()->log->error( 'This version of WPML is outdated and does not include the required method get_setting().' );
 
-			if ( ! method_exists( $sitepress, 'get_setting' ) ) {
-				gravityview()->log->error( 'This version of WPML is outdated and does not include the required method get_setting().' );
-				return $languages;
-			}
-
-			$trid         = $sitepress->get_element_trid( $post->ID );
-			$translations = $sitepress->get_element_translations( $trid );
-			$language_url_setting = $sitepress->get_setting( 'language_negotiation_type' );
-
-			$this->remove_url_hooks();
-
-			if( $translations ) {
-				foreach ( $languages as $lang_code => $language ) {
-
-					if( ! isset( $translations[ $lang_code ] ) || ! is_object( $translations[ $lang_code ] ) ) {
-						continue;
-					}
-
-					$lang_post_id = $translations[ $lang_code ]->element_id;
-
-					$entry_link = GravityView_API::entry_link( $entry_slug, $lang_post_id );
-
-					// How is WPML handling the language?
-					switch ( intval( $language_url_setting ) ) {
-
-						// Subdomains or directories
-						case 1:
-						case 2:
-							// For sites using directories or sub-domains for languages, rewrite base URL
-							$entry_link = $wpml_url_converter->convert_url( $entry_link, $lang_code );
-							break;
-
-						// URL Parameters
-						case 3:
-						default:
-							if ( ! empty( $translations[ $lang_code ]->original ) ) {
-
-								// The original language doesn't need a language parameter
-								$entry_link = remove_query_arg( 'lang', $entry_link );
-
-							} elseif ( $entry_link ) {
-
-								// Every other language does
-								$entry_link = add_query_arg( array( 'lang' => $lang_code ), $entry_link );
-							}
-							break;
-					}
-
-					$languages[ $lang_code ]['url'] = $entry_link;
-				}
-			}
-
-			$this->add_url_hooks();
+			return $languages;
 		}
+
+		$entry = gravityview()->request->is_entry();
+
+		if ( ! $entry ) {
+			return $languages;
+		}
+
+		$entry_slug = $entry->get_slug();
+
+		$trid         = $sitepress->get_element_trid( $post->ID );
+		$translations = $sitepress->get_element_translations( $trid );
+
+		if ( ! $translations ) {
+			return $languages;
+		}
+
+		$language_url_setting = $sitepress->get_setting( 'language_negotiation_type' );
+
+		$this->remove_url_hooks();
+
+		foreach ( $languages as $lang_code => $language ) {
+
+			if ( ! isset( $translations[ $lang_code ] ) || ! is_object( $translations[ $lang_code ] ) ) {
+				continue;
+			}
+
+			$lang_post_id = $translations[ $lang_code ]->element_id;
+
+			$entry_link = GravityView_API::entry_link( $entry_slug, $lang_post_id );
+
+			// How is WPML handling the language?
+			switch ( intval( $language_url_setting ) ) {
+
+				// Subdomains or directories
+				case 1:
+				case 2:
+					// For sites using directories or sub-domains for languages, rewrite base URL
+					$entry_link = $wpml_url_converter->convert_url( $entry_link, $lang_code );
+					break;
+
+				// URL Parameters
+				case 3:
+				default:
+					if ( ! empty( $translations[ $lang_code ]->original ) ) {
+
+						// The original language doesn't need a language parameter
+						$entry_link = remove_query_arg( 'lang', $entry_link );
+
+					} elseif ( $entry_link ) {
+
+						// Every other language does
+						$entry_link = add_query_arg( array( 'lang' => $lang_code ), $entry_link );
+					}
+					break;
+			}
+
+			$languages[ $lang_code ]['url'] = $entry_link;
+		}
+
+		$this->add_url_hooks();
 
 		return $languages;
 	}
-
 }
 
-new GravityView_Theme_Hooks_WPML;
+new GravityView_Theme_Hooks_WPML();

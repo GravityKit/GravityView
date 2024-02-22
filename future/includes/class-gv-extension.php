@@ -10,23 +10,27 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * The \GV\Extension class.
  *
  * An interface that most extensions would want to adhere to and inherit from.
+ *
+ * @deprecated 2.16.1
+ *
+ * @TODO Remove once all extensions have been updated to use Foundation.
  */
 abstract class Extension {
 	/**
-	 * @var string Name of the plugin in gravityview.co
+	 * @var string Name of the plugin in gravitykit.com
 	 */
-	protected $_title = NULL;
+	protected $_title = null;
 
 	/**
 	 * @var string Version number of the plugin
 	 */
-	protected $_version = NULL;
+	protected $_version = null;
 
 	/**
-	 * @var int The ID of the download on gravityview.co
+	 * @var int The ID of the download on gravitykit.com
 	 * @since 1.1
 	 */
-	protected $_item_id = NULL;
+	protected $_item_id = null;
 
 	/**
 	 * @var string Translation textdomain
@@ -46,12 +50,7 @@ abstract class Extension {
 	/**
 	 * @var string Minimum version of GravityView the Extension requires
 	 */
-	protected $_min_php_version = '5.3';
-
-	/**
-	 * @var string The URL to fetch license info from. Do not change unless you know what you're doing.
-	 */
-	protected $_remote_update_url = 'https://gravityview.co';
+	protected $_min_php_version = '5.6.4';
 
 	/**
 	 * @var string Author of plugin, sent when fetching license info.
@@ -66,13 +65,13 @@ abstract class Extension {
 	/**
 	 * @var array Admin notices to display
 	 */
-	static protected $admin_notices = array();
+	protected static $admin_notices = array();
 
 	/**
 	 * @var boolean[] An array of extension compatibility.
 	 * @since 2.0 This is an array of classes instead.
 	 */
-	static public $is_compatible = array();
+	public static $is_compatible = array();
 
 	/**
 	 * Generic initialization.
@@ -88,8 +87,6 @@ abstract class Extension {
 
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		add_action( 'admin_init', array( $this, 'settings' ) );
-
 		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
 
 		// Save the view configuration. Run at 14 so that View metadata is already saved (at 10)
@@ -100,6 +97,54 @@ abstract class Extension {
 		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
 
 		$this->add_hooks();
+	}
+
+	/**
+	 * Load translations for the extension
+	 *
+	 * 1. Check  `wp-content/languages/gravityview/` folder and load using `load_textdomain()`
+	 * 2. Check  `wp-content/plugins/gravityview/languages/` folder for `gravityview-[locale].mo` file and load using `load_textdomain()`
+	 * 3. Load default file using `load_plugin_textdomain()` from `wp-content/plugins/gravityview/languages/`
+	 *
+	 * @return void
+	 */
+	public function load_plugin_textdomain() {
+		if ( empty( $this->_text_domain ) ) {
+			gravityview()->log->debug( 'Extension translation cannot be loaded; the `_text_domain` variable is not defined', array( 'data' => $this ) );
+			return;
+		}
+
+		// Backward compat for Ratings & Reviews / Maps
+		$path = isset( $this->_path ) ? $this->_path : ( isset( $this->plugin_file ) ? $this->plugin_file : '' );
+
+		// Set filter for plugin's languages directory
+		$lang_dir = dirname( plugin_basename( $path ) ) . '/languages/';
+
+		$locale = get_locale();
+
+		if ( function_exists( 'get_user_locale' ) && is_admin() ) {
+			$locale = get_user_locale();
+		}
+
+		// Traditional WordPress plugin locale filter
+		$locale = apply_filters( 'plugin_locale', $locale, $this->_text_domain );
+
+		$mofile = sprintf( '%1$s-%2$s.mo', $this->_text_domain, $locale );
+
+		// Setup paths to current locale file
+		$mofile_local  = $lang_dir . $mofile;
+		$mofile_global = WP_LANG_DIR . '/' . $this->_text_domain . '/' . $mofile;
+
+		if ( file_exists( $mofile_global ) ) {
+			// Look in global /wp-content/languages/[plugin-dir]/ folder
+			load_textdomain( $this->_text_domain, $mofile_global );
+		} elseif ( file_exists( $mofile_local ) ) {
+			// Look in local /wp-content/plugins/[plugin-dir]/languages/ folder
+			load_textdomain( $this->_text_domain, $mofile_local );
+		} else {
+			// Load the default language files
+			load_plugin_textdomain( $this->_text_domain, false, $lang_dir );
+		}
 	}
 
 	/**
@@ -126,8 +171,8 @@ abstract class Extension {
 	 *
 	 * <code>
 	 * $tooltips['gv_example_extension_setting'] = array(
-	 * 	'title'	=> 'About Example Extension Setting',
-	 *  'value'	=> 'When you do [x] with [y], [z] happens.'
+	 *  'title' => 'About Example Extension Setting',
+	 *  'value' => 'When you do [x] with [y], [z] happens.'
 	 * );
 	 * </code>
 	 *
@@ -167,14 +212,14 @@ abstract class Extension {
 		}
 
 		$tab_defaults = array(
-			'id' => '',
-			'title' => '',
-			'callback' => '',
-			'icon-class' => '',
-			'file' => '',
+			'id'            => '',
+			'title'         => '',
+			'callback'      => '',
+			'icon-class'    => '',
+			'file'          => '',
 			'callback_args' => '',
-			'context' => 'side',
-			'priority' => 'default',
+			'context'       => 'side',
+			'priority'      => 'default',
 		);
 
 		$tab = wp_parse_args( $tab_settings, $tab_defaults );
@@ -214,15 +259,15 @@ abstract class Extension {
 		self::$is_compatible = is_array( self::$is_compatible ) ? self::$is_compatible : array( get_called_class() => (bool) self::$is_compatible );
 
 		if ( ! function_exists( 'gravityview' ) ) {
-			$message = sprintf( __( 'Could not activate the %s Extension; GravityView is not active.', 'gravityview' ), esc_html( $this->_title ) );
-		} else if ( false === version_compare( Plugin::$version, $this->_min_gravityview_version , ">=" ) ) {
-			$message = sprintf( __( 'The %s Extension requires GravityView Version %s or newer.', 'gravityview' ), esc_html( $this->_title ), '<tt>'.$this->_min_gravityview_version.'</tt>' );
-		} else if ( isset( $this->_min_php_version ) && false === version_compare( phpversion(), $this->_min_php_version , ">=" ) ) {
-			$message = sprintf( __( 'The %s Extension requires PHP Version %s or newer. Please ask your host to upgrade your server\'s PHP.', 'gravityview' ), esc_html( $this->_title ), '<tt>'.$this->_min_php_version.'</tt>' );
-		} else if ( ! empty( $this->_max_gravityview_version ) && false === version_compare( $this->_max_gravityview_version, Plugin::$version, ">" ) ) {
-			$message = sprintf( __( 'The %s Extension is not compatible with this version of GravityView. Please update the Extension to the latest version.', 'gravityview' ), esc_html( $this->_title ) );
+			$message = sprintf( __( 'Could not activate the %s Extension; GravityView is not active.', 'gk-gravityview' ), esc_html( $this->_title ) );
+		} elseif ( false === version_compare( Plugin::$version, $this->_min_gravityview_version, '>=' ) ) {
+			$message = sprintf( __( 'The %1$s Extension requires GravityView Version %2$s or newer.', 'gk-gravityview' ), esc_html( $this->_title ), '<tt>' . $this->_min_gravityview_version . '</tt>' );
+		} elseif ( isset( $this->_min_php_version ) && false === version_compare( phpversion(), $this->_min_php_version, '>=' ) ) {
+			$message = sprintf( __( 'The %1$s Extension requires PHP Version %2$s or newer. Please ask your host to upgrade your server\'s PHP.', 'gk-gravityview' ), esc_html( $this->_title ), '<tt>' . $this->_min_php_version . '</tt>' );
+		} elseif ( ! empty( $this->_max_gravityview_version ) && false === version_compare( $this->_max_gravityview_version, Plugin::$version, '>' ) ) {
+			$message = sprintf( __( 'The %s Extension is not compatible with this version of GravityView. Please update the Extension to the latest version.', 'gk-gravityview' ), esc_html( $this->_title ) );
 		} else {
-			$message = '';
+			$message                                   = '';
 			self::$is_compatible[ get_called_class() ] = gravityview()->plugin->is_compatible();
 		}
 
@@ -233,99 +278,6 @@ abstract class Extension {
 		}
 
 		return self::is_compatible();
-	}
-
-	/**
-	 * Load translations for the extension
-	 *
-	 * 1. Check  `wp-content/languages/gravityview/` folder and load using `load_textdomain()`
-	 * 2. Check  `wp-content/plugins/gravityview/languages/` folder for `gravityview-[locale].mo` file and load using `load_textdomain()`
-	 * 3. Load default file using `load_plugin_textdomain()` from `wp-content/plugins/gravityview/languages/`
-	 *
-	 * @return void
-	 */
-	public function load_plugin_textdomain() {
-		if ( empty( $this->_text_domain ) ) {
-			gravityview()->log->debug( 'Extension translation cannot be loaded; the `_text_domain` variable is not defined', array( 'data' => $this ) );
-			return;
-		}
-
-		// Backward compat for Ratings & Reviews / Maps
-		$path = isset( $this->_path ) ? $this->_path : ( isset( $this->plugin_file ) ? $this->plugin_file : '' );
-
-		// Set filter for plugin's languages directory
-		$lang_dir = dirname( plugin_basename( $path ) ) . '/languages/';
-
-		$locale = get_locale();
-
-		if ( function_exists('get_user_locale') && is_admin() ) {
-			$locale = get_user_locale();
-		}
-
-		// Traditional WordPress plugin locale filter
-		$locale = apply_filters( 'plugin_locale',  $locale, $this->_text_domain );
-
-		$mofile = sprintf( '%1$s-%2$s.mo', $this->_text_domain, $locale );
-
-		// Setup paths to current locale file
-		$mofile_local  = $lang_dir . $mofile;
-		$mofile_global = WP_LANG_DIR . '/' . $this->_text_domain . '/' . $mofile;
-
-		if ( file_exists( $mofile_global ) ) {
-			// Look in global /wp-content/languages/[plugin-dir]/ folder
-			load_textdomain( $this->_text_domain, $mofile_global );
-		} elseif ( file_exists( $mofile_local ) ) {
-			// Look in local /wp-content/plugins/[plugin-dir]/languages/ folder
-			load_textdomain( $this->_text_domain, $mofile_local );
-		} else {
-			// Load the default language files
-			load_plugin_textdomain( $this->_text_domain, false, $lang_dir );
-		}
-	}
-
-	/**
-	 * Register the updater for the Extension using GravityView license information
-	 *
-	 * @return void
-	 */
-	public function settings() {
-
-		// If doing ajax, get outta here
-		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX && 'update-plugin' !== Utils::_POST('action') ) )  {
-			return;
-		}
-
-		$license = $this->get_license();
-
-		if ( ! class_exists( '\GV\EDD_SL_Plugin_Updater' ) ) {
-			require_once gravityview()->plugin->dir( 'future/lib/EDD_SL_Plugin_Updater.php' );
-		}
-
-		new EDD_SL_Plugin_Updater(
-			$this->_remote_update_url,
-			$this->_path,
-			array(
-            	'version'	=> $this->_version, // current version number
-            	'license'	=> \GV\Utils::get( $license, 'license_key', \GV\Utils::get( $license, 'license', null ) ),
-	            'item_id'   => $this->_item_id, // The ID of the download on _remote_update_url
-            	'item_name' => $this->_title,  // name of this plugin
-            	'author' 	=> strip_tags( $this->_author )  // author of this plugin
-          	)
-        );
-	}
-
-	/**
-	 * Get license information from GravityView
-	 *
-	 * @since 1.8 (Extension version 1.0.7)
-	 *
-	 * @return bool|array False: \GV\Addon_Settings class does not exist. Array: array of GV license data.
-	 */
-	protected function get_license() {
-		if ( ! class_exists( '\GV\Addon_Settings' ) ) {
-			return false;
-		}
-		return gravityview()->plugin->settings->get( 'license' );
 	}
 
 	/**
@@ -340,13 +292,13 @@ abstract class Extension {
 		if ( is_array( $notice ) && empty( $notice['message'] ) ) {
 			gravityview()->log->error( 'Notice not set', array( 'data' => $notice ) );
 			return;
-		} else if ( is_string( $notice ) ) {
+		} elseif ( is_string( $notice ) ) {
 			$notice = array( 'message' => $notice );
 		}
 
 		$notice['class'] = empty( $notice['class'] ) ? 'error' : $notice['class'];
 
-		self::$admin_notices []= $notice;
+		self::$admin_notices [] = $notice;
 	}
 
 	/**
@@ -360,13 +312,13 @@ abstract class Extension {
 		}
 
 		foreach ( self::$admin_notices as $key => $notice ) {
-			echo '<div id="message" class="'. esc_attr( $notice['class'] ).'">';
+			echo '<div id="message" class="' . esc_attr( $notice['class'] ) . '">';
 			echo wpautop( $notice['message'] );
 			echo '<div class="clear"></div>';
 			echo '</div>';
 		}
 
-		//reset the notices handler
+		// reset the notices handler
 		self::$admin_notices = array();
 	}
 }

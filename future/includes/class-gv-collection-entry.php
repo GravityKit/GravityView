@@ -74,7 +74,7 @@ class Entry_Collection extends Collection {
 	/**
 	 * Get a \GV\Entry from this list.
 	 *
-	 * @param int $entry_id The ID of the entry to get.
+	 * @param int    $entry_id The ID of the entry to get.
 	 * @param string $backend The form backend identifier, allows for multiple form backends in the future. Unused until then.
 	 *
 	 * @api
@@ -104,7 +104,7 @@ class Entry_Collection extends Collection {
 
 		/** Call all lazy callbacks. */
 		foreach ( $this->callbacks as $callback ) {
-			if ( $callback[0] != 'count' ) {
+			if ( 'count' != $callback[0] ) {
 				continue;
 			}
 
@@ -116,18 +116,6 @@ class Entry_Collection extends Collection {
 		}
 
 		return $total - $this->offset;
-	}
-
-	/**
-	 * Get the total number of entries that are fetched.
-	 *
-	 * @api
-	 * @since develop
-	 *
-	 * @return int The number of entries fetched now.
-	 */
-	public function count() {
-		return count( $this->fetch()->all() );
 	}
 
 	/**
@@ -159,7 +147,7 @@ class Entry_Collection extends Collection {
 		$result = array();
 
 		foreach ( $this->all() as $entry ) {
-			$entry = $entry->as_entry();
+			$entry    = $entry->as_entry();
 			$result[] = Utils::get( $entry, $key, null );
 		}
 
@@ -205,6 +193,7 @@ class Entry_Collection extends Collection {
 	 * @return \GV\Entry_Collection This collection, now hydrated.
 	 */
 	public function fetch() {
+
 		if ( $this->fetched >= 0 ) {
 			return $this;
 		}
@@ -212,16 +201,17 @@ class Entry_Collection extends Collection {
 		$this->clear();
 
 		/** Calculate the offsets. */
-		$offset = new \GV\Entry_Offset();
-		$offset->limit = $this->limit;
+		$offset         = new \GV\Entry_Offset();
+		$offset->limit  = $this->limit;
 		$offset->offset = ( $this->limit * ( $this->current_page - 1 ) ) + $this->offset;
 
 		/** Call all lazy callbacks. */
 		foreach ( $this->callbacks as $i => $callback ) {
-			if ( $callback[0] != 'fetch' ) {
+			if ( 'fetch' != $callback[0] ) {
 				continue;
 			}
 
+			/** Adds entries found in the callback to the collection using {@see \GV\Entry_Collection::add()}. */
 			$this->merge( $callback[1]( $this->filters, $this->sorts, $offset ) );
 		}
 
@@ -378,7 +368,7 @@ class Entry_Collection extends Collection {
 			return;
 		}
 
-		$this->callbacks []= array( $type, $callback );
+		$this->callbacks [] = array( $type, $callback );
 	}
 
 	/**

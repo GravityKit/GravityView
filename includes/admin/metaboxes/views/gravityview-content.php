@@ -17,15 +17,16 @@
 
 	/**
 	 * Loop through the array of registered metaboxes
+	 *
 	 * @var GravityView_Metabox_Tab $metabox
 	 */
-	foreach( $metaboxes as $metabox ) {
+foreach ( $metaboxes as $metabox ) {
 
-		echo '<div id="'.esc_attr( $metabox->id ).'">';
+	echo '<div id="' . esc_attr( $metabox->id ) . '">';
 
-		$metabox->render( $post );
+	$metabox->render( $post );
 
-		echo '</div>';
-	}
+	echo '</div>';
+}
 ?>
 </div>

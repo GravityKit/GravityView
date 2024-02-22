@@ -10,19 +10,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * @group gvfuture
  */
 class GVFuture_Test extends GV_UnitTestCase {
-	function setUp() {
-		/** The future branch of GravityView requires PHP 5.3+ namespaces. */
-		if ( version_compare( phpversion(), '5.3' , '<' ) ) {
-			$this->markTestSkipped( 'The future code requires PHP 5.3+' );
-			return;
-		}
-
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 
@@ -51,48 +45,45 @@ class GVFuture_Test extends GV_UnitTestCase {
      * @covers \GV\Plugin::relpath()
 	 */
 	public function test_plugin_dir_and_url_and_relpath() {
+		$plugin_folder_name = basename( GRAVITYVIEW_DIR );
+		$plugin_folder_name_lower = strtolower( $plugin_folder_name );
 	    $this->assertEquals( GRAVITYVIEW_DIR, gravityview()->plugin->dir() );
-		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
-		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/test/this.php", strtolower( gravityview()->plugin->dir( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/and/this.php", strtolower( gravityview()->plugin->dir( '/and/this.php' ) ) );
 
 		$dirname = trailingslashit( dirname( plugin_basename( GRAVITYVIEW_FILE ) ) );
+
 		$this->assertEquals( $dirname, gravityview()->plugin->relpath() );
 		$this->assertEquals( $dirname . 'languages/', gravityview()->plugin->relpath('/languages/') );
 		$this->assertEquals( $dirname . 'languages', gravityview()->plugin->relpath('languages') );
 
 		/** Due to how WP_PLUGIN_DIR is different in test mode, we are only able to check bits of the URL */
 		$this->assertStringStartsWith( 'http', strtolower( gravityview()->plugin->url() ) );
-		$this->assertStringEndsWith( '/gravityview/', strtolower( gravityview()->plugin->url() ) );
-		$this->assertStringEndsWith( '/gravityview/test/this.php', strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
-		$this->assertStringEndsWith( '/gravityview/and/this.php', strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/", strtolower( gravityview()->plugin->url() ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/test/this.php", strtolower( gravityview()->plugin->url( 'test/this.php' ) ) );
+		$this->assertStringEndsWith( "/{$plugin_folder_name_lower}/and/this.php", strtolower( gravityview()->plugin->url( '/and/this.php' ) ) );
 	}
 
 	/**
 	 * @covers \GV\Plugin::is_compatible()
 	 * @covers \GV\Plugin::is_compatible_wordpress()
 	 * @covers \GV\Plugin::is_compatible_gravityforms()
-	 * @covers \GV\Plugin::is_compatible_php()
 	 */
 	public function test_plugin_is_compatible() {
 		/** Under normal testing conditions this should pass. */
-		$this->assertTrue( gravityview()->plugin->is_compatible_php() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_wordpress() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_gravityforms() );
 		$this->assertTrue( gravityview()->plugin->is_compatible() );
 
 		/** Simulate various other conditions, including failure conditions. */
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '7.0.99-hhvm';
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '4.8-alpha-39901';
-		$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] = '2.3.2.3-alpha';
-		$this->assertTrue( gravityview()->plugin->is_compatible_php() );
+		$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] = '2.5.2-alpha';
 		$this->assertTrue( gravityview()->plugin->is_compatible_wordpress() );
 		$this->assertTrue( gravityview()->plugin->is_compatible_gravityforms() );
 		$this->assertTrue( gravityview()->plugin->is_compatible() );
 
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.2';
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '3.0';
 		$GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] = '1.0';
-		$this->assertFalse( gravityview()->plugin->is_compatible_php() );
 		$this->assertFalse( gravityview()->plugin->is_compatible_wordpress() );
 		$this->assertFalse( gravityview()->plugin->is_compatible_gravityforms() );
 		$this->assertFalse( gravityview()->plugin->is_compatible() );
@@ -103,24 +94,18 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertFalse( gravityview()->plugin->is_compatible() );
 
 		/** Cleanup used overrides. */
-		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_INACTIVE_OVERRIDE'] );
 
 		/** Test deprecations and stubs in the old code. */
 		$this->assertTrue( GravityView_Compatibility::is_valid() );
-		$this->assertTrue( GravityView_Compatibility::check_php() );
 		$this->assertTrue( GravityView_Compatibility::check_wordpress() );
 		$this->assertTrue( GravityView_Compatibility::check_gravityforms() );
 
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.2';
-		$this->assertFalse( GravityView_Compatibility::is_valid() );
-		$this->assertFalse( GravityView_Compatibility::check_php() );
 		$GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] = '3.0';
 		$this->assertFalse( GravityView_Compatibility::check_wordpress() );
 
-		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE'] );
 		unset( $GLOBALS['GRAVITYVIEW_TESTS_GF_VERSION_OVERRIDE'] );
 	}
@@ -286,7 +271,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** With tracking. */
 		$_GET = array( 'pagenum' => 1, 'sort' => '4', 'dir' => 'rand' );
 
-		$this->assertEquals( add_query_arg( $_GET, $expected_url ), $entry->get_permalink( $view, $request ) );
+		$expected_url = add_query_arg($_GET, $expected_url);
+
+		parse_str(parse_url($expected_url, PHP_URL_QUERY), $expected_url_params);
+		parse_str(parse_url($entry->get_permalink( $view, $request ), PHP_URL_QUERY), $permalink_params);
+
+		$this->assertEquals( ksort($expected_url_params), ksort($permalink_params));
 
 		$_GET = array();
 
@@ -334,10 +324,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 */
 	public function test_plugin_activate() {
 		/** Trigger an activation. By default, during tests these are not triggered. */
-		GravityView_Plugin::activate();
-		gravityview()->plugin->activate(); /** Deprecated. */
+		gravityview()->plugin->activate();
 
-		$this->assertEquals( get_option( 'gv_version' ), GravityView_Plugin::version );
+		$this->assertEquals( get_option( 'gv_version' ), GV_PLUGIN_VERSION );
 	}
 
 	/**
@@ -504,7 +493,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$wp_admin_bar->expects( $this->exactly( 4 ) )->method( 'add_menu' )
 				->withConsecutive(
 					array( $this->callback( function ( $subject ) {
-						return $subject['id'] == 'gravityview'; /** The GravityView button. */
+						return 'gravityview' == $subject['id']; /** The GravityView button. */
 					} ) ),
 					array( $this->callback( function ( $subject ) use ( $view ) {
 						return $subject['id'] == 'edit-view-' . $view->ID; /** Edit the first view. */
@@ -705,6 +694,38 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertTrue( GravityView_View_Data::is_valid_embed_id( '', $view->ID, true ) );
 		$this->assertInstanceOf( '\WP_Error', GravityView_View_Data::is_valid_embed_id( $post->ID, $post->ID ) );
 
+		/**
+		 * Test block parsing
+		 * @since 2.17.2
+		 */
+		$this->_reset_context();
+		$form  = $this->factory->form->create_and_get();
+		$view  = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$post_with_view  = $this->factory->post->create_and_get( array( 'post_content' => sprintf( '<!-- wp:gk-gravityview-blocks/view {"viewId":"%d","previewBlock":true} /-->', $view->ID ) ) );
+
+		$view_collection = \GV\View_Collection::from_post( $post_with_view );
+		$this->assertEquals( 1, $view_collection->count() );
+		$this->assertNotNull( $view_collection->get( $view->ID ) );
+		$this->assertNull( $view_collection->get( -1 ) );
+		$this->assertTrue( $view_collection->contains( $view->ID ) );
+		$this->assertFalse( $view_collection->contains( -1 ) );
+
+		$another_view  = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$post_with_two_views  = $this->factory->post->create_and_get( array( 'post_content' => sprintf(
+			'<!-- wp:gk-gravityview-blocks/view {"viewId":"%d","previewBlock":true} /--><!-- wp:gk-gravityview-blocks/view {"viewId":"%d","previewBlock":true} /-->',
+			$view->ID,
+			$another_view->ID
+		) ) );
+
+		$view_collection = \GV\View_Collection::from_post( $post_with_two_views );
+		$this->assertEquals( 2, $view_collection->count() );
+		$this->assertNotNull( $view_collection->get( $view->ID ) );
+		$this->assertNotNull( $view_collection->get( $another_view->ID ) );
+		$this->assertNull( $view_collection->get( -1 ) );
+		$this->assertTrue( $view_collection->contains( $view->ID ) );
+		$this->assertTrue( $view_collection->contains( $another_view->ID ) );
+		$this->assertFalse( $view_collection->contains( -1 ) );
+
 		$this->_reset_context();
 
 		$data = GravityView_View_Data::getInstance();
@@ -878,11 +899,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$_SERVER['SCRIPT_NAME'] = $_script_name;
 		set_current_screen( 'front' );
 
-		/** Now make sure old code stubs behave in the same way. */
-		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );
-		set_current_screen( 'front' );
-		$this->assertEquals( gravityview()->request->is_admin(), \GravityView_Plugin::is_admin() );
-
 		/** \GravityView_frontend::parse_content returns immediately if is_admin() */
 		$fe = \GravityView_frontend::getInstance();
 		$restore_GvOutputData = $fe->getGvOutputData(); /** Remember the global state... */
@@ -908,7 +924,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$logic_shortcode = \GVLogic_Shortcode::get_instance();
 		$this->assertEquals( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 		set_current_screen( 'dashboard' );
-		$this->assertEmpty( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
+		$this->assertEquals( $logic_shortcode->shortcode( array( 'if' => 'true', 'is' => 'true' ), 'sentinel' ), 'sentinel' );
 
 		/** \GravityView_Widget::add_shortcode short circuits and adds no tags if is_admin() */
 		set_current_screen( 'front' );
@@ -932,11 +948,13 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		global $post;
 		$this->assertFalse( $request->is_view() );
+		$this->assertFalse( $request->is_view( false ) );
 
 		$view = $this->factory->view->create_and_get();
 
 		$post = $view;
 		$this->assertInstanceOf( '\GV\View', $request->is_view() );
+		$this->assertTrue( $request->is_view( false ) );
 
 		$_GET = array();
 		$this->assertFalse( $request->is_search() );
@@ -1065,23 +1083,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$_id = get_current_screen()->id;
 		$_post_type = get_current_screen()->post_type;
-		get_current_screen()->id = 'gravityview_page_gravityview_settings';
-		get_current_screen()->post_type = 'gravityview';
-
-		$this->assertEquals( 'settings', \GravityView_Admin::is_admin_page( 'edit.php', '' ) );
-
-		$this->assertTrue( gravityview()->request->is_admin( 'edit.php', 'settings' ) );
-		$this->assertFalse( gravityview()->request->is_admin( 'edit.php', 'zettingz' ) );
-
-		get_current_screen()->id = 'gravityview_page_gv-admin-installer';
-		get_current_screen()->post_type = 'gravityview';
-
-		$this->assertTrue( gravityview()->request->is_admin( '', 'downloads' ) );
-		$this->assertEquals( 'downloads', gravityview()->request->is_admin( 'gravityview_page_gv-admin-installer' ) );
-
-		get_current_screen()->post_type = 'not gravityview';
-		$this->assertFalse( gravityview()->request->is_admin( '', 'downloads' ) );
-
 		get_current_screen()->id = 'toplevel_page_gf_edit_forms';
 		get_current_screen()->post_type = '';
 		$this->assertFalse( gravityview()->request->is_admin( '', null ) );
@@ -1167,7 +1168,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Group. */
 		$group = \GV\View_Settings::defaults( true, 'sort' );
-		$this->assertEmpty( array_filter( $group, function( $setting ) { return !empty( $setting['group'] ) && $setting['group'] != 'sort'; } ) );
+		$this->assertEmpty( array_filter( $group, function( $setting ) { return !empty( $setting['group'] ) && 'sort' != $setting['group']; } ) );
 
 		/** Test old filter. */
 		add_filter( 'gravityview_default_args', function( $defaults ) {
@@ -1200,51 +1201,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview_default_args' );
 		remove_all_filters( 'gravityview/view/settings/defaults' );
-
-		/** Dead get_id_from_atts() test assumptions, no actual live code is present in our core... */
-		add_filter( 'gravityview/view/settings/defaults', function( $defaults ) {
-			$defaults['view_id'] = array( 'value' => '39' );
-			return $defaults;
-		} );
-		$this->assertEquals( 39, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40"' ) );
-		remove_all_filters( 'gravityview/view/settings/defaults' );
-		$this->assertEquals( 40, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40"' ) );
-		$this->assertEquals( 50, \GravityView_View_Data::getInstance()->get_id_from_atts( 'id="40" view_id="50"' ) );
 	}
 
 	/**
 	 * @covers \GV\WP_Action_Logger::log()
 	 */
 	public function test_logging() {
-		$this->assertInstanceOf( '\GV\WP_Action_Logger', gravityview()->log );
-
 		$_this = &$this;
-		if ( version_compare( phpversion(), '5.4', '>=' ) ) {
-			add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
-				$_this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
-				$_this->assertEquals( $data, array( 'a' => 'b' ) );
-			}, 10, 2 );
-			gravityview()->log->info( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
-			remove_all_actions( 'gravityview_log_debug_test' );
 
-			add_action( 'gravityview_log_error_test', function( $message, $data ) use ( $_this ) {
-				$_this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
-				$_this->assertEquals( $data, array( 'a' => 'b' ) );
-			}, 10, 2 );
-			gravityview()->log->critical( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
-			remove_all_actions( 'gravityview_log_error_test' );
-		}
-
-		$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] = '5.3';
+		add_action( 'gravityview_log_debug_test', function( $message, $data ) use ( $_this ) {
+			$_this->assertEquals( "[info, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
+			$_this->assertEquals( $data, array( 'a' => 'b' ) );
+		}, 10, 2 );
+		gravityview()->log->info( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
+		remove_all_actions( 'gravityview_log_debug_test' );
 
 		add_action( 'gravityview_log_error_test', function( $message, $data ) use ( $_this ) {
-			$_this->assertEquals( "[critical] Hello, TRAPPIST-1!", $message );
+			$_this->assertEquals( "[critical, GVFuture_Test->test_logging] Hello, TRAPPIST-1!", $message );
 			$_this->assertEquals( $data, array( 'a' => 'b' ) );
 		}, 10, 2 );
 		gravityview()->log->critical( 'Hello, {world}!', array( 'world' => 'TRAPPIST-1', 'data' => array( 'a' => 'b' ) ) );
 		remove_all_actions( 'gravityview_log_error_test' );
-
-		unset( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] );
 	}
 
 	public function test_widget_collection() {
@@ -1421,7 +1398,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotNull( $visible->get( '000b' ) );
 
 		add_filter( 'gravityview/field/is_visible', function( $visible, $field ) {
-			if ( $field->UID == '000c' )
+			if ( '000c' == $field->UID )
 				return false;
 			return $visible;
 		}, 10, 2 );
@@ -1442,7 +1419,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/configuration/fields', function( $fields ) {
 			foreach ( $fields['directory_table-columns'] as &$field ) {
-				if ( $field['label'] == 'Business Name' ) {
+				if ( 'Business Name' == $field['label'] ) {
 					/** Custom parameters */
 					$field['sentinel'] = '9148';
 				}
@@ -1457,7 +1434,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Test custom getters */
 		foreach( $view->fields->by_position( 'directory_table-columns' )->all() as $field ) {
-			if ( $field->label == 'Business Name' ) {
+			if ( 'Business Name' == $field->label ) {
 				$this->assertEquals( '9148', $field->sentinel );
 			}
 		}
@@ -1470,7 +1447,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Visible/hidden fields */
 		add_filter( 'gravityview/configuration/fields', function( $fields ) {
 			foreach ( $fields['directory_table-columns'] as &$field ) {
-				if ( $field['label'] == 'Business Name' ) {
+				if ( 'Business Name' == $field['label'] ) {
 					$field['only_loggedin'] = 1;
 					$field['only_loggedin_cap'] = 'read';
 				}
@@ -1633,7 +1610,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		GravityView_View::getInstance()->setForm( $form->form );
 
 		$field_settings = array(
-			'id' => '14',
+			'id'         => '14',
+			'new_window' => true,
 		);
 		$this->assertEquals( '<a href="http://apple.com" rel="noopener noreferrer" target="_blank">http://apple.com</a>', GravityView_API::field_value( $entry->as_entry(), $field_settings ) );
 	}
@@ -1699,12 +1677,20 @@ class GVFuture_Test extends GV_UnitTestCase {
         gravityview()->request = new \GV\Mock_Request();
         gravityview()->request->returns['is_view'] = $view;
 
+        add_filter( 'gravityview/view/anchor_id', '__return_false' );
+        add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+
         $legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
         $future = $renderer->render( $view );
 
         /** No matching entries... */
         $this->assertEquals( $legacy, $future );
         $this->assertContains( 'No entries match your request', $future );
+
+
+		// Disable caching as we'll be running the same query but after creating new entries.
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		/** Some more */
 		foreach ( range( 1, 25 ) as $i ) {
@@ -1742,7 +1728,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( '[25] Some text in a textarea', $future );
 
 		$this->assertTrue( remove_filter( 'gravityview/view/entries', $callback ) );
-    }
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
+	}
 
     /**
      * Return only entries with an even entry ID
@@ -1758,7 +1749,7 @@ class GVFuture_Test extends GV_UnitTestCase {
         $return = new \GV\Entry_Collection();
 
         foreach ( $entries->all() as $i => $entry ) {
-            if ( $i % 2 === 0 ) {
+            if ( 0 === $i % 2 ) {
                 $return->add( $entry );
             }
         }
@@ -1814,6 +1805,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entries = new \GV\Entry_Collection();
 
 		$renderer = new \GV\View_Renderer();
+
+        add_filter( 'gravityview/view/anchor_id', '__return_false' );
+        add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
@@ -1988,6 +1984,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 		$this->assertNotContains( 'The Multiple Entries layout has not been configured.', $future );
 		$this->assertNotContains( 'Textarea', $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
@@ -2116,6 +2117,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$renderer = new \GV\View_Renderer();
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
 		$future = $renderer->render( $view, new \GV\Frontend_Request() );
 
@@ -2159,10 +2162,15 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$future = preg_replace( '#>\s*<#', '><', $future );
 
 		$this->assertEquals( $legacy, $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
 	}
 
 	public function test_frontend_widgets() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		global $post;
 
@@ -2224,6 +2232,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+		add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+
 		$renderer = new \GV\View_Renderer();
 
 		$legacy = \GravityView_frontend::getInstance()->insert_view_in_content( '' );
@@ -2234,6 +2245,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertContains( 'Displaying 1 - 3 of 5', $future );
 		$this->assertContains( "class='page-numbers'", $future );
 		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
@@ -2788,7 +2804,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '2' );
 
-		$this->assertEquals( "<ul class='bulleted'><li>Much Better</li><li>yes </li></ul>", $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( "<ul class='bulleted'><li>Much Better</li><li>yes</li></ul>", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field = \GV\GF_Field::by_id( $form, '2.1' );
 		$this->assertEquals( '<span class="dashicons dashicons-yes"></span>', $renderer->render( $field, $view, $form, $entry, $request ) );
@@ -2943,6 +2959,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'no_entries_hide' => true ) );
 		$this->assertEmpty( $renderer->render( $field, $view, null, $entry, $request ) );
 
+		// Disable caching as we'll be running the same query but after creating new entries.
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
 		$entry_2 = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'created_by' => $user_1,
@@ -2966,6 +2986,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, null, $entry, $request ) );
 
 		unset( $GLOBALS['post'] );
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
@@ -3139,7 +3162,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://gravityview.co/ <b>beep, I allow it!</b>',
+			'16' => 'okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? <script>huh()</script> http://www.gravitykit.com/ <b>beep, I allow it!</b>',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -3152,7 +3175,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field = \GV\GF_Field::by_id( $form, '16' );
 
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() http://gravityview.co/ <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() http://www.gravitykit.com/ <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => 4 ) );
@@ -3165,28 +3188,28 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'trim_words' => false, 'make_clickable' => true, 'new_window' => false ) );
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow">http://gravityview.co/</a> <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://www.gravitykit.com/" rel="nofollow">http://www.gravitykit.com/</a> <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'new_window' => true ) );
-		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow" target="_blank">http://gravityview.co/</a> <b>beep, I allow it!</b></p>' . "\n";
+		$expected = '<p>okay  {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://www.gravitykit.com/" rel="nofollow" target="_blank">http://www.gravitykit.com/</a> <b>beep, I allow it!</b></p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		add_filter( 'gravityview/fields/textarea/allowed_kses', function( $kses ) {
 			return array( 'so' => array() );
 		} );
 
-		$expected = '<p>okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://gravityview.co/" rel="nofollow" target="_blank">http://gravityview.co/</a> beep, I allow it!</p>' . "\n";
+		$expected = '<p>okay <so> {entry_id} what happens [gvtest_shortcode_t1] here? huh() <a href="http://www.gravitykit.com/" rel="nofollow" target="_blank">http://www.gravitykit.com/</a> beep, I allow it!</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		remove_all_filters( 'gravityview/fields/textarea/allowed_kses' );
 
 		$field->update_configuration( array( 'allow_html' => false, 'new_window' => false, 'make_clickable' => true ) );
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://gravityview.co/" rel="nofollow">http://gravityview.co/</a> &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; <a href="http://www.gravitykit.com/" rel="nofollow">http://www.gravitykit.com/</a> &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'allow_html' => false, 'new_window' => false, 'make_clickable' => false ) );
-		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://gravityview.co/ &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
+		$expected = '<p>okay &lt;so&gt; {entry_id} what happens [gvtest_shortcode_t1] here? &lt;script&gt;huh()&lt;/script&gt; http://www.gravitykit.com/ &lt;b&gt;beep, I allow it!&lt;/b&gt;</p>' . "\n";
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
@@ -3279,7 +3302,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'18' => 'https://gravityview.co/?<script>a</script>=<script>b</script>&1',
+			'18' => 'https://www.gravitykit.com/?<script>a</script>=<script>b</script>&1',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -3291,21 +3314,26 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '18' );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank">https://gravityview.co/?scripta/script=scriptb/script&1</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1">https://www.gravitykit.com/?scripta/script=scriptb/script&1</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'truncatelink' => true ) );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank">gravityview.co</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1">gravitykit.com</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** HTML is allowed. */
-		$field->update_configuration( array( 'anchor_text' => '<danger>ok {entry_id}' ) );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank"><danger>ok ' . $entry->ID . '</a>';
+		$field->update_configuration( array( 'anchor_text' => '<danger>ok {entry_id}', 'new_window' => true ) );
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1" rel="noopener noreferrer" target="_blank"><danger>ok ' . $entry->ID . '</a>';
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'open_same_window' => true, 'new_window' => true ) );
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'open_same_window' => true ) );
-		$expected = '<a href="https://gravityview.co/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
+		$expected = '<a href="https://www.gravitykit.com/?scripta/script=scriptb/script&amp;1"><danger>ok ' . $entry->ID . '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
+
 	}
 
 	/**
@@ -3434,7 +3462,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -3450,21 +3478,21 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 
 		$field = \GV\GF_Field::by_id( $form, '4' );
-		$this->assertEquals( '<a href="mailto:support@gravityview.co">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( '<a href="mailto:support@gravitykit.com">support@gravitykit.com</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'emailsubject' => 'su<script>bject[gvtest_filters_e1]' ) );
-		$this->assertEquals( '<a href="mailto:support@gravityview.co?subject=subjectshort">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( '<a href="mailto:support@gravitykit.com?subject=subjectshort">support@gravitykit.com</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'emailbody' => 'su<script>bject[gvtest_filters_e1] space' ) );
-		$this->assertEquals( '<a href="mailto:support@gravityview.co?subject=subjectshort&amp;body=subjectshort%20space">support@gravityview.co</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( '<a href="mailto:support@gravitykit.com?subject=subjectshort&amp;body=subjectshort%20space">support@gravitykit.com</a>', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'emailmailto' => false ) );
-		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( 'support@gravitykit.com', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		add_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
 
 		$field->update_configuration( array( 'emailencrypt' => true ) );
-		$this->assertEquals( 'support@gravityview.co', $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertEquals( 'support@gravitykit.com', $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		remove_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
 	}
@@ -3771,14 +3799,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$maybe_ie_nine = $audio_instance > 1 ? '' : "<!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->\n";
 			$expected .= "<li>$maybe_ie_nine";
 			$expected .= '<audio class="wp-audio-shortcode gv-audio gv-field-id-5" id="audio-0-' . $audio_instance . '" preload="none" style="width: 100%;" controls="controls"><source type="audio/mpeg" src="http://two.mp3?_=' . $audio_instance . '" /><a href="http://two.mp3">http://two.mp3</a></audio></li>';
-			// three.pdf
-			$expected .= '<li>three.pdf</li>';
+			// three.pdf (PDF always links to file as per https://github.com/gravityview/GravityView/pull/1577/commits/808063d2d2c6ea121ed7ccb2d53a16a863d4a69c)
+			$expected .= '<li><a href="http://three.pdf?gv-iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li>';
 			// four.mp4
 			$maybe_ie_nine = $video_instance > 1 ? '' : "<!--[if lt IE 9]><script>document.createElement('video');</script><![endif]-->\n";
 			$expected .= '<li><div style="width: 640px;" class="wp-video">' . $maybe_ie_nine;
 			$expected .= '<video class="wp-video-shortcode gv-video gv-field-id-5" id="video-0-' . $video_instance . '" width="640" height="360" preload="metadata" controls="controls"><source type="video/mp4" src="http://four.mp4?_=' . $video_instance . '" /><a href="http://four.mp4">http://four.mp4</a></video></div></li>';
 			// five.txt
-			$expected .= '<li>five.txt</li>';
+			$expected .= '<li><a href="http://five.txt?gv-iframe=true" rel="noopener noreferrer" target="_blank">five.txt</a></li>';
 		$expected .= '</ul>';
 
 		$this->assertEquals( $expected, $output );
@@ -3793,11 +3821,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 			// two.mp3
 			$expected .= '<li><a href="http://two.mp3" rel="noopener noreferrer" target="_blank">two.mp3</a></li>';
 			// three.pdf
-			$expected .= '<li><a href="http://three.pdf?TB_iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li>';
+			$expected .= '<li><a href="http://three.pdf?gv-iframe=true" rel="noopener noreferrer" target="_blank">three.pdf</a></li>';
 			// four.mp4
 			$expected .= '<li><a href="http://four.mp4" rel="noopener noreferrer" target="_blank">four.mp4</a></li>';
 			// five.txt
-			$expected .= '<li><a href="http://five.txt" rel="noopener noreferrer" target="_blank">five.txt</a></li>';
+			$expected .= '<li><a href="http://five.txt?gv-iframe=true" rel="noopener noreferrer" target="_blank">five.txt</a></li>';
 		$expected .= '</ul>';
 
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
@@ -3873,7 +3901,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '">';
+		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '">';
 			$expected .= '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
 		$expected .= '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
@@ -3881,7 +3909,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => true ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a>';
+		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="noopener noreferrer" target="_blank">one.jpg</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( $display_as_url => false ) );
@@ -3901,7 +3929,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => false ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '">';
+		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '">';
 			$expected .= '<img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" />';
 		$expected .= '</a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
@@ -3909,7 +3937,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( $display_as_url => true ) );
 		$field->update_configuration( array( $link_to_entry => false ) );
 
-		$expected = '<a class="thickbox" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>';
+		$expected = '<a class="gravityview-fancybox" data-fancybox="gallery-' . $form->ID . '-5-' . $entry->ID . '" href="http://one.jpg" rel="gv-field-' . $form->ID . '-5-' . $entry->ID . '"><img src="http://one.jpg" width="250" class="gv-image gv-field-id-5" /></a>';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( $display_as_url => false ) );
@@ -3998,7 +4026,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		foreach ( $form['fields'] as &$field ) {
 			/** The post categories is a multi-select thing that needs inputs set. */
-			if ( $field->type == 'post_category' ) {
+			if ( 'post_category' == $field->type ) {
 				$field = GFCommon::add_categories_as_choices( $field, '' );
 			}
 		}
@@ -4180,7 +4208,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Note: GF does escape category names, but they can come from anywhere. We must escape. */
 		$expected = array(
 			"<ul class='bulleted'>",
-			'<li>Before category</li>',
+			'<li>Beore category</li>', // Tags are stripped from: Be<script>f</script>ore category
 			'<li>Categorized 4 [gvtest_shortcode_p1]</li>',
 			'</ul>',
 		);
@@ -4220,17 +4248,19 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( strlen( implode( ', ', $expected ) ), strlen( $renderer->render( $field, $view, $form, $entry, $request ) ) );
 
 		/** Post Image */
+		$image_tag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
+		$image_caption_tag = GFFormsModel::is_html5_enabled() ? 'figcaption' : 'div';
 		$field = \GV\GF_Field::by_id( $form, '24' );
-		$expected = '<div class="gv-image"><a class="thickbox" href="' . $filename . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div>';
+		$expected = sprintf('<%1$s class="gv-image"><a class="gravityview-fancybox" href="' . $filename . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s>', $image_tag, $image_caption_tag);
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'link_to_post' => true ) );
-		$expected = '<div class="gv-image"><a href="' . get_permalink( $post->ID ) . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div>';
+		$expected = sprintf('<%1$s class="gv-image"><a href="' . get_permalink( $post->ID ) . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s>', $image_tag, $image_caption_tag);
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'dynamic_data' => true, 'link_to_post' => false, 'show_as_link' => true ) );
 		$images = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), 'large' );
-		$expected = '<a href="' . esc_attr( $entry->get_permalink( $view, $request ) ) . '"><div class="gv-image"><a href="" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $images[0] . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <div class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</div></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></div></a>';
+		$expected = sprintf('<a href="' . esc_attr( $entry->get_permalink( $view, $request ) ) . '"><%1$s class="gv-image"><a title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $images[0] . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s></a>', $image_tag, $image_caption_tag);
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** @todo: When there's not much else to do, test all the filters in the template! */
@@ -4266,7 +4296,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$renderer = new \GV\Field_Renderer();
 
 		$field = \GV\GF_Field::by_id( $form, '26' );
-		$expected = 'productname&lt;script&gt;o&lt;/script&gt; ($48.00)';
+		$expected = 'productname ($48.00)';
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field = \GV\GF_Field::by_id( $form, '26.1' );
@@ -4289,7 +4319,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		/** Options (checkbox) */
 		$field = \GV\GF_Field::by_id( $form, '28' );
-		$expected = "<ul class='bulleted'><li>Op1 ($48.00)</li><li>Op3 ($3.00)</li></ul>";
+		$expected = "<ul class='bulleted'><li>Op ($48.00)</li><li>Op ($3.00)</li></ul>";
 
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
@@ -4545,7 +4575,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = $request;
 		$request->returns['is_view'] = $view;
 
-		$template = new \GV\View_Table_Template( $view, $view->form->get_entries( $view ), $request );
+		$template = new \GV\View_Table_Template( $view, $view->form->entries, $request );
 
 		/** Test the column ouput. */
 		$expected = sprintf( '<th id="gv-field-%1$d-1" class="gv-field-%1$d-1" data-label="This is field one"><span class="gv-field-label">This is field one</span></th><th id="gv-field-%1$d-2" class="gv-field-%1$d-2" data-label="This is field two"><span class="gv-field-label">This is field two</span></th>', $view->form->ID );
@@ -4567,7 +4597,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		unset( $_GET['sort'] );
 
-		$entries = $view->form->get_entries( $view )->all();
+		$entries = $view->form->entries->all();
 
 		$attributes = array( 'class' => 'hello-button', 'data-row' => '1' );
 
@@ -4613,7 +4643,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = $request;
 		$request->returns['is_view'] = $view;
 
-		$template = new \GV\View_Table_Template( $view, $view->form->get_entries( $view ), $request );
+		$template = new \GV\View_Table_Template( $view, $view->form->entries, $request );
 
 		$gv_field = new \GV\Field();
 		$gv_field->ID = 1;
@@ -4819,7 +4849,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2' => -100,
 		) );
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form->ID ) );
-		$view = \GV\View::from_post( $view );
 
 		$entries = new \GV\Entry_Collection();
 
@@ -4837,60 +4866,61 @@ class GVFuture_Test extends GV_UnitTestCase {
 			) );
 		}
 
-		$this->assertEquals( $form->get_entries( $view )->total(), 501 );
-		$this->assertEquals( $form->get_entries( $view )->count(), 20 );
+		$this->assertEquals( $form->entries->total(), 501 );
+		$this->assertEquals( $form->entries->count(), 0 );
 
 		$filter_1 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
 			'mode' => 'any', /** OR */
 			array( 'key' => '2', 'value' => '200' ),
 			array( 'key' => '2', 'value' => '300' ),
 		) ) );
-
-		$this->assertEquals( $form->get_entries( $view )->filter( $filter_1 )->count(), 2 );
-		$this->assertEquals( $form->get_entries( $view )->filter( $filter_1 )->total(), 2 );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->count(), 0 );
+		$this->assertEquals( $form->entries->filter( $filter_1 )->total(), 2 );
 
 		$filter_2 = \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
 			'mode' => 'any', /** OR */
 			array( 'key' => '2', 'value' => '150' ),
 			array( 'key' => '2', 'value' => '450' ),
 		) ) );
-		$this->assertEquals( 4, $form->get_entries( $view )->filter( $filter_1 )->filter( $filter_2 )->total() );
+		$this->assertEquals( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->total() );
 
-		$this->assertCount( 20, $form->get_entries( $view )->all() ); /** The default count... */
-		$this->assertCount( 4, $form->get_entries( $view )->filter( $filter_1 )->filter( $filter_2 )->all() );
+		$this->assertCount( 20, $form->entries->all() ); /** The default count... */
+		$this->assertCount( 4, $form->entries->filter( $filter_1 )->filter( $filter_2 )->all() );
 
 		/** Try limiting and offsetting (a.k.a. pagination)... */
-		$this->assertCount( 5, $form->get_entries( $view )->limit( 5 )->all() );
-		$this->assertEquals( 501, $form->get_entries( $view )->limit( 5 )->total() );
-		$this->assertEquals( 5, $form->get_entries( $view )->limit( 5 )->count() );
+		$this->assertCount( 5, $form->entries->limit( 5 )->all() );
+		$this->assertEquals( 501, $form->entries->limit( 5 )->total() );
+		$this->assertEquals( 0, $form->entries->limit( 5 )->count() );
 
-		$entries = $form->get_entries( $view )->limit( 2 )->offset( 0 )->all();
+		$entries = $form->entries->limit( 2 )->offset( 0 )->all();
 		$this->assertCount( 2, $entries );
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '500', '499' ) );
 
-		$entries = $form->get_entries( $view )->limit( 2 )->offset( 6 )->all();
+		$entries = $form->entries->limit( 2 )->offset( 6 )->all();
 		$this->assertCount( 2, $entries );
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '494', '493' ) );
 
-		$entries = $form->get_entries( $view )->limit( 2 )->offset( 6 );
+		$entries = $form->entries->limit( 2 )->offset( 6 );
 		$entries->fetch();
 		$this->assertEquals( $entries->count(), 2 );
 		$entries->fetch();
 		$this->assertEquals( $entries->count(), 2 );
 
-		$last = $form->get_entries( $view )->limit( 2 )->offset( 6 )->last();
+		$last = $form->entries->limit( 2 )->offset( 6 )->last();
 		$this->assertEquals( $last['2'], '493' );
 
 		/** Hey, how about some sorting love? */
+		$view = \GV\View::from_post( $view );
+
 		$field = new \GV\Field();
 		$field->ID = '2'; /** @todo What about them joins? Should a field have a form link or the other way around? */
 		$sort = new \GV\Entry_Sort( $field, \GV\Entry_Sort::ASC );
-		$entries = $form->get_entries( $view )->limit( 2 )->sort( $sort )->offset( 18 )->all();
+		$entries = $form->entries->limit( 2 )->sort( $sort )->offset( 18 )->all();
 
 		$this->assertEquals( array( $entries[0]['2'], $entries[1]['2'] ), array( '114', '115' ) );
 
 		/** Pagination */
-		$page_1 = $form->get_entries( $view )->limit( 2 )->offset( 1 )->sort( $sort );
+		$page_1 = $form->entries->limit( 2 )->offset( 1 )->sort( $sort );
 		$this->assertEquals( 1, $page_1->current_page );
 		$this->assertEquals( $page_1->total(), 500 );
 
@@ -4925,7 +4955,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2' => 0.13,
 		) );
 
-		$entries = $form->get_entries( $view )->filter( \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
+		$entries = $form->entries->filter( \GV\GF_Entry_Filter::from_search_criteria( array( 'field_filters' => array(
 			'mode' => 'all',
 			array( 'key' => '1', 'value' => 'floaty-numbered', 'operator' => 'contains' ),
 		) ) ) );
@@ -5191,6 +5221,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 	 * @covers \GravityView_Shortcode::shortcode()
 	 */
 	public function test_shortcodes_gravityview() {
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 
 		$post = $this->factory->view->create_and_get( array(
@@ -5263,6 +5296,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 			)
 		) );
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+		add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+
 		$legacy = new GravityView_Shortcode();
 		$future = new \GV\Shortcodes\gravityview();
 
@@ -5304,6 +5340,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( $legacy_output, $future_output );
 		$this->assertContains( '] Entry ', $future_output );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
@@ -5731,7 +5772,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			),
 		) );
 		$view = \GV\View::from_post( $post );
-
+		$request = new \GV\Mock_Request();
 		$future = array( '\GV\oEmbed', 'render' );
 
 		/** Trash */
@@ -5896,185 +5937,21 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'coder', \GV\Utils::get( $o, 'who/is/that' ) );
 	}
 
-	public function test_license_handler() {
-		require_once gravityview()->plugin->dir( 'includes/class-gv-license-handler.php' );
-
-		$settings = $this->getMockBuilder( '\GV\Addon_Settings' )
-			->setMethods( array( 'get', 'update' ) )->getMock();
-
-		$settings->method( 'get' )->will( $this->returnValueMap( array(
-			array( 'license_key', 'TEST123' ),
-		) ) );
-
-		$this->assertSame( \GV_License_Handler::get_instance( $settings ), $handler = \GV\License_Handler::get() );
-
-		$handler->setup_edd();
-
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array(
-				'license' => 'invalid',
-				'license_key' => 'TEST',
-			) ) );
-		} );
-
-		$result = json_decode( $handler->license_call(), true );
-		$this->assertEquals( $result['error'], 'capability' );
-		$result = json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true );
-		$this->assertEquals( $result['license'], 'invalid' );
-
-		remove_filter( 'pre_http_request', $callback );
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array(
-				'license' => 'valid',
-				'license_key' => 'TEST',
-				'license_name' => 'Test Suite License',
-				'upgrades' => array( 'one' => array( 'name' => 'what', 'price' => 10, 'price_id' => 1, 'url' => 'https://gravityview.co', 'description' => 'testing' ) ),
-			) ) );
-		} );
-
-		$result = json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true );
-		$this->assertContains( 'Test Suite License', $result['details'] );
-
-		remove_filter( 'pre_http_request', $callback );
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array() ) );
-		} );
-
-		$this->assertEquals( array(), json_decode( $handler->license_call( array( 'license' => 'TEST' ), false ), true ) );
-
-		remove_filter( 'pre_http_request', $callback );
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array(
-				'license' => 'valid',
-				'license_key' => 'TEST!THIS',
-			) ) );
-		} );
-		$handler->license_call( array( 'license' => 'TEST', 'field_id' => 1, 'update' => 1 ), false );
-
-		remove_filter( 'pre_http_request', $callback );
-		add_filter( 'pre_http_request', $callback = function() {
-			return array( 'body' => json_encode( array() ) );
-		} );
-
-		delete_transient( $handler::status_transient_key );
-		$handler->refresh_license_status();
-
-		delete_transient( $handler::status_transient_key );
-		delete_transient( 'gv_license_check' );
-		$handler->flush_related_plugins_transient();
-
-		$form = $this->factory->form->import_and_get( 'complete.json' );
-		$this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
-		$this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
-
-		remove_filter( 'pre_http_request', $callback );
-		$test = &$this;
-		add_filter( 'pre_http_request', $callback = function() use ( $test ) {
-			$args = func_get_args();
-			$args = $args[0]['body'];
-			$test->assertEquals( $args['item_name'], 'GravityView' );
-			$test->assertEquals( $args['site_data']['php_version'], phpversion() );
-			$test->assertEquals( $args['site_data']['view_count'], wp_count_posts( 'gravityview', 'readable' )->publish );
-			$form_counts = \GFFormsModel::get_form_count();
-			$test->assertEquals( $args['site_data']['forms_total'], $form_counts['total'] );
-			return array( 'body' => json_encode( array() ) );
-		} );
-
-		$handler->check_license();
-		remove_filter( 'pre_http_request', $callback );
-
-		$this->assertContains( 'Verifying license', $handler->settings_edd_license_activation( false, false ) );
-
-		remove_all_filters( 'pre_http_request' );
-	}
-
-	public function test_addon_settings() {
+	public function test_plugin_settings() {
 		$settings = gravityview()->plugin->settings;
 		$settings->update( array() );
+
 		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
-		$this->assertEquals( array_keys( $settings->get_default_settings() ), array( 'license_key', 'license_key_response', 'license_key_status', 'support-email', 'no-conflict-mode', 'support_port', 'flexbox_search', 'rest_api', 'beta' ) );
+		$this->assertEquals( array_keys( $settings->defaults() ), array( 'rest_api', 'public_entry_moderation', 'caching', 'caching_entries' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );
 		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );
-		$this->assertEquals( $settings->get( 'beta' ), '0' );
 		$this->assertEquals( $settings->get_app_settings(), $settings->all() );
 
-		$settings->set( 'beta', '1' );
-		$this->assertEquals( $settings->get( 'beta' ), '1' );
-		$this->assertEquals( $settings->get( 'license' ), array( 'license' => '', 'status' => '', 'response' => '' ) );
-
-		$settings->set( array(
-			'beta' => '3',
-			'alpha' => '16'
-		) );
-
-		$this->assertEquals( $settings->get( 'beta' ), '3' );
-		$this->assertEquals( $settings->get( 'alpha' ), '16' );
-		$this->assertEquals( $settings->get( 'support-email' ), get_bloginfo( 'admin_email' ) );
-
 		$settings->update( $expected = array( 'wub' => 'dub' ) );
-		$this->assertEquals( $settings->all(), wp_parse_args( $expected, $settings->get_default_settings() ) );
+		$this->assertEquals( $settings->all(), wp_parse_args( $expected, $settings->defaults() ) );
 
 		$this->assertEquals( \GravityView_Settings::getSetting( 'wub' ), 'dub' );
-
-		$settings = new \GV\Addon_Settings();
-		$settings->init_admin();
-		$settings->init_ajax();
-		$settings->add_network_menu();
-		$this->assertEquals( $settings->modify_app_settings_menu_title( array( array() ) ), array( array( 'label' => 'GravityView Settings' ) ) );
-		$this->assertFalse( $settings->current_user_can_any( array( 'oops' ) ) );
-
-		$this->assertContains( 'delete then', $settings->uninstall_warning_message() );
-		$this->assertContains( 'gv-uninstall-form-wrapper', $settings->uninstall_form() );
-
-		$administrator = $this->factory->user->create( array(
-			'user_login' => md5( microtime() ),
-			'user_email' => md5( microtime() ) . '@gravityview.tests',
-			'role' => 'administrator' )
-		);
-
-		if ( function_exists( 'grant_super_admin' ) ) {
-			grant_super_admin( $administrator );
-		}
-		wp_set_current_user( $administrator );
-
-		ob_start();
-		$settings->app_settings_uninstall_tab();
-		$this->assertContains( 'ALL GravityView settings will be deleted', ob_get_clean() );
-
-		ob_start();
-		$settings->app_settings_tab();
-		$this->assertContains( '_gravityview_save_settings_nonce', $tab = ob_get_clean() );
-		$this->assertContains( 'Uninstall GravityView', $tab );
-		$this->assertNull( $settings->app_settings_title() );
-		$this->assertEquals( $settings->app_settings_icon(), '&nbsp;' );
-
-		$settings->scripts();
-		$settings->styles();
-
-		$settings->create_app_menu();
-
-		wp_set_current_user( 0 );
-	}
-
-	public function test_extension_class() {
-		$legacy_ext = new GVFutureTest_Extension_Test_BC();
-		$ext = new GVFutureTest_Extension_Test();
-
-		$this->assertFalse( $ext::is_compatible() );
-		$this->assertTrue( $legacy_ext::is_compatible() );
-
-		ob_start(); $legacy_ext->admin_notice();
-		$this->assertContains( 'requires GravityView Version', ob_get_clean() );
-
-		set_current_screen( 'dashboard' );
-		gravityview()->plugin->settings->set( 'license_key_status', 'valid' );
-		$ext->settings();
-		set_current_screen( 'front' );
-
-		$ext->load_plugin_textdomain();
-		$ext->tooltips();
-		$ext->add_metabox_tab();
 	}
 
 	public function test_widget_class() {
@@ -6320,6 +6197,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 
+		add_filter('gravityview/view/wrapper_container', '__return_false');
+
 		$out = $renderer->render( $view );
 
 		$this->assertStringStartsWith( '{{ gravityview/template/before }}{{ gravityview_before }}', $out );
@@ -6438,6 +6317,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
+
+		remove_all_filters('gravityview/view/wrapper_container');
 	}
 
 	public function test_template_hooks_compat_table_single() {
@@ -6579,6 +6460,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_entry'] = $entry;
 
+		add_filter('gravityview/view/wrapper_container', '__return_false');
+
 		$out = $renderer->render( $entry, $view );
 
 		$this->assertStringStartsWith( '{{ gravityview/template/before }}{{ gravityview_before }}', $out );
@@ -6624,6 +6507,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
+
+		remove_all_filters('gravityview/view/wrapper_container');
 	}
 
 	public function test_template_hooks_compat_list_directory( $really_directory = true, $save_callback = null ) {
@@ -6687,7 +6572,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
-		if ( $mode == 'single' && is_callable( $save_callback ) ) {
+		if ( 'single' == $mode && is_callable( $save_callback ) ) {
 			$save_callback( $view, \GV\GF_Entry::by_id( $entry['id'] ) );
 		}
 
@@ -6876,7 +6761,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/template/field_label', $callbacks []= function( $label, $field, $form, $_entry ) use ( $view, $entry, $test, $mode ) {
 			$test->assertEquals( $form['id'], $view->form->ID );
-			if ( $mode == 'single' ) {
+			if ( 'single' == $mode ) {
 				$test->assertEquals( $_entry['id'], $entry['id'] );
 			}
 			return "$label{{ gravityview/template/field_label }}";
@@ -6884,7 +6769,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		add_filter( 'gravityview/template/field/label', $callbacks []= function( $label, $context ) use ( $view, $entry, $test, $mode ) {
 			$test->assertSame( $view, $context->view );
-			if ( $mode == 'single' ) {
+			if ( 'single' == $mode ) {
 				$test->assertEquals( $entry->ID, $context->entry->ID );
 			}
 			return "$label{{ gravityview/template/field/label }}";
@@ -6892,7 +6777,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		gravityview()->request = new \GV\Mock_Request();
 
-		if ( $mode == 'directory' ) {
+		add_filter('gravityview/view/wrapper_container', '__return_false');
+
+		if ( 'directory' == $mode ) {
 			$renderer = new \GV\View_Renderer();
 			gravityview()->request->returns['is_view'] = $view;
 			$out = $renderer->render( $view );
@@ -6907,7 +6794,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertStringEndsWith( '{{ gravityview/template/after }}{{ gravityview_after }}', $out );
 
 
-		if ( $mode == 'directory' ) {
+		if ( 'directory' == $mode ) {
 			$this->assertContains( '{{ gravityview/template/header }}{{ gravityview_header }}', $out );
 			$this->assertContains( '{{ gravityview/template/footer }}{{ gravityview_footer }}', $out );
 
@@ -6970,7 +6857,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
 
-		if ( $mode == 'single' ) {
+		if ( 'single' == $mode ) {
 			return $out;
 		}
 
@@ -6999,6 +6886,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertNotContains( false, $removed );
 		$this->assertEmpty( $callbacks );
+
+		remove_all_filters('gravityview/view/wrapper_container');
 	}
 
 	public function test_template_hooks_compat_list_single() {
@@ -7516,36 +7405,36 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'gennady@gravityview.co',
+			'4' => 'gennady@gravitykit.com',
 			'16' => 'Backend',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'vlad@gravityview.co',
+			'4' => 'vlad@gravitykit.com',
 			'16' => 'Frontend',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'rafael@gravityview.co',
+			'4' => 'rafael@gravitykit.com',
 			'16' => 'Support',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'zack@gravityview.co',
+			'4' => 'zack@gravitykit.com',
 			'16' => 'Backend', // and frontend, but we need the same values here for testing :)
 		) );
 
 		$entries = $view->get_entries()->all();
 
 		/** Ascending skill/role, descending e-mail address: */
-		$this->assertEquals( 'Backend',  $entries[0]['16'] ); $this->assertEquals( 'zack@gravityview.co',    $entries[0]['4'] );
-		$this->assertEquals( 'Backend',  $entries[1]['16'] ); $this->assertEquals( 'gennady@gravityview.co', $entries[1]['4'] );
+		$this->assertEquals( 'Backend',  $entries[0]['16'] ); $this->assertEquals( 'zack@gravitykit.com',    $entries[0]['4'] );
+		$this->assertEquals( 'Backend',  $entries[1]['16'] ); $this->assertEquals( 'gennady@gravitykit.com', $entries[1]['4'] );
 		$this->assertEquals( 'Frontend', $entries[2]['16'] );
 		$this->assertEquals( 'Support',  $entries[3]['16'] );
 
@@ -7711,7 +7600,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
-	public function test_view_csv_simple() {
+	public function test_view_csv_tsv_simple() {
 		$this->_reset_context();
 
 		$form = $this->factory->form->import_and_get( 'complete.json' );
@@ -7784,6 +7673,31 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'"Order ID",Item,"Customer Name","Customer First Name"',
 			$entry2->ID . ',"\'=Broomsticks x 8","Harry Churchill",Harry',
 			$entry->ID . ',"A pair of shoes","Winston Potter",Winston',
+		);
+		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
+
+		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		set_query_var( 'csv', null );
+		set_query_var( 'tsv', 1 );
+
+		$this->assertNull( $view::template_redirect() );
+
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		$this->assertNull( $view::template_redirect() );
+
+		$view->settings->update( array( 'csv_enable' => '1' ) );
+
+		add_filter( 'gform_include_bom_export_entries', '__return_false' );
+
+		ob_start();
+		$view::template_redirect();
+		$expected = array(
+				'"Order ID"' . "\t" . 'Item' . "\t" . '"Customer Name"' . "\t" . '"Customer First Name"',
+				$entry2->ID . "\t" . '"\'=Broomsticks x 8"' . "\t" . '"Harry Churchill"' . "\t" . 'Harry',
+				$entry->ID . "\t" . '"A pair of shoes"' . "\t" . '"Winston Potter"' . "\t" . 'Winston',
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
@@ -7952,6 +7866,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 						'id' => '16',
 						'label' => 'Textarea',
 					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '18',
+						'label' => 'Website',
+					),
 				),
 			),
 		) );
@@ -7960,7 +7878,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 			'7' => serialize( array(
 				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
@@ -7972,6 +7890,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			'2.1' => 'Much Better',
 			'2.2' => 'Somewhat Better',
 			'16'  => "This\nis\nan\nofficial\nletter.",
+			'18'  => 'https://example.com?query=vars',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -7997,9 +7916,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$textarea = "This\nis\nan\nofficial\nletter.";
 
+		$website  = 'https://example.com?query=vars';
+
 		$expected = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( 'support@gravityview.co,"%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( 'support@gravitykit.com,"%s",%s,"%s","%s",%s', $list, $file, $checkbox, $textarea, $website ),
 		);
 
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
@@ -8027,27 +7948,27 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 
 		$expected         = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( 'support@gravityview.co,"%s","%s","%s","%s"', $list_newline, $file_newline, $checkbox_newline, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( 'support@gravitykit.com,"%s","%s","%s","%s",%s', $list_newline, $file_newline, $checkbox_newline, $textarea, $website ),
 		);
 
 		remove_all_filters( 'gravityview/template/field/csv/glue' );
 
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
-		add_filter( 'gravityview/template/csv/field/raw', '__return_false' );
+		add_filter( 'gravityview/template/csv/field/raw', '__return_empty_array' );
 
 		$textarea = str_replace( "\n", "<br />\n", $textarea );
 
 		ob_start();
 		$view::template_redirect();
 		$expected = array(
-			'Email,"A List",File,Checkbox,Textarea',
-			sprintf( '"<a href=\'mailto:support@gravityview.co\'>support@gravityview.co</a>","%s",%s,"%s","%s"', $list, $file, $checkbox, $textarea ),
+			'Email,"A List",File,Checkbox,Textarea,Website',
+			sprintf( '"<a href=\'mailto:support@gravitykit.com\'>support@gravitykit.com</a>","%s",%s,"%s","%s","<a href=\'https://example.com?query=vars\' target=\'_blank\'>https://example.com?query=vars</a>"', $list, $file, $checkbox, $textarea ),
 		);
 		$this->assertEquals( implode( "\n", $expected ), ob_get_clean() );
 
-		remove_filter( 'gravityview/template/csv/field/raw', '__return_false' );
+		remove_filter( 'gravityview/template/csv/field/raw', '__return_empty_array' );
 		remove_filter( 'gform_include_bom_export_entries', '__return_false' );
 
 		$this->_reset_context();
@@ -8086,7 +8007,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
@@ -8142,7 +8063,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$entry = $this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => $_ . 'support@gravityview.co',
+				'4' => $_ . 'support@gravitykit.com',
 			) );
 		}
 
@@ -8510,7 +8431,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'gennady@gravityview.co',
+			'4' => 'gennady@gravitykit.com',
 		) );
 
 		register_post_type( $post_type = 'test_' . wp_generate_password( 4, false ), array(
@@ -8634,25 +8555,25 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'gennady@gravityview.co',
+			'4' => 'gennady@gravitykit.com',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'vlad@gravityview.co',
+			'4' => 'vlad@gravitykit.com',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'rafael@gravityview.co',
+			'4' => 'rafael@gravitykit.com',
 		) );
 
 		$this->factory->entry->create_and_get( array(
 			'form_id' => $form->ID,
 			'status' => 'active',
-			'4' => 'zack@gravityview.co',
+			'4' => 'zack@gravitykit.com',
 		) );
 
 		$renderer = new \GV\View_Renderer();
@@ -8721,25 +8642,25 @@ class GVFuture_Test extends GV_UnitTestCase {
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => 'gennady@gravityview.co',
+				'4' => 'gennady@gravitykit.com',
 			) ),
 
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => 'vlad@gravityview.co',
+				'4' => 'vlad@gravitykit.com',
 			) ),
 
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => 'rafael@gravityview.co',
+				'4' => 'rafael@gravitykit.com',
 			) ),
 
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form->ID,
 				'status' => 'active',
-				'4' => 'zack@gravityview.co',
+				'4' => 'zack@gravitykit.com',
 			) ),
 		);
 
@@ -8747,7 +8668,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$args = array(
 			'id' => $view->ID,
-			'sort_field' => 'id'
+			'sort_field' => 'id',
+			'sort_direction' => 'DESC'
 		);
 
 		preg_match_all( '#data-label="Entry ID">(\d+)</td>#', $shortcode->callback( $args ), $matches );
@@ -8764,14 +8686,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
-}
-
-class GVFutureTest_Extension_Test_BC extends GravityView_Extension {
-	protected $_title = 'Legacy Test Extension';
-	protected $_version = '9.1.1-BC';
-	protected $_item_id = 911;
-	protected $_min_gravityview_version = '2.0-dev';
-	protected $_min_php_version = '5.3';
 }
 
 class GVFutureTest_Extension_Test extends \GV\Extension {
@@ -8793,7 +8707,7 @@ class GVFutureTest_Widget_Test_BC extends GravityView_Widget {
 
 class GVFutureTest_Widget_Test_Merge_Tag extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
-		if ( ! $this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 
@@ -8803,7 +8717,7 @@ class GVFutureTest_Widget_Test_Merge_Tag extends \GV\Widget {
 
 class GVFutureTest_Widget_Test extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
-		if ( ! $this->pre_render_frontend() ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 		?>

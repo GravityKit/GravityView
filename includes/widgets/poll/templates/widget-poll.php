@@ -2,7 +2,7 @@
 /**
  * Display the Poll widget
  *
- * @see ../class-gravityview-widget-poll.php
+ * @file ../class-gravityview-widget-poll.php
  */
 
 $gravityview_view = GravityView_View::getInstance();
@@ -15,6 +15,8 @@ foreach ( $gravityview_view->poll_fields as $form_id => $poll_field ) {
 	 */
 	$merge_tag = $gravityview_view->poll_merge_tag;
 
-	echo GFCommon::replace_variables( $merge_tag, GFAPI::get_form( $form_id ), array( 'id' => 0 ) );
+	echo '<div class="gravity-theme">';
+	echo GFCommon::replace_variables( $merge_tag, GVCommon::get_form( $form_id ), array( 'id' => 0 ) );
+	echo '</div>';
 
 }

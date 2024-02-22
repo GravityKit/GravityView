@@ -45,7 +45,7 @@ final class GravityView_Fields {
 		$type = isset( $properties['type'] ) ? $properties['type'] : '';
 		$type = empty( $properties['inputType'] ) ? $type : $properties['inputType'];
 		if ( empty( $type ) || ! isset( self::$_fields[ $type ] ) ) {
-			return new GravityView_Field( $properties );
+			return false;
 		}
 		$class      = self::$_fields[ $type ];
 		$class_name = get_class( $class );
@@ -62,7 +62,7 @@ final class GravityView_Fields {
 	 * @return bool True: yes, it exists; False: nope
 	 */
 	public static function exists( $field_name ) {
-		return isset( self::$_fields["{$field_name}"] );
+		return isset( self::$_fields[ "{$field_name}" ] );
 	}
 
 	/**
@@ -96,8 +96,8 @@ final class GravityView_Fields {
 
 		$field_type = is_a( $gf_field, 'GF_Field' ) ? get_class( $gf_field ) : $gf_field;
 
-		foreach( self::$_fields as $field ) {
-			if( $field_type === $field->_gf_field_class_name ) {
+		foreach ( self::$_fields as $field ) {
+			if ( $field_type === $field->_gf_field_class_name ) {
 				return $field;
 			}
 		}
@@ -110,23 +110,50 @@ final class GravityView_Fields {
 	 *
 	 * @since 1.16 Added $group parameter
 	 *
-	 * @param string $group Optional. If defined, fetch all fields in a group
+	 * @param string|array $groups Optional. If defined, fetch all fields in a group or array of groups.
+	 * @param string       $context Optional. If defined, limit returned fields to those that support the defined context.
 	 *
 	 * @return GravityView_Field[]
 	 */
-	public static function get_all( $group = '' ) {
+	public static function get_all( $groups = '', $context = '' ) {
 
-		if( '' !== $group ) {
-			$return_fields = self::$_fields;
+		$return_fields = self::$_fields;
+
+		if ( '' !== $groups ) {
+
+			$groups = (array) $groups;
+
 			foreach ( $return_fields as $key => $field ) {
-				if( $group !== $field->group ) {
+				if ( ! in_array( $field->group, $groups, true ) ) {
 					unset( $return_fields[ $key ] );
 				}
 			}
-			return $return_fields;
-		} else {
-			return self::$_fields;
 		}
-	}
 
+		if ( '' === $context ) {
+			return $return_fields;
+		}
+
+		/**
+		 * Now check to see which fields support the passed context.
+		 */
+
+		// "directory" is the old name for the "multiple entries" context.
+		if ( 'directory' === $context ) {
+			$context = 'multiple';
+		}
+
+		foreach ( $return_fields as $key => $field ) {
+
+			if ( empty( $field->contexts ) || ! is_array( $field->contexts ) ) {
+				continue;
+			}
+
+			if ( ! in_array( $context, $field->contexts, true ) ) {
+				unset( $return_fields[ $key ] );
+			}
+		}
+
+		return $return_fields;
+	}
 }

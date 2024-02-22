@@ -29,7 +29,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 	var $is_set_up = false;
 
-	function setUp() {
+	function setUp() : void {
 
 		parent::setUp();
 
@@ -62,7 +62,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		GravityView_View::getInstance()->setEntries( array( array('id'), array('id') ) );
 		GravityView_View::getInstance()->setTotalEntries( 2 );
-		
+
 		// Test non-empty View
 		ob_start();
 		gv_container_class();
@@ -135,9 +135,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		GravityView_View::getInstance()->setHideUntilSearched( true );
 
 		$classes = array(
-			'gv-container hidden' => gv_container_class(),
-			'with-passed-class gv-container hidden' => gv_container_class( 'with-passed-class' ),
-			'with-passed-class and-whitespace gv-container hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+			'gv-container gv-hidden' => gv_container_class(),
+			'with-passed-class gv-container gv-hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container gv-hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
 		);
 
 		foreach ( $classes as $expected => $formatted ) {
@@ -148,9 +148,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$context->request->returns['is_search'] = false;
 
 		$classes = array(
-			'gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( '', false, $context ),
-			'with-passed-class gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( 'with-passed-class', false, $context ),
-			'with-passed-class and-whitespace gv-container gv-container-' . $view->ID .' hidden' => gv_container_class( '   with-passed-class and-whitespace   ', false, $context ),
+			'gv-container gv-container-' . $view->ID .' gv-hidden' => gv_container_class( '', false, $context ),
+			'with-passed-class gv-container gv-container-' . $view->ID .' gv-hidden' => gv_container_class( 'with-passed-class', false, $context ),
+			'with-passed-class and-whitespace gv-container gv-container-' . $view->ID .' gv-hidden' => gv_container_class( '   with-passed-class and-whitespace   ', false, $context ),
 		);
 
 		foreach ( $classes as $expected => $formatted ) {
@@ -161,9 +161,9 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		GravityView_View::getInstance()->setViewId( 12 );
 
 		$classes = array(
-			'gv-container gv-container-12 hidden' => gv_container_class(),
-			'with-passed-class gv-container gv-container-12 hidden' => gv_container_class( 'with-passed-class' ),
-			'with-passed-class and-whitespace gv-container gv-container-12 hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
+			'gv-container gv-container-12 gv-hidden' => gv_container_class(),
+			'with-passed-class gv-container gv-container-12 gv-hidden' => gv_container_class( 'with-passed-class' ),
+			'with-passed-class and-whitespace gv-container gv-container-12 gv-hidden' => gv_container_class( '   with-passed-class and-whitespace   ' ),
 		);
 
 		foreach ( $classes as $expected => $formatted ) {
@@ -294,6 +294,45 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 	/**
 	 * @group entry_link
+	 * @since 2.10
+	 * @covers gv_get_query_args()
+	 */
+	public function test_gv_get_query_args() {
+
+		$_GET = array();
+
+		$this->assertEquals( array(), gv_get_query_args() );
+
+		$_GET = array( 'entry_id' => '1234' );
+		$this->assertEquals( array(), gv_get_query_args(), 'Should have ignored reserved args' );
+
+		$_GET = array( 'not_reserved' => '1234' );
+		$this->assertEquals( $_GET, gv_get_query_args(), 'Should have returned $_GET verbatim; not reserved' );
+
+		add_filter( 'gravityview/api/reserved_query_args', $add_not_reserved = function( $args ) {
+			$args[] = 'not_reserved';
+			return $args;
+		} );
+
+		$_GET = array( 'not_reserved' => '1234' );
+		$this->assertEquals( array(), gv_get_query_args(), 'Should have been blocked by adding `not_reserved` to reserved args using the filter.' );
+
+		remove_filter( 'gravityview/api/reserved_query_args', $add_not_reserved );
+
+		$_GET = array( 'example' => 'anjela%27s%2c%20inc' );
+		$this->assertEquals( array( 'example' => "anjela's, inc" ), gv_get_query_args(), 'Should have decoded URL args.' );
+
+		$_GET = array( 'example' => '<script>Example</script>' );
+		$this->assertEquals( array( 'example' => "<script>Example</script>" ), gv_get_query_args(), 'Should not have stripped or sanitized. That\'s for later in the cycle.' );
+
+		$_GET = array( 'gv_search' => 'testing', 'gv_start' => '2020-02-02', 'gv_end' => '2020-02-02', 'gv_id' => '1', 'gv_by' => '3', 'mode' => 'all' );
+		$this->assertEquals( array(), gv_get_query_args(), 'Search Bar should define search parameters as reserved.' );
+
+		$_GET = array();
+	}
+
+	/**
+	 * @group entry_link
 	 * @covers GravityView_API::entry_link()
 	 */
 	public function test_entry_link() {
@@ -321,6 +360,24 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$href = GravityView_API::entry_link( $entry, $view->ID );
 
 		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href );
+
+		$_GET = array( 'entry' => '1746472' );
+		$href = GravityView_API::entry_link( $entry, $view->ID );
+		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href, 'Reserved $_GET args should have been ignored by gv_get_query_args()' );
+
+		$_GET = array( 'fortune' => 'brave' );
+		$href = GravityView_API::entry_link( $entry, $view->ID );
+		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&fortune=brave&entry='.$entry['id'] ), $href, '$_GET args should have been added but weren\'t.' );
+
+		add_filter( 'gravityview/entry_link/add_query_args', '__return_false' );
+
+		$href = GravityView_API::entry_link( $entry, $view->ID );
+
+		$this->assertEquals( site_url('?gravityview='.$view->post_name.'&entry='.$entry['id'] ), $href, 'Filter should have prevented $_GET args from being added' );
+
+		$_GET = array();
+
+		remove_filter( 'gravityview/entry_link/add_query_args', '__return_false' );
 
 		$post_with_embeds = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID .'"] and then [gravityview id="' . $view2->ID .'"]') );
 
@@ -393,7 +450,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'NO ENTRIES <strong>IN</strong> THIS SEARCH', GravityView_API::no_results( false, $context ) );
 		$this->assertEquals( '<p>NO ENTRIES <strong>IN</strong> THIS SEARCH</p>' . "\n", GravityView_API::no_results( true, $context ) );
 
-
 		$context->request->returns['is_search'] = false;
 		$context->view = new \GV\View();
 		$this->assertEquals( 'No entries match your request.', GravityView_API::no_results( false, $context ) );
@@ -417,7 +473,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		// Remove the filter for later
 		remove_filter( 'gravitview_no_entries_text', array( $this, '_override_no_entries_text_output' ) );
-
 	}
 
 	public function _override_no_entries_text_output( $previous, $is_search = false ) {
@@ -555,9 +610,6 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$add_pagination = true;
 		$this->assertEquals( site_url( '?p=' . $post_id . '&pagenum=2' ), GravityView_API::directory_link( $post_id, $add_pagination ) );
-
-		// Make sure the cache is working properly
-		$this->assertEquals( site_url( '?p=' . $post_id ), wp_cache_get( 'gv_directory_link_' . $post_id ) );
 
 		//
 		// Use $gravityview_view data

@@ -1,0 +1,268 @@
+/**
+ * Copy of gravityforms/assets/css/src/admin/components/_merge-tags.pcss
+ *
+ * Note: Not an exact copy! Two Webpack mixins were moved inline:
+ *  .gform-admin .gform-dropdown--merge-tags:focus .gform-icon--merge-tag
+ *  .gform-admin .gform-dropdown--merge-tags:hover .gform-icon--merge-tag
+ *
+ * @copyright Rocketgenius, Inc.
+ */
+
+.all-merge-tags {
+	position: absolute;
+	right: 0;
+	top: -1.9rem;
+
+	button {
+		transition: color ease-in-out 500ms;
+	}
+}
+
+.gform-tinymce-mergetag-button .all-merge-tags {
+	display: inline-block;
+	padding-top: 0.45rem;
+	position: static;
+}
+
+.wp-media-buttons .all-merge-tags {
+	position: relative;
+	top: 0.375rem;
+}
+
+.field_setting .all-merge-tags {
+
+	/* position and weight are different in the form editor sidebar */
+	top: -0.15rem;
+
+	.gform-button--unstyled {
+		font-weight: 400;
+	}
+}
+
+@-moz-document url-prefix() {
+
+	.gform-settings-input__container--with-merge-tag .all-merge-tags.textarea a.open-list {
+		margin-top: 1px;
+	}
+}
+
+#gf_merge_tag_list {
+	background: #fff;
+	border: 1px solid #d9dae6;
+	border-radius: 3px;
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.125);
+	max-height: 14rem;
+	overflow: auto;
+	position: absolute;
+	right: 0;
+	width: 14.625rem !important;
+	z-index: 999;
+
+	li {
+		margin: 0;
+
+		a {
+			cursor: pointer;
+
+			&:hover {
+				background: #f6f9fc;
+			}
+		}
+
+		&:last-child a {
+			border-bottom: none;
+		}
+	}
+
+	li a,
+	.group-header {
+		border-bottom: 1px solid #ecedf8;
+		color: #242748;
+		display: block;
+		font-size: 0.875rem;
+		line-height: 1.1875rem;
+		padding: 0.75rem 1.1875rem 1.0625rem;
+	}
+
+	.group-header {
+		font-weight: bold;
+	}
+}
+
+.right ul#gf_merge_tag_list {
+	right: 0;
+}
+
+.mt-gform_notification_message,
+.mt-form_confirmation_message {
+	float: right;
+	position: relative;
+	right: 10px;
+	top: 90px;
+}
+
+#wp-gform_notification_message-wrap,
+#wp-form_confirmation_message-wrap {
+	margin-right: 12px;
+}
+
+#form_settings {
+	margin-top: 0;
+}
+
+table#gf_personal_data_field_settings td {
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+}
+
+#gf_personal_data_field_settings {
+
+	.gf_personal_data_field_label_title {
+		font-weight: bold;
+		padding: 0 10px 10px 0;
+		text-align: left;
+	}
+
+	.gf_personal_data_cb_title {
+		font-weight: bold;
+		padding: 0;
+		text-align: center;
+		width: 50px;
+	}
+
+	.gf_personal_data_cb_cell {
+		text-align: center;
+		width: 50px;
+	}
+}
+
+.gform-admin {
+
+	.ui-autocomplete {
+
+		.ui-state-active {
+			background-color: var(--c-light-blue);
+			border-right: 2px solid var(--c-gravity-blue);
+		}
+	}
+
+	.ui-menu-item {
+		padding: 0;
+
+		div {
+			padding: 0.25rem 0.625rem;
+		}
+	}
+
+}
+
+.gform-admin .gform-dropdown--merge-tags {
+	display: inline-block;
+
+	.gform-dropdown__control {
+		background: none;
+		border: none;
+		box-shadow: none;
+		display: inline-block;
+		height: auto;
+		line-height: 1;
+		padding: 0;
+
+		i.gform-dropdown__chevron {
+			display: none;
+		}
+
+		.gform-icon--merge-tag {
+			border: 1px solid transparent;
+			border-radius: 3px;
+			color: #9092b2;
+			font-size: 1.5rem;
+			position: relative;
+		}
+
+		// GravityView modified: Embedded from @gravityforms/theme/mixins/admin/input-hover.js
+		&:focus .gform-icon--merge-tag {
+			border: 1px solid var(--c-primary-light);
+			box-shadow: var(--bs-input-focus);
+			color: var(--c-text);
+		}
+
+		// GravityView modified: Embedded from @gravityforms/theme/mixins/admin/input-focus.js
+		&:hover .gform-icon--merge-tag {
+			box-shadow: var(--bs-input-hover);
+			color: var(--c-text);
+		}
+
+		.gform-dropdown__control-text {
+			align-items: center;
+			color: var(--c-port);
+			display: flex;
+			font-size: 0.8125rem;
+			overflow: visible;
+		}
+	}
+
+	.gform-dropdown__container {
+		border-radius: 0.1875rem;
+		border-top: 0.0625rem solid #d5d7e9;
+		top: 1.5rem;
+		width: 16rem;
+
+		@media (--viewport-full) {
+			width: 18.75rem;
+		}
+	}
+
+	.gform-dropdown__container::before {
+		display: none;
+	}
+
+	.gform-dropdown__group-text {
+		display: inline-block;
+		padding-bottom: 0.6875rem;
+	}
+
+}
+
+.right .gform-dropdown__container {
+	right: 0;
+}
+
+.gform-admin .gform-dropdown__search .gform-dropdown__search-input {
+	-webkit-appearance: none;
+	background: #fff;
+	border: 1px solid var(--c-blue-haze);
+	border-radius: 3px;
+	box-shadow: 0 0 0 transparent;
+	box-sizing: border-box;
+	color: var(--c-port);
+	font-family: var(--t-font-family-base);
+	font-size: 0.8125rem;
+	line-height: 2;
+	outline: none;
+	padding: 0.25rem 0.75rem;
+	transition: var(--tr-inputs);
+}
+
+html[dir="rtl"] {
+
+	.all-merge-tags {
+		left: 0;
+		right: auto;
+	}
+
+	#gf_merge_tag_list {
+		left: 0;
+		right: auto;
+	}
+
+	.gform-admin .gform-dropdown--merge-tags .gform-dropdown__control {
+		padding: 0;
+	}
+
+	.right .gform-dropdown__container {
+		left: 0;
+		right: auto;
+	}
+}

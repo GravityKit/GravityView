@@ -3,8 +3,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -100,7 +100,7 @@
 					}
 
 					$( showEvent.popper )
-						.find( 'a[data-approved="' + key + '"]' ).click();
+						.find( 'a[data-approved="' + key + '"]' ).trigger('click');
 				};
 
 				$( document ).on( 'keyup', document.gvStatusKeyPressHandler );

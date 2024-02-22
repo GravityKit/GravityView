@@ -1,21 +1,39 @@
 
 /** tooltip for docs */
-.gv_tooltip {
+.gv_tooltip,
+.post-type-gravityview .gf_tooltip {
 
 	font-size: 0.001px;
-	color: transparent;
+	background: transparent;
 
 	&:before {
-		// @see .fa in FontAwesome
 		display: inline-block;
 		font-size: inherit;
 		text-rendering: auto;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
-		font: normal normal normal 14px/1 FontAwesome;
-		content: "\f059";
+		font: normal normal normal 14px/1 'gravityview';
+		content: "\6b";
 	}
+	display: inline-block;
+	text-align: center;
+	border-radius: 100px;
+	padding: .2rem;
+	margin: 0 2px 0 0;
+	.rtl & {
+		margin: 0 0 0 2px;
+	}
+	height: 16px;
+	width: 16px;
+	text-decoration: none;
+	color: #424242;
+	zoom: 1;
+	filter: alpha(opacity=50);
+	opacity: 0.5;
+	border: none;
+	cursor: help;
 }
+
 
 
 /** tooltips for fields + widgets */
@@ -23,15 +41,20 @@
 $tooltip_background: #eee;
 
 body .ui-tooltip {
-	padding: 8px;
+	padding: 0;
 	position:absolute;
-	width: 400px;
+	width: 460px;
+
+	&:has(.gv-widget-picker-container) {
+		width: 640px;
+	}
+
 	max-width: 100%; // Resize for responsive, if necessary
 	z-index: 999999!important; // Gravity Forms tooltips - need to make sure they're higher z-index to be above the field settings
-	background: $tooltip_background;
-	border: 4px solid #999;
-	border-radius: 4px;
-	box-shadow: 0 0 5px #aaa;
+	background: white; //$tooltip_background;
+	border: 1px solid #e2e4e7;
+	box-shadow: 0 3px 30px rgba(25, 30, 35, 0.1);
+	font-size: 1em;
 
 	// Fixes https://github.com/gravityview/GravityView/issues/1416
 	overflow-y: hidden;
@@ -46,83 +69,401 @@ body .ui-tooltip {
 }
 
 .ui-tooltip-content {
-	padding: 0 10px;
-	max-height: 325px;
+
+	padding: 20px;
+	color: $color-444;
+
+	h6 {
+		font-size: 17px;
+		color: $color-444;
+	}
+
+	p {
+		font-size: 14px;
+	}
+
+	.gravityview-item-picker-tooltip & {
+		padding: 0;
+		overflow-x: hidden;
+	}
+
+	max-height: 500px;
 	overflow-y: auto;
+	position: relative;
 
 	&:after {
-	  content: "";
-	  display: table;
-	  clear: both;
+		content: "";
+		display: table;
+		clear: both;
 	}
 
 	.close {
-		position: absolute;
-		padding: 5px;
-		top: -25px;
-		left: -25px;
-		cursor: pointer;
-	}
-	.close i {
-		font-size: 25px;
-		color: #555;
-
-		&:hover,
-		&:active {
-			color: #000;
+		position:absolute;
+		left:-10000px;
+		.rtl & {
+			right: -100000px;
+			left: auto;
 		}
+		top:auto;
+		width:1px;
+		height:1px;
+		overflow:hidden;
 	}
 
 	.gv-field-controls {
 		display: none;
 	}
 
+	div[role=listbox] {
+		padding: 8px;
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+	}
+
+	[data-cols="2"] .gv-fields {
+		width: 50%;
+	}
+
 	.gv-fields {
+		background: transparent;
+		border: 1px solid white;
+
+		// Prevent text selection; speeds up clicks on mobile
+		// and also prevents selection when double-clicking
+		user-select: none;
+
+		&.trigger--hover,
+		&:hover {
+			border: 1px solid $color-777;
+			color: $color-111;
+			.gv-field-info {
+				//display: block!important;
+			}
+		}
+
+		&.trigger--active,
+		&:active {
+			border-color: #32373C;
+			background: rgba(210, 224, 235, .7);
+		}
+
 		cursor: pointer;
 		border-radius: 4px;
 		padding: .5em .75em;
+		margin-bottom: 10px;
+		width: 50%;
 
-		// Indent the child fields a bit.
-		&.gv-child-field {
-			width: 95%;
-			margin-left: 5%;
+		h5 {
+			float: none;
+			width: 100%;
+			font-weight: normal;
 		}
 
+		.gv-field-info {
+			display: block;
+			font-weight: normal;
+			color: #999;
+			text-shadow: none;
+			margin-top: .5rem;
+
+			span {
+				&:after {
+					content: ", ";
+				}
+
+				&.gv-sublabel,
+				&:last-child {
+					@extend %clearfix;
+				}
+			}
+		}
+		.gv-field-label {
+			display: block;
+			width: 100%;
+			margin-bottom: 0;
+		}
+
+		.dashicons,
+		.gform-icon,
+		.material-icons {
+			display: table-cell;
+			margin: 0 auto 10px;
+			font-size: 24px;
+			width: 24px;
+			height: 24px;
+		}
+
+		&[data-fieldid="all-fields"] {
+			width: 100%;
+			padding-left: 12px!important;
+			.rtl & {
+				padding-right: 12px!important;
+				padding-left: 0!important;
+			}
+		}
+	}
+
+	.gv-items-picker-container {
+
+		.gv-fields {
+			padding: 16px 12px;
+			* {
+				cursor: pointer!important;
+			}
+		}
+
+		.dashicons,
+		.gform-icon,
+		.gv-icon {
+			display: inline-block;
+			margin: 0 .2em 0 0;
+			color: $color-666;
+			width: .9em;
+
+			.rtl & {
+				margin: 0 0 0 .2em;
+			}
+
+			&.background-icon {
+				transition: opacity 0.1s ease-in;
+				background-repeat: no-repeat!important;
+				background-size: contain;
+				background-position: center center;
+				opacity: .566;
+			}
+		}
+
+		.gv-fields.trigger--hover .dashicons,
+		.gv-fields.trigger--hover .gv-icon,
+		.gv-fields:hover .dashicons,
+		.gv-fields:hover .gv-icon {
+			color: $color-444;
+
+			&.background-icon {
+				transition: opacity 0.1s ease-in;
+				opacity: .766;
+			}
+		}
+
+		&[data-layout="list"] .gv-field-label-text-container {
+			display: inline-block; /** Intentionally left for older browsers */
+			display: inline-flex;
+			white-space: nowrap;
+			max-width: 100%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		&[data-layout="grid"] .gv-field-label-text-container {
+			max-width: 80%;
+		}
+
+		&[data-layout="list"] .gv-fields.gv-child-field {
+			padding-top: 3px;
+			padding-bottom: 4px;
+		}
+
+		// Child field ↪ icon
+		.gv-child-field .gv-icon-level-down {
+			display: inline-block;
+			position: relative;
+			top: .1em;
+		}
+	}
+
+	.gv-items-picker-container[data-layout="list"] {
+		.gv-fields {
+			width: 100%;
+			min-height: 36px;
+			font-size: 13px;
+			padding: 7px 12px 8px (36px + 12px);
+			margin: 0;
+			line-height: 24px;
+
+			.rtl & {
+				padding: 7px (36px + 12px) 8px 12px;
+			}
+			* {
+				text-align: left;
+				.rtl & {
+					text-align: right;
+				}
+			}
+		}
+
+		.gform-icon,
+		.dashicons {
+			display: inline-block;
+
+			margin: 0 8px 0 -36px;
+			.rtl & {
+				margin: 0 -36px 0 8px;
+			}
+		}
+
+		.gv-field-info {
+			display: none;
+		}
+	}
+
+	.gv-items-picker-container.gv-widget-picker-container {
+
+		.gv-icon,
+		.gform-icon,
+		.dashicons {
+			padding: 17px;
+			border-radius: 5px;
+			background-color: $color-light-grey-150;
+			background-size: 24px!important;
+			background-position: center center;
+			display: table-cell;
+			float: left;
+			font-size: 24px!important;
+			width: 24px!important;
+			height: 24px!important;
+			line-height: 24px!important;
+			margin: 0 10px 6px 0!important;
+		}
+
+		.gv-fields {
+			display: block;
+			width: 50%;
+			padding: 16px 12px;
+			line-height: 1.25em;
+			h5 {
+				font-weight: 500;
+				color: $color-222;
+			}
+		}
+		.gv-field-info {
+			margin: .25em 0 0 0;
+			display: table-row;
+			color: $color-666;
+		}
+	}
+
+	[data-fieldid="all-fields"] {
+		* {
+			text-align: center!important;
+		}
 	}
 
 	.gv-field-filter-form {
-		input {
-			height: 2.5em;
+		z-index: 10000;
+		position: sticky;
+		top: 0;
+		width: 460px;
+		background: $color-light-grey-150;
+		margin: 0;
+		padding: 16px;
+		box-sizing: border-box;
+
+		border-bottom: 1px solid $color-gf-eee;
+		background-color: $color-gf-fff;
+
+		border-bottom-left-radius: 6px;
+		border-bottom-right-radius: 6px;
+
+		.rtl & {
+			text-align: right;
 		}
-		margin: 0 0 1em 0;
-		padding-bottom: 1em;
-		border-bottom: 1px solid rgba(204, 204, 204, .6 );
+
+		input.gv-field-filter {
+			top: 0;
+			left: 0;
+			width: 75%;
+			height: 2.5em;
+			padding-left: 30px;
+
+			display: inline-block;
+			line-height: 1em;
+
+			&::placeholder,
+			&:placeholder-shown {
+				line-height: 2.5em;
+			}
+
+			.rtl & {
+				text-align: right;
+				padding-left: 8px;
+				padding-right: 30px;
+				left: auto;
+				right: 0;
+			}
+		}
+
+		&:before {
+			font-family: Dashicons, sans-serif;
+			content: "\f179";
+			display: block;
+			height: 26px;
+			width: 26px;
+			margin-left: 3px;
+			line-height: 35px;
+			font-size: 26px;
+			position: absolute;
+			color: $color-ccc;
+
+			.rtl & {
+				left: auto;
+				margin-left: auto;
+				margin-right: 3px;
+			}
+		}
+
+		.button-group {
+			float: right;
+			height: 35px;
+			border-radius: 3px;
+
+			.rtl & {
+				float: left;
+			}
+		}
+
+		span[role=button] {
+			&:first-child {
+				border-right: 0;
+			}
+			display: inline-block;
+			cursor: pointer;
+			margin: 0;
+			border-color: $color-777;
+			color: $color-888;
+			border-radius: 3px;
+			height: 35px;
+
+			.gform-icon,
+			.dashicons {
+				line-height: 35px;
+			}
+
+			&:hover {
+				background: rgba(210, 224, 235, .2);
+			}
+			&.active {
+				background: rgba(210, 224, 235, .6);
+				color: #40464D;
+				border-color: #7e8993;
+			}
+		}
 	}
 
 	.gv-no-results {
-		font-size: 14px;
+		text-align: center;
+		font-size: 16px;
+		font-style: italic;
+		padding: 0 24px 32px 24px;
 		margin: 1em 0;
+		vertical-align: top;
 	}
-
-	.gv-fields h5 {
-		float: none;
-		width: 100%;
-	}
-
 
 }
 
 .top .ui-tooltip-content::after {
-    bottom: -14px;
-    left: 48%;
-    border-color: #999 transparent;
-    border-width: 10px 10px 0;
-}
-
-/**
- * Fix double close icons in jQuery UI dialog boxes
- * @see https://github.com/katzwebservices/GravityView/issues/438
- */
-.gv-dialog .ui-dialog-titlebar-close:before {
-    content: '';
+	bottom: -14px;
+	left: 48%;
+	border-color: #999 transparent;
+	border-width: 10px 10px 0;
 }

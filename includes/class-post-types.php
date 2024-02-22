@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  * @deprecated
  *
@@ -20,31 +20,28 @@ class GravityView_Post_Types {
 	/**
 	 * Init plugin components such as register own custom post types
 	 *
-	 * @access public
 	 * @deprecated
 	 * @see \GV\View::register_post_type
 	 * @return void
 	 */
 	public static function init_post_types() {
-		return \GV\View::register_post_type();
+		\GV\View::register_post_type();
 	}
 
 	/**
 	 * Register rewrite rules to capture the single entry view
 	 *
-	 * @access public
 	 * @deprecated
 	 * @see \GV\Entry::add_rewrite_endpoint
 	 * @return void
 	 */
 	public static function init_rewrite() {
-		return \GV\Entry::add_rewrite_endpoint();
+		\GV\Entry::add_rewrite_endpoint();
 	}
 
 	/**
 	 * Return the query var / end point name for the entry
 	 *
-	 * @access public
 	 * @deprecated
 	 * @see \GV\Entry::get_endpoint_name
 	 * @return string Default: "entry"
@@ -54,4 +51,4 @@ class GravityView_Post_Types {
 	}
 }
 
-new GravityView_Post_Types;
+new GravityView_Post_Types();

@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-genesis.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.15.2
@@ -50,4 +50,4 @@ class GravityView_Theme_Hooks_Genesis extends GravityView_Plugin_and_Theme_Hooks
 	);
 }
 
-new GravityView_Theme_Hooks_Genesis;
+new GravityView_Theme_Hooks_Genesis();

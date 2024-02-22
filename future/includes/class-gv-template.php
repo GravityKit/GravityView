@@ -22,7 +22,7 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
  *  and other metadata.
  */
 abstract class Template extends \GV\Gamajo_Template_Loader {
-	
+
 	/**
 	 * @var array The template data stack.
 	 */
@@ -65,7 +65,7 @@ abstract class Template extends \GV\Gamajo_Template_Loader {
 	 */
 	public static function split_slug( $slug, $name = null ) {
 
-		$dir_name = ( dirname( $slug ) != '.' ) ? trailingslashit( dirname( $slug ) ) : '';
+		$dir_name  = ( '.' != dirname( $slug ) ) ? trailingslashit( dirname( $slug ) ) : '';
 		$slug_name = basename( $slug ) . ( $name ? "-$name" : '' );
 
 		return array( $dir_name, $slug_name );
@@ -78,13 +78,13 @@ abstract class Template extends \GV\Gamajo_Template_Loader {
 	 *  without destroying data under the same variable in a nested
 	 *  or parallel template.
 	 *
-	 * @param mixed $data The data to set.
+	 * @param mixed  $data The data to set.
 	 * @param string $var_name The data variable identifier (Default: "data")
 	 *
 	 * @see \Gamajo_Template_Loader::set_template_data
 	 * @see \GV\Template::pop_template_data
 	 *
-	 * @return \Gamajo_Template_Loader The current instance.
+	 * @return \GV\Gamajo_Template_Loader The current instance.
 	 */
 	public function push_template_data( $data, $var_name = 'data' ) {
 		if ( ! isset( self::$data_stack[ $var_name ] ) ) {

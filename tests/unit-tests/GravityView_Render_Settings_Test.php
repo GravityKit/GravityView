@@ -7,7 +7,7 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		// Include required files
@@ -16,7 +16,7 @@ class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @since todo
+	 * @since 2.5
 	 *
 	 * @covers GravityView_Render_Settings::render_field_options
 	 * @covers GravityView_Render_Settings::get_default_field_options
@@ -54,7 +54,7 @@ class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @since todo
+	 * @since 2.5
 	 *
 	 * @covers GravityView_Render_Settings::get_default_field_options
 	 */
@@ -96,7 +96,7 @@ class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 	/**
 	 * @covers GravityView_Render_Settings::get_cap_choices
 	 *
-	 * @since todo
+	 * @since 2.5
 	 */
 	public function test_get_cap_choices() {
 

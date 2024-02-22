@@ -11,21 +11,23 @@ class GravityView_Field_Radio extends GravityView_Field {
 
 	var $is_searchable = true;
 
-	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains');
+	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains' );
 
 	var $_gf_field_class_name = 'GF_Field_Radio';
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-marker';
+
 	public function __construct() {
-		$this->label = esc_html__( 'Radio Buttons', 'gravityview' );
+		$this->label = esc_html__( 'Radio Buttons', 'gk-gravityview' );
 		parent::__construct();
 	}
 
 	/**
 	 * Add `choice_display` setting to the field
 	 *
-	 * @param array $field_options
+	 * @param array  $field_options
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $context
@@ -39,17 +41,18 @@ class GravityView_Field_Radio extends GravityView_Field {
 
 		// Set the $_field_id var
 		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
-		
-		if( $this->is_choice_value_enabled() ) {
+
+		if ( $this->is_choice_value_enabled() ) {
 			$field_options['choice_display'] = array(
 				'type'    => 'radio',
 				'value'   => 'value',
-				'label'   => __( 'What should be displayed:', 'gravityview' ),
-				'desc'    => __( 'This input has a label and a value. What should be displayed?', 'gravityview' ),
+				'label'   => __( 'What should be displayed:', 'gk-gravityview' ),
+				'desc'    => __( 'This input has a label and a value. What should be displayed?', 'gk-gravityview' ),
 				'choices' => array(
-					'value' => __( 'Value of the input', 'gravityview' ),
-					'label' => __( 'Label of the input', 'gravityview' ),
+					'value' => __( 'Value of the input', 'gk-gravityview' ),
+					'label' => __( 'Label of the input', 'gk-gravityview' ),
 				),
+				'group'   => 'display',
 			);
 		}
 
@@ -57,4 +60,4 @@ class GravityView_Field_Radio extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Radio;
+new GravityView_Field_Radio();

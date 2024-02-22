@@ -14,7 +14,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 
 	private $form_id = 0;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->form = $this->factory->form->create_and_get();
@@ -38,7 +38,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers GravityView_Entry_Approval::_send_notifications()
+	 * @covers GravityView_Notifications::send_notifications()
 	 * @covers GravityView_Entry_Approval::_trigger_notifications()
 	 */
 	public function test_send_notifications() {
@@ -84,12 +84,15 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 
 		foreach( $notifications as $test_notification ) {
 
-			add_filter( 'gform_notification', $filter_notification = function( $notification, $form, $lead ) use ( $test_notification, $test_form, $test_entry, & $triggered_notifications, $test_object ) {
+			$filter_notification = function( $notification, $form, $lead ) use ( $test_notification, $test_form, $test_entry, & $triggered_notifications, $test_object ) {
 				$test_object->assertSame( $notification, $test_notification );
 				$test_object->assertSame( $lead, $test_entry );
 				$test_object->assertSame( $form, $test_form );
 				$triggered_notifications[] = $test_notification;
-			}, 10, 3 );
+				return $notification;
+			};
+
+			add_filter( 'gform_notification', $filter_notification, 10, 3 );
 
 			do_action( $test_notification['event'], $test_entry['id'] );
 
@@ -147,17 +150,17 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	/**
 	 * @since 1.18
 	 * @covers GravityView_Entry_Approval::update_approved
-	 * @covers GravityView_Cache::in_blacklist()
+	 * @covers GravityView_Cache::in_blocklist()
 	 */
 	public function test_update_approved() {
 
 		$GVCache = new GravityView_Cache();
 
-		// Remove the form from the blacklist
-		$GVCache->blacklist_remove( $this->form_id );
+		// Remove the form from the blocklist
+		$GVCache->blocklist_remove( $this->form_id );
 
-		// Make sure form isn't in cache blacklist
-		$this->assertFalse( $GVCache->in_blacklist( $this->form_id ) );
+		// Make sure form isn't in cache blocklist
+		$this->assertFalse( $GVCache->in_blocklist( $this->form_id ) );
 
 		$statuses = GravityView_Entry_Approval_Status::get_all();
 
@@ -173,8 +176,8 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 			}
 		}
 
-		// Now that the entry has been updated, the form should be in the blacklist
-		$this->assertTrue( $GVCache->in_blacklist( $this->form_id ) );
+		// Now that the entry has been updated, the form should be in the blocklist
+		$this->assertTrue( $GVCache->in_blocklist( $this->form_id ) );
 
 		// Invalid Entry ID
 		$this->assertFalse( GravityView_Entry_Approval::update_approved( rand( 100000, 1000000000 ), GravityView_Entry_Approval_Status::APPROVED, $this->form_id ), 'Should have returned false; Invalid entry ID' );

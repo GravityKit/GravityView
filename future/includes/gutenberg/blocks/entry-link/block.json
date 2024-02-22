@@ -1,0 +1,68 @@
+{
+  "apiVersion": 2,
+  "name": "gk-gravityview-blocks/entry-link",
+  "version": "1.0.0",
+  "title": "GravityView Entry Link",
+  "category": "gk-gravityview-blocks",
+  "description": "Display a link to the GravityView entry.",
+  "keywords": [
+    "GravityView",
+    "form entry",
+    "entry"
+  ],
+  "supports": {
+    "html": false
+  },
+  "textdomain": "gk-gravityview",
+  "attributes": {
+    "viewId": {
+      "default": "",
+      "type": "string"
+    },
+    "entryId": {
+      "default": "",
+      "type": "string"
+    },
+    "postId": {
+      "default": 0,
+      "type": "number"
+    },
+    "action": {
+      "default": "read",
+      "type": "string"
+    },
+    "returnFormat": {
+      "default": "html",
+      "type": "string"
+    },
+    "linkAtts": {
+      "default": "",
+      "type": "string"
+    },
+    "fieldValues": {
+      "default": "",
+      "type": "string"
+    },
+    "content": {
+      "default": "",
+      "type": "string"
+    },
+    "previewBlock": {
+      "type": "boolean",
+      "default": false
+    },
+    "previewAsShortcode": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPreviewImage": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "example": {
+    "attributes": {
+      "showPreviewImage": true
+    }
+  }
+}

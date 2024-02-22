@@ -25,7 +25,7 @@ class Collection {
 	 * @return void
 	 */
 	public function add( $value ) {
-		$this->storage []= $value;
+		$this->storage [] = $value;
 	}
 
 	/**
@@ -36,7 +36,7 @@ class Collection {
 	 * @return void
 	 */
 	public function clear() {
-		$this->storage = array();
+		$this->count() && ( $this->storage = array() );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Collection {
 	 * @return void
 	 */
 	public function merge( \GV\Collection $collection ) {
-		array_map( array( $this, 'add'), $collection->all() );
+		array_map( array( $this, 'add' ), $collection->all() );
 	}
 
 	/**

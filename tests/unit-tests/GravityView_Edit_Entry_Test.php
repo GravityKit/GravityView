@@ -86,10 +86,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( add_query_arg( $args, get_permalink( $view->ID ) ), $edit_link_no_post );
 
 		$args = array(
-			'p' => $post_id,
+			'p'     => $post_id,
 			'entry' => $entry['id'],
-			'edit' => $nonce,
-			'gvid' => $view->ID,
+			'edit'  => $nonce,
+			'gvid'  => $view->ID,
 		);
 
 		// When running all tests, this test thinks we have multiple Views. Correct that.
@@ -607,7 +607,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertContains( 'link to edit this entry is not valid', ob_get_clean() );
 
 		$_GET['edit'] = wp_create_nonce( $render::$nonce_key ); /** @todo: also test gravityview/edit_entry/verify_nonce */
-		ob_start() && $render->init( $data );
+		ob_start() && $render->init( $data, null, \GV\View::from_post( $view ));
 		$this->assertContains( 'gv-edit-entry-wrapper', ob_get_clean() );
 
 		/** So this is the basic emulation of viewing the edit entry. Let's try something more complex: */
@@ -625,7 +625,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			return $form;
 		}, 9999, 3 );
 		$_this->disable_action_1 = true;
-		ob_start() && $render->init( $data ); ob_get_clean();
+		ob_start() && $render->init( $data, null, \GV\View::from_post( $view ) ); ob_get_clean();
 
 		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */
 		$_POST = array(
@@ -635,7 +635,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		foreach ( $form['fields'] as $field ) {
 			/** Emulate a $_POST */
 			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
-				if ( $field->type == 'time' ) { /** An old incompatibility in the time field. */
+				if ( 'time' == $field->type ) { /** An old incompatibility in the time field. */
 					$_POST["input_{$field->id}"] = $entry[$field->id];
 				} else {
 					$_POST["input_{$field->id}"] = $entry[strval($input['id'])];
@@ -772,7 +772,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 */
 	public function _fake_move_uploaded_file( $value, $lead, $field, $form, $input_id ) {
 
-		if ( $value == 'FAILED (Temporary file could not be copied.)' ) {
+		if ( 'FAILED (Temporary file could not be copied.)' == $value ) {
 			$target = GFFormsModel::get_file_upload_path( $form['id'], 'tiny.jpg' );
 			$this->_target = $target;
 			return $target['url'];
@@ -933,7 +933,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 		$_user_before_update_prop = new ReflectionProperty( 'GravityView_Edit_Entry_User_Registration', '_user_before_update' );
@@ -1067,7 +1067,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 
@@ -1122,7 +1122,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$loader = GravityView_Edit_Entry::getInstance();
 
-		/** @var GravityView_Edit_Entry_User_Registration $registration */
+		/** @type GravityView_Edit_Entry_User_Registration $registration */
 		$registration = $loader->instances['user-registration'];
 		$this->assertInstanceOf( 'GravityView_Edit_Entry_User_Registration', $registration );
 
@@ -1714,7 +1714,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertContains( 'Entry Updated', $output );
 
-		if ( $location !== false ) {
+		if ( false !== $location ) {
 			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
 			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
 
@@ -1729,7 +1729,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 	function get_redirect_after_edit_data() {
 
-		$custom_url = 'https://gravityview.co/floaty-loves-you/?with=<>&wild[]=! &characters=",';
+		$custom_url = 'https://www.gravitykit.com/floaty-loves-you/?with=<>&wild[]=! &characters=",';
 
 		return array(
 			array( '', false ),
@@ -2422,6 +2422,137 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'rld', $entry[2] );
 		$this->assertEquals( '', $entry['3.1'] );
 		$this->assertEquals( GravityView_Entry_Approval_Status::UNAPPROVED, $entry['is_approved'] );
+
+		$this->_reset_context();
+	}
+
+	public function test_required_upload_field_with_conditional_logic_and_invalid_extension_validation() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'upload.json' );
+
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
+			'created_by' => $administrator,
+			'status' => 'active',
+			'form_id' => $form['id'],
+		) );
+
+		$form['fields'][0]->conditionalLogic = array(
+			'rules' => array(
+				array(
+					'fieldId' => '4',
+					'value' => 'text 1',
+					'operator' => 'is',
+				),
+			),
+			'logicType' => 'all',
+			'actionType' => 'show',
+		);
+		$form['fields'][0]->isRequired = true;
+		$form['fields'][0]->allowedExtensions = 'pdf';
+
+		\GFAPI::update_form( $form );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				// Excluding field ID 4
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+					),
+				),
+			),
+		) );
+
+		$file = tmpfile();
+		fwrite($file, 'not PDF!');
+
+		$_POST = array(
+			'input_1' => stream_get_meta_data($file)['uri'],
+			'input_2' => 'text 1 updated',
+		);
+
+		$_FILES = array(
+			'input_1' => array(
+				'name' => 'test.txt',
+				'type' => 'text/plain',
+				'tmp_name' =>  stream_get_meta_data($file)['uri'],
+				'error' => 0,
+				'size' => 1024
+			)
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertContains("gfield_validation_message'>The uploaded file type is not allowed. Must be one of the following: pdf", $output);
+
+		$this->_reset_context();
+	}
+
+
+	public function test_validation_of_required_fields_with_conditional_logic() {
+		$this->_reset_context();
+
+		$administrator = $this->_generate_user( 'administrator' );
+
+		$form = $this->factory->form->import_and_get( 'standard.json' );
+
+		$entry = $this->factory->entry->import_and_get( 'standard_entry.json', array(
+			'created_by' => $administrator,
+			'status' => 'active',
+			'form_id' => $form['id'],
+			'5' => 'text',
+			'8' => '',
+		) );
+
+		$form['fields'][7]->conditionalLogic = array(
+			'rules' => array(
+				array(
+					'fieldId' => '2.1',
+					'value' => 'choice 2',
+					'operator' => 'is',
+				),
+			),
+			'logicType' => 'all',
+			'actionType' => 'show',
+		);
+		$form['fields'][7]->isRequired = true;
+
+		\GFAPI::update_form( $form );
+
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				// Excluding field ID 2
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '5',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '8',
+					),
+				),
+			),
+		) );
+
+		$_POST = array(
+			'input_5' => 'updated text',
+		);
+
+		wp_set_current_user( $administrator );
+		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		$this->assertEmpty( $entry['8'] );
+		$this->assertContains('This field is required', $output);
 
 		$this->_reset_context();
 	}

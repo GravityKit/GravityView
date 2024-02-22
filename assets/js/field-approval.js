@@ -3,8 +3,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -55,10 +55,17 @@
 	 */
 	self.setup_triggers = function(){
 
+		// Only continue if the script has been properly localized
+		if ( ! window.gvApproval ) {
+			return;
+		}
+
 		var maybeDT = $( self.dt_selector );
 
 		if ( maybeDT.length > 0 ){
 			$( '.gv-datatables' ).on( 'draw.dt', self.add_toggle_approval_trigger );
+
+			$( window ).on( 'gravityview-datatables/event/responsive', self.add_toggle_approval_trigger );
 		} else {
 			self.add_toggle_approval_trigger();
 		}
@@ -123,7 +130,7 @@
 						return;
 					}
 
-					$( showEvent.popper ).find( 'a[data-approved="' + key + '"]' ).click();
+					$( showEvent.popper ).find( 'a[data-approved="' + key + '"]' ).trigger('click');
 				};
 
 				$( document ).on( 'keyup', document.gvStatusKeyPressHandler );

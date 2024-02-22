@@ -10,17 +10,22 @@ $gravityview_view = GravityView_View::getInstance();
 
 $gv_field = $gravityview_view->getCurrentField();
 
-/** @var string $value Raw time value */
+/** @type string $value Raw time value */
 $value = \GV\Utils::_GET( 'value', \GV\Utils::get( $gv_field, 'value' ) );
 
-/** @var string $field_id ID of the field being displayed */
+// strtotime() fails at "00:00 am"; it returns false instead of midnight.
+if ( false !== strpos( $value, '00:00' ) ) {
+	$value = '00:00';
+}
+
+/** @type string $field_id ID of the field being displayed */
 $field_id = \GV\Utils::_GET( 'field_id', \GV\Utils::get( $gv_field, 'field_id' ) );
 
 $output = '';
 
-if( '' !== $value ) {
+if ( '' !== $value ) {
 
-	/** @var GF_Field_Time $field Gravity Forms Time field */
+	/** @type GF_Field_Time $field Gravity Forms Time field */
 	$field = \GV\Utils::_GET( 'field', \GV\Utils::get( $gv_field, 'field' ) );
 
 	$format = $gravityview_view->getCurrentFieldSetting( 'date_display' );

@@ -1,0 +1,12 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "create-block/example-plugin",
+	"version": "0.1.0",
+	"title": "Example Plugin",
+	"category": "widgets",
+	"textdomain": "example-plugin",
+	"editorScript": "file:./build/index.js",
+	"editorStyle": "file:./build/index.css",
+	"style": "file:./build/style-index.css"
+}

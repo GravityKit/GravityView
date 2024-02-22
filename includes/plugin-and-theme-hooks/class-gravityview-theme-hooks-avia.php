@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-avia.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.15.2
@@ -29,9 +29,8 @@ class GravityView_Theme_Hooks_Avia extends GravityView_Plugin_and_Theme_Hooks {
 	 * @since 1.15.2
 	 */
 	protected $content_meta_keys = array(
-		'_aviaLayoutBuilderCleanData'
+		'_aviaLayoutBuilderCleanData',
 	);
-
 }
 
-new GravityView_Theme_Hooks_Avia;
+new GravityView_Theme_Hooks_Avia();

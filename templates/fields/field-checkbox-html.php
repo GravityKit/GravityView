@@ -10,23 +10,28 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
-$form = $gravityview->view->form->form;
-$display_value = $gravityview->display_value;
-$entry = $gravityview->entry->as_entry();
+$field_id       = $gravityview->field->ID;
+$field          = $gravityview->field->field;
+$value          = $gravityview->value;
+$form           = $gravityview->view->form->form;
+$display_value  = $gravityview->display_value;
+$entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
 $is_single_input = floor( $field_id ) !== floatval( $field_id );
 
 $output = '';
 
-if ( ! $is_single_input ) {
-	$output = gravityview_get_field_value( $entry, $field_id, $display_value );
-} else {
+$display_type = \GV\Utils::get( $field_settings, 'choice_display' );
 
-	$display_type = \GV\Utils::get( $field_settings, 'choice_display' );
+// It's the parent field, not an input
+if ( ! $is_single_input ) {
+	if ( 'label' === $display_type ) {
+		$output = $field->get_value_entry_detail( $value, '', true );
+	} else {
+		$output = gravityview_get_field_value( $entry, $field_id, $display_value );
+	}
+} else {
 
 	$field_value = gravityview_get_field_value( $entry, $field_id, $display_value );
 
@@ -41,7 +46,8 @@ if ( ! $is_single_input ) {
 		default: // Backward compatibility
 			if ( '' !== $field_value ) {
 				/**
-				 * @filter `gravityview_field_tick` Change the output for a checkbox "check" symbol. Default is the "dashicons-yes" icon
+				 * Change the output for a checkbox "check" symbol. Default is the "dashicons-yes" icon.
+				 *
 				 * @see https://developer.wordpress.org/resource/dashicons/#yes
 				 *
 				 * @param string $output HTML span with `dashicons dashicons-yes` class
@@ -55,7 +61,6 @@ if ( ! $is_single_input ) {
 			}
 			break;
 	}
-
 }
 
 echo $output;

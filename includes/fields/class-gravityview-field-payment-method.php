@@ -20,14 +20,16 @@ class GravityView_Field_Payment_Method extends GravityView_Field {
 
 	var $_custom_merge_tag = 'payment_method';
 
+	var $icon = 'dashicons-cart';
+
 	/**
 	 * GravityView_Field_Date_Created constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Payment Method', 'gravityview' );
-		$this->description = esc_html__( 'The way the entry was paid for (ie "Credit Card", "PayPal", etc.)', 'gravityview' );
+		$this->label       = esc_html__( 'Payment Method', 'gk-gravityview' );
+		$this->description = esc_html__( 'The way the entry was paid for (ie "Credit Card", "PayPal", etc.)', 'gk-gravityview' );
 		parent::__construct();
 	}
 }
 
-new GravityView_Field_Payment_Method;
+new GravityView_Field_Payment_Method();

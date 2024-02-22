@@ -4,16 +4,36 @@
  */
 
 @import "_mixins";
+@import "variables";
 
 #gravityview-metabox-content-container {
-
-  max-height: 640px; // Most common resolution - see https://gs.statcounter.com/screen-resolution-stats/mobile/worldwide
-  overflow-y: auto;
-
-  background: white; // Allow .striped rows to show
+  background: transparent; // Allow .striped rows to show
   float: left;
-  width: 80%;
+  width: 100%;
   border-left: 1px solid #eee;
+
+	.rtl & {
+		float: right;
+		border-left: none;
+		border-right: 1px solid #eee;
+	}
+
+  /**
+   * The sidebar is 30% wide, max-width 20em.
+   * This code below is to grow the content panel, without getting into flexbox
+   */
+  padding-left: 20em;
+  padding-left: calc( min( 30%, 20em ) );
+  margin-left: -20em;
+  margin-left: calc( min( 30%, 20em ) * -1 );
+  .rtl & {
+	padding-left: 0;
+	margin-left: 0;
+	padding-right: 20em;
+	padding-right: calc(min(30%, 20em));
+	margin-right: -20em;
+	margin-right: calc(min(30%, 20em) * -1);
+  }
   @include borderbox();
 
 
@@ -24,6 +44,9 @@
       @include clearfix();
       display: block;
       padding: 10px 10px 3px;
+	    .rtl & {
+		    padding: 10px 0 3px 10px;
+	    }
     }
 
   }
@@ -67,17 +90,23 @@
     }
 
     p {
-      margin: 9px 0 9px;
+      margin: 9px 0;
     }
 
     p.form-field,
     fieldset.form-field {
       padding: 5px 20px 5px 162px !important; /** Padding for aligning labels left - 12px + 150 label width **/
+	    .rtl & {
+		    padding: 5px 162px 5px 20px !important;
+	    }
     }
 
     .description {
       padding: 0;
       margin: 0 0 0 7px;
+	    .rtl & {
+		    margin: 0 7px 0 0;
+	    }
       clear: none;
       display: inline;
     }
@@ -94,6 +123,10 @@
       &[type="checkbox"]{
       	margin-top: -4px;
       }
+
+      &::placeholder {
+	      color: #8F98A1;
+      }
     }
 
     textarea {
@@ -101,10 +134,17 @@
       height: 3.5em;
       line-height: 1.5em;
     }
+    textarea[rows] {
+	    height: auto;
+    }
 
     input.button {
       width: auto;
       margin-left: 8px;
+	    .rtl & {
+		    margin-left: 0;
+		    margin-right: 8px;
+	    }
     }
 
   }

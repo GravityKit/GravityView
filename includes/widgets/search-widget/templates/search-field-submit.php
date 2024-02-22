@@ -4,7 +4,7 @@
  */
 
 $gravityview_view = GravityView_View::getInstance();
-$view_id = $gravityview_view->getViewId();
+$view_id          = $gravityview_view->getViewId();
 ?>
 <div class="gv-search-box gv-search-box-submit">
 	<?php
@@ -12,13 +12,23 @@ $view_id = $gravityview_view->getViewId();
 	// Output the Clear button, if enabled
 	GravityView_Widget_Search::the_clear_search_button();
 
-	if ( isset( $_GET['page_size'] ) ) {
-		?>
-		<input type="hidden" name="page_size" value="<?php echo esc_attr( $_GET['page_size'] ); ?>" />
-		<?php
+	$args = gv_get_query_args();
+
+	foreach ( $args as $key => $value ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $k => $v ) {
+				?>
+			<input type="hidden" name="<?php echo esc_attr( sprintf( '%s[%s]', $key, $k ) ); ?>" value="<?php echo esc_attr( $v ); ?>" />
+				<?php
+			}
+		} else {
+			?>
+		<input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+			<?php
+		}
 	}
 
 	?>
 	<input type="hidden" name="mode" value="<?php echo esc_attr( $gravityview_view->search_mode ); ?>" />
-	<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gravityview' ); ?>" />
+	<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gk-gravityview' ); ?>" />
 </div>

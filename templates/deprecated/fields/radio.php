@@ -14,9 +14,9 @@ $display_type = isset( $field_settings['choice_display'] ) ? $field_settings['ch
 
 $output = '';
 
-if( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
+if ( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
 
-	if( 'value' === $display_type ) {
+	if ( 'value' === $display_type ) {
 		// For the complete field value
 		$output = $display_value;
 	} else {
@@ -25,10 +25,10 @@ if( floatval( $field_id ) === floor( floatval( $field_id ) ) ) {
 } else {
 	// For part of the field value
 	$entry_keys = array_keys( $entry );
-	foreach( $entry_keys as $input_key ) {
-		if( is_numeric( $input_key ) && floatval( $input_key ) === floatval( $field_id ) ) {
-			if( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && !empty( $entry[ $input_key ] ) ) {
-				$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field);
+	foreach ( $entry_keys as $input_key ) {
+		if ( is_numeric( $input_key ) && floatval( $input_key ) === floatval( $field_id ) ) {
+			if ( in_array( $field['type'], array( 'radio', 'checkbox' ) ) && ! empty( $entry[ $input_key ] ) ) {
+				$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field );
 			} else {
 				$output = $entry[ $input_key ];
 			}

@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.13
@@ -32,9 +32,8 @@ class GravityView_Shortcode {
 	 *
 	 * @since 1.13
 	 *
-	 * @access public
 	 * @static
-	 * @param mixed $passed_atts
+	 * @param mixed       $passed_atts
 	 * @param string|null $content Content passed inside the shortcode
 	 * @return null|string If admin, null. Otherwise, output of $this->render_view()
 	 */
@@ -48,7 +47,7 @@ class GravityView_Shortcode {
 		gravityview()->log->debug( '$passed_atts: ', array( 'data' => $passed_atts ) );
 
 		// Get details about the current View
-		if( !empty( $passed_atts['detail'] ) ) {
+		if ( ! empty( $passed_atts['detail'] ) ) {
 			return $this->get_view_detail( $passed_atts['detail'] );
 		}
 
@@ -89,27 +88,28 @@ class GravityView_Shortcode {
 
 		$atts = array();
 
-		foreach( $filtered_atts as $key => $passed_value ) {
+		foreach ( $filtered_atts as $key => $passed_value ) {
 
 			// Allow using GravityView merge tags in shortcode attributes, like {get} and {created_by}
 			$passed_value = GravityView_Merge_Tags::replace_variables( $passed_value );
 
-			switch( $defaults[ $key ]['type'] ) {
+			switch ( $defaults[ $key ]['type'] ) {
 
 				/**
 				 * Make sure number fields are numeric.
 				 * Also, convert mixed number strings to numbers
+				 *
 				 * @see http://php.net/manual/en/function.is-numeric.php#107326
 				 */
 				case 'number':
-					if( is_numeric( $passed_value ) ) {
+					if ( is_numeric( $passed_value ) ) {
 						$atts[ $key ] = ( $passed_value + 0 );
 					}
 					break;
 
 				/** @since 2.1 */
 				case 'operator':
-					if( GFFormsModel::is_valid_operator( $passed_value ) ) {
+					if ( GFFormsModel::is_valid_operator( $passed_value ) ) {
 						$atts[ $key ] = $passed_value;
 					}
 					break;
@@ -125,7 +125,7 @@ class GravityView_Shortcode {
 				case 'select':
 				case 'radio':
 					$options = isset( $defaults[ $key ]['choices'] ) ? $defaults[ $key ]['choices'] : $defaults[ $key ]['options'];
-					if( in_array( $passed_value, array_keys( $options ) ) ) {
+					if ( in_array( $passed_value, array_keys( $options ) ) ) {
 						$atts[ $key ] = $passed_value;
 					}
 					break;
@@ -152,9 +152,9 @@ class GravityView_Shortcode {
 	private function get_view_detail( $detail = '' ) {
 
 		$gravityview_view = GravityView_View::getInstance();
-		$return = '';
+		$return           = '';
 
-		switch( $detail ) {
+		switch ( $detail ) {
 			case 'total_entries':
 				$return = number_format_i18n( $gravityview_view->getTotalEntries() );
 				break;
@@ -173,7 +173,8 @@ class GravityView_Shortcode {
 		}
 
 		/**
-		 * @filter `gravityview/shortcode/detail/{$detail}` Filter the detail output returned from `[gravityview detail="$detail"]`
+		 * Filter the detail output returned from `[gravityview detail="$detail"]`.
+		 *
 		 * @since 1.13
 		 * @param string $return Existing output
 		 */
@@ -183,4 +184,4 @@ class GravityView_Shortcode {
 	}
 }
 
-new GravityView_Shortcode;
+new GravityView_Shortcode();

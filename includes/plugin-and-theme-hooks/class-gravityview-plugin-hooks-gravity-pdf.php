@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravity-pdf.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since develop
@@ -67,4 +67,4 @@ class GravityView_Plugin_Hooks_Gravity_PDF extends GravityView_Plugin_and_Theme_
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_PDF;
+new GravityView_Plugin_Hooks_Gravity_PDF();

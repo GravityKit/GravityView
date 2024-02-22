@@ -3,8 +3,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -33,6 +33,7 @@
 }
 
 // Prevent borders on images in the Getting Started, What's New screens
+.gravitykit_page_gv-getting-started .about-wrap,
 .post-type-gravityview .about-wrap {
 
 	.feature-video {
@@ -48,6 +49,7 @@
 			height: auto;
 		}
 	}
+
 	.feature-section.three-col .col {
 		flex-basis: 30%;
 		max-width: 250px;
@@ -63,8 +65,8 @@
 
 	.gv-icon {
 		font-size: 19px;
-		margin-top: -.5em;
-		line-height: 0.5em;
+		height: 19px;
+		width: 20px;
 		display: inline-block;
 	}
 
@@ -72,17 +74,15 @@
 		content: "\f132";
 		display: inline-block;
 		font-weight: normal;
-		font-size: 16px;
+		font-size: 20px;
 		font-family: dashicons!important;
-		line-height: 16px!important;
-		top: 4px;
-		left: -3px;
-		speak: none;
+		line-height: 20px!important;
 		margin: 0 auto;
-		padding: 0 !important;
+		padding: 0;
 		position: relative;
 		text-align: center;
-		width: 16px;
+		width: 20px;
+		speak: none;
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 	}
@@ -99,14 +99,35 @@
 	li a {
 		// Important is necessary because we're dealing with overriding
 		// ul#gf_form_toolbar_links .gf_submenu ul li a
-		padding: .5em .75em!important;
-		display: block;
+		//display: block;
 		width: auto;
 	}
 }
 
+.dashicons-spacer {
+
+}
+
+.gf-popover__button[data-url="#gravityview-group-heading"] {
+	font-weight: 500;
+	color: #40464d;
+	padding-top: 12px;
+	padding-bottom: 6px;
+	border-radius: 0;
+	cursor: default !important;
+}
+.gf-popover__button__icon:empty {
+	display: none;
+}
+
+.gf-popover__button[data-url="#gravityview-group-heading"]:hover {
+	background: white;
+	color: #40464d;
+}
+
 // On all Admin pages
-.post-type-gravityview {
+.post-type-gravityview,
+.gravitykit_page_gv-changelog {
 
   .changelog ul {
 	list-style-type: square;
@@ -117,4 +138,36 @@
 	}
   }
 
+}
+
+// Entry Creator
+.gv-entry-creator-dropdown {
+	.select2-search__field {
+		padding: 0 4px 0 4px;
+	}
+
+	&.gf25 {
+		.select2-search__field {
+			line-height: 1.25rem;
+			padding: .6875rem 1rem;
+		}
+
+
+		&.select2-dropdown--below {
+			border-top: initial;
+			margin-top: -8px;
+		}
+	}
+}
+
+.gv-entry-creator-container.select2-container--default.gf25 {
+	min-height: 4em;
+
+	.select2-selection__arrow {
+		display: none;
+	}
+
+	.select2-selection__rendered {
+		margin: -1px;
+	}
 }

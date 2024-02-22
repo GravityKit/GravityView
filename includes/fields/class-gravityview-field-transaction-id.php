@@ -14,19 +14,21 @@ class GravityView_Field_Transaction_ID extends GravityView_Field {
 
 	var $is_numeric = true;
 
-	var $search_operators = array( 'is', 'isnot', 'starts_with', 'ends_with'  );
+	var $search_operators = array( 'is', 'isnot', 'starts_with', 'ends_with' );
 
 	var $group = 'pricing';
 
 	var $_custom_merge_tag = 'transaction_id';
 
+	var $icon = 'dashicons-cart';
+
 	/**
 	 * GravityView_Field_Payment_Amount constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Transaction ID', 'gravityview' );
+		$this->label = esc_html__( 'Transaction ID', 'gk-gravityview' );
 		parent::__construct();
 	}
 }
 
-new GravityView_Field_Transaction_ID;
+new GravityView_Field_Transaction_ID();

@@ -1,0 +1,21 @@
+/**
+ * Style the Powered By link
+ *
+ * @package   GravityView
+ * @license   GPL2
+ * @link      https://www.gravitykit.com
+ * @copyright Copyright 2016, Katz Web Services, Inc.
+ *
+ * @since 2.5.3
+ */
+
+.gv-powered-by {
+  width: 100%;
+  display: block;
+  text-align: center;
+
+  a {
+	font-size: .825em;
+	padding: .25em 0 0 0;
+  }
+}

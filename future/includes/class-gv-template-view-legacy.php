@@ -21,8 +21,8 @@ class View_Legacy_Template extends View_Template {
 		}
 
 		$context = array(
-			'view' => $this->view,
-			'fields' => $this->view->fields->by_visible( $this->view ),
+			'view'    => $this->view,
+			'fields'  => $this->view->fields->by_visible( $this->view ),
 			'entries' => $this->entries,
 			'request' => $this->request,
 		);

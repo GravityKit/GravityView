@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-yoast-seo.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.15.2
@@ -24,28 +24,36 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	 */
 	protected $constant_name = 'WPSEO_FILE';
 
-	/**
-	 * @inheritDoc
-	 * @since 1.15.2
-	 */
 	protected $style_handles = array(
 		'wp-seo-metabox',
 		'wpseo-admin-media',
-		'yoast-seo-metabox-css',
 		'yoast-seo-admin-media',
-		'yoast-seo-scoring',
 		'yoast-seo-snippet',
-		'yoast-seo-select2',
 		'yoast-seo-kb-search',
 		'metabox-tabs',
 		'metabox-classic',
 		'metabox-fresh',
-		'yoast-seo-admin-global',
-		'yoast-seo-dismissible',
-		'yoast-seo-monorepo',
+		// Yoast 14.7
 		'yoast-seo-admin-css',
+		'yoast-seo-admin-global',
 		'yoast-seo-adminbar',
+		'yoast-seo-alert',
+		'yoast-seo-dismissible',
+		'yoast-seo-edit-page',
+		'yoast-seo-extensions',
+		'yoast-seo-featured-image',
+		'yoast-seo-filter-explanation',
+		'yoast-seo-metabox-css',
+		'yoast-seo-monorepo',
+		'yoast-seo-notifications',
+		'yoast-seo-primary-category',
+		'yoast-seo-scoring',
 		'yoast-seo-search-appearance',
+		'yoast-seo-select2',
+		'yoast-seo-structured-data-blocks',
+		'yoast-seo-toggle-switch',
+		'yoast-seo-wp-dashboard',
+		'yoast-seo-yoast-components',
 	);
 
 	/**
@@ -62,9 +70,39 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 		'yoast-seo-shortcode-plugin',
 		'jquery-qtip',
 		'jquery-ui-autocomplete',
-		'yoast-seo-admin-global-script',
 		'yoast-seo-admin-media',
 		'yoast-seo-admin-script',
+		// Yoast 14.7
+		'yoast-seo-admin-global-script',
+		'yoast-seo-analysis',
+		'yoast-seo-api',
+		'yoast-seo-bulk-editor',
+		'yoast-seo-commons',
+		'yoast-seo-components',
+		'yoast-seo-configuration-wizard',
+		'yoast-seo-dashboard-widget',
+		'yoast-seo-draft-js',
+		'yoast-seo-edit-page-script',
+		'yoast-seo-filter-explanation',
+		'yoast-seo-help-scout-beacon',
+		'yoast-seo-indexation',
+		'yoast-seo-jed',
+		'yoast-seo-network-admin-script',
+		'yoast-seo-post-edit',
+		'yoast-seo-quick-edit-handler',
+		'yoast-seo-recalculate',
+		'yoast-seo-redux',
+		'yoast-seo-reindex-links',
+		'yoast-seo-search-appearance',
+		'yoast-seo-select2',
+		'yoast-seo-select2-translations',
+		'yoast-seo-settings',
+		'yoast-seo-structured-data-blocks',
+		'yoast-seo-styled-components',
+		'yoast-seo-term-edit',
+		'yoast-seo-yoast-modal',
+		// Yoast 14.8
+		'yoast-seo-post-edit-classic',
 	);
 
 	/**
@@ -76,7 +114,7 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 
 		parent::add_hooks();
 
-		if( gravityview()->request->is_admin( '', null ) ) {
+		if ( gravityview()->request->is_admin( '', null ) ) {
 
 				// Make Yoast metabox go down to the bottom please.
 			add_filter( 'wpseo_metabox_prio', array( $this, 'return_low' ) );
@@ -114,14 +152,14 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	 *
 	 * @since 1.15.2 Moved from class-gravityview-admin-metaboxes.php
 	 *
-	 * @param  array       $options WP SEO options array
+	 * @param  array $options WP SEO options array
 	 * @return array               Modified array if on post-new.php
 	 */
 	public function hide_wordpress_seo_metabox( $options = array() ) {
 		global $pagenow;
 
 		// New View page
-		if( $pagenow === 'post-new.php' ) {
+		if ( 'post-new.php' === $pagenow ) {
 			$options['hideeditbox-gravityview'] = true;
 		}
 
@@ -142,4 +180,4 @@ class GravityView_Plugin_Hooks_Yoast_SEO extends GravityView_Plugin_and_Theme_Ho
 	}
 }
 
-new GravityView_Plugin_Hooks_Yoast_SEO;
+new GravityView_Plugin_Hooks_Yoast_SEO();

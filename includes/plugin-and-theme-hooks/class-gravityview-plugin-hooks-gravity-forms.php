@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravity-forms.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.15.2
@@ -27,6 +27,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms extends GravityView_Plugin_and_Them
 	protected $style_handles = array(
 		'gform_tooltip',
 		'gform_font_awesome',
+		'gform_admin_icons',
 	);
 
 	/**
@@ -38,7 +39,6 @@ class GravityView_Plugin_Hooks_Gravity_Forms extends GravityView_Plugin_and_Them
 		'gform_field_filter',
 		'gform_forms',
 	);
-
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms;
+new GravityView_Plugin_Hooks_Gravity_Forms();

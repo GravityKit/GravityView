@@ -17,8 +17,10 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 	var $group = 'standard';
 
+	var $icon = 'dashicons-hidden';
+
 	public function __construct() {
-		$this->label = esc_html__( 'Hidden', 'gravityview' );
+		$this->label = esc_html__( 'Hidden', 'gk-gravityview' );
 
 		$this->edit_entry_add_hooks();
 
@@ -48,13 +50,14 @@ class GravityView_Field_Hidden extends GravityView_Field {
 	 */
 	function edit_entry_fix_hidden_fields( $fields ) {
 
-		/** @var GF_Field $field */
-		foreach( $fields as &$field ) {
+		/** @type GF_Field $field */
+		foreach ( $fields as &$field ) {
 
 			if ( 'hidden' === $field->type ) {
 
 				/**
-				 * @filter `gravityview/edit_entry/reveal_hidden_field` Convert Hidden fields into Text fields on Edit Entry
+				 * Convert Hidden fields into Text fields on Edit Entry.
+				 *
 				 * @since 1.22.6
 				 * @since 2.7 Changed default value to `false` from `true`
 				 * @param bool $reveal_hidden_field True: Convert the hidden field to text; False: Leave hidden
@@ -62,7 +65,7 @@ class GravityView_Field_Hidden extends GravityView_Field {
 				 */
 				$reveal_hidden_field = apply_filters( 'gravityview/edit_entry/reveal_hidden_field', false, $field );
 
-				if( ! $reveal_hidden_field ) {
+				if ( ! $reveal_hidden_field ) {
 					continue;
 				}
 
@@ -76,7 +79,6 @@ class GravityView_Field_Hidden extends GravityView_Field {
 
 		return $fields;
 	}
-
 }
 
-new GravityView_Field_Hidden;
+new GravityView_Field_Hidden();

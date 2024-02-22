@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-elegant-themes.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2016', Katz Web Services, Inc.
  *
  * @since 1.17.2
@@ -25,7 +25,6 @@ class GravityView_Theme_Hooks_Elementor extends GravityView_Plugin_and_Theme_Hoo
 	protected $constant_name = 'ELEMENTOR_VERSION';
 
 	protected $content_meta_keys = array( '_elementor_data' );
-
 }
 
-new GravityView_Theme_Hooks_Elementor;
+new GravityView_Theme_Hooks_Elementor();

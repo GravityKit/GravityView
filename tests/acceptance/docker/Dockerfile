@@ -1,4 +1,4 @@
-FROM gravityview/gravityview_codeception:1.0
+FROM gravityview/codeception:gv-core
 
 ADD docker-entrypoint.sh /
 

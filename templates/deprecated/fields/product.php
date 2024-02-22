@@ -24,7 +24,7 @@ extract( $gravityview_view->getCurrentField() );
 $value = is_array( $value ) ? array_filter( $value, 'gravityview_is_not_empty_string' ) : $value;
 
 // If so, then we have something worth showing
-if ( !empty( $value ) ) {
+if ( ! empty( $value ) ) {
 
 	$input_id = gravityview_get_input_id_from_id( $field_id );
 

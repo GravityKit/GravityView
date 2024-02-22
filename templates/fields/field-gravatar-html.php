@@ -3,7 +3,7 @@
  * Gravatar field output for HTML rendering
  *
  * @global \GV\Template_Context $gravityview
- * @since TODO
+ * @since 2.8
  */
 
 if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
@@ -27,8 +27,9 @@ $settings['args'] = array(
 );
 
 /**
- * @filter `gravityview/fields/gravatar/settings` Modify the Gravatar settings for the field
- * @param[in,out] $settings array Settings passed to {@see get_avatar()} for parameters.
+ * Modify the Gravatar settings for the field.
+ *
+ * @param $settings array Settings passed to {@see get_avatar()} for parameters.
  * @param \GV\Template_Context $gravityview Current context
  */
 $settings = apply_filters( 'gravityview/fields/gravatar/settings', $settings, $gravityview );

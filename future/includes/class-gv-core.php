@@ -50,7 +50,7 @@ final class Core {
 	 */
 	public static function get() {
 		if ( ! self::$__instance instanceof self ) {
-			self::$__instance = new self;
+			self::$__instance = new self();
 		}
 		return self::$__instance;
 	}
@@ -61,7 +61,7 @@ final class Core {
 	 * Activation handlers, rewrites, post type registration.
 	 */
 	public static function bootstrap() {
-		require_once dirname( __FILE__ ) . '/class-gv-plugin.php';
+		require_once __DIR__ . '/class-gv-plugin.php';
 		Plugin::get()->register_activation_hooks();
 	}
 
@@ -88,7 +88,8 @@ final class Core {
 		/** Enable logging. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
 		/**
-		 * @filter `gravityview/logger` Filter the logger instance being used for logging.
+		 * Filter the logger instance being used for logging.
+		 *
 		 * @param \GV\Logger $logger The logger instance.
 		 */
 		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
@@ -112,15 +113,16 @@ final class Core {
 		}
 
 		/** Require critical legacy core files. @todo Deprecate */
+		require_once $this->plugin->dir( 'includes/import-functions.php' );
 		require_once $this->plugin->dir( 'includes/helper-functions.php' );
-		require_once $this->plugin->dir( 'includes/class-common.php');
-		require_once $this->plugin->dir( 'includes/connector-functions.php');
+		require_once $this->plugin->dir( 'includes/class-common.php' );
+		require_once $this->plugin->dir( 'includes/connector-functions.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-compatibility.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-roles-capabilities.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-admin-notices.php' );
 		require_once $this->plugin->dir( 'includes/class-admin.php' );
-		require_once $this->plugin->dir( 'includes/class-post-types.php');
-		require_once $this->plugin->dir( 'includes/class-cache.php');
+		require_once $this->plugin->dir( 'includes/class-post-types.php' );
+		require_once $this->plugin->dir( 'includes/class-cache.php' );
 
 		/**
 		 * GravityView extensions and widgets.
@@ -228,11 +230,16 @@ final class Core {
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
 
+		/** Gutenberg Blocks. */
+		require_once $this->plugin->dir( 'future/includes/gutenberg/class-gv-gutenberg-blocks.php' );
+
+		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
+
 		/** Cache busting. */
 		add_action( 'clean_post_cache', '\GV\View::_flush_cache' );
 
 		/**
-		 * @action `gravityview/loaded` The core has been loaded.
+		 * The core has been loaded.
 		 *
 		 * Note: this is a very early load hook, not all of WordPress core has been loaded here.
 		 *  `init` hasn't been called yet.
@@ -240,9 +247,9 @@ final class Core {
 		do_action( 'gravityview/loaded' );
 	}
 
-	private function __clone() { }
+	public function __clone() { }
 
-	private function __wakeup() { }
+	public function __wakeup() { }
 
 	/**
 	 * Wrapper magic.

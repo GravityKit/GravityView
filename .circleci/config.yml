@@ -1,24 +1,141 @@
-version: 2
+version: 2.1
+
+anchors:
+  context: &context
+    context: shared
+
+  default_job_config: &default_job_config
+    working_directory: /home/circleci/plugin
+    machine:
+      image: ubuntu-2004:202201-02
+
+  test_job_config: &test_job_config
+    <<: *context
+    requires:
+      - prepare_test_and_build_environment
+
 jobs:
-  acceptance_tests:
-    working_directory: /home/circleci/gravityview
-    machine: true
+  run_acceptance_tests:
+    <<: *default_job_config
     steps:
       - checkout
       - run:
-          name: "Set up virtual host"
+          name: Setting up virtual host
           command: echo 127.0.0.1 wordpress | sudo tee -a /etc/hosts
       - run:
           name: Run acceptance tests
           command: |
-            docker-compose -f tests/acceptance/docker/docker-compose.yml run gravityview_codeception --debug -vvv --html --xml
+            PLUGIN_DIR=$PLUGIN_DIR docker-compose -f tests/acceptance/docker/docker-compose.yml run codeception --debug -vvv --html --xml
       - store_artifacts:
-          path: tests/_output
+          path: tests/acceptance/_output
       - store_test_results:
-          path: tests/_output
+          path: tests/acceptance/_output
+
+  prepare_test_and_build_environment:
+    <<: *default_job_config
+    steps:
+      - checkout
+      - run:
+          name: Getting GV test/build tools
+          command: |
+            git clone git@github.com:gravityview/Tooling.git /home/circleci/tooling
+      - restore_cache:
+          keys:
+            - test-dependencies-{{ epoch }}
+            - test-dependencies-
+      - run:
+          name: Installing build dependencies
+          command: |
+            /home/circleci/tooling/build-tools/build_tools.sh npm -o install
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o install
+      - run:
+          name: Configuring tests environment
+          command: |
+            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
+      - save_cache:
+          key: test-dependencies-{{ epoch }}
+          paths:
+            - /home/circleci/test_dependencies
+      - persist_to_workspace:
+          root: /home/circleci
+          paths:
+            - .
+
+  run_php_72_unit_tests:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Running PHP 7.2 unit tests
+          command: |
+            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_72
+
+  run_php_80_unit_tests:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Running PHP 8.0 unit tests
+          command: |
+            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80
+
+  build_package_release:
+    <<: *default_job_config
+    steps:
+      - attach_workspace:
+          at: /home/circleci
+      - run:
+          name: Building and packaging
+          command: |
+            /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
+            /home/circleci/tooling/build-tools/build_tools.sh grunt
+            if [ "${CIRCLE_BRANCH}" != "main" ]; then
+              /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
+            else
+              /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
+            fi
+            mkdir -p gravityview
+            cp -R vendor* gravityview
+            rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php
+            zip -gr $(ls gravityview-*.zip) gravityview
+            mkdir .release
+            cp gravityview-*.zip .release
+      - run:
+          name: Creating a Github release
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "main" ]; then
+              git config user.email "support@gravitykit.com"
+              git config user.name "GravityView - CI"
+              /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
+            fi
+      - run:
+          name: Notifying GravityView Release Manager
+          command: |
+            if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
+              /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
+            fi
+      - store_artifacts:
+          path: .release
+          destination: release
 
 workflows:
   version: 2
-  acceptance_tests:
+  test_and_package:
     jobs:
-      - acceptance_tests
+      - prepare_test_and_build_environment:
+          <<: *context
+      - run_php_72_unit_tests:
+          <<: *test_job_config
+      - run_php_80_unit_tests:
+          <<: *test_job_config
+#      - run_acceptance_tests:
+#          <<: *context
+      - build_package_release:
+          <<: *context
+          requires:
+            - run_php_72_unit_tests
+            - run_php_80_unit_tests
+#            - run_acceptance_tests
+

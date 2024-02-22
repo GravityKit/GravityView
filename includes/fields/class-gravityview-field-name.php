@@ -18,11 +18,12 @@ class GravityView_Field_Name extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	var $icon = 'dashicons-admin-users';
+
 	public function __construct() {
-		$this->label = esc_html__( 'Name', 'gravityview' );
+		$this->label = esc_html__( 'Name', 'gk-gravityview' );
 		parent::__construct();
 	}
-
 }
 
-new GravityView_Field_Name;
+new GravityView_Field_Name();

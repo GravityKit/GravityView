@@ -115,6 +115,9 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 	 * https://github.com/gravityview/GravityView/issues/1223
 	 */
 	function test_GravityView_Field_Other_Entries_get_entries() {
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -220,6 +223,9 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$entries = $field->field->get_entries( $context );
 		$this->assertCount( 1, $entries );
 		$this->assertEquals( $valid_date_entry->ID, $entries[0]->ID );
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	function test_GravityView_Field_Sequence() {
@@ -308,6 +314,9 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 	}
 
 	function test_GravityView_Field_Sequence_single() {
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 		$post = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -354,6 +363,9 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$field->reverse = true;
 
 		$this->assertEquals( 1, $field->field->get_sequence( $context ) );
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	function test_GravityView_Field_Unsubscribe_render_permissions() {

@@ -27,12 +27,14 @@ class gvlogic extends \GV\Shortcode {
 		parent::add( 'gvlogic2' );
 		parent::add( 'gvlogic3' ); // This level of nesting is not supported by GravityView support...but go for it!
 		parent::add( 'gvlogicelse' );
+
+		add_filter( 'no_texturize_shortcodes', array( __CLASS__, 'filter_no_texturize_shortcodes' ) );
 	}
 
 	/**
 	 * Process and output the [gvfield] shortcode.
 	 *
-	 * @param array $atts The attributes passed.
+	 * @param array  $atts The attributes passed.
 	 * @param string $content The content inside the shortcode.
 	 * @param string $tag The tag.
 	 *
@@ -41,11 +43,13 @@ class gvlogic extends \GV\Shortcode {
 	public function callback( $atts, $content = '', $tag = '' ) {
 		$request = gravityview()->request;
 
-		if ( $request->is_admin() ) {
-			return apply_filters( 'gravityview/shortcodes/gvlogic/output', '', $atts );
-		}
-
 		$atts = $this->parse_atts( $atts, $content, $tag );
+
+		$content = \GravityView_Merge_Tags::replace_get_variables( $content );
+		$atts    = gv_map_deep( $atts, array( '\GravityView_Merge_Tags', 'replace_get_variables' ) );
+
+		$content = \GFCommon::replace_variables_prepopulate( $content );
+		$atts    = gv_map_deep( $atts, array( '\GFCommon', 'replace_variables_prepopulate' ) );
 
 		// An invalid operation
 		if ( is_null( \GV\Utils::get( $atts, 'logged_in', null ) ) && false === \GV\Utils::get( $atts, 'if', false ) ) {
@@ -63,11 +67,44 @@ class gvlogic extends \GV\Shortcode {
 			} else {
 				$match = $authed; // Just login test
 			}
-		} else { // Regular test
-			$match = $authed && \GVCommon::matches_operation( $atts['if'], $value, $operator );
-		}
 
-		$output = $this->get_output( $match, $atts, $content );
+			$output = $this->get_output( $match, $atts, $content );
+		} else { // Regular test
+
+			$output = $content;
+
+			// Allow checking against multiple values at once
+			$and_values = explode( '&&', $value );
+			$or_values  = explode( '||', $value );
+
+			// Cannot combine AND and OR
+			if ( sizeof( $and_values ) > 1 ) {
+
+				// Need to match all AND
+				foreach ( $and_values as $and_value ) {
+					$match = $authed && \GVCommon::matches_operation( $atts['if'], $and_value, $operator );
+					if ( ! $match ) {
+						break;
+					}
+				}
+			} elseif ( sizeof( $or_values ) > 1 ) {
+
+				// Only need to match a single OR
+				foreach ( $or_values as $or_value ) {
+
+					$match = \GVCommon::matches_operation( $atts['if'], $or_value, $operator );
+
+					// Negate the negative operators
+					if ( ( $authed && $match ) || ( $authed && ( ! $match && in_array( $operator, array( 'isnot', 'not_contains', 'not_in' ) ) ) ) ) {
+						break;
+					}
+				}
+			} else {
+				$match = $authed && \GVCommon::matches_operation( $atts['if'], $value, $operator );
+			}
+
+			$output = $this->get_output( $match, $atts, $output );
+		}
 
 		// Output and get recursive!
 		$output = do_shortcode( $output );
@@ -141,10 +178,10 @@ class gvlogic extends \GV\Shortcode {
 	}
 
 	/**
-	 * Get the ouput content.
+	 * Get the output content.
 	 *
-	 * @param bool $match if or else?
-	 * @param array $atts The attributes.
+	 * @param bool   $match if or else?
+	 * @param array  $atts The attributes.
 	 * @param string $content The content.
 	 *
 	 * @return string The output.
@@ -154,7 +191,7 @@ class gvlogic extends \GV\Shortcode {
 			return $atts['else']; // Attributized else is easy :)
 		}
 
-		$if = '';
+		$if   = '';
 		$else = '';
 
 		$opens = 0; // inner opens
@@ -185,17 +222,17 @@ class gvlogic extends \GV\Shortcode {
 				if ( $match ) {
 					break; // We just need the if on a match, no need to analyze further
 				}
-			} else if ( $match && 0 === strpos( $shortcode, '[else if' ) && 0 === $opens ) {
+			} elseif ( $match && 0 === strpos( $shortcode, '[else if' ) && 0 === $opens ) {
 				$found = true; // We found a match, do not process further
 				break;
 			} else {
 				// Increment inner tracking counters
 				if ( 0 === strpos( $shortcode, '[gvlogic' ) ) {
-					$opens++;
+					++$opens;
 				}
 
 				if ( 0 === strpos( $shortcode, '[/gvlogic' ) ) {
-					$opens--;
+					--$opens;
 				}
 
 				// Tack on the shortcode
@@ -209,18 +246,21 @@ class gvlogic extends \GV\Shortcode {
 			$content = $after_shortcode;
 		}
 
-		gravityview()->log->debug( '[gvlogic] output parsing:', array(
-			'data' => array(
-				'if'   => $if,
-				'else' => $else,
-			),
-		) );
+		gravityview()->log->debug(
+			'[gvlogic] output parsing:',
+			array(
+				'data' => array(
+					'if'   => $if,
+					'else' => $else,
+				),
+			)
+		);
 
 		if ( ! $match ) {
 			while ( ( $position = strpos( $if, '[else if=' ) ) !== false ) {
 				// Try to match one of the elseif's
 				$sentinel = wp_generate_password( 32, false );
-				$if = substr( $if, $position ); // ...by replacing it with a gvlogic shortcode
+				$if       = substr( $if, $position ); // ...by replacing it with a gvlogic shortcode
 				// ..and executing it!
 				$result = do_shortcode( preg_replace( '#\[else if#', '[gvlogic if', $if, 1 ) . "[else]{$sentinel}[/gvlogic]" );
 				if ( $result !== $sentinel ) {
@@ -236,6 +276,7 @@ class gvlogic extends \GV\Shortcode {
 
 	/**
 	 * Get array of supported operators
+	 *
 	 * @param bool $with_values
 	 *
 	 * @return array
@@ -243,10 +284,22 @@ class gvlogic extends \GV\Shortcode {
 	private function get_operators( $with_values = false ) {
 
 		$operators = array(
-			'is', 'isnot', 'contains', 'starts_with', 'ends_with',
-			'greater_than', 'less_than', 'in', 'not_in',
-			'contains', 'equals', 'greater_than_or_is', 'greater_than_or_equals',
-			'less_than_or_is', 'less_than_or_equals', 'not_contains',
+			'is',
+			'isnot',
+			'contains',
+			'starts_with',
+			'ends_with',
+			'greater_than',
+			'less_than',
+			'in',
+			'not_in',
+			'contains',
+			'equals',
+			'greater_than_or_is',
+			'greater_than_or_equals',
+			'less_than_or_is',
+			'less_than_or_equals',
+			'not_contains',
 		);
 
 		if ( $with_values ) {
@@ -268,11 +321,15 @@ class gvlogic extends \GV\Shortcode {
 
 		$supplied_atts = ! empty( $atts ) ? $atts : array();
 
-		$atts = shortcode_atts( array(
-			'if'        => null,
-			'else'      => null,
-			'logged_in' => null,
-		) + $this->get_operators( true ), $atts, $tag );
+		$atts = shortcode_atts(
+			array(
+				'if'        => null,
+				'else'      => null,
+				'logged_in' => null,
+			) + $this->get_operators( true ),
+			$atts,
+			$tag
+		);
 
 		// Only keep the passed attributes after making sure that they're valid pairs
 		$atts = array_intersect_key( $supplied_atts, $atts );
@@ -294,12 +351,33 @@ class gvlogic extends \GV\Shortcode {
 		}
 
 		/**
-		 * @filter `gravityview/gvlogic/atts` The logic attributes.
+		 * The logic attributes.
 		 *
 		 * @since 2.5
 		 *
-		 * @param[in,out] array $atts The logic attributes.
+		 * @param array $atts The logic attributes.
 		 */
 		return apply_filters( 'gravityview/gvlogic/atts', $atts );
+	}
+
+	/**
+	 * Fixes formatting issues when embedding in posts/pages.
+	 *
+	 * @see https://github.com/GravityKit/GravityView/issues/1846
+	 *
+	 * @since 2.17.6
+	 *
+	 * @param array $atts
+	 *
+	 * @return array
+	 */
+	public static function filter_no_texturize_shortcodes( $shortcodes = array() ) {
+
+		$shortcodes[] = 'gvlogic';
+		$shortcodes[] = 'gvlogic2';
+		$shortcodes[] = 'gvlogic3';
+		$shortcodes[] = 'gvlogicelse';
+
+		return $shortcodes;
 	}
 }

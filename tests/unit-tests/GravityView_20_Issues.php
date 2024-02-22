@@ -6,19 +6,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * Issues uncovered in 2.0
  */
 class GV_20_Issues_Test extends GV_UnitTestCase {
-	function setUp() {
-		/** The future branch of GravityView requires PHP 5.3+ namespaces. */
-		if ( version_compare( phpversion(), '5.3' , '<' ) ) {
-			$this->markTestSkipped( 'The future code requires PHP 5.3+' );
-			return;
-		}
-
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 
@@ -106,10 +100,12 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		) );
 		$view = \GV\View::from_post( $post );
 
+		$year_and_one_day_ago = '366 days';
+
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'3' => date( 'Y-m-d H:i:s', strtotime( '-367 days' ) ),
+			'3' => date( 'Y-m-d H:i:s', strtotime( "-${year_and_one_day_ago}" ) ),
 		) );
 
 		global $post;
@@ -121,7 +117,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" /]' => '1',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%y years" /]' => '1 years',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%y year(s) %m months %d day(s)" /]' => '1 year(s) 0 months 1 day(s)',
-			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%a days" /]' => '367 days',
+			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="3" format="%a days" /]' => $year_and_one_day_ago,
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="30" /]' => 'Error: Field value not specified.',
 			'[gv_age_2_0 entry_id="'.$entry['id'].'" field_id="30" hide_errors="1" /]' => '',
 			'[gv_age_2_0 entry_id="9999999" /]' => 'Error: Entry not found',
@@ -373,6 +369,9 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 			$entries->add( \GV\GF_Entry::by_id( $entry['id'] ) );
 		}
 
+		add_filter( 'gravityview/view/anchor_id', '__return_false' );
+		add_filter( 'gravityview/widget/search/append_view_id_anchor', '__return_false' );
+
 		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 
@@ -384,6 +383,9 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertEquals( $legacy, $future );
 		$this->assertContains( 'Search Entries', $future );
 		$this->assertContains( 'Here we go again! <b>Now</b>', $future );
+
+		remove_all_filters( 'gravityview/view/anchor_id' );
+		remove_all_filters( 'gravityview/widget/search/append_view_id_anchor' );
 	}
 
 	/**
@@ -610,9 +612,11 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$upload_url = GFFormsModel::get_upload_url( $form['id'] );
 
+		$file = $upload_url . '/one.jpg';
+
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'5' => json_encode( array( $file = $upload_url . '/one.jpg' ) ),
+			'5' => json_encode( array( $file ) ),
 		) );
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
@@ -634,18 +638,18 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 		$output = $renderer->render( $field, $view, $form, $entry, $request );
 
-		$secure_file = $field->field->get_download_url( $file );
+		$secure_link = $field->field->get_download_url($file);
 
-		$expected = '<img src="' . $secure_file . '" width="250" class="gv-image gv-field-id-5" />';
+		$expected = sprintf(
+			'<a class="gravityview-fancybox" data-fancybox="%s" href="%s" rel="gv-field-%d-5-%d"><img src="' . $secure_link . '" width="250" class="gv-image gv-field-id-5" /></a>',
+			'gallery-' . sprintf( "%s-%s-%s", $form->ID, $field->ID, $entry->get_slug() ),
+			esc_attr( $secure_link ),
+			$form->ID,
+			$entry->ID
+		);
 
 		$this->assertEquals( $expected, $output );
 
-		add_filter( 'gravityview/fields/fileupload/allow_insecure_lightbox', '__return_true' ); /** ALARM! ALARM!! */
-
-		$output = $renderer->render( $field, $view, $form, $entry, $request );
-
-		$expected = sprintf( '<a class="thickbox" href="%s" rel="gv-field-%d-5-%d"><img src="' . $file . '" width="250" class="gv-image gv-field-id-5" /></a>', esc_attr( $file ), $form->ID, $entry->ID );
-		$this->assertEquals( $expected, $output );
 	}
 
 	/**

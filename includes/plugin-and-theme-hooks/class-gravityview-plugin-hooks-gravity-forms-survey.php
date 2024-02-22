@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravity-forms-survey.php
  * @package   GravityView
  * @license   GPL2
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @since 1.17
@@ -30,7 +30,6 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 		add_action( 'gravityview/edit-entry/render/after', array( $this, 'remove_render_hooks' ) );
 
 		add_filter( 'gravityview/extension/search/input_type', array( $this, 'modify_search_bar_input_type' ), 10, 2 );
-
 	}
 
 	/**
@@ -45,7 +44,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 
 		$return = $input_type;
 
-		if( 'survey' === $field_type ) {
+		if ( 'survey' === $field_type ) {
 			$return = 'select';
 		}
 
@@ -65,8 +64,8 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 	public function fix_survey_fields( $fields ) {
 
 		/** @var GF_Field $field */
-		foreach( $fields as &$field ) {
-			if( 'survey' === $field->type ) {
+		foreach ( $fields as &$field ) {
+			if ( 'survey' === $field->type ) {
 				$field->allowsPrepopulate = true;
 			}
 		}
@@ -82,7 +81,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 	 * @return void
 	 */
 	function add_render_hooks() {
-		add_filter( 'gform_field_value', array( $this, 'fix_survey_field_value'), 10, 3 );
+		add_filter( 'gform_field_value', array( $this, 'fix_survey_field_value' ), 10, 3 );
 	}
 
 	/**
@@ -95,7 +94,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 	 * @return void
 	 */
 	function remove_render_hooks() {
-		remove_filter( 'gform_field_value', array( $this, 'fix_survey_field_value'), 10 );
+		remove_filter( 'gform_field_value', array( $this, 'fix_survey_field_value' ), 10 );
 	}
 
 	/**
@@ -105,22 +104,22 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 	 * @since 1.16.4
 	 * @since 1.17 Moved to GravityView_Plugin_Hooks_Gravity_Forms_Survey class
 	 *
-	 * @param string $value Existing value
+	 * @param string   $value Existing value
 	 * @param GF_Field $field
-	 * @param string $name Field custom parameter name, normally blank.
+	 * @param string   $name Field custom parameter name, normally blank.
 	 *
 	 * @return mixed
 	 */
 	public function fix_survey_field_value( $value, $field, $name ) {
 
-		if( 'survey' === $field->type ) {
+		if ( 'survey' === $field->type ) {
 
 			$entry = GravityView_Edit_Entry::getInstance()->instances['render']->get_entry();
 
 			// We need to run through each survey row until we find a match for expected values
 			foreach ( $entry as $field_id => $field_value ) {
 
-				if ( floor( $field_id ) !== floor( $field->id ) ) {
+				if ( (int) $field_id !== (int) $field->id ) {
 					continue;
 				}
 
@@ -128,7 +127,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 					list( $row_val, $col_val ) = explode( ':', $field_value, 2 );
 
 					// If the $name matches the $row_val, we are processing the correct row
-					if( $row_val === $name ) {
+					if ( $row_val === $name ) {
 						$value = $field_value;
 						break;
 					}
@@ -142,7 +141,6 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Survey extends GravityView_Plugin_a
 
 		return $value;
 	}
-
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Survey;
+new GravityView_Plugin_Hooks_Gravity_Forms_Survey();

@@ -9,6 +9,8 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /**
  * The \GV\WP_Action_Logger implementation.
  *
+ * @TODO: (Foundation) Deprecate in future versions.
+ *
  * Uses the old logging stuff for now.
  */
 class WP_Action_Logger extends Logger {
@@ -19,26 +21,18 @@ class WP_Action_Logger extends Logger {
 	 *
 	 * $context['data'] will be passed to the action.
 	 *
-	 * @param mixed $level The log level.
+	 * @param mixed  $level The log level.
 	 * @param string $message The message to log.
-	 * @param array $context The context.
+	 * @param array  $context The context.
 	 *
 	 * @return void
 	 */
 	protected function log( $level, $message, $context ) {
+		$backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 3 );
+		$location  = $this->interpolate( '{class}{type}{function}', $backtrace[2] );
+		$message   = $this->interpolate( "[$level, $location] $message", $context );
 
-		$php_version = ( ! empty( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] ) ) ?
-			$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] : phpversion();
-
-		if ( version_compare( $php_version, '5.4', '>=' ) ) {
-			$backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 3 );
-			$location = $this->interpolate( "{class}{type}{function}", $backtrace[2] );
-			$message = $this->interpolate( "[$level, $location] $message", $context );
-		} else {
-			$message = "[$level] $message";
-		}
-
-		switch ( $level ):
+		switch ( $level ) :
 			case LogLevel::EMERGENCY:
 			case LogLevel::ALERT:
 			case LogLevel::CRITICAL:
@@ -61,7 +55,7 @@ class WP_Action_Logger extends Logger {
 				empty( $context['data'] ) ? array() : $context['data']
 			);
 		}
-		
+
 		do_action(
 			sprintf( 'gravityview_log_%s', $action ),
 			$this->interpolate( $message, $context ),

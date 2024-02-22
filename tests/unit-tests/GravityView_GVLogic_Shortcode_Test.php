@@ -23,30 +23,46 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 
 		$correct = array(
 			'if="4" is="4"',
+			'if="4" is="3||4"',
 			'if="4" equals="4"',
+			'if="4" equals="3||4||5"',
 			'if="4" isnot="3"',
 			'if="carbon" contains="car"',
+			'if="carbon" contains="car||bon"',
+			'if="carbon" contains="car&&bon"',
 			'if="carbon" starts_with="car"',
+			'if="carbon" starts_with="c||car"',
 			'if="carbon" ends_with="bon"',
+			'if="carbon" ends_with="n||bon"',
 			'if="4" greater_than="1"',
+			'if="4" greater_than="1&&2"',
 			'if="4" greater_than_or_is="1"',
+			'if="4" greater_than_or_is="1&&2&&3&&4"',
 			'if="4" greater_than_or_equals="1"',
+			'if="4" greater_than_or_equals="4"',
+			'if="4" greater_than_or_equals="1&&2&&3&&4"',
+			'if="4" less_than_or_equals="5"',
 			'if="1"',
 		);
 
 		foreach ( $correct as $i => $true_statement ) {
-			$this->assertEquals( 'Correct a' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .' else="Incorrect a' . $i .'"]Correct a' . $i .'[/'.$shortcode.']') );
-			$this->assertEquals( 'Correct b' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .']Correct b' . $i .'[else]Incorrect b' . $i .'[/'.$shortcode.']') );
+			$this->assertEquals( 'Correct a' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .' else="Incorrect a' . $i .'"]Correct a' . $i .'[/'.$shortcode.']'), $true_statement );
+			$this->assertEquals( 'Correct b' . $i, do_shortcode( '['.$shortcode.' ' . $true_statement .']Correct b' . $i .'[else]Incorrect b' . $i .'[/'.$shortcode.']'), $true_statement );
 		}
 
 
 		$incorrect = array(
 			'if="4" is="2"',
 			'if="4" equals="asd"',
+			'if="4" equals="asd||feigegieng"',
 			'if="4" isnot="4"',
+			'if="4" isnot="4||5||6"',
+			'if="4" isnot="4&&5&&6"',
+			'if="carbon" contains="donkey"',
+			'if="carbon" contains="donkey||egg custard"',
 			'if="carbon" contains="donkey"',
 			'if="carbon" starts_with="dandy"',
-			'if="carbon" ends_with="lion"',
+			'if="carbon" ends_with="lion||flower"',
 			'if="4" greater_than="400"',
 			'if="4" greater_than_or_is="400"',
 			'if="4" greater_than_or_equals="400"',
@@ -181,6 +197,90 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Test the parsing of {get} Merge Tag
+	 *
+	 * @since 2.9.4
+	 */
+	function test_get_merge_tag() {
+
+		unset( $_GET['example'] );
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" is=""]?example is blank[/gvlogic]' );
+
+		$this->assertEquals( '?example is blank', $value );
+
+		$_GET['example'] = 'correct';
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" is="correct"]?example is "{get:example}"[/gvlogic]' );
+
+		$this->assertEquals( '?example is "correct"', $value );
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" isnot="correct"]Not correct[else if="{get:example}" is="correct"]?example is "{get:example}"[/gvlogic]', 'testing else with atts' );
+
+		$this->assertEquals( '?example is "correct"', $value );
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" isnot="correct"]Not correct[else if="{get:example}" isnot="correct"]Not correct[else]?example is "{get:example}"[/gvlogic]', 'testing else without atts' );
+
+		$_GET['example'] = '5';
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" greater_than="5"]Not correct[else]?example is "{get:example}"[/gvlogic]' );
+
+		$this->assertEquals( '?example is "5"', $value );
+
+		$value = do_shortcode( '[gvlogic if="{get:example}" greater_than_or_is="5"]?example is "{get:example}"[/gvlogic]' );
+
+		$this->assertEquals( '?example is "5"', $value );
+
+		/**
+		 * An extra test to ensure {get} is HTML-escaped by default
+		 * @see \GravityView_Merge_Tags_Test::test_replace_get_variables for full test.
+		 */
+		$esc_html_string = '& < > \' " <script>tag</script>';
+		$_GET['example'] = $esc_html_string;
+		$value = do_shortcode( '[gvlogic if="1" is="1"]{get:example}[/gvlogic]' );
+		$this->assertEquals( esc_html( $esc_html_string ), $value );
+
+		unset( $_GET['example'] );
+	}
+
+	/**
+	 * Make sure user meta works
+	 */
+	function test_gv_shortcode_for_user_meta() {
+
+		// @todo Fix test once gvlogic changes are made
+		$this->markTestSkipped();
+
+		$this->expected_deprecated[] = 'WP_User->id';
+
+		$administrator = $this->factory->user->create( array(
+				'user_login' => md5( microtime() ),
+				'user_email' => md5( microtime() ) . '@gravityview.tests',
+				'first_name' => 'Example',
+				'last_name'  => 'Crow',
+				'role' => 'administrator' )
+		);
+
+		add_user_meta( $administrator, 'custom_user_meta', 'Super Custom' );
+
+		wp_set_current_user( 0 );
+
+		$this->assertEquals( '', GFCommon::replace_variables_prepopulate( '{user:first_name}' ) );
+		$this->assertEquals( '', do_shortcode( '[gvlogic if="1" equals="1"]{user:custom_user_meta}[/gvlogic]' ) );
+
+		wp_set_current_user( $administrator );
+
+
+		// $current_user->get("ID") returns false, which gets replaced with empty string.
+		$this->assertEquals( 'Example', GFCommon::replace_variables_prepopulate( '{user:first_name}' ) );
+		$this->assertEquals( 'Super Custom', GFCommon::replace_variables_prepopulate( '{user:custom_user_meta}' ) );
+
+		$this->assertEquals( 'Example', do_shortcode( '[gvlogic if="{user:first_name}"]{user:first_name}[else]Not correct![/gvlogic]' ) );
+		$this->assertEquals( 'Example', do_shortcode( '[gvlogic if="1" equals="1"]{user:first_name}[else]Not correct![/gvlogic]' ) );
+		$this->assertEquals( 'Super Custom', do_shortcode( '[gvlogic if="1" equals="1"]{user:custom_user_meta}[else]Not correct![/gvlogic]' ) );
+	}
+
+	/**
 	 * Make sure a basic "logged-in" check works
 	 */
 	function test_gv_shortcode_for_user_id_logged_in() {
@@ -218,9 +318,9 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @dataProvider get_test_gv_shortcode_date_comparison
+	 * @dataProvider get_test_gv_custom_content_field_date_comparison
 	 */
-	function test_gv_shortcode_date_comparison( $date1, $date2, $op, $result ) {
+	function test_gv_field_date_comparison( $date1, $date2, $op, $result ) {
 		$form_id = \GFAPI::add_form( array(
 			'title'  => __FUNCTION__,
 			'fields' => array(
@@ -256,10 +356,10 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 		$field = \GV\Internal_Field::by_id( 'custom' );
 
 		$field->content = sprintf( '[gvlogic if="{Date Field:1}" %s="{Date Field 2:2}"]CORRECT[/gvlogic]', $op );
-		$this->assertEquals( $result ? 'CORRECT' : '', $renderer->render( $field, $view, null, $entry ) );
+		$this->assertEquals( $result ? 'CORRECT' : '', $renderer->render( $field, $view, null, $entry ), $date1 . ' ' . $date2 . ' ' . $op );
 	}
 
-	function get_test_gv_shortcode_date_comparison() {
+	function get_test_gv_custom_content_field_date_comparison() {
 		return array(
 			array( '2019-01-13', '2019-01-13', 'equals', true ),
 			array( '2019-01-14', '2019-01-13', 'equals', false ),
@@ -269,6 +369,109 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 			array( '2019-01-11', '2019-01-14', 'less_than', true ),
 			array( '2019-01-17', '2019-01-14', 'greater_than_or_is', true ),
 			array( '2019-01-17', '2019-01-14', 'less_than_or_is', false ),
+		);
+	}
+
+	/**
+	 * @dataProvider get_test_gv_shortcode_date_comparison
+	 */
+	function test_gv_shortcode_date_comparison( $date1, $date2, $op, $result ) {
+
+		$content = sprintf( '[gvlogic if="%s" %s="%s"]CORRECT[/gvlogic]', $date1, $op, $date2 );
+
+		$this->assertEquals( $result ? 'CORRECT' : '', do_shortcode( $content ) );
+	}
+
+	/**
+	 * @covers \GV\Shortcodes\gvlogic::parse_atts()
+	 * @see https://github.com/GravityKit/GravityView/issues/1846
+	 * @return void
+	 */
+	function test_gv_shortcode_texturized_quotes_in_attributes() {
+
+		$content = <<<EOD
+[gvlogic if="1" is="2"]{wrong}[else if="context" is=""]{correct}[else]{um}[/gvlogic]
+EOD;
+
+		$content = strtr( $content, array(
+			'{wrong}' => 'That\'s WRONG!',
+			'{correct}' => 'That\'s CORRECT!',
+			'{um}' => 'Something went wrong!',
+		) );
+
+		$content = apply_filters( 'the_content', $content );
+
+		$this->assertContains( 'CORRECT!', $content );
+
+		// Now test single quotes.
+		$content = <<<EOD
+[gvlogic if='1' is='2']{wrong}[else if='context' is='']{correct}[else]{um}[/gvlogic]
+EOD;
+
+		$content = apply_filters( 'the_content', $content );
+
+		$content = strtr( $content, array(
+			'{wrong}' => 'That\'s WRONG!',
+			'{correct}' => 'That\'s CORRECT!',
+			'{um}' => 'Something went wrong!',
+		) );
+
+		$content = do_shortcode( $content );
+
+		$this->assertContains( 'CORRECT!', $content );
+	}
+
+	function get_test_gv_shortcode_date_comparison() {
+
+		$last_week = date( 'Y-m-d', strtotime( 'midnight -1 week' ) );
+		$next_week = date( 'Y-m-d', strtotime( 'midnight +1 week' ) );
+		$last_year = date( 'Y-m-d', strtotime( 'midnight -1 year' ) );
+		$next_year = date( 'Y-m-d', strtotime( 'midnight +1 year' ) );
+		$last_sat  = date( 'Y-m-d', strtotime( 'midnight last Saturday' ) );
+
+		// Test different date formats.
+		return array(
+			array( '01/13/2019', '2019-01-13', 'equals', true ),
+			array( '13/01/2019', '2019-01-13', 'equals', true ),
+			array( '13.01.2019', '2019-01-13', 'equals', true ),
+			array( '01-13-2019', '2019-01-13', 'equals', true ),
+			array( '01/01/2019', '2019-01-01', 'equals', true ),
+			array( '2019-01-14', '2019-01-13', 'equals', false ),
+			array( '01/14/2019', '2019-01-13', 'equals', false ),
+			array( '2019-01-14', '2019-01-13', 'isnot', true ),
+			array( '01/14/2019', '2019-01-13', 'isnot', true ),
+			array( '2019-01-14', '2019-01-14', 'isnot', false ),
+			array( '01/14/2019', '2019-01-14', 'isnot', false ),
+			array( '2019/01/11', '2019-01-14', 'greater_than', false ),
+			array( '01/14/2019', '2019-01-14', 'greater_than', false ),
+			array( '01/01/2019', '2019-01-01', 'greater_than', false ),
+			array( '01/15/2019', '2019-01-14', 'greater_than', true ),
+			array( '15/01/2019', '2019-01-14', 'greater_than', true ),
+			array( '2019-01-11', '2019-01-14', 'less_than', true ),
+			array( '01/13/2019', '2019-01-14', 'less_than', true ),
+			array( '13/01/2019', '2019-01-14', 'less_than', true ),
+			array( '01/17/2019', '2019-01-14', 'greater_than_or_is', true ),
+			array( '17/01/2019', '2019-01-14', 'greater_than_or_is', true ),
+			array( '14/01/2019', '2019-01-14', 'greater_than_or_is', true ),
+			array( '17/01/2019', '2019-01-14', 'less_than_or_is', false ),
+			array( '01/17/2019', '2019-01-14', 'less_than_or_is', false ),
+			array( '01/01/2019', '2019-01-14', 'less_than_or_is', true ),
+			array( '01/14/2019', '2019-01-14', 'less_than_or_is', true ),
+
+			// Test relative dates.
+			array( $last_week, 'relative:midnight -1 week', 'equals', true ),
+			array( $last_week, 'relative:midnight -1 week', 'isnot', false ),
+			array( $last_week, 'relative:midnight -1 week', 'greater_than_or_is', true ),
+			array( $last_week, 'relative:midnight -1 week', 'less_than_or_is', true ),
+			array( $last_week, 'relative:midnight -1 week', 'less_than', false ),
+			array( $last_week, 'relative:-1 week', 'greater_than', false ),
+			array( $next_week, 'relative:-1 week', 'equals', false ),
+			array( $next_week, 'relative:-1 week', 'greater_than', true ),
+			array( $next_year, 'relative:today', 'greater_than', true ),
+			array( 'relative:today', $last_week, 'greater_than', true ),
+			array( 'relative:today', $last_sat, 'greater_than', true ),
+			array( $next_year, $last_year, 'greater_than', true ),
+			array( $next_year, $last_week, 'greater_than', true ),
 		);
 	}
 

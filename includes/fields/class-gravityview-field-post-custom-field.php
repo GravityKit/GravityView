@@ -11,16 +11,22 @@ class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 
 	var $is_searchable = true;
 
-	/** @var array Custom fields are text, but can be any format (including JSON) */
+	/**
+	 * @var array $search_operators Custom fields are text, but can be any format (including JSON)
+	 */
 	var $search_operators = array( 'contains', 'is', 'isnot' );
 
-	/** @see GF_Field_Post_Custom_Field */
+	/**
+	 * @see GF_Field_Post_Custom_Field
+	 */
 	var $_gf_field_class_name = 'GF_Field_Post_Custom_Field';
 
 	var $group = 'post';
 
+	var $icon = 'dashicons-admin-generic';
+
 	public function __construct() {
-		$this->label = esc_html__( 'Post Custom Field', 'gravityview' );
+		$this->label = esc_html__( 'Post Custom Field', 'gk-gravityview' );
 		parent::__construct();
 
 		$this->add_hooks();
@@ -34,7 +40,7 @@ class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 	 * @return void
 	 */
 	private function add_hooks() {
-		add_filter( 'gravityview/edit_entry/field_value_post_custom_field', array( $this, 'edit_entry_field_value'), 10, 2 );
+		add_filter( 'gravityview/edit_entry/field_value_post_custom_field', array( $this, 'edit_entry_field_value' ), 10, 2 );
 	}
 
 	/**
@@ -42,14 +48,14 @@ class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 	 *
 	 * @since 1.17
 	 *
-	 * @param mixed $field_value field value used to populate the input
+	 * @param mixed    $field_value field value used to populate the input
 	 * @param GF_Field $field Gravity Forms field object
 	 *
 	 * @return mixed If a List input for Custom Field, returns JSON-decoded value. Otherwise, original value.
 	 */
 	public function edit_entry_field_value( $field_value, $field ) {
 
-		if( 'list' === $field->inputType ) {
+		if ( 'list' === $field->inputType ) {
 			$field_value = is_string( $field_value ) ? json_decode( $field_value, true ) : $field_value;
 
 			if ( ! is_array( $field_value ) ) {
@@ -59,7 +65,6 @@ class GravityView_Field_Post_Custom_Field extends GravityView_Field {
 
 		return $field_value;
 	}
-
 }
 
-new GravityView_Field_Post_Custom_Field;
+new GravityView_Field_Post_Custom_Field();

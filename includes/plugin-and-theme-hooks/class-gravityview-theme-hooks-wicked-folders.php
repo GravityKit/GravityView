@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-generatepress.php
  * @package   GravityView
  * @license   GPL2+
- * @author    Katz Web Services, Inc.
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2020, Katz Web Services, Inc.
  */
 
@@ -18,7 +18,7 @@ class GravityView_Plugin_Hooks_Wicked_Folders extends GravityView_Plugin_and_The
 	protected $class_name = 'Wicked_Folders';
 
 	protected $style_handles = array(
-		'wicked-folders-admin'
+		'wicked-folders-admin',
 	);
 
 	protected $script_handles = array(
@@ -27,4 +27,4 @@ class GravityView_Plugin_Hooks_Wicked_Folders extends GravityView_Plugin_and_The
 	);
 }
 
-new GravityView_Plugin_Hooks_Wicked_Folders;
+new GravityView_Plugin_Hooks_Wicked_Folders();
