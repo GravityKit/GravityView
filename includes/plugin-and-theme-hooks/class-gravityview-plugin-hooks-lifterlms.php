@@ -195,7 +195,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 
 	private function get_raw_content() {
 
-		$view_ids = $this->get_option( 'views', __( 'My Forms', 'gk-gravityview' ) );
+		$view_ids = $this->get_option( 'views', [] );
 
 		if ( empty( $view_ids ) ) {
 			return '';
