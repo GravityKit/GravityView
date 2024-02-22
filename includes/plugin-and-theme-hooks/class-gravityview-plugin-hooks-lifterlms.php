@@ -76,7 +76,10 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	protected function configure() {
 
 		$this->title       = __( 'GravityView', 'gk-gravityview' );
-		$this->description = sprintf( __( 'Display Gravity Forms entries for the current student using %sGravityView%s', 'gk-gravityview' ), '<a href="https://lifterlms.com/docs/lifterlms-and-gravityview/" target="_blank" rel="noopener noreferrer">',  '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>' );
+		$this->description = strtr( __( 'Display Gravity Forms entries for the current student using [link]GravityView[/link].', 'gk-gravityview' ), [
+			'[link]' => '<a href="https://lifterlms.com/docs/lifterlms-and-gravityview/" target="_blank" rel="noopener noreferrer">',
+			'[/link]' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
+		] );
 
 		if ( ! $this->is_available() ) {
 			return;
@@ -118,6 +121,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 
 	public function filter_student_dashboard_tabs( $tabs = [] ) {
 
+		$tab_title = $this->get_option( 'label', __( 'My Forms', 'gk-gravityview' ) );
 		$slug_name = $this->get_option( 'slug', 'my-forms' );
 
 		$new_tab = [
@@ -125,7 +129,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 				'content'  => [ $this, 'dashboard_content' ],
 				'endpoint' => sanitize_title_with_dashes( $slug_name ),
 				'nav_item' => true,
-				'title'    => $this->get_option( 'label', __( 'My Forms', 'gk-gravityview' ) ),
+				'title'    => $tab_title,
 			],
 		];
 
@@ -153,7 +157,9 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		}
 
 		$more = false;
-		if ( LLMS_Student_Dashboard::is_endpoint_enabled( 'gravityview' ) ) {
+
+		$is_endpoint_enabled = LLMS_Student_Dashboard::is_endpoint_enabled( 'gravityview' );
+		if ( $is_endpoint_enabled ) {
 			$more = [
 				'url'  => llms_get_endpoint_url( 'gravityview', '', llms_get_page_url( 'myaccount' ) ),
 				'text' => __( 'View All My Forms', 'gk-gravityview' ),
@@ -161,18 +167,18 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		}
 
 		ob_start();
+
 		lifterlms_template_certificates_loop( $student );
 
-		llms_get_template(
-			'myaccount/dashboard-section.php',
-			[
-				'action'  => 'gravityview',
-				'slug'    => 'llms-gravityview',
-				'title'   => $preview ? __( 'My Forms', 'gk-gravityview' ) : '',
-				'content' => ob_get_clean(),
-				'more'    => $more,
-			]
-		);
+		$content = ob_get_clean();
+
+		llms_get_template( 'myaccount/dashboard-section.php', [
+			'action'  => 'gravityview',
+			'slug'    => 'llms-gravityview',
+			'title'   => $preview ? __( 'My Forms', 'gk-gravityview' ) : '',
+			'content' => $content,
+			'more'    => $more,
+		] );
 	}
 
 	/**
