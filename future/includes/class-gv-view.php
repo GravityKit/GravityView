@@ -4,6 +4,7 @@ namespace GV;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GF_Query;
+use GravityView_Compatibility;
 use GravityView_Cache;
 
 /** If this file is called directly, abort. */
@@ -122,10 +123,13 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public static function register_post_type() {
-
 		/** Register only once */
 		if ( post_type_exists( 'gravityview' ) ) {
 			return;
+		}
+
+		if ( ! gravityview()->plugin->is_compatible() ) {
+			GravityView_Compatibility::override_post_pages_when_compatibility_fails();
 		}
 
 		/**
@@ -193,7 +197,7 @@ class View implements \ArrayAccess {
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
 			'public'              => apply_filters( 'gravityview_direct_access', gravityview()->plugin->is_compatible(), 0 ),
-			'show_ui'             => gravityview()->plugin->is_compatible(),
+			'show_ui'             => true,
 			'show_in_menu'        => false, // Menu items are added in \GV\Plugin::add_to_gravitykit_admin_menu()
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
@@ -1512,7 +1516,6 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public static function template_redirect() {
-
 		$is_csv = get_query_var( 'csv' );
 		$is_tsv = get_query_var( 'tsv' );
 

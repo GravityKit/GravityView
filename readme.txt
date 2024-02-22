@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Added: Global and View-specific settings to control caching of View entries
 * Added: Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode
+* Improved: If Gravity Forms is not installed and/or activated, a notice is displayed to alert user when creating new or listing existing Views
 * Fixed: Deprecation notice in PHP 8.1+ when displaying a View with file upload fields
 * Fixed: Fatal error when exporting entries to CSV
 
