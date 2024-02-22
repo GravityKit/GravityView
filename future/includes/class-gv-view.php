@@ -1798,7 +1798,7 @@ class View implements \ArrayAccess {
 		$display_notices = function ( $hook_data ) {
 			global $post;
 
-			if ( ! $post || 'gravityview' !== $post->post_type ) {
+			if ( ! $post instanceof \WP_Post || 'gravityview' !== $post->post_type ) {
 				return $hook_data;
 			}
 
