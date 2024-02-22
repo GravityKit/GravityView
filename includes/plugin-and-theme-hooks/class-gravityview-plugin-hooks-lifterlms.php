@@ -202,17 +202,12 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		}
 
 		$content = '';
-
 		foreach ( $view_ids as $view_id ) {
 
 			$view = \GV\View::by_id( $view_id );
-			$request = new GV\Frontend_Request();
-
-			$request->is_view( $view_id );
 			$renderer = new GV\View_Renderer( $view );
 
-			echo $renderer->render( $view );
-			//$content .= '[gravityview view_id="' . $view_id . '" post_id="181"]';
+			$content .= $renderer->render( $view );
 		}
 
 		return $content;
