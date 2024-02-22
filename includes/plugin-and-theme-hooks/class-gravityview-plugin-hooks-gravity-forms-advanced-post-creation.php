@@ -88,7 +88,11 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 			return null;
 		}
 
-		$form  = $view->form;
+		$form = $view->form;
+		if ( ! $form ) {
+			return null;
+		}
+		
 		$apc   = GF_Advanced_Post_Creation::get_instance();
 		$feeds = $apc->get_active_feeds( $form->ID );
 

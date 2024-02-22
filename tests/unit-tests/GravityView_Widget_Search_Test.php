@@ -957,6 +957,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
 		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		update_user_meta( $gamma, 'custom_meta', 'custom' );
 		add_filter( 'gravityview/widgets/search/created_by/user_meta_fields', function() {
@@ -966,6 +967,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview/widgets/search/created_by/user_meta_fields' );
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 
 		$_GET = array();
 	}
