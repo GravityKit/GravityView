@@ -1,5 +1,7 @@
 <?php
 
+use GravityKit\GravityView\Foundation\Helpers\WP as WPHelper;
+
 /**
  * Handle caching using transients for GravityView
  */
@@ -9,6 +11,8 @@ class GravityView_Cache {
 	const BLACKLIST_OPTION_NAME = 'gravityview_cache_blocklist';
 
 	const BLOCKLIST_OPTION_NAME = 'gravityview_cache_blocklist';
+
+	const TRANSIENT_KEY_PREFIX = 'gv-cache-';
 
 	/**
 	 * Form ID, or array of Form IDs
@@ -267,7 +271,7 @@ class GravityView_Cache {
 
 		// Prefix for transient keys
 		// Now the prefix would be: `gv-cache-f:12-f:5-f:14-`
-		return 'gv-cache-' . $forms . '-';
+		return self::TRANSIENT_KEY_PREFIX . $forms . '-';
 	}
 
 	/**
@@ -472,7 +476,7 @@ class GravityView_Cache {
 
 		gravityview()->log->debug( 'Fetching request with transient key {key}', array( 'key' => $key ) );
 
-		$result = get_transient( $key );
+		$result = WPHelper::get_transient( $key );
 
 		if ( is_wp_error( $result ) ) {
 
@@ -506,39 +510,45 @@ class GravityView_Cache {
 	 * @return bool If $content is not set, false. Otherwise, returns true if transient was set and false if not.
 	 */
 	public function set( $content, $filter_name = '', $expiration = null ) {
-
 		// Don't cache empty results
-		if ( ! empty( $content ) ) {
+		if ( empty( $content ) ) {
+			gravityview()->log->debug( 'Cache not set; content is empty' );
 
-			$expiration = ! is_int( $expiration ) ? DAY_IN_SECONDS : $expiration;
-
-			/**
-			 * Modify the cache time for a type of cache.
-			 *
-			 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
-			 */
-			$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
-
-			gravityview()->log->debug(
-				'Setting cache with transient key {key} for {expiration} seconds',
-				array(
-					'key'        => $this->key,
-					'expiration' => $expiration,
-				)
-			);
-
-			$transient_was_set = set_transient( $this->key, $content, $expiration );
-
-			if ( ! $transient_was_set && $this->use_cache() ) {
-				gravityview()->log->error( 'Transient was not set for this key: ' . $this->key );
-			}
-
-			return $transient_was_set;
+			return false;
 		}
 
-		gravityview()->log->debug( 'Cache not set; content is empty' );
+		if ( ! is_int( $expiration ) ) {
+			// Global cache duration setting.
+			$expiration = gravityview()->plugin->settings->get( "caching_{$filter_name}", DAY_IN_SECONDS );
 
-		return false;
+			// View-specific cache duration setting.
+			if ( is_array( $this->args ) && array_key_exists( "caching_{$filter_name}", $this->args ) ) {
+				$expiration = $this->args["caching_{$filter_name}"];
+			}
+		}
+
+		/**
+		 * Modify the cache time for a type of cache.
+		 *
+		 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
+		 */
+		$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
+
+		gravityview()->log->debug(
+			'Setting cache with transient key {key} for {expiration} seconds',
+			array(
+				'key'        => $this->key,
+				'expiration' => $expiration,
+			)
+		);
+
+		$transient_was_set = WPHelper::set_transient( $this->key, $content, $expiration );
+
+		if ( ! $transient_was_set && $this->use_cache() ) {
+			gravityview()->log->error( 'Transient was not set for this key: ' . $this->key );
+		}
+
+		return $transient_was_set;
 	}
 
 	/**
@@ -565,19 +575,18 @@ class GravityView_Cache {
 
 		foreach ( (array) $form_ids as $form_id ) {
 
-			$key = '_transient_gv-cache-';
+			$key = self::TRANSIENT_KEY_PREFIX;
 
 			$key = $wpdb->esc_like( $key );
 
 			$form_id = intval( $form_id );
 
 			// Find the transients containing this form
-			$key = "$key%f:$form_id-%"; // \_transient\_gv-cache-%f:1-% for example
+			$key = "$key%f:$form_id-%"; // gv-cache-%f:1-% for example
 			$sql = $wpdb->prepare( "SELECT option_name FROM {$wpdb->options} WHERE `option_name` LIKE %s", $key );
 
 			foreach ( ( $transients = $wpdb->get_col( $sql ) ) as $transient ) {
-				// We have to delete it via the API to make sure the object cache is updated appropriately
-				delete_transient( preg_replace( '#^_transient_#', '', $transient ) );
+				WPHelper::delete_transient( $transient );
 			}
 
 			gravityview()->log->debug(
@@ -630,40 +639,49 @@ class GravityView_Cache {
 	public function delete_expired_transients() {
 		global $wpdb;
 
-		// Added this line, which isn't in the plugin
+		// Added this line, which isn't in the plugin.
 		$blog_id = get_current_blog_id();
 
-		$num_results = 0;
-
-		// get current PHP time, offset by a minute to avoid clashes with other tasks
+		// Get current PHP time, offset by a minute to avoid clashes with other tasks.
 		$threshold = time() - 60;
 
-		// get table name for options on specified blog
+		// Get table name for options on specified blog.
 		$table = $wpdb->get_blog_prefix( $blog_id ) . 'options';
 
-		// delete expired transients, using the paired timeout record to find them
-		$sql = "
-			delete from t1, t2
-			using $table t1
-			join $table t2 on t2.option_name = replace(t1.option_name, '_timeout', '')
-			where (t1.option_name like '\_transient\_timeout\_%' or t1.option_name like '\_site\_transient\_timeout\_%')
-			and t1.option_value < '$threshold'
-		";
+		// Delete expired GravityView <2.9.16 transients, using the paired timeout record to find them.
+		$sql = <<<SQL
+			DELETE FROM t1, t2
+			USING {$table} t1
+			JOIN {$table} t2 ON t2.option_name = replace(t1.option_name, '_timeout', '')
+			WHERE (t1.option_name LIKE '\_transient\_timeout\_%' OR t1.option_name LIKE '\_site\_transient\_timeout\_%')
+			AND t1.option_value < $threshold
+SQL;
 
 		$num_results = $wpdb->query( $sql );
 
-		// delete orphaned transient expirations
-		// also delete NextGEN Gallery 2.x display cache timeout aliases
-		$sql = "
-			delete from $table
-			where (
-				   option_name like '\_transient\_timeout\_%'
-				or option_name like '\_site\_transient\_timeout\_%'
-				or option_name like 'displayed\_galleries\_%'
-				or option_name like 'displayed\_gallery\_rendering\_%'
+		// Delete orphaned transient expirations.
+		// Also delete NextGEN Gallery 2.x display cache timeout aliases.
+		$sql = <<<SQL
+			DELETE FROM {$table}
+			WHERE (
+				   option_name LIKE '\_transient\_timeout\_%'
+				OR option_name LIKE '\_site\_transient\_timeout\_%'
+				OR option_name LIKE 'displayed\_galleries\_%'
+				OR option_name LIKE 'displayed\_gallery\_rendering\_%'
 			)
-			and option_value < '$threshold'
-		";
+			AND option_value < {$threshold}
+SQL;
+
+		$num_results += $wpdb->query( $sql );
+
+		// Delete expired GravityView >2.19.6 transients.
+		$key = self::TRANSIENT_KEY_PREFIX;
+
+		$sql = <<<SQL
+			DELETE FROM {$table}
+			WHERE option_name LIKE '{$key}%' AND
+			CAST(SUBSTRING_INDEX( SUBSTRING_INDEX(option_value, '"expiration";i:', -1), ';', 1 ) AS UNSIGNED INTEGER) <= {$threshold};
+SQL;
 
 		$num_results += $wpdb->query( $sql );
 
@@ -689,7 +707,13 @@ class GravityView_Cache {
 			return $this->use_cache;
 		}
 
-		$use_cache = true;
+		// Global cache setting.
+		$use_cache = (bool) gravityview()->plugin->settings->get( 'caching' );
+
+		// View-specific cache setting.
+		if ( is_array( $this->args ) && array_key_exists( 'caching', $this->args ) ) {
+			$use_cache = $this->args['caching'];
+		}
 
 		if ( GVCommon::has_cap( 'edit_gravityviews' ) ) {
 

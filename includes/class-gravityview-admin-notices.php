@@ -163,6 +163,8 @@ class GravityView_Admin_Notices {
 		 * Modify the notices displayed in the admin.
 		 *
 		 * @since 1.12
+		 *
+		 * @param array $notices Array of notices to display.
 		 */
 		$notices = apply_filters( 'gravityview/admin/notices', self::$admin_notices );
 
