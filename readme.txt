@@ -26,7 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 This release introduces new settings for better control over View caching, adds support for the Advanced Post Creation Add-On when editing entries, fixes a fatal error when exporting entries to CSV, and updates internal components for better performance and compatibility.
 
 #### 🚀 Added
-- Global and View-specific settings to control caching of View entries.
+- Global and View-specific settings to control caching of View entries. [Learn more about GravityView caching](https://docs.gravitykit.com/article/58-about-gravityview-caching).
 - Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode.
 
 #### ✨ Improved

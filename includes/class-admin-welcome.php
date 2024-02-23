@@ -302,8 +302,9 @@ class GravityView_Welcome {
 				<h4>🚀 Added</h4>
 
 				<ul>
-					<li>Global and View-specific settings to control caching of View entries.</li>
-					<li>Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode.</li></ul>
+					<li>Global and View-specific settings to control caching of View entries. <a href='https://docs.gravitykit.com/article/58-about-gravityview-caching'>Learn more about GravityView caching</a>.</li>
+					<li>Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode.</li>
+				</ul>
 
 				<h4>✨ Improved</h4>
 
