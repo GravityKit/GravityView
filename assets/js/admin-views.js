@@ -1393,23 +1393,48 @@
 			} );
 		},
 
+		/**
+		 * Whether the current template selector is a `data-view-dropdown`.
+		 * @since $ver$
+		 * @return {boolean}
+		 * @private
+		 */
 		_isViewDropDown: function () {
 			return 'undefined' !== typeof viewConfiguration.wantedTemplate.data( 'view-data' );
 		},
 
+		/**
+		 * Returns the current template ID, based on the selector.
+		 *
+		 * If a section was provided (i.e. it uses a view drop down) it will return the template for that section.
+		 * If no section was provided, it will fall back to the directory template for backward compatibility.
+		 *
+		 * @since $ver$
+		 * @return {string} The template id.
+		 * @private
+		 */
 		_getCurrentTemplateId() {
-			var section = this._getTemplateSection();
+			const section = this._getTemplateSection();
+
 			if ( section === null || section === 'directory') {
 				return this.currentDirectoryTemplate;
-			} else if ( section === 'single' ) {
+			}
+
+			if ( section === 'single' ) {
 				return this.currentSingletemplate;
 			}
 
 			return '';
 		},
 
+		/**
+		 * Sets the current template ID based on the active section.
+		 * @since $ver$
+		 * @param {string} template_id The template ID.
+		 * @private
+		 */
 		_setCurrentTemplateId( template_id ) {
-			var section = this._getTemplateSection();
+			const section = this._getTemplateSection();
 			if ( section === null || section === 'directory' ) {
 				this.currentDirectoryTemplate = template_id;
 			}
@@ -1418,8 +1443,14 @@
 			}
 		},
 
+		/**
+		 * Returns the template ID from the selector.
+		 * @since $ver$
+		 * @return {string} The template ID on the selector.
+		 * @private
+		 */
 		_getTemplateId: function () {
-			var template_id = viewConfiguration.wantedTemplate.attr( 'data-templateid' );
+			let template_id = viewConfiguration.wantedTemplate.attr( 'data-templateid' );
 			if ( viewConfiguration._isViewDropDown() ) {
 				template_id = viewConfiguration.wantedTemplate.val();
 			}
@@ -1427,8 +1458,17 @@
 			return template_id;
 		},
 
+		/**
+		 * Returns the section from the selector.
+		 *
+		 * Only a view dropdown has a section, so this method helps ease the difference with the "old" selector.
+		 *
+		 * @since $ver$
+		 * @return {null|string} The section.
+		 * @private
+		 */
 		_getTemplateSection: function() {
-			var section = null;
+			let section = null;
 			if ( viewConfiguration._isViewDropDown() ) {
 				section = viewConfiguration.wantedTemplate.data( 'section' );
 			}
@@ -1436,12 +1476,28 @@
 			return section;
 		},
 
+		/**
+		 * Restores the value on the selector.
+		 *
+		 * This is only relevant for view dropdowns.
+		 *
+		 * @since $ver$
+		 * @private
+		 */
 		_restoreValue: function() {
 			if ( viewConfiguration._isViewDropDown() ) {
 				viewConfiguration.wantedTemplate.data( 'view-data' ).restoreValue();
 			}
 		},
 
+		/**
+		 * Stores the value on the selector.
+		 *
+		 * If the current selector is not a view dropdown, we store all view dropdowns, since all are updated.
+		 *
+		 * @since $ver$
+		 * @private
+		 */
 		_storeValue: function() {
 			if ( viewConfiguration._isViewDropDown() ) {
 				viewConfiguration.wantedTemplate.data( 'view-data' ).storeValue();
@@ -1745,10 +1801,10 @@
 		 */
 		updateViewConfig: function ( data ) {
 			return new Promise( ( resolve, reject ) => {
-				var vcfg = viewConfiguration;
-				var section = vcfg._getTemplateSection();
-				var update_directory = (section === 'directory' || section === null);
-				var update_single = (section === 'single' || section === null);
+				const vcfg = viewConfiguration;
+				const section = vcfg._getTemplateSection();
+				const update_directory = ( section === 'directory' || section === null );
+				const update_single = ( section === 'single' || section === null );
 
 				if ( update_directory ) {
 					$( "#directory-active-fields" ).children().remove();
@@ -1958,13 +2014,16 @@
 		 * @return array
 		 */
 		getConfiguredFields: function () {
-			var section = viewConfiguration._getTemplateSection();
-			var selectors = {
+			const section = viewConfiguration._getTemplateSection();
+			const selectors = {
 				'directory': '#directory-active-fields',
 				'single': '#single-active-fields',
 			};
 
-			var selector = selectors.hasOwnProperty( section ) ? selectors[ section ] : '#directory-active-fields, #single-active-fields, #edit-active-fields';
+			const selector = selectors.hasOwnProperty( section )
+				? selectors[ section ]
+				: '#directory-active-fields, #single-active-fields, #edit-active-fields';
+
 			return $( selector ).find( '.gv-fields' );
 		},
 
@@ -2752,9 +2811,8 @@
 			viewGeneralSettings.initTabs();
 
 			// Conditional display general settings & trigger display settings if template changes
-			// $('#gravityview_directory_template')
-			// 	.on('change', viewGeneralSettings.updateSettingsDisplay )
-			// 	.trigger('change');
+			$('#gravityview_directory_template')
+				.on('change', viewGeneralSettings.updateSettingsDisplay );
 
 			$( document.body )
 				// Enable a setting tab (since 1.8)

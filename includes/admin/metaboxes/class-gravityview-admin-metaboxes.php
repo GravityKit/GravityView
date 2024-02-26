@@ -344,7 +344,7 @@ class GravityView_Admin_Metaboxes {
 		 * Selected templates
 		 *
 		 * @deprecated $curr_template since $ver$
-		 *             Use $multiple_entries_template instead.
+		 *             Use $directory_entries_template instead.
 		 */
 		$curr_template              = gravityview_get_directory_entries_template_id( $post->ID );
 		$directory_entries_template = gravityview_get_directory_entries_template_id( $post->ID );

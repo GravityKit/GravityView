@@ -22,14 +22,15 @@ class GravityView_Default_Template_Table extends GravityView_Template {
 			$css_filename = 'table-view-legacy.css';
 		}
 
-		$table_settings = array(
+		$table_settings = [
 			'slug'        => 'table',
 			'type'        => 'custom',
 			'label'       => __( 'Table', 'gk-gravityview' ),
 			'description' => __( 'Display items in a table view.', 'gk-gravityview' ),
 			'logo'        => plugins_url( 'includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE ),
+			'icon'        => 'data:image/svg+xml;base64, PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzE0MzRfMTI4MSkiPgo8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIxIiB5PSIwLjUiIHdpZHRoPSIzMCIgaGVpZ2h0PSI3IiBmaWxsPSIjRjNGNEY1Ii8+CjxyZWN0IHk9IjciIHdpZHRoPSIzMiIgaGVpZ2h0PSIxIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHk9IjEyIiB3aWR0aD0iMzIiIGhlaWdodD0iMSIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB5PSIxNyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjEiIGZpbGw9IiMxRDIzMjciLz4KPHJlY3QgeD0iMTMiIHk9IjEiIHdpZHRoPSIxIiBoZWlnaHQ9IjIzIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHg9IjE5IiB5PSIxIiB3aWR0aD0iMSIgaGVpZ2h0PSIyMyIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB4PSIyNSIgeT0iMSIgd2lkdGg9IjEiIGhlaWdodD0iMjMiIGZpbGw9IiMxRDIzMjciLz4KPHJlY3QgeD0iMTUiIHk9IjkuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB4PSIxNSIgeT0iMTQuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iI0NDRDBENCIvPgo8cmVjdCB4PSIxNSIgeT0iMTkuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iI0NDRDBENCIvPgo8cmVjdCB4PSIyIiB5PSI5LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHg9IjIiIHk9IjE0LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjQ0NEMEQ0Ii8+CjxyZWN0IHg9IjIiIHk9IjE5LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjQ0NEMEQ0Ii8+CjwvZz4KPHJlY3QgeD0iMC41IiB5PSIwLjUiIHdpZHRoPSIzMSIgaGVpZ2h0PSIyMyIgcng9IjEuNSIgc3Ryb2tlPSIjMUQyMzI3Ii8+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzE0MzRfMTI4MSI+CjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIyNCIgcng9IjIiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==',
 			'css_source'  => gravityview_css_url( $css_filename, GRAVITYVIEW_DIR . 'templates/css/' ),
-		);
+		];
 
 		$settings = wp_parse_args( $settings, $table_settings );
 

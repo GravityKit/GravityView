@@ -17,6 +17,34 @@ $templates = array_filter(
 	}
 );
 
+/**
+ * Returns the HTML for the templates options needed for the view dropdown.
+ *
+ * @since $ver$
+ *
+ * @param array       $templates         The templates to render.
+ * @param string|null $selected_template The current selected template.
+ *
+ * @return string The rendered options.
+ */
+function render_template_options( array $templates, ?string $selected_template ): string {
+	$html = sprintf( '<option value="">%s</option>', esc_html__( 'Select a type', 'gk-gravityview' ) );
+
+	foreach ( $templates as $template_id => $template ) {
+		$html .= sprintf(
+			'<option data-icon="%s" data-title="%s" data-description="%s" value="%s"%s>%s</option>',
+			esc_attr( rgar( $template, 'icon', rgar( $template, 'logo', '' ) ) ),
+			esc_attr( rgar( $template, 'label', '' ) ),
+			esc_attr( rgar( $template, 'description', '' ) ),
+			esc_attr( $template_id ),
+			$template_id === $selected_template ? 'selected="selected"' : '',
+			esc_html( rgar( $template, 'label', '' ) )
+		);
+	}
+
+	return $html;
+}
+
 ?>
 <input name="gv_fields" type="hidden" value="<?php echo esc_attr( http_build_query( array( 'fields' => get_post_meta( $post->ID, '_gravityview_directory_fields', true ) ) ) ); ?>" />
 
@@ -35,20 +63,7 @@ $templates = array_filter(
 		<div id="directory-fields" class="gv-section">
 			<div class="view-template-select">
 				<select data-view-dropdown id="gravityview_directory_template" name="gravityview_directory_template" data-section="directory" data-scope="Multiple Entries" data-label="View type">
-					<option value=""><?php esc_html_e( 'Select a type', 'gk-gravityview' ); ?></option>
-					<?php
-					foreach ( $templates as $template_id => $template ) {
-						printf(
-							'<option data-icon="%s" data-title="%s" data-description="%s" value="%s"%s>%s</option>',
-							esc_attr( rgar( $template, 'logo', '' ) ), //'data:image/svg+xml;base64, PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzE0MzRfMTI4MSkiPgo8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIxIiB5PSIwLjUiIHdpZHRoPSIzMCIgaGVpZ2h0PSI3IiBmaWxsPSIjRjNGNEY1Ii8+CjxyZWN0IHk9IjciIHdpZHRoPSIzMiIgaGVpZ2h0PSIxIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHk9IjEyIiB3aWR0aD0iMzIiIGhlaWdodD0iMSIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB5PSIxNyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjEiIGZpbGw9IiMxRDIzMjciLz4KPHJlY3QgeD0iMTMiIHk9IjEiIHdpZHRoPSIxIiBoZWlnaHQ9IjIzIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHg9IjE5IiB5PSIxIiB3aWR0aD0iMSIgaGVpZ2h0PSIyMyIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB4PSIyNSIgeT0iMSIgd2lkdGg9IjEiIGhlaWdodD0iMjMiIGZpbGw9IiMxRDIzMjciLz4KPHJlY3QgeD0iMTUiIHk9IjkuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB4PSIxNSIgeT0iMTQuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iI0NDRDBENCIvPgo8cmVjdCB4PSIxNSIgeT0iMTkuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iI0NDRDBENCIvPgo8cmVjdCB4PSIyIiB5PSI5LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHg9IjIiIHk9IjE0LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjQ0NEMEQ0Ii8+CjxyZWN0IHg9IjIiIHk9IjE5LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjQ0NEMEQ0Ii8+CjwvZz4KPHJlY3QgeD0iMC41IiB5PSIwLjUiIHdpZHRoPSIzMSIgaGVpZ2h0PSIyMyIgcng9IjEuNSIgc3Ryb2tlPSIjMUQyMzI3Ii8+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzE0MzRfMTI4MSI+CjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIyNCIgcng9IjIiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==',
-							esc_attr( rgar( $template, 'label', '' ) ),
-							esc_attr( rgar( $template, 'description', '' ) ),
-							esc_attr( $template_id ),
-							$template_id === $directory_entries_template ? 'selected="selected"' : '',
-							esc_html( rgar( $template, 'label', '' ) )
-						);
-					}
-					?>
+					<?php echo render_template_options( $templates, $directory_entries_template ); ?>
 				</select>
 			</div>
 
@@ -99,20 +114,7 @@ $templates = array_filter(
 
 			<div class="view-template-select">
 				<select data-view-dropdown id="gravityview_single_template" name="gravityview_single_template" data-section="single" data-scope="Single Entry" data-label="View type">
-					<option value=""><?php esc_html_e( 'Select a type', 'gk-gravityview' ); ?></option>
-					<?php
-						foreach ( $templates as $template_id => $template ) {
-							printf(
-								'<option data-icon="%s" data-title="%s" data-description="%s" value="%s"%s>%s</option>',
-								esc_attr( rgar( $template, 'logo', '' ) ), //'data:image/svg+xml;base64, PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAzMiAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzE0MzRfMTI4MSkiPgo8cmVjdCB3aWR0aD0iMzIiIGhlaWdodD0iMjQiIHJ4PSIyIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIxIiB5PSIwLjUiIHdpZHRoPSIzMCIgaGVpZ2h0PSI3IiBmaWxsPSIjRjNGNEY1Ii8+CjxyZWN0IHk9IjciIHdpZHRoPSIzMiIgaGVpZ2h0PSIxIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHk9IjEyIiB3aWR0aD0iMzIiIGhlaWdodD0iMSIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB5PSIxNyIgd2lkdGg9IjMyIiBoZWlnaHQ9IjEiIGZpbGw9IiMxRDIzMjciLz4KPHJlY3QgeD0iMTMiIHk9IjEiIHdpZHRoPSIxIiBoZWlnaHQ9IjIzIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHg9IjE5IiB5PSIxIiB3aWR0aD0iMSIgaGVpZ2h0PSIyMyIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB4PSIyNSIgeT0iMSIgd2lkdGg9IjEiIGhlaWdodD0iMjMiIGZpbGw9IiMxRDIzMjciLz4KPHJlY3QgeD0iMTUiIHk9IjkuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iIzFEMjMyNyIvPgo8cmVjdCB4PSIxNSIgeT0iMTQuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iI0NDRDBENCIvPgo8cmVjdCB4PSIxNSIgeT0iMTkuNSIgd2lkdGg9IjMiIGhlaWdodD0iMSIgZmlsbD0iI0NDRDBENCIvPgo8cmVjdCB4PSIyIiB5PSI5LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjMUQyMzI3Ii8+CjxyZWN0IHg9IjIiIHk9IjE0LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjQ0NEMEQ0Ii8+CjxyZWN0IHg9IjIiIHk9IjE5LjUiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxIiBmaWxsPSIjQ0NEMEQ0Ii8+CjwvZz4KPHJlY3QgeD0iMC41IiB5PSIwLjUiIHdpZHRoPSIzMSIgaGVpZ2h0PSIyMyIgcng9IjEuNSIgc3Ryb2tlPSIjMUQyMzI3Ii8+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzE0MzRfMTI4MSI+CjxyZWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIyNCIgcng9IjIiIGZpbGw9IndoaXRlIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPC9zdmc+Cg==',
-								esc_attr( rgar( $template, 'label', '' ) ),
-								esc_attr( rgar( $template, 'description', '' ) ),
-								esc_attr( $template_id ),
-								$template_id === $single_entry_template ? 'selected="selected"' : '',
-								esc_html( rgar( $template, 'label', '' ) )
-							);
-						}
-					?>
+					<?php echo render_template_options( $templates, $single_entry_template ); ?>
 				</select>
 			</div>
 
