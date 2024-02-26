@@ -167,8 +167,8 @@ msgid "Show only approved entries"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:258
-#: includes/admin/metaboxes/views/view-configuration.php:118
-#: includes/admin/metaboxes/views/view-configuration.php:143
+#: includes/admin/metaboxes/views/view-configuration.php:117
+#: includes/admin/metaboxes/views/view-configuration.php:151
 msgid "Note: %s"
 msgstr ""
 
@@ -182,9 +182,9 @@ msgstr ""
 
 #: future/includes/class-gv-renderer.php:282
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:153
-#: includes/admin/metaboxes/views/view-configuration.php:28
-#: includes/admin/metaboxes/views/view-configuration.php:143
-#: includes/admin/metaboxes/views/view-configuration.php:144
+#: includes/admin/metaboxes/views/view-configuration.php:58
+#: includes/admin/metaboxes/views/view-configuration.php:151
+#: includes/admin/metaboxes/views/view-configuration.php:152
 #: includes/class-admin-views.php:1393
 #: includes/class-frontend-views.php:685
 #: includes/class-gravityview-admin-bar.php:104
@@ -201,9 +201,9 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:296
 #: future/includes/class-gv-settings-view.php:498
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:145
-#: includes/admin/metaboxes/views/view-configuration.php:27
+#: includes/admin/metaboxes/views/view-configuration.php:57
+#: includes/admin/metaboxes/views/view-configuration.php:117
 #: includes/admin/metaboxes/views/view-configuration.php:118
-#: includes/admin/metaboxes/views/view-configuration.php:119
 #: includes/class-frontend-views.php:689
 msgid "Single Entry"
 msgstr ""
@@ -211,7 +211,7 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:300
 #: future/includes/class-gv-settings-view.php:497
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
-#: includes/admin/metaboxes/views/view-configuration.php:26
+#: includes/admin/metaboxes/views/view-configuration.php:56
 #: includes/class-frontend-views.php:682
 msgid "Multiple Entries"
 msgstr ""
@@ -1302,7 +1302,7 @@ msgid "Layout"
 msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:86
-#: includes/admin/metaboxes/views/view-configuration.php:23
+#: includes/admin/metaboxes/views/view-configuration.php:53
 #: includes/class-admin-views.php:536
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:202
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:290
@@ -1488,41 +1488,45 @@ msgstr ""
 msgid "Add this shortcode to a post or page to embed this view."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:23
+#: includes/admin/metaboxes/views/view-configuration.php:31
+msgid "Select a type"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:53
 msgid "Scroll to View Settings"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:26
-#: includes/admin/metaboxes/views/view-configuration.php:27
-#: includes/admin/metaboxes/views/view-configuration.php:28
+#: includes/admin/metaboxes/views/view-configuration.php:56
+#: includes/admin/metaboxes/views/view-configuration.php:57
+#: includes/admin/metaboxes/views/view-configuration.php:58
 msgid "%s Layout"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:53
+#: includes/admin/metaboxes/views/view-configuration.php:65
 msgid "Top Widgets"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:53
+#: includes/admin/metaboxes/views/view-configuration.php:65
 msgid "These widgets will be shown above entries."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:57
+#: includes/admin/metaboxes/views/view-configuration.php:75
 msgid "Entries Fields"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:57
+#: includes/admin/metaboxes/views/view-configuration.php:75
 msgid "These fields will be shown for each entry."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:67
+#: includes/admin/metaboxes/views/view-configuration.php:85
 msgid "Bottom Widgets"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:67
+#: includes/admin/metaboxes/views/view-configuration.php:85
 msgid "These widgets will be shown below entries."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:80
+#: includes/admin/metaboxes/views/view-configuration.php:98
 #: includes/class-admin-views.php:1265
 #: includes/class-admin-views.php:1466
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
@@ -1532,13 +1536,13 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:118
-#: includes/admin/metaboxes/views/view-configuration.php:143
+#: includes/admin/metaboxes/views/view-configuration.php:117
+#: includes/admin/metaboxes/views/view-configuration.php:151
 msgid "No fields link to the %s layout."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:119
-#: includes/admin/metaboxes/views/view-configuration.php:144
+#: includes/admin/metaboxes/views/view-configuration.php:118
+#: includes/admin/metaboxes/views/view-configuration.php:152
 msgid "Learn how to link to %s"
 msgstr ""
 
@@ -1546,11 +1550,11 @@ msgstr ""
 msgid "These fields will be shown in Single Entry layout."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:147
+#: includes/admin/metaboxes/views/view-configuration.php:155
 msgid "Fields shown when editing an entry."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:147
+#: includes/admin/metaboxes/views/view-configuration.php:155
 msgid "If not configured, all form fields will be displayed."
 msgstr ""
 
@@ -4090,7 +4094,7 @@ msgid "Display items in a listing view."
 msgstr ""
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:27
-#: includes/presets/default-table/class-gravityview-default-template-table.php:43
+#: includes/presets/default-table/class-gravityview-default-template-table.php:44
 msgid "Link to single entry"
 msgstr ""
 
@@ -4134,15 +4138,15 @@ msgstr ""
 msgid "Table"
 msgstr ""
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:56
+#: includes/presets/default-table/class-gravityview-default-template-table.php:57
 msgid "Visible Table Columns"
 msgstr ""
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:57
+#: includes/presets/default-table/class-gravityview-default-template-table.php:58
 msgid "Each field will be displayed as a column in the table."
 msgstr ""
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:105
+#: includes/presets/default-table/class-gravityview-default-template-table.php:106
 msgid "Add Table Column"
 msgstr ""
 

@@ -18,6 +18,7 @@ abstract class GravityView_Template {
 	 * @type string $label - template nicename (admin)
 	 * @type string $description - short about text (admin)
 	 * @type string $logo - template icon (admin)
+	 * @type string $icon - template icon (admin)
 	 * @type string $preview - template image for previewing (admin)
 	 * @type string $buy_source - url source for buying this template
 	 * @type string $preset_form - path to Gravity Form form XML file

@@ -96,6 +96,7 @@
 					e.preventDefault();
 				}
 
+				// Capture enter, arrow up & down and space if we are focussing on the entire select.
 				if ( [ 'Enter', ' ', 'ArrowUp', 'ArrowDown' ].indexOf( e.key ) > -1 && dropdown.select.has( ':focus' ) ) {
 					e.preventDefault();
 				}
