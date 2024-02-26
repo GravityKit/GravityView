@@ -1,5 +1,6 @@
 <?php
 /**
+ * @global \WP_Post $post The current post
  * @global string $directory_entries_template GravityView_Template::template_id value for directory entries section.
  * @global string $single_entry_template GravityView_Template::template_id value for single entry section.
  */
@@ -10,8 +11,9 @@ $templates = array_filter(
 		$placeholder = ! empty( $template['buy_source'] );
 		$is_included = ! empty( $template['included'] );
 
-		// TOdo: activate
-		return /*'custom' === rgar( $template, 'type' ) && */! $placeholder && ! $is_included;
+		// Todo: include these when the design allows for them.
+		// Todo: Sort by active / inactive; then by name ASC.
+		return ! $placeholder && ! $is_included;
 	}
 );
 
@@ -32,8 +34,8 @@ $templates = array_filter(
 
 		<div id="directory-fields" class="gv-section">
 			<div class="view-template-select">
-				<select id="gravityview_directory_template" name="gravityview_directory_template" class="view-dropdown" data-section="directory" data-scope="Multiple Entries" data-label="View type">
-					<option value="">Select a type</option>
+				<select data-view-dropdown id="gravityview_directory_template" name="gravityview_directory_template" data-section="directory" data-scope="Multiple Entries" data-label="View type">
+					<option value=""><?php esc_html_e( 'Select a type', 'gk-gravityview' ); ?></option>
 					<?php
 					foreach ( $templates as $template_id => $template ) {
 						printf(
@@ -96,8 +98,8 @@ $templates = array_filter(
 		<div id="single-fields" class="gv-section">
 
 			<div class="view-template-select">
-				<select id="gravityview_single_template" name="gravityview_single_template" class="view-dropdown" data-section="single" data-scope="Single Entry" data-label="View type">
-					<option value="">Select a type</option>
+				<select data-view-dropdown id="gravityview_single_template" name="gravityview_single_template" data-section="single" data-scope="Single Entry" data-label="View type">
+					<option value=""><?php esc_html_e( 'Select a type', 'gk-gravityview' ); ?></option>
 					<?php
 						foreach ( $templates as $template_id => $template ) {
 							printf(
