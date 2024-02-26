@@ -2079,3 +2079,22 @@ $dialog-button-padding: 5px;
 	white-space: nowrap;
 	width: 1px;
 }
+
+.gv-section-header {
+	display: flex;
+	justify-content: space-between;
+	margin-top: -1em;
+
+	h4 {
+		flex: 1;
+	}
+
+	.view-template-select {
+		flex: 1;
+		height: 42px;
+		width: 100%;
+		position: relative;
+		margin: 1rem 0 1rem 1rem;
+		flex-shrink: 0;
+	}
+}

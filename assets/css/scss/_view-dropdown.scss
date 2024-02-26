@@ -14,6 +14,7 @@
 		cursor: pointer;
 		background-color: #FFF;
 		overflow: hidden;
+		max-width: 99%;
 
 		&:hover,
 		&:focus {
@@ -47,17 +48,21 @@
 		font-size: 14px;
 		font-weight: 500;
 		color: #2C3338;
+		white-space: nowrap;
 	}
 
 	.view-dropdown-select__value__selection {
 		color: #2271B1;
 		margin-left: 4px;
+		text-overflow: ellipsis;
+		overflow: hidden;
 	}
 
 	.view-dropdown-select__value,
 	.view-dropdown-select__toggle {
 		line-height: 24px;
 		padding: 8px;
+		overflow: hidden;
 	}
 
 	.view-dropdown-select__toggle {
@@ -77,8 +82,7 @@
 		position: absolute;
 		top: 48px;
 		right: 0;
-		width: 80%;
-		max-width: 360px;
+		width: 360px;
 		background-color: #FFF;
 		border-radius: 3px;
 		border: 1px solid #C3C4C7;

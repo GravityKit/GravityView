@@ -61,13 +61,14 @@ function render_template_options( array $templates, ?string $selected_template )
 	<div id="directory-view">
 
 		<div id="directory-fields" class="gv-section">
-			<div class="view-template-select">
-				<select data-view-dropdown id="gravityview_directory_template" name="gravityview_directory_template" data-section="directory" data-scope="Multiple Entries" data-label="View type">
-					<?php echo render_template_options( $templates, $directory_entries_template ); ?>
-				</select>
+			<div class="gv-section-header">
+				<h4><?php esc_html_e( 'Top Widgets', 'gk-gravityview' ); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gk-gravityview' ); ?></span></h4>
+				<div class="view-template-select">
+					<select data-view-dropdown id="gravityview_directory_template" name="gravityview_directory_template" data-section="directory" data-scope="Multiple Entries" data-label="View type">
+						<?php echo render_template_options( $templates, $directory_entries_template ); ?>
+					</select>
+				</div>
 			</div>
-
-			<h4><?php esc_html_e( 'Top Widgets', 'gk-gravityview' ); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gk-gravityview' ); ?></span></h4>
 
 			<?php do_action( 'gravityview_render_widgets_active_areas', $directory_entries_template, 'header', $post->ID ); ?>
 
@@ -112,18 +113,21 @@ function render_template_options( array $templates, ?string $selected_template )
 
 		<div id="single-fields" class="gv-section">
 
-			<div class="view-template-select">
-				<select data-view-dropdown id="gravityview_single_template" name="gravityview_single_template" data-section="single" data-scope="Single Entry" data-label="View type">
-					<?php echo render_template_options( $templates, $single_entry_template ); ?>
-				</select>
-			</div>
-
 			<div class="notice notice-warning notice-no-link inline is-dismissible">
 				<h3><?php printf( esc_html__( 'Note: %s', 'gk-gravityview' ), sprintf( esc_html__( 'No fields link to the %s layout.', 'gk-gravityview' ), esc_html__( 'Single Entry', 'gk-gravityview' ) ) ); ?></h3>
 				<p><a data-beacon-article-modal="54c67bbae4b0512429885516" href="https://docs.gravitykit.com/article/70-linking-to-a-single-entry"><?php printf( esc_html__( 'Learn how to link to %s', 'gk-gravityview' ), esc_html__( 'Single Entry', 'gk-gravityview' ) ); ?></a></p>
 			</div>
 
-			<h4><?php esc_html_e( 'These fields will be shown in Single Entry layout.', 'gk-gravityview' ); ?></h4>
+			<div class="gv-section-header">
+				<h4><?php esc_html_e( 'These fields will be shown in Single Entry layout.', 'gk-gravityview' ); ?></h4>
+
+				<div class="view-template-select">
+					<select data-view-dropdown id="gravityview_single_template" name="gravityview_single_template"
+							data-section="single" data-scope="Single Entry" data-label="View type">
+						<?php echo render_template_options( $templates, $single_entry_template ); ?>
+					</select>
+				</div>
+			</div>
 
 			<div id="single-active-fields" class="gv-grid">
 				<?php
