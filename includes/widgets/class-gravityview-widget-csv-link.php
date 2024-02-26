@@ -74,7 +74,7 @@ final class GravityView_Widget_Csv_Link extends Widget {
 	public function __construct() {
 		$this->widget_description = 'Insert a link to a CSV / TSV download.';
 
-		parent::__construct( 'CSV download Link', 'csv_link', self::defaults(), self::settings() );
+		parent::__construct( 'CSV download link', 'csv_link', self::defaults(), self::settings() );
 	}
 
 	/**
