@@ -48,7 +48,7 @@
 
 		this.storeValue();
 
-		$el.css( { display: 'none' } );
+		$el.hide();
 		$el.wrap( $( '<div class="view-dropdown"></div>' ) );
 		this.$wrapper = $el.closest( 'div.view-dropdown' );
 		this.$options_wrapper = $( ' <div class="view-dropdown-options"></div>' );
@@ -105,9 +105,7 @@
 			.on( 'click', $.proxy( this.toggle, dropdown ) )
 			.on( 'keyup', $.proxy( this.handleKeySelect, this ) );
 
-		$el.on( 'change', function () {
-			dropdown.close();
-		} );
+		$el.on( 'change', $.proxy( this.close, dropdown ) );
 
 		$( this.$options_list )
 			.on( 'click', 'div.view-dropdown-list-item', function () {
@@ -378,7 +376,7 @@
 
 	// Initialize any `view-dropdown` elements currently on the page.
 	$( function () {
-		$( 'select.view-dropdown' ).each( function () {
+		$( 'select[data-view-dropdown]' ).each( function () {
 			$( this ).viewDropdown();
 		} );
 	} );

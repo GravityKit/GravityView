@@ -141,7 +141,7 @@
 
 				// select template
 				.on( 'click', '.gv_select_template', vcfg.selectTemplate )
-				.on( 'change', '.view-dropdown', vcfg.selectTemplate )
+				.on( 'change', 'select[data-view-dropdown]', vcfg.selectTemplate )
 
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
@@ -1447,7 +1447,7 @@
 				viewConfiguration.wantedTemplate.data( 'view-data' ).storeValue();
 			} else {
 				// Persist all current values for dropdowns.
-				$( 'select.view-dropdown' ).each( function () {
+				$( 'select[data-view-dropdown]' ).each( function () {
 					$( this ).data( 'view-data' ).storeValue();
 				} );
 			}
