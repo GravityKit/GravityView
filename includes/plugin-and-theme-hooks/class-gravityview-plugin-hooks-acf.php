@@ -70,21 +70,23 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 			return [];
 		}
 
-		if ( ! isset( $this->keys[ $post_id ] ) ) {
-			$post_id = acf_get_valid_post_id( $post_id );
-			$meta    = acf_get_meta( $post_id );
-
-			/**
-			 * Filter non ACF keys. {@see get_field_objects}.
-			 * We use this instead of `get_field_objects` to prevent circular reference and save memory.
-			 */
-			$this->keys[ $post_id ] = array_filter(
-				array_keys( $meta ),
-				static function ( string $key ) use ( $meta ) {
-					return isset( $meta[ '_' . $key ] );
-				}
-			);
+		if ( isset( $this->keys[ $post_id ] ) ) {
+			return $this->keys[ $post_id ];
 		}
+
+		$post_id = acf_get_valid_post_id( $post_id );
+		$meta    = acf_get_meta( $post_id );
+
+		/**
+		 * Filter non ACF keys. {@see get_field_objects}.
+		 * We use this instead of `get_field_objects` to prevent circular reference and save memory.
+		 */
+		$this->keys[ $post_id ] = array_filter(
+			array_keys( $meta ),
+			static function ( string $key ) use ( $meta ) {
+				return isset( $meta[ '_' . $key ] );
+			}
+		);
 
 		return $this->keys[ $post_id ];
 	}
