@@ -62,7 +62,7 @@ final class GravityView_Widget_Csv_Link extends Widget {
 	 */
 	private static function defaults(): array {
 		return [
-			'label' => __( 'Download CSV', 'gk-gravityview' ),
+			'title' => __( 'Download CSV', 'gk-gravityview' ),
 			'type'  => 'csv',
 		];
 	}
@@ -72,9 +72,13 @@ final class GravityView_Widget_Csv_Link extends Widget {
 	 * @since $ver$
 	 */
 	public function __construct() {
-		$this->widget_description = 'Insert a link to a CSV / TSV download.';
+		$this->widget_description = sprintf(
+			'<p>%s</p><p class="notice notice-alt notice-large notice-warning hidden csv-disabled-notice">%s</p>',
+			esc_html__( 'Insert a button to a CSV / TSV download.', 'gk-gravityview' ),
+			esc_html__( 'In order to use this feature you need to Allow Export.', 'gk-gravityview' )
+		);
 
-		parent::__construct( 'CSV download link', 'csv_link', self::defaults(), self::settings() );
+		parent::__construct( 'CSV download button', 'csv_link', self::defaults(), self::settings() );
 	}
 
 	/**
@@ -89,35 +93,66 @@ final class GravityView_Widget_Csv_Link extends Widget {
 			return;
 		}
 
-		$view = $context->view;
-
+		$view  = $context->view;
+		$nonce = $this->get_nonce( $view );
 		if (
-			! $view instanceof View
-			|| false === (bool) $view->settings->get( 'csv_enable', false )
+			! $nonce
+			|| ! $view->settings->get( 'csv_enable' )
 		) {
 			return;
 		}
 
-		$type         = rgar( $widget_args, 'type', 'csv' );
+		$available_types = [ 'csv', 'tsv' ];
+		$type            = strtolower( rgar( $widget_args, 'type', 'csv' ) );
+		if ( ! in_array( $type, $available_types, true ) ) {
+			$type = 'csv';
+		}
+
 		$label        = rgar( $widget_args, 'title', 'Download CSV' );
 		$in_paragraph = (bool) rgar( $widget_args, 'in_paragraph', false );
 
-		$permalink = get_permalink( $view->id );
-
-		if ( ! $permalink ) {
-			return;
-		}
+		$rest_url = add_query_arg(
+			[ '_nonce' => $nonce ],
+			sprintf( '%sgravityview/v1/views/%d/entries.%s', get_rest_url(), $view->ID, $type )
+		);
 
 		$link = sprintf(
-			'<a href="%s/%s">%s</a>',
-			esc_attr( rtrim( $permalink, '/' ) ),
-			esc_attr( $type ),
+			'<a href="%s" target="_blank" rel="noopener nofollow">%s</a>',
+			esc_attr( $rest_url ),
 			esc_attr( $label )
 		);
 
 		$in_paragraph
 			? printf( '<p>%s</p>', $link )
 			: print( $link );
+	}
+
+	/**
+	 * Create a nonce for a guest, as the REST API is stateless.
+	 *
+	 * @since $ver$
+	 *
+	 * @param View|null $view The view object.
+	 *
+	 * @return string The nonce.
+	 */
+	private function get_nonce( $view ): string {
+		if ( ! $view instanceof View ) {
+			return '';
+		}
+
+		$user_id = wp_get_current_user()->ID;
+		if ( $user_id ) {
+			wp_set_current_user( 0 );
+		}
+
+		$nonce = wp_create_nonce( sprintf( '%s.%d', $this->get_widget_id(), $view->ID ) );
+
+		if ( $user_id ) {
+			wp_set_current_user( $user_id );
+		}
+
+		return $nonce ?: '';
 	}
 }
 

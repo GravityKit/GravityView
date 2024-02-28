@@ -2802,4 +2802,21 @@
 		$( document.body ).trigger( 'gravityview/loaded' );
 	} );
 
+	/**
+	 * Handles CSV widget classes.
+	 * @since $ver$
+	 */
+	$( function () {
+		const $csv_enable = $( '#gravityview_se_csv_enable' );
+		const update_csv_widget_classes = function () {
+			$( '[data-fieldid="csv_link"]' )
+				.toggleClass( 'csv-disabled', !$csv_enable.is( ':checked' ) )
+				.attr( 'aria-disabled', $csv_enable.is( ':checked' ) ? 'false' : 'true' )
+			;
+		};
+
+		$csv_enable.on( 'change', update_csv_widget_classes );
+		update_csv_widget_classes();
+	} );
+
 }(jQuery));

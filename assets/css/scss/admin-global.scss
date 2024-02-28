@@ -171,3 +171,15 @@
 		margin: -1px;
 	}
 }
+
+.gv-fields.csv-disabled {
+	cursor: not-allowed;
+
+	.csv-disabled-notice {
+		display: block;
+	}
+	.gv-field-label,
+	.gv-field-controls button {
+		color: #d7dade !important;
+	}
+}

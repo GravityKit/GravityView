@@ -26,6 +26,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### Added
 * A widget to export all entries as CSV or TSV.
 
+#### Fixed
+* An entry link was added to the CSV output.
+
 = 2.20.2 on March 4, 2024 =
 
 This release enhances performance by optimizing caching and managing transients more effectively.
@@ -36,6 +39,9 @@ This release enhances performance by optimizing caching and managing transients 
 #### 🔧 Updated
 * Updated [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.10.
   - Transients are no longer autoloaded.
+Improved: The database now stores fewer cache records due to enhanced detection of duplicate queries.
+Added: a widget to quickly download as a CSV.
+Fixed: No entry link on CSV output.
 
 = 2.20.1 on February 29, 2024 =
 
