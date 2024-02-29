@@ -23,7 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.20.1 [unreleased] =
 
-Fixed: Issues with disappearing pagination and incorrect entry count when View caching is enabled.
+* Fixed: Issues with disappearing pagination and incorrect entry count when View caching is enabled.
+* Fixed: Potential timeout issue when embedding GravityView shortcodes with Advanced Custom Fields plugin.
 
 = 2.20 on February 22, 2024 =
 
