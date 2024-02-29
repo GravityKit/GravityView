@@ -122,12 +122,11 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	public function filter_student_dashboard_tabs( $tabs = [] ) {
 
 		$tab_title = $this->get_option( 'label', __( 'My Forms', 'gk-gravityview' ) );
-		$slug_name = $this->get_option( 'slug', 'my-forms' );
 
 		$new_tab = [
 			'gravityview' => [
 				'content'  => [ $this, 'dashboard_content' ],
-				'endpoint' => sanitize_title_with_dashes( $slug_name ),
+				'endpoint' => $this->get_endpoint(),
 				'nav_item' => true,
 				'title'    => $tab_title,
 			],
@@ -138,6 +137,26 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		array_splice( $tabs, $my_grades_index + 1, 0, $new_tab );
 
 		return $tabs;
+	}
+
+	/**
+	 * Return the default slug for the GravityView integration endpoint.
+	 *
+	 * @return string The default slug for the GravityView integration endpoint, sanitized by `sanitize_title_with_dashes`.
+	 */
+	private function get_default_slug() {
+		return sanitize_title_with_dashes( __( 'my-forms', 'gk-gravityview' ) );
+	}
+
+	/**
+	 * Get the endpoint slug from GravityView LifterLMS settings.
+	 *
+	 * @return string
+	 */
+	private function get_endpoint() {
+		$slug_name = $this->get_option( 'slug', $this->get_default_slug() );
+
+		return sanitize_title_with_dashes( $slug_name );
 	}
 
 	/**
@@ -246,16 +265,22 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		return trailingslashit( $permalink ) . trailingslashit( $this->get_endpoint() );
 	}
 
+	/**
+	 * Generate the shortcode output for the configured Views.
+	 *
+	 * @return string
+	 */
 	private function get_raw_content() {
+
+		$content = '';
 
 		$view_ids = $this->get_option( 'views', [] );
 
 		if ( empty( $view_ids ) ) {
-			return '';
+			return $content;
 		}
 
 		global $post;
-		$content = '';
 		foreach ( $view_ids as $view_id ) {
 			$content .= '[gravityview view_id="' . (int) $view_id . '" post_id="'. $post->ID . '" /]';
 		}
@@ -264,7 +289,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	}
 
 	/**
-	 *
+	 * Return the settings for the integration.
 	 *
 	 * @return array[]
 	 */
@@ -297,7 +322,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 			[
 				'title'   => __( 'Endpoint slug:', 'gk-gravityview' ),
 				'desc'    => __( 'The end of the URL to display when accessing this tab from the Student Dashboard. This value will be converted to lowercase spaces and special characters replaced by dashes.', 'gk-gravityview' ),
-				'default' => __( 'my-forms', 'gk-gravityview' ),
+				'default' => $this->get_default_slug(),
 				'id'      => $this->get_option_name( 'slug' ),
 				'type'    => 'text',
 			],
@@ -312,16 +337,6 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 					'size' => 10,
 				],
 			],
-			/*[
-				'default' => 'embed',
-				'id'      => $this->get_option_name( 'display' ),
-				'type'    => 'radio',
-				'options' => [
-					'embed' => __( 'Embedded', 'gk-gravityview' ),
-					'as_list' => __( 'Links', 'gk-gravityview' ),
-				],
-				'title'   => __( 'Display the Views as:', 'gk-gravityview' ),
-			),*/
 		];
 
 	}
