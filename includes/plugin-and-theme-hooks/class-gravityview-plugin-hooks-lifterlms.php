@@ -182,7 +182,11 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	}
 
 	/**
-	 * Show all the Views as configured in LifterLMS settings
+	 * Renders the Views that were configured in LifterLMS settings.
+	 *
+	 * @since TODO
+	 *
+	 * @return void
 	 */
 	public function dashboard_content() {
 
@@ -196,7 +200,50 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 
 		$content = $this->get_raw_content();
 
+		if ( '' === $content ) {
+			return;
+		}
+
+		/**
+		 * Disable permalinks so that the /entry/123/ endpoint instead is rendered as ?entry=123
+		 *
+		 * We use a custom filter to avoid conflicts with other plugins that may be using `__return_false`.
+		 *
+		 * @see {GV\Entry::get_permalink}
+		 */
+		add_filter( 'option_permalink_structure', [ $this, 'return_false' ] );
+
+		// Append the LifterLMS GravityView endpoint to the directory link.
+		add_filter( 'gravityview_directory_link', [ $this, 'add_endpoint_to_directory_link' ] );
+
 		echo do_shortcode( $content );
+
+		remove_filter( 'gravityview_directory_link', [ $this, 'add_endpoint_to_directory_link' ] );
+		remove_filter( 'option_permalink_structure', [ $this, 'return_false' ] );
+	}
+
+	/**
+	 * Returns false!
+	 *
+	 * @since TODO
+	 *
+	 * @return false
+	 */
+	public function return_false() {
+		return false;
+	}
+
+	/**
+	 * Appends the LifterLMS GravityView endpoint to the directory link.
+	 *
+	 * @since TODO
+	 *
+	 * @param string $permalink The existing directory link, which points to the LifterLMS Student Dashboard URL.
+	 *
+	 * @return string The directory link with the GravityView endpoint appended.
+	 */
+	public function add_endpoint_to_directory_link( $permalink ) {
+		return trailingslashit( $permalink ) . trailingslashit( $this->get_endpoint() );
 	}
 
 	private function get_raw_content() {
