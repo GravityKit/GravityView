@@ -295,6 +295,17 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.20.1 on February 29, 2024</h3>
+
+				<p>This release fixes an issue with View caching and improves compatibility with the Advanced Custom Fields plugin.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Disappearing pagination and incorrect entry count when View caching is enabled.</li>
+					<li>Potential timeout issue when embedding GravityView shortcodes with Advanced Custom Fields plugin.</li>
+				</ul>
+
 				<h3>2.20 on February 22, 2024</h3>
 
 				<p>This release introduces new settings for better control over View caching, adds support for the Advanced Post Creation Add-On when editing entries, fixes a fatal error when exporting entries to CSV, and updates internal components for better performance and compatibility.</p>
@@ -321,7 +332,7 @@ class GravityView_Welcome {
 
 				<h4>🔧 Updated</h4>
 
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to versions 1.2.9.</p>
+				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.9.</p>
 
 				<ul>
 					<li>GravityKit products that are already installed can now be activated without a valid license.</li>
