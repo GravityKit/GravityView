@@ -235,10 +235,23 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		// Append the LifterLMS GravityView endpoint to the directory link.
 		add_filter( 'gravityview_directory_link', [ $this, 'add_endpoint_to_directory_link' ] );
 
+		add_filter( 'gravityview_go_back_url', [ $this, 'single_entry_go_back_url' ] );
+
 		echo do_shortcode( $content );
 
 		remove_filter( 'gravityview_directory_link', [ $this, 'add_endpoint_to_directory_link' ] );
 		remove_filter( 'option_permalink_structure', [ $this, 'return_false' ] );
+	}
+
+	/**
+	 * Fixes the go back URL when viewing a single entry by removing the single entry endpoint.
+	 *
+	 * @param string $url The current go back URL.
+	 *
+	 * @return string The go back URL with the single entry endpoint removed.
+	 */
+	public function single_entry_go_back_url( $url ) {
+		return remove_query_arg( \GV\Entry::get_endpoint_name() );
 	}
 
 	/**
