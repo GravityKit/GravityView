@@ -263,8 +263,9 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	 */
 	public function add_endpoint_to_directory_link( $permalink ) {
 
-		if ( ! get_option( 'permalink_structure' ) || is_preview() ) {
-			return $permalink;
+		// Check against empty string (WordPress) instead of false (as returned by this class).
+		if ( '' === get_option( 'permalink_structure' ) ) {
+			return add_query_arg( [ $this->get_endpoint() => 1 ], $permalink );
 		}
 
 		return trailingslashit( $permalink ) . trailingslashit( $this->get_endpoint() );
