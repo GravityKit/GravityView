@@ -606,7 +606,12 @@ class GravityView_Welcome {
 
 		// Bail if no activation redirect
 		if ( ! get_transient( '_gv_activation_redirect' ) ) {
-			return; }
+			return;
+		}
+
+		if ( ( $_GET['page'] ?? '' ) === GravityKit\GravityView\Foundation\Licenses\Framework::ID ) {
+			return;
+		}
 
 		// Delete the redirect transient
 		delete_transient( '_gv_activation_redirect' );
