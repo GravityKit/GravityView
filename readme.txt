@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.20.1 [unreleased] =
+
+Fixed: Issues with disappearing pagination and incorrect entry count when View caching is enabled.
+
 = 2.20 on February 22, 2024 =
 
 This release introduces new settings for better control over View caching, adds support for the Advanced Post Creation Add-On when editing entries, fixes a fatal error when exporting entries to CSV, and updates internal components for better performance and compatibility.
