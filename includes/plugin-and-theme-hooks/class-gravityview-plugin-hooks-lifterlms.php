@@ -262,6 +262,11 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	 * @return string The directory link with the GravityView endpoint appended.
 	 */
 	public function add_endpoint_to_directory_link( $permalink ) {
+
+		if ( ! get_option( 'permalink_structure' ) || is_preview() ) {
+			return $permalink;
+		}
+
 		return trailingslashit( $permalink ) . trailingslashit( $this->get_endpoint() );
 	}
 
