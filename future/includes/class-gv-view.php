@@ -1461,18 +1461,23 @@ class View implements \ArrayAccess {
 		if ( $long_lived_cache->use_cache() ) {
 			$cached_entries = $long_lived_cache->get();
 
-			if ( $cached_entries ) {
+			if ( is_array( $cached_entries ) && array_key_exists( 'entries', $cached_entries ) && array_key_exists( 'total', $cached_entries ) ) {
+				$query->total_found = $cached_entries['total'];
+
 				return [
-					$cached_entries,
+					$cached_entries['entries'],
 					$query,
 				];
 			}
 
-			$db_entries = $query->get();
+			$cached_entries = [
+				'entries' => $query->get(),
+				'total'   => $query->total_found,
+			];
 
-			if ( $long_lived_cache->set( $db_entries, 'entries' ) ) {
+			if ( $long_lived_cache->set( $cached_entries, 'entries' ) ) {
 				return [
-					$db_entries,
+					$cached_entries['entries'],
 					$query,
 				];
 			}
