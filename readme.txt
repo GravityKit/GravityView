@@ -28,6 +28,7 @@ This release fixes an issue with View caching and improves compatibility with th
 #### 🐛 Fixed
 * Disappearing pagination and incorrect entry count when View caching is enabled.
 * Potential timeout issue when embedding GravityView shortcodes with Advanced Custom Fields plugin.
+* PHP 8.1+ deprecation notice.
 
 = 2.20 on February 22, 2024 =
 
