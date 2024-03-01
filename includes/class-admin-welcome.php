@@ -304,6 +304,7 @@ class GravityView_Welcome {
 				<ul>
 					<li>Disappearing pagination and incorrect entry count when View caching is enabled.</li>
 					<li>Potential timeout issue when embedding GravityView shortcodes with Advanced Custom Fields plugin.</li>
+					<li>PHP 8.1+ deprecation notice.</li>
 				</ul>
 
 				<h3>2.20 on February 22, 2024</h3>
