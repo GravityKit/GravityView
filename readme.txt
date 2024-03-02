@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+Improved: The database now stores fewer cache records due to enhanced detection of duplicate queries.
+
 = 2.20.1 on February 29, 2024 =
 
 This release fixes an issue with View caching and improves compatibility with the Advanced Custom Fields plugin.
