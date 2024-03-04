@@ -172,6 +172,7 @@
 	}
 }
 
+
 .gv-fields.csv-disabled {
 	cursor: not-allowed;
 
@@ -181,5 +182,9 @@
 	.gv-field-label,
 	.gv-field-controls button {
 		color: #d7dade !important;
+	}
+
+	.ui-tooltip-content .gv-items-picker-container.gv-widget-picker-container & {
+		display: none;
 	}
 }

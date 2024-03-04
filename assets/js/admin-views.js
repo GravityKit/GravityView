@@ -2809,7 +2809,7 @@
 	$( function () {
 		const $csv_enable = $( '#gravityview_se_csv_enable' );
 		const update_csv_widget_classes = function () {
-			$( '[data-fieldid="csv_link"]' )
+			$( '[data-fieldid="export_link"]' )
 				.toggleClass( 'csv-disabled', !$csv_enable.is( ':checked' ) )
 				.attr( 'aria-disabled', $csv_enable.is( ':checked' ) ? 'false' : 'true' )
 			;
