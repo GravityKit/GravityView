@@ -21,7 +21,7 @@ final class GravityView_Widget_Export_Link extends Widget {
 	 *
 	 * @since $ver$
 	 */
-	public const WIDGET_ID = 'export_link_widget';
+	public const WIDGET_ID = 'export_link';
 
 	/**
 	 * A short description.
@@ -121,7 +121,7 @@ final class GravityView_Widget_Export_Link extends Widget {
 	public function hide_description_picker( array $items, GravityView_Admin_View_Item $view_item ): array {
 		if (
 			! $view_item instanceof GravityView_Admin_View_Widget
-			|| rgar( $items[0], 'value' ) !== $this->widget_description
+			|| rgar( $items[0] ?? [], 'value' ) !== $this->widget_description
 		) {
 			return $items;
 		}
@@ -136,6 +136,8 @@ final class GravityView_Widget_Export_Link extends Widget {
 	 * @since $ver$
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ): void {
+		global $wp_query;
+
 		if (
 			! $context instanceof Template_Context
 			|| ! $this->pre_render_frontend( $context )
@@ -163,11 +165,24 @@ final class GravityView_Widget_Export_Link extends Widget {
 		$use_labels   = (bool) rgar( $widget_args, 'use_labels', false );
 		$classes      = (string) rgar( $widget_args, 'classes', '' );
 
+		$page_query_params = array_filter(
+			$_GET,
+			static function ( string $value, string $key ): bool {
+				return 'mode' === $key || preg_match( '/^filter_?/i', $key );
+			},
+			ARRAY_FILTER_USE_BOTH
+		);
+
 		$rest_url = add_query_arg(
-			[
-				'_nonce'     => $nonce,
-				'use_labels' => $use_labels,
-			],
+			array_filter(
+				array_merge(
+					$page_query_params,
+					[
+						'_nonce'     => $nonce,
+						'use_labels' => $use_labels,
+					]
+				)
+			),
 			sprintf( '%sgravityview/v1/views/%d/entries.%s', get_rest_url(), $view->ID, $type )
 		);
 
