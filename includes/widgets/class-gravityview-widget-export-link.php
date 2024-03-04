@@ -5,11 +5,11 @@ use GV\View;
 use GV\Widget;
 
 /**
- * Widget to add a CSV download link.
+ * Widget to add an export link.
  *
  * @since $ver$
  */
-final class GravityView_Widget_Csv_Link extends Widget {
+final class GravityView_Widget_Export_Link extends Widget {
 	/**
 	 * @inheritDoc
 	 * @since $ver$
@@ -17,10 +17,19 @@ final class GravityView_Widget_Csv_Link extends Widget {
 	public $icon = 'dashicons-database-export';
 
 	/**
-	 * @inheritDoc
+	 * The widget ID.
+	 *
 	 * @since $ver$
 	 */
-	protected $show_on_single = false;
+	public const WIDGET_ID = 'export_link_widget';
+
+	/**
+	 * A short description.
+	 *
+	 * @since $ver$
+	 * @var string
+	 */
+	private $widget_short;
 
 	/**
 	 * Returns the settings for this widget.
@@ -29,6 +38,8 @@ final class GravityView_Widget_Csv_Link extends Widget {
 	 * @return array[] The settings.
 	 */
 	private static function settings(): array {
+		$defaults = self::defaults();
+
 		return [
 			'type'         => [
 				'label'   => __( 'Type', 'gk-gravityview' ),
@@ -37,20 +48,32 @@ final class GravityView_Widget_Csv_Link extends Widget {
 					'csv' => 'CSV',
 					'tsv' => 'TSV',
 				],
+				'value'   => $defaults['type'],
 			],
 			'title'        => [
 				'type'       => 'text',
 				'class'      => 'widefat',
 				'label'      => __( 'Label', 'gk-gravityview' ),
 				'desc'       => __( 'Enter the label of the link.', 'gk-gravityview' ),
-				'value'      => '',
+				'value'      => $defaults['title'],
 				'merge_tags' => false,
-				'required'   => true,
 			],
 			'in_paragraph' => [
 				'type'  => 'checkbox',
 				'label' => __( 'Wrap link in paragraph', 'gk-gravityview' ),
 				'desc'  => __( 'Will wrap the link in a <code>&lt;p&gt;</code> tag.', 'gk-gravityview' ),
+			],
+			'use_labels'   => [
+				'type'  => 'checkbox',
+				'label' => __( 'Use labels instead of field ID\'s', 'gk-gravityview' ),
+				'desc'  => __( 'The headers of the file will use the labels instead of the field ID\'s', 'gk-gravityview' ),
+				'value' => $defaults['use_labels'],
+			],
+			'classes'      => [
+				'type'  => 'text',
+				'class' => 'widefat',
+				'label' => __( 'Custom classes', 'gk-gravityview' ),
+				'desc'  => __( 'These classes will be added to the <code>&lt;a&gt;</code> tag.', 'gk-gravityview' )
 			],
 		];
 	}
@@ -62,8 +85,9 @@ final class GravityView_Widget_Csv_Link extends Widget {
 	 */
 	private static function defaults(): array {
 		return [
-			'title' => __( 'Download CSV', 'gk-gravityview' ),
-			'type'  => 'csv',
+			'title'      => __( 'Download CSV', 'gk-gravityview' ),
+			'type'       => 'csv',
+			'use_labels' => true,
 		];
 	}
 
@@ -72,13 +96,39 @@ final class GravityView_Widget_Csv_Link extends Widget {
 	 * @since $ver$
 	 */
 	public function __construct() {
+		$this->widget_short       = esc_html__( 'Insert a button to a CSV / TSV download.', 'gk-gravityview' );
 		$this->widget_description = sprintf(
 			'<p>%s</p><p class="notice notice-alt notice-large notice-warning hidden csv-disabled-notice">%s</p>',
-			esc_html__( 'Insert a button to a CSV / TSV download.', 'gk-gravityview' ),
+			$this->widget_short,
 			esc_html__( 'In order to use this feature you need to Allow Export.', 'gk-gravityview' )
 		);
 
-		parent::__construct( 'CSV download button', 'csv_link', self::defaults(), self::settings() );
+		parent::__construct( 'Export Link', self::WIDGET_ID, self::defaults(), self::settings() );
+
+		add_filter( 'gravityview_admin_label_item_info', [ $this, 'hide_description_picker' ], 10, 2 );
+	}
+
+	/**
+	 * Removes the notification part from the description.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array                       $items     The description items.
+	 * @param GravityView_Admin_View_Item $view_item The view item.
+	 *
+	 * @return array The adjusted description items.
+	 */
+	public function hide_description_picker( array $items, GravityView_Admin_View_Item $view_item ): array {
+		if (
+			! $view_item instanceof GravityView_Admin_View_Widget
+			|| rgar( $items[0], 'value' ) !== $this->widget_description
+		) {
+			return $items;
+		}
+
+		$items[0]['value'] = $this->widget_short;
+
+		return $items;
 	}
 
 	/**
@@ -110,15 +160,21 @@ final class GravityView_Widget_Csv_Link extends Widget {
 
 		$label        = rgar( $widget_args, 'title', 'Download CSV' );
 		$in_paragraph = (bool) rgar( $widget_args, 'in_paragraph', false );
+		$use_labels   = (bool) rgar( $widget_args, 'use_labels', false );
+		$classes      = (string) rgar( $widget_args, 'classes', '' );
 
 		$rest_url = add_query_arg(
-			[ '_nonce' => $nonce ],
+			[
+				'_nonce'     => $nonce,
+				'use_labels' => $use_labels,
+			],
 			sprintf( '%sgravityview/v1/views/%d/entries.%s', get_rest_url(), $view->ID, $type )
 		);
 
 		$link = sprintf(
-			'<a href="%s" target="_blank" rel="noopener nofollow">%s</a>',
+			'<a href="%s" target="_blank" rel="noopener nofollow" class="%s">%s</a>',
 			esc_attr( $rest_url ),
+			esc_attr( $classes ),
 			esc_attr( $label )
 		);
 
@@ -156,4 +212,4 @@ final class GravityView_Widget_Csv_Link extends Widget {
 	}
 }
 
-new GravityView_Widget_Csv_Link();
+new GravityView_Widget_Export_Link();

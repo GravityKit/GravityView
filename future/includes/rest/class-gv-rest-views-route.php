@@ -10,6 +10,7 @@
  */
 namespace GV\REST;
 
+use GravityView_Widget_Export_Link;
 use WP_REST_Request;
 
 /** If this file is called directly, abort. */
@@ -176,18 +177,6 @@ class Views_Route extends Route {
 			$field_id = $field->ID;
 			$index    = null;
 
-			if ( ! $this->headers_done ) {
-				$label = $field->get_label( $view, $source, $entry );
-				if ( ! $label ) {
-					$label = $field_id;
-				}
-
-				$this->headers[] = [
-					'field_id' => $field_id,
-					'label'    => $label,
-				];
-			}
-
 			if ( ! isset( $used_ids[ $field_id ] ) ) {
 				$used_ids[ $field_id ] = 0;
 			} else {
@@ -211,6 +200,18 @@ class Views_Route extends Route {
 			 * @param string           $context  The context (directory, single)
 			 */
 			$field_id = apply_filters( 'gravityview/api/field/key', $field_id, $view, $entry, $request, $context );
+
+			if ( ! $this->headers_done ) {
+				$label = $field->get_label( $view, $source, $entry );
+				if ( ! $label ) {
+					$label = $field_id;
+				}
+
+				$this->headers[] = [
+					'field_id' => $field_id,
+					'label'    => $label,
+				];
+			}
 
 			if ( ! $class && in_array( $field->ID, array( 'custom' ) ) ) {
 				/**
@@ -337,14 +338,15 @@ class Views_Route extends Route {
 			$this->headers_done = false;
 			$this->headers      = [];
 
-			// If not "tsv" then use comma
+			// If not "tsv" then use comma.
 			$delimiter = ( 'tsv' === $format ) ? "\t" : ',';
 
 			foreach ( $entries->all() as $entry ) {
 				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory', '\GV\Field_CSV_Template' );
+				$label = $request->get_param( 'use_labels' ) ? 'label' : 'field_id';
 
 				if ( ! $this->headers_done ) {
-					$this->headers_done = false !== fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_column( $this->headers, 'label' ) ), $delimiter );
+					$this->headers_done = false !== fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_column( $this->headers, $label ) ), $delimiter );
 				}
 
 				fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ), $delimiter );
@@ -585,7 +587,7 @@ class Views_Route extends Route {
 		if (
 			'1' === $view->settings->get( 'csv_enable' )
 			&& in_array( $format, [ 'csv', 'tsv' ], true )
-			&& wp_verify_nonce( $nonce, sprintf( '%s.%d', 'csv_link', $view->ID ) )
+			&& wp_verify_nonce( $nonce, sprintf( '%s.%d', GravityView_Widget_Export_Link::WIDGET_ID, $view->ID ) )
 		) {
 			// All results.
 			$request->set_param( 'limit', 0 );
