@@ -21,6 +21,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.20.2 on March 4, 2024 =
+
+This release enhances performance by optimizing caching and managing transients more effectively.
+
+#### ✨ Improved
+* Enhanced detection of duplicate queries, resulting in fewer cache records stored in the database.
+
+#### 🔧 Updated
+* Updated [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.10.
+  - Transients are no longer autoloaded.
+
 = 2.20.1 on February 29, 2024 =
 
 This release fixes an issue with View caching and improves compatibility with the Advanced Custom Fields plugin.

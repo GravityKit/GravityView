@@ -295,6 +295,24 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.20.2 on March 4, 2024</h3>
+
+				<p>This release enhances performance by optimizing caching and managing transients more effectively.</p>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>Enhanced detection of duplicate queries, resulting in fewer cache records stored in the database.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.10.</p>
+
+				<ul>
+					<li>Transients are no longer autoloaded.</li>
+				</ul>
+
 				<h3>2.20.1 on February 29, 2024</h3>
 
 				<p>This release fixes an issue with View caching and improves compatibility with the Advanced Custom Fields plugin.</p>
