@@ -86,19 +86,27 @@
 				}
 			} )
 			.on( 'keydown', function ( e ) {
-				var allow_keys = [ 'Meta', 'Control', 'Shift', 'r', 'R', 'c', 'C','F5' ];
-				if ( dropdown.open && allow_keys.indexOf( e.key ) === -1 ) {
+				if ( dropdown.open && !e.altKey && !e.metaKey && !e.ctrlKey && !e.shiftKey ) {
 					e.preventDefault();
 				}
 
 				// Capture tab, space or enter if we are focussing on the items.
-				if ( [ ' ', 'Enter', 'Tab' ].indexOf( e.key ) > -1 && dropdown.$options_list.find( ':focus' ).length > 0 ) {
+				if ( dropdown.open && [ ' ', 'Enter', 'Tab' ].indexOf( e.key ) > -1 && dropdown.$options_list.find( ':focus' ).length > 0 ) {
 					e.preventDefault();
 				}
 
 				// Capture enter, arrow up & down and space if we are focussing on the entire select.
-				if ( [ 'Enter', ' ', 'ArrowUp', 'ArrowDown' ].indexOf( e.key ) > -1 && dropdown.select.has( ':focus' ) ) {
+				if ( [ 'Enter', ' ', 'ArrowUp', 'ArrowDown' ].indexOf( e.key ) > -1 && dropdown.select.is(document.activeElement) ) {
 					e.preventDefault();
+				}
+			} )
+			.on( 'click', function ( e ) {
+				// Close the dropdown if clicked outside the wrapper.
+				const is_inside = $.contains( dropdown.$wrapper.get( 0 ), e.target );
+				if ( !is_inside && dropdown.open ) {
+					e.preventDefault();
+
+					dropdown.close();
 				}
 			} );
 
