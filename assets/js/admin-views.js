@@ -1446,11 +1446,12 @@
 		/**
 		 * Returns the template ID from the selector.
 		 * @since $ver$
+		 * @param {boolean} use_base_template Whether to use the base template of a preset.
 		 * @return {string} The template ID on the selector.
 		 * @private
 		 */
-		_getTemplateId: function () {
-			let template_id = viewConfiguration.wantedTemplate.attr( 'data-templateid' );
+		_getTemplateId: function ( use_base_template = false ) {
+			let template_id = viewConfiguration.wantedTemplate.data( use_base_template ? 'base-template' : 'templateid' );
 			if ( viewConfiguration._isViewDropDown() ) {
 				template_id = viewConfiguration.wantedTemplate.val();
 			}
@@ -1562,8 +1563,9 @@
 				changeAllSection = !vcfg._getTemplateSection();
 
 			if ( changeAllSection ) {
-				$( "#gravityview_directory_template" ).val( selectedTemplateId ).trigger( 'change', { section: null } );
-				$( "#gravityview_single_template" ).val( selectedTemplateId ).trigger( 'change', { section: null } );
+				var base_template = vcfg._getTemplateId( true );
+				$( "#gravityview_directory_template" ).val( base_template ).trigger( 'change', { section: null } );
+				$( "#gravityview_single_template" ).val( base_template ).trigger( 'change', { section: null } );
 			}
 
 			//add Selected class
@@ -2623,7 +2625,7 @@
 		 */
 		processFormSubmit: function ( e ) {
 			var vcfg = viewConfiguration;
-			var templateId = $( "#gravityview_directory_template" ).val();
+			var templateId = vcfg._getTemplateId();
 
 			// Create the form if we're starting fresh.
 			// On success, this also sets the vcfg.startFreshStatus to false.
@@ -2841,7 +2843,7 @@
 			var row = $( this ), templates = row.attr( 'data-show-if' );
 
 			// if setting field attribute is empty, leave..
-			if ( templates.length < 1 ) {
+			if ( templates.length < 1 || ! viewGeneralSettings.templateId ) {
 				return;
 			}
 
