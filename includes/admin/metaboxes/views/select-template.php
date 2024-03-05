@@ -39,6 +39,26 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 <?php // list all the available templates (type= fresh or custom ) ?>
 <div class="gv-grid">
 	<?php
+	// Retrieve the base templates.
+	$base_template_mapping = array_reduce(
+		array_keys( $templates ),
+		static function ( array $mapping, string $key ) use ( $templates ) {
+			$template    = $templates[ $key ];
+			$placeholder = ! empty( $template['buy_source'] );
+			$is_included = ! empty( $template['included'] );
+
+			if ( 'custom' !== $template['type'] || $placeholder || $is_included ) {
+				return $mapping;
+			}
+
+			$mapping[ $template['slug'] ] = $key;
+
+			return $mapping;
+		},
+		[]
+	);
+
+
 	foreach ( $templates as $id => $template ) {
 		$selected           = ( $id == $directory_template ) ? ' gv-selected' : '';
 		$placeholder        = ! empty( $template['buy_source'] );
@@ -50,6 +70,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 		$template_path      = isset( $plugin_data['path'] ) ? $plugin_data['path'] : '';
 		$template_id        = isset( $template['template_id'] ) ? $template['template_id'] : '';
 		$download_id        = isset( $template['download_id'] ) ? $template['download_id'] : '';
+		$base_type          = $base_template_mapping[ $template['slug'] ?? 'table' ] ?? 'default_table';
 		?>
 		<div class="gv-grid-col-1-4">
 			<div class="gv-view-types-module
@@ -94,7 +115,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 							?>
 						</div><div class="hidden"> <?php } ?>
 
-						<p><a href="#gv_select_template" role="button" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>"><?php esc_html_e( 'Select', 'gk-gravityview' ); ?></a></p>
+						<p><a href="#gv_select_template" role="button" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>" data-base-template="<?php echo esc_attr( $base_type) ; ?>"><?php esc_html_e( 'Select', 'gk-gravityview' ); ?></a></p>
 						<?php if ( ! empty( $template['preview'] ) ) { ?>
 							<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-welcome-view-site" title="<?php esc_html_e( 'View a live demo of this preset', 'gk-gravityview' ); ?>"></i></a>
 						<?php } ?>
