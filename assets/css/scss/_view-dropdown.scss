@@ -137,6 +137,12 @@
 		&:focus {
 			background-color: #F3F4F5;
 		}
+
+		&[aria-disabled="true"] {
+			filter: grayscale(1);
+			color: #babfc5;
+			cursor: not-allowed;
+		}
 	}
 
 	.view-dropdown-list-item__icon {
