@@ -8,12 +8,23 @@
 $templates = array_filter(
 	gravityview_get_registered_templates(),
 	static function ( array $template ) {
-		$placeholder = ! empty( $template['buy_source'] );
-		$is_included = ! empty( $template['included'] );
-
-		// Todo: include these when the design allows for them.
+		// Todo:include these when the design allows for them.
 		// Todo: Sort by active / inactive; then by name ASC.
-		return ! $placeholder && ! $is_included;
+		return 'custom' === rgar( $template, 'type' );
+	}
+);
+
+function is_active( array $template ): bool {
+	$placeholder = ! empty( $template['buy_source'] );
+	$is_included = ! empty( $template['included'] );
+
+	return ! $placeholder && ! $is_included;
+}
+
+uasort(
+	$templates,
+	static function ( array $a, array $b ) {
+		return is_active( $b ) <=> is_active( $a );
 	}
 );
 
@@ -31,13 +42,21 @@ function render_template_options( array $templates, ?string $selected_template )
 	$html = sprintf( '<option value="">%s</option>', esc_html__( 'Select a type', 'gk-gravityview' ) );
 
 	foreach ( $templates as $template_id => $template ) {
+		$extra = [];
+		if ( $template_id === $selected_template ) {
+			$extra[] = 'selected="selected"';
+		}
+		if ( ! is_active( $template ) ) {
+			$extra[] = 'disabled="disabled"';
+		}
+
 		$html .= sprintf(
 			'<option data-icon="%s" data-title="%s" data-description="%s" value="%s"%s>%s</option>',
 			esc_attr( rgar( $template, 'icon', rgar( $template, 'logo', '' ) ) ),
 			esc_attr( rgar( $template, 'label', '' ) ),
 			esc_attr( rgar( $template, 'description', '' ) ),
 			esc_attr( $template_id ),
-			$template_id === $selected_template ? 'selected="selected"' : '',
+			implode( ' ', $extra ),
 			esc_html( rgar( $template, 'label', '' ) )
 		);
 	}

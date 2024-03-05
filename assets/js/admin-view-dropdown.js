@@ -102,7 +102,7 @@
 			} )
 			.on( 'click', function ( e ) {
 				// Close the dropdown if clicked outside the wrapper.
-				const is_inside = $.contains( dropdown.$wrapper.get( 0 ), e.target );
+				var is_inside = $.contains( dropdown.$wrapper.get( 0 ), e.target );
 				if ( !is_inside && dropdown.open ) {
 					e.preventDefault();
 
@@ -117,7 +117,17 @@
 		$el.on( 'change', $.proxy( this.close, dropdown ) );
 
 		$( this.$options_list )
-			.on( 'click', 'div.view-dropdown-list-item', function () {
+			.on( 'mousedown', 'div.view-dropdown-list-item[aria-disabled="true"]', function ( e ) {
+				e.preventDefault();
+			} )
+			.on( 'click', 'div.view-dropdown-list-item', function (e) {
+				if ( $( this ).attr( 'aria-disabled' ) === 'true' ) {
+					e.preventDefault();
+					e.stopImmediatePropagation();
+
+					return;
+				}
+
 				$el.val( $( this ).data( 'value' ) );
 				$el.trigger( 'change' );
 				dropdown.focus();
@@ -181,6 +191,11 @@
 			$previous = this.$options_list.find( '.view-dropdown-list-item:last-child' );
 		}
 
+		// Skip over disabled items.
+		while ($previous.attr('aria-disabled') === 'true' && $previous !== $focussed) {
+			$previous = $previous.prev( '.view-dropdown-list-item' );
+		}
+
 		if ( $previous ) {
 			$previous.focus();
 		}
@@ -204,8 +219,17 @@
 		}
 
 		var $next = $focussed.next( '.view-dropdown-list-item' );
+
 		if ( $next.length === 0 ) {
 			$next = this.$options_list.find( '.view-dropdown-list-item:first-child' );
+		}
+
+		// Skip over disabled items.
+		while ($next.attr('aria-disabled') === 'true' && $next !== $focussed) {
+			$next = $next.next( '.view-dropdown-list-item' );
+			if ( $next.length === 0 ) {
+				$next = this.$options_list.find( '.view-dropdown-list-item:first-child' );
+			}
 		}
 
 		if ( $next ) {
@@ -284,7 +308,7 @@
 	ViewDropDown.prototype.renderOptions = function () {
 		var $list = this.$options_list;
 		// Clear old values
-		$list.html();
+		$list.html('');
 
 		this.$el.find( 'option' ).each( function () {
 			var $option = $( this );
@@ -299,13 +323,15 @@
 
 			var id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
 			var $item = $(
-				'<div tabindex="0" id="' + id + '" role="option" aria-selected="false" class="view-dropdown-list-item" data-value="' + $option.val() + '">' +
+				'<div tabindex="0" id="' + id + '" role="option" aria-selected="false" class="view-dropdown-list-item" aria-disabled="' + $option.is(':disabled') + '" data-value="' + $option.val() + '">' +
 				'	<div class="view-dropdown-list-item__icon">' + icon + '</div>' +
 				'	<div class="view-dropdown-list-item__value">' +
 				'		<div class="view-dropdown-list-item__label">' + $option.data( 'title' ) + '</div>' +
 				'		<div class="view-dropdown-list-item__description">' + $option.data( 'description' ) + '</div>' +
 				'	</div>' +
 				'</div>' );
+
+			$item.data( 'option', $option );
 
 			$list.append( $item );
 		} );
@@ -323,9 +349,17 @@
 		this.refresh();
 
 		if ( this.open ) {
-			this.$options_list.find( 'div.view-dropdown-list-item--active' ).focus();
+			this.focusActive();
 		}
 	};
+
+	/**
+	 * Puts focus on the active item.
+	 * @since $ver$
+	 */
+	ViewDropDown.prototype.focusActive = function () {
+		this.$options_list.find( 'div.view-dropdown-list-item--active' ).focus()
+	}
 
 	/**
 	 * Closes the dropdown.
