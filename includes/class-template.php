@@ -149,6 +149,13 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	static $instance = null;
 
 	/**
+	 * The current field data.
+	 *
+	 * @deprecated 1.6.2
+	 */
+	public $field_data;
+
+	/**
 	 * Construct the view object
 	 *
 	 * @param  array $atts Associative array to set the data of
@@ -998,4 +1005,3 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		}
 	}
 }
-

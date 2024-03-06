@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed PHP 8.2 deprecation notices.
+
 = 2.20.2 on March 4, 2024 =
 
 This release enhances performance by optimizing caching and managing transients more effectively.

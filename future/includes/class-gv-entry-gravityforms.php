@@ -21,6 +21,13 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	public static $backend = 'gravityforms';
 
 	/**
+	 * The entry slug.
+	 *
+	 * @var string
+	 */
+	public $slug;
+
+	/**
 	 * Initialization.
 	 */
 	private function __construct() {
