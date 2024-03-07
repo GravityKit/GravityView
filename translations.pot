@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-06T00:08:38+00:00\n"
+"POT-Creation-Date: 2024-03-07T13:41:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1071,24 +1071,25 @@ msgstr ""
 msgid "Endpoint Not Yet Implemented."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:60
+#: future/includes/rest/class-gv-rest-views-route.php:80
 #: includes/class-admin.php:61
 msgid "No Views found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:288
+#: future/includes/rest/class-gv-rest-views-route.php:322
 msgid "No Entries found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:393
-#: future/includes/rest/class-gv-rest-views-route.php:449
-#: future/includes/rest/class-gv-rest-views-route.php:464
-#: future/includes/rest/class-gv-rest-views-route.php:468
-#: future/includes/rest/class-gv-rest-views-route.php:479
+#: future/includes/rest/class-gv-rest-views-route.php:433
+#: future/includes/rest/class-gv-rest-views-route.php:489
+#: future/includes/rest/class-gv-rest-views-route.php:504
+#: future/includes/rest/class-gv-rest-views-route.php:508
+#: future/includes/rest/class-gv-rest-views-route.php:519
+#: future/includes/rest/class-gv-rest-views-route.php:584
 msgid "You are not allowed to access this content."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:466
+#: future/includes/rest/class-gv-rest-views-route.php:506
 msgid "This View is not configured properly."
 msgstr ""
 
@@ -1522,7 +1523,6 @@ msgstr ""
 msgid "These widgets will be shown below entries."
 msgstr ""
 
-#. translators: %1$s is the vendor title
 #: includes/admin/metaboxes/views/view-configuration.php:47
 #: includes/class-admin-views.php:1263
 #: includes/class-admin-views.php:1463
@@ -4011,7 +4011,6 @@ msgstr ""
 msgid "Caution: [link]Advanced Post Creation[/link] is active for this form."
 msgstr ""
 
-#. translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:116
 msgid "Editing entries in GravityView may also update a connected post."
 msgstr ""
@@ -4235,6 +4234,59 @@ msgstr ""
 msgid "Enter text or HTML. Also supports shortcodes."
 msgstr ""
 
+#: includes/widgets/class-gravityview-widget-export-link.php:45
+msgid "Type"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:56
+#: includes/widgets/search-widget/class-search-widget.php:309
+msgid "Label"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:57
+msgid "Enter the label of the link."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:63
+msgid "Wrap link in paragraph"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:64
+msgid "Will wrap the link in a <code>&lt;p&gt;</code> tag."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:68
+msgid "Use labels instead of field ID's"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:69
+msgid "The headers of the file will use the labels instead of the field ID's"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:75
+msgid "Custom classes"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:76
+msgid "These classes will be added to the <code>&lt;a&gt;</code> tag."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:88
+msgid "Download CSV"
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:99
+msgid "Insert a button to a CSV / TSV download."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:100
+msgid "In order to use this feature you need to Allow Export."
+msgstr ""
+
+#: includes/widgets/class-gravityview-widget-export-link.php:101
+msgid "Note: all matching entries will be downloaded."
+msgstr ""
+
 #: includes/widgets/class-gravityview-widget-page-links.php:16
 msgid "Links to multiple pages of results."
 msgstr ""
@@ -4378,7 +4430,6 @@ msgstr ""
 msgid "Pre-Filter Choices"
 msgstr ""
 
-#. translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
 #: includes/widgets/search-widget/class-search-widget.php:89
 msgid "For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries."
 msgstr ""
@@ -4421,10 +4472,6 @@ msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:307
 msgid "No search fields configured yet."
-msgstr ""
-
-#: includes/widgets/search-widget/class-search-widget.php:309
-msgid "Label"
 msgstr ""
 
 #: includes/widgets/search-widget/class-search-widget.php:311
@@ -5542,7 +5589,6 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#. translators: %1$s is the vendor title
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:41
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1156
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1333
@@ -6166,7 +6212,6 @@ msgstr ""
 msgid "%s support may not be able to access this site."
 msgstr ""
 
-#. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
 #: vendor_prefixed/trustedlogin/client/src/Form.php:684
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""
@@ -6375,7 +6420,6 @@ msgstr ""
 msgid "Copy the access key to your clipboard"
 msgstr ""
 
-#. translators: %s is the display name of the TrustedLogin support user.
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1340
 msgid "The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums."
 msgstr ""
@@ -6791,4 +6835,84 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""
