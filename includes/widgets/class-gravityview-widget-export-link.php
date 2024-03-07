@@ -97,12 +97,14 @@ final class GravityView_Widget_Export_Link extends Widget {
 	 */
 	public function __construct() {
 		$this->widget_short       = esc_html__( 'Insert a button to a CSV / TSV download.', 'gk-gravityview' );
-		$this->widget_description = sprintf(
-			'<p>%s</p><p class="notice notice-alt notice-large notice-warning hidden csv-disabled-notice">%s</p>',
-			$this->widget_short,
-			esc_html__( 'In order to use this feature you need to Allow Export.', 'gk-gravityview' )
-		);
+		$disabled_warning = esc_html__( 'In order to use this feature you need to Allow Export.', 'gk-gravityview' );
+		$all_entries_notice = esc_html__( 'Note: all matching entries will be downloaded.', 'gk-gravityview' );
 
+		$this->widget_description = <<<HTML
+<p>{$this->widget_short}</p>
+<p class="notice notice-alt notice-large notice-warning hidden csv-disabled-notice">{$disabled_warning}</p>
+<p class="notice notice-alt notice-large notice-info">{$all_entries_notice}</p>
+HTML;
 		parent::__construct( 'Export Link', self::WIDGET_ID, self::defaults(), self::settings() );
 
 		add_filter( 'gravityview_admin_label_item_info', [ $this, 'hide_description_picker' ], 10, 2 );
