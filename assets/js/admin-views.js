@@ -2789,6 +2789,23 @@
 			}
 		} );
 
+		const $embedShortcodeEl = $( '#gv-embed-shortcode' );
+		$( '#gravityview_se_is_secure' ).on( 'change', function () {
+			let embedShortcode = $embedShortcodeEl.val();
+			if ( !embedShortcode ) {
+				return;
+			}
+
+			if ( $( this ).is( ':checked' ) ) {
+				embedShortcode = embedShortcode.replace( /]$/, ` secret="${ $embedShortcodeEl.data( 'secret' ) }"]` );
+
+			} else {
+				embedShortcode = embedShortcode.replace( / secret="[^"]+"/, '' );
+			}
+
+			$embedShortcodeEl.val( embedShortcode );
+		} );
+
 		// Expose globally methods to initialize/destroy tooltips and to display dialog window
 		window.gvAdminActions = {
 			initTooltips: viewConfiguration.init_tooltips,

@@ -1836,12 +1836,12 @@ class View implements \ArrayAccess {
 	 *
 	 * @return string|null The view's secret.
 	 */
-	final public function get_validation_secret(): ?string {
+	final public function get_validation_secret( bool $is_forced = false ): ?string {
 		// Cannot use the setting variable because it can be overwritten from the short code.
 		$settings  = get_post_meta( $this->ID, '_gravityview_template_settings', true );
 		$is_secure = (bool) rgar( $settings, 'is_secure', false );
 
-		if ( ! $is_secure || ! class_exists( GravityKitFoundation::class ) ) {
+		if ( ( ! $is_secure && ! $is_forced ) || ! class_exists( GravityKitFoundation::class ) ) {
 			return null;
 		}
 
