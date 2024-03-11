@@ -18,6 +18,13 @@ class Internal_Field extends Field {
 	public $field;
 
 	/**
+	 * The field type.
+	 *
+	 * @var string
+	 */
+	public $type;
+
+	/**
 	 * Create self from a configuration array.
 	 *
 	 * @param array $configuration The configuration array.

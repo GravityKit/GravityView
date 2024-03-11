@@ -73,6 +73,13 @@ abstract class Field_Template extends Template {
 	public static $slug;
 
 	/**
+	 * THe callback that registers the template files.
+	 *
+	 * @var callable
+	 */
+	private $_add_id_specific_templates_callback;
+
+	/**
 	 * Initializer.
 	 *
 	 * @param \GV\Field   $field The field about to be rendered.
