@@ -1571,9 +1571,16 @@ class GravityView_frontend {
 
 				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, true );
 
+				static $inlined_scripts = [];
+
+				$custom_javascript = $view->settings->get( 'custom_javascript' );
+
 				// Only print once.
-				if ( 'wp_print_footer_scripts' !== current_filter() ) {
-					wp_add_inline_script( 'gravityview-fe-view', $view->settings->get( 'custom_javascript' ), 'after' );
+				if( ! empty( $custom_javascript ) && ! isset( $inlined_scripts[ $view->ID ] ) ) {
+
+					wp_add_inline_script( 'gravityview-fe-view', $custom_javascript, 'after' );
+
+					$inlined_scripts[ $view->ID ] = true;
 				}
 
 				wp_enqueue_script( 'gravityview-fe-view' );
