@@ -1450,7 +1450,20 @@ class View implements \ArrayAccess {
 	private function run_db_query( GF_Query $query ) {
 		$db_entries = null;
 
-		$query_hash = md5( serialize( $query->_introspect() ) );
+		$query_introspect =  $query->_introspect();
+
+		// Order keys are randomly generated, so we need to make them deterministic or else the query hash will change every time.
+		if ( isset( $query_introspect['order'] ) ) {
+			$order_hashes = [];
+
+			foreach ( $query_introspect['order'] as $order ) {
+				$order_hashes[] = md5( serialize( $order ) );
+			}
+
+			$query_introspect['order'] = $order_hashes;
+		}
+
+		$query_hash = md5( serialize( $query_introspect ) );
 
 		$atts = $this->settings->all();
 
@@ -1461,18 +1474,23 @@ class View implements \ArrayAccess {
 		if ( $long_lived_cache->use_cache() ) {
 			$cached_entries = $long_lived_cache->get();
 
-			if ( $cached_entries ) {
+			if ( is_array( $cached_entries ) && array_key_exists( 'entries', $cached_entries ) && array_key_exists( 'total', $cached_entries ) ) {
+				$query->total_found = $cached_entries['total'];
+
 				return [
-					$cached_entries,
+					$cached_entries['entries'],
 					$query,
 				];
 			}
 
-			$db_entries = $query->get();
+			$cached_entries = [
+				'entries' => $query->get(),
+				'total'   => $query->total_found,
+			];
 
-			if ( $long_lived_cache->set( $db_entries, 'entries' ) ) {
+			if ( $long_lived_cache->set( $cached_entries, 'entries' ) ) {
 				return [
-					$db_entries,
+					$cached_entries['entries'],
 					$query,
 				];
 			}

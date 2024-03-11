@@ -21,27 +21,43 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.20.2 on March 4, 2024 =
 
-* Fixed: Possible recursion timeout using GravityView shortcodes in "Advanced Custom Fields"-fields.
+This release enhances performance by optimizing caching and managing transients more effectively.
+
+#### ✨ Improved
+* Enhanced detection of duplicate queries, resulting in fewer cache records stored in the database.
+
+#### 🔧 Updated
+* Updated [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.10.
+  - Transients are no longer autoloaded.
+
+= 2.20.1 on February 29, 2024 =
+
+This release fixes an issue with View caching and improves compatibility with the Advanced Custom Fields plugin.
+
+#### 🐛 Fixed
+* Disappearing pagination and incorrect entry count when View caching is enabled.
+* Potential timeout issue when embedding GravityView shortcodes with Advanced Custom Fields plugin.
+* PHP 8.1+ deprecation notice.
 
 = 2.20 on February 22, 2024 =
 
 This release introduces new settings for better control over View caching, adds support for the Advanced Post Creation Add-On when editing entries, fixes a fatal error when exporting entries to CSV, and updates internal components for better performance and compatibility.
 
 #### 🚀 Added
-- Global and View-specific settings to control caching of View entries. [Learn more about GravityView caching](https://docs.gravitykit.com/article/58-about-gravityview-caching).
-- Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode.
+* Global and View-specific settings to control caching of View entries. [Learn more about GravityView caching](https://docs.gravitykit.com/article/58-about-gravityview-caching).
+* Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode.
 
 #### ✨ Improved
-- If Gravity Forms is not installed and/or activated, a notice is displayed to alert users when creating new or listing existing Views.
+* If Gravity Forms is not installed and/or activated, a notice is displayed to alert users when creating new or listing existing Views.
 
 #### 🐛 Fixed
-- Deprecation notice in PHP 8.1+ when displaying a View with file upload fields.
-- Fatal error when exporting entries to CSV.
+* Deprecation notice in PHP 8.1+ when displaying a View with file upload fields.
+* Fatal error when exporting entries to CSV.
 
 #### 🔧 Updated
-* [Foundation](https://www.gravitykit.com/foundation/) to versions 1.2.9.
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.9.
   - GravityKit products that are already installed can now be activated without a valid license.
   - Fixed PHP warning messages that appeared when deactivating the last active product with Foundation installed.
 
