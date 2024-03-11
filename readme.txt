@@ -21,9 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.21 [unreleased] =
 
-* Fixed PHP 8.2 deprecation notices.
+* Added: Support for SVG images.
+* Fixed: PHP 8.2 deprecation notices.
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11
+    - GravityKit product updates are now showing on the Plugins page.
+    - Database options that are no longer used are now automatically removed.
 
 = 2.20.2 on March 4, 2024 =
 
