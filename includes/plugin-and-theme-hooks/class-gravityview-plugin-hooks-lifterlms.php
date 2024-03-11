@@ -88,6 +88,61 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		add_filter( 'llms_get_student_dashboard_tabs', [ $this, 'filter_student_dashboard_tabs' ], 1 );
 		add_action( 'lifterlms_student_dashboard_index', [ $this, 'add_student_dashboard_my_forms' ] );
 		add_action( 'lifterlms_settings_save_integrations', [ $this, 'save' ], 30 );
+
+		// Early hook inside DataTables layout output to allow for the endpoint to be added to the URL.
+		add_filter( 'gravityview/datatables/json/header/content_length', [ $this, 'filter_content_length' ], 10, 2 );
+	}
+
+	public function filter_content_length( $length ) {
+		add_filter( 'option_permalink_structure', [ $this, 'return_false' ] );
+
+		// Append the LifterLMS GravityView endpoint to the directory link.
+		add_filter( 'gravityview_directory_link', [ $this, 'add_endpoint_to_directory_link' ] );
+		add_filter( 'gravityview_go_back_url', [ $this, 'single_entry_go_back_url' ] );
+		return $length;
+	}
+
+	/**
+	 * Fix the permalinks to the entry for the DataTables layout.
+	 *
+	 * @since TODO
+	 *
+	 * @param string $permalink
+	 *
+	 * @return string The filtered output of the DataTables extension.
+	 */
+	public function filter_datatables_permalink( $permalink ) {
+
+		$parts = explode( '?', $permalink );
+
+		return $this->add_endpoint_to_directory_link( $parts[0] ) . '?' . $parts[1];
+	}
+
+	/**
+	 * Fix the permalinks to the entry for the DataTables layout.
+	 *
+	 * @since TODO
+	 *
+	 * @param string $output The output of the DataTables extension.
+	 * @param \GV\View $view The View context.
+	 *
+	 * @return string The filtered output of the DataTables extension.
+	 */
+	public function filter_datatables_output( $output, $view ) {
+
+		if ( empty( $output['data'] ) ) {
+			return $output;
+		}
+
+		$entry_endpoint = \GV\Entry::get_endpoint_name();
+		foreach ( $output['data'] as &$entry ) {
+
+			foreach( $entry as $key => $column ) {
+				$entry[ $key ] = preg_replace( '/\/(' . preg_quote( $entry_endpoint ) . ')\/(.*?)\/?/is', '/?$1=$2', $column );
+			}
+		}
+
+		return $output;
 	}
 
 	/**
@@ -234,7 +289,6 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 
 		// Append the LifterLMS GravityView endpoint to the directory link.
 		add_filter( 'gravityview_directory_link', [ $this, 'add_endpoint_to_directory_link' ] );
-
 		add_filter( 'gravityview_go_back_url', [ $this, 'single_entry_go_back_url' ] );
 
 		echo do_shortcode( $content );
@@ -276,7 +330,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	 */
 	public function add_endpoint_to_directory_link( $permalink ) {
 
-		// Check against empty string (WordPress) instead of false (as returned by this class).
+		/** Check against empty string (WordPress) instead of false (as returned by {@see return_false}). */
 		if ( '' === get_option( 'permalink_structure' ) ) {
 			return add_query_arg( [ $this->get_endpoint() => 1 ], $permalink );
 		}
