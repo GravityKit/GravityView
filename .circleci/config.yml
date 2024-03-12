@@ -7,7 +7,7 @@ anchors:
   default_job_config: &default_job_config
     working_directory: /home/circleci/plugin
     machine:
-      image: ubuntu-2004:202201-02
+      image: default
 
   test_job_config: &test_job_config
     <<: *context

@@ -4,6 +4,8 @@ namespace GV;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GF_Query;
+use GravityView_Compatibility;
+use GravityView_Cache;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -121,10 +123,13 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public static function register_post_type() {
-
 		/** Register only once */
 		if ( post_type_exists( 'gravityview' ) ) {
 			return;
+		}
+
+		if ( ! gravityview()->plugin->is_compatible() ) {
+			GravityView_Compatibility::override_post_pages_when_compatibility_fails();
 		}
 
 		/**
@@ -192,7 +197,7 @@ class View implements \ArrayAccess {
 			 * @param int $view_id The ID of the View currently being requested. `0` for general setting
 			 */
 			'public'              => apply_filters( 'gravityview_direct_access', gravityview()->plugin->is_compatible(), 0 ),
-			'show_ui'             => gravityview()->plugin->is_compatible(),
+			'show_ui'             => true,
 			'show_in_menu'        => false, // Menu items are added in \GV\Plugin::add_to_gravitykit_admin_menu()
 			'show_in_nav_menus'   => true,
 			'show_in_admin_bar'   => true,
@@ -1434,6 +1439,7 @@ class View implements \ArrayAccess {
 
 	/**
 	 * Queries database and conditionally caches results.
+	 * First, checks if the long-lived cache is enabled and if the query is cached. If not, it checks if the short-lived cache is enabled and if the query is cached.
 	 *
 	 * @since 2.18.2
 	 *
@@ -1442,8 +1448,56 @@ class View implements \ArrayAccess {
 	 * @return array{0: array, 1: GF_Query} Array of entries and the query object. The latter may be needed as it is modified during the query.
 	 */
 	private function run_db_query( GF_Query $query ) {
+		$db_entries = null;
+
+		$query_introspect =  $query->_introspect();
+
+		// Order keys are randomly generated, so we need to make them deterministic or else the query hash will change every time.
+		if ( isset( $query_introspect['order'] ) ) {
+			$order_hashes = [];
+
+			foreach ( $query_introspect['order'] as $order ) {
+				$order_hashes[] = md5( serialize( $order ) );
+			}
+
+			$query_introspect['order'] = $order_hashes;
+		}
+
+		$query_hash = md5( serialize( $query_introspect ) );
+
+		$atts = $this->settings->all();
+
+		$atts['query_hash'] = $query_hash;
+
+		$long_lived_cache = new GravityView_Cache( $this->form->ID, $atts );
+
+		if ( $long_lived_cache->use_cache() ) {
+			$cached_entries = $long_lived_cache->get();
+
+			if ( is_array( $cached_entries ) && array_key_exists( 'entries', $cached_entries ) && array_key_exists( 'total', $cached_entries ) ) {
+				$query->total_found = $cached_entries['total'];
+
+				return [
+					$cached_entries['entries'],
+					$query,
+				];
+			}
+
+			$cached_entries = [
+				'entries' => $query->get(),
+				'total'   => $query->total_found,
+			];
+
+			if ( $long_lived_cache->set( $cached_entries, 'entries' ) ) {
+				return [
+					$cached_entries['entries'],
+					$query,
+				];
+			}
+		}
+
 		/**
-		 * Controls whether the query is cached.
+		 * Controls whether the query is cached per request. This is a short-lived cache.
 		 *
 		 * @filter gk/gravityview/view/entries/cache
 		 *
@@ -1454,16 +1508,14 @@ class View implements \ArrayAccess {
 		if ( ! apply_filters( 'gk/gravityview/view/entries/cache', true ) ) {
 			$db_entries = $query->get();
 
-			return array(
+			return [
 				$db_entries,
 				$query,
-			);
+			];
 		}
 
-		$query_hash = md5( serialize( $query->_introspect() ) );
-
 		if ( ! Arr::get( self::$cache, $query_hash ) ) {
-			$db_entries = $query->get();
+			$db_entries = $db_entries ?? $query->get();
 
 			self::$cache[ $query_hash ] = array(
 				$db_entries,
@@ -1482,7 +1534,6 @@ class View implements \ArrayAccess {
 	 * @return void
 	 */
 	public static function template_redirect() {
-
 		$is_csv = get_query_var( 'csv' );
 		$is_tsv = get_query_var( 'tsv' );
 

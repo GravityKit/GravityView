@@ -36,6 +36,15 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	protected $style_handles = array( 'acf-global' );
 
 	/**
+	 * Microcache for keys by post id.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array{int, mixed}
+	 */
+	private $keys = [];
+
+	/**
 	 * @since 1.16.5
 	 */
 	protected function add_hooks() {
@@ -47,22 +56,52 @@ class GravityView_Plugin_Hooks_ACF extends GravityView_Plugin_and_Theme_Hooks {
 	}
 
 	/**
+	 * Retrieve the "Advanced Custom Field" field keys for the post.
+	 *
+	 * @since $ver$
+	 *
+	 * @param int $post_id The post id.
+	 *
+	 * @return array The ACF field keys.
+	 */
+	private function get_acf_keys( int $post_id ): array {
+		// Can never be too careful: double-check that ACF is active and the functions exist.
+		if ( ! function_exists( 'acf_get_meta' ) || ! function_exists( 'acf_get_valid_post_id' ) || ! $post_id ) {
+			return [];
+		}
+
+		if ( isset( $this->keys[ $post_id ] ) ) {
+			return $this->keys[ $post_id ];
+		}
+
+		$post_id = acf_get_valid_post_id( $post_id );
+		$meta    = acf_get_meta( $post_id );
+
+		/**
+		 * Filter non ACF keys. {@see get_field_objects}.
+		 * We use this instead of `get_field_objects` to prevent circular reference and save memory.
+		 */
+		$this->keys[ $post_id ] = array_filter(
+			array_keys( $meta ),
+			static function ( string $key ) use ( $meta ) {
+				return isset( $meta[ '_' . $key ] );
+			}
+		);
+
+		return $this->keys[ $post_id ];
+	}
+
+	/**
 	 * @param array    $meta_keys Existing meta keys to parse for [gravityview] shortcode
 	 * @param \WP_Post $post Current post ID
 	 *
 	 * @return array
 	 */
-	function add_meta_keys_from_post( $meta_keys = array(), $post = null ) {
-
-		// Can never be too careful: double-check that ACF is active and the function exists
-		if ( ! function_exists( 'get_field_objects' ) ) {
-			return $meta_keys;
-		}
-
-		$acf_keys = get_field_objects( $post->ID, array( 'load_value' => false ) );
+	public function add_meta_keys_from_post( $meta_keys = array(), $post = null ) {
+		$acf_keys = $this->get_acf_keys( (int) $post->ID );
 
 		if ( $acf_keys ) {
-			return array_merge( array_keys( $acf_keys ), $meta_keys );
+			return array_merge( $acf_keys, $meta_keys );
 		}
 
 		return $meta_keys;
