@@ -132,6 +132,11 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	private function maybe_add_hooks() {
 
 		if ( ! $this->is_active() ) {
+
+			if ( is_callable( [ $this, 'add_placeholder_hooks' ] ) ) {
+				$this->add_placeholder_hooks();
+			}
+
 			return;
 		}
 
@@ -178,8 +183,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 * @return array Array of features associated with a functional area of the edit screen, merged with existing values
 	 */
 	public function merge_post_type_support( $supports = array(), $is_hierarchical = false ) {
-		$supports = array_merge( $this->post_type_support, $supports );
-		return $supports;
+		return array_merge( $this->post_type_support, $supports );
 	}
 
 	/**
