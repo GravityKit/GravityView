@@ -177,21 +177,23 @@ HTML;
 			ARRAY_FILTER_USE_BOTH
 		);
 
+		/**
+		 * In order to provide easier JS modification of the URL, we provide both the base URL and the full URL.
+		 */
+		$rest_nonce_url = sprintf( '%sgravityview/v1/views/%d/entries.%s', get_rest_url(), $view->ID, $type );
+		$rest_nonce_url = add_query_arg( [
+			'_nonce'     => $nonce,
+			'use_labels' => $use_labels,
+		], $base_rest_url );
+
 		$rest_url = add_query_arg(
-			array_filter(
-				array_merge(
-					$page_query_params,
-					[
-						'_nonce'     => $nonce,
-						'use_labels' => $use_labels,
-					]
-				)
-			),
-			sprintf( '%sgravityview/v1/views/%d/entries.%s', get_rest_url(), $view->ID, $type )
+			$page_query_params,
+			$rest_nonce_url
 		);
 
-		$link = strtr( '<a href="{url}" download rel="nofollow" type="{mime_type}">{label}</a>', [
+		$link = strtr( '<a href="{url}" data-nonce-url="{nonce_url}" download rel="nofollow" type="{mime_type}">{label}</a>', [
 			'{url}'       => esc_url( $rest_url ),
+			'{nonce_url}'  => esc_url( $rest_nonce_url ),
 			'{mime_type}' => $mime_type,
 			'{label}'     => esc_html( $label ),
 		] );
