@@ -90,16 +90,22 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		add_action( 'lifterlms_settings_save_integrations', [ $this, 'save' ], 30 );
 
 		// Early hook inside DataTables layout output to allow for the endpoint to be added to the URL.
-		add_filter( 'gravityview/datatables/json/header/content_length', [ $this, 'filter_content_length' ], 10, 2 );
+		add_action( 'gk/gravityview/datatables/get-output-data/before', [ $this, 'datatables_setup_filters' ] );
 	}
 
-	public function filter_content_length( $length ) {
+	/**
+	 * Add hooks to the DataTables output to fix Lifter dashboard behavior.
+	 *
+	 * @since TODO
+	 *
+	 * @return void
+	 */
+	public function datatables_setup_filters() {
 		add_filter( 'option_permalink_structure', [ $this, 'return_false' ] );
 
 		// Append the LifterLMS GravityView endpoint to the directory link.
 		add_filter( 'gravityview_directory_link', [ $this, 'add_endpoint_to_directory_link' ] );
 		add_filter( 'gravityview_go_back_url', [ $this, 'single_entry_go_back_url' ] );
-		return $length;
 	}
 
 	/**
