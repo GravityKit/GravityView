@@ -98,9 +98,9 @@ final class GravityView_Widget_Export_Link extends Widget {
 	 * @since $ver$
 	 */
 	public function __construct() {
-		$this->widget_short       = esc_html__( 'Insert a button to a CSV / TSV download.', 'gk-gravityview' );
-		$disabled_warning = esc_html__( 'In order to use this feature you need to Allow Export.', 'gk-gravityview' );
-		$all_entries_notice = esc_html__( 'Note: all matching entries will be downloaded.', 'gk-gravityview' );
+		$this->widget_short       = esc_html__( 'Insert a link to download a CSV or TSV of the current View results.', 'gk-gravityview' );
+		$disabled_warning = esc_html__( 'To use this feature, you must enable the "Allow Export" setting for this View. This setting is located in the Permissions tab of the Settings section.', 'gk-gravityview' );
+		$all_entries_notice = esc_html__( 'Note: All matching entries will be downloaded in the generated file.', 'gk-gravityview' );
 
 		$this->widget_description = <<<HTML
 <p>{$this->widget_short}</p>
