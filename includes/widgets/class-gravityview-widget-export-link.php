@@ -123,7 +123,7 @@ HTML;
 	public function hide_description_picker( array $items, GravityView_Admin_View_Item $view_item ): array {
 		if (
 			! $view_item instanceof GravityView_Admin_View_Widget
-			|| rgar( $items[0] ?? [], 'value' ) !== $this->widget_description
+			|| GV\Utils::get( $items[0] ?? [], 'value' ) !== $this->widget_description
 		) {
 			return $items;
 		}
@@ -157,15 +157,15 @@ HTML;
 		}
 
 		$available_types = [ 'csv', 'tsv' ];
-		$type            = strtolower( rgar( $widget_args, 'type', 'csv' ) );
+		$type            = strtolower( GV\Utils::get( $widget_args, 'type', 'csv' ) );
 		if ( ! in_array( $type, $available_types, true ) ) {
 			$type = 'csv';
 		}
 
-		$label        = rgar( $widget_args, 'title', 'Download CSV' );
-		$in_paragraph = (bool) rgar( $widget_args, 'in_paragraph', false );
-		$use_labels   = (bool) rgar( $widget_args, 'use_labels', false );
-		$classes      = (string) rgar( $widget_args, 'classes', '' );
+		$label        = GV\Utils::get( $widget_args, 'title', 'Download CSV' );
+		$in_paragraph = (bool) GV\Utils::get( $widget_args, 'in_paragraph', false );
+		$use_labels   = (bool) GV\Utils::get( $widget_args, 'use_labels', false );
+		$classes      = (string) GV\Utils::get( $widget_args, 'classes', '' );
 
 		$page_query_params = array_filter(
 			$_GET,
