@@ -21,6 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.21 [unreleased] =
+
+* Added: Support for SVG images.
+* Added: Search Bar support for Gravity Flow "Workflow User" and "Workflow Multi-User" fields.
+* Fixed: PHP 8.2 deprecation notices.
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11
+    - GravityKit product updates are now showing on the Plugins page.
+    - Database options that are no longer used are now automatically removed.
+
 = 2.20.2 on March 4, 2024 =
 
 This release enhances performance by optimizing caching and managing transients more effectively.
