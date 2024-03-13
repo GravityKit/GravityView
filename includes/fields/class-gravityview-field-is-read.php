@@ -33,9 +33,9 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 */
 	public function __construct() {
 
-		$this->label                = esc_html__( 'Read Status', 'gravityview' );
-		$this->default_search_label = __( 'Is Read', 'gravityview' );
-		$this->description          = esc_html__( 'Display whether the entry has been read.', 'gravityview' );
+		$this->label                = esc_html__( 'Read Status', 'gk-gravityview' );
+		$this->default_search_label = __( 'Is Read', 'gk-gravityview' );
+		$this->description          = esc_html__( 'Display whether the entry has been read.', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -52,16 +52,16 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 		$field_options['is_read_label'] = array(
 			'type'  => 'text',
-			'label' => __( 'Read Label', 'gravityview' ),
-			'desc'  => __( 'If the entry has been read, display this value', 'gravityview' ),
-			'value' => __( 'Read', 'gravityview' ),
+			'label' => __( 'Read Label', 'gk-gravityview' ),
+			'desc'  => __( 'If the entry has been read, display this value', 'gk-gravityview' ),
+			'value' => __( 'Read', 'gk-gravityview' ),
 		);
 
 		$field_options['is_unread_label'] = array(
 			'type'  => 'text',
-			'label' => __( 'Unread Label', 'gravityview' ),
-			'desc'  => __( 'If the entry has not been read, display this value', 'gravityview' ),
-			'value' => __( 'Unread', 'gravityview' ),
+			'label' => __( 'Unread Label', 'gk-gravityview' ),
+			'desc'  => __( 'If the entry has not been read, display this value', 'gk-gravityview' ),
+			'value' => __( 'Unread', 'gk-gravityview' ),
 		);
 
 		return $field_options;
@@ -82,10 +82,10 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return string Value of the field
 	 */
 	public function get_value( $value, $field, $view, $source, $entry, $request ) {
-		self::$is_read_label = \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gravityview' ) );
+		self::$is_read_label = \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
 
 		if ( empty( $value ) ) {
-			return \GV\Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gravityview' ) );
+			return \GV\Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
 		}
 
 		self::$is_read = true;
@@ -143,7 +143,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 						}
 					})
 					.fail(function() {
-						alert(<?php echo json_encode( __( 'There was an error updating the entry.', 'gravityview' ) ); ?>);
+						alert(<?php echo json_encode( __( 'There was an error updating the entry.', 'gk-gravityview' ) ); ?>);
 					});
 			});
 		</script>
