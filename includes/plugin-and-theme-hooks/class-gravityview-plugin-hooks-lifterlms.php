@@ -125,33 +125,6 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	}
 
 	/**
-	 * Fix the permalinks to the entry for the DataTables layout.
-	 *
-	 * @since TODO
-	 *
-	 * @param string $output The output of the DataTables extension.
-	 * @param \GV\View $view The View context.
-	 *
-	 * @return string The filtered output of the DataTables extension.
-	 */
-	public function filter_datatables_output( $output, $view ) {
-
-		if ( empty( $output['data'] ) ) {
-			return $output;
-		}
-
-		$entry_endpoint = \GV\Entry::get_endpoint_name();
-		foreach ( $output['data'] as &$entry ) {
-
-			foreach( $entry as $key => $column ) {
-				$entry[ $key ] = preg_replace( '/\/(' . preg_quote( $entry_endpoint ) . ')\/(.*?)\/?/is', '/?$1=$2', $column );
-			}
-		}
-
-		return $output;
-	}
-
-	/**
 	 * When the GravityView integration is saved, flush the rewrite rules.
 	 *
 	 * Even before adding the slug setting, the LifterLMS settings had to be saved twice before permalinks were flushed.
