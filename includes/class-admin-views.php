@@ -494,17 +494,16 @@ class GravityView_Admin_Views {
 
 				$html = <<<HTML
 <div class="gv-shortcode">
-		<input type="text" readonly="readonly" value="%s" class="code shortcode widefat" />
-		<span class="copied">%s</span>
-	</div>
-	<small>(%s)</small>
+	<input title="%s" aria-labelledby="shortcode" type="text" readonly="readonly" value="%s" class="code shortcode widefat" />
+	<span class="copied">%s</span>
+</div>
 HTML;
 
 				$output = sprintf(
 					$html,
+					esc_html__( 'Click to copy', 'gk-gravityview' ),
 					esc_attr( $view->get_shortcode() ),
-					esc_html__( 'Copied!', 'gk-gravityview' ),
-					esc_html__( 'Click to copy', 'gk-gravityview' )
+					esc_html__( 'Copied!', 'gk-gravityview' )
 				);
 				break;
 		}
