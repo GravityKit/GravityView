@@ -65,8 +65,8 @@ final class GravityView_Widget_Export_Link extends Widget {
 			],
 			'use_labels'   => [
 				'type'  => 'checkbox',
-				'label' => __( 'Use labels instead of field ID\'s', 'gk-gravityview' ),
-				'desc'  => __( 'The headers of the file will use the labels instead of the field ID\'s', 'gk-gravityview' ),
+				'label' => __( 'Use labels instead of field IDs', 'gk-gravityview' ),
+				'desc'  => __( 'The headers of the file will use the labels instead of the field IDs', 'gk-gravityview' ),
 				'value' => $defaults['use_labels'],
 			],
 			'classes'      => [
