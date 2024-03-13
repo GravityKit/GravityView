@@ -184,7 +184,7 @@ HTML;
 		$rest_nonce_url = add_query_arg( [
 			'_nonce'     => $nonce,
 			'use_labels' => $use_labels,
-		], $base_rest_url );
+		], $rest_nonce_url );
 
 		$rest_url = add_query_arg(
 			$page_query_params,
