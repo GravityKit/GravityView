@@ -163,6 +163,7 @@ HTML;
 		if ( ! in_array( $type, $available_types, true ) ) {
 			$type = 'csv';
 		}
+		$mime_type = 'csv' === $type ? 'text/csv' : 'text/tab-separated-values';
 
 		$label        = GV\Utils::get( $widget_args, 'title', 'Download CSV' );
 		$in_paragraph = (bool) GV\Utils::get( $widget_args, 'in_paragraph', false );
@@ -190,12 +191,12 @@ HTML;
 			sprintf( '%sgravityview/v1/views/%d/entries.%s', get_rest_url(), $view->ID, $type )
 		);
 
-		$link = sprintf(
-			'<a href="%s" target="_blank" rel="noopener nofollow" class="%s">%s</a>',
-			esc_attr( $rest_url ),
-			esc_attr( $classes ),
-			esc_attr( $label )
-		);
+		$link = strtr( '<a href="{url}" download rel="nofollow" class="{classes}" type="{mime_type}">{label}</a>', [
+			'{url}'       => esc_url( $rest_url ),
+			'{classes}'   => gravityview_sanitize_html_class( $classes ),
+			'{mime_type}' => "text/{$mime_type}",
+			'{label}'     => esc_html( $label ),
+		] );
 
 		$in_paragraph
 			? printf( '<p>%s</p>', $link )
