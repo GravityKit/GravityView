@@ -2,21 +2,28 @@
  * Responsible for copying the short codes from the list and edit page.
  * @since $ver$
  */
-(function ($) {
-	$(document).on('ready', function () {
-		new ClipboardJS('.gv-shortcode input.code', {
-			text: function (trigger) {
-				return $(trigger).val();
+( function ( $ ) {
+	$( document ).on( 'ready', function () {
+		var shortcode_clipboard = new ClipboardJS( '.gv-shortcode input.code', {
+			text: function ( trigger ) {
+				return $( trigger ).val();
 			}
+		} );
+
+		shortcode_clipboard.on('success', function (e) {
+			var $el = $( e.trigger ).closest( '.gv-shortcode' ).find( '.copied' );
+			$el.show();
+			setTimeout( function () {
+				$el.fadeOut();
+			}, 1000 );
 		});
 
-		$('.gv-shortcode input.code').on('click', function (e) {
-			e.preventDefault();
-			var $el = $(this).closest('.gv-shortcode').find('.copied');
-			$el.show();
-			setTimeout(function () {
-				$el.fadeOut();
-			}, 1000);
-		});
-	});
-})(jQuery);
+		// ClipBoardJS only listens to the `click` event, so we fake that here for `Enter`.
+		$( '.gv-shortcode input.code' ).on( 'keydown', function ( e ) {
+			if ( 'Enter' === e.key ) {
+				e.preventDefault();
+				$( this ).trigger( 'click' );
+			}
+		} );
+	} );
+} )( jQuery );

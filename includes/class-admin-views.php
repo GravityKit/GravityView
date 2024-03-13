@@ -497,12 +497,14 @@ class GravityView_Admin_Views {
 		<input type="text" readonly="readonly" value="%s" class="code shortcode widefat" />
 		<span class="copied">%s</span>
 	</div>
+	<small>(%s)</small>
 HTML;
 
 				$output = sprintf(
 					$html,
 					esc_attr( $view->get_shortcode() ),
-					esc_html__( 'Copied!', 'gk-gravityview' )
+					esc_html__( 'Copied!', 'gk-gravityview' ),
+					esc_html__( 'Click to copy', 'gk-gravityview' )
 				);
 				break;
 		}
@@ -615,7 +617,7 @@ HTML;
 
 		$columns['gv_template'] = _x( 'Template', 'Column title that shows what template is being used for Views', 'gk-gravityview' );
 
-		$columns['shortcode'] = esc_html__( 'Shortcode', 'gk-gravityview' ) . sprintf( ' <small>(%s)</small>', esc_html__( 'Click to copy', 'gk-gravityview' ) );
+		$columns['shortcode'] = esc_html__( 'Shortcode', 'gk-gravityview' );
 
 		// Add the date back in.
 		$columns['date'] = $date;
