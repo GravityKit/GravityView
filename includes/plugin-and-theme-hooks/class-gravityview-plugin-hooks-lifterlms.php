@@ -90,7 +90,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 		add_action( 'lifterlms_settings_save_integrations', [ $this, 'save' ], 30 );
 
 		// Early hook inside DataTables layout output to allow for the endpoint to be added to the URL.
-		add_action( 'gk/gravityview/datatables/get-output-data/before', [ $this, 'datatables_setup_filters' ] );
+		add_action( 'gk/gravityview/datatables/get-output-data/before', [ $this, 'datatables_setup_filters' ], 10, 3 );
 	}
 
 	/**
@@ -98,9 +98,20 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	 *
 	 * @since TODO
 	 *
+	 * @param \GV\Entry_Collection $entries The collection of entries for the current search.
+	 * @param \GV\View $view The View.
+	 * @param \WP_Post $post The current View or post/page where View is embedded.
+	 *
 	 * @return void
 	 */
-	public function datatables_setup_filters() {
+	public function datatables_setup_filters( $entries, $view, $post ) {
+
+		$dashboard_page_id = llms_get_page_id( 'myaccount' );
+
+		if ( $dashboard_page_id !== $post->ID ) {
+			return;
+		}
+
 		add_filter( 'option_permalink_structure', [ $this, 'return_false' ] );
 
 		// Append the LifterLMS GravityView endpoint to the directory link.
