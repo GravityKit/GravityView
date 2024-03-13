@@ -74,8 +74,7 @@ final class GravityView_Widget_Export_Link extends Widget {
 				'type'  => 'text',
 				'class' => 'widefat',
 				'label' => __( 'Custom CSS Class:', 'gk-gravityview' ),
-				// translators: %s is replaced by a code block.
-				'desc'  => sprintf( esc_html__( 'These classes will be added to the anchor tag (%s).', 'gk-gravityview' ), '<code>&lt;a&gt;</code>' ),
+				'desc'  => __( 'This class will be added to the widget container', 'gk-gravityview' ),
 			],
 		];
 	}
@@ -191,16 +190,15 @@ HTML;
 			sprintf( '%sgravityview/v1/views/%d/entries.%s', get_rest_url(), $view->ID, $type )
 		);
 
-		$link = strtr( '<a href="{url}" download rel="nofollow" class="{classes}" type="{mime_type}">{label}</a>', [
+		$link = strtr( '<a href="{url}" download rel="nofollow" type="{mime_type}">{label}</a>', [
 			'{url}'       => esc_url( $rest_url ),
-			'{classes}'   => gravityview_sanitize_html_class( $classes ),
 			'{mime_type}' => "text/{$mime_type}",
 			'{label}'     => esc_html( $label ),
 		] );
 
-		$in_paragraph
-			? printf( '<p>%s</p>', $link )
-			: print( $link );
+		$link = $in_paragraph ? sprintf( '<p>%s</p>', $link ) : $link;
+
+		printf( '<div class="gv-widget-export-link %s">' . $link . '</div>', gravityview_sanitize_html_class( $classes ) );
 	}
 
 	/**
