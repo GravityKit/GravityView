@@ -412,6 +412,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 				'id'      => $this->get_option_name( 'views' ),
 				'type'    => 'multiselect',
 				'options' => $view_array,
+				'class'   => 'llms-select2',
 				'custom_attributes' => [
 					'size' => 10,
 				],
