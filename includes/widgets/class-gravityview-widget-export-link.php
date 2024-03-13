@@ -61,7 +61,8 @@ final class GravityView_Widget_Export_Link extends Widget {
 			'in_paragraph' => [
 				'type'  => 'checkbox',
 				'label' => __( 'Wrap link in paragraph', 'gk-gravityview' ),
-				'desc'  => __( 'Will wrap the link in a <code>&lt;p&gt;</code> tag.', 'gk-gravityview' ),
+				// translators: %s is replaced by a code block.
+				'desc'  => sprintf( esc_html__( 'Will wrap the link in a paragraph HTML tag (%s).', 'gk-gravityview' ), '<code>&lt;p&gt;</code>' ),
 			],
 			'use_labels'   => [
 				'type'  => 'checkbox',
@@ -73,7 +74,8 @@ final class GravityView_Widget_Export_Link extends Widget {
 				'type'  => 'text',
 				'class' => 'widefat',
 				'label' => __( 'Custom classes', 'gk-gravityview' ),
-				'desc'  => __( 'These classes will be added to the <code>&lt;a&gt;</code> tag.', 'gk-gravityview' )
+				// translators: %s is replaced by a code block.
+				'desc'  => sprintf( esc_html__( 'These classes will be added to the anchor tag (%s).', 'gk-gravityview' ), '<code>&lt;a&gt;</code>' ),
 			],
 		];
 	}
