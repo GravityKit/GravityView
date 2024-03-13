@@ -73,7 +73,7 @@ final class GravityView_Widget_Export_Link extends Widget {
 			'classes'      => [
 				'type'  => 'text',
 				'class' => 'widefat',
-				'label' => __( 'Custom classes', 'gk-gravityview' ),
+				'label' => __( 'Custom CSS Class:', 'gk-gravityview' ),
 				// translators: %s is replaced by a code block.
 				'desc'  => sprintf( esc_html__( 'These classes will be added to the anchor tag (%s).', 'gk-gravityview' ), '<code>&lt;a&gt;</code>' ),
 			],
