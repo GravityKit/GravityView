@@ -192,7 +192,7 @@ HTML;
 
 		$link = strtr( '<a href="{url}" download rel="nofollow" type="{mime_type}">{label}</a>', [
 			'{url}'       => esc_url( $rest_url ),
-			'{mime_type}' => "text/{$mime_type}",
+			'{mime_type}' => $mime_type,
 			'{label}'     => esc_html( $label ),
 		] );
 
