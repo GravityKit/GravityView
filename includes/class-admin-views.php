@@ -496,6 +496,7 @@ class GravityView_Admin_Views {
 <div class="gv-shortcode">
 	<input title="%s" aria-labelledby="shortcode" type="text" readonly="readonly" value="%s" class="code shortcode widefat" />
 	<span class="copied">%s</span>
+	<div class="screen-reader-text">%1\$s</div>
 </div>
 HTML;
 
