@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Added: Support for SVG images.
 * Added: Search Bar support for Gravity Flow "Workflow User" and "Workflow Multi-User" fields.
+* Added: Integration with LifterLMS: Embed Views inside your LifterLMS Student Dashboards.
 * Fixed: PHP 8.2 deprecation notices.
 * Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11
     - GravityKit product updates are now showing on the Plugins page.
