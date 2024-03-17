@@ -2,6 +2,9 @@
 
 namespace GV;
 
+use GFCommon;
+use WP_Error;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -156,9 +159,9 @@ class Shortcode {
 	 *
 	 * @param array $atts The attributes for the short code.
 	 *
-	 * @return View|null The view.
+	 * @return View|WP_Error|null The view.
 	 */
-	protected function get_view_by_atts( array $atts ): ?View {
+	protected function get_view_by_atts( array $atts ) {
 		if ( ! isset( $atts['view_id'] ) ) {
 			return null;
 		}
@@ -170,6 +173,33 @@ class Shortcode {
 
 		$secret = rgar( $atts, 'secret', '' );
 
-		return $view->validate_secret( $secret ) ? $view : null;
+		if ( $view->validate_secret( $secret ) ) {
+			return $view;
+		}
+
+		return new WP_Error(
+			'invalid_secret',
+			sprintf(
+				esc_html__( '%1$s: Invalid View secret provided. Update the shortcode with the secret: %2$s', 'gk-gravityview' ),
+				'GravityView',
+				'<code>secret="' . $view->get_validation_secret() . '"</code>'
+			)
+		);
 	}
+
+	/**
+	 * Handles a WP_Error.
+	 * @param WP_Error $error The error.
+	 * @return string The result to return in case of an error.
+	 */
+	protected function handle_error( WP_Error $error ): string
+	{
+		// If the user can't edit forms, don't show the error message at all.
+		if ( ! GFCommon::current_user_can_any( [ 'gravityforms_edit_forms' ] ) ) {
+			return '';
+		}
+
+		return '<div><p>' . $error->get_error_message() . '</p></div>';
+	}
+
 }

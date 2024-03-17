@@ -53,6 +53,10 @@ class gventry extends \GV\Shortcode {
 
 		$view = $this->get_view_by_atts( $atts );
 
+		if ( is_wp_error( $view ) ) {
+			return $this->handle_error( $view );
+		}
+
 		if ( ! $view ) {
 			gravityview()->log->error( 'View does not exist #{view_id}', array( 'view_id' => $atts['view_id'] ) );
 			return apply_filters( 'gravityview/shortcodes/gventry/output', '', null, null, $atts );
