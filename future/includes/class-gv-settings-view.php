@@ -59,8 +59,8 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => false,
 				),
 				'is_secure'                   => [
-					'label' => __( 'Enable security for this view', 'gk-gravityview' ),
-					'desc'  => __( 'This will require a <code>secret</code> attribute on short codes and other requests.', 'gk-gravityview' ),
+					'label' => __( 'Enable security for this View', 'gk-gravityview' ),
+					'desc'  => __( 'This will require a <code>secret</code> attribute on shortcodes and other requests.', 'gk-gravityview' ),
 					'type'  => 'checkbox',
 					'group' => 'default',
 					'value' => 0,
