@@ -1436,6 +1436,10 @@ class GVCommon {
 	public static function get_template_settings( $post_id ) {
 
 		$settings = get_post_meta( $post_id, '_gravityview_template_settings', true );
+		// Enable secured views by default on new views.
+		if ( ! $settings ) {
+			$settings = [ 'is_secure' => 1 ];
+		}
 
 		if ( class_exists( '\GV\View_Settings' ) ) {
 

@@ -1912,23 +1912,6 @@ $dialog-button-padding: 5px;
 	}
 }
 
-/** The "Embed Shortcode" section in the Publish metabox */
-.gv-shortcode {
-	.dashicons-editor-code {
-		color: #888;
-		left: -1px;
-		font-size: 20px;
-		line-height: 1;
-		html[dir=rtl] & {
-			left: auto;
-			right: -1px;
-		}
-	}
-	html[dir=rtl] & .code.widefat {
-		text-align: right;
-	}
-}
-
 /** The "Direct Access" section in the Publish metabox */
 #gv-direct-access:before {
 	font: normal 20px/1 Dashicons;

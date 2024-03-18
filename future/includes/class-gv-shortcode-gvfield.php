@@ -50,7 +50,13 @@ class gvfield extends \GV\Shortcode {
 		 */
 		$atts = apply_filters( 'gravityview/shortcodes/gvfield/atts', $atts );
 
-		if ( ! $view = \GV\View::by_id( $atts['view_id'] ) ) {
+		$view = $this->get_view_by_atts( $atts );
+
+		if ( is_wp_error( $view ) ) {
+			return $this->handle_error( $view );
+		}
+
+		if ( ! $view ) {
 			gravityview()->log->error( 'View #{view_id} not found', array( 'view_id' => $atts['view_id'] ) );
 			return apply_filters( 'gravityview/shortcodes/gvfield/output', '', $view, null, null, $atts );
 		}

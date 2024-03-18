@@ -1,5 +1,9 @@
 <?php
+
 namespace GV;
+
+use GFCommon;
+use WP_Error;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -12,7 +16,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Contains some unitility methods, base class for all GV Shortcodes.
  */
 class Shortcode {
-	/*
+	/**
 	 * @var array All GravityView-registered and loaded shortcodes can be found here.
 	 */
 	private static $shortcodes;
@@ -35,9 +39,9 @@ class Shortcode {
 	/**
 	 * The WordPress Shortcode API callback for this shortcode.
 	 *
-	 * @param array  $atts The attributes passed.
+	 * @param array  $atts    The attributes passed.
 	 * @param string $content The content inside the shortcode.
-	 * @param string $tag The tag.
+	 * @param string $tag     The tag.
 	 *
 	 * @return string The output.
 	 */
@@ -49,6 +53,7 @@ class Shortcode {
 				'class'     => get_class( $this ),
 			)
 		);
+
 		return '';
 	}
 
@@ -58,7 +63,8 @@ class Shortcode {
 	 * @internal
 	 *
 	 * @since develop
-	 * @param string $name A shortcode name override. Default: self::$name
+	 *
+	 * @param string $name A shortcode name override. Default: self::$name.
 	 *
 	 * @return \GV\Shortcode|null The only internally registered instance of this shortcode, or null on error.
 	 */
@@ -68,6 +74,7 @@ class Shortcode {
 		if ( shortcode_exists( $name ) ) {
 			if ( empty( self::$shortcodes[ $name ] ) ) {
 				gravityview()->log->error( 'Shortcode [{shortcode}] has already been registered elsewhere.', array( 'shortcode' => $name ) );
+
 				return null;
 			}
 		} else {
@@ -142,4 +149,57 @@ class Shortcode {
 
 		return $shortcodes;
 	}
+
+	/**
+	 * Returns the view by the provided attributes.
+	 *
+	 * It will also handle security through the `secret` attribute.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $atts The attributes for the short code.
+	 *
+	 * @return View|WP_Error|null The view.
+	 */
+	protected function get_view_by_atts( array $atts ) {
+		if ( ! isset( $atts['view_id'] ) ) {
+			return null;
+		}
+
+		$view = View::by_id( $atts['view_id'] );
+		if ( ! $view ) {
+			return null;
+		}
+
+		$secret = rgar( $atts, 'secret', '' );
+
+		if ( $view->validate_secret( $secret ) ) {
+			return $view;
+		}
+
+		return new WP_Error(
+			'invalid_secret',
+			sprintf(
+				esc_html__( '%1$s: Invalid View secret provided. Update the shortcode with the secret: %2$s', 'gk-gravityview' ),
+				'GravityView',
+				'<code>secret="' . $view->get_validation_secret() . '"</code>'
+			)
+		);
+	}
+
+	/**
+	 * Handles a WP_Error.
+	 * @param WP_Error $error The error.
+	 * @return string The result to return in case of an error.
+	 */
+	protected function handle_error( WP_Error $error ): string
+	{
+		// If the user can't edit forms, don't show the error message at all.
+		if ( ! GFCommon::current_user_can_any( [ 'gravityforms_edit_forms' ] ) ) {
+			return '';
+		}
+
+		return '<div><p>' . $error->get_error_message() . '</p></div>';
+	}
+
 }

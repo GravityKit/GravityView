@@ -31,6 +31,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
     - GravityKit product updates are now showing on the Plugins page.
     - Database options that are no longer used are now automatically removed.
 
+#### 🔐 Security
+* Views can now choose to "Enable security" that forces the use of a `secret` attribute on short codes.
+* Blocks are updated to include the `secret` when necessary (*note that this requires an update of the block*).
+
+#### 🚀 Added
+* A view short code can now be copied
+
 = 2.20.2 on March 4, 2024 =
 
 This release enhances performance by optimizing caching and managing transients more effectively.
@@ -70,6 +77,9 @@ This release introduces new settings for better control over View caching, adds 
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.9.
   - GravityKit products that are already installed can now be activated without a valid license.
   - Fixed PHP warning messages that appeared when deactivating the last active product with Foundation installed.
+
+#### 🐛 Fixed
+* The GravityView capabilities for a specific role were overwritten on every admin request.
 
 = 2.19.6 on February 7, 2024 =
 
