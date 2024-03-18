@@ -155,6 +155,20 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	 */
 	public $field_data;
 
+	public $search_fields;
+
+	public $search_field;
+
+	public $permalink_fields;
+
+	public $search_layout;
+
+	public $search_mode;
+
+	public $search_class;
+
+	public $search_clear;
+
 	/**
 	 * Construct the view object
 	 *
