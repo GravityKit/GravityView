@@ -159,6 +159,27 @@ class gravityview extends \GV\Shortcode {
 						return self::_return( sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) ) );
 					}
 					break;
+				case 'in_trash':
+
+					if ( ! current_user_can( 'delete_post', $view->ID ) ) {
+						return self::_return( '' ); // Do not give a hint that this content exists, for security purposes.
+					}
+
+					/** @see WP_Posts_List_Table::handle_row_actions() Grabbed the link generation from there. */
+					$untrash_link = wp_nonce_url( admin_url( sprintf( 'post.php?post=%d&amp;action=untrash', $view->ID ) ), 'untrash-post_' . $view->ID );
+
+					// Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
+					$notice = sprintf(
+						__( 'This View is in the Trash. %sClick to restore the View%s.', 'gravityview' ),
+						sprintf(
+							'<a href="%s" onclick="return confirm(\'%s\');">',
+							esc_url( $untrash_link ),
+							esc_js( __( 'Are you sure you want to restore this View? It will immediately be removed from the trash and set to draft status.', 'gravityview' ) )
+						),
+						'</a>'
+					);
+
+					return \GVCommon::generate_notice( '<p>' . $notice . '</p>', 'notice', array( 'delete_post' ), $view->ID );
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':

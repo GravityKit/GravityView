@@ -407,6 +407,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 					),
 					wp_generate_password( 4, false ) => array(
 						'id' => '1',
+						'label' => 'Expected Field Value',
 					),
 				),
 			),
