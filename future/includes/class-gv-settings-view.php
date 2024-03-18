@@ -102,7 +102,7 @@ class View_Settings extends Settings {
 					),
 				),
 				'caching'                     => array(
-					'label'             => __( 'Enable Caching', 'gk-gravityview' ),
+					'label'             => __( 'Enable caching', 'gk-gravityview' ),
 					'type'              => 'checkbox',
 					'group'             => 'default',
 					'value'             => gravityview()->plugin->settings->get( 'caching' ),
@@ -713,7 +713,7 @@ class View_Settings extends Settings {
 			),
 			array(
 				'csv_nolimit' => array(
-					'label'             => __( 'Show all in file', 'gk-gravityview' ),
+					'label'             => __( 'Show All In File', 'gk-gravityview' ),
 					'group'             => 'default',
 					'desc'              => __( 'Do not limit the number of entries output in the file.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
