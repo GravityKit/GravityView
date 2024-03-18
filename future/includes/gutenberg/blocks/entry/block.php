@@ -40,6 +40,7 @@ class Entry {
 		$block_to_shortcode_attributes_map = array(
 			'entryId' => 'id',
 			'viewId'  => 'view_id',
+			'secret'  => 'secret',
 		);
 
 		$shortcode_attributes = array();

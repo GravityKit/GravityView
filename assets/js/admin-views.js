@@ -144,9 +144,6 @@
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
 
-				// When user clicks into the shortcode example field, select the example.
-				.on( 'click', ".gv-shortcode input", vcfg.selectText )
-
 				// Show the direct access options and hide the toggle button when opened.
 				.on( 'click', "#gv-direct-access .edit-direct-access", vcfg.editDirectAccess )
 
@@ -2790,6 +2787,23 @@
 				/** @since 2.14.1 */
 				$( document.body ).trigger( 'gravityview/tab-ready', ui.newPanel );
 			}
+		} );
+
+		const $embedShortcodeEl = $( '#gv-embed-shortcode' );
+		$( '#gravityview_se_is_secure' ).on( 'change', function () {
+			let embedShortcode = $embedShortcodeEl.val();
+			if ( !embedShortcode ) {
+				return;
+			}
+
+			if ( $( this ).is( ':checked' ) ) {
+				embedShortcode = embedShortcode.replace( /]$/, ` secret="${ $embedShortcodeEl.data( 'secret' ) }"]` );
+
+			} else {
+				embedShortcode = embedShortcode.replace( / secret="[^"]+"/, '' );
+			}
+
+			$embedShortcodeEl.val( embedShortcode );
 		} );
 
 		// Expose globally methods to initialize/destroy tooltips and to display dialog window
