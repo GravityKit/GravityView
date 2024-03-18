@@ -1,6 +1,6 @@
 /**
  * Responsible for copying the short codes from the list and edit page.
- * @since $ver$
+ * @since 2.21
  */
 ( function ( $ ) {
 	$( document ).on( 'ready', function () {

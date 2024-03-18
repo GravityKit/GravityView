@@ -1829,7 +1829,7 @@ class View implements \ArrayAccess {
 	/**
 	 * Calculates and returns the view's validation secret.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 *
 	 * @return string|null The view's secret.
 	 */
@@ -1852,7 +1852,7 @@ class View implements \ArrayAccess {
 	/**
 	 * Returns whether the provided secret validates for this view.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 *
 	 * @param string $secret The provided secret.
 	 *
@@ -1870,7 +1870,7 @@ class View implements \ArrayAccess {
 	/**
 	 * Returns the shortcode for this view.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 * @return string
 	 */
 	final public function get_shortcode(): string {

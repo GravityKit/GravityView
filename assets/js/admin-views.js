@@ -2818,7 +2818,7 @@
 
 	/**
 	 * Handles CSV widget classes.
-	 * @since $ver$
+	 * @since 2.21
 	 */
 	$( function () {
 		const $csv_enable = $( '#gravityview_se_csv_enable' );

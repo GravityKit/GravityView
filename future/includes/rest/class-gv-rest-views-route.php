@@ -42,7 +42,7 @@ class Views_Route extends Route {
 	/**
 	 * Whether the headers are rendered.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 * @var bool
 	 */
 	private $headers_done;
@@ -50,7 +50,7 @@ class Views_Route extends Route {
 	/**
 	 * The headers for the output.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 * @var array
 	 */
 	private $headers = [];

@@ -155,7 +155,7 @@ class Shortcode {
 	 *
 	 * It will also handle security through the `secret` attribute.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 *
 	 * @param array $atts The attributes for the short code.
 	 *

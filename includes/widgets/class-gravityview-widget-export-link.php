@@ -7,26 +7,26 @@ use GV\Widget;
 /**
  * Widget to add an export link.
  *
- * @since $ver$
+ * @since 2.21
  */
 final class GravityView_Widget_Export_Link extends Widget {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.21
 	 */
 	public $icon = 'dashicons-database-export';
 
 	/**
 	 * The widget ID.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 */
 	public const WIDGET_ID = 'export_link';
 
 	/**
 	 * A short description.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 * @var string
 	 */
 	private $widget_short;
@@ -34,7 +34,7 @@ final class GravityView_Widget_Export_Link extends Widget {
 	/**
 	 * Returns the settings for this widget.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 * @return array[] The settings.
 	 */
 	private static function settings(): array {
@@ -82,7 +82,7 @@ final class GravityView_Widget_Export_Link extends Widget {
 	/**
 	 * Returns the default settings.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 */
 	private static function defaults(): array {
 		return [
@@ -94,7 +94,7 @@ final class GravityView_Widget_Export_Link extends Widget {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.21
 	 */
 	public function __construct() {
 		$this->widget_short = esc_html__( 'Insert a link to download a CSV or TSV of the current View results.', 'gk-gravityview' );
@@ -114,7 +114,7 @@ HTML;
 	/**
 	 * Removes the notification part from the description.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 *
 	 * @param array                       $items     The description items.
 	 * @param GravityView_Admin_View_Item $view_item The view item.
@@ -136,7 +136,7 @@ HTML;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.21
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ): void {
 		global $wp_query;
@@ -206,7 +206,7 @@ HTML;
 	/**
 	 * Create a nonce for a guest, as the REST API is stateless.
 	 *
-	 * @since $ver$
+	 * @since 2.21
 	 *
 	 * @param View|null $view The view object.
 	 *

@@ -96,7 +96,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	/**
 	 * Add hooks to the DataTables output to fix Lifter dashboard behavior.
 	 *
-	 * @since TODO
+	 * @since 2.21
 	 *
 	 * @param \GV\Entry_Collection $entries The collection of entries for the current search.
 	 * @param \GV\View $view The View.
@@ -122,7 +122,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	/**
 	 * Fix the permalinks to the entry for the DataTables layout.
 	 *
-	 * @since TODO
+	 * @since 2.21
 	 *
 	 * @param string $permalink
 	 *
@@ -248,7 +248,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	/**
 	 * Renders the Views that were configured in LifterLMS settings.
 	 *
-	 * @since TODO
+	 * @since 2.21
 	 *
 	 * @return void
 	 */
@@ -301,7 +301,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	/**
 	 * Returns false!
 	 *
-	 * @since TODO
+	 * @since 2.21
 	 *
 	 * @return false
 	 */
@@ -312,7 +312,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 	/**
 	 * Appends the LifterLMS GravityView endpoint to the directory link.
 	 *
-	 * @since TODO
+	 * @since 2.21
 	 *
 	 * @param string $permalink The existing directory link, which points to the LifterLMS Student Dashboard URL.
 	 *

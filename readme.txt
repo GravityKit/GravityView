@@ -21,24 +21,29 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.21 [unreleased] =
+= 2.21 on March 18, 2024 =
 
-* Added: A widget to export all entries as CSV or TSV.
-* Added: Support for SVG images.
-* Added: Search Bar support for Gravity Flow "Workflow User" and "Workflow Multi-User" fields.
-* Added: Integration with LifterLMS: Embed Views inside your LifterLMS Student Dashboards.
-* Fixed: PHP 8.2 deprecation notices.
-* Fixed: Entry Link field values were wrapped in `<a>` HTML tags.
-* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11.
-    - GravityKit product updates are now showing on the Plugins page.
-    - Database options that are no longer used are now automatically removed.
-
-#### 🔐 Security
-* Views can now choose to "Enable security" that forces the use of a `secret` attribute on short codes.
-* Blocks are updated to include the `secret` when necessary (*note that this requires an update of the block*).
+This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, and updates essential components for better performance.
 
 #### 🚀 Added
-* A view short code can now be copied
+* A View editor widget to export entries in CSV or TSV formats.
+* Support for SVG images.
+* Support for Gravity Flow's "Workflow User" and "Workflow Multi-User" fields inside the Search Bar.
+* Integration with LifterLMS that allows embedding Views inside Student Dashboards.
+* Notice to inform administrators that an embedded View was moved to "trash" and an option to restore it.
+* Click-to-copy shortcode functionality in the View editor and when listing existing Views.
+
+#### 🐛 Fixed
+* PHP 8.2 deprecation notices.
+* Fields linked to single entry layouts are now exported as plain text values, not hyperlinks, in CSV/TSV files.
+
+#### 🔐 Security
+* Enhanced security by adding a `secret` attribute to shortcodes and blocks connected to Views.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11.
+  - GravityKit product updates are now showing on the Plugins page.
+  - Database options that are no longer used are now automatically removed.
 
 = 2.20.2 on March 4, 2024 =
 
@@ -50,9 +55,6 @@ This release enhances performance by optimizing caching and managing transients 
 #### 🔧 Updated
 * Updated [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.10.
   - Transients are no longer autoloaded.
-Improved: The database now stores fewer cache records due to enhanced detection of duplicate queries.
-Added: a widget to quickly download as a CSV.
-Fixed: No entry link on CSV output.
 
 = 2.20.1 on February 29, 2024 =
 
