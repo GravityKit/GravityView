@@ -281,6 +281,8 @@ class Blocks {
 		$scripts_before_shortcode = array_keys( $wp_scripts->registered );
 		$styles_before_shortcode  = array_keys( $wp_styles->registered );
 
+		ob_start();
+
 		$rendered_shortcode = do_shortcode( $shortcode );
 
 		do_action( 'wp_enqueue_scripts' );
@@ -335,6 +337,8 @@ class Blocks {
 		foreach ( $newly_registered_styles as $style ) {
 			$style_dependencies = array_merge( $style_dependencies, $get_dependencies( $style, $wp_styles ) );
 		}
+
+		ob_end_clean();
 
 		return array(
 			'scripts' => array_unique( $script_dependencies, SORT_REGULAR ),
