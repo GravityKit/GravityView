@@ -58,13 +58,6 @@ class View_Settings extends Settings {
 					'tooltip'           => null,
 					'show_in_shortcode' => false,
 				),
-				'is_secure'                   => [
-					'label' => __( 'Enable security for this View', 'gk-gravityview' ),
-					'desc'  => __( 'This will require a <code>secret</code> attribute on shortcodes and other requests.', 'gk-gravityview' ),
-					'type'  => 'checkbox',
-					'group' => 'default',
-					'value' => 0,
-				],
 				'page_size'                   => array(
 					'label'             => __( 'Number of entries per page', 'gk-gravityview' ),
 					'tooltip'           => esc_html__( 'Enter the number of entries to display per page. Set to negative one (-1) to display all entries.', 'gk-gravityview' ),
@@ -598,6 +591,12 @@ class View_Settings extends Settings {
 					'requires'    => 'delete_redirect=' . \GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE,
 					'merge_tags'  => 'force',
 				),
+				'is_secure'                   => [
+					'label' => __( 'Enable Enhanced Security', 'gk-gravityview' ),
+					'desc'  => __( 'This will require a <code>secret</code> attribute on shortcodes and other requests.', 'gk-gravityview' ),
+					'type'  => 'checkbox',
+					'value' => 0,
+				],
 				'embed_only'                  => array(
 					'label'             => __( 'Prevent Direct Access', 'gk-gravityview' ),
 					'group'             => 'default',
