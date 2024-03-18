@@ -23,11 +23,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.21 [unreleased] =
 
+* Added: A widget to export all entries as CSV or TSV.
 * Added: Support for SVG images.
 * Added: Search Bar support for Gravity Flow "Workflow User" and "Workflow Multi-User" fields.
 * Added: Integration with LifterLMS: Embed Views inside your LifterLMS Student Dashboards.
 * Fixed: PHP 8.2 deprecation notices.
-* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11
+* Fixed: Entry Link field values were wrapped in `<a>` HTML tags.
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11.
     - GravityKit product updates are now showing on the Plugins page.
     - Database options that are no longer used are now automatically removed.
 
@@ -48,6 +50,9 @@ This release enhances performance by optimizing caching and managing transients 
 #### 🔧 Updated
 * Updated [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.10.
   - Transients are no longer autoloaded.
+Improved: The database now stores fewer cache records due to enhanced detection of duplicate queries.
+Added: a widget to quickly download as a CSV.
+Fixed: No entry link on CSV output.
 
 = 2.20.1 on February 29, 2024 =
 

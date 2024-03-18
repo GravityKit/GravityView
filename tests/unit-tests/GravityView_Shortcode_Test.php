@@ -429,9 +429,9 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
 
-		$shorcode = new \GV\Shortcodes\gravityview();
+		$shortcode = new \GV\Shortcodes\gravityview();
 
-		$this->assertContains( $field, $shorcode->callback( array( 'id' => $view->ID ) ) );
+		$this->assertStringContainsString( $field, $shortcode->callback( array( 'id' => $view->ID ) ) );
 
 		gravityview()->request = new \GV\Frontend_Request();
 	}
@@ -472,17 +472,17 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		$shortcode = new \GV\Shortcodes\gravityview();
 		$content = $shortcode->callback( array( 'id' => $view->ID ) );
-		$this->assertContains( 'data-label="Text">abc</td>', $content );
-		$this->assertContains( 'data-label="Text">abcxyz</td>', $content );
+		$this->assertStringContainsString( 'data-label="Text">abc</td>', $content );
+		$this->assertStringContainsString( 'data-label="Text">abcxyz</td>', $content );
 
 		$shortcode = new \GV\Shortcodes\gravityview();
 		$content = $shortcode->callback( array( 'id' => $view->ID, 'search_field' => '1', 'search_value' => 'abcxyz' ) );
-		$this->assertNotContains( 'data-label="Text">abc</td>', $content );
-		$this->assertContains( 'data-label="Text">abcxyz</td>', $content );
+		$this->assertStringNotContainsString( 'data-label="Text">abc</td>', $content );
+		$this->assertStringContainsString( 'data-label="Text">abcxyz</td>', $content );
 
 		$shortcode = new \GV\Shortcodes\gravityview();
 		$content = $shortcode->callback( array( 'id' => $view->ID, 'search_field' => '1', 'search_value' => 'abc', 'search_operator' => 'is' ) );
-		$this->assertContains( 'data-label="Text">abc</td>', $content );
-		$this->assertNotContains( 'data-label="Text">abcxyz</td>', $content );
+		$this->assertStringContainsString( 'data-label="Text">abc</td>', $content );
+		$this->assertStringNotContainsString( 'data-label="Text">abcxyz</td>', $content );
 	}
 }

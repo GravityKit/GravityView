@@ -364,7 +364,7 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 			return [
 				[
 					'type' => 'custom-html',
-					'value' => '<div class="error inline"><h4>' . esc_html__( 'No Views found.', 'gravityview' ) . '</h4></div>',
+					'value' => '<div class="error inline"><h4>' . esc_html__( 'No Views found.', 'gk-gravityview' ) . '</h4></div>',
 				],
 			];
 		}

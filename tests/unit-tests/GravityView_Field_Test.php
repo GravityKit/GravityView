@@ -401,8 +401,8 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1 ), array( 'unsub_all' => true ), null ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'null' ), array( 'unsub_all' => true ), null ) );
 
-		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'active' ), array( 'unsub_all' => true ), null ) );
-		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $administrator, 'id' => 1, 'payment_status' => 'active' ), null, null ) );
+		$this->assertStringContainsString( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'active' ), array( 'unsub_all' => true ), null ) );
+		$this->assertStringContainsString( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $administrator, 'id' => 1, 'payment_status' => 'active' ), null, null ) );
 
 		wp_set_current_user( $author );
 
@@ -414,7 +414,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author ), null, null ) );
 		$this->assertEquals( 'sentinel', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'null' ), null, null ) );
 
-		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'active' ), null, null ) );
+		$this->assertStringContainsString( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', array( 'created_by' => $author, 'id' => 1, 'payment_status' => 'active' ), null, null ) );
 
 		wp_set_current_user( 0 );
 	}
@@ -445,7 +445,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'payment_status' => 'active',
 		) ) );
 
-		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+		$this->assertStringContainsString( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
 
 		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
 
@@ -455,7 +455,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 			'unsubscribe' => wp_create_nonce( 'unsubscribe_' . $entry['id'] ),
 		);
 
-		$this->assertContains( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+		$this->assertStringContainsString( 'Unsubscribe', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
 
 		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
 
@@ -470,7 +470,7 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 
 		gform_update_meta( $entry['id'], 'processed_feeds', array( 'gf_paymentaddon_test' => array( $feed_id ) ) );
 
-		$this->assertContains( 'Cancelled', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
+		$this->assertStringContainsString( 'Cancelled', $field->modify_entry_value_unsubscribe( 'sentinel', $entry, null, null ) );
 
 		$entry = \GV\GF_Entry::by_id( $entry['id'] )->as_entry();
 
