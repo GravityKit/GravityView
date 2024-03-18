@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.4.2
+Tested up to: 6.4.3
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,11 +21,70 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.21 [unreleased] =
 
-* Added: Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode
-* Fixed: Deprecation notice in PHP 8.1+ when displaying a View with file upload fields
-* Fixed: Fatal error when exporting entries to CSV
+* Added: A widget to export all entries as CSV or TSV.
+* Added: Support for SVG images.
+* Added: Search Bar support for Gravity Flow "Workflow User" and "Workflow Multi-User" fields.
+* Added: Integration with LifterLMS: Embed Views inside your LifterLMS Student Dashboards.
+* Fixed: PHP 8.2 deprecation notices.
+* Fixed: Entry Link field values were wrapped in `<a>` HTML tags.
+* Updated: [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11.
+    - GravityKit product updates are now showing on the Plugins page.
+    - Database options that are no longer used are now automatically removed.
+
+#### 🔐 Security
+* Views can now choose to "Enable security" that forces the use of a `secret` attribute on short codes.
+* Blocks are updated to include the `secret` when necessary (*note that this requires an update of the block*).
+
+#### 🚀 Added
+* A view short code can now be copied
+
+= 2.20.2 on March 4, 2024 =
+
+This release enhances performance by optimizing caching and managing transients more effectively.
+
+#### ✨ Improved
+* Enhanced detection of duplicate queries, resulting in fewer cache records stored in the database.
+
+#### 🔧 Updated
+* Updated [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.10.
+  - Transients are no longer autoloaded.
+Improved: The database now stores fewer cache records due to enhanced detection of duplicate queries.
+Added: a widget to quickly download as a CSV.
+Fixed: No entry link on CSV output.
+
+= 2.20.1 on February 29, 2024 =
+
+This release fixes an issue with View caching and improves compatibility with the Advanced Custom Fields plugin.
+
+#### 🐛 Fixed
+* Disappearing pagination and incorrect entry count when View caching is enabled.
+* Potential timeout issue when embedding GravityView shortcodes with Advanced Custom Fields plugin.
+* PHP 8.1+ deprecation notice.
+
+= 2.20 on February 22, 2024 =
+
+This release introduces new settings for better control over View caching, adds support for the Advanced Post Creation Add-On when editing entries, fixes a fatal error when exporting entries to CSV, and updates internal components for better performance and compatibility.
+
+#### 🚀 Added
+* Global and View-specific settings to control caching of View entries. [Learn more about GravityView caching](https://docs.gravitykit.com/article/58-about-gravityview-caching).
+* Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode.
+
+#### ✨ Improved
+* If Gravity Forms is not installed and/or activated, a notice is displayed to alert users when creating new or listing existing Views.
+
+#### 🐛 Fixed
+* Deprecation notice in PHP 8.1+ when displaying a View with file upload fields.
+* Fatal error when exporting entries to CSV.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.9.
+  - GravityKit products that are already installed can now be activated without a valid license.
+  - Fixed PHP warning messages that appeared when deactivating the last active product with Foundation installed.
+
+#### 🐛 Fixed
+* The GravityView capabilities for a specific role were overwritten on every admin request.
 
 = 2.19.6 on February 7, 2024 =
 
@@ -34,16 +93,16 @@ This update introduces the ability to send notifications using Gravity Forms whe
 #### 🚀 Added
 * Ability to send notifications using Gravity Forms when an entry is deleted by selecting the "GravityView - Entry is deleted" event from the event dropdown in Gravity Forms notifications settings.
 
+#### 🐛 Fixed
+* Sorting the View by entry ID in ascending and descending order would yield the same result.
+* Survey fields without a rating would show a 1-star rating.
+* Editing Gravity Forms [Custom Post Fields](https://docs.gravityforms.com/post-custom/#h-general-settings) with a Field Type set to "File Uploads" inside in Edit Entry.
+
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) and [TrustedLogin](https://www.trustedlogin.com/) to versions 1.2.8 and 1.7.0, respectively.
   - Transients are now set and retrieved correctly when using object cache plugins.
   - Fixed a JavaScript warning that occurred when deactivating license keys and when viewing products without the necessary permissions.
   - Resolved PHP warning messages on the Plugins page.
-
-#### 🐛 Fixed
-* Sorting the View by entry ID in ascending and descending order would yield the same result.
-* Survey fields without a rating would show a 1-star rating.
-* Editing Gravity Forms [Custom Post Fields](https://docs.gravityforms.com/post-custom/#h-general-settings) with a Field Type set to "File Uploads" inside in Edit Entry.
 
 __Developer Updates:__
 

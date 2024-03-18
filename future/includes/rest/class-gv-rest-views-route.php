@@ -10,6 +10,9 @@
  */
 namespace GV\REST;
 
+use GravityView_Widget_Export_Link;
+use WP_REST_Request;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -34,6 +37,23 @@ class Views_Route extends Route {
 	 * @var string
 	 */
 	protected $sub_type = 'entries';
+
+
+	/**
+	 * Whether the headers are rendered.
+	 *
+	 * @since $ver$
+	 * @var bool
+	 */
+	private $headers_done;
+
+	/**
+	 * The headers for the output.
+	 *
+	 * @since $ver$
+	 * @var array
+	 */
+	private $headers = [];
 
 
 	/**
@@ -150,8 +170,10 @@ class Views_Route extends Route {
 		$used_ids = array();
 
 		foreach ( $allowed as $field ) {
-			$source = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
+			// remove all links from output.
+			$field->update_configuration( [ 'show_as_link' => '0' ] );
 
+			$source   = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
 			$field_id = $field->ID;
 			$index    = null;
 
@@ -171,13 +193,25 @@ class Views_Route extends Route {
 			/**
 			 * Filter the key name in the results for JSON output.
 			 *
-			 * @param string $field_id The ID. Should be unique or keys will be gobbled up.
-			 * @param \GV\View $view The view.
-			 * @param \GV\Entry $entry The entry.
-			 * @param \WP_REST_Request $request Request object.
-			 * @param string $context The context (directory, single)
+			 * @param string           $field_id The ID. Should be unique or keys will be gobbled up.
+			 * @param \GV\View         $view     The view.
+			 * @param \GV\Entry        $entry    The entry.
+			 * @param \WP_REST_Request $request  Request object.
+			 * @param string           $context  The context (directory, single)
 			 */
 			$field_id = apply_filters( 'gravityview/api/field/key', $field_id, $view, $entry, $request, $context );
+
+			if ( ! $this->headers_done ) {
+				$label = $field->get_label( $view, $source, $entry );
+				if ( ! $label ) {
+					$label = $field_id;
+				}
+
+				$this->headers[] = [
+					'field_id' => $field_id,
+					'label'    => $label,
+				];
+			}
 
 			if ( ! $class && in_array( $field->ID, array( 'custom' ) ) ) {
 				/**
@@ -294,21 +328,25 @@ class Views_Route extends Route {
 
 			$csv_or_tsv = fopen( 'php://output', 'w' );
 
+			$filename = apply_filters( 'gravityview/output/' . $format . '/filename', get_the_title( $view->post ), $view );
+
 			/** Da' BOM :) */
 			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
 				fputs( $csv_or_tsv, "\xef\xbb\xbf" );
 			}
 
-			$headers_done = false;
+			$this->headers_done = false;
+			$this->headers      = [];
 
-			// If not "tsv" then use comma
+			// If not "tsv" then use comma.
 			$delimiter = ( 'tsv' === $format ) ? "\t" : ',';
 
 			foreach ( $entries->all() as $entry ) {
 				$entry = $this->prepare_entry_for_response( $view, $entry, $request, 'directory', '\GV\Field_CSV_Template' );
+				$label = $request->get_param( 'use_labels' ) ? 'label' : 'field_id';
 
-				if ( ! $headers_done ) {
-					$headers_done = fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_keys( $entry ) ), $delimiter );
+				if ( ! $this->headers_done ) {
+					$this->headers_done = false !== fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), array_column( $this->headers, $label ) ), $delimiter );
 				}
 
 				fputcsv( $csv_or_tsv, array_map( array( '\GV\Utils', 'strip_excel_formulas' ), $entry ), $delimiter );
@@ -318,6 +356,8 @@ class Views_Route extends Route {
 			$response->header( 'X-Item-Count', $entries->count() );
 			$response->header( 'X-Item-Total', $entries->total() );
 			$response->header( 'Content-Type', 'text/' . $format );
+			$response->header( 'Content-Transfer-Encoding', 'binary' );
+			$response->header( 'Content-Disposition', sprintf( 'attachment;filename="%s.%s"', sanitize_file_name( $filename ), $format ) );
 
 			fflush( $csv_or_tsv );
 
@@ -526,8 +566,36 @@ class Views_Route extends Route {
 		return true;
 	}
 
+	/**
+	 * Permission check for the REST endpoint.
+	 *
+	 * @param WP_REST_Request $request The request object.
+	 *
+	 * @return bool|\WP_Error The permission result.
+	 */
 	public function get_sub_items_permissions_check( $request ) {
-		// Accessing all entries of a View needs the same permissions as accessing the View.
+		// Make sure to get the format from the URL.
+		$params  = $request->get_url_params();
+		$format  = strtolower( rgar( $params, 'format', '' ) );
+		$nonce   = $request->get_param( '_nonce' );
+		$view_id = rgar( $params, 'id', 0 );
+
+		if ( ! $view = \GV\View::by_id( $view_id ) ) {
+			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
+		}
+
+		if (
+			'1' === $view->settings->get( 'csv_enable' )
+			&& in_array( $format, [ 'csv', 'tsv' ], true )
+			&& wp_verify_nonce( $nonce, sprintf( '%s.%d', GravityView_Widget_Export_Link::WIDGET_ID, $view->ID ) )
+		) {
+			// All results.
+			$request->set_param( 'limit', 0 );
+
+			// The current request is a nonce verified CSV download request.
+			return true;
+		}
+
 		return $this->get_item_permissions_check( $request );
 	}
 }

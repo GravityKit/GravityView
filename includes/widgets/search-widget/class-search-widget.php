@@ -813,7 +813,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			if ( gv_empty( $value, false, false ) || ( is_array( $value ) && 1 === count( $value ) && gv_empty( $value[0], false, false ) ) ) {
 				/**
 				 * Filter to control if empty field values should be ignored or strictly matched (default: true).
-    			 *
 				 * @since  2.14.2.1
 				 * @param bool $ignore_empty_values
 				 * @param int|null $filter_key
@@ -1219,6 +1218,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		switch ( $form_field->type ) {
 
 			case 'select':
+			case 'workflow_user':
 			case 'radio':
 				$filter['operator'] = $this->get_operator( $get, $key, array( 'is' ), 'is' );
 				break;
@@ -1243,6 +1243,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				break;
 
 			case 'multiselect':
+			case 'workflow_multi_user':
 				if ( ! is_array( $value ) ) {
 					break;
 				}

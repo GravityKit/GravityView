@@ -144,9 +144,6 @@
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
 
-				// When user clicks into the shortcode example field, select the example.
-				.on( 'click', ".gv-shortcode input", vcfg.selectText )
-
 				// Show the direct access options and hide the toggle button when opened.
 				.on( 'click', "#gv-direct-access .edit-direct-access", vcfg.editDirectAccess )
 
@@ -2792,6 +2789,23 @@
 			}
 		} );
 
+		const $embedShortcodeEl = $( '#gv-embed-shortcode' );
+		$( '#gravityview_se_is_secure' ).on( 'change', function () {
+			let embedShortcode = $embedShortcodeEl.val();
+			if ( !embedShortcode ) {
+				return;
+			}
+
+			if ( $( this ).is( ':checked' ) ) {
+				embedShortcode = embedShortcode.replace( /]$/, ` secret="${ $embedShortcodeEl.data( 'secret' ) }"]` );
+
+			} else {
+				embedShortcode = embedShortcode.replace( / secret="[^"]+"/, '' );
+			}
+
+			$embedShortcodeEl.val( embedShortcode );
+		} );
+
 		// Expose globally methods to initialize/destroy tooltips and to display dialog window
 		window.gvAdminActions = {
 			initTooltips: viewConfiguration.init_tooltips,
@@ -2800,6 +2814,23 @@
 		};
 
 		$( document.body ).trigger( 'gravityview/loaded' );
+	} );
+
+	/**
+	 * Handles CSV widget classes.
+	 * @since $ver$
+	 */
+	$( function () {
+		const $csv_enable = $( '#gravityview_se_csv_enable' );
+		const update_csv_widget_classes = function () {
+			$( '[data-fieldid="export_link"]' )
+				.toggleClass( 'csv-disabled', !$csv_enable.is( ':checked' ) )
+				.attr( 'aria-disabled', $csv_enable.is( ':checked' ) ? 'false' : 'true' )
+			;
+		};
+
+		$csv_enable.on( 'change', update_csv_widget_classes );
+		update_csv_widget_classes();
 	} );
 
 }(jQuery));

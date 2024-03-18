@@ -46,9 +46,9 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 
 		$gventry = new \GV\Shortcodes\gventry();
 
-		$this->assertContains( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $atts ) );
+		$this->assertStringContainsString( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $atts ) );
 
-		$this->assertContains( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $atts_id ) );
+		$this->assertStringContainsString( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $atts_id ) );
 
 		$get_atts = array(
 			'view_id' => '{get:view_id}',
@@ -57,7 +57,7 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 
 		$_GET = $atts;
 
-		$this->assertContains( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $get_atts ), '$_GET merge tags not being replaced' );
+		$this->assertStringContainsString( '<span class="gv-field-label">Textarea</span></th><td><p>hello</p>', $gventry->callback( $get_atts ), '$_GET merge tags not being replaced' );
 
 		$_GET = array();
 
@@ -75,7 +75,7 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 			return $atts;
 		} );
 
-		$this->assertContains( '<span class="gv-field-label">Textarea</span></th><td><p>well, o!</p>', $gventry->callback( $atts ) );
+		$this->assertStringContainsString( '<span class="gv-field-label">Textarea</span></th><td><p>well, o!</p>', $gventry->callback( $atts ) );
 
 		add_filter( 'gravityview/shortcodes/gventry/output', function( $output ) {
 			return 'heh, o!';
@@ -99,10 +99,10 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 		 * last means the other way around.
 		 */
 		$atts['entry_id'] = 'first';
-		$this->assertContains( sprintf( '<span class="gv-field-label">Entry ID</span></th><td>%d</td></tr>', $and_another_entry['id'] ), $gventry->callback( $atts ) );
+		$this->assertStringContainsString( sprintf( '<span class="gv-field-label">Entry ID</span></th><td>%d</td></tr>', $and_another_entry['id'] ), $gventry->callback( $atts ) );
 
 		$atts['entry_id'] = 'last';
-		$this->assertContains( sprintf( '<span class="gv-field-label">Entry ID</span></th><td>%d</td></tr>', $entry['id'] ), $gventry->callback( $atts ) );
+		$this->assertStringContainsString( sprintf( '<span class="gv-field-label">Entry ID</span></th><td>%d</td></tr>', $entry['id'] ), $gventry->callback( $atts ) );
 	}
 
 	public function test_failures() {
@@ -185,6 +185,6 @@ class GravityView_GVEntry_Shortcode_Test extends GV_UnitTestCase {
 			'entry_id' => $entry['id'],
 		);
 
-		$this->assertContains( 'password', $gventry->callback( $atts ) );
+		$this->assertStringContainsString( 'password', $gventry->callback( $atts ) );
 	}
 }
