@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.21 on March 18, 2024 =
 
-This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, and updates essential components for better performance.
+This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, fixes a conflict with BuddyBoss Platform, and improves performance with updates to essential components.
 
 #### 🚀 Added
 * A View editor widget to export entries in CSV or TSV formats.
@@ -36,6 +36,7 @@ This release enhances security, introduces support for LifterLMS, adds a new CSV
 #### 🐛 Fixed
 * PHP 8.2 deprecation notices.
 * Fields linked to single entry layouts are now exported as plain text values, not hyperlinks, in CSV/TSV files.
+* Issue preventing the saving of pages/posts with GravityView Gutenberg blocks when BuddyBoss Platform is active.
 
 #### 🔐 Security
 * Enhanced security by adding a `secret` attribute to shortcodes and blocks connected to Views.

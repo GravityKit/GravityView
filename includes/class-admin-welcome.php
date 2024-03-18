@@ -297,7 +297,7 @@ class GravityView_Welcome {
 				?>
 				<h3>2.21 on March 18, 2024</h3>
 
-				<p>This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, and updates essential components for better performance.</p>
+				<p>This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, fixes a conflict with BuddyBoss Platform, and improves performance with updates to essential components.</p>
 
 				<h4>🚀 Added</h4>
 
@@ -315,6 +315,7 @@ class GravityView_Welcome {
 				<ul>
 					<li>PHP 8.2 deprecation notices.</li>
 					<li>Fields linked to single entry layouts are now exported as plain text values, not hyperlinks, in CSV/TSV files.</li>
+					<li>Issue preventing the saving of pages/posts with GravityView Gutenberg blocks when BuddyBoss Platform is active.</li>
 				</ul>
 
 				<h4>🔐 Security</h4>
