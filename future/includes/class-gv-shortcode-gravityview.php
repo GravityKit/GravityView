@@ -157,7 +157,7 @@ class gravityview extends \GV\Shortcode {
 				case 'in_trash':
 
 					if ( ! current_user_can( 'delete_post', $view->ID ) ) {
-						return ''; // Do not give a hint that this content exists, for security purposes.
+						return self::_return( '' ); // Do not give a hint that this content exists, for security purposes.
 					}
 
 					/** @see WP_Posts_List_Table::handle_row_actions() Grabbed the link generation from there. */
