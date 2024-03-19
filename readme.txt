@@ -46,6 +46,10 @@ This release enhances security, introduces support for LifterLMS, adds a new CSV
   - GravityKit product updates are now showing on the Plugins page.
   - Database options that are no longer used are now automatically removed.
 
+__Developer Updates:__
+
+* Added: `gk/gravityview/widget/search/clear-button/params` filter to modify the parameters of the Clear button in the search widget.
+
 = 2.20.2 on March 4, 2024 =
 
 This release enhances performance by optimizing caching and managing transients more effectively.

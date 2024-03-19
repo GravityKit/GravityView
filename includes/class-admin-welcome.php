@@ -333,6 +333,12 @@ class GravityView_Welcome {
 					<li>Database options that are no longer used are now automatically removed.</li>
 				</ul>
 
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gk/gravityview/widget/search/clear-button/params</code> filter to modify the parameters of the Clear button in the search widget.</li>
+				</ul>
+
 				<h3>2.20.2 on March 4, 2024</h3>
 
 				<p>This release enhances performance by optimizing caching and managing transients more effectively.</p>

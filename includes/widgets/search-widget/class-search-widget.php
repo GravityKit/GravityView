@@ -1974,8 +1974,27 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$url = strtok( add_query_arg( array() ), '?' );
 
-			echo gravityview_get_link( $url, esc_html__( 'Clear', 'gk-gravityview' ), 'class=button gv-search-clear' );
+			$clear_button_params = [
+				'url' => $url,
+				'text' => esc_html__( 'Clear', 'gk-gravityview' ),
+				'atts' => [ 'class' => 'button gv-search-clear'],
+			];
 
+			/**
+			 * Modifies search widget's Clear button parameters.
+			 *
+			 * @filter `gravityview/widget/search/clear-button/params`
+			 *
+			 * @since 2.21
+			 *
+			 * @param array{url: string, text: string, atts: array} $clear_button_params
+			 */
+			$clear_button_params = wp_parse_args(
+				apply_filters( 'gk/gravityview/widget/search/clear-button/params', $clear_button_params ),
+				$clear_button_params
+			);
+
+			echo gravityview_get_link( $clear_button_params['url'], $clear_button_params['text'], $clear_button_params['atts'] );
 		}
 	}
 
