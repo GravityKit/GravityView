@@ -96,7 +96,7 @@
 				}
 
 				// Capture enter, arrow up & down and space if we are focussing on the entire select.
-				if ( [ 'Enter', ' ', 'ArrowUp', 'ArrowDown' ].indexOf( e.key ) > -1 && dropdown.select.is(document.activeElement) ) {
+				if ( [ 'Enter', ' ', 'ArrowUp', 'ArrowDown' ].indexOf( e.key ) > -1 && dropdown.select.is( document.activeElement ) ) {
 					e.preventDefault();
 				}
 			} )
@@ -120,9 +120,14 @@
 			.on( 'mousedown', 'div.view-dropdown-list-item[aria-disabled="true"]', function ( e ) {
 				e.preventDefault();
 			} )
-			.on( 'click', 'div.view-dropdown-list-item', function (e) {
+			.on( 'click', 'div.view-dropdown-list-item', function ( e ) {
 				if ( $( this ).attr( 'aria-disabled' ) === 'true' ) {
-					e.preventDefault();
+					// allow clicking on links inside the item.)
+					if ( 'A' !== e.target.tagName ) {
+						e.preventDefault();
+					}
+
+					e.stopPropagation();
 					e.stopImmediatePropagation();
 
 					return;
@@ -192,7 +197,7 @@
 		}
 
 		// Skip over disabled items.
-		while ($previous.attr('aria-disabled') === 'true' && $previous !== $focussed) {
+		while ( $previous.attr( 'aria-disabled' ) === 'true' && $previous !== $focussed ) {
 			$previous = $previous.prev( '.view-dropdown-list-item' );
 		}
 
@@ -225,7 +230,7 @@
 		}
 
 		// Skip over disabled items.
-		while ($next.attr('aria-disabled') === 'true' && $next !== $focussed) {
+		while ( $next.attr( 'aria-disabled' ) === 'true' && $next !== $focussed ) {
 			$next = $next.next( '.view-dropdown-list-item' );
 			if ( $next.length === 0 ) {
 				$next = this.$options_list.find( '.view-dropdown-list-item:first-child' );
@@ -308,7 +313,7 @@
 	ViewDropDown.prototype.renderOptions = function () {
 		var $list = this.$options_list;
 		// Clear old values
-		$list.html('');
+		$list.html( '' );
 
 		this.$el.find( 'option' ).each( function () {
 			var $option = $( this );
@@ -321,15 +326,40 @@
 				icon = '<img src="' + $option.data( 'icon' ) + '" alt="Icon" />';
 			}
 
+			var license = $option.data( 'license' );
+			var buy_source = $option.data( 'buy-source' );
+
 			var id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
 			var $item = $(
-				'<div tabindex="0" id="' + id + '" role="option" aria-selected="false" class="view-dropdown-list-item" aria-disabled="' + $option.is(':disabled') + '" data-value="' + $option.val() + '">' +
+				'<div tabindex="0" id="' + id + '" role="option" aria-selected="false" class="view-dropdown-list-item" aria-disabled="' + $option.is( ':disabled' ) + '" data-value="' + $option.val() + '">' +
 				'	<div class="view-dropdown-list-item__icon">' + icon + '</div>' +
+				( license
+						? ( '<div class="view-dropdown-list-item__license hidden">' +
+							'	<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+							'   	<path d="M4 0C4.24397 0 4.45537 0.169044 4.50899 0.407096L4.77668 1.59548C4.95946 2.40689 5.59313 3.04056 6.40452 3.2233L7.5929 3.49099C7.83096 3.54463 8 3.75603 8 4C8 4.24397 7.83096 4.45537 7.5929 4.50901L6.40452 4.7767C5.59313 4.95944 4.95946 5.59311 4.77668 6.40452L4.50899 7.59291C4.45537 7.83096 4.24397 8 4 8C3.75603 8 3.54463 7.83096 3.49101 7.59291L3.22333 6.40452C3.04054 5.59311 2.40687 4.95944 1.59544 4.7767L0.407082 4.50901C0.169078 4.45537 0 4.24397 0 4C0 3.75603 0.169078 3.54463 0.407082 3.49099L1.59544 3.2233C2.40687 3.04056 3.04054 2.40689 3.22333 1.59548L3.49101 0.407096C3.54463 0.169044 3.75603 0 4 0Z" fill="currentColor"/>' +
+							'	</svg>' +
+							'	<span>' + license + '</span>' +
+							'</div>'
+						)
+						: ''
+				) +
 				'	<div class="view-dropdown-list-item__value">' +
 				'		<div class="view-dropdown-list-item__label">' + $option.data( 'title' ) + '</div>' +
 				'		<div class="view-dropdown-list-item__description">' + $option.data( 'description' ) + '</div>' +
 				'	</div>' +
+				( buy_source
+						? (
+							'<div class="view-dropdown-list-item__buy-source hidden">' +
+							'	<a href="' + buy_source + '" target="_blank">Upgrade</a>' +
+							'</div>'
+						)
+						: ''
+				) +
 				'</div>' );
+
+			if ( license ) {
+				$item.addClass( 'view-dropdown-list-item--license' );
+			}
 
 			$item.data( 'option', $option );
 
