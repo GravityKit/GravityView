@@ -22,6 +22,7 @@
 				background-color: #F3F4F5;
 			}
 		}
+
 		&:focus {
 			border: 1px solid #2c3338;
 		}
@@ -130,6 +131,7 @@
 		&.view-dropdown-list-item--active {
 			color: #2C3338;
 		}
+
 		&.view-dropdown-list-item--active {
 			border-color: #1D2327;
 		}
@@ -139,9 +141,83 @@
 		}
 
 		&[aria-disabled="true"] {
+			cursor: not-allowed;
+		}
+
+		&[aria-disabled="true"]:not(.view-dropdown-list-item--license) {
 			filter: grayscale(1);
 			color: #babfc5;
-			cursor: not-allowed;
+		}
+
+		&.view-dropdown-list-item--license {
+			border-color: #FF1B67;
+			position: relative;
+			margin-top: 20px;
+			overflow: visible;
+			border-top-left-radius: 0;
+
+			.view-dropdown-list-item__buy-source {
+				background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 30%);
+				position: absolute;
+				right: 2px;
+				top: 2px;
+				bottom: 2px;
+				width: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				padding-right: 10px;
+
+				a {
+					display: flex;
+					background-color: #0073AA;
+					border-radius: 4px;
+					border: 2px solid #0073AA;
+					padding: 6px 13px;
+					font-size: 12px;
+					line-height: 14px;
+					color: #FFF;
+					text-decoration: none;
+
+					&:hover {
+						background-color: #FFF;
+						color: #0073AA;
+					}
+				}
+			}
+
+			.view-dropdown-list-item__license {
+				display: block;
+				position: absolute;
+				color: #FF1B67;
+				font-size: 10px;
+				text-transform: uppercase;
+				font-weight: bold;
+				left: -1px;
+				top: 0;
+				background-color: #FFF;
+				border: 1px solid #FF1B67;
+				border-bottom: 0;
+				border-top-left-radius: 4px;
+				border-top-right-radius: 4px;
+				padding: 5px 8px 0 6px;
+				line-height: 10px;
+				margin-top: -16px;
+				min-width: 50px;
+				text-align: center;
+			}
+
+			&:hover {
+				&,
+				.view-dropdown-list-item__license {
+					background-color: #FF1B67;
+					color: #FFF;
+				}
+
+				.view-dropdown-list-item__buy-source {
+					background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #FF1B67 30%);
+				}
+			}
 		}
 	}
 

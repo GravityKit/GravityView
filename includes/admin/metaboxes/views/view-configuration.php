@@ -8,8 +8,6 @@
 $templates = array_filter(
 	gravityview_get_registered_templates(),
 	static function ( array $template ) {
-		// Todo:include these when the design allows for them.
-		// Todo: Sort by active / inactive; then by name ASC.
 		return 'custom' === rgar( $template, 'type' );
 	}
 );
@@ -46,8 +44,16 @@ function render_template_options( array $templates, ?string $selected_template )
 		if ( $template_id === $selected_template ) {
 			$extra[] = 'selected="selected"';
 		}
+
 		if ( ! is_active( $template ) ) {
 			$extra[] = 'disabled="disabled"';
+			if ( $template['buy_source'] ?? false ) {
+				$extra[] = sprintf( 'data-buy-source="%s"', esc_attr( $template['buy_source'] ) );
+			}
+
+			if ( isset( $template['included'], $template['license'] ) ) {
+				$extra[] = sprintf( 'data-license="%s"', 'Pro' );
+			}
 		}
 
 		$html .= sprintf(
