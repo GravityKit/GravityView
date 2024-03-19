@@ -23,6 +23,11 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	do_action( 'gravityview/metaboxes/permissions_before', $current_settings );
 
 	/**
+	 * @since 2.21
+	 */
+	GravityView_Render_Settings::render_setting_row( 'is_secure', $current_settings );
+
+	/**
 	 * @since 1.15.2
 	 */
 	GravityView_Render_Settings::render_setting_row( 'embed_only', $current_settings );

@@ -28,11 +28,11 @@ class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 		$output = GravityView_Render_Settings::render_field_options( $form['id'], 'field', 'default_table', '12', 'Example Field Label', 'directory_table-columns', 'multiselect', 'UNIQID_EXAMPLE', '', 'single', array() );
 
 		#<input type="hidden" class="field-key" name="fields[directory_table-columns][UNIQID_EXAMPLE][id]" value="12">'
-		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][id]" value="12"', $output );
-		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][label]" value="Example Field Label"', $output );
-		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][form_id]" value="' . $form['id'] . '"', $output );
-		$this->assertContains( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][only_loggedin]" type="hidden" value="0"', $output );
-		$this->assertContains( 'show_label" type="checkbox" value="1"  checked=\'checked\' />', $output );
+		$this->assertStringContainsString( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][id]" value="12"', $output );
+		$this->assertStringContainsString( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][label]" value="Example Field Label"', $output );
+		$this->assertStringContainsString( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][form_id]" value="' . $form['id'] . '"', $output );
+		$this->assertStringContainsString( 'name="fields[directory_table-columns][UNIQID_EXAMPLE][only_loggedin]" type="hidden" value="0"', $output );
+		$this->assertStringContainsString( 'show_label" type="checkbox" value="1"  checked=\'checked\' />', $output );
 
 		add_filter( 'gravityview_template_field_options', $_change_field_options = function ( $default_options = array() ) {
 
@@ -47,8 +47,8 @@ class GravityView_Render_Settings_Test extends GV_UnitTestCase {
 
 		$output = GravityView_Render_Settings::render_field_options( $form['id'], 'field', 'default_table', '12', 'Example Field Label', 'directory_table-columns', 'multiselect', 'UNIQID_EXAMPLE', '', 'single', array() );
 
-		$this->assertContains( 'only_loggedin" type="checkbox" value="1"  checked=\'checked\' />', $output );
-		$this->assertContains( 'show_label" type="checkbox" value="1"  />', $output );
+		$this->assertStringContainsString( 'only_loggedin" type="checkbox" value="1"  checked=\'checked\' />', $output );
+		$this->assertStringContainsString( 'show_label" type="checkbox" value="1"  />', $output );
 
 		$this->assertTrue( remove_filter( 'gravityview_template_field_options', $_change_field_options ) );
 	}

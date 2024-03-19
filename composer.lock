@@ -1,8 +1,8 @@
 {
     "_readme": [
-        "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
+    "This file locks the dependencies of your project to a known state",
+    "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+    "This file is @generated automatically"
     ],
     "content-hash": "859be52e0c4a4dfeea7d9b2a5942d935",
     "packages": [
@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "24e0d916ca1b35e6bcfa92dea3ec74e7bb656761"
+                "reference": "fdd6fb9097a2c36424cd2d24a548e5c2fff8400c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/24e0d916ca1b35e6bcfa92dea3ec74e7bb656761",
-                "reference": "24e0d916ca1b35e6bcfa92dea3ec74e7bb656761",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/fdd6fb9097a2c36424cd2d24a548e5c2fff8400c",
+                "reference": "fdd6fb9097a2c36424cd2d24a548e5c2fff8400c",
                 "shasum": ""
             },
             "require": {
@@ -322,10 +322,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.10",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.11",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2024-03-04T18:50:44+00:00"
+            "time": "2024-03-05T23:11:10+00:00"
         },
         {
             "name": "illuminate/container",
@@ -9845,14 +9845,14 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "gravitykit/foundation": 20
+    "gravitykit/foundation": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.0",
-        "ext-json": "*",
-        "ext-openssl": "*"
+    "php": ">=7.2.0",
+    "ext-json": "*",
+    "ext-openssl": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

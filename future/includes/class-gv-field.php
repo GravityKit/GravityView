@@ -297,7 +297,11 @@ class Field {
 
 		/** A custom label is available. */
 		if ( ! empty( $this->custom_label ) ) {
-			return \GravityView_API::replace_variables( $this->custom_label, $source ? $source->form ? : null : null, $entry ? $entry->as_entry() : null );
+			return \GravityView_API::replace_variables(
+				$this->custom_label,
+				$source ? $source->form ?? null : null,
+				$entry ? $entry->as_entry() : null
+			);
 		}
 
 		return '';

@@ -35,7 +35,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		backLinkLabel,
 		previewBlock,
 		previewAsShortcode,
-		showPreviewImage
+		showPreviewImage,
 	} = attributes;
 
 	const previewImage = gkGravityViewBlocks[ blockName ]?.previewImage && <img className="preview-image" src={ gkGravityViewBlocks[ blockName ]?.previewImage } alt={ __( 'Block preview image.', 'gk-gravityview' ) } />;
@@ -98,7 +98,15 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( _viewId ) => setAttributes( { viewId: _viewId, previewBlock: previewBlock && !_viewId ? false : previewBlock } ) }
+								onChange={ ( _viewId ) => {
+									const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );
+
+									setAttributes( {
+										viewId: _viewId,
+										secret: selectedView?.secret,
+										previewBlock: previewBlock && !_viewId ? false : previewBlock,
+									} );
+								} }
 							/>
 
 							<PreviewControl

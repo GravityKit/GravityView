@@ -401,7 +401,7 @@ EOD;
 
 		$content = apply_filters( 'the_content', $content );
 
-		$this->assertContains( 'CORRECT!', $content );
+		$this->assertStringContainsString( 'CORRECT!', $content );
 
 		// Now test single quotes.
 		$content = <<<EOD
@@ -418,7 +418,7 @@ EOD;
 
 		$content = do_shortcode( $content );
 
-		$this->assertContains( 'CORRECT!', $content );
+		$this->assertStringContainsString( 'CORRECT!', $content );
 	}
 
 	function get_test_gv_shortcode_date_comparison() {

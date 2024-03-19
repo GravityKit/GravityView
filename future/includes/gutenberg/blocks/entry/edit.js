@@ -42,7 +42,16 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( viewId ) => setAttributes( { viewId, previewBlock: false, entryId: '' } ) }
+								onChange={ ( _viewId ) => {
+									const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );
+
+									setAttributes( {
+										viewId: _viewId,
+										secret: selectedView?.secret,
+										previewBlock: false,
+										entryId: '',
+									} );
+								} }
 							/>
 
 							<EntrySelector

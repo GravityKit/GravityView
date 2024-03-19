@@ -21,6 +21,13 @@ class GF_Form extends Form implements \ArrayAccess {
 	public static $backend = self::BACKEND_GRAVITYFORMS;
 
 	/**
+	 * The form object.
+	 *
+	 * @var array
+	 */
+	public $form;
+
+	/**
 	 * Initialization.
 	 */
 	private function __construct() {

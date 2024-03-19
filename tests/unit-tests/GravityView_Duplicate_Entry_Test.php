@@ -103,7 +103,7 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 
 		$confirm_dialog = GravityView_Duplicate_Entry::get_confirm_dialog();
 
-		$this->assertContains( 'return window.confirm', $confirm_dialog, 'confirm JS is not in the confirm dialog response' );
+		$this->assertStringContainsString( 'return window.confirm', $confirm_dialog, 'confirm JS is not in the confirm dialog response' );
 
 		add_filter( 'gravityview/duplicate-entry/confirm-text', '__return_empty_string' );
 
@@ -438,12 +438,12 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 
 		$_GET['duplicate'] = wp_create_nonce( GravityView_Duplicate_Entry::get_nonce_key( $_GET['entry_id'] ) );
 
-		$this->assertContains( 'The+entry+does+not+exist', $duplicate->process_duplicate() ); // Invalid entry
+		$this->assertStringContainsString( 'The+entry+does+not+exist', $duplicate->process_duplicate() ); // Invalid entry
 
 		$_GET['entry_id'] = $entry['id'];
 		$_GET['duplicate'] = wp_create_nonce( GravityView_Duplicate_Entry::get_nonce_key( $_GET['entry_id'] ) );
 
-		$this->assertContains( 'You+do+not+have+permission+to+duplicate+this+entry', $duplicate->process_duplicate() ); // Not allowed
+		$this->assertStringContainsString( 'You+do+not+have+permission+to+duplicate+this+entry', $duplicate->process_duplicate() ); // Not allowed
 
 		$this->factory->user->set( $admin->ID );
 
@@ -453,7 +453,7 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 
 		$wpdb->suppress_errors( true );
 
-		$this->assertContains( 'There+was+an+error+duplicating+the+entry.', $duplicate->process_duplicate() ); // User agent cannot be NULL
+		$this->assertStringContainsString( 'There+was+an+error+duplicating+the+entry.', $duplicate->process_duplicate() ); // User agent cannot be NULL
 
 		$wpdb->suppress_errors( false );
 
@@ -465,7 +465,7 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertCount( 1, GFAPI::get_entries( $form['id'] ) );
 
-		$this->assertContains( '?status=duplicated', $duplicate->process_duplicate() ); // OK
+		$this->assertStringContainsString( '?status=duplicated', $duplicate->process_duplicate() ); // OK
 
 		$this->assertCount( 2, list( $duplicate_entry, $source_entry ) = GFAPI::get_entries( $form['id'] ) );
 
@@ -478,7 +478,7 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 		$this->assertNotEquals( $duplicate_entry['id'], $source_entry['id'] );
 		$this->assertNotEquals( $duplicate_entry['source_url'], $source_entry['source_url'] );
 
-		$this->assertContains( 'tests', $duplicate_entry['source_url'] );
+		$this->assertStringContainsString( 'tests', $duplicate_entry['source_url'] );
 
 		$this->assertEquals( 'Tests', $duplicate_entry['user_agent'] );
 

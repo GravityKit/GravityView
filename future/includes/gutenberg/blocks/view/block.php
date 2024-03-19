@@ -38,11 +38,14 @@ class View {
 	 * @return string $output
 	 */
 	static function render( $block_attributes = array() ) {
+		$shortcode_attributes        = [];
+		$mapped_shortcode_attributes = \GV\Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block_attributes );
 
-		$shortcode_attributes = \GV\Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block_attributes );
-
-		foreach ( $shortcode_attributes as $attribute => $value ) {
+		foreach ( $mapped_shortcode_attributes as $attribute => $value ) {
 			$value = esc_attr( sanitize_text_field( $value ) );
+			if ( empty( $value ) ) {
+				continue;
+			}
 
 			$shortcode_attributes[] = sprintf(
 				'%s="%s"',
@@ -54,7 +57,7 @@ class View {
 		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_attributes ) );
 
 		if ( Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
-			return json_encode(
+			return wp_json_encode(
 				array(
 					'content' => $shortcode,
 					'script'  => '',
