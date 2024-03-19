@@ -170,11 +170,11 @@ class gravityview extends \GV\Shortcode {
 
 					// Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
 					$notice = sprintf(
-						__( 'This View is in the Trash. %sClick to restore the View%s.', 'gravityview' ),
+						__( 'This View is in the Trash. %sClick to restore the View%s.', 'gk-gravityview' ),
 						sprintf(
 							'<a href="%s" onclick="return confirm(\'%s\');">',
 							esc_url( $untrash_link ),
-							esc_js( __( 'Are you sure you want to restore this View? It will immediately be removed from the trash and set to draft status.', 'gravityview' ) )
+							esc_js( __( 'Are you sure you want to restore this View? It will immediately be removed from the trash and set to draft status.', 'gk-gravityview' ) )
 						),
 						'</a>'
 					);
