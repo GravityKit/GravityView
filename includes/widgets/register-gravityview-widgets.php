@@ -21,6 +21,7 @@ function gravityview_register_gravityview_widgets() {
 
 	include_once GRAVITYVIEW_DIR . 'includes/widgets/search-widget/class-search-widget.php';
 	include_once GRAVITYVIEW_DIR . 'includes/widgets/class-gravityview-widget-custom-content.php';
+	include_once GRAVITYVIEW_DIR . 'includes/widgets/class-gravityview-widget-export-link.php';
 	include_once GRAVITYVIEW_DIR . 'includes/widgets/class-gravityview-widget-gravityforms.php';
 	include_once GRAVITYVIEW_DIR . 'includes/widgets/class-gravityview-widget-page-size.php';
 	include_once GRAVITYVIEW_DIR . 'includes/widgets/class-gravityview-widget-pagination-info.php';

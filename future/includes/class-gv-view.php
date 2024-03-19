@@ -4,6 +4,7 @@ namespace GV;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GF_Query;
+use GravityKitFoundation;
 use GravityView_Compatibility;
 use GravityView_Cache;
 
@@ -338,14 +339,7 @@ class View implements \ArrayAccess {
 					}
 					break;
 				case 'in_trash':
-					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						$notice = sprintf( __( 'This View is in the Trash. You can <a href="%s">restore the View here</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
-
-						return \GVCommon::generate_notice( '<h3>' . $notice . '</h3>', 'notice', array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID );
-					}
-
-					return ''; // Do not show
-					break;
+					return '';  // Views in trash are unreachable when accessed as a CPT, but adding this just in case. We do not give a hint that this content exists, for security purposes.
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
@@ -546,9 +540,13 @@ class View implements \ArrayAccess {
 			}
 		}
 
+		if ( 'trash' === get_post_status( $this->ID ) ) {
+			return new \WP_Error( 'gravityview/in_trash' );
+		}
+
 		/** Private, pending, draft, etc. */
 		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $this->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $this->ID ) ) {
+		if ( ! in_array( $this->post_status, $public_states, true ) && ! \GVCommon::has_cap( 'read_gravityview', $this->ID ) ) {
 			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $this->ID ) );
 			return new \WP_Error( 'gravityview/not_public' );
 		}
@@ -1826,5 +1824,62 @@ class View implements \ArrayAccess {
 		$query_parameters = $query->_introspect();
 
 		$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+	}
+
+	/**
+	 * Calculates and returns the view's validation secret.
+	 *
+	 * @since 2.21
+	 *
+	 * @return string|null The view's secret.
+	 */
+	final public function get_validation_secret( bool $is_forced = false ): ?string {
+		// Cannot use the setting variable because it can be overwritten from the short code.
+		$settings  = get_post_meta( $this->ID, '_gravityview_template_settings', true );
+		$is_secure = (bool) rgar( $settings, 'is_secure', false );
+
+		if ( ( ! $is_secure && ! $is_forced ) || ! class_exists( GravityKitFoundation::class ) ) {
+			return null;
+		}
+
+		$foundation = GravityKitFoundation::get_instance();
+		$encryption = $foundation->encryption();
+		$hash       = $encryption->hash( $this->ID );
+
+		return substr( $hash, 0, 12 );
+	}
+
+	/**
+	 * Returns whether the provided secret validates for this view.
+	 *
+	 * @since 2.21
+	 *
+	 * @param string $secret The provided secret.
+	 *
+	 * @return bool
+	 */
+	final public function validate_secret( string $secret ): bool {
+		$view_secret = $this->get_validation_secret();
+		if ( ! $view_secret ) {
+			return true;
+		}
+
+		return $secret === $view_secret;
+	}
+
+	/**
+	 * Returns the shortcode for this view.
+	 *
+	 * @since 2.21
+	 * @return string
+	 */
+	final public function get_shortcode(): string {
+		$secret = $this->get_validation_secret();
+		$atts   = [ sprintf( 'id="%d"', $this->post->ID ) ];
+		if ( $secret ) {
+			$atts[] = sprintf( 'secret="%s"', $secret );
+		}
+
+		return sprintf( '[gravityview %s]', implode( ' ', $atts ) );
 	}
 }

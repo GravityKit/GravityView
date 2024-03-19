@@ -102,7 +102,7 @@ class View_Settings extends Settings {
 					),
 				),
 				'caching'                     => array(
-					'label'             => __( 'Enable Caching', 'gk-gravityview' ),
+					'label'             => __( 'Enable caching', 'gk-gravityview' ),
 					'type'              => 'checkbox',
 					'group'             => 'default',
 					'value'             => gravityview()->plugin->settings->get( 'caching' ),
@@ -591,6 +591,12 @@ class View_Settings extends Settings {
 					'requires'    => 'delete_redirect=' . \GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE,
 					'merge_tags'  => 'force',
 				),
+				'is_secure'                   => [
+					'label' => __( 'Enable Enhanced Security', 'gk-gravityview' ),
+					'desc'  => __( 'This will require a <code>secret</code> attribute on all shortcodes and blocks connected to this View, including <code>[gravityview]</code>, <code>[gvfield]</code> and <code>[gventry]</code>.', 'gk-gravityview' ),
+					'type'  => 'checkbox',
+					'value' => 0,
+				],
 				'embed_only'                  => array(
 					'label'             => __( 'Prevent Direct Access', 'gk-gravityview' ),
 					'group'             => 'default',
@@ -707,7 +713,7 @@ class View_Settings extends Settings {
 			),
 			array(
 				'csv_nolimit' => array(
-					'label'             => __( 'Show all in file', 'gk-gravityview' ),
+					'label'             => __( 'Show All In File', 'gk-gravityview' ),
 					'group'             => 'default',
 					'desc'              => __( 'Do not limit the number of entries output in the file.', 'gk-gravityview' ),
 					'type'              => 'checkbox',

@@ -347,13 +347,12 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				unset( $gv_entry );
 
 				if ( $lightbox && empty( $field_settings['show_as_link'] ) ) {
-
 					$lightbox_link_atts = array(
 						'rel'   => sprintf( '%s-%s', $gv_class, $entry_slug ),
 						'class' => '',
 					);
 
-					$lightbox_link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $lightbox_link_atts, $field_compat, $context );
+					$lightbox_link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', $lightbox_link_atts, $field_compat, $context, compact( 'file_path', 'insecure_file_path', 'disable_lightbox' ) );
 
 					$rendered = gravityview_get_link( $file_path, $image->html(), $lightbox_link_atts );
 				} else {

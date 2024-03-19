@@ -295,6 +295,50 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.21 on March 18, 2024</h3>
+
+				<p>This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, fixes a conflict with BuddyBoss Platform, and improves performance with updates to essential components.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>A View editor widget to export entries in CSV or TSV formats.</li>
+					<li>Support for SVG images.</li>
+					<li>Support for Gravity Flow's "Workflow User" and "Workflow Multi-User" fields inside the Search Bar.</li>
+					<li>Integration with LifterLMS that allows embedding Views inside Student Dashboards.</li>
+					<li>Notice to inform administrators that an embedded View was moved to "trash" and an option to restore it.</li>
+					<li>Click-to-copy shortcode functionality in the View editor and when listing existing Views.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>PHP 8.2 deprecation notices.</li>
+					<li>Fields linked to single entry layouts are now exported as plain text values, not hyperlinks, in CSV/TSV files.</li>
+					<li>Issue preventing the saving of pages/posts with GravityView Gutenberg blocks when BuddyBoss Platform is active.</li>
+				</ul>
+
+				<h4>🔐 Security</h4>
+
+				<ul>
+					<li>Enhanced security by adding a <code>secret</code> attribute to shortcodes and blocks connected to Views.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.11.</p>
+
+				<ul>
+					<li>GravityKit product updates are now showing on the Plugins page.</li>
+					<li>Database options that are no longer used are now automatically removed.</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li>Added: <code>gk/gravityview/widget/search/clear-button/params</code> filter to modify the parameters of the Clear button in the search widget.</li>
+				</ul>
+
 				<h3>2.20.2 on March 4, 2024</h3>
 
 				<p>This release enhances performance by optimizing caching and managing transients more effectively.</p>
@@ -356,103 +400,6 @@ class GravityView_Welcome {
 				<ul>
 					<li>GravityKit products that are already installed can now be activated without a valid license.</li>
 					<li>Fixed PHP warning messages that appeared when deactivating the last active product with Foundation installed.</li>
-				</ul>
-
-				<h3>2.19.6 on February 7, 2024</h3>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Ability to send notifications using Gravity Forms when an entry is deleted by selecting the "GravityView - Entry is deleted" event from the event dropdown in Gravity Forms notifications settings.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Sorting the View by entry ID in ascending and descending order would yield the same result.</li>
-					<li>Survey fields without a rating would show a 1-star rating.</li>
-					<li>Editing Gravity Forms <a href="https://docs.gravityforms.com/post-custom/#h-general-settings">Custom Post Fields</a> with a Field Type set to "File Uploads" inside in Edit Entry.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> and <a href="https://www.trustedlogin.com/">TrustedLogin</a> to versions 1.2.8 and 1.7.0, respectively.</p>
-
-				<ul>
-					<li>Transients are now set and retrieved correctly when using object cache plugins.</li>
-					<li>Fixed a JavaScript warning that occurred when deactivating license keys and when viewing products without the necessary permissions.</li>
-					<li>Resolved PHP warning messages on the Plugins page.</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Added: <code>GravityView_Notifications</code> class as a wrapper for Gravity Forms notifications.</li>
-					<li>Modified: Added the current <code>\GV\View</code> object as a second parameter for the <code>gravityview/search-all-split-words</code> and <code>gravityview/search-trim-input</code> filters.</li>
-					<li>Modified: Attach listeners in the View editor to <code>$( document.body )</code> instead of <code>$('body')</code> for speed improvements.</li>
-				</ul>
-
-				<h3>2.19.5 on December 7, 2023</h3>
-
-				<ul>
-					<li>Fixed: PHP 8.1+ deprecation notice when editing an entry with the Gravity Forms User Registration add-on enabled</li>
-					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2.6</li>
-				</ul>
-
-				<h3>2.19.4 on November 2, 2023</h3>
-
-				<ul>
-					<li>Improved: View editor performance, especially with Views with a large number of fields</li>
-					<li>Improved: "Link to Edit Entry," "Link to Single Entry," and "Delete Entry" fields are now more easily accessible at the top of the field picker in the View editor</li>
-					<li>Fixed: PHP 8.1+ deprecation notice</li>
-				</ul>
-
-				<h3>2.19.3 on October 25, 2023</h3>
-
-				<ul>
-					<li>Fixed: Using merge tags as values for search and start/end date override settings was not working in Views embedded as a field</li>
-					<li>Fixed: Deprecation notice in PHP 8.2+</li>
-				</ul>
-
-				<h3>2.19.2 on October 19, 2023</h3>
-
-				<ul>
-					<li>Fixed: Merge tags were still not working in the Custom Content field after the fix in 2.19.1</li>
-				</ul>
-
-				<h3>2.19.1 on October 17, 2023</h3>
-
-				<ul>
-					<li>Fixed: PHP 8+ deprecation notice appearing on 404 pages</li>
-					<li>Fixed: Merge tags not working in the Custom Content field</li>
-					<li>Improved: PHP 8.1 compatibility</li>
-				</ul>
-
-				<h3>2.19 on October 12, 2023</h3>
-
-				<ul>
-					<li>Added: Embed a Gravity Forms form using a field in the View editor</li>
-					<li>Added: Embed a GravityView View using a field in the View editor</li>
-					<li>Added: New Custom Code tab in the View Setting metabox to add custom CSS and JavaScript to the
-						View
-					</li>
-					<li>Fixed: Appearance of HTML tables nested within View fields, including Gravity Forms Survey
-						Add-On fields
-					</li>
-					<li>Fixed: Clicking the '?' tooltip icon would not go to the article if the Support Port is
-						disabled
-					</li>
-					<li>Tweak: Improved Chained Select field output when the Chained Select Add-On is disabled</li>
-					<li>Updated: <a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2.5</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Added: Entries submitted using the new Gravity Forms Field will have
-						<code>gk_parent_entry_id</code> and <code>gk_parent_form_id</code> entry meta added to them to
-						better support connecting Views
-					</li>
 				</ul>
 
 				<p style="text-align: center;">

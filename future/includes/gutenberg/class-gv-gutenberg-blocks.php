@@ -3,6 +3,8 @@
 namespace GravityKit\GravityView\Gutenberg;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
+use GravityView_Roles_Capabilities;
+use GV\View;
 use GVCommon;
 
 class Blocks {
@@ -18,6 +20,11 @@ class Blocks {
 		$this->blocks_build_path = str_replace( GRAVITYVIEW_DIR, '', __DIR__ ) . '/build';
 
 		if ( version_compare( $wp_version, self::MIN_WP_VERSION, '<' ) ) {
+			return;
+		}
+
+		// Only show blocks for a user with `publish_gravityviews` capabilities.
+		if ( ! GravityView_Roles_Capabilities::has_cap( 'publish_gravityviews' ) ) {
 			return;
 		}
 
@@ -173,6 +180,11 @@ class Blocks {
 	 * @return void
 	 */
 	public function localize_block_assets() {
+		// Prevent leaking information on front-end.
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		/**
 		 * Modifies the global blocks localization data.
 		 *
@@ -224,14 +236,19 @@ class Blocks {
 		);
 
 		$formatted_views = array_map(
-			function ( $view ) {
-				return array(
-					'value' => (string) $view->ID,
-					'label' => sprintf(
-						'%s (#%d)',
-						$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
-						$view->ID
-					),
+			static function ( $post ) {
+				$view = View::from_post( $post );
+
+				return array_filter(
+					[
+						'value'  => (string) $view->ID,
+						'label'  => sprintf(
+							'%s (#%d)',
+							$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
+							$view->ID
+						),
+						'secret' => $view->get_validation_secret(),
+					]
 				);
 			},
 			$views
@@ -263,6 +280,8 @@ class Blocks {
 
 		$scripts_before_shortcode = array_keys( $wp_scripts->registered );
 		$styles_before_shortcode  = array_keys( $wp_styles->registered );
+
+		ob_start();
 
 		$rendered_shortcode = do_shortcode( $shortcode );
 
@@ -318,6 +337,8 @@ class Blocks {
 		foreach ( $newly_registered_styles as $style ) {
 			$style_dependencies = array_merge( $style_dependencies, $get_dependencies( $style, $wp_styles ) );
 		}
+
+		ob_end_clean();
 
 		return array(
 			'scripts' => array_unique( $script_dependencies, SORT_REGULAR ),
