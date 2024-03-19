@@ -689,43 +689,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
-			$operator = 'contains';
-			$replace_multiple_spaces = true;
-			$is_quoted_search = $this->is_quoted_search( $search_all_value );
+			$words = $this->get_words( $search_all_value, $split_words );
 
-			if ( $is_quoted_search ) {
-				$split_words = false;
-				$replace_multiple_spaces = false; // Don't modify the search value if it's quoted.
-
-				// Remove the wrapping quotes from the search value.
-				if ( function_exists( 'mb_substr' ) ) {
-					$search_all_value = mb_substr( $search_all_value, 1, - 1 );
-				} else {
-					$search_all_value = substr( $search_all_value, 1, - 1 );
-				}
-			}
-
-			if ( $split_words ) {
-				// Search for a piece
-				$words = explode( ' ', $search_all_value );
-
-				$words = array_filter( $words );
-			} else {
-
-				if( $replace_multiple_spaces ) {
-					// Replace multiple spaces with one space
-					$search_all_value = preg_replace( '/\s+/ism', ' ', $search_all_value );
-				}
-
-				$words = array( $search_all_value );
-			}
-
-			foreach ( $words as $word ) {
-				$search_criteria['field_filters'][] = array(
+			foreach ( $words as $item ) {
+				$search_criteria['field_filters'][] = [
 					'key'      => null, // The field ID to search
-					'value'    => $word, // The value to search
-					'operator' => $operator, // What to search in. Options: `is` or `contains`
-				);
+					'value'    => $item['value'], // The value to search
+					'operator' => $item['operator'], // What to search in. Options: `is` or `contains`
+				];
 			}
 		}
 
@@ -890,31 +861,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 		unset( $get );
 
 		return $search_criteria;
-	}
-
-	/**
-	 * Returns whether the search value is quoted.
-	 *
-	 * @since TODO
-	 *
-	 * @param string $search_all_value The search value
-	 *
-	 * @return bool
-	 */
-	private function is_quoted_search( $search_all_value ) {
-
-		if ( function_exists( 'mb_substr' ) ) {
-			$first_char = mb_substr( $search_all_value, 0, 1 );
-			$last_char  = mb_substr( $search_all_value, - 1 );
-		} else {
-			$first_char = substr( $search_all_value, 0, 1 );
-			$last_char  = substr( $search_all_value, - 1 );
-			gravityview()->log->warning( 'mb_substr is not installed on the server. Using substr instead. This may cause issues with non-English characters.' );
-		}
-
-		$quotation_marks = $this->get_quotation_marks();
-
-		return in_array( $first_char, $quotation_marks['opening'], true ) && in_array( $last_char, $quotation_marks['closing'], true );
 	}
 
 	/**
@@ -2316,6 +2262,57 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		return $operator;
+	}
+
+	/**
+	 * Quotes values for a regex.
+	 * @since TODO
+	 *
+	 * @param string[] $words The words to quote.
+	 * @param string   $delimiter The delimiter.
+	 *
+	 * @return string[] The quoted words.
+	 */
+	private static function preg_quote( array $words, string $delimiter = '/' ): array {
+		return array_map( static function ( string $mark ) use ( $delimiter ): string {
+			return preg_quote( $mark, $delimiter );
+		}, $words );
+	}
+
+	/**
+	 * Retrieves the words in with its operator for querying.
+	 * @since TODO
+	 * @param string $query The search query.
+	 * @param bool   $split_words Whether to split the words.
+	 *
+	 * @return array The search words with their operator.
+	 */
+	private function get_words( string $query, bool $split_words ): array {
+		$words           = [];
+		$quotation_marks = $this->get_quotation_marks();
+
+		$regex = sprintf(
+			'/(%s)(?<word>.*?)(%s)/m',
+			implode( '|', self::preg_quote( $quotation_marks['opening'] ?? [] ) ),
+			implode( '|', self::preg_quote( $quotation_marks['closing'] ?? [] ) )
+		);
+
+		if ( preg_match_all( $regex, $query, $matches ) ) {
+			$query = trim( str_replace( $matches[0], '', $query ) );
+			foreach ( $matches['word'] as $exact_word ) {
+				$words[] = [ 'operator' => 'is', 'value' => $exact_word ];
+			}
+		}
+
+		if ( $query && $split_words ) {
+			foreach ( preg_split( '/\s+/', $query ) as $word ) {
+				$words[] = [ 'operator' => 'contains', 'value' => $word ];
+			}
+		}
+
+		return array_filter( $words, static function ( array $word ) {
+			return ! empty( $word['value'] ?? '' );
+		} );
 	}
 } // end class
 
