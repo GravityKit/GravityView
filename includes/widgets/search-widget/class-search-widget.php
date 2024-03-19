@@ -669,6 +669,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 *
 		 * @since 1.20.2
 		 * @since TODO Added $view parameter
+		 *
 		 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
 		 * @param \GV\View $view The View being searched
 		 */
@@ -679,6 +680,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 *
 		 * @since 2.9.3
 		 * @since TODO Added $view parameter
+		 *
 		 * @param bool $trim_search_value True: remove whitespace; False: keep as is [Default: true]
 		 * @param \GV\View $view The View being searched
 		 */
@@ -879,6 +881,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		/**
 		 * @filter `gk/gravityview/common/quotation-marks` Modify the quotation marks used to detect quoted searches.
+		 *
 		 * @since TODO
 		 *
 		 * @param array $quotations_marks List of quotation marks with `opening` and `closing` keys.
@@ -2266,12 +2269,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Quotes values for a regex.
+	 *
 	 * @since TODO
 	 *
-	 * @param string[] $words The words to quote.
+	 * @param array[] $words The words to quote.
 	 * @param string   $delimiter The delimiter.
 	 *
-	 * @return string[] The quoted words.
+	 * @return array[] The quoted words.
 	 */
 	private static function preg_quote( array $words, string $delimiter = '/' ): array {
 		return array_map( static function ( string $mark ) use ( $delimiter ): string {
@@ -2281,7 +2285,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Retrieves the words in with its operator for querying.
+	 *
 	 * @since TODO
+	 *
 	 * @param string $query The search query.
 	 * @param bool   $split_words Whether to split the words.
 	 *
