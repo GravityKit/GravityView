@@ -691,13 +691,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
-			$words = $this->get_criteria_from_query( $search_all_value, $split_words );
+			$criteria = $this->get_criteria_from_query( $search_all_value, $split_words );
 
-			foreach ( $words as $item ) {
+			foreach ( $criteria as $criterion ) {
 				$search_criteria['field_filters'][] = [
-					'key'      => $item['key'] ?? null, // The field ID to search
-					'value'    => $item['value'], // The value to search
-					'operator' => $item['operator'], // What to search in. Options: `is` or `contains`
+					'key'      => $criterion['key'] ?? null, // The field ID to search
+					'value'    => $criterion['value'], // The value to search
+					'operator' => $criterion['operator'], // What to search in. Options: `is` or `contains`
 				];
 			}
 		}
