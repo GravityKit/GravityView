@@ -906,7 +906,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * We feed these into an new GF_Query and tack them onto the current object.
 		 */
 		$search_criteria = $this->filter_entries( array(), null, array( 'id' => $view->ID ), true /** force search_criteria */ );
-
 		/**
 		 * Call any userland filters that they might have.
 		 */
@@ -919,6 +918,21 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( empty( $search_criteria['field_filters'] ) ) {
 			return;
 		}
+
+		$exclude_global_search_words = [];
+
+		foreach ( $search_criteria['field_filters'] as $i => $criterion ) {
+			if (
+				! empty( $criterion['key'] ?? null )
+				|| 'not contains' !== ( $criterion['operator'] ?? '' )
+			) {
+				continue;
+			}
+
+			$exclude_global_search_words[] = $criterion['value'];
+			unset($search_criteria['field_filters'][$i]);
+		}
+
 
 		$widgets = $view->widgets->by_id( $this->widget_id );
 		if ( $widgets->count() ) {
@@ -1113,10 +1127,35 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$query_parts = $query->_introspect();
 
+		if ($exclude_global_search_words) {
+			global $wpdb;
+			$extra_conditions[] = new GF_Query_Condition(new GF_Query_Call(
+				'NOT EXISTS',
+				[
+					sprintf(
+						'SELECT 1 FROM `%s` WHERE `form_id` = %d AND `entry_id` = `%s`.`id` AND (%s)',
+						GFFormsModel::get_entry_meta_table_name(),
+						$view->form ? $view->form->ID : 0,
+						$query->_alias( null, $view->form ? $view->form->ID : 0 ),
+						implode( ' OR ', array_map( static function ( string $word ) use ( $wpdb ) {
+							return $wpdb->prepare( '`meta_value` LIKE "%%%s%%"', $word );
+						}, $exclude_global_search_words ) )
+					)
+				]
+			));
+		}
+
+
 		/**
 		 * Combine the parts as a new WHERE clause.
 		 */
-		$where = call_user_func_array( '\GF_Query_Condition::_and', array_merge( array( $query_parts['where'] ), $search_conditions, $extra_conditions ) );
+		$where = \GF_Query_Condition::_and(
+			...array_merge(
+				[$query_parts['where']],
+				$search_conditions,
+				$extra_conditions
+			)
+		);
 		$query->where( $where );
 	}
 
@@ -2298,15 +2337,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$quotation_marks = $this->get_quotation_marks();
 
 		$regex = sprintf(
-			'/(%s)(?<word>.*?)(%s)/m',
+			'/(?<match>(\+|\-))?(%s)(?<word>.*?)(%s)/m',
 			implode( '|', self::preg_quote( $quotation_marks['opening'] ?? [] ) ),
 			implode( '|', self::preg_quote( $quotation_marks['closing'] ?? [] ) )
 		);
 
 		if ( preg_match_all( $regex, $query, $matches ) ) {
 			$query = str_replace( $matches[0], '', $query );
-			foreach ( $matches['word'] as $exact_word ) {
-				$words[] = [ 'operator' => 'contains', 'value' => $exact_word ];
+			foreach ( $matches['word'] as $i => $exact_word ) {
+				$operator = '-' === $matches['match'][ $i ] ? 'not contains' : 'contains';
+				$words[] = [ 'operator' => $operator, 'value' => $exact_word ];
 			}
 		}
 
