@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
+
+__Developer Updates:__
+
+* Added: `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+
 = 2.21 on March 18, 2024 =
 
 This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, fixes a conflict with BuddyBoss Platform, and improves performance with updates to essential components.
