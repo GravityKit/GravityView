@@ -22,7 +22,7 @@ class View_Renderer extends Renderer {
 	 *
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
-	 * @param View $view The View instance to render.
+	 * @param View        $view The View instance to render.
 	 *
 	 * @return string The rendered View.
 	 */
@@ -37,7 +37,8 @@ class View_Renderer extends Renderer {
 		}
 
 		/**
-		 * @filter `gravityview_template_slug_{$template_id}` Modify the template slug about to be loaded in directory views.
+		 * Modify the template slug about to be loaded in directory views.
+		 *
 		 * @since 1.6
 		 * @deprecated
 		 * @see The `gravityview_get_template_id` filter
@@ -51,7 +52,8 @@ class View_Renderer extends Renderer {
 		 *
 		 * Some contexts don't need initial entries, like the DataTables directory type.
 		 *
-		 * @filter `gravityview_get_view_entries_{$template_slug}` Whether to get the entries or not.
+		 * Whether to get the entries or not.
+		 *
 		 * @param boolean $get_entries Get entries or not, default: true.
 		 */
 		$get_entries = apply_filters( 'gravityview_get_view_entries_' . $template_slug, true );
@@ -80,7 +82,7 @@ class View_Renderer extends Renderer {
 
 			$path = $override->get_template_part( $template_slug, $part );
 
-			if ( $path && strpos( $path, '/deprecated' ) === false ) {
+			if ( $path && false === strpos( $path, '/deprecated' ) ) {
 				/**
 				 * We have to bail and call the legacy renderer. Crap!
 				 */
@@ -96,7 +98,8 @@ class View_Renderer extends Renderer {
 		}
 
 		/**
-		 * @filter `gravityview/template/view/class` Filter the template class that is about to be used to render the view.
+		 * Filter the template class that is about to be used to render the view.
+		 *
 		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
 		 * @param View $view The view about to be rendered.
@@ -122,21 +125,26 @@ class View_Renderer extends Renderer {
 
 		/**
 		 * Updates the View anchor ID each time the View is rendered.
+		 *
 		 * @since 2.15
 		 * @uses {@var $counter}
 		 * @param Template_Context $context
 		 */
-		add_action( 'gravityview/template/view/render', $add_anchor_id_filter = function ( $context ) use ( &$counter ) {
-			/** @see \GV\View::set_anchor_id() */
-			$context->view->set_anchor_id( $counter[ $context->view->ID ] );
-		} );
+		add_action(
+			'gravityview/template/view/render',
+			$add_anchor_id_filter = function ( $context ) use ( &$counter ) {
+				/** @see \GV\View::set_anchor_id() */
+				$context->view->set_anchor_id( $counter[ $context->view->ID ] );
+			}
+		);
 
 		$add_search_action_filter = function ( $action ) use ( $view ) {
 			return $action . '#' . esc_attr( $view->get_anchor_id() );
 		};
 
 		/**
-		 * @filter `gravityview/widget/search/set_view_id_anchor` Allow appending the View ID anchor to the search URL.
+		 * Allow appending the View ID anchor to the search URL.
+		 *
 		 * @since  2.15
 		 *
 		 * @param bool   $set_view_id_anchor
@@ -144,6 +152,7 @@ class View_Renderer extends Renderer {
 		if ( apply_filters( 'gravityview/widget/search/append_view_id_anchor', true ) ) {
 			/**
 			 * Append the View anchor ID to the search form action.
+			 *
 			 * @since 2.15
 			 *
 			 * @param string $action The search form action URL.
@@ -159,7 +168,7 @@ class View_Renderer extends Renderer {
 		 */
 		$parameters = $view->settings->as_atts();
 		if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
-			$has_multisort = true;
+			$has_multisort            = true;
 			$parameters['sort_field'] = reset( $parameters['sort_field'] );
 			if ( ! empty( $parameters['sort_direction'] ) && is_array( $parameters['sort_direction'] ) ) {
 				$parameters['sort_direction'] = reset( $parameters['sort_direction'] );
@@ -172,20 +181,29 @@ class View_Renderer extends Renderer {
 		global $post;
 
 		/** Mock the legacy state for the widgets and whatnot */
-		\GV\Mocks\Legacy_Context::push( array_merge( array(
-			'view' => $view,
-			'entries' => $entries,
-			'request' => $request,
-		), empty( $parameters ) ? array() : array(
-			'paging' => $parameters['paging'],
-			'sorting' => $parameters['sorting'],
-		), empty( $post ) ? array() : array(
-			'post' => $post,
-		) ) );
+		\GV\Mocks\Legacy_Context::push(
+			array_merge(
+				array(
+					'view'    => $view,
+					'entries' => $entries,
+					'request' => $request,
+				),
+				empty( $parameters ) ? array() : array(
+					'paging'  => $parameters['paging'],
+					'sorting' => $parameters['sorting'],
+				),
+				empty( $post ) ? array() : array(
+					'post' => $post,
+				)
+			)
+		);
 
-		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
-			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
-		} );
+		add_action(
+			'gravityview/template/after',
+			$view_id_output = function ( $context ) {
+				printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
+			}
+		);
 
 		ob_start();
 		$template->render();

@@ -248,8 +248,8 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
 
 
-		$this->assertContains( 'entry='.$entry['id'].'">No Attributes Defined', $rendered_view );
-		$this->assertContains( 'entry='.$entry['id'].'">Only Entry ID', $rendered_view );
+		$this->assertStringContainsString( 'entry='.$entry['id'].'">No Attributes Defined', $rendered_view );
+		$this->assertStringContainsString( 'entry='.$entry['id'].'">Only Entry ID', $rendered_view );
 
 		$post = $this->factory->post->create_and_get(array(
 			'post_content' => sprintf( '[gravityview id="%d"]', $view->ID )

@@ -25,4 +25,4 @@ class GravityView_Field_Text extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Text;
+new GravityView_Field_Text();

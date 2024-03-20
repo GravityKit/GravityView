@@ -40,4 +40,4 @@ class GravityView_Field_ID extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_ID;
+new GravityView_Field_ID();

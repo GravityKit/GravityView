@@ -34,42 +34,49 @@ class GravityView_Entry_List {
 
 	/**
 	 * HTML or text to display after the link to the entry
+	 *
 	 * @var string
 	 */
 	private $after_link = '';
 
 	/**
 	 * The message when there are no entries to display
+	 *
 	 * @var string
 	 */
 	private $empty_message = '';
 
 	/**
 	 * Whether to skip the entry currently being displayed, if any.
+	 *
 	 * @var bool
 	 */
 	private $skip_current_entry = true;
 
 	/**
 	 * Optional. Set the context for the output to allow for easier filtering output.
+	 *
 	 * @var string
 	 */
 	private $context = '';
 
 	/**
 	 * HTML tag to wrap output inside
+	 *
 	 * @var string
 	 */
 	private $wrapper_tag = 'ul';
 
 	/**
 	 * HTML tag to wrap each entry inside
+	 *
 	 * @var string
 	 */
 	private $item_tag = 'li';
 
 	/**
 	 * The context this list is operating in.
+	 *
 	 * @todo Deprecate this class altogether.
 	 * @since 2.0
 	 * @var \GV\Template_Context
@@ -78,6 +85,7 @@ class GravityView_Entry_List {
 
 	/**
 	 * The ID of the View connected to the entries being displayed
+	 *
 	 * @since 2.7.2
 	 * @var int
 	 */
@@ -87,24 +95,24 @@ class GravityView_Entry_List {
 	 * @since 2.0 Added $template_context parameter
 	 * @since 2.7.2 Added $view_id parameter
 	 *
-	 * @param array|GV\Entry[] $entries
-	 * @param int $post_id
-	 * @param array $form
-	 * @param string $link_format
-	 * @param string $after_link
+	 * @param array|GV\Entry[]     $entries
+	 * @param int                  $post_id
+	 * @param array                $form
+	 * @param string               $link_format
+	 * @param string               $after_link
 	 * @param \GV\Template_Context $template_context The context
-	 * @param int|null $view_id View to link to when displaying on a page with multiple Views
+	 * @param int|null             $view_id View to link to when displaying on a page with multiple Views
 	 */
 	function __construct( $entries = array(), $post_id = 0, $form = array(), $link_format = '', $after_link = '', $context = '', $template_context = null, $view_id = 0 ) {
-		$this->entries = $entries;
-		$this->post_id = $post_id;
-		$this->form = $form;
-		$this->link_format = $link_format;
-		$this->after_link = $after_link;
-		$this->context = $context;
+		$this->entries          = $entries;
+		$this->post_id          = $post_id;
+		$this->form             = $form;
+		$this->link_format      = $link_format;
+		$this->after_link       = $after_link;
+		$this->context          = $context;
 		$this->template_context = $template_context;
-		$this->view_id = $view_id;
-		$this->empty_message = function_exists( 'gv_no_results' ) ? gv_no_results( $template_context ) : __( 'No entries match your request.', 'gk-gravityview' );
+		$this->view_id          = $view_id;
+		$this->empty_message    = function_exists( 'gv_no_results' ) ? gv_no_results( $template_context ) : __( 'No entries match your request.', 'gk-gravityview' );
 	}
 
 	/**
@@ -125,7 +133,7 @@ class GravityView_Entry_List {
 	 * @param boolean $skip_current_entry
 	 */
 	public function set_skip_current_entry( $skip_current_entry ) {
-		$this->skip_current_entry = (bool)$skip_current_entry;
+		$this->skip_current_entry = (bool) $skip_current_entry;
 	}
 
 	/**
@@ -137,6 +145,7 @@ class GravityView_Entry_List {
 
 	/**
 	 * Set the message when there are no entries to display
+	 *
 	 * @param string $empty_message
 	 */
 	public function set_empty_message( $empty_message ) {
@@ -145,6 +154,7 @@ class GravityView_Entry_List {
 
 	/**
 	 * Set the context in which this entry list is being displayed.
+	 *
 	 * @param string $context
 	 */
 	public function set_context( $context ) {
@@ -190,8 +200,8 @@ class GravityView_Entry_List {
 	public function get_output() {
 
 		// No Entries
-		if( empty( $this->entries ) ) {
-			return '<div class="gv-no-results">'.$this->empty_message.'</div>';
+		if ( empty( $this->entries ) ) {
+			return '<div class="gv-no-results">' . $this->empty_message . '</div>';
 		}
 
 		$output = '';
@@ -202,25 +212,26 @@ class GravityView_Entry_List {
 			$current_entry = GravityView_View::getInstance()->getCurrentEntry();
 		}
 
-		$output .= '<'. $this->wrapper_tag .'>';
+		$output .= '<' . $this->wrapper_tag . '>';
 
-		foreach( $this->entries as $entry ) {
+		foreach ( $this->entries as $entry ) {
 
 			if ( $entry instanceof \GV\Entry ) {
 				$entry = $entry->as_entry();
 			}
 
-			if( $this->skip_entry( $entry, $current_entry ) ) {
+			if ( $this->skip_entry( $entry, $current_entry ) ) {
 				continue;
 			}
 
 			$output .= $this->get_item_output( $entry );
 		}
 
-		$output .= '</'. $this->wrapper_tag .'>';
+		$output .= '</' . $this->wrapper_tag . '>';
 
 		/**
-		 * @filter `gravityview/widget/recent-entries/output` Modify the HTML of the Recent Entries widget output
+		 * Modify the HTML of the Recent Entries widget output.
+		 *
 		 * @param string $output HTML to be displayed
 		 * @param GravityView_Entry_List $this The current class instance
 		 */
@@ -232,15 +243,15 @@ class GravityView_Entry_List {
 	/**
 	 * Should the current entry be skipped while showing the list of entries?
 	 *
-	 * @param array $entry GF Entry array
-	 * @param array|int  $current_entry As returned by GravityView_View::getCurrentEntry()
+	 * @param array     $entry GF Entry array
+	 * @param array|int $current_entry As returned by GravityView_View::getCurrentEntry()
 	 *
 	 * @return bool True: Skip entry; False: don't skip entry
 	 */
 	private function skip_entry( $entry, $current_entry ) {
 
 		// If skip entry is off, or there's no current entry, return false
-		if( empty( $this->skip_current_entry ) || empty( $current_entry ) ) {
+		if ( empty( $this->skip_current_entry ) || empty( $current_entry ) ) {
 			return false;
 		}
 
@@ -248,7 +259,7 @@ class GravityView_Entry_List {
 		$current_entry_id = is_array( $current_entry ) ? $current_entry['id'] : $current_entry;
 
 		// If the entry ID matches the current entry, yes: skip
-		if( $entry['id'] === $current_entry_id ) {
+		if ( $entry['id'] === $current_entry_id ) {
 			return true;
 		}
 
@@ -274,7 +285,8 @@ class GravityView_Entry_List {
 		$link = GravityView_API::entry_link( $entry, $this->post_id, true, $this->view_id );
 
 		/**
-		 * @filter `gravityview/entry-list/link` The link to this other entry now.
+		 * The link to this other entry now.
+		 *
 		 * @param string $link The link.
 		 * @param array $entry The entry.
 		 * @param \GravityView_Entry_List $this The current entry list object.
@@ -283,26 +295,28 @@ class GravityView_Entry_List {
 
 		$item_output = gravityview_get_link( $link, $this->link_format );
 
-		if( !empty( $this->after_link ) ) {
+		if ( ! empty( $this->after_link ) ) {
 
 			/**
-			 * @filter `gravityview/entry-list/after-link` Modify the content displayed after the entry link in an entry list
+			 * Modify the content displayed after the entry link in an entry list.
+			 *
 			 * @since 1.7.2
 			 * @param string $item_output The HTML output for the after_link content
 			 * @param array $entry Gravity Forms entry array
 			 * @param GravityView_Entry_List $this The current class instance
 			 */
-			$after_link = apply_filters( 'gravityview/entry-list/after-link', '<div>'.$this->after_link.'</div>', $entry, $this );
+			$after_link = apply_filters( 'gravityview/entry-list/after-link', '<div>' . $this->after_link . '</div>', $entry, $this );
 
 			$item_output .= $after_link;
 		}
 
 		$item_output = GravityView_API::replace_variables( $item_output, $this->form, $entry );
 
-		$item_output = '<'. $this->item_tag .'>'. $item_output .'</'. $this->item_tag .'>';
+		$item_output = '<' . $this->item_tag . '>' . $item_output . '</' . $this->item_tag . '>';
 
 		/**
-		 * @filter `gravityview/entry-list/item` Modify each item's output in an entry list
+		 * Modify each item's output in an entry list.
+		 *
 		 * @since 1.7.2
 		 * @param string $item_output The HTML output for the item
 		 * @param array $entry Gravity Forms entry array
@@ -312,5 +326,4 @@ class GravityView_Entry_List {
 
 		return $item_output;
 	}
-
 }

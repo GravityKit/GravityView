@@ -4,13 +4,13 @@
  * @global GravityView_Edit_Entry_Render $object
  */
 
-if ( current_filter() === 'gform_previous_button' ) {
+if ( 'gform_previous_button' === current_filter() ) {
 	if ( $object->show_previous_button || $object->show_update_button ) {
 		return; // Will be called later once more
 	}
 }
 
-if ( current_filter() === 'gform_next_button' ) {
+if ( 'gform_next_button' === current_filter() ) {
 	if ( $object->show_update_button ) {
 		return; // Will be called later once more
 	}
@@ -21,7 +21,8 @@ if ( current_filter() === 'gform_next_button' ) {
 	<?php
 
     /**
-     * @filter `gravityview/edit_entry/cancel_link` Modify the cancel button link URL
+     * Modify the cancel button link URL.
+     *
      * @since 1.11.1
      * @since 2.11 The cancel link now uses history.back() so the $back_link URL matters less.
      * @param string $back_link Existing URL of the Cancel link
@@ -32,7 +33,8 @@ if ( current_filter() === 'gform_next_button' ) {
     $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', remove_query_arg( array( 'page', 'view', 'edit' ) ), $object->form, $object->entry, $object->view_id );
 
 	/**
-	 * @action `gravityview/edit-entry/publishing-action/before` Triggered before the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
+	 * container.
+     *
 	 * @since 1.5.1
 	 * @param array $form The Gravity Forms form
 	 * @param array $entry The Gravity Forms entry
@@ -44,30 +46,30 @@ if ( current_filter() === 'gform_next_button' ) {
 
 	if ( $object->show_previous_button ) {
 		$previous_tabindex = GFCommon::get_tabindex();
-		$previous_label = GFCommon::replace_variables( $labels['previous'], $object->form, $object->entry );
+		$previous_label    = GFCommon::replace_variables( $labels['previous'], $object->form, $object->entry );
 		?>
 		<input id="gform_previous_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-previous" type="submit" <?php echo $previous_tabindex; ?> value="<?php echo esc_attr( $previous_label ); ?>" name="save" />
 		<?php
 	}
 
 	if ( $object->show_next_button ) {
-		$next_tabindex    = GFCommon::get_tabindex();
-		$next_label = GFCommon::replace_variables( $labels['next'], $object->form, $object->entry );
+		$next_tabindex = GFCommon::get_tabindex();
+		$next_label    = GFCommon::replace_variables( $labels['next'], $object->form, $object->entry );
 		?>
 		<input id="gform_next_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-next" type="submit" <?php echo $next_tabindex; ?> value="<?php echo esc_attr( $next_label ); ?>" name="save" />
 		<?php
 	}
 
 	if ( $object->show_update_button ) {
-		$update_tabindex  = GFCommon::get_tabindex();
-		$update_label = GFCommon::replace_variables( $labels['submit'], $object->form, $object->entry );
+		$update_tabindex = GFCommon::get_tabindex();
+		$update_label    = GFCommon::replace_variables( $labels['submit'], $object->form, $object->entry );
 		?>
 		<input id="gform_submit_button_<?php echo esc_attr( $object->form['id'] ); ?>" class="btn btn-lg button button-large gform_button button-primary gv-button-update" type="submit" <?php echo $update_tabindex; ?> value="<?php echo esc_attr( $update_label ); ?>" name="save" />
 		<?php
 	}
 
-	$cancel_tabindex   = GFCommon::get_tabindex();
-	$cancel_label = GFCommon::replace_variables( $labels['cancel'], $object->form, $object->entry );
+	$cancel_tabindex = GFCommon::get_tabindex();
+	$cancel_label    = GFCommon::replace_variables( $labels['cancel'], $object->form, $object->entry );
 
 	// If the entry has been edited, history.back() will keep pointing to the Edit Entry screen. Go back before editing, please!
 	// On first visit, will be history.go(-1) because (0 + 1 * -1).
@@ -75,7 +77,8 @@ if ( current_filter() === 'gform_next_button' ) {
 	$update_count = (int) \GV\Utils::_POST( 'update_count', 0 );
 
 	/**
-	 * @filter `gravityview/edit_entry/cancel_onclick` Modify the `onclick` attribute for the back link. To remove `onclick` altogether, return an empty string.
+	 * altogether, return an empty string.
+     *
 	 * @since 2.13.4
 	 * @param string $back_link Existing "back" of the Cancel link.
 	 * @param array $form The Gravity Forms form.
@@ -91,7 +94,7 @@ if ( current_filter() === 'gform_next_button' ) {
 	<?php
 
 	/**
-	 * @action `gravityview/edit-entry/publishing-action/after` Triggered after the submit buttons in the Edit Entry screen, inside the `<div id="publishing-action">` container.
+	 * container.
 	 *
 	 * @used-by GravityView_Delete_Entry::add_delete_button()
 	 *

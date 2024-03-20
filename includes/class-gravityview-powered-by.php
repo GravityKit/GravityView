@@ -10,7 +10,6 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Add a Powered By link below Views.
  *
  * @since 2.5.3
- *
  */
 class GravityView_Powered_By {
 
@@ -34,7 +33,7 @@ class GravityView_Powered_By {
 
 		$powered_by = gravityview()->plugin->settings->get_gravitykit_setting( 'powered_by', 0 );
 
-		if( empty( $powered_by ) ) {
+		if ( empty( $powered_by ) ) {
 			return;
 		}
 
@@ -52,7 +51,8 @@ class GravityView_Powered_By {
 		}
 
 		/**
-		 * @filter `gravityview/powered_by/text` Modify the anchor text for the Powered By link
+		 * Modify the anchor text for the Powered By link.
+		 *
 		 * @param string $anchor_text Anchor text for the Powered By link. Default: "Powered by GravityView". Will be sanitized before display.
 		 */
 		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gk-gravityview' ) );
@@ -67,21 +67,25 @@ class GravityView_Powered_By {
 	 */
 	protected function get_url() {
 
-		$url = sprintf( self::url, get_bloginfo('name' ) );
+		$url = sprintf( self::url, get_bloginfo( 'name' ) );
 
 		$affiliate_id = gravityview()->plugin->settings->get_gravitykit_setting( 'affiliate_id', '' );
 
-		if( $affiliate_id && is_numeric( $affiliate_id ) ) {
+		if ( $affiliate_id && is_numeric( $affiliate_id ) ) {
 			$url = add_query_arg( array( 'ref' => $affiliate_id ), $url );
 		}
 
-		$url = add_query_arg( array(
-			'utm_source' => 'powered_by',
-            'utm_term' => get_bloginfo('name' ),
-		), $url );
+		$url = add_query_arg(
+			array(
+				'utm_source' => 'powered_by',
+				'utm_term'   => get_bloginfo( 'name' ),
+			),
+			$url
+		);
 
 		/**
-		 * @filter `gravityview/powered_by/url` Modify the URL returned by the Powered By link
+		 * Modify the URL returned by the Powered By link.
+		 *
 		 * @param $url string The URL passed to the Powered By link
 		 */
 		$url = apply_filters( 'gravityview/powered_by/url', $url );

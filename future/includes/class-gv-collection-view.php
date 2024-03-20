@@ -96,7 +96,7 @@ class View_Collection extends Collection {
 			$views->merge( self::from_content( $post->post_content ) );
 
 			/**
-			 * @filter `gravityview/view_collection/from_post/meta_keys` Define meta keys to parse to check for GravityView shortcode content.
+			 * Define meta keys to parse to check for GravityView shortcode content.
 			 *
 			 * This is useful when using themes that store content that may contain shortcodes in custom post meta.
 			 *
@@ -131,7 +131,7 @@ class View_Collection extends Collection {
 	 * @since 2.1
 	 *
 	 * @param \GV\View_Collection $views Existing View Collection to merge with
-	 * @param string|array $meta_value Value to parse. Normally the value of $post->{$meta_key}.
+	 * @param string|array        $meta_value Value to parse. Normally the value of $post->{$meta_key}.
 	 *
 	 * @return \GV\View_Collection $views View Collection containing any additional Views found
 	 */
@@ -168,7 +168,7 @@ class View_Collection extends Collection {
 
 		/** Let's find us some [gravityview] shortcodes perhaps. */
 		foreach ( Shortcode::parse( $content ) as $shortcode ) {
-			if ( $shortcode->name != 'gravityview' || empty( $shortcode->atts['id'] ) ) {
+			if ( 'gravityview' != $shortcode->name || empty( $shortcode->atts['id'] ) ) {
 				continue;
 			}
 

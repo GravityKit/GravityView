@@ -7,7 +7,7 @@ anchors:
   default_job_config: &default_job_config
     working_directory: /home/circleci/plugin
     machine:
-      image: ubuntu-2004:202201-02
+      image: default
 
   test_job_config: &test_job_config
     <<: *context
@@ -106,7 +106,7 @@ jobs:
           name: Creating a Github release
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              git config user.email "support@gravityview.co"
+              git config user.email "support@gravitykit.com"
               git config user.name "GravityView - CI"
               /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
             fi
@@ -138,4 +138,3 @@ workflows:
             - run_php_72_unit_tests
             - run_php_80_unit_tests
 #            - run_acceptance_tests
-

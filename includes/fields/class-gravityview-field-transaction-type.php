@@ -36,7 +36,7 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 	 * GravityView_Field_Transaction_Type constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Transaction Type', 'gk-gravityview' );
+		$this->label       = esc_html__( 'Transaction Type', 'gk-gravityview' );
 		$this->description = esc_html__( 'The type of the order: one-time payment or subscription', 'gk-gravityview' );
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
@@ -54,15 +54,16 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 	 *
 	 * @param string $output HTML value output
 	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field
-	 * @param array $field Current field being displayed
+	 * @param  array  $field_settings Settings for the particular GV field
+	 * @param array  $field Current field being displayed
 	 *
 	 * @return String values for this field based on the numeric values used by Gravity Forms
 	 */
 	public function get_content( $output, $entry = array(), $field_settings = array(), $field = array() ) {
 
 		/** Overridden by a template. */
-		if( ! empty( $field['field_path'] ) ) { return $output; }
+		if ( ! empty( $field['field_path'] ) ) {
+			return $output; }
 
 		return $this->get_string_from_value( $output );
 	}
@@ -94,11 +95,11 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 		switch ( intval( $value ) ) {
 			case self::ONE_TIME_PAYMENT:
 			default:
-				$return = __('One-Time Payment', 'gk-gravityview');
+				$return = __( 'One-Time Payment', 'gk-gravityview' );
 				break;
 
 			case self::SUBSCRIPTION:
-				$return = __('Subscription', 'gk-gravityview');
+				$return = __( 'Subscription', 'gk-gravityview' );
 				break;
 		}
 
@@ -106,4 +107,4 @@ class GravityView_Field_Transaction_Type extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Transaction_Type;
+new GravityView_Field_Transaction_Type();

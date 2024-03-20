@@ -79,7 +79,7 @@ class views {
 				}
 
 				// When only one View is found, return a \GV\View.
-				if( 1 === $views->count() ) {
+				if ( 1 === $views->count() ) {
 					return $views->first();
 				}
 

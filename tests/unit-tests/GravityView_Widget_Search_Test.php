@@ -88,6 +88,27 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		);
 		$this->assertEquals( $search_criteria_split, $this->widget->filter_entries( array(), null, $args, true ) );
 
+		// Exact search.
+		$search_criteria_single_exact = $search_criteria_single;
+		$search_criteria_single_exact['field_filters'][0]['value'] = ' with  spaces';
+
+		$_GET = [ 'gv_search' => '" with  spaces"' ];
+		$this->assertEquals( $search_criteria_single_exact, $this->widget->filter_entries( array(), null, $args, true ) );
+
+		$_GET = [ 'gv_search' => '" space " "another one" and two' ];
+
+		$search_criteria_split_exact = [
+			'field_filters' => [
+				'mode' => 'any',
+				[ 'key' => null, 'value' => ' space ', 'operator' => 'contains' ],
+				[ 'key' => null, 'value' => 'another one', 'operator' => 'contains' ],
+				[ 'key' => null, 'value' => 'and', 'operator' => 'contains' ],
+				[ 'key' => null, 'value' => 'two', 'operator' => 'contains' ],
+			]
+		];
+
+		$this->assertEquals( $search_criteria_split_exact, $this->widget->filter_entries( array(), null, $args, true ) );
+
 		$_GET = array(
 			'gv_search' => '%20with%20%20spaces'
 		);
@@ -504,7 +525,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * https://docs.gravityview.co/article/115-changing-the-format-of-the-search-widgets-date-picker
+	 * https://docs.gravitykit.com/article/115-changing-the-format-of-the-search-widgets-date-picker
 	 */
 	public function get_gv_start_end_formats() {
 		return array(
@@ -639,7 +660,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'support@gravityview.co',
+			'4'  => 'support@gravitykit.com',
 			'16' => 'Contact us if you have any questions.',
 		) );
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
@@ -649,7 +670,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'gravityview.co',
+			'4'  => 'gravitykit.com',
 			'16' => 'Our website.',
 		) );
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
@@ -659,7 +680,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 			'form_id' => $form['id'],
 			'status' => 'active',
 
-			'4'  => 'support@gravityview.co',
+			'4'  => 'support@gravitykit.com',
 			'16' => 'Contact us if you have any questions.',
 		) );
 
@@ -736,7 +757,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					continue;
 				}
 
-				gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, $status === 'approved' ? \GravityView_Entry_Approval_Status::APPROVED : \GravityView_Entry_Approval_Status::DISAPPROVED );
+				gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, 'approved' === $status ? \GravityView_Entry_Approval_Status::APPROVED : \GravityView_Entry_Approval_Status::DISAPPROVED );
 			}
 		}
 
@@ -957,6 +978,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
 		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
 
 		update_user_meta( $gamma, 'custom_meta', 'custom' );
 		add_filter( 'gravityview/widgets/search/created_by/user_meta_fields', function() {
@@ -966,6 +988,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gravityview/widgets/search/created_by/user_meta_fields' );
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 
 		$_GET = array();
 	}
@@ -1093,7 +1116,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview_fe_search_criteria', $callback );
 
 		add_filter( 'gravityview_search_operator', $callback = function( $operator, $field ) {
-			if ( $field['key'] == '16' ) {
+			if ( '16' == $field['key'] ) {
 				return 'is';
 			}
 			return $operator;

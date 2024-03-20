@@ -23,13 +23,13 @@ class GravityView_Field_Delete_Link extends GravityView_Field {
 	var $is_searchable = false;
 
 	/** @inheritDoc  */
-	var $group = 'gravityview';
+	var $group = 'featured';
 
 	/** @inheritDoc  */
 	var $icon = 'dashicons-trash';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Delete Entry', 'gk-gravityview' );
+		$this->label       = esc_html__( 'Delete Entry', 'gk-gravityview' );
 		$this->description = esc_html__( 'A link to delete the entry. Respects the Delete Entry permissions.', 'gk-gravityview' );
 
 		$this->add_hooks();
@@ -45,37 +45,6 @@ class GravityView_Field_Delete_Link extends GravityView_Field {
 	public function add_hooks() {
 		// For the Delete Entry Link, you don't want visible to all users.
 		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps' ), 10, 5 );
-
-		// Add Delete Link as a default field, outside those set in the Gravity Forms form
-		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
-	}
-
-	/**
-	 * Add as a default field, outside those set in the Gravity Form form
-	 *
-	 * @since 2.18.1
-	 *
-	 * @param array        $entry_default_fields Existing fields
-	 * @param string|array $form                 form_ID or form object
-	 * @param string       $zone                 Either 'single', 'directory', 'edit', 'header', 'footer'
-	 *
-	 * @return array
-	 */
-	public function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
-
-		if ( 'directory' !== $zone ) {
-			return $entry_default_fields;
-		}
-
-		$entry_default_fields[ $this->name ] = array(
-			'label' => $this->label,
-			'type'  => $this->name,
-			'desc'  => $this->description,
-			'icon'  => $this->icon,
-			'group' => 'gravityview',
-		);
-
-		return $entry_default_fields;
 	}
 
 	/**
@@ -84,10 +53,10 @@ class GravityView_Field_Delete_Link extends GravityView_Field {
 	 * @since 1.5.1
 	 * @since 2.9.2 Moved here from GravityView_Delete_Entry
 	 *
-	 * @param array $visibility_caps Array of capabilities to display in field dropdown.
+	 * @param array  $visibility_caps Array of capabilities to display in field dropdown.
 	 * @param string $field_type Type of field options to render (`field` or `widget`)
 	 * @param string $template_id Table slug
-	 * @param float $field_id GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param float  $field_id GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
 	 * @param string $context What context are we in? Example: `single` or `directory`
 	 * @param string $input_type (textarea, list, select, etc.)
 	 *
@@ -116,7 +85,7 @@ class GravityView_Field_Delete_Link extends GravityView_Field {
 	 * @since 2.9.2 Moved here from GravityView_Delete_Entry
 	 * @since TODO Moved to own field class.
 	 *
-	 * @param array $field_options
+	 * @param array  $field_options
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $context
@@ -141,19 +110,18 @@ class GravityView_Field_Delete_Link extends GravityView_Field {
 		);
 
 		$field_options['allow_edit_cap'] = array(
-			'type'    => 'select',
-			'label'   => __( 'Allow the following users to delete the entry:', 'gk-gravityview' ),
-			'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
-			'tooltip' => 'allow_edit_cap',
-			'class'   => 'widefat',
-			'value'   => 'read', // Default: entry creator
-			'group'   => 'visibility',
+			'type'     => 'select',
+			'label'    => __( 'Allow the following users to delete the entry:', 'gk-gravityview' ),
+			'choices'  => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
+			'tooltip'  => 'allow_edit_cap',
+			'class'    => 'widefat',
+			'value'    => 'read', // Default: entry creator
+			'group'    => 'visibility',
 			'priority' => 100,
 		);
 
 		return array_merge( $add_option, $field_options );
 	}
-
 }
 
-new GravityView_Field_Delete_Link;
+new GravityView_Field_Delete_Link();

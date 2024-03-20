@@ -24,23 +24,22 @@ class GravityView_Field_Quiz_Score extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
 		$new_fields = array(
 			'quiz_use_max_score' => array(
-				'type' => 'checkbox',
-				'label' => __( 'Show Max Score?', 'gk-gravityview' ),
-				'desc' => __('Display score as the a fraction: "[score]/[max score]". If unchecked, will display score.', 'gk-gravityview'),
-				'value' => true,
+				'type'       => 'checkbox',
+				'label'      => __( 'Show Max Score?', 'gk-gravityview' ),
+				'desc'       => __( 'Display score as the a fraction: "[score]/[max score]". If unchecked, will display score.', 'gk-gravityview' ),
+				'value'      => true,
 				'merge_tags' => false,
 			),
 		);
 
 		return $new_fields + $field_options;
 	}
-
 }
 
-new GravityView_Field_Quiz_Score;
+new GravityView_Field_Quiz_Score();

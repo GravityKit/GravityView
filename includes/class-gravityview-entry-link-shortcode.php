@@ -25,7 +25,7 @@ class GravityView_Entry_Link_Shortcode {
 	 * @type array The accepted shortcode attribute pairs, with defaults set
 	 * @since 1.15
 	 */
-	static private $defaults = array(
+	private static $defaults = array(
 		'action'       => 'read',
 		'view_id'      => 0,
 		'entry_id'     => 0,
@@ -101,7 +101,7 @@ class GravityView_Entry_Link_Shortcode {
 	 *
 	 * @since 1.15
 	 *
-	 * @param array $atts {
+	 * @param array       $atts {
 	 *    @type string $action What type of link to generate. Options: `read`, `edit`, and `delete`. Default: `read`
 	 *    @type string $view_id Define the ID for the View. If not set, use current View ID, if exists.
 	 *    @type string $entry_id ID of the entry to edit. If undefined, uses the current entry ID, if exists.
@@ -112,7 +112,7 @@ class GravityView_Entry_Link_Shortcode {
 	 * }
 	 *
 	 * @param string|null $content Used as link anchor text, if specified.
-	 * @param string $context Current shortcode being called. Not used.
+	 * @param string      $context Current shortcode being called. Not used.
 	 *
 	 * @return null|string If admin or an error occurred, returns null. Otherwise, returns entry link output. If `$atts['return']` is 'url', the entry link URL. Otherwise, entry link `<a>` HTML tag.
 	 */
@@ -147,10 +147,22 @@ class GravityView_Entry_Link_Shortcode {
 			return null;
 		}
 
-		gravityview()->log->debug( '{context} atts:', array( 'context' => $context, 'data' => $atts ) );
+		gravityview()->log->debug(
+			'{context} atts:',
+			array(
+				'context' => $context,
+				'data'    => $atts,
+			)
+		);
 
 		if ( ! $this->has_cap() ) {
-			gravityview()->log->error( 'User does not have the capability to {action} this entry: {entry_id}', array( 'action' => esc_attr( $this->settings['action'] ), 'entry_id' => $this->entry['id'] ) );
+			gravityview()->log->error(
+				'User does not have the capability to {action} this entry: {entry_id}',
+				array(
+					'action'   => esc_attr( $this->settings['action'] ),
+					'entry_id' => $this->entry['id'],
+				)
+			);
 
 			return null;
 		}
@@ -175,7 +187,8 @@ class GravityView_Entry_Link_Shortcode {
 		$return = gravityview_get_link( $url, $link_text, $link_atts );
 
 		/**
-		 * @filter `gravityview/shortcodes/gv_entry_link/output` Modify the output of the [gv_entry_link] shortcode
+		 * Modify the output of the [gv_entry_link] shortcode.
+		 *
 		 * @since 2.0.15
 		 * @param string $return The HTML link output
 		 * @param array {
@@ -322,7 +335,7 @@ class GravityView_Entry_Link_Shortcode {
 			}
 
 			$entry = $backup_entry;
-		} else if ( in_array( $entry_id, [ 'first', 'last' ] ) ) {
+		} elseif ( in_array( $entry_id, array( 'first', 'last' ) ) ) {
 			$view = GV\View::by_id( $this->view_id );
 
 			if ( ! $view ) {
@@ -375,4 +388,4 @@ class GravityView_Entry_Link_Shortcode {
 	}
 }
 
-new GravityView_Entry_Link_Shortcode;
+new GravityView_Entry_Link_Shortcode();

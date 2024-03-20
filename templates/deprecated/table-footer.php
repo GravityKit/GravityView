@@ -12,10 +12,13 @@
 		<tr>
 			<?php
 
-			$this->renderZone( 'columns', array(
-				'markup' => '<th id="{{ field_id }}" class="{{class}}">{{label}}</th>',
-				'hide_empty' => false, // Always show <th>
-			));
+			$this->renderZone(
+				'columns',
+				array(
+					'markup'     => '<th id="{{ field_id }}" class="{{class}}">{{label}}</th>',
+					'hide_empty' => false, // Always show <th>
+				)
+			);
 
 			?>
 		</tr>

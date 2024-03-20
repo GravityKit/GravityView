@@ -51,5 +51,10 @@ docs/html
 docker-compose.yml
 docker-unit-tests.sh
 phpunit
+phpunit.xml
 wordpress-51-tests-lib
 wordpress-latest-tests-lib
+
+.coveralls.yml
+.scrutinizer.yml
+.tx

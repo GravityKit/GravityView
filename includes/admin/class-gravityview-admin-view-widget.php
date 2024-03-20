@@ -12,15 +12,14 @@ class GravityView_Admin_View_Widget extends GravityView_Admin_View_Item {
 
 		$field_info_items = array();
 
-		if( !empty( $this->item['description'] ) ) {
+		if ( ! empty( $this->item['description'] ) ) {
 
 			$field_info_items[] = array(
-				'value' => $this->item['description']
+				'value' => $this->item['description'],
 			);
 
 		}
 
 		return $field_info_items;
 	}
-
 }
