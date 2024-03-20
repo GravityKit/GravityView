@@ -54,6 +54,8 @@ class GravityView_Edit_Entry_Admin {
 
 		GravityView_Render_Settings::render_setting_row( 'edit_locking', $current_settings );
 
+		GravityView_Render_Settings::render_setting_row( 'paged_edit', $current_settings );
+
 		GravityView_Render_Settings::render_setting_row( 'user_edit', $current_settings );
 
 		GravityView_Render_Settings::render_setting_row( 'unapprove_edit', $current_settings );
