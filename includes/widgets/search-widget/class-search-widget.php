@@ -1127,9 +1127,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$query_parts = $query->_introspect();
 
-		if ($exclude_global_search_words) {
+		if ( $exclude_global_search_words ) {
 			global $wpdb;
-			$extra_conditions[] = new GF_Query_Condition(new GF_Query_Call(
+			$extra_conditions[] = new GF_Query_Condition( new GF_Query_Call(
 				'NOT EXISTS',
 				[
 					sprintf(
@@ -1142,7 +1142,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						}, $exclude_global_search_words ) )
 					)
 				]
-			));
+			) );
 		}
 
 
@@ -2351,16 +2351,19 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		if ( $query && $split_words ) {
-			foreach ( preg_split( '/\s+/', $query ) as $word ) {
+			foreach ( preg_split( '/\s+/', $query ) as $value ) {
+				$is_exclude = '-' === ($value[0] ?? '');
 				$words[] = [
-					'operator' => 'contains',
-					'value'    => $word,
+					'operator' => $is_exclude ? 'not contains' : 'contains',
+					'value'    => $is_exclude ? substr( $value, 1 ) : $value,
 				];
 			}
 		} elseif ( $query ) {
+			$is_exclude = '-' === ($query[0] ?? '');
+			$value = preg_replace( '/\s+/', ' ', $query );
 			$words[] = [
-				'operator' => 'contains',
-				'value'    => preg_replace( '/\s+/', ' ', $query ),
+				'operator' => $is_exclude ? 'not contains' : 'contains',
+				'value'    => $is_exclude ? substr( $value, 1 ) : $value,
 			];
 		}
 
