@@ -693,7 +693,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			foreach ( $words as $item ) {
 				$search_criteria['field_filters'][] = [
-					'key'      => null, // The field ID to search
+					'key'      => $item['key'] ?? null, // The field ID to search
 					'value'    => $item['value'], // The value to search
 					'operator' => $item['operator'], // What to search in. Options: `is` or `contains`
 				];
@@ -2300,7 +2300,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( preg_match_all( $regex, $query, $matches ) ) {
 			$query = str_replace( $matches[0], '', $query );
 			foreach ( $matches['word'] as $exact_word ) {
-				$words[] = [ 'operator' => 'is', 'value' => $exact_word ];
+				$words[] = [ 'operator' => 'contains', 'value' => $exact_word ];
 			}
 		}
 
