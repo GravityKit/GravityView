@@ -689,7 +689,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
-			$words = $this->get_words( $search_all_value, $split_words );
+			$words = $this->get_criteria_from_query( $search_all_value, $split_words );
 
 			foreach ( $words as $item ) {
 				$search_criteria['field_filters'][] = [
@@ -2287,7 +2287,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @return array The search words with their operator.
 	 */
-	private function get_words( string $query, bool $split_words ): array {
+	private function get_criteria_from_query( string $query, bool $split_words ): array {
 		$words           = [];
 		$quotation_marks = $this->get_quotation_marks();
 
@@ -2298,7 +2298,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		);
 
 		if ( preg_match_all( $regex, $query, $matches ) ) {
-			$query = trim( str_replace( $matches[0], '', $query ) );
+			$query = str_replace( $matches[0], '', $query );
 			foreach ( $matches['word'] as $exact_word ) {
 				$words[] = [ 'operator' => 'is', 'value' => $exact_word ];
 			}
@@ -2306,8 +2306,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		if ( $query && $split_words ) {
 			foreach ( preg_split( '/\s+/', $query ) as $word ) {
-				$words[] = [ 'operator' => 'contains', 'value' => $word ];
+				$words[] = [
+					'operator' => 'contains',
+					'value'    => $word,
+				];
 			}
+		} elseif ( $query ) {
+			$words[] = [
+				'operator' => 'contains',
+				'value'    => preg_replace( '/\s+/', ' ', $query ),
+			];
 		}
 
 		return array_filter( $words, static function ( array $word ) {
