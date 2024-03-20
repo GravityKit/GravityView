@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-code-snippets.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2021, Katz Web Services, Inc.
  *
  * @since 2.13.2
@@ -28,7 +28,6 @@ class GravityView_Plugin_Hooks_Code_Snippets extends GravityView_Plugin_and_Them
 	 * @var array
 	 */
 	protected $style_handles = array( 'menu-icon-snippets' );
-
 }
 
-new GravityView_Plugin_Hooks_Code_Snippets;
+new GravityView_Plugin_Hooks_Code_Snippets();

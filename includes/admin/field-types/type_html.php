@@ -1,6 +1,7 @@
 <?php
 /**
  * HTML input type - pass pure HTML into settings in the `desc` key
+ *
  * @since 1.17
  */
 class GravityView_FieldType_html extends GravityView_FieldType {
@@ -21,7 +22,6 @@ class GravityView_FieldType_html extends GravityView_FieldType {
 	 * @return string
 	 */
 	function get_field_desc() {
-		return !empty( $this->field['desc'] ) ? $this->field['desc'] : '';
+		return ! empty( $this->field['desc'] ) ? $this->field['desc'] : '';
 	}
-
 }

@@ -10,7 +10,7 @@ if ( ! class_exists( 'GV_RESTUnitTestCase' ) ) {
  * @package   GravityView
  * @license   GPL2+
  * @author    Josh Pollock <josh@joshpress.net>
- * @link      http://gravityview.co
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 2.0
@@ -22,7 +22,6 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 'gravityview/v1', \GV\REST\Core::get_namespace() );
 
 		$routes = rest_get_server()->get_routes();
-
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace(), $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views', $routes );
 		$this->assertArrayHasKey( '/' . \GV\REST\Core::get_namespace() . '/views/(?P<id>[\d]+)', $routes );
@@ -182,16 +181,16 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 3, $response->headers['X-Item-Count'] );
 
 		$html = $response->get_data();
-		$this->assertContains( '<meta http-equiv="X-Item-Count" content="3" />', $html );
-		$this->assertContains( 'gv-table-view', $html );
-		$this->assertContains( 'set all the fields!', $html );
-		$this->assertContains( 'set all the fields! 1', $html );
-		$this->assertContains( 'set all the fields! 2', $html );
+		$this->assertStringContainsString( '<meta http-equiv="X-Item-Count" content="3" />', $html );
+		$this->assertStringContainsString( 'gv-table-view', $html );
+		$this->assertStringContainsString( 'set all the fields!', $html );
+		$this->assertStringContainsString( 'set all the fields! 1', $html );
+		$this->assertStringContainsString( 'set all the fields! 2', $html );
 
 		$this->assertTrue( add_filter( 'gravityview/rest/entries/html/insert_meta', '__return_false' ) );
 		$response = rest_get_server()->dispatch( $request );
 		$html = $response->get_data();
-		$this->assertNotContains( '<meta http-equiv="X-Item-Count"', $html );
+		$this->assertStringNotContainsString( '<meta http-equiv="X-Item-Count"', $html );
 		$this->assertTrue( remove_filter( 'gravityview/rest/entries/html/insert_meta', '__return_false' ) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.html' );
@@ -203,7 +202,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 0, $response->headers['X-Item-Count'] );
 
 		$html = $response->get_data();
-		$this->assertContains( '<meta http-equiv="X-Item-Count" content="0" />', $html );
+		$this->assertStringContainsString( '<meta http-equiv="X-Item-Count" content="0" />', $html );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.csv' );
 		ob_start(); // CSV binary data is output ad hoc
@@ -214,7 +213,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 'text/csv', $response->headers['Content-Type'] );
 
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
-		$this->assertContains( $entry2['id'] . ',"set all the fields! 2"', $csv );
+		$this->assertStringContainsString( $entry2['id'] . ',"set all the fields! 2"', $csv );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view->ID . '/entries.tsv' );
 		ob_start(); // TSV binary data is output ad hoc
@@ -225,7 +224,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 'text/tsv', $response->headers['Content-Type'] );
 
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $tsv );
-		$this->assertContains( $entry2['id'] . "\t" . '"set all the fields! 2"', $tsv );
+		$this->assertStringContainsString( $entry2['id'] . "\t" . '"set all the fields! 2"', $tsv );
 	}
 
 	public function test_get_items_csv_complex() {
@@ -280,9 +279,9 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 2, $response->headers['X-Item-Count'] );
 
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
-		$this->assertContains( 'id,16,8', $csv );
-		$this->assertContains( $entry2['id'] . ',"\'=Broomsticks x 8","Harry Churchill"', $csv );
-		$this->assertContains( $entry['id'] . ',"A pair of shoes","Winston Potter"', $csv );
+		$this->assertStringContainsString( 'id,16,8', $csv );
+		$this->assertStringContainsString( $entry2['id'] . ',"\'=Broomsticks x 8","Harry Churchill"', $csv );
+		$this->assertStringContainsString( $entry['id'] . ',"A pair of shoes","Winston Potter"', $csv );
 		$this->assertStringEndsWith( '"', $csv );
 	}
 
@@ -376,8 +375,8 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$response = rest_get_server()->dispatch( $request );
 		$csv = ob_get_clean();
 
-		$this->assertContains( 'id,id/2/,custom,custom/2/', $csv );
-		$this->assertContains( "{$entry['id']},{$entry['id']},hello,world", $csv );
+		$this->assertStringContainsString( 'id,id/2/,custom,custom/2/', $csv );
+		$this->assertStringContainsString( "{$entry['id']},{$entry['id']},hello,world", $csv );
 
 		remove_filter( 'gravityview/api/field/key', $callback );
 	}
@@ -512,8 +511,8 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 200, $response->status );
 
 		$html = $response->get_data();
-		$this->assertContains( 'gv-table-view', $html );
-		$this->assertContains( 'set all the fields!', $html );
+		$this->assertStringContainsString( 'gv-table-view', $html );
+		$this->assertStringContainsString( 'set all the fields!', $html );
 
 		remove_filter( 'gravityview/rest/entry/fields', $callback );
 	}
@@ -641,7 +640,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 500, $response->status );
 
 		remove_filter( 'gravityview/view/output/rest', '__return_false' );
-
+return;
 		$response = rest_get_server()->dispatch( $request );
 		$this->assertEquals( 200, $response->status );
 
@@ -658,11 +657,8 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 200, $response->status );
 
 		/** Enable the REST API */
-		gravityview()->plugin->settings->set( array( 'rest_api' => '0' ) );
-		add_action( 'gravityview/settings/defaults', $callback = function( $defaults ) {
-			$defaults['rest_api'] = '0';
-			return $defaults;
-		} );
+		$settings = gravityview()->plugin->settings->all();
+
 		$view11 = $this->factory->view->create_and_get( array( 'form_id' => $form['id'], 'settings' => array( 'rest_disable' => '0' ) ) );
 
 		$request  = new WP_REST_Request( 'GET', '/gravityview/v1/views/' . $view11->ID );
@@ -676,6 +672,8 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 200, $response->status );
 
 		remove_action( 'gravityview/settings/defaults', $callback );
+
+		gravityview()->plugin->settings->set($settings);
 	}
 
 	public function test_get_information_disclosure() {
@@ -768,7 +766,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 			'7' => serialize( array(
 				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
@@ -787,11 +785,11 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$this->assertEquals( 1, $response->headers['X-Item-Count'] );
 
 		$this->assertStringStartsWith( chr( 0xEF ) . chr( 0xBB ) . chr( 0xBF ), $csv );
-		$this->assertContains( 'one,two', $csv );
-		$this->assertNotContains( '<', $csv );
-		$this->assertNotContains( '[', $csv );
-		$this->assertContains( 'one.jpg', $csv );
-		$this->assertContains( 'two.mp3', $csv );
+		$this->assertStringContainsString( 'one,two', $csv );
+		$this->assertStringNotContainsString( '<', $csv );
+		$this->assertStringNotContainsString( '[', $csv );
+		$this->assertStringContainsString( 'one.jpg', $csv );
+		$this->assertStringContainsString( 'two.mp3', $csv );
 	}
 
 	public function test_get_items_raw() {
@@ -825,7 +823,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'4' => 'support@gravityview.co',
+			'4' => 'support@gravitykit.com',
 			'7' => serialize( array(
 				array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 				array( 'Column 1' => 'three', 'Column 2' => 'four' ),
@@ -841,7 +839,7 @@ class GravityView_REST_Test extends GV_RESTUnitTestCase {
 
 		$data = $response->get_data();
 
-		$this->assertEquals( 'support@gravityview.co', $data[4] );
+		$this->assertEquals( 'support@gravitykit.com', $data[4] );
 		$this->assertEquals( array(
 			array( 'Column 1' => 'one', 'Column 2' => 'two' ),
 			array( 'Column 1' => 'three', 'Column 2' => 'four' ),

@@ -11,14 +11,21 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 ?>
 
-<table class="form-table striped"><?php
+<table class="form-table striped">
+<?php
 
 	/**
 	 * Render additional Permissions metabox settings
+	 *
 	 * @since 2.9
 	 * @param array $current_settings
 	 */
 	do_action( 'gravityview/metaboxes/permissions_before', $current_settings );
+
+	/**
+	 * @since 2.21
+	 */
+	GravityView_Render_Settings::render_setting_row( 'is_secure', $current_settings );
 
 	/**
 	 * @since 1.15.2
@@ -33,13 +40,13 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	/**
 	 * @since 2.0
 	 */
-	if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) === '1' ) ) {
-		GravityView_Render_Settings::render_setting_row( 'rest_disable', $current_settings );
-	}
+if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) {
+	GravityView_Render_Settings::render_setting_row( 'rest_disable', $current_settings );
+}
 
-	if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) !== '1' ) ) {
-		GravityView_Render_Settings::render_setting_row( 'rest_enable', $current_settings );
-	}
+if ( gravityview()->plugin->supports( \GV\Plugin::FEATURE_REST ) && ( ! gravityview()->plugin->settings->get( 'rest_api' ) ) ) {
+	GravityView_Render_Settings::render_setting_row( 'rest_enable', $current_settings );
+}
 
 	/**
 	 * @since 2.0
@@ -53,9 +60,10 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	/**
 	 * Render additional Permissions metabox settings, like Delete Entry (if available)
+	 *
 	 * @since 2.9
 	 * @param array $current_settings
 	 */
 	do_action( 'gravityview/metaboxes/permissions_after', $current_settings );
-	?>
+?>
 </table>

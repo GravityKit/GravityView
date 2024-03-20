@@ -4,48 +4,42 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
 if ( ! defined( 'WPINC' ) ) {
-    die;
+	die;
 }
 
 
 class GravityView_Edit_Entry_Admin {
 
-    protected $loader;
+	protected $loader;
 
-    function __construct( GravityView_Edit_Entry $loader ) {
-        $this->loader = $loader;
-    }
+	function __construct( GravityView_Edit_Entry $loader ) {
+		$this->loader = $loader;
+	}
 
-    function load() {
+	function load() {
 
-        if( !is_admin() ) {
-            return;
-        }
+		if ( ! is_admin() ) {
+			return;
+		}
 
-        // Add Edit Link as a default field, outside those set in the Gravity Form form
-        add_filter( 'gravityview_entry_default_fields', array( $this, 'add_default_field' ), 10, 3 );
+		// For the Edit Entry Link, you don't want visible to all users.
+		add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps' ), 10, 5 );
 
-        // For the Edit Entry Link, you don't want visible to all users.
-        add_filter( 'gravityview_field_visibility_caps', array( $this, 'modify_visibility_caps' ), 10, 5 );
+		// add tooltips
+		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
 
-        // Modify the field options based on the name of the field type
-        add_filter( 'gravityview_template_edit_link_options', array( $this, 'edit_link_field_options' ), 10, 5 );
+		// custom fields' options for zone EDIT
+		add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 6 );
 
-        // add tooltips
-        add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips') );
-
-        // custom fields' options for zone EDIT
-        add_filter( 'gravityview_template_field_options', array( $this, 'field_options' ), 10, 6 );
-
-        // Add Edit Entry settings to View Settings
-        add_action( 'gravityview/metaboxes/edit_entry', array( $this, 'view_settings_metabox' ) );
-    }
+		// Add Edit Entry settings to View Settings
+		add_action( 'gravityview/metaboxes/edit_entry', array( $this, 'view_settings_metabox' ) );
+	}
 
 	/**
 	 * Render Edit Entry View metabox settings
@@ -75,109 +69,51 @@ class GravityView_Edit_Entry_Admin {
 		GravityView_Render_Settings::render_setting_row( 'action_label_cancel', $current_settings );
 	}
 
-    /**
-     * Add Edit Link as a default field, outside those set in the Gravity Form form
-     * @param array $entry_default_fields Existing fields
-     * @param  string|array $form form_ID or form object
-     * @param  string $zone   Either 'single', 'directory', 'header', 'footer'
-     */
-    function add_default_field( $entry_default_fields, $form = array(), $zone = '' ) {
+	/**
+	 * Change wording for the Edit context to read Entry Creator
+	 *
+	 * @param  array  $visibility_caps        Array of capabilities to display in field dropdown.
+	 * @param  string $field_type  Type of field options to render (`field` or `widget`)
+	 * @param  string $template_id Table slug
+	 * @param  float  $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param  string $context     What context are we in? Example: `single` or `directory`
+	 * @param  string $input_type  (textarea, list, select, etc.)
+	 * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
+	 */
+	function modify_visibility_caps( $visibility_caps = array(), $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
 
-        if( $zone !== 'edit' ) {
+		if ( 'edit' !== $context ) {
+			return $visibility_caps;
+		}
 
-            $entry_default_fields['edit_link'] = array(
-                'label' => __('Link to Edit Entry', 'gravityview'),
-                'type' => 'edit_link',
-                'desc'	=> __('A link to edit the entry. Visible based on View settings.', 'gravityview'),
-                'icon' => 'dashicons-welcome-write-blog',
-            );
+		// If we're configuring fields in the edit context, we want a limited selection.
+		$caps = $visibility_caps;
 
-        }
+		// Remove other built-in caps.
+		unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['delete_others_posts'] );
 
-        return $entry_default_fields;
-    }
+		$caps['read'] = _x( 'Entry Creator', 'User capability', 'gk-gravityview' );
 
-    /**
-     * Change wording for the Edit context to read Entry Creator
-     *
-     * @param  array 	   $visibility_caps        Array of capabilities to display in field dropdown.
-     * @param  string      $field_type  Type of field options to render (`field` or `widget`)
-     * @param  string      $template_id Table slug
-     * @param  float       $field_id    GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
-     * @param  string      $context     What context are we in? Example: `single` or `directory`
-     * @param  string      $input_type  (textarea, list, select, etc.)
-     * @return array                   Array of field options with `label`, `value`, `type`, `default` keys
-     */
-    function modify_visibility_caps( $visibility_caps = array(), $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
+		return $caps;
+	}
 
-        $caps = $visibility_caps;
+	/**
+	 * Add tooltips
+	 *
+	 * @param  array $tooltips Existing tooltips
+	 * @return array           Modified tooltips
+	 */
+	function tooltips( $tooltips ) {
 
-        // If we're configuring fields in the edit context, we want a limited selection
-        if( $context === 'edit' ) {
+		$return = $tooltips;
 
-            // Remove other built-in caps.
-            unset( $caps['publish_posts'], $caps['gravityforms_view_entries'], $caps['delete_others_posts'] );
+		$return['allow_edit_cap'] = array(
+			'title' => __( 'Limiting Edit Access', 'gk-gravityview' ),
+			'value' => __( 'Change this setting if you don\'t want the user who created the entry to be able to edit this field.', 'gk-gravityview' ),
+		);
 
-            $caps['read'] = _x('Entry Creator','User capability', 'gravityview');
-        }
-
-        return $caps;
-    }
-
-    /**
-     * Add "Edit Link Text" setting to the edit_link field settings
-     *
-     * @param array  $field_options
-     * @param string $template_id
-     * @param string $field_id
-     * @param string $context
-     * @param string $input_type
-     *
-     * @return array $field_options, with "Edit Link Text" field option
-     */
-    function edit_link_field_options( $field_options, $template_id, $field_id, $context, $input_type ) {
-
-        // Always a link, never a filter
-        unset( $field_options['show_as_link'], $field_options['search_filter'] );
-
-        // Edit Entry link should only appear to visitors capable of editing entries
-        unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
-
-        $add_option['edit_link'] = array(
-            'type' => 'text',
-            'label' => __( 'Edit Link Text', 'gravityview' ),
-            'desc' => NULL,
-            'value' => __('Edit Entry', 'gravityview'),
-            'merge_tags' => true,
-        );
-
-	    $add_option['new_window'] = array(
-		    'type' => 'checkbox',
-		    'label' => __( 'Open link in a new tab or window?', 'gravityview' ),
-		    'value' => false,
-		    'group' => 'display',
-		    'priority' => 1300,
-	    );
-
-        return array_merge( $add_option, $field_options );
-    }
-
-    /**
-     * Add tooltips
-     * @param  array $tooltips Existing tooltips
-     * @return array           Modified tooltips
-     */
-    function tooltips( $tooltips ) {
-
-        $return = $tooltips;
-
-        $return['allow_edit_cap'] = array(
-            'title' => __('Limiting Edit Access', 'gravityview'),
-            'value' => __('Change this setting if you don\'t want the user who created the entry to be able to edit this field.', 'gravityview'),
-        );
-
-        return $return;
-    }
+		return $return;
+	}
 
 	/**
 	 * Add "Edit Link Text" setting to the edit_link field settings
@@ -193,28 +129,26 @@ class GravityView_Edit_Entry_Admin {
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-        // We only want to modify the settings for the edit context
-        if( 'edit' !== $context ) {
-            return $field_options;
-        }
+		// We only want to modify the settings for the edit context
+		if ( 'edit' !== $context ) {
+			return $field_options;
+		}
 
-        //  Entry field is only for logged in users
-        unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
+		// Entry field is only for logged in users
+		unset( $field_options['only_loggedin'], $field_options['only_loggedin_cap'] );
 
-        $add_options = array(
-            'allow_edit_cap' => array(
-                'type' => 'select',
-                'label' => __( 'Make field editable to:', 'gravityview' ),
-                'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
-                'tooltip' => 'allow_edit_cap',
-                'class' => 'widefat',
-                'value' => 'read', // Default: entry creator
-                'group' => 'visibility',
-            ),
-        );
+		$add_options = array(
+			'allow_edit_cap' => array(
+				'type'    => 'select',
+				'label'   => __( 'Make field editable to:', 'gk-gravityview' ),
+				'choices' => GravityView_Render_Settings::get_cap_choices( $template_id, $field_id, $context, $input_type ),
+				'tooltip' => 'allow_edit_cap',
+				'class'   => 'widefat',
+				'value'   => 'read', // Default: entry creator
+				'group'   => 'visibility',
+			),
+		);
 
-        return array_merge( $field_options, $add_options );
-    }
-
-
+		return array_merge( $field_options, $add_options );
+	}
 } // end class

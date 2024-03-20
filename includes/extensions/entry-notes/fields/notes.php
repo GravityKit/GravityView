@@ -8,17 +8,18 @@
 
 $gravityview_view = GravityView_View::getInstance();
 
-$visibility_settings = $gravityview_view->getCurrentFieldSetting( 'notes' );
+$visibility_settings   = $gravityview_view->getCurrentFieldSetting( 'notes' );
 $show_notes_logged_out = ( ! empty( $visibility_settings['view'] ) && ! empty( $visibility_settings['view_loggedout'] ) );
 
-if(	! GVCommon::has_cap( array( 'gravityview_view_entry_notes', 'gravityview_add_entry_notes', 'gravityview_delete_entry_notes' ) ) && ! $show_notes_logged_out ) {
+if ( ! GVCommon::has_cap( array( 'gravityview_view_entry_notes', 'gravityview_add_entry_notes', 'gravityview_delete_entry_notes' ) ) && ! $show_notes_logged_out ) {
 	return;
 }
 
-require_once( GFCommon::get_base_path() . '/entry_detail.php' );
+require_once GFCommon::get_base_path() . '/entry_detail.php';
 
 /**
- * @action `gravityview/field/notes/scripts` Print scripts and styles required for the Notes field
+ * Print scripts and styles required for the Notes field.
+ *
  * @see GravityView_Field_Notes::enqueue_scripts
  * @since 1.17
  */
@@ -29,26 +30,29 @@ $notes      = (array) GravityView_Entry_Notes::get_notes( $entry['id'] );
 $strings    = GravityView_Field_Notes::strings();
 $entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 
-$show_add = ! empty( $visibility_settings['add'] );
+$show_add    = ! empty( $visibility_settings['add'] );
 $show_delete = ( ! empty( $visibility_settings['delete'] ) && GVCommon::has_cap( 'gravityview_delete_entry_notes' ) );
-$show_notes = $show_notes_logged_out || ( ! empty( $visibility_settings['view'] ) && GVCommon::has_cap( 'gravityview_view_entry_notes' ) );
+$show_notes  = $show_notes_logged_out || ( ! empty( $visibility_settings['view'] ) && GVCommon::has_cap( 'gravityview_view_entry_notes' ) );
 
-$container_class = ( sizeof( $notes ) > 0 ? 'gv-has-notes' : 'gv-no-notes' );
+$container_class  = ( sizeof( $notes ) > 0 ? 'gv-has-notes' : 'gv-no-notes' );
 $container_class .= $show_notes ? ' gv-show-notes' : ' gv-hide-notes';
 ?>
 <div class="gv-notes <?php echo $container_class; ?>">
 <?php
-	if( $show_notes ) {
-?>
+if ( $show_notes ) {
+	?>
 	<form method="post" class="gv-notes-list">
-		<?php if ( $show_delete ) { wp_nonce_field( 'gv_delete_notes_' . $entry_slug, 'gv_delete_notes' ); } ?>
+	<?php
+	if ( $show_delete ) {
+		wp_nonce_field( 'gv_delete_notes_' . $entry_slug, 'gv_delete_notes' ); }
+	?>
 		<div>
 			<input type="hidden" name="action" value="gv_delete_notes" />
 			<input type="hidden" name="entry-slug" value="<?php echo esc_attr( $entry_slug ); ?>" />
 			<table>
 				<caption><?php echo $strings['caption']; ?></caption>
-				<?php
-				if ( $show_delete ) {
+			<?php
+			if ( $show_delete ) {
 				?>
 				<thead>
 					<tr>
@@ -61,20 +65,20 @@ $container_class .= $show_notes ? ' gv-show-notes' : ' gv-hide-notes';
 				<?php } ?>
 				<tbody>
 					<tr class="gv-notes-no-notes"><td colspan="2"><?php echo $strings['no-notes']; ?></td></tr>
-					<?php
-						foreach ( $notes as $note ) {
-							echo GravityView_Field_Notes::display_note( $note, $show_delete );
-						}
-					?>
+				<?php
+				foreach ( $notes as $note ) {
+					echo GravityView_Field_Notes::display_note( $note, $show_delete );
+				}
+				?>
 				</tbody>
 			</table>
 		</div>
 	</form>
-<?php
-	} // End if can view notes
+	<?php
+} // End if can view notes
 
-	if( $show_add ) {
-		echo do_shortcode( '[gv_note_add]' );
-	}
+if ( $show_add ) {
+	echo do_shortcode( '[gv_note_add]' );
+}
 ?>
 </div>

@@ -19,9 +19,9 @@ class GravityView_Field_Page extends GravityView_Field {
 	var $icon = 'dashicons-media-text';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Page', 'gravityview' );
+		$this->label = esc_html__( 'Page', 'gk-gravityview' );
 		parent::__construct();
 	}
 }
 
-new GravityView_Field_Page;
+new GravityView_Field_Page();

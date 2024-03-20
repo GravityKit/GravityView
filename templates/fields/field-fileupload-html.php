@@ -13,7 +13,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 $field = $gravityview->field->field;
 $value = $gravityview->value;
-$form = $gravityview->view->form->form;
+$form  = $gravityview->view->form->form;
 $entry = $gravityview->entry->as_entry();
 
 $output = '';
@@ -25,7 +25,7 @@ if ( ! empty( $value ) ) {
 	$output_arr = gravityview_get_files_array( $value, $gv_class, $gravityview );
 
 	// If the output array is just one item, let's not show a list.
-	if ( sizeof( $output_arr ) === 1 ) {
+	if ( 1 === sizeof( $output_arr ) ) {
 		$output = $output_arr[0]['content'];
 	}
 
@@ -33,10 +33,11 @@ if ( ! empty( $value ) ) {
 	else {
 
 		// For each file, show as a list
-		foreach ( $output_arr as $key => $item) {
+		foreach ( $output_arr as $key => $item ) {
 
 			// Fix empty lists
-			if ( empty( $item['content'] ) ) { continue; }
+			if ( empty( $item['content'] ) ) {
+				continue; }
 
 			$output .= '<li>' . $item['content'] . '</li>';
 		}
@@ -45,7 +46,6 @@ if ( ! empty( $value ) ) {
 			$output = sprintf( "<ul class='gv-field-file-uploads %s'>%s</ul>", $gv_class, $output );
 		}
 	}
-
 }
 
 echo $output;

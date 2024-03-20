@@ -4,7 +4,7 @@
  * @package   GravityView
  * @author    Zack Katz <zack@katzwebservices.com>
  * @license   GPL2
- * @link      https://gravityview.co
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @since 1.17
@@ -14,7 +14,7 @@
   text-align: $left;
 }
 
-.gv-no-results {
+.gv-no-results-text {
   text-align: center;
   vertical-align: middle;
   padding: .5em;
@@ -26,6 +26,6 @@ a.gv-sort {
 }
 
 // Used to hide elements (e.g. Hide View data until search is performed)
-.hidden {
+.gv-hidden {
   display: none;
 }

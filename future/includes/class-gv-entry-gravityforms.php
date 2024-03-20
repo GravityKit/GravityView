@@ -21,6 +21,13 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	public static $backend = 'gravityforms';
 
 	/**
+	 * The entry slug.
+	 *
+	 * @var string
+	 */
+	public $slug;
+
+	/**
 	 * Initialization.
 	 */
 	private function __construct() {
@@ -33,7 +40,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * Construct a \GV\Entry instance by ID.
 	 *
 	 * @param int|string $entry_id The internal entry ID.
-	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 * @param int        $form_id The form ID, since slugs can be non-unique. Default: 0.
 	 *
 	 * @api
 	 * @since 2.0
@@ -63,7 +70,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * Construct a \GV\Entry instance by slug name.
 	 *
 	 * @param int|string $entry_slug The registered slug for the entry.
-	 * @param int $form_id The form ID, since slugs can be non-unique. Default: 0.
+	 * @param int        $form_id The form ID, since slugs can be non-unique. Default: 0.
 	 *
 	 * @api
 	 * @since 2.0
@@ -74,14 +81,13 @@ class GF_Entry extends Entry implements \ArrayAccess {
 
 		if ( version_compare( \GFFormsModel::get_database_version(), '2.3-dev-1', '>=' ) ) {
 			$entry_meta = \GFFormsModel::get_entry_meta_table_name();
-			$sql = "SELECT entry_id FROM $entry_meta";
+			$sql        = "SELECT entry_id FROM $entry_meta";
 		} else {
 			$lead_meta = \GFFormsModel::get_lead_meta_table_name();
-			$sql = "SELECT lead_id FROM $lead_meta";
+			$sql       = "SELECT lead_id FROM $lead_meta";
 		}
 
 		$sql = "$sql WHERE meta_key = 'gravityview_unique_id' AND";
-
 
 		if ( $form_id = apply_filters( 'gravityview/common/get_entry_id_from_slug/form_id', $form_id ) ) {
 			$sql = $wpdb->prepare( "$sql meta_value = %s AND form_id = %s", $entry_slug, $form_id );
@@ -110,10 +116,10 @@ class GF_Entry extends Entry implements \ArrayAccess {
 			return null;
 		}
 
-		$self = new self();
+		$self        = new self();
 		$self->entry = $entry;
 
-		$self->ID = $self->entry['id'];
+		$self->ID   = $self->entry['id'];
 		$self->slug = $self->get_slug();
 
 		return $self;
@@ -127,8 +133,9 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @since 2.0
 	 * @return bool Whether the offset exists or not.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
-		return isset( $this->entry[$offset] );
+		return isset( $this->entry[ $offset ] );
 	}
 
 	/**
@@ -142,8 +149,9 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @return mixed The value of the requested entry data.
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
-		return $this->entry[$offset];
+		return $this->entry[ $offset ];
 	}
 
 	/**
@@ -155,6 +163,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 *
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
 		gravityview()->log->error( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
 	}
@@ -167,6 +176,7 @@ class GF_Entry extends Entry implements \ArrayAccess {
 	 * @since 2.0
 	 * @return void
 	 */
+	#[\ReturnTypeWillChange]
 	public function offsetUnset( $offset ) {
 		gravityview()->log->error( 'The underlying Gravity Forms entry is immutable. This is a \GV\Entry object and should not be accessed as an array.' );
 	}

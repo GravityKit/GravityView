@@ -26,7 +26,7 @@ if ( empty( $entries ) ) {
 	if ( $gravityview->field->no_entries_hide ) {
 		return;
 	}
-	
+
 	if ( $gravityview->field->no_entries_text ) {
 		echo '<div class="gv-no-results"><p>' . esc_html( $gravityview->field->no_entries_text );
 		echo "</p>\n</div>";
@@ -36,8 +36,12 @@ if ( empty( $entries ) ) {
 
 /** If there are search results, get the entry list object. */
 $list = new GravityView_Entry_List(
-	array_map( function( $entry ) { return $entry->as_entry(); }, $entries ),
-	$gravityview->request->is_view() ? $gravityview->view->ID : ( is_object( $GLOBALS['post'] ) ? $GLOBALS['post']->ID : 0 ),
+	array_map(
+		function ( $entry ) {
+			return $entry->as_entry(); },
+		$entries
+	),
+	$gravityview->request->is_view( false ) ? $gravityview->view->ID : ( is_object( $GLOBALS['post'] ) ? $GLOBALS['post']->ID : 0 ),
 	$gravityview->view->form->form,
 	$gravityview->field->link_format,
 	$gravityview->field->after_link,
@@ -54,5 +58,5 @@ $list->output();
  */
 $deprecated = apply_filters( 'gravityview/field/other_entries/args', array(), null );
 if ( ! empty( $deprecated ) ) {
-    _deprecated_function(  'The "gravityview/field/other_entries/args" filter', 'GravityView 1.11', 'gravityview/field/other_entries/criteria' );
+	_deprecated_function( 'The "gravityview/field/other_entries/args" filter', 'GravityView 1.11', 'gravityview/field/other_entries/criteria' );
 }

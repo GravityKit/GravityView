@@ -4,8 +4,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  * @deprecated
  *
@@ -25,7 +25,7 @@ class GravityView_Post_Types {
 	 * @return void
 	 */
 	public static function init_post_types() {
-		return \GV\View::register_post_type();
+		\GV\View::register_post_type();
 	}
 
 	/**
@@ -36,7 +36,7 @@ class GravityView_Post_Types {
 	 * @return void
 	 */
 	public static function init_rewrite() {
-		return \GV\Entry::add_rewrite_endpoint();
+		\GV\Entry::add_rewrite_endpoint();
 	}
 
 	/**
@@ -51,4 +51,4 @@ class GravityView_Post_Types {
 	}
 }
 
-new GravityView_Post_Types;
+new GravityView_Post_Types();

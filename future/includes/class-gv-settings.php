@@ -64,7 +64,7 @@ class Settings {
 	 * Set an setting.
 	 *
 	 * @param mixed $key The key in this setting to retrieve.
-	 * @param mixed $default A default in case the key is not set. 
+	 * @param mixed $default A default in case the key is not set.
 	 *
 	 * @api
 	 * @since 2.0

@@ -24,23 +24,22 @@ class GravityView_Field_Post_Title extends GravityView_Field {
 	var $icon = 'dashicons-edit';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Post Title', 'gravityview' );
+		$this->label = esc_html__( 'Post Title', 'gk-gravityview' );
 		parent::__construct();
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$this->add_field_support('link_to_post', $field_options );
+		$this->add_field_support( 'link_to_post', $field_options );
 
-		$this->add_field_support('dynamic_data', $field_options );
+		$this->add_field_support( 'dynamic_data', $field_options );
 
 		return $field_options;
 	}
-
 }
 
-new GravityView_Field_Post_Title;
+new GravityView_Field_Post_Title();

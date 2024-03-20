@@ -14,7 +14,7 @@ class GravityView_Ajax_Test extends GV_UnitTestCase {
 	 */
 	var $GravityView_Preset_Business_Data;
 
-	function setUp() {
+	function setUp() : void {
 
 		parent::setUp();
 

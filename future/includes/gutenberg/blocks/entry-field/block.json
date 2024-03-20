@@ -1,0 +1,56 @@
+{
+  "apiVersion": 2,
+  "name": "gk-gravityview-blocks/entry-field",
+  "version": "1.0.0",
+  "title": "GravityView Entry Field",
+  "category": "gk-gravityview-blocks",
+  "description": "Display an entry field value.",
+  "keywords": [
+    "GravityView",
+    "form entry",
+    "entry"
+  ],
+  "supports": {
+    "html": false
+  },
+  "textdomain": "gk-gravityview",
+  "attributes": {
+    "viewId": {
+      "default": "",
+      "type": "string"
+    },
+    "secret": {
+      "default": null,
+      "type": "string"
+    },
+    "entryId": {
+      "default": "",
+      "type": "string"
+    },
+    "fieldId": {
+      "default": "",
+      "type": "string"
+    },
+    "fieldSettingOverrides": {
+      "default": "",
+      "type": "string"
+    },
+    "previewBlock": {
+      "type": "boolean",
+      "default": false
+    },
+    "previewAsShortcode": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPreviewImage": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "example": {
+    "attributes": {
+      "showPreviewImage": true
+    }
+  }
+}

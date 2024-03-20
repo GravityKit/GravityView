@@ -12,7 +12,7 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 	/** @type  GravityView_Entry_Link_Shortcode */
 	var $object;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 		$this->object = new GravityView_Entry_Link_Shortcode;
 	}
@@ -248,8 +248,8 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
 
 
-		$this->assertContains( 'entry='.$entry['id'].'">No Attributes Defined', $rendered_view );
-		$this->assertContains( 'entry='.$entry['id'].'">Only Entry ID', $rendered_view );
+		$this->assertStringContainsString( 'entry='.$entry['id'].'">No Attributes Defined', $rendered_view );
+		$this->assertStringContainsString( 'entry='.$entry['id'].'">Only Entry ID', $rendered_view );
 
 		$post = $this->factory->post->create_and_get(array(
 			'post_content' => sprintf( '[gravityview id="%d"]', $view->ID )

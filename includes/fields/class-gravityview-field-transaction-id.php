@@ -14,7 +14,7 @@ class GravityView_Field_Transaction_ID extends GravityView_Field {
 
 	var $is_numeric = true;
 
-	var $search_operators = array( 'is', 'isnot', 'starts_with', 'ends_with'  );
+	var $search_operators = array( 'is', 'isnot', 'starts_with', 'ends_with' );
 
 	var $group = 'pricing';
 
@@ -26,9 +26,9 @@ class GravityView_Field_Transaction_ID extends GravityView_Field {
 	 * GravityView_Field_Payment_Amount constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Transaction ID', 'gravityview' );
+		$this->label = esc_html__( 'Transaction ID', 'gk-gravityview' );
 		parent::__construct();
 	}
 }
 
-new GravityView_Field_Transaction_ID;
+new GravityView_Field_Transaction_ID();

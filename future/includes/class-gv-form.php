@@ -55,7 +55,7 @@ abstract class Form extends Source {
 	 * - `entries` -> `$this->get_entries()`
 	 */
 	public function __get( $key ) {
-		switch ( $key ):
+		switch ( $key ) :
 			case 'entries':
 				return $this->get_entries();
 		endswitch;

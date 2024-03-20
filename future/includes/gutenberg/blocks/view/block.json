@@ -1,0 +1,103 @@
+{
+  "apiVersion": 2,
+  "name": "gk-gravityview-blocks/view",
+  "version": "1.0.0",
+  "title": "GravityView View",
+  "category": "gk-gravityview-blocks",
+  "description": "Display a GravityView View.",
+  "keywords": [
+    "GravityView",
+    "view"
+  ],
+  "supports": {
+    "html": false
+  },
+  "textdomain": "gk-gravityview",
+  "attributes": {
+    "viewId": {
+      "default": "",
+      "type": "string"
+    },
+    "postId": {
+      "default": 0,
+      "type": "number"
+    },
+    "secret": {
+      "default": null,
+      "type": "string"
+    },
+    "pageSize": {
+      "default": "",
+      "type": "string"
+    },
+    "sortField": {
+      "default": "",
+      "type": "string"
+    },
+    "sortDirection": {
+      "default": "",
+      "type": "string"
+    },
+    "searchField": {
+      "default": "",
+      "type": "string"
+    },
+    "searchValue": {
+      "default": "",
+      "type": "string"
+    },
+    "searchOperator": {
+      "default": "contains",
+      "type": "string"
+    },
+    "startDate": {
+      "default": "",
+      "type": "string"
+    },
+    "startDateType": {
+      "default": "date",
+      "type": "string"
+    },
+    "endDate": {
+      "default": "",
+      "type": "string"
+    },
+    "endDateType": {
+      "default": "date",
+      "type": "string"
+    },
+    "classValue": {
+      "default": "",
+      "type": "string"
+    },
+    "offset": {
+      "default": 0,
+      "type": "number"
+    },
+    "singleTitle": {
+      "default": "",
+      "type": "string"
+    },
+    "backLinkLabel": {
+      "default": "",
+      "type": "string"
+    },
+    "previewBlock": {
+      "type": "boolean",
+      "default": false
+    },
+    "previewAsShortcode": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPreviewImage": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "example": {
+    "attributes": {
+      "showPreviewImage": true
+    }
+  }
+}

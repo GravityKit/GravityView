@@ -39,9 +39,9 @@ class Join {
 	 * Construct a JOIN container.
 	 *
 	 * @param \GV\Source $join The form we're joining to.
-	 * @param \GV\Field $join_column Its column.
+	 * @param \GV\Field  $join_column Its column.
 	 * @param \GV\Source $join_on The form we're joining on.
-	 * @param \GV\Field $join_on_column Its column.
+	 * @param \GV\Field  $join_on_column Its column.
 	 */
 	public function __construct( $join, $join_column, $join_on, $join_on_column ) {
 		if ( $join instanceof \GV\Source ) {

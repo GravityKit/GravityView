@@ -14,11 +14,15 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 gravityview_before( $gravityview );
 
-?><?php if ( $link = gravityview_back_link( $gravityview ) ) { ?><p class="gv-back-link"><?php echo $link; ?></p><?php } ?>
+?>
+<?php
+if ( $link = gravityview_back_link( $gravityview ) ) {
+	?>
+	<p class="gv-back-link"><?php echo $link; ?></p><?php } ?>
 
 <div class="<?php gv_container_class( 'gv-table-view gv-table-container gv-table-single-container', true, $gravityview ); ?>">
 	<table class="gv-table-view-content">
-		<?php if ( $gravityview->fields->by_position( 'single_table-columns' )->by_visible( $gravityview->view )->count() ): ?>
+		<?php if ( $gravityview->fields->by_position( 'single_table-columns' )->by_visible( $gravityview->view )->count() ) : ?>
 			<thead>
 				<?php gravityview_header( $gravityview ); ?>
 			</thead>
@@ -32,7 +36,8 @@ gravityview_before( $gravityview );
 			</tfoot>
 		<?php endif; ?>
 	</table>
-</div><?php
+</div>
+<?php
 
 gravityview_after( $gravityview );
 

@@ -10,11 +10,10 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Add a Powered By link below Views.
  *
  * @since 2.5.3
- *
  */
 class GravityView_Powered_By {
 
-	const url = 'https://gravityview.co/powered-by/';
+	const url = 'https://www.gravitykit.com/powered-by/';
 
 	/**
 	 * GravityView_Powered_By constructor.
@@ -26,13 +25,15 @@ class GravityView_Powered_By {
 	/**
 	 * Prints a HTML link to GravityView's site if "Powered By" GravityView setting is enabled
 	 *
+	 * @param \GV\Template_Context $context The context.
+	 *
 	 * @return void
 	 */
-	public function maybe_add_link() {
+	public function maybe_add_link( \GV\Template_Context $context ) {
 
-		$powered_by = gravityview()->plugin->settings->get( 'powered_by', '0' );
+		$powered_by = gravityview()->plugin->settings->get_gravitykit_setting( 'powered_by', 0 );
 
-		if( empty( $powered_by ) ) {
+		if ( empty( $powered_by ) ) {
 			return;
 		}
 
@@ -43,13 +44,20 @@ class GravityView_Powered_By {
 			return;
 		}
 
+		$css_class = 'gv-powered-by';
+
+		if ( ! $context->request->is_search() && isset( $context->entries ) && 0 === $context->entries->count() && 3 === (int) $context->view->settings->get( 'no_entries_options', '0' ) ) {
+			$css_class .= ' gv-hidden';
+		}
+
 		/**
-		 * @filter `gravityview/powered_by/text` Modify the anchor text for the Powered By link
+		 * Modify the anchor text for the Powered By link.
+		 *
 		 * @param string $anchor_text Anchor text for the Powered By link. Default: "Powered by GravityView". Will be sanitized before display.
 		 */
-		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gravityview' ) );
+		$anchor_text = apply_filters( 'gravityview/powered_by/text', __( 'Powered by GravityView', 'gk-gravityview' ) );
 
-		printf( '<span class="gv-powered-by"><a href="%s">%s</a></span>', esc_url( $url ), esc_html( $anchor_text ) );
+		printf( '<span class="%s"><a href="%s">%s</a></span>', esc_attr( $css_class ), esc_url( $url ), esc_html( $anchor_text ) );
 	}
 
 	/**
@@ -59,21 +67,25 @@ class GravityView_Powered_By {
 	 */
 	protected function get_url() {
 
-		$url = sprintf( self::url, get_bloginfo('name' ) );
+		$url = sprintf( self::url, get_bloginfo( 'name' ) );
 
-		$affiliate_id = gravityview()->plugin->settings->get( 'affiliate_id', '' );
+		$affiliate_id = gravityview()->plugin->settings->get_gravitykit_setting( 'affiliate_id', '' );
 
-		if( $affiliate_id && is_numeric( $affiliate_id ) ) {
+		if ( $affiliate_id && is_numeric( $affiliate_id ) ) {
 			$url = add_query_arg( array( 'ref' => $affiliate_id ), $url );
 		}
 
-		$url = add_query_arg( array(
-			'utm_source' => 'powered_by',
-            'utm_term' => get_bloginfo('name' ),
-		), $url );
+		$url = add_query_arg(
+			array(
+				'utm_source' => 'powered_by',
+				'utm_term'   => get_bloginfo( 'name' ),
+			),
+			$url
+		);
 
 		/**
-		 * @filter `gravityview/powered_by/url` Modify the URL returned by the Powered By link
+		 * Modify the URL returned by the Powered By link.
+		 *
 		 * @param $url string The URL passed to the Powered By link
 		 */
 		$url = apply_filters( 'gravityview/powered_by/url', $url );

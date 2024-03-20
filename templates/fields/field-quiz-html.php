@@ -11,10 +11,10 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field = $gravityview->field->field;
-$value = $gravityview->value;
-$form = $gravityview->view->form->form;
-$entry = $gravityview->entry->as_entry();
+$field          = $gravityview->field->field;
+$value          = $gravityview->value;
+$form           = $gravityview->view->form->form;
+$entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
 
 // If there's no grade, don't continue
