@@ -20,6 +20,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.15
  */
+
+use GravityKit\GravityView\Foundation\Helpers\Arr;
+
 class GravityView_Roles_Capabilities {
 
 	/**
@@ -213,8 +216,7 @@ class GravityView_Roles_Capabilities {
 			$capabilities = self::all_caps( false, false );
 
 			foreach ( $capabilities as $role_slug => $role_caps ) {
-				$role         = rgar( $wp_roles->roles, $role_slug );
-				$capabilities = rgar( $role, 'capabilities', [] );
+				$capabilities = Arr::get( $wp_roles->roles, "{$role_slug}.capabilities", [] );
 
 				foreach ( $role_caps as $cap ) {
 					// Keep the capability if it is already set.
