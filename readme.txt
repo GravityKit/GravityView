@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
+
+__Developer Updates:__
+
+* Added: `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+
 = 2.21.1 on March 22, 2024 =
 
 This hotfix release addresses a critical error that occurred when activating the plugin without Gravity Forms installed.
