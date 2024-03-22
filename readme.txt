@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.21.1 on March 22, 2024 =
+
+This hotfix release addresses a critical error that occurred when activating the plugin without Gravity Forms installed.
+
+#### 🐛 Fixed
+* Critical error when activating the plugin without Gravity Forms installed.
+
 = 2.21 on March 18, 2024 =
 
 This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, fixes a conflict with BuddyBoss Platform, and improves performance with updates to essential components.
@@ -45,6 +52,8 @@ This release enhances security, introduces support for LifterLMS, adds a new CSV
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11.
   - GravityKit product updates are now showing on the Plugins page.
   - Database options that are no longer used are now automatically removed.
+
+* Added: You can now search exact-match phrases by wrapping a search term in quotes (e.g., `"blue motorcycle"`). This will search for text exactly matching `"blue motorcycle"`)
 
 __Developer Updates:__
 
