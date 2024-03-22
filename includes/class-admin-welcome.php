@@ -295,6 +295,16 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.21.1 on March 22, 2024</h3>
+
+				<p>This hotfix release addresses a critical error that occurred when activating the plugin without Gravity Forms installed.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Critical error when activating the plugin without Gravity Forms installed.</li>
+				</ul>
+
 				<h3>2.21 on March 18, 2024</h3>
 
 				<p>This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, fixes a conflict with BuddyBoss Platform, and improves performance with updates to essential components.</p>
