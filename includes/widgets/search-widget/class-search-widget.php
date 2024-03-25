@@ -694,11 +694,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$criteria = $this->get_criteria_from_query( $search_all_value, $split_words );
 
 			foreach ( $criteria as $criterion ) {
-				$search_criteria['field_filters'][] = [
-					'key'      => $criterion['key'] ?? null, // The field ID to search
-					'value'    => $criterion['value'], // The value to search
-					'operator' => $criterion['operator'], // What to search in. Options: `is` or `contains`
-				];
+				$search_criteria['field_filters'][] = array_merge(
+					[ 'key' => null ],
+					$criterion
+				);
 			}
 		}
 
@@ -919,18 +918,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return;
 		}
 
-		$exclude_global_search_words = [];
+		$include_global_search_words = $exclude_global_search_words = [];
 
 		foreach ( $search_criteria['field_filters'] as $i => $criterion ) {
-			if (
-				! empty( $criterion['key'] ?? null )
-				|| 'not contains' !== ( $criterion['operator'] ?? '' )
-			) {
+			if ( ! empty( $criterion['key'] ?? null ) ) {
 				continue;
 			}
 
-			$exclude_global_search_words[] = $criterion['value'];
-			unset($search_criteria['field_filters'][$i]);
+			if ( 'not contains' === ( $criterion['operator'] ?? '' ) ) {
+				$exclude_global_search_words[] = $criterion['value'];
+				unset( $search_criteria['field_filters'][ $i ] );
+			} elseif ( true === ( $criterion['required'] ?? false ) ) {
+				$include_global_search_words[] = $criterion['value'];
+				unset( $search_criteria['field_filters'][ $i ] );
+			}
 		}
 
 
@@ -1126,6 +1127,24 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * Grab the current clauses. We'll be combining them shortly.
 		 */
 		$query_parts = $query->_introspect();
+
+		if ( $include_global_search_words ) {
+			global $wpdb;
+			$extra_conditions[] = new GF_Query_Condition( new GF_Query_Call(
+				'EXISTS',
+				[
+					sprintf(
+						'SELECT 1 FROM `%s` WHERE `form_id` = %d AND `entry_id` = `%s`.`id` AND (%s)',
+						GFFormsModel::get_entry_meta_table_name(),
+						$view->form ? $view->form->ID : 0,
+						$query->_alias( null, $view->form ? $view->form->ID : 0 ),
+						implode( ' AND ', array_map( static function ( string $word ) use ( $wpdb ) {
+							return $wpdb->prepare( '`meta_value` LIKE "%%%s%%"', $word );
+						}, $include_global_search_words ) )
+					)
+				]
+			) );
+		}
 
 		if ( $exclude_global_search_words ) {
 			global $wpdb;
@@ -2344,27 +2363,28 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		if ( preg_match_all( $regex, $query, $matches ) ) {
 			$query = str_replace( $matches[0], '', $query );
-			foreach ( $matches['word'] as $i => $exact_word ) {
+			foreach ( $matches['word'] as $i => $value ) {
 				$operator = '-' === $matches['match'][ $i ] ? 'not contains' : 'contains';
-				$words[] = [ 'operator' => $operator, 'value' => $exact_word ];
+				$required = '+' === $matches['match'][ $i ];
+				$words[]  = array_filter( compact( 'operator', 'value', 'required' ) );
 			}
 		}
 
-		if ( $query && $split_words ) {
-			foreach ( preg_split( '/\s+/', $query ) as $value ) {
-				$is_exclude = '-' === ($value[0] ?? '');
-				$words[] = [
-					'operator' => $is_exclude ? 'not contains' : 'contains',
-					'value'    => $is_exclude ? substr( $value, 1 ) : $value,
-				];
-			}
-		} elseif ( $query ) {
-			$is_exclude = '-' === ($query[0] ?? '');
-			$value = preg_replace( '/\s+/', ' ', $query );
-			$words[] = [
+		$values = [];
+		if ( $query ) {
+			$values = $split_words
+				? preg_split( '/\s+/', $query )
+				: [ preg_replace( '/\s+/', ' ', $query ) ];
+		}
+
+		foreach ( $values as $value ) {
+			$is_exclude = '-' === ( $value[0] ?? '' );
+			$required   = '+' === ( $value[0] ?? '' );
+			$words[]    = array_filter( [
 				'operator' => $is_exclude ? 'not contains' : 'contains',
-				'value'    => $is_exclude ? substr( $value, 1 ) : $value,
-			];
+				'value'    => ( $is_exclude || $required ) ? substr( $value, 1 ) : $value,
+				'required' => $required,
+			] );
 		}
 
 		return array_filter( $words, static function ( array $word ) {
