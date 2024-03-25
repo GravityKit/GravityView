@@ -97,17 +97,61 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = [ 'gv_search' => '" space " "another one" and two' ];
 
-		$search_criteria_split_exact = [
-			'field_filters' => [
-				'mode' => 'any',
-				[ 'key' => null, 'value' => ' space ', 'operator' => 'contains' ],
-				[ 'key' => null, 'value' => 'another one', 'operator' => 'contains' ],
-				[ 'key' => null, 'value' => 'and', 'operator' => 'contains' ],
-				[ 'key' => null, 'value' => 'two', 'operator' => 'contains' ],
-			]
-		];
+		$this->assertEquals(
+			[
+				'field_filters' => [
+					'mode' => 'any',
+					[ 'key' => null, 'value' => ' space ', 'operator' => 'contains' ],
+					[ 'key' => null, 'value' => 'another one', 'operator' => 'contains' ],
+					[ 'key' => null, 'value' => 'and', 'operator' => 'contains' ],
+					[ 'key' => null, 'value' => 'two', 'operator' => 'contains' ],
+				]
+			],
+			$this->widget->filter_entries( array(), null, $args, true )
+		);
 
-		$this->assertEquals( $search_criteria_split_exact, $this->widget->filter_entries( array(), null, $args, true ) );
+		$_GET = [ 'gv_search' => '-"excluded spaces" -another' ];
+
+		$this->assertEquals(
+			[
+				'field_filters' => [
+					'mode' => 'any',
+					[ 'key' => null, 'value' => 'excluded spaces', 'operator' => 'not contains' ],
+					[ 'key' => null, 'value' => 'another', 'operator' => 'not contains' ],
+				]
+			],
+			$this->widget->filter_entries( array(), null, $args, true )
+		);
+
+		// Additive search
+		$_GET = [ 'gv_search' => 'world +"included spaces" +another hello' ];
+		$this->assertEquals(
+			[
+				'field_filters' => [
+					'mode' => 'any',
+					[ 'key' => null, 'value' => 'included spaces', 'operator' => 'contains', 'required' => true ],
+					[ 'key' => null, 'value' => 'world', 'operator' => 'contains' ],
+					[ 'key' => null, 'value' => 'another', 'operator' => 'contains', 'required' => true ],
+					[ 'key' => null, 'value' => 'hello', 'operator' => 'contains' ],
+				]
+			],
+			$this->widget->filter_entries( array(), null, $args, true )
+		);
+
+		// Combined search
+		$_GET = [ 'gv_search' => 'regular words +with -without' ];
+		$this->assertEquals(
+			[
+				'field_filters' => [
+					'mode' => 'any',
+					[ 'key' => null, 'value' => 'regular', 'operator' => 'contains'],
+					[ 'key' => null, 'value' => 'words', 'operator' => 'contains'],
+					[ 'key' => null, 'value' => 'with', 'operator' => 'contains', 'required' => true ],
+					[ 'key' => null, 'value' => 'without', 'operator' => 'not contains'],
+				]
+			],
+			$this->widget->filter_entries( array(), null, $args, true )
+		);
 
 		$_GET = array(
 			'gv_search' => '%20with%20%20spaces'
@@ -1407,6 +1451,36 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET['gv_search'] = 'hello';
 		$entries = $view->get_entries()->fetch()->all();
 		$this->assertCount( 2, $entries );
+
+		$_GET['gv_search'] = 'hello world';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 3, $entries );
+
+		$_GET['gv_search'] = '"hello world"';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+
+		$_GET['gv_search'] = 'hello -world';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+
+		$_GET['gv_search'] = '+world';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertSame(
+			[ 'world', 'hello world' ],
+			array_map(
+				static function ( $entry ) {
+					return $entry['16'];
+				},
+				$entries
+			)
+		);
+
+		$_GET['gv_search'] = '-hello +world';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+		$this->assertSame( 'world', $entries[0]['16'] );
 
 		$_GET = array();
 	}
