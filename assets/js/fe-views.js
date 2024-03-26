@@ -31,6 +31,8 @@ jQuery( function ( $ ) {
 			$( '.gv-search-clear' ).on( 'click', this.clear_search );
 
 			$( 'a.gv-sort' ).on( 'click', this.multiclick_sort );
+
+			this.number_range();
 		},
 
 		/**
@@ -143,6 +145,21 @@ jQuery( function ( $ ) {
 				e.preventDefault();
 				location.href = $( this ).data( 'multisort-href' );
 			}
+		},
+
+		/**
+		 * Client side logic to prevent invalid search values.
+		 * @since $ver$
+		 */
+		number_range() {
+			$( '.gv-search-number-range' )
+				.on( 'input change', 'input', function () {
+					const $name = $( this ).attr( 'name' );
+					const other_type = $name.includes( 'max' ) ? 'min' : 'max';
+					const $other = $( this ).parent().find( 'input[name="' + $name.replace( /(min|max)/, other_type ) + '"]' );
+					$other.attr( other_type === 'max' ? 'min' : 'max', $( this ).val() );
+				} )
+				.find( 'input' ).trigger( 'change' ); // Initial trigger.
 		}
 	};
 
