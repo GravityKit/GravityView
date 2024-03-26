@@ -1401,6 +1401,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$min = $value['min'] ?? null; // Can't trust `rgar` here.
 					$max = $value['max'] ?? null;
 
+					if ( is_numeric( $min ) && is_numeric( $max ) && $min > $max) {
+						break;
+					}
 					if ( is_numeric( $min ) ) {
 						$filter[] = [ 'key' => $field_id, 'operator' => '>=', 'value' => $min, 'is_numeric' => true ];
 					}
