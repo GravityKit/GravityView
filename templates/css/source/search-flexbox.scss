@@ -82,9 +82,10 @@ $flexbox-margin: 10px;
 		}
 
 		/**
-		 * DATE FIELD
+		 * Range FIELDS
 		 */
-		&.gv-search-date {
+		&.gv-search-date,
+		&.gv-search-number {
 			-js-display: flex;
 			display: flex;
 			flex-flow: row wrap;

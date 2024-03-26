@@ -217,7 +217,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$input_types = array(
 			'text'       => array( 'input_text' ),
 			'address'    => array( 'input_text' ),
-			'number'     => array( 'input_text' ),
+			'number'     => array( 'input_text', 'number_range' ),
 			'date'       => array( 'date', 'date_range' ),
 			'boolean'    => array( 'single_checkbox' ),
 			'select'     => array( 'select', 'radio', 'link' ),
@@ -263,6 +263,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'single_checkbox' => esc_html__( 'Checkbox', 'gk-gravityview' ),
 			'link'            => esc_html__( 'Links', 'gk-gravityview' ),
 			'date_range'      => esc_html__( 'Date range', 'gk-gravityview' ),
+			'number_range'    => esc_html__( 'Number range', 'gk-gravityview' ),
 		);
 
 		/**
@@ -471,7 +472,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$input_type = 'select';
 		} elseif ( in_array( $field_type, array( 'date' ) ) || in_array( $field_id, array( 'payment_date' ) ) ) {
 			$input_type = 'date';
-		} elseif ( in_array( $field_type, array( 'number' ) ) || in_array( $field_id, array( 'payment_amount' ) ) ) {
+		} elseif ( in_array( $field_type, array( 'number', 'quantity', 'total' ) ) || in_array( $field_id, array( 'payment_amount' ) ) ) {
 			$input_type = 'number';
 		} elseif ( in_array( $field_type, array( 'product' ) ) ) {
 			$input_type = 'product';
@@ -838,9 +839,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			if ( isset( $filter[0]['value'] ) ) {
 				$filter[0]['value'] = $trim_search_value ? trim( $filter[0]['value'] ) : $filter[0]['value'];
 
+				unset($filter['operator']);
 				$search_criteria['field_filters'] = array_merge( $search_criteria['field_filters'], $filter );
 
-				// if date range type, set search mode to ALL
+				// if range type, set search mode to ALL
 				if ( ! empty( $filter[0]['operator'] ) && in_array( $filter[0]['operator'], array( '>=', '<=', '>', '<' ) ) ) {
 					$mode = 'all';
 				}
@@ -1067,26 +1069,24 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$search_conditions[] = $search_condition;
 				} else {
 					$left = $search_condition->left;
-
 					// When casting a column value to a certain type (e.g., happens with the Number field), GF_Query_Column is wrapped in a GF_Query_Call class.
-					if ( $left instanceof GF_Query_Call ) {
-						try {
-							$reflectionProperty = new \ReflectionProperty( $left, '_parameters' );
-							$reflectionProperty->setAccessible( true );
+					if ( $left instanceof GF_Query_Call && $left->parameters ) {
+						// Update columns to include the correct alias.
+						$parameters = array_map( static function ( $parameter ) use ( $query ) {
+							return $parameter instanceof GF_Query_Column
+								? new GF_Query_Column(
+									$parameter->field_id,
+									$parameter->source,
+									$query->_alias( $parameter->field_id, $parameter->source, $parameter->is_entry_column() ? 't' : 'm' )
+								)
+								: $parameter;
+						}, $left->parameters );
 
-							$value = $reflectionProperty->getValue( $left );
-
-							if ( ! empty( $value[0] ) && $value[0] instanceof GF_Query_Column ) {
-								$left = $value[0];
-							} else {
-								continue;
-							}
-						} catch ( ReflectionException $e ) {
-							continue;
-						}
+						$left = new GF_Query_Call( $left->function_name, $parameters );
+					} else {
+						$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
+						$left  = new GF_Query_Column( $left->field_id, $left->source, $alias );
 					}
-
-					$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
 
 					if ( $view->joins && GF_Query_Column::META == $left->field_id ) {
 						foreach ( $view->joins as $_join ) {
@@ -1110,7 +1110,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						}
 					} else {
 						$search_conditions[] = new GF_Query_Condition(
-							new GF_Query_Column( $left->field_id, $left->source, $alias ),
+							$left,
 							$search_condition->operator,
 							$search_condition->right
 						);
@@ -1119,7 +1119,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			if ( $search_conditions ) {
-				$search_conditions = array( call_user_func_array( '\GF_Query_Condition::' . ( 'all' == $mode ? '_and' : '_or' ), $search_conditions ) );
+				$search_conditions = 'all' === $mode
+					? [ GF_Query_Condition::_and( ...$search_conditions ) ]
+					: [ GF_Query_Condition::_or( ...$search_conditions ) ];
 			}
 		}
 
@@ -1447,6 +1449,23 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$filter['operator'] = 'contains';
 				}
 
+				break;
+			case 'number':
+			case 'quantity':
+			case 'total':
+				if ( is_array( $value ) ) {
+					$filter = []; // Reset the filter.
+
+					$min = $value['min'] ?? null; // Can't trust `rgar` here.
+					$max = $value['max'] ?? null;
+
+					if ( is_numeric( $min ) ) {
+						$filter[] = [ 'key' => $field_id, 'operator' => '>=', 'value' => $min, 'is_numeric' => true ];
+					}
+					if ( is_numeric( $max ) ) {
+						$filter[] = [ 'key' => $field_id, 'operator' => '<=', 'value' => $max, 'is_numeric' => true ];
+					}
+				}
 				break;
 		} // switch field type
 
@@ -1809,6 +1828,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$filter['value'] = array(
 				'start' => '',
 				'end'   => '',
+			);
+		}
+
+		if ( 'number_range' === $field['input'] && empty( $value ) ) {
+			$filter['value'] = array(
+				'min' => '',
+				'max' => '',
 			);
 		}
 
