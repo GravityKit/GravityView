@@ -153,11 +153,25 @@ jQuery( function ( $ ) {
 		 */
 		number_range() {
 			$( '.gv-search-number-range' )
-				.on( 'input change', 'input', function () {
+				.on( 'change', 'input', function () {
 					const $name = $( this ).attr( 'name' );
-					const other_type = $name.includes( 'max' ) ? 'min' : 'max';
-					const $other = $( this ).parent().find( 'input[name="' + $name.replace( /(min|max)/, other_type ) + '"]' );
-					$other.attr( other_type === 'max' ? 'min' : 'max', $( this ).val() );
+					const current_type = $name.includes( 'max' ) ? 'max' : 'min';
+					const other_type = 'max' === current_type ? 'min' : 'max';
+					const $other = $( this )
+						.closest( '.gv-search-number-range' )
+						.find( 'input[name="' + $name.replace( /(min|max)/, other_type ) + '"]' );
+
+					// Push to end of the stack to avoid timing issues.
+					setTimeout( function () {
+						if ( $( this ).attr( other_type ) ) {
+							if ( 'max' === current_type && $( this ).val() < $( this ).attr( 'min' ) ) {
+								$( this ).val( $( this ).attr( 'min' ) );
+							} else if ( 'min' === current_type && $( this ).val() > $( this ).attr( 'max' ) ) {
+								$( this ).val( $( this ).attr( 'max' ) );
+							}
+						}
+						$other.attr( current_type, $( this ).val() );
+					}.bind( this ), 0 );
 				} )
 				.find( 'input' ).trigger( 'change' ); // Initial trigger.
 		}
