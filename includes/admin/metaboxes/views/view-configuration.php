@@ -1,5 +1,75 @@
 <?php
-/** @global string $curr_template GravityView_Template::template_id value. Empty string if not. */
+/**
+ * @global \WP_Post $post The current post
+ * @global string $directory_entries_template GravityView_Template::template_id value for directory entries section.
+ * @global string $single_entry_template GravityView_Template::template_id value for single entry section.
+ */
+
+$templates = array_filter(
+	gravityview_get_registered_templates(),
+	static function ( array $template ) {
+		return 'custom' === rgar( $template, 'type' );
+	}
+);
+
+function is_active( array $template ): bool {
+	$placeholder = ! empty( $template['buy_source'] );
+	$is_included = ! empty( $template['included'] );
+
+	return ! $placeholder && ! $is_included;
+}
+
+uasort(
+	$templates,
+	static function ( array $a, array $b ) {
+		return is_active( $b ) <=> is_active( $a );
+	}
+);
+
+/**
+ * Returns the HTML for the templates options needed for the view dropdown.
+ *
+ * @since $ver$
+ *
+ * @param array       $templates         The templates to render.
+ * @param string|null $selected_template The current selected template.
+ *
+ * @return string The rendered options.
+ */
+function render_template_options( array $templates, ?string $selected_template ): string {
+	$html = sprintf( '<option value="">%s</option>', esc_html__( 'Select a type', 'gk-gravityview' ) );
+
+	foreach ( $templates as $template_id => $template ) {
+		$extra = [];
+		if ( $template_id === $selected_template ) {
+			$extra[] = 'selected="selected"';
+		}
+
+		if ( ! is_active( $template ) ) {
+			$extra[] = 'disabled="disabled"';
+			if ( $template['buy_source'] ?? false ) {
+				$extra[] = sprintf( 'data-buy-source="%s"', esc_attr( $template['buy_source'] ) );
+			}
+
+			if ( isset( $template['included'], $template['license'] ) ) {
+				$extra[] = sprintf( 'data-license="%s"', 'Pro' );
+			}
+		}
+
+		$html .= sprintf(
+			'<option data-icon="%s" data-title="%s" data-description="%s" value="%s"%s>%s</option>',
+			esc_attr( rgar( $template, 'icon', rgar( $template, 'logo', '' ) ) ),
+			esc_attr( rgar( $template, 'label', '' ) ),
+			esc_attr( rgar( $template, 'description', '' ) ),
+			esc_attr( $template_id ),
+			implode( ' ', $extra ),
+			esc_html( rgar( $template, 'label', '' ) )
+		);
+	}
+
+	return $html;
+}
+
 ?>
 <input name="gv_fields" type="hidden" value="<?php echo esc_attr( http_build_query( array( 'fields' => get_post_meta( $post->ID, '_gravityview_directory_fields', true ) ) ) ); ?>" />
 
@@ -16,17 +86,23 @@
 	<div id="directory-view">
 
 		<div id="directory-fields" class="gv-section">
+			<div class="gv-section-header">
+				<h4><?php esc_html_e( 'Top Widgets', 'gk-gravityview' ); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gk-gravityview' ); ?></span></h4>
+				<div class="view-template-select">
+					<select data-view-dropdown id="gravityview_directory_template" name="gravityview_directory_template" data-section="directory" data-scope="Multiple Entries" data-label="View type">
+						<?php echo render_template_options( $templates, $directory_entries_template ); ?>
+					</select>
+				</div>
+			</div>
 
-			<h4><?php esc_html_e( 'Top Widgets', 'gk-gravityview' ); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gk-gravityview' ); ?></span></h4>
-
-			<?php do_action( 'gravityview_render_widgets_active_areas', $curr_template, 'header', $post->ID ); ?>
+			<?php do_action( 'gravityview_render_widgets_active_areas', $directory_entries_template, 'header', $post->ID ); ?>
 
 			<h4><?php esc_html_e( 'Entries Fields', 'gk-gravityview' ); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gk-gravityview' ); ?></span></h4>
 
 			<div id="directory-active-fields" class="gv-grid">
 				<?php
-				if ( ! empty( $curr_template ) ) {
-					do_action( 'gravityview_render_directory_active_areas', $curr_template, 'directory', $post->ID, true );
+				if ( ! empty( $directory_entries_template ) ) {
+					do_action( 'gravityview_render_directory_active_areas', $directory_entries_template, 'directory', $post->ID, true );
 				}
 				?>
 			</div>
@@ -35,7 +111,7 @@
 
 			<?php
 
-				do_action( 'gravityview_render_widgets_active_areas', $curr_template, 'footer', $post->ID );
+				do_action( 'gravityview_render_widgets_active_areas', $directory_entries_template, 'footer', $post->ID );
 
 				do_action( 'gravityview_render_field_pickers', 'directory' );
 
@@ -67,12 +143,21 @@
 				<p><a data-beacon-article-modal="54c67bbae4b0512429885516" href="https://docs.gravitykit.com/article/70-linking-to-a-single-entry"><?php printf( esc_html__( 'Learn how to link to %s', 'gk-gravityview' ), esc_html__( 'Single Entry', 'gk-gravityview' ) ); ?></a></p>
 			</div>
 
-			<h4><?php esc_html_e( 'These fields will be shown in Single Entry layout.', 'gk-gravityview' ); ?></h4>
+			<div class="gv-section-header">
+				<h4><?php esc_html_e( 'These fields will be shown in Single Entry layout.', 'gk-gravityview' ); ?></h4>
+
+				<div class="view-template-select">
+					<select data-view-dropdown id="gravityview_single_template" name="gravityview_single_template"
+							data-section="single" data-scope="Single Entry" data-label="View type">
+						<?php echo render_template_options( $templates, $single_entry_template ); ?>
+					</select>
+				</div>
+			</div>
 
 			<div id="single-active-fields" class="gv-grid">
 				<?php
-				if ( ! empty( $curr_template ) ) {
-					do_action( 'gravityview_render_directory_active_areas', $curr_template, 'single', $post->ID, true );
+				if ( ! empty( $single_entry_template ) ) {
+					do_action( 'gravityview_render_directory_active_areas', $single_entry_template, 'single', $post->ID, true );
 				}
 				?>
 			</div>

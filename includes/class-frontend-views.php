@@ -1500,8 +1500,10 @@ class GravityView_frontend {
 
 			foreach ( $views as $view_id => $data ) {
 				$view        = \GV\View::by_id( $data['id'] );
-				$template_id = gravityview_get_template_id( $view->ID );
 				$data        = $view->as_data();
+				$template_id = $this->single_entry
+					? gravityview_get_single_entry_template_id( $view->ID )
+					: gravityview_get_directory_entries_template_id( $view->ID );
 
 				// By default, no thickbox
 				$js_dependencies  = array( 'jquery', 'gravityview-jquery-cookie' );

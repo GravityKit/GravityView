@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Added: Ability to select different view types for directory and single entry view.
 * Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
 
 __Developer Updates:__

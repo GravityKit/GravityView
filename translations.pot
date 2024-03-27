@@ -168,8 +168,8 @@ msgid "Show only approved entries"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:258
-#: includes/admin/metaboxes/views/view-configuration.php:66
-#: includes/admin/metaboxes/views/view-configuration.php:91
+#: includes/admin/metaboxes/views/view-configuration.php:136
+#: includes/admin/metaboxes/views/view-configuration.php:170
 msgid "Note: %s"
 msgstr ""
 
@@ -183,10 +183,10 @@ msgstr ""
 
 #: future/includes/class-gv-renderer.php:282
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:153
-#: includes/admin/metaboxes/views/view-configuration.php:13
-#: includes/admin/metaboxes/views/view-configuration.php:91
-#: includes/admin/metaboxes/views/view-configuration.php:92
-#: includes/class-admin-views.php:1414
+#: includes/admin/metaboxes/views/view-configuration.php:77
+#: includes/admin/metaboxes/views/view-configuration.php:170
+#: includes/admin/metaboxes/views/view-configuration.php:171
+#: includes/class-admin-views.php:1416
 #: includes/class-frontend-views.php:685
 #: includes/class-gravityview-admin-bar.php:104
 #: includes/class-gravityview-entry-link-shortcode.php:246
@@ -202,9 +202,9 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:296
 #: future/includes/class-gv-settings-view.php:498
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:145
-#: includes/admin/metaboxes/views/view-configuration.php:12
-#: includes/admin/metaboxes/views/view-configuration.php:66
-#: includes/admin/metaboxes/views/view-configuration.php:67
+#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:136
+#: includes/admin/metaboxes/views/view-configuration.php:137
 #: includes/class-frontend-views.php:689
 msgid "Single Entry"
 msgstr ""
@@ -212,7 +212,7 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:300
 #: future/includes/class-gv-settings-view.php:497
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
-#: includes/admin/metaboxes/views/view-configuration.php:11
+#: includes/admin/metaboxes/views/view-configuration.php:75
 #: includes/class-frontend-views.php:682
 msgid "Multiple Entries"
 msgstr ""
@@ -619,7 +619,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:315
 #: future/includes/class-gv-settings-view.php:346
-#: includes/class-common.php:1626
+#: includes/class-common.php:1648
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -912,7 +912,6 @@ msgstr ""
 msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a form</a>."
 msgstr ""
 
-#. Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
 #: future/includes/class-gv-shortcode-gravityview.php:173
 msgid "This View is in the Trash. %sClick to restore the View%s."
 msgstr ""
@@ -1328,7 +1327,7 @@ msgid "Layout"
 msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:86
-#: includes/admin/metaboxes/views/view-configuration.php:8
+#: includes/admin/metaboxes/views/view-configuration.php:72
 #: includes/class-admin-views.php:557
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:201
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:300
@@ -1460,7 +1459,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/direct-access-status.php:98
 #: includes/class-admin-add-shortcode.php:140
-#: includes/class-admin-views.php:1513
+#: includes/class-admin-views.php:1516
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:283
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1189
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1322
@@ -1469,40 +1468,40 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:50
+#: includes/admin/metaboxes/views/select-template.php:68
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:121
 msgid "Install"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:50
+#: includes/admin/metaboxes/views/select-template.php:68
 msgid "Activate & Select"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:76
-#: includes/admin/metaboxes/views/select-template.php:89
+#: includes/admin/metaboxes/views/select-template.php:95
+#: includes/admin/metaboxes/views/select-template.php:108
 msgid "This layout is included in the %s license."
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:82
+#: includes/admin/metaboxes/views/select-template.php:101
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:110
 msgid "Buy Now"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:85
+#: includes/admin/metaboxes/views/select-template.php:104
 msgid "View a live demo of this layout"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:85
+#: includes/admin/metaboxes/views/select-template.php:104
 msgid "Try a demo"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:99
+#: includes/admin/metaboxes/views/select-template.php:118
 #: includes/fields/class-gravityview-field-select.php:27
 #: includes/widgets/search-widget/class-search-widget.php:259
 msgid "Select"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:101
+#: includes/admin/metaboxes/views/select-template.php:120
 msgid "View a live demo of this preset"
 msgstr ""
 
@@ -1525,44 +1524,47 @@ msgstr ""
 msgid "Copied!"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:8
+#: includes/admin/metaboxes/views/view-configuration.php:42
+msgid "Select a type"
+msgstr ""
+
+#: includes/admin/metaboxes/views/view-configuration.php:72
 msgid "Scroll to View Settings"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:11
-#: includes/admin/metaboxes/views/view-configuration.php:12
-#: includes/admin/metaboxes/views/view-configuration.php:13
+#: includes/admin/metaboxes/views/view-configuration.php:75
+#: includes/admin/metaboxes/views/view-configuration.php:76
+#: includes/admin/metaboxes/views/view-configuration.php:77
 msgid "%s Layout"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:20
+#: includes/admin/metaboxes/views/view-configuration.php:84
 msgid "Top Widgets"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:20
+#: includes/admin/metaboxes/views/view-configuration.php:84
 msgid "These widgets will be shown above entries."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:24
+#: includes/admin/metaboxes/views/view-configuration.php:94
 msgid "Entries Fields"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:24
+#: includes/admin/metaboxes/views/view-configuration.php:94
 msgid "These fields will be shown for each entry."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:34
+#: includes/admin/metaboxes/views/view-configuration.php:104
 msgid "Bottom Widgets"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:34
+#: includes/admin/metaboxes/views/view-configuration.php:104
 msgid "These widgets will be shown below entries."
 msgstr ""
 
-#. translators: %1$s is the vendor title
-#: includes/admin/metaboxes/views/view-configuration.php:47
-#: includes/class-admin-views.php:1286
-#: includes/class-admin-views.php:1512
+#: includes/admin/metaboxes/views/view-configuration.php:117
+#: includes/class-admin-views.php:1288
+#: includes/class-admin-views.php:1515
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:216
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:24
@@ -1570,25 +1572,25 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:66
-#: includes/admin/metaboxes/views/view-configuration.php:91
+#: includes/admin/metaboxes/views/view-configuration.php:136
+#: includes/admin/metaboxes/views/view-configuration.php:170
 msgid "No fields link to the %s layout."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:67
-#: includes/admin/metaboxes/views/view-configuration.php:92
+#: includes/admin/metaboxes/views/view-configuration.php:137
+#: includes/admin/metaboxes/views/view-configuration.php:171
 msgid "Learn how to link to %s"
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:70
+#: includes/admin/metaboxes/views/view-configuration.php:141
 msgid "These fields will be shown in Single Entry layout."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:95
+#: includes/admin/metaboxes/views/view-configuration.php:174
 msgid "Fields shown when editing an entry."
 msgstr ""
 
-#: includes/admin/metaboxes/views/view-configuration.php:95
+#: includes/admin/metaboxes/views/view-configuration.php:174
 msgid "If not configured, all form fields will be displayed."
 msgstr ""
 
@@ -1632,7 +1634,7 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:186
-#: includes/class-admin-views.php:1517
+#: includes/class-admin-views.php:1520
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1772,106 +1774,106 @@ msgstr ""
 msgid "Shortcode"
 msgstr ""
 
-#: includes/class-admin-views.php:818
+#: includes/class-admin-views.php:820
 msgid "Add All Form Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:819
+#: includes/class-admin-views.php:821
 msgid "Insert all the form fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:1003
+#: includes/class-admin-views.php:1005
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:1005
+#: includes/class-admin-views.php:1007
 msgid "Add Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1089
+#: includes/class-admin-views.php:1091
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1199
+#: includes/class-admin-views.php:1201
 #: includes/widgets/search-widget/class-search-widget.php:130
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1209
+#: includes/class-admin-views.php:1211
 #: includes/widgets/class-gravityview-widget-pagination-info.php:31
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1215
-#: includes/class-admin-views.php:1222
+#: includes/class-admin-views.php:1217
+#: includes/class-admin-views.php:1224
 #: includes/widgets/class-gravityview-widget-page-links.php:30
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1289
+#: includes/class-admin-views.php:1291
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1290
+#: includes/class-admin-views.php:1292
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1301
+#: includes/class-admin-views.php:1303
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1338
+#: includes/class-admin-views.php:1340
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1339
+#: includes/class-admin-views.php:1341
 msgid "The data is not lost; re-activate the associated plugin and the configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1415
+#: includes/class-admin-views.php:1417
 #: includes/fields/class-gravityview-field-edit-link.php:32
 msgid "Link to Edit Entry"
 msgstr ""
 
-#: includes/class-admin-views.php:1508
+#: includes/class-admin-views.php:1511
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1509
+#: includes/class-admin-views.php:1512
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1510
+#: includes/class-admin-views.php:1513
 #: includes/widgets/search-widget/class-search-widget.php:308
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1511
+#: includes/class-admin-views.php:1514
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1514
+#: includes/class-admin-views.php:1517
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1515
+#: includes/class-admin-views.php:1518
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1149
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1516
+#: includes/class-admin-views.php:1519
 msgid "Error while creating the View for you. Check the settings or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1518
+#: includes/class-admin-views.php:1521
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1519
+#: includes/class-admin-views.php:1522
 msgid "Error while adding the field. Please try again or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1520
+#: includes/class-admin-views.php:1523
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -2070,16 +2072,16 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1579
+#: includes/class-common.php:1601
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1630
+#: includes/class-common.php:1652
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1762
+#: includes/class-common.php:1784
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -2109,12 +2111,12 @@ msgstr ""
 msgid "The ID is already a View."
 msgstr ""
 
-#: includes/class-frontend-views.php:1613
+#: includes/class-frontend-views.php:1615
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1614
+#: includes/class-frontend-views.php:1616
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
@@ -4052,7 +4054,6 @@ msgstr ""
 msgid "Caution: [link]Advanced Post Creation[/link] is active for this form."
 msgstr ""
 
-#. translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:116
 msgid "Editing entries in GravityView may also update a connected post."
 msgstr ""
@@ -4175,7 +4176,7 @@ msgid "Display items in a listing view."
 msgstr ""
 
 #: includes/presets/default-list/class-gravityview-default-template-list.php:27
-#: includes/presets/default-table/class-gravityview-default-template-table.php:43
+#: includes/presets/default-table/class-gravityview-default-template-table.php:44
 msgid "Link to single entry"
 msgstr ""
 
@@ -4219,15 +4220,15 @@ msgstr ""
 msgid "Table"
 msgstr ""
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:56
+#: includes/presets/default-table/class-gravityview-default-template-table.php:57
 msgid "Visible Table Columns"
 msgstr ""
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:57
+#: includes/presets/default-table/class-gravityview-default-template-table.php:58
 msgid "Each field will be displayed as a column in the table."
 msgstr ""
 
-#: includes/presets/default-table/class-gravityview-default-template-table.php:105
+#: includes/presets/default-table/class-gravityview-default-template-table.php:106
 msgid "Add Table Column"
 msgstr ""
 
@@ -4507,7 +4508,6 @@ msgstr ""
 msgid "Pre-Filter Choices"
 msgstr ""
 
-#. translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
 #: includes/widgets/search-widget/class-search-widget.php:89
 msgid "For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries."
 msgstr ""
@@ -5667,7 +5667,6 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#. translators: %1$s is the vendor title
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:41
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1156
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1333
@@ -6291,7 +6290,6 @@ msgstr ""
 msgid "%s support may not be able to access this site."
 msgstr ""
 
-#. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
 #: vendor_prefixed/trustedlogin/client/src/Form.php:684
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""
@@ -6496,7 +6494,6 @@ msgstr ""
 msgid "Copy the access key to your clipboard"
 msgstr ""
 
-#. translators: %s is the display name of the TrustedLogin support user.
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1340
 msgid "The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums."
 msgstr ""
