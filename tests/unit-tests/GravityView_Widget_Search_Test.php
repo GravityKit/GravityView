@@ -1825,11 +1825,11 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$view = \GV\View::from_post( $post );
 
-		foreach ( array(1,5,7,10) as $number ) {
+		foreach ( array( 1, 5, 7, 10, '-20.23' ) as $number ) {
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form['id'],
 				'status'  => 'active',
-				'9'     => $number,
+				'9'       => $number,
 			) );
 		}
 
@@ -1858,6 +1858,15 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
 		remove_all_filters('gravityview_search_operator');
+
+		$_GET = [ 'filter_9' => [ 'min' => -21, 'max' => 9 ], 'mode' => 'all' ];
+		$this->assertEquals( 4, $view->get_entries()->count() );
+
+		$_GET = [ 'filter_9' => [ 'min' => -20, 'max' => 9 ], 'mode' => 'all' ];
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$entries = $view->get_entries()->all();
+		$this->assertSame( [ '7', '5' ], [ $entries[0]->as_entry()[9], $entries[1]->as_entry()[9] ] );
 
 		$_GET = array();
 	}
