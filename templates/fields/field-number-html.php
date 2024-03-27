@@ -15,13 +15,28 @@ $value          = $gravityview->value;
 $form           = $gravityview->view->form->form;
 $display_value  = $gravityview->display_value;
 $field_settings = $gravityview->field->as_configuration();
+$field          = GFFormsModel::get_field( $form, $gravityview->field->id );
 
 if ( '' !== $value ) {
 	$decimals = ( isset( $field_settings['decimals'] ) && '' !== $field_settings['decimals'] ) ? $field_settings['decimals'] : '';
 	if ( empty( $field_settings['number_format'] ) && 'currency' === $gravityview->field->field->numberFormat ) {
 		echo $display_value;
 	} else {
-		echo gravityview_number_format( $value, $decimals, ! empty( $field_settings['number_format'] ) );
+		if ( $decimals ) {
+			$decimal_point = '.';
+			$thousands_sep = ',';
+
+			if ( 'decimal_comma' === $gravityview->field->field->numberFormat ) {
+				$decimal_point = ',';
+				$thousands_sep = '.';
+			}
+
+			$value = number_format( $value, absint( $decimals ), $decimal_point, $thousands_sep );
+
+		}
+
+		echo $field->get_value_entry_list( $value, $gravityview->entry, $gravityview->field->id, array(), $form );
+
 	}
 } else {
 	echo $display_value;
