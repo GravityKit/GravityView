@@ -23,18 +23,16 @@ if ( '' !== $value ) {
 		echo $display_value;
 	} else {
 		if ( $decimals ) {
-			global $wp_locale;
-			if ( $wp_locale ) {
-				if ( $gravityview->field->field->numberFormat === 'decimal_comma' ) {
-					$wp_locale->number_format['decimal_point'] = ',';
-					$wp_locale->number_format['thousands_sep'] = '.';
-				} else {
-					$wp_locale->number_format['decimal_point'] = '.';
-					$wp_locale->number_format['thousands_sep'] = ',';
-				}
+			$decimal_point = '.';
+			$thousands_sep = ',';
+
+			if ( 'decimal_comma' === $gravityview->field->field->numberFormat ) {
+				$decimal_point = ',';
+				$thousands_sep = '.';
 			}
 
-			$value = gravityview_number_format( $value, $decimals, ! empty( $field_settings['number_format'] ) );
+			$value = number_format( $value, absint( $decimals ), $decimal_point, $thousands_sep );
+
 		}
 
 		echo $field->get_value_entry_list( $value, $gravityview->entry, $gravityview->field->id, array(), $form );
