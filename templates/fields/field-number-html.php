@@ -19,7 +19,7 @@ $field = GFFormsModel::get_field( $form, $gravityview->field->id );
 
 if ( '' !== $value ) {
 	$decimals = ( isset( $field_settings['decimals'] ) && '' !== $field_settings['decimals'] ) ? $field_settings['decimals'] : '';
-	if ( 'currency' === $gravityview->field->field->numberFormat ) {
+	if ( empty( $field_settings['number_format'] ) && 'currency' === $gravityview->field->field->numberFormat ) {
 		echo $display_value;
 	} else {
 		if($decimals){
