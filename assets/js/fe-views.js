@@ -163,7 +163,7 @@ jQuery( function ( $ ) {
 
 					// Push to end of the stack to avoid timing issues.
 					setTimeout( function () {
-						if ( $( this ).attr( other_type ) ) {
+						if ( $( this ).attr( other_type ) && '' !== $( this ).val() ) {
 							if ( 'max' === current_type && $( this ).val() < $( this ).attr( 'min' ) ) {
 								$( this ).val( $( this ).attr( 'min' ) );
 							} else if ( 'min' === current_type && $( this ).val() > $( this ).attr( 'max' ) ) {
