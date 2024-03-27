@@ -24,6 +24,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added: Ability to select different view types for directory and single entry view.
+* Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
+
+__Developer Updates:__
+
+* Added: `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+
+= 2.21.1 on March 22, 2024 =
+
+This hotfix release addresses a critical error that occurred when activating the plugin without Gravity Forms installed.
+
+#### 🐛 Fixed
+* Critical error when activating the plugin without Gravity Forms installed.
 
 = 2.21 on March 18, 2024 =
 
@@ -49,6 +61,8 @@ This release enhances security, introduces support for LifterLMS, adds a new CSV
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.11.
   - GravityKit product updates are now showing on the Plugins page.
   - Database options that are no longer used are now automatically removed.
+
+* Added: You can now search exact-match phrases by wrapping a search term in quotes (e.g., `"blue motorcycle"`). This will search for text exactly matching `"blue motorcycle"`)
 
 __Developer Updates:__
 

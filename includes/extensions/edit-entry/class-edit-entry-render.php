@@ -1775,9 +1775,9 @@ class GravityView_Edit_Entry_Render {
 		 */
 		add_filter( 'gform_validation_' . $this->form_id, array( $this, 'custom_validation' ), 10, 4 );
 
-		// Needed by the validate funtion
+		// Needed by the validation function.
 		$failed_validation_page = null;
-		$field_values           = RGForms::post( 'gform_field_values' );
+		$field_values           = rgpost( 'gform_field_values' );
 
 		// Prevent entry limit from running when editing an entry, also
 		// prevent form scheduling from preventing editing

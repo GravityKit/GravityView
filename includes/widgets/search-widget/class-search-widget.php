@@ -669,6 +669,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 *
 		 * @since 1.20.2
 		 * @since TODO Added $view parameter
+		 *
 		 * @param bool $split_words True: split a phrase into words; False: search whole word only [Default: true]
 		 * @param \GV\View $view The View being searched
 		 */
@@ -679,6 +680,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 *
 		 * @since 2.9.3
 		 * @since TODO Added $view parameter
+		 *
 		 * @param bool $trim_search_value True: remove whitespace; False: keep as is [Default: true]
 		 * @param \GV\View $view The View being searched
 		 */
@@ -689,25 +691,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
-			if ( $split_words ) {
-				// Search for a piece
-				$words = explode( ' ', $search_all_value );
+			$criteria = $this->get_criteria_from_query( $search_all_value, $split_words );
 
-				$words = array_filter( $words );
-
-			} else {
-				// Replace multiple spaces with one space
-				$search_all_value = preg_replace( '/\s+/ism', ' ', $search_all_value );
-
-				$words = array( $search_all_value );
-			}
-
-			foreach ( $words as $word ) {
-				$search_criteria['field_filters'][] = array(
-					'key'      => null, // The field ID to search
-					'value'    => $word, // The value to search
-					'operator' => 'contains', // What to search in. Options: `is` or `contains`
-				);
+			foreach ( $criteria as $criterion ) {
+				$search_criteria['field_filters'][] = [
+					'key'      => $criterion['key'] ?? null, // The field ID to search
+					'value'    => $criterion['value'], // The value to search
+					'operator' => $criterion['operator'], // What to search in. Options: `is` or `contains`
+				];
 			}
 		}
 
@@ -872,6 +863,32 @@ class GravityView_Widget_Search extends \GV\Widget {
 		unset( $get );
 
 		return $search_criteria;
+	}
+
+	/**
+	 * Returns a list of quotation marks.
+	 *
+	 * @since TODO
+	 *
+	 * @return array List of quotation marks with `opening` and `closing` keys.
+	 */
+	private function get_quotation_marks() {
+
+		$quotations_marks = [
+			'opening' => [ '"', "'", '“', '‘', '«', '‹', '「', '『', '【', '〖', '〝', '〟', '｢' ],
+			'closing' => [ '"', "'", '”', '’', '»', '›', '」', '』', '】', '〗', '〞', '〟', '｣' ],
+		];
+
+		/**
+		 * @filter `gk/gravityview/common/quotation-marks` Modify the quotation marks used to detect quoted searches.
+		 *
+		 * @since TODO
+		 *
+		 * @param array $quotations_marks List of quotation marks with `opening` and `closing` keys.
+		 */
+		$quotations_marks = apply_filters( 'gk/gravityview/common/quotation-marks', $quotations_marks );
+
+		return $quotations_marks;
 	}
 
 	/**
@@ -2248,6 +2265,68 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		return $operator;
+	}
+
+	/**
+	 * Quotes values for a regex.
+	 *
+	 * @since TODO
+	 *
+	 * @param array[] $words The words to quote.
+	 * @param string   $delimiter The delimiter.
+	 *
+	 * @return array[] The quoted words.
+	 */
+	private static function preg_quote( array $words, string $delimiter = '/' ): array {
+		return array_map( static function ( string $mark ) use ( $delimiter ): string {
+			return preg_quote( $mark, $delimiter );
+		}, $words );
+	}
+
+	/**
+	 * Retrieves the words in with its operator for querying.
+	 *
+	 * @since TODO
+	 *
+	 * @param string $query The search query.
+	 * @param bool   $split_words Whether to split the words.
+	 *
+	 * @return array The search words with their operator.
+	 */
+	private function get_criteria_from_query( string $query, bool $split_words ): array {
+		$words           = [];
+		$quotation_marks = $this->get_quotation_marks();
+
+		$regex = sprintf(
+			'/(%s)(?<word>.*?)(%s)/m',
+			implode( '|', self::preg_quote( $quotation_marks['opening'] ?? [] ) ),
+			implode( '|', self::preg_quote( $quotation_marks['closing'] ?? [] ) )
+		);
+
+		if ( preg_match_all( $regex, $query, $matches ) ) {
+			$query = str_replace( $matches[0], '', $query );
+			foreach ( $matches['word'] as $exact_word ) {
+				$words[] = [ 'operator' => 'contains', 'value' => $exact_word ];
+			}
+		}
+
+		if ( $query && $split_words ) {
+			foreach ( preg_split( '/\s+/', $query ) as $word ) {
+				$words[] = [
+					'operator' => 'contains',
+					'value'    => $word,
+				];
+			}
+		} elseif ( $query ) {
+			$words[] = [
+				'operator' => 'contains',
+				'value'    => preg_replace( '/\s+/', ' ', $query ),
+			];
+		}
+
+		return array_filter( $words, static function ( array $word ) {
+			return ! empty( $word['value'] ?? '' );
+		} );
 	}
 } // end class
 
