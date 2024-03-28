@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
+* Fixed: Secrets would not be added to blocks when selecting the view from the preview window.
 
 __Developer Updates:__
 

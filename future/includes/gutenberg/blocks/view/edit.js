@@ -15,6 +15,7 @@ import Disabled from 'shared/js/disabled';
 
 import './editor.scss';
 
+/*global gkGravityViewBlocks*/
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const {
 		viewId,
@@ -89,6 +90,21 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		return <div dangerouslySetInnerHTML={ { __html: contentEl.innerHTML } } />;
 	};
 
+	/**
+	 * Sets the selected view from the ViewSelect object.
+	 * @param {number} _viewId The View ID.
+	 * @since $ver$
+	 */
+	function selectView( _viewId ) {
+		const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );
+
+		setAttributes( {
+			viewId: _viewId,
+			secret: selectedView?.secret,
+			previewBlock: previewBlock && ! _viewId ? false : previewBlock,
+		} );
+	}
+
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
@@ -98,15 +114,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( _viewId ) => {
-									const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );
-
-									setAttributes( {
-										viewId: _viewId,
-										secret: selectedView?.secret,
-										previewBlock: previewBlock && !_viewId ? false : previewBlock,
-									} );
-								} }
+								onChange={ selectView }
 							/>
 
 							<PreviewControl
@@ -317,7 +325,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 					<ViewSelector
 						viewId={ viewId }
-						onChange={ ( _viewId ) => setAttributes( { viewId: _viewId, previewBlock: previewBlock && !_viewId ? false : previewBlock } ) }
+						onChange={ selectView }
 					/>
 
 					<PreviewControl
