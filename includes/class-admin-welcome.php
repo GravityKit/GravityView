@@ -297,12 +297,12 @@ class GravityView_Welcome {
 				?>
 				<h3>2.21.2 on March 28, 2024</h3>
 
-				<p>This update fixes an issue with previewing GravityView blocks for Views that have access restrictions and resolves a problem where blocks were only rendered for logged-in users.</p>
+				<p>This update fixes an issue with previewing GravityView blocks for Views with enhanced security and resolves a problem where blocks were previously rendered only for logged-in users.</p>
 
 				<h4>🐛 Fixed</h4>
 
 				<ul>
-					<li>Previewing a GravityView block for a protected View no longer displays a notice about a missing <code>secret</code> attribute in the shortcode.</li>
+					<li>Previewing a GravityView block for a View that has enhanced security enabled no longer results in a notice about a missing <code>secret</code> shortcode attribute.</li>
 					<li>GravityView blocks now render for all users, not just those who are logged in.</li>
 				</ul>
 
