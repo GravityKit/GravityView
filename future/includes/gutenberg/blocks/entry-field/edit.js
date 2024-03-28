@@ -39,9 +39,11 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const fieldSettingOverridesHelpLabel = __( 'These are space-separated overrides for field settings (e.g., title, label, etc.) using the key="value" format. See the [link]GravityView documentation[/link] for more information.', 'gk-gravityview' ).replace( '[link]', '<a href="https://docs.gravitykit.com/article/462-gvfield-embed-gravity-forms-field-values">' ).replace( '[/link]', '</a>' );
 
 	/**
-	 * Sets the selected view from the ViewSelect object.
-	 * @param {number} _viewId The View ID.
+	 * Sets the selected View from the ViewSelect object.
+	 *
 	 * @since $ver$
+	 *
+	 * @param {number} _viewId The View ID.
 	 */
 	function selectView( _viewId ) {
 		const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );

@@ -91,9 +91,11 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	};
 
 	/**
-	 * Sets the selected view from the ViewSelect object.
-	 * @param {number} _viewId The View ID.
+	 * Sets the selected View from the ViewSelect object.
+	 *
 	 * @since $ver$
+	 *
+	 * @param {number} _viewId The View ID.
 	 */
 	function selectView( _viewId ) {
 		const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );
