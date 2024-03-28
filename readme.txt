@@ -26,7 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 This update fixes an issue with previewing GravityView blocks for Views that have access restrictions and resolves a problem where blocks were only rendered for logged-in users.
 
 #### 🐛 Fixed
-* Previewing a GravityView block for a protected View no longer displays a notice about a missing secret attribute.
+* Previewing a GravityView block for a protected View no longer displays a notice about a missing `secret` attribute in the shortcode.
 * GravityView blocks now render for all users, not just those who are logged in.
 
 = 2.21.1 on March 22, 2024 =

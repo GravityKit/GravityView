@@ -302,7 +302,7 @@ class GravityView_Welcome {
 				<h4>🐛 Fixed</h4>
 
 				<ul>
-					<li>Previewing a GravityView block for a protected View no longer displays a notice about a missing secret attribute.</li>
+					<li>Previewing a GravityView block for a protected View no longer displays a notice about a missing <code>secret</code> attribute in the shortcode.</li>
 					<li>GravityView blocks now render for all users, not just those who are logged in.</li>
 				</ul>
 
