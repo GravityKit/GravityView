@@ -21,15 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.21.2 on March 28, 2024 =
 
-* Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
-* Fixed: Secrets would not be added to blocks when selecting the view from the preview window.
-* Fixed: Blocks would not be shown on the page without certain capabilities.
+This update fixes an issue with previewing GravityView blocks for Views that have access restrictions and resolves a problem where blocks were only rendered for logged-in users.
 
-__Developer Updates:__
-
-* Added: `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+#### 🐛 Fixed
+* Previewing a GravityView block for a protected View no longer displays a notice about a missing secret attribute.
+* GravityView blocks now render for all users, not just those who are logged in.
 
 = 2.21.1 on March 22, 2024 =
 
