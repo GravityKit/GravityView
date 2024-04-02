@@ -1113,6 +1113,17 @@ hr {
 		box-sizing: border-box;
 	}
 
+
+	button.gv-field-duplicate {
+		border: 0;
+		cursor: pointer;
+		visibility: hidden;
+		background: none;
+		&:hover {
+			color: #136cb9;
+		}
+	}
+
 	&:hover {
 
 		border-color: $color-888;
@@ -1124,6 +1135,10 @@ hr {
 		h5 small,
 		.gv-field-info {
 			color: #636D77;
+		}
+
+		button.gv-field-duplicate {
+			visibility: visible;
 		}
 	}
 

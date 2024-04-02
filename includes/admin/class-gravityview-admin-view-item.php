@@ -227,6 +227,11 @@ abstract class GravityView_Admin_View_Item {
 
 		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $title . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . '</span></span>';
 
+		$output .= sprintf(
+			'<button class="gv-field-duplicate" type="button" title="%s"><span class="dashicons dashicons-admin-page"/></button>',
+			esc_attr( __( 'Duplicate this field', 'gk-gravityview' ) )
+		);
+
 		// Displays only in the field/widget picker
 		if ( ! $nonexistent_form_field && $field_info = $this->get_item_info() ) {
 			$output .= '<span class="gv-field-info">' . $field_info . '</span>';

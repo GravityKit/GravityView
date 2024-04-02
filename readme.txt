@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
+* Added: Ability to duplicate a field or widget with all its configuration.
 * Fixed: Fatal error when editing posts/pages containing GravityView blocks
 
 __Developer Updates:__
