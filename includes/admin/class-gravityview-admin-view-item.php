@@ -229,7 +229,7 @@ abstract class GravityView_Admin_View_Item {
 
 		$output .= sprintf(
 			'<button class="gv-field-duplicate" type="button" title="%s"><span class="dashicons dashicons-admin-page"/></button>',
-			esc_attr( __( 'Duplicate this field', 'gk-gravityview' ) )
+			esc_attr__( 'Duplicate this field', 'gk-gravityview' )
 		);
 
 		// Displays only in the field/widget picker
