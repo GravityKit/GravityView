@@ -144,6 +144,15 @@
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
 
+				// Bind Add fields popup to button between fields.
+				.on( 'click', '.gv-add-field-before', function () {
+					$( this )
+						.closest( '.active-drop-container' )
+						.find( 'a.gv-add-field' )
+						.trigger( 'click', { before: $( this ).closest( '.gv-fields' ) } );
+				} )
+
+				// Bind duplicate field action to duplication button.
 				.on( 'click', '.gv-field-duplicate', vcfg.duplicateField )
 
 				// Show the direct access options and hide the toggle button when opened.
@@ -1780,9 +1789,14 @@
 				.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
 				e.stopImmediatePropagation();
 			} )
-				.on( 'click', function ( e ) {
+				.on( 'click', function ( e, data ) {
 					// add title attribute so the tooltip can continue to work (jquery ui bug?)
 					$( this ).attr( "title", "" );
+
+					$( this ).data( 'before', null ); // reset "before" element.
+					if ( data?.before ) {
+						$( this ).data( 'before', data.before );
+					}
 
 					e.preventDefault();
 					//e.stopImmediatePropagation();
@@ -1948,10 +1962,14 @@
 			e.preventDefault();
 
 			const tooltipId = clicked.closest( '.ui-tooltip' ).attr( 'id' );
+			const $addButton = $( '.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
+			const $before = $addButton.data( 'before' );
 
 			viewConfiguration.placeField(
 				clicked,
-				$( '.gv-add-field[data-tooltip-id="' + tooltipId + '"]' )
+				$addButton,
+				$before,
+				!!$before
 			);
 		},
 
@@ -1959,9 +1977,10 @@
 		 * Add (a copy of the) selected field in the active area.
 		 * @param  {object} $field jQuery DOM object of the clicked field to place.
 		 * @param  {object} $addButton jQuery DOM object of the add-button that belongs to the field.
-		 * @param  {object|undefined} $after (optional) jQuery DOM object to place the new field after.
+		 * @param  {object|undefined} $anchor (optional) jQuery DOM object to place the new field after.
+		 * @param  {Boolean} add_before_anchor Whether to place field before the anchor field. Will be `after` for `false`.
 		 */
-		placeField: function ( $field, $addButton, $after ) {
+		placeField: function ( $field, $addButton, $anchor, add_before_anchor = false ) {
 			const vcfg = viewConfiguration;
 			const $newField = $field.clone().hide();
 			const templateId = $( "#gravityview_directory_template" ).val();
@@ -2038,9 +2057,10 @@
 					$( '.gv-field-settings', $newField ).removeClass( 'hide-if-js' );
 				}
 
-				if ( $after ) {
+				if ( $anchor ) {
 					// Append the new field after this element.
-					$newField.insertAfter( $after );
+					const insert_method = add_before_anchor ? 'insertBefore' : 'insertAfter';
+					$newField[ insert_method ]( $anchor );
 				} else {
 					// append the new field to the active drop
 					$addButton
@@ -2048,7 +2068,6 @@
 						.find( '.active-drop' )
 						.append( $newField );
 				}
-				$addButton.attr( 'data-tooltip-id', '' );
 
 				$( document.body ).trigger( 'gravityview/field-added', $newField );
 
