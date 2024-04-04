@@ -212,6 +212,11 @@ abstract class GravityView_Admin_View_Item {
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gk-gravityview' ), $label ) . '</button>';
+		// This needs to be an `<a`-tag to please Firefox.
+		$output .= sprintf(
+			'<a role="button" class="gv-add-field-before" title="%s"><span class="dashicons dashicons-plus-alt"></span></a>',
+			esc_html( $this->settings['add_button_label'] ?? __( 'Add Field', 'gk-gravityview' ) )
+		);
 		$title  = esc_attr( sprintf( __( 'Field: %s', 'gk-gravityview' ), $label ) );
 		if ( ! $nonexistent_form_field ) {
 			$title .= "\n" . $this->get_item_info( false );
