@@ -29,6 +29,13 @@ final class GravityView_Plugin_Hooks_Gravity_Perks_Nested_Forms extends GravityV
 			Closure::fromCallable( [ $this, 'add_custom_gpnf_merge_tags' ] ),
 			10
 		);
+
+		add_filter(
+			'gravityview_entry_default_fields',
+			Closure::fromCallable( [ $this, 'add_entry_field' ] ),
+			10,
+			3
+		);
 	}
 
 	/**
@@ -68,6 +75,40 @@ final class GravityView_Plugin_Hooks_Gravity_Perks_Nested_Forms extends GravityV
 				'tag'   => '{Parent:form_id}',
 			],
 		] );
+	}
+
+	/**
+	 * Add fields to GravityView.
+	 * @since $ver$
+	 *
+	 * @param array        $fields The fields.
+	 * @param string|array $form   THe form reference.
+	 * @param string       $zone   The zone.
+	 *
+	 * @return array The updated fields.
+	 */
+	private function add_entry_field( array $fields, $form, string $zone ): array {
+		if ( ! in_array( $zone, [ 'directory', 'single' ] ) ) {
+			return $fields;
+		}
+
+		$fields[ GPNF_Entry::ENTRY_PARENT_KEY ] = [
+			'label' => esc_html__( 'Parent Entry ID', 'gp-nested-forms' ),
+			'desc'  => esc_html__( 'The parent entry ID for nested form entries.', 'gk-gravityview' ),
+			'type'  => GPNF_Entry::ENTRY_PARENT_KEY,
+			'group' => 'add-on',
+			'icon'  => 'dashicons-code-standards',
+		];
+
+		$fields[ GPNF_Entry::ENTRY_PARENT_FORM_KEY ] = [
+			'label' => esc_html__( 'Parent Entry Form ID', 'gp-nested-forms' ),
+			'desc'  => esc_html__( 'The parent form ID for this nested form entry.', 'gk-gravityview' ),
+			'type'  => 'gpnf_entry_parent',
+			'group' => 'add-on',
+			'icon'  => 'dashicons-code-standards',
+		];
+
+		return $fields;
 	}
 }
 
