@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.4.3
+Tested up to: 6.5.0
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
+* Fixed: Fatal error when editing posts/pages containing GravityView blocks
 
 __Developer Updates:__
 
