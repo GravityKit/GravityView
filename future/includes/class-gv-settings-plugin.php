@@ -369,17 +369,13 @@ HTML;
 					'title'    => esc_html__( 'Product Tour', 'gk-gravityview' ),
 					'settings' => [
 						[
-							'id'          => 'restart_product_tour',
-							'type'        => 'button',
-							'title'       => esc_html__( 'Restart Product Tour', 'gk-gravityview' ),
-							'description'   => strtr(
-							// translators: Do not translate the words inside the {} curly brackets; they are replaced.
-								__( 'Restart GravityView product tour by clicking on this {link}link{/link}', 'gk-gravityview' ),
-								array(
-									'{link}' => $product_tour_link,
-									'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
-								)
-							),
+							'id'               => 'restart_product_tour',
+							'type'             => 'button',
+							'title'            => esc_html__( 'Restart Product Tour', 'gk-gravityview' ),
+							'url'              => $link,
+							'btnText'          => __( 'Restart', 'gk-gravityview' ),
+							'screenReaderText' => esc_html__( 'This link opens in a new window', 'gk-gravityview' ),
+							'description'      => esc_html__( 'Restart the GravityView product tour by clicking the button.', 'gk-gravityview' ),
 						],
 					],
 				],

@@ -11,6 +11,8 @@ class Onboarding {
 	 */
 	private $plugin = GRAVITYVIEW_FILE;
 
+	private $onboarding_id = 'create_view';
+
 	/**
 	 * Onboarding constructor.
 	 */
@@ -29,7 +31,7 @@ class Onboarding {
 			return;
 		}
 
-		$this->restart_onboarding();
+		$this->restart_onboarding( $this->plugin, $this->onboarding_id );
 
 		$this->redirect_after_restart();
 	}
@@ -50,9 +52,9 @@ class Onboarding {
 	 *
 	 * @return void
 	 */
-	private function restart_onboarding() {
-		$onboarding = OnboardingFramework::get_instance( $this->plugin );
-		$onboarding->restart_onboarding();
+	private function restart_onboarding( $plugin, $onboarding_id ) {
+		$onboarding = OnboardingFramework::get_instance( $plugin );
+		$onboarding->restart_onboarding( $onboarding_id );
 	}
 
 	/**
@@ -247,7 +249,7 @@ class Onboarding {
 		] );
 
 		// Initialise onboarding.
-		$onboarding = OnboardingFramework::get_instance( $this->plugin );
+		$onboarding = OnboardingFramework::get_instance( $this->plugin);
 
 		$onboarding->steps->add( $step_1 )
 		                  ->add( $step_2 )
@@ -261,7 +263,7 @@ class Onboarding {
 		                  ->add( $step_10 )
 		                  ->add( $step_11 );
 
-		$onboarding->init_onboarding();
+		$onboarding->init_onboarding( $this->onboarding_id );
 	}
 }
 
