@@ -315,6 +315,14 @@ HTML;
 			]
 		);
 
+		$onboarding_nonce = wp_create_nonce( 'restart_product_tour' );
+
+		$link = add_query_arg( [
+			'restart_product_tour' => $onboarding_nonce,
+		], admin_url( 'post-new.php?post_type=gravityview' ) );
+
+		$product_tour_link = sprintf( __( '<a href="%s" target="_blank" rel="noopener noreferrer">', 'gk-gravityview' ), esc_url( $link ) );
+
 		$settings = array(
 			'id'       => self::SETTINGS_PLUGIN_ID,
 			'title'    => 'GravityView',
@@ -357,6 +365,24 @@ HTML;
 						),
 					),
 				),
+				[
+					'title'    => esc_html__( 'Product Tour', 'gk-gravityview' ),
+					'settings' => [
+						[
+							'id'          => 'restart_product_tour',
+							'type'        => 'button',
+							'title'       => esc_html__( 'Restart Product Tour', 'gk-gravityview' ),
+							'description'   => strtr(
+							// translators: Do not translate the words inside the {} curly brackets; they are replaced.
+								__( 'Restart GravityView product tour by clicking on this {link}link{/link}', 'gk-gravityview' ),
+								array(
+									'{link}' => $product_tour_link,
+									'{/link}' => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
+								)
+							),
+						],
+					],
+				],
 			),
 		);
 
