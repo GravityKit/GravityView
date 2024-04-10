@@ -163,14 +163,22 @@ jQuery( function ( $ ) {
 
 					// Push to end of the stack to avoid timing issues.
 					setTimeout( function () {
+						const value = parseFloat( $( this ).val() );
+
 						if ( $( this ).attr( other_type ) && '' !== $( this ).val() ) {
-							if ( 'max' === current_type && $( this ).val() < $( this ).attr( 'min' ) ) {
+							if (
+								'max' === current_type
+								&& value < parseFloat( $( this ).attr( 'min' ) )
+							) {
 								$( this ).val( $( this ).attr( 'min' ) );
-							} else if ( 'min' === current_type && $( this ).val() > $( this ).attr( 'max' ) ) {
+							} else if (
+								'min' === current_type
+								&& value > parseFloat( $( this ).attr( 'max' ) )
+							) {
 								$( this ).val( $( this ).attr( 'max' ) );
 							}
 						}
-						$other.attr( current_type, $( this ).val() );
+						$other.attr( current_type, value );
 					}.bind( this ), 0 );
 				} )
 				.find( 'input' ).trigger( 'change' ); // Initial trigger.
