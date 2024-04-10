@@ -212,6 +212,11 @@ abstract class GravityView_Admin_View_Item {
 		}
 
 		$output = '<button class="gv-add-field screen-reader-text">' . sprintf( esc_html__( 'Add "%s"', 'gk-gravityview' ), $label ) . '</button>';
+		// This needs to be an `<a`-tag to please Firefox.
+		$output .= sprintf(
+			'<a tabindex="0" href="javascript:void(0);" role="button" class="gv-add-field-before" title="%s"><span class="dashicons dashicons-plus-alt"></span></a>',
+		esc_html( $this->settings['add_button_label'] ?? __( 'Add Field', 'gk-gravityview' ) )
+		);
 		$title  = esc_attr( sprintf( __( 'Field: %s', 'gk-gravityview' ), $label ) );
 		if ( ! $nonexistent_form_field ) {
 			$title .= "\n" . $this->get_item_info( false );
@@ -226,6 +231,11 @@ abstract class GravityView_Admin_View_Item {
 		$output .= '<span class="gv-field-controls">' . $settings_link . $this->get_indicator_icons() . '<button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
 		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $title . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . '</span></span>';
+
+		$output .= sprintf(
+			'<button class="gv-field-duplicate" type="button" title="%s"><span class="dashicons dashicons-admin-page"/></button>',
+			esc_attr__( 'Duplicate this field', 'gk-gravityview' )
+		);
 
 		// Displays only in the field/widget picker
 		if ( ! $nonexistent_form_field && $field_info = $this->get_item_info() ) {

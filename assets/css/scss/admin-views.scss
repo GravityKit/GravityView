@@ -984,6 +984,10 @@ hr {
 
 	}
 
+	// Prevent focus of this non-working button.
+	.gv-add-field {
+		display: none;
+	}
 }
 
 // End .active-drop
@@ -1113,6 +1117,17 @@ hr {
 		box-sizing: border-box;
 	}
 
+
+	button.gv-field-duplicate {
+		border: 0;
+		cursor: pointer;
+		visibility: hidden;
+		background: none;
+		&:hover {
+			color: #136cb9;
+		}
+	}
+
 	&:hover {
 
 		border-color: $color-888;
@@ -1124,6 +1139,53 @@ hr {
 		h5 small,
 		.gv-field-info {
 			color: #636D77;
+		}
+
+		button.gv-field-duplicate {
+			visibility: visible;
+		}
+	}
+
+	.gv-add-field-before {
+		position: absolute;
+		height: 10px;
+		left: 10px;
+		border: 0;
+		color: #2271b1;
+		z-index: 10;
+		margin-top: -10px;
+		right: 10px;
+		border-radius: 4px;
+		cursor: pointer;
+		background: none;
+
+		.dashicons {
+			position: absolute;
+			top: -5px;
+			background: #FFF;
+			border-radius: 100%;
+			visibility: hidden;
+		}
+
+		&::before {
+			display: block;
+			height: 2px;
+			position: absolute;
+			left: 0;
+			right: 0;
+			background-color: #2271b1;
+			content: ' ';
+			border-radius: 4px;
+			top: 4px;
+			visibility: hidden;
+		}
+
+		&:hover, &:focus {
+			.dashicons,
+			&::before {
+				visibility: visible;
+				text-decoration: none;
+			}
 		}
 	}
 

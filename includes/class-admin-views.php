@@ -1100,6 +1100,8 @@ HTML;
 																				if ( ! empty( $values[ $zone . '_' . $area['areaid'] ] ) ) {
 
 																					foreach ( $values[ $zone . '_' . $area['areaid'] ] as $uniqid => $field ) {
+																						// Provide the button label to the field.
+																						$field['add_button_label'] = $button_label;
 
 																						// Maybe has a form ID
 																						$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
