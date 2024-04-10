@@ -984,6 +984,10 @@ hr {
 
 	}
 
+	// Prevent focus of this non-working button.
+	.gv-add-field {
+		display: none;
+	}
 }
 
 // End .active-drop
@@ -1176,10 +1180,11 @@ hr {
 			visibility: hidden;
 		}
 
-		&:hover {
+		&:hover, &:focus {
 			.dashicons,
 			&::before {
 				visibility: visible;
+				text-decoration: none;
 			}
 		}
 	}
