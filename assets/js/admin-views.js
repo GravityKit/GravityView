@@ -1746,7 +1746,6 @@
 					$( this ).attr( 'data-tooltip', null );
 				},
 				open: function( event, tooltip ) {
-
 					$( this )
 						.attr( 'data-tooltip', 'active' )
 						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
@@ -2015,8 +2014,8 @@
 					vcfg.enable_publish();
 				}
 			} ).done( function ( response ) {
-				// const regex = /fields\[[^\]]+\]\[([^\.\]]+)(?:\.[^\]]+)?\].*/i;
-				const regex = /(?:[^\[]+)\[[^\]]+\]\[([^\]]+)\].*/i;
+				// Retrieve the <HASH> ID from an input like: widgets[header_top][<HASH>][id]
+				const regex = /[^\[]+\[[^\]]+\]\[([^\]]+)\].*/i;
 
 				if ( $field.find( 'input.field-key' ).length > 0 ) {
 					$newField.find( '.gv-dialog, .gv-dialog-options' ).remove();
@@ -2024,6 +2023,7 @@
 					const oldId = $field.find( 'input.field-key' ).attr( 'name' ).replace( regex, '$1' );
 					const newId = response.match( regex, '$1' )[ 1 ] ?? null;
 
+					// Make the response a jQuery object.
 					response = $(response);
 
 					$field.find( '.gv-dialog-options :input' ).each( function ( i, el ) {
