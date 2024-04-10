@@ -2,8 +2,8 @@
 
 namespace GV;
 
-use GravityKit\Foundation\Onboarding\Framework as OnboardingFramework;
-use GravityKit\Foundation\Onboarding\Step;
+use GravityKit\GravityView\Foundation\Onboarding\Framework as OnboardingFramework;
+use GravityKit\GravityView\Foundation\Onboarding\Step;
 
 class Onboarding {
 	/**
