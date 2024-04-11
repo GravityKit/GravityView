@@ -163,9 +163,9 @@ jQuery( function ( $ ) {
 
 					// Push to end of the stack to avoid timing issues.
 					setTimeout( function () {
-						const value = parseFloat( $( this ).val() );
-
 						if ( $( this ).attr( other_type ) && '' !== $( this ).val() ) {
+							const value = parseFloat( $( this ).val() );
+
 							if (
 								'max' === current_type
 								&& value < parseFloat( $( this ).attr( 'min' ) )
@@ -178,8 +178,9 @@ jQuery( function ( $ ) {
 								$( this ).val( $( this ).attr( 'max' ) );
 							}
 						}
-						$other.attr( current_type, value );
-					}.bind( this ), 0 );
+
+						$other.attr( current_type, $( this ).val() );
+					}.bind( this ), 2 );
 				} )
 				.find( 'input' ).trigger( 'change' ); // Initial trigger.
 		}

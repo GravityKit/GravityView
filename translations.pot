@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-28T14:36:58+00:00\n"
+"POT-Creation-Date: 2024-04-11T09:45:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
-#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:163
+#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:53
 #: includes/class-gravityview-roles-capabilities.php:149
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:78
@@ -1071,7 +1071,7 @@ msgstr ""
 msgid "GravityView View"
 msgstr ""
 
-#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:241
+#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:243
 #: includes/fields/class-gravityview-field-gravityview_view.php:58
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
@@ -4572,48 +4572,48 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1688
+#: includes/widgets/search-widget/class-search-widget.php:1817
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1691
+#: includes/widgets/search-widget/class-search-widget.php:1820
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1694
+#: includes/widgets/search-widget/class-search-widget.php:1823
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2025
+#: includes/widgets/search-widget/class-search-widget.php:2154
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2109
+#: includes/widgets/search-widget/class-search-widget.php:2238
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2110
+#: includes/widgets/search-widget/class-search-widget.php:2239
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2111
+#: includes/widgets/search-widget/class-search-widget.php:2240
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2112
+#: includes/widgets/search-widget/class-search-widget.php:2241
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2113
+#: includes/widgets/search-widget/class-search-widget.php:2242
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2114
+#: includes/widgets/search-widget/class-search-widget.php:2243
 msgid "Show a different month"
 msgstr ""
 
@@ -4635,11 +4635,11 @@ msgstr ""
 msgid "The \"from\" value is lower than the \"to\" value."
 msgstr ""
 
-#: includes/widgets/search-widget/templates/search-field-number_range.php:28
+#: includes/widgets/search-widget/templates/search-field-number_range.php:47
 msgid "From"
 msgstr ""
 
-#: includes/widgets/search-widget/templates/search-field-number_range.php:29
+#: includes/widgets/search-widget/templates/search-field-number_range.php:54
 msgid "To"
 msgstr ""
 

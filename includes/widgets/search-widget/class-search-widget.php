@@ -226,7 +226,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			// hybrids
 			'created_by' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
 			'multi_text' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
-			'product'    => array( 'select', 'radio', 'link', 'input_text' ),
+			'product'    => array( 'select', 'radio', 'link', 'input_text', 'number_range' ),
 		);
 
 		/**
@@ -1024,6 +1024,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				unset( $search_criteria['field_filters'][ $key ] );
 			}
 		}
+		unset( $filter );
 
 		if ( ! empty( $search_criteria['start_date'] ) || ! empty( $search_criteria['end_date'] ) ) {
 			$date_criteria = array();
@@ -1044,7 +1045,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$search_conditions = array();
 
 		if ( $filters = array_filter( $search_criteria['field_filters'] ) ) {
-			foreach ( $filters as &$filter ) {
+			foreach ( $filters as $filter ) {
 				if ( ! is_array( $filter ) ) {
 					continue;
 				}
@@ -1086,6 +1087,59 @@ class GravityView_Widget_Search extends \GV\Widget {
 					} else {
 						$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
 						$left  = new GF_Query_Column( $left->field_id, $left->source, $alias );
+					}
+
+					if ( $this->is_product_field( $filter ) ) {
+						$original_left = clone $left;
+						$column        = $left instanceof GF_Query_Call ? reset( $left->columns ) : $left;
+						$column_name   = sprintf( '`%s`.`%s`', $column->alias, $column->is_entry_column() ? $column->field_id : 'meta_value' );
+
+						// Add the original join back.
+						$search_conditions[] = new GF_Query_Condition( $column, null, $column );
+
+						// Split product name for.
+						$position = new GF_Query_Call( 'POSITION', [ sprintf( '"|" IN %s', $column_name ) ] );
+						$left     = new GF_Query_Call( 'SUBSTR', [
+							$column_name,
+							sprintf( "%s + 1", $position->sql( $query ) ),
+						] );
+
+						// Remove currency symbol and format properly.
+						$currency           = RGCurrency::get_currency( GFCommon::get_currency() );
+						$symbol             = html_entity_decode( rgar( $currency, 'symbol_left' ) );
+						$thousand_separator = rgar( $currency, 'thousand_separator' );
+						$decimal_separator  = rgar( $currency, 'decimal_separator' );
+
+						$replacements = [ $symbol => '', $thousand_separator => '' ];
+						if ( ',' === $decimal_separator ) {
+							$replacements[','] = '.';
+						}
+
+						foreach ( $replacements as $key => $value ) {
+							$left = new GF_Query_Call( 'REPLACE', [
+								$left->sql( $query ),
+								'"' . $key . '"',
+								'"' . $value . '"',
+							] );
+						}
+
+						// Return original function call.
+						if ( $original_left instanceof GF_Query_Call ) {
+							$parameters    = $original_left->parameters;
+							$function_name = $original_left->function_name;
+
+							$parameters[0] = $left->sql( $query );
+							if ( $function_name === 'CAST' ) {
+								$function_name = ' ' . $function_name; // prevent regular `CAST` sql.
+								if ( GF_Query::TYPE_DECIMAL === ( $parameters[1] ?? '' ) ) {
+									$parameters[1] = 'DECIMAL(65,6)';
+								}
+								// CAST needs 'AND' as a separator.
+								$parameters = [ implode( ' AS ', $parameters ) ];
+							}
+
+							$left = new GF_Query_Call( $function_name, $parameters );
+						}
 					}
 
 					if ( $view->joins && GF_Query_Column::META == $left->field_id ) {
@@ -1178,6 +1232,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 			)
 		);
 		$query->where( $where );
+	}
+
+	/**
+	 * Whether the field in the filter is a product field.
+	 * @since $ver$
+	 *
+	 * @param array $filter The filter object.
+	 *
+	 * @return bool
+	 */
+	private function is_product_field( array $filter ): bool {
+		$field = GFAPI::get_field( $filter['form_id'] ?? 0, $filter['key'] ?? 0 );
+
+		return \GFCommon::is_product_field( $field->type );
 	}
 
 	/**
@@ -1452,6 +1520,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				break;
 			case 'number':
 			case 'quantity':
+			case 'product':
 			case 'total':
 				if ( is_array( $value ) ) {
 					$filter = []; // Reset the filter.
@@ -1460,8 +1529,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$max = $value['max'] ?? null;
 
 					if ( is_numeric( $min ) && is_numeric( $max ) && $min > $max) {
-						break;
+						// Reverse the polarity!
+						[$min, $max] = [$max, $min];
 					}
+
 					if ( is_numeric( $min ) ) {
 						$filter[] = [ 'key' => $field_id, 'operator' => '>=', 'value' => $min, 'is_numeric' => true ];
 					}

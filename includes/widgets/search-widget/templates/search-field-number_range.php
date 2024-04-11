@@ -37,7 +37,7 @@ $step = apply_filters(
 <div class="gv-search-box gv-search-number gv-search-number-range">
 	<?php if ( ! gv_empty( $label, false, false ) ) { ?>
 		<label for="search-box-<?php echo esc_attr( $name ) . '-start'; ?>">
-			<?php echo esc_html__( $label ) . ( $is_currency ? ' (' . GFCommon::get_currency() . ')' : '' ); ?>
+			<?php echo esc_html( $label ) . ( $is_currency ? ' (' . GFCommon::get_currency() . ')' : '' ); ?>
 		</label>
 	<?php } ?>
 	<p>
