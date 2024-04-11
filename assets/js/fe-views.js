@@ -166,15 +166,9 @@ jQuery( function ( $ ) {
 						if ( $( this ).attr( other_type ) && '' !== $( this ).val() ) {
 							const value = parseFloat( $( this ).val() );
 
-							if (
-								'max' === current_type
-								&& value < parseFloat( $( this ).attr( 'min' ) )
-							) {
+							if ( 'max' === current_type	&& value < parseFloat( $( this ).attr( 'min' ) ) ) {
 								$( this ).val( $( this ).attr( 'min' ) );
-							} else if (
-								'min' === current_type
-								&& value > parseFloat( $( this ).attr( 'max' ) )
-							) {
+							} else if (	'min' === current_type && value > parseFloat( $( this ).attr( 'max' ) )	) {
 								$( this ).val( $( this ).attr( 'max' ) );
 							}
 						}

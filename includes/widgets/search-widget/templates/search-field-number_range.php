@@ -35,7 +35,7 @@ if ( ! $is_currency ) {
  */
 $step = apply_filters(
 	'gk/gravityview/search/number_range/step',
-	'quantity' === $gravityview_view->search_field['type'] ? '0' : '0.01',
+	'quantity' === $gravityview_view->search_field['type'] ? '1' : 'any',
 	$gravityview_view
 );
 ?>
