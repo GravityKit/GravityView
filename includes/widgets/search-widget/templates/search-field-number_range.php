@@ -26,10 +26,16 @@ if ( ! $is_currency ) {
 	$is_currency = 'currency' === $field->numberFormat;
 }
 
-// Add decimal support for total price.
+/**
+ * Modify the step value for the input fields.
+ *
+ * @since $ver$
+ * @param string $value The step size.
+ * @param GravityView_View $gravityview_view The view object.
+ */
 $step = apply_filters(
 	'gk/gravityview/search/number_range/step',
-	'quantity' === $gravityview_view->search_field['type'] ? '1' : '0.01',
+	'quantity' === $gravityview_view->search_field['type'] ? '0' : '0.01',
 	$gravityview_view
 );
 ?>

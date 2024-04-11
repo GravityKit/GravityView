@@ -1245,7 +1245,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	private function is_product_field( array $filter ): bool {
 		$field = GFAPI::get_field( $filter['form_id'] ?? 0, $filter['key'] ?? 0 );
 
-		return \GFCommon::is_product_field( $field->type );
+		return $field && \GFCommon::is_product_field( $field->type );
 	}
 
 	/**
