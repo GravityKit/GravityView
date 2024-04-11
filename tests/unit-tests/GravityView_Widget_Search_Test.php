@@ -1813,9 +1813,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					wp_generate_password( 4, false ) => array(
 						'id'            => 'search_bar',
 						'search_fields' => json_encode( array(
-								array(
-									'field' => '9',
-								),
+								array( 'field' => '9' ),
+								array( 'field' => '26' ),
 							)
 						),
 					),
@@ -1824,12 +1823,14 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		) );
 
 		$view = \GV\View::from_post( $post );
+		$currency_symbol = rgar( RGCurrency::get_currency( GFCommon::get_currency() ), 'symbol_left' );
 
-		foreach ( array(1,5,7,10) as $number ) {
+		foreach ( array( 1, 5, 7, 10, '-20.23' ) as $number ) {
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form['id'],
 				'status'  => 'active',
-				'9'     => $number,
+				'9'       => $number,
+				'26'      => 'product name|' . $currency_symbol . $number,
 			) );
 		}
 
@@ -1858,6 +1859,23 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
 		remove_all_filters('gravityview_search_operator');
+
+		// Number field
+		$_GET = [ 'filter_9' => [ 'min' => -21, 'max' => 9 ], 'mode' => 'all' ];
+		$this->assertEquals( 4, $view->get_entries()->count() );
+
+		$_GET = [ 'filter_9' => [ 'min' => -20, 'max' => 9 ], 'mode' => 'all' ];
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$entries = $view->get_entries()->all();
+		$this->assertSame( [ '7', '5' ], [ $entries[0]->as_entry()[9], $entries[1]->as_entry()[9] ] );
+
+		// Product field.
+		$_GET = [ 'filter_26' => [ 'min' => -21, 'max' => 6.50 ], 'mode' => 'all' ];
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = [ 'filter_26' => [ 'min' => -20, 'max' => 7 ], 'mode' => 'all' ];
+		$this->assertEquals( 3, $view->get_entries()->count() );
 
 		$_GET = array();
 	}

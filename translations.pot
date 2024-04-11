@@ -9,14 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-03-28T14:36:58+00:00\n"
+"POT-Creation-Date: 2024-04-11T09:45:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
-#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:163
+#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:53
 #: includes/class-gravityview-roles-capabilities.php:149
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:78
@@ -693,7 +693,7 @@ msgid "Define a default search value for the View"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:434
-#: includes/widgets/search-widget/class-search-widget.php:310
+#: includes/widgets/search-widget/class-search-widget.php:311
 #: future/includes/gutenberg/blocks/view/edit.js:240
 #: future/includes/gutenberg/build/view.js:1
 msgid "Search Field"
@@ -912,7 +912,6 @@ msgstr ""
 msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a form</a>."
 msgstr ""
 
-#. Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
 #: future/includes/class-gv-shortcode-gravityview.php:173
 msgid "This View is in the Trash. %sClick to restore the View%s."
 msgstr ""
@@ -1072,7 +1071,7 @@ msgstr ""
 msgid "GravityView View"
 msgstr ""
 
-#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:241
+#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:243
 #: includes/fields/class-gravityview-field-gravityview_view.php:58
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
@@ -1559,7 +1558,6 @@ msgstr ""
 msgid "These widgets will be shown below entries."
 msgstr ""
 
-#. translators: %1$s is the vendor title
 #: includes/admin/metaboxes/views/view-configuration.php:47
 #: includes/class-admin-views.php:1286
 #: includes/class-admin-views.php:1512
@@ -1842,7 +1840,7 @@ msgid "Reorder Search Fields"
 msgstr ""
 
 #: includes/class-admin-views.php:1510
-#: includes/widgets/search-widget/class-search-widget.php:308
+#: includes/widgets/search-widget/class-search-widget.php:309
 msgid "Add Search Field"
 msgstr ""
 
@@ -3486,7 +3484,7 @@ msgid "HTML"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-id.php:24
-#: includes/widgets/search-widget/class-search-widget.php:392
+#: includes/widgets/search-widget/class-search-widget.php:393
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/entry.js:1
@@ -3510,7 +3508,7 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-is-approved.php:42
 #: includes/fields/class-gravityview-field-is-approved.php:125
-#: includes/widgets/search-widget/class-search-widget.php:407
+#: includes/widgets/search-widget/class-search-widget.php:408
 msgid "Approval Status"
 msgstr ""
 
@@ -3567,7 +3565,7 @@ msgid "Entry Star"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-starred.php:30
-#: includes/widgets/search-widget/class-search-widget.php:400
+#: includes/widgets/search-widget/class-search-widget.php:401
 msgid "Is Starred"
 msgstr ""
 
@@ -4052,7 +4050,6 @@ msgstr ""
 msgid "Caution: [link]Advanced Post Creation[/link] is active for this form."
 msgstr ""
 
-#. translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:116
 msgid "Editing entries in GravityView may also update a connected post."
 msgstr ""
@@ -4323,7 +4320,7 @@ msgid "Type"
 msgstr ""
 
 #: includes/widgets/class-gravityview-widget-export-link.php:56
-#: includes/widgets/search-widget/class-search-widget.php:309
+#: includes/widgets/search-widget/class-search-widget.php:310
 msgid "Label"
 msgstr ""
 
@@ -4507,7 +4504,6 @@ msgstr ""
 msgid "Pre-Filter Choices"
 msgstr ""
 
-#. translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
 #: includes/widgets/search-widget/class-search-widget.php:89
 msgid "For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries."
 msgstr ""
@@ -4548,72 +4544,76 @@ msgstr ""
 msgid "Date range"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:307
+#: includes/widgets/search-widget/class-search-widget.php:266
+msgid "Number range"
+msgstr ""
+
+#: includes/widgets/search-widget/class-search-widget.php:308
 msgid "No search fields configured yet."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:311
+#: includes/widgets/search-widget/class-search-widget.php:312
 msgid "Input Type"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:312
+#: includes/widgets/search-widget/class-search-widget.php:313
 msgid "There was an error loading searchable fields. Save the View or refresh the page to fix this issue."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:384
+#: includes/widgets/search-widget/class-search-widget.php:385
 msgid "Search Everything"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:388
+#: includes/widgets/search-widget/class-search-widget.php:389
 msgid "Entry Date"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:396
+#: includes/widgets/search-widget/class-search-widget.php:397
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1666
+#: includes/widgets/search-widget/class-search-widget.php:1817
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1669
+#: includes/widgets/search-widget/class-search-widget.php:1820
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1672
+#: includes/widgets/search-widget/class-search-widget.php:1823
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1996
+#: includes/widgets/search-widget/class-search-widget.php:2154
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2080
+#: includes/widgets/search-widget/class-search-widget.php:2238
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2081
+#: includes/widgets/search-widget/class-search-widget.php:2239
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2082
+#: includes/widgets/search-widget/class-search-widget.php:2240
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2083
+#: includes/widgets/search-widget/class-search-widget.php:2241
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2084
+#: includes/widgets/search-widget/class-search-widget.php:2242
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2085
+#: includes/widgets/search-widget/class-search-widget.php:2243
 msgid "Show a different month"
 msgstr ""
 
@@ -4629,6 +4629,18 @@ msgstr ""
 
 #: includes/widgets/search-widget/templates/search-field-link.php:21
 msgid "Show only:"
+msgstr ""
+
+#: includes/widgets/search-widget/templates/search-field-number_range.php:19
+msgid "The \"from\" value is lower than the \"to\" value."
+msgstr ""
+
+#: includes/widgets/search-widget/templates/search-field-number_range.php:47
+msgid "From"
+msgstr ""
+
+#: includes/widgets/search-widget/templates/search-field-number_range.php:54
+msgid "To"
 msgstr ""
 
 #: includes/widgets/search-widget/templates/search-field-submit.php:33
@@ -5667,7 +5679,6 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#. translators: %1$s is the vendor title
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:41
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1156
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1333
@@ -6291,7 +6302,6 @@ msgstr ""
 msgid "%s support may not be able to access this site."
 msgstr ""
 
-#. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
 #: vendor_prefixed/trustedlogin/client/src/Form.php:684
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""
@@ -6496,7 +6506,6 @@ msgstr ""
 msgid "Copy the access key to your clipboard"
 msgstr ""
 
-#. translators: %s is the display name of the TrustedLogin support user.
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1340
 msgid "The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums."
 msgstr ""
