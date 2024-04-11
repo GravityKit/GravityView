@@ -26,11 +26,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
 * Added: Ability to duplicate a field or widget with all its configuration.
 * Added: Ability to add a field before another field.
+* Added: Range filter for numeric fields in search widget.
 * Fixed: Fatal error when editing posts/pages containing GravityView blocks
 
 __Developer Updates:__
 
 * Added: `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+* Added: `gk/gravityview/search/number-range/step` filter to modify the step size for the range fields.
 
 = 2.21.2 on March 28, 2024 =
 
