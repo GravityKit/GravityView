@@ -29,12 +29,15 @@ if ( ! $is_currency ) {
 /**
  * Modify the step value for the input fields.
  *
- * @since $ver$
- * @param string $value The step size.
+ * @filter gk/gravityview/search/number-range/step
+ *
+ * @since  $ver$
+ *
+ * @param string           $value            The step size.
  * @param GravityView_View $gravityview_view The view object.
  */
 $step = apply_filters(
-	'gk/gravityview/search/number_range/step',
+	'gk/gravityview/search/number-range/step',
 	'quantity' === $gravityview_view->search_field['type'] ? '1' : 'any',
 	$gravityview_view
 );
