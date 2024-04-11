@@ -1091,7 +1091,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 					if ( $this->is_product_field( $filter ) ) {
 						$original_left = clone $left;
-						$column        = $left instanceof GF_Query_Call ? reset( $left->columns ) : $left;
+						$column        = $left instanceof GF_Query_Call ? $left->columns[0] ?? null : $left;
 						$column_name   = sprintf( '`%s`.`%s`', $column->alias, $column->is_entry_column() ? $column->field_id : 'meta_value' );
 
 						// Add the original join back.
