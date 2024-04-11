@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-11T09:45:22+00:00\n"
+"POT-Creation-Date: 2024-04-11T17:53:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -912,6 +912,7 @@ msgstr ""
 msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a form</a>."
 msgstr ""
 
+#. Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
 #: future/includes/class-gv-shortcode-gravityview.php:173
 msgid "This View is in the Trash. %sClick to restore the View%s."
 msgstr ""
@@ -1558,6 +1559,7 @@ msgstr ""
 msgid "These widgets will be shown below entries."
 msgstr ""
 
+#. translators: %1$s is the vendor title
 #: includes/admin/metaboxes/views/view-configuration.php:47
 #: includes/class-admin-views.php:1286
 #: includes/class-admin-views.php:1512
@@ -4050,6 +4052,7 @@ msgstr ""
 msgid "Caution: [link]Advanced Post Creation[/link] is active for this form."
 msgstr ""
 
+#. translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:116
 msgid "Editing entries in GravityView may also update a connected post."
 msgstr ""
@@ -4504,6 +4507,7 @@ msgstr ""
 msgid "Pre-Filter Choices"
 msgstr ""
 
+#. translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
 #: includes/widgets/search-widget/class-search-widget.php:89
 msgid "For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries."
 msgstr ""
@@ -4635,11 +4639,11 @@ msgstr ""
 msgid "The \"from\" value is lower than the \"to\" value."
 msgstr ""
 
-#: includes/widgets/search-widget/templates/search-field-number_range.php:47
+#: includes/widgets/search-widget/templates/search-field-number_range.php:56
 msgid "From"
 msgstr ""
 
-#: includes/widgets/search-widget/templates/search-field-number_range.php:54
+#: includes/widgets/search-widget/templates/search-field-number_range.php:63
 msgid "To"
 msgstr ""
 
@@ -5451,18 +5455,14 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "There is a new version [version] of [product] available. [link]Update now…[/link]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:558
-msgid "There is a new version [version] of [product] available."
-msgstr ""
-
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:634
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:626
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[unlicensed] product is unlicensed. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one."
 msgid_plural "[unlicensed] products are unlicensed. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one."
 msgstr[0] ""
 msgstr[1] ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:658
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:650
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "This is an unlicensed product. Please [link]visit the licensing page[/link] to enter a valid license or to purchase a new one."
 msgstr ""
@@ -5476,7 +5476,7 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "You have version [current_version] installed. Before updating to [new_version], please [link]review the requirements[/link]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/UpdatesPage.php:166
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/UpdatesPage.php:175
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "This product has unmet dependencies. [link]Review the requirements[/link] and try updating again."
 msgstr ""
@@ -5679,6 +5679,7 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
+#. translators: %1$s is the vendor title
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:41
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1156
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1333
@@ -6302,6 +6303,7 @@ msgstr ""
 msgid "%s support may not be able to access this site."
 msgstr ""
 
+#. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets")
 #: vendor_prefixed/trustedlogin/client/src/Form.php:684
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""
@@ -6506,6 +6508,7 @@ msgstr ""
 msgid "Copy the access key to your clipboard"
 msgstr ""
 
+#. translators: %s is the display name of the TrustedLogin support user.
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1340
 msgid "The access key is not a password; only %1$s will be able to access your site using this code. You may share this access key on support forums."
 msgstr ""
@@ -6921,84 +6924,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""
