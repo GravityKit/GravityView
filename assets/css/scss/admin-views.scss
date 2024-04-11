@@ -1121,15 +1121,16 @@ hr {
 	button.gv-field-duplicate {
 		border: 0;
 		cursor: pointer;
-		visibility: hidden;
+		position: absolute;
+		left: -9999px;
 		background: none;
-		&:hover {
+		&:hover, &:focus {
 			color: #136cb9;
+			position: static;
 		}
 	}
 
 	&:hover {
-
 		border-color: $color-888;
 
 		.gv-field-controls .dashicons {
@@ -1142,7 +1143,7 @@ hr {
 		}
 
 		button.gv-field-duplicate {
-			visibility: visible;
+			position: static;
 		}
 	}
 
