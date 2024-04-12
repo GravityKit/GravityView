@@ -5,7 +5,6 @@ import './style.scss';
 import Edit from './edit';
 
 const { name, ...settings } = blockMeta;
-console.log( name );
 
 registerBlockType(
 	name,
