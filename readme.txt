@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
 * Fixed: Fatal error when editing posts/pages containing GravityView blocks
+* Fixed: Editing an entry with Yoast SEO active would result in changes being saved twice
 
 __Developer Updates:__
 
