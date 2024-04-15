@@ -1827,11 +1827,11 @@ class View implements \ArrayAccess {
 	}
 
 	/**
-	 * Calculates and returns the view's validation secret.
+	 * Calculates and returns the View's validation secret.
 	 *
 	 * @since 2.21
 	 *
-	 * @return string|null The view's secret.
+	 * @return string|null The View's secret.
 	 */
 	final public function get_validation_secret( bool $is_forced = false ): ?string {
 		// Cannot use the setting variable because it can be overwritten from the short code.
@@ -1850,7 +1850,7 @@ class View implements \ArrayAccess {
 	}
 
 	/**
-	 * Returns whether the provided secret validates for this view.
+	 * Returns whether the provided secret validates for this View.
 	 *
 	 * @since 2.21
 	 *
@@ -1868,7 +1868,7 @@ class View implements \ArrayAccess {
 	}
 
 	/**
-	 * Returns the shortcode for this view.
+	 * Returns the shortcode for this View.
 	 *
 	 * @since 2.21
 	 * @return string

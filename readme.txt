@@ -27,7 +27,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Added: Ability to duplicate a field or widget with all its configuration.
 * Added: Ability to add a field before another field.
 * Added: Range filter for numeric fields in search widget.
-* Fixed: Fatal error when editing posts/pages containing GravityView blocks
+* Fixed: Editing an entry with Yoast SEO active would result in changes being saved twice.
+* Fixed: Support Views with secrets in LifterLMS dashboards.
+* Fixed: Fatal error when editing posts/pages containing GravityView blocks.
 
 __Developer Updates:__
 
