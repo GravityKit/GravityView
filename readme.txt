@@ -23,18 +23,28 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
-* Added: Ability to duplicate a field or widget with all its configuration.
-* Added: Ability to add a field before another field.
-* Added: Range filter for numeric fields in search widget.
-* Fixed: Editing an entry with Yoast SEO active would result in changes being saved twice.
-* Fixed: Support Views with secrets in LifterLMS dashboards.
-* Fixed: Fatal error when editing posts/pages containing GravityView blocks.
+= 2.22 on April 15, 2024 =
+
+This release introduces support for search modifiers and range-based searching for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS.
+
+#### 🚀 Added
+* Support for negative, positive, and exact-match search modifiers in the Search Bar.
+* Range-based search for Number, Product (user-defined price), Quantity and Total fields in the Search Bar.
+* Ability to duplicate View fields and widgets, and to insert them at a desired position.
+
+#### 🐛 Fixed
+* Editing an entry with Yoast SEO active resulted in changes being saved twice.
+* Views secured with a secret code did not display inside LifterLMS dashboards.
+* Fatal error when editing posts/pages containing GravityView blocks.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.12.
+  - Fixed a bug that hid third-party plugin updates on the Plugins and Updates pages.
+  - Resolved a dependency management issue that incorrectly prompted for a Gravity Forms update before activating, installing, or updating GravityKit products.
 
 __Developer Updates:__
-
-* Added: `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
-* Added: `gk/gravityview/search/number-range/step` filter to modify the step size for the range fields.
+* `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+* `gk/gravityview/search/number-range/step` filter to adjust the interval between numbers in input fields for range-based searches.
 
 = 2.21.2 on March 28, 2024 =
 

@@ -2096,7 +2096,7 @@
 		},
 		/**
 		 * Duplicate a field and add it under the duplicated field.
-		 * @since $ver$
+		 * @since 2.22
 		 * @param  {jQueryEvent} e jQuery Event object
 		 */
 		duplicateField: function ( e ) {

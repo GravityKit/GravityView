@@ -1236,7 +1236,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 	/**
 	 * Whether the field in the filter is a product field.
-	 * @since $ver$
+	 * @since 2.22
 	 *
 	 * @param array $filter The filter object.
 	 *

@@ -149,7 +149,7 @@ jQuery( function ( $ ) {
 
 		/**
 		 * Client side logic to prevent invalid search values.
-		 * @since $ver$
+		 * @since 2.22
 		 */
 		number_range() {
 			$( '.gv-search-number-range' )

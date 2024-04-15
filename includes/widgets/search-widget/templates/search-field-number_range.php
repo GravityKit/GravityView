@@ -31,7 +31,7 @@ if ( ! $is_currency ) {
  *
  * @filter gk/gravityview/search/number-range/step
  *
- * @since  $ver$
+ * @since  2.22
  *
  * @param string           $value            The step size.
  * @param GravityView_View $gravityview_view The view object.
