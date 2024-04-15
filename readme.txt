@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 __Developer Updates:__
 
 * Added: `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+* Added: `gk/gravityview/search/number-range/step` filter to modify the step size for the range fields.
 
 = 2.21.2 on March 28, 2024 =
 
