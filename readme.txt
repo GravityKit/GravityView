@@ -24,8 +24,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
-* Fixed: Fatal error when editing posts/pages containing GravityView blocks
-* Fixed: Editing an entry with Yoast SEO active would result in changes being saved twice
+* Added: Ability to duplicate a field or widget with all its configuration.
+* Added: Ability to add a field before another field.
+* Added: Range filter for numeric fields in search widget.
+* Fixed: Editing an entry with Yoast SEO active would result in changes being saved twice.
+* Fixed: Support Views with secrets in LifterLMS dashboards.
+* Fixed: Fatal error when editing posts/pages containing GravityView blocks.
 
 __Developer Updates:__
 

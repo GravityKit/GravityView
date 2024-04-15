@@ -345,7 +345,16 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 
 		global $post;
 		foreach ( $view_ids as $view_id ) {
-			$content .= '[gravityview view_id="' . (int) $view_id . '" post_id="'. $post->ID . '" /]';
+
+			$view = \GV\View::by_id( $atts['view_id'] );
+
+			if ( ! $view ) {
+				return null;
+			}
+
+			$secret = $view->get_validation_secret() ?? '';
+
+			$content .= sprintf( '[gravityview view_id="%1$d" post_id="%2$d" secret="%3$s"]', $view_id, $post->ID, $secret );
 		}
 
 		return $content;
