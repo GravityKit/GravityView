@@ -22,6 +22,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 == Changelog ==
 
 = develop =
+Fixed: Conflict where View modals would be clipped in some instances.
 
 = 2.22 on April 16, 2024 =
 
