@@ -297,7 +297,7 @@ class GravityView_Welcome {
 				?>
 				<h3>2.22 on April 16, 2024</h3>
 
-				<p>This release introduces support for <a href="https://docs.gravitykit.com/article/995-gravityview-search-modifiers">search modifiers</a> and <a href="https://docs.gravitykit.com/article/996-number-range-search">range-based searching</a> for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS.</p>
+				<p>This release introduces support for <a href="https://docs.gravitykit.com/article/995-gravityview-search-modifiers">search modifiers</a> and <a href="https://docs.gravitykit.com/article/996-number-range-search">range-based searching</a> for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS. <a href="https://www.gravitykit.com/gravityview-2-22/">Read the announcement</a> for more details.</p>
 
 				<h4>🚀 Added</h4>
 
@@ -312,8 +312,8 @@ class GravityView_Welcome {
 				<ul>
 					<li>Editing an entry with Yoast SEO active resulted in changes being saved twice.</li>
 					<li>Views secured with a secret code did not display inside LifterLMS dashboards.</li>
+					<li>View editor display issues when LifterLMS is active.</li>
 					<li>Fatal error when editing posts/pages containing GravityView blocks.</li>
-					<li>Conflict where View modals would be clipped in some instances.</li>
 				</ul>
 
 				<h4>🔧 Updated</h4>
