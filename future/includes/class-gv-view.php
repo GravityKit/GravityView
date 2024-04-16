@@ -1871,6 +1871,7 @@ class View implements \ArrayAccess {
 	 * Returns the shortcode for this View.
 	 *
 	 * @since 2.21
+	 * @since 2.22 Added `$atts` parameter.
 	 *
 	 * @param array $atts Additional attributes for the shortcode.
 	 *
@@ -1879,7 +1880,7 @@ class View implements \ArrayAccess {
 	final public function get_shortcode( array $atts = [] ): string {
 		$secret = $this->get_validation_secret();
 
-		// ID & secret can't be overwritten from the view.
+		// ID & secret can't be overwritten from the View.
 		$atts['id'] = $this->post->ID;
 
 		if ( $secret ) {
