@@ -345,7 +345,14 @@ class LLMS_Integration_GravityView extends LLMS_Abstract_Integration {
 
 		global $post;
 		foreach ( $view_ids as $view_id ) {
-			$content .= '[gravityview view_id="' . (int) $view_id . '" post_id="'. $post->ID . '" /]';
+
+			$view = \GV\View::by_id( (int) $view_id );
+
+			if ( ! $view ) {
+				return null;
+			}
+
+			$content .= $view->get_shortcode( [ 'post_id' => $post->ID ] );
 		}
 
 		return $content;

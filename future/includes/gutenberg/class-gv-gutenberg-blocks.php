@@ -11,6 +11,8 @@ class Blocks {
 
 	const SLUG = 'gk-gravityview-blocks';
 
+	const IGNORE_SCRIPTS_AND_STYLES = [ 'jetpack', 'elementor' ];
+
 	private $blocks_build_path;
 
 	public function __construct() {
@@ -290,6 +292,12 @@ class Blocks {
 
 		$newly_registered_scripts = array_diff( $scripts_after_shortcode, $scripts_before_shortcode );
 		$newly_registered_styles  = array_diff( $styles_after_shortcode, $styles_before_shortcode );
+
+		// Ignore certain scripts and styles that may cause conflicts.
+		$ignore_pattern = '/(' . implode( '|', self::IGNORE_SCRIPTS_AND_STYLES ) . ')/';
+
+		$newly_registered_scripts = array_diff( $newly_registered_scripts, preg_grep( $ignore_pattern, $newly_registered_scripts ) );
+		$newly_registered_styles  = array_diff( $newly_registered_styles, preg_grep( $ignore_pattern, $newly_registered_styles ) );
 
 		// This will return an array of all dependencies sorted in the order they should be loaded.
 		$get_dependencies = function ( $handle, $source, $dependencies = array() ) use ( &$get_dependencies ) {

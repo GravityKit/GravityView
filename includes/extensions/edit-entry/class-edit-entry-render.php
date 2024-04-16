@@ -346,12 +346,16 @@ class GravityView_Edit_Entry_Render {
 	 * @param GravityView_View_Data $gv_data The View data.
 	 */
 	private function process_save( $gv_data ) {
-
 		if ( empty( $_POST ) || ! isset( $_POST['lid'] ) ) {
 			return;
 		}
 
-		// Make sure the entry, view, and form IDs are all correct
+		// Yoast SEO can trigger a save action after one has been performed.
+		if ( doing_action( 'wpseo_head' ) ) {
+			return;
+		}
+
+		// Make sure the entry, view, and form IDs are all correct.
 		$valid = $this->verify_nonce();
 
 		if ( ! $valid ) {
@@ -428,7 +432,6 @@ class GravityView_Edit_Entry_Render {
 			 * @param GravityView_View_Data $gv_data The View data
 			 */
 			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this, $gv_data );
-
 		} else {
 			gravityview()->log->error( 'Submission is NOT valid.', array( 'entry' => $this->entry ) );
 		}

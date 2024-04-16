@@ -295,6 +295,43 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.22 on April 16, 2024</h3>
+
+				<p>This release introduces support for <a href="https://docs.gravitykit.com/article/995-gravityview-search-modifiers">search modifiers</a> and <a href="https://docs.gravitykit.com/article/996-number-range-search">range-based searching</a> for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS. <a href="https://www.gravitykit.com/gravityview-2-22/">Read the announcement</a> for more details.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Support for negative, positive, and exact-match search modifiers in the Search Bar.</li>
+					<li>Range-based search for Number, Product (user-defined price), Quantity and Total fields in the Search Bar.</li>
+					<li>Ability to duplicate View fields and widgets, and to insert them at a desired position.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Editing an entry with Yoast SEO active resulted in changes being saved twice.</li>
+					<li>Views secured with a secret code did not display inside LifterLMS dashboards.</li>
+					<li>View editor display issues when LifterLMS is active.</li>
+					<li>Fatal error when editing posts/pages containing GravityView blocks.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.12.</p>
+
+				<ul>
+					<li>Fixed a bug that hid third-party plugin updates on the Plugins and Updates pages.</li>
+					<li>Resolved a dependency management issue that incorrectly prompted for a Gravity Forms update before activating, installing, or updating GravityKit products.</li>
+				</ul>
+
+				<p><strong>Developer Updates:</strong></p>
+
+				<ul>
+					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.
+					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.
+				</ul>
+
 				<h3>2.21.2 on March 28, 2024</h3>
 
 				<p>This update fixes an issue with previewing GravityView blocks for Views with enhanced security and resolves a problem where blocks were previously rendered only for logged-in users.</p>

@@ -97,17 +97,61 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = [ 'gv_search' => '" space " "another one" and two' ];
 
-		$search_criteria_split_exact = [
-			'field_filters' => [
-				'mode' => 'any',
-				[ 'key' => null, 'value' => ' space ', 'operator' => 'contains' ],
-				[ 'key' => null, 'value' => 'another one', 'operator' => 'contains' ],
-				[ 'key' => null, 'value' => 'and', 'operator' => 'contains' ],
-				[ 'key' => null, 'value' => 'two', 'operator' => 'contains' ],
-			]
-		];
+		$this->assertEquals(
+			[
+				'field_filters' => [
+					'mode' => 'any',
+					[ 'key' => null, 'value' => ' space ', 'operator' => 'contains' ],
+					[ 'key' => null, 'value' => 'another one', 'operator' => 'contains' ],
+					[ 'key' => null, 'value' => 'and', 'operator' => 'contains' ],
+					[ 'key' => null, 'value' => 'two', 'operator' => 'contains' ],
+				]
+			],
+			$this->widget->filter_entries( array(), null, $args, true )
+		);
 
-		$this->assertEquals( $search_criteria_split_exact, $this->widget->filter_entries( array(), null, $args, true ) );
+		$_GET = [ 'gv_search' => '-"excluded spaces" -another' ];
+
+		$this->assertEquals(
+			[
+				'field_filters' => [
+					'mode' => 'any',
+					[ 'key' => null, 'value' => 'excluded spaces', 'operator' => 'not contains' ],
+					[ 'key' => null, 'value' => 'another', 'operator' => 'not contains' ],
+				]
+			],
+			$this->widget->filter_entries( array(), null, $args, true )
+		);
+
+		// Additive search
+		$_GET = [ 'gv_search' => 'world +"included spaces" +another hello' ];
+		$this->assertEquals(
+			[
+				'field_filters' => [
+					'mode' => 'any',
+					[ 'key' => null, 'value' => 'included spaces', 'operator' => 'contains', 'required' => true ],
+					[ 'key' => null, 'value' => 'world', 'operator' => 'contains' ],
+					[ 'key' => null, 'value' => 'another', 'operator' => 'contains', 'required' => true ],
+					[ 'key' => null, 'value' => 'hello', 'operator' => 'contains' ],
+				]
+			],
+			$this->widget->filter_entries( array(), null, $args, true )
+		);
+
+		// Combined search
+		$_GET = [ 'gv_search' => 'regular words +with -without' ];
+		$this->assertEquals(
+			[
+				'field_filters' => [
+					'mode' => 'any',
+					[ 'key' => null, 'value' => 'regular', 'operator' => 'contains'],
+					[ 'key' => null, 'value' => 'words', 'operator' => 'contains'],
+					[ 'key' => null, 'value' => 'with', 'operator' => 'contains', 'required' => true ],
+					[ 'key' => null, 'value' => 'without', 'operator' => 'not contains'],
+				]
+			],
+			$this->widget->filter_entries( array(), null, $args, true )
+		);
 
 		$_GET = array(
 			'gv_search' => '%20with%20%20spaces'
@@ -1408,6 +1452,36 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$entries = $view->get_entries()->fetch()->all();
 		$this->assertCount( 2, $entries );
 
+		$_GET['gv_search'] = 'hello world';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 3, $entries );
+
+		$_GET['gv_search'] = '"hello world"';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+
+		$_GET['gv_search'] = 'hello -world';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+
+		$_GET['gv_search'] = '+world';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+		$this->assertSame(
+			[ 'world', 'hello world' ],
+			array_map(
+				static function ( $entry ) {
+					return $entry['16'];
+				},
+				$entries
+			)
+		);
+
+		$_GET['gv_search'] = '-hello +world';
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+		$this->assertSame( 'world', $entries[0]['16'] );
+
 		$_GET = array();
 	}
 
@@ -1739,9 +1813,8 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 					wp_generate_password( 4, false ) => array(
 						'id'            => 'search_bar',
 						'search_fields' => json_encode( array(
-								array(
-									'field' => '9',
-								),
+								array( 'field' => '9' ),
+								array( 'field' => '26' ),
 							)
 						),
 					),
@@ -1750,12 +1823,14 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		) );
 
 		$view = \GV\View::from_post( $post );
+		$currency_symbol = rgar( RGCurrency::get_currency( GFCommon::get_currency() ), 'symbol_left' );
 
-		foreach ( array(1,5,7,10) as $number ) {
+		foreach ( array( 1, 5, 7, 10, '-20.23' ) as $number ) {
 			$this->factory->entry->create_and_get( array(
 				'form_id' => $form['id'],
 				'status'  => 'active',
-				'9'     => $number,
+				'9'       => $number,
+				'26'      => 'product name|' . $currency_symbol . $number,
 			) );
 		}
 
@@ -1784,6 +1859,23 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$this->assertEquals( 0, $view->get_entries()->count() );
 
 		remove_all_filters('gravityview_search_operator');
+
+		// Number field
+		$_GET = [ 'filter_9' => [ 'min' => -21, 'max' => 9 ], 'mode' => 'all' ];
+		$this->assertEquals( 4, $view->get_entries()->count() );
+
+		$_GET = [ 'filter_9' => [ 'min' => -20, 'max' => 9 ], 'mode' => 'all' ];
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$entries = $view->get_entries()->all();
+		$this->assertSame( [ '7', '5' ], [ $entries[0]->as_entry()[9], $entries[1]->as_entry()[9] ] );
+
+		// Product field.
+		$_GET = [ 'filter_26' => [ 'min' => -21, 'max' => 6.50 ], 'mode' => 'all' ];
+		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		$_GET = [ 'filter_26' => [ 'min' => -20, 'max' => 7 ], 'mode' => 'all' ];
+		$this->assertEquals( 3, $view->get_entries()->count() );
 
 		$_GET = array();
 	}

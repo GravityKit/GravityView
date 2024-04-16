@@ -31,6 +31,12 @@ abstract class GV_RESTUnitTestCase extends WP_Test_REST_Controller_Testcase {
 		if ( version_compare( GFForms::$version, '2.2', '<' ) ) {
 			@GFForms::setup_database();
 		}
+
+		/**
+		 * Add extra level of output buffering to avoid issues.
+		 * @see \GV\REST\Route::ob_start()
+		 */
+		 ob_start();
 	}
 
 	/**
