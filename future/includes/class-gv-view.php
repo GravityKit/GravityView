@@ -1871,15 +1871,27 @@ class View implements \ArrayAccess {
 	 * Returns the shortcode for this View.
 	 *
 	 * @since 2.21
+	 * @since 2.22 Added `$atts` parameter.
+	 *
+	 * @param array $atts Additional attributes for the shortcode.
+	 *
 	 * @return string
 	 */
-	final public function get_shortcode(): string {
+	final public function get_shortcode( array $atts = [] ): string {
 		$secret = $this->get_validation_secret();
-		$atts   = [ sprintf( 'id="%d"', $this->post->ID ) ];
+
+		// ID & secret can't be overwritten from the View.
+		$atts['id'] = $this->post->ID;
+
 		if ( $secret ) {
-			$atts[] = sprintf( 'secret="%s"', $secret );
+			$atts['secret'] = $secret;
 		}
 
-		return sprintf( '[gravityview %s]', implode( ' ', $atts ) );
+		$options = [];
+		foreach ( $atts as $key => $value ) {
+			$options[] = sprintf( '%s="%s"', esc_attr( $key ), esc_attr( $value ) );
+		}
+
+		return sprintf( '[gravityview %s]', implode( ' ', $options ) );
 	}
 }
