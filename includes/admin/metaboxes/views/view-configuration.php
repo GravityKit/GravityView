@@ -53,6 +53,9 @@ function render_template_options( array $templates, ?string $selected_template )
 			$plugin_data = Core::get_installed_plugin_by_text_domain( $template['textdomain'] ?? '' ) ?: [];
 			if ( $plugin_data ) {
 				$extra[] = sprintf( 'data-activate="%s"', esc_attr( $plugin_data['name'] ) );
+				$extra[] = sprintf( 'data-template-text-domain="%s"', esc_attr( $plugin_data['text_domain'] ?? '' ) );
+				$extra[] = sprintf( 'data-templateid="%s"', esc_attr( $template['template_id'] ?? '' ) );
+				$extra[] = sprintf( 'data-download-id="%s"', esc_attr( $template['download_id'] ?? '' ) );
 			} else if ( $template['buy_source'] ?? false ) {
 				$extra[] = sprintf( 'data-buy-source="%s"', esc_attr( $template['buy_source'] ) );
 			}
