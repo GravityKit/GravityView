@@ -21,9 +21,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
-Fixed: Conflict where View modals would be clipped in some instances.
-
 = 2.22 on April 16, 2024 =
 
 This release introduces [support for search modifiers](https://docs.gravitykit.com/article/995-gravityview-search-modifiers) and [range-based searching for numeric fields](https://docs.gravitykit.com/article/996-number-range-search), enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS.
@@ -37,6 +34,7 @@ This release introduces [support for search modifiers](https://docs.gravitykit.c
 * Editing an entry with Yoast SEO active resulted in changes being saved twice.
 * Views secured with a secret code did not display inside LifterLMS dashboards.
 * Fatal error when editing posts/pages containing GravityView blocks.
+* Conflict where View modals would be clipped in some instances.
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.12.
