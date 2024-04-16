@@ -124,16 +124,16 @@
 				const $item = $( this );
 
 				if ( $item.attr( 'aria-disabled' ) === 'true' ) {
-					// allow clicking on links inside the item.)
+					// Allow clicking on links inside the item.
 					if ( 'A' !== e.target.tagName ) {
 						e.preventDefault();
 					}
 
-					if ( undefined !== $( e.target ).data( 'activate' ) ) {
+					if ( undefined !== $( e.target ).data( 'action' ) ) {
 						e.preventDefault();
 
 						$el.trigger( {
-							type: 'gravityview/dropdown/activate',
+							type: 'gravityview/dropdown/' + $( e.target ).data( 'action' ),
 							target: $item.data( 'option' ).get( 0 ),
 						} );
 					}
@@ -345,6 +345,7 @@
 			var license = $option.data( 'license' );
 			var buy_source = $option.data( 'buy-source' );
 			var activate = $option.data( 'activate' );
+			var download_id = $option.data( 'download-id' );
 
 			var id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
 			var $item = $(
@@ -362,8 +363,9 @@
 				) +
 				'	<div class="view-dropdown-list-item__value">' +
 				'		<div class="view-dropdown-list-item__label">' + $option.data( 'title' ) +
-				( buy_source ? ' <a class="view-dropdown-button--pill" href="' + buy_source + '" target="_blank">' + ($dropdown.data( 'label-install' ) || 'Install' ) + '</a>' : "" ) +
-				( activate ? ' <a role="button" data-activate="' + ( $dropdown.data( 'template-text-domain' ) || '' ) + '" class="view-dropdown-button--pill" href="#">' + ($dropdown.data( 'label-activate' ) || 'Activate' ) + '</a>' : "" ) +
+				( buy_source ? ' <a class="view-dropdown-button--pill" href="' + buy_source + '" target="_blank">' + ($dropdown.data( 'label-buy' ) || 'Buy Now' ) + '</a>' : "" ) +
+				( activate ? ' <a role="button" data-action="activate" class="view-dropdown-button--pill" href="#">' + ($dropdown.data( 'label-activate' ) || 'Activate' ) + '</a>' : "" ) +
+				( download_id ? ' <a role="button" data-action="install" class="view-dropdown-button--pill" href="#">' + ($dropdown.data( 'label-install' ) || 'Install' ) + '</a>' : "" ) +
 				'		</div>' +
 				'		<div class="view-dropdown-list-item__description">' + $option.data( 'description' ) + '</div>' +
 				'	</div>' +

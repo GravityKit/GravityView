@@ -42,7 +42,10 @@ function render_template_options( array $templates, ?string $selected_template )
 	$html = sprintf( '<option value="">%s</option>', esc_html__( 'Select a type', 'gk-gravityview' ) );
 
 	foreach ( $templates as $template_id => $template ) {
-		$extra = [];
+		$extra = [
+			sprintf( 'data-template-id="%s"', esc_attr( $template['template_id'] ?? '' ) ),
+		];
+
 		if ( $template_id === $selected_template ) {
 			$extra[] = 'selected="selected"';
 		}
@@ -52,11 +55,14 @@ function render_template_options( array $templates, ?string $selected_template )
 
 			$plugin_data = Core::get_installed_plugin_by_text_domain( $template['textdomain'] ?? '' ) ?: [];
 			if ( $plugin_data ) {
+				// Plugin containing the template is installed but not active.
 				$extra[] = sprintf( 'data-activate="%s"', esc_attr( $plugin_data['name'] ) );
 				$extra[] = sprintf( 'data-template-text-domain="%s"', esc_attr( $plugin_data['text_domain'] ?? '' ) );
-				$extra[] = sprintf( 'data-templateid="%s"', esc_attr( $template['template_id'] ?? '' ) );
+			} elseif ( ! empty( $template['included'] ?? 0 ) ) {
+				// Plugin is not installed, but can be downloaded.
 				$extra[] = sprintf( 'data-download-id="%s"', esc_attr( $template['download_id'] ?? '' ) );
-			} else if ( $template['buy_source'] ?? false ) {
+			} elseif ( $template['buy_source'] ?? false ) {
+				$is_action  = false;
 				$extra[] = sprintf( 'data-buy-source="%s"', esc_attr( $template['buy_source'] ) );
 			}
 		}
@@ -98,11 +104,12 @@ function render_template_options( array $templates, ?string $selected_template )
 						data-view-dropdown
 						id="gravityview_directory_template"
 						name="gravityview_directory_template"
-						data-label-install="<?php esc_attr_e('Install now', 'gk-gravityview'); ?>"
-						data-label-activate="<?php esc_attr_e('Activate', 'gk-gravityview'); ?>"
+						data-label-install="<?php esc_attr_e( 'Install now', 'gk-gravityview' ); ?>"
+						data-label-activate="<?php esc_attr_e( 'Activate', 'gk-gravityview' ); ?>"
+						data-label-buy="<?php esc_attr_e( 'Buy Now', 'gk-gravityview' ); ?>"
 						data-section="directory"
-						data-scope="<?php esc_attr_e('Multiple Entries', 'gk-gravityview'); ?>"
-						data-label="<?php esc_attr_e('View type', 'gk-gravityview'); ?>"
+						data-scope="<?php esc_attr_e( 'Multiple Entries', 'gk-gravityview' ); ?>"
+						data-label="<?php esc_attr_e( 'View type', 'gk-gravityview' ); ?>"
 					>
 						<?php echo render_template_options( $templates, $directory_entries_template ); ?>
 					</select>
@@ -165,10 +172,11 @@ function render_template_options( array $templates, ?string $selected_template )
 						data-view-dropdown
 						id="gravityview_single_template"
 						name="gravityview_single_template"
-						data-label-install="<?php esc_attr_e('Install', 'gk-gravityview'); ?>"
-						data-label-activate="<?php esc_attr_e('Activate now', 'gk-gravityview'); ?>"
-						data-scope="<?php esc_attr_e('Single Entry', 'gk-gravityview'); ?>"
-						data-label="<?php esc_attr_e('View type', 'gk-gravityview'); ?>"
+						data-label-install="<?php esc_attr_e( 'Install', 'gk-gravityview' ); ?>"
+						data-label-activate="<?php esc_attr_e( 'Activate now', 'gk-gravityview' ); ?>"
+						data-label-buy="<?php esc_attr_e( 'Buy Now', 'gk-gravityview' ); ?>"
+						data-scope="<?php esc_attr_e( 'Single Entry', 'gk-gravityview' ); ?>"
+						data-label="<?php esc_attr_e( 'View type', 'gk-gravityview' ); ?>"
 					>
 						<?php echo render_template_options( $templates, $single_entry_template ); ?>
 					</select>
