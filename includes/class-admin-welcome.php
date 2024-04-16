@@ -313,6 +313,7 @@ class GravityView_Welcome {
 					<li>Editing an entry with Yoast SEO active resulted in changes being saved twice.</li>
 					<li>Views secured with a secret code did not display inside LifterLMS dashboards.</li>
 					<li>Fatal error when editing posts/pages containing GravityView blocks.</li>
+					<li>Conflict where View modals would be clipped in some instances.</li>
 				</ul>
 
 				<h4>🔧 Updated</h4>
@@ -323,9 +324,9 @@ class GravityView_Welcome {
 					<li>Fixed a bug that hid third-party plugin updates on the Plugins and Updates pages.</li>
 					<li>Resolved a dependency management issue that incorrectly prompted for a Gravity Forms update before activating, installing, or updating GravityKit products.</li>
 				</ul>
-				
+
 				<p><strong>Developer Updates:</strong></p>
-				
+
 				<ul>
 					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.
 					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.
