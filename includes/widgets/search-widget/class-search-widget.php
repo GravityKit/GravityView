@@ -883,7 +883,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * @filter `gk/gravityview/common/quotation-marks` Modify the quotation marks used to detect quoted searches.
 		 *
-		 * @since TODO
+		 * @since 2.22
 		 *
 		 * @param array $quotations_marks List of quotation marks with `opening` and `closing` keys.
 		 */

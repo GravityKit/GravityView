@@ -297,7 +297,7 @@ class GravityView_Welcome {
 				?>
 				<h3>2.22 on April 15, 2024</h3>
 
-				<p>This release introduces support for search modifiers and range-based searching for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS.</p>
+				<p>This release introduces support for <a href="https://docs.gravitykit.com/article/995-gravityview-search-modifiers">search modifiers</a> and <a href="https://docs.gravitykit.com/article/996-number-range-search">range-based searching</a> for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS.</p>
 
 				<h4>🚀 Added</h4>
 
