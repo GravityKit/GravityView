@@ -68,7 +68,8 @@ module.exports = function(grunt) {
 
 		jshint: {
 			options: {
-				esversion: 11
+				esversion: 11,
+				laxbreak: true,
 			},
 			all: [
 				"assets/js/admin-views.js",

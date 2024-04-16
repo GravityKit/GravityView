@@ -274,7 +274,11 @@
 			this.focusDown();
 		} else if ( e.key === 'Tab' ) {
 			// If `Shift` is used in combination with `Tab` we focus up, otherwise we focus down.
-			true === e.shiftKey ? this.focusUp() : this.focusDown();
+			if (true === e.shiftKey){
+				this.focusUp();
+			} else {
+				this.focusDown();
+			}
 		} else if ( e.key === 'Home' ) {
 			this.focusFirst();
 		} else if ( e.key === 'End' ) {
@@ -315,6 +319,7 @@
 		// Clear old values
 		$list.html( '' );
 
+		const $dropdown = this.$el;
 		this.$el.find( 'option' ).each( function () {
 			var $option = $( this );
 			if ( '' === $option.val() ) {
@@ -328,7 +333,9 @@
 
 			var license = $option.data( 'license' );
 			var buy_source = $option.data( 'buy-source' );
+			var activate = $option.data( 'activate' );
 
+			console.log($option.data());
 			var id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
 			var $item = $(
 				'<div tabindex="0" id="' + id + '" role="option" aria-selected="false" class="view-dropdown-list-item" aria-disabled="' + $option.is( ':disabled' ) + '" data-value="' + $option.val() + '">' +
@@ -344,17 +351,12 @@
 						: ''
 				) +
 				'	<div class="view-dropdown-list-item__value">' +
-				'		<div class="view-dropdown-list-item__label">' + $option.data( 'title' ) + '</div>' +
+				'		<div class="view-dropdown-list-item__label">' + $option.data( 'title' ) +
+				( buy_source ? ' <a role="button" class="view-dropdown-button--pill" href="' + buy_source + '" target="_blank">' + ($dropdown.data( 'label-install' ) || 'Install' ) + '</a>' : "" ) +
+				( activate ? ' <a role="button" class="view-dropdown-button--pill" href="#" target="_blank">' + ($dropdown.data( 'label-activate' ) || 'Activate' ) + '</a>' : "" ) +
+				'		</div>' +
 				'		<div class="view-dropdown-list-item__description">' + $option.data( 'description' ) + '</div>' +
 				'	</div>' +
-				( buy_source
-						? (
-							'<div class="view-dropdown-list-item__buy-source hidden">' +
-							'	<a href="' + buy_source + '" target="_blank">Upgrade</a>' +
-							'</div>'
-						)
-						: ''
-				) +
 				'</div>' );
 
 			if ( license ) {
@@ -388,8 +390,8 @@
 	 * @since $ver$
 	 */
 	ViewDropDown.prototype.focusActive = function () {
-		this.$options_list.find( 'div.view-dropdown-list-item--active' ).focus()
-	}
+		this.$options_list.find( 'div.view-dropdown-list-item--active' ).focus();
+	};
 
 	/**
 	 * Closes the dropdown.

@@ -5,6 +5,8 @@
  * @global string $single_entry_template GravityView_Template::template_id value for single entry section.
  */
 
+use GravityKit\GravityView\Foundation\Helpers\Core;
+
 $templates = array_filter(
 	gravityview_get_registered_templates(),
 	static function ( array $template ) {
@@ -47,12 +49,12 @@ function render_template_options( array $templates, ?string $selected_template )
 
 		if ( ! is_active( $template ) ) {
 			$extra[] = 'disabled="disabled"';
-			if ( $template['buy_source'] ?? false ) {
-				$extra[] = sprintf( 'data-buy-source="%s"', esc_attr( $template['buy_source'] ) );
-			}
 
-			if ( isset( $template['included'], $template['license'] ) ) {
-				$extra[] = sprintf( 'data-license="%s"', 'Pro' );
+			$plugin_data = Core::get_installed_plugin_by_text_domain( $template['textdomain'] ?? '' ) ?: [];
+			if ( $plugin_data ) {
+				$extra[] = sprintf( 'data-activate="%s"', esc_attr( $plugin_data['name'] ) );
+			} else if ( $template['buy_source'] ?? false ) {
+				$extra[] = sprintf( 'data-buy-source="%s"', esc_attr( $template['buy_source'] ) );
 			}
 		}
 
@@ -89,7 +91,16 @@ function render_template_options( array $templates, ?string $selected_template )
 			<div class="gv-section-header">
 				<h4><?php esc_html_e( 'Top Widgets', 'gk-gravityview' ); ?> <span><?php esc_html_e( 'These widgets will be shown above entries.', 'gk-gravityview' ); ?></span></h4>
 				<div class="view-template-select">
-					<select data-view-dropdown id="gravityview_directory_template" name="gravityview_directory_template" data-section="directory" data-scope="Multiple Entries" data-label="View type">
+					<select
+						data-view-dropdown
+						id="gravityview_directory_template"
+						name="gravityview_directory_template"
+						data-label-install="<?php esc_attr_e('Install now', 'gk-gravityview'); ?>"
+						data-label-activate="<?php esc_attr_e('Activate', 'gk-gravityview'); ?>"
+						data-section="directory"
+						data-scope="<?php esc_attr_e('Multiple Entries', 'gk-gravityview'); ?>"
+						data-label="<?php esc_attr_e('View type', 'gk-gravityview'); ?>"
+					>
 						<?php echo render_template_options( $templates, $directory_entries_template ); ?>
 					</select>
 				</div>
@@ -147,8 +158,15 @@ function render_template_options( array $templates, ?string $selected_template )
 				<h4><?php esc_html_e( 'These fields will be shown in Single Entry layout.', 'gk-gravityview' ); ?></h4>
 
 				<div class="view-template-select">
-					<select data-view-dropdown id="gravityview_single_template" name="gravityview_single_template"
-							data-section="single" data-scope="Single Entry" data-label="View type">
+					<select
+						data-view-dropdown
+						id="gravityview_single_template"
+						name="gravityview_single_template"
+						data-label-install="<?php esc_attr_e('Install', 'gk-gravityview'); ?>"
+						data-label-activate="<?php esc_attr_e('Activate now', 'gk-gravityview'); ?>"
+						data-scope="<?php esc_attr_e('Single Entry', 'gk-gravityview'); ?>"
+						data-label="<?php esc_attr_e('View type', 'gk-gravityview'); ?>"
+					>
 						<?php echo render_template_options( $templates, $single_entry_template ); ?>
 					</select>
 				</div>

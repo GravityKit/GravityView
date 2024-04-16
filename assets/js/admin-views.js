@@ -1400,7 +1400,8 @@
 		 * @private
 		 */
 		_isViewDropDown: function () {
-			return 'undefined' !== typeof viewConfiguration.wantedTemplate.data( 'view-data' );
+			return viewConfiguration.wantedTemplate
+				&& 'undefined' !== typeof viewConfiguration.wantedTemplate.data( 'view-data' );
 		},
 
 		/**
