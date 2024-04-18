@@ -251,7 +251,10 @@
 						return true;
 					}
 					$( this ).parent( '.gv-fields' ).removeClass( 'trigger--active' );
-				});
+				})
+
+				.on( 'gravityview/dropdown/activate gravityview/dropdown/install', vcfg.enableLockedTemplate )
+			;
 			// End bind to $( document.body )
 
 			$( window ).resize( function() {
@@ -1609,6 +1612,39 @@
 			vcfg.setUnsavedChanges( true );
 		},
 
+		server_request: ( ajaxRoute, payload ) => {
+			const defer = $.Deferred();
+
+			viewConfiguration.performingAjaxAction = true;
+
+			$( '.gv-view-template-notice' ).hide();
+
+			const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter, frontendFoundationVersion } = window.gvGlobals.foundation_licenses_router;
+
+			const request = {
+				nonce,
+				action,
+				ajaxRouter,
+				ajaxRoute,
+				frontendFoundationVersion,
+				payload
+			};
+
+			$.post( url, request )
+				.fail( response => 	defer.reject( response.responseText ))
+				.done( (response) => {
+					if ( !response.success ) {
+						defer.reject( response.data );
+						return;
+					}
+
+					viewConfiguration.performingAjaxAction = false;
+					defer.resolve();
+				} );
+
+			return defer.promise();
+		},
+
 		/**
 		 * When clicking the hover overlay, select the template by clicking the #gv_select_template button
 		 * @param  {jQueryEvent}    e     jQuery event object
@@ -1625,39 +1661,6 @@
 
 			e.preventDefault();
 			e.stopImmediatePropagation();
-
-			const server_request = ( ajaxRoute, payload ) => {
-				const defer = $.Deferred();
-
-				$link.addClass( 'disabled' );
-				vcfg.performingAjaxAction = true;
-				$( '.gv-view-template-notice' ).hide();
-
-				const { _wpNonce: nonce, _wpAjaxAction: action, _wpAjaxUrl: url, ajaxRouter, frontendFoundationVersion } = window.gvGlobals.foundation_licenses_router;
-
-				const request = {
-					nonce,
-					action,
-					ajaxRouter,
-					ajaxRoute,
-					frontendFoundationVersion,
-					payload
-				};
-
-				$.post( url, request ).done( response => {
-					if ( !response.success ) {
-						defer.reject( response.data );
-
-						return;
-					}
-
-					defer.resolve();
-				} ).fail( response => {
-					defer.reject( response.responseText );
-				} );
-
-				return defer.promise();
-			};
 
 			const on_fail = ( error ) => {
 				$( '.gv-view-template-notice' ).show().find( 'p' ).html( error );
@@ -1685,7 +1688,9 @@
 					return;
 				}
 
-				$.when( server_request( 'activate_product', {
+				$link.addClass( 'disabled' );
+
+				$.when( vcfg.server_request( 'activate_product', {
 						text_domain: $link.attr( 'data-template-text-domain' ),
 					} ) )
 					.then( on_success )
@@ -1701,7 +1706,7 @@
 					return;
 				}
 
-				$.when( server_request( 'install_product', {
+				$.when( vcfg.server_request( 'install_product', {
 						id: $link.attr( 'data-download-id' ),
 						activate: true,
 					} ) )
@@ -1713,6 +1718,56 @@
 			}
 
 			$(this).find('.gv_select_template').trigger('click');
+		},
+
+		enableLockedTemplate: function ( e, data ) {
+			const $option = $( data?.option ) || null;
+			const action = data?.action || null;
+
+			let payload = {};
+
+			if ( 'activate' === action ) {
+				payload = {
+					text_domain: $option.data( 'template-text-domain' ),
+				};
+			} else if ( 'install' === action ) {
+				payload = {
+					id: $option.data( 'download-id' ),
+					activate: true,
+				};
+			}
+
+			if ( JSON.stringify( payload ) !== '{}' ) {
+				const $pill = $( e.target );
+				$pill.addClass( 'is-idle' );
+
+				$.when( viewConfiguration.server_request( action + '_product', payload ) )
+					.then( () => {
+						$pill.removeClass( 'has-failed' );
+
+						// We need to update all view selectors on the page.
+						const $view_selectors = $('[data-view-dropdown]');
+						const $options = $view_selectors.find( 'option[value="' + $option.val() + '"]' );
+
+						$options.attr( 'disabled', false );
+						$options.val( $option.data( 'template-id' ) );
+
+						// Refresh the selectors with the updated values.
+						$view_selectors.each( ( _, el ) => {
+							const dropdown = $( el ).viewDropdown();
+							dropdown.renderOptions();
+						} );
+
+						data?.dropdown?.focusActive();
+					} )
+					.fail( ( error ) => {
+						$pill.addClass( 'has-failed' ).text( 'Error' );
+						console.log( error );
+					} )
+					.always( () => {
+						$pill.removeClass( 'is-idle' );
+					} );
+			}
 		},
 
 		openExternalLinks: function () {

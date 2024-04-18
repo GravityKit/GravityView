@@ -144,10 +144,14 @@
 			.view-dropdown-list-item__description {
 				color: #B1B6BB;
 			}
+			.view-dropdown-button--pill {
+				display: inherit;
+			}
 		}
 	}
 
 	.view-dropdown-button--pill {
+		display: none;
 		border: 0;
 		background-color: #0073AA;
 		color: #FFF;
@@ -159,8 +163,17 @@
 		text-decoration: none;
 		margin-left: 5px;
 		flex-shrink: 0;
+
 		&:hover, &:focus {
 			background-color: #0a4b78;
+		}
+
+		&.has-failed {
+			background-color: #C62D2D;
+		}
+		&.is-idle {
+			cursor: progress;
+			background: #999;
 		}
 	}
 

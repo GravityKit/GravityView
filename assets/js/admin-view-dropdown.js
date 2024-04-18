@@ -28,7 +28,6 @@
 
 		this.init();
 		this.renderOptions();
-		this.refresh();
 	};
 
 	/**
@@ -43,8 +42,8 @@
 			return;
 		}
 
-		var $el = this.$el;
-		var dropdown = this;
+		const $el = this.$el;
+		const dropdown = this;
 
 		this.storeValue();
 
@@ -132,9 +131,14 @@
 					if ( undefined !== $( e.target ).data( 'action' ) ) {
 						e.preventDefault();
 
+						const action = $( e.target ).data( 'action' );
 						$el.trigger( {
-							type: 'gravityview/dropdown/' + $( e.target ).data( 'action' ),
-							target: $item.data( 'option' ).get( 0 ),
+							type: 'gravityview/dropdown/' + action,
+							target: e.target,
+						}, {
+							action,
+							dropdown,
+							option: $item.data( 'option' ).get( 0 ),
 						} );
 					}
 
@@ -197,12 +201,12 @@
 			return;
 		}
 
-		var $focussed = this.$options_list.find( ':focus' );
+		const $focussed = this.$options_list.find( ':focus' );
 		if ( !$focussed.length ) {
 			return;
 		}
 
-		var $previous = $focussed.prev( '.view-dropdown-list-item' );
+		let $previous = $focussed.prev( '.view-dropdown-list-item' );
 		if ( $previous.length === 0 ) {
 			$previous = this.$options_list.find( '.view-dropdown-list-item:last-child' );
 		}
@@ -229,12 +233,12 @@
 			return;
 		}
 
-		var $focussed = this.$options_list.find( ':focus' );
+		const $focussed = this.$options_list.find( ':focus' );
 		if ( !$focussed.length ) {
 			return;
 		}
 
-		var $next = $focussed.next( '.view-dropdown-list-item' );
+		let $next = $focussed.next( '.view-dropdown-list-item' );
 
 		if ( $next.length === 0 ) {
 			$next = this.$options_list.find( '.view-dropdown-list-item:first-child' );
@@ -285,7 +289,7 @@
 			this.focusDown();
 		} else if ( e.key === 'Tab' ) {
 			// If `Shift` is used in combination with `Tab` we focus up, otherwise we focus down.
-			if (true === e.shiftKey){
+			if ( true === e.shiftKey ) {
 				this.focusUp();
 			} else {
 				this.focusDown();
@@ -326,29 +330,29 @@
 	 * @since $ver$
 	 */
 	ViewDropDown.prototype.renderOptions = function () {
-		var $list = this.$options_list;
+		const $list = this.$options_list;
 		// Clear old values
 		$list.html( '' );
 
 		const $dropdown = this.$el;
 		this.$el.find( 'option' ).each( function () {
-			var $option = $( this );
+			const $option = $( this );
 			if ( '' === $option.val() ) {
 				return;
 			}
 
-			var icon = '';
+			let icon = '';
 			if ( $option.data( 'icon' ) ) {
 				icon = '<img src="' + $option.data( 'icon' ) + '" alt="Icon" />';
 			}
 
-			var license = $option.data( 'license' );
-			var buy_source = $option.data( 'buy-source' );
-			var activate = $option.data( 'activate' );
-			var download_id = $option.data( 'download-id' );
+			const license = $option.data( 'license' );
+			const buy_source = $option.data( 'buy-source' );
+			const activate = $option.data( 'activate' );
+			const download_id = $option.data( 'download-id' );
 
-			var id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
-			var $item = $(
+			const id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
+			const $item = $(
 				'<div tabindex="0" id="' + id + '" role="option" aria-selected="false" class="view-dropdown-list-item" aria-disabled="' + $option.is( ':disabled' ) + '" data-value="' + $option.val() + '">' +
 				'	<div class="view-dropdown-list-item__icon">' + icon + '</div>' +
 				( license
@@ -363,9 +367,9 @@
 				) +
 				'	<div class="view-dropdown-list-item__value">' +
 				'		<div class="view-dropdown-list-item__label">' + $option.data( 'title' ) +
-				( buy_source ? ' <a class="view-dropdown-button--pill" href="' + buy_source + '" target="_blank">' + ($dropdown.data( 'label-buy' ) || 'Buy Now' ) + '</a>' : "" ) +
-				( activate ? ' <a role="button" data-action="activate" class="view-dropdown-button--pill" href="#">' + ($dropdown.data( 'label-activate' ) || 'Activate' ) + '</a>' : "" ) +
-				( download_id ? ' <a role="button" data-action="install" class="view-dropdown-button--pill" href="#">' + ($dropdown.data( 'label-install' ) || 'Install' ) + '</a>' : "" ) +
+				( buy_source ? ' <a class="view-dropdown-button--pill" href="' + buy_source + '" target="_blank">' + ( $dropdown.data( 'label-buy' ) || 'Buy Now' ) + '</a>' : "" ) +
+				( activate ? ' <a role="button" data-action="activate" class="view-dropdown-button--pill" href="#">' + ( $dropdown.data( 'label-activate' ) || 'Activate' ) + '</a>' : "" ) +
+				( download_id ? ' <a role="button" data-action="install" class="view-dropdown-button--pill" href="#">' + ( $dropdown.data( 'label-install' ) || 'Install' ) + '</a>' : "" ) +
 				'		</div>' +
 				'		<div class="view-dropdown-list-item__description">' + $option.data( 'description' ) + '</div>' +
 				'	</div>' +
@@ -379,6 +383,8 @@
 
 			$list.append( $item );
 		} );
+
+		this.refresh();
 	};
 
 	/**
@@ -453,11 +459,11 @@
 	// Add a `viewDropdown` method on any element.
 	$.fn.extend( {
 		'viewDropdown': function () {
-			if ( $( this ).data( 'view-dropdown' ) ) {
-				return;
+			if ( !$( this ).data( 'view-data' ) ) {
+				$( this ).data( 'view-data', new ViewDropDown( this ) );
 			}
 
-			$( this ).data( 'view-data', new ViewDropDown( this ) );
+			return $( this ).data( 'view-data' );
 		}
 	} );
 
