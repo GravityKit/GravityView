@@ -1723,19 +1723,10 @@
 		enableLockedTemplate: function ( e, data ) {
 			const $option = $( data?.option ) || null;
 			const action = data?.action || null;
-
-			let payload = {};
-
-			if ( 'activate' === action ) {
-				payload = {
-					text_domain: $option.data( 'template-text-domain' ),
-				};
-			} else if ( 'install' === action ) {
-				payload = {
-					id: $option.data( 'download-id' ),
-					activate: true,
-				};
-			}
+			const payload = {
+				text_domain: $option.data( 'template-text-domain' ),
+				activate: true,
+			};
 
 			if ( JSON.stringify( payload ) !== '{}' ) {
 				const $pill = $( e.target );

@@ -348,8 +348,7 @@
 
 			const license = $option.data( 'license' );
 			const buy_source = $option.data( 'buy-source' );
-			const activate = $option.data( 'activate' );
-			const download_id = $option.data( 'download-id' );
+			const action = $option.data( 'action' );
 
 			const id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
 			const $item = $(
@@ -367,9 +366,9 @@
 				) +
 				'	<div class="view-dropdown-list-item__value">' +
 				'		<div class="view-dropdown-list-item__label">' + $option.data( 'title' ) +
-				( buy_source ? ' <a class="view-dropdown-button--pill" href="' + buy_source + '" target="_blank">' + ( $dropdown.data( 'label-buy' ) || 'Buy Now' ) + '</a>' : "" ) +
-				( activate ? ' <a role="button" data-action="activate" class="view-dropdown-button--pill" href="#">' + ( $dropdown.data( 'label-activate' ) || 'Activate' ) + '</a>' : "" ) +
-				( download_id ? ' <a role="button" data-action="install" class="view-dropdown-button--pill" href="#">' + ( $dropdown.data( 'label-install' ) || 'Install' ) + '</a>' : "" ) +
+				( 'buy' === action ? ' <a class="view-dropdown-button--pill" href="' + buy_source + '" target="_blank">' + ( $dropdown.data( 'label-buy' ) || 'Buy Now' ) + '</a>' : "" ) +
+				( 'activate' === action ? ' <a role="button" data-action="activate" class="view-dropdown-button--pill" href="#">' + ( $dropdown.data( 'label-activate' ) || 'Activate' ) + '</a>' : "" ) +
+				( 'install' === action ? ' <a role="button" data-action="install" class="view-dropdown-button--pill" href="#">' + ( $dropdown.data( 'label-install' ) || 'Install' ) + '</a>' : "" ) +
 				'		</div>' +
 				'		<div class="view-dropdown-list-item__description">' + $option.data( 'description' ) + '</div>' +
 				'	</div>' +

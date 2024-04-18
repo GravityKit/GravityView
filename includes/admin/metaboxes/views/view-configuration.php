@@ -56,14 +56,15 @@ function render_template_options( array $templates, ?string $selected_template )
 			$plugin_data = Core::get_installed_plugin_by_text_domain( $template['textdomain'] ?? '' ) ?: [];
 			if ( $plugin_data ) {
 				// Plugin containing the template is installed but not active.
-				$extra[] = sprintf( 'data-activate="%s"', esc_attr( $plugin_data['name'] ) );
+				$extra[] = 'data-action="activate"';
 				$extra[] = sprintf( 'data-template-text-domain="%s"', esc_attr( $plugin_data['text_domain'] ?? '' ) );
 			} elseif ( ! empty( $template['included'] ?? 0 ) ) {
 				// Plugin is not installed, but can be downloaded.
-				$extra[] = sprintf( 'data-download-id="%s"', esc_attr( $template['download_id'] ?? '' ) );
+				$extra[] = sprintf( 'data-template-text-domain="%s"', esc_attr( $template['textdomain'] ?? '' ) );
+				$extra[] = 'data-action="install"';
 			} elseif ( $template['buy_source'] ?? false ) {
-				$is_action  = false;
 				$extra[] = sprintf( 'data-buy-source="%s"', esc_attr( $template['buy_source'] ) );
+				$extra[] = 'data-action="buy"';
 			}
 		}
 
