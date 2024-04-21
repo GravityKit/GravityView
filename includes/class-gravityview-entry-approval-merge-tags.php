@@ -228,6 +228,17 @@ class GravityView_Entry_Approval_Merge_Tags {
 
 			$anchor_text = GravityView_Entry_Approval_Status::get_action( $action . 'd' );
 
+			/**
+			 * Modify the anchor text for the entry approval link.
+			 *
+			 * @param string $anchor_text The anchor text to filter. 
+			 * @param int $form_id The Form ID.
+			 * @param string $action The link action (e.g., 'approve').
+			 * @return string The filtered anchor text. 
+			 */
+
+			$anchor_text = apply_filters( 'gk/gravityview/approve-link/anchor-text', $anchor_text, $form['id'], $action );
+
 			$link = sprintf( '<a href="%s">%s</a>', esc_url_raw( $link_url ), esc_html( $anchor_text ) );
 
 			$text = str_replace( $full_tag, $link, $text );
