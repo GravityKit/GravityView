@@ -22,7 +22,8 @@ If you wish to make changes to the plugin, you need to install developer depende
    - Run `npm install -g grunt-cli` if this the first time you've installed Node.js or switched to a new version
 
 Next, install dependencies:
-1. Run `composer install` to install Composer dependencies
+1. Run `composer public-install` to install Composer dependencies, including development dependencies, or `composer public-install-no-dev` if you don't need the development dependencies.
+   - If you have access to private GravityKit repositories, you can run `composer install` or `composer install --no-dev` instead.
 2. Run `npm install` to install Node.js dependencies
  
 To compile/minify UI assets, use the following commands:
@@ -30,6 +31,8 @@ To compile/minify UI assets, use the following commands:
 1. `grunt sass` & `grunt postcss` to compile and minify CSS files
 2. `grunt uglify` to minify JavaScript files
 3. `grunt imagemin` to minify images
+
+You do not have to run the commands if submitting a pull request as the minification process is handled by our CI/CD pipeline.
 
 #### Unit Tests
 
