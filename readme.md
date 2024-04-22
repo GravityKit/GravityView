@@ -9,13 +9,13 @@ If you are using the plugin on a live site, please purchase a valid license from
 ----------
 ### Installation Instructions
 
-To install the plugin, clone this repo to your WordPress plugins folder and activate it. Alternatively, you can download [the latest release](https://github.com/gravityview/GravityView/releases) to your WordPress plugins folder and then activate it.
+To install the plugin, download [the latest release](https://github.com/gravityview/GravityView/releases) to your WordPress plugins folder and then activate it.
 
 ### For Developers
 
-If you wish to make changes to the plugin, you need to install developer dependencies. First, a couple of prerequisites:
+If you wish to make changes to the plugin, you need to install the necessary dependencies and compile assets. First, a couple of prerequisites:
 
-1. Make sure that you have the full plugin source code by either cloning this repo or downloading the source code (not the versioned release) from the [Releases section](https://github.com/gravityview/GravityView/releases)
+1. Make sure that you have the full plugin source code by either cloning this repo or downloading the source code (not the versioned release) from the [Releases section](https://github.com/gravityview/GravityView/releases).
 
 2. Install [Composer](https://getcomposer.org/)
 
@@ -29,7 +29,7 @@ Next, install dependencies:
    
 2. Run `npm install` to install Node.js dependencies
  
-To compile/minify UI assets, use the following commands:
+To compile/minify UI assets, run `grunt` or use the following commands separately:
 
 1. `grunt sass` & `grunt postcss` to compile and minify CSS files
 
