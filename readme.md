@@ -1,6 +1,6 @@
 <img src="https://www.gravitykit.com/wp-content/themes/Website/images/GravityView-262x80@2x.png" width="262" height="80" alt="GravityView (Floaty loves you!)" />
 
-![CircleCI](https://circleci.com/gh/gravityview/GravityView/tree/develop.svg?style=svg&circle-token=19fbfae4c960858b2e08be4f7e993df41df5f367)
+![CircleCI](https://circleci.com/gh/GravityKit/GravityView/tree/develop.svg?style=svg&circle-token=CCIPRJ_HANdBG7RCeCEaYW4SJtZEK_c978aa92e6f77ee3fd94b9d2d74b3b8eae7dd80a)
 
 [GravityView](https://www.gravitykit.com/?utm_source=github&utm_medium=readme&utm_campaign=readme) is a commercial plugin available from [https://www.gravitykit.com](http://www.gravitykit.com?utm_source=github&utm_medium=readme&utm_campaign=readme). The plugin is hosted here on a public GitHub repository to better facilitate community contributions from developers and users. If you have a suggestion, a bug report, or a patch for an issue, feel free to submit it here.
 
@@ -45,7 +45,7 @@ We offer preconfigured Docker containers and a custom Bash script to facilitate 
 
 If you wish to run tests using your local environment, use the following instructions:
 
-1. Clone the [WordPress Develop](https://github.com/WordPress/wordpress-develop) and [Gravity Forms](https://github.com/gravityforms/gravityforms) repositories:
+1. Clone the [WordPress Develop](https://github.com/WordPress/wordpress-develop) and [Gravity Forms](https://github.com/gravityforms/gravityforms) repositories
 
 2. In the cloned repository folder, copy `wp-tests-config-sample.php` to `wp-tests-config.php`, and edit `wp-tests-config.php` to define the following constants:
     ```php
