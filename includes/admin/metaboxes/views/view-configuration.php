@@ -176,6 +176,7 @@ function render_template_options( array $templates, ?string $selected_template )
 						data-label-install="<?php esc_attr_e( 'Install', 'gk-gravityview' ); ?>"
 						data-label-activate="<?php esc_attr_e( 'Activate now', 'gk-gravityview' ); ?>"
 						data-label-buy="<?php esc_attr_e( 'Buy Now', 'gk-gravityview' ); ?>"
+						data-section="single"
 						data-scope="<?php esc_attr_e( 'Single Entry', 'gk-gravityview' ); ?>"
 						data-label="<?php esc_attr_e( 'View type', 'gk-gravityview' ); ?>"
 					>
