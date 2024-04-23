@@ -19,14 +19,19 @@ $field          = $gravityview->field->field;
 
 if ( '' !== $value ) {
 	$decimals = ( isset( $field_settings['decimals'] ) && '' !== $field_settings['decimals'] ) ? $field_settings['decimals'] : '';
-	if ( empty( $field_settings['number_format'] ) && 'currency' === $gravityview->field->field->numberFormat ) {
+
+	if ( 'currency' === $field->numberFormat ) {
 		echo $display_value;
 	} else {
 		if ( $decimals ) {
 			$value = number_format( $value, (int) $decimals, '.', '' );
 		}
-		echo $field->get_value_entry_list( $value, $gravityview->entry->as_entry(), $gravityview->field->id, array(), $form );
 
+		if ( ! empty( $field_settings['number_format'] ) ) {
+			echo $field->get_value_entry_list( $value, $gravityview->entry->as_entry(), $gravityview->field->id, array(), $form );
+		} else {
+			echo $value;
+		}
 	}
 } else {
 	echo $display_value;
