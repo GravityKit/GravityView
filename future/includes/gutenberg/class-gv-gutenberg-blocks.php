@@ -3,7 +3,6 @@
 namespace GravityKit\GravityView\Gutenberg;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
-use GravityView_Roles_Capabilities;
 use GV\View;
 use GVCommon;
 
@@ -11,6 +10,8 @@ class Blocks {
 	const MIN_WP_VERSION = '6.0.0';
 
 	const SLUG = 'gk-gravityview-blocks';
+
+	const IGNORE_SCRIPTS_AND_STYLES = [ 'jetpack', 'elementor' ];
 
 	private $blocks_build_path;
 
@@ -20,11 +21,6 @@ class Blocks {
 		$this->blocks_build_path = str_replace( GRAVITYVIEW_DIR, '', __DIR__ ) . '/build';
 
 		if ( version_compare( $wp_version, self::MIN_WP_VERSION, '<' ) ) {
-			return;
-		}
-
-		// Only show blocks for a user with `publish_gravityviews` capabilities.
-		if ( ! GravityView_Roles_Capabilities::has_cap( 'publish_gravityviews' ) ) {
 			return;
 		}
 
@@ -296,6 +292,12 @@ class Blocks {
 
 		$newly_registered_scripts = array_diff( $scripts_after_shortcode, $scripts_before_shortcode );
 		$newly_registered_styles  = array_diff( $styles_after_shortcode, $styles_before_shortcode );
+
+		// Ignore certain scripts and styles that may cause conflicts.
+		$ignore_pattern = '/(' . implode( '|', self::IGNORE_SCRIPTS_AND_STYLES ) . ')/';
+
+		$newly_registered_scripts = array_diff( $newly_registered_scripts, preg_grep( $ignore_pattern, $newly_registered_scripts ) );
+		$newly_registered_styles  = array_diff( $newly_registered_styles, preg_grep( $ignore_pattern, $newly_registered_styles ) );
 
 		// This will return an array of all dependencies sorted in the order they should be loaded.
 		$get_dependencies = function ( $handle, $source, $dependencies = array() ) use ( &$get_dependencies ) {

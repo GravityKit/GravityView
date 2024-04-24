@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.4.3
+Tested up to: 6.5.0
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,13 +21,44 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.22 on April 16, 2024 =
 
-* Added: Ability to perform exact-match searches in the search bar by enclosing search terms in quotation marks.
+This release introduces [support for search modifiers](https://docs.gravitykit.com/article/995-gravityview-search-modifiers) and [range-based searching for numeric fields](https://docs.gravitykit.com/article/996-number-range-search), enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS. [Read the announcement](https://www.gravitykit.com/gravityview-2-22/) for more details.
+
+#### 🚀 Added
+* Support for negative, positive, and exact-match search modifiers in the Search Bar.
+* Range-based search for Number, Product (user-defined price), Quantity and Total fields in the Search Bar.
+* Ability to duplicate View fields and widgets, and to insert them at a desired position.
+
+#### 🐛 Fixed
+* Editing an entry with Yoast SEO active resulted in changes being saved twice.
+* Views secured with a secret code did not display inside LifterLMS dashboards.
+* View editor display issues when LifterLMS is active.
+* Fatal error when editing posts/pages containing GravityView blocks.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.12.
+  - Fixed a bug that hid third-party plugin updates on the Plugins and Updates pages.
+  - Resolved a dependency management issue that incorrectly prompted for a Gravity Forms update before activating, installing, or updating GravityKit products.
 
 __Developer Updates:__
+* `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+* `gk/gravityview/search/number-range/step` filter to adjust the interval between numbers in input fields for range-based searches.
 
-* Added: `gk/gravityview/common/quotation-marks` filter to modify the quotation marks used for exact-match searches.
+= 2.21.2 on March 28, 2024 =
+
+This update fixes an issue with previewing GravityView blocks for Views with enhanced security and resolves a problem where blocks were previously rendered only for logged-in users.
+
+#### 🐛 Fixed
+* Previewing a GravityView block for a View that has enhanced security enabled no longer results in a notice about a missing `secret` shortcode attribute.
+* GravityView blocks now render for all users, not just those who are logged in.
+
+= 2.21.1 on March 22, 2024 =
+
+This hotfix release addresses a critical error that occurred when activating the plugin without Gravity Forms installed.
+
+#### 🐛 Fixed
+* Critical error when activating the plugin without Gravity Forms installed.
 
 = 2.21 on March 18, 2024 =
 

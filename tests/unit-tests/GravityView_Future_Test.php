@@ -4158,7 +4158,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** Post tags */
-		wp_set_post_tags( $post->ID, 'some,more', true );
+		wp_set_post_tags( $post->ID, 'some,more,[gvtest_shortcode_p1]', true );
 
 		$field = \GV\GF_Field::by_id( $form, '22' );
 		/** Note: we do not allow HTML output here, they're tags. */
@@ -4189,7 +4189,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 			sprintf( '<a href="%s" rel="tag">some</a>, ', esc_url( get_term_link( 'some', 'post_tag' ) ) ),
 			sprintf( '<a href="%s" rel="tag">tag 1</a>', esc_url( get_term_link( 'tag 1', 'post_tag' ) ) ),
 		);
-		if ( get_term_by( 'name', '<b>hi</b>', 'post_tag' ) ) {
+		$term_name = get_term_by( 'name', '<b>hi</b>', 'post_tag' );
+		if ( $term_name ) {
 			$expected []= sprintf( '<a href="%s" rel="tag">hi</a>, ', esc_url( get_term_link( get_term_by( 'name', '<b>hi</b>', 'post_tag' ), 'post_tag' ) ) );
 		}
 
@@ -4198,7 +4199,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 		}
 
 		$field->update_configuration( array( 'link_to_term' => false ) );
-		$expected = explode( ', ', '[gvtest_shortcode_p1], hi, more, oh no, some, tag 1' );
+		$expected = explode( ', ', '[gvtest_shortcode_p1], more, oh no, some, tag 1' );
+		if ( $term_name ) {
+			$expected[] = 'hi';
+		}
 		foreach ( $expected as $_expected ) {
 			$this->assertStringContainsString( $_expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 		}

@@ -110,7 +110,9 @@ body .ui-tooltip {
 		overflow:hidden;
 	}
 
-	.gv-field-controls {
+	.gv-field-controls,
+	.gv-add-field-before,
+	.gv-field-duplicate {
 		display: none;
 	}
 
