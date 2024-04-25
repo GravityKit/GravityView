@@ -224,24 +224,35 @@ class GravityView_Entry_Approval_Merge_Tags {
 				continue;
 			}
 
-			$link_url = $this->get_link_url( $token, $expiration_seconds, $privacy );
+			$approval_link = $this->get_link_url( $token, $expiration_seconds, $privacy );
 
-			$anchor_text = GravityView_Entry_Approval_Status::get_action( $action . 'd' );
+			$approval_link_text = GravityView_Entry_Approval_Status::get_action( $action . 'd' );
+
+			$approval_link_params = [
+				'url'     => $approval_link,
+				'text'    => $approval_link_text,
+				'form_id' => (int) $form['id'],
+				'action'  => $action,
+				'atts'    => []
+			];
 
 			/**
-			 * Modify the anchor text for the entry approval link.
+			 * Modifies entry approval link parameters.
 			 *
-			 * @param string $anchor_text The anchor text to filter. 
-			 * @param int $form_id The Form ID.
-			 * @param string $action The link action (e.g., 'approve').
-			 * @return string The filtered anchor text. 
+			 * @filter `gk/gravityview/entry/approval-link/params`
+			 *
+			 * @since  TBD
+			 *
+			 * @param array{url: string, text: string, form_id: int, action: string, atts: array} $approval_link_params
 			 */
+			$approval_link_params = wp_parse_args(
+				apply_filters( 'gk/gravityview/entry/approval-link/params', $approval_link_params ),
+				$approval_link_params
+			);
 
-			$anchor_text = apply_filters( 'gk/gravityview/approve-link/anchor-text', $anchor_text, $form['id'], $action );
+			$approval_link = gravityview_get_link( esc_html( $approval_link_params['url'] ), esc_html( $approval_link_params['text'] ), $approval_link_params['atts'] );
 
-			$link = sprintf( '<a href="%s">%s</a>', esc_url_raw( $link_url ), esc_html( $anchor_text ) );
-
-			$text = str_replace( $full_tag, $link, $text );
+			$text = str_replace( $full_tag, $approval_link, $text );
 		}
 
 		return $text;
