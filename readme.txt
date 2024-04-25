@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+#### 🐛 Fixed
+* Export link widget would cause fatal error when search on multiple words.
+
 = 2.22 on April 16, 2024 =
 
 This release introduces [support for search modifiers](https://docs.gravitykit.com/article/995-gravityview-search-modifiers) and [range-based searching for numeric fields](https://docs.gravitykit.com/article/996-number-range-search), enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS. [Read the announcement](https://www.gravitykit.com/gravityview-2-22/) for more details.
