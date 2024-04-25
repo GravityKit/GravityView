@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 #### 🐛 Fixed
-* Export link widget would cause fatal error when search on multiple words.
+* Export link widget would cause fatal error when searching on multiple words.
 
 = 2.22 on April 16, 2024 =
 
