@@ -233,6 +233,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 				'text'    => $approval_link_text,
 				'form_id' => (int) $form['id'],
 				'action'  => $action,
+				'format'  => 'html',
 				'atts'    => []
 			];
 
@@ -243,14 +244,18 @@ class GravityView_Entry_Approval_Merge_Tags {
 			 *
 			 * @since  TBD
 			 *
-			 * @param array{url: string, text: string, form_id: int, action: string, atts: array} $approval_link_params
+			 * @param array{url: string, text: string, form_id: int, action: string, format: string, atts: array} $approval_link_params
 			 */
 			$approval_link_params = wp_parse_args(
 				apply_filters( 'gk/gravityview/entry/approval-link/params', $approval_link_params ),
 				$approval_link_params
 			);
 
-			$approval_link = gravityview_get_link( esc_html( $approval_link_params['url'] ), esc_html( $approval_link_params['text'] ), $approval_link_params['atts'] );
+			if ( 'text' === ( $approval_link_params['format'] ?? '' ) ) {
+				$approval_link = $approval_link_params['url'];
+			} else {
+				$approval_link = gravityview_get_link( esc_html( $approval_link_params['url'] ), esc_html( $approval_link_params['text'] ), $approval_link_params['atts'] );
+			}
 
 			$text = str_replace( $full_tag, $approval_link, $text );
 		}
