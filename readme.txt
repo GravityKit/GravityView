@@ -23,8 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-__Developer Updates:__
-* `gk/gravityview/entry/approval-link/params` filter to modify entry approval link parameters.
+#### 🐛 Fixed
+* Export link widget would cause a fatal error during multi-word searches.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/entry/approval-link/params` filter to modify entry approval link parameters.
 
 = 2.22 on April 16, 2024 =
 

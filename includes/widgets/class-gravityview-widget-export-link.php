@@ -200,7 +200,7 @@ HTML;
 
 		$link = $in_paragraph ? sprintf( '<p>%s</p>', $link ) : $link;
 
-		printf( '<div class="gv-widget-export-link %s">' . $link . '</div>', gravityview_sanitize_html_class( $classes ) );
+		printf( '<div class="gv-widget-export-link %s">%s</div>', gravityview_sanitize_html_class( $classes ), $link );
 	}
 
 	/**
