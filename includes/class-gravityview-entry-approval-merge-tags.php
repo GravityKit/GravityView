@@ -251,7 +251,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 				$approval_link_params
 			);
 
-			if ( 'text' === ( $approval_link_params['format'] ?? '' ) ) {
+			if ( 'text' === $approval_link_params['format'] ) {
 				$approval_link = $approval_link_params['url'];
 			} else {
 				$approval_link = gravityview_get_link( esc_html( $approval_link_params['url'] ), esc_html( $approval_link_params['text'] ), $approval_link_params['atts'] );

@@ -2170,7 +2170,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$clear_button_params
 			);
 
-			if ( 'text' === ( $clear_button_params['format'] ?? '' ) ) {
+			if ( 'text' === $clear_button_params['format'] ) {
 				echo $clear_button_params['url'];
 			} else {
 				echo gravityview_get_link( $clear_button_params['url'], $clear_button_params['text'], $clear_button_params['atts'] );
