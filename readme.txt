@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+* Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.
+
 #### 🐛 Fixed
 * Export link widget would cause a fatal error during multi-word searches.
 

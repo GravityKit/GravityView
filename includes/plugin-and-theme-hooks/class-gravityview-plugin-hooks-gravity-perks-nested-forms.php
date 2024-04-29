@@ -1,18 +1,21 @@
 <?php
 
 /**
- * Handles custom hooks for Gravity Perks Nested Forms.
+ * Handles custom hooks for Gravity Wiz's Gravity Forms Nested Forms.
+ *
  * @since $ver$
  */
 final class GravityView_Plugin_Hooks_Gravity_Perks_Nested_Forms extends GravityView_Plugin_and_Theme_Hooks {
 	/**
 	 * @inheritDoc
+	 *
 	 * @since $ver$
 	 */
 	protected $class_name = GPNF_Parent_Merge_Tag::class;
 
 	/**
 	 * @inheritDoc
+	 *
 	 * @since $ver$
 	 */
 	protected function add_hooks() {
@@ -39,8 +42,10 @@ final class GravityView_Plugin_Hooks_Gravity_Perks_Nested_Forms extends GravityV
 	}
 
 	/**
-	 * Add GP Nested forms merge tags for Gravity View.
+	 * Adds GP Nested Forms merge tags for GravityView.
+	 *
 	 * @since $ver$
+	 *
 	 * @return bool
 	 */
 	private function add_gpnf_merge_tags( $value ) {
@@ -58,7 +63,9 @@ final class GravityView_Plugin_Hooks_Gravity_Perks_Nested_Forms extends GravityV
 	}
 
 	/**
-	 * Adds the merge tags for
+	 * Adds custom merge tags for parent and child form/entry IDs.
+	 *
+	 * @since $ver$
 	 *
 	 * @param array $tags The registered tags.
 	 *
@@ -82,11 +89,12 @@ final class GravityView_Plugin_Hooks_Gravity_Perks_Nested_Forms extends GravityV
 	}
 
 	/**
-	 * Add fields to GravityView.
+	 * Adds fields to GravityView.
+	 *
 	 * @since $ver$
 	 *
 	 * @param array        $fields The fields.
-	 * @param string|array $form   THe form reference.
+	 * @param string|array $form   The form reference.
 	 * @param string       $zone   The zone.
 	 *
 	 * @return array The updated fields.
