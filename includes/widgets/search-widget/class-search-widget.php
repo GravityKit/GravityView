@@ -2146,13 +2146,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if ( $gravityview_view->search_clear ) {
-
 			$url = strtok( add_query_arg( array() ), '?' );
 
 			$clear_button_params = [
-				'url' => $url,
-				'text' => esc_html__( 'Clear', 'gk-gravityview' ),
-				'atts' => [ 'class' => 'button gv-search-clear'],
+				'url'     => $url,
+				'text'    => esc_html__( 'Clear', 'gk-gravityview' ),
+				'view_id' => $gravityview_view->getViewId(),
+				'format'  => 'html',
+				'atts'    => [ 'class' => 'button gv-search-clear' ],
 			];
 
 			/**
@@ -2160,16 +2161,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 *
 			 * @filter `gravityview/widget/search/clear-button/params`
 			 *
-			 * @since 2.21
+			 * @since  2.21
 			 *
-			 * @param array{url: string, text: string, atts: array} $clear_button_params
+			 * @param array{url: string, text: string, view_id: int, atts: array} $clear_button_params
 			 */
 			$clear_button_params = wp_parse_args(
 				apply_filters( 'gk/gravityview/widget/search/clear-button/params', $clear_button_params ),
 				$clear_button_params
 			);
 
-			echo gravityview_get_link( $clear_button_params['url'], $clear_button_params['text'], $clear_button_params['atts'] );
+			if ( 'text' === $clear_button_params['format'] ) {
+				echo $clear_button_params['url'];
+			} else {
+				echo gravityview_get_link( $clear_button_params['url'], $clear_button_params['text'], $clear_button_params['atts'] );
+			}
 		}
 	}
 

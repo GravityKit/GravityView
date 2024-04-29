@@ -224,13 +224,40 @@ class GravityView_Entry_Approval_Merge_Tags {
 				continue;
 			}
 
-			$link_url = $this->get_link_url( $token, $expiration_seconds, $privacy );
+			$approval_link = $this->get_link_url( $token, $expiration_seconds, $privacy );
 
-			$anchor_text = GravityView_Entry_Approval_Status::get_action( $action . 'd' );
+			$approval_link_text = GravityView_Entry_Approval_Status::get_action( $action . 'd' );
 
-			$link = sprintf( '<a href="%s">%s</a>', esc_url_raw( $link_url ), esc_html( $anchor_text ) );
+			$approval_link_params = [
+				'url'     => $approval_link,
+				'text'    => $approval_link_text,
+				'form_id' => (int) $form['id'],
+				'action'  => $action,
+				'format'  => 'html',
+				'atts'    => []
+			];
 
-			$text = str_replace( $full_tag, $link, $text );
+			/**
+			 * Modifies entry approval link parameters.
+			 *
+			 * @filter `gk/gravityview/entry/approval-link/params`
+			 *
+			 * @since  TBD
+			 *
+			 * @param array{url: string, text: string, form_id: int, action: string, format: string, atts: array} $approval_link_params
+			 */
+			$approval_link_params = wp_parse_args(
+				apply_filters( 'gk/gravityview/entry/approval-link/params', $approval_link_params ),
+				$approval_link_params
+			);
+
+			if ( 'text' === $approval_link_params['format'] ) {
+				$approval_link = $approval_link_params['url'];
+			} else {
+				$approval_link = gravityview_get_link( esc_html( $approval_link_params['url'] ), esc_html( $approval_link_params['text'] ), $approval_link_params['atts'] );
+			}
+
+			$text = str_replace( $full_tag, $approval_link, $text );
 		}
 
 		return $text;

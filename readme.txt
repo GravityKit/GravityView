@@ -23,7 +23,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Added: Ability to select different view types for directory and single entry view.
+#### 🚀 Added
+* Ability to select different View types for Directory and Single Entry Views.
+* Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.
+
+#### 🐛 Fixed
+* Export link widget would cause a fatal error during multi-word searches.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/entry/approval-link/params` filter to modify entry approval link parameters.
 
 = 2.22 on April 16, 2024 =
 
