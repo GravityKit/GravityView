@@ -27,7 +27,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.
 
 #### 🐛 Fixed
-* Export link widget would cause a fatal error during multi-word searches.
+* Export link View widget would cause a fatal error during multi-word searches.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.13.
+  - Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates.
+  - Improved internal check for product updates that could still interfere with third-party plugin updates.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/entry/approval-link/params` filter to modify entry approval link parameters.
