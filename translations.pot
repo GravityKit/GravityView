@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-16T16:29:23+00:00\n"
+"POT-Creation-Date: 2024-04-30T15:04:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
@@ -2343,42 +2343,42 @@ msgstr ""
 msgid "Moderation: Reset entry approval link"
 msgstr ""
 
-#: includes/class-gravityview-entry-approval-merge-tags.php:380
-#: includes/class-gravityview-entry-approval-merge-tags.php:390
-#: includes/class-gravityview-entry-approval-merge-tags.php:399
+#: includes/class-gravityview-entry-approval-merge-tags.php:407
+#: includes/class-gravityview-entry-approval-merge-tags.php:417
+#: includes/class-gravityview-entry-approval-merge-tags.php:426
 msgid "Entry moderation failed: %s"
 msgstr ""
 
-#: includes/class-gravityview-entry-approval-merge-tags.php:466
+#: includes/class-gravityview-entry-approval-merge-tags.php:493
 msgid "You are not allowed to perform this operation."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval-merge-tags.php:472
-#: includes/class-gravityview-entry-approval-merge-tags.php:489
+#: includes/class-gravityview-entry-approval-merge-tags.php:499
+#: includes/class-gravityview-entry-approval-merge-tags.php:516
 msgid "The link has expired."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval-merge-tags.php:481
-#: includes/class-gravityview-entry-approval-merge-tags.php:580
-#: includes/class-gravityview-entry-approval-merge-tags.php:588
-#: includes/class-gravityview-entry-approval-merge-tags.php:599
-#: includes/class-gravityview-entry-approval-merge-tags.php:624
-#: includes/class-gravityview-entry-approval-merge-tags.php:637
+#: includes/class-gravityview-entry-approval-merge-tags.php:508
+#: includes/class-gravityview-entry-approval-merge-tags.php:607
+#: includes/class-gravityview-entry-approval-merge-tags.php:615
+#: includes/class-gravityview-entry-approval-merge-tags.php:626
+#: includes/class-gravityview-entry-approval-merge-tags.php:651
+#: includes/class-gravityview-entry-approval-merge-tags.php:664
 msgid "The link is invalid."
 msgstr ""
 
 #. translators: Do not translate the words inside the {} curly brackets; they are replaced.
-#: includes/class-gravityview-entry-approval-merge-tags.php:524
+#: includes/class-gravityview-entry-approval-merge-tags.php:551
 msgid "Success: Entry #{entry_id} has been {approval_label}."
 msgstr ""
 
 #. translators: Do not translate the words inside the {} curly brackets; they are replaced.
-#: includes/class-gravityview-entry-approval-merge-tags.php:530
+#: includes/class-gravityview-entry-approval-merge-tags.php:557
 msgid "There was an error updating entry #{entry_id}."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval-merge-tags.php:564
-#: includes/class-gravityview-entry-approval-merge-tags.php:570
+#: includes/class-gravityview-entry-approval-merge-tags.php:591
+#: includes/class-gravityview-entry-approval-merge-tags.php:597
 msgid "Invalid security token."
 msgstr ""
 
@@ -4062,6 +4062,18 @@ msgstr ""
 msgid "Editing entries in GravityView may also update a connected post."
 msgstr ""
 
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-perks-nested-forms.php:109
+msgid "The parent entry ID for nested form entries."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-perks-nested-forms.php:117
+msgid "The parent form ID for this nested form entry."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-perks-nested-forms.php:125
+msgid "The field ID on the parent form for this nested form."
+msgstr ""
+
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:54
 msgid "Quiz Score Total"
 msgstr ""
@@ -4593,36 +4605,36 @@ msgstr ""
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2154
+#: includes/widgets/search-widget/class-search-widget.php:2153
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2238
+#: includes/widgets/search-widget/class-search-widget.php:2243
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2239
+#: includes/widgets/search-widget/class-search-widget.php:2244
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2240
+#: includes/widgets/search-widget/class-search-widget.php:2245
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2241
+#: includes/widgets/search-widget/class-search-widget.php:2246
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2242
+#: includes/widgets/search-widget/class-search-widget.php:2247
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2243
+#: includes/widgets/search-widget/class-search-widget.php:2248
 msgid "Show a different month"
 msgstr ""
 
@@ -5241,12 +5253,12 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:141
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:446
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:471
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:150
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:293
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:420
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:503
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:586
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:786
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:176
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:319
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:446
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:529
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:612
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:812
 msgid "You do not have a permission to perform this action."
 msgstr ""
 
@@ -5316,72 +5328,72 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "Product with '[text_domain]' text domain"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:158
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:301
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:428
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:511
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:594
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:184
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:327
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:454
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:537
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:620
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Product with '[text_domain]' text domain not found."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:211
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:354
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:237
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:380
 msgid "Unable to load core WordPress files required to install the product."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:248
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:274
 msgid "Unable to locate product download link."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:259
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:268
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:396
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:285
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:294
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:422
 msgid "Installation failed."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:387
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:413
 msgid "Update failed."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:436
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:462
 msgid "Product must be deactivated before it can be deleted."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:478
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:504
 msgid "Could not delete the product due to missing filesystem credentials."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:550
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:576
 msgid "Product is already active."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:558
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:584
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Could not activate the product. [error]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:610
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:636
 msgid "Redirecting to the Plugins page…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:611
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:637
 msgid "Manage Your Kit functionality is no longer available."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:631
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:657
 msgid "Product in not active."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:637
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:663
 msgid "Could not deactivate the product."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:669
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:695
 msgid "Invalid product information received from the API."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:759
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:785
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:61
 msgid "View full changelog"
 msgstr ""
@@ -6929,84 +6941,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""
