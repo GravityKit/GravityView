@@ -295,6 +295,35 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>Develop</h3>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Export link View widget would cause a fatal error during multi-word searches.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.13.</p>
+
+				<ul>
+					<li>Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates.</li>
+					<li>Improved internal check for product updates that could still interfere with third-party plugin updates.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gk/gravityview/entry/approval-link/params</code> filter to modify entry approval link parameters.</li>
+				</ul>
+
 				<h3>2.22 on April 16, 2024</h3>
 
 				<p>This release introduces support for <a href="https://docs.gravitykit.com/article/995-gravityview-search-modifiers">search modifiers</a> and <a href="https://docs.gravitykit.com/article/996-number-range-search">range-based searching</a> for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS. <a href="https://www.gravitykit.com/gravityview-2-22/">Read the announcement</a> for more details.</p>
@@ -325,11 +354,11 @@ class GravityView_Welcome {
 					<li>Resolved a dependency management issue that incorrectly prompted for a Gravity Forms update before activating, installing, or updating GravityKit products.</li>
 				</ul>
 
-				<p><strong>Developer Updates:</strong></p>
+				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.
-					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.
+					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.</li>
+					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.</li>
 				</ul>
 
 				<h3>2.21.2 on March 28, 2024</h3>
