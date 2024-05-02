@@ -28,7 +28,11 @@ if ( '' !== $value ) {
 		}
 
 		if ( ! empty( $field_settings['number_format'] ) ) {
-			echo $field->get_value_entry_list( $value, $gravityview->entry->as_entry(), $gravityview->field->id, array(), $form );
+			$value = $field->get_value_entry_list( $value, $gravityview->entry->as_entry(), $gravityview->field->id, array(), $form );
+		}
+
+		if ( ! $decimals && empty( $field_settings['number_format'] ) ) {
+			echo $display_value;
 		} else {
 			echo $value;
 		}
