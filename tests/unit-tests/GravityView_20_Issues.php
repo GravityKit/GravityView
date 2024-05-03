@@ -591,6 +591,10 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'decimals' => 3 ) );
 
 		$this->assertEquals( '9.999,990', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'number_format' => false ) );
+
+		$this->assertEquals( '9999.990', $renderer->render( $field, $view, $form, $entry, $request ) );
 	}
 
 
