@@ -558,6 +558,42 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$this->assertTrue( remove_filter( 'gravityview_entries', $before_callback ) );
 	}
 
+
+
+	/**
+	 * @group field_html
+	 */
+	public function test_frontend_field_html_number_comma_type() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'9' => '9999.99',
+		) );
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$form = \GV\GF_Form::by_id( $form['id'] );
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view = \GV\View::from_post( $view );
+
+		$request = new \GV\Frontend_Request();
+		$renderer = new \GV\Field_Renderer();
+
+		$field = \GV\GF_Field::by_id( $form, '9' );
+
+		$field->field->numberFormat = 'decimal_comma';
+
+		$this->assertEquals( '9999,99', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'number_format' => true ) );
+
+		$this->assertEquals( '9.999,99', $renderer->render( $field, $view, $form, $entry, $request ) );
+		
+		$field->update_configuration( array( 'decimals' => 3 ) );
+
+		$this->assertEquals( '9.999,990', $renderer->render( $field, $view, $form, $entry, $request ) );
+	}
+
+
 	/**
 	 * https://secure.helpscout.net/conversation/673812806/16937/
 	 */
