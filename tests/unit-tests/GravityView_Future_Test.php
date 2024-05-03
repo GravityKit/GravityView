@@ -2894,9 +2894,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$this->assertEquals( '$7,982,489.24', $renderer->render( $field, $view, $form, $entry, $request ) );
 
-		$field->update_configuration( array( 'number_format' => true ) );
 
 		$field->field->numberFormat = 'decimal_dot';
+
+		$this->assertEquals( '7982489.23929', $renderer->render( $field, $view, $form, $entry, $request ) );
+
+		$field->update_configuration( array( 'number_format' => true ) );
 
 		$this->assertEquals( '7,982,489.23929', $renderer->render( $field, $view, $form, $entry, $request ) );
 
