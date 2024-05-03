@@ -74,15 +74,15 @@ final class GravityView_Plugin_Hooks_Gravity_Perks_Nested_Forms extends GravityV
 	private function add_custom_gpnf_merge_tags( array $tags ): array {
 		return array_merge( $tags, [
 			[
-				'label' => esc_html__( 'Parent Entry ID', 'gp-nested-forms', 'gk-gravityview' ),
+				'label' => esc_html__( 'Parent Entry ID', 'gk-gravityview' ),
 				'tag'   => '{Parent:entry_id}',
 			],
 			[
-				'label' => esc_html__( 'Parent Entry Form ID', 'gp-nested-forms', 'gk-gravityview' ),
+				'label' => esc_html__( 'Parent Entry Form ID', 'gk-gravityview' ),
 				'tag'   => '{Parent:form_id}',
 			],
 			[
-				'label' => esc_html__( 'Child Form Field ID', 'gp-nested-forms', 'gk-gravityview' ),
+				'label' => esc_html__( 'Child Form Field ID', 'gk-gravityview' ),
 				'tag'   => '{Parent:child_id}',
 			],
 		] );
