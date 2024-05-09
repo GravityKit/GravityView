@@ -60,7 +60,12 @@
 		this.$options_wrapper.append( $( '<div class="view-dropdown-options__body"></div>' ).append( this.$options_list ) );
 		this.$options_wrapper.append( $(
 			'<div class="view-dropdown-options__footer">' +
-			'	<a target="_blank" href="#">Learn more about view types &amp; layouts</a>' +
+			'	<a target="_blank" href="https://www.gravitykit.com/pricing/?utm_source=plugin&utm_medium=buy_now&utm_campaign=view_type">' +
+			'		<span>' + this.$el.data( 'label-learn-more' ) + '</span>' +
+			'		<svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+			'			<path d="M1 9.16659L9.33333 0.833252M9.33333 0.833252H1M9.33333 0.833252V9.16659" stroke="#2271B1" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>' +
+			'		</svg>' +
+			'	</a>' +
 			'</div>'
 		) );
 
@@ -331,6 +336,7 @@
 	 */
 	ViewDropDown.prototype.renderOptions = function () {
 		const $list = this.$options_list;
+		let placeholders = [];
 		// Clear old values
 		$list.html( '' );
 
@@ -346,42 +352,51 @@
 				icon = '<img src="' + $option.data( 'icon' ) + '" alt="Icon" />';
 			}
 
-			const license = $option.data( 'license' );
 			const buy_source = $option.data( 'buy-source' );
 			const action = $option.data( 'action' );
 
 			const id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
 			const $item = $(
-				'<div tabindex="0" id="' + id + '" role="option" aria-selected="false" class="view-dropdown-list-item" aria-disabled="' + $option.is( ':disabled' ) + '" data-value="' + $option.val() + '">' +
+				'<div' + ( $option.is( ':disabled' ) ? '' : ' tabindex="0"' ) + ' id="' + id + '" role="option" aria-selected="false" class="view-dropdown-list-item" aria-disabled="' + $option.is( ':disabled' ) + '" data-value="' + $option.val() + '">' +
 				'	<div class="view-dropdown-list-item__icon">' + icon + '</div>' +
-				( license
-						? ( '<div class="view-dropdown-list-item__license hidden">' +
-							'	<svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-							'   	<path d="M4 0C4.24397 0 4.45537 0.169044 4.50899 0.407096L4.77668 1.59548C4.95946 2.40689 5.59313 3.04056 6.40452 3.2233L7.5929 3.49099C7.83096 3.54463 8 3.75603 8 4C8 4.24397 7.83096 4.45537 7.5929 4.50901L6.40452 4.7767C5.59313 4.95944 4.95946 5.59311 4.77668 6.40452L4.50899 7.59291C4.45537 7.83096 4.24397 8 4 8C3.75603 8 3.54463 7.83096 3.49101 7.59291L3.22333 6.40452C3.04054 5.59311 2.40687 4.95944 1.59544 4.7767L0.407082 4.50901C0.169078 4.45537 0 4.24397 0 4C0 3.75603 0.169078 3.54463 0.407082 3.49099L1.59544 3.2233C2.40687 3.04056 3.04054 2.40689 3.22333 1.59548L3.49101 0.407096C3.54463 0.169044 3.75603 0 4 0Z" fill="currentColor"/>' +
-							'	</svg>' +
-							'	<span>' + license + '</span>' +
-							'</div>'
-						)
-						: ''
-				) +
 				'	<div class="view-dropdown-list-item__value">' +
 				'		<div class="view-dropdown-list-item__label">' + $option.data( 'title' ) +
-				( 'buy' === action ? ' <a class="view-dropdown-button--pill" href="' + buy_source + '" target="_blank">' + ( $dropdown.data( 'label-buy' ) || 'Buy Now' ) + '</a>' : "" ) +
 				( 'activate' === action ? ' <a role="button" data-action="activate" class="view-dropdown-button--pill" href="#">' + ( $dropdown.data( 'label-activate' ) || 'Activate' ) + '</a>' : "" ) +
 				( 'install' === action ? ' <a role="button" data-action="install" class="view-dropdown-button--pill" href="#">' + ( $dropdown.data( 'label-install' ) || 'Install' ) + '</a>' : "" ) +
 				'		</div>' +
 				'		<div class="view-dropdown-list-item__description">' + $option.data( 'description' ) + '</div>' +
 				'	</div>' +
-				'</div>' );
-
-			if ( license ) {
-				$item.addClass( 'view-dropdown-list-item--license' );
-			}
+				'</div>'
+			);
 
 			$item.data( 'option', $option );
 
-			$list.append( $item );
+			if ( 'buy' === action ) {
+				placeholders.push($item);
+			} else {
+				$list.append( $item );
+			}
 		} );
+
+		if (placeholders.length > 0) {
+			const $available = $(
+				'<div class="view-dropdown-list-available">' +
+				'	<div class="view-dropdown-list-available__header">' +
+				'		<div class="view-dropdown-list-available__heading">' +
+				'			<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0C7.42695 0 7.79691 0.295826 7.89073 0.712418L8.35918 2.79209C8.67906 4.21205 9.78797 5.32097 11.2079 5.64078L13.2876 6.10923C13.7042 6.20309 14 6.57306 14 7C14 7.42694 13.7042 7.79691 13.2876 7.89077L11.2079 8.35922C9.78797 8.67903 8.67906 9.78795 8.35918 11.2079L7.89073 13.2876C7.79691 13.7042 7.42695 14 7 14C6.57305 14 6.2031 13.7042 6.10927 13.2876L5.64082 11.2079C5.32094 9.78795 4.21203 8.67903 2.79203 8.35922L0.712393 7.89077C0.295887 7.79691 0 7.42694 0 7C0 6.57306 0.295887 6.20309 0.712393 6.10923L2.79203 5.64078C4.21203 5.32097 5.32094 4.21205 5.64082 2.79209L6.10927 0.712418C6.2031 0.295826 6.57305 0 7 0Z" fill="white"/></svg>' +
+				'			<span>'+ ( $dropdown.data( 'label-available' ) || 'Available' ) + '</span>' +
+				'		</div>' +
+				'		<div><a target="_blank" rel="nofollow noopener" class="view-dropdown-list-available__upgrade" href="https://www.gravitykit.com/pricing/?utm_source=plugin&utm_medium=buy_now&utm_campaign=view_type">'+ ( $dropdown.data( 'label-upgrade' ) || 'Upgrade' ) +'</a></div>' +
+				'	</div>' +
+				'	<div class="view-dropdown-list-available__options"></div> ' +
+				'</div>'
+			);
+			$( placeholders ).each( function ( i, el ) {
+				$available.find( '.view-dropdown-list-available__options' ).append( el );
+			} );
+
+			$list.append( $available );
+		}
 
 		this.refresh();
 	};
