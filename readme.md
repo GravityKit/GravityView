@@ -9,13 +9,13 @@ If you are using the plugin on a live site, please purchase a valid license from
 ----------
 ### Installation Instructions
 
-To install the plugin, download [the latest release](https://github.com/gravityview/GravityView/releases) to your WordPress plugins folder and then activate it.
+To install the plugin, download [the latest release](https://github.com/GravityKit/GravityView/releases) to your WordPress plugins folder and then activate it.
 
 ### For Developers
 
 If you wish to make changes to the plugin, you need to install the necessary dependencies and compile assets. First, a couple of prerequisites:
 
-1. Make sure that you have the full plugin source code by either cloning this repo or downloading the source code (not the versioned release) from the [Releases section](https://github.com/gravityview/GravityView/releases).
+1. Make sure that you have the full plugin source code by either cloning this repo or downloading the source code (not the versioned release) from the [Releases section](https://github.com/GravityKit/GravityView/releases).
 
 2. Install [Composer](https://getcomposer.org/)
 
@@ -24,8 +24,8 @@ If you wish to make changes to the plugin, you need to install the necessary dep
    - Run `npm install -g grunt-cli` if this the first time you've installed Node.js or switched to a new version
 
 Next, install dependencies:
-1. Run `composer public-install` to install Composer dependencies, including development dependencies, or `composer public-install-no-dev` if you don't need the development dependencies.
-   - If you have access to private GravityKit repositories, you can run `composer install` or `composer install --no-dev` instead.
+1. Run `composer public-install` to install Composer dependencies, including development dependencies, or `composer public-install-no-dev` if you don't need the development dependencies
+   - If you have access to private GravityKit repositories, you can run `composer install` or `composer install --no-dev` instead
    
 2. Run `npm install` to install Node.js dependencies
  

@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Export link View widget would cause a fatal error during multi-word searches.
+* Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.13.
