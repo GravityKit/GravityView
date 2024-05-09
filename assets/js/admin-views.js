@@ -1504,6 +1504,10 @@
 		 * @private
 		 */
 		_storeValue: function() {
+			if ( !viewConfiguration.wantedTemplate ) {
+				return;
+			}
+
 			if ( viewConfiguration._isViewDropDown() ) {
 				viewConfiguration.wantedTemplate.data( 'view-data' ).storeValue();
 			} else {
@@ -1595,7 +1599,7 @@
 				} );
 			} else {
 
-				if( ! slugmatch ) {
+				if( ! slugmatch || changeAllSection ) {
 					//change view configuration active areas
 					vcfg.updateActiveAreas( selectedTemplateId, ( selectedFormId * 1 ) );
 				} else {
@@ -1728,9 +1732,10 @@
 				activate: true,
 			};
 
+			const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
 			if ( JSON.stringify( payload ) !== '{}' ) {
 				const $pill = $( e.target );
-				$pill.addClass( 'is-idle' );
+				$pill.addClass( 'is-idle' ).html( $spinner );
 
 				$.when( viewConfiguration.server_request( action + '_product', payload ) )
 					.then( () => {

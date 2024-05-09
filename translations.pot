@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-30T15:04:18+00:00\n"
+"POT-Creation-Date: 2024-05-09T07:14:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
@@ -1941,23 +1941,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:464
+#: includes/class-admin-welcome.php:494
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:516
+#: includes/class-admin-welcome.php:546
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:554
+#: includes/class-admin-welcome.php:584
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:586
+#: includes/class-admin-welcome.php:616
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:587
+#: includes/class-admin-welcome.php:617
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -4020,23 +4020,23 @@ msgstr ""
 msgid "Don&rsquo;t show the full URL, only show the domain."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-workflow_current_status_timestamp.php:24
+#: includes/fields/class-gravityview-field-workflow_current_status_timestamp.php:30
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:160
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:187
 msgid "Workflow Current Status Timestamp"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-workflow_final_status.php:18
+#: includes/fields/class-gravityview-field-workflow_final_status.php:24
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:144
 msgid "Workflow Status"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-workflow_step.php:18
+#: includes/fields/class-gravityview-field-workflow_step.php:24
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:139
 msgid "Workflow Step"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-workflow_step.php:61
+#: includes/fields/class-gravityview-field-workflow_step.php:68
 msgid "Workflow Complete"
 msgstr ""
 
@@ -4084,6 +4084,18 @@ msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:116
 msgid "Editing entries in GravityView may also update a connected post."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-perks-nested-forms.php:77
+msgid "Parent Entry ID"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-perks-nested-forms.php:81
+msgid "Parent Entry Form ID"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-perks-nested-forms.php:85
+msgid "Child Form Field ID"
 msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-perks-nested-forms.php:109
@@ -6961,4 +6973,84 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""

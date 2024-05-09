@@ -1,3 +1,12 @@
+@keyframes spinner-animation {
+	0% {
+		transform: rotate(0deg)
+	}
+	to {
+		transform: rotate(359deg)
+	}
+}
+
 .view-dropdown {
 	position: absolute;
 	right: 0;
@@ -141,9 +150,11 @@
 
 		&[aria-disabled="true"] {
 			color: #95999B;
+
 			.view-dropdown-list-item__description {
 				color: #B1B6BB;
 			}
+
 			.view-dropdown-button--pill {
 				display: inherit;
 			}
@@ -168,12 +179,25 @@
 			background-color: #0a4b78;
 		}
 
+		.loading {
+			display: none;
+			width: 16px;
+			height: 16px;
+			margin: 2px;
+			animation: spinner-animation 1s cubic-bezier(.6, 0, .4, 1) infinite;
+		}
+
 		&.has-failed {
 			background-color: #C62D2D;
 		}
+
 		&.is-idle {
 			cursor: progress;
 			background: #999;
+
+			.loading {
+				display: block;
+			}
 		}
 	}
 
