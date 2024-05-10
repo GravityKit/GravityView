@@ -35,18 +35,22 @@ class GravityView_Default_Template_Search extends GravityView_Template {
 		 * @see  GravityView_Admin_Views::get_default_field_options() for Generic Field Options
 		 * @var array
 		 */
-		$field_options = array();
+		$field_options = [];
 
-		$areas = array(
-			array(
-				'1-1' => array(
-					array(
+		$areas = [
+			[
+				'1-1' => [
+					[
 						'areaid' => 'search-fields',
 						'title' => __('Search Fields', 'gk-gravityview' )
-					)
-				)
-			)
-		);
+					],
+					[
+						'areaid' => 'advanced-search-fields',
+						'title' => __('Advanced Search Fields', 'gk-gravityview' ),
+					]
+				],
+			]
+		];
 
 
 		parent::__construct( $id, $settings, $field_options, $areas );
