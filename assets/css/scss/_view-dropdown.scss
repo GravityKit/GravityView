@@ -145,6 +145,11 @@
 		cursor: pointer;
 		border: 2px solid #FFF;
 
+		&:hover {
+			background-color: #F3F4F5;
+			border-color: #DEDFE0;
+		}
+
 		&:focus {
 			background-color: #F3F4F5;
 			border-color: #DEDFE0;
