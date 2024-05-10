@@ -230,6 +230,7 @@
 
 		img {
 			max-height: 32px;
+			max-width: 34px;
 		}
 	}
 
@@ -304,5 +305,23 @@
 				background-color: $color-blue-70;
 			}
 		}
+	}
+
+	/**
+	 * Adjust position of the icon in the icon placeholder.
+	 */
+	div[data-value="diy_placeholder"] img,
+	div[data-value="datatables_table"] img {
+		position: relative;
+	}
+
+	div[data-value="diy_placeholder"] img {
+		top: -1px;
+		max-width: 30px;
+	}
+	div[data-value="datatables_table"] img {
+		top: -2px;
+		right: -3px;
+		max-width: 36px;
 	}
 }
