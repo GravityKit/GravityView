@@ -15,12 +15,15 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 <table class="form-table">
 <?php
-
 	GravityView_Render_Settings::render_setting_row( 'lightbox', $current_settings );
 
 	GravityView_Render_Settings::render_setting_row( 'show_only_approved', $current_settings );
 
 	GravityView_Render_Settings::render_setting_row( 'admin_show_all_statuses', $current_settings );
+
+	GravityView_Render_Settings::render_setting_row( 'caching', $current_settings );
+
+	GravityView_Render_Settings::render_setting_row( 'caching_entries', $current_settings );
 
 	do_action( 'gravityview_admin_directory_settings', $current_settings );
 ?>

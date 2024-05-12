@@ -253,7 +253,7 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 				}
 
 				// The templates weren't found; don't look this up again.
-				if( ! $located ) {
+				if ( ! $located ) {
 					$template_path_cache[ $this->filter_prefix ][ $cache_key ] = false;
 				}
 			}

@@ -33,4 +33,4 @@ class GravityView_Field_Quantity extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Quantity;
+new GravityView_Field_Quantity();

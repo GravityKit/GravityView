@@ -34,8 +34,8 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 	 * GravityView_Field_Is_Fulfilled constructor.
 	 */
 	public function __construct() {
-		$this->label = esc_html__( 'Is Fulfilled', 'gk-gravityview' );
-		$this->description = esc_html__( 'Indicates if the entry or order has been fulfilled.', 'gk-gravityview' );
+		$this->label                = esc_html__( 'Is Fulfilled', 'gk-gravityview' );
+		$this->description          = esc_html__( 'Indicates if the entry or order has been fulfilled.', 'gk-gravityview' );
 		$this->default_search_label = $this->label;
 
 		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', array( $this, 'get_content' ), 10, 4 );
@@ -53,15 +53,16 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 	 *
 	 * @param string $output HTML value output
 	 * @param array  $entry The GF entry array
-	 * @param  array $field_settings Settings for the particular GV field
-	 * @param array $field Current field being displayed
+	 * @param  array  $field_settings Settings for the particular GV field
+	 * @param array  $field Current field being displayed
 	 *
 	 * @return String values for this field based on the numeric values used by Gravity Forms
 	 */
 	public function get_content( $output, $entry = array(), $field_settings = array(), $field = array() ) {
 
 		/** Overridden by a template. */
-		if( ! empty( $field['field_path'] ) ) { return $output; }
+		if ( ! empty( $field['field_path'] ) ) {
+			return $output; }
 
 		return $this->get_string_from_value( $output );
 	}
@@ -93,11 +94,11 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 		switch ( intval( $value ) ) {
 			case self::NOT_FULFILLED:
 			default:
-				$return = __('Not Fulfilled', 'gk-gravityview');
+				$return = __( 'Not Fulfilled', 'gk-gravityview' );
 				break;
 
 			case self::FULFILLED:
-				$return = __('Fulfilled', 'gk-gravityview');
+				$return = __( 'Fulfilled', 'gk-gravityview' );
 				break;
 		}
 
@@ -108,16 +109,16 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 	 * Add {is_fulfilled} merge tag
 	 *
 	 * @since 1.16
-	 **
-	 * @param array $matches Array of Merge Tag matches found in text by preg_match_all
+	 * *
+	 * @param array  $matches Array of Merge Tag matches found in text by preg_match_all
 	 * @param string $text Text to replace
-	 * @param array $form Gravity Forms form array
-	 * @param array $entry Entry array
-	 * @param bool $url_encode Whether to URL-encode output
+	 * @param array  $form Gravity Forms form array
+	 * @param array  $entry Entry array
+	 * @param bool   $url_encode Whether to URL-encode output
 	 *
 	 * @return string Original text if {is_fulfilled} isn't found. Otherwise, "Not Fulfilled" or "Fulfilled"
 	 */
-	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false  ) {
+	public function replace_merge_tag( $matches = array(), $text = '', $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		$return = $text;
 
@@ -138,4 +139,4 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Is_Fulfilled;
+new GravityView_Field_Is_Fulfilled();

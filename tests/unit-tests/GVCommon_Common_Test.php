@@ -517,7 +517,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 	 * Note: This fails intermittently in local testing with PHPUnit 7.5.20 for an unknown reason. I believe this to be
 	 * purely a PHPUnit issue, because I don't understand why there would be a race condition related to $_GET['gvid'].
 	 * I've spent far too long trying to understand why it would trigger "Entry failed search_criteria and field_filters"
-	 * WP_Error. Let's hope remote unit testing doesn't have the same problems. {@see https://i.gravityview.co/tdNq84+}
+	 * WP_Error. Let's hope remote unit testing doesn't have the same problems. {@see https://i.gravitykit.com/tdNq84+}
 	 *
 	 * @since 2.7.2
 	 *
@@ -581,7 +581,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 		$cat_2 = wp_create_category( 'Category 2' );
 
 		foreach ( $form['fields'] as &$field ) {
-			if ( $field->type == 'post_category' ) {
+			if ( 'post_category' == $field->type ) {
 				$field = GFCommon::add_categories_as_choices( $field, '' );
 			}
 		}

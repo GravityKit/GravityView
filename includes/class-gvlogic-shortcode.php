@@ -17,7 +17,7 @@ class GVLogic_Shortcode {
 		return self::$instance;
 	}
 
-	public function shortcode( $atts, $content = '', $tag = '') {
+	public function shortcode( $atts, $content = '', $tag = '' ) {
 		$shortcode = new \GV\Shortcodes\gvlogic();
 		return $shortcode->callback( $atts, $content, $tag );
 	}

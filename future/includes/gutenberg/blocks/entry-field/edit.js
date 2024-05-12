@@ -12,6 +12,7 @@ import Disabled from 'shared/js/disabled';
 
 import './editor.scss';
 
+/*global gkGravityViewBlocks*/
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const {
 		viewId,
@@ -20,7 +21,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		fieldSettingOverrides,
 		previewBlock,
 		previewAsShortcode,
-		showPreviewImage
+		showPreviewImage,
 	} = attributes;
 
 	const previewImage = gkGravityViewBlocks[ blockName ]?.previewImage && <img className="preview-image" src={ gkGravityViewBlocks[ blockName ]?.previewImage } alt={ __( 'Block preview image.', 'gk-gravityview' ) } />;
@@ -29,13 +30,31 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		return previewImage;
 	}
 
-	if ( !gkGravityViewBlocks?.views?.length ) {
+	if ( ! gkGravityViewBlocks?.views?.length ) {
 		return <NoViewsNotice blockPreviewImage={ previewImage } newViewUrl={ gkGravityViewBlocks?.create_new_view_url } />;
 	}
 
 	const shouldPreview = ( previewBlock && viewId && entryId && fieldId );
 
 	const fieldSettingOverridesHelpLabel = __( 'These are space-separated overrides for field settings (e.g., title, label, etc.) using the key="value" format. See the [link]GravityView documentation[/link] for more information.', 'gk-gravityview' ).replace( '[link]', '<a href="https://docs.gravitykit.com/article/462-gvfield-embed-gravity-forms-field-values">' ).replace( '[/link]', '</a>' );
+
+	/**
+	 * Sets the selected View from the ViewSelect object.
+	 *
+	 * @since 2.21.2
+	 *
+	 * @param {number} _viewId The View ID.
+	 */
+	function selectView( _viewId ) {
+		const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );
+
+		setAttributes( {
+			viewId: _viewId,
+			secret: selectedView?.secret,
+			previewBlock: previewBlock && ! _viewId ? false : previewBlock,
+			entryId: '',
+		} );
+	}
 
 	return (
 		<div { ...useBlockProps() }>
@@ -46,7 +65,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( viewId ) => { setAttributes( { viewId, previewBlock: false, entryId: '' } ); } }
+								onChange={ selectView }
 							/>
 
 							<EntrySelector
@@ -98,7 +117,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 					<ViewSelector
 						viewId={ viewId }
-						onChange={ ( viewId ) => setAttributes( { viewId, previewBlock: false, entryId: '' } ) }
+						onChange={ selectView }
 					/>
 
 					<EntrySelector

@@ -19,8 +19,8 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	var $icon = 'dashicons-cart';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Unsubscribe', 'gk-gravityview' );
-		$this->description =  esc_attr__( 'Unsubscribe from a Payment-based entry.', 'gk-gravityview' );
+		$this->label       = esc_html__( 'Unsubscribe', 'gk-gravityview' );
+		$this->description = esc_attr__( 'Unsubscribe from a Payment-based entry.', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -48,12 +48,12 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 * Remove the logged in, new window and show as link options.
 	 * Add the allow unsubscribe for all admins option.
 	 *
-	 * @param array $field_options The options.
-	 * @param string $template_id The template ID.
+	 * @param array            $field_options The options.
+	 * @param string           $template_id The template ID.
 	 * @param int|string|float $field_id The field ID.
-	 * @param string $context The configuration context (edit, single, etc.)
-	 * @param string $input_type The input type.
-	 * @param int $form_id The form ID.
+	 * @param string           $context The configuration context (edit, single, etc.)
+	 * @param string           $input_type The input type.
+	 * @param int              $form_id The form ID.
 	 *
 	 * @return array The field options.
 	 */
@@ -83,7 +83,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 *
 	 * Hide the field for non-logged in users for sure.
 	 *
-	 * @param bool $visible Consider visible or not.
+	 * @param bool      $visible Consider visible or not.
 	 * @param \GV\Field $field The field.
 	 *
 	 * @return bool Visible or not.
@@ -101,9 +101,9 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 *
 	 * Called from `gravityview_entry_default_fields`
 	 *
-	 * @param array         $entry_default_fields An array of available for configuration
-	 * @param array|int     $form                 Form ID or array
-	 * @param string        $context              The configuration context (edit, single, etc.)
+	 * @param array     $entry_default_fields An array of available for configuration
+	 * @param array|int $form                 Form ID or array
+	 * @param string    $context              The configuration context (edit, single, etc.)
 	 *
 	 * @return array The array of available default fields.
 	 */
@@ -127,7 +127,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 
 			foreach ( $registered as $addon ) {
 				if ( method_exists( $addon, 'cancel_subscription' ) && is_callable( array( $addon, 'get_instance' ) ) ) {
-					$addon = $addon::get_instance();
+					$addon                                     = $addon::get_instance();
 					$subscription_addons[ $addon->get_slug() ] = $addon;
 				}
 			}
@@ -139,8 +139,8 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 
 		foreach ( $feeds as $feed ) {
 			if ( isset( $subscription_addons[ $feed['addon_slug'] ] ) && 'subscription' === \GV\Utils::get( $feed, 'meta/transactionType' ) ) {
-				if ( ! isset( $entry_default_fields["{$this->name}"] ) && 'edit' !== $context ) {
-					$entry_default_fields["{$this->name}"] = array(
+				if ( ! isset( $entry_default_fields[ "{$this->name}" ] ) && 'edit' !== $context ) {
+					$entry_default_fields[ "{$this->name}" ] = array(
 						'label' => $this->label,
 						'desc'  => $this->description,
 						'type'  => $this->name,
@@ -159,9 +159,9 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	 *
 	 * Called from `gravityview_field_entry_value_unsubscribe`
 	 *
-	 * @param string $output The output.
-	 * @param array $entry The entry.
-	 * @param array $field_settings The field settings.
+	 * @param string    $output The output.
+	 * @param array     $entry The entry.
+	 * @param array     $field_settings The field settings.
 	 * @param \GV\Field $field The field.
 	 *
 	 * @return string The content.
@@ -242,7 +242,7 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 
 			foreach ( $registered as $addon ) {
 				if ( method_exists( $addon, 'cancel_subscription' ) ) {
-					$addon = $addon::get_instance();
+					$addon                                     = $addon::get_instance();
 					$subscription_addons[ $addon->get_slug() ] = $addon;
 				}
 			}
@@ -278,4 +278,4 @@ class GravityView_Field_Unsubscribe extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Unsubscribe;
+new GravityView_Field_Unsubscribe();

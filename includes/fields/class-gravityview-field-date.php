@@ -33,11 +33,11 @@ class GravityView_Field_Date extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$this->add_field_support('date_display', $field_options );
+		$this->add_field_support( 'date_display', $field_options );
 
 		return $field_options;
 	}
@@ -48,11 +48,11 @@ class GravityView_Field_Date extends GravityView_Field {
 	 * @since 2.0
 	 * @uses  GravityView_Merge_Tags::format_date
 	 *
-	 * @param string $return The current merge tag value to be filtered.
-	 * @param string $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
-	 * @param string $value The original merge tag value, passed from Gravity Forms
-	 * @param string $merge_tag If the merge tag being executed is an individual field merge tag (i.e. {Name:3}), this variable will contain the field's ID. If not, this variable will contain the name of the merge tag (i.e. all_fields).
-	 * @param string $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
+	 * @param string   $return The current merge tag value to be filtered.
+	 * @param string   $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
+	 * @param string   $value The original merge tag value, passed from Gravity Forms
+	 * @param string   $merge_tag If the merge tag being executed is an individual field merge tag (i.e. {Name:3}), this variable will contain the field's ID. If not, this variable will contain the name of the merge tag (i.e. all_fields).
+	 * @param string   $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
 	 * @param GF_Field $field The current field.
 	 *
 	 * @return string If Date field, run it through GravityView_Merge_Tags::format_date; otherwise, return the original value
@@ -72,11 +72,11 @@ class GravityView_Field_Date extends GravityView_Field {
 	 * @since 1.16.4
 
 	 * @param string $date_format The Gravity Forms date format for the field. Default: "mdy"
-	 * @param int $field_id The ID of the field. Used to figure out full date/day/month/year
+	 * @param int    $field_id The ID of the field. Used to figure out full date/day/month/year
 	 *
 	 * @return string PHP date format for the date
 	 */
-	static public function date_display( $value = '', $date_format = 'mdy', $field_id = 0 ) {
+	public static function date_display( $value = '', $date_format = 'mdy', $field_id = 0 ) {
 
 		// Let Gravity Forms figure out, based on the date format, what day/month/year values are.
 		$parsed_date = GFCommon::parse_date( $value, $date_format );
@@ -85,7 +85,7 @@ class GravityView_Field_Date extends GravityView_Field {
 		$field_input_id = gravityview_get_input_id_from_id( $field_id );
 
 		$date_field_output = '';
-		switch( $field_input_id ) {
+		switch ( $field_input_id ) {
 			case 1:
 				$date_field_output = \GV\Utils::get( $parsed_date, 'month' );
 				break;
@@ -98,7 +98,8 @@ class GravityView_Field_Date extends GravityView_Field {
 		}
 
 		/**
-		 * @filter `gravityview_date_format` Whether to override the Gravity Forms date format with a PHP date format
+		 * Whether to override the Gravity Forms date format with a PHP date format.
+		 *
 		 * @see https://codex.wordpress.org/Formatting_Date_and_Time
 		 * @param null|string Date Format (default: $field->dateFormat)
 		 */
@@ -110,7 +111,6 @@ class GravityView_Field_Date extends GravityView_Field {
 		// Note: The output might be empty because $parsed_date didn't parse correctly.
 		return ( '' === $date_field_output ) ? $full_date : $date_field_output;
 	}
-
 }
 
-new GravityView_Field_Date;
+new GravityView_Field_Date();

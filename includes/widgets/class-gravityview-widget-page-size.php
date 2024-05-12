@@ -1,5 +1,6 @@
 <?php
 namespace GV\Widgets;
+
 /**
  * Widget to display page size
  *
@@ -13,6 +14,7 @@ class Page_Size extends \GV\Widget {
 
 	/**
 	 * Does this get displayed on a single entry?
+	 *
 	 * @var boolean
 	 */
 	protected $show_on_single = false;
@@ -62,12 +64,13 @@ class Page_Size extends \GV\Widget {
 		foreach ( $sizes as $size ) {
 			$page_sizes [] = array(
 				'value' => $size,
-				'text'  => $size
+				'text'  => $size,
 			);
 		}
 
 		/**
-		 * @filter `gravityview/widget/page_size/page_sizes` Filter the available page sizes as needed
+		 * Filter the available page sizes as needed.
+		 *
 		 * @param array $sizes The sizes, with `value` and `text` keys. `text` key used as HTML option label.
 		 * @param \GV\Template_Context $context The context.
 		 */
@@ -78,51 +81,58 @@ class Page_Size extends \GV\Widget {
 
 	/**
 	 * Render the page size widget
-     *
-	 * @param array $widget_args The Widget shortcode args.
-	 * @param string $content The content.
+	 *
+	 * @param array                       $widget_args The Widget shortcode args.
+	 * @param string                      $content The content.
 	 * @param string|\GV\Template_Context $context The context, if available.
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = null ) {
 
-		if( ! $this->pre_render_frontend( $context ) ) {
+		if ( ! $this->pre_render_frontend( $context ) ) {
 			return;
 		}
 
 		$page_size = (int) \GV\Utils::_GET( 'page_size', $context->view->settings->get( 'page_size' ) );
 
-		$settings = shortcode_atts( array(
-			'label'   => __( 'Page Size', 'gk-gravityview' ),
-			'choices' => self::get_page_sizes( $context ),
-			'default_choice_text' => __( 'Results Per Page', 'gk-gravityview' ),
-		), $widget_args, 'gravityview_widget_page_size' );
+		$settings = shortcode_atts(
+			array(
+				'label'               => __( 'Page Size', 'gk-gravityview' ),
+				'choices'             => self::get_page_sizes( $context ),
+				'default_choice_text' => __( 'Results Per Page', 'gk-gravityview' ),
+			),
+			$widget_args,
+			'gravityview_widget_page_size'
+		);
 
 		/**
-		 * @filter `gravityview/widget/page_size/settings` Filter the settings for the widget
+		 * Filter the settings for the widget.
+		 *
 		 * @param array $settings Configuration for how output will display, with `label`, `choices`, `default_choice_text` keys
 		 * @param \GV\Template_Context $context The context.
 		 */
 		$settings = apply_filters( 'gravityview/widget/page_size/settings', $settings, $context );
 
 		?>
-        <div class="gv-widget-page-size">
-            <form method="get" action="<?php echo esc_url( add_query_arg( array() ) ); ?>" onchange="this.submit();">
-                <div>
-                    <?php if( ! empty( $settings['label'] ) ) { ?>
-                    <label for="gv-page_size"><?php echo esc_html( $settings['label'] ); ?></label>
-                    <?php } ?>
-                    <select name="page_size" id="gv-page_size">
-                        <option value=""><?php echo esc_html( $settings['default_choice_text'] ); ?></option>
+		<div class="gv-widget-page-size">
+			<form method="get" action="<?php echo esc_url( add_query_arg( array() ) ); ?>" onchange="this.submit();">
+				<div>
+					<?php if ( ! empty( $settings['label'] ) ) { ?>
+					<label for="gv-page_size"><?php echo esc_html( $settings['label'] ); ?></label>
+					<?php } ?>
+					<select name="page_size" id="gv-page_size">
+						<option value=""><?php echo esc_html( $settings['default_choice_text'] ); ?></option>
 						<?php
-						foreach ( $settings['choices'] as $choice ) { ?>
-                            <option value='<?php echo esc_attr( $choice['value'] ); ?>'<?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $page_size ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
+						foreach ( $settings['choices'] as $choice ) {
+							?>
+							<option value='<?php echo esc_attr( $choice['value'] ); ?>'<?php gv_selected( esc_attr( $choice['value'] ), esc_attr( $page_size ), true ); ?>><?php echo esc_html( $choice['text'] ); ?></option>
 						<?php } ?>
-                    </select>
-                    <input type="submit" value="Submit" style="visibility: hidden; position: absolute;" /><?php
-                    if( ! empty( $_GET ) ) {
-                        $get = $_GET;
-                        unset( $get['page_size'] );
-	                    foreach ( $get as $key => $value ) {
+					</select>
+					<input type="submit" value="Submit" style="visibility: hidden; position: absolute;" />
+					<?php
+					if ( ! empty( $_GET ) ) {
+						$get = $_GET;
+						unset( $get['page_size'] );
+						foreach ( $get as $key => $value ) {
 							if ( is_array( $value ) ) {
 								foreach ( $value as $_key => $_value ) {
 									printf( '<input type="hidden" name="%s[%s]" value="%s" />', esc_attr( $key ), esc_attr( $_key ), esc_attr( $_value ) );
@@ -130,12 +140,12 @@ class Page_Size extends \GV\Widget {
 							} else {
 								printf( '<input type="hidden" name="%s" value="%s" />', esc_attr( $key ), esc_attr( $value ) );
 							}
-	                    }
-                    }
-                    ?>
-                </div>
-            </form>
-        </div>
+						}
+					}
+					?>
+				</div>
+			</form>
+		</div>
 		<?php
 	}
 
@@ -164,9 +174,11 @@ class Page_Size extends \GV\Widget {
 			return;
 		}
 
-		$context = \GV\Template_Context::from_template( array(
-			'view' => $view,
-		) );
+		$context = \GV\Template_Context::from_template(
+			array(
+				'view' => $view,
+			)
+		);
 
 		if ( ! in_array( (int) $page_size, wp_list_pluck( self::get_page_sizes( $context ), 'value' ), true ) ) {
 			gravityview()->log->warning( 'The passed page size is not allowed: {page_size}. Not modifying result.', array( 'page_size' => $page_size ) );
@@ -177,4 +189,4 @@ class Page_Size extends \GV\Widget {
 	}
 }
 
-new Page_Size;
+new Page_Size();

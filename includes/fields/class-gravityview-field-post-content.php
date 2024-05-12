@@ -28,11 +28,11 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 
 		unset( $field_options['show_as_link'] );
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$this->add_field_support('dynamic_data', $field_options );
+		$this->add_field_support( 'dynamic_data', $field_options );
 
 		return $field_options;
 	}
@@ -40,19 +40,19 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 	/**
 	 * Returns the field inner markup.
 	 *
-	 * @param array $form The Form Object currently being processed.
-	 * @param string|array $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
-	 * @param null|array $entry Null or the Entry Object currently being edited.
+	 * @param array                                             $form The Form Object currently being processed.
+	 * @param string|array                                      $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
+	 * @param null|array                                        $entry Null or the Entry Object currently being edited.
 	 * @param null|GF_Field_Post_Content The field being edited.
 	 *
 	 * @return string
 	 */
 	public function get_field_input( $form, $value = '', $entry = null, GF_Field_Post_Content $field = null ) {
 
-		$id    = (int) $field->id;
+		$id         = (int) $field->id;
 		$input_name = "input_{$id}";
-		$class = esc_attr( $field->size );
-		$tabindex = $field->get_tabindex();
+		$class      = esc_attr( $field->size );
+		$tabindex   = $field->get_tabindex();
 
 		$editor_settings = array(
 			'editor_class'  => "textarea {$class}",
@@ -60,13 +60,14 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 			'textarea_rows' => 15,
 			'tabindex'      => $tabindex,
 			'media_buttons' => false,
-			'quicktags' => false,
-			'logic_event' => $field->get_conditional_logic_event( 'keyup' ),
-			'placeholder' => $field->get_field_placeholder_attribute(),
+			'quicktags'     => false,
+			'logic_event'   => $field->get_conditional_logic_event( 'keyup' ),
+			'placeholder'   => $field->get_field_placeholder_attribute(),
 		);
 
 		/**
-		 * @filter `gravityview/edit_entry/post_content/wp_editor_settings` Modify the settings passed to the Post Content wp_editor()
+		 * Modify the settings passed to the Post Content wp_editor().
+		 *
 		 * @see wp_editor() For the options available
 		 * @since 1.7
 		 * @param array $editor_settings Array of settings to be passed to wp_editor(). Note: there are also two additional values in the array: `logic_event` and `placehodler`, added to the textarea HTML by GravityView.
@@ -85,7 +86,6 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 
 		return sprintf( "<div class='ginput_container ginput_container_post_content'>%s</div>", trim( $editor ) );
 	}
-
 }
 
-new GravityView_Field_Post_Content;
+new GravityView_Field_Post_Content();

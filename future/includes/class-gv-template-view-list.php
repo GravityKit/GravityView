@@ -22,7 +22,7 @@ class View_List_Template extends View_Template {
 	 *
 	 * @param \GV\Field $field The field to output.
 	 * @param \GV\Entry $entry The entry.
-	 * @param array $extras Extra stuff, like wpautop, etc.
+	 * @param array     $extras Extra stuff, like wpautop, etc.
 	 *
 	 * @return string
 	 */
@@ -47,15 +47,17 @@ class View_List_Template extends View_Template {
 		/**
 		 * Push legacy entry context.
 		 */
-		\GV\Mocks\Legacy_Context::load( array(
-			'entry' => $entry,
-			'form' => $form,
-		) );
+		\GV\Mocks\Legacy_Context::load(
+			array(
+				'entry' => $entry,
+				'form'  => $form,
+			)
+		);
 
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		$renderer = new Field_Renderer();
-		$source = is_numeric( $field->ID ) ? $form : new Internal_Source();
+		$source   = is_numeric( $field->ID ) ? $form : new Internal_Source();
 
 		$value = $renderer->render( $field, $this->view, $source, $entry, $this->request );
 
@@ -66,7 +68,8 @@ class View_List_Template extends View_Template {
 		$label = apply_filters( 'gravityview/template/field_label', $label, $field->as_configuration(), $form->form ? $form->form : null, null );
 
 		/**
-		 * @filter `gravityview/template/field/label` Override the field label.
+		 * Override the field label.
+		 *
 		 * @since 2.0
 		 * @param string $label The label to override.
 		 * @param \GV\Template_Context $context The context.
@@ -84,10 +87,10 @@ class View_List_Template extends View_Template {
 			$extras['field'] = $field->as_configuration();
 		}
 
-		$extras['entry'] = $entry->as_entry();
+		$extras['entry']      = $entry->as_entry();
 		$extras['hide_empty'] = $hide_empty;
-		$extras['label'] = $label;
-		$extras['value'] = $value;
+		$extras['label']      = $label;
+		$extras['value']      = $value;
 
 		return \gravityview_field_output( $extras, $context );
 	}
@@ -108,8 +111,8 @@ class View_List_Template extends View_Template {
 
 		$vars = array();
 		foreach ( $zones as $zone ) {
-			$zone_var = str_replace( '-', '_', $zone );
-			$vars[ $zone_var ] = $this->view->fields->by_position( 'directory_list-' . $zone )->by_visible( $this->view );
+			$zone_var                = str_replace( '-', '_', $zone );
+			$vars[ $zone_var ]       = $this->view->fields->by_position( 'directory_list-' . $zone )->by_visible( $this->view );
 			$vars[ "has_$zone_var" ] = $vars[ $zone_var ]->count();
 		}
 
@@ -121,15 +124,16 @@ class View_List_Template extends View_Template {
 	 *
 	 * Modify of the class of a row.
 	 *
-	 * @param string $class The class.
-	 * @param \GV\Entry $entry The entry.
+	 * @param string                           $class The class.
+	 * @param \GV\Entry                        $entry The entry.
 	 * @param \GV\Template_Context The context.
 	 *
 	 * @return string The classes.
 	 */
 	public static function entry_class( $class, $entry, $context ) {
 		/**
-		 * @filter `gravityview_entry_class` Modify the class applied to the entry row.
+		 * Modify the class applied to the entry row.
+		 *
 		 * @param string $class Existing class.
 		 * @param array $entry Current entry being displayed
 		 * @param \GravityView_View $this Current GravityView_View object
@@ -139,7 +143,8 @@ class View_List_Template extends View_Template {
 		$class = apply_filters( 'gravityview_entry_class', $class, $entry->as_entry(), \GravityView_View::getInstance() );
 
 		/**
-		 * @filter `gravityview/template/list/entry/class` Modify the class aplied to the entry row.
+		 * Modify the class aplied to the entry row.
+		 *
 		 * @param string $class The existing class.
 		 * @param \GV\Template_Context The context.
 		 * @return string The modified class.
@@ -158,14 +163,16 @@ class View_List_Template extends View_Template {
 	 */
 	public static function body_before( $context ) {
 		/**
-		 * @action `gravityview/template/list/body/before` Output inside the `tbody` of the list.
+		 * of the list.
+		 *
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/list/body/before', $context );
 
 		/**
-		* @action `gravityview_list_body_before` Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
+		* Inside the `tbody`, before any rows are rendered. Can be used to insert additional rows.
+		 *
 		* @deprecated Use `gravityview/template/list/body/before`
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
@@ -184,14 +191,16 @@ class View_List_Template extends View_Template {
 	 */
 	public static function body_after( $context ) {
 		/**
-		 * @action `gravityview/template/list/body/after` Output inside the `tbody` of the list at the end.
+		 * of the list at the end.
+		 *
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/list/body/after', $context );
 
 		/**
-		* @action `gravityview_list_body_after` Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
+		* Inside the `tbody`, after any rows are rendered. Can be used to insert additional rows.
+		 *
 		* @deprecated Use `gravityview/template/list/body/after`
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
@@ -207,9 +216,9 @@ class View_List_Template extends View_Template {
 	 *
 	 * Output inside the `entry` of the list.
 	 *
-	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Entry            $entry The entry.
 	 * @param \GV\Template_Context $context The 2.0 context.
-	 * @param string $zone The list zone (footer, image, title, etc.).
+	 * @param string               $zone The list zone (footer, image, title, etc.).
 	 *
 	 * @return void
 	 */
@@ -217,7 +226,8 @@ class View_List_Template extends View_Template {
 		$zone = str_replace( '//', '/', "/$zone/" );
 
 		/**
-		 * @action `gravityview/template/list/entry/$zone/before` Output inside the `entry` of the list at the end.
+		 * of the list at the end.
+		 *
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
@@ -226,7 +236,8 @@ class View_List_Template extends View_Template {
 		$zone = str_replace( '/', '_', $zone );
 
 		/**
-		* @action `gravityview_list_entry_$zone_before` Inside the `entry`, before any rows are rendered. Can be used to insert additional rows.
+		* Inside the `entry`, before any rows are rendered. Can be used to insert additional rows.
+		 *
 		* @deprecated Use `gravityview/template/list/entry/$zone/before`
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.
@@ -242,9 +253,9 @@ class View_List_Template extends View_Template {
 	 *
 	 * Output inside the `entry` of the list.
 	 *
-	 * @param \GV\Entry $entry The entry.
+	 * @param \GV\Entry            $entry The entry.
 	 * @param \GV\Template_Context $context The 2.0 context.
-	 * @param string $zone The list zone (footer, image, title, etc.).
+	 * @param string               $zone The list zone (footer, image, title, etc.).
 	 *
 	 * @return void
 	 */
@@ -252,7 +263,8 @@ class View_List_Template extends View_Template {
 		$zone = str_replace( '//', '/', "/$zone/" );
 
 		/**
-		 * @action `gravityview/template/list/entry/$zone/after` Output inside the `entry` of the list at the end.
+		 * of the list at the end.
+		 *
 		 * @since 2.0
 		 * @param \GV\Template_Context $context The template context.
 		 */
@@ -261,7 +273,8 @@ class View_List_Template extends View_Template {
 		$zone = str_replace( '/', '_', $zone );
 
 		/**
-		* @action `gravityview_list_entry_$zone_after` Inside the `entry`, after any rows are rendered. Can be used to insert additional rows.
+		* Inside the `entry`, after any rows are rendered. Can be used to insert additional rows.
+		 *
 		* @deprecated Use `gravityview/template/list/entry/after`
 		* @since 1.0.7
 		* @param \GravityView_View $gravityview_view Current GravityView_View object.

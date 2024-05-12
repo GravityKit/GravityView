@@ -7,7 +7,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 }
 
 /**
- * Filtering window settings: 
+ * Filtering window settings:
  *
  * Offset and limit, pagination.
  */
@@ -29,7 +29,7 @@ class Entry_Offset {
 	public function to_paging( $page = 1 ) {
 		return array(
 			'page_size' => $this->limit,
-			'offset' => ( ( $page - 1 ) * $this->limit ) + $this->offset,
+			'offset'    => ( ( $page - 1 ) * $this->limit ) + $this->offset,
 		);
 	}
 }

@@ -19,13 +19,13 @@ class View {
 	 * @return array
 	 */
 	public function modify_block_meta( $block_meta ) {
-		return [
+		return array(
 			'title'           => __( 'GravityView View', 'gk-gravityview' ),
-			'render_callback' => [ $this, 'render' ],
-			'localization'    => [
-				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg'
-			]
-		];
+			'render_callback' => array( $this, 'render' ),
+			'localization'    => array(
+				'previewImage' => untrailingslashit( plugin_dir_url( __FILE__ ) ) . '/preview.svg',
+			),
+		);
 	}
 
 	/**
@@ -37,12 +37,15 @@ class View {
 	 *
 	 * @return string $output
 	 */
-	static function render( $block_attributes = [] ) {
+	static function render( $block_attributes = array() ) {
+		$shortcode_attributes        = [];
+		$mapped_shortcode_attributes = \GV\Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block_attributes );
 
-		$shortcode_attributes = \GV\Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block_attributes );
-
-		foreach ( $shortcode_attributes as $attribute => $value ) {
+		foreach ( $mapped_shortcode_attributes as $attribute => $value ) {
 			$value = esc_attr( sanitize_text_field( $value ) );
+			if ( empty( $value ) ) {
+				continue;
+			}
 
 			$shortcode_attributes[] = sprintf(
 				'%s="%s"',
@@ -54,7 +57,13 @@ class View {
 		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_attributes ) );
 
 		if ( Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
-			return json_encode( [ 'content' => $shortcode, 'script' => '', 'styles' => '' ] );
+			return wp_json_encode(
+				array(
+					'content' => $shortcode,
+					'script'  => '',
+					'styles'  => '',
+				)
+			);
 		}
 
 		// Gravity Forms outputs JS not wrapped in <script> tags that's then displayed in the block preview.

@@ -50,7 +50,7 @@ final class Core {
 	 */
 	public static function get() {
 		if ( ! self::$__instance instanceof self ) {
-			self::$__instance = new self;
+			self::$__instance = new self();
 		}
 		return self::$__instance;
 	}
@@ -61,7 +61,7 @@ final class Core {
 	 * Activation handlers, rewrites, post type registration.
 	 */
 	public static function bootstrap() {
-		require_once dirname( __FILE__ ) . '/class-gv-plugin.php';
+		require_once __DIR__ . '/class-gv-plugin.php';
 		Plugin::get()->register_activation_hooks();
 	}
 
@@ -88,7 +88,8 @@ final class Core {
 		/** Enable logging. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-logger.php' );
 		/**
-		 * @filter `gravityview/logger` Filter the logger instance being used for logging.
+		 * Filter the logger instance being used for logging.
+		 *
 		 * @param \GV\Logger $logger The logger instance.
 		 */
 		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
@@ -114,14 +115,14 @@ final class Core {
 		/** Require critical legacy core files. @todo Deprecate */
 		require_once $this->plugin->dir( 'includes/import-functions.php' );
 		require_once $this->plugin->dir( 'includes/helper-functions.php' );
-		require_once $this->plugin->dir( 'includes/class-common.php');
-		require_once $this->plugin->dir( 'includes/connector-functions.php');
+		require_once $this->plugin->dir( 'includes/class-common.php' );
+		require_once $this->plugin->dir( 'includes/connector-functions.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-compatibility.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-roles-capabilities.php' );
 		require_once $this->plugin->dir( 'includes/class-gravityview-admin-notices.php' );
 		require_once $this->plugin->dir( 'includes/class-admin.php' );
-		require_once $this->plugin->dir( 'includes/class-post-types.php');
-		require_once $this->plugin->dir( 'includes/class-cache.php');
+		require_once $this->plugin->dir( 'includes/class-post-types.php' );
+		require_once $this->plugin->dir( 'includes/class-cache.php' );
 
 		/**
 		 * GravityView extensions and widgets.
@@ -132,6 +133,13 @@ final class Core {
 		/** More legacy core. @todo Deprecate */
 		$this->plugin->include_legacy_core();
 
+		/** Register the gravityview post type upon WordPress core init. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
+		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
+		add_action( 'init', array( '\GV\View', 'add_rewrite_endpoint' ) );
+		add_filter( 'map_meta_cap', array( '\GV\View', 'restrict' ), 11, 4 );
+		add_action( 'template_redirect', array( '\GV\View', 'template_redirect' ) );
+		add_action( 'the_content', array( '\GV\View', 'content' ) );
 		/**
 		 * Stop all further functionality from loading if the WordPress
 		 * plugin is incompatible with the current environment.
@@ -140,16 +148,10 @@ final class Core {
 		 */
 		if ( ! $this->plugin->is_compatible() ) {
 			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
+
 			return;
 		}
 
-		/** Register the gravityview post type upon WordPress core init. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
-		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
-		add_action( 'init', array( '\GV\View', 'add_rewrite_endpoint' ) );
-		add_filter( 'map_meta_cap', array( '\GV\View', 'restrict' ), 11, 4 );
-		add_action( 'template_redirect', array( '\GV\View', 'template_redirect' ) );
-		add_action( 'the_content', array( '\GV\View', 'content' ) );
 
 		/** Add rewrite endpoint for single-entry URLs. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
@@ -238,7 +240,7 @@ final class Core {
 		add_action( 'clean_post_cache', '\GV\View::_flush_cache' );
 
 		/**
-		 * @action `gravityview/loaded` The core has been loaded.
+		 * The core has been loaded.
 		 *
 		 * Note: this is a very early load hook, not all of WordPress core has been loaded here.
 		 *  `init` hasn't been called yet.

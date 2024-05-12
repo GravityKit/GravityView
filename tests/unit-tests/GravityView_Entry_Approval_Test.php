@@ -38,7 +38,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers GravityView_Entry_Approval::_send_notifications()
+	 * @covers GravityView_Notifications::send_notifications()
 	 * @covers GravityView_Entry_Approval::_trigger_notifications()
 	 */
 	public function test_send_notifications() {

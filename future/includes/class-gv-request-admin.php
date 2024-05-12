@@ -38,28 +38,29 @@ class Admin_Request extends Request {
 		 */
 		$is_page = false;
 
-		if( function_exists( '\get_current_screen' ) || function_exists( 'get_current_screen' ) ) {
+		if ( function_exists( '\get_current_screen' ) || function_exists( 'get_current_screen' ) ) {
 			$current_screen = \get_current_screen();
 		} else {
 			$current_screen = false;
 		}
 
-		if ( $current_screen && $current_screen->post_type == 'gravityview' ) {
+		if ( $current_screen && 'gravityview' == $current_screen->post_type ) {
 			if ( 'edit' === $current_screen->base ) {
 				$is_page = 'views';
 			} elseif ( 'post' === $current_screen->base ) {
 				$is_page = 'single';
-			} elseif( 'gravityview_page_gv-changelog' === $current_screen->id ) {
+			} elseif ( 'gravityview_page_gv-changelog' === $current_screen->id ) {
 				$is_page = 'changelog';
-			} elseif( 'gravityview_page_gv-getting-started' === $current_screen->id ) {
+			} elseif ( 'gravityview_page_gv-getting-started' === $current_screen->id ) {
 				$is_page = 'getting-started';
-			} elseif( 'gravityview_page_gv-credits' === $current_screen->id ) {
+			} elseif ( 'gravityview_page_gv-credits' === $current_screen->id ) {
 				$is_page = 'credits';
 			}
 		}
 
 		/**
-		 * @filter `gravityview_is_admin_page` Is the current admin page a GravityView-related page?
+		 * Is the current admin page a GravityView-related page?
+		 *
 		 * @param string|bool $is_page If false, no. If string, the name of the page (`single`, `settings`, or `views`)
 		 * @param string $hook The name of the page to check against. Is passed to the method.
 		 */

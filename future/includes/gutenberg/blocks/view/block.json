@@ -22,6 +22,10 @@
       "default": 0,
       "type": "number"
     },
+    "secret": {
+      "default": null,
+      "type": "string"
+    },
     "pageSize": {
       "default": "",
       "type": "string"

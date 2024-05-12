@@ -20,7 +20,8 @@ $gravityview->template->get_template_part( 'table/table', 'footer' );
 $content = ob_get_clean();
 
 /**
- * @filter `gravityview/view/wrapper_container` Modify the wrapper container.
+ * Modify the wrapper container.
+ *
  * @since  2.15
  *
  * @param string   $wrapper_container Wrapper container HTML markup

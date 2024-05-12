@@ -12,12 +12,12 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 }
 
 /** @var \GV\Field $field */
-$field = $gravityview->field;
+$field         = $gravityview->field;
 $display_value = $gravityview->display_value;
-$input_id = gravityview_get_input_id_from_id( $field->ID );
+$input_id      = gravityview_get_input_id_from_id( $field->ID );
 
 // Used in filters below.
-$return_true = function() {
+$return_true = function () {
 	return true;
 };
 
@@ -36,7 +36,6 @@ switch ( $gravityview->field->field->inputType ) {
 		echo $display_value;
 		return;  // Return early
 	case 'checkbox':
-
 		// Display the <ul>
 		if ( ! $input_id ) {
 			echo $display_value;
@@ -56,10 +55,9 @@ switch ( $gravityview->field->field->inputType ) {
 
 		return; // Return early
 	case 'likert':
+		if ( class_exists( 'GFSurvey' ) && is_callable( array( 'GFSurvey', 'get_instance' ) ) ) {
 
-		if ( class_exists( 'GFSurvey' ) && is_callable( array('GFSurvey', 'get_instance') ) ) {
-
-			if( version_compare( GFSurvey::get_instance()->get_version(), '3.8', '>=' ) ) {
+			if ( version_compare( GFSurvey::get_instance()->get_version(), '3.8', '>=' ) ) {
 				wp_register_style( 'gsurvey_css', GFSurvey::get_instance()->get_base_url() . '/assets/css/dist/admin.css' );
 			} else {
 				wp_register_style( 'gsurvey_css', GFSurvey::get_instance()->get_base_url() . '/css/gsurvey.css' );
@@ -72,7 +70,7 @@ switch ( $gravityview->field->field->inputType ) {
 		if ( 'default' === $choice_display || empty( $choice_display ) ) {
 
 			// Default is the likert table; show it and return early.
-			if( $field->field->gsurveyLikertEnableMultipleRows && ! $input_id ) {
+			if ( $field->field->gsurveyLikertEnableMultipleRows && ! $input_id ) {
 
 				add_filter( 'gform_is_entry_detail', $return_true );
 
@@ -91,7 +89,7 @@ switch ( $gravityview->field->field->inputType ) {
 		add_filter( 'gform_is_entry_detail', $return_true );
 
 		$output_values = array();
-		foreach( $raw_value as $row => $row_values ) {
+		foreach ( $raw_value as $row => $row_values ) {
 			list( $_likert_row, $row_value ) = array_pad( explode( ':', $row_values ), 2, '' );
 
 			// If we're displaying a single row, don't include other row values
@@ -99,7 +97,7 @@ switch ( $gravityview->field->field->inputType ) {
 				continue;
 			}
 
-			switch( $choice_display ) {
+			switch ( $choice_display ) {
 				case 'score':
 					$output_values[] = GravityView_Field_Survey::get_choice_score( $field->field, $row_value, $row );
 					break;
@@ -113,7 +111,7 @@ switch ( $gravityview->field->field->inputType ) {
 					$single_input_field                                  = clone $field->field;
 					$single_input_field->id                              = $field->ID;
 					$single_input_field->gsurveyLikertEnableMultipleRows = false;
-					$output_values[] = $single_input_field->get_field_input( array( 'id' => $field->form_id ), $row_value );
+					$output_values[]                                     = $single_input_field->get_field_input( array( 'id' => $field->form_id ), $row_value );
 					break;
 			}
 		}
@@ -121,7 +119,8 @@ switch ( $gravityview->field->field->inputType ) {
 		remove_filter( 'gform_is_entry_detail', $return_true );
 
 		/**
-		 * @filter `gravityview/template/field/survey/glue` The value used to separate multiple values in the Survey field output
+		 * The value used to separate multiple values in the Survey field output.
+		 *
 		 * @since 2.10.4
 		 *
 		 * @param string The glue. Default: "; " (semicolon with a trailing space)
@@ -136,10 +135,9 @@ switch ( $gravityview->field->field->inputType ) {
 		return; // Return early
 
 	case 'rating':
-
 		$choice_text = RGFormsModel::get_choice_text( $field->field, $gravityview->value, $input_id );
 
-		if( ! in_array( $choice_display, array( 'stars', 'dashicons', 'emoji' ), true ) ) {
+		if ( ! in_array( $choice_display, array( 'stars', 'dashicons', 'emoji' ), true ) ) {
 			echo $choice_text;
 			return;
 		}
@@ -147,7 +145,9 @@ switch ( $gravityview->field->field->inputType ) {
 		$choices = $field->field->choices;
 		$choice_values = wp_list_pluck( $choices, 'value', $gravityview->value );
 		$starred_index = array_search( $gravityview->value, $choice_values );
-		$star_a11y_label = sprintf( __( '%s (%d out of %d stars)', 'gk-gravityview'), $choice_text, ( $starred_index + 1 ), sizeof( $choice_values ) );
+		$star_a11y_label = $starred_index !== false
+			? sprintf( __( '%s (%d out of %d stars)', 'gk-gravityview'), $choice_text, $starred_index + 1, count( $choice_values ) )
+			: '';
 
 		/**
 		 * @action `gravityview/field/survey/rating-styles`
@@ -162,10 +162,10 @@ switch ( $gravityview->field->field->inputType ) {
 		foreach ( $choices as $current_index => $choice_value ) {
 
 			// Have we already shown the last filled-in star?
-			$empty = ( $current_index > $starred_index );
+			$empty = ( $starred_index === false || $current_index > $starred_index );
 			$css_class = 'gv-field-survey-star-' . ( $empty ? 'empty' : 'filled' );
 
-			echo sprintf( '<span class="%s" title="%s"></span>', esc_attr( $css_class ), esc_attr( $choice_value['text'] ) );
+			printf( '<span class="%s" title="%s"></span>', esc_attr( $css_class ), esc_attr( $choice_value['text'] ) );
 		}
 
 

@@ -35,6 +35,7 @@ assets/lib/fancybox/*
 ## Node & Composer
 node_modules
 vendor
+vendor_prefixed
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -50,5 +51,11 @@ docs/html
 docker-compose.yml
 docker-unit-tests.sh
 phpunit
+phpunit.xml
 wordpress-51-tests-lib
 wordpress-latest-tests-lib
+.phpunit.result.cache
+
+.coveralls.yml
+.scrutinizer.yml
+.tx

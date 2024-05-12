@@ -25,16 +25,16 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		unset ( $field_options['search_filter'] );
+		unset( $field_options['search_filter'] );
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$this->add_field_support('link_to_post', $field_options );
+		$this->add_field_support( 'link_to_post', $field_options );
 
 		// @since 1.5.4
-		$this->add_field_support('dynamic_data', $field_options );
+		$this->add_field_support( 'dynamic_data', $field_options );
 
 		return $field_options;
 	}
@@ -51,7 +51,7 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	 *
 	 * @return array with `url`, `title`, `caption` and `description` values
 	 */
-	static public function explode_value( $value ) {
+	public static function explode_value( $value ) {
 
 		// Already is an array, perhaps?
 		if ( ! is_string( $value ) ) {
@@ -61,14 +61,14 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 		$url = $title = $caption = $description = '';
 
 		// If there's a |:| match, process. Otherwise, empty array!
-		if( preg_match( '/\|\:\|/', $value ) ) {
+		if ( preg_match( '/\|\:\|/', $value ) ) {
 			list( $url, $title, $caption, $description ) = array_pad( explode( '|:|', $value ), 4, false );
 		}
 
 		return array(
-			'url' => $url,
-			'title' => $title,
-			'caption' => $caption,
+			'url'         => $url,
+			'title'       => $title,
+			'caption'     => $caption,
 			'description' => $description,
 		);
 	}
@@ -81,34 +81,35 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 	 *
 	 * @since 1.16.2
 	 *
-	 * @param array $form The Form Object currently being processed.
-	 * @param string|array $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
-	 * @param null|array $entry Null or the Entry Object currently being edited.
+	 * @param array               $form The Form Object currently being processed.
+	 * @param string|array        $value The field value. From default/dynamic population, $_POST, or a resumed incomplete submission.
+	 * @param null|array          $entry Null or the Entry Object currently being edited.
 	 * @param GF_Field_Post_Image $field The field being edited.
 	 *
 	 * @return string
 	 */
 	public function get_field_input( $form, $value = '', $entry = null, GF_Field_Post_Image $field = null ) {
 
-		$id = (int) $field->id;
-		$form_id = $form['id'];
+		$id         = (int) $field->id;
+		$form_id    = $form['id'];
 		$input_name = "input_{$id}";
-		$field_id = sprintf( 'input_%d_%d', $form_id, $id );
-		$img_name = null;
+		$field_id   = sprintf( 'input_%d_%d', $form_id, $id );
+		$img_name   = null;
 
 		// Convert |:| to associative array
 		$img_array = self::explode_value( $value );
 
-		if( ! empty( $img_array['url'] ) ) {
+		if ( ! empty( $img_array['url'] ) ) {
 
 			$img_name = basename( $img_array['url'] );
 
 			/**
 			 * Set the $uploaded_files value so that the .ginput_preview renders, and the file upload is hidden
+			 *
 			 * @see GF_Field_Post_Image::get_field_input See the `<span class='ginput_preview'>` code
 			 * @see GFFormsModel::get_temp_filename See the `rgget( $input_name, self::$uploaded_files[ $form_id ] );` code
 			 */
-			if( empty( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
+			if ( empty( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
 				GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $img_name;
 			}
 		}
@@ -132,18 +133,18 @@ class GravityView_Field_Post_Image extends GravityView_Field {
 
 		/**
 		 * Insert a hidden field into the output that is used to store the image URL
+		 *
 		 * @var string $current_file We need to have a reference of whether same file is being updated, or user wants to remove the image.
 		 * @see \GravityView_Edit_Entry_Render::maybe_update_post_fields
 		 * @hack
 		 */
 		if ( null !== $img_name ) {
-			$current_file = sprintf( "<input name='%s' id='%s' type='hidden' value='%s' />", $input_name, $field_id, esc_url_raw( $img_array['url'] ) );
-			$gf_post_image_field_output = str_replace('<span class=\'ginput_preview\'>', '<span class=\'ginput_preview\'>'.$current_file, $gf_post_image_field_output );
+			$current_file               = sprintf( "<input name='%s' id='%s' type='hidden' value='%s' />", $input_name, $field_id, esc_url_raw( $img_array['url'] ) );
+			$gf_post_image_field_output = str_replace( '<span class=\'ginput_preview\'>', '<span class=\'ginput_preview\'>' . $current_file, $gf_post_image_field_output );
 		}
 
 		return $gf_post_image_field_output;
 	}
-
 }
 
-new GravityView_Field_Post_Image;
+new GravityView_Field_Post_Image();

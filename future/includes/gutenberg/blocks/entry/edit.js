@@ -12,6 +12,7 @@ import Disabled from 'shared/js/disabled';
 
 import './editor.scss';
 
+/*global gkGravityViewBlocks*/
 export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	const {
 		viewId,
@@ -33,6 +34,23 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		return <NoViewsNotice blockPreviewImage={ previewImage } newViewUrl={ gkGravityViewBlocks?.create_new_view_url } />;
 	}
 
+	/**
+	 * Sets the selected View from the ViewSelect object.
+	 *
+	 * @since 2.21.2
+	 *
+	 * @param {number} _viewId The View ID.
+	 */
+	function selectView( _viewId ) {
+		const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );
+		setAttributes( {
+			viewId: _viewId,
+			secret: selectedView?.secret,
+			previewBlock: false,
+			entryId: '',
+		} );
+	}
+
 	return (
 		<div { ...useBlockProps() }>
 			<InspectorControls>
@@ -42,7 +60,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( viewId ) => setAttributes( { viewId, previewBlock: false, entryId: '' } ) }
+								onChange={ selectView }
 							/>
 
 							<EntrySelector
@@ -73,7 +91,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 					<ViewSelector
 						viewId={ viewId }
-						onChange={ ( viewId ) => setAttributes( { viewId, previewBlock: false, entryId: '' } ) }
+						onChange={ selectView }
 					/>
 
 					<EntrySelector

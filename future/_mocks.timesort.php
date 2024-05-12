@@ -11,34 +11,34 @@ class GF_Query_Call_TIMESORT extends \GF_Query_Call {
 		global $wpdb;
 
 		list( $column, $sql ) = $this->parameters;
-		$meta_table = \GFFormsModel::get_entry_meta_table_name();
+		$meta_table           = \GFFormsModel::get_entry_meta_table_name();
 
 		$alias = $query->_alias( $column->field_id, $column->source, 'm' );
 
-/*
-SELECT v,
-IF(
-POSITION('pm' IN v) > 0,
+		/*
+		SELECT v,
+		IF(
+		POSITION('pm' IN v) > 0,
 
-(
-SUBSTRING_INDEX(v, ':', 1)
-+ IF(SUBSTRING_INDEX(v, ':', 1) < 12, 12, 0)
-) * 60,
+		(
+		SUBSTRING_INDEX(v, ':', 1)
+		+ IF(SUBSTRING_INDEX(v, ':', 1) < 12, 12, 0)
+		) * 60,
 
-SUBSTRING_INDEX(v, ':', 1) * 60
-) +
-RIGHT(IF(
-POSITION('m' IN v) > 0,
-SUBSTRING_INDEX(v, ' ', 1),
-v
-),2) t1
+		SUBSTRING_INDEX(v, ':', 1) * 60
+		) +
+		RIGHT(IF(
+		POSITION('m' IN v) > 0,
+		SUBSTRING_INDEX(v, ' ', 1),
+		v
+		),2) t1
 
-FROM meta;
-*/
+		FROM meta;
+		*/
 
 		// Detect if 'pm' is in the time field
 		$pm_exists = "POSITION('pm' IN $alias.`meta_value`)";
-		
+
 		// Transform a pm time into minutes ((hour + (12 if hour > 12 else 0)) * 60)
 		$minutes_12 = "(SUBSTRING_INDEX($alias.`meta_value`, ':', 1) + IF(SUBSTRING_INDEX($alias.`meta_value`, ':', 1) < 12, 12, 0)) * 60";
 

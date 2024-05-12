@@ -1,6 +1,8 @@
 <?php
 namespace GV;
 
+use GravityKit\GravityView\Foundation\Settings\Framework as SettingsFramework;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -46,7 +48,6 @@ class View_Settings extends Settings {
 	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
-
 		$default_settings = array_merge(
 			array(
 				'id'                          => array(
@@ -84,7 +85,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5e9a1f8904286364bc98931f',
-						'url' => 'https://docs.gravityview.co/article/705-view-settings-enable-lightbox-for-images',
+						'url' => 'https://docs.gravitykit.com/article/705-view-settings-enable-lightbox-for-images',
 					),
 				),
 				'show_only_approved'          => array(
@@ -97,8 +98,36 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5bad1a33042863158cc6d396',
-						'url' => 'https://docs.gravityview.co/article/490-entry-approval-gravity-forms',
+						'url' => 'https://docs.gravitykit.com/article/490-entry-approval-gravity-forms',
 					),
+				),
+				'caching'                     => array(
+					'label'             => __( 'Enable caching', 'gk-gravityview' ),
+					'type'              => 'checkbox',
+					'group'             => 'default',
+					'value'             => gravityview()->plugin->settings->get( 'caching' ),
+					'desc'              => strtr(
+						esc_html_x( 'Turn caching on or off to improve performance. Default settings are configured in [url]GravityView Caching Settings[/url].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+						[
+							'[url]'  => '<a href="' . esc_url( SettingsFramework::get_instance()->get_plugin_settings_url( Plugin_Settings::SETTINGS_PLUGIN_ID ) . '&s=1' ) . '">',
+							'[/url]' => '</a>',
+						]
+					),
+					'show_in_shortcode' => false,
+					'article'           => array(
+						'id'  => '54c67bb6e4b051242988550a',
+						'url' => 'https://docs.gravitykit.com/article/58-about-gravityview-caching',
+					),
+				),
+				'caching_entries'             => array(
+					'label'             => __( 'Entry Cache Duration', 'gk-gravityview' ),
+					'tooltip'           => esc_html__( 'Specify the duration, in seconds, that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance.', 'gk-gravityview' ),
+					'type'              => 'number',
+					'group'             => 'default',
+					'value'             => gravityview()->plugin->settings->get( 'caching_entries' ),
+					'show_in_shortcode' => false,
+					'requires'          => 'caching=1',
+					'min'               => 1,
 				),
 				'no_entries_options'          => array(
 					'label'             => __( 'No Entries Behavior', 'gk-gravityview' ),
@@ -194,7 +223,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => false,
 					'article'           => array(
 						'id'  => '5c772fa02c7d3a0cb9320a84',
-						'url' => 'https://docs.gravityview.co/article/536-how-to-hide-results-and-only-display-them-if-a-search-is-performed',
+						'url' => 'https://docs.gravitykit.com/article/536-how-to-hide-results-and-only-display-them-if-a-search-is-performed',
 					),
 				),
 				'hide_empty'                  => array(
@@ -232,7 +261,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b07997ea3f3f6b',
-						'url' => 'https://docs.gravityview.co/article/77-user-edit-allow-users-to-edit-their-own-entries',
+						'url' => 'https://docs.gravitykit.com/article/77-user-edit-allow-users-to-edit-their-own-entries',
 					),
 				),
 				'unapprove_edit'              => array(
@@ -246,7 +275,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5ddd81d504286364bc923957',
-						'url' => 'https://docs.gravityview.co/article/657-unapproving-edited-entries-automatically',
+						'url' => 'https://docs.gravitykit.com/article/657-unapproving-edited-entries-automatically',
 					),
 				),
 				'user_delete'                 => array(
@@ -259,7 +288,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bb9e4b0512429885512',
-						'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
+						'url' => 'https://docs.gravitykit.com/article/66-configuring-delete-entry',
 					),
 				),
 				'user_duplicate'              => array(
@@ -270,7 +299,7 @@ class View_Settings extends Settings {
 					'tooltip'           => __( 'Display "Duplicate Entry" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators.', 'gk-gravityview' ),
 					'article'           => array(
 						'id'  => '5df11eb704286364bc92bf36',
-						'url' => 'https://docs.gravityview.co/article/66-configuring-delete-entry',
+						'url' => 'https://docs.gravitykit.com/article/66-configuring-delete-entry',
 					),
 					'type'              => 'checkbox',
 					'show_in_shortcode' => true,
@@ -282,13 +311,13 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'group'             => 'sort',
 					'options'           => array(
-						''             => __( 'Default', 'gk-gravityview' ),
+						'id'           => __( 'Default', 'gk-gravityview' ),
 						'date_created' => __( 'Date Created', 'gk-gravityview' ),
 					),
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b051242988551a',
-						'url' => 'https://docs.gravityview.co/article/74-sorting-results-by-field-value',
+						'url' => 'https://docs.gravitykit.com/article/74-sorting-results-by-field-value',
 					),
 				),
 				'sort_direction'              => array(
@@ -304,7 +333,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5c9d338a2c7d3a1544617f9b',
-						'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+						'url' => 'https://docs.gravitykit.com/article/570-sorting-by-multiple-columns',
 					),
 				),
 				'sort_field_2'                => array(
@@ -313,14 +342,14 @@ class View_Settings extends Settings {
 					'value'             => '',
 					'group'             => 'sort',
 					'options'           => array(
-						''             => __( 'Default', 'gk-gravityview' ),
+						'id'           => __( 'Default', 'gk-gravityview' ),
 						'date_created' => __( 'Date Created', 'gk-gravityview' ),
 					),
 					'requires_not'      => 'sort_direction][=RAND', // ][ is for toggleRequired, so it ends in []
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5c9d338a2c7d3a1544617f9b',
-						'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+						'url' => 'https://docs.gravitykit.com/article/570-sorting-by-multiple-columns',
 					),
 				),
 				'sort_direction_2'            => array(
@@ -336,7 +365,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '5c9d338a2c7d3a1544617f9b',
-						'url' => 'https://docs.gravityview.co/article/570-sorting-by-multiple-columns',
+						'url' => 'https://docs.gravitykit.com/article/570-sorting-by-multiple-columns',
 					),
 				),
 				'sort_columns'                => array(
@@ -352,11 +381,11 @@ class View_Settings extends Settings {
 						'preset_business_data',
 						'preset_issue_tracker',
 						'preset_resume_board',
-						'preset_job_board'
+						'preset_job_board',
 					),
 					'article'           => array(
 						'id'  => '54ee1246e4b034c37ea91c11',
-						'url' => 'https://docs.gravityview.co/article/230-enabling-the-table-column-sorting-feature',
+						'url' => 'https://docs.gravitykit.com/article/230-enabling-the-table-column-sorting-feature',
 					),
 				),
 				'start_date'                  => array(
@@ -369,7 +398,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b0512429885520',
-						'url' => 'https://docs.gravityview.co/article/79-using-relative-start-dates-and-end-dates',
+						'url' => 'https://docs.gravitykit.com/article/79-using-relative-start-dates-and-end-dates',
 					),
 				),
 				'end_date'                    => array(
@@ -382,7 +411,7 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b0512429885520',
-						'url' => 'https://docs.gravityview.co/article/79-using-relative-start-dates-and-end-dates',
+						'url' => 'https://docs.gravitykit.com/article/79-using-relative-start-dates-and-end-dates',
 					),
 				),
 				'class'                       => array(
@@ -426,7 +455,7 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 					'article'           => array(
 						'id'  => '54c67bcee4b07997ea3f3f9a',
-						'url' => 'https://docs.gravityview.co/article/121-changing-the-single-entry-page-title',
+						'url' => 'https://docs.gravitykit.com/article/121-changing-the-single-entry-page-title',
 					),
 				),
 				'back_link_label'             => array(
@@ -455,7 +484,7 @@ class View_Settings extends Settings {
 					),
 					'article' => array(
 						'id'  => '5e9a3e0c2c7d3a7e9aeb2efb',
-						'url' => 'https://docs.gravityview.co/article/707-view-settings-redirect-after-editing',
+						'url' => 'https://docs.gravitykit.com/article/707-view-settings-redirect-after-editing',
 					),
 				),
 				'edit_return_context'         => array(
@@ -473,7 +502,7 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 					'article'           => array(
 						'id'  => '5e9a3e0c2c7d3a7e9aeb2efb',
-						'url' => 'https://docs.gravityview.co/article/707-view-settings-redirect-after-editing',
+						'url' => 'https://docs.gravitykit.com/article/707-view-settings-redirect-after-editing',
 					),
 				),
 				'edit_redirect_url'           => array(
@@ -537,7 +566,7 @@ class View_Settings extends Settings {
 					'value'      => true,
 					'article'    => array(
 						'id'  => '5e4449d72c7d3a7e9ae7a54c',
-						'url' => 'https://docs.gravityview.co/article/676-entry-locking',
+						'url' => 'https://docs.gravitykit.com/article/676-entry-locking',
 					),
 				),
 				'delete_redirect'             => array(
@@ -562,15 +591,82 @@ class View_Settings extends Settings {
 					'requires'    => 'delete_redirect=' . \GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE,
 					'merge_tags'  => 'force',
 				),
+				'is_secure'                   => [
+					'label' => __( 'Enable Enhanced Security', 'gk-gravityview' ),
+					'desc'  => __( 'This will require a <code>secret</code> attribute on all shortcodes and blocks connected to this View, including <code>[gravityview]</code>, <code>[gvfield]</code> and <code>[gventry]</code>.', 'gk-gravityview' ),
+					'type'  => 'checkbox',
+					'value' => 0,
+				],
 				'embed_only'                  => array(
 					'label'             => __( 'Prevent Direct Access', 'gk-gravityview' ),
 					'group'             => 'default',
-					'desc'              => __( 'Only allow access to this View when embedded using the shortcode.', 'gk-gravityview' ),
+					'desc'              => __( 'Only allow access to this View when embedded using the block or shortcode.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
 					'tooltip'           => false,
 					'show_in_shortcode' => false,
 					'full_width'        => true,
+					'article'           => array(
+						'id'   => '5590376ce4b027e1978eb8d0',
+						'type' => 'modal',
+						'url'  => 'https://docs.gravitykit.com/article/288-how-gravityview-security-works',
+					),
+				),
+				'custom_css'                  => array(
+					'label'             => __( 'Custom CSS', 'gk-gravityview' ),
+					'group'             => 'default',
+					// translators: Do not translate the words inside the square brackets ([]); they are replaced.
+					'desc'              => strtr(
+					// translators: Do not translate the words inside the square brackets ([]); they are replaced.
+						esc_html__( 'CSS added here will be placed inside [style] tags in the page&rsquo;s [head], after GravityView styles.', 'gk-gravityview' ),
+						array(
+							'[style]' => '<code>' . esc_html( '<style>' ) . '</code>',
+							'[head]'  => '<code>' . esc_html( '<head>' ) . '</code>',
+						)
+					),
+					'type'              => 'textarea',
+					'rows'              => 15,
+					'class'             => 'code widefat',
+					'codemirror'        => array(
+						'mode' => 'css',
+					),
+					'value'             => '',
+					'tooltip'           => false,
+					'merge_tags'        => false,
+					'show_in_shortcode' => false,
+					'full_width'        => true,
+					'article'           => array(
+						'id'   => '6527426e44252e4a513e9d35',
+						'type' => 'modal',
+						'url'  => 'https://docs.gravitykit.com/article/962-view-settings-custom-code',
+					),
+				),
+				'custom_javascript'           => array(
+					'label'             => __( 'Custom JavaScript', 'gk-gravityview' ),
+					'group'             => 'default',
+					'desc'              => strtr(
+						// translators: Do not translate the words inside the square brackets ([]); they are replaced.
+						esc_html__( 'JavaScript added here will be placed inside [script] tags in the page&rsquo;s footer, after GravityView scripts.', 'gk-gravityview' ),
+						array(
+							'[script]' => '<code>' . esc_html( '<script>' ) . '</code>',
+						)
+					),
+					'type'              => 'textarea',
+					'rows'              => 15,
+					'class'             => 'code widefat',
+					'codemirror'        => array(
+						'mode' => 'javascript',
+					),
+					'merge_tags'        => false,
+					'value'             => '',
+					'tooltip'           => false,
+					'show_in_shortcode' => false,
+					'full_width'        => true,
+					'article'           => array(
+						'id'   => '6527426e44252e4a513e9d35',
+						'type' => 'modal',
+						'url'  => 'https://docs.gravitykit.com/article/962-view-settings-custom-code',
+					),
 				),
 			),
 			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?
@@ -611,13 +707,13 @@ class View_Settings extends Settings {
 					'full_width'        => true,
 					'article'           => array(
 						'id'  => '5bad2a0c042863158cc6d4ac',
-						'url' => 'https://docs.gravityview.co/article/491-csv-export',
+						'url' => 'https://docs.gravitykit.com/article/491-csv-export',
 					),
 				),
 			),
 			array(
 				'csv_nolimit' => array(
-					'label'             => __( 'Show all in file', 'gk-gravityview' ),
+					'label'             => __( 'Show All In File', 'gk-gravityview' ),
 					'group'             => 'default',
 					'desc'              => __( 'Do not limit the number of entries output in the file.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
@@ -638,7 +734,8 @@ class View_Settings extends Settings {
 		);
 
 		/**
-		 * @filter `gravityview_default_args` Modify the default settings for new Views
+		 * Modify the default settings for new Views.
+		 *
 		 * @deprecated
 		 * @see filter `gravityview/view/settings/defaults`
 		 *
@@ -647,7 +744,7 @@ class View_Settings extends Settings {
 		$default_settings = apply_filters( 'gravityview_default_args', $default_settings );
 
 		/**
-		 * @filter `gravityview/view/defaults` Modify the default settings for new Views
+		 * Modify the default settings for new Views.
 		 *
 		 * @param array $default_settings Array of default settings.
 		 */
@@ -693,7 +790,7 @@ class View_Settings extends Settings {
 		return array_combine(
 			$defaults,
 			array_map(
-				function( $key ) use ( $_this ) {
+				function ( $key ) use ( $_this ) {
 					return $_this->get( $key );
 				},
 				$defaults
