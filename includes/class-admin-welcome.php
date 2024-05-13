@@ -308,6 +308,7 @@ class GravityView_Welcome {
 				<ul>
 					<li>Export link View widget would cause a fatal error during multi-word searches.</li>
 					<li>Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.</li>
+					<li>Duplicating entries no longer fails to refresh the entry list when View-based caching is enabled.</li>
 				</ul>
 
 				<h4>🔧 Updated</h4>
