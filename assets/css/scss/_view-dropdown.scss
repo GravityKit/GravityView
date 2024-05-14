@@ -13,6 +13,10 @@
 	top: 0;
 	left: 0;
 
+	* {
+		user-select: none;
+	}
+
 	.view-dropdown-select {
 		position: absolute;
 		right: 0;
@@ -105,6 +109,7 @@
 		border-bottom: 1px solid $color-gray-10;
 		font-size: 14px;
 		font-weight: 500;
+		cursor: default;
 	}
 
 	.view-dropdown-options__body {
@@ -113,6 +118,9 @@
 
 	.view-dropdown-options__footer {
 		padding: 0 20px 20px;
+		*, & {
+			user-select: text;
+		}
 
 		a {
 			font-size: 14px;
@@ -144,6 +152,7 @@
 		line-height: 17px;
 		cursor: pointer;
 		border: 2px solid #FFF;
+		margin-bottom: 4px;
 
 		&:hover {
 			background-color: $color-gray-0;
@@ -164,11 +173,7 @@
 		}
 
 		&[aria-disabled="true"] {
-			color: $color-888;
-
-			.view-dropdown-list-item__description {
-				color: $color-bbb;
-			}
+			color: $color-gray-60;
 
 			.view-dropdown-button--pill {
 				display: inherit;
@@ -187,7 +192,7 @@
 		line-height: 20px;
 		padding: 0 10px;
 		text-decoration: none;
-		margin-left: 5px;
+		margin-left: .666em;
 		flex-shrink: 0;
 
 		&:hover, &:focus {
@@ -243,11 +248,12 @@
 		font-size: 15px;
 		display: flex;
 		align-items: center;
+		margin-bottom: .15em;
 	}
 
 	.view-dropdown-list-item__description {
 		font-size: 12px;
-		color: $color-gray-50;
+		color: $color-gray-60;
 	}
 
 	&.view-dropdown--open {
@@ -264,8 +270,11 @@
 
 	.view-dropdown-list-available {
 		border: 2px solid $color-pro-pink;
+		background-color: $color-gray-05;
 		border-radius: 4px;
 		overflow: hidden;
+		margin-top: 8px;
+		padding-bottom: 2px;
 
 		.view-dropdown-list-available__header {
 			background-color: $color-pro-pink;
@@ -276,13 +285,14 @@
 			justify-content: space-between;
 			align-items: center;
 			padding: 0 12px;
-			margin: 0 -2px;
+			margin: 0 -2px 4px;
 		}
 
 		.view-dropdown-list-available__heading {
 			display: flex;
 			text-transform: uppercase;
 			font-weight: bold;
+			align-items: center;
 
 			svg {
 				margin-right: 8px;
@@ -290,20 +300,28 @@
 		}
 
 		a.view-dropdown-list-available__upgrade {
-			display: block;
+			display: inline-block;
 			background-color: $color-blue-50;
-			color: #FFF;
+			color: #fff;
 			border-radius: 4px;
-			border: 2px solid #FFF;
+			box-shadow: 0 0 4px 1px rgba( 255, 255, 255, 0.4 );
 			text-decoration: none;
-			font-size: 12px;
+			font-size: 13px;
 			font-weight: 500;
 			line-height: 16px;
-			padding: 4px 15px;
+			margin-top: -1px;
+			padding: 5px 15px 7px;
 
 			&:hover, &:focus {
 				background-color: $color-blue-70;
 			}
+		}
+
+		.view-dropdown-list-item__icon,
+		.view-dropdown-list-item,
+		.view-dropdown-list-item:hover {
+			background-color: transparent;
+			border-color: transparent;
 		}
 	}
 
