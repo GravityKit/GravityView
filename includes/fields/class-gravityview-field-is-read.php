@@ -19,8 +19,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	var $icon = 'dashicons-book-alt';
 
-	var $entry_meta_key = 'is_read';
-
 	var $entry_meta_is_default_column = true;
 
 	var $is_numeric = true;
@@ -137,8 +135,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 						name: 'is_read',
 						value: 1
 					}
-				})
-					.done(function() {
+				}).done(function() {
 						if(read_field.parents('tbody').length > 0){
 							read_field.find('td').text(read_label);
 						}else{
