@@ -273,9 +273,20 @@ class GravityView_Ajax {
 		// The GF type of field: `product`, `name`, `creditcard`, `id`, `text`
 		$input_type = isset( $_post['input_type'] ) ? esc_attr( $_post['input_type'] ) : null;
 		$context    = isset( $_post['context'] ) ? esc_attr( $_post['context'] ) : null;
+		$field_id   = isset( $_post['field_id'] ) ? esc_attr( $_post['field_id'] ) : null;
 
 		$form_id  = empty( $_post['form_id'] ) ? null : $_post['form_id'];
-		$response = GravityView_Render_Settings::render_field_options( $form_id, $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context );
+
+		// When "All Fields" is selected, return a single response for all fields.
+		if ( 'all-fields' === $field_id ) {
+			$fields = GVCommon::get_form_fields( $form_id );
+			$response = '';
+			foreach( $fields as $field ) {
+				$response .= GravityView_Render_Settings::render_field_options( $form_id, $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context );
+			}
+		} else {
+			$response = GravityView_Render_Settings::render_field_options( $form_id, $_post['field_type'], $_post['template'], $_post['field_id'], $_post['field_label'], $_post['area'], $input_type, '', '', $context );
+		}
 
 		$response = gravityview_strip_whitespace( $response );
 

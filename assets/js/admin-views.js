@@ -1922,7 +1922,7 @@
 			// If the clicked field div contains the all fields label,
 			// we're dealing with an all fields click!
 			if ( $( this ).has( '.field-id-all-fields' ).length ) {
-				viewConfiguration.addAllFields( $( this ) );
+				viewConfiguration.addAllFields( $( this ), e );
 			} else {
 				// Add a single field.
 				viewConfiguration.addField( $( this ), e );
@@ -1933,9 +1933,12 @@
 		 * Add all the fields available at once. Bam!
 		 * @param  {object}    clicked jQuery object of the clicked "+ Add All Fields" link
 		 */
-		addAllFields: function ( clicked ) {
+		addAllFields: function ( clicked, e ) {
 
-			clicked.siblings( '.gv-fields' ).filter( function () {
+			// Add the field.
+			viewConfiguration.addField( clicked, e );
+
+			/*clicked.siblings( '.gv-fields' ).filter( function () {
 
 				var field_id = $( this ).data( 'fieldid' );
 
@@ -1945,7 +1948,7 @@
 
 			} ).each( function () {
 				$( this ).trigger( 'click' );
-			} );
+			} );*/
 
 			// We just added all the fields. No reason to show the tooltip.
 			$( "a.gv-add-field[data-tooltip='active']" ).gvTooltip( "close" );
