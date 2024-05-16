@@ -20,10 +20,21 @@ class Request extends \GV\Request {
 	}
 
 	public function is_view( $return_view = true ) {
+		return parent::is_view( $return_view );
 	}
 
 	public function is_entry( $form_id = 0 ) {
-		die('asd');
+
+		//
+		//
+		// TODO: This is a temporary fix!
+		//
+		//
+		if ( isset( $_GET['lightbox'] ) ) {
+			return true;
+		}
+
+		return parent::is_entry( $form_id );
 	}
 
 	/**
