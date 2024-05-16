@@ -122,7 +122,6 @@ abstract class Request {
 
 		return $is_view instanceof \GV\View ? $is_view : false;
 	}
-	}
 
 	/**
 	 * Checks whether this is a single entry request
