@@ -545,6 +545,8 @@ final class GravityView_Duplicate_Entry {
 
 		$duplicated_entry = \GFAPI::get_entry( $duplicated_id );
 
+		do_action( 'gform_entry_created', $duplicated_entry, $form );
+
 		$duplicate_response = 'duplicated';
 
 		/**

@@ -154,8 +154,9 @@ abstract class Entry {
 		 * Modify the URL to the View "directory" context.
 		 *
 		 * @since 1.19.4
-		 * @param string $link URL to the View's "directory" context (Multiple Entries screen)
-		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID
+		 *
+		 * @param string $permalink URL to the View's "directory" context (Multiple Entries screen).
+		 * @param int $post_id ID of the post to link to. If the View is embedded, it is the post or page ID.
 		 */
 		$permalink = apply_filters( 'gravityview_directory_link', $permalink, $request->is_view( false ) ? $view_id : ( $post ? $post->ID : null ) );
 

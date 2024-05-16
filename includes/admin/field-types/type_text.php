@@ -3,14 +3,24 @@
  * text input type
  */
 class GravityView_FieldType_text extends GravityView_FieldType {
+	function render_setting( $override_input = null ) {
+		if ( ! empty( $this->field['full_width'] ) ) { ?>
+			<th scope="row" colspan="2">
+				<div>
+					<?php $this->render_option(); ?>
+				</div>
+			</th>
+		<?php } else {
+			parent::render_setting( $override_input );
+		}
+	}
 
 	function render_option() {
 		?>
 		<label for="<?php echo $this->get_field_id(); ?>" class="<?php echo $this->get_label_class(); ?>">
 								<?php
 
-								echo '<span class="gv-label">' . $this->get_field_label() . '</span>';
-								echo $this->get_tooltip() . $this->get_field_desc();
+								echo $this->get_field_label() . $this->get_tooltip() . $this->get_field_desc();
 								?>
 		<div>
 				<?php $this->render_input(); ?>

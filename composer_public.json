@@ -1,0 +1,110 @@
+{
+  "name": "gravityview/gravityview",
+  "type": "wordpress-plugin",
+  "description": "The best way to display Gravity Forms entries on your website.",
+  "keywords": [
+    "gravityview",
+    "gravity view",
+    "gravity forms directory",
+    "gravity forms"
+  ],
+  "homepage": "https://www.gravitykit.com/",
+  "license": "GPL-2.0+",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/katzwebservices/standalone-phpenkoder"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "gravitykit/foundation",
+        "version": "1.2.12",
+        "dist": {
+          "url": "https://www.dropbox.com/scl/fi/9ymdlep3stwsobdxa3fvm/foundation-1.2.12-987da1e.zip?rlkey=tt6zethqhk1f574ygoi1xdnlm&dl=1",
+          "type": "zip"
+        }
+      }
+    }
+  ],
+  "require": {
+    "php": ">=7.2.0",
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "gravitykit/foundation": "1.2.12"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.5",
+    "lucatume/wp-browser": "^2.4",
+    "codeception/module-asserts": "^1.0",
+    "codeception/module-phpbrowser": "^1.0",
+    "codeception/module-webdriver": "^1.0",
+    "codeception/module-db": "^1.0",
+    "codeception/module-filesystem": "^1.0",
+    "codeception/module-cli": "^1.0",
+    "codeception/util-universalframework": "^1.0",
+    "yoast/phpunit-polyfills": "^1.0",
+    "squizlabs/php_codesniffer": "*",
+    "wp-coding-standards/wpcs": "^3.0",
+    "phpcompatibility/phpcompatibility-wp": "^2.1"
+  },
+  "extra": {
+    "strauss": {
+      "target_directory": "vendor_prefixed",
+      "namespace_prefix": "GravityKit\\GravityView",
+      "classmap_prefix": "GravityKit_GravityView_",
+      "packages": [
+        "gravitykit/foundation"
+      ],
+      "namespace_replacement_patterns": {
+        "/^Gettext/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext",
+        "/^Illuminate/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Illuminate",
+        "/^Psr/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Psr",
+        "/^Monolog/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Monolog",
+        "/^TrustedLogin/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\TrustedLogin",
+        "/^GravityKit\\\\Foundation/": "GravityKit\\GravityView\\Foundation"
+      },
+      "override_autoload": {
+        "gravitykit/foundation": {
+          "psr-4": {
+            "GravityKit\\Foundation\\": "src"
+          },
+          "files": [
+            "assets"
+          ]
+        }
+      },
+      "exclude_from_prefix": {
+        "file_patterns": []
+      },
+      "exclude_from_copy": {
+        "packages": [
+          "paragonie/random_compat",
+          "paragonie/sodium_compat"
+        ]
+      }
+    }
+  },
+  "scripts": {
+    "prefix_vendor": "@php strauss.phar",
+    "post_update_install": "./composer_post_update_install.sh",
+    "post-install-cmd": [
+      "@prefix_vendor",
+      "@post_update_install",
+      "composer dump-autoload -o"
+    ],
+    "post-update-cmd": [
+      "@prefix_vendor",
+      "@post_update_install",
+      "composer dump-autoload -o"
+    ]
+  },
+  "config": {
+    "platform-check": false,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  }
+}

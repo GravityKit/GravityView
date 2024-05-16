@@ -5,20 +5,18 @@
  * @since 1.9
  */
 class GV_Unit_Tests_Bootstrap {
-
 	/**
 	 * @var \GV_Unit_Tests_Bootstrap $instance
 	 */
 	protected static $instance = null;
 
-	/** @var string directory where wordpress-tests-lib is installed */
 	public $wp_tests_dir;
 
-	/** @var string testing directory */
 	public $tests_dir;
 
-	/** @var string plugin directory */
 	public $plugin_dir;
+
+	public $gf_plugin_dir;
 
 	/**
 	 * @var int
@@ -49,9 +47,10 @@ class GV_Unit_Tests_Bootstrap {
 		ini_set( 'display_errors', 'on' );
 		error_reporting( E_ALL );
 
-		$this->tests_dir    = dirname( __FILE__ );
-		$this->plugin_dir   = dirname( $this->tests_dir );
-		$this->wp_tests_dir = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
+		$this->tests_dir     = dirname( __FILE__ );
+		$this->plugin_dir    = dirname( $this->tests_dir );
+		$this->wp_tests_dir  = getenv( 'WP_TESTS_DIR' ) ? getenv( 'WP_TESTS_DIR' ) : '/tmp/wordpress-tests-lib';
+		$this->gf_plugin_dir = getenv( 'GF_PLUGIN_DIR' ) ? getenv( 'GF_PLUGIN_DIR' ) : '/tmp/gravityforms';
 
 		if ( ! defined( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH' ) ) {
 			define( 'WP_TESTS_PHPUNIT_POLYFILLS_PATH', $this->plugin_dir . '/vendor/yoast/phpunit-polyfills' );
@@ -124,13 +123,7 @@ class GV_Unit_Tests_Bootstrap {
 	 * @since 1.9
 	 */
 	public function load() {
-
-		if( file_exists( $this->plugin_dir . '/tmp/gravityforms/gravityforms.php' ) ) {
-			require_once $this->plugin_dir . '/tmp/gravityforms/gravityforms.php';
-		} else {
-			require_once '/tmp/gravityforms/gravityforms.php';
-		}
-
+		require_once $this->gf_plugin_dir . '/gravityforms.php';
 		require_once( GFCommon::get_base_path() . '/form_display.php' );
 		require_once( GFCommon::get_base_path() . '/tooltips.php' );
 

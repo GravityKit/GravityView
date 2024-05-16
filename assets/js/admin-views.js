@@ -144,8 +144,16 @@
 				// bind Add Field fields to the addField method
 				.on( 'click', '.ui-tooltip-content .gv-fields', vcfg.startAddField )
 
-				// When user clicks into the shortcode example field, select the example.
-				.on( 'click', ".gv-shortcode input", vcfg.selectText )
+				// Bind Add fields popup to button between fields.
+				.on( 'click', '.gv-add-field-before', function () {
+					$( this )
+						.closest( '.active-drop-container' )
+						.find( 'a.gv-add-field' )
+						.trigger( 'click', { before: $( this ).closest( '.gv-fields' ) } );
+				} )
+
+				// Bind duplicate field action to duplication button.
+				.on( 'click', '.gv-field-duplicate', vcfg.duplicateField )
 
 				// Show the direct access options and hide the toggle button when opened.
 				.on( 'click', "#gv-direct-access .edit-direct-access", vcfg.editDirectAccess )
@@ -216,7 +224,7 @@
 
 				// Only start tracking changes after the View is loaded to prevent this from being run multiple times.
 				.on( 'gravityview/loaded', function() {
-					$(".gv-setting-list, #gravityview_settings" ).on('change', vcfg.toggleCheckboxes );
+					$( '.gv-setting-list, #gravityview_settings' ).on( 'change', vcfg.toggleCheckboxes ).trigger( 'change' );
 				})
 
 				.on( 'change', ".gv-dialog-options", vcfg.toggleCheckboxes )
@@ -1738,7 +1746,6 @@
 					$( this ).attr( 'data-tooltip', null );
 				},
 				open: function( event, tooltip ) {
-
 					$( this )
 						.attr( 'data-tooltip', 'active' )
 						.attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
@@ -1781,9 +1788,14 @@
 				.attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
 				e.stopImmediatePropagation();
 			} )
-				.on( 'click', function ( e ) {
+				.on( 'click', function ( e, data ) {
 					// add title attribute so the tooltip can continue to work (jquery ui bug?)
 					$( this ).attr( "title", "" );
+
+					$( this ).data( 'before', null ); // reset "before" element.
+					if ( data?.before ) {
+						$( this ).data( 'before', data.before );
+					}
 
 					e.preventDefault();
 					//e.stopImmediatePropagation();
@@ -1948,24 +1960,40 @@
 		addField: function ( clicked, e ) {
 			e.preventDefault();
 
-			var vcfg = viewConfiguration;
+			const tooltipId = clicked.closest( '.ui-tooltip' ).attr( 'id' );
+			const $addButton = $( '.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
+			const $before = $addButton.data( 'before' );
 
-			var newField = clicked.clone().hide();
-			var areaId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
-			var templateId = $( "#gravityview_directory_template" ).val();
-			var tooltipId = clicked.parents( '.ui-tooltip' ).attr( 'id' );
-			var addButton = $( '.gv-add-field[data-tooltip-id="' + tooltipId + '"]' );
+			viewConfiguration.placeField(
+				clicked,
+				$addButton,
+				$before,
+				!!$before
+			);
+		},
 
-			var data = {
+		/**
+		 * Add (a copy of the) selected field in the active area.
+		 * @param  {object} $field jQuery DOM object of the clicked field to place.
+		 * @param  {object} $addButton jQuery DOM object of the add-button that belongs to the field.
+		 * @param  {object|undefined} $anchor (optional) jQuery DOM object to place the new field after.
+		 * @param  {Boolean} add_before_anchor Whether to place field before the anchor field. Will be `after` for `false`.
+		 */
+		placeField: function ( $field, $addButton, $anchor, add_before_anchor = false ) {
+			const vcfg = viewConfiguration;
+			const $newField = $field.clone().hide();
+			const templateId = $( "#gravityview_directory_template" ).val();
+
+			const data = {
 				action: 'gv_field_options',
 				template: templateId,
-				area: addButton.attr( 'data-areaid' ),
-				context: addButton.attr( 'data-context' ),
-				field_id: newField.attr( 'data-fieldid' ),
-				field_label: newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
-				field_type: addButton.attr( 'data-objecttype' ),
-				input_type: newField.attr( 'data-inputtype' ),
-				form_id: parseInt($(clicked).attr( 'data-formid' ), 10) || vcfg.currentFormId,
+				area: $addButton.attr('data-areaid'),
+				context: $addButton.attr( 'data-context' ),
+				field_id: $newField.attr( 'data-fieldid' ),
+				field_label: $newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
+				field_type: $addButton.attr( 'data-objecttype' ),
+				input_type: $newField.attr( 'data-inputtype' ),
+				form_id: parseInt( $field.attr( 'data-formid' ), 10 ) || vcfg.currentFormId,
 				nonce: gvGlobals.nonce
 			};
 
@@ -1986,26 +2014,65 @@
 					vcfg.enable_publish();
 				}
 			} ).done( function ( response ) {
+				// Retrieve the <HASH> ID from an input like: widgets[header_top][<HASH>][id]
+				const regex = /[^\[]+\[[^\]]+\]\[([^\]]+)\].*/i;
+
+				if ( $field.find( 'input.field-key' ).length > 0 ) {
+					$newField.find( '.gv-dialog, .gv-dialog-options' ).remove();
+
+					const oldId = $field.find( 'input.field-key' ).attr( 'name' ).replace( regex, '$1' );
+					const newId = response.match( regex, '$1' )[ 1 ] ?? null;
+
+					// Make the response a jQuery object.
+					response = $(response);
+
+					$field.find( '.gv-dialog-options :input' ).each( function ( i, el ) {
+						if ( !$( el ).attr( 'name' ) ) {
+							return;
+						}
+
+						const $fields = response.find( '[name="' + $( el ).attr( 'name' ).replaceAll( '' + oldId, '' + newId ) + '"]' );
+
+						if ( $fields.length === 1 ) {
+							$fields.val( $( el ).val() );
+						} else if ($fields.length === 2) {
+							// Possible checkbox.
+							if ( $( el ).is( ':checked' ) ) {
+								$fields.prop( 'checked', true );
+							}
+						}
+					} );
+
+				}
 
 				// Add in the Options <div>
-				newField.append( response );
+				$newField.append( response );
 
 				$( '.ui-tabs-panel' ).each( function () {
 					vcfg.init_droppables( this );
 				} );
 
 				// If there are field options, show the settings gear.
-				if ( $( '.gv-dialog-options', newField ).length > 0 ) {
-					$( '.gv-field-settings', newField ).removeClass( 'hide-if-js' );
+				if ( $( '.gv-dialog-options', $newField ).length > 0 ) {
+					$( '.gv-field-settings', $newField ).removeClass( 'hide-if-js' );
 				}
 
-				// append the new field to the active drop
-				$( '[data-tooltip-id="' + areaId + '"]' ).parents( '.gv-droppable-area' ).find( '.active-drop' ).append( newField ).end().attr( 'data-tooltip-id', '' );
+				if ( $anchor ) {
+					// Append the new field after this element.
+					const insert_method = add_before_anchor ? 'insertBefore' : 'insertAfter';
+					$newField[ insert_method ]( $anchor );
+				} else {
+					// append the new field to the active drop
+					$addButton
+						.closest( '.gv-droppable-area' )
+						.find( '.active-drop' )
+						.append( $newField );
+				}
 
-				$( document.body ).trigger( 'gravityview/field-added', newField );
+				$( document.body ).trigger( 'gravityview/field-added', $newField );
 
 				// Show the new field
-				newField.fadeIn( 100 );
+				$newField.fadeIn( 100 );
 
 				// refresh the little help tooltips
 				vcfg.refreshGFtooltips();
@@ -2026,7 +2093,21 @@
 				vcfg.setUnsavedChanges( true );
 
 			} );
+		},
+		/**
+		 * Duplicate a field and add it under the duplicated field.
+		 * @since 2.22
+		 * @param  {jQueryEvent} e jQuery Event object
+		 */
+		duplicateField: function ( e ) {
+			e.preventDefault();
+			const $field = $( this ).closest( '.gv-fields' );
 
+			viewConfiguration.placeField(
+				$field,
+				$( this ).closest( '.active-drop-container' ).find( 'a.gv-add-field' ),
+				$field
+			);
 		},
 
 		/**
@@ -2792,6 +2873,23 @@
 			}
 		} );
 
+		const $embedShortcodeEl = $( '#gv-embed-shortcode' );
+		$( '#gravityview_se_is_secure' ).on( 'change', function () {
+			let embedShortcode = $embedShortcodeEl.val();
+			if ( !embedShortcode ) {
+				return;
+			}
+
+			if ( $( this ).is( ':checked' ) ) {
+				embedShortcode = embedShortcode.replace( /]$/, ` secret="${ $embedShortcodeEl.data( 'secret' ) }"]` );
+
+			} else {
+				embedShortcode = embedShortcode.replace( / secret="[^"]+"/, '' );
+			}
+
+			$embedShortcodeEl.val( embedShortcode );
+		} );
+
 		// Expose globally methods to initialize/destroy tooltips and to display dialog window
 		window.gvAdminActions = {
 			initTooltips: viewConfiguration.init_tooltips,
@@ -2800,6 +2898,23 @@
 		};
 
 		$( document.body ).trigger( 'gravityview/loaded' );
+	} );
+
+	/**
+	 * Handles CSV widget classes.
+	 * @since 2.21
+	 */
+	$( function () {
+		const $csv_enable = $( '#gravityview_se_csv_enable' );
+		const update_csv_widget_classes = function () {
+			$( '[data-fieldid="export_link"]' )
+				.toggleClass( 'csv-disabled', !$csv_enable.is( ':checked' ) )
+				.attr( 'aria-disabled', $csv_enable.is( ':checked' ) ? 'false' : 'true' )
+			;
+		};
+
+		$csv_enable.on( 'change', update_csv_widget_classes );
+		update_csv_widget_classes();
 	} );
 
 }(jQuery));

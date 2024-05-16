@@ -526,7 +526,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		foreach ( $note_content as $tag => $value ) {
-			$note_detail_html = str_replace( '{' . $tag . '}', $value, $note_detail_html );
+			$note_detail_html = str_replace( '{' . $tag . '}', $value ?? '', $note_detail_html );
 		}
 
 		$replacements = array(

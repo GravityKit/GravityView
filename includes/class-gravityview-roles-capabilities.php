@@ -20,6 +20,9 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.15
  */
+
+use GravityKit\GravityView\Foundation\Helpers\Arr;
+
 class GravityView_Roles_Capabilities {
 
 	/**
@@ -196,6 +199,8 @@ class GravityView_Roles_Capabilities {
 	 */
 	public function add_caps() {
 
+		$has_changes = false;
+
 		$wp_roles = $this->wp_roles();
 
 		if ( is_object( $wp_roles ) ) {
@@ -211,17 +216,27 @@ class GravityView_Roles_Capabilities {
 			$capabilities = self::all_caps( false, false );
 
 			foreach ( $capabilities as $role_slug => $role_caps ) {
+				$capabilities = Arr::get( $wp_roles->roles, "{$role_slug}.capabilities", [] );
+
 				foreach ( $role_caps as $cap ) {
+					// Keep the capability if it is already set.
+					if ( isset( $capabilities[ $cap ] ) ) {
+						continue;
+					}
+
+					$has_changes = true;
 					$wp_roles->add_cap( $role_slug, $cap );
 				}
 			}
 
-			/**
-			 * Update the option, as it does in add_cap when $use_db is true
-			 *
-			 * @see WP_Roles::add_cap() Original code
-			 */
-			update_option( $wp_roles->role_key, $wp_roles->roles );
+			if ( $has_changes ) {
+				/**
+				 * Update the option, as it does in add_cap when $use_db is true
+				 *
+				 * @see WP_Roles::add_cap() Original code
+				 */
+				update_option( $wp_roles->role_key, $wp_roles->roles );
+			}
 
 			/**
 			 * Restore previous $use_db setting

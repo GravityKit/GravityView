@@ -1571,9 +1571,17 @@ class GravityView_frontend {
 
 				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, true );
 
+				static $inlined_scripts = [];
+
+
 				// Only print once.
-				if ( 'wp_print_footer_scripts' !== current_filter() ) {
-					wp_add_inline_script( 'gravityview-fe-view', $view->settings->get( 'custom_javascript' ), 'after' );
+				if( ! isset( $inlined_scripts[ $view->ID ] ) ) {
+
+					$custom_javascript = $view->settings->get( 'custom_javascript' );
+
+					if ( ! empty( $custom_javascript ) ) {
+						wp_add_inline_script( 'gravityview-fe-view', $custom_javascript, 'after' );
+					}
 				}
 
 				wp_enqueue_script( 'gravityview-fe-view' );
@@ -1587,13 +1595,15 @@ class GravityView_frontend {
 				self::add_style( $template_id );
 
 				// Only print once.
-				if ( 'wp_print_footer_scripts' !== current_filter() ) {
+				if( ! isset( $inlined_scripts[ $view->ID ] ) ) {
 					$custom_css = $view->settings->get( 'custom_css', null );
 
 					if ( $custom_css ) {
 						wp_add_inline_style( 'gravityview_default_style', $custom_css );
 					}
 				}
+
+				$inlined_scripts[ $view->ID ] = true;
 			}
 
 			if ( 'wp_print_footer_scripts' === current_filter() ) {

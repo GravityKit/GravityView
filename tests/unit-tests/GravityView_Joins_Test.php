@@ -287,6 +287,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 	public function test_joins_with_approves() {
 		add_filter('gk/gravityview/view/entries/cache', '__return_false');
+		add_filter('gravityview_use_cache', '__return_false');
 
 		$this->_reset_context();
 
@@ -376,6 +377,7 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	public function test_legacy_template_table_joins() {
@@ -907,47 +909,47 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
 
-		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s1['id'] ) ), $output );
-		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s2['id'] ) ), $output );
-		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s3['id'] ) ), $output );
-		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s4['id'] ) ), $output );
+		$this->assertStringContainsString( 'entry=' . implode( ',', array( $c1['id'], $s1['id'] ) ), $output );
+		$this->assertStringContainsString( 'entry=' . implode( ',', array( $c1['id'], $s2['id'] ) ), $output );
+		$this->assertStringContainsString( 'entry=' . implode( ',', array( $c2['id'], $s3['id'] ) ), $output );
+		$this->assertStringContainsString( 'entry=' . implode( ',', array( $c2['id'], $s4['id'] ) ), $output );
 
 		$output = $view->content( '' );
 
-		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s1['id'] ) ), $output );
-		$this->assertContains( 'entry=' . implode( ',', array( $c1['id'], $s2['id'] ) ), $output );
-		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s3['id'] ) ), $output );
-		$this->assertContains( 'entry=' . implode( ',', array( $c2['id'], $s4['id'] ) ), $output );
+		$this->assertStringContainsString( 'entry=' . implode( ',', array( $c1['id'], $s1['id'] ) ), $output );
+		$this->assertStringContainsString( 'entry=' . implode( ',', array( $c1['id'], $s2['id'] ) ), $output );
+		$this->assertStringContainsString( 'entry=' . implode( ',', array( $c2['id'], $s3['id'] ) ), $output );
+		$this->assertStringContainsString( 'entry=' . implode( ',', array( $c2['id'], $s4['id'] ) ), $output );
 
 		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
 			\GV\GF_Entry::by_id( $c1['id'] ), \GV\GF_Entry::by_id( $s1['id'] ),
 		) );
 
 		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
-		$this->assertNotContains( 'not allowed', $output );
+		$this->assertStringNotContainsString( 'not allowed', $output );
 
 		$output = $view->content( '' );
-		$this->assertNotContains( 'not allowed', $output );
+		$this->assertStringNotContainsString( 'not allowed', $output );
 
 		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
 			\GV\GF_Entry::by_id( $c2['id'] ), \GV\GF_Entry::by_id( $s3['id'] ),
 		) );
 
 		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
-		$this->assertNotContains( 'not allowed', $output );
+		$this->assertStringNotContainsString( 'not allowed', $output );
 
 		$output = $view->content( '' );
-		$this->assertNotContains( 'not allowed', $output );
+		$this->assertStringNotContainsString( 'not allowed', $output );
 
 		gravityview()->request->returns['is_entry'] = \GV\Multi_Entry::from_entries( array(
 			\GV\GF_Entry::by_id( $c1['id'] ), \GV\GF_Entry::by_id( $n1['id'] ),
 		) );
 
 		$output = do_shortcode( '[gravityview id=' . $view->ID . ']' );
-		$this->assertContains( 'not allowed', $output );
+		$this->assertStringContainsString( 'not allowed', $output );
 
 		$output = $view->content( '' );
-		$this->assertContains( 'not allowed', $output );
+		$this->assertStringContainsString( 'not allowed', $output );
 	}
 
 	/**
@@ -1259,8 +1261,8 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$out = $renderer->render( $view );
 
-		$this->assertContains( sprintf( 'Step 1">%s<', $entry1_1['id'] ), $out );
-		$this->assertContains( sprintf( 'Step 2">%s<', $entry1_2['id'] ), $out );
+		$this->assertStringContainsString( sprintf( 'Step 1">%s<', $entry1_1['id'] ), $out );
+		$this->assertStringContainsString( sprintf( 'Step 2">%s<', $entry1_2['id'] ), $out );
 
 		$this->_reset_context();
 	}
