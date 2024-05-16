@@ -133,6 +133,13 @@ final class Core {
 		/** More legacy core. @todo Deprecate */
 		$this->plugin->include_legacy_core();
 
+		/** Register the gravityview post type upon WordPress core init. */
+		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
+		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
+		add_action( 'init', array( '\GV\View', 'add_rewrite_endpoint' ) );
+		add_filter( 'map_meta_cap', array( '\GV\View', 'restrict' ), 11, 4 );
+		add_action( 'template_redirect', array( '\GV\View', 'template_redirect' ) );
+		add_action( 'the_content', array( '\GV\View', 'content' ) );
 		/**
 		 * Stop all further functionality from loading if the WordPress
 		 * plugin is incompatible with the current environment.
@@ -141,16 +148,10 @@ final class Core {
 		 */
 		if ( ! $this->plugin->is_compatible() ) {
 			$this->log->error( 'GravityView 2.0 is not compatible with this environment. Stopped loading.' );
+
 			return;
 		}
 
-		/** Register the gravityview post type upon WordPress core init. */
-		require_once $this->plugin->dir( 'future/includes/class-gv-view.php' );
-		add_action( 'init', array( '\GV\View', 'register_post_type' ) );
-		add_action( 'init', array( '\GV\View', 'add_rewrite_endpoint' ) );
-		add_filter( 'map_meta_cap', array( '\GV\View', 'restrict' ), 11, 4 );
-		add_action( 'template_redirect', array( '\GV\View', 'template_redirect' ) );
-		add_action( 'the_content', array( '\GV\View', 'content' ) );
 
 		/** Add rewrite endpoint for single-entry URLs. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );

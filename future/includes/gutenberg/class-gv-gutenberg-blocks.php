@@ -3,12 +3,15 @@
 namespace GravityKit\GravityView\Gutenberg;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
+use GV\View;
 use GVCommon;
 
 class Blocks {
 	const MIN_WP_VERSION = '6.0.0';
 
 	const SLUG = 'gk-gravityview-blocks';
+
+	const IGNORE_SCRIPTS_AND_STYLES = [ 'jetpack', 'elementor' ];
 
 	private $blocks_build_path;
 
@@ -173,6 +176,11 @@ class Blocks {
 	 * @return void
 	 */
 	public function localize_block_assets() {
+		// Prevent leaking information on front-end.
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		/**
 		 * Modifies the global blocks localization data.
 		 *
@@ -224,14 +232,19 @@ class Blocks {
 		);
 
 		$formatted_views = array_map(
-			function ( $view ) {
-				return array(
-					'value' => (string) $view->ID,
-					'label' => sprintf(
-						'%s (#%d)',
-						$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
-						$view->ID
-					),
+			static function ( $post ) {
+				$view = View::from_post( $post );
+
+				return array_filter(
+					[
+						'value'  => (string) $view->ID,
+						'label'  => sprintf(
+							'%s (#%d)',
+							$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
+							$view->ID
+						),
+						'secret' => $view->get_validation_secret(),
+					]
 				);
 			},
 			$views
@@ -264,6 +277,8 @@ class Blocks {
 		$scripts_before_shortcode = array_keys( $wp_scripts->registered );
 		$styles_before_shortcode  = array_keys( $wp_styles->registered );
 
+		ob_start();
+
 		$rendered_shortcode = do_shortcode( $shortcode );
 
 		do_action( 'wp_enqueue_scripts' );
@@ -277,6 +292,12 @@ class Blocks {
 
 		$newly_registered_scripts = array_diff( $scripts_after_shortcode, $scripts_before_shortcode );
 		$newly_registered_styles  = array_diff( $styles_after_shortcode, $styles_before_shortcode );
+
+		// Ignore certain scripts and styles that may cause conflicts.
+		$ignore_pattern = '/(' . implode( '|', self::IGNORE_SCRIPTS_AND_STYLES ) . ')/';
+
+		$newly_registered_scripts = array_diff( $newly_registered_scripts, preg_grep( $ignore_pattern, $newly_registered_scripts ) );
+		$newly_registered_styles  = array_diff( $newly_registered_styles, preg_grep( $ignore_pattern, $newly_registered_styles ) );
 
 		// This will return an array of all dependencies sorted in the order they should be loaded.
 		$get_dependencies = function ( $handle, $source, $dependencies = array() ) use ( &$get_dependencies ) {
@@ -318,6 +339,8 @@ class Blocks {
 		foreach ( $newly_registered_styles as $style ) {
 			$style_dependencies = array_merge( $style_dependencies, $get_dependencies( $style, $wp_styles ) );
 		}
+
+		ob_end_clean();
 
 		return array(
 			'scripts' => array_unique( $script_dependencies, SORT_REGULAR ),

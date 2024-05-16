@@ -29,6 +29,7 @@
     "gravitykit/foundation": "dev-main"
   },
   "require-dev": {
+    "phpunit/phpunit": "^8.5",
     "lucatume/wp-browser": "^2.4",
     "codeception/module-asserts": "^1.0",
     "codeception/module-phpbrowser": "^1.0",
@@ -80,6 +81,8 @@
     }
   },
   "scripts": {
+    "install-public-no-dev": "[ -f composer.json ] && ( cp composer_public.json composer.json && composer update gravitykit/foundation --no-dev && git checkout composer.lock composer.json )  || ( echo 'failed to use the public composer.json' && git checkout composer.json composer.lock)",
+    "install-public": "[ -f composer.json ] && ( cp composer_public.json composer.json && composer update gravitykit/foundation && git checkout composer.lock composer.json )  || ( echo 'failed to use the public composer.json' && git checkout composer.json ccomposer.lock)",
     "prefix_vendor": "@php strauss.phar",
     "post_update_install": "./composer_post_update_install.sh",
     "post-install-cmd": [

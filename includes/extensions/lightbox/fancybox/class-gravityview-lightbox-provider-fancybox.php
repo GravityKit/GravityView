@@ -181,14 +181,15 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			}
 		}
 
-		$file_path = \GV\Utils::get( $additional_details, 'file_path' );
+		$file_path = \GV\Utils::get( $additional_details, 'file_path', '' );
 
 		/**
-		 * For file types that require IFRAME, declare `pdf` media type.
+		 * For file types that require iframe (e.g., PDFs, text files), declare `pdf` media type.
+		 * SVGs are not supported by Fancybox by default but render fine inside an iframe.
 		 *
-		 * @see https://fancyapps.com/docs/ui/fancybox#media-types
+		 * @see https://web.archive.org/web/20230221135246/https://fancyapps.com/docs/ui/fancybox/#media-types
 		 */
-		if ( false !== strpos( $file_path, 'gv-iframe' ) ) {
+		if ( false !== strpos( $file_path, 'gv-iframe' ) || preg_match( '/\.svg$/i', $file_path ) ) {
 			$link_atts['data-type'] = 'pdf';
 		}
 

@@ -486,6 +486,27 @@ class GravityView_Admin_Views {
 				}
 
 				break;
+			case 'shortcode':
+				$view = \GV\View::by_id( $post_id );
+				if ( ! $view ) {
+					break;
+				}
+
+				$html = <<<HTML
+<div class="gv-shortcode">
+	<input title="%s" aria-labelledby="shortcode" type="text" readonly="readonly" value="%s" class="code shortcode widefat" />
+	<span class="copied">%s</span>
+	<div class="screen-reader-text">%1\$s</div>
+</div>
+HTML;
+
+				$output = sprintf(
+					$html,
+					esc_html__( 'Click to copy', 'gk-gravityview' ),
+					esc_attr( $view->get_shortcode() ),
+					esc_html__( 'Copied!', 'gk-gravityview' )
+				);
+				break;
 		}
 
 		echo $output;
@@ -595,6 +616,8 @@ class GravityView_Admin_Views {
 		}
 
 		$columns['gv_template'] = _x( 'Template', 'Column title that shows what template is being used for Views', 'gk-gravityview' );
+
+		$columns['shortcode'] = esc_html__( 'Shortcode', 'gk-gravityview' );
 
 		// Add the date back in.
 		$columns['date'] = $date;
@@ -1077,6 +1100,8 @@ class GravityView_Admin_Views {
 																				if ( ! empty( $values[ $zone . '_' . $area['areaid'] ] ) ) {
 
 																					foreach ( $values[ $zone . '_' . $area['areaid'] ] as $uniqid => $field ) {
+																						// Provide the button label to the field.
+																						$field['add_button_label'] = $button_label;
 
 																						// Maybe has a form ID
 																						$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
@@ -1427,6 +1452,16 @@ class GravityView_Admin_Views {
 		wp_register_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array( 'dashicons', 'wp-jquery-ui-dialog' ), \GV\Plugin::$version );
 
 		wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), \GV\Plugin::$version, true );
+		wp_enqueue_script(
+			'gravityview-shortcode',
+			plugins_url( 'assets/js/admin-shortcode' . $script_debug . '.js', GRAVITYVIEW_FILE ),
+			[
+				'jquery',
+				'clipboard',
+			],
+			\GV\Plugin::$version,
+			true
+		);
 
 		if ( 'form_list' === GFForms::get_page() ) {
 			wp_enqueue_style( 'gravityview_views_styles' );
@@ -1445,7 +1480,23 @@ class GravityView_Admin_Views {
 		wp_enqueue_style( 'gravityview_views_datepicker', plugins_url( 'assets/css/admin-datepicker.css', GRAVITYVIEW_FILE ), \GV\Plugin::$version );
 
 		// Enqueue scripts
-		wp_enqueue_script( 'gravityview_views_scripts', plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery-ui-tabs', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable', 'jquery-ui-tooltip', 'jquery-ui-dialog', 'gravityview-jquery-cookie', 'jquery-ui-datepicker', 'underscore' ), \GV\Plugin::$version );
+		wp_enqueue_script(
+			'gravityview_views_scripts',
+			plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ),
+			[
+				'jquery-ui-tabs',
+				'jquery-ui-draggable',
+				'jquery-ui-droppable',
+				'jquery-ui-sortable',
+				'jquery-ui-tooltip',
+				'jquery-ui-dialog',
+				'gravityview-jquery-cookie',
+				'jquery-ui-datepicker',
+				'underscore',
+				'clipboard'
+			],
+			\GV\Plugin::$version
+		);
 
 		wp_localize_script(
 			'gravityview_views_scripts',

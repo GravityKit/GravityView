@@ -1,6 +1,8 @@
 <?php
 namespace GV;
 
+use GravityKit\GravityView\Foundation\Settings\Framework as SettingsFramework;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -46,7 +48,6 @@ class View_Settings extends Settings {
 	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
-
 		$default_settings = array_merge(
 			array(
 				'id'                          => array(
@@ -99,6 +100,34 @@ class View_Settings extends Settings {
 						'id'  => '5bad1a33042863158cc6d396',
 						'url' => 'https://docs.gravitykit.com/article/490-entry-approval-gravity-forms',
 					),
+				),
+				'caching'                     => array(
+					'label'             => __( 'Enable caching', 'gk-gravityview' ),
+					'type'              => 'checkbox',
+					'group'             => 'default',
+					'value'             => gravityview()->plugin->settings->get( 'caching' ),
+					'desc'              => strtr(
+						esc_html_x( 'Turn caching on or off to improve performance. Default settings are configured in [url]GravityView Caching Settings[/url].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
+						[
+							'[url]'  => '<a href="' . esc_url( SettingsFramework::get_instance()->get_plugin_settings_url( Plugin_Settings::SETTINGS_PLUGIN_ID ) . '&s=1' ) . '">',
+							'[/url]' => '</a>',
+						]
+					),
+					'show_in_shortcode' => false,
+					'article'           => array(
+						'id'  => '54c67bb6e4b051242988550a',
+						'url' => 'https://docs.gravitykit.com/article/58-about-gravityview-caching',
+					),
+				),
+				'caching_entries'             => array(
+					'label'             => __( 'Entry Cache Duration', 'gk-gravityview' ),
+					'tooltip'           => esc_html__( 'Specify the duration, in seconds, that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance.', 'gk-gravityview' ),
+					'type'              => 'number',
+					'group'             => 'default',
+					'value'             => gravityview()->plugin->settings->get( 'caching_entries' ),
+					'show_in_shortcode' => false,
+					'requires'          => 'caching=1',
+					'min'               => 1,
 				),
 				'no_entries_options'          => array(
 					'label'             => __( 'No Entries Behavior', 'gk-gravityview' ),
@@ -562,6 +591,12 @@ class View_Settings extends Settings {
 					'requires'    => 'delete_redirect=' . \GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE,
 					'merge_tags'  => 'force',
 				),
+				'is_secure'                   => [
+					'label' => __( 'Enable Enhanced Security', 'gk-gravityview' ),
+					'desc'  => __( 'This will require a <code>secret</code> attribute on all shortcodes and blocks connected to this View, including <code>[gravityview]</code>, <code>[gvfield]</code> and <code>[gventry]</code>.', 'gk-gravityview' ),
+					'type'  => 'checkbox',
+					'value' => 0,
+				],
 				'embed_only'                  => array(
 					'label'             => __( 'Prevent Direct Access', 'gk-gravityview' ),
 					'group'             => 'default',
@@ -678,7 +713,7 @@ class View_Settings extends Settings {
 			),
 			array(
 				'csv_nolimit' => array(
-					'label'             => __( 'Show all in file', 'gk-gravityview' ),
+					'label'             => __( 'Show All In File', 'gk-gravityview' ),
 					'group'             => 'default',
 					'desc'              => __( 'Do not limit the number of entries output in the file.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
