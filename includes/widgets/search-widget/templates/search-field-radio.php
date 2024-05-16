@@ -3,11 +3,11 @@
  * Display the search RADIO input field
  *
  * @file class-search-widget.php See for usage
+ *
+ * @global array $data
  */
 
-$gravityview_view = GravityView_View::getInstance();
-$view_id          = $gravityview_view->getViewId();
-$search_field     = $gravityview_view->search_field;
+$search_field = \GV\Utils::get( $data, 'search_field', [] );
 
 // Make sure that there are choices to display
 if ( empty( $search_field['choices'] ) ) {

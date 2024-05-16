@@ -1,16 +1,19 @@
 <?php
 /**
  * @since 2.0
+ *
+ * @global array $data
  */
 
-$gravityview_view = GravityView_View::getInstance();
-$view_id          = $gravityview_view->getViewId();
+$view_id = \GV\Utils::get( $data, 'view_id', 0 );
+$search_mode = \GV\Utils::get( $data, 'search_mode', 'any' );
+$search_clear = \GV\Utils::get( $data, 'search_clear', false );
 ?>
 <div class="gv-search-box gv-search-box-submit">
 	<?php
 
 	// Output the Clear button, if enabled
-	GravityView_Widget_Search::the_clear_search_button();
+	echo $search_clear;
 
 	$args = gv_get_query_args();
 
@@ -33,6 +36,6 @@ $view_id          = $gravityview_view->getViewId();
 	}
 
 	?>
-	<input type="hidden" name="mode" value="<?php echo esc_attr( $gravityview_view->search_mode ); ?>" />
-	<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gk-gravityview' ); ?>" />
+	<input type="hidden" name="mode" value="<?php echo esc_attr( $search_mode ); ?>" />
+	<input type="submit" class="button gv-search-button" id="gv_search_button_<?php echo (int) $view_id; ?>" value="<?php esc_attr_e( 'Search', 'gk-gravityview' ); ?>" />
 </div>

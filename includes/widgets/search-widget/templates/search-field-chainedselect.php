@@ -7,11 +7,12 @@
  * - [ ] When using Chained Select, it only works well when "All"
  *
  * @file class-search-widget.php See for usage
+ *
+ * @global array $data
  */
 
-$gravityview_view = GravityView_View::getInstance();
-$view_id          = $gravityview_view->getViewId();
-$search_field     = $gravityview_view->search_field;
+$search_field = \GV\Utils::get( $data, 'search_field', [] );
+$search_layout = \GV\Utils::get( $data, 'search_layout', 'horizontal' );
 
 if ( ! class_exists( 'GF_Chained_Field_Select' ) ) {
 	gravityview()->log->error( 'The Gravity Forms Chained Select Add-On is not active.' );
@@ -24,7 +25,7 @@ if ( empty( $search_field['choices'] ) ) {
 	return;
 }
 
-$form = \GV\GF_Form::from_form( $gravityview_view->getForm() );
+$form = \GV\GF_Form::by_id( $search_field['form_id'] );
 
 $field = \GV\GF_Field::by_id( $form, $search_field['key'] );
 
@@ -38,7 +39,7 @@ $gf_field = $field->field;
  * @param GravityView_Widget_Search $this GravityView Widget instance
  * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
  */
-$alignment = apply_filters( 'gravityview/search/chained_selects/alignment', $gravityview_view->search_layout, $search_field );
+$alignment = apply_filters( 'gravityview/search/chained_selects/alignment', $search_layout, $search_field );
 
 /**
  * Choose whether to hide inactive dropdowns in the chain.
@@ -51,7 +52,7 @@ $alignment = apply_filters( 'gravityview/search/chained_selects/alignment', $gra
 $hide_inactive = apply_filters( 'gravityview/search/chained_selects/hide_inactive', false, $search_field );
 
 // Set horizontal/vertical alignment
-$gf_field->chainedSelectsAlignment = $gravityview_view->search_layout;
+$gf_field->chainedSelectsAlignment = $search_layout;
 ?>
 <div class="gv-search-box gv-search-field-chainedselect">
 	<?php if ( ! gv_empty( $search_field['label'], false, false ) ) { ?>
@@ -81,7 +82,7 @@ $gf_field->chainedSelectsAlignment = $gravityview_view->search_layout;
 			'{form_id}'       => $form->ID,
 			'{field_id}'      => $field->ID,
 			'{hide_inactive}' => (int) $hide_inactive,
-			'{search_layout}' => $gravityview_view->search_layout,
+			'{search_layout}' => $search_layout,
 		)
 	);
 	?>

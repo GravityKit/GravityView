@@ -1045,7 +1045,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 								'key'      => 'is_approved',
 								'value'    => '',
 							),
-							'mode' => 'any',
+						'mode' => 'any',
 						),
 					)
 				);
@@ -1689,16 +1689,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function has_date_field( $search_fields ) {
 
-		$has_date = false;
-
 		foreach ( $search_fields as $k => $field ) {
-			if ( in_array( $field['input'], array( 'date', 'date_range', 'entry_date' ) ) ) {
-				$has_date = true;
-				break;
+			if ( in_array( $field['input'], array( 'date', 'date_range', 'entry_date' ), true ) ) {
+				return true;
 			}
 		}
 
-		return $has_date;
+		return false;
 	}
 
 	/**
@@ -1712,66 +1709,108 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 
-		$gravityview_view = GravityView_View::getInstance();
-
-		if ( empty( $gravityview_view ) ) {
-			gravityview()->log->debug( '$gravityview_view not instantiated yet.' );
-			return;
+		if ( $context instanceof \GV\Template_Context ) {
+			$view_id = $context->view->ID;
+		} else {
+			$view_id = \GV\Utils::get( $widget_args, 'view_id', 0 );
 		}
 
-		$view = \GV\View::by_id( $gravityview_view->view_id );
+		$search_fields = $this->set_search_fields( $widget_args, $context );
 
-		// get configured search fields
-		$search_fields = ! empty( $widget_args['search_fields'] ) ? json_decode( $widget_args['search_fields'], true ) : '';
+		if ( $this->has_date_field( $search_fields ) ) {
+			// enqueue datepicker stuff only if needed!
+			$this->enqueue_datepicker();
+		}
 
-		$search_fields = $view->fields->by_position( 'search_search-fields' )->as_configuration();
+		$search_layout = ( ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal' );
+		$custom_class = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
+
+		$data = [
+			'datepicker_class' => $this->get_datepicker_class(),
+			'search_fields' => $search_fields,
+			'search_method' => $this->get_search_method(),
+			'search_layout' => $search_layout,
+			'search_mode' => ( ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any' ),
+			'search_clear' => ( ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false ),
+			'view_id' => $view_id,
+			'search_class' => self::get_search_class( $custom_class, $search_layout ),
+			'permalink_fields' => $this->add_no_permalink_fields( array(), $this, $widget_args ),
+			'search_form_action' => self::get_search_form_action(),
+		];
+
+		GravityView_View::getInstance()->render( 'widget', 'search', false, $data );
+	}
+
+	/**
+	 * @param string|\GV\Template_Context $context
+	 *
+	 * @return array|mixed|null
+	 */
+	public function set_search_fields( $widget_args, $context ) {
+
+		if ( $context instanceof \GV\Template_Context ) {
+			$view = $context->view;
+		} else {
+			$view_id = \GV\Utils::get( $widget_args, 'view_id', 0 );
+			$view = \GV\View::by_id( $view_id );
+		}
+
+		if ( ! $view instanceof \GV\View ) {
+			gravityview()->log->error( 'View not found', array( 'data' => $widget_args ) );
+			return [];
+		}
+
+		$search_fields = $view->fields->by_position( 'search_*' )->as_configuration();
 
 		if ( empty( $search_fields ) || ! is_array( $search_fields ) ) {
 			gravityview()->log->debug( 'No search fields configured for widget:', array( 'data' => $widget_args ) );
-			return;
+			return [];
 		}
 
 		// prepare fields
-		foreach ( $search_fields['search_search-fields'] as $k => $field ) {
+		foreach ( $search_fields as $group => $fields ) {
+			foreach ( $fields as $k => $field ) {
 
-			$updated_field = $field;
+				$updated_field = $field;
 
-			$updated_field = $this->get_search_filter_details( $updated_field, $context, $widget_args );
+				$updated_field = $this->get_search_filter_details( $updated_field, $context, $widget_args );
 
-			switch ( $field['field'] ) {
+				$updated_field['label'] = self::get_field_label( $field );
 
-				case 'search_all':
-					$updated_field['key']   = 'search_all';
-					$updated_field['input'] = 'search_all';
-					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_search' );
-					break;
+				switch ( $field['field'] ) {
 
-				case 'entry_date':
-					$updated_field['key']   = 'entry_date';
-					$updated_field['input'] = 'entry_date';
-					$updated_field['value'] = array(
-						'start' => $this->rgget_or_rgpost( 'gv_start' ),
-						'end'   => $this->rgget_or_rgpost( 'gv_end' ),
-					);
-					break;
+					case 'search_all':
+						$updated_field['key']   = 'search_all';
+						$updated_field['input'] = 'search_all';
+						$updated_field['value'] = $this->rgget_or_rgpost( 'gv_search' );
+						break;
 
-				case 'entry_id':
-					$updated_field['key']   = 'entry_id';
-					$updated_field['input'] = 'entry_id';
-					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_id' );
-					break;
+					case 'entry_date':
+						$updated_field['key']   = 'entry_date';
+						$updated_field['input'] = 'entry_date';
+						$updated_field['value'] = array(
+							'start' => $this->rgget_or_rgpost( 'gv_start' ),
+							'end'   => $this->rgget_or_rgpost( 'gv_end' ),
+						);
+						break;
 
-				case 'created_by':
-					$updated_field['key']   = 'created_by';
-					$updated_field['name']  = 'gv_by';
-					$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
-					break;
+					case 'entry_id':
+						$updated_field['key']   = 'entry_id';
+						$updated_field['input'] = 'entry_id';
+						$updated_field['value'] = $this->rgget_or_rgpost( 'gv_id' );
+						break;
 
-				case 'is_approved':
-					$updated_field['key']     = 'is_approved';
-					$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_approved' );
-					$updated_field['choices'] = self::get_is_approved_choices();
-					break;
+					case 'created_by':
+						$updated_field['key']   = 'created_by';
+						$updated_field['name']  = 'gv_by';
+						$updated_field['value'] = $this->rgget_or_rgpost( 'gv_by' );
+						break;
+
+					case 'is_approved':
+						$updated_field['key']     = 'is_approved';
+						$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_approved' );
+						$updated_field['choices'] = self::get_is_approved_choices();
+						break;
 
 				case 'is_read':
 					$updated_field['key']     = 'is_read';
@@ -1787,9 +1826,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 						),
 					);
 					break;
-			}
+				}
 
-			$search_fields[ $k ] = $updated_field;
+				$search_fields[ $group ][ $k ] = $updated_field;
+			}
 		}
 
 		gravityview()->log->debug( 'Calculated Search Fields: ', array( 'data' => $search_fields ) );
@@ -1803,40 +1843,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @param \GV\Template_Context $context {@since 2.0}
 		 * @type array
 		 */
-		$gravityview_view->search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args, $context );
+		$search_fields = apply_filters( 'gravityview_widget_search_filters', $search_fields, $this, $widget_args, $context );
 
-		$gravityview_view->permalink_fields = $this->add_no_permalink_fields( array(), $this, $widget_args );
-
-		$gravityview_view->search_layout = ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal';
-
-		/** @since 1.14 */
-		$gravityview_view->search_mode = ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any';
-
-		$custom_class = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
-
-		$gravityview_view->search_class = self::get_search_class( $custom_class );
-
-		$gravityview_view->search_clear = ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false;
-
-		if ( $this->has_date_field( $search_fields ) ) {
-			// enqueue datepicker stuff only if needed!
-			$this->enqueue_datepicker();
-		}
-
-		$gravityview_view->render( 'widget', 'search', false );
+		return $search_fields;
 	}
 
 	/**
-	 * Get the search class for a search form
+	 * Get the search class for a search form.
 	 *
 	 * @since 1.5.4
+	 * @since TODO Added $search_layout parameter.
+	 *
+	 * @param string $custom_class Custom class to add to the search form
+	 * @param string $search_layout Search layout ("horizontal" or "vertical"). Default: "horizontal".
 	 *
 	 * @return string Sanitized CSS class for the search form
 	 */
-	public static function get_search_class( $custom_class = '' ) {
-		$gravityview_view = GravityView_View::getInstance();
+	public static function get_search_class( $custom_class = '', $search_layout = 'horizontal' ) {
 
-		$search_class = 'gv-search-' . $gravityview_view->search_layout;
+		$search_class = 'gv-search-'. $search_layout;
 
 		if ( ! empty( $custom_class ) ) {
 			$search_class .= ' ' . $custom_class;
@@ -1860,13 +1885,17 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Calculate the search form action
 	 *
 	 * @since 1.6
+	 * @since TODO Added $post_id parameter.
 	 *
 	 * @return string
 	 */
-	public static function get_search_form_action() {
-		$gravityview_view = GravityView_View::getInstance();
+	public static function get_search_form_action( $post_id = 0 ) {
 
-		$post_id = $gravityview_view->getPostId() ? $gravityview_view->getPostId() : $gravityview_view->getViewId();
+		if ( empty( $post_id ) ) {
+			$gravityview_view = GravityView_View::getInstance();
+
+			$post_id = $gravityview_view->getPostId() ? $gravityview_view->getPostId() : $gravityview_view->getViewId();
+		}
 
 		$url = add_query_arg( array(), get_permalink( $post_id ) );
 
@@ -1890,7 +1919,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private static function get_field_label( $field, $form_field = array() ) {
 
-		$label = \GV\Utils::_GET( 'label', \GV\Utils::get( $field, 'label' ) );
+		// TODO: Convert from "Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys" to use the current structure.
+
+		$label = \GV\Utils::get( $field, 'custom_label', '' );
+
+		if ( '' === $label ) {
+			$label = \GV\Utils::_GET( 'label', \GV\Utils::get( $field, 'label' ) );
+		}
 
 		if ( ! $label ) {
 
@@ -1944,7 +1979,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @since 2.16 Added $widget_args parameter.
 	 *
 	 * @param array       $field
-	 * @param \GV\Context $context
+	 * @param \GV\Template_Context $context
 	 * @param array       $widget_args
 	 *
 	 * @return array
@@ -1971,6 +2006,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'input' => self::get_input_types_by_gf_field( $form_field )[0],
 			'value' => $value,
 			'type'  => $form_field_type,
+			'form_id' => \GV\Utils::get( $field, 'form_id' ),
 		);
 
 		// collect choices
@@ -2056,7 +2092,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 *
 			 * @param bool $sieve_choices True: Yes, filter choices based on whether the value exists in entries. False: show all choices in the original field. Default: false.
 			 * @param array $field The field configuration.
-			 * @param \GV\Context The context.
+			 * @param \GV\Template_Context The context.
 			 */
 			if ( apply_filters( 'gravityview/search/sieve_choices', $sieve_choices, $field, $context, $widget_args ) ) {
 				$filter['choices'] = $this->sieve_filter_choices( $filter, $context );
@@ -2230,39 +2266,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @since 1.5.4
 	 */
 	public static function the_clear_search_button() {
-		$gravityview_view = GravityView_View::getInstance();
-
-		if ( $gravityview_view->search_clear ) {
-			$clear_button_params = [
-				'url'     => remove_query_arg(
-					( GravityView_Widget_Search::getInstance() )->add_reserved_args( [] )
-				),
-				'text'    => esc_html__( 'Clear', 'gk-gravityview' ),
-				'view_id' => $gravityview_view->getViewId(),
-				'format'  => 'html',
-				'atts'    => [ 'class' => 'button gv-search-clear' ],
-			];
-
-			/**
-			 * Modifies search widget's Clear button parameters.
-			 *
-			 * @filter `gravityview/widget/search/clear-button/params`
-			 *
-			 * @since  2.21
-			 *
-			 * @param array{url: string, text: string, view_id: int, atts: array} $clear_button_params
-			 */
-			$clear_button_params = wp_parse_args(
-				apply_filters( 'gk/gravityview/widget/search/clear-button/params', $clear_button_params ),
-				$clear_button_params
-			);
-
-			if ( 'text' === $clear_button_params['format'] ) {
-				echo $clear_button_params['url'];
-			} else {
-				echo gravityview_get_link( $clear_button_params['url'], $clear_button_params['text'], $clear_button_params['atts'] );
-			}
-		}
+		_deprecated_function( __METHOD__, 'TODO', 'The button is now available in the templates as global $data[\'search_clear\']' );
 	}
 
 	/**
@@ -2354,8 +2358,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Enqueue the datepicker script
 	 *
-	 * It sets the $gravityview->atts['datepicker_class'] parameter
-	 *
 	 * @todo Use own datepicker javascript instead of GF datepicker.js - that way, we can localize the settings and not require the changeMonth and changeYear pickers.
 	 * @return void
 	 */
@@ -2369,10 +2371,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$scheme = is_ssl() ? 'https://' : 'http://';
 		wp_enqueue_style( 'jquery-ui-datepicker', $scheme . 'ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/smoothness/jquery-ui.css' );
+	}
 
+	private function get_datepicker_class() {
 		/**
 		 * @filter `gravityview_search_datepicker_class`
 		 * Modify the CSS class for the datepicker, used by the CSS class is used by Gravity Forms' javascript to determine the format for the date picker. The `gv-datepicker` class is required by the GravityView datepicker javascript.
+		 *
 		 * @param string $css_class CSS class to use. Default: `gv-datepicker datepicker mdy` \n
 		 * Options are:
 		 * - `mdy` (mm/dd/yyyy)
@@ -2385,12 +2390,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker ' . $this->get_datepicker_format() );
 
-		$gravityview_view->setAtts(
-			array_merge(
-				$gravityview_view->atts,
-				[ 'datepicker_class' => $datepicker_class ]
-			)
-		);
+		return $datepicker_class;
 	}
 
 	/**

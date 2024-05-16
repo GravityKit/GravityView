@@ -850,12 +850,24 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		return $templates;
 	}
 
-	// Load the template
-	public function render( $slug, $name, $require_once = true ) {
+	/**
+	 * Render a template part
+	 *
+	 * @since TODO Added $data parameter.
+	 *
+	 * @param string $slug The template slug (like "table").
+	 * @param string $name The template part name (like "body").
+	 * @param bool $require_once Whether to require_once the template file. Default: true.
+	 * @param array $data Data to pass to the template, available to the template as a $data global. Default: array().
+	 */
+	public function render( $slug, $name, $require_once = true, $data = [] ) {
 
 		$this->setTemplatePartSlug( $slug );
 
 		$this->setTemplatePartName( $name );
+
+		// Set the data to be available in the template as a $data global.
+		$this->set_template_data( $data );
 
 		$template_file = $this->get_template_part( $slug, $name, false );
 
@@ -869,6 +881,9 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 				require $template_file;
 			}
 		}
+
+		// Clear the data after rendering.
+		$this->unset_template_data();
 	}
 
 	/**
