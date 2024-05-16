@@ -27,6 +27,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 - ⚠️ TODO: Properly handle deprecating the `GravityView_View` properties; other code likely calls them. ⚠️
 - TODO: Make sure the `set_template_data()` and `unset_template_data()` methods aren't heavy. They're called a lot.
 - TODO: Clean up widget-search.php so that each of the sections (basic fields, advanced fields, and permalink fields) are processed in a loop instead of multiple times.
+- TODO: Actually implement the Advanced Search part, not just cobble it together.
+- TODO: Write unit tests to cover changed functionality.
+- TODO: Add back-compatibility so that `field`, `input`, and `input_type` keys are set so that filters `$search_fields` structure so that it is set for existing filters and methods:
+	- [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "field" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/fields/class-gravityview-field.php on line 239
+    - [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "field" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/widgets/search-widget/class-search-widget.php on line 1509
+    - [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "input" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/widgets/search-widget/class-search-widget.php on line 1423
+
 
 - Search Bar is now a tab! You can now configure the Search Bar settings in the View editor, under the "Search" tab.
 
