@@ -3,11 +3,13 @@
  * Display the search MULTISELECT input field
  *
  * @file class-search-widget.php See for usage
+ *
+ * @global array $data
  */
 
-$gravityview_view = GravityView_View::getInstance();
-$view_id = $gravityview_view->getViewId();
-$search_field = $gravityview_view->search_field;
+$search_field = \GV\Utils::get( $data, 'search_field', [] );
+$form_id = \GV\Utils::get( $search_field, 'form_id', null );
+$form = \GV\GF_Form::by_id( $form_id );
 
 // Make sure that there are choices to display
 if( empty( $search_field['choices'] ) ) {
@@ -15,7 +17,7 @@ if( empty( $search_field['choices'] ) ) {
 	return;
 }
 
-$gf_field = GFAPI::get_field( $gravityview_view->getForm(), $search_field['key'] );
+$gf_field = GFAPI::get_field( $form, $search_field['key'] );
 $placeholder = \GV\Utils::get( $gf_field, 'placeholder', '' );
 
 /**

@@ -3,11 +3,11 @@
  * Display the search text input field
  *
  * @file class-search-widget.php See for usage
+ *
+ * @global array $data
  */
 
-$gravityview_view = GravityView_View::getInstance();
-$search_field = $gravityview_view->search_field;
-
+$search_field = \GV\Utils::get( $data, 'search_field', [] );
 ?>
 <div class="gv-search-box gv-search-field-text">
 	<?php if( ! gv_empty( $search_field['label'], false, false ) ) { ?>

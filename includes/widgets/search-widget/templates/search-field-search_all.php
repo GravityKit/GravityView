@@ -3,21 +3,24 @@
  * Display the search all input box
  *
  * @file class-search-widget.php See for usage
+ *
+ * @global array $data
  */
 
-$gravityview_view = GravityView_View::getInstance();
-$view_id = $gravityview_view->getViewId();
-$value = $gravityview_view->search_field['value'];
-$label = $gravityview_view->search_field['label'];
+$view_id = \GV\Utils::get( $data, 'view_id', null );
+$search_field = \GV\Utils::get( $data, 'search_field', [] );
+$value = \GV\Utils::get( $search_field, 'value' );
+$label = \GV\Utils::get( $search_field, 'label' );
 
+// TODO: Remove this when we remove support for Gravity Forms < 2.8.
 $html_input_type = RGFormsModel::is_html5_enabled() ? 'search' : 'text';
 ?>
 
 <div class="gv-search-box gv-search-field-text gv-search-field-search_all">
 	<div class="gv-search">
 	<?php if( ! gv_empty( $label, false, false ) ) { ?>
-		<label for="gv_search_<?php echo $view_id; ?>"><?php echo esc_html( $label ); ?></label>
+		<label for="gv_search_<?php echo (int) $view_id; ?>"><?php echo esc_html( $label ); ?></label>
 	<?php } ?>
-		<p><input type="<?php echo $html_input_type; ?>" name="gv_search" id="gv_search_<?php echo $view_id; ?>" value="<?php echo esc_attr( $value ); ?>" /></p>
+		<p><input type="<?php echo $html_input_type; ?>" name="gv_search" id="gv_search_<?php echo (int) $view_id; ?>" value="<?php echo esc_attr( $value ); ?>" /></p>
 	</div>
 </div>

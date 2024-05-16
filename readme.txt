@@ -21,6 +21,25 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= WIP =
+
+- ⚠️ TODO: Properly handle deprecating the `GravityView_View` properties; other code likely calls them. ⚠️
+- TODO: Make sure the `set_template_data()` and `unset_template_data()` methods aren't heavy. They're called a lot.
+- TODO: Clean up widget-search.php so that each of the sections (basic fields, advanced fields, and permalink fields) are processed in a loop instead of multiple times.
+
+- Search Bar is now a tab! You can now configure the Search Bar settings in the View editor, under the "Search" tab.
+
+__Developer Updates:__
+
+- Added: Fourth `$data` attribute to \GravityView_View::render() method to set a `$data` global in View templates.
+- Updated the Search Bar templates to remove usage of `$gravityview_view` in favor of a global `$data` variable.
+	- `$gravityview_view->search_fields` => `$data['search_fields']`
+	- `$gravityview_view->permalink_fields` => `$data['permalink_fields']`
+	- `$gravityview_view->search_layout` => `$data['search_layout']`
+	- `$gravityview_view->search_mode` => `$data['search_mode']`
+	- `$gravityview_view->search_class` => `$data['search_class']`
+	- `$gravityview_view->search_clear` => `$data['search_clear']`
+
 = 2.16.0.4 on December 2, 2022 =
 
 * Fixed: Incompatibility with some plugins/themes that could result in a blank WordPress Dashboard
