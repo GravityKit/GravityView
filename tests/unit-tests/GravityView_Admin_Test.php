@@ -38,7 +38,7 @@ class GravityView_Admin_Test extends GV_UnitTestCase {
 		$admin->add_select( $form['id'], $entry );
 		$select = ob_get_clean();
 
-		$this->assertNotContains( '251-i-only-see-some-users-in-the-change-entry-creator-dropdown', $select );
+		$this->assertStringNotContainsString( '251-i-only-see-some-users-in-the-change-entry-creator-dropdown', $select );
 
 		remove_filter( 'gravityview/get_users/change_entry_creator', $callback );
 
@@ -46,7 +46,7 @@ class GravityView_Admin_Test extends GV_UnitTestCase {
 			return $total;
 		} );
 
-		$this->assertNotContains( '251-i-only-see-some-users-in-the-change-entry-creator-dropdown', $select );
+		$this->assertStringNotContainsString( '251-i-only-see-some-users-in-the-change-entry-creator-dropdown', $select );
 
 		remove_filter( 'gravityview/get_users/change_entry_creator', $callback );
 

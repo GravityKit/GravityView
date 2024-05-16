@@ -23,18 +23,21 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 abstract class View_Template extends Template {
 	/**
 	 * Prefix for filter names.
+	 *
 	 * @var string
 	 */
 	protected $filter_prefix = 'gravityview/template/views';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
+	 *
 	 * @var string
 	 */
 	protected $theme_template_directory = 'gravityview/views/';
 
 	/**
 	 * Directory name where the default templates for this plugin are found.
+	 *
 	 * @var string
 	 */
 	protected $plugin_template_directory = 'templates/views/';
@@ -62,12 +65,12 @@ abstract class View_Template extends Template {
 	/**
 	 * Initializer.
 	 *
-	 * @param \GV\View $view The View connected to this template.
+	 * @param \GV\View             $view The View connected to this template.
 	 * @param \GV\Entry_Collection $entries A collection of entries for this view.
-	 * @param \GV\Request $request The request context.
+	 * @param \GV\Request          $request The request context.
 	 */
 	public function __construct( View $view, Entry_Collection $entries, Request $request ) {
-		$this->view = $view;
+		$this->view    = $view;
 		$this->entries = $entries;
 		$this->request = $request;
 
@@ -93,7 +96,7 @@ abstract class View_Template extends Template {
 	 * - table-footer.php
 	 *
 	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
-	 * @param array $templates Existing list of templates.
+	 * @param array  $templates Existing list of templates.
 	 * @param string $slug      Name of the template base, example: `table`, `list`, `datatables`, `map`
 	 * @param string $name      Name of the template part, example: `body`, `footer`, `head`, `single`
 	 *
@@ -108,13 +111,12 @@ abstract class View_Template extends Template {
 		global $post;
 
 		if ( ! $this->request->is_view( false ) && $post ) {
-			$specifics []= sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
-			$specifics []= sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
+			$specifics [] = sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
+			$specifics [] = sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
 		}
 
-
-		$specifics []= sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
-		$specifics []= sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
+		$specifics [] = sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
+		$specifics [] = sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
 
 		return array_merge( $specifics, $templates );
 	}
@@ -139,7 +141,8 @@ abstract class View_Template extends Template {
 		$this->push_template_data( $context = apply_filters( 'gravityview/template/view/context', $context, $this ), 'gravityview' );
 
 		/**
-		 * @filter `gravityview/template/view/render` Before rendering.
+		 * Before rendering.
+		 *
 		 * @param \GV\View_Template $template The current template.
 		 * @since 2.0
 		 */

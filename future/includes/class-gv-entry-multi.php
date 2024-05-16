@@ -44,7 +44,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 			if ( ! $entry instanceof Entry ) {
 				continue;
 			}
-			$_entry->entries[ $entry['form_id'] ]  = &$entry;
+			$_entry->entries[ $entry['form_id'] ] = &$entry;
 		}
 		return $_entry;
 	}
@@ -64,7 +64,7 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 			$_entry = $entry->as_entry();
 
 			foreach ( $this->entries as $entry ) {
-				$entry = $entry->as_entry();
+				$entry                                 = $entry->as_entry();
 				$_entry['_multi'][ $entry['form_id'] ] = $entry;
 			}
 		}
@@ -79,17 +79,22 @@ class Multi_Entry extends Entry implements \ArrayAccess {
 	 * @since 2.2
 	 *
 	 * @param \GV\View|null $view The View context.
-	 * @param \GV\Request $request The Request (current if null).
-	 * @param boolean $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
+	 * @param \GV\Request   $request The Request (current if null).
+	 * @param boolean       $track_directory Keep the housing directory arguments intact (used for breadcrumbs, for example). Default: true.
 	 *
 	 * @return string The permalink to this entry.
 	 */
 	public function get_permalink( \GV\View $view = null, \GV\Request $request = null, $track_directory = true ) {
-		$slugs = array();
-		add_filter( 'gravityview/entry/slug', $callback = function( $slug ) use ( &$slugs ) {
-			$slugs[] = $slug;
-			return implode( ',', $slugs );
-		}, 10, 1 );
+		$slugs        = array();
+		add_filter(
+			'gravityview/entry/slug',
+			$callback = function ( $slug ) use ( &$slugs ) {
+				$slugs[] = $slug;
+				return implode( ',', $slugs );
+			},
+			10,
+			1
+		);
 
 		foreach ( $this->entries as $entry ) {
 			$permalink = call_user_func_array( array( $entry, __FUNCTION__ ), func_get_args() );

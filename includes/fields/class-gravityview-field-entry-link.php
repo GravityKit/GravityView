@@ -10,29 +10,29 @@
  */
 class GravityView_Field_Entry_Link extends GravityView_Field {
 
-	var $name = 'entry_link';
+	public $name = 'entry_link';
 
-	var $contexts = array( 'multiple' );
-
-	/**
-	 * @var bool
-	 * @since 1.15.3
-	 */
-	var $is_sortable = false;
+	public $contexts = array( 'multiple' );
 
 	/**
 	 * @var bool
 	 * @since 1.15.3
 	 */
-	var $is_searchable = false;
+	public $is_sortable = false;
 
-	var $group = 'gravityview';
+	/**
+	 * @var bool
+	 * @since 1.15.3
+	 */
+	public $is_searchable = false;
 
-	var $icon = 'dashicons-media-default';
+	public $group = 'featured';
+
+	public $icon = 'dashicons-media-default';
 
 	public function __construct() {
-		$this->label = esc_html__( 'Link to Single Entry', 'gk-gravityview' );
-		$this->description = esc_html__('A dedicated link to the single entry with customizable text.', 'gk-gravityview');
+		$this->label       = esc_html__( 'Link to Single Entry', 'gk-gravityview' );
+		$this->description = esc_html__( 'A dedicated link to the single entry with customizable text.', 'gk-gravityview' );
 		parent::__construct();
 	}
 
@@ -41,9 +41,9 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 	 *
 	 * @since 2.10 Moved here from GravityView_Admin_Views::get_entry_default_fields
 	 *
-	 * @param array $entry_default_fields Existing fields
+	 * @param array        $entry_default_fields Existing fields
 	 * @param string|array $form form_ID or form object
-	 * @param string $zone Either 'single', 'directory', 'edit', 'header', 'footer'
+	 * @param string       $zone Either 'single', 'directory', 'edit', 'header', 'footer'
 	 *
 	 * @return array
 	 */
@@ -58,6 +58,7 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 			'type'  => $this->name,
 			'desc'  => $this->description,
 			'icon'  => $this->icon,
+			'group' => $this->group,
 		);
 
 		return $entry_default_fields;
@@ -68,16 +69,16 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 		// Always a link!
 		unset( $field_options['show_as_link'], $field_options['search_filter'] );
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-		$add_options = array();
+		$add_options                    = array();
 		$add_options['entry_link_text'] = array(
-			'type' => 'text',
-			'label' => __( 'Link Text:', 'gk-gravityview' ),
-			'desc' => NULL,
-			'value' => __('View Details', 'gk-gravityview'),
+			'type'       => 'text',
+			'label'      => __( 'Link Text:', 'gk-gravityview' ),
+			'desc'       => null,
+			'value'      => __( 'View Details', 'gk-gravityview' ),
 			'merge_tags' => true,
 		);
 
@@ -85,7 +86,6 @@ class GravityView_Field_Entry_Link extends GravityView_Field {
 
 		return $add_options + $field_options;
 	}
-
 }
 
-new GravityView_Field_Entry_Link;
+new GravityView_Field_Entry_Link();

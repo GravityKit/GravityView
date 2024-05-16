@@ -195,6 +195,8 @@ module.exports = function(grunt) {
 		},
 
 		exec: {
+			blocks: 'cd future/includes/gutenberg && npm i && npm run build',
+
 			// Generate POT file.
 			makepot: {
 				cmd: function () {
@@ -256,7 +258,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate' ] );
+	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'exec:blocks', 'translate' ] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'addtextdomain', 'exec:makepot' ] );

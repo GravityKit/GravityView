@@ -4,8 +4,8 @@
  *
  * @since 2.12.1
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2021, Katz Web Services, Inc.
  * @package   GravityView
  */
@@ -41,7 +41,7 @@ add_action( 'wp_import_post_meta', 'gravityview_import_helper_fix_line_breaks', 
  * @since 2.12.1
  *
  * @param array $postmeta Copy of $post['postmeta'] to be filtered.
- * @param int $post_id
+ * @param int   $post_id
  * @param array $post
  *
  * @return array Modified array, if GravityView
@@ -59,6 +59,7 @@ function gravityview_import_helper_fix_line_breaks( $postmeta = array(), $post_i
 	$keys_to_fix = array(
 		'_gravityview_directory_fields',
 		'_gravityview_directory_widgets',
+		'_gravityview_template_settings',
 	);
 
 	$performed_fix = false;
@@ -102,15 +103,16 @@ add_action( 'import_post_meta', 'gravityview_import_helper_restore_line_breaks',
  *
  * @see gravityview_import_helper_fix_line_breaks()
  *
- * @param int $post_id
+ * @param int    $post_id
  * @param string $key
- * @param mixed $value
+ * @param mixed  $value
  */
 function gravityview_import_helper_restore_line_breaks( $post_id, $key, $value ) {
 
 	$keys_to_fix = array(
 		'_gravityview_directory_fields',
 		'_gravityview_directory_widgets',
+		'_gravityview_template_settings',
 	);
 
 	if ( ! in_array( $key, $keys_to_fix, true ) ) {

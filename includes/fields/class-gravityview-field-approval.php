@@ -2,6 +2,7 @@
 
 /**
  * Add custom options for address fields
+ *
  * @since 1.19
  */
 class GravityView_Field_Entry_Approval extends GravityView_Field {
@@ -26,7 +27,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		$this->label = esc_attr__( 'Approve Entries', 'gk-gravityview' );
 
-		$this->description =  esc_attr__( 'Approve and reject entries from the View.', 'gk-gravityview' );
+		$this->description = esc_attr__( 'Approve and reject entries from the View.', 'gk-gravityview' );
 
 		$this->add_hooks();
 
@@ -38,7 +39,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 *
 	 * @since 1.19
 	 *
-	 * @param array $field_options
+	 * @param array  $field_options
 	 * @param string $template_id
 	 * @param string $field_id
 	 * @param string $context
@@ -75,7 +76,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		add_action( 'gravityview/field/approval/load_scripts', array( $this, 'enqueue_and_localize_script' ) );
 
-		add_action( 'gravityview_datatables_scripts_styles',  array( $this, 'enqueue_and_localize_script' ) );
+		add_action( 'gravityview_datatables_scripts_styles', array( $this, 'enqueue_and_localize_script' ) );
 
 		add_filter( 'gravityview_get_entries', array( $this, 'modify_search_parameters' ), 1000 );
 
@@ -85,19 +86,19 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	}
 
 	/**
-	 * @filter `gravityview/template/field_label` Modify field label output
+	 * Modify field label output.
 	 *
 	 * @since 1.19
 	 *
 	 * @param string $html Existing HTML output
-	 * @param array $args Arguments passed to the function
+	 * @param array  $args Arguments passed to the function
 	 *
 	 * @return string Empty string if user doesn't have the `gravityview_moderate_entries` cap; field HTML otherwise
 	 */
 	public function maybe_prevent_field_render( $html, $args ) {
 
 		// If the field is `entry_approval` type but the user doesn't have the moderate entries cap, don't render.
-		if( $this->name === \GV\Utils::get( $args['field'], 'id' ) && ! GVCommon::has_cap('gravityview_moderate_entries') ) {
+		if ( $this->name === \GV\Utils::get( $args['field'], 'id' ) && ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			return '';
 		}
 
@@ -148,7 +149,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval'.$script_debug.'.js', array( 'jquery' ), GV_PLUGIN_VERSION, true );
+		wp_register_script( 'gravityview-field-approval', GRAVITYVIEW_URL . 'assets/js/field-approval' . $script_debug . '.js', array( 'jquery' ), GV_PLUGIN_VERSION, true );
 
 		wp_register_script( 'gravityview-field-approval-popper', GRAVITYVIEW_URL . 'assets/lib/tippy/popper.min.js', array(), GV_PLUGIN_VERSION, true );
 		wp_register_script( 'gravityview-field-approval-tippy', GRAVITYVIEW_URL . 'assets/lib/tippy/tippy.min.js', array(), GV_PLUGIN_VERSION, true );
@@ -156,23 +157,24 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		$style_path = GRAVITYVIEW_DIR . 'templates/css/field-approval.css';
 
-		if( class_exists( 'GravityView_View' ) ) {
+		if ( class_exists( 'GravityView_View' ) ) {
 			/**
 			 * Override CSS file by placing in your theme's /gravityview/css/ sub-directory.
 			 */
 			$style_path = GravityView_View::getInstance()->locate_template( 'css/field-approval.css', false );
 		}
 
-		$style_url = plugins_url( 'css/field-approval.css', trailingslashit( dirname( $style_path ) )  );
+		$style_url = plugins_url( 'css/field-approval.css', trailingslashit( dirname( $style_path ) ) );
 
 		/**
-		 * @filter `gravityview/field/approval/css_url` URL to the Approval field CSS file.
+		 * URL to the Approval field CSS file.
+		 *
 		 * @since 1.19
 		 * @param string $style_url Override to use your own CSS file, or return empty string to disable loading.
 		 */
 		$style_url = apply_filters( 'gravityview/field/approval/css_url', $style_url );
 
-		if( ! empty( $style_url ) ) {
+		if ( ! empty( $style_url ) ) {
 			wp_register_style( 'gravityview-field-approval', $style_url, array( 'dashicons' ), GV_PLUGIN_VERSION, 'screen' );
 		}
 
@@ -181,13 +183,14 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	/**
 	 * Register the field approval script and output the localized text JS variables
+	 *
 	 * @since 1.19
 	 * @return void
 	 */
 	public function enqueue_and_localize_script() {
 
 		// The script is already registered and enqueued
-		if( wp_script_is( 'gravityview-field-approval', 'enqueued' ) ) {
+		if ( wp_script_is( 'gravityview-field-approval', 'enqueued' ) ) {
 			return;
 		}
 
@@ -198,14 +201,17 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		wp_enqueue_script( 'gravityview-field-approval-popper' );
 		wp_enqueue_style( 'gravityview-field-approval-tippy' );
 
-		wp_localize_script( 'gravityview-field-approval', 'gvApproval', array(
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'nonce' => wp_create_nonce('gravityview_entry_approval'),
-			'status' => GravityView_Entry_Approval_Status::get_all(),
-			'status_popover_template' => GravityView_Entry_Approval::get_popover_template(),
-			'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
-		));
-
+		wp_localize_script(
+			'gravityview-field-approval',
+			'gvApproval',
+			array(
+				'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
+				'nonce'                    => wp_create_nonce( 'gravityview_entry_approval' ),
+				'status'                   => GravityView_Entry_Approval_Status::get_all(),
+				'status_popover_template'  => GravityView_Entry_Approval::get_popover_template(),
+				'status_popover_placement' => GravityView_Entry_Approval::get_popover_placement(),
+			)
+		);
 	}
 
 	/**
@@ -213,16 +219,16 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 *
 	 * @since 1.19
 	 *
-	 * @param array $entry_default_fields Array of fields shown by default
+	 * @param array        $entry_default_fields Array of fields shown by default
 	 * @param string|array $form form_ID or form object
-	 * @param string $context  Either 'single', 'directory', 'header', 'footer'
+	 * @param string       $context  Either 'single', 'directory', 'header', 'footer'
 	 *
 	 * @return array
 	 */
 	public function filter_gravityview_entry_default_field( $entry_default_fields, $form, $context ) {
 
-		if ( ! isset( $entry_default_fields["{$this->name}"] ) && 'edit' !== $context ) {
-			$entry_default_fields["{$this->name}"] = array(
+		if ( ! isset( $entry_default_fields[ "{$this->name}" ] ) && 'edit' !== $context ) {
+			$entry_default_fields[ "{$this->name}" ] = array(
 				'label' => $this->label,
 				'desc'  => $this->description,
 				'type'  => $this->name,
@@ -275,4 +281,4 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Entry_Approval;
+new GravityView_Field_Entry_Approval();

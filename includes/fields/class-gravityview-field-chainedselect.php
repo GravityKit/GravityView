@@ -15,7 +15,7 @@ class GravityView_Field_Chained_Select extends GravityView_Field {
 
 	var $_gf_field_class_name = 'GF_Field_ChainedSelect';
 
-	var $group = 'add-ons';
+	var $group = 'advanced';
 
 	var $icon = 'dashicons-admin-links';
 
@@ -25,4 +25,4 @@ class GravityView_Field_Chained_Select extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Chained_Select;
+new GravityView_Field_Chained_Select();

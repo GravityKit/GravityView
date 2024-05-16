@@ -3,6 +3,7 @@
 namespace GV;
 
 use GravityKitFoundation;
+use GVCommon;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -18,12 +19,14 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Accessible via gravityview()->plugin
  */
 final class Plugin {
+	const ALL_VIEWS_SLUG = 'gravityview_all_views';
+
+	const NEW_VIEW_SLUG = 'gravityview_new_view';
 
 	/**
 	 * @since 2.0
 	 * @api
 	 * @var string The plugin version.
-	 *
 	 */
 	public static $version = GV_PLUGIN_VERSION;
 
@@ -51,13 +54,6 @@ final class Plugin {
 	public static $min_gf_version = GV_MIN_GF_VERSION;
 
 	/**
-	 * @var string Minimum PHP version.
-	 *
-	 * GravityView requires at least this version of PHP to function properly.
-	 */
-	private static $min_php_version = GV_MIN_PHP_VERSION;
-
-	/**
 	 * @var string|bool Minimum future PHP version.
 	 *
 	 * GravityView will require this version of PHP soon. False if no future PHP version changes are planned.
@@ -80,7 +76,6 @@ final class Plugin {
 	 * @since 2.0
 	 * @api
 	 * @var \GV\Plugin_Settings The plugin settings.
-	 *
 	 */
 	public $settings;
 
@@ -112,7 +107,7 @@ final class Plugin {
 	public static function get() {
 
 		if ( ! self::$__instance instanceof self ) {
-			self::$__instance = new self;
+			self::$__instance = new self();
 		}
 
 		return self::$__instance;
@@ -147,7 +142,6 @@ final class Plugin {
 	 *
 	 * @return bool
 	 * @todo add @since
-	 *
 	 */
 	public function is_GF_25() {
 
@@ -201,6 +195,10 @@ final class Plugin {
 	 * @return void
 	 */
 	public function include_legacy_core() {
+		if ( ! class_exists( '\GravityView_Extension' ) ) {
+			include_once $this->dir( 'includes/class-gravityview-extension.php' );
+		}
+
 		if ( ! gravityview()->plugin->is_compatible() ) {
 			return;
 		}
@@ -215,6 +213,7 @@ final class Plugin {
 		}
 
 		include_once $this->dir( 'includes/class-gravityview-entry-approval-status.php' );
+		include_once $this->dir( 'includes/class-gravityview-entry-approval-merge-tags.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-approval.php' );
 
 		include_once $this->dir( 'includes/class-gravityview-entry-notes.php' );
@@ -237,6 +236,9 @@ final class Plugin {
 		// Add oEmbed
 		include_once $this->dir( 'includes/class-api.php' );
 		include_once $this->dir( 'includes/class-oembed.php' );
+
+		// Add notification
+		include_once $this->dir( 'includes/class-gravityview-notifications.php' );
 
 		// Add logging
 		include_once $this->dir( 'includes/class-gravityview-logging.php' );
@@ -371,23 +373,7 @@ final class Plugin {
 	 */
 	public function is_compatible() {
 
-		return
-			$this->is_compatible_php()
-			&& $this->is_compatible_wordpress()
-			&& $this->is_compatible_gravityforms();
-	}
-
-	/**
-	 * Is this version of GravityView compatible with the current version of PHP?
-	 *
-	 * @since 2.0
-	 *
-	 * @return bool true if compatible, false otherwise.
-	 * @api
-	 */
-	public function is_compatible_php() {
-
-		return version_compare( $this->get_php_version(), self::$min_php_version, '>=' );
+		return $this->is_compatible_wordpress() && $this->is_compatible_gravityforms();
 	}
 
 	/**
@@ -398,9 +384,8 @@ final class Plugin {
 	 * @return bool true if compatible, false otherwise.
 	 * @api
 	 */
-	public function is_compatible_future_php() {
-
-		return version_compare( $this->get_php_version(), self::$future_min_php_version, '>=' );
+	public function is_compatible_future_php(): bool {
+		return version_compare( phpversion(), self::$future_min_php_version, '>=' );
 	}
 
 	/**
@@ -468,19 +453,6 @@ final class Plugin {
 	}
 
 	/**
-	 * Retrieve the current PHP version.
-	 *
-	 * Overridable with GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE during testing.
-	 *
-	 * @return string The version of PHP.
-	 */
-	private function get_php_version() {
-
-		return ! empty( $GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] ) ?
-			$GLOBALS['GRAVITYVIEW_TESTS_PHP_VERSION_OVERRIDE'] : phpversion();
-	}
-
-	/**
 	 * Retrieve the current WordPress version.
 	 *
 	 * Overridable with GRAVITYVIEW_TESTS_WP_VERSION_OVERRIDE during testing.
@@ -522,7 +494,8 @@ final class Plugin {
 	public function supports( $feature ) {
 
 		/**
-		 * @filter `gravityview/supports` Overrides whether GravityView supports a feature.
+		 * Overrides whether GravityView supports a feature.
+		 *
 		 * @since 2.0
 		 * @param boolean|null $supports Whether the feature is supported. Default: null.
 		 */
@@ -532,12 +505,12 @@ final class Plugin {
 			return (bool) $supports;
 		}
 
-		switch ( $feature ):
+		switch ( $feature ) :
 			case self::FEATURE_GFQUERY:
 				return class_exists( '\GF_Query' );
 			case self::FEATURE_JOINS:
 			case self::FEATURE_UNIONS:
-				return apply_filters( 'gravityview/query/class', false ) === '\GF_Patched_Query';
+				return '\GF_Patched_Query' === apply_filters( 'gravityview/query/class', false );
 			case self::FEATURE_REST:
 				return class_exists( '\WP_REST_Controller' );
 			default:
@@ -559,12 +532,14 @@ final class Plugin {
 		/**
 		 * Posts.
 		 */
-		$items = get_posts( array(
-			'post_type'   => 'gravityview',
-			'post_status' => 'any',
-			'numberposts' => - 1,
-			'fields'      => 'ids',
-		) );
+		$items = get_posts(
+			array(
+				'post_type'   => 'gravityview',
+				'post_status' => 'any',
+				'numberposts' => - 1,
+				'fields'      => 'ids',
+			)
+		);
 
 		foreach ( $items as $item ) {
 			wp_delete_post( $item, true );
@@ -607,14 +582,18 @@ final class Plugin {
 
 		$suppress = $wpdb->suppress_errors();
 		foreach ( $tables as $notes_table ) {
-			$sql = $wpdb->prepare( "
+			$sql = $wpdb->prepare(
+				"
 				DELETE FROM $notes_table
 				WHERE (
 					`note_type` = 'gravityview' OR
 					`value` = %s OR
 					`value` = %s
 				);
-			", $approved, $disapproved );
+			",
+				$approved,
+				$disapproved
+			);
 			$wpdb->query( $sql );
 		}
 
@@ -648,7 +627,7 @@ final class Plugin {
 	 * @return void
 	 */
 	public function setup_gravitykit_admin_menu_redirects() {
-		if ( ! \GVCommon::has_cap( 'edit_gravityviews' ) ) {
+		if ( ! class_exists( 'GVCommon' ) || ! GVCommon::has_cap( 'edit_gravityviews' ) ) {
 			return;
 		}
 
@@ -659,22 +638,46 @@ final class Plugin {
 		}
 
 		if ( 'admin.php' === $pagenow ) {
-			if ( 'gravityview_all_views' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
-				wp_safe_redirect(
-					add_query_arg(
-						[ 'post_type' => 'gravityview' ],
-						admin_url( 'edit.php' ) )
-				);
+			if ( self::ALL_VIEWS_SLUG === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect( $this->get_link_to_all_views() );
+
+				exit;
 			}
 
-			if ( 'gravityview_new_view' === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
-				wp_safe_redirect(
-					add_query_arg(
-						[ 'post_type' => 'gravityview' ],
-						admin_url( 'post-new.php' ) )
-				);
+			if ( self::NEW_VIEW_SLUG === GravityKitFoundation::helpers()->array->get( $_GET, 'page' ) ) {
+				wp_safe_redirect( $this->get_link_to_new_view() );
+
+				exit;
 			}
 		}
+	}
+
+	/**
+	 * Returns the URL to the "All Views" page.
+	 *
+	 * @since 2.17
+	 *
+	 * @return string
+	 */
+	public function get_link_to_new_view() {
+		return add_query_arg(
+			array( 'post_type' => 'gravityview' ),
+			admin_url( 'post-new.php' )
+		);
+	}
+
+	/**
+	 * Returns the URL to the "New View" page.
+	 *
+	 * @since 2.17
+	 *
+	 * @return string
+	 */
+	public function get_link_to_all_views() {
+		return add_query_arg(
+			array( 'post_type' => 'gravityview' ),
+			admin_url( 'edit.php' )
+		);
 	}
 
 	/**
@@ -687,51 +690,60 @@ final class Plugin {
 	 * @return void
 	 */
 	public function add_to_gravitykit_admin_menu( $foundation ) {
-		if ( ! \GVCommon::has_cap( 'edit_gravityviews' ) || GravityKitFoundation::helpers()->core->is_network_admin() ) {
+		if ( ! GVCommon::has_cap( 'edit_gravityviews' ) || GravityKitFoundation::helpers()->core->is_network_admin() ) {
 			return;
 		}
 
-		$admin_menu   = $foundation::admin_menu();
-		$post_type    = 'gravityview';
-		$capability   = 'edit_gravityviews';
+		$admin_menu        = $foundation::admin_menu();
+		$post_type         = 'gravityview';
+		$capability        = 'edit_gravityviews';
 		$all_views_menu_id = "{$post_type}_all_views";
 		$new_view_menu_id  = "{$post_type}_new_view";
 
-		$admin_menu::add_submenu_item( [
-			'page_title' => __( 'All Views', 'gk-gravityview' ),
-			'menu_title' => __( 'All Views', 'gk-gravityview' ),
-			'capability' => $capability,
-			'id'         => $all_views_menu_id,
-			'callback'   => '__return_false', // We'll redirect this to edit.php?post_type=gravityview (@see Plugin::setup_gravitykit_admin_menu_redirects()).
-			'order'      => 1,
-		], 'center' );
+		$admin_menu::add_submenu_item(
+			array(
+				'page_title' => __( 'All Views', 'gk-gravityview' ),
+				'menu_title' => __( 'All Views', 'gk-gravityview' ),
+				'capability' => $capability,
+				'id'         => $all_views_menu_id,
+				'callback'   => '__return_false', // We'll redirect this to edit.php?post_type=gravityview (@see Plugin::setup_gravitykit_admin_menu_redirects()).
+				'order'      => 1,
+			),
+			'center'
+		);
 
-		$admin_menu::add_submenu_item( [
-			'page_title' => __( 'New View', 'gk-gravityview' ),
-			'menu_title' => __( 'New View', 'gk-gravityview' ),
-			'capability' => $capability,
-			'id'         => $new_view_menu_id,
-			'callback'   => '__return_false', // We'll redirect this to post-new.php?post_type=gravityview (@see Plugin::setup_gravitykit_admin_menu_redirects()).
-			'order'      => 2,
-		], 'center' );
+		$admin_menu::add_submenu_item(
+			array(
+				'page_title' => __( 'New View', 'gk-gravityview' ),
+				'menu_title' => __( 'New View', 'gk-gravityview' ),
+				'capability' => $capability,
+				'id'         => $new_view_menu_id,
+				'callback'   => '__return_false', // We'll redirect this to post-new.php?post_type=gravityview (@see Plugin::setup_gravitykit_admin_menu_redirects()).
+				'order'      => 2,
+			),
+			'center'
+		);
 
-		add_filter( 'parent_file', function ( $parent_file ) use ( $admin_menu, $post_type, $all_views_menu_id, $new_view_menu_id ) {
-			global $submenu_file;
+		add_filter(
+			'parent_file',
+			function ( $parent_file ) use ( $admin_menu, $post_type, $all_views_menu_id, $new_view_menu_id ) {
+				global $submenu_file;
 
-			if ( ! $submenu_file || strpos( $submenu_file, "post_type={$post_type}" ) === false ) {
-				return $parent_file;
+				if ( ! $submenu_file || false === strpos( $submenu_file, "post_type={$post_type}" ) ) {
+					return $parent_file;
+				}
+
+				if ( false !== strpos( $submenu_file, 'edit.php' ) ) {
+					$submenu_file = $all_views_menu_id;
+				}
+
+				if ( false !== strpos( $submenu_file, 'post-new.php' ) ) {
+					$submenu_file = $new_view_menu_id;
+				}
+
+				return constant( get_class( $admin_menu ) . '::WP_ADMIN_MENU_SLUG' );
 			}
-
-			if ( strpos( $submenu_file, 'edit.php' ) !== false ) {
-				$submenu_file = $all_views_menu_id;
-			}
-
-			if ( strpos( $submenu_file, 'post-new.php' ) !== false ) {
-				$submenu_file = $new_view_menu_id;
-			}
-
-			return constant( get_class( $admin_menu ) . '::WP_ADMIN_MENU_SLUG' );
-		} );
+		);
 	}
 
 	public function __clone() {

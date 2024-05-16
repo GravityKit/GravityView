@@ -33,11 +33,10 @@ class GravityView_Lightbox {
 	 * @param string|null $provider GravityView_Lightbox_Provider::$slug of provider
 	 *
 	 * @internal
-	 *
 	 */
 	public function set_provider( $provider = null ) {
 
-		if( gravityview()->request->is_admin() ) {
+		if ( gravityview()->request->is_admin() ) {
 			return;
 		}
 
@@ -56,11 +55,11 @@ class GravityView_Lightbox {
 		}
 
 		// We're switching providers; remove the hooks that were added.
-		if( self::$active_provider ) {
+		if ( self::$active_provider ) {
 			self::$active_provider->remove_hooks();
 		}
 
-		self::$active_provider = new self::$providers[ $provider ];
+		self::$active_provider = new self::$providers[ $provider ]();
 
 		self::$active_provider->add_hooks();
 	}
@@ -73,7 +72,6 @@ class GravityView_Lightbox {
 	public static function register( $provider ) {
 		self::$providers[ $provider::$slug ] = $provider;
 	}
-
 }
 
 new GravityView_Lightbox();

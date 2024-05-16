@@ -32,50 +32,49 @@ class GravityView_Field_Email extends GravityView_Field {
 		// It makes no sense to use this as the link.
 		unset( $field_options['show_as_link'] );
 
-		if( 'edit' === $context ) {
+		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
 		$email_options = array(
-			'emailmailto' => array(
-				'type' => 'checkbox',
+			'emailmailto'  => array(
+				'type'  => 'checkbox',
 				'value' => true,
 				'label' => __( 'Link the Email Address', 'gk-gravityview' ),
-				'desc' => __( 'Clicking the link will generate a new email.', 'gk-gravityview' ),
+				'desc'  => __( 'Clicking the link will generate a new email.', 'gk-gravityview' ),
 				'group' => 'field',
 			),
 			'emailsubject' => array(
-				'type' => 'text',
-				'label' => __( 'Email Subject', 'gk-gravityview' ),
-				'value' => '',
-				'desc' => __( 'Set the default email subject line.', 'gk-gravityview' ),
+				'type'       => 'text',
+				'label'      => __( 'Email Subject', 'gk-gravityview' ),
+				'value'      => '',
+				'desc'       => __( 'Set the default email subject line.', 'gk-gravityview' ),
 				'merge_tags' => 'force',
-				'requires' => 'emailmailto',
-				'group' => 'field',
+				'requires'   => 'emailmailto',
+				'group'      => 'field',
 			),
-			'emailbody' => array(
-				'type' => 'textarea',
-				'label' => __( 'Email Body', 'gk-gravityview' ),
-				'value' => '',
-				'desc' => __( 'Set the default email content.', 'gk-gravityview' ),
+			'emailbody'    => array(
+				'type'       => 'textarea',
+				'label'      => __( 'Email Body', 'gk-gravityview' ),
+				'value'      => '',
+				'desc'       => __( 'Set the default email content.', 'gk-gravityview' ),
 				'merge_tags' => 'force',
-				'class' => 'widefat code',
-				'requires' => 'emailmailto',
-				'group' => 'field',
+				'class'      => 'widefat code',
+				'requires'   => 'emailmailto',
+				'group'      => 'field',
 			),
 			'emailencrypt' => array(
-				'type' => 'checkbox',
-				'value' => true,
-				'label' => __( 'Encrypt Email Address', 'gk-gravityview' ),
-				'desc' => __( 'Make it harder for spammers to get email addresses from your entries. Email addresses will not be visible with Javascript disabled.', 'gk-gravityview' ),
-				'group' => 'advanced',
+				'type'     => 'checkbox',
+				'value'    => true,
+				'label'    => __( 'Encrypt Email Address', 'gk-gravityview' ),
+				'desc'     => __( 'Make it harder for spammers to get email addresses from your entries. Email addresses will not be visible with Javascript disabled.', 'gk-gravityview' ),
+				'group'    => 'advanced',
 				'priority' => 100,
 			),
 		);
 
 		return $email_options + $field_options;
 	}
-
 }
 
-new GravityView_Field_Email;
+new GravityView_Field_Email();

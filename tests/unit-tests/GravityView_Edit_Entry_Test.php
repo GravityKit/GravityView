@@ -593,22 +593,22 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'entries' => array( $entry ),
 		) );
 		ob_start() && $render->init( $data );
-		$this->assertContains( 'do not have permission', ob_get_clean() );
+		$this->assertStringContainsString( 'do not have permission', ob_get_clean() );
 
 		/** Let's try again. */
 		$subscriber = $this->_generate_user( 'subscriber' );
 		wp_set_current_user( $subscriber );
 		ob_start() && $render->init( $data );
-		$this->assertContains( 'do not have permission', ob_get_clean() );
+		$this->assertStringContainsString( 'do not have permission', ob_get_clean() );
 
 		$administrator = $this->_generate_user( 'administrator' );
 		wp_set_current_user( $administrator );
 		ob_start() && $render->init( $data );
-		$this->assertContains( 'link to edit this entry is not valid', ob_get_clean() );
+		$this->assertStringContainsString( 'link to edit this entry is not valid', ob_get_clean() );
 
 		$_GET['edit'] = wp_create_nonce( $render::$nonce_key ); /** @todo: also test gravityview/edit_entry/verify_nonce */
 		ob_start() && $render->init( $data, null, \GV\View::from_post( $view ));
-		$this->assertContains( 'gv-edit-entry-wrapper', ob_get_clean() );
+		$this->assertStringContainsString( 'gv-edit-entry-wrapper', ob_get_clean() );
 
 		/** So this is the basic emulation of viewing the edit entry. Let's try something more complex: */
 
@@ -635,7 +635,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		foreach ( $form['fields'] as $field ) {
 			/** Emulate a $_POST */
 			foreach ( $field->inputs ? : array( array( 'id' => $field->id ) ) as $input ) {
-				if ( $field->type == 'time' ) { /** An old incompatibility in the time field. */
+				if ( 'time' == $field->type ) { /** An old incompatibility in the time field. */
 					$_POST["input_{$field->id}"] = $entry[$field->id];
 				} else {
 					$_POST["input_{$field->id}"] = $entry[strval($input['id'])];
@@ -676,7 +676,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 		wp_set_current_user( $administrator );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertContains( 'gform_submit', $output );
+		$this->assertStringContainsString( 'gform_submit', $output );
 
 		/** Submit an edit */
 		$this->_reset_context();
@@ -692,7 +692,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( $entry['1'], 'we changed it' );
 		$this->assertEquals( $entry['2'], 102 );
 
-		$this->assertContains( 'Entry Updated', $output );
+		$this->assertStringContainsString( 'Entry Updated', $output );
 
 		/** Cleanup */
 		$this->_reset_context();
@@ -720,8 +720,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 		wp_set_current_user( $administrator );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertContains( 'gform_submit', $output );
-		$this->assertContains( 'upload.txt', $output );
+		$this->assertStringContainsString( 'gform_submit', $output );
+		$this->assertStringContainsString( 'upload.txt', $output );
 
 		/** Try saving a change, but no touching the upload field. */
 		$_POST = array(
@@ -772,7 +772,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 */
 	public function _fake_move_uploaded_file( $value, $lead, $field, $form, $input_id ) {
 
-		if ( $value == 'FAILED (Temporary file could not be copied.)' ) {
+		if ( 'FAILED (Temporary file could not be copied.)' == $value ) {
 			$target = GFFormsModel::get_file_upload_path( $form['id'], 'tiny.jpg' );
 			$this->_target = $target;
 			return $target['url'];
@@ -819,14 +819,14 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		/** No permissions to edit this entry */
 		$this->_reset_context(); $_POST = $post;
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertStringContainsString( 'do not have permission to edit this entry', $output );
 		$this->assertEquals( $entry['1'], $entry['1'] );
 		$this->assertEquals( $entry['2'], $entry['2'] );
 
 		/** No permissions to edit this entry, not logged in. */
 		$this->_reset_context(); $_POST = $post;
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertStringContainsString( 'do not have permission to edit this entry', $output );
 		$this->assertEquals( $entry['1'], $entry['1'] );
 		$this->assertEquals( $entry['2'], $entry['2'] );
 
@@ -834,7 +834,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context(); $_POST = $post;
 		wp_set_current_user( $subscriber2 );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertContains( 'do not have permission to edit this entry', $output );
+		$this->assertStringContainsString( 'do not have permission to edit this entry', $output );
 		$this->assertEquals( $entry['1'], $entry['1'] );
 		$this->assertEquals( $entry['2'], $entry['2'] );
 
@@ -857,7 +857,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$_POST['input_2'] = 'this is not a number nanananana';
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 		$this->assertEquals( $entry['2'], $post['input_2'], 'A numeric field was changed! WTF?' );
-		$this->assertContains( 'enter a valid number', $output );
+		$this->assertStringContainsString( 'enter a valid number', $output );
 
 		/** Cleanup */
 		$this->_reset_context();
@@ -894,15 +894,15 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 		wp_set_current_user( $administrator );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertContains( 'gform_submit', $output );
-		$this->assertContains( "{$input}_1", $output );
-		$this->assertContains( 'upload.png', $output );
-		$this->assertContains( "{$input}_1_1", $output );
-		$this->assertContains( 'this is a title', $output );
-		$this->assertContains( "{$input}_1_4", $output );
-		$this->assertContains( 'this is a caption', $output );
-		$this->assertContains( "{$input}_1_7", $output );
-		$this->assertContains( 'this is a description', $output );
+		$this->assertStringContainsString( 'gform_submit', $output );
+		$this->assertStringContainsString( "{$input}_1", $output );
+		$this->assertStringContainsString( 'upload.png', $output );
+		$this->assertStringContainsString( "{$input}_1_1", $output );
+		$this->assertStringContainsString( 'this is a title', $output );
+		$this->assertStringContainsString( "{$input}_1_4", $output );
+		$this->assertStringContainsString( 'this is a caption', $output );
+		$this->assertStringContainsString( "{$input}_1_7", $output );
+		$this->assertStringContainsString( 'this is a description', $output );
 
 		/** Try saving a change, but not touching the image upload field. */
 		$_POST = array(
@@ -1207,13 +1207,13 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		gravityview()->request->returns['is_entry'] = $entry;
 
 		// The entry is not approved for viewing
-		$this->assertContains( 'are not allowed', \GV\View::content( 'entry' ) );
+		$this->assertStringContainsString( 'are not allowed', \GV\View::content( 'entry' ) );
 
 		// Approve the entry
 		gform_update_meta( $entry->ID, \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
 
 		// The entry is approved for viewing
-		$this->assertNotContains( 'are not allowed', \GV\View::content( 'entry' ) );
+		$this->assertStringNotContainsString( 'are not allowed', \GV\View::content( 'entry' ) );
 
 		wp_set_current_user( $subscriber );
 
@@ -1224,7 +1224,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_emulate_render( $form, $view, $entry->as_entry() );
 
 		// It's still approved and modified
-		$this->assertNotContains( 'this is two', \GV\View::content( 'entry' ) );
+		$this->assertStringNotContainsString( 'this is two', \GV\View::content( 'entry' ) );
 
 		// Update the View settings
 		$view->settings->update( array( 'unapprove_edit' => true ) );
@@ -1238,7 +1238,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( 0 );
 
 		// The entry is no longer approved
-		$this->assertContains( 'are not allowed', \GV\View::content( 'entry' ) );
+		$this->assertStringContainsString( 'are not allowed', \GV\View::content( 'entry' ) );
 
 		// Approve it
 		gform_update_meta( $entry->ID, \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
@@ -1252,7 +1252,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_emulate_render( $form, $view, $entry->as_entry() );
 
 		// It's still approved and modified
-		$this->assertNotContains( 'this is four', \GV\View::content( 'entry' ) );
+		$this->assertStringNotContainsString( 'this is four', \GV\View::content( 'entry' ) );
 
 		$this->_reset_context();
 	}
@@ -1281,7 +1281,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 		wp_set_current_user( $administrator );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertNotContains( "value='Much Worse' checked='checked'", $output );
+		$this->assertStringNotContainsString( "value='Much Worse' checked='checked'", $output );
 
 		$this->_reset_context();
 
@@ -1303,8 +1303,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 		wp_set_current_user( $administrator );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertContains( "value='Much Better' checked='checked'", $output );
-		$this->assertNotContains( "value='Much Worse' checked='checked'", $output );
+		$this->assertStringContainsString( "value='Much Better' checked='checked'", $output );
+		$this->assertStringNotContainsString( "value='Much Worse' checked='checked'", $output );
 
 		$this->_reset_context();
 	}
@@ -1712,16 +1712,16 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertContains( 'Entry Updated', $output );
+		$this->assertStringContainsString( 'Entry Updated', $output );
 
-		if ( $location !== false ) {
+		if ( false !== $location ) {
 			$output = str_replace( json_encode( get_permalink( $view ) ), '"{permalink}"', $output );
-			$this->assertContains( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
+			$this->assertStringContainsString( sprintf( 'location.href = %s', json_encode( $location ) ), $output );
 
 			$location = str_replace( '{permalink}', get_permalink( $view ), $location );
-			$this->assertContains( sprintf( '<meta http-equiv="refresh" content="0;URL=%s" /></noscript>', esc_attr( $location ) ), $output );
+			$this->assertStringContainsString( sprintf( '<meta http-equiv="refresh" content="0;URL=%s" /></noscript>', esc_attr( $location ) ), $output );
 		} else {
-			$this->assertNotContains( 'location.href', $output );
+			$this->assertStringNotContainsString( 'location.href', $output );
 		}
 
 		$this->_reset_context();
@@ -1931,15 +1931,15 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 		remove_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
 
-		$this->assertNotContains( "name='input_1'", $output );
-		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertStringNotContainsString( "name='input_1'", $output );
+		$this->assertStringNotContainsString( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1], 'The value should not be updated when the Hidden field is not being rendered.' );
 		$this->assertEquals( 'this is two', $entry[2] );
 
 		// Since input 1 is now rendered, the value will be updated by _emulate_render()
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
-		$this->assertContains( "name='input_1'", $output );
-		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertStringContainsString( "name='input_1'", $output );
+		$this->assertStringNotContainsString( "name='input_2'", $output );
 		$this->assertEquals( 'this is ' . $random_string, $entry[1] );
 		$this->assertEquals( 'this is two', $entry[2] );
 
@@ -1956,8 +1956,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( "name='input_1'", $output );
-		$this->assertContains( "name='input_2'", $output );
+		$this->assertStringNotContainsString( "name='input_1'", $output );
+		$this->assertStringContainsString( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( '666', $entry[2] );
 
@@ -1971,8 +1971,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertContains( "name='input_1'", $output );
-		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertStringContainsString( "name='input_1'", $output );
+		$this->assertStringNotContainsString( "name='input_2'", $output );
 		$this->assertNotEquals( 'this is one', $entry[1] );
 		$this->assertEquals( '666', $entry[2] );
 
@@ -2025,8 +2025,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 		remove_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
 
-		$this->assertNotContains( "name='input_1'", $output );
-		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertStringNotContainsString( "name='input_1'", $output );
+		$this->assertStringNotContainsString( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( 'this is two', $entry[2] );
 
@@ -2041,8 +2041,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( "name='input_1'", $output );
-		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertStringNotContainsString( "name='input_1'", $output );
+		$this->assertStringNotContainsString( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( 'this is two', $entry[2] );
 
@@ -2057,8 +2057,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( "name='input_1'", $output );
-		$this->assertNotContains( "name='input_2'", $output );
+		$this->assertStringNotContainsString( "name='input_1'", $output );
+		$this->assertStringNotContainsString( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( 'this is two', $entry[2] );
 
@@ -2073,8 +2073,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( "name='input_1'", $output );
-		$this->assertContains( "name='input_2'", $output );
+		$this->assertStringNotContainsString( "name='input_1'", $output );
+		$this->assertStringContainsString( "name='input_2'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( '666', $entry[2] );
 
@@ -2087,8 +2087,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertNotContains( 'input_1', $output );
-		$this->assertNotContains( 'input_2', $output );
+		$this->assertStringNotContainsString( 'input_1', $output );
+		$this->assertStringNotContainsString( 'input_2', $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( '666', $entry[2] );
 
@@ -2492,7 +2492,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		wp_set_current_user( $administrator );
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertContains("gfield_validation_message'>The uploaded file type is not allowed. Must be one of the following: pdf", $output);
+		$this->assertStringContainsString("gfield_validation_message'>The uploaded file type is not allowed. Must be one of the following: pdf", $output);
 
 		$this->_reset_context();
 	}
@@ -2552,7 +2552,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
 		$this->assertEmpty( $entry['8'] );
-		$this->assertContains('This field is required', $output);
+		$this->assertStringContainsString('This field is required', $output);
 
 		$this->_reset_context();
 	}

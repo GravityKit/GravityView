@@ -111,20 +111,20 @@ class Field_Collection extends Collection {
 	 *
 	 * array(
 	 *
-	 * 	[other zones]
+	 *  [other zones]
 	 *
-	 * 	'directory_list-title' => array(
+	 *  'directory_list-title' => array(
 	 *
-	 *   	[other fields]
+	 *      [other fields]
 	 *
-	 *  	'5372653f25d44' => array(
-	 *			@see \GV\Field::as_configuration() for structure
-	 *  	)
+	 *      '5372653f25d44' => array(
+	 *          @see \GV\Field::as_configuration() for structure
+	 *      )
 	 *
-	 * 		[other fields]
+	 *      [other fields]
 	 *  )
 	 *
-	 * 	[other zones]
+	 *  [other zones]
 	 * )
 	 *
 	 * @return \GV\Field_Collection A collection of fields.
@@ -138,8 +138,8 @@ class Field_Collection extends Collection {
 			}
 
 			foreach ( $_fields as $uid => $_configuration ) {
-				$field = Field::from_configuration( $_configuration );
-				$field->UID = $uid;
+				$field           = Field::from_configuration( $_configuration );
+				$field->UID      = $uid;
 				$field->position = $position;
 
 				$fields->add( $field );

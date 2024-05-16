@@ -11,13 +11,14 @@
  */
 
 /**
- * @action `gravityview_list_body_before` Tap in before the entry loop has been displayed
+ * Tap in before the entry loop has been displayed.
+ *
  * @param \GravityView_View $this The GravityView_View instance
  */
 do_action( 'gravityview_list_body_before', $this );
 
 // There are no entries.
-if( ! $this->getTotalEntries() ) {
+if ( ! $this->getTotalEntries() ) {
 
 	?>
 	<div class="gv-list-view gv-no-results">
@@ -27,7 +28,7 @@ if( ! $this->getTotalEntries() ) {
 	</div>
 	<?php
 
-} elseif( $this->getContextFields() ) {
+} elseif ( $this->getContextFields() ) {
 
 	// There are entries. Loop through them.
 	foreach ( $this->getEntries() as $entry ) {
@@ -35,14 +36,15 @@ if( ! $this->getTotalEntries() ) {
 		$this->setCurrentEntry( $entry );
 
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-	?>
+		?>
 
 		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="<?php echo esc_attr( apply_filters( 'gravityview_entry_class', 'gv-list-view', $entry, $this ) ); ?>">
 
 		<?php
 
 		/**
-		 * @action `gravityview_entry_before` Tap in before the the entry is displayed, inside the entry container
+		 * Tap in before the the entry is displayed, inside the entry container.
+		 *
 		 * @param array $entry Gravity Forms Entry array
 		 * @param \GravityView_View $this The GravityView_View instance
 		 */
@@ -50,12 +52,13 @@ if( ! $this->getTotalEntries() ) {
 
 		?>
 
-		<?php if ( $this->getField('directory_list-title') || $this->getField('directory_list-subtitle') ) { ?>
+		<?php if ( $this->getField( 'directory_list-title' ) || $this->getField( 'directory_list-subtitle' ) ) { ?>
 
 			<?php
 
 			/**
-			 * @action `gravityview_entry_title_before` Tap in before the the entry title is displayed
+			 * Tap in before the the entry title is displayed.
+			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -64,7 +67,8 @@ if( ! $this->getTotalEntries() ) {
 			?>
 			<div class="gv-list-view-title">
 
-				<?php if ( $this->getField('directory_list-title') ) {
+				<?php
+				if ( $this->getField( 'directory_list-title' ) ) {
 					$i          = 0;
 					$title_args = array(
 						'entry'      => $entry,
@@ -76,7 +80,7 @@ if( ! $this->getTotalEntries() ) {
 						$title_args['field'] = $field;
 
 						// The first field in the title zone is the main
-						if ( $i == 0 ) {
+						if ( 0 == $i ) {
 							$title_args['markup'] = '<h3 class="{{class}}">{{label}}{{value}}</h3>';
 							echo gravityview_field_output( $title_args );
 							unset( $title_args['markup'] );
@@ -85,21 +89,25 @@ if( ! $this->getTotalEntries() ) {
 							echo gravityview_field_output( $title_args );
 						}
 
-						$i ++;
+						++$i;
 					}
 				}
 
-				$this->renderZone('subtitle', array(
-					'markup' => '<h4 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h4>',
-					'wrapper_class' => 'gv-list-view-subtitle',
-				));
-			?>
+				$this->renderZone(
+					'subtitle',
+					array(
+						'markup'        => '<h4 id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</h4>',
+						'wrapper_class' => 'gv-list-view-subtitle',
+					)
+				);
+				?>
 			</div>
 
 			<?php
 
 			/**
-			 * @action `gravityview_entry_title_after` Tap in after the title block
+			 * Tap in after the title block.
+			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -107,19 +115,21 @@ if( ! $this->getTotalEntries() ) {
 
 			?>
 
-		<?php }
+			<?php
+		}
 
 		if (
-            ( $this->getFields( 'directory_list-image' ) || $this->getFields( 'directory_list-description' ) || $this->getFields( 'directory_list-content-attributes' ) )
-            || has_action( 'gravityview_entry_content_before' ) || has_action( 'gravityview_entry_content_after' )
-        ) { ?>
+			( $this->getFields( 'directory_list-image' ) || $this->getFields( 'directory_list-description' ) || $this->getFields( 'directory_list-content-attributes' ) )
+			|| has_action( 'gravityview_entry_content_before' ) || has_action( 'gravityview_entry_content_after' )
+		) {
+			?>
 
-            <div class="gv-grid gv-list-view-content">
+			<div class="gv-grid gv-list-view-content">
 
 				<?php
 
 				/**
-				 * @action `gravityview_entry_content_before` Tap in inside the View Content wrapper <div>
+				 * Tap in inside the View Content wrapper <div>.
 				 *
 				 * @param array $entry Gravity Forms Entry array
 				 * @param \GravityView_View $this The GravityView_View instance
@@ -128,37 +138,44 @@ if( ! $this->getTotalEntries() ) {
 
 				$this->renderZone( 'image', 'wrapper_class="gv-grid-col-1-3 gv-list-view-content-image"' );
 
-				$this->renderZone( 'description', array(
-					'wrapper_class' => 'gv-grid-col-2-3 gv-list-view-content-description',
-					'label_markup'  => '<h4>{{label}}</h4>',
-					'wpautop'       => true
-				) );
+				$this->renderZone(
+					'description',
+					array(
+						'wrapper_class' => 'gv-grid-col-2-3 gv-list-view-content-description',
+						'label_markup'  => '<h4>{{label}}</h4>',
+						'wpautop'       => true,
+					)
+				);
 
-				$this->renderZone( 'content-attributes', array(
-					'wrapper_class' => 'gv-list-view-content-attributes',
-					'markup'        => '<p id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</p>'
-				) );
+				$this->renderZone(
+					'content-attributes',
+					array(
+						'wrapper_class' => 'gv-list-view-content-attributes',
+						'markup'        => '<p id="{{ field_id }}" class="{{class}}">{{label}}{{value}}</p>',
+					)
+				);
 
 				/**
-				 * @action `gravityview_entry_content_after` Tap in at the end of the View Content wrapper <div>
+				 * Tap in at the end of the View Content wrapper <div>.
 				 *
 				 * @param array $entry Gravity Forms Entry array
 				 * @param \GravityView_View $this The GravityView_View instance
 				 */
 				do_action( 'gravityview_entry_content_after', $entry, $this );
 
-			?>
+				?>
 
-            </div>
+			</div>
 
 			<?php
 		}
 
 		// Is the footer configured?
-		if ( $this->getField('directory_list-footer-left') || $this->getField('directory_list-footer-right') ) {
+		if ( $this->getField( 'directory_list-footer-left' ) || $this->getField( 'directory_list-footer-right' ) ) {
 
 			/**
-			 * @action `gravityview_entry_footer_before` Tap in before the footer wrapper
+			 * Tap in before the footer wrapper.
+			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -168,18 +185,19 @@ if( ! $this->getTotalEntries() ) {
 
 			<div class="gv-grid gv-list-view-footer">
 				<div class="gv-grid-col-1-2 gv-left">
-					<?php $this->renderZone('footer-left'); ?>
+					<?php $this->renderZone( 'footer-left' ); ?>
 				</div>
 
 				<div class="gv-grid-col-1-2 gv-right">
-					<?php $this->renderZone('footer-right'); ?>
+					<?php $this->renderZone( 'footer-right' ); ?>
 				</div>
 			</div>
 
 			<?php
 
 			/**
-			 * @action `gravityview_entry_footer_after` Tap in after the footer wrapper
+			 * Tap in after the footer wrapper.
+			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance
 			 */
@@ -189,7 +207,8 @@ if( ! $this->getTotalEntries() ) {
 
 
 		/**
-		 * @action `gravityview_entry_after` Tap in after the entry has been displayed, but before the container is closed
+		 * Tap in after the entry has been displayed, but before the container is closed.
+		 *
 		 * @param array $entry Gravity Forms Entry array
 		 * @param \GravityView_View $this The GravityView_View instance
 		 */
@@ -199,12 +218,13 @@ if( ! $this->getTotalEntries() ) {
 
 		</div>
 
-	<?php }
-
+		<?php
+	}
 } // End if has entries
 
 /**
- * @action `gravityview_list_body_after` Tap in after the entry loop has been displayed
+ * Tap in after the entry loop has been displayed.
+ *
  * @param \GravityView_View $this The GravityView_View instance
  */
 do_action( 'gravityview_list_body_after', $this );

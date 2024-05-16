@@ -5,8 +5,8 @@
  * @file      class-gravityview-plugin-hooks-gravityformsquiz.php
  * @since     1.17
  * @license   GPL2
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @package   GravityView
@@ -82,4 +82,4 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Quiz extends GravityView_Plugin_and
 	}
 }
 
-new GravityView_Plugin_Hooks_Gravity_Forms_Quiz;
+new GravityView_Plugin_Hooks_Gravity_Forms_Quiz();

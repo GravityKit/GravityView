@@ -11,10 +11,10 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
+$field_id      = $gravityview->field->ID;
+$field         = $gravityview->field->field;
 $display_value = $gravityview->display_value;
-$entry = $gravityview->entry->as_entry();
+$entry         = $gravityview->entry->as_entry();
 
 if ( floatval( $field_id ) != intval( $field_id ) ) {
 	echo esc_html( gravityview_get_field_value( $entry, $field_id, $display_value ) );

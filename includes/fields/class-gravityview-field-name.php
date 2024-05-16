@@ -24,7 +24,6 @@ class GravityView_Field_Name extends GravityView_Field {
 		$this->label = esc_html__( 'Name', 'gk-gravityview' );
 		parent::__construct();
 	}
-
 }
 
-new GravityView_Field_Name;
+new GravityView_Field_Name();

@@ -5,8 +5,8 @@
  * @since 1.11
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  */
 
@@ -48,13 +48,15 @@ class GravityView_Edit_Entry_User_Registration {
     public function add_hooks() {
 
 	    /**
-	     * @filter `gravityview/edit_entry/user_registration/trigger_update` Choose whether to update user information via User Registration add-on when an entry is updated?
+	     * Choose whether to update user information via User Registration add-on when an entry is updated?
+	     *
 	     * @since 1.11
+	     *
 	     * @param boolean $boolean Whether to trigger update on user registration (default: true)
 	     */
-	    if( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
+	    if ( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
 
-	    	add_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10, 2 );
+	    	add_action( 'gravityview/edit_entry/after_update', array( $this, 'update_user' ), 10, 2 );
 
 		    // last resort in case the current user display name don't match any of the defaults
 		    add_action( 'gform_user_updated', array( $this, 'restore_display_name' ), 10, 4 );
@@ -66,7 +68,7 @@ class GravityView_Edit_Entry_User_Registration {
      *
      * @since 1.11
      *
-     * @param array $form Gravity Forms form array
+     * @param array  $form Gravity Forms form array
      * @param string $entry_id Gravity Forms entry ID
      * @return void
      */
@@ -77,12 +79,12 @@ class GravityView_Edit_Entry_User_Registration {
 		    return;
 	    }
 
-        if( ! class_exists( 'GFAPI' ) ) {
+        if ( ! class_exists( 'GFAPI' ) ) {
 	        gravityview()->log->error( 'GFAPI class not found; not updating the user' );
 	        return;
         }
 
-		if( empty( $entry_id ) ) {
+		if ( empty( $entry_id ) ) {
 			gravityview()->log->error( 'Entry ID is empty [{entry_id}]; not updating the user', array( 'entry_id' => $entry_id ) );
 			return;
 		}
@@ -92,12 +94,14 @@ class GravityView_Edit_Entry_User_Registration {
         $entry = GFAPI::get_entry( $entry_id );
 
 	    /**
-	     * @filter `gravityview/edit_entry/user_registration/entry` Modify entry details before updating the user via User Registration add-on
+	     * Modify entry details before updating the user via User Registration add-on.
+	     *
 	     * @since 1.11
-	     * @param array $entry Gravity Forms entry
-	     * @param array $form Gravity Forms form
+	     *
+	     * @param array $entry Gravity Forms entry.
+	     * @param array $form Gravity Forms form.
 	     */
-        $entry = apply_filters( 'gravityview/edit_entry/user_registration/entry', $entry, $form );
+	    $entry = apply_filters( 'gravityview/edit_entry/user_registration/entry', $entry, $form );
 
 	    $config = $this->get_feed_configuration( $entry, $form );
 
@@ -107,8 +111,8 @@ class GravityView_Edit_Entry_User_Registration {
 	    }
 
 	    // If an Update feed, make sure the conditions are met.
-	    if ( \GV\Utils::get( $config, 'meta/feedType' ) === 'update' ) {
-	    	if( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {
+	    if ( 'update' === \GV\Utils::get( $config, 'meta/feedType' ) ) {
+	    	if ( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {
 			    return;
 		    }
 	    }
@@ -130,7 +134,7 @@ class GravityView_Edit_Entry_User_Registration {
         remove_filter( 'send_email_change_email', '__return_false', 3 );
 
         // Prevent double-triggering by removing the hook
-	    remove_action( 'gravityview/edit_entry/after_update' , array( $this, 'update_user' ), 10 );
+	    remove_action( 'gravityview/edit_entry/after_update', array( $this, 'update_user' ), 10 );
     }
 
 	/**
@@ -148,21 +152,30 @@ class GravityView_Edit_Entry_User_Registration {
 	 */
     public function get_feed_configuration( $entry, $form ) {
 
+	    /** @var \GF_User_Registration $gf_user_registration */
 	    $gf_user_registration = GF_User_Registration::get_instance();
 
 	    $config = $gf_user_registration->get_single_submission_feed( $entry, $form );
 
+	    // Return empty array if no feed found, but still allow filtering.
+	    if ( empty( $config ) ) {
+		    // Filter is documented below.
+		    return apply_filters( 'gravityview/edit_entry/user_registration/config', [], $form, $entry );
+	    }
+
 	    /**
-	     * @filter `gravityview/edit_entry/user_registration/preserve_role` Keep the current user role or override with the role defined in the Create feed
+	     * Keep the current user role or override with the role defined in the Create feed.
+	     *
 	     * @since 1.15
-	     * @param boolean $preserve_role Preserve current user role Default: true
-	     * @param array $config Gravity Forms User Registration feed configuration for the form
-	     * @param array $form Gravity Forms form array
-	     * @param array $entry Gravity Forms entry being edited
+	     *
+	     * @param boolean $preserve_role Preserve current user role Default: true.
+	     * @param array $config Gravity Forms User Registration feed configuration for the form.
+	     * @param array $form Gravity Forms form array.
+	     * @param array $entry Gravity Forms entry being edited.
 	     */
 	    $preserve_role = apply_filters( 'gravityview/edit_entry/user_registration/preserve_role', true, $config, $form, $entry );
 
-	    if( $preserve_role ) {
+	    if ( $preserve_role ) {
 		    $config['meta']['role'] = 'gfur_preserve_role';
 	    }
 
@@ -170,12 +183,14 @@ class GravityView_Edit_Entry_User_Registration {
 
 	    /**
 	     * Make sure the current display name is not changed with the update user method.
+	     *
 	     * @since 1.15
 	     */
 	    $config['meta']['displayname'] = $displayname ? $displayname : $config['meta']['displayname'];
 
 	    /**
-	     * @filter `gravityview/edit_entry/user_registration/config` Modify the User Registration Addon feed configuration
+	     * Modify the User Registration Addon feed configuration.
+	     *
 	     * @since 1.14
 	     * @param array $config Gravity Forms User Registration feed configuration for the form
 	     * @param array $form Gravity Forms form array
@@ -197,25 +212,26 @@ class GravityView_Edit_Entry_User_Registration {
      */
     public function match_current_display_name( $user_id ) {
 
-        $user = get_userdata( $user_id );
+	    $user = get_userdata( $user_id );
 
-        if( ! $user ) {
-        	return false;
-        }
+	    if ( ! $user ) {
+		    return false;
+	    }
 
-        $names = $this->generate_display_names( $user );
+	    $names = $this->generate_display_names( $user );
 
-        $format = array_search( $user->display_name, $names, true );
+	    $format = array_search( $user->display_name, $names, true );
 
-        /**
-         * In case we can't find the current display name format, trigger last resort method at the 'gform_user_updated' hook
-         * @see restore_display_name
-         */
-        if( false === $format ) {
-            $this->_user_before_update = $user;
-        }
+	    /**
+	     * In case we can't find the current display name format, trigger last resort method at the 'gform_user_updated' hook
+	     *
+	     * @see restore_display_name
+	     */
+	    if ( false === $format ) {
+		    $this->_user_before_update = $user;
+	    }
 
-        return $format;
+	    return $format;
     }
 
     /**
@@ -228,19 +244,19 @@ class GravityView_Edit_Entry_User_Registration {
      */
     public function generate_display_names( $profileuser ) {
 
-        $public_display = array();
-        $public_display['nickname']  = $profileuser->nickname;
-        $public_display['username']  = $profileuser->user_login;
+        $public_display             = array();
+        $public_display['nickname'] = $profileuser->nickname;
+        $public_display['username'] = $profileuser->user_login;
 
-        if ( !empty($profileuser->first_name) ) {
+        if ( ! empty( $profileuser->first_name ) ) {
 	        $public_display['firstname'] = $profileuser->first_name;
         }
 
-        if ( !empty($profileuser->last_name) ) {
+        if ( ! empty( $profileuser->last_name ) ) {
 	        $public_display['lastname'] = $profileuser->last_name;
         }
 
-        if ( !empty($profileuser->first_name) && !empty($profileuser->last_name) ) {
+        if ( ! empty( $profileuser->first_name ) && ! empty( $profileuser->last_name ) ) {
             $public_display['firstlast'] = $profileuser->first_name . ' ' . $profileuser->last_name;
             $public_display['lastfirst'] = $profileuser->last_name . ' ' . $profileuser->first_name;
         }
@@ -256,34 +272,36 @@ class GravityView_Edit_Entry_User_Registration {
      * Restore the Display Name and roles of a user after being updated by Gravity Forms User Registration Addon
      *
      * @see GFUser::update_user()
-     * @param int $user_id WP User ID that was updated by Gravity Forms User Registration Addon
-     * @param array $config Gravity Forms User Registration Addon form feed configuration
-     * @param array $entry The Gravity Forms entry that was just updated
+     * @param int    $user_id WP User ID that was updated by Gravity Forms User Registration Addon
+     * @param array  $config Gravity Forms User Registration Addon form feed configuration
+     * @param array  $entry The Gravity Forms entry that was just updated
      * @param string $password User password
      * @return int|false|WP_Error|null True: User updated; False: $user_id not a valid User ID; WP_Error: User update error; Null: Method didn't process
      */
     public function restore_display_name( $user_id = 0, $config = array(), $entry = array(), $password = '' ) {
 
         /**
-         * @filter `gravityview/edit_entry/restore_display_name` Whether display names should be restored to before updating an entry.
-         * Otherwise, display names will be reset to the format specified in Gravity Forms User Registration "Update" feed
-         * @since 1.14.4
-         * @param boolean $restore_display_name Restore Display Name? Default: true
-         */
+		 * Whether display names should be restored to before updating an entry.
+		 * Otherwise, display names will be reset to the format specified in Gravity Forms User Registration "Update" feed
+		 *
+		 * @since 1.14.4
+		 * @param boolean $restore_display_name Restore Display Name? Default: true
+		 */
         $restore_display_name = apply_filters( 'gravityview/edit_entry/restore_display_name', true );
 
-        $is_update_feed = ( $config && \GV\Utils::get( $config, 'meta/feed_type' ) === 'update' );
+        $is_update_feed = ( $config && 'update' === \GV\Utils::get( $config, 'meta/feed_type' ) );
 
-        /**
-         * Don't restore display name:
-         *   - either disabled,
-         *   - or it is an Update feed (we only care about Create feed)
-         *   - or we don't need as we found the correct format before updating user.
-         * @since 1.14.4
-         */
-        if( ! $restore_display_name || $is_update_feed || is_null( $this->_user_before_update ) ) {
-            return null;
-        }
+	    /**
+	     * Don't restore display name:
+	     *   - either disabled,
+	     *   - or it is an Update feed (we only care about Create feed)
+	     *   - or we don't need as we found the correct format before updating user.
+	     *
+	     * @since 1.14.4
+	     */
+	    if ( ! $restore_display_name || $is_update_feed || is_null( $this->_user_before_update ) ) {
+		    return null;
+	    }
 
         $user_after_update = get_userdata( $user_id );
 
@@ -302,19 +320,26 @@ class GravityView_Edit_Entry_User_Registration {
 	    unset( $restored_user->data->user_pass, $restored_user->user_pass );
 
         /**
-         * Modify the user data after updated by Gravity Forms User Registration but before restored by GravityView
-         * @since 1.14
-         * @param WP_User $restored_user The user with restored details about to be updated by wp_update_user()
-         * @param WP_User $user_before_update The user before being updated by Gravity Forms User Registration
-         * @param WP_User $user_after_update The user after being updated by Gravity Forms User Registration
-         * @param array   $entry The Gravity Forms entry that was just updated
-         */
+		 * Modify the user data after updated by Gravity Forms User Registration but before restored by GravityView
+		 *
+		 * @since 1.14
+		 * @param WP_User $restored_user The user with restored details about to be updated by wp_update_user()
+		 * @param WP_User $user_before_update The user before being updated by Gravity Forms User Registration
+		 * @param WP_User $user_after_update The user after being updated by Gravity Forms User Registration
+		 * @param array   $entry The Gravity Forms entry that was just updated
+		 */
         $restored_user = apply_filters( 'gravityview/edit_entry/user_registration/restored_user', $restored_user, $this->_user_before_update, $user_after_update, $entry );
 
         $updated = wp_update_user( $restored_user );
 
-        if( is_wp_error( $updated ) ) {
-            gravityview()->log->error( 'There was an error updating user #{user_id} details', array( 'user_id' => $user_id, 'data' => $updated ) );
+        if ( is_wp_error( $updated ) ) {
+            gravityview()->log->error(
+                'There was an error updating user #{user_id} details',
+                array(
+					'user_id' => $user_id,
+					'data'    => $updated,
+                )
+            );
         } else {
             gravityview()->log->debug( 'User #{user_id} details restored', array( 'user_id' => $user_id ) );
         }
@@ -325,5 +350,4 @@ class GravityView_Edit_Entry_User_Registration {
 
         return $updated;
     }
-
-} //end class
+}//end class

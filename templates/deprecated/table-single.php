@@ -14,7 +14,7 @@
 
 <div class="<?php gv_container_class( 'gv-table-view gv-table-container gv-table-single-container' ); ?>">
 	<table class="gv-table-view-content">
-		<?php if( $this->getFields('single_table-columns') ) { ?>
+		<?php if ( $this->getFields( 'single_table-columns' ) ) { ?>
 			<thead>
 				<?php gravityview_header(); ?>
 			</thead>
@@ -27,10 +27,13 @@
 							<td>{{value}}</td>
 						</tr>';
 
-					$this->renderZone( 'columns', array(
-						'markup' => $markup,
-					));
-			?>
+					$this->renderZone(
+						'columns',
+						array(
+							'markup' => $markup,
+						)
+					);
+				?>
 			</tbody>
 			<tfoot>
 				<?php gravityview_footer(); ?>

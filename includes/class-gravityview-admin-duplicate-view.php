@@ -15,12 +15,12 @@ class GravityView_Admin_Duplicate_View {
 	function __construct() {
 
 		// Only run on Admin
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 			return;
 		}
 
 		// If the Duplicate Post plugin is active, don't run.
-		if( defined('DUPLICATE_POST_CURRENT_VERSION') ) {
+		if ( defined( 'DUPLICATE_POST_CURRENT_VERSION' ) ) {
 			return;
 		}
 
@@ -29,6 +29,7 @@ class GravityView_Admin_Duplicate_View {
 
 	/**
 	 * Add actions & filters
+     *
 	 * @since 1.15
 	 * @return void
 	 */
@@ -60,16 +61,14 @@ class GravityView_Admin_Duplicate_View {
 		global $post;
 
 		// We only want to add Clone links to the Edit View metabox
-		if( !$this->is_all_views_page() ) {
+		if ( ! $this->is_all_views_page() ) {
 
-			if( $duplicate_links = $this->make_duplicate_link_row( array(), $post ) ) {
+			if ( $duplicate_links = $this->make_duplicate_link_row( array(), $post ) ) {
 				$links[] = '<span>' . $duplicate_links['edit_as_new_draft'] . '</span>';
 			}
-
 		}
 
 		return $links;
-
 	}
 
 	/**
@@ -80,7 +79,7 @@ class GravityView_Admin_Duplicate_View {
 	private function is_all_views_page() {
 		global $pagenow;
 
-		return $pagenow === 'edit.php';
+		return 'edit.php' === $pagenow;
 	}
 
 	/**
@@ -98,32 +97,32 @@ class GravityView_Admin_Duplicate_View {
 
 		// Can't edit this current View
 		return GVCommon::has_cap( 'copy_gravityviews', $id );
-
 	}
 
 	/**
 	 * Create a duplicate from a View $post
 	 *
 	 * @param WP_Post $post
-	 * @param string $status The post status
+	 * @param string  $status The post status
 	 * @since 1.6
 	 */
 	private function create_duplicate( $post, $status = '' ) {
 
 		// We only want to clone Views
-		if ( $post->post_type !== 'gravityview' ) {
+		if ( 'gravityview' !== $post->post_type ) {
 			return;
 		}
 
 		$new_view_author = wp_get_current_user();
 
 		/**
-		 * @filter `gravityview/duplicate-view/status` Modify the default status for a new View. Return empty for the new View to inherit existing View status
+		 * Modify the default status for a new View. Return empty for the new View to inherit existing View status.
+		 *
 		 * @since 1.6
 		 * @param string|null If string, the status to set for the new View. If empty, use existing View status.
 		 * @param WP_Post $post View being cloned
 		 */
-		$new_view_status = apply_filters('gravityview/duplicate-view/status', $status, $post );
+		$new_view_status = apply_filters( 'gravityview/duplicate-view/status', $status, $post );
 
 		$new_view = array(
 			'menu_order'     => $post->menu_order,
@@ -141,12 +140,13 @@ class GravityView_Admin_Duplicate_View {
 		);
 
 		/**
-		 * @filter `gravityview/duplicate-view/copy-date` When copying a View, should the date also be copied?
+		 * When copying a View, should the date also be copied?
+		 *
 		 * @since 1.6
 		 * @param boolean $copy_date Whether the copy the date from the existing View. Default: `false`
 		 * @param WP_Post $post View being cloned
 		 */
-		$copy_date = apply_filters('gravityview/duplicate-view/copy-date', false, $post );
+		$copy_date = apply_filters( 'gravityview/duplicate-view/copy-date', false, $post );
 
 		if ( $copy_date ) {
 			$new_view['post_date']     = $new_post_date = $post->post_date;
@@ -154,23 +154,24 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * @filter `gravityview/duplicate-view/new-view` Modify View configuration before creating the duplicated View.
+		 * Modify View configuration before creating the duplicated View.
+		 *
 		 * @since 1.6
 		 * @param array $new_view Array of settings to be passed to wp_insert_post()
 		 * @param WP_Post $post View being cloned
 		 */
-		$new_view = apply_filters('gravityview/duplicate-view/new-view', $new_view, $post );
+		$new_view = apply_filters( 'gravityview/duplicate-view/new-view', $new_view, $post );
 
 		// Magic happens here.
 		$new_view_id = wp_insert_post( $new_view );
 
 		// If the copy is published or scheduled, we have to set a proper slug.
-		if ( $new_view_status == 'publish' || $new_view_status == 'future' ) {
+		if ( 'publish' == $new_view_status || 'future' == $new_view_status ) {
 
 			$view_name = wp_unique_post_slug( $post->post_name, $new_view_id, $new_view_status, $post->post_type, $post->post_parent );
 
 			$new_view_name_array = array(
-				'ID' => $new_view_id,
+				'ID'        => $new_view_id,
 				'post_name' => $view_name,
 			);
 
@@ -179,7 +180,8 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * @action `gv_duplicate_view` After a View is duplicated, perform an action
+		 * After a View is duplicated, perform an action.
+		 *
 		 * @since 1.6
 		 * @see GravityView_Admin_Duplicate_View::copy_view_meta_info
 		 * @param int $new_view_id The ID of the newly created View
@@ -199,7 +201,7 @@ class GravityView_Admin_Duplicate_View {
 	 *
 	 * @since 1.6
 	 *
-	 * @param int $new_view_id The ID of the newly created View
+	 * @param int     $new_view_id The ID of the newly created View
 	 * @param WP_Post $post The View that was just cloned
 	 *
 	 * @return void
@@ -229,25 +231,25 @@ class GravityView_Admin_Duplicate_View {
 	 * Add the link to action list for post_row_actions
 	 *
 	 * @since 1.6
-	 * @param array $actions Row action links. Defaults are 'Edit', 'Quick Edit', 'Restore, 'Trash', 'Delete Permanently', 'Preview', and 'View'
+	 * @param array   $actions Row action links. Defaults are 'Edit', 'Quick Edit', 'Restore, 'Trash', 'Delete Permanently', 'Preview', and 'View'
 	 * @param WP_Post $post
 	 */
 	public function make_duplicate_link_row( $actions, $post ) {
 
 		// Only process on GravityView Views
-		if ( get_post_type( $post ) === 'gravityview' && $this->current_user_can_copy( $post ) ) {
+		if ( 'gravityview' === get_post_type( $post ) && $this->current_user_can_copy( $post ) ) {
 
-			$clone_link = $this->get_clone_view_link( $post->ID, 'display', false );
-			$clone_text = __( 'Clone', 'gk-gravityview' );
+			$clone_link  = $this->get_clone_view_link( $post->ID, 'display', false );
+			$clone_text  = __( 'Clone', 'gk-gravityview' );
 			$clone_title = __( 'Clone this View', 'gk-gravityview' );
 
-			$actions['clone'] = gravityview_get_link( $clone_link, $clone_text, 'title='.$clone_title );
+			$actions['clone'] = gravityview_get_link( $clone_link, $clone_text, 'title=' . $clone_title );
 
-			$clone_draft_link = $this->get_clone_view_link( $post->ID );
-			$clone_draft_text = $this->is_all_views_page() ? __( 'New Draft', 'gk-gravityview' ) : __( 'Clone View', 'gk-gravityview' );
+			$clone_draft_link  = $this->get_clone_view_link( $post->ID );
+			$clone_draft_text  = $this->is_all_views_page() ? __( 'New Draft', 'gk-gravityview' ) : __( 'Clone View', 'gk-gravityview' );
 			$clone_draft_title = __( 'Copy as a new draft View', 'gk-gravityview' );
 
-			$actions['edit_as_new_draft'] = gravityview_get_link( $clone_draft_link, esc_html( $clone_draft_text ), 'title='.$clone_draft_title );
+			$actions['edit_as_new_draft'] = gravityview_get_link( $clone_draft_link, esc_html( $clone_draft_text ), 'title=' . $clone_draft_title );
 		}
 
 		return $actions;
@@ -258,7 +260,7 @@ class GravityView_Admin_Duplicate_View {
 	 *
 	 * @since 1.6
 	 *
-	 * @param int $id Optional. Post ID.
+	 * @param int    $id Optional. Post ID.
 	 * @param string $context Optional, default to display. How to write the '&', defaults to '&amp;'.
 	 * @param string $draft Optional, default to true
 	 * @return string
@@ -271,11 +273,11 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		// Verify the View exists
-		if ( !$view = get_post( $id ) ) {
+		if ( ! $view = get_post( $id ) ) {
 			return '';
 		}
 
-		$action_name = $draft ? "duplicate_view_as_draft" : "duplicate_view";
+		$action_name = $draft ? 'duplicate_view_as_draft' : 'duplicate_view';
 
 		$action = '?action=' . $action_name . '&post=' . $view->ID;
 
@@ -286,19 +288,20 @@ class GravityView_Admin_Duplicate_View {
 		$post_type_object = get_post_type_object( $view->post_type );
 
 		/** If there's no gravityview post type for some reason, abort! */
-		if ( !$post_type_object ) {
+		if ( ! $post_type_object ) {
 			gravityview()->log->error( 'No gravityview post type exists when trying to clone the View.', array( 'data' => $view ) );
 			return '';
 		}
 
 		/**
-		 * @filter `gravityview/duplicate-view/get_clone_view_link` Modify the Clone View URL that is generated
+		 * Modify the Clone View URL that is generated.
+		 *
 		 * @since 1.6
 		 * @param string $clone_view_link Link with `admin_url("admin.php")`, plus the action query string
 		 * @param int $view_id View ID
 		 * @param string $context How to display the link. If "display", the URL is run through esc_html(). Default: `display`
 		 */
-		$clone_view_link = apply_filters( 'gravityview/duplicate-view/get_clone_view_link', admin_url( "admin.php". $action ), $view->ID, $context );
+		$clone_view_link = apply_filters( 'gravityview/duplicate-view/get_clone_view_link', admin_url( 'admin.php' . $action ), $view->ID, $context );
 
 		return $clone_view_link;
 	}
@@ -330,20 +333,20 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		// Get the original post
-		$id   = ( isset( $_GET['post'] ) ? $_GET['post'] : $_POST['post'] );
+		$id = ( isset( $_GET['post'] ) ? $_GET['post'] : $_POST['post'] );
 
-		if( ! $this->current_user_can_copy( $id ) ) {
+		if ( ! $this->current_user_can_copy( $id ) ) {
 			wp_die( __( 'You don\'t have permission to copy this View.', 'gk-gravityview' ) );
 		}
 
 		$post = get_post( $id );
 
 		// Copy the post and insert it
-		if ( isset( $post ) && $post != NULL ) {
+		if ( isset( $post ) && null != $post ) {
 
 			$new_id = $this->create_duplicate( $post, $status );
 
-			if ( $status == '' ) {
+			if ( '' == $status ) {
 				// Redirect to the post list screen
 				wp_redirect( admin_url( 'edit.php?post_type=' . $post->post_type ) );
 			} else {
@@ -358,8 +361,7 @@ class GravityView_Admin_Duplicate_View {
 
 		}
 	}
-
 }
 
 
-new GravityView_Admin_Duplicate_View;
+new GravityView_Admin_Duplicate_View();

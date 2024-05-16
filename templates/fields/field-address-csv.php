@@ -11,12 +11,12 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
-$field = $gravityview->field->field;
-$value = $gravityview->value;
-$display_value = $gravityview->display_value;
-$entry = $gravityview->entry->as_entry();
-$field_settings = $gravityview->field->as_configuration();
+$field_id        = $gravityview->field->ID;
+$field           = $gravityview->field->field;
+$value           = $gravityview->value;
+$display_value   = $gravityview->display_value;
+$entry           = $gravityview->entry->as_entry();
+$field_settings  = $gravityview->field->as_configuration();
 $is_single_input = floor( $field_id ) !== floatval( $field_id );
 
 // If it's the full address
@@ -27,7 +27,7 @@ if ( ! $is_single_input ) {
 	 */
 	foreach ( $field->inputs as $input ) {
 		if ( ! empty( $input['isHidden'] ) ) {
-			unset( $value["{$input['id']}"] );
+			unset( $value[ "{$input['id']}" ] );
 		}
 	}
 
@@ -36,7 +36,7 @@ if ( ! $is_single_input ) {
 	/**
 	 * Use Gravity Forms' method to get the full address.
 	 */
-	$value_with_newline = GFCommon::get_lead_field_display( $field, $value, "", false, 'text' );
+	$value_with_newline = GFCommon::get_lead_field_display( $field, $value, '', false, 'text' );
 
 	remove_filter( 'gform_disable_address_map_link', '__return_true' );
 
@@ -47,7 +47,8 @@ if ( ! $is_single_input ) {
 	}
 
 	/**
-	 * @filter `gravityview/template/field/address/csv/delimiter` The address parts delimiter.
+	 * The address parts delimiter.
+	 *
 	 * @since develop
 	 * @param string The delimiter. Default: newline
 	 * @param \GV\Template_Context The context.

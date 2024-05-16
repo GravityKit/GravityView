@@ -24,14 +24,19 @@ abstract class Request {
 	 */
 	public function is_renderable() {
 
-		$is_renderable = in_array( get_class( $this ), array(
-			'GV\Frontend_Request',
-			'GV\Mock_Request',
-			'GV\REST\Request',
-		), true );
+		$is_renderable = in_array(
+			get_class( $this ),
+			array(
+				'GV\Frontend_Request',
+				'GV\Mock_Request',
+				'GV\REST\Request',
+			),
+			true
+		);
 
 		/**
-		 * @filter `gravityview/request/is_renderable` Is this request renderable?
+		 * Is this request renderable?
+		 *
 		 * @since 2.5.2
 		 * @param boolean $is_renderable Huh?
 		 * @param \GV\Request $this This.
@@ -45,7 +50,7 @@ abstract class Request {
 	 * @return boolean
 	 */
 	public static function is_admin() {
-		$doing_ajax = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
+		$doing_ajax          = defined( 'DOING_AJAX' ) ? DOING_AJAX : false;
 		$load_scripts_styles = preg_match( '#^/wp-admin/load-(scripts|styles).php$#', Utils::_SERVER( 'SCRIPT_NAME' ) );
 
 		return is_admin() && ! ( $doing_ajax || $load_scripts_styles );
@@ -69,7 +74,7 @@ abstract class Request {
 	 */
 	public static function is_add_oembed_preview() {
 		/** The preview request is a parse-embed AJAX call without a type set. */
-		return ( self::is_ajax() && ! empty( $_POST['action'] ) && $_POST['action'] == 'parse-embed' && ! isset( $_POST['type'] ) );
+		return ( self::is_ajax() && ! empty( $_POST['action'] ) && 'parse-embed' == $_POST['action'] && ! isset( $_POST['type'] ) );
 	}
 
 	/**
@@ -148,11 +153,17 @@ abstract class Request {
 			$view = gravityview()->views->get();
 		}
 
+		// If there are multiple Views on a page, the permalink _should_ include `gvid` to specify which View to use.
+		if ( $view instanceof \GV\View_Collection ) {
+			$gvid = \GV\Utils::_GET( 'gvid' );
+			$view = $view->get( $gvid );
+		}
+
 		/**
 		 * A joined request.
 		 */
-		if ( $view && ( $joins = $view->joins ) ) {
-			$forms = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
+		if ( $view instanceof \GV\View && ( $joins = $view->joins ) ) {
+			$forms       = array_merge( wp_list_pluck( $joins, 'join' ), wp_list_pluck( $joins, 'join_on' ) );
 			$valid_forms = array_unique( wp_list_pluck( $forms, 'ID' ) );
 
 			$multientry = array();
@@ -180,7 +191,7 @@ abstract class Request {
 			}
 
 			$entry = Multi_Entry::from_entries( array_filter( $multientry ) );
-		}  else {
+		} else {
 			/**
 			 * A regular one.
 			 */
@@ -204,18 +215,24 @@ abstract class Request {
 	 * @return \GV\Entry|false The entry requested or false.
 	 */
 	public function is_edit_entry( $form_id = 0 ) {
+
+		$entry = $this->is_entry( $form_id );
+
 		/**
-		* @filter `gravityview_is_edit_entry` Whether we're currently on the Edit Entry screen \n
-		* The Edit Entry functionality overrides this value.
-		* @param boolean $is_edit_entry
-		*/
-		if ( ( $entry = $this->is_entry( $form_id ) ) && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+		 * Whether we're currently on the Edit Entry screen \n.
+		 * The Edit Entry functionality overrides this value.
+		 *
+		 * @param boolean $is_edit_entry
+		 */
+		if ( $entry && apply_filters( 'gravityview_is_edit_entry', false ) ) {
+
 			if ( $entry->is_multi() ) {
 				return array_pop( $entry->entries );
 			}
 
 			return $entry;
 		}
+
 		return false;
 	}
 
@@ -240,9 +257,9 @@ abstract class Request {
 
 		unset( $get['mode'] );
 
-		$get = array_filter( $get, 'gravityview_is_not_empty_string' );
+		$get = array_filter( (array) $get, 'gravityview_is_not_empty_string' );
 
-		if( $this->_has_field_key( $get ) ) {
+		if ( $this->_has_field_key( $get ) ) {
 			return true;
 		}
 
@@ -269,13 +286,13 @@ abstract class Request {
 
 		$meta = array();
 		foreach ( $fields as $field ) {
-			if( empty( $field->_gf_field_class_name ) ) {
+			if ( empty( $field->_gf_field_class_name ) ) {
 				$meta[] = preg_quote( $field->name );
 			}
 		}
 
 		foreach ( $get as $key => $value ) {
-			if ( preg_match('/^(filter|input)_(([0-9_]+)|'. implode( '|', $meta ) .')$/sm', $key ) ) {
+			if ( preg_match( '/^(filter|input)_(([0-9_]+)|' . implode( '|', $meta ) . ')$/sm', $key ) ) {
 				$has_field_key = true;
 				break;
 			}

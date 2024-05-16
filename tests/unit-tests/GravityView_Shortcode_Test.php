@@ -50,6 +50,10 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$value = do_shortcode( '[gravityview detail=first_entry]' );
 		$this->assertEquals( '0', $value );
 
+		// Disable caching as we'll be running the same query but after creating new entries.
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
 		foreach ( range( 1, 50 ) as $i ) {
 			$entry = $this->factory->entry->create_and_get( array(
 				'form_id' => $form['id'],
@@ -66,6 +70,9 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		$value = do_shortcode( '[gravityview detail=page_size]' );
 		$this->assertEquals( '10', $value );
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 
 		$view->settings->update( array(
 			'offset' => 20,
@@ -124,6 +131,10 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$value = do_shortcode( '[gravityview detail=total_entries]' );
 		$this->assertEquals( '0', $value );
 
+		// Disable caching as we'll be running the same query but after creating new entries.
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
 		foreach ( range( 1, 1050 ) as $i ) {
 			$entry = $this->factory->entry->create_and_get( array(
 				'form_id' => $form['id'],
@@ -141,6 +152,9 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		remove_filter( 'gravityview/shortcode/detail/total_entries', '__return_empty_string' );
 
 		gravityview()->request = new \GV\Frontend_Request();
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
 	}
 
 	/**
@@ -393,6 +407,7 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 					),
 					wp_generate_password( 4, false ) => array(
 						'id' => '1',
+						'label' => 'Expected Field Value',
 					),
 				),
 			),
@@ -415,9 +430,9 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		$post = $this->factory->post->create_and_get( array( 'post_content' => '[gravityview id="' . $view->ID . '"]' ) );
 
-		$shorcode = new \GV\Shortcodes\gravityview();
+		$shortcode = new \GV\Shortcodes\gravityview();
 
-		$this->assertContains( $field, $shorcode->callback( array( 'id' => $view->ID ) ) );
+		$this->assertStringContainsString( $field, $shortcode->callback( array( 'id' => $view->ID ) ) );
 
 		gravityview()->request = new \GV\Frontend_Request();
 	}
@@ -458,17 +473,17 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 
 		$shortcode = new \GV\Shortcodes\gravityview();
 		$content = $shortcode->callback( array( 'id' => $view->ID ) );
-		$this->assertContains( 'data-label="Text">abc</td>', $content );
-		$this->assertContains( 'data-label="Text">abcxyz</td>', $content );
+		$this->assertStringContainsString( 'data-label="Text">abc</td>', $content );
+		$this->assertStringContainsString( 'data-label="Text">abcxyz</td>', $content );
 
 		$shortcode = new \GV\Shortcodes\gravityview();
 		$content = $shortcode->callback( array( 'id' => $view->ID, 'search_field' => '1', 'search_value' => 'abcxyz' ) );
-		$this->assertNotContains( 'data-label="Text">abc</td>', $content );
-		$this->assertContains( 'data-label="Text">abcxyz</td>', $content );
+		$this->assertStringNotContainsString( 'data-label="Text">abc</td>', $content );
+		$this->assertStringContainsString( 'data-label="Text">abcxyz</td>', $content );
 
 		$shortcode = new \GV\Shortcodes\gravityview();
 		$content = $shortcode->callback( array( 'id' => $view->ID, 'search_field' => '1', 'search_value' => 'abc', 'search_operator' => 'is' ) );
-		$this->assertContains( 'data-label="Text">abc</td>', $content );
-		$this->assertNotContains( 'data-label="Text">abcxyz</td>', $content );
+		$this->assertStringContainsString( 'data-label="Text">abc</td>', $content );
+		$this->assertStringNotContainsString( 'data-label="Text">abcxyz</td>', $content );
 	}
 }
