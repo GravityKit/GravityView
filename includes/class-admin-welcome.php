@@ -305,6 +305,12 @@ class GravityView_Welcome {
 					<li>Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.</li>
 				</ul>
 
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>The "Add All Fields" button in the View editor now adds fields in their correct form order.</li>
+				</ul>
+
 				<h4>🐛 Fixed</h4>
 
 				<ul>

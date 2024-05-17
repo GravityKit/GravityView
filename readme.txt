@@ -28,6 +28,9 @@ This update adds support for Nested Forms' entry meta, addresses several bugs, i
 #### 🚀 Added
 * Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.
 
+#### ✨ Improved
+* The "Add All Fields" button in the View editor now adds fields in their correct form order.
+
 #### 🐛 Fixed
 * Export link View widget would cause a fatal error during multi-word searches.
 * Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.
