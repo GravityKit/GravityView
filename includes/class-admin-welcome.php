@@ -295,12 +295,14 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3>Develop</h3>
+				<h3>2.23 on May 17, 2024</h3>
 
 				<h4>🚀 Added</h4>
 
+				<p>This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.</p>
+
 				<ul>
-					<li>Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.</li>
+					<li>Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.</li>
 				</ul>
 
 				<h4>🐛 Fixed</h4>
@@ -314,11 +316,14 @@ class GravityView_Welcome {
 
 				<h4>🔧 Updated</h4>
 
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.13.</p>
+				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.14.</p>
 
 				<ul>
-					<li>Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates.</li>
-					<li>Improved internal check for product updates that could still interfere with third-party plugin updates.</li>
+					<li>Added an option to subscribe to GravityKit's newsletter from the Manage Your Kit screen.</li>
+					<li>Added a setting in GravityKit > Settings > GravityKit to specify the GravityKit menu position in the Dashboard.</li>
+					<li>Improved internal check for product updates that could still interfere with third-party plugin updates. Thanks, Aaron!</li>
+					<li>Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates. Thanks, Jérôme!</li>
+					<li>Success message now shows correct product name after activation/deactivation.</li>
 				</ul>
 
 				<h4>💻 Developer Updates</h4>

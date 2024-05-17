@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.5.0
+Tested up to: 6.5.3
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,10 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.23 on May 17, 2024 =
+
+= May 17, 2024 =
+
+This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.
 
 #### 🚀 Added
-* Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.
+* Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.
 
 #### 🐛 Fixed
 * Export link View widget would cause a fatal error during multi-word searches.
@@ -33,9 +37,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Number field output now respects the form field's format settings, such as decimals and currency.
 
 #### 🔧 Updated
-* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.13.
-  - Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates.
-  - Improved internal check for product updates that could still interfere with third-party plugin updates.
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.14.
+  - Added an option to subscribe to GravityKit's newsletter from the Manage Your Kit screen.
+  - Added a setting in GravityKit > Settings > GravityKit to specify the GravityKit menu position in the Dashboard.
+  - Improved internal check for product updates that could still interfere with third-party plugin updates. Thanks, Aaron!
+  - Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates. Thanks, Jérôme!
+  - Success message now shows correct product name after activation/deactivation.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/entry/approval-link/params` filter to modify entry approval link parameters.
