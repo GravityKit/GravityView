@@ -297,9 +297,9 @@ class GravityView_Welcome {
 				?>
 				<h3>2.23 on May 17, 2024</h3>
 
-				<h4>🚀 Added</h4>
-
 				<p>This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.</p>
+
+				<h4>🚀 Added</h4>
 
 				<ul>
 					<li>Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.</li>
@@ -311,6 +311,7 @@ class GravityView_Welcome {
 					<li>Export link View widget would cause a fatal error during multi-word searches.</li>
 					<li>Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.</li>
 					<li>Duplicating entries no longer fails to refresh the entry list when View-based caching is enabled.</li>
+					<li>View cache not being invalidated when updating entries on a form joined using the Multiple Forms extension.</li>
 					<li>Number field output now respects the form field's format settings, such as decimals and currency.</li>
 				</ul>
 

@@ -23,8 +23,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.23 on May 17, 2024 =
 
-= May 17, 2024 =
-
 This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.
 
 #### 🚀 Added
@@ -34,6 +32,7 @@ This update adds support for Nested Forms' entry meta, addresses several bugs, i
 * Export link View widget would cause a fatal error during multi-word searches.
 * Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.
 * Duplicating entries no longer fails to refresh the entry list when View-based caching is enabled.
+* View cache not being invalidated when updating entries on a form joined using the Multiple Forms extension.
 * Number field output now respects the form field's format settings, such as decimals and currency.
 
 #### 🔧 Updated
