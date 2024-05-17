@@ -237,16 +237,17 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "ad78fa8bc535d04568c734aadd8bc12aad636055"
+                "reference": "76ffb1acab9cb90eedc161e72521487100401a89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/ad78fa8bc535d04568c734aadd8bc12aad636055",
-                "reference": "ad78fa8bc535d04568c734aadd8bc12aad636055",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/76ffb1acab9cb90eedc161e72521487100401a89",
+                "reference": "76ffb1acab9cb90eedc161e72521487100401a89",
                 "shasum": ""
             },
             "require": {
                 "doctrine/inflector": "1.1.0",
+                "ext-json": "*",
                 "gettext/gettext": "^4.8.7",
                 "illuminate/support": "5.4.*",
                 "illuminate/translation": "5.4.*",
@@ -322,10 +323,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.12",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.14",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2024-04-11T16:57:28+00:00"
+            "time": "2024-05-17T15:20:10+00:00"
         },
         {
             "name": "illuminate/container",

@@ -295,6 +295,50 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.23 on May 17, 2024</h3>
+
+				<p>This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.</li>
+				</ul>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>The "Add All Fields" button in the View editor now adds fields in their correct form order.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Export link View widget would cause a fatal error during multi-word searches.</li>
+					<li>Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.</li>
+					<li>Duplicating entries no longer fails to refresh the entry list when View-based caching is enabled.</li>
+					<li>View cache not being invalidated when updating entries on a form joined using the Multiple Forms extension.</li>
+					<li>Number field output now respects the form field's format settings, such as decimals and currency.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.14.</p>
+
+				<ul>
+					<li>Added an option to subscribe to GravityKit's newsletter from the Manage Your Kit screen.</li>
+					<li>Added a setting in GravityKit > Settings > GravityKit to specify the GravityKit menu position in the Dashboard.</li>
+					<li>Improved internal check for product updates that could still interfere with third-party plugin updates. Thanks, Aaron!</li>
+					<li>Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates. Thanks, Jérôme!</li>
+					<li>Success message now shows correct product name after activation/deactivation.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gk/gravityview/entry/approval-link/params</code> filter to modify entry approval link parameters.</li>
+				</ul>
+
 				<h3>2.22 on April 16, 2024</h3>
 
 				<p>This release introduces support for <a href="https://docs.gravitykit.com/article/995-gravityview-search-modifiers">search modifiers</a> and <a href="https://docs.gravitykit.com/article/996-number-range-search">range-based searching</a> for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS. <a href="https://www.gravitykit.com/gravityview-2-22/">Read the announcement</a> for more details.</p>
@@ -325,11 +369,11 @@ class GravityView_Welcome {
 					<li>Resolved a dependency management issue that incorrectly prompted for a Gravity Forms update before activating, installing, or updating GravityKit products.</li>
 				</ul>
 
-				<p><strong>Developer Updates:</strong></p>
+				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.
-					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.
+					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.</li>
+					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.</li>
 				</ul>
 
 				<h3>2.21.2 on March 28, 2024</h3>
