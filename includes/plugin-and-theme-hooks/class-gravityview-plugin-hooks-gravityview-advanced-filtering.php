@@ -47,7 +47,7 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 				__( 'Advanced Filtering', 'gk-gravityview' ),
 				__( 'Control what entries are displayed in a View using advanced conditional logic.', 'gk-gravityview' ),
 				$this->get_placeholder_icon(),
-				defined( 'GRAVITYKIT_ADVANCED_FILTERING_FILE' ) ? plugin_basename( GRAVITYKIT_ADVANCED_FILTERING_FILE ) : 'gravityview-advanced-filter/advanced-filter.php',
+				'gravityview-advanced-filter',
 				'https://www.gravitykit.com/products/advanced-filter'
 			);
 	}

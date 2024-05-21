@@ -24,7 +24,7 @@ class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin
 				__( 'DataTables Layout', 'gk-gravityview' ),
 				__( 'Display Gravity Forms data in a live-updating table with extended sorting, filtering and exporting capabilities.', 'gk-gravityview' ),
 				$this->get_placeholder_icon(),
-				defined( 'GV_DT_FILE' ) ? plugin_basename( GV_DT_FILE ) : 'gravityview-datatables/gravityview-datatables.php',
+				'gv-datatables',
 				'https://www.gravitykit.com/products/datatables/'
 			);
 	}

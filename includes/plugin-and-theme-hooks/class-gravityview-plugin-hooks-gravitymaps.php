@@ -122,7 +122,7 @@ ICON;
 				__( 'Maps Layout', 'gk-gravityview' ),
 				__( 'Display entries in a Map View, where entries are displayed as “pins” on a map, like on Yelp.com. Also, add map widgets and fields to all GravityView layouts.', 'gk-gravityview' ),
 				$this->get_placeholder_icon(),
-				defined( 'GRAVITYVIEW_MAPS_FILE' ) ? plugin_basename( GRAVITYVIEW_MAPS_FILE ) : 'gravityview-maps/gravityview-maps.php',
+				'gk-gravitymaps',
 				'https://www.gravitykit.com/products/maps/'
 			);
 	}
