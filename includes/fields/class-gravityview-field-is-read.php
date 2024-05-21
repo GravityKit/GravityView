@@ -106,7 +106,9 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 			return;
 		}
 
-		if ( gravityview_get_context() !== 'single' ) {
+		$entry = gravityview()->request->is_entry();
+
+		if ( ! $entry ) {
 			return;
 		}
 
