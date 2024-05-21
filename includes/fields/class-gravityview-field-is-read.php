@@ -92,7 +92,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @since 2.0
 	 *
 	 * @param string                                   $value The value.
-	 * @param \GV\Field The field we're doing this for.
+	 * @param \GV\Field 							   $field The field we're doing this for.
 	 * @param \GV\View                                 $view The view for this context if applicable.
 	 * @param \GV\Source                               $source The source (form) for this context if applicable.
 	 * @param \GV\Entry                                $entry The entry for this context if applicable.
@@ -106,18 +106,31 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 			return \GV\Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
 		}
 
-		return $this->get_is_read_label( $field );
+		return $this->get_is_read_label( $field, $view );
 	}
 
 	/**
 	 * Get the label for "Read" for a field.
 	 *
 	 * @param \GV\Field $field The field.
+	 * @param \GV\View  $view  The View.
 	 *
 	 * @return string The string to use for "Read".
 	 */
-	protected function get_is_read_label( $field ) {
-		return \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
+	protected function get_is_read_label( $field, $view ) {
+
+		$label = \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
+
+		/**
+		 * @filter `gk/gravityview/field/is_read/label` Modify the label for the "Read" status.
+		 * @since TODO
+		 * @param string $label The label.
+		 * @param \GV\Field $field The field.
+		 * @param \GV\View $view The View.
+		 */
+		$label = apply_filters( 'gk/gravityview/field/is_read/is_read_label', $label, $field, $view );
+
+		return $label;
 	}
 
 	/**
@@ -171,8 +184,8 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 			return;
 		}
 
-		$field = $this->get_field_from_context( $context );
-		$read_label = $this->get_is_read_label( $field );
+		$field = $this->get_field_from_context( $context, $context );
+		$read_label = $this->get_is_read_label( $field, $context->view );
 		?>
 		<script>
 			jQuery( document ).ready( function ( $ ) {
