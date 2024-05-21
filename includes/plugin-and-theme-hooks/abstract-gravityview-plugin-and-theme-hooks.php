@@ -133,14 +133,20 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 
 		if ( ! $this->is_active() ) {
 
-			if ( is_callable( [ $this, 'add_placeholder_hooks' ] ) ) {
-				$this->add_placeholder_hooks();
-			}
+			$this->add_inactive_hooks();
 
 			return;
 		}
 
 		$this->add_hooks();
+	}
+
+	/**
+	 * Add hooks when the plugin / theme is active.
+	 *
+	 * @since $ver$
+	 */
+	protected function add_inactive_hooks(): void {
 	}
 
 	/**

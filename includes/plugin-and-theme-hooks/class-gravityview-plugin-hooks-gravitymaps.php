@@ -5,9 +5,6 @@
  * @since 2.16
  */
 class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_Hooks {
-
-	use GravityView_Functionality_Placeholder;
-
 	protected $constant_name = 'GRAVITYVIEW_MAPS_VERSION';
 
 	/**
@@ -43,7 +40,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 			'gravityview/admin/notices',
 			function ( $notices ) {
 
-				$message  = '<h3>' . esc_html__( 'Plugin update required.', 'gk-gravityview' ) . '</h3>';
+				$message = '<h3>' . esc_html__( 'Plugin update required.', 'gk-gravityview' ) . '</h3>';
 				$message .= esc_html_x( 'You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update [plugin][/link] to the latest version.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' );
 
 				$message = strtr(
@@ -69,25 +66,24 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 		parent::add_hooks();
 	}
 
-	public function get_placeholder_title() {
-		return __( 'Maps Layout', 'gk-gravityview' );
-	}
-
-	public function get_placeholder_description() {
-		return __( 'Display entries in a Map View, where entries are displayed as “pins” on a map, like on Yelp.com. Also, add map widgets and fields to all GravityView layouts.', 'gk-gravityview' );
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function add_inactive_hooks(): void {
+		add_action( 'add_meta_boxes', [ $this, 'register_metabox_placeholder' ] );
 	}
 
 	/**
-	 * @inheritDoc
-	 * @return string
+	 * Returns the icon for the Maps plugin.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The SVG icon.
 	 */
-	protected function get_buy_now_link() {
-		return 'https://www.gravitykit.com/products/maps/';
-	}
-
-	public function get_placeholder_icon() {
-		$icon = <<<ICON
-	<svg width='80' height='80' viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'>
+	private function get_placeholder_icon(): string {
+		return <<<ICON
+	<svg viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'>
 		<rect x='1.5' y='1.5' width='77' height='77' rx='6.5' fill='white'/>
 		<rect x='1.5' y='1.5' width='77' height='77' rx='6.5' stroke='#FF1B67' stroke-width='3'/>
 		<path d='M40.5 54.5V50.5' stroke='#FF1B67' stroke-width='3' stroke-miterlimit='10'
@@ -111,41 +107,42 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 			fill='#FF1B67'/>
 	</svg>
 ICON;
-
-		return $icon;
 	}
 
 	/**
-	 * @inheritDoc
+	 * Returns the Placeholder Value object.
 	 *
-	 * @since TODO
+	 * @since $ver$
 	 *
-	 * @return string
+	 * @return GravityView_Object_Placeholder The placeholder.
 	 */
-	protected function get_plugin_basename() {
-		return defined( 'GRAVITYVIEW_MAPS_FILE' ) ? plugin_basename( GRAVITYVIEW_MAPS_FILE ) : 'gravityview-maps/gravityview-maps.php';
+	private function get_placeholder(): GravityView_Object_Placeholder {
+		return
+			GravityView_Object_Placeholder::card(
+				__( 'Maps Layout', 'gk-gravityview' ),
+				__( 'Display entries in a Map View, where entries are displayed as “pins” on a map, like on Yelp.com. Also, add map widgets and fields to all GravityView layouts.', 'gk-gravityview' ),
+				$this->get_placeholder_icon(),
+				defined( 'GRAVITYVIEW_MAPS_FILE' ) ? plugin_basename( GRAVITYVIEW_MAPS_FILE ) : 'gravityview-maps/gravityview-maps.php',
+				'https://www.gravitykit.com/products/maps/'
+			);
 	}
 
 	/**
 	 * Register the Maps placeholder metabox.
 	 *
-	 * @since TODO
+	 * @since $ver$
 	 */
-	function register_metabox_placeholder() {
-
-		$m = [
-			'id'            => 'maps_settings',
-			'title'         => __( 'Maps', 'gk-gravitymaps' ),
-			'callback'      => [ $this, 'render_metabox_placeholder' ],
-			'icon-class'    => 'dashicons-location-alt',
-			'file'          => '',
-			'callback_args' => '',
-			'screen'        => 'gravityview',
-			'context'       => 'side',
-			'priority'      => 'default',
-		];
-
-		$metabox = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback'], $m['callback_args'] );
+	public function register_metabox_placeholder(): void {
+		$metabox = new GravityView_Metabox_Tab(
+			'maps_settings',
+			__( 'Maps', 'gk-gravitymaps' ),
+			'',
+			'dashicons-location-alt',
+			function () {
+				$this->get_placeholder()->render();
+			}
+		);
+		$metabox->extra_nav_class = 'gravityview-upgrade';
 
 		GravityView_Metabox_Tabs::add( $metabox );
 	}

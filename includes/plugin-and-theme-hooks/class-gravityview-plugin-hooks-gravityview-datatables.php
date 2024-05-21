@@ -6,68 +6,39 @@
  * @since TODO
  */
 class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin_and_Theme_Hooks {
-
-	use GravityView_Functionality_Placeholder;
-
 	/**
 	 * @inheritDoc
 	 */
 	public $constant_name = 'GV_DT_VERSION';
 
 	/**
-	 * @inheritDoc
+	 * Returns the Placeholder Value object.
 	 *
-	 * @since TODO
+	 * @since $ver$
 	 *
-	 * @return string
+	 * @return GravityView_Object_Placeholder The placeholder.
 	 */
-	public function get_placeholder_title() {
-		return __( 'DataTables Layout', 'gk-gravityview' );
+	private function get_placeholder(): GravityView_Object_Placeholder {
+		return
+			GravityView_Object_Placeholder::card(
+				__( 'DataTables Layout', 'gk-gravityview' ),
+				__( 'Display Gravity Forms data in a live-updating table with extended sorting, filtering and exporting capabilities.', 'gk-gravityview' ),
+				$this->get_placeholder_icon(),
+				defined( 'GV_DT_FILE' ) ? plugin_basename( GV_DT_FILE ) : 'gravityview-datatables/gravityview-datatables.php',
+				'https://www.gravitykit.com/products/datatables/'
+			);
 	}
 
 	/**
-	 * @inheritDoc
+	 * Returns the icon for the Maps plugin.
 	 *
-	 * @since TODO
+	 * @since $ver$
 	 *
-	 * @return string
+	 * @return string The SVG icon.
 	 */
-	public function get_placeholder_description() {
-		return __( 'Display Gravity Forms data in a live-updating table with extended sorting, filtering and exporting capabilities.', 'gk-gravityview' );
-	}
-
-	/**
-	 * @inheritDoc
-	 *
-	 * @since TODO
-	 *
-	 * @return string
-	 */
-	protected function get_buy_now_link() {
-		return 'https://www.gravitykit.com/products/datatables/';
-	}
-
-	/**
-	 * @inheritDoc
-	 *
-	 * @since TODO
-	 *
-	 * @return string
-	 */
-	protected function get_plugin_basename() {
-		return defined( 'GV_DT_FILE' ) ? plugin_basename( GV_DT_FILE ) : 'gravityview-datatables/gravityview-datatables.php';
-	}
-
-	/**
-	 * @inheritDoc
-	 *
-	 * @since TODO
-	 *
-	 * @return string
-	 */
-	public function get_placeholder_icon() {
-		$icon = <<<ICON
-	<svg width='80' height='80' viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'>
+	public function get_placeholder_icon(): string {
+		return <<<ICON
+	<svg viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'>
 		<rect x='1.5' y='1.5' width='77' height='77' rx='6.5' fill='white'/>
 		<rect x='1.5' y='1.5' width='77' height='77' rx='6.5' stroke='#FF1B67' stroke-width='3'/>
 		<path
@@ -95,32 +66,33 @@ class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin
 			  stroke-linejoin='round'/>
 	</svg>
 ICON;
-
-		return $icon;
 	}
 
 	/**
 	 * @inheritDoc
-	 *
-	 * @since TODO
-	 *
-	 * @return void
+	 * @since $ver$
 	 */
-	public function register_metabox_placeholder() {
+	protected function add_inactive_hooks(): void {
+		add_action( 'add_meta_boxes', [ $this, 'register_metabox_placeholder' ] );
+	}
 
-		$m = [
-			'id' => 'datatables_settings',
-			'title' => __( 'DataTables', 'gv-datatables' ),
-			'callback' => [ $this, 'render_metabox_placeholder' ],
-			'callback_args' => [],
-			'screen' => 'gravityview',
-			'file' => '',
-			'icon-class' => 'gv-icon-datatables-icon',
-			'context' => 'side',
-			'priority' => 'default',
-		];
+	/**
+	 * Register the Maps placeholder metabox.
+	 *
+	 * @since $ver$
+	 */
+	public function register_metabox_placeholder(): void {
+		$metabox = new GravityView_Metabox_Tab(
+			'datatables_settings',
+			__( 'DataTables', 'gv-datatables' ),
+			'',
+			'gv-icon-datatables-icon',
+			function () {
+				$this->get_placeholder()->render();
+			}
+		);
 
-		$metabox = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback'], $m['callback_args'] );
+		$metabox->extra_nav_class = 'gravityview-upgrade';
 
 		GravityView_Metabox_Tabs::add( $metabox );
 	}
