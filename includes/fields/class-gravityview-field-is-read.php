@@ -17,6 +17,8 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	var $is_searchable = true;
 
+	var $entry_meta_key = 'is_read';
+
 	var $search_operators = [ 'is', 'isnot' ];
 
 	var $group = 'meta';
