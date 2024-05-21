@@ -110,7 +110,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 			return;
 		}
 
-		if ( self::$is_read ) {
+		if ( ! empty( $entry['is_read'] ) ) {
 			return;
 		}
 
