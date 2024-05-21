@@ -11,11 +11,11 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	var $is_searchable = true;
 
-	var $search_operators = array( 'is', 'isnot' );
+	var $search_operators = [ 'is', 'isnot' ];
 
 	var $group = 'meta';
 
-	var $contexts = array( 'single', 'multiple', 'export' );
+	var $contexts = [ 'single', 'multiple', 'export' ];
 
 	var $icon = 'dashicons-book-alt';
 
@@ -44,25 +44,25 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	private function add_hooks() {
 		/** @see \GV\Field::get_value_filters */
-		add_action( 'gravityview/template/after', array( $this, 'print_script' ), 10, 1 );
 		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 6 );
+		add_action( 'gravityview/template/after', [ $this, 'print_script' ], 10, 1 );
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		$field_options['is_read_label'] = array(
+		$field_options['is_read_label'] = [
 			'type'  => 'text',
 			'label' => __( 'Read Label', 'gk-gravityview' ),
 			'desc'  => __( 'If the entry has been read, display this value', 'gk-gravityview' ),
 			'value' => __( 'Read', 'gk-gravityview' ),
-		);
+		];
 
-		$field_options['is_unread_label'] = array(
+		$field_options['is_unread_label'] = [
 			'type'  => 'text',
 			'label' => __( 'Unread Label', 'gk-gravityview' ),
 			'desc'  => __( 'If the entry has not been read, display this value', 'gk-gravityview' ),
 			'value' => __( 'Unread', 'gk-gravityview' ),
-		);
+		];
 
 		return $field_options;
 	}
@@ -89,6 +89,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		}
 
 		self::$is_read = true;
+
 		return self::$is_read_label;
 	}
 
