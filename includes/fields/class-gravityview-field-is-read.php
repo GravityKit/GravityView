@@ -119,9 +119,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		?>
 		<script>
 			jQuery( document ).ready( function ( $ ) {
-				if(!$('[class*=is_read]').length > 0){
-					return;
-				}
 
 				var entry_id = <?php echo (int) $context->entry->ID; ?>;
 					read_field = $('[class*=is_read]');
