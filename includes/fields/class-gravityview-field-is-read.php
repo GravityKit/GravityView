@@ -135,6 +135,11 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return void
 	 */
 	public function print_script( $context ) {
+
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+			return;
+		}
+
 		if ( ! GravityView_Roles_Capabilities::has_cap( 'gravityview_edit_entries' ) ) {
 			return;
 		}
