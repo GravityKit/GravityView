@@ -1,10 +1,16 @@
 <?php
 /**
- * @file class-gravityview-field-is-starred.php
+ * @file class-gravityview-field-is-read.php
  * @package GravityView
  * @subpackage includes\fields
+ * @since TODO
  */
 
+/**
+ * Field to display whether the entry has been read.
+ *
+ * @since TODO
+ */
 class GravityView_Field_Is_Read extends GravityView_Field {
 
 	var $name = 'is_read';
@@ -25,9 +31,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	var $is_sortable = true;
 
-	private static $is_read = false;
-	private static $is_read_label;
-
 	/**
 	 * GravityView_Field_Is_Read constructor.
 	 */
@@ -42,6 +45,9 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		parent::__construct();
 	}
 
+	/**
+	 * Add hooks for the field.
+	 */
 	private function add_hooks() {
 		/** @see \GV\Field::get_value_filters */
 		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 6 );
@@ -82,17 +88,41 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return string Value of the field
 	 */
 	public function get_value( $value, $field, $view, $source, $entry, $request ) {
-		self::$is_read_label = \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
 
 		if ( empty( $value ) ) {
 			return \GV\Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
 		}
 
-		self::$is_read = true;
-
-		return self::$is_read_label;
+		return $this->get_is_read_label( $field );
 	}
 
+	/**
+	 * Get the label for "Read" for a field.
+	 *
+	 * @param \GV\Field $field The field.
+	 *
+	 * @return string The string to use for "Read".
+	 */
+	protected function get_is_read_label( $field ) {
+		return \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
+	}
+
+	/**
+	 * Returns the first "Read Status" field from the context.
+	 *
+	 * @param \GV\Template_Context $context The context.
+	 *
+	 * @return \GV\Field|null The field or null if not found.
+	 */
+	protected function get_field_from_context( $context ) {
+		foreach ( $context->fields->all() as $field ) {
+			if ( $this->name === $field->type ) {
+				return $field;
+			}
+		}
+
+		return null;
+	}
 
 	/**
 	 * Add JS to the bottom of the View if there is a read field and user has `gravityview_edit_entries` cap
@@ -110,7 +140,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		/**
 		 * @filter `gk/gravityview/field/is_read/print_script` Disable the script that marks the entry as read.
 		 * @since TODO
-		 * @param boolean $print_script Should the script be printed? Default: true.
+		 * @param bool $print_script Should the script be printed? Default: true.
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		if ( ! apply_filters( 'gk/gravityview/field/is_read/print_script', true, $context ) ) {
@@ -127,13 +157,15 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 			return;
 		}
 
+		$field = $this->get_field_from_context( $context );
+		$read_label = $this->get_is_read_label( $field );
 		?>
 		<script>
 			jQuery( document ).ready( function ( $ ) {
 
 				var entry_id = <?php echo (int) $context->entry->ID; ?>;
 					read_field = $('[class*=is_read]');
-					read_label = '<?php echo esc_html( self::$is_read_label ); ?>';
+					read_label = '<?php echo esc_html( $read_label ); ?>';
 
 				$.ajax({
 					type: "POST",
