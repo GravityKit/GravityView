@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🚀 Added
 * Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.
+* A "Read Status" field to display whether an entry has been read or not. Previously, the status was output as either 1 or 0. Now, you can customize the labels for "Read" and "Unread" statuses.
 
 #### 🐛 Fixed
 * Export link View widget would cause a fatal error during multi-word searches.
