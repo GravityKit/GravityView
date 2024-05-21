@@ -48,6 +48,17 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	}
 
 	/**
+	 * Don't override Gravity Forms entry meta, even though it's a meta field.
+	 *
+	 * @param array $entry_meta Existing entry meta.
+	 *
+	 * @return array
+	 */
+	public function add_entry_meta( $entry_meta ) {
+		return $entry_meta;
+	}
+
+	/**
 	 * Add hooks for the field.
 	 */
 	private function add_hooks() {
@@ -135,10 +146,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return void
 	 */
 	public function print_script( $context ) {
-
-		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
-			return;
-		}
 
 		if ( ! GravityView_Roles_Capabilities::has_cap( 'gravityview_edit_entries' ) ) {
 			return;
