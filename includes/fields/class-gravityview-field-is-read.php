@@ -44,8 +44,8 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	private function add_hooks() {
 		/** @see \GV\Field::get_value_filters */
-		add_filter( "gravityview/field/{$this->name}/value", array( $this, 'get_value' ), 10, 6 );
 		add_action( 'gravityview/template/after', array( $this, 'print_script' ), 10, 1 );
+		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 6 );
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
