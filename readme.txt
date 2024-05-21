@@ -37,6 +37,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/entry/approval-link/params` filter to modify entry approval link parameters.
+* Added `gk/gravityview/field/is_read/print_script` filter to modify whether to print the script on the front-end that marks an entry as "Read".
 
 = 2.22 on April 16, 2024 =
 

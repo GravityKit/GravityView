@@ -107,6 +107,16 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 			return;
 		}
 
+		/**
+		 * @filter `gk/gravityview/field/is_read/print_script` Disable the script that marks the entry as read.
+		 * @since TODO
+		 * @param boolean $print_script Should the script be printed? Default: true.
+		 * @param \GV\Template_Context $context The template context.
+		 */
+		if ( ! apply_filters( 'gk/gravityview/field/is_read/print_script', true, $context ) ) {
+			return;
+		}
+
 		$entry = gravityview()->request->is_entry();
 
 		if ( ! $entry ) {
