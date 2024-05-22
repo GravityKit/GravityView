@@ -46,8 +46,9 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 			$template    = $templates[ $key ];
 			$placeholder = ! empty( $template['buy_source'] );
 			$is_included = ! empty( $template['included'] );
+			$type        = $template['type'] ?? '';
 
-			if ( 'custom' !== $template['type'] || $placeholder || $is_included ) {
+			if ( 'custom' !== $type || $placeholder || $is_included ) {
 				return $mapping;
 			}
 
@@ -57,7 +58,6 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 		},
 		[]
 	);
-
 
 	foreach ( $templates as $id => $template ) {
 		$selected           = ( $id == $directory_template ) ? ' gv-selected' : '';
