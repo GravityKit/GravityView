@@ -46,6 +46,22 @@ class GravityView_Widget_Search extends \GV\Widget {
 		);
 
 		$settings = array(
+			'search_fields_section' => array(
+				'type' => 'html',
+				'id'   => 'search_fields_section',
+				'desc' => '<!-- Search fields will be added here! 🔎 -->',
+			),
+			'search_fields' => array(
+				'type' => 'hidden',
+				'label' => '',
+				'class' => 'gv-search-fields-value',
+				'value' => '[{"field":"search_all","input":"input_text"}]', // Default: Search Everything text box
+			),
+			'search_settings_divider' => array(
+				'type' => 'html',
+				'id'   => 'search_fields_section',
+				'desc' => sprintf( '<h3>%s</h3>', esc_html__( 'Search settings', 'gk-gravityview' ) ),
+			),
 			'search_layout' => array(
 				'type'       => 'radio',
 				'full_width' => true,
@@ -61,17 +77,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'label' => __( 'Show Clear button', 'gk-gravityview' ),
 				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gk-gravityview' ),
 				'value' => true,
-			),
-			'section' => array(
-				'type' => 'html',
-				'id'   => 'search_fields_section',
-				'desc' => '<!-- Search fields will be added here! 🔎 -->',
-			),
-			'search_fields' => array(
-				'type'  => 'hidden',
-				'label' => '',
-				'class' => 'gv-search-fields-value',
-				'value' => '[{"field":"search_all","input":"input_text"}]', // Default: Search Everything text box
 			),
 			'search_mode'   => array(
 				'type'       => 'radio',
