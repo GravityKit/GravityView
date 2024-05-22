@@ -135,7 +135,7 @@ ICON;
 	public function register_metabox_placeholder(): void {
 		$metabox = new GravityView_Metabox_Tab(
 			'maps_settings',
-			__( 'Maps', 'gk-gravitymaps' ),
+			__( 'Maps', 'gk-gravitymaps', 'gk-gravityview' ),
 			'',
 			'dashicons-location-alt',
 			function () {

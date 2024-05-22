@@ -84,7 +84,7 @@ ICON;
 	public function register_metabox_placeholder(): void {
 		$metabox = new GravityView_Metabox_Tab(
 			'datatables_settings',
-			__( 'DataTables', 'gv-datatables' ),
+			__( 'DataTables', 'gv-datatables', 'gk-gravityview' ),
 			'',
 			'gv-icon-datatables-icon',
 			function () {
