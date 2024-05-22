@@ -63,6 +63,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gk-gravityview' ),
 				'value' => true,
 			),
+			'section' => array(
+				'type' => 'html',
+				'id'   => 'search_fields_section',
+				'desc' => '<!-- Search fields will be added here! 🔎 -->',
+			),
 			'search_fields' => array(
 				'type'  => 'hidden',
 				'label' => '',

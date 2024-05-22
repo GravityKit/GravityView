@@ -93,8 +93,6 @@ function render_template_options( array $templates, ?string $selected_template )
 		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page tab-icon"></i> <?php printf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Multiple Entries', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
 		<li><a href="#single-view" class="nav-tab"><i class="dashicons dashicons-media-default tab-icon"></i> <?php printf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Single Entry', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
 		<li><a href="#edit-view" class="nav-tab"><i class="dashicons dashicons-welcome-write-blog tab-icon"></i> <?php printf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Edit Entry', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
-		<li><a href='#search-view' class='nav-tab'><i class='dashicons dashicons-search tab-icon'></i> <?php echo sprintf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Search', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span>
-			</a></li>
 	</ul>
 
 	<div id="directory-view">
