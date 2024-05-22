@@ -79,7 +79,14 @@ span.gravityview-upgrade-pill {
 	&.gk-gravityview-placeholder-container--inline {
 
 		.gk-gravityview-placeholder-icon {
-			margin-right: 16px;
+			@media (min-width: 1200px) {
+				margin-right: 16px;
+
+				&:dir(rtl) {
+					margin-left: 16px;
+					margin-right: 0;
+				}
+			}
 		}
 
 		.gk-gravityview-placeholder-body {
@@ -88,7 +95,14 @@ span.gravityview-upgrade-pill {
 		}
 
 		.gk-gravityview-placeholder-actions {
-			margin-left: 16px;
+			@media (min-width: 1300px) {
+				margin-left: 16px;
+
+				&:dir(rtl) {
+					margin-left: 0;
+					margin-right: 16px;
+				}
+			}
 		}
 
 		@media (max-width: 1299px) {
@@ -96,7 +110,6 @@ span.gravityview-upgrade-pill {
 				flex-direction: column;
 			}
 			.gk-gravityview-placeholder-actions {
-				margin-left: 0;
 				margin-top: 16px;
 			}
 		}
@@ -110,7 +123,6 @@ span.gravityview-upgrade-pill {
 
 			.gk-gravityview-placeholder-icon {
 				margin-bottom: 16px;
-				margin-right: 0;
 			}
 		}
 	}
