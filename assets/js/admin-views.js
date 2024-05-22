@@ -1735,14 +1735,17 @@
 			const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
 			if ( JSON.stringify( payload ) !== '{}' ) {
 				const $pill = $( e.target );
+				const $item = $pill.closest( '.view-dropdown-list-item' )
+
 				$pill.addClass( 'is-idle' ).html( $spinner );
+				$item.addClass( 'is-idle' );
 
 				$.when( viewConfiguration.server_request( action + '_product', payload ) )
 					.then( () => {
 						$pill.removeClass( 'has-failed' );
 
 						// We need to update all view selectors on the page.
-						const $view_selectors = $('[data-view-dropdown]');
+						const $view_selectors = $( '[data-view-dropdown]' );
 						const $options = $view_selectors.find( 'option[value="' + $option.val() + '"]' );
 
 						$options.attr( 'disabled', false );
@@ -1762,6 +1765,7 @@
 					} )
 					.always( () => {
 						$pill.removeClass( 'is-idle' );
+						$item.removeClass( 'is-idle' );
 					} );
 			}
 		},
