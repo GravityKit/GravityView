@@ -11,7 +11,7 @@ class GravityView_FieldType_html extends GravityView_FieldType {
 	 */
 	function render_option() {
 		?>
-		<div class="<?php echo $this->get_label_class(); ?>">
+		<div class="<?php echo $this->get_label_class(); ?>" id="<?php echo $this->get_field_id(); ?>">
 		<?php echo $this->get_field_desc(); ?>
 		</div>
 		<?php
