@@ -53,6 +53,7 @@
 		img {
 			max-width: 32px;
 			max-height: 24px;
+			pointer-events: none;
 		}
 	}
 
@@ -118,6 +119,7 @@
 
 	.view-dropdown-options__footer {
 		padding: 0 20px 20px;
+
 		*, & {
 			user-select: text;
 		}
@@ -179,6 +181,10 @@
 				display: inherit;
 			}
 		}
+
+		&.is-idle {
+			cursor: progress;
+		}
 	}
 
 	.view-dropdown-button--pill {
@@ -236,6 +242,7 @@
 		img {
 			max-height: 32px;
 			max-width: 34px;
+			pointer-events: none;
 		}
 	}
 
@@ -304,7 +311,7 @@
 			background-color: $color-blue-50;
 			color: #fff;
 			border-radius: 4px;
-			box-shadow: 0 0 4px 1px rgba( 255, 255, 255, 0.4 );
+			box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.4);
 			text-decoration: none;
 			font-size: 13px;
 			font-weight: 500;
@@ -337,6 +344,7 @@
 		top: -1px;
 		max-width: 30px;
 	}
+
 	div[data-value="datatables_table"] img {
 		top: -2px;
 		right: -3px;
