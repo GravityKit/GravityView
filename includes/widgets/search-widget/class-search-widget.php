@@ -33,9 +33,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function __construct() {
 
 		$this->widget_id          = 'search_bar';
-
-		$this->widget_description = esc_html__( 'Display a search form for users to search a View\'s entries.', 'gk-gravityview' );
-		$this->widget_subtitle    = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
+		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
+		$this->widget_subtitle = '';
 
 		self::$instance = &$this;
 

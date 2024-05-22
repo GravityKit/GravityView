@@ -1350,6 +1350,11 @@
 		*/
 	   setupFieldDetails: function ( dialog ) {
 
+			// Don't show field details in the search bar dialog.
+			if ( dialog.parents( "[data-fieldid=\"search_bar\"]" ).length ) {
+				return;
+			}
+
 		   // Add the details to the title bar
 		   $( '.gv-field-details--container', dialog ).insertAfter( '.ui-dialog-title:visible' );
 
