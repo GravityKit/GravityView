@@ -262,15 +262,7 @@
 					of: window
 				} );
 
-				// If dialog width is greater than 95% of window width, set to 95% window width
-				var window_width = vcfg.dialogWidth;
-				var ninety_five_per = $( window ).width() * 0.95;
-
-				if ( vcfg.dialogWidth > ninety_five_per ) {
-					window_width = ninety_five_per;
-				}
-
-				$open_dialog.dialog( 'option', 'width', window_width );
+				$open_dialog.dialog( 'option', 'width', vcfg.getDialogWidth( $open_dialog ) );
 			});
 
 
@@ -301,6 +293,34 @@
 			};
 
 			$( 'div .gform-dropdown__trigger' ).on( 'click.gravityforms', vcfg.sendMergeTagValueToCodemirrorEditor );
+		},
+
+		/**
+		 * Returns the width of the dialog, based on the window size and field type.
+		 *
+		 * @since TODO
+		 *
+		 * @param $dialog
+		 * @returns {number|int}
+		 */
+		getDialogWidth: function( $dialog ) {
+
+			var dialog_width = viewConfiguration.dialogWidth;
+
+			// If the dialog is for the Search Bar widget, make it wider.
+			if ( $dialog.parents( '[data-fieldid="search_bar"]' ).length > 0 ) {
+				dialog_width = 1200;
+			}
+
+			// If dialog width is greater than 95% of window width, set to 95% window width.
+			var ninety_five_per = $( window ).width() * 0.95;
+
+			// If the dialog is greater than 95% of the window, set it to 95% window width.
+			if ( dialog_width > ninety_five_per ) {
+				return ninety_five_per;
+			}
+
+			return dialog_width;
 		},
 
 		getCookieVal: function ( cookie ) {
@@ -977,16 +997,7 @@
 				appendTo: thisDialog.parent(),
 				draggable: false,
 				resizable: false,
-				width: function () {
-
-					// If the window is wider than {vcfg.dialogWidth}px, use vcfg.dialogWidth
-					if ( $( window ).width() > vcfg.dialogWidth ) {
-						return vcfg.dialogWidth;
-					}
-
-					// Otherwise, return the window width, less 10px
-					return $( window ).width() - 10;
-				},
+				width: vcfg.getDialogWidth( thisDialog ),
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 
