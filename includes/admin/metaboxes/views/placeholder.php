@@ -55,15 +55,14 @@ $user_can = current_user_can( $caps );
 					implode( ' ', $attributes ),
 				);
 			} else {
-
 				printf(
 					'<a href="%s" class="gk-gravityview-placeholder-button button button-primary button-hero" rel="external noopener noreferrer" target="_blank">%s<span class="screen-reader-text">%s</span></span></a>',
 					esc_url( $buy_now_link ),
 					esc_html( $button_text ),
 					esc_html__( 'This link opens in a new window.', 'gk-gravityview' )
-				)
-				?>
-			<?php } ?>
+				);
+			}
+			?>
 		</div>
 	</div>
 </div>
