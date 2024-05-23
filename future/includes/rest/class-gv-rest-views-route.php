@@ -411,6 +411,7 @@ class Views_Route extends Route {
 
 		if ( 'html' === $format ) {
 			$renderer = new \GV\Entry_Renderer();
+
 			return $renderer->render( $entry, $view, new Request( $request ) );
 		}
 
