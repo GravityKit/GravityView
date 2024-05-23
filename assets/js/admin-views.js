@@ -1455,6 +1455,11 @@
 		 * @private
 		 */
 		_getTemplateId: function ( use_base_template = false ) {
+			const template = viewConfiguration.wantedTemplate;
+			if ( !template ) {
+				return '';
+			}
+
 			let template_id = viewConfiguration.wantedTemplate.data( use_base_template ? 'base-template' : 'templateid' );
 			if ( viewConfiguration._isViewDropDown() ) {
 				template_id = viewConfiguration.wantedTemplate.val();
