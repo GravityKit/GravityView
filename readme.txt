@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Export link View widget would not use date range filters.
+* The Entry Date Search Field could select a "Date" input type which is not supported.
 
 = 2.23 on May 17, 2024 =
 
