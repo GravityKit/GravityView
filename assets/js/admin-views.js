@@ -324,7 +324,7 @@
 		 */
 		toggleTabConfigurationWarnings: function ( e ) {
 
-			var tabs = {
+			const tabs = {
 				single: {
 					configured: ( $( '.gv-dialog-options input[name*=show_as_link]:checked', '#directory-active-fields' ).length || $( '[data-fieldid="entry_link"]', '#directory-active-fields' ).length ),
 					icon: 'dashicons-media-default',
@@ -337,12 +337,15 @@
 
 			$.each( tabs,  function ( index, value ) {
 
-				var warning_name = index + '-fields' + '-' + $( '#post_ID' ).val();
-				var dismissed_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-' + warning_name ) );
+				const warning_name = index + '-fields' + '-' + $( '#post_ID' ).val();
+				const dismissed_warning = viewConfiguration.getCookieVal( $.cookie( 'warning-dismissed-' + warning_name ) );
 
-				var show_warning = ! dismissed_warning && value.configured === 0;
+				const $fields_section = $( '#' + index + '-fields' );
+				const fields_count = $fields_section.find('.active-drop .gv-fields').length;
+				const show_warning = ! dismissed_warning && value.configured === 0 && fields_count > 0;
 
-				$( '#' + index + '-fields' ).find( '.notice-no-link' ).toggle( show_warning );
+				$fields_section.find( '.notice-no-link' ).toggle( show_warning );
+
 				$( 'li[aria-controls="' + index + '-view"]' )
 					.toggleClass( 'tab-not-configured', show_warning )
 					.find( '.tab-icon' )
