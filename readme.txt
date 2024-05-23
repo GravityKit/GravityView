@@ -21,12 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🚀 Added
+* Ability to select different View types for Directory and Single Entry Views.
+
 = 2.23 on May 17, 2024 =
 
 This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.
 
 #### 🚀 Added
-* Ability to select different View types for Directory and Single Entry Views.
 * Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.
 
 #### ✨ Improved
