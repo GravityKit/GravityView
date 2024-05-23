@@ -1489,17 +1489,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 						if ( empty( $date ) ) {
 							continue;
 						}
-						$operator = 'start' === $k ? '>=' : '<=';
 
-						/**
-						 * @hack
-						 * @since 1.16.3
-						 * Safeguard until GF implements '<=' operator
-						 */
-						if ( ! GFFormsModel::is_valid_operator( $operator ) && '<=' === $operator ) {
-							$operator = '<';
-							$date     = date( 'Y-m-d', strtotime( self::get_formatted_date( $date, 'Y-m-d', $date_format ) . ' +1 day' ) );
-						}
+						$operator = 'start' === $k ? '>=' : '<=';
 
 						$filter[] = array(
 							'key'      => $field_id,

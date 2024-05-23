@@ -192,7 +192,6 @@ class GravityView_Cache {
 	 * @return void
 	 */
 	public function entry_updated( $form, $lead_id ) {
-
 		gravityview()->log->debug(
 			' adding form {form_id} to blocklist because entry #{entry_id} was updated',
 			array(
