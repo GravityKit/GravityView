@@ -60,7 +60,7 @@
 		this.$options_wrapper.append( $( '<div class="view-dropdown-options__body"></div>' ).append( this.$options_list ) );
 		this.$options_wrapper.append( $(
 			'<div class="view-dropdown-options__footer">' +
-			'	<a target="_blank" href="https://www.gravitykit.com/pricing/?utm_source=plugin&utm_medium=buy_now&utm_campaign=view_type">' +
+			'	<a target="_blank" href="https://docs.gravitykit.com/article/400-what-are-the-differences-between-the-view-types">' +
 			'		<span>' + this.$el.data( 'label-learn-more' ) + '</span>' +
 			'		<svg width="11" height="10" viewBox="0 0 11 10" fill="none" xmlns="http://www.w3.org/2000/svg">' +
 			'			<path d="M1 9.16659L9.33333 0.833252M9.33333 0.833252H1M9.33333 0.833252V9.16659" stroke="#2271B1" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -352,7 +352,6 @@
 				icon = '<img src="' + $option.data( 'icon' ) + '" alt="Icon" />';
 			}
 
-			const buy_source = $option.data( 'buy-source' );
 			const action = $option.data( 'action' );
 
 			const id = 'view-option-' + ( Math.random() + 1 ).toString( 36 ).substring( 2 );
@@ -386,7 +385,7 @@
 				'			<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0C7.42695 0 7.79691 0.295826 7.89073 0.712418L8.35918 2.79209C8.67906 4.21205 9.78797 5.32097 11.2079 5.64078L13.2876 6.10923C13.7042 6.20309 14 6.57306 14 7C14 7.42694 13.7042 7.79691 13.2876 7.89077L11.2079 8.35922C9.78797 8.67903 8.67906 9.78795 8.35918 11.2079L7.89073 13.2876C7.79691 13.7042 7.42695 14 7 14C6.57305 14 6.2031 13.7042 6.10927 13.2876L5.64082 11.2079C5.32094 9.78795 4.21203 8.67903 2.79203 8.35922L0.712393 7.89077C0.295887 7.79691 0 7.42694 0 7C0 6.57306 0.295887 6.20309 0.712393 6.10923L2.79203 5.64078C4.21203 5.32097 5.32094 4.21205 5.64082 2.79209L6.10927 0.712418C6.2031 0.295826 6.57305 0 7 0Z" fill="white"/></svg>' +
 				'			<span>'+ ( $dropdown.data( 'label-available' ) || 'Available' ) + '</span>' +
 				'		</div>' +
-				'		<div><a target="_blank" rel="nofollow noopener" class="view-dropdown-list-available__upgrade" href="https://www.gravitykit.com/pricing/?utm_source=plugin&utm_medium=buy_now&utm_campaign=view_type">'+ ( $dropdown.data( 'label-upgrade' ) || 'Upgrade' ) +'</a></div>' +
+				'		<div><a target="_blank" rel="nofollow noopener" class="view-dropdown-list-available__upgrade" href="https://www.gravitykit.com/pricing/?utm_campaign=gk_upsells&utm_source=view-editor&utm_content=upgrade">'+ ( $dropdown.data( 'label-upgrade' ) || 'Upgrade' ) +'</a></div>' +
 				'	</div>' +
 				'	<div class="view-dropdown-list-available__options"></div> ' +
 				'</div>'

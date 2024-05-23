@@ -1581,7 +1581,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:116
 #: includes/admin/metaboxes/views/view-configuration.php:187
-msgid "Learn more about view types & layouts"
+msgid "Learn more about View types & layouts"
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:119
