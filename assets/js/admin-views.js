@@ -2933,6 +2933,10 @@
 		$( document ).on( 'click', '.gk-gravityview-placeholder-actions [data-action]', function ( e ) {
 			e.preventDefault();
 
+			if ( viewConfiguration.hasUnsavedChanges && !window.confirm( gvGlobals.discard_unsaved_changes ) ) {
+				return;
+			}
+
 			if ( $( this ).hasClass( 'is-idle' ) ) {
 				return;
 			}
