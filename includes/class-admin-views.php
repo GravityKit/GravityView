@@ -1493,7 +1493,7 @@ HTML;
 	 *
 	 * @param string $template_id (default: '') Template ID, like `default_list`, `default_table`, `preset_business_data`, etc. {@see GravityView_Template::__construct()}
 	 * @param string $context (default: 'single') Context of the template. `single` or `directory` (`edit` not implemented but valid).
-	 * @param string $post_id (default: '')
+	 * @param string $post_id (default: '') ID of the View CPT. Used to get the fields for the View.
 	 * @param bool   $echo (default: false) Whether to echo the output or return it. Default: `false`.
 	 * @param int    $form_id (default: 0) Main form ID for the View. Used to set default fields for a new View.
 	 *

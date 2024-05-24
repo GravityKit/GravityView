@@ -2357,3 +2357,15 @@ $dialog-button-padding: 5px;
 .post-type-gravityview #post-body.columns-2 #postbox-container-1 {
 	clear: left;
 }
+
+/**
+ * Search Bar
+ */
+#search-view {
+	.gv-field-duplicate {
+		display: none;
+	}
+	.gv-add-field {
+		display: inline-block;
+	}
+}

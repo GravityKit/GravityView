@@ -136,11 +136,10 @@
 		 */
 		openDialog: function ( e ) {
 			e.preventDefault();
+
 			gvSearchWidget.widgetTarget = $( this );
 
-			$('#search_fields_section' ).replaceWith( $( '#search-view' ) );
-
-			//gvSearchWidget.renderUI( $( this ).parents( '.gv-fields' ) );
+			$( '#search-view' ).appendTo( $('#search_fields_section' ) );
 		},
 
 		/** Table manipulation */
