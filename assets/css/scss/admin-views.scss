@@ -2077,3 +2077,15 @@ $dialog-button-padding: 5px;
 	white-space: nowrap;
 	width: 1px;
 }
+
+/**
+ * Search Bar
+ */
+#search-view {
+	.gv-field-duplicate {
+		display: none;
+	}
+	.gv-add-field {
+		display: inline-block;
+	}
+}

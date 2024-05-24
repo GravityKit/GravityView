@@ -135,7 +135,7 @@ abstract class GravityView_Admin_View_Item {
 					continue;
 				}
 
-				$class = isset( $item['class'] ) ? sanitize_html_class( $item['class'] ) . ' description' : 'description';
+				$class = isset( $item['class'] ) ? gravityview_sanitize_html_class( $item['class'] ) . ' description' : 'description';
 				// Add the title in case the value's long, in which case, it'll be truncated by CSS.
 				$output .= '<span class="' . $class . '">';
 				$output .= esc_html( $item['value'] );
@@ -217,7 +217,13 @@ abstract class GravityView_Admin_View_Item {
 			'<a tabindex="0" href="javascript:void(0);" role="button" class="gv-add-field-before" title="%s"><span class="dashicons dashicons-plus-alt"></span></a>',
 		esc_html( $this->settings['add_button_label'] ?? __( 'Add Field', 'gk-gravityview' ) )
 		);
-		$title  = esc_attr( sprintf( __( 'Field: %s', 'gk-gravityview' ), $label ) );
+
+		if ( $this instanceof GravityView_Admin_View_Widget ) {
+			$title  = esc_attr( sprintf( __( 'Widget: %s', 'gk-gravityview' ), $label ) );
+		} else {
+			$title  = esc_attr( sprintf( __( 'Field: %s', 'gk-gravityview' ), $label ) );
+		}
+
 		if ( ! $nonexistent_form_field ) {
 			$title .= "\n" . $this->get_item_info( false );
 		} else {
