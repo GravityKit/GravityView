@@ -35,7 +35,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/field/is-read/print-script` filter to modify whether to print the script in the frontend that marks an entry as "Read".
-* Added `gk/gravityview/field/is-read/read-label` filter to change field "Read" label.
+* Added `gk/gravityview/field/is-read/label` filter to change the "Is Read" field's "Read" or "Unread" label.
 
 = 2.23 on May 17, 2024 =
 

@@ -6,7 +6,9 @@
  * @package    GravityView
  */
 
+use GV\Entry;
 use GV\Field;
+use GV\Source;
 use GV\Template_Context;
 use GV\Utils;
 use GV\View;
@@ -70,7 +72,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 */
 	private function add_hooks() {
 		/** @see Field::get_value_filters */
-		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 3 );
+		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 5 );
 		add_action( 'gravityview/template/after', [ $this, 'print_script' ], 10, 1 );
 	}
 
@@ -102,18 +104,36 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 *
 	 * @since 2.0
 	 *
-	 * @param string $value The value.
-	 * @param Field  $field The field we're doing this for.
-	 * @param View   $view  The view for this context if applicable.
+	 * @param string $value  The value.
+	 * @param Field  $field  The field we're doing this for.
+	 * @param View   $view   The view for this context if applicable.
+	 * @param Source $source The source (form) for this context if applicable.
+	 * @param Entry  $entry  The entry for this context if applicable.
 	 *
 	 * @return string Value of the field
 	 */
-	public function get_value( $value, $field, $view ) {
+	public function get_value( $value, $field, $view, $source, $entry ) {
 		if ( empty( $value ) ) {
-			return Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
+			$label = Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
+		} else {
+			$label = Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
 		}
 
-		return $this->get_is_read_label( $field, $view );
+		/**
+		 * Modify the field's "Read" or "Unread" label.
+		 *
+		 * @filter `gk/gravityview/field/is-read/label`
+		 *
+		 * @since  TBD
+		 *
+		 * @param string $label  The label.
+		 * @param string $value  The field value.
+		 * @param Field  $field  The field.
+		 * @param View   $view   The View.
+		 * @param Source $source The source (form) for this context if applicable.
+		 * @param Entry  $entry  The entry for this context if applicable.
+		 */
+		return apply_filters( 'gk/gravityview/field/is-read/label', $label, $value, $field, $view, $source, $entry );
 	}
 
 	/**
@@ -127,6 +147,22 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return string The string to use for "Read".
 	 */
 	protected function get_is_read_label( $field, $view ) {
+
+
+		return $label;
+	}
+
+	/**
+	 * Returns the field's "Read" label.
+	 *
+	 * @since TBD
+	 *
+	 * @param Field $field The field.
+	 * @param View  $view  The View.
+	 *
+	 * @return string The string to use for "Read".
+	 */
+	protected function get_read_label( $field, $view ) {
 		$label = Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
 
 		/**
