@@ -23,9 +23,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+* "Read Status" field to display whether an entry has been read or not.
+  - Customize the labels for "Read" and "Unread" statuses.
+  - Sort a View by "Read Status".
+
 #### 🐛 Fixed
-* Export link View widget would not use date range filters.
-* The Entry Date Search Field could select a "Date" input type which is not supported.
+* Product search now returns correct results when using all search input types.
+* View's Export Link widget would not respect date range search filters.
+* Removed the unsupported "date" input type for the Date Entry field under the Search Bar's settings.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/field/is-read/print-script` filter to modify whether to print the script in the frontend that marks an entry as "Read".
+* Added `gk/gravityview/field/is-read/read-label` filter to change field "Read" label.
 
 = 2.23 on May 17, 2024 =
 
@@ -33,9 +43,6 @@ This update adds support for Nested Forms' entry meta, addresses several bugs, i
 
 #### 🚀 Added
 * Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.
-
-#### ✨ Improved
-* The "Add All Fields" button in the View editor now adds fields in their correct form order.
 
 #### 🐛 Fixed
 * Export link View widget would cause a fatal error during multi-word searches.
