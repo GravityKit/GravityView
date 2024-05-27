@@ -33,6 +33,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function __construct() {
 
 		$this->widget_id          = 'search_bar';
+
 		$this->widget_description = esc_html__( 'Display a search form for users to search a View\'s entries.', 'gk-gravityview' );
 		$this->widget_subtitle    = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
 
@@ -400,6 +401,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'is_starred' => array(
 				'text' => esc_html__( 'Is Starred', 'gk-gravityview' ),
 				'type' => 'boolean',
+			),
+			'is_read'    => array(
+				'text'    => esc_html__( 'Is Read', 'gravityview' ),
+				'type'    => 'select',
+				'choices' => array(
+					array(
+						'text'  => __( 'Read', 'gravityview' ),
+						'value' => '1',
+					),
+					array(
+						'text'  => __( 'Unread', 'gravityview' ),
+						'value' => '0',
+					),
+				),
 			),
 		);
 
@@ -1692,6 +1707,21 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_approved' );
 					$updated_field['choices'] = self::get_is_approved_choices();
 					break;
+
+				case 'is_read':
+					$updated_field['key']     = 'is_read';
+					$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_read' );
+					$updated_field['choices'] = array(
+						array(
+							'text'  => __( 'Unread', 'gravityview' ),
+							'value' => 0,
+						),
+						array(
+							'text'  => __( 'Read', 'gravityview' ),
+							'value' => 1,
+						),
+					);
+					break;
 			}
 
 			$search_fields[ $k ] = $updated_field;
@@ -1906,6 +1936,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( 'created_by' === $field['field'] ) {
 			$filter['choices'] = self::get_created_by_choices( ( isset( $context->view ) ? $context->view : null ) );
 			$filter['type']    = 'created_by';
+		}
+
+		if( 'payment_status' === $field['field'] ) {
+			$filter['type']    = 'entry_meta';
+			$filter['choices'] = GFCommon::get_entry_payment_statuses_as_choices();
 		}
 
 		if ( 'payment_status' === $field['field'] ) {
