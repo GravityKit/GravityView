@@ -38,12 +38,19 @@ class GravityView_Admin_Bar {
 		/** @var WP_Admin_Bar $wp_admin_bar */
 		global $wp_admin_bar;
 
-		if ( is_admin() || ! GVCommon::has_cap( array( 'edit_gravityviews', 'gravityview_edit_entry', 'gravityforms_edit_forms' ) ) ) {
+		if ( ! GVCommon::has_cap( array( 'edit_gravityviews', 'gravityview_edit_entry', 'gravityforms_edit_forms' ) ) ) {
 			return;
 		}
 
 		$view_data = GravityView_View_Data::getInstance()->get_views();
-		if ( empty( $view_data ) ) {
+
+		// Dashboard Views.
+		$view = false;
+		if ( is_admin() ) {
+			$view = gravityview()->request->is_view();
+		}
+
+		if ( empty( $view_data ) && empty( $view ) ) {
 			return;
 		}
 
@@ -129,6 +136,12 @@ class GravityView_Admin_Bar {
 
 			// If there is a View embed, show Edit View link.
 			if ( ! empty( $views ) ) {
+		// Dashboard Views.
+		if( is_admin() ) {
+			$view = gravityview()->request->is_view();
+			$views[] = $view;
+		}
+
 
 				$added_forms = array();
 				$added_views = array();
