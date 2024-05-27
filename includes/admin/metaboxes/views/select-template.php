@@ -67,10 +67,14 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 		$plugin_text_domain = $plugin_data['text_domain'] ?? '';
 		$button_text        = empty( $plugin_data ) ? esc_html__( 'Install', 'gk-gravityview' ) : esc_html__( 'Activate & Select', 'gk-gravityview' );
 		$button_class       = 'gv-layout-' . ( empty( $plugin_data ) ? 'install' : 'activate' );
-		$template_path      = isset( $plugin_data['path'] ) ? $plugin_data['path'] : '';
-		$template_id        = isset( $template['template_id'] ) ? $template['template_id'] : '';
-		$download_id        = isset( $template['download_id'] ) ? $template['download_id'] : '';
 		$base_type          = $base_template_mapping[ $template['slug'] ?? 'table' ] ?? 'default_table';
+		$template_path      = \GV\Utils::get( $plugin_data, 'path', '' );
+		$template_id        = \GV\Utils::get( $template, 'template_id', '' );
+		$download_id        = \GV\Utils::get( $template, 'download_id', '' );
+		$type               = \GV\Utils::get( $template, 'type', '' );
+		$logo               = \GV\Utils::get( $template, 'logo', '' );
+		$label              = \GV\Utils::get( $template, 'label', '' );
+		$description        = \GV\Utils::get( $template, 'description', '' );
 		?>
 		<div class="gv-grid-col-1-4">
 			<div class="gv-view-types-module
@@ -79,11 +83,11 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 			if ( $placeholder ) {
 				echo ' gv-view-template-placeholder'; }
 			?>
-			" data-filter="<?php echo esc_attr( $template['type'] ); ?>">
+			" data-filter="<?php echo esc_attr( $type ); ?>">
 				<div class="gv-view-types-normal">
-					<img src="<?php echo esc_url( $template['logo'] ); ?>" alt="<?php echo esc_attr( $template['label'] ); ?>">
-					<h5><?php echo esc_html( $template['label'] ); ?></h5>
-					<p class="description"><?php echo esc_html( $template['description'] ); ?></p>
+					<img src="<?php echo esc_url( $logo ); ?>" alt="<?php echo esc_attr( $label ); ?>">
+					<h5><?php echo esc_html( $label ); ?></h5>
+					<p class="description"><?php echo esc_html( $description ); ?></p>
 				</div>
 				<div class="gv-view-types-hover">
 					<div>
