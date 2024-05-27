@@ -220,6 +220,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'address'    => array( 'input_text' ),
 			'number'     => array( 'input_text', 'number_range' ),
 			'date'       => array( 'date', 'date_range' ),
+			'entry_date' => array( 'date_range' ),
 			'boolean'    => array( 'single_checkbox' ),
 			'select'     => array( 'select', 'radio', 'link' ),
 			'multi'      => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
@@ -388,7 +389,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			),
 			'entry_date' => array(
 				'text' => esc_html__( 'Entry Date', 'gk-gravityview' ),
-				'type' => 'date',
+				'type' => 'entry_date',
 			),
 			'entry_id'   => array(
 				'text' => esc_html__( 'Entry ID', 'gk-gravityview' ),
