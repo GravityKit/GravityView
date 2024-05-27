@@ -8,6 +8,7 @@
 
 use GV\Field;
 use GV\Template_Context;
+use GV\Utils;
 use GV\View;
 
 /**
@@ -68,7 +69,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @since TBD
 	 */
 	private function add_hooks() {
-		/** @see \GV\Field::get_value_filters */
+		/** @see Field::get_value_filters */
 		add_filter( 'gravityview/field/is-read/value', [ $this, 'get_value' ], 10, 3 );
 		add_action( 'gravityview/template/after', [ $this, 'print_script' ], 10, 1 );
 	}
@@ -109,7 +110,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 */
 	public function get_value( $value, $field, $view ) {
 		if ( empty( $value ) ) {
-			return \GV\Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
+			return Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
 		}
 
 		return $this->get_is_read_label( $field, $view );
@@ -126,7 +127,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return string The string to use for "Read".
 	 */
 	protected function get_is_read_label( $field, $view ) {
-		$label = \GV\Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
+		$label = Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
 
 		/**
 		 * Modify the "Read" label.
