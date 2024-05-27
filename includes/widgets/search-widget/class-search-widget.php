@@ -404,15 +404,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'type' => 'boolean',
 			),
 			'is_read'    => array(
-				'text'    => esc_html__( 'Is Read', 'gravityview' ),
+				'text'    => esc_html__( 'Is Read', 'gk-gravityview' ),
 				'type'    => 'select',
 				'choices' => array(
 					array(
-						'text'  => __( 'Read', 'gravityview' ),
+						'text'  => __( 'Read', 'gk-gravityview' ),
 						'value' => '1',
 					),
 					array(
-						'text'  => __( 'Unread', 'gravityview' ),
+						'text'  => __( 'Unread', 'gk-gravityview' ),
 						'value' => '0',
 					),
 				),
@@ -1714,11 +1714,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_read' );
 					$updated_field['choices'] = array(
 						array(
-							'text'  => __( 'Unread', 'gravityview' ),
+							'text'  => __( 'Unread', 'gk-gravityview' ),
 							'value' => 0,
 						),
 						array(
-							'text'  => __( 'Read', 'gravityview' ),
+							'text'  => __( 'Read', 'gk-gravityview' ),
 							'value' => 1,
 						),
 					);
