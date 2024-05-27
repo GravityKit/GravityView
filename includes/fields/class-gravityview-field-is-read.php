@@ -29,8 +29,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 
 	var $entry_meta_is_default_column = true;
 
-	var $is_numeric = true;
-
 	var $is_sortable = true;
 
 	/**
