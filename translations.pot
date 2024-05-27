@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-19T13:35:37+00:00\n"
+"POT-Creation-Date: 2024-05-23T12:44:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -4606,48 +4606,48 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1817
+#: includes/widgets/search-widget/class-search-widget.php:1808
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1820
+#: includes/widgets/search-widget/class-search-widget.php:1811
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1823
+#: includes/widgets/search-widget/class-search-widget.php:1814
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2153
+#: includes/widgets/search-widget/class-search-widget.php:2144
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2243
+#: includes/widgets/search-widget/class-search-widget.php:2234
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2244
+#: includes/widgets/search-widget/class-search-widget.php:2235
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2245
+#: includes/widgets/search-widget/class-search-widget.php:2236
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2246
+#: includes/widgets/search-widget/class-search-widget.php:2237
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2247
+#: includes/widgets/search-widget/class-search-widget.php:2238
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2248
+#: includes/widgets/search-widget/class-search-widget.php:2239
 msgid "Show a different month"
 msgstr ""
 
@@ -4794,11 +4794,11 @@ msgstr ""
 msgid "%s (%d out of %d stars)"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Components/NewsletterSignup.php:184
+#: vendor_prefixed/gravitykit/foundation/src/Components/NewsletterSignup.php:221
 msgid "The provided email address is not valid."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Components/NewsletterSignup.php:212
+#: vendor_prefixed/gravitykit/foundation/src/Components/NewsletterSignup.php:249
 msgid "Something went wrong on our end. Please try again later."
 msgstr ""
 

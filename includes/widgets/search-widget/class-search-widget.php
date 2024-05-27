@@ -1104,7 +1104,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						$left  = new GF_Query_Column( $left->field_id, $left->source, $alias );
 					}
 
-					if ( $this->is_product_field( $filter ) ) {
+					if ( $this->is_product_field( $filter ) && ( $filter['is_numeric'] ?? false ) ) {
 						$original_left = clone $left;
 						$column        = $left instanceof GF_Query_Call ? $left->columns[0] ?? null : $left;
 						$column_name   = sprintf( '`%s`.`%s`', $column->alias, $column->is_entry_column() ? $column->field_id : 'meta_value' );
