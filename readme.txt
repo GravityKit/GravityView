@@ -23,12 +23,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Added: A "Read Status" field to display whether an entry has been read or not. Previously, the status was output as either 1 or 0. Now, you can customize the labels for "Read" and "Unread" statuses.
-	- You can now sort a View by "Read Status"
+* Added: "Read Status" field to display whether an entry has been read or not. Previously, the status was output as either 1 or 0. Now, you can customize the labels for "Read" and "Unread" statuses.
+  - You can now sort a View by "Read Status".
 
 __Developer Updates:__
 
-* Added `gk/gravityview/field/is_read/print_script` filter to modify whether to print the script on the front-end that marks an entry as "Read".
+* Added `gk/gravityview/field/is-read/print-script` filter to modify whether to print the script in the frontend that marks an entry as "Read".
+* Added `gk/gravityview/field/is-read/read-label` filter to change field "Read" label.
 
 = 2.23 on May 17, 2024 =
 
