@@ -69,12 +69,7 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 		<select name="gravityview_form_id" id="gravityview_form_id" class="hidden"><option selected="selected" value=""></option></select>
 	<?php } ?>
 
-	&nbsp;<button class="button button-primary" 
-	<?php
-	if ( empty( $current_form ) ) {
-		echo 'style="display:none;"'; }
-	?>
-	id="gv_switch_view_button" title="<?php esc_attr_e( 'Switch View', 'gk-gravityview' ); ?>"><?php esc_html_e( 'Switch View Type', 'gk-gravityview' ); ?></button>
+	<button class="button button-primary" style="display:none;" id="gv_switch_view_button" title="<?php esc_attr_e( 'Switch View', 'gk-gravityview' ); ?>"><?php esc_html_e( 'Switch View Type', 'gk-gravityview' ); ?></button>
 </p>
 
 <?php // confirm dialog box ?>

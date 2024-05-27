@@ -14,7 +14,7 @@
 @import "admin-tooltips";
 @import "admin-metabox";
 @import "admin-merge-tags";
-
+@import "view-dropdown";
 
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
@@ -146,7 +146,9 @@ $gv-overlay-index: 10000;
 
 /* GV Sections
 --------------------------------------- */
-
+.gv-section {
+	position: relative;
+}
 .gv-section:before,
 .gv-section:after {
 	content: " ";
@@ -351,7 +353,7 @@ $gv-overlay-index: 10000;
 }
 
 #gv_switch_view_button {
-	display: inline-block;
+	display: none!important;
 }
 
 #gravityview_select_template {
@@ -2076,4 +2078,23 @@ $dialog-button-padding: 5px;
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+}
+
+.gv-section-header {
+	display: flex;
+	justify-content: space-between;
+	margin-top: -1em;
+
+	h4 {
+		flex: 1;
+	}
+
+	.view-template-select {
+		flex: 1;
+		height: 42px;
+		width: 100%;
+		position: relative;
+		margin: 1rem 0 1rem 1rem;
+		flex-shrink: 0;
+	}
 }

@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🚀 Added
+* Ability to select different View types for Directory and Single Entry Views.
 * "Read Status" field to display whether an entry has been read or not.
   - Customize the labels for "Read" and "Unread" statuses.
   - Sort a View by "Read Status".
