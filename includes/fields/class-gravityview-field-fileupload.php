@@ -206,6 +206,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		// Process each file path
 		foreach ( $file_paths as $index => $file_path ) {
 
+			if ( empty( $file_path ) || ! is_string( $file_path ) ) {
+				continue;
+			}
+
 			/**
 			 * URL-encode non-Latin characters to comply with RFC 3986.
 			 *
