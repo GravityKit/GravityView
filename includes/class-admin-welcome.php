@@ -297,7 +297,7 @@ class GravityView_Welcome {
 				?>
 				<h3>2.24 on May 28, 2024</h3>
 
-				<p>This release introduces the ability to use different view types for the Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications.</p>
+				<p>This release introduces the ability to use different view types for the Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. <a href="https://www.gravitykit.com/announcing-gravityview-2-24/">Read the announcement</a> for more details.</p>
 
 				<h4>🚀 Added</h4>
 
