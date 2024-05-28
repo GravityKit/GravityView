@@ -42,6 +42,10 @@ final class GravityView_Notifications {
 			return;
 		}
 
+		if ( $form ) {
+			$form = gf_apply_filters( [ 'gform_pre_render', $form['id'] ], $form, false, [] );
+		}
+
 		GFAPI::send_notifications( $form, $entry, $event );
 	}
 }
