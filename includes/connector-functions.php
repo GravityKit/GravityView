@@ -234,7 +234,7 @@ function gravityview_get_template_id( $view_id ) {
 /**
  * Get the template ID for directory entries for a view.
  *
- * @since $ver$
+ * @since 2.24
  *
  * @param int $view_id The view ID.
  *
@@ -247,7 +247,7 @@ function gravityview_get_directory_entries_template_id( $view_id ) {
 /**
  * Get the template ID for a single entry for a view.
  *
- * @since $ver$
+ * @since 2.24
  *
  * @param int $view_id The view ID.
  *

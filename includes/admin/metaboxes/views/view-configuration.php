@@ -31,7 +31,7 @@ uasort(
 /**
  * Returns the HTML for the templates options needed for the view dropdown.
  *
- * @since $ver$
+ * @since 2.24
  *
  * @param array       $templates         The templates to render.
  * @param string|null $selected_template The current selected template.

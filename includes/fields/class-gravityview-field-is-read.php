@@ -1,7 +1,7 @@
 <?php
 /**
  * @file       class-gravityview-field-is-read.php
- * @since      TBD
+ * @since      2.24
  * @subpackage includes\fields
  * @package    GravityView
  */
@@ -16,7 +16,7 @@ use GV\View;
 /**
  * Field to display whether the entry has been read.
  *
- * @since TBD
+ * @since 2.24
  */
 class GravityView_Field_Is_Read extends GravityView_Field {
 	var $name = 'is_read';
@@ -40,7 +40,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * Class constructor.
 	 *
-	 * @since TBD
+	 * @since 2.24
 	 */
 	public function __construct() {
 		$this->label                = esc_html__( 'Read Status', 'gk-gravityview' );
@@ -55,7 +55,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * Prevents overriding Gravity Forms entry meta, even though it's a meta field.
 	 *
-	 * @since TBD
+	 * @since 2.24
 	 *
 	 * @param array $entry_meta Existing entry meta.
 	 *
@@ -68,7 +68,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * Adds field hooks.
 	 *
-	 * @since TBD
+	 * @since 2.24
 	 */
 	private function add_hooks() {
 		/** @see Field::get_value_filters */
@@ -79,7 +79,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since TBD
+	 * @since 2.24
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 		$field_options['is_read_label'] = [
@@ -124,7 +124,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		 *
 		 * @filter `gk/gravityview/field/is-read/label`
 		 *
-		 * @since  TBD
+		 * @since  2.24
 		 *
 		 * @param string $label  The label.
 		 * @param string $value  The field value.
@@ -139,7 +139,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * Returns the field's "Read" label.
 	 *
-	 * @since TBD
+	 * @since 2.24
 	 *
 	 * @param Field $field The field.
 	 * @param View  $view  The View.
@@ -155,7 +155,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * Returns the field's "Read" label.
 	 *
-	 * @since TBD
+	 * @since 2.24
 	 *
 	 * @param Field $field The field.
 	 * @param View  $view  The View.
@@ -170,7 +170,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		 *
 		 * @filter `gk/gravityview/field/is-read/read-label`
 		 *
-		 * @since  TBD
+		 * @since  2.24
 		 *
 		 * @param string $label The label.
 		 * @param Field  $field The field.
@@ -184,7 +184,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * Returns the first "Read Status" field from the context.
 	 *
-	 * @since TBD
+	 * @since 2.24
 	 *
 	 * @param Template_Context $context The context.
 	 *
@@ -219,7 +219,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		 *
 		 * @filter `gk/gravityview/field/is-read/print-script`
 		 *
-		 * @since  TBD
+		 * @since  2.24
 		 *
 		 * @param bool             $print_script Whether the script be printed? Default: true.
 		 * @param Template_Context $context      The template context.

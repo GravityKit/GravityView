@@ -21,24 +21,26 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.24 on May 28, 2024 =
+
+This release introduces the ability to use different view types for the Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications.
 
 #### 🚀 Added
-* Ability to select different View types for Directory and Single Entry Views.
+* Ability to select different View types for the Multiple Entries and Single Entry layouts.
 * "Read Status" field to display whether an entry has been read or not.
   - Customize the labels for "Read" and "Unread" statuses.
   - Sort a View by "Read Status".
 
 #### 🐛 Fixed
-* File Upload links not rendering for non-Latin characters.
-* Product search now returns correct results when using all search input types.
+* File Upload field values not rendering in the View if filenames have non-Latin characters.
+* Product search now returns correct results when using all search input types in the search bar.
 * View's Export Link widget would not respect date range search filters.
-* Removed the unsupported "date" input type for the Date Entry field under the Search Bar's settings.
+* Removed the unsupported "date" input type for the Date Entry field under the search bar's settings.
 * Merge tags in GravityView notifications are now properly processed for fields dynamically populated by Gravity Wiz's Populate Anything add-on.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/field/is-read/print-script` filter to modify whether to print the script in the frontend that marks an entry as "Read".
-* Added `gk/gravityview/field/is-read/label` filter to change the "Is Read" field's "Read" or "Unread" label.
+* Added `gk/gravityview/field/is-read/label` filter to change the "Is Read" field's "Read" and "Unread" labels.
 
 = 2.23 on May 17, 2024 =
 

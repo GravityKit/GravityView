@@ -130,7 +130,7 @@ function gravityview_register_placeholder_templates() {
 
 /**
  * Registers missing icons with various templates.
- * @since $ver$
+ * @since 2.24
  *
  * @param array $templates The registered templates.
  *

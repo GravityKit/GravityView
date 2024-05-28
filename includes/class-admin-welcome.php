@@ -295,6 +295,38 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.24 on May 28, 2024</h3>
+
+				<p>This release introduces the ability to use different view types for the Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Ability to select different View types for the Multiple Entries and Single Entry layouts.</li>
+					<li>"Read Status" field to display whether an entry has been read or not.</li>
+					<ul>
+						<li>Customize the labels for "Read" and "Unread" statuses.</li>
+						<li>Sort a View by "Read Status".</li>
+					</ul>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>File Upload field values not rendering in the View if filenames have non-Latin characters.</li>
+					<li>Product search now returns correct results when using all search input types in the search bar.</li>
+					<li>View's Export Link widget would not respect date range search filters.</li>
+					<li>Removed the unsupported "date" input type for the Date Entry field under the search bar's settings.</li>
+					<li>Merge tags in GravityView notifications are now properly processed for fields dynamically populated by Gravity Wiz's Populate Anything add-on.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gk/gravityview/field/is-read/print-script</code> filter to modify whether to print the script in the frontend that marks an entry as "Read".</li>
+					<li>Added <code>gk/gravityview/field/is-read/label</code> filter to change the "Is Read" field's "Read" and "Unread" labels.</li>
+				</ul>
+
 				<h3>2.23 on May 17, 2024</h3>
 
 				<p>This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.</p>
@@ -374,134 +406,6 @@ class GravityView_Welcome {
 				<ul>
 					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.</li>
 					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.</li>
-				</ul>
-
-				<h3>2.21.2 on March 28, 2024</h3>
-
-				<p>This update fixes an issue with previewing GravityView blocks for Views with enhanced security and resolves a problem where blocks were previously rendered only for logged-in users.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Previewing a GravityView block for a View that has enhanced security enabled no longer results in a notice about a missing <code>secret</code> shortcode attribute.</li>
-					<li>GravityView blocks now render for all users, not just those who are logged in.</li>
-				</ul>
-
-				<h3>2.21.1 on March 22, 2024</h3>
-
-				<p>This hotfix release addresses a critical error that occurred when activating the plugin without Gravity Forms installed.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Critical error when activating the plugin without Gravity Forms installed.</li>
-				</ul>
-
-				<h3>2.21 on March 18, 2024</h3>
-
-				<p>This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, fixes a conflict with BuddyBoss Platform, and improves performance with updates to essential components.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>A View editor widget to export entries in CSV or TSV formats.</li>
-					<li>Support for SVG images.</li>
-					<li>Support for Gravity Flow's "Workflow User" and "Workflow Multi-User" fields inside the Search Bar.</li>
-					<li>Integration with LifterLMS that allows embedding Views inside Student Dashboards.</li>
-					<li>Notice to inform administrators that an embedded View was moved to "trash" and an option to restore it.</li>
-					<li>Click-to-copy shortcode functionality in the View editor and when listing existing Views.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>PHP 8.2 deprecation notices.</li>
-					<li>Fields linked to single entry layouts are now exported as plain text values, not hyperlinks, in CSV/TSV files.</li>
-					<li>Issue preventing the saving of pages/posts with GravityView Gutenberg blocks when BuddyBoss Platform is active.</li>
-				</ul>
-
-				<h4>🔐 Security</h4>
-
-				<ul>
-					<li>Enhanced security by adding a <code>secret</code> attribute to shortcodes and blocks connected to Views.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.11.</p>
-
-				<ul>
-					<li>GravityKit product updates are now showing on the Plugins page.</li>
-					<li>Database options that are no longer used are now automatically removed.</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Added: <code>gk/gravityview/widget/search/clear-button/params</code> filter to modify the parameters of the Clear button in the search widget.</li>
-				</ul>
-
-				<h3>2.20.2 on March 4, 2024</h3>
-
-				<p>This release enhances performance by optimizing caching and managing transients more effectively.</p>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Enhanced detection of duplicate queries, resulting in fewer cache records stored in the database.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.10.</p>
-
-				<ul>
-					<li>Transients are no longer autoloaded.</li>
-				</ul>
-
-				<h3>2.20.1 on February 29, 2024</h3>
-
-				<p>This release fixes an issue with View caching and improves compatibility with the Advanced Custom Fields plugin.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Disappearing pagination and incorrect entry count when View caching is enabled.</li>
-					<li>Potential timeout issue when embedding GravityView shortcodes with Advanced Custom Fields plugin.</li>
-					<li>PHP 8.1+ deprecation notice.</li>
-				</ul>
-
-				<h3>2.20 on February 22, 2024</h3>
-
-				<p>This release introduces new settings for better control over View caching, adds support for the Advanced Post Creation Add-On when editing entries, fixes a fatal error when exporting entries to CSV, and updates internal components for better performance and compatibility.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Global and View-specific settings to control caching of View entries. <a href='https://docs.gravitykit.com/article/58-about-gravityview-caching'>Learn more about GravityView caching</a>.</li>
-					<li>Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode.</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>If Gravity Forms is not installed and/or activated, a notice is displayed to alert users when creating new or listing existing Views.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Deprecation notice in PHP 8.1+ when displaying a View with file upload fields.</li>
-					<li>Fatal error when exporting entries to CSV.</li>
-				</ul
-
-				<h4>🔧 Updated</h4>
-
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.9.</p>
-
-				<ul>
-					<li>GravityKit products that are already installed can now be activated without a valid license.</li>
-					<li>Fixed PHP warning messages that appeared when deactivating the last active product with Foundation installed.</li>
 				</ul>
 
 				<p style="text-align: center;">

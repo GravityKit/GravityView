@@ -7,7 +7,7 @@
  * @link      http://www.gravitykit.com
  * @copyright Copyright 2024, Katz Web Services, Inc.
  *
- * @since $ver$
+ * @since 2.24
  *
  * globals jQuery
  */
@@ -17,7 +17,7 @@
 
 	/**
 	 * Creates a new instance of `ViewDropDown`
-	 * @since $ver$
+	 * @since 2.24
 	 * @param {Element} el The original `select` element.
 	 * @constructor
 	 */
@@ -35,7 +35,7 @@
 	 *
 	 * It replaces the original `select` with a nicely styled `combobox`, and hooks up the required events.
 	 *
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.init = function () {
 		if ( this.initialized ) {
@@ -164,7 +164,7 @@
 
 	/**
 	 * Relay method for easy focus on the select box.
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.focus = function () {
 		this.select.focus();
@@ -172,7 +172,7 @@
 
 	/**
 	 * Focuses on the first option.
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.focusFirst = function () {
 		if ( !this.open ) {
@@ -184,7 +184,7 @@
 
 	/**
 	 * Focuses on the last option.
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.focusLast = function () {
 		if ( !this.open ) {
@@ -199,7 +199,7 @@
 	 *
 	 * Will focus on the last option if the current option is first option.
 	 *
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.focusUp = function () {
 		if ( !this.open ) {
@@ -231,7 +231,7 @@
 	 *
 	 * Will focus on the first option if the current option is last option.
 	 *
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.focusDown = function () {
 		if ( !this.open ) {
@@ -265,7 +265,7 @@
 	/**
 	 * Handles the key events on the select box itself.
 	 *
-	 * @since $ver$
+	 * @since 2.24
 	 * @param {KeyboardEvent} e The event.
 	 */
 	ViewDropDown.prototype.handleKeySelect = function ( e ) {
@@ -279,7 +279,7 @@
 	/**
 	 * Handles the key events on an option.
 	 *
-	 * @since $ver$
+	 * @since 2.24
 	 * @param {KeyboardEvent} e The event.
 	 */
 	ViewDropDown.prototype.handleKeyOption = function ( e ) {
@@ -308,7 +308,7 @@
 
 	/**
 	 * Stores the current value on the instance.
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.storeValue = function () {
 		this.$el.data( 'gv-view-value', this.$el.val() );
@@ -319,7 +319,7 @@
 	 *
 	 * This is used when a confirmation is canceled, and the original value needs to be reset.
 	 *
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.restoreValue = function () {
 		this.$el.val( this.$el.data( 'gv-view-value' ) );
@@ -332,7 +332,7 @@
 	 *
 	 * Can be called again to sync options if the values on the original `select` are updated.
 	 *
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.renderOptions = function () {
 		const $list = this.$options_list;
@@ -405,7 +405,7 @@
 	 *
 	 * Puts focus on the first option once opened.
 	 *
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.toggle = function () {
 		this.open = !this.open;
@@ -418,7 +418,7 @@
 
 	/**
 	 * Puts focus on the active item.
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.focusActive = function () {
 		this.$options_list.find( 'div.view-dropdown-list-item--active' ).focus();
@@ -426,7 +426,7 @@
 
 	/**
 	 * Closes the dropdown.
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.close = function () {
 		this.open = false;
@@ -435,7 +435,7 @@
 
 	/**
 	 * Synchronizes the visual state to the underlying data state.
-	 * @since $ver$
+	 * @since 2.24
 	 */
 	ViewDropDown.prototype.refresh = function () {
 		this.$wrapper.toggleClass( 'view-dropdown--open', this.open );

@@ -1401,7 +1401,7 @@
 
 		/**
 		 * Whether the current template selector is a `data-view-dropdown`.
-		 * @since $ver$
+		 * @since 2.24
 		 * @return {boolean}
 		 * @private
 		 */
@@ -1416,7 +1416,7 @@
 		 * If a section was provided (i.e. it uses a view drop down) it will return the template for that section.
 		 * If no section was provided, it will fall back to the directory template for backward compatibility.
 		 *
-		 * @since $ver$
+		 * @since 2.24
 		 * @return {string} The template id.
 		 * @private
 		 */
@@ -1436,7 +1436,7 @@
 
 		/**
 		 * Sets the current template ID based on the active section.
-		 * @since $ver$
+		 * @since 2.24
 		 * @param {string} template_id The template ID.
 		 * @private
 		 */
@@ -1452,7 +1452,7 @@
 
 		/**
 		 * Returns the template ID from the selector.
-		 * @since $ver$
+		 * @since 2.24
 		 * @param {boolean} use_base_template Whether to use the base template of a preset.
 		 * @return {string} The template ID on the selector.
 		 * @private
@@ -1476,7 +1476,7 @@
 		 *
 		 * Only a view dropdown has a section, so this method helps ease the difference with the "old" selector.
 		 *
-		 * @since $ver$
+		 * @since 2.24
 		 * @return {null|string} The section.
 		 * @private
 		 */
@@ -1494,7 +1494,7 @@
 		 *
 		 * This is only relevant for view dropdowns.
 		 *
-		 * @since $ver$
+		 * @since 2.24
 		 * @private
 		 */
 		_restoreValue: function() {
@@ -1508,7 +1508,7 @@
 		 *
 		 * If the current selector is not a view dropdown, we store all view dropdowns, since all are updated.
 		 *
-		 * @since $ver$
+		 * @since 2.24
 		 * @private
 		 */
 		_storeValue: function() {
