@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
   - Sort a View by "Read Status".
 
 #### 🐛 Fixed
+* File Upload links not rendering for non-Latin characters.
 * Product search now returns correct results when using all search input types.
 * View's Export Link widget would not respect date range search filters.
 * Removed the unsupported "date" input type for the Date Entry field under the Search Bar's settings.
