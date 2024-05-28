@@ -206,6 +206,16 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		// Process each file path
 		foreach ( $file_paths as $index => $file_path ) {
 
+			/**
+			 * URL-encode non-Latin characters to comply with RFC 3986.
+			 *
+			 * @see https://github.com/GravityKit/GravityView/issues/2051
+			 * @see https://stackoverflow.com/a/27124836
+			 */
+			$file_path = preg_replace_callback( '/[^\x21-\x7f]/', function ( $match ) {
+				return rawurlencode( $match[0] );
+			}, $file_path );
+
 			// If the file path is not a valid URL, skip it. This is the same check that Gravity Forms does.
 			if ( ! GFCommon::is_valid_url( $file_path ) ) {
 				continue;
