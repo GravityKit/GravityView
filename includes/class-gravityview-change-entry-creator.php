@@ -17,20 +17,20 @@ class GravityView_Change_Entry_Creator {
 		 */
 		add_action( 'gform_user_registered', array( $this, 'assign_new_user_to_lead' ), 10, 4 );
 
-		// ONLY ADMIN FROM HERE ON.
-		if ( ! is_admin() ) {
-			return;
-		}
-
 		/**
 		 * Disable the Change Entry Creator functionality.
 		 *
 		 * @since  1.7.4
+		 *
 		 * @param boolean $disable Disable the Change Entry Creator functionality. Default: false.
 		 */
 		if ( apply_filters( 'gravityview_disable_change_entry_creator', false ) ) {
 			return;
 		}
+
+		add_filter( 'gravityview_entry_default_fields', [ $this, 'register_edit_field' ], 10, 3 );
+		add_filter( 'gravityview/edit_entry/form_fields', [ $this, 'register_created_by_input' ], 10, 3 );
+		add_filter( 'gravityview_field_visibility_caps', [ $this, 'created_by_visibility_caps' ], 15, 3 );
 
 		/**
 		 * Use `init` to fix bbPress warning
@@ -76,7 +76,10 @@ class GravityView_Change_Entry_Creator {
 		wp_enqueue_script( 'gravityview_selectwoo', plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ), array(), $version );
 		wp_enqueue_style( 'gravityview_selectwoo', plugins_url( 'assets/lib/selectWoo/selectWoo.min.css', GRAVITYVIEW_FILE ), array(), $version );
 
-		wp_enqueue_script( 'gravityview_entry_creator', plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ), array( 'jquery', 'gravityview_selectwoo' ), $version );
+		wp_enqueue_script( 'gravityview_entry_creator', plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(
+			'jquery',
+			'gravityview_selectwoo'
+		), $version );
 
 		wp_localize_script(
 			'gravityview_entry_creator',
@@ -134,10 +137,12 @@ class GravityView_Change_Entry_Creator {
 	 * When an user is created using the User Registration add-on, assign the entry to them
 	 *
 	 * @since  1.5.1
+	 *
 	 * @param int    $user_id  WordPress User ID
 	 * @param array  $config   User registration feed configuration
 	 * @param array  $entry    GF Entry array
 	 * @param string $password User password
+	 *
 	 * @return void
 	 * @uses   RGFormsModel::update_lead_property() Modify the entry `created_by` field
 	 */
@@ -175,6 +180,7 @@ class GravityView_Change_Entry_Creator {
 		 * Disable adding a note when changing the entry creator.
 		 *
 		 * @since  1.21.5
+		 *
 		 * @param boolean $disable Disable the Change Entry Creator note. Default: false.
 		 */
 		if ( apply_filters( 'gravityview_disable_change_entry_creator_note', false ) ) {
@@ -198,6 +204,23 @@ class GravityView_Change_Entry_Creator {
 	}
 
 	/**
+	 * Whether the current user has the rights to edit the entry creator.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether the user has rights.
+	 */
+	private function is_user_allowed(): bool {
+		// Todo: only show users if the user has rights to see all users.
+		// Can the user edit entries?
+		if ( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * @since  3.6.3
 	 * @return void
 	 */
@@ -209,12 +232,21 @@ class GravityView_Change_Entry_Creator {
 		}
 
 		// Can the user edit entries?
-		if ( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
+		if ( ! $this->is_user_allowed() ) {
 			return;
 		}
 
-		// If screen mode isn't set, then we're in the wrong place.
-		if ( empty( $_REQUEST['screen_mode'] ) ) {
+		/**
+		 * If screen mode isn't set, then we're in the wrong place.
+		 * But if we posted a valid nonce, then we are legit.
+		 */
+		if (
+			empty( $_REQUEST['screen_mode'] )
+			&& (
+				! rgpost( 'gv_entry_creator_nonce' )
+				|| ! wp_verify_nonce( rgpost( 'gv_entry_creator_nonce' ), 'gv_entry_creator' )
+			)
+		) {
 			return;
 		}
 
@@ -223,7 +255,7 @@ class GravityView_Change_Entry_Creator {
 
 		add_action( 'gform_entry_info', array( &$this, 'add_select' ), 10, 2 );
 
-		add_action( 'gform_after_update_entry', array( &$this, 'update_entry_creator' ), 10, 2 );
+		add_action( 'gform_after_update_entry', array( &$this, 'update_entry_creator' ), 10, 3 );
 	}
 
 	/**
@@ -248,9 +280,10 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @param array $form     GF entry array
 	 * @param int   $entry_id Entry ID
+	 *
 	 * @return void
 	 */
-	function update_entry_creator( $form, $entry_id ) {
+	function update_entry_creator( $form, $entry_id, array $original_entry ) {
 
 		global $current_user;
 
@@ -260,7 +293,7 @@ class GravityView_Change_Entry_Creator {
 		RGFormsModel::update_lead_property( $entry_id, 'created_by', $created_by );
 
 		// If the creator has changed, let's add a note about who it used to be.
-		$originally_created_by = \GV\Utils::_POST( 'originally_created_by' );
+		$originally_created_by = rgar( $original_entry, 'created_by' );
 
 		// If there's no owner and there didn't used to be, keep going
 		if ( empty( $originally_created_by ) && empty( $created_by ) ) {
@@ -297,23 +330,16 @@ class GravityView_Change_Entry_Creator {
 	}
 
 	/**
-	 * Output select element used to change the entry creator
+	 * Returns the HTML for the user select field.
 	 *
-	 * @param int   $form_id GF Form ID
-	 * @param array $entry   GF entry array
+	 * @since $ver$
 	 *
-	 * @return void
+	 * @param array $entry The entry object.
+	 *
+	 * @return string The HTML.
 	 */
-	function add_select( $form_id, $entry ) {
-
-		if ( 'edit' !== \GV\Utils::_POST( 'screen_mode' ) ) {
-			return;
-		}
-
-		$output  = '<label for="change_created_by">';
-		$output .= esc_html__( 'Change Entry Creator:', 'gk-gravityview' );
-		$output .= '</label>';
-		$output .= '<select name="created_by" id="change_created_by" class="widefat">';
+	public static function get_select_field( array $entry ): string {
+		$output = '<select name="created_by" id="change_created_by" class="widefat">';
 
 		$entry_creator_user_id = \GV\Utils::get( $entry, 'created_by' );
 
@@ -344,12 +370,33 @@ class GravityView_Change_Entry_Creator {
 			$user_users      = _n( esc_html__( 'user', 'gk-gravityview' ), esc_html__( 'users', 'gk-gravityview' ), $remaining_users );
 			$message         = esc_html_x( 'Use the input above to search the remaining %1$d %2$s.', '%d is replaced with user count %s is replaced with "user" or "users"', 'gk-gravityview' );
 			$message         = sprintf( $message, $remaining_users, $user_users );
-			$output         .= '<option value="_user_count" disabled="disabled">' . esc_html( $message ) . '</option>';
+			$output          .= '<option value="_user_count" disabled="disabled">' . esc_html( $message ) . '</option>';
 		}
 
 		$output .= '</select>';
-		$output .= '<input name="originally_created_by" value="' . esc_attr( $entry['created_by'] ) . '" type="hidden" />';
 		$output .= wp_nonce_field( 'gv_entry_creator', 'gv_entry_creator_nonce', false, false );
+
+		return $output;
+	}
+
+	/**
+	 * Output select element used to change the entry creator
+	 *
+	 * @param int   $form_id GF Form ID
+	 * @param array $entry   GF entry array
+	 *
+	 * @return void
+	 */
+	function add_select( $form_id, $entry ) {
+
+		if ( 'edit' !== \GV\Utils::_POST( 'screen_mode' ) ) {
+			return;
+		}
+
+		$output = '<label for="change_created_by">';
+		$output .= esc_html__( 'Change Entry Creator:', 'gk-gravityview' );
+		$output .= '</label>';
+		$output .= self::get_select_field( $entry );
 
 		echo $output;
 	}
@@ -366,6 +413,97 @@ class GravityView_Change_Entry_Creator {
 		$assets[] = 'gravityview_entry_creator';
 
 		return $assets;
+	}
+
+	/**
+	 * Registers the `created_by` field on the `Edit Entry` tab.
+	 *
+	 * @since $ver$
+	 *
+	 * @param GF_Field[] $fields The registered fields.
+	 * @param array      $form   The form object.
+	 * @param string     $zone   The fields zone.
+	 *
+	 * @return array The updated fields array.
+	 */
+	public function register_edit_field( array $fields, array $form, string $zone ): array {
+		if ( 'edit' !== $zone ) {
+			return $fields;
+		}
+
+		$meta_fields = GravityView_Fields::get_all( array( 'meta', 'gravityview' ), $zone );
+		$field       = $meta_fields['created_by'] ?? null;
+
+		if ( $field ) {
+			$fields += $field->as_array();
+		}
+
+		return $fields;
+	}
+
+	/**
+	 * Registers the `created_by` field on the `Edit Entry` tab.
+	 *
+	 * @since $ver$
+	 *
+	 * @param GF_Field[] $fields          The registered fields.
+	 * @param array|null $editable_fields The fields zone.
+	 * @param array      $form            The form object.
+	 *
+	 * @return array The updated fields array.
+	 */
+	public function register_created_by_input( array $fields, ?array $editable_fields, array $form ): array {
+		// Don't add the `created_by` field if the user can't change it.
+		$editable_field_ids = array_flip( array_map( static function ( array $field ): string {
+			return $field['id'] ?? 0;
+		}, $editable_fields ?? [] ) );
+
+		$form        = GFExport::add_default_export_fields( $form );
+		$form_fields = array_column( $form['fields'], null, 'id' );
+
+		// Don't show field automatically, only when actively added.
+		if ( null === $editable_fields || ! isset( $editable_field_ids['created_by'] ) ) {
+			return $fields;
+		}
+
+		$configuration = $editable_fields[ $editable_field_ids['created_by'] ] ?? [];
+
+		if ( ! GVCommon::has_cap( array( $configuration['allow_edit_cap'] ?? 'manage_options' ) ) ) {
+			return $fields;
+		}
+
+		$fields[] = $form_fields['created_by'];
+
+		// Sort fields according to Gravity View.
+		$sort_order_lookup = array_flip( array_keys( $editable_field_ids ) );
+
+		uasort( $fields, static function ( GF_Field $a, GF_Field $b ) use ( $sort_order_lookup ): int {
+			return $sort_order_lookup[ $a->id ] ?? 0 <=> $sort_order_lookup[ $b->id ];
+		} );
+
+		return $fields;
+	}
+
+	/**
+	 * Manages the visibility capabilities for the `created_by` field on the edit page.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array  $caps     The capabilities.
+	 * @param string $template The template name.
+	 * @param string $field    The field name.
+	 *
+	 * @return array The new capabilities.
+	 */
+	public function created_by_visibility_caps( array $caps, string $template, string $field ): array {
+		if ( 'created_by' !== $field || false === strpos( $template, 'edit' ) ) {
+			return $caps;
+		}
+
+		// Read users can't update the `created_by` field.
+		unset ( $caps['read'] );
+
+		return $caps;
 	}
 }
 
