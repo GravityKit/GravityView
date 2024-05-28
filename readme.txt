@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Product search now returns correct results when using all search input types.
 * View's Export Link widget would not respect date range search filters.
 * Removed the unsupported "date" input type for the Date Entry field under the Search Bar's settings.
+* Merge tags in GravityView notifications are now properly processed for fields dynamically populated by Gravity Wiz's Populate Anything add-on.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/field/is-read/print-script` filter to modify whether to print the script in the frontend that marks an entry as "Read".
