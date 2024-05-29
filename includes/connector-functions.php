@@ -219,14 +219,42 @@ function gravityview_get_joined_forms( $view_id ) {
 /**
  * Get the template ID (`list`, `table`, `datatables`, `map`) for a View
  *
- * @see GravityView_Template::template_id
+ * @deprecated use `gravityview_get_multiple_entries_template_id` instead.
  *
- * @param int $view_id The ID of the View to get the layout of
+ * @see        GravityView_Template::template_id
+ *
+ * @param int $view_id The ID of the View to get the layout of.
  *
  * @return string GravityView_Template::template_id value. Empty string if not.
  */
-function gravityview_get_template_id( $post_id ) {
-	return GVCommon::get_meta_template_id( $post_id );
+function gravityview_get_template_id( $view_id ) {
+	return gravityview_get_directory_entries_template_id( $view_id );
+}
+
+/**
+ * Get the template ID for directory entries for a view.
+ *
+ * @since 2.24
+ *
+ * @param int $view_id The view ID.
+ *
+ * @return string The template id.
+ */
+function gravityview_get_directory_entries_template_id( $view_id ) {
+	return GVCommon::get_meta_template_id( $view_id, 'directory' );
+}
+
+/**
+ * Get the template ID for a single entry for a view.
+ *
+ * @since 2.24
+ *
+ * @param int $view_id The view ID.
+ *
+ * @return string The template id.
+ */
+function gravityview_get_single_entry_template_id( $view_id ) {
+	return GVCommon::get_meta_template_id( $view_id, 'single' );
 }
 
 /**

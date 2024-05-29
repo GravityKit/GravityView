@@ -205,17 +205,17 @@ class GravityView_Admin_Views {
 				<optgroup label="<?php esc_html_e( 'Layouts', 'gk-gravityview' ); ?>">
 				<?php
 				foreach ( $layouts as $layout_id => $layout ) {
-					if ( in_array( $layout['type'], array( 'preset', 'internal' ), true ) ) {
+					if ( in_array( $layout['type'] ?? '', array( 'preset', 'internal' ), true ) ) {
 						continue;
 					}
 					?>
-					<option value="<?php echo esc_attr( $layout_id ); ?>" <?php selected( $layout_id, $current_layout, true ); ?>><?php echo esc_html( $layout['label'] ); ?></option>
+					<option value="<?php echo esc_attr( $layout_id ); ?>" <?php selected( $layout_id, $current_layout, true ); ?>><?php echo esc_html( $layout['label'] ?? '' ); ?></option>
 				<?php } ?>
 				</optgroup>
 				<optgroup label="<?php esc_html_e( 'Form Presets', 'gk-gravityview' ); ?>">
 				<?php
 				foreach ( $layouts as $layout_id => $layout ) {
-					if ( ! in_array( $layout['type'], array( 'preset' ), true ) ) {
+					if ( ! in_array( $layout['type'] ?? '', array( 'preset' ), true ) ) {
 						continue;
 					}
 					?>
@@ -446,22 +446,31 @@ class GravityView_Admin_Views {
 
 		switch ( $column_name ) {
 			case 'gv_template':
-				$template_id = gravityview_get_template_id( $post_id );
+				$directory_template = gravityview_get_directory_entries_template_id( $post_id );
+				$single_template    = gravityview_get_single_entry_template_id( $post_id );
 
 				// All Views should have a connected form. If it doesn't, that's not right.
-				if ( empty( $template_id ) ) {
+				if ( empty( $directory_template ) ) {
 					gravityview()->log->error( 'View ID {view_id} does not have a connected template.', array( 'view_id' => $post_id ) );
 					break;
 				}
 
 				$templates = gravityview_get_registered_templates();
 
-				$template = isset( $templates[ $template_id ] ) ? $templates[ $template_id ] : false;
+				$get_title = static function ( string $template_id ) use ( $templates ): string {
+					$template = $templates[ $template_id ] ?? [];
+					if ( ! $template ) {
+						return '';
+					}
+
+					return $template['label'] ?? ucwords( implode( ' ', explode( '_', $template_id ) ) );
+				};
 
 				// Generate backup if label doesn't exist: `example_name` => `Example Name`
-				$template_id_pretty = ucwords( implode( ' ', explode( '_', $template_id ) ) );
-
-				$output = $template ? $template['label'] : $template_id_pretty;
+				$output = $get_title( $directory_template );
+				if ( $directory_template !== $single_template ) {
+					$output .= ' / ' . $get_title( $single_template );
+				}
 
 				break;
 
@@ -682,10 +691,12 @@ HTML;
 		// Check if we have a template id
 		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
 
-			$template_id = ! empty( $_POST['gravityview_directory_template'] ) ? $_POST['gravityview_directory_template'] : '';
+			$directory_template_id = rgpost( 'gravityview_directory_template' );
+			$single_template_id    = rgpost( 'gravityview_single_template' );
 
-			// now save template id
-			$statii['directory_template'] = update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
+			// now save template ids
+			$statii['directory_template'] = update_post_meta( $post_id, '_gravityview_directory_template', $directory_template_id );
+			$statii['single_template']    = update_post_meta( $post_id, '_gravityview_single_template', $single_template_id );
 		}
 
 		// save View Configuration metabox
@@ -1497,6 +1508,7 @@ HTML;
 			],
 			\GV\Plugin::$version
 		);
+		wp_enqueue_script( 'gravityview_view_dropdown', plugins_url( 'assets/js/admin-view-dropdown' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], \GV\Plugin::$version );
 
 		wp_localize_script(
 			'gravityview_views_scripts',

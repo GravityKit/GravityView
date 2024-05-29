@@ -78,16 +78,16 @@
         },
         {
             "name": "gettext/gettext",
-            "version": "v4.8.11",
+            "version": "v4.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-gettext/Gettext.git",
-                "reference": "b632aaf5e4579d0b2ae8bc61785e238bff4c5156"
+                "reference": "11af89ee6c087db3cf09ce2111a150bca5c46e12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-gettext/Gettext/zipball/b632aaf5e4579d0b2ae8bc61785e238bff4c5156",
-                "reference": "b632aaf5e4579d0b2ae8bc61785e238bff4c5156",
+                "url": "https://api.github.com/repos/php-gettext/Gettext/zipball/11af89ee6c087db3cf09ce2111a150bca5c46e12",
+                "reference": "11af89ee6c087db3cf09ce2111a150bca5c46e12",
                 "shasum": ""
             },
             "require": {
@@ -139,7 +139,7 @@
             "support": {
                 "email": "oom@oscarotero.com",
                 "issues": "https://github.com/oscarotero/Gettext/issues",
-                "source": "https://github.com/php-gettext/Gettext/tree/v4.8.11"
+                "source": "https://github.com/php-gettext/Gettext/tree/v4.8.12"
             },
             "funding": [
                 {
@@ -155,7 +155,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-08-14T15:15:05+00:00"
+            "time": "2024-05-18T10:25:07+00:00"
         },
         {
             "name": "gettext/languages",
@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "76ffb1acab9cb90eedc161e72521487100401a89"
+                "reference": "836e3240bb0190923ddd65517f9872d1bc8d3969"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/76ffb1acab9cb90eedc161e72521487100401a89",
-                "reference": "76ffb1acab9cb90eedc161e72521487100401a89",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/836e3240bb0190923ddd65517f9872d1bc8d3969",
+                "reference": "836e3240bb0190923ddd65517f9872d1bc8d3969",
                 "shasum": ""
             },
             "require": {
@@ -323,10 +323,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.14",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.15",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2024-05-17T15:20:10+00:00"
+            "time": "2024-05-22T20:23:59+00:00"
         },
         {
             "name": "illuminate/container",

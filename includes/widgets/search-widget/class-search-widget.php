@@ -33,6 +33,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function __construct() {
 
 		$this->widget_id          = 'search_bar';
+
 		$this->widget_description = esc_html__( 'Display a search form for users to search a View\'s entries.', 'gk-gravityview' );
 		$this->widget_subtitle    = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
 
@@ -219,6 +220,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'address'    => array( 'input_text' ),
 			'number'     => array( 'input_text', 'number_range' ),
 			'date'       => array( 'date', 'date_range' ),
+			'entry_date' => array( 'date_range' ),
 			'boolean'    => array( 'single_checkbox' ),
 			'select'     => array( 'select', 'radio', 'link' ),
 			'multi'      => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
@@ -387,7 +389,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			),
 			'entry_date' => array(
 				'text' => esc_html__( 'Entry Date', 'gk-gravityview' ),
-				'type' => 'date',
+				'type' => 'entry_date',
 			),
 			'entry_id'   => array(
 				'text' => esc_html__( 'Entry ID', 'gk-gravityview' ),
@@ -400,6 +402,20 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'is_starred' => array(
 				'text' => esc_html__( 'Is Starred', 'gk-gravityview' ),
 				'type' => 'boolean',
+			),
+			'is_read'    => array(
+				'text'    => esc_html__( 'Is Read', 'gk-gravityview' ),
+				'type'    => 'select',
+				'choices' => array(
+					array(
+						'text'  => __( 'Read', 'gk-gravityview' ),
+						'value' => '1',
+					),
+					array(
+						'text'  => __( 'Unread', 'gk-gravityview' ),
+						'value' => '0',
+					),
+				),
 			),
 		);
 
@@ -1089,7 +1105,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						$left  = new GF_Query_Column( $left->field_id, $left->source, $alias );
 					}
 
-					if ( $this->is_product_field( $filter ) ) {
+					if ( $this->is_product_field( $filter ) && ( $filter['is_numeric'] ?? false ) ) {
 						$original_left = clone $left;
 						$column        = $left instanceof GF_Query_Call ? $left->columns[0] ?? null : $left;
 						$column_name   = sprintf( '`%s`.`%s`', $column->alias, $column->is_entry_column() ? $column->field_id : 'meta_value' );
@@ -1489,17 +1505,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 						if ( empty( $date ) ) {
 							continue;
 						}
-						$operator = 'start' === $k ? '>=' : '<=';
 
-						/**
-						 * @hack
-						 * @since 1.16.3
-						 * Safeguard until GF implements '<=' operator
-						 */
-						if ( ! GFFormsModel::is_valid_operator( $operator ) && '<=' === $operator ) {
-							$operator = '<';
-							$date     = date( 'Y-m-d', strtotime( self::get_formatted_date( $date, 'Y-m-d', $date_format ) . ' +1 day' ) );
-						}
+						$operator = 'start' === $k ? '>=' : '<=';
 
 						$filter[] = array(
 							'key'      => $field_id,
@@ -1700,6 +1707,21 @@ class GravityView_Widget_Search extends \GV\Widget {
 					$updated_field['key']     = 'is_approved';
 					$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_approved' );
 					$updated_field['choices'] = self::get_is_approved_choices();
+					break;
+
+				case 'is_read':
+					$updated_field['key']     = 'is_read';
+					$updated_field['value']   = $this->rgget_or_rgpost( 'filter_is_read' );
+					$updated_field['choices'] = array(
+						array(
+							'text'  => __( 'Unread', 'gk-gravityview' ),
+							'value' => 0,
+						),
+						array(
+							'text'  => __( 'Read', 'gk-gravityview' ),
+							'value' => 1,
+						),
+					);
 					break;
 			}
 
@@ -1915,6 +1937,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 		if ( 'created_by' === $field['field'] ) {
 			$filter['choices'] = self::get_created_by_choices( ( isset( $context->view ) ? $context->view : null ) );
 			$filter['type']    = 'created_by';
+		}
+
+		if( 'payment_status' === $field['field'] ) {
+			$filter['type']    = 'entry_meta';
+			$filter['choices'] = GFCommon::get_entry_payment_statuses_as_choices();
 		}
 
 		if ( 'payment_status' === $field['field'] ) {

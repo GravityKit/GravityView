@@ -1830,7 +1830,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 				'form_id' => $form['id'],
 				'status'  => 'active',
 				'9'       => $number,
-				'26'      => 'product name|' . $currency_symbol . $number,
+				'26'      => 'product name ' . $number . '|' . $currency_symbol . $number,
 			) );
 		}
 
@@ -1876,6 +1876,14 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = [ 'filter_26' => [ 'min' => -20, 'max' => 7 ], 'mode' => 'all' ];
 		$this->assertEquals( 3, $view->get_entries()->count() );
+
+		// Make sure searching on text still works.
+		$_GET = ['filter_26' => 'product'];
+		$this->assertEquals( 5, $view->get_entries()->count() );
+
+		$_GET = ['filter_26' => 'name 7'];
+		$this->assertEquals( 1, $view->get_entries()->count() );
+
 
 		$_GET = array();
 	}
