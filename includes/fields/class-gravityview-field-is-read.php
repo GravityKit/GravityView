@@ -146,22 +146,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 *
 	 * @return string The string to use for "Read".
 	 */
-	protected function get_is_read_label( $field, $view ) {
-
-
-		return $label;
-	}
-
-	/**
-	 * Returns the field's "Read" label.
-	 *
-	 * @since 2.24
-	 *
-	 * @param Field $field The field.
-	 * @param View  $view  The View.
-	 *
-	 * @return string The string to use for "Read".
-	 */
 	protected function get_read_label( $field, $view ) {
 		$label = Utils::get( $field, 'is_read_label', esc_html__( 'Read', 'gk-gravityview' ) );
 
@@ -173,8 +157,8 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		 * @since  2.24
 		 *
 		 * @param string $label The label.
-		 * @param Field  $field The field.
-		 * @param View   $view  The View.
+		 * @param Field $field The field.
+		 * @param View $view The View.
 		 */
 		$label = apply_filters( 'gk/gravityview/field/is-read/read-label', $label, $field, $view );
 
@@ -201,7 +185,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	}
 
 	/**
-	 * Adds JS to the bottom of the View if there is a read field and user has `gravityview_edit_entries` capability.
+	 * Adds JS to the bottom of the Single Entry screen if the user has `gravityview_edit_entries` capability.
 	 *
 	 * @since 2.0
 	 *
@@ -235,7 +219,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		}
 
 		$field      = $this->get_field_from_context( $context );
-		$read_label = $this->get_is_read_label( $field, $context->view );
+		$read_label = $this->get_read_label( $field, $context->view );
 		?>
 		<script>
 			jQuery( function ( $ ) {
