@@ -2,31 +2,51 @@
 @import "variables";
 
 span.gravityview-upgrade-pill {
-	display: inline-flex;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	border-radius: 6px;
-	background-color: #1D2327;
+	background-color: #FFF;
 	padding: 6px 8px;
-	color: #FFF;
+	color: #1D2327;
 	text-transform: uppercase;
 	font-size: 10px;
 	font-weight: 700;
-	margin-left: 8px;
 	line-height: 1;
+	position: absolute;
+	top: 14px;
+	right: 13px;
+
+	&:dir(rtl) {
+		right: auto;
+		left: 13px;
+	}
 
 	svg {
 		width: 10px;
 		height: 10px;
-		margin-right: 6px;
 	}
 
-	&:dir(rtl) {
-		margin-left: 0;
-		margin-right: 8px;
-		svg {
-			margin-left: 6px;
-			margin-right: 0;
+	span {
+		width: 0;
+		overflow: hidden;
+	}
+}
+
+a.gravityview-upgrade {
+	&:hover {
+		span.gravityview-upgrade-pill {
+			span {
+				width: auto;
+				margin-left: 6px;
+			}
+
+			&:dir(rtl) {
+				span {
+					margin-left: 0;
+					margin-right: 6px;
+				}
+			}
 		}
 	}
 }

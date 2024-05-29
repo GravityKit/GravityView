@@ -41,9 +41,10 @@ SVG;
 	 * @return string The navigation label for the metabox.
 	 */
 	public function maybe_add_upgrade_pill( $title, GravityView_Metabox_Tab $metabox ): string {
-		if ( strpos( $metabox->extra_nav_class, 'gravityview-upgrade' ) === false ) {
+		if (
+			false === strpos( $metabox->extra_nav_class, 'gravityview-upgrade' )
+		) {
 			return $title;
-
 		}
 
 		return sprintf(
