@@ -172,7 +172,7 @@ HTML;
 		$page_query_params = array_filter(
 			$_GET,
 			static function ( $value, string $key ): bool {
-				return 'mode' === $key || preg_match( '/^filter_?/i', $key );
+				return 'mode' === $key || preg_match( '/^(gv|filter)_?/i', $key );
 			},
 			ARRAY_FILTER_USE_BOTH
 		);

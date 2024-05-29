@@ -21,15 +21,35 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.24 on May 28, 2024 =
+
+This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. [Read the announcement](https://www.gravitykit.com/announcing-gravityview-2-24/) for more details.
+
+#### 🚀 Added
+* Ability to select different View types for Multiple Entries and Single Entry layouts. [Learn all about the new View type switcher!](https://www.gravitykit.com/announcing-gravityview-2-24/)
+* "Read Status" field to display whether an entry has been read or not.
+  - Customize the labels for "Read" and "Unread" statuses.
+  - Sort a View by "Read Status".
+* Entries are now marked as "Read" when users who have the ability to edit entries visit an entry in the front-end.
+
+#### 🐛 Fixed
+* File Upload field values not rendering in the View if filenames have non-Latin characters.
+* Product search now returns correct results when using all search input types in the search bar.
+* View's Export Link widget would not respect date range search filters.
+* Removed the unsupported "date" input type for the Date Entry field under the Search Bar widget settings.
+* Merge tags in GravityView notifications are now properly processed for fields dynamically populated by Gravity Wiz's Populate Anything add-on.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/field/is-read/print-script` filter to modify whether to print the script in the frontend that marks an entry as "Read".
+* Added `gk/gravityview/field/is-read/label` filter to change the "Is Read" field's "Read" and "Unread" labels.
+* Added `gk/gravityview/entry-approval/choices` filter to modify strings used for entry approval ("Approved", "Unapproved", "Disapproved", etc.).
+
 = 2.23 on May 17, 2024 =
 
 This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.
 
 #### 🚀 Added
 * Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.
-
-#### ✨ Improved
-* The "Add All Fields" button in the View editor now adds fields in their correct form order.
 
 #### 🐛 Fixed
 * Export link View widget would cause a fatal error during multi-word searches.
