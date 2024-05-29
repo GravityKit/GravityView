@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.24 on May 28, 2024 =
 
-This release introduces the ability to use different view types for the Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. [Read the announcement](https://www.gravitykit.com/announcing-gravityview-2-24/) for more details.
+This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. [Read the announcement](https://www.gravitykit.com/announcing-gravityview-2-24/) for more details.
 
 #### 🚀 Added
 * Ability to select different View types for Multiple Entries and Single Entry layouts. [Learn all about the new View type switcher!](https://www.gravitykit.com/announcing-gravityview-2-24/)

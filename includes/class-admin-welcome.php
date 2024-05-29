@@ -297,12 +297,12 @@ class GravityView_Welcome {
 				?>
 				<h3>2.24 on May 28, 2024</h3>
 
-				<p>This release introduces the ability to use different view types for the Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. <a href="https://www.gravitykit.com/announcing-gravityview-2-24/">Read the announcement</a> for more details.</p>
+				<p>This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. <a href="https://www.gravitykit.com/announcing-gravityview-2-24/">Read the announcement</a> for more details.</p>
 
 				<h4>🚀 Added</h4>
 
 				<ul>
-					<li>Ability to select different View types for the Multiple Entries and Single Entry layouts.</li>
+					<li>Ability to select different View types for Multiple Entries and Single Entry layouts. <a href="https://www.gravitykit.com/announcing-gravityview-2-24">Learn all about the new View type switcher!</a></li>
 					<li>"Read Status" field to display whether an entry has been read or not.</li>
 					<ul>
 						<li>Customize the labels for "Read" and "Unread" statuses.</li>
@@ -316,7 +316,7 @@ class GravityView_Welcome {
 					<li>File Upload field values not rendering in the View if filenames have non-Latin characters.</li>
 					<li>Product search now returns correct results when using all search input types in the search bar.</li>
 					<li>View's Export Link widget would not respect date range search filters.</li>
-					<li>Removed the unsupported "date" input type for the Date Entry field under the search bar's settings.</li>
+					<li>Removed the unsupported "date" input type for the Date Entry field under the Search Bar widget settings.</li>
 					<li>Merge tags in GravityView notifications are now properly processed for fields dynamically populated by Gravity Wiz's Populate Anything add-on.</li>
 				</ul>
 
