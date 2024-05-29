@@ -205,17 +205,17 @@ class GravityView_Admin_Views {
 				<optgroup label="<?php esc_html_e( 'Layouts', 'gk-gravityview' ); ?>">
 				<?php
 				foreach ( $layouts as $layout_id => $layout ) {
-					if ( in_array( $layout['type'], array( 'preset', 'internal' ), true ) ) {
+					if ( in_array( $layout['type'] ?? '', array( 'preset', 'internal' ), true ) ) {
 						continue;
 					}
 					?>
-					<option value="<?php echo esc_attr( $layout_id ); ?>" <?php selected( $layout_id, $current_layout, true ); ?>><?php echo esc_html( $layout['label'] ); ?></option>
+					<option value="<?php echo esc_attr( $layout_id ); ?>" <?php selected( $layout_id, $current_layout, true ); ?>><?php echo esc_html( $layout['label'] ?? '' ); ?></option>
 				<?php } ?>
 				</optgroup>
 				<optgroup label="<?php esc_html_e( 'Form Presets', 'gk-gravityview' ); ?>">
 				<?php
 				foreach ( $layouts as $layout_id => $layout ) {
-					if ( ! in_array( $layout['type'], array( 'preset' ), true ) ) {
+					if ( ! in_array( $layout['type'] ?? '', array( 'preset' ), true ) ) {
 						continue;
 					}
 					?>
