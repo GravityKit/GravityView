@@ -2,22 +2,23 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.23\n"
+"Project-Id-Version: GravityView 2.24\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-05-27T17:38:36+00:00\n"
+"POT-Creation-Date: 2024-05-29T01:42:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
+#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
-#: includes/class-gravityview-admin-bar.php:53
+#: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:78
 msgid "GravityView"
@@ -25,14 +26,17 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
+#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
+#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:402
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:163
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:164
@@ -188,7 +192,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:214
 #: includes/class-admin-views.php:1427
 #: includes/class-frontend-views.php:685
-#: includes/class-gravityview-admin-bar.php:104
+#: includes/class-gravityview-admin-bar.php:111
 #: includes/class-gravityview-entry-link-shortcode.php:246
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1131
 #: includes/extensions/edit-entry/fields/edit_link.php:14
@@ -257,6 +261,15 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "[url]Enabling caching[/url] improves performance by reducing the number of queries during page loads. When enabled, you can also specify cache duration for entries."
 msgstr ""
 
+#: future/includes/class-gv-settings-plugin.php:292
+#: future/includes/class-gv-settings-plugin.php:353
+#: includes/class-gravityview-entry-approval-merge-tags.php:92
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:123
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:81
+#: vendor_prefixed/trustedlogin/client/src/Form.php:1160
+msgid "(This link opens in a new window.)"
+msgstr ""
+
 #: future/includes/class-gv-settings-plugin.php:308
 msgid "The cache duration must be at least 1 second."
 msgstr ""
@@ -306,14 +319,6 @@ msgstr ""
 #: future/includes/class-gv-settings-plugin.php:349
 #: includes/class-gravityview-entry-approval-merge-tags.php:88
 msgid "If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry."
-msgstr ""
-
-#: future/includes/class-gv-settings-plugin.php:353
-#: includes/class-gravityview-entry-approval-merge-tags.php:92
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:123
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:81
-#: vendor_prefixed/trustedlogin/client/src/Form.php:1160
-msgid "(This link opens in a new window.)"
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:432
@@ -956,7 +961,7 @@ msgid "Add New View"
 msgstr ""
 
 #: future/includes/class-gv-view.php:170
-#: includes/class-gravityview-admin-bar.php:141
+#: includes/class-gravityview-admin-bar.php:156
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/entry.js:1
@@ -1149,12 +1154,12 @@ msgid "Remove %s"
 msgstr ""
 
 #: includes/admin/class-gravityview-admin-view-item.php:164
-#: includes/admin/class-gravityview-admin-view-item.php:280
+#: includes/admin/class-gravityview-admin-view-item.php:286
 msgid "This field links to the Single Entry"
 msgstr ""
 
 #: includes/admin/class-gravityview-admin-view-item.php:165
-#: includes/admin/class-gravityview-admin-view-item.php:285
+#: includes/admin/class-gravityview-admin-view-item.php:291
 msgid "This field has modified visibility"
 msgstr ""
 
@@ -1172,16 +1177,20 @@ msgstr ""
 msgid "Add Field"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:220
+#: includes/admin/class-gravityview-admin-view-item.php:222
+msgid "Widget: %s"
+msgstr ""
+
+#: includes/admin/class-gravityview-admin-view-item.php:224
 #: includes/fields/class-gravityview-field-gravatar.php:172
 msgid "Field: %s"
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:226
+#: includes/admin/class-gravityview-admin-view-item.php:232
 msgid "The field connected to \"%s\" was deleted from the form. The associated entry data no longer exists."
 msgstr ""
 
-#: includes/admin/class-gravityview-admin-view-item.php:237
+#: includes/admin/class-gravityview-admin-view-item.php:243
 msgid "Duplicate this field"
 msgstr ""
 
@@ -1490,33 +1499,33 @@ msgstr ""
 msgid "Activate & Select"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:95
-#: includes/admin/metaboxes/views/select-template.php:108
+#: includes/admin/metaboxes/views/select-template.php:99
+#: includes/admin/metaboxes/views/select-template.php:112
 msgid "This layout is included in the %s license."
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:101
+#: includes/admin/metaboxes/views/select-template.php:105
 #: includes/admin/metaboxes/views/view-configuration.php:110
 #: includes/admin/metaboxes/views/view-configuration.php:181
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:117
 msgid "Buy Now"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:104
+#: includes/admin/metaboxes/views/select-template.php:108
 msgid "View a live demo of this layout"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:104
+#: includes/admin/metaboxes/views/select-template.php:108
 msgid "Try a demo"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:118
+#: includes/admin/metaboxes/views/select-template.php:122
 #: includes/fields/class-gravityview-field-select.php:27
 #: includes/widgets/search-widget/class-search-widget.php:261
 msgid "Select"
 msgstr ""
 
-#: includes/admin/metaboxes/views/select-template.php:120
+#: includes/admin/metaboxes/views/select-template.php:124
 msgid "View a live demo of this preset"
 msgstr ""
 
@@ -1794,7 +1803,7 @@ msgid "The connected form can not be found; it may no longer exist."
 msgstr ""
 
 #: includes/class-admin-views.php:554
-#: includes/class-gravityview-admin-bar.php:142
+#: includes/class-gravityview-admin-bar.php:157
 msgid "Edit Form"
 msgstr ""
 
@@ -1958,23 +1967,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:508
+#: includes/class-admin-welcome.php:412
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:560
+#: includes/class-admin-welcome.php:464
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:598
+#: includes/class-admin-welcome.php:502
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:630
+#: includes/class-admin-welcome.php:534
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:631
+#: includes/class-admin-welcome.php:535
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2166,16 +2175,16 @@ msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
 
-#: includes/class-gravityview-admin-bar.php:106
+#: includes/class-gravityview-admin-bar.php:113
 msgid "Edit Entry %s"
 msgstr ""
 
-#: includes/class-gravityview-admin-bar.php:145
+#: includes/class-gravityview-admin-bar.php:160
 msgctxt "Edit View with the ID of %d"
 msgid "Edit View #%d"
 msgstr ""
 
-#: includes/class-gravityview-admin-bar.php:146
+#: includes/class-gravityview-admin-bar.php:161
 msgctxt "Edit Form with the ID of %d"
 msgid "Edit Form #%d"
 msgstr ""
@@ -3610,52 +3619,51 @@ msgstr ""
 msgid "Fulfilled"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:44
+#: includes/fields/class-gravityview-field-is-read.php:46
 msgid "Read Status"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:45
+#: includes/fields/class-gravityview-field-is-read.php:47
 #: includes/widgets/search-widget/class-search-widget.php:407
 msgid "Is Read"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:46
+#: includes/fields/class-gravityview-field-is-read.php:48
 msgid "Display whether the entry has been read."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:85
+#: includes/fields/class-gravityview-field-is-read.php:87
 msgid "Read Label"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:86
+#: includes/fields/class-gravityview-field-is-read.php:88
 msgid "If the entry has been read, display this value"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:87
-#: includes/fields/class-gravityview-field-is-read.php:130
+#: includes/fields/class-gravityview-field-is-read.php:89
+#: includes/fields/class-gravityview-field-is-read.php:119
 #: includes/widgets/search-widget/class-search-widget.php:411
 #: includes/widgets/search-widget/class-search-widget.php:1721
 msgid "Read"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:92
+#: includes/fields/class-gravityview-field-is-read.php:94
 msgid "Unread Label"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:93
+#: includes/fields/class-gravityview-field-is-read.php:95
 msgid "If the entry has not been read, display this value"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:94
-#: includes/fields/class-gravityview-field-is-read.php:113
+#: includes/fields/class-gravityview-field-is-read.php:96
+#: includes/fields/class-gravityview-field-is-read.php:117
 #: includes/widgets/search-widget/class-search-widget.php:415
 #: includes/widgets/search-widget/class-search-widget.php:1717
 msgid "Unread"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-read.php:228
-#: includes/fields/class-gravityview-field-is-starred.php:146
-msgid "There was an error updating the entry."
+#: includes/fields/class-gravityview-field-is-read.php:218
+msgid "There was an error marking this entry as read."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-is-starred.php:29
@@ -3669,6 +3677,10 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-is-starred.php:31
 msgid "Display the entry's \"star\" status."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-is-starred.php:146
+msgid "There was an error updating the entry."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-list.php:41
@@ -7076,4 +7088,84 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""
