@@ -27,7 +27,9 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 	 * @param GravityView_Metabox_Tab $metabox The metabox.
 	 */
 	public function render_metabox_placeholder( GravityView_Metabox_Tab $metabox ): void {
-		if ( 'gravityview_sort_filter' !== $metabox->id ) {
+		$disabled = apply_filters( 'gk/gravity-view/feature/upgrade/disabled', false );
+
+		if ( $disabled || 'gravityview_sort_filter' !== $metabox->id ) {
 			return;
 		}
 

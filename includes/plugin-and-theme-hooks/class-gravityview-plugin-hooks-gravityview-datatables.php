@@ -82,6 +82,11 @@ ICON;
 	 * @since $ver$
 	 */
 	public function register_metabox_placeholder(): void {
+		$disabled = apply_filters( 'gk/gravity-view/feature/upgrade/disabled', false );
+		if ( $disabled ) {
+			return;
+		}
+
 		$metabox = new GravityView_Metabox_Tab(
 			'datatables_settings',
 			__( 'DataTables', 'gv-datatables', 'gk-gravityview' ),

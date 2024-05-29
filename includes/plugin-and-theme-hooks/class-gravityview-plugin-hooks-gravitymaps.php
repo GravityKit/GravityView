@@ -33,7 +33,9 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 
 		/**
 		 * @since 2.16
+		 *
 		 * @param array $notices
+		 *
 		 * @return array $notices, with a new notice about Maps compatibility added.
 		 */
 		add_filter(
@@ -133,6 +135,11 @@ ICON;
 	 * @since $ver$
 	 */
 	public function register_metabox_placeholder(): void {
+		$disabled = apply_filters( 'gk/gravity-view/feature/upgrade/disabled', false );
+		if ( $disabled ) {
+			return;
+		}
+
 		$metabox = new GravityView_Metabox_Tab(
 			'maps_settings',
 			__( 'Maps', 'gk-gravitymaps', 'gk-gravityview' ),
@@ -142,6 +149,7 @@ ICON;
 				$this->get_placeholder()->render();
 			}
 		);
+
 		$metabox->extra_nav_class = 'gravityview-upgrade';
 
 		GravityView_Metabox_Tabs::add( $metabox );
