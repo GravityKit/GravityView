@@ -8,7 +8,7 @@ span.gravityview-upgrade-pill {
 	border-radius: 6px;
 	background-color: #FFF;
 	padding: 6px 8px;
-	color: #a2aab2;
+	color: $color-aaa;
 	text-transform: uppercase;
 	font-size: 10px;
 	font-weight: 700;
@@ -36,7 +36,7 @@ span.gravityview-upgrade-pill {
 a.gravityview-upgrade {
 	&:hover {
 		span.gravityview-upgrade-pill {
-			color: #1D2327;
+			color: $color-111 ;
 
 			span {
 				width: auto;
@@ -108,7 +108,7 @@ a.gravityview-upgrade {
 			display: block;
 			font-weight: 500;
 			vertical-align: middle;
-			color: #1D2327;
+			color: $color-111;
 			font-size: 16px;
 			margin: 0;
 			padding: 0;
