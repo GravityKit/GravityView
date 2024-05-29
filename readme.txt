@@ -42,6 +42,7 @@ This release introduces the ability to use different view types for Multiple Ent
 #### 💻 Developer Updates
 * Added `gk/gravityview/field/is-read/print-script` filter to modify whether to print the script in the frontend that marks an entry as "Read".
 * Added `gk/gravityview/field/is-read/label` filter to change the "Is Read" field's "Read" and "Unread" labels.
+* Added `gk/gravityview/entry-approval/choices` filter to modify strings used for entry approval ("Approved", "Unapproved", "Disapproved", etc.).
 
 = 2.23 on May 17, 2024 =
 
