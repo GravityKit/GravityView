@@ -84,6 +84,29 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		/** @see Field::get_value_filters */
 		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 5 );
 		add_action( 'gravityview/template/before', [ $this, 'maybe_mark_entry_as_read' ] );
+		add_action( 'gravityview_default_args', [ $this, 'modify_single_entry_view_settings' ] );
+	}
+
+	/**
+	 * Adds the "Mark Entry As Read" setting to the View settings.
+	 *
+	 * @since 2.24.1
+	 *
+	 * @param array $settings The settings.
+	 *
+	 * @return array The modified settings.
+	 */
+	public function modify_single_entry_view_settings( $settings ) {
+		$settings['mark_entry_as_read'] = [
+			'label'      => esc_html__( 'Mark Entry As Read', 'gk-gravityview' ),
+			'desc'       => esc_html__( 'This will mark the entry as "read" when it is displayed in the Single Entry layout.', 'gk-gravityview' ),
+			'group'      => 'default',
+			'type'       => 'checkbox',
+			'full_width' => true,
+			'value'      => true,
+		];
+
+		return $settings;
 	}
 
 	/**
@@ -99,9 +122,10 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		}
 
 		$entry = gravityview()->request->is_entry();
+		$view  = gravityview()->request->is_view();
 		$entry = $entry instanceof GF_Entry ? $entry->as_entry() : null;
 
-		if ( ! $entry || ! empty( $entry['is_read'] ) ) {
+		if ( ! $view || ! $entry || ! empty( $entry['is_read'] ) || true !== (bool) $view->settings->get( 'mark_entry_as_read' ) ) {
 			return;
 		}
 
