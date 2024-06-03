@@ -8,6 +8,7 @@
 
 use GV\Entry;
 use GV\Field;
+use GV\GF_Entry;
 use GV\Source;
 use GV\Template_Context;
 use GV\Utils;
@@ -36,6 +37,15 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	var $entry_meta_is_default_column = true;
 
 	var $is_sortable = true;
+
+	/**
+	 * Whether the entry has been marked as read during the request.
+	 *
+	 * @since 2.24.1
+	 *
+	 * @var bool
+	 */
+	private $marked_read = false;
 
 	/**
 	 * Class constructor.
@@ -73,6 +83,35 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	private function add_hooks() {
 		/** @see Field::get_value_filters */
 		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 5 );
+		add_action( 'gravityview/template/before', [ $this, 'maybe_mark_entry_as_read' ] );
+	}
+
+	/**
+	 * Marks the entry as read if the user has `gravityview_edit_entries` capability.
+	 *
+	 * @since 2.24
+	 *
+	 * @return void
+	 */
+	public function maybe_mark_entry_as_read() {
+		if ( ! GravityView_Roles_Capabilities::has_cap( 'gravityview_edit_entries' ) ) {
+			return;
+		}
+
+		$entry = gravityview()->request->is_entry();
+		$entry = $entry instanceof GF_Entry ? $entry->as_entry() : null;
+
+		if ( ! $entry || ! empty( $entry['is_read'] ) ) {
+			return;
+		}
+
+		$entry['is_read'] = 1;
+
+		GFAPI::update_entry( $entry );
+
+		do_action( 'gravityview_clear_entry_cache', $entry['id'] );
+
+		$this->marked_read = true;
 	}
 
 	/**
@@ -112,6 +151,8 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return string Value of the field
 	 */
 	public function get_value( $value, $field, $view, $source, $entry ) {
+		$value = empty( $value ) && $this->marked_read ? '1' : $value;
+
 		if ( empty( $value ) ) {
 			$label = Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
 		} else {
