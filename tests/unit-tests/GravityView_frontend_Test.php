@@ -270,17 +270,6 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 
 		$renderer = new \GV\Entry_Renderer();
 
-		// Entry is not marked as read - disabled in View settings.
-		wp_set_current_user( $this->factory->user->create( [ 'role' => 'contributor' ] ) );
-
-		$view->settings->set( 'mark_entry_as_read', false );
-		gravityview()->request->returns['is_view']  = $view;
-
-		$renderer->render( $entry, $view );
-		$entry  = \GV\GF_Entry::by_id( $entry['id'] );
-
-		$this->assertEquals( '0', $entry->as_entry()['is_read'] );
-
 		// Entry is not marked as read - user does not have "gravityview_edit_entries" capability.
 		wp_set_current_user( $this->factory->user->create( [ 'role' => 'contributor' ] ) );
 
@@ -289,9 +278,6 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 
 		// Entry is marked as read.
 		wp_set_current_user( $this->factory->user->create( [ 'role' => 'administrator' ] ) );
-
-		$view->settings->set( 'mark_entry_as_read', true );
-		gravityview()->request->returns['is_view']  = $view;
 
 		$output = $renderer->render( $entry, $view );
 		$entry  = \GV\GF_Entry::by_id( $entry['id'] );
@@ -311,8 +297,25 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 		$output = $renderer->render( $entry, $view );
 		$this->assertStringContainsString( $filtered_read_label_filter, $output );
 
-		wp_set_current_user( 0 );
 		remove_all_filters( 'gk/gravityview/field/is-read/label' );
+
+		// Entry is not marked as read - disabled in View settings.
+		$entry = $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+		] );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+		$view->settings->set( 'mark_entry_as_read', false );
+
+		gravityview()->request->returns['is_view']  = $view;
+		gravityview()->request->returns['is_entry']  = $entry;
+
+		$renderer->render( $entry, $view );
+		$entry  = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->assertEquals( '0', $entry->as_entry()['is_read'] );
+
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 		remove_all_filters( 'gravityview_use_cache' );
 	}

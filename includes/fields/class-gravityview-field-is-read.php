@@ -126,6 +126,8 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		$entry = $entry instanceof GF_Entry ? $entry->as_entry() : null;
 
 		if ( ! $view || ! $entry || ! empty( $entry['is_read'] ) || true !== (bool) $view->settings->get( 'mark_entry_as_read' ) ) {
+			$this->marked_read = false;
+
 			return;
 		}
 
