@@ -227,4 +227,93 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 		$_GET = array();
 	}
 
+	/**
+	 * @covers GravityView_Field_Is_Read::maybe_mark_entry_as_read()
+	 * @covers GravityView_Field_Is_Read::get_value()
+	 */
+	public function test_marking_single_entry_as_read() {
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		$custom_read_label = 'Custom Read Label';
+
+		$post = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'settings'    => [
+				'show_only_approved' => false,
+			],
+			'fields'      => [
+				'single_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id'            => 'is_read',
+						'is_read_label' => $custom_read_label,
+					],
+				],
+			],
+		] );
+
+		$view = \GV\View::from_post( $post );
+
+		$entry = $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+		] );
+
+		$entry = \GV\GF_Entry::by_id( $entry['id'] );
+
+		gravityview()->request                      = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view']  = $view;
+		gravityview()->request->returns['is_entry'] = $entry;
+
+		$renderer = new \GV\Entry_Renderer();
+
+		// Entry is not marked as read - disabled in View settings.
+		wp_set_current_user( $this->factory->user->create( [ 'role' => 'contributor' ] ) );
+
+		$view->settings->set( 'mark_entry_as_read', false );
+		gravityview()->request->returns['is_view']  = $view;
+
+		$renderer->render( $entry, $view );
+		$entry  = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->assertEquals( '0', $entry->as_entry()['is_read'] );
+
+		// Entry is not marked as read - user does not have "gravityview_edit_entries" capability.
+		wp_set_current_user( $this->factory->user->create( [ 'role' => 'contributor' ] ) );
+
+		$output = $renderer->render( $entry, $view );
+		$this->assertStringNotContainsString( $custom_read_label, $output );
+
+		// Entry is marked as read.
+		wp_set_current_user( $this->factory->user->create( [ 'role' => 'administrator' ] ) );
+
+		$view->settings->set( 'mark_entry_as_read', true );
+		gravityview()->request->returns['is_view']  = $view;
+
+		$output = $renderer->render( $entry, $view );
+		$entry  = \GV\GF_Entry::by_id( $entry['id'] );
+
+		$this->assertStringContainsString( $custom_read_label, $output );
+		$this->assertEquals( '1', $entry->as_entry()['is_read'] );
+
+		// Custom read label can be set via filter.
+		$filtered_read_label_filter = 'Filtered - Custom Read Label';
+
+		add_filter( 'gk/gravityview/field/is-read/label', function ( $label ) use ( $custom_read_label, $filtered_read_label_filter ) {
+			$this->assertEquals( $label, $custom_read_label );
+
+			return $filtered_read_label_filter;
+		}, 10, 2 );
+
+		$output = $renderer->render( $entry, $view );
+		$this->assertStringContainsString( $filtered_read_label_filter, $output );
+
+		wp_set_current_user( 0 );
+		remove_all_filters( 'gk/gravityview/field/is-read/label' );
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
+	}
 }
