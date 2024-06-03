@@ -21,6 +21,17 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🚀 Added
+* New "View" setting under the Single Entry tab to mark an entry as "Read".
+
+#### ✨ Improved
+* Marking an entry as "Read" is now handled in the backend instead of the frontend, enhancing performance.
+
+#### 💻 Developer Updates
+* Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the new "mark as read" functionality.
+
 = 2.24 on May 28, 2024 =
 
 This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. [Read the announcement](https://www.gravitykit.com/announcing-gravityview-2-24/) for more details.
