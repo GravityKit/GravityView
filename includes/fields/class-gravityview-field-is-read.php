@@ -73,7 +73,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	private function add_hooks() {
 		/** @see Field::get_value_filters */
 		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 5 );
-		add_action( 'gravityview/template/after', [ $this, 'print_script' ], 10, 1 );
 	}
 
 	/**
@@ -133,93 +132,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		 * @param Entry  $entry The entry for this context if applicable.
 		 */
 		return apply_filters( 'gk/gravityview/field/is-read/label', $label, $value, $field, $view, $entry );
-	}
-
-	/**
-	 * Returns the first "Read Status" field from the context.
-	 *
-	 * @since 2.24
-	 *
-	 * @param Template_Context $context The context.
-	 *
-	 * @return Field|null The field or null if not found.
-	 */
-	protected function get_field_from_context( $context ) {
-		foreach ( $context->fields->all() as $field ) {
-			if ( $this->name === $field->type ) {
-				return $field;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Adds JS to the bottom of the Single Entry screen if the user has `gravityview_edit_entries` capability.
-	 *
-	 * @since 2.0
-	 *
-	 * @param Template_Context $context The template context.
-	 *
-	 * @return void
-	 */
-	public function print_script( $context ) {
-		if ( ! GravityView_Roles_Capabilities::has_cap( 'gravityview_edit_entries' ) ) {
-			return;
-		}
-
-		/**
-		 * Disable the script that marks the entry as read.
-		 *
-		 * @filter `gk/gravityview/field/is-read/print-script`
-		 *
-		 * @since  2.24
-		 *
-		 * @param bool             $print_script Whether the script be printed? Default: true.
-		 * @param Template_Context $context      The template context.
-		 */
-		if ( ! apply_filters( 'gk/gravityview/field/is-read/print-script', true, $context ) ) {
-			return;
-		}
-
-		$entry = gravityview()->request->is_entry();
-
-		if ( ! $entry || ! empty( $entry['is_read'] ) ) {
-			return;
-		}
-
-		$field      = $this->get_field_from_context( $context );
-		$read_label = $this->get_value( '1', $field, $context->view, $context->source, $entry );
-		?>
-		<script>
-			jQuery( function ( $ ) {
-				const entryId = <?php echo (int) $context->entry->ID; ?>;
-				const isReadField = $( '[class*=is_read]' );
-				const isReadFieldLabel = '<?php echo esc_html( $read_label ); ?>';
-
-				$.ajax( {
-					type: 'POST',
-					url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
-					data: {
-						action: 'rg_update_lead_property',
-						rg_update_lead_property: '<?php echo wp_create_nonce( 'rg_update_lead_property' ); ?>',
-						lead_id: entryId,
-						name: 'is_read',
-						value: 1
-					}
-				} ).done( function () {
-						if ( isReadField.parents( 'tbody' ).length > 0 ) {
-							isReadField.find( 'td' ).text( isReadFieldLabel );
-						} else {
-							isReadField.text( isReadFieldLabel );
-						}
-					} )
-					.fail( function () {
-						alert(<?php echo json_encode( __( 'There was an error marking this entry as read.', 'gk-gravityview' ) ); ?>);
-					} );
-			} );
-		</script>
-		<?php
 	}
 }
 
