@@ -24,13 +24,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🚀 Added
-* New "View" setting under the Single Entry tab to mark an entry as "Read".
+* New View setting under the Single Entry tab to mark an entry as "Read".
 
 #### ✨ Improved
 * Marking an entry as "Read" is now handled in the backend instead of the frontend, enhancing performance.
 
 #### 💻 Developer Updates
-* Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the new "mark as read" functionality.
+* Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the improved automating marking of entry as "Read" functionality.
 
 = 2.24 on May 28, 2024 =
 
