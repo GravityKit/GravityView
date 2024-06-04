@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Requires Gravity Forms 2.6 or newer (2.6 was released March 2022)
+* Fixed: Appearance of the Merge Tag picker in fields settings the View editor
+
 = 2.24 on May 28, 2024 =
 
 This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. [Read the announcement](https://www.gravitykit.com/announcing-gravityview-2-24/) for more details.
