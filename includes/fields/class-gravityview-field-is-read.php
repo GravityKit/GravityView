@@ -8,6 +8,8 @@
 
 use GV\Entry;
 use GV\Field;
+use GV\GF_Entry;
+use GV\Multi_Entry;
 use GV\Source;
 use GV\Template_Context;
 use GV\Utils;
@@ -36,6 +38,15 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	var $entry_meta_is_default_column = true;
 
 	var $is_sortable = true;
+
+	/**
+	 * An array of entry IDs that have been marked as read during the request.
+	 *
+	 * @since TBD
+	 *
+	 * @var array
+	 */
+	private $marked_read = [];
 
 	/**
 	 * Class constructor.
@@ -73,7 +84,71 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	private function add_hooks() {
 		/** @see Field::get_value_filters */
 		add_filter( 'gravityview/field/is_read/value', [ $this, 'get_value' ], 10, 5 );
-		add_action( 'gravityview/template/after', [ $this, 'print_script' ], 10, 1 );
+		add_action( 'gravityview/template/before', [ $this, 'maybe_mark_entry_as_read' ] );
+		add_action( 'gravityview_default_args', [ $this, 'modify_single_entry_view_settings' ] );
+	}
+
+	/**
+	 * Adds the "Mark Entry As Read" setting to the View settings.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $settings The settings.
+	 *
+	 * @return array The modified settings.
+	 */
+	public function modify_single_entry_view_settings( $settings ) {
+		$settings['mark_entry_as_read'] = [
+			'label'      => esc_html__( 'Mark Entry As Read', 'gk-gravityview' ),
+			'desc'       => esc_html__( 'This will mark the entry as "read" when it is displayed in the Single Entry layout.', 'gk-gravityview' ),
+			'group'      => 'default',
+			'type'       => 'checkbox',
+			'full_width' => true,
+			'value'      => true,
+		];
+
+		return $settings;
+	}
+
+	/**
+	 * Marks the entry as read if the user has `gravityview_edit_entries` capability and the "Mark Entry As Read" View setting is enabled.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function maybe_mark_entry_as_read() {
+		if ( ! GravityView_Roles_Capabilities::has_cap( 'gravityview_edit_entries' ) ) {
+			return;
+		}
+
+		if ( 'single' !== GravityView_View::getInstance()->getContext() || true !== (bool) GravityView_View::getInstance()->getAtts( 'mark_entry_as_read' ) ) {
+			return;
+		}
+
+		$entry = gravityview()->request->is_entry();
+
+		$entry = $entry instanceof GF_Entry || $entry instanceof Multi_Entry ? $entry->as_entry() : null;
+
+		if ( ! $entry ) {
+			return;
+		}
+
+		$entries = ! empty( $entry['_multi'] ) ? $entry['_multi'] : [ $entry ];
+
+		foreach ( $entries as $entry ) {
+			if ( ! empty( $entry['is_read'] ) ) {
+				continue;
+			}
+
+			$entry['is_read'] = '1';
+
+			GFAPI::update_entry( $entry );
+
+			do_action( 'gravityview_clear_entry_cache', $entry['id'] );
+
+			$this->marked_read[ $entry['id'] ] = true;
+		}
 	}
 
 	/**
@@ -113,6 +188,8 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	 * @return string Value of the field
 	 */
 	public function get_value( $value, $field, $view, $source, $entry ) {
+		$value = empty( $value ) && isset( $this->marked_read[ $entry['id'] ?? '' ] ) ? '1' : $value;
+
 		if ( empty( $value ) ) {
 			$label = Utils::get( $field, 'is_unread_label', esc_html__( 'Unread', 'gk-gravityview' ) );
 		} else {
@@ -133,93 +210,6 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		 * @param Entry  $entry The entry for this context if applicable.
 		 */
 		return apply_filters( 'gk/gravityview/field/is-read/label', $label, $value, $field, $view, $entry );
-	}
-
-	/**
-	 * Returns the first "Read Status" field from the context.
-	 *
-	 * @since 2.24
-	 *
-	 * @param Template_Context $context The context.
-	 *
-	 * @return Field|null The field or null if not found.
-	 */
-	protected function get_field_from_context( $context ) {
-		foreach ( $context->fields->all() as $field ) {
-			if ( $this->name === $field->type ) {
-				return $field;
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Adds JS to the bottom of the Single Entry screen if the user has `gravityview_edit_entries` capability.
-	 *
-	 * @since 2.0
-	 *
-	 * @param Template_Context $context The template context.
-	 *
-	 * @return void
-	 */
-	public function print_script( $context ) {
-		if ( ! GravityView_Roles_Capabilities::has_cap( 'gravityview_edit_entries' ) ) {
-			return;
-		}
-
-		/**
-		 * Disable the script that marks the entry as read.
-		 *
-		 * @filter `gk/gravityview/field/is-read/print-script`
-		 *
-		 * @since  2.24
-		 *
-		 * @param bool             $print_script Whether the script be printed? Default: true.
-		 * @param Template_Context $context      The template context.
-		 */
-		if ( ! apply_filters( 'gk/gravityview/field/is-read/print-script', true, $context ) ) {
-			return;
-		}
-
-		$entry = gravityview()->request->is_entry();
-
-		if ( ! $entry || ! empty( $entry['is_read'] ) ) {
-			return;
-		}
-
-		$field      = $this->get_field_from_context( $context );
-		$read_label = $this->get_value( '1', $field, $context->view, $context->source, $entry );
-		?>
-		<script>
-			jQuery( function ( $ ) {
-				const entryId = <?php echo (int) $context->entry->ID; ?>;
-				const isReadField = $( '[class*=is_read]' );
-				const isReadFieldLabel = '<?php echo esc_html( $read_label ); ?>';
-
-				$.ajax( {
-					type: 'POST',
-					url: "<?php echo esc_js( admin_url( 'admin-ajax.php' ) ); ?>",
-					data: {
-						action: 'rg_update_lead_property',
-						rg_update_lead_property: '<?php echo wp_create_nonce( 'rg_update_lead_property' ); ?>',
-						lead_id: entryId,
-						name: 'is_read',
-						value: 1
-					}
-				} ).done( function () {
-						if ( isReadField.parents( 'tbody' ).length > 0 ) {
-							isReadField.find( 'td' ).text( isReadFieldLabel );
-						} else {
-							isReadField.text( isReadFieldLabel );
-						}
-					} )
-					.fail( function () {
-						alert(<?php echo json_encode( __( 'There was an error marking this entry as read.', 'gk-gravityview' ) ); ?>);
-					} );
-			} );
-		</script>
-		<?php
 	}
 }
 

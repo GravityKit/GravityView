@@ -23,8 +23,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Requires Gravity Forms 2.6 or newer (2.6 was released March 2022)
-* Fixed: Appearance of the Merge Tag picker in fields settings the View editor
+**Note: GravityView now requires Gravity Forms 2.6 or newer (2.6 was released in March 2022)**
+
+#### 🚀 Added
+* New View setting under the Single Entry tab to mark an entry as "Read".
+
+#### ✨ Improved
+* Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.
+
+#### 🐛 Fixed
+* Appearance of the Merge Tag picker in the field settings of the View editor.
+
+#### 💻 Developer Updates
+* Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the improved automating marking of entry as "Read" functionality.
 
 = 2.24 on May 28, 2024 =
 
