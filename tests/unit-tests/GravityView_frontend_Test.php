@@ -319,4 +319,141 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 		remove_all_filters( 'gravityview_use_cache' );
 	}
+
+	public function test_marking_multiple_single_entries_as_read() {
+		add_filter( 'gk/gravityview/view/entries/cache', '__return_false' );
+		add_filter( 'gravityview_use_cache', '__return_false' );
+
+		$form1 = $this->factory->form->import_and_get( 'simple.json' );
+		$form2 = $this->factory->form->import_and_get( 'simple.json' );
+
+		$custom_read_label = 'Custom Read Label';
+		$custom_unread_label = 'Custom Unread Label';
+
+		$post = $this->factory->view->create_and_get( [
+			'form_id'     => $form1['id'],
+			'template_id' => 'table',
+			'settings'    => [
+				'show_only_approved' => false,
+			],
+			'fields'      => [
+				'single_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id'            => 'is_read',
+						'form_id'       => $form1['id'],
+						'is_read_label' => $custom_read_label,
+						'is_unread_label' => $custom_unread_label,
+					],
+					wp_generate_password( 4, false ) => [
+						'id'            => 'is_read',
+						'form_id'       => $form2['id'],
+						'is_read_label' => $custom_read_label,
+						'is_unread_label' => $custom_unread_label,
+					],
+				],
+			],
+			'joins' => array(
+				array( $form1['id'], '2', $form2['id'], '2' ),
+			),
+		] );
+
+		$view = \GV\View::from_post( $post );
+
+		$entry1 = $this->factory->entry->create_and_get( [
+			'form_id' => $form1['id'],
+			'status'  => 'active',
+			'2' => 1,
+		] );
+
+		$entry1 = \GV\GF_Entry::by_id( $entry1['id'] );
+
+		$entry2 = $this->factory->entry->create_and_get( [
+			'form_id' => $form2['id'],
+			'status'  => 'active',
+			'2' => 1,
+		] );
+
+		$entry2 = \GV\GF_Entry::by_id( $entry2['id'] );
+
+		$entries = GV\Multi_Entry::from_entries( [ $entry1, $entry2 ] );
+
+		gravityview()->request                      = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view']  = $view;
+		gravityview()->request->returns['is_entry'] = $entries;
+
+		$renderer = new \GV\Entry_Renderer();
+
+		// Entry is not marked as read - user does not have "gravityview_edit_entries" capability.
+		wp_set_current_user( $this->factory->user->create( [ 'role' => 'contributor' ] ) );
+
+		$output = $renderer->render( $entries, $view );
+
+		preg_match_all('/' . preg_quote($custom_unread_label, '/') . '/', $output, $matches);
+		$this->assertGreaterThanOrEqual(2, count($matches[0]));
+
+		// Entry is marked as read.
+		wp_set_current_user( $this->factory->user->create( [ 'role' => 'administrator' ] ) );
+
+		$output = $renderer->render( $entries, $view );
+		$entry1  = \GV\GF_Entry::by_id( $entry1['id'] );
+		$entry2  = \GV\GF_Entry::by_id( $entry2['id'] );
+
+		preg_match_all('/' . preg_quote($custom_read_label, '/') . '/', $output, $matches);
+		$this->assertGreaterThanOrEqual(2, count($matches[0]));
+
+		$this->assertEquals( '1', $entry1->as_entry()['is_read'] );
+		$this->assertEquals( '1', $entry1->as_entry()['is_read'] );
+
+		// Custom read label can be set via filter.
+		$filtered_read_label_filter = 'Filtered - Custom Read Label';
+
+		add_filter( 'gk/gravityview/field/is-read/label', function ( $label ) use ( $custom_read_label, $filtered_read_label_filter ) {
+			$this->assertEquals( $label, $custom_read_label );
+
+			return $filtered_read_label_filter;
+		}, 10, 2 );
+
+		$output = $renderer->render( $entries, $view );
+		preg_match_all('/' . preg_quote($filtered_read_label_filter, '/') . '/', $output, $matches);
+		$this->assertGreaterThanOrEqual(2, count($matches[0]));
+
+		remove_all_filters( 'gk/gravityview/field/is-read/label' );
+
+		// Entry is not marked as read - disabled in View settings.
+		$entry1 = $this->factory->entry->create_and_get( [
+			'form_id' => $form1['id'],
+			'status'  => 'active',
+		] );
+
+		$entry1 = \GV\GF_Entry::by_id( $entry1['id'] );
+
+		$entry2 = $this->factory->entry->create_and_get( [
+			'form_id' => $form2['id'],
+			'status'  => 'active',
+		] );
+
+		$entry2 = \GV\GF_Entry::by_id( $entry2['id'] );
+
+		$view->settings->set( 'mark_entry_as_read', false );
+
+		$entries = GV\Multi_Entry::from_entries( [ $entry1, $entry2 ] );
+
+		gravityview()->request                      = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view']  = $view;
+		gravityview()->request->returns['is_entry'] = $entries;
+
+		$output = $renderer->render( $entries, $view );
+
+		$entry1  = \GV\GF_Entry::by_id( $entry1['id'] );
+		$entry2  = \GV\GF_Entry::by_id( $entry1['id'] );
+
+		$this->assertEquals( '0', $entry1->as_entry()['is_read'] );
+		$this->assertEquals( '0', $entry2->as_entry()['is_read'] );
+
+		preg_match_all('/' . preg_quote($custom_unread_label, '/') . '/', $output, $matches);
+		$this->assertGreaterThanOrEqual(2, count($matches[0]));
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		remove_all_filters( 'gravityview_use_cache' );
+	}
 }
