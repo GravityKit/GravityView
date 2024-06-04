@@ -32,7 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.
 
 #### 🐛 Fixed
-* Appearance of the Merge Tag picker in fields settings the View editor.
+* Appearance of the Merge Tag picker in the field settings of the View editor.
 
 #### 💻 Developer Updates
 * Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the improved automating marking of entry as "Read" functionality.
