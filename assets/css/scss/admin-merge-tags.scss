@@ -11,90 +11,86 @@
 	top: auto;
 }
 
-.gf-minor-version-2-6 {
+.all-merge-tags {
 
+	&.right {
+		right: 8px;
+		left: auto;
+	}
+
+	&.left {
+		right: auto;
+		left: 8px;
+	}
+
+	text-align: center;
+
+	* {
+		text-align: left;
+	}
+}
+
+table .all-merge-tags {
+	&.right {
+		right: 2px;
+		left: auto;
+	}
+
+	&.left {
+		right: auto;
+		left: 2px;
+	}
+
+	text-align: center;
+
+	* {
+		text-align: left;
+	}
+}
+
+th .all-merge-tags {
+	width: 5%;
+	margin-top: .25rem;
+
+	&.right {
+		right: 0;
+		left: auto;
+	}
+
+	&.left {
+		right: auto;
+		left: 0;
+	}
+}
+
+.rtl {
 	.all-merge-tags {
 
-		&.right {
-			right: 8px;
-			left: auto;
+		text-align: left;
+
+		* {
+			text-align: right;
 		}
 
 		&.left {
-			right: auto;
-			left: 8px;
-		}
-
-		text-align: center;
-
-		* {
-			text-align: left;
-		}
-	}
-
-	table .all-merge-tags {
-		&.right {
 			right: 2px;
 			left: auto;
 		}
 
-		&.left {
+		&.right {
 			right: auto;
 			left: 2px;
-		}
-
-		text-align: center;
-
-		* {
-			text-align: left;
 		}
 	}
 
 	th .all-merge-tags {
-		width: 5%;
-		margin-top: .25rem;
-
-		&.right {
-			right: 0;
-			left: auto;
-		}
-
-		&.left {
-			right: auto;
-			left: 0;
+		left: 0;
+		right: auto;
+		text-align: left;
+		* {
+			text-align: right;
 		}
 	}
-
-	&.rtl {
-		.all-merge-tags {
-
-			text-align: left;
-
-			* {
-				text-align: right;
-			}
-
-			&.left {
-				right: 2px;
-				left: auto;
-			}
-
-			&.right {
-				right: auto;
-				left: 2px;
-			}
-		}
-
-		th .all-merge-tags {
-			left: 0;
-			right: auto;
-			text-align: left;
-			* {
-				text-align: right;
-			}
-		}
-	}
-
 }
 
 // Fix issue with huge padding at the bottom of the merge tag picker.
@@ -102,8 +98,3 @@
 	display: none;
 }
 
-// Version 2.5 supported 2.4 functionality; we used the 2.4 styles in 2.5
-.gf-minor-version-2-5,
-.gf-minor-version-2-4 {
-	@import "gf-merge-tags-legacy";
-}
