@@ -21,9 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+This update improves how entries are automatically marked as "Read" and adds a new View setting to control control this functionality.
 
-**Note: GravityView now requires Gravity Forms 2.6 or newer (2.6 was released in March 2022)**
+= 2.25 on June 5, 2024 =
+
+**Note: GravityView now requires Gravity Forms 2.6 (released in March 2022) or newer.**
 
 #### 🚀 Added
 * New View setting under the Single Entry tab to mark an entry as "Read".
