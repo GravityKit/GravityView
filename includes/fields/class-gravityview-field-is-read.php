@@ -100,11 +100,15 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	public function modify_single_entry_view_settings( $settings ) {
 		$settings['mark_entry_as_read'] = [
 			'label'      => esc_html__( 'Mark Entry As Read', 'gk-gravityview' ),
-			'desc'       => esc_html__( 'This will mark the entry as "read" when it is displayed in the Single Entry layout.', 'gk-gravityview' ),
+			'desc'       => esc_html__( 'This will mark the entry as "read" when it is displayed in the Single Entry layout and visited by a user who has the capability to edit Gravity Forms entries.', 'gk-gravityview' ),
 			'group'      => 'default',
 			'type'       => 'checkbox',
 			'full_width' => true,
 			'value'      => true,
+			'article'    => [
+				'id'  => '6660d406804514782072dcfa',
+				'url' => 'https://docs.gravitykit.com/article/1008-marking-entries-as-read',
+			],
 		];
 
 		return $settings;

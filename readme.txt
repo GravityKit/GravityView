@@ -28,7 +28,7 @@ This update improves how entries are automatically marked as "Read" and adds a n
 **Note: GravityView now requires Gravity Forms 2.6 (released in March 2022) or newer.**
 
 #### 🚀 Added
-* New View setting under the Single Entry tab to mark an entry as "Read".
+* New View setting under the Single Entry tab to mark an entry as "Read". [Read more about the feature](https://docs.gravitykit.com/article/1008-marking-entries-as-read).
 
 #### ✨ Improved
 * Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.

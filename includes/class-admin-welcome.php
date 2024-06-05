@@ -304,7 +304,10 @@ class GravityView_Welcome {
 				<h4>🚀 Added</h4>
 
 				<ul>
-					<li>New View setting under the Single Entry tab to mark an entry as "Read".</li>
+					<li>New View setting under the Single Entry tab to mark an entry as 'Read'. <a
+							href='https://docs.gravitykit.com/article/1008-marking-entries-as-read'>Read more about
+							the feature</a>.
+					</li>
 				</ul>
 
 				<h4>✨ Improved</h4>
