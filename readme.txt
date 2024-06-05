@@ -37,7 +37,7 @@ This update improves how entries are automatically marked as "Read" and adds a n
 * Appearance of the Merge Tag picker in the field settings of the View editor.
 
 #### 💻 Developer Updates
-* Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the improved automating marking of entry as "Read" functionality.
+* Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the improved functionality that marks entries as "Read".
 
 = 2.24 on May 28, 2024 =
 

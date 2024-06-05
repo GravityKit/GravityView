@@ -325,7 +325,7 @@ class GravityView_Welcome {
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li>Removed the <code>gk/gravityview/field/is-read/print-script</code> filter in favor of the improved automating marking of entry as "Read" functionality.</li>
+					<li>Removed the <code>gk/gravityview/field/is-read/print-script</code> filter in favor of the improved functionality that marks entries as "Read".</li>
 				</ul>
 
 				<h3>2.24 on May 28, 2024</h3>
