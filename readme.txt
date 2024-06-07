@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
+
+Fixed: Timeout issue when
 = 2.25 on June 5, 2024 =
 
 This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.
