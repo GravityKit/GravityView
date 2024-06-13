@@ -84,7 +84,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 2 );
 
-		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 4 );
+		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 3 );
 
 		add_action( 'gravityview/edit_entry/after_update', array( $this, 'update_edit_entry' ), 10, 3 );
 
@@ -107,10 +107,13 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		}
 
 		$unique_id = crc32( 'is_approved' );
+
 		if ( ! isset( $_POST[ 'input_' . $unique_id ] ) ) {
 			return;
 		}
+
 		$approval_status = \GV\Utils::_POST( 'input_' . $unique_id );
+
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
 			$approval_status = GravityView_Entry_Approval_Status::UNAPPROVED;
 		}
@@ -313,21 +316,18 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		return esc_attr( "gv-approval-{$approved_key}" );
 	}
 
-
 	/**
 	 * Adds the GravityView Approval Entries field to the Edit Entry form
 	 *
 	 * @since TBD
 	 *
-	 * @param GF_Field[] $fields Gravity Forms form fields
-	 * @param array|null $edit_fields Fields for the Edit Entry tab configured in the View Configuration
-	 * @param array      $form GF Form array (`fields` key modified to have only fields configured to show in Edit Entry)
-	 * @param int        $view_id View ID
+	 * @param GF_Field[] $fields 		Gravity Forms form fields
+	 * @param array|null $edit_fields 	Fields for the Edit Entry tab configured in the View Configuration
+	 * @param array      $form 			GF Form array (`fields` key modified to have only fields configured to show in Edit Entry)
 	 *
-	 * @return GF_Field[] If Custom Content field exists, returns fields array with the fields inserted. Otherwise, returns unmodified fields array.
+	 * @return GF_Field[] 				If Custom Content field exists, returns fields array with the fields inserted. Otherwise, returns unmodified fields array.
 	 */
-	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form = array(), $view_id = 0 ) {
-
+	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form = array()) {
 		// Not configured; show all fields.
 		if ( is_null( $edit_fields ) ) {
 			return $fields;
@@ -340,19 +340,16 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		$_entry = $entry->as_entry();
 
 		foreach ( (array) $edit_fields as $id => $edit_field ) {
-			if ( 'entry_approval' === \GV\Utils::get( $edit_field, 'id' ) ) {
-				$label = ( \GV\Utils::get( $edit_field, 'custom_label' ) ? \GV\Utils::get( $edit_field, 'custom_label' ) : __( 'Approve Entries', 'gk-gravityview' ) );
+			if ( 'entry_approval' === $edit_field['id'] ) {
+				$label = ( $edit_field['custom_label'] ? $edit_field['custom_label'] : __( 'Approve Entries', 'gk-gravityview' ) );
 
-				if ( ! \GV\Utils::get( $edit_field, 'show_label' ) ) {
+				if ( ! $edit_field['show_label'] ) {
 					$label = '';
 				}
 
 				$unique_id = crc32( 'is_approved' );
 				$value     = ( $_entry['is_approved'] ? (int) $_entry['is_approved'] : GravityView_Entry_Approval_Status::UNAPPROVED );
-
-				if ( isset( $_POST[ 'input_' . $unique_id ] ) ) {
-					$value = \GV\Utils::_POST( 'input_' . $unique_id );
-				}
+				$value = $_POST[ "input_{$unique_id}" ] ?? $value;
 
 				$field_data = array(
 					'id'           => $unique_id,
@@ -372,20 +369,20 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 							'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
 						),
 					),
-					'defaultValue' => $value,
-					'cssClass'     => \GV\Utils::get( $edit_field, 'custom_class' ),
+					'defaultValue' => (int) $value,
+					'cssClass'     => $edit_field['custom_class'],
 				);
 
 				$new_fields[] = new GF_Field_Radio( $field_data );
-
 			} else {
+
 				if ( isset( $fields[ $i ] ) ) {
 					$new_fields[] = $fields[ $i ];
 				}
+				
 				++$i;
 			}
 		}
-
 		return $new_fields;
 	}
 
