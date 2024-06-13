@@ -202,6 +202,7 @@ class Blocks {
 					admin_url( 'post.php' )
 				),
 				'views'               => $this->get_views(),
+				'nonce'=>wp_create_nonce( 'gravityview_ajaxaddshortcode' ),
 			)
 		);
 
