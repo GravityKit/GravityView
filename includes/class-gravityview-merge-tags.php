@@ -104,7 +104,18 @@ class GravityView_Merge_Tags {
 
 		// No GravityView modifications were made; return the (default) original value
 		if ( $raw_value === $return ) {
-			return $value;
+			/**
+			 * Modify the merge tag modifier output.
+			 *
+			 * @since TBD
+			 * 
+			 * @param string $value The original merge tag value, passed from Gravity Forms
+			 * @param string $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
+			 * @param GF_Field $field The current field.
+			 * 
+			 * @return mixed
+			 */
+			return apply_filters( 'gravityview/merge_tags/no_modifiers/value', $value, $modifier, $field );
 		}
 
 		/**
@@ -566,7 +577,7 @@ class GravityView_Merge_Tags {
 		// If there's a "format:[php date format string]" date format, grab it
 		if ( false !== $format_key_index && isset( $exploded[ $format_key_index + 1 ] ) ) {
 			// Return escaped colons placeholder
-			$return = str_replace( '|COLON|', ':', $exploded[ $format_key_index + 1 ] );
+			$return = str_replace( '|COLON|', ':', implode(':', array_slice($exploded, $format_key_index + 1)) );
 		}
 
 		return $return;
