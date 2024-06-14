@@ -28,7 +28,7 @@ class GravityView_Field_Date extends GravityView_Field {
 
 		add_filter( 'gravityview/merge_tags/modifiers/value', array( $this, 'apply_format_date_modifiers' ), 10, 6 );
 
-		add_filter('gravityview/merge_tags/no_modifiers/value',array($this,'replace_merge_tags_format'),10,3);
+		add_filter( 'gravityview/merge_tags/no_modifiers/value', array( $this, 'replace_merge_tags_format' ), 10, 3 );
 
 		parent::__construct();
 	}
@@ -36,17 +36,19 @@ class GravityView_Field_Date extends GravityView_Field {
 	/**
 	 * Replaces merge tags format modifier.
 	 *
-	 * @param string $value The original merge tag value, passed from Gravity Forms
-	 * @param string $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
-	 * @param GF_Field $field The current field.
-	 * 
+	 * @since TBD
+	 *
+	 * @param string   $value     The original merge tag value, passed from Gravity Forms
+	 * @param string   $modifier  The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
+	 * @param GF_Field $field   The current field.
+	 *
 	 * @return string
 	 */
-	public function replace_merge_tags_format($value, $modifier, $field){
-		if ($field instanceof GF_Field_Date && $modifier) {
-			return GravityView_Merge_Tags::format_date($value,$modifier);
+	public function replace_merge_tags_format( $value, $modifier, $field ) {
+		if ( $field instanceof GF_Field_Date && $modifier ) {
+			return GravityView_Merge_Tags::format_date( $value, $modifier );
 		}
-	
+
 		return $value;
 	}
 
