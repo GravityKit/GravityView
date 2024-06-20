@@ -1,0 +1,64 @@
+div[id*=gv-view-] html{font-size:62.5%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif}
+div[id*=gv-view-] body{font-size:1.8rem;line-height:1.618;max-width:38em;margin:auto;color:#4a4a4a;background-color:#f9f9f9;padding:13px}
+@media (max-width:684px){
+div[id*=gv-view-] body{font-size:1.53rem}
+}
+@media (max-width:382px){
+div[id*=gv-view-] body{font-size:1.35rem}
+}
+div[id*=gv-view-] h1,div[id*=gv-view-] h2,div[id*=gv-view-] h3,div[id*=gv-view-] h4,div[id*=gv-view-] h5,div[id*=gv-view-] h6{line-height:1.1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;font-weight:700;margin-top:3rem;margin-bottom:1.5rem;overflow-wrap:break-word;word-wrap:break-word;-ms-word-break:break-all;word-break:break-word}
+div[id*=gv-view-] h1{font-size:2.35em}
+div[id*=gv-view-] h2{font-size:2em}
+div[id*=gv-view-] h3{font-size:1.75em}
+div[id*=gv-view-] h4{font-size:1.5em}
+div[id*=gv-view-] h5{font-size:1.25em}
+div[id*=gv-view-] h6{font-size:1em}
+div[id*=gv-view-] p{margin-top:0;margin-bottom:2.5rem}
+div[id*=gv-view-] small,div[id*=gv-view-] sub,div[id*=gv-view-] sup{font-size:75%}
+div[id*=gv-view-] hr{border-color:#1d7484}
+div[id*=gv-view-] a{text-decoration:none;color:#1d7484}
+div[id*=gv-view-] a:visited{color:#144f5a}
+div[id*=gv-view-] a:hover{color:#982c61;border-bottom:2px solid #4a4a4a}
+div[id*=gv-view-] ul{padding-left:1.4em;margin-top:0;margin-bottom:2.5rem}
+div[id*=gv-view-] li{margin-bottom:.4em}
+div[id*=gv-view-] blockquote{margin-left:0;margin-right:0;padding-left:1em;padding-top:.8em;padding-bottom:.8em;padding-right:.8em;border-left:5px solid #1d7484;margin-bottom:2.5rem;background-color:#f1f1f1}
+div[id*=gv-view-] blockquote p{margin-bottom:0}
+div[id*=gv-view-] img,div[id*=gv-view-] video{height:auto;max-width:100%;margin-top:0;margin-bottom:2.5rem}
+div[id*=gv-view-] pre{background-color:#f1f1f1;display:block;padding:1em;overflow-x:auto;margin-top:0;margin-bottom:2.5rem;font-size:.9em}
+div[id*=gv-view-] code,div[id*=gv-view-] kbd,div[id*=gv-view-] samp{font-size:.9em;padding:0 .5em;background-color:#f1f1f1;white-space:pre-wrap}
+div[id*=gv-view-] pre>code{padding:0;background-color:transparent;white-space:pre;font-size:1em}
+div[id*=gv-view-] table{text-align:justify;width:100%;border-collapse:collapse;margin-bottom:2rem}
+div[id*=gv-view-] td,div[id*=gv-view-] th{padding:.5em;border-bottom:1px solid #f1f1f1}
+div[id*=gv-view-] input,div[id*=gv-view-] textarea{border:1px solid #4a4a4a}
+div[id*=gv-view-] input:focus,div[id*=gv-view-] textarea:focus{border:1px solid #1d7484}
+div[id*=gv-view-] textarea{width:100%}
+div[id*=gv-view-] input[type=file]::-webkit-file-upload-button{display:inline-block;padding:5px 10px;text-align:center;text-decoration:none;white-space:nowrap;background-color:#1d7484;color:#f9f9f9;border-radius:1px;border:1px solid #1d7484;cursor:pointer;-webkit-box-sizing:border-box;box-sizing:border-box}
+div[id*=gv-view-] .button,div[id*=gv-view-] button,div[id*=gv-view-] input[type=button],div[id*=gv-view-] input[type=file]::file-selector-button,div[id*=gv-view-] input[type=reset],div[id*=gv-view-] input[type=submit]{display:inline-block;padding:5px 10px;text-align:center;text-decoration:none;white-space:nowrap;background-color:#1d7484;color:#f9f9f9;border-radius:1px;border:1px solid #1d7484;cursor:pointer;-webkit-box-sizing:border-box;box-sizing:border-box}
+div[id*=gv-view-] input[type=file]::-webkit-file-upload-button[disabled]{cursor:default;opacity:.5}
+div[id*=gv-view-] .button[disabled],div[id*=gv-view-] button[disabled],div[id*=gv-view-] input[type=button][disabled],div[id*=gv-view-] input[type=file]::file-selector-button[disabled],div[id*=gv-view-] input[type=reset][disabled],div[id*=gv-view-] input[type=submit][disabled]{cursor:default;opacity:.5}
+div[id*=gv-view-] input[type=file]::-webkit-file-upload-button:hover{background-color:#982c61;color:#f9f9f9;outline:0}
+div[id*=gv-view-] .button:hover,div[id*=gv-view-] button:hover,div[id*=gv-view-] input[type=button]:hover,div[id*=gv-view-] input[type=file]::file-selector-button:hover,div[id*=gv-view-] input[type=reset]:hover,div[id*=gv-view-] input[type=submit]:hover{background-color:#982c61;color:#f9f9f9;outline:0}
+div[id*=gv-view-] input[type=file]::-webkit-file-upload-button:focus-visible{outline-style:solid;outline-width:2px}
+div[id*=gv-view-] .button:focus-visible,div[id*=gv-view-] button:focus-visible,div[id*=gv-view-] input[type=button]:focus-visible,div[id*=gv-view-] input[type=file]::file-selector-button:focus-visible,div[id*=gv-view-] input[type=reset]:focus-visible,div[id*=gv-view-] input[type=submit]:focus-visible{outline-style:solid;outline-width:2px}
+div[id*=gv-view-] input,div[id*=gv-view-] select,div[id*=gv-view-] textarea{color:#4a4a4a;padding:6px 10px;margin-bottom:10px;background-color:#f1f1f1;border:1px solid #f1f1f1;border-radius:4px;-webkit-box-shadow:none;box-shadow:none;-webkit-box-sizing:border-box;box-sizing:border-box}
+div[id*=gv-view-] input:focus,div[id*=gv-view-] select:focus,div[id*=gv-view-] textarea:focus{border:1px solid #1d7484;outline:0}
+div[id*=gv-view-] input[type=checkbox]:focus{outline:1px dotted #1d7484}
+div[id*=gv-view-] fieldset,div[id*=gv-view-] label,div[id*=gv-view-] legend{display:block;margin-bottom:.5rem;font-weight:600}
+:root{--font-size:1rem}
+body{background:#fff}
+#wpfooter,.update-nag{display:none}
+div[id*=gv-view-] *{font-size:initial}
+div[id*=gv-view-] .gv-grid-col-1-2{width:auto}
+div[id*=gv-view-] .gv-table-container{overflow-x:auto}
+div[id*=gv-view-] form.gv-widget-search input{width:auto}
+div[id*=gv-view-] form.gv-widget-search:not(.gv-is-search) .gv-search-clear{display:none}
+div[id*=gv-view-] form.gv-widget-search .gv-search-clear{margin:0 3%}
+div[id*=gv-view-] form.gv-widget-search .gv-search-box-submit{align-items:baseline}
+div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action{display:flex}
+div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action>*{margin-right:3%}
+div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action>:last-child{margin-right:0}
+div[id*=gv-view-] .gk-maps-search-geolocation-address-autocomplete-container{display:flex}
+div[id*=gv-view-] .gk-maps-search-geolocation-address-autocomplete-container input.gk-maps-search-geolocation-address-autocomplete{width:inherit}
+div[id*=gv-view-] .gk-maps-search-current-geolocation-radius{width:auto}
+div[id*=gv-view-] .dataTables_length select{display:inline-block}
+.fancybox__container{z-index:100000!important}

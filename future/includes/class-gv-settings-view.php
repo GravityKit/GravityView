@@ -641,7 +641,7 @@ class View_Settings extends Settings {
 						'url'  => 'https://docs.gravitykit.com/article/962-view-settings-custom-code',
 					),
 				),
-				'custom_javascript'           => array(
+				'custom_javascript' => array(
 					'label'             => __( 'Custom JavaScript', 'gk-gravityview' ),
 					'group'             => 'default',
 					'desc'              => strtr(
@@ -667,6 +667,31 @@ class View_Settings extends Settings {
 						'type' => 'modal',
 						'url'  => 'https://docs.gravitykit.com/article/962-view-settings-custom-code',
 					),
+				),
+				'stylesheet' => array(
+					'label'             => __( 'Stylesheet', 'gk-gravityview' ),
+					'group'             => 'default',
+					'desc'              => 'Desc',
+					'type'              => 'select',
+					'options' => array(
+						'' => __( 'GravityView Legacy', 'gk-gravityview' ),
+						'orbital' => __( 'Gravity Forms Orbital', 'gk-gravityview' ),
+						'chota'   => __( 'Chota', 'gk-gravityview' ),
+						'cirrus'  => __( 'Cirrus', 'gk-gravityview' ),
+						'marx'    => __( 'Marx', 'gk-gravityview' ),
+						'mvp'     => __( 'MVP', 'gk-gravityview' ),
+						'picnic'  => __( 'Picnic', 'gk-gravityview' ),
+						'picocss' => __( 'Pico.css', 'gk-gravityview' ),
+						'pure'    => __( 'Pure', 'gk-gravityview' ),
+						'sakura'  => __( 'Sakura', 'gk-gravityview' ),
+						'simple'    => __( 'Simple', 'gk-gravityview' ),
+					),
+					'class'             => 'widefat',
+					'merge_tags'        => false,
+					'value'             => '', // Defaults to legacy styles.
+					'tooltip'           => false,
+					'show_in_shortcode' => true,
+					'full_width'        => false,
 				),
 			),
 			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?
