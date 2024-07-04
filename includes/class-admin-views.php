@@ -1172,7 +1172,7 @@ HTML;
 									</div>
 								<div class="gv-droppable-area-action">
 									<a href="#" class="gv-add-field button button-link button-hero" title=""
-									    data-templateid="<?php echo esc_attr($template_id); ?>"
+									    data-templateid="<?php echo esc_attr( $template_id ); ?>"
 										data-objecttype="<?php echo esc_attr( $type ); ?>"
 										data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"
 										data-context="<?php echo esc_attr( $zone ); ?>"
