@@ -25,7 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
-* New fields on the Single Entry Layout were added with the Multiple Entries Layout template.
+* View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.
 
 = 2.25 on June 5, 2024 =
 
