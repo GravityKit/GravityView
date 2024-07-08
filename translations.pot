@@ -9,14 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-05T21:56:50+00:00\n"
+"POT-Creation-Date: 2024-07-08T20:20:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
-#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -26,17 +25,14 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
-#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
-#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:402
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:163
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:164
@@ -190,7 +186,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:95
 #: includes/admin/metaboxes/views/view-configuration.php:213
 #: includes/admin/metaboxes/views/view-configuration.php:214
-#: includes/class-admin-views.php:1427
+#: includes/class-admin-views.php:1428
 #: includes/class-frontend-views.php:685
 #: includes/class-gravityview-admin-bar.php:111
 #: includes/class-gravityview-entry-link-shortcode.php:246
@@ -1480,7 +1476,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/direct-access-status.php:98
 #: includes/class-admin-add-shortcode.php:140
-#: includes/class-admin-views.php:1527
+#: includes/class-admin-views.php:1528
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:283
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1192
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1325
@@ -1617,8 +1613,8 @@ msgstr ""
 
 #. translators: %1$s is the vendor title
 #: includes/admin/metaboxes/views/view-configuration.php:148
-#: includes/class-admin-views.php:1299
-#: includes/class-admin-views.php:1526
+#: includes/class-admin-views.php:1300
+#: includes/class-admin-views.php:1527
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:216
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:24
@@ -1692,7 +1688,7 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:186
-#: includes/class-admin-views.php:1531
+#: includes/class-admin-views.php:1532
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1848,86 +1844,86 @@ msgstr ""
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1212
+#: includes/class-admin-views.php:1213
 #: includes/widgets/search-widget/class-search-widget.php:131
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1222
+#: includes/class-admin-views.php:1223
 #: includes/widgets/class-gravityview-widget-pagination-info.php:31
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1228
-#: includes/class-admin-views.php:1235
+#: includes/class-admin-views.php:1229
+#: includes/class-admin-views.php:1236
 #: includes/widgets/class-gravityview-widget-page-links.php:30
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1302
+#: includes/class-admin-views.php:1303
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1303
+#: includes/class-admin-views.php:1304
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1314
+#: includes/class-admin-views.php:1315
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1351
+#: includes/class-admin-views.php:1352
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1352
+#: includes/class-admin-views.php:1353
 msgid "The data is not lost; re-activate the associated plugin and the configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1428
+#: includes/class-admin-views.php:1429
 #: includes/fields/class-gravityview-field-edit-link.php:32
 msgid "Link to Edit Entry"
 msgstr ""
 
-#: includes/class-admin-views.php:1522
+#: includes/class-admin-views.php:1523
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1523
+#: includes/class-admin-views.php:1524
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1524
+#: includes/class-admin-views.php:1525
 #: includes/widgets/search-widget/class-search-widget.php:311
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1525
+#: includes/class-admin-views.php:1526
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1528
+#: includes/class-admin-views.php:1529
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1529
+#: includes/class-admin-views.php:1530
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1149
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1530
+#: includes/class-admin-views.php:1531
 msgid "Error while creating the View for you. Check the settings or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1532
+#: includes/class-admin-views.php:1533
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1533
+#: includes/class-admin-views.php:1534
 msgid "Error while adding the field. Please try again or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1534
+#: includes/class-admin-views.php:1535
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
@@ -5377,13 +5373,13 @@ msgstr ""
 msgid "Manage Your Kit"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/Helpers.php:50
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/Helpers.php:49
 msgid "Unable to process remote request. Invalid response body."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:141
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:446
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:471
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:447
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:472
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:177
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:320
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:452
@@ -5427,29 +5423,29 @@ msgstr ""
 msgid "License status could not be determined."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:340
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:341
 msgid "License data received from the API is incomplete."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:450
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:529
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:451
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:530
 msgid "Missing license key."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:477
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:478
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:27
 msgid "This license is already activated."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:537
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:538
 msgid "The license key is invalid."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:568
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:569
 msgid "Failed to deactivate license."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:608
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/LicenseManager.php:609
 msgctxt "Indicates \"time ago\""
 msgid "ago"
 msgstr ""
@@ -7092,84 +7088,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""
