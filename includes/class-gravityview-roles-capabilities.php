@@ -84,12 +84,6 @@ class GravityView_Roles_Capabilities {
 			return $usercaps;
 		}
 
-		static $usercaps_cache = array();
-
-		if ( ! empty( $usercaps_cache ) ) {
-			return $usercaps_cache;
-		}
-
 		/**
 		 * Enable all GravityView caps_to_check if `gravityview_full_access` is enabled
 		 */
@@ -105,8 +99,6 @@ class GravityView_Roles_Capabilities {
 		}
 
 		$usercaps = $this->add_gravity_forms_usercaps_to_gravityview_caps( $usercaps );
-
-		$usercaps_cache = $usercaps;
 
 		return $usercaps;
 	}
