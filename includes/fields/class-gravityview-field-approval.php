@@ -340,48 +340,48 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		$_entry = $entry->as_entry();
 
 		foreach ( (array) $edit_fields as $id => $edit_field ) {
-			if ( 'entry_approval' === $edit_field['id'] ) {
-				$label = ( $edit_field['custom_label'] ? $edit_field['custom_label'] : __( 'Approve Entries', 'gk-gravityview' ) );
-
-				if ( ! $edit_field['show_label'] ) {
-					$label = '';
-				}
-
-				$unique_id = crc32( 'is_approved' );
-				$value     = ( $_entry['is_approved'] ? (int) $_entry['is_approved'] : GravityView_Entry_Approval_Status::UNAPPROVED );
-				$value = $_POST[ "input_{$unique_id}" ] ?? $value;
-
-				$field_data = array(
-					'id'           => $unique_id,
-					'custom_id'    => $id,
-					'label'        => $label,
-					'choices'      => array(
-						array(
-							'text'  => __( 'Approve', 'gk-gravityview' ),
-							'value' => GravityView_Entry_Approval_Status::APPROVED,
-						),
-						array(
-							'text'  => __( 'Disapprove', 'gk-gravityview' ),
-							'value' => GravityView_Entry_Approval_Status::DISAPPROVED,
-						),
-						array(
-							'text'  => __( 'Reset Approval', 'gk-gravityview' ),
-							'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
-						),
-					),
-					'defaultValue' => (int) $value,
-					'cssClass'     => $edit_field['custom_class'],
-				);
-
-				$new_fields[] = new GF_Field_Radio( $field_data );
-			} else {
-
+			if ( 'entry_approval' !== $edit_field['id'] ) {
 				if ( isset( $fields[ $i ] ) ) {
 					$new_fields[] = $fields[ $i ];
 				}
-				
 				++$i;
+				continue;
 			}
+		
+			$label = ( $edit_field['custom_label'] ? $edit_field['custom_label'] : __( 'Approve Entries', 'gk-gravityview' ) );
+		
+			if ( ! $edit_field['show_label'] ) {
+				$label = '';
+			}
+		
+			$unique_id = crc32( 'is_approved' );
+		
+			$value = ( $_entry['is_approved'] ? (int) $_entry['is_approved'] : GravityView_Entry_Approval_Status::UNAPPROVED );
+			$value = $_POST[ "input_{$unique_id}" ] ?? $value;
+		
+			$field_data = array(
+				'id'           => $unique_id,
+				'custom_id'    => $id,
+				'label'        => $label,
+				'choices'      => array(
+					array(
+						'text'  => __( 'Approve', 'gk-gravityview' ),
+						'value' => GravityView_Entry_Approval_Status::APPROVED,
+					),
+					array(
+						'text'  => __( 'Disapprove', 'gk-gravityview' ),
+						'value' => GravityView_Entry_Approval_Status::DISAPPROVED,
+					),
+					array(
+						'text'  => __( 'Reset Approval', 'gk-gravityview' ),
+						'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
+					),
+				),
+				'defaultValue' => (int) $value,
+				'cssClass'     => $edit_field['custom_class'],
+			);
+		
+			$new_fields[] = new GF_Field_Radio( $field_data );
 		}
 		return $new_fields;
 	}
