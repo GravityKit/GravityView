@@ -70,7 +70,7 @@ class GravityView_Merge_Tags {
 			'ucfirst'                   => 'modifier_strings',
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
-			'format'					=> 'modifier_format',
+			'format'                    => 'modifier_format',
 		);
 
 		$modifiers = explode( ',', $modifier );
@@ -128,18 +128,18 @@ class GravityView_Merge_Tags {
 	 * Converts date and time values to the format modifier.
 	 *
 	 * @since TBD
-	 * 
+	 *
 	 * @param string $raw_value
-	 * @param array $matches
+	 * @param array  $matches
 	 * @param string $value
-	 * @param array $field
+	 * @param array  $field
 	 * @param string $passed_modifier
-	 * 
+	 *
 	 * @return string
 	 */
-	private static function modifier_format($raw_value, $matches, $value, $field, $passed_modifier){
-		if (($field instanceof GF_Field_Date  || $field instanceof GF_Field_Time) && $passed_modifier ) {
-			return GravityView_Merge_Tags::format_date( $value, $passed_modifier );
+	private static function modifier_format( $raw_value, $matches, $value, $field, $passed_modifier ) {
+		if ( ( $field instanceof GF_Field_Date || $field instanceof GF_Field_Time ) && $passed_modifier ) {
+			return self::format_date( $raw_value, $passed_modifier );
 		}
 
 		return $raw_value;
@@ -588,7 +588,7 @@ class GravityView_Merge_Tags {
 		// If there's a "format:[php date format string]" date format, grab it
 		if ( false !== $format_key_index && isset( $exploded[ $format_key_index + 1 ] ) ) {
 			// Return escaped colons placeholder
-			$return = str_replace( '|COLON|', ':', implode(':', array_slice($exploded, $format_key_index + 1)) );
+			$return = str_replace( '|COLON|', ':', implode( ':', array_slice( $exploded, $format_key_index + 1 ) ) );
 		}
 
 		return $return;
