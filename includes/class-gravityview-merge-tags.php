@@ -70,6 +70,7 @@ class GravityView_Merge_Tags {
 			'ucfirst'                   => 'modifier_strings',
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
+			'format'					=> 'modifier_format',
 		);
 
 		$modifiers = explode( ',', $modifier );
@@ -97,25 +98,14 @@ class GravityView_Merge_Tags {
 				}
 
 				// The called method is passed the raw value and the full matches array
-				$return = self::$method( $return, $matches, $value, $field );
+				$return = self::$method( $return, $matches, $value, $field, $passed_modifier );
 				break;
 			}
 		}
 
 		// No GravityView modifications were made; return the (default) original value
 		if ( $raw_value === $return ) {
-			/**
-			 * Modify the merge tag modifier output.
-			 *
-			 * @since TBD
-			 * 
-			 * @param string $value The original merge tag value, passed from Gravity Forms
-			 * @param string $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
-			 * @param GF_Field $field The current field.
-			 * 
-			 * @return mixed
-			 */
-			return apply_filters( 'gravityview/merge_tags/no_modifiers/value', $value, $modifier, $field );
+			return $value;
 		}
 
 		/**
@@ -132,6 +122,27 @@ class GravityView_Merge_Tags {
 		$return = apply_filters( 'gravityview/merge_tags/modifiers/value', $return, $raw_value, $value, $merge_tag, $modifier, $field );
 
 		return $return;
+	}
+
+	/**
+	 * Converts date and time values to the format modifier.
+	 *
+	 * @since TBD
+	 * 
+	 * @param string $raw_value
+	 * @param array $matches
+	 * @param string $value
+	 * @param array $field
+	 * @param string $passed_modifier
+	 * 
+	 * @return string
+	 */
+	private static function modifier_format($raw_value, $matches, $value, $field, $passed_modifier){
+		if (($field instanceof GF_Field_Date  || $field instanceof GF_Field_Time) && $passed_modifier ) {
+			return GravityView_Merge_Tags::format_date( $value, $passed_modifier );
+		}
+
+		return $raw_value;
 	}
 
 	/**

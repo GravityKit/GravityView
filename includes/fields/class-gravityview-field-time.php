@@ -66,28 +66,8 @@ class GravityView_Field_Time extends GravityView_Field {
 
 		add_filter( 'gravityview_search_criteria', array( $this, '_maybe_filter_gravity_forms_query' ), 10, 4 );
 
-		add_filter( 'gravityview/merge_tags/no_modifiers/value', array( $this, 'replace_merge_tags_format' ), 10, 3 );
-
 	}
 
-	/**
-	 * Replaces merge tags format modifier.
-	 *
-	 * @since TBD
-	 *
-	 * @param string   $value     The original merge tag value, passed from Gravity Forms
-	 * @param string   $modifier  The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
-	 * @param GF_Field $field   The current field.
-	 *
-	 * @return string
-	 */
-	public function replace_merge_tags_format( $value, $modifier, $field ) {
-		if ( $field instanceof GF_Field_Time && $modifier ) {
-			return GravityView_Merge_Tags::format_date( $value, $modifier );
-		}
-
-		return $value;
-	}
 
 	/**
 	 * Modify the sort key for the time field so it can be parsed by the query filter
