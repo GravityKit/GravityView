@@ -133,13 +133,13 @@ class GravityView_Merge_Tags {
 	 * @param array  $matches
 	 * @param string $value
 	 * @param array  $field
-	 * @param string $passed_modifier
+	 * @param string $modifier
 	 *
 	 * @return string
 	 */
-	private static function modifier_format( $raw_value, $matches, $value, $field, $passed_modifier ) {
-		if ( ( $field instanceof GF_Field_Date || $field instanceof GF_Field_Time ) && $passed_modifier ) {
-			return self::format_date( $raw_value, $passed_modifier );
+	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier ) {
+		if ( ( $field instanceof GF_Field_Date || $field instanceof GF_Field_Time ) && $modifier ) {
+			return self::format_date( $raw_value, $modifier );
 		}
 
 		return $raw_value;
