@@ -22,12 +22,12 @@
 [class*=gk-gravityview-blocks] .disabled {
   opacity: 0.2 !important;
 }
-[class*=gk-gravityview-blocks] .entry-selector, [class*=gk-gravityview-blocks] .preview-control, [class*=gk-gravityview-blocks] .view-selector {
+[class*=gk-gravityview-blocks] .entry-selector, [class*=gk-gravityview-blocks] .preview-control, [class*=gk-gravityview-blocks] .view-selector, [class*=gk-gravityview-blocks] .sort-field-selector {
   width: 100%;
   display: inline-block;
   text-align: left;
 }
-[class*=gk-gravityview-blocks] .view-selector input {
+[class*=gk-gravityview-blocks] .view-selector input, [class*=gk-gravityview-blocks] .sort-field-selector input {
   margin: 0 !important;
   height: auto !important;
   -webkit-box-shadow: none !important;
@@ -41,7 +41,7 @@
   text-align: center;
   padding: 40px;
 }
-[class*=gk-gravityview-blocks] .block-editor .entry-selector, [class*=gk-gravityview-blocks] .block-editor .preview-control, [class*=gk-gravityview-blocks] .block-editor .view-selector {
+[class*=gk-gravityview-blocks] .block-editor .entry-selector, [class*=gk-gravityview-blocks] .block-editor .preview-control, [class*=gk-gravityview-blocks] .block-editor .view-selector, [class*=gk-gravityview-blocks] .block-editor .sort-field-selector {
   width: 70%;
 }
 [class*=gk-gravityview-blocks] .block-editor .preview-control span {
@@ -61,7 +61,7 @@
   left: -10%;
   top: 5%;
 }
-[class*=gk-gravityview-blocks] .components-panel .view-selector, [class*=gk-gravityview-blocks] .components-panel .entry-selector:not(.no-entry-input) {
+[class*=gk-gravityview-blocks] .components-panel .view-selector, [class*=gk-gravityview-blocks] .components-panel .sort-field-selector, [class*=gk-gravityview-blocks] .components-panel .entry-selector:not(.no-entry-input) {
   margin-bottom: 24px;
 }
 [class*=gk-gravityview-blocks] .components-panel .view-selector.edit-view {
