@@ -1,9 +1,9 @@
-/**
+	/**
  * Responsible for copying the short codes from the list and edit page.
  * @since 2.21
  */
 ( function ( $ ) {
-	$( document ).on( 'ready', function () {
+	$( document ).ready( function () {
 		var shortcode_clipboard = new ClipboardJS( '.gv-shortcode input.code', {
 			text: function ( trigger ) {
 				return $( trigger ).val();
