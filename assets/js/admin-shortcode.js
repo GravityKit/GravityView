@@ -1,4 +1,4 @@
-	/**
+/**
  * Responsible for copying the short codes from the list and edit page.
  * @since 2.21
  */
