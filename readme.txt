@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 * Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
 * View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.
+* Search Widget issue where the Search Mode was fixed and disabled after selecting a Date Field.
 
 = 2.25 on June 5, 2024 =
 
