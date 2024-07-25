@@ -12,8 +12,6 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 $entry = $gravityview->entry;
 
-\GV\Mocks\Legacy_Context::push( array( 'view' => $gravityview->view ) );
-
 $entry_slug = GravityView_API::get_entry_slug( $entry->ID, $entry->as_entry() );
 
 extract( $gravityview->template->extract_zone_vars( array( 'title', 'subtitle' ) ) );
@@ -43,7 +41,7 @@ gravityview_before( $gravityview );
 						} else {
 							$extras = array( 'wpautop' => true );
 						}
- 
+
 						$extras['zone_id'] = 'single_list-title';
 						echo $gravityview->template->the_field( $field, $extras );
 					}
@@ -137,5 +135,3 @@ gravityview_before( $gravityview );
 </div><?php
 
 gravityview_after( $gravityview );
-
-\GV\Mocks\Legacy_Context::pop();
