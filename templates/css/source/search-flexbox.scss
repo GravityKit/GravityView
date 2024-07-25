@@ -82,9 +82,10 @@ $flexbox-margin: 10px;
 		}
 
 		/**
-		 * DATE FIELD
+		 * Range FIELDS
 		 */
-		&.gv-search-date {
+		&.gv-search-date,
+		&.gv-search-number {
 			-js-display: flex;
 			display: flex;
 			flex-flow: row wrap;
@@ -105,6 +106,14 @@ $flexbox-margin: 10px;
 				margin-bottom: .5em;
 				margin-right: 1%;
 				flex: 1 1 49%;
+
+				// Remove arrows.
+				&::-webkit-outer-spin-button,
+				&::-webkit-inner-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+				-moz-appearance: textfield;
 			}
 		}
 	}

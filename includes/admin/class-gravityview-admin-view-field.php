@@ -14,15 +14,15 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 		$field_info_items = array();
 
-		if( !empty( $this->item['adminLabel'] ) ) {
+		if ( ! empty( $this->item['adminLabel'] ) ) {
 			$field_info_items[] = array(
-				'value' => sprintf( __('Admin Label: %s', 'gk-gravityview' ), $this->item['adminLabel'] ),
-				'class'	=> 'gv-sublabel'
+				'value' => sprintf( __( 'Admin Label: %s', 'gk-gravityview' ), $this->item['adminLabel'] ),
+				'class' => 'gv-sublabel',
 			);
 		}
 
 		// Fields with IDs, not like Source URL or Entry ID
-		if( is_numeric( $this->id ) ) {
+		if ( is_numeric( $this->id ) ) {
 
 			$field_type_title = GFCommon::get_field_type_title( $this->item['input_type'] );
 
@@ -33,27 +33,26 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 			}
 
 			$field_info_items[] = array(
-				'value' => sprintf( __('Type: %s', 'gk-gravityview'), $field_type_title ),
+				'value'          => sprintf( __( 'Type: %s', 'gk-gravityview' ), $field_type_title ),
 				'hide_in_picker' => ! empty( $this->item['parent'] ),
 			);
 
 			$field_info_items[] = array(
-				'value' => sprintf( __('Field ID: %s', 'gk-gravityview'), $this->id ),
+				'value' => sprintf( __( 'Field ID: %s', 'gk-gravityview' ), $this->id ),
 			);
 		}
 
-		if( !empty( $this->item['desc'] ) ) {
+		if ( ! empty( $this->item['desc'] ) ) {
 			$field_info_items[] = array(
-				'value' => $this->item['desc']
+				'value' => $this->item['desc'],
 			);
 		}
 
 		$field_info_items[] = array(
-			'value'          => sprintf( __('Form ID: %s', 'gk-gravityview' ), $this->form_id ),
+			'value'          => sprintf( __( 'Form ID: %s', 'gk-gravityview' ), $this->form_id ),
 			'hide_in_picker' => true,
 		);
 
 		return $field_info_items;
 	}
-
 }

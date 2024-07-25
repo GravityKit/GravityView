@@ -5,8 +5,8 @@
  * @file      class-gravityview-theme-hooks-woothemes.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
  * @since 1.15.2
@@ -70,6 +70,7 @@ class GravityView_Theme_Hooks_WooThemes extends GravityView_Plugin_and_Theme_Hoo
 
 	/**
 	 * Remove the WooThemes metabox on new page
+	 *
 	 * @since 1.15.2
 	 */
 	function remove_meta_box() {
@@ -78,11 +79,10 @@ class GravityView_Theme_Hooks_WooThemes extends GravityView_Plugin_and_Theme_Hoo
 		$gv_page = gravityview()->request->is_admin( '', 'single' );
 
 		// New View or Edit View page
-		if( $gv_page && $pagenow === 'post-new.php' ) {
+		if ( $gv_page && 'post-new.php' === $pagenow ) {
 			remove_meta_box( 'woothemes-settings', 'gravityview', 'normal' );
 		}
 	}
-
 }
 
-new GravityView_Theme_Hooks_WooThemes;
+new GravityView_Theme_Hooks_WooThemes();

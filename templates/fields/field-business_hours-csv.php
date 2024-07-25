@@ -11,10 +11,10 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$field_id = $gravityview->field->ID;
+$field_id      = $gravityview->field->ID;
 $display_value = $gravityview->display_value;
-$value = $gravityview->value;
-$entry = $gravityview->entry->as_entry();
+$value         = $gravityview->value;
+$entry         = $gravityview->entry->as_entry();
 
 if ( $value = json_decode( $value ) ) {
 	$output = array();
@@ -23,13 +23,14 @@ if ( $value = json_decode( $value ) ) {
 	}
 
 	/**
-	 * @filter `gravityview/template/field/csv/glue` The value used to separate multiple values in the CSV export
+	 * The value used to separate multiple values in the CSV export.
+	 *
 	 * @since 2.4.2
 	 *
 	 * @param string The glue. Default: ";" (semicolon)
 	 * @param \GV\Template_Context The context.
 	 */
-	$glue = apply_filters( 'gravityview/template/field/csv/glue', ";", $gravityview );
+	$glue = apply_filters( 'gravityview/template/field/csv/glue', ';', $gravityview );
 
 	echo implode( $glue, $output );
 }

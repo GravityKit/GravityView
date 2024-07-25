@@ -21,6 +21,13 @@ class GF_Form extends Form implements \ArrayAccess {
 	public static $backend = self::BACKEND_GRAVITYFORMS;
 
 	/**
+	 * The form object.
+	 *
+	 * @var array
+	 */
+	public $form;
+
+	/**
 	 * Initialization.
 	 */
 	private function __construct() {
@@ -40,19 +47,13 @@ class GF_Form extends Form implements \ArrayAccess {
 	 */
 	public static function by_id( $form_id ) {
 
-		$form = wp_cache_get( 'gf_form_' . $form_id, 'gravityview' );
-
-		if ( ! $form ) {
-			$form = \GFAPI::get_form( $form_id );
-		}
+		$form = \GVCommon::get_form( $form_id );
 
 		if ( ! $form ) {
 			return null;
 		}
 
-		wp_cache_set( 'gf_form_' . $form_id, $form, 'gravityview' );
-
-		$self = new self();
+		$self       = new self();
 		$self->form = $form;
 
 		$self->ID = intval( $self->form['id'] );
@@ -74,9 +75,9 @@ class GF_Form extends Form implements \ArrayAccess {
 			return null;
 		}
 
-		$self = new self();
+		$self       = new self();
 		$self->form = $form;
-		$self->ID = $self->form['id'];
+		$self->ID   = $self->form['id'];
 
 		return $self;
 	}
@@ -95,57 +96,65 @@ class GF_Form extends Form implements \ArrayAccess {
 		$form = &$this;
 
 		/** Add the fetcher lazy callback. */
-		$entries->add_fetch_callback( function( $filters, $sorts, $offset ) use ( $form ) {
-			$entries = new \GV\Entry_Collection();
+		$entries->add_fetch_callback(
+			function ( $filters, $sorts, $offset ) use ( $form ) {
+				$entries = new \GV\Entry_Collection();
 
-			$search_criteria = array();
-			$sorting = array();
-			$paging = array();
+				$search_criteria = array();
+				$sorting         = array();
+				$paging          = array();
 
-			/** Apply the filters */
-			foreach ( $filters as $filter ) {
-				$search_criteria = $filter::merge_search_criteria( $search_criteria, $filter->as_search_criteria() );
+				/** Apply the filters */
+				foreach ( $filters as $filter ) {
+						$search_criteria = $filter::merge_search_criteria( $search_criteria, $filter->as_search_criteria() );
+				}
+
+				/** Apply the sorts */
+				foreach ( $sorts as $sort ) {
+					/** Gravity Forms does not have multi-sorting, so just overwrite. */
+					$sorting = array(
+						'key'        => $sort->field->ID,
+						'direction'  => $sort->direction,
+						'is_numeric' => Entry_Sort::NUMERIC == $sort->mode,
+					);
+				}
+
+				/** The offset and limit */
+				if ( ! empty( $offset->limit ) ) {
+					$paging['page_size'] = $offset->limit;
+				}
+
+				if ( ! empty( $offset->offset ) ) {
+					$paging['offset'] = $offset->offset;
+				}
+
+				$_entries = \GFAPI::get_entries( $form->ID, $search_criteria, $sorting, $paging );
+
+				foreach ( $_entries as $entry ) {
+					$entries->add( \GV\GF_Entry::from_entry( $entry ) );
+				}
+
+				unset( $_entries );
+
+				return $entries;
 			}
-
-			/** Apply the sorts */
-			foreach ( $sorts as $sort ) {
-				/** Gravity Forms does not have multi-sorting, so just overwrite. */
-				$sorting = array(
-					'key' => $sort->field->ID,
-					'direction' => $sort->direction,
-					'is_numeric' => $sort->mode == Entry_Sort::NUMERIC,
-				);
-			}
-
-			/** The offset and limit */
-			if ( ! empty( $offset->limit ) ) {
-				$paging['page_size'] = $offset->limit;
-			}
-
-			if ( ! empty( $offset->offset ) ) {
-				$paging['offset'] = $offset->offset;
-			}
-
-			foreach ( \GFAPI::get_entries( $form->ID, $search_criteria, $sorting, $paging ) as $entry ) {
-				$entries->add( \GV\GF_Entry::from_entry( $entry ) );
-			}
-
-			return $entries;
-		} );
+		);
 
 		/** Add the counter lazy callback. */
-		$entries->add_count_callback( function( $filters ) use ( $form ) {
-			$search_criteria = array();
-			$sorting = array();
+		$entries->add_count_callback(
+			function ( $filters ) use ( $form ) {
+				$search_criteria = array();
+				$sorting         = array();
 
-			/** Apply the filters */
-			/** @type \GV\GF_Entry_Filter|\GV\Entry_Filter $filter */
-			foreach ( $filters as $filter ) {
-				$search_criteria = $filter::merge_search_criteria( $search_criteria, $filter->as_search_criteria() );
+				/** Apply the filters */
+				/** @type \GV\GF_Entry_Filter|\GV\Entry_Filter $filter */
+				foreach ( $filters as $filter ) {
+						$search_criteria = $filter::merge_search_criteria( $search_criteria, $filter->as_search_criteria() );
+				}
+
+				return \GFAPI::count_entries( $form->ID, $search_criteria );
 			}
-
-			return \GFAPI::count_entries( $form->ID, $search_criteria );
-		} );
+		);
 
 		return $entries;
 	}
@@ -154,14 +163,14 @@ class GF_Form extends Form implements \ArrayAccess {
 	 * Get a \GV\Field by Form and Field ID for this data source.
 	 *
 	 * @param \GV\GF_Form $form The Gravity Form form ID.
-	 * @param int $field_id The Gravity Form field ID for the $form_id.
+	 * @param int         $field_id The Gravity Form field ID for the $form_id.
 	 *
 	 * @return \GV\Field|null The requested field or null if not found.
 	 */
 	public static function get_field( /** varargs */ ) {
 		$args = func_get_args();
 
-		if ( ! is_array( $args ) || count( $args ) != 2 ) {
+		if ( ! is_array( $args ) || 2 != count( $args ) ) {
 			gravityview()->log->error( '{source} expects 2 arguments for ::get_field ($form, $field_id)', array( 'source' => __CLASS__ ) );
 			return null;
 		}
@@ -219,7 +228,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 */
 	#[\ReturnTypeWillChange]
 	public function offsetExists( $offset ) {
-		return isset( $this->form[$offset] );
+		return isset( $this->form[ $offset ] );
 	}
 
 	/**
@@ -235,7 +244,7 @@ class GF_Form extends Form implements \ArrayAccess {
 	 */
 	#[\ReturnTypeWillChange]
 	public function offsetGet( $offset ) {
-		return $this->form[$offset];
+		return $this->form[ $offset ];
 	}
 
 	/**

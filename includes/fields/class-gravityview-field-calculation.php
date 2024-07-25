@@ -41,7 +41,7 @@ class GravityView_Field_Calculation extends GravityView_Field {
 	 *
 	 * @since 2.14
 	 *
-	 * @param array $field_types Array of field types
+	 * @param array  $field_types Array of field types
 	 * @param string $context
 	 *
 	 * @return array Field types with calculation added, if not Edit Entry context
@@ -49,7 +49,7 @@ class GravityView_Field_Calculation extends GravityView_Field {
 	public function blocklist_field_types( $field_types = array(), $context = '' ) {
 
 		// Allow Calculation field in Edit Entry
-		if( 'edit' !== $context ) {
+		if ( 'edit' !== $context ) {
 			$field_types[] = $this->name;
 		}
 
@@ -57,4 +57,4 @@ class GravityView_Field_Calculation extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_Calculation;
+new GravityView_Field_Calculation();

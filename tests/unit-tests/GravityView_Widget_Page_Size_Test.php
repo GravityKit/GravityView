@@ -6,13 +6,13 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * @covers \GV\Widgets\Page_Size
  */
 class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
-	function setUp() {
+	function setUp() : void {
 		$this->_reset_context();
 
 		parent::setUp();
 	}
 
-	function tearDown() {
+	function tearDown() : void {
 		$this->_reset_context();
 	}
 
@@ -86,18 +86,18 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		}
 
 		$future = $renderer->render( $view );
-		$this->assertContains( 'gv-page_size', $future );
-		$this->assertContains( "<option value='25' selected='selected'>25</option>", $future, 'default page size should be selected' );
+		$this->assertStringContainsString( 'gv-page_size', $future );
+		$this->assertStringContainsString( "<option value='25' selected='selected'>25</option>", $future, 'default page size should be selected' );
 
 		// Update default page size
 		$view->settings->update( array( 'page_size' => 50 ) );
 
 		$future = $renderer->render( $view );
-		$this->assertContains( "<option value='50' selected='selected'>50</option>", $future, 'default page size should be selected' );
+		$this->assertStringContainsString( "<option value='50' selected='selected'>50</option>", $future, 'default page size should be selected' );
 
 		$view->settings->update( array( 'page_size' => 1 ) );
 		$future = $renderer->render( $view );
-		$this->assertContains( "<option value='1' selected='selected'>", $future, 'default page size should be added, if not exists already' );
+		$this->assertStringContainsString( "<option value='1' selected='selected'>", $future, 'default page size should be added, if not exists already' );
 
 		// Restore default page size
 		$view->settings->update( array( 'page_size' => 25 ) );
@@ -110,12 +110,12 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		} );
 
 		$future = $renderer->render( $view );
-		$this->assertContains( 'page_sizes12345', $future );
-		$this->assertContains( esc_attr( '<a>& don\'t forget to escape me!</a>' ), $future );
+		$this->assertStringContainsString( 'page_sizes12345', $future );
+		$this->assertStringContainsString( esc_attr( '<a>& don\'t forget to escape me!</a>' ), $future );
 
 		$this->assertTrue( remove_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback ) );
 
-		$this->assertContains('<label for="gv-page_size">', $future );
+		$this->assertStringContainsString('<label for="gv-page_size">', $future );
 
 		add_filter( 'gravityview/widget/page_size/settings', $test_settings_filter = function( $settings ) {
 			$settings['label'] = '';
@@ -123,7 +123,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		});
 
 		$future = $renderer->render( $view );
-		$this->assertNotContains('<label for="gv-page_size">', $future );
+		$this->assertStringNotContainsString('<label for="gv-page_size">', $future );
 
 		add_filter( 'gravityview/widget/page_size/settings', $test_settings_filter = function( $settings ) {
 			$settings['label'] = '<em>Sanitize Me Labels!</em>';
@@ -131,7 +131,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		});
 
 		$future = $renderer->render( $view );
-		$this->assertContains( esc_html( '<em>Sanitize Me Labels!</em>' ), $future );
+		$this->assertStringContainsString( esc_html( '<em>Sanitize Me Labels!</em>' ), $future );
 
 		add_filter( 'gravityview/widget/page_size/settings', $test_settings_filter = function( $settings ) {
 			$settings['default_choice_text'] = 'Make a choice, me matey';
@@ -139,13 +139,13 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		});
 
 		$future = $renderer->render( $view );
-		$this->assertContains( '<option value="">Make a choice, me matey</option>', $future );
+		$this->assertStringContainsString( '<option value="">Make a choice, me matey</option>', $future );
 
 		$_GET['page_size'] = 100;
 		$_GET['filter_1_4'] = '\'Sanitize & Me!"';
 
 		$future = $renderer->render( $view );
-		$this->assertContains( '<input type="hidden" name="filter_1_4" value="&#039;Sanitize &amp; Me!&quot;" />', $future );
+		$this->assertStringContainsString( '<input type="hidden" name="filter_1_4" value="&#039;Sanitize &amp; Me!&quot;" />', $future );
 
 		remove_all_filters( 'gravityview/widget/page_size/settings' );
     }
@@ -279,7 +279,7 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		}
 
 		$future = $renderer->render( $view );
-		$this->assertContains( 'gv-page_size', $future );
+		$this->assertStringContainsString( 'gv-page_size', $future );
 
 		add_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback = function( $sizes ) {
 			$sizes[] = array( 'value' => 7, 'text' => '7 entries per page' );
@@ -287,18 +287,18 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		} );
 
 		$future = $renderer->render( $view );
-		$this->assertContains( '[100] Some text in a textarea', $future );
-		$this->assertContains( '[76] Some text in a textarea', $future );
-		$this->assertNotContains( '[1] Some text in a textarea', $future );
+		$this->assertStringContainsString( '[100] Some text in a textarea', $future );
+		$this->assertStringContainsString( '[76] Some text in a textarea', $future );
+		$this->assertStringNotContainsString( '[1] Some text in a textarea', $future );
 
 		$_GET['page_size'] = 7;
         $view = \GV\View::from_post( $post );
 
 		$future = $renderer->render( $view );
-		$this->assertContains( "selected='selected'>7 entries per page", $future );
-		$this->assertContains( '[100] Some text in a textarea', $future );
-		$this->assertContains( '[94] Some text in a textarea', $future );
-		$this->assertNotContains( '[93] Some text in a textarea', $future );
+		$this->assertStringContainsString( "selected='selected'>7 entries per page", $future );
+		$this->assertStringContainsString( '[100] Some text in a textarea', $future );
+		$this->assertStringContainsString( '[94] Some text in a textarea', $future );
+		$this->assertStringNotContainsString( '[93] Some text in a textarea', $future );
 
 		$this->assertTrue( remove_filter( 'gravityview/widget/page_size/page_sizes', $page_sizes_callback ) );
     }
@@ -347,14 +347,14 @@ class GravityView_Widget_Page_Size_Test extends GV_UnitTestCase {
 		}
 
 		$future = $renderer->render( $view );
-		$this->assertNotContains( 'gv-page_size', $future );
+		$this->assertStringNotContainsString( 'gv-page_size', $future );
 
 		$_GET['page_size'] = 10;
         $view = \GV\View::from_post( $post );
 
 		$future = $renderer->render( $view );
-		$this->assertContains( '[100] Some text in a textarea', $future );
-		$this->assertContains( '[76] Some text in a textarea', $future );
-		$this->assertNotContains( '[1] Some text in a textarea', $future );
+		$this->assertStringContainsString( '[100] Some text in a textarea', $future );
+		$this->assertStringContainsString( '[76] Some text in a textarea', $future );
+		$this->assertStringNotContainsString( '[1] Some text in a textarea', $future );
     }
 }

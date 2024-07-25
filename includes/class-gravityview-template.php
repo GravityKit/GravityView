@@ -18,6 +18,7 @@ abstract class GravityView_Template {
 	 * @type string $label - template nicename (admin)
 	 * @type string $description - short about text (admin)
 	 * @type string $logo - template icon (admin)
+	 * @type string $icon - template icon (admin)
 	 * @type string $preview - template image for previewing (admin)
 	 * @type string $buy_source - url source for buying this template
 	 * @type string $preset_form - path to Gravity Form form XML file
@@ -102,7 +103,7 @@ abstract class GravityView_Template {
 			'preview'       => '',
 			'buy_source'    => '',
 			'preset_form'   => '',
-			'preset_fields' => ''
+			'preset_fields' => '',
 		);
 
 		$this->settings = wp_parse_args( $settings, $defaults );
@@ -131,7 +132,7 @@ abstract class GravityView_Template {
 	 *
 	 * @access protected
 	 *
-	 * @param array $areas
+	 * @param array  $areas
 	 * @param string $template (default: '')
 	 *
 	 * @return array Array of active areas
@@ -156,14 +157,14 @@ abstract class GravityView_Template {
 	/**
 	 * Assign template specific field options
 	 *
-	 * @param array $options (default: array())
-	 * @param string $template (default: '')
-	 * @param string $field_id key for the field
+	 * @param array        $options (default: array())
+	 * @param string       $template (default: '')
+	 * @param string       $field_id key for the field
 	 * @param  string|array $context Context for the field; `directory` or `single` for example.
 	 *
 	 * @return array Array of field options
 	 */
-	public function assign_field_options( $field_options, $template_id, $field_id = NULL, $context = 'directory', $input_type = '' ) {
+	public function assign_field_options( $field_options, $template_id, $field_id = null, $context = 'directory', $input_type = '' ) {
 
 		if ( $this->template_id === $template_id ) {
 
@@ -193,7 +194,7 @@ abstract class GravityView_Template {
 	 * @return string                Path to XML file
 	 */
 	public function assign_form_xml( $xml = '', $template = '' ) {
-		if ( $this->settings['type'] === 'preset' && ! empty( $this->settings['preset_form'] ) && $this->template_id === $template ) {
+		if ( 'preset' === $this->settings['type'] && ! empty( $this->settings['preset_form'] ) && $this->template_id === $template ) {
 			return $this->settings['preset_form'];
 		}
 
@@ -207,7 +208,7 @@ abstract class GravityView_Template {
 	 * @return string                Path to XML file
 	 */
 	public function assign_fields_xml( $xml = '', $template = '' ) {
-		if ( $this->settings['type'] === 'preset' && ! empty( $this->settings['preset_fields'] ) && $this->template_id === $template ) {
+		if ( 'preset' === $this->settings['type'] && ! empty( $this->settings['preset_fields'] ) && $this->template_id === $template ) {
 			return $this->settings['preset_fields'];
 		}
 
@@ -248,5 +249,4 @@ abstract class GravityView_Template {
 			wp_register_style( 'gravityview_style_' . $this->template_id, $this->settings['css_source'], array(), GV_PLUGIN_VERSION, 'all' );
 		}
 	}
-
 }

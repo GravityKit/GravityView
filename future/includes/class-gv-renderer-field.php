@@ -16,12 +16,12 @@ class Field_Renderer extends Renderer {
 	/**
 	 * Renders a \GV\Field instance.
 	 *
-	 * @param \GV\Field $request   The field.
-	 * @param \GV\View $view       The view for this context if applicable.
-	 * @param \GV\Source $source   The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry     The entry for this context if applicable.
+	 * @param \GV\Field   $request   The field.
+	 * @param \GV\View    $view       The view for this context if applicable.
+	 * @param \GV\Source  $source   The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry     The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
-	 * @param string $class        The field template class. Default: \GV\Field_HTML_Template'.
+	 * @param string      $class        The field template class. Default: \GV\Field_HTML_Template'.
 	 *
 	 * @api
 	 * @since 2.0
@@ -40,7 +40,8 @@ class Field_Renderer extends Renderer {
 		}
 
 		/**
-		 * @filter `gravityview/template/field/class` Filter the template class that is about to be used to render the view.
+		 * Filter the template class that is about to be used to render the view.
+		 *
 		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\Field_HTML_Template.
 		 * @param \GV\Field $field The field about to be rendered.

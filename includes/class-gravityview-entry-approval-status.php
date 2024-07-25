@@ -3,8 +3,8 @@
  * @file class-gravityview-entry-approval-status.php
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      https://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      https://www.gravitykit.com
  * @copyright Copyright 2016, Katz Web Services, Inc.
  *
  * @since 1.18
@@ -50,7 +50,7 @@ final class GravityView_Entry_Approval_Status {
 	 * @return array
 	 */
 	private static function get_choices() {
-		return array(
+		$choices = array(
 			'disapproved' => array(
 				'value'  => self::DISAPPROVED,
 				'label'  => esc_html__( 'Disapproved', 'gk-gravityview' ),
@@ -58,11 +58,11 @@ final class GravityView_Entry_Approval_Status {
 				'title'  => esc_html__( 'Entry not approved for directory viewing. Click to approve this entry.', 'gk-gravityview' ),
 			),
 			'approved'    => array(
-				'value'  => self::APPROVED,
-				'label'  => esc_html__( 'Approved', 'gk-gravityview' ),
-				'action' => esc_html__( 'Approve', 'gk-gravityview' ),
-				'title'  => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
-				'title_popover'  => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
+				'value'         => self::APPROVED,
+				'label'         => esc_html__( 'Approved', 'gk-gravityview' ),
+				'action'        => esc_html__( 'Approve', 'gk-gravityview' ),
+				'title'         => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
+				'title_popover' => esc_html__( 'Entry approved for directory viewing. Click to disapprove this entry.', 'gk-gravityview' ),
 			),
 			'unapproved'  => array(
 				'value'  => self::UNAPPROVED,
@@ -71,6 +71,19 @@ final class GravityView_Entry_Approval_Status {
 				'title'  => esc_html__( 'Entry not yet reviewed. Click to approve this entry.', 'gk-gravityview' ),
 			),
 		);
+
+		/**
+		 * Modify the entry approval status choices.
+		 *
+		 * Do not modify the array keys or the `value` key! Only modify the `label`, `action`, and `title` keys!
+		 *
+		 * @since TODO
+		 *
+		 * @param array $choices Array of entry approval statuses.
+		 */
+		$choices = apply_filters( 'gk/gravityview/entry-approval/choices', $choices );
+
+		return $choices;
 	}
 
 	/**
@@ -114,12 +127,12 @@ final class GravityView_Entry_Approval_Status {
 		$new_value = $old_value;
 
 		// Meta value does not exist yet
-		if( false === $old_value ) {
+		if ( false === $old_value ) {
 			return self::UNAPPROVED;
 		}
 
 		// Meta value does not exist yet
-		if( true === $old_value ) {
+		if ( true === $old_value ) {
 			return self::APPROVED;
 		}
 
@@ -131,7 +144,7 @@ final class GravityView_Entry_Approval_Status {
 				$new_value = self::APPROVED;
 				break;
 
-			//Disapproved values
+			// Disapproved values
 			case '0':
 			case '2':
 				$new_value = self::DISAPPROVED;
@@ -156,7 +169,7 @@ final class GravityView_Entry_Approval_Status {
 	 *
 	 * @return bool True: value is valid; false: value is not valid
 	 */
-	public static function is_valid( $value = NULL ) {
+	public static function is_valid( $value = null ) {
 
 		if ( ! is_scalar( $value ) || is_null( $value ) ) {
 			return false;
@@ -239,7 +252,7 @@ final class GravityView_Entry_Approval_Status {
 	 * @since 1.18
 	 *
 	 * @param int|string $status Valid status value or key (1 or "approved")
-	 * @param string $attr_key Key name for the "value", "label", "action", "title". If "key", returns the matched key instead of value.
+	 * @param string     $attr_key Key name for the "value", "label", "action", "title". If "key", returns the matched key instead of value.
 	 *
 	 * @return false|string False if match isn't not found
 	 */
@@ -250,8 +263,7 @@ final class GravityView_Entry_Approval_Status {
 
 			// Is the passed status value the same as the choice value or key?
 			if ( $status === $choice['value'] || $status === $key ) {
-
-				if( 'key' === $attr_key ) {
+				if ( 'key' === $attr_key ) {
 					return $key;
 				} else {
 					return \GV\Utils::get( $choice, $attr_key, false );
@@ -273,6 +285,19 @@ final class GravityView_Entry_Approval_Status {
 	 */
 	public static function get_label( $value_or_key ) {
 		return self::choice_pluck( $value_or_key, 'label' );
+	}
+
+	/**
+	 * Get the label for a specific approval value
+	 *
+	 * @since 2.17
+	 *
+	 * @param int|string $value_or_key Valid status value or key (1 or "approved")
+	 *
+	 * @return string|false Action of value (eg: "Reset Approval"). If invalid value, return false.
+	 */
+	public static function get_action( $value_or_key ) {
+		return self::choice_pluck( $value_or_key, 'action' );
 	}
 
 	/**
@@ -311,5 +336,4 @@ final class GravityView_Entry_Approval_Status {
 	public static function get_key( $value ) {
 		return self::choice_pluck( $value, 'key' );
 	}
-
 }

@@ -3,8 +3,8 @@
  *
  * @package   GravityView
  * @license   GPL2+
- * @author    GravityView <hello@gravityview.co>
- * @link      http://gravityview.co
+ * @author    GravityKit <hello@gravitykit.com>
+ * @link      http://www.gravitykit.com
  * @copyright Copyright 2014, Katz Web Services, Inc.
  *
  * @since 1.0.0
@@ -14,7 +14,7 @@
 @import "admin-tooltips";
 @import "admin-metabox";
 @import "admin-merge-tags";
-
+@import "view-dropdown";
 
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
@@ -23,6 +23,14 @@
 		display: table;
 		clear: both;
 	}
+}
+
+.gk-large-icon {
+	font-size: 24px;
+	height: 24px;
+	width: 24px;
+	vertical-align: top;
+	overflow: hidden;
 }
 
 $dismiss-red: #C62D2D;
@@ -138,7 +146,9 @@ $gv-overlay-index: 10000;
 
 /* GV Sections
 --------------------------------------- */
-
+.gv-section {
+	position: relative;
+}
 .gv-section:before,
 .gv-section:after {
 	content: " ";
@@ -243,7 +253,7 @@ $gv-overlay-index: 10000;
 			padding: .5em;
 			margin-bottom: 0;
 
-			.rtl & {
+			html[dir=rtl] & {
 				right: 0;
 				left: auto;
 			}
@@ -343,7 +353,7 @@ $gv-overlay-index: 10000;
 }
 
 #gv_switch_view_button {
-	display: inline-block;
+	display: none!important;
 }
 
 #gravityview_select_template {
@@ -371,7 +381,6 @@ $gv-overlay-index: 10000;
  */
 
 #gravityview_settings {
-
 	th {
 		white-space: nowrap;
 		width: 30%;
@@ -379,6 +388,10 @@ $gv-overlay-index: 10000;
 		max-width: 200px; // Default th width in forms.css
 		padding: 16px 10px;
 	}
+
+    #gravityview_advanced th {
+      white-space: normal;
+    }
 
 	// Stack label and values in smaller viewport
 	@media (max-width: 1199px) {
@@ -433,6 +446,11 @@ $gv-overlay-index: 10000;
 		}
 	}
 
+	.howto {
+		margin: .25em 0 .5em;
+		font-weight: normal;
+	}
+
 	li .nav-tab {
 		border-radius: 0;
 	}
@@ -468,6 +486,7 @@ $gv-overlay-index: 10000;
 	> .inside {
 		padding: 0;
 		border-radius: 5px;
+		overflow: visible;
 	}
 	#gv-view-configuration-tabs {
 		padding: 0;
@@ -490,7 +509,7 @@ $gv-overlay-index: 10000;
 	padding: 6px .5em 6px 1em; // Align the text to the gv-field edge and the button to the container edge
 	cursor: pointer;
 
-	.rtl & {
+	html[dir=rtl] & {
 		padding: 6px 1em 6px .5em;
 	}
 
@@ -556,7 +575,50 @@ $gv-overlay-index: 10000;
 
 .post-type-gravityview .CodeMirror {
 	height: 15.75em; // 10 visible rows
+	max-width: 690px!important;
 }
+
+.gform-admin .gform-dropdown--merge-tags .gform-dropdown__container {
+	z-index: $gv-overlay-index + 2;
+}
+
+#gk-settings-link {
+	color: $color-aaa;
+	position: relative;
+	float: right;
+	top: 1em;
+	margin-left: .5em;
+	margin-right: 0;
+
+	html[dir=rtl] & {
+		margin-right: .5em;
+		margin-left: 0;
+		float: left;
+	}
+	background-color: transparent;
+	text-decoration: none;
+	border: none;
+
+	.dashicons {
+		@extend .gk-large-icon;
+	}
+	&:visited {
+		color: $color-aaa;
+	}
+	&:hover {
+		color: $color-444;
+	}
+	&:active {
+		color: $color-222;
+	}
+
+	@media (max-width: 850px) {
+		display: block;
+		top: auto;
+	}
+}
+
+
 
 /** View configuration tabs */
 .post-type-gravityview .ui-tabs {
@@ -569,7 +631,7 @@ $gv-overlay-index: 10000;
 	#gv-view-configuration-tabs-tooltip {
 		position: absolute;
 		right: 0;
-		.rtl & {
+		html[dir=rtl] & {
 			right: auto;
 			left: 0;
 		}
@@ -596,7 +658,7 @@ $gv-overlay-index: 10000;
 			top: 2px;
 			margin: 0 .5em 1px 0;
 
-			.rtl & {
+			[dir=rtl] & {
 				float: right;
 				margin: 0 0 1px .5em;
 			}
@@ -618,7 +680,7 @@ $gv-overlay-index: 10000;
 				padding: .666em 1.333em;
 				margin: 0 5px 0 0;
 
-				.rtl & {
+				html[dir=rtl] & {
 					float: right;
 					margin: 0 0 0 5px;
 				}
@@ -643,15 +705,11 @@ $gv-overlay-index: 10000;
 
 			// Non-active state
 		  .dashicons,
+		  .gform-icon,
 		  [class^='gv-icon-'],
 		  [class^='gv-icon-']:before {
 				color: $color-aaa;
-
-				font-size: 24px;
-				height: 24px;
-				width: 24px;
-				vertical-align: top;
-				overflow: hidden;
+			    @extend .gk-large-icon;
 			}
 
 			&.tab-not-configured .dashicons {
@@ -665,6 +723,7 @@ $gv-overlay-index: 10000;
 				top: -1em;
 				display: block;
 
+				.gform-icon,
 				.dashicons {
 					font-size: 18px;
 					height: 18px;
@@ -697,6 +756,7 @@ $gv-overlay-index: 10000;
 				// since it's bolder.
 				.dashicons,
 				.dashicons.tab-icon,
+				.gform-icon,
 				[class^='gv-icon-'],
 				[class^='gv-icon-']:before {
 					color: $color-444;
@@ -712,6 +772,7 @@ $gv-overlay-index: 10000;
 					background-color: rgba( 255, 255, 255, .5 );
 					color: $color-222;
 				}
+				.gform-icon,
 				.dashicons,
 				[class^='gv-icon-'],
 				[class^='gv-icon-']:before {
@@ -722,9 +783,10 @@ $gv-overlay-index: 10000;
 			.configuration-status-icons {
 				display: inline-block;
 				padding-left: .666em;
-				.rtl & {
+				html[dir=rtl] & {
 					padding-right: .666em;
 				}
+				.gform-icon,
 				.dashicons {
 					display: inline-block;
 				}
@@ -735,7 +797,7 @@ $gv-overlay-index: 10000;
 
 					padding-right: 0;
 
-					.rtl & {
+					html[dir=rtl] & {
 						padding-left: 0;
 					}
 
@@ -845,7 +907,7 @@ hr {
 		text-align: left;
 
 		margin: 0 12px 6px 0;
-		.rtl & {
+		html[dir=rtl] & {
 			margin: 0 0 6px 12px;
 			text-align: right;
 		}
@@ -925,6 +987,10 @@ hr {
 
 	}
 
+	// Prevent focus of this non-working button.
+	.gv-add-field {
+		display: none;
+	}
 }
 
 // End .active-drop
@@ -953,7 +1019,6 @@ hr {
 .gv-fields {
 	cursor: move;
 	border: 1px solid $color-ddd;
-	background: #f7f7f7;
 	background: $color-light-grey-200;
 	overflow: hidden;
 	margin: 8px 0;
@@ -978,7 +1043,7 @@ hr {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
 
-			.rtl & {
+			html[dir=rtl] & {
 				margin: -2px 0 0 6px;
 			}
 		}
@@ -994,7 +1059,7 @@ hr {
 		.gv-indicator-icon {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
-			.rtl & {
+			html[dir=rtl] & {
 				margin: -2px 0 0 6px;
 			}
 		}
@@ -1017,7 +1082,7 @@ hr {
 		text-align: left;
 		position: relative;
 
-		.rtl & {
+		html[dir=rtl] & {
 			float: right;
 			text-align: right;
 		}
@@ -1031,6 +1096,7 @@ hr {
 				max-width: 100%;
 			}
 
+			.gform-icon,
 			.dashicons {
 				margin-top: .2em;
 				margin-bottom: -.2em;
@@ -1054,8 +1120,20 @@ hr {
 		box-sizing: border-box;
 	}
 
-	&:hover {
 
+	button.gv-field-duplicate {
+		border: 0;
+		cursor: pointer;
+		position: absolute;
+		left: -9999px;
+		background: none;
+		&:hover, &:focus {
+			color: #136cb9;
+			position: static;
+		}
+	}
+
+	&:hover {
 		border-color: $color-888;
 
 		.gv-field-controls .dashicons {
@@ -1065,6 +1143,55 @@ hr {
 		h5 small,
 		.gv-field-info {
 			color: #636D77;
+		}
+
+		button.gv-field-duplicate {
+			position: static;
+		}
+	}
+
+	.gv-add-field-before {
+		position: absolute;
+		height: 10px;
+		left: 10px;
+		border: 0;
+		color: #2271b1;
+		z-index: 10;
+		margin-top: -10px;
+		right: 10px;
+		border-radius: 4px;
+		cursor: pointer;
+		background: none;
+		text-decoration: none;
+
+		.dashicons {
+			position: absolute;
+			top: -5px;
+			margin-left: -10px;
+			background: #FFF;
+			border-radius: 100%;
+			visibility: hidden;
+		}
+
+		&::before {
+			display: block;
+			height: 2px;
+			position: absolute;
+			left: 0;
+			right: 0;
+			background-color: #2271b1;
+			content: ' ';
+			border-radius: 4px;
+			top: 4px;
+			visibility: hidden;
+		}
+
+		&:hover, &:focus {
+			.dashicons,
+			&::before {
+				visibility: visible;
+				text-decoration: none;
+			}
 		}
 	}
 
@@ -1080,12 +1207,13 @@ hr {
 
 		transition: all 200ms;
 
-		.rtl & {
+		html[dir=rtl] & {
 			margin: 0 0 0 8px;
 			border-right: 1px solid transparent;
 			border-left: 1px solid $color-ddd;
 		}
 
+		.gform-icon,
 		.dashicons {
 			transition: transform 200ms;
 		}
@@ -1118,7 +1246,7 @@ hr {
 			margin: 0;
 			background-color: transparent;
 
-			.rtl & {
+			html[dir=rtl] & {
 				left: -3px;
 				right: auto;
 			}
@@ -1130,7 +1258,7 @@ hr {
 				border-right-color: transparent;
 				border-left: 1px solid $color-ddd;
 
-				.rtl & {
+				html[dir=rtl] & {
 					border-left: none;
 					border-right: 1px solid $color-ddd;
 				}
@@ -1142,6 +1270,7 @@ hr {
 			}
 		}
 
+		.gform-icon,
 		.dashicons {
 
 			width: 20px; // Give a larger click target
@@ -1179,7 +1308,7 @@ hr {
 		display: none;
 		text-align: left;
 
-		.rtl & {
+		html[dir=rtl] & {
 			text-align: right;
 		}
 
@@ -1280,7 +1409,7 @@ $dialog-button-padding: 5px;
 		font-weight: 300;
 		font-size: 1.5rem;
 
-		.rtl & {
+		html[dir=rtl] & {
 			text-align: right;
 		}
 	}
@@ -1308,6 +1437,7 @@ $dialog-button-padding: 5px;
 		padding: 0;
 		color: $color-666;
 
+		.gform-icon,
 		.dashicons {
 			margin-top: .1em;
 		}
@@ -1331,7 +1461,7 @@ $dialog-button-padding: 5px;
 			align-self: flex-start;
 			flex-shrink: 1;
 
-			.rtl & {
+			html[dir=rtl] & {
 				padding-left: 2%;
 				padding-right: 0;
 			}
@@ -1350,7 +1480,7 @@ $dialog-button-padding: 5px;
 			}
 
 			padding-right: .33rem;
-			.rtl & {
+			html[dir=rtl] & {
 				padding-left: .33rem;
 			}
 		}
@@ -1379,7 +1509,7 @@ $dialog-button-padding: 5px;
 		border-radius: 3px;
 		text-indent: -99999px;
 
-		.rtl & {
+		html[dir=rtl] & {
 			right: auto;
 			left: $dialog-button-padding;
 		}
@@ -1424,7 +1554,7 @@ $dialog-button-padding: 5px;
 		margin-left: -$dialog-padding;
 		margin-right: -$dialog-padding;
 
-		.rtl & {
+		html[dir=rtl] & {
 			padding-left: 15px;
 			padding-right: $gutter-width;
 		}
@@ -1455,7 +1585,7 @@ $dialog-button-padding: 5px;
 			color: $color-222;
 			font-weight: 200;
 
-			.rtl & {
+			html[dir=rtl] & {
 				right: $dialog-padding;
 				left: auto;
 			}
@@ -1491,7 +1621,7 @@ $dialog-button-padding: 5px;
 	padding: 10px 0 !important;
 	text-align: left;
 
-	.rtl & {
+	html[dir=rtl] & {
 		text-align: right;
 	}
 
@@ -1517,7 +1647,7 @@ $dialog-button-padding: 5px;
 		text-align: right;
 		color: $color-ddd;
 
-		.rtl & {
+		html[dir=rtl] & {
 			text-align: left;
 			float: left;
 		}
@@ -1533,7 +1663,8 @@ $dialog-button-padding: 5px;
 		font-size: 1.1em;
 		clear: left;
 
-		// Hide search mode by default
+		// Hide hidden containers and search mode by default
+		&.hidden,
 		&.gv-setting-container-search_mode {
 		  display: none;
 		}
@@ -1650,7 +1781,7 @@ $dialog-button-padding: 5px;
 		td, th {
 			text-align: left;
 
-			.rtl & {
+			html[dir=rtl] & {
 				text-align: right;
 			}
 
@@ -1849,20 +1980,24 @@ $dialog-button-padding: 5px;
 	}
 }
 
-.gv-shortcode {
-	.dashicons-editor-code {
-		color: #888;
-		left: -1px;
-		font-size: 20px;
-		line-height: 1;
-		.rtl & {
-			left: auto;
-			right: -1px;
-		}
-	}
-	.rtl & .code.widefat {
-		text-align: right;
-	}
+/** The "Direct Access" section in the Publish metabox */
+#gv-direct-access:before {
+	font: normal 20px/1 Dashicons;
+	speak: never;
+	display: inline-block;
+	margin-left: -1px;
+	padding-right: 3px;
+	vertical-align: top;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+#gv-direct-access:before {
+	content: "\f528";
+	color: $color-yellow-40;
+}
+#gv-direct-access.embed-only:before {
+	content: "\f160";
+	color: $color-green-40;
 }
 
 .button.button-link.gv-add-field {
@@ -1890,6 +2025,7 @@ $dialog-button-padding: 5px;
 
 .gv-field-label {
 	.gv-icon,
+	.gform-icon,
 	.dashicons {
 		display: none;
 	}
@@ -1900,10 +2036,16 @@ $dialog-button-padding: 5px;
 	.dashicons-admin-comments,
 	.dashicons-yes-alt,
 	.dashicons-editor-code,
+	&[data-original-title="Gravity Forms"] .background-icon,
+	&[data-original-title="GravityView View"] .background-icon,
 	.dashicons-lock,
 	.dashicons-warning,
+	.dashicons-search,
 	.dashicons-media-default {
-		display: inline-block;
+		display: inline-block !important;
+		background-repeat: no-repeat;
+		background-size: contain;
+		background-position: center center;
 	}
 }
 
@@ -1923,7 +2065,7 @@ $dialog-button-padding: 5px;
 
 /**
  * Hidden labels in the merge tag picker end up not breaking the flow.
- * @see https://i.gravityview.co/R1oaj9+
+ * @see https://i.gravitykit.com/R1oaj9+
  */
 .gform-admin .gform-visually-hidden,
 #gv-view-configuration-tabs .gform-visually-hidden {
@@ -1936,4 +2078,23 @@ $dialog-button-padding: 5px;
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+}
+
+.gv-section-header {
+	display: flex;
+	justify-content: space-between;
+	margin-top: -1em;
+
+	h4 {
+		flex: 1;
+	}
+
+	.view-template-select {
+		flex: 1;
+		height: 42px;
+		width: 100%;
+		position: relative;
+		margin: 1rem 0 1rem 1rem;
+		flex-shrink: 0;
+	}
 }

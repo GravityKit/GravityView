@@ -29,11 +29,10 @@ class GravityView_Field_HTML extends GravityView_Field {
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
-		unset ( $field_options['search_filter'], $field_options['show_as_link'] );
+		unset( $field_options['search_filter'], $field_options['show_as_link'] );
 
 		return $field_options;
 	}
-
 }
 
-new GravityView_Field_HTML;
+new GravityView_Field_HTML();

@@ -27,4 +27,4 @@ class GravityView_Field_IP extends GravityView_Field {
 	}
 }
 
-new GravityView_Field_IP;
+new GravityView_Field_IP();

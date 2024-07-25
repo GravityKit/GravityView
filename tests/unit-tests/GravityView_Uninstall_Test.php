@@ -9,7 +9,7 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Uninstall_Test extends GV_UnitTestCase {
 
-	function setUp() {
+	function setUp() : void {
 		parent::setUp();
 
 		require_once GV_Unit_Tests_Bootstrap::instance()->plugin_dir . '/includes/class-gravityview-settings.php';

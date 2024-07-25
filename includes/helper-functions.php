@@ -1,6 +1,7 @@
 <?php
 /**
  * Functions that don't require GravityView or Gravity Forms API access but are used in the plugin to extend PHP and WP functions
+ *
  * @since 1.12
  */
 
@@ -32,19 +33,19 @@ function gravityview_css_url( $css_file = '', $dir_path = '' ) {
 	// If there's an overriding CSS file in the current template folder, use it.
 	$template_css_path = trailingslashit( get_stylesheet_directory() ) . 'gravityview/css/' . $css_file;
 
-	if( file_exists( $template_css_path ) ) {
+	if ( file_exists( $template_css_path ) ) {
 		$path = trailingslashit( get_stylesheet_directory_uri() ) . 'gravityview/css/' . $css_file;
 		gravityview()->log->debug( 'Stylesheet override ({css_file})', array( 'css_file' => esc_attr( $css_file ) ) );
 	} else {
 		// Default: use GravityView CSS file
 
 		// If no path is provided, assume default plugin templates CSS folder
-		if( '' === $dir_path ) {
+		if ( '' === $dir_path ) {
 			$dir_path = GRAVITYVIEW_DIR . 'templates/css/';
 		}
 
 		// plugins_url() expects a path to a file, not directory. We append a file to be stripped.
-		$path = plugins_url( $css_file, trailingslashit( $dir_path )  . 'stripped-by-plugin_basename.php' );
+		$path = plugins_url( $css_file, trailingslashit( $dir_path ) . 'stripped-by-plugin_basename.php' );
 	}
 
 	return $path;
@@ -62,7 +63,7 @@ function gravityview_css_url( $css_file = '', $dir_path = '' ) {
  * @return bool true: $mixed is *not* an empty string; false: $mixed *is* an empty string
  */
 function gravityview_is_not_empty_string( $mixed = '' ) {
-	return ( $mixed !== '' );
+	return ( '' !== $mixed );
 }
 
 /**
@@ -82,9 +83,9 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
 
 	$parsed_permalink = parse_url( get_permalink( $id ) );
 
-	$permalink_args =  isset( $parsed_permalink['query'] ) ? $parsed_permalink['query'] : false;
+	$permalink_args = isset( $parsed_permalink['query'] ) ? $parsed_permalink['query'] : false;
 
-	if( empty( $permalink_args ) ) {
+	if ( empty( $permalink_args ) ) {
 		return array();
 	}
 
@@ -100,8 +101,8 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
  * @see selected() WordPress core function
  *
  * @param string $value One of the values to compare
- * @param mixed $current (true) The other value to compare if not just true
- * @param bool $echo Whether to echo or just return the string
+ * @param mixed  $current (true) The other value to compare if not just true
+ * @param bool   $echo Whether to echo or just return the string
  * @param string $type The type of checked|selected|disabled we are doing
  *
  * @return string html attribute or empty string
@@ -109,15 +110,15 @@ function gravityview_get_permalink_query_args( $id = 0 ) {
 function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
 
 	$output = '';
-	if( is_array( $current ) ) {
-		if( in_array( $value, $current ) ) {
+	if ( is_array( $current ) ) {
+		if ( in_array( $value, $current ) ) {
 			$output = __checked_selected_helper( true, true, false, $type );
 		}
 	} else {
 		$output = __checked_selected_helper( $value, $current, false, $type );
 	}
 
-	if( $echo ) {
+	if ( $echo ) {
 		echo $output;
 	}
 
@@ -125,7 +126,7 @@ function gv_selected( $value, $current, $echo = true, $type = 'selected' ) {
 }
 
 
-if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
+if ( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 
 	/**
 	 * sanitize_html_class doesn't handle spaces (multiple classes). We remedy that.
@@ -171,7 +172,7 @@ if( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
  */
 function gravityview_strip_whitespace( $string ) {
 	$string = normalize_whitespace( $string );
-	return preg_replace('/[\r\n\t ]+/', ' ', $string );
+	return preg_replace( '/[\r\n\t ]+/', ' ', $string );
 }
 
 /**
@@ -181,16 +182,16 @@ function gravityview_strip_whitespace( $string ) {
  * @since 1.15 Added $object param
  *
  * @param string $file_path Full path to a file
- * @param mixed $object Pass pseudo-global to the included file
+ * @param mixed  $object Pass pseudo-global to the included file
  * @return string Included file contents
  */
-function gravityview_ob_include( $file_path, $object = NULL ) {
-	if( ! file_exists( $file_path ) ) {
+function gravityview_ob_include( $file_path, $object = null ) {
+	if ( ! file_exists( $file_path ) ) {
 		gravityview()->log->error( 'File path does not exist. {path}', array( 'path' => $file_path ) );
 		return '';
 	}
 	ob_start();
-	include( $file_path );
+	include $file_path;
 	return ob_get_clean();
 }
 
@@ -200,7 +201,7 @@ function gravityview_ob_include( $file_path, $object = NULL ) {
  * @since 1.12
  * @since 2.1 Added $class parameter
  *
- * @param int $height Height of the cutie in pixels
+ * @param int         $height Height of the cutie in pixels
  * @param null|string $css_class If defined, use the passed CSS class (can be empty string). Otherwise, use default alignleft (or alignright, based on RTL).
  *
  * @return string HTML image tag with floaty's cute mug on it
@@ -209,15 +210,15 @@ function gravityview_get_floaty( $height = 87, $css_class = null ) {
 
 	$width = $height * 0.7586206897;
 
-	if( function_exists('is_rtl') && is_rtl() ) {
-		$style = 'margin:10px 10px 10px 0; height='. $height .'px; width: '. $width .'px;';
+	if ( function_exists( 'is_rtl' ) && is_rtl() ) {
+		$style     = 'margin:10px 10px 10px 0; height=' . $height . 'px; width: ' . $width . 'px;';
 		$css_class = is_string( $css_class ) ? $css_class : 'alignright';
 	} else {
-		$style = 'margin:10px 10px 10px 0; height='. $height .'px; width: '. $width .'px;';
+		$style     = 'margin:10px 10px 10px 0; height=' . $height . 'px; width: ' . $width . 'px;';
 		$css_class = is_string( $css_class ) ? $css_class : 'alignleft';
 	}
 
-	return '<img src="'. esc_url( plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ) ) .'" class="'. gravityview_sanitize_html_class( $css_class ).'" height="'.intval( $height ).'" width="'.round( $width, 2 ).'" alt="The GravityView Astronaut Says:" style="'.$style.'" />';
+	return '<img src="' . esc_url( plugins_url( 'assets/images/astronaut-200x263.png', GRAVITYVIEW_FILE ) ) . '" class="' . gravityview_sanitize_html_class( $css_class ) . '" height="' . intval( $height ) . '" width="' . round( $width, 2 ) . '" alt="The GravityView Astronaut Says:" style="' . $style . '" />';
 }
 
 /**
@@ -233,27 +234,28 @@ function gravityview_get_floaty( $height = 87, $css_class = null ) {
  * @since 1.13
  *
  * @param int|float|string|double $number A number to format
- * @param int|string $decimals Optional. Precision of the number of decimal places. Default '' (use existing number of decimals)
- * @param boolean $separator Separate with dots or commas, etc. Default: true.
+ * @param int|string              $decimals Optional. Precision of the number of decimal places. Default '' (use existing number of decimals)
+ * @param boolean                 $separator Separate with dots or commas, etc. Default: true.
  *
  * @return string Converted number in string format.
  */
 function gravityview_number_format( $number, $decimals = '', $separator = true ) {
 	global $wp_locale;
 
-	if( '' === $decimals ) {
+	if ( '' === $decimals ) {
 
 		$decimal_point = isset( $wp_locale ) ? $wp_locale->number_format['decimal_point'] : '.';
 
 		/**
 		 * Calculate the position of the decimal point in the number
+		 *
 		 * @see http://stackoverflow.com/a/2430144/480856
 		 */
 		$decimals = strlen( substr( strrchr( $number, $decimal_point ), 1 ) );
 	}
 
 	if ( $separator ) {
-		$number = number_format_i18n( $number, (int)$decimals );
+		$number = number_format_i18n( $number, (int) $decimals );
 	} else {
 		$number = sprintf( "%.{$decimals}f", $number );
 	}
@@ -272,11 +274,10 @@ function gravityview_number_format( $number, $decimals = '', $separator = true )
  */
 function gravityview_format_link( $value = null ) {
 
-
 	$parts = parse_url( $value );
 
 	// No domain? Strange...show the original text.
-	if( empty( $parts['host'] ) ) {
+	if ( empty( $parts['host'] ) ) {
 		return $value;
 	}
 
@@ -284,44 +285,46 @@ function gravityview_format_link( $value = null ) {
 	$return = '';
 
 	/**
-	 * @filter `gravityview_anchor_text_striphttp` Strip scheme from the displayed URL?
+	 * Strip scheme from the displayed URL?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to strip the scheme. Return false to show scheme. (default: true)\n
 	 * If true: `http://example.com => example.com`
 	 */
-	if( false === apply_filters('gravityview_anchor_text_striphttp', true) ) {
+	if ( false === apply_filters( 'gravityview_anchor_text_striphttp', true ) ) {
 
-		if( isset( $parts['scheme'] ) ) {
+		if ( isset( $parts['scheme'] ) ) {
 			$return .= $parts['scheme'];
 		}
-
 	}
 
 	// The domain, which may contain a subdomain
 	$domain = $parts['host'];
 
 	/**
-	 * @filter `gravityview_anchor_text_stripwww` Strip www from the domain?
+	 * Strip www from the domain?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to strip www. Return false to show www. (default: true)\n
 	 * If true: `www.example.com => example.com`
 	 */
-	$strip_www = apply_filters('gravityview_anchor_text_stripwww', true );
+	$strip_www = apply_filters( 'gravityview_anchor_text_stripwww', true );
 
-	if( $strip_www ) {
-		$domain = str_replace('www.', '', $domain );
+	if ( $strip_www ) {
+		$domain = str_replace( 'www.', '', $domain );
 	}
 
 	/**
-	 * @filter `gravityview_anchor_text_nosubdomain` Strip subdomains from the domain?
+	 * Strip subdomains from the domain?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to strip subdomains. Return false to show subdomains. (default: true)\n
 	 * If true: `http://demo.example.com => example.com` \n
 	 * If false: `http://demo.example.com => demo.example.com`
 	 */
-	$strip_subdomains = apply_filters('gravityview_anchor_text_nosubdomain', true);
+	$strip_subdomains = apply_filters( 'gravityview_anchor_text_nosubdomain', true );
 
-	if( $strip_subdomains ) {
+	if ( $strip_subdomains ) {
 
 		$domain = _gravityview_strip_subdomain( $parts['host'] );
 
@@ -331,35 +334,36 @@ function gravityview_format_link( $value = null ) {
 	$return .= $domain;
 
 	/**
-	 * @filter `gravityview_anchor_text_rootonly` Display link path going only to the base directory, not a sub-directory or file?
+	 * Display link path going only to the base directory, not a sub-directory or file?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to enable "root only". Return false to show full path. (default: true)\n
 	 * If true: `http://example.com/sub/directory/page.html => example.com`  \n
 	 * If false: `http://example.com/sub/directory/page.html => example.com/sub/directory/page.html`
 	 */
-	$root_only = apply_filters('gravityview_anchor_text_rootonly', true);
+	$root_only = apply_filters( 'gravityview_anchor_text_rootonly', true );
 
-	if( empty( $root_only ) ) {
+	if ( empty( $root_only ) ) {
 
-		if( isset( $parts['path'] ) ) {
+		if ( isset( $parts['path'] ) ) {
 			$return .= $parts['path'];
 		}
 	}
 
 	/**
-	 * @filter `gravityview_anchor_text_noquerystring` Strip the query string from the end of the URL?
+	 * Strip the query string from the end of the URL?
+     *
 	 * @since 1.5.1
 	 * @param boolean $enable Whether to enable "root only". Return false to show full path. (default: true)\n
 	 * If true: `http://example.com/?query=example => example.com`
 	 */
-	$strip_query_string = apply_filters('gravityview_anchor_text_noquerystring', true );
+	$strip_query_string = apply_filters( 'gravityview_anchor_text_noquerystring', true );
 
-	if( empty( $strip_query_string ) ) {
+	if ( empty( $strip_query_string ) ) {
 
-		if( isset( $parts['query'] ) ) {
-			$return .= '?'.$parts['query'];
+		if ( isset( $parts['query'] ) ) {
+			$return .= '?' . $parts['query'];
 		}
-
 	}
 
 	return $return;
@@ -369,12 +373,13 @@ function gravityview_format_link( $value = null ) {
  * Do a _very_ basic match for second-level TLD domains, like `.co.uk`
  *
  * Ideally, we'd use https://github.com/jeremykendall/php-domain-parser to check for this, but it's too much work for such a basic functionality. Maybe if it's needed more in the future. So instead, we use [Basic matching regex](http://stackoverflow.com/a/12372310).
+ *
  * @param  string $domain Domain to check if it's a TLD or subdomain
  * @return string         Extracted domain if it has a subdomain
  */
 function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
 
-	if( preg_match("/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.(?:com\.|co\.|net\.|org\.|firm\.|me\.|school\.|law\.|gov\.|mod\.|msk\.|irkutsks\.|sa\.|act\.|police\.|plc\.|ac\.|tm\.|asso\.|biz\.|pro\.|cg\.|telememo\.)?[a-z\.]{2,6})$/i", $string_maybe_has_subdomain, $matches ) ) {
+	if ( preg_match( '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.(?:com\.|co\.|net\.|org\.|firm\.|me\.|school\.|law\.|gov\.|mod\.|msk\.|irkutsks\.|sa\.|act\.|police\.|plc\.|ac\.|tm\.|asso\.|biz\.|pro\.|cg\.|telememo\.)?[a-z\.]{2,6})$/i', $string_maybe_has_subdomain, $matches ) ) {
 		return $matches['domain'];
 	} else {
 		return $string_maybe_has_subdomain;
@@ -386,9 +391,9 @@ function _gravityview_strip_subdomain( $string_maybe_has_subdomain ) {
  *
  * @since 2.0
  *
- * @param mixed  $value Check whether this is not empty
- * @param bool $zero_is_empty Should the number zero be treated as an empty value? Default: `false`
- * @param bool $allow_string_booleans Whether to check if 'yes', 'true' => `true` and 'no', 'false' => `false`. Default: `false`
+ * @param mixed $value Check whether this is not empty
+ * @param bool  $zero_is_empty Should the number zero be treated as an empty value? Default: `false`
+ * @param bool  $allow_string_booleans Whether to check if 'yes', 'true' => `true` and 'no', 'false' => `false`. Default: `false`
  *
  * @return bool
  */
@@ -404,7 +409,7 @@ function gv_not_empty( $value, $zero_is_empty = false, $allow_string_booleans = 
  * Checks whether `false`, `null`, empty string, empty array, object with no vars defined
  *
  * @since 1.15.1
- * @param  mixed  $value Check whether this is empty
+ * @param  mixed   $value Check whether this is empty
  * @param boolean $zero_is_empty Should the number zero be treated as an empty value?
  * @param boolean $allow_string_booleans Whether to check if 'yes', 'true' => `true` and 'no', 'false' => `false`
  * @return boolean        True: empty; false: not empty
@@ -430,7 +435,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 		! isset( $value ) // If it's not set, it's empty!
 		|| false === $value
 		|| null === $value
-	    || '' === $value // Empty string
+		|| '' === $value // Empty string
 		|| array() === $value // Empty array
 		|| ( is_object( $value ) && ! get_object_vars( $value ) ) // Empty object
 	) {
@@ -444,7 +449,7 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
 
 		if ( in_array( $value, array( 'yes', 'true' ), true ) ) {
 			$value = true;
-		} else if( in_array( $value, array( 'no', 'false' ), true ) ) {
+		} elseif ( in_array( $value, array( 'no', 'false' ), true ) ) {
 			$value = false;
 		}
 	}
@@ -465,15 +470,15 @@ function gv_empty( $value, $zero_is_empty = true, $allow_string_booleans = true 
  * @see json_decode() for more information about the function parameters
  *
  * @param string $value The string that may be decoded
- * @param bool $assoc [optional] When `true`, returned objects will be converted into associative arrays
- * @param int $depth [optional] User specified recursion depth.
- * @param int $options [optional] Bitmask of JSON decode options. Used only on sites running PHP 5.4+
+ * @param bool   $assoc [optional] When `true`, returned objects will be converted into associative arrays
+ * @param int    $depth [optional] User specified recursion depth.
+ * @param int    $options [optional] Bitmask of JSON decode options. Used only on sites running PHP 5.4+
  *
  * @return array|mixed|object|string If $value is JSON, returns the response from `json_decode()`. Otherwise, returns original value.
  */
 function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 0 ) {
 
-	if( ! is_string( $value ) ) {
+	if ( ! is_string( $value ) ) {
 		return $value;
 	}
 
@@ -484,12 +489,12 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
 	}
 
 	// There was a JSON error (PHP 5.3+)
-	if( function_exists('json_last_error') && JSON_ERROR_NONE !== json_last_error() ) {
+	if ( function_exists( 'json_last_error' ) && JSON_ERROR_NONE !== json_last_error() ) {
 		return $value;
 	}
 
 	// It wasn't JSON (PHP < 5.3 fallback)
-	if( is_null( $decoded ) ) {
+	if ( is_null( $decoded ) ) {
 		return $value;
 	}
 
@@ -591,7 +596,8 @@ function gravityview_get_terms_choices( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	/**
-	 * @filter `gravityview_get_terms_choices_args` Modify the arguments passed to `get_terms()`
+	 * Modify the arguments passed to `get_terms()`.
+     *
 	 * @see get_terms()
 	 * @since 1.15.3
 	 */
@@ -605,7 +611,7 @@ function gravityview_get_terms_choices( $args = array() ) {
 		foreach ( $terms as $term_id => $term_name ) {
 			$choices[] = array(
 				'text'  => $term_name,
-				'value' => $term_id
+				'value' => $term_id,
 			);
 		}
 	}
@@ -627,7 +633,7 @@ function gravityview_get_terms_choices( $args = array() ) {
 function _gravityview_process_posted_fields() {
 	$fields = array();
 
-	if( !empty( $_POST['gv_fields'] ) ) {
+	if ( ! empty( $_POST['gv_fields'] ) ) {
 		if ( ! is_array( $_POST['gv_fields'] ) ) {
 
 			// We are not using parse_str() due to max_input_vars limitation with large View configurations
@@ -639,7 +645,6 @@ function _gravityview_process_posted_fields() {
 			} else {
 				gravityview()->log->error( 'No `fields` key was found after parsing $fields string', array( 'data' => $fields_holder ) );
 			}
-
 		} else {
 			$fields = $_POST['gv_fields'];
 		}
@@ -672,7 +677,7 @@ function gravityview_maybe_convert_date_string_to_timestamp( $value = '' ) {
 		return false;
 	}
 
-	if( false !== strpos( strtolower( $value ), "relative:") ) {
+	if ( false !== strpos( strtolower( $value ), 'relative:' ) ) {
 		$value = str_replace( 'relative:', '', $value );
 
 		$timestamp = strtotime( $value );

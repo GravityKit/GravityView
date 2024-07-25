@@ -71,6 +71,7 @@
     label {
       .howto {
         margin-top: 5px;
+        white-space: normal;
       }
     }
   }
@@ -133,6 +134,9 @@
       vertical-align: top;
       height: 3.5em;
       line-height: 1.5em;
+    }
+    textarea[rows] {
+	    height: auto;
     }
 
     input.button {

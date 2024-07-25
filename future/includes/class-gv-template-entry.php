@@ -23,18 +23,21 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 abstract class Entry_Template extends Template {
 	/**
 	 * Prefix for filter names.
+	 *
 	 * @var string
 	 */
 	protected $filter_prefix = 'gravityview/template/entries';
 
 	/**
 	 * Directory name where custom templates for this plugin should be found in the theme.
+	 *
 	 * @var string
 	 */
 	protected $theme_template_directory = 'gravityview/entries/';
 
 	/**
 	 * Directory name where the default templates for this plugin are found.
+	 *
 	 * @var string
 	 */
 	protected $plugin_template_directory = 'templates/entries/';
@@ -62,13 +65,13 @@ abstract class Entry_Template extends Template {
 	/**
 	 * Initializer.
 	 *
-	 * @param \GV\View $view The View connected to this template.
+	 * @param \GV\View             $view The View connected to this template.
 	 * @param \GV\Entry_Collection $entries A collection of entries for this view.
-	 * @param \GV\Request $request The request context.
+	 * @param \GV\Request          $request The request context.
 	 */
 	public function __construct( Entry $entry, View $view, Request $request ) {
-		$this->entry = $entry;
-		$this->view = $view;
+		$this->entry   = $entry;
+		$this->view    = $view;
 		$this->request = $request;
 
 		/** Add granular overrides. */
@@ -98,7 +101,7 @@ abstract class Entry_Template extends Template {
 	 * - table-footer.php
 	 *
 	 * @see  Gamajo_Template_Loader::get_template_file_names() Where the filter is
-	 * @param array $templates Existing list of templates.
+	 * @param array  $templates Existing list of templates.
 	 * @param string $slug      Name of the template base, example: `table`, `list`, `datatables`, `map`
 	 * @param string $name      Name of the template part, example: `body`, `footer`, `head`, `single`
 	 *
@@ -113,18 +116,18 @@ abstract class Entry_Template extends Template {
 		global $post;
 
 		if ( ! $this->request->is_view( false ) && $post ) {
-			$specifics []= sprintf( '%spost-%d-view-%d-entry-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->entry->ID, $slug_name );
-			$specifics []= sprintf( '%spost-%d-entry-%d-%s.php', $slug_dir, $post->ID, $this->entry->ID, $slug_name );
-			$specifics []= sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
-			$specifics []= sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
+			$specifics [] = sprintf( '%spost-%d-view-%d-entry-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $this->entry->ID, $slug_name );
+			$specifics [] = sprintf( '%spost-%d-entry-%d-%s.php', $slug_dir, $post->ID, $this->entry->ID, $slug_name );
+			$specifics [] = sprintf( '%spost-%d-view-%d-%s.php', $slug_dir, $post->ID, $this->view->ID, $slug_name );
+			$specifics [] = sprintf( '%spost-%d-%s.php', $slug_dir, $post->ID, $slug_name );
 		}
 
-		$specifics []= sprintf( '%sview-%d-entry-%d-%s.php', $slug_dir, $this->view->ID, $this->entry->ID, $slug_name );
-		$specifics []= sprintf( '%sform-%d-entry-%d-%s.php', $slug_dir, $this->view->form->ID, $this->entry->ID, $slug_name );
-		$specifics []= sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
-		$specifics []= sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
+		$specifics [] = sprintf( '%sview-%d-entry-%d-%s.php', $slug_dir, $this->view->ID, $this->entry->ID, $slug_name );
+		$specifics [] = sprintf( '%sform-%d-entry-%d-%s.php', $slug_dir, $this->view->form->ID, $this->entry->ID, $slug_name );
+		$specifics [] = sprintf( '%sview-%d-%s.php', $slug_dir, $this->view->ID, $slug_name );
+		$specifics [] = sprintf( '%sform-%d-%s.php', $slug_dir, $this->view->form->ID, $slug_name );
 
-		$specifics []= sprintf( '%sentry-%d-%s.php', $slug_dir, $this->entry->ID, $slug_name );
+		$specifics [] = sprintf( '%sentry-%d-%s.php', $slug_dir, $this->entry->ID, $slug_name );
 
 		return array_merge( $specifics, $templates );
 	}

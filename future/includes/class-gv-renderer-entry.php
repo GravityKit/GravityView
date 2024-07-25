@@ -16,8 +16,8 @@ class Entry_Renderer extends Renderer {
 	/**
 	 * Renders a single \GV\Entry instance.
 	 *
-	 * @param \GV\Entry $entry The Entry instance to render.
-	 * @param \GV\View $view The View connected to the entry.
+	 * @param \GV\Entry   $entry The Entry instance to render.
+	 * @param \GV\View    $view The View connected to the entry.
 	 * @param \GV\Request $request The request context we're currently in. Default: `gravityview()->request`
 	 *
 	 * @api
@@ -42,9 +42,9 @@ class Entry_Renderer extends Renderer {
 			return get_the_password_form( $view->ID );
 		}
 
-
 		/**
-		 * @action `gravityview_render_entry_{View ID}` Before rendering a single entry for a specific View ID
+		 * Before rendering a single entry for a specific View ID.
+		 *
 		 * @since 1.17
 		 *
 		 * @since 2.0
@@ -63,27 +63,41 @@ class Entry_Renderer extends Renderer {
 			}
 			foreach ( $entry->entries as $e ) {
 				if ( ! in_array( $e['form_id'], $form_ids ) ) {
-					gravityview()->log->error( 'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}', array( 'entry_id' => $e->ID, 'view_id' => $view->ID ) );
+					gravityview()->log->error(
+						'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}',
+						array(
+							'entry_id' => $e->ID,
+							'view_id'  => $view->ID,
+						)
+					);
 					return null;
 				}
 			}
-		} else if ( $view->form && $view->form->ID != $entry['form_id'] ) {
-			gravityview()->log->error( 'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}', array( 'entry_id' => $entry->ID, 'view_id' => $view->ID ) );
+		} elseif ( $view->form && $view->form->ID != $entry['form_id'] ) {
+			gravityview()->log->error(
+				'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}',
+				array(
+					'entry_id' => $entry->ID,
+					'view_id'  => $view->ID,
+				)
+			);
 			return null;
 		}
 
 		/**
-		 * @filter `gravityview_template_slug_{$template_id}` Modify the template slug about to be loaded in directory views.
+		 * Modify the template slug about to be loaded in directory views.
+		 *
 		 * @since 1.6
 		 * @param deprecated
 		 * @see The `gravityview_get_template_id` filter
 		 * @param string $slug Default: 'table'
 		 * @param string $view The current view context: single
 		 */
-		$template_slug = apply_filters( 'gravityview_template_slug_' . $view->settings->get( 'template' ), 'table', 'single' );
+		$template_slug = apply_filters( 'gravityview_template_slug_' . $view->settings->get( 'template_single_entry' ), 'table', 'single' );
 
 		/**
-		 * @filter `gravityview/template/entry/class` Filter the template class that is about to be used to render the entry.
+		 * Filters the template class that is about to be used to render the entry.
+		 *
 		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\Entry_Table_Template.
 		 * @param \GV\Entry $entry The entry about to be rendered.
@@ -97,9 +111,12 @@ class Entry_Renderer extends Renderer {
 		}
 		$template = new $class( $entry, $view, $request );
 
-		add_action( 'gravityview/template/after', $view_id_output = function( $context ) {
-			printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
-		} );
+		add_action(
+			'gravityview/template/after',
+			$view_id_output = function ( $context ) {
+				printf( '<input type="hidden" class="gravityview-view-id" value="%d">', $context->view->ID );
+			}
+		);
 
 		/** Mock the legacy state for the widgets and whatnot */
 		$entries = new Entry_Collection();

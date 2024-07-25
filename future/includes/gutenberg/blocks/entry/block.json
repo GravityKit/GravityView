@@ -1,0 +1,48 @@
+{
+  "apiVersion": 2,
+  "name": "gk-gravityview-blocks/entry",
+  "version": "1.0.0",
+  "title": "GravityView Entry",
+  "category": "gk-gravityview-blocks",
+  "description": "Display a GravityView entry.",
+  "keywords": [
+    "GravityView",
+    "form entry",
+    "entry"
+  ],
+  "supports": {
+    "html": false
+  },
+  "textdomain": "gk-gravityview",
+  "attributes": {
+    "viewId": {
+      "default": "",
+      "type": "string"
+    },
+    "secret": {
+      "default": null,
+      "type": "string"
+    },
+    "entryId": {
+      "default": "",
+      "type": "string"
+    },
+    "previewBlock": {
+      "type": "boolean",
+      "default": false
+    },
+    "previewAsShortcode": {
+      "type": "boolean",
+      "default": false
+    },
+    "showPreviewImage": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "example": {
+    "attributes": {
+      "showPreviewImage": true
+    }
+  }
+}

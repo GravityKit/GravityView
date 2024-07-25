@@ -18,6 +18,13 @@ class Internal_Field extends Field {
 	public $field;
 
 	/**
+	 * The field type.
+	 *
+	 * @var string
+	 */
+	public $type;
+
+	/**
 	 * Create self from a configuration array.
 	 *
 	 * @param array $configuration The configuration array.
@@ -30,7 +37,13 @@ class Internal_Field extends Field {
 	public static function from_configuration( $configuration ) {
 
 		if ( empty( $configuration['id'] ) || ! is_string( $configuration['id'] ) ) {
-			gravityview()->log->error( 'Invalid configuration[id] supplied.' );
+			gravityview()->log->error(
+				'Invalid configuration[id] supplied for internal field: {id}',
+				array(
+					'data' => $configuration,
+					'id'   => \GV\Utils::get( $configuration, 'id' ),
+				)
+			);
 			return null;
 		}
 
@@ -49,12 +62,13 @@ class Internal_Field extends Field {
 	 * @return \GV\Internal_Field|null The requested field or null if not found.
 	 */
 	public static function by_id( $field_id ) {
-		$field = new self();
-		$field->ID = $field_id;
+		$field       = new self();
+		$field->ID   = $field_id;
 		$field->type = $field->ID;
 
 		/**
 		 * Retrieve the internal backing field (old for now)
+		 *
 		 * @todo switch to future subclasses
 		 */
 		$field->field = \GravityView_Fields::get_instance( $field_id );
@@ -65,9 +79,9 @@ class Internal_Field extends Field {
 	/**
 	 * Retrieve the label for this field.
 	 *
-	 * @param \GV\View $view The view for this context if applicable.
-	 * @param \GV\Source $source The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\View    $view The view for this context if applicable.
+	 * @param \GV\Source  $source The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @return string The label for this field.
@@ -94,9 +108,9 @@ class Internal_Field extends Field {
 	 *
 	 * Requires the \GV\Entry in this implementation.
 	 *
-	 * @param \GV\View $view The view for this context if applicable.
-	 * @param \GV\Source $source The source (form) for this context if applicable.
-	 * @param \GV\Entry $entry The entry for this context if applicable.
+	 * @param \GV\View    $view The view for this context if applicable.
+	 * @param \GV\Source  $source The source (form) for this context if applicable.
+	 * @param \GV\Entry   $entry The entry for this context if applicable.
 	 * @param \GV\Request $request The request for this context if applicable.
 	 *
 	 * @return mixed The value for this field.
@@ -118,7 +132,7 @@ class Internal_Field extends Field {
 		 * A TEMPLATE :)
 		 */
 		$value = Utils::get( $entry->as_entry(), $this->ID );
-		
+
 		/** Apply parent filters. */
 		return $this->get_value_filters( $value, $view, $source, $entry, $request );
 	}

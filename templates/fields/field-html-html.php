@@ -12,7 +12,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 }
 
 $field = $gravityview->field->field;
-$form = $gravityview->view->form->form;
+$form  = $gravityview->view->form->form;
 $entry = $gravityview->entry->as_entry();
 
 echo GravityView_API::replace_variables( $field->content, $form, $entry );
