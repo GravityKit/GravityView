@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "0be45420786a8d108e6cd28a5619db2f390944c4"
+                "reference": "bc93c59a099e9b367cb6e3e562b25dbaec64a924"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/0be45420786a8d108e6cd28a5619db2f390944c4",
-                "reference": "0be45420786a8d108e6cd28a5619db2f390944c4",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/bc93c59a099e9b367cb6e3e562b25dbaec64a924",
+                "reference": "bc93c59a099e9b367cb6e3e562b25dbaec64a924",
                 "shasum": ""
             },
             "require": {
@@ -255,7 +255,7 @@
                 "monolog/monolog": "1.*",
                 "php": ">=7.2.0",
                 "psr/log": "^1.1",
-                "trustedlogin/client": "^1.7"
+                "trustedlogin/client": "^v1.8.0"
             },
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
@@ -323,10 +323,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.16",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.17",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2024-07-08T20:06:45+00:00"
+            "time": "2024-07-22T23:20:16+00:00"
         },
         {
             "name": "illuminate/container",
@@ -1106,24 +1106,29 @@
         },
         {
             "name": "trustedlogin/client",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "35938a4bd9749f475518b88d4ce593d27970024c"
+                "reference": "3ba476906afe0b98f551f080ee0cd92d5d9c8830"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/35938a4bd9749f475518b88d4ce593d27970024c",
-                "reference": "35938a4bd9749f475518b88d4ce593d27970024c",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/3ba476906afe0b98f551f080ee0cd92d5d9c8830",
+                "reference": "3ba476906afe0b98f551f080ee0cd92d5d9c8830",
                 "shasum": ""
             },
             "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
                 "ext-curl": "*",
                 "ext-json": "*",
                 "php": ">=5.3.0",
-                "spatie/phpunit-watcher": "^1.23",
-                "yoast/phpunit-polyfills": "^1.1.0"
+                "phpcompatibility/phpcompatibility-wp": "^2.1",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan": "^1.10",
+                "szepeviktor/phpstan-wordpress": "^1.3",
+                "wp-coding-standards/wpcs": "^3.0",
+                "yoast/phpunit-polyfills": "^1.0.0"
             },
             "bin": [
                 "bin/build-sass"
@@ -1154,9 +1159,9 @@
             ],
             "support": {
                 "issues": "https://github.com/trustedlogin/client/issues",
-                "source": "https://github.com/trustedlogin/client/tree/v1.7.0"
+                "source": "https://github.com/trustedlogin/client/tree/v1.8.0"
             },
-            "time": "2024-01-29T20:51:28+00:00"
+            "time": "2024-07-18T15:45:05+00:00"
         }
     ],
     "packages-dev": [

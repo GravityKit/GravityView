@@ -140,6 +140,13 @@ class gravityview extends \GV\Shortcode {
 		$view->settings->update( $atts );
 
 		/**
+		 * Assign all `shortcode_atts` settings to the View so they can be used by layouts and extensions.
+		 * @used-by GV_Extension_DataTables_Data::get_datatables_script_configuration()
+		 */
+		$view->settings->update( array( 'shortcode_atts' => $atts ) );
+		$view->settings->update( $atts );
+
+		/**
 		 * Check permissions.
 		 */
 		while ( $error = $view->can_render( array( 'shortcode' ), $request ) ) {
