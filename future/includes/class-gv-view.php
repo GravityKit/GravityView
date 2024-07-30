@@ -1464,7 +1464,7 @@ class View implements \ArrayAccess {
 
 		$query_hash = md5( serialize( $query_introspect ) );
 
-		$atts = $this->settings->all();
+		$atts = $this->settings->get('cache_atts', [] );
 
 		$atts['query_hash'] = $query_hash;
 
