@@ -1464,12 +1464,14 @@ class View implements \ArrayAccess {
 
 		$query_hash = md5( serialize( $query_introspect ) );
 
-		$cache_atts = [
-			'view_id' => $this->post->ID,
-			'query_hash' => $query_hash,
+		$caching_atts = [
+			'view_id'         => $this->ID ?: null,
+			'caching'         => $this->settings->get( 'caching' ),
+			'caching_entries' => $this->settings->get( 'caching_entries' ),
+			'query_hash'      => $query_hash,
 		];
 
-		$cache_atts = array_merge( $cache_atts, $this->settings->get( 'cache_atts', [] ) );
+		$caching_atts = array_merge( $caching_atts, $this->settings->get( 'caching_atts', [] ) );
 
 		$form_ids = [ $this->form->ID ];
 
@@ -1477,7 +1479,7 @@ class View implements \ArrayAccess {
 			$form_ids[] = $join->join_on->ID;
 		}
 
-		$long_lived_cache = new GravityView_Cache( $form_ids, $cache_atts );
+		$long_lived_cache = new GravityView_Cache( $form_ids, $caching_atts );
 
 		if ( $long_lived_cache->use_cache() ) {
 			$cached_entries = $long_lived_cache->get();
