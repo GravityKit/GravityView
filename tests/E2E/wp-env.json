@@ -1,0 +1,13 @@
+{
+	"plugins": [
+		"../..",
+		"/Users/mwalek/Desktop/icraw/projects/gravitykit-qa2/gravityforms"
+	],
+	"config": {
+		"WP_DEBUG": true,
+		"WP_DEBUG_LOG": true,
+		"WP_DEBUG_DISPLAY": true,
+		"SAVEQUERIES": true,
+		"SCRIPT_DEBUG": true
+	}
+}
