@@ -17,7 +17,7 @@
 	foreach ( $metaboxes as $metabox ) {
 		$class = ! isset( $class ) ? 'nav-tab-active' : '';
 		if ( $metabox->extra_nav_class ) {
-			$class .= ' ' . (string) $metabox->extra_nav_class;
+			$class .= ' ' . gravityview_sanitize_html_class( (string) $metabox->extra_nav_class );
 		}
 		?>
 	<li class="ui-state-default">
