@@ -2,6 +2,8 @@
 /**
  * Template the represents a placeholder.
  *
+ * @since TODO
+ *
  * @param string   $type         The placeholder type.
  * @param string   $icon         The plugin icon.
  * @param string   $title        The plugin title.
