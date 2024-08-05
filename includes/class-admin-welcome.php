@@ -295,6 +295,39 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.25 on June 5, 2024</h3>
+
+				<p>This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.</p>
+
+				<b>Note: GravityView now requires Gravity Forms 2.6 (released in March 2022) or newer.</b>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>New View setting under the Single Entry tab to mark an entry as 'Read'. <a
+							href='https://docs.gravitykit.com/article/1008-marking-entries-as-read'>Read more about
+							the feature</a>.
+					</li>
+				</ul>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Appearance of the Merge Tag picker in the field settings of the View editor.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Removed the <code>gk/gravityview/field/is-read/print-script</code> filter in favor of the improved functionality that marks entries as "Read".</li>
+				</ul>
+
 				<h3>2.24 on May 28, 2024</h3>
 
 				<p>This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. <a href="https://www.gravitykit.com/announcing-gravityview-2-24/">Read the announcement</a> for more details.</p>
@@ -369,43 +402,6 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Added <code>gk/gravityview/entry/approval-link/params</code> filter to modify entry approval link parameters.</li>
-				</ul>
-
-				<h3>2.22 on April 16, 2024</h3>
-
-				<p>This release introduces support for <a href="https://docs.gravitykit.com/article/995-gravityview-search-modifiers">search modifiers</a> and <a href="https://docs.gravitykit.com/article/996-number-range-search">range-based searching</a> for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS. <a href="https://www.gravitykit.com/gravityview-2-22/">Read the announcement</a> for more details.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Support for negative, positive, and exact-match search modifiers in the Search Bar.</li>
-					<li>Range-based search for Number, Product (user-defined price), Quantity and Total fields in the Search Bar.</li>
-					<li>Ability to duplicate View fields and widgets, and to insert them at a desired position.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Editing an entry with Yoast SEO active resulted in changes being saved twice.</li>
-					<li>Views secured with a secret code did not display inside LifterLMS dashboards.</li>
-					<li>View editor display issues when LifterLMS is active.</li>
-					<li>Fatal error when editing posts/pages containing GravityView blocks.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.12.</p>
-
-				<ul>
-					<li>Fixed a bug that hid third-party plugin updates on the Plugins and Updates pages.</li>
-					<li>Resolved a dependency management issue that incorrectly prompted for a Gravity Forms update before activating, installing, or updating GravityKit products.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.</li>
-					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.</li>
 				</ul>
 
 				<p style="text-align: center;">

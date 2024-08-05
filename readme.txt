@@ -21,6 +21,35 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🚀 Added
+* Ability to modify the entry creator's information in the Edit Entry screen.
+
+#### 🐛 Fixed
+* Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
+* View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.
+* An issue in the Search Widget configuration where adding a Date field caused the search mode ("any" and "all") to no longer be toggleable.
+* `[gv_entry_link]` shortcode not rendering inside the Custom HTML block.
+
+= 2.25 on June 5, 2024 =
+
+This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.
+
+**Note: GravityView now requires Gravity Forms 2.6 (released in March 2022) or newer.**
+
+#### 🚀 Added
+* New View setting under the Single Entry tab to mark an entry as "Read". [Read more about the feature](https://docs.gravitykit.com/article/1008-marking-entries-as-read).
+
+#### ✨ Improved
+* Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.
+
+#### 🐛 Fixed
+* Appearance of the Merge Tag picker in the field settings of the View editor.
+
+#### 💻 Developer Updates
+* Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the improved functionality that marks entries as "Read".
+
 = 2.24 on May 28, 2024 =
 
 This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. [Read the announcement](https://www.gravitykit.com/announcing-gravityview-2-24/) for more details.

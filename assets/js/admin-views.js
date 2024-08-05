@@ -2217,12 +2217,12 @@
 		placeField: function ( $field, $addButton, $anchor, add_before_anchor = false ) {
 			const vcfg = viewConfiguration;
 			const $newField = $field.clone().hide();
-			const templateId = $( "#gravityview_directory_template" ).val();
+			const templateId = $addButton.attr( 'data-templateid' );
 
 			const data = {
 				action: 'gv_field_options',
 				template: templateId,
-				area: $addButton.attr('data-areaid'),
+				area: $addButton.attr( 'data-areaid' ),
 				context: $addButton.attr( 'data-context' ),
 				field_id: $newField.attr( 'data-fieldid' ),
 				field_label: $newField.find( '.gv-field-label' ).attr( 'data-original-title' ),
