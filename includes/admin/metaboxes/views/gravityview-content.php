@@ -29,9 +29,9 @@ foreach ( $metaboxes as $metabox ) {
 	 *
 	 * @since  $ver$
 	 *
-	 * @filter gk/gravityview/metabox/content/before
+	 * @action gk/gravityview/metabox/content/before
 	 *
-	 * @param GravityView_Metabox_Tab $metabox Current GravityView_View object
+	 * @param GravityView_Metabox_Tab $metabox Current GravityView_Metabox_Tab object.
 	 */
 	do_action( 'gk/gravityview/metabox/content/before', $metabox );
 
@@ -42,9 +42,9 @@ foreach ( $metaboxes as $metabox ) {
 	 *
 	 * @since  $ver$
 	 *
-	 * @filter gk/gravityview/metabox/content/after
+	 * @action gk/gravityview/metabox/content/after
 	 *
-	 * @param GravityView_Metabox_Tab $metabox Current GravityView_View object
+	 * @param GravityView_Metabox_Tab $metabox Current GravityView_Metabox_Tab object.
 	 */
 	do_action( 'gk/gravityview/metabox/content/after', $metabox );
 

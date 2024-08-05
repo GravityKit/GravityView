@@ -23,7 +23,6 @@ $user_can = current_user_can( $caps );
 ?>
 <div
 	class="gk-gravityview-placeholder-container gk-gravityview-placeholder-container--<?php echo esc_attr( $type ); ?>">
-	<?php //	<div class="gk-gravityview-placeholder-header"></div> ?>
 	<div class="gk-gravityview-placeholder-content">
 		<div class="gk-gravityview-placeholder-icon"><?php echo $icon; ?></div>
 		<div class="gk-gravityview-placeholder-body">
@@ -35,6 +34,7 @@ $user_can = current_user_can( $caps );
 						printf(
 							'<p><a href="%s" rel="external noopener noreferrer" target="_blank">%s<span class="screen-reader-text">%s</span></span></a></p>',
 							esc_url( $buy_now_link ),
+							// translators: %s is the plugin title.
 							esc_html( sprintf( __( 'Learn more about %s…', 'gk-gravityview' ), $title ) ),
 							esc_html__( 'This link opens in a new window.', 'gk-gravityview' )
 						);
