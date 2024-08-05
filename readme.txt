@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🚀 Added
 * Ability to modify the entry creator's information in the Edit Entry screen.
+* Placeholders in View Settings to inform you that additional functionality is available.
 
 #### 🐛 Fixed
 * Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
