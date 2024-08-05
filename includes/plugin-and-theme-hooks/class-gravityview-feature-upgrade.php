@@ -12,7 +12,7 @@ final class GravityView_Feature_Upgrade {
 	 * @since $ver$
 	 */
 	public function __construct() {
-		add_filter( 'gk/navigation/tab', [ $this, 'maybe_add_upgrade_pill' ], 10, 2 );
+		add_filter( 'gk/gravityview/metaboxes/navigation/title', [ $this, 'maybe_add_upgrade_pill' ], 10, 2 );
 	}
 
 	/**

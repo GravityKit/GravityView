@@ -25,16 +25,18 @@
 			<span class="<?php echo $metabox->icon_class_name; ?>"></span>&nbsp;
 			<?php
 			/**
-			 * Overwrites the metabox title for the navigation.
+			 * Modifies the metabox title for the navigation tab.
 			 *
 			 * @since  $ver$
 			 *
-			 * @filter `gk/navigation/tab`
+			 * @filter `gk/gravityview/metaboxes/navigation/title`
 			 *
 			 * @param string                  $title   The metabox title.
 			 * @param GravityView_Metabox_Tab $metabox The metabox object.
 			 */
-			echo apply_filters( 'gk/navigation/tab', esc_html( $metabox->title ), $metabox );
+			$title = apply_filters( 'gk/gravityview/metaboxes/navigation/title', esc_html( $metabox->title ), $metabox );
+
+			echo $title; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped - Intent is to allow HTML.
 			?>
 		</a>
 	</li>
