@@ -1533,7 +1533,7 @@ HTML;
 				'loading_error'               => esc_html__( 'There was an error loading dynamic content.', 'gk-gravityview' ),
 				'field_loaderror'             => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gk-gravityview' ),
 				'remove_all_fields'           => __( 'Would you like to remove all fields in this zone?', 'gk-gravityview' ),
-				'discard_unsaved_changes'     => __( 'You have unsaved changes. Are you sure you want to discard these changes?', 'gk-gravityview' ),
+				'discard_unsaved_changes'     => __( 'You have unsaved changes. Continuing will discard them. Are you sure you want to proceed?', 'gk-gravityview' ),
 				'foundation_licenses_router'  => array_merge(
 					GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
 					array(
