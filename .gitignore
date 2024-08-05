@@ -59,3 +59,7 @@ wordpress-latest-tests-lib
 .coveralls.yml
 .scrutinizer.yml
 .tx
+
+# Playwright/E2E tests
+/tests/E2E/results
+/tests/E2E/.wp-env.json
