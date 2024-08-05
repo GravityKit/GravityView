@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
+* View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.
+* An issue in the Search Widget configuration where adding a Date field caused the search mode ("any" and "all") to no longer be toggleable.
+* `[gv_entry_link]` shortcode not rendering inside the Custom HTML block.
+
 = 2.25 on June 5, 2024 =
 
 This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.

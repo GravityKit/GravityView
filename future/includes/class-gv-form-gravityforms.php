@@ -128,9 +128,13 @@ class GF_Form extends Form implements \ArrayAccess {
 					$paging['offset'] = $offset->offset;
 				}
 
-				foreach ( \GFAPI::get_entries( $form->ID, $search_criteria, $sorting, $paging ) as $entry ) {
+				$_entries = \GFAPI::get_entries( $form->ID, $search_criteria, $sorting, $paging );
+
+				foreach ( $_entries as $entry ) {
 					$entries->add( \GV\GF_Entry::from_entry( $entry ) );
 				}
+
+				unset( $_entries );
 
 				return $entries;
 			}
