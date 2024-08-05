@@ -33,6 +33,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * An issue in the Search Widget configuration where adding a Date field caused the search mode ("any" and "all") to no longer be toggleable.
 * `[gv_entry_link]` shortcode not rendering inside the Custom HTML block.
 
+#### 💻 Developer Updates
+
+* Added: `gk/gravityview/feature/upgrade/disabled` filter to disable the functionality placeholders. Return `true` to disable the placeholders.
+
 = 2.25 on June 5, 2024 =
 
 This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.
