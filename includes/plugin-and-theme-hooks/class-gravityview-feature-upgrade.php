@@ -41,7 +41,7 @@ SVG;
 	 * @return string The navigation label for the metabox.
 	 */
 	public function maybe_add_upgrade_pill( $title, GravityView_Metabox_Tab $metabox ): string {
-		$disabled = apply_filters( 'gk/gravity-view/feature/upgrade/disabled', false );
+		$disabled = apply_filters( 'gk/gravityview/feature/upgrade/disabled', false );
 
 		if (
 			$disabled

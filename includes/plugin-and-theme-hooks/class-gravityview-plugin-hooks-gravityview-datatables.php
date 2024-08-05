@@ -82,7 +82,7 @@ ICON;
 	 * @since $ver$
 	 */
 	public function register_metabox_placeholder(): void {
-		$disabled = apply_filters( 'gk/gravity-view/feature/upgrade/disabled', false );
+		$disabled = apply_filters( 'gk/gravityview/feature/upgrade/disabled', false );
 		if ( $disabled ) {
 			return;
 		}
