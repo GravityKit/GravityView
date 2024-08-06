@@ -40,10 +40,10 @@
 		"bower": "^1.8.8"
 	},
 	"scripts": {
-		"wp-env": "cd tests/E2E && node wp-env.config.js && wp-env",
-		"wp-env-bash": "cd tests/E2E && wp-env run cli bash -c",
-		"tests:e2e:configure": "cd tests/E2E && yes | npm run wp-env destroy || true && wp-env start",
-		"tests:e2e": "npx playwright test --config=tests/E2E/playwright.config.js"
+		"wp-env": "cd tests/E2E/setup && wp-env",
+		"wp-env:configure": "cd tests/E2E/setup && node wp-env.config.js",
+		"wp-env:bash": "npm run wp-env cli bash -c",
+		"tests:e2e": "npx playwright test --config=tests/E2E/setup/playwright.config.js"
 	},
 	"husky": {
 		"hooks": {
