@@ -7,6 +7,7 @@ require("dotenv").config({ path: `${process.env.INIT_CWD}/.env` });
 let containerId;
 
 async function startDockerContainer() {
+	console.log("Attempting to start Docker container...");
 	return new Promise((resolve, reject) => {
 		exec(
 			"docker run -d --rm --network host --ipc=host jacoblincool/playwright:chromium-server",
@@ -24,15 +25,18 @@ async function startDockerContainer() {
 }
 
 async function stopDockerContainer() {
+	console.log("Attempting to stop Docker container...");
 	return new Promise((resolve, reject) => {
 		exec(
 			"docker stop $(docker ps -q --filter ancestor=jacoblincool/playwright:chromium-server)",
-			(err) => {
+			(err, stdout, stderr) => {
 				if (err) {
 					console.error("Error stopping Docker container:", err);
+					console.error("stderr output:", stderr);
 					return reject(err);
 				}
 				console.log("Docker container stopped");
+				console.log("stdout output:", stdout);
 				resolve();
 			},
 		);
@@ -41,11 +45,15 @@ async function stopDockerContainer() {
 
 // Export the setup and teardown functions
 module.exports.globalSetup = async () => {
+	console.log("Global setup starting...");
 	await startDockerContainer();
+	console.log("Global setup completed.");
 };
 
 module.exports.globalTeardown = async () => {
+	console.log("Global teardown starting...");
 	await stopDockerContainer();
+	console.log("Global teardown completed.");
 };
 
 /**

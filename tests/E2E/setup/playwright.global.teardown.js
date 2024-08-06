@@ -3,7 +3,7 @@ const { exec } = require("child_process");
 async function stopDockerContainer() {
 	return new Promise((resolve, reject) => {
 		exec(
-			"docker ps -q --filter ancestor=jacoblincool/playwright:chromium-server",
+			"docker ps -q --filter ancestor=jacoblincool/playwright:chromium-server-1.44.0",
 			(err, stdout) => {
 				if (err) {
 					console.error("Error retrieving Docker container ID:", err);
@@ -40,6 +40,10 @@ async function stopDockerContainer() {
 }
 
 module.exports = async () => {
+	if (global.__BROWSER__) {
+		await global.__BROWSER__.close();
+	}
+
 	try {
 		await stopDockerContainer();
 	} catch (error) {
