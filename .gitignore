@@ -62,4 +62,4 @@ wordpress-latest-tests-lib
 
 # Playwright/E2E tests
 /tests/E2E/results
-/tests/E2E/.wp-env.json
+/tests/E2E/setup/.wp-env.json
