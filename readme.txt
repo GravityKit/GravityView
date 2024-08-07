@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.5.3
+Tested up to: 6.6.0
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -24,7 +24,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🚀 Added
-* Ability to modify the entry creator's information in the Edit Entry screen.
+* Ability to modify the entry creator’s information on the Edit Entry screen.
+* Merge tag modifier for formatting Date and Time fields (e.g., {Date Field:1:format:Y-m-d}).
 
 #### 🐛 Fixed
 * Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
