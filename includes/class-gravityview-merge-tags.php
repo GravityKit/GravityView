@@ -6,6 +6,14 @@
  * @since 1.8.4
  */
 class GravityView_Merge_Tags {
+	/**
+	 * Microcache for merge tag modifiers.
+	 *
+	 * @since TBD
+	 *
+	 * @var array[]
+	 */
+	private static $merge_tag_modifiers = [];
 
 	/**
 	 * @since 1.8.4
@@ -20,12 +28,44 @@ class GravityView_Merge_Tags {
 	 * @since 1.8.4
 	 */
 	private function add_hooks() {
-
 		/** @see GFCommon::replace_variables_prepopulate */
 		add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
 
 		// Process after 10 priority
 		add_filter( 'gform_merge_tag_filter', array( 'GravityView_Merge_Tags', 'process_modifiers' ), 20, 5 );
+
+		add_filter( 'gform_pre_replace_merge_tags', [ $this, 'cache_merge_tag_modifiers' ] );
+	}
+
+	/**
+	 * Caches merge tag modifiers to preserve their case sensitivity.
+	 * This is necessary because {@see GFCommon::replace_field_variable()) applies
+	 * `strtolower()` to the modifier and causing issues where case is expexted,
+	 * such as date formatting (e.g., `format:Y-m-d`).
+	 *
+	 * @since TBD
+	 *
+	 * @param string $text Text with merge tags.
+	 *
+	 * @return string
+	 */
+	public function cache_merge_tag_modifiers( $text ) {
+		// Regex pattern taken from GFCommon::replace_variables().
+		preg_match_all( '/{[^{]*?:(\d+(\.\w+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER );
+
+		if ( ! $matches ) {
+			return $text;
+		}
+
+		foreach ( $matches as $match ) {
+			$modifier = $match[4] ?? '';
+
+			if ( $modifier ) {
+				self::$merge_tag_modifiers[ strtolower( $modifier ) ] = $modifier;
+			}
+		}
+
+		return $text;
 	}
 
 	/**
@@ -49,6 +89,9 @@ class GravityView_Merge_Tags {
 		if ( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
 			return $value;
 		}
+
+		// Retrieve the original case-sensitive modifier.
+		$modifier = self::$merge_tag_modifiers[ strtolower( $modifier ) ] ?? $modifier;
 
 		// matching regex => the value is the method to call to replace the value.
 		$gv_modifiers = array(
