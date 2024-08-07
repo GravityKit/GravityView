@@ -40,7 +40,7 @@ class GravityView_Merge_Tags {
 	/**
 	 * Caches merge tag modifiers to preserve their case sensitivity.
 	 * This is necessary because {@see GFCommon::replace_field_variable()) applies
-	 * `strtolower()` to the modifier and causing issues where case is expexted,
+	 * `strtolower()` to the modifier and causes issues where case is expected,
 	 * such as date formatting (e.g., `format:Y-m-d`).
 	 *
 	 * @since TBD
