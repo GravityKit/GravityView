@@ -27,6 +27,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Ability to modify the entry creator’s information on the Edit Entry screen.
 * Merge tag modifier for formatting Date and Time fields (e.g., {Date Field:1:format:Y-m-d}).
 
+#### ✨ Improved
+* The "Sort By" option in the GravityView Gutenberg block now offers a dropdown selection of fields instead of requiring manual entry of the field ID.
+
 #### 🐛 Fixed
 * Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
 * View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.
