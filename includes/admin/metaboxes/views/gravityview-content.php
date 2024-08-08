@@ -24,7 +24,29 @@ foreach ( $metaboxes as $metabox ) {
 
 	echo '<div id="' . esc_attr( $metabox->id ) . '">';
 
+	/**
+	 * Can be used to insert additional HTML inside the <div> before the metabox is rendered.
+	 *
+	 * @since  2.26
+	 *
+	 * @action `gk/gravityview/metabox/content/before`
+	 *
+	 * @param GravityView_Metabox_Tab $metabox Current GravityView_Metabox_Tab object.
+	 */
+	do_action( 'gk/gravityview/metabox/content/before', $metabox );
+
 	$metabox->render( $post );
+
+	/**
+	 * Can be used to insert additional HTML inside the <div> after the metabox is rendered.
+	 *
+	 * @since  2.26
+	 *
+	 * @action `gk/gravityview/metabox/content/after`
+	 *
+	 * @param GravityView_Metabox_Tab $metabox Current GravityView_Metabox_Tab object.
+	 */
+	do_action( 'gk/gravityview/metabox/content/after', $metabox );
 
 	echo '</div>';
 }

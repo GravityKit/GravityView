@@ -221,6 +221,22 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 				'raw' => '["Apple", "Orange", "Pear"]',
 				'expected' => 'Apple Orange Pear',
 			),
+
+			array(
+				'modifier' => 'format:F-j-y',
+				'merge_tag' => 'Date',
+				'value' => '06/02/2024',
+				'raw' => '06/02/2024',
+				'expected' => 'June-2-24',
+			),
+
+			array(
+				'modifier' => 'format:g:i..a',
+				'merge_tag' => 'Time',
+				'value' => '04:05 pm',
+				'raw' => '04:05 pm',
+				'expected' => '4:05..pm',
+			),
 		);
 
 		// Fake it as it's used for default filters
@@ -229,6 +245,14 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		foreach ( $tests as $test ) {
 			$value = isset( $test['value'] ) ? $test['value'] : 'value should not be used';
 			$merge_tag = isset( $test['merge_tag'] ) ? $test['merge_tag'] : 'merge tag not used';
+			if( isset( $test['merge_tag'] ) && $test['merge_tag'] === 'Time'){
+				$field = new GF_Field_Time();
+			}
+
+			if( isset( $test['merge_tag'] ) && $test['merge_tag'] === 'Date'){
+				$field = new GF_Field_Date();
+			}
+
 			$value = GravityView_Merge_Tags::process_modifiers( $value, $merge_tag, $test['modifier'], $field, $test['raw'] );
 			$this->assertEquals( $test['expected'], $value, print_r( $test, true ) );
 		}
