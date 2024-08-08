@@ -42,7 +42,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * An array of entry IDs that have been marked as read during the request.
 	 *
-	 * @since TBD
+	 * @since 2.25
 	 *
 	 * @var array
 	 */
@@ -91,7 +91,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * Adds the "Mark Entry As Read" setting to the View settings.
 	 *
-	 * @since TBD
+	 * @since 2.25
 	 *
 	 * @param array $settings The settings.
 	 *
@@ -117,7 +117,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 	/**
 	 * Marks the entry as read if the user has `gravityview_edit_entries` capability and the "Mark Entry As Read" View setting is enabled.
 	 *
-	 * @since TBD
+	 * @since 2.25
 	 *
 	 * @return void
 	 */

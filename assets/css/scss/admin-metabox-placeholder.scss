@@ -1,0 +1,239 @@
+@import "_mixins";
+@import "variables";
+
+span.gravityview-upgrade-pill {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 6px;
+	background-color: #FFF;
+	padding: 6px 8px;
+	color: $color-aaa;
+	text-transform: uppercase;
+	font-size: 10px;
+	font-weight: 700;
+	line-height: 1;
+	position: absolute;
+	top: 14px;
+	right: 13px;
+
+	&:dir(rtl) {
+		right: auto;
+		left: 13px;
+	}
+
+	svg {
+		width: 10px;
+		height: 10px;
+	}
+
+	span {
+		width: 0;
+		overflow: hidden;
+	}
+}
+
+a.gravityview-upgrade {
+	&:hover {
+		span.gravityview-upgrade-pill {
+			color: $color-111 ;
+
+			span {
+				width: auto;
+				margin-left: 6px;
+			}
+
+			&:dir(rtl) {
+				span {
+					margin-left: 0;
+					margin-right: 6px;
+				}
+			}
+		}
+	}
+}
+
+.gk-gravityview-placeholder-container {
+	margin: 16px;
+	background: white;
+	overflow: hidden;
+	border-radius: 4px;
+	border: 1px #DDDDE5 solid;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+
+	@keyframes spinner-animation {
+		0% {
+			transform: rotate(0deg)
+		}
+		to {
+			transform: rotate(359deg)
+		}
+	}
+
+	.loading {
+		display: none;
+		width: 16px;
+		height: 16px;
+		margin: 2px;
+		animation: spinner-animation 1s cubic-bezier(.6, 0, .4, 1) infinite;
+	}
+
+	.gk-gravityview-placeholder-content {
+		display: flex;
+		padding: 16px;
+	}
+
+	.gk-gravityview-placeholder-icon {
+		width: 48px;
+		height: 48px;
+	}
+
+	.gk-gravityview-placeholder-learn-more {
+		text-align: center;
+		margin: 1.5em auto;
+		font-size: 1.1em;
+
+		a {
+			display: inline-block;
+		}
+	}
+
+	.gk-gravityview-placeholder-summary {
+		flex: 1;
+		line-height: 1.5;
+
+		h3 {
+			display: block;
+			font-weight: 500;
+			vertical-align: middle;
+			color: $color-111;
+			font-size: 16px;
+			margin: 0;
+			padding: 0;
+		}
+
+		.howto {
+			font-size: 14px;
+			margin: 0;
+
+			p {
+				margin: 0 !important;
+			}
+		}
+	}
+
+	.gk-gravityview-placeholder-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-grow: 0;
+
+		&.is-idle {
+			cursor: progress;
+			background: $color-888;
+			border-color: $color-888;
+
+			.loading {
+				display: block;
+			}
+		}
+
+		&.is-error {
+			background: $color-red;
+			border-color: $color-red;
+		}
+	}
+
+	&.gk-gravityview-placeholder-container--inline {
+		.gk-gravityview-placeholder-icon {
+			@media (min-width: 1200px) {
+				margin-right: 16px;
+
+				&:dir(rtl) {
+					margin-left: 16px;
+					margin-right: 0;
+				}
+			}
+		}
+
+		.gk-gravityview-placeholder-body {
+			display: flex;
+			flex: 1;
+		}
+
+		.gk-gravityview-placeholder-actions {
+			@media (min-width: 1300px) {
+				margin-left: 16px;
+
+				&:dir(rtl) {
+					margin-left: 0;
+					margin-right: 16px;
+				}
+			}
+		}
+
+		@media (max-width: 1299px) {
+			.gk-gravityview-placeholder-body {
+				flex-direction: column;
+			}
+			.gk-gravityview-placeholder-actions {
+				margin-top: 16px;
+			}
+		}
+
+		@media (max-width: 1199px) {
+			.gk-gravityview-placeholder-content {
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+			}
+
+			.gk-gravityview-placeholder-icon {
+				margin-bottom: 16px;
+			}
+		}
+	}
+
+	&.gk-gravityview-placeholder-container--card {
+		max-width: 400px;
+		margin: 32px auto;
+		width: calc(100% - 64px); // keep at least 32px margin on the sides.
+
+		.gk-gravityview-placeholder-header {
+			aspect-ratio: 16/9;
+			width: 100%;
+			background-color: #FF1B67;
+		}
+
+		.gk-gravityview-placeholder-content {
+			align-items: center;
+			text-align: center;
+			flex-direction: column;
+			padding: 32px 32px;
+		}
+
+		.gk-gravityview-placeholder-icon {
+			margin-bottom: 24px;
+			width: 80px;
+			height: 80px;
+		}
+
+		.gk-gravityview-placeholder-summary {
+			line-height: 20px;
+
+			h3 {
+				margin-bottom: 16px;
+			}
+
+			p {
+				margin-top: 16px !important;
+			}
+		}
+
+		.gk-gravityview-placeholder-actions {
+			margin-top: 36px;
+		}
+	}
+}

@@ -65,7 +65,9 @@ class GravityView_Field_Time extends GravityView_Field {
 		add_filter( 'gravityview/sorting/time', array( $this, 'modify_sort_id' ), 10, 2 );
 
 		add_filter( 'gravityview_search_criteria', array( $this, '_maybe_filter_gravity_forms_query' ), 10, 4 );
+
 	}
+
 
 	/**
 	 * Modify the sort key for the time field so it can be parsed by the query filter
