@@ -93,7 +93,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	/**
 	 * Updates approval field after edit entry save.
 	 *
-	 * @since TBD
+	 * @since 2.26
 	 *
 	 * @param array                         $form Gravity Forms form array
 	 * @param int                           $entry_id Gravity Forms Entry ID
@@ -319,7 +319,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	/**
 	 * Adds the GravityView Approval Entries field to the Edit Entry form
 	 *
-	 * @since TBD
+	 * @since 2.26
 	 *
 	 * @param GF_Field[] $fields        Gravity Forms form fields
 	 * @param array|null $edit_fields   Fields for the Edit Entry tab configured in the View Configuration

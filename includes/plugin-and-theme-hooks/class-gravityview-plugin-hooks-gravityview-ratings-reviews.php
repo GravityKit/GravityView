@@ -2,7 +2,7 @@
 /**
  * GravityView Ratings & Reviews placeholder metabox.
  *
- * @since $ver$
+ * @since 2.26
  *
  * @package GravityView
  */
@@ -10,19 +10,19 @@
 /**
  * @inheritDoc
  *
- * @since TODO
+ * @since 2.26
  */
 class GravityView_Plugin_Hooks_GravityView_Ratings_Reviews extends GravityView_Plugin_and_Theme_Hooks {
 	/**
 	 * @inheritDoc
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	public $class_name = 'GravityView_Ratings_Reviews_Loader';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	protected function add_inactive_hooks(): void {
 		add_action( 'add_meta_boxes', [ $this, 'register_metabox_placeholder' ] );
@@ -31,7 +31,7 @@ class GravityView_Plugin_Hooks_GravityView_Ratings_Reviews extends GravityView_P
 	/**
 	 * Renders the placeholder in the sort_filter metabox.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @param GravityView_Metabox_Tab $metabox The metabox.
 	 */
@@ -60,7 +60,7 @@ class GravityView_Plugin_Hooks_GravityView_Ratings_Reviews extends GravityView_P
 	/**
 	 * Returns the placeholder value object.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return GravityView_Object_Placeholder The placeholder.
 	 */
@@ -78,7 +78,7 @@ class GravityView_Plugin_Hooks_GravityView_Ratings_Reviews extends GravityView_P
 	/**
 	 * Returns the icon for the Ratings & Reviews extension.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return string The SVG icon.
 	 */

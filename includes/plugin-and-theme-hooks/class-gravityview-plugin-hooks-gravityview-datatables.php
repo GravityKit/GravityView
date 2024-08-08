@@ -3,7 +3,7 @@
 /**
  * @inheritDoc
  *
- * @since TODO
+ * @since 2.26
  */
 class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin_and_Theme_Hooks {
 	/**
@@ -14,7 +14,7 @@ class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin
 	/**
 	 * Returns the placeholder value object.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return GravityView_Object_Placeholder The placeholder.
 	 */
@@ -32,7 +32,7 @@ class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin
 	/**
 	 * Returns the icon for the DataTables layout.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return string The SVG icon.
 	 */
@@ -71,7 +71,7 @@ ICON;
 	/**
 	 * @inheritDoc
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	protected function add_inactive_hooks(): void {
 		add_action( 'add_meta_boxes', [ $this, 'register_metabox_placeholder' ] );
@@ -80,7 +80,7 @@ ICON;
 	/**
 	 * Register the DataTables placeholder metabox.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	public function register_metabox_placeholder(): void {
 		$disabled = apply_filters( 'gk/gravityview/feature/upgrade/disabled', false );

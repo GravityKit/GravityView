@@ -5,13 +5,13 @@ use GravityKit\GravityView\Foundation\Helpers\Core;
 /**
  * Represents a placeholder object for a GravityView plugin.
  *
- * @since $ver$
+ * @since 2.26
  */
 final class GravityView_Object_Placeholder {
 	/**
 	 * The placeholder types.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	private const TYPE_INLINE = 'inline';
 	private const TYPE_CARD = 'card';
@@ -19,7 +19,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * The plugin statuses.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	private const STATUS_NOT_INSTALLED = 0;
 	private const STATUS_INACTIVE = 1;
@@ -28,7 +28,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * The title on the placeholder.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @var string
 	 */
@@ -37,7 +37,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * The description on the placeholder.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @var string
 	 */
@@ -46,7 +46,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * The icon on the placeholder.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @var string
 	 */
@@ -55,7 +55,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * The plugin base name.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @var string
 	 */
@@ -64,7 +64,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * The link to buy the plugin.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @var string
 	 */
@@ -73,7 +73,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * The placeholder type.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @var string
 	 */
@@ -82,7 +82,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Microcache for the plugin information.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @var array|null
 	 */
@@ -91,7 +91,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Creates the value object.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	private function __construct(
 		string $title,
@@ -110,7 +110,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Create a placeholder of the "inline" type.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @param string $title        The title.
 	 * @param string $description  The description.
@@ -137,7 +137,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Create a placeholder of the "card" type.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @param string $title        The title.
 	 * @param string $description  The description.
@@ -164,7 +164,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Returns whether the plugin is included in one of the licences.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @throws Exception
 	 *
@@ -189,7 +189,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Returns the plugin info.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return array
 	 */
@@ -206,7 +206,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Returns the status for the plugin.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return int The status for the plugin.
 	 */
@@ -223,7 +223,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Renders the placeholder using placeholder template.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	public function render(): void {
 		if ( self::STATUS_ACTIVE === $this->get_status() ) {

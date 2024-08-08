@@ -3,13 +3,13 @@
 /**
  * Handles the upgrade possibilities for a plugin.
  *
- * @since $ver$
+ * @since 2.26
  */
 final class GravityView_Feature_Upgrade {
 	/**
 	 * Registers the hooks.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	public function __construct() {
 		add_filter( 'gk/gravityview/metaboxes/navigation/title', [ $this, 'maybe_add_upgrade_pill' ], 10, 2 );
@@ -18,7 +18,7 @@ final class GravityView_Feature_Upgrade {
 	/**
 	 * The star SVG used for the Upgrade pill.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return string The SVG code.
 	 */
@@ -33,7 +33,7 @@ SVG;
 	/**
 	 * Displays an upgrade pill on any metabox tab that has the `gravityview-upgrade` class.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @param string                  $title   The metabox navigation title.
 	 * @param GravityView_Metabox_Tab $metabox The metabox object.

@@ -76,7 +76,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 	/**
 	 * @inheritDoc
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	protected function add_inactive_hooks(): void {
 		add_action( 'add_meta_boxes', [ $this, 'register_metabox_placeholder' ] );
@@ -85,7 +85,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 	/**
 	 * Returns the icon for the GravityView Maps layout.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return string The SVG icon.
 	 */
@@ -120,7 +120,7 @@ ICON;
 	/**
 	 * Returns the placeholder value object.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return GravityView_Object_Placeholder The placeholder.
 	 */
@@ -138,7 +138,7 @@ ICON;
 	/**
 	 * Register the Maps placeholder metabox.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	public function register_metabox_placeholder(): void {
 		$disabled = apply_filters( 'gk/gravityview/feature/upgrade/disabled', false );

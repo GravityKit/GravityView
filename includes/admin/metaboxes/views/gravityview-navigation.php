@@ -29,7 +29,7 @@
 			 *
 			 * @filter `gk/gravityview/metaboxes/navigation/title`
 			 *
-			 * @since  $ver$
+			 * @since  2.26
 			 *
 			 * @param string                  $title   The metabox title.
 			 * @param GravityView_Metabox_Tab $metabox The metabox object.

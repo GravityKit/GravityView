@@ -9,7 +9,7 @@ class GravityView_Merge_Tags {
 	/**
 	 * Microcache for merge tag modifiers.
 	 *
-	 * @since TBD
+	 * @since 2.26
 	 *
 	 * @var array[]
 	 */
@@ -43,7 +43,7 @@ class GravityView_Merge_Tags {
 	 * `strtolower()` to the modifier and causes issues where case is expected,
 	 * such as date formatting (e.g., `format:Y-m-d`).
 	 *
-	 * @since TBD
+	 * @since 2.26
 	 *
 	 * @param string $text Text with merge tags.
 	 *
@@ -170,7 +170,7 @@ class GravityView_Merge_Tags {
 	/**
 	 * Converts date and time values to the format modifier.
 	 *
-	 * @since TBD
+	 * @since 2.26
 	 *
 	 * @param string $raw_value
 	 * @param array  $matches

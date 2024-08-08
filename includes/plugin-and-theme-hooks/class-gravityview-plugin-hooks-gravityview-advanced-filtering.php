@@ -3,19 +3,19 @@
 /**
  * @inheritDoc
  *
- * @since TODO
+ * @since 2.26
  */
 class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityView_Plugin_and_Theme_Hooks {
 	/**
 	 * @inheritDoc
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	public $constant_name = 'GRAVITYKIT_ADVANCED_FILTERING_VERSION';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.26
 	 */
 	protected function add_inactive_hooks(): void {
 		add_action( 'gk/gravityview/metabox/content/after', [ $this, 'render_metabox_placeholder' ] );
@@ -24,7 +24,7 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 	/**
 	 * Renders the placeholder in the sort_filter metabox.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @param GravityView_Metabox_Tab $metabox The metabox.
 	 */
@@ -41,7 +41,7 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 	/**
 	 * Returns the placeholder value object.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return GravityView_Object_Placeholder The placeholder.
 	 */
@@ -59,7 +59,7 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 	/**
 	 * Returns the icon for the Advanced Filtering extension.
 	 *
-	 * @since $ver$
+	 * @since 2.26
 	 *
 	 * @return string The SVG icon.
 	 */
