@@ -61,5 +61,7 @@ wordpress-latest-tests-lib
 .tx
 
 # Playwright/E2E tests
-/tests/E2E/results
 /tests/E2E/setup/.wp-env.json
+/tests/E2E/setup/.state.json
+/tests/E2E/**/report/
+/tests/E2E/**/results/
