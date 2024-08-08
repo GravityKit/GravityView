@@ -31,6 +31,12 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 			}
 		);
 
+		if ( ! defined( 'GRAVITYVIEW_MAPS_VERSION' ) ||
+		     version_compare( GRAVITYVIEW_MAPS_VERSION, '1.8', '>=' )
+		) {
+			return;
+		}
+
 		/**
 		 * @since 2.16
 		 *
