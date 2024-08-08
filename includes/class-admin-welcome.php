@@ -460,7 +460,7 @@ class GravityView_Welcome {
 			<div class="cols">
 
 				<div class="col">
-					<h3>Zack Katz <a href="https://twitter.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on Twitter"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
+					<h3>Zack Katz <a href="https://x.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on X"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
 					<h4>Project Lead &amp; Developer</h4>
 					<p><img alt="Zack Katz" src="<?php echo plugins_url( 'assets/images/team/Zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing WordPress plugins since 2008 and has been a huge Gravity Forms fan from the start. Zack is co-owner of GravityKit and he lives with his wife in Leverett, Massachusetts. He can&rsquo;t wait for the next episode of <a href="https://atp.fm">ATP</a> or <a href="https://www.flophousepodcast.com">The Flop House</a> podcasts.</p>
 				</div>
@@ -478,7 +478,7 @@ class GravityView_Welcome {
 				</div>
 
 				<div class="col">
-					<h3>Rafael Bennemann <a href="https://twitter.com/rafaelbe" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a></h3>
+					<h3>Rafael Bennemann <a href="https://x.com/rafaelbe" title="Follow Rafael on X"><span class="dashicons dashicons-twitter"></span></a></h3>
 					<h4>Support Specialist</h4>
 					<p><img alt="Rafael Bennemann"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Bennemann.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael dedicated most of his adult life to helping people and companies take their ideas to the web, first as a developer and now as a Customer Advocate at GravityKit. He will do his best to help you too, all the while sipping a <a href="https://en.wikipedia.org/wiki/Spritz_Veneziano">Spritz Veneziano</a> in Northern Italy, where he currently lives with his family.</p>
 				</div>
@@ -487,6 +487,12 @@ class GravityView_Welcome {
 					<h3>Casey Burridge</h3>
 					<h4 style='font-weight:0; margin-top:0'>Content Creator</h4>
 					<p><img alt="Casey Burridge" class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Casey.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94"/>Casey is GravityKit&rsquo;s resident content creator. He&rsquo;s been a WordPress lover ever since launching his first blog more than 6 years ago. Casey has lived and worked in London and Beijing, but feels most at home in Cape Town, South Africa, where he&rsquo;s originally from.</p>
+				</div>
+
+				<div class='col'>
+					<h3>Doeke Norg <a href="https://x.com/doekenorg" title="Follow Doeke on X"><span class="dashicons dashicons-twitter"></span></a> <a href="https://doeken.org/" title="View Doeke&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
+					<h4 style='font-weight:0; margin-top:0'>Senior Developer</h4>
+					<p>With almost 20 years of experience in PHP; there are few things Doeke doesn&rsquo;t know about our favourite programming language. He lives with his family in The Netherlands, and spends his time designing elaborate, but maintainable code. He also writes a blog about software design in PHP.</p>
 				</div>
 			</div>
 
