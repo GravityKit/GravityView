@@ -1,29 +1,30 @@
 // @ts-check
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
-const path = require('path');
 
-require('dotenv').config({ path: `${process.env.INIT_CWD}/.env` });
+const path = require( 'path' );
 
-test('GravityKit menu is available', async ({ admin, page, headless }) => {
-  await page.goto('/wp-admin');
+require( 'dotenv' ).config( { path: `${ process.env.INIT_CWD }/.env` } );
 
-  await page.fill('#user_login', process.env.WP_ENV_USER);
-  await page.fill('#user_pass', process.env.WP_ENV_USER_PASS);
+test( 'GravityKit menu is available', async ( { admin, page, headless } ) => {
+	await page.goto( '/wp-admin' );
 
-  await page.click('#wp-submit');
+	await page.fill( '#user_login', process.env.WP_ENV_USER );
+	await page.fill( '#user_pass', process.env.WP_ENV_USER_PASS );
 
-  await page.waitForSelector('#toplevel_page__gk_admin_menu');
-  await page.hover('#toplevel_page__gk_admin_menu');
+	await page.click( '#wp-submit' );
 
-  await page.waitForSelector('#toplevel_page__gk_admin_menu .wp-submenu');
+	await page.waitForSelector( '#toplevel_page__gk_admin_menu' );
+	await page.hover( '#toplevel_page__gk_admin_menu' );
 
-  const submenus = await page
-    .locator('#toplevel_page__gk_admin_menu .wp-submenu a')
-    .allTextContents();
+	await page.waitForSelector( '#toplevel_page__gk_admin_menu .wp-submenu' );
 
-  const submenuTitles = submenus.map((item) => item.replace(/\d+$/, '').trim()); // Remove the trailing number as it's a hidden <span class="plugin-count">0</span> element.
+	const submenus = await page
+		.locator( '#toplevel_page__gk_admin_menu .wp-submenu a' )
+		.allTextContents();
 
-  expect(submenuTitles).toContain('Manage Your Kit');
-  expect(submenuTitles).toContain('Settings');
-  expect(submenuTitles).toContain('Grant Support Access');
-});
+	const submenuTitles = submenus.map( ( item ) => item.replace( /\d+$/, '' ).trim() ); // Remove the trailing number as it's a hidden <span class="plugin-count">0</span> element.
+
+	expect( submenuTitles ).toContain( 'Manage Your Kit' );
+	expect( submenuTitles ).toContain( 'Settings' );
+	expect( submenuTitles ).toContain( 'Grant Support Access' );
+} );
