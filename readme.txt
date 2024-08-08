@@ -40,6 +40,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 💻 Developer Updates
 
 * Added: `gk/gravityview/feature/upgrade/disabled` filter to disable the functionality placeholders. Return `true` to disable the placeholders.
+* Added: `gk/gravityview/metabox/content/before` and `gk/gravityview/metabox/content/after` actions, triggered before and after the View metabox is rendered.
 
 = 2.25 on June 5, 2024 =
 
