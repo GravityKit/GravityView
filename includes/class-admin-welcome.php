@@ -473,7 +473,7 @@ class GravityView_Welcome {
 
 				<div class="col">
 					<h3>Vlad K.</h3>
-					<h4>Core Developer</h4>
+					<h4>Head of Development</h4>
 					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad is GravityKit&rsquo;s lead developer. Known for his versatility, Vlad handles both front-end and back-end programming, as well as testing and DevOps. He lives in Ottawa, Canada, and frequently travels the world in pursuit of unique experiences that fuel his creativity and broaden his worldview.</p>
 				</div>
 
