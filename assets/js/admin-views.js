@@ -1647,11 +1647,13 @@
 				.done( (response) => {
 					if ( !response.success ) {
 						defer.reject( response.data );
+
 						return;
 					}
 
 					viewConfiguration.performingAjaxAction = false;
-					defer.resolve();
+
+					defer.resolve( response );
 				} );
 
 			return defer.promise();
@@ -3151,4 +3153,47 @@
 		update_csv_widget_classes();
 	} );
 
+	/**
+	 * Upgrade plugins support.
+	 *
+	 * @since $ver$
+	 */
+	$( function () {
+		const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
+
+		$( document ).on( 'click', '.gk-gravityview-placeholder-actions [data-action]', function ( e ) {
+			e.preventDefault();
+
+			if ( viewConfiguration.hasUnsavedChanges && !window.confirm( gvGlobals.discard_unsaved_changes ) ) {
+				return;
+			}
+
+			if ( $( this ).hasClass( 'is-idle' ) ) {
+				return;
+			}
+
+			$( this ).addClass( 'is-idle' ).html( $spinner );
+
+			const action = $( this ).data( 'action' ) + '_product';
+
+			const payload = {
+				text_domain: $( this ).data( 'text-domain' ),
+				activate: true,
+			};
+
+			const on_fail = () => $(this).removeClass( 'is-idle' ).addClass( 'is-error' ).text( 'Try again' );
+
+			$.when( viewConfiguration.server_request( action, payload ) )
+				.then( ( response ) => {
+					console.log(response);
+					if ( ! response.success ) {
+						throw new Error();
+					}
+
+					// Refresh page on success.
+					document.location = document.location;
+				} )
+				.fail( on_fail );
+		} );
+	} );
 }(jQuery));
