@@ -5,7 +5,7 @@ require('dotenv').config({ path: `${process.env.INIT_CWD}/.env` });
 
 module.exports = defineConfig({
   testDir: path.resolve(__dirname, '..'),
-  outputDir: path.resolve(__dirname, 'results'),
+  outputDir: path.resolve(__dirname, '../results'),
   snapshotPathTemplate:
     '{testDir}/.playwright/snapshots/{testFileDir}/{testName}-snapshots/{arg}{ext}',
   fullyParallel: true,
@@ -15,7 +15,7 @@ module.exports = defineConfig({
   reporter: [
     [
       'html',
-      { open: 'never', outputFolder: path.resolve(__dirname, 'report') },
+      { open: 'never', outputFolder: path.resolve(__dirname, '../report') },
     ],
   ],
   use: {
