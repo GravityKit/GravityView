@@ -7,7 +7,7 @@ module.exports = defineConfig( {
 	testDir: path.resolve( __dirname, '..' ),
 	outputDir: path.resolve( __dirname, '../results' ),
 	snapshotPathTemplate:
-		'{testDir}/.playwright/snapshots/{testFileDir}/{testName}-snapshots/{arg}{ext}',
+		'{testDir}/snapshots/{testFileDir}/{testName}-snapshots/{arg}{ext}',
 	fullyParallel: true,
 	forbidOnly: !!process.env.CI,
 	retries: process.env.CI ? 2 : 0,
