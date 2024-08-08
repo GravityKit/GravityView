@@ -32,7 +32,7 @@ This update resolves various issues, including compatibility with Yoast SEO, imp
 
 #### ✨ Improved
 * The "Sort By" option in the GravityView Gutenberg block now offers a dropdown selection of fields instead of requiring manual entry of the field ID.
-* Caching of View entries to prevent unnecessary database queries.
+* Caching of View entries to prevent unnecessary database queries. Thanks, Shehroz!
 
 #### 🐛 Fixed
 * Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
