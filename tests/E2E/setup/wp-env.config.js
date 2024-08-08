@@ -6,7 +6,7 @@ const path = require( 'path' );
 require( 'dotenv' ).config( { path: `${ process.env.INIT_CWD }/.env` } );
 
 const wpEnvConfig = {
-	phpVersion: '7.4',
+	phpVersion: '7.2',
 	plugins: [ '../../..', process.env.GRAVITYFORMS_FOLDER || '/tmp/gravityforms' ],
 	port: parseInt( process.env.WP_ENV_PORT, 10 ) || 8888,
 	config: {
