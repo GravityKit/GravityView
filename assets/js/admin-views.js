@@ -1647,11 +1647,13 @@
 				.done( (response) => {
 					if ( !response.success ) {
 						defer.reject( response.data );
+
 						return;
 					}
 
 					viewConfiguration.performingAjaxAction = false;
-					defer.resolve();
+
+					defer.resolve( response );
 				} );
 
 			return defer.promise();
@@ -3153,6 +3155,7 @@
 
 	/**
 	 * Upgrade plugins support.
+	 *
 	 * @since $ver$
 	 */
 	$( function () {
@@ -3171,49 +3174,26 @@
 
 			$( this ).addClass( 'is-idle' ).html( $spinner );
 
-			const ajaxRoute = $( this ).data( 'action' ) + '_product';
-			const text_domain = $( this ).data( 'text-domain' );
+			const action = $( this ).data( 'action' ) + '_product';
 
-			// Todo: refactor after #1996 is merged.
-			const {
-				_wpNonce: nonce,
-				_wpAjaxAction: action,
-				_wpAjaxUrl: url,
-				ajaxRouter,
-				frontendFoundationVersion
-			} = window.gvGlobals.foundation_licenses_router;
-
-			const request = {
-				nonce,
-				action,
-				ajaxRouter,
-				ajaxRoute,
-				frontendFoundationVersion,
-				payload: {
-					text_domain,
-					activate: true
-				}
+			const payload = {
+				text_domain: $( this ).data( 'text-domain' ),
+				activate: true,
 			};
 
-			$.post( url, request )
-				.fail( _ => {
-					$( this )
-						.removeClass( 'is-idle' )
-						.addClass( 'is-error' )
-						.text( 'Try again' );
-				} )
-				.done( response => {
-					if ( !response.success ) {
-						$( this )
-							.removeClass( 'is-idle' )
-							.addClass( 'is-error' )
-							.text( 'Try again' );
-						return;
+			const on_fail = () => $(this).removeClass( 'is-idle' ).addClass( 'is-error' ).text( 'Try again' );
+
+			$.when( viewConfiguration.server_request( action, payload ) )
+				.then( ( response ) => {
+					console.log(response);
+					if ( ! response.success ) {
+						throw new Error();
 					}
 
-					// Refresh page on successful activation.
+					// Refresh page on success.
 					document.location = document.location;
-				} );
+				} )
+				.fail( on_fail );
 		} );
 	} );
 }(jQuery));
