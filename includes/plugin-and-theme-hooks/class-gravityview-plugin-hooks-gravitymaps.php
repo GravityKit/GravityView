@@ -31,45 +31,43 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 			}
 		);
 
-		if ( ! defined( 'GRAVITYVIEW_MAPS_VERSION' ) ||
-		     version_compare( GRAVITYVIEW_MAPS_VERSION, '1.8', '>=' )
+		if ( defined( 'GRAVITYVIEW_MAPS_VERSION' ) &&
+		     version_compare( GRAVITYVIEW_MAPS_VERSION, '1.8', '<' )
 		) {
-			return;
+			/**
+			 * @since 2.16
+			 *
+			 * @param array $notices
+			 *
+			 * @return array $notices, with a new notice about Maps compatibility added.
+			 */
+			add_filter(
+				'gravityview/admin/notices',
+				function ( $notices ) {
+
+					$message = '<h3>' . esc_html__( 'Plugin update required.', 'gk-gravityview' ) . '</h3>';
+					$message .= esc_html_x( 'You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update [plugin][/link] to the latest version.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' );
+
+					$message = strtr(
+						$message,
+						[
+							'[version]' => GRAVITYVIEW_MAPS_VERSION,
+							'[link]'    => '<a href="' . esc_url( GravityKitFoundation::licenses()->get_link_to_product_search( 27 ) ) . '">',
+							'[plugin]'  => 'GravityView Maps',
+							'[/link]'   => '</a>',
+						]
+					);
+
+					$notices[] = [
+						'class'   => 'error',
+						'message' => $message,
+						'dismiss' => false,
+					];
+
+					return $notices;
+				}
+			);
 		}
-
-		/**
-		 * @since 2.16
-		 *
-		 * @param array $notices
-		 *
-		 * @return array $notices, with a new notice about Maps compatibility added.
-		 */
-		add_filter(
-			'gravityview/admin/notices',
-			function ( $notices ) {
-
-				$message = '<h3>' . esc_html__( 'Plugin update required.', 'gk-gravityview' ) . '</h3>';
-				$message .= esc_html_x( 'You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update [plugin][/link] to the latest version.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' );
-
-				$message = strtr(
-					$message,
-					array(
-						'[version]' => GRAVITYVIEW_MAPS_VERSION,
-						'[link]'    => '<a href="' . esc_url( GravityKitFoundation::licenses()->get_link_to_product_search( 27 ) ) . '">',
-						'[plugin]'  => 'GravityView Maps',
-						'[/link]'   => '</a>',
-					)
-				);
-
-				$notices[] = array(
-					'class'   => 'error',
-					'message' => $message,
-					'dismiss' => false,
-				);
-
-				return $notices;
-			}
-		);
 
 		parent::add_hooks();
 	}
