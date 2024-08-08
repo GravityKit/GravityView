@@ -9,11 +9,13 @@
 
 /**
  * @inheritDoc
+ *
  * @since TODO
  */
 class GravityView_Plugin_Hooks_GravityView_Ratings_Reviews extends GravityView_Plugin_and_Theme_Hooks {
 	/**
 	 * @inheritDoc
+	 *
 	 * @since $ver$
 	 */
 	public $class_name = 'GravityView_Ratings_Reviews_Loader';
@@ -56,7 +58,7 @@ class GravityView_Plugin_Hooks_GravityView_Ratings_Reviews extends GravityView_P
 	}
 
 	/**
-	 * Returns the Placeholder Value object.
+	 * Returns the placeholder value object.
 	 *
 	 * @since $ver$
 	 *
@@ -74,7 +76,7 @@ class GravityView_Plugin_Hooks_GravityView_Ratings_Reviews extends GravityView_P
 	}
 
 	/**
-	 * Returns the icon for the Advanced Filtering plugin.
+	 * Returns the icon for the Ratings & Reviews extension.
 	 *
 	 * @since $ver$
 	 *

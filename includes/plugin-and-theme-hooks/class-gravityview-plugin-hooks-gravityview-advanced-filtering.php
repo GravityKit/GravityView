@@ -2,11 +2,13 @@
 
 /**
  * @inheritDoc
+ *
  * @since TODO
  */
 class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityView_Plugin_and_Theme_Hooks {
 	/**
 	 * @inheritDoc
+	 *
 	 * @since $ver$
 	 */
 	public $constant_name = 'GRAVITYKIT_ADVANCED_FILTERING_VERSION';
@@ -37,7 +39,7 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 	}
 
 	/**
-	 * Returns the Placeholder Value object.
+	 * Returns the placeholder value object.
 	 *
 	 * @since $ver$
 	 *
@@ -55,7 +57,7 @@ class GravityView_Plugin_Hooks_GravityView_Advanced_Filtering extends GravityVie
 	}
 
 	/**
-	 * Returns the icon for the Advanced Filtering plugin.
+	 * Returns the icon for the Advanced Filtering extension.
 	 *
 	 * @since $ver$
 	 *

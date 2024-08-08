@@ -27,9 +27,9 @@
 			/**
 			 * Modifies the metabox title for the navigation tab.
 			 *
-			 * @since  $ver$
-			 *
 			 * @filter `gk/gravityview/metaboxes/navigation/title`
+			 *
+			 * @since  $ver$
 			 *
 			 * @param string                  $title   The metabox title.
 			 * @param GravityView_Metabox_Tab $metabox The metabox object.

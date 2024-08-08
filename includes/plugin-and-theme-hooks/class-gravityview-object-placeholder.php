@@ -3,7 +3,8 @@
 use GravityKit\GravityView\Foundation\Helpers\Core;
 
 /**
- * Represents a placeholder object for a GravityView Plugin.
+ * Represents a placeholder object for a GravityView plugin.
+ *
  * @since $ver$
  */
 final class GravityView_Object_Placeholder {
@@ -80,7 +81,9 @@ final class GravityView_Object_Placeholder {
 
 	/**
 	 * Microcache for the plugin information.
+	 *
 	 * @since $ver$
+	 *
 	 * @var array|null
 	 */
 	private $plugin;
@@ -162,6 +165,8 @@ final class GravityView_Object_Placeholder {
 	 * Returns whether the plugin is included in one of the licences.
 	 *
 	 * @since $ver$
+	 *
+	 * @throws Exception
 	 *
 	 * @return bool Whether the plugin is included in one of the licences.
 	 */

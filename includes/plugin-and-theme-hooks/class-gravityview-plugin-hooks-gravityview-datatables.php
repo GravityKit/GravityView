@@ -12,7 +12,7 @@ class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin
 	public $constant_name = 'GV_DT_VERSION';
 
 	/**
-	 * Returns the Placeholder Value object.
+	 * Returns the placeholder value object.
 	 *
 	 * @since $ver$
 	 *
@@ -30,7 +30,7 @@ class GravityView_Plugin_Hooks_GravityView_DataTables extends GravityView_Plugin
 	}
 
 	/**
-	 * Returns the icon for the Maps plugin.
+	 * Returns the icon for the DataTables layout.
 	 *
 	 * @since $ver$
 	 *
@@ -70,6 +70,7 @@ ICON;
 
 	/**
 	 * @inheritDoc
+	 *
 	 * @since $ver$
 	 */
 	protected function add_inactive_hooks(): void {
@@ -77,7 +78,7 @@ ICON;
 	}
 
 	/**
-	 * Register the Maps placeholder metabox.
+	 * Register the DataTables placeholder metabox.
 	 *
 	 * @since $ver$
 	 */

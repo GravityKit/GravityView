@@ -1,6 +1,6 @@
 <?php
 /**
- * Template the represents a placeholder.
+ * Template that represents a placeholder.
  *
  * @since TODO
  *
@@ -55,7 +55,7 @@ $user_can = current_user_can( $caps );
 						esc_url( $button_href ),
 						esc_html( $button_text ),
 						implode( ' ', $attributes ),
-				);
+					);
 				} else {
 					printf(
 						'<a href="%s" class="gk-gravityview-placeholder-button button button-primary button-hero" rel="external noopener noreferrer" target="_blank">%s<span class="screen-reader-text">%s</span></span></a>',

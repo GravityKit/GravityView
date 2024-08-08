@@ -2,6 +2,7 @@
 
 /**
  * @inheritDoc
+ *
  * @since 2.16
  */
 class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_Hooks {
@@ -74,6 +75,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 
 	/**
 	 * @inheritDoc
+	 *
 	 * @since $ver$
 	 */
 	protected function add_inactive_hooks(): void {
@@ -81,7 +83,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 	}
 
 	/**
-	 * Returns the icon for the Maps plugin.
+	 * Returns the icon for the GravityView Maps layout.
 	 *
 	 * @since $ver$
 	 *
@@ -116,7 +118,7 @@ ICON;
 	}
 
 	/**
-	 * Returns the Placeholder Value object.
+	 * Returns the placeholder value object.
 	 *
 	 * @since $ver$
 	 *
@@ -140,6 +142,7 @@ ICON;
 	 */
 	public function register_metabox_placeholder(): void {
 		$disabled = apply_filters( 'gk/gravityview/feature/upgrade/disabled', false );
+
 		if ( $disabled ) {
 			return;
 		}
