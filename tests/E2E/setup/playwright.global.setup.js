@@ -6,7 +6,7 @@ const { promises: fs } = require( 'fs' );
 async function startDockerContainer() {
 	return new Promise( ( resolve, reject ) => {
 		exec(
-			'docker run -d --rm --network host --ipc=host jacoblincool/playwright:chromium-server-1.45.0',
+			'docker run -d --rm --network host --ipc=host jacoblincool/playwright:chromium-light-server-1.46.0',
 			( error, stdout ) => {
 				if ( error ) {
 					console.error( 'Error starting Docker container:', error );
