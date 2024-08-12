@@ -336,9 +336,6 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		$new_fields = array();
 		$i          = 0;
 
-		$entry  = gravityview()->request->is_edit_entry( $form['id'] );
-		$_entry = $entry->as_entry();
-
 		foreach ( (array) $edit_fields as $id => $edit_field ) {
 			if ( 'entry_approval' !== $edit_field['id'] ) {
 				if ( isset( $fields[ $i ] ) ) {
@@ -356,7 +353,16 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 			$unique_id = crc32( 'is_approved' );
 
-			$value = ( $_entry['is_approved'] ? (int) $_entry['is_approved'] : GravityView_Entry_Approval_Status::UNAPPROVED );
+			$entry  = gravityview()->request->is_edit_entry( $form['id'] );
+
+			$value = '';
+
+			if ( $entry ) {
+				$entry = $entry->as_entry();
+
+				$value = $entry['is_approved'] ? (int) $entry['is_approved'] : GravityView_Entry_Approval_Status::UNAPPROVED;
+			}
+
 			$value = $_POST[ "input_{$unique_id}" ] ?? $value;
 
 			$field_data = array(
