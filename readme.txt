@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.5.3
+Tested up to: 6.6.0
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,16 +21,31 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.26 on August 8, 2024 =
+
+This update resolves various issues, including compatibility with Yoast SEO, improves performance through enhanced View entries caching, and adds new functionality.
 
 #### 🚀 Added
-* Ability to modify the entry creator's information in the Edit Entry screen.
+* Ability to modify the entry creator’s information on the Edit Entry screen.
+* Merge tag modifier for formatting Date and Time fields (e.g., `{Date Field:1:format:Y-m-d}`).
+* Placeholders in View Settings to inform you that additional functionality is available.
+
+#### ✨ Improved
+* The "Sort By" option in the GravityView Gutenberg block now offers a dropdown selection of fields instead of requiring manual entry of the field ID.
+* Caching of View entries to prevent unnecessary database queries. Thanks, Shehroz!
 
 #### 🐛 Fixed
 * Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
 * View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.
-* An issue in the Search Widget configuration where adding a Date field caused the search mode ("any" and "all") to no longer be toggleable.
+* An issue in the Search Bar widget configuration where adding a Date field caused the search mode ("any" and "all") to no longer be toggleable.
 * `[gv_entry_link]` shortcode not rendering inside the Custom HTML block.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) and [TrustedLogin](https://www.trustedlogin.com/) to versions 1.2.17 and 1.8.0, respectively.
+
+#### 💻 Developer Updates
+* Added: `gk/gravityview/feature/upgrade/disabled` filter to disable the functionality placeholders. Return `true` to disable the placeholders.
+* Added: `gk/gravityview/metabox/content/before` and `gk/gravityview/metabox/content/after` actions, triggered before and after the View metabox is rendered.
 
 = 2.25 on June 5, 2024 =
 

@@ -2,20 +2,21 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.25\n"
+"Project-Id-Version: GravityView 2.26\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-22T23:33:25+00:00\n"
+"POT-Creation-Date: 2024-08-08T23:45:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
+#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -25,14 +26,17 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
+#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
+#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:402
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:163
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:164
@@ -59,14 +63,14 @@ msgstr ""
 #: future/includes/class-gv-oembed.php:232
 #: future/includes/class-gv-oembed.php:237
 #: future/includes/class-gv-oembed.php:243
-#: future/includes/class-gv-shortcode-gravityview.php:187
-#: future/includes/class-gv-shortcode-gravityview.php:221
-#: future/includes/class-gv-shortcode-gravityview.php:226
-#: future/includes/class-gv-shortcode-gravityview.php:232
-#: future/includes/class-gv-shortcode-gravityview.php:255
-#: future/includes/class-gv-shortcode-gravityview.php:260
-#: future/includes/class-gv-shortcode-gravityview.php:266
-#: future/includes/class-gv-shortcode-gravityview.php:280
+#: future/includes/class-gv-shortcode-gravityview.php:194
+#: future/includes/class-gv-shortcode-gravityview.php:228
+#: future/includes/class-gv-shortcode-gravityview.php:233
+#: future/includes/class-gv-shortcode-gravityview.php:239
+#: future/includes/class-gv-shortcode-gravityview.php:262
+#: future/includes/class-gv-shortcode-gravityview.php:267
+#: future/includes/class-gv-shortcode-gravityview.php:273
+#: future/includes/class-gv-shortcode-gravityview.php:287
 #: future/includes/class-gv-view.php:354
 #: future/includes/class-gv-view.php:368
 #: future/includes/class-gv-view.php:373
@@ -125,7 +129,10 @@ msgstr ""
 msgid "There are %s unapproved entries that are not being shown."
 msgstr ""
 
+#. translators: %s is the plugin title.
 #: future/includes/class-gv-renderer.php:245
+#: includes/admin/metaboxes/views/placeholder.php:39
+#: includes/admin/metaboxes/views/placeholder.php:64
 #: includes/class-admin-welcome.php:199
 #: includes/fields/class-gravityview-field-gravityview_view.php:78
 #: includes/widgets/search-widget/class-search-widget.php:95
@@ -189,7 +196,7 @@ msgstr ""
 #: includes/class-admin-views.php:1428
 #: includes/class-frontend-views.php:685
 #: includes/class-gravityview-admin-bar.php:111
-#: includes/class-gravityview-entry-link-shortcode.php:246
+#: includes/class-gravityview-entry-link-shortcode.php:250
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1131
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: includes/fields/class-gravityview-field-edit-link.php:54
@@ -686,7 +693,7 @@ msgid "CSS class to add to the wrapping HTML container."
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:426
-#: future/includes/gutenberg/blocks/view/edit.js:249
+#: future/includes/gutenberg/blocks/view/edit.js:248
 #: future/includes/gutenberg/build/view.js:1
 msgid "Search Value"
 msgstr ""
@@ -697,7 +704,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:434
 #: includes/widgets/search-widget/class-search-widget.php:313
-#: future/includes/gutenberg/blocks/view/edit.js:240
+#: future/includes/gutenberg/blocks/view/edit.js:239
 #: future/includes/gutenberg/build/view.js:1
 msgid "Search Field"
 msgstr ""
@@ -707,7 +714,7 @@ msgid "If Search Value is set, you can define a specific field to search in. Oth
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:442
-#: future/includes/gutenberg/blocks/view/edit.js:259
+#: future/includes/gutenberg/blocks/view/edit.js:258
 #: future/includes/gutenberg/build/view.js:1
 msgid "Search Operator"
 msgstr ""
@@ -721,7 +728,7 @@ msgid "When viewing a single entry, change the title of the page to this setting
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:462
-#: future/includes/gutenberg/blocks/view/edit.js:303
+#: future/includes/gutenberg/blocks/view/edit.js:302
 #: future/includes/gutenberg/build/view.js:1
 msgid "Back Link Label"
 msgstr ""
@@ -908,7 +915,7 @@ msgstr ""
 msgid "Do not limit the number of entries output in the file."
 msgstr ""
 
-#: future/includes/class-gv-shortcode-gravityview.php:159
+#: future/includes/class-gv-shortcode-gravityview.php:166
 #: future/includes/class-gv-shortcode-gventry.php:147
 #: future/includes/class-gv-shortcode-gvfield.php:151
 #: future/includes/class-gv-view.php:332
@@ -916,11 +923,11 @@ msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a
 msgstr ""
 
 #. Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
-#: future/includes/class-gv-shortcode-gravityview.php:173
+#: future/includes/class-gv-shortcode-gravityview.php:180
 msgid "This View is in the Trash. %sClick to restore the View%s."
 msgstr ""
 
-#: future/includes/class-gv-shortcode-gravityview.php:177
+#: future/includes/class-gv-shortcode-gravityview.php:184
 msgid "Are you sure you want to restore this View? It will immediately be removed from the trash and set to draft status."
 msgstr ""
 
@@ -1075,7 +1082,7 @@ msgstr ""
 msgid "GravityView View"
 msgstr ""
 
-#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:243
+#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:244
 #: includes/fields/class-gravityview-field-gravityview_view.php:58
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
@@ -1359,7 +1366,7 @@ msgid "View Settings"
 msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:161
-#: includes/class-gravityview-entry-link-shortcode.php:249
+#: includes/class-gravityview-entry-link-shortcode.php:253
 #: includes/extensions/delete-entry/class-delete-entry-admin.php:82
 #: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:32
 #: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:108
@@ -1485,6 +1492,11 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#. translators: %s is the plugin title.
+#: includes/admin/metaboxes/views/placeholder.php:38
+msgid "Learn more about %s…"
+msgstr ""
+
 #: includes/admin/metaboxes/views/select-template.php:68
 #: includes/admin/metaboxes/views/view-configuration.php:179
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:128
@@ -1503,6 +1515,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/select-template.php:105
 #: includes/admin/metaboxes/views/view-configuration.php:110
 #: includes/admin/metaboxes/views/view-configuration.php:181
+#: includes/plugin-and-theme-hooks/class-gravityview-object-placeholder.php:249
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:117
 msgid "Buy Now"
 msgstr ""
@@ -1582,6 +1595,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:112
 #: includes/admin/metaboxes/views/view-configuration.php:183
+#: includes/plugin-and-theme-hooks/class-gravityview-feature-upgrade.php:57
 msgid "Upgrade"
 msgstr ""
 
@@ -1927,6 +1941,10 @@ msgstr ""
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
+#: includes/class-admin-views.php:1536
+msgid "You have unsaved changes. Continuing will discard them. Are you sure you want to proceed?"
+msgstr ""
+
 #: includes/class-admin-welcome.php:66
 #: includes/class-admin-welcome.php:67
 msgid "Changelog"
@@ -1963,23 +1981,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:408
+#: includes/class-admin-welcome.php:406
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:460
+#: includes/class-admin-welcome.php:458
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:498
+#: includes/class-admin-welcome.php:502
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:530
+#: includes/class-admin-welcome.php:534
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:531
+#: includes/class-admin-welcome.php:535
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2435,6 +2453,7 @@ msgid "Disapproved"
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:57
+#: includes/fields/class-gravityview-field-approval.php:372
 msgid "Disapprove"
 msgstr ""
 
@@ -2447,6 +2466,7 @@ msgid "Approved"
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:63
+#: includes/fields/class-gravityview-field-approval.php:368
 msgid "Approve"
 msgstr ""
 
@@ -2460,6 +2480,7 @@ msgid "Unapproved"
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:70
+#: includes/fields/class-gravityview-field-approval.php:376
 msgid "Reset Approval"
 msgstr ""
 
@@ -2503,7 +2524,7 @@ msgstr ""
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 
-#: includes/class-gravityview-entry-link-shortcode.php:252
+#: includes/class-gravityview-entry-link-shortcode.php:256
 #: includes/fields/class-gravityview-field-entry-link.php:81
 #: templates/deprecated/fields/entry_link.php:17
 #: templates/fields/field-entry_link-html.php:27
@@ -3002,6 +3023,7 @@ msgid "Open map link in a new tab or window?"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-approval.php:28
+#: includes/fields/class-gravityview-field-approval.php:351
 msgid "Approve Entries"
 msgstr ""
 
@@ -3234,8 +3256,8 @@ msgstr ""
 
 #: includes/fields/class-gravityview-field-date.php:27
 #: includes/widgets/search-widget/class-search-widget.php:260
-#: future/includes/gutenberg/blocks/view/edit.js:151
-#: future/includes/gutenberg/blocks/view/edit.js:190
+#: future/includes/gutenberg/blocks/view/edit.js:152
+#: future/includes/gutenberg/blocks/view/edit.js:191
 #: future/includes/gutenberg/build/view.js:1
 msgid "Date"
 msgstr ""
@@ -4146,6 +4168,14 @@ msgstr ""
 msgid "Define how the date is displayed (using %1$sthe PHP date format%2$s)"
 msgstr ""
 
+#: includes/plugin-and-theme-hooks/class-gravityview-object-placeholder.php:240
+msgid "Activate Now"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-object-placeholder.php:245
+msgid "Install & Activate"
+msgstr ""
+
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:133
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
@@ -4218,13 +4248,46 @@ msgstr ""
 msgid "Displays either Passed or Failed based on the Pass/Fail settings configured in the Quiz Settings."
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:42
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:49
 msgid "Plugin update required."
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:43
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:50
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update [plugin][/link] to the latest version."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:130
+msgid "Maps Layout"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravitymaps.php:131
+msgid "Display entries in a Map View, where entries are displayed as “pins” on a map, like on Yelp.com. Also, add map widgets and fields to all GravityView layouts."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityview-advanced-filtering.php:51
+msgid "Advanced Filtering"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityview-advanced-filtering.php:52
+msgid "Control what entries are displayed in a View using advanced conditional logic."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityview-datatables.php:24
+msgid "DataTables Layout"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityview-datatables.php:25
+msgid "Display Gravity Forms data in a live-updating table with extended sorting, filtering and exporting capabilities."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityview-ratings-reviews.php:47
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityview-ratings-reviews.php:70
+msgid "Ratings & Reviews"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityview-ratings-reviews.php:71
+msgid "Allow users to rate, review, and comment on entries in a View. Supports star ratings and up/down voting."
 msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:79
@@ -4511,7 +4574,7 @@ msgstr ""
 #: includes/widgets/class-gravityview-widget-page-size.php:39
 #: includes/widgets/class-gravityview-widget-page-size.php:99
 #: future/includes/gutenberg/blocks/view-details/edit.js:55
-#: future/includes/gutenberg/blocks/view/edit.js:214
+#: future/includes/gutenberg/blocks/view/edit.js:215
 #: future/includes/gutenberg/build/view-details.js:1
 #: future/includes/gutenberg/build/view.js:1
 msgid "Page Size"
@@ -6758,7 +6821,7 @@ msgstr ""
 #: future/includes/gutenberg/blocks/entry-link/edit.js:31
 #: future/includes/gutenberg/blocks/entry/edit.js:27
 #: future/includes/gutenberg/blocks/view-details/edit.js:23
-#: future/includes/gutenberg/blocks/view/edit.js:42
+#: future/includes/gutenberg/blocks/view/edit.js:43
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/entry.js:1
@@ -6776,7 +6839,7 @@ msgstr ""
 #: future/includes/gutenberg/blocks/entry-link/edit.js:48
 #: future/includes/gutenberg/blocks/entry/edit.js:59
 #: future/includes/gutenberg/blocks/view-details/edit.js:40
-#: future/includes/gutenberg/blocks/view/edit.js:115
+#: future/includes/gutenberg/blocks/view/edit.js:116
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/entry.js:1
@@ -6823,7 +6886,7 @@ msgid "Link Attributes"
 msgstr ""
 
 #: future/includes/gutenberg/blocks/entry-link/edit.js:109
-#: future/includes/gutenberg/blocks/view/edit.js:211
+#: future/includes/gutenberg/blocks/view/edit.js:212
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/view.js:1
 msgid "Extra Settings"
@@ -6854,162 +6917,157 @@ msgstr ""
 msgid "Last Entry"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:70
+#: future/includes/gutenberg/blocks/view/edit.js:71
 #: future/includes/gutenberg/build/view.js:1
 msgid "Map is not available in the Block preview"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:82
+#: future/includes/gutenberg/blocks/view/edit.js:83
 #: future/includes/gutenberg/build/view.js:1
 msgid "Entries from the DataTables layout are not available in the Block preview"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:129
+#: future/includes/gutenberg/blocks/view/edit.js:130
 #: future/includes/gutenberg/build/view.js:1
 msgid "Entries Settings"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:131
+#: future/includes/gutenberg/blocks/view/edit.js:132
 #: future/includes/gutenberg/build/view.js:1
 msgid "Start Date"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:138
-#: future/includes/gutenberg/blocks/view/edit.js:177
+#: future/includes/gutenberg/blocks/view/edit.js:139
+#: future/includes/gutenberg/blocks/view/edit.js:178
 #: future/includes/gutenberg/build/view.js:1
 msgid "Calendar Date"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:146
-#: future/includes/gutenberg/blocks/view/edit.js:162
-#: future/includes/gutenberg/blocks/view/edit.js:185
-#: future/includes/gutenberg/blocks/view/edit.js:201
+#: future/includes/gutenberg/blocks/view/edit.js:147
+#: future/includes/gutenberg/blocks/view/edit.js:163
+#: future/includes/gutenberg/blocks/view/edit.js:186
+#: future/includes/gutenberg/blocks/view/edit.js:202
 #: future/includes/gutenberg/build/view.js:1
 msgid "Relative Date"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:163
-#: future/includes/gutenberg/blocks/view/edit.js:202
+#: future/includes/gutenberg/blocks/view/edit.js:164
+#: future/includes/gutenberg/blocks/view/edit.js:203
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Examples of relative dates."
 msgid "now, today, +1 day"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:170
+#: future/includes/gutenberg/blocks/view/edit.js:171
 #: future/includes/gutenberg/build/view.js:1
 msgid "End Date"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:222
-#: future/includes/gutenberg/build/view.js:1
-msgid "Sort Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/edit.js:230
+#: future/includes/gutenberg/blocks/view/edit.js:229
 #: future/includes/gutenberg/build/view.js:1
 msgid "Sort Direction"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:233
+#: future/includes/gutenberg/blocks/view/edit.js:232
 #: future/includes/gutenberg/build/view.js:1
 msgid "Ascending"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:234
+#: future/includes/gutenberg/blocks/view/edit.js:233
 #: future/includes/gutenberg/build/view.js:1
 msgid "Descending"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:262
+#: future/includes/gutenberg/blocks/view/edit.js:261
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"is\"."
 msgid "Is"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:263
+#: future/includes/gutenberg/blocks/view/edit.js:262
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"isnot\"."
 msgid "Is Not"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:264
+#: future/includes/gutenberg/blocks/view/edit.js:263
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"<>\"."
 msgid "Not Equal"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:265
+#: future/includes/gutenberg/blocks/view/edit.js:264
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"not in\"."
 msgid "Not In"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:266
+#: future/includes/gutenberg/blocks/view/edit.js:265
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"in\"."
 msgid "In"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:267
+#: future/includes/gutenberg/blocks/view/edit.js:266
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \">\"."
 msgid "Greater"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:268
+#: future/includes/gutenberg/blocks/view/edit.js:267
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"<\"."
 msgid "Lesser"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:269
+#: future/includes/gutenberg/blocks/view/edit.js:268
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"contains\"."
 msgid "Contains"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:270
+#: future/includes/gutenberg/blocks/view/edit.js:269
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"starts_with\"."
 msgid "Starts With"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:271
+#: future/includes/gutenberg/blocks/view/edit.js:270
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"ends_with\"."
 msgid "Ends With"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:272
+#: future/includes/gutenberg/blocks/view/edit.js:271
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"like\"."
 msgid "Like"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:273
+#: future/includes/gutenberg/blocks/view/edit.js:272
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \">=\"."
 msgid "Greater Or Equal"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:274
+#: future/includes/gutenberg/blocks/view/edit.js:273
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes search operator \"<=\"."
 msgid "Lesser Or Equal"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:283
+#: future/includes/gutenberg/blocks/view/edit.js:282
 #: future/includes/gutenberg/build/view.js:1
 msgctxt "Denotes CSS class"
 msgid "Class"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:289
+#: future/includes/gutenberg/blocks/view/edit.js:288
 #: future/includes/gutenberg/build/view.js:1
 msgid "Offset"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view/edit.js:297
+#: future/includes/gutenberg/blocks/view/edit.js:296
 #: future/includes/gutenberg/build/view.js:1
 msgid "Single Title"
 msgstr ""
@@ -7087,4 +7145,99 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/server-side-render.js:171
 msgid "The block did not render any content."
+msgstr ""
+
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/sort-selector.js:12
+msgid "Select a Sort Field"
+msgstr ""
+
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/sort-selector.js:13
+msgid "Sort Field"
+msgstr ""
+
+#: future/includes/gutenberg/build/view.js:1
+#: future/includes/gutenberg/shared/js/sort-selector.js:75
+msgid "No Sorting Fields found"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""
