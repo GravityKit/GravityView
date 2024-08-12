@@ -1,58 +1,58 @@
 {
-	"name": "gravityview",
-	"version": "1.0.0",
-	"license": "GPL-2.0",
-	"devDependencies": {
-		"@lodder/grunt-postcss": "^3.1.1",
-		"@playwright/test": "1.46.0",
-		"@types/node": "^20.14.14",
-		"@wordpress/e2e-test-utils-playwright": "^0.24.0",
-		"@wordpress/env": "^9.10.0",
-		"@wordpress/scripts": "^27.9.0",
-		"autoprefixer": "^9.8.8",
-		"dotenv": "^16.4.5",
-		"grunt": "^1.4.1",
-		"grunt-contrib-imagemin": "^4.0.0",
-		"grunt-contrib-jshint": "^3.2.0",
-		"grunt-contrib-uglify": "^5.0.1",
-		"grunt-contrib-watch": "^1.1.0",
-		"grunt-exec": "^0.4.6",
-		"grunt-newer": "^1.1.0",
-		"grunt-potomo": "^3.1.0",
-		"grunt-sass": "^3.1.0",
-		"grunt-wp-i18n": "^1.0.3",
-		"grunt-wp-readme-to-markdown": "^2.1.0",
-		"husky": "^8.0.3",
-		"lint-staged": "^15.2.0",
-		"load-grunt-tasks": "^3.5.2",
-		"node-sass": "^9.0.0",
-		"postcss": "^8.4.31",
-		"shelljs": "^0.8.5"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/gravityview/GravityView.git"
-	},
-	"browserslist": [
-		"cover 99.7%"
-	],
-	"dependencies": {
-		"bower": "^1.8.8"
-	},
-	"scripts": {
-		"wp-env": "cd tests/E2E/setup && wp-env",
-		"wp-env:configure": "cd tests/E2E/setup && node wp-env.config.js",
-		"wp-env:bash": "npm run wp-env cli bash -c",
-		"tests:e2e": "npx playwright test --config=tests/E2E/setup/playwright.config.js"
-	},
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"lint-staged": {
-		"*.php": [
-			"vendor/bin/phpcs"
-		]
-	}
+  "name": "gravityview",
+  "version": "1.0.0",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "@lodder/grunt-postcss": "^3.1.1",
+    "@playwright/test": "1.44.0",
+    "@types/node": "^20.14.14",
+    "@wordpress/e2e-test-utils-playwright": "^0.24.0",
+    "@wordpress/env": "^9.10.0",
+    "@wordpress/scripts": "^27.9.0",
+    "autoprefixer": "^9.8.8",
+    "dotenv": "^16.4.5",
+    "grunt": "^1.4.1",
+    "grunt-contrib-imagemin": "^4.0.0",
+    "grunt-contrib-jshint": "^3.2.0",
+    "grunt-contrib-uglify": "^5.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-exec": "^0.4.6",
+    "grunt-newer": "^1.1.0",
+    "grunt-potomo": "^3.1.0",
+    "grunt-sass": "^3.1.0",
+    "grunt-wp-i18n": "^1.0.3",
+    "grunt-wp-readme-to-markdown": "^2.1.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "load-grunt-tasks": "^3.5.2",
+    "node-sass": "^9.0.0",
+    "postcss": "^8.4.31",
+    "shelljs": "^0.8.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gravityview/GravityView.git"
+  },
+  "browserslist": [
+    "cover 99.7%"
+  ],
+  "dependencies": {
+    "bower": "^1.8.8"
+  },
+  "scripts": {
+    "wp-env": "cd tests/E2E/setup && wp-env",
+    "wp-env:configure": "cd tests/E2E/setup && node wp-env.config.js",
+    "wp-env:bash": "npm run wp-env cli bash -c",
+    "tests:e2e": "npx playwright test --config=tests/E2E/setup/playwright.config.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.php": [
+      "vendor/bin/phpcs"
+    ]
+  }
 }
