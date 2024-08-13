@@ -181,8 +181,12 @@ class GravityView_Merge_Tags {
 	 * @return string
 	 */
 	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier ) {
-		if ( ( $field instanceof GF_Field_Date || $field instanceof GF_Field_Time ) && $modifier ) {
-			return self::format_date( $raw_value, $modifier );
+		$format = self::get_format_merge_tag_modifier_value( $modifier );
+
+		if ( $format && $field instanceof GF_Field_Time ) {
+			$raw_value = ( new DateTime( $raw_value ) )->format( $format ); // GF's Time field always uses local time.
+		} elseif ( $format && $field instanceof GF_Field_Date ) {
+			$raw_value = self::format_date( $raw_value, $modifier );
 		}
 
 		return $raw_value;
