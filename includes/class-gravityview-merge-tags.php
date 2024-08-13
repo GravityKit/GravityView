@@ -588,20 +588,6 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Returns a merge tag modifier parsed into an array with escaped colons replaced by |COLON|.
-	 *
-	 * @since TODO
-	 *
-	 * @param string $modifier
-	 *
-	 * @return false|string[]
-	 */
-	private static function parse_merge_tag_modifier( $modifier ) {
-		// Expand all modifiers, skipping escaped colons. str_replace() works better than preg_split( "/(?<!\\):/" ).
-		return explode( ':', str_replace( '\:', '|COLON|', $modifier ) );
-	}
-
-	/**
 	 * Formats merge tag value using Merge Tags using GVCommon::format_date()
 	 *
 	 * @todo  This is no longer needed since Gravity Forms 2.5 as it supports modifiers, but should be reviewed before removal.
@@ -617,7 +603,7 @@ class GravityView_Merge_Tags {
 	 * @return int|string If timestamp requested, timestamp int. Otherwise, string output.
 	 */
 	public static function format_date( $date_or_time_string = '', $modifier = '' ) {
-		$parsed_modifier = self::parse_merge_tag_modifier( $modifier );
+		$parsed_modifier = explode( ':', $modifier );
 
 		$atts = [
 			'format'    => self::get_format_merge_tag_modifier_value( $modifier, false ),
