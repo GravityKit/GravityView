@@ -1082,7 +1082,7 @@ HTML;
 
 					<?php foreach ( $areas as $area ) : ?>
 
-						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>">
+						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-templateid="<?php echo esc_attr( $template_id ); ?>">
 							<p class="gv-droppable-area-title"
 							<?php
 							if ( 'widget' === $type && empty( $area['subtitle'] ) ) {
