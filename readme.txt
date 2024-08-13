@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: When searching a View, the searched time zone would not appear as selected in the Search Bar.
 * Fixed: Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.
 * Fixed: Fatal error on the Edit Entry screen when Multiple Forms is enabled.
+* Fixed: The ``:format` merge tag modifier on the Time field returned a UTC-adjusted time value.
 
 = 2.26 on August 8, 2024 =
 
