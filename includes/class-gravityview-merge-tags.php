@@ -95,15 +95,10 @@ class GravityView_Merge_Tags {
 
 		// matching regex => the value is the method to call to replace the value.
 		$gv_modifiers = array(
-			'maxwords:(\d+)'            => 'modifier_maxwords',
-			/** @see modifier_maxwords */
-							'timestamp' => 'modifier_timestamp',
-			/** @see modifier_timestamp */
-							'explode'   => 'modifier_explode',
-			/** @see modifier_explode */
-
-							/** @see modifier_strings */
-							'urlencode' => 'modifier_strings',
+			'maxwords:(\d+)'            => 'modifier_maxwords', /** @see modifier_maxwords */
+			'timestamp'                 => 'modifier_timestamp', /** @see modifier_timestamp */
+			'explode'                   => 'modifier_explode', /** @see modifier_explode */
+			'urlencode'                 => 'modifier_strings', /** @see modifier_strings */
 			'wpautop'                   => 'modifier_strings',
 			'esc_html'                  => 'modifier_strings',
 			'sanitize_html_class'       => 'modifier_strings',
@@ -113,7 +108,7 @@ class GravityView_Merge_Tags {
 			'ucfirst'                   => 'modifier_strings',
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
-			'format'                    => 'modifier_format',
+			'format'                    => 'modifier_format', /** @see modifier_format */
 		);
 
 		$modifiers = explode( ',', $modifier );
