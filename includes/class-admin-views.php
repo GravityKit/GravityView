@@ -1388,10 +1388,14 @@ HTML;
 		}
 
 		/**
-		 * @filter `gk/gravityview/view/new-view-show-all-fields` Modify whether to show all fields in the Multiple Entries layout when creating a new View.
-		 * @since TODO
+		 * Modify whether to show all fields in the Multiple Entries layout when creating a new View.
+		 *
+		 * @filter `gk/gravityview/view/new/show-all-fields-in-multiple-entries`
+		 *
+		 * @since  TODO
+		 *
 		 * @param bool $show_all_fields Whether to show all fields (true) or only fields that are configured on the Gravity Forms Entries grid (false). Default: `false`.
-		 * @param int $form_id The current form ID.
+		 * @param int  $form_id         The current form ID.
 		 */
 		$show_all_fields = apply_filters( 'gk/gravityview/view/new/show-all-fields-in-multiple-entries', false, $form_id );
 
