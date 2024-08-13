@@ -27,6 +27,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.
 * Fixed: Fatal error on the Edit Entry screen when Multiple Forms is enabled.
 
+__Developer Updates:__
+
+* Added: `gk/gravityview/view/new/show-all-fields-in-multiple-entries` filter allows showing all fields in the Multiple Entries layout when creating a new View. Return `true` to show all fields. Default is `false`, which shows the fields configured in the Gravity Forms Entries table.
+
 = 2.26 on August 8, 2024 =
 
 This update resolves various issues, including compatibility with Yoast SEO, improves performance through enhanced View entries caching, and adds new functionality.

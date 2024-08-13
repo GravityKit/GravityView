@@ -1375,7 +1375,7 @@ HTML;
 	 * @since 2.17
 	 * @internal Do not use this method directly. Use the `gravityview/view/configuration/fields` filter instead.
 	 *
-	 * @param array    $fields A Widget configuration array.
+	 * @param array    $fields Multi-array of fields with first level being the field zones.
 	 * @param \GV\View $view The View the fields are being pulled for. Unused in this method.
 	 * @param int      $form_id The form ID.
 	 *
@@ -1387,40 +1387,65 @@ HTML;
 			return $fields;
 		}
 
-		$columns = GFFormsModel::get_grid_columns( $form_id );
+		/**
+		 * @filter `gk/gravityview/view/new-view-show-all-fields` Modify whether to show all fields in the Multiple Entries layout when creating a new View.
+		 * @since TODO
+		 * @param bool $show_all_fields Whether to show all fields (true) or only fields that are configured on the Gravity Forms Entries grid (false). Default: `false`.
+		 * @param int $form_id The current form ID.
+		 */
+		$show_all_fields = apply_filters( 'gk/gravityview/view/new/show-all-fields-in-multiple-entries', false, $form_id );
 
-		$directory_fields = array();
+		if ( ! $show_all_fields ) {
+			$columns = GFFormsModel::get_grid_columns( $form_id );
 
-		foreach ( $columns as $column_id => $column ) {
+			$directory_fields = array();
 
-			$gv_field = GravityView_Fields::get_instance( $column['type'] );
+			foreach ( $columns as $column_id => $column ) {
 
-			if ( ! $gv_field ) {
-				continue;
+				$gv_field = GravityView_Fields::get_instance( $column['type'] );
+
+				if ( ! $gv_field ) {
+					continue;
+				}
+
+				$directory_fields[ uniqid( '', true ) ] = array(
+					'label'        => \GV\Utils::get( $column, 'label' ),
+					'type'         => $gv_field->name,
+					'id'           => $column_id,
+					'form_id'      => $form_id,
+					'show_as_link' => empty( $directory_fields ),
+				);
+
 			}
-
-			$directory_fields[ uniqid( '', true ) ] = array(
-				'label'        => \GV\Utils::get( $column, 'label' ),
-				'type'         => $gv_field->name,
-				'id'           => $column_id,
-				'form_id'      => $form_id,
-				'show_as_link' => empty( $directory_fields ),
-			);
-
 		}
 
 		$form         = GV\GF_Form::by_id( $form_id );
 		$entry_fields = array();
 
 		foreach ( $form->form['fields'] as $gv_field ) {
-
 			$entry_fields[ uniqid( '', true ) ] = array(
 				'label'   => $gv_field->label,
 				'type'    => $gv_field->type,
 				'id'      => $gv_field->id,
 				'form_id' => $form_id,
 			);
+		}
 
+		// If we're showing all fields, the entry fields are the same as the directory fields.
+		if ( $show_all_fields ) {
+			$directory_fields = $entry_fields;
+
+			// If we're showing all fields, we want to show the first field as a link.
+			foreach( $directory_fields as &$field ) {
+				$gf_field = GF_Fields::get( $field['type'] );
+
+				if ( ! $gf_field ) {
+					continue;
+				}
+
+				$field['show_as_link'] = true;
+				break; // Only show the first field as a link.
+			}
 		}
 
 		// Add Edit Entry to the bottom of the Single Entry configuration.
