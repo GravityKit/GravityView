@@ -25,6 +25,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Fixed: When searching a View, the searched time zone would not appear as selected in the Search Bar.
 * Fixed: Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.
+* Fixed: Fatal error on the Edit Entry screen when Multiple Forms is enabled.
+
 = 2.26 on August 8, 2024 =
 
 This update resolves various issues, including compatibility with Yoast SEO, improves performance through enhanced View entries caching, and adds new functionality.
