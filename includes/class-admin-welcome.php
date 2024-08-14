@@ -296,6 +296,16 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.27.1 on August 14, 2024</h3>
+
+				<p>This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Fields added to the Edit Entry layout in the View editor could not be configured and would disappear after saving the View when Multiple Forms was enabled.</li>
+				</ul>
+
 				<h3>2.27 on August 13, 2024</h3>
 
 				<p>This update resolves several issues related to the Multiple Forms extension, fixes the recently introduced <code>:format</code> merge tag modifier to return the Time field value in the local timezone, and adds a new filter to control which fields are added by default when creating a new View.</p>
