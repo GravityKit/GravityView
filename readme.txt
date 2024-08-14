@@ -29,7 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 __Developer Updates:__
 
-* Added: `gk/gravityview/view/new/show-all-fields-in-multiple-entries` filter allows showing all fields in the Multiple Entries layout when creating a new View. Return `true` to show all fields. Default is `false`, which shows the fields configured in the Gravity Forms Entries table.
+* Added: `gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields` filter that, when set to `true`, initializes the Multiple Entries layout with all form fields when creating a new View. The default is `false`, which populates the View with only the fields configured in the Gravity Forms Entries table.
 
 = 2.26 on August 8, 2024 =
 

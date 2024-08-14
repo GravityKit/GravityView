@@ -1388,16 +1388,16 @@ HTML;
 		}
 
 		/**
-		 * Modify whether to show all fields in the Multiple Entries layout when creating a new View.
+		 * Modify whether to initialize the Multiple Entries layout with all form fields or only the fields displayed in the Gravity Forms Entries table when creating a new View.
 		 *
-		 * @filter `gk/gravityview/view/new/show-all-fields-in-multiple-entries`
+		 * @filter `gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields`
 		 *
-		 * @since  TODO
+		 * @since TODO
 		 *
-		 * @param bool $show_all_fields Whether to show all fields (true) or only fields that are configured on the Gravity Forms Entries grid (false). Default: `false`.
+		 * @param bool $show_all_fields Whether to include all form fields (true) or only the fields displayed in the Gravity Forms Entries table (false). Default: `false`.
 		 * @param int  $form_id         The current form ID.
 		 */
-		$show_all_fields = apply_filters( 'gk/gravityview/view/new/show-all-fields-in-multiple-entries', false, $form_id );
+		$show_all_fields = apply_filters( 'gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields', false, $form_id );
 
 		if ( ! $show_all_fields ) {
 			$columns = GFFormsModel::get_grid_columns( $form_id );
