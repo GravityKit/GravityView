@@ -28,6 +28,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Fatal error on the Edit Entry screen when Multiple Forms is enabled.
 * Fixed: The ``:format` merge tag modifier on the Time field returned a UTC-adjusted time value.
 
+__Developer Updates:__
+
+* Added: `gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields` filter that, when set to `true`, initializes the Multiple Entries layout with all form fields when creating a new View. The default is `false`, which populates the View with only the fields configured in the Gravity Forms Entries table.
+
 = 2.26 on August 8, 2024 =
 
 This update resolves various issues, including compatibility with Yoast SEO, improves performance through enhanced View entries caching, and adds new functionality.
