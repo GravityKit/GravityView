@@ -2219,7 +2219,7 @@
 		placeField: function ( $field, $addButton, $anchor, add_before_anchor = false ) {
 			const vcfg = viewConfiguration;
 			const $newField = $field.clone().hide();
-			const templateId = $addButton.attr( 'data-templateid' ) ?? $addButton.parents( '.gv-section' ).find( '.view-template-select select' ).val();
+			const templateId = $addButton.attr( 'data-templateid' ) ?? $addButton.parents( '.gv-section' ).find( '.view-template-select select' ).val() ?? $( "#gravityview_directory_template" ).val();
 
 			const data = {
 				action: 'gv_field_options',
