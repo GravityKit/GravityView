@@ -21,16 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.27 on August 13, 2024 =
 
-* Fixed: When searching a View, the searched time zone would not appear as selected in the Search Bar.
-* Fixed: Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.
-* Fixed: Fatal error on the Edit Entry screen when Multiple Forms is enabled.
-* Fixed: The ``:format` merge tag modifier on the Time field returned a UTC-adjusted time value.
+This update resolves several issues related to the Multiple Forms extension, fixes the recently introduced `:format` merge tag modifier to return the Time field value in the local timezone, and adds a new filter to control which fields are added by default when creating a new View.
 
-__Developer Updates:__
+#### 🐛 Fixed
+* Time zone selection in the Search Bar did not persist after searching a View, causing it to reset upon page refresh.
+* Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.
+* Fatal error occurred on the Edit Entry screen when Multiple Forms was enabled.
+* The `:format` merge tag modifier on the Time field returned a UTC-adjusted time value.
 
-* Added: `gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields` filter that, when set to `true`, initializes the Multiple Entries layout with all form fields when creating a new View. The default is `false`, which populates the View with only the fields configured in the Gravity Forms Entries table.
+#### 💻 Developer Updates
+* Added `gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields` filter that, when set to `true`, initializes the Multiple Entries layout with all form fields when creating a new View. The default is `false`, which populates the View with only the fields configured in the Gravity Forms Entries table.
 
 = 2.26 on August 8, 2024 =
 
@@ -55,8 +57,8 @@ This update resolves various issues, including compatibility with Yoast SEO, imp
 * [Foundation](https://www.gravitykit.com/foundation/) and [TrustedLogin](https://www.trustedlogin.com/) to versions 1.2.17 and 1.8.0, respectively.
 
 #### 💻 Developer Updates
-* Added: `gk/gravityview/feature/upgrade/disabled` filter to disable the functionality placeholders. Return `true` to disable the placeholders.
-* Added: `gk/gravityview/metabox/content/before` and `gk/gravityview/metabox/content/after` actions, triggered before and after the View metabox is rendered.
+* Added `gk/gravityview/feature/upgrade/disabled` filter to disable the functionality placeholders. Return `true` to disable the placeholders.
+* Added `gk/gravityview/metabox/content/before` and `gk/gravityview/metabox/content/after` actions, triggered before and after the View metabox is rendered.
 
 = 2.25 on June 5, 2024 =
 

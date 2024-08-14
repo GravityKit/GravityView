@@ -296,6 +296,25 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.27 on August 13, 2024</h3>
+
+				<p>This update resolves several issues related to the Multiple Forms extension, fixes the recently introduced <code>:format</code> merge tag modifier to return the Time field value in the local timezone, and adds a new filter to control which fields are added by default when creating a new View.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Time zone selection in the Search Bar did not persist after searching a View, causing it to reset upon page refresh.</li>
+					<li>Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.</li>
+					<li>Fatal error occurred on the Edit Entry screen when Multiple Forms was enabled.</li>
+					<li>The <code>:format</code> merge tag modifier on the Time field returned a UTC-adjusted time value.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added: <code>gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields</code> filter that, when set to <code>true</code>, initializes the Multiple Entries layout with all form fields when creating a new View. The default is <code>false</code>, which populates the View with only the fields configured in the Gravity Forms Entries table.</li>
+				</ul>
+
 				<h3>2.26 on August 8, 2024</h3>
 
 				<p>This update resolves various issues, including compatibility with Yoast SEO, improves performance through enhanced View entries caching, and adds new functionality.</p>
@@ -368,38 +387,6 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Removed the <code>gk/gravityview/field/is-read/print-script</code> filter in favor of the improved functionality that marks entries as "Read".</li>
-				</ul>
-
-				<h3>2.24 on May 28, 2024</h3>
-
-				<p>This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. <a href="https://www.gravitykit.com/announcing-gravityview-2-24/">Read the announcement</a> for more details.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Ability to select different View types for Multiple Entries and Single Entry layouts. <a href="https://www.gravitykit.com/announcing-gravityview-2-24">Learn all about the new View type switcher!</a></li>
-					<li>"Read Status" field to display whether an entry has been read or not.</li>
-					<ul>
-						<li>Customize the labels for "Read" and "Unread" statuses.</li>
-						<li>Sort a View by "Read Status".</li>
-					</ul>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>File Upload field values not rendering in the View if filenames have non-Latin characters.</li>
-					<li>Product search now returns correct results when using all search input types in the search bar.</li>
-					<li>View's Export Link widget would not respect date range search filters.</li>
-					<li>Removed the unsupported "date" input type for the Date Entry field under the Search Bar widget settings.</li>
-					<li>Merge tags in GravityView notifications are now properly processed for fields dynamically populated by Gravity Wiz's Populate Anything add-on.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/field/is-read/print-script</code> filter to modify whether to print the script in the frontend that marks an entry as "Read".</li>
-					<li>Added <code>gk/gravityview/field/is-read/label</code> filter to change the "Is Read" field's "Read" and "Unread" labels.</li>
 				</ul>
 
 				<p style="text-align: center;">
