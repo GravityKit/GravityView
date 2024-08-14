@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.27.1 on August 14, 2024 =
+
+This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.
+
+#### 🐛 Fixed
+* Fields added to the Edit Entry layout in the View editor could not be configured and would disappear after saving the View when Multiple Forms was enabled.
+
 = 2.27 on August 13, 2024 =
 
 This update resolves several issues related to the Multiple Forms extension, fixes the recently introduced `:format` merge tag modifier to return the Time field value in the local timezone, and adds a new filter to control which fields are added by default when creating a new View.
