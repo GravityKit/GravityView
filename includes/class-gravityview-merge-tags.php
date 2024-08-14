@@ -617,7 +617,7 @@ class GravityView_Merge_Tags {
 	 * This handles cases such as "foo:format:m/d/Y", "format:m/d/Y", "format:m/d/Y\ \a\t\ H\:i\:s".
 	 *
 	 * @since 1.16
-	 * @since TODO Renamed and refactored to use regex and instead of working with an array.
+	 * @since 2.27 Renamed and refactored to use regex and instead of working with an array.
 	 *
 	 * @param string $modifier Merge tag modifier.
 	 * @param mixed  $backup   The backup value to use, if format not found.

@@ -271,7 +271,7 @@ final class GravityView_Object_Placeholder {
 	/**
 	 * Returns the Buy Now link with UTM parameters added.
 	 *
-	 * @since TODO
+	 * @since 2.27
 	 *
 	 * @return string The buy now link.
 	 */

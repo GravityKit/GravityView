@@ -1392,7 +1392,7 @@ HTML;
 		 *
 		 * @filter `gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields`
 		 *
-		 * @since TODO
+		 * @since 2.27
 		 *
 		 * @param bool $show_all_fields Whether to include all form fields (true) or only the fields displayed in the Gravity Forms Entries table (false). Default: `false`.
 		 * @param int  $form_id         The current form ID.
