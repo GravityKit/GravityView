@@ -95,15 +95,10 @@ class GravityView_Merge_Tags {
 
 		// matching regex => the value is the method to call to replace the value.
 		$gv_modifiers = array(
-			'maxwords:(\d+)'            => 'modifier_maxwords',
-			/** @see modifier_maxwords */
-							'timestamp' => 'modifier_timestamp',
-			/** @see modifier_timestamp */
-							'explode'   => 'modifier_explode',
-			/** @see modifier_explode */
-
-							/** @see modifier_strings */
-							'urlencode' => 'modifier_strings',
+			'maxwords:(\d+)'            => 'modifier_maxwords', /** @see modifier_maxwords */
+			'timestamp'                 => 'modifier_timestamp', /** @see modifier_timestamp */
+			'explode'                   => 'modifier_explode', /** @see modifier_explode */
+			'urlencode'                 => 'modifier_strings', /** @see modifier_strings */
 			'wpautop'                   => 'modifier_strings',
 			'esc_html'                  => 'modifier_strings',
 			'sanitize_html_class'       => 'modifier_strings',
@@ -113,7 +108,7 @@ class GravityView_Merge_Tags {
 			'ucfirst'                   => 'modifier_strings',
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
-			'format'                    => 'modifier_format',
+			'format'                    => 'modifier_format', /** @see modifier_format */
 		);
 
 		$modifiers = explode( ',', $modifier );
@@ -181,7 +176,17 @@ class GravityView_Merge_Tags {
 	 * @return string
 	 */
 	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier ) {
-		if ( ( $field instanceof GF_Field_Date || $field instanceof GF_Field_Time ) && $modifier ) {
+		$format = self::get_format_merge_tag_modifier_value( $modifier );
+
+		if ( ! $format ) {
+			return $raw_value;
+		}
+
+		if ( $field instanceof GF_Field_Time ) {
+			return ( new DateTime( $raw_value ) )->format( $format ); // GF's Time field always uses local time.
+		}
+
+		if ( $field instanceof GF_Field_Date ) {
 			return self::format_date( $raw_value, $modifier );
 		}
 
@@ -578,20 +583,6 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Returns a merge tag modifier parsed into an array with escaped colons replaced by |COLON|.
-	 *
-	 * @since TODO
-	 *
-	 * @param string $modifier
-	 *
-	 * @return false|string[]
-	 */
-	private static function parse_merge_tag_modifier( $modifier ) {
-		// Expand all modifiers, skipping escaped colons. str_replace() works better than preg_split( "/(?<!\\):/" ).
-		return explode( ':', str_replace( '\:', '|COLON|', $modifier ) );
-	}
-
-	/**
 	 * Formats merge tag value using Merge Tags using GVCommon::format_date()
 	 *
 	 * @todo  This is no longer needed since Gravity Forms 2.5 as it supports modifiers, but should be reviewed before removal.
@@ -607,10 +598,10 @@ class GravityView_Merge_Tags {
 	 * @return int|string If timestamp requested, timestamp int. Otherwise, string output.
 	 */
 	public static function format_date( $date_or_time_string = '', $modifier = '' ) {
-		$parsed_modifier = self::parse_merge_tag_modifier( $modifier );
+		$parsed_modifier = explode( ':', $modifier );
 
 		$atts = [
-			'format'    => self::get_format_from_modifiers( $modifier, false ),
+			'format'    => self::get_format_merge_tag_modifier_value( $modifier, false ),
 			'human'     => in_array( 'human', $parsed_modifier ), // {date_created:human}
 			'diff'      => in_array( 'diff', $parsed_modifier ), // {date_created:diff}
 			'raw'       => in_array( 'raw', $parsed_modifier ), // {date_created:raw}
@@ -622,19 +613,18 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * If there is a `:format` modifier in a merge tag, grab the formatting
-	 *
-	 * The `:format` modifier should always have the format follow it; it's the next item in the array
-	 * In `foo:format:bar`, "bar" will be the returned format
+	 * Returns the `format:` merge tag modifier value.
+	 * This handles cases such as "foo:format:m/d/Y", "format:m/d/Y", "format:m/d/Y\ \a\t\ H\:i\:s".
 	 *
 	 * @since 1.16
+	 * @since TODO Renamed and refactored to use regex and instead of working with an array.
 	 *
-	 * @param array $modifier Array of modifiers with a possible `format` value
-	 * @param mixed $backup   The backup value to use, if not found
+	 * @param string $modifier Merge tag modifier.
+	 * @param mixed  $backup   The backup value to use, if format not found.
 	 *
 	 * @return string If format is found, the passed format. Otherwise, the backup.
 	 */
-	private static function get_format_from_modifiers( $modifier, $backup = '' ) {
+	private static function get_format_merge_tag_modifier_value( $modifier, $backup = '' ) {
 		preg_match( '/(?:^|:)format:(.*)/', $modifier, $match );
 
 		return isset( $match[1] ) ? str_replace( '\:', ':', $match[1] ) : $backup;
