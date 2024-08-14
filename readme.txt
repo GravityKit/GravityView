@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Deprecated filter notice if using GravityView Maps 3.1.0 or newer.
+
 = 2.27.1 on August 14, 2024 =
 
 This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.
