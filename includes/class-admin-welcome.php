@@ -312,7 +312,7 @@ class GravityView_Welcome {
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li>Added: <code>gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields</code> filter that, when set to <code>true</code>, initializes the Multiple Entries layout with all form fields when creating a new View. The default is <code>false</code>, which populates the View with only the fields configured in the Gravity Forms Entries table.</li>
+					<li>Added <code>gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields</code> filter that, when set to <code>true</code>, initializes the Multiple Entries layout with all form fields when creating a new View. The default is <code>false</code>, which populates the View with only the fields configured in the Gravity Forms Entries table.</li>
 				</ul>
 
 				<h3>2.26 on August 8, 2024</h3>
@@ -352,8 +352,8 @@ class GravityView_Welcome {
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li>Added: <code>gk/gravityview/feature/upgrade/disabled</code> filter to disable the functionality placeholders. Return <code>true</code> to disable the placeholders.</li>
-					<li>Added: <code>gk/gravityview/metabox/content/before</code> and <code>gk/gravityview/metabox/content/after</code> actions, triggered before and after the View metabox is rendered.</li>
+					<li>Added <code>gk/gravityview/feature/upgrade/disabled</code> filter to disable the functionality placeholders. Return <code>true</code> to disable the placeholders.</li>
+					<li>Added <code>gk/gravityview/metabox/content/before</code> and <code>gk/gravityview/metabox/content/after</code> actions, triggered before and after the View metabox is rendered.</li>
 				</ul>
 
 				<h3>2.25 on June 5, 2024</h3>
