@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Fixed: Deprecated filter notice if using GravityView Maps 3.1.0 or newer.
+* Fixed: PHP 8.2 deprecation notice due to passing an empty value to `htmlspecialchars()`.
 
 = 2.27.1 on August 14, 2024 =
 
