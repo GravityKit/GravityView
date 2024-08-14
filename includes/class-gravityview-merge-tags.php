@@ -95,15 +95,10 @@ class GravityView_Merge_Tags {
 
 		// matching regex => the value is the method to call to replace the value.
 		$gv_modifiers = array(
-			'maxwords:(\d+)'            => 'modifier_maxwords',
-			/** @see modifier_maxwords */
-							'timestamp' => 'modifier_timestamp',
-			/** @see modifier_timestamp */
-							'explode'   => 'modifier_explode',
-			/** @see modifier_explode */
-
-							/** @see modifier_strings */
-							'urlencode' => 'modifier_strings',
+			'maxwords:(\d+)'            => 'modifier_maxwords', /** @see modifier_maxwords */
+			'timestamp'                 => 'modifier_timestamp', /** @see modifier_timestamp */
+			'explode'                   => 'modifier_explode', /** @see modifier_explode */
+			'urlencode'                 => 'modifier_strings', /** @see modifier_strings */
 			'wpautop'                   => 'modifier_strings',
 			'esc_html'                  => 'modifier_strings',
 			'sanitize_html_class'       => 'modifier_strings',
@@ -113,7 +108,7 @@ class GravityView_Merge_Tags {
 			'ucfirst'                   => 'modifier_strings',
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
-			'format'                    => 'modifier_format',
+			'format'                    => 'modifier_format', /** @see modifier_format */
 		);
 
 		$modifiers = explode( ',', $modifier );
@@ -181,7 +176,17 @@ class GravityView_Merge_Tags {
 	 * @return string
 	 */
 	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier ) {
-		if ( ( $field instanceof GF_Field_Date || $field instanceof GF_Field_Time ) && $modifier ) {
+		$format = self::get_format_merge_tag_modifier_value( $modifier );
+
+		if ( ! $format ) {
+			return $raw_value;
+		}
+
+		if ( $field instanceof GF_Field_Time ) {
+			return ( new DateTime( $raw_value ) )->format( $format ); // GF's Time field always uses local time.
+		}
+
+		if ( $field instanceof GF_Field_Date ) {
 			return self::format_date( $raw_value, $modifier );
 		}
 
@@ -578,63 +583,51 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Format Merge Tags using GVCommon::format_date()
+	 * Formats merge tag value using Merge Tags using GVCommon::format_date()
 	 *
-	 * @uses GVCommon::format_date()
-	 *
-	 * @see https://docs.gravitykit.com/article/331-date-created-merge-tag for documentation
-	 * @todo Once Gravity Forms 2.5 becomes the minimum requirement, this is no longer needed.
-	 *
-	 * @param string $date_created The Gravity Forms date created format
-	 * @param string $property Any modifiers for the merge tag (`human`, `format:m/d/Y`)
-	 *
-	 * @return int|string If timestamp requested, timestamp int. Otherwise, string output.
-	 */
-	public static function format_date( $date_created = '', $property = '' ) {
-
-		// Expand all modifiers, skipping escaped colons. str_replace worked better than preg_split( "/(?<!\\):/" )
-		$exploded = explode( ':', str_replace( '\:', '|COLON|', $property ) );
-
-		$atts = array(
-			'format'    => self::get_format_from_modifiers( $exploded, false ),
-			'human'     => in_array( 'human', $exploded ), // {date_created:human}
-			'diff'      => in_array( 'diff', $exploded ), // {date_created:diff}
-			'raw'       => in_array( 'raw', $exploded ), // {date_created:raw}
-			'timestamp' => in_array( 'timestamp', $exploded ), // {date_created:timestamp}
-			'time'      => in_array( 'time', $exploded ),  // {date_created:time}
-		);
-
-		$formatted_date = GVCommon::format_date( $date_created, $atts );
-
-		return $formatted_date;
-	}
-
-	/**
-	 * If there is a `:format` modifier in a merge tag, grab the formatting
-	 *
-	 * The `:format` modifier should always have the format follow it; it's the next item in the array
-	 * In `foo:format:bar`, "bar" will be the returned format
+	 * @todo  This is no longer needed since Gravity Forms 2.5 as it supports modifiers, but should be reviewed before removal.
 	 *
 	 * @since 1.16
 	 *
-	 * @param array  $exploded Array of modifiers with a possible `format` value
-	 * @param string $backup The backup value to use, if not found
+	 * @see   https://docs.gravitykit.com/article/331-date-created-merge-tag for documentation
+	 * @uses  GVCommon::format_date()
+	 *
+	 * @param string $date_or_time_string The Gravity Forms date or time string.
+	 * @param string $modifier            Merge tag modifier (`human`, `format:m/d/Y`)
+	 *
+	 * @return int|string If timestamp requested, timestamp int. Otherwise, string output.
+	 */
+	public static function format_date( $date_or_time_string = '', $modifier = '' ) {
+		$parsed_modifier = explode( ':', $modifier );
+
+		$atts = [
+			'format'    => self::get_format_merge_tag_modifier_value( $modifier, false ),
+			'human'     => in_array( 'human', $parsed_modifier ), // {date_created:human}
+			'diff'      => in_array( 'diff', $parsed_modifier ), // {date_created:diff}
+			'raw'       => in_array( 'raw', $parsed_modifier ), // {date_created:raw}
+			'timestamp' => in_array( 'timestamp', $parsed_modifier ), // {date_created:timestamp}
+			'time'      => in_array( 'time', $parsed_modifier ),  // {date_created:time}
+		];
+
+		return GVCommon::format_date( $date_or_time_string, $atts );
+	}
+
+	/**
+	 * Returns the `format:` merge tag modifier value.
+	 * This handles cases such as "foo:format:m/d/Y", "format:m/d/Y", "format:m/d/Y\ \a\t\ H\:i\:s".
+	 *
+	 * @since 1.16
+	 * @since 2.27 Renamed and refactored to use regex and instead of working with an array.
+	 *
+	 * @param string $modifier Merge tag modifier.
+	 * @param mixed  $backup   The backup value to use, if format not found.
 	 *
 	 * @return string If format is found, the passed format. Otherwise, the backup.
 	 */
-	private static function get_format_from_modifiers( $exploded, $backup = '' ) {
+	private static function get_format_merge_tag_modifier_value( $modifier, $backup = '' ) {
+		preg_match( '/(?:^|:)format:(.*)/', $modifier, $match );
 
-		$return = $backup;
-
-		$format_key_index = array_search( 'format', $exploded );
-
-		// If there's a "format:[php date format string]" date format, grab it
-		if ( false !== $format_key_index && isset( $exploded[ $format_key_index + 1 ] ) ) {
-			// Return escaped colons placeholder
-			$return = str_replace( '|COLON|', ':', implode( ':', array_slice( $exploded, $format_key_index + 1 ) ) );
-		}
-
-		return $return;
+		return isset( $match[1] ) ? str_replace( '\:', ':', $match[1] ) : $backup;
 	}
 
 	/**

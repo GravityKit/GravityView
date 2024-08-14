@@ -1,5 +1,7 @@
 <?php
 
+use GV\Multi_Entry;
+
 /**
  * Add custom options for address fields
  *
@@ -336,9 +338,6 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		$new_fields = array();
 		$i          = 0;
 
-		$entry  = gravityview()->request->is_edit_entry( $form['id'] );
-		$_entry = $entry->as_entry();
-
 		foreach ( (array) $edit_fields as $id => $edit_field ) {
 			if ( 'entry_approval' !== $edit_field['id'] ) {
 				if ( isset( $fields[ $i ] ) ) {
@@ -356,8 +355,19 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 			$unique_id = crc32( 'is_approved' );
 
-			$value = ( $_entry['is_approved'] ? (int) $_entry['is_approved'] : GravityView_Entry_Approval_Status::UNAPPROVED );
-			$value = $_POST[ "input_{$unique_id}" ] ?? $value;
+			$approval_value = GravityView_Entry_Approval_Status::UNAPPROVED;
+
+			$entry = gravityview()->request->is_entry();
+
+			if ( $entry ) {
+				$entry = $entry instanceof Multi_Entry ? reset( $entry->entries ) : $entry;
+
+				$entry = $entry->as_entry();
+
+				$approval_value = $entry['is_approved'] ?? $approval_value;
+			}
+
+			$approval_value = $_POST[ "input_{$unique_id}" ] ?? $approval_value;
 
 			$field_data = array(
 				'id'           => $unique_id,
@@ -377,7 +387,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 						'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
 					),
 				),
-				'defaultValue' => (int) $value,
+				'defaultValue' => (int) $approval_value,
 				'cssClass'     => $edit_field['custom_class'],
 			);
 

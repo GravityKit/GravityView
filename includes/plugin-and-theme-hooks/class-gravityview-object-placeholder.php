@@ -231,6 +231,9 @@ final class GravityView_Object_Placeholder {
 		}
 
 		$attributes = [ 'data-text-domain' => $this->text_domain ];
+
+		$buy_now_link = $this->get_buy_now_link_with_utms();
+
 		if ( self::STATUS_INACTIVE === $this->get_status() ) {
 			$plugin          = $this->get_plugin();
 			$plugin_basename = $plugin['path'] ?? '';
@@ -243,20 +246,19 @@ final class GravityView_Object_Placeholder {
 			$caps                      = 'install_plugins';
 			$attributes['data-action'] = 'install';
 			$button_text               = __( 'Install & Activate', 'gk-gravityview' );
-			$button_href               = $this->buy_now_link;
+			$button_href               = $buy_now_link;
 		} else {
 			$caps        = 'read';
 			$button_text = __( 'Buy Now', 'gk-gravityview' );
-			$button_href = $this->buy_now_link;
+			$button_href = $buy_now_link;
 		}
 
-		$params = compact( 'caps', 'button_href', 'button_text', 'attributes' );
+		$params = compact( 'caps', 'button_href', 'button_text', 'attributes', 'buy_now_link' );
 		$params = array_merge( $params, [
 			'type'         => (string) $this->type,
 			'icon'         => (string) $this->icon,
 			'title'        => (string) $this->title,
 			'description'  => (string) $this->description,
-			'buy_now_link' => (string) $this->buy_now_link,
 		] );
 
 		// Render the template in a scoped function.
@@ -264,5 +266,21 @@ final class GravityView_Object_Placeholder {
 			extract( $params );
 			require GRAVITYVIEW_DIR . 'includes/admin/metaboxes/views/placeholder.php';
 		} )();
+	}
+
+	/**
+	 * Returns the Buy Now link with UTM parameters added.
+	 *
+	 * @since 2.27
+	 *
+	 * @return string The buy now link.
+	 */
+	private function get_buy_now_link_with_utms(): string {
+		return add_query_arg( [
+			'utm_source'   => 'plugin',
+			'utm_medium'   => 'buy_now',
+			'utm_campaign' => 'placeholders',
+			'utm_term'     => $this->text_domain,
+		], $this->buy_now_link );
 	}
 }
