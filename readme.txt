@@ -24,7 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Fixed: Deprecated filter notice if using GravityView Maps 3.1.0 or newer.
-* Fixed: PHP 8.2 deprecation notice due to passing an empty value to `htmlspecialchars()`.
+* Fixed: PHP 8.2 deprecation notice due to passing an empty value to `htmlspecialchars()` and creating dynamic class properties.
 * Fixed: The maximum number of files allowed in the File Upload field was not respected when editing an entry.
 
 = 2.27.1 on August 14, 2024 =
