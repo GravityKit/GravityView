@@ -2320,7 +2320,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Enqueue the datepicker script
 	 *
-	 * It sets the $gravityview->datepicker_class parameter
+	 * It sets the $gravityview->atts['datepicker_class'] parameter
 	 *
 	 * @todo Use own datepicker javascript instead of GF datepicker.js - that way, we can localize the settings and not require the changeMonth and changeYear pickers.
 	 * @return void
@@ -2351,7 +2351,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker ' . $this->get_datepicker_format() );
 
-		$gravityview_view->datepicker_class = $datepicker_class;
+		$gravityview_view->setAtts(
+			array_merge(
+				$gravityview_view->atts,
+				[ 'datepicker_class' => $datepicker_class ]
+			)
+		);
 	}
 
 	/**
