@@ -181,6 +181,7 @@ class GV_UnitTest_Factory_For_Entry extends GF_UnitTest_Factory_For_Entry {
 			'3' => GV_UnitTest_Generator_Number::get(),
 			'ip' => GV_UnitTest_Generator_IP::get(),
 			'source_url' => 'http://example.com/wordpress/?gf_page=preview&id=16',
+			'source_id' => 16,
 			'user_agent' => GF_UnitTest_Generator_User_Agent::get(),
 			'payment_status' => GF_UnitTest_Generator_Payment_Status::get(),
 			'payment_date' => GV_UnitTest_Generator_Date::get(),
