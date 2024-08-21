@@ -95,8 +95,25 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		}
 	}
 
-	// Hide the GravityView settings so that it can be shown in a modal.
-	#gravityview_settings {
+	// Settings modal.
+	.gv-dialog-gravityview_settings {
+		.postbox-header {
+			display: none;
+		}
+
+		.ui-dialog-content {
+			padding: 0 !important;
+		}
+
+		.ui-dialog-titlebar {
+			padding: 0;
+			background: none;
+			border: none;
+		}
+	}
+
+	// Revisions metabox.
+	#advanced-sortables {
 		display: none;
 	}
 

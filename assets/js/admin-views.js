@@ -188,6 +188,8 @@
 				// Double-clicking a field/widget label opens settings
 				.on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
 
+				.on( 'click', '#gk-settings-link', vcfg.openViewSettings )
+
 				.on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
 
 				.on( 'click', '.gv-field-details--toggle', function( e ) {
@@ -986,7 +988,7 @@
 			buttons = buttons || default_buttons;
 
 			thisDialog.dialog( {
-				dialogClass: 'wp-dialog gv-dialog',
+				dialogClass: 'wp-dialog gv-dialog gv-dialog-' + dialogSelector.replace( '#', '' ),
 				appendTo: thisDialog.parent(),
 				draggable: false,
 				resizable: false,
@@ -2604,6 +2606,12 @@
 			});
 		},
 
+		openViewSettings: function ( e ) {
+			e.preventDefault();
+
+			viewConfiguration.showDialog( '#gravityview_settings' );
+		},
+
 		/**
 		 * Event handler to open dialog with Field Settings
 		 * @param {jQueryEvent} e
@@ -2974,8 +2982,9 @@
 					}
 				} )
 				.addClass( "ui-tabs-vertical ui-helper-clearfix" )
+				.hide()
 				.find('li')
-				.removeClass( "ui-corner-top" );
+					.removeClass( "ui-corner-top" );
 
 		},
 
