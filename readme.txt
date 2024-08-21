@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Added: Support for Gravity Forms Source ID meta, added in Gravity Forms 2.9
+
 = 2.27.1 on August 14, 2024 =
 
 This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.
