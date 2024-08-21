@@ -1,0 +1,106 @@
+/**
+ * GravityView Admin Refresh Styles
+ *
+ * The rules are attempted to be ordered in visual order of the DOM, starting at the top.
+ *
+ */
+$body-inset: 50px;
+$border-gray: #CCD0D4;
+$chip-background: #FAFBFC;
+$field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+
+.post-type-gravityview {
+
+	background-color: $chip-background;
+
+	#wpcontent {
+		margin: 0;
+	}
+
+	#wpbody-content {
+		padding-bottom: 0;
+	}
+
+	.wrap h1.wp-heading-inline,
+	.page-title-action,
+	.wp-header-end {
+		display: none;
+	}
+
+	#titlediv #title {
+		background-color: transparent;
+		border: none;
+	}
+
+	#poststuff {
+		padding-left: $body-inset;
+		padding-right: $body-inset;
+	}
+
+	.postbox {
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+
+		.postbox-header {
+			border-bottom: none;
+		}
+	}
+
+	.folded #wpcontent, .folded #wpfooter {
+		margin-left: 0;
+	}
+
+	.active-drop-container {
+		box-shadow: none;
+		border-radius: 0;
+	}
+
+	#gravityview_view_config {
+
+		/* To counteract .wrap `margin: 10px 20px 0 2px;` and #wpcontent padding-left: 20px; */
+		margin-left: -22px - $body-inset;
+		margin-right: -20px - $body-inset;
+
+		margin-bottom: 0;
+
+		#gv-view-configuration-tabs .ui-tabs-panel,
+		.ui-tabs-panel,
+		.ui-tabs-nav {
+			border: none;
+			border-radius: 0;
+			padding-left: 22px + $body-inset; // Inset the padding to match the original #wpcontent padding.
+			padding-right: 20px + $body-inset; // Inset the padding to match the original .wrap padding.
+		}
+
+		.nav-tab {
+			border: none;
+			border-radius: 0;
+			background-color: $chip-background;
+		}
+
+		.ui-state-active .nav-tab {
+			background-color: #fff;
+		}
+
+		.gv-fields {
+			background: white;
+			box-shadow: $field-box-shadow;
+			border-color: $border-gray;
+		}
+
+		.gv-fields .gv-field-controls button {
+			background: white;
+		}
+	}
+
+	// Hide the GravityView settings so that it can be shown in a modal.
+	#gravityview_settings {
+		display: none;
+	}
+
+	#wpfooter {
+		display: none;
+	}
+}
