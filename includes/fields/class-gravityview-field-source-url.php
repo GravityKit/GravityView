@@ -50,6 +50,7 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 			'value'      => null,
 			'merge_tags' => 'force',
 			'requires'   => 'link_to_source',
+			'class'      => 'widefat',
 		);
 
 		return $add_options + $field_options;
