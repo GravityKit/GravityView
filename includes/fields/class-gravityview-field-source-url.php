@@ -48,7 +48,7 @@ class GravityView_Field_Source_URL extends GravityView_Field {
 			'label'      => __( 'Link Text:', 'gk-gravityview' ),
 			'desc'       => __( 'Customize the link text. If empty, the link text will be the URL.', 'gk-gravityview' ),
 			'value'      => null,
-			'merge_tags' => true,
+			'merge_tags' => 'force',
 			'requires'   => 'link_to_source',
 		);
 
