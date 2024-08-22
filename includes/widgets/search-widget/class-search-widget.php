@@ -456,7 +456,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 				$types = self::get_search_input_types( $id, $field['type'] );
 
-				$output .= '<option value="' . $id . '" ' . selected( $id, $current, false ) . 'data-inputtypes="' . esc_attr( $types ) . '">' . esc_html( $field['label'] ) . '</option>';
+				$output .= '<option value="' . $id . '" ' . selected( $id, $current, false ) . 'data-inputtypes="' . esc_attr( $types ) . '" data-placeholder="'.esc_html( $field['label'] ).'">' . esc_html( $field['text'] ?? $field['label'] ) . '</option>';
 			}
 		}
 
