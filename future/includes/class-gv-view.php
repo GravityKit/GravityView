@@ -813,8 +813,9 @@ class View implements \ArrayAccess {
 		/** View configuration. */
 		$view->settings->update( gravityview_get_template_settings( $view->ID ) );
 
-		/** Add the template name into the settings. */
-		$view->settings->update( array( 'template' => gravityview_get_template_id( $view->ID ) ) );
+		/** Add the template names into the settings. */
+		$view->settings->update( array( 'template' => gravityview_get_directory_entries_template_id( $view->ID ) ) );
+		$view->settings->update( array( 'template_single_entry' => gravityview_get_single_entry_template_id( $view->ID ) ) );
 
 		/** View basics. */
 		$view->settings->update(
@@ -1076,9 +1077,15 @@ class View implements \ArrayAccess {
 			 * Apply multisort.
 			 */
 			if ( ! empty( $has_multisort ) ) {
+				// Clear ordering that was set when initializing the query since we're going to set it from scratch.
+				( function () {
+					$this->order = [];
+				} )->bindTo( $query, $query )();
+
 				$atts = $this->settings->as_atts();
 
 				$view_setting_sort_field_ids  = \GV\Utils::get( $atts, 'sort_field', array() );
+
 				$view_setting_sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
 
 				$has_sort_query_param = ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] );
@@ -1095,21 +1102,20 @@ class View implements \ArrayAccess {
 					$sort_directions = $view_setting_sort_directions;
 				}
 
-				$skip_first = false;
-
 				foreach ( (array) $sort_field_ids as $key => $sort_field_id ) {
-
-					if ( ! $skip_first && ! $has_sort_query_param ) {
-						$skip_first = true; // Skip the first one, it's already in the query
-						continue;
-					}
-
 					$sort_field_id  = \GravityView_frontend::_override_sorting_id_by_field_type( $sort_field_id, $this->form->ID );
 					$sort_direction = strtoupper( \GV\Utils::get( $sort_directions, $key, 'ASC' ) );
 
-					if ( ! empty( $sort_field_id ) ) {
-						$order = new \GF_Query_Column( $sort_field_id, $this->form->ID );
-						if ( 'id' !== $sort_field_id && \GVCommon::is_field_numeric( $this->form->ID, $sort_field_id ) ) {
+					if ( empty( $sort_field_id ) ) {
+						continue;
+					}
+
+					$sort_field_id = explode( '|', $sort_field_id );
+
+					foreach ( $sort_field_id as $id ) {
+						$order = new \GF_Query_Column( $id, $this->form->ID );
+
+						if ( 'id' !== $id && \GVCommon::is_field_numeric( $this->form->ID, $id ) ) {
 							$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? \GF_Query::TYPE_DECIMAL : \GF_Query::TYPE_SIGNED );
 						}
 
@@ -1463,11 +1469,22 @@ class View implements \ArrayAccess {
 
 		$query_hash = md5( serialize( $query_introspect ) );
 
-		$atts = $this->settings->all();
+		$caching_atts = [
+			'view_id'         => $this->ID ?: null,
+			'caching'         => $this->settings->get( 'caching' ),
+			'caching_entries' => $this->settings->get( 'caching_entries' ),
+			'query_hash'      => $query_hash,
+		];
 
-		$atts['query_hash'] = $query_hash;
+		$caching_atts = array_merge( $caching_atts, $this->settings->get( 'caching_atts', [] ) );
 
-		$long_lived_cache = new GravityView_Cache( $this->form->ID, $atts );
+		$form_ids = [ $this->form->ID ];
+
+		foreach ( $this->joins as $join ) {
+			$form_ids[] = $join->join_on->ID;
+		}
+
+		$long_lived_cache = new GravityView_Cache( $form_ids, $caching_atts );
 
 		if ( $long_lived_cache->use_cache() ) {
 			$cached_entries = $long_lived_cache->get();

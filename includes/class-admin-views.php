@@ -205,17 +205,17 @@ class GravityView_Admin_Views {
 				<optgroup label="<?php esc_html_e( 'Layouts', 'gk-gravityview' ); ?>">
 				<?php
 				foreach ( $layouts as $layout_id => $layout ) {
-					if ( in_array( $layout['type'], array( 'preset', 'internal' ), true ) ) {
+					if ( in_array( $layout['type'] ?? '', array( 'preset', 'internal' ), true ) ) {
 						continue;
 					}
 					?>
-					<option value="<?php echo esc_attr( $layout_id ); ?>" <?php selected( $layout_id, $current_layout, true ); ?>><?php echo esc_html( $layout['label'] ); ?></option>
+					<option value="<?php echo esc_attr( $layout_id ); ?>" <?php selected( $layout_id, $current_layout, true ); ?>><?php echo esc_html( $layout['label'] ?? '' ); ?></option>
 				<?php } ?>
 				</optgroup>
 				<optgroup label="<?php esc_html_e( 'Form Presets', 'gk-gravityview' ); ?>">
 				<?php
 				foreach ( $layouts as $layout_id => $layout ) {
-					if ( ! in_array( $layout['type'], array( 'preset' ), true ) ) {
+					if ( ! in_array( $layout['type'] ?? '', array( 'preset' ), true ) ) {
 						continue;
 					}
 					?>
@@ -446,22 +446,31 @@ class GravityView_Admin_Views {
 
 		switch ( $column_name ) {
 			case 'gv_template':
-				$template_id = gravityview_get_template_id( $post_id );
+				$directory_template = gravityview_get_directory_entries_template_id( $post_id );
+				$single_template    = gravityview_get_single_entry_template_id( $post_id );
 
 				// All Views should have a connected form. If it doesn't, that's not right.
-				if ( empty( $template_id ) ) {
+				if ( empty( $directory_template ) ) {
 					gravityview()->log->error( 'View ID {view_id} does not have a connected template.', array( 'view_id' => $post_id ) );
 					break;
 				}
 
 				$templates = gravityview_get_registered_templates();
 
-				$template = isset( $templates[ $template_id ] ) ? $templates[ $template_id ] : false;
+				$get_title = static function ( string $template_id ) use ( $templates ): string {
+					$template = $templates[ $template_id ] ?? [];
+					if ( ! $template ) {
+						return '';
+					}
+
+					return $template['label'] ?? ucwords( implode( ' ', explode( '_', $template_id ) ) );
+				};
 
 				// Generate backup if label doesn't exist: `example_name` => `Example Name`
-				$template_id_pretty = ucwords( implode( ' ', explode( '_', $template_id ) ) );
-
-				$output = $template ? $template['label'] : $template_id_pretty;
+				$output = $get_title( $directory_template );
+				if ( $directory_template !== $single_template ) {
+					$output .= ' / ' . $get_title( $single_template );
+				}
 
 				break;
 
@@ -682,10 +691,12 @@ HTML;
 		// Check if we have a template id
 		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'], 'gravityview_select_template' ) ) {
 
-			$template_id = ! empty( $_POST['gravityview_directory_template'] ) ? $_POST['gravityview_directory_template'] : '';
+			$directory_template_id = rgpost( 'gravityview_directory_template' );
+			$single_template_id    = rgpost( 'gravityview_single_template' );
 
-			// now save template id
-			$statii['directory_template'] = update_post_meta( $post_id, '_gravityview_directory_template', $template_id );
+			// now save template ids
+			$statii['directory_template'] = update_post_meta( $post_id, '_gravityview_directory_template', $directory_template_id );
+			$statii['single_template']    = update_post_meta( $post_id, '_gravityview_single_template', $single_template_id );
 		}
 
 		// save View Configuration metabox
@@ -1071,7 +1082,7 @@ HTML;
 
 					<?php foreach ( $areas as $area ) : ?>
 
-						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>">
+						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-templateid="<?php echo esc_attr( $template_id ); ?>">
 							<p class="gv-droppable-area-title"
 							<?php
 							if ( 'widget' === $type && empty( $area['subtitle'] ) ) {
@@ -1161,6 +1172,7 @@ HTML;
 									</div>
 								<div class="gv-droppable-area-action">
 									<a href="#" class="gv-add-field button button-link button-hero" title=""
+									    data-templateid="<?php echo esc_attr( $template_id ); ?>"
 										data-objecttype="<?php echo esc_attr( $type ); ?>"
 										data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"
 										data-context="<?php echo esc_attr( $zone ); ?>"
@@ -1363,7 +1375,7 @@ HTML;
 	 * @since 2.17
 	 * @internal Do not use this method directly. Use the `gravityview/view/configuration/fields` filter instead.
 	 *
-	 * @param array    $fields A Widget configuration array.
+	 * @param array    $fields Multi-array of fields with first level being the field zones.
 	 * @param \GV\View $view The View the fields are being pulled for. Unused in this method.
 	 * @param int      $form_id The form ID.
 	 *
@@ -1375,40 +1387,69 @@ HTML;
 			return $fields;
 		}
 
-		$columns = GFFormsModel::get_grid_columns( $form_id );
+		/**
+		 * Modify whether to initialize the Multiple Entries layout with all form fields or only the fields displayed in the Gravity Forms Entries table when creating a new View.
+		 *
+		 * @filter `gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields`
+		 *
+		 * @since 2.27
+		 *
+		 * @param bool $show_all_fields Whether to include all form fields (true) or only the fields displayed in the Gravity Forms Entries table (false). Default: `false`.
+		 * @param int  $form_id         The current form ID.
+		 */
+		$show_all_fields = apply_filters( 'gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields', false, $form_id );
 
-		$directory_fields = array();
+		if ( ! $show_all_fields ) {
+			$columns = GFFormsModel::get_grid_columns( $form_id );
 
-		foreach ( $columns as $column_id => $column ) {
+			$directory_fields = array();
 
-			$gv_field = GravityView_Fields::get_instance( $column['type'] );
+			foreach ( $columns as $column_id => $column ) {
 
-			if ( ! $gv_field ) {
-				continue;
+				$gv_field = GravityView_Fields::get_instance( $column['type'] );
+
+				if ( ! $gv_field ) {
+					continue;
+				}
+
+				$directory_fields[ uniqid( '', true ) ] = array(
+					'label'        => \GV\Utils::get( $column, 'label' ),
+					'type'         => $gv_field->name,
+					'id'           => $column_id,
+					'form_id'      => $form_id,
+					'show_as_link' => empty( $directory_fields ),
+				);
+
 			}
-
-			$directory_fields[ uniqid( '', true ) ] = array(
-				'label'        => \GV\Utils::get( $column, 'label' ),
-				'type'         => $gv_field->name,
-				'id'           => $column_id,
-				'form_id'      => $form_id,
-				'show_as_link' => empty( $directory_fields ),
-			);
-
 		}
 
 		$form         = GV\GF_Form::by_id( $form_id );
 		$entry_fields = array();
 
 		foreach ( $form->form['fields'] as $gv_field ) {
-
 			$entry_fields[ uniqid( '', true ) ] = array(
 				'label'   => $gv_field->label,
 				'type'    => $gv_field->type,
 				'id'      => $gv_field->id,
 				'form_id' => $form_id,
 			);
+		}
 
+		// If we're showing all fields, the entry fields are the same as the directory fields.
+		if ( $show_all_fields ) {
+			$directory_fields = $entry_fields;
+
+			// If we're showing all fields, we want to show the first field as a link.
+			foreach( $directory_fields as &$field ) {
+				$gf_field = GF_Fields::get( $field['type'] );
+
+				if ( ! $gf_field ) {
+					continue;
+				}
+
+				$field['show_as_link'] = true;
+				break; // Only show the first field as a link.
+			}
 		}
 
 		// Add Edit Entry to the bottom of the Single Entry configuration.
@@ -1497,6 +1538,7 @@ HTML;
 			],
 			\GV\Plugin::$version
 		);
+		wp_enqueue_script( 'gravityview_view_dropdown', plugins_url( 'assets/js/admin-view-dropdown' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], \GV\Plugin::$version );
 
 		wp_localize_script(
 			'gravityview_views_scripts',
@@ -1520,6 +1562,7 @@ HTML;
 				'loading_error'               => esc_html__( 'There was an error loading dynamic content.', 'gk-gravityview' ),
 				'field_loaderror'             => __( 'Error while adding the field. Please try again or contact GravityView support.', 'gk-gravityview' ),
 				'remove_all_fields'           => __( 'Would you like to remove all fields in this zone?', 'gk-gravityview' ),
+				'discard_unsaved_changes'     => __( 'You have unsaved changes. Continuing will discard them. Are you sure you want to proceed?', 'gk-gravityview' ),
 				'foundation_licenses_router'  => array_merge(
 					GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
 					array(

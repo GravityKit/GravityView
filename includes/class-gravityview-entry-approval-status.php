@@ -50,7 +50,7 @@ final class GravityView_Entry_Approval_Status {
 	 * @return array
 	 */
 	private static function get_choices() {
-		return array(
+		$choices = array(
 			'disapproved' => array(
 				'value'  => self::DISAPPROVED,
 				'label'  => esc_html__( 'Disapproved', 'gk-gravityview' ),
@@ -71,6 +71,19 @@ final class GravityView_Entry_Approval_Status {
 				'title'  => esc_html__( 'Entry not yet reviewed. Click to approve this entry.', 'gk-gravityview' ),
 			),
 		);
+
+		/**
+		 * Modify the entry approval status choices.
+		 *
+		 * Do not modify the array keys or the `value` key! Only modify the `label`, `action`, and `title` keys!
+		 *
+		 * @since TODO
+		 *
+		 * @param array $choices Array of entry approval statuses.
+		 */
+		$choices = apply_filters( 'gk/gravityview/entry-approval/choices', $choices );
+
+		return $choices;
 	}
 
 	/**

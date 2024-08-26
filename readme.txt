@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.5.0
+Tested up to: 6.6.0
 Requires PHP: 7.2.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -23,19 +23,120 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Fixed: Merge tag support in the Source URL "Link Text" field setting
+* Fixed: Deprecated filter notice if using GravityView Maps 3.1.0 or newer.
+* Fixed: PHP 8.2 deprecation notice due to passing an empty value to `htmlspecialchars()` and creating dynamic class properties.
+* Fixed: The maximum number of files allowed in the File Upload field was not respected when editing an entry.
+* Fixed: Sorting the View by the Name field would yield incorrect results.
+
+= 2.27.1 on August 14, 2024 =
+
+This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.
+
+#### 🐛 Fixed
+* Fields added to the Edit Entry layout in the View editor could not be configured and would disappear after saving the View when Multiple Forms was enabled.
+
+= 2.27 on August 13, 2024 =
+
+This update resolves several issues related to the Multiple Forms extension, fixes the recently introduced `:format` merge tag modifier to return the Time field value in the local timezone, and adds a new filter to control which fields are added by default when creating a new View.
+
+#### 🐛 Fixed
+* Time zone selection in the Search Bar did not persist after searching a View, causing it to reset upon page refresh.
+* Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.
+* Fatal error occurred on the Edit Entry screen when Multiple Forms was enabled.
+* The `:format` merge tag modifier on the Time field returned a UTC-adjusted time value.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields` filter that, when set to `true`, initializes the Multiple Entries layout with all form fields when creating a new View. The default is `false`, which populates the View with only the fields configured in the Gravity Forms Entries table.
+
+= 2.26 on August 8, 2024 =
+
+This update resolves various issues, including compatibility with Yoast SEO, improves performance through enhanced View entries caching, and adds new functionality.
+
 #### 🚀 Added
-* Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.
+* Ability to modify the entry creator’s information on the Edit Entry screen.
+* Merge tag modifier for formatting Date and Time fields (e.g., `{Date Field:1:format:Y-m-d}`).
+* Placeholders in View Settings to inform you that additional functionality is available.
+
+#### ✨ Improved
+* The "Sort By" option in the GravityView Gutenberg block now offers a dropdown selection of fields instead of requiring manual entry of the field ID.
+* Caching of View entries to prevent unnecessary database queries. Thanks, Shehroz!
+
+#### 🐛 Fixed
+* Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.
+* View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.
+* An issue in the Search Bar widget configuration where adding a Date field caused the search mode ("any" and "all") to no longer be toggleable.
+* `[gv_entry_link]` shortcode not rendering inside the Custom HTML block.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) and [TrustedLogin](https://www.trustedlogin.com/) to versions 1.2.17 and 1.8.0, respectively.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/feature/upgrade/disabled` filter to disable the functionality placeholders. Return `true` to disable the placeholders.
+* Added `gk/gravityview/metabox/content/before` and `gk/gravityview/metabox/content/after` actions, triggered before and after the View metabox is rendered.
+
+= 2.25 on June 5, 2024 =
+
+This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.
+
+**Note: GravityView now requires Gravity Forms 2.6 (released in March 2022) or newer.**
+
+#### 🚀 Added
+* New View setting under the Single Entry tab to mark an entry as "Read". [Read more about the feature](https://docs.gravitykit.com/article/1008-marking-entries-as-read).
+
+#### ✨ Improved
+* Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.
+
+#### 🐛 Fixed
+* Appearance of the Merge Tag picker in the field settings of the View editor.
+
+#### 💻 Developer Updates
+* Removed the `gk/gravityview/field/is-read/print-script` filter in favor of the improved functionality that marks entries as "Read".
+
+= 2.24 on May 28, 2024 =
+
+This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. [Read the announcement](https://www.gravitykit.com/announcing-gravityview-2-24/) for more details.
+
+#### 🚀 Added
+* Ability to select different View types for Multiple Entries and Single Entry layouts. [Learn all about the new View type switcher!](https://www.gravitykit.com/announcing-gravityview-2-24/)
+* "Read Status" field to display whether an entry has been read or not.
+  - Customize the labels for "Read" and "Unread" statuses.
+  - Sort a View by "Read Status".
+* Entries are now marked as "Read" when users who have the ability to edit entries visit an entry in the front-end.
+
+#### 🐛 Fixed
+* File Upload field values not rendering in the View if filenames have non-Latin characters.
+* Product search now returns correct results when using all search input types in the search bar.
+* View's Export Link widget would not respect date range search filters.
+* Removed the unsupported "date" input type for the Date Entry field under the Search Bar widget settings.
+* Merge tags in GravityView notifications are now properly processed for fields dynamically populated by Gravity Wiz's Populate Anything add-on.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/field/is-read/print-script` filter to modify whether to print the script in the frontend that marks an entry as "Read".
+* Added `gk/gravityview/field/is-read/label` filter to change the "Is Read" field's "Read" and "Unread" labels.
+* Added `gk/gravityview/entry-approval/choices` filter to modify strings used for entry approval ("Approved", "Unapproved", "Disapproved", etc.).
+
+= 2.23 on May 17, 2024 =
+
+This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.
+
+#### 🚀 Added
+* Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.
 
 #### 🐛 Fixed
 * Export link View widget would cause a fatal error during multi-word searches.
 * Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.
 * Duplicating entries no longer fails to refresh the entry list when View-based caching is enabled.
+* View cache not being invalidated when updating entries on a form joined using the Multiple Forms extension.
 * Number field output now respects the form field's format settings, such as decimals and currency.
 
 #### 🔧 Updated
-* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.13.
-  - Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates.
-  - Improved internal check for product updates that could still interfere with third-party plugin updates.
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.14.
+  - Added an option to subscribe to GravityKit's newsletter from the Manage Your Kit screen.
+  - Added a setting in GravityKit > Settings > GravityKit to specify the GravityKit menu position in the Dashboard.
+  - Improved internal check for product updates that could still interfere with third-party plugin updates. Thanks, Aaron!
+  - Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates. Thanks, Jérôme!
+  - Success message now shows correct product name after activation/deactivation.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/entry/approval-link/params` filter to modify entry approval link parameters.

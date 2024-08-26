@@ -1416,17 +1416,20 @@ class GravityView_frontend {
 					 * Override how to sort when sorting full name.
 					 *
 					 * @since 1.7.4
+					 * @since TBD Default sorting is set to first and last name.
 					 *
-					 * @param string $name_part Sort by `first` or `last` (default: `first`)
+					 * @param string $name_part Sort by `first`, `last` or `first-last` (default: `first-last`)
 					 * @param string $sort_field_id Field used for sorting
 					 * @param int $form_id GF Form ID
 					 */
-					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
+					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first-last', $sort_field_id, $form_id );
 
 					if ( 'last' === strtolower( $name_part ) ) {
 						$sort_field_id .= '.6';
-					} else {
+					} elseif ( 'first' === strtolower( $name_part ) ) {
 						$sort_field_id .= '.3';
+					} elseif ( 'first-last' === strtolower( $name_part ) ) {
+						$sort_field_id = "{$sort_field_id}.3|{$sort_field_id}.6";
 					}
 				}
 				break;
@@ -1500,8 +1503,10 @@ class GravityView_frontend {
 
 			foreach ( $views as $view_id => $data ) {
 				$view        = \GV\View::by_id( $data['id'] );
-				$template_id = gravityview_get_template_id( $view->ID );
 				$data        = $view->as_data();
+				$template_id = $this->single_entry
+					? gravityview_get_single_entry_template_id( $view->ID )
+					: gravityview_get_directory_entries_template_id( $view->ID );
 
 				// By default, no thickbox
 				$js_dependencies  = array( 'jquery', 'gravityview-jquery-cookie' );

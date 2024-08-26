@@ -286,6 +286,7 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
+
 				<?php
 				/**
 				 * Include changelog entries for two MINOR versions. Prune beyond that.
@@ -295,201 +296,107 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3>Develop</h3>
+				<h3>2.27.1 on August 14, 2024</h3>
 
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Support for Gravity Wiz's Gravity Forms Nested Forms entry meta.</li>
-				</ul>
+				<p>This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.</p>
 
 				<h4>🐛 Fixed</h4>
 
 				<ul>
-					<li>Export link View widget would cause a fatal error during multi-word searches.</li>
-					<li>Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.</li>
-					<li>Duplicating entries no longer fails to refresh the entry list when View-based caching is enabled.</li>
-					<li>Number field output now respects the form field's format settings, such as decimals and currency.</li>
+					<li>Fields added to the Edit Entry layout in the View editor could not be configured and would disappear after saving the View when Multiple Forms was enabled.</li>
 				</ul>
 
-				<h4>🔧 Updated</h4>
+				<h3>2.27 on August 13, 2024</h3>
 
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.13.</p>
+				<p>This update resolves several issues related to the Multiple Forms extension, fixes the recently introduced <code>:format</code> merge tag modifier to return the Time field value in the local timezone, and adds a new filter to control which fields are added by default when creating a new View.</p>
+
+				<h4>🐛 Fixed</h4>
 
 				<ul>
-					<li>Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates.</li>
-					<li>Improved internal check for product updates that could still interfere with third-party plugin updates.</li>
+					<li>Time zone selection in the Search Bar did not persist after searching a View, causing it to reset upon page refresh.</li>
+					<li>Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.</li>
+					<li>Fatal error occurred on the Edit Entry screen when Multiple Forms was enabled.</li>
+					<li>The <code>:format</code> merge tag modifier on the Time field returned a UTC-adjusted time value.</li>
 				</ul>
 
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li>Added <code>gk/gravityview/entry/approval-link/params</code> filter to modify entry approval link parameters.</li>
+					<li>Added <code>gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields</code> filter that, when set to <code>true</code>, initializes the Multiple Entries layout with all form fields when creating a new View. The default is <code>false</code>, which populates the View with only the fields configured in the Gravity Forms Entries table.</li>
 				</ul>
 
-				<h3>2.22 on April 16, 2024</h3>
+				<h3>2.26 on August 8, 2024</h3>
 
-				<p>This release introduces support for <a href="https://docs.gravitykit.com/article/995-gravityview-search-modifiers">search modifiers</a> and <a href="https://docs.gravitykit.com/article/996-number-range-search">range-based searching</a> for numeric fields, enables easy duplication and precise insertion of View fields and widgets, and resolves critical issues with Yoast SEO and LifterLMS. <a href="https://www.gravitykit.com/gravityview-2-22/">Read the announcement</a> for more details.</p>
+				<p>This update resolves various issues, including compatibility with Yoast SEO, improves performance through enhanced View entries caching, and adds new functionality.</p>
 
 				<h4>🚀 Added</h4>
 
 				<ul>
-					<li>Support for negative, positive, and exact-match search modifiers in the Search Bar.</li>
-					<li>Range-based search for Number, Product (user-defined price), Quantity and Total fields in the Search Bar.</li>
-					<li>Ability to duplicate View fields and widgets, and to insert them at a desired position.</li>
+					<li>Ability to modify the entry creator’s information on the Edit Entry screen.</li>
+					<li>Merge tag modifier for formatting Date and Time fields (e.g., <code>{Date Field:1:format:Y-m-d}</code>).</li>
+					<li>Placeholders in View Settings to inform you that additional functionality is available.</li>
+				</ul>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>The "Sort By" option in the GravityView Gutenberg block now offers a dropdown selection of fields instead of requiring manual entry of the field ID.</li>
+					<li>Caching of View entries to prevent unnecessary database queries. Thanks, Shehroz!</li>
 				</ul>
 
 				<h4>🐛 Fixed</h4>
 
 				<ul>
-					<li>Editing an entry with Yoast SEO active resulted in changes being saved twice.</li>
-					<li>Views secured with a secret code did not display inside LifterLMS dashboards.</li>
-					<li>View editor display issues when LifterLMS is active.</li>
-					<li>Fatal error when editing posts/pages containing GravityView blocks.</li>
+					<li>Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.</li>
+					<li>View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.</li>
+					<li>An issue in the Search Bar widget configuration where adding a Date field caused the search mode ("any" and "all") to no longer be toggleable.</li>
+					<li><code>[gv_entry_link]</code> shortcode not rendering inside the Custom HTML block.</li>
 				</ul>
 
 				<h4>🔧 Updated</h4>
 
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.12.</p>
-
 				<ul>
-					<li>Fixed a bug that hid third-party plugin updates on the Plugins and Updates pages.</li>
-					<li>Resolved a dependency management issue that incorrectly prompted for a Gravity Forms update before activating, installing, or updating GravityKit products.</li>
+					<li><a href='https://www.gravitykit.com/foundation/'>Foundation</a> and <a href='https://www.trustedlogin.com/'>TrustedLogin</a> to versions 1.2.17 and 1.8.0, respectively.</li>
 				</ul>
 
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li><code>gk/gravityview/common/quotation-marks</code> filter to modify the quotation marks used for exact-match searches.</li>
-					<li><code>gk/gravityview/search/number-range/step</code> filter to adjust the interval between numbers in input fields for range-based searches.</li>
+					<li>Added <code>gk/gravityview/feature/upgrade/disabled</code> filter to disable the functionality placeholders. Return <code>true</code> to disable the placeholders.</li>
+					<li>Added <code>gk/gravityview/metabox/content/before</code> and <code>gk/gravityview/metabox/content/after</code> actions, triggered before and after the View metabox is rendered.</li>
 				</ul>
 
-				<h3>2.21.2 on March 28, 2024</h3>
+				<h3>2.25 on June 5, 2024</h3>
 
-				<p>This update fixes an issue with previewing GravityView blocks for Views with enhanced security and resolves a problem where blocks were previously rendered only for logged-in users.</p>
+				<p>This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.</p>
 
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Previewing a GravityView block for a View that has enhanced security enabled no longer results in a notice about a missing <code>secret</code> shortcode attribute.</li>
-					<li>GravityView blocks now render for all users, not just those who are logged in.</li>
-				</ul>
-
-				<h3>2.21.1 on March 22, 2024</h3>
-
-				<p>This hotfix release addresses a critical error that occurred when activating the plugin without Gravity Forms installed.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Critical error when activating the plugin without Gravity Forms installed.</li>
-				</ul>
-
-				<h3>2.21 on March 18, 2024</h3>
-
-				<p>This release enhances security, introduces support for LifterLMS, adds a new CSV/TSV export widget to the View editor along with the option to add Gravity Flow fields to the Search Bar, addresses PHP 8.2 deprecation notices, fixes a conflict with BuddyBoss Platform, and improves performance with updates to essential components.</p>
+				<b>Note: GravityView now requires Gravity Forms 2.6 (released in March 2022) or newer.</b>
 
 				<h4>🚀 Added</h4>
 
 				<ul>
-					<li>A View editor widget to export entries in CSV or TSV formats.</li>
-					<li>Support for SVG images.</li>
-					<li>Support for Gravity Flow's "Workflow User" and "Workflow Multi-User" fields inside the Search Bar.</li>
-					<li>Integration with LifterLMS that allows embedding Views inside Student Dashboards.</li>
-					<li>Notice to inform administrators that an embedded View was moved to "trash" and an option to restore it.</li>
-					<li>Click-to-copy shortcode functionality in the View editor and when listing existing Views.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>PHP 8.2 deprecation notices.</li>
-					<li>Fields linked to single entry layouts are now exported as plain text values, not hyperlinks, in CSV/TSV files.</li>
-					<li>Issue preventing the saving of pages/posts with GravityView Gutenberg blocks when BuddyBoss Platform is active.</li>
-				</ul>
-
-				<h4>🔐 Security</h4>
-
-				<ul>
-					<li>Enhanced security by adding a <code>secret</code> attribute to shortcodes and blocks connected to Views.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.11.</p>
-
-				<ul>
-					<li>GravityKit product updates are now showing on the Plugins page.</li>
-					<li>Database options that are no longer used are now automatically removed.</li>
-				</ul>
-
-				<p><strong>Developer Updates:</strong></p>
-
-				<ul>
-					<li>Added: <code>gk/gravityview/widget/search/clear-button/params</code> filter to modify the parameters of the Clear button in the search widget.</li>
-				</ul>
-
-				<h3>2.20.2 on March 4, 2024</h3>
-
-				<p>This release enhances performance by optimizing caching and managing transients more effectively.</p>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Enhanced detection of duplicate queries, resulting in fewer cache records stored in the database.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.10.</p>
-
-				<ul>
-					<li>Transients are no longer autoloaded.</li>
-				</ul>
-
-				<h3>2.20.1 on February 29, 2024</h3>
-
-				<p>This release fixes an issue with View caching and improves compatibility with the Advanced Custom Fields plugin.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Disappearing pagination and incorrect entry count when View caching is enabled.</li>
-					<li>Potential timeout issue when embedding GravityView shortcodes with Advanced Custom Fields plugin.</li>
-					<li>PHP 8.1+ deprecation notice.</li>
-				</ul>
-
-				<h3>2.20 on February 22, 2024</h3>
-
-				<p>This release introduces new settings for better control over View caching, adds support for the Advanced Post Creation Add-On when editing entries, fixes a fatal error when exporting entries to CSV, and updates internal components for better performance and compatibility.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Global and View-specific settings to control caching of View entries. <a href='https://docs.gravitykit.com/article/58-about-gravityview-caching'>Learn more about GravityView caching</a>.</li>
-					<li>Support for the [Advanced Post Creation Add-On](https://www.gravityforms.com/add-ons/advanced-post-creation/) when editing entries in GravityView's Edit Entry mode.</li>
+					<li>New View setting under the Single Entry tab to mark an entry as 'Read'. <a
+							href='https://docs.gravitykit.com/article/1008-marking-entries-as-read'>Read more about
+							the feature</a>.
+					</li>
 				</ul>
 
 				<h4>✨ Improved</h4>
 
 				<ul>
-					<li>If Gravity Forms is not installed and/or activated, a notice is displayed to alert users when creating new or listing existing Views.</li>
+					<li>Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.</li>
 				</ul>
 
 				<h4>🐛 Fixed</h4>
 
 				<ul>
-					<li>Deprecation notice in PHP 8.1+ when displaying a View with file upload fields.</li>
-					<li>Fatal error when exporting entries to CSV.</li>
-				</ul
+					<li>Appearance of the Merge Tag picker in the field settings of the View editor.</li>
+				</ul>
 
-				<h4>🔧 Updated</h4>
-
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.9.</p>
+				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li>GravityKit products that are already installed can now be activated without a valid license.</li>
-					<li>Fixed PHP warning messages that appeared when deactivating the last active product with Foundation installed.</li>
+					<li>Removed the <code>gk/gravityview/field/is-read/print-script</code> filter in favor of the improved functionality that marks entries as "Read".</li>
 				</ul>
 
 				<p style="text-align: center;">
@@ -550,7 +457,7 @@ class GravityView_Welcome {
 			<div class="cols">
 
 				<div class="col">
-					<h3>Zack Katz <a href="https://twitter.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on Twitter"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
+					<h3>Zack Katz <a href="https://x.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on X"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
 					<h4>Project Lead &amp; Developer</h4>
 					<p><img alt="Zack Katz" src="<?php echo plugins_url( 'assets/images/team/Zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing WordPress plugins since 2008 and has been a huge Gravity Forms fan from the start. Zack is co-owner of GravityKit and he lives with his wife in Leverett, Massachusetts. He can&rsquo;t wait for the next episode of <a href="https://atp.fm">ATP</a> or <a href="https://www.flophousepodcast.com">The Flop House</a> podcasts.</p>
 				</div>
@@ -563,12 +470,12 @@ class GravityView_Welcome {
 
 				<div class="col">
 					<h3>Vlad K.</h3>
-					<h4>Core Developer</h4>
+					<h4>Head of Development</h4>
 					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad is GravityKit&rsquo;s lead developer. Known for his versatility, Vlad handles both front-end and back-end programming, as well as testing and DevOps. He lives in Ottawa, Canada, and frequently travels the world in pursuit of unique experiences that fuel his creativity and broaden his worldview.</p>
 				</div>
 
 				<div class="col">
-					<h3>Rafael Bennemann <a href="https://twitter.com/rafaelbe" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a></h3>
+					<h3>Rafael Bennemann <a href="https://x.com/rafaelbe" title="Follow Rafael on X"><span class="dashicons dashicons-twitter"></span></a></h3>
 					<h4>Support Specialist</h4>
 					<p><img alt="Rafael Bennemann"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Bennemann.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael dedicated most of his adult life to helping people and companies take their ideas to the web, first as a developer and now as a Customer Advocate at GravityKit. He will do his best to help you too, all the while sipping a <a href="https://en.wikipedia.org/wiki/Spritz_Veneziano">Spritz Veneziano</a> in Northern Italy, where he currently lives with his family.</p>
 				</div>
@@ -577,6 +484,12 @@ class GravityView_Welcome {
 					<h3>Casey Burridge</h3>
 					<h4 style='font-weight:0; margin-top:0'>Content Creator</h4>
 					<p><img alt="Casey Burridge" class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Casey.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94"/>Casey is GravityKit&rsquo;s resident content creator. He&rsquo;s been a WordPress lover ever since launching his first blog more than 6 years ago. Casey has lived and worked in London and Beijing, but feels most at home in Cape Town, South Africa, where he&rsquo;s originally from.</p>
+				</div>
+
+				<div class='col'>
+					<h3>Doeke Norg <a href="https://x.com/doekenorg" title="Follow Doeke on X"><span class="dashicons dashicons-twitter"></span></a> <a href="https://doeken.org/" title="View Doeke&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
+					<h4 style='font-weight:0; margin-top:0'>Senior Developer</h4>
+					<p>With almost 20 years of experience in PHP, there are few things Doeke doesn&rsquo;t know about our favourite programming language. He lives with his family in The Netherlands, and spends his time designing elaborate, but maintainable code. He also writes a blog about software design in PHP.</p>
 				</div>
 			</div>
 

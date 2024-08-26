@@ -29,6 +29,7 @@ class GravityView_Placeholder_Template extends GravityView_Template {
 			'label'       => '',
 			'description' => '',
 			'logo'        => '',
+			'icon'        => '',
 			'price_id'    => '',
 			'textdomain'  => '',
 		);

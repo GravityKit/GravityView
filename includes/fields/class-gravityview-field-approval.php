@@ -1,5 +1,7 @@
 <?php
 
+use GV\Multi_Entry;
+
 /**
  * Add custom options for address fields
  *
@@ -19,7 +21,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 	var $group = 'gravityview';
 
-	var $contexts = array( 'single', 'multiple' );
+	var $contexts = array( 'single', 'multiple', 'edit' );
 
 	var $icon = 'dashicons-yes-alt';
 
@@ -83,6 +85,42 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		add_filter( 'gravityview/field_output/html', array( $this, 'maybe_prevent_field_render' ), 10, 2 );
 
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 2 );
+
+		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 3 );
+
+		add_action( 'gravityview/edit_entry/after_update', array( $this, 'update_edit_entry' ), 10, 3 );
+
+	}
+
+	/**
+	 * Updates approval field after edit entry save.
+	 *
+	 * @since 2.26
+	 *
+	 * @param array                         $form Gravity Forms form array
+	 * @param int                           $entry_id Gravity Forms Entry ID
+	 * @param GravityView_Edit_Entry_Render $Edit_Entry_Render
+	 *
+	 * @return void
+	 */
+	public function update_edit_entry( $form = array(), $entry_id = 0, $Edit_Entry_Render = null ) {
+		if ( ! $form || ! $entry_id ) {
+			return;
+		}
+
+		$unique_id = crc32( 'is_approved' );
+
+		if ( ! isset( $_POST[ 'input_' . $unique_id ] ) ) {
+			return;
+		}
+
+		$approval_status = \GV\Utils::_POST( 'input_' . $unique_id );
+
+		if ( ! GravityView_Entry_Approval_Status::is_valid( $approval_status ) ) {
+			$approval_status = GravityView_Entry_Approval_Status::UNAPPROVED;
+		}
+
+		GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form['id'] );
 	}
 
 	/**
@@ -227,7 +265,7 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 */
 	public function filter_gravityview_entry_default_field( $entry_default_fields, $form, $context ) {
 
-		if ( ! isset( $entry_default_fields[ "{$this->name}" ] ) && 'edit' !== $context ) {
+		if ( ! isset( $entry_default_fields[ "{$this->name}" ] ) && 'edit' === $context ) {
 			$entry_default_fields[ "{$this->name}" ] = array(
 				'label' => $this->label,
 				'desc'  => $this->description,
@@ -279,6 +317,85 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		return esc_attr( "gv-approval-{$approved_key}" );
 	}
+
+	/**
+	 * Adds the GravityView Approval Entries field to the Edit Entry form
+	 *
+	 * @since 2.26
+	 *
+	 * @param GF_Field[] $fields        Gravity Forms form fields
+	 * @param array|null $edit_fields   Fields for the Edit Entry tab configured in the View Configuration
+	 * @param array      $form          GF Form array (`fields` key modified to have only fields configured to show in Edit Entry)
+	 *
+	 * @return GF_Field[]               If Custom Content field exists, returns fields array with the fields inserted. Otherwise, returns unmodified fields array.
+	 */
+	public function show_field_in_edit_entry( $fields, $edit_fields = null, $form = array() ) {
+		// Not configured; show all fields.
+		if ( is_null( $edit_fields ) ) {
+			return $fields;
+		}
+
+		$new_fields = array();
+		$i          = 0;
+
+		foreach ( (array) $edit_fields as $id => $edit_field ) {
+			if ( 'entry_approval' !== $edit_field['id'] ) {
+				if ( isset( $fields[ $i ] ) ) {
+					$new_fields[] = $fields[ $i ];
+				}
+				++$i;
+				continue;
+			}
+
+			$label = ( $edit_field['custom_label'] ? $edit_field['custom_label'] : __( 'Approve Entries', 'gk-gravityview' ) );
+
+			if ( ! $edit_field['show_label'] ) {
+				$label = '';
+			}
+
+			$unique_id = crc32( 'is_approved' );
+
+			$approval_value = GravityView_Entry_Approval_Status::UNAPPROVED;
+
+			$entry = gravityview()->request->is_entry();
+
+			if ( $entry ) {
+				$entry = $entry instanceof Multi_Entry ? reset( $entry->entries ) : $entry;
+
+				$entry = $entry->as_entry();
+
+				$approval_value = $entry['is_approved'] ?? $approval_value;
+			}
+
+			$approval_value = $_POST[ "input_{$unique_id}" ] ?? $approval_value;
+
+			$field_data = array(
+				'id'           => $unique_id,
+				'custom_id'    => $id,
+				'label'        => $label,
+				'choices'      => array(
+					array(
+						'text'  => __( 'Approve', 'gk-gravityview' ),
+						'value' => GravityView_Entry_Approval_Status::APPROVED,
+					),
+					array(
+						'text'  => __( 'Disapprove', 'gk-gravityview' ),
+						'value' => GravityView_Entry_Approval_Status::DISAPPROVED,
+					),
+					array(
+						'text'  => __( 'Reset Approval', 'gk-gravityview' ),
+						'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
+					),
+				),
+				'defaultValue' => (int) $approval_value,
+				'cssClass'     => $edit_field['custom_class'],
+			);
+
+			$new_fields[] = new GF_Field_Radio( $field_data );
+		}
+		return $new_fields;
+	}
+
 }
 
 new GravityView_Field_Entry_Approval();
