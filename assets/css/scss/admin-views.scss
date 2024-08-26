@@ -2017,6 +2017,7 @@ $dialog-button-padding: 5px;
 
 // Multiple Forms buttons
 .gv-droppable-area .gv-add-field[data-formid] {
+	border: 1px solid $color-gv-grey-02;
 	max-width: 100%!important;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
