@@ -13,6 +13,7 @@
 @import "font";
 @import "admin-members-plugin";
 @import "beacon";
+@import "variables";
 
 /* add gravityview menu icon */
 #toplevel_page_gravityview_settings .wp-menu-image:before,
@@ -189,6 +190,14 @@
 	}
 }
 
+.gv-field-label{
+	background-color: $color-gv-shade-03;
+	border: 1px solid $color-gv-shade-02;
+	border-radius: 3px;
+	color: $color-gv-text;
+	padding: $space-gv-xs/2 $space-gv-xs;
+	font-size: $font-size-gv-s;
+}
 
 /** The "Embed Shortcode" section in the Publish metabox */
 .gv-shortcode {

@@ -2003,6 +2003,7 @@ $dialog-button-padding: 5px;
 .button.button-link.gv-add-field {
 	text-decoration: none;
 	border-radius: 3px;
+	border: 1px solid $color-gv-grey-02;
 	min-height: 40px;
 	line-height: 40px;
 	padding: 0 1.25rem;
@@ -2017,7 +2018,6 @@ $dialog-button-padding: 5px;
 
 // Multiple Forms buttons
 .gv-droppable-area .gv-add-field[data-formid] {
-	border: 1px solid $color-gv-grey-02;
 	max-width: 100%!important;
 	overflow-x: hidden;
 	text-overflow: ellipsis;

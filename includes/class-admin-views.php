@@ -1176,7 +1176,7 @@ HTML;
 										data-objecttype="<?php echo esc_attr( $type ); ?>"
 										data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"
 										data-context="<?php echo esc_attr( $zone ); ?>"
-										data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '<span class="dashicons dashicons-plus-alt"></span>' . esc_html( $button_label ); ?></a>
+										data-formid="<?php echo $view ? esc_attr( $view->form ? $view->form->ID : '' ) : ''; ?>"><?php echo '<span class="dashicons dashicons-plus-alt"></span>' ?></a>
 								</div>
 							</div>
 						</div>
