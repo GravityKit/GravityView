@@ -32,6 +32,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: The maximum number of files allowed in the File Upload field was not respected when editing an entry.
 * Fixed: Sorting the View by the Name field would yield incorrect results.
 
+#### 💻 Developer Updates
+* Added `gk/gravityview/view/entries/query/sorting-parameters` filter to modify the sorting parameters applied during the retrieval of View entries.
+
 = 2.27.1 on August 14, 2024 =
 
 This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.
