@@ -157,7 +157,7 @@ class GravityView_Entry_Approval_Merge_Tags {
 	public function _filter_gform_replace_merge_tags( $text, $form = array(), $entry = array(), $url_encode = false, $esc_html = false ) {
 
 		$matches = array();
-		preg_match_all( '/{gv_((?:dis|un)?approve)_entry:?(?:(\d+)([d|h|m|s]))?:?(public)?}/', $text, $matches, PREG_SET_ORDER );
+		preg_match_all( '/{gv_((?:dis|un)?approve)_entry:?(?:(\d+)([d|h|m|s]))?:?(public)?:?(url)?}/', $text, $matches, PREG_SET_ORDER );
 
 		// If there are no matches, return original text
 		if ( empty( $matches ) ) {
@@ -233,8 +233,8 @@ class GravityView_Entry_Approval_Merge_Tags {
 				'text'    => $approval_link_text,
 				'form_id' => (int) $form['id'],
 				'action'  => $action,
-				'format'  => 'html',
-				'atts'    => []
+				'format'  => isset( $match[5] ) ? 'text' : 'html',
+				'atts'    => [],
 			];
 
 			/**
