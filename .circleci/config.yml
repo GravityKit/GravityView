@@ -126,7 +126,7 @@ workflows:
     jobs:
       - prepare_test_and_build_environment:
           <<: *context
-      - run_php_72_unit_tests:
+      - run_php_74_unit_tests:
           <<: *test_job_config
       - run_php_80_unit_tests:
           <<: *test_job_config
