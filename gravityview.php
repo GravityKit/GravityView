@@ -22,6 +22,11 @@ if ( ! GravityKit\GravityView\Foundation\should_load( __FILE__ ) ) {
 	return;
 }
 
+if ( ! GravityKit\GravityView\Foundation\meets_min_php_version_requirement( __FILE__, '7.4.0' ) ) {
+	return;
+}
+
+
 /** Constants */
 
 /**
@@ -77,7 +82,7 @@ define( 'GV_FUTURE_MIN_WP_VERSION', '5.3' );
  * @since 1.19.2
  * @var string|false
  */
-define( 'GV_FUTURE_MIN_PHP_VERSION', '7.4.0' );
+define( 'GV_FUTURE_MIN_PHP_VERSION', '8.0.0' );
 
 /**
  * The future is here and now.

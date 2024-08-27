@@ -23,6 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+**Note: GravityView now requires PHP 7.4 or newer**
+
 * Added: Modifier for entry moderation merge tags to output plain-text URLs (e.g., `{gv_approve_entry:url}`).
 * Fixed: Merge tag support in the Source URL "Link Text" field setting
 * Fixed: Deprecated filter notice if using GravityView Maps 3.1.0 or newer.
