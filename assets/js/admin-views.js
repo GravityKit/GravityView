@@ -1722,6 +1722,7 @@
 
 				$.when( vcfg.server_request( 'install_product', {
 						id: $link.attr( 'data-download-id' ),
+						text_domain: $link.attr( 'data-template-text-domain' ),
 						activate: true,
 					} ) )
 					.then( on_success )
