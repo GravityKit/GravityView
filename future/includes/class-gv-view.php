@@ -1129,7 +1129,7 @@ class View implements \ArrayAccess {
 				 *
 				 * @filter `gk/gravityview/view/entries/query/sorting-parameters`
 				 *
-				 * @since  TBD
+				 * @since  2.28.0
 				 *
 				 * @param array $sorting_parameters The array of sorting parameters, including field ID, field type (direction, and casting types.
 				 * @param View  $this               The View instance.

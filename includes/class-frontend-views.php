@@ -1416,7 +1416,7 @@ class GravityView_frontend {
 					 * Override how to sort when sorting full name.
 					 *
 					 * @since 1.7.4
-					 * @since TBD Default sorting is set to first and last name.
+					 * @since 2.28.0 Default sorting is set to first and last name.
 					 *
 					 * @param string $name_part Sort by `first`, `last` or `first-last` (default: `first-last`)
 					 * @param string $sort_field_id Field used for sorting
