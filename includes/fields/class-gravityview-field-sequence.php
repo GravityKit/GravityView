@@ -258,7 +258,13 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 			global $wpdb;
 
-			foreach ( $wpdb->get_results( implode( ' ', $sql_query ), ARRAY_A ) as $n => $result ) {
+			$results = $wpdb->get_results( implode( ' ', $sql_query ), ARRAY_A );
+
+			if ( is_null( $results ) ) {
+				return 0;
+			}
+
+			foreach ( $results as $n => $result ) {
 				if ( in_array( $entry->ID, $result ) ) {
 					return $context->field->reverse ? ( $total - $n ) : ( $n + 1 );
 				}
