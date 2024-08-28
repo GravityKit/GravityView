@@ -1107,11 +1107,21 @@ class View implements \ArrayAccess {
 				$sorting_parameters = [];
 
 				foreach ( $sort_field_ids as $key => $id ) {
-					$sorting_parameters[ $id ] = [
-						'id'        => GravityView_frontend::_override_sorting_id_by_field_type( $id, $this->form->ID ),
-						'type'      => GVCommon::is_field_numeric( $this->form->ID, $id ) ? 'numeric' : 'string',
-						'direction' => strtoupper( \GV\Utils::get( $sort_directions, $key, 'ASC' ) ),
-					];
+					// The original field ID can be overridden for certain fields, including the Name field
+					// where a single ID becomes multiple field input IDs joined by a pipe (e.g., "3.3|3.6").
+					$id_overrides = explode(
+						'|',
+						GravityView_frontend::_override_sorting_id_by_field_type( $id, $this->form->ID )
+					);
+
+					foreach ( $id_overrides as $id_override ) {
+						$sorting_parameters[] = [
+							'_original_id' => $id,
+							'id'           => $id_override,
+							'is_numeric'   => GVCommon::is_field_numeric( $this->form->ID, $id ),
+							'direction'    => strtoupper( \GV\Utils::get( $sort_directions, $key, 'ASC' ) ),
+						];
+					}
 				}
 
 				/**
@@ -1121,8 +1131,8 @@ class View implements \ArrayAccess {
 				 *
 				 * @since  TBD
 				 *
-				 * @param array $sorting_parameters The array of sorting parameters, including field IDs, directions, and casting types.
-				 * @param View  $this            The View instance.
+				 * @param array $sorting_parameters The array of sorting parameters, including field ID, field type (direction, and casting types.
+				 * @param View  $this               The View instance.
 				 */
 				$sorting_parameters = apply_filters( 'gk/gravityview/view/entries/query/sorting-parameters', $sorting_parameters, $this );
 
@@ -1131,17 +1141,13 @@ class View implements \ArrayAccess {
 						continue;
 					}
 
-					$sort_field_ids = explode( '|', $field['id'] );
+					$order = new \GF_Query_Column( $field['id'], $this->form->ID );
 
-					foreach ( $sort_field_ids as $field_id ) {
-						$order = new \GF_Query_Column( $field_id, $this->form->ID );
-
-						if ( 'id' !== $field_id && 'numeric' === $field['type'] ) {
-							$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? \GF_Query::TYPE_DECIMAL : \GF_Query::TYPE_SIGNED );
-						}
-
-						$query->order( $order, $field['direction'] );
+					if ( 'id' !== $field['id'] && (int) $field['is_numeric'] ) {
+						$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? \GF_Query::TYPE_DECIMAL : \GF_Query::TYPE_SIGNED );
 					}
+
+					$query->order( $order, $field['direction'] );
 				}
 			}
 
