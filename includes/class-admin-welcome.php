@@ -296,7 +296,7 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3>2.28.0 on August 28, 2024</h3>
+				<h3>2.28.0 on August 29, 2024</h3>
 
 				<p>This update adds support for plain-text URLs in entry moderation merge tags, and fixes several bugs, including critical errors in the View editor.</p>
 
