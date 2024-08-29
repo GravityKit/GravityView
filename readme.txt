@@ -1,8 +1,8 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.6.0
-Requires PHP: 7.2.0
+Tested up to: 6.6.1
+Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
 License: GPL 3 or higher
@@ -20,6 +20,30 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.28.0 on August 29, 2024 =
+
+This update adds support for plain-text URLs in entry moderation merge tags, and fixes several bugs, including critical errors in the View editor. Starting with this version, PHP 7.4 or newer is required.
+
+**Note: GravityView now requires PHP 7.4 or newer.**
+
+#### 🚀 Added
+* Modifier for entry moderation merge tags to output plain-text URLs (e.g., `{gv_approve_entry:url}`).
+
+#### 🐛 Fixed
+* "Text domain not found" error when trying to install a layout during the View creation process.
+* Fatal error in the View editor when the user does not have the necessary capabilities to install plugins.
+* Merge tag support in the Source URL "Link Text" field setting.
+* Deprecated filter notice when using GravityView Maps 3.1.0 or newer.
+* PHP 8.2 deprecation notice due to passing an empty value to `htmlspecialchars()` and creating dynamic class properties.
+* The maximum number of files allowed in the File Upload field was not respected when editing an entry.
+* Sorting the View by the Name field yielded incorrect results.
+
+#### 🔧 Updated
+* [TrustedLogin](https://www.trustedlogin.com/) to version 1.9.0.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/view/entries/query/sorting-parameters` filter to modify the sorting parameters applied during the retrieval of View entries.
 
 = 2.27.1 on August 14, 2024 =
 

@@ -63,8 +63,8 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 		$selected           = ( $id == $directory_template ) ? ' gv-selected' : '';
 		$placeholder        = ! empty( $template['buy_source'] );
 		$is_included        = ! empty( $template['included'] );
-		$plugin_data        = GravityKit\GravityView\Foundation\Helpers\Core::get_installed_plugin_by_text_domain( $template['textdomain'] ?? '' ) ?: array();
-		$plugin_text_domain = $plugin_data['text_domain'] ?? '';
+		$plugin_data        = GravityKit\GravityView\Foundation\Helpers\Core::get_installed_plugin_by_text_domain( $template['textdomain'] ?? '' ) ?? [];
+		$plugin_text_domain = $plugin_data['text_domain'] ?? $template['textdomain'] ?? '';
 		$button_text        = empty( $plugin_data ) ? esc_html__( 'Install', 'gk-gravityview' ) : esc_html__( 'Activate & Select', 'gk-gravityview' );
 		$button_class       = 'gv-layout-' . ( empty( $plugin_data ) ? 'install' : 'activate' );
 		$base_type          = $base_template_mapping[ $template['slug'] ?? 'table' ] ?? 'default_table';

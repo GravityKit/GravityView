@@ -7,6 +7,8 @@ use GF_Query;
 use GravityKitFoundation;
 use GravityView_Compatibility;
 use GravityView_Cache;
+use GravityView_frontend;
+use GVCommon;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -327,7 +329,7 @@ class View implements \ArrayAccess {
 					 * This View has no data source. There's nothing to show really.
 					 * ...apart from a nice message if the user can do anything about it.
 					 */
-					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
+					if ( GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
 
 						$title = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
 
@@ -335,7 +337,7 @@ class View implements \ArrayAccess {
 
 						$image = sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', esc_attr__( 'Data Source', 'gk-gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/data-source.png', GRAVITYVIEW_FILE ) ) );
 
-						return \GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message . $image ), 'notice' );
+						return GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message . $image ), 'notice' );
 					}
 					break;
 				case 'in_trash':
@@ -357,7 +359,7 @@ class View implements \ArrayAccess {
 			return $content;
 		}
 
-		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $view->ID );
+		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && GVCommon::has_cap( 'gravityview_moderate_entries', $view->ID );
 
 		/**
 		 * Editing a single entry.
@@ -414,7 +416,7 @@ class View implements \ArrayAccess {
 					}
 				}
 
-				$error = \GVCommon::check_entry_display( $e->as_entry(), $view );
+				$error = GVCommon::check_entry_display( $e->as_entry(), $view );
 
 				if ( is_wp_error( $error ) ) {
 					gravityview()->log->error(
@@ -535,7 +537,7 @@ class View implements \ArrayAccess {
 			 * Is this View an embed-only View? If so, don't allow rendering here,
 			 *  as this is a direct request.
 			 */
-			if ( $this->settings->get( 'embed_only' ) && ! \GVCommon::has_cap( 'read_private_gravityviews' ) ) {
+			if ( $this->settings->get( 'embed_only' ) && ! GVCommon::has_cap( 'read_private_gravityviews' ) ) {
 				return new \WP_Error( 'gravityview/embed_only' );
 			}
 		}
@@ -546,7 +548,7 @@ class View implements \ArrayAccess {
 
 		/** Private, pending, draft, etc. */
 		$public_states = get_post_stati( array( 'public' => true ) );
-		if ( ! in_array( $this->post_status, $public_states, true ) && ! \GVCommon::has_cap( 'read_gravityview', $this->ID ) ) {
+		if ( ! in_array( $this->post_status, $public_states, true ) && ! GVCommon::has_cap( 'read_gravityview', $this->ID ) ) {
 			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $this->ID ) );
 			return new \WP_Error( 'gravityview/not_public' );
 		}
@@ -1018,10 +1020,10 @@ class View implements \ArrayAccess {
 		/**
 		 * @todo: Stop using _frontend and use something like $request->get_search_criteria() instead
 		 */
-		$parameters = \GravityView_frontend::get_view_entries_parameters( $parameters, $this->form->ID );
+		$parameters = GravityView_frontend::get_view_entries_parameters( $parameters, $this->form->ID );
 
 		$parameters['context_view_id'] = $this->ID;
-		$parameters                    = \GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
+		$parameters                    = GVCommon::calculate_get_entries_criteria( $parameters, $this->form->ID );
 
 		if ( ! is_array( $parameters ) ) {
 			$parameters = array();
@@ -1077,9 +1079,15 @@ class View implements \ArrayAccess {
 			 * Apply multisort.
 			 */
 			if ( ! empty( $has_multisort ) ) {
+				// Clear ordering that was set when initializing the query since we're going to set it from scratch.
+				( function () {
+					$this->order = [];
+				} )->bindTo( $query, $query )();
+
 				$atts = $this->settings->as_atts();
 
 				$view_setting_sort_field_ids  = \GV\Utils::get( $atts, 'sort_field', array() );
+
 				$view_setting_sort_directions = \GV\Utils::get( $atts, 'sort_direction', array() );
 
 				$has_sort_query_param = ! empty( $_GET['sort'] ) && is_array( $_GET['sort'] );
@@ -1096,26 +1104,50 @@ class View implements \ArrayAccess {
 					$sort_directions = $view_setting_sort_directions;
 				}
 
-				$skip_first = false;
+				$sorting_parameters = [];
 
-				foreach ( (array) $sort_field_ids as $key => $sort_field_id ) {
+				foreach ( $sort_field_ids as $key => $id ) {
+					// The original field ID can be overridden for certain fields, including the Name field
+					// where a single ID becomes multiple field input IDs joined by a pipe (e.g., "3.3|3.6").
+					$id_overrides = explode(
+						'|',
+						GravityView_frontend::_override_sorting_id_by_field_type( $id, $this->form->ID )
+					);
 
-					if ( ! $skip_first && ! $has_sort_query_param ) {
-						$skip_first = true; // Skip the first one, it's already in the query
+					foreach ( $id_overrides as $id_override ) {
+						$sorting_parameters[] = [
+							'_original_id' => $id,
+							'id'           => $id_override,
+							'is_numeric'   => GVCommon::is_field_numeric( $this->form->ID, $id ),
+							'direction'    => strtoupper( \GV\Utils::get( $sort_directions, $key, 'ASC' ) ),
+						];
+					}
+				}
+
+				/**
+				 * Modifies the sorting parameters applied during the retrieval of View entries.
+				 *
+				 * @filter `gk/gravityview/view/entries/query/sorting-parameters`
+				 *
+				 * @since  2.28.0
+				 *
+				 * @param array $sorting_parameters The array of sorting parameters, including field ID, field type (direction, and casting types.
+				 * @param View  $this               The View instance.
+				 */
+				$sorting_parameters = apply_filters( 'gk/gravityview/view/entries/query/sorting-parameters', $sorting_parameters, $this );
+
+				foreach ( $sorting_parameters as $field ) {
+					if ( empty( $field['id'] ) ) {
 						continue;
 					}
 
-					$sort_field_id  = \GravityView_frontend::_override_sorting_id_by_field_type( $sort_field_id, $this->form->ID );
-					$sort_direction = strtoupper( \GV\Utils::get( $sort_directions, $key, 'ASC' ) );
+					$order = new \GF_Query_Column( $field['id'], $this->form->ID );
 
-					if ( ! empty( $sort_field_id ) ) {
-						$order = new \GF_Query_Column( $sort_field_id, $this->form->ID );
-						if ( 'id' !== $sort_field_id && \GVCommon::is_field_numeric( $this->form->ID, $sort_field_id ) ) {
-							$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? \GF_Query::TYPE_DECIMAL : \GF_Query::TYPE_SIGNED );
-						}
-
-						$query->order( $order, $sort_direction );
+					if ( 'id' !== $field['id'] && (int) $field['is_numeric'] ) {
+						$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? \GF_Query::TYPE_DECIMAL : \GF_Query::TYPE_SIGNED );
 					}
+
+					$query->order( $order, $field['direction'] );
 				}
 			}
 
@@ -1811,7 +1843,7 @@ class View implements \ArrayAccess {
 			return;
 		}
 
-		$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
+		$is_admin_and_can_view = $this->settings->get( 'admin_show_all_statuses' ) && GVCommon::has_cap( 'gravityview_moderate_entries', $this->ID );
 
 		if ( $is_admin_and_can_view ) {
 			return;
