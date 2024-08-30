@@ -208,7 +208,7 @@ class gvlogic extends \GV\Shortcode {
 				break; // No more shortcodes
 			}
 
-			list( $_, $before_shortcode, $shortcode, $_, $after_shortcode ) = $matches;
+			list( $_, $before_shortcode, $shortcode, $__, $after_shortcode ) = $matches;
 
 			if ( ! $found ) { // We're still iffing.
 				$if .= $before_shortcode;

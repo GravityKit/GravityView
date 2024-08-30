@@ -296,6 +296,42 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.28.0 on August 29, 2024</h3>
+
+				<p>This update adds support for plain-text URLs in entry moderation merge tags, and fixes several bugs, including critical errors in the View editor.</p>
+
+				<p><strong>Note:</strong> GravityView now requires PHP 7.4 or newer.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Modifier for entry moderation merge tags to output plain-text URLs (e.g., <code>{gv_approve_entry:url}</code>).</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>"Text domain not found" error when trying to install a layout during the View creation process.</li>
+					<li>Fatal error in the View editor when the user does not have the necessary capabilities to install plugins.</li>
+					<li>Merge tag support in the Source URL "Link Text" field setting.</li>
+					<li>Deprecated filter notice when using GravityView Maps 3.1.0 or newer.</li>
+					<li>PHP 8.2 deprecation notice due to passing an empty value to <code>htmlspecialchars()</code> and creating dynamic class properties.</li>
+					<li>The maximum number of files allowed in the File Upload field was not respected when editing an entry.</li>
+					<li>Sorting the View by the Name field yielded incorrect results.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.trustedlogin.com/">TrustedLogin</a> to version 1.9.0.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gk/gravityview/view/entries/query/sorting-parameters</code> filter to modify the sorting parameters applied during the retrieval of View entries.</li>
+				</ul>
+
 				<h3>2.27.1 on August 14, 2024</h3>
 
 				<p>This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.</p>
@@ -364,39 +400,6 @@ class GravityView_Welcome {
 				<ul>
 					<li>Added <code>gk/gravityview/feature/upgrade/disabled</code> filter to disable the functionality placeholders. Return <code>true</code> to disable the placeholders.</li>
 					<li>Added <code>gk/gravityview/metabox/content/before</code> and <code>gk/gravityview/metabox/content/after</code> actions, triggered before and after the View metabox is rendered.</li>
-				</ul>
-
-				<h3>2.25 on June 5, 2024</h3>
-
-				<p>This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.</p>
-
-				<b>Note: GravityView now requires Gravity Forms 2.6 (released in March 2022) or newer.</b>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>New View setting under the Single Entry tab to mark an entry as 'Read'. <a
-							href='https://docs.gravitykit.com/article/1008-marking-entries-as-read'>Read more about
-							the feature</a>.
-					</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Appearance of the Merge Tag picker in the field settings of the View editor.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Removed the <code>gk/gravityview/field/is-read/print-script</code> filter in favor of the improved functionality that marks entries as "Read".</li>
 				</ul>
 
 				<p style="text-align: center;">

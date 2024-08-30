@@ -54,7 +54,7 @@ $user_can = current_user_can( $caps );
 						'<a href="%1$s" %3$s class="gk-gravityview-placeholder-button button button-primary button-hero">%2$s</a>',
 						esc_url( $button_href ),
 						esc_html( $button_text ),
-						implode( ' ', $attributes ),
+						implode( ' ', $attributes )
 					);
 				} else {
 					printf(
