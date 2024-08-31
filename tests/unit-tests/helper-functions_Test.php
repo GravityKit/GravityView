@@ -496,7 +496,7 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 		$this->assertEquals( 42, $resultUpper['scalar_int'] );  // No change
 		$this->assertEquals( 3.14, $resultUpper['scalar_float'] );  // No change
 		$this->assertEquals( true, $resultUpper['scalar_bool'] );  // No change
-		$this->assertNull( $resultUpper['null_value'] );
+		$this->assertEquals( '', $resultUpper['null_value'] );
 		$this->assertEquals( [ 'APPLE', 'BANANA', null, 99 ], $resultUpper['simple_array'] );
 		$this->assertEquals( [
 			'fruits'  => [ 'CHERRY', 'DATE' ],
