@@ -120,4 +120,47 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 	#wpfooter {
 		display: none;
 	}
+
+	ul.ui-tabs-nav {
+		float: none;
+	}
+
+	.gv-section,
+	#gravityview_select_form,
+	#directory-fields,
+	.ui-tabs .ui-tabs-nav,
+	#titlediv {
+		position: relative;
+		margin: 0 auto;
+		max-width: 1240px;
+	}
+
+	#directory-fields .gv-fields{
+		padding: 0 1.25rem;
+	}
+
+	.gv-droppable-area-action a.button-link{
+		color: $color-gv-grey-01;
+	}
+
+	.gv-field-label{
+		background-color: $color-gv-shade-03;
+		border: 1px solid $color-gv-shade-02;
+		border-radius: 3px;
+		color: $color-gv-text;
+		padding: $space-gv-xs/2 $space-gv-xs;
+		font-size: $font-size-gv-s;
+	}
+
+	.button.button-link.gv-add-field {
+		border: 1px solid $color-gv-grey-02;
+	}
+
+	#post-body-content{
+		margin-top: $space-gv-xl;
+	}
+
+	#gk-settings-link{
+		right: 40px;
+	}
 }

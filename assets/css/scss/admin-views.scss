@@ -148,8 +148,6 @@ $gv-overlay-index: 10000;
 --------------------------------------- */
 .gv-section {
 	position: relative;
-	margin: auto;
-	max-width: 1240px;
 }
 .gv-section:before,
 .gv-section:after {
@@ -322,11 +320,6 @@ $gv-overlay-index: 10000;
 // Don't display the arrow toggle for collapsing the metabox
 #gravityview_select_form .handlediv {
 	display: none;
-}
-
-#gravityview_select_form{
-	max-width: 1240px;
-	margin: 0 auto;
 }
 
 /**
@@ -645,16 +638,13 @@ $gv-overlay-index: 10000;
 	}
 
 	.ui-tabs-nav {
+		margin: 0;
 		padding: 0;
 		-webkit-margin-before: 0;
 		-webkit-margin-after: 0;
 		-webkit-margin-start: 0;
 		-webkit-margin-end: 0;
 		-webkit-padding-start: 0;
-    
-		margin: 0 auto;
-		max-width: 1240px;
-
 
 		@media (max-width: 850px) {
 			width: 100%;
@@ -1016,11 +1006,6 @@ hr {
 	border: none;
 	background: rgba(99, 109, 119, .2);
 	border-radius: 3px;
-}
-
-#directory-fields{
-	margin: auto;
-	max-width: 1240px;
 }
 
 #directory-fields .gv-fields {
@@ -2018,7 +2003,6 @@ $dialog-button-padding: 5px;
 .button.button-link.gv-add-field {
 	text-decoration: none;
 	border-radius: 3px;
-	border: 1px solid $color-gv-grey-02;
 	min-height: 40px;
 	line-height: 40px;
 	padding: 0;
@@ -2031,9 +2015,6 @@ $dialog-button-padding: 5px;
 	}
 }
 
-.gv-droppable-area-action a.button-link{
-	color: $color-gv-grey-01;
-}
 
 // Multiple Forms buttons
 .gv-droppable-area .gv-add-field[data-formid] {

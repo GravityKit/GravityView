@@ -85,9 +85,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 			?>
 			" data-filter="<?php echo esc_attr( $type ); ?>">
 				<div class="gv-view-types-normal">
-					<img src="<?php echo esc_url( $logo ); ?>" alt="<?php echo esc_attr( $label ); ?>">
 					<h5><?php echo esc_html( $label ); ?></h5>
-					<p class="description"><?php echo esc_html( $description ); ?></p>
 				</div>
 				<div class="gv-view-types-hover">
 					<div>

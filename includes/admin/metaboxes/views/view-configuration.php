@@ -87,7 +87,7 @@ function render_template_options( array $templates, ?string $selected_template )
 
 <div id="gv-view-configuration-tabs">
 
-	<a href="#gravityview_settings" class="alignright" id="gk-settings-link" title="<?php esc_html_e( 'View Settings', 'gk-gravityview' ); ?>"><i class='dashicons dashicons-admin-generic'></i> <?php esc_html_e( 'Settings', 'gk-gravityview' ); ?></a>
+	<a href="#gravityview_settings" class="alignright" id="gk-settings-link" title="<?php esc_html_e( 'View Settings', 'gk-gravityview' ); ?>"><i class='dashicons dashicons-admin-generic'></i></a>
 
 	<ul class="nav-tab-wrapper">
 		<li><a href="#directory-view" class="nav-tab"><i class="dashicons dashicons-admin-page tab-icon"></i> <?php printf( esc_html__( '%s Layout', 'gk-gravityview' ), esc_html__( 'Multiple Entries', 'gk-gravityview' ) . '<span class="gv-responsive-label--collapse">' ); ?></span></a></li>
