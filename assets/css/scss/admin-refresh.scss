@@ -5,13 +5,14 @@
  *
  */
 $body-inset: 50px;
-$border-gray: #CCD0D4;
-$chip-background: #FAFBFC;
 $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
 .post-type-gravityview {
 
-	background-color: $chip-background;
+	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	font-size: $font-size-gv-m;
+	background-color: $color-gv-shade-01;
+	font-size: $font-size-gv-m;
 
 	#wpcontent {
 		margin: 0;
@@ -29,7 +30,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
 	#titlediv #title {
 		background-color: transparent;
-		border: none;
+		border-color: $color-gv-shade-01;
 	}
 
 	#poststuff {
@@ -77,17 +78,17 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		.nav-tab {
 			border: none;
 			border-radius: 0;
-			background-color: $chip-background;
+			background-color: $color-gv-shade-05;
 		}
 
 		.ui-state-active .nav-tab {
-			background-color: #fff;
+			background-color: $color-gv-white;
 		}
 
 		.gv-fields {
 			background: white;
 			box-shadow: $field-box-shadow;
-			border-color: $border-gray;
+			border-color: $color-gv-shade-02;
 		}
 
 		.gv-fields .gv-field-controls button {
@@ -135,6 +136,10 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		max-width: 1240px;
 	}
 
+	.gravityview_view_config{
+		padding-bottom: $space-gv-xl;
+	}
+
 	#directory-fields .gv-fields{
 		padding: 0 1.25rem;
 	}
@@ -162,5 +167,69 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
 	#gk-settings-link{
 		right: 40px;
+	}
+
+	#wpbody-content{
+		float: none;
+	}
+
+	#directory-fields .gv-fields{
+		padding: 0 0 0 1.25rem;
+	}
+
+	div.gv-dialog-gravityview_settings{
+		width: 100%!important;
+		left: 0!important;
+	}
+
+	.alternate, .striped>tbody>:nth-child(odd), ul.striped>:nth-child(odd){
+		background-color: $color-gv-white;
+	}
+
+	#gravityview_settings ul.ui-tabs-nav li.ui-state-active a{
+		background-color: $color-gv-white;
+	}
+
+	.button.button-link.gv-add-field .dashicons{
+		padding: 0 0.5em;
+		border-radius: 1px;
+	}
+
+	.ui-tooltip-content .gv-items-picker-container.gv-widget-picker-container .gv-icon, .ui-tooltip-content .gv-items-picker-container.gv-widget-picker-container .gform-icon, .ui-tooltip-content .gv-items-picker-container.gv-widget-picker-container .dashicons{
+		padding: 0;
+	}
+
+	.gv-droppable-area .gv-droppable-area-title{
+		text-transform: none;
+	}
+
+	.gv-droppable-area{
+		padding: $space-gv-m 0;
+	}
+
+	.postbox .inside{
+		padding: $space-gv-m 0;
+	}
+
+	#poststuff h2{
+		font-size: $font-size-gv-l;
+		padding: 0;
+	}
+
+	#gravityview_select_form{
+		padding-bottom: $space-gv-xl;
+	}
+
+	#directory-fields{
+		padding: $space-gv-xl 0;
+	}
+
+	#gravityview_settings ul.ui-tabs-nav li a{
+		border-bottom: none;
+		font-size: $font-size-gv-s;
+	}
+
+	.gv-section-header{
+		padding: $space-gv-xl 0 0 0;
 	}
 }
