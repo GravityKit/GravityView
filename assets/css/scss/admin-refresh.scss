@@ -136,6 +136,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		max-width: 1240px;
 	}
 
+	#gravityview_select_form,
 	.gravityview_view_config{
 		padding-bottom: $space-gv-xl;
 	}
@@ -182,10 +183,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		left: 0!important;
 	}
 
-	.alternate, .striped>tbody>:nth-child(odd), ul.striped>:nth-child(odd){
-		background-color: $color-gv-white;
-	}
-
+	.alternate, .striped>tbody>:nth-child(odd), ul.striped>:nth-child(odd),
 	#gravityview_settings ul.ui-tabs-nav li.ui-state-active a{
 		background-color: $color-gv-white;
 	}
@@ -203,21 +201,14 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		text-transform: none;
 	}
 
-	.gv-droppable-area{
-		padding: $space-gv-m 0;
-	}
-
-	.postbox .inside{
+	.gv-droppable-area,
+	.postbox .inside {
 		padding: $space-gv-m 0;
 	}
 
 	#poststuff h2{
 		font-size: $font-size-gv-l;
 		padding: 0;
-	}
-
-	#gravityview_select_form{
-		padding-bottom: $space-gv-xl;
 	}
 
 	#directory-fields{
