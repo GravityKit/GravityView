@@ -1,5 +1,10 @@
 <?php
 
+use GV\Entry;
+use GV\GF_Entry;
+use GV\Request;
+use GV\View;
+
 /**
  *
  * - [ ] Allow for Next/Previous and Single Entry navigation options.
@@ -11,8 +16,7 @@
  * - [ ] Enable galleries inside modal
  */
 
-function gravityview_is_request_lightbox( \WP_REST_Request $request ) {
-
+function gravityview_is_request_lightbox( WP_REST_Request $request ) {
 	if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
 		return false;
 	}
@@ -32,8 +36,7 @@ function gravityview_is_request_lightbox( \WP_REST_Request $request ) {
 }
 
 add_filter( 'rest_post_dispatch', function ( $response, $server, $request ) {
-
-	if ( ! $response instanceof \WP_REST_Response ) {
+	if ( ! $response instanceof WP_REST_Response ) {
 		return $response;
 	}
 
@@ -59,20 +62,19 @@ add_filter( 'rest_post_dispatch', function ( $response, $server, $request ) {
  *
  * @since 4.4.0
  *
- * @param bool             $served  Whether the request has already been served.
+ * @param bool             $served           Whether the request has already been served.
  *                                           Default false.
- * @param \WP_HTTP_Response $result  Result to send to the client. Usually a `WP_REST_Response`.
- * @param \WP_REST_Request  $request Request used to generate the response.
- * @param \WP_REST_Server   $server  Server instance.
+ * @param WP_HTTP_Response $result           Result to send to the client. Usually a `WP_REST_Response`.
+ * @param WP_REST_Request  $request          Request used to generate the response.
+ * @param WP_REST_Server   $server           Server instance.
  */
-add_filter( 'rest_pre_serve_request', function( $served, $result, $request, $server ) {
-
+add_filter( 'rest_pre_serve_request', function ( $served, $result, $request, $server ) {
 	if ( ! gravityview_is_request_lightbox( $request ) ) {
 		return $served;
 	}
 
 	$entry_id = $request->get_params()['s_id'];
-	$view_id = $request->get_params()['id'];
+	$view_id  = $request->get_params()['id'];
 
 	$rendered = apply_filters( 'gk/gravityview/rest/entry/html', $result->get_data(), $result, $request, $entry_id, $view_id );
 
@@ -85,12 +87,12 @@ add_filter( 'rest_pre_serve_request', function( $served, $result, $request, $ser
  * Wrap the rendered HTML snippet inside a full HTML page.
  *
  * @internal
+ *
  * @return void
  */
-add_filter( 'gk/gravityview/rest/entry/html', function( $rendered, $result, $request, $entry_id, $view_id ) {
-
-	$view = \GV\View::by_id( $view_id );
-	$entry = \GV\GF_Entry::by_id( $entry_id );
+add_filter( 'gk/gravityview/rest/entry/html', function ( $rendered, $result, $request, $entry_id, $view_id ) {
+	$view  = View::by_id( $view_id );
+	$entry = GF_Entry::by_id( $entry_id );
 
 	$title = $view->settings->get( 'single_title', '' );
 
@@ -102,26 +104,27 @@ add_filter( 'gk/gravityview/rest/entry/html', function( $rendered, $result, $req
 	$title = do_shortcode( $title );
 
 	ob_start();
-
 	?>
-<html lang="<?php echo get_bloginfo( 'language' ); ?>">
-	<head>
-		<title>{{title}}</title>
-		<?php wp_head(); ?>
-		<style>
-			<?php echo $view->settings->get( 'custom_css', '' ); ?>
-		</style>
 
-		<script type="text/javascript">
-			<?php echo $view->settings->get( 'custom_javascript', '' ); ?>
-		</script>
+	<html lang="<?php echo get_bloginfo( 'language' ); ?>">
+		<head>
+			<title>{{title}}</title>
+			<?php wp_head(); ?>
+			<style>
+				<?php echo $view->settings->get( 'custom_css', '' ); ?>
+			</style>
 
-	</head>
-	<body>
-		{{content}}
-	</body>
-</html>
-<?php
+			<script type="text/javascript">
+				<?php echo $view->settings->get( 'custom_javascript', '' ); ?>
+			</script>
+
+		</head>
+		<body>
+			{{content}}
+		</body>
+	</html>
+
+	<?php
 	$template = ob_get_clean();
 
 	$rendered = str_replace( '{{content}}', $rendered, $template );
@@ -133,11 +136,11 @@ add_filter( 'gk/gravityview/rest/entry/html', function( $rendered, $result, $req
 /**
  * Edit the Edit Link URL.
  *
- * @param string $href The Edit Link URL.
- * @param array $entry The GF entry array.
- * @param \GV\View $view The View.
+ * @param string $href  The Edit Link URL.
+ * @param array  $entry The GF entry array.
+ * @param View   $view  The View.
  */
-add_filter( 'gravityview/edit/link', function( $href, $entry, $view ) {
+add_filter( 'gravityview/edit/link', function ( $href, $entry, $view ) {
 
 	// Get URL args from $href
 	$args = wp_parse_args( parse_url( $href, PHP_URL_QUERY ) );
@@ -145,26 +148,26 @@ add_filter( 'gravityview/edit/link', function( $href, $entry, $view ) {
 	$href = rest_url( 'gravityview/v1/views/' . $view->ID . '/entries/' . $entry['id'] . '.html' );
 
 	$args['lightbox'] = 1;
-	$args['output'] = 'raw';
+	$args['output']   = 'raw';
 
 	return add_query_arg( $args, $href );
 }, 10, 3 );
 
 /**
  * @filter `gravityview/entry/permalink` The permalink of this entry.
- * @since 2.0
- * @param string $permalink The permalink.
- * @param \GV\Entry $entry The entry we're retrieving it for.
- * @param \GV\View|null $view The view context.
- * @param \GV\Request $request The request context.
+ * @since  2.0
+ *
+ * @param string    $permalink The permalink.
+ * @param Entry     $entry     The entry we're retrieving it for.
+ * @param View|null $view      The view context.
+ * @param Request   $request   The request context.
  */
-add_filter( 'gravityview/entry/permalink', function( $permalink, $gv_entry, $view, $request ) {
-
+add_filter( 'gravityview/entry/permalink', function ( $permalink, $gv_entry, $view, $request ) {
 	$href = rest_url( 'gravityview/v1/views/' . $view->ID . '/entries/' . $gv_entry->ID . '.html' );
 
 	$args = [
 		'lightbox' => 1,
-		'output' => 'raw'
+		'output'   => 'raw',
 	];
 
 	return add_query_arg( $args, $href );
@@ -180,7 +183,7 @@ add_filter( 'gravityview/lightbox/provider/fancybox/settings', function ( $setti
  */
 add_filter( 'gk/gravityview/field/edit_link/atts', function ( $link_atts, $context ) {
 	$link_atts['data-fancybox'] = 'edit';
-	$link_atts['data-type'] = 'iframe';
+	$link_atts['data-type']     = 'iframe';
 
 	return $link_atts;
 }, 10, 2 );
