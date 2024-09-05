@@ -60,6 +60,11 @@ class GravityView_Field_Date extends GravityView_Field {
 	public function apply_format_date_modifiers( $return, $raw_value = '', $value = '', $merge_tag = '', $modifier = '', $field = null ) {
 
 		if ( 'date' === $field->type ) {
+			// If human then don't change anything as it's already been formatted.
+			if ( strpos( $modifier, 'human' ) !== false ) {
+				return $return;
+			}
+
 			$return = GravityView_Merge_Tags::format_date( $raw_value, $modifier );
 		}
 
