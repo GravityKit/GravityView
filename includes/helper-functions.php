@@ -505,8 +505,9 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
 /**
  * Maps a function to all non-iterable elements of an array or an object.
  *
- * @see map_deep() This is an alias of the WP core function `map_deep()`, added in 4.4. Here for legacy purposes.
+ * @uses map_deep()
  * @since 1.16.3
+ * @since TODO Updated to filter `null` in callbacks that don't allow receiving `null` values.
  *
  * @param mixed    $value    The array, object, or scalar.
  * @param callable $callback The function to map onto $value.
@@ -514,7 +515,32 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
  * @return mixed The value with the callback applied to all non-arrays and non-objects inside it.
  */
 function gv_map_deep( $value, $callback ) {
-	return map_deep( $value, $callback );
+	$_value = unserialize( serialize( $value ) ); // Make a deep copy to avoid overwriting the original object.
+
+	$unsafe_callbacks = [
+		'rawurlencode',
+		'rawurldecode',
+		'urlencode',
+		'urldecode',
+		'base64_encode',
+		'base64_decode',
+		'get_headers',
+		'mb_convert_encoding',
+		'mb_detect_encoding',
+		'mb_strlen',
+		'mb_strpos',
+		'mb_strrpos',
+		'mb_substr',
+		'mb_str_split',
+	];
+
+	if ( in_array( $callback, $unsafe_callbacks, true ) ) {
+		return map_deep( $_value, function ( $item ) use ( $callback ) {
+			return is_null( $item ) ? $item : $callback( $item );
+		} );
+	}
+
+	return map_deep( $_value, $callback );
 }
 
 /**

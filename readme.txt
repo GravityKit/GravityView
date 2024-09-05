@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Clearing search removed all URL query parameters and under some circumstances redirected to the homepage.
+* Fixed: Searching the View added duplicate search parameters to the URL.
+
 = 2.28.0 on August 29, 2024 =
 
 This update adds support for plain-text URLs in entry moderation merge tags, and fixes several bugs, including critical errors in the View editor. Starting with this version, PHP 7.4 or newer is required.

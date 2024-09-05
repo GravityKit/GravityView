@@ -462,4 +462,140 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 		$this->assertEquals( "'=Equals", \GV\Utils::strip_excel_formulas( '=Equals' ) );
 
 	}
+
+	/**
+	 * @covers \gv_map_deep()
+	 * @since TODO
+	 */
+	public function test_gv_map_deep() {
+		$test_data = [
+			'scalar_string'   => 'hello world',
+			'scalar_int'      => 42,
+			'scalar_float'    => 3.14,
+			'scalar_bool'     => true,
+			'null_value'      => null,
+			'simple_array'    => [ 'apple', 'banana', null, 99 ],
+			'nested_array'    => [ 'fruits' => [ 'cherry', 'date' ], 'numbers' => [ 1, 2, null ] ],
+			'simple_object'   => (object) [ 'name' => 'John', 'age' => 30, 'city' => null ],
+			'nested_object'   => (object) [
+				'person'   => (object) [ 'name' => 'Jane', 'details' => [ 'hobby' => 'reading', 'pet' => null ] ],
+				'location' => 'New York'
+			],
+			'mixed_structure' => [
+				'array'  => [ 'nested' => 'array', 'null' => null ],
+				'object' => (object) [ 'prop' => 'value', 'null_prop' => null ],
+				'scalar' => 'mixed',
+				'null'   => null
+			]
+		];
+
+		// Test with strtoupper (safe callback)
+		$resultUpper = gv_map_deep( $test_data, 'strtoupper' );
+
+		$this->assertEquals( 'HELLO WORLD', $resultUpper['scalar_string'] );
+		$this->assertEquals( 42, $resultUpper['scalar_int'] );  // No change
+		$this->assertEquals( 3.14, $resultUpper['scalar_float'] );  // No change
+		$this->assertEquals( true, $resultUpper['scalar_bool'] );  // No change
+		$this->assertEquals( '', $resultUpper['null_value'] );
+		$this->assertEquals( [ 'APPLE', 'BANANA', null, 99 ], $resultUpper['simple_array'] );
+		$this->assertEquals( [
+			'fruits'  => [ 'CHERRY', 'DATE' ],
+			'numbers' => [ 1, 2, null ]
+		], $resultUpper['nested_array'] );
+		$this->assertEquals( (object) [
+			'name' => 'JOHN',
+			'age'  => 30,
+			'city' => null
+		], $resultUpper['simple_object'] );
+		$this->assertEquals(
+			(object) [
+				'person'   => (object) [ 'name' => 'JANE', 'details' => [ 'hobby' => 'READING', 'pet' => null ] ],
+				'location' => 'NEW YORK'
+			],
+			$resultUpper['nested_object']
+		);
+		$this->assertEquals(
+			[
+				'array'  => [ 'nested' => 'ARRAY', 'null' => null ],
+				'object' => (object) [ 'prop' => 'VALUE', 'null_prop' => null ],
+				'scalar' => 'MIXED',
+				'null'   => null
+			],
+			$resultUpper['mixed_structure']
+		);
+
+		// Test with rawurlencode (unsafe callback)
+		$resultEncoded = gv_map_deep( $test_data, 'rawurlencode' );
+
+		$this->assertEquals( 'hello%20world', $resultEncoded['scalar_string'] );
+		$this->assertEquals( 42, $resultEncoded['scalar_int'] );  // No change
+		$this->assertEquals( 3.14, $resultEncoded['scalar_float'] );  // No change
+		$this->assertEquals( true, $resultEncoded['scalar_bool'] );  // No change
+		$this->assertNull( $resultEncoded['null_value'] );
+		$this->assertEquals( [ 'apple', 'banana', null, 99 ], $resultEncoded['simple_array'] );
+		$this->assertEquals( [
+			'fruits'  => [ 'cherry', 'date' ],
+			'numbers' => [ 1, 2, null ]
+		], $resultEncoded['nested_array'] );
+		$this->assertEquals( (object) [
+			'name' => 'John',
+			'age'  => 30,
+			'city' => null
+		], $resultEncoded['simple_object'] );
+		$this->assertEquals(
+			(object) [
+				'person'   => (object) [ 'name' => 'Jane', 'details' => [ 'hobby' => 'reading', 'pet' => null ] ],
+				'location' => 'New%20York'
+			],
+			$resultEncoded['nested_object']
+		);
+		$this->assertEquals(
+			[
+				'array'  => [ 'nested' => 'array', 'null' => null ],
+				'object' => (object) [ 'prop' => 'value', 'null_prop' => null ],
+				'scalar' => 'mixed',
+				'null'   => null
+			],
+			$resultEncoded['mixed_structure']
+		);
+
+		// Test with custom callback
+		$customCallback = function ( $value ) {
+			return is_string( $value ) ? strrev( $value ) : $value;
+		};
+
+		$resultCustom   = gv_map_deep( $test_data, $customCallback );
+
+		$this->assertEquals( 'dlrow olleh', $resultCustom['scalar_string'] );
+		$this->assertEquals( 42, $resultCustom['scalar_int'] );
+		$this->assertEquals( 3.14, $resultCustom['scalar_float'] );
+		$this->assertTrue( $resultCustom['scalar_bool'] );
+		$this->assertNull( $resultCustom['null_value'] );
+		$this->assertEquals( [ 'elppa', 'ananab', null, 99 ], $resultCustom['simple_array'] );
+		$this->assertEquals( [
+			'fruits'  => [ 'yrrehc', 'etad' ],
+			'numbers' => [ 1, 2, null ]
+		], $resultCustom['nested_array'] );
+		$this->assertEquals( (object) [
+			'name' => 'nhoJ',
+			'age'  => 30,
+			'city' => null
+		], $resultCustom['simple_object'] );
+		$this->assertEquals(
+			(object) [
+				'person'   => (object) [ 'name' => 'enaJ', 'details' => [ 'hobby' => 'gnidaer', 'pet' => null ] ],
+				'location' => 'kroY weN'
+			],
+			$resultCustom['nested_object']
+		);
+		$this->assertEquals(
+			[
+				'array'  => [ 'nested' => 'yarra', 'null' => null ],
+				'object' => (object) [ 'prop' => 'eulav', 'null_prop' => null ],
+				'scalar' => 'dexim',
+				'null'   => null
+			],
+			$resultCustom['mixed_structure']
+		);
+	}
 }
