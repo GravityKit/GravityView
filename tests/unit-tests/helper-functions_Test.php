@@ -563,9 +563,10 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 		$customCallback = function ( $value ) {
 			return is_string( $value ) ? strrev( $value ) : $value;
 		};
+
 		$resultCustom   = gv_map_deep( $test_data, $customCallback );
 
-		$this->assertEquals( 'olleh dlrow', $resultCustom['scalar_string'] );
+		$this->assertEquals( 'dlrow olleh', $resultCustom['scalar_string'] );
 		$this->assertEquals( 42, $resultCustom['scalar_int'] );
 		$this->assertEquals( 3.14, $resultCustom['scalar_float'] );
 		$this->assertTrue( $resultCustom['scalar_bool'] );

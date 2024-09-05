@@ -15,15 +15,19 @@ $view_id          = $gravityview_view->getViewId();
 	$args = gv_get_query_args();
 
 	foreach ( $args as $key => $value ) {
+		if ( 'gravityview' === $key ) {
+			continue;
+		}
+
 		if ( is_array( $value ) ) {
 			foreach ( $value as $k => $v ) {
 				?>
-			<input type="hidden" name="<?php echo esc_attr( sprintf( '%s[%s]', $key, $k ) ); ?>" value="<?php echo esc_attr( $v ); ?>" />
+				<input type="hidden" name="<?php echo esc_attr( sprintf( '%s[%s]', $key, $k ) ); ?>" value="<?php echo esc_attr( $v ); ?>" />
 				<?php
 			}
 		} else {
 			?>
-		<input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+			<input type="hidden" name="<?php echo esc_attr( $key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 			<?php
 		}
 	}

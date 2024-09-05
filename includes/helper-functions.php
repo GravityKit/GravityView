@@ -515,6 +515,8 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
  * @return mixed The value with the callback applied to all non-arrays and non-objects inside it.
  */
 function gv_map_deep( $value, $callback ) {
+	$_value = unserialize( serialize( $value ) ); // Make a deep copy to avoid overwriting the original object.
+
 	$unsafe_callbacks = [
 		'rawurlencode',
 		'rawurldecode',
@@ -533,12 +535,12 @@ function gv_map_deep( $value, $callback ) {
 	];
 
 	if ( in_array( $callback, $unsafe_callbacks, true ) ) {
-		return map_deep( $value, function ( $item ) use ( $callback ) {
+		return map_deep( $_value, function ( $item ) use ( $callback ) {
 			return is_null( $item ) ? $item : $callback( $item );
 		} );
 	}
 
-	return map_deep( $value, $callback );
+	return map_deep( $_value, $callback );
 }
 
 /**
