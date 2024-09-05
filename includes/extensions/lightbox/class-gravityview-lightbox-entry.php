@@ -194,8 +194,22 @@ add_filter( 'gk/gravityview/field/edit_link/atts', function ( $link_atts, $conte
  */
 add_filter( 'gravityview/entry_link/link_atts', function ( $link_atts, $context ) {
 	$link_atts['data-fancybox'] = 'gallery';
-	$link_atts['data-type'] = 'iframe';
+	$link_atts['data-type']     = 'iframe';
 
 	return $link_atts;
 }, 10, 2 );
 
+/*
+ * Prevents the back link from being displayed in the single entry lightbox view.
+ *
+ * @since TBD
+ */
+add_filter( 'gravityview/template/links/back/url', function ( $url, $context ) {
+	$request = $context->request instanceof Request ? $context->request->get_request() : $context->request;
+
+	if ( ! $request instanceof WP_REST_Request ) {
+		return $url;
+	}
+
+	return gravityview_is_request_lightbox( $request ) ? null : $url;
+}, 10, 3 );
