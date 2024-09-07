@@ -184,11 +184,9 @@ class GravityView_Merge_Tags {
 			return $raw_value;
 		}
 
-		$current_time = current_time( 'timestamp' );
-		$time_diff = strtotime( $raw_value ) - $current_time;
 		$args         = array(
 			'human' => true,
-			'diff'  => $time_diff,
+			'diff'  => true,
 		);
 
 		if ( $field instanceof GF_Field_Time ) {

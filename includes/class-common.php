@@ -1202,13 +1202,15 @@ class GVCommon {
 		$is_raw       = ! empty( $atts['raw'] );
 		$is_timestamp = ! empty( $atts['timestamp'] );
 		$include_time = ! empty( $atts['time'] );
+		$time_diff = strtotime( $date_string ) - current_time( 'timestamp' );
+
 
 		// If we're using time diff, we want to have a different default format
 		if ( empty( $format ) ) {
 			/* translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago" */
-			$is_past = ( $atts['diff'] < 0 );
-			$time_diff = $is_past ? esc_html__( '%s ago', 'gk-gravityview' ) : esc_html__( '%s from now', 'gk-gravityview' );
-			$format = $is_diff ? $time_diff : get_option( 'date_format' );
+			$is_past = ( $time_diff < 0 );
+			$human_diff = $is_past ? esc_html__( '%s ago', 'gk-gravityview' ) : esc_html__( '%s from now', 'gk-gravityview' );
+			$format = $is_diff ? $human_diff : get_option( 'date_format' );
 		}
 
 		// If raw was specified, don't modify the stored value
