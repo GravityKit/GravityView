@@ -1206,7 +1206,9 @@ class GVCommon {
 		// If we're using time diff, we want to have a different default format
 		if ( empty( $format ) ) {
 			/* translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago" */
-			$format = $is_diff ? esc_html__( '%s ago', 'gk-gravityview' ) : get_option( 'date_format' );
+			$is_past = ( $atts['diff'] < 0 );
+			$time_diff = $is_past ? esc_html__( '%s ago', 'gk-gravityview' ) : esc_html__( '%s from now', 'gk-gravityview' );
+			$format = $is_diff ? $time_diff : get_option( 'date_format' );
 		}
 
 		// If raw was specified, don't modify the stored value

@@ -185,7 +185,7 @@ class GravityView_Merge_Tags {
 		}
 
 		$current_time = current_time( 'timestamp' );
-		$time_diff    = human_time_diff( strtotime( $raw_value ), $current_time );
+		$time_diff = strtotime( $raw_value ) - $current_time;
 		$args         = array(
 			'human' => true,
 			'diff'  => $time_diff,
