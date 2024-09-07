@@ -31,8 +31,35 @@ jQuery( function ( $ ) {
 			$( '.gv-search-clear' ).on( 'click', this.clear_search );
 
 			$( 'a.gv-sort' ).on( 'click', this.multiclick_sort );
+			
+			// this.multi_file_upload();
 
 			this.number_range();
+		},
+
+		multi_file_upload: function(){
+			if (typeof gfMultiFileUploader === 'undefined' || !gfMultiFileUploader || !gfMultiFileUploader.uploaders || gfMultiFileUploader.uploaders.length === 0) {
+				return;
+			}
+
+			var checkUploaders = setInterval(function() {
+				if (gfMultiFileUploader.uploaders && Object.keys(gfMultiFileUploader.uploaders).length > 0) {
+					$.each(gfMultiFileUploader.uploaders, function(index, uploader){
+						uploader.bind( 'Init', function( up, params ) {
+							var limit = parseInt(uploader.settings.gf_vars.max_files, 10);
+							if (limit <= 0) {
+								return;
+							}
+							
+							var fieldId = uploader.settings.multipart_params.field_id;
+							var totalCount = $('#preview_existing_files_'+fieldId).children().length;
+							var limitReached = totalCount >= limit;
+							gfMultiFileUploader.toggleDisabled(uploader.settings, limitReached);
+						});
+					});
+					clearInterval(checkUploaders);
+				}
+			}, 100);
 		},
 
 		/**
