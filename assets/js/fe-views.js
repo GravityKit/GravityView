@@ -32,34 +32,73 @@ jQuery( function ( $ ) {
 
 			$( 'a.gv-sort' ).on( 'click', this.multiclick_sort );
 			
-			// this.multi_file_upload();
+			this.disable_upload_file_when_limit_reached();
+
+			this.fix_updating_files_after_edit();
 
 			this.number_range();
 		},
 
-		multi_file_upload: function(){
-			if (typeof gfMultiFileUploader === 'undefined' || !gfMultiFileUploader || !gfMultiFileUploader.uploaders || gfMultiFileUploader.uploaders.length === 0) {
-				return;
-			}
+		/**
+		 * Fix the issue of updating files after edit where the previous value still exists in the uploaded field.
+		 */
+		fix_updating_files_after_edit: function(){
+			$.each($('.ginput_preview_list'), function(index, element){
+				if ($(element).children().length > 0) {
+					return true;
+				}
+
+				$(element).parents('form').find('[name=gform_uploaded_files]').val('');
+			});
+		},
+
+		/**
+		 * Fix the issue for file upload fields where the button is not disabled and show message for multi upload file.
+		 */
+		disable_upload_file_when_limit_reached: function(){
 
 			var checkUploaders = setInterval(function() {
-				if (gfMultiFileUploader.uploaders && Object.keys(gfMultiFileUploader.uploaders).length > 0) {
-					$.each(gfMultiFileUploader.uploaders, function(index, uploader){
-						uploader.bind( 'Init', function( up, params ) {
-							var limit = parseInt(uploader.settings.gf_vars.max_files, 10);
-							if (limit <= 0) {
-								return;
-							}
-							
-							var fieldId = uploader.settings.multipart_params.field_id;
-							var totalCount = $('#preview_existing_files_'+fieldId).children().length;
-							var limitReached = totalCount >= limit;
-							gfMultiFileUploader.toggleDisabled(uploader.settings, limitReached);
-						});
-					});
+				if (typeof gfMultiFileUploader !== 'undefined' && gfMultiFileUploader.uploaders) {
 					clearInterval(checkUploaders);
+					$.each(gfMultiFileUploader.uploaders, function(index, uploader){
+						uploader.bind('Init', function(up, params) {
+							var data = up.settings;
+							var max = data.gf_vars.max_files;
+							var fieldId = data.multipart_params.field_id;
+							var existingFilesCount = $('#preview_existing_files_'+fieldId).children().length;
+							var limitReached = existingFilesCount >= max;
+							gfMultiFileUploader.toggleDisabled(data, limitReached);
+						});
+
+						uploader.bind('FilesAdded', function(up, params) {
+							var data = up.settings;
+							var max = data.gf_vars.max_files;
+							var fieldId = data.multipart_params.field_id;
+							var formId = data.multipart_params.form_id;
+							var newFilesCount = $('#gform_preview_'+formId+'_'+fieldId).children().length;
+							var existingFilesCount = $('#preview_existing_files_'+fieldId).children().length;
+							var limitReached = existingFilesCount + newFilesCount >= max;
+							gfMultiFileUploader.toggleDisabled(data, limitReached);
+
+							// Only show message if max is greater than 1
+							if(max <= 1){
+								return true;
+							}
+
+							$( "#" + up.settings.gf_vars.message_id ).prepend( "<li class='gfield_description gfield_validation_message'>" +
+								$('<div/>').text(gform_gravityforms.strings.max_reached).html()
+							 +
+								 "</li>" );
+							// Announce errors.
+							setTimeout(function () {
+								wp.a11y.speak( $( "#" + up.settings.gf_vars.message_id ).text() );
+							}, 1000 );
+
+						});
+
+					});
 				}
-			}, 100);
+			}, 1);
 		},
 
 		/**
