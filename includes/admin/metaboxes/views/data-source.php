@@ -34,17 +34,14 @@ $forms = gravityview_get_forms( 'any', false, $order_by );
 do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 
 ?>
-<label for="gravityview_form_id" ><?php esc_html_e( 'Where would you like the data to come from for this View?', 'gk-gravityview' ); ?></label>
 
-<p>
+
 	<?php
 
 	if ( empty( $current_form ) && GVCommon::has_cap( 'gravityforms_create_form' ) ) {
 		?>
-		<a class="button button-primary" href="#gv_start_fresh" title="<?php esc_attr_e( 'Use a Form Preset', 'gk-gravityview' ); ?>"><?php esc_html_e( 'Use a Form Preset', 'gk-gravityview' ); ?></a>
-
+	
 		<?php if ( ! empty( $forms ) ) { ?>
-			<span>&nbsp;<?php esc_html_e( 'or use an existing form', 'gk-gravityview' ); ?>&nbsp;</span>
 			<?php
 		}
 	}
@@ -70,7 +67,7 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 	<?php } ?>
 
 	<button class="button button-primary" style="display:none;" id="gv_switch_view_button" title="<?php esc_attr_e( 'Switch View', 'gk-gravityview' ); ?>"><?php esc_html_e( 'Switch View Type', 'gk-gravityview' ); ?></button>
-</p>
+
 
 <?php // confirm dialog box ?>
 <div id="gravityview_change_form_dialog" class="gv-dialog-options gv-dialog-warning" title="<?php esc_attr_e( 'Attention', 'gk-gravityview' ); ?>">

@@ -6,12 +6,41 @@
  */
 $body-inset: 50px;
 $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 400;
+	src:
+		url(../../../fonts/inter-regular-webfont.woff2) format("woff2"),
+		url(../../../fonts/inter-regular-webfont.woff) format("woff");
+}
+
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 500;
+	src:
+		url(../../../fonts/inter-medium-webfont.woff2) format("woff2"),
+		url(../../../fonts/inter-medium-webfont.woff) format("woff");
+}
+
+@font-face {
+	font-display: swap;
+	font-family: "Inter";
+	font-style: normal;
+	font-weight: 600;
+	src:
+		url(../../../fonts/inter-semibold-webfont.woff2) format("woff2"),
+		url(../../../fonts/inter-semibold-webfont.woff) format("woff");
+}
 
 .post-type-gravityview {
 
-	font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+	font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 	font-size: $font-size-gv-m;
-	background-color: $color-gv-shade-01;
+	background-color: $color-gf-in-color-anti-flash-white;;
 	font-size: $font-size-gv-m;
 
 	#wpcontent {
@@ -30,7 +59,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
 	#titlediv #title {
 		background-color: transparent;
-		border-color: $color-gv-shade-01;
+		border-color: $color-gf-in-color-anti-flash-white;
 	}
 
 	#poststuff {
@@ -88,7 +117,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		.gv-fields {
 			background: white;
 			box-shadow: $field-box-shadow;
-			border-color: $color-gv-shade-02;
+			border-color: $color-gf-in-color-border;
 		}
 
 		.gv-fields .gv-field-controls button {
@@ -155,7 +184,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		border-radius: 3px;
 		color: $color-gv-text;
 		padding: $space-gv-xs/2 $space-gv-xs;
-		font-size: $font-size-gv-s;
+		font-size: $fontsize-gf-xs;
 	}
 
 	.button.button-link.gv-add-field {
@@ -185,7 +214,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
 	.alternate, .striped>tbody>:nth-child(odd), ul.striped>:nth-child(odd),
 	#gravityview_settings ul.ui-tabs-nav li.ui-state-active a{
-		background-color: $color-gv-white;
+		background-color: $color-gf-in-color-white;
 	}
 
 	.button.button-link.gv-add-field .dashicons{
@@ -201,8 +230,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		text-transform: none;
 	}
 
-	.gv-droppable-area,
-	.postbox .inside {
+	.gv-droppable-area{
 		padding: $space-gv-m 0;
 	}
 
@@ -212,7 +240,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 	}
 
 	#directory-fields{
-		padding: $space-gv-xl 0;
+		padding: $space-gv-l 0;
 	}
 
 	#gravityview_settings ul.ui-tabs-nav li a{
@@ -221,6 +249,18 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 	}
 
 	.gv-section-header{
-		padding: $space-gv-xl 0 0 0;
+		padding: $space-gv-l 0 0 0;
+	}
+
+	#gravityview_select_form .postbox-header{
+		float:left;
+		width: 20%;
+	}
+
+	#grainview_select_form .inside{
+		float: left;
+		margin: 0;
+		padding: 0;
+		width: 80%;
 	}
 }
