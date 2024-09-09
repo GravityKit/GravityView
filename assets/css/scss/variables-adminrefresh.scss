@@ -23,8 +23,9 @@ $space-gv-m: 24px;
 $space-gv-l: 32px;
 $space-gv-xl: 64px;
 
-// Iteration font sizes: using WP core for some
-$font-family-gv-base: "SF Pro Text", "Helvetica Neue", sans-serif;
+// Legacy admin refresh styles
+$body-inset: 50px;
+$field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
 // Gravity forms from here
 // Gravity Forms Foundation colors

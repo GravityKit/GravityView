@@ -4,44 +4,18 @@
  * The rules are attempted to be ordered in visual order of the DOM, starting at the top.
  *
  */
-$body-inset: 50px;
-$field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-@font-face {
-	font-display: swap;
-	font-family: "Inter";
-	font-style: normal;
-	font-weight: 400;
-	src:
-		url(../../../fonts/inter-regular-webfont.woff2) format("woff2"),
-		url(../../../fonts/inter-regular-webfont.woff) format("woff");
-}
 
 @font-face {
-	font-display: swap;
 	font-family: "Inter";
-	font-style: normal;
-	font-weight: 500;
 	src:
-		url(../../../fonts/inter-medium-webfont.woff2) format("woff2"),
-		url(../../../fonts/inter-medium-webfont.woff) format("woff");
-}
-
-@font-face {
-	font-display: swap;
-	font-family: "Inter";
-	font-style: normal;
-	font-weight: 600;
-	src:
-		url(../../../fonts/inter-semibold-webfont.woff2) format("woff2"),
-		url(../../../fonts/inter-semibold-webfont.woff) format("woff");
+		url(assets/fonts/Inter-VariableFont) format("ttf");
 }
 
 .post-type-gravityview {
 
 	font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-	font-size: $font-size-gv-m;
+	font-size: $fontsize-gf-s;
 	background-color: $color-gf-in-color-anti-flash-white;;
-	font-size: $font-size-gv-m;
 
 	#wpcontent {
 		margin: 0;
@@ -111,7 +85,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		}
 
 		.ui-state-active .nav-tab {
-			background-color: $color-gv-white;
+			background-color: $color-gf-in-color-white;
 		}
 
 		.gv-fields {
@@ -121,7 +95,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		}
 
 		.gv-fields .gv-field-controls button {
-			background: white;
+			background: $color-gf-in-color-white;
 		}
 	}
 
@@ -175,20 +149,20 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 	}
 
 	.gv-droppable-area-action a.button-link{
-		color: $color-gv-grey-01;
+		color: $color-gf-in-color-santas;
 	}
 
 	.gv-field-label{
-		background-color: $color-gv-shade-03;
-		border: 1px solid $color-gv-shade-02;
+		background-color: $color-gf-in-color-anti-flash-white;
+		border: 1px solid $color-gf-in-color-border;
 		border-radius: 3px;
-		color: $color-gv-text;
+		color: $color-gf-in-color-placeholder;
 		padding: $space-gv-xs/2 $space-gv-xs;
 		font-size: $fontsize-gf-xs;
 	}
 
 	.button.button-link.gv-add-field {
-		border: 1px solid $color-gv-grey-02;
+		border: 1px solid $color-gf-in-color-border;
 	}
 
 	#post-body-content{
@@ -235,7 +209,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 	}
 
 	#poststuff h2{
-		font-size: $font-size-gv-l;
+		font-size: $fontsize-gf-l;
 		padding: 0;
 	}
 
@@ -245,7 +219,7 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 
 	#gravityview_settings ul.ui-tabs-nav li a{
 		border-bottom: none;
-		font-size: $font-size-gv-s;
+		font-size: $fontsize-gf-s;
 	}
 
 	.gv-section-header{
@@ -262,5 +236,11 @@ $field-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 		margin: 0;
 		padding: 0;
 		width: 80%;
+	}
+
+	.active-drop.active-drop-field{
+		border: 1px dashed $color-gf-in-color-border;
+		height: $space-gv-m;
+		margin-bottom: $space-gv-m;
 	}
 }
