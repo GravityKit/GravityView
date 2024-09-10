@@ -85,6 +85,11 @@ jQuery( function ( $ ) {
 								return true;
 							}
 
+							// Check if message already exists
+							if($("#" + up.settings.gf_vars.message_id).length > 0){
+								return true;
+							}
+
 							$( "#" + up.settings.gf_vars.message_id ).prepend( "<li class='gfield_description gfield_validation_message'>" +
 								$('<div/>').text(gform_gravityforms.strings.max_reached).html()
 							 +
