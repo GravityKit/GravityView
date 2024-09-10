@@ -131,6 +131,7 @@ class GravityView_Edit_Entry_Render {
 	public $show_next_button;
 	public $show_update_button;
 	public $is_paged_submitted;
+	private $unset_hidden_calculations = [];
 
 	function __construct( GravityView_Edit_Entry $loader ) {
 		$this->loader = $loader;
