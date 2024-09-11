@@ -33,6 +33,8 @@ jQuery( function ( $ ) {
 			$( 'a.gv-sort' ).on( 'click', this.multiclick_sort );
 
 			this.number_range();
+
+			this.lightbox();
 		},
 
 		/**
@@ -177,6 +179,33 @@ jQuery( function ( $ ) {
 					}.bind( this ), 2 );
 				} )
 				.find( 'input' ).trigger( 'change' ); // Initial trigger.
+		},
+
+		/**
+		 * Listen for messages from the iframe and close the lightbox if requested.
+		 *
+		 * @since TBD
+		 */
+		lightbox: function () {
+			window.addEventListener( 'message', function ( event ) {
+				if ( event.data?.closeLightbox && window.Fancybox ) {
+					Fancybox.close();
+				}
+
+				if ( event.data?.reloadPage ) {
+					if ( window.location.hash ) {
+						history.pushState( '', document.title, window.location.pathname + window.location.search );
+					}
+
+					location.reload();
+
+					return;
+				}
+
+				if ( event.data?.redirectUrl ) {
+					window.location = event.data.redirectUrl;
+				}
+			} );
 		}
 	};
 
