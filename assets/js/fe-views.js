@@ -34,7 +34,7 @@ jQuery( function ( $ ) {
 
 			this.number_range();
 
-			this.lightbox();
+			this.iframe();
 		},
 
 		/**
@@ -182,28 +182,24 @@ jQuery( function ( $ ) {
 		},
 
 		/**
-		 * Listen for messages from the iframe and close the lightbox if requested.
+		 * Listen for messages from the iframe and perform various actions.
 		 *
 		 * @since TBD
 		 */
-		lightbox: function () {
+		iframe: function () {
 			window.addEventListener( 'message', function ( event ) {
-				if ( event.data?.closeLightbox && window.Fancybox ) {
+				if ( event.data?.closeFancybox && window.Fancybox ) {
+					history.replaceState( null, null, ' ' );
+
 					Fancybox.close();
 				}
 
 				if ( event.data?.reloadPage ) {
-					if ( window.location.hash ) {
-						history.pushState( '', document.title, window.location.pathname + window.location.search );
-					}
-
-					location.reload();
-
-					return;
+					return location.reload();
 				}
 
-				if ( event.data?.redirectUrl ) {
-					window.location = event.data.redirectUrl;
+				if ( event.data?.redirectToUrl ) {
+					return window.location = event.data.redirectToUrl;
 				}
 			} );
 		}

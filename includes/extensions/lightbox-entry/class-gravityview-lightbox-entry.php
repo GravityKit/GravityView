@@ -137,6 +137,7 @@ class GravityView_Lightbox_Entry {
 		$view_data->add_view( $view->ID );
 
 		if ( $is_edit && wp_verify_nonce( $is_edit, GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry->ID ) ) ) {
+			add_filter( 'gravityview/edit_entry/cancel_onclick', '__return_null' );
 			add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
 
 			add_filter( 'gravityview/view/links/directory', function () use ( $view, $entry ) {
@@ -153,16 +154,18 @@ class GravityView_Lightbox_Entry {
 
 			do_action( 'wp' ); // Entry deletion hooks to the `wp` action.
 
-			$redirect_url = $view->settings->get( 'delete_redirect_url', '' );
-			$reload_page  = GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE === (int) $view->settings->get( 'delete_redirect', GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE );
+			$reload_page     = GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE === (int) $view->settings->get( 'delete_redirect' );
+			$redirect_to_url = GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE === (int) $view->settings->get( 'delete_redirect' );
+			$redirect_url    = esc_url( $view->settings->get( 'delete_redirect_url', '' ) );
 
 			?>
-				<script type="text/javascript">
-					window.parent.postMessage( {
-						reloadPage: <?php echo $reload_page ? 'true' : 'false'; ?>,
-						redirectUrl: '<?php echo esc_url( $redirect_url ); ?>',
-					} );
-				</script>
+			<script type="text/javascript">
+				window.parent.postMessage( {
+					closeFancybox: true,
+					reloadPage: <?php echo $reload_page ? 'true' : 'false'; ?>,
+					redirectToUrl: '<?php echo $redirect_to_url ? $redirect_url : ''; ?>',
+				} );
+			</script>
 			<?php
 
 			return new WP_REST_Response( null, 200, [ 'Content-Type' => 'text/html' ] );
