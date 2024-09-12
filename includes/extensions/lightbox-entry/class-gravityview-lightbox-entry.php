@@ -71,8 +71,8 @@ class GravityView_Lightbox_Entry {
 	 */
 	public function modify_entry_link( $link, $href, $entry, $field_settings ) {
 		$view          = GravityView_View::getInstance();
-		$href          = self::REST_NAMESPACE . "/view/{$view->getViewId()}/entry/{$entry['id']}";
-		$is_rest       = $href === ltrim( $_REQUEST['rest_route'] ?? '', '/' );
+		$rest_endpoint = $this->get_rest_endpoint( $view->view_id, $entry['id'] );
+		$is_rest       = strpos( $_SERVER['REQUEST_URI'] ?? '', $rest_endpoint ) !== false;
 		$is_edit_entry = 'edit_link' === ( $field_settings['id'] ?? '' );
 
 		if ( ! (int) ( $field_settings['lightbox'] ?? 0 ) && ! $is_rest ) {
@@ -89,7 +89,7 @@ class GravityView_Lightbox_Entry {
 
 		$href = add_query_arg(
 			$args,
-			rest_url( $href ),
+			rest_url( $rest_endpoint ),
 		);
 
 		$atts = [
@@ -138,6 +138,10 @@ class GravityView_Lightbox_Entry {
 
 		if ( $is_edit && wp_verify_nonce( $is_edit, GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry->ID ) ) ) {
 			add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
+
+			add_filter( 'gravityview/view/links/directory', function () use ( $view, $entry ) {
+				return rest_url( $this->get_rest_endpoint( $view->ID, $entry->ID ) );
+			} );
 		}
 
 		ob_start();
@@ -210,6 +214,20 @@ class GravityView_Lightbox_Entry {
 
 		// Set the response content type and let WP take care of returning the buffered content.
 		return new WP_REST_Response( null, 200, [ 'Content-Type' => 'text/html' ] );
+	}
+
+	/**
+	 * Returns REST endpoint for specific View and entry.
+	 *
+	 * @since TBD
+	 *
+	 * @param int $view_id  The View object.
+	 * @param int $entry_id The entry object.
+	 *
+	 * @return string
+	 */
+	public function get_rest_endpoint( $view_id, $entry_id ) {
+		return self::REST_NAMESPACE . "/view/{$view_id}/entry/{$entry_id}";
 	}
 
 	/**
