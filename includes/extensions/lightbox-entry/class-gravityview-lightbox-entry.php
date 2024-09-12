@@ -224,7 +224,7 @@ class GravityView_Lightbox_Entry {
 	public function enqueue_view_editor_script( $scripts ) {
 		global $post;
 
-		if ( ! $post instanceof WP_Post && 'gravityview' !== $post->post_type && 'edit' !== $post->filter ) {
+		if ( ! $post || ( ! $post instanceof WP_Post && 'gravityview' !== $post->post_type && 'edit' !== $post->filter ) ) {
 			return $scripts;
 		}
 
