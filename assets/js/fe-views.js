@@ -188,6 +188,10 @@ jQuery( function ( $ ) {
 		 */
 		iframe: function () {
 			window.addEventListener( 'message', function ( event ) {
+				if ( event.data?.removeHash ) {
+					history.replaceState( null, null, ' ' );
+				}
+
 				if ( event.data?.closeFancybox && window.Fancybox ) {
 					history.replaceState( null, null, ' ' );
 

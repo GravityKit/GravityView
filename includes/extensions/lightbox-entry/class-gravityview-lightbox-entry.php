@@ -143,6 +143,24 @@ class GravityView_Lightbox_Entry {
 			add_filter( 'gravityview/view/links/directory', function () use ( $view, $entry ) {
 				return rest_url( $this->get_rest_endpoint( $view->ID, $entry->ID ) );
 			} );
+
+			if ( in_array( $view->settings->get( 'edit_redirect' ), [ '1', '2' ] ) ) {
+				add_filter( 'gravityview/edit_entry/success', function ( $message ) use ( $view ) {
+					$reload_page     = 1 === (int) $view->settings->get( 'edit_redirect' ) ? 'true' : 'false';
+					$redirect_to_url = 2 === (int) $view->settings->get( 'edit_redirect' ) ? esc_url( $view->settings->get( 'edit_redirect_url', '' ) ) : '';
+
+					return <<<JS
+						<style>.gv-notice { display: none; }</style>
+						<script>
+							window.parent.postMessage( {
+							    removeHash: {$reload_page},
+								reloadPage: {$reload_page},
+								redirectToUrl: '{$redirect_to_url}',
+							} );
+						</script>
+					JS;
+				} );
+			}
 		}
 
 		ob_start();
