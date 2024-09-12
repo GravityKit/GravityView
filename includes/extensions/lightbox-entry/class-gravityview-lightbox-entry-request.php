@@ -6,6 +6,24 @@ use GV\View;
 
 class GravityView_Lightbox_Entry_Request extends Frontend_Request {
 	/**
+	 * Gravity Forms entry object.
+	 *
+	 * @since TBD
+	 *
+	 * @var GF_Entry
+	 */
+	private $entry;
+
+	/**
+	 * GravityView View object.
+	 *
+	 * @since TBD
+	 *
+	 * @var View
+	 */
+	private $view;
+
+	/**
 	 * Class constructor.
 	 *
 	 * @param View     $view
