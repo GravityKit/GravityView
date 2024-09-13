@@ -70,7 +70,7 @@ jQuery( function ( $ ) {
 							gfMultiFileUploader.toggleDisabled(data, limitReached);
 						});
 
-						uploader.bind('FilesAdded', function(up, params) {
+						uploader.bind('FilesAdded', function(up, files) {
 							var data = up.settings;
 							var max = data.gf_vars.max_files;
 							var fieldId = data.multipart_params.field_id;
@@ -78,7 +78,19 @@ jQuery( function ( $ ) {
 							var newFilesCount = $('#gform_preview_'+formId+'_'+fieldId).children().length;
 							var existingFilesCount = $('#preview_existing_files_'+fieldId).children().length;
 							var limitReached = existingFilesCount + newFilesCount >= max;
+
+							$.each(files, function(i, file) {
+								if (max > 0 && existingFilesCount >= max){
+									up.removeFile(file);
+									$('#'+file.id).remove();
+									return;
+								}
+
+								existingFilesCount++;
+							});
+
 							gfMultiFileUploader.toggleDisabled(data, limitReached);
+
 
 							// Only show message if max is greater than 1
 							if(max <= 1){
@@ -86,10 +98,10 @@ jQuery( function ( $ ) {
 							}
 
 							// Check if message already exists
-							if($("#" + up.settings.gf_vars.message_id).length > 0){
+
+							if($("#" + up.settings.gf_vars.message_id).children().length > 0){
 								return true;
 							}
-
 							$( "#" + up.settings.gf_vars.message_id ).prepend( "<li class='gfield_description gfield_validation_message'>" +
 								$('<div/>').text(gform_gravityforms.strings.max_reached).html()
 							 +
