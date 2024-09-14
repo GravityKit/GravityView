@@ -16,8 +16,26 @@ $field         = $gravityview->field->field;
 $display_value = $gravityview->display_value;
 $entry         = $gravityview->entry->as_entry();
 
+
+$field_settings = $gravityview->field->as_configuration();
+
 if ( floatval( $field_id ) != intval( $field_id ) ) {
-	echo esc_html( gravityview_get_field_value( $entry, $field_id, $display_value ) );
+	$display_value = esc_html( gravityview_get_field_value( $entry, $field_id, $display_value ) );
 } else {
-	echo gravityview_get_field_value( $entry, $field_id, $display_value );
+	$display_value = gravityview_get_field_value( $entry, $field_id, $display_value );
 }
+
+
+if ( !empty( $field_settings['only_initials'] ) ) {
+	$names = explode( ' ', $display_value );
+	$initials = '';
+
+	foreach ( $names as $name ) {
+		$initials .= strtoupper( $name[0] ) . '.';
+	}
+
+	$display_value = trim($initials);
+}
+
+
+echo apply_filters('gravityview/field/name/html', $display_value, $gravityview);
