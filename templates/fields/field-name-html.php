@@ -37,5 +37,4 @@ if ( !empty( $field_settings['only_initials'] ) ) {
 	$display_value = trim($initials);
 }
 
-
 echo apply_filters('gk/gravityview/fields/name/initials', $display_value, $gravityview);
