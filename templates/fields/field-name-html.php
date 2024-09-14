@@ -38,4 +38,4 @@ if ( !empty( $field_settings['only_initials'] ) ) {
 }
 
 
-echo apply_filters('gravityview/field/name/html', $display_value, $gravityview);
+echo apply_filters('gk/gravityview/fields/name/initials', $display_value, $gravityview);
