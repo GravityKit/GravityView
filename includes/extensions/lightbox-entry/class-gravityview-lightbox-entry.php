@@ -72,7 +72,7 @@ class GravityView_Lightbox_Entry {
 	public function modify_entry_link( $link, $href, $entry, $field_settings ) {
 		$view          = GravityView_View::getInstance();
 		$rest_endpoint = $this->get_rest_endpoint( $view->view_id, $entry['id'] );
-		$is_rest       = strpos( $_SERVER['REQUEST_URI'] ?? '', $rest_endpoint ) !== false;
+		$is_rest       = strpos( urldecode( $_SERVER['REQUEST_URI'] ?? '' ), $rest_endpoint ) !== false;
 		$is_edit_entry = 'edit_link' === ( $field_settings['id'] ?? '' );
 
 		if ( ! (int) ( $field_settings['lightbox'] ?? 0 ) && ! $is_rest ) {
