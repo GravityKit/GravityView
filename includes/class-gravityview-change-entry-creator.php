@@ -419,7 +419,22 @@ class GravityView_Change_Entry_Creator {
 		$output .= '</label>';
 		$output .= self::get_select_field( $entry );
 
-		echo wp_kses( $output );
+		echo wp_kses(
+			$output,
+			[
+				'label'  => [ 'for' => true ],
+				'select' => [
+					'id'    => true,
+					'name'  => true,
+					'class' => true,
+				],
+				'option' => [
+					'value'    => true,
+					'selected' => true,
+					'disabled' => true,
+				],
+			]
+		);
 	}
 
 	/**
