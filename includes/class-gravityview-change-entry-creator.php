@@ -8,9 +8,9 @@ class GravityView_Change_Entry_Creator {
 	/*
 	 * @var int Number of users to show in the select element
 	 */
-	const DEFAULT_NUMBER_OF_USERS = 100;
+	public const DEFAULT_NUMBER_OF_USERS = 100;
 
-	function __construct() {
+	public function __construct() {
 
 		/**
 		 * @since  1.5.1
@@ -55,7 +55,7 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @since  2.9.1
 	 */
-	function enqueue_selectwoo_assets() {
+	public function enqueue_selectwoo_assets() {
 
 		if ( ! class_exists( 'GFForms' ) ) {
 			return;
@@ -76,10 +76,12 @@ class GravityView_Change_Entry_Creator {
 		wp_enqueue_script( 'gravityview_selectwoo', plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ), array(), $version );
 		wp_enqueue_style( 'gravityview_selectwoo', plugins_url( 'assets/lib/selectWoo/selectWoo.min.css', GRAVITYVIEW_FILE ), array(), $version );
 
-		wp_enqueue_script( 'gravityview_entry_creator', plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(
-			'jquery',
-			'gravityview_selectwoo'
-		), $version );
+		wp_enqueue_script(
+			'gravityview_entry_creator',
+			plugins_url( 'assets/js/admin-entry-creator' . $script_debug . '.js', GRAVITYVIEW_FILE ),
+			[ 'jquery', 'gravityview_selectwoo' ],
+			$version
+		);
 
 		wp_localize_script(
 			'gravityview_entry_creator',
@@ -100,7 +102,7 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @since  2.9.1
 	 */
-	function entry_creator_get_users() {
+	public function entry_creator_get_users() {
 
 		$post_var = wp_parse_args(
 			wp_unslash( $_POST ),
@@ -146,7 +148,7 @@ class GravityView_Change_Entry_Creator {
 	 * @return void
 	 * @uses   RGFormsModel::update_lead_property() Modify the entry `created_by` field
 	 */
-	function assign_new_user_to_lead( $user_id, $config, $entry = array(), $password = '' ) {
+	public function assign_new_user_to_lead( $user_id, $config, $entry = array(), $password = '' ) {
 
 		/**
 		 * Disable assigning the new user to the entry by returning false.
@@ -195,7 +197,7 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @return void
 	 */
-	function prevent_conflicts() {
+	public function prevent_conflicts() {
 
 		// Plugin that was provided here:
 		// @link https://www.gravitykit.com/support/documentation/201991205/
@@ -211,9 +213,17 @@ class GravityView_Change_Entry_Creator {
 	 * @return bool Whether the user has rights.
 	 */
 	private function is_user_allowed(): bool {
-		// Todo: only show users if the user has rights to see all users.
+		if ( ! GVCommon::has_cap( 'list_users' ) ) {
+			return false;
+		}
+
 		// Can the user edit entries?
-		if ( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ) ) ) {
+		if ( ! GVCommon::has_cap( [
+			'gravityforms_edit_entries',
+			'gravityview_edit_entries',
+			'gravityview_edit_others_entries',
+			'gravityview_edit_form_entries',
+		] ) ) {
 			return false;
 		}
 
@@ -224,7 +234,7 @@ class GravityView_Change_Entry_Creator {
 	 * @since  3.6.3
 	 * @return void
 	 */
-	function load() {
+	public function load() {
 
 		// Does GF exist?
 		if ( ! class_exists( 'GFCommon' ) ) {
@@ -251,11 +261,9 @@ class GravityView_Change_Entry_Creator {
 		}
 
 		// Now, no validation is required in the methods; let's hook in.
-		add_action( 'admin_init', array( &$this, 'set_screen_mode' ) );
-
-		add_action( 'gform_entry_info', array( &$this, 'add_select' ), 10, 2 );
-
-		add_action( 'gform_after_update_entry', array( &$this, 'update_entry_creator' ), 10, 3 );
+		add_action( 'admin_init', [ $this, 'set_screen_mode' ] );
+		add_action( 'gform_entry_info', [ $this, 'add_select' ], 10, 2 );
+		add_action( 'gform_after_update_entry', [ $this, 'update_entry_creator' ], 10, 3 );
 	}
 
 	/**
@@ -263,7 +271,7 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @return void
 	 */
-	function set_screen_mode() {
+	public function set_screen_mode() {
 
 		if ( 'view' === \GV\Utils::_POST( 'screen_mode' ) ) {
 			return;
@@ -278,12 +286,13 @@ class GravityView_Change_Entry_Creator {
 	/**
 	 * When the entry creator is changed, add a note to the entry
 	 *
-	 * @param array $form     GF entry array
-	 * @param int   $entry_id Entry ID
+	 * @param array $form           GF entry array
+	 * @param int   $entry_id       Entry ID
+	 * @param array $original_entry The entry before updating.
 	 *
 	 * @return void
 	 */
-	function update_entry_creator( $form, $entry_id, array $original_entry ) {
+	public function update_entry_creator( $form, $entry_id, array $original_entry ) {
 
 		global $current_user;
 
@@ -387,7 +396,7 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @return void
 	 */
-	function add_select( $form_id, $entry ) {
+	public function add_select( $form_id, $entry ) {
 
 		if ( 'edit' !== \GV\Utils::_POST( 'screen_mode' ) ) {
 			return;
@@ -408,7 +417,7 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @return array
 	 */
-	function register_gform_noconflict( $assets ) {
+	public function register_gform_noconflict( $assets ) {
 		$assets[] = 'gravityview_selectwoo';
 		$assets[] = 'gravityview_entry_creator';
 

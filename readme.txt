@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Added: Entry creator can be changed from the Edit Entry Layout.
 * Fixed: Clearing search removed all URL query parameters and under some circumstances redirected to the homepage.
 * Fixed: Searching the View added duplicate search parameters to the URL.
 * Fixed: PHP 8.2 deprecation notice related to dynamic property creation.
