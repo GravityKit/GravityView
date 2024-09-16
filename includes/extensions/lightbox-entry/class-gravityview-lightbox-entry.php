@@ -100,7 +100,7 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Modify attributes for the Single or Edit Entry link in order to open inside a lightbox.
+	 * Modifies Single or Edit Entry links to open inside lightbox.
 	 *
 	 * @used-by `gravityview_field_entry_link` filter.
 	 *
@@ -149,9 +149,16 @@ class GravityView_Lightbox_Entry {
 			'data-fancybox' => $view->getCurrentField()['UID'],
 		];
 
+		if ( in_array( $field_settings['id'], [ 'edit_link', 'entry_link' ] ) ) {
+			$link_text = $is_edit ? $field_settings['edit_link'] : $field_settings['entry_link_text'];
+		} else {
+			// This sets the text for entry values that link to the Single Entry.
+			$link_text = preg_match( '/<a[^>]*>(.*?)<\/a>/', $link, $matches ) ? $matches[1] : '';
+		}
+
 		return gravityview_get_link(
 			$href,
-			$is_edit ? $field_settings['edit_link'] : $field_settings['entry_link_text'],
+			$link_text,
 			$is_rest ? [] : $atts // Do not add the attributes if the link is being rendered in the REST context.
 		);
 	}
@@ -250,7 +257,7 @@ class GravityView_Lightbox_Entry {
 	 * @param GF_Entry $entry The entry data.
 	 * @param array    $form  The form data.
 	 *
-	 * @return void
+	 * @return WP_REST_Response
 	 */
 	private function render_entry( $type, $view, $entry, $form ) {
 		add_filter( 'gravityview_go_back_url', '__return_false' );
@@ -281,26 +288,26 @@ class GravityView_Lightbox_Entry {
 
 		?>
 		<html lang="<?php echo get_bloginfo( 'language' ); ?>">
-		<head>
-			<title><?php echo $title; ?></title>
+			<head>
+				<title><?php echo $title; ?></title>
 
-			<?php wp_head(); ?>
+				<?php wp_head(); ?>
 
-			<style>
-				<?php echo $view->settings->get( 'custom_css', '' ); ?>
-			</style>
+				<style>
+					<?php echo $view->settings->get( 'custom_css', '' ); ?>
+				</style>
 
-			<script type="text/javascript">
-				<?php echo $view->settings->get( 'custom_javascript', '' ); ?>
-			</script>
-		</head>
+				<script type="text/javascript">
+					<?php echo $view->settings->get( 'custom_javascript', '' ); ?>
+				</script>
+			</head>
 
-		<body>
-			<?php echo $content; ?>
-		</body>
+			<body>
+				<?php echo $content; ?>
+			</body>
 
-		<?php wp_print_scripts(); ?>
-		<?php wp_print_styles(); ?>
+			<?php wp_print_scripts(); ?>
+			<?php wp_print_styles(); ?>
 		</html>
 		<?php
 
@@ -392,7 +399,7 @@ class GravityView_Lightbox_Entry {
 							.off( 'change.lightboxEntry' );
 					} );
 				} );
-JS,
+			JS,
 			'deps'   => [ 'jquery' ],
 		];
 
