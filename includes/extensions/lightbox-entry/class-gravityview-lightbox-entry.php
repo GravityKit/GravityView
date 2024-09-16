@@ -48,7 +48,7 @@ class GravityView_Lightbox_Entry {
 				'(?P<view_id>[0-9]+)',
 				'(?P<entry_id>[0-9]+)' ),
 			'methods'             => [ 'GET', 'POST' ],
-			'callback'            => [ $this, 'render_entry' ],
+			'callback'            => [ $this, 'process_rest_request' ],
 			'permission_callback' => '__return_true', // WP will handle the nonce and Entry_Renderer::render() will take care of permissions.
 		];
 
@@ -56,7 +56,51 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Modify attributes for the single or entry link to open in a lightbox.
+	 * Processes the REST request by rendering the single or edit entry lightbox view, and handling delete and other actions.
+	 *
+	 * @since TBD
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response
+	 */
+	public function process_rest_request( $request ) {
+		$view         = View::by_id( $request->get_param( 'view_id' ) ?? 0 );
+		$entry        = GF_Entry::by_id( $request->get_param( 'entry_id' ) ?? 0 );
+		$form         = GVCommon::get_form( $entry['form_id'] ?? 0 );
+		$edit_nonce   = $request->get_param( 'edit' ) ?? null;
+		$delete_nonce = $request->get_param( 'delete' ) ?? null;
+
+		if ( ! $view || ! $entry || ! $form ) {
+			gravityview()->log->error( "Unable to find View ID {$view->ID} and/or entry ID {$entry->ID}." );
+
+			ob_start();
+
+			printf( '<html>%s</html>', esc_html__( 'The requested entry could not be found.', 'gravityview' ) );
+
+			return new WP_REST_Response( null, 404, [ 'Content-Type' => 'text/html' ] );
+		}
+
+		gravityview()->request = new GravityView_Lightbox_Entry_Request( $view, $entry );
+
+		if ( $delete_nonce ) {
+			return $this->process_delete_entry( $view );
+		}
+
+		if ( $edit_nonce ) {
+			$this->process_edit_entry( $edit_nonce, $view, $entry, $form );
+		}
+
+		return $this->render_entry(
+			$edit_nonce ? 'edit' : 'single',
+			$view,
+			$entry,
+			$form
+		);
+	}
+
+	/**
+	 * Modify attributes for the Single or Edit Entry link in order to open inside a lightbox.
 	 *
 	 * @used-by `gravityview_field_entry_link` filter.
 	 *
@@ -73,7 +117,7 @@ class GravityView_Lightbox_Entry {
 		$view          = GravityView_View::getInstance();
 		$rest_endpoint = $this->get_rest_endpoint( $view->view_id, $entry['id'] );
 		$is_rest       = strpos( urldecode( $_SERVER['REQUEST_URI'] ?? '' ), $rest_endpoint ) !== false;
-		$is_edit_entry = 'edit_link' === ( $field_settings['id'] ?? '' );
+		$is_edit       = 'edit_link' === ( $field_settings['id'] ?? '' );
 
 		if ( ! (int) ( $field_settings['lightbox'] ?? 0 ) && ! $is_rest ) {
 			return $link;
@@ -83,8 +127,14 @@ class GravityView_Lightbox_Entry {
 			'_wpnonce' => wp_create_nonce( 'wp_rest' ),
 		];
 
-		if ( $is_edit_entry ) {
-			$args['edit'] = wp_create_nonce( GravityView_Edit_Entry::get_nonce_key( $view->view_id, $view->form_id, $entry['id'] ) );
+		if ( $is_edit ) {
+			$args['edit'] = wp_create_nonce(
+				GravityView_Edit_Entry::get_nonce_key(
+					$view->view_id,
+					$view->form_id,
+					$entry['id']
+				)
+			);
 		}
 
 		$href = add_query_arg(
@@ -101,96 +151,119 @@ class GravityView_Lightbox_Entry {
 
 		return gravityview_get_link(
 			$href,
-			$is_edit_entry ? $field_settings['edit_link'] : $field_settings['entry_link_text'],
+			$is_edit ? $field_settings['edit_link'] : $field_settings['entry_link_text'],
 			$is_rest ? [] : $atts // Do not add the attributes if the link is being rendered in the REST context.
 		);
 	}
 
 	/**
-	 * Renders the single or edit entry view.
+	 * Configures the necessary logic to process the edit entry request.
+	 *
+	 * @since TBD
+	 *
+	 * @param string   $nonce The edit entry nonce.
+	 * @param View     $view  The View object.
+	 * @param GF_Entry $entry The entry object.
+	 * @param array    $form  The form data.
+	 *
+	 * @return void
+	 */
+	private function process_edit_entry( $nonce, $view, $entry, $form ) {
+		if ( ! wp_verify_nonce( $nonce, GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry->ID ) ) ) {
+			return;
+		}
+
+		add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
+		add_filter( 'gravityview/edit_entry/cancel_onclick', '__return_empty_string' );
+		add_filter( 'gravityview/view/links/directory', function () use ( $view, $entry ) {
+			return rest_url( $this->get_rest_endpoint( $view->ID, $entry->ID ) );
+		} );
+
+		// Prevent redirection inside the lightbox by sending event to the parent window and hiding the success message.
+		if ( ! in_array( $view->settings->get( 'edit_redirect' ), [ '1', '2' ] ) ) {
+			return;
+		}
+
+		$reload_page     = 1 === (int) $view->settings->get( 'edit_redirect' ) ? 'true' : 'false';
+		$redirect_to_url = 2 === (int) $view->settings->get( 'edit_redirect' ) ? esc_url( $view->settings->get( 'edit_redirect_url', '' ) ) : '';
+
+		add_filter( 'gravityview/edit_entry/success', function ( $message ) use ( $view, $reload_page, $redirect_to_url ) {
+			return <<<JS
+				<style>.gv-notice { display: none; }</style>
+				<script>
+					window.parent.postMessage( {
+					    removeHash: {$reload_page},
+						reloadPage: {$reload_page},
+						redirectToUrl: '{$redirect_to_url}',
+					} );
+				</script>
+			JS;
+		} );
+	}
+
+	/**
+	 * Processes the delete entry request.
+	 *
+	 * @since TBD
+	 *
+	 * @param View $view The View object.
+	 *
+	 * @return WP_REST_Response
+	 */
+	private function process_delete_entry( $view ) {
+		add_filter( 'wp_redirect', '__return_false' ); // Prevent redirection after the entry is deleted.
+
+		do_action( 'wp' ); // Entry deletion hooks to the `wp` action.
+
+		$reload_page     = GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE === (int) $view->settings->get( 'delete_redirect' ) ? 'true' : 'false';
+		$redirect_to_url = GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE === (int) $view->settings->get( 'delete_redirect' ) ? esc_url( $view->settings->get( 'delete_redirect_url', '' ) ) : '';
+
+		ob_start();
+
+		echo <<<JS
+			<style>.gv-notice { display: none; }</style>
+			<script>
+				window.parent.postMessage( { 
+					closeFancybox: true,
+					reloadPage: {$reload_page},
+					redirectToUrl: '{$redirect_to_url}',
+				} );
+			</script>
+		JS;
+
+		return new WP_REST_Response(
+			null,
+			200,
+			[ 'Content-Type' => 'text/html' ]
+		);
+	}
+
+	/**
+	 * Renders the single or edit entry lightbox view.
 	 *
 	 * @used-by `gk/foundation/rest/routes` filter.
 	 *
 	 * @since   TBD
 	 *
-	 * @param GravityView_Lightbox_Entry_Request $request The request object.
+	 * @param string   $type  The type of the entry view (single or edit).
+	 * @param View     $view  The View object.
+	 * @param GF_Entry $entry The entry data.
+	 * @param array    $form  The form data.
 	 *
 	 * @return void
 	 */
-	public function render_entry( $request ) {
-		$view_id  = $request->get_param( 'view_id' ) ?? 0;
-		$entry_id = $request->get_param( 'entry_id' ) ?? 0;
-
-		$view      = View::by_id( $view_id );
-		$entry     = GF_Entry::by_id( $entry_id );
-		$form      = GVCommon::get_form( $entry['form_id'] ?? 0 );
-		$is_edit   = $request->get_param( 'edit' ) ?? null;
-		$is_delete = $request->get_param( 'delete' ) ?? null;
-
-		if ( ! $view || ! $entry || ! $form ) {
-			gravityview()->log->error( "Unable to find View ID {$view_id} and/or entry ID {$entry_id}." );
-
-			return;
-		}
+	private function render_entry( $type, $view, $entry, $form ) {
+		add_filter( 'gravityview_go_back_url', '__return_false' );
 
 		$view_data = GravityView_View_Data::getInstance();
 		$view_data->add_view( $view->ID );
 
-		if ( $is_edit && wp_verify_nonce( $is_edit, GravityView_Edit_Entry::get_nonce_key( $view->ID, $form['id'], $entry->ID ) ) ) {
-			add_filter( 'gravityview/edit_entry/cancel_onclick', '__return_null' );
-			add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
-
-			add_filter( 'gravityview/view/links/directory', function () use ( $view, $entry ) {
-				return rest_url( $this->get_rest_endpoint( $view->ID, $entry->ID ) );
-			} );
-
-			if ( in_array( $view->settings->get( 'edit_redirect' ), [ '1', '2' ] ) ) {
-				add_filter( 'gravityview/edit_entry/success', function ( $message ) use ( $view ) {
-					$reload_page     = 1 === (int) $view->settings->get( 'edit_redirect' ) ? 'true' : 'false';
-					$redirect_to_url = 2 === (int) $view->settings->get( 'edit_redirect' ) ? esc_url( $view->settings->get( 'edit_redirect_url', '' ) ) : '';
-
-					return <<<JS
-						<style>.gv-notice { display: none; }</style>
-						<script>
-							window.parent.postMessage( {
-							    removeHash: {$reload_page},
-								reloadPage: {$reload_page},
-								redirectToUrl: '{$redirect_to_url}',
-							} );
-						</script>
-					JS;
-				} );
-			}
-		}
-
-		ob_start();
-
-		add_filter( 'gravityview_go_back_url', '__return_false' );
-
-		if ( $is_delete ) {
-			add_filter( 'wp_redirect', '__return_false' );
-
-			do_action( 'wp' ); // Entry deletion hooks to the `wp` action.
-
-			$reload_page     = GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE === (int) $view->settings->get( 'delete_redirect' );
-			$redirect_to_url = GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE === (int) $view->settings->get( 'delete_redirect' );
-			$redirect_url    = esc_url( $view->settings->get( 'delete_redirect_url', '' ) );
-
-			?>
-			<script type="text/javascript">
-				window.parent.postMessage( {
-					closeFancybox: true,
-					reloadPage: <?php echo $reload_page ? 'true' : 'false'; ?>,
-					redirectToUrl: '<?php echo $redirect_to_url ? $redirect_url : ''; ?>',
-				} );
-			</script>
-			<?php
-
-			return new WP_REST_Response( null, 200, [ 'Content-Type' => 'text/html' ] );
-		}
-
 		GravityView_frontend::getInstance()->setGvOutputData( $view_data );
 		GravityView_frontend::getInstance()->add_scripts_and_styles();
+
+		$entry_renderer = 'edit' === $type ? new Edit_Entry_Renderer() : new Entry_Renderer();
+
+		ob_start();
 
 		$title = do_shortcode(
 			GravityView_API::replace_variables(
@@ -200,41 +273,42 @@ class GravityView_Lightbox_Entry {
 			)
 		);
 
-		$entry_renderer = $is_edit ? new Edit_Entry_Renderer() : new Entry_Renderer();
-
 		$content = $entry_renderer->render(
 			$entry,
 			$view,
-			new GravityView_Lightbox_Entry_Request( $view, $entry )
+			gravityview()->request,
 		);
 
 		?>
 		<html lang="<?php echo get_bloginfo( 'language' ); ?>">
-			<head>
-				<title><?php echo $title; ?></title>
+		<head>
+			<title><?php echo $title; ?></title>
 
-				<?php wp_head(); ?>
+			<?php wp_head(); ?>
 
-				<style>
-					<?php echo $view->settings->get( 'custom_css', '' ); ?>
-				</style>
+			<style>
+				<?php echo $view->settings->get( 'custom_css', '' ); ?>
+			</style>
 
-				<script type="text/javascript">
-					<?php echo $view->settings->get( 'custom_javascript', '' ); ?>
-				</script>
-			</head>
+			<script type="text/javascript">
+				<?php echo $view->settings->get( 'custom_javascript', '' ); ?>
+			</script>
+		</head>
 
-			<body>
-				<?php echo $content; ?>
-			</body>
+		<body>
+			<?php echo $content; ?>
+		</body>
 
-			<?php wp_print_scripts(); ?>
-			<?php wp_print_styles(); ?>
+		<?php wp_print_scripts(); ?>
+		<?php wp_print_styles(); ?>
 		</html>
 		<?php
 
-		// Set the response content type and let WP take care of returning the buffered content.
-		return new WP_REST_Response( null, 200, [ 'Content-Type' => 'text/html' ] );
+		return new WP_REST_Response(
+			null,
+			200,
+			[ 'Content-Type' => 'text/html' ]
+		);
 	}
 
 	/**
@@ -247,7 +321,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @return string
 	 */
-	public function get_rest_endpoint( $view_id, $entry_id ) {
+	public function get_rest_endpoint( int $view_id, int $entry_id ) {
 		return self::REST_NAMESPACE . "/view/{$view_id}/entry/{$entry_id}";
 	}
 
@@ -258,7 +332,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @param array $scripts The registered scripts.
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function enqueue_view_editor_script( $scripts ) {
 		global $post;
