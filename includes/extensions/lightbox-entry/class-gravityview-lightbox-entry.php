@@ -263,7 +263,7 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Processes the delete entry request.
+	 * Processes the delete entry action.
 	 *
 	 * @since TBD
 	 *
