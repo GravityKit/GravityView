@@ -100,6 +100,32 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
+	 * Returns REST directory link for specific View and entry.
+	 *
+	 * @return string
+	 */
+	public function get_rest_directory_link( $view_id, $entry_id ) {
+		return add_query_arg(
+			[ '_wpnonce' => wp_create_nonce( 'wp_rest' ) ],
+			rest_url( $this->get_rest_endpoint( $view_id, $entry_id ) ),
+		);
+	}
+
+	/**
+	 * Returns REST endpoint for specific View and entry.
+	 *
+	 * @since TBD
+	 *
+	 * @param int $view_id  The View object.
+	 * @param int $entry_id The entry object.
+	 *
+	 * @return string
+	 */
+	public function get_rest_endpoint( $view_id, $entry_id ) {
+		return self::REST_NAMESPACE . "/view/{$view_id}/entry/{$entry_id}";
+	}
+
+	/**
 	 * Modifies Single or Edit Entry links to open inside lightbox.
 	 *
 	 * @used-by `gravityview_field_entry_link` filter.
@@ -123,24 +149,22 @@ class GravityView_Lightbox_Entry {
 			return $link;
 		}
 
-		$args = [
-			'_wpnonce' => wp_create_nonce( 'wp_rest' ),
-		];
+		$directory_link = $this->get_rest_directory_link( $view->view_id, $entry['id'] );
 
 		if ( $is_edit ) {
-			$args['edit'] = wp_create_nonce(
-				GravityView_Edit_Entry::get_nonce_key(
-					$view->view_id,
-					$view->form_id,
-					$entry['id']
-				)
+			$directory_link = add_query_arg(
+				[
+					'edit' => wp_create_nonce(
+						GravityView_Edit_Entry::get_nonce_key(
+							$view->view_id,
+							$view->form_id,
+							$entry['id']
+						)
+					),
+				],
+				$directory_link,
 			);
 		}
-
-		$href = add_query_arg(
-			$args,
-			rest_url( $rest_endpoint ),
-		);
 
 		$atts = [
 			'class'         => ( $link_atts['class'] ?? '' ) . ' gravityview-fancybox',
@@ -157,7 +181,7 @@ class GravityView_Lightbox_Entry {
 		}
 
 		return gravityview_get_link(
-			$href,
+			$directory_link,
 			$link_text,
 			$is_rest ? [] : $atts // Do not add the attributes if the link is being rendered in the REST context.
 		);
@@ -318,20 +342,6 @@ class GravityView_Lightbox_Entry {
 			200,
 			[ 'Content-Type' => 'text/html' ]
 		);
-	}
-
-	/**
-	 * Returns REST endpoint for specific View and entry.
-	 *
-	 * @since TBD
-	 *
-	 * @param int $view_id  The View object.
-	 * @param int $entry_id The entry object.
-	 *
-	 * @return string
-	 */
-	public function get_rest_endpoint( $view_id, $entry_id ) {
-		return self::REST_NAMESPACE . "/view/{$view_id}/entry/{$entry_id}";
 	}
 
 	/**
