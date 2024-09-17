@@ -24,6 +24,7 @@ class GravityView_Lightbox_Entry {
 		add_filter( 'gk/foundation/rest/routes', [ $this, 'register_rest_routes' ] );
 		add_filter( 'gravityview_field_entry_link', [ $this, 'modify_entry_link' ], 10, 4 );
 		add_filter( 'gk/foundation/inline-scripts', [ $this, 'enqueue_view_editor_script' ] );
+		add_filter( 'gravityview/view/links/directory', [ $this, 'rewrite_directory_link' ] );
 	}
 
 	/**
@@ -97,6 +98,30 @@ class GravityView_Lightbox_Entry {
 			$entry,
 			$form
 		);
+	}
+
+	/**
+	 * Rewrites the directory link when inside the REST context.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $link The directory link.
+	 *
+	 * @return string
+	 */
+	public function rewrite_directory_link( $link ) {
+		if ( ! gravityview()->request instanceof GravityView_Lightbox_Entry_Request && ! $skip_rest_check ) {
+			return $link;
+		}
+
+		$view  = gravityview()->request->is_view();
+		$entry = gravityview()->request->is_entry();
+
+		if ( ! $view || ! $entry ) {
+			return $link;
+		}
+
+		return $this->get_rest_directory_link( $view->ID, $entry->ID );
 	}
 
 	/**
