@@ -328,7 +328,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @return string
 	 */
-	public function get_rest_endpoint( int $view_id, int $entry_id ) {
+	public function get_rest_endpoint( $view_id, $entry_id ) {
 		return self::REST_NAMESPACE . "/view/{$view_id}/entry/{$entry_id}";
 	}
 
