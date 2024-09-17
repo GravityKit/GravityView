@@ -66,11 +66,12 @@ class GravityView_Lightbox_Entry {
 	 * @return WP_REST_Response
 	 */
 	public function process_rest_request( $request ) {
-		$view         = View::by_id( $request->get_param( 'view_id' ) ?? 0 );
-		$entry        = GF_Entry::by_id( $request->get_param( 'entry_id' ) ?? 0 );
-		$form         = GVCommon::get_form( $entry['form_id'] ?? 0 );
-		$edit_nonce   = $request->get_param( 'edit' ) ?? null;
-		$delete_nonce = $request->get_param( 'delete' ) ?? null;
+		$view            = View::by_id( $request->get_param( 'view_id' ) ?? 0 );
+		$entry           = GF_Entry::by_id( $request->get_param( 'entry_id' ) ?? 0 );
+		$form            = GVCommon::get_form( $entry['form_id'] ?? 0 );
+		$edit_nonce      = $request->get_param( 'edit' ) ?? null;
+		$delete_nonce    = $request->get_param( 'delete' ) ?? null;
+		$duplicate_nonce = $request->get_param( 'duplicate' ) ?? null;
 
 		if ( ! $view || ! $entry || ! $form ) {
 			gravityview()->log->error( "Unable to find View ID {$view->ID} and/or entry ID {$entry->ID}." );
@@ -86,6 +87,10 @@ class GravityView_Lightbox_Entry {
 
 		if ( $delete_nonce ) {
 			return $this->process_delete_entry( $view );
+		}
+
+		if ( $duplicate_nonce ) {
+			return $this->process_duplicate_entry();
 		}
 
 		if ( $edit_nonce ) {
@@ -283,6 +288,36 @@ class GravityView_Lightbox_Entry {
 					closeFancybox: true,
 					reloadPage: {$reload_page},
 					redirectToUrl: '{$redirect_to_url}',
+				} );
+			</script>
+		JS;
+
+		return new WP_REST_Response(
+			null,
+			200,
+			[ 'Content-Type' => 'text/html' ]
+		);
+	}
+
+	/**
+	 * Processes the duplicate entry action.
+	 *
+	 * @since TBD
+	 *
+	 * @return WP_REST_Response
+	 */
+	private function process_duplicate_entry() {
+		add_filter( 'wp_redirect', '__return_false'); // Prevent redirection after the entry is duplicated.
+
+		( GravityView_Duplicate_Entry::getInstance() )->process_duplicate();
+
+		ob_start();
+
+		echo <<<JS
+			<script>
+				window.parent.postMessage( {
+					closeFancybox: true,
+					reloadPage: true,
 				} );
 			</script>
 		JS;
