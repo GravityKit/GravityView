@@ -373,9 +373,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		// Make sure it's a GravityView request
-		$valid_nonce_key = wp_verify_nonce( \GV\Utils::_GET( 'duplicate' ), self::get_nonce_key( $_GET['entry_id'] ) );
-
-		if ( ! $valid_nonce_key ) {
+		if ( ! $this->verify_nonce() ) {
 			gravityview()->log->debug( 'Duplicate entry not processed: nonce validation failed.' );
 			return;
 		}
@@ -880,7 +878,7 @@ final class GravityView_Duplicate_Entry {
 			);
 		}
 
-		if ( ! wp_verify_nonce( \GV\Utils::_GET( 'duplicate' ), self::get_nonce_key( $entry_id = \GV\Utils::_GET( 'entry_id' ) ) ) ) {
+		if ( ! $this->verify_nonce() ) {
 			return;
 		}
 
