@@ -31,10 +31,19 @@ if ( !empty( $field_settings['only_initials'] ) ) {
 	$initials = '';
 
 	foreach ( $names as $name ) {
-		$initials .= strtoupper( $name[0] ) . '.';
+		$initials .= trim(strtoupper( $name[0] )) . '.';
 	}
 
-	$display_value = trim($initials);
+	/**
+	 * Filter to override custom initials.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $initials The initials to display.
+	 * @param string $display_value The full name to display.
+	 * @param \GV\Template_Context $gravityview The GravityView template context.
+	 */
+	$display_value = apply_filters('gk/gravityview/fields/name/initials', $initials, $display_value, $gravityview);
 }
 
-echo apply_filters('gk/gravityview/fields/name/initials', $display_value, $gravityview);
+echo $display_value;
