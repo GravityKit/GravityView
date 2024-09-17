@@ -1770,6 +1770,13 @@
 			}
 		},
 
+		/**
+		 * Activates a selection on all view selectors after installation or activation.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {String} template_id The template ID.
+		 */
 		activateViewSelection: function ( template_id ) {
 			// We need to update all view selectors on the page.
 			const $view_selectors = $( '[data-view-dropdown]' );
@@ -1783,6 +1790,8 @@
 				const dropdown = $( el ).viewDropdown();
 				dropdown.renderOptions();
 			} );
+
+			viewConfiguration.updateSettingsArea();
 		},
 
 		openExternalLinks: function () {
@@ -1847,6 +1856,27 @@
 			};
 
 			return vcfg.updateViewConfig( data );
+		},
+
+		/**
+		 * Renders the current page again, but with possible changes; and replaces the settings section.
+		 *
+		 * @since $ver$
+		 */
+		updateSettingsArea: function () {
+			const $settings_content = $('#gravityview_settings .inside');
+			$settings_content.html('');
+
+			$.get( document.URL, function ( response ) {
+				if ( response ) {
+					const $document = $(response);
+					$settings_content.html( $document.find( '#gravityview_settings .inside' ).html() );
+
+					viewGeneralSettings.refresh();
+					// Some plugins rely on this event to show or hide settings.
+					$( '#gravityview_directory_template' ).trigger( 'change' );
+				}
+			} );
 		},
 
 		/**
@@ -2901,6 +2931,20 @@
 				.on('gravityview/settings/tab/disable', viewGeneralSettings.disableSettingTab );
 
 		},
+		/**
+		 * Refreshes the tabs after HTML was replaced.
+		 *
+		 * @since $ver$
+		 */
+		refresh: function () {
+			viewGeneralSettings.metaboxObj.trigger( 'change' );
+
+			viewGeneralSettings.metaboxObj
+				// .off( 'tabscreate', viewGeneralSettings.tabsCreate )
+				.tabs( 'destroy' );
+
+			viewGeneralSettings.initTabs();
+		},
 
 		/**
 		 * Callback method to show/hide settings if template changes and settings have a specific template attribute
@@ -2954,7 +2998,7 @@
 
 			viewGeneralSettings.metaboxObj
 				// What happens after tabs are generated
-				.on( 'tabscreate', viewGeneralSettings.tabsCreate )
+				// .on( 'tabscreate', viewGeneralSettings.tabsCreate )
 
 				// Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
 				.insertAfter( $('#gravityview_view_config') )
