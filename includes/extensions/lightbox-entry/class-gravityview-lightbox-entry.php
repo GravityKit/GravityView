@@ -115,7 +115,7 @@ class GravityView_Lightbox_Entry {
 	 * @return string
 	 */
 	public function rewrite_directory_link( $link ) {
-		if ( ! gravityview()->request instanceof GravityView_Lightbox_Entry_Request && ! $skip_rest_check ) {
+		if ( ! gravityview()->request instanceof GravityView_Lightbox_Entry_Request ) {
 			return $link;
 		}
 
