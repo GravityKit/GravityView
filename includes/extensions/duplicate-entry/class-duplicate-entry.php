@@ -437,7 +437,7 @@ final class GravityView_Duplicate_Entry {
 		$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'entry_id' ) ) );
 		$redirect_to      = add_query_arg( $messages, $redirect_to_base );
 
-		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) || ! apply_filters( 'wp_redirect', $redirect_to ) ) {
 			return $redirect_to;
 		}
 
