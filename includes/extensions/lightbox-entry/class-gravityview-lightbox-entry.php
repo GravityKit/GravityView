@@ -36,7 +36,7 @@ class GravityView_Lightbox_Entry {
 		require_once 'class-gravityview-lightbox-entry-request.php';
 
 		add_filter( 'gk/foundation/rest/routes', [ $this, 'register_rest_routes' ] );
-		add_filter( 'gravityview_field_entry_link', [ $this, 'modify_entry_link' ], 10, 4 );
+		add_filter( 'gravityview_field_entry_link', [ $this, 'rewrite_entry_link' ], 10, 4 );
 		add_filter( 'gk/foundation/inline-scripts', [ $this, 'enqueue_view_editor_script' ] );
 		add_filter( 'gravityview/view/links/directory', [ $this, 'rewrite_directory_link' ] );
 		add_filter( 'gform_get_form_confirmation_filter', [ $this, 'process_gravity_forms_form_submission' ] );
@@ -212,7 +212,7 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Modifies Single or Edit Entry links to open inside lightbox.
+	 * Rewrites Single or Edit Entry links to open inside lightbox.
 	 *
 	 * @used-by `gravityview_field_entry_link` filter.
 	 *
@@ -225,10 +225,10 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @return string
 	 */
-	public function modify_entry_link( $link, $href, $entry, $field_settings ) {
-		$view          = GravityView_View::getInstance();
-		$is_rest       = ! empty( $this->get_rest_endpoint_from_request() );
-		$is_edit       = 'edit_link' === ( $field_settings['id'] ?? '' );
+	public function rewrite_entry_link( $link, $href, $entry, $field_settings ) {
+		$view    = GravityView_View::getInstance();
+		$is_rest = ! empty( $this->get_rest_endpoint_from_request() );
+		$is_edit = 'edit_link' === ( $field_settings['id'] ?? '' );
 
 		if ( ! (int) ( $field_settings['lightbox'] ?? 0 ) && ! $is_rest ) {
 			return $link;
@@ -362,7 +362,7 @@ class GravityView_Lightbox_Entry {
 	 * @return WP_REST_Response
 	 */
 	private function process_duplicate_entry() {
-		add_filter( 'wp_redirect', '__return_false'); // Prevent redirection after the entry is duplicated.
+		add_filter( 'wp_redirect', '__return_false' ); // Prevent redirection after the entry is duplicated.
 
 		( GravityView_Duplicate_Entry::getInstance() )->process_duplicate();
 
