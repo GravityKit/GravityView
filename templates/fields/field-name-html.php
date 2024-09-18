@@ -31,7 +31,7 @@ if ( !empty( $field_settings['only_initials'] ) ) {
 	$initials = '';
 
 	foreach ( $names as $name ) {
-		$initials .= trim(strtoupper( $name[0] )) . '.';
+		$initials .= trim(mb_strtoupper( mb_substr($name, 0, 1) )) . '.';
 	}
 
 	/**
