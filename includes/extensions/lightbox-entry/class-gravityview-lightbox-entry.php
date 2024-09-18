@@ -354,6 +354,8 @@ class GravityView_Lightbox_Entry {
 
 		$entry_renderer = 'edit' === $type ? new Edit_Entry_Renderer() : new Entry_Renderer();
 
+		do_action( 'wp' );
+
 		do_action( 'wp_enqueue_scripts' );
 
 		ob_start();
