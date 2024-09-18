@@ -157,8 +157,8 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @since TBD
 	 *
-	 * @param int $view_id  The View object.
-	 * @param int $entry_id The entry object.
+	 * @param int $view_id  The View ID.
+	 * @param int $entry_id The entry ID.
 	 *
 	 * @return string
 	 */
@@ -168,8 +168,45 @@ class GravityView_Lightbox_Entry {
 			self::REST_NAMESPACE,
 			self::REST_VERSION,
 			$view_id,
-			$entry_id,
+			$entry_id
 		);
+	}
+
+	/**
+	 * Returns REST endpoint for specific View and entry.
+	 *
+	 * @since TBD
+	 *
+	 * @return string
+	 */
+	public function get_rest_endpoint_from_request() {
+		preg_match(
+			sprintf(
+				'#%s/v%s/(?P<endpoint>%s)#',
+				self::REST_NAMESPACE,
+				self::REST_VERSION,
+				self::REST_ENDPOINT_REGEX
+			),
+			urldecode( $_SERVER['REQUEST_URI'] ?? '' ),
+			$matches
+		);
+
+		return $matches['endpoint'] ?? null;
+	}
+
+	/**
+	 * Returns the View and entry IDs from the REST endpoint.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $endpoint The REST endpoint.
+	 *
+	 * @return array{view_id:string, entry_id:string}|null
+	 */
+	public function get_view_and_entry_from_rest_endpoint( $endpoint ) {
+		preg_match( self::REST_ENDPOINT_REGEX, $endpoint, $matches );
+
+		return ! empty( $matches ) ? [ 'view_id' => $matches['view_id'], 'entry_id' => $matches['entry_id'] ] : null;
 	}
 
 	/**
@@ -188,8 +225,7 @@ class GravityView_Lightbox_Entry {
 	 */
 	public function modify_entry_link( $link, $href, $entry, $field_settings ) {
 		$view          = GravityView_View::getInstance();
-		$rest_endpoint = $this->get_rest_endpoint( $view->view_id, $entry['id'] );
-		$is_rest       = strpos( urldecode( $_SERVER['REQUEST_URI'] ?? '' ), $rest_endpoint ) !== false;
+		$is_rest       = ! empty( $this->get_rest_endpoint_from_request() );
 		$is_edit       = 'edit_link' === ( $field_settings['id'] ?? '' );
 
 		if ( ! (int) ( $field_settings['lightbox'] ?? 0 ) && ! $is_rest ) {
