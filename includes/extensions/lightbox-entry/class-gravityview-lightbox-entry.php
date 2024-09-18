@@ -39,6 +39,8 @@ class GravityView_Lightbox_Entry {
 		add_filter( 'gravityview_field_entry_link', [ $this, 'modify_entry_link' ], 10, 4 );
 		add_filter( 'gk/foundation/inline-scripts', [ $this, 'enqueue_view_editor_script' ] );
 		add_filter( 'gravityview/view/links/directory', [ $this, 'rewrite_directory_link' ] );
+		add_filter( 'gform_get_form_confirmation_filter', [ $this, 'process_gravity_forms_form_submission' ] );
+		add_filter( 'gform_get_form_filter', [ $this, 'process_gravity_forms_form_submission' ] );
 	}
 
 	/**
@@ -380,6 +382,27 @@ class GravityView_Lightbox_Entry {
 			200,
 			[ 'Content-Type' => 'text/html' ]
 		);
+	}
+
+	/**
+	 * Sets headers for Gravity Forms form submissions.
+	 *
+	 * @used-by `gform_get_form_confirmation_filter` filter.
+	 *
+	 * @since   TBD
+	 *
+	 * @param string $response The form submission response.
+	 *
+	 * @return string
+	 */
+	public function process_gravity_forms_form_submission( $response ) {
+		$rest_endpoint = $this->get_rest_endpoint_from_request();
+
+		if ( 1 === (int) ( $_REQUEST['gform_submit'] ?? 0 ) && $rest_endpoint ) {
+			header( 'Content-Type: text/html' );
+		}
+
+		return $response;
 	}
 
 	/**
