@@ -11,7 +11,21 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @since TBD
 	 */
-	const REST_NAMESPACE = 'gravityview/v1';
+	const REST_NAMESPACE = 'gravityview';
+
+	/**
+	 * The REST version used for the single entry lightbox view.
+	 *
+	 * @since TBD
+	 */
+	const REST_VERSION = 1;
+
+	/**
+	 * Regex used to match the REST endpoint.
+	 *
+	 * @since TBD
+	 */
+	const REST_ENDPOINT_REGEX = 'view/(?P<view_id>[0-9]+)/entry/(?P<entry_id>[0-9]+)';
 
 	/**
 	 * Class constructor.
@@ -42,12 +56,9 @@ class GravityView_Lightbox_Entry {
 		$routes = $routes ?? [];
 
 		$routes[] = [
-			'namespace'           => explode( '/v', self::REST_NAMESPACE )[0],
-			'version'             => explode( '/v', self::REST_NAMESPACE )[1],
-			'endpoint'            => sprintf(
-				'view/%s/entry/%s',
-				'(?P<view_id>[0-9]+)',
-				'(?P<entry_id>[0-9]+)' ),
+			'namespace'           => self::REST_NAMESPACE,
+			'version'             => self::REST_VERSION,
+			'endpoint'            => self::REST_ENDPOINT_REGEX,
 			'methods'             => [ 'GET', 'POST' ],
 			'callback'            => [ $this, 'process_rest_request' ],
 			'permission_callback' => '__return_true', // WP will handle the nonce and Entry_Renderer::render() will take care of permissions.
@@ -152,7 +163,13 @@ class GravityView_Lightbox_Entry {
 	 * @return string
 	 */
 	public function get_rest_endpoint( $view_id, $entry_id ) {
-		return self::REST_NAMESPACE . "/view/{$view_id}/entry/{$entry_id}";
+		return sprintf(
+			'%s/v%s/view/%s/entry/%s',
+			self::REST_NAMESPACE,
+			self::REST_VERSION,
+			$view_id,
+			$entry_id,
+		);
 	}
 
 	/**
