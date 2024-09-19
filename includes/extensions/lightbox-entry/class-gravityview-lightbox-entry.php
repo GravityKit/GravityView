@@ -3,6 +3,7 @@
 use GV\Edit_Entry_Renderer;
 use GV\Entry_Renderer;
 use GV\GF_Entry;
+use GV\Template_Context;
 use GV\View;
 
 class GravityView_Lightbox_Entry {
@@ -35,12 +36,36 @@ class GravityView_Lightbox_Entry {
 	public function __construct() {
 		require_once 'class-gravityview-lightbox-entry-request.php';
 
+		add_filter( 'gravityview/template/before', [ $this, 'maybe_enable_lightbox' ] );
 		add_filter( 'gk/foundation/rest/routes', [ $this, 'register_rest_routes' ] );
 		add_filter( 'gravityview_field_entry_link', [ $this, 'rewrite_entry_link' ], 10, 4 );
 		add_filter( 'gk/foundation/inline-scripts', [ $this, 'enqueue_view_editor_script' ] );
 		add_filter( 'gravityview/view/links/directory', [ $this, 'rewrite_directory_link' ] );
 		add_filter( 'gform_get_form_confirmation_filter', [ $this, 'process_gravity_forms_form_submission' ] );
 		add_filter( 'gform_get_form_filter', [ $this, 'process_gravity_forms_form_submission' ] );
+	}
+
+	/**
+	 * Enables lightbox when it's not explicitly enabled in the View settings but a field is configured to use it.
+	 *
+	 * @since TBD
+	 *
+	 * @param Template_Context $context
+	 *
+	 * @return void
+	 */
+	public function maybe_enable_lightbox( $context ) {
+		if ( $context->view->settings->get( 'lightbox' ) ) {
+			return;
+		}
+
+		foreach ( $context->view->fields->all() as $field ) {
+			if ( (int) ( $field->as_configuration()['lightbox'] ?? 0 ) ) {
+				$context->view->settings->set( 'lightbox', 1 );
+
+				break;
+			}
+		}
 	}
 
 	/**
