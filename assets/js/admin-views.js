@@ -457,7 +457,8 @@
 
 					if ( $input.is('[type=checkbox]') ) {
 						if ( reverse_logic ) {
-							$this.toggle( $input.not(':checked') );
+							// Sometimes there's extra hidden input next to checkbox that causes false positives
+							$this.toggle( $input.filter(':checked').filter(':not(:hidden)').length > 0 );
 						} else {
 							$this.toggle( $input.is(':checked') );
 						}

@@ -63,6 +63,7 @@ class GravityView_Render_Settings {
 					'value'    => ! empty( $is_table_layout ),
 					'priority' => 1000,
 					'group'    => 'label',
+					'requires_not' => 'full_width=1',
 				),
 				'custom_label'      => array(
 					'type'       => 'text',
