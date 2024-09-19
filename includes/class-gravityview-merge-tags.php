@@ -494,17 +494,20 @@ class GravityView_Merge_Tags {
 			$utc_timestamp   = time();
 			$local_timestamp = GFCommon::get_local_timestamp( $utc_timestamp );
 
-			$replacements = array(
-				'now' 		=> date_i18n( 'Y-m-d H:i:s', $local_timestamp, true ),
-				'yesterday' => date_i18n( 'Y-m-d H:i:s', $local_timestamp - DAY_IN_SECONDS, true ),
-				'tomorrow'  => date_i18n( 'Y-m-d H:i:s', $local_timestamp + DAY_IN_SECONDS, true ),
-			);
-
 			foreach ( $matches as $match ) {
+				$modifier    = $match[2];
+				if( strpos( $modifier, 'timestamp' ) !== false ) {
+					$local_timestamp = time();
+				}
+
+				$replacements = array(
+					'now' 		=> date_i18n( 'Y-m-d H:i:s', $local_timestamp, true ),
+					'yesterday' => date_i18n( 'Y-m-d H:i:s', $local_timestamp - DAY_IN_SECONDS, true ),
+					'tomorrow'  => date_i18n( 'Y-m-d H:i:s', $local_timestamp + DAY_IN_SECONDS, true ),
+				);
+
 				$full_tag    = $match[0];
 				$replaceable_date = $replacements[$match[1]];
-				$modifier    = $match[2];
-
 				$formatted_date = self::format_date( $replaceable_date, $modifier );
 				$text = str_replace( $full_tag, $formatted_date, $text );
 			}
