@@ -398,7 +398,7 @@ class GravityView_Lightbox_Entry {
 	public function process_gravity_forms_form_submission( $response ) {
 		$rest_endpoint = $this->get_rest_endpoint_from_request();
 
-		if ( 1 === (int) ( $_REQUEST['gform_submit'] ?? 0 ) && $rest_endpoint ) {
+		if ( array_key_exists( 'gform_submit', $_REQUEST ) && $rest_endpoint ) {
 			header( 'Content-Type: text/html' );
 		}
 
