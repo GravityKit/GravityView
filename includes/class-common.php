@@ -1219,7 +1219,7 @@ class GVCommon {
 		} elseif ( $is_timestamp ) {
 			$formatted_date = $date_local_timestamp;
 		} elseif ( $is_diff ) {
-			$formatted_date = sprintf( $format, human_time_diff( $date_gmt_time ) );
+			$formatted_date = sprintf( $format, human_time_diff( $date_gmt_time, current_time('timestamp') ) );
 		} else {
 			$formatted_date = GFCommon::format_date( $date_string, $is_human, $format, $include_time );
 		}
