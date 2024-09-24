@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Clearing search removed all URL query parameters and under some circumstances redirected to the homepage.
 * Fixed: Searching the View added duplicate search parameters to the URL.
 * Fixed: PHP 8.2 deprecation notice related to dynamic property creation.
+* Fixed: Entries not displaying when a DataTables View is embedded in a Single Entry page using the List layout.
 
 = 2.28.0 on August 29, 2024 =
 
