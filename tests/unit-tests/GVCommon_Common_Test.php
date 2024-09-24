@@ -109,12 +109,19 @@ class GVCommon_Test extends GV_UnitTestCase {
 	function test_format_date() {
 
 		$form = $this->factory->form->create_and_get();
+		$current_time = current_time( 'mysql' );
+		$two_days_from_now  = date( 'Y-m-d H:i:s', strtotime( $current_time . ' +2 day' ) );
+		$two_hours_from_now = date( 'h:i a', strtotime( $current_time . ' +2 hour' ) );
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
+			'10' 	  => $two_days_from_now,
+			'11'	  =>$two_hours_from_now
 		) );
 
 		$date_created = \GV\Utils::get( $entry, 'date_created' );
+		$datepicker = \GV\Utils::get( $entry, '10' );
+		$time = \GV\Utils::get( $entry, '11' );
 
 		/**
 		 * adjusting date to local configured Time Zone
@@ -122,6 +129,12 @@ class GVCommon_Test extends GV_UnitTestCase {
 		 */
 		$entry_gmt_time   = mysql2date( 'G', $date_created );
 		$entry_local_time = GFCommon::get_local_timestamp( $entry_gmt_time );
+
+		$datepicker_gmt_time   = mysql2date( 'G', $datepicker );
+		$datepicker_local_time = GFCommon::get_local_timestamp( $datepicker_gmt_time );
+
+		$time_gmt_time   = mysql2date( 'G', $time );
+		$time_local_time = GFCommon::get_local_timestamp( $time_gmt_time );
 
 		$tests = array(
 			GVCommon::format_date( $date_created, 'raw=1') => $date_created,
@@ -154,6 +167,10 @@ class GVCommon_Test extends GV_UnitTestCase {
 			GVCommon::format_date( $date_created, array('diff' => true ) ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
 			GVCommon::format_date( $date_created, 'diff=1&format=%s is so long ago' ) => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
 			GVCommon::format_date( $date_created, array('diff' => 1, 'format' => '%s is so long ago' ) ) => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+
+			// 2 days and 2 hours from now
+			GVCommon::format_date( $datepicker, 'diff=1&human=1') => sprintf( '%s from now', human_time_diff( $datepicker_local_time ) ),
+			GVCommon::format_date( $time, 'diff=1&human=1&time=1') => sprintf( '%s from now', human_time_diff( $time_local_time ) ),
 
 			// Relative should NOT process other modifiers
 			GVCommon::format_date( $date_created, 'diff=1&time=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
