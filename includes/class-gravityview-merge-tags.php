@@ -184,10 +184,10 @@ class GravityView_Merge_Tags {
 			return $raw_value;
 		}
 
-		$args         = array(
+		$args = [
 			'human' => true,
 			'diff'  => true,
-		);
+		];
 
 		if ( $field instanceof GF_Field_Time ) {
 			$args['time'] = true;
