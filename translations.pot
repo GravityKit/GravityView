@@ -9,14 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-08-29T14:55:00+00:00\n"
+"POT-Creation-Date: 2024-09-24T14:17:14+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
-#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -26,17 +25,14 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
-#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
-#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:402
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:163
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:164
@@ -99,24 +95,69 @@ msgstr ""
 msgid "Styles don't get loaded when being previewed, so the content below will look strange. Don't be concerned!"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:580
+#. Translators: [url] is replaced by the preview URL.
+#: future/includes/class-gv-permalinks.php:148
+msgid "Example: [url]"
+msgstr ""
+
+#. Translators: [slug] is replaced by the slug.
+#: future/includes/class-gv-permalinks.php:150
+msgid "Default: [slug]"
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:161
+msgid "View Slug"
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:177
+msgid "Entry Endpoint"
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:193
+msgid "Entry slug"
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:220
+msgid "Permalinks"
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:221
+msgid "GravityView allows you to create a custom URL structure for your Views."
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:254
+#: future/includes/class-gv-permalinks.php:302
+msgid "Only letters, numbers, underscores and dashes are allowed."
+msgstr ""
+
+#. Translators: [count] is replaced by the amount of characters.
+#: future/includes/class-gv-permalinks.php:263
+msgid "At least [count] characters are required."
+msgstr ""
+
+#. Translators: [slug] will contain the slug value.
+#: future/includes/class-gv-permalinks.php:296
+msgid "Must contain \"[slug]\"."
+msgstr ""
+
+#: future/includes/class-gv-plugin.php:583
 #: includes/class-gravityview-entry-approval.php:437
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:581
+#: future/includes/class-gv-plugin.php:584
 #: includes/class-gravityview-entry-approval.php:431
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:705
-#: future/includes/class-gv-plugin.php:706
+#: future/includes/class-gv-plugin.php:708
+#: future/includes/class-gv-plugin.php:709
 #: future/includes/class-gv-view.php:168
 msgid "All Views"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:717
-#: future/includes/class-gv-plugin.php:718
+#: future/includes/class-gv-plugin.php:720
+#: future/includes/class-gv-plugin.php:721
 #: future/includes/class-gv-view.php:171
 msgid "New View"
 msgstr ""
@@ -129,7 +170,6 @@ msgstr ""
 msgid "There are %s unapproved entries that are not being shown."
 msgstr ""
 
-#. translators: %s is the plugin title.
 #: future/includes/class-gv-renderer.php:245
 #: includes/admin/metaboxes/views/placeholder.php:39
 #: includes/admin/metaboxes/views/placeholder.php:64
@@ -197,7 +237,7 @@ msgstr ""
 #: includes/class-frontend-views.php:685
 #: includes/class-gravityview-admin-bar.php:111
 #: includes/class-gravityview-entry-link-shortcode.php:250
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1108
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1109
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: includes/fields/class-gravityview-field-edit-link.php:54
 #: templates/fields/field-edit_link-html.php:38
@@ -245,27 +285,27 @@ msgstr ""
 msgid "Please <a href=\"%s\">read this article</a> for more information."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:247
+#: future/includes/class-gv-settings-plugin.php:249
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "The [filter] active filter could be overriding cache settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:248
+#: future/includes/class-gv-settings-plugin.php:250
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "The following active filters could be overriding cache settings: [filters]."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:287
+#: future/includes/class-gv-settings-plugin.php:289
 msgid "Enable Caching"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:289
+#: future/includes/class-gv-settings-plugin.php:291
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[url]Enabling caching[/url] improves performance by reducing the number of queries during page loads. When enabled, you can also specify cache duration for entries."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:292
-#: future/includes/class-gv-settings-plugin.php:353
+#: future/includes/class-gv-settings-plugin.php:294
+#: future/includes/class-gv-settings-plugin.php:360
 #: includes/class-gravityview-entry-approval-merge-tags.php:92
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:123
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:81
@@ -273,126 +313,126 @@ msgstr ""
 msgid "(This link opens in a new window.)"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:308
+#: future/includes/class-gv-settings-plugin.php:310
 msgid "The cache duration must be at least 1 second."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:311
+#: future/includes/class-gv-settings-plugin.php:313
 #: future/includes/class-gv-settings-view.php:123
 msgid "Entry Cache Duration"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:312
+#: future/includes/class-gv-settings-plugin.php:314
 msgid "Specify the duration in seconds that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:325
+#: future/includes/class-gv-settings-plugin.php:332
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:544
 msgid "General"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:330
+#: future/includes/class-gv-settings-plugin.php:337
 msgid "REST API"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:331
+#: future/includes/class-gv-settings-plugin.php:338
 msgid "Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.)."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:331
+#: future/includes/class-gv-settings-plugin.php:338
 msgid "If you are unsure, disable this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:337
+#: future/includes/class-gv-settings-plugin.php:344
 msgid "Caching"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:341
+#: future/includes/class-gv-settings-plugin.php:348
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:177
 msgid "Permissions"
 msgstr ""
 
 #. translators: %s is replaced with a setting label
-#: future/includes/class-gv-settings-plugin.php:346
+#: future/includes/class-gv-settings-plugin.php:353
 #: includes/class-gravityview-entry-approval-merge-tags.php:85
 msgid "Enable Public Entry Moderation"
 msgstr ""
 
 #. translators: Do not translate the words inside the {} curly brackets; they are replaced.
-#: future/includes/class-gv-settings-plugin.php:349
+#: future/includes/class-gv-settings-plugin.php:356
 #: includes/class-gravityview-entry-approval-merge-tags.php:88
 msgid "If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:432
+#: future/includes/class-gv-settings-plugin.php:440
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:440
+#: future/includes/class-gv-settings-plugin.php:448
 msgid "Uninstall GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:441
+#: future/includes/class-gv-settings-plugin.php:449
 msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravitykit.com"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:442
+#: future/includes/class-gv-settings-plugin.php:450
 msgid "Please share your thoughts about GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:443
+#: future/includes/class-gv-settings-plugin.php:451
 msgid "Please follow up with me about my feedback"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:444
+#: future/includes/class-gv-settings-plugin.php:452
 msgid "How likely are you to recommend GravityView?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:445
+#: future/includes/class-gv-settings-plugin.php:453
 msgid "Send Us Your Feedback"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:446
+#: future/includes/class-gv-settings-plugin.php:454
 msgid "Thank you for using GravityView!"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:447
+#: future/includes/class-gv-settings-plugin.php:455
 msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravitykit.com"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:448
+#: future/includes/class-gv-settings-plugin.php:456
 msgid "If you delete then re-install GravityView, it will be like installing GravityView for the first time."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:449
+#: future/includes/class-gv-settings-plugin.php:457
 msgid "Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:450
+#: future/includes/class-gv-settings-plugin.php:458
 msgid "I am going to continue using GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:451
+#: future/includes/class-gv-settings-plugin.php:459
 msgid "I no longer need GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:452
+#: future/includes/class-gv-settings-plugin.php:460
 msgid "The plugin doesn't work"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:453
+#: future/includes/class-gv-settings-plugin.php:461
 msgid "I found a better plugin"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:454
+#: future/includes/class-gv-settings-plugin.php:462
 msgid "What plugin you are using, and why?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:455
+#: future/includes/class-gv-settings-plugin.php:463
 msgid "Other"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:456
+#: future/includes/class-gv-settings-plugin.php:464
 msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%1$s (\"Not at all likely\") to %2$s (\"Extremely likely\")"
 msgstr ""
@@ -788,7 +828,7 @@ msgid "Update Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:524
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2561
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2562
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
@@ -798,7 +838,7 @@ msgid "Cancel Link Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:532
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2560
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2561
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
@@ -922,7 +962,6 @@ msgstr ""
 msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a form</a>."
 msgstr ""
 
-#. Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
 #: future/includes/class-gv-shortcode-gravityview.php:180
 msgid "This View is in the Trash. %sClick to restore the View%s."
 msgstr ""
@@ -1485,8 +1524,8 @@ msgstr ""
 #: includes/class-admin-add-shortcode.php:140
 #: includes/class-admin-views.php:1557
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:283
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1169
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1302
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1170
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1303
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:99
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1312
 msgid "Cancel"
@@ -1625,7 +1664,6 @@ msgstr ""
 msgid "These widgets will be shown below entries."
 msgstr ""
 
-#. translators: %1$s is the vendor title.
 #: includes/admin/metaboxes/views/view-configuration.php:148
 #: includes/class-admin-views.php:1300
 #: includes/class-admin-views.php:1556
@@ -2516,7 +2554,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:189
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2411
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2412
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2749,86 +2787,86 @@ msgstr ""
 msgid "Your request was rejected"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1170
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1303
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1171
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1304
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:70
 msgid "Update"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1171
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1304
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1172
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1305
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:262
 msgid "Next"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1172
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1305
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1173
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1306
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1195
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1196
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1195
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1196
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1202
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1203
 msgid "Entry Updated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1224
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1225
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %1$sReturning to Entry%2$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1229
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1230
 msgctxt "Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %1$sReturning to %2$s%3$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1235
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1236
 msgctxt "Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %1$sRedirecting to %2$s%3$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1240
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1241
 msgid "Entry Updated. %1$sReturn to Entry%2$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1461
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1462
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1468
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1469
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1809
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1810
 msgid "This field is required."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1845
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1846
 msgid "Maximum number of files reached"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2406
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2407
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2415
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2416
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2431
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2432
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2456
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2457
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -4186,7 +4224,6 @@ msgstr ""
 msgid "Caution: [link]Advanced Post Creation[/link] is active for this form."
 msgstr ""
 
-#. translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:116
 msgid "Editing entries in GravityView may also update a connected post."
 msgstr ""
@@ -4698,7 +4735,6 @@ msgstr ""
 msgid "Pre-Filter Choices"
 msgstr ""
 
-#. translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
 #: includes/widgets/search-widget/class-search-widget.php:90
 msgid "For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries."
 msgstr ""
@@ -4838,7 +4874,7 @@ msgstr ""
 msgid "To"
 msgstr ""
 
-#: includes/widgets/search-widget/templates/search-field-submit.php:33
+#: includes/widgets/search-widget/templates/search-field-submit.php:37
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:141
 msgid "Search"
 msgstr ""
@@ -5886,7 +5922,6 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
-#. translators: %1$s is the vendor title.
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:41
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1315
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1495
@@ -6529,7 +6564,6 @@ msgstr ""
 msgid "%s support may not be able to access this site."
 msgstr ""
 
-#. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets").
 #: vendor_prefixed/trustedlogin/client/src/Form.php:760
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""
