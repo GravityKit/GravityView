@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Searching the View added duplicate search parameters to the URL.
 * Fixed: PHP 8.2 deprecation notice related to dynamic property creation.
 * Fixed: Entries not displaying when a DataTables View is embedded in a Single Entry page using the List layout.
+* Fixed: PHP warning when deactivating the Gravity Forms Event Fields add-on when displaying a View with an Event field.
 
 = 2.28.0 on August 29, 2024 =
 
