@@ -1169,6 +1169,7 @@ HTML;
 																						}
 																					}
 																				} // End if zone is not empty
+																				// 25:09:24 Added for new admin refresh functionality. This could have a switch class for empty but for now adding placeholder.
 																				else {
 																					?>
 																					<div class="emptywrapper"></div>
