@@ -253,17 +253,7 @@ class View_Table_Template extends View_Template {
 		$context = Template_Context::from_template( $this, compact( 'entry', 'fields' ) );
 
 		/**
-		 * Push legacy entry context.
-		 */
-		\GV\Mocks\Legacy_Context::load(
-            array(
-				'entry' => $entry,
-            )
-        );
-
-		/**
-		 * Modify the fields displayed in a table.
-		 *
+		 * Modifies the fields displayed in a table
 		 * @param array $fields
 		 * @param \GravityView_View $this
 		 * @deprecated Use `gravityview/template/table/fields`
@@ -367,15 +357,6 @@ class View_Table_Template extends View_Template {
 	public function the_field( \GV\Field $field, \GV\Entry $entry ) {
 		$form         = $this->view->form;
 		$single_entry = $entry;
-
-		/**
-		 * Push legacy entry context.
-		 */
-		\GV\Mocks\Legacy_Context::load(
-            array(
-				'field' => $field,
-            )
-        );
 
 		if ( $entry->is_multi() ) {
 			if ( ! $single_entry = $entry->from_field( $field ) ) {

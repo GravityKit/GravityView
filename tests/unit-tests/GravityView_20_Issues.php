@@ -20,7 +20,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 	 * Resets the GravityView context, both old and new.
 	 */
 	private function _reset_context() {
-		\GV\Mocks\Legacy_Context::reset();
+
 		gravityview()->request = new \GV\Frontend_Request();
 
 		global $wp_query, $post;
@@ -135,8 +135,6 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		);
 
 		\GravityView_View::getInstance()->setCurrentEntry( $entry );
-
-		\GV\Mocks\Legacy_Context::push( $context );
 
 		foreach ( $tests as $shortcode => $expected ) {
 			$post->post_content = $shortcode;
