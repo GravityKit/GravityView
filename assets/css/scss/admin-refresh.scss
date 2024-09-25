@@ -165,6 +165,15 @@
 		border: 1px solid $color-gf-in-color-border;
 	}
 
+	.button.button-link.gv-add-field:hover {
+		background: $color-gf-in-color-button;
+		border: 1px solid $color-gf-in-color-button;
+	}
+
+	.button.button-link.gv-add-field:hover .dashicons {
+		color: $color-gf-in-color-white;
+	}
+
 	#post-body-content{
 		margin-top: $space-gv-xl;
 	}
@@ -238,9 +247,9 @@
 		width: 80%;
 	}
 
-	.active-drop.active-drop-field{
+	.emptywrapper{
 		border: 1px dashed $color-gf-in-color-border;
-		height: $space-gv-m;
+		height: $space-gv-l;
 		margin-bottom: $space-gv-m;
 	}
 }

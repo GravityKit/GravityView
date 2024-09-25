@@ -1105,6 +1105,7 @@ HTML;
 								<?php } ?>
 							</p>
 							<div class="active-drop-container active-drop-container-<?php echo esc_attr( $type ); ?>">
+								
 								<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>">
 																				<?php
 																				// render saved fields
@@ -1168,6 +1169,11 @@ HTML;
 																						}
 																					}
 																				} // End if zone is not empty
+																				else {
+																					?>
+																					<div class="emptywrapper"></div>
+																					<?php
+																				}
 																				?>
 									</div>
 								<div class="gv-droppable-area-action">
