@@ -61,15 +61,15 @@ jobs:
           paths:
             - .
 
-  run_php_72_unit_tests:
+  run_php_74_unit_tests:
     <<: *default_job_config
     steps:
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Running PHP 7.2 unit tests
+          name: Running PHP 7.4 unit tests
           command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_72
+            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74
 
   run_php_80_unit_tests:
     <<: *default_job_config
@@ -126,7 +126,7 @@ workflows:
     jobs:
       - prepare_test_and_build_environment:
           <<: *context
-      - run_php_72_unit_tests:
+      - run_php_74_unit_tests:
           <<: *test_job_config
       - run_php_80_unit_tests:
           <<: *test_job_config
@@ -135,6 +135,6 @@ workflows:
       - build_package_release:
           <<: *context
           requires:
-            - run_php_72_unit_tests
+            - run_php_74_unit_tests
             - run_php_80_unit_tests
 #            - run_acceptance_tests

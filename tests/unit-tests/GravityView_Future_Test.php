@@ -2767,10 +2767,10 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field->update_configuration( array( 'show_map_link' => true ) );
 
-		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br /><a class=\"map-it-link\" href=\"https://maps.google.com/maps\?q=.*\">Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertMatchesRegularExpression( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br /><a class=\"map-it-link\" href=\"https://maps.google.com/maps\?q=.*\">Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'show_map_link' => false ) );
-		$this->assertRegExp( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->assertMatchesRegularExpression( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'show_map_link' => true ) );
 

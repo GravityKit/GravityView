@@ -131,6 +131,7 @@ class GravityView_Edit_Entry_Render {
 	public $show_next_button;
 	public $show_update_button;
 	public $is_paged_submitted;
+	private $unset_hidden_calculations = [];
 
 	function __construct( GravityView_Edit_Entry $loader ) {
 		$this->loader = $loader;
@@ -155,9 +156,6 @@ class GravityView_Edit_Entry_Render {
 
 		// Disable conditional logic if needed (since 1.9)
 		add_filter( 'gform_has_conditional_logic', array( $this, 'manage_conditional_logic' ), 10, 2 );
-
-		// Make sure GF doesn't validate max files (since 1.9)
-		add_filter( 'gform_plupload_settings', array( $this, 'modify_fileupload_settings' ), 10, 3 );
 
 		// Add fields expected by GFFormDisplay::validate()
 		add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation' ) );
@@ -634,26 +632,6 @@ class GravityView_Edit_Entry_Render {
 
 		return $value;
 	}
-
-	/**
-	 * Remove max_files validation (done on gravityforms.js) to avoid conflicts with GravityView
-	 * Late validation done on self::custom_validation
-	 *
-	 * @param $plupload_init array Plupload settings
-	 * @param $form_id
-	 * @param $instance
-	 * @return mixed
-	 */
-	public function modify_fileupload_settings( $plupload_init, $form_id, $instance ) {
-		if ( ! $this->is_edit_entry() ) {
-			return $plupload_init;
-		}
-
-		$plupload_init['gf_vars']['max_files'] = 0;
-
-		return $plupload_init;
-	}
-
 
 	/**
 	 * Set visibility to visible and convert field input key to string

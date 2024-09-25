@@ -12,6 +12,9 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 	 * @inheritDoc
 	 */
 	public function add_hooks() {
+		$google_maps_api_key_filter = defined( 'GRAVITYVIEW_MAPS_VERSION' ) && version_compare( GRAVITYVIEW_MAPS_VERSION, '3.1.0', '<' )
+			? 'gravityview/maps/render/google_api_key'
+			: 'gk/gravitymaps/map-services/google-maps/api_key';
 
 		/**
 		 * Temporarily keep maps working on the front-end when running new GV and old Maps.
@@ -19,9 +22,8 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 		 * @since 2.16
 		 */
 		add_filter(
-			'gravityview/maps/render/google_api_key',
+			$google_maps_api_key_filter,
 			function ( $api_key ) {
-
 				if ( ! empty( $api_key ) ) {
 					return $api_key;
 				}

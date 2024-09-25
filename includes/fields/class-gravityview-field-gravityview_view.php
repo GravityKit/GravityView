@@ -164,7 +164,11 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 			return;
 		}
 
-		$attributes = [ 'post_id' => $post->ID ];
+		$attributes = [];
+
+		if ( ! empty( $post->ID ) ) {
+			$attributes = [ 'post_id' => $post->ID ];
+		}
 
 		$page_size_value = \GV\Utils::get( $field_settings, 'page_size', 'default' );
 		if ( 'default' !== $page_size_value ) {

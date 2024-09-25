@@ -1627,7 +1627,7 @@ function gravityview_field_output( $passed_args, $context = null ) {
 		return '';
 	}
 
-	if ( '' !== $placeholders['value'] && ! empty( $args['wpautop'] ) ) {
+	if ( '' !== $placeholders['value'] && ! empty( $args['wpautop'] ) && 'gravityview_view' !== ( $field['id'] ?? '' ) ) {
 		$placeholders['value'] = wpautop( $placeholders['value'] );
 	}
 

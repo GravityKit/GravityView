@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "604d558ca30260f2d1f1d62d8bd13600",
+    "content-hash": "e56545ec20e762d9f700ff2434772a3c",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "bc93c59a099e9b367cb6e3e562b25dbaec64a924"
+                "reference": "ada291cc355f669f142935a11cb99a8ba60f29d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/bc93c59a099e9b367cb6e3e562b25dbaec64a924",
-                "reference": "bc93c59a099e9b367cb6e3e562b25dbaec64a924",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/ada291cc355f669f142935a11cb99a8ba60f29d8",
+                "reference": "ada291cc355f669f142935a11cb99a8ba60f29d8",
                 "shasum": ""
             },
             "require": {
@@ -263,7 +263,6 @@
                 "phpcompatibility/phpcompatibility-wp": "*",
                 "wp-coding-standards/wpcs": "^2.3"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "strauss": {
@@ -299,6 +298,9 @@
                 "prefix_vendor": [
                     "@php tools/strauss.phar"
                 ],
+                "test:unit": [
+                    "vendor/bin/pest --group=unit"
+                ],
                 "post_update_install": [
                     "./composer_post_update_install.sh"
                 ],
@@ -323,10 +325,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.17",
+                "source": "https://github.com/GravityKit/Foundation/tree/develop",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2024-07-22T23:20:16+00:00"
+            "time": "2024-08-28T15:11:21+00:00"
         },
         {
             "name": "illuminate/container",
@@ -1106,16 +1108,16 @@
         },
         {
             "name": "trustedlogin/client",
-            "version": "v1.8.0",
+            "version": "v1.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/trustedlogin/client.git",
-                "reference": "3ba476906afe0b98f551f080ee0cd92d5d9c8830"
+                "reference": "b913058ae57b512a7766f449ab8d55952500fe72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/trustedlogin/client/zipball/3ba476906afe0b98f551f080ee0cd92d5d9c8830",
-                "reference": "3ba476906afe0b98f551f080ee0cd92d5d9c8830",
+                "url": "https://api.github.com/repos/trustedlogin/client/zipball/b913058ae57b512a7766f449ab8d55952500fe72",
+                "reference": "b913058ae57b512a7766f449ab8d55952500fe72",
                 "shasum": ""
             },
             "require-dev": {
@@ -1159,9 +1161,9 @@
             ],
             "support": {
                 "issues": "https://github.com/trustedlogin/client/issues",
-                "source": "https://github.com/trustedlogin/client/tree/v1.8.0"
+                "source": "https://github.com/trustedlogin/client/tree/v1.9.0"
             },
-            "time": "2024-07-18T15:45:05+00:00"
+            "time": "2024-08-26T01:13:42+00:00"
         }
     ],
     "packages-dev": [
@@ -9466,7 +9468,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.0",
+        "php": ">=7.4.0",
         "ext-json": "*",
         "ext-openssl": "*"
     },

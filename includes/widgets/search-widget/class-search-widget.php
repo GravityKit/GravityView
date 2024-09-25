@@ -456,7 +456,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 				$types = self::get_search_input_types( $id, $field['type'] );
 
-				$output .= '<option value="' . $id . '" ' . selected( $id, $current, false ) . 'data-inputtypes="' . esc_attr( $types ) . '">' . esc_html( $field['label'] ) . '</option>';
+				$output .= '<option value="' . $id . '" ' . selected( $id, $current, false ) . 'data-inputtypes="' . esc_attr( $types ) . '" data-placeholder="'.esc_html( $field['label'] ).'">' . esc_html( $field['text'] ?? $field['label'] ) . '</option>';
 			}
 		}
 
@@ -2173,10 +2173,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if ( $gravityview_view->search_clear ) {
-			$url = strtok( add_query_arg( array() ), '?' );
-
 			$clear_button_params = [
-				'url'     => $url,
+				'url'     => remove_query_arg(
+					( GravityView_Widget_Search::getInstance() )->add_reserved_args( [] )
+				),
 				'text'    => esc_html__( 'Clear', 'gk-gravityview' ),
 				'view_id' => $gravityview_view->getViewId(),
 				'format'  => 'html',
@@ -2320,7 +2320,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Enqueue the datepicker script
 	 *
-	 * It sets the $gravityview->datepicker_class parameter
+	 * It sets the $gravityview->atts['datepicker_class'] parameter
 	 *
 	 * @todo Use own datepicker javascript instead of GF datepicker.js - that way, we can localize the settings and not require the changeMonth and changeYear pickers.
 	 * @return void
@@ -2351,7 +2351,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker ' . $this->get_datepicker_format() );
 
-		$gravityview_view->datepicker_class = $datepicker_class;
+		$gravityview_view->setAtts(
+			array_merge(
+				$gravityview_view->atts,
+				[ 'datepicker_class' => $datepicker_class ]
+			)
+		);
 	}
 
 	/**

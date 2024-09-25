@@ -175,7 +175,7 @@ final class GravityView_Object_Placeholder {
 		 * @var $product_manager \GravityKit\GravityView\Foundation\Licenses\ProductManager
 		 */
 		$product_manager = GravityKitFoundation::licenses()->product_manager();
-		$products        = $product_manager->get_products_data();
+		$products        = $product_manager ? $product_manager->get_products_data() : [];
 
 		$product = $products[ $this->text_domain ] ?? null;
 		if ( ! $product ) {

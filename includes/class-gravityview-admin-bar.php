@@ -149,6 +149,10 @@ class GravityView_Admin_Bar {
 			$added_views = array();
 
 			foreach ( $views as $view ) {
+				if ( ! $view ) {
+					continue;
+				}
+
 				$view    = \GV\View::by_id( $view['id'] );
 				$view_id = $view->ID;
 				$form_id = $view->form ? $view->form->ID : null;
