@@ -229,6 +229,7 @@ final class Plugin {
 		include_once $this->dir( 'includes/extensions/duplicate-entry/class-duplicate-entry.php' );
 		include_once $this->dir( 'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
 		include_once $this->dir( 'includes/extensions/lightbox/class-gravityview-lightbox.php' );
+		include_once $this->dir( 'includes/extensions/lightbox-entry/class-gravityview-lightbox-entry.php' );
 
 		// Load WordPress Widgets
 		include_once $this->dir( 'includes/wordpress-widgets/register-wordpress-widgets.php' );
