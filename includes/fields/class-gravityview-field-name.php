@@ -26,18 +26,20 @@ class GravityView_Field_Name extends GravityView_Field {
 		parent::__construct();
 	}
 
-
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since TBD
+	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-
 		if ( 'edit' === $context ) {
 			return $field_options;
 		}
 
-
-		$field_options['only_initials'] = array(
+		$field_options['show_as_initials'] = array(
 			'type'     => 'checkbox',
-			'label'    => __( 'Only show initials', 'gk-gravityview' ),
-			'desc'     => __( 'Only show the initials of the name.', 'gk-gravityview' ),
+			'label'    => __( 'Show as initials', 'gk-gravityview' ),
+			'desc'     => __( 'This displays the first letter of the first and last names.', 'gk-gravityview' ),
 			'value'    => '',
 			'group'    => 'display',
 		);
