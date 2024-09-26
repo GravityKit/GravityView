@@ -502,6 +502,13 @@ abstract class GravityView_Field {
 				'group'    => 'display',
 				'priority' => 1300,
 			),
+			'lightbox' => array(
+				'type' => 'checkbox',
+				'label' => __( 'Open in a lightbox?', 'gk-gravityview' ),
+				'value' => false,
+				'group' => 'display',
+				'priority' => 1300,
+			),
 		);
 
 		/**

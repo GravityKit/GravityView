@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.6.1
+Tested up to: 6.6.2
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -23,9 +23,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Added: Ability to view and edit entries inside a lightbox.
+* Added: `:human` merge tag modifier for date fields to display in human-readable format (e.g., `10 minutes ago`, `5 days from now`).
 * Fixed: Clearing search removed all URL query parameters and under some circumstances redirected to the homepage.
 * Fixed: Searching the View added duplicate search parameters to the URL.
 * Fixed: PHP 8.2 deprecation notice related to dynamic property creation.
+* Fixed: Entries not displaying when a DataTables View is embedded in a Single Entry page using the List layout.
+* Fixed: PHP warning when deactivating the Gravity Forms Event Fields add-on when displaying a View with an Event field.
+* Fixed: Sorting entries in random order not working.
+* Fixed: Multiselect field values that started with a square bracket were not displayed as selected on the Edit Entry screen.
 
 = 2.28.0 on August 29, 2024 =
 
