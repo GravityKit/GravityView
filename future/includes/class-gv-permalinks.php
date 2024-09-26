@@ -2,6 +2,8 @@
 
 namespace GV;
 
+use GravityView_Merge_Tags;
+use GVCommon;
 use WP_Rewrite;
 
 /**
@@ -44,10 +46,12 @@ final class Permalinks {
 		add_filter( 'gravityview_slug', [ $this, 'set_view_slug' ], 1 );
 		add_filter( 'gravityview_directory_endpoint', [ $this, 'set_entry_endpoint' ], 1 );
 		add_filter( 'gravityview_custom_entry_slug', [ $this, 'is_custom_entry_slug' ], 1 );
-		add_filter( 'gravityview_entry_slug', [ $this, 'set_entry_slug' ], 1, 2 );
+		add_filter( 'gravityview_entry_slug', [ $this, 'set_entry_slug' ], 1, 3 );
 
 		add_filter( 'gk/foundation/settings/data/plugins', [ $this, 'add_permalink_settings' ], 11 );
 		add_filter( 'gk/foundation/inline-scripts', [ $this, 'add_inline_scripts' ] );
+
+		add_filter( 'gravityview/view/settings/defaults', [ $this, 'add_view_settings' ] );
 
 		add_action( 'init', [ $this, 'maybe_update_rewrite_rules' ], 1 );
 	}
@@ -97,18 +101,27 @@ final class Permalinks {
 	 *
 	 * @since $ver$
 	 *
-	 * @param string     $slug The original slug.
-	 * @param string|int $id   The entry ID.
+	 * @param string     $slug  The original slug.
+	 * @param string|int $_     The entry ID.
+	 * @param array      $entry The entry.
 	 *
 	 * @return string The slug.
 	 */
-	public function set_entry_slug( $slug, $id ): string {
+	public function set_entry_slug( $slug, $_, array $entry ): string {
 		$new_slug = trim( $this->settings->get( 'entry_slug', $slug ) );
+		$view     = View::from_post( get_post() );
+
+		if ( $view && (int) $view->form->ID === (int) $entry['form_id'] ) {
+			$new_slug = trim( (string) $view->settings->get( 'single_entry_slug' ) ?: $new_slug );
+		}
+
 		if ( $new_slug === $slug || strpos( $new_slug, '{entry_id}' ) === false ) {
 			return (string) $slug;
 		}
 
-		return str_replace( '{entry_id}', $id, $new_slug );
+		$form = GVCommon::get_form( $entry['form_id'] );
+
+		return sanitize_title( GravityView_Merge_Tags::replace_variables( $new_slug, $form, $entry ) );
 	}
 
 	/**
@@ -121,7 +134,16 @@ final class Permalinks {
 	 * @return bool Whether the custom entry slug is enabled
 	 */
 	public function is_custom_entry_slug( bool $is_custom_slug ): bool {
-		return '' !== trim( (string) $this->settings->get( 'entry_slug', '' ) ) ? true : $is_custom_slug;
+		$is_global_entry_slug = '' !== trim( (string) $this->settings->get( 'entry_slug', '' ) );
+		$is_view_entry_slug   = false;
+
+		$view = View::from_post( get_post() );
+		if ( $view ) {
+			$entry_slug         = (string) $view->settings->get( 'single_entry_slug' );
+			$is_view_entry_slug = (bool) trim( $entry_slug );
+		}
+
+		return ( $is_global_entry_slug || $is_view_entry_slug ) ? true : $is_custom_slug;
 	}
 
 	/**
@@ -195,7 +217,7 @@ final class Permalinks {
 			[
 				'id'          => 'entry_slug',
 				'type'        => 'text',
-				'title'       => esc_html__( 'Entry slug', 'gk-gravityview' ),
+				'title'       => esc_html__( 'Entry Slug', 'gk-gravityview' ),
 				'description' => strtr(
 					$example_label,
 					[
@@ -228,6 +250,33 @@ final class Permalinks {
 				'gk-gravityview'
 			),
 			'settings'    => $this->permalink_settings(),
+		];
+
+		return $settings;
+	}
+
+	/**
+	 * Adds the entry slug setting for a single View.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $settings The View settings.
+	 *
+	 * @return array The new View settings.
+	 */
+	public function add_view_settings( array $settings ): array {
+		$settings['single_entry_slug'] = [
+			'label'             => __( 'Entry Slug', 'gk-gravityview' ),
+			'type'              => 'text',
+			'desc'              => __( 'Change the slug for an entry.', 'gk-gravityview' ),
+			'group'             => 'default',
+			'value'             => '',
+			'show_in_shortcode' => false,
+			'full_width'        => true,
+			'article'           => [
+				'id'  => '54c67bb5e4b07997ea3f3f58',
+				'url' => 'https://docs.gravitykit.com/article/57-customizing-urls',
+			],
 		];
 
 		return $settings;
