@@ -268,7 +268,14 @@ final class Permalinks {
 		$settings['single_entry_slug'] = [
 			'label'             => __( 'Entry Slug', 'gk-gravityview' ),
 			'type'              => 'text',
-			'desc'              => __( 'Change the slug for an entry.', 'gk-gravityview' ),
+			// Translators: [entry_id] will be replaced by the actual merge tag.
+			'desc'              => strtr(
+				esc_html__(
+					'Change the slug for an entry. Make sure to at least include [entry_id] to avoid URL collisions.',
+					'gk-gravityview'
+				),
+				[ '[entry_id]' => '<code>{entry_id}</code>' ],
+			),
 			'group'             => 'default',
 			'value'             => '',
 			'show_in_shortcode' => false,

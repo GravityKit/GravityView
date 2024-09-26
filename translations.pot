@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-24T14:17:14+00:00\n"
+"POT-Creation-Date: 2024-09-26T14:12:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.9.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -96,47 +96,52 @@ msgid "Styles don't get loaded when being previewed, so the content below will l
 msgstr ""
 
 #. Translators: [url] is replaced by the preview URL.
-#: future/includes/class-gv-permalinks.php:148
+#: future/includes/class-gv-permalinks.php:175
 msgid "Example: [url]"
 msgstr ""
 
 #. Translators: [slug] is replaced by the slug.
-#: future/includes/class-gv-permalinks.php:150
+#: future/includes/class-gv-permalinks.php:177
 msgid "Default: [slug]"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:161
+#: future/includes/class-gv-permalinks.php:188
 msgid "View Slug"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:177
+#: future/includes/class-gv-permalinks.php:204
 msgid "Entry Endpoint"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:193
-msgid "Entry slug"
+#: future/includes/class-gv-permalinks.php:220
+#: future/includes/class-gv-permalinks.php:269
+msgid "Entry Slug"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:220
+#: future/includes/class-gv-permalinks.php:247
 msgid "Permalinks"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:221
+#: future/includes/class-gv-permalinks.php:248
 msgid "GravityView allows you to create a custom URL structure for your Views."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:254
-#: future/includes/class-gv-permalinks.php:302
+#: future/includes/class-gv-permalinks.php:273
+msgid "Change the slug for an entry. Make sure to at least include [entry_id] to avoid URL collisions."
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:315
+#: future/includes/class-gv-permalinks.php:363
 msgid "Only letters, numbers, underscores and dashes are allowed."
 msgstr ""
 
 #. Translators: [count] is replaced by the amount of characters.
-#: future/includes/class-gv-permalinks.php:263
+#: future/includes/class-gv-permalinks.php:324
 msgid "At least [count] characters are required."
 msgstr ""
 
 #. Translators: [slug] will contain the slug value.
-#: future/includes/class-gv-permalinks.php:296
+#: future/includes/class-gv-permalinks.php:357
 msgid "Must contain \"[slug]\"."
 msgstr ""
 
@@ -305,7 +310,7 @@ msgid "[url]Enabling caching[/url] improves performance by reducing the number o
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:294
-#: future/includes/class-gv-settings-plugin.php:360
+#: future/includes/class-gv-settings-plugin.php:355
 #: includes/class-gravityview-entry-approval-merge-tags.php:92
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:123
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:81
@@ -326,113 +331,113 @@ msgstr ""
 msgid "Specify the duration in seconds that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:332
+#: future/includes/class-gv-settings-plugin.php:327
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:544
 msgid "General"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:337
+#: future/includes/class-gv-settings-plugin.php:332
 msgid "REST API"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:338
+#: future/includes/class-gv-settings-plugin.php:333
 msgid "Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.)."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:338
+#: future/includes/class-gv-settings-plugin.php:333
 msgid "If you are unsure, disable this setting."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:344
+#: future/includes/class-gv-settings-plugin.php:339
 msgid "Caching"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:348
+#: future/includes/class-gv-settings-plugin.php:343
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:177
 msgid "Permissions"
 msgstr ""
 
 #. translators: %s is replaced with a setting label
-#: future/includes/class-gv-settings-plugin.php:353
+#: future/includes/class-gv-settings-plugin.php:348
 #: includes/class-gravityview-entry-approval-merge-tags.php:85
 msgid "Enable Public Entry Moderation"
 msgstr ""
 
 #. translators: Do not translate the words inside the {} curly brackets; they are replaced.
-#: future/includes/class-gv-settings-plugin.php:356
+#: future/includes/class-gv-settings-plugin.php:351
 #: includes/class-gravityview-entry-approval-merge-tags.php:88
 msgid "If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:440
+#: future/includes/class-gv-settings-plugin.php:435
 msgid "You don't have the ability to edit plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:448
+#: future/includes/class-gv-settings-plugin.php:443
 msgid "Uninstall GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:449
+#: future/includes/class-gv-settings-plugin.php:444
 msgid "There was an error sharing your feedback. Sorry! Please email us at support@gravitykit.com"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:450
+#: future/includes/class-gv-settings-plugin.php:445
 msgid "Please share your thoughts about GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:451
+#: future/includes/class-gv-settings-plugin.php:446
 msgid "Please follow up with me about my feedback"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:452
+#: future/includes/class-gv-settings-plugin.php:447
 msgid "How likely are you to recommend GravityView?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:453
+#: future/includes/class-gv-settings-plugin.php:448
 msgid "Send Us Your Feedback"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:454
+#: future/includes/class-gv-settings-plugin.php:449
 msgid "Thank you for using GravityView!"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:455
+#: future/includes/class-gv-settings-plugin.php:450
 msgid "Your feedback helps us improve GravityView. If you have any questions or comments, email us: support@gravitykit.com"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:456
+#: future/includes/class-gv-settings-plugin.php:451
 msgid "If you delete then re-install GravityView, it will be like installing GravityView for the first time."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:457
+#: future/includes/class-gv-settings-plugin.php:452
 msgid "Delete all Views, GravityView entry approval status, GravityView-generated entry notes (including approval and entry creator changes), and GravityView plugin settings."
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:458
+#: future/includes/class-gv-settings-plugin.php:453
 msgid "I am going to continue using GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:459
+#: future/includes/class-gv-settings-plugin.php:454
 msgid "I no longer need GravityView"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:460
+#: future/includes/class-gv-settings-plugin.php:455
 msgid "The plugin doesn't work"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:461
+#: future/includes/class-gv-settings-plugin.php:456
 msgid "I found a better plugin"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:462
+#: future/includes/class-gv-settings-plugin.php:457
 msgid "What plugin you are using, and why?"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:463
+#: future/includes/class-gv-settings-plugin.php:458
 msgid "Other"
 msgstr ""
 
-#: future/includes/class-gv-settings-plugin.php:464
+#: future/includes/class-gv-settings-plugin.php:459
 msgctxt "A scale from 0 (bad) to 10 (good)"
 msgid "%1$s (\"Not at all likely\") to %2$s (\"Extremely likely\")"
 msgstr ""
@@ -669,7 +674,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:315
 #: future/includes/class-gv-settings-view.php:346
-#: includes/class-common.php:1648
+#: includes/class-common.php:1652
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -2173,21 +2178,24 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#. translators: %s: relative time from now, used for generic date comparisons. "1 day ago", or "20 seconds ago"
-#: includes/class-common.php:1209
+#: includes/class-common.php:1212
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1601
+#: includes/class-common.php:1212
+msgid "%s from now"
+msgstr ""
+
+#: includes/class-common.php:1605
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1652
+#: includes/class-common.php:1656
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1784
+#: includes/class-common.php:1788
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
