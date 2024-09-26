@@ -159,9 +159,6 @@ class GravityView_Edit_Entry_Render {
 
 		// Add fields expected by GFFormDisplay::validate()
 		add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation' ) );
-
-		// Fix multiselect value for GF 2.2
-		add_filter( 'gravityview/edit_entry/field_value_multiselect', array( $this, 'fix_multiselect_value_serialization' ), 10, 3 );
 	}
 
 	/**

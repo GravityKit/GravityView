@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Entries not displaying when a DataTables View is embedded in a Single Entry page using the List layout.
 * Fixed: PHP warning when deactivating the Gravity Forms Event Fields add-on when displaying a View with an Event field.
 * Fixed: Sorting entries in random order not working.
+* Fixed: Multiselect field values that started with a square bracket were not displayed as selected on the Edit Entry screen.
 
 = 2.28.0 on August 29, 2024 =
 
