@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Added: Ability to view and edit entries inside a lightbox.
 * Added: `:human` merge tag modifier for date fields to display in human-readable format (e.g., `10 minutes ago`, `5 days from now`).
+* Added: Support for Gravity Forms Source ID meta, added in Gravity Forms 2.9
 * Fixed: Clearing search removed all URL query parameters and under some circumstances redirected to the homepage.
 * Fixed: Searching the View added duplicate search parameters to the URL.
 * Fixed: PHP 8.2 deprecation notice related to dynamic property creation.

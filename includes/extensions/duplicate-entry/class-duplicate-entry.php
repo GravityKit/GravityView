@@ -483,6 +483,7 @@ final class GravityView_Duplicate_Entry {
 		$row['is_read']      = false;
 		$row['ip']           = rgars( $form, 'personalData/preventIP' ) ? '' : GFFormsModel::get_ip();
 		$row['source_url']   = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'result', 'duplicate', 'entry_id' ) ) );
+		$row['source_id']    = null; // Duplicated entry doesn't have a source ID page, since it's coming from admin.
 		$row['user_agent']   = \GV\Utils::_SERVER( 'HTTP_USER_AGENT' );
 		$row['created_by']   = wp_get_current_user()->ID;
 
