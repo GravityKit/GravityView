@@ -2939,9 +2939,7 @@
 		refresh: function () {
 			viewGeneralSettings.metaboxObj.trigger( 'change' );
 
-			viewGeneralSettings.metaboxObj
-				// .off( 'tabscreate', viewGeneralSettings.tabsCreate )
-				.tabs( 'destroy' );
+			viewGeneralSettings.metaboxObj.tabs( 'destroy' );
 
 			viewGeneralSettings.initTabs();
 		},
@@ -2997,9 +2995,6 @@
 			}
 
 			viewGeneralSettings.metaboxObj
-				// What happens after tabs are generated
-				// .on( 'tabscreate', viewGeneralSettings.tabsCreate )
-
 				// Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
 				.insertAfter( $('#gravityview_view_config') )
 
