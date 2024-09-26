@@ -47,6 +47,7 @@ final class Permalinks {
 		add_filter( 'gravityview_entry_slug', [ $this, 'set_entry_slug' ], 1, 2 );
 
 		add_filter( 'gk/foundation/settings/data/plugins', [ $this, 'add_permalink_settings' ], 11 );
+		add_filter( 'gk/foundation/inline-scripts', [ $this, 'add_inline_scripts' ] );
 
 		add_action( 'init', [ $this, 'maybe_update_rewrite_rules' ], 1 );
 	}
@@ -135,12 +136,16 @@ final class Permalinks {
 
 		$preview = static function ( string $id, string $value = '' ): string {
 			$slug_default = self::$default_slugs[ $id ] ?? 'unknown';
+			$value        = $value ?: $slug_default;
+			if ( 'entry_slug' === $id ) {
+				$value = str_replace( '{entry_id}', '123', $value );
+			}
 
 			return sprintf(
 				'<span data-slug-preview="%s" data-slug-default="%s">%s</span>',
 				$id,
 				$slug_default,
-				$value ?: $slug_default
+				$value
 			);
 		};
 
@@ -259,7 +264,7 @@ final class Permalinks {
 				[
 					'rule'    => 'matches:(^$|.{3,}$)',
 					'message' => strtr(
-						// Translators: [count] is replaced by the amount of characters.
+					// Translators: [count] is replaced by the amount of characters.
 						esc_html__( 'At least [count] characters are required.', 'gk-gravityview', ),
 						[ '[count]' => 3 ],
 					),
@@ -350,5 +355,37 @@ final class Permalinks {
 		if ( count( $found ) < 2 ) {
 			$wp_rewrite->flush_rules();
 		}
+	}
+
+	/**
+	 * Adds Inline javascript for GravityViews Foundation settings.
+	 *
+	 * @since $ver$
+	 */
+	public function add_inline_scripts( array $scripts ): array {
+		$script = <<<JS
+window.addEventListener( 'gk/foundation/settings/initialized', () => {
+	document.addEventListener( 'input', ( e ) => {
+		if ( [ 'view_slug', 'entry_endpoint', 'entry_slug' ].indexOf( e.target.name ) < 0 ) {
+			return;
+		}
+		// Update all preview element when the corresponding input is changed.
+		document.querySelectorAll( `[data-slug-preview="\${e.target.name}"]` ).forEach( ( element ) => {
+			const default_value = element.dataset.slugDefault ?? 'unknown';
+			element.innerHTML = ( e.target.value || default_value );
+
+			if ( 'entry_slug' === e.target.name ) {
+				element.innerHTML = element.innerHTML.replaceAll( '{entry_id}', '123' );
+			}
+		} );
+	} );
+} );
+JS;
+
+		$scripts[] = [
+			'script' => $script,
+		];
+
+		return $scripts;
 	}
 }
