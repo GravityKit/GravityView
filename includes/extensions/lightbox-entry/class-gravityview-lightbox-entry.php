@@ -116,7 +116,7 @@ class GravityView_Lightbox_Entry {
 
 			ob_start();
 
-			printf( '<html>%s</html>', esc_html__( 'The requested entry could not be found.', 'gravityview' ) );
+			printf( '<html>%s</html>', esc_html__( 'The requested entry could not be found.', 'gk-gravityview' ) );
 
 			return new WP_REST_Response( null, 404, [ 'Content-Type' => 'text/html' ] );
 		}
