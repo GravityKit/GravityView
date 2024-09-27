@@ -45,7 +45,7 @@ if ( ! empty( $field_settings['show_as_initials'] ) ) {
  *
  * @filter `gk/gravityview/field/name/display`
  *
- * @since  TBD
+ * @since  2.29.0
  *
  * @param string           $display_value Name or initials to display.
  * @param Template_Context $gravityview   The GravityView template context.

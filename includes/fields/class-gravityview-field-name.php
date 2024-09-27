@@ -29,7 +29,7 @@ class GravityView_Field_Name extends GravityView_Field {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 		if ( 'edit' === $context ) {

@@ -166,7 +166,7 @@ class GravityView_Merge_Tags {
 	/**
 	 * Converts date and time values to the human format modifier.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @param string $raw_value The raw value to modify.
 	 * @param array  $matches   Array of regex matches.
