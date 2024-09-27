@@ -40,7 +40,7 @@ This release brings a much-requested lightbox feature for displaying and editing
 * Multi Select field values starting with a square bracket were not displayed as selected on the Edit Entry screen.
 
 #### 🔧 Updated
-* [Foundation](https://www.gravitykit.com/foundation/) version 1.2.18.
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.18.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/field/name/display` filter to modify the Name field display value.
