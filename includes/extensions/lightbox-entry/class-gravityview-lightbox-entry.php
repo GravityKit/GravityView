@@ -318,9 +318,6 @@ class GravityView_Lightbox_Entry {
 
 		add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
 		add_filter( 'gravityview/edit_entry/cancel_onclick', '__return_empty_string' );
-		add_filter( 'gravityview/view/links/directory', function () use ( $view, $entry ) {
-			return rest_url( $this->get_rest_endpoint( $view->ID, $entry->ID ) );
-		} );
 
 		// Prevent redirection inside the lightbox by sending event to the parent window and hiding the success message.
 		if ( ! in_array( $view->settings->get( 'edit_redirect' ), [ '1', '2' ] ) ) {
