@@ -352,9 +352,11 @@ class GravityView_Lightbox_Entry {
 	 * @return WP_REST_Response
 	 */
 	private function process_delete_entry( $view ) {
+		global $wp;
+
 		add_filter( 'wp_redirect', '__return_false' ); // Prevent redirection after the entry is deleted.
 
-		do_action( 'wp' ); // Entry deletion hooks to the `wp` action.
+		do_action( 'wp', $wp ); // Entry deletion hooks to the `wp` action.
 
 		$reload_page     = GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE === (int) $view->settings->get( 'delete_redirect' ) ? 'true' : 'false';
 		$redirect_to_url = GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE === (int) $view->settings->get( 'delete_redirect' ) ? esc_url( $view->settings->get( 'delete_redirect_url', '' ) ) : '';
@@ -445,6 +447,8 @@ class GravityView_Lightbox_Entry {
 	 * @return WP_REST_Response
 	 */
 	private function render_entry( $type, $view, $entry, $form ) {
+		global $wp;
+
 		add_filter( 'gravityview_go_back_url', '__return_false' );
 
 		$view_data = GravityView_View_Data::getInstance();
@@ -455,7 +459,7 @@ class GravityView_Lightbox_Entry {
 
 		$entry_renderer = 'edit' === $type ? new Edit_Entry_Renderer() : new Entry_Renderer();
 
-		do_action( 'wp' );
+		do_action( 'wp', $wp );
 
 		do_action( 'wp_enqueue_scripts' );
 
