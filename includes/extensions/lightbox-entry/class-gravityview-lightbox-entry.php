@@ -207,6 +207,8 @@ class GravityView_Lightbox_Entry {
 	 * @return string
 	 */
 	public function get_rest_endpoint_from_request() {
+		global $wp;
+
 		preg_match(
 			sprintf(
 				'#%s/v%s/(?P<endpoint>%s)#',
@@ -214,7 +216,7 @@ class GravityView_Lightbox_Entry {
 				self::REST_VERSION,
 				self::REST_ENDPOINT_REGEX
 			),
-			urldecode( $_SERVER['REQUEST_URI'] ?? '' ),
+			$wp->query_vars['rest_route'] ?? '',
 			$matches
 		);
 
