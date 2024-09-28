@@ -48,6 +48,8 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Enables lightbox when it's not explicitly enabled in the View settings but a field is configured to use it.
 	 *
+	 * @used-by `gravityview/template/before` filter.
+	 *
 	 * @since 2.29.0
 	 *
 	 * @param Template_Context $context
@@ -146,6 +148,8 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Rewrites the directory link when inside the REST context.
 	 *
+	 * @used-by `gravityview/view/links/directory` filter.
+	 *
 	 * @since 2.29.0
 	 *
 	 * @param string $link The directory link.
@@ -169,6 +173,8 @@ class GravityView_Lightbox_Entry {
 
 	/**
 	 * Returns REST directory link for specific View and entry.
+	 *
+	 * @since 2.9.0
 	 *
 	 * @return string
 	 */
@@ -200,11 +206,11 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Returns REST endpoint for specific View and entry.
+	 * Returns REST endpoint from the current request.
 	 *
 	 * @since 2.29.0
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function get_rest_endpoint_from_request() {
 		global $wp;
@@ -411,7 +417,7 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Sets headers for Gravity Forms form submissions.
+	 * Sets headers for Gravity Forms form submission.
 	 *
 	 * @used-by `gform_get_form_confirmation_filter` filter.
 	 *
@@ -433,8 +439,6 @@ class GravityView_Lightbox_Entry {
 
 	/**
 	 * Renders the single or edit entry lightbox view.
-	 *
-	 * @used-by `gk/foundation/rest/routes` filter.
 	 *
 	 * @since   2.29.0
 	 *
@@ -512,6 +516,8 @@ class GravityView_Lightbox_Entry {
 
 	/**
 	 * Enqueues View editor script that handles the lightbox entry settings.
+	 *
+	 * @used-by `gk/foundation/inline-scripts` filter.
 	 *
 	 * @since 2.29.0
 	 *
