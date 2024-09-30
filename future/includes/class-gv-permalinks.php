@@ -34,6 +34,118 @@ final class Permalinks {
 	];
 
 	/**
+	 * Returns a list of reserved WordPress terms {@see https://codex.wordpress.org/Reserved_Terms}.
+	 *
+	 * @since $ver
+	 *
+	 * @return string[] The reserved terms.
+	 */
+	public static function get_reserved_terms(): array {
+		$reserved_terms = [
+			'action',
+			'attachment',
+			'attachment_id',
+			'author',
+			'author_name',
+			'calendar',
+			'cat',
+			'category',
+			'category__and',
+			'category__in',
+			'category__not_in',
+			'category_name',
+			'comments_per_page',
+			'comments_popup',
+			'custom',
+			'customize_messenger_channel',
+			'customized',
+			'cpage',
+			'day',
+			'debug',
+			'embed',
+			'error',
+			'exact',
+			'feed',
+			'fields',
+			'hour',
+			'link_category',
+			'm',
+			'minute',
+			'monthnum',
+			'more',
+			'name',
+			'nav_menu',
+			'nonce',
+			'nopaging',
+			'offset',
+			'order',
+			'orderby',
+			'p',
+			'page',
+			'page_id',
+			'paged',
+			'pagename',
+			'pb',
+			'perm',
+			'post',
+			'post__in',
+			'post__not_in',
+			'post_format',
+			'post_mime_type',
+			'post_status',
+			'post_tag',
+			'post_type',
+			'posts',
+			'posts_per_archive_page',
+			'posts_per_page',
+			'preview',
+			'robots',
+			's',
+			'search',
+			'second',
+			'sentence',
+			'showposts',
+			'static',
+			'status',
+			'subpost',
+			'subpost_id',
+			'tag',
+			'tag__and',
+			'tag__in',
+			'tag__not_in',
+			'tag_id',
+			'tag_slug__and',
+			'tag_slug__in',
+			'taxonomy',
+			'tb',
+			'term',
+			'terms',
+			'theme',
+			'title',
+			'type',
+			'types',
+			'w',
+			'withcomments',
+			'withoutcomments',
+			'year',
+		];
+
+		/**
+		 * @filter `gk/gravityview/permalinks/reserved-terms` Modify the extra reserved terms list.
+		 *
+		 * @since  $ver$
+		 *
+		 * @param string[] $extra_reserved_terms List of extra reserved terms.
+		 * @param string[] $reserved_terms       The list of reserved WordPress terms.
+		 */
+		$extra_reserved_terms = apply_filters( 'gk/gravityview/permalinks/reserved-terms', [], $reserved_terms );
+		$extra_reserved_terms = array_filter( $extra_reserved_terms, 'is_string' );
+
+		// Using array_merge to avoid the ability to change the reserved terms of WordPress.
+		return array_merge( $reserved_terms, $extra_reserved_terms );
+	}
+
+	/**
 	 * Creates the Permalinks feature.
 	 *
 	 * @since $ver$
@@ -57,6 +169,48 @@ final class Permalinks {
 	}
 
 	/**
+	 * Returns imploded regex group that matched reserved terms.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The regex.
+	 */
+	private static function get_reserved_terms_regex_group(): string {
+		$reserved_terms = array_map(
+			static fn( string $term ): string => preg_quote( $term, '/' ),
+			self::get_reserved_terms()
+		);
+
+		return '(' . implode( '|', $reserved_terms ) . ')';
+	}
+
+	/**
+	 * Validates a slug.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $slug                   The slug to validate.
+	 * @param bool   $exclude_reserved_terms Whether to exclude reserved terms from the slug.
+	 *
+	 * @return bool Whether the provided slug is valid.
+	 */
+	private static function validate_slug( string $slug, bool $exclude_reserved_terms = false ): bool {
+		// Slug needs to be at least 3 characters.
+		if ( strlen( $slug ) < 3 ) {
+			return false;
+		}
+
+		if (
+			$exclude_reserved_terms
+			&& preg_match( '/^' . self::get_reserved_terms_regex_group() . '(\/|$)/i', $slug )
+		) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Updates the view slug.
 	 *
 	 * @since $ver$
@@ -73,7 +227,7 @@ final class Permalinks {
 
 		$new_slug = trim( (string) $this->settings->get( 'view_slug' ) ) ?: $slug;
 
-		return (string) strlen( $new_slug ) >= 3 ? $new_slug : $slug;
+		return (string) self::validate_slug( $new_slug, true ) ? $new_slug : $slug;
 	}
 
 	/**
@@ -93,7 +247,7 @@ final class Permalinks {
 
 		$new_endpoint = trim( (string) $this->settings->get( 'entry_endpoint' ) ) ?: $endpoint;
 
-		return (string) strlen( $new_endpoint ) >= 3 ? $new_endpoint : $endpoint;
+		return (string) self::validate_slug( $new_endpoint ) ? $new_endpoint : $endpoint;
 	}
 
 	/**
@@ -321,9 +475,13 @@ final class Permalinks {
 					'rule'    => 'matches:(^$|.{3,}$)',
 					'message' => strtr(
 					// Translators: [count] is replaced by the amount of characters.
-						esc_html__( 'At least [count] characters are required.', 'gk-gravityview', ),
+						esc_html__( 'At least [count] characters are required.', 'gk-gravityview' ),
 						[ '[count]' => 3 ],
 					),
+				],
+				[
+					'rule'    => 'matches:^(?!' . self::get_reserved_terms_regex_group() . '(\/|$)).*',
+					'message' => esc_html__( 'You have used a reserved word.', 'gk-gravityview' ),
 				],
 			];
 		}
@@ -334,8 +492,7 @@ final class Permalinks {
 					return true;
 				}
 
-				// Needs at least 3 allowed characters.
-				return preg_match( '/^[a-zA-Z0-9_{}\-]{3,}$/', $value ) !== false;
+				return self::validate_slug( $value, 'view_slug' === (string) ( $settings['id'] ?? '' ) );
 			},
 		];
 	}
