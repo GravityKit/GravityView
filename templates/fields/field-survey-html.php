@@ -143,6 +143,12 @@ switch ( $gravityview->field->field->inputType ) {
 		}
 
 		$choices = $field->field->choices;
+
+		// If the choices are reversed, reverse them back.
+		if( !empty($choices) && $choices[0]['text'] === 'Excellent' ){
+			$choices = array_reverse( $choices );
+		}
+
 		$choice_values = wp_list_pluck( $choices, 'value', $gravityview->value );
 		$starred_index = array_search( $gravityview->value, $choice_values );
 		$star_a11y_label = $starred_index !== false
