@@ -343,9 +343,11 @@ final class Permalinks {
 				'description' => strtr(
 					$example_label,
 					[
-						'[url]' => sprintf( '%s/%s/some-view/entry/123',
+						'[url]' => sprintf(
+							'%s/%s/some-view/entry/123',
 							$base_url,
-							$preview( 'view_slug', $view_slug ) ),
+							$preview( 'view_slug', $view_slug )
+						),
 					],
 				),
 				'placeholder' => strtr( $default_label, [ '[slug]' => 'view' ] ),
@@ -359,9 +361,11 @@ final class Permalinks {
 				'description' => strtr(
 					$example_label,
 					[
-						'[url]' => sprintf( '%s/view/some-view/%s/123',
+						'[url]' => sprintf(
+							'%s/view/some-view/%s/123',
 							$base_url,
-							$preview( 'entry_endpoint', $entry_endpoint ) ),
+							$preview( 'entry_endpoint', $entry_endpoint )
+						),
 					],
 				),
 				'placeholder' => strtr( $default_label, [ '[slug]' => 'entry' ] ),
@@ -375,9 +379,11 @@ final class Permalinks {
 				'description' => strtr(
 					$example_label,
 					[
-						'[url]' => sprintf( '%s/view/some-view/entry/%s',
+						'[url]' => sprintf(
+							'%s/view/some-view/entry/%s',
 							$base_url,
-							$preview( 'entry_slug', $entry_slug ) ),
+							$preview( 'entry_slug', $entry_slug )
+						),
 					],
 				),
 				'placeholder' => strtr( $default_label, [ '[slug]' => '{entry_id}' ] ),
@@ -551,17 +557,24 @@ final class Permalinks {
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 
+		if ( ! $wp_rewrite instanceof \WP_Rewrite ) {
+			return;
+		}
+
 		$view_slug      = apply_filters( 'gravityview_slug', 'view' );
 		$entry_endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
 
 		$found = [];
-		foreach ( $wp_rewrite->wp_rewrite_rules() as $rule => $_ ) {
-			if ( strpos( $rule, $view_slug . '/' ) === 0 ) {
-				$found['view'] = true;
-			}
+		$rules = $wp_rewrite->wp_rewrite_rules();
+		if ( is_array( $rules ) ) {
+			foreach ( $rules as $rule => $_ ) {
+				if ( strpos( $rule, $view_slug . '/' ) === 0 ) {
+					$found['view'] = true;
+				}
 
-			if ( strpos( $rule, $entry_endpoint . '(/' ) === 0 ) {
-				$found['entry'] = true;
+				if ( strpos( $rule, $entry_endpoint . '(/' ) === 0 ) {
+					$found['entry'] = true;
+				}
 			}
 		}
 
