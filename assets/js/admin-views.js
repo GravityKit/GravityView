@@ -1458,14 +1458,14 @@
 		 * @private
 		 */
 		_getTemplateId: function ( use_base_template = false ) {
-			const template = viewConfiguration.wantedTemplate;
-			if ( !template ) {
+			const $template = viewConfiguration.wantedTemplate;
+			if ( !$template ) {
 				return '';
 			}
 
-			let template_id = viewConfiguration.wantedTemplate.data( use_base_template ? 'base-template' : 'templateid' );
+			let template_id = $template.data( use_base_template ? 'base-template' : 'templateid' );
 			if ( viewConfiguration._isViewDropDown() ) {
-				template_id = viewConfiguration.wantedTemplate.val();
+				template_id = String( $template.val() );
 			}
 
 			return template_id;
@@ -1579,7 +1579,7 @@
 				changeAllSection = !vcfg._getTemplateSection();
 
 			if ( changeAllSection ) {
-				var base_template = vcfg._getTemplateId( true );
+				var base_template = vcfg._getTemplateId( );
 				$( "#gravityview_directory_template" ).val( base_template ).trigger( 'change', { section: null } );
 				$( "#gravityview_single_template" ).val( base_template ).trigger( 'change', { section: null } );
 			}
@@ -1667,6 +1667,7 @@
 			const vcfg = viewConfiguration;
 			const $link = $( e.target );
 			const $parent = $link.parents( '.gv-view-types-module' );
+			const $select = $( this ).find( '.gv_select_template' );
 
 			// If we're internally linking
 			if ( $link.is( '[rel=internal]' ) && ( !$link.hasClass( 'gv-layout-activate' ) && !$link.hasClass( 'gv-layout-install' ) ) ) {
@@ -1695,6 +1696,7 @@
 				$parent.removeClass( 'gv-view-template-placeholder' );
 				$parent.find( 'a.gv_select_template' ).attr( 'data-templateid', $link.data( 'templateid' ) ).trigger( 'click' );
 				vcfg.activateViewSelection( $link.data( 'templateid' ) );
+				$select.trigger( 'click' );
 			};
 
 			// Activate layout
@@ -1732,8 +1734,6 @@
 
 				return;
 			}
-
-			$(this).find('.gv_select_template').trigger('click');
 		},
 
 		enableLockedTemplate: function ( e, data ) {
