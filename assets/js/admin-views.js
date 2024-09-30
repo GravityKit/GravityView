@@ -1003,6 +1003,8 @@
 				open: function () {
 					$( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 
+					$( document.body ).trigger( 'gravityview/dialog-opened', thisDialog );
+
 					vcfg.toggleCheckboxes( thisDialog );
 					vcfg.setupFieldDetails( thisDialog );
 
