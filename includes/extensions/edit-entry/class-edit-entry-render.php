@@ -2525,26 +2525,6 @@ class GravityView_Edit_Entry_Render {
 		return $valid;
 	}
 
-
-	/**
-	 * Multiselect in GF 2.2 became a json_encoded value. Fix it.
-	 *
-	 * As a hack for now we'll implode it back.
-	 */
-	public function fix_multiselect_value_serialization( $field_value, $field, $_this ) {
-		if ( empty( $field->storageType ) || 'json' != $field->storageType ) {
-			return $field_value;
-		}
-
-		$maybe_json = @json_decode( $field_value, true );
-
-		if ( $maybe_json ) {
-			return implode( ',', $maybe_json );
-		}
-
-		return $field_value;
-	}
-
 	/**
 	 * Returns labels for the action links on Edit Entry
 	 *

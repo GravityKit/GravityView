@@ -465,7 +465,7 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 
 	/**
 	 * @covers \gv_map_deep()
-	 * @since TODO
+	 * @since 2.29.0
 	 */
 	public function test_gv_map_deep() {
 		$test_data = [

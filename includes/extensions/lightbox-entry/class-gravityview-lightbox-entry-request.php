@@ -8,7 +8,7 @@ class GravityView_Lightbox_Entry_Request extends Frontend_Request {
 	/**
 	 * Gravity Forms entry object.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @var GF_Entry
 	 */
@@ -17,7 +17,7 @@ class GravityView_Lightbox_Entry_Request extends Frontend_Request {
 	/**
 	 * GravityView View object.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @var View
 	 */
@@ -39,7 +39,7 @@ class GravityView_Lightbox_Entry_Request extends Frontend_Request {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 */
 	public function is_entry( $form_id = 0 ) {
 		return $this->entry;
@@ -48,7 +48,7 @@ class GravityView_Lightbox_Entry_Request extends Frontend_Request {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 */
 	public function is_view( $return_view = true ) {
 		return $return_view ? $this->view : true;
@@ -57,7 +57,7 @@ class GravityView_Lightbox_Entry_Request extends Frontend_Request {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 */
 	public function is_renderable(): bool {
 		return true;
