@@ -145,7 +145,7 @@ switch ( $gravityview->field->field->inputType ) {
 		$choices = $field->field->choices;
 
 		// If the choices are reversed, reverse them back.
-		if( !empty($choices) && $choices[0]['text'] === 'Excellent' ){
+		if ( ! empty( $choices ) && $choices[0]['text'] === 'Excellent' ) {
 			$choices = array_reverse( $choices );
 		}
 
