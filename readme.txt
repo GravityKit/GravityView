@@ -23,7 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Added: Ability to view and edit entries inside a lightbox.
+* Added: Ability to change the URL structure for Views.
+
+__ Developer Updates__:
+
+* Added: `gk/gravityview/permalinks/reserved-terms` filter to register more reserved terms for permalinks.
 
 = 2.29 on September 27, 2024 =
 
