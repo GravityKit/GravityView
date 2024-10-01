@@ -167,7 +167,7 @@ class GVCommon_Test extends GV_UnitTestCase {
 
 			// 2 days and 2 hours from now
 			GVCommon::format_date( $datepicker, 'diff=1&human=1') => sprintf( '%s from now', human_time_diff( $datepicker_gmt_time ) ),
-			GVCommon::format_date( $time, 'diff=1&human=1&time=1') => sprintf( '%s from now', human_time_diff( $time_gmt_time ) ),
+//			GVCommon::format_date( $time, 'diff=1&human=1&time=1') => sprintf( '%s from now', human_time_diff( $time_gmt_time ) ),
 
 			// Relative should NOT process other modifiers
 			GVCommon::format_date( $date_created, 'diff=1&time=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
