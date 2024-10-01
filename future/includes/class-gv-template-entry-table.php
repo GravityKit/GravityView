@@ -94,13 +94,27 @@ class Entry_Table_Template extends Entry_Template {
 			 */
 			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty_single', false ), $context );
 
+			$markup = '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>';
+
+			/**
+			 * Modifies the table row markup for an entry.
+			 *
+			 * @filter `gravityview/template/table/entry/markup`
+			 *
+			 * @since  2.29.0
+			 *
+			 * @param string    $markup The markup.
+			 * @param \GV\Field $field  The field.
+			 */
+			$markup = apply_filters( 'gravityview/template/table/entry/markup', $markup, $field );
+
 			echo \gravityview_field_output(
 				array(
 					'entry'      => $this->entry->as_entry(),
 					'field'      => is_numeric( $field->ID ) ? $field->as_configuration() : null,
 					'label'      => $column_label,
 					'value'      => $this->the_field( $field ),
-					'markup'     => '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>',
+					'markup'     => $markup,
 					'hide_empty' => $hide_empty,
 					'zone_id'    => 'single_table-columns',
 				),

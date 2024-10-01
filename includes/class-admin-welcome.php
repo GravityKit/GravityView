@@ -296,7 +296,46 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3>2.28.0 on August 29, 2024</h3>
+				<h3>2.29 on October 1, 2024</h3>
+
+				<p>This release introduces a much-requested <a href="https://docs.gravitykit.com/article/1020-opening-and-editing-entry-details-in-a-lightbox-modal-popup">lightbox feature</a> for displaying and editing entries, settings for customizing View URLs, new options for <a href="https://docs.gravitykit.com/article/1021-show-name-fields-as-initials">displaying Name field initials</a> and Custom Content fields in full width, and a merge tag modifier to show date field values in a human-readable format. Several bugs have also been fixed.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Ability to edit and display entries inside a lightbox.</li>
+					<li>Global and individual View settings to customize the URL structure for all or specific Views.</li>
+					<li><code>:human</code> merge tag modifier for date fields to display in human-readable format (e.g., <em>10 minutes ago</em>, <em>5 days from now</em>).</li>
+					<li>Option to display the Name field value as initials.</li>
+					<li>Option to display Custom Content field full width on the Single Entry screen.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Clearing search removed all URL query parameters and, in some cases, redirected to the homepage.</li>
+					<li>Searching the View added duplicate search parameters to the URL.</li>
+					<li>PHP 8.2 deprecation notice related to dynamic property creation.</li>
+					<li>Entries not displaying when a View using DataTables was embedded in a Single Entry page with the List layout.</li>
+					<li>PHP warning when displaying a View with an Event field without an active Gravity Forms Event Fields Add-On.</li>
+					<li>Sorting entries in random order was not working.</li>
+					<li>Multi Select field values starting with a square bracket were not displayed as selected on the Edit Entry screen.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.18.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gk/gravityview/field/name/display</code> filter to modify the Name field display value.</li>
+					<li>Added <code>gk/gravityview/permalinks/reserved-terms</code> filter to modify the list of reserved terms that are excluded from permalinks.</li>
+				</ul>
+
+				<h3>2.28 on August 29, 2024</h3>
 
 				<p>This update adds support for plain-text URLs in entry moderation merge tags, and fixes several bugs, including critical errors in the View editor.</p>
 
@@ -359,47 +398,6 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Added <code>gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields</code> filter that, when set to <code>true</code>, initializes the Multiple Entries layout with all form fields when creating a new View. The default is <code>false</code>, which populates the View with only the fields configured in the Gravity Forms Entries table.</li>
-				</ul>
-
-				<h3>2.26 on August 8, 2024</h3>
-
-				<p>This update resolves various issues, including compatibility with Yoast SEO, improves performance through enhanced View entries caching, and adds new functionality.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Ability to modify the entry creator’s information on the Edit Entry screen.</li>
-					<li>Merge tag modifier for formatting Date and Time fields (e.g., <code>{Date Field:1:format:Y-m-d}</code>).</li>
-					<li>Placeholders in View Settings to inform you that additional functionality is available.</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>The "Sort By" option in the GravityView Gutenberg block now offers a dropdown selection of fields instead of requiring manual entry of the field ID.</li>
-					<li>Caching of View entries to prevent unnecessary database queries. Thanks, Shehroz!</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Timeout issue when rendering a page/post with GravityView Gutenberg blocks when Yoast SEO is active.</li>
-					<li>View editor fields added to the Single or Edit Entry layouts inheriting options from the View type set in the Multiple Entries layout.</li>
-					<li>An issue in the Search Bar widget configuration where adding a Date field caused the search mode ("any" and "all") to no longer be toggleable.</li>
-					<li><code>[gv_entry_link]</code> shortcode not rendering inside the Custom HTML block.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href='https://www.gravitykit.com/foundation/'>Foundation</a> and <a href='https://www.trustedlogin.com/'>TrustedLogin</a> to versions 1.2.17 and 1.8.0, respectively.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/feature/upgrade/disabled</code> filter to disable the functionality placeholders. Return <code>true</code> to disable the placeholders.</li>
-					<li>Added <code>gk/gravityview/metabox/content/before</code> and <code>gk/gravityview/metabox/content/after</code> actions, triggered before and after the View metabox is rendered.</li>
 				</ul>
 
 				<p style="text-align: center;">

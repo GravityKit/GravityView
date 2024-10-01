@@ -2173,10 +2173,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if ( $gravityview_view->search_clear ) {
-			$url = strtok( add_query_arg( array() ), '?' );
-
 			$clear_button_params = [
-				'url'     => $url,
+				'url'     => remove_query_arg(
+					( GravityView_Widget_Search::getInstance() )->add_reserved_args( [] )
+				),
 				'text'    => esc_html__( 'Clear', 'gk-gravityview' ),
 				'view_id' => $gravityview_view->getViewId(),
 				'format'  => 'html',
