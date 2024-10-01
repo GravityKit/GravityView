@@ -132,7 +132,7 @@ final class Permalinks {
 		];
 
 		/**
-		 * Modify the extra reserved terms list.
+		 * Modifies the list of reserved terms that are excluded from permalinks.
 		 *
 		 * @filter `gk/gravityview/permalinks/reserved-terms`
 		 *
