@@ -25,6 +25,7 @@ final class Permalinks {
 	 * The default slug values.
 	 *
 	 * @since $ver$
+	 *
 	 * @var array|string[]
 	 */
 	private static array $default_slugs = [
@@ -36,7 +37,7 @@ final class Permalinks {
 	/**
 	 * Returns a list of reserved WordPress terms {@see https://codex.wordpress.org/Reserved_Terms}.
 	 *
-	 * @since $ver
+	 * @since $ver$
 	 *
 	 * @return string[] The reserved terms.
 	 */
@@ -131,7 +132,9 @@ final class Permalinks {
 		];
 
 		/**
-		 * @filter `gk/gravityview/permalinks/reserved-terms` Modify the extra reserved terms list.
+		 * Modify the extra reserved terms list.
+		 *
+		 * @filter `gk/gravityview/permalinks/reserved-terms`
 		 *
 		 * @since  $ver$
 		 *
@@ -212,7 +215,7 @@ final class Permalinks {
 	}
 
 	/**
-	 * Updates the view slug.
+	 * Updates the View slug.
 	 *
 	 * @since $ver$
 	 *
@@ -256,13 +259,13 @@ final class Permalinks {
 	 *
 	 * @since $ver$
 	 *
-	 * @param string     $slug  The original slug.
-	 * @param string|int $_     The entry ID.
-	 * @param array      $entry The entry.
+	 * @param string     $slug     The original slug.
+	 * @param string|int $entry_id The entry ID.
+	 * @param array      $entry    The entry.
 	 *
 	 * @return string The slug.
 	 */
-	public function set_entry_slug( $slug, $_, array $entry ): string {
+	public function set_entry_slug( $slug, $entry_id, array $entry ): string {
 		$new_slug = trim( $this->settings->get( 'entry_slug', $slug ) );
 		$view     = View::from_post( get_post() );
 
@@ -433,7 +436,7 @@ final class Permalinks {
 	}
 
 	/**
-	 * Adds a Permalinks Section to the GravityView Settings.
+	 * Adds a Permalinks Section to the GravityView global settings.
 	 *
 	 * @since $ver$
 	 *
@@ -494,7 +497,7 @@ final class Permalinks {
 	}
 
 	/**
-	 * Adds inline javascript for the view settings.
+	 * Adds inline JavaScript for the View settings.
 	 *
 	 * @since $ver$
 	 */
@@ -504,47 +507,47 @@ final class Permalinks {
 		}
 
 		$js = <<<JS
-( function( $ ) {
-	$( function() {
-		const getErrorMessage = ( value ) => {
-			if ( value.length === 0 ) {
-				return '';
-			}
-
-			if (value.length < 3) {
-				return '[ERROR_AT_LEAST_3]';
-			}
-
-			if ( ! value.match( /{entry_id}/s ) ) {
-				 return '[ERROR_MISSING_ENTRY_ID]';
-			}
-
-			if ( ! value.match( /(^[a-zA-Z0-9_{}\-]*$)/s ) ) {
-				return '[ERROR_NO_SPACES]';
-			}
-
-			return '';
-		}
-
-		$( '#gravityview_se_single_entry_slug' ).on( 'input', function () {
-			const value = $( this ).val();
-			const parent = $( this ).closest( 'label' );
-			const error = getErrorMessage( value );
-			const is_valid = '' === error;
-
-			parent.toggleClass( 'form-invalid form-required', ! is_valid  );
-			$( '#publish ')
-				.attr( 'disabled', ! is_valid )
-				.toggleClass( 'disabled' , ! is_valid );
-
-			parent.find( 'span.error-message' ).remove();
-			if ( !is_valid ) {
-				parent.append( $( '<span class="error-message" style="margin-top:2px; font-size: 12px">' + error + '</span>' ) );
-			}
-		} );
-	} );
-} )( jQuery );
-JS;
+			( function( $ ) {
+				$( function() {
+					const getErrorMessage = ( value ) => {
+						if ( value.length === 0 ) {
+							return '';
+						}
+			
+						if (value.length < 3) {
+							return '[ERROR_AT_LEAST_3]';
+						}
+			
+						if ( ! value.match( /{entry_id}/s ) ) {
+							 return '[ERROR_MISSING_ENTRY_ID]';
+						}
+			
+						if ( ! value.match( /(^[a-zA-Z0-9_{}\-]*$)/s ) ) {
+							return '[ERROR_NO_SPACES]';
+						}
+			
+						return '';
+					}
+			
+					$( '#gravityview_se_single_entry_slug' ).on( 'input', function () {
+						const value = $( this ).val();
+						const parent = $( this ).closest( 'label' );
+						const error = getErrorMessage( value );
+						const is_valid = '' === error;
+			
+						parent.toggleClass( 'form-invalid form-required', ! is_valid  );
+						$( '#publish ')
+							.attr( 'disabled', ! is_valid )
+							.toggleClass( 'disabled' , ! is_valid );
+			
+						parent.find( 'span.error-message' ).remove();
+						if ( !is_valid ) {
+							parent.append( $( '<span class="error-message" style="margin-top:2px; font-size: 12px">' + error + '</span>' ) );
+						}
+					} );
+				} );
+			} )( jQuery );
+		JS;
 
 		$js = strtr(
 			$js,
@@ -565,6 +568,7 @@ JS;
 				),
 			]
 		);
+
 		wp_add_inline_script( 'gravityview_views_scripts', $js );
 	}
 
@@ -623,7 +627,7 @@ JS;
 	}
 
 	/**
-	 * Returns the validation rules for the entry_slug, based on the current environment.
+	 * Returns the validation rules for the entry slug, based on the current environment.
 	 *
 	 * @since $ver$
 	 *
@@ -676,7 +680,7 @@ JS;
 		/** @var WP_Rewrite $wp_rewrite */
 		global $wp_rewrite;
 
-		if ( ! $wp_rewrite instanceof \WP_Rewrite ) {
+		if ( ! $wp_rewrite instanceof WP_Rewrite ) {
 			return;
 		}
 
@@ -685,6 +689,7 @@ JS;
 
 		$found = [];
 		$rules = $wp_rewrite->wp_rewrite_rules();
+
 		if ( is_array( $rules ) ) {
 			foreach ( $rules as $rule => $_ ) {
 				if ( strpos( $rule, $view_slug . '/' ) === 0 ) {
@@ -709,23 +714,23 @@ JS;
 	 */
 	public function add_global_settings_scripts( array $scripts ): array {
 		$script = <<<JS
-window.addEventListener( 'gk/foundation/settings/initialized', () => {
-	document.addEventListener( 'input', ( e ) => {
-		if ( [ 'view_slug', 'entry_endpoint', 'entry_slug' ].indexOf( e.target.name ) < 0 ) {
-			return;
-		}
-		// Update all preview element when the corresponding input is changed.
-		document.querySelectorAll( `[data-slug-preview="\${e.target.name}"]` ).forEach( ( element ) => {
-			const default_value = element.dataset.slugDefault ?? 'unknown';
-			element.innerHTML = ( e.target.value || default_value );
-
-			if ( 'entry_slug' === e.target.name ) {
-				element.innerHTML = element.innerHTML.replaceAll( '{entry_id}', '123' );
-			}
-		} );
-	} );
-} );
-JS;
+			window.addEventListener( 'gk/foundation/settings/initialized', () => {
+				document.addEventListener( 'input', ( e ) => {
+					if ( [ 'view_slug', 'entry_endpoint', 'entry_slug' ].indexOf( e.target.name ) < 0 ) {
+						return;
+					}
+					// Update all preview element when the corresponding input is changed.
+					document.querySelectorAll( `[data-slug-preview="\${e.target.name}"]` ).forEach( ( element ) => {
+						const default_value = element.dataset.slugDefault ?? 'unknown';
+						element.innerHTML = ( e.target.value || default_value );
+			
+						if ( 'entry_slug' === e.target.name ) {
+							element.innerHTML = element.innerHTML.replaceAll( '{entry_id}', '123' );
+						}
+					} );
+				} );
+			} );
+		JS;
 
 		$scripts[] = [
 			'script' => $script,
