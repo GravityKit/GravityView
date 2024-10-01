@@ -481,7 +481,7 @@ final class Permalinks {
 			'full_width'        => true,
 			'placeholder'       => str_replace(
 				'[slug]',
-				'{entry_id}',
+				$this->settings->get( 'entry_slug', '' ) ?: '{entry_id}',
 				esc_html__( 'Default: [slug]', 'gk-gravityview' )
 			),
 			'article'           => [
