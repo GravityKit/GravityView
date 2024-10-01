@@ -57,23 +57,24 @@ class GravityView_Render_Settings {
 
 			// Default options - fields
 			$field_options = array(
-				'show_label'        => array(
-					'type'     => 'checkbox',
-					'label'    => __( 'Show Label', 'gk-gravityview' ),
-					'value'    => ! empty( $is_table_layout ),
-					'priority' => 1000,
-					'group'    => 'label',
+				'show_label' => array(
+					'type'         => 'checkbox',
+					'label'        => __( 'Show Label', 'gk-gravityview' ),
+					'value'        => ! empty( $is_table_layout ),
+					'priority'     => 1000,
+					'group'        => 'label',
 					'requires_not' => 'full_width=1',
 				),
-				'custom_label'      => array(
-					'type'       => 'text',
-					'label'      => __( 'Custom Label:', 'gk-gravityview' ),
-					'value'      => '',
-					'merge_tags' => true,
-					'class'      => 'widefat',
-					'priority'   => 1100,
-					'requires'   => 'show_label',
-					'group'      => 'label',
+				'custom_label' => array(
+					'type'         => 'text',
+					'label'        => __( 'Custom Label:', 'gk-gravityview' ),
+					'value'        => '',
+					'merge_tags'   => true,
+					'class'        => 'widefat',
+					'priority'     => 1100,
+					'requires'     => 'show_label',
+					'requires_not' => 'full_width=1',
+					'group'        => 'label',
 				),
 				'custom_class'      => array(
 					'type'       => 'text',
