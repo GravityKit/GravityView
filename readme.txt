@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.29 on September 27, 2024 =
+= 2.29 on October 1, 2024 =
 
 This release introduces a much-requested [lightbox feature](https://docs.gravitykit.com/article/1020-opening-and-editing-entry-details-in-a-lightbox-modal-popup) for displaying and editing entries, settings for customizing View URLs, new options for [displaying Name field initials](https://docs.gravitykit.com/article/1021-show-name-fields-as-initials) and Custom Content fields in full width, and a merge tag modifier to show date field values in a human-readable format. Several bugs have also been fixed.
 
