@@ -341,7 +341,16 @@ final class Permalinks {
 				'type'        => 'text',
 				'title'       => esc_html__( 'View Slug', 'gk-gravityview' ),
 				'description' => strtr(
-					$example_label,
+					implode(
+						'<br/><br/>',
+						[
+							$example_label,
+							esc_html__(
+								'The slug must be at least 3 characters, and cannot contain certain words. See documentation for more information.',
+								'gk-gravityview'
+							),
+						],
+					),
 					[
 						'[url]' => sprintf(
 							'%s/%s/some-view/entry/123',
@@ -353,13 +362,27 @@ final class Permalinks {
 				'placeholder' => strtr( $default_label, [ '[slug]' => 'view' ] ),
 				'value'       => $view_slug,
 				'validation'  => $slug_validation_rules,
+				'link'        => [
+					'title' => esc_html__( 'Read documentation', 'gk-gravityview' ),
+					'url'   => 'https://docs.gravitykit.com/article/57-customizing-urls',
+				],
 			],
 			[
 				'id'          => 'entry_endpoint',
 				'type'        => 'text',
 				'title'       => esc_html__( 'Entry Endpoint', 'gk-gravityview' ),
 				'description' => strtr(
-					$example_label,
+					implode(
+						'<br/><br/>',
+						[
+							$example_label,
+							// Translators: [slug] is replaced by the correct merge tag.
+							esc_html__(
+								'The slug must be at least 3 characters, and cannot contain certain words. See documentation for more information.',
+								'gk-gravityview'
+							),
+						],
+					),
 					[
 						'[url]' => sprintf(
 							'%s/view/some-view/%s/123',
@@ -371,19 +394,34 @@ final class Permalinks {
 				'placeholder' => strtr( $default_label, [ '[slug]' => 'entry' ] ),
 				'value'       => $entry_endpoint,
 				'validation'  => $slug_validation_rules,
+				'link'        => [
+					'title' => esc_html__( 'Read documentation', 'gk-gravityview' ),
+					'url'   => 'https://docs.gravitykit.com/article/57-customizing-urls',
+				],
 			],
 			[
 				'id'          => 'entry_slug',
 				'type'        => 'text',
 				'title'       => esc_html__( 'Entry Slug', 'gk-gravityview' ),
 				'description' => strtr(
-					$example_label,
+					implode(
+						'<br/><br/>',
+						[
+							$example_label,
+							// Translators: [slug] is replaced by the correct merge tag.
+							esc_html__(
+								'The entry slug requires at least the [slug] merge tag, to ensure uniqueness.',
+								'gk-gravityview'
+							),
+						],
+					),
 					[
-						'[url]' => sprintf(
+						'[url]'  => sprintf(
 							'%s/view/some-view/entry/%s',
 							$base_url,
 							$preview( 'entry_slug', $entry_slug )
 						),
+						'[slug]' => '<code>{entry_id}</code>',
 					],
 				),
 				'placeholder' => strtr( $default_label, [ '[slug]' => '{entry_id}' ] ),
