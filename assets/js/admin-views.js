@@ -55,6 +55,8 @@
 
    var viewConfiguration, viewGeneralSettings;
 
+   const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
+
    viewConfiguration = {
 
 	   // Checks if the execution is on a Start Fresh context
@@ -1461,14 +1463,15 @@
 		* @private
 		*/
 	   _getTemplateId: function ( use_base_template = false ) {
-		   const template = viewConfiguration.wantedTemplate;
-		   if ( !template ) {
+		   const $template = viewConfiguration.wantedTemplate;
+		   if ( !$template ) {
 			   return '';
 		   }
 
-		   let template_id = viewConfiguration.wantedTemplate.data( use_base_template ? 'base-template' : 'templateid' );
+		   let template_id = $template.data( use_base_template ? 'base-template' : 'templateid' );
 		   if ( viewConfiguration._isViewDropDown() ) {
 			   template_id = viewConfiguration.wantedTemplate.val();
+			   template_id = String( $template.val() );
 		   }
 
 		   return template_id;
@@ -1582,7 +1585,7 @@
 			   changeAllSection = !vcfg._getTemplateSection();
 
 		   if ( changeAllSection ) {
-			   var base_template = vcfg._getTemplateId( true );
+			   var base_template = vcfg._getTemplateId();
 			   $( "#gravityview_directory_template" ).val( base_template ).trigger( 'change', { section: null } );
 			   $( "#gravityview_single_template" ).val( base_template ).trigger( 'change', { section: null } );
 		   }
@@ -1670,6 +1673,7 @@
 		   const vcfg = viewConfiguration;
 		   const $link = $( e.target );
 		   const $parent = $link.parents( '.gv-view-types-module' );
+		   const $select = $( this ).find( '.gv_select_template' );
 
 		   // If we're internally linking
 		   if ( $link.is( '[rel=internal]' ) && ( !$link.hasClass( 'gv-layout-activate' ) && !$link.hasClass( 'gv-layout-install' ) ) ) {
@@ -1690,6 +1694,7 @@
 		   const do_always = () => {
 			   vcfg.performingAjaxAction = false;
 			   $link.removeClass( 'disabled' );
+			   $parent.removeClass( 'active' );
 		   };
 
 		   const on_success = () => {
@@ -1697,6 +1702,8 @@
 			   $parent.find( '.gv-view-types-hover > div:eq(1)' ).removeClass( 'hidden' );
 			   $parent.removeClass( 'gv-view-template-placeholder' );
 			   $parent.find( 'a.gv_select_template' ).attr( 'data-templateid', $link.data( 'templateid' ) ).trigger( 'click' );
+			   vcfg.activateViewSelection( $link.data( 'templateid' ) );
+			   $select.trigger( 'click' );
 		   };
 
 		   // Activate layout
@@ -1705,7 +1712,9 @@
 				   return;
 			   }
 
-			   $link.addClass( 'disabled' );
+			   $parent.addClass( 'active' );
+			   $link.addClass( 'disabled' ).attr( 'disabled', true );
+			   $link.html( $spinner );
 
 			   $.when( vcfg.server_request( 'activate_product', {
 					   text_domain: $link.attr( 'data-template-text-domain' ),
@@ -1723,6 +1732,10 @@
 				   return;
 			   }
 
+			   $parent.addClass( 'active' );
+			   $link.addClass( 'disabled' ).attr( 'disabled', true );
+			   $link.html( $spinner );
+
 			   $.when( vcfg.server_request( 'install_product', {
 					   id: $link.attr( 'data-download-id' ),
 					   text_domain: $link.attr( 'data-template-text-domain' ),
@@ -1734,8 +1747,6 @@
 
 			   return;
 		   }
-
-		   $(this).find('.gv_select_template').trigger('click');
 	   },
 
 	   enableLockedTemplate: function ( e, data ) {
@@ -1746,10 +1757,9 @@
 			   activate: true,
 		   };
 
-		   const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
 		   if ( JSON.stringify( payload ) !== '{}' ) {
 			   const $pill = $( e.target );
-			   const $item = $pill.closest( '.view-dropdown-list-item' )
+			   const $item = $pill.closest( '.view-dropdown-list-item' );
 
 			   $pill.addClass( 'is-idle' ).html( $spinner );
 			   $item.addClass( 'is-idle' );
@@ -1758,18 +1768,7 @@
 				   .then( () => {
 					   $pill.removeClass( 'has-failed' );
 
-					   // We need to update all view selectors on the page.
-					   const $view_selectors = $( '[data-view-dropdown]' );
-					   const $options = $view_selectors.find( 'option[value="' + $option.val() + '"]' );
-
-					   $options.attr( 'disabled', false );
-					   $options.val( $option.data( 'template-id' ) );
-
-					   // Refresh the selectors with the updated values.
-					   $view_selectors.each( ( _, el ) => {
-						   const dropdown = $( el ).viewDropdown();
-						   dropdown.renderOptions();
-					   } );
+					   viewConfiguration.activateViewSelection( $option.data('template-id') );
 
 					   data?.dropdown?.focusActive();
 				   } )
@@ -1782,6 +1781,30 @@
 					   $item.removeClass( 'is-idle' );
 				   } );
 		   }
+	   },
+
+	   /**
+		* Activates a selection on all view selectors after installation or activation.
+		*
+		* @since $ver$
+		*
+		* @param {String} template_id The template ID.
+		*/
+	   activateViewSelection: function ( template_id ) {
+		   // We need to update all view selectors on the page.
+		   const $view_selectors = $( '[data-view-dropdown]' );
+		   const $options = $view_selectors.find( 'option[data-template-id="' + template_id + '"]' );
+
+		   $options.attr( 'disabled', false );
+		   $options.val( template_id );
+
+		   // Refresh the selectors with the updated values.
+		   $view_selectors.each( ( _, el ) => {
+			   const dropdown = $( el ).viewDropdown();
+			   dropdown.renderOptions();
+		   } );
+
+		   viewConfiguration.updateSettingsArea();
 	   },
 
 	   openExternalLinks: function () {
@@ -1846,6 +1869,27 @@
 		   };
 
 		   return vcfg.updateViewConfig( data );
+	   },
+
+	   /**
+		* Renders the current page again, but with possible changes; and replaces the settings section.
+		*
+		* @since $ver$
+		*/
+	   updateSettingsArea: function () {
+		   const $settings_content = $('#gravityview_settings .inside');
+		   $settings_content.html('');
+
+		   $.get( document.URL, function ( response ) {
+			   if ( response ) {
+				   const $document = $(response);
+				   $settings_content.html( $document.find( '#gravityview_settings .inside' ).html() );
+
+				   viewGeneralSettings.refresh();
+				   // Some plugins rely on this event to show or hide settings.
+				   $( '#gravityview_directory_template' ).trigger( 'change' );
+			   }
+		   } );
 	   },
 
 	   /**
@@ -2902,6 +2946,19 @@
 	   },
 
 	   /**
+		* Refreshes the tabs after HTML was replaced.
+		*
+		* @since $ver$
+		*/
+	   refresh: function () {
+		   viewGeneralSettings.metaboxObj.trigger( 'change' );
+
+		   viewGeneralSettings.metaboxObj.tabs( 'destroy' );
+
+		   viewGeneralSettings.initTabs();
+	   },
+
+	   /**
 		* Callback method to show/hide settings if template changes and settings have a specific template attribute
 		*/
 	   updateSettingsDisplay: function () {
@@ -2952,9 +3009,6 @@
 		   }
 
 		   viewGeneralSettings.metaboxObj
-			   // What happens after tabs are generated
-			   .on( 'tabscreate', viewGeneralSettings.tabsCreate )
-
 			   // Force the sort metabox to be directly under the view configuration. Damn 3rd party metaboxes!
 			   .insertAfter( $('#gravityview_view_config') )
 
@@ -3189,7 +3243,6 @@
 
 		   $.when( viewConfiguration.server_request( action, payload ) )
 			   .then( ( response ) => {
-				   console.log(response);
 				   if ( ! response.success ) {
 					   throw new Error();
 				   }
