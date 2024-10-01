@@ -10,28 +10,28 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * The REST namespace used for the single entry lightbox view.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 */
 	const REST_NAMESPACE = 'gravityview';
 
 	/**
 	 * The REST version used for the single entry lightbox view.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 */
 	const REST_VERSION = 1;
 
 	/**
 	 * Regex used to match the REST endpoint.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 */
 	const REST_ENDPOINT_REGEX = 'view/(?P<view_id>[0-9]+)/entry/(?P<entry_id>[0-9]+)';
 
 	/**
 	 * Class constructor.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 */
 	public function __construct() {
 		require_once 'class-gravityview-lightbox-entry-request.php';
@@ -48,7 +48,9 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Enables lightbox when it's not explicitly enabled in the View settings but a field is configured to use it.
 	 *
-	 * @since TBD
+	 * @used-by `gravityview/template/before` filter.
+	 *
+	 * @since 2.29.0
 	 *
 	 * @param Template_Context $context
 	 *
@@ -73,7 +75,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @used-by `gk/foundation/rest/routes` filter.
 	 *
-	 * @since   TBD
+	 * @since   2.29.0
 	 *
 	 * @param array[] $routes The registered REST routes.
 	 *
@@ -97,7 +99,7 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Processes the REST request by rendering the single or edit entry lightbox view, and handling delete and other actions.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @param WP_REST_Request $request
 	 *
@@ -116,7 +118,7 @@ class GravityView_Lightbox_Entry {
 
 			ob_start();
 
-			printf( '<html>%s</html>', esc_html__( 'The requested entry could not be found.', 'gravityview' ) );
+			printf( '<html>%s</html>', esc_html__( 'The requested entry could not be found.', 'gk-gravityview' ) );
 
 			return new WP_REST_Response( null, 404, [ 'Content-Type' => 'text/html' ] );
 		}
@@ -146,7 +148,9 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Rewrites the directory link when inside the REST context.
 	 *
-	 * @since TBD
+	 * @used-by `gravityview/view/links/directory` filter.
+	 *
+	 * @since 2.29.0
 	 *
 	 * @param string $link The directory link.
 	 *
@@ -170,6 +174,8 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Returns REST directory link for specific View and entry.
 	 *
+	 * @since 2.9.0
+	 *
 	 * @return string
 	 */
 	public function get_rest_directory_link( $view_id, $entry_id ) {
@@ -182,7 +188,7 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Returns REST endpoint for specific View and entry.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @param int $view_id  The View ID.
 	 * @param int $entry_id The entry ID.
@@ -200,13 +206,15 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Returns REST endpoint for specific View and entry.
+	 * Returns REST endpoint from the current request.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function get_rest_endpoint_from_request() {
+		global $wp;
+
 		preg_match(
 			sprintf(
 				'#%s/v%s/(?P<endpoint>%s)#',
@@ -214,7 +222,7 @@ class GravityView_Lightbox_Entry {
 				self::REST_VERSION,
 				self::REST_ENDPOINT_REGEX
 			),
-			urldecode( $_SERVER['REQUEST_URI'] ?? '' ),
+			$wp->query_vars['rest_route'] ?? '',
 			$matches
 		);
 
@@ -224,7 +232,7 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Returns the View and entry IDs from the REST endpoint.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @param string $endpoint The REST endpoint.
 	 *
@@ -241,7 +249,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @used-by `gravityview_field_entry_link` filter.
 	 *
-	 * @since   TBD
+	 * @since   2.29.0
 	 *
 	 * @param string $link           The entry link (HTML markup).
 	 * @param string $href           The entry link URL.
@@ -300,7 +308,7 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Configures the necessary logic to process the edit entry request.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @param string   $nonce The edit entry nonce.
 	 * @param View     $view  The View object.
@@ -316,9 +324,6 @@ class GravityView_Lightbox_Entry {
 
 		add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
 		add_filter( 'gravityview/edit_entry/cancel_onclick', '__return_empty_string' );
-		add_filter( 'gravityview/view/links/directory', function () use ( $view, $entry ) {
-			return rest_url( $this->get_rest_endpoint( $view->ID, $entry->ID ) );
-		} );
 
 		// Prevent redirection inside the lightbox by sending event to the parent window and hiding the success message.
 		if ( ! in_array( $view->settings->get( 'edit_redirect' ), [ '1', '2' ] ) ) {
@@ -345,16 +350,18 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Processes the delete entry action.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @param View $view The View object.
 	 *
 	 * @return WP_REST_Response
 	 */
 	private function process_delete_entry( $view ) {
+		global $wp;
+
 		add_filter( 'wp_redirect', '__return_false' ); // Prevent redirection after the entry is deleted.
 
-		do_action( 'wp' ); // Entry deletion hooks to the `wp` action.
+		do_action_ref_array( 'wp', [ $wp ] ); // Entry deletion hooks to the `wp` action.
 
 		$reload_page     = GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE === (int) $view->settings->get( 'delete_redirect' ) ? 'true' : 'false';
 		$redirect_to_url = GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE === (int) $view->settings->get( 'delete_redirect' ) ? esc_url( $view->settings->get( 'delete_redirect_url', '' ) ) : '';
@@ -382,7 +389,7 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Processes the duplicate entry action.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @return WP_REST_Response
 	 */
@@ -410,11 +417,11 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Sets headers for Gravity Forms form submissions.
+	 * Sets headers for Gravity Forms form submission.
 	 *
 	 * @used-by `gform_get_form_confirmation_filter` filter.
 	 *
-	 * @since   TBD
+	 * @since   2.29.0
 	 *
 	 * @param string $response The form submission response.
 	 *
@@ -433,9 +440,7 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Renders the single or edit entry lightbox view.
 	 *
-	 * @used-by `gk/foundation/rest/routes` filter.
-	 *
-	 * @since   TBD
+	 * @since   2.29.0
 	 *
 	 * @param string   $type  The type of the entry view (single or edit).
 	 * @param View     $view  The View object.
@@ -445,6 +450,8 @@ class GravityView_Lightbox_Entry {
 	 * @return WP_REST_Response
 	 */
 	private function render_entry( $type, $view, $entry, $form ) {
+		global $wp;
+
 		add_filter( 'gravityview_go_back_url', '__return_false' );
 
 		$view_data = GravityView_View_Data::getInstance();
@@ -455,7 +462,7 @@ class GravityView_Lightbox_Entry {
 
 		$entry_renderer = 'edit' === $type ? new Edit_Entry_Renderer() : new Entry_Renderer();
 
-		do_action( 'wp' );
+		do_action_ref_array( 'wp', [ $wp ] );
 
 		do_action( 'wp_enqueue_scripts' );
 
@@ -510,7 +517,9 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Enqueues View editor script that handles the lightbox entry settings.
 	 *
-	 * @since TBD
+	 * @used-by `gk/foundation/inline-scripts` filter.
+	 *
+	 * @since 2.29.0
 	 *
 	 * @param array $scripts The registered scripts.
 	 *

@@ -184,7 +184,7 @@ jQuery( function ( $ ) {
 		/**
 		 * Listen for messages from the iframe and perform various actions.
 		 *
-		 * @since TBD
+		 * @since 2.29.0
 		 */
 		iframe: function () {
 			window.addEventListener( 'message', function ( event ) {
