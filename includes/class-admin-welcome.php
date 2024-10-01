@@ -298,7 +298,7 @@ class GravityView_Welcome {
 				?>
 				<h3>2.29 on September 27, 2024</h3>
 
-				<p>This release brings a much-requested lightbox feature for displaying and editing entries, adds an option to show Name field values as initials, and introduces a modifier to display date field values in a human-readable format, while also squashing several bugs.</p>
+				<p>This release brings a much-requested lightbox feature for displaying and editing entries, adds new display options for Name and Custom Content fields, and introduces a modifier to display date field values in a human-readable format, while also squashing several bugs.</p>
 
 				<h4>🚀 Added</h4>
 
@@ -306,6 +306,7 @@ class GravityView_Welcome {
 					<li>Ability to edit and display entries inside a lightbox.</li>
 					<li><code>:human</code> merge tag modifier for date fields to display in human-readable format (e.g., <em>10 minutes ago</em>, <em>5 days from now</em>).</li>
 					<li>Option to display the Name field value as initials.</li>
+					<li>Option to display Custom Content field full width on the Single Entry screen.</li>
 				</ul>
 
 				<h4>🐛 Fixed</h4>
