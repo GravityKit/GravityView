@@ -55,6 +55,8 @@
 
 	var viewConfiguration, viewGeneralSettings;
 
+	const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
+
 	viewConfiguration = {
 
 		// Checks if the execution is on a Start Fresh context
@@ -1690,6 +1692,7 @@
 			const do_always = () => {
 				vcfg.performingAjaxAction = false;
 				$link.removeClass( 'disabled' );
+				$parent.removeClass( 'active' );
 			};
 
 			const on_success = () => {
@@ -1707,7 +1710,9 @@
 					return;
 				}
 
-				$link.addClass( 'disabled' );
+				$parent.addClass( 'active' );
+				$link.addClass( 'disabled' ).attr( 'disabled', true );
+				$link.html( $spinner );
 
 				$.when( vcfg.server_request( 'activate_product', {
 						text_domain: $link.attr( 'data-template-text-domain' ),
@@ -1724,6 +1729,10 @@
 				if ( vcfg.performingAjaxAction ) {
 					return;
 				}
+
+				$parent.addClass( 'active' );
+				$link.addClass( 'disabled' ).attr( 'disabled', true );
+				$link.html( $spinner );
 
 				$.when( vcfg.server_request( 'install_product', {
 						id: $link.attr( 'data-download-id' ),
@@ -1746,7 +1755,6 @@
 				activate: true,
 			};
 
-			const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
 			if ( JSON.stringify( payload ) !== '{}' ) {
 				const $pill = $( e.target );
 				const $item = $pill.closest( '.view-dropdown-list-item' );
