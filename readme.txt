@@ -31,12 +31,13 @@ __ Developer Updates__:
 
 = 2.29 on September 27, 2024 =
 
-This release brings a much-requested lightbox feature for displaying and editing entries, adds an option to show Name field values as initials, and introduces a modifier to display date field values in a human-readable format, while also squashing several bugs.
+This release brings a much-requested lightbox feature for displaying and editing entries, adds new display options for Name and Custom Content fields, and introduces a modifier to display date field values in a human-readable format, while also squashing several bugs.
 
 #### 🚀 Added
 * Ability to edit and display entries inside a lightbox.
 * `:human` merge tag modifier for date fields to display in human-readable format (e.g., `10 minutes ago`, `5 days from now`).
 * Option to display the Name field value as initials.
+* Option to display Custom Content field full width on the Single Entry screen.
 
 #### 🐛 Fixed
 * Clearing search removed all URL query parameters and, in some cases, redirected to the homepage.

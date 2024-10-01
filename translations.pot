@@ -9,9 +9,9 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-09-30T10:40:52+00:00\n"
+"POT-Creation-Date: 2024-10-01T21:56:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.9.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
@@ -96,57 +96,78 @@ msgid "Styles don't get loaded when being previewed, so the content below will l
 msgstr ""
 
 #. Translators: [url] is replaced by the preview URL.
-#: future/includes/class-gv-permalinks.php:329
+#: future/includes/class-gv-permalinks.php:330
 msgid "Example: [url]"
 msgstr ""
 
 #. Translators: [slug] is replaced by the slug.
-#: future/includes/class-gv-permalinks.php:331
+#: future/includes/class-gv-permalinks.php:332
+#: future/includes/class-gv-permalinks.php:485
 msgid "Default: [slug]"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:342
+#: future/includes/class-gv-permalinks.php:343
 msgid "View Slug"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:358
-msgid "Entry Endpoint"
+#. Translators: [slug] is replaced by the correct merge tag.
+#: future/includes/class-gv-permalinks.php:349
+#: future/includes/class-gv-permalinks.php:381
+msgid "The slug must be at least 3 characters, and cannot contain certain words. See documentation for more information."
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:367
+#: future/includes/class-gv-permalinks.php:399
+msgid "Read documentation"
 msgstr ""
 
 #: future/includes/class-gv-permalinks.php:374
-#: future/includes/class-gv-permalinks.php:423
+msgid "Entry Endpoint"
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:406
+#: future/includes/class-gv-permalinks.php:468
 msgid "Entry Slug"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:401
+#. Translators: [slug] is replaced by the correct merge tag.
+#: future/includes/class-gv-permalinks.php:413
+msgid "The entry slug requires at least the [slug] merge tag, to ensure uniqueness."
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:446
 msgid "Permalinks"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:402
+#: future/includes/class-gv-permalinks.php:447
 msgid "GravityView allows you to create a custom URL structure for your Views."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:427
+#. Translators: [entry_id] will be replaced by the actual merge tag.
+#: future/includes/class-gv-permalinks.php:472
 msgid "Change the slug for an entry. Make sure to at least include [entry_id] to avoid URL collisions."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:469
-#: future/includes/class-gv-permalinks.php:520
-msgid "Only letters, numbers, underscores and dashes are allowed."
-msgstr ""
-
 #. Translators: [count] is replaced by the amount of characters.
-#: future/includes/class-gv-permalinks.php:478
+#: future/includes/class-gv-permalinks.php:554
+#: future/includes/class-gv-permalinks.php:603
 msgid "At least [count] characters are required."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:484
-msgid "You have used a reserved word."
+#. Translators: [slug] will contain the slug value.
+#: future/includes/class-gv-permalinks.php:559
+#: future/includes/class-gv-permalinks.php:639
+msgid "Must contain \"[slug]\"."
 msgstr ""
 
-#. Translators: [slug] will contain the slug value.
-#: future/includes/class-gv-permalinks.php:514
-msgid "Must contain \"[slug]\"."
+#: future/includes/class-gv-permalinks.php:562
+#: future/includes/class-gv-permalinks.php:594
+#: future/includes/class-gv-permalinks.php:645
+msgid "Only letters, numbers, underscores and dashes are allowed."
+msgstr ""
+
+#: future/includes/class-gv-permalinks.php:609
+msgid "You have used a reserved word."
 msgstr ""
 
 #: future/includes/class-gv-plugin.php:584
@@ -179,6 +200,7 @@ msgstr ""
 msgid "There are %s unapproved entries that are not being shown."
 msgstr ""
 
+#. translators: %s is the plugin title.
 #: future/includes/class-gv-renderer.php:245
 #: includes/admin/metaboxes/views/placeholder.php:39
 #: includes/admin/metaboxes/views/placeholder.php:64
@@ -971,6 +993,7 @@ msgstr ""
 msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a form</a>."
 msgstr ""
 
+#. Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
 #: future/includes/class-gv-shortcode-gravityview.php:180
 msgid "This View is in the Trash. %sClick to restore the View%s."
 msgstr ""
@@ -1087,7 +1110,7 @@ msgid "Data Source"
 msgstr ""
 
 #: future/includes/class-gv-widget.php:189
-#: includes/admin/class.render.settings.php:79
+#: includes/admin/class.render.settings.php:81
 #: includes/widgets/class-gravityview-widget-export-link.php:76
 msgid "Custom CSS Class:"
 msgstr ""
@@ -1298,67 +1321,67 @@ msgstr ""
 msgid "Show Label"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:69
+#: includes/admin/class.render.settings.php:70
 msgid "Custom Label:"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:80
+#: includes/admin/class.render.settings.php:82
 msgid "This class will be added to the field container"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:90
+#: includes/admin/class.render.settings.php:92
 msgid "Make visible only to logged-in users?"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:97
+#: includes/admin/class.render.settings.php:99
 msgid "Make visible for:"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:111
+#: includes/admin/class.render.settings.php:113
 msgid "Percent Width"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:112
+#: includes/admin/class.render.settings.php:114
 msgid "Leave blank for column width to be based on the field content."
 msgstr ""
 
-#: includes/admin/class.render.settings.php:235
+#: includes/admin/class.render.settings.php:237
 msgid "Any Logged-In User"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:236
+#: includes/admin/class.render.settings.php:238
 msgid "Author Or Higher"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:237
+#: includes/admin/class.render.settings.php:239
 msgid "Can View Gravity Forms Entries"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:238
+#: includes/admin/class.render.settings.php:240
 msgid "Editor Or Higher"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:239
+#: includes/admin/class.render.settings.php:241
 msgid "Can Edit Gravity Forms Entries"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:240
+#: includes/admin/class.render.settings.php:242
 msgid "Administrator"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:244
+#: includes/admin/class.render.settings.php:246
 msgid "Multisite Super Admin"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:319
+#: includes/admin/class.render.settings.php:321
 msgid "%s Settings"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:388
+#: includes/admin/class.render.settings.php:390
 msgid "Field Details"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:394
+#: includes/admin/class.render.settings.php:396
 #: future/includes/gutenberg/blocks/entry-field/edit.js:80
 #: future/includes/gutenberg/blocks/entry-field/edit.js:81
 #: future/includes/gutenberg/blocks/entry-field/edit.js:133
@@ -1367,12 +1390,12 @@ msgstr ""
 msgid "Field ID"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:400
+#: includes/admin/class.render.settings.php:402
 msgctxt "The type of field being configured (eg: \"Single Line Text\")"
 msgid "Type"
 msgstr ""
 
-#: includes/admin/class.render.settings.php:406
+#: includes/admin/class.render.settings.php:408
 msgid "Form"
 msgstr ""
 
@@ -1668,6 +1691,7 @@ msgstr ""
 msgid "These widgets will be shown below entries."
 msgstr ""
 
+#. translators: %1$s is the vendor title.
 #: includes/admin/metaboxes/views/view-configuration.php:148
 #: includes/class-admin-views.php:1300
 #: includes/class-admin-views.php:1556
@@ -2023,23 +2047,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:401
+#: includes/class-admin-welcome.php:402
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:453
+#: includes/class-admin-welcome.php:454
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:497
+#: includes/class-admin-welcome.php:498
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:529
+#: includes/class-admin-welcome.php:530
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:530
+#: includes/class-admin-welcome.php:531
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -3248,7 +3272,7 @@ msgid "Currency"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-custom.php:37
-#: includes/fields/class-gravityview-field-custom.php:52
+#: includes/fields/class-gravityview-field-custom.php:74
 #: includes/widgets/class-gravityview-widget-custom-content.php:33
 #: includes/widgets/class-gravityview-widget-custom-content.php:55
 msgid "Custom Content"
@@ -3258,41 +3282,49 @@ msgstr ""
 msgid "Insert custom text or HTML."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:53
+#: includes/fields/class-gravityview-field-custom.php:75
 msgid "Enter text or HTML. Also supports shortcodes. You can show or hide data using the %1$s shortcode (%2$slearn more%3$s)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:53
+#: includes/fields/class-gravityview-field-custom.php:75
 msgid "Click the arrow icon next to the content area to add %1$sMerge Tags%2$s."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:64
+#: includes/fields/class-gravityview-field-custom.php:86
 #: includes/widgets/class-gravityview-widget-custom-content.php:42
 msgid "Automatically add paragraphs to content"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:65
+#: includes/fields/class-gravityview-field-custom.php:87
 #: includes/widgets/class-gravityview-widget-custom-content.php:43
 msgid "Wrap each block of text in an HTML paragraph tag (recommended for text)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:72
+#: includes/fields/class-gravityview-field-custom.php:94
 msgid "Render oEmbeds"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:73
+#: includes/fields/class-gravityview-field-custom.php:95
 msgctxt "HTML link pointing to WordPress article on oEmbed"
 msgid "Automatically convert oEmbed URLs into embedded content (%1$slearn more%2$s)."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:81
+#: includes/fields/class-gravityview-field-custom.php:103
 #: includes/widgets/class-gravityview-widget-custom-content.php:49
 msgid "Admin Label"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-custom.php:82
+#: includes/fields/class-gravityview-field-custom.php:104
 #: includes/widgets/class-gravityview-widget-custom-content.php:50
 msgid "A label that is only shown in the GravityView View configuration screen."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:118
+msgid "Full width"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-custom.php:119
+msgid "Show the field at full width without the label."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-date-created.php:31
@@ -4251,6 +4283,7 @@ msgstr ""
 msgid "Caution: [link]Advanced Post Creation[/link] is active for this form."
 msgstr ""
 
+#. translators: Do not translate [link] and [/link]; they are replaced with an anchor tag.
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-advanced-post-creation.php:116
 msgid "Editing entries in GravityView may also update a connected post."
 msgstr ""
@@ -4762,6 +4795,7 @@ msgstr ""
 msgid "Pre-Filter Choices"
 msgstr ""
 
+#. translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
 #: includes/widgets/search-widget/class-search-widget.php:90
 msgid "For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries."
 msgstr ""
@@ -5949,6 +5983,7 @@ msgstr ""
 msgid "Deactivate"
 msgstr ""
 
+#. translators: %1$s is the vendor title.
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:41
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1315
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1495
@@ -6591,6 +6626,7 @@ msgstr ""
 msgid "%s support may not be able to access this site."
 msgstr ""
 
+#. translators: %s is replaced with the name of the software developer (e.g. "Acme Widgets").
 #: vendor_prefixed/trustedlogin/client/src/Form.php:760
 msgid "This website is running in a local development environment. To provide support, we must be able to access your site using a publicly-accessible URL."
 msgstr ""
@@ -7221,84 +7257,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/sort-selector.js:75
 msgid "No Sorting Fields found"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""
