@@ -9,13 +9,13 @@ use WP_Rewrite;
 /**
  * Responsible for registering the correct permalinks.
  *
- * @since 2.5.0
+ * @since 2.29.0
  */
 final class Permalinks {
 	/**
 	 * The plugin settings.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @var Plugin_Settings
 	 */
@@ -24,7 +24,7 @@ final class Permalinks {
 	/**
 	 * The default slug values.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @var array|string[]
 	 */
@@ -37,7 +37,7 @@ final class Permalinks {
 	/**
 	 * Returns a list of reserved WordPress terms {@see https://codex.wordpress.org/Reserved_Terms}.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @return string[] The reserved terms.
 	 */
@@ -136,7 +136,7 @@ final class Permalinks {
 		 *
 		 * @filter `gk/gravityview/permalinks/reserved-terms`
 		 *
-		 * @since  2.5.0
+		 * @since  2.29.0
 		 *
 		 * @param string[] $extra_reserved_terms List of extra reserved terms.
 		 * @param string[] $reserved_terms       The list of reserved WordPress terms.
@@ -151,7 +151,7 @@ final class Permalinks {
 	/**
 	 * Creates the Permalinks feature.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @param Plugin_Settings $settings The settings object.
 	 */
@@ -175,7 +175,7 @@ final class Permalinks {
 	/**
 	 * Returns imploded regex group that matched reserved terms.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @return string The regex.
 	 */
@@ -191,7 +191,7 @@ final class Permalinks {
 	/**
 	 * Validates a slug.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @param string $slug                   The slug to validate.
 	 * @param bool   $exclude_reserved_terms Whether to exclude reserved terms from the slug.
@@ -217,7 +217,7 @@ final class Permalinks {
 	/**
 	 * Updates the View slug.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @param string $slug The original slug.
 	 *
@@ -237,7 +237,7 @@ final class Permalinks {
 	/**
 	 * Updates the endpoint for the entry.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @param string $endpoint The original endpoint.
 	 *
@@ -257,7 +257,7 @@ final class Permalinks {
 	/**
 	 * Updates the entry slug if one is set.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @param string     $slug     The original slug.
 	 * @param string|int $entry_id The entry ID.
@@ -285,7 +285,7 @@ final class Permalinks {
 	/**
 	 * Returns whether the custom entry slug is enabled.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @param bool $is_custom_slug Whether the custom slug is enabled.
 	 *
@@ -307,7 +307,7 @@ final class Permalinks {
 	/**
 	 * Returns the settings for the permalink structure.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @return array
 	 */
@@ -438,7 +438,7 @@ final class Permalinks {
 	/**
 	 * Adds a Permalinks Section to the GravityView global settings.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @param array $settings The original settings.
 	 *
@@ -460,7 +460,7 @@ final class Permalinks {
 	/**
 	 * Adds the entry slug setting for a single View.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @param array $settings The View settings.
 	 *
@@ -499,7 +499,7 @@ final class Permalinks {
 	/**
 	 * Adds inline JavaScript for the View settings.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 */
 	public function add_view_settings_scripts(): void {
 		if ( ! wp_script_is( 'gravityview_views_scripts', 'registered' ) ) {
@@ -575,7 +575,7 @@ final class Permalinks {
 	/**
 	 * Returns whether the current request is a backend validation.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @return bool whether the current request is a backend validation.
 	 */
@@ -586,7 +586,7 @@ final class Permalinks {
 	/**
 	 * Returns the validation for generic slugs, based on the current environment.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @return array The validation rules.
 	 */
@@ -629,7 +629,7 @@ final class Permalinks {
 	/**
 	 * Returns the validation rules for the entry slug, based on the current environment.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 *
 	 * @return array The validation rules.
 	 */
@@ -674,7 +674,7 @@ final class Permalinks {
 	/**
 	 * Updates the rewrite rules if the required ones are missing.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 */
 	public function maybe_update_rewrite_rules(): void {
 		/** @var WP_Rewrite $wp_rewrite */
@@ -710,7 +710,7 @@ final class Permalinks {
 	/**
 	 * Adds Inline javascript for GravityViews Foundation settings.
 	 *
-	 * @since 2.5.0
+	 * @since 2.29.0
 	 */
 	public function add_global_settings_scripts( array $scripts ): array {
 		$script = <<<JS
