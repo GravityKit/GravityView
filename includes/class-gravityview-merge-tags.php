@@ -497,55 +497,51 @@ class GravityView_Merge_Tags {
 
 		$text = self::replace_entry_link( $text, $form, $entry, $url_encode, $esc_html );
 
-		$text = self::replace_merge_tags_dates( $text, $form, $entry, $url_encode, $esc_html );
+		$text = self::replace_merge_tags_dates( $text );
 
 		return $text;
 	}
 
-
 	/**
-	 * Replace date merge tags in the text.
-	 * 
+	 * Replaces human-readable date merge tags with formatted dates per the modifier.
+	 *
 	 * @since TBD
 	 *
 	 * @param string $text The text containing merge tags.
-	 * @param array  $form The Gravity Forms form array.
-	 * @param array  $entry The entry array.
-	 * @param bool   $url_encode Whether to URL-encode output.
-	 * @param bool   $esc_html Whether to apply `esc_html()` to output.
 	 *
 	 * @return string The text with date merge tags replaced.
 	 */
-	public static function replace_merge_tags_dates( $text, $form, $entry, $url_encode, $esc_html ) {
-
-		if ( strpos( $text, '{' ) === false ) {
+	public static function replace_merge_tags_dates( $text ) {
+		if ( false === strpos( $text, '{' ) ) {
 			return $text;
 		}
 
 		preg_match_all( '/{(now|yesterday|tomorrow):?(.*?)(?:\s)?}/ism', $text, $matches, PREG_SET_ORDER );
-		if ( ! empty( $matches ) ) {
 
-			$utc_timestamp   = time();
-			$local_timestamp = GFCommon::get_local_timestamp( $utc_timestamp );
+		if ( empty( $matches ) ) {
+			return $text;
+		}
 
-			foreach ( $matches as $match ) {
-				$modifier    = $match[2];
-				if( strpos( $modifier, 'timestamp' ) !== false ) {
-					$local_timestamp = time();
-				}
+		$utc_timestamp   = time();
+		$local_timestamp = GFCommon::get_local_timestamp( $utc_timestamp );
 
-				$replacements = array(
-					'now' 		=> date_i18n( 'Y-m-d H:i:s', $local_timestamp, true ),
-					'yesterday' => date_i18n( 'Y-m-d H:i:s', $local_timestamp - DAY_IN_SECONDS, true ),
-					'tomorrow'  => date_i18n( 'Y-m-d H:i:s', $local_timestamp + DAY_IN_SECONDS, true ),
-				);
+		foreach ( $matches as $match ) {
+			$modifier = $match[2];
 
-				$full_tag    = $match[0];
-				$replaceable_date = $replacements[$match[1]];
-				$formatted_date = self::format_date( $replaceable_date, $modifier );
-				$text = str_replace( $full_tag, $formatted_date, $text );
+			if ( strpos( $modifier, 'timestamp' ) !== false ) {
+				$local_timestamp = $utc_timestamp;
 			}
 
+			$replacements = [
+				'now'       => date_i18n( 'Y-m-d H:i:s', $local_timestamp, true ),
+				'yesterday' => date_i18n( 'Y-m-d H:i:s', $local_timestamp - DAY_IN_SECONDS, true ),
+				'tomorrow'  => date_i18n( 'Y-m-d H:i:s', $local_timestamp + DAY_IN_SECONDS, true ),
+			];
+
+			$full_tag         = $match[0];
+			$replaceable_date = $replacements[ $match[1] ];
+			$formatted_date   = self::format_date( $replaceable_date, $modifier );
+			$text             = str_replace( $full_tag, $formatted_date, $text );
 		}
 
 		return $text;
