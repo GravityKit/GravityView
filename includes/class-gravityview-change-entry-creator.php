@@ -489,6 +489,8 @@ class GravityView_Change_Entry_Creator {
 	 * @return array The updated fields array.
 	 */
 	public function register_created_by_input( array $fields, ?array $editable_fields, array $form ): array {
+		require_once GFCommon::get_base_path() . '/export.php';
+
 		// Don't add the `created_by` field if the user can't change it.
 		$editable_field_ids = array_flip(
 			array_map(
