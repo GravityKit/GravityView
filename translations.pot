@@ -9,13 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-01T21:56:51+00:00\n"
+"POT-Creation-Date: 2024-10-02T00:35:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
+#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -25,14 +26,17 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
+#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
+#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:402
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:163
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:164
@@ -96,77 +100,77 @@ msgid "Styles don't get loaded when being previewed, so the content below will l
 msgstr ""
 
 #. Translators: [url] is replaced by the preview URL.
-#: future/includes/class-gv-permalinks.php:330
+#: future/includes/class-gv-permalinks.php:333
 msgid "Example: [url]"
 msgstr ""
 
 #. Translators: [slug] is replaced by the slug.
-#: future/includes/class-gv-permalinks.php:332
-#: future/includes/class-gv-permalinks.php:485
+#: future/includes/class-gv-permalinks.php:335
+#: future/includes/class-gv-permalinks.php:488
 msgid "Default: [slug]"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:343
+#: future/includes/class-gv-permalinks.php:346
 msgid "View Slug"
 msgstr ""
 
 #. Translators: [slug] is replaced by the correct merge tag.
-#: future/includes/class-gv-permalinks.php:349
-#: future/includes/class-gv-permalinks.php:381
+#: future/includes/class-gv-permalinks.php:352
+#: future/includes/class-gv-permalinks.php:384
 msgid "The slug must be at least 3 characters, and cannot contain certain words. See documentation for more information."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:367
-#: future/includes/class-gv-permalinks.php:399
+#: future/includes/class-gv-permalinks.php:370
+#: future/includes/class-gv-permalinks.php:402
 msgid "Read documentation"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:374
+#: future/includes/class-gv-permalinks.php:377
 msgid "Entry Endpoint"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:406
-#: future/includes/class-gv-permalinks.php:468
+#: future/includes/class-gv-permalinks.php:409
+#: future/includes/class-gv-permalinks.php:471
 msgid "Entry Slug"
 msgstr ""
 
 #. Translators: [slug] is replaced by the correct merge tag.
-#: future/includes/class-gv-permalinks.php:413
+#: future/includes/class-gv-permalinks.php:416
 msgid "The entry slug requires at least the [slug] merge tag, to ensure uniqueness."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:446
+#: future/includes/class-gv-permalinks.php:449
 msgid "Permalinks"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:447
+#: future/includes/class-gv-permalinks.php:450
 msgid "GravityView allows you to create a custom URL structure for your Views."
 msgstr ""
 
 #. Translators: [entry_id] will be replaced by the actual merge tag.
-#: future/includes/class-gv-permalinks.php:472
+#: future/includes/class-gv-permalinks.php:475
 msgid "Change the slug for an entry. Make sure to at least include [entry_id] to avoid URL collisions."
 msgstr ""
 
 #. Translators: [count] is replaced by the amount of characters.
-#: future/includes/class-gv-permalinks.php:554
-#: future/includes/class-gv-permalinks.php:603
+#: future/includes/class-gv-permalinks.php:557
+#: future/includes/class-gv-permalinks.php:607
 msgid "At least [count] characters are required."
 msgstr ""
 
 #. Translators: [slug] will contain the slug value.
-#: future/includes/class-gv-permalinks.php:559
-#: future/includes/class-gv-permalinks.php:639
+#: future/includes/class-gv-permalinks.php:562
+#: future/includes/class-gv-permalinks.php:643
 msgid "Must contain \"[slug]\"."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:562
-#: future/includes/class-gv-permalinks.php:594
-#: future/includes/class-gv-permalinks.php:645
+#: future/includes/class-gv-permalinks.php:565
+#: future/includes/class-gv-permalinks.php:598
+#: future/includes/class-gv-permalinks.php:649
 msgid "Only letters, numbers, underscores and dashes are allowed."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:609
+#: future/includes/class-gv-permalinks.php:613
 msgid "You have used a reserved word."
 msgstr ""
 
@@ -2047,23 +2051,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:402
+#: includes/class-admin-welcome.php:404
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:454
+#: includes/class-admin-welcome.php:456
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:498
+#: includes/class-admin-welcome.php:500
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:530
+#: includes/class-admin-welcome.php:532
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:531
+#: includes/class-admin-welcome.php:533
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -7257,4 +7261,84 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/sort-selector.js:75
 msgid "No Sorting Fields found"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""
