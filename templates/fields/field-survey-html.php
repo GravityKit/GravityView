@@ -15,6 +15,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 $field         = $gravityview->field;
 $display_value = $gravityview->display_value;
 $input_id      = gravityview_get_input_id_from_id( $field->ID );
+$form_id 	   = $gravityview->view->form->ID;
 
 // Used in filters below.
 $return_true = function () {
@@ -142,12 +143,7 @@ switch ( $gravityview->field->field->inputType ) {
 			return;
 		}
 
-		$choices = $field->field->choices;
-
-		// If the choices are reversed, reverse them back.
-		if ( ! empty( $choices ) && $choices[0]['text'] === 'Excellent' ) {
-			$choices = array_reverse( $choices );
-		}
+		$choices = GravityView_Field_Survey::get_field_choices( $form_id, $field->ID );
 
 		$choice_values = wp_list_pluck( $choices, 'value', $gravityview->value );
 		$starred_index = array_search( $gravityview->value, $choice_values );
