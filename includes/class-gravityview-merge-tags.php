@@ -503,7 +503,7 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Replaces human-readable date merge tags with formatted dates per the modifier.
+	 * Replaces relative date merge tags with formatted dates per the modifier.
 	 *
 	 * @since TBD
 	 *
