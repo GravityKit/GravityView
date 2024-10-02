@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added: `{now}`, `{yesterday}` and `{tomorrow}` relative date merge tags.
+* Improved: Better handling of multi-file uploads on the Edit Entry screen.
 
 = 2.29 on October 1, 2024 =
 
