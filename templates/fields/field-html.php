@@ -11,4 +11,11 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-echo $gravityview->display_value;
+$display_value = $gravityview->display_value;
+
+// Handle outliers.
+if ( is_array( $display_value ) ) {
+	$display_value = implode( ', ', $display_value );
+}
+
+echo $display_value;

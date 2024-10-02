@@ -37,6 +37,8 @@ jQuery( function ( $ ) {
 			this.fix_updating_files_after_edit();
 
 			this.number_range();
+
+			this.iframe();
 		},
 
 		/**
@@ -260,6 +262,33 @@ jQuery( function ( $ ) {
 					}.bind( this ), 2 );
 				} )
 				.find( 'input' ).trigger( 'change' ); // Initial trigger.
+		},
+
+		/**
+		 * Listen for messages from the iframe and perform various actions.
+		 *
+		 * @since 2.29.0
+		 */
+		iframe: function () {
+			window.addEventListener( 'message', function ( event ) {
+				if ( event.data?.removeHash ) {
+					history.replaceState( null, null, ' ' );
+				}
+
+				if ( event.data?.closeFancybox && window.Fancybox ) {
+					history.replaceState( null, null, ' ' );
+
+					Fancybox.close();
+				}
+
+				if ( event.data?.reloadPage ) {
+					return location.reload();
+				}
+
+				if ( event.data?.redirectToUrl ) {
+					return window.location = event.data.redirectToUrl;
+				}
+			} );
 		}
 	};
 
