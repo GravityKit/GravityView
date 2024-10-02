@@ -55,10 +55,12 @@ $dismiss-red: #C62D2D;
 		border-style: none;
 		padding: 0;
 	}
+
 	// Restore the focus styles unset by the previous rule.
 	&:-moz-focusring {
 		outline: 1px dotted ButtonText;
 	}
+
 	/**
 	 * End from normalize.css
 	 */
@@ -75,14 +77,42 @@ $gv-overlay-index: 10000;
 --------------------------------------- */
 
 .gv-grid {
-	box-sizing: border-box;
-	margin-bottom: 2em;
+	.gv-grid-row {
+		box-sizing: border-box;
+		margin: 1em 0;
+		display: grid;
+		grid-template-columns: repeat( 12, 1fr );
+		grid-template-rows: repeat( auto-fill, auto );
+		grid-column-gap: 24px;
+		grid-row-gap: 12px;
+		position: relative;
 
-	display: grid;
-	grid-template-columns: repeat( 12, 1fr );
-	grid-template-rows: repeat( auto-fill, auto );
-	grid-column-gap: 24px;
-	grid-row-gap: 12px;
+		.gv-grid-row-handle {
+			display: none;
+			position: absolute;
+			left: -10px;
+			top: 10px;
+			background: #136cb9;
+			bottom: 0;
+			width: 10px;
+			height: 50px;
+			border-radius: 3px;
+			cursor: move;
+		}
+
+		&:hover {
+			.gv-grid-row-handle {
+				display: block;
+			}
+		}
+	}
+
+	.grid-row-placeholder {
+		height: 50px;
+		background: rgba(210, 224, 235, 0.6);
+		border-radius: 3px;
+		margin: 1em 0;
+	}
 }
 
 .gv-grid [class^="gv-grid-col-"] {
@@ -149,6 +179,7 @@ $gv-overlay-index: 10000;
 .gv-section {
 	position: relative;
 }
+
 .gv-section:before,
 .gv-section:after {
 	content: " ";
@@ -185,8 +216,8 @@ $gv-overlay-index: 10000;
 
 /* GV View Types
 --------------------------------------- */
-#gravityview_select_template .gv-grid {
-	grid-template-columns: repeat( auto-fill, minmax( 75px, 1fr ) ); // Force layouts to be smaller than full-size
+#gravityview_select_template .gv-grid-row {
+	grid-template-columns: repeat( auto-fill, minmax(75px, 1fr) ); // Force layouts to be smaller than full-size
 }
 
 .gv-view-types-module {
@@ -336,9 +367,9 @@ $gv-overlay-index: 10000;
  */
 .gv-form-links {
 
-    .metabox-prefs & {
-      display: none;
-    }
+	.metabox-prefs & {
+		display: none;
+	}
 
 	color: $color-ddd;
 	font-weight: normal;
@@ -352,17 +383,18 @@ $gv-overlay-index: 10000;
 		@media screen and (max-width: 850px) {
 			&,
 			& a {
-				display: inline!important;
+				display: inline !important;
 			}
 		}
 	}
+
 	.gv-form-title {
 		display: none;
 	}
 }
 
 #gv_switch_view_button {
-	display: none!important;
+	display: none !important;
 }
 
 #gravityview_select_template {
@@ -398,9 +430,9 @@ $gv-overlay-index: 10000;
 		padding: 16px 10px;
 	}
 
-    #gravityview_advanced th {
-      white-space: normal;
-    }
+	#gravityview_advanced th {
+		white-space: normal;
+	}
 
 	// Stack label and values in smaller viewport
 	@media (max-width: 1199px) {
@@ -413,6 +445,7 @@ $gv-overlay-index: 10000;
 			box-sizing: border-box;
 			width: 100%;
 			padding-bottom: 5px;
+
 			& + td {
 				padding-top: 0;
 				display: block;
@@ -429,7 +462,7 @@ $gv-overlay-index: 10000;
 
 		// 2.6 field groups in the Merge Tag dropdowns inside View Settings
 		.gform-dropdown--merge-tags .gform-dropdown__group-text {
-			font-weight: 500!important;
+			font-weight: 500 !important;
 		}
 
 		select[multiple] {
@@ -497,6 +530,7 @@ $gv-overlay-index: 10000;
 		border-radius: 5px;
 		overflow: visible;
 	}
+
 	#gv-view-configuration-tabs {
 		padding: 0;
 
@@ -525,7 +559,7 @@ $gv-overlay-index: 10000;
 	margin: -6px -1em;
 	border: 1px solid transparent;
 	color: $color-777;
-	font-size: 12px!important;
+	font-size: 12px !important;
 	position: relative;
 	transition: .1s padding;
 
@@ -547,7 +581,7 @@ $gv-overlay-index: 10000;
 	}
 
 	&:hover {
-		padding: 6px calc( 1em + 12px) 6px 1em;
+		padding: 6px calc(1em + 12px) 6px 1em;
 		transition: .2s all;
 
 		&:after {
@@ -569,22 +603,23 @@ $gv-overlay-index: 10000;
 /** Show spinner cursor while the View is being AJAX updated. **/
 .gv-wait,
 .gv-wait a {
-  cursor: wait;
+	cursor: wait;
 }
 
 // Fix issue with theme conflicts where .gv-overlay gets in the way
 .post-type-gravityview .ui-front,
 .post-type-gravityview .CodeMirror-hints,
 .post-type-gravityview .CodeMirror-lint-tooltip {
-  z-index: $gv-overlay-index + 1 !important;
+	z-index: $gv-overlay-index + 1 !important;
 }
+
 .post-type-gravityview .CodeMirror, .CodeMirror-hint {
 	font-size: 15px;
 }
 
 .post-type-gravityview .CodeMirror {
 	height: 15.75em; // 10 visible rows
-	max-width: 690px!important;
+	max-width: 690px !important;
 }
 
 .gform-admin .gform-dropdown--merge-tags .gform-dropdown__container {
@@ -604,6 +639,7 @@ $gv-overlay-index: 10000;
 		margin-left: 0;
 		float: left;
 	}
+
 	background-color: transparent;
 	text-decoration: none;
 	border: none;
@@ -611,12 +647,15 @@ $gv-overlay-index: 10000;
 	.dashicons {
 		@extend .gk-large-icon;
 	}
+
 	&:visited {
 		color: $color-aaa;
 	}
+
 	&:hover {
 		color: $color-444;
 	}
+
 	&:active {
 		color: $color-222;
 	}
@@ -626,7 +665,6 @@ $gv-overlay-index: 10000;
 		top: auto;
 	}
 }
-
 
 
 /** View configuration tabs */
@@ -640,6 +678,7 @@ $gv-overlay-index: 10000;
 	#gv-view-configuration-tabs-tooltip {
 		position: absolute;
 		right: 0;
+
 		html[dir=rtl] & {
 			right: auto;
 			left: 0;
@@ -659,6 +698,7 @@ $gv-overlay-index: 10000;
 			width: 100%;
 			box-sizing: border-box;
 		}
+
 		li {
 			transition: none;
 			list-style: none;
@@ -671,6 +711,7 @@ $gv-overlay-index: 10000;
 				float: right;
 				margin: 0 0 1px .5em;
 			}
+
 			border-bottom: 0;
 			padding: 0;
 			white-space: nowrap;
@@ -702,8 +743,8 @@ $gv-overlay-index: 10000;
 				box-sizing: border-box;
 
 				&:link, &:visited, &:hover, &:active, &:focus {
-				  outline: none;
-                  -webkit-box-shadow: none;
+					outline: none;
+					-webkit-box-shadow: none;
 				}
 
 				@media (min-width: 851px) and (max-width: 1023px) {
@@ -713,12 +754,12 @@ $gv-overlay-index: 10000;
 			}
 
 			// Non-active state
-		  .dashicons,
-		  .gform-icon,
-		  [class^='gv-icon-'],
-		  [class^='gv-icon-']:before {
+			.dashicons,
+			.gform-icon,
+			[class^='gv-icon-'],
+			[class^='gv-icon-']:before {
 				color: $color-aaa;
-			    @extend .gk-large-icon;
+				@extend .gk-large-icon;
 			}
 
 			&.tab-not-configured .dashicons {
@@ -778,9 +819,10 @@ $gv-overlay-index: 10000;
 
 			&.ui-state-hover {
 				a {
-					background-color: rgba( 255, 255, 255, .5 );
+					background-color: rgba(255, 255, 255, .5);
 					color: $color-222;
 				}
+
 				.gform-icon,
 				.dashicons,
 				[class^='gv-icon-'],
@@ -792,9 +834,11 @@ $gv-overlay-index: 10000;
 			.configuration-status-icons {
 				display: inline-block;
 				padding-left: .666em;
+
 				html[dir=rtl] & {
 					padding-right: .666em;
 				}
+
 				.gform-icon,
 				.dashicons {
 					display: inline-block;
@@ -816,6 +860,7 @@ $gv-overlay-index: 10000;
 					}
 
 				}
+
 				a {
 					//color: $color-red;
 					background-color: $color-light-grey-200;
@@ -849,6 +894,7 @@ $gv-overlay-index: 10000;
 		&.ui-tabs.ui-tabs-nav {
 			margin-bottom: 10px;
 		}
+
 		.nav-tab {
 			border-radius: 3px;
 			margin-bottom: 3px;
@@ -858,6 +904,7 @@ $gv-overlay-index: 10000;
 		}
 	}
 }
+
 .gv-dialog {
 	position: absolute;
 	z-index: $gv-overlay-index + 1 !important;
@@ -916,14 +963,17 @@ hr {
 		text-align: left;
 
 		margin: 0 12px 6px 0;
+
 		html[dir=rtl] & {
 			margin: 0 0 6px 12px;
 			text-align: right;
 		}
+
 		color: $color-777;
 		text-transform: uppercase;
 		font-size: 13px;
 		font-weight: 500;
+
 		span {
 			text-transform: none;
 			font-weight: normal;
@@ -953,11 +1003,13 @@ hr {
 	min-height: 44px;
 	border-radius: 3px;
 	max-width: 100%;
+	background-color: #FFF;
 
 	&.is-receivable {
 		&:empty {
 			min-height: 44px;
 		}
+
 		border: none;
 		transition: all 200ms;
 
@@ -968,6 +1020,7 @@ hr {
 		}
 	}
 }
+
 .active-drop {
 	border-radius: 3px;
 	padding: 4px 8px 8px;
@@ -1064,10 +1117,12 @@ hr {
 		.gv-indicator-icon {
 			cursor: help;
 		}
+
 		.icon-custom-visibility,
 		.gv-indicator-icon {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
+
 			html[dir=rtl] & {
 				margin: -2px 0 0 6px;
 			}
@@ -1099,7 +1154,7 @@ hr {
 		.gv-field-label {
 			display: inline-block;
 			max-width: 80%;
-			max-width: calc( 100% - 95px ); // Make room for close icons
+			max-width: calc(100% - 95px); // Make room for close icons
 
 			.gravityview-item-picker-tooltip & {
 				max-width: 100%;
@@ -1136,6 +1191,7 @@ hr {
 		position: absolute;
 		left: -9999px;
 		background: none;
+
 		&:hover, &:focus {
 			color: #136cb9;
 			position: static;
@@ -1238,6 +1294,7 @@ hr {
 				text-shadow: 0 0 2px $color-blue-tint-75;
 			}
 		}
+
 		border-radius: 0;
 		color: $color-blue-wp;
 
@@ -1484,11 +1541,13 @@ $dialog-button-padding: 5px;
 		.gv-field-detail--label {
 			font-weight: 500;
 			display: inline-block;
+
 			&:after {
 				content: ': ';
 			}
 
 			padding-right: .33rem;
+
 			html[dir=rtl] & {
 				padding-left: .33rem;
 			}
@@ -1581,6 +1640,7 @@ $dialog-button-padding: 5px;
 				padding-left: $dialog-padding;
 				margin-left: -$gutter-width;
 			}
+
 			legend {
 				display: none;
 			}
@@ -1634,17 +1694,17 @@ $dialog-button-padding: 5px;
 		text-align: right;
 	}
 
-    /** @since 1.8 **/
-    .subtitle {
-      margin: 0 15px .8em;
-      padding: .5em 0 .8em;
-      border-bottom: 1px solid $color-bg-active;
-    }
+	/** @since 1.8 **/
+	.subtitle {
+		margin: 0 15px .8em;
+		padding: .5em 0 .8em;
+		border-bottom: 1px solid $color-bg-active;
+	}
 
 	&.gv-dialog-warning p {
 		font-size: 1.1em;
-        margin: 0 !important;
-        padding: 0 0 1em!important;
+		margin: 0 !important;
+		padding: 0 0 1em !important;
 	}
 
 	&.gv-dialog-warning .dashicons {
@@ -1675,7 +1735,7 @@ $dialog-button-padding: 5px;
 		// Hide hidden containers and search mode by default
 		&.hidden,
 		&.gv-setting-container-search_mode {
-		  display: none;
+			display: none;
 		}
 
 		&:last-child {
@@ -1697,7 +1757,7 @@ $dialog-button-padding: 5px;
 
 			// 2.6 field groups in the Merge Tag dropdown
 			.gform-dropdown__group-text {
-				font-weight: 500!important;
+				font-weight: 500 !important;
 			}
 		}
 
@@ -1731,7 +1791,7 @@ $dialog-button-padding: 5px;
 		  * @see https://secure.helpscout.net/conversation/100064704/2718/
 		  */
 		code {
-			font-style: normal!important;
+			font-style: normal !important;
 		}
 
 		// Vertically stacked radios
@@ -1785,7 +1845,7 @@ $dialog-button-padding: 5px;
 
 	table {
 		padding-bottom: 15px;
-	  	margin: .5em auto; // Give rows some breathing room around other settings
+		margin: .5em auto; // Give rows some breathing room around other settings
 
 		td, th {
 			text-align: left;
@@ -1827,7 +1887,7 @@ $dialog-button-padding: 5px;
 			}
 		}
 
-	  	.gv-search-fields,
+		.gv-search-fields,
 		.gv-search-inputs {
 			width: 100%;
 		}
@@ -1870,21 +1930,21 @@ $dialog-button-padding: 5px;
 			width: 24px;
 		}
 
-        .cell-add-remove {
-            display: flex;
-            width: 50px;
-        }
-    }
+		.cell-add-remove {
+			display: flex;
+			width: 50px;
+		}
+	}
 }
 
 .wp-block-legacy-widget {
-    .gv-widget-search-fields .cell-add-remove {
-        width: 70px !important;
-    }
+	.gv-widget-search-fields .cell-add-remove {
+		width: 70px !important;
+	}
 
-    .gv-howto.howto {
-        font-size: small;
-    }
+	.gv-howto.howto {
+		font-size: small;
+	}
 }
 
 // Only modify GV post type
@@ -1925,7 +1985,7 @@ $dialog-button-padding: 5px;
 	color: $color-666;
 	text-transform: uppercase;
 	font-size: 13px;
-	font-weight: 500!important;
+	font-weight: 500 !important;
 
 	&::after {
 		content: "\A";
@@ -1965,7 +2025,7 @@ $dialog-button-padding: 5px;
 	overflow-y: auto;
 	left: $dialog-padding !important;
 	right: $dialog-padding !important;
-	width: calc( 100% - ( #{$dialog-padding} * 2 ) - 2px ) !important; // Border is 1px * 2
+	width: calc(100% - (#{$dialog-padding} * 2) - 2px) !important; // Border is 1px * 2
 	outline: none; // We want to outline each item, not the whole box
 
 	// Override GF here and apply padding to each item in order to make keyboard navigation look better
@@ -2000,10 +2060,12 @@ $dialog-button-padding: 5px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
 #gv-direct-access:before {
 	content: "\f528";
 	color: $color-yellow-40;
 }
+
 #gv-direct-access.embed-only:before {
 	content: "\f160";
 	color: $color-green-40;
@@ -2026,7 +2088,7 @@ $dialog-button-padding: 5px;
 
 // Multiple Forms buttons
 .gv-droppable-area .gv-add-field[data-formid] {
-	max-width: 100%!important;
+	max-width: 100% !important;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
 	margin-bottom: .5em;
@@ -2063,6 +2125,7 @@ $dialog-button-padding: 5px;
 	span.gv-field-label {
 		padding: 8px 12px;
 	}
+
 	span.gv-field-label-text-container {
 		color: $color-777;
 	}

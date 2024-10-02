@@ -1074,6 +1074,7 @@ HTML;
 		}
 
 		foreach ( $rows as $row ) :
+			echo '<div class="gv-grid-row is-draggable"><div class="gv-grid-row-handle"></div>';
 			foreach ( $row as $col => $areas ) :
 				$column = ( '2-2' == $col ) ? '1-2' : $col;
 				?>
@@ -1106,69 +1107,69 @@ HTML;
 							</p>
 							<div class="active-drop-container active-drop-container-<?php echo esc_attr( $type ); ?>">
 								<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>">
-																				<?php
-																				// render saved fields
-																				if ( ! empty( $values[ $zone . '_' . $area['areaid'] ] ) ) {
+									<?php
+									// render saved fields
+									if ( ! empty( $values[ $zone . '_' . $area['areaid'] ] ) ) {
 
-																					foreach ( $values[ $zone . '_' . $area['areaid'] ] as $uniqid => $field ) {
-																						// Provide the button label to the field.
-																						$field['add_button_label'] = $button_label;
+										foreach ( $values[ $zone . '_' . $area['areaid'] ] as $uniqid => $field ) {
+											// Provide the button label to the field.
+											$field['add_button_label'] = $button_label;
 
-																						// Maybe has a form ID
-																						$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
+											// Maybe has a form ID
+											$form_id = empty( $field['form_id'] ) ? $form_id : $field['form_id'];
 
-																						$input_type = null;
+											$input_type = null;
 
-																						if ( $form_id ) {
-																							$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false;
-																						} else {
-																							$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false;
-																						}
+											if ( $form_id ) {
+												$original_item = isset( $available_items[ $form_id ] [ $field['id'] ] ) ? $available_items[ $form_id ] [ $field['id'] ] : false;
+											} else {
+												$original_item = isset( $available_items[ $field['id'] ] ) ? $available_items[ $field['id'] ] : false;
+											}
 
-																						if ( ! $original_item ) {
+											if ( ! $original_item ) {
 
-																							global $pagenow;
-																							if ( 'post-new.php' !== $pagenow ) {
-																								gravityview()->log->error(
-																									'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.',
-																									array(
-																										' data' => array(
-																											'available_items' => $available_items,
-																											'field'           => $field,
-																										),
-																									)
-																								);
-																							}
+												global $pagenow;
+												if ( 'post-new.php' !== $pagenow ) {
+													gravityview()->log->error(
+														'An item was not available when rendering the output; maybe it was added by a plugin that is now de-activated.',
+														array(
+															' data' => array(
+																'available_items' => $available_items,
+																'field'           => $field,
+															),
+														)
+													);
+												}
 
-																							$original_item = $field;
-																						}
+												$original_item = $field;
+											}
 
-																						$input_type = isset( $original_item['type'] ) ? $original_item['type'] : null;
+											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : null;
 
-																						// Field options dialog box
-																						$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone . '_' . $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
+											// Field options dialog box
+											$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone . '_' . $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
 
-																						$item = array(
-																							'input_type' => $input_type,
-																							'settings_html' => $field_options,
-																							'label_type' => $type,
-																						);
+											$item = array(
+												'input_type' => $input_type,
+												'settings_html' => $field_options,
+												'label_type' => $type,
+											);
 
-																						// Merge the values with the current item to pass things like widget descriptions and original field names
-																						if ( $original_item ) {
-																							$item = wp_parse_args( $item, $original_item );
-																						}
+											// Merge the values with the current item to pass things like widget descriptions and original field names
+											if ( $original_item ) {
+												$item = wp_parse_args( $item, $original_item );
+											}
 
-																						switch ( $type ) {
-																							case 'widget':
-																								echo new GravityView_Admin_View_Widget( $item['label'], $field['id'], $item, $field );
-																								break;
-																							default:
-																								echo new GravityView_Admin_View_Field( $field['label'], $field['id'], $item, $field, $form_id, $form );
-																						}
-																					}
-																				} // End if zone is not empty
-																				?>
+											switch ( $type ) {
+												case 'widget':
+													echo new GravityView_Admin_View_Widget( $item['label'], $field['id'], $item, $field );
+													break;
+												default:
+													echo new GravityView_Admin_View_Field( $field['label'], $field['id'], $item, $field, $form_id, $form );
+											}
+										}
+									} // End if zone is not empty
+									?>
 									</div>
 								<div class="gv-droppable-area-action">
 									<a href="#" class="gv-add-field button button-link button-hero" title=""
@@ -1186,6 +1187,7 @@ HTML;
 				</div>
 				<?php
 			endforeach;
+			echo '</div>';
 		endforeach;
 	}
 
@@ -1256,7 +1258,17 @@ HTML;
 		?>
 
 		<div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets">
-			<?php $this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets ); ?>
+			<?php
+				$this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets );
+				printf(
+					'<button type="button" class="gv-add-field button button-link button-hero" data-add-row="%s" data-template-id="%s">
+						<span class="dashicons dashicons-plus-alt"></span> %s
+					</button>',
+					$zone,
+					$template_id,
+					esc_html__( 'Add row', 'gk-gravityview' ),
+				);
+			?>
 		</div>
 
 		<?php
@@ -1440,7 +1452,7 @@ HTML;
 			$directory_fields = $entry_fields;
 
 			// If we're showing all fields, we want to show the first field as a link.
-			foreach( $directory_fields as &$field ) {
+			foreach ( $directory_fields as &$field ) {
 				$gf_field = GF_Fields::get( $field['type'] );
 
 				if ( ! $gf_field ) {
@@ -1539,6 +1551,7 @@ HTML;
 			\GV\Plugin::$version
 		);
 		wp_enqueue_script( 'gravityview_view_dropdown', plugins_url( 'assets/js/admin-view-dropdown' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], \GV\Plugin::$version );
+		wp_enqueue_script( 'gravityview_grid', plugins_url( 'assets/js/admin-grid' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], \GV\Plugin::$version );
 
 		wp_localize_script(
 			'gravityview_views_scripts',

@@ -3200,7 +3200,8 @@
 	   window.gvAdminActions = {
 		   initTooltips: viewConfiguration.init_tooltips,
 		   removeTooltips: viewConfiguration.remove_tooltips,
-		   showDialog: viewConfiguration.showDialog
+		   showDialog: viewConfiguration.showDialog,
+		   initDroppables: viewConfiguration.init_droppables
 	   };
 
 	   $( document.body ).trigger( 'gravityview/loaded' );
