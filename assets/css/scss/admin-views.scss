@@ -197,7 +197,15 @@ $gv-overlay-index: 10000;
 	border: 2px solid transparent;
 	box-sizing: border-box;
 
-	&:hover .gv-view-types-hover {
+	svg.loading {
+		height: 30px;
+		width: 30px;
+		margin-top: 7px;
+		animation: spinner-animation 1s cubic-bezier(.6, 0, .4, 1) infinite;
+	}
+
+	&:hover .gv-view-types-hover,
+	&.active .gv-view-types-hover {
 		display: block;
 	}
 
@@ -234,7 +242,8 @@ $gv-overlay-index: 10000;
 		opacity: .7;
 		transition: all .1s;
 
-		&:hover {
+		&:hover,
+		&.active {
 			opacity: 1;
 		}
 

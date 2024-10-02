@@ -57,22 +57,24 @@ class GravityView_Render_Settings {
 
 			// Default options - fields
 			$field_options = array(
-				'show_label'        => array(
-					'type'     => 'checkbox',
-					'label'    => __( 'Show Label', 'gk-gravityview' ),
-					'value'    => ! empty( $is_table_layout ),
-					'priority' => 1000,
-					'group'    => 'label',
+				'show_label' => array(
+					'type'         => 'checkbox',
+					'label'        => __( 'Show Label', 'gk-gravityview' ),
+					'value'        => ! empty( $is_table_layout ),
+					'priority'     => 1000,
+					'group'        => 'label',
+					'requires_not' => 'full_width=1',
 				),
-				'custom_label'      => array(
-					'type'       => 'text',
-					'label'      => __( 'Custom Label:', 'gk-gravityview' ),
-					'value'      => '',
-					'merge_tags' => true,
-					'class'      => 'widefat',
-					'priority'   => 1100,
-					'requires'   => 'show_label',
-					'group'      => 'label',
+				'custom_label' => array(
+					'type'         => 'text',
+					'label'        => __( 'Custom Label:', 'gk-gravityview' ),
+					'value'        => '',
+					'merge_tags'   => true,
+					'class'        => 'widefat',
+					'priority'     => 1100,
+					'requires'     => 'show_label',
+					'requires_not' => 'full_width=1',
+					'group'        => 'label',
 				),
 				'custom_class'      => array(
 					'type'       => 'text',
@@ -147,16 +149,17 @@ class GravityView_Render_Settings {
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		if ( 'directory' === $context && isset( $field_options['show_as_link'] ) && ! isset( $field_options['new_window'] ) ) {
-			$field_options['new_window'] = array(
-				'type'     => 'checkbox',
-				'label'    => __( 'Open link in a new tab or window?', 'gk-gravityview' ),
-				'value'    => false,
-				'context'  => 'directory',
-				'requires' => 'show_as_link',
-				'priority' => 101,
-				'group'    => 'display',
-			);
+		if ( 'directory' === $context && isset( $field_options['show_as_link'] ) ) {
+			$field = new class extends GravityView_Field {
+				public function __construct() {
+				}
+			};
+
+			$field->add_field_support( 'new_window', $field_options );
+			$field->add_field_support( 'lightbox', $field_options );
+
+			$field_options['lightbox']   = array_merge( $field_options['lightbox'], [ 'requires' => 'show_as_link', 'priority' => 101 ] );
+			$field_options['new_window'] = array_merge( $field_options['new_window'], [ 'requires' => 'show_as_link', 'priority' => 102 ] );
 		}
 
 		if ( $grouped ) {

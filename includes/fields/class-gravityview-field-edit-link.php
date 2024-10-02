@@ -55,6 +55,7 @@ class GravityView_Field_Edit_Link extends GravityView_Field {
 			'merge_tags' => true,
 		);
 
+		$this->add_field_support( 'lightbox', $field_options );
 		$this->add_field_support( 'new_window', $field_options );
 
 		return array_merge( $add_option, $field_options );

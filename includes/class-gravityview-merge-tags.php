@@ -109,6 +109,7 @@ class GravityView_Merge_Tags {
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
 			'format'                    => 'modifier_format', /** @see modifier_format */
+			'human'						=> 'modifier_human', /** @see modifier_human */
 		);
 
 		$modifiers = explode( ',', $modifier );
@@ -160,6 +161,39 @@ class GravityView_Merge_Tags {
 		$return = apply_filters( 'gravityview/merge_tags/modifiers/value', $return, $raw_value, $value, $merge_tag, $modifier, $field );
 
 		return $return;
+	}
+
+	/**
+	 * Converts date and time values to the human format modifier.
+	 *
+	 * @since 2.29.0
+	 *
+	 * @param string $raw_value The raw value to modify.
+	 * @param array  $matches   Array of regex matches.
+	 * @param string $value     The original value.
+	 * @param array  $field     The field object.
+	 * @param string $modifier  The modifier string.
+	 *
+	 * @return string
+	 */
+	public static function modifier_human( $raw_value, $matches, $value = '', $field = null, $modifier = '' ) {
+		// Check if the value is a valid date.
+		$timestamp = strtotime( $raw_value );
+
+		if ( false === $timestamp || ( ! $field instanceof GF_Field_Date && ! $field instanceof GF_Field_Time ) ) {
+			return $raw_value;
+		}
+
+		$args = [
+			'human' => true,
+			'diff'  => true,
+		];
+
+		if ( $field instanceof GF_Field_Time ) {
+			$args['time'] = true;
+		}
+
+		return GVCommon::format_date( $raw_value, $args );
 	}
 
 	/**

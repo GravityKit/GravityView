@@ -1141,6 +1141,12 @@ class View implements \ArrayAccess {
 						continue;
 					}
 
+					if ( 'RAND' === strtoupper( $field['direction'] ) ) {
+						$query->order( \GF_Query_Call::RAND() );
+
+						continue;
+					}
+
 					$order = new \GF_Query_Column( $field['id'], $this->form->ID );
 
 					if ( 'id' !== $field['id'] && (int) $field['is_numeric'] ) {
