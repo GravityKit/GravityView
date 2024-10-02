@@ -296,16 +296,18 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3>2.29 on September 27, 2024</h3>
+				<h3>2.29 on October 1, 2024</h3>
 
-				<p>This release brings a much-requested lightbox feature for displaying and editing entries, adds an option to show Name field values as initials, and introduces a modifier to display date field values in a human-readable format, while also squashing several bugs.</p>
+				<p>This release introduces a much-requested <a href="https://docs.gravitykit.com/article/1020-opening-and-editing-entry-details-in-a-lightbox-modal-popup">lightbox feature</a> for displaying and editing entries, settings for customizing View URLs, new options for <a href="https://docs.gravitykit.com/article/1021-show-name-fields-as-initials">displaying Name field initials</a> and Custom Content fields in full width, and a merge tag modifier to show date field values in a human-readable format. Several bugs have also been fixed.</p>
 
 				<h4>🚀 Added</h4>
 
 				<ul>
 					<li>Ability to edit and display entries inside a lightbox.</li>
+					<li>Global and individual View settings to customize the URL structure for all or specific Views.</li>
 					<li><code>:human</code> merge tag modifier for date fields to display in human-readable format (e.g., <em>10 minutes ago</em>, <em>5 days from now</em>).</li>
 					<li>Option to display the Name field value as initials.</li>
+					<li>Option to display Custom Content field full width on the Single Entry screen.</li>
 				</ul>
 
 				<h4>🐛 Fixed</h4>
@@ -323,13 +325,14 @@ class GravityView_Welcome {
 				<h4>🔧 Updated</h4>
 
 				<ul>
-					<li><a href='https://www.gravitykit.com/foundation/'>Foundation</a> to version 1.2.18.</li>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.18.</li>
 				</ul>
 
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
 					<li>Added <code>gk/gravityview/field/name/display</code> filter to modify the Name field display value.</li>
+					<li>Added <code>gk/gravityview/permalinks/reserved-terms</code> filter to modify the list of reserved terms that are excluded from permalinks.</li>
 				</ul>
 
 				<h3>2.28 on August 29, 2024</h3>

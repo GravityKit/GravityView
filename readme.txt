@@ -24,15 +24,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added: Entry creator can be changed from the Edit Entry Layout.
+* Added: `{now}`, `{yesterday}` and `{tomorrow}` relative date merge tags.
+* Improved: Better handling of multi-file uploads on the Edit Entry screen.
 
-= 2.29 on September 27, 2024 =
+= 2.29 on October 1, 2024 =
 
-This release brings a much-requested lightbox feature for displaying and editing entries, adds an option to show Name field values as initials, and introduces a modifier to display date field values in a human-readable format, while also squashing several bugs.
+This release introduces a much-requested [lightbox feature](https://docs.gravitykit.com/article/1020-opening-and-editing-entry-details-in-a-lightbox-modal-popup) for displaying and editing entries, settings for customizing View URLs, new options for [displaying Name field initials](https://docs.gravitykit.com/article/1021-show-name-fields-as-initials) and Custom Content fields in full width, and a merge tag modifier to show date field values in a human-readable format. Several bugs have also been fixed.
 
 #### 🚀 Added
 * Ability to edit and display entries inside a lightbox.
+* Global and individual View settings to customize the URL structure for all or specific Views.
 * `:human` merge tag modifier for date fields to display in human-readable format (e.g., `10 minutes ago`, `5 days from now`).
 * Option to display the Name field value as initials.
+* Option to display Custom Content field full width on the Single Entry screen.
 
 #### 🐛 Fixed
 * Clearing search removed all URL query parameters and, in some cases, redirected to the homepage.
@@ -48,6 +52,7 @@ This release brings a much-requested lightbox feature for displaying and editing
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/field/name/display` filter to modify the Name field display value.
+* Added `gk/gravityview/permalinks/reserved-terms` filter to modify the list of reserved terms that are excluded from permalinks.
 
 = 2.28 on August 29, 2024 =
 
