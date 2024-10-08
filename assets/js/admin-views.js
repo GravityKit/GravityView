@@ -259,7 +259,7 @@
 		   ;
 		   // End bind to $( document.body )
 
-		   $( window ).resize( function() {
+		   $( window ).on( 'resize', function () {
 
 			   var $open_dialog = $( ".ui-dialog:visible" ).find( '.ui-dialog-content' );
 
