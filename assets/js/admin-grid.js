@@ -6,6 +6,7 @@
 			distance: 2,
 			revert: 75,
 			placeholder: 'grid-row-placeholder',
+			forcePlaceholderSize: true,
 		} );
 
 		$( document ).on( 'click', '[data-add-row]', function () {
@@ -29,5 +30,5 @@
 					window?.gvAdminActions?.initDroppables( $row );
 				} ) );
 		} );
-	} )
+	} );
 } )( jQuery );
