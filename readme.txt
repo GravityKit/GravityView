@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Added: `{now}`, `{yesterday}` and `{tomorrow}` relative date merge tags.
 * Improved: Better handling of multi-file uploads on the Edit Entry screen.
+* Fixed: Entry loading inside a lightbox did not work in some cases when BuddyPress is active.
 
 = 2.29 on October 1, 2024 =
 
