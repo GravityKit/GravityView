@@ -79,12 +79,12 @@ $gv-overlay-index: 10000;
 .gv-grid {
 	.gv-grid-row {
 		box-sizing: border-box;
-		margin: 1em 0;
+		margin-bottom: 24px;
 		display: grid;
 		grid-template-columns: repeat( 12, 1fr );
 		grid-template-rows: repeat( auto-fill, auto );
 		grid-column-gap: 24px;
-		grid-row-gap: 12px;
+		grid-row-gap: 24px;
 		position: relative;
 
 		.gv-grid-row-handle {
@@ -100,7 +100,8 @@ $gv-overlay-index: 10000;
 			cursor: move;
 		}
 
-		&:hover {
+		&:hover,
+		&.ui-sortable-helper {
 			.gv-grid-row-handle {
 				display: block;
 			}
@@ -108,10 +109,9 @@ $gv-overlay-index: 10000;
 	}
 
 	.grid-row-placeholder {
-		height: 50px;
 		background: rgba(210, 224, 235, 0.6);
 		border-radius: 3px;
-		margin: 1em 0;
+		margin-bottom: 24px;
 	}
 }
 
@@ -119,8 +119,12 @@ $gv-overlay-index: 10000;
 	max-width: 100%;
 }
 
-.gv-grid-col-1-4 {
+.gv-grid-col-1-6 {
 	grid-column: span 2;
+}
+
+.gv-grid-col-1-4 {
+	grid-column: span 3;
 }
 
 .gv-grid-col-1-2 {
@@ -935,9 +939,7 @@ hr {
 --------------------------------------- */
 
 .gv-droppable-area {
-
 	transition: all 200ms;
-	margin-bottom: 1em;
 	text-align: center;
 
 	.gv-droppable-area-action {
