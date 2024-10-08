@@ -12,6 +12,10 @@
  */
 
 /** If this file is called directly, abort. */
+
+use GV\Grid;
+use GV\Widget_Collection;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
@@ -1076,7 +1080,7 @@ HTML;
 		foreach ( $rows as $row ) :
 			echo '<div class="gv-grid-row is-draggable"><div class="gv-grid-row-handle"></div>';
 			foreach ( $row as $col => $areas ) :
-				$column = ( '2-2' == $col ) ? '1-2' : $col;
+				$column = ( '2-2' === $col ) ? '1-2' : $col;
 				?>
 
 				<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
@@ -1204,42 +1208,44 @@ HTML;
 
 		$default_widget_areas = \GV\Widget::get_default_widget_areas();
 
-		$widgets = array();
+		$widgets   = [];
+		$unique_id = static fn(): string => substr( md5( microtime( true ) ), 0, 13 );
+
 		if ( ! empty( $post_id ) ) {
 			if ( 'auto-draft' === get_post_status( $post_id ) ) {
 				// This is a new View, prefill the widgets
-				$widgets = array(
-					'header_top'   => array(
-						substr( md5( microtime( true ) ), 0, 13 ) => array(
+				$widgets = [
+					'header_top'   => [
+						$unique_id() => [
 							'id'            => 'search_bar',
 							'label'         => __( 'Search Bar', 'gk-gravityview' ),
 							'search_layout' => 'horizontal',
 							'search_clear'  => '0',
 							'search_fields' => '[{"field":"search_all","input":"input_text"}]',
 							'search_mode'   => 'any',
-						),
-					),
-					'header_left'  => array(
-						substr( md5( microtime( true ) ), 0, 13 ) => array(
+						],
+					],
+					'header_left'  => [
+						$unique_id() => [
 							'id'    => 'page_info',
 							'label' => __( 'Show Pagination Info', 'gk-gravityview' ),
-						),
-					),
-					'header_right' => array(
-						substr( md5( microtime( true ) ), 0, 13 ) => array(
+						],
+					],
+					'header_right' => [
+						$unique_id() => [
 							'id'       => 'page_links',
 							'label'    => __( 'Page Links', 'gk-gravityview' ),
 							'show_all' => '0',
-						),
-					),
-					'footer_right' => array(
-						substr( md5( microtime( true ) ), 0, 13 ) => array(
+						],
+					],
+					'footer_right' => [
+						$unique_id() => [
 							'id'       => 'page_links',
 							'label'    => __( 'Page Links', 'gk-gravityview' ),
 							'show_all' => '0',
-						),
-					),
-				);
+						],
+					],
+				];
 
 				/**
 				 * Modify the default widgets for new Views.
@@ -1250,7 +1256,9 @@ HTML;
 				 */
 				$widgets = apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
 			} else {
-				$widgets = gravityview_get_directory_widgets( $post_id );
+				$widgets     = gravityview_get_directory_widgets( $post_id );
+				$collection = Widget_Collection::from_configuration( $widgets );
+				$default_widget_areas = Grid::get_rows_from_widgets( $collection, $zone ) ?: $default_widget_areas;
 			}
 		}
 
@@ -1260,6 +1268,7 @@ HTML;
 		<div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets">
 			<?php
 				$this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets );
+
 				printf(
 					'<button type="button" class="gv-add-field button button-link button-hero" data-add-row="%s" data-template-id="%s">
 						<span class="dashicons dashicons-plus-alt"></span> %s
@@ -1546,7 +1555,7 @@ HTML;
 				'gravityview-jquery-cookie',
 				'jquery-ui-datepicker',
 				'underscore',
-				'clipboard'
+				'clipboard',
 			],
 			\GV\Plugin::$version
 		);

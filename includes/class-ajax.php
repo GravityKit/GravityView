@@ -1,5 +1,7 @@
 <?php
 
+use GV\Grid;
+
 class GravityView_Ajax {
 
 	function __construct() {
@@ -121,24 +123,24 @@ class GravityView_Ajax {
 
 		ob_start();
 		do_action(
-            'gravityview_render_directory_active_areas',
+			'gravityview_render_directory_active_areas',
 			\GV\Utils::_POST( 'template_id' ),
 			'directory',
 			'',
 			true,
-            \GV\Utils::_POST( 'form_id', 0 )
-        );
+			\GV\Utils::_POST( 'form_id', 0 )
+		);
 		$response['directory'] = ob_get_clean();
 
 		ob_start();
 		do_action(
-            'gravityview_render_directory_active_areas',
+			'gravityview_render_directory_active_areas',
 			\GV\Utils::_POST( 'template_id' ),
 			'single',
 			'',
 			true,
-            \GV\Utils::_POST( 'form_id', 0 )
-        );
+			\GV\Utils::_POST( 'form_id', 0 )
+		);
 		$response['single'] = ob_get_clean();
 
 		$response = array_map( 'gravityview_strip_whitespace', $response );
@@ -156,21 +158,12 @@ class GravityView_Ajax {
 			$this->_exit( false );
 		}
 
-		$columns = [ '1-3', '1-3', '1-3' ];
-		$type    = 'widget';
-		$zone    = 'header';
-		$rows    = array_reduce(
-			$columns,
-			static function ( array $columns, string $column ): array {
-				$area_id                             = wp_generate_password( 8, false );
-				$columns[ $column . ' ' . $area_id ] = [ [ 'areaid' => $area_id ] ];
+		$type     = 'widget';
+		$row_types = ['100','50/50','33/66','25/50/25'];
+		$rows = [ Grid::get_row_by_type( $row_types[array_rand($row_types)] ) ];
 
-				return $columns;
-			},
-			[]
-		);
 		ob_start();
-		do_action( 'gravityview_render_active_areas', $_POST['template_id'], $type, $zone, [ $rows ], [] );
+		do_action( 'gravityview_render_active_areas', $_POST['template_id'], $type, $_POST['zone'], $rows, [] );
 		$response['row'] = ob_get_clean();
 
 		$this->_exit( json_encode( $response ) );
@@ -211,46 +204,46 @@ class GravityView_Ajax {
 
 		ob_start();
 		do_action(
-            'gravityview_render_active_areas',
+			'gravityview_render_active_areas',
 			$template_id,
 			'widget',
 			'header',
 			$default_widget_areas,
-            $presets['widgets']
-        );
+			$presets['widgets']
+		);
 		$response['header'] = ob_get_clean();
 
 		ob_start();
 		do_action(
-            'gravityview_render_active_areas',
+			'gravityview_render_active_areas',
 			$template_id,
 			'widget',
 			'footer',
 			$default_widget_areas,
-            $presets['widgets']
-        );
+			$presets['widgets']
+		);
 		$response['footer'] = ob_get_clean();
 
 		ob_start();
 		do_action(
-            'gravityview_render_active_areas',
+			'gravityview_render_active_areas',
 			$template_id,
 			'field',
 			'directory',
 			$template_areas_directory,
-            $presets['fields']
-        );
+			$presets['fields']
+		);
 		$response['directory'] = ob_get_clean();
 
 		ob_start();
 		do_action(
-            'gravityview_render_active_areas',
+			'gravityview_render_active_areas',
 			$template_id,
 			'field',
 			'single',
 			$template_areas_single,
-            $presets['fields']
-        );
+			$presets['fields']
+		);
 		$response['single'] = ob_get_clean();
 
 		$response = array_map( 'gravityview_strip_whitespace', $response );
@@ -283,9 +276,9 @@ class GravityView_Ajax {
 		if ( false === $form ) {
 			// send error to user
 			gravityview()->log->error(
-                'Error importing form for template id: {template_id}',
-                [ 'template_id' => (int) $_POST['template_id'] ]
-            );
+				'Error importing form for template id: {template_id}',
+				[ 'template_id' => (int) $_POST['template_id'] ]
+			);
 
 			$this->_exit( false );
 		}
@@ -305,9 +298,9 @@ class GravityView_Ajax {
 
 		if ( empty( $xml_or_json_path ) || ! class_exists( 'GFExport' ) || ! file_exists( $xml_or_json_path ) ) {
 			gravityview()->log->error(
-                'Class GFExport or file not found. file: {path}',
-                [ 'path' => $xml_or_json_path ]
-            );
+				'Class GFExport or file not found. file: {path}',
+				[ 'path' => $xml_or_json_path ]
+			);
 
 			return false;
 		}
@@ -355,7 +348,7 @@ class GravityView_Ajax {
 
 		$form_id  = empty( $_post['form_id'] ) ? null : $_post['form_id'];
 		$response = GravityView_Render_Settings::render_field_options(
-            $form_id,
+			$form_id,
 			$_post['field_type'],
 			$_post['template'],
 			$_post['field_id'],
@@ -364,8 +357,8 @@ class GravityView_Ajax {
 			$input_type,
 			'',
 			'',
-            $context
-        );
+			$context
+		);
 
 		$response = gravityview_strip_whitespace( $response );
 
@@ -479,9 +472,9 @@ class GravityView_Ajax {
 
 		if ( empty( $presets['posts'][0]['postmeta'] ) && ! is_array( $presets['posts'][0]['postmeta'] ) ) {
 			gravityview()->log->error(
-                'Importing Preset Fields failed. Meta not found in file. {path}',
-                [ 'path' => $file ]
-            );
+				'Importing Preset Fields failed. Meta not found in file. {path}',
+				[ 'path' => $file ]
+			);
 
 			return false;
 		}
