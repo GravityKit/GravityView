@@ -1256,8 +1256,8 @@ HTML;
 				 */
 				$widgets = apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
 			} else {
-				$widgets     = gravityview_get_directory_widgets( $post_id );
-				$collection = Widget_Collection::from_configuration( $widgets );
+				$widgets              = gravityview_get_directory_widgets( $post_id );
+				$collection           = Widget_Collection::from_configuration( $widgets );
 				$default_widget_areas = Grid::get_rows_from_widgets( $collection, $zone ) ?: $default_widget_areas;
 			}
 		}
@@ -1269,14 +1269,7 @@ HTML;
 			<?php
 				$this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets );
 
-				printf(
-					'<button type="button" class="gv-add-field button button-link button-hero" data-add-row="%s" data-template-id="%s">
-						<span class="dashicons dashicons-plus-alt"></span> %s
-					</button>',
-					$zone,
-					$template_id,
-					esc_html__( 'Add row', 'gk-gravityview' ),
-				);
+				$this->render_add_row( $template_id, 'widget', $zone );
 			?>
 		</div>
 
@@ -1388,6 +1381,65 @@ HTML;
 		}
 
 		return $output;
+	}
+
+	private function render_add_row( string $template_id, string $type, string $zone ) {
+		$button = <<<HTML
+<button
+	type="button"
+	class="gv-add-row"
+	data-add-row="%s"
+	data-template-id="%s"
+	data-type="%s"
+	data-row-type="%s"
+>
+	<span class="screen-reader-text">%s</span>
+	%s
+</button>
+HTML;
+		?>
+		<div class="gv-grid-add-row">
+			<div class="gv-grid-row-layouts">
+				<div class="gv-grid-row-title"><?php esc_html_e( 'Select your layout', 'gk-gravityview' ); ?></div>
+				<div class="gv-grid-row-types">
+				<?php
+				foreach ( Grid::get_row_types() as $key => $_ ) {
+					$columns = explode( '/', $key );
+					$icon    = '<div class="gv-grid-add-row-icon">';
+					foreach ( $columns as $column ) {
+						$icon .= sprintf(
+							'<div class="gv-grid-add-row-icon-column-%s">%s</div>',
+							esc_attr( $column ),
+							esc_html( $column ),
+						);
+					}
+					$icon .= '</div>';
+					printf(
+						$button,
+						esc_attr( $zone ),
+						esc_attr( $template_id ),
+						'widget',
+						esc_attr( $key ),
+						esc_attr(
+                            str_replace(
+                                '[type]',
+                                $key,
+                                esc_html__( 'Add [type] row', 'gk-gravityview' ),
+                            )
+                        ),
+						$icon
+					);
+				}
+				?>
+				</div>
+			</div>
+			<div class="gv-grid-row-button">
+				<button type="button" class="gv-add-field button button-link button-hero gv-toggle">
+					<span class="dashicons dashicons-plus-alt"></span> <?php esc_html_e( 'Add row', 'gk-gravityview' ); ?>
+				</button>
+			</div>
+		</div>
+			<?php
 	}
 
 	/**

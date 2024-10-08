@@ -84,7 +84,7 @@ final class Grid {
 	 *
 	 * @return array The row types with their configuration.
 	 */
-	private static function get_row_types(): array {
+	public static function get_row_types(): array {
 		return [
 			'100'      => [
 				'1-1' => [

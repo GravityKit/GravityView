@@ -154,16 +154,24 @@ class GravityView_Ajax {
 		if (
 			empty( $_POST['template_id'] )
 			|| empty( $_POST['zone'] )
+			|| empty( $_POST['type'] )
+			|| empty( $_POST['row_type'] )
 		) {
 			$this->_exit( false );
 		}
 
-		$type     = 'widget';
-		$row_types = ['100','50/50','33/66','25/50/25'];
-		$rows = [ Grid::get_row_by_type( $row_types[array_rand($row_types)] ) ];
+		$rows      = [ Grid::get_row_by_type( $_POST['row_type'] ) ];
 
 		ob_start();
-		do_action( 'gravityview_render_active_areas', $_POST['template_id'], $type, $_POST['zone'], $rows, [] );
+
+		do_action(
+            'gravityview_render_active_areas',
+			$_POST['template_id'],
+			$_POST['type'],
+			$_POST['zone'],
+			$rows,
+            []
+        );
 		$response['row'] = ob_get_clean();
 
 		$this->_exit( json_encode( $response ) );

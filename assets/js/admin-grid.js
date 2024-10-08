@@ -9,26 +9,36 @@
 			forcePlaceholderSize: true,
 		} );
 
-		$( document ).on( 'click', '[data-add-row]', function () {
-			const $add_row_button = $( this );
-			const zone = $add_row_button.data( 'add-row' );
-			const template_id = $add_row_button.data( 'template-id' );
-
-			$.post( ajaxurl, {
-				action: 'gv_create_row',
-				template_id,
-				nonce: gvGlobals.nonce,
-				zone,
-				dataType: 'json'
+		$( '.gv-grid-add-row' )
+			.on( 'click', '.gv-toggle', function ( e ) {
+				$( e.delegateTarget ).toggleClass( 'open' );
 			} )
-				.done( ( response => {
-					const result = JSON.parse( response );
-					const $row = $( result?.row );
-					$row.insertBefore( $add_row_button );
+			.on( 'click', '[data-add-row]', function ( e ) {
+				const $add_row_button = $( this );
 
-					window?.gvAdminActions?.initTooltips();
-					window?.gvAdminActions?.initDroppables( $row );
-				} ) );
-		} );
+				const zone = $add_row_button.data( 'add-row' );
+				const template_id = $add_row_button.data( 'template-id' );
+				const type = $add_row_button.data( 'type' );
+				const row_type = $add_row_button.data( 'row-type' );
+
+				$.post( ajaxurl, {
+					action: 'gv_create_row',
+					template_id,
+					nonce: gvGlobals.nonce,
+					zone,
+					type,
+					row_type,
+					dataType: 'json'
+				} )
+					.always( () => $( e.delegateTarget ).removeClass( 'open' ) )
+					.done( ( response => {
+						const result = JSON.parse( response );
+						const $row = $( result?.row );
+						$row.insertBefore( $( e.delegateTarget ) );
+
+						window?.gvAdminActions?.initTooltips();
+						window?.gvAdminActions?.initDroppables( $row );
+					} ) );
+			} );
 	} );
 } )( jQuery );
