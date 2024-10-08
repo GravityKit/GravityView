@@ -8,6 +8,8 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 
 /**
  * A collection of \GV\Entry objects.
+ *
+ * @implements Collection<Entry>
  */
 class Entry_Collection extends Collection {
 	/**
