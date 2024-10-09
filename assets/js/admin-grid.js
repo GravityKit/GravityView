@@ -2,11 +2,33 @@
 	$( () => {
 		$( document ).find( '.gv-grid' ).sortable( {
 			handle: '.gv-grid-row-handle',
-			items: '> .gv-grid-row.is-draggable',
+			items: '> .gv-grid-row.is-sortable',
 			distance: 2,
 			revert: 75,
 			placeholder: 'grid-row-placeholder',
 			forcePlaceholderSize: true,
+		} );
+
+		$( document ).on( 'click', '.gv-grid-row-delete', function () {
+			const $row = $( this ).closest( '.gv-grid-row' );
+			const $fields = $row.find( '.gv-fields' );
+
+			if (
+				$fields.length > 0
+				&& !confirm( $( this ).data( 'confirm' ) )
+			) {
+				return;
+			}
+
+			$row.fadeOut( 'fast', () => {
+				$fields.each( function () {
+					$( this ).remove();
+					$( document.body ).trigger( 'gravityview/field-removed', $( this ) );
+				} );
+
+				$row.remove();
+				$( document.body ).trigger( 'gravityview/row-removed', $row );
+			} );
 		} );
 
 		$( '.gv-grid-add-row' )

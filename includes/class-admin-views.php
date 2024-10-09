@@ -1016,8 +1016,10 @@ HTML;
 
 		if ( 'widget' === $type ) {
 			$button_label = __( 'Add Widget', 'gk-gravityview' );
+			$is_sortable  = true;
 		} else {
 			$button_label = __( 'Add Field', 'gk-gravityview' );
+			$is_sortable  = false;
 		}
 
 		/**
@@ -1078,7 +1080,9 @@ HTML;
 		}
 
 		foreach ( $rows as $row ) :
-			echo '<div class="gv-grid-row is-draggable"><div class="gv-grid-row-handle"></div>';
+			printf( '<div class="gv-grid-row %s">', $is_sortable ? 'is-sortable' : '' );
+			$this->render_actions( $is_sortable );
+
 			foreach ( $row as $col => $areas ) :
 				$column = ( '2-2' === $col ) ? '1-2' : $col;
 				?>
@@ -1195,6 +1199,38 @@ HTML;
 		endforeach;
 	}
 
+	/**
+	 * Renders the row actions.
+     *
+	 * @since $ver$
+	 *
+     * @param bool $is_sortable Whether the rows are sortable.
+	 */
+	private function render_actions( bool $is_sortable ): void {
+		if ( ! $is_sortable ) {
+			return;
+		}
+
+		echo '<div class="gv-grid-row-actions">
+				<div class="gv-grid-row-action gv-grid-row-handle">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect x="8" y="4.99988" width="2" height="2" fill="currentColor"/>
+						<rect x="8" y="10.9999" width="2" height="2" fill="currentColor"/>
+						<rect x="8" y="16.9999" width="2" height="2" fill="currentColor"/>
+						<rect x="14" y="4.99988" width="2" height="2" fill="currentColor"/>
+						<rect x="14" y="10.9999" width="2" height="2" fill="currentColor"/>
+						<rect x="14" y="16.9999" width="2" height="2" fill="currentColor"/>
+					</svg>
+				</div>
+				<div class="gv-grid-row-action gv-grid-row-delete" data-confirm="' . esc_attr__( 'Are you sure you want to delete the entire row?', 'gk-gravityview' ) . '">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path d="M6.33755 7.17057C6.23321 6.47927 6.76848 5.85714 7.46761 5.85714H16.5328C17.2319 5.85714 17.7672 6.47927 17.6629 7.17058L15.9809 18.3134C15.8966 18.8724 15.4162 19.2857 14.8509 19.2857H9.14955C8.58424 19.2857 8.10387 18.8724 8.01949 18.3134L6.33755 7.17057Z" stroke="currentColor" stroke-width="1.71429"/>
+						<rect x="4" y="5" width="16" height="2" fill="currentColor"/>
+						<path d="M14.2858 5C14.2858 5 13.2624 5 12.0001 5C10.7377 5 9.71436 5 9.71436 5C9.71436 3.73763 10.7377 2.71429 12.0001 2.71429C13.2624 2.71429 14.2858 3.73763 14.2858 5Z" fill="currentColor"/>
+					</svg>
+				</div>
+			</div>';
+	}
 	/**
 	 * Render the widget active areas
 	 *
@@ -1399,38 +1435,40 @@ HTML;
 HTML;
 		?>
 		<div class="gv-grid-add-row">
-			<div class="gv-grid-row-layouts">
-				<div class="gv-grid-row-title"><?php esc_html_e( 'Select your layout', 'gk-gravityview' ); ?></div>
-				<div class="gv-grid-row-types">
-				<?php
-				foreach ( Grid::get_row_types() as $key => $_ ) {
-					$columns = explode( '/', $key );
-					$icon    = '<div class="gv-grid-add-row-icon">';
-					foreach ( $columns as $column ) {
-						$icon .= sprintf(
-							'<div class="gv-grid-add-row-icon-column-%s">%s</div>',
-							esc_attr( $column ),
-							esc_html( $column ),
+			<div class="gv-grid-row-layouts-wrapper">
+				<div class="gv-grid-row-layouts">
+					<div class="gv-grid-row-title"><?php esc_html_e( 'Select your layout', 'gk-gravityview' ); ?></div>
+					<div class="gv-grid-row-types">
+					<?php
+					foreach ( Grid::get_row_types() as $key => $_ ) {
+						$columns = explode( '/', $key );
+						$icon    = '<div class="gv-grid-add-row-icon">';
+						foreach ( $columns as $column ) {
+							$icon .= sprintf(
+								'<div class="gv-grid-add-row-icon-column-%s">%s</div>',
+								esc_attr( $column ),
+								esc_html( $column ),
+							);
+						}
+						$icon .= '</div>';
+						printf(
+							$button,
+							esc_attr( $zone ),
+							esc_attr( $template_id ),
+							'widget',
+							esc_attr( $key ),
+							esc_attr(
+								str_replace(
+									'[type]',
+									$key,
+									esc_html__( 'Add [type] row', 'gk-gravityview' ),
+								)
+							),
+							$icon
 						);
 					}
-					$icon .= '</div>';
-					printf(
-						$button,
-						esc_attr( $zone ),
-						esc_attr( $template_id ),
-						'widget',
-						esc_attr( $key ),
-						esc_attr(
-                            str_replace(
-                                '[type]',
-                                $key,
-                                esc_html__( 'Add [type] row', 'gk-gravityview' ),
-                            )
-                        ),
-						$icon
-					);
-				}
-				?>
+					?>
+					</div>
 				</div>
 			</div>
 			<div class="gv-grid-row-button">

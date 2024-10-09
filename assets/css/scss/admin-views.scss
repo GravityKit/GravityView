@@ -78,33 +78,60 @@ $gv-overlay-index: 10000;
 
 .gv-grid {
 	.gv-grid-row {
+		padding: 12px;
 		box-sizing: border-box;
 		margin-bottom: 24px;
 		display: grid;
 		grid-template-columns: repeat( 12, 1fr );
 		grid-template-rows: repeat( auto-fill, auto );
-		grid-column-gap: 24px;
+		grid-column-gap: 12px;
 		grid-row-gap: 24px;
 		position: relative;
+		background-color: #FFF;
 
-		.gv-grid-row-handle {
-			display: none;
-			position: absolute;
-			left: -10px;
-			top: 10px;
-			background: #136cb9;
-			bottom: 0;
-			width: 10px;
-			height: 50px;
-			border-radius: 3px;
-			cursor: move;
+		&:hover {
+			.gv-grid-row-actions {
+				display: flex;
+			}
+		}
+	}
+
+	.gv-grid-row-actions {
+		position: absolute;
+		z-index: 1;
+		bottom: 100%;
+		left: 10px;
+		margin-bottom: -16px;
+		background-color: #FFF;
+		border-radius: 3px;
+		border: 1px solid #D5D7E9;
+		display: none;
+		overflow: hidden;
+		box-shadow: 0 0 20px 0 #D5D7E9;
+	}
+
+	.gv-grid-row-action {
+		display: flex;
+		padding: 8px 6px;
+		width: 32px;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+
+		& + .gv-grid-row-action {
+			border-left: 1px solid #D5D7E9;
 		}
 
-		&:hover,
-		&.ui-sortable-helper {
-			.gv-grid-row-handle {
-				display: block;
-			}
+		&:hover {
+			color: #2271B1;
+		}
+	}
+
+	.gv-grid-row-handle {
+		cursor: grab;
+
+		&:active {
+			cursor: grabbing;
 		}
 	}
 
@@ -112,6 +139,7 @@ $gv-overlay-index: 10000;
 		background: rgba(210, 224, 235, 0.6);
 		border-radius: 3px;
 		margin-bottom: 24px;
+		padding: 12px;
 	}
 
 	&.ui-sortable .gv-grid-row {
@@ -124,21 +152,24 @@ $gv-overlay-index: 10000;
 			display: flex;
 			justify-content: center;
 		}
+
+		.gv-grid-row-layouts-wrapper {
+			max-height: 0;
+			overflow: hidden;
+		}
+
 		.gv-grid-row-layouts {
 			border: 2px dashed #E4ECF3;
 			flex: 1;
 			border-radius: 3px;
 			padding: 2em;
-			display: none;
-			height: 0;
-			transition: all;
-			transition-duration: 500ms;
 			margin-bottom: 2em;
 		}
+
 		&.open {
-			.gv-grid-row-layouts {
-				height: auto;
-				display: block;
+			.gv-grid-row-layouts-wrapper {
+				max-height: 500px;
+				transition: max-height 300ms ease-out;
 			}
 		}
 
@@ -1102,7 +1133,6 @@ hr {
 	min-height: 44px;
 	border-radius: 3px;
 	max-width: 100%;
-	background-color: #FFF;
 
 	&.is-receivable {
 		&:empty {
@@ -2190,7 +2220,13 @@ $dialog-button-padding: 5px;
 	max-width: 100% !important;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
-	margin-bottom: .5em;
+	border: 1px solid #d7dade;
+}
+
+[class^="gv-grid-col-"]:not(.gv-grid-col-1-1) .gv-droppable-area .gv-add-field {
+	display: block;
+	text-align: center;
+
 }
 
 .gv-field-label {
