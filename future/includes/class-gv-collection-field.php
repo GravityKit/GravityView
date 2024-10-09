@@ -8,6 +8,8 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 
 /**
  * A collection of \GV\Field objects.
+ *
+ * @implements Collection<Field>
  */
 class Field_Collection extends Collection {
 

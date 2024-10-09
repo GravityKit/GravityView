@@ -12,6 +12,9 @@
  */
 
 /** If this file is called directly, abort. */
+
+use GV\Grid;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die;
 }
@@ -530,7 +533,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		 * @since 1.13
 		 * @param array $counts Array with $first, $last, $total numbers in that order
 		 */
-		list( $first, $last, $total ) = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
+		[ $first, $last, $total ] = apply_filters( 'gravityview_pagination_counts', array( $first, $last, $total ) );
 
 		return array(
 			'first' => (int) $first,
@@ -945,7 +948,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			return;
 		}
 
-		$rows = \GV\Widget::get_default_widget_areas();
+		$rows = Grid::get_rows_from_widgets( $widgets, $zone );
 
 		// TODO: Move to sep. method, use an action instead
 		wp_enqueue_style( 'gravityview_default_style' );
@@ -975,10 +978,12 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		// TODO Convert to partials
 		?>
 		<div class="<?php echo $css_class; ?>">
-			<?php
-			foreach ( $rows as $row ) {
+			<?php foreach ( $rows as $row ) { ?>
+				<div class="gv-grid-row">
+				<?php
 				foreach ( $row as $col => $areas ) {
-					$column = ( '2-2' == $col ) ? '1-2 gv-right' : "$col gv-left";
+					$is_right = ( '2-2' === $col || strpos( $col, ' right' ) !== false );
+					$column   = $col . ' gv-' . ( $is_right ? 'right' : 'left' );
 					?>
 					<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 						<?php
@@ -992,6 +997,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 						?>
 					</div>
 				<?php } // $row ?>
+				</div>
 			<?php } // $rows ?>
 		</div>
 

@@ -38,6 +38,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 
 <?php // list all the available templates (type= fresh or custom ) ?>
 <div class="gv-grid">
+	<div class="gv-grid-row">
 	<?php
 	// Retrieve the base templates.
 	$base_template_mapping = array_reduce(
@@ -76,7 +77,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 		$label              = \GV\Utils::get( $template, 'label', '' );
 		$description        = \GV\Utils::get( $template, 'description', '' );
 		?>
-		<div class="gv-grid-col-1-4">
+		<div class="gv-grid-col-1-6">
 			<div class="gv-view-types-module
 			<?php
 			echo $selected;
@@ -128,4 +129,5 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 			</div>
 		</div>
 	<?php } ?>
+	</div>
 </div>
