@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Improved: Better handling of multi-file uploads on the Edit Entry screen.
 * Fixed: Entry loading inside a lightbox did not work in some cases when BuddyPress is active.
 * Improved: The page no longer suddenly skips when adding a field.
+* Fixed: Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.
 
 = 2.29 on October 1, 2024 =
 
