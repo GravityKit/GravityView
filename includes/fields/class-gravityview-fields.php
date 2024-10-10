@@ -93,11 +93,20 @@ final class GravityView_Fields {
 	 * @return GravityView_Field|false Returns false if no matching fields found
 	 */
 	public static function get_associated_field( $gf_field ) {
+		$is_field    = $gf_field instanceof GF_Field;
+		$field_class = $is_field ? get_class( $gf_field ) : $gf_field;
+		$field_name  = $is_field && ! is_numeric( $gf_field->id ) ? $gf_field->id : null;
 
-		$field_type = is_a( $gf_field, 'GF_Field' ) ? get_class( $gf_field ) : $gf_field;
+		if ( $field_name ) {
+			foreach ( self::$_fields as $field ) {
+				if ( $field_name === $field->name ) {
+					return $field;
+				}
+			}
+		}
 
 		foreach ( self::$_fields as $field ) {
-			if ( $field_type === $field->_gf_field_class_name ) {
+			if ( $field_class === $field->_gf_field_class_name ) {
 				return $field;
 			}
 		}
