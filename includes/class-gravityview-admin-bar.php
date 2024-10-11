@@ -131,7 +131,7 @@ class GravityView_Admin_Bar {
 
 		if ( ! GVCommon::has_cap(
 			[ 'edit_gravityviews', 'edit_gravityview', 'gravityforms_edit_forms' ],
-			$post->ID
+			isset( $post ) ? $post->ID : null
 		) ) {
 			return;
 		}
