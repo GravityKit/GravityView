@@ -2066,7 +2066,7 @@ class GravityView_Edit_Entry_Render {
 	        /** @var GF_Field $field */
 	        foreach ( $fields as $field ) {
 				if ( intval( $configured_field['id'] ) === intval( $field->id ) && $this->user_can_edit_field( $configured_field, false ) ) {
-				    $edit_fields[] = $this->merge_field_properties( $field, $configured_field );
+				    $edit_fields[] = static::merge_field_properties( $field, $configured_field );
 				    break;
 				}
 			}
@@ -2083,7 +2083,7 @@ class GravityView_Edit_Entry_Render {
 	 * @since  1.5
 	 * @return array|GF_Field
 	 */
-	private function merge_field_properties( $field, $field_setting ) {
+	public static function merge_field_properties( $field, $field_setting ) {
 
 		$return_field = $field;
 

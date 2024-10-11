@@ -515,7 +515,7 @@ class GravityView_Change_Entry_Creator {
 			return $fields;
 		}
 
-		$fields[] = $form_fields['created_by'];
+		$fields[] = GravityView_Edit_Entry_Render::merge_field_properties( $form_fields['created_by'], $configuration );
 
 		// Sort fields according to Gravity View.
 		$sort_order_lookup = array_flip( array_keys( $editable_field_ids ) );
