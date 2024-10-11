@@ -423,7 +423,7 @@ final class GravityView_Delete_Entry {
 	 * @param bool   $safe_redirect Whether to use wp_safe_redirect() or not.
 	 */
 	private function _redirect_and_exit( $url, $message = '', $status = '', $safe_redirect = true ) {
-		if ( ! apply_filters( 'wp_redirect', $url ) ) {
+		if ( ! apply_filters( 'wp_redirect', $url, 302 ) ) {
 			return;
 		}
 

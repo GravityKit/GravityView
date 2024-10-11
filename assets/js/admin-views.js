@@ -2043,7 +2043,19 @@
 
 				   viewConfiguration.setTooltipLayout( activate_layout );
 
-				   $focus_item.trigger('focus');
+				   // Smooth scroll to focus.
+				   $focus_item[ 0 ].focus( { preventScroll: true } );
+				   const box = $focus_item[ 0 ].getBoundingClientRect();
+
+				   if ( box.y < 0 || box.y > document.body.getBoundingClientRect().height ) {
+					   window.scrollTo(
+						   {
+							   left: window.scrollX,
+							   top: window.scrollY + box.y + ( box.y < 0 ? -60 : 60 ),
+							   behavior: 'smooth'
+						   }
+					   );
+				   }
 			   },
 			   closeOnEscape: true,
 			   disabled: true, // Don't open on hover
