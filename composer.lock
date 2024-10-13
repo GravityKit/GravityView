@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "93d00cfd445c3485f6adb099164fc03d16bd42db"
+                "reference": "a0876b3985cec34fdb69553863ae5da9ddb31c6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/93d00cfd445c3485f6adb099164fc03d16bd42db",
-                "reference": "93d00cfd445c3485f6adb099164fc03d16bd42db",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/a0876b3985cec34fdb69553863ae5da9ddb31c6e",
+                "reference": "a0876b3985cec34fdb69553863ae5da9ddb31c6e",
                 "shasum": ""
             },
             "require": {
@@ -260,7 +260,13 @@
             "require-dev": {
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
                 "dingo-d/wp-pest": "^1.6",
+                "php-stubs/gravity-forms-stubs": "^2.8",
+                "php-stubs/wordpress-stubs": "^6.6",
+                "php-stubs/wp-cli-stubs": "^2.10",
                 "phpcompatibility/phpcompatibility-wp": "*",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^1.12",
+                "szepeviktor/phpstan-wordpress": "^1.3",
                 "wp-coding-standards/wpcs": "^2.3"
             },
             "type": "library",
@@ -295,6 +301,15 @@
                 }
             },
             "scripts": {
+                "code:analyze": [
+                    "phpstan analyse -c phpstan/config.neon.dist --memory-limit=2048M"
+                ],
+                "code:sniff": [
+                    "./vendor/bin/phpcs"
+                ],
+                "code:format": [
+                    "./vendor/bin/phpcbf --report-summary --report-source"
+                ],
                 "prefix_vendor": [
                     "@php tools/strauss.phar"
                 ],
@@ -325,10 +340,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/main",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.19",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2024-09-12T23:42:51+00:00"
+            "time": "2024-10-13T16:39:26+00:00"
         },
         {
             "name": "illuminate/container",
