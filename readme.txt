@@ -21,17 +21,27 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.30 on October 14, 2024 =
 
-* Added: Entry creator can be changed from the Edit Entry Layout.
-* Added: `{now}`, `{yesterday}` and `{tomorrow}` relative date merge tags.
-* Improved: Better handling of multi-file uploads on the Edit Entry screen.
-* Improved: The page no longer suddenly scrolls up when adding a field.
-* Fixed: Entry loading inside a lightbox did not work in some cases when BuddyPress is active.
-* Fixed: Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.
-* Fixed: Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.
-* Fixed: Fatal error when rendering a GravityView View field with a non-existent View ID.
-* Fixed: Survey field (Rating type) values displaying in reverse order when a View is embedded inside another View.
+This release adds the ability to change the entry creator from the Edit Entry screen, improves upload handling, fixes various bugs, and updates internal components.
+
+#### 🚀 Added
+* Entry creator can now be changed from the Edit Entry screen.
+* `{now}`, `{yesterday}`, and `{tomorrow}` relative date merge tags.
+
+#### ✨ Improved
+* Handling of multi-file uploads on the Edit Entry screen.
+
+#### 🐛 Fixed
+* Entry loading inside a lightbox did not work in some cases when BuddyPress was active.
+* Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.
+* Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.
+* Fatal error when rendering a GravityView View field with a non-existent View ID.
+* Survey field (Rating type) values were displaying in reverse order when a View was embedded inside another View.
+* Unexpected scrolling in the View editor after adding a field.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.19.
 
 = 2.29 on October 1, 2024 =
 
