@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Added: Entry creator can be changed from the Edit Entry Layout.
 * Added: `{now}`, `{yesterday}` and `{tomorrow}` relative date merge tags.
 * Improved: Better handling of multi-file uploads on the Edit Entry screen.
 * Improved: The page no longer suddenly scrolls up when adding a field.
