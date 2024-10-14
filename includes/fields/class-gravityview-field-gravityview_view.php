@@ -207,7 +207,7 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 			$attributes['end_date'] = esc_attr( $end_date );
 		}
 
-		$view      = \GV\View::by_id( $view_id );
+		$view = \GV\View::by_id( $view_id );
 
 		if ( ! $view ) {
 			return;
