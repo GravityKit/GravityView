@@ -127,9 +127,12 @@ class GravityView_Admin_Bar {
 	 */
 	function add_edit_view_and_form_link() {
 		/** @var WP_Admin_Bar $wp_admin_bar */
-		global $wp_admin_bar;
+		global $wp_admin_bar, $post;
 
-		if ( ! GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview', 'gravityforms_edit_forms' ) ) ) {
+		if ( ! GVCommon::has_cap(
+			[ 'edit_gravityviews', 'edit_gravityview', 'gravityforms_edit_forms' ],
+			isset( $post ) ? $post->ID : null
+		) ) {
 			return;
 		}
 

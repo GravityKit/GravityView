@@ -344,6 +344,39 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers GravityView_Merge_Tags::replace_merge_tags_dates
+	 *
+	 * @since  2.30.0
+	 */
+	function test_replace_field_dates_merge_tags() {
+		$form = $this->factory->form->create_and_get();
+
+		$entry = $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+		] );
+
+		$test_data = [
+			'{now:raw}'                => date_i18n( 'Y-m-d H:i:s', time(), true ),
+			'{now:format:Y-m-d}'       => date_i18n( 'Y-m-d', time(), true ),
+			'{now:timestamp}'          => time(),
+			'{tomorrow:raw}'           => date_i18n( 'Y-m-d H:i:s', time() + DAY_IN_SECONDS, true ),
+			'{tomorrow:format:Y-m-d}'  => date_i18n( 'Y-m-d', time() + DAY_IN_SECONDS, true ),
+			'{tomorrow:timestamp}'     => time() + DAY_IN_SECONDS,
+			'{yesterday:raw}'          => date_i18n( 'Y-m-d H:i:s', time() - DAY_IN_SECONDS, true ),
+			'{yesterday:format:Y-m-d}' => date_i18n( 'Y-m-d', time() - DAY_IN_SECONDS, true ),
+			'{yesterday:timestamp}'    => time() - DAY_IN_SECONDS,
+		];
+
+		foreach ( $test_data as $merge_tag => $expected ) {
+			$this->assertEquals(
+				$expected,
+				GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ),
+				$merge_tag
+			);
+		}
+	}
+
+	/**
 	 * @covers GravityView_Field::replace_merge_tag
 	 * @covers GravityView_Merge_Tags::replace_is_starred
 	 * @covers GravityView_Field_Payment_Amount::replace_merge_tag

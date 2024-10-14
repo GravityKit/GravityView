@@ -464,8 +464,6 @@ class GravityView_Lightbox_Entry {
 
 		do_action_ref_array( 'wp', [ $wp ] );
 
-		do_action( 'wp_enqueue_scripts' );
-
 		ob_start();
 
 		$title = do_shortcode(
@@ -487,7 +485,7 @@ class GravityView_Lightbox_Entry {
 			<head>
 				<title><?php echo $title; ?></title>
 
-				<?php wp_head(); ?>
+				<?php do_action( 'wp_enqueue_scripts' ); wp_head(); ?>
 
 				<style>
 					<?php echo $view->settings->get( 'custom_css', '' ); ?>

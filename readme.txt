@@ -21,6 +21,29 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.30 on October 14, 2024 =
+
+This release adds the ability to change the entry creator from the Edit Entry screen, improves upload handling, fixes various bugs, and updates internal components.
+
+#### 🚀 Added
+* Entry creator can now be changed from the Edit Entry screen.
+* `{now}`, `{yesterday}`, and `{tomorrow}` relative date merge tags.
+
+#### ✨ Improved
+* Handling of multi-file uploads on the Edit Entry screen.
+
+#### 🐛 Fixed
+* Entry loading inside a lightbox did not work in some cases when BuddyPress was active.
+* Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.
+* Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.
+* Fatal error when rendering a GravityView View field with a non-existent View ID.
+* Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.
+* Unexpected scrolling in the View editor after adding a field.
+* PHP notice when rendering a View with a field associated with an inactive add-on.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.19.
+
 = 2.29 on October 1, 2024 =
 
 This release introduces a much-requested [lightbox feature](https://docs.gravitykit.com/article/1020-opening-and-editing-entry-details-in-a-lightbox-modal-popup) for displaying and editing entries, settings for customizing View URLs, new options for [displaying Name field initials](https://docs.gravitykit.com/article/1021-show-name-fields-as-initials) and Custom Content fields in full width, and a merge tag modifier to show date field values in a human-readable format. Several bugs have also been fixed.
