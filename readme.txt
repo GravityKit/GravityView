@@ -40,6 +40,7 @@ This release adds the ability to change the entry creator from the Edit Entry sc
 * Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.
 * Unexpected scrolling in the View editor after adding a field.
 * PHP notice when rendering a View with a field associated with an inactive add-on.
+* Entry duplication not working on the Entries page.
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.19.
