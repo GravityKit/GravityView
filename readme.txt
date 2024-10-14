@@ -37,7 +37,7 @@ This release adds the ability to change the entry creator from the Edit Entry sc
 * Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.
 * Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.
 * Fatal error when rendering a GravityView View field with a non-existent View ID.
-* Survey field (Rating type) values were displaying in reverse order when a View was embedded inside another View.
+* Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.
 * Unexpected scrolling in the View editor after adding a field.
 
 #### 🔧 Updated

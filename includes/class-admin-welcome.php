@@ -320,7 +320,7 @@ class GravityView_Welcome {
 					<li>Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.</li>
 					<li>Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.</li>
 					<li>Fatal error when rendering a GravityView View field with a non-existent View ID.</li>
-					<li>Survey field (Rating type) values were displaying in reverse order when a View was embedded inside another View.</li>
+					<li>Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.</li>
 					<li>Unexpected scrolling in the View editor after adding a field.</li>
 				</ul>
 
