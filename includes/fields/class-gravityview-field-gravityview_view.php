@@ -208,6 +208,11 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 		}
 
 		$view      = \GV\View::by_id( $view_id );
+
+		if ( ! $view ) {
+			return;
+		}
+
 		$shortcode = $view->get_shortcode( $attributes );
 
 		echo do_shortcode( $shortcode );

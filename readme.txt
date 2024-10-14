@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Entry loading inside a lightbox did not work in some cases when BuddyPress is active.
 * Fixed: Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.
 * Fixed: Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.
+* Fixed: Fatal error when rendering a GravityView View field with a non-existent View ID.
 
 = 2.29 on October 1, 2024 =
 
