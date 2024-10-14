@@ -322,6 +322,7 @@ class GravityView_Welcome {
 					<li>Fatal error when rendering a GravityView View field with a non-existent View ID.</li>
 					<li>Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.</li>
 					<li>Unexpected scrolling in the View editor after adding a field.</li>
+					<li>PHP notice when rendering a View with a field associated with an inactive add-on.</li>
 				</ul>
 
 				<h4>🔧 Updated</h4>

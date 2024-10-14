@@ -39,6 +39,7 @@ This release adds the ability to change the entry creator from the Edit Entry sc
 * Fatal error when rendering a GravityView View field with a non-existent View ID.
 * Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.
 * Unexpected scrolling in the View editor after adding a field.
+* PHP notice when rendering a View with a field associated with an inactive add-on.
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.19.
