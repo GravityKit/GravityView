@@ -346,7 +346,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 	/**
 	 * @covers GravityView_Merge_Tags::replace_merge_tags_dates
 	 *
-	 * @since  TBD
+	 * @since  2.30.0
 	 */
 	function test_replace_field_dates_merge_tags() {
 		$form = $this->factory->form->create_and_get();

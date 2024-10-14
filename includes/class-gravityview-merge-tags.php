@@ -505,7 +505,7 @@ class GravityView_Merge_Tags {
 	/**
 	 * Replaces relative date merge tags with formatted dates per the modifier.
 	 *
-	 * @since TBD
+	 * @since 2.30.0
 	 *
 	 * @param string $text The text containing merge tags.
 	 *

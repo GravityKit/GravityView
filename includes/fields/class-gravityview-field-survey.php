@@ -62,7 +62,7 @@ class GravityView_Field_Survey extends GravityView_Field {
 	/**
 	 * Gets field choices directly from the database (To avoid issues where choices are reversed by the survey plugin).
 	 *
-	 * @since TBD
+	 * @since 2.30.0
 	 *
 	 * @param int $form_id The ID of the form.
 	 * @param int $field_id The ID of the field.

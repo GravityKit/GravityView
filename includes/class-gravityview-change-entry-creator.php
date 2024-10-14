@@ -214,7 +214,7 @@ class GravityView_Change_Entry_Creator {
 	/**
 	 * Whether the current user has the rights to edit the entry creator.
 	 *
-	 * @since $ver$
+	 * @since 2.30.0
 	 *
 	 * @return bool Whether the user has rights.
 	 */
@@ -352,7 +352,7 @@ class GravityView_Change_Entry_Creator {
 	/**
 	 * Returns the HTML for the user select field.
 	 *
-	 * @since $ver$
+	 * @since 2.30.0
 	 *
 	 * @param array $entry The entry object.
 	 *
@@ -454,7 +454,7 @@ class GravityView_Change_Entry_Creator {
 	/**
 	 * Registers the `created_by` field on the `Edit Entry` tab.
 	 *
-	 * @since $ver$
+	 * @since 2.30.0
 	 *
 	 * @param GF_Field[] $fields The registered fields.
 	 * @param array      $form   The form object.
@@ -480,7 +480,7 @@ class GravityView_Change_Entry_Creator {
 	/**
 	 * Registers the `created_by` field on the `Edit Entry` tab.
 	 *
-	 * @since $ver$
+	 * @since 2.30.0
 	 *
 	 * @param GF_Field[] $fields          The registered fields.
 	 * @param array|null $editable_fields The fields zone.
@@ -533,7 +533,7 @@ class GravityView_Change_Entry_Creator {
 	/**
 	 * Manages the visibility capabilities for the `created_by` field on the edit page.
 	 *
-	 * @since $ver$
+	 * @since 2.30.0
 	 *
 	 * @param array  $caps     The capabilities.
 	 * @param string $template The template name.

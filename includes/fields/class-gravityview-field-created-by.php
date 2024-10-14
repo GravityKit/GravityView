@@ -157,7 +157,7 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	/**
 	 * Returns the HTML for the field input.
 	 *
-	 * @since $ver$
+	 * @since 2.30.0
 	 *
 	 * @param array    $form  The form object.
 	 * @param mixed    $value The field value.
