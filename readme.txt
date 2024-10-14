@@ -31,6 +31,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.
 * Fixed: Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.
 * Fixed: Fatal error when rendering a GravityView View field with a non-existent View ID.
+* Fixed: Survey field (Rating type) values displaying in reverse order when a View is embedded inside another View.
 
 = 2.29 on October 1, 2024 =
 
