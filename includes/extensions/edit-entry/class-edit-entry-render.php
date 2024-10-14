@@ -901,7 +901,7 @@ class GravityView_Edit_Entry_Render {
 							$value = $value[ $field_id ];
 						}
 
-						if( ! empty( $field->customFieldTemplateEnabled ) ) {
+						if ( ! empty( $field->customFieldTemplateEnabled ) ) {
 							$value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
 						}
 
@@ -1095,7 +1095,8 @@ class GravityView_Edit_Entry_Render {
 
 		?>
 			<h2 class="gv-edit-entry-title">
-				<span><?php
+				<span>
+                <?php
 
 					/**
 					 * Modify the edit entry title.
@@ -1106,7 +1107,8 @@ class GravityView_Edit_Entry_Render {
 					$edit_entry_title = apply_filters( 'gravityview_edit_entry_title', __( 'Edit Entry', 'gk-gravityview' ), $this );
 
 					echo esc_attr( $edit_entry_title );
-					?></span>
+				?>
+                    </span>
 			</h2>
 
 			<?php $this->maybe_print_message(); ?>
@@ -1492,8 +1494,8 @@ class GravityView_Edit_Entry_Render {
 		// If the form has been submitted, then we don't need to pre-fill the values,
 		// Except for fileupload type and when a field input is overridden- run always!!
 
-		if(
-			( $this->is_edit_entry_submission() && !in_array( $field->get_input_type(), array( 'fileupload', 'post_image' ) ) )
+		if (
+			( $this->is_edit_entry_submission() && ! in_array( $field->get_input_type(), array( 'fileupload', 'post_image' ) ) )
 			&& false === ( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) )
 			&& ! GFCommon::is_product_field( $field->type )
 			|| ! empty( $field_content )
@@ -2066,7 +2068,7 @@ class GravityView_Edit_Entry_Render {
 	        /** @var GF_Field $field */
 	        foreach ( $fields as $field ) {
 				if ( intval( $configured_field['id'] ) === intval( $field->id ) && $this->user_can_edit_field( $configured_field, false ) ) {
-				    $edit_fields[] = $this->merge_field_properties( $field, $configured_field );
+				    $edit_fields[] = static::merge_field_properties( $field, $configured_field );
 				    break;
 				}
 			}
@@ -2083,7 +2085,7 @@ class GravityView_Edit_Entry_Render {
 	 * @since  1.5
 	 * @return array|GF_Field
 	 */
-	private function merge_field_properties( $field, $field_setting ) {
+	public static function merge_field_properties( $field, $field_setting ) {
 
 		$return_field = $field;
 
@@ -2091,6 +2093,8 @@ class GravityView_Edit_Entry_Render {
 			$return_field->label = '';
 		} elseif ( ! empty( $field_setting['custom_label'] ) ) {
 			$return_field->label = $field_setting['custom_label'];
+		} elseif ( ! empty( $field_setting['label'] ) ) {
+			$return_field->label = $field_setting['label'];
 		}
 
 		if ( ! empty( $field_setting['custom_class'] ) ) {

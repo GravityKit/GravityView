@@ -132,7 +132,10 @@ final class Plugin {
 
 	public function load_settings() {
 		require_once $this->dir( 'future/includes/class-gv-settings-plugin.php' );
+		require_once $this->dir( 'future/includes/class-gv-permalinks.php' );
+
 		$this->settings = new Plugin_Settings();
+		new Permalinks( $this->settings );
 
 		include_once $this->dir( 'includes/class-gravityview-settings.php' );
 	}
