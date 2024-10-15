@@ -456,13 +456,17 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @since 2.30.0
 	 *
-	 * @param GF_Field[] $fields The registered fields.
-	 * @param array      $form   The form object.
-	 * @param string     $zone   The fields zone.
+	 * @param GF_Field[]   $fields The registered fields.
+	 * @param string|array $form   The form object.
+	 * @param string       $zone   The fields zone.
 	 *
 	 * @return array The updated fields array.
 	 */
-	public function register_edit_field( array $fields, array $form, string $zone ): array {
+	public function register_edit_field( $fields, $form, $zone ): array {
+		if ( ! is_array( $fields ) ) {
+			$fields = (array) $fields;
+		}
+
 		if ( 'edit' !== $zone ) {
 			return $fields;
 		}
@@ -488,8 +492,12 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @return array The updated fields array.
 	 */
-	public function register_created_by_input( array $fields, ?array $editable_fields, array $form ): array {
+	public function register_created_by_input( $fields, $editable_fields, $form ): array {
 		require_once GFCommon::get_base_path() . '/export.php';
+
+		if ( ! is_array( $fields ) ) {
+			$fields = (array) $fields;
+		}
 
 		// Don't add the `created_by` field if the user can't change it.
 		$editable_field_ids = array_flip(
@@ -541,7 +549,11 @@ class GravityView_Change_Entry_Creator {
 	 *
 	 * @return array The new capabilities.
 	 */
-	public function created_by_visibility_caps( array $caps, string $template, string $field ): array {
+	public function created_by_visibility_caps( $caps, $template, $field ): array {
+		if ( ! is_array( $caps ) ) {
+			$caps = (array) $caps;
+		}
+
 		if ( 'created_by' !== $field || false === strpos( $template, 'edit' ) ) {
 			return $caps;
 		}

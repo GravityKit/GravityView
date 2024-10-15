@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.30.1 on October 15, 2024 =
+
+This hotfix release resolves an issue with the Multiple Forms extension.
+
+#### 🐛 Fixed
+* Fatal error in the View editor when using joined data from multiple forms.
+
 = 2.30 on October 14, 2024 =
 
 This release adds the ability to change the entry creator from the Edit Entry screen, improves upload handling, fixes various bugs, and updates internal components.
