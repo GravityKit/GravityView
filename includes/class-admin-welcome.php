@@ -296,6 +296,16 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.30.1 on October 15, 2024</h3>
+
+				<p>This hotfix release resolves an issue with the Multiple Forms extension.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Fatal error in the View editor when using joined data from multiple forms.</li>
+				</ul>
+
 				<h3>2.30 on October 14, 2024</h3>
 
 				<p>This release adds the ability to change the entry creator from the Edit Entry screen, improves upload handling, fixes various bugs, and updates internal components.</p>

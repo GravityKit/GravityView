@@ -21,9 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.30.1 on October 15, 2024 =
 
-Fixed: A fatal error could happen in combination with the Multiple Forms add-on.
+This hotfix release resolves an issue with the Multiple Forms extension.
+
+#### 🐛 Fixed
+* Fatal error in the View editor when using joined data from multiple forms.
 
 = 2.30 on October 14, 2024 =
 
