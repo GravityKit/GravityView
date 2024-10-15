@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+Fixed: A fatal error could happen in combination with the Multiple Forms add-on.
+
 = 2.30 on October 14, 2024 =
 
 This release adds the ability to change the entry creator from the Edit Entry screen, improves upload handling, fixes various bugs, and updates internal components.
