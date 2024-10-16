@@ -148,6 +148,11 @@ class GravityView_Ajax {
 		$this->_exit( json_encode( $response ) );
 	}
 
+	/**
+	 * Returns the HTML for a new grid row.
+     *
+	 * @since $ver$
+	 */
 	public function create_row() {
 		$this->check_ajax_nonce();
 
@@ -160,7 +165,10 @@ class GravityView_Ajax {
 			$this->_exit( false );
 		}
 
-		$rows      = [ Grid::get_row_by_type( $_POST['row_type'] ) ];
+		$row = Grid::prefixed(
+			$_POST['template_id'],
+			static fn () => Grid::get_row_by_type( $_POST['row_type'] )
+		);
 
 		ob_start();
 
@@ -169,7 +177,7 @@ class GravityView_Ajax {
 			$_POST['template_id'],
 			$_POST['type'],
 			$_POST['zone'],
-			$rows,
+			[ $row ],
             []
         );
 		$response['row'] = ob_get_clean();

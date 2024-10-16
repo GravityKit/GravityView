@@ -1019,8 +1019,21 @@ HTML;
 			$is_sortable  = true;
 		} else {
 			$button_label = __( 'Add Field', 'gk-gravityview' );
-			$is_sortable  = false;
+			$is_sortable = false;
 		}
+
+		/**
+		 * Modifies whether the zone is sortable.
+		 *
+		 * @filter `gk/gravityview/view/template/active-areas`
+		 * @since $ver$
+
+		 * @param bool $is_sortable Whether the zone is sortable.
+		 * @param string $template_id Template ID.
+		 * @param string $type The object type; widget or field.
+		 * @param string $zone Current View context: `directory`, `single`, or `edit` (default: 'single')
+		 */
+		$is_sortable = (bool) apply_filters( 'gk/gravityview/view/admin/is-sortable', $is_sortable, $template_id, $type, $zone );
 
 		/**
 		 * @internal Don't rely on this filter! This is for internal use and may change.
@@ -1290,11 +1303,11 @@ HTML;
 				 * @param string $zone The widget zone that's being requested
 				 * @param int $post_id The auto-draft post ID
 				 */
-				$widgets = apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
+				$widgets = (array) apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
 			} else {
-				$widgets              = gravityview_get_directory_widgets( $post_id );
+				$widgets              = (array) gravityview_get_directory_widgets( $post_id );
 				$collection           = Widget_Collection::from_configuration( $widgets );
-				$default_widget_areas = Grid::get_rows_from_widgets( $collection, $zone ) ?: $default_widget_areas;
+				$default_widget_areas = Grid::get_rows_from_collection( $collection, $zone ) ?: $default_widget_areas;
 			}
 		}
 
@@ -1403,13 +1416,37 @@ HTML;
 			$output .= '<p class="description" style="font-size: 14px; margin:0 0 1em 0;padding:0">' . esc_html__( 'The data is not lost; re-activate the associated plugin and the configuration will re-appear.', 'gk-gravityview' ) . '</p>';
 			$output .= '</div>';
 		} else {
+			/**
+			 * Modifies the template area's before rendering.
+			 *
+			 * @filter `gk/gravityview/view/template/active-areas`
+			 * @since $ver$
 
-			$fields = gravityview_get_directory_fields( $post_id, true, $form_id );
+			 * @param array $template_areas The template areas.
+			 * @param string $template_id Template ID.
+			 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
+			 * @param array $fields The fields for the View.
+			 */
+			$fields         = (array) gravityview_get_directory_fields( $post_id, true, $form_id );
+			$template_areas = (array) apply_filters( 'gk/gravityview/view/template/active-areas', $template_areas, $template_id, $context, $fields );
+			$type           = 'field';
 
 			ob_start();
-			$this->render_active_areas( $template_id, 'field', $context, $template_areas, $fields );
-			$output = ob_get_clean();
+			$this->render_active_areas( $template_id, $type, $context, $template_areas, $fields );
 
+			/**
+			 * Allows additional content after the zone was rendered.
+             *
+			 * @filter `gk/gravityview/admin/view/after-zone`
+
+			 * @param self $this This instance.
+			 * @param string $template_id Template ID.
+             * @param string $type The zone type (field or widget).
+			 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
+			 */
+			do_action( 'gk/gravityview/admin/view/after-zone', $this, $template_id, $type, $context );
+
+			$output = ob_get_clean();
 		}
 
 		if ( $echo ) {
@@ -1419,7 +1456,16 @@ HTML;
 		return $output;
 	}
 
-	private function render_add_row( string $template_id, string $type, string $zone ) {
+	/**
+	 * Returns an "add row" button for a template zone.
+     *
+	 * @since $ver$
+	 *
+     * @param string $template_id The template ID.
+     * @param string $type The object type (widget or field).)
+     * @param string $zone The zone ID.
+	 */
+	public function render_add_row( string $template_id, string $type, string $zone ) {
 		$button = <<<HTML
 <button
 	type="button"
@@ -1455,7 +1501,7 @@ HTML;
 							$button,
 							esc_attr( $zone ),
 							esc_attr( $template_id ),
-							'widget',
+							$type,
 							esc_attr( $key ),
 							esc_attr(
 								str_replace(

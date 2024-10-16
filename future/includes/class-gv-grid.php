@@ -14,6 +14,15 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 final class Grid {
 	/**
+	 * A prefix to use for the area key.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string
+	 */
+	private static string $area_prefix = '';
+
+	/**
 	 * Internal counter to avoid UID clashes.
 	 *
 	 * @since $ver$
@@ -53,28 +62,48 @@ final class Grid {
 	}
 
 	/**
-	 * Calculates and returns the row configurations based on a set of widgets and the zone.
+	 * Calculates and returns the row configurations based on a collection and the zone.
 	 *
 	 * @since $ver$
 	 *
-	 * @param Widget_Collection $widgets The widgets.
-	 * @param string            $zone    The zone.
+	 * @param Widget_Collection|Field_Collection $collection The collection.
+	 * @param string                             $zone       The zone.
 	 *
 	 * @return array The row configurations.
 	 */
-	public static function get_rows_from_widgets( Widget_Collection $widgets, string $zone ): array {
+	public static function get_rows_from_collection( Collection $collection, string $zone ): array {
 		$rows = [];
+		if ( ! $collection instanceof Widget_Collection && ! $collection instanceof Field_Collection ) {
+			return $rows;
+		}
 
-		foreach ( $widgets->by_position( $zone . '*' )->all() as $widget ) {
-			$parts = explode( '::', explode( '_', $widget->position, 2 )[1] ?? '', 3 );
-			$area  = $parts[0] ?? '';
-			$type  = $parts[1] ?? ( $area === 'top' ? '100' : '50/50' );
-			$id    = $parts[2] ?? $type;
+		foreach ( $collection->by_position( $zone . '*' )->all() as $element ) {
+			$parts = explode( '::', explode( '_', $element->position, 2 )[1] ?? '', 3 );
+
+			$area = $parts[0] ?? '';
+			$type = $parts[1] ?? ( in_array( $area, [ 'left', 'right' ], true ) ? '50/50' : '100' );
+			$id   = $parts[2] ?? $type;
 
 			$rows[ $id ] ??= self::get_row_by_type( $type, $id, ! ( $parts[1] ?? false ) );
 		}
 
 		return array_values( $rows );
+	}
+
+	/**
+	 * Prefixes any area's for methods called within the callback.
+	 *
+	 * @param string        $prefix   The prefix.
+	 * @param callable|null $callback The callback
+	 *
+	 * @return array
+	 */
+	public static function prefixed( string $prefix, callable $callback ): array {
+		self::$area_prefix = $prefix;
+		$result            = $callback();
+		self::$area_prefix = '';
+
+		return $result;
 	}
 
 	/**
@@ -85,7 +114,7 @@ final class Grid {
 	 * @return array The row types with their configuration.
 	 */
 	public static function get_row_types(): array {
-		return [
+		$types = [
 			'100'      => [
 				'1-1' => [
 					[
@@ -236,5 +265,16 @@ final class Grid {
 				],
 			],
 		];
+
+		array_walk_recursive(
+			$types,
+			function ( &$value, $key ) {
+				if ( 'areaid' === $key ) {
+					$value = ( self::$area_prefix ? self::$area_prefix . '-' : '' ) . $value;
+				}
+			}
+		);
+
+		return $types;
 	}
 }

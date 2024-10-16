@@ -948,7 +948,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			return;
 		}
 
-		$rows = Grid::get_rows_from_widgets( $widgets, $zone );
+		$rows = Grid::get_rows_from_collection( $widgets, $zone );
 
 		// TODO: Move to sep. method, use an action instead
 		wp_enqueue_style( 'gravityview_default_style' );
