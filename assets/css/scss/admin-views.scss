@@ -94,6 +94,12 @@ $gv-overlay-index: 10000;
 				display: flex;
 			}
 		}
+
+		&.is-sortable {
+			.gv-droppable-area-title {
+				display: none;
+			}
+		}
 	}
 
 	.gv-grid-row-actions {
@@ -159,9 +165,9 @@ $gv-overlay-index: 10000;
 		}
 
 		.gv-grid-row-layouts {
-			border: 2px dashed #E4ECF3;
-			flex: 1;
+			background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='3' ry='3' stroke='%23DADADA' stroke-width='2' stroke-dasharray='6' stroke-dashoffset='0' stroke-linecap='round'/%3e%3c/svg%3e");
 			border-radius: 3px;
+			flex: 1;
 			padding: 2em;
 			margin-bottom: 2em;
 		}
@@ -1135,10 +1141,7 @@ hr {
 	max-width: 100%;
 
 	&.is-receivable {
-		&:empty {
-			min-height: 44px;
-		}
-
+		min-height: 44px;
 		border: none;
 		transition: all 200ms;
 
@@ -1146,6 +1149,7 @@ hr {
 			min-height: 60px;
 			background: rgba(210, 224, 235, .4);
 			transition: all 200ms;
+			margin-bottom: 8px;
 		}
 	}
 }
@@ -1283,7 +1287,7 @@ hr {
 		.gv-field-label {
 			display: inline-block;
 			max-width: 80%;
-			max-width: calc(100% - 95px); // Make room for close icons
+			max-width: calc(100% - 95px); // Make room for close icons.
 
 			.gravityview-item-picker-tooltip & {
 				max-width: 100%;
@@ -1298,6 +1302,12 @@ hr {
 					margin-top: 0;
 					margin-bottom: 0;
 				}
+			}
+		}
+
+		&:hover {
+			.gv-field-label {
+				max-width: calc(100% - 125px); // Make room for duplicate icon.
 			}
 		}
 
@@ -2227,9 +2237,22 @@ $dialog-button-padding: 5px;
 	display: block;
 	text-align: center;
 
+	& + .gv-add-field {
+		margin-top: -1px;
+	}
+}
+
+.gv-grid-col-1-1 .gv-droppable-area .gv-add-field + .gv-add-field {
+	margin-left: 8px;
 }
 
 .gv-field-label {
+	vertical-align: middle;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-top: -2px;
+
 	.gv-icon,
 	.gform-icon,
 	.dashicons {
