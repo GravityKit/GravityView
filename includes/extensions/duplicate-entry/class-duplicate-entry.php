@@ -882,6 +882,8 @@ final class GravityView_Duplicate_Entry {
 			return;
 		}
 
+		$entry_id = (int) ( $_GET['entry_id'] ?? 0 );
+
 		if ( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gform_full_access', 'gravityview_full_access' ), $entry_id ) ) {
 			return;
 		}

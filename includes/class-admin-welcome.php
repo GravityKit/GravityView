@@ -296,6 +296,52 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.30.1 on October 15, 2024</h3>
+
+				<p>This hotfix release resolves an issue with the Multiple Forms extension.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Fatal error in the View editor when using joined data from multiple forms.</li>
+				</ul>
+
+				<h3>2.30 on October 14, 2024</h3>
+
+				<p>This release adds the ability to change the entry creator from the Edit Entry screen, improves upload handling, fixes various bugs, and updates internal components.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Entry creator can now be changed from the Edit Entry screen.</li>
+					<li><code>{now}</code>, <code>{yesterday}</code>, and <code>{tomorrow}</code> relative date merge tags.</li>
+				</ul>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>Handling of multi-file uploads on the Edit Entry screen.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Entry loading inside a lightbox did not work in some cases when BuddyPress was active.</li>
+					<li>Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.</li>
+					<li>Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.</li>
+					<li>Fatal error when rendering a GravityView View field with a non-existent View ID.</li>
+					<li>Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.</li>
+					<li>Unexpected scrolling in the View editor after adding a field.</li>
+					<li>PHP notice when rendering a View with a field associated with an inactive add-on.</li>
+					<li>Entry duplication not working on the Entries page.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.19.</li>
+				</ul>
+
 				<h3>2.29 on October 1, 2024</h3>
 
 				<p>This release introduces a much-requested <a href="https://docs.gravitykit.com/article/1020-opening-and-editing-entry-details-in-a-lightbox-modal-popup">lightbox feature</a> for displaying and editing entries, settings for customizing View URLs, new options for <a href="https://docs.gravitykit.com/article/1021-show-name-fields-as-initials">displaying Name field initials</a> and Custom Content fields in full width, and a merge tag modifier to show date field values in a human-readable format. Several bugs have also been fixed.</p>
@@ -333,71 +379,6 @@ class GravityView_Welcome {
 				<ul>
 					<li>Added <code>gk/gravityview/field/name/display</code> filter to modify the Name field display value.</li>
 					<li>Added <code>gk/gravityview/permalinks/reserved-terms</code> filter to modify the list of reserved terms that are excluded from permalinks.</li>
-				</ul>
-
-				<h3>2.28 on August 29, 2024</h3>
-
-				<p>This update adds support for plain-text URLs in entry moderation merge tags, and fixes several bugs, including critical errors in the View editor.</p>
-
-				<p><strong>Note:</strong> GravityView now requires PHP 7.4 or newer.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Modifier for entry moderation merge tags to output plain-text URLs (e.g., <code>{gv_approve_entry:url}</code>).</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>"Text domain not found" error when trying to install a layout during the View creation process.</li>
-					<li>Fatal error in the View editor when the user does not have the necessary capabilities to install plugins.</li>
-					<li>Merge tag support in the Source URL "Link Text" field setting.</li>
-					<li>Deprecated filter notice when using GravityView Maps 3.1.0 or newer.</li>
-					<li>PHP 8.2 deprecation notice due to passing an empty value to <code>htmlspecialchars()</code> and creating dynamic class properties.</li>
-					<li>The maximum number of files allowed in the File Upload field was not respected when editing an entry.</li>
-					<li>Sorting the View by the Name field yielded incorrect results.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.trustedlogin.com/">TrustedLogin</a> to version 1.9.0.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/view/entries/query/sorting-parameters</code> filter to modify the sorting parameters applied during the retrieval of View entries.</li>
-				</ul>
-
-				<h3>2.27.1 on August 14, 2024</h3>
-
-				<p>This release fixes an issue with adding fields in the View editor's Edit Entry layout when the Multiple Forms extension is enabled.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Fields added to the Edit Entry layout in the View editor could not be configured and would disappear after saving the View when Multiple Forms was enabled.</li>
-				</ul>
-
-				<h3>2.27 on August 13, 2024</h3>
-
-				<p>This update resolves several issues related to the Multiple Forms extension, fixes the recently introduced <code>:format</code> merge tag modifier to return the Time field value in the local timezone, and adds a new filter to control which fields are added by default when creating a new View.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Time zone selection in the Search Bar did not persist after searching a View, causing it to reset upon page refresh.</li>
-					<li>Fields added to the View could not be configured and would disappear after saving the View when Multiple Forms was enabled.</li>
-					<li>Fatal error occurred on the Edit Entry screen when Multiple Forms was enabled.</li>
-					<li>The <code>:format</code> merge tag modifier on the Time field returned a UTC-adjusted time value.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/view/configuration/multiple-entries/initialize-with-all-form-fields</code> filter that, when set to <code>true</code>, initializes the Multiple Entries layout with all form fields when creating a new View. The default is <code>false</code>, which populates the View with only the fields configured in the Gravity Forms Entries table.</li>
 				</ul>
 
 				<p style="text-align: center;">

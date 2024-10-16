@@ -738,7 +738,7 @@ TEMPLATE;
 	 *
 	 * @used-by check_admin_referer action
 	 *
-	 * @since TBD
+	 * @since 2.30.0
 	 *
 	 * @param string $action The action being performed.
 	 * @param int    $result The result of the action check.
