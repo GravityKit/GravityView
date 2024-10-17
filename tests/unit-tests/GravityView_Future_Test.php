@@ -5953,7 +5953,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$settings->update( array() );
 
 		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
-		$this->assertEquals( array_keys( $settings->defaults() ), array( 'rest_api', 'public_entry_moderation', 'caching', 'caching_entries' ) );
+		$this->assertEquals( array_keys( $settings->defaults() ), array( 'rest_api', 'use_dynamic_widgets', 'public_entry_moderation', 'caching', 'caching_entries' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );
 		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );
