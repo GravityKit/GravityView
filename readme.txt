@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+Fixed: Settings paged showed an undefined settings tab when the GravityView Settings tab was disabled.
+
 = 2.30.1 on October 15, 2024 =
 
 This hotfix release resolves an issue with the Multiple Forms extension.
