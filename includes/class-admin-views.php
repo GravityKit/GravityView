@@ -14,6 +14,7 @@
 /** If this file is called directly, abort. */
 
 use GV\Grid;
+use GV\Plugin;
 use GV\View;
 use GV\Widget_Collection;
 
@@ -68,8 +69,9 @@ class GravityView_Admin_Views {
 
 		add_filter( 'gravityview/support_port/localization_data', array( $this, 'suggest_support_articles' ) );
 
-		add_action( 'gk/gravitykit/admin-views/row/before', [ $this, 'render_actions' ], 5, 4 );
+		add_action( 'gk/gravityview/admin-views/row/before', [ $this, 'render_actions' ], 5, 4 );
 		add_action( 'gk/gravityview/admin-views/view/after-zone', [ $this, 'render_add_row' ], 5, 4 );
+		add_filter( 'gk/gravityview/admin-views/view/is-dynamic', [ $this, 'add_dynamic_widgets' ], 0, 3 );
 	}
 
 	/**
@@ -1097,7 +1099,7 @@ HTML;
 			 * @param string $type        The object type (widget or field).
 			 * @param string $zone        The render zone.
 			 */
-			do_action( 'gk/gravitykit/admin-views/row/before', $is_dynamic, $template_id, $type, $zone );
+			do_action( 'gk/gravityview/admin-views/row/before', $is_dynamic, $template_id, $type, $zone );
 
 			foreach ( $row as $col => $areas ) :
 				$column = ( '2-2' === $col ) ? '1-2' : $col;
@@ -1221,7 +1223,7 @@ HTML;
 				 * @param string $type        The object type (widget or field).
 				 * @param string $zone        The render zone.
 				 */
-				do_action( 'gk/gravitykit/admin-views/row/after', $is_dynamic, $view, $template_id, $type, $zone );
+				do_action( 'gk/gravityview/admin-views/row/after', $is_dynamic, $view, $template_id, $type, $zone );
 
 			endforeach;
 			echo '</div>';
@@ -1582,6 +1584,24 @@ HTML;
 			</div>
 		</div>
 			<?php
+	}
+
+	/**
+     * Returns whether the widgets should be dynamic; based on the plugin setting.
+     *
+	 * @since $ver$
+	 *
+	 * @param bool   $is_dynamic Whether the zone is dynamic.
+     * @param string $_ The template ID (unused))
+     * @param string $type The object type (widget or field).
+     * @return bool Whether the widgets should be dynamic.
+	 */
+	public function add_dynamic_widgets( bool $is_dynamic, string $_, string $type ): bool {
+		if ( $type !== 'widget' || $is_dynamic ) {
+			return $is_dynamic;
+		}
+
+		return Plugin::get()->settings->get( 'use_dynamic_widgets', false );
 	}
 
 	/**
