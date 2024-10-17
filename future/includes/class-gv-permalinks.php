@@ -445,6 +445,10 @@ final class Permalinks {
 	 * @return array The full settings array.
 	 */
 	public function add_permalink_settings( array $settings ): array {
+		if ( ! isset( $settings[ Plugin_Settings::SETTINGS_PLUGIN_ID ] ) ) {
+			return $settings;
+		}
+
 		$settings[ Plugin_Settings::SETTINGS_PLUGIN_ID ]['sections'][] = [
 			'title'       => esc_html__( 'Permalinks', 'gk-gravityview' ),
 			'description' => esc_html__(
@@ -513,33 +517,33 @@ final class Permalinks {
 						if ( value.length === 0 ) {
 							return '';
 						}
-			
+
 						if (value.length < 3) {
 							return '[ERROR_AT_LEAST_3]';
 						}
-			
+
 						if ( ! value.match( /{entry_id}/s ) ) {
 							 return '[ERROR_MISSING_ENTRY_ID]';
 						}
-			
+
 						if ( ! value.match( /(^[a-zA-Z0-9_{}\-]*$)/s ) ) {
 							return '[ERROR_NO_SPACES]';
 						}
-			
+
 						return '';
 					}
-			
+
 					$( '#gravityview_se_single_entry_slug' ).on( 'input', function () {
 						const value = $( this ).val();
 						const parent = $( this ).closest( 'label' );
 						const error = getErrorMessage( value );
 						const is_valid = '' === error;
-			
+
 						parent.toggleClass( 'form-invalid form-required', ! is_valid  );
 						$( '#publish ')
 							.attr( 'disabled', ! is_valid )
 							.toggleClass( 'disabled' , ! is_valid );
-			
+
 						parent.find( 'span.error-message' ).remove();
 						if ( !is_valid ) {
 							parent.append( $( '<span class="error-message" style="margin-top:2px; font-size: 12px">' + error + '</span>' ) );
@@ -723,7 +727,7 @@ final class Permalinks {
 					document.querySelectorAll( `[data-slug-preview="\${e.target.name}"]` ).forEach( ( element ) => {
 						const default_value = element.dataset.slugDefault ?? 'unknown';
 						element.innerHTML = ( e.target.value || default_value );
-			
+
 						if ( 'entry_slug' === e.target.name ) {
 							element.innerHTML = element.innerHTML.replaceAll( '{entry_id}', '123' );
 						}
