@@ -14,6 +14,7 @@
 /** If this file is called directly, abort. */
 
 use GV\Grid;
+use GV\View;
 use GV\Widget_Collection;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -66,6 +67,9 @@ class GravityView_Admin_Views {
 		add_action( 'pre_get_posts', array( $this, 'filter_pre_get_posts' ) );
 
 		add_filter( 'gravityview/support_port/localization_data', array( $this, 'suggest_support_articles' ) );
+
+		add_action( 'gk/gravitykit/admin-views/row/before', [ $this, 'render_actions' ], 5, 4 );
+		add_action( 'gk/gravityview/admin-views/view/after-zone', [ $this, 'render_add_row' ], 5, 4 );
 	}
 
 	/**
@@ -1016,25 +1020,11 @@ HTML;
 
 		if ( 'widget' === $type ) {
 			$button_label = __( 'Add Widget', 'gk-gravityview' );
-			$is_sortable  = true;
 		} else {
 			$button_label = __( 'Add Field', 'gk-gravityview' );
-			$is_sortable = false;
 		}
 
-		/**
-		 * Modifies whether the zone is sortable.
-		 *
-		 * @filter `gk/gravityview/view/template/active-areas`
-		 * @since $ver$
-
-		 * @param bool $is_sortable Whether the zone is sortable.
-		 * @param string $template_id Template ID.
-		 * @param string $type The object type; widget or field.
-		 * @param string $zone Current View context: `directory`, `single`, or `edit` (default: 'single')
-		 */
-		$is_sortable = (bool) apply_filters( 'gk/gravityview/view/admin/is-sortable', $is_sortable, $template_id, $type, $zone );
-
+		$is_dynamic = $this->is_dynamic( $template_id, $type, $zone );
 		/**
 		 * @internal Don't rely on this filter! This is for internal use and may change.
 		 *
@@ -1093,15 +1083,27 @@ HTML;
 		}
 
 		foreach ( $rows as $row ) :
-			printf( '<div class="gv-grid-row %s">', $is_sortable ? 'is-sortable' : '' );
-			$this->render_actions( $is_sortable );
+			printf( '<div class="gv-grid-row %s">', $is_dynamic ? 'is-sortable' : '' );
+
+			/**
+			 * Triggers before a row is rendered in the View editor.
+			 *
+			 * @since  $ver$
+			 *
+			 * @action `gk/gravityview/admin-views/row/before`
+			 *
+			 * @param bool   $is_dynamic  Whether the area is dynamic.
+			 * @param string $template_id The template ID.
+			 * @param string $type        The object type (widget or field).
+			 * @param string $zone        The render zone.
+			 */
+			do_action( 'gk/gravitykit/admin-views/row/before', $is_dynamic, $template_id, $type, $zone );
 
 			foreach ( $row as $col => $areas ) :
 				$column = ( '2-2' === $col ) ? '1-2' : $col;
 				?>
 
 				<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
-
 					<?php foreach ( $areas as $area ) : ?>
 
 						<div class="gv-droppable-area" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>" data-context="<?php echo esc_attr( $zone ); ?>" data-templateid="<?php echo esc_attr( $template_id ); ?>">
@@ -1204,9 +1206,23 @@ HTML;
 						</div>
 
 					<?php endforeach; ?>
-
 				</div>
 				<?php
+				/**
+				 * Triggers after a row is rendered in the View editor.
+				 *
+				 * @since  $ver$
+				 *
+				 * @action `gk/gravityview/admin-views/row/before`
+				 *
+				 * @param bool   $is_dynamic  Whether the area is dynamic.
+				 * @param View   $view        The View.
+				 * @param string $template_id The template ID.
+				 * @param string $type        The object type (widget or field).
+				 * @param string $zone        The render zone.
+				 */
+				do_action( 'gk/gravitykit/admin-views/row/after', $is_dynamic, $view, $template_id, $type, $zone );
+
 			endforeach;
 			echo '</div>';
 		endforeach;
@@ -1217,32 +1233,55 @@ HTML;
      *
 	 * @since $ver$
 	 *
-     * @param bool $is_sortable Whether the rows are sortable.
+     * @param bool $is_dynamic Whether the rows are actionable.
 	 */
-	private function render_actions( bool $is_sortable ): void {
-		if ( ! $is_sortable ) {
+	public function render_actions(
+		bool $is_dynamic,
+		string $template_id,
+		string $type,
+		string $zone
+	): void {
+		if ( ! $is_dynamic ) {
 			return;
 		}
 
-		echo '<div class="gv-grid-row-actions">
-				<div class="gv-grid-row-action gv-grid-row-handle">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect x="8" y="4.99988" width="2" height="2" fill="currentColor"/>
-						<rect x="8" y="10.9999" width="2" height="2" fill="currentColor"/>
-						<rect x="8" y="16.9999" width="2" height="2" fill="currentColor"/>
-						<rect x="14" y="4.99988" width="2" height="2" fill="currentColor"/>
-						<rect x="14" y="10.9999" width="2" height="2" fill="currentColor"/>
-						<rect x="14" y="16.9999" width="2" height="2" fill="currentColor"/>
-					</svg>
-				</div>
-				<div class="gv-grid-row-action gv-grid-row-delete" data-confirm="' . esc_attr__( 'Are you sure you want to delete the entire row?', 'gk-gravityview' ) . '">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M6.33755 7.17057C6.23321 6.47927 6.76848 5.85714 7.46761 5.85714H16.5328C17.2319 5.85714 17.7672 6.47927 17.6629 7.17058L15.9809 18.3134C15.8966 18.8724 15.4162 19.2857 14.8509 19.2857H9.14955C8.58424 19.2857 8.10387 18.8724 8.01949 18.3134L6.33755 7.17057Z" stroke="currentColor" stroke-width="1.71429"/>
-						<rect x="4" y="5" width="16" height="2" fill="currentColor"/>
-						<path d="M14.2858 5C14.2858 5 13.2624 5 12.0001 5C10.7377 5 9.71436 5 9.71436 5C9.71436 3.73763 10.7377 2.71429 12.0001 2.71429C13.2624 2.71429 14.2858 3.73763 14.2858 5Z" fill="currentColor"/>
-					</svg>
-				</div>
+		echo '<div class="gv-grid-row-actions">';
+		$actions = '<div class="gv-grid-row-action gv-grid-row-handle">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<rect x="8" y="4.99988" width="2" height="2" fill="currentColor"/>
+					<rect x="8" y="10.9999" width="2" height="2" fill="currentColor"/>
+					<rect x="8" y="16.9999" width="2" height="2" fill="currentColor"/>
+					<rect x="14" y="4.99988" width="2" height="2" fill="currentColor"/>
+					<rect x="14" y="10.9999" width="2" height="2" fill="currentColor"/>
+					<rect x="14" y="16.9999" width="2" height="2" fill="currentColor"/>
+				</svg>
+			</div>
+			<div class="gv-grid-row-action gv-grid-row-delete" data-confirm="' . esc_attr__(
+            'Are you sure you want to delete the entire row?',
+            'gk-gravityview'
+        ) . '">
+				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+					<path d="M6.33755 7.17057C6.23321 6.47927 6.76848 5.85714 7.46761 5.85714H16.5328C17.2319 5.85714 17.7672 6.47927 17.6629 7.17058L15.9809 18.3134C15.8966 18.8724 15.4162 19.2857 14.8509 19.2857H9.14955C8.58424 19.2857 8.10387 18.8724 8.01949 18.3134L6.33755 7.17057Z" stroke="currentColor" stroke-width="1.71429"/>
+					<rect x="4" y="5" width="16" height="2" fill="currentColor"/>
+					<path d="M14.2858 5C14.2858 5 13.2624 5 12.0001 5C10.7377 5 9.71436 5 9.71436 5C9.71436 3.73763 10.7377 2.71429 12.0001 2.71429C13.2624 2.71429 14.2858 3.73763 14.2858 5Z" fill="currentColor"/>
+				</svg>
 			</div>';
+
+		/**
+		 * Modifies the actions rendered in the View editor.
+		 *
+		 * @since  $ver$
+		 *
+		 * @filter `gk/gravityview/admin-views/rows-actions`
+		 *
+		 * @param string $actions The HTML for the actions.
+		 * @param string $template_id The template ID.
+		 * @param string $type        The object type (widget or field).
+		 * @param string $zone        The render zone.
+		 */
+		echo apply_filters( 'gk/gravityview/admin-views/rows-actions', $actions, $template_id, $type, $zone );
+
+		echo '</div>';
 	}
 	/**
 	 * Render the widget active areas
@@ -1316,9 +1355,22 @@ HTML;
 
 		<div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets">
 			<?php
-				$this->render_active_areas( $template_id, 'widget', $zone, $default_widget_areas, $widgets );
+			$type       = 'widget';
+			$is_dynamic = $this->is_dynamic( $template_id, $type, $zone );
 
-				$this->render_add_row( $template_id, 'widget', $zone );
+			$this->render_active_areas( $template_id, $type, $zone, $default_widget_areas, $widgets );
+
+			/**
+			 * Allows additional content after the zone was rendered.
+			 *
+			 * @filter `gk/gravityview/admin/view/after-zone`
+
+			 * @param string $template_id Template ID.
+			 * @param string $type The zone type (field or widget).
+			 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
+			 * @param bool $is_dynamic Whether the zone is dynamic.
+			 */
+			do_action( 'gk/gravityview/admin-views/view/after-zone', $template_id, $type, $zone, $is_dynamic );
 			?>
 		</div>
 
@@ -1419,7 +1471,7 @@ HTML;
 			/**
 			 * Modifies the template area's before rendering.
 			 *
-			 * @filter `gk/gravityview/view/template/active-areas`
+			 * @filter `gk/gravityview/admin-views/view/template/active-areas`
 			 * @since $ver$
 
 			 * @param array $template_areas The template areas.
@@ -1428,8 +1480,9 @@ HTML;
 			 * @param array $fields The fields for the View.
 			 */
 			$fields         = (array) gravityview_get_directory_fields( $post_id, true, $form_id );
-			$template_areas = (array) apply_filters( 'gk/gravityview/view/template/active-areas', $template_areas, $template_id, $context, $fields );
+			$template_areas = (array) apply_filters( 'gk/gravityview/admin-views/view/template/active-areas', $template_areas, $template_id, $context, $fields );
 			$type           = 'field';
+			$is_dynamic     = $this->is_dynamic( $template_id, $type, $context );
 
 			ob_start();
 			$this->render_active_areas( $template_id, $type, $context, $template_areas, $fields );
@@ -1439,12 +1492,12 @@ HTML;
              *
 			 * @filter `gk/gravityview/admin/view/after-zone`
 
-			 * @param self $this This instance.
 			 * @param string $template_id Template ID.
              * @param string $type The zone type (field or widget).
 			 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
+			 * @param bool $is_dynamic Whether the zone is dynamic.
 			 */
-			do_action( 'gk/gravityview/admin/view/after-zone', $this, $template_id, $type, $context );
+			do_action( 'gk/gravityview/admin-views/view/after-zone', $template_id, $type, $context, $is_dynamic );
 
 			$output = ob_get_clean();
 		}
@@ -1464,8 +1517,13 @@ HTML;
      * @param string $template_id The template ID.
      * @param string $type The object type (widget or field).)
      * @param string $zone The zone ID.
+	 * @param bool   $is_dynamic Whether the zone is dynamic.
 	 */
-	public function render_add_row( string $template_id, string $type, string $zone ) {
+	public function render_add_row( string $template_id, string $type, string $zone, bool $is_dynamic ): void {
+		if ( ! $is_dynamic ) {
+			return;
+		}
+
 		$button = <<<HTML
 <button
 	type="button"
@@ -1801,6 +1859,31 @@ HTML;
 		}
 
 		return array_merge( $registered, $allowed_dependencies );
+	}
+
+	/**
+	 * Returns whether the zone is dynamic.
+     *
+	 * @since $ver$
+	 *
+     * @param string $template_id The template ID.
+     * @param string $type The type.
+     * @param string $zone The zone.
+     * @return bool Whether the zone is dynamic.
+	 */
+	private function is_dynamic( string $template_id, string $type, string $zone ): bool {
+		/**
+		 * Modifies whether the zone is sortable.
+		 *
+		 * @filter `gk/gravityview/view/template/active-areas`
+		 * @since $ver$
+
+		 * @param bool $is_dynamic Whether area is dynamic, meaning sortable / deletable / acionable.
+		 * @param string $template_id Template ID.
+		 * @param string $type The object type; widget or field.
+		 * @param string $zone Current View context: `directory`, `single`, or `edit` (default: 'single')
+		 */
+		return (bool) apply_filters( 'gk/gravityview/admin-views/view/is-dynamic', false, $template_id, $type, $zone );
 	}
 }
 
