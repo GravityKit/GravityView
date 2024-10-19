@@ -18,14 +18,14 @@ if ( 'image' === \GV\Utils::get( $field_settings, 'choice_display' ) ) {
 	$gravityview_view = GravityView_View::getInstance();
 	$form             = $gravityview_view->getForm();
 	$image_choice     = new GravityView_Field_Image_Choice( $field );
-	
+
 	echo $image_choice->output_image_choice( $gravityview->value, $field, $form );
 } else {
 	/**
 	 * Overrides whether to show the value or the label of a Image Choice field.
 	 *
 	 * @since TBD
-	 * 
+	 *
 	 * @param bool $show_label True: Show the label of the Choice; False: show the value of the Choice. Default: `false`
 	 * @param array $entry GF Entry
 	 * @param GF_Field_Select $field Gravity Forms Select field
