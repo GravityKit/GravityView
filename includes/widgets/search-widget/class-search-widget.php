@@ -216,19 +216,19 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @see admin-search-widget.js (getSelectInput)
 		 */
 		$input_types = array(
-			'text'       => array( 'input_text' ),
-			'address'    => array( 'input_text' ),
-			'number'     => array( 'input_text', 'number_range' ),
-			'date'       => array( 'date', 'date_range' ),
-			'entry_date' => array( 'date_range' ),
-			'boolean'    => array( 'single_checkbox' ),
-			'select'     => array( 'select', 'radio', 'link' ),
-			'multi'      => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
+			'text'         => array( 'input_text' ),
+			'address'      => array( 'input_text' ),
+			'number'       => array( 'input_text', 'number_range' ),
+			'date'         => array( 'date', 'date_range' ),
+			'entry_date'   => array( 'date_range' ),
+			'boolean'      => array( 'single_checkbox' ),
+			'select'       => array( 'select', 'radio', 'link' ),
+			'multi'        => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
 
 			// hybrids
-			'created_by' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
-			'multi_text' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
-			'product'    => array( 'select', 'radio', 'link', 'input_text', 'number_range' ),
+			'created_by'   => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
+			'multi_text'   => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
+			'product'      => array( 'select', 'radio', 'link', 'input_text', 'number_range' ),
 		);
 
 		/**
@@ -448,9 +448,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', array( 'fileupload', 'post_image', 'post_id', 'section' ), null );
 
+			$blocklist_sub_fields = apply_filters( 'gravityview_blocklist_sub_fields', array( 'image_choice', 'multi_choice' ), null );
+
 			foreach ( $fields as $id => $field ) {
 
 				if ( in_array( $field['type'], $blocklist_field_types ) ) {
+					continue;
+				}
+
+				if ( in_array( $field['type'], $blocklist_sub_fields ) && NULL !== $field['parent'] ) {
 					continue;
 				}
 
@@ -480,7 +486,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// @todo - This needs to be improved - many fields have . including products and addresses
 		if ( false !== strpos( (string) $field_id, '.' ) && in_array( $field_type, array( 'checkbox' ) ) || in_array( $field_id, array( 'is_fulfilled' ) ) ) {
 			$input_type = 'boolean'; // on/off checkbox
-		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
+		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect', 'image_choice','multi_choice' ) ) ) {
 			$input_type = 'multi'; // multiselect
 		} elseif ( in_array( $field_id, array( 'payment_status' ) ) ) {
 			$input_type = 'multi_text';
