@@ -109,7 +109,7 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 	 *
 	 * @param bool $enable_jquery_compat
 	 *
-	 * @return false
+	 * @return bool
 	 */
 	public function edit_entry_jquery_compat_fix( $enable_jquery_compat ) {
 		return gravityview()->request->is_edit_entry() ? false : $enable_jquery_compat;
