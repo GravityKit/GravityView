@@ -164,9 +164,9 @@ class GravityView_Ajax {
 		) {
 			$this->_exit( false );
 		}
-
-		$row = Grid::prefixed(
-			$_POST['template_id'],
+		$type = $_POST['type'] ?? 'widget';
+		$row  = Grid::prefixed(
+			'widget' !== $type ? $_POST['template_id'] : '',
 			static fn () => Grid::get_row_by_type( $_POST['row_type'] )
 		);
 
@@ -175,7 +175,7 @@ class GravityView_Ajax {
 		do_action(
             'gravityview_render_active_areas',
 			$_POST['template_id'],
-			$_POST['type'],
+			$type,
 			$_POST['zone'],
 			[ $row ],
             []
