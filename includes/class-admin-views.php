@@ -1580,7 +1580,7 @@ HTML;
 			</div>
 			<div class="gv-grid-row-button">
 				<button aria-haspopup="true" aria-controls="<?php echo $controls_id; ?>" aria-expanded="false" type="button" class="gv-add-field button button-link button-hero gv-toggle">
-					<span class="dashicons dashicons-plus-alt"></span> <?php esc_html_e( 'Add row', 'gk-gravityview' ); ?>
+					<span class="dashicons dashicons-plus-alt"></span> <?php esc_html_e( 'Add Row', 'gk-gravityview' ); ?>
 				</button>
 			</div>
 		</div>
