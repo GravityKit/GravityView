@@ -1526,7 +1526,8 @@ HTML;
 			return;
 		}
 
-		$button = <<<HTML
+		$controls_id = 'gv-grid-options-' . wp_generate_password( 12, false, false );
+		$button      = <<<HTML
 <button
 	type="button"
 	class="gv-add-row"
@@ -1540,7 +1541,7 @@ HTML;
 </button>
 HTML;
 		?>
-		<div class="gv-grid-add-row">
+		<div id="<?php echo $controls_id; ?>" class="gv-grid-add-row">
 			<div class="gv-grid-row-layouts-wrapper">
 				<div class="gv-grid-row-layouts">
 					<div class="gv-grid-row-title"><?php esc_html_e( 'Select your layout', 'gk-gravityview' ); ?></div>
@@ -1578,7 +1579,7 @@ HTML;
 				</div>
 			</div>
 			<div class="gv-grid-row-button">
-				<button type="button" class="gv-add-field button button-link button-hero gv-toggle">
+				<button aria-haspopup="true" aria-controls="<?php echo $controls_id; ?>" aria-expanded="false" type="button" class="gv-add-field button button-link button-hero gv-toggle">
 					<span class="dashicons dashicons-plus-alt"></span> <?php esc_html_e( 'Add row', 'gk-gravityview' ); ?>
 				</button>
 			</div>

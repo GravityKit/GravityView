@@ -34,6 +34,7 @@
 		$( '.gv-grid-add-row' )
 			.on( 'click', '.gv-toggle', function ( e ) {
 				$( e.delegateTarget ).toggleClass( 'open' );
+				$( this ).attr( 'aria-expanded', $( e.delegateTarget ).hasClass( 'open' ) );
 			} )
 			.on( 'click', '[data-add-row]', function ( e ) {
 				const $add_row_button = $( this );
@@ -52,7 +53,10 @@
 					row_type,
 					dataType: 'json'
 				} )
-					.always( () => $( e.delegateTarget ).removeClass( 'open' ) )
+					.always( () => {
+						$( e.delegateTarget ).removeClass( 'open' )
+						$( e.delegateTarget ).find( '.gv-toggle' ).attr( 'aria-expanded', false );
+					} )
 					.done( ( response => {
 						const result = JSON.parse( response );
 						const $row = $( result?.row );
