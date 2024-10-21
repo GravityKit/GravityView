@@ -1937,6 +1937,11 @@
 						   $( '#directory-header-widgets' ).html( content.header );
 						   $( '#directory-footer-widgets' ).html( content.footer );
 						   $( '#directory-active-fields' ).append( content.directory );
+
+						   // Update the template and form ID for all [data-templateid] buttons.
+						   $( '#directory-header-widgets a[data-templateid], #directory-footer-widgets a[data-templateid]' )
+							   .attr( 'data-templateid', data.template_id )
+							   .attr( 'data-formid', data.form_id );
 					   }
 
 					   if ( update_single ) {
