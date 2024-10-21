@@ -8,6 +8,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 
 /**
  * A generic Collection base class.
+ * @template T
  */
 class Collection {
 	/**
@@ -18,7 +19,7 @@ class Collection {
 	/**
 	 * Add an object to this collection.
 	 *
-	 * @param mixed $value The object to be added.
+	 * @param T $value The object to be added.
 	 *
 	 * @api
 	 * @since 2.0
@@ -42,7 +43,7 @@ class Collection {
 	/**
 	 * Merge another collection into here.
 	 *
-	 * @param \GV\Collection $collection The collection to be merged.
+	 * @param \GV\Collection<T> $collection The collection to be merged.
 	 *
 	 * @api
 	 * @since 2.0
@@ -57,7 +58,7 @@ class Collection {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return array The objects in this collection.
+	 * @return array<T> The objects in this collection.
 	 */
 	public function all() {
 		return $this->storage;
@@ -68,7 +69,7 @@ class Collection {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return mixed|null The last item in here, or null if there are none.
+	 * @return T|null The last item in here, or null if there are none.
 	 */
 	public function last() {
 		return end( $this->storage );
@@ -79,7 +80,7 @@ class Collection {
 	 *
 	 * @api
 	 * @since 2.0
-	 * @return mixed|null The first item in here, or null if there are none.
+	 * @return T|null The first item in here, or null if there are none.
 	 */
 	public function first() {
 		return reset( $this->storage );

@@ -282,11 +282,12 @@ jQuery( function ( $ ) {
 				}
 
 				if ( event.data?.reloadPage ) {
-					return location.reload();
+					location.reload();
+					return;
 				}
 
 				if ( event.data?.redirectToUrl ) {
-					return window.location = event.data.redirectToUrl;
+					window.location = event.data.redirectToUrl;
 				}
 			} );
 		}

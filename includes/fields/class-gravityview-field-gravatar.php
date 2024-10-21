@@ -84,7 +84,7 @@ class GravityView_Field_Gravatar extends GravityView_Field {
 
 				$user = get_user_by( 'id', $created_by );
 
-				$email = $user->user_email;
+				$email = $user ? $user->user_email : '';
 				break;
 			default:
 				$field_id = \GV\Utils::get( $field_settings, 'email_field' );
