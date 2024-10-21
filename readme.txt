@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 Fixed: Settings paged showed an undefined settings tab when the GravityView Settings tab was disabled.
+Fixed: Widgets could not be configured on a new unsaved View.
 
 = 2.30.1 on October 15, 2024 =
 
