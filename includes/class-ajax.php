@@ -157,15 +157,19 @@ class GravityView_Ajax {
 		$this->check_ajax_nonce();
 
 		if (
-			empty( $_POST['template_id'] )
-			|| empty( $_POST['zone'] )
+			empty( $_POST['zone'] )
 			|| empty( $_POST['type'] )
 			|| empty( $_POST['row_type'] )
 		) {
 			$this->_exit( false );
 		}
+
 		$type = $_POST['type'] ?? 'widget';
-		$row  = Grid::prefixed(
+		if ( 'widget' !== $type && empty( $_POST['template_id'] ?? '' ) ) {
+			$this->_exit( false );
+		}
+
+		$row = Grid::prefixed(
 			'widget' !== $type ? $_POST['template_id'] : '',
 			static fn () => Grid::get_row_by_type( $_POST['row_type'] )
 		);
