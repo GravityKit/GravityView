@@ -31,13 +31,15 @@
 			} );
 		} );
 
-		$( '.gv-grid-add-row' )
-			.on( 'click', '.gv-toggle', function ( e ) {
-				$( e.delegateTarget ).toggleClass( 'open' );
-				$( this ).attr( 'aria-expanded', $( e.delegateTarget ).hasClass( 'open' ) );
+		$( document )
+			.on( 'click', '.gv-grid-add-row .gv-toggle', function ( e ) {
+				const $add_row = $( this ).closest( '.gv-grid-add-row' );
+				$add_row.toggleClass( 'open' );
+				$( this ).attr( 'aria-expanded', $add_row.hasClass( 'open' ) );
 			} )
-			.on( 'click', '[data-add-row]', function ( e ) {
+			.on( 'click', '.gv-grid-add-row [data-add-row]', function ( e ) {
 				const $add_row_button = $( this );
+				const $add_row = $( this ).closest( '.gv-grid-add-row' );
 
 				const zone = $add_row_button.data( 'add-row' );
 				const template_id = $add_row_button.data( 'template-id' );
@@ -54,13 +56,13 @@
 					dataType: 'json'
 				} )
 					.always( () => {
-						$( e.delegateTarget ).removeClass( 'open' )
-						$( e.delegateTarget ).find( '.gv-toggle' ).attr( 'aria-expanded', false );
+						$add_row.removeClass( 'open' )
+						$add_row.find( '.gv-toggle' ).attr( 'aria-expanded', false );
 					} )
 					.done( ( response => {
 						const result = JSON.parse( response );
 						const $row = $( result?.row );
-						$row.insertBefore( $( e.delegateTarget ) );
+						$row.insertBefore( $add_row );
 
 						window?.gvAdminActions?.initTooltips();
 						window?.gvAdminActions?.initDroppables( $row );
