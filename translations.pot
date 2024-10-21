@@ -9,14 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-15T21:11:46+00:00\n"
+"POT-Creation-Date: 2024-10-21T16:23:51+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
-#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -26,17 +25,14 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
-#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
-#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:404
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:163
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:164
@@ -106,7 +102,7 @@ msgstr ""
 
 #. Translators: [slug] is replaced by the slug.
 #: future/includes/class-gv-permalinks.php:335
-#: future/includes/class-gv-permalinks.php:488
+#: future/includes/class-gv-permalinks.php:492
 msgid "Default: [slug]"
 msgstr ""
 
@@ -130,7 +126,7 @@ msgid "Entry Endpoint"
 msgstr ""
 
 #: future/includes/class-gv-permalinks.php:409
-#: future/includes/class-gv-permalinks.php:471
+#: future/includes/class-gv-permalinks.php:475
 msgid "Entry Slug"
 msgstr ""
 
@@ -139,38 +135,38 @@ msgstr ""
 msgid "The entry slug requires at least the [slug] merge tag, to ensure uniqueness."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:449
+#: future/includes/class-gv-permalinks.php:453
 msgid "Permalinks"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:450
+#: future/includes/class-gv-permalinks.php:454
 msgid "GravityView allows you to create a custom URL structure for your Views."
 msgstr ""
 
 #. Translators: [entry_id] will be replaced by the actual merge tag.
-#: future/includes/class-gv-permalinks.php:475
+#: future/includes/class-gv-permalinks.php:479
 msgid "Change the slug for an entry. Make sure to at least include [entry_id] to avoid URL collisions."
 msgstr ""
 
 #. Translators: [count] is replaced by the amount of characters.
-#: future/includes/class-gv-permalinks.php:557
-#: future/includes/class-gv-permalinks.php:607
+#: future/includes/class-gv-permalinks.php:561
+#: future/includes/class-gv-permalinks.php:611
 msgid "At least [count] characters are required."
 msgstr ""
 
 #. Translators: [slug] will contain the slug value.
-#: future/includes/class-gv-permalinks.php:562
-#: future/includes/class-gv-permalinks.php:643
+#: future/includes/class-gv-permalinks.php:566
+#: future/includes/class-gv-permalinks.php:647
 msgid "Must contain \"[slug]\"."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:565
-#: future/includes/class-gv-permalinks.php:598
-#: future/includes/class-gv-permalinks.php:649
+#: future/includes/class-gv-permalinks.php:569
+#: future/includes/class-gv-permalinks.php:602
+#: future/includes/class-gv-permalinks.php:653
 msgid "Only letters, numbers, underscores and dashes are allowed."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:613
+#: future/includes/class-gv-permalinks.php:617
 msgid "You have used a reserved word."
 msgstr ""
 
@@ -1277,7 +1273,7 @@ msgid "Click %s icon for additional information."
 msgstr ""
 
 #: includes/admin/class-gravityview-support-port.php:88
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:108
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:109
 msgid "Learn More"
 msgstr ""
 
@@ -1426,7 +1422,7 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:203
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:302
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:379
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:102
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:103
 msgid "Settings"
 msgstr ""
 
@@ -1557,7 +1553,7 @@ msgstr ""
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:283
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1169
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1302
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:99
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:100
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1312
 msgid "Cancel"
 msgstr ""
@@ -1569,7 +1565,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/select-template.php:68
 #: includes/admin/metaboxes/views/view-configuration.php:179
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:128
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:129
 msgid "Install"
 msgstr ""
 
@@ -1586,7 +1582,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:110
 #: includes/admin/metaboxes/views/view-configuration.php:181
 #: includes/plugin-and-theme-hooks/class-gravityview-object-placeholder.php:252
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:117
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:118
 msgid "Buy Now"
 msgstr ""
 
@@ -1654,7 +1650,7 @@ msgid "Install now"
 msgstr ""
 
 #: includes/admin/metaboxes/views/view-configuration.php:109
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:125
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:126
 msgid "Activate"
 msgstr ""
 
@@ -2965,7 +2961,7 @@ msgid "Note Content"
 msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:119
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:120
 msgid "Delete"
 msgstr ""
 
@@ -4015,7 +4011,7 @@ msgid "Radio Buttons"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-section.php:24
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:168
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:169
 msgid "Section"
 msgstr ""
 
@@ -4942,7 +4938,7 @@ msgid "To"
 msgstr ""
 
 #: includes/widgets/search-widget/templates/search-field-submit.php:37
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:141
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:142
 msgid "Search"
 msgstr ""
 
@@ -5705,7 +5701,7 @@ msgid "This product has unmet dependencies. Click this link to see see what they
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:237
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:123
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:124
 msgid "Activate…"
 msgstr ""
 
@@ -5729,7 +5725,7 @@ msgid "[product] is required by other products to be active. Click this link to 
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:286
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:156
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:157
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[product] is required by [products] to be active. Are you sure you want to deactivate it?"
 msgstr ""
@@ -6178,338 +6174,343 @@ msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:85
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "[dependency] needs to be activated"
+msgid "[dependency] needs to be updated to [version] or newer"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:86
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "[dependency] needs to be licensed"
+msgid "[dependency] needs to be activated"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:87
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "GravityKit must provide dependency information for [dependency] [version]. Please [link]contact support[/link]."
+msgid "[dependency] needs to be licensed"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:88
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "GravityKit must indicate a version number for [dependency]. Please [link]contact support[/link]."
+msgid "GravityKit must provide dependency information for [dependency] [version]. Please [link]contact support[/link]."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:89
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "[dependency] [version] needs to be installed and activated"
+msgid "GravityKit must indicate a version number for [dependency]. Please [link]contact support[/link]."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:90
-msgid "Installing…"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "[dependency] [version] or newer needs to be installed and activated"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:91
-msgid "Updating…"
+msgid "Installing…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:92
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Installing [product]…"
+msgid "Updating…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:93
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "Activating [product]…"
+msgid "Installing [product]…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:94
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "Updating [product]…"
+msgid "Activating [product]…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:95
-msgid "Resolving Dependencies…"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Updating [product]…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:96
-msgid "Continue With Installation"
+msgid "Resolving Dependencies…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:97
-msgid "Continue With Activation"
+msgid "Continue With Installation"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:98
-msgid "Continue With Update"
+msgid "Continue With Activation"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:100
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "[product] was deleted."
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:99
+msgid "Continue With Update"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:101
 msgctxt "Placeholders inside [] are not to be translated."
+msgid "[product] was deleted."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:102
+msgctxt "Placeholders inside [] are not to be translated."
 msgid "[product] was deactivated."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:103
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:104
 msgid "Go to the settings for this product."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:104
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:105
 msgid "Unlicensed product"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:105
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:106
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "View changelog for [product_title]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:106
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:107
 msgctxt "Used in the \"version X is available\" context. Placeholders inside [] are not to be translated."
 msgid "[version] Available"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:107
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:108
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Learn more about [product_title]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:109
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:110
 msgid "View Changelog"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:110
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:111
 msgid "View documentation for [product]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:111
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:112
 msgid "Documentation"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:112
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:113
 msgid "Open Docs in a new window."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:113
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:114
 msgid "Coming soon!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:114
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:115
 msgid "Enter License Key"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:115
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:116
 msgid "I have a license key"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:116
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:117
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Buy [product_title]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:118
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:119
 msgid "Deleting…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:120
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:121
 msgid "Activate/Deactivate"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:121
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:122
 msgid "Network Deactivate"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:122
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:123
 msgid "Network Activate…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:124
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:125
 msgid "Network Activate"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:126
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:127
 msgid "Download is not available"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:127
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:128
 msgid "Install…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:129
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:130
 msgid "This product has been been network-activated and only the network administrator can change its status"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:130
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:131
 msgid "Network Active"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:131
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:132
 msgid "Hmm… no products found."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:132
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:133
 msgid "Sorry, no products match your filter criteria."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:133
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:134
 msgid "Show all products"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:134
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:135
 msgid "Select a product filter or search for products"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:135
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:136
 msgid "Filters"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:136
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:137
 msgid "All"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:137
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:138
 msgid "Unlicensed"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:138
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:139
 msgid "Update Available"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:139
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:140
 msgid "Inactive"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:140
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:141
 msgid "Not Installed"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:142
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:143
 msgid "Search Products"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:143
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:144
 msgid "Search all GravityKit products using a keyword"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:144
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:145
 msgid "Search products by title or description"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:145
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:146
 msgid "Clear Search"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:146
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:147
 msgid "Tabs"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:147
-msgid "Some products are installed from a Git repository. Are you sure you want to update them?"
-msgstr ""
-
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:148
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Updated [updated] out of [total] products."
+msgid "Some products are installed from a Git repository. Are you sure you want to update them?"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:149
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "Update [product]"
+msgid "Updated [updated] out of [total] products."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:150
-msgid "Update All"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Update [product]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:151
-msgid "Spinning wheel animation"
+msgid "Update All"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:152
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "Updating [product]"
+msgid "Spinning wheel animation"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:153
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "Updating [product] ([current] of [total])"
+msgid "Updating [product]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:154
-msgid "Cancelling…"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Updating [product] ([current] of [total])"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:155
-msgid "Incorrect data received from the server."
+msgid "Cancelling…"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:157
-msgctxt "Placeholders inside [] are not to be translated."
-msgid "[product] is installed from a Git repository. Are you sure you want to continue?"
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:156
+msgid "Incorrect data received from the server."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:158
 msgctxt "Placeholders inside [] are not to be translated."
-msgid "Deleting [product] can't be undone. Are you sure you want to continue?"
+msgid "[product] is installed from a Git repository. Are you sure you want to continue?"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:159
-msgid "Reloading the UI…"
+msgctxt "Placeholders inside [] are not to be translated."
+msgid "Deleting [product] can't be undone. Are you sure you want to continue?"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:160
+msgid "Reloading the UI…"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:161
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Changes to [product] require reloading the UI."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:161
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:162
 msgid "Required"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:162
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:163
 msgid "Are you sure you want to clear unsaved changes?"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:163
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:164
 msgid "plugin icon"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:164
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:165
 msgid "Close Navigation"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:165
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:166
 msgid "Open Navigation"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:166
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:167
 msgid "Quick search..."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:167
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:168
 msgid "Product Navigation"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:169
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:170
 msgid "Save Settings"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:170
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:171
 msgid "Saving..."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:171
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:172
 msgid "Floaty logo"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:172
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:173
 msgid "The settings data couldn't be loaded."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:173
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:174
 msgid "Please [link]contact support[/link]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:174
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:175
 msgid "Select All"
 msgstr ""
 
@@ -7267,84 +7268,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/sort-selector.js:75
 msgid "No Sorting Fields found"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""
