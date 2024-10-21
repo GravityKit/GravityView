@@ -1186,6 +1186,20 @@ hr {
 	.gv-add-field {
 		display: none;
 	}
+
+	.gv-field-label {
+		vertical-align: middle;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		margin-top: -2px;
+	}
+
+	.gfield:hover {
+		.gv-field-label {
+			max-width: calc(100% - 125px); // Make room for duplicate icon.
+		}
+	}
 }
 
 // End .active-drop
@@ -1304,13 +1318,6 @@ hr {
 				}
 			}
 		}
-
-		&:hover {
-			.gv-field-label {
-				max-width: calc(100% - 125px); // Make room for duplicate icon.
-			}
-		}
-
 
 		// Parent field name
 		small {
@@ -2247,12 +2254,6 @@ $dialog-button-padding: 5px;
 }
 
 .gv-field-label {
-	vertical-align: middle;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	margin-top: -2px;
-
 	.gv-icon,
 	.gform-icon,
 	.dashicons {
