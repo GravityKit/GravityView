@@ -28,7 +28,7 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 		parent::add_hooks();
 
 		add_action( 'admin_init', [ $this, 'add_hooks_admin_init' ], 1 );
-		add_action( 'et_builder_enable_jquery_body', [ $this, 'edit_entry_jquery_compat_fix' ] );
+		add_filter( 'et_builder_enable_jquery_body', [ $this, 'edit_entry_jquery_compat_fix' ] );
 	}
 
 	/**
@@ -104,6 +104,8 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 	/**
 	 * Prevents Divi from "faking" jQuery on the Edit Entry screen.
 	 * This breaks some functionality, such as the Gravity Forms Signature Add-On.
+	 *
+	 * @used-by `et_builder_enable_jquery_body` filter
 	 *
 	 * @since TBD
 	 *
