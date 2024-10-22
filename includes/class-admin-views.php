@@ -1301,11 +1301,16 @@ HTML;
 		$widgets   = [];
 		$unique_id = static fn(): string => substr( md5( microtime( true ) ), 0, 13 );
 
+		$header_top   = 'header_' . ($default_widget_areas[0]['1-1'][0]['areaid'] ?? 'top');
+		$header_left  = 'header_' . ($default_widget_areas[1]['1-2 left'][0]['areaid'] ?? 'left');
+		$header_right = 'header_' . ($default_widget_areas[1]['1-2 right'][0]['areaid'] ?? 'right');
+		$footer_right = 'footer_' . ($default_widget_areas[1]['1-2 right'][0]['areaid'] ?? 'right');
+
 		if ( ! empty( $post_id ) ) {
 			if ( 'auto-draft' === get_post_status( $post_id ) ) {
 				// This is a new View, prefill the widgets
 				$widgets = [
-					'header_top'   => [
+					$header_top   => [
 						$unique_id() => [
 							'id'            => 'search_bar',
 							'label'         => __( 'Search Bar', 'gk-gravityview' ),
@@ -1315,20 +1320,20 @@ HTML;
 							'search_mode'   => 'any',
 						],
 					],
-					'header_left'  => [
+					$header_left  => [
 						$unique_id() => [
 							'id'    => 'page_info',
 							'label' => __( 'Show Pagination Info', 'gk-gravityview' ),
 						],
 					],
-					'header_right' => [
+					$header_right => [
 						$unique_id() => [
 							'id'       => 'page_links',
 							'label'    => __( 'Page Links', 'gk-gravityview' ),
 							'show_all' => '0',
 						],
 					],
-					'footer_right' => [
+					$footer_right => [
 						$unique_id() => [
 							'id'       => 'page_links',
 							'label'    => __( 'Page Links', 'gk-gravityview' ),
