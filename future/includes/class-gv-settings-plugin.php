@@ -194,6 +194,7 @@ class Plugin_Settings {
 	public function defaults() {
 		$defaults = [
 			'rest_api'                => 0,
+			'use_dynamic_widgets'     => 0,
 			'public_entry_moderation' => 0,
 			'caching'                 => 1,
 			'caching_entries'         => DAY_IN_SECONDS,
@@ -282,7 +283,9 @@ HTML;
 			];
 		}
 
-		$cache_settings = array_merge( $cache_settings, [
+		$cache_settings = array_merge(
+            $cache_settings,
+            [
 				[
 					'id'          => 'caching',
 					'type'        => 'checkbox',
@@ -332,6 +335,13 @@ HTML;
 							'title'       => esc_html__( 'REST API', 'gk-gravityview' ),
 							'description' => esc_html__( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gk-gravityview' ) . ' ' . esc_html__( 'If you are unsure, disable this setting.', 'gk-gravityview' ),
 							'value'       => $this->get( 'rest_api', $default_settings['rest_api'] ),
+						],
+						[
+							'id'          => 'use_dynamic_widgets',
+							'type'        => 'checkbox',
+							'title'       => esc_html__( 'Use Dynamic Widget Placement', 'gk-gravityview' ),
+							'description' => esc_html__( 'Create additional, drag and droppable, widget rows of different layout types.', 'gk-gravityview' ),
+							'value'       => $this->get( 'use_dynamic_widgets', $default_settings['use_dynamic_widgets'] ),
 						],
 					],
 				],
