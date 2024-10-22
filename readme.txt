@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 Fixed: Settings paged showed an undefined settings tab when the GravityView Settings tab was disabled.
 Fixed: Widgets could not be configured on a new unsaved View.
 Fixed: Compatability with the Divi theme that prevented the Signature field from being edited on the Edit Entry screen.
+Fixed: Conflict with the LiteSpeed plugin caused a fatal error when redirecting users after duplicating an entry.
 
 = 2.30.1 on October 15, 2024 =
 
