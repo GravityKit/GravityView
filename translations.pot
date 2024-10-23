@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-10-21T16:23:51+00:00\n"
+"POT-Creation-Date: 2024-10-23T22:11:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -5547,7 +5547,7 @@ msgstr ""
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:452
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:535
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:618
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:819
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:821
 msgid "You do not have a permission to perform this action."
 msgstr ""
 
@@ -5682,7 +5682,7 @@ msgstr ""
 msgid "Invalid product information received from the API."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:792
+#: vendor_prefixed/gravitykit/foundation/src/Licenses/ProductManager.php:794
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:68
 msgid "View full changelog"
 msgstr ""
