@@ -485,7 +485,7 @@ class GravityView_Lightbox_Entry {
 			<head>
 				<title><?php echo $title; ?></title>
 
-				<?php do_action( 'wp_enqueue_scripts' ); wp_head(); ?>
+				<?php wp_head(); ?>
 
 				<style>
 					<?php echo $view->settings->get( 'custom_css', '' ); ?>
@@ -500,8 +500,7 @@ class GravityView_Lightbox_Entry {
 				<?php echo $content; ?>
 			</body>
 
-			<?php wp_print_scripts(); ?>
-			<?php wp_print_styles(); ?>
+			<?php wp_footer(); ?>
 		</html>
 		<?php
 
