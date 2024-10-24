@@ -29,6 +29,14 @@ Fixed: Compatability with the Divi theme that prevented the Signature field from
 Fixed: Conflict with the LiteSpeed plugin caused a fatal error when redirecting users after duplicating an entry.
 Fixed: JavaScript enqueued in the site's footer was not executed when editing an entry in the lightbox.
 
+#### 💻 Developer Updates
+* Added `gk/gravityview/lightbox/entry/before-output` action that fires before the entry content is output in the lightbox.
+* Added `gk/gravityview/lightbox/entry/output/head-before` action that fires after the <head> tag is opened.
+* Added `gk/gravityview/lightbox/entry/output/head-after` action that fires before the </head> tag is closed.
+* Added `gk/gravityview/lightbox/entry/output/content-before` action that fires after the <body> tag is opened and before the content is rendered.
+* Added `gk/gravityview/lightbox/entry/output/content-after` action that fires after the content is rendered and before the footer.
+* Added `gk/gravityview/lightbox/entry/output/footer-after` action that fires after the footer and before the closing </body> tag.
+
 = 2.30.1 on October 15, 2024 =
 
 This hotfix release resolves an issue with the Multiple Forms extension.
