@@ -23,6 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+Added: View setting to control what happens when a user clicks on the Cancel link when editing an entry in the lightbox.
 Fixed: Settings paged showed an undefined settings tab when the GravityView Settings tab was disabled.
 Fixed: Widgets could not be configured on a new unsaved View.
 Fixed: Compatability with the Divi theme that prevented the Signature field from being edited on the Edit Entry screen.
