@@ -28,6 +28,7 @@ Fixed: Widgets could not be configured on a new unsaved View.
 Fixed: Compatability with the Divi theme that prevented the Signature field from being edited on the Edit Entry screen.
 Fixed: Conflict with the LiteSpeed plugin caused a fatal error when redirecting users after duplicating an entry.
 Fixed: JavaScript enqueued in the site's footer was not executed when editing an entry in the lightbox.
+Fixed: Adding entry notes when viewing a single entry in the lightbox did not work.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/lightbox/entry/before-output` action that fires before the entry content is output in the lightbox.

@@ -43,6 +43,7 @@ class GravityView_Lightbox_Entry {
 		add_filter( 'gravityview/view/links/directory', [ $this, 'rewrite_directory_link' ] );
 		add_filter( 'gform_get_form_confirmation_filter', [ $this, 'process_gravity_forms_form_submission' ] );
 		add_filter( 'gform_get_form_filter', [ $this, 'process_gravity_forms_form_submission' ] );
+		add_filter( 'gk/gravityview/lightbox/entry/output/head-after', [ $this, 'run_during_head_output' ], 10, 2 );
 	}
 
 	/**
@@ -681,6 +682,31 @@ class GravityView_Lightbox_Entry {
 		];
 
 		return $scripts;
+	}
+
+	/**
+	 * Performs actions during <head> output.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $type The type of the entry view (single or edit).
+	 * @param View $view The View object being rendered.
+	 *
+	 * @return void
+	 */
+	public function run_during_head_output( $type, $view ) {
+		// Enqueue scripts for the Entry Notes field.
+		if ( 'single' !== $type ) {
+			return;
+		}
+
+		foreach ( $view->fields->all() as $field ) {
+			if ( 'notes' === $field->type ) {
+				do_action( 'gravityview/field/notes/scripts' );
+
+				break;
+			}
+		}
 	}
 }
 
