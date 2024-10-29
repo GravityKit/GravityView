@@ -635,25 +635,24 @@ class GravityView_Lightbox_Entry {
 
 		$scripts[] = [
 			'script' => <<<JS
-				// Disable "open in new tab/window" input when "open in lightbox" is checked, and vice versa.
 				jQuery( document ).ready( function ( jQuery ) {
-					function toggleEditEntryCancelButtonAction() {
-						const hasCheckedLightbox = jQuery( 'input[type="checkbox"]' )
+					// Show/hide the View's "Cancel Link Action" setting under Edit Entry.
+					function toggleCancelLinkActionViewSetting() {
+						const isLightBoxEnabled = jQuery( 'input[type="checkbox"]' )
 							.filter( function () {
-								const name = jQuery( this ).attr( 'name' ) || '';
-
-								return name.startsWith('fields[directory_table-columns]') && name.endsWith('[lightbox]');
+								return /^fields\[directory_table-columns\]\[.*?\]\[lightbox\]$/.test( jQuery( this ).attr( 'name' ) || '' );
 							} )
 							.toArray()
 							.some( checkbox => checkbox.checked );
 
-						jQuery('tr:has(#gravityview_se_edit_cancel_lightbox_action)').toggle( hasCheckedLightbox );
+						jQuery( 'tr:has(#gravityview_se_edit_cancel_lightbox_action)' ).toggle( isLightBoxEnabled );
 					}
-				
+
+					// Disable "open in new tab/window" input when "open in lightbox" is checked, and vice versa.
 					function handleInputState( dialog ) {
 						const newWindow = dialog.find( '.gv-setting-container-new_window input' );
 						const lightbox = dialog.find( '.gv-setting-container-lightbox input' );
-				
+
 						function updateState( active, inactive ) {
 							if ( active.is( ':checked' ) ) {
 								inactive.prop( 'checked', false ).prop( 'disabled', true );
@@ -661,11 +660,11 @@ class GravityView_Lightbox_Entry {
 								inactive.prop( 'disabled', false );
 							}
 						}
-				
+
 						updateState( newWindow, lightbox );
 						updateState( lightbox, newWindow );
 					}
-					
+
 					function handleChange( changedInput, otherInput ) {
 						otherInput.prop( 'checked', false );
 
@@ -674,32 +673,33 @@ class GravityView_Lightbox_Entry {
 							otherInput.prop( 'disabled', changedInput.is( ':checked' ) );
 						}, 10 );
 					}
-					
+
 					jQuery( document ).on( 'gravityview/dialog-opened', function ( event, thisDialog ) {
 						const dialog = jQuery( thisDialog );
-				
+
 						handleInputState( dialog );
-				
+
 						const newWindow = dialog.find( '.gv-setting-container-new_window input' );
 						const lightbox = dialog.find( '.gv-setting-container-lightbox input' );
-				
+
 						newWindow.on( 'change.lightboxEntry', function () {
 							handleChange( jQuery( this ), lightbox );
 						} );
-				
+
 						lightbox.on( 'change.lightboxEntry', function () {
 							handleChange( jQuery( this ), newWindow );
 						} );
 					} );
-				
+
 					jQuery( document ).on( 'gravityview/dialog-closed', function ( event, thisDialog ) {
-						jQuery( thisDialog ).find( '.gv-setting-container-new_window input, .gv-setting-container-lightbox input' )
+						jQuery( thisDialog )
+							.find( '.gv-setting-container-new_window input, .gv-setting-container-lightbox input' )
 							.off( 'change.lightboxEntry' );
-				
-						toggleEditEntryCancelButtonAction();
+
+						toggleCancelLinkActionViewSetting();
 					} );
-				
-					toggleEditEntryCancelButtonAction();
+
+					toggleCancelLinkActionViewSetting();
 				} );
 			JS,
 			'deps'   => [ 'jquery' ],

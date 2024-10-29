@@ -529,7 +529,7 @@ class View_Settings extends Settings {
 					'desc'      => __( 'Action to perform inside the lightbox when the Cancel link is clicked.', 'gk-gravityview' ),
 					'type'      => 'select',
 					'hidden' => 1,
-					'value'     => '',
+					'value'     => 'close_lightbox',
 					'options'   => array(
 						'close_lightbox'           => __( 'Close Lightbox', 'gk-gravityview' ),
 						'redirect_to_single_entry' => __( 'Redirect to Single Entry', 'gk-gravityview' ),
