@@ -38,5 +38,5 @@ do_action( 'gravityview/field/user_activation/load_scripts', $gravityview );
 ?>
 
 <a href="#" activation-key="<?php echo $activation_key; ?>" class="button gv-user-activation-link" style="cursor: pointer;">
-	<?php esc_html_e( 'Activate User', 'gk-gravityview' ); ?>
+	<?php esc_attr_e( 'Activate User', 'gk-gravityview' ); ?>
 </a>
