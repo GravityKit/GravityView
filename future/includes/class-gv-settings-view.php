@@ -526,7 +526,7 @@ class View_Settings extends Settings {
 				),
 				'edit_cancel_lightbox_action' => array(
 					'label'     => __( 'Cancel Link Action', 'gk-gravityview' ),
-					'desc'      => __( 'Action to perform inside the lightbox when the Cancel link is clicked.', 'gk-gravityview' ),
+					'tooltip'   => __( 'Choose what happens when you click Cancel while editing an entry in a lightbox.', 'gk-gravityview' ),
 					'type'      => 'select',
 					'hidden' => 1,
 					'value'     => 'close_lightbox',
