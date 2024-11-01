@@ -477,7 +477,7 @@ class GravityView_Lightbox_Entry {
 		 *
 		 * @action `gk/gravityview/lightbox/entry/before-output`
 		 *
-		 * @since TBD
+		 * @since 2.31.0
 		 *
 		 * @param array $args {
 		 *     @type View         $view            The View object being rendered.
@@ -513,7 +513,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/head-before`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -541,7 +541,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/head-after`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -559,7 +559,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/content-before`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -577,7 +577,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/content-after`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -595,7 +595,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/footer-after`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -711,7 +711,7 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Performs actions during <head> output.
 	 *
-	 * @since TBD
+	 * @since 2.31.0
 	 *
 	 * @param string $type The type of the entry view (single or edit).
 	 * @param View $view The View object being rendered.

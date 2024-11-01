@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.6.2
+Tested up to: 6.7
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,15 +21,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.31 on November 1, 2024 =
 
-Added: View setting to control what happens when a user clicks on the Cancel link when editing an entry in the lightbox.
-Fixed: Settings paged showed an undefined settings tab when the GravityView Settings tab was disabled.
-Fixed: Widgets could not be configured on a new unsaved View.
-Fixed: Compatability with the Divi theme that prevented the Signature field from being edited on the Edit Entry screen.
-Fixed: Conflict with the LiteSpeed plugin caused a fatal error when redirecting users after duplicating an entry.
-Fixed: JavaScript enqueued in the site's footer was not executed when editing an entry in the lightbox.
-Fixed: Adding entry notes when viewing a single entry in the lightbox did not work.
+This release enhances entry-in-a-lightbox functionality, resolves compatibility issues with LiteSpeed and Divi, and includes other fixes and improvements.
+
+#### 🚀 Added
+* View setting to control what happens when a user clicks the Cancel link when editing an entry in the lightbox.
+
+#### 🐛 Fixed
+* GravityView tab not displaying in certain cases under GravityKit > Settings menu.
+* Widgets could not be configured after being added to a new, unsaved View.
+* Compatibility with the Divi theme that prevented the Signature field from being edited on the Edit Entry screen.
+* Conflict with the LiteSpeed plugin that caused a fatal error when redirecting users after duplicating an entry.
+* JavaScript enqueued in the site's footer was not executed when editing an entry in the lightbox.
+* It was not possible to add new entry notes when viewing a single entry in the lightbox.
+* Validation error displayed when adding merge tags to the Entry Slug setting input in the View editor.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.20.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/lightbox/entry/before-output` action that fires before the entry content is output in the lightbox.
