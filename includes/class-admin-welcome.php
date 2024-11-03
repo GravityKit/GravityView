@@ -296,7 +296,7 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3>2.31 on November 1, 2024</h3>
+				<h3>2.31 on November 4, 2024</h3>
 
 				<p>This release enhances entry-in-a-lightbox functionality, resolves compatibility issues with LiteSpeed and Divi, and includes other fixes and improvements.</p>
 
@@ -316,6 +316,7 @@ class GravityView_Welcome {
 					<li>JavaScript enqueued in the site's footer was not executed when editing an entry in the lightbox.</li>
 					<li>It was not possible to add new entry notes when viewing a single entry in the lightbox.</li>
 					<li>Validation error displayed when adding merge tags to the Entry Slug setting input in the View editor.</li>
+					<li>Searching across all fields not working as expected when the search value contains special characters or accents (e.g., ä, ß, İ).</li>
 				</ul>
 
 				<h4>🔧 Updated</h4>
