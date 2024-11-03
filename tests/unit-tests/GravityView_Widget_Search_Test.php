@@ -1887,4 +1887,71 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		$_GET = array();
 	}
+
+	public function test_search_everything_with_json_storage_fields() {
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+
+		$post = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => [
+				'directory_table-columns' => [
+					wp_generate_password( 16, false ) => [
+						'id'    => '16',
+						'label' => 'Textarea',
+					],
+				],
+			],
+			'widgets'     => [
+				'header_top' => [
+					wp_generate_password( 4, false ) => [
+						'id'            => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					],
+				],
+			],
+			'settings'    => array_merge( \GV\View_Settings::defaults(), [
+				'show_only_approved' => 0,
+			] ),
+		] );
+
+		$view = \GV\View::from_post( $post );
+
+		$first_choice = $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'35'      => 'First Choice',
+		] );
+
+		$fourth_choice = $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'35'      => json_encode( [
+				'First Choice',
+				'Quatrième Choix',
+			] ),
+		] );
+
+		$fifth_choice = $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'35'      => 'Fünfte Wahl',
+		] );
+
+		$_GET    = [];
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 3, $entries );
+
+		$_GET['gv_search'] = 'first';
+		$entries           = $view->get_entries()->fetch()->all();
+		$this->assertCount( 2, $entries );
+
+		$_GET['gv_search'] = 'quatrième';
+		$entries           = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+
+		$_GET['gv_search'] = 'fünfte';
+		$entries           = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+	}
 }

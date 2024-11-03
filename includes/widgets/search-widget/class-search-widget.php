@@ -705,16 +705,43 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// add free search
 		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
-
 			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
 			$criteria = $this->get_criteria_from_query( $search_all_value, $split_words );
 
+			$form = GFAPI::get_form( $form_id );
+
+			$use_json_storage = false;
+
+			foreach ( ( $form['fields'] ?? [] ) as $field ) {
+				if ( 'json' === $field->storageType ) {
+					$use_json_storage = true;
+
+					break;
+				}
+			}
+
 			foreach ( $criteria as $criterion ) {
-				$search_criteria['field_filters'][] = array_merge(
+				$params = array_merge(
 					[ 'key' => null ],
 					$criterion
 				);
+
+				$search_criteria['field_filters'][] = $params;
+
+				// Certain form field meta values are stored as JSON, so we need to encode them before searching.
+				// This replicates the behavior of GF_Query_JSON_Literal::sql().
+				$value = $params['value'] ?? '';
+
+				if ( $use_json_storage && $value && is_string( $value ) ) {
+					$value = trim( json_encode( $value ), '"' );
+					$value = str_replace( '\\', '\\\\', $value );
+
+					$search_criteria['field_filters'][] = array_merge(
+						$params,
+						[ 'value' => $value ]
+					);
+				}
 			}
 		}
 
