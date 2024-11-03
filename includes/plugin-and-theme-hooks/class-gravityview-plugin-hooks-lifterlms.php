@@ -1,42 +1,19 @@
 <?php
 /**
- * Add GravityView integration to LifterLMS
+ * Add GravityView integration to LifterLMS.
  *
- * @file      class-gravityview-plugin-hooks-gravity-perks.php
- * @since     1.17.5
+ * @file      class-gravityview-plugin-hooks-lifterlms.php
+ * @since     2.20
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      https://gravityview.co
- * @copyright Copyright 2016, Katz Web Services, Inc.
+ * @copyright Copyright 2024, Katz Web Services, Inc.
  *
  * @package   GravityView
  */
 
-// This needs to happen outside the class because the class is loaded too late.
 add_filter( 'lifterlms_integrations', function ( $integrations = [] ) {
-	/**
-	 * @inheritDoc
-	 *
-	 * @since 2.20
-	 */
-	class GravityView_Plugin_Hooks_LifterLMS extends GravityView_Plugin_and_Theme_Hooks {
-		/**
-		 * @var string Check for the LifterLMS loader function
-		 */
-		protected $function_name = 'llms';
-
-		protected $content_meta_keys = [];
-
-		public function __construct() {
-			parent::__construct();
-		}
-
-		static public function add_lifterlms_integration( $integrations = [] ) {
-			$integrations[] = 'LLMS_Integration_GravityView';
-
-			return $integrations;
-		}
-	}
+	$integrations[] = 'LLMS_Integration_GravityView';
 
 	/**
 	 * GravityView Integration
@@ -394,5 +371,5 @@ add_filter( 'lifterlms_integrations', function ( $integrations = [] ) {
 		}
 	}
 
-	return GravityView_Plugin_Hooks_LifterLMS::add_lifterlms_integration( $integrations );
+	return $integrations;
 }, 20 );
