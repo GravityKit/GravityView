@@ -64,7 +64,6 @@ add_filter( 'lifterlms_integrations', function ( $integrations = [] ) {
 		 * @return void
 		 */
 		protected function configure() {
-			ray("asdasdasd");
 			$this->title       = __( 'GravityView', 'gk-gravityview' );
 			$this->description = strtr( __( 'Display Gravity Forms entries for the current student using [link]GravityView[/link].', 'gk-gravityview' ), [
 				'[link]'  => '<a href="https://lifterlms.com/docs/lifterlms-and-gravityview/" target="_blank" rel="noopener noreferrer">',
