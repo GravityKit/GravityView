@@ -1556,7 +1556,7 @@ class GravityView_Edit_Entry_Render {
 		$override_saved_value = apply_filters( 'gravityview/edit_entry/pre_populate/override', false, $field );
 
 		// We're dealing with multiple inputs (e.g. checkbox) but not time or date (as it doesn't store data in input IDs)
-		if ( isset( $field->inputs ) && is_array( $field->inputs ) && ! in_array( $field->type, array( 'time', 'date' ) ) ) {
+		if ( isset( $field->inputs ) && is_array( $field->inputs ) && ! in_array( $field->type, array( 'time', 'date' ) ) && ! ( $field instanceof GF_Field_Radio && in_array($field->type, array('image_choice','multi_choice')) ) ) {
 
 			$field_value = array();
 

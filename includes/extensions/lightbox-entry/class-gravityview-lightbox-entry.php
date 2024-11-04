@@ -43,6 +43,7 @@ class GravityView_Lightbox_Entry {
 		add_filter( 'gravityview/view/links/directory', [ $this, 'rewrite_directory_link' ] );
 		add_filter( 'gform_get_form_confirmation_filter', [ $this, 'process_gravity_forms_form_submission' ] );
 		add_filter( 'gform_get_form_filter', [ $this, 'process_gravity_forms_form_submission' ] );
+		add_filter( 'gk/gravityview/lightbox/entry/output/head-after', [ $this, 'run_during_head_output' ], 10, 2 );
 	}
 
 	/**
@@ -323,7 +324,14 @@ class GravityView_Lightbox_Entry {
 		}
 
 		add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
-		add_filter( 'gravityview/edit_entry/cancel_onclick', '__return_empty_string' );
+
+		add_filter( 'gravityview/edit_entry/cancel_onclick', function () use ( $view ) {
+			if ( 'close_lightbox' === $view->settings->get( 'edit_cancel_lightbox_action' ) ) {
+				return 'window.parent.postMessage( { closeFancybox: true, } );';
+			} else {
+				return '';
+			}
+		} );
 
 		// Prevent redirection inside the lightbox by sending event to the parent window and hiding the success message.
 		if ( ! in_array( $view->settings->get( 'edit_redirect' ), [ '1', '2' ] ) ) {
@@ -464,6 +472,22 @@ class GravityView_Lightbox_Entry {
 
 		do_action_ref_array( 'wp', [ $wp ] );
 
+		/**
+		 * Fires before rendering the lightbox entry view.
+		 *
+		 * @action `gk/gravityview/lightbox/entry/before-output`
+		 *
+		 * @since 2.31.0
+		 *
+		 * @param array $args {
+		 *     @type View         $view            The View object being rendered.
+		 *     @type GF_Entry     $entry           The Gravity Forms entry data.
+		 *     @type array        $form            The Gravity Forms form array.
+		 *     @type Entry_Render $entry_renderer  The renderer object responsible for rendering the entry.
+		 * }
+		 */
+		do_action_ref_array( 'gk/gravityview/lightbox/entry/before-output', [ &$view, &$entry, &$form, &$entry_renderer ] );
+
 		ob_start();
 
 		$title = do_shortcode(
@@ -483,9 +507,25 @@ class GravityView_Lightbox_Entry {
 		?>
 		<html lang="<?php echo get_bloginfo( 'language' ); ?>">
 			<head>
+				<?php
+					/**
+					 * Fires after <head> tag.
+					 *
+					 * @action `gk/gravityview/lightbox/entry/output/head-before`
+					 *
+					 * @since 2.31.0
+					 *
+					 * @param string   $type  The type of the entry view (single or edit).
+					 * @param View     $view  The View object being rendered.
+					 * @param GF_Entry $entry The Gravity Forms entry data.
+					 * @param array    $form  The Gravity Forms form array.
+					 */
+					do_action( 'gk/gravityview/lightbox/entry/output/head-before', $type, $view, $entry, $form );
+				?>
+
 				<title><?php echo $title; ?></title>
 
-				<?php do_action( 'wp_enqueue_scripts' ); wp_head(); ?>
+				<?php wp_head(); ?>
 
 				<style>
 					<?php echo $view->settings->get( 'custom_css', '' ); ?>
@@ -494,14 +534,77 @@ class GravityView_Lightbox_Entry {
 				<script type="text/javascript">
 					<?php echo $view->settings->get( 'custom_javascript', '' ); ?>
 				</script>
+
+				<?php
+					/**
+					 * Fires before </head> tag.
+					 *
+					 * @action `gk/gravityview/lightbox/entry/output/head-after`
+					 *
+					 * @since 2.31.0
+					 *
+					 * @param string   $type  The type of the entry view (single or edit).
+					 * @param View     $view  The View object being rendered.
+					 * @param GF_Entry $entry The Gravity Forms entry data.
+					 * @param array    $form  The Gravity Forms form array.
+					 */
+					do_action( 'gk/gravityview/lightbox/entry/output/head-after', $type, $view, $entry, $form );
+				?>
 			</head>
 
 			<body>
-				<?php echo $content; ?>
-			</body>
+				<?php
+					/**
+					 * Fires after <body> tag before the content is rendered.
+					 *
+					 * @action `gk/gravityview/lightbox/entry/output/content-before`
+					 *
+					 * @since 2.31.0
+					 *
+					 * @param string   $type  The type of the entry view (single or edit).
+					 * @param View     $view  The View object being rendered.
+					 * @param GF_Entry $entry The Gravity Forms entry data.
+					 * @param array    $form  The Gravity Forms form array.
+					 */
+					do_action( 'gk/gravityview/lightbox/entry/output/content-before', $type, $view, $entry, $form );
+				?>
 
-			<?php wp_print_scripts(); ?>
-			<?php wp_print_styles(); ?>
+				<?php echo $content; ?>
+
+				<?php
+					/**
+					 * Fires inside the <body> tag after the content is rendered and before the footer.
+					 *
+					 * @action `gk/gravityview/lightbox/entry/output/content-after`
+					 *
+					 * @since 2.31.0
+					 *
+					 * @param string   $type  The type of the entry view (single or edit).
+					 * @param View     $view  The View object being rendered.
+					 * @param GF_Entry $entry The Gravity Forms entry data.
+					 * @param array    $form  The Gravity Forms form array.
+					 */
+					do_action( 'gk/gravityview/lightbox/entry/output/content-after', $type, $view, $entry, $form );
+				?>
+
+				<?php wp_footer(); ?>
+
+				<?php
+					/**
+					 * Fires after the footer and before the closing </body> tag.
+					 *
+					 * @action `gk/gravityview/lightbox/entry/output/footer-after`
+					 *
+					 * @since 2.31.0
+					 *
+					 * @param string   $type  The type of the entry view (single or edit).
+					 * @param View     $view  The View object being rendered.
+					 * @param GF_Entry $entry The Gravity Forms entry data.
+					 * @param array    $form  The Gravity Forms form array.
+					 */
+					do_action( 'gk/gravityview/lightbox/entry/output/footer-after', $type, $view, $entry, $form );
+				?>
+			</body>
 		</html>
 		<?php
 
@@ -532,12 +635,24 @@ class GravityView_Lightbox_Entry {
 
 		$scripts[] = [
 			'script' => <<<JS
-				// Disable "open in new tab/window" input when "open in lightbox" is checked, and vice versa.
 				jQuery( document ).ready( function ( jQuery ) {
+					// Show/hide the View's "Cancel Link Action" setting under Edit Entry.
+					function toggleCancelLinkActionViewSetting() {
+						const isLightBoxEnabled = jQuery( 'input[type="checkbox"]' )
+							.filter( function () {
+								return /^fields\[directory_table-columns\]\[.*?\]\[lightbox\]$/.test( jQuery( this ).attr( 'name' ) || '' );
+							} )
+							.toArray()
+							.some( checkbox => checkbox.checked );
+
+						jQuery( 'tr:has(#gravityview_se_edit_cancel_lightbox_action)' ).toggle( isLightBoxEnabled );
+					}
+
+					// Disable "open in new tab/window" input when "open in lightbox" is checked, and vice versa.
 					function handleInputState( dialog ) {
 						const newWindow = dialog.find( '.gv-setting-container-new_window input' );
 						const lightbox = dialog.find( '.gv-setting-container-lightbox input' );
-				
+
 						function updateState( active, inactive ) {
 							if ( active.is( ':checked' ) ) {
 								inactive.prop( 'checked', false ).prop( 'disabled', true );
@@ -545,11 +660,11 @@ class GravityView_Lightbox_Entry {
 								inactive.prop( 'disabled', false );
 							}
 						}
-				
+
 						updateState( newWindow, lightbox );
 						updateState( lightbox, newWindow );
 					}
-					
+
 					function handleChange( changedInput, otherInput ) {
 						otherInput.prop( 'checked', false );
 
@@ -558,34 +673,64 @@ class GravityView_Lightbox_Entry {
 							otherInput.prop( 'disabled', changedInput.is( ':checked' ) );
 						}, 10 );
 					}
-					
+
 					jQuery( document ).on( 'gravityview/dialog-opened', function ( event, thisDialog ) {
 						const dialog = jQuery( thisDialog );
-				
+
 						handleInputState( dialog );
-				
+
 						const newWindow = dialog.find( '.gv-setting-container-new_window input' );
 						const lightbox = dialog.find( '.gv-setting-container-lightbox input' );
-				
+
 						newWindow.on( 'change.lightboxEntry', function () {
 							handleChange( jQuery( this ), lightbox );
 						} );
-				
+
 						lightbox.on( 'change.lightboxEntry', function () {
 							handleChange( jQuery( this ), newWindow );
 						} );
 					} );
-				
+
 					jQuery( document ).on( 'gravityview/dialog-closed', function ( event, thisDialog ) {
-						jQuery( thisDialog ).find( '.gv-setting-container-new_window input, .gv-setting-container-lightbox input' )
+						jQuery( thisDialog )
+							.find( '.gv-setting-container-new_window input, .gv-setting-container-lightbox input' )
 							.off( 'change.lightboxEntry' );
+
+						toggleCancelLinkActionViewSetting();
 					} );
+
+					toggleCancelLinkActionViewSetting();
 				} );
 			JS,
 			'deps'   => [ 'jquery' ],
 		];
 
 		return $scripts;
+	}
+
+	/**
+	 * Performs actions during <head> output.
+	 *
+	 * @since 2.31.0
+	 *
+	 * @param string $type The type of the entry view (single or edit).
+	 * @param View $view The View object being rendered.
+	 *
+	 * @return void
+	 */
+	public function run_during_head_output( $type, $view ) {
+		// Enqueue scripts for the Entry Notes field.
+		if ( 'single' !== $type ) {
+			return;
+		}
+
+		foreach ( $view->fields->all() as $field ) {
+			if ( 'notes' === $field->type ) {
+				do_action( 'gravityview/field/notes/scripts' );
+
+				break;
+			}
+		}
 	}
 }
 
