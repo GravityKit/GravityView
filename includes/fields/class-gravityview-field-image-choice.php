@@ -1,15 +1,14 @@
 <?php
+
 /**
- * @file class-gravityview-field-image-choice.php
- * @package GravityView
+ * @file       class-gravityview-field-image-choice.php
+ * @package    GravityView
  * @subpackage includes\fields
  */
-
 class GravityView_Field_Image_Choice extends GravityView_Field {
-
 	var $name = 'image_choice';
 
-	var $search_operators = array( 'is', 'in', 'not in', 'isnot', 'contains' );
+	var $search_operators = [ 'is', 'in', 'not in', 'isnot', 'contains' ];
 
 	var $is_searchable = true;
 
@@ -21,14 +20,15 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 
 	public function __construct() {
 		$this->label = esc_html__( 'Image Choice', 'gk-gravityview' );
+
 		parent::__construct();
 	}
 
 	/**
 	 * Adds `choice_display` setting to the field
 	 *
-	 * @since TBD
-	 * 
+	 * @since 2.31
+	 *
 	 * @param array  $field_options
 	 * @param string $template_id
 	 * @param string $field_id
@@ -38,27 +38,33 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 	 * @return array
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-
 		$field_options = parent::field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		$choices = array(
-			'label' => __( 'Label of the input', 'gk-gravityview' ),
-			'image' => __( 'Image of the input', 'gk-gravityview' ),
-		);
+		$choices = [
+			'label' => __( 'Input label', 'gk-gravityview' ),
+			'image' => __( 'Input image', 'gk-gravityview' ),
+		];
 
 		if ( $this->is_choice_value_enabled() ) {
-			$choices['value'] = __( 'Value of the input', 'gk-gravityview' );
+			$choices['value'] = __( 'Input value', 'gk-gravityview' );
 		}
 
-		$field_options['choice_display'] = array(
+		$field_options['choice_display'] = [
 			'type'    => 'radio',
 			'value'   => 'image',
 			'label'   => __( 'What should be displayed:', 'gk-gravityview' ),
-			// translators: %s is replaced by the components that the field has (label, value, and image or label, value)
-			'desc'    => sprintf( __( 'This input has a %s. What should be displayed?', 'gk-gravityview' ), $this->is_choice_value_enabled() ? _x( 'label, value, and image', 'These are a list of choices for what to to display for the current input.', 'gk-gravityview' ) : _x( 'label and value', 'These are a list of choices for what to to display for the current input.', 'gk-gravityview' ) ),
+			'desc' => strtr(
+				// Translators: [choice] is replaced by the components that the field has (label, value, and image or label, value).
+				__( 'This input displays [choice]. What would you like to show?', 'gk-gravityview' ),
+				[
+					'[choice]' => $this->is_choice_value_enabled()
+						? _x( 'the label, value, and image', 'Options available for displaying the input data', 'gk-gravityview' )
+						: _x( 'the label and value', 'Options available for displaying the input data', 'gk-gravityview' )
+				]
+			),
 			'choices' => $choices,
 			'group'   => 'display',
-		);
+		];
 
 		return $field_options;
 	}
@@ -66,13 +72,11 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 	/**
 	 * Outputs the image choice markup.
 	 *
-	 * @since TBD
+	 * @since 2.31
 	 *
-	 * @param mixed                $value The field value
-	 * @param GF_Field_Select      $field Gravity Forms Select field
-	 * @param array                $form The current form array
-	 * @param array                $entry GF Entry
-	 * @param \GV\Template_Context $gravityview The context
+	 * @param mixed                            $value The field value.
+	 * @param GF_Field_Checkbox|GF_Field_Radio $field The Gravity Forms field (can be either a radio or checkbox field).
+	 * @param array                            $form  The current form array.
 	 *
 	 * @return string The image markup
 	 */
@@ -80,19 +84,18 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 		$choices         = $field->choices;
 		$is_entry_detail = $field->is_entry_detail();
 		$is_form_editor  = $field->is_form_editor();
+		$values          = is_array( $value ) ? $value : [ $value ];
 		$output          = '';
-
-		$values = is_array( $value ) ? $value : array( $value );
 
 		foreach ( $values as $val ) {
 			$choice_number = 1;
 
-			foreach ( $choices as $choice_id => $choice ) {
+			foreach ( $choices as $choice ) {
 				if ( $choice['value'] != $val ) {
 					continue;
 				}
 
-				// Taken from GF_Field_Decorator_Choice_Radio_Markup::get_radio_choices()
+				// Taken from `GF_Field_Decorator_Choice_Radio_Markup::get_radio_choices()`.
 				if ( $choice_number % 10 == 0 ) {
 					$choice_number++;
 				}
@@ -106,11 +109,11 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 				$decorator = new ChoiceDecorator( $field );
 
 				/**
-				 * Override the image markup for the image choice field.
+				 * Overrides the image markup for the Image Choice field.
 				 *
 				 * @filter `gravityview/fields/image_choice/image_markup`
 				 *
-				 * @since TBD
+				 * @since  2.31
 				 *
 				 * @param string          $image_markup The image markup
 				 * @param array           $choice       The choice array
@@ -133,8 +136,6 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 
 		return $output;
 	}
-
-
 }
 
 new GravityView_Field_Image_Choice();
