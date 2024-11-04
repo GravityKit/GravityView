@@ -232,38 +232,15 @@ abstract class Widget {
 	 * Default widget areas.
 	 *
 	 * Usually overridden by the selected template.
-	 *
+     *
 	 * @return array The default areas where widgets can be rendered.
 	 */
 	public static function get_default_widget_areas() {
 
-		$default_areas = array(
-			array(
-				'1-1' => array(
-					array(
-						'areaid'   => 'top',
-						'title'    => __( 'Top', 'gk-gravityview' ),
-						'subtitle' => '',
-					),
-				),
-			),
-			array(
-				'1-2' => array(
-					array(
-						'areaid'   => 'left',
-						'title'    => __( 'Left', 'gk-gravityview' ),
-						'subtitle' => '',
-					),
-				),
-				'2-2' => array(
-					array(
-						'areaid'   => 'right',
-						'title'    => __( 'Right', 'gk-gravityview' ),
-						'subtitle' => '',
-					),
-				),
-			),
-		);
+		$default_areas = [
+			Grid::get_row_by_type( '100' ),
+			Grid::get_row_by_type( '50/50' ),
+		];
 
 		/**
 		 * Array of zones available for widgets to be dropped into.
