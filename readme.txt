@@ -37,6 +37,7 @@ This release enhances entry-in-a-lightbox functionality, adds support for the ne
 * JavaScript enqueued in the site's footer was not executed when editing an entry in the lightbox.
 * It was not possible to add new entry notes when viewing a single entry in the lightbox.
 * Validation error displayed when adding merge tags to the Entry Slug setting input in the View editor.
+* The search box in the Change Entry Creator field did not return results when editing an entry on the Forms > Entries screen.
 * Fatal error when activating LifterLMS with GravityView active.
 * Searching across all fields not working as expected when the search value contains special characters or accents (e.g., ä, ß, İ).
 

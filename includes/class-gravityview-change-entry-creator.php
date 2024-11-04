@@ -433,6 +433,12 @@ class GravityView_Change_Entry_Creator {
 					'selected' => true,
 					'disabled' => true,
 				],
+				'input'  => [
+					'type'  => true,
+					'id'    => true,
+					'name'  => true,
+					'value' => true,
+				],
 			]
 		);
 	}

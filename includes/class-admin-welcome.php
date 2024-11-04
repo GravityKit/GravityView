@@ -317,6 +317,7 @@ class GravityView_Welcome {
 					<li>JavaScript enqueued in the site's footer was not executed when editing an entry in the lightbox.</li>
 					<li>It was not possible to add new entry notes when viewing a single entry in the lightbox.</li>
 					<li>Validation error displayed when adding merge tags to the Entry Slug setting input in the View editor.</li>
+					<li>The search box in the Change Entry Creator field did not return results when editing an entry on the Forms > Entries screen.</li>
 					<li>Fatal error when activating LifterLMS with GravityView active.</li>
 					<li>Searching across all fields not working as expected when the search value contains special characters or accents (e.g., ä, ß, İ).</li>
 				</ul>
