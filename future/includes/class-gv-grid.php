@@ -10,13 +10,13 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /**
  * Manages Grid displays.
  *
- * @since $ver$
+ * @since 2.31.0
  */
 final class Grid {
 	/**
 	 * A prefix to use for the area key.
 	 *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
 	 * @var string
 	 */
@@ -25,7 +25,7 @@ final class Grid {
 	/**
 	 * Internal counter to avoid UID clashes.
 	 *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
 	 * @var int
 	 */
@@ -34,7 +34,7 @@ final class Grid {
 	/**
 	 * Returns the row configuration based on a type.
 	 *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
 	 * @param string      $type         The type.
 	 * @param string|null $id           The row ID. WIll be generated if not provided.
@@ -64,7 +64,7 @@ final class Grid {
 	/**
 	 * Calculates and returns the row configurations based on a collection and the zone.
 	 *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
 	 * @param Widget_Collection|Field_Collection $collection The collection.
 	 * @param string                             $zone       The zone.
@@ -109,7 +109,7 @@ final class Grid {
 	/**
 	 * Returns all registered row types.
 	 *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
 	 * @return array The row types with their configuration.
 	 */

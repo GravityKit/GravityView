@@ -151,7 +151,7 @@ class GravityView_Ajax {
 	/**
 	 * Returns the HTML for a new grid row.
      *
-	 * @since $ver$
+	 * @since 2.31.0
 	 */
 	public function create_row() {
 		$this->check_ajax_nonce();

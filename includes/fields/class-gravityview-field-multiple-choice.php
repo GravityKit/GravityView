@@ -28,7 +28,7 @@ class GravityView_Field_Multiple_Choice extends GravityView_Field {
 	/**
 	 * Adds `choice_display` setting to the field
 	 *
-	 * @since TBD
+	 * @since 2.31.0
 	 * 
 	 * @param array  $field_options
 	 * @param string $template_id
