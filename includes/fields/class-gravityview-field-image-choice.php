@@ -77,35 +77,56 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 	 * @return string The image markup
 	 */
 	public function output_image_choice( $value, $field, $form ) {
-		$choices = $field->choices;
-		$output  = '';
+		$choices         = $field->choices;
+		$is_entry_detail = $field->is_entry_detail();
+		$is_form_editor  = $field->is_form_editor();
+		$output          = '';
 
 		$values = is_array( $value ) ? $value : array( $value );
 
 		foreach ( $values as $val ) {
-			foreach ( $choices as $choice ) {
+			$choice_number = 1;
+
+			foreach ( $choices as $choice_id => $choice ) {
 				if ( $choice['value'] != $val ) {
 					continue;
 				}
+
+				// Taken from GF_Field_Decorator_Choice_Radio_Markup::get_radio_choices()
+				if ( $choice_number % 10 == 0 ) {
+					$choice_number++;
+				}
+
+				if ( $is_entry_detail || $is_form_editor || $form['id'] == 0 ) {
+					$id = $field->id . '_' . $choice_number;
+				} else {
+					$id = $form['id'] . '_' . $field->id . '_' . $choice_number;
+				}
+
 				$decorator = new ChoiceDecorator( $field );
+
 				/**
 				 * Override the image markup for the image choice field.
 				 *
+				 * @filter `gravityview/fields/image_choice/image_markup`
+				 *
 				 * @since TBD
 				 *
-				 * @param string $image_markup The image markup
-				 * @param array $choice The choice array
-				 * @param array $form The current form array
-				 * @param GF_Field_Select $field Gravity Forms Select field
+				 * @param string          $image_markup The image markup
+				 * @param array           $choice       The choice array
+				 * @param array           $form         The current form array
+				 * @param GF_Field_Select $field        Gravity Forms Select field
 				 */
 				$image_markup = apply_filters(
 					'gravityview/fields/image_choice/image_markup',
-					$decorator->get_image_markup( $choice, $form ),
+					$decorator->get_image_markup( $choice, $id, $choice_number, $form ),
 					$choice,
 					$form,
 					$field,
 				);
-				$output      .= $image_markup;
+
+				$output .= $image_markup;
+
 				break;
 			}
 		}
