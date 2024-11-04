@@ -23,10 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.31 on November 1, 2024 =
 
-This release enhances entry-in-a-lightbox functionality, resolves compatibility issues with LiteSpeed and Divi, and includes other fixes and improvements.
+This release enhances entry-in-a-lightbox functionality, adds support for the new Image Choice field (Gravity Forms 2.9+), and resolves compatibility issues with LiteSpeed, Divi, and LifterLMS, along with various other fixes and improvements.
 
 #### 🚀 Added
 * View setting to control what happens when a user clicks the Cancel link when editing an entry in the lightbox.
+* Support for the upcoming Image Choice field in Gravity Forms 2.9+.
 
 #### 🐛 Fixed
 * GravityView tab not displaying in certain cases under GravityKit > Settings menu.
@@ -49,6 +50,8 @@ This release enhances entry-in-a-lightbox functionality, resolves compatibility 
 * Added `gk/gravityview/lightbox/entry/output/content-before` action that fires after the <body> tag is opened and before the content is rendered.
 * Added `gk/gravityview/lightbox/entry/output/content-after` action that fires after the content is rendered and before the footer.
 * Added `gk/gravityview/lightbox/entry/output/footer-after` action that fires after the footer and before the closing </body> tag.
+* Added `gravityview/fields/image_choice/image_markup` filter to modify the Image Choice field (Gravity Forms 2.9+) markup.
+* Added `gravityview/fields/image_choice/output_label` filter to control whether to display the value or label of an Image Choice field.
 
 = 2.30.1 on October 15, 2024 =
 
