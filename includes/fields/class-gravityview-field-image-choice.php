@@ -54,7 +54,8 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 			'type'    => 'radio',
 			'value'   => 'image',
 			'label'   => __( 'What should be displayed:', 'gk-gravityview' ),
-			'desc'    => sprintf( __( 'This input has a label%s and an image. What should be displayed?', 'gk-gravityview' ), $this->is_choice_value_enabled() ? __( ', value', 'gk-gravityview' ) : '' ),
+			// translators: %s is replaced by the components that the field has (label, value, and image or label, value)
+			'desc'    => sprintf( __( 'This input has a %s. What should be displayed?', 'gk-gravityview' ), $this->is_choice_value_enabled() ? _x( 'label, value, and image', 'These are a list of choices for what to to display for the current input.', 'gk-gravityview' ) : _x( 'label and value', 'These are a list of choices for what to to display for the current input.', 'gk-gravityview' ) ),
 			'choices' => $choices,
 			'group'   => 'display',
 		);
