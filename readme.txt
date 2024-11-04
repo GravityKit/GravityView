@@ -23,9 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.31 on November 4, 2024 =
 
-This release enhances entry-in-a-lightbox functionality, adds support for the new Image Choice field (Gravity Forms 2.9+), and resolves compatibility issues with LiteSpeed, Divi, and LifterLMS, along with various other fixes and improvements.
+This release introduces [flexible widget positioning](https://docs.gravitykit.com/article/1027-dynamic-widget-placement?utm_source=gravityview&utm_medium=changelog&utm_campaign=release) in Views, enhances entry-in-a-lightbox functionality, and adds support for the Gravity Forms 2.9+ Image Choice field. It also addresses compatibility issues with LiteSpeed, Divi, and LifterLMS, along with various other fixes and improvements.
 
 #### 🚀 Added
+* Ability to position widgets in the View editor using predefined layouts, offering a range of single or multi-column configurations with varying widths.
 * View setting to control what happens when a user clicks the Cancel link when editing an entry in the lightbox.
 * Support for the upcoming Image Choice field in Gravity Forms 2.9+.
 
