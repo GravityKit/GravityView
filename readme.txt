@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.31 on November 1, 2024 =
+= 2.31 on November 4, 2024 =
 
 This release enhances entry-in-a-lightbox functionality, adds support for the new Image Choice field (Gravity Forms 2.9+), and resolves compatibility issues with LiteSpeed, Divi, and LifterLMS, along with various other fixes and improvements.
 
