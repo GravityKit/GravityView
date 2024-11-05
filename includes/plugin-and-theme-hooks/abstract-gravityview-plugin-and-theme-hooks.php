@@ -142,7 +142,7 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	}
 
 	/**
-	 * Add hooks when the plugin / theme is active.
+	 * Add hooks when the plugin / theme is inactive.
 	 *
 	 * @since 2.26
 	 */
