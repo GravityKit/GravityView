@@ -153,6 +153,25 @@ class GravityView_Field_Created_By extends GravityView_Field {
 
 		return $field_options;
 	}
+
+	/**
+	 * Returns the HTML for the field input.
+	 *
+	 * @since 2.30.0
+	 *
+	 * @param array    $form  The form object.
+	 * @param mixed    $value The field value.
+	 * @param array    $entry The entry object.
+	 * @param GF_Field $field The field object.
+	 *
+	 * @return string The input HTML.
+	 */
+	public function get_field_input( array $form, $value, array $entry, GF_Field $field ): string {
+		return sprintf(
+			'<div class="ginput_container">%s</div>',
+			GravityView_Change_Entry_Creator::get_select_field( $entry )
+		);
+	}
 }
 
 new GravityView_Field_Created_By();

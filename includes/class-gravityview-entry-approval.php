@@ -56,6 +56,8 @@ class GravityView_Entry_Approval {
 		add_action( 'gravityview/approve_entries/disapproved', array( $this, '_trigger_notifications' ) );
 		add_action( 'gravityview/approve_entries/unapproved', array( $this, '_trigger_notifications' ) );
 		add_action( 'gravityview/approve_entries/updated', array( $this, '_trigger_notifications' ) );
+
+		add_action( 'check_admin_referer', [ $this, 'resend_gf_notifications' ], 10, 2 );
 	}
 
 	/**
@@ -728,6 +730,51 @@ class GravityView_Entry_Approval {
 <a href="#" data-approved="{$choices['disapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-disapproved popover" title="{$choices['disapproved']['action']}"><span class="screen-reader-text">{$choices['disapproved']['action']}</span></a>
 <a href="#" data-approved="{$choices['unapproved']['value']}" aria-role="button"  aria-live="polite" class="gv-approval-toggle gv-approval-unapproved popover" title="{$choices['unapproved']['action']}"><span class="screen-reader-text">{$choices['unapproved']['action']}</span></a>
 TEMPLATE;
+	}
+
+	/**
+	 * Makes "resend notifications" work with GravityView approval status filtering.
+	 * Workaround for the lack of a filter to override the search criteria used by {@see GFForms::resend_notifications()}.
+	 *
+	 * @used-by check_admin_referer action
+	 *
+	 * @since 2.30.0
+	 *
+	 * @param string $action The action being performed.
+	 * @param int    $result The result of the action check.
+	 *
+	 * @return void
+	 */
+	public function resend_gf_notifications( $action, $result ) {
+		if ( 'gf_resend_notifications' !== $action || 1 !== $result ) {
+			return;
+		}
+
+		$form_id = (int) rgpost( 'formId' );
+		$leads   = rgpost( 'leadIds' );
+		$filter  = rgpost( 'filter' );
+
+		$filter_to_approval_status_map = [
+			'gv_approved'    => GravityView_Entry_Approval_Status::APPROVED,
+			'gv_unapproved'  => GravityView_Entry_Approval_Status::UNAPPROVED,
+			'gv_disapproved' => GravityView_Entry_Approval_Status::DISAPPROVED,
+		];
+
+		if ( ! isset( $filter_to_approval_status_map[ $filter ] ) || ! $form_id || 0 !== (int) $leads ) {
+			return;
+		}
+
+		$search_criteria = [
+			'status'        => 'active',
+			'field_filters' => [
+				[
+					'key'   => 'is_approved',
+					'value' => $filter_to_approval_status_map[ $filter ],
+				],
+			],
+		];
+
+		$_POST['leadIds'] = GFFormsModel::search_lead_ids( $form_id, $search_criteria );
 	}
 }
 

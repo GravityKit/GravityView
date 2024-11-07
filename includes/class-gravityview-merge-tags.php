@@ -166,7 +166,7 @@ class GravityView_Merge_Tags {
 	/**
 	 * Converts date and time values to the human format modifier.
 	 *
-	 * @since TBD
+	 * @since 2.29.0
 	 *
 	 * @param string $raw_value The raw value to modify.
 	 * @param array  $matches   Array of regex matches.
@@ -496,6 +496,53 @@ class GravityView_Merge_Tags {
 		$text = self::replace_current_post( $text, $form, $entry, $url_encode, $esc_html );
 
 		$text = self::replace_entry_link( $text, $form, $entry, $url_encode, $esc_html );
+
+		$text = self::replace_merge_tags_dates( $text );
+
+		return $text;
+	}
+
+	/**
+	 * Replaces relative date merge tags with formatted dates per the modifier.
+	 *
+	 * @since 2.30.0
+	 *
+	 * @param string $text The text containing merge tags.
+	 *
+	 * @return string The text with date merge tags replaced.
+	 */
+	public static function replace_merge_tags_dates( $text ) {
+		if ( false === strpos( $text, '{' ) ) {
+			return $text;
+		}
+
+		preg_match_all( '/{(now|yesterday|tomorrow):?(.*?)(?:\s)?}/ism', $text, $matches, PREG_SET_ORDER );
+
+		if ( empty( $matches ) ) {
+			return $text;
+		}
+
+		$utc_timestamp   = time();
+		$local_timestamp = GFCommon::get_local_timestamp( $utc_timestamp );
+
+		foreach ( $matches as $match ) {
+			$modifier = $match[2];
+
+			if ( strpos( $modifier, 'timestamp' ) !== false ) {
+				$local_timestamp = $utc_timestamp;
+			}
+
+			$replacements = [
+				'now'       => date_i18n( 'Y-m-d H:i:s', $local_timestamp, true ),
+				'yesterday' => date_i18n( 'Y-m-d H:i:s', $local_timestamp - DAY_IN_SECONDS, true ),
+				'tomorrow'  => date_i18n( 'Y-m-d H:i:s', $local_timestamp + DAY_IN_SECONDS, true ),
+			];
+
+			$full_tag         = $match[0];
+			$replaceable_date = $replacements[ $match[1] ];
+			$formatted_date   = self::format_date( $replaceable_date, $modifier );
+			$text             = str_replace( $full_tag, $formatted_date, $text );
+		}
 
 		return $text;
 	}

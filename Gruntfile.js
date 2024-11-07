@@ -74,6 +74,7 @@ module.exports = function(grunt) {
 			all: [
 				"assets/js/admin-views.js",
 				"assets/js/admin-view-dropdown.js",
+				"assets/js/admin-grid.js",
 				"assets/js/admin-post-edit.js",
 				"assets/js/admin-widgets.js",
 				"assets/js/admin-entries-list.js",

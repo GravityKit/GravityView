@@ -39,7 +39,29 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 4 );
 
+		add_filter( 'gravityview/template/table/entry/markup', array( $this, 'filter_table_entry_markup' ), 10, 2 );
+
 		parent::__construct();
+	}
+
+	/**
+	 * Makes the Custom Content field full width in the table template when enabled in the field settings.
+	 *
+	 * @since 2.29.0
+	 *
+	 * @param string    $markup
+	 * @param \GV\Field $field
+	 *
+	 * @return string
+	 */
+	public function filter_table_entry_markup( $markup, $field ) {
+		$field_settings = $field->as_configuration();
+
+		if ( isset( $field_settings['full_width'] ) && 1 === (int) $field_settings['full_width'] ) {
+			$markup = '<tr id="{{ field_id }}" class="{{ class }}"><td colspan="2">{{ value }}</td></tr>';
+		}
+
+		return $markup;
 	}
 
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
@@ -88,6 +110,16 @@ class GravityView_Field_Custom extends GravityView_Field {
 
 		if ( 'edit' === $context ) {
 			unset( $field_options['custom_label'], $field_options['show_label'], $field_options['allow_edit_cap'], $new_fields['wpautop'], $new_fields['oembed'] );
+		}
+		
+		if ( 'single' === $context && strpos( $template_id, 'table' ) !== false ) {
+			$new_fields['full_width'] = array(
+				'type'     => 'checkbox',
+				'label'    => __( 'Full width', 'gk-gravityview' ),
+				'desc'     => __( 'Show the field at full width without the label.', 'gk-gravityview' ),
+				'value'    => '',
+				'group'    => 'field',
+			);
 		}
 
 		return $new_fields + $field_options;

@@ -22,5 +22,7 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	GravityView_Render_Settings::render_setting_row( 'mark_entry_as_read', $current_settings );
 
+	GravityView_Render_Settings::render_setting_row( 'single_entry_slug', $current_settings );
+
 ?>
 </table>

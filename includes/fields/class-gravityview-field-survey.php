@@ -59,6 +59,36 @@ class GravityView_Field_Survey extends GravityView_Field {
 		return is_array( $value ) ? '' : $value;
 	}
 
+	/**
+	 * Gets field choices directly from the database (To avoid issues where choices are reversed by the survey plugin).
+	 *
+	 * @since 2.30.0
+	 *
+	 * @param int $form_id The ID of the form.
+	 * @param int $field_id The ID of the field.
+	 * 
+	 * @return array The choices for the field.
+	 */
+	public static function get_field_choices($form_id, $field_id) {
+		global $wpdb;
+		$table_name = GFFormsModel::get_meta_table_name();
+		$form_row   = $wpdb->get_row( $wpdb->prepare( "SELECT display_meta FROM {$table_name} WHERE form_id=%d", $form_id ), ARRAY_A );
+		$form_meta 	= GFFormsModel::unserialize( rgar( $form_row, 'display_meta' ) );
+
+		if ( ! $form_meta ) {
+			return [];
+		}
+
+		foreach ( $form_meta['fields'] as $form_field ) {
+			if ( $form_field['id'] == $field_id ) {
+				return $form_field['choices'];
+			}
+		}
+		
+		return [];
+	}
+
+
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
 
 		unset( $field_options['search_filter'] );

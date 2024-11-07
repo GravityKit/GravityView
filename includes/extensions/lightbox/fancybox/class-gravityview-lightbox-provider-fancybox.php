@@ -119,6 +119,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		$atts['data-caption']          = null;
 		$atts['data-options']          = null;
 		$atts['data-filter']           = null;
+		$atts['data-preload']          = null;
 
 		return $atts;
 	}

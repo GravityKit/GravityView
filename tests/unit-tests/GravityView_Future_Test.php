@@ -2767,10 +2767,14 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field->update_configuration( array( 'show_map_link' => true ) );
 
-		$this->assertMatchesRegularExpression( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br /><a class=\"map-it-link\" href=\"https://maps.google.com/maps\?q=.*\">Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+		$match_regex_method = method_exists( $this, 'assertMatchesRegularExpression' )
+			? 'assertMatchesRegularExpression'
+			: 'assertRegExp';
+
+		$this->{$match_regex_method}( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country<br /><a class=\"map-it-link\" href=\"https://maps.google.com/maps\?q=.*\">Map It</a>$#", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'show_map_link' => false ) );
-		$this->assertMatchesRegularExpression( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
+		$this->{$match_regex_method}( "#^Address 1&lt;careful&gt;<br />Address 2<br />City, State ZIP<br />Country$#", $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'show_map_link' => true ) );
 
@@ -5949,7 +5953,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$settings->update( array() );
 
 		$this->assertSame( \GravityView_Settings::get_instance(), $settings );
-		$this->assertEquals( array_keys( $settings->defaults() ), array( 'rest_api', 'public_entry_moderation', 'caching', 'caching_entries' ) );
+		$this->assertEquals( array_keys( $settings->defaults() ), array( 'rest_api', 'use_dynamic_widgets', 'public_entry_moderation', 'caching', 'caching_entries' ) );
 
 		$this->assertNull( $settings->get( 'not' ) );
 		$this->assertEquals( $settings->get( 'not', 'default' ), 'default' );

@@ -507,7 +507,7 @@ function gv_maybe_json_decode( $value, $assoc = false, $depth = 512, $options = 
  *
  * @uses map_deep()
  * @since 1.16.3
- * @since TODO Updated to filter `null` in callbacks that don't allow receiving `null` values.
+ * @since 2.29.0 Updated to filter `null` in callbacks that don't allow receiving `null` values.
  *
  * @param mixed    $value    The array, object, or scalar.
  * @param callable $callback The function to map onto $value.

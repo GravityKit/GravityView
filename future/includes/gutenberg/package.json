@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@wordpress/api-fetch": "^6.22.0",
-    "@wordpress/scripts": "^27.2.0",
+    "@wordpress/scripts": "^30.0.2",
     "@wordpress/url": "^3.26.0",
     "dangerously-set-html-content": "^1.0.13",
     "jotai": "^1.13.1",

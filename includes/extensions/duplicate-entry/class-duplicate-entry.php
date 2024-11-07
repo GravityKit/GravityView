@@ -373,9 +373,7 @@ final class GravityView_Duplicate_Entry {
 		}
 
 		// Make sure it's a GravityView request
-		$valid_nonce_key = wp_verify_nonce( \GV\Utils::_GET( 'duplicate' ), self::get_nonce_key( $_GET['entry_id'] ) );
-
-		if ( ! $valid_nonce_key ) {
+		if ( ! $this->verify_nonce() ) {
 			gravityview()->log->debug( 'Duplicate entry not processed: nonce validation failed.' );
 			return;
 		}
@@ -439,7 +437,7 @@ final class GravityView_Duplicate_Entry {
 		$redirect_to_base = esc_url_raw( remove_query_arg( array( 'action', 'gvid', 'entry_id' ) ) );
 		$redirect_to      = add_query_arg( $messages, $redirect_to_base );
 
-		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) ) {
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) || ! apply_filters( 'wp_redirect', $redirect_to, 302 ) ) {
 			return $redirect_to;
 		}
 
@@ -881,9 +879,11 @@ final class GravityView_Duplicate_Entry {
 			);
 		}
 
-		if ( ! wp_verify_nonce( \GV\Utils::_GET( 'duplicate' ), self::get_nonce_key( $entry_id = \GV\Utils::_GET( 'entry_id' ) ) ) ) {
+		if ( ! $this->verify_nonce() ) {
 			return;
 		}
+
+		$entry_id = (int) ( $_GET['entry_id'] ?? 0 );
 
 		if ( ! GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gform_full_access', 'gravityview_full_access' ), $entry_id ) ) {
 			return;

@@ -383,20 +383,20 @@ final class GravityView_Delete_Entry {
 
 			gravityview()->log->debug( 'Delete entry failed: there was no entry with the entry slug {entry_slug}', array( 'entry_slug' => $entry_slug ) );
 
-			$this->_redirect_and_exit( $delete_redirect_base, __( 'The entry does not exist.', 'gk-gravityview' ), 'error' );
+			return $this->_redirect_and_exit( $delete_redirect_base, __( 'The entry does not exist.', 'gk-gravityview' ), 'error' );
 		}
 
 		$has_permission = $this->user_can_delete_entry( $entry, \GV\Utils::_GET( 'gvid', \GV\Utils::_GET( 'view_id' ) ) );
 
 		if ( is_wp_error( $has_permission ) ) {
-			$this->_redirect_and_exit( $delete_redirect_base, $has_permission->get_error_message(), 'error' );
+			return $this->_redirect_and_exit( $delete_redirect_base, $has_permission->get_error_message(), 'error' );
 		}
 
 		// Delete the entry
 		$delete_response = $this->delete_or_trash_entry( $entry );
 
 		if ( is_wp_error( $delete_response ) ) {
-			$this->_redirect_and_exit( $delete_redirect_base, $delete_response->get_error_message(), 'error' );
+			return $this->_redirect_and_exit( $delete_redirect_base, $delete_response->get_error_message(), 'error' );
 		}
 
 		if ( self::REDIRECT_TO_URL_VALUE === (int) $view->settings->get( 'delete_redirect' ) ) {
@@ -405,11 +405,11 @@ final class GravityView_Delete_Entry {
 			$redirect_url_setting = $view->settings->get( 'delete_redirect_url' );
 			$redirect_url         = GFCommon::replace_variables( $redirect_url_setting, $form, $entry, false, false, false, 'text' );
 
-			$this->_redirect_and_exit( $redirect_url, '', '', false );
+			return $this->_redirect_and_exit( $redirect_url, '', '', false );
 		}
 
 		// Redirect to multiple entries
-		$this->_redirect_and_exit( $delete_redirect_base, '', $delete_response, true );
+		return $this->_redirect_and_exit( $delete_redirect_base, '', $delete_response, true );
 	}
 
 	/**
@@ -423,6 +423,9 @@ final class GravityView_Delete_Entry {
 	 * @param bool   $safe_redirect Whether to use wp_safe_redirect() or not.
 	 */
 	private function _redirect_and_exit( $url, $message = '', $status = '', $safe_redirect = true ) {
+		if ( ! apply_filters( 'wp_redirect', $url, 302 ) ) {
+			return;
+		}
 
 		$delete_redirect_args = array(
 			'status'  => $status,
