@@ -191,7 +191,6 @@ class View_Settings extends Settings {
 					'value'       => '',
 					'placeholder' => 'https://www.example.com',
 					'requires'    => 'no_entries_options=2',
-					'show_in_shortcode' => true,
 				),
 				'no_search_results_text'      => array(
 					'label'             => __( '"No Search Results" Text', 'gk-gravityview' ),
