@@ -477,6 +477,7 @@ class GravityView_Duplicate_Entry_Test extends GV_UnitTestCase {
 
 		$this->assertNotEquals( $duplicate_entry['id'], $source_entry['id'] );
 		$this->assertNotEquals( $duplicate_entry['source_url'], $source_entry['source_url'] );
+		$this->assertEquals( $duplicate_entry['source_id'], null );
 
 		$this->assertStringContainsString( 'tests', $duplicate_entry['source_url'] );
 
