@@ -296,6 +296,16 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.31.1 on November 8, 2024</h3>
+
+				<p>This hotfix release resolves display issues with certain View layouts.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Rendering issue affecting certain View layouts, such as Maps, introduced in the previous release.</li>
+				</ul>
+
 				<h3>2.31 on November 4, 2024</h3>
 
 				<p>This release introduces <a href="https://docs.gravitykit.com/article/1027-dynamic-widget-placement?utm_source=gravityview&utm_medium=changelog&utm_campaign=release">flexible widget positioning</a> in Views, enhances entry-in-a-lightbox functionality, and adds support for the Gravity Forms 2.9+ Image Choice field. It also addresses compatibility issues with LiteSpeed, Divi, and LifterLMS, along with various other fixes and improvements.</p>

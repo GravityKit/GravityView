@@ -21,9 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.31.1 on November 8, 2024 =
 
-* Fixed: Custom templates using the GravityView grid styles would render incorrectly.
+This hotfix release resolves display issues with certain View layouts.
+
+#### 🐛 Fixed
+* Rendering issue affecting certain View layouts, such as Maps, introduced in the previous release.
 
 = 2.31 on November 4, 2024 =
 
