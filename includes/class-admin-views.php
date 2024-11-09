@@ -1090,7 +1090,7 @@ HTML;
 			/**
 			 * Triggers before a row is rendered in the View editor.
 			 *
-			 * @since  $ver$
+			 * @since  2.31.0
 			 *
 			 * @action `gk/gravityview/admin-views/row/before`
 			 *
@@ -1213,7 +1213,7 @@ HTML;
 				/**
 				 * Triggers after a row is rendered in the View editor.
 				 *
-				 * @since  $ver$
+				 * @since  2.31.0
 				 *
 				 * @action `gk/gravityview/admin-views/row/before`
 				 *
@@ -1233,7 +1233,7 @@ HTML;
 	/**
 	 * Renders the row actions.
      *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
      * @param bool $is_dynamic Whether the rows are actionable.
 	 */
@@ -1272,7 +1272,7 @@ HTML;
 		/**
 		 * Modifies the actions rendered in the View editor.
 		 *
-		 * @since  $ver$
+		 * @since  2.31.0
 		 *
 		 * @filter `gk/gravityview/admin-views/rows-actions`
 		 *
@@ -1479,7 +1479,7 @@ HTML;
 			 * Modifies the template area's before rendering.
 			 *
 			 * @filter `gk/gravityview/admin-views/view/template/active-areas`
-			 * @since $ver$
+			 * @since 2.31.0
 
 			 * @param array $template_areas The template areas.
 			 * @param string $template_id Template ID.
@@ -1519,7 +1519,7 @@ HTML;
 	/**
 	 * Returns an "add row" button for a template zone.
      *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
      * @param string $template_id The template ID.
      * @param string $type The object type (widget or field).)
@@ -1595,7 +1595,7 @@ HTML;
 	/**
      * Returns whether the widgets should be dynamic; based on the plugin setting.
      *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
 	 * @param bool   $is_dynamic Whether the zone is dynamic.
      * @param string $_ The template ID (unused))
@@ -1890,7 +1890,7 @@ HTML;
 	/**
 	 * Returns whether the zone is dynamic.
      *
-	 * @since $ver$
+	 * @since 2.31.0
 	 *
      * @param string $template_id The template ID.
      * @param string $type The type.
@@ -1902,7 +1902,7 @@ HTML;
 		 * Modifies whether the zone is sortable.
 		 *
 		 * @filter `gk/gravityview/view/template/active-areas`
-		 * @since $ver$
+		 * @since 2.31.0
 
 		 * @param bool $is_dynamic Whether area is dynamic, meaning sortable / deletable / acionable.
 		 * @param string $template_id Template ID.

@@ -2,7 +2,7 @@
 /**
  * The default Image Choice field output template.
  *
- * @since 2.31
+ * @since 2.31.0
  *
  * @global Template_Context $gravityview
  */
@@ -29,7 +29,7 @@ if ( 'image' === Utils::get( $field_settings, 'choice_display' ) ) {
 	/**
 	 * Overrides whether to show the value or the label of an Image Choice field.
 	 *
-	 * @since 2.31
+	 * @since 2.31.0
 	 *
 	 * @param bool                             $show_label  True to display the label of the choice; false to display the value. Default is false.
 	 * @param array                            $entry       The Gravity Forms entry.
