@@ -1222,7 +1222,9 @@ class View implements \ArrayAccess {
 				foreach ( $this->joins as $join ) {
 					$query = $join->as_query_join( $query );
 
-					if ( $this->settings->get( 'multiple_forms_disable_null_joins' ) ) {
+					$is_strict_mode = $this->settings->get( 'multiple_forms_disable_null_joins' );
+
+					if ( $is_strict_mode ) {
 
 						// Disable NULL outputs
 						$condition = new \GF_Query_Condition(
@@ -1251,7 +1253,10 @@ class View implements \ArrayAccess {
 					);
 
 					$q = $query->_introspect();
-					$query->where( \GF_Query_Condition::_and( $q['where'], $status_conditions ) );
+
+					$relation = $is_strict_mode ? '_and' : '_or';
+
+					$query->where( \GF_Query_Condition::$relation( $q['where'], $status_conditions ) );
 
 					/**
 					 * Applies legacy modifications to Query for is_approved settings.
