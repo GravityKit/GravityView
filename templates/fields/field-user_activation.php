@@ -11,6 +11,11 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
+if ( ! class_exists( 'gf_user_registration' ) ) {
+	echo __( 'Gravity Forms User Registration Add-On does not exist', 'gk-gravityview' );
+	return;
+}
+
 
 require_once gf_user_registration()->get_base_path() . '/includes/signups.php';
 

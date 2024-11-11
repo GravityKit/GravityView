@@ -60,7 +60,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 				'nonce'           => wp_create_nonce( 'gf_user_activate' ),
 				'success_message' => esc_html__( 'User Activated Successfully!', 'gk-gravityview' ),
 				'confirm_message' => esc_html__( 'Are you sure you want to activate this user?', 'gk-gravityview' ),
-				'spinner_url'     => GFCommon::get_base_url() . '/images/spinner.gif',
+				'spinner_url'     => GFCommon::get_base_url() . '/images/spinner.svg',
 			)
 		);
 
@@ -146,7 +146,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 		}
 
 		foreach ( $feeds as $feed ) {
-			if ( 1 !== (int) $feed['is_active'] || 'gravityformsuserregistration' !== $feed['addon_slug'] ) {
+			if ( isset( $feed['is_active'] ) && 1 !== (int) $feed['is_active'] || 'gravityformsuserregistration' !== $feed['addon_slug'] ) {
 				continue;
 			}
 
