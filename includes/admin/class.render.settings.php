@@ -120,6 +120,25 @@ class GravityView_Render_Settings {
 			}
 		}
 
+		if ( 'directory' === $context && isset( $field_options['show_as_link'] ) ) {
+			$field = new class extends GravityView_Field {
+				public function __construct() {
+				}
+			};
+
+			$field->add_field_support( 'new_window', $field_options );
+			$field->add_field_support( 'lightbox', $field_options );
+
+			$field_options['lightbox'] = array_merge(
+				$field_options['lightbox'] ?? [],
+				[ 'requires' => 'show_as_link', 'priority' => 101 ]
+			);
+			$field_options['new_window'] = array_merge(
+				$field_options['new_window'] ?? [],
+				[ 'requires' => 'show_as_link', 'priority' => 102 ]
+			);
+		}
+
 		// Remove suffix ":" from the labels to standardize style. Using trim() instead of rtrim() for i18n.
 		foreach ( $field_options as $key => $field_option ) {
 			$field_options[ $key ]['label'] = trim( $field_option['label'], ':' );
@@ -152,19 +171,6 @@ class GravityView_Render_Settings {
 		 * @param int    $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
-
-		if ( 'directory' === $context && isset( $field_options['show_as_link'] ) ) {
-			$field = new class extends GravityView_Field {
-				public function __construct() {
-				}
-			};
-
-			$field->add_field_support( 'new_window', $field_options );
-			$field->add_field_support( 'lightbox', $field_options );
-
-			$field_options['lightbox']   = array_merge( $field_options['lightbox'], [ 'requires' => 'show_as_link', 'priority' => 101 ] );
-			$field_options['new_window'] = array_merge( $field_options['new_window'], [ 'requires' => 'show_as_link', 'priority' => 102 ] );
-		}
 
 		if ( $grouped ) {
 

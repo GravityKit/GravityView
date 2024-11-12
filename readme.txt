@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Fixed: Some field settings could not be changed with the available filter hooks.
+
 = 2.31.1 on November 8, 2024 =
 
 This hotfix release resolves display issues with certain View layouts.
