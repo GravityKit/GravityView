@@ -1250,6 +1250,8 @@ class View implements \ArrayAccess {
 						)
 					);
 
+					$status_conditions = apply_filters( 'gk/gravityview/view/entries/join_conditions', $status_conditions, $join, $this );
+
 					$q = $query->_introspect();
 					$query->where( \GF_Query_Condition::_and( $q['where'], $status_conditions ) );
 
