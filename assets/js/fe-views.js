@@ -66,6 +66,9 @@ jQuery( function ( $ ) {
 						uploader.bind('Init', function(up, params) {
 							var data = up.settings;
 							var max = data.gf_vars.max_files;
+							if(max === 0){
+								return;
+							}
 							var fieldId = data.multipart_params.field_id;
 							var existingFilesCount = $('#preview_existing_files_'+fieldId).children().length;
 							var limitReached = existingFilesCount >= max;
@@ -75,6 +78,9 @@ jQuery( function ( $ ) {
 						uploader.bind('FilesAdded', function(up, files) {
 							var data = up.settings;
 							var max = data.gf_vars.max_files;
+							if(max === 0){
+								return;
+							}
 							var fieldId = data.multipart_params.field_id;
 							var formId = data.multipart_params.form_id;
 							var newFilesCount = $('#gform_preview_'+formId+'_'+fieldId).children().length;
