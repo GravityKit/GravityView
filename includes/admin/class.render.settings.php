@@ -1,4 +1,7 @@
 <?php
+
+use GV\Utils;
+
 /**
  * Renders field/widget options and view settings
  *
@@ -12,6 +15,117 @@
  */
 
 class GravityView_Render_Settings {
+	/**
+	 * Registers required filter hooks.
+	 *
+	 * @since $ver$
+	 */
+	public static function register_hooks(): void {
+		add_filter( 'gk/gravityview/template/options', [ self::class, 'add_general_options' ], 500, 4 );
+		add_filter( 'gk/gravityview/template/options', [ self::class, 'maybe_sort_options' ], 900, 5 );
+	}
+
+	/**
+	 * Adds general field options.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array            $field_options The field options.
+	 * @param 'widget'|'field' $field_type    The field type.
+	 * @param string           $template_id   The template ID.
+	 * @param string           $context       The context (`single` or `directory`).
+	 *
+	 * @return array The updated field options.
+	 */
+	public static function add_general_options(
+		array $field_options,
+		string $field_type,
+		string $template_id,
+		string $context
+	): array {
+		if (
+			'directory' !== $context
+			|| ! ($field_options['show_as_link'] ?? null)
+		) {
+			return $field_options;
+		}
+
+		$field = new class extends GravityView_Field {
+			public function __construct() {
+			}
+		};
+
+		$field->add_field_support( 'new_window', $field_options );
+		$field->add_field_support( 'lightbox', $field_options );
+
+		if ( isset( $field_options['lightbox'] ) ) {
+			$field_options['lightbox'] = array_merge(
+				$field_options['lightbox'],
+				[ 'requires' => 'show_as_link', 'priority' => 101 ]
+			);
+		}
+
+		if ( isset( $field_options['new_window'] ) ) {
+			$field_options['new_window'] = array_merge(
+				$field_options['new_window'],
+				[ 'requires' => 'show_as_link', 'priority' => 102 ]
+			);
+		}
+
+		return $field_options;
+	}
+
+	/**
+	 * Sorts the field options.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array            $field_options The field options.
+	 * @param 'widget'|'field' $field_type    The field type.
+	 * @param string           $template_id   The template ID.
+	 * @param string           $context       The context (`single` or `directory`).
+	 * @param bool             $grouped       Whether the options are supposed to be grouped.
+	 *
+	 * @return array The sorted field options.
+	 */
+	public static function maybe_sort_options(
+		array $field_options,
+		string $field_type,
+		string $template_id,
+		string $context,
+		bool $grouped
+	): array {
+		if ( ! $grouped ) {
+			uasort( $field_options, [ __CLASS__, '_sort_by_priority' ] );
+
+			return $field_options;
+		}
+
+		$option_groups = [];
+
+		foreach ( $field_options as $key => $field_option ) {
+			$_group = Utils::get( $field_option, 'group', 'display' );
+
+			if ( 'show_as_link' === $key ) {
+				$_group                   = 'display';
+				$field_option['priority'] = 100;
+			}
+
+			$option_groups[ $_group ][ $key ] = $field_option;
+		}
+
+		foreach ( $option_groups as &$option_group ) {
+			uasort( $option_group, [ __CLASS__, '_sort_by_priority' ] );
+		}
+		unset( $option_group );
+
+		$field_options = [];
+		foreach ( self::get_field_groups() as $group_key => $group_name ) {
+			$field_options[ $group_key ] = Utils::get( $option_groups, $group_key, [] );
+		}
+
+		return $field_options;
+	}
 
 	/**
 	 * Get available field groups.
@@ -54,18 +168,17 @@ class GravityView_Render_Settings {
 		$is_table_layout = preg_match( '/table/ism', $template_id );
 
 		if ( 'field' === $field_type ) {
-
 			// Default options - fields
-			$field_options = array(
-				'show_label' => array(
+			$field_options = [
+				'show_label'        => [
 					'type'         => 'checkbox',
 					'label'        => __( 'Show Label', 'gk-gravityview' ),
 					'value'        => ! empty( $is_table_layout ),
 					'priority'     => 1000,
 					'group'        => 'label',
 					'requires_not' => 'full_width=1',
-				),
-				'custom_label' => array(
+				],
+				'custom_label'      => [
 					'type'         => 'text',
 					'label'        => __( 'Custom Label:', 'gk-gravityview' ),
 					'value'        => '',
@@ -75,8 +188,8 @@ class GravityView_Render_Settings {
 					'requires'     => 'show_label',
 					'requires_not' => 'full_width=1',
 					'group'        => 'label',
-				),
-				'custom_class'      => array(
+				],
+				'custom_class'      => [
 					'type'       => 'text',
 					'label'      => __( 'Custom CSS Class:', 'gk-gravityview' ),
 					'desc'       => __( 'This class will be added to the field container', 'gk-gravityview' ),
@@ -86,15 +199,15 @@ class GravityView_Render_Settings {
 					'class'      => 'widefat code',
 					'priority'   => 5000,
 					'group'      => 'advanced',
-				),
-				'only_loggedin'     => array(
+				],
+				'only_loggedin'     => [
 					'type'     => 'checkbox',
 					'label'    => __( 'Make visible only to logged-in users?', 'gk-gravityview' ),
 					'value'    => '',
 					'priority' => 4000,
 					'group'    => 'visibility',
-				),
-				'only_loggedin_cap' => array(
+				],
+				'only_loggedin_cap' => [
 					'type'     => 'select',
 					'label'    => __( 'Make visible for:', 'gk-gravityview' ),
 					'options'  => self::get_cap_choices( $template_id, $field_id, $context, $input_type ),
@@ -103,40 +216,22 @@ class GravityView_Render_Settings {
 					'priority' => 4100,
 					'requires' => 'only_loggedin',
 					'group'    => 'visibility',
-				),
-			);
+				],
+			];
 
 			// Match Table as well as DataTables
 			if ( $is_table_layout && 'directory' === $context ) {
-				$field_options['width'] = array(
+				$field_options['width'] = [
 					'type'     => 'number',
 					'label'    => __( 'Percent Width', 'gk-gravityview' ),
-					'desc'     => __( 'Leave blank for column width to be based on the field content.', 'gk-gravityview' ),
+					'desc'     => __( 'Leave blank for column width to be based on the field content.',
+						'gk-gravityview' ),
 					'class'    => 'code widefat',
 					'value'    => '',
 					'priority' => 200,
 					'group'    => 'display',
-				);
+				];
 			}
-		}
-
-		if ( 'directory' === $context && isset( $field_options['show_as_link'] ) ) {
-			$field = new class extends GravityView_Field {
-				public function __construct() {
-				}
-			};
-
-			$field->add_field_support( 'new_window', $field_options );
-			$field->add_field_support( 'lightbox', $field_options );
-
-			$field_options['lightbox'] = array_merge(
-				$field_options['lightbox'] ?? [],
-				[ 'requires' => 'show_as_link', 'priority' => 101 ]
-			);
-			$field_options['new_window'] = array_merge(
-				$field_options['new_window'] ?? [],
-				[ 'requires' => 'show_as_link', 'priority' => 102 ]
-			);
 		}
 
 		// Remove suffix ":" from the labels to standardize style. Using trim() instead of rtrim() for i18n.
@@ -172,39 +267,29 @@ class GravityView_Render_Settings {
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
-		if ( $grouped ) {
-
-			$option_groups = array();
-
-			foreach ( $field_options as $key => $field_option ) {
-
-				// TODO: Add filter to override instead of doing inline.
-				switch ( $key ) {
-					case 'show_as_link':
-						$_group                   = 'display';
-						$field_option['priority'] = 100;
-						break;
-					default:
-						$_group = \GV\Utils::get( $field_option, 'group', 'display' );
-						break;
-				}
-
-				$option_groups[ $_group ][ $key ] = $field_option;
-			}
-
-			foreach ( $option_groups as & $option_group ) {
-				uasort( $option_group, array( __CLASS__, '_sort_by_priority' ) );
-			}
-
-			$field_options = array();
-			foreach ( self::get_field_groups() as $group_key => $group_name ) {
-				$field_options[ $group_key ] = \GV\Utils::get( $option_groups, $group_key, array() );
-			}
-		} else {
-			uasort( $field_options, array( __CLASS__, '_sort_by_priority' ) );
-		}
-
-		return $field_options;
+		/**
+		 * Filters the field options.
+		 *
+		 * @since  $ver$
+		 *
+		 * @filter `gravityview_template_{$input_type}_options`
+		 *
+		 * @param array            $field_options Array of field options with `label`, `value`, `type`, `default` keys.
+		 * @param 'widget'|'field' $field_type    The field type (`widget` or `field`).
+		 * @param string           $template_id   The template ID.
+		 * @param string           $context       The context (`single` or `directory`).
+		 * @param bool             $grouped       Whether the options should be grouped.
+		 * @param int              $form_id       The form ID.
+		 */
+		return apply_filters(
+			'gk/gravityview/template/options',
+			(array) $field_options,
+			(string) $field_type,
+			(string) $template_id,
+			(string) $context,
+			(bool) $grouped,
+			(int) $form_id
+		);
 	}
 
 	/**
@@ -220,8 +305,8 @@ class GravityView_Render_Settings {
 	 */
 	public static function _sort_by_priority( $a, $b ) {
 
-		$a_priority = \GV\Utils::get( $a, 'priority', 10001 );
-		$b_priority = \GV\Utils::get( $b, 'priority', 10001 );
+		$a_priority = Utils::get( $a, 'priority', 10001 );
+		$b_priority = Utils::get( $b, 'priority', 10001 );
 
 		if ( $a_priority === $b_priority ) {
 			return 0;
@@ -235,22 +320,22 @@ class GravityView_Render_Settings {
 	 *
 	 * Parameters are only to pass to the filter.
 	 *
-	 * @param  string $template_id Optional. View slug
-	 * @param  string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
-	 * @param  string $context     Optional. What context are we in? Example: `single` or `directory`
-	 * @param  string $input_type  Optional. (textarea, list, select, etc.)
+	 * @param string $template_id Optional. View slug
+	 * @param string $field_id    Optional. GF Field ID - Example: `3`, `5.2`, `entry_link`, `created_by`
+	 * @param string $context     Optional. What context are we in? Example: `single` or `directory`
+	 * @param string $input_type  Optional. (textarea, list, select, etc.)
+	 *
 	 * @return array Associative array, with the key being the capability and the value being the label shown.
 	 */
 	public static function get_cap_choices( $template_id = '', $field_id = '', $context = '', $input_type = '' ) {
-
-		$select_cap_choices = array(
+		$select_cap_choices = [
 			'read'                      => __( 'Any Logged-In User', 'gk-gravityview' ),
 			'publish_posts'             => __( 'Author Or Higher', 'gk-gravityview' ),
 			'gravityforms_view_entries' => __( 'Can View Gravity Forms Entries', 'gk-gravityview' ),
 			'delete_others_posts'       => __( 'Editor Or Higher', 'gk-gravityview' ),
 			'gravityforms_edit_entries' => __( 'Can Edit Gravity Forms Entries', 'gk-gravityview' ),
 			'manage_options'            => __( 'Administrator', 'gk-gravityview' ),
-		);
+		];
 
 		if ( is_multisite() ) {
 			$select_cap_choices['manage_network'] = __( 'Multisite Super Admin', 'gk-gravityview' );
@@ -272,7 +357,6 @@ class GravityView_Render_Settings {
 		return $select_cap_choices;
 	}
 
-
 	/**
 	 * Render Field Options html (shown through a dialog box)
 	 *
@@ -285,10 +369,10 @@ class GravityView_Render_Settings {
 	 * @param string $field_id
 	 * @param string $field_label
 	 * @param string $area
-	 * @param string $uniqid (default: '')
-	 * @param string $current (default: '')
-	 * @param string $context (default: 'single')
-	 * @param array  $item Field or widget array that's being rendered
+	 * @param string $uniqid     (default: '')
+	 * @param string $current    (default: '')
+	 * @param string $context    (default: 'single')
+	 * @param array  $item       Field or widget array that's being rendered
 	 *
 	 * @return string HTML of dialog box
 	 */
@@ -304,7 +388,7 @@ class GravityView_Render_Settings {
 		$option_groups = self::get_default_field_options( $field_type, $template_id, $field_id, $context, $input_type, $form_id, $grouped );
 
 		if ( ! $grouped ) {
-			$option_groups = array( $option_groups );
+			$option_groups = [ $option_groups ];
 		}
 
 		$option_groups = array_filter( $option_groups );
@@ -343,20 +427,18 @@ class GravityView_Render_Settings {
 
 		$field_settings = '';
 		foreach ( $option_groups as $group_key => $option_group ) {
-
 			if ( empty( $option_group ) ) {
 				continue;
 			}
 
 			if ( $grouped ) {
-				$group_name      = rgar( self::get_field_groups(), $group_key, '' );
+				$group_name     = rgar( self::get_field_groups(), $group_key, '' );
 				$field_settings .= '<fieldset class="item-settings-group item-settings-group-' . esc_attr( $group_key ) . '">';
 				$field_settings .= '<legend>' . esc_attr( $group_name ) . '</legend>';
 			}
 
 			foreach ( $option_group as $key => $option ) {
-
-				$value = isset( $current[ $key ] ) ? $current[ $key ] : null;
+				$value = $current[ $key ] ?? null;
 
 				$field_output = self::render_field_option( $name_prefix . '[' . $key . ']', $option, $value );
 
@@ -424,7 +506,7 @@ class GravityView_Render_Settings {
 			</div>';
 		} else {
 			$subtitle               = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
-			$widget_details_content = \GV\Utils::get( $item, 'description', '' );
+			$widget_details_content = Utils::get( $item, 'description', '' );
 
 			// Intentionally not escaping to allow HTML.
 			$item_details = '<div class="gv-field-details--container">' . wpautop( trim( $widget_details_content ) ) . '</div>';
@@ -441,7 +523,7 @@ EOD;
 
 		$output = $template;
 
-		$replacements = array(
+		$replacements = [
 			'settings_title',
 			'hidden_fields',
 			'subtitle',
@@ -451,7 +533,7 @@ EOD;
 			'field_id',
 			'form_title',
 			'form_id',
-		);
+		];
 
 		foreach ( $replacements as $replacement ) {
 			if ( is_null( ${$replacement} ) ) {
@@ -471,18 +553,16 @@ EOD;
 		return $output;
 	}
 
-
-
 	/**
 	 * Handle rendering a field option form element
 	 *
-	 * @param  string $name    Input `name` attribute
-	 * @param  array  $option  Associative array of options. See the $defaults variable for available keys.
-	 * @param  mixed  $curr_value Current value of option
+	 * @param string $name       Input `name` attribute
+	 * @param array  $option     Associative array of options. See the $defaults variable for available keys.
+	 * @param mixed  $curr_value Current value of option
+	 *
 	 * @return string     HTML output of option
 	 */
-	public static function render_field_option( $name = '', $option = array(), $curr_value = null ) {
-
+	public static function render_field_option( $name = '', $option = [], $curr_value = null ) {
 		$output = '';
 
 		/**
@@ -496,11 +576,9 @@ EOD;
 
 		// prepare to render option field type
 		if ( isset( $option['type'] ) ) {
-
 			$type_class = self::load_type_class( $option );
 
 			if ( class_exists( $type_class ) ) {
-
 				/** @type GravityView_FieldType $render_type */
 				$render_type = new $type_class( $name, $option, $curr_value );
 
@@ -517,7 +595,7 @@ EOD;
 				 * `$option_type` is the type of setting (`radio`, `text`, etc.).
 				 *
 				 * @param string $output field class name
-				 * @param array $option  option field data
+				 * @param array  $option option field data
 				 */
 				$output = apply_filters( "gravityview/option/output/{$option_type}", $output, $option );
 			}
@@ -526,19 +604,16 @@ EOD;
 		return $output;
 	}
 
-
-
-
-
-
 	/**
 	 * Output a table row for view settings
-     *
-	 * @param  string $key              The key of the input
-	 * @param  array  $current_settings Associative array of current settings to use as input values, if set. If not set, the defaults are used.
-	 * @param  string $override_input   [description]
-	 * @param  string $name             [description]
-	 * @param  string $id               [description]
+	 *
+	 * @param string $key              The key of the input
+	 * @param array  $current_settings Associative array of current settings to use as input values, if set. If not
+	 *                                 set, the defaults are used.
+	 * @param string $override_input   [description]
+	 * @param string $name             [description]
+	 * @param string $id               [description]
+	 *
 	 * @return void                   [description]
 	 */
 	public static function render_setting_row( $key = '', $current_settings = array(), $override_input = null, $name = 'template_settings[%s]', $id = 'gravityview_se_%s' ) {
@@ -594,7 +669,7 @@ EOD;
 		// Check if setting is specific for a template
 		if ( ! empty( $setting['show_in_template'] ) ) {
 			if ( ! is_array( $setting['show_in_template'] ) ) {
-				$setting['show_in_template'] = array( $setting['show_in_template'] );
+				$setting['show_in_template'] = [ $setting['show_in_template'] ];
 			}
 			$show_if = ' data-show-if="' . implode( ' ', $setting['show_in_template'] ) . '"';
 		} else {
@@ -613,15 +688,14 @@ EOD;
 		echo '<tr style="vertical-align: top;" ' . $show_if . '>' . $output . '</tr>';
 	}
 
-
 	/**
 	 * Given a field type calculates the php class. If not found try to load it.
-     *
-	 * @param  array $field
+	 *
+	 * @param array $field
+	 *
 	 * @return string type class name
 	 */
 	public static function load_type_class( $field = null ) {
-
 		if ( empty( $field['type'] ) ) {
 			return null;
 		}
@@ -631,8 +705,8 @@ EOD;
 		/**
 		 * Modifies the field type class name to be loaded for a given field.
 		 *
-		 * @param string $class_suffix  field class suffix; `GravityView_FieldType_{$class_suffix}`
-		 * @param array $field   field data
+		 * @param string $class_suffix field class suffix; `GravityView_FieldType_{$class_suffix}`
+		 * @param array  $field        field data
 		 */
 		$type_class = apply_filters( "gravityview/setting/class/{$field_type}", 'GravityView_FieldType_' . $field_type, $field );
 
@@ -643,10 +717,12 @@ EOD;
 		/**
 		 * Modifies file path to be loaded for a given field.
 		 *
-		 * @param string  $field_type_include_path field class file path
-		 * @param array $field  field data
+		 * @param string $field_type_include_path field class file path
+		 * @param array  $field                   field data
 		 */
-		$class_file = apply_filters( "gravityview/setting/class_file/{$field_type}", GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field_type}.php", $field );
+		$class_file = apply_filters( "gravityview/setting/class_file/{$field_type}",
+			GRAVITYVIEW_DIR . "includes/admin/field-types/type_{$field_type}.php",
+			$field );
 
 		if ( $class_file && file_exists( $class_file ) ) {
 			require_once $class_file;
@@ -654,10 +730,6 @@ EOD;
 
 		return $type_class;
 	}
-
-
-
-
 
 	/**
 	 * @deprecated 1.2
@@ -667,7 +739,6 @@ EOD;
 	 * @return string         html tags
 	 */
 	public static function render_checkbox_option( $name = '', $id = '', $current = '' ) {
-
 		_deprecated_function( __METHOD__, '1.2', 'GravityView_FieldType_checkbox::render_input' );
 
 		$output  = '<input name="' . esc_attr( $name ) . '" type="hidden" value="0">';
@@ -675,7 +746,6 @@ EOD;
 
 		return $output;
 	}
-
 
 	/**
 	 * @deprecated 1.2
