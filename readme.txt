@@ -23,11 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Fixed: Some field settings could not be changed with the available filter hooks.
-
 __Developer Updates:__
 
-* Added: `gk/gravityview/template/options` filter in `class.render.settings.php`.
+* Added: `gk/gravityview/template/options` filter to allow programmatically modifying Field settings in the View editor.
 
 = 2.31.1 on November 8, 2024 =
 

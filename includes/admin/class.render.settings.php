@@ -21,8 +21,14 @@ class GravityView_Render_Settings {
 	 * @since $ver$
 	 */
 	public static function register_hooks(): void {
+		// Filter is applied with priority 500 to act later in the process. It is very likely this filter will be
+		// used with default or slightly higher than default priorities. This priority makes it likely
+		// all (or most) options have been processed already.
 		add_filter( 'gk/gravityview/template/options', [ self::class, 'add_general_options' ], 500, 4 );
-		add_filter( 'gk/gravityview/template/options', [ self::class, 'maybe_sort_options' ], 900, 5 );
+
+		// Filter is applied with priority 1000 to act *very* late in the process. This gives users a wide range of
+		// priority values to work with, while making it very likely those options are still sorted properly.
+		add_filter( 'gk/gravityview/template/options', [ self::class, 'maybe_sort_options' ], 1000, 5 );
 	}
 
 	/**
