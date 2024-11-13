@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/view/entries/join-conditions` filter to modify the join conditions applied during the retrieval of View entries.
+
 = 2.31.1 on November 8, 2024 =
 
 This hotfix release resolves display issues with certain View layouts.
