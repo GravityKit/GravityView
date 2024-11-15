@@ -100,20 +100,22 @@ jQuery( function ( $ ) {
 							gfMultiFileUploader.toggleDisabled(data, limitReached);
 
 
-							// Only show message if max is greater than 1
-							if(max <= 1){
+							// Only show message if max is greater than 1 or limit is reached
+							if(max <= 1 || !limitReached){
 								return true;
 							}
 
-							// Check if message already exists
 
+							// Check if message already exists
 							if($("#" + up.settings.gf_vars.message_id).children().length > 0){
 								return true;
 							}
+
 							$( "#" + up.settings.gf_vars.message_id ).prepend( "<li class='gfield_description gfield_validation_message'>" +
 								$('<div/>').text(gform_gravityforms.strings.max_reached).html()
 							 +
 								 "</li>" );
+
 							// Announce errors.
 							setTimeout(function () {
 								wp.a11y.speak( $( "#" + up.settings.gf_vars.message_id ).text() );
