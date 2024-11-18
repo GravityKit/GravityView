@@ -332,6 +332,12 @@ class GravityView_Edit_Entry_Render {
 
 		// File download/delete icons
 		wp_enqueue_style( 'gform_admin_icons' );
+
+		// Fixes the icons not showing up correctly in Gravity Forms 2.9+
+		if ( version_compare( GFForms::$version, '2.9', '>=' ) ) {
+			wp_add_inline_style( 'gform_theme', '.gform-icon { font-family: gform-icons-admin !important; }' );
+		}
+
 	}
 
 
