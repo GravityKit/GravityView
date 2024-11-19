@@ -24,7 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 __Developer Updates:__
-
+* Added `gk/gravityview/view/entries/join-conditions` filter to modify the join conditions applied during the retrieval of View entries.
 * Added: `gk/gravityview/template/options` filter to allow programmatically modifying Field settings in the View editor.
 * Added: `gravityview/row-added` JavaScript event when a new row is added to a Widget/Field area.
 
