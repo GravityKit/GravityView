@@ -17,7 +17,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 
 class GravityView_Edit_Entry {
-
     /**
      * @var string
      */
@@ -462,33 +461,33 @@ class GravityView_Edit_Entry {
 	}
 
 	/**
-	 * Trigger the notifications.
+	 * Triggers notifications.
 	 *
 	 * @since TBD
 	 *
-	 * @param array $form 		The form object.
-	 * @param int   $entry_id 	The entry ID.
+	 * @param array                         $form              The form object.
+	 * @param int                           $entry_id          The entry ID.
+	 * @param GravityView_Edit_Entry_Render $edit_entry_render The edit entry render class instance.
 	 */
 	public function trigger_notifications( $form, $entry_id, $edit_entry_render ) {
 		GravityView_Notifications::send_notifications( (int) $entry_id, 'gravityview/edit_entry/after_update', $edit_entry_render->entry );
 	}
 
 	/**
-	 * Add the edit notification event.
+	 * Adds the notification event.
 	 *
 	 * @since TBD
 	 *
-	 * @param array	$notification_events Existing notification events.
-	 * @param array	$form 				 The form object.
+	 * @param array $notification_events Existing notification events.
+	 * @param array $form                The form object.
 	 *
 	 * @return array
 	 */
-	public function add_edit_notification_events( $notification_events = array(), $form = array() ) {
+	public function add_edit_notification_events( $notification_events = [], $form = [] ) {
 		$notification_events['gravityview/edit_entry/after_update'] = 'GravityView - ' . esc_html_x( 'Entry is updated', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+
 		return $notification_events;
 	}
+}
 
-} // end class
-
-// add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
 GravityView_Edit_Entry::getInstance();
