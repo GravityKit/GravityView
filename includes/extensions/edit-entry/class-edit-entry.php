@@ -463,7 +463,7 @@ class GravityView_Edit_Entry {
 	/**
 	 * Triggers notifications.
 	 *
-	 * @since TBD
+	 * @since 2.32.0
 	 *
 	 * @param array                         $form              The form object.
 	 * @param int                           $entry_id          The entry ID.
@@ -476,7 +476,7 @@ class GravityView_Edit_Entry {
 	/**
 	 * Adds the notification event.
 	 *
-	 * @since TBD
+	 * @since 2.32.0
 	 *
 	 * @param array $notification_events Existing notification events.
 	 * @param array $form                The form object.

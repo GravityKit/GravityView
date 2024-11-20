@@ -18,7 +18,7 @@ class GravityView_Render_Settings {
 	/**
 	 * Registers required filter hooks.
 	 *
-	 * @since $ver$
+	 * @since 2.32.0
 	 */
 	public static function register_hooks(): void {
 		// Filter is applied with priority 500 to act later in the process. It is very likely this filter will be
@@ -34,7 +34,7 @@ class GravityView_Render_Settings {
 	/**
 	 * Adds general field options.
 	 *
-	 * @since $ver$
+	 * @since 2.32.0
 	 *
 	 * @param array            $field_options The field options.
 	 * @param 'widget'|'field' $field_type    The field type.
@@ -84,7 +84,7 @@ class GravityView_Render_Settings {
 	/**
 	 * Sorts the field options.
 	 *
-	 * @since $ver$
+	 * @since 2.32.0
 	 *
 	 * @param array            $field_options The field options.
 	 * @param 'widget'|'field' $field_type    The field type.
@@ -276,7 +276,7 @@ class GravityView_Render_Settings {
 		/**
 		 * Filters the field options.
 		 *
-		 * @since  $ver$
+		 * @since  2.32.0
 		 *
 		 * @filter `gravityview_template_{$input_type}_options`
 		 *

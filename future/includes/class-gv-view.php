@@ -1258,7 +1258,7 @@ class View implements \ArrayAccess {
 					 *
 					 * @filter `gk/gravityview/view/entries/join-conditions`
 					 *
-					 * @since $ver$
+					 * @since 2.32.0
 					 *
 					 * @param GF_Query_Condition $status_conditions The GF_Query_Condition instance.
 					 * @param Join $join The Join instance.
