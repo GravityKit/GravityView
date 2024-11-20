@@ -107,7 +107,7 @@ class GravityView_Theme_Hooks_Elegant_Themes extends GravityView_Plugin_and_Them
 	 *
 	 * @used-by `et_builder_enable_jquery_body` filter
 	 *
-	 * @since TBD
+	 * @since 2.31.0
 	 *
 	 * @param bool $enable_jquery_compat
 	 *

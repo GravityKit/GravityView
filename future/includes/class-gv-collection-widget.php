@@ -8,6 +8,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 
 /**
  * A collection of \GV\Widget objects.
+ * @implements Collection<\GV\Widget>
  */
 class Widget_Collection extends Collection {
 	/**
