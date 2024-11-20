@@ -23,6 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+Added: New form notification event triggered when an entry is updated.
+
 __Developer Updates:__
 * Added `gk/gravityview/view/entries/join-conditions` filter to modify the join conditions applied during the retrieval of View entries.
 * Added: `gk/gravityview/template/options` filter to allow programmatically modifying Field settings in the View editor.
