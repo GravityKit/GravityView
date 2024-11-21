@@ -65,7 +65,7 @@ jQuery( function ( $ ) {
 					$.each(gfMultiFileUploader.uploaders, function(index, uploader){
 						uploader.bind('Init', function(up, params) {
 							var data = up.settings;
-							var max = data.gf_vars.max_files;
+							var max = parseInt(data.gf_vars.max_files, 10);
 							if(max === 0){
 								return;
 							}
@@ -77,7 +77,7 @@ jQuery( function ( $ ) {
 
 						uploader.bind('FilesAdded', function(up, files) {
 							var data = up.settings;
-							var max = data.gf_vars.max_files;
+							var max = parseInt(data.gf_vars.max_files, 10);
 							if(max === 0){
 								return;
 							}
