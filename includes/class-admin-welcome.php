@@ -296,7 +296,7 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3>2.32 on November 20, 2024</h3>
+				<h3>2.32 on November 21, 2024</h3>
 
 				<p>This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.</p>
 

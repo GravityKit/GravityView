@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-= 2.32 on November 20, 2024 =
+= 2.32 on November 21, 2024 =
 
 This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.
 
