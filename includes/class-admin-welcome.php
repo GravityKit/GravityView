@@ -317,6 +317,12 @@ class GravityView_Welcome {
 					</li>
 				</ul>
 
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.21.</li>
+				</ul>
+
 				<h4>💻 Developer Updates</h4>
 
 				<ul>

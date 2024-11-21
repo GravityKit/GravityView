@@ -35,6 +35,9 @@ This release adds a new form notification option for updated entries, resolves f
   - Delete/download icons not displaying in Gravity Forms 2.9+;
   - Unable to select files for upload when the form field's "Multiple Files" setting was enabled without a "Maximum Number of Files" value.
 
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.21.
+
 #### 💻 Developer Updates
 * Added `gk/gravityview/view/entries/join-conditions` filter to modify the join conditions applied when retrieving View entries.
 * Added `gk/gravityview/template/options` filter to programmatically modify field settings in the View editor.
