@@ -21,6 +21,25 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+= 2.32 on November 21, 2024 =
+
+This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.
+
+#### 🚀 Added
+* New notification option for forms, triggered when an entry is updated.
+
+#### 🐛 Fixed
+* File upload field issues on the Edit Entry screen:
+  - Delete/download icons not displaying in Gravity Forms 2.9+;
+  - Unable to select files for upload when the form field's "Multiple Files" setting was enabled without a "Maximum Number of Files" value.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/view/entries/join-conditions` filter to modify the join conditions applied when retrieving View entries.
+* Added `gk/gravityview/template/options` filter to programmatically modify field settings in the View editor.
+* Added `gravityview/row-added` JavaScript event, triggered when a new row is added to a widget or field area.
+
 = 2.31.1 on November 8, 2024 =
 
 This hotfix release resolves display issues with certain View layouts.

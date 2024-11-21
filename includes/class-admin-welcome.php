@@ -296,6 +296,35 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.32 on November 21, 2024</h3>
+
+				<p>This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>New notification option for forms, triggered when an entry is updated.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>File upload field issues on the Edit Entry screen:
+						<ul>
+							<li>Delete/download icons not displaying in Gravity Forms 2.9+;</li>
+							<li>Unable to select files for upload when the form field's "Multiple Files" setting was enabled without a "Maximum Number of Files" value.</li>
+						</ul>
+					</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gk/gravityview/view/entries/join-conditions</code> filter to modify the join conditions applied when retrieving View entries.</li>
+					<li>Added <code>gk/gravityview/template/options</code> filter to programmatically modify field settings in the View editor.</li>
+					<li>Added <code>gravityview/row-added</code> JavaScript event, triggered when a new row is added to a widget or field area.</li>
+				</ul>
+
 				<h3>2.31.1 on November 8, 2024</h3>
 
 				<p>This hotfix release resolves display issues with certain View layouts.</p>
@@ -396,45 +425,6 @@ class GravityView_Welcome {
 
 				<ul>
 					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.19.</li>
-				</ul>
-
-				<h3>2.29 on October 1, 2024</h3>
-
-				<p>This release introduces a much-requested <a href="https://docs.gravitykit.com/article/1020-opening-and-editing-entry-details-in-a-lightbox-modal-popup">lightbox feature</a> for displaying and editing entries, settings for customizing View URLs, new options for <a href="https://docs.gravitykit.com/article/1021-show-name-fields-as-initials">displaying Name field initials</a> and Custom Content fields in full width, and a merge tag modifier to show date field values in a human-readable format. Several bugs have also been fixed.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Ability to edit and display entries inside a lightbox.</li>
-					<li>Global and individual View settings to customize the URL structure for all or specific Views.</li>
-					<li><code>:human</code> merge tag modifier for date fields to display in human-readable format (e.g., <em>10 minutes ago</em>, <em>5 days from now</em>).</li>
-					<li>Option to display the Name field value as initials.</li>
-					<li>Option to display Custom Content field full width on the Single Entry screen.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Clearing search removed all URL query parameters and, in some cases, redirected to the homepage.</li>
-					<li>Searching the View added duplicate search parameters to the URL.</li>
-					<li>PHP 8.2 deprecation notice related to dynamic property creation.</li>
-					<li>Entries not displaying when a View using DataTables was embedded in a Single Entry page with the List layout.</li>
-					<li>PHP warning when displaying a View with an Event field without an active Gravity Forms Event Fields Add-On.</li>
-					<li>Sorting entries in random order was not working.</li>
-					<li>Multi Select field values starting with a square bracket were not displayed as selected on the Edit Entry screen.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.18.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/field/name/display</code> filter to modify the Name field display value.</li>
-					<li>Added <code>gk/gravityview/permalinks/reserved-terms</code> filter to modify the list of reserved terms that are excluded from permalinks.</li>
 				</ul>
 
 				<p style="text-align: center;">
