@@ -11,6 +11,10 @@
 namespace GV\REST;
 
 use GravityView_Widget_Export_Link;
+use GV\Field;
+use GV\GF_Form;
+use GV\Internal_Source;
+use GV\View;
 use WP_REST_Request;
 
 /** If this file is called directly, abort. */
@@ -121,7 +125,7 @@ class Views_Route extends Route {
 	 * Prepare the item for the REST response
 	 *
 	 * @since 2.0
-	 * @param \GV\View         $view The view.
+	 * @param View             $view The view.
 	 * @param \GV\Entry        $entry WordPress representation of the item.
 	 * @param \WP_REST_Request $request Request object.
 	 * @param string           $context The context (directory, single)
@@ -143,7 +147,7 @@ class Views_Route extends Route {
 		 * Allow more entry fields that are output in regular REST requests.
 		 *
 		 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
-		 * @param \GV\View $view The view.
+		 * @param View $view The view.
 		 * @param \GV\Entry $entry The entry.
 		 * @param \WP_REST_Request $request Request object.
 		 * @param string $context The context (directory, single)
@@ -173,7 +177,8 @@ class Views_Route extends Route {
 			// remove all links from output.
 			$field->update_configuration( [ 'show_as_link' => '0' ] );
 
-			$source   = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
+			$source = $this->get_source( $field, $view );
+
 			$field_id = $field->ID;
 			$index    = null;
 
@@ -194,7 +199,7 @@ class Views_Route extends Route {
 			 * Filter the key name in the results for JSON output.
 			 *
 			 * @param string           $field_id The ID. Should be unique or keys will be gobbled up.
-			 * @param \GV\View         $view     The view.
+			 * @param View             $view     The view.
 			 * @param \GV\Entry        $entry    The entry.
 			 * @param \WP_REST_Request $request  Request object.
 			 * @param string           $context  The context (directory, single)
@@ -241,6 +246,39 @@ class Views_Route extends Route {
 	}
 
 	/**
+	 * Gets the source of the field.
+	 *
+	 * @since $ver$
+	 *
+	 * @param Field $field The field.
+	 * @param View  $view The view.
+	 *
+	 * @return GF_Form|Internal_Source
+	 */
+	protected function get_source( $field, $view ) {
+		if ( ! is_numeric( $field->ID ) ) {
+			return new Internal_Source();
+		}
+
+		$form_id = $field->field->formId ?? null;
+
+		// If the field's form differs from the main view form, get the form from the joined entries.
+		if ( $form_id && $view->form->ID != $form_id && ! empty( $view->joins ) ) {
+			foreach ( $view->joins as $join ) {
+				if ( isset( $join->join_on->ID ) && $join->join_on->ID == $form_id ) {
+					return $join->join_on;
+				}
+			}
+
+			// Edge case where the form cannot be retrieved from the joins.
+			return GF_Form::by_id( $form_id );
+		}
+
+		// Return the main view form.
+		return $view->form;
+	}
+
+	/**
 	 * Get entries from a view
 	 *
 	 * Callback for /v1/views/{id}/entries/
@@ -270,7 +308,7 @@ class Views_Route extends Route {
 			}
 		}
 
-		$view = \GV\View::by_id( $view_id );
+		$view = View::by_id( $view_id );
 
 		if ( null !== $view ) {
 			$post = $view->get_post();
@@ -298,7 +336,7 @@ class Views_Route extends Route {
 			 * @since 2.0
 			 * @param bool $insert_meta Add <meta> tags? [Default: true]
 			 * @param int $count The number of entries being rendered
-			 * @param \GV\View $view The view.
+			 * @param View $view The view.
 			 * @param \WP_REST_Request $request Request object.
 			 * @param int $total The number of total entries for the request
 			 */
@@ -406,7 +444,7 @@ class Views_Route extends Route {
 		$entry_id = intval( $url['s_id'] );
 		$format   = \GV\Utils::get( $url, 'format', 'json' );
 
-		$view  = \GV\View::by_id( $view_id );
+		$view  = View::by_id( $view_id );
 		$entry = \GV\GF_Entry::by_id( $entry_id );
 
 		if ( 'html' === $format ) {
@@ -434,7 +472,7 @@ class Views_Route extends Route {
 			);
 		}
 
-		$view = \GV\View::from_post( $view_post );
+		$view = View::from_post( $view_post );
 
 		$item = $view->as_data();
 
@@ -485,7 +523,7 @@ class Views_Route extends Route {
 			$view_id = intval( $url['id'] );
 		}
 
-		if ( ! $view = \GV\View::by_id( $view_id ) ) {
+		if ( ! $view = View::by_id( $view_id ) ) {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
 		}
 
@@ -513,7 +551,7 @@ class Views_Route extends Route {
 		 * Disable rest output. Final chance.
 		 *
 		 * @param bool Enable or not.
-		 * @param \GV\View $view The view.
+		 * @param View $view The view.
 		 */
 		if ( ! apply_filters( 'gravityview/view/output/rest', true, $view ) ) {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
@@ -532,7 +570,7 @@ class Views_Route extends Route {
 		$view_id  = intval( $url['id'] );
 		$entry_id = intval( $url['s_id'] );
 
-		$view = \GV\View::by_id( $view_id );
+		$view = View::by_id( $view_id );
 
 		if ( ! $entry = \GV\GF_Entry::by_id( $entry_id ) ) {
 			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
@@ -580,7 +618,7 @@ class Views_Route extends Route {
 		$nonce   = $request->get_param( '_nonce' );
 		$view_id = rgar( $params, 'id', 0 );
 
-		if ( ! $view = \GV\View::by_id( $view_id ) ) {
+		if ( ! $view = View::by_id( $view_id ) ) {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
 		}
 

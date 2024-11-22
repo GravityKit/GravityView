@@ -41,6 +41,7 @@ This release adds a new form notification option for updated entries, resolves f
 #### 💻 Developer Updates
 * Added `gk/gravityview/view/entries/join-conditions` filter to modify the join conditions applied when retrieving View entries.
 * Added `gk/gravityview/template/options` filter to programmatically modify field settings in the View editor.
+* Added `gravityview/template/field/csv/tick` filter to programmatically modify the checkbox "check" output in CSV.
 * Added `gravityview/row-added` JavaScript event, triggered when a new row is added to a widget or field area.
 
 = 2.31.1 on November 8, 2024 =
