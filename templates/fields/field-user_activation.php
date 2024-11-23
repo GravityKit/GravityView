@@ -12,7 +12,7 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 }
 
 if ( ! class_exists( 'gf_user_registration' ) ) {
-	echo __( 'Gravity Forms User Registration Add-On does not exist', 'gk-gravityview' );
+	echo __( 'Install/activate Gravity Forms User Registration Add-On', 'gk-gravityview' );
 	return;
 }
 

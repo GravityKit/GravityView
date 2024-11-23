@@ -146,7 +146,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 		}
 
 		foreach ( $feeds as $feed ) {
-			if ( isset( $feed['is_active'] ) && 1 !== (int) $feed['is_active'] || 'gravityformsuserregistration' !== $feed['addon_slug'] ) {
+			if ( ( isset( $feed['is_active'] ) && 1 !== (int) $feed['is_active'] ) || !isset( $feed['addon_slug'] ) || 'gravityformsuserregistration' !== $feed['addon_slug'] ) {
 				continue;
 			}
 
