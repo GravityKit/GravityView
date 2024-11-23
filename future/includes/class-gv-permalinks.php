@@ -526,7 +526,7 @@ final class Permalinks {
 							 return '[ERROR_MISSING_ENTRY_ID]';
 						}
 
-						if ( ! value.match( /(^[a-zA-Z0-9_{}\-]*$)/s ) ) {
+						if ( ! value.match( /(^(?:[a-zA-Z0-9_\-]*|\{[^\}]*\})*$)/s ) ) {
 							return '[ERROR_NO_SPACES]';
 						}
 

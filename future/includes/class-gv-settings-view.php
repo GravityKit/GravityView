@@ -524,6 +524,17 @@ class View_Settings extends Settings {
 					'value'      => _x( 'Update', 'Button to update an entry the user is editing', 'gk-gravityview' ),
 					'merge_tags' => 'force',
 				),
+				'edit_cancel_lightbox_action' => array(
+					'label'     => __( 'Cancel Link Action', 'gk-gravityview' ),
+					'tooltip'   => __( 'Choose what happens when you click Cancel while editing an entry in a lightbox.', 'gk-gravityview' ),
+					'type'      => 'select',
+					'hidden' => 1,
+					'value'     => 'close_lightbox',
+					'options'   => array(
+						'close_lightbox'           => __( 'Close Lightbox', 'gk-gravityview' ),
+						'redirect_to_single_entry' => __( 'Redirect to Single Entry', 'gk-gravityview' ),
+					),
+				),
 				'action_label_cancel'         => array(
 					'label'      => __( 'Cancel Link Text', 'gk-gravityview' ),
 					'group'      => 'default',

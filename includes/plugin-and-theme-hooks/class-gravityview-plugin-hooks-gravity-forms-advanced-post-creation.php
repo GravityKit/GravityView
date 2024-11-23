@@ -92,7 +92,7 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 		if ( ! $form ) {
 			return null;
 		}
-		
+
 		$apc   = GF_Advanced_Post_Creation::get_instance();
 		$feeds = $apc->get_active_feeds( $form->ID );
 
@@ -101,10 +101,12 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 		}
 
 		$notification_html = <<<HTML
-<div class="gv-grid-col-1-1">
-	<div class="notice notice-warning inline">
-		<p><strong>%s</strong></p>
-		<p>%s</p>
+<div class="gv-grid-row">
+	<div class="gv-grid-col-1-1">
+		<div class="notice notice-warning inline">
+			<p><strong>%s</strong></p>
+			<p>%s</p>
+		</div>
 	</div>
 </div>
 HTML;

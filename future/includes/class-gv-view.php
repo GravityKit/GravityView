@@ -2,6 +2,9 @@
 
 namespace GV;
 
+use GF_Query_Column;
+use GF_Query_Condition;
+use GF_Query_Literal;
 use GravityKit\GravityView\Foundation\Helpers\Arr;
 use GF_Query;
 use GravityKitFoundation;
@@ -1147,7 +1150,7 @@ class View implements \ArrayAccess {
 						continue;
 					}
 
-					$order = new \GF_Query_Column( $field['id'], $this->form->ID );
+					$order = new GF_Query_Column( $field['id'], $this->form->ID );
 
 					if ( 'id' !== $field['id'] && (int) $field['is_numeric'] ) {
 						$order = \GF_Query_Call::CAST( $order, defined( 'GF_Query::TYPE_DECIMAL' ) ? \GF_Query::TYPE_DECIMAL : \GF_Query::TYPE_SIGNED );
@@ -1172,10 +1175,10 @@ class View implements \ArrayAccess {
 
 						$column = null;
 
-						if ( $order[0] instanceof \GF_Query_Column ) {
+						if ( $order[0] instanceof GF_Query_Column ) {
 							$column = $order[0];
 						} elseif ( $order[0] instanceof \GF_Query_Call ) {
-							if ( 1 != count( $order[0]->columns ) || ! $order[0]->columns[0] instanceof \GF_Query_Column ) {
+							if ( 1 != count( $order[0]->columns ) || ! $order[0]->columns[0] instanceof GF_Query_Column ) {
 								$orders[ $oid ] = $order;
 								continue; // Need something that resembles a single sort
 							}
@@ -1225,33 +1228,46 @@ class View implements \ArrayAccess {
 					if ( $this->settings->get( 'multiple_forms_disable_null_joins' ) ) {
 
 						// Disable NULL outputs
-						$condition = new \GF_Query_Condition(
-							new \GF_Query_Column( $join->join_on_column->ID, $join->join_on->ID ),
-							\GF_Query_Condition::NEQ,
-							new \GF_Query_Literal( '' )
+						$condition = new GF_Query_Condition(
+							new GF_Query_Column( $join->join_on_column->ID, $join->join_on->ID ),
+							GF_Query_Condition::NEQ,
+							new GF_Query_Literal( '' )
 						);
 
 						$query_parameters = $query->_introspect();
 
-						$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+						$query->where( GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 					}
 
 					// Filter to active entries only
-					$status_conditions = \GF_Query_Condition::_or(
-						new \GF_Query_Condition(
-							new \GF_Query_Column( 'status', $join->join_on->ID ),
-							\GF_Query_Condition::EQ,
-							new \GF_Query_Literal( 'active' )
+					$status_conditions = GF_Query_Condition::_or(
+						new GF_Query_Condition(
+							new GF_Query_Column( 'status', $join->join_on->ID ),
+							GF_Query_Condition::EQ,
+							new GF_Query_Literal( 'active' )
 						),
-						new \GF_Query_Condition(
-							new \GF_Query_Column( 'status', $join->join_on->ID ),
-							\GF_Query_Condition::IS,
-							\GF_Query_Condition::NULL
+						new GF_Query_Condition(
+							new GF_Query_Column( 'status', $join->join_on->ID ),
+							GF_Query_Condition::IS,
+							GF_Query_Condition::NULL
 						)
 					);
 
+					/**
+					 * Modifies the join conditions applied during the retrieval of View entries.
+					 *
+					 * @filter `gk/gravityview/view/entries/join-conditions`
+					 *
+					 * @since 2.32.0
+					 *
+					 * @param GF_Query_Condition $status_conditions The GF_Query_Condition instance.
+					 * @param Join $join The Join instance.
+					 * @param View $this The View instance.
+					 */
+					$status_conditions = apply_filters( 'gk/gravityview/view/entries/join-conditions', $status_conditions, $join, $this );
+
 					$q = $query->_introspect();
-					$query->where( \GF_Query_Condition::_and( $q['where'], $status_conditions ) );
+					$query->where( GF_Query_Condition::_and( $q['where'], $status_conditions ) );
 
 					/**
 					 * Applies legacy modifications to Query for is_approved settings.
@@ -1268,11 +1284,11 @@ class View implements \ArrayAccess {
 				$unions_sql = array();
 
 				/**
-				 * @param \GF_Query_Condition $condition
+				 * @param GF_Query_Condition $condition
 				 * @param array $fields
 				 * @param $recurse
 				 *
-				 * @return \GF_Query_Condition
+				 * @return GF_Query_Condition
 				 */
 				$where_union_substitute = function ( $condition, $fields, $recurse ) {
 					if ( $condition->expressions ) {
@@ -1288,9 +1304,9 @@ class View implements \ArrayAccess {
 						);
 					}
 
-					if ( ! ( $condition->left && $condition->left instanceof \GF_Query_Column ) || ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) ) {
-						return new \GF_Query_Condition(
-							new \GF_Query_Column( $fields[ $condition->left->field_id ]->ID ),
+					if ( ! ( $condition->left && $condition->left instanceof GF_Query_Column ) || ( ! $condition->left->is_entry_column() && ! $condition->left->is_meta_column() ) ) {
+						return new GF_Query_Condition(
+							new GF_Query_Column( $fields[ $condition->left->field_id ]->ID ),
 							$condition->operator,
 							$condition->right
 						);
@@ -1314,9 +1330,9 @@ class View implements \ArrayAccess {
 					foreach ( $query_parameters['order'] as $order ) {
 						[ $column, $_order ] = $order;
 
-						if ( $column && $column instanceof \GF_Query_Column ) {
+						if ( $column && $column instanceof GF_Query_Column ) {
 							if ( ! $column->is_entry_column() && ! $column->is_meta_column() ) {
-								$column = new \GF_Query_Column( $fields[ $column->field_id ]->ID );
+								$column = new GF_Query_Column( $fields[ $column->field_id ]->ID );
 							}
 
 							$q->order( $column, $_order );
@@ -1856,24 +1872,24 @@ class View implements \ArrayAccess {
 		}
 
 		// Show only approved joined entries
-		$condition = new \GF_Query_Condition(
-			new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
-			\GF_Query_Condition::EQ,
-			new \GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
+		$condition = new GF_Query_Condition(
+			new GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+			GF_Query_Condition::EQ,
+			new GF_Query_Literal( \GravityView_Entry_Approval_Status::APPROVED )
 		);
 
-		$condition = \GF_Query_Condition::_or(
+		$condition = GF_Query_Condition::_or(
 			$condition,
-			new \GF_Query_Condition(
-				new \GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
-				\GF_Query_Condition::IS,
-				\GF_Query_Condition::NULL
+			new GF_Query_Condition(
+				new GF_Query_Column( \GravityView_Entry_Approval::meta_key, $join->join_on->ID ),
+				GF_Query_Condition::IS,
+				GF_Query_Condition::NULL
 			)
 		);
 
 		$query_parameters = $query->_introspect();
 
-		$query->where( \GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
+		$query->where( GF_Query_Condition::_and( $query_parameters['where'], $condition ) );
 	}
 
 	/**

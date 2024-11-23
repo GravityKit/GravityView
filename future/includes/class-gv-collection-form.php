@@ -8,6 +8,8 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 
 /**
  * A collection of \GV\Form objects.
+ *
+ * @implements Collection<Form>
  */
 class Form_Collection extends Collection {
 	/**
