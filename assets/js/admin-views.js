@@ -676,15 +676,18 @@
 
 			   case 'mouseup':
 
-				   if ( // If clicking inside the dialog or tooltip
-					   $( e.target ).parents( '.ui-dialog,.ui-tooltip' ).length ||
-
-					   // Or on the dialog or tooltip itself
-					   $( e.target ).is( '.ui-dialog,.ui-tooltip' ) ) {
+				   if ( $( e.target ).closest( '.ui-tooltip' ).length) {
+					   // If clicked inside a tooltip.
 					   close = false;
+				   } else if ( $( e.target ).closest( '.ui-dialog' ).length) {
+					   // If clicked inside a dialog.
+					   if (activeTooltips.length > 0) {
+						   // And there are tooltips active, close only those.
+						   close = 'tooltips';
+					   }
 				   }
 
-					   // For tooltips, clicking on anything outside of the tooltip
+				   // For tooltips, clicking on anything outside the tooltip
 				   // should close it. Not for dialogs.
 				   else if ( activeTooltips.length > 0 ) {
 					   close = true;
@@ -718,10 +721,12 @@
 		   if ( close ) {
 
 			   // Close all open tooltips
-			   activeTooltips.gvTooltip( "close" );
+			   activeTooltips.gvTooltip( 'close' );
 
 			   // Close all open dialogs
-			   $( ".ui-dialog:visible" ).find( '.ui-dialog-content' ).dialog( "close" );
+			   if ( close !== 'tooltips' ) {
+				   $( '.ui-dialog:visible' ).find( '.ui-dialog-content' ).dialog( 'close' );
+			   }
 
 			   // Prevent scrolling window on click close
 			   if ( return_false ) {
@@ -2194,7 +2199,6 @@
 					   );
 				   }
 			   },
-			   closeOnEscape: true,
 			   disabled: true, // Don't open on hover
 			   position: {
 				   my: "center bottom",

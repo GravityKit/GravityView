@@ -230,7 +230,7 @@ function render_template_options( array $templates, ?string $selected_template )
 
 	</div> <?php // end edit view tab ?>
 
-	<div id='search-view'>
+	<div id='search-view' aria-hidden="true">
 
 		<div id='search-fields' class='gv-section'>
 

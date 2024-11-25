@@ -39,7 +39,7 @@
 
 				// [View] hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
-				.on( 'dialogclose', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.closeDialog )
+				.on( 'dialogclose dialogdestroy', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.closeDialog )
 
 				// [WP widget] When opening the WP widget settings, trigger the search fields table
 				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
@@ -144,7 +144,21 @@
 				gvSearchWidget.searchModal = $( '#search-view' );
 			}
 
-			gvSearchWidget.searchModal.appendTo( $( this ).find( '[data-search-fields]' ) );
+			// Add to the end of the stack so the content is in the modal.
+			setTimeout( () => {
+				const sortable = gvSearchWidget.searchModal
+					.find( ".active-drop-field" )
+					.sortable( 'instance' );
+
+				// Sortable needs to be reinitialized when the modal opens.
+				sortable && sortable.destroy(); // Remove sorting if it is active.
+				gvAdminActions.initDroppables( gvSearchWidget.searchModal ); // Add sorting (back).
+			} );
+
+			if ( gvSearchWidget.searchModal ) {
+				gvSearchWidget.searchModal.attr( 'aria-hidden', 'false' );
+				gvSearchWidget.searchModal.appendTo( $( this ).find( '[data-search-fields]' ) );
+			}
 		},
 
 		/**
@@ -157,6 +171,7 @@
 
 			gvSearchWidget.widgetTarget = $( this );
 			if ( gvSearchWidget.searchModal ) {
+				gvSearchWidget.searchModal.attr( 'aria-hidden', 'true' );
 				gvSearchWidget.searchModal.appendTo( $( '#gv-view-configuration-tabs' ) );
 			}
 		},
