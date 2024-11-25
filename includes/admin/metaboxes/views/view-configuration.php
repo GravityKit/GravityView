@@ -234,13 +234,21 @@ function render_template_options( array $templates, ?string $selected_template )
 
 		<div id='search-fields' class='gv-section'>
 
-			<h4><?php esc_html_e( 'Search fields shown.', 'gk-gravityview' ); ?>
+			<h4><?php esc_html_e( 'Search fields shown.', 'gk-gravityview' ); ?></h4>
+
+			<div id="search-active-fields" class="gv-grid">
+				<?php
+				do_action( 'gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/search', 'search' ), 'search', $post->ID, true );
+				?>
+			</div>
+
+			<h4><?php esc_html_e( 'Advanced Search fields shown.', 'gk-gravityview' ); ?>
 				<span><?php esc_html_e( 'If any Advanced Search fields exist, a link will show to toggle them.', 'gk-gravityview' ); ?></span>
 			</h4>
 
-			<div id="edit-active-fields" class="gv-grid">
+			<div id="search-advanced-active-fields" class="gv-grid">
 				<?php
-				do_action( 'gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/search', 'search' ), 'search', $post->ID, true );
+				do_action( 'gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/search-advanced', 'search' ), 'search-advanced', $post->ID, true );
 				?>
 			</div>
 

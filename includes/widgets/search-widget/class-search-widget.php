@@ -48,8 +48,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$settings = array(
 			'search_fields_section' => array(
 				'type' => 'html',
-				'id'   => 'search_fields_section',
-				'desc' => '<!-- Search fields will be added here! 🔎 -->',
+				'desc' => '<div data-search-fields><!-- Search fields will be added here! 🔎 --></div>',
 			),
 			'search_fields' => array(
 				'type' => 'hidden',

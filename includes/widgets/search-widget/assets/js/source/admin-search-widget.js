@@ -20,6 +20,8 @@
 		// holds the current widget settings DOM object
 		widgetTarget: $( '.gv-dialog-options' ),
 
+		searchModal: null,
+
 		selectFields: null,
 
 		wp_widget_id: 'gravityview_search',
@@ -37,6 +39,7 @@
 
 				// [View] hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
+				.on( 'dialogclose', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.closeDialog )
 
 				// [WP widget] When opening the WP widget settings, trigger the search fields table
 				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
@@ -80,7 +83,6 @@
 			gvSearchWidget.widgetTarget = obj.closest( 'div.widget' ).find( 'div.' + gvSearchWidget.wrapClass );
 			// reset fields to the exist appended to the table (if none, it gets undefined)
 			gvSearchWidget.selectFields = null;
-
 		},
 
 		/**
@@ -138,8 +140,25 @@
 			e.preventDefault();
 
 			gvSearchWidget.widgetTarget = $( this );
+			if ( !gvSearchWidget.searchModal ) {
+				gvSearchWidget.searchModal = $( '#search-view' );
+			}
 
-			$( '#search-view' ).appendTo( $('#search_fields_section' ) );
+			gvSearchWidget.searchModal.appendTo( $( this ).find( '[data-search-fields]' ) );
+		},
+
+		/**
+		 * [Specific for View Search Widget]
+		 * Capture the widget dialog and call to render the widget settings content
+		 * @param  {jQuery} e event
+		 */
+		closeDialog: function ( e ) {
+			e.preventDefault();
+
+			gvSearchWidget.widgetTarget = $( this );
+			if ( gvSearchWidget.searchModal ) {
+				gvSearchWidget.searchModal.appendTo( $( '#gv-view-configuration-tabs' ) );
+			}
 		},
 
 		/** Table manipulation */
@@ -659,7 +678,7 @@
 				widgetTarget = e.target ? $( e.target ).parents( '.gv-widget-search-fields, .gv-fields' ) : e.parents( '.gv-widget-search-fields, .gv-fields' );
 				// If one of the search fields uses a "date range", the search mode option input fields become disabled.
 				// In order to pass the selected search mode option to the server, we need to enable the checked input field.
-				$( '.gv-setting-container-search_mode' ).find( 'input:checked:disabled' ).prop('disabled', false);
+				$( '.gv-setting-container-search_mode' ).find( 'input:checked:disabled' ).prop( 'disabled', false );
 			} else {
 				widgetTarget = gvSearchWidget.widgetTarget;
 			}

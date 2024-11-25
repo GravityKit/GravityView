@@ -1129,7 +1129,7 @@
 			   appendTo: thisDialog.parent(),
 			   draggable: false,
 			   resizable: false,
-				width: vcfg.getDialogWidth( thisDialog ),
+			   width: vcfg.getDialogWidth( thisDialog ),
 			   open: function () {
 				   $( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 
@@ -2737,7 +2737,7 @@
 		   e.preventDefault();
 
 		   var vcfg = viewConfiguration;
-			var area = $( e.currentTarget ).parentsUntil( ".active-drop" ).parent();
+		   var area = $( e.currentTarget ).parentsUntil( ".active-drop" ).parent();
 
 		   vcfg.setUnsavedChanges( true );
 

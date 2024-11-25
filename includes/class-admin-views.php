@@ -74,7 +74,7 @@ class GravityView_Admin_Views {
 
 		add_action( 'gk/gravityview/admin-views/row/before', [ $this, 'render_actions' ], 5, 4 );
 		add_action( 'gk/gravityview/admin-views/view/after-zone', [ $this, 'render_add_row' ], 5, 4 );
-		add_filter( 'gk/gravityview/admin-views/view/is-dynamic', [ $this, 'add_dynamic_widgets' ], 0, 3 );
+		add_filter( 'gk/gravityview/admin-views/view/is-dynamic', [ $this, 'set_dynamic_areas' ], 0, 4 );
 	}
 
 	/**
@@ -1349,10 +1349,10 @@ HTML;
 		$widgets   = [];
 		$unique_id = static fn(): string => substr( md5( microtime( true ) ), 0, 13 );
 
-		$header_top   = 'header_' . ($default_widget_areas[0]['1-1'][0]['areaid'] ?? 'top');
-		$header_left  = 'header_' . ($default_widget_areas[1]['1-2 left'][0]['areaid'] ?? 'left');
-		$header_right = 'header_' . ($default_widget_areas[1]['1-2 right'][0]['areaid'] ?? 'right');
-		$footer_right = 'footer_' . ($default_widget_areas[1]['1-2 right'][0]['areaid'] ?? 'right');
+		$header_top   = 'header_' . ( $default_widget_areas[0]['1-1'][0]['areaid'] ?? 'top' );
+		$header_left  = 'header_' . ( $default_widget_areas[1]['1-2 left'][0]['areaid'] ?? 'left' );
+		$header_right = 'header_' . ( $default_widget_areas[1]['1-2 right'][0]['areaid'] ?? 'right' );
+		$footer_right = 'footer_' . ( $default_widget_areas[1]['1-2 right'][0]['areaid'] ?? 'right' );
 
 		if ( ! empty( $post_id ) ) {
 			if ( 'auto-draft' === get_post_status( $post_id ) ) {
@@ -1650,7 +1650,11 @@ HTML;
      * @param string $type The object type (widget or field).
      * @return bool Whether the widgets should be dynamic.
 	 */
-	public function add_dynamic_widgets( bool $is_dynamic, string $_, string $type ): bool {
+	public function set_dynamic_areas( bool $is_dynamic, string $_, string $type, string $zone ): bool {
+		if ( strpos( $zone, 'search' ) === 0 ) {
+			return true;
+		}
+
 		if ( $type !== 'widget' || $is_dynamic ) {
 			return $is_dynamic;
 		}
