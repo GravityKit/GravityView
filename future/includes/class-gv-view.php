@@ -874,6 +874,39 @@ class View implements \ArrayAccess {
 	}
 
 	/**
+	 * Gets the source of the field.
+	 *
+	 * @since $ver$
+	 *
+	 * @param Field $field The field.
+	 * @param View  $view The view.
+	 *
+	 * @return GF_Form|Internal_Source
+	 */
+	public static function get_source( $field, $view ) {
+		if ( ! is_numeric( $field->ID ) ) {
+			return new Internal_Source();
+		}
+
+		$form_id = $field->field->formId ?? null;
+
+		// If the field's form differs from the main view form, get the form from the joined entries.
+		if ( $form_id && $view->form->ID != $form_id && ! empty( $view->joins ) ) {
+			foreach ( $view->joins as $join ) {
+				if ( isset( $join->join_on->ID ) && $join->join_on->ID == $form_id ) {
+					return $join->join_on;
+				}
+			}
+
+			// Edge case where the form cannot be retrieved from the joins.
+			return GF_Form::by_id( $form_id );
+		}
+
+		// Return the main view form.
+		return $view->form;
+	}
+
+	/**
 	 * Determines if a view exists to begin with.
 	 *
 	 * @param int|\WP_Post|null $view The WordPress post ID, a \WP_Post object or null for global $post;
@@ -1691,7 +1724,7 @@ class View implements \ArrayAccess {
 			}
 
 			foreach ( $allowed as $field ) {
-				$source = is_numeric( $field->ID ) ? $view->form : new \GV\Internal_Source();
+				$source = self::get_source( $field, $view );
 
 				$return[] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
 
