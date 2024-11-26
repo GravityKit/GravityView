@@ -29,6 +29,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 class View implements \ArrayAccess {
 
 	/**
+	 * @var string GravityView custom post type.
+	 * */
+	const POST_TYPE = 'gravityview';
+
+	/**
 	 * @var \WP_Post The backing post instance.
 	 */
 	private $post;
@@ -130,7 +135,7 @@ class View implements \ArrayAccess {
 	 */
 	public static function register_post_type() {
 		/** Register only once */
-		if ( post_type_exists( 'gravityview' ) ) {
+		if ( post_type_exists( self::POST_TYPE ) ) {
 			return;
 		}
 
@@ -243,7 +248,7 @@ class View implements \ArrayAccess {
 			'map_meta_cap'        => true,
 		);
 
-		register_post_type( 'gravityview', $args );
+		register_post_type( self::POST_TYPE, $args );
 	}
 
 	/**
@@ -576,7 +581,7 @@ class View implements \ArrayAccess {
 			return $joins;
 		}
 
-		if ( ! $post || 'gravityview' !== get_post_type( $post ) ) {
+		if ( ! $post || self::POST_TYPE !== get_post_type( $post ) ) {
 			gravityview()->log->error( 'Only "gravityview" post types can be \GV\View instances.' );
 			return $joins;
 		}
@@ -672,7 +677,7 @@ class View implements \ArrayAccess {
 	public static function get_unions( $post ) {
 		$unions = array();
 
-		if ( ! $post || 'gravityview' !== get_post_type( $post ) ) {
+		if ( ! $post || self::POST_TYPE !== get_post_type( $post ) ) {
 			gravityview()->log->error( 'Only "gravityview" post types can be \GV\View instances.' );
 			return $unions;
 		}
@@ -726,7 +731,7 @@ class View implements \ArrayAccess {
 	 */
 	public static function from_post( $post ) {
 
-		if ( ! $post || 'gravityview' !== get_post_type( $post ) ) {
+		if ( ! $post || self::POST_TYPE !== get_post_type( $post ) ) {
 			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
 			return null;
 		}
@@ -883,7 +888,7 @@ class View implements \ArrayAccess {
 	 * @return bool Whether the post exists or not.
 	 */
 	public static function exists( $view ) {
-		return 'gravityview' == get_post_type( $view );
+		return self::POST_TYPE == get_post_type( $view );
 	}
 
 	/**
@@ -1778,7 +1783,7 @@ class View implements \ArrayAccess {
 
 				return $caps;
 			case 'edit_post':
-				if ( 'gravityview' === get_post_type( array_pop( $args ) ) ) {
+				if ( self::POST_TYPE === get_post_type( array_pop( $args ) ) ) {
 					return self::restrict( $caps, 'edit_gravityview', $user_id, $args );
 				}
 		endswitch;
