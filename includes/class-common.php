@@ -1158,6 +1158,49 @@ class GVCommon {
 
 
 	/**
+	 * A copy of GFCommon::format_date() without the local timezone adjustment
+	 *
+	 * @since TBD
+	 * 
+	 * @param string $gmt_datetime The UTC date/time value to be formatted.
+	 * @param bool   $is_human     Indicates if a human readable time difference such as "1 hour ago" should be returned when within 24hrs of the current time. Defaults to true.
+	 * @param string $date_format  The format the value should be returned in. Defaults to an empty string; the date format from the WordPress general settings, if configured, or Y-m-d.
+	 * @param bool   $include_time Indicates if the time should be included in the returned string. Defaults to true; the time format from the WordPress general settings, if configured, or H:i.
+	 *
+	 * @return string
+	 * 
+	 */
+	public static function format_date_without_local( $gmt_datetime, $is_human = true, $date_format = '', $include_time = true ) {
+		if ( empty( $gmt_datetime ) ) {
+			return '';
+		}
+
+		$gmt_time = mysql2date( 'G', $gmt_datetime );
+
+		if ( $is_human ) {
+			$time_diff = time() - $gmt_time;
+
+			if ( $time_diff > 0 && $time_diff < DAY_IN_SECONDS ) {
+				return sprintf( esc_html__( '%s ago', 'gravityforms' ), human_time_diff( $gmt_time ) );
+			}
+		}
+
+		if ( empty( $date_format ) ) {
+			$date_format = GFCommon::get_default_date_format();
+		}
+
+		if ( $include_time ) {
+			$time_format = GFCommon::get_default_time_format();
+
+			return sprintf( esc_html__( '%1$s at %2$s', 'gravityforms' ), date_i18n( $date_format, $gmt_time, true ), date_i18n( $time_format, $gmt_time, true ) );
+		}
+
+		return date_i18n( $date_format, $gmt_time, true );
+	}
+
+
+
+	/**
 	 * Allow formatting date and time based on GravityView standards
 	 *
 	 * @since 1.16
@@ -1178,12 +1221,13 @@ class GVCommon {
 	public static function format_date( $date_string = '', $args = array() ) {
 
 		$default_atts = array(
-			'raw'       => false,
-			'timestamp' => false,
-			'diff'      => false,
-			'human'     => false,
-			'format'    => '',
-			'time'      => false,
+			'raw'       		=> false,
+			'timestamp' 		=> false,
+			'diff'      		=> false,
+			'human'     		=> false,
+			'format'    		=> '',
+			'time'      		=> false,
+			'disable_local'		=> false,
 		);
 
 		$atts = wp_parse_args( $args, $default_atts );
@@ -1196,13 +1240,14 @@ class GVCommon {
 		$date_gmt_time        = mysql2date( 'G', $date_string );
 		$date_local_timestamp = GFCommon::get_local_timestamp( $date_gmt_time );
 
-		$format       = \GV\Utils::get( $atts, 'format' );
-		$is_human     = ! empty( $atts['human'] );
-		$is_diff      = ! empty( $atts['diff'] );
-		$is_raw       = ! empty( $atts['raw'] );
-		$is_timestamp = ! empty( $atts['timestamp'] );
-		$include_time = ! empty( $atts['time'] );
-		$time_diff    = strtotime( $date_string ) - current_time( 'timestamp' );
+		$format       	= \GV\Utils::get( $atts, 'format' );
+		$is_human    	= ! empty( $atts['human'] );
+		$is_diff     	= ! empty( $atts['diff'] );
+		$is_raw      	= ! empty( $atts['raw'] );
+		$is_timestamp 	= ! empty( $atts['timestamp'] );
+		$include_time 	= ! empty( $atts['time'] );
+		$disable_local 	= ! empty( $atts['disable_local'] );
+		$time_diff    	= strtotime( $date_string ) - current_time( 'timestamp' );
 
 
 		// If we're using time diff, we want to have a different default format
@@ -1221,10 +1266,14 @@ class GVCommon {
 		} elseif ( $is_diff ) {
 			$formatted_date = sprintf( $format, human_time_diff( $date_gmt_time, current_time( 'timestamp' ) ) );
 		} else {
-			$formatted_date = GFCommon::format_date( $date_string, $is_human, $format, $include_time );
+			if($disable_local){
+				$formatted_date = self::format_date_without_local( $date_string, $is_human, $format, $include_time );
+			}else{
+				$formatted_date = GFCommon::format_date( $date_string, $is_human, $format, $include_time );
+			}
 		}
 
-		unset( $format, $is_diff, $is_human, $is_timestamp, $is_raw, $date_gmt_time, $date_local_timestamp, $default_atts );
+		unset( $format, $is_diff, $is_human, $is_timestamp, $disable_local, $is_raw, $date_gmt_time, $date_local_timestamp, $default_atts );
 
 		return $formatted_date;
 	}

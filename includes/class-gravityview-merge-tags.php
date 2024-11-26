@@ -688,12 +688,13 @@ class GravityView_Merge_Tags {
 		$parsed_modifier = explode( ':', $modifier );
 
 		$atts = [
-			'format'    => self::get_format_merge_tag_modifier_value( $modifier, false ),
-			'human'     => in_array( 'human', $parsed_modifier ), // {date_created:human}
-			'diff'      => in_array( 'diff', $parsed_modifier ), // {date_created:diff}
-			'raw'       => in_array( 'raw', $parsed_modifier ), // {date_created:raw}
-			'timestamp' => in_array( 'timestamp', $parsed_modifier ), // {date_created:timestamp}
-			'time'      => in_array( 'time', $parsed_modifier ),  // {date_created:time}
+			'format'    		=> self::get_format_merge_tag_modifier_value( $modifier, false ),
+			'human'     		=> in_array( 'human', $parsed_modifier ), // {date_created:human}
+			'diff'      		=> in_array( 'diff', $parsed_modifier ), // {date_created:diff}
+			'raw'       		=> in_array( 'raw', $parsed_modifier ), // {date_created:raw}
+			'timestamp' 		=> in_array( 'timestamp', $parsed_modifier ), // {date_created:timestamp}
+			'time'      		=> in_array( 'time', $parsed_modifier ),  // {date_created:time}
+			'disable_local'     => in_array( 'disable_local', $parsed_modifier ),  // {date_created:disable_local}
 		];
 
 		return GVCommon::format_date( $date_or_time_string, $atts );
