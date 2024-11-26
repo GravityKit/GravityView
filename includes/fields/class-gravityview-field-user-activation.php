@@ -105,6 +105,30 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	}
 
 	/**
+	 * Check if the user exists
+	 *
+	 * @since TBD
+	 *
+	 * @param array $form
+	 * @param array $entry
+	 *
+	 * @return bool
+	 */
+	public static function check_if_user_exist( $form, $entry ) {
+		foreach ( $form['fields'] as $field ) {
+			if ( $field->type === 'email' ) {
+
+				$email = rgar( $entry, $field->id );
+				if ( $email ) {
+					return email_exists( $email );
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	/**
 	 * Check if the activation key is valid
 	 *
 	 * @since TBD
@@ -119,11 +143,11 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 		$signup = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}signups WHERE activation_key = %s", $activation_key ) );
 
 		if ( empty( $signup ) ) {
-			return new WP_Error( 'invalid_key', __( 'Invalid activation key.', 'gk-gravityview' ) );
+			return new WP_Error( 'invalid_key', __( 'Invalid activation key', 'gk-gravityview' ) );
 		}
 
 		if ( $signup->active ) {
-			return new WP_Error( 'already_active', __( 'The user is already active.', 'gk-gravityview' ) );
+			return new WP_Error( 'already_active', __( 'The user is already active', 'gk-gravityview' ) );
 		}
 
 		return true;

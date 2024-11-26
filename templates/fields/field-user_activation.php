@@ -30,6 +30,12 @@ if ( ! class_exists( 'GFUserSignups' ) ) {
 	return;
 }
 
+$user_exist = GravityView_Field_User_Activation::check_if_user_exist( $gravityview->view->form, $entry );
+if ( $user_exist ) {
+	echo  __( 'The user is already active', 'gk-gravityview' );
+	return;
+}
+
 $activation_key  = GFUserSignups::get_lead_activation_key( $entry['id'] );
 $user_activation = GravityView_Field_User_Activation::check_activation_key( $activation_key );
 if ( is_wp_error( $user_activation ) ) {
