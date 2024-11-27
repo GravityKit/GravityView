@@ -307,6 +307,14 @@ class gravityview extends \GV\Shortcode {
 			 * Just this view.
 			 */
 		} else {
+			/**
+			 * When viewing a specific View don't render the other Views.
+			 */
+			$selected_view = (int) \GV\Utils::_GET( 'gvid',0 );
+			if ( $selected_view && (int) $view->ID !== $selected_view ) {
+				return self::_return( '' );
+			}
+
 			if ( $is_reembedded ) {
 
 				// Mock the request with the actual View, not the global one
