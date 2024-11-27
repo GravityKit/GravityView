@@ -279,7 +279,7 @@ final class Permalinks {
 	 * @return string The slug.
 	 */
 	public function set_entry_slug( $slug, $entry_id, array $entry ): string {
-		$new_slug = trim( $this->settings->get( 'entry_slug', $slug ) );
+		$new_slug = trim( (string) $this->settings->get( 'entry_slug', $slug ) );
 		$view     = $this->get_current_view();
 
 		if ( $view && (int) $view->form->ID === (int) $entry['form_id'] ) {
