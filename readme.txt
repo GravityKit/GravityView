@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🐛 Fixed
+* Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.
+
 = 2.32 on November 21, 2024 =
 
 This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.

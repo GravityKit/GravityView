@@ -29,6 +29,9 @@ class GravityView_Admin_Views {
 	function __construct() {
 		add_action( 'save_post', array( $this, 'save_postdata' ) );
 
+		// Remove unnecessary noise from the Views overview page.
+		add_action( 'current_screen', [ $this, 'disable_views_overview_notices' ] );
+
 		// set the blocklist field types across the entire plugin
 		add_filter( 'gravityview_blocklist_field_types', array( $this, 'default_field_blocklist' ), 10, 2 );
 
@@ -72,6 +75,50 @@ class GravityView_Admin_Views {
 		add_action( 'gk/gravityview/admin-views/row/before', [ $this, 'render_actions' ], 5, 4 );
 		add_action( 'gk/gravityview/admin-views/view/after-zone', [ $this, 'render_add_row' ], 5, 4 );
 		add_filter( 'gk/gravityview/admin-views/view/is-dynamic', [ $this, 'add_dynamic_widgets' ], 0, 3 );
+	}
+
+	/**
+	 * Disables all notices and footer text on the Views overview page.
+	 *
+	 * @since $ver$
+	 *
+	 * @return void
+	 */
+	public function disable_views_overview_notices() {
+		if ( ! $this->is_views_overview_page() ) {
+			return;
+		}
+		add_action(
+			'admin_enqueue_scripts',
+			function () {
+				remove_all_actions( 'admin_notices' );
+			}
+		);
+		add_filter(
+			'admin_enqueue_scripts',
+			function () {
+				remove_all_filters( 'update_footer' );
+			}
+		);
+		add_action(
+			'admin_footer_text',
+			function () {
+				return '';
+			}
+		);
+	}
+
+	/**
+	 * Checks if the current page is the Views overview page.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool
+	 */
+	public function is_views_overview_page(): bool {
+		$screen = get_current_screen();
+
+		return $screen && View::POST_TYPE === $screen->post_type && 'edit' === $screen->base;
 	}
 
 	/**
@@ -1198,6 +1245,7 @@ HTML;
 									</div>
 								<div class="gv-droppable-area-action">
 									<a href="#" class="gv-add-field button button-link button-hero" title=""
+									    data-title="<?php echo esc_attr( $button_label ); ?>"
 									    data-templateid="<?php echo esc_attr( $template_id ); ?>"
 										data-objecttype="<?php echo esc_attr( $type ); ?>"
 										data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"
