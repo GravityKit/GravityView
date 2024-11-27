@@ -25,6 +25,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.
+* Individual Checkboxes field inputs incorrectly exported in CSV.
+
+#### 💻 Developer Updates
+* Added `gravityview/template/field/csv/tick` filter to programmatically modify the checkbox "check" output in CSV.
 
 = 2.32 on November 21, 2024 =
 
@@ -44,7 +48,6 @@ This release adds a new form notification option for updated entries, resolves f
 #### 💻 Developer Updates
 * Added `gk/gravityview/view/entries/join-conditions` filter to modify the join conditions applied when retrieving View entries.
 * Added `gk/gravityview/template/options` filter to programmatically modify field settings in the View editor.
-* Added `gravityview/template/field/csv/tick` filter to programmatically modify the checkbox "check" output in CSV.
 * Added `gravityview/row-added` JavaScript event, triggered when a new row is added to a widget or field area.
 
 = 2.31.1 on November 8, 2024 =
