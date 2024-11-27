@@ -127,7 +127,7 @@ class GravityView_Lightbox_Entry {
 		gravityview()->request = new GravityView_Lightbox_Entry_Request( $view, $entry );
 
 		if ( $delete_nonce ) {
-			return $this->process_delete_entry( $view );
+			return $this->process_delete_entry( $view, $entry, $form );
 		}
 
 		if ( $duplicate_nonce ) {
@@ -339,7 +339,11 @@ class GravityView_Lightbox_Entry {
 		}
 
 		$reload_page     = 1 === (int) $view->settings->get( 'edit_redirect' ) ? 'true' : 'false';
-		$redirect_to_url = 2 === (int) $view->settings->get( 'edit_redirect' ) ? esc_url( $view->settings->get( 'edit_redirect_url', '' ) ) : '';
+		$redirect_to_url = 2 === (int) $view->settings->get( 'edit_redirect' ) ? $view->settings->get( 'edit_redirect_url', '' ) : '';
+
+		if ( $redirect_to_url ) {
+			$redirect_to_url = esc_url( GravityView_API::replace_variables( $redirect_to_url, $form, $entry->as_entry() ) );
+		}
 
 		add_filter( 'gravityview/edit_entry/success', function ( $message ) use ( $view, $reload_page, $redirect_to_url ) {
 			return <<<JS
@@ -359,12 +363,15 @@ class GravityView_Lightbox_Entry {
 	 * Processes the delete entry action.
 	 *
 	 * @since 2.29.0
+	 * @since TBD Added $entry and $form parameters.
 	 *
-	 * @param View $view The View object.
+	 * @param View     $view  The View object.
+	 * @param GF_Entry $entry The entry object.
+	 * @param array    $form  The form data.
 	 *
 	 * @return WP_REST_Response
 	 */
-	private function process_delete_entry( $view ) {
+	private function process_delete_entry( $view, $entry, $form ) {
 		global $wp;
 
 		add_filter( 'wp_redirect', '__return_false' ); // Prevent redirection after the entry is deleted.
@@ -373,6 +380,10 @@ class GravityView_Lightbox_Entry {
 
 		$reload_page     = GravityView_Delete_Entry::REDIRECT_TO_MULTIPLE_ENTRIES_VALUE === (int) $view->settings->get( 'delete_redirect' ) ? 'true' : 'false';
 		$redirect_to_url = GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE === (int) $view->settings->get( 'delete_redirect' ) ? esc_url( $view->settings->get( 'delete_redirect_url', '' ) ) : '';
+
+		if ( $redirect_to_url ) {
+			$redirect_to_url = esc_url( GravityView_API::replace_variables( $redirect_to_url, $form, $entry->as_entry() ) );
+		}
 
 		ob_start();
 
@@ -477,7 +488,7 @@ class GravityView_Lightbox_Entry {
 		 *
 		 * @action `gk/gravityview/lightbox/entry/before-output`
 		 *
-		 * @since TBD
+		 * @since 2.31.0
 		 *
 		 * @param array $args {
 		 *     @type View         $view            The View object being rendered.
@@ -494,7 +505,7 @@ class GravityView_Lightbox_Entry {
 			GravityView_API::replace_variables(
 				$view->settings->get( 'single_title', '' ),
 				$form,
-				$entry
+				$entry->as_entry()
 			)
 		);
 
@@ -513,7 +524,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/head-before`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -541,7 +552,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/head-after`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -559,7 +570,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/content-before`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -577,7 +588,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/content-after`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -595,7 +606,7 @@ class GravityView_Lightbox_Entry {
 					 *
 					 * @action `gk/gravityview/lightbox/entry/output/footer-after`
 					 *
-					 * @since TBD
+					 * @since 2.31.0
 					 *
 					 * @param string   $type  The type of the entry view (single or edit).
 					 * @param View     $view  The View object being rendered.
@@ -711,7 +722,7 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Performs actions during <head> output.
 	 *
-	 * @since TBD
+	 * @since 2.31.0
 	 *
 	 * @param string $type The type of the entry view (single or edit).
 	 * @param View $view The View object being rendered.

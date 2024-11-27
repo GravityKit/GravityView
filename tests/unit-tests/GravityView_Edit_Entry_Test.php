@@ -476,6 +476,11 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 *  and second item the render instance, and third item is the reloaded entry.
 	 */
 	private function _emulate_render( $form, $view, $entry ) {
+		// Get clean form every test.
+		if ( method_exists( GFFormDisplay::class, 'flush_cached_forms' ) ) {
+			GFFormDisplay::flush_cached_forms();
+		}
+
 		$loader = GravityView_Edit_Entry::getInstance();
 		$render = $loader->instances['render'];
 

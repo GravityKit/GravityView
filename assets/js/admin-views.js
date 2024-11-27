@@ -259,7 +259,7 @@
 		   ;
 		   // End bind to $( document.body )
 
-		   $( window ).resize( function() {
+		   $( window ).on( 'resize', function () {
 
 			   var $open_dialog = $( ".ui-dialog:visible" ).find( '.ui-dialog-content' );
 
@@ -2071,9 +2071,10 @@
 			   tooltipClass: 'gravityview-item-picker-tooltip top'
 		   } )
 			   // add title attribute so the tooltip can continue to work (jquery ui bug?)
-			   .attr( "title", "" ).on( 'mouseout focusout', function ( e ) {
-			   e.stopImmediatePropagation();
-		   } )
+			   .attr( 'title', function() {
+				   return $( this ).attr( 'title' ) || $( this ).data( 'title' ) || '';
+			   } )
+			   .on( 'mouseout focusout', e => e.stopImmediatePropagation() )
 			   .on( 'click', function ( e, data ) {
 				   // add title attribute so the tooltip can continue to work (jquery ui bug?)
 				   $( this ).attr( "title", "" );
@@ -3205,7 +3206,8 @@
 	   window.gvAdminActions = {
 		   initTooltips: viewConfiguration.init_tooltips,
 		   removeTooltips: viewConfiguration.remove_tooltips,
-		   showDialog: viewConfiguration.showDialog
+		   showDialog: viewConfiguration.showDialog,
+		   initDroppables: viewConfiguration.init_droppables
 	   };
 
 	   $( document.body ).trigger( 'gravityview/loaded' );
