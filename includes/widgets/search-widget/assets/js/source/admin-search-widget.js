@@ -146,12 +146,14 @@
 
 			// Add to the end of the stack so the content is in the modal.
 			setTimeout( () => {
-				const sortable = gvSearchWidget.searchModal
-					.find( ".active-drop-field" )
-					.sortable( 'instance' );
+				const $sortables = gvSearchWidget.searchModal.find( '.active-drop-field' );
 
 				// Sortable needs to be reinitialized when the modal opens.
-				sortable && sortable.destroy(); // Remove sorting if it is active.
+				$sortables.each( ( _, el ) => {
+					const sortable = $( el ).sortable( 'instance' );
+					sortable && sortable.destroy(); // Remove sorting if it is active.
+				} );
+
 				gvAdminActions.initDroppables( gvSearchWidget.searchModal ); // Add sorting (back).
 			} );
 
