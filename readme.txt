@@ -26,6 +26,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Fixed: Custom permalinks were not used on embedded Views.
 * Fixed: When multiple Views were embedded on the same page, it would show the other Views when displaying a single entry.
 
+__Developer updates__:
+* Added `gravityview/shortcode/after-processing` action after a `[gravityview]` shortcode is finished.
+
 = 2.32 on November 21, 2024 =
 
 This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.
