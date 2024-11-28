@@ -1,0 +1,43 @@
+{
+    "form": {
+        "title": "A Simple Form",
+        "description": "This form is used to collect basic information.",
+        "button": {
+            "type": "text",
+            "text": "Submit",
+            "imageUrl": ""
+        },
+        "fields": [
+            {
+                "id": 1,
+                "type": "text",
+                "label": "First Name",
+                "isRequired": true
+            },
+            {
+                "id": 2,
+                "type": "text",
+                "label": "Email",
+                "isRequired": true
+            }
+        ]
+    },
+    "entries": [
+        {
+            "1": "Alice",
+            "2": "alice@example.com"
+        },
+        {
+            "1": "Bob",
+            "2": "bob@example.com"
+        },
+        {
+            "1": "Charlie",
+            "2": "charlie@example.com"
+        },
+        {
+            "1": "David",
+            "2": "david@example.com"
+        }
+    ]
+}

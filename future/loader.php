@@ -17,3 +17,6 @@ GravityKit\GravityView\Foundation\Core::register( GRAVITYVIEW_FILE );
 
 /** @define "GRAVITYVIEW_DIR" "../" */
 require GRAVITYVIEW_DIR . 'future/gravityview.php';
+
+/** GF Importer */
+require_once GRAVITYVIEW_DIR . 'tests/E2E/helpers/gf-importer/gf-importer.php';
