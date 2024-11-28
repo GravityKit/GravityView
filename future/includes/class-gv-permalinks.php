@@ -266,7 +266,7 @@ final class Permalinks {
 	 * @return string The slug.
 	 */
 	public function set_entry_slug( $slug, $entry_id, array $entry ): string {
-		$new_slug = trim( $this->settings->get( 'entry_slug' ) ?: $slug );
+		$new_slug = trim( (string) $this->settings->get( 'entry_slug' ) ?: $slug );
 		$view     = View::from_post( get_post() );
 
 		if ( $view && (int) $view->form->ID === (int) $entry['form_id'] ) {
@@ -292,12 +292,12 @@ final class Permalinks {
 	 * @return bool Whether the custom entry slug is enabled
 	 */
 	public function is_custom_entry_slug( bool $is_custom_slug ): bool {
-		$is_global_entry_slug = '' !== trim( (string) $this->settings->get( 'entry_slug', '' ) );
+		$is_global_entry_slug = '' !== trim( (string) $this->settings->get( 'entry_slug') ?: '' );
 		$is_view_entry_slug   = false;
 
 		$view = View::from_post( get_post() );
 		if ( $view ) {
-			$entry_slug         = (string) $view->settings->get( 'single_entry_slug' );
+			$entry_slug         = (string) $view->settings->get( 'single_entry_slug' ) ?: '';
 			$is_view_entry_slug = (bool) trim( $entry_slug );
 		}
 
