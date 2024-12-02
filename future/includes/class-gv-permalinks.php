@@ -22,6 +22,16 @@ final class Permalinks {
 	private Plugin_Settings $settings;
 
 	/**
+	 * A memoization of the current View.
+	 *
+	 * This is used to determine the View, when rendering through a short code.
+	 *
+	 * @since $ver$
+	 * @var View|null
+	 */
+	private ?View $current_view;
+
+	/**
 	 * The default slug values.
 	 *
 	 * @since 2.29.0
@@ -170,6 +180,9 @@ final class Permalinks {
 
 		add_action( 'init', [ $this, 'maybe_update_rewrite_rules' ], 1 );
 		add_action( 'admin_enqueue_scripts', [ $this, 'add_view_settings_scripts' ], 1500 );
+
+		add_action( 'gravityview/shortcode/before-processing', [ $this, 'capture_view' ] );
+		add_action( 'gravityview/shortcode/after-processing', [ $this, 'clear_captured_view' ] );
 	}
 
 	/**
@@ -267,7 +280,7 @@ final class Permalinks {
 	 */
 	public function set_entry_slug( $slug, $entry_id, array $entry ): string {
 		$new_slug = trim( (string) $this->settings->get( 'entry_slug' ) ?: $slug );
-		$view     = View::from_post( get_post() );
+		$view     = $this->get_current_view();
 
 		if ( $view && (int) $view->form->ID === (int) $entry['form_id'] ) {
 			$new_slug = trim( (string) $view->settings->get( 'single_entry_slug' ) ?: $new_slug );
@@ -295,7 +308,7 @@ final class Permalinks {
 		$is_global_entry_slug = '' !== trim( (string) $this->settings->get( 'entry_slug') ?: '' );
 		$is_view_entry_slug   = false;
 
-		$view = View::from_post( get_post() );
+		$view = $this->get_current_view();
 		if ( $view ) {
 			$entry_slug         = (string) $view->settings->get( 'single_entry_slug' ) ?: '';
 			$is_view_entry_slug = (bool) trim( $entry_slug );
@@ -741,5 +754,44 @@ final class Permalinks {
 		];
 
 		return $scripts;
+	}
+
+	/**
+	 * Captures the current View when it is rendered through a shortcode or block.
+	 * @since $ver$
+	 * @param View|null $view The View object.
+	 */
+	public function capture_view( $view ): void {
+		/**
+		 * When viewing an entry don't render multiple views.
+		 */
+		$selected_view = (int) ( $_GET['gvid'] ?? 0 );
+		if ( $selected_view && (int) $view->ID !== $selected_view ) {
+			return;
+		}
+
+		if ( $view instanceof View ) {
+			$this->current_view = $view;
+		}
+	}
+
+	/**
+	 * Clears the captured View object.
+	 *
+	 * @since $ver$
+	 */
+	public function clear_captured_view(): void {
+		$this->current_view = null;
+	}
+
+	/**
+	 * Returns the current View.
+	 *
+	 * @since $ver$
+	 */
+	private function get_current_view(): ?View {
+		$view = $this->current_view ?? View::from_post( get_post() );
+
+		return $view instanceof View ? $view : null;
 	}
 }
