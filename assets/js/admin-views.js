@@ -190,7 +190,7 @@
 			   // Double-clicking a field/widget label opens settings
 			   .on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
 
-			   .on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
+			   .on( 'change', "#gravityview_settings", vcfg.changedSettingsAction )
 
 			   .on( 'click', '.gv-field-details--toggle', function( e ) {
 
@@ -367,6 +367,109 @@
 		*/
 	   altKeyListener: function( e ) {
 		   viewConfiguration.altKey = e.altKey;
+	   },
+
+	   /**
+		* Manages all actions required when the settings are updated.
+		*
+		* @since $ver$
+		*
+		* @param {Event} event
+		*/
+	   changedSettingsAction: function (event) {
+		   viewConfiguration.validateField( $( event.target ) );
+		   viewConfiguration.zebraStripeSettings();
+	   },
+
+	   /**
+		* Validates the field when its value changes.
+		*
+		* @since $ver$
+		*
+		* @param {jQuery} $field
+		*/
+	   validateField: function ( $field ) {
+		   var rules = $field.data( 'rules' );
+		   if ( ! rules ) {
+			   return;
+		   }
+
+		   var error = viewConfiguration.validateValue( $field.val(), rules );
+		   $field.toggleClass( 'gv-error', !! error );
+		   $field.parent().find( '.gv-error-message' ).remove();
+		   if ( error ) {
+			   $( '<div>' ).addClass( 'gv-error-message' ).text( error ).insertAfter( $field );
+		   }
+	   },
+
+	   /**
+		* Validates a value against a set of rules.
+		*
+		* @since $ver$
+		*
+		* @param {any} value - The value to validate.
+		* @param {Array} rules - The rules to validate against.
+		* @returns {String|undefined} - Error message. Empty if valid.
+		*/
+	   validateValue( value, rules ) {
+		   if ( ! rules ) {
+			   return;
+		   }
+
+		   var validators = viewConfiguration.getValidators();
+		   for ( var i in rules ) {
+			   if ( ! rules.hasOwnProperty( i ) ) {
+				   continue;
+			   }
+			   var ruleset = rules[ i ],
+				   rule = ruleset.rule,
+				   message = ruleset.message,
+				   param = '',
+				   isValid = true;
+
+			   // Split the rule to get the rule parameter. Example: max:5, rule - max, param - 5.
+			   if ( rule.includes( ':' ) ) {
+				   var parts = rule.split( ':' );
+				   rule = parts[ 0 ];
+				   param = parts[ 1 ];
+			   }
+			   if ( validators[ rule ] ) {
+				   isValid = validators[ rule ]( value, param );
+			   }
+			   if ( ! isValid ) {
+				   return message;
+			   }
+		   }
+	   },
+
+	   /**
+		* Gets a list of validation callbacks.
+		*
+		* @since $ver$
+		*
+		* @returns {Object} - An object containing validation callbacks.
+		*/
+	   getValidators: function () {
+		   return {
+			   required: function ( value ) {
+				   return value !== null && value !== undefined && value.toString().trim() !== '';
+			   },
+			   max: function ( value, max ) {
+				   return value !== null && value !== undefined && Number( value ) <= max;
+			   },
+			   min: function ( value, min ) {
+				   return value !== null && value !== undefined && Number( value ) >= min;
+			   },
+			   email: function ( value ) {
+				   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test( value );
+			   },
+			   integer: function ( value ) {
+				   return Number.isInteger ? Number.isInteger( Number( value ) ) : Number( value ) % 1 === 0;
+			   },
+			   matches: function ( value, pattern ) {
+				   return new RegExp( pattern ).test( value );
+			   },
+		   };
 	   },
 
 	   /**
