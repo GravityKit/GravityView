@@ -328,6 +328,19 @@ function gravityview_get_directory_widgets( $post_id ) {
 }
 
 /**
+ * Get the search fields as configured for a View.
+ *
+ * @since $ver$
+ *
+ * @param int $view_id The View ID.
+ *
+ * @return array
+ */
+function gravityview_get_directory_search( int $view_id ): array {
+	return (array) get_post_meta( $view_id, '_gravityview_directory_search', true );
+}
+
+/**
  * Set the widgets, as configured for a View
  *
  * @since 1.17.4
@@ -339,6 +352,20 @@ function gravityview_get_directory_widgets( $post_id ) {
  */
 function gravityview_set_directory_widgets( $post_id, $widgets = array() ) {
 	return update_post_meta( $post_id, '_gravityview_directory_widgets', $widgets );
+}
+
+/**
+ * Set the Search fields, as configured for a View.
+ *
+ * @since $ver$
+ *
+ * @param int   $post_id       The post ID.
+ * @param array $search_fields Array of search fields.
+ *
+ * @return int|bool
+ */
+function gravityview_set_directory_search( int $post_id, array $search_fields = [] ) {
+	return update_post_meta( $post_id, '_gravityview_directory_search', $search_fields );
 }
 
 /**

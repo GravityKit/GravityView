@@ -2,14 +2,14 @@
 /**
  * GravityView preset template
  *
- * @file class-gravityview-preset-website-showcase.php
- * @package   GravityView
+ * @file      class-gravityview-preset-website-showcase.php
+ * @since     1.15
  * @license   GPL2+
  * @author    GravityView <hello@gravityview.co>
  * @link      http://gravityview.co
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.15
+ * @package   GravityView
  */
 
 use GravityKit\GravityView\LayoutBuilder\Extension;
@@ -21,16 +21,15 @@ use GV\Grid;
  */
 class GravityView_Default_Template_Search extends GravityView_Template {
 
-	function __construct( $id = 'search', $settings = array() ) {
-
-		$search_settings = array(
+	function __construct( $id = 'search', $settings = [] ) {
+		$search_settings = [
 			'slug'        => 'search',
 			'type'        => 'internal',
 			'label'       => __( 'Search', 'gk-gravityview' ),
 			'description' => __( 'Display a search bar.', 'gk-gravityview' ),
 			'logo'        => plugins_url( 'includes/presets/default-table/logo-default-table.png', GRAVITYVIEW_FILE ),
 			'css_source'  => gravityview_css_url( 'table-view.css', GRAVITYVIEW_DIR . 'templates/css/' ),
-		);
+		];
 
 		$settings = wp_parse_args( $settings, $search_settings );
 
@@ -40,10 +39,7 @@ class GravityView_Default_Template_Search extends GravityView_Template {
 		 */
 		$field_options = [];
 
-		$areas = Grid::prefixed(
-			'search',
-			static fn() => [ Grid::get_row_by_type( '100' ) ],
-		);
+		$areas = [ Grid::get_row_by_type( '100' ) ];
 
 		parent::__construct( $id, $settings, $field_options, $areas );
 	}

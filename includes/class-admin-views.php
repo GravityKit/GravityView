@@ -13,6 +13,7 @@
 
 /** If this file is called directly, abort. */
 
+use GV\Field_Collection;
 use GV\Grid;
 use GV\Plugin;
 use GV\View;
@@ -784,6 +785,12 @@ HTML;
 			}
 			$statii['directory_widgets'] = gravityview_set_directory_widgets( $post_id, $_POST['widgets'] );
 
+			// Visible search fields.
+			if ( empty( $_POST['searchs'] ) ) {
+				$_POST['searchs'] = array();
+			}
+
+			$statii['directory_search'] = gravityview_set_directory_search( $post_id, $_POST['searchs'] );
 		} // end save view configuration
 
 		/**
@@ -1532,14 +1539,28 @@ HTML;
 			 * Modifies the template area's before rendering.
 			 *
 			 * @filter `gk/gravityview/admin-views/view/template/active-areas`
-			 * @since 2.31.0
-
-			 * @param array $template_areas The template areas.
-			 * @param string $template_id Template ID.
-			 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
-			 * @param array $fields The fields for the View.
+			 * @since  2.31.0
+			 *
+			 * @param array  $template_areas The template areas.
+			 * @param string $template_id    Template ID.
+			 * @param string $context        Current View context: `directory`, `single`, or `edit` (default: 'single')
+			 * @param array  $fields         The fields for the View.
 			 */
-			$fields         = (array) gravityview_get_directory_fields( $post_id, true, $form_id );
+
+			$is_search = stripos( $context, 'search' ) === 0;
+			$fields    = $is_search
+				? gravityview_get_directory_search( $post_id )
+				: (array) gravityview_get_directory_fields( $post_id, true, $form_id );
+
+			// Todo, move to hook.
+			if ( $is_search ) {
+				$collection = Field_Collection::from_configuration( gravityview_get_directory_search( $post_id ) );
+				$rows       = Grid::get_rows_from_collection( $collection, $context );
+				if ( $rows ) {
+					$template_areas = $rows;
+				}
+			}
+
 			$template_areas = (array) apply_filters(
 				'gk/gravityview/admin-views/view/template/active-areas',
 				$template_areas,
@@ -1547,21 +1568,22 @@ HTML;
 				$context,
 				$fields
 			);
-			$type           = stripos( $context, 'search' ) === 0 ? 'search' : 'field';
-			$is_dynamic     = $this->is_dynamic( $template_id, $type, $context );
+
+			$type       = $is_search ? 'search' : 'field';
+			$is_dynamic = $this->is_dynamic( $template_id, $type, $context );
 
 			ob_start();
 			$this->render_active_areas( $template_id, $type, $context, $template_areas, $fields );
 
 			/**
 			 * Allows additional content after the zone was rendered.
-             *
+			 *
 			 * @filter `gk/gravityview/admin/view/after-zone`
-
+			 *
 			 * @param string $template_id Template ID.
-             * @param string $type The zone type (field or widget).
-			 * @param string $context Current View context: `directory`, `single`, or `edit` (default: 'single')
-			 * @param bool $is_dynamic Whether the zone is dynamic.
+			 * @param string $type        The zone type (field or widget).
+			 * @param string $context     Current View context: `directory`, `single`, or `edit` (default: 'single')
+			 * @param bool   $is_dynamic  Whether the zone is dynamic.
 			 */
 			do_action( 'gk/gravityview/admin-views/view/after-zone', $template_id, $type, $context, $is_dynamic );
 
