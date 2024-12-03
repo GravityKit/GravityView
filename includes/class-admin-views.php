@@ -1067,10 +1067,15 @@ HTML;
 	function render_active_areas( $template_id, $type, $zone, $rows, $values ) {
 		global $post;
 
-		if ( 'widget' === $type ) {
-			$button_label = __( 'Add Widget', 'gk-gravityview' );
-		} else {
-			$button_label = __( 'Add Field', 'gk-gravityview' );
+		switch( $type ){
+			case 'widget':
+				$button_label = __( 'Add Widget', 'gk-gravityview' );
+				break;
+			case 'search':
+				$button_label = __( 'Add Search Field', 'gk-gravityview' );
+				break;
+			default:
+				$button_label = __( 'Add Field', 'gk-gravityview' );
 		}
 
 		$is_dynamic = $this->is_dynamic( $template_id, $type, $zone );
@@ -1535,8 +1540,14 @@ HTML;
 			 * @param array $fields The fields for the View.
 			 */
 			$fields         = (array) gravityview_get_directory_fields( $post_id, true, $form_id );
-			$template_areas = (array) apply_filters( 'gk/gravityview/admin-views/view/template/active-areas', $template_areas, $template_id, $context, $fields );
-			$type           = 'field';
+			$template_areas = (array) apply_filters(
+				'gk/gravityview/admin-views/view/template/active-areas',
+				$template_areas,
+				$template_id,
+				$context,
+				$fields
+			);
+			$type           = stripos( $context, 'search' ) === 0 ? 'search' : 'field';
 			$is_dynamic     = $this->is_dynamic( $template_id, $type, $context );
 
 			ob_start();
