@@ -1619,7 +1619,7 @@ $dialog-button-padding: 5px;
 
 .gv-dialog {
 
-	&.ui-widget-content > div {
+	&.ui-widget-content > div:not(.ui-tooltip) {
 		padding-left: $dialog-padding;
 		padding-right: $dialog-padding;
 	}

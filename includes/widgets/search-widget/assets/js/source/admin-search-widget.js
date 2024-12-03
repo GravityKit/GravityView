@@ -139,6 +139,9 @@
 		openDialog: function ( e ) {
 			e.preventDefault();
 
+			// Remove ui-front to add field dialogs to <body>, fixing their appearance.
+			$( this ).closest( '[role="dialog"]' ).removeClass( 'ui-front' );
+
 			gvSearchWidget.widgetTarget = $( this );
 			if ( !gvSearchWidget.searchModal ) {
 				gvSearchWidget.searchModal = $( '#search-view' );
@@ -146,7 +149,7 @@
 
 			// Add to the end of the stack so the content is in the modal.
 			setTimeout( () => {
-				const $sortables = gvSearchWidget.searchModal.find( '.active-drop-field' );
+				const $sortables = gvSearchWidget.searchModal.find( '.active-drop-search' );
 
 				// Sortable needs to be reinitialized when the modal opens.
 				$sortables.each( ( _, el ) => {
