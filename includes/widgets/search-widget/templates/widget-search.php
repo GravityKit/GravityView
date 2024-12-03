@@ -29,7 +29,7 @@ $search_form_action = \GV\Utils::get( $data, 'search_form_action', '' );
 	do_action( 'gravityview_search_widget_fields_before', $this );
 
 	$has_inputs = false;
-	foreach( array_merge( $search_fields['search_search-fields'], $permalink_fields ) as $search_field ) {
+	foreach( array_merge( $search_fields, $permalink_fields ) as $search_field ) {
 
 		/**
 		 * @action `gravityview_search_widget_field_before` Before each search input is rendered (other than the submit button)
