@@ -280,7 +280,6 @@
 			   $open_dialog.dialog( 'option', 'width', window_width );
 		   });
 
-
 		   // Make sure the user intends to leave the page before leaving.
 		   window.addEventListener('beforeunload', ( event) => {
 			   if ( vcfg.hasUnsavedChanges ) {
@@ -395,10 +394,14 @@
 		   }
 
 		   var error = viewConfiguration.validateValue( $field.val(), rules );
+
+		   error ? viewConfiguration.disable_publish() : viewConfiguration.enable_publish();
+
 		   $field.toggleClass( 'gv-error', !! error );
+
 		   $field.parent().find( '.gv-error-message' ).remove();
 		   if ( error ) {
-			   $( '<div>' ).addClass( 'gv-error-message' ).text( error ).insertAfter( $field );
+			   $( '<div>', { class: 'gv-error-message', text: error } ).insertAfter( $field );
 		   }
 	   },
 
