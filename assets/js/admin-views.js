@@ -429,7 +429,7 @@
 
 			   // Split the rule to get the rule parameter. Example: max:5, rule - max, param - 5.
 			   if ( rule.includes( ':' ) ) {
-				   var parts = rule.split( ':' );
+				   var parts = rule.split( /:(.+)/ ); // Split only on the first ":"
 				   rule = parts[ 0 ];
 				   param = parts[ 1 ];
 			   }

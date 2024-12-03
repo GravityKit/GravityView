@@ -189,8 +189,41 @@ class View_Settings extends Settings {
 					'type'        => 'text',
 					'class'       => 'code widefat',
 					'value'       => '',
-					'placeholder' => 'https://www.example.com',
+					'placeholder' => 'https://www.example.com/{field:1}',
 					'requires'    => 'no_entries_options=2',
+					'validation' => [
+						[
+							'rule'    => 'required',
+							'message' => __( 'Field is required', 'gk-gravityview' ),
+						],
+						/**
+						 * Valid format examples:
+						 * //foo.bar
+						 * //foo.bar/{field:1}
+						 * //foo.bar/{field:1}:8080?name=value#fragment
+						 * http://foo.bar/{field:1}
+						 * https://foo.bar/{field:1}
+						 * https://foo.bar/{field:1}:8080?name=value#fragment
+						 * http://foo.bar
+						 * https://foo.bar/path/to/resource
+						 * http://192.168.0.1:8080/query?name=value#fragment
+						 * https://[2001:db8::1]:443/resource
+						 * {field:1}
+						 *
+						 * Invalid examples:
+						 * //foo - Invalid because it lacks a valid domain name after //.
+						 * htp://foo.bar - Misspelled protocol http (should not match).
+						 * foo.bar - Missing protocol (http:// or https://) or leading //.
+						 * https://foo - Incomplete domain; needs at least a .tld (e.g., .com).
+						 * http://foo - Same as above; incomplete domain.
+						 * foo.bar/{field:1} - Missing protocol (http:// or https://) or leading //.
+						 * foo - No protocol, domain, or valid structure.
+						 **/
+						[
+							'rule'    => 'matches:^\s*(https?:\/\/|\/\/|{[a-zA-Z0-9_:]+})([a-zA-Z0-9\-._~%!$&()*+,;=]+@)?(([a-zA-Z0-9\-._~]+\.[a-zA-Z]{2,}|\[[a-fA-F0-9:.]+\])|(\d{1,3}(\.\d{1,3}){3}))?(:[0-9]+)?(\/[^\s?#{}]*({[a-zA-Z0-9_:]+})?[^\s?#{}]*)?(\?[^\s#{}]*)?(#[^\s{}]*)?\s*$',
+							'message' => __( 'Must be a valid URL. Can contain merge tags.', 'gk-gravityview' ),
+						],
+					],
 				),
 				'no_search_results_text'      => array(
 					'label'             => __( '"No Search Results" Text', 'gk-gravityview' ),
