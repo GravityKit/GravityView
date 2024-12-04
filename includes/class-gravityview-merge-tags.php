@@ -85,6 +85,11 @@ class GravityView_Merge_Tags {
 	 */
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
 
+		// Handle subfields
+		if( is_array( $raw_value ) && isset( $raw_value[ $merge_tag ] ) && $raw_value[ $merge_tag ] ) {
+			$raw_value = $raw_value[ $merge_tag ];
+		}
+
 		// No modifier was set or the raw value was empty
 		if ( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
 			return $value;
@@ -137,7 +142,7 @@ class GravityView_Merge_Tags {
 				}
 
 				// The called method is passed the raw value and the full matches array
-				$return = self::$method( $return, $matches, $value, $field, $passed_modifier );
+				$return = self::$method( $return, $matches, $value, $field, $passed_modifier, $merge_tag );
 				break;
 			}
 		}
@@ -206,10 +211,11 @@ class GravityView_Merge_Tags {
 	 * @param string $value
 	 * @param array  $field
 	 * @param string $modifier
+	 * @param string $merge_tag
 	 *
 	 * @return string
 	 */
-	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier ) {
+	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier, $merge_tag ) {
 		$format = self::get_format_merge_tag_modifier_value( $modifier );
 
 		if ( ! $format ) {
@@ -224,7 +230,7 @@ class GravityView_Merge_Tags {
 			return self::format_date( $raw_value, $modifier );
 		}
 
-		return $raw_value;
+		return apply_filters( 'gravityview/merge_tags/modifiers/format', $raw_value, $format, $field, $modifier, $merge_tag );
 	}
 
 	/**
@@ -682,12 +688,13 @@ class GravityView_Merge_Tags {
 		$parsed_modifier = explode( ':', $modifier );
 
 		$atts = [
-			'format'    => self::get_format_merge_tag_modifier_value( $modifier, false ),
-			'human'     => in_array( 'human', $parsed_modifier ), // {date_created:human}
-			'diff'      => in_array( 'diff', $parsed_modifier ), // {date_created:diff}
-			'raw'       => in_array( 'raw', $parsed_modifier ), // {date_created:raw}
-			'timestamp' => in_array( 'timestamp', $parsed_modifier ), // {date_created:timestamp}
-			'time'      => in_array( 'time', $parsed_modifier ),  // {date_created:time}
+			'format'    		=> self::get_format_merge_tag_modifier_value( $modifier, false ),
+			'human'     		=> in_array( 'human', $parsed_modifier ), // {date_created:human}
+			'diff'      		=> in_array( 'diff', $parsed_modifier ), // {date_created:diff}
+			'raw'       		=> in_array( 'raw', $parsed_modifier ), // {date_created:raw}
+			'timestamp' 		=> in_array( 'timestamp', $parsed_modifier ), // {date_created:timestamp}
+			'time'      		=> in_array( 'time', $parsed_modifier ),  // {date_created:time}
+			'disable_local'     => in_array( 'disable_local', $parsed_modifier ),  // {date_created:disable_local}
 		];
 
 		return GVCommon::format_date( $date_or_time_string, $atts );
