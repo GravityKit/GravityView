@@ -56,61 +56,67 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'class' => 'gv-search-fields-value',
 				'value' => '[{"field":"search_all","input":"input_text"}]', // Default: Search Everything text box
 			),
-			'search_settings_divider' => array(
-				'type' => 'html',
-				'id'   => 'search_fields_section',
-				'desc' => sprintf( '<h3>%s</h3>', esc_html__( 'Search settings', 'gk-gravityview' ) ),
-			),
-			'search_layout' => array(
-				'type'       => 'radio',
-				'full_width' => true,
-				'label'      => esc_html__( 'Search Layout', 'gk-gravityview' ),
-				'value'      => 'horizontal',
-				'options'    => array(
-					'horizontal' => esc_html__( 'Horizontal', 'gk-gravityview' ),
-					'vertical'   => esc_html__( 'Vertical', 'gk-gravityview' ),
-				),
-			),
-			'search_clear'  => array(
-				'type'  => 'checkbox',
-				'label' => __( 'Show Clear button', 'gk-gravityview' ),
-				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gk-gravityview' ),
-				'value' => true,
-			),
-			'search_mode'   => array(
-				'type'       => 'radio',
-				'full_width' => true,
-				'label'      => esc_html__( 'Search Mode', 'gk-gravityview' ),
-				'desc'       => __( 'Should search results match all search fields, or any?', 'gk-gravityview' ),
-				'value'      => 'any',
-				'class'      => 'hide-if-js',
-				'options'    => array(
-					'any' => esc_html__( 'Match Any Fields', 'gk-gravityview' ),
-					'all' => esc_html__( 'Match All Fields', 'gk-gravityview' ),
-				),
-			),
-			'sieve_choices' => array(
-				'type'       => 'radio',
-				'full_width' => true,
-				'label'      => esc_html__( 'Pre-Filter Choices', 'gk-gravityview' ),
-				// translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
-				'desc'       => strtr(
-					esc_html__( 'For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries.', 'gk-gravityview' ) .
-					'<p><strong>⚠️ ' . esc_html__( 'This setting affects security.', 'gk-gravityview' ) . '</strong> ' . esc_html__( '[link]Learn about the Pre-Filter Choices setting[/link] before enabling it.', 'gk-gravityview' ) . '</p>',
-					array(
-						'[b]'     => '<strong>',
-						'[/b]'    => '</strong>',
-						'[link]'  => '<a href="https://docs.gravitykit.com/article/701-s" target="_blank" rel="external noopener nofollower" title="' . esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ) . '">',
-						'[/link]' => '</a>',
-					)
-				),
-				'value'      => '0',
-				'class'      => 'hide-if-js',
-				'options'    => array(
-					'0' => esc_html__( 'Show all field choices', 'gk-gravityview' ),
-					'1' => esc_html__( 'Only show choices that exist in form entries', 'gk-gravityview' ),
-				),
-			),
+//			'search_settings_divider' => array(
+//				'type' => 'html',
+//				'id'   => 'search_fields_section',
+//				'desc' => sprintf( '<h3>%s</h3>', esc_html__( 'Search settings', 'gk-gravityview' ) ),
+//			),
+// Todo: this should be removable because of the layout builder.
+//			'search_layout' => array(
+//				'type'       => 'radio',
+//				'full_width' => true,
+//				'label'      => esc_html__( 'Search Layout', 'gk-gravityview' ),
+//				'value'      => 'horizontal',
+//				'options'    => array(
+//					'horizontal' => esc_html__( 'Horizontal', 'gk-gravityview' ),
+//					'vertical'   => esc_html__( 'Vertical', 'gk-gravityview' ),
+//				),
+//			),
+// Todo: make custom clear field.
+//			'search_clear'  => array(
+//				'type'  => 'checkbox',
+//				'label' => __( 'Show Clear button', 'gk-gravityview' ),
+//				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gk-gravityview' ),
+//				'value' => true,
+//			),
+
+		//Todo:  Is this a global setting?
+//			'search_mode'   => array(
+//				'type'       => 'radio',
+//				'full_width' => true,
+//				'label'      => esc_html__( 'Search Mode', 'gk-gravityview' ),
+//				'desc'       => __( 'Should search results match all search fields, or any?', 'gk-gravityview' ),
+//				'value'      => 'any',
+//				'class'      => 'hide-if-js',
+//				'options'    => array(
+//					'any' => esc_html__( 'Match Any Fields', 'gk-gravityview' ),
+//					'all' => esc_html__( 'Match All Fields', 'gk-gravityview' ),
+//				),
+//			),
+
+		// Todo: Move this setting to the choice field.
+//			'sieve_choices' => array(
+//				'type'       => 'radio',
+//				'full_width' => true,
+//				'label'      => esc_html__( 'Pre-Filter Choices', 'gk-gravityview' ),
+//				// translators: Do not translate [b], [/b], [link], or [/link]; they are placeholders for HTML and links to documentation.
+//				'desc'       => strtr(
+//					esc_html__( 'For fields with choices: Instead of showing all choices for each field, show only field choices that exist in submitted form entries.', 'gk-gravityview' ) .
+//					'<p><strong>⚠️ ' . esc_html__( 'This setting affects security.', 'gk-gravityview' ) . '</strong> ' . esc_html__( '[link]Learn about the Pre-Filter Choices setting[/link] before enabling it.', 'gk-gravityview' ) . '</p>',
+//					array(
+//						'[b]'     => '<strong>',
+//						'[/b]'    => '</strong>',
+//						'[link]'  => '<a href="https://docs.gravitykit.com/article/701-s" target="_blank" rel="external noopener nofollower" title="' . esc_attr__( 'This link opens in a new window.', 'gk-gravityview' ) . '">',
+//						'[/link]' => '</a>',
+//					)
+//				),
+//				'value'      => '0',
+//				'class'      => 'hide-if-js',
+//				'options'    => array(
+//					'0' => esc_html__( 'Show all field choices', 'gk-gravityview' ),
+//					'1' => esc_html__( 'Only show choices that exist in form entries', 'gk-gravityview' ),
+//				),
+//			),
 		);
 
 		if ( ! $this->is_registered() ) {
