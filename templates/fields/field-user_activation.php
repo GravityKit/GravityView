@@ -26,7 +26,8 @@ if ( ! GravityView_Field_User_Activation::check_if_feeds_are_valid( $entry['form
 }
 
 if ( ! class_exists( 'GFUserSignups' ) ) {
-	echo __( 'GFUserSignups class does not exist', 'gk-gravityview' );
+	gravityview()->log->error( 'GFUserSignups class does not exist', array() );
+	echo __( 'An error occurred', 'gk-gravityview' );
 	return;
 }
 

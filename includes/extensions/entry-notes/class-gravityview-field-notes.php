@@ -514,6 +514,7 @@ class GravityView_Field_Notes extends GravityView_Field {
             ob_start();
 			$context->template->get_template_part( 'note', $note_row_template, true );
 			$note_row = ob_get_clean();
+
 		} else {
 			/** @deprecated path */
 			ob_start();
@@ -534,7 +535,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'{row_class}'   => 'gv-note',
 			'{note_detail}' => $note_detail_html,
 		);
-
+var_dump($note_row);exit;
 		// Strip extra whitespace in template
 		$output = gravityview_strip_whitespace( $note_row );
 

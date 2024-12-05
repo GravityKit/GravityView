@@ -6,7 +6,6 @@
  * @subpackage GravityView_Field_User_Activation
  */
 class GravityView_Field_User_Activation extends GravityView_Field {
-
 	var $name = 'user_activation';
 
 	var $group = 'gravityview';
@@ -40,12 +39,11 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	}
 
 	/**
-	 * Enqueue and localize the script
+	 * Enqueues and localizes the script
 	 *
 	 * @since TBD
 	 */
 	public function enqueue_and_localize_script() {
-
 		// The script is already registered and enqueued
 		if ( wp_script_is( 'gv-user-activation', 'enqueued' ) ) {
 			return;
@@ -63,11 +61,10 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 				'spinner_url'     => GFCommon::get_base_url() . '/images/spinner.svg',
 			)
 		);
-
 	}
 
 	/**
-	 * Register the scripts and styles
+	 * Registers the scripts and styles
 	 *
 	 * @since TBD
 	 */
@@ -79,11 +76,10 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 		$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
 		wp_register_script( 'gv-user-activation', GRAVITYVIEW_URL . 'assets/js/field-user-activation' . $script_debug . '.js', array( 'jquery' ), GV_PLUGIN_VERSION, true );
-
 	}
 
 	/**
-	 * Get the content of the field
+	 * Gets the content of the field
 	 *
 	 * @since TBD
 	 *
@@ -95,7 +91,6 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	 * @return string
 	 */
 	public function get_content( $output = '', $entry = array(), $field_settings = array(), $field = array() ) {
-
 		/** Overridden by a template. */
 		if ( ! empty( $field['field_path'] ) ) {
 			return $output;
@@ -105,7 +100,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	}
 
 	/**
-	 * Check if the user exists
+	 * Checks if the user exists
 	 *
 	 * @since TBD
 	 *
@@ -116,12 +111,13 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	 */
 	public static function check_if_user_exist( $form, $entry ) {
 		foreach ( $form['fields'] as $field ) {
-			if ( $field->type === 'email' ) {
+			if ( $field->type !== 'email' ) {
+				continue;
+			}
 
-				$email = rgar( $entry, $field->id );
-				if ( $email ) {
-					return email_exists( $email );
-				}
+			$email = rgar( $entry, $field->id );
+			if ( $email ) {
+				return email_exists( $email );
 			}
 		}
 		
@@ -129,7 +125,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	}
 
 	/**
-	 * Check if the activation key is valid
+	 * Checks if the activation key is valid
 	 *
 	 * @since TBD
 	 *
@@ -154,7 +150,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	}
 
 	/**
-	 * Check if the feeds are valid and have the user activation value set to manual.
+	 * Checks if the feeds are valid and have the user activation value set to manual.
 	 *
 	 * @since TBD
 	 *

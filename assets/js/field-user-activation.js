@@ -33,17 +33,13 @@
                 nonce:  gvUserActivation.nonce
             }, function (response) {
 
+                spinner.destroy();
+
                 // if there is an error message, alert it
                 if ( ! response.success ) {
-
                     alert( response.data.message );
-                    spinner.destroy();
-
                 } else {
-
                     that.parent().html(gvUserActivation.success_message);
-                    spinner.destroy();
-
                 }
 
             });
