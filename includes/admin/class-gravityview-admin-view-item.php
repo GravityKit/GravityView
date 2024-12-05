@@ -5,7 +5,7 @@
  */
 
 /**
- * A field or widget in GravityView view configuration
+ * A (search) field or widget in GravityView view configuration
  */
 abstract class GravityView_Admin_View_Item {
 
@@ -161,8 +161,6 @@ abstract class GravityView_Admin_View_Item {
 
 		$settings_title    = sprintf( __( 'Configure %s Settings', 'gk-gravityview' ), esc_html( rgar( $this->item, 'label', ucfirst( $this->label_type ?: '' ) ) ) );
 		$delete_title      = sprintf( __( 'Remove %s', 'gk-gravityview' ), ucfirst( $this->label_type ?: '' ) );
-		$single_link_title = __( 'This field links to the Single Entry', 'gk-gravityview' );
-		$visibility_title  = __( 'This field has modified visibility', 'gk-gravityview' );
 
 		// $settings_html will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
@@ -178,11 +176,11 @@ abstract class GravityView_Admin_View_Item {
 		} elseif ( ! empty( $this->item['customLabel'] ) ) {
 			$label = $this->item['customLabel'];
 		}
-		$label = esc_attr( $label );
+
+		$label = (string) esc_attr( $label );
 
 		$field_icon = '';
 
-		$form = ! empty( $this->form ) ? $this->form : false;
 		$form = ! empty( $this->form_id ) ? GVCommon::get_form( $this->form_id ) : false;
 
 		$nonexistent_form_field = $form && $this->id && preg_match( '/^\d+\.\d+$|^\d+$/', $this->id ) && ! gravityview_get_field( $form, $this->id );
@@ -206,7 +204,7 @@ abstract class GravityView_Admin_View_Item {
 				$field_icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
 			}
 
-			$field_icon = $field_icon . ' ';
+			$field_icon .= ' ';
 		} elseif ( \GV\Utils::get( $this->item, 'parent' ) ) {
 			$field_icon = '<i class="gv-icon gv-icon-level-down"></i>' . ' ';
 		}
@@ -218,11 +216,7 @@ abstract class GravityView_Admin_View_Item {
 		esc_html( $this->settings['add_button_label'] ?? __( 'Add Field', 'gk-gravityview' ) )
 		);
 
-		if ( $this instanceof GravityView_Admin_View_Widget ) {
-			$title  = esc_attr( sprintf( __( 'Widget: %s', 'gk-gravityview' ), $label ) );
-		} else {
-			$title  = esc_attr( sprintf( __( 'Field: %s', 'gk-gravityview' ), $label ) );
-		}
+		$title = esc_attr( $this->get_title( $label ) );
 
 		if ( ! $nonexistent_form_field ) {
 			$title .= "\n" . $this->get_item_info( false );
@@ -320,5 +314,18 @@ abstract class GravityView_Admin_View_Item {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Returns the label.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $label The label.
+	 *
+	 * @return string The title.
+	 */
+	protected function get_title( string $label ): string {
+		return $label;
 	}
 }

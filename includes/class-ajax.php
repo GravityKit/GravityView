@@ -170,7 +170,7 @@ class GravityView_Ajax {
 		}
 
 		$row = Grid::prefixed(
-			'widget' !== $type ? $_POST['template_id'] : '',
+			'field' === $type ? $_POST['template_id'] : '',
 			static fn () => Grid::get_row_by_type( $_POST['row_type'] )
 		);
 

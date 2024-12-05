@@ -2,6 +2,8 @@
 
 namespace GV;
 
+use GV\Search\Search_Field_Collection;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -73,7 +75,7 @@ final class Grid {
 	 */
 	public static function get_rows_from_collection( Collection $collection, string $zone ): array {
 		$rows = [];
-		if ( ! $collection instanceof Widget_Collection && ! $collection instanceof Field_Collection ) {
+		if ( ! $collection instanceof Collection_Position_Aware ) {
 			return $rows;
 		}
 

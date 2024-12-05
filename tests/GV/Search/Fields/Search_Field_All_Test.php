@@ -16,7 +16,7 @@ final class Search_Field_All_Test extends TestCase {
 	 * @since $ver$
 	 */
 	public function test_get_value(): void {
-		$field = Search_Field_All::from_array( [ 'value' => 1234 ] );
-		self::assertSame( [ 'type' => 'all', 'label' => 'Search Everything', 'value' => '1234' ], $field->to_array() );
+		$field = Search_Field_All::from_configuration( [ 'value' => 1234 ] );
+		self::assertSame( [ 'type' => 'all', 'label' => 'Search Everything', 'value' => '1234' ], $field->to_configuration() );
 	}
 }

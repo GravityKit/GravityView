@@ -2,13 +2,41 @@
 
 namespace GV\Search\Fields;
 
+use GV\Search\Search_Field_Collection;
+
 /**
  * Represents a single Search Field.
  *
  * @since $ver$
  * @template T The type of the value.
  */
-abstract class Search_Field {
+abstract class Search_Field extends \GravityView_Admin_View_Item {
+	/**
+	 * The unique ID for this field.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string
+	 */
+	protected string $UID = '';
+
+	/**
+	 * The position.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string
+	 */
+	public string $position = '';
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_title( string $label ): string {
+		return sprintf( __( 'Search Field: %s', 'gk-gravityview' ), $label );
+	}
+
 	/**
 	 * A unique identifier for the Search Field type.
 	 *
@@ -25,7 +53,16 @@ abstract class Search_Field {
 	 *
 	 * @var string
 	 */
-	protected string $label;
+	protected string $label = 'Unknown Field';
+
+	/**
+	 * The icon.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string
+	 */
+	protected string $icon = '';
 
 	/**
 	 * The value.
@@ -41,8 +78,14 @@ abstract class Search_Field {
 	 *
 	 * @since $ver$
 	 */
-	public function __construct() {
-		$this->label = esc_html__( 'Unknown Field', 'gk-gravityview' );
+	protected function __construct( ?string $label = null, array $data = [] ) {
+		parent::__construct(
+			$label ?? $this->label,
+			$this->type,
+			$data,
+		);
+
+		$this->item['icon'] = $this->icon ? $this->icon : $this->item['icon'];
 	}
 
 	/**
@@ -54,8 +97,19 @@ abstract class Search_Field {
 	 *
 	 * @return static|null The field instance.
 	 */
-	public static function from_array( array $data ): ?Search_Field {
-		$field = new static();
+	public static function from_configuration( array $data ): ?Search_Field {
+		// Can't instantiate the abstract class, but we can use it as a factory.
+		if ( static::class === self::class ) {
+			$types = iterator_to_array( Search_Field_Collection::available_fields() );
+			$class = $types[ $data['id'] ?? '' ] ?? null;
+			if ( ! $class instanceof self ) {
+				return null;
+			}
+
+			return $class::from_configuration( $data );
+		}
+
+		$field = new static( $data['label'] ?? null, $data );
 
 		unset( $data['type'] );
 
@@ -80,15 +134,19 @@ abstract class Search_Field {
 	}
 
 	/**
-	 * Returns the field as a
+	 * Returns the field as a configuration array.
 	 *
-	 * @return array
+	 * @since $ver$
+	 *
+	 * @return array The configuration.
 	 */
-	public function to_array(): array {
+	public function to_configuration(): array {
 		return [
-			'type'  => $this->type,
-			'label' => $this->label,
-			'value' => $this->get_value(),
+			'type'     => $this->type,
+			'label'    => $this->label,
+			'value'    => $this->get_value(),
+			'position' => $this->position,
+			'UID'      => $this->UID,
 		];
 	}
 }

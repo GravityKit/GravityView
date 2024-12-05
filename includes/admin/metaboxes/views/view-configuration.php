@@ -238,7 +238,7 @@ function render_template_options( array $templates, ?string $selected_template )
 
 			<div id="search-active-fields" class="gv-grid">
 				<?php
-				do_action( 'gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/search', 'search' ), 'search', $post->ID, true );
+				    do_action( 'gravityview_render_search_active_areas',$directory_entries_template, 'search-general', $post->ID );
 				?>
 			</div>
 
@@ -248,14 +248,16 @@ function render_template_options( array $templates, ?string $selected_template )
 
 			<div id="search-advanced-active-fields" class="gv-grid">
 				<?php
-				do_action( 'gravityview_render_directory_active_areas', apply_filters( 'gravityview/template/search-advanced', 'search' ), 'search-advanced', $post->ID, true );
+				    do_action( 'gravityview_render_search_active_areas', $directory_entries_template, 'search-advanced', $post->ID );
 				?>
 			</div>
 
-			<?php
-			do_action( 'gravityview_render_field_pickers', 'search' );
-			?>
-
+            <div id="available-search-active-fields" class="hide-if-js gv-tooltip">
+                <div aria-live="polite" role="listbox" class="gv-items-picker-container gv-widget-picker-container" data-layout="grid" data-cols="2">
+                    <button class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gk-gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></button>
+					<?php do_action( 'gravityview_render_available_search_fields' ); ?>
+                </div>
+            </div>
 		</div>
 
 	</div>

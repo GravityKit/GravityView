@@ -11,6 +11,12 @@ namespace GV\Search\Fields;
  */
 final class Search_Field_All extends Search_Field {
 	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected string $icon = 'dashicons-admin-site-alt3';
+
+	/**
 	 * @inheritdoc
 	 * @since $ver$
 	 */
@@ -30,9 +36,9 @@ final class Search_Field_All extends Search_Field {
 	 * @since $ver$
 	 */
 	public function __construct() {
-		parent::__construct();
-
-		$this->label = esc_html__( 'Search Everything', 'gk-gravityview' );
+		parent::__construct(
+			esc_html__( 'Search Everything', 'gk-gravityview' ),
+		);
 	}
 
 	/**
