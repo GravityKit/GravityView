@@ -376,6 +376,10 @@
 		* @param {Event} event
 		*/
 	   changedSettingsAction: function (event) {
+		   // Make sure that form is blocked if invalid fields become active and unblocked when they become hidden.
+		   var hasVisibleErrorFields = viewGeneralSettings.metaboxObj.find('.gv-error:visible').length > 0;
+		   hasVisibleErrorFields ? viewConfiguration.disable_publish() : viewConfiguration.enable_publish();
+
 		   viewConfiguration.validateField( $( event.target ) );
 		   viewConfiguration.zebraStripeSettings();
 	   },
