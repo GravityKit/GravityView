@@ -375,8 +375,8 @@
 		* @since 1.19
 		*/
 	   zebraStripeSettings: function() {
-		   jQuery( '#gravityview_settings').find('table').each( function ( ) {
-			   $trs = $( this ).find('tr').not('[style="display: none;"]');
+		   viewGeneralSettings.metaboxObj.find('table').each( function () {
+			   var $trs = $( this ).find('tr').filter(':visible');
 
 			   $trs.removeClass('alternate');
 
@@ -3047,6 +3047,7 @@
 					   } );
 
 					   viewConfiguration.setupCodeMirror( ui.newPanel );
+					   viewConfiguration.zebraStripeSettings();
 				   }
 			   } )
 			   .addClass( "ui-tabs-vertical ui-helper-clearfix" )
