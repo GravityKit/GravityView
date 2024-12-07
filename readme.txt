@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Individual Checkboxes field inputs incorrectly exported in CSV.
 * Custom permalinks were not used on embedded Views.
 * When multiple Views were embedded on the same page, it would show the other Views when displaying a single entry.
+* Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.
 
 #### 💻 Developer Updates
 * Added `gravityview/template/field/csv/tick` filter to programmatically modify the checkbox "check" output in CSV.
