@@ -8,6 +8,8 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 
 /**
  * A collection of \GV\View objects.
+ *
+ * @implements Collection<View>
  */
 class View_Collection extends Collection {
 
