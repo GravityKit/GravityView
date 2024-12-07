@@ -2293,7 +2293,7 @@ class GravityView_Edit_Entry_Render {
 							$value = gform_get_meta( $this->entry['id'], $rule['fieldId'] );
 						}
 
-						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
+						$match = GVCommon::matches_operation( $value, $rule['value'], $rule['operator'] );
 
 						if ( $match ) {
 							$remove_conditions_rule[] = array( $field['id'], $i );
