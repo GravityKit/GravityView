@@ -48,6 +48,30 @@ class GravityView_Field_Name extends GravityView_Field {
 		return $field_options;
 	}
 
+	/**
+	 * Convert a full name or string to initials.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $value The full name or string to convert.
+	 * 
+	 * @return string The initials.
+	 */
+	public static function convert_to_initials( $value ) {
+		$names    = explode( ' ', $value );
+
+		$display_value = '';
+	
+		foreach ( $names as $name ) {
+			$first_char = function_exists( 'mb_substr' ) ? mb_substr( $name, 0, 1 ) : substr( $name, 0, 1 );
+			$upper_char = function_exists( 'mb_strtoupper' ) ? mb_strtoupper( $first_char ) : strtoupper( $first_char );
+	
+			$display_value .= trim( $upper_char ) . '.';
+		}
+
+		return $display_value;
+	}
+
 
 }
 
