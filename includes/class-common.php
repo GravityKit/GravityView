@@ -896,16 +896,18 @@ class GVCommon {
 	}
 
 	/**
-	 * Wrapper for the GFFormsModel::matches_operation() method that adds additional comparisons, including:
+	 * Wrapper for the GFFormsModel::matches_conditional_operation() method that adds additional comparisons, including:
 	 * 'equals', 'greater_than_or_is', 'greater_than_or_equals', 'less_than_or_is', 'less_than_or_equals',
 	 * 'not_contains', 'in', and 'not_in'
 	 *
+	 * @see https://docs.gravitykit.com/article/252-gvlogic-shortcode
+	 *
+	 * @uses GFFormsModel::matches_operation
+	 *
+	 * @since 1.7.5
 	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
 	 * @since 1.22.1 Added 'in' and 'not_in' for JSON-encoded array values, serialized non-strings
-	 *
-	 * @see https://docs.gravitykit.com/article/252-gvlogic-shortcode
-	 * @uses GFFormsModel::matches_operation
-	 * @since 1.7.5
+	 * @since TBD Uses GFFormsModel::matches_operation or GFFormsModel::matches_conditional_operation depending on the Gravity Forms version.
 	 *
 	 * @param mixed  $val1 Left side of comparison
 	 * @param mixed  $val2 Right side of comparison
@@ -914,7 +916,6 @@ class GVCommon {
 	 * @return bool True: matches, false: not matches
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
-
 		// Only process strings
 		$val1 = ! is_string( $val1 ) ? wp_json_encode( $val1 ) : $val1;
 		$val2 = ! is_string( $val2 ) ? wp_json_encode( $val2 ) : $val2;
@@ -922,7 +923,6 @@ class GVCommon {
 		$value = false;
 
 		if ( 'context' === $val1 ) {
-
 			$matching_contexts = array( $val2 );
 
 			// We allow for non-standard contexts.
@@ -949,6 +949,10 @@ class GVCommon {
 			$val1 = (string) $timestamp_1;
 			$val2 = (string) $timestamp_2;
 		}
+
+		$gf_comparison_method = method_exists( GFFormsModel::class, 'matches_conditional_operation' )
+			? 'matches_conditional_operation'
+			: 'matches_operation';
 
 		switch ( $operation ) {
 			case 'equals':
@@ -998,13 +1002,12 @@ class GVCommon {
 					$value = ( 'in' === $operation ) ? $json_in : ! $json_in;
 				}
 				break;
-
 			case 'less_than':
 			case '<':
 				if ( is_string( $val1 ) && is_string( $val2 ) ) {
 					$value = $val1 < $val2;
 				} else {
-					$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+					$value = GFFormsModel::$gf_comparison_method( $val1, $val2, $operation );
 				}
 				break;
 			case 'greater_than':
@@ -1012,11 +1015,11 @@ class GVCommon {
 				if ( is_string( $val1 ) && is_string( $val2 ) ) {
 					$value = $val1 > $val2;
 				} else {
-					$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+					$value = GFFormsModel::$gf_comparison_method( $val1, $val2, $operation );
 				}
 				break;
 			default:
-				$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+				$value = GFFormsModel::$gf_comparison_method( $val1, $val2, $operation );
 		}
 
 		return $value;
