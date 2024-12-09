@@ -35,10 +35,16 @@ final class Search_Field_All extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	public function __construct() {
-		parent::__construct(
-			esc_html__( 'Search Everything', 'gk-gravityview' ),
-		);
+	protected function get_label(): string {
+		return esc_html__( 'Search Everything', 'gk-gravityview' );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_description(): string {
+		return esc_html__( 'Search across all entry fields', 'gk-gravityview' );
 	}
 
 	/**

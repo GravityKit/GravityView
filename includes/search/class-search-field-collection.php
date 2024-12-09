@@ -38,7 +38,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 */
 	public static function available_fields(): self {
 		$fields = (array) apply_filters(
-			'gk/gravityview/search/collection/available-fields',
+			'gk/gravityview/search/available-fields',
 			[
 				new Search_Field_All(),
 				new Search_Field_Text(),

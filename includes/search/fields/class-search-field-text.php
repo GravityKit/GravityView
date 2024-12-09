@@ -3,7 +3,7 @@
 namespace GV\Search\Fields;
 
 /**
- * Represents a search field that searches a single field.
+ * Represents a search field that searches by text.
  *
  * @since $ver$
  *
@@ -14,7 +14,7 @@ final class Search_Field_Text extends Search_Field {
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	protected string $type = 'input_text';
+	protected string $type = 'text';
 
 	/**
 	 * @inheritDoc
@@ -44,10 +44,16 @@ final class Search_Field_Text extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	public function __construct() {
-		parent::__construct(
-			esc_html__( 'Text', 'gk-gravityview' ),
-		);
+	protected function get_description(): string {
+		return esc_html__( 'Search input field', 'gk-gravityview' );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_label(): string {
+		return esc_html__( 'Text', 'gk-gravityview' );
 	}
 
 	/**

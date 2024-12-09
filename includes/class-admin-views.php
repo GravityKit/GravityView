@@ -1317,7 +1317,7 @@ HTML;
 													);
 													break;
 												case 'search':
-													echo Search_Field::from_configuration( $item );
+													echo( Search_Field::from_configuration( $item ) ?? '');
 													break;
 												default:
 													echo new GravityView_Admin_View_Field(
