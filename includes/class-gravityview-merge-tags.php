@@ -414,7 +414,7 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Modifier to convert a full name or string to initials.
+	 * Adds a modifier to convert a full name or string to initials.
 	 *
 	 * @since TBD
 	 *

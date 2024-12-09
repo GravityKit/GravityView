@@ -49,7 +49,7 @@ class GravityView_Field_Name extends GravityView_Field {
 	}
 
 	/**
-	 * Convert a full name or string to initials.
+	 * Converts a full name or string to initials.
 	 *
 	 * @since TBD
 	 *
@@ -71,8 +71,6 @@ class GravityView_Field_Name extends GravityView_Field {
 
 		return $display_value;
 	}
-
-
 }
 
 new GravityView_Field_Name();
