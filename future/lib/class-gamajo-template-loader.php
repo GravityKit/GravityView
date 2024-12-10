@@ -25,6 +25,9 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 	 * @author  Gary Jones
 	 */
 	class Gamajo_Template_Loader {
+
+		private $slug = '';
+		
 		/**
 		 * Prefix for filter names.
 		 *
@@ -109,6 +112,8 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 		 * @return string
 		 */
 		public function get_template_part( $slug, $name = null, $load = true ) {
+			$this->slug = $slug;
+
 			// Execute code for this part.
 			do_action( 'get_template_part_' . $slug, $slug, $name );
 			do_action( $this->filter_prefix . '_get_template_part_' . $slug, $slug, $name );
@@ -243,7 +248,7 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 
 					// Try locating this template file by looping through the template paths.
 					foreach ( $template_paths as $template_path ) {
-						if ( file_exists( $template_path . $template_name ) ) {
+						if ( file_exists( $template_path . $template_name ) && ($this->slug === '' || strpos($template_name, $this->slug) !== false) ) {
 							$located = $template_path . $template_name;
 							// Store the template path in the cache.
 							$template_path_cache[ $this->filter_prefix ][ $cache_key ] = $located;
