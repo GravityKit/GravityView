@@ -405,7 +405,9 @@
 
 		   $field.parent().find( '.gv-error-message' ).remove();
 		   if ( error ) {
-			   $( '<div>', { class: 'gv-error-message', text: error } ).insertAfter( $field );
+			   $field.parent().append(
+				   $( '<div>', { class: 'gv-error-message', text: error } )
+			   );
 		   }
 	   },
 
