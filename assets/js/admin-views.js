@@ -376,11 +376,13 @@
 		* @param {Event} event
 		*/
 	   changedSettingsAction: function (event) {
-		   // Make sure that form is blocked if invalid fields become active and unblocked when they become hidden.
-		   var hasVisibleErrorFields = viewGeneralSettings.metaboxObj.find('.gv-error:visible').length > 0;
-		   hasVisibleErrorFields ? viewConfiguration.disable_publish() : viewConfiguration.enable_publish();
+		   // Revalidate all current tab fields, as new fields may appear when settings are changed.
+		   var $tabFields = viewGeneralSettings.metaboxObj.find( '[name^=template_settings]:visible' );
+		   $tabFields.each( function () {
+			   viewConfiguration.validateField( $( this ) );
+		   } );
 
-		   viewConfiguration.validateField( $( event.target ) );
+		   // Recalculate zebra stripes.
 		   viewConfiguration.zebraStripeSettings();
 	   },
 
@@ -398,8 +400,6 @@
 		   }
 
 		   var error = viewConfiguration.validateValue( $field.val(), rules );
-
-		   error ? viewConfiguration.disable_publish() : viewConfiguration.enable_publish();
 
 		   $field.toggleClass( 'gv-error', !! error );
 
@@ -2877,6 +2877,10 @@
 		   var vcfg = viewConfiguration;
 		   var templateId = vcfg._getTemplateId();
 
+		   if ( ! vcfg.validateSettingFields( e ) ) {
+			   return false;
+		   }
+
 		   // Create the form if we're starting fresh.
 		   // On success, this also sets the vcfg.startFreshStatus to false.
 		   if ( vcfg.startFreshStatus ) {
@@ -2967,7 +2971,42 @@
 		   }, 101 );
 
 		   return false;
+	   },
 
+	   validateSettingFields: function ( e ) {
+
+		   var $metabox = viewGeneralSettings.metaboxObj;
+
+		   var $invalidFields = $metabox
+			   .find( '[name^=template_settings].gv-error' )
+			   .filter( function () {
+				   // Get only active fields, i.e., those whose parent <tr> is not "display: none".
+				   return $( this ).closest( 'tr.alternate' ).css( 'display' ) !== 'none';
+			   } );
+
+		   // If no invalid fields are found, return.
+		   if ( ! $invalidFields.length ) {
+			   return true;
+		   }
+
+		   // Prevent form submission.
+		   e.stopImmediatePropagation();
+		   e.preventDefault();
+
+		   // Open the tab containing the invalid field.
+		   var tabPanelId = $invalidFields.first().closest( 'div[role=tabpanel]' ).prop( 'id' );
+		   var $tabLink = $metabox.find( '.ui-tab[aria-controls=' + tabPanelId + '] a.nav-tab' );
+		   $tabLink.trigger( 'click' );
+
+		   // Scroll to the Settings section.
+		   window.scrollTo(
+			   {
+				   top: $metabox.offset().top,
+				   behavior: 'smooth',
+			   },
+		   );
+
+		   return false;
 	   },
 
 	   /**
