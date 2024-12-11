@@ -14,7 +14,7 @@ final class Search_Field_Text extends Search_Field {
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	protected string $type = 'text';
+	protected static string $type = 'text';
 
 	/**
 	 * @inheritDoc
@@ -38,13 +38,13 @@ final class Search_Field_Text extends Search_Field {
 	 *
 	 * @var string
 	 */
-	protected $search_field = '';
+	protected string $search_field = '';
 
 	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_description(): string {
+	public function get_description(): string {
 		return esc_html__( 'Search input field', 'gk-gravityview' );
 	}
 

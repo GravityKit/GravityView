@@ -36,7 +36,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @var string
 	 */
-	protected string $type = 'unknown';
+	protected static string $type = 'unknown';
 
 	/**
 	 * The Field description.
@@ -73,12 +73,29 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	public function __construct( ?string $label = null, array $data = [] ) {
 		parent::__construct(
 			$label ?? $this->get_label(),
-			$this->type,
+			static::$type,
 			$data,
 		);
 
 		$this->item['icon']        = $this->icon ? $this->icon : $this->item['icon'];
 		$this->item['description'] = $this->get_description();
+
+		$this->init();
+	}
+
+	/**
+	 * Returns the icon for the field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	public function icon_html(): string {
+		if ( ! $this->icon ) {
+			return '';
+		}
+
+		return sprintf( '<i class="dashicons %s"></i>', $this->icon );
 	}
 
 	/**
@@ -116,7 +133,41 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
-	 * Returns the value of the field as the correc type.
+	 * Returns the options for this field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return array
+	 */
+	protected static function get_options(): array {
+		return [];
+	}
+
+	/**
+	 * Returns the default settings for every search field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return array[]
+	 */
+	private static function get_search_field_options(): array {
+		return [
+			'show_label'   => [
+				'type'  => 'checkbox',
+				'label' => esc_html__( 'Show label', 'gk-gravityview' ),
+				'value' => '1',
+			],
+			'custom_label' => [
+				'type'  => 'text',
+				'label' => esc_html__( 'Custom label', 'gk-gravityview' ),
+				'value' => '',
+				'class' => 'widefat',
+			],
+		];
+	}
+
+	/**
+	 * Returns the value of the field as the correct type.
 	 *
 	 * @since $ver$
 	 *
@@ -135,7 +186,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 */
 	public function to_configuration(): array {
 		return [
-			'type'     => $this->type,
+			'type'     => static::$type,
 			'label'    => $this->title,
 			'value'    => $this->get_value(),
 			'position' => $this->position,
@@ -148,6 +199,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	protected function get_title( string $label ): string {
+		// Translators: %s will contain the label of the field.
 		return sprintf( __( 'Search Field: %s', 'gk-gravityview' ), $label );
 	}
 
@@ -157,7 +209,11 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	protected function get_label(): string {
-		return $this->item['label'] ?? $this->title;
+		if ( ! ( $this->item['show_label'] ?? true ) ) {
+			return '';
+		}
+
+		return $this->item['custom_label'] ?? $this->title;
 	}
 
 	/**
@@ -165,13 +221,14 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @since $ver$
 	 */
-	protected function get_description(): string {
+	public function get_description(): string {
 		return '';
 	}
 
 	/**
 	 * @inheritDoc
 	 * @since $ver$
+	 * @return array{value: string, label?: string, class?: string, hide_in_picker?: bool}
 	 */
 	protected function additional_info(): array {
 		$description = $this->get_description();
@@ -184,5 +241,34 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		];
 
 		return $field_info_items;
+	}
+
+	/**
+	 * Registers the required hooks.
+	 *
+	 * @since $ver$
+	 */
+	protected function init(): void {
+		// Only register the options once per field type.
+		if ( ! has_filter( 'gravityview_template_search_options', [ static::class, 'set_search_field_options' ] ) ) {
+			add_filter( 'gravityview_template_search_options', [ static::class, 'set_search_field_options' ], 10, 3 );
+		}
+	}
+
+	/**
+	 * Add the settings for this field.
+	 *
+	 * @param array  $options  The original options.
+	 * @param string $template The template ID.
+	 * @param string $type     The field type.
+	 *
+	 * @return array The updated options.
+	 */
+	final public static function set_search_field_options( $options = [], $template = '', $type = '' ): array {
+		if ( $type !== static::$type ) {
+			return (array) $options;
+		}
+
+		return array_merge( self::get_search_field_options(), static::get_options() );
 	}
 }

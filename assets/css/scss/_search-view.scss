@@ -1,0 +1,44 @@
+div#search-view.has-options-panel {
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #FFF;
+        opacity: .75;
+        z-index: 15; // Needs to be on top of field buttons with high z-indexes.
+    }
+
+    > .gv-dialog-options {
+        display: block;
+        position: absolute;
+        right: 0;
+        width: 350px;
+        top: 0;
+        bottom: 0;
+        background: #F6F6F6;
+        border-left: 1px solid #f1f1f1;
+        box-sizing: border-box;
+        padding: 24px !important;
+        z-index: 20; // Needs to be on top of the overlay. Leaving room for 5 layers.
+    }
+
+    .gv-fields.has-options-panel {
+        border: 1px solid #136cb9;
+    }
+    .gv-field-details--container {
+        margin-bottom: 32px;
+        p {
+            color: #999999;
+        }
+    }
+}
+
+.search-field-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+}

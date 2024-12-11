@@ -1428,20 +1428,20 @@
 
 		   // Does the field have a custom label?
 		   var $admin_label = $( '[name*=admin_label]', dialog );
-		   var $custom_label;
+		   var $custom_label_field;
 
 		   if ( ! $admin_label.length || ! $admin_label.val() ) {
-			   $custom_label = $( '[name*=custom_label]', dialog );
+			   $custom_label_field = $( '[name*=custom_label]', dialog );
 		   } else {
-			   $custom_label = $admin_label; // We have an administrative label for this field
+			   $custom_label_field = $admin_label; // We have an administrative label for this field
 		   }
 
-		   var $label = dialog.parents( '.gv-fields' ).find( '.gv-field-label-text-container' );
+		   var $label = dialog.closest( '.gv-fields' ).find( '.gv-field-label-text-container' );
 
 		   // If there's a custom title, use it for the label.
-		   if ( $custom_label.length ) {
+		   if ( $custom_label_field.length ) {
 
-			   var custom_label_text = $custom_label.val().trim();
+			   var custom_label_text = $custom_label_field.val().trim();
 
 			   // Make sure the custom label isn't empty
 			   if( custom_label_text.length > 0 ) {
@@ -2752,7 +2752,7 @@
 
 				   vcfg.toggleDropMessage();
 			   }
-		   } )
+		   } );
 	   },
 
 	   toggleDropMessage: function () {
@@ -2849,7 +2849,8 @@
 		   e.preventDefault();
 
 		   // Don't open a dialog for search field settings.
-		   if ( $( e.currentTarget ).closest( '#search-active-fields' ).length ) {
+		   const $field = $( e.target ).closest( '[data-fieldid="search_bar"]' );
+		   if ( $field.length && $( e.target ).closest( $field.find( '.gv-dialog-options' ) ).length ) {
 			   return;
 		   }
 
@@ -3423,7 +3424,8 @@
 		   initTooltips: viewConfiguration.init_tooltips,
 		   removeTooltips: viewConfiguration.remove_tooltips,
 		   showDialog: viewConfiguration.showDialog,
-		   initDroppables: viewConfiguration.init_droppables
+		   initDroppables: viewConfiguration.init_droppables,
+		   setCustomLabel: viewConfiguration.setCustomLabel,
 	   };
 
 	   $( document.body ).trigger( 'gravityview/loaded' );

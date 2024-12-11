@@ -35,7 +35,7 @@
 
 			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
-			$( 'body' )
+			$( document.body )
 
 				// [View] hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
@@ -64,7 +64,14 @@
 				.on( 'change', '#gravityview_form_id', gvSearchWidget.clearViewSearchData )
 
 				// [WP widget] hook on assigned view id change to clear cache
-				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData );
+				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData )
+
+				.on ( 'click', '#search-fields .gv-field-settings', gvSearchWidget.openFieldSettings )
+
+				.on( 'click', '#search-fields > .gv-dialog-options [data-close-settings]', gvSearchWidget.closeFieldSettings )
+
+				.on( 'click', '#search-view', gvSearchWidget.closeFieldSettingsOutside )
+			;
 
 			// Refresh widget searchable settings after saving or adding the widget
 			// Bind to document because WP triggers document, not body
@@ -173,6 +180,9 @@
 		 */
 		closeDialog: function ( e ) {
 			e.preventDefault();
+
+			// Close any open field settings first.
+			gvSearchWidget.closeFieldSettings(e);
 
 			gvSearchWidget.widgetTarget = $( this );
 			if ( gvSearchWidget.searchModal ) {
@@ -749,8 +759,51 @@
 				gvSearchWidget.renderUI( widget );
 			}
 
-		}
+		},
 
+		openFieldSettings: function ( e ) {
+			gvSearchWidget.closeFieldSettings(e); // Close any open panels.
+
+			const $field = $( this ).closest( '.gv-fields' );
+			const $options = $field.find( '.gv-dialog-options' );
+			$options.data( 'field', $field ); // Store the originating field.
+
+			$field.addClass('has-options-panel');
+
+			$( '#search-view' )
+				.addClass('has-options-panel')
+				.append( $options ); // Move options to search view div.
+		},
+
+		closeFieldSettings: function ( e ) {
+			e.preventDefault();
+
+			$( '#search-view' ).removeClass( 'has-options-panel' );
+
+			const $options = $( '#search-view > .gv-dialog-options' );
+			if ( !$options.length ) {
+				return;
+			}
+
+			const $field = $options.data( 'field' );
+			if ( !$field.length ) {
+				return;
+			}
+
+			$field
+				.removeClass( 'has-options-panel' )
+				.append( $options ); // Return options to field.
+
+			gvAdminActions.setCustomLabel( $field );
+		},
+
+		closeFieldSettingsOutside: function ( e ) {
+			if ( e.target.id !== 'search-view' ) {
+				return;
+			}
+
+			gvSearchWidget.closeFieldSettings(e);
+		}
 	}; // end
 
 	$( document ).ready( function () {

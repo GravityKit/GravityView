@@ -20,7 +20,7 @@ final class Search_Field_All extends Search_Field {
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	protected string $type = 'all';
+	protected static string $type = 'all';
 
 	/**
 	 * @inheritdoc
@@ -43,7 +43,7 @@ final class Search_Field_All extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_description(): string {
+	public function get_description(): string {
 		return esc_html__( 'Search across all entry fields', 'gk-gravityview' );
 	}
 

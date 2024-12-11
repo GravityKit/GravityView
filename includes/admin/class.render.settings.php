@@ -1,5 +1,6 @@
 <?php
 
+use GV\Search\Fields\Search_Field;
 use GV\Utils;
 
 /**
@@ -524,6 +525,18 @@ class GravityView_Render_Settings {
 				$item_details .= '
 				</section>
 			</div>';
+		} elseif ( 'search' === $field_type ) {
+			$search_field = Search_Field::from_configuration( $item );
+			$description  = $search_field ? $search_field->get_description() : '';
+			$icon         = $search_field ? $search_field->icon_html() : '';
+
+			$item_details = sprintf(
+				"<div class=\"gv-field-details--container\">
+				<h3 class=\"search-field-title\">$icon <span>{$item['label']}</span></h3>
+				%s
+			</div>",
+				wpautop( trim( $description ) )
+			);
 		} else {
 			$subtitle               = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
 			$widget_details_content = Utils::get( $item, 'description', '' );
