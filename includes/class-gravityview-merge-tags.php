@@ -85,6 +85,11 @@ class GravityView_Merge_Tags {
 	 */
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
 
+		// Process array value for sub fields like name and address.
+		if ( is_array( $raw_value ) && isset( $raw_value[ $merge_tag ] ) ) {
+			$raw_value = $raw_value[ $merge_tag ];
+		}
+
 		// No modifier was set or the raw value was empty
 		if ( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
 			return $value;
@@ -108,6 +113,7 @@ class GravityView_Merge_Tags {
 			'ucfirst'                   => 'modifier_strings',
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
+			'initials'                  => 'modifier_initials', /** @see modifier_initials */
 			'format'                    => 'modifier_format', /** @see modifier_format */
 			'human'						=> 'modifier_human', /** @see modifier_human */
 		);
@@ -405,6 +411,19 @@ class GravityView_Merge_Tags {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Adds a modifier to convert a full name or string to initials.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $raw_value The full name or string to convert.
+	 * 
+	 * @return string The initials.
+	 */
+	public static function modifier_initials( $raw_value ) {
+		return GravityView_Field_Name::convert_to_initials( $raw_value );
 	}
 
 	/**

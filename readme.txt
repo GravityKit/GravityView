@@ -23,6 +23,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+* `:initials` merge tag modifier for Name fields to display initials.
+
+#### 🐛 Fixed
+* Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.
+* Individual Checkboxes field inputs incorrectly exported in CSV.
+* Custom permalinks were not used on embedded Views.
+* When multiple Views were embedded on the same page, it would show the other Views when displaying a single entry.
+* Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.
+
+#### 💻 Developer Updates
+* Added `gravityview/template/field/csv/tick` filter to programmatically modify the checkbox "check" output in CSV.
+* Added `gravityview/shortcode/after-processing` action after a `[gravityview]` shortcode is finished.
+
 = 2.32 on November 21, 2024 =
 
 This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.

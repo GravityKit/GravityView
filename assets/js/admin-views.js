@@ -1312,7 +1312,7 @@
 			   } else {
 				   // If there's no custom title, then use the original
 				   // @see GravityView_Admin_View_Item::getOutput()
-				   $label.html( $label.attr( 'data-original-title' ) );
+				   $label.html( $label.parent( '.gv-field-label' ).data( 'original-title' ) );
 			   }
 
 		   }
