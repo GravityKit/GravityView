@@ -374,14 +374,16 @@
 		* This prevents two gray rows next to each other.
 		* @since 1.19
 		*/
-	   zebraStripeSettings: function() {
-		   viewGeneralSettings.metaboxObj.find('table').each( function () {
-			   var $trs = $( this ).find('tr').filter(':visible');
+	   zebraStripeSettings: function () {
+		   setTimeout( function () {
+			   viewGeneralSettings.metaboxObj.find( 'table' ).each( function () {
+				   var $trs = $( this ).find( 'tr' ).filter( ':visible' );
 
-			   $trs.removeClass('alternate');
+				   $trs.removeClass( 'alternate' );
 
-			   $trs.filter( ':even' ).addClass( 'alternate' );
-		   });
+				   $trs.filter( ':even' ).addClass( 'alternate' );
+			   } );
+		   }, 50 );
 	   },
 
 	   /**
