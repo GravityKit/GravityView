@@ -12,15 +12,6 @@ use GV\Search\Search_Field_Collection;
  */
 abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
-	 * The unique ID for this field.
-	 *
-	 * @since $ver$
-	 *
-	 * @var string
-	 */
-	protected string $UID = '';
-
-	/**
 	 * The position.
 	 *
 	 * @since $ver$
@@ -73,7 +64,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	public function __construct( ?string $label = null, array $data = [] ) {
 		parent::__construct(
 			$label ?? $this->get_label(),
-			static::$type,
+			$this->get_type(),
 			$data,
 		);
 
@@ -110,9 +101,9 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	public static function from_configuration( array $data ): ?Search_Field {
 		// Can't instantiate the abstract class, but we can use it as a factory.
 		if ( static::class === self::class ) {
-			$types = iterator_to_array( Search_Field_Collection::available_fields() );
-			$class = $types[ $data['id'] ?? '' ] ?? null;
-			if ( ! $class instanceof self ) {
+			$fields = Search_Field_Collection::available_fields( (int) ( $data['form_id'] ?? 0 ) );
+			$class  = $fields->get_class_by_type( $data['id'] );
+			if ( ! is_a( $class, self::class, true ) ) {
 				return null;
 			}
 
@@ -186,12 +177,22 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 */
 	public function to_configuration(): array {
 		return [
-			'type'     => static::$type,
+			'type'     => $this->get_type(),
 			'label'    => $this->title,
 			'value'    => $this->get_value(),
 			'position' => $this->position,
-			'UID'      => $this->UID,
 		];
+	}
+
+	/**
+	 * Returns the unique type of this field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The type.
+	 */
+	protected function get_type(): string {
+		return static::$type;
 	}
 
 	/**
@@ -256,6 +257,19 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns whether the search field is of the provided type.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $type The type.
+	 *
+	 * @return bool Whether the search field is of the provided type.
+	 */
+	protected static function is_of_type( string $type ): bool {
+		return $type === static::$type;
+	}
+
+	/**
 	 * Add the settings for this field.
 	 *
 	 * @param array  $options  The original options.
@@ -265,7 +279,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return array The updated options.
 	 */
 	final public static function set_search_field_options( $options = [], $template = '', $type = '' ): array {
-		if ( $type !== static::$type ) {
+		if ( ! static::is_of_type( $type ) ) {
 			return (array) $options;
 		}
 

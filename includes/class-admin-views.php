@@ -14,6 +14,7 @@
 /** If this file is called directly, abort. */
 
 use GV\Field_Collection;
+use GV\GF_Form;
 use GV\Grid;
 use GV\Plugin;
 use GV\Search\Fields\Search_Field;
@@ -977,8 +978,12 @@ HTML;
 			}
 
 			// Render a label for each of them
-			echo new GravityView_Admin_View_Field( $item['label_text'], $item['field_id'], $item, $settings = array(), $form_id, $form );
-
+			echo new GravityView_Admin_View_Field( $item['label_text'],
+				$item['field_id'],
+				$item,
+				$settings = [],
+				$form_id,
+				$form );
 		}
 	}
 
@@ -1097,8 +1102,15 @@ HTML;
 	 * @since $ver$
 	 */
 	public function render_available_search_fields(): void {
-		$search_fields = Search_Field_Collection::available_fields();
-        if ( ! $search_fields->count() ) {
+		global $post;
+
+		$view = View::by_id( $post->ID ?? 0 );
+		if ( ! $view instanceof View || ! $view->form instanceof GF_Form ) {
+			return;
+		}
+
+		$search_fields = Search_Field_Collection::available_fields( $view->form->ID ?? 0 );
+		if ( ! $search_fields->count() ) {
 			return;
 		}
 
@@ -1247,15 +1259,19 @@ HTML;
                                 ><?php echo esc_html( $area['title'] ); ?></strong>
 
 								<?php if ( 'widget' !== $type ) { ?>
-									<a class="clear-all-fields alignright" role="button" href="#" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"><?php esc_html_e( 'Clear all fields', 'gk-gravityview' ); ?></a>
+                                    <a class="clear-all-fields alignright" role="button" href="#"
+                                       data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"><?php esc_html_e( 'Clear all fields',
+											'gk-gravityview' ); ?></a>
 								<?php } ?>
 
 								<?php if ( ! empty( $area['subtitle'] ) ) { ?>
-									<span class="gv-droppable-area-subtitle"><span class="gf_tooltip gv_tooltip tooltip" title="<?php echo esc_attr( $area['subtitle'] ); ?>"></span></span>
+                                    <span class="gv-droppable-area-subtitle"><span class="gf_tooltip gv_tooltip tooltip"
+                                                                                   title="<?php echo esc_attr( $area['subtitle'] ); ?>"></span></span>
 								<?php } ?>
-							</p>
-							<div class="active-drop-container active-drop-container-<?php echo esc_attr( $type ); ?>">
-								<div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>" data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>">
+                            </p>
+                            <div class="active-drop-container active-drop-container-<?php echo esc_attr( $type ); ?>">
+                                <div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>"
+                                     data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>">
 									<?php
 									// render saved fields
 									if ( ! empty( $values[ $zone . '_' . $area['areaid'] ] ) ) {
@@ -1294,7 +1310,17 @@ HTML;
 											$input_type = isset( $original_item['type'] ) ? $original_item['type'] : null;
 
 											// Field options dialog box
-											$field_options = GravityView_Render_Settings::render_field_options( $form_id, $type, $template_id, $field['id'], $original_item['label'], $zone . '_' . $area['areaid'], $input_type, $uniqid, $field, $zone, $original_item );
+											$field_options = GravityView_Render_Settings::render_field_options( $form_id,
+												$type,
+												$template_id,
+												$field['id'],
+												$original_item['label'],
+												$zone . '_' . $area['areaid'],
+												$input_type,
+												$uniqid,
+												$field,
+												$zone,
+												$original_item );
 
 											$item = [
 												'input_type'    => $input_type,
@@ -1317,7 +1343,7 @@ HTML;
 													);
 													break;
 												case 'search':
-													echo( Search_Field::from_configuration( $item ) ?? '');
+													echo( Search_Field::from_configuration( $item ) ?? '' );
 													break;
 												default:
 													echo new GravityView_Admin_View_Field(
@@ -1585,7 +1611,6 @@ HTML;
 
 		return (string) $output;
 	}
-
 
 	/**
 	 * Renders "Add Field" tooltips

@@ -5,9 +5,15 @@ namespace GV\Search;
 use ArrayIterator;
 use GV\Collection;
 use GV\Collection_Position_Aware;
+use GV\Plugin;
 use GV\Search\Fields\Search_Field;
 use GV\Search\Fields\Search_Field_All;
-use GV\Search\Fields\Search_Field_Text;
+use GV\Search\Fields\Search_Field_Created_By;
+use GV\Search\Fields\Search_Field_Entry_Date;
+use GV\Search\Fields\Search_Field_Entry_ID;
+use GV\Search\Fields\Search_Field_Is_Approved;
+use GV\Search\Fields\Search_Field_Is_Read;
+use GV\Search\Fields\Search_Field_Is_Starred;
 use IteratorAggregate;
 
 /**
@@ -18,6 +24,15 @@ use IteratorAggregate;
  * @extends Collection<Search_Field>
  */
 final class Search_Field_Collection extends Collection implements Collection_Position_Aware, IteratorAggregate {
+	/**
+	 * Micro cache to avoid multiple DB and filter calls.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array<int, self>
+	 */
+	private static $available_fields_cache = [];
+
 	/**
 	 * Creates a collection of fields.
 	 *
@@ -33,19 +48,37 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 * Returns the default search fields.
 	 *
 	 * @since $ver$
+	 *
+	 * @param int $form_id The form ID.
+	 *
 	 * @return self
 	 * @todo  add @filter
 	 */
-	public static function available_fields(): self {
-		$fields = (array) apply_filters(
-			'gk/gravityview/search/available-fields',
-			[
-				new Search_Field_All(),
-				new Search_Field_Text(),
-			]
-		);
+	public static function available_fields( int $form_id = 0 ): self {
+		if ( $form_id > 0 && isset( self::$available_fields_cache[ $form_id ] ) ) {
+			return self::$available_fields_cache[ $form_id ];
+		}
 
-		return new self( array_filter( $fields, static fn( $field ) => $field instanceof Search_Field ) );
+		$fields = [
+			new Search_Field_All(),
+			new Search_Field_Entry_Date(),
+			new Search_Field_Entry_ID(),
+			new Search_Field_Created_By(),
+			new Search_Field_Is_Starred(),
+			new Search_Field_Is_Read(),
+		];
+
+		if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
+			$fields[] = new Search_Field_Is_Approved();
+		}
+
+		$fields = (array) apply_filters( 'gk/gravityview/search/available-fields', $fields, $form_id );
+
+		$collection = new self( array_filter( $fields, static fn( $field ) => $field instanceof Search_Field ) );
+
+		self::$available_fields_cache[ $form_id ] = $collection;
+
+		return $collection;
 	}
 
 	/**
@@ -135,5 +168,26 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 		);
 
 		return $clone;
+	}
+
+	/**
+	 * Returns the class name of the search field, based on the provided type.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $type The search field type.
+	 *
+	 * @return string The class name.
+	 */
+	public function get_class_by_type( string $type ): string {
+		foreach ( $this->storage as $field ) {
+			$configuration = $field->to_configuration();
+
+			if ( $type === $configuration['type'] ) {
+				return get_class( $field );
+			}
+		}
+
+		return '';
 	}
 }
