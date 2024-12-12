@@ -1312,7 +1312,7 @@
 			   } else {
 				   // If there's no custom title, then use the original
 				   // @see GravityView_Admin_View_Item::getOutput()
-				   $label.html( $label.attr( 'data-original-title' ) );
+				   $label.html( $label.parent( '.gv-field-label' ).data( 'original-title' ) );
 			   }
 
 		   }
@@ -2558,10 +2558,10 @@
 			   revert: 75,
 			   connectWith: ".active-drop-field",
 			   start: function( event, ui ) {
-				   $( panel ).find( ".active-drop-container-field" ).addClass('is-receivable');
+				   $( document.body ).find( ".active-drop-container-field" ).addClass('is-receivable');
 			   },
 			   stop: function( event, ui ) {
-				   $( panel ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+				   $( document.body ).find( ".active-drop-container-field" ).removeClass('is-receivable');
 			   },
 			   change: function( event, ui ) {
 				   vcfg.setUnsavedChanges( true );

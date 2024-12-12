@@ -23,6 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+* New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.
+* `:initials` merge tag modifier for Name fields to display initials.
+
 #### 🐛 Fixed
 * Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.
 * Individual Checkboxes field inputs incorrectly exported in CSV.
