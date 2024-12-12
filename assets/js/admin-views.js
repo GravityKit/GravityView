@@ -2558,10 +2558,10 @@
 			   revert: 75,
 			   connectWith: ".active-drop-field",
 			   start: function( event, ui ) {
-				   $( panel ).find( ".active-drop-container-field" ).addClass('is-receivable');
+				   $( document.body ).find( ".active-drop-container-field" ).addClass('is-receivable');
 			   },
 			   stop: function( event, ui ) {
-				   $( panel ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+				   $( document.body ).find( ".active-drop-container-field" ).removeClass('is-receivable');
 			   },
 			   change: function( event, ui ) {
 				   vcfg.setUnsavedChanges( true );
