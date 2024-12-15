@@ -62,7 +62,8 @@ class GravityView_Field_Source_ID extends GravityView_Field {
 				'source_id'  => __( 'ID of Source', 'gk-gravityview' ),
 				'page_title' => __( 'Title of Source', 'gk-gravityview' ),
 				'custom'     => __( 'Custom Text', 'gk-gravityview' ),
-			]
+			],
+			'requires'   => 'link_to_source=1',
 		);
 		$add_options['source_link_text'] = array(
 			'type'       => 'text',
