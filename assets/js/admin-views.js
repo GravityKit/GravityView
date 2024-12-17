@@ -486,14 +486,16 @@
 		* This prevents two gray rows next to each other.
 		* @since 1.19
 		*/
-	   zebraStripeSettings: function() {
-		   jQuery( '#gravityview_settings').find('table').each( function ( ) {
-			   $trs = $( this ).find('tr').not('[style="display: none;"]');
+	   zebraStripeSettings: function () {
+		   setTimeout( function () {
+			   viewGeneralSettings.metaboxObj.find( 'table' ).each( function () {
+				   var $trs = $( this ).find( 'tr' ).filter( ':visible' );
 
-			   $trs.removeClass('alternate');
+				   $trs.removeClass( 'alternate' );
 
-			   $trs.filter( ':even' ).addClass( 'alternate' );
-		   });
+				   $trs.filter( ':even' ).addClass( 'alternate' );
+			   } );
+		   }, 50 );
 	   },
 
 	   /**
@@ -2670,10 +2672,10 @@
 			   revert: 75,
 			   connectWith: ".active-drop-field",
 			   start: function( event, ui ) {
-				   $( panel ).find( ".active-drop-container-field" ).addClass('is-receivable');
+				   $( document.body ).find( ".active-drop-container-field" ).addClass('is-receivable');
 			   },
 			   stop: function( event, ui ) {
-				   $( panel ).find( ".active-drop-container-field" ).removeClass('is-receivable');
+				   $( document.body ).find( ".active-drop-container-field" ).removeClass('is-receivable');
 			   },
 			   change: function( event, ui ) {
 				   vcfg.setUnsavedChanges( true );
@@ -3198,6 +3200,7 @@
 					   } );
 
 					   viewConfiguration.setupCodeMirror( ui.newPanel );
+					   viewConfiguration.zebraStripeSettings();
 				   }
 			   } )
 			   .addClass( "ui-tabs-vertical ui-helper-clearfix" )

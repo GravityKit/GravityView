@@ -822,6 +822,16 @@ $gv-overlay-index: 10000;
 	margin-top: 1em;
 	transition: none;
 
+	// Disable default WP style and use .alternate instead to support hidden items.
+	.striped > tbody {
+		> :nth-child(odd) {
+			background-color: initial;
+		}
+		.alternate {
+			background-color: #f6f7f7;
+		}
+	}
+
 	#gv-view-configuration-tabs-tooltip {
 		position: absolute;
 		right: 0;
