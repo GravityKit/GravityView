@@ -1764,9 +1764,9 @@ HTML;
 	 * @return void
 	 */
 	static function add_scripts_and_styles( $hook ) {
-		global $plugin_page, $pagenow;
+		global $pagenow;
 
-		$version = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? time() : $version;
+		$version = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? time() : Plugin::$version;
 
 		$script_debug    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$is_widgets_page = ( 'widgets.php' === $pagenow );
