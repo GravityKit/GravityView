@@ -603,6 +603,7 @@ class View_Settings extends Settings {
 					'placeholder' => 'https://www.example.com/landing-page/',
 					'requires'    => 'delete_redirect=' . \GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE,
 					'merge_tags'  => 'force',
+					'validation'  => self::validate_url_with_tags(),
 				),
 				'is_secure'                   => [
 					'label' => __( 'Enable Enhanced Security', 'gk-gravityview' ),
