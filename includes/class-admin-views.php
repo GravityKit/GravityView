@@ -1764,7 +1764,9 @@ HTML;
 	 * @return void
 	 */
 	static function add_scripts_and_styles( $hook ) {
-		global $plugin_page, $pagenow;
+		global $pagenow;
+
+		$version = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? time() : Plugin::$version;
 
 		$script_debug    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$is_widgets_page = ( 'widgets.php' === $pagenow );
@@ -1773,15 +1775,15 @@ HTML;
 		if ( gravityview()->plugin->is_GF_25() && gravityview()->request->is_admin( '', 'single' ) ) {
 			wp_dequeue_script( 'gform_tooltip_init' );
 			wp_dequeue_style( 'gform_tooltip' );
-			wp_enqueue_style( 'gravityview_gf_tooltip', plugins_url( 'assets/css/gf_tooltip.css', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version );
-			wp_enqueue_script( 'gravityview_gf_tooltip', plugins_url( 'assets/js/gf_tooltip' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version );
+			wp_enqueue_style( 'gravityview_gf_tooltip', plugins_url( 'assets/css/gf_tooltip.css', GRAVITYVIEW_FILE ), array(), $version );
+			wp_enqueue_script( 'gravityview_gf_tooltip', plugins_url( 'assets/js/gf_tooltip' . $script_debug . '.js', GRAVITYVIEW_FILE ), array(), $version );
 		}
 
 		// Add the GV font (with the Astronaut)
-		wp_enqueue_style( 'gravityview_global', plugins_url( 'assets/css/admin-global.css', GRAVITYVIEW_FILE ), array(), \GV\Plugin::$version );
-		wp_register_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array( 'dashicons', 'wp-jquery-ui-dialog' ), \GV\Plugin::$version );
+		wp_enqueue_style( 'gravityview_global', plugins_url( 'assets/css/admin-global.css', GRAVITYVIEW_FILE ), array(), $version );
+		wp_register_style( 'gravityview_views_styles', plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ), array( 'dashicons', 'wp-jquery-ui-dialog' ), $version );
 
-		wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), \GV\Plugin::$version, true );
+		wp_register_script( 'gravityview-jquery-cookie', plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ), array( 'jquery' ), $version, true );
 		wp_enqueue_script(
 			'gravityview-shortcode',
 			plugins_url( 'assets/js/admin-shortcode' . $script_debug . '.js', GRAVITYVIEW_FILE ),
@@ -1789,7 +1791,7 @@ HTML;
 				'jquery',
 				'clipboard',
 			],
-			\GV\Plugin::$version,
+			$version,
 			true
 		);
 
@@ -1807,7 +1809,7 @@ HTML;
 
 		wp_enqueue_script( 'jquery-ui-datepicker' );
 
-		wp_enqueue_style( 'gravityview_views_datepicker', plugins_url( 'assets/css/admin-datepicker.css', GRAVITYVIEW_FILE ), \GV\Plugin::$version );
+		wp_enqueue_style( 'gravityview_views_datepicker', plugins_url( 'assets/css/admin-datepicker.css', GRAVITYVIEW_FILE ), $version );
 
 		// Enqueue scripts
 		wp_enqueue_script(
@@ -1825,10 +1827,10 @@ HTML;
 				'underscore',
 				'clipboard',
 			],
-			\GV\Plugin::$version
+			$version
 		);
-		wp_enqueue_script( 'gravityview_view_dropdown', plugins_url( 'assets/js/admin-view-dropdown' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], \GV\Plugin::$version );
-		wp_enqueue_script( 'gravityview_grid', plugins_url( 'assets/js/admin-grid' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], \GV\Plugin::$version );
+		wp_enqueue_script( 'gravityview_view_dropdown', plugins_url( 'assets/js/admin-view-dropdown' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], $version );
+		wp_enqueue_script( 'gravityview_grid', plugins_url( 'assets/js/admin-grid' . $script_debug . '.js', GRAVITYVIEW_FILE ), [ 'jquery' ], $version );
 
 		wp_localize_script(
 			'gravityview_views_scripts',

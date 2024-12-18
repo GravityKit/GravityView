@@ -594,9 +594,17 @@ $gv-overlay-index: 10000;
 
 	th,
 	td {
-
 		span, input {
 			font-weight: normal !important;
+		}
+
+		input.gv-error {
+			border: 1px solid $color-red;
+		}
+
+		.gv-error-message {
+			margin-top: 4px;
+			color: $color-red;
 		}
 
 		// 2.6 field groups in the Merge Tag dropdowns inside View Settings
