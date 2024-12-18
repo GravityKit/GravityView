@@ -192,6 +192,8 @@
 
 			   .on( 'change', "#gravityview_settings", vcfg.changedSettingsAction )
 
+			   .on( 'click', 'div[data-js="gform-simplebar"]', vcfg.changedSettingsAction )
+
 			   .on( 'click', '.gv-field-details--toggle', function( e ) {
 
 				   var $dialog = $( this ).parents('.ui-dialog');
