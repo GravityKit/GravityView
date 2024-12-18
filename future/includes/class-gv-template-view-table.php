@@ -378,11 +378,8 @@ class View_Table_Template extends View_Template {
         );
 
 		if ( $entry->is_multi() ) {
-			if ( ! $single_entry = $entry->from_field( $field ) ) {
-				echo '<td></td>';
-				return;
-			}
-			$form = GF_Form::by_id( $field->form_id );
+			$single_entry = $entry->from_field( $field );
+			$form         = GF_Form::by_id( $field->form_id );
 		}
 
 		$renderer = new Field_Renderer();
