@@ -926,11 +926,11 @@ class GravityView_frontend {
 		}
 
 		if ( ! empty( $args['show_only_approved'] ) ) {
-
-			$search_criteria['field_filters'][] = array(
-				'key'   => GravityView_Entry_Approval::meta_key,
-				'value' => GravityView_Entry_Approval_Status::APPROVED,
-			);
+			$search_criteria['field_filters'][] = [
+				'key'      => GravityView_Entry_Approval::meta_key,
+				'operator' => '=',
+				'value'    => GravityView_Entry_Approval_Status::APPROVED,
+			];
 
 			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
 
