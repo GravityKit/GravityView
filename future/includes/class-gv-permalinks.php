@@ -587,7 +587,7 @@ final class Permalinks {
 					),
 				],
 				[
-					'rule'    => 'matches:^[a-zA-Z0-9_{}\-]*$',
+					'rule'    => 'matches:^(?:[a-zA-Z0-9_\-]|{[^}]*})*$',
 					'message' => esc_html__(
 						'Only letters, numbers, underscores and dashes are allowed.',
 						'gk-gravityview',
