@@ -403,7 +403,7 @@ class GravityView_Edit_Entry {
             $current_user = wp_get_current_user();
 
             // User edit is disabled
-            if ( empty( $user_edit ) ) {
+            if ( $view_id && empty( $user_edit ) ) {
 
                 gravityview()->log->debug( 'User Edit is disabled. Returning false.' );
 
