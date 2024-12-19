@@ -211,7 +211,8 @@ class GravityView_API {
 
 		if ( ! empty( $id ) ) {
 			if ( ! empty( $form ) && ! empty( $form['id'] ) ) {
-				$form_id = '-' . $form['id'];
+				$form_id = $field['form_id'] ?? $form['id'];
+				$form_id = '-' . $form_id;
 			} else {
 				// @deprecated path. Form should always be given.
 				gravityview()->log->warning( 'GravityView_View::getInstance() legacy API called' );
