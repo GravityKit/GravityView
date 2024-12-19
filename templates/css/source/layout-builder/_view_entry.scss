@@ -1,0 +1,54 @@
+.gv-layout-builder-view--entry {
+    border: 1px solid $color-border;
+    background: #FFF;
+    padding: $padding 0;
+
+    + .gv-layout-builder-view--entry {
+        margin-top: -1px;
+    }
+
+    .gv-grid-row {
+        display: flex;
+
+        & + .gv-grid-row {
+            div[class^=gv-field-] {
+                margin-top: $padding;
+                border-top: 1px solid $color-border;
+                padding-top: $padding;
+            }
+        }
+    }
+
+    div[class^=gv-field-] {
+        .gv-field-label {
+            color: $color-label;
+            font-size: .8em;
+
+            + * {
+                margin: 0;
+            }
+        }
+
+        p, ul, ol {
+            margin: 0;
+
+            & + p, ul, ol {
+                margin-top: 1em;
+            }
+        }
+
+        & + div[class^=gv-field-] {
+            margin-top: $padding;
+            border-top: 1px solid $color-border;
+            padding-top: $padding;
+        }
+    }
+
+    div[class^=gv-grid-col-] {
+        padding: 0 $padding;
+
+        & + div[class^=gv-grid-col-] {
+            border-left: 1px solid $color-border;
+        }
+    }
+}

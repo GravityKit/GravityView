@@ -65,7 +65,10 @@ jQuery( function ( $ ) {
 					$.each(gfMultiFileUploader.uploaders, function(index, uploader){
 						uploader.bind('Init', function(up, params) {
 							var data = up.settings;
-							var max = data.gf_vars.max_files;
+							var max = parseInt(data.gf_vars.max_files, 10);
+							if(max === 0){
+								return;
+							}
 							var fieldId = data.multipart_params.field_id;
 							var existingFilesCount = $('#preview_existing_files_'+fieldId).children().length;
 							var limitReached = existingFilesCount >= max;
@@ -74,7 +77,10 @@ jQuery( function ( $ ) {
 
 						uploader.bind('FilesAdded', function(up, files) {
 							var data = up.settings;
-							var max = data.gf_vars.max_files;
+							var max = parseInt(data.gf_vars.max_files, 10);
+							if(max === 0){
+								return;
+							}
 							var fieldId = data.multipart_params.field_id;
 							var formId = data.multipart_params.form_id;
 							var newFilesCount = $('#gform_preview_'+formId+'_'+fieldId).children().length;
@@ -94,20 +100,22 @@ jQuery( function ( $ ) {
 							gfMultiFileUploader.toggleDisabled(data, limitReached);
 
 
-							// Only show message if max is greater than 1
-							if(max <= 1){
+							// Only show message if max is greater than 1 or limit is reached
+							if(max <= 1 || !limitReached){
 								return true;
 							}
 
-							// Check if message already exists
 
+							// Check if message already exists
 							if($("#" + up.settings.gf_vars.message_id).children().length > 0){
 								return true;
 							}
+
 							$( "#" + up.settings.gf_vars.message_id ).prepend( "<li class='gfield_description gfield_validation_message'>" +
 								$('<div/>').text(gform_gravityforms.strings.max_reached).html()
 							 +
 								 "</li>" );
+
 							// Announce errors.
 							setTimeout(function () {
 								wp.a11y.speak( $( "#" + up.settings.gf_vars.message_id ).text() );

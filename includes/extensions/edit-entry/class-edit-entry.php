@@ -17,7 +17,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 
 class GravityView_Edit_Entry {
-
     /**
      * @var string
      */
@@ -95,6 +94,11 @@ class GravityView_Edit_Entry {
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 
 		add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_arg' ) );
+
+		add_filter( 'gform_notification_events', array( $this, 'add_edit_notification_events' ), 10, 2 );
+
+		add_action( 'gravityview/edit_entry/after_update', array( $this, 'trigger_notifications' ), 10, 3 );
+
     }
 
 	/**
@@ -455,7 +459,35 @@ class GravityView_Edit_Entry {
 
 		GFForms::delete_file();
 	}
-} // end class
 
-// add_action( 'plugins_loaded', array('GravityView_Edit_Entry', 'getInstance'), 6 );
+	/**
+	 * Triggers notifications.
+	 *
+	 * @since 2.32.0
+	 *
+	 * @param array                         $form              The form object.
+	 * @param int                           $entry_id          The entry ID.
+	 * @param GravityView_Edit_Entry_Render $edit_entry_render The edit entry render class instance.
+	 */
+	public function trigger_notifications( $form, $entry_id, $edit_entry_render ) {
+		GravityView_Notifications::send_notifications( (int) $entry_id, 'gravityview/edit_entry/after_update', $edit_entry_render->entry );
+	}
+
+	/**
+	 * Adds the notification event.
+	 *
+	 * @since 2.32.0
+	 *
+	 * @param array $notification_events Existing notification events.
+	 * @param array $form                The form object.
+	 *
+	 * @return array
+	 */
+	public function add_edit_notification_events( $notification_events = [], $form = [] ) {
+		$notification_events['gravityview/edit_entry/after_update'] = 'GravityView - ' . esc_html_x( 'Entry is updated', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+
+		return $notification_events;
+	}
+}
+
 GravityView_Edit_Entry::getInstance();

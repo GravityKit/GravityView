@@ -132,6 +132,7 @@ class GravityView_Admin {
 		include_once GRAVITYVIEW_DIR . 'includes/class-admin-approve-entries.php';
 		include_once GRAVITYVIEW_DIR . 'includes/class-gravityview-bulk-actions.php';
 
+		GravityView_Render_Settings::register_hooks();
 		/**
 		 * Triggered after all GravityView admin files are loaded.
 		 *
