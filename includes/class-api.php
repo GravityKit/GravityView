@@ -181,15 +181,20 @@ class GravityView_API {
 
 		if ( ! empty( $field['id'] ) ) {
 			if ( ! empty( $form ) && ! empty( $form['id'] ) ) {
-				$form_id = '-' . $form['id'];
+				$form_id = $form['id'];
 			} else {
 				// @deprecated path. Form should always be given.
 				gravityview()->log->warning( 'GravityView_View::getInstance() legacy API called' );
 				$gravityview_view = GravityView_View::getInstance();
-				$form_id          = $gravityview_view->getFormId() ? '-' . $gravityview_view->getFormId() : '';
+				$form_id          = $gravityview_view->getFormId() ? $gravityview_view->getFormId() : '';
 			}
 
-			$classes[] = 'gv-field' . $form_id . '-' . $field['id'];
+			$classes[] = 'gv-field' . ( $form_id ? '-' . $form_id : '' ) . '-' . $field['id'];
+
+			// Field is from different form, so we add an extra class.
+			if ( (int) ( $field['form_id'] ?? $form_id ) !== (int) $form_id ) {
+				$classes[] = 'gv-field-' . $field['form_id'] . '-' . $field['id'];
+			}
 		}
 
 		return esc_attr( implode( ' ', $classes ) );
