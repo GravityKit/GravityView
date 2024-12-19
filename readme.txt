@@ -75,6 +75,7 @@ This release introduces [flexible widget positioning](https://docs.gravitykit.co
 * Ability to position widgets in the View editor using predefined layouts, offering a range of single or multi-column configurations with varying widths.
 * View setting to control what happens when a user clicks the Cancel link when editing an entry in the lightbox.
 * Support for the upcoming Image Choice field in Gravity Forms 2.9+.
+* Validation for View editor settings to prevent incorrect values from being set.
 
 #### 🐛 Fixed
 * GravityView tab not displaying in certain cases under GravityKit > Settings menu.

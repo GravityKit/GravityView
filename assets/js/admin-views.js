@@ -190,7 +190,9 @@
 			   // Double-clicking a field/widget label opens settings
 			   .on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
 
-			   .on( 'change', "#gravityview_settings", vcfg.zebraStripeSettings )
+			   .on( 'change', "#gravityview_settings", vcfg.changedSettingsAction )
+
+			   .on( 'click', 'div[data-js="gform-simplebar"]', vcfg.changedSettingsAction )
 
 			   .on( 'click', '.gv-field-details--toggle', function( e ) {
 
@@ -280,7 +282,6 @@
 			   $open_dialog.dialog( 'option', 'width', window_width );
 		   });
 
-
 		   // Make sure the user intends to leave the page before leaving.
 		   window.addEventListener('beforeunload', ( event) => {
 			   if ( vcfg.hasUnsavedChanges ) {
@@ -367,6 +368,119 @@
 		*/
 	   altKeyListener: function( e ) {
 		   viewConfiguration.altKey = e.altKey;
+	   },
+
+	   /**
+		* Manages all actions required when the settings are updated.
+		*
+		* @since $ver$
+		*
+		* @param {Event} event
+		*/
+	   changedSettingsAction: function (event) {
+		   // Revalidate all current tab fields, as new fields may appear when settings are changed.
+		   var $tabFields = viewGeneralSettings.metaboxObj.find( '[name^=template_settings]:visible' );
+		   $tabFields.each( function () {
+			   viewConfiguration.validateField( $( this ) );
+		   } );
+
+		   // Recalculate zebra stripes.
+		   viewConfiguration.zebraStripeSettings();
+	   },
+
+	   /**
+		* Validates the field when its value changes.
+		*
+		* @since $ver$
+		*
+		* @param {jQuery} $field
+		*/
+	   validateField: function ( $field ) {
+		   var rules = $field.data( 'rules' );
+		   if ( ! rules ) {
+			   return;
+		   }
+
+		   var error = viewConfiguration.validateValue( $field.val(), rules );
+
+		   $field.toggleClass( 'gv-error', !! error );
+
+		   $field.parent().find( '.gv-error-message' ).remove();
+		   if ( error ) {
+			   $field.parent().append(
+				   $( '<div>', { class: 'gv-error-message', text: error } )
+			   );
+		   }
+	   },
+
+	   /**
+		* Validates a value against a set of rules.
+		*
+		* @since $ver$
+		*
+		* @param {any} value - The value to validate.
+		* @param {Array} rules - The rules to validate against.
+		* @returns {String|undefined} - Error message. Empty if valid.
+		*/
+	   validateValue( value, rules ) {
+		   if ( ! rules ) {
+			   return;
+		   }
+
+		   var validators = viewConfiguration.getValidators();
+		   for ( var i in rules ) {
+			   if ( ! rules.hasOwnProperty( i ) ) {
+				   continue;
+			   }
+			   var ruleset = rules[ i ],
+				   rule = ruleset.rule,
+				   message = ruleset.message,
+				   param = '',
+				   isValid = true;
+
+			   // Split the rule to get the rule parameter. Example: max:5, rule - max, param - 5.
+			   if ( rule.includes( ':' ) ) {
+				   var parts = rule.split( /:(.+)/ ); // Split only on the first ":"
+				   rule = parts[ 0 ];
+				   param = parts[ 1 ];
+			   }
+			   if ( validators[ rule ] ) {
+				   isValid = validators[ rule ]( value, param );
+			   }
+			   if ( ! isValid ) {
+				   return message;
+			   }
+		   }
+	   },
+
+	   /**
+		* Gets a list of validation callbacks.
+		*
+		* @since $ver$
+		*
+		* @returns {Object} - An object containing validation callbacks.
+		*/
+	   getValidators: function () {
+		   return {
+			   required: function ( value ) {
+				   return value !== null && value !== undefined && value.toString().trim() !== '';
+			   },
+			   max: function ( value, max ) {
+				   return value !== null && value !== undefined && Number( value ) <= max;
+			   },
+			   min: function ( value, min ) {
+				   return value !== null && value !== undefined && Number( value ) >= min;
+			   },
+			   email: function ( value ) {
+				   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test( value );
+			   },
+			   integer: function ( value ) {
+				   return Number.isInteger ? Number.isInteger( Number( value ) ) : Number( value ) % 1 === 0;
+			   },
+			   matches: function ( value, pattern ) {
+				   return new RegExp( pattern ).test( value );
+			   },
+		   };
 	   },
 
 	   /**
@@ -2767,6 +2881,10 @@
 		   var vcfg = viewConfiguration;
 		   var templateId = vcfg._getTemplateId();
 
+		   if ( ! vcfg.validateSettingFields( e ) ) {
+			   return false;
+		   }
+
 		   // Create the form if we're starting fresh.
 		   // On success, this also sets the vcfg.startFreshStatus to false.
 		   if ( vcfg.startFreshStatus ) {
@@ -2857,7 +2975,42 @@
 		   }, 101 );
 
 		   return false;
+	   },
 
+	   validateSettingFields: function ( e ) {
+
+		   var $metabox = viewGeneralSettings.metaboxObj;
+
+		   var $invalidFields = $metabox
+			   .find( '[name^=template_settings].gv-error' )
+			   .filter( function () {
+				   // Get only active fields, i.e., those whose parent <tr> is not "display: none".
+				   return $( this ).closest( 'tr.alternate' ).css( 'display' ) !== 'none';
+			   } );
+
+		   // If no invalid fields are found, return.
+		   if ( ! $invalidFields.length ) {
+			   return true;
+		   }
+
+		   // Prevent form submission.
+		   e.stopImmediatePropagation();
+		   e.preventDefault();
+
+		   // Open the tab containing the invalid field.
+		   var tabPanelId = $invalidFields.first().closest( 'div[role=tabpanel]' ).prop( 'id' );
+		   var $tabLink = $metabox.find( '.ui-tab[aria-controls=' + tabPanelId + '] a.nav-tab' );
+		   $tabLink.trigger( 'click' );
+
+		   // Scroll to the Settings section.
+		   window.scrollTo(
+			   {
+				   top: $metabox.offset().top,
+				   behavior: 'smooth',
+			   },
+		   );
+
+		   return false;
 	   },
 
 	   /**
