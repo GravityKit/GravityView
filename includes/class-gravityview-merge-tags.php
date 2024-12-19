@@ -84,9 +84,8 @@ class GravityView_Merge_Tags {
 	 * @return string If no modifiers passed, $raw_value is not a string, or {all_fields} Merge Tag is used, original value. Otherwise, output from modifier methods.
 	 */
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
-
-		// Handle subfields
-		if( is_array( $raw_value ) && isset( $raw_value[ $merge_tag ] ) && $raw_value[ $merge_tag ] ) {
+		// Process array value for sub-fields like name and address.
+		if ( $raw_value[ $merge_tag ] ?? null ) {
 			$raw_value = $raw_value[ $merge_tag ];
 		}
 
@@ -113,6 +112,7 @@ class GravityView_Merge_Tags {
 			'ucfirst'                   => 'modifier_strings',
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
+			'initials'                  => 'modifier_initials', /** @see modifier_initials */
 			'format'                    => 'modifier_format', /** @see modifier_format */
 			'human'						=> 'modifier_human', /** @see modifier_human */
 		);
@@ -124,16 +124,13 @@ class GravityView_Merge_Tags {
 		$unserialized = maybe_unserialize( $raw_value );
 
 		if ( method_exists( $field, 'get_value_merge_tag' ) && is_array( $unserialized ) ) {
-
 			$non_gv_modifiers = array_diff( $modifiers, array_keys( $gv_modifiers ) );
 
 			$return = $field->get_value_merge_tag( $value, '', array( 'currency' => '' ), array(), implode( '', $non_gv_modifiers ), $raw_value, false, false, 'text', false );
 		}
 
 		foreach ( $modifiers as $passed_modifier ) {
-
 			foreach ( $gv_modifiers as $gv_modifier => $method ) {
-
 				// Uses ^ to only match the first modifier, to enforce same order as passed by GF
 				preg_match( '/^' . $gv_modifier . '/ism', $passed_modifier, $matches );
 
@@ -143,6 +140,7 @@ class GravityView_Merge_Tags {
 
 				// The called method is passed the raw value and the full matches array
 				$return = self::$method( $return, $matches, $value, $field, $passed_modifier, $merge_tag );
+
 				break;
 			}
 		}
@@ -205,6 +203,7 @@ class GravityView_Merge_Tags {
 	 * Converts date and time values to the format modifier.
 	 *
 	 * @since 2.26
+	 * @since TBD Added $merge_tag parameter.
 	 *
 	 * @param string $raw_value
 	 * @param array  $matches
@@ -215,7 +214,7 @@ class GravityView_Merge_Tags {
 	 *
 	 * @return string
 	 */
-	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier, $merge_tag ) {
+	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier, $merge_tag = '' ) {
 		$format = self::get_format_merge_tag_modifier_value( $modifier );
 
 		if ( ! $format ) {
@@ -411,6 +410,19 @@ class GravityView_Merge_Tags {
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Adds a modifier to convert a full name or string to initials.
+	 *
+	 * @since TBD
+	 *
+	 * @param string $raw_value The full name or string to convert.
+	 *
+	 * @return string The initials.
+	 */
+	public static function modifier_initials( $raw_value ) {
+		return GravityView_Field_Name::convert_to_initials( $raw_value );
 	}
 
 	/**

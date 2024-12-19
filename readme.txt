@@ -23,12 +23,22 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+* New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.
+* `:initials` merge tag modifier for Name fields to display initials.
+* Support for Source ID meta added in Gravity Forms 2.9
+
 #### 🐛 Fixed
 * Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.
 * Individual Checkboxes field inputs incorrectly exported in CSV.
+* Custom permalinks were not used on embedded Views.
+* When multiple Views were embedded on the same page, it would show the other Views when displaying a single entry.
+* Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.
+* When using the Multiple Forms extension, labels for fields with empty values no longer disappear in the mobile view.
 
 #### 💻 Developer Updates
 * Added `gravityview/template/field/csv/tick` filter to programmatically modify the checkbox "check" output in CSV.
+* Added `gravityview/shortcode/after-processing` action after a `[gravityview]` shortcode is finished.
 
 = 2.32 on November 21, 2024 =
 
@@ -65,6 +75,7 @@ This release introduces [flexible widget positioning](https://docs.gravitykit.co
 * Ability to position widgets in the View editor using predefined layouts, offering a range of single or multi-column configurations with varying widths.
 * View setting to control what happens when a user clicks the Cancel link when editing an entry in the lightbox.
 * Support for the upcoming Image Choice field in Gravity Forms 2.9+.
+* Validation for View editor settings to prevent incorrect values from being set.
 
 #### 🐛 Fixed
 * GravityView tab not displaying in certain cases under GravityKit > Settings menu.
