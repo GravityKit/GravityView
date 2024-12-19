@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🚀 Added
 * New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.
 * `:initials` merge tag modifier for Name fields to display initials.
+* Support for Source ID meta added in Gravity Forms 2.9
 
 #### 🐛 Fixed
 * Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.
