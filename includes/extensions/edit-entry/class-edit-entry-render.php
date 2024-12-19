@@ -332,6 +332,12 @@ class GravityView_Edit_Entry_Render {
 
 		// File download/delete icons
 		wp_enqueue_style( 'gform_admin_icons' );
+
+		// Fixes the icons not showing up correctly in Gravity Forms 2.9+
+		if ( version_compare( GFForms::$version, '2.9', '>=' ) ) {
+			wp_add_inline_style( 'gform_theme', '.gform-icon { font-family: gform-icons-admin !important; }' );
+		}
+
 	}
 
 
@@ -1232,7 +1238,7 @@ class GravityView_Edit_Entry_Render {
 				case '2':
 					$redirect_url          = $edit_redirect_url;
 					$redirect_url          = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
-					$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sRedirecting to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
+					$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sRedirecting to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $redirect_url ), '</a>' );
 					break;
 
 				case '':
@@ -2287,7 +2293,7 @@ class GravityView_Edit_Entry_Render {
 							$value = gform_get_meta( $this->entry['id'], $rule['fieldId'] );
 						}
 
-						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
+						$match = GVCommon::matches_operation( $value, $rule['value'], $rule['operator'] );
 
 						if ( $match ) {
 							$remove_conditions_rule[] = array( $field['id'], $i );

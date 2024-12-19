@@ -64,6 +64,17 @@
 						const $row = $( result?.row );
 						$row.insertBefore( $add_row );
 
+						$( document.body ).trigger(
+							'gravityview/row-added',
+							$row,
+							{
+								type,
+								row_type,
+								zone,
+								template_id
+							}
+						);
+
 						window?.gvAdminActions?.initTooltips();
 						window?.gvAdminActions?.initDroppables( $row );
 					} ) );

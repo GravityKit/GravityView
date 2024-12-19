@@ -122,7 +122,7 @@ $image_meta = apply_filters(
 			'label'     => esc_attr_x( 'Caption:', 'Post Image field caption heading', 'gk-gravityview' ),
 			'value'     => $caption,
 			'tag_label' => 'span',
-			'tag_value' => GFFormsModel::is_html5_enabled() ? 'figcaption' : 'div',
+			'tag_value' => 'figcaption',
 		),
 		'description' => array(
 			'label'     => esc_attr_x( 'Description:', 'Post Image field description heading', 'gk-gravityview' ),
@@ -134,7 +134,7 @@ $image_meta = apply_filters(
 );
 
 // If HTML5 output is enabled, support the `figure` and `figcaption` tags
-$wrappertag = GFFormsModel::is_html5_enabled() ? 'figure' : 'div';
+$wrappertag = 'figure';
 
 /**
  * Whether to show labels for the image meta.
