@@ -224,6 +224,7 @@ class GV_Unit_Tests_Bootstrap {
 			'3' => '3.33333',
 			'ip' => '127.0.0.1',
 			'source_url' => 'http://example.com/wordpress/?gf_page=preview&id=16',
+			'source_id' => 16,
 			'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.78.2 (KHTML, like Gecko) Version/7.0.6 Safari/537.78.2',
 			'payment_status' => 'Processing',
 			'payment_date' => '2014-08-29 20:55:06',

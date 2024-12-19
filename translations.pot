@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-21T20:27:53+00:00\n"
+"POT-Creation-Date: 2024-12-10T00:52:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -90,22 +90,22 @@ msgstr ""
 #: future/includes/class-gv-oembed.php:232
 #: future/includes/class-gv-oembed.php:237
 #: future/includes/class-gv-oembed.php:243
-#: future/includes/class-gv-shortcode-gravityview.php:194
-#: future/includes/class-gv-shortcode-gravityview.php:228
-#: future/includes/class-gv-shortcode-gravityview.php:233
-#: future/includes/class-gv-shortcode-gravityview.php:239
-#: future/includes/class-gv-shortcode-gravityview.php:262
-#: future/includes/class-gv-shortcode-gravityview.php:267
-#: future/includes/class-gv-shortcode-gravityview.php:273
-#: future/includes/class-gv-shortcode-gravityview.php:287
-#: future/includes/class-gv-view.php:359
-#: future/includes/class-gv-view.php:373
+#: future/includes/class-gv-shortcode-gravityview.php:206
+#: future/includes/class-gv-shortcode-gravityview.php:240
+#: future/includes/class-gv-shortcode-gravityview.php:245
+#: future/includes/class-gv-shortcode-gravityview.php:251
+#: future/includes/class-gv-shortcode-gravityview.php:274
+#: future/includes/class-gv-shortcode-gravityview.php:279
+#: future/includes/class-gv-shortcode-gravityview.php:285
+#: future/includes/class-gv-shortcode-gravityview.php:299
+#: future/includes/class-gv-view.php:364
 #: future/includes/class-gv-view.php:378
-#: future/includes/class-gv-view.php:384
-#: future/includes/class-gv-view.php:407
+#: future/includes/class-gv-view.php:383
+#: future/includes/class-gv-view.php:389
 #: future/includes/class-gv-view.php:412
-#: future/includes/class-gv-view.php:418
-#: future/includes/class-gv-view.php:432
+#: future/includes/class-gv-view.php:417
+#: future/includes/class-gv-view.php:423
+#: future/includes/class-gv-view.php:437
 #: includes/class-frontend-views.php:818
 msgid "You are not allowed to view this content."
 msgstr ""
@@ -127,77 +127,77 @@ msgid "Styles don't get loaded when being previewed, so the content below will l
 msgstr ""
 
 #. Translators: [url] is replaced by the preview URL.
-#: future/includes/class-gv-permalinks.php:333
+#: future/includes/class-gv-permalinks.php:346
 msgid "Example: [url]"
 msgstr ""
 
 #. Translators: [slug] is replaced by the slug.
-#: future/includes/class-gv-permalinks.php:335
-#: future/includes/class-gv-permalinks.php:492
+#: future/includes/class-gv-permalinks.php:348
+#: future/includes/class-gv-permalinks.php:505
 msgid "Default: [slug]"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:346
+#: future/includes/class-gv-permalinks.php:359
 msgid "View Slug"
 msgstr ""
 
 #. Translators: [slug] is replaced by the correct merge tag.
-#: future/includes/class-gv-permalinks.php:352
-#: future/includes/class-gv-permalinks.php:384
+#: future/includes/class-gv-permalinks.php:365
+#: future/includes/class-gv-permalinks.php:397
 msgid "The slug must be at least 3 characters, and cannot contain certain words. See documentation for more information."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:370
-#: future/includes/class-gv-permalinks.php:402
+#: future/includes/class-gv-permalinks.php:383
+#: future/includes/class-gv-permalinks.php:415
 msgid "Read documentation"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:377
+#: future/includes/class-gv-permalinks.php:390
 msgid "Entry Endpoint"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:409
-#: future/includes/class-gv-permalinks.php:475
+#: future/includes/class-gv-permalinks.php:422
+#: future/includes/class-gv-permalinks.php:488
 msgid "Entry Slug"
 msgstr ""
 
 #. Translators: [slug] is replaced by the correct merge tag.
-#: future/includes/class-gv-permalinks.php:416
+#: future/includes/class-gv-permalinks.php:429
 msgid "The entry slug requires at least the [slug] merge tag, to ensure uniqueness."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:453
+#: future/includes/class-gv-permalinks.php:466
 msgid "Permalinks"
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:454
+#: future/includes/class-gv-permalinks.php:467
 msgid "GravityView allows you to create a custom URL structure for your Views."
 msgstr ""
 
 #. Translators: [entry_id] will be replaced by the actual merge tag.
-#: future/includes/class-gv-permalinks.php:479
+#: future/includes/class-gv-permalinks.php:492
 msgid "Change the slug for an entry. Make sure to at least include [entry_id] to avoid URL collisions."
 msgstr ""
 
 #. Translators: [count] is replaced by the amount of characters.
-#: future/includes/class-gv-permalinks.php:561
-#: future/includes/class-gv-permalinks.php:611
+#: future/includes/class-gv-permalinks.php:574
+#: future/includes/class-gv-permalinks.php:624
 msgid "At least [count] characters are required."
 msgstr ""
 
 #. Translators: [slug] will contain the slug value.
-#: future/includes/class-gv-permalinks.php:566
-#: future/includes/class-gv-permalinks.php:647
+#: future/includes/class-gv-permalinks.php:579
+#: future/includes/class-gv-permalinks.php:660
 msgid "Must contain \"[slug]\"."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:569
-#: future/includes/class-gv-permalinks.php:602
-#: future/includes/class-gv-permalinks.php:653
+#: future/includes/class-gv-permalinks.php:582
+#: future/includes/class-gv-permalinks.php:615
+#: future/includes/class-gv-permalinks.php:666
 msgid "Only letters, numbers, underscores and dashes are allowed."
 msgstr ""
 
-#: future/includes/class-gv-permalinks.php:617
+#: future/includes/class-gv-permalinks.php:630
 msgid "You have used a reserved word."
 msgstr ""
 
@@ -213,13 +213,13 @@ msgstr ""
 
 #: future/includes/class-gv-plugin.php:709
 #: future/includes/class-gv-plugin.php:710
-#: future/includes/class-gv-view.php:171
+#: future/includes/class-gv-view.php:176
 msgid "All Views"
 msgstr ""
 
 #: future/includes/class-gv-plugin.php:721
 #: future/includes/class-gv-plugin.php:722
-#: future/includes/class-gv-view.php:174
+#: future/includes/class-gv-view.php:179
 msgid "New View"
 msgstr ""
 
@@ -285,7 +285,7 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:258
 #: future/includes/class-gv-renderer.php:333
 #: future/includes/class-gv-renderer.php:390
-#: future/includes/class-gv-view.php:339
+#: future/includes/class-gv-view.php:344
 #: includes/class-frontend-views.php:696
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
@@ -295,7 +295,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:95
 #: includes/admin/metaboxes/views/view-configuration.php:213
 #: includes/admin/metaboxes/views/view-configuration.php:214
-#: includes/class-admin-views.php:1698
+#: includes/class-admin-views.php:1746
 #: includes/class-frontend-views.php:685
 #: includes/class-gravityview-admin-bar.php:111
 #: includes/class-gravityview-entry-link-shortcode.php:250
@@ -739,7 +739,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:315
 #: future/includes/class-gv-settings-view.php:346
-#: includes/class-common.php:1652
+#: includes/class-common.php:1655
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -1038,19 +1038,19 @@ msgstr ""
 msgid "Do not limit the number of entries output in the file."
 msgstr ""
 
-#: future/includes/class-gv-shortcode-gravityview.php:166
+#: future/includes/class-gv-shortcode-gravityview.php:178
 #: future/includes/class-gv-shortcode-gventry.php:147
 #: future/includes/class-gv-shortcode-gvfield.php:151
-#: future/includes/class-gv-view.php:337
+#: future/includes/class-gv-view.php:342
 msgid "This View is not configured properly. Start by <a href=\"%s\">selecting a form</a>."
 msgstr ""
 
 #. Translators: The first %s is the beginning of the HTML. The second %s is the end of the HTML.
-#: future/includes/class-gv-shortcode-gravityview.php:180
+#: future/includes/class-gv-shortcode-gravityview.php:192
 msgid "This View is in the Trash. %sClick to restore the View%s."
 msgstr ""
 
-#: future/includes/class-gv-shortcode-gravityview.php:184
+#: future/includes/class-gv-shortcode-gravityview.php:196
 msgid "Are you sure you want to restore this View? It will immediately be removed from the trash and set to draft status."
 msgstr ""
 
@@ -1058,35 +1058,35 @@ msgstr ""
 msgid "%1$s: Invalid View secret provided. Update the shortcode with the secret: %2$s"
 msgstr ""
 
-#: future/includes/class-gv-view.php:167
+#: future/includes/class-gv-view.php:172
 msgctxt "Post Type General Name"
 msgid "Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:168
+#: future/includes/class-gv-view.php:173
 msgctxt "Post Type Singular Name"
 msgid "View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:169
+#: future/includes/class-gv-view.php:174
 msgctxt "Menu name"
 msgid "Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:170
+#: future/includes/class-gv-view.php:175
 msgid "Parent View:"
 msgstr ""
 
-#: future/includes/class-gv-view.php:172
+#: future/includes/class-gv-view.php:177
 msgctxt "View Item"
 msgid "View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:173
+#: future/includes/class-gv-view.php:178
 msgid "Add New View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:175
+#: future/includes/class-gv-view.php:180
 #: includes/class-gravityview-admin-bar.php:163
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
@@ -1097,67 +1097,67 @@ msgstr ""
 msgid "Edit View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:176
+#: future/includes/class-gv-view.php:181
 msgid "Update View"
 msgstr ""
 
-#: future/includes/class-gv-view.php:177
+#: future/includes/class-gv-view.php:182
 msgid "Search Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:179
+#: future/includes/class-gv-view.php:184
 #: includes/class-admin.php:59
 msgid "No Views found in Trash"
 msgstr ""
 
-#: future/includes/class-gv-view.php:180
+#: future/includes/class-gv-view.php:185
 msgid "Filter Views list"
 msgstr ""
 
-#: future/includes/class-gv-view.php:181
+#: future/includes/class-gv-view.php:186
 msgid "Views list navigation"
 msgstr ""
 
-#: future/includes/class-gv-view.php:182
+#: future/includes/class-gv-view.php:187
 msgid "Views list"
 msgstr ""
 
-#: future/includes/class-gv-view.php:183
+#: future/includes/class-gv-view.php:188
 msgid "See Views"
 msgstr ""
 
-#: future/includes/class-gv-view.php:184
+#: future/includes/class-gv-view.php:189
 msgid "View Attributes"
 msgstr ""
 
-#: future/includes/class-gv-view.php:185
+#: future/includes/class-gv-view.php:190
 msgid "View updated."
 msgstr ""
 
-#: future/includes/class-gv-view.php:186
+#: future/includes/class-gv-view.php:191
 msgid "View published."
 msgstr ""
 
-#: future/includes/class-gv-view.php:187
+#: future/includes/class-gv-view.php:192
 msgid "View reverted to draft."
 msgstr ""
 
-#: future/includes/class-gv-view.php:188
+#: future/includes/class-gv-view.php:193
 msgid "View scheduled."
 msgstr ""
 
-#: future/includes/class-gv-view.php:192
+#: future/includes/class-gv-view.php:197
 msgid "view"
 msgstr ""
 
-#: future/includes/class-gv-view.php:193
+#: future/includes/class-gv-view.php:198
 msgid "Create views based on a Gravity Forms form"
 msgstr ""
 
-#: future/includes/class-gv-view.php:341
+#: future/includes/class-gv-view.php:346
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:228
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:268
-#: includes/class-admin-views.php:634
+#: includes/class-admin-views.php:681
 msgid "Data Source"
 msgstr ""
 
@@ -1216,26 +1216,26 @@ msgstr ""
 msgid "Endpoint Not Yet Implemented."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:80
+#: future/includes/rest/class-gv-rest-views-route.php:84
 #: includes/class-admin.php:61
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-lifterlms.php:333
 msgid "No Views found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:322
+#: future/includes/rest/class-gv-rest-views-route.php:327
 msgid "No Entries found."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:433
-#: future/includes/rest/class-gv-rest-views-route.php:489
-#: future/includes/rest/class-gv-rest-views-route.php:504
-#: future/includes/rest/class-gv-rest-views-route.php:508
-#: future/includes/rest/class-gv-rest-views-route.php:519
-#: future/includes/rest/class-gv-rest-views-route.php:584
+#: future/includes/rest/class-gv-rest-views-route.php:438
+#: future/includes/rest/class-gv-rest-views-route.php:494
+#: future/includes/rest/class-gv-rest-views-route.php:509
+#: future/includes/rest/class-gv-rest-views-route.php:513
+#: future/includes/rest/class-gv-rest-views-route.php:524
+#: future/includes/rest/class-gv-rest-views-route.php:589
 msgid "You are not allowed to access this content."
 msgstr ""
 
-#: future/includes/rest/class-gv-rest-views-route.php:506
+#: future/includes/rest/class-gv-rest-views-route.php:511
 msgid "This View is not configured properly."
 msgstr ""
 
@@ -1287,7 +1287,7 @@ msgid "Add \"%s\""
 msgstr ""
 
 #: includes/admin/class-gravityview-admin-view-item.php:218
-#: includes/class-admin-views.php:1026
+#: includes/class-admin-views.php:1073
 msgid "Add Field"
 msgstr ""
 
@@ -1458,7 +1458,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:86
 #: includes/admin/metaboxes/views/view-configuration.php:90
-#: includes/class-admin-views.php:576
+#: includes/class-admin-views.php:623
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:206
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:305
 #: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:379
@@ -1589,7 +1589,7 @@ msgstr ""
 
 #: includes/admin/metaboxes/views/direct-access-status.php:98
 #: includes/class-admin-add-shortcode.php:140
-#: includes/class-admin-views.php:1799
+#: includes/class-admin-views.php:1847
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:283
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1175
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1308
@@ -1653,12 +1653,12 @@ msgid "Add this shortcode to a post or page to embed this view."
 msgstr ""
 
 #: includes/admin/metaboxes/views/shortcode-hint.php:19
-#: includes/class-admin-views.php:524
+#: includes/class-admin-views.php:571
 msgid "Click to copy"
 msgstr ""
 
 #: includes/admin/metaboxes/views/shortcode-hint.php:20
-#: includes/class-admin-views.php:526
+#: includes/class-admin-views.php:573
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1316
 msgid "Copied!"
 msgstr ""
@@ -1733,8 +1733,8 @@ msgstr ""
 
 #. translators: %1$s is the vendor title.
 #: includes/admin/metaboxes/views/view-configuration.php:148
-#: includes/class-admin-views.php:1422
-#: includes/class-admin-views.php:1798
+#: includes/class-admin-views.php:1470
+#: includes/class-admin-views.php:1846
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:74
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:216
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:24
@@ -1808,7 +1808,7 @@ msgid "(no title)"
 msgstr ""
 
 #: includes/class-admin-add-shortcode.php:186
-#: includes/class-admin-views.php:1803
+#: includes/class-admin-views.php:1851
 msgid "Loading&hellip;"
 msgstr ""
 
@@ -1856,214 +1856,214 @@ msgstr ""
 msgid "GravityView entry approval status"
 msgstr ""
 
-#: includes/class-admin-views.php:196
+#: includes/class-admin-views.php:243
 msgid "Filter Views by form"
 msgstr ""
 
-#: includes/class-admin-views.php:198
+#: includes/class-admin-views.php:245
 msgid "All forms"
 msgstr ""
 
-#: includes/class-admin-views.php:212
+#: includes/class-admin-views.php:259
 msgid "Filter Views by layout"
 msgstr ""
 
-#: includes/class-admin-views.php:214
+#: includes/class-admin-views.php:261
 msgid "All layouts"
 msgstr ""
 
-#: includes/class-admin-views.php:215
+#: includes/class-admin-views.php:262
 msgid "Layouts"
 msgstr ""
 
-#: includes/class-admin-views.php:225
+#: includes/class-admin-views.php:272
 msgid "Form Presets"
 msgstr ""
 
-#: includes/class-admin-views.php:285
-#: includes/class-admin-views.php:317
+#: includes/class-admin-views.php:332
+#: includes/class-admin-views.php:364
 msgid "Create a View"
 msgstr ""
 
-#: includes/class-admin-views.php:287
-#: includes/class-admin-views.php:319
+#: includes/class-admin-views.php:334
+#: includes/class-admin-views.php:366
 msgid "Create a View using this form as a data source"
 msgstr ""
 
-#: includes/class-admin-views.php:304
+#: includes/class-admin-views.php:351
 msgid "No Title (View #%d)"
 msgstr ""
 
-#: includes/class-admin-views.php:333
+#: includes/class-admin-views.php:380
 msgid "Connected Views"
 msgstr ""
 
-#: includes/class-admin-views.php:335
+#: includes/class-admin-views.php:382
 msgid "GravityView Views using this form as a data source"
 msgstr ""
 
-#: includes/class-admin-views.php:416
+#: includes/class-admin-views.php:463
 msgid "CSS Merge Tags"
 msgstr ""
 
-#: includes/class-admin-views.php:417
+#: includes/class-admin-views.php:464
 msgid "Developers: The CSS classes will be sanitized using the %1$ssanitize_title_with_dashes()%2$s function."
 msgstr ""
 
-#: includes/class-admin-views.php:493
+#: includes/class-admin-views.php:540
 msgid "Not connected."
 msgstr ""
 
-#: includes/class-admin-views.php:502
+#: includes/class-admin-views.php:549
 msgid "The connected form can not be found; it may no longer exist."
 msgstr ""
 
-#: includes/class-admin-views.php:564
+#: includes/class-admin-views.php:611
 #: includes/class-gravityview-admin-bar.php:164
 msgid "Edit Form"
 msgstr ""
 
-#: includes/class-admin-views.php:571
+#: includes/class-admin-views.php:618
 msgid "Entries"
 msgstr ""
 
-#: includes/class-admin-views.php:576
+#: includes/class-admin-views.php:623
 msgid "Edit settings for this form"
 msgstr ""
 
-#: includes/class-admin-views.php:581
+#: includes/class-admin-views.php:628
 msgid "Preview Form"
 msgstr ""
 
-#: includes/class-admin-views.php:581
+#: includes/class-admin-views.php:628
 msgid "Preview this form"
 msgstr ""
 
-#: includes/class-admin-views.php:637
+#: includes/class-admin-views.php:684
 msgctxt "Column title that shows what template is being used for Views"
 msgid "Template"
 msgstr ""
 
-#: includes/class-admin-views.php:639
+#: includes/class-admin-views.php:686
 msgid "Shortcode"
 msgstr ""
 
-#: includes/class-admin-views.php:839
+#: includes/class-admin-views.php:886
 msgid "Add All Form Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:840
+#: includes/class-admin-views.php:887
 msgid "Insert all the form fields at once."
 msgstr ""
 
-#: includes/class-admin-views.php:1024
+#: includes/class-admin-views.php:1071
 msgid "Add Widget"
 msgstr ""
 
-#: includes/class-admin-views.php:1126
+#: includes/class-admin-views.php:1173
 msgid "Clear all fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1261
+#: includes/class-admin-views.php:1309
 msgid "Are you sure you want to delete the entire row?"
 msgstr ""
 
-#: includes/class-admin-views.php:1316
+#: includes/class-admin-views.php:1364
 #: includes/widgets/search-widget/class-search-widget.php:131
 msgid "Search Bar"
 msgstr ""
 
-#: includes/class-admin-views.php:1326
+#: includes/class-admin-views.php:1374
 #: includes/widgets/class-gravityview-widget-pagination-info.php:31
 msgid "Show Pagination Info"
 msgstr ""
 
-#: includes/class-admin-views.php:1332
-#: includes/class-admin-views.php:1339
+#: includes/class-admin-views.php:1380
+#: includes/class-admin-views.php:1387
 #: includes/widgets/class-gravityview-widget-page-links.php:30
 msgid "Page Links"
 msgstr ""
 
-#: includes/class-admin-views.php:1425
+#: includes/class-admin-views.php:1473
 msgid "Filter Fields:"
 msgstr ""
 
-#: includes/class-admin-views.php:1426
+#: includes/class-admin-views.php:1474
 msgid "Filter fields by name or label"
 msgstr ""
 
-#: includes/class-admin-views.php:1437
+#: includes/class-admin-views.php:1485
 msgid "No fields were found matching the search."
 msgstr ""
 
-#: includes/class-admin-views.php:1474
+#: includes/class-admin-views.php:1522
 msgid "This View is configured using the %s View type, which is disabled."
 msgstr ""
 
-#: includes/class-admin-views.php:1475
+#: includes/class-admin-views.php:1523
 msgid "The data is not lost; re-activate the associated plugin and the configuration will re-appear."
 msgstr ""
 
-#: includes/class-admin-views.php:1552
+#: includes/class-admin-views.php:1600
 msgid "Select your layout"
 msgstr ""
 
-#: includes/class-admin-views.php:1576
+#: includes/class-admin-views.php:1624
 msgid "Add [type] row"
 msgstr ""
 
-#: includes/class-admin-views.php:1588
+#: includes/class-admin-views.php:1636
 msgid "Add Row"
 msgstr ""
 
-#: includes/class-admin-views.php:1699
+#: includes/class-admin-views.php:1747
 #: includes/fields/class-gravityview-field-edit-link.php:32
 msgid "Link to Edit Entry"
 msgstr ""
 
-#: includes/class-admin-views.php:1794
+#: includes/class-admin-views.php:1842
 msgid "Enter View name here"
 msgstr ""
 
-#: includes/class-admin-views.php:1795
+#: includes/class-admin-views.php:1843
 msgid "Reorder Search Fields"
 msgstr ""
 
-#: includes/class-admin-views.php:1796
+#: includes/class-admin-views.php:1844
 #: includes/widgets/search-widget/class-search-widget.php:311
 msgid "Add Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1797
+#: includes/class-admin-views.php:1845
 msgid "Remove Search Field"
 msgstr ""
 
-#: includes/class-admin-views.php:1800
+#: includes/class-admin-views.php:1848
 msgid "Continue"
 msgstr ""
 
-#: includes/class-admin-views.php:1801
+#: includes/class-admin-views.php:1849
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1308
 msgid "Ok"
 msgstr ""
 
-#: includes/class-admin-views.php:1802
+#: includes/class-admin-views.php:1850
 msgid "Error while creating the View for you. Check the settings or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1804
+#: includes/class-admin-views.php:1852
 msgid "There was an error loading dynamic content."
 msgstr ""
 
-#: includes/class-admin-views.php:1805
+#: includes/class-admin-views.php:1853
 msgid "Error while adding the field. Please try again or contact GravityView support."
 msgstr ""
 
-#: includes/class-admin-views.php:1806
+#: includes/class-admin-views.php:1854
 msgid "Would you like to remove all fields in this zone?"
 msgstr ""
 
-#: includes/class-admin-views.php:1807
+#: includes/class-admin-views.php:1855
 msgid "You have unsaved changes. Continuing will discard them. Are you sure you want to proceed?"
 msgstr ""
 
@@ -2257,24 +2257,24 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:1212
+#: includes/class-common.php:1215
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1212
+#: includes/class-common.php:1215
 msgid "%s from now"
 msgstr ""
 
-#: includes/class-common.php:1605
+#: includes/class-common.php:1608
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1656
+#: includes/class-common.php:1659
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1788
+#: includes/class-common.php:1791
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -4309,18 +4309,18 @@ msgid "Don&rsquo;t show the full URL, only show the domain."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-workflow_current_status_timestamp.php:30
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:160
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:187
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:166
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:193
 msgid "Workflow Current Status Timestamp"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-workflow_final_status.php:24
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:144
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:150
 msgid "Workflow Status"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-workflow_step.php:24
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:139
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:145
 msgid "Workflow Step"
 msgstr ""
 
@@ -4376,7 +4376,7 @@ msgstr ""
 msgid "Install & Activate"
 msgstr ""
 
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:133
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:139
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
 msgstr ""
