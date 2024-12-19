@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🚀 Added
 * New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.
 * Support for Source ID meta added in Gravity Forms 2.9
+* New User Activation field in the View editor to activate users added by the Gravity Forms User Registration add-on.
 * `:initials` merge tag modifier for Name fields to display initials.
 * `:format` merge tag modifier for field inputs (e.g., `{Event Field:1.1:format:Y-m-d}`).
 
