@@ -12,9 +12,9 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
+ob_start();
 gravityview_before( $gravityview );
 
-ob_start();
 gravityview_header( $gravityview );
 
 // There are no entries.
@@ -63,6 +63,8 @@ if ( ! $gravityview->entries->count() ) {
 
 gravityview_footer( $gravityview );
 
+gravityview_after( $gravityview );
+
 $content = ob_get_clean();
 /**
  * Modify the wrapper container.
@@ -82,5 +84,3 @@ $wrapper_container = apply_filters(
 );
 
 echo $wrapper_container ? str_replace( '{content}', $content, $wrapper_container ) : $content;
-
-gravityview_after( $gravityview );

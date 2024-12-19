@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🚀 Added
 * New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.
 * `:initials` merge tag modifier for Name fields to display initials.
+* Support for Source ID meta added in Gravity Forms 2.9
 
 #### 🐛 Fixed
 * Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.
@@ -33,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Custom permalinks were not used on embedded Views.
 * When multiple Views were embedded on the same page, it would show the other Views when displaying a single entry.
 * Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.
+* When using the Multiple Forms extension, labels for fields with empty values no longer disappear in the mobile view.
 
 #### 💻 Developer Updates
 * Added `gravityview/template/field/csv/tick` filter to programmatically modify the checkbox "check" output in CSV.
