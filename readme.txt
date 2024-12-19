@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.7
+Tested up to: 6.7.1
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,22 +21,27 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.33 on December 19, 2024 =
+
+This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.
 
 #### 🚀 Added
-* New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.
-* Support for Source ID meta added in Gravity Forms 2.9
+* Support for the Source ID meta introduced in Gravity Forms 2.9.
 * New User Activation field in the View editor to activate users added by the Gravity Forms User Registration add-on.
+* Client-side validation of View editor settings to prevent incorrect values.
 * `:initials` merge tag modifier for Name fields to display initials.
 * `:format` merge tag modifier for field inputs (e.g., `{Event Field:1.1:format:Y-m-d}`).
 
 #### 🐛 Fixed
 * Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.
 * Individual Checkboxes field inputs incorrectly exported in CSV.
-* Custom permalinks were not used on embedded Views.
-* When multiple Views were embedded on the same page, it would show the other Views when displaying a single entry.
+* Custom permalinks not being used in embedded Views.
 * Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.
-* When using the Multiple Forms extension, labels for fields with empty values no longer disappear in the mobile view.
+* Labels for fields with empty values disappearing in mobile view when joining forms using the Multiple Forms extension.
+* Views defaulting to English instead of the site's language for users without certain capabilities.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.22.
 
 #### 💻 Developer Updates
 * Added `gravityview/template/field/csv/tick` filter to programmatically modify the checkbox "check" output in CSV.
@@ -77,7 +82,6 @@ This release introduces [flexible widget positioning](https://docs.gravitykit.co
 * Ability to position widgets in the View editor using predefined layouts, offering a range of single or multi-column configurations with varying widths.
 * View setting to control what happens when a user clicks the Cancel link when editing an entry in the lightbox.
 * Support for the upcoming Image Choice field in Gravity Forms 2.9+.
-* Validation for View editor settings to prevent incorrect values from being set.
 
 #### 🐛 Fixed
 * GravityView tab not displaying in certain cases under GravityKit > Settings menu.
