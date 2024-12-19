@@ -5,6 +5,7 @@ use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
 use Elementor\Widget_Base;
+use GravityKit\GravityView\Gutenberg\Blocks;
 
 if ( ! class_exists( 'Elementor\Widget_Base' ) ) {
 	return;
@@ -101,7 +102,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	 * @return string Widget custom icon.
 	 */
 	public static function get_custom_icon() {
-		return '<svg fill="none" height="80" viewBox="0 0 80 80" width="80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path clip-rule="evenodd" d="m70.6842 63.9999h-9.2135v3c0 4.9706-4.1537 9-9.2134 9h-24.5683c-5.1266 0-9.2135-4.0294-9.2135-9v-44.9999h-9.21341c-1.73812 0-3.07072 1.343-3.07072 2.9999v30c0 1.657 1.3326 3.0001 3.07072 3.0001h1.53601c.8068 0 1.5347.6715 1.5347 1.5v3c0 .8284-.7279 1.4999-1.5347 1.4999h-1.53601c-5.13114 0-9.213445-4.0294-9.213445-9v-30c0-4.9705 4.082305-9 9.213445-9h9.21341v-2.9999c0-4.97062 4.0869-9 9.2135-9h24.5683c5.0597 0 9.2134 4.02938 9.2134 9v45h9.2135c1.6711 0 3.0707-1.3431 3.0707-3.0001v-30c0-1.6569-1.3996-2.9999-3.0707-2.9999h-1.536c-.8736 0-1.536-.6716-1.536-1.5v-3.0001c0-.8284.6624-1.5 1.536-1.5h1.536c5.0642 0 9.2121 4.0295 9.2121 9v30c0 4.9706-4.1479 9-9.2121 9zm-15.3562-50.9999c0-1.657-1.404-3-3.0707-3h-24.5683c-1.7335 0-3.0708 1.343-3.0708 3v53.9999c0 1.6568 1.3373 3.0001 3.0708 3.0001h24.5683c1.6667 0 3.0707-1.3433 3.0707-3.0001z" fill="#40464d" fill-rule="evenodd"/></svg>';
+		return '<svg fill="none" height="28" viewBox="0 0 80 80" width="28" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path clip-rule="evenodd" d="m70.6842 63.9999h-9.2135v3c0 4.9706-4.1537 9-9.2134 9h-24.5683c-5.1266 0-9.2135-4.0294-9.2135-9v-44.9999h-9.21341c-1.73812 0-3.07072 1.343-3.07072 2.9999v30c0 1.657 1.3326 3.0001 3.07072 3.0001h1.53601c.8068 0 1.5347.6715 1.5347 1.5v3c0 .8284-.7279 1.4999-1.5347 1.4999h-1.53601c-5.13114 0-9.213445-4.0294-9.213445-9v-30c0-4.9705 4.082305-9 9.213445-9h9.21341v-2.9999c0-4.97062 4.0869-9 9.2135-9h24.5683c5.0597 0 9.2134 4.02938 9.2134 9v45h9.2135c1.6711 0 3.0707-1.3431 3.0707-3.0001v-30c0-1.6569-1.3996-2.9999-3.0707-2.9999h-1.536c-.8736 0-1.536-.6716-1.536-1.5v-3.0001c0-.8284.6624-1.5 1.536-1.5h1.536c5.0642 0 9.2121 4.0295 9.2121 9v30c0 4.9706-4.1479 9-9.2121 9zm-15.3562-50.9999c0-1.657-1.404-3-3.0707-3h-24.5683c-1.7335 0-3.0708 1.343-3.0708 3v53.9999c0 1.6568 1.3373 3.0001 3.0708 3.0001h24.5683c1.6667 0 3.0707-1.3433 3.0707-3.0001z" fill="#40464d" fill-rule="evenodd"/></svg>';
 	}
 
 	protected function is_dynamic_content(): bool {
@@ -115,10 +116,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	 * @access protected
 	 */
 	protected function register_controls() {
+
 		$this->start_controls_section(
-			'section_form',
+			'section_view',
 			[
-				'label' => esc_html__( 'View Settings', 'gk-gravityview' ),
+				'label' => esc_html__( 'Select a View', 'gk-gravityview' ),
 			]
 		);
 
@@ -135,341 +137,380 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$this->end_controls_section();
 
+		$this->start_controls_section(
+			'section_view_settings',
+			[
+				'label' => esc_html__( 'Customize View Settings', 'gk-gravityview' ),
+			]
+		);
+
+		$defaults = \GV\View_Settings::defaults( true );
+
+		foreach( $defaults as $key => $default_setting ) {
+
+			if ( empty( $default_setting['show_in_shortcode'] ) ) {
+				continue;
+			}
+
+			$control_settings = [
+				'label'       => $default_setting['label'],
+				'default'     => $view_settings[ $key ] ?? $default_setting['value'],
+				'label_block' => true,
+			];
+
+			switch ( $default_setting['type'] ) {
+				case 'text':
+				case 'textarea':
+					$type = Controls_Manager::TEXT;
+					break;
+				case 'number':
+					$type = Controls_Manager::NUMBER;
+					break;
+				case 'checkbox':
+					$type = Controls_Manager::SWITCHER;
+					break;
+				case 'select':
+				case 'radio':
+					$type = Controls_Manager::SELECT;
+					$control_settings['options'] = $default_setting['options'];
+					break;
+				default:
+					$type = Controls_Manager::TEXT;
+			}
+
+			$control_settings['type'] = $type;
+
+			$this->add_control(
+				$key,
+				$control_settings
+			);
+		}
+
+		$this->end_controls_section();
+
 		$this->register_style_controls();
 	}
 
 	protected function register_style_controls() {
-
-		// Table Style Controls
+		// Preview Section
 		$this->start_controls_section(
-			'gravityview_table_style_section',
+			'gravityview_preview_section',
 			[
-				'label' => esc_html__( 'Table', 'gk-gravityview' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-				'conditions' => [
-					'terms' => [
-						[
-							'name' => 'embedded_view',
-							'operator' => 'contains',
-							'value' => 'table',
+				'label' => esc_html__( 'Preview', 'gk-gravityview' ),
+				'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+			]
+		);
+
+		$this->add_control(
+			'preview_single_entry',
+			[
+				'label'        => __( 'Preview Single Entry', 'gk-gravityview' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'gk-gravityview' ),
+				'label_off'    => __( 'No', 'gk-gravityview' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+			]
+		);
+
+		$this->add_control(
+			'show_debug_output',
+			[
+				'label'        => __( 'Show Debug Output', 'gk-gravityview' ),
+				'type'         => Controls_Manager::SWITCHER,
+				'label_on'     => __( 'Yes', 'gk-gravityview' ),
+				'label_off'    => __( 'No', 'gk-gravityview' ),
+				'return_value' => 'yes',
+				'default'      => 'no',
+			]
+		);
+
+		$this->end_controls_section();
+
+		// Define base selectors for multiple entries and single entry views
+		$multiple_selector = '{{WRAPPER}} [id^=gv-view-] .gv-table-multiple-container';
+		$single_selector = '{{WRAPPER}} .gv-table-single-container .gv-table-view-content';
+
+		$sections = [
+			'table'         => [
+				'label'    => esc_html__( 'Table', 'gk-gravityview' ),
+				'controls' => [
+					[
+						'name'       => 'width',
+						'type'       => \Elementor\Controls_Manager::SLIDER,
+						'label'      => esc_html__( 'Width', 'gk-gravityview' ),
+						'devices' => [ 'desktop', 'tablet', 'mobile' ],
+						'desktop_default' => [
+							'unit' => '%',
+							'size' => '100',
+						],
+						'tablet_default' => [
+							'unit' => '%',
+							'size' => '100',
+						],
+						'mobile_default' => [
+							'unit' => '%',
+							'size' => '100',
+						],
+						'size_units' => [ '%', 'px' ],
+						'range'      => [
+							'%'  => [ 'min' => 10, 'max' => 100 ],
+							'px' => [ 'min' => 100, 'max' => 2500 ],
+						],
+						'selectors'  => [
+							'multiple' => [
+								"$multiple_selector" => 'width: {{SIZE}}{{UNIT}};overflow-x: auto;',
+							],
+							'single'   => [
+								"$single_selector" => 'width: {{SIZE}}{{UNIT}};overflow-x: auto;',
+							],
 						],
 					],
 				],
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_width',
-			[
-				'label' => esc_html__( 'Width', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'size_units' => [ '%', 'px' ],
-				'range' => [
-					'%' => [ 'min' => 10, 'max' => 100 ],
-					'px' => [ 'min' => 100, 'max' => 2000 ],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view' => 'width: {{SIZE}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_group_control(
-			\Elementor\Group_Control_Border::get_type(),
-			[
-				'name' => 'gravityview_table_border',
-				'label' => esc_html__( 'Border', 'gk-gravityview' ),
-				'selector' => '{{WRAPPER}} .gv-table-container .gv-table-view',
-			]
-		);
-
-		$this->add_group_control(
-			\Elementor\Group_Control_Background::get_type(),
-			[
-				'name' => 'gravityview_table_background',
-				'label' => esc_html__( 'Background', 'gk-gravityview' ),
-				'types' => [ 'classic', 'gradient' ],
-				'selector' => '{{WRAPPER}} .gv-table-container .gv-table-view',
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_cell_spacing',
-			[
-				'label' => esc_html__( 'Cell Spacing', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::SLIDER,
-				'range' => [
-					'px' => [ 'min' => 0, 'max' => 50 ],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view' => 'border-spacing: {{SIZE}}px;',
-				],
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_cell_padding',
-			[
-				'label' => esc_html__( 'Cell Padding', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view td, {{WRAPPER}} .gv-table-container .gv-table-view th' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_margin',
-			[
-				'label' => esc_html__( 'Margin', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', 'em', '%' ],
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_text_align',
-			[
-				'label' => esc_html__( 'Table Text Alignment', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::CHOOSE,
-				'options' => [
-					'left' => [
-						'title' => __( 'Left', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-left',
+			],
+			'header_footer' => [
+				'label'    => esc_html__( 'Header & Footer', 'gk-gravityview' ),
+				'controls' => [
+					[
+						'name'      => 'text_color',
+						'type'      => \Elementor\Controls_Manager::COLOR,
+						'label'     => esc_html__( 'Text Color', 'gk-gravityview' ),
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector thead th" => 'color: {{VALUE}};',
+								"$multiple_selector tfoot th" => 'color: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tr th" => 'color: {{VALUE}};',
+							],
+						],
 					],
-					'center' => [
-						'title' => __( 'Center', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-center',
+					[
+						'name'      => 'background_color',
+						'type'      => \Elementor\Controls_Manager::COLOR,
+						'label'     => esc_html__( 'Background Color', 'gk-gravityview' ),
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector thead" => 'background-color: {{VALUE}};',
+								"$multiple_selector tfoot" => 'background-color: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tr th" => 'background-color: {{VALUE}};',
+							],
+						],
 					],
-					'right' => [
-						'title' => __( 'Right', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-right',
+					[
+						'name'      => 'text_align',
+						'type'      => \Elementor\Controls_Manager::CHOOSE,
+						'label'     => esc_html__( 'Text Alignment', 'gk-gravityview' ),
+						'options'   => [
+							'left'   => [
+								'title' => __( 'Left', 'gk-gravityview' ),
+								'icon'  => 'eicon-text-align-left',
+							],
+							'center' => [
+								'title' => __( 'Center', 'gk-gravityview' ),
+								'icon'  => 'eicon-text-align-center',
+							],
+							'right'  => [
+								'title' => __( 'Right', 'gk-gravityview' ),
+								'icon'  => 'eicon-text-align-right',
+							],
+						],
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector thead th" => 'text-align: {{VALUE}};',
+								"$multiple_selector tfoot th" => 'text-align: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tr th" => 'text-align: {{VALUE}};',
+							],
+						],
+					],
+					[
+						'name'      => 'hover_background_color',
+						'type'      => \Elementor\Controls_Manager::COLOR,
+						'label'     => esc_html__( 'Hover Background Color', 'gk-gravityview' ),
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector thead:hover th" => 'background-color: {{VALUE}};',
+								"$multiple_selector tfoot:hover th" => 'background-color: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tr:hover th" => 'background-color: {{VALUE}};',
+							],
+						],
+					],
+					[
+						'name'      => 'hover_text_color',
+						'type'      => \Elementor\Controls_Manager::COLOR,
+						'label'     => esc_html__( 'Hover Text Color', 'gk-gravityview' ),
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector thead:hover th" => 'color: {{VALUE}};',
+								"$multiple_selector tfoot:hover th" => 'color: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tr:hover th" => 'color: {{VALUE}};',
+							],
+						],
 					],
 				],
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view' => 'text-align: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_hover_background_color',
-			[
-				'label' => esc_html__( 'Hover Background Color', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view tbody tr:hover' => 'background-color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_hover_text_color',
-			[
-				'label' => esc_html__( 'Hover Text Color', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view tbody tr:hover td' => 'color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->end_controls_section();
-
-// Header Style Controls
-		$this->start_controls_section(
-			'gravityview_table_header_style_section',
-			[
-				'label' => esc_html__( 'Header & Footer', 'gk-gravityview' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_header_text_color',
-			[
-				'label' => esc_html__( 'Text Color', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view thead th' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .gv-table-container .gv-table-view tfoot th' => 'color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->add_group_control(
-			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'gravityview_table_header_typography',
-				'label' => esc_html__( 'Typography', 'gk-gravityview' ),
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view thead th',
-					'{{WRAPPER}} .gv-table-container .gv-table-view tfoot th',
-				],
-			]
-		);
-
-		$this->add_group_control(
-			\Elementor\Group_Control_Background::get_type(),
-			[
-				'name' => 'gravityview_table_header_background',
-				'label' => esc_html__( 'Background', 'gk-gravityview' ),
-				'types' => [ 'classic' ],
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view thead',
-					'{{WRAPPER}} .gv-table-container .gv-table-view tfoot',
-				],
-			]
-		);
-
-		$this->add_control(
-			'gravityview_table_header_text_align',
-			[
-				'label' => esc_html__( 'Text Alignment', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::CHOOSE,
-				'options' => [
-					'left' => [
-						'title' => __( 'Left', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-left',
+			],
+			'body'          => [
+				'label'    => esc_html__( 'Body', 'gk-gravityview' ),
+				'controls' => [
+					[
+						'name'      => 'text_color',
+						'type'      => \Elementor\Controls_Manager::COLOR,
+						'label'     => esc_html__( 'Text Color', 'gk-gravityview' ),
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector tbody td" => 'color: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tbody td" => 'color: {{VALUE}};',
+							],
+						],
 					],
-					'center' => [
-						'title' => __( 'Center', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-center',
+					[
+						'name'      => 'background_color',
+						'type'      => \Elementor\Controls_Manager::COLOR,
+						'label'     => esc_html__( 'Background Color', 'gk-gravityview' ),
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector tbody tr" => 'background-color: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tbody tr" => 'background-color: {{VALUE}};',
+							],
+						],
 					],
-					'right' => [
-						'title' => __( 'Right', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-right',
+					[
+						'name'      => 'hover_background_color',
+						'type'      => \Elementor\Controls_Manager::COLOR,
+						'label'     => esc_html__( 'Hover Background Color', 'gk-gravityview' ),
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector tbody tr:hover" => 'background-color: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tbody tr:hover" => 'background-color: {{VALUE}};',
+							],
+						],
+					],
+					[
+						'name'      => 'hover_text_color',
+						'type'      => \Elementor\Controls_Manager::COLOR,
+						'label'     => esc_html__( 'Hover Text Color', 'gk-gravityview' ),
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector tbody tr:hover td" => 'color: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tbody tr:hover td" => 'color: {{VALUE}};',
+							],
+						],
+					],
+					[
+						'name'      => 'text_align',
+						'type'      => \Elementor\Controls_Manager::CHOOSE,
+						'label'     => esc_html__( 'Text Alignment', 'gk-gravityview' ),
+						'options'   => [
+							'left'   => [
+								'title' => __( 'Left', 'gk-gravityview' ),
+								'icon'  => 'eicon-text-align-left',
+							],
+							'center' => [
+								'title' => __( 'Center', 'gk-gravityview' ),
+								'icon'  => 'eicon-text-align-center',
+							],
+							'right'  => [
+								'title' => __( 'Right', 'gk-gravityview' ),
+								'icon'  => 'eicon-text-align-right',
+							],
+						],
+						'selectors' => [
+							'multiple' => [
+								"$multiple_selector tbody td" => 'text-align: {{VALUE}};',
+								"$multiple_selector tbody td" => 'text-align: {{VALUE}};',
+							],
+							'single'   => [
+								"$single_selector tr td" => 'text-align: {{VALUE}};',
+							],
+						],
 					],
 				],
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view thead th' => 'text-align: {{VALUE}};',
-					'{{WRAPPER}} .gv-table-container .gv-table-view tfoot th' => 'text-align: {{VALUE}};',
-				],
-			]
-		);
+			],
+		];
 
-		$this->add_control(
-			'gravityview_table_header_hover_background_color',
-			[
-				'label' => esc_html__( 'Hover Background Color', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view thead th:hover' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} .gv-table-container .gv-table-view tfoot th:hover' => 'background-color: {{VALUE}};',
-				],
-			]
-		);
+		// Register sections with tabs
+		foreach ( $sections as $section_name => $section_data ) {
+			$this->start_controls_section(
+				"gravityview_{$section_name}_style_section",
+				[
+					'label' => $section_data['label'],
+					'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+				]
+			);
 
-		$this->add_control(
-			'gravityview_table_header_hover_text_color',
-			[
-				'label' => esc_html__( 'Hover Text Color', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view thead th:hover' => 'color: {{VALUE}};',
-					'{{WRAPPER}} .gv-table-container .gv-table-view tfoot th:hover' => 'color: {{VALUE}};',
-				],
-			]
-		);
+			$this->start_controls_tabs( "{$section_name}_context_tabs" );
 
-		$this->end_controls_section();
+			$contexts = [
+				'multiple_entries' => esc_html__( 'Multiple Entries', 'gk-gravityview' ),
+				'single_entry'     => esc_html__( 'Single Entry', 'gk-gravityview' ),
+			];
+			foreach( $contexts as $context => $context_label ) {
+				$this->start_controls_tab( "{$section_name}_{$context}_tab", [
+					'label' => esc_html( $context_label ),
+				] );
 
-		// Body Style Controls
-		$this->start_controls_section(
-			'gravityview_table_body_style_section',
-			[
-				'label' => esc_html__( 'Body', 'gk-gravityview' ),
-				'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-			]
-		);
+				foreach ( $section_data['controls'] as $control ) {
+					$control_args = [
+						'label'      => $control['label'],
+						'type'       => $control['type'],
+						'options'    => $control['options'] ?? null,
+						'size_units' => $control['size_units'] ?? [],
+						'range'      => $control['range'] ?? [],
+						'selector'   => $control['selector']['single'] ?? '',
+						'selectors'  => $control['selectors']['multiple'] ?? [],
+					];
 
-		$this->add_control(
-			'gravityview_table_body_text_color',
-			[
-				'label' => esc_html__( 'Text Color', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view tbody td' => 'color: {{VALUE}};',
-				],
-			]
-		);
+					// Only set the default value if it's set in the control.
+					if ( isset( $control['default'] ) ) {
+						$control_args['default'] = $control['default'];
+					}
 
-		$this->add_group_control(
-			\Elementor\Group_Control_Typography::get_type(),
-			[
-				'name' => 'gravityview_table_body_typography',
-				'label' => esc_html__( 'Typography', 'gk-gravityview' ),
-				'selector' => '{{WRAPPER}} .gv-table-container .gv-table-view tbody td',
-			]
-		);
+					// Responsive controls.
+					if ( isset( $control['devices'] ) ) {
+						$control_args['devices'] = $control['devices'];
+						$control_args['desktop_default'] = $control['desktop_default'];
+						$control_args['tablet_default'] = $control['tablet_default'];
+						$control_args['mobile_default'] = $control['mobile_default'];
 
-		$this->add_group_control(
-			\Elementor\Group_Control_Background::get_type(),
-			[
-				'name' => 'gravityview_table_body_background',
-				'label' => esc_html__( 'Background', 'gk-gravityview' ),
-				'types' => [ 'classic', 'gradient' ],
-				'selector' => '{{WRAPPER}} .gv-table-container .gv-table-view tbody',
-			]
-		);
+						$this->add_responsive_control(
+							"gravityview_{$section_name}_{$control['name']}_{$context}",
+							$control_args
+						);
 
-		$this->add_control(
-			'gravityview_table_body_text_align',
-			[
-				'label' => esc_html__( 'Body Text Alignment', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::CHOOSE,
-				'options' => [
-					'left' => [
-						'title' => __( 'Left', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-left',
-					],
-					'center' => [
-						'title' => __( 'Center', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-center',
-					],
-					'right' => [
-						'title' => __( 'Right', 'gk-gravityview' ),
-						'icon' => 'eicon-text-align-right',
-					],
-				],
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view tbody td' => 'text-align: {{VALUE}};',
-				],
-			]
-		);
+					} else {
+						$this->add_control(
+							"gravityview_{$section_name}_{$control['name']}_{$context}",
+							$control_args
+						);
+					}
 
-		$this->add_control(
-			'gravityview_table_body_hover_background_color',
-			[
-				'label' => esc_html__( 'Body Hover Background Color', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view tbody tr:hover' => 'background-color: {{VALUE}};',
-				],
-			]
-		);
+				}
 
-		$this->add_control(
-			'gravityview_table_body_hover_text_color',
-			[
-				'label' => esc_html__( 'Body Hover Text Color', 'gk-gravityview' ),
-				'type' => \Elementor\Controls_Manager::COLOR,
-				'selectors' => [
-					'{{WRAPPER}} .gv-table-container .gv-table-view tbody tr:hover td' => 'color: {{VALUE}};',
-				],
-			]
-		);
-
-		$this->end_controls_section();
-
+				$this->end_controls_tab();
+			}
+			$this->end_controls_tabs();
+			$this->end_controls_section();
+		}
 	}
 
 	/**
-	 * Render Gravity Forms widget output on the frontend.
+	 * Render GravityView widget output on the frontend.
 	 *
 	 * @since 1.0.0
 	 * @access protected
@@ -479,7 +520,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$settings = $this->get_settings_for_display();
 
 		$view_id = 0;
-		$value = $settings['embedded_view'];
+		$value   = $settings['embedded_view'];
 
 		if ( ! empty( $value ) ) {
 			list( $view_id, $directory_template, $single_template ) = explode( ',', $value );
@@ -501,12 +542,38 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			return;
 		}
 
-		$view_id = (int) $view_id;
 		$view = \GV\View::by_id( $view_id );
 
-		$secret = $view->get_validation_secret();
+		if ( ! $view ) {
+			echo esc_html__( 'View not found.', 'gk-gravityview' );
+			return;
+		}
 
-		$shortcode = sprintf( '[gravityview id="%s" secret="%s"]', $view_id, $secret );
+		$atts_string = '';
+		$atts = $this->convert_widget_settings_to_shortcode( $settings );
+
+		$atts['id'] = $view->ID;
+
+		$secret = $view->get_validation_secret();
+		if ( $secret ) {
+			$atts['secret'] = $secret;
+		}
+
+
+		// Convert array to shortcode attributes string
+		foreach ( $atts as $key => $value ) {
+			$atts_string .= sprintf( ' %s="%s"', $key, esc_attr( $value ) );
+		}
+
+		$shortcode = sprintf( '[gravityview %s]', $atts_string );
+
+
+		if ( 'yes' === \GV\Utils::get( $settings, 'show_debug_output' ) ) {
+			echo '<div style="background-color: #f9f9f9; padding: 20px; margin-bottom: 20px;">';
+			echo '<h3>' . esc_html__( 'Shortcode', 'gk-gravityview' ) . '</h3>';
+			echo '<code>' . $shortcode . '</code>';
+			echo '</div>';
+		}
 
 		$custom_css = $view->settings->get( 'custom_css', null );
 
@@ -514,18 +581,75 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			wp_add_inline_style( 'gravityview_default_style', $custom_css );
 		}
 
+		$preview_single_entry = $settings['preview_single_entry'];
+
+		if ( 'yes' === $preview_single_entry ) {
+			// Get the first entry in a View.
+			$entry     = $view->get_entries()->first();
+			$shortcode = sprintf( '[gventry entry_id="%d" view_id="%d" secret="%s"]', $entry->ID, $view_id, $secret );
+		}
+
+		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && wp_doing_ajax() && 'elementor_ajax' === \GV\Utils::_POST( 'action' ) ) {
+			add_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
+		}
+
 		// Needs to be above the frontend rendering to ensure the Views are loaded.
-		$rendered = \GravityKit\GravityView\Gutenberg\Blocks::render_shortcode( $shortcode );
+		$rendered = Blocks::render_shortcode( $shortcode );
 
 		$gravityview_frontend = \GravityView_frontend::getInstance();
 		$gravityview_frontend->setGvOutputData( \GravityView_View_Data::getInstance( $shortcode ) );
 		$gravityview_frontend->add_scripts_and_styles();
 
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-			#wp_print_styles();
+		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && wp_doing_ajax() && 'elementor_ajax' === \GV\Utils::_POST( 'action' ) ) {
+			wp_print_styles();
 		}
 
 		echo $rendered['content'];
+	}
+
+	public function get_data( $item = null ) {
+
+		$this->settings = $this->get_default_data();
+
+		if( null === $item ) {
+			$item = [];
+		}
+
+		return parent::get_data( $item );
+	}
+
+	private function convert_widget_settings_to_shortcode( $settings ) {
+
+		$defaults = \GV\View_Settings::defaults( true );
+
+		$atts = [];
+		foreach( $defaults as $key => $view_setting ) {
+
+			if ( empty( $view_setting['show_in_shortcode'] ) ) {
+				continue;
+			}
+
+			$passed_value = ( is_null( $settings[ $key ] ) || '' === $settings[ $key ] ) ? $view_setting['value'] : $settings[ $key ] ?? '';
+
+			switch ( $view_setting['type'] ) {
+				case 'number':
+					$atts[ $key ] = (int) $passed_value;
+					break;
+				case 'checkbox':
+					// Convert checkbox values to 1 or 0
+					if ( 'yes' === $settings[ $key ] ) {
+						$atts[ $key ] = 1;
+					} else {
+						$atts[ $key ] = 0;
+					}
+					break;
+				default:
+					$atts[ $key ] = $passed_value;
+					break;
+			}
+		}
+
+		return $atts;
 	}
 
 	/**
@@ -548,10 +672,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		}
 
 		foreach ( $all_views as $view ) {
-			$directory_template = gravityview_get_directory_entries_template_id( $view->ID );
-			$single_template    = gravityview_get_single_entry_template_id( $view->ID );
-			$option_value = sprintf( '%d,%s,%s', $view->ID, esc_attr( $directory_template ), esc_attr(  $single_template ) );
-			$views[ $option_value ] = esc_html( sprintf('%s #%d', $view->post_title, $view->ID ) );
+			$directory_template     = gravityview_get_directory_entries_template_id( $view->ID );
+			$single_template        = gravityview_get_single_entry_template_id( $view->ID );
+			$option_value           = sprintf( '%d,multiple_%s,single_%s', $view->ID, esc_attr( $directory_template ), esc_attr( $single_template ) );
+			$views[ $option_value ] = esc_html( sprintf( '%s #%d', $view->post_title, $view->ID ) );
 		}
 
 		return $views;

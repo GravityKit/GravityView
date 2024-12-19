@@ -79,11 +79,10 @@ class GravityView_Theme_Hooks_Elementor extends GravityView_Plugin_and_Theme_Hoo
 		$icon_svg_url     = 'data:image/svg+xml;utf8,' . rawurlencode( $icon_svg_encoded );
 
 		return ".elementor-element .icon .gk-gravityview-icon {
-            width: 52px;
-            height: 52px;
+            width: 28px;
+            height: 28px;
             display: inline-block;
-            margin-top: -12px; /* Allow icon to be taller */
-            background-image: url('{$icon_svg_url}');
+            background: url('{$icon_svg_url}') top center no-repeat;
         }";
 	}
 

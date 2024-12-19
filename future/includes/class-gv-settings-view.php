@@ -192,6 +192,7 @@ class View_Settings extends Settings {
 					'placeholder' => 'https://www.example.com/{field:1}',
 					'requires'    => 'no_entries_options=2',
 					'validation'  => self::validate_url_with_tags(),
+					'show_in_shortcode' => true,
 				),
 				'no_search_results_text'      => array(
 					'label'             => __( '"No Search Results" Text', 'gk-gravityview' ),
@@ -234,7 +235,7 @@ class View_Settings extends Settings {
 					'desc'              => __( 'When enabled, empty fields will be not be displayed. If disabled, fields and their labels will be displayed with no content.', 'gk-gravityview' ),
 					'value'             => 1,
 					'tooltip'           => false,
-					'show_in_shortcode' => false,
+					'show_in_shortcode' => true,
 				),
 				'hide_empty_single'           => array(
 					'label'             => __( 'Hide empty fields', 'gk-gravityview' ),
@@ -243,7 +244,7 @@ class View_Settings extends Settings {
 					'desc'              => __( 'When enabled, empty fields will be not be displayed. If disabled, fields and their labels will be displayed with no content.', 'gk-gravityview' ),
 					'value'             => 1,
 					'tooltip'           => false,
-					'show_in_shortcode' => false,
+					'show_in_shortcode' => true,
 				),
 				'edit_feeds'                  => array(
 					'label'             => __( 'Feeds', 'gk-gravityview' ),
