@@ -1183,7 +1183,7 @@ class GVCommon {
 			$time_diff = time() - $gmt_time;
 
 			if ( $time_diff > 0 && $time_diff < DAY_IN_SECONDS ) {
-				return sprintf( esc_html__( '%s ago', 'gravityview' ), human_time_diff( $gmt_time ) );
+				return sprintf( esc_html__( '%s ago', 'gk-gravityview' ), human_time_diff( $gmt_time ) );
 			}
 		}
 
@@ -1194,7 +1194,7 @@ class GVCommon {
 		if ( $include_time ) {
 			$time_format = GFCommon::get_default_time_format();
 
-			return sprintf( esc_html__( '%1$s at %2$s', 'gravityview' ), date_i18n( $date_format, $gmt_time, true ), date_i18n( $time_format, $gmt_time, true ) );
+			return sprintf( esc_html__( '%1$s at %2$s', 'gk-gravityview' ), date_i18n( $date_format, $gmt_time, true ), date_i18n( $time_format, $gmt_time, true ) );
 		}
 
 		return date_i18n( $date_format, $gmt_time, true );
