@@ -41,7 +41,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	/**
 	 * Enqueues and localizes the script
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 */
 	public function enqueue_and_localize_script() {
 		// The script is already registered and enqueued
@@ -66,7 +66,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	/**
 	 * Registers the scripts and styles
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 */
 	public function register_scripts_and_styles() {
 		if ( wp_script_is( 'gv-user-activation' ) ) {
@@ -81,7 +81,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	/**
 	 * Gets the content of the field
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 *
 	 * @param string $output
 	 * @param array  $entry
@@ -102,7 +102,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	/**
 	 * Checks if the user exists
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 *
 	 * @param array $form
 	 * @param array $entry
@@ -127,7 +127,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	/**
 	 * Checks if the activation key is valid
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 *
 	 * @param string $activation_key
 	 *
@@ -152,7 +152,7 @@ class GravityView_Field_User_Activation extends GravityView_Field {
 	/**
 	 * Checks if the feeds are valid and have the user activation value set to manual.
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 *
 	 * @param int $form_id
 	 *

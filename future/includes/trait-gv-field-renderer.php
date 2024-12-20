@@ -4,7 +4,7 @@ namespace GV;
 /**
  * Trait responsible for rendering a single field for an entry.
  *
- * @since $ver$
+ * @since 2.33
  */
 trait Field_Renderer_Trait {
 	/**

@@ -80,7 +80,7 @@ class GravityView_Admin_Views {
 	/**
 	 * Disables all notices and footer text on the Views overview page.
 	 *
-	 * @since $ver$
+	 * @since 2.33
 	 *
 	 * @return void
 	 */
@@ -111,7 +111,7 @@ class GravityView_Admin_Views {
 	/**
 	 * Checks if the current page is the Views overview page.
 	 *
-	 * @since $ver$
+	 * @since 2.33
 	 *
 	 * @return bool
 	 */

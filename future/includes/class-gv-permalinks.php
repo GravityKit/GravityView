@@ -24,9 +24,10 @@ final class Permalinks {
 	/**
 	 * A memoization of the current View.
 	 *
-	 * This is used to determine the View, when rendering through a short code.
+	 * This is used to determine the View, when rendering through a shortcode.
 	 *
-	 * @since $ver$
+	 * @since 2.33
+	 *
 	 * @var View|null
 	 */
 	private ?View $current_view;
@@ -683,7 +684,9 @@ final class Permalinks {
 
 	/**
 	 * Captures the current View when it is rendered through a shortcode or block.
-	 * @since $ver$
+	 *
+	 * @since 2.33
+	 *
 	 * @param View|null $view The View object.
 	 */
 	public function capture_view( $view ): void {
@@ -703,7 +706,7 @@ final class Permalinks {
 	/**
 	 * Clears the captured View object.
 	 *
-	 * @since $ver$
+	 * @since 2.33
 	 */
 	public function clear_captured_view(): void {
 		$this->current_view = null;
@@ -712,7 +715,7 @@ final class Permalinks {
 	/**
 	 * Returns the current View.
 	 *
-	 * @since $ver$
+	 * @since 2.33
 	 */
 	private function get_current_view(): ?View {
 		$view = $this->current_view ?? View::from_post( get_post() );

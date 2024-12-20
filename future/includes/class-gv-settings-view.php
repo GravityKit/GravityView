@@ -837,7 +837,7 @@ class View_Settings extends Settings {
 	 * foo.bar/{field:1} - Missing protocol (http:// or https://) or leading //.
 	 * foo - No protocol, domain, or valid structure.
 	 *
-	 * @since $var$
+	 * @since 2.33
 	 *
 	 * @return array
 	 **/

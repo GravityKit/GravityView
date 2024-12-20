@@ -203,7 +203,7 @@ class GravityView_Merge_Tags {
 	 * Converts date and time values to the format modifier.
 	 *
 	 * @since 2.26
-	 * @since TBD Added $merge_tag parameter.
+	 * @since 2.33 Added $merge_tag parameter.
 	 *
 	 * @param string $raw_value
 	 * @param array  $matches
@@ -415,7 +415,7 @@ class GravityView_Merge_Tags {
 	/**
 	 * Adds a modifier to convert a full name or string to initials.
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 *
 	 * @param string $raw_value The full name or string to convert.
 	 *

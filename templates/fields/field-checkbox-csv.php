@@ -51,7 +51,7 @@ if ( ! $is_single_input ) {
 				/**
 				 * Change the output for a checkbox "check" symbol.
 				 *
-				 * @since $ver$
+				 * @since 2.33
 				 *
 				 * @param string $output Checkbox "check" symbol. Default: "✓".
 				 * @param array $entry Entry data.

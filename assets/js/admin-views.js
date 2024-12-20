@@ -373,7 +373,7 @@
 	   /**
 		* Manages all actions required when the settings are updated.
 		*
-		* @since $ver$
+		* @since 2.33
 		*
 		* @param {Event} event
 		*/
@@ -391,7 +391,7 @@
 	   /**
 		* Validates the field when its value changes.
 		*
-		* @since $ver$
+		* @since 2.33
 		*
 		* @param {jQuery} $field
 		*/
@@ -416,7 +416,7 @@
 	   /**
 		* Validates a value against a set of rules.
 		*
-		* @since $ver$
+		* @since 2.33
 		*
 		* @param {any} value - The value to validate.
 		* @param {Array} rules - The rules to validate against.
@@ -456,7 +456,7 @@
 	   /**
 		* Gets a list of validation callbacks.
 		*
-		* @since $ver$
+		* @since 2.33
 		*
 		* @returns {Object} - An object containing validation callbacks.
 		*/

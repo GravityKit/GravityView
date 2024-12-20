@@ -907,7 +907,7 @@ class GVCommon {
 	 * @since 1.7.5
 	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
 	 * @since 1.22.1 Added 'in' and 'not_in' for JSON-encoded array values, serialized non-strings
-	 * @since TBD Uses GFFormsModel::matches_operation or GFFormsModel::matches_conditional_operation depending on the Gravity Forms version.
+	 * @since 2.33 Uses GFFormsModel::matches_operation or GFFormsModel::matches_conditional_operation depending on the Gravity Forms version.
 	 *
 	 * @param mixed  $val1 Left side of comparison
 	 * @param mixed  $val2 Right side of comparison
@@ -1162,7 +1162,7 @@ class GVCommon {
 	/**
 	 * Formats date without applying site's timezone. This is a copy of {@see GFCommon::format_date()}.
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 *
 	 * @param string $gmt_datetime The UTC date/time value to be formatted.
 	 * @param bool   $is_human     Indicates if a human-readable time difference such as "1 hour ago" should be returned when within 24hrs of the current time. Defaults to true.
