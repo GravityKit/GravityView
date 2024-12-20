@@ -28,16 +28,7 @@ if ( floatval( $field_id ) != intval( $field_id ) ) {
 }
 
 if ( ! empty( $field_settings['show_as_initials'] ) ) {
-	$names    = explode( ' ', $display_value );
-
-	$display_value = '';
-
-	foreach ( $names as $name ) {
-		$first_char = function_exists( 'mb_substr' ) ? mb_substr( $name, 0, 1 ) : substr( $name, 0, 1 );
-		$upper_char = function_exists( 'mb_strtoupper' ) ? mb_strtoupper( $first_char ) : strtoupper( $first_char );
-
-		$display_value .= trim( $upper_char ) . '.';
-	}
+	$display_value = GravityView_Field_Name::convert_to_initials( $display_value );
 }
 
 /**

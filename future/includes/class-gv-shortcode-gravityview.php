@@ -1,6 +1,8 @@
 <?php
 namespace GV\Shortcodes;
 
+use GV\View;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -19,6 +21,15 @@ class gravityview extends \GV\Shortcode {
 	 * A stack of calls to track nested shortcodes.
 	 */
 	public static $callstack = array();
+
+	/**
+	 * Keeps the current View remembered.
+	 *
+	 * @since 2.33
+	 *
+	 * @var View|null
+	 */
+	private static ?View $current_view = null;
 
 	/**
 	 * Process and output the [gravityview] shortcode.
@@ -108,6 +119,7 @@ class gravityview extends \GV\Shortcode {
 		 */
 		do_action( 'gravityview/shortcode/before-processing', $view, $post );
 
+		self::$current_view = $view;
 		gravityview()->views->set( $view );
 
 		/**
@@ -186,7 +198,7 @@ class gravityview extends \GV\Shortcode {
 						'</a>'
 					);
 
-					return \GVCommon::generate_notice( '<p>' . $notice . '</p>', 'notice', array( 'delete_post' ), $view->ID );
+					return self::_return( \GVCommon::generate_notice( '<p>' . $notice . '</p>', 'notice', array( 'delete_post' ), $view->ID ) );
 				case 'no_direct_access':
 				case 'embed_only':
 				case 'not_public':
@@ -295,6 +307,14 @@ class gravityview extends \GV\Shortcode {
 			 * Just this view.
 			 */
 		} else {
+			/**
+			 * When viewing a specific View don't render the other Views.
+			 */
+			$selected_view = (int) \GV\Utils::_GET( 'gvid',0 );
+			if ( $selected_view && (int) $view->ID !== $selected_view ) {
+				return self::_return( '' );
+			}
+
 			if ( $is_reembedded ) {
 
 				// Mock the request with the actual View, not the global one
@@ -485,6 +505,19 @@ class gravityview extends \GV\Shortcode {
 	 */
 	private static function _return( $value ) {
 		array_pop( self::$callstack );
+		$view = self::$current_view;
+
+		self::$current_view = null; // Clear for future calls.
+
+		/**
+		 * @action `gravityview/shortcode/after-processing` Runs after the GV shortcode is processed.
+		 *
+		 * @since  2.33
+		 *
+		 * @param \GV\View|null $view The View object.
+		 */
+		do_action( 'gravityview/shortcode/after-processing', $view );
+
 		return $value;
 	}
 }

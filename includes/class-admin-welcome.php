@@ -296,6 +296,44 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.33 on December 19, 2024</h3>
+
+				<p>This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Support for the Source ID meta introduced in Gravity Forms 2.9.</li>
+					<li>New User Activation field in the View editor to activate users added by the Gravity Forms User Registration add-on.</li>
+					<li>Client-side validation of View editor settings to prevent incorrect values.</li>
+					<li><code>:initials</code> merge tag modifier for Name fields to display initials.</li>
+					<li><code>:format</code> merge tag modifier for field inputs (e.g., <code>{Event Field:1.1:format:Y-m-d}</code>).</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.</li>
+					<li>Individual Checkboxes field inputs incorrectly exported in CSV.</li>
+					<li>Custom permalinks not being used in embedded Views.</li>
+					<li>Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.</li>
+					<li>Labels for fields with empty values disappearing in mobile view when joining forms using the Multiple Forms extension.</li>
+					<li>Views defaulting to English instead of the site's language for users without certain capabilities.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.22.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gravityview/template/field/csv/tick</code> filter to programmatically modify the checkbox "check" output in CSV.</li>
+					<li>Added <code>gravityview/shortcode/after-processing</code> action after a <code>[gravityview]</code> shortcode is finished.</li>
+				</ul>
+
 				<h3>2.32 on November 21, 2024</h3>
 
 				<p>This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.</p>
@@ -385,52 +423,6 @@ class GravityView_Welcome {
 					<li>Added <code>gk/gravityview/lightbox/entry/output/footer-after</code> action that fires after the footer and before the closing <code>&lt;/body&gt;</code> tag.</li>
 					<li>Added <code>gravityview/fields/image_choice/image_markup</code> filter to modify the Image Choice field (Gravity Forms 2.9+) markup.</li>
 					<li>Added <code>gravityview/fields/image_choice/output_label</code> filter to control whether to display the value or label of an Image Choice field.</li>
-				</ul>
-
-				<h3>2.30.1 on October 15, 2024</h3>
-
-				<p>This hotfix release resolves an issue with the Multiple Forms extension.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Fatal error in the View editor when using joined data from multiple forms.</li>
-				</ul>
-
-				<h3>2.30 on October 14, 2024</h3>
-
-				<p>This release adds the ability to change the entry creator from the Edit Entry screen, improves upload handling, fixes various bugs, and updates internal components.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Entry creator can now be changed from the Edit Entry screen.</li>
-					<li><code>{now}</code>, <code>{yesterday}</code>, and <code>{tomorrow}</code> relative date merge tags.</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Handling of multi-file uploads on the Edit Entry screen.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Entry loading inside a lightbox did not work in some cases when BuddyPress was active.</li>
-					<li>Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.</li>
-					<li>Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.</li>
-					<li>Fatal error when rendering a GravityView View field with a non-existent View ID.</li>
-					<li>Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.</li>
-					<li>Unexpected scrolling in the View editor after adding a field.</li>
-					<li>PHP notice when rendering a View with a field associated with an inactive add-on.</li>
-					<li>Entry duplication not working on the Entries page.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.19.</li>
 				</ul>
 
 				<p style="text-align: center;">
