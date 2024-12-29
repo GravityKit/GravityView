@@ -190,7 +190,7 @@ class GravityView_Edit_Entry_Locking {
 		wp_add_inline_script( 'heartbeat', '
 			jQuery(document).ready(function($) {
 				if ($("#wpwrap").length === 0) {
-					var lockUI = ' . json_encode( $this->get_lock_ui( $lock_user_id ) ) . ';
+					var lockUI = ' . json_encode( $this->get_lock_ui( $lock_user_id, $entry ) ) . ';
 					$("body").prepend(lockUI);
 				}
 			});
@@ -225,7 +225,7 @@ class GravityView_Edit_Entry_Locking {
 
 		$vars = array(
 			'hasLock'    => ! $lock_user_id ? 1 : 0,
-			'lockUI'     => $this->get_lock_ui( $lock_user_id ),
+			'lockUI'     => $this->get_lock_ui( $lock_user_id, $entry ),
 			'objectID'   => $entry['id'],
 			'objectType' => 'entry',
 			'strings'    => $strings,
@@ -245,10 +245,11 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * @param int $user_id The User ID that has the current lock. Will be empty if entry is not locked
 	 *                     or is locked to the current user.
+	 * @param array $entry The entry array.
 	 *
 	 * @return string The Lock UI dialog box, etc.
 	 */
-	public function get_lock_ui( $user_id ) {
+	public function get_lock_ui( $user_id, $entry ) {
 		$user = get_userdata( $user_id );
 
 		$locked = $user_id && $user;
@@ -256,7 +257,7 @@ class GravityView_Edit_Entry_Locking {
 		$hidden = $locked ? '' : ' hidden';
 		if ( $locked ) {
 
-			if ( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
+			if ( GVCommon::has_cap( 'gravityforms_edit_entries' ) || $entry['created_by'] == get_current_user_id() ) {
 				$avatar              = get_avatar( $user->ID, 64 );
 				$person_editing_text = $user->display_name;
 			} else {
@@ -361,7 +362,7 @@ class GravityView_Edit_Entry_Locking {
 	public function maybe_lock_object( $entry_id ) {
 		global $wp;
 
-		$current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+		$current_url = home_url( add_query_arg( null, null ) );
 
 		if ( isset( $_GET['get-edit-lock'] ) ) {
 			$this->set_lock( $entry_id );
@@ -373,7 +374,7 @@ class GravityView_Edit_Entry_Locking {
 			echo '<script>window.location = ' . json_encode( remove_query_arg( 'release-edit-lock', $current_url ) ) . ';</script>';
 			exit();
 		} elseif ( ! $user_id = $this->check_lock( $entry_id ) ) {
-				$this->set_lock( $entry_id );
+			$this->set_lock( $entry_id );
 		}
 	}
 
@@ -576,7 +577,7 @@ class GravityView_Edit_Entry_Locking {
 
 			$object_id = $received['objectID'];
 
-			if ( ! GFCommon::current_user_can_any( $this->_capabilities ) || empty( $received['post_nonce'] ) ) {
+			if ( ! GVCommon::has_cap( 'gravityforms_edit_entries' ) || empty( $received['post_nonce'] ) ) {
 				return $response;
 			}
 
