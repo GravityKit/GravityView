@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.33\n"
+"Project-Id-Version: GravityView 2.33.1\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-20T01:17:49+00:00\n"
+"POT-Creation-Date: 2024-12-30T14:57:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2112,23 +2112,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:429
+#: includes/class-admin-welcome.php:439
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:481
+#: includes/class-admin-welcome.php:491
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:525
+#: includes/class-admin-welcome.php:535
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:557
+#: includes/class-admin-welcome.php:567
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:558
+#: includes/class-admin-welcome.php:568
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
