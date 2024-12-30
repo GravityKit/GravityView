@@ -21,6 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.33.1 on December 30, 2024 =
+
+This update removes debugging code from the Entry Notes field.
+
+#### 🐛 Fixed
+* Debugging code being shown in the Entry Notes field output.
+
 = 2.33 on December 19, 2024 =
 
 This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.
