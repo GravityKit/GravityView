@@ -296,6 +296,16 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.33.1 on December 30, 2024</h3>
+
+				<p>This update fixes an issue with entry notes being displayed.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Entry notes being displayed.</li>
+				</ul>
+
 				<h3>2.33 on December 19, 2024</h3>
 
 				<p>This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.</p>
