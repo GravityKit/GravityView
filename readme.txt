@@ -23,10 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.33.1 on December 30, 2024 =
 
-This update fixes an issue with entry notes being displayed.
+This update removes debugging code from the Entry Notes field.
 
 #### 🐛 Fixed
-* Entry notes being displayed.
+* Debugging code being shown in the Entry Notes field output.
 
 = 2.33 on December 19, 2024 =
 
