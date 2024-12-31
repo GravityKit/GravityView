@@ -28,6 +28,7 @@ This update removes debugging code from the Entry Notes field.
 #### 🐛 Fixed
 
 * Debugging code being shown in the Entry Notes field output.
+* Output of the User Activation field not being sanitized.
 
 = 2.33.1 on December 30, 2024 =
 
