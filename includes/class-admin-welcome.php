@@ -296,6 +296,16 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.33.2 on December 31, 2024</h3>
+
+				<p>This update removes debugging code from the Entry Notes field.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Debugging code being shown in the Entry Notes field output.</li>
+				</ul>
+
 				<h3>2.33.1 on December 30, 2024</h3>
 
 				<p>This update removes debugging code from the Entry Notes field.</p>

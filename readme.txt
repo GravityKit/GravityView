@@ -21,11 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.33.2 on December 31, 2024 =
+
+This update removes debugging code from the Entry Notes field.
+
+#### 🐛 Fixed
+
+* Debugging code being shown in the Entry Notes field output.
+
 = 2.33.1 on December 30, 2024 =
 
 This update removes debugging code from the Entry Notes field.
 
 #### 🐛 Fixed
+
 * Debugging code being shown in the Entry Notes field output.
 
 = 2.33 on December 19, 2024 =
