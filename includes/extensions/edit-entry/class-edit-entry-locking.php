@@ -28,10 +28,33 @@ class GravityView_Edit_Entry_Locking {
 			add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue_scripts' ) );
 		}
 
+		add_filter( 'heartbeat_received', array( $this, 'heartbeat_refresh_nonces' ), 10, 3 );
+		add_filter( 'heartbeat_received', array( $this, 'heartbeat_check_locked_objects' ), 10, 3 );
+		add_filter( 'heartbeat_received', array( $this, 'heartbeat_refresh_lock' ), 10, 3 );
+		add_filter( 'heartbeat_received', array( $this, 'heartbeat_request_lock' ), 10, 3 );
+
 		add_action( 'wp_ajax_gf_lock_request_entry', array( $this, 'ajax_lock_request' ), 1 );
 		add_action( 'wp_ajax_gf_reject_lock_request_entry', array( $this, 'ajax_reject_lock_request' ), 1 );
 		add_action( 'wp_ajax_nopriv_gf_lock_request_entry', array( $this, 'ajax_lock_request' ) );
 		add_action( 'wp_ajax_nopriv_gf_reject_lock_request_entry', array( $this, 'ajax_reject_lock_request' ) );
+	}
+
+
+	protected function get_lock_request_meta( $object_id ) {
+		return GFCache::get( 'lock_request_entry_' . $object_id );
+	}
+
+	protected function check_lock_request( $object_id ) {
+
+		if ( ! $user_id = $this->get_lock_request_meta( $object_id ) ) {
+			return false;
+		}
+
+		if ( $user_id != get_current_user_id() ) {
+			return $user_id;
+		}
+
+		return false;
 	}
 
 	// TODO: Convert to extending Gravity Forms
@@ -130,12 +153,8 @@ class GravityView_Edit_Entry_Locking {
 				continue;
 			}
 
-			// Make sure that the entry belongs to one of the forms connected to one of the Views in this request
-			$joined_forms = $view::get_joined_forms( $view->ID );
-
-			$entry_form_id = $entry_array['form_id'];
-
-			if ( ! isset( $joined_forms[ $entry_form_id ] ) ) {
+			// Make sure that the entry belongs to the view form
+			if( $view->form->ID != $entry_array['form_id'] ){
 				continue;
 			}
 
@@ -164,11 +183,32 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	protected function enqueue_scripts( $entry ) {
 
+		$lock_user_id = $this->check_lock( $entry['id'] );
+
+		// Gravity forms locking checks if #wpwrap exist in the admin dashboard, 
+		// So we have to add the lock UI to the body before the gforms locking script is loaded.
+		wp_add_inline_script( 'heartbeat', '
+			jQuery(document).ready(function($) {
+				if ($("#wpwrap").length === 0) {
+					var lockUI = ' . json_encode( $this->get_lock_ui( $lock_user_id, $entry ) ) . ';
+					$("body").prepend(lockUI);
+				}
+			});
+		', 'after' );
+
+
 		$min          = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 		$locking_path = GFCommon::get_base_url() . '/includes/locking/';
 
 		wp_enqueue_script( 'gforms_locking', $locking_path . "js/locking{$min}.js", array( 'jquery', 'heartbeat' ), GFCommon::$version );
 		wp_enqueue_style( 'gforms_locking_css', $locking_path . "css/locking{$min}.css", array( 'edit' ), GFCommon::$version );
+
+		// add inline css to hide notification-dialog-wrap if it has the hidden class
+		wp_add_inline_style( 'gforms_locking_css', '
+			.notification-dialog-wrap.hidden {
+				display: none;
+			}
+		' );
 
 		$translations = array_map( 'wp_strip_all_tags', $this->get_strings() );
 
@@ -185,7 +225,7 @@ class GravityView_Edit_Entry_Locking {
 
 		$vars = array(
 			'hasLock'    => ! $lock_user_id ? 1 : 0,
-			'lockUI'     => $this->get_lock_ui( $lock_user_id ),
+			'lockUI'     => $this->get_lock_ui( $lock_user_id, $entry ),
 			'objectID'   => $entry['id'],
 			'objectType' => 'entry',
 			'strings'    => $strings,
@@ -205,10 +245,11 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * @param int $user_id The User ID that has the current lock. Will be empty if entry is not locked
 	 *                     or is locked to the current user.
+	 * @param array $entry The entry array.
 	 *
 	 * @return string The Lock UI dialog box, etc.
 	 */
-	public function get_lock_ui( $user_id ) {
+	public function get_lock_ui( $user_id, $entry ) {
 		$user = get_userdata( $user_id );
 
 		$locked = $user_id && $user;
@@ -216,7 +257,7 @@ class GravityView_Edit_Entry_Locking {
 		$hidden = $locked ? '' : ' hidden';
 		if ( $locked ) {
 
-			if ( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
+			if ( GVCommon::has_cap( 'gravityforms_edit_entries' ) || $entry['created_by'] == get_current_user_id() ) {
 				$avatar              = get_avatar( $user->ID, 64 );
 				$person_editing_text = $user->display_name;
 			} else {
@@ -321,7 +362,7 @@ class GravityView_Edit_Entry_Locking {
 	public function maybe_lock_object( $entry_id ) {
 		global $wp;
 
-		$current_url = add_query_arg( $wp->query_string, '', home_url( $wp->request ) );
+		$current_url = home_url( add_query_arg( null, null ) );
 
 		if ( isset( $_GET['get-edit-lock'] ) ) {
 			$this->set_lock( $entry_id );
@@ -333,7 +374,7 @@ class GravityView_Edit_Entry_Locking {
 			echo '<script>window.location = ' . json_encode( remove_query_arg( 'release-edit-lock', $current_url ) ) . ';</script>';
 			exit();
 		} elseif ( ! $user_id = $this->check_lock( $entry_id ) ) {
-				$this->set_lock( $entry_id );
+			$this->set_lock( $entry_id );
 		}
 	}
 
@@ -417,4 +458,140 @@ class GravityView_Edit_Entry_Locking {
 
 		return $user_id;
 	}
+
+
+	public function heartbeat_check_locked_objects( $response, $data, $screen_id ) {
+		$checked       = array();
+		$heartbeat_key = 'gform-check-locked-objects-entry';
+		if ( array_key_exists( $heartbeat_key, $data ) && is_array( $data[ $heartbeat_key ] ) ) {
+			foreach ( $data[ $heartbeat_key ] as $object_id ) {
+				if ( ( $user_id = $this->check_lock( $object_id ) ) && ( $user = get_userdata( $user_id ) ) ) {
+					$send = array( 'text' => sprintf( __( $this->get_string( 'currently_editing' ) ), $user->display_name ) );
+
+					if ( ( $avatar = get_avatar( $user->ID, 18 ) ) && preg_match( "|src='([^']+)'|", $avatar, $matches ) ) {
+						$send['avatar_src'] = $matches[1];
+					}
+
+					$checked[ $object_id ] = $send;
+				}
+			}
+		}
+
+		if ( ! empty( $checked ) ) {
+			$response[ $heartbeat_key ] = $checked;
+		}
+
+		return $response;
+	}
+
+	public function heartbeat_refresh_lock( $response, $data, $screen_id ) {
+		$heartbeat_key = 'gform-refresh-lock-entry';
+		if ( array_key_exists( $heartbeat_key, $data ) ) {
+			$received = $data[ $heartbeat_key ];
+			$send     = array();
+
+			if ( ! isset( $received['objectID'] ) ) {
+				return $response;
+			}
+
+			$object_id = $received['objectID'];
+
+			if ( ( $user_id = $this->check_lock( $object_id ) ) && ( $user = get_userdata( $user_id ) ) ) {
+
+				$error = array(
+					'text' => sprintf( __( $this->get_string( 'taken_over' ) ), $user->display_name )
+				);
+
+				if ( $avatar = get_avatar( $user->ID, 64 ) ) {
+					if ( preg_match( "|src='([^']+)'|", $avatar, $matches ) ) {
+						$error['avatar_src'] = $matches[1];
+					}
+				}
+
+				$send['lock_error'] = $error;
+			} else {
+
+				if ( $new_lock = $this->set_lock( $object_id ) ) {
+					$send['new_lock'] = $new_lock;
+
+					if ( ( $lock_requester = $this->check_lock_request( $object_id ) ) && ( $user = get_userdata( $lock_requester ) ) ) {
+						$lock_request = array(
+							'text' => sprintf( __( $this->get_string( 'lock_requested' ) ), $user->display_name )
+						);
+
+						if ( $avatar = get_avatar( $user->ID, 64 ) ) {
+							if ( preg_match( "|src='([^']+)'|", $avatar, $matches ) ) {
+								$lock_request['avatar_src'] = $matches[1];
+							}
+						}
+						$send['lock_request'] = $lock_request;
+					}
+				}
+			}
+
+			$response[ $heartbeat_key ] = $send;
+		}
+
+		return $response;
+	}
+
+	public function heartbeat_request_lock( $response, $data, $screen_id ) {
+		$heartbeat_key = 'gform-request-lock-entry';
+		if ( array_key_exists( $heartbeat_key, $data ) ) {
+			$received = $data[ $heartbeat_key ];
+			$send     = array();
+
+			if ( ! isset( $received['objectID'] ) ) {
+				return $response;
+			}
+
+			$object_id = $received['objectID'];
+
+			if ( ( $user_id = $this->check_lock( $object_id ) ) && ( $user = get_userdata( $user_id ) ) ) {
+				if ( $this->get_lock_request_meta( $object_id ) ) {
+					$send['status'] = 'pending';
+				} else {
+					$send['status'] = 'deleted';
+				}
+			} else {
+				if ( $new_lock = $this->set_lock( $object_id ) ) {
+					$send['status'] = 'granted';
+				}
+			}
+
+			$response[ $heartbeat_key ] = $send;
+		}
+
+		return $response;
+	}
+
+
+	public function heartbeat_refresh_nonces( $response, $data, $screen_id ) {
+		if ( array_key_exists( 'gform-refresh-nonces', $data ) ) {
+			$received                         = $data['gform-refresh-nonces'];
+			$response['gform-refresh-nonces'] = array( 'check' => 1 );
+
+			if ( ! isset( $received['objectID'] ) ) {
+				return $response;
+			}
+
+			$object_id = $received['objectID'];
+
+			if ( ! GVCommon::has_cap( 'gravityforms_edit_entries' ) || empty( $received['post_nonce'] ) ) {
+				return $response;
+			}
+
+			if ( 2 === wp_verify_nonce( $received['object_nonce'], 'update-contact_' . $object_id ) ) {
+				$response['gform-refresh-nonces'] = array(
+					'replace'        => array(
+						'_wpnonce' => wp_create_nonce( 'update-object_' . $object_id ),
+					),
+					'heartbeatNonce' => wp_create_nonce( 'heartbeat-nonce' ),
+				);
+			}
+		}
+
+		return $response;
+	}
+
 }
