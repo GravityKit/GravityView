@@ -896,16 +896,18 @@ class GVCommon {
 	}
 
 	/**
-	 * Wrapper for the GFFormsModel::matches_operation() method that adds additional comparisons, including:
+	 * Wrapper for the GFFormsModel::matches_conditional_operation() method that adds additional comparisons, including:
 	 * 'equals', 'greater_than_or_is', 'greater_than_or_equals', 'less_than_or_is', 'less_than_or_equals',
 	 * 'not_contains', 'in', and 'not_in'
 	 *
+	 * @see https://docs.gravitykit.com/article/252-gvlogic-shortcode
+	 *
+	 * @uses GFFormsModel::matches_operation
+	 *
+	 * @since 1.7.5
 	 * @since 1.13 You can define context, which displays/hides based on what's being displayed (single, multiple, edit)
 	 * @since 1.22.1 Added 'in' and 'not_in' for JSON-encoded array values, serialized non-strings
-	 *
-	 * @see https://docs.gravitykit.com/article/252-gvlogic-shortcode
-	 * @uses GFFormsModel::matches_operation
-	 * @since 1.7.5
+	 * @since 2.33 Uses GFFormsModel::matches_operation or GFFormsModel::matches_conditional_operation depending on the Gravity Forms version.
 	 *
 	 * @param mixed  $val1 Left side of comparison
 	 * @param mixed  $val2 Right side of comparison
@@ -914,7 +916,6 @@ class GVCommon {
 	 * @return bool True: matches, false: not matches
 	 */
 	public static function matches_operation( $val1, $val2, $operation ) {
-
 		// Only process strings
 		$val1 = ! is_string( $val1 ) ? wp_json_encode( $val1 ) : $val1;
 		$val2 = ! is_string( $val2 ) ? wp_json_encode( $val2 ) : $val2;
@@ -922,7 +923,6 @@ class GVCommon {
 		$value = false;
 
 		if ( 'context' === $val1 ) {
-
 			$matching_contexts = array( $val2 );
 
 			// We allow for non-standard contexts.
@@ -949,6 +949,10 @@ class GVCommon {
 			$val1 = (string) $timestamp_1;
 			$val2 = (string) $timestamp_2;
 		}
+
+		$gf_comparison_method = method_exists( GFFormsModel::class, 'matches_conditional_operation' )
+			? 'matches_conditional_operation'
+			: 'matches_operation';
 
 		switch ( $operation ) {
 			case 'equals':
@@ -998,13 +1002,12 @@ class GVCommon {
 					$value = ( 'in' === $operation ) ? $json_in : ! $json_in;
 				}
 				break;
-
 			case 'less_than':
 			case '<':
 				if ( is_string( $val1 ) && is_string( $val2 ) ) {
 					$value = $val1 < $val2;
 				} else {
-					$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+					$value = GFFormsModel::$gf_comparison_method( $val1, $val2, $operation );
 				}
 				break;
 			case 'greater_than':
@@ -1012,11 +1015,11 @@ class GVCommon {
 				if ( is_string( $val1 ) && is_string( $val2 ) ) {
 					$value = $val1 > $val2;
 				} else {
-					$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+					$value = GFFormsModel::$gf_comparison_method( $val1, $val2, $operation );
 				}
 				break;
 			default:
-				$value = GFFormsModel::matches_operation( $val1, $val2, $operation );
+				$value = GFFormsModel::$gf_comparison_method( $val1, $val2, $operation );
 		}
 
 		return $value;
@@ -1156,6 +1159,46 @@ class GVCommon {
 		return $entry;
 	}
 
+	/**
+	 * Formats date without applying site's timezone. This is a copy of {@see GFCommon::format_date()}.
+	 *
+	 * @since 2.33
+	 *
+	 * @param string $gmt_datetime The UTC date/time value to be formatted.
+	 * @param bool   $is_human     Indicates if a human-readable time difference such as "1 hour ago" should be returned when within 24hrs of the current time. Defaults to true.
+	 * @param string $date_format  The format the value should be returned in. Defaults to an empty string; the date format from the WordPress general settings, if configured, or Y-m-d.
+	 * @param bool   $include_time Indicates if the time should be included in the returned string. Defaults to true; the time format from the WordPress general settings, if configured, or H:i.
+	 *
+	 * @return string
+	 *
+	 */
+	public static function format_date_without_timezone_offset( $gmt_datetime, $is_human = true, $date_format = '', $include_time = true ) {
+		if ( empty( $gmt_datetime ) ) {
+			return '';
+		}
+
+		$gmt_time = mysql2date( 'G', $gmt_datetime );
+
+		if ( $is_human ) {
+			$time_diff = time() - $gmt_time;
+
+			if ( $time_diff > 0 && $time_diff < DAY_IN_SECONDS ) {
+				return sprintf( esc_html__( '%s ago', 'gk-gravityview' ), human_time_diff( $gmt_time ) );
+			}
+		}
+
+		if ( empty( $date_format ) ) {
+			$date_format = GFCommon::get_default_date_format();
+		}
+
+		if ( $include_time ) {
+			$time_format = GFCommon::get_default_time_format();
+
+			return sprintf( esc_html__( '%1$s at %2$s', 'gk-gravityview' ), date_i18n( $date_format, $gmt_time, true ), date_i18n( $time_format, $gmt_time, true ) );
+		}
+
+		return date_i18n( $date_format, $gmt_time, true );
+	}
 
 	/**
 	 * Allow formatting date and time based on GravityView standards
@@ -1176,34 +1219,34 @@ class GVCommon {
 	 * @return int|null|string Formatted date based on the original date
 	 */
 	public static function format_date( $date_string = '', $args = array() ) {
-
-		$default_atts = array(
-			'raw'       => false,
-			'timestamp' => false,
-			'diff'      => false,
-			'human'     => false,
-			'format'    => '',
-			'time'      => false,
-		);
+		$default_atts = [
+			'raw'          => false,
+			'timestamp'    => false,
+			'diff'         => false,
+			'human'        => false,
+			'format'       => '',
+			'time'         => false,
+			'no_tz_offset' => false,
+		];
 
 		$atts = wp_parse_args( $args, $default_atts );
 
 		/**
-		 * Gravity Forms code to adjust date to locally-configured Time Zone
+		 * Gravity Forms code to adjust date to locally-configured timezone.
 		 *
 		 * @see GFCommon::format_date() for original code
 		 */
 		$date_gmt_time        = mysql2date( 'G', $date_string );
 		$date_local_timestamp = GFCommon::get_local_timestamp( $date_gmt_time );
 
-		$format       = \GV\Utils::get( $atts, 'format' );
-		$is_human     = ! empty( $atts['human'] );
-		$is_diff      = ! empty( $atts['diff'] );
-		$is_raw       = ! empty( $atts['raw'] );
-		$is_timestamp = ! empty( $atts['timestamp'] );
-		$include_time = ! empty( $atts['time'] );
-		$time_diff    = strtotime( $date_string ) - current_time( 'timestamp' );
-
+		$format       	= \GV\Utils::get( $atts, 'format' );
+		$is_human    	= ! empty( $atts['human'] );
+		$is_diff     	= ! empty( $atts['diff'] );
+		$is_raw      	= ! empty( $atts['raw'] );
+		$is_timestamp 	= ! empty( $atts['timestamp'] );
+		$include_time 	= ! empty( $atts['time'] );
+		$no_tz_offset 	= ! empty( $atts['no_tz_offset'] );
+		$time_diff    	= strtotime( $date_string ) - current_time( 'timestamp' );
 
 		// If we're using time diff, we want to have a different default format
 		if ( empty( $format ) ) {
@@ -1220,11 +1263,13 @@ class GVCommon {
 			$formatted_date = $date_local_timestamp;
 		} elseif ( $is_diff ) {
 			$formatted_date = sprintf( $format, human_time_diff( $date_gmt_time, current_time( 'timestamp' ) ) );
+		} elseif ( $no_tz_offset ) {
+			$formatted_date = self::format_date_without_timezone_offset( $date_string, $is_human, $format, $include_time );
 		} else {
 			$formatted_date = GFCommon::format_date( $date_string, $is_human, $format, $include_time );
 		}
 
-		unset( $format, $is_diff, $is_human, $is_timestamp, $is_raw, $date_gmt_time, $date_local_timestamp, $default_atts );
+		unset( $format, $is_diff, $is_human, $is_timestamp, $no_tz_offset, $is_raw, $date_gmt_time, $date_local_timestamp, $default_atts );
 
 		return $formatted_date;
 	}

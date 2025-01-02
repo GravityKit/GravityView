@@ -40,6 +40,7 @@ function gravityview_register_default_templates() {
 	include_once $path . 'resume-board/class-gravityview-preset-resume-board.php';
 	include_once $path . 'job-board/class-gravityview-preset-job-board.php';
 	include_once $path . 'event-listings/class-gravityview-preset-event-listings.php';
+	include_once $path . 'layout-builder/class-gravityview-layout-builder.php';
 }
 
 

@@ -881,7 +881,7 @@ class View implements \ArrayAccess {
 	/**
 	 * Gets the source of the field.
 	 *
-	 * @since $ver$
+	 * @since 2.33
 	 *
 	 * @param Field $field The field.
 	 * @param View  $view The view.

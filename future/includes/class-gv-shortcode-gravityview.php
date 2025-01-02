@@ -25,7 +25,7 @@ class gravityview extends \GV\Shortcode {
 	/**
 	 * Keeps the current View remembered.
 	 *
-	 * @since $ver$
+	 * @since 2.33
 	 *
 	 * @var View|null
 	 */
@@ -512,7 +512,7 @@ class gravityview extends \GV\Shortcode {
 		/**
 		 * @action `gravityview/shortcode/after-processing` Runs after the GV shortcode is processed.
 		 *
-		 * @since  $ver$
+		 * @since  2.33
 		 *
 		 * @param \GV\View|null $view The View object.
 		 */

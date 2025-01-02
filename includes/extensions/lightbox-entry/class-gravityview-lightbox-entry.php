@@ -363,7 +363,7 @@ class GravityView_Lightbox_Entry {
 	 * Processes the delete entry action.
 	 *
 	 * @since 2.29.0
-	 * @since TBD Added $entry and $form parameters.
+	 * @since 2.33 Added $entry and $form parameters.
 	 *
 	 * @param View     $view  The View object.
 	 * @param GF_Entry $entry The entry object.
