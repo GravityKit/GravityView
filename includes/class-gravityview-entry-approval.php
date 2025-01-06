@@ -58,6 +58,43 @@ class GravityView_Entry_Approval {
 		add_action( 'gravityview/approve_entries/updated', array( $this, '_trigger_notifications' ) );
 
 		add_action( 'check_admin_referer', [ $this, 'resend_gf_notifications' ], 10, 2 );
+
+		add_filter( 'gform_field_filters', [ $this, 'add_approval_field_filter' ], 10, 2 );
+
+	}
+
+	/**
+	 * Add approval status filter to the filter list (Export entries conditional logic)
+	 *
+	 * @since TBD
+	 *
+	 * @param array $filters The existing filters.
+	 * @param array $form The form array.
+	 * @return array The modified filters.
+	 */
+	public function add_approval_field_filter( $filters, $form ) {
+		$filters[] = array(
+			'key' 				=> 'is_approved',
+			'text' 				=> __( 'Approval Status', 'gk-gravityview' ),
+			'preventMultiple' 	=> false,
+			'operators' 		=> array( 'is' ),
+			'values' 			=> array(
+				array(
+					'value' => '1',
+					'text' => __( 'Approved', 'gk-gravityview' ),
+				),
+				array(
+					'value' => '2',
+					'text' => __( 'Disapproved', 'gk-gravityview' ),
+				),
+				array(
+					'value' => '3',
+					'text' => __( 'Unapproved', 'gk-gravityview' ),
+				),
+			),
+		);
+
+		return $filters;
 	}
 
 	/**
