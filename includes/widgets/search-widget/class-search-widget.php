@@ -1122,12 +1122,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 				if ( empty( $filter['key'] ) && $search_condition->expressions ) {
 					$search_conditions[] = $search_condition;
 				} else {
-					$left = $search_condition->left;
-
 					// If the left condition is empty, it is likely a multiple forms filter. In this case, we should retrieve the search condition from the main form.
-					if ( ! $left && $search_condition->expressions ) {
+					if ( ! $search_condition->left && $search_condition->expressions ) {
 						$search_condition = $search_condition->expressions[0];
 					}
+
+					$left = $search_condition->left;
 
 					// When casting a column value to a certain type (e.g., happens with the Number field), GF_Query_Column is wrapped in a GF_Query_Call class.
 					if ( $left instanceof GF_Query_Call && $left->parameters ) {
