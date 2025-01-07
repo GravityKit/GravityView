@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Fatal error when searching entries by approval status in Views joined with another form using the Multiple Forms extension.
+* Some merge tag modifiers (e.g., `maxwords`) were not being processed.
 
 = 2.33.2 on December 31, 2024 =
 

@@ -85,7 +85,7 @@ class GravityView_Merge_Tags {
 	 */
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
 		// Process array value for sub-fields like name and address.
-		if ( $raw_value[ $merge_tag ] ?? null ) {
+		if ( is_array( $raw_value ) && ( $raw_value[ $merge_tag ] ?? null ) ) {
 			$raw_value = $raw_value[ $merge_tag ];
 		}
 
