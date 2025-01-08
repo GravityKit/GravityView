@@ -21,12 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Fatal error when searching entries by approval status in Views joined with another form using the Multiple Forms extension.
+* Some merge tag modifiers (e.g., `maxwords`) were not being processed.
+
+#### ✨ Improved
+* Entries added via the Gravity Forms API or while GravityView is inactive can now be filtered using the "Unapproved" status on the Entries page.
+
 = 2.33.2 on December 31, 2024 =
 
 This update removes debugging code from the Entry Notes field.
 
 #### 🐛 Fixed
-
 * Debugging code being shown in the Entry Notes field output.
 * Output of the User Activation field not being sanitized.
 
