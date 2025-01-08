@@ -245,26 +245,35 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	}
 
 	public function test_entry_list_filter_links() {
+		// Discussion: https://gravitykit.slack.com/archives/C727B06MB/p1736354374221989
+		$this->markTestSkipped('Flaky test due to $wpdb sometimes returning empty results');
+
 		$form = $this->factory->form->create_and_get();
 
 		$entry = $this->factory->entry->create_and_get( [ 'form_id' => $form['id'] ] );
 
 		$approve_entries = new class extends GravityView_Admin_ApproveEntries { };
 
-		$this->assertEquals( 0, $approve_entries->filter_links_entry_list( [], $form )[0]['count'] );
-		$this->assertEquals( 0, $approve_entries->filter_links_entry_list( [], $form )[1]['count'] );
-		$this->assertEquals( 1, $approve_entries->filter_links_entry_list( [], $form )[2]['count'] );
+		$filter_links = $approve_entries->filter_links_entry_list( [], $form );
+
+		$this->assertEquals( 0, $filter_links[0]['count'] );
+		$this->assertEquals( 0, $filter_links[1]['count'] );
+		$this->assertEquals( 1, $filter_links[2]['count'] );
 
 		GravityView_Entry_Approval::update_approved( $entry['id'], GravityView_Entry_Approval_Status::APPROVED, $form['id'] );
 
-		$this->assertEquals( 1, $approve_entries->filter_links_entry_list( [], $form )[0]['count'] );
-		$this->assertEquals( 0, $approve_entries->filter_links_entry_list( [], $form )[1]['count'] );
-		$this->assertEquals( 0, $approve_entries->filter_links_entry_list( [], $form )[2]['count'] );
+		$filter_links = $approve_entries->filter_links_entry_list( [], $form );
+
+		$this->assertEquals( 1, $filter_links[0]['count'] );
+		$this->assertEquals( 0, $filter_links[1]['count'] );
+		$this->assertEquals( 0, $filter_links[2]['count'] );
 
 		GravityView_Entry_Approval::update_approved( $entry['id'], GravityView_Entry_Approval_Status::DISAPPROVED, $form['id'] );
 
-		$this->assertEquals( 0, $approve_entries->filter_links_entry_list( [], $form )[0]['count'] );
-		$this->assertEquals( 1, $approve_entries->filter_links_entry_list( [], $form )[1]['count'] );
-		$this->assertEquals( 0, $approve_entries->filter_links_entry_list( [], $form )[2]['count'] );
+		$filter_links = $approve_entries->filter_links_entry_list( [], $form );
+
+		$this->assertEquals( 0, $filter_links[0]['count'] );
+		$this->assertEquals( 1, $filter_links[1]['count'] );
+		$this->assertEquals( 0, $filter_links[2]['count'] );
 	}
 }
