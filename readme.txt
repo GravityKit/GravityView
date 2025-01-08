@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+* Support for entry approval statuses in conditional logic on the Gravity Forms Export Entries page.
+
 #### 🐛 Fixed
 * Fatal error when searching entries by approval status in Views joined with another form using the Multiple Forms extension.
 * Some merge tag modifiers (e.g., `maxwords`) were not being processed.
