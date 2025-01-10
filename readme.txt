@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.34 on January 9, 2025 =
 
-This release introduces the [Layout Builder](https://www.gravitykit.com/?p=846801) that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.
+This release introduces the [Layout Builder](https://www.gravitykit.com/announcing-gravityview-2-34-all-new-layout-builder) that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.
 
 #### 🚀 Added
 * New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.

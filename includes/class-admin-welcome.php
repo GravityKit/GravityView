@@ -298,7 +298,7 @@ class GravityView_Welcome {
 				?>
 				<h3>2.34 on January 9, 2025</h3>
 
-				<p>This release introduces the <a href="https://www.gravitykit.com/?p=846801">Layout Builder</a> that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.</p>
+				<p>This release introduces the <a href="https://www.gravitykit.com/announcing-gravityview-2-34-all-new-layout-builder">Layout Builder</a> that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.</p>
 
 				<h4>🚀 Added</h4>
 
