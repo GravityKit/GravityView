@@ -40,10 +40,24 @@ class GravityView_Edit_Entry_Locking {
 	}
 
 
+	/**
+	 * Get the lock request meta for an object.
+	 *
+	 * @param int $object_id The object ID.
+	 *
+	 * @return int|null The User ID or null.
+	 */
 	protected function get_lock_request_meta( $object_id ) {
 		return GFCache::get( 'lock_request_entry_' . $object_id );
 	}
 
+	/**
+	 * Check if the current user has a lock request for an object.
+	 *
+	 * @param int $object_id The object ID.
+	 *
+	 * @return int|null The User ID or null.
+	 */
 	protected function check_lock_request( $object_id ) {
 
 		if ( ! $user_id = $this->get_lock_request_meta( $object_id ) ) {
@@ -459,7 +473,15 @@ class GravityView_Edit_Entry_Locking {
 		return $user_id;
 	}
 
-
+	/**
+	 * Check if the objects are locked.
+	 *
+	 * @param array $response The response array.
+	 * @param array $data The data array.
+	 * @param string $screen_id The screen ID.
+	 *
+	 * @return array The response array.
+	 */
 	public function heartbeat_check_locked_objects( $response, $data, $screen_id ) {
 		$checked       = array();
 		$heartbeat_key = 'gform-check-locked-objects-entry';
@@ -484,6 +506,15 @@ class GravityView_Edit_Entry_Locking {
 		return $response;
 	}
 
+	/**
+	 * Refresh the lock for an entry.
+	 *
+	 * @param array $response The response array.
+	 * @param array $data The data array.
+	 * @param string $screen_id The screen ID.
+	 *
+	 * @return array The response array.
+	 */
 	public function heartbeat_refresh_lock( $response, $data, $screen_id ) {
 		$heartbeat_key = 'gform-refresh-lock-entry';
 		if ( array_key_exists( $heartbeat_key, $data ) ) {
@@ -535,6 +566,15 @@ class GravityView_Edit_Entry_Locking {
 		return $response;
 	}
 
+	/**
+	 * Request the lock for an entry.
+	 *
+	 * @param array $response The response array.
+	 * @param array $data The data array.
+	 * @param string $screen_id The screen ID.
+	 *
+	 * @return array The response array.
+	 */
 	public function heartbeat_request_lock( $response, $data, $screen_id ) {
 		$heartbeat_key = 'gform-request-lock-entry';
 		if ( array_key_exists( $heartbeat_key, $data ) ) {
@@ -565,7 +605,15 @@ class GravityView_Edit_Entry_Locking {
 		return $response;
 	}
 
-
+	/**
+	 * Refresh the nonces for an entry.
+	 *
+	 * @param array $response The response array.
+	 * @param array $data The data array.
+	 * @param string $screen_id The screen ID.
+	 *
+	 * @return array The response array.
+	 */
 	public function heartbeat_refresh_nonces( $response, $data, $screen_id ) {
 		if ( array_key_exists( 'gform-refresh-nonces', $data ) ) {
 			$received                         = $data['gform-refresh-nonces'];
