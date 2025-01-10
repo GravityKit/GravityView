@@ -66,7 +66,7 @@ class GravityView_Entry_Approval {
 	/**
 	 * Adds approval status filter to the filter list (Export Entries conditional logic).
 	 *
-	 * @since TBD
+	 * @since 2.34
 	 *
 	 * @param array $filters The existing filters.
 	 * @param array $form    The form array.
