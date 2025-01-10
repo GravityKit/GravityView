@@ -64,6 +64,11 @@ class GravityView_Field_Date extends GravityView_Field {
 				return $return;
 			}
 
+			// Skip the timezone offset.
+			if ( false === strpos( $modifier, 'no_tz_offset' ) ) {
+				$modifier = 'no_tz_offset:' . $modifier;
+			}
+
 			$return = GravityView_Merge_Tags::format_date( $raw_value, $modifier );
 		}
 

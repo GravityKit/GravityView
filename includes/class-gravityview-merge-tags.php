@@ -85,7 +85,7 @@ class GravityView_Merge_Tags {
 	 */
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
 		// Process array value for sub-fields like name and address.
-		if ( $raw_value[ $merge_tag ] ?? null ) {
+		if ( is_array( $raw_value ) && ( $raw_value[ $merge_tag ] ?? null ) ) {
 			$raw_value = $raw_value[ $merge_tag ];
 		}
 
@@ -226,6 +226,11 @@ class GravityView_Merge_Tags {
 		}
 
 		if ( $field instanceof GF_Field_Date ) {
+			if ( false === strpos( $modifier, 'no_tz_offset' ) ) {
+				$modifier = 'no_tz_offset:' . $modifier;
+			}
+
+			// Skip the timezone offset.
 			return self::format_date( $raw_value, $modifier );
 		}
 
