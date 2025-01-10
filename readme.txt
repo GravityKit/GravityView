@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 * Fatal error when searching entries by Approval Status in Views joined with another form using the Multiple Forms extension.
 * Some merge tag modifiers (e.g., `maxwords`) were not being processed.
+* WordPress's timezone offset was not being applied to the Date field's output when using the `:format` merge tag modifier.
 
 #### ✨ Improved
 * Entries added via the Gravity Forms API or while GravityView is inactive can now be filtered using the "Unapproved" status on the Entries page.

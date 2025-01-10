@@ -226,6 +226,11 @@ class GravityView_Merge_Tags {
 		}
 
 		if ( $field instanceof GF_Field_Date ) {
+			if ( false === strpos( $modifier, 'no_tz_offset' ) ) {
+				$modifier = 'no_tz_offset:' . $modifier;
+			}
+
+			// Skip the timezone offset.
 			return self::format_date( $raw_value, $modifier );
 		}
 
