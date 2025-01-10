@@ -298,7 +298,7 @@ class GravityView_Welcome {
 				?>
 				<h3>2.34 on January 9, 2025</h3>
 
-				<p>This release introduces the <a href="https://www.gravitykit.com/announcing-gravityview-2-4-all-new-layout-builder/">Layout Builder</a> that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.</p>
+				<p>This release introduces the <a href="https://www.gravitykit.com/?p=846801">Layout Builder</a> that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.</p>
 
 				<h4>🚀 Added</h4>
 
@@ -317,7 +317,7 @@ class GravityView_Welcome {
 
 				<ul>
 					<li>Fatal error when searching entries by Approval Status in Views joined with another form using the Multiple Forms extension.</li>
-					<li>Some merge tag modifiers (e.g., <code>maxwords</code>) not being processed.</li>
+					li>Some <a href='https://docs.gravitykit.com/article/350-merge-tag-modifiers'>merge tag modifiers</a> (e.g., <code>:maxwords</code>) not being processed.</li>
 					<li>WordPress's timezone offset not applying to Date field output with the <code>:format</code> merge tag modifier.</li>
 				</ul>
 
