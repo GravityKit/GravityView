@@ -47,4 +47,4 @@ class GravityView_Style {
 	}
 }
 
-new GravityView_Style();
+new GravityView_Style;
