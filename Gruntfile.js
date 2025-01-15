@@ -10,6 +10,73 @@ module.exports = function(grunt) {
 
 		pkg: grunt.file.readJSON('package.json'),
 
+		cssmin: {
+			options: {
+				format: 'keep-breaks',
+				mergeIntoShorthands: false,
+				roundingPrecision: -1
+			},
+			target: {
+				files: {
+					'includes/extensions/styles/css/pico.min.css': [ 'includes/extensions/styles/css/pico.css' ],
+					'includes/extensions/styles/css/simple.min.css': [ 'includes/extensions/styles/css/simple.css' ],
+					'includes/extensions/styles/css/marx.min.css': [ 'includes/extensions/styles/css/marx.css' ],
+					'includes/extensions/styles/css/mvp.min.css': [ 'includes/extensions/styles/css/mvp.css' ],
+					'includes/extensions/styles/css/sakura.min.css': [ 'includes/extensions/styles/css/sakura.css' ],
+					'includes/extensions/styles/css/pure.min.css': [ 'includes/extensions/styles/css/pure.css' ],
+					'includes/extensions/styles/css/picnic.min.css': [ 'includes/extensions/styles/css/picnic.css' ],
+					'includes/extensions/styles/css/chota.min.css': [ 'includes/extensions/styles/css/chota.css' ],
+					'includes/extensions/styles/css/cirrus.min.css': [ 'includes/extensions/styles/css/cirrus.css' ]
+				}
+			}
+		},
+
+		clean: {
+			css: [
+				'build/css/*',
+				'!build/css/*.min.css',
+			]
+		},
+
+		concat: {
+			picoCss: {
+				src: [ 'build/css/_dashboard-view-pico.postcss.css', 'build/css/_dashboard-view-pico.sass.css' ],
+				dest: 'includes/extensions/styles/css/pico.css',
+			},
+			simpleCss: {
+				src: [ 'build/css/_dashboard-view-simple.postcss.css', 'build/css/_dashboard-view-simple.sass.css' ],
+				dest: 'includes/extensions/styles/css/simple.css',
+			},
+			marxCss: {
+				src: [ 'build/css/_dashboard-view-marx.postcss.css', 'build/css/_dashboard-view-marx.sass.css' ],
+				dest: 'includes/extensions/styles/css/marx.css',
+			},
+			mvpCss: {
+				src: [ 'build/css/_dashboard-view-mvp.postcss.css', 'build/css/_dashboard-view-mvp.sass.css' ],
+				dest: 'includes/extensions/styles/css/mvp.css',
+			},
+			sakuraCss: {
+				src: [ 'build/css/_dashboard-view-sakura.postcss.css', 'build/css/_dashboard-view-sakura.sass.css' ],
+				dest: 'includes/extensions/styles/css/sakura.css',
+			},
+			pureCss: {
+				src: [ 'build/css/_dashboard-view-pure.postcss.css', 'build/css/_dashboard-view-pure.sass.css' ],
+				dest: 'includes/extensions/styles/css/pure.css',
+			},
+			picnicCss: {
+				src: [ 'build/css/_dashboard-view-picnic.postcss.css', 'build/css/_dashboard-view-picnic.sass.css' ],
+				dest: 'includes/extensions/styles/css/picnic.css',
+			},
+			chotaCss: {
+				src: [ 'build/css/_dashboard-view-chota.postcss.css', 'build/css/_dashboard-view-chota.sass.css' ],
+				dest: 'includes/extensions/styles/css/chota.css',
+			},
+			cirrusCss: {
+				src: [ 'build/css/_dashboard-view-cirrus.postcss.css', 'build/css/_dashboard-view-cirrus.sass.css' ],
+				dest: 'includes/extensions/styles/css/cirrus.css',
+			}
+		},
+
 		sass: {
 			options: {
 				implementation: sass,
@@ -57,13 +124,37 @@ module.exports = function(grunt) {
 		postcss: {
 			options: {
 				map: false,
-				processors: [
-					require('autoprefixer')()
-				]
 			},
 			dist: {
-				src: 'assets/css/*.css'
-			}
+				options: {
+					processors: [
+						require('autoprefixer')()
+					],
+				},
+				src: 'assets/css/*.css',
+			},
+			withNamespace: {
+				options: {
+					map: false,
+					processors: [
+						require('postcss-selector-namespace')({
+							namespace: 'div[id*=gv-view-]',
+							not: [':root', '@keyframes', '@font-face'],
+						}),
+					],
+				},
+				files: {
+					'build/css/_dashboard-view-pico.postcss.css': 'node_modules/@picocss/pico/css/pico.min.css',
+					'build/css/_dashboard-view-simple.postcss.css': 'node_modules/simpledotcss/simple.min.css',
+					'build/css/_dashboard-view-marx.postcss.css': 'node_modules/marx-css/css/marx.min.css',
+					'build/css/_dashboard-view-mvp.postcss.css': 'node_modules/mvp.css/mvp.css',
+					'build/css/_dashboard-view-sakura.postcss.css': 'node_modules/sakura.css/css/sakura.css',
+					'build/css/_dashboard-view-pure.postcss.css': 'node_modules/purecss/build/pure-min.css',
+					'build/css/_dashboard-view-picnic.postcss.css': 'node_modules/picnic/releases/picnic.min.css',
+					'build/css/_dashboard-view-chota.postcss.css': 'node_modules/chota/dist/chota.min.css',
+					'build/css/_dashboard-view-cirrus.postcss.css': 'node_modules/cirrus-ui/dist/cirrus-all.css',
+				},
+			},
 		},
 
 		jshint: {
@@ -160,6 +251,13 @@ module.exports = function(grunt) {
 			templates: {
 				files: ['templates/css/**/*.scss','!templates/css/**/*.css'],
 				tasks: ['sass:templates']
+			},
+			css: {
+				files: [ 'assets/css/**/*.css', 'assets/css/**/*.scss' ],
+				tasks: [ 'styles' ],
+				options: {
+					spawn: false,
+				},
 			},
 			scss: {
 				files: ['assets/css/scss/*.scss'],
@@ -264,5 +362,7 @@ module.exports = function(grunt) {
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'addtextdomain', 'exec:makepot' ] );
+
+	grunt.registerTask( 'styles', [ 'postcss', 'sass', 'concat', 'cssmin', 'clean:css' ] );
 
 };

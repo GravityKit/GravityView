@@ -1,7 +1,7 @@
 /*! Marx v4.1.1 - The classless CSS reset (perfect for Communists) | MIT License | https://github.com/mblode/marx */
-div[id*=gv-view-] *,div[id*=gv-view-] :after,div[id*=gv-view-] :before{background-repeat:no-repeat;-webkit-box-sizing:border-box;box-sizing:border-box}
+div[id*=gv-view-] *,div[id*=gv-view-] :after,div[id*=gv-view-] :before{background-repeat:no-repeat;box-sizing:border-box}
 div[id*=gv-view-] :after,div[id*=gv-view-] :before{text-decoration:inherit;vertical-align:inherit}
-div[id*=gv-view-] :where(:root){-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;-ms-text-size-adjust:100%;text-size-adjust:100%;cursor:default;line-height:1.5;overflow-wrap:break-word;-moz-tab-size:4;-o-tab-size:4;tab-size:4}
+div[id*=gv-view-] :where(:root){-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%;cursor:default;line-height:1.5;overflow-wrap:break-word;-moz-tab-size:4;-o-tab-size:4;tab-size:4}
 div[id*=gv-view-] :where(body){margin:0}
 div[id*=gv-view-] :where(h1){font-size:2em;margin:.67em 0}
 div[id*=gv-view-] :where(dl,ol,ul) :where(dl,ol,ul){margin:0}
@@ -27,7 +27,7 @@ div[id*=gv-view-] ::-webkit-inner-spin-button,div[id*=gv-view-] ::-webkit-outer-
 div[id*=gv-view-] ::-webkit-input-placeholder{color:inherit;opacity:.54}
 div[id*=gv-view-] ::-webkit-search-decoration{-webkit-appearance:none}
 div[id*=gv-view-] ::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}
-div[id*=gv-view-] :where(dialog){background-color:#fff;border:solid;color:#000;height:-moz-fit-content;height:-webkit-fit-content;height:fit-content;left:0;margin:auto;padding:1em;position:absolute;right:0;width:-moz-fit-content;width:-webkit-fit-content;width:fit-content}
+div[id*=gv-view-] :where(dialog){background-color:#fff;border:solid;color:#000;height:-moz-fit-content;height:fit-content;left:0;margin:auto;padding:1em;position:absolute;right:0;width:-moz-fit-content;width:fit-content}
 div[id*=gv-view-] :where(dialog:not([open])){display:none}
 div[id*=gv-view-] :where(details>summary:first-of-type){display:list-item}
 div[id*=gv-view-] :where([aria-busy=true i]){cursor:progress}
@@ -39,7 +39,7 @@ div[id*=gv-view-] article,div[id*=gv-view-] aside,div[id*=gv-view-] details,div[
 div[id*=gv-view-] main{display:block;margin:0 auto;max-width:var(--lg-breakpoint);padding:0 var(--md-pad) var(--md-pad)}
 div[id*=gv-view-] footer{border-top:var(--border);padding:var(--md-pad) 0;text-align:center}
 div[id*=gv-view-] footer p{margin-bottom:0}
-div[id*=gv-view-] hr{border:0;border-top:var(--border);-webkit-box-sizing:content-box;box-sizing:content-box;display:block;height:0;margin-bottom:var(--md-pad);margin-top:var(--md-pad);overflow:visible;width:100%}
+div[id*=gv-view-] hr{border:0;border-top:var(--border);box-sizing:content-box;display:block;height:0;margin-bottom:var(--md-pad);margin-top:var(--md-pad);overflow:visible;width:100%}
 div[id*=gv-view-] img{height:auto;max-width:100%;vertical-align:baseline}
 @media screen and (max-width:var(--sm-breakpoint)){
 div[id*=gv-view-] article,div[id*=gv-view-] aside,div[id*=gv-view-] section{clear:both;display:block;max-width:100%}
@@ -76,11 +76,11 @@ div[id*=gv-view-] sup{vertical-align:super}
 div[id*=gv-view-] sub,div[id*=gv-view-] sup{font-size:var(--font-size-sm)}
 div[id*=gv-view-] sub{vertical-align:sub}
 div[id*=gv-view-] mark{background-color:var(--yellow)}
-div[id*=gv-view-] input[type=date],div[id*=gv-view-] input[type=datetime-local],div[id*=gv-view-] input[type=datetime],div[id*=gv-view-] input[type=email],div[id*=gv-view-] input[type=month],div[id*=gv-view-] input[type=number],div[id*=gv-view-] input[type=password],div[id*=gv-view-] input[type=search],div[id*=gv-view-] input[type=tel],div[id*=gv-view-] input[type=text],div[id*=gv-view-] input[type=time],div[id*=gv-view-] input[type=url],div[id*=gv-view-] input[type=week],div[id*=gv-view-] select,div[id*=gv-view-] textarea{background:var(--white);background-clip:padding-box;border:var(--border);border-radius:var(--br);color:var(--text);display:block;font-family:var(--sans-serif);font-size:1rem;line-height:1.5;padding:var(--sm-pad) var(--md-pad);-webkit-transition:border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;width:100%;word-break:normal}
+div[id*=gv-view-] input[type=date],div[id*=gv-view-] input[type=datetime-local],div[id*=gv-view-] input[type=datetime],div[id*=gv-view-] input[type=email],div[id*=gv-view-] input[type=month],div[id*=gv-view-] input[type=number],div[id*=gv-view-] input[type=password],div[id*=gv-view-] input[type=search],div[id*=gv-view-] input[type=tel],div[id*=gv-view-] input[type=text],div[id*=gv-view-] input[type=time],div[id*=gv-view-] input[type=url],div[id*=gv-view-] input[type=week],div[id*=gv-view-] select,div[id*=gv-view-] textarea{background:var(--white);background-clip:padding-box;border:var(--border);border-radius:var(--br);color:var(--text);display:block;font-family:var(--sans-serif);font-size:1rem;line-height:1.5;padding:var(--sm-pad) var(--md-pad);transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;width:100%;word-break:normal}
 div[id*=gv-view-] input[type=color]{background-color:var(--white);display:inline-block;vertical-align:middle}
 div[id*=gv-view-] input:not([type]),div[id*=gv-view-] input[type=color]{border:var(--border);border-radius:var(--br)}
-div[id*=gv-view-] input:not([type]){-webkit-appearance:none;background:var(--white);background-clip:padding-box;color:var(--text);display:block;line-height:1.5;padding:var(--sm-pad) var(--md-pad);text-align:left;-webkit-transition:border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;width:100%;word-break:normal}
-div[id*=gv-view-] input:not([type]):focus,div[id*=gv-view-] input[type=color]:focus,div[id*=gv-view-] input[type=date]:focus,div[id*=gv-view-] input[type=datetime-local]:focus,div[id*=gv-view-] input[type=datetime]:focus,div[id*=gv-view-] input[type=email]:focus,div[id*=gv-view-] input[type=month]:focus,div[id*=gv-view-] input[type=number]:focus,div[id*=gv-view-] input[type=password]:focus,div[id*=gv-view-] input[type=search]:focus,div[id*=gv-view-] input[type=tel]:focus,div[id*=gv-view-] input[type=text]:focus,div[id*=gv-view-] input[type=time]:focus,div[id*=gv-view-] input[type=url]:focus,div[id*=gv-view-] input[type=week]:focus,div[id*=gv-view-] select:focus,div[id*=gv-view-] textarea:focus{background-color:var(--white);border-color:var(--primary-400);-webkit-box-shadow:0 0 0 .2rem rgba(59,130,246,.5);box-shadow:0 0 0 .2rem rgba(59,130,246,.5);outline:0}
+div[id*=gv-view-] input:not([type]){-webkit-appearance:none;background:var(--white);background-clip:padding-box;color:var(--text);display:block;line-height:1.5;padding:var(--sm-pad) var(--md-pad);text-align:left;transition:border-color .15s ease-in-out,box-shadow .15s ease-in-out;width:100%;word-break:normal}
+div[id*=gv-view-] input:not([type]):focus,div[id*=gv-view-] input[type=color]:focus,div[id*=gv-view-] input[type=date]:focus,div[id*=gv-view-] input[type=datetime-local]:focus,div[id*=gv-view-] input[type=datetime]:focus,div[id*=gv-view-] input[type=email]:focus,div[id*=gv-view-] input[type=month]:focus,div[id*=gv-view-] input[type=number]:focus,div[id*=gv-view-] input[type=password]:focus,div[id*=gv-view-] input[type=search]:focus,div[id*=gv-view-] input[type=tel]:focus,div[id*=gv-view-] input[type=text]:focus,div[id*=gv-view-] input[type=time]:focus,div[id*=gv-view-] input[type=url]:focus,div[id*=gv-view-] input[type=week]:focus,div[id*=gv-view-] select:focus,div[id*=gv-view-] textarea:focus{background-color:var(--white);border-color:var(--primary-400);box-shadow:0 0 0 .2rem rgba(59,130,246,.5);outline:0}
 div[id*=gv-view-] input[type=checkbox]:focus,div[id*=gv-view-] input[type=file]:focus,div[id*=gv-view-] input[type=radio]:focus{outline:1px thin var(--dividers)}
 div[id*=gv-view-] input:not([type])[disabled],div[id*=gv-view-] input[type=color][disabled],div[id*=gv-view-] input[type=date][disabled],div[id*=gv-view-] input[type=datetime-local][disabled],div[id*=gv-view-] input[type=datetime][disabled],div[id*=gv-view-] input[type=email][disabled],div[id*=gv-view-] input[type=month][disabled],div[id*=gv-view-] input[type=number][disabled],div[id*=gv-view-] input[type=password][disabled],div[id*=gv-view-] input[type=search][disabled],div[id*=gv-view-] input[type=tel][disabled],div[id*=gv-view-] input[type=text][disabled],div[id*=gv-view-] input[type=time][disabled],div[id*=gv-view-] input[type=url][disabled],div[id*=gv-view-] input[type=week][disabled],div[id*=gv-view-] select[disabled],div[id*=gv-view-] textarea[disabled]{background-color:var(--dividers);color:var(--secondary);cursor:not-allowed;opacity:1}
 div[id*=gv-view-] input[readonly],div[id*=gv-view-] select[readonly],div[id*=gv-view-] textarea[readonly]{border-color:var(--dividers);color:var(--secondary)}
@@ -94,11 +94,11 @@ div[id*=gv-view-] fieldset{border:0;margin:0}
 div[id*=gv-view-] fieldset,div[id*=gv-view-] legend{padding:var(--sm-pad 0)}
 div[id*=gv-view-] legend{border-bottom:var(--border);color:var(--text);display:block;margin-bottom:var(--sm-pad);width:100%}
 div[id*=gv-view-] textarea{overflow:auto;resize:vertical}
-div[id*=gv-view-] input[type=checkbox],div[id*=gv-view-] input[type=radio]{-webkit-box-sizing:border-box;box-sizing:border-box;display:inline;padding:0}
-div[id*=gv-view-] button,div[id*=gv-view-] input[type=button],div[id*=gv-view-] input[type=reset],div[id*=gv-view-] input[type=submit]{background-color:var(--primary);border:1px solid transparent;border-radius:var(--br);color:var(--white);display:inline-block;font-size:1rem;font-weight:400;line-height:1.5;padding:var(--sm-pad) var(--md-pad);text-align:center;-webkit-transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;vertical-align:middle;white-space:nowrap}
+div[id*=gv-view-] input[type=checkbox],div[id*=gv-view-] input[type=radio]{box-sizing:border-box;display:inline;padding:0}
+div[id*=gv-view-] button,div[id*=gv-view-] input[type=button],div[id*=gv-view-] input[type=reset],div[id*=gv-view-] input[type=submit]{background-color:var(--primary);border:1px solid transparent;border-radius:var(--br);color:var(--white);display:inline-block;font-size:1rem;font-weight:400;line-height:1.5;padding:var(--sm-pad) var(--md-pad);text-align:center;transition:color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;-webkit-user-select:none;-moz-user-select:none;user-select:none;vertical-align:middle;white-space:nowrap}
 div[id*=gv-view-] button::-moz-focus-inner,div[id*=gv-view-] input[type=button]::-moz-focus-inner,div[id*=gv-view-] input[type=reset]::-moz-focus-inner,div[id*=gv-view-] input[type=submit]::-moz-focus-inner{padding:0}
 div[id*=gv-view-] button:hover,div[id*=gv-view-] button:not(:disabled):active,div[id*=gv-view-] input[type=button]:hover,div[id*=gv-view-] input[type=button]:not(:disabled):active,div[id*=gv-view-] input[type=reset]:hover,div[id*=gv-view-] input[type=reset]:not(:disabled):active,div[id*=gv-view-] input[type=submit]:hover,div[id*=gv-view-] input[type=submit]:not(:disabled):active{background-color:var(--primary-600);border-color:var(--primary-600);color:var(--white)}
-div[id*=gv-view-] button:focus,div[id*=gv-view-] input[type=button]:focus,div[id*=gv-view-] input[type=reset]:focus,div[id*=gv-view-] input[type=submit]:focus{-webkit-box-shadow:0 0 0 .2rem rgba(59,130,246,.5);box-shadow:0 0 0 .2rem rgba(59,130,246,.5);outline:0}
+div[id*=gv-view-] button:focus,div[id*=gv-view-] input[type=button]:focus,div[id*=gv-view-] input[type=reset]:focus,div[id*=gv-view-] input[type=submit]:focus{box-shadow:0 0 0 .2rem rgba(59,130,246,.5);outline:0}
 div[id*=gv-view-] button:disabled,div[id*=gv-view-] input[type=button]:disabled,div[id*=gv-view-] input[type=reset]:disabled,div[id*=gv-view-] input[type=submit]:disabled{background-color:var(--primary);border-color:var(--primary);color:var(--white);cursor:not-allowed;opacity:.65}
 div[id*=gv-view-] table{border-top:var(--border);margin-bottom:var(--md-pad)}
 div[id*=gv-view-] caption{padding:var(--sm-pad 0)}
@@ -107,21 +107,3 @@ div[id*=gv-view-] tr{margin-bottom:var(--sm-pad)}
 div[id*=gv-view-] td,div[id*=gv-view-] th{border-bottom:var(--border);padding:var(--md-pad);vertical-align:inherit}
 div[id*=gv-view-] tfoot tr{text-align:left}
 div[id*=gv-view-] tfoot td{color:var(--secondary);font-size:var(--sm-pad);font-style:italic;padding:var(--md-pad) var(--xs-pad)}
-:root{--font-size:1rem}
-body{background:#fff}
-#wpfooter,.update-nag{display:none}
-div[id*=gv-view-] *{font-size:initial}
-div[id*=gv-view-] .gv-grid-col-1-2{width:auto}
-div[id*=gv-view-] .gv-table-container{overflow-x:auto}
-div[id*=gv-view-] form.gv-widget-search input{width:auto}
-div[id*=gv-view-] form.gv-widget-search:not(.gv-is-search) .gv-search-clear{display:none}
-div[id*=gv-view-] form.gv-widget-search .gv-search-clear{margin:0 3%}
-div[id*=gv-view-] form.gv-widget-search .gv-search-box-submit{align-items:baseline}
-div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action{display:flex}
-div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action>*{margin-right:3%}
-div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action>:last-child{margin-right:0}
-div[id*=gv-view-] .gk-maps-search-geolocation-address-autocomplete-container{display:flex}
-div[id*=gv-view-] .gk-maps-search-geolocation-address-autocomplete-container input.gk-maps-search-geolocation-address-autocomplete{width:inherit}
-div[id*=gv-view-] .gk-maps-search-current-geolocation-radius{width:auto}
-div[id*=gv-view-] .dataTables_length select{display:inline-block}
-.fancybox__container{z-index:100000!important}
