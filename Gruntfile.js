@@ -93,13 +93,22 @@ module.exports = function(grunt) {
 		      }]
 			},
 			extensions: {
-				files: [{
-					expand: true,
-					cwd: 'includes/extensions/entry-notes/assets/css/source',
-					src: ['*.scss'],
-					dest: 'includes/extensions/entry-notes/assets/css',
-					ext: '.css'
-				}]
+				files: [
+					{
+						expand: true,
+						cwd: 'includes/extensions/entry-notes/assets/css/source',
+						src: ['*.scss'],
+						dest: 'includes/extensions/entry-notes/assets/css',
+						ext: '.css'
+					},
+					{
+						expand: true,
+						cwd: 'includes/extensions/styles',
+						src: ['*.scss'],
+						dest: 'includes/extensions/styles/css',
+						ext: '.css'
+					}
+				]
 			},
 			templates: {
 				files: [{
