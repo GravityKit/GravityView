@@ -672,7 +672,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'Stylesheet', 'gk-gravityview' ),
 					'group'             => 'default',
 					'desc'              => 'Desc',
-					'type'              => 'select',
+					'type'              => 'radio',
 					'options' => array(
 						'' => __( 'GravityView Legacy', 'gk-gravityview' ),
 						'orbital' => __( 'Gravity Forms Orbital', 'gk-gravityview' ),
@@ -691,7 +691,7 @@ class View_Settings extends Settings {
 					'value'             => '', // Defaults to legacy styles.
 					'tooltip'           => false,
 					'show_in_shortcode' => true,
-					'full_width'        => false,
+					'full_width'        => true,
 				),
 			),
 			( gravityview()->plugin->supports( Plugin::FEATURE_REST ) && ( gravityview()->plugin->settings->get( 'rest_api' ) ) ) ?

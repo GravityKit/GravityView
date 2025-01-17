@@ -23,6 +23,24 @@ class GravityView_Style {
 		}
 
 		add_action( 'plugins_loaded', array( $this, 'set_provider' ), 11 );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+	}
+
+	/**
+	 * Enqueue scripts and styles for the admin
+	 *
+	 * @internal
+	 */
+	public function admin_enqueue_scripts() {
+
+		// Only enqueue on GravityView View editor
+		if( ! gravityview()->request->is_admin() ) {
+			return;
+		}
+
+		// Enqueue the admin styles
+		wp_enqueue_style( 'gravityview-admin-view-editor-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), GravityView_Plugin::version );
 	}
 
 	/**
