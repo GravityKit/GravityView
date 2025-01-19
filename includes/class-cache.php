@@ -88,7 +88,7 @@ class GravityView_Cache {
 
 		add_action( 'gform_post_update_entry_property', array( $this, 'entry_property_changed' ), 10, 4 );
 
-		add_action( 'gform_delete_entry', array( $this, 'entry_property_changed' ), 10 );
+		add_action( 'gform_delete_entry', array( $this, 'entry_property_changed' ) );
 	}
 
 	/**
