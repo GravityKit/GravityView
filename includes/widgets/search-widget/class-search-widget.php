@@ -1113,12 +1113,22 @@ class GravityView_Widget_Search extends \GV\Widget {
 					)
 				);
 				$_tmp_query_parts = $_tmp_query->_introspect();
+
+				/**
+				 * @var GF_Query_Condition $search_condition
+				 * */
 				$search_condition = $_tmp_query_parts['where'];
 
 				if ( empty( $filter['key'] ) && $search_condition->expressions ) {
 					$search_conditions[] = $search_condition;
 				} else {
+					// If the left condition is empty, it is likely a multiple forms filter. In this case, we should retrieve the search condition from the main form.
+					if ( ! $search_condition->left && $search_condition->expressions ) {
+						$search_condition = $search_condition->expressions[0];
+					}
+
 					$left = $search_condition->left;
+
 					// When casting a column value to a certain type (e.g., happens with the Number field), GF_Query_Column is wrapped in a GF_Query_Call class.
 					if ( $left instanceof GF_Query_Call && $left->parameters ) {
 						// Update columns to include the correct alias.
@@ -1133,7 +1143,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						}, $left->parameters );
 
 						$left = new GF_Query_Call( $left->function_name, $parameters );
-					} else {
+					} elseif ( $left ) {
 						$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
 						$left  = new GF_Query_Column( $left->field_id, $left->source, $alias );
 					}

@@ -51,7 +51,7 @@ class GravityView_Field_Name extends GravityView_Field {
 	/**
 	 * Converts a full name or string to initials.
 	 *
-	 * @since TBD
+	 * @since 2.33
 	 *
 	 * @param string $value The full name or string to convert.
 	 * 

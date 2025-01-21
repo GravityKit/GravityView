@@ -514,6 +514,7 @@ class GravityView_Field_Notes extends GravityView_Field {
             ob_start();
 			$context->template->get_template_part( 'note', $note_row_template, true );
 			$note_row = ob_get_clean();
+
 		} else {
 			/** @deprecated path */
 			ob_start();

@@ -24,9 +24,10 @@ final class Permalinks {
 	/**
 	 * A memoization of the current View.
 	 *
-	 * This is used to determine the View, when rendering through a short code.
+	 * This is used to determine the View, when rendering through a shortcode.
 	 *
-	 * @since $ver$
+	 * @since 2.33
+	 *
 	 * @var View|null
 	 */
 	private ?View $current_view;
@@ -179,7 +180,6 @@ final class Permalinks {
 		add_filter( 'gravityview/view/settings/defaults', [ $this, 'add_view_settings' ] );
 
 		add_action( 'init', [ $this, 'maybe_update_rewrite_rules' ], 1 );
-		add_action( 'admin_enqueue_scripts', [ $this, 'add_view_settings_scripts' ], 1500 );
 
 		add_action( 'gravityview/shortcode/before-processing', [ $this, 'capture_view' ] );
 		add_action( 'gravityview/shortcode/after-processing', [ $this, 'clear_captured_view' ] );
@@ -508,86 +508,12 @@ final class Permalinks {
 				'id'  => '54c67bb5e4b07997ea3f3f58',
 				'url' => 'https://docs.gravitykit.com/article/57-customizing-urls',
 			],
+			'validation' => $this->entry_slug_validation(),
 		];
 
 		return $settings;
 	}
 
-	/**
-	 * Adds inline JavaScript for the View settings.
-	 *
-	 * @since 2.29.0
-	 */
-	public function add_view_settings_scripts(): void {
-		if ( ! wp_script_is( 'gravityview_views_scripts', 'registered' ) ) {
-			return;
-		}
-
-		$js = <<<JS
-			( function( $ ) {
-				$( function() {
-					const getErrorMessage = ( value ) => {
-						if ( value.length === 0 ) {
-							return '';
-						}
-
-						if (value.length < 3) {
-							return '[ERROR_AT_LEAST_3]';
-						}
-
-						if ( ! value.match( /{entry_id}/s ) ) {
-							 return '[ERROR_MISSING_ENTRY_ID]';
-						}
-
-						if ( ! value.match( /(^(?:[a-zA-Z0-9_\-]*|\{[^\}]*\})*$)/s ) ) {
-							return '[ERROR_NO_SPACES]';
-						}
-
-						return '';
-					}
-
-					$( '#gravityview_se_single_entry_slug' ).on( 'input', function () {
-						const value = $( this ).val();
-						const parent = $( this ).closest( 'label' );
-						const error = getErrorMessage( value );
-						const is_valid = '' === error;
-
-						parent.toggleClass( 'form-invalid form-required', ! is_valid  );
-						$( '#publish ')
-							.attr( 'disabled', ! is_valid )
-							.toggleClass( 'disabled' , ! is_valid );
-
-						parent.find( 'span.error-message' ).remove();
-						if ( !is_valid ) {
-							parent.append( $( '<span class="error-message" style="margin-top:2px; font-size: 12px">' + error + '</span>' ) );
-						}
-					} );
-				} );
-			} )( jQuery );
-		JS;
-
-		$js = strtr(
-			$js,
-			[
-				'[ERROR_AT_LEAST_3]'       => strtr(
-				// Translators: [count] is replaced by the amount of characters.
-					esc_html__( 'At least [count] characters are required.', 'gk-gravityview' ),
-					[ '[count]' => 3 ],
-				),
-				'[ERROR_MISSING_ENTRY_ID]' => strtr(
-				// Translators: [slug] will contain the slug value.
-					__( 'Must contain "[slug]".', 'gk-gravityview' ),
-					[ '[slug]' => '{entry_id}' ]
-				),
-				'[ERROR_NO_SPACES]'        => esc_html__(
-					'Only letters, numbers, underscores and dashes are allowed.',
-					'gk-gravityview',
-				),
-			]
-		);
-
-		wp_add_inline_script( 'gravityview_views_scripts', $js );
-	}
 
 	/**
 	 * Returns whether the current request is a backend validation.
@@ -662,7 +588,7 @@ final class Permalinks {
 					),
 				],
 				[
-					'rule'    => 'matches:^[a-zA-Z0-9_{}\-]*$',
+					'rule'    => 'matches:^(?:[a-zA-Z0-9_\-]|{[^}]*})*$',
 					'message' => esc_html__(
 						'Only letters, numbers, underscores and dashes are allowed.',
 						'gk-gravityview',
@@ -758,7 +684,9 @@ final class Permalinks {
 
 	/**
 	 * Captures the current View when it is rendered through a shortcode or block.
-	 * @since $ver$
+	 *
+	 * @since 2.33
+	 *
 	 * @param View|null $view The View object.
 	 */
 	public function capture_view( $view ): void {
@@ -778,7 +706,7 @@ final class Permalinks {
 	/**
 	 * Clears the captured View object.
 	 *
-	 * @since $ver$
+	 * @since 2.33
 	 */
 	public function clear_captured_view(): void {
 		$this->current_view = null;
@@ -787,7 +715,7 @@ final class Permalinks {
 	/**
 	 * Returns the current View.
 	 *
-	 * @since $ver$
+	 * @since 2.33
 	 */
 	private function get_current_view(): ?View {
 		$view = $this->current_view ?? View::from_post( get_post() );

@@ -1,4 +1,7 @@
 <?php
+
+use GV\Utils;
+
 /**
  * text input type
  */
@@ -43,11 +46,19 @@ class GravityView_FieldType_text extends GravityView_FieldType {
 		if ( $show_mt && false !== $this->field['merge_tags'] || 'force' === $this->field['merge_tags'] ) {
 			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
-		$class      .= \GV\Utils::get( $this->field, 'class', 'widefat' );
-		$placeholder = \GV\Utils::get( $this->field, 'placeholder' );
-		?>
-		<input name="<?php echo esc_attr( $this->name ); ?>" placeholder="<?php echo esc_attr( $placeholder ); ?>" id="<?php echo $this->get_field_id(); ?>" type="text" value="<?php echo esc_attr( $this->value ); ?>" class="<?php echo esc_attr( $class ); ?>">
-		<?php
+		$class      .= Utils::get( $this->field, 'class', 'widefat' );
+		$placeholder = Utils::get( $this->field, 'placeholder' );
+		$validation  = Utils::get( $this->field, 'validation' );
+
+		printf(
+			'<input name="%s" placeholder="%s" id="%s" type="text" value="%s" class="%s" data-rules="%s">',
+			esc_attr( $this->name ),
+			esc_attr( $placeholder ),
+			$this->get_field_id(),
+			esc_attr( $this->value ),
+			esc_attr( $class ),
+			esc_attr( json_encode( $validation ) )
+		);
 	}
 }
 

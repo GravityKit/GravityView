@@ -296,6 +296,89 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.34 on January 9, 2025</h3>
+
+				<p>This release introduces the <a href="https://www.gravitykit.com/announcing-gravityview-2-34-all-new-layout-builder">Layout Builder</a> that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.</li>
+					<li>Support for using entry Approval Status in conditional logic rules on the Gravity Forms Export Entries page.</li>
+				</ul>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>Entries added via the Gravity Forms API or while GravityView is inactive can now be filtered using the "Unapproved" status on the Entries page.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Fatal error when searching entries by Approval Status in Views joined with another form using the Multiple Forms extension.</li>
+					li>Some <a href='https://docs.gravitykit.com/article/350-merge-tag-modifiers'>merge tag modifiers</a> (e.g., <code>:maxwords</code>) not being processed.</li>
+					<li>WordPress's timezone offset not applying to Date field output with the <code>:format</code> merge tag modifier.</li>
+				</ul>
+
+				<h3>2.33.2 on December 31, 2024</h3>
+
+				<p>This update removes debugging code from the Entry Notes field.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Debugging code being shown in the Entry Notes field output.</li>
+				</ul>
+
+				<h3>2.33.1 on December 30, 2024</h3>
+
+				<p>This update removes debugging code from the Entry Notes field.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Debugging code being shown in the Entry Notes field output.</li>
+				</ul>
+
+				<h3>2.33 on December 19, 2024</h3>
+
+				<p>This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Support for the Source ID meta introduced in Gravity Forms 2.9.</li>
+					<li>New User Activation field in the View editor to activate users added by the Gravity Forms User Registration add-on.</li>
+					<li>Client-side validation of View editor settings to prevent incorrect values.</li>
+					<li><code>:initials</code> merge tag modifier for Name fields to display initials.</li>
+					<li><code>:format</code> merge tag modifier for field inputs (e.g., <code>{Event Field:1.1:format:Y-m-d}</code>).</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.</li>
+					<li>Individual Checkboxes field inputs incorrectly exported in CSV.</li>
+					<li>Custom permalinks not being used in embedded Views.</li>
+					<li>Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.</li>
+					<li>Labels for fields with empty values disappearing in mobile view when joining forms using the Multiple Forms extension.</li>
+					<li>Views defaulting to English instead of the site's language for users without certain capabilities.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.22.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gravityview/template/field/csv/tick</code> filter to programmatically modify the checkbox "check" output in CSV.</li>
+					<li>Added <code>gravityview/shortcode/after-processing</code> action after a <code>[gravityview]</code> shortcode is finished.</li>
+				</ul>
+
 				<h3>2.32 on November 21, 2024</h3>
 
 				<p>This release adds a new form notification option for updated entries, resolves file upload issues on the Edit Entry screen, and includes developer-focused enhancements.</p>
@@ -329,108 +412,6 @@ class GravityView_Welcome {
 					<li>Added <code>gk/gravityview/view/entries/join-conditions</code> filter to modify the join conditions applied when retrieving View entries.</li>
 					<li>Added <code>gk/gravityview/template/options</code> filter to programmatically modify field settings in the View editor.</li>
 					<li>Added <code>gravityview/row-added</code> JavaScript event, triggered when a new row is added to a widget or field area.</li>
-				</ul>
-
-				<h3>2.31.1 on November 8, 2024</h3>
-
-				<p>This hotfix release resolves display issues with certain View layouts.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Rendering issue affecting certain View layouts, such as Maps, introduced in the previous release.</li>
-				</ul>
-
-				<h3>2.31 on November 4, 2024</h3>
-
-				<p>This release introduces <a href="https://docs.gravitykit.com/article/1027-dynamic-widget-placement?utm_source=gravityview&utm_medium=changelog&utm_campaign=release">flexible widget positioning</a> in Views, enhances entry-in-a-lightbox functionality, and adds support for the Gravity Forms 2.9+ Image Choice field. It also addresses compatibility issues with LiteSpeed, Divi, and LifterLMS, along with various other fixes and improvements.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Ability to position widgets in the View editor using predefined layouts, offering a range of single or multi-column configurations with varying widths.</li>
-					<li>View setting to control what happens when a user clicks the Cancel link when editing an entry in the lightbox.</li>
-					<li>Support for the upcoming Image Choice field in Gravity Forms 2.9+.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>GravityView tab not displaying in certain cases under GravityKit > Settings menu.</li>
-					<li>Widgets could not be configured after being added to a new, unsaved View.</li>
-					<li>Compatibility with the Divi theme that prevented the Signature field from being edited on the Edit Entry screen.</li>
-					<li>Conflict with the LiteSpeed plugin that caused a fatal error when redirecting users after duplicating an entry.</li>
-					<li>JavaScript enqueued in the site's footer was not executed when editing an entry in the lightbox.</li>
-					<li>It was not possible to add new entry notes when viewing a single entry in the lightbox.</li>
-					<li>Validation error displayed when adding merge tags to the Entry Slug setting input in the View editor.</li>
-					<li>The search box in the Change Entry Creator field did not return results when editing an entry on the Forms > Entries screen.</li>
-					<li>Fatal error when activating LifterLMS with GravityView active.</li>
-					<li>Searching across all fields not working as expected when the search value contains special characters or accents (e.g., ä, ß, İ).</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.20.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/lightbox/entry/before-output</code> action that fires before the entry content is output in the lightbox.</li>
-					<li>Added <code>gk/gravityview/lightbox/entry/output/head-before</code> action that fires after the <code>&lt;head&gt;</code> tag is opened.</li>
-					<li>Added <code>gk/gravityview/lightbox/entry/output/head-after</code> action that fires before the <code>&lt;/head&gt;</code> tag is closed.</li>
-					<li>Added <code>gk/gravityview/lightbox/entry/output/content-before</code> action that fires after the <code>&lt;body&gt;</code> tag is opened and before the content is rendered.</li>
-					<li>Added <code>gk/gravityview/lightbox/entry/output/content-after</code> action that fires after the content is rendered and before the footer.</li>
-					<li>Added <code>gk/gravityview/lightbox/entry/output/footer-after</code> action that fires after the footer and before the closing <code>&lt;/body&gt;</code> tag.</li>
-					<li>Added <code>gravityview/fields/image_choice/image_markup</code> filter to modify the Image Choice field (Gravity Forms 2.9+) markup.</li>
-					<li>Added <code>gravityview/fields/image_choice/output_label</code> filter to control whether to display the value or label of an Image Choice field.</li>
-				</ul>
-
-				<h3>2.30.1 on October 15, 2024</h3>
-
-				<p>This hotfix release resolves an issue with the Multiple Forms extension.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Fatal error in the View editor when using joined data from multiple forms.</li>
-				</ul>
-
-				<h3>2.30 on October 14, 2024</h3>
-
-				<p>This release adds the ability to change the entry creator from the Edit Entry screen, improves upload handling, fixes various bugs, and updates internal components.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Entry creator can now be changed from the Edit Entry screen.</li>
-					<li><code>{now}</code>, <code>{yesterday}</code>, and <code>{tomorrow}</code> relative date merge tags.</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Handling of multi-file uploads on the Edit Entry screen.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Entry loading inside a lightbox did not work in some cases when BuddyPress was active.</li>
-					<li>Resending notifications from the Entries screen did not work when sending to all entries filtered by approval status.</li>
-					<li>Conflict with the Wordfence plugin caused a fatal error when redirecting users after deleting an entry.</li>
-					<li>Fatal error when rendering a GravityView View field with a non-existent View ID.</li>
-					<li>Survey field (Rating type) values were displayed in reverse order when a View was embedded inside another View.</li>
-					<li>Unexpected scrolling in the View editor after adding a field.</li>
-					<li>PHP notice when rendering a View with a field associated with an inactive add-on.</li>
-					<li>Entry duplication not working on the Entries page.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.19.</li>
 				</ul>
 
 				<p style="text-align: center;">
