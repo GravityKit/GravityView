@@ -39,16 +39,18 @@ jobs:
                         echo "package-lock.json missing"
                         exit 1
                       fi
-            # Get build tools
+            # Try to restore dependencies from cache
+            - restore_cache:
+                  keys:
+                      - deps-v2-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+                      - deps-v2-
+            # Only clone tooling if not in cache
             - run:
                   name: Getting GV test/build tools
                   command: |
-                      git clone --depth 1 git@github.com:gravityview/Tooling.git /home/circleci/tooling
-            # Restore cached dependencies
-            - restore_cache:
-                  keys:
-                      - deps-v1-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
-                      - deps-v1-
+                      if [[ ! -d "/home/circleci/tooling" ]]; then
+                        git clone --depth 1 git@github.com:gravityview/Tooling.git /home/circleci/tooling
+                      fi
             # Install dependencies through Docker containers
             - run:
                   name: Installing build dependencies
@@ -60,11 +62,12 @@ jobs:
                   name: Configuring tests environment
                   command: |
                       /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
-            # Save cache
+            # Save cache including tooling
             - save_cache:
-                  key: deps-v1-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+                  key: deps-v2-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
                   paths:
                       - /home/circleci/test_dependencies
+                      - /home/circleci/tooling
                       - node_modules
                       - vendor
             # Persist workspace - conservative approach
