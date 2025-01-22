@@ -1,140 +1,249 @@
 version: 2.1
+setup: true
+
+# Environment variables
+env:
+    PLUGIN_BASE_DIR: &plugin_base_dir /home/circleci/plugin
+    TOOLING_DIR: &tooling_dir /home/circleci/tooling
+    TEST_RESULTS_DIR: &test_results_dir /home/circleci/test_results
 
 anchors:
-  context: &context
-    context: shared
+    context: &context
+        context: shared
 
-  default_job_config: &default_job_config
-    working_directory: /home/circleci/plugin
-    machine:
-      image: default
+    default_job_config: &default_job_config
+        working_directory: *plugin_base_dir
+        machine:
+            image: ubuntu-2204:2024.01.1
+            docker_layer_caching: true
+        resource_class: large
 
-  test_job_config: &test_job_config
-    <<: *context
-    requires:
-      - prepare_test_and_build_environment
+    test_job_config: &test_job_config
+        <<: *context
+        requires:
+            - prepare_test_and_build_environment
 
 jobs:
-  run_acceptance_tests:
-    <<: *default_job_config
-    steps:
-      - checkout
-      - run:
-          name: Setting up virtual host
-          command: echo 127.0.0.1 wordpress | sudo tee -a /etc/hosts
-      - run:
-          name: Run acceptance tests
-          command: |
-            PLUGIN_DIR=$PLUGIN_DIR docker-compose -f tests/acceptance/docker/docker-compose.yml run codeception --debug -vvv --html --xml
-      - store_artifacts:
-          path: tests/acceptance/_output
-      - store_test_results:
-          path: tests/acceptance/_output
+    prepare_test_and_build_environment:
+        <<: *default_job_config
+        steps:
+            - checkout
+            # Verify lock files exist
+            - run:
+                  name: Verify lock files
+                  command: |
+                      if [[ ! -f composer.lock ]]; then
+                        echo "composer.lock missing"
+                        exit 1
+                      fi
+                      if [[ ! -f package-lock.json ]]; then
+                        echo "package-lock.json missing"
+                        exit 1
+                      fi
+            # Get build tools
+            - run:
+                  name: Getting GV test/build tools
+                  command: |
+                      git clone --depth 1 git@github.com:gravityview/Tooling.git *tooling_dir
+            # Restore cached dependencies
+            - restore_cache:
+                  keys:
+                      - deps-v1-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+                      - deps-v1-
+            # Install dependencies through Docker containers
+            - run:
+                  name: Installing build dependencies
+                  command: |
+                      set -e
+                      *tooling_dir/build-tools/build_tools.sh npm -o ci
+                      *tooling_dir/build-tools/build_tools.sh composer -o install
+            - run:
+                  name: Configuring tests environment
+                  command: |
+                      *tooling_dir/docker-unit-tests/docker-unit-tests.sh prepare_all
+            # Save cache
+            - save_cache:
+                  key: deps-v1-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+                  paths:
+                      - /home/circleci/test_dependencies
+                      - node_modules
+                      - vendor
+            # Persist workspace - conservative approach
+            - persist_to_workspace:
+                  root: /home/circleci
+                  paths:
+                      - plugin
+                      - plugin/.*
+                      - tooling
+                      - test_dependencies
 
-  prepare_test_and_build_environment:
-    <<: *default_job_config
-    steps:
-      - checkout
-      - run:
-          name: Getting GV test/build tools
-          command: |
-            git clone git@github.com:gravityview/Tooling.git /home/circleci/tooling
-      - restore_cache:
-          keys:
-            - test-dependencies-{{ epoch }}
-            - test-dependencies-
-      - run:
-          name: Installing build dependencies
-          command: |
-            /home/circleci/tooling/build-tools/build_tools.sh npm -o install
-            /home/circleci/tooling/build-tools/build_tools.sh composer -o install
-      - run:
-          name: Configuring tests environment
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
-      - save_cache:
-          key: test-dependencies-{{ epoch }}
-          paths:
-            - /home/circleci/test_dependencies
-      - persist_to_workspace:
-          root: /home/circleci
-          paths:
-            - .
+    run_php_74_unit_tests:
+        <<: *default_job_config
+        parallelism: 2
+        steps:
+            - attach_workspace:
+                  at: /home/circleci
+            - run:
+                  name: Verify workspace
+                  command: |
+                      if [[ ! -d *plugin_base_dir ]]; then
+                        echo "Workspace not properly attached"
+                        exit 1
+                      fi
+                      if [[ ! -d *tooling_dir ]]; then
+                        echo "Tooling directory not found"
+                        exit 1
+                      fi
+            - run:
+                  name: Running PHP 7.4 unit tests
+                  command: |
+                      mkdir -p *test_results_dir/php74
+                      TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
+                      *tooling_dir/docker-unit-tests/docker-unit-tests.sh test_74 $TESTFILES
+            - store_test_results:
+                  path: *test_results_dir/php74
+            - store_artifacts:
+                  path: *test_results_dir/php74
+                  destination: php74-test-results
 
-  run_php_74_unit_tests:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Running PHP 7.4 unit tests
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74
+    run_php_80_unit_tests:
+        <<: *default_job_config
+        parallelism: 2
+        steps:
+            - attach_workspace:
+                  at: /home/circleci
+            - run:
+                  name: Verify workspace
+                  command: |
+                      if [[ ! -d *plugin_base_dir ]]; then
+                        echo "Workspace not properly attached"
+                        exit 1
+                      fi
+                      if [[ ! -d *tooling_dir ]]; then
+                        echo "Tooling directory not found"
+                        exit 1
+                      fi
+            - run:
+                  name: Running PHP 8.0 unit tests
+                  command: |
+                      mkdir -p *test_results_dir/php80
+                      TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
+                      *tooling_dir/docker-unit-tests/docker-unit-tests.sh test_80 $TESTFILES
+            - store_test_results:
+                  path: *test_results_dir/php80
+            - store_artifacts:
+                  path: *test_results_dir/php80
+                  destination: php80-test-results
 
-  run_php_80_unit_tests:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Running PHP 8.0 unit tests
-          command: |
-            /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80
+    run_acceptance_tests:
+        <<: *default_job_config
+        steps:
+            - checkout
+            - run:
+                  name: Setting up virtual host
+                  command: echo "127.0.0.1 wordpress" | sudo tee -a /etc/hosts
+            - run:
+                  name: Run acceptance tests
+                  command: |
+                      mkdir -p *test_results_dir/acceptance
+                      PLUGIN_DIR=$PLUGIN_DIR docker-compose -f tests/acceptance/docker/docker-compose.yml \
+                        run codeception --debug -vvv --html --xml
+                  no_output_timeout: 30m
+            - store_artifacts:
+                  path: tests/acceptance/_output
+                  destination: acceptance-test-results
+            - store_test_results:
+                  path: tests/acceptance/_output
 
-  build_package_release:
-    <<: *default_job_config
-    steps:
-      - attach_workspace:
-          at: /home/circleci
-      - run:
-          name: Building and packaging
-          command: |
-            /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
-            /home/circleci/tooling/build-tools/build_tools.sh grunt
-            if [ "${CIRCLE_BRANCH}" != "main" ]; then
-              /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
-            else
-              /home/circleci/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
-            fi
-            mkdir -p gravityview
-            cp -R vendor* gravityview
-            rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php
-            zip -gr $(ls gravityview-*.zip) gravityview
-            mkdir .release
-            cp gravityview-*.zip .release
-      - run:
-          name: Creating a Github release
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              git config user.email "support@gravitykit.com"
-              git config user.name "GravityView - CI"
-              /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
-            fi
-      - run:
-          name: Notifying GravityView Release Manager
-          command: |
-            if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
-              /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
-            fi
-      - store_artifacts:
-          path: .release
-          destination: release
+    build_package_release:
+        <<: *default_job_config
+        resource_class: medium
+        steps:
+            - attach_workspace:
+                  at: /home/circleci
+            - run:
+                  name: Verify workspace
+                  command: |
+                      if [[ ! -d *plugin_base_dir ]]; then
+                        echo "Workspace not properly attached"
+                        exit 1
+                      fi
+                      if [[ ! -d *tooling_dir ]]; then
+                        echo "Tooling directory not found"
+                        exit 1
+                      fi
+            - run:
+                  name: Building and packaging
+                  command: |
+                      set -e
+                      # Production optimized install
+                      *tooling_dir/build-tools/build_tools.sh composer -o "install --no-dev --prefer-dist --optimize-autoloader"
+                      *tooling_dir/build-tools/build_tools.sh grunt
+
+                      # Determine package build options
+                      if [ "${CIRCLE_BRANCH}" != "main" ]; then
+                        BUILD_OPTS="gravityview gravityview.php --include-hash"
+                      else
+                        BUILD_OPTS="gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
+                      fi
+
+                      # Build package
+                      *tooling_dir/build-tools/build_tools.sh package_build -o "${BUILD_OPTS}"
+
+                      # Prepare release files with error checking
+                      mkdir -p gravityview || exit 1
+                      cp -R vendor* gravityview || exit 1
+                      rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php || exit 1
+
+                      # Create ZIP file with error checking
+                      zip -gr $(ls gravityview-*.zip) gravityview || exit 1
+                      mkdir -p .release || exit 1
+                      cp gravityview-*.zip .release/ || exit 1
+            - run:
+                  name: Creating a Github release
+                  command: |
+                      if [ "${CIRCLE_BRANCH}" == "main" ]; then
+                        git config user.email "support@gravitykit.com"
+                        git config user.name "GravityView - CI"
+                        *tooling_dir/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)" || {
+                          echo "Failed to create GitHub release"
+                          exit 1
+                        }
+                      fi
+            - run:
+                  name: Notifying GravityView Release Manager
+                  when: on_success
+                  command: |
+                      if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
+                        *tooling_dir/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle" || {
+                          echo "Failed to notify Release Manager"
+                          exit 1
+                        }
+                      fi
+            - store_artifacts:
+                  path: .release
+                  destination: release
 
 workflows:
-  version: 2
-  test_and_package:
-    jobs:
-      - prepare_test_and_build_environment:
-          <<: *context
-      - run_php_74_unit_tests:
-          <<: *test_job_config
-      - run_php_80_unit_tests:
-          <<: *test_job_config
-#      - run_acceptance_tests:
-#          <<: *context
-      - build_package_release:
-          <<: *context
-          requires:
-            - run_php_74_unit_tests
-            - run_php_80_unit_tests
-#            - run_acceptance_tests
+    version: 2
+    test_and_package:
+        jobs:
+            - prepare_test_and_build_environment:
+                  <<: *context
+            # Run tests in parallel
+            - run_php_74_unit_tests:
+                  <<: *test_job_config
+            - run_php_80_unit_tests:
+                  <<: *test_job_config
+            # Acceptance tests are currently disabled
+            # TODO: Re-enable when test stability issues are resolved
+            #- run_acceptance_tests:
+            #    <<: *context
+            #    requires:
+            #      - prepare_test_and_build_environment
+            - build_package_release:
+                  <<: *context
+                  requires:
+                      - run_php_74_unit_tests
+                      - run_php_80_unit_tests
+                      #- run_acceptance_tests
