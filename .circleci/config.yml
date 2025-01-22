@@ -1,7 +1,7 @@
 version: 2.2
 setup: true
 
-# Environment variables
+# Environment variables for YAML references
 env:
     PLUGIN_BASE_DIR: &plugin_base_dir /home/circleci/plugin
     TOOLING_DIR: &tooling_dir /home/circleci/tooling
@@ -12,7 +12,7 @@ anchors:
         context: shared
 
     default_job_config: &default_job_config
-        working_directory: *plugin_base_dir
+        working_directory: /home/circleci/plugin
         machine:
             image: ubuntu-2204:2024.01.1
             docker_layer_caching: true
@@ -44,7 +44,7 @@ jobs:
             - run:
                   name: Getting GV test/build tools
                   command: |
-                      git clone --depth 1 git@github.com:gravityview/Tooling.git "${TOOLING_DIR}"
+                      git clone --depth 1 git@github.com:gravityview/Tooling.git /home/circleci/tooling
             # Restore cached dependencies
             - restore_cache:
                   keys:
@@ -55,12 +55,12 @@ jobs:
                   name: Installing build dependencies
                   command: |
                       set -e
-                      "${TOOLING_DIR}/build-tools/build_tools.sh" npm -o ci
-                      "${TOOLING_DIR}/build-tools/build_tools.sh" composer -o install
+                      /home/circleci/tooling/build-tools/build_tools.sh npm -o ci
+                      /home/circleci/tooling/build-tools/build_tools.sh composer -o install
             - run:
                   name: Configuring tests environment
                   command: |
-                      "${TOOLING_DIR}/docker-unit-tests/docker-unit-tests.sh" prepare_all
+                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
             # Save cache
             - save_cache:
                   key: deps-v1-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
@@ -86,20 +86,20 @@ jobs:
             - run:
                   name: Verify workspace
                   command: |
-                      if [[ ! -d "${PLUGIN_BASE_DIR}" ]]; then
+                      if [[ ! -d "/home/circleci/plugin" ]]; then
                         echo "Workspace not properly attached"
                         exit 1
                       fi
-                      if [[ ! -d "${TOOLING_DIR}" ]]; then
+                      if [[ ! -d "/home/circleci/tooling" ]]; then
                         echo "Tooling directory not found"
                         exit 1
                       fi
             - run:
                   name: Running PHP 7.4 unit tests
                   command: |
-                      mkdir -p "${TEST_RESULTS_DIR}/php74"
+                      mkdir -p /home/circleci/test_results/php74
                       TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
-                      "${TOOLING_DIR}/docker-unit-tests/docker-unit-tests.sh" test_74 $TESTFILES
+                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74 $TESTFILES
             - store_test_results:
                   path: "/home/circleci/test_results/php74"
             - store_artifacts:
@@ -115,20 +115,20 @@ jobs:
             - run:
                   name: Verify workspace
                   command: |
-                      if [[ ! -d "${PLUGIN_BASE_DIR}" ]]; then
+                      if [[ ! -d "/home/circleci/plugin" ]]; then
                         echo "Workspace not properly attached"
                         exit 1
                       fi
-                      if [[ ! -d "${TOOLING_DIR}" ]]; then
+                      if [[ ! -d "/home/circleci/tooling" ]]; then
                         echo "Tooling directory not found"
                         exit 1
                       fi
             - run:
                   name: Running PHP 8.0 unit tests
                   command: |
-                      mkdir -p "${TEST_RESULTS_DIR}/php80"
+                      mkdir -p /home/circleci/test_results/php80
                       TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
-                      "${TOOLING_DIR}/docker-unit-tests/docker-unit-tests.sh" test_80 $TESTFILES
+                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80 $TESTFILES
             - store_test_results:
                   path: "/home/circleci/test_results/php80"
             - store_artifacts:
@@ -145,7 +145,7 @@ jobs:
             - run:
                   name: Run acceptance tests
                   command: |
-                      mkdir -p "${TEST_RESULTS_DIR}/acceptance"
+                      mkdir -p /home/circleci/test_results/acceptance
                       PLUGIN_DIR=$PLUGIN_DIR docker-compose -f tests/acceptance/docker/docker-compose.yml \
                         run codeception --debug -vvv --html --xml
                   no_output_timeout: 30m
@@ -164,11 +164,11 @@ jobs:
             - run:
                   name: Verify workspace
                   command: |
-                      if [[ ! -d "${PLUGIN_BASE_DIR}" ]]; then
+                      if [[ ! -d "/home/circleci/plugin" ]]; then
                         echo "Workspace not properly attached"
                         exit 1
                       fi
-                      if [[ ! -d "${TOOLING_DIR}" ]]; then
+                      if [[ ! -d "/home/circleci/tooling" ]]; then
                         echo "Tooling directory not found"
                         exit 1
                       fi
@@ -177,8 +177,8 @@ jobs:
                   command: |
                       set -e
                       # Production optimized install
-                      "${TOOLING_DIR}/build-tools/build_tools.sh" composer -o "install --no-dev --prefer-dist --optimize-autoloader"
-                      "${TOOLING_DIR}/build-tools/build_tools.sh" grunt
+                      /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev --prefer-dist --optimize-autoloader"
+                      /home/circleci/tooling/build-tools/build_tools.sh grunt
 
                       # Determine package build options
                       if [ "${CIRCLE_BRANCH}" != "main" ]; then
@@ -188,7 +188,7 @@ jobs:
                       fi
 
                       # Build package
-                      "${TOOLING_DIR}/build-tools/build_tools.sh" package_build -o "${BUILD_OPTS}"
+                      /home/circleci/tooling/build-tools/build_tools.sh package_build -o "${BUILD_OPTS}"
 
                       # Prepare release files with error checking
                       mkdir -p gravityview || exit 1
@@ -205,7 +205,7 @@ jobs:
                       if [ "${CIRCLE_BRANCH}" == "main" ]; then
                         git config user.email "support@gravitykit.com"
                         git config user.name "GravityView - CI"
-                        "${TOOLING_DIR}/build-tools/build_tools.sh" create_release -o "gravityview.php $(ls gravityview-*.zip)" || {
+                        /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)" || {
                           echo "Failed to create GitHub release"
                           exit 1
                         }
@@ -215,7 +215,7 @@ jobs:
                   when: on_success
                   command: |
                       if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
-                        "${TOOLING_DIR}/build-tools/build_tools.sh" announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle" || {
+                        /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle" || {
                           echo "Failed to notify Release Manager"
                           exit 1
                         }
