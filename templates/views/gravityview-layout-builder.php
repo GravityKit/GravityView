@@ -16,15 +16,17 @@ ob_start();
 gravityview_before( $gravityview );
 
 gravityview_header( $gravityview );
-
+?>
+<div class="<?php echo esc_attr( gv_container_class( 'gv-layout-builder-container', false, $gravityview ) ); ?>"
+<?php
 // There are no entries.
 if ( ! $gravityview->entries->count() ) {
 	?>
-	<div class="gv-layout-builder-view gv-no-results">
-		<div class="gv-layout-builder-view-title">
-			<h3><?php echo gv_no_results( true, $gravityview ); ?></h3>
-		</div>
-	</div>
+    <div class="gv-layout-builder-view gv-no-results">
+        <div class="gv-layout-builder-view-title">
+            <h3><?php echo gv_no_results( true, $gravityview ); ?></h3>
+        </div>
+    </div>
 	<?php
 } else {
 	$zone = 'directory';
@@ -35,14 +37,14 @@ if ( ! $gravityview->entries->count() ) {
 	// There are entries. Loop through them.
 	foreach ( $gravityview->entries->all() as $entry ) {
 		?>
-		<div class="gv-layout-builder-view gv-layout-builder-view--entry gv-grid">
+        <div class="gv-layout-builder-view gv-layout-builder-view--entry gv-grid">
 			<?php foreach ( $rows as $row ) { ?>
-				<div class="gv-grid-row">
+                <div class="gv-grid-row">
 					<?php
 					foreach ( $row as $col => $areas ) {
 						$column = $col;
 						?>
-						<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
+                        <div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
 							<?php
 							if ( ! empty( $areas ) ) {
 								foreach ( $areas as $area ) {
@@ -52,15 +54,17 @@ if ( ! $gravityview->entries->count() ) {
 								}
 							}
 							?>
-						</div>
+                        </div>
 					<?php } // $row ?>
-				</div>
+                </div>
 			<?php } // $rows ?>
-		</div>
+        </div>
 		<?php
 	}
 }
-
+?>
+</div>
+<?php
 gravityview_footer( $gravityview );
 
 gravityview_after( $gravityview );
@@ -71,14 +75,13 @@ $content = ob_get_clean();
  *
  * @since  2.15
  *
- * @param string   $wrapper_container Wrapper container HTML markup
- * @param string   $anchor_id         (optional) Unique anchor ID to identify the view.
- * @param \GV\View $view              The View.
+ * @param string $wrapper_container Wrapper container HTML markup
+ * @param string $anchor_id         (optional) Unique anchor ID to identify the view.
+ * @param \GV\View $view            The View.
  */
-$class             = gv_container_class( 'gv-layout-builder-container', false, $gravityview );
 $wrapper_container = apply_filters(
 	'gravityview/view/wrapper_container',
-	'<div id="' . esc_attr( $gravityview->view->get_anchor_id() ) . '" class="' . esc_attr( $class ) . '">{content}</div>',
+	'<div id="' . esc_attr( $gravityview->view->get_anchor_id() ) . '">{content}</div>',
 	$gravityview->view->get_anchor_id(),
 	$gravityview->view
 );
