@@ -5,7 +5,6 @@ setup: true
 env:
     PLUGIN_BASE_DIR: &plugin_base_dir /home/circleci/plugin
     TOOLING_DIR: &tooling_dir /home/circleci/tooling
-    TEST_RESULTS_DIR: &test_results_dir /home/circleci/test_results
 
 anchors:
     context: &context
@@ -97,13 +96,12 @@ jobs:
             - run:
                   name: Running PHP 7.4 unit tests
                   command: |
-                      mkdir -p /home/circleci/test_results/php74
                       TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
                       /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74 $TESTFILES
             - store_test_results:
-                  path: "/home/circleci/test_results/php74"
+                  path: tests/_output
             - store_artifacts:
-                  path: "/home/circleci/test_results/php74"
+                  path: tests/_output
                   destination: php74-test-results
 
     run_php_80_unit_tests:
@@ -126,13 +124,12 @@ jobs:
             - run:
                   name: Running PHP 8.0 unit tests
                   command: |
-                      mkdir -p /home/circleci/test_results/php80
                       TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
                       /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80 $TESTFILES
             - store_test_results:
-                  path: "/home/circleci/test_results/php80"
+                  path: tests/_output
             - store_artifacts:
-                  path: "/home/circleci/test_results/php80"
+                  path: tests/_output
                   destination: php80-test-results
 
     run_acceptance_tests:
@@ -145,7 +142,6 @@ jobs:
             - run:
                   name: Run acceptance tests
                   command: |
-                      mkdir -p /home/circleci/test_results/acceptance
                       PLUGIN_DIR=$PLUGIN_DIR docker-compose -f tests/acceptance/docker/docker-compose.yml \
                         run codeception --debug -vvv --html --xml
                   no_output_timeout: 30m
