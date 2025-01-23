@@ -135,8 +135,7 @@ jobs:
                   name: Running PHP 7.4 unit tests
                   command: |
                       set -eo pipefail
-                      TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
-                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74 $TESTFILES
+                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74
                   no_output_timeout: 20m
             - store_test_results:
                   path: tests/_output
@@ -172,8 +171,7 @@ jobs:
                   name: Running PHP 8.0 unit tests
                   command: |
                       set -eo pipefail
-                      TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
-                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80 $TESTFILES
+                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80
                   no_output_timeout: 20m
             - store_test_results:
                   path: tests/_output
