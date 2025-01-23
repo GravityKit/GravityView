@@ -17,26 +17,26 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * DO NOT RENAME this method. Required by the class-edit-entry.php component loader.
 	 *
-	 * @see GravityView_Edit_Entry::load_components()
-	 *
 	 * @since 2.5.2
+	 *
+	 * @see   GravityView_Edit_Entry::load_components()
 	 *
 	 * @return void
 	 */
 	public function load() {
-		if ( ! has_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue_scripts' ) ) ) {
-			add_action( 'wp_enqueue_scripts', array( $this, 'maybe_enqueue_scripts' ) );
+		if ( ! has_action( 'wp_enqueue_scripts', [ $this, 'maybe_enqueue_scripts' ] ) ) {
+			add_action( 'wp_enqueue_scripts', [ $this, 'maybe_enqueue_scripts' ] );
 		}
 
-		add_filter( 'heartbeat_received', array( $this, 'heartbeat_refresh_nonces' ), 10, 3 );
-		add_filter( 'heartbeat_received', array( $this, 'heartbeat_check_locked_objects' ), 10, 3 );
-		add_filter( 'heartbeat_received', array( $this, 'heartbeat_refresh_lock' ), 10, 3 );
-		add_filter( 'heartbeat_received', array( $this, 'heartbeat_request_lock' ), 10, 3 );
+		add_filter( 'heartbeat_received', [ $this, 'heartbeat_refresh_nonces' ], 10, 3 );
+		add_filter( 'heartbeat_received', [ $this, 'heartbeat_check_locked_objects' ], 10, 3 );
+		add_filter( 'heartbeat_received', [ $this, 'heartbeat_refresh_lock' ], 10, 3 );
+		add_filter( 'heartbeat_received', [ $this, 'heartbeat_request_lock' ], 10, 3 );
 
-		add_action( 'wp_ajax_gf_lock_request_entry', array( $this, 'ajax_lock_request' ), 1 );
-		add_action( 'wp_ajax_gf_reject_lock_request_entry', array( $this, 'ajax_reject_lock_request' ), 1 );
-		add_action( 'wp_ajax_nopriv_gf_lock_request_entry', array( $this, 'ajax_lock_request' ) );
-		add_action( 'wp_ajax_nopriv_gf_reject_lock_request_entry', array( $this, 'ajax_reject_lock_request' ) );
+		add_action( 'wp_ajax_gf_lock_request_entry', [ $this, 'ajax_lock_request' ], 1 );
+		add_action( 'wp_ajax_gf_reject_lock_request_entry', [ $this, 'ajax_reject_lock_request' ], 1 );
+		add_action( 'wp_ajax_nopriv_gf_lock_request_entry', [ $this, 'ajax_lock_request' ] );
+		add_action( 'wp_ajax_nopriv_gf_reject_lock_request_entry', [ $this, 'ajax_reject_lock_request' ] );
 	}
 
 
@@ -102,7 +102,7 @@ class GravityView_Edit_Entry_Locking {
 
 		$lock_holder_user_id = $this->check_lock( $object_id );
 
-		$result = array();
+		$result = [];
 		if ( ! $lock_holder_user_id ) {
 			$this->set_lock( $object_id );
 			$result['html']   = __( 'You now have control', 'gk-gravityview' );
@@ -168,7 +168,7 @@ class GravityView_Edit_Entry_Locking {
 			}
 
 			// Make sure that the entry belongs to the view form
-			if( $view->form->ID != $entry_array['form_id'] ){
+			if ( $view->form->ID != $entry_array['form_id'] ) {
 				continue;
 			}
 
@@ -214,8 +214,8 @@ class GravityView_Edit_Entry_Locking {
 		$min          = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 		$locking_path = GFCommon::get_base_url() . '/includes/locking/';
 
-		wp_enqueue_script( 'gforms_locking', $locking_path . "js/locking{$min}.js", array( 'jquery', 'heartbeat' ), GFCommon::$version );
-		wp_enqueue_style( 'gforms_locking_css', $locking_path . "css/locking{$min}.css", array( 'edit' ), GFCommon::$version );
+		wp_enqueue_script( 'gforms_locking', $locking_path . "js/locking{$min}.js", [ 'jquery', 'heartbeat' ], GFCommon::$version );
+		wp_enqueue_style( 'gforms_locking_css', $locking_path . "css/locking{$min}.css", [ 'edit' ], GFCommon::$version );
 
 		// add inline css to hide notification-dialog-wrap if it has the hidden class
 		wp_add_inline_style( 'gforms_locking_css', '
@@ -226,24 +226,24 @@ class GravityView_Edit_Entry_Locking {
 
 		$translations = array_map( 'wp_strip_all_tags', $this->get_strings() );
 
-		$strings = array(
+		$strings = [
 			'noResponse'    => $translations['no_response'],
 			'requestAgain'  => $translations['request_again'],
 			'requestError'  => $translations['request_error'],
 			'gainedControl' => $translations['gained_control'],
 			'rejected'      => $translations['request_rejected'],
 			'pending'       => $translations['request_pending'],
-		);
+		];
 
 		$lock_user_id = $this->check_lock( $entry['id'] );
 
-		$vars = array(
+		$vars = [
 			'hasLock'    => ! $lock_user_id ? 1 : 0,
 			'lockUI'     => $this->get_lock_ui( $lock_user_id, $entry ),
 			'objectID'   => $entry['id'],
 			'objectType' => 'entry',
 			'strings'    => $strings,
-		);
+		];
 
 		wp_localize_script( 'gforms_locking', 'gflockingVars', $vars );
 	}
@@ -255,11 +255,11 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * @since 2.5.2
 	 *
-	 * @see GravityView_Edit_Entry_Locking::check_lock
+	 * @see   GravityView_Edit_Entry_Locking::check_lock
 	 *
-	 * @param int $user_id The User ID that has the current lock. Will be empty if entry is not locked
-	 *                     or is locked to the current user.
-	 * @param array $entry The entry array.
+	 * @param int   $user_id The User ID that has the current lock. Will be empty if entry is not locked
+	 *                       or is locked to the current user.
+	 * @param array $entry   The entry array.
 	 *
 	 * @return string The Lock UI dialog box, etc.
 	 */
@@ -308,7 +308,7 @@ class GravityView_Edit_Entry_Locking {
                         </div>';
 
 		}
-		$html  = '<div id="gform-lock-dialog" class="notification-dialog-wrap' . $hidden . '">
+		$html = '<div id="gform-lock-dialog" class="notification-dialog-wrap' . $hidden . '">
                     <div class="notification-dialog-background"></div>
                     <div class="notification-dialog">';
 		$html .= $message;
@@ -329,7 +329,7 @@ class GravityView_Edit_Entry_Locking {
 	 * @return array An array of translations.
 	 */
 	public function get_strings() {
-		$translations = array(
+		$translations = [
 			'currently_locked'  => __( 'This entry is currently locked. Click on the "Request Control" button to let %s know you\'d like to take over.', 'gk-gravityview' ),
 			'currently_editing' => __( '%s is currently editing this entry', 'gk-gravityview' ),
 			'taken_over'        => __( '%s has taken over and is currently editing this entry.', 'gk-gravityview' ),
@@ -342,7 +342,7 @@ class GravityView_Edit_Entry_Locking {
 			'request_again'     => __( 'Request again', 'gk-gravityview' ),
 			'request_error'     => __( 'Error', 'gk-gravityview' ),
 			'request_rejected'  => __( 'Your request was rejected', 'gk-gravityview' ),
-		);
+		];
 
 		$translations = array_map( 'wp_strip_all_tags', $translations );
 
@@ -421,6 +421,8 @@ class GravityView_Edit_Entry_Locking {
 	 * @return int|null The User ID or null.
 	 */
 	public function get_lock_meta( $entry_id ) {
+		ray()->trace();
+
 		return GFCache::get( 'lock_entry_' . $entry_id );
 	}
 
@@ -428,7 +430,7 @@ class GravityView_Edit_Entry_Locking {
 	 * Set the lock for an entry.
 	 *
 	 * @param int $entry_id The entry ID.
-	 * @param int $user_id The user ID to lock the entry to.
+	 * @param int $user_id  The user ID to lock the entry to.
 	 *
 	 * @return void
 	 */
@@ -476,19 +478,19 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Check if the objects are locked.
 	 *
-	 * @param array $response The response array.
-	 * @param array $data The data array.
+	 * @param array  $response  The response array.
+	 * @param array  $data      The data array.
 	 * @param string $screen_id The screen ID.
 	 *
 	 * @return array The response array.
 	 */
 	public function heartbeat_check_locked_objects( $response, $data, $screen_id ) {
-		$checked       = array();
+		$checked       = [];
 		$heartbeat_key = 'gform-check-locked-objects-entry';
 		if ( array_key_exists( $heartbeat_key, $data ) && is_array( $data[ $heartbeat_key ] ) ) {
 			foreach ( $data[ $heartbeat_key ] as $object_id ) {
 				if ( ( $user_id = $this->check_lock( $object_id ) ) && ( $user = get_userdata( $user_id ) ) ) {
-					$send = array( 'text' => sprintf( __( $this->get_string( 'currently_editing' ) ), $user->display_name ) );
+					$send = [ 'text' => sprintf( __( $this->get_string( 'currently_editing' ) ), $user->display_name ) ];
 
 					if ( ( $avatar = get_avatar( $user->ID, 18 ) ) && preg_match( "|src='([^']+)'|", $avatar, $matches ) ) {
 						$send['avatar_src'] = $matches[1];
@@ -509,8 +511,8 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Refresh the lock for an entry.
 	 *
-	 * @param array $response The response array.
-	 * @param array $data The data array.
+	 * @param array  $response  The response array.
+	 * @param array  $data      The data array.
 	 * @param string $screen_id The screen ID.
 	 *
 	 * @return array The response array.
@@ -519,7 +521,7 @@ class GravityView_Edit_Entry_Locking {
 		$heartbeat_key = 'gform-refresh-lock-entry';
 		if ( array_key_exists( $heartbeat_key, $data ) ) {
 			$received = $data[ $heartbeat_key ];
-			$send     = array();
+			$send     = [];
 
 			if ( ! isset( $received['objectID'] ) ) {
 				return $response;
@@ -529,9 +531,9 @@ class GravityView_Edit_Entry_Locking {
 
 			if ( ( $user_id = $this->check_lock( $object_id ) ) && ( $user = get_userdata( $user_id ) ) ) {
 
-				$error = array(
-					'text' => sprintf( __( $this->get_string( 'taken_over' ) ), $user->display_name )
-				);
+				$error = [
+					'text' => sprintf( __( $this->get_string( 'taken_over' ) ), $user->display_name ),
+				];
 
 				if ( $avatar = get_avatar( $user->ID, 64 ) ) {
 					if ( preg_match( "|src='([^']+)'|", $avatar, $matches ) ) {
@@ -546,9 +548,9 @@ class GravityView_Edit_Entry_Locking {
 					$send['new_lock'] = $new_lock;
 
 					if ( ( $lock_requester = $this->check_lock_request( $object_id ) ) && ( $user = get_userdata( $lock_requester ) ) ) {
-						$lock_request = array(
-							'text' => sprintf( __( $this->get_string( 'lock_requested' ) ), $user->display_name )
-						);
+						$lock_request = [
+							'text' => sprintf( __( $this->get_string( 'lock_requested' ) ), $user->display_name ),
+						];
 
 						if ( $avatar = get_avatar( $user->ID, 64 ) ) {
 							if ( preg_match( "|src='([^']+)'|", $avatar, $matches ) ) {
@@ -569,8 +571,8 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Request the lock for an entry.
 	 *
-	 * @param array $response The response array.
-	 * @param array $data The data array.
+	 * @param array  $response  The response array.
+	 * @param array  $data      The data array.
 	 * @param string $screen_id The screen ID.
 	 *
 	 * @return array The response array.
@@ -579,7 +581,7 @@ class GravityView_Edit_Entry_Locking {
 		$heartbeat_key = 'gform-request-lock-entry';
 		if ( array_key_exists( $heartbeat_key, $data ) ) {
 			$received = $data[ $heartbeat_key ];
-			$send     = array();
+			$send     = [];
 
 			if ( ! isset( $received['objectID'] ) ) {
 				return $response;
@@ -608,8 +610,8 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Refresh the nonces for an entry.
 	 *
-	 * @param array $response The response array.
-	 * @param array $data The data array.
+	 * @param array  $response  The response array.
+	 * @param array  $data      The data array.
 	 * @param string $screen_id The screen ID.
 	 *
 	 * @return array The response array.
@@ -617,7 +619,7 @@ class GravityView_Edit_Entry_Locking {
 	public function heartbeat_refresh_nonces( $response, $data, $screen_id ) {
 		if ( array_key_exists( 'gform-refresh-nonces', $data ) ) {
 			$received                         = $data['gform-refresh-nonces'];
-			$response['gform-refresh-nonces'] = array( 'check' => 1 );
+			$response['gform-refresh-nonces'] = [ 'check' => 1 ];
 
 			if ( ! isset( $received['objectID'] ) ) {
 				return $response;
@@ -630,12 +632,12 @@ class GravityView_Edit_Entry_Locking {
 			}
 
 			if ( 2 === wp_verify_nonce( $received['object_nonce'], 'update-contact_' . $object_id ) ) {
-				$response['gform-refresh-nonces'] = array(
-					'replace'        => array(
+				$response['gform-refresh-nonces'] = [
+					'replace'        => [
 						'_wpnonce' => wp_create_nonce( 'update-object_' . $object_id ),
-					),
+					],
 					'heartbeatNonce' => wp_create_nonce( 'heartbeat-nonce' ),
-				);
+				];
 			}
 		}
 
