@@ -3390,15 +3390,3 @@ We're just getting started with what can be done with DataTables. We'll have muc
 * Liftoff!
 
 == Upgrade Notice ==
-
-= 1.0.1 =
-* Added: "Getting Started" link to the Views menu
-* Fixed: Fatal error for users with Gravity Forms versions 1.7 or older
-* Fixed: Entries in trash no longer show in View
-* Tweak: When modifying the "Only visible to logged in users with role" setting, if choosing a role other than "Any", check the checkbox.
-* Tweak: `gravityview_field_visibility_caps` filter to add/remove capabilities from the field dropdowns
-* Added: Translation files. If you'd like to contribute translations, [please sign up here](https://www.transifex.com/projects/p/gravityview/).
-
-= 1.0 =
-
-* Liftoff!
