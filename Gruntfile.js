@@ -255,13 +255,20 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		concurrent: {
+			options: {
+				limit: 10,
+				logConcurrentOutput: true,
+			},
+			all: [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'translate' ],
+		},
 	});
 
 	// Still have to manually add this one...
 	grunt.loadNpmTasks('grunt-wp-i18n');
 
 	// Regular CSS/JS/Image Compression stuff
-	grunt.registerTask( 'default', [ 'exec:bower', 'sass', 'postcss', 'uglify', 'imagemin', 'exec:blocks', 'translate' ] );
+	grunt.registerTask( 'default', ['concurrent:all', 'exec:blocks'] );
 
 	// Translation stuff
 	grunt.registerTask( 'translate', [ 'addtextdomain', 'exec:makepot' ] );

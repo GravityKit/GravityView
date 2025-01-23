@@ -6,6 +6,7 @@
     "@lodder/grunt-postcss": "^3.1.1",
     "autoprefixer": "^10.4.20",
     "grunt": "^1.6.1",
+    "grunt-concurrent": "^3.0.0",
     "grunt-contrib-imagemin": "^4.0.0",
     "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-uglify": "^5.0.1",
