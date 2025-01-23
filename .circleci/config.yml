@@ -115,14 +115,7 @@ jobs:
             - persist_to_workspace:
                   root: /home/circleci
                   paths:
-                      - plugin
-                      - plugin/vendor
-                      - plugin/vendor_prefixed
-                      - tooling
-                      - gravityforms
-                      - wordpress-latest-tests-lib
-                      - phpunit
-                      - test_dependencies
+                      - *
 
     run_php_74_unit_tests:
         <<: *default_job_config
