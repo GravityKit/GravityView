@@ -46,8 +46,15 @@ jobs:
                   name: Verify lock files
                   command: |
                       set -eo pipefail
-                      [[ ! -f composer.lock ]] && echo "composer.lock missing" && exit 1
-                      [[ ! -f package-lock.json ]] && echo "package-lock.json missing" && exit 1
+                      if [[ ! -f composer.lock ]]; then
+                          echo "composer.lock missing"
+                          exit 1
+                      fi
+                      if [[ ! -f package-lock.json ]]; then
+                          echo "package-lock.json missing"
+                          exit 1
+                      fi
+                      echo "Lock files verified successfully"
             # Restore all caches separately
             - restore_cache:
                   <<: *composer_cache_keys
