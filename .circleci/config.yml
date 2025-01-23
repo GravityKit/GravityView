@@ -36,6 +36,11 @@ anchors:
             - tooling-cache-{{ .Branch }}
             - tooling-cache-
 
+    test_dependencies_cache_keys: &test_dependencies_cache_keys
+        keys:
+            - test-dependencies-{{ epoch }}
+            - test-dependencies-
+
 jobs:
     prepare_test_and_build_environment:
         <<: *default_job_config
@@ -62,6 +67,8 @@ jobs:
                   <<: *npm_cache_keys
             - restore_cache:
                   <<: *tooling_cache_keys
+            - restore_cache:
+                  <<: *test_dependencies_cache_keys
             # Clone tooling if not cached
             - run:
                   name: Getting GV test/build tools
@@ -100,7 +107,10 @@ jobs:
                   key: tooling-cache-{{ .Branch }}
                   paths:
                       - /home/circleci/tooling
-            # Persist workspace - optimized
+            -   save_cache:
+                    key: test-dependencies-{{ epoch }}
+                    paths:
+                      - /home/circleci/test_dependencies
             - persist_to_workspace:
                   root: /home/circleci
                   paths:
@@ -111,6 +121,7 @@ jobs:
                       - gravityforms
                       - wordpress-latest-tests-lib
                       - phpunit
+                      - test_dependencies
 
     run_php_74_unit_tests:
         <<: *default_job_config
