@@ -33,7 +33,7 @@ class GravityView_Edit_Entry_Locking {
 			add_action( 'wp_enqueue_scripts', [ $this, 'maybe_enqueue_scripts' ] );
 		}
 
-		add_filter( 'heartbeat_received', [ $this, 'heartbeat_refresh_nonces' ], 10, 3 );
+		add_filter( 'heartbeat_received', [ $this, 'heartbeat_refresh_nonces' ], 10, 2 );
 		add_filter( 'heartbeat_received', [ $this, 'heartbeat_check_locked_objects' ], 10, 2 );
 		add_filter( 'heartbeat_received', [ $this, 'heartbeat_refresh_lock' ], 10, 2 );
 		add_filter( 'heartbeat_received', [ $this, 'heartbeat_request_lock' ], 10, 2 );
@@ -196,7 +196,7 @@ class GravityView_Edit_Entry_Locking {
 					$("body").prepend(lockUI);
 				}
 			});
-		');
+		' );
 
 		$min          = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 		$locking_path = GFCommon::get_base_url() . '/includes/locking/';
@@ -209,7 +209,7 @@ class GravityView_Edit_Entry_Locking {
 			.notification-dialog-wrap.hidden {
 				display: none;
 			}
-		');
+		' );
 
 		$translations = array_map( 'wp_strip_all_tags', $this->get_strings() );
 
@@ -616,16 +616,12 @@ class GravityView_Edit_Entry_Locking {
 
 		$object_id = $received['objectID'];
 
-		if ( ( $user_id = $this->check_lock( $object_id ) ) && ( $user = get_userdata( $user_id ) ) ) {
-			if ( $this->get_lock_request_meta( $object_id ) ) {
-				$send['status'] = 'pending';
-			} else {
-				$send['status'] = 'deleted';
-			}
-		} else {
-			if ( $this->set_lock( $object_id ) ) {
-				$send['status'] = 'granted';
-			}
+		$user_id = $this->check_lock( $object_id );
+
+		if ( $user_id && get_userdata( $user_id ) ) {
+			$send['status'] = $this->get_lock_request_meta( $object_id ) ? 'pending' : 'deleted';
+		} elseif ( $this->set_lock( $object_id ) ) {
+			$send['status'] = 'granted';
 		}
 
 		$response[ $heartbeat_key ] = $send;
@@ -640,14 +636,14 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * @param array  $response  The response array.
 	 * @param array  $data      The data array.
-	 * @param string $screen_id The screen ID.
 	 *
 	 * @return array The response array.
 	 */
-	public function heartbeat_refresh_nonces( $response, $data, $screen_id ) {
+	public function heartbeat_refresh_nonces( $response, $data ) {
 		if ( ! array_key_exists( 'gform-refresh-nonces', $data ) ) {
 			return $response;
 		}
+
 		$received = $data['gform-refresh-nonces'];
 
 		$response['gform-refresh-nonces'] = [ 'check' => 1 ];
