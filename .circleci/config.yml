@@ -104,6 +104,11 @@ jobs:
                           )
                       fi
                   no_output_timeout: 10m
+            - run:
+                    name: Configuring tests environment
+                    command: |
+                        /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
+                    no_output_timeout: 10m
             # Save caches separately
             - save_cache:
                   key: v2-composer-{{ checksum "composer.lock" }}
@@ -147,11 +152,6 @@ jobs:
                   name: Running PHP 7.4 unit tests
                   command: |
                       set -eo pipefail
-
-                      # Configure test suites first
-                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh configure_test_suites
-
-                      # Then run the tests
                       TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
                       /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74 $TESTFILES
                   no_output_timeout: 20m
@@ -189,11 +189,6 @@ jobs:
                   name: Running PHP 8.0 unit tests
                   command: |
                       set -eo pipefail
-
-                      # Configure test suites first
-                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh configure_test_suites
-
-                      # Then run the tests
                       TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
                       /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80 $TESTFILES
                   no_output_timeout: 20m
