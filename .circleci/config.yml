@@ -126,8 +126,7 @@ jobs:
             - persist_to_workspace:
                   root: /home/circleci
                   paths:
-                      - plugin
-                      - tooling
+                      - .
 
     run_php_74_unit_tests:
         <<: *default_job_config
