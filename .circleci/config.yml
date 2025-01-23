@@ -39,100 +39,33 @@ anchors:
 jobs:
     prepare_test_and_build_environment:
         <<: *default_job_config
-        resource_class: medium
         steps:
             - checkout
-            - run:
-                  name: Verify lock files
-                  command: |
-                      set -eo pipefail
-                      if [[ ! -f composer.lock ]]; then
-                          echo "composer.lock missing"
-                          exit 1
-                      fi
-                      if [[ ! -f package-lock.json ]]; then
-                          echo "package-lock.json missing"
-                          exit 1
-                      fi
-                      echo "Lock files verified successfully"
-            # Restore all caches separately
-            - restore_cache:
-                  <<: *composer_cache_keys
-            - restore_cache:
-                  <<: *npm_cache_keys
-            - restore_cache:
-                  <<: *tooling_cache_keys
-            # Clone tooling if not cached
-            - run:
-                  name: Getting GV test/build tools
-                  command: |
-                      set -eo pipefail
-                      echo "Checking for cached tooling..."
-                      if [[ ! -d "/home/circleci/tooling" ]]; then
-                          echo "Cache MISS - Tooling not found, cloning fresh copy..."
-                          git clone --depth 1 https://github.com/gravityview/Tooling.git /home/circleci/tooling
-                      else
-                          echo "Cache HIT - Using cached tooling directory"
-                      fi
-                  no_output_timeout: 5m
-            # Dependency check
-            - run:
-                  name: Check and install dependencies
-                  command: |
-                      echo "Checking for cached dependencies..."
-                      VENDOR_EXISTS=false
-                      MODULES_EXISTS=false
-
-                      [[ -d vendor ]] && { echo "Cache HIT - Using cached vendor directory"; VENDOR_EXISTS=true; } || echo "Cache MISS - vendor directory not found"
-                      [[ -d node_modules ]] && { echo "Cache HIT - Using cached node_modules"; MODULES_EXISTS=true; } || echo "Cache MISS - node_modules not found"
-
-                      if [[ "$VENDOR_EXISTS" = true ]] && [[ "$MODULES_EXISTS" = true ]]; then
-                          echo "All dependencies found in cache"
-                      else
-                          echo "Installing missing dependencies in parallel..."
-                          (
-                              if [[ "$VENDOR_EXISTS" = false ]]; then
-                                  /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-progress" &
-                                  COMPOSER_PID=$!
-                              fi
-                              if [[ "$MODULES_EXISTS" = false ]]; then
-                                  /home/circleci/tooling/build-tools/build_tools.sh npm -o ci &
-                                  NPM_PID=$!
-                              fi
-                              [[ -n "$COMPOSER_PID" ]] && wait $COMPOSER_PID
-                              [[ -n "$NPM_PID" ]] && wait $NPM_PID
-                          )
-                      fi
-                  no_output_timeout: 10m
-            - run:
+            -   run:
+                    name: Getting GV test/build tools
+                    command: |
+                        git clone git@github.com:gravityview/Tooling.git /home/circleci/tooling
+            -   restore_cache:
+                    keys:
+                        - test-dependencies-{{ epoch }}
+                        - test-dependencies-
+            -   run:
+                    name: Installing build dependencies
+                    command: |
+                        /home/circleci/tooling/build-tools/build_tools.sh npm -o install
+                        /home/circleci/tooling/build-tools/build_tools.sh composer -o install
+            -   run:
                     name: Configuring tests environment
                     command: |
                         /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
-                    no_output_timeout: 10m
-            # Save caches separately
-            - save_cache:
-                  key: v2-composer-{{ checksum "composer.lock" }}
-                  paths:
-                      - vendor
-            - save_cache:
-                  key: v2-npm-{{ checksum "package-lock.json" }}
-                  paths:
-                      - node_modules
-            - save_cache:
-                  key: tooling-cache-{{ .Branch }}
-                  paths:
-                      - /home/circleci/tooling
-            # Persist workspace - optimized
-            - persist_to_workspace:
-                  root: /home/circleci
-                  paths:
-                      - plugin
-                      - plugin/vendor
-                      - plugin/vendor_prefixed
-                      - tooling
-                      - gravityforms
-                      - wordpress-latest-tests-lib
-                      - phpunit
+            -   save_cache:
+                    key: test-dependencies-{{ epoch }}
+                    paths:
+                        - /home/circleci/test_dependencies
+            -   persist_to_workspace:
+                    root: /home/circleci
+                    paths:
+                        - .
 
     run_php_74_unit_tests:
         <<: *default_job_config
