@@ -39,33 +39,78 @@ anchors:
 jobs:
     prepare_test_and_build_environment:
         <<: *default_job_config
+        resource_class: medium
         steps:
             - checkout
+            - run:
+                  name: Verify lock files
+                  command: |
+                      set -eo pipefail
+                      if [[ ! -f composer.lock ]]; then
+                          echo "composer.lock missing"
+                          exit 1
+                      fi
+                      if [[ ! -f package-lock.json ]]; then
+                          echo "package-lock.json missing"
+                          exit 1
+                      fi
+                      echo "Lock files verified successfully"
+            # Restore all caches separately
+            - restore_cache:
+                  <<: *composer_cache_keys
+            - restore_cache:
+                  <<: *npm_cache_keys
+            - restore_cache:
+                  <<: *tooling_cache_keys
+            # Clone tooling if not cached
+            - run:
+                  name: Getting GV test/build tools
+                  command: |
+                      set -eo pipefail
+                      echo "Checking for cached tooling..."
+                      if [[ ! -d "/home/circleci/tooling" ]]; then
+                          echo "Cache MISS - Tooling not found, cloning fresh copy..."
+                          git clone --depth 1 https://github.com/gravityview/Tooling.git /home/circleci/tooling
+                      else
+                          echo "Cache HIT - Using cached tooling directory"
+                      fi
+                  no_output_timeout: 5m
+            # Dependency check
             -   run:
-                    name: Getting GV test/build tools
+                    name: Install dependencies
                     command: |
-                        git clone git@github.com:gravityview/Tooling.git /home/circleci/tooling
-            -   restore_cache:
-                    keys:
-                        - test-dependencies-{{ epoch }}
-                        - test-dependencies-
-            -   run:
-                    name: Installing build dependencies
-                    command: |
-                        /home/circleci/tooling/build-tools/build_tools.sh npm -o install
-                        /home/circleci/tooling/build-tools/build_tools.sh composer -o install
-            -   run:
+                      /home/circleci/tooling/build-tools/build_tools.sh composer -o install
+                      /home/circleci/tooling/build-tools/build_tools.sh npm -o install
+                    no_output_timeout: 10m
+            - run:
                     name: Configuring tests environment
                     command: |
-                        /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
-            -   save_cache:
-                    key: test-dependencies-{{ epoch }}
-                    paths:
-                        - /home/circleci/test_dependencies
-            -   persist_to_workspace:
-                    root: /home/circleci
-                    paths:
-                        - .
+                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
+                    no_output_timeout: 10m
+            # Save caches separately
+            - save_cache:
+                  key: v2-composer-{{ checksum "composer.lock" }}
+                  paths:
+                      - vendor
+            - save_cache:
+                  key: v2-npm-{{ checksum "package-lock.json" }}
+                  paths:
+                      - node_modules
+            - save_cache:
+                  key: tooling-cache-{{ .Branch }}
+                  paths:
+                      - /home/circleci/tooling
+            # Persist workspace - optimized
+            - persist_to_workspace:
+                  root: /home/circleci
+                  paths:
+                      - plugin
+                      - plugin/vendor
+                      - plugin/vendor_prefixed
+                      - tooling
+                      - gravityforms
+                      - wordpress-latest-tests-lib
+                      - phpunit
 
     run_php_74_unit_tests:
         <<: *default_job_config
