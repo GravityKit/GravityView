@@ -99,6 +99,7 @@ jobs:
                   key: v2-composer-{{ checksum "composer.lock" }}
                   paths:
                       - vendor
+                      - vendor_prefixed
             - save_cache:
                   key: v2-npm-{{ checksum "package-lock.json" }}
                   paths:
