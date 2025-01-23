@@ -157,6 +157,10 @@ class GravityView_Edit_Entry_Locking {
 				continue;
 			}
 
+			if ( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_array, $view ) ) {
+				continue;
+			}
+
 			$continue_enqueuing = true;
 
 			break;
