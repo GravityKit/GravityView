@@ -1,5 +1,4 @@
-version: 2.1
-setup: true
+version: 2.2
 
 anchors:
     context: &context
