@@ -21,118 +21,160 @@ anchors:
         requires:
             - prepare_test_and_build_environment
 
+    composer_cache_keys: &composer_cache_keys
+        keys:
+            - v2-composer-{{ checksum "composer.lock" }}
+            - v2-composer-
+
+    npm_cache_keys: &npm_cache_keys
+        keys:
+            - v2-npm-{{ checksum "package-lock.json" }}
+            - v2-npm-
+
+    tooling_cache_keys: &tooling_cache_keys
+        keys:
+            - tooling-cache-{{ .Branch }}
+            - tooling-cache-
+
 jobs:
     prepare_test_and_build_environment:
         <<: *default_job_config
+        resource_class: medium
         steps:
             - checkout
-            # Verify lock files exist
             - run:
                   name: Verify lock files
                   command: |
-                      if [[ ! -f composer.lock ]]; then
-                        echo "composer.lock missing"
-                        exit 1
-                      fi
-                      if [[ ! -f package-lock.json ]]; then
-                        echo "package-lock.json missing"
-                        exit 1
-                      fi
-            # Try to restore dependencies from cache
+                      set -eo pipefail
+                      [[ ! -f composer.lock ]] && echo "composer.lock missing" && exit 1
+                      [[ ! -f package-lock.json ]] && echo "package-lock.json missing" && exit 1
+            # Restore all caches separately
             - restore_cache:
-                  keys:
-                      - deps-v2-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
-                      - deps-v2-
-            # Only clone tooling if not in cache
+                  <<: *composer_cache_keys
+            - restore_cache:
+                  <<: *npm_cache_keys
+            - restore_cache:
+                  <<: *tooling_cache_keys
+            # Clone tooling if not cached
             - run:
                   name: Getting GV test/build tools
                   command: |
+                      set -eo pipefail
+                      echo "Checking for cached tooling..."
                       if [[ ! -d "/home/circleci/tooling" ]]; then
-                        git clone --depth 1 git@github.com:gravityview/Tooling.git /home/circleci/tooling
+                          echo "Cache MISS - Tooling not found, cloning fresh copy..."
+                          git clone --depth 1 https://github.com/gravityview/Tooling.git /home/circleci/tooling
+                      else
+                          echo "Cache HIT - Using cached tooling directory"
                       fi
-            # Install dependencies through Docker containers
+                  no_output_timeout: 5m
+            # Dependency check
             - run:
-                  name: Installing build dependencies
+                  name: Check and install dependencies
                   command: |
-                      set -e
-                      /home/circleci/tooling/build-tools/build_tools.sh npm -o ci
-                      /home/circleci/tooling/build-tools/build_tools.sh composer -o install
-            - run:
-                  name: Configuring tests environment
-                  command: |
-                      /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
-            # Save cache including tooling
+                      echo "Checking for cached dependencies..."
+                      VENDOR_EXISTS=false
+                      MODULES_EXISTS=false
+
+                      [[ -d vendor ]] && { echo "Cache HIT - Using cached vendor directory"; VENDOR_EXISTS=true; } || echo "Cache MISS - vendor directory not found"
+                      [[ -d node_modules ]] && { echo "Cache HIT - Using cached node_modules"; MODULES_EXISTS=true; } || echo "Cache MISS - node_modules not found"
+
+                      if [[ "$VENDOR_EXISTS" = true ]] && [[ "$MODULES_EXISTS" = true ]]; then
+                          echo "All dependencies found in cache"
+                      else
+                          echo "Installing missing dependencies in parallel..."
+                          (
+                              if [[ "$VENDOR_EXISTS" = false ]]; then
+                                  /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-progress" &
+                                  COMPOSER_PID=$!
+                              fi
+                              if [[ "$MODULES_EXISTS" = false ]]; then
+                                  /home/circleci/tooling/build-tools/build_tools.sh npm -o ci &
+                                  NPM_PID=$!
+                              fi
+                              [[ -n "$COMPOSER_PID" ]] && wait $COMPOSER_PID
+                              [[ -n "$NPM_PID" ]] && wait $NPM_PID
+                          )
+                      fi
+                  no_output_timeout: 10m
+            # Save caches separately
             - save_cache:
-                  key: deps-v2-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+                  key: v2-composer-{{ checksum "composer.lock" }}
                   paths:
-                      - /home/circleci/test_dependencies
-                      - /home/circleci/tooling
-                      - node_modules
                       - vendor
-            # Persist workspace - conservative approach
+            - save_cache:
+                  key: v2-npm-{{ checksum "package-lock.json" }}
+                  paths:
+                      - node_modules
+            - save_cache:
+                  key: tooling-cache-{{ .Branch }}
+                  paths:
+                      - /home/circleci/tooling
+            # Persist workspace - optimized
             - persist_to_workspace:
                   root: /home/circleci
                   paths:
                       - plugin
-                      - plugin/.*
                       - tooling
-                      - test_dependencies
 
     run_php_74_unit_tests:
         <<: *default_job_config
-        parallelism: 2
+        parallelism: 8
         steps:
             - attach_workspace:
                   at: /home/circleci
             - run:
                   name: Verify workspace
                   command: |
-                      if [[ ! -d "/home/circleci/plugin" ]]; then
-                        echo "Workspace not properly attached"
-                        exit 1
-                      fi
-                      if [[ ! -d "/home/circleci/tooling" ]]; then
-                        echo "Tooling directory not found"
-                        exit 1
-                      fi
+                      set -eo pipefail
+                      [[ ! -d "/home/circleci/plugin" ]] && echo "Workspace not properly attached" && exit 1
+                      [[ ! -d "/home/circleci/tooling" ]] && echo "Tooling directory not found" && exit 1
             - run:
                   name: Running PHP 7.4 unit tests
                   command: |
+                      set -eo pipefail
                       TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
                       /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74 $TESTFILES
+                  no_output_timeout: 20m
             - store_test_results:
                   path: tests/_output
             - store_artifacts:
                   path: tests/_output
                   destination: php74-test-results
+            - persist_to_workspace:
+                  root: /home/circleci
+                  paths:
+                      - plugin/tests/_output
 
     run_php_80_unit_tests:
         <<: *default_job_config
-        parallelism: 2
+        parallelism: 8
+        resource_class: xlarge
         steps:
             - attach_workspace:
                   at: /home/circleci
             - run:
                   name: Verify workspace
                   command: |
-                      if [[ ! -d "/home/circleci/plugin" ]]; then
-                        echo "Workspace not properly attached"
-                        exit 1
-                      fi
-                      if [[ ! -d "/home/circleci/tooling" ]]; then
-                        echo "Tooling directory not found"
-                        exit 1
-                      fi
+                      set -eo pipefail
+                      [[ ! -d "/home/circleci/plugin" ]] && echo "Workspace not properly attached" && exit 1
+                      [[ ! -d "/home/circleci/tooling" ]] && echo "Tooling directory not found" && exit 1
             - run:
                   name: Running PHP 8.0 unit tests
                   command: |
+                      set -eo pipefail
                       TESTFILES=$(circleci tests glob "tests/unit/**/*Test.php" | circleci tests split --split-by=timings)
                       /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80 $TESTFILES
+                  no_output_timeout: 20m
             - store_test_results:
                   path: tests/_output
             - store_artifacts:
                   path: tests/_output
                   destination: php80-test-results
+            - persist_to_workspace:
+                  root: /home/circleci
+                  paths:
+                      - plugin/tests/_output
 
     run_acceptance_tests:
         <<: *default_job_config
@@ -145,7 +187,7 @@ jobs:
                   name: Run acceptance tests
                   command: |
                       PLUGIN_DIR=$PLUGIN_DIR docker-compose -f tests/acceptance/docker/docker-compose.yml \
-                        run codeception --debug -vvv --html --xml
+                          run codeception --debug -vvv --html --xml
                   no_output_timeout: 30m
             - store_artifacts:
                   path: tests/acceptance/_output
@@ -159,65 +201,69 @@ jobs:
         steps:
             - attach_workspace:
                   at: /home/circleci
-            - run:
-                  name: Verify workspace
-                  command: |
-                      if [[ ! -d "/home/circleci/plugin" ]]; then
-                        echo "Workspace not properly attached"
-                        exit 1
-                      fi
-                      if [[ ! -d "/home/circleci/tooling" ]]; then
-                        echo "Tooling directory not found"
-                        exit 1
-                      fi
+            - restore_cache:
+                  <<: *composer_cache_keys
+            - restore_cache:
+                  <<: *npm_cache_keys
             - run:
                   name: Building and packaging
                   command: |
-                      set -e
-                      # Production optimized install
-                      /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev --prefer-dist --optimize-autoloader"
+                      set -eo pipefail
+                      # Run Composer first to ensure dependencies are in place
+                      echo "Installing PHP dependencies..."
+                      /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev --prefer-dist --optimize-autoloader --no-progress"
+
+                      echo "Running Grunt tasks..."
                       /home/circleci/tooling/build-tools/build_tools.sh grunt
 
                       # Determine package build options
-                      if [ "${CIRCLE_BRANCH}" != "main" ]; then
-                        BUILD_OPTS="gravityview gravityview.php --include-hash"
-                      else
-                        BUILD_OPTS="gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
-                      fi
+                      BUILD_OPTS="gravityview gravityview.php"
+                      [[ "${CIRCLE_BRANCH}" != "main" ]] && BUILD_OPTS+=" --include-hash"
+                      [[ $(git log -n 1 | grep "\[skip release\]") ]] && BUILD_OPTS+=" --include-hash"
 
                       # Build package
                       /home/circleci/tooling/build-tools/build_tools.sh package_build -o "${BUILD_OPTS}"
 
-                      # Prepare release files with error checking
-                      mkdir -p gravityview || exit 1
-                      cp -R vendor* gravityview || exit 1
-                      rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php || exit 1
+                      # Prepare release files
+                      mkdir -p gravityview && cp -R vendor* gravityview || exit 1
+                      rm -f gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php
 
-                      # Create ZIP file with error checking
-                      zip -gr $(ls gravityview-*.zip) gravityview || exit 1
-                      mkdir -p .release || exit 1
-                      cp gravityview-*.zip .release/ || exit 1
+                      # Create ZIP file with moderate compression for good size/speed balance
+                      zip -3gr $(ls gravityview-*.zip) gravityview || exit 1
+                      mkdir -p .release
+                      cp gravityview-*.zip .release/
+                  no_output_timeout: 30m
+            - save_cache:
+                  key: build-cache-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
+                  paths:
+                      - gravityview
+                      - .release
             - run:
                   name: Creating a GitHub release
+                  when: on_success
                   command: |
+                      set -eo pipefail
                       if [ "${CIRCLE_BRANCH}" == "main" ]; then
-                        git config user.email "support@gravitykit.com"
-                        git config user.name "GravityView - CI"
-                        /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)" || {
-                          echo "Failed to create GitHub release"
-                          exit 1
-                        }
+                          git config user.email "support@gravitykit.com"
+                          git config user.name "GravityView - CI"
+                          /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)" || {
+                              echo "Failed to create GitHub release"
+                              exit 1
+                          }
                       fi
+                  no_output_timeout: 10m
             - run:
                   name: Notifying GravityView Release Manager
                   when: on_success
                   command: |
+                      set -eo pipefail
                       if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
-                        /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle" || {
-                          echo "Failed to notify Release Manager"
-                          exit 1
-                        }
+                          /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle" || {
+                              echo "Failed to notify Release Manager"
+                              exit 1
+                          }
                       fi
+                  no_output_timeout: 5m
             - store_artifacts:
                   path: .release
                   destination: release
@@ -228,7 +274,6 @@ workflows:
         jobs:
             - prepare_test_and_build_environment:
                   <<: *context
-            # Run tests in parallel
             - run_php_74_unit_tests:
                   <<: *test_job_config
             - run_php_80_unit_tests:
