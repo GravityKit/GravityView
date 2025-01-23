@@ -134,8 +134,15 @@ jobs:
                   name: Verify workspace
                   command: |
                       set -eo pipefail
-                      [[ ! -d "/home/circleci/plugin" ]] && echo "Workspace not properly attached" && exit 1
-                      [[ ! -d "/home/circleci/tooling" ]] && echo "Tooling directory not found" && exit 1
+                      if [[ ! -d "/home/circleci/plugin" ]]; then
+                          echo "Workspace not properly attached"
+                          exit 1
+                      fi
+                      if [[ ! -d "/home/circleci/tooling" ]]; then
+                          echo "Tooling directory not found"
+                          exit 1
+                      fi
+                      echo "Workspace verified successfully"
             - run:
                   name: Running PHP 7.4 unit tests
                   command: |
@@ -164,8 +171,15 @@ jobs:
                   name: Verify workspace
                   command: |
                       set -eo pipefail
-                      [[ ! -d "/home/circleci/plugin" ]] && echo "Workspace not properly attached" && exit 1
-                      [[ ! -d "/home/circleci/tooling" ]] && echo "Tooling directory not found" && exit 1
+                      if [[ ! -d "/home/circleci/plugin" ]]; then
+                          echo "Workspace not properly attached"
+                          exit 1
+                      fi
+                      if [[ ! -d "/home/circleci/tooling" ]]; then
+                          echo "Tooling directory not found"
+                          exit 1
+                      fi
+                      echo "Workspace verified successfully"
             - run:
                   name: Running PHP 8.0 unit tests
                   command: |
