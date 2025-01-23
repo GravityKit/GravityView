@@ -117,7 +117,6 @@ jobs:
 
     run_php_74_unit_tests:
         <<: *default_job_config
-        parallelism: 8
         steps:
             -   attach_workspace:
                     at: /home/circleci
@@ -128,7 +127,6 @@ jobs:
 
     run_php_80_unit_tests:
         <<: *default_job_config
-        parallelism: 8
         steps:
             -   attach_workspace:
                     at: /home/circleci
