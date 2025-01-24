@@ -23,7 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-* Fixed: The Search Bar would not always be visible on Views with the Layout Builder.
+#### 🐛 Fixed
+* The Search Bar would not always be visible in Views using the Layout Builder.
+* Users belonging to the main network site in a multisite environment couldn’t delete their own entries on subsites.
 
 = 2.34 on January 9, 2025 =
 
