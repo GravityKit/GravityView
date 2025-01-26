@@ -161,6 +161,10 @@ class GravityView_Edit_Entry_Locking {
 				continue;
 			}
 
+			if ( ! ( new GravityView_Edit_Entry_Render( GravityView_Edit_Entry::getInstance() ) )->verify_nonce() ) {
+				continue;
+			}
+
 			$continue_enqueuing = true;
 
 			break;
