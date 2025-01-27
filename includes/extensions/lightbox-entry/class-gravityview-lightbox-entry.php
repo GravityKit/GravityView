@@ -323,6 +323,8 @@ class GravityView_Lightbox_Entry {
 			return;
 		}
 
+		add_filter( 'gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets', '__return_true' );
+
 		add_filter( 'gravityview/edit_entry/verify_nonce', '__return_true' );
 
 		add_filter( 'gravityview/edit_entry/cancel_onclick', function () use ( $view ) {
@@ -331,6 +333,25 @@ class GravityView_Lightbox_Entry {
 			} else {
 				return '';
 			}
+		} );
+
+		// Updates the GF entry lock UI markup to properly handle requests for accepting the release or taking over the edit lock.
+		add_filter( 'gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup', function ( $markup ) {
+			// To accept the release, we do an Ajax GET request by passing "release-edit-lock=1" and then close the lightbox.
+			$markup = str_replace(
+				'id="gform-release-lock-button"',
+				'id="gform-release-lock-button" onclick="event.preventDefault(); jQuery.ajax({ url: window.location.href, data: { \'release-edit-lock\': 1 }, method: \'GET\', dataType: \'html\' }).done(function() { window.parent.postMessage({ closeFancybox: true }); });"',
+				$markup
+			);
+
+			// To take over once the release has been accepted, we do an Ajax GET request by passing "get-edit-lock=1" and then close the GF lock dialog window.
+			$markup = str_replace(
+				'id="gform-take-over-button"',
+				'id="gform-take-over-button" onclick="event.preventDefault(); jQuery.ajax({ url: window.location.href, data: { \'get-edit-lock\': 1 }, method: \'GET\', dataType: \'html\' }).done(function() { jQuery( \'#gform-lock-dialog\' ).hide(); });"',
+				$markup
+			);
+
+			return $markup;
 		} );
 
 		// Prevent redirection inside the lightbox by sending event to the parent window and hiding the success message.
