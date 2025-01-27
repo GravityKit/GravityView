@@ -313,7 +313,16 @@ class GravityView_Edit_Entry_Locking {
                     <div class="notification-dialog">' . $message . '</div>';
 		$html .= '</div>';
 
-		return $html;
+		/**
+		 * Modifies the edit entry lock UI markup.
+		 *
+		 * @filter `gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup`
+		 *
+		 * @since  TBD
+		 *
+		 * @param string $html The HTML markup.
+		 */
+		return apply_filters( 'gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup', $html );
 	}
 
 	/**
