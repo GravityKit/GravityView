@@ -60,17 +60,19 @@ class GravityView_Edit_Entry_Locking {
 	// TODO: Convert to extending Gravity Forms
 	public function ajax_lock_request() {
 		$object_id = rgget( 'object_id' );
-		$response  = $this->request_lock( $object_id );
-		echo json_encode( $response );
-		die();
+
+		$response = $this->request_lock( $object_id );
+
+		wp_send_json( $response );
 	}
 
 	// TODO: Convert to extending Gravity Forms
 	public function ajax_reject_lock_request() {
 		$object_id = rgget( 'object_id' );
-		$response  = $this->delete_lock_request_meta( $object_id );
-		echo json_encode( $response );
-		die();
+
+		$response = $this->delete_lock_request_meta( $object_id );
+
+		wp_send_json( $response );
 	}
 
 	// TODO: Convert to extending Gravity Forms
@@ -89,27 +91,41 @@ class GravityView_Edit_Entry_Locking {
 		$lock_holder_user_id = $this->check_lock( $object_id );
 
 		$result = [];
+
 		if ( ! $lock_holder_user_id ) {
 			$this->set_lock( $object_id );
+
 			$result['html']   = __( 'You now have control', 'gk-gravityview' );
 			$result['status'] = 'lock_obtained';
-		} else {
 
-			if ( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
-				$user           = get_userdata( $lock_holder_user_id );
-				$result['html'] = sprintf( __( 'Your request has been sent to %s.', 'gk-gravityview' ), $user->display_name );
-			} else {
-				$result['html'] = __( 'Your request has been sent.', 'gk-gravityview' );
-			}
-
-			$this->update_lock_request_meta( $object_id, $user_id );
-
-			$result['status'] = 'lock_requested';
+			return $result;
 		}
+
+		if ( GVCommon::has_cap( 'gravityforms_edit_entries' ) ) {
+			$user = get_userdata( $lock_holder_user_id );
+
+			$result['html'] = sprintf( __( 'Your request has been sent to %s.', 'gk-gravityview' ), $user->display_name );
+		} else {
+			$result['html'] = __( 'Your request has been sent.', 'gk-gravityview' );
+		}
+
+		$this->update_lock_request_meta( $object_id, $user_id );
+
+		$result['status'] = 'lock_requested';
 
 		return $result;
 	}
 
+	/**
+	 * Updates the lock request meta for an object.
+	 *
+	 * @since 2.34
+	 *
+	 * @param string $object_id
+	 * @param string $lock_request_value
+	 *
+	 * @return void
+	 */
 	protected function update_lock_request_meta( $object_id, $lock_request_value ) {
 		GFCache::set( 'lock_request_entry_' . $object_id, $lock_request_value, true, 120 );
 	}
@@ -658,8 +674,8 @@ class GravityView_Edit_Entry_Locking {
 	 *
 	 * @since TBD
 	 *
-	 * @param array  $response  The response array.
-	 * @param array  $data      The data array.
+	 * @param array $response The response array.
+	 * @param array $data     The data array.
 	 *
 	 * @return array The response array.
 	 */

@@ -51,7 +51,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @used-by `gravityview/template/before` filter.
 	 *
-	 * @since 2.29.0
+	 * @since   2.29.0
 	 *
 	 * @param Template_Context $context
 	 *
@@ -151,7 +151,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @used-by `gravityview/view/links/directory` filter.
 	 *
-	 * @since 2.29.0
+	 * @since   2.29.0
 	 *
 	 * @param string $link The directory link.
 	 *
@@ -509,14 +509,15 @@ class GravityView_Lightbox_Entry {
 		 *
 		 * @action `gk/gravityview/lightbox/entry/before-output`
 		 *
-		 * @since 2.31.0
+		 * @since  2.31.0
 		 *
-		 * @param array $args {
-		 *     @type View         $view            The View object being rendered.
-		 *     @type GF_Entry     $entry           The Gravity Forms entry data.
-		 *     @type array        $form            The Gravity Forms form array.
-		 *     @type Entry_Render $entry_renderer  The renderer object responsible for rendering the entry.
-		 * }
+		 * @param array       $args           {
+		 *
+		 * @type View         $view           The View object being rendered.
+		 * @type GF_Entry     $entry          The Gravity Forms entry data.
+		 * @type array        $form           The Gravity Forms form array.
+		 * @type Entry_Render $entry_renderer The renderer object responsible for rendering the entry.
+		 *                                    }
 		 */
 		do_action_ref_array( 'gk/gravityview/lightbox/entry/before-output', [ &$view, &$entry, &$form, &$entry_renderer ] );
 
@@ -540,19 +541,19 @@ class GravityView_Lightbox_Entry {
 		<html lang="<?php echo get_bloginfo( 'language' ); ?>">
 			<head>
 				<?php
-					/**
-					 * Fires after <head> tag.
-					 *
-					 * @action `gk/gravityview/lightbox/entry/output/head-before`
-					 *
-					 * @since 2.31.0
-					 *
-					 * @param string   $type  The type of the entry view (single or edit).
-					 * @param View     $view  The View object being rendered.
-					 * @param GF_Entry $entry The Gravity Forms entry data.
-					 * @param array    $form  The Gravity Forms form array.
-					 */
-					do_action( 'gk/gravityview/lightbox/entry/output/head-before', $type, $view, $entry, $form );
+				/**
+				 * Fires after <head> tag.
+				 *
+				 * @action `gk/gravityview/lightbox/entry/output/head-before`
+				 *
+				 * @since  2.31.0
+				 *
+				 * @param string   $type  The type of the entry view (single or edit).
+				 * @param View     $view  The View object being rendered.
+				 * @param GF_Entry $entry The Gravity Forms entry data.
+				 * @param array    $form  The Gravity Forms form array.
+				 */
+				do_action( 'gk/gravityview/lightbox/entry/output/head-before', $type, $view, $entry, $form );
 				?>
 
 				<title><?php echo $title; ?></title>
@@ -568,73 +569,73 @@ class GravityView_Lightbox_Entry {
 				</script>
 
 				<?php
-					/**
-					 * Fires before </head> tag.
-					 *
-					 * @action `gk/gravityview/lightbox/entry/output/head-after`
-					 *
-					 * @since 2.31.0
-					 *
-					 * @param string   $type  The type of the entry view (single or edit).
-					 * @param View     $view  The View object being rendered.
-					 * @param GF_Entry $entry The Gravity Forms entry data.
-					 * @param array    $form  The Gravity Forms form array.
-					 */
-					do_action( 'gk/gravityview/lightbox/entry/output/head-after', $type, $view, $entry, $form );
+				/**
+				 * Fires before </head> tag.
+				 *
+				 * @action `gk/gravityview/lightbox/entry/output/head-after`
+				 *
+				 * @since  2.31.0
+				 *
+				 * @param string   $type  The type of the entry view (single or edit).
+				 * @param View     $view  The View object being rendered.
+				 * @param GF_Entry $entry The Gravity Forms entry data.
+				 * @param array    $form  The Gravity Forms form array.
+				 */
+				do_action( 'gk/gravityview/lightbox/entry/output/head-after', $type, $view, $entry, $form );
 				?>
 			</head>
 
 			<body>
 				<?php
-					/**
-					 * Fires after <body> tag before the content is rendered.
-					 *
-					 * @action `gk/gravityview/lightbox/entry/output/content-before`
-					 *
-					 * @since 2.31.0
-					 *
-					 * @param string   $type  The type of the entry view (single or edit).
-					 * @param View     $view  The View object being rendered.
-					 * @param GF_Entry $entry The Gravity Forms entry data.
-					 * @param array    $form  The Gravity Forms form array.
-					 */
-					do_action( 'gk/gravityview/lightbox/entry/output/content-before', $type, $view, $entry, $form );
+				/**
+				 * Fires after <body> tag before the content is rendered.
+				 *
+				 * @action `gk/gravityview/lightbox/entry/output/content-before`
+				 *
+				 * @since  2.31.0
+				 *
+				 * @param string   $type  The type of the entry view (single or edit).
+				 * @param View     $view  The View object being rendered.
+				 * @param GF_Entry $entry The Gravity Forms entry data.
+				 * @param array    $form  The Gravity Forms form array.
+				 */
+				do_action( 'gk/gravityview/lightbox/entry/output/content-before', $type, $view, $entry, $form );
 				?>
 
 				<?php echo $content; ?>
 
 				<?php
-					/**
-					 * Fires inside the <body> tag after the content is rendered and before the footer.
-					 *
-					 * @action `gk/gravityview/lightbox/entry/output/content-after`
-					 *
-					 * @since 2.31.0
-					 *
-					 * @param string   $type  The type of the entry view (single or edit).
-					 * @param View     $view  The View object being rendered.
-					 * @param GF_Entry $entry The Gravity Forms entry data.
-					 * @param array    $form  The Gravity Forms form array.
-					 */
-					do_action( 'gk/gravityview/lightbox/entry/output/content-after', $type, $view, $entry, $form );
+				/**
+				 * Fires inside the <body> tag after the content is rendered and before the footer.
+				 *
+				 * @action `gk/gravityview/lightbox/entry/output/content-after`
+				 *
+				 * @since  2.31.0
+				 *
+				 * @param string   $type  The type of the entry view (single or edit).
+				 * @param View     $view  The View object being rendered.
+				 * @param GF_Entry $entry The Gravity Forms entry data.
+				 * @param array    $form  The Gravity Forms form array.
+				 */
+				do_action( 'gk/gravityview/lightbox/entry/output/content-after', $type, $view, $entry, $form );
 				?>
 
 				<?php wp_footer(); ?>
 
 				<?php
-					/**
-					 * Fires after the footer and before the closing </body> tag.
-					 *
-					 * @action `gk/gravityview/lightbox/entry/output/footer-after`
-					 *
-					 * @since 2.31.0
-					 *
-					 * @param string   $type  The type of the entry view (single or edit).
-					 * @param View     $view  The View object being rendered.
-					 * @param GF_Entry $entry The Gravity Forms entry data.
-					 * @param array    $form  The Gravity Forms form array.
-					 */
-					do_action( 'gk/gravityview/lightbox/entry/output/footer-after', $type, $view, $entry, $form );
+				/**
+				 * Fires after the footer and before the closing </body> tag.
+				 *
+				 * @action `gk/gravityview/lightbox/entry/output/footer-after`
+				 *
+				 * @since  2.31.0
+				 *
+				 * @param string   $type  The type of the entry view (single or edit).
+				 * @param View     $view  The View object being rendered.
+				 * @param GF_Entry $entry The Gravity Forms entry data.
+				 * @param array    $form  The Gravity Forms form array.
+				 */
+				do_action( 'gk/gravityview/lightbox/entry/output/footer-after', $type, $view, $entry, $form );
 				?>
 			</body>
 		</html>
@@ -652,7 +653,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @used-by `gk/foundation/inline-scripts` filter.
 	 *
-	 * @since 2.29.0
+	 * @since   2.29.0
 	 *
 	 * @param array $scripts The registered scripts.
 	 *
@@ -746,7 +747,7 @@ class GravityView_Lightbox_Entry {
 	 * @since 2.31.0
 	 *
 	 * @param string $type The type of the entry view (single or edit).
-	 * @param View $view The View object being rendered.
+	 * @param View   $view The View object being rendered.
 	 *
 	 * @return void
 	 */
