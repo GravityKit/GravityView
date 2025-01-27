@@ -120,6 +120,8 @@ class GravityView_Edit_Entry_Locking {
 	 * - Is it Edit Entry?
 	 * - Is the entry connected to a View that has `edit_locking` enabled?
 	 * - Is the entry connected to a form connected to a currently-loaded View?
+	 * - Does the user have the capability to edit the entry?
+	 * - Is the nonce valid?
 	 *
 	 * @internal
 	 * @since 2.7
@@ -135,46 +137,55 @@ class GravityView_Edit_Entry_Locking {
 			return;
 		}
 
+		$entry = $entry->as_entry();
+
+		/**
+		 * Overrides whether to load the entry lock UI assets.
+		 * This filter runs before checking whether if the edit entry link is valid, user has the capability to edit the entry, etc.
+		 *
+		 * Filter: `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets`
+		 *
+		 * @since TBD
+		 *
+		 * @param bool  $load  Whether to load the entry lock UI assets. Default: false.
+		 * @param array $entry The entry.
+		 */
+		if ( apply_filters( 'gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets', false, $entry ) ) {
+			$this->enqueue_scripts( $entry );
+		}
+
 		if ( ! $post || ! is_a( $post, 'WP_Post' ) ) {
 			return;
 		}
 
 		$views = View_Collection::from_post( $post );
 
-		$entry_array = $entry->as_entry();
-
-		$continue_enqueuing = false;
-
-		// If any Views being loaded have entry locking, enqueue the scripts
+		// If any Views being loaded have entry locking, enqueue the scripts.
 		foreach ( $views->all() as $view ) {
 			// Make sure the View has edit locking enabled
 			if ( ! $view->settings->get( 'edit_locking' ) ) {
 				continue;
 			}
 
-			// Make sure that the entry belongs to the view form
-			if ( $view->form->ID != $entry_array['form_id'] ) {
+			// Make sure that the entry belongs to the View form.
+			if ( $view->form->ID !== (int) $entry['form_id'] ) {
 				continue;
 			}
 
-			if ( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $entry_array, $view ) ) {
+			// Check user capabilities.
+			if ( ! GravityView_Edit_Entry::check_user_cap_edit_entry( $entry, $view ) ) {
 				continue;
 			}
 
+			// Check the nonce.
 			if ( ! ( new GravityView_Edit_Entry_Render( GravityView_Edit_Entry::getInstance() ) )->verify_nonce() ) {
 				continue;
 			}
 
-			$continue_enqueuing = true;
+			$this->enqueue_scripts( $entry );
 
 			break;
 		}
-
-		if ( ! $continue_enqueuing ) {
-			return;
-		}
-
-		$this->enqueue_scripts( $entry_array );
 	}
 
 	/**
