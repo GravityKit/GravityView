@@ -26,6 +26,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 * The Search Bar would not always be visible in Views using the Layout Builder.
 * Users belonging to the main network site in a multisite environment couldn’t delete their own entries on subsites.
+* Entry locking not working.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets` filter to override whether to load the entry lock UI assets.
+* Added `gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup` filter to modify the entry locking UI dialog window markup.
 
 = 2.34 on January 9, 2025 =
 
