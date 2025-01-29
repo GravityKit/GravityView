@@ -16,6 +16,7 @@
  * @since 1.17
  */
 class GravityView_Field_Notes extends GravityView_Field {
+	const ASSETS_HANDLE = 'gravityview-notes';
 
 	/**
 	 * @var string Current __FILE__
@@ -79,7 +80,6 @@ class GravityView_Field_Notes extends GravityView_Field {
 		add_filter( 'gravityview_template_paths', array( $this, 'add_template_path' ) );
 		add_filter( 'gravityview/template/fields_template_paths', array( $this, 'add_template_path' ) );
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
 		add_action( 'gravityview/field/notes/scripts', array( $this, 'enqueue_scripts' ) );
 
 		add_filter( 'gravityview_entry_default_fields', array( $this, 'add_entry_default_field' ), 10, 3 );
@@ -114,7 +114,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
-	 * Register scripts and styles used by the Notes field
+	 * Registers scripts and styles used in the UI.
 	 *
 	 * @since 1.17
 	 *
@@ -122,44 +122,46 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 */
 	public function register_scripts() {
 		$css_file = gravityview_css_url( 'entry-notes.css', self::$path . 'assets/css/' );
-		wp_register_style( 'gravityview-notes', $css_file, array(), GV_PLUGIN_VERSION );
-		wp_register_script( 'gravityview-notes', plugins_url( '/assets/js/entry-notes.js', self::$file ), array( 'jquery' ), GV_PLUGIN_VERSION, true );
+
+		wp_register_style( self::ASSETS_HANDLE, $css_file, [], GV_PLUGIN_VERSION );
+		wp_register_script( self::ASSETS_HANDLE, plugins_url( '/assets/js/entry-notes.js', self::$file ), [ 'jquery' ], GV_PLUGIN_VERSION, true );
 	}
 
 	/**
-	 * Enqueue, localize field scripts and styles
+	 * Enqueues and localizes scripts and styles.
 	 *
 	 * @since 1.17
 	 *
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-		global $wp_actions;
-
-		if ( ! wp_script_is( 'gravityview-notes', 'enqueued' ) ) {
-			wp_enqueue_style( 'gravityview-notes' );
-			wp_enqueue_script( 'gravityview-notes' );
+		if ( wp_script_is( self::ASSETS_HANDLE ) ) {
+			return;
 		}
 
-		if ( ! wp_script_is( 'gravityview-notes', 'done' ) ) {
-
-			$strings = self::strings();
-
-			wp_localize_script(
-                'gravityview-notes',
-                'GVNotes',
-                array(
-					'ajaxurl' => admin_url( 'admin-ajax.php' ),
-					'text'    => array(
-						'processing'       => $strings['processing'],
-						'delete_confirm'   => $strings['delete-confirm'],
-						'note_added'       => $strings['added-note'],
-						'error_invalid'    => $strings['error-invalid'],
-						'error_empty_note' => $strings['error-empty-note'],
-					),
-                )
-            );
+		if ( ! wp_script_is( self::ASSETS_HANDLE, 'registered' ) ) {
+			$this->register_scripts();
 		}
+
+		$strings = self::strings();
+
+		wp_localize_script(
+			self::ASSETS_HANDLE,
+			'GVNotes',
+			[
+				'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				'text'    => [
+					'processing'       => $strings['processing'],
+					'delete_confirm'   => $strings['delete-confirm'],
+					'note_added'       => $strings['added-note'],
+					'error_invalid'    => $strings['error-invalid'],
+					'error_empty_note' => $strings['error-empty-note'],
+				],
+			]
+		);
+
+		wp_enqueue_style( self::ASSETS_HANDLE );
+		wp_enqueue_script( self::ASSETS_HANDLE );
 	}
 
 	/**
