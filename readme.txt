@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Users belonging to the main network site in a multisite environment couldn’t delete their own entries on subsites.
 * Entry locking not working.
 * JavaScript error preventing entry notes from being added when using the Twenty Twenty-Two theme or newer.
+* Using a comma in the `:format` merge tag modifier with Date fields caused partial results to be returned.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets` filter to override whether to load the entry lock UI assets.
