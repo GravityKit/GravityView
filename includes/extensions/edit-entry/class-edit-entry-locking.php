@@ -47,7 +47,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Get the lock request meta for an object.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param int $object_id The object ID.
 	 *
@@ -161,7 +161,7 @@ class GravityView_Edit_Entry_Locking {
 		 *
 		 * Filter: `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets`
 		 *
-		 * @since TBD
+		 * @since 2.34.1
 		 *
 		 * @param bool  $load  Whether to load the entry lock UI assets. Default: false.
 		 * @param array $entry The entry.
@@ -334,7 +334,7 @@ class GravityView_Edit_Entry_Locking {
 		 *
 		 * @filter `gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup`
 		 *
-		 * @since  TBD
+		 * @since  2.34.1
 		 *
 		 * @param string $html The HTML markup.
 		 */
@@ -419,7 +419,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Checks if this entry is locked to some other user.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
@@ -438,7 +438,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Check if the current user has a lock request for an object.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param int $object_id The object ID.
 	 *
@@ -457,7 +457,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Returns the lock status by leveraging GF's persistent caching mechanism.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
@@ -470,7 +470,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Sets the lock for an entry.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param int $entry_id The entry ID.
 	 * @param int $user_id  The user ID to lock the entry to.
@@ -484,7 +484,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Returns the cache key used to retrieve/save the lock status for an entry.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param int $entry_id
 	 *
@@ -497,7 +497,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Releases the lock for an entry.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
@@ -535,7 +535,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Checks if the objects are locked.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param array $response The response array.
 	 * @param array $data     The data array.
@@ -571,7 +571,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Refreshes the lock for an entry.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param array $response The response array.
 	 * @param array $data     The data array.
@@ -631,7 +631,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Requests the lock for an entry.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param array  $response  The response array.
 	 * @param array  $data      The data array.
@@ -672,7 +672,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Refreshes nonces for an entry.
 	 *
-	 * @since TBD
+	 * @since 2.34.1
 	 *
 	 * @param array $response The response array.
 	 * @param array $data     The data array.
