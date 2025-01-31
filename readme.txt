@@ -21,6 +21,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.34.1 on January 30, 2025 =
+
+This update resolves multiple issues, including problems with search bar visibility in Layout Builder, entry management in multisite environments, and non-functional entry locking and notes, among others.
+
+#### 🐛 Fixed
+* The Search Bar would not always be visible in Views using the Layout Builder.
+* Users belonging to the main network site in a multisite environment couldn’t delete their own entries on subsites.
+* Entry locking not working.
+* JavaScript error preventing entry notes from being added when using the Twenty Twenty-Two theme or newer.
+* Using a comma in the `:format` merge tag modifier with Date fields caused partial results to be returned.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets` filter to override whether to load the entry lock UI assets.
+* Added `gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup` filter to modify the entry locking UI dialog window markup.
+
 = 2.34 on January 9, 2025 =
 
 This release introduces the [Layout Builder](https://www.gravitykit.com/announcing-gravityview-2-34-all-new-layout-builder) that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.
