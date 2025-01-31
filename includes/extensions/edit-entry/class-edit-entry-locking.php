@@ -550,7 +550,7 @@ class GravityView_Edit_Entry_Locking {
 		if ( array_key_exists( $heartbeat_key, $data ) && is_array( $data[ $heartbeat_key ] ) ) {
 			foreach ( $data[ $heartbeat_key ] as $object_id ) {
 				if ( ( $user_id = $this->check_lock( $object_id ) ) && ( $user = get_userdata( $user_id ) ) ) {
-					$send = [ 'text' => sprintf( __( $this->get_string( 'currently_editing' ) ), $user->display_name ) ];
+					$send = [ 'text' => sprintf( __( $this->get_string( 'currently_editing' ), 'gk-gravityview' ), $user->display_name ) ];
 
 					if ( ( $avatar = get_avatar( $user->ID, 18 ) ) && preg_match( "|src='([^']+)'|", $avatar, $matches ) ) {
 						$send['avatar_src'] = $matches[1];
@@ -594,7 +594,7 @@ class GravityView_Edit_Entry_Locking {
 
 			if ( ( $user_id = $this->check_lock( $object_id ) ) && ( $user = get_userdata( $user_id ) ) ) {
 				$error = [
-					'text' => sprintf( __( $this->get_string( 'taken_over' ) ), $user->display_name ),
+					'text' => sprintf( __( $this->get_string( 'taken_over' ), 'gk-gravityview' ), $user->display_name ),
 				];
 
 				$avatar = get_avatar( $user->ID, 64 );
@@ -609,7 +609,7 @@ class GravityView_Edit_Entry_Locking {
 
 				if ( ( $lock_requester = $this->check_lock_request( $object_id ) ) && ( $user = get_userdata( $lock_requester ) ) ) {
 					$lock_request = [
-						'text' => sprintf( __( $this->get_string( 'lock_requested' ) ), $user->display_name ),
+						'text' => sprintf( __( $this->get_string( 'lock_requested' ), 'gk-gravityview' ), $user->display_name ),
 					];
 
 					$avatar = get_avatar( $user->ID, 64 );
