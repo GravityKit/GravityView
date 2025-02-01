@@ -210,10 +210,12 @@ final class Plugin {
 		include_once $this->dir( 'includes/fields/class-gravityview-fields.php' );
 		include_once $this->dir( 'includes/fields/class-gravityview-field.php' );
 
-		// Load all field files automatically
-		foreach ( glob( $this->dir( 'includes/fields/class-gravityview-field*.php' ) ) as $gv_field_filename ) {
-			include_once $gv_field_filename;
-		}
+		add_action( 'after_setup_theme', function () {
+			// Load all field files automatically
+			foreach ( glob( $this->dir( 'includes/fields/class-gravityview-field*.php' ) ) as $gv_field_filename ) {
+				include_once $gv_field_filename;
+			}
+		} );
 
 		include_once $this->dir( 'includes/class-gravityview-entry-approval-status.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-approval-merge-tags.php' );

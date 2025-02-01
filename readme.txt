@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* PHP notice when translation loading was triggered too early, affecting non-`en_US` locale sites.
+
 = 2.34.1 on January 30, 2025 =
 
 This update resolves multiple issues, including problems with search bar visibility in Layout Builder, entry management in multisite environments, and non-functional entry locking and notes, among others.
