@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * PHP notice when translation loading was triggered too early, affecting non-`en_US` locale sites.
+* The Layout Builder View template was missing a closing tag, which could break the styling.
 
 = 2.34.1 on January 30, 2025 =
 
