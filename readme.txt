@@ -27,7 +27,7 @@ This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views u
 
 #### 🐛 Fixed
 * `function _load_textdomain_just_in_time was called incorrectly` PHP notice in WordPress 6.7 or newer.
-* Display issue caused by a missing closing `div` tag in the Layout Builder View template.
+* Display issue caused by a malformed `div` tag in the Layout Builder View template.
 
 = 2.34.1 on January 30, 2025 =
 

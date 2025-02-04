@@ -304,7 +304,7 @@ class GravityView_Welcome {
 
 				<ul>
 					<li><code>function _load_textdomain_just_in_time was called incorrectly</code> PHP notice in WordPress 6.7 or newer.</li>
-					<li>Display issue caused by a missing closing <code>div</code> tag in the Layout Builder View template.</li>
+					<li>Display issue caused by a malformed <code>div</code> tag in the Layout Builder View template.</li>
 				</ul>
 
 				<h3>2.34.1 on January 30, 2025</h3>
