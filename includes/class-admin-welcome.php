@@ -296,11 +296,22 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.34.2 on February 4, 2025</h3>
+
+				<p>This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li><code>function _load_textdomain_just_in_time was called incorrectly</code> PHP notice in WordPress 6.7 or newer.</li>
+					<li>Display issue caused by a missing closing <code>div</code> tag in the Layout Builder View template.</li>
+				</ul>
+
 				<h3>2.34.1 on January 30, 2025</h3>
 
 				<p>This update resolves multiple issues, including problems with search bar visibility in Layout Builder, entry management in multisite environments, and non-functional entry locking and notes, among others.</p>
 
-				<h4>🦛 Fixed</h4>
+				<h4>🐛 Fixed</h4>
 
 				<ul>
 					<li>The Search Bar would not always be visible in Views using the Layout Builder.</li>
