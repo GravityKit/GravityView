@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.34.1\n"
+"Project-Id-Version: GravityView 2.34.2\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-01-31T00:05:36+00:00\n"
+"POT-Creation-Date: 2025-02-04T23:59:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -202,24 +202,24 @@ msgstr ""
 msgid "Must contain \"[slug]\"."
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:584
+#: future/includes/class-gv-plugin.php:586
 #: includes/class-gravityview-entry-approval.php:477
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:585
+#: future/includes/class-gv-plugin.php:587
 #: includes/class-gravityview-entry-approval.php:471
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:709
-#: future/includes/class-gv-plugin.php:710
+#: future/includes/class-gv-plugin.php:711
+#: future/includes/class-gv-plugin.php:712
 #: future/includes/class-gv-view.php:176
 msgid "All Views"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:721
-#: future/includes/class-gv-plugin.php:722
+#: future/includes/class-gv-plugin.php:723
+#: future/includes/class-gv-plugin.php:724
 #: future/includes/class-gv-view.php:179
 msgid "New View"
 msgstr ""
@@ -2112,23 +2112,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:404
+#: includes/class-admin-welcome.php:415
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:456
+#: includes/class-admin-welcome.php:467
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:500
+#: includes/class-admin-welcome.php:511
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:532
+#: includes/class-admin-welcome.php:543
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:533
+#: includes/class-admin-welcome.php:544
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
