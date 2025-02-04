@@ -17,7 +17,7 @@ gravityview_before( $gravityview );
 
 gravityview_header( $gravityview );
 ?>
-<div class="<?php echo esc_attr( gv_container_class( 'gv-layout-builder-container', false, $gravityview ) ); ?>"
+<div class="<?php echo esc_attr( gv_container_class( 'gv-layout-builder-container', false, $gravityview ) ); ?>">
 <?php
 // There are no entries.
 if ( ! $gravityview->entries->count() ) {

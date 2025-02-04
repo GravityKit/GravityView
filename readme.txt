@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.34.2 on February 4, 2025 =
+
+This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.
+
+#### 🐛 Fixed
+* `function _load_textdomain_just_in_time was called incorrectly` PHP notice in WordPress 6.7 or newer.
+* Display issue caused by a malformed `div` tag in the Layout Builder View template.
+
 = 2.34.1 on January 30, 2025 =
 
 This update resolves multiple issues, including problems with search bar visibility in Layout Builder, entry management in multisite environments, and non-functional entry locking and notes, among others.
