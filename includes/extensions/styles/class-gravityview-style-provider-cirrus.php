@@ -18,6 +18,13 @@ class GravityView_Style_Provider_Cirrus extends GravityView_Style_Provider {
 
 	public static $css_file_name = 'cirrus.min.css';
 
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct() {
+		$this->name = __( 'Cirrus', 'gravityview' );
+	}
+
 }
 
 GravityView_Style::register( 'GravityView_Style_Provider_Cirrus' );

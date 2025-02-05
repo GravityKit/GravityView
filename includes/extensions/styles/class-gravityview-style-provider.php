@@ -7,14 +7,38 @@
  */
 abstract class GravityView_Style_Provider {
 
+	/**
+	 * The name of the provider, as displayed in the admin.
+	 *
+	 * @var string
+	 */
+	protected $name;
+
+	/**
+	 * The slug of the style, as used in the View settings.
+	 *
+	 * @var string
+	 */
 	public static $slug;
 
-	#public static $script_slug;
-
+	/**
+	 * The asset slug, as used when registering the style with WordPress.
+	 *
+	 * @var string
+	 */
 	public static $style_slug;
 
-
+	/**
+	 * The CSS file name, as saved in the includes/extensions/styles/css/ directory.
+	 *
+	 * @var string
+	 */
 	public static $css_file_name;
+
+	/**
+	 * Override this method to set the provider name.
+	 */
+	abstract function __construct();
 
 	/**
 	 * Adds actions and that modify GravityView to use this lightbox provider
@@ -22,10 +46,16 @@ abstract class GravityView_Style_Provider {
 	public function add_hooks() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'gravityview/template/before', array( $this, 'print_assets' ) );
-		#add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		#add_action( 'wp_footer', array( $this, 'output_footer' ) );
 	}
 
+	/**
+	 * Returns the provider name string, as set in the constructor.
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->name;
+	}
 
 	/**
 	 * Prints scripts for lightbox after a View is rendered

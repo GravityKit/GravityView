@@ -63,6 +63,20 @@ class GravityView_Style {
 	public static function register( $provider ) {
 		self::$providers[ $provider::$slug ] = $provider;
 	}
+
+	/**
+	 * Returns an array of available styles with the slug as the key and the name as the value.
+	 *
+	 * @return []
+	 */
+	public static function get_styles() {
+		foreach( self::$providers as $key => $provider ) {
+			$provider = new $provider();
+			$styles[ $provider::$slug ] = $provider->get_name();
+		}
+
+		return $styles;
+	}
 }
 
 new GravityView_Style;

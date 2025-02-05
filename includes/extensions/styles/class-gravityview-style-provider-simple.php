@@ -18,6 +18,12 @@ class GravityView_Style_Provider_Simple extends GravityView_Style_Provider {
 
 	public static $css_file_name = 'simple.min.css';
 
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct() {
+		$this->name = __( 'Simple', 'gravityview' );
+	}
 }
 
 GravityView_Style::register( 'GravityView_Style_Provider_Simple' );

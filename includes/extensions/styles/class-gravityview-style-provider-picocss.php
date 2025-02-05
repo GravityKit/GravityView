@@ -18,6 +18,12 @@ class GravityView_Style_Provider_PicoCSS extends GravityView_Style_Provider {
 
 	public static $css_file_name = 'pico.min.css';
 
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct() {
+		$this->name = __( 'PicoCSS', 'gravityview' );
+	}
 }
 
 GravityView_Style::register( 'GravityView_Style_Provider_PicoCSS' );
