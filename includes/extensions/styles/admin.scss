@@ -3,7 +3,7 @@ $hover-shadow-color: rgba(0, 0, 0, 0.1);
 $selected-border-color: #2196F3;
 $selected-checkmark-bg: #2196F3;
 
-#gravityview_template_settings {
+#gravityview_styles {
 	.form-table {
 		width: 100%;
 		table-layout: fixed;
@@ -176,7 +176,7 @@ $selected-checkmark-bg: #2196F3;
 }
 
 @media (max-width: 768px) {
-	#gravityview_template_settings {
+	#gravityview_styles {
 		.form-table {
 			tbody {
 				tr {
@@ -194,7 +194,7 @@ $selected-checkmark-bg: #2196F3;
 
 @media (max-width: 480px) {
 
-	#gravityview_template_settings {
+	#gravityview_styles {
 		.form-table {
 			tbody {
 				tr {
