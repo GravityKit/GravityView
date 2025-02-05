@@ -33,7 +33,7 @@ async function wpLogin( {
 
 		await page.click( '#wp-submit' );
 
-		await page.waitForNavigation( { waitUntil: 'networkidle' } );
+		await page.waitForNavigation({ waitUntil: 'networkidle', timeout: 90000 });
 
 		if ( page.url().includes( loginPage ) ) {
 			throw new Error( 'WordPress login failed' );
