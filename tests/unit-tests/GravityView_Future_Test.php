@@ -5909,32 +5909,56 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$callbacks = array();
 
 		add_action( 'gravityview_before', $callbacks []= function( $view_id ) use ( $view, $test ) {
-			$test->assertEquals( $view->ID, $view_id );
+			$test->assertEquals( $view->ID, $view_id, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview_before }}';
 		} );
 
 		add_action( 'gravityview/template/before', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview/template/before }}';
 		} );
 
 		add_action( 'gravityview_after', $callbacks []= function( $view_id ) use ( $view, $test ) {
-			$test->assertEquals( $view->ID, $view_id );
+			$test->assertEquals( $view->ID, $view_id, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview_after }}';
 		}, 11 );
 
 		add_action( 'gravityview/template/after', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview/template/after }}';
 		}, 11 );
 
 		add_action( 'gravityview_header', $callbacks []= function( $view_id ) use ( $view, $test ) {
-			$test->assertEquals( $view->ID, $view_id );
+			$test->assertEquals( $view->ID, $view_id, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview_header }}';
 		} );
 
 		add_action( 'gravityview/template/header', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview/template/header }}';
 		} );
 
@@ -5944,7 +5968,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 
 		add_action( 'gravityview/template/footer', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview/template/footer }}';
 		} );
 
@@ -5954,7 +5982,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 
 		add_action( 'gravityview/template/table/body/before', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview/template/table/body/before }}';
 		} );
 
@@ -5964,7 +5996,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		} );
 
 		add_action( 'gravityview/template/table/body/after', $callbacks []= function( $context ) use ( $view, $test ) {
-			$test->assertSame( $view, $context->view );
+			$test->assertSame( $view, $context->view, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $view, true ),
+				var_export( $context->view, true )
+			) );
 			echo '{{ gravityview/template/table/body/after }}';
 		} );
 
@@ -5975,7 +6011,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		}, 10, 3 );
 
 		add_filter( 'gravityview/template/table/entry/class', $callbacks []= function( $class, $context ) use ( $view, $form, $test ) {
-			$test->assertSame( $context->view, $view );
+			$test->assertSame( $context->view, $view, sprintf(
+				"Failed asserting that view objects are the same.\nExpected:\n%s\nActual:\n%s",
+				var_export( $context->view, true ),
+				var_export( $view, true )
+			) );
 			$test->assertEquals( $context->entry['form_id'], $form['id'] );
 			return "$class gravityview/template/table/entry/class";
 		}, 10, 2 );
@@ -7341,7 +7381,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		\GV\Entry::add_rewrite_endpoint();
 		flush_rewrite_rules();
 
-		$this->assertEquals( get_permalink( $post->ID ) . 'entry/' . $entry->ID . '/', $url = $entry->get_permalink( $view, $request ) );
+		$url = $entry->get_permalink( $view, $request );
+		$this->assertEquals( get_permalink( $post->ID ) . 'entry/' . $entry->ID . '/', $url );
 
 		$this->go_to( $url );
 
