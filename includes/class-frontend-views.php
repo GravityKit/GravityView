@@ -926,11 +926,11 @@ class GravityView_frontend {
 		}
 
 		if ( ! empty( $args['show_only_approved'] ) ) {
-
-			$search_criteria['field_filters'][] = array(
-				'key'   => GravityView_Entry_Approval::meta_key,
-				'value' => GravityView_Entry_Approval_Status::APPROVED,
-			);
+			$search_criteria['field_filters'][] = [
+				'key'      => GravityView_Entry_Approval::meta_key,
+				'operator' => '=',
+				'value'    => GravityView_Entry_Approval_Status::APPROVED,
+			];
 
 			$search_criteria['field_filters']['mode'] = 'all'; // force all the criterias to be met
 
@@ -1416,17 +1416,20 @@ class GravityView_frontend {
 					 * Override how to sort when sorting full name.
 					 *
 					 * @since 1.7.4
+					 * @since 2.28.0 Default sorting is set to first and last name.
 					 *
-					 * @param string $name_part Sort by `first` or `last` (default: `first`)
+					 * @param string $name_part Sort by `first`, `last` or `first-last` (default: `first-last`)
 					 * @param string $sort_field_id Field used for sorting
 					 * @param int $form_id GF Form ID
 					 */
-					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first', $sort_field_id, $form_id );
+					$name_part = apply_filters( 'gravityview/sorting/full-name', 'first-last', $sort_field_id, $form_id );
 
 					if ( 'last' === strtolower( $name_part ) ) {
 						$sort_field_id .= '.6';
-					} else {
+					} elseif ( 'first' === strtolower( $name_part ) ) {
 						$sort_field_id .= '.3';
+					} elseif ( 'first-last' === strtolower( $name_part ) ) {
+						$sort_field_id = "{$sort_field_id}.3|{$sort_field_id}.6";
 					}
 				}
 				break;

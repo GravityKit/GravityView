@@ -97,9 +97,14 @@ class GravityView_Admin_ApproveEntries {
 		);
 
 		$field_filters_unapproved = array(
+			'mode' => 'any',
 			array(
 				'key'   => GravityView_Entry_Approval::meta_key,
 				'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
+			),
+			array(
+				'key'      => GravityView_Entry_Approval::meta_key,
+				'value'    => '',
 			),
 		);
 

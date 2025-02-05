@@ -155,8 +155,10 @@ function GravityView_frontend_get_view_entries( $args, $form_id, $parameters, $c
  * @return null|string The value of a field in an entry.
  */
 function GravityView_API_field_value( $entry, $field_settings, $format ) {
+	$original_args = func_get_args();
+
 	if ( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
-		gravityview()->log->error( 'No entry or field_settings[id] supplied', array( 'data' => array( func_get_args() ) ) );
+		gravityview()->log->error( 'No entry or field_settings[id] supplied', array( 'data' => array( $original_args ) ) );
 		return null;
 	}
 
@@ -202,7 +204,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
 
 		/** An unidentified backend. */
 		default:
-			gravityview()->log->error( 'Could not determine source for entry', array( 'data' => array( func_get_args() ) ) );
+			gravityview()->log->error( 'Could not determine source for entry', array( 'data' => array( $original_args ) ) );
 			return null;
 	endswitch;
 
@@ -235,6 +237,7 @@ function GravityView_API_field_value( $entry, $field_settings, $format ) {
  * @return string The label of a field in an entry.
  */
 function GravityView_API_field_label( $form, $field_settings, $entry, $force_show_label = false ) {
+	$original_args = func_get_args();
 
 	/** A bail condition. */
 	$bail = function ( $label, $field_settings, $entry, $force_show_label, $form ) {
@@ -280,7 +283,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 	}
 
 	if ( empty( $entry['form_id'] ) || empty( $field_settings['id'] ) ) {
-		gravityview()->log->error( 'No entry or field_settings[id] supplied', array( 'data' => array( func_get_args() ) ) );
+		gravityview()->log->error( 'No entry or field_settings[id] supplied', array( 'data' => array( $original_args ) ) );
 		return $bail( $label, $field_settings, $entry, $force_show_label, $form );
 	}
 
@@ -333,7 +336,7 @@ function GravityView_API_field_label( $form, $field_settings, $entry, $force_sho
 
 		/** An unidentified backend. */
 		default:
-			gravityview()->log->error( 'Could not determine source for entry. Using empty field.', array( 'data' => array( func_get_args() ) ) );
+			gravityview()->log->error( 'Could not determine source for entry. Using empty field.', array( 'data' => array( $original_args ) ) );
 			$field = new \GV\Field();
 			break;
 	endswitch;

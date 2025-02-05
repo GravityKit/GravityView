@@ -16,13 +16,13 @@ $background-color: #fff;
 
   @include disabled-element;
 
-  .entry-selector, .preview-control, .view-selector {
+  .entry-selector, .preview-control, .view-selector,.sort-field-selector {
     width: 100%;
     display: inline-block;
     text-align: left;
   }
 
-  .view-selector {
+  .view-selector,.sort-field-selector {
     input {
       margin: 0 !important;
       height: auto !important;
@@ -42,7 +42,7 @@ $background-color: #fff;
     text-align: center;
     padding: 40px;
 
-    .entry-selector, .preview-control, .view-selector {
+    .entry-selector, .preview-control, .view-selector,.sort-field-selector {
       width: 70%;
     }
 
@@ -74,7 +74,7 @@ $background-color: #fff;
    * Sidebar
    */
   .components-panel {
-    .view-selector, .entry-selector:not(.no-entry-input) {
+    .view-selector, .sort-field-selector, .entry-selector:not(.no-entry-input) {
       margin-bottom: 24px;
     }
 

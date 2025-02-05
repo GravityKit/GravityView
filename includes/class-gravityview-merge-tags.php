@@ -6,6 +6,14 @@
  * @since 1.8.4
  */
 class GravityView_Merge_Tags {
+	/**
+	 * Microcache for merge tag modifiers.
+	 *
+	 * @since 2.26
+	 *
+	 * @var array[]
+	 */
+	private static $merge_tag_modifiers = [];
 
 	/**
 	 * @since 1.8.4
@@ -20,12 +28,44 @@ class GravityView_Merge_Tags {
 	 * @since 1.8.4
 	 */
 	private function add_hooks() {
-
 		/** @see GFCommon::replace_variables_prepopulate */
 		add_filter( 'gform_replace_merge_tags', array( 'GravityView_Merge_Tags', 'replace_gv_merge_tags' ), 10, 7 );
 
 		// Process after 10 priority
 		add_filter( 'gform_merge_tag_filter', array( 'GravityView_Merge_Tags', 'process_modifiers' ), 20, 5 );
+
+		add_filter( 'gform_pre_replace_merge_tags', [ $this, 'cache_merge_tag_modifiers' ] );
+	}
+
+	/**
+	 * Caches merge tag modifiers to preserve their case sensitivity.
+	 * This is necessary because {@see GFCommon::replace_field_variable()) applies
+	 * `strtolower()` to the modifier and causes issues where case is expected,
+	 * such as date formatting (e.g., `format:Y-m-d`).
+	 *
+	 * @since 2.26
+	 *
+	 * @param string $text Text with merge tags.
+	 *
+	 * @return string
+	 */
+	public function cache_merge_tag_modifiers( $text ) {
+		// Regex pattern taken from GFCommon::replace_variables().
+		preg_match_all( '/{[^{]*?:(\d+(\.\w+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER );
+
+		if ( ! $matches ) {
+			return $text;
+		}
+
+		foreach ( $matches as $match ) {
+			$modifier = $match[4] ?? '';
+
+			if ( $modifier ) {
+				self::$merge_tag_modifiers[ strtolower( $modifier ) ] = $modifier;
+			}
+		}
+
+		return $text;
 	}
 
 	/**
@@ -44,23 +84,25 @@ class GravityView_Merge_Tags {
 	 * @return string If no modifiers passed, $raw_value is not a string, or {all_fields} Merge Tag is used, original value. Otherwise, output from modifier methods.
 	 */
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
+		// Process array value for sub-fields like name and address.
+		if ( is_array( $raw_value ) && ( $raw_value[ $merge_tag ] ?? null ) ) {
+			$raw_value = $raw_value[ $merge_tag ];
+		}
 
 		// No modifier was set or the raw value was empty
 		if ( 'all_fields' === $merge_tag || '' === $modifier || ! is_string( $raw_value ) || '' === $raw_value ) {
 			return $value;
 		}
 
+		// Retrieve the original case-sensitive modifier.
+		$modifier = self::$merge_tag_modifiers[ strtolower( $modifier ) ] ?? $modifier;
+
 		// matching regex => the value is the method to call to replace the value.
 		$gv_modifiers = array(
-			'maxwords:(\d+)'            => 'modifier_maxwords',
-			/** @see modifier_maxwords */
-							'timestamp' => 'modifier_timestamp',
-			/** @see modifier_timestamp */
-							'explode'   => 'modifier_explode',
-			/** @see modifier_explode */
-
-							/** @see modifier_strings */
-							'urlencode' => 'modifier_strings',
+			'maxwords:(\d+)'            => 'modifier_maxwords', /** @see modifier_maxwords */
+			'timestamp'                 => 'modifier_timestamp', /** @see modifier_timestamp */
+			'explode'                   => 'modifier_explode', /** @see modifier_explode */
+			'urlencode'                 => 'modifier_strings', /** @see modifier_strings */
 			'wpautop'                   => 'modifier_strings',
 			'esc_html'                  => 'modifier_strings',
 			'sanitize_html_class'       => 'modifier_strings',
@@ -70,25 +112,31 @@ class GravityView_Merge_Tags {
 			'ucfirst'                   => 'modifier_strings',
 			'ucwords'                   => 'modifier_strings',
 			'wptexturize'               => 'modifier_strings',
+			'initials'                  => 'modifier_initials', /** @see modifier_initials */
+			'format'                    => 'modifier_format', /** @see modifier_format */
+			'human'						=> 'modifier_human', /** @see modifier_human */
 		);
 
-		$modifiers = explode( ',', $modifier );
+		// Do not split on escaped commas (\,).
+		$modifiers = preg_split('/(?<!\\\\),/', $modifier);
+
+		// Remove \ from escaped commas before processing.
+		$modifiers = array_map(function($mod) {
+			return str_replace('\\,', ',', trim($mod));
+		}, $modifiers);
 
 		$return = $raw_value;
 
 		$unserialized = maybe_unserialize( $raw_value );
 
 		if ( method_exists( $field, 'get_value_merge_tag' ) && is_array( $unserialized ) ) {
-
 			$non_gv_modifiers = array_diff( $modifiers, array_keys( $gv_modifiers ) );
 
 			$return = $field->get_value_merge_tag( $value, '', array( 'currency' => '' ), array(), implode( '', $non_gv_modifiers ), $raw_value, false, false, 'text', false );
 		}
 
 		foreach ( $modifiers as $passed_modifier ) {
-
 			foreach ( $gv_modifiers as $gv_modifier => $method ) {
-
 				// Uses ^ to only match the first modifier, to enforce same order as passed by GF
 				preg_match( '/^' . $gv_modifier . '/ism', $passed_modifier, $matches );
 
@@ -96,8 +144,10 @@ class GravityView_Merge_Tags {
 					continue;
 				}
 
+
 				// The called method is passed the raw value and the full matches array
-				$return = self::$method( $return, $matches, $value, $field );
+				$return = self::$method( $return, $matches, $value, $field, $passed_modifier, $merge_tag );
+
 				break;
 			}
 		}
@@ -121,6 +171,77 @@ class GravityView_Merge_Tags {
 		$return = apply_filters( 'gravityview/merge_tags/modifiers/value', $return, $raw_value, $value, $merge_tag, $modifier, $field );
 
 		return $return;
+	}
+
+	/**
+	 * Converts date and time values to the human format modifier.
+	 *
+	 * @since 2.29.0
+	 *
+	 * @param string $raw_value The raw value to modify.
+	 * @param array  $matches   Array of regex matches.
+	 * @param string $value     The original value.
+	 * @param array  $field     The field object.
+	 * @param string $modifier  The modifier string.
+	 *
+	 * @return string
+	 */
+	public static function modifier_human( $raw_value, $matches, $value = '', $field = null, $modifier = '' ) {
+		// Check if the value is a valid date.
+		$timestamp = strtotime( $raw_value );
+
+		if ( false === $timestamp || ( ! $field instanceof GF_Field_Date && ! $field instanceof GF_Field_Time ) ) {
+			return $raw_value;
+		}
+
+		$args = [
+			'human' => true,
+			'diff'  => true,
+		];
+
+		if ( $field instanceof GF_Field_Time ) {
+			$args['time'] = true;
+		}
+
+		return GVCommon::format_date( $raw_value, $args );
+	}
+
+	/**
+	 * Converts date and time values to the format modifier.
+	 *
+	 * @since 2.26
+	 * @since 2.33 Added $merge_tag parameter.
+	 *
+	 * @param string $raw_value
+	 * @param array  $matches
+	 * @param string $value
+	 * @param array  $field
+	 * @param string $modifier
+	 * @param string $merge_tag
+	 *
+	 * @return string
+	 */
+	private static function modifier_format( $raw_value, $matches, $value, $field, $modifier, $merge_tag = '' ) {
+		$format = self::get_format_merge_tag_modifier_value( $modifier );
+
+		if ( ! $format ) {
+			return $raw_value;
+		}
+
+		if ( $field instanceof GF_Field_Time ) {
+			return ( new DateTime( $raw_value ) )->format( $format ); // GF's Time field always uses local time.
+		}
+
+		if ( $field instanceof GF_Field_Date ) {
+			if ( false === strpos( $modifier, 'no_tz_offset' ) ) {
+				$modifier = 'no_tz_offset:' . $modifier;
+			}
+
+			// Skip the timezone offset.
+			return self::format_date( $raw_value, $modifier );
+		}
+
+		return apply_filters( 'gravityview/merge_tags/modifiers/format', $raw_value, $format, $field, $modifier, $merge_tag );
 	}
 
 	/**
@@ -304,6 +425,19 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
+	 * Adds a modifier to convert a full name or string to initials.
+	 *
+	 * @since 2.33
+	 *
+	 * @param string $raw_value The full name or string to convert.
+	 *
+	 * @return string The initials.
+	 */
+	public static function modifier_initials( $raw_value ) {
+		return GravityView_Field_Name::convert_to_initials( $raw_value );
+	}
+
+	/**
 	 * Alias for GFCommon::replace_variables()
 	 *
 	 * Before 1.15.3, it would check for merge tags before passing to Gravity Forms to improve speed.
@@ -392,6 +526,53 @@ class GravityView_Merge_Tags {
 		$text = self::replace_current_post( $text, $form, $entry, $url_encode, $esc_html );
 
 		$text = self::replace_entry_link( $text, $form, $entry, $url_encode, $esc_html );
+
+		$text = self::replace_merge_tags_dates( $text );
+
+		return $text;
+	}
+
+	/**
+	 * Replaces relative date merge tags with formatted dates per the modifier.
+	 *
+	 * @since 2.30.0
+	 *
+	 * @param string $text The text containing merge tags.
+	 *
+	 * @return string The text with date merge tags replaced.
+	 */
+	public static function replace_merge_tags_dates( $text ) {
+		if ( false === strpos( $text, '{' ) ) {
+			return $text;
+		}
+
+		preg_match_all( '/{(now|yesterday|tomorrow):?(.*?)(?:\s)?}/ism', $text, $matches, PREG_SET_ORDER );
+
+		if ( empty( $matches ) ) {
+			return $text;
+		}
+
+		$utc_timestamp   = time();
+		$local_timestamp = GFCommon::get_local_timestamp( $utc_timestamp );
+
+		foreach ( $matches as $match ) {
+			$modifier = $match[2];
+
+			if ( strpos( $modifier, 'timestamp' ) !== false ) {
+				$local_timestamp = $utc_timestamp;
+			}
+
+			$replacements = [
+				'now'       => date_i18n( 'Y-m-d H:i:s', $local_timestamp, true ),
+				'yesterday' => date_i18n( 'Y-m-d H:i:s', $local_timestamp - DAY_IN_SECONDS, true ),
+				'tomorrow'  => date_i18n( 'Y-m-d H:i:s', $local_timestamp + DAY_IN_SECONDS, true ),
+			];
+
+			$full_tag         = $match[0];
+			$replaceable_date = $replacements[ $match[1] ];
+			$formatted_date   = self::format_date( $replaceable_date, $modifier );
+			$text             = str_replace( $full_tag, $formatted_date, $text );
+		}
 
 		return $text;
 	}
@@ -513,63 +694,52 @@ class GravityView_Merge_Tags {
 	}
 
 	/**
-	 * Format Merge Tags using GVCommon::format_date()
+	 * Formats merge tag value using Merge Tags using GVCommon::format_date()
 	 *
-	 * @uses GVCommon::format_date()
-	 *
-	 * @see https://docs.gravitykit.com/article/331-date-created-merge-tag for documentation
-	 * @todo Once Gravity Forms 2.5 becomes the minimum requirement, this is no longer needed.
-	 *
-	 * @param string $date_created The Gravity Forms date created format
-	 * @param string $property Any modifiers for the merge tag (`human`, `format:m/d/Y`)
-	 *
-	 * @return int|string If timestamp requested, timestamp int. Otherwise, string output.
-	 */
-	public static function format_date( $date_created = '', $property = '' ) {
-
-		// Expand all modifiers, skipping escaped colons. str_replace worked better than preg_split( "/(?<!\\):/" )
-		$exploded = explode( ':', str_replace( '\:', '|COLON|', $property ) );
-
-		$atts = array(
-			'format'    => self::get_format_from_modifiers( $exploded, false ),
-			'human'     => in_array( 'human', $exploded ), // {date_created:human}
-			'diff'      => in_array( 'diff', $exploded ), // {date_created:diff}
-			'raw'       => in_array( 'raw', $exploded ), // {date_created:raw}
-			'timestamp' => in_array( 'timestamp', $exploded ), // {date_created:timestamp}
-			'time'      => in_array( 'time', $exploded ),  // {date_created:time}
-		);
-
-		$formatted_date = GVCommon::format_date( $date_created, $atts );
-
-		return $formatted_date;
-	}
-
-	/**
-	 * If there is a `:format` modifier in a merge tag, grab the formatting
-	 *
-	 * The `:format` modifier should always have the format follow it; it's the next item in the array
-	 * In `foo:format:bar`, "bar" will be the returned format
+	 * @todo  This is no longer needed since Gravity Forms 2.5 as it supports modifiers, but should be reviewed before removal.
 	 *
 	 * @since 1.16
 	 *
-	 * @param array  $exploded Array of modifiers with a possible `format` value
-	 * @param string $backup The backup value to use, if not found
+	 * @see   https://docs.gravitykit.com/article/331-date-created-merge-tag for documentation
+	 * @uses  GVCommon::format_date()
+	 *
+	 * @param string $date_or_time_string The Gravity Forms date or time string.
+	 * @param string $modifier            Merge tag modifier (`human`, `format:m/d/Y`)
+	 *
+	 * @return int|string If timestamp requested, timestamp int. Otherwise, string output.
+	 */
+	public static function format_date( $date_or_time_string = '', $modifier = '' ) {
+		$parsed_modifier = explode( ':', $modifier );
+
+		$atts = [
+			'format'       => self::get_format_merge_tag_modifier_value( $modifier, false ),
+			'human'        => in_array( 'human', $parsed_modifier ), // {date_created:human}
+			'diff'         => in_array( 'diff', $parsed_modifier ), // {date_created:diff}
+			'raw'          => in_array( 'raw', $parsed_modifier ), // {date_created:raw}
+			'timestamp'    => in_array( 'timestamp', $parsed_modifier ), // {date_created:timestamp}
+			'time'         => in_array( 'time', $parsed_modifier ),  // {date_created:time}
+			'no_tz_offset' => in_array( 'no_tz_offset', $parsed_modifier ),  // {date_created:no_tz_offset}
+		];
+
+		return GVCommon::format_date( $date_or_time_string, $atts );
+	}
+
+	/**
+	 * Returns the `format:` merge tag modifier value.
+	 * This handles cases such as "foo:format:m/d/Y", "format:m/d/Y", "format:m/d/Y\ \a\t\ H\:i\:s".
+	 *
+	 * @since 1.16
+	 * @since 2.27 Renamed and refactored to use regex and instead of working with an array.
+	 *
+	 * @param string $modifier Merge tag modifier.
+	 * @param mixed  $backup   The backup value to use, if format not found.
 	 *
 	 * @return string If format is found, the passed format. Otherwise, the backup.
 	 */
-	private static function get_format_from_modifiers( $exploded, $backup = '' ) {
+	private static function get_format_merge_tag_modifier_value( $modifier, $backup = '' ) {
+		preg_match( '/(?:^|:)format:(.*)/', $modifier, $match );
 
-		$return = $backup;
-
-		$format_key_index = array_search( 'format', $exploded );
-
-		// If there's a "format:[php date format string]" date format, grab it
-		if ( false !== $format_key_index && isset( $exploded[ $format_key_index + 1 ] ) ) {
-			// Return escaped colons placeholder
-			$return = str_replace( '|COLON|', ':', $exploded[ $format_key_index + 1 ] );
-		}
-
-		return $return;
+		return isset( $match[1] ) ? str_replace( '\:', ':', $match[1] ) : $backup;
 	}
 
 	/**

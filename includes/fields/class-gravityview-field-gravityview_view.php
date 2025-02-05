@@ -164,7 +164,11 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 			return;
 		}
 
-		$attributes = [ 'post_id' => $post->ID ];
+		$attributes = [];
+
+		if ( ! empty( $post->ID ) ) {
+			$attributes = [ 'post_id' => $post->ID ];
+		}
 
 		$page_size_value = \GV\Utils::get( $field_settings, 'page_size', 'default' );
 		if ( 'default' !== $page_size_value ) {
@@ -203,7 +207,12 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 			$attributes['end_date'] = esc_attr( $end_date );
 		}
 
-		$view      = \GV\View::by_id( $view_id );
+		$view = \GV\View::by_id( $view_id );
+
+		if ( ! $view ) {
+			return;
+		}
+
 		$shortcode = $view->get_shortcode( $attributes );
 
 		echo do_shortcode( $shortcode );

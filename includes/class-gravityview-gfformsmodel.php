@@ -17,7 +17,7 @@ class GravityView_GFFormsModel extends GFFormsModel {
 	 */
 	public static function get_database_version() {
 
-		if ( is_callable( 'parent::get_database_version' ) ) {
+		if ( is_callable( 'GFFormsModel::get_database_version' ) ) {
 			return parent::get_database_version();
 		}
 

@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 				files: [{
 		          expand: true,
 		          cwd: 'assets/css/scss',
-		          src: ['*.scss','!gf-merge-tags-*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!admin-metabox-panel.scss','!admin-metabox.scss','!admin-members-plugin.scss','!variables.scss'],
+		          src: ['*.scss','!gf-merge-tags-*.scss','!admin-merge-tags.scss','!admin-tooltips.scss','!admin-metabox-panel.scss','!admin-metabox.scss','!admin-metabox-placeholder.scss','!admin-members-plugin.scss','!variables.scss'],
 		          dest: 'assets/css',
 		          ext: '.css'
 		      }]
@@ -74,6 +74,7 @@ module.exports = function(grunt) {
 			all: [
 				"assets/js/admin-views.js",
 				"assets/js/admin-view-dropdown.js",
+				"assets/js/admin-grid.js",
 				"assets/js/admin-post-edit.js",
 				"assets/js/admin-widgets.js",
 				"assets/js/admin-entries-list.js",

@@ -13,6 +13,7 @@
 @import "font";
 @import "admin-members-plugin";
 @import "beacon";
+@import "settings";
 
 /* add gravityview menu icon */
 #toplevel_page_gravityview_settings .wp-menu-image:before,
@@ -57,6 +58,46 @@
 	.feature-section img {
 		border: 1px solid #ccc;
 		max-width: 99%; // Allow for border on the right
+	}
+}
+
+.post-type-gravityview {
+	#wpcontent {
+		position: relative;
+	}
+
+	h1.wp-heading-inline {
+		margin-bottom: 24px;
+
+		&:before {
+			content: "";
+			display: inline-block;
+			width: 36px;
+			height: 36px;
+			margin-right: 8px;
+			position: relative;
+			top: 9px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-image: url("data:image/svg+xml,%3Csvg fill='none' height='80' viewBox='0 0 80 80' width='80' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3CclipPath id='a'%3E%3Cpath d='m16 18h48v44h-48z'/%3E%3C/clipPath%3E%3Crect fill='%23ff1b67' height='80' rx='8' width='80'/%3E%3Cg clip-path='url(%23a)'%3E%3Cpath clip-rule='evenodd' d='m58.4105 54.6666h-5.5281v1.8333c0 3.0376-2.4922 5.5-5.528 5.5h-14.741c-3.0759 0-5.5281-2.4624-5.5281-5.5v-27.4999h-5.5281c-1.0428 0-1.8424.8207-1.8424 1.8333v18.3333c0 1.0126.7996 1.8334 1.8424 1.8334h.9216c.4841 0 .9209.4104.9209.9167v1.8333c0 .5062-.4368.9166-.9209.9166h-.9216c-3.0786 0-5.528-2.4624-5.528-5.5v-18.3333c0-3.0376 2.4494-5.5 5.528-5.5h5.5281v-1.8333c0-3.0376 2.4522-5.5 5.5281-5.5h14.741c3.0358 0 5.528 2.4624 5.528 5.5v27.5h5.5281c1.0027 0 1.8424-.8208 1.8424-1.8334v-18.3333c0-1.0126-.8397-1.8333-1.8424-1.8333h-.9216c-.5242 0-.9216-.4104-.9216-.9167v-1.8334c0-.5062.3974-.9166.9216-.9166h.9216c3.0385 0 5.5273 2.4624 5.5273 5.5v18.3333c0 3.0376-2.4888 5.5-5.5273 5.5zm-9.2137-31.1666c0-1.0126-.8424-1.8333-1.8424-1.8333h-14.741c-1.0401 0-1.8425.8207-1.8425 1.8333v32.9999c0 1.0126.8024 1.8334 1.8425 1.8334h14.741c1 0 1.8424-.8208 1.8424-1.8334z' fill='%23fff' fill-rule='evenodd'/%3E%3C/g%3E%3C/svg%3E");
+		}
+
+		&:after {
+			content: "";
+			position: absolute;
+			display: block;
+			left: -20px; // Adjust for the left padding applied to #wpcontent.
+			right: 0;
+			height: 84px;
+			background: white;
+			top: 0;
+			z-index: -1;
+
+			@media (max-width: 782px) {
+				height: 136px;
+			}
+		}
 	}
 }
 

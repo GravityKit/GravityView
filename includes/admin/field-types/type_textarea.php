@@ -61,7 +61,7 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 					class="<?php echo gravityview_sanitize_html_class( $class ); ?>"
 					rows="<?php echo absint( $rows ); ?>"
 					data-codemirror="<?php echo esc_attr( $this->get_codemirror_config() ); ?>"
-		><?php echo esc_textarea( $this->value ); ?></textarea>
+		><?php echo $this->value ? esc_textarea( $this->value ) : $this->value; ?></textarea>
 		<?php
 	}
 

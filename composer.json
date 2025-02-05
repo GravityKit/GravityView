@@ -23,7 +23,7 @@
     }
   ],
   "require": {
-    "php": ">=7.2.0",
+    "php": ">=7.4.0",
     "ext-json": "*",
     "ext-openssl": "*",
     "gravitykit/foundation": "dev-main"
@@ -94,7 +94,8 @@
       "@prefix_vendor",
       "@post_update_install",
       "composer dump-autoload -o"
-    ]
+    ],
+    "compat": "./vendor/bin/phpcs -p ./ ./gravityview.php ./tests  --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.2- --ignore=vendor/*,vendor_prefixed/*,node_modules/*"
   },
   "config": {
     "platform-check": false,

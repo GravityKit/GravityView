@@ -157,3 +157,5 @@ abstract class View_Template extends Template {
 /** Load implementations. */
 require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-table.php' );
 require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-list.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-legacy.php' );
+require gravityview()->plugin->dir( 'future/includes/class-gv-template-view-layout-builder.php' );
