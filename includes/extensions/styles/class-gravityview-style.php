@@ -26,6 +26,36 @@ class GravityView_Style {
 		add_action( 'plugins_loaded', [ $this, 'set_provider' ], 11 );
 
 		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
+
+		add_action( 'gravityview/template/before', [ $this, 'setup_grid' ] );
+	}
+
+	function setup_grid( $gravityview ) {
+		$view = $gravityview->view;
+		$is_grid_enabled = $view->settings->get( 'grid' );
+
+		if( ! $is_grid_enabled ) {
+			return;
+		}
+
+		$grid_gap = (int) $view->settings->get( 'grid_gap', 20 );
+		$grid_columns = (int) $view->settings->get( 'grid_columns', 2 );
+
+
+		// Create CSS to make GravityView listings into a grid
+		$css = strtr( '
+			.gv-layout-builder-container.gv-container-[view_id],
+			.gv-list-multiple-container.gv-container-[view_id] {
+			    display: grid;
+				grid-template-columns: repeat( [columns], 1fr );
+				grid-gap: [gap]px;
+			}
+		', [
+			'[view_id]'  => $view->ID,
+			'[columns]' => $grid_columns,
+			'[gap]'     => $grid_gap,
+		] );
+		wp_add_inline_style( 'gravityview_default_style', $css );
 	}
 
 	/**
