@@ -22,7 +22,7 @@ class GravityView_Style_Provider_Orbital extends GravityView_Style_Provider {
 	 * @inheritDoc
 	 */
 	public function __construct() {
-		$this->name = __( 'Orbital', 'gravityview' );
+		$this->name = __( 'Orbital', 'gk-gravityview' );
 	}
 }
 

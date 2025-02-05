@@ -22,7 +22,7 @@ class GravityView_Style_Provider_Cirrus extends GravityView_Style_Provider {
 	 * @inheritDoc
 	 */
 	public function __construct() {
-		$this->name = __( 'Cirrus', 'gravityview' );
+		$this->name = __( 'Cirrus', 'gk-gravityview' );
 	}
 
 }

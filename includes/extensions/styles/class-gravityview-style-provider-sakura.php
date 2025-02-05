@@ -22,7 +22,7 @@ class GravityView_Style_Provider_Sakura extends GravityView_Style_Provider {
 	 * @inheritDoc
 	 */
 	public function __construct() {
-		$this->name = __( 'Sakura', 'gravityview' );
+		$this->name = __( 'Sakura', 'gk-gravityview' );
 	}
 }
 

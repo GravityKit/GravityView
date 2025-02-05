@@ -22,7 +22,7 @@ class GravityView_Style_Provider_PicoCSS extends GravityView_Style_Provider {
 	 * @inheritDoc
 	 */
 	public function __construct() {
-		$this->name = __( 'PicoCSS', 'gravityview' );
+		$this->name = __( 'PicoCSS', 'gk-gravityview' );
 	}
 }
 

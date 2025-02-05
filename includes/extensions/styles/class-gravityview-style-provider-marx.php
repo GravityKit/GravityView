@@ -22,7 +22,7 @@ class GravityView_Style_Provider_Marx extends GravityView_Style_Provider {
 	 * @inheritDoc
 	 */
 	public function __construct() {
-		$this->name = __( 'Marx', 'gravityview' );
+		$this->name = __( 'Marx', 'gk-gravityview' );
 	}
 
 }

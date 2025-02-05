@@ -22,7 +22,7 @@ class GravityView_Style_Provider_Picnic extends GravityView_Style_Provider {
 	 * @inheritDoc
 	 */
 	public function __construct() {
-		$this->name = __( 'Picnic', 'gravityview' );
+		$this->name = __( 'Picnic', 'gk-gravityview' );
 	}
 
 }

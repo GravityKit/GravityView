@@ -22,7 +22,7 @@ class GravityView_Style_Provider_Pure extends GravityView_Style_Provider {
 	 * @inheritDoc
 	 */
 	public function __construct() {
-		$this->name = __( 'Pure', 'gravityview' );
+		$this->name = __( 'Pure', 'gk-gravityview' );
 	}
 }
 
