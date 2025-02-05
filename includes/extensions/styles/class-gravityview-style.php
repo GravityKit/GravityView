@@ -8,9 +8,10 @@
 class GravityView_Style {
 	const DEFAULT_PROVIDER = '';
 
-	private static $providers = array();
-
-	private static $active_provider = null;
+	/**
+	 * @var array Array of available providers
+	 */
+	private static $providers = [];
 
 	/**
 	 * GravityView_Lightbox_Provider constructor.
@@ -22,9 +23,9 @@ class GravityView_Style {
 			include_once $style_provider;
 		}
 
-		add_action( 'plugins_loaded', array( $this, 'set_provider' ), 11 );
+		add_action( 'plugins_loaded', [ $this, 'set_provider' ], 11 );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue_scripts' ] );
 	}
 
 	/**
@@ -40,7 +41,7 @@ class GravityView_Style {
 		}
 
 		// Enqueue the admin styles
-		wp_enqueue_style( 'gravityview-admin-view-editor-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), GravityView_Plugin::version );
+		wp_enqueue_style( 'gravityview-admin-view-editor-styles', plugins_url( 'css/admin.css', __FILE__ ), [], GravityView_Plugin::version );
 	}
 
 	/**
@@ -49,14 +50,15 @@ class GravityView_Style {
 	 * @internal
 	 */
 	public function set_provider() {
-		foreach( self::$providers as $key => $provider ) {
-			self::$active_provider = new $provider();
-			self::$active_provider->add_hooks();
+		foreach( self::$providers as $provider ) {
+			$provider::add_hooks();
 		}
 	}
 
 	/**
-	 * Register lightbox providers
+	 * Register style providers with key as the slug and value as the class name.
+	 *
+	 * We're only registering the class name here, not the instance; we can instantiate the class when we need it.
 	 *
 	 * @param $provider
 	 */
@@ -70,7 +72,7 @@ class GravityView_Style {
 	 * @return []
 	 */
 	public static function get_styles() {
-		foreach( self::$providers as $key => $provider ) {
+		foreach( self::$providers as $provider ) {
 			$provider = new $provider();
 			$styles[ $provider::$slug ] = $provider->get_name();
 		}

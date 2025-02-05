@@ -43,9 +43,13 @@ abstract class GravityView_Style_Provider {
 	/**
 	 * Adds actions and that modify GravityView to use this lightbox provider
 	 */
-	public function add_hooks() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-		add_action( 'gravityview/template/before', array( $this, 'print_assets' ) );
+	public static function add_hooks() {
+		try {
+			add_action( 'wp_enqueue_scripts', [ get_called_class(), 'enqueue_styles' ] );
+			add_action( 'gravityview/template/before', [ get_called_class(), 'print_assets' ] );
+		} catch ( Exception $e ) {
+			// Do nothing
+		}
 	}
 
 	/**
@@ -66,7 +70,7 @@ abstract class GravityView_Style_Provider {
 	 *
 	 * @return void
 	 */
-	public function print_assets( $gravityview ) {
+	public static function print_assets( $gravityview ) {
 
 		if ( ! self::is_active( $gravityview ) ) {
 			return;
@@ -106,16 +110,14 @@ abstract class GravityView_Style_Provider {
 	}
 
 	/**
-	 * Removes actions that were added by {@see GravityView_Lightbox_Provider::add_hooks}
-	 *
-	 * @internal Do not call directly. Instead, use:
-	 *
-	 * <code>
-	 * do_action( 'gravityview/lightbox/provider', 'slug' );
-	 * </code>
+	 * Removes actions that were added by {@see GravityView_Style_Provider::add_hooks}
 	 */
-	public function remove_hooks() {
-		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+	public static function remove_hooks() {
+		try {
+			remove_action( 'wp_enqueue_scripts', [ get_called_class(), 'enqueue_styles' ] );
+		} catch ( Exception $e ) {
+			// Do nothing
+		}
 	}
 
 	/**
@@ -124,7 +126,7 @@ abstract class GravityView_Style_Provider {
 	 * @return array
 	 */
 	protected function default_settings() {
-		return array();
+		return [];
 	}
 
 	/**
@@ -139,7 +141,7 @@ abstract class GravityView_Style_Provider {
 	 *
 	 * @internal
 	 */
-	public function enqueue_styles() {
+	public static function enqueue_styles() {
 		wp_register_style( static::$style_slug, plugins_url( 'includes/extensions/styles/css/' . static::$css_file_name, GRAVITYVIEW_FILE ), [], GV_PLUGIN_VERSION );
 	}
 
