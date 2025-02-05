@@ -18,7 +18,8 @@ jobs:
   run_e2e_tests:
     <<: *default_job_config
     steps:
-      - checkout
+      - attach_workspace:
+          at: /home/circleci
       - run:
           name: Run E2E tests
           command: |
