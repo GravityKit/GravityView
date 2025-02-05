@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Entry notes not displaying in the DataTables extension when the first View field is a Date field.
+* Gravity Flow fields were displaying as available when Gravity Flow was not active.
 
 = 2.34.2 on February 4, 2025 =
 
