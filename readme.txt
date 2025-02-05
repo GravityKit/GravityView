@@ -23,6 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+
+* Random sorting option in the GravityView block.
+
 #### 🐛 Fixed
 * Entry notes not displaying in the DataTables extension when the first View field is a Date field.
 * Gravity Flow fields were displaying as available when Gravity Flow was not active.
