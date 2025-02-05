@@ -41,11 +41,15 @@
 		}
 	}
 
+	.gform-theme--framework .gfield:where(.gfield--type-fileupload,.gfield--input-type-fileupload) .ginput_preview {
+		flex-direction: row;
+	}
+
 	// GF 2.5.6.4
 	.ginput_preview_control {
-		bottom: -0.25rem;
 		display: inline-block;
 		font-size: 1.25rem;
+		line-height: 1;
 		outline: none;
 		position: relative;
 		text-decoration: none;
@@ -57,6 +61,11 @@
 		&.gform-icon--circle-delete {
 			color: #dd301d;
 		}
+	}
+
+	.gform-theme--framework .gfield:where(.gfield--type-fileupload,.gfield--input-type-fileupload) .ginput_preview_control {
+		bottom: 0;
+		top: -.15rem;
 	}
 
 	#publishing-action {
