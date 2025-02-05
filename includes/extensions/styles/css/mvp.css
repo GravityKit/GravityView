@@ -1,0 +1,594 @@
+/* MVP.css v1.17 - https://github.com/andybrewer/mvp */
+
+:root {
+  --active-brightness: 0.85;
+  --border-radius: 5px;
+  --box-shadow: 2px 2px 10px;
+  --color-accent: #118bee15;
+  --color-bg: #fff;
+  --color-bg-secondary: #e9e9e9;
+  --color-link: #118bee;
+  --color-secondary: #920de9;
+  --color-secondary-accent: #920de90b;
+  --color-shadow: #f4f4f4;
+  --color-table: #118bee;
+  --color-text: #000;
+  --color-text-secondary: #999;
+  --color-scrollbar: #cacae8;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --hover-brightness: 1.2;
+  --justify-important: center;
+  --justify-normal: left;
+  --line-height: 1.5;
+  --width-card: 285px;
+  --width-card-medium: 460px;
+  --width-card-wide: 800px;
+  --width-content: 1080px;
+}
+
+@media (prefers-color-scheme: dark) {
+  [color-mode="user"] {
+    --color-accent: #0097fc4f;
+    --color-bg: #333;
+    --color-bg-secondary: #555;
+    --color-link: #0097fc;
+    --color-secondary: #e20de9;
+    --color-secondary-accent: #e20de94f;
+    --color-shadow: #bbbbbb20;
+    --color-table: #0097fc;
+    --color-text: #f7f7f7;
+    --color-text-secondary: #aaa;
+  }
+}
+
+div[id*=gv-view-] html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  div[id*=gv-view-] html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Layout */
+div[id*=gv-view-] article aside {
+  background: var(--color-secondary-accent);
+  border-left: 4px solid var(--color-secondary);
+  padding: 0.01rem 0.8rem;
+}
+
+div[id*=gv-view-] body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  line-height: var(--line-height);
+  margin: 0;
+  overflow-x: hidden;
+  padding: 0;
+}
+
+div[id*=gv-view-] footer,
+div[id*=gv-view-] header,
+div[id*=gv-view-] main {
+  margin: 0 auto;
+  max-width: var(--width-content);
+  padding: 3rem 1rem;
+}
+
+div[id*=gv-view-] hr {
+  background-color: var(--color-bg-secondary);
+  border: none;
+  height: 1px;
+  margin: 4rem 0;
+  width: 100%;
+}
+
+div[id*=gv-view-] section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: var(--justify-important);
+}
+
+div[id*=gv-view-] section img,
+div[id*=gv-view-] article img {
+  max-width: 100%;
+}
+
+div[id*=gv-view-] section pre {
+  overflow: auto;
+}
+
+div[id*=gv-view-] section aside {
+  border: 1px solid var(--color-bg-secondary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow) var(--color-shadow);
+  margin: 1rem;
+  padding: 1.25rem;
+  width: var(--width-card);
+}
+
+div[id*=gv-view-] section aside:hover {
+  box-shadow: var(--box-shadow) var(--color-bg-secondary);
+}
+
+div[id*=gv-view-] [hidden] {
+  display: none;
+}
+
+/* Headers */
+div[id*=gv-view-] article header,
+div[id*=gv-view-] div header,
+div[id*=gv-view-] main header {
+  padding-top: 0;
+}
+
+div[id*=gv-view-] header {
+  text-align: var(--justify-important);
+}
+
+div[id*=gv-view-] header a b,
+div[id*=gv-view-] header a em,
+div[id*=gv-view-] header a i,
+div[id*=gv-view-] header a strong {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+div[id*=gv-view-] header nav img {
+  margin: 1rem 0;
+}
+
+div[id*=gv-view-] section header {
+  padding-top: 0;
+  width: 100%;
+}
+
+/* Nav */
+div[id*=gv-view-] nav {
+  align-items: center;
+  display: flex;
+  font-weight: bold;
+  justify-content: space-between;
+  margin-bottom: 7rem;
+}
+
+div[id*=gv-view-] nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+div[id*=gv-view-] nav ul li {
+  display: inline-block;
+  margin: 0 0.5rem;
+  position: relative;
+  text-align: left;
+}
+
+/* Nav Dropdown */
+div[id*=gv-view-] nav ul li:hover ul {
+  display: block;
+}
+
+div[id*=gv-view-] nav ul li ul {
+  background: var(--color-bg);
+  border: 1px solid var(--color-bg-secondary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow) var(--color-shadow);
+  display: none;
+  height: auto;
+  left: -2px;
+  padding: 0.5rem 1rem;
+  position: absolute;
+  top: 1.7rem;
+  white-space: nowrap;
+  width: auto;
+  z-index: 1;
+}
+
+div[id*=gv-view-] nav ul li ul::before {
+  /* fill gap above to make mousing over them easier */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -0.5rem;
+  height: 0.5rem;
+}
+
+div[id*=gv-view-] nav ul li ul li,
+div[id*=gv-view-] nav ul li ul li a {
+  display: block;
+}
+
+/* Nav for Mobile */
+@media (max-width: 768px) {
+  div[id*=gv-view-] nav {
+    flex-wrap: wrap;
+  }
+
+  div[id*=gv-view-] nav ul li {
+    width: calc(100% - 1em);
+  }
+
+  div[id*=gv-view-] nav ul li ul {
+    border: none;
+    box-shadow: none;
+    display: block;
+    position: static;
+  }
+}
+
+/* Typography */
+div[id*=gv-view-] code,
+div[id*=gv-view-] samp {
+  background-color: var(--color-accent);
+  border-radius: var(--border-radius);
+  color: var(--color-text);
+  display: inline-block;
+  margin: 0 0.1rem;
+  padding: 0 0.5rem;
+}
+
+div[id*=gv-view-] details {
+  margin: 1.3rem 0;
+}
+
+div[id*=gv-view-] details summary {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+div[id*=gv-view-] h1,
+div[id*=gv-view-] h2,
+div[id*=gv-view-] h3,
+div[id*=gv-view-] h4,
+div[id*=gv-view-] h5,
+div[id*=gv-view-] h6 {
+  line-height: var(--line-height);
+  text-wrap: balance;
+}
+
+div[id*=gv-view-] mark {
+  padding: 0.1rem;
+}
+
+div[id*=gv-view-] ol li,
+div[id*=gv-view-] ul li {
+  padding: 0.2rem 0;
+}
+
+div[id*=gv-view-] p {
+  margin: 0.75rem 0;
+  padding: 0;
+  width: 100%;
+}
+
+div[id*=gv-view-] pre {
+  margin: 1rem 0;
+  max-width: var(--width-card-wide);
+  padding: 1rem 0;
+}
+
+div[id*=gv-view-] pre code,
+div[id*=gv-view-] pre samp {
+  display: block;
+  max-width: var(--width-card-wide);
+  padding: 0.5rem 2rem;
+  white-space: pre-wrap;
+}
+
+div[id*=gv-view-] small {
+  color: var(--color-text-secondary);
+}
+
+div[id*=gv-view-] sup {
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius);
+  color: var(--color-bg);
+  font-size: xx-small;
+  font-weight: bold;
+  margin: 0.2rem;
+  padding: 0.2rem 0.3rem;
+  position: relative;
+  top: -2px;
+}
+
+/* Links */
+div[id*=gv-view-] a {
+  color: var(--color-link);
+  display: inline-block;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+div[id*=gv-view-] a:hover {
+  filter: brightness(var(--hover-brightness));
+}
+
+div[id*=gv-view-] a:active {
+  filter: brightness(var(--active-brightness));
+}
+
+div[id*=gv-view-] a b,
+div[id*=gv-view-] a em,
+div[id*=gv-view-] a i,
+div[id*=gv-view-] a strong,
+div[id*=gv-view-] button,
+div[id*=gv-view-] input[type="submit"] {
+  border-radius: var(--border-radius);
+  display: inline-block;
+  font-size: medium;
+  font-weight: bold;
+  line-height: var(--line-height);
+  margin: 0.5rem 0;
+  padding: 1rem 2rem;
+}
+
+div[id*=gv-view-] button,
+div[id*=gv-view-] input[type="submit"] {
+  font-family: var(--font-family);
+}
+
+div[id*=gv-view-] button:hover,
+div[id*=gv-view-] input[type="submit"]:hover {
+  cursor: pointer;
+  filter: brightness(var(--hover-brightness));
+}
+
+div[id*=gv-view-] button:active,
+div[id*=gv-view-] input[type="submit"]:active {
+  filter: brightness(var(--active-brightness));
+}
+
+div[id*=gv-view-] a b,
+div[id*=gv-view-] a strong,
+div[id*=gv-view-] button,
+div[id*=gv-view-] input[type="submit"] {
+  background-color: var(--color-link);
+  border: 2px solid var(--color-link);
+  color: var(--color-bg);
+}
+
+div[id*=gv-view-] a em,
+div[id*=gv-view-] a i {
+  border: 2px solid var(--color-link);
+  border-radius: var(--border-radius);
+  color: var(--color-link);
+  display: inline-block;
+  padding: 1rem 2rem;
+}
+
+div[id*=gv-view-] article aside a {
+  color: var(--color-secondary);
+}
+
+/* Images */
+div[id*=gv-view-] figure {
+  margin: 0;
+  padding: 0;
+}
+
+div[id*=gv-view-] figure img {
+  max-width: 100%;
+}
+
+div[id*=gv-view-] figure figcaption {
+  color: var(--color-text-secondary);
+}
+
+/* Forms */
+div[id*=gv-view-] button:disabled,
+div[id*=gv-view-] input:disabled {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-bg-secondary);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
+div[id*=gv-view-] button[disabled]:hover,
+div[id*=gv-view-] input[type="submit"][disabled]:hover {
+  filter: none;
+}
+
+div[id*=gv-view-] form {
+  border: 1px solid var(--color-bg-secondary);
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow) var(--color-shadow);
+  display: block;
+  max-width: var(--width-card-wide);
+  min-width: var(--width-card);
+  padding: 1.5rem;
+  text-align: var(--justify-normal);
+}
+
+div[id*=gv-view-] form header {
+  margin: 1.5rem 0;
+  padding: 1.5rem 0;
+}
+
+div[id*=gv-view-] input,
+div[id*=gv-view-] label,
+div[id*=gv-view-] select,
+div[id*=gv-view-] textarea {
+  display: block;
+  font-size: inherit;
+  max-width: var(--width-card-wide);
+}
+
+div[id*=gv-view-] input[type="checkbox"],
+div[id*=gv-view-] input[type="radio"] {
+  display: inline-block;
+}
+
+div[id*=gv-view-] input[type="checkbox"] + label,
+div[id*=gv-view-] input[type="radio"] + label {
+  display: inline-block;
+  font-weight: normal;
+  position: relative;
+  top: 1px;
+}
+
+div[id*=gv-view-] input[type="range"] {
+  padding: 0.4rem 0;
+}
+
+div[id*=gv-view-] input,
+div[id*=gv-view-] select,
+div[id*=gv-view-] textarea {
+  border: 1px solid var(--color-bg-secondary);
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+  padding: 0.4rem 0.8rem;
+}
+
+div[id*=gv-view-] input[type="text"],
+div[id*=gv-view-] input[type="password"],
+div[id*=gv-view-] textarea {
+  width: calc(100% - 1.6rem);
+}
+
+div[id*=gv-view-] input[readonly],
+div[id*=gv-view-] textarea[readonly] {
+  background-color: var(--color-bg-secondary);
+}
+
+div[id*=gv-view-] label {
+  font-weight: bold;
+  margin-bottom: 0.2rem;
+}
+
+/* Popups */
+div[id*=gv-view-] dialog {
+  max-width: 90%;
+  max-height: 85dvh;
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--color-bg-secondary);
+  border-radius: 0.5rem;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+  scrollbar-color: transparent transparent;
+  animation: bottom-to-top 0.25s ease-in-out forwards;
+}
+
+div[id*=gv-view-] dialog::-webkit-scrollbar {
+  width: 0;
+  display: none;
+}
+
+div[id*=gv-view-] dialog::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+div[id*=gv-view-] dialog::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+@media (min-width: 650px) {
+  div[id*=gv-view-] dialog {
+    max-width: 39rem;
+  }
+}
+
+div[id*=gv-view-] dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes bottom-to-top {
+  0% {
+    opacity: 0;
+    transform: translateY(10%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Tables */
+div[id*=gv-view-] table {
+  border: 1px solid var(--color-bg-secondary);
+  border-radius: var(--border-radius);
+  border-spacing: 0;
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: 0;
+  white-space: nowrap;
+}
+
+div[id*=gv-view-] table td,
+div[id*=gv-view-] table th,
+div[id*=gv-view-] table tr {
+  padding: 0.4rem 0.8rem;
+  text-align: var(--justify-important);
+}
+
+div[id*=gv-view-] table thead {
+  background-color: var(--color-table);
+  border-collapse: collapse;
+  border-radius: var(--border-radius);
+  color: var(--color-bg);
+  margin: 0;
+  padding: 0;
+}
+
+div[id*=gv-view-] table thead tr:first-child th:first-child {
+  border-top-left-radius: var(--border-radius);
+}
+
+div[id*=gv-view-] table thead tr:first-child th:last-child {
+  border-top-right-radius: var(--border-radius);
+}
+
+div[id*=gv-view-] table thead th:first-child,
+div[id*=gv-view-] table tr td:first-child {
+  text-align: var(--justify-normal);
+}
+
+div[id*=gv-view-] table tr:nth-child(even) {
+  background-color: var(--color-accent);
+}
+
+/* Quotes */
+div[id*=gv-view-] blockquote {
+  display: block;
+  font-size: x-large;
+  line-height: var(--line-height);
+  margin: 1rem auto;
+  max-width: var(--width-card-medium);
+  padding: 1.5rem 1rem;
+  text-align: var(--justify-important);
+}
+
+div[id*=gv-view-] blockquote footer {
+  color: var(--color-text-secondary);
+  display: block;
+  font-size: small;
+  line-height: var(--line-height);
+  padding: 1.5rem 0;
+}
+
+/* Scrollbars */
+div[id*=gv-view-] * {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-scrollbar) transparent;
+}
+
+div[id*=gv-view-] *::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+div[id*=gv-view-] *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+div[id*=gv-view-] *::-webkit-scrollbar-thumb {
+  background-color: var(--color-scrollbar);
+  border-radius: 10px;
+}

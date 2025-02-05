@@ -1,0 +1,226 @@
+/* Sakura.css v1.5.0
+ * ================
+ * Minimal css theme.
+ * Project: https://github.com/oxalorg/sakura/
+ */
+/* Body */
+div[id*=gv-view-] html {
+  font-size: 62.5%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+div[id*=gv-view-] body {
+  font-size: 1.8rem;
+  line-height: 1.618;
+  max-width: 38em;
+  margin: auto;
+  color: #4a4a4a;
+  background-color: #f9f9f9;
+  padding: 13px;
+}
+
+@media (max-width: 684px) {
+  div[id*=gv-view-] body {
+    font-size: 1.53rem;
+  }
+}
+@media (max-width: 382px) {
+  div[id*=gv-view-] body {
+    font-size: 1.35rem;
+  }
+}
+div[id*=gv-view-] h1, div[id*=gv-view-] h2, div[id*=gv-view-] h3, div[id*=gv-view-] h4, div[id*=gv-view-] h5, div[id*=gv-view-] h6 {
+  line-height: 1.1;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-weight: 700;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+}
+
+div[id*=gv-view-] h1 {
+  font-size: 2.35em;
+}
+
+div[id*=gv-view-] h2 {
+  font-size: 2em;
+}
+
+div[id*=gv-view-] h3 {
+  font-size: 1.75em;
+}
+
+div[id*=gv-view-] h4 {
+  font-size: 1.5em;
+}
+
+div[id*=gv-view-] h5 {
+  font-size: 1.25em;
+}
+
+div[id*=gv-view-] h6 {
+  font-size: 1em;
+}
+
+div[id*=gv-view-] p {
+  margin-top: 0px;
+  margin-bottom: 2.5rem;
+}
+
+div[id*=gv-view-] small, div[id*=gv-view-] sub, div[id*=gv-view-] sup {
+  font-size: 75%;
+}
+
+div[id*=gv-view-] hr {
+  border-color: #1d7484;
+}
+
+div[id*=gv-view-] a {
+  text-decoration: none;
+  color: #1d7484;
+}
+div[id*=gv-view-] a:visited {
+  color: #144f5a;
+}
+div[id*=gv-view-] a:hover {
+  color: #982c61;
+  border-bottom: 2px solid #4a4a4a;
+}
+
+div[id*=gv-view-] ul {
+  padding-left: 1.4em;
+  margin-top: 0px;
+  margin-bottom: 2.5rem;
+}
+
+div[id*=gv-view-] li {
+  margin-bottom: 0.4em;
+}
+
+div[id*=gv-view-] blockquote {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 1em;
+  padding-top: 0.8em;
+  padding-bottom: 0.8em;
+  padding-right: 0.8em;
+  border-left: 5px solid #1d7484;
+  margin-bottom: 2.5rem;
+  background-color: #f1f1f1;
+}
+
+div[id*=gv-view-] blockquote p {
+  margin-bottom: 0;
+}
+
+div[id*=gv-view-] img, div[id*=gv-view-] video {
+  height: auto;
+  max-width: 100%;
+  margin-top: 0px;
+  margin-bottom: 2.5rem;
+}
+
+/* Pre and Code */
+div[id*=gv-view-] pre {
+  background-color: #f1f1f1;
+  display: block;
+  padding: 1em;
+  overflow-x: auto;
+  margin-top: 0px;
+  margin-bottom: 2.5rem;
+  font-size: 0.9em;
+}
+
+div[id*=gv-view-] code, div[id*=gv-view-] kbd, div[id*=gv-view-] samp {
+  font-size: 0.9em;
+  padding: 0 0.5em;
+  background-color: #f1f1f1;
+  white-space: pre-wrap;
+}
+
+div[id*=gv-view-] pre > code {
+  padding: 0;
+  background-color: transparent;
+  white-space: pre;
+  font-size: 1em;
+}
+
+/* Tables */
+div[id*=gv-view-] table {
+  text-align: justify;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+div[id*=gv-view-] td, div[id*=gv-view-] th {
+  padding: 0.5em;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+/* Buttons, forms and input */
+div[id*=gv-view-] input, div[id*=gv-view-] textarea {
+  border: 1px solid #4a4a4a;
+}
+div[id*=gv-view-] input:focus, div[id*=gv-view-] textarea:focus {
+  border: 1px solid #1d7484;
+}
+
+div[id*=gv-view-] textarea {
+  width: 100%;
+}
+
+div[id*=gv-view-] .button, div[id*=gv-view-] button, div[id*=gv-view-] input[type=submit], div[id*=gv-view-] input[type=reset], div[id*=gv-view-] input[type=button], div[id*=gv-view-] input[type=file]::file-selector-button {
+  display: inline-block;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: #1d7484;
+  color: #f9f9f9;
+  border-radius: 1px;
+  border: 1px solid #1d7484;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+div[id*=gv-view-] .button[disabled], div[id*=gv-view-] button[disabled], div[id*=gv-view-] input[type=submit][disabled], div[id*=gv-view-] input[type=reset][disabled], div[id*=gv-view-] input[type=button][disabled], div[id*=gv-view-] input[type=file]::file-selector-button[disabled] {
+  cursor: default;
+  opacity: 0.5;
+}
+div[id*=gv-view-] .button:hover, div[id*=gv-view-] button:hover, div[id*=gv-view-] input[type=submit]:hover, div[id*=gv-view-] input[type=reset]:hover, div[id*=gv-view-] input[type=button]:hover, div[id*=gv-view-] input[type=file]::file-selector-button:hover {
+  background-color: #982c61;
+  color: #f9f9f9;
+  outline: 0;
+}
+div[id*=gv-view-] .button:focus-visible, div[id*=gv-view-] button:focus-visible, div[id*=gv-view-] input[type=submit]:focus-visible, div[id*=gv-view-] input[type=reset]:focus-visible, div[id*=gv-view-] input[type=button]:focus-visible, div[id*=gv-view-] input[type=file]::file-selector-button:focus-visible {
+  outline-style: solid;
+  outline-width: 2px;
+}
+
+div[id*=gv-view-] textarea, div[id*=gv-view-] select, div[id*=gv-view-] input {
+  color: #4a4a4a;
+  padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  border: 1px solid #f1f1f1;
+  border-radius: 4px;
+  box-shadow: none;
+  box-sizing: border-box;
+}
+div[id*=gv-view-] textarea:focus, div[id*=gv-view-] select:focus, div[id*=gv-view-] input:focus {
+  border: 1px solid #1d7484;
+  outline: 0;
+}
+
+div[id*=gv-view-] input[type=checkbox]:focus {
+  outline: 1px dotted #1d7484;
+}
+
+div[id*=gv-view-] label, div[id*=gv-view-] legend, div[id*=gv-view-] fieldset {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}

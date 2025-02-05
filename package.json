@@ -6,6 +6,9 @@
     "@lodder/grunt-postcss": "^3.1.1",
     "autoprefixer": "^9.8.8",
     "grunt": "^1.4.1",
+    "grunt-contrib-clean": "^2.0.1",
+    "grunt-contrib-concat": "^2.1.0",
+    "grunt-contrib-cssmin": "^5.0.0",
     "grunt-contrib-imagemin": "^4.0.0",
     "grunt-contrib-jshint": "^3.2.0",
     "grunt-contrib-uglify": "^5.0.1",
@@ -21,7 +24,17 @@
     "load-grunt-tasks": "^3.5.2",
     "node-sass": "^9.0.0",
     "postcss": "^8.4.31",
-    "shelljs": "^0.8.5"
+    "postcss-selector-namespace": "^3.0.1",
+    "marx-css": "^4.1.1",
+    "mvp.css": "^1.15.0",
+    "picnic": "^7.1.0",
+    "purecss": "^3.0.0",
+    "sakura.css": "^1.5.0",
+    "simpledotcss": "^2.3.0",
+    "tom-select": "^2.3.1",
+    "chota": "^0.9.2",
+    "cirrus-ui": "^0.7.2-patch.1",
+    "@picocss/pico": "^2.0.6"
   },
   "repository": {
     "type": "git",

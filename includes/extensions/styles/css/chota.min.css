@@ -40,24 +40,24 @@ div[id*=gv-view-] .row,div[id*=gv-view-] .row.reverse{-webkit-box-orient:horizon
 div[id*=gv-view-] .row.reverse{-webkit-box-direction:reverse;-ms-flex-direction:row-reverse;flex-direction:row-reverse}
 div[id*=gv-view-] .col{-webkit-box-flex:1;-ms-flex:1;flex:1}
 div[id*=gv-view-] .col,div[id*=gv-view-] [class*=" col-"],div[id*=gv-view-] [class^=col-]{margin:0 calc(var(--grid-gutter)/2) calc(var(--grid-gutter)/2)}
-div[id*=gv-view-] .col-1{-ms-flex:0 0 calc(8.33333% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(8.33333% - var(--grid-gutter));max-width:calc(8.33333% - var(--grid-gutter))}
+div[id*=gv-view-] .col-1{-ms-flex:0 0 calc(8.33333% - var(--grid-gutter));flex:0 0 calc(8.33333% - var(--grid-gutter));max-width:calc(8.33333% - var(--grid-gutter))}
 div[id*=gv-view-] .col-1,div[id*=gv-view-] .col-2{-webkit-box-flex:0}
-div[id*=gv-view-] .col-2{-ms-flex:0 0 calc(16.66667% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(16.66667% - var(--grid-gutter));max-width:calc(16.66667% - var(--grid-gutter))}
-div[id*=gv-view-] .col-3{-ms-flex:0 0 calc(25% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(25% - var(--grid-gutter));max-width:calc(25% - var(--grid-gutter))}
+div[id*=gv-view-] .col-2{-ms-flex:0 0 calc(16.66667% - var(--grid-gutter));flex:0 0 calc(16.66667% - var(--grid-gutter));max-width:calc(16.66667% - var(--grid-gutter))}
+div[id*=gv-view-] .col-3{-ms-flex:0 0 calc(25% - var(--grid-gutter));flex:0 0 calc(25% - var(--grid-gutter));max-width:calc(25% - var(--grid-gutter))}
 div[id*=gv-view-] .col-3,div[id*=gv-view-] .col-4{-webkit-box-flex:0}
-div[id*=gv-view-] .col-4{-ms-flex:0 0 calc(33.33333% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(33.33333% - var(--grid-gutter));max-width:calc(33.33333% - var(--grid-gutter))}
-div[id*=gv-view-] .col-5{-ms-flex:0 0 calc(41.66667% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(41.66667% - var(--grid-gutter));max-width:calc(41.66667% - var(--grid-gutter))}
+div[id*=gv-view-] .col-4{-ms-flex:0 0 calc(33.33333% - var(--grid-gutter));flex:0 0 calc(33.33333% - var(--grid-gutter));max-width:calc(33.33333% - var(--grid-gutter))}
+div[id*=gv-view-] .col-5{-ms-flex:0 0 calc(41.66667% - var(--grid-gutter));flex:0 0 calc(41.66667% - var(--grid-gutter));max-width:calc(41.66667% - var(--grid-gutter))}
 div[id*=gv-view-] .col-5,div[id*=gv-view-] .col-6{-webkit-box-flex:0}
-div[id*=gv-view-] .col-6{-ms-flex:0 0 calc(50% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(50% - var(--grid-gutter));max-width:calc(50% - var(--grid-gutter))}
-div[id*=gv-view-] .col-7{-ms-flex:0 0 calc(58.33333% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(58.33333% - var(--grid-gutter));max-width:calc(58.33333% - var(--grid-gutter))}
+div[id*=gv-view-] .col-6{-ms-flex:0 0 calc(50% - var(--grid-gutter));flex:0 0 calc(50% - var(--grid-gutter));max-width:calc(50% - var(--grid-gutter))}
+div[id*=gv-view-] .col-7{-ms-flex:0 0 calc(58.33333% - var(--grid-gutter));flex:0 0 calc(58.33333% - var(--grid-gutter));max-width:calc(58.33333% - var(--grid-gutter))}
 div[id*=gv-view-] .col-7,div[id*=gv-view-] .col-8{-webkit-box-flex:0}
-div[id*=gv-view-] .col-8{-ms-flex:0 0 calc(66.66667% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(66.66667% - var(--grid-gutter));max-width:calc(66.66667% - var(--grid-gutter))}
-div[id*=gv-view-] .col-9{-ms-flex:0 0 calc(75% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(75% - var(--grid-gutter));max-width:calc(75% - var(--grid-gutter))}
+div[id*=gv-view-] .col-8{-ms-flex:0 0 calc(66.66667% - var(--grid-gutter));flex:0 0 calc(66.66667% - var(--grid-gutter));max-width:calc(66.66667% - var(--grid-gutter))}
+div[id*=gv-view-] .col-9{-ms-flex:0 0 calc(75% - var(--grid-gutter));flex:0 0 calc(75% - var(--grid-gutter));max-width:calc(75% - var(--grid-gutter))}
 div[id*=gv-view-] .col-10,div[id*=gv-view-] .col-9{-webkit-box-flex:0}
-div[id*=gv-view-] .col-10{-ms-flex:0 0 calc(83.33333% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(83.33333% - var(--grid-gutter));max-width:calc(83.33333% - var(--grid-gutter))}
-div[id*=gv-view-] .col-11{-ms-flex:0 0 calc(91.66667% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(91.66667% - var(--grid-gutter));max-width:calc(91.66667% - var(--grid-gutter))}
+div[id*=gv-view-] .col-10{-ms-flex:0 0 calc(83.33333% - var(--grid-gutter));flex:0 0 calc(83.33333% - var(--grid-gutter));max-width:calc(83.33333% - var(--grid-gutter))}
+div[id*=gv-view-] .col-11{-ms-flex:0 0 calc(91.66667% - var(--grid-gutter));flex:0 0 calc(91.66667% - var(--grid-gutter));max-width:calc(91.66667% - var(--grid-gutter))}
 div[id*=gv-view-] .col-11,div[id*=gv-view-] .col-12{-webkit-box-flex:0}
-div[id*=gv-view-] .col-12{-ms-flex:0 0 calc(100% - var(--grid-gutter));-webkit-box-flex:0;flex:0 0 calc(100% - var(--grid-gutter));max-width:calc(100% - var(--grid-gutter))}
+div[id*=gv-view-] .col-12{-ms-flex:0 0 calc(100% - var(--grid-gutter));flex:0 0 calc(100% - var(--grid-gutter));max-width:calc(100% - var(--grid-gutter))}
 @media screen and (max-width:599px){
 div[id*=gv-view-] .container{width:100%}
 div[id*=gv-view-] .col,div[id*=gv-view-] [class*=col-],div[id*=gv-view-] [class^=col-]{-webkit-box-flex:0;-ms-flex:0 1 100%;flex:0 1 100%;max-width:100%}
@@ -216,21 +216,3 @@ div[id*=gv-view-] .hide-lg{display:none!important}
 @media print{
 div[id*=gv-view-] .hide-pr{display:none!important}
 }
-:root{--font-size:1rem}
-body{background:#fff}
-#wpfooter,.update-nag{display:none}
-div[id*=gv-view-] *{font-size:initial}
-div[id*=gv-view-] .gv-grid-col-1-2{width:auto}
-div[id*=gv-view-] .gv-table-container{overflow-x:auto}
-div[id*=gv-view-] form.gv-widget-search input{width:auto}
-div[id*=gv-view-] form.gv-widget-search:not(.gv-is-search) .gv-search-clear{display:none}
-div[id*=gv-view-] form.gv-widget-search .gv-search-clear{margin:0 3%}
-div[id*=gv-view-] form.gv-widget-search .gv-search-box-submit{align-items:baseline}
-div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action{display:flex}
-div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action>*{margin-right:3%}
-div[id*=gv-view-] .gv-edit-entry-wrapper #publishing-action>:last-child{margin-right:0}
-div[id*=gv-view-] .gk-maps-search-geolocation-address-autocomplete-container{display:flex}
-div[id*=gv-view-] .gk-maps-search-geolocation-address-autocomplete-container input.gk-maps-search-geolocation-address-autocomplete{width:inherit}
-div[id*=gv-view-] .gk-maps-search-current-geolocation-radius{width:auto}
-div[id*=gv-view-] .dataTables_length select{display:inline-block}
-.fancybox__container{z-index:100000!important}
