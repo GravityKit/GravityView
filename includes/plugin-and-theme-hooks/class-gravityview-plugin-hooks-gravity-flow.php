@@ -188,10 +188,18 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 				$keys_end   = array_splice( $keys, $insert_at + 1 );
 				$values_end = array_splice( $values, $insert_at + 1 );
 
-				$keys[]   = 'workflow_current_status_timestamp';
+				$timestamp = GravityView_Fields::get( 'workflow_current_status_timestamp' );
+
+				// If the field isn't found for some reason, don't add it.
+				if ( ! $timestamp ) {
+					return $fields;
+				}
+
+				$keys[]   = $timestamp->entry_meta_key;
 				$values[] = array(
-					'label' => __( 'Workflow Current Status Timestamp', 'gk-gravityview' ),
-					'type'  => 'workflow_current_status_timestamp',
+					'label' => $timestamp->label,
+					'type'  => $timestamp->name,
+					'icon'  => $timestamp->icon,
 				);
 
 				$fields = array_combine( $keys, $values ) + array_combine( $keys_end, $values_end );
