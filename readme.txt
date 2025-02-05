@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Entry notes not displaying in the DataTables extension when the first View field is a Date field.
+
 = 2.34.2 on February 4, 2025 =
 
 This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.
