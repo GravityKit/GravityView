@@ -40,21 +40,25 @@ class GravityView_Style {
 
 		$grid_gap = (int) $view->settings->get( 'grid_gap', 20 );
 		$grid_columns = (int) $view->settings->get( 'grid_columns', 2 );
+		$grid_min_width = (int) $view->settings->get( 'grid_min_width', 200 );
 
-
-		// Create CSS to make GravityView listings into a grid
+		// Create CSS to make GravityView listings into a flexible, responsive grid using CSS Grid
 		$css = strtr( '
-			.gv-layout-builder-container.gv-container-[view_id],
-			.gv-list-multiple-container.gv-container-[view_id] {
-			    display: grid;
-				grid-template-columns: repeat( [columns], 1fr );
-				grid-gap: [gap]px;
-			}
-		', [
-			'[view_id]'  => $view->ID,
-			'[columns]' => $grid_columns,
-			'[gap]'     => $grid_gap,
+		    .gv-layout-builder-container.gv-container-[view_id],
+		    .gv-list-multiple-container.gv-container-[view_id] {
+		        display: grid;
+		        grid-template-columns: repeat(auto-fit, minmax(min(calc(100% / [columns]), [min_width]px), 1fr));
+		        gap: [gap]px;
+		    }
+', [
+			'[view_id]'   => $view->ID,
+			'[columns]'   => $grid_columns,   // Preferred number of columns
+			'[gap]'       => $grid_gap,       // Gap between items
+			'[min_width]' => $grid_min_width, // Minimum width per item
 		] );
+
+		$css = normalize_whitespace( $css );
+
 		wp_add_inline_style( 'gravityview_default_style', $css );
 	}
 
