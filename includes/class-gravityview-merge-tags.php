@@ -85,7 +85,7 @@ class GravityView_Merge_Tags {
 	 */
 	public static function process_modifiers( $value, $merge_tag, $modifier, $field, $raw_value ) {
 		// Process array value for sub-fields like name and address.
-		if ( $raw_value[ $merge_tag ] ?? null ) {
+		if ( is_array( $raw_value ) && ( $raw_value[ $merge_tag ] ?? null ) ) {
 			$raw_value = $raw_value[ $merge_tag ];
 		}
 
@@ -117,7 +117,13 @@ class GravityView_Merge_Tags {
 			'human'						=> 'modifier_human', /** @see modifier_human */
 		);
 
-		$modifiers = explode( ',', $modifier );
+		// Do not split on escaped commas (\,).
+		$modifiers = preg_split('/(?<!\\\\),/', $modifier);
+
+		// Remove \ from escaped commas before processing.
+		$modifiers = array_map(function($mod) {
+			return str_replace('\\,', ',', trim($mod));
+		}, $modifiers);
 
 		$return = $raw_value;
 
@@ -137,6 +143,7 @@ class GravityView_Merge_Tags {
 				if ( empty( $matches ) ) {
 					continue;
 				}
+
 
 				// The called method is passed the raw value and the full matches array
 				$return = self::$method( $return, $matches, $value, $field, $passed_modifier, $merge_tag );
@@ -226,6 +233,11 @@ class GravityView_Merge_Tags {
 		}
 
 		if ( $field instanceof GF_Field_Date ) {
+			if ( false === strpos( $modifier, 'no_tz_offset' ) ) {
+				$modifier = 'no_tz_offset:' . $modifier;
+			}
+
+			// Skip the timezone offset.
 			return self::format_date( $raw_value, $modifier );
 		}
 

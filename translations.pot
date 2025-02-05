@@ -1,15 +1,15 @@
-# Copyright (C) 2024 GravityKit
+# Copyright (C) 2025 GravityKit
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.33\n"
+"Project-Id-Version: GravityView 2.34.2\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-12-20T01:17:49+00:00\n"
+"POT-Creation-Date: 2025-02-04T23:59:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -202,24 +202,24 @@ msgstr ""
 msgid "Must contain \"[slug]\"."
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:584
-#: includes/class-gravityview-entry-approval.php:439
+#: future/includes/class-gv-plugin.php:586
+#: includes/class-gravityview-entry-approval.php:477
 msgid "Disapproved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:585
-#: includes/class-gravityview-entry-approval.php:433
+#: future/includes/class-gv-plugin.php:587
+#: includes/class-gravityview-entry-approval.php:471
 msgid "Approved the Entry for GravityView"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:709
-#: future/includes/class-gv-plugin.php:710
+#: future/includes/class-gv-plugin.php:711
+#: future/includes/class-gv-plugin.php:712
 #: future/includes/class-gv-view.php:176
 msgid "All Views"
 msgstr ""
 
-#: future/includes/class-gv-plugin.php:721
-#: future/includes/class-gv-plugin.php:722
+#: future/includes/class-gv-plugin.php:723
+#: future/includes/class-gv-plugin.php:724
 #: future/includes/class-gv-view.php:179
 msgid "New View"
 msgstr ""
@@ -1599,7 +1599,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/direct-access-status.php:98
 #: includes/class-admin-add-shortcode.php:140
 #: includes/class-admin-views.php:1849
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:283
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:358
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1175
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1308
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:100
@@ -1825,43 +1825,43 @@ msgstr ""
 msgid "Please select a View"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:173
+#: includes/class-admin-approve-entries.php:178
 msgid "GravityView Fields"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:174
+#: includes/class-admin-approve-entries.php:179
 msgid "Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:195
+#: includes/class-admin-approve-entries.php:200
 msgid "Approve/Reject"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:202
+#: includes/class-admin-approve-entries.php:207
 msgid "User Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:226
+#: includes/class-admin-approve-entries.php:231
 msgid "Approved? (Admin-only)"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:228
+#: includes/class-admin-approve-entries.php:233
 msgid "Approved?"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:248
+#: includes/class-admin-approve-entries.php:253
 msgid "Show Entry on Website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:250
+#: includes/class-admin-approve-entries.php:255
 msgid "Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:258
+#: includes/class-admin-approve-entries.php:263
 msgid "Yes, display my entry on the website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:426
+#: includes/class-admin-approve-entries.php:431
 msgid "GravityView entry approval status"
 msgstr ""
 
@@ -2112,23 +2112,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:429
+#: includes/class-admin-welcome.php:415
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:481
+#: includes/class-admin-welcome.php:467
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:525
+#: includes/class-admin-welcome.php:511
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:557
+#: includes/class-admin-welcome.php:543
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:558
+#: includes/class-admin-welcome.php:544
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2404,7 +2404,7 @@ msgid "Search by ID, login, email, or name."
 msgstr ""
 
 #: includes/class-gravityview-change-entry-creator.php:174
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:288
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:363
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1464
 msgid "Error"
 msgstr ""
@@ -2590,6 +2590,7 @@ msgid "Invalid security token."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:56
+#: includes/class-gravityview-entry-approval.php:89
 msgid "Disapproved"
 msgstr ""
 
@@ -2603,6 +2604,7 @@ msgid "Entry not approved for directory viewing. Click to approve this entry."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:62
+#: includes/class-gravityview-entry-approval.php:85
 msgid "Approved"
 msgstr ""
 
@@ -2617,6 +2619,7 @@ msgid "Entry approved for directory viewing. Click to disapprove this entry."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:69
+#: includes/class-gravityview-entry-approval.php:93
 msgid "Unapproved"
 msgstr ""
 
@@ -2629,39 +2632,46 @@ msgstr ""
 msgid "Entry not yet reviewed. Click to approve this entry."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:95
+#: includes/class-gravityview-entry-approval.php:79
+#: includes/fields/class-gravityview-field-is-approved.php:42
+#: includes/fields/class-gravityview-field-is-approved.php:125
+#: includes/widgets/search-widget/class-search-widget.php:424
+msgid "Approval Status"
+msgstr ""
+
+#: includes/class-gravityview-entry-approval.php:133
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is approved"
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:96
+#: includes/class-gravityview-entry-approval.php:134
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is disapproved"
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:97
+#: includes/class-gravityview-entry-approval.php:135
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is reset"
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:98
+#: includes/class-gravityview-entry-approval.php:136
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry approval is changed"
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:164
-#: includes/class-gravityview-entry-approval.php:173
-#: includes/class-gravityview-entry-approval.php:182
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:441
+#: includes/class-gravityview-entry-approval.php:202
+#: includes/class-gravityview-entry-approval.php:211
+#: includes/class-gravityview-entry-approval.php:220
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:443
 msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:191
+#: includes/class-gravityview-entry-approval.php:229
 #: includes/extensions/edit-entry/class-edit-entry-render.php:2419
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
-#: includes/class-gravityview-entry-approval.php:436
+#: includes/class-gravityview-entry-approval.php:474
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 
@@ -2707,35 +2717,35 @@ msgstr ""
 msgid "Are you sure you want to delete this entry? This cannot be undone."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:660
+#: includes/extensions/delete-entry/class-delete-entry.php:659
 msgid "The link to delete this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:664
+#: includes/extensions/delete-entry/class-delete-entry.php:663
 msgid "You do not have permission to delete this entry."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:669
+#: includes/extensions/delete-entry/class-delete-entry.php:668
 msgid "The entry is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:671
+#: includes/extensions/delete-entry/class-delete-entry.php:670
 msgid "You cannot delete the entry; it is already in the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:813
+#: includes/extensions/delete-entry/class-delete-entry.php:797
 msgid "There was an error deleting the entry: %s"
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:817
+#: includes/extensions/delete-entry/class-delete-entry.php:801
 msgid "The entry was successfully moved to the trash."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:820
+#: includes/extensions/delete-entry/class-delete-entry.php:804
 msgid "The entry was successfully deleted."
 msgstr ""
 
-#: includes/extensions/delete-entry/class-delete-entry.php:865
+#: includes/extensions/delete-entry/class-delete-entry.php:849
 msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is deleted"
 msgstr ""
@@ -2824,69 +2834,69 @@ msgstr ""
 msgid "Make field editable to:"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:71
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:284
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:98
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:359
 msgid "You now have control"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:77
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:107
 msgid "Your request has been sent to %s."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:79
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:109
 msgid "Your request has been sent."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:225
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:298
 msgctxt "Referring to the user who is currently editing a locked entry"
 msgid "the person who is editing the entry"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:233
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:305
 msgid "Take Over"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:234
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:306
 msgid "Request Control"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:251
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:321
 msgid "Reject Request"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:278
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:353
 msgid "This entry is currently locked. Click on the \"Request Control\" button to let %s know you'd like to take over."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:279
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:354
 msgid "%s is currently editing this entry"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:280
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:355
 msgid "%s has taken over and is currently editing this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:281
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:356
 msgid "%s has requested permission to take over control of this entry."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:282
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:357
 msgid "Accept"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:285
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:360
 msgid "Pending"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:286
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:361
 msgid "No response"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:287
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:362
 msgid "Request again"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-locking.php:289
+#: includes/extensions/edit-entry/class-edit-entry-locking.php:364
 msgid "Your request was rejected"
 msgstr ""
 
@@ -2994,129 +3004,129 @@ msgstr ""
 msgid "Display, add, and delete notes for an entry."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:377
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:379
 msgid "Note Settings"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:378
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:380
 msgctxt "%s is opening and closing HTML link"
 msgid "Only users with specific capabilities will be able to view, add and delete notes. %1$sRead more%2$s."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:381
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:383
 msgid "Display notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:384
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:386
 msgid "Display notes to users who are not logged-in?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:388
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:390
 msgid "Enable adding notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:391
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:393
 msgid "Allow emailing notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:395
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:397
 msgid "Allow deleting notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:423
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
 msgid "Add Note"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:424
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
 msgid "Note added."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
 msgid "Note Content"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:120
 msgid "Delete"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
 msgid "Are you sure you want to delete the selected notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:430
 msgid "Notes for this entry"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:431
 msgid "Toggle all notes"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:430
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:432
 msgid "There are no notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:431
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:433
 msgid "Processing&hellip;"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:432
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:434
 msgid "Other email address"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:433
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:435
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:259
 msgid "Email address"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:434
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:436
 msgctxt "Example email address used as a placeholder"
 msgid "you@example.com"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:435
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:437
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:258
 msgid "Subject"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:436
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:438
 msgid "Email subject"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:437
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:439
 msgid "New entry note"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:438
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:440
 msgid "This note was sent from {url}"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:439
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:441
 msgid "Also email this note to"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:440
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:442
 msgid "There was an error adding the note."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:442
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:444
 msgctxt "Message to display when submitting a note without content."
 msgid "Note cannot be blank."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:443
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:445
 msgid "You don't have the ability to delete notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:444
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:446
 msgid "You don't have the ability to add notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:485
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:489
 msgid "added on {date_created_formatted}"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:569
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:574
 msgid "The note is empty."
 msgstr ""
 
@@ -3417,7 +3427,7 @@ msgstr ""
 msgid "The date the entry was last updated."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-date.php:27
+#: includes/fields/class-gravityview-field-date.php:26
 #: includes/widgets/search-widget/class-search-widget.php:260
 #: future/includes/gutenberg/blocks/view/edit.js:152
 #: future/includes/gutenberg/blocks/view/edit.js:191
@@ -3778,12 +3788,6 @@ msgstr ""
 msgid "The IP Address of the user who created the entry."
 msgstr ""
 
-#: includes/fields/class-gravityview-field-is-approved.php:42
-#: includes/fields/class-gravityview-field-is-approved.php:125
-#: includes/widgets/search-widget/class-search-widget.php:424
-msgid "Approval Status"
-msgstr ""
-
 #: includes/fields/class-gravityview-field-is-approved.php:43
 msgid "Display the entry's current approval status."
 msgstr ""
@@ -3864,7 +3868,7 @@ msgstr ""
 #: includes/fields/class-gravityview-field-is-read.php:168
 #: includes/fields/class-gravityview-field-is-read.php:200
 #: includes/widgets/search-widget/class-search-widget.php:411
-#: includes/widgets/search-widget/class-search-widget.php:1754
+#: includes/widgets/search-widget/class-search-widget.php:1764
 msgid "Read"
 msgstr ""
 
@@ -3879,7 +3883,7 @@ msgstr ""
 #: includes/fields/class-gravityview-field-is-read.php:175
 #: includes/fields/class-gravityview-field-is-read.php:198
 #: includes/widgets/search-widget/class-search-widget.php:415
-#: includes/widgets/search-widget/class-search-widget.php:1750
+#: includes/widgets/search-widget/class-search-widget.php:1760
 msgid "Unread"
 msgstr ""
 
@@ -5058,48 +5062,48 @@ msgstr ""
 msgid "Entry Creator"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1872
+#: includes/widgets/search-widget/class-search-widget.php:1882
 msgid "Search Entries:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1875
+#: includes/widgets/search-widget/class-search-widget.php:1885
 msgid "Filter by date:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1878
+#: includes/widgets/search-widget/class-search-widget.php:1888
 msgid "Entry ID:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2213
+#: includes/widgets/search-widget/class-search-widget.php:2223
 msgid "Clear"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2303
+#: includes/widgets/search-widget/class-search-widget.php:2313
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2304
+#: includes/widgets/search-widget/class-search-widget.php:2314
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2305
+#: includes/widgets/search-widget/class-search-widget.php:2315
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2306
+#: includes/widgets/search-widget/class-search-widget.php:2316
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2307
+#: includes/widgets/search-widget/class-search-widget.php:2317
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2308
+#: includes/widgets/search-widget/class-search-widget.php:2318
 msgid "Show a different month"
 msgstr ""
 
@@ -5258,7 +5262,7 @@ msgstr ""
 msgid "An error occurred"
 msgstr ""
 
-#: templates/fields/field-user_activation.php:53
+#: templates/fields/field-user_activation.php:59
 msgid "Activate User"
 msgstr ""
 

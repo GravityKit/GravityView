@@ -483,6 +483,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 101, 'form_id' => $form['id'] ) );
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 201, 'form_id' => $form['id'] ) );
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 301, 'form_id' => $form['id'] ) );
+		$form['fields'][] = new GF_Field_Date( array( 'id' => 501, 'form_id' => $form['id'] ) );
 
 		$list_field = new GF_Field_List( array( 'id' => 401, 'form_id' => $form['id'] ) );
 
@@ -493,6 +494,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$entry['201'] = '<tag>';
 		$entry['301'] = '["This","is","JSON"]';
 		$entry['401'] = 'a:2:{i:0;s:8:"One List";i:1;s:8:"Two List";}';
+		$entry['501'] = '2025-01-31';
 
 		$tests = array(
 			'{Field:100:sanitize_html_class}' => 'This is spaces',
@@ -529,6 +531,10 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{List Field:401:text,urlencode}' => 'One+List%2C+Two+List',
 			'{List Field:401:html,esc_html}' => "&lt;ul class=&#039;bulleted&#039;&gt;&lt;li&gt;One List&lt;/li&gt;&lt;li&gt;Two List&lt;/li&gt;&lt;/ul&gt;",
 			'{List Field:401:non_gf_non_gv}' => 'One List, Two List',
+			'{Field:501:format:F j, Y}' => 'January 31', // Comma is not escaped
+			'{Field:501:format:F j\, Y}' => 'January 31, 2025',
+			'{Field:501:format:\j\a\n\u\a\r\y j\, Y,ucwords }' => 'January 31, 2025',
+			'{Field:501:format:\j\a\n\u\a\r\y j\, Y,ucwords,maxwords:2}' => 'January 31,&hellip;',
 		);
 
 		$filter_tags = function( $tags ) {

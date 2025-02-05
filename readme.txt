@@ -21,6 +21,61 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.34.2 on February 4, 2025 =
+
+This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.
+
+#### 🐛 Fixed
+* `function _load_textdomain_just_in_time was called incorrectly` PHP notice in WordPress 6.7 or newer.
+* Display issue caused by a malformed `div` tag in the Layout Builder View template.
+
+= 2.34.1 on January 30, 2025 =
+
+This update resolves multiple issues, including problems with search bar visibility in Layout Builder, entry management in multisite environments, and non-functional entry locking and notes, among others.
+
+#### 🐛 Fixed
+* The Search Bar would not always be visible in Views using the Layout Builder.
+* Users belonging to the main network site in a multisite environment couldn’t delete their own entries on subsites.
+* Entry locking not working.
+* JavaScript error preventing entry notes from being added when using the Twenty Twenty-Two theme or newer.
+* Using a comma in the `:format` merge tag modifier with Date fields caused partial results to be returned.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets` filter to override whether to load the entry lock UI assets.
+* Added `gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup` filter to modify the entry locking UI dialog window markup.
+
+= 2.34 on January 9, 2025 =
+
+This release introduces the [Layout Builder](https://www.gravitykit.com/announcing-gravityview-2-34-all-new-layout-builder) that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.
+
+#### 🚀 Added
+* New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.
+* Support for using entry Approval Status in conditional logic rules on the Gravity Forms Export Entries page.
+
+#### ✨ Improved
+* Entries added via the Gravity Forms API or while GravityView is inactive can now be filtered using the "Unapproved" status on the Entries page.
+
+#### 🐛 Fixed
+* Fatal error when searching entries by Approval Status in Views joined with another form using the Multiple Forms extension.
+* Some [merge tag modifiers](https://docs.gravitykit.com/article/350-merge-tag-modifiers) (e.g., `:maxwords`) not being processed.
+* WordPress's timezone offset not applying to Date field output with the `:format` merge tag modifier.
+
+= 2.33.2 on December 31, 2024 =
+
+This update removes debugging code from the Entry Notes field.
+
+#### 🐛 Fixed
+* Debugging code being shown in the Entry Notes field output.
+* Output of the User Activation field not being sanitized.
+
+= 2.33.1 on December 30, 2024 =
+
+This update removes debugging code from the Entry Notes field.
+
+#### 🐛 Fixed
+
+* Debugging code being shown in the Entry Notes field output.
+
 = 2.33 on December 19, 2024 =
 
 This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.

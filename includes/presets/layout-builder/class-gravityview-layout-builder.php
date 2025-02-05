@@ -158,4 +158,4 @@ final class GravityView_Layout_Builder extends GravityView_Template {
 	}
 }
 
-// new GravityView_Layout_Builder();
+new GravityView_Layout_Builder();
