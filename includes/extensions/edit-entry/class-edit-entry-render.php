@@ -131,6 +131,7 @@ class GravityView_Edit_Entry_Render {
 	public $show_next_button;
 	public $show_update_button;
 	public $is_paged_submitted;
+	private $unset_hidden_calculations = [];
 
 	function __construct( GravityView_Edit_Entry $loader ) {
 		$this->loader = $loader;
@@ -156,14 +157,8 @@ class GravityView_Edit_Entry_Render {
 		// Disable conditional logic if needed (since 1.9)
 		add_filter( 'gform_has_conditional_logic', array( $this, 'manage_conditional_logic' ), 10, 2 );
 
-		// Make sure GF doesn't validate max files (since 1.9)
-		add_filter( 'gform_plupload_settings', array( $this, 'modify_fileupload_settings' ), 10, 3 );
-
 		// Add fields expected by GFFormDisplay::validate()
 		add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation' ) );
-
-		// Fix multiselect value for GF 2.2
-		add_filter( 'gravityview/edit_entry/field_value_multiselect', array( $this, 'fix_multiselect_value_serialization' ), 10, 3 );
 	}
 
 	/**
@@ -337,6 +332,12 @@ class GravityView_Edit_Entry_Render {
 
 		// File download/delete icons
 		wp_enqueue_style( 'gform_admin_icons' );
+
+		// Fixes the icons not showing up correctly in Gravity Forms 2.9+
+		if ( version_compare( GFForms::$version, '2.9', '>=' ) ) {
+			wp_add_inline_style( 'gform_theme', '.gform-icon { font-family: gform-icons-admin !important; }' );
+		}
+
 	}
 
 
@@ -636,26 +637,6 @@ class GravityView_Edit_Entry_Render {
 	}
 
 	/**
-	 * Remove max_files validation (done on gravityforms.js) to avoid conflicts with GravityView
-	 * Late validation done on self::custom_validation
-	 *
-	 * @param $plupload_init array Plupload settings
-	 * @param $form_id
-	 * @param $instance
-	 * @return mixed
-	 */
-	public function modify_fileupload_settings( $plupload_init, $form_id, $instance ) {
-		if ( ! $this->is_edit_entry() ) {
-			return $plupload_init;
-		}
-
-		$plupload_init['gf_vars']['max_files'] = 0;
-
-		return $plupload_init;
-	}
-
-
-	/**
 	 * Set visibility to visible and convert field input key to string
      *
 	 * @return array $form
@@ -926,7 +907,7 @@ class GravityView_Edit_Entry_Render {
 							$value = $value[ $field_id ];
 						}
 
-						if( ! empty( $field->customFieldTemplateEnabled ) ) {
+						if ( ! empty( $field->customFieldTemplateEnabled ) ) {
 							$value = $this->fill_post_template( $field->customFieldTemplate, $form, $entry_tmp, true );
 						}
 
@@ -1120,7 +1101,8 @@ class GravityView_Edit_Entry_Render {
 
 		?>
 			<h2 class="gv-edit-entry-title">
-				<span><?php
+				<span>
+                <?php
 
 					/**
 					 * Modify the edit entry title.
@@ -1131,7 +1113,8 @@ class GravityView_Edit_Entry_Render {
 					$edit_entry_title = apply_filters( 'gravityview_edit_entry_title', __( 'Edit Entry', 'gk-gravityview' ), $this );
 
 					echo esc_attr( $edit_entry_title );
-					?></span>
+				?>
+                    </span>
 			</h2>
 
 			<?php $this->maybe_print_message(); ?>
@@ -1255,7 +1238,7 @@ class GravityView_Edit_Entry_Render {
 				case '2':
 					$redirect_url          = $edit_redirect_url;
 					$redirect_url          = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
-					$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sRedirecting to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $edit_redirect_url ), '</a>' );
+					$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sRedirecting to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $redirect_url ), '</a>' );
 					break;
 
 				case '':
@@ -1517,8 +1500,8 @@ class GravityView_Edit_Entry_Render {
 		// If the form has been submitted, then we don't need to pre-fill the values,
 		// Except for fileupload type and when a field input is overridden- run always!!
 
-		if(
-			( $this->is_edit_entry_submission() && !in_array( $field->get_input_type(), array( 'fileupload', 'post_image' ) ) )
+		if (
+			( $this->is_edit_entry_submission() && ! in_array( $field->get_input_type(), array( 'fileupload', 'post_image' ) ) )
 			&& false === ( $gv_field && is_callable( array( $gv_field, 'get_field_input' ) ) )
 			&& ! GFCommon::is_product_field( $field->type )
 			|| ! empty( $field_content )
@@ -1579,7 +1562,7 @@ class GravityView_Edit_Entry_Render {
 		$override_saved_value = apply_filters( 'gravityview/edit_entry/pre_populate/override', false, $field );
 
 		// We're dealing with multiple inputs (e.g. checkbox) but not time or date (as it doesn't store data in input IDs)
-		if ( isset( $field->inputs ) && is_array( $field->inputs ) && ! in_array( $field->type, array( 'time', 'date' ) ) ) {
+		if ( isset( $field->inputs ) && is_array( $field->inputs ) && ! in_array( $field->type, array( 'time', 'date' ) ) && ! ( $field instanceof GF_Field_Radio && in_array($field->type, array('image_choice','multi_choice')) ) ) {
 
 			$field_value = array();
 
@@ -2091,7 +2074,7 @@ class GravityView_Edit_Entry_Render {
 	        /** @var GF_Field $field */
 	        foreach ( $fields as $field ) {
 				if ( intval( $configured_field['id'] ) === intval( $field->id ) && $this->user_can_edit_field( $configured_field, false ) ) {
-				    $edit_fields[] = $this->merge_field_properties( $field, $configured_field );
+				    $edit_fields[] = static::merge_field_properties( $field, $configured_field );
 				    break;
 				}
 			}
@@ -2108,7 +2091,7 @@ class GravityView_Edit_Entry_Render {
 	 * @since  1.5
 	 * @return array|GF_Field
 	 */
-	private function merge_field_properties( $field, $field_setting ) {
+	public static function merge_field_properties( $field, $field_setting ) {
 
 		$return_field = $field;
 
@@ -2116,6 +2099,8 @@ class GravityView_Edit_Entry_Render {
 			$return_field->label = '';
 		} elseif ( ! empty( $field_setting['custom_label'] ) ) {
 			$return_field->label = $field_setting['custom_label'];
+		} elseif ( ! empty( $field_setting['label'] ) ) {
+			$return_field->label = $field_setting['label'];
 		}
 
 		if ( ! empty( $field_setting['custom_class'] ) ) {
@@ -2308,7 +2293,7 @@ class GravityView_Edit_Entry_Render {
 							$value = gform_get_meta( $this->entry['id'], $rule['fieldId'] );
 						}
 
-						$match = GFFormsModel::matches_operation( $value, $rule['value'], $rule['operator'] );
+						$match = GVCommon::matches_operation( $value, $rule['value'], $rule['operator'] );
 
 						if ( $match ) {
 							$remove_conditions_rule[] = array( $field['id'], $i );
@@ -2548,26 +2533,6 @@ class GravityView_Edit_Entry_Render {
 		$valid = apply_filters( 'gravityview/edit_entry/verify_nonce', $valid, self::$nonce_field );
 
 		return $valid;
-	}
-
-
-	/**
-	 * Multiselect in GF 2.2 became a json_encoded value. Fix it.
-	 *
-	 * As a hack for now we'll implode it back.
-	 */
-	public function fix_multiselect_value_serialization( $field_value, $field, $_this ) {
-		if ( empty( $field->storageType ) || 'json' != $field->storageType ) {
-			return $field_value;
-		}
-
-		$maybe_json = @json_decode( $field_value, true );
-
-		if ( $maybe_json ) {
-			return implode( ',', $maybe_json );
-		}
-
-		return $field_value;
 	}
 
 	/**

@@ -216,19 +216,19 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 * @see admin-search-widget.js (getSelectInput)
 		 */
 		$input_types = array(
-			'text'       => array( 'input_text' ),
-			'address'    => array( 'input_text' ),
-			'number'     => array( 'input_text', 'number_range' ),
-			'date'       => array( 'date', 'date_range' ),
-			'entry_date' => array( 'date_range' ),
-			'boolean'    => array( 'single_checkbox' ),
-			'select'     => array( 'select', 'radio', 'link' ),
-			'multi'      => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
+			'text'         => array( 'input_text' ),
+			'address'      => array( 'input_text' ),
+			'number'       => array( 'input_text', 'number_range' ),
+			'date'         => array( 'date', 'date_range' ),
+			'entry_date'   => array( 'date_range' ),
+			'boolean'      => array( 'single_checkbox' ),
+			'select'       => array( 'select', 'radio', 'link' ),
+			'multi'        => array( 'select', 'multiselect', 'radio', 'checkbox', 'link' ),
 
 			// hybrids
-			'created_by' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
-			'multi_text' => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
-			'product'    => array( 'select', 'radio', 'link', 'input_text', 'number_range' ),
+			'created_by'   => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
+			'multi_text'   => array( 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ),
+			'product'      => array( 'select', 'radio', 'link', 'input_text', 'number_range' ),
 		);
 
 		/**
@@ -448,15 +448,21 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', array( 'fileupload', 'post_image', 'post_id', 'section' ), null );
 
+			$blocklist_sub_fields = apply_filters( 'gravityview_blocklist_sub_fields', array( 'image_choice', 'multi_choice' ), null );
+
 			foreach ( $fields as $id => $field ) {
 
 				if ( in_array( $field['type'], $blocklist_field_types ) ) {
 					continue;
 				}
 
+				if ( in_array( $field['type'], $blocklist_sub_fields ) && NULL !== $field['parent'] ) {
+					continue;
+				}
+
 				$types = self::get_search_input_types( $id, $field['type'] );
 
-				$output .= '<option value="' . $id . '" ' . selected( $id, $current, false ) . 'data-inputtypes="' . esc_attr( $types ) . '">' . esc_html( $field['label'] ) . '</option>';
+				$output .= '<option value="' . $id . '" ' . selected( $id, $current, false ) . 'data-inputtypes="' . esc_attr( $types ) . '" data-placeholder="'.esc_html( $field['label'] ).'">' . esc_html( $field['text'] ?? $field['label'] ) . '</option>';
 			}
 		}
 
@@ -480,7 +486,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		// @todo - This needs to be improved - many fields have . including products and addresses
 		if ( false !== strpos( (string) $field_id, '.' ) && in_array( $field_type, array( 'checkbox' ) ) || in_array( $field_id, array( 'is_fulfilled' ) ) ) {
 			$input_type = 'boolean'; // on/off checkbox
-		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect' ) ) ) {
+		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect', 'image_choice','multi_choice' ) ) ) {
 			$input_type = 'multi'; // multiselect
 		} elseif ( in_array( $field_id, array( 'payment_status' ) ) ) {
 			$input_type = 'multi_text';
@@ -705,16 +711,43 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// add free search
 		if ( isset( $get['gv_search'] ) && '' !== $get['gv_search'] && in_array( 'search_all', $searchable_fields ) ) {
-
 			$search_all_value = $trim_search_value ? trim( $get['gv_search'] ) : $get['gv_search'];
 
 			$criteria = $this->get_criteria_from_query( $search_all_value, $split_words );
 
+			$form = GFAPI::get_form( $form_id );
+
+			$use_json_storage = false;
+
+			foreach ( ( $form['fields'] ?? [] ) as $field ) {
+				if ( 'json' === $field->storageType ) {
+					$use_json_storage = true;
+
+					break;
+				}
+			}
+
 			foreach ( $criteria as $criterion ) {
-				$search_criteria['field_filters'][] = array_merge(
+				$params = array_merge(
 					[ 'key' => null ],
 					$criterion
 				);
+
+				$search_criteria['field_filters'][] = $params;
+
+				// Certain form field meta values are stored as JSON, so we need to encode them before searching.
+				// This replicates the behavior of GF_Query_JSON_Literal::sql().
+				$value = $params['value'] ?? '';
+
+				if ( $use_json_storage && $value && is_string( $value ) ) {
+					$value = trim( json_encode( $value ), '"' );
+					$value = str_replace( '\\', '\\\\', $value );
+
+					$search_criteria['field_filters'][] = array_merge(
+						$params,
+						[ 'value' => $value ]
+					);
+				}
 			}
 		}
 
@@ -1080,12 +1113,22 @@ class GravityView_Widget_Search extends \GV\Widget {
 					)
 				);
 				$_tmp_query_parts = $_tmp_query->_introspect();
+
+				/**
+				 * @var GF_Query_Condition $search_condition
+				 * */
 				$search_condition = $_tmp_query_parts['where'];
 
 				if ( empty( $filter['key'] ) && $search_condition->expressions ) {
 					$search_conditions[] = $search_condition;
 				} else {
+					// If the left condition is empty, it is likely a multiple forms filter. In this case, we should retrieve the search condition from the main form.
+					if ( ! $search_condition->left && $search_condition->expressions ) {
+						$search_condition = $search_condition->expressions[0];
+					}
+
 					$left = $search_condition->left;
+
 					// When casting a column value to a certain type (e.g., happens with the Number field), GF_Query_Column is wrapped in a GF_Query_Call class.
 					if ( $left instanceof GF_Query_Call && $left->parameters ) {
 						// Update columns to include the correct alias.
@@ -1100,7 +1143,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 						}, $left->parameters );
 
 						$left = new GF_Query_Call( $left->function_name, $parameters );
-					} else {
+					} elseif ( $left ) {
 						$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
 						$left  = new GF_Query_Column( $left->field_id, $left->source, $alias );
 					}
@@ -2173,10 +2216,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$gravityview_view = GravityView_View::getInstance();
 
 		if ( $gravityview_view->search_clear ) {
-			$url = strtok( add_query_arg( array() ), '?' );
-
 			$clear_button_params = [
-				'url'     => $url,
+				'url'     => remove_query_arg(
+					( GravityView_Widget_Search::getInstance() )->add_reserved_args( [] )
+				),
 				'text'    => esc_html__( 'Clear', 'gk-gravityview' ),
 				'view_id' => $gravityview_view->getViewId(),
 				'format'  => 'html',
@@ -2320,7 +2363,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Enqueue the datepicker script
 	 *
-	 * It sets the $gravityview->datepicker_class parameter
+	 * It sets the $gravityview->atts['datepicker_class'] parameter
 	 *
 	 * @todo Use own datepicker javascript instead of GF datepicker.js - that way, we can localize the settings and not require the changeMonth and changeYear pickers.
 	 * @return void
@@ -2351,7 +2394,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$datepicker_class = apply_filters( 'gravityview_search_datepicker_class', 'gv-datepicker datepicker ' . $this->get_datepicker_format() );
 
-		$gravityview_view->datepicker_class = $datepicker_class;
+		$gravityview_view->setAtts(
+			array_merge(
+				$gravityview_view->atts,
+				[ 'datepicker_class' => $datepicker_class ]
+			)
+		);
 	}
 
 	/**

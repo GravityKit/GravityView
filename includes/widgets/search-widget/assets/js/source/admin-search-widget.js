@@ -530,7 +530,7 @@
 
 			var options = gvSearchWidget.getSelectInput( type );
 
-			select.html( options );
+			select.html( options ).trigger( 'change' );
 
 			// If there's only one option, disable ability to change it.
 			select.prop( 'disabled', function () {

@@ -286,6 +286,7 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
+
 				<?php
 				/**
 				 * Include changelog entries for two MINOR versions. Prune beyond that.
@@ -295,113 +296,119 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3>2.25 on June 5, 2024</h3>
+				<h3>2.34.2 on February 4, 2025</h3>
 
-				<p>This update improves how entries are automatically marked as "Read" and adds a new View setting to control this functionality.</p>
-
-				<b>Note: GravityView now requires Gravity Forms 2.6 (released in March 2022) or newer.</b>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>New View setting under the Single Entry tab to mark an entry as 'Read'. <a
-							href='https://docs.gravitykit.com/article/1008-marking-entries-as-read'>Read more about
-							the feature</a>.
-					</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Marking an entry as "Read" is now handled in the backend and also supports the Multiple Forms extension.</li>
-				</ul>
+				<p>This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.</p>
 
 				<h4>🐛 Fixed</h4>
 
 				<ul>
-					<li>Appearance of the Merge Tag picker in the field settings of the View editor.</li>
+					<li><code>function _load_textdomain_just_in_time was called incorrectly</code> PHP notice in WordPress 6.7 or newer.</li>
+					<li>Display issue caused by a malformed <code>div</code> tag in the Layout Builder View template.</li>
+				</ul>
+
+				<h3>2.34.1 on January 30, 2025</h3>
+
+				<p>This update resolves multiple issues, including problems with search bar visibility in Layout Builder, entry management in multisite environments, and non-functional entry locking and notes, among others.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>The Search Bar would not always be visible in Views using the Layout Builder.</li>
+					<li>Users belonging to the main network site in a multisite environment couldn’t delete their own entries on subsites.</li>
+					<li>Entry locking not working.</li>
+					<li>JavaScript error preventing entry notes from being added when using the Twenty Twenty-Two theme or newer.</li>
+					<li>Using a comma in the <code>:format</code> merge tag modifier with Date fields caused partial results to be returned.</li>
 				</ul>
 
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li>Removed the <code>gk/gravityview/field/is-read/print-script</code> filter in favor of the improved functionality that marks entries as "Read".</li>
+					<li>Added <code>gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets</code> filter to override whether to load the entry lock UI assets.</li>
+					<li>Added <code>gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup</code> filter to modify the entry locking UI dialog window markup.</li>
 				</ul>
 
-				<h3>2.24 on May 28, 2024</h3>
+				<h3>2.34 on January 9, 2025</h3>
 
-				<p>This release introduces the ability to use different view types for Multiple Entries and Single Entry layouts, adds a new View field to display an entry's read status, and fixes issues with the File Upload field, product search, and merge tag processing in entry-based notifications. <a href="https://www.gravitykit.com/announcing-gravityview-2-24/">Read the announcement</a> for more details.</p>
+				<p>This release introduces the <a href="https://www.gravitykit.com/announcing-gravityview-2-34-all-new-layout-builder">Layout Builder</a> that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.</p>
 
 				<h4>🚀 Added</h4>
 
 				<ul>
-					<li>Ability to select different View types for Multiple Entries and Single Entry layouts. <a href="https://www.gravitykit.com/announcing-gravityview-2-24">Learn all about the new View type switcher!</a></li>
-					<li>"Read Status" field to display whether an entry has been read or not.</li>
-					<ul>
-						<li>Customize the labels for "Read" and "Unread" statuses.</li>
-						<li>Sort a View by "Read Status".</li>
-					</ul>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>File Upload field values not rendering in the View if filenames have non-Latin characters.</li>
-					<li>Product search now returns correct results when using all search input types in the search bar.</li>
-					<li>View's Export Link widget would not respect date range search filters.</li>
-					<li>Removed the unsupported "date" input type for the Date Entry field under the Search Bar widget settings.</li>
-					<li>Merge tags in GravityView notifications are now properly processed for fields dynamically populated by Gravity Wiz's Populate Anything add-on.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/field/is-read/print-script</code> filter to modify whether to print the script in the frontend that marks an entry as "Read".</li>
-					<li>Added <code>gk/gravityview/field/is-read/label</code> filter to change the "Is Read" field's "Read" and "Unread" labels.</li>
-				</ul>
-
-				<h3>2.23 on May 17, 2024</h3>
-
-				<p>This update adds support for Nested Forms' entry meta, addresses several bugs, including critical ones, and improves GravityKit's Settings and Manage Your Kit screens.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Support for Gravity Wiz's Gravity Forms Nested Forms entry meta (parent form and entry IDs, child form field ID) in the View editor and merge tags.</li>
+					<li>New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.</li>
+					<li>Support for using entry Approval Status in conditional logic rules on the Gravity Forms Export Entries page.</li>
 				</ul>
 
 				<h4>✨ Improved</h4>
 
 				<ul>
-					<li>The "Add All Fields" button in the View editor now adds fields in their correct form order.</li>
+					<li>Entries added via the Gravity Forms API or while GravityView is inactive can now be filtered using the "Unapproved" status on the Entries page.</li>
 				</ul>
 
 				<h4>🐛 Fixed</h4>
 
 				<ul>
-					<li>Export link View widget would cause a fatal error during multi-word searches.</li>
-					<li>Fatal error when the search bar is configured with a Gravity Flow field and the Gravity Flow plugin is not active.</li>
-					<li>Duplicating entries no longer fails to refresh the entry list when View-based caching is enabled.</li>
-					<li>View cache not being invalidated when updating entries on a form joined using the Multiple Forms extension.</li>
-					<li>Number field output now respects the form field's format settings, such as decimals and currency.</li>
+					<li>Fatal error when searching entries by Approval Status in Views joined with another form using the Multiple Forms extension.</li>
+					<li>Some <a href='https://docs.gravitykit.com/article/350-merge-tag-modifiers'>merge tag modifiers</a> (e.g., <code>:maxwords</code>) not being processed.</li>
+					<li>WordPress's timezone offset not applying to Date field output with the <code>:format</code> merge tag modifier.</li>
+				</ul>
+
+				<h3>2.33.2 on December 31, 2024</h3>
+
+				<p>This update removes debugging code from the Entry Notes field.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Debugging code being shown in the Entry Notes field output.</li>
+				</ul>
+
+				<h3>2.33.1 on December 30, 2024</h3>
+
+				<p>This update removes debugging code from the Entry Notes field.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Debugging code being shown in the Entry Notes field output.</li>
+				</ul>
+
+				<h3>2.33 on December 19, 2024</h3>
+
+				<p>This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Support for the Source ID meta introduced in Gravity Forms 2.9.</li>
+					<li>New User Activation field in the View editor to activate users added by the Gravity Forms User Registration add-on.</li>
+					<li>Client-side validation of View editor settings to prevent incorrect values.</li>
+					<li><code>:initials</code> merge tag modifier for Name fields to display initials.</li>
+					<li><code>:format</code> merge tag modifier for field inputs (e.g., <code>{Event Field:1.1:format:Y-m-d}</code>).</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.</li>
+					<li>Individual Checkboxes field inputs incorrectly exported in CSV.</li>
+					<li>Custom permalinks not being used in embedded Views.</li>
+					<li>Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.</li>
+					<li>Labels for fields with empty values disappearing in mobile view when joining forms using the Multiple Forms extension.</li>
+					<li>Views defaulting to English instead of the site's language for users without certain capabilities.</li>
 				</ul>
 
 				<h4>🔧 Updated</h4>
 
-				<p><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.14.</p>
-
 				<ul>
-					<li>Added an option to subscribe to GravityKit's newsletter from the Manage Your Kit screen.</li>
-					<li>Added a setting in GravityKit > Settings > GravityKit to specify the GravityKit menu position in the Dashboard.</li>
-					<li>Improved internal check for product updates that could still interfere with third-party plugin updates. Thanks, Aaron!</li>
-					<li>Fixed a bug that prevented WordPress from loading third-party plugin translations after their updates. Thanks, Jérôme!</li>
-					<li>Success message now shows correct product name after activation/deactivation.</li>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.22.</li>
 				</ul>
 
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li>Added <code>gk/gravityview/entry/approval-link/params</code> filter to modify entry approval link parameters.</li>
+					<li>Added <code>gravityview/template/field/csv/tick</code> filter to programmatically modify the checkbox "check" output in CSV.</li>
+					<li>Added <code>gravityview/shortcode/after-processing</code> action after a <code>[gravityview]</code> shortcode is finished.</li>
 				</ul>
 
 				<p style="text-align: center;">
@@ -462,7 +469,7 @@ class GravityView_Welcome {
 			<div class="cols">
 
 				<div class="col">
-					<h3>Zack Katz <a href="https://twitter.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on Twitter"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
+					<h3>Zack Katz <a href="https://x.com/zackkatz"><span class="dashicons dashicons-twitter" title="Follow Zack on X"></span></a> <a href="https://katz.co" title="View Zack&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
 					<h4>Project Lead &amp; Developer</h4>
 					<p><img alt="Zack Katz" src="<?php echo plugins_url( 'assets/images/team/Zack.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Zack has been developing WordPress plugins since 2008 and has been a huge Gravity Forms fan from the start. Zack is co-owner of GravityKit and he lives with his wife in Leverett, Massachusetts. He can&rsquo;t wait for the next episode of <a href="https://atp.fm">ATP</a> or <a href="https://www.flophousepodcast.com">The Flop House</a> podcasts.</p>
 				</div>
@@ -475,12 +482,12 @@ class GravityView_Welcome {
 
 				<div class="col">
 					<h3>Vlad K.</h3>
-					<h4>Core Developer</h4>
+					<h4>Head of Development</h4>
 					<p><img alt="Vlad K."  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Vlad.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Vlad is GravityKit&rsquo;s lead developer. Known for his versatility, Vlad handles both front-end and back-end programming, as well as testing and DevOps. He lives in Ottawa, Canada, and frequently travels the world in pursuit of unique experiences that fuel his creativity and broaden his worldview.</p>
 				</div>
 
 				<div class="col">
-					<h3>Rafael Bennemann <a href="https://twitter.com/rafaelbe" title="Follow Rafael on Twitter"><span class="dashicons dashicons-twitter"></span></a></h3>
+					<h3>Rafael Bennemann <a href="https://x.com/rafaelbe" title="Follow Rafael on X"><span class="dashicons dashicons-twitter"></span></a></h3>
 					<h4>Support Specialist</h4>
 					<p><img alt="Rafael Bennemann"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Bennemann.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" />Rafael dedicated most of his adult life to helping people and companies take their ideas to the web, first as a developer and now as a Customer Advocate at GravityKit. He will do his best to help you too, all the while sipping a <a href="https://en.wikipedia.org/wiki/Spritz_Veneziano">Spritz Veneziano</a> in Northern Italy, where he currently lives with his family.</p>
 				</div>
@@ -489,6 +496,12 @@ class GravityView_Welcome {
 					<h3>Casey Burridge</h3>
 					<h4 style='font-weight:0; margin-top:0'>Content Creator</h4>
 					<p><img alt="Casey Burridge" class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Casey.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94"/>Casey is GravityKit&rsquo;s resident content creator. He&rsquo;s been a WordPress lover ever since launching his first blog more than 6 years ago. Casey has lived and worked in London and Beijing, but feels most at home in Cape Town, South Africa, where he&rsquo;s originally from.</p>
+				</div>
+
+				<div class='col'>
+					<h3>Doeke Norg <a href="https://x.com/doekenorg" title="Follow Doeke on X"><span class="dashicons dashicons-twitter"></span></a> <a href="https://doeken.org/" title="View Doeke&rsquo;s website"><span class="dashicons dashicons-admin-site"></span></a></h3>
+					<h4 style='font-weight:0; margin-top:0'>Senior Developer</h4>
+					<p>With almost 20 years of experience in PHP, there are few things Doeke doesn&rsquo;t know about our favourite programming language. He lives with his family in The Netherlands, and spends his time designing elaborate, but maintainable code. He also writes a blog about software design in PHP.</p>
 				</div>
 			</div>
 

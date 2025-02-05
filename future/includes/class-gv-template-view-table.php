@@ -90,15 +90,13 @@ class View_Table_Template extends View_Template {
 
 		$class = 'gv-sort';
 
-		$sort_field_id = \GravityView_frontend::_override_sorting_id_by_field_type( $context->field->ID, $context->view->form->ID );
-
 		$sort_args = array(
 			sprintf( 'sort[%s]', $context->field->ID ),
 			'asc',
 		);
 
 		// If we are already sorting by the current field...
-		if ( ! empty( $sorting['key'] ) && (string) $sort_field_id === (string) $sorting['key'] ) {
+		if ( ! empty( $sorting['key'] ) && (string) $context->field->ID === (string) $sorting['key'] ) {
 
 		    switch ( $sorting['direction'] ) {
 		        // No sort
@@ -380,11 +378,8 @@ class View_Table_Template extends View_Template {
         );
 
 		if ( $entry->is_multi() ) {
-			if ( ! $single_entry = $entry->from_field( $field ) ) {
-				echo '<td></td>';
-				return;
-			}
-			$form = GF_Form::by_id( $field->form_id );
+			$single_entry = $entry->from_field( $field );
+			$form         = GF_Form::by_id( $field->form_id );
 		}
 
 		$renderer = new Field_Renderer();

@@ -11,7 +11,7 @@ class Blocks {
 
 	const SLUG = 'gk-gravityview-blocks';
 
-	const IGNORE_SCRIPTS_AND_STYLES = [ 'jetpack', 'elementor' ];
+	const IGNORE_SCRIPTS_AND_STYLES = [ 'jetpack', 'elementor', 'yoast' ];
 
 	private $blocks_build_path;
 
@@ -202,6 +202,7 @@ class Blocks {
 					admin_url( 'post.php' )
 				),
 				'views'               => $this->get_views(),
+				'nonce'=>wp_create_nonce( 'gravityview_ajaxaddshortcode' ),
 			)
 		);
 

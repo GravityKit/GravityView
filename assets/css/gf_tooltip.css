@@ -30,7 +30,7 @@ a.tooltip_bottomleft:hover {
 	font-size: 1.0em;
 	border-radius: 6px;
 	-webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.3);
+	     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.3);
 }
 
 body .ui-tooltip {

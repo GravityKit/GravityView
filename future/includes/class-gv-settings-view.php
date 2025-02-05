@@ -189,8 +189,9 @@ class View_Settings extends Settings {
 					'type'        => 'text',
 					'class'       => 'code widefat',
 					'value'       => '',
-					'placeholder' => 'https://www.example.com',
+					'placeholder' => 'https://www.example.com/{field:1}',
 					'requires'    => 'no_entries_options=2',
+					'validation'  => self::validate_url_with_tags(),
 				),
 				'no_search_results_text'      => array(
 					'label'             => __( '"No Search Results" Text', 'gk-gravityview' ),
@@ -515,6 +516,7 @@ class View_Settings extends Settings {
 					'placeholder' => 'https://www.example.com/landing-page/',
 					'requires'    => 'edit_redirect=2',
 					'merge_tags'  => 'force',
+					'validation'  => self::validate_url_with_tags(),
 				),
 				'action_label_update'         => array(
 					'label'      => __( 'Update Button Text', 'gk-gravityview' ),
@@ -523,6 +525,17 @@ class View_Settings extends Settings {
 					'type'       => 'text',
 					'value'      => _x( 'Update', 'Button to update an entry the user is editing', 'gk-gravityview' ),
 					'merge_tags' => 'force',
+				),
+				'edit_cancel_lightbox_action' => array(
+					'label'     => __( 'Cancel Link Action', 'gk-gravityview' ),
+					'tooltip'   => __( 'Choose what happens when you click Cancel while editing an entry in a lightbox.', 'gk-gravityview' ),
+					'type'      => 'select',
+					'hidden' => 1,
+					'value'     => 'close_lightbox',
+					'options'   => array(
+						'close_lightbox'           => __( 'Close Lightbox', 'gk-gravityview' ),
+						'redirect_to_single_entry' => __( 'Redirect to Single Entry', 'gk-gravityview' ),
+					),
 				),
 				'action_label_cancel'         => array(
 					'label'      => __( 'Cancel Link Text', 'gk-gravityview' ),
@@ -590,6 +603,7 @@ class View_Settings extends Settings {
 					'placeholder' => 'https://www.example.com/landing-page/',
 					'requires'    => 'delete_redirect=' . \GravityView_Delete_Entry::REDIRECT_TO_URL_VALUE,
 					'merge_tags'  => 'force',
+					'validation'  => self::validate_url_with_tags(),
 				),
 				'is_secure'                   => [
 					'label' => __( 'Enable Enhanced Security', 'gk-gravityview' ),
@@ -809,5 +823,47 @@ class View_Settings extends Settings {
 				$defaults
 			)
 		);
+	}
+
+	/**
+	 * Validates URLs with merge tags.
+	 *
+	 * Valid format examples:
+	 * http://foo.bar/{field:1}
+	 * https://foo.bar/{field:1}
+	 * https://{field:1}
+	 * https://foo.bar/{field:1}/{another:2}
+	 * https://foo.bar/{field:1}:8080?name=value#fragment
+	 * http://foo.bar
+	 * https://foo.bar/path/to/resource
+	 * http://192.168.0.1:8080/query?name=value#fragment
+	 * https://[2001:db8::1]:443/resource
+	 * https://2001:0db8:85a3:0000:0000:8a2e:0370:7334/path/to?name=value#fragment
+	 * {field:1}
+	 * {field:1}/path/to?name=value#fragment
+	 *
+	 * Invalid examples:
+	 * htp://foo.bar - Misspelled protocol http (should not match).
+	 * foo.bar - Missing protocol (http:// or https://) or leading //.
+	 * https://foo - Incomplete domain (e.g., .com).
+	 * http://foo - Same as above; incomplete domain.
+	 * foo.bar/{field:1} - Missing protocol (http:// or https://) or leading //.
+	 * foo - No protocol, domain, or valid structure.
+	 *
+	 * @since 2.33
+	 *
+	 * @return array
+	 **/
+	private static function validate_url_with_tags() {
+		return [
+			[
+				'rule'    => 'required',
+				'message' => __( 'Field is required', 'gk-gravityview' ),
+			],
+			[
+				'rule'    => "matches:^s*((https?:\/\/)((\S+\.+\S+)|(\[?(\S+:)+\S+\]?)|({.*}.*))?(?::\d+)?({.*}.*)?|({.*}.*))\s*$",
+				'message' => __( 'Must be a valid URL. Can contain merge tags.', 'gk-gravityview' ),
+			],
+		];
 	}
 }

@@ -132,7 +132,10 @@ final class Plugin {
 
 	public function load_settings() {
 		require_once $this->dir( 'future/includes/class-gv-settings-plugin.php' );
+		require_once $this->dir( 'future/includes/class-gv-permalinks.php' );
+
 		$this->settings = new Plugin_Settings();
+		new Permalinks( $this->settings );
 
 		include_once $this->dir( 'includes/class-gravityview-settings.php' );
 	}
@@ -207,10 +210,12 @@ final class Plugin {
 		include_once $this->dir( 'includes/fields/class-gravityview-fields.php' );
 		include_once $this->dir( 'includes/fields/class-gravityview-field.php' );
 
-		// Load all field files automatically
-		foreach ( glob( $this->dir( 'includes/fields/class-gravityview-field*.php' ) ) as $gv_field_filename ) {
-			include_once $gv_field_filename;
-		}
+		add_action( 'after_setup_theme', function () {
+			// Load all field files automatically
+			foreach ( glob( $this->dir( 'includes/fields/class-gravityview-field*.php' ) ) as $gv_field_filename ) {
+				include_once $gv_field_filename;
+			}
+		} );
 
 		include_once $this->dir( 'includes/class-gravityview-entry-approval-status.php' );
 		include_once $this->dir( 'includes/class-gravityview-entry-approval-merge-tags.php' );
@@ -226,6 +231,7 @@ final class Plugin {
 		include_once $this->dir( 'includes/extensions/duplicate-entry/class-duplicate-entry.php' );
 		include_once $this->dir( 'includes/extensions/entry-notes/class-gravityview-field-notes.php' );
 		include_once $this->dir( 'includes/extensions/lightbox/class-gravityview-lightbox.php' );
+		include_once $this->dir( 'includes/extensions/lightbox-entry/class-gravityview-lightbox-entry.php' );
 		include_once $this->dir( 'includes/extensions/styles/class-gravityview-style.php' );
 
 		// Load WordPress Widgets

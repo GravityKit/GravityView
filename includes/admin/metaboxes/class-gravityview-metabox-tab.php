@@ -92,6 +92,13 @@ class GravityView_Metabox_Tab {
 	 */
 	public $icon_class_name = '';
 
+	/**
+	 * CSS class to append to the navigation tab.
+	 *
+	 * @since 2.26
+	 * @var string
+	 */
+	public $extra_nav_class = '';
 
 	/**
 	 * Create a new metabox tab

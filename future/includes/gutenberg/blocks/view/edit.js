@@ -6,6 +6,7 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 
 import ViewSelector from 'shared/js/view-selector';
+import SortFieldSelector from 'shared/js/sort-selector';
 import PostSelector from 'shared/js/post-selector';
 import PreviewControl from 'shared/js/preview-control';
 import PreviewAsShortcodeControl from 'shared/js/preview-as-shortcode-control';
@@ -218,12 +219,10 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									onChange={ ( pageSize ) => setAttributes( { pageSize } ) }
 								/>
 
-								<TextControl
-									label={ __( 'Sort Field', 'gk-gravityview' ) }
-									value={ sortField }
-									type="number"
-									min="1"
-									onChange={ ( sortField ) => setAttributes( { sortField } ) }
+								<SortFieldSelector
+									viewId={ viewId }
+									onChange={ (sortField) => setAttributes({sortField}) }
+									sortField={sortField}
 								/>
 
 								<SelectControl

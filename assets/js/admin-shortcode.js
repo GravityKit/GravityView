@@ -3,15 +3,15 @@
  * @since 2.21
  */
 ( function ( $ ) {
-	$( document ).on( 'ready', function () {
-		var shortcode_clipboard = new ClipboardJS( '.gv-shortcode input.code', {
+	$( function () {
+		const shortcode_clipboard = new ClipboardJS( '.gv-shortcode input.code', {
 			text: function ( trigger ) {
 				return $( trigger ).val();
 			}
 		} );
 
 		shortcode_clipboard.on('success', function (e) {
-			var $el = $( e.trigger ).closest( '.gv-shortcode' ).find( '.copied' );
+			const $el = $( e.trigger ).closest( '.gv-shortcode' ).find( '.copied' );
 			$el.show();
 			setTimeout( function () {
 				$el.fadeOut();

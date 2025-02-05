@@ -221,6 +221,22 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 				'raw' => '["Apple", "Orange", "Pear"]',
 				'expected' => 'Apple Orange Pear',
 			),
+
+			array(
+				'modifier' => 'format:F-j-y',
+				'merge_tag' => 'Date',
+				'value' => '06/02/2024',
+				'raw' => '06/02/2024',
+				'expected' => 'June-2-24',
+			),
+
+			array(
+				'modifier' => 'format:g:i..a',
+				'merge_tag' => 'Time',
+				'value' => '04:05 pm',
+				'raw' => '04:05 pm',
+				'expected' => '4:05..pm',
+			),
 		);
 
 		// Fake it as it's used for default filters
@@ -229,6 +245,14 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		foreach ( $tests as $test ) {
 			$value = isset( $test['value'] ) ? $test['value'] : 'value should not be used';
 			$merge_tag = isset( $test['merge_tag'] ) ? $test['merge_tag'] : 'merge tag not used';
+			if( isset( $test['merge_tag'] ) && $test['merge_tag'] === 'Time'){
+				$field = new GF_Field_Time();
+			}
+
+			if( isset( $test['merge_tag'] ) && $test['merge_tag'] === 'Date'){
+				$field = new GF_Field_Date();
+			}
+
 			$value = GravityView_Merge_Tags::process_modifiers( $value, $merge_tag, $test['modifier'], $field, $test['raw'] );
 			$this->assertEquals( $test['expected'], $value, print_r( $test, true ) );
 		}
@@ -317,6 +341,39 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 
 	function test_replace_date_updated() {
 		return $this->test_replace_date_created_and_updated( 'date_updated' );
+	}
+
+	/**
+	 * @covers GravityView_Merge_Tags::replace_merge_tags_dates
+	 *
+	 * @since  2.30.0
+	 */
+	function test_replace_field_dates_merge_tags() {
+		$form = $this->factory->form->create_and_get();
+
+		$entry = $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+		] );
+
+		$test_data = [
+			'{now:raw}'                => date_i18n( 'Y-m-d H:i:s', time(), true ),
+			'{now:format:Y-m-d}'       => date_i18n( 'Y-m-d', time(), true ),
+			'{now:timestamp}'          => time(),
+			'{tomorrow:raw}'           => date_i18n( 'Y-m-d H:i:s', time() + DAY_IN_SECONDS, true ),
+			'{tomorrow:format:Y-m-d}'  => date_i18n( 'Y-m-d', time() + DAY_IN_SECONDS, true ),
+			'{tomorrow:timestamp}'     => time() + DAY_IN_SECONDS,
+			'{yesterday:raw}'          => date_i18n( 'Y-m-d H:i:s', time() - DAY_IN_SECONDS, true ),
+			'{yesterday:format:Y-m-d}' => date_i18n( 'Y-m-d', time() - DAY_IN_SECONDS, true ),
+			'{yesterday:timestamp}'    => time() - DAY_IN_SECONDS,
+		];
+
+		foreach ( $test_data as $merge_tag => $expected ) {
+			$this->assertEquals(
+				$expected,
+				GravityView_Merge_Tags::replace_variables( $merge_tag, $form, $entry ),
+				$merge_tag
+			);
+		}
 	}
 
 	/**
@@ -426,6 +483,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 101, 'form_id' => $form['id'] ) );
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 201, 'form_id' => $form['id'] ) );
 		$form['fields'][] = new GF_Field_Text( array( 'id' => 301, 'form_id' => $form['id'] ) );
+		$form['fields'][] = new GF_Field_Date( array( 'id' => 501, 'form_id' => $form['id'] ) );
 
 		$list_field = new GF_Field_List( array( 'id' => 401, 'form_id' => $form['id'] ) );
 
@@ -436,6 +494,7 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 		$entry['201'] = '<tag>';
 		$entry['301'] = '["This","is","JSON"]';
 		$entry['401'] = 'a:2:{i:0;s:8:"One List";i:1;s:8:"Two List";}';
+		$entry['501'] = '2025-01-31';
 
 		$tests = array(
 			'{Field:100:sanitize_html_class}' => 'This is spaces',
@@ -472,6 +531,10 @@ class GravityView_Merge_Tags_Test extends GV_UnitTestCase {
 			'{List Field:401:text,urlencode}' => 'One+List%2C+Two+List',
 			'{List Field:401:html,esc_html}' => "&lt;ul class=&#039;bulleted&#039;&gt;&lt;li&gt;One List&lt;/li&gt;&lt;li&gt;Two List&lt;/li&gt;&lt;/ul&gt;",
 			'{List Field:401:non_gf_non_gv}' => 'One List, Two List',
+			'{Field:501:format:F j, Y}' => 'January 31', // Comma is not escaped
+			'{Field:501:format:F j\, Y}' => 'January 31, 2025',
+			'{Field:501:format:\j\a\n\u\a\r\y j\, Y,ucwords }' => 'January 31, 2025',
+			'{Field:501:format:\j\a\n\u\a\r\y j\, Y,ucwords,maxwords:2}' => 'January 31,&hellip;',
 		);
 
 		$filter_tags = function( $tags ) {

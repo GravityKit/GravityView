@@ -3,7 +3,8 @@
  * Plugin Name:         GravityView
  * Plugin URI:          https://www.gravitykit.com
  * Description:         The best, easiest way to display Gravity Forms entries on your website.
- * Version:             2.25
+ * Version:             2.34.2
+ * Requires PHP:        7.4.0
  * Author:              GravityKit
  * Author URI:          https://www.gravitykit.com
  * Text Domain:         gk-gravityview
@@ -22,12 +23,16 @@ if ( ! GravityKit\GravityView\Foundation\should_load( __FILE__ ) ) {
 	return;
 }
 
+if ( ! GravityKit\GravityView\Foundation\meets_min_php_version_requirement( __FILE__, '7.4.0' ) ) {
+	return;
+}
+
 /** Constants */
 
 /**
  * The plugin version.
  */
-define( 'GV_PLUGIN_VERSION', '2.25' );
+define( 'GV_PLUGIN_VERSION', '2.34.2' );
 
 /**
  * Full path to the GravityView file
@@ -77,7 +82,7 @@ define( 'GV_FUTURE_MIN_WP_VERSION', '5.3' );
  * @since 1.19.2
  * @var string|false
  */
-define( 'GV_FUTURE_MIN_PHP_VERSION', '7.4.0' );
+define( 'GV_FUTURE_MIN_PHP_VERSION', '8.0.0' );
 
 /**
  * The future is here and now.

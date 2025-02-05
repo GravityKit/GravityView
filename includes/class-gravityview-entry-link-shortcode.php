@@ -133,6 +133,10 @@ class GravityView_Entry_Link_Shortcode {
 
 		$this->view_id = empty( $this->settings['view_id'] ) ? GravityView_View::getInstance()->getViewId() : absint( $this->settings['view_id'] );
 
+		if ( empty( $this->view_id ) && get_the_ID() ) {
+			$this->view_id = get_the_ID();
+		}
+
 		if ( empty( $this->view_id ) ) {
 			gravityview()->log->error( 'A View ID was not defined and we are not inside a View' );
 

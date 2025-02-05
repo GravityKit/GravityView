@@ -9,7 +9,8 @@ use GravityKit\GravityView\Foundation\Helpers\Arr;
 
 /**
  * Ex-GF Addon Settings class that's been stripped of GF functionality.
- * Serves as a wrapper for Foundation Settings while also providing old getter/setter methods for backward compatibility.
+ * Serves as a wrapper for Foundation Settings while also providing old getter/setter methods for backward
+ * compatibility.
  */
 class Plugin_Settings {
 	const SETTINGS_PLUGIN_ID = 'gravityview';
@@ -30,7 +31,7 @@ class Plugin_Settings {
 	 *
 	 * @var array
 	 */
-	private $_plugin_settings = array();
+	private $_plugin_settings = [];
 
 	public function __construct() {
 		// GravityKitFoundation may not yet be available when this class is instantiated, so let's temporarily use the Settings framework from Foundation that's included with GravityView and then possibly replace it with the latest version.
@@ -43,7 +44,7 @@ class Plugin_Settings {
 			}
 		);
 
-		add_filter( 'gk/foundation/settings/data/plugins', array( $this, 'add_settings' ) );
+		add_filter( 'gk/foundation/settings/data/plugins', [ $this, 'add_settings' ] );
 	}
 
 	/**
@@ -118,7 +119,8 @@ class Plugin_Settings {
 
 	/**
 	 * Migrates GravityView <2.16 settings to the new settings framework.
-	 * Some of those settings are now part of the GravityKit general settings, and some are part of the GravityView plugin settings.
+	 * Some of those settings are now part of the GravityKit general settings, and some are part of the GravityView
+	 * plugin settings.
 	 *
 	 * @return array The settings.
 	 */
@@ -129,19 +131,19 @@ class Plugin_Settings {
 		$site_has_settings = ( ! is_multisite() ) || is_main_site() || ( ! gravityview()->plugin->is_network_activated() ) || ( is_network_admin() && gravityview()->plugin->is_network_activated() );
 
 		if ( $site_has_settings ) {
-			$legacy_settings = get_option( $option_name, array() );
+			$legacy_settings = get_option( $option_name, [] );
 		} else {
 			$legacy_settings = get_blog_option( get_main_site_id(), $option_name );
 		}
 
 		if ( empty( $legacy_settings ) ) {
-			return array();
+			return [];
 		}
 
 		// Migrate legacy GravityView settings that are still part of GravityView.
-		$plugin_settings = array(
+		$plugin_settings = [
 			'rest_api' => (int) Arr::get( $legacy_settings, 'rest_api' ),
-		);
+		];
 
 		$this->_foundation_settings->save_plugin_settings( self::SETTINGS_PLUGIN_ID, $plugin_settings );
 
@@ -153,7 +155,7 @@ class Plugin_Settings {
 		$gk_settings = $this->_foundation_settings->get_plugin_settings( $gk_settings_id );
 
 		if ( empty( $gk_settings ) ) {
-			$gk_settings = array(
+			$gk_settings = [
 				'support_email'    => Arr::get( $legacy_settings, 'support-email' ),
 				'support_port'     => Arr::get( $legacy_settings, 'support_port' ),
 				'powered_by'       => (int) Arr::get( $legacy_settings, 'powered_by' ),
@@ -162,7 +164,7 @@ class Plugin_Settings {
 				'support_email'    => Arr::get( $legacy_settings, 'support-email' ),
 				'support_port'     => (int) Arr::get( $legacy_settings, 'support_port' ),
 				'no_conflict_mode' => (int) Arr::get( $legacy_settings, 'no-conflict-mode' ),
-			);
+			];
 
 			$this->_foundation_settings->save_plugin_settings( $gk_settings_id, $gk_settings );
 		}
@@ -190,12 +192,13 @@ class Plugin_Settings {
 	 * @return array The defaults.
 	 */
 	public function defaults() {
-		$defaults = array(
-			'rest_api'                  => 0,
-			'public_entry_moderation'   => 0,
-			'caching'                   => 1,
-			'caching_entries'           => DAY_IN_SECONDS,
-		);
+		$defaults = [
+			'rest_api'                => 0,
+			'use_dynamic_widgets'     => 0,
+			'public_entry_moderation' => 0,
+			'caching'                 => 1,
+			'caching_entries'         => DAY_IN_SECONDS,
+		];
 
 		/**
 		 * Filter default global settings.
@@ -250,7 +253,7 @@ class Plugin_Settings {
 			$notice = strtr(
 				$notice,
 				[
-					'[filter]' => '<code>' . implode( '</code>, <code>', $cache_filters_in_use ) . '</code>',
+					'[filter]'  => '<code>' . implode( '</code>, <code>', $cache_filters_in_use ) . '</code>',
 					'[filters]' => '<code>' . implode( '</code>, <code>', $cache_filters_in_use ) . '</code>',
 				]
 			);
@@ -280,8 +283,10 @@ HTML;
 			];
 		}
 
-		$cache_settings = array_merge( $cache_settings, [
-				array(
+		$cache_settings = array_merge(
+            $cache_settings,
+            [
+				[
 					'id'          => 'caching',
 					'type'        => 'checkbox',
 					'title'       => esc_html__( 'Enable Caching', 'gk-gravityview' ),
@@ -293,74 +298,81 @@ HTML;
 						]
 					),
 					'value'       => $this->get( 'caching', $default_settings['caching'] ),
-				),
-				array(
+				],
+				[
 					'id'          => 'caching_entries',
 					'type'        => 'number',
-					'requires'    => array(
+					'requires'    => [
 						'id'       => 'caching',
 						'operator' => '==',
 						'value'    => 1,
-					),
-					'validation'  => array(
-						array(
+					],
+					'validation'  => [
+						[
 							'rule'    => 'min:1',
 							'message' => esc_html__( 'The cache duration must be at least 1 second.', 'gk-gravityview' ),
-						),
-					),
+						],
+					],
 					'title'       => esc_html__( 'Entry Cache Duration', 'gk-gravityview' ),
 					'description' => esc_html__( 'Specify the duration in seconds that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance.', 'gk-gravityview' ),
 					'value'       => $this->get( 'caching_entries', $default_settings['caching_entries'] ),
-				),
+				],
 			]
 		);
 
-		$settings = array(
+		$settings = [
 			'id'       => self::SETTINGS_PLUGIN_ID,
 			'title'    => 'GravityView',
 			'defaults' => $default_settings,
 			'icon'     => 'data:image/svg+xml,%3Csvg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="80" height="80" rx="8" fill="%23FF1B67"/%3E%3Cg clip-path="url(%23clip0_16_27)"%3E%3Cpath fill-rule="evenodd" clip-rule="evenodd" d="M58.4105 54.6666H52.8824V56.4999C52.8824 59.5375 50.3902 61.9999 47.3544 61.9999H32.6134C29.5375 61.9999 27.0853 59.5375 27.0853 56.4999V29H21.5572C20.5144 29 19.7148 29.8207 19.7148 30.8333V49.1666C19.7148 50.1792 20.5144 51 21.5572 51H22.4788C22.9629 51 23.3997 51.4104 23.3997 51.9167V53.75C23.3997 54.2562 22.9629 54.6666 22.4788 54.6666H21.5572C18.4786 54.6666 16.0292 52.2042 16.0292 49.1666V30.8333C16.0292 27.7957 18.4786 25.3333 21.5572 25.3333H27.0853V23.5C27.0853 20.4624 29.5375 18 32.6134 18H47.3544C50.3902 18 52.8824 20.4624 52.8824 23.5V51H58.4105C59.4132 51 60.2529 50.1792 60.2529 49.1666V30.8333C60.2529 29.8207 59.4132 29 58.4105 29H57.4889C56.9647 29 56.5673 28.5896 56.5673 28.0833V26.2499C56.5673 25.7437 56.9647 25.3333 57.4889 25.3333H58.4105C61.449 25.3333 63.9378 27.7957 63.9378 30.8333V49.1666C63.9378 52.2042 61.449 54.6666 58.4105 54.6666ZM49.1968 23.5C49.1968 22.4874 48.3544 21.6667 47.3544 21.6667H32.6134C31.5733 21.6667 30.7709 22.4874 30.7709 23.5V56.4999C30.7709 57.5125 31.5733 58.3333 32.6134 58.3333H47.3544C48.3544 58.3333 49.1968 57.5125 49.1968 56.4999V23.5Z" fill="white"/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id="clip0_16_27"%3E%3Crect width="48" height="44" fill="white" transform="translate(16 18)"/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E%0A',
-			'sections' => array(
-				array(
+			'sections' => [
+				[
 					'title'    => esc_html__( 'General', 'gk-gravityview' ),
-					'settings' => array(
-						array(
+					'settings' => [
+						[
 							'id'          => 'rest_api',
 							'type'        => 'checkbox',
 							'title'       => esc_html__( 'REST API', 'gk-gravityview' ),
 							'description' => esc_html__( 'Enable View and Entry access via the REST API? Regular per-View restrictions apply (private, password protected, etc.).', 'gk-gravityview' ) . ' ' . esc_html__( 'If you are unsure, disable this setting.', 'gk-gravityview' ),
 							'value'       => $this->get( 'rest_api', $default_settings['rest_api'] ),
-						),
-					),
-				),
-				array(
+						],
+						[
+							'id'          => 'use_dynamic_widgets',
+							'type'        => 'checkbox',
+							'title'       => esc_html__( 'Use Dynamic Widget Placement', 'gk-gravityview' ),
+							'description' => esc_html__( 'Create additional, drag and droppable, widget rows of different layout types.', 'gk-gravityview' ),
+							'value'       => $this->get( 'use_dynamic_widgets', $default_settings['use_dynamic_widgets'] ),
+						],
+					],
+				],
+				[
 					'title'    => esc_html__( 'Caching', 'gk-gravityview' ),
 					'settings' => $cache_settings,
-				),
-				array(
+				],
+				[
 					'title'    => esc_html__( 'Permissions', 'gk-gravityview' ),
-					'settings' => array(
-						array(
+					'settings' => [
+						[
 							'id'          => 'public_entry_moderation',
 							'type'        => 'checkbox',
 							'title'       => esc_html__( 'Enable Public Entry Moderation', 'gk-gravityview' ),
 							'description' => strtr(
-								// translators: Do not translate the words inside the {} curly brackets; they are replaced.
+							// translators: Do not translate the words inside the {} curly brackets; they are replaced.
 								__( 'If enabled, adding {public} to {link}entry moderation merge tags{/link} will allow logged-out users to approve or reject entries. If disabled, all entry moderation actions require the user to be logged-in and have the ability to edit the entry.', 'gk-gravityview' ),
-								array(
+								[
 									'{public}' => '<code style="font-size: .9em">:public</code>',
 									'{link}'   => '<a href="https://docs.gravitykit.com/article/904-entry-moderation-merge-tags" target="_blank" rel="noopener noreferrer">',
 									'{/link}'  => '<span class="screen-reader-text"> ' . esc_html__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span></a>',
-								)
+								]
 							),
 							'value'       => $this->get( 'public_entry_moderation', $default_settings['public_entry_moderation'] ),
-						),
-					),
-				),
-			),
-		);
+						],
+					],
+				],
+			],
+		];
 
-		return array_merge( (array) $plugins_data, array( self::SETTINGS_PLUGIN_ID => $settings ) );
+		return array_merge( (array) $plugins_data, [ self::SETTINGS_PLUGIN_ID => $settings ] );
 	}
 
 	/**
@@ -368,7 +380,7 @@ HTML;
 	 *
 	 * Same as the GFAddon, except it returns the value from update_option()
 	 *
-	 * @param array $settings - App settings to be saved
+	 * @param array $settings App settings to be saved
 	 *
 	 * @return boolean False if value was not updated and true if value was updated.
 	 * @deprecated Use \GV\Settings::set() or \GV\Settings::update()
@@ -380,12 +392,12 @@ HTML;
 	/**
 	 * Sets a subset of settings.
 	 *
-	 * @param array|string An array of settings to update, or string (key) and $value to update one setting.
-	 * @param mixed                                                            $value A value if $settings is string (key). Default: null.
+	 * @param array|string $settings An array of settings to update, or string (key) and $value to update one setting.
+	 * @param mixed        $value    A value if $settings is string (key). Default: null.
 	 */
 	public function set( $settings, $value = null ) {
 		if ( is_string( $settings ) ) {
-			$settings = array( $settings => $value );
+			$settings = [ $settings => $value ];
 		}
 
 		$settings = wp_parse_args( $settings, $this->all() );
@@ -414,7 +426,8 @@ HTML;
 
 	/**
 	 * Check for the `gravityview_edit_settings` capability before saving plugin settings.
-	 * Gravity Forms says you're able to edit if you're able to view settings. GravityView allows two different permissions.
+	 * Gravity Forms says you're able to edit if you're able to view settings. GravityView allows two different
+	 * permissions.
 	 *
 	 * @since 1.15
 	 * @return void
@@ -428,7 +441,7 @@ HTML;
 			return;
 		}
 
-		$_POST = array(); // If you don't reset the $_POST array, it *looks* like the settings were changed, but they weren't
+		$_POST = []; // If you don't reset the $_POST array, it *looks* like the settings were changed, but they weren't
 		\GFCommon::add_error_message( __( 'You don\'t have the ability to edit plugin settings.', 'gk-gravityview' ) );
 	}
 
