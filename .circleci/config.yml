@@ -15,28 +15,28 @@ anchors:
       - prepare_test_and_build_environment
 
 jobs:
-  run_acceptance_tests:
+  run_e2e_tests:
     <<: *default_job_config
     steps:
-      - checkout
+      - attach_workspace:
+          at: /home/circleci
       - run:
-          name: Setting up virtual host
-          command: echo 127.0.0.1 wordpress | sudo tee -a /etc/hosts
-      - run:
-          name: Run acceptance tests
+          name: Run E2E tests
           command: |
-            PLUGIN_DIR=$PLUGIN_DIR docker-compose -f tests/acceptance/docker/docker-compose.yml run codeception --debug -vvv --html --xml
+            npm run wp-env:configure
+            npm run wp-env start
+            npm run tests:e2e
       - store_artifacts:
-          path: tests/acceptance/_output
+          path: tests/E2E/results
       - store_test_results:
-          path: tests/acceptance/_output
+          path: tests/E2E/results
 
   prepare_test_and_build_environment:
     <<: *default_job_config
     steps:
       - checkout
       - run:
-          name: Getting GV test/build tools
+          name: Get GK test/build tools
           command: |
             git clone git@github.com:gravityview/Tooling.git /home/circleci/tooling
       - restore_cache:
@@ -44,14 +44,20 @@ jobs:
             - test-dependencies-{{ epoch }}
             - test-dependencies-
       - run:
-          name: Installing build dependencies
+          name: Install build dependencies
           command: |
             /home/circleci/tooling/build-tools/build_tools.sh npm -o install
             /home/circleci/tooling/build-tools/build_tools.sh composer -o install
       - run:
-          name: Configuring tests environment
+          name: Configure test environment
           command: |
             /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
+            echo $GH_AUTH_TOKEN > .gh_token
+            /home/circleci/tooling/build-tools/build_tools.sh gh -o "auth login --with-token < .gh_token"
+            /home/circleci/tooling/build-tools/build_tools.sh gh -o 'release download -R gravityforms/gravityforms --clobber --pattern "*.zip" --dir .tmp'
+            unzip .tmp/gravityforms*.zip -d .tmp
+            mv .env.sample .env
+            sed -i "s|GRAVITY_FORMS_FOLDER=.*|GRAVITY_FORMS_FOLDER=${PWD}/.tmp/gravityforms|" .env
       - save_cache:
           key: test-dependencies-{{ epoch }}
           paths:
@@ -67,7 +73,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Running PHP 7.4 unit tests
+          name: Run PHP 7.4 unit tests
           command: |
             /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_74
 
@@ -77,7 +83,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Running PHP 8.0 unit tests
+          name: Run PHP 8.0 unit tests
           command: |
             /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh test_80
 
@@ -87,7 +93,7 @@ jobs:
       - attach_workspace:
           at: /home/circleci
       - run:
-          name: Building and packaging
+          name: Build and package
           command: |
             /home/circleci/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
             /home/circleci/tooling/build-tools/build_tools.sh grunt
@@ -103,7 +109,7 @@ jobs:
             mkdir .release
             cp gravityview-*.zip .release
       - run:
-          name: Creating a Github release
+          name: Create a GitHub release
           command: |
             if [ "${CIRCLE_BRANCH}" == "main" ]; then
               git config user.email "support@gravitykit.com"
@@ -111,7 +117,7 @@ jobs:
               /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
             fi
       - run:
-          name: Notifying GravityView Release Manager
+          name: Notify the GK Release Manager
           command: |
             if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
               /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
@@ -130,11 +136,11 @@ workflows:
           <<: *test_job_config
       - run_php_80_unit_tests:
           <<: *test_job_config
-#      - run_acceptance_tests:
-#          <<: *context
+      - run_e2e_tests:
+          <<: *test_job_config
       - build_package_release:
           <<: *context
           requires:
             - run_php_74_unit_tests
             - run_php_80_unit_tests
-#            - run_acceptance_tests
+            - run_e2e_tests
