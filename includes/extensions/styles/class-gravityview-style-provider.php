@@ -48,10 +48,7 @@ abstract class GravityView_Style_Provider {
 			return;
 		}
 
-		echo '<link rel="stylesheet" href="' . esc_url( plugins_url( 'includes/extensions/styles/css/' . static::$slug . '.min.css', GRAVITYVIEW_FILE ) ) . '" />';
-
-		#wp_print_scripts( static::$script_slug );
-		#wp_print_styles( static::$style_slug );
+		wp_print_styles( static::$style_slug );
 	}
 
 	/**
@@ -113,7 +110,7 @@ abstract class GravityView_Style_Provider {
 	 * @internal
 	 */
 	public function enqueue_styles() {
-		wp_register_style( self::$style_slug, plugins_url( 'includes/extensions/styles/css/' . self::$css_file_name, GRAVITYVIEW_FILE ), [], GV_PLUGIN_VERSION );
+		wp_register_style( static::$style_slug, plugins_url( 'includes/extensions/styles/css/' . static::$css_file_name, GRAVITYVIEW_FILE ), [], GV_PLUGIN_VERSION );
 	}
 
 }
