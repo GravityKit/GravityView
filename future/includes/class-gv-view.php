@@ -1116,10 +1116,21 @@ class View implements \ArrayAccess {
 			/** @type \GF_Query $query */
 			$query = new $query_class( $this->form->ID, $parameters['search_criteria'], Utils::get( $parameters, 'sorting' ) );
 
+			// Determine if we need to apply multisort: if the query is random, we don't need to.
+			$has_random = false;
+			foreach ( $query->_introspect()['order'] as $order ) {
+				if ( isset( $order[0] ) && $order[0] instanceof \GF_Query_Call ) {
+					if( 'RAND' === $order[0]->function_name ) {
+						$has_random = true;
+						break;
+					}
+				}
+			}
+
 			/**
 			 * Apply multisort.
 			 */
-			if ( ! empty( $has_multisort ) ) {
+			if ( ! empty( $has_multisort ) && ! $has_random ) {
 				// Clear ordering that was set when initializing the query since we're going to set it from scratch.
 				( function () {
 					$this->order = [];
@@ -1141,8 +1152,8 @@ class View implements \ArrayAccess {
 					$sort_field_ids  = array_keys( $_GET['sort'] );
 					$sort_directions = array_values( $_GET['sort'] );
 				} else {
-					$sort_field_ids  = $view_setting_sort_field_ids;
-					$sort_directions = $view_setting_sort_directions;
+					$sort_field_ids  = (array) $view_setting_sort_field_ids;
+					$sort_directions = (array) $view_setting_sort_directions;
 				}
 
 				$sorting_parameters = [];
