@@ -1554,12 +1554,20 @@ class View implements \ArrayAccess {
 
 		$query_introspect =  $query->_introspect();
 
+		$random_order = false;
+
 		// Order keys are randomly generated, so we need to make them deterministic or else the query hash will change every time.
 		if ( isset( $query_introspect['order'] ) ) {
 			$order_hashes = [];
 
 			foreach ( $query_introspect['order'] as $order ) {
-				$order_hashes[] = md5( serialize( $order ) );
+				$serialized_order = serialize( $order );
+
+				if ( strpos( $serialized_order, '"RAND"' ) !== false ) {
+					$random_order = true;
+				}
+
+				$order_hashes[] = md5( serialize( $serialized_order ) );
 			}
 
 			$query_introspect['order'] = $order_hashes;
@@ -1584,7 +1592,7 @@ class View implements \ArrayAccess {
 
 		$long_lived_cache = new GravityView_Cache( $form_ids, $caching_atts );
 
-		if ( $long_lived_cache->use_cache() ) {
+		if ( ! $random_order && $long_lived_cache->use_cache() ) {
 			$cached_entries = $long_lived_cache->get();
 
 			if ( is_array( $cached_entries ) && array_key_exists( 'entries', $cached_entries ) && array_key_exists( 'total', $cached_entries ) ) {

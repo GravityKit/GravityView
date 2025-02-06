@@ -33,6 +33,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Entry notes not displaying in the DataTables extension when the first View field is a Date field.
 * Gravity Flow fields were displaying as available when Gravity Flow was not active.
 * Result Number field would not reset counts when multiple Views were displayed on the same page.
+* Random sorting of View entries did not work unless View caching was explicitly disabled.
 
 = 2.34.2 on February 4, 2025 =
 
