@@ -230,7 +230,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$context_key = md5(
 			json_encode(
 				array(
-					$context->view->ID,
+					$context->view->get_anchor_id(),
 					\GV\Utils::get( $context, 'field/UID' ),
 				)
 			)
