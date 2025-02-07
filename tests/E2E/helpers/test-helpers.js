@@ -1,7 +1,7 @@
 const path = require("path");
 const { test, expect } = require("@playwright/test");
 
-const url = process.env.URL;
+const url = `${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}`;
 
 const defaultGVAdminURL = `${url}/wp-admin/edit.php?post_type=gravityview`;
 
