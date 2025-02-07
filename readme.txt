@@ -24,8 +24,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🚀 Added
-
 * Random sorting option in the GravityView block.
+
+#### ✨ Improved
+* Partial entries no longer appear as "Unapproved" on the Entries page.
 
 #### 🐛 Fixed
 
