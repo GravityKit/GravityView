@@ -554,9 +554,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$atts['id'] = $view->ID;
 
-		$secret = $view->get_validation_secret();
-		if ( $secret ) {
-			$atts['secret'] = $secret;
+		// Only add the secret if the current user can edit the View.
+		// This is to prevent the secret from being exposed to users who shouldn't see it.
+		if( current_user_can( 'edit_gravityview', $view->ID ) ) {
+			$secret = $view->get_validation_secret();
+			if ( $secret ) {
+				$atts['secret'] = $secret;
+			}
 		}
 
 
