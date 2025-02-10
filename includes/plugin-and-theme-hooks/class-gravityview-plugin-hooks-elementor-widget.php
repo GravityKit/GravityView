@@ -519,12 +519,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$settings = $this->get_settings_for_display();
 
-		$view_id = 0;
-		$value   = $settings['embedded_view'];
-
-		if ( ! empty( $value ) ) {
-			list( $view_id, $directory_template, $single_template ) = explode( ',', $value );
-		}
+		$view_id = (int) $settings['embedded_view'];
 
 		if ( 0 === $view_id ) {
 			// Only show this message in the admin editor.
@@ -676,10 +671,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		}
 
 		foreach ( $all_views as $view ) {
-			$directory_template     = gravityview_get_directory_entries_template_id( $view->ID );
-			$single_template        = gravityview_get_single_entry_template_id( $view->ID );
-			$option_value           = sprintf( '%d,multiple_%s,single_%s', $view->ID, esc_attr( $directory_template ), esc_attr( $single_template ) );
-			$views[ $option_value ] = esc_html( sprintf( '%s #%d', $view->post_title, $view->ID ) );
+			$views[ $view->ID ] = esc_html( sprintf( '%s #%d', $view->post_title, $view->ID ) );
 		}
 
 		return $views;
