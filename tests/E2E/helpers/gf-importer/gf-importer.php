@@ -4,16 +4,11 @@
  * Description: Imports Gravity Forms and Entries via WP-CLI or based on a query parameter.
  */
 
+if (defined('WP_CLI') && WP_CLI) {
+    WP_CLI::add_command('import_forms_and_entries', 'gf_import_forms_and_entries');
+}
+
 function gf_import_forms_or_entries() {
-    if (defined('WP_CLI') && WP_CLI) {
-        $args = WP_CLI::get_runner()->arguments;
-        $command = isset($args[0]) ? $args[0] : null;
-
-        if ($command === 'import_forms_and_entries') {
-            gf_import_forms_and_entries();
-        }
-    }
-
     if (isset($_GET['import_gf_forms_entries']) && $_GET['import_gf_forms_entries'] === 'true') {
         gf_import_forms_and_entries();
     }
