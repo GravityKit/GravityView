@@ -316,7 +316,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'Sort by field', 'gk-gravityview' ),
 					'type'              => 'select',
 					'desc'              => __( 'By default, entries are sorted by Entry ID.', 'gk-gravityview' ),
-					'value'             => '',
+					'value'             => 'id',
 					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'options'           => array(
 						'id'           => __( 'Default', 'gk-gravityview' ),
