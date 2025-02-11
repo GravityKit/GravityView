@@ -373,10 +373,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			}
 
 			$control_settings = [
-				'label'       => esc_html( $default_setting['label'] ),
-				'default'     => $view_settings[ $key ] ?? $default_setting['value'],
+				'label'       => esc_html( \GV\Utils::get( $default_setting, 'label', '' ) ),
+				'default'     => \GV\Utils::get( $default_setting, 'value', '' ), // TODO: Get default value from View settings.
 				'label_block' => true,
-				'description' => esc_html( $default_setting['desc'] ),
+				'description' => esc_html( \GV\Utils::get( $default_setting, 'desc', '' ) ),
 				'separator'   => 'before',
 			];
 
@@ -406,7 +406,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 				$control_settings['separator'] = 'none';
 
-				[ $condition_name, $condition_value ] = explode( '=', $default_setting['requires'] );
+				[ $condition_name, $condition_value ] = array_pad( explode( '=', $default_setting['requires'] ), 2, null );
 
 				if ( $condition_value ) {
 					$control_settings['condition'] = [
@@ -821,7 +821,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 			if ( $show_debug_output ) {
 				echo '<p style="margin-top:1em; padding-top:0;"><strong>' . esc_html__( 'Shortcode', 'gk-gravityview' ) . '</strong></p>';
-				echo '<code>' . $shortcode . '</code>';
+				echo '<code>' . esc_html( $shortcode ) . '</code>';
 			}
 		echo '</div>';
 
