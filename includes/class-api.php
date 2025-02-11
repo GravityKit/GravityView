@@ -496,7 +496,7 @@ class GravityView_API {
 
 		// No post ID, get outta here.
 		if ( empty( $post_id ) ) {
-			return null;
+			return '';
 		}
 
 		static $directory_links = array();
