@@ -341,7 +341,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$this->add_control(
 			'layout_single',
 			[
-				'type' => \Elementor\Controls_Manager::TEXT,
+				'type' => \Elementor\Controls_Manager::HIDDEN,
 				'default' => '',
 			]
 		);
@@ -350,7 +350,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$this->add_control(
 			'layout_multiple',
 			[
-				'type' => \Elementor\Controls_Manager::TEXT,
+				'type' => \Elementor\Controls_Manager::HIDDEN,
 				'default' => '',
 			]
 		);
