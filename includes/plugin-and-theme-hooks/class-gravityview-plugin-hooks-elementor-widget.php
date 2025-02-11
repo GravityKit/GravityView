@@ -814,10 +814,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		// Add a notice to the top of the View to indicate that it's a preview.
 		// Use the action instead of directly outputting to prevent Elementor errors.
-		add_action( 'gravityview/template/before', function () use ( $preview_single_entry, $show_debug_output, $shortcode ) {
-			echo '<div style="font-size: .8em; background-color: #fff; padding: 10px; margin-bottom: 0; border-bottom: 1px dashed var(--e-a-border-color-bold);">';
+		add_action( 'gravityview/template/after', function () use ( $preview_single_entry, $show_debug_output, $shortcode ) {
+			echo '<div style="font-size: .8em; background-color: #fff; padding: 10px 0; margin-bottom: 0; border-top: 1px dashed var(--e-a-border-color-bold);">';
 			if ( $preview_single_entry ) {
-				echo '<p style="margin:0; "><span style="line-height:1.15;" class="dashicons dashicons-media-default"></span> <strong>' . esc_html__( 'Single Entry Preview', 'gk-gravityview' ) . '</strong></p>';
+				echo '<p style="margin:0;"><span style="line-height:1.15;" class="dashicons dashicons-media-default"></span> <strong>' . esc_html__( 'Single Entry Preview', 'gk-gravityview' ) . '</strong></p>';
 			} else {
 				echo '<p style="margin:0;"><span style="line-height:1.15;" class="dashicons dashicons-admin-page"></span> <strong>' . esc_html__( 'Multiple Entries Preview', 'gk-gravityview' ) . '</strong></p>';
 			}
@@ -827,7 +827,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				echo '<code>' . esc_html( $shortcode ) . '</code>';
 			}
 			echo '</div>';
-		}, 10, 1 );
+		}, PHP_INT_MAX, 1 );
 
 		$custom_css = $view->settings->get( 'custom_css', null );
 
