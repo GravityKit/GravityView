@@ -760,27 +760,28 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	 * @access protected
 	 */
 	protected function render() {
-
-		$settings = $this->get_settings_for_display();
-
-		$view_id = (int) $settings['embedded_view'];
+		// Get settings and ensure we have valid data
+		$settings = $this->get_settings_for_display() ?: [];
+		$view_id = (int) \GV\Utils::get( $settings, 'embedded_view', 0 );
 
 		if ( 0 === $view_id ) {
 			// Only show this message in the admin editor.
 			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-				echo strtr( '
+				$template = '
 				<div style="text-align: center; width: 100%;">
 					<div style="width:120px; margin: 0 auto;">{icon}</div>
 					<p>{message}</p>
-				</div>', [
+				</div>';
+
+				echo strtr( $template, [
 					'{icon}'    => self::get_filled_icon(),
 					'{message}' => esc_html__( 'Select a View from the widget settings.', 'gk-gravityview' ),
 				] );
 			}
-
 			return;
 		}
 
+		// Get the View object
 		$view = \GV\View::by_id( $view_id );
 
 		if ( ! $view ) {
