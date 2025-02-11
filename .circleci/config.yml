@@ -25,6 +25,8 @@ jobs:
           command: |
             npm run wp-env:configure
             npm run wp-env start
+            npm run import:forms-entries
+            npm run pretty-permalinks
             npm run tests:e2e
       - store_artifacts:
           path: tests/E2E/results
