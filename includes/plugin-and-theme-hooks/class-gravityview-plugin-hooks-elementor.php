@@ -37,6 +37,7 @@ class GravityView_Theme_Hooks_Elementor extends GravityView_Plugin_and_Theme_Hoo
 	public function add_hooks() {
 		parent::add_hooks();
 
+		add_action( 'elementor/editor/before_enqueue_scripts', [ $this, 'enqueue_editor_scripts' ] );
 		add_action( 'elementor/widgets/register', [ $this, 'register_elementor_widget' ] );
 	}
 
@@ -57,14 +58,27 @@ class GravityView_Theme_Hooks_Elementor extends GravityView_Plugin_and_Theme_Hoo
 
 		add_action( 'elementor/editor/after_enqueue_styles', [
 			$this,
-			'enqueue_editor_styles',
+			'add_inline_icon_styles'
 		] );
 	}
 
-	public function enqueue_editor_styles() {
+	public function add_inline_icon_styles() {
 		wp_add_inline_style(
 			'elementor-editor',
 			self::get_custom_icon_style()
+		);
+	}
+
+	/**
+	 * Register editor scripts
+	 */
+	public function enqueue_editor_scripts() {
+		wp_enqueue_script(
+			'gravityview-elementor-widget',
+			plugins_url('assets/js/elementor-widget.js', GRAVITYVIEW_FILE),
+			['elementor-editor'],
+			filemtime( GRAVITYVIEW_DIR . 'assets/js/elementor-widget.js' ),
+			true
 		);
 	}
 

@@ -27,6 +27,174 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	const ELEMENT_KEY = 'gk-gravityview';
 
 	/**
+	 * GravityView_Elementor_Widget constructor.
+	 */
+	public function __construct( $data = [], $args = null ) {
+		parent::__construct( $data, $args );
+		add_action( 'elementor/init', [ $this, 'init' ] );
+	}
+
+	/**
+	 * Initialize the GravityView widget
+	 */
+	public function init( $data ) {
+		parent::init( $data );
+
+		// Check if Elementor is installed and activated
+		if ( ! did_action( 'elementor/loaded' ) ) {
+			add_action( 'admin_notices', [ $this, 'admin_notice_missing_elementor' ] );
+			return;
+		}
+
+		// Check if GravityView is installed and activated
+		if ( ! class_exists( 'GravityView_Plugin' ) ) {
+			add_action( 'admin_notices', [ $this, 'admin_notice_missing_gravityview' ] );
+			return;
+		}
+
+		$this->init_layouts();
+	}
+
+	/**
+	 * Admin notice for missing GravityView
+	 */
+	public function admin_notice_missing_gravityview() {
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+
+		$message = sprintf(
+		/* translators: 1: Plugin name 2: GravityView */
+			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'gravityview-elementor' ),
+			'<strong>' . esc_html__( 'GravityView Elementor Integration', 'gravityview-elementor' ) . '</strong>',
+			'<strong>' . esc_html__( 'GravityView', 'gravityview-elementor' ) . '</strong>'
+		);
+
+		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+	}
+
+	/**
+	 * Admin notice for missing Elementor
+	 */
+	public function admin_notice_missing_elementor() {
+		if ( isset( $_GET['activate'] ) ) {
+			unset( $_GET['activate'] );
+		}
+
+		$message = sprintf(
+		/* translators: 1: Plugin name 2: Elementor */
+			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'gravityview-elementor' ),
+			'<strong>' . esc_html__( 'GravityView Elementor Integration', 'gravityview-elementor' ) . '</strong>',
+			'<strong>' . esc_html__( 'Elementor', 'gravityview-elementor' ) . '</strong>'
+		);
+
+		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
+	}
+
+	public function get_script_depends() {
+		if ( ! \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
+			return [];
+		}
+
+		return [
+			'gravityview-elementor-widget',
+		];
+	}
+
+	/**
+	 * Initialize available layouts and their settings
+	 */
+	private function init_layouts() {
+
+		// TODO: Load these dynamically from the plugin, reading from available layouts.
+		$this->view_layouts = [
+			'default_table'          => [
+				'label'           => __( 'Table Layout', 'gravityview-elementor' ),
+				'template_id'     => 'default_table',
+				'class'           => 'gv-table-view',
+				'settings'        => [
+					'has_header'          => true,
+					'has_footer'          => true,
+					'supports_datatables' => true,
+				],
+				'style_selectors' => [
+					'wrapper' => '.gv-table-view',
+					'header'  => '.gv-table-view thead th',
+					'rows'    => '.gv-table-view tbody tr',
+					'cells'   => '.gv-table-view tbody td',
+				],
+			],
+			'default_list'          => [
+				'label'           => __( 'List Layout', 'gravityview-elementor' ),
+				'template_id'     => 'default_list',
+				'class'           => 'gv-list-container',
+				'settings'        => [
+					'has_header'          => false,
+					'has_footer'          => false,
+					'supports_datatables' => false,
+				],
+				'style_selectors' => [
+					'wrapper' => '.gv-list-container',
+					'header'  => '.gv-table-view thead th',
+					'rows'    => '.gv-table-view tbody tr',
+					'cells'   => '.gv-table-view tbody td',
+				],
+			],
+			'datatables_table'     => [
+				'label'           => __( 'DataTables Layout', 'gravityview-elementor' ),
+				'template_id'     => 'datatables',
+				'class'           => 'gv-datatables-view',
+				'settings'        => [
+					'has_header'          => true,
+					'has_footer'          => true,
+					'supports_datatables' => true,
+					'has_search'          => true,
+					'has_pagination'      => true,
+				],
+				'style_selectors' => [
+					'wrapper'    => '.gv-datatables-view',
+					'header'     => '.gv-datatables-view thead th',
+					'rows'       => '.gv-datatables-view tbody tr',
+					'cells'      => '.gv-datatables-view tbody td',
+					'pagination' => '.dataTables_pagination',
+					'search'     => '.dataTables_filter',
+				],
+			],
+			'diy'            => [
+				'label'           => __( 'DIY Layout', 'gravityview-elementor' ),
+				'template_id'     => 'custom',
+				'class'           => 'gv-diy-view',
+				'settings'        => [
+					'has_container'       => true,
+					'supports_custom_css' => true,
+				],
+				'style_selectors' => [
+					'wrapper'     => '.gv-diy-view',
+					'container'   => '.gv-diy-container',
+					'entry'       => '.gv-diy-entry',
+					'field_label' => '.gv-field-label',
+					'field_value' => '.gv-field-value',
+				],
+			],
+			'layout_builder' => [
+				'label'           => __( 'Layout Builder', 'gravityview-elementor' ),
+				'template_id'     => 'layout_builder',
+				'class'           => 'gv-layout-builder-view',
+				'settings'        => [
+					'has_grid'            => true,
+					'supports_custom_css' => true,
+				],
+				'style_selectors' => [
+					'wrapper' => '.gv-layout-builder-view',
+					'grid'    => '.gv-grid',
+					'columns' => '.gv-grid-col',
+					'items'   => '.gv-grid-col-item',
+				],
+			],
+		];
+	}
+
+	/**
 	 * Retrieve Gravity Forms widget name.
 	 *
 	 * @since 1.0.0
@@ -132,6 +300,58 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				'options'     => $this->get_views_list(),
 				'default'     => '0',
 				'label_block' => true,
+			]
+		);
+
+		$views = get_posts([
+			'post_type'      => 'gravityview',
+			'posts_per_page' => -1,
+		]);
+
+		$views_options = [];
+		$views_layouts = [];
+
+		foreach ($views as $view) {
+			$views_options[$view->ID] = $view->post_title;
+
+			try {
+				$gv_view = \GV\View::by_id($view->ID);
+				if ($gv_view) {
+					$views_layouts[$view->ID] = [
+						'multiple' => $gv_view->settings->get('template'),
+						'single' => $gv_view->settings->get('template_single_entry') ?? $gv_view->settings->get('template'),
+					];
+				}
+			} catch (Exception $e) {
+				// Skip if view can't be loaded
+				continue;
+			}
+		}
+
+		// Store layouts data for use in JS
+		$this->add_control(
+			'views_layouts',
+			[
+				'type' => \Elementor\Controls_Manager::HIDDEN,
+				'default' => json_encode($views_layouts),
+			]
+		);
+
+		// Hidden control for multiple layout
+		$this->add_control(
+			'layout_single',
+			[
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => '',
+			]
+		);
+
+		// Hidden control for multiple layout
+		$this->add_control(
+			'layout_multiple',
+			[
+				'type' => \Elementor\Controls_Manager::TEXT,
+				'default' => '',
 			]
 		);
 
@@ -267,6 +487,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						],
 					],
 				],
+#				'condition' => [
+#					'layout_single' => [ 'default_table', 'datatables_table' ],
+#				],
 			],
 			'header_footer' => [
 				'label'    => esc_html__( 'Header & Footer', 'gk-gravityview' ),
@@ -557,7 +780,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$atts['secret'] = $secret;
 			}
 		}
-
 
 		// Convert array to shortcode attributes string
 		foreach ( $atts as $key => $value ) {
