@@ -49,6 +49,11 @@ class View_Settings extends Settings {
 	 *      @param boolean $full_width True: Display the input and label together when rendering. False: Display label and input in separate columns when rendering.
 	 */
 	public static function defaults( $detailed = false, $group = null ) {
+
+		if ( ! class_exists( 'GravityView_Admin_Metaboxes' ) ) {
+			require_once GRAVITYVIEW_DIR . 'includes/admin/metaboxes/class-gravityview-admin-metaboxes.php';
+		}
+
 		$default_settings = array_merge(
 			array(
 				'id'                          => array(
