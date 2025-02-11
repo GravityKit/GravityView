@@ -61,6 +61,7 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 			console.log( 'Updating layout type for view:', controlValue );
 
 			this.updateLayoutType( controlValue );
+			this.updateViewSettings( controlValue );
 
 			// Get the current edited element so we can trigger a change event on its model.
 			const elementView = elementor.getPanelView()?.getCurrentPageView()?.getOption( 'editedElementView' );
@@ -128,6 +129,75 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 
 		} catch ( e ) {
 			console.error( 'Error updating layout:', e );
+		}
+	}
+
+	updateViewSettings( viewId ) {
+		if ( !viewId ) {
+			console.warn( 'No view ID provided' );
+			return;
+		}
+
+		console.log( 'Updating settings for view:', viewId );
+
+		// Get layouts data from hidden control
+		const viewsLayouts = document.querySelector( this.getDefaultSettings().selectors.viewsLayouts );
+		if ( !viewsLayouts?.value ) {
+			return;
+		}
+
+		try {
+			const layouts = JSON.parse( viewsLayouts.value );
+			if ( !layouts[ viewId ] || !layouts[ viewId ].settings ) {
+				return;
+			}
+
+			const settings = layouts[ viewId ].settings;
+			console.log( 'Fetched settings for View:', settings );
+
+			// Get the current edited element
+			const elementView = elementor.getPanelView()?.getCurrentPageView()?.getOption( 'editedElementView' );
+			if ( !elementView ) {
+				console.warn( 'Edited element view not found' );
+				return;
+			}
+
+			const container = elementView.getContainer();
+			const model = elementView.getEditModel();
+			const modelSettings = model.get( 'settings' );
+
+			// Batch update the settings
+			Object.entries( settings ).forEach( ( [ key, value ] ) => {
+				// Convert boolean values to 'yes'/'no' for Elementor compatibility
+				if ( typeof value === 'boolean' ) {
+					value = value ? 'yes' : 'no';
+				}
+
+				console.log( 'Preparing setting update:', key, value );
+
+				// Update both the model and container settings
+				modelSettings.set( key, value );
+				container.settings.set( key, value );
+
+				// Update the DOM input
+				const input = document.querySelector( `.elementor-control-${key} input, .elementor-control-${key} select, .elementor-control-${key} textarea` );
+				if ( input ) {
+					if ( input.type === 'checkbox' ) {
+						input.checked = value === 'yes';
+					} else {
+						input.value = value;
+					}
+
+					// Trigger change event to update Elementor's UI
+					input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+				}
+			} );
+
+			// Render just this widget
+			elementView.renderOnChange();
+
+		} catch ( e ) {
+			console.error( 'Error updating settings:', e );
 		}
 	}
 }
