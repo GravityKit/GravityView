@@ -5,8 +5,61 @@
  */
 class GravityView_Admin_Metaboxes {
 
-	static $metaboxes_dir;
+	/**
+	 * Group identifier for View Settings tab
+	 * @since TODO
+	 */
+	const GROUP_VIEW_SETTINGS = 'template_settings';
 
+	/**
+	 * Group identifier for Multiple Entries tab
+	 * @since TODO
+	 */
+	const GROUP_MULTIPLE_ENTRIES = 'multiple_entries';
+
+	/**
+	 * Group identifier for Single Entry tab
+	 * @since TODO
+	 */
+	const GROUP_SINGLE_ENTRY = 'single_entry';
+
+	/**
+	 * Group identifier for Edit Entry tab
+	 * @since TODO
+	 */
+	const GROUP_EDIT_ENTRY = 'edit_entry';
+
+	/**
+	 * Group identifier for Delete Entry tab
+	 * @since TODO
+	 */
+	const GROUP_DELETE_ENTRY = 'delete_entry';
+
+	/**
+	 * Group identifier for Filter & Sort tab
+	 * @since TODO
+	 */
+	const GROUP_SORT_FILTER = 'sort_filter';
+
+	/**
+	 * Group identifier for Permissions tab
+	 * @since TODO
+	 */
+	const GROUP_PERMISSIONS = 'permissions';
+
+	/**
+	 * Group identifier for Advanced/Custom Code tab
+	 * @since TODO
+	 */
+	const GROUP_ADVANCED = 'advanced';
+
+	/**
+	 * Directory path to the metaboxes folder
+	 * 
+	 * @var string Path to the metaboxes directory, with trailing slash
+	 * @static
+	 */
+	static $metaboxes_dir;
 	/**
 	 * @var int The post ID of the current View
 	 */
@@ -117,72 +170,81 @@ class GravityView_Admin_Metaboxes {
 	}
 
 	/**
-	 * Add default tabs to the Settings metabox
+	 * Returns the default settings metabox tabs.
 	 *
-	 * @since 1.8
+	 * @since TODO
+	 * @static
+	 * 
+	 * @return array Metabox tabs, filtered by `gravityview/metaboxes/default` filter. {
+	 *   @type string $id            The tab ID.
+	 *   @type string $title         The tab title.
+	 *   @type string $file          The file to include, relative to $metaboxes_dir.
+	 *   @type string $icon-class    The dashicon class.
+	 *   @type string $callback      The callback function.
+	 *   @type string $callback_args The callback arguments.
+	 * }
 	 */
-	private function add_settings_metabox_tabs() {
-
+	static public function get_settings_metabox_tabs() {
 		$metaboxes = array(
 			array(
-				'id'            => 'template_settings',
-				'title'         => __( 'View Settings', 'gk-gravityview' ),
+				'id'            => self::GROUP_VIEW_SETTINGS,
+				'title'         => esc_html__( 'View Settings', 'gk-gravityview' ),
 				'file'          => 'view-settings.php',
 				'icon-class'    => 'dashicons-admin-generic',
 				'callback'      => '',
 				'callback_args' => '',
 			),
 			array(
-				'id'            => 'multiple_entries',
-				'title'         => __( 'Multiple Entries', 'gk-gravityview' ),
+				'id'            => self::GROUP_MULTIPLE_ENTRIES,
+				'title'         => esc_html__( 'Multiple Entries', 'gk-gravityview' ),
 				'file'          => 'multiple-entries.php',
 				'icon-class'    => 'dashicons-admin-page',
 				'callback'      => '',
 				'callback_args' => '',
 			),
 			array(
-				'id'            => 'single_entry', // Use the same ID as View Settings for backward compatibility
-				'title'         => __( 'Single Entry', 'gk-gravityview' ),
+				'id'            => self::GROUP_SINGLE_ENTRY,
+				'title'         => esc_html__( 'Single Entry', 'gk-gravityview' ),
 				'file'          => 'single-entry.php',
 				'icon-class'    => 'dashicons-media-default',
 				'callback'      => '',
 				'callback_args' => '',
 			),
 			array(
-				'id'            => 'edit_entry', // Use the same ID as View Settings for backward compatibility
-				'title'         => __( 'Edit Entry', 'gk-gravityview' ),
+				'id'            => self::GROUP_EDIT_ENTRY,
+				'title'         => esc_html__( 'Edit Entry', 'gk-gravityview' ),
 				'file'          => 'edit-entry.php',
 				'icon-class'    => 'dashicons-welcome-write-blog',
 				'callback'      => '',
 				'callback_args' => '',
 			),
 			array(
-				'id'            => 'delete_entry',
-				'title'         => __( 'Delete Entry', 'gk-gravityview' ),
+				'id'            => self::GROUP_DELETE_ENTRY,
+				'title'         => esc_html__( 'Delete Entry', 'gk-gravityview' ),
 				'file'          => 'delete-entry.php',
 				'icon-class'    => 'dashicons-trash',
 				'callback'      => '',
 				'callback_args' => '',
 			),
 			array(
-				'id'            => 'sort_filter',
-				'title'         => __( 'Filter &amp; Sort', 'gk-gravityview' ),
+				'id'            => self::GROUP_SORT_FILTER,
+				'title'         => esc_html( __( 'Filter &amp; Sort', 'gk-gravityview' ) ),
 				'file'          => 'sort-filter.php',
 				'icon-class'    => 'dashicons-sort',
 				'callback'      => '',
 				'callback_args' => '',
 			),
 			array(
-				'id'            => 'permissions', // Use the same ID as View Settings for backward compatibility
-				'title'         => __( 'Permissions', 'gk-gravityview' ),
+				'id'            => self::GROUP_PERMISSIONS,
+				'title'         => esc_html__( 'Permissions', 'gk-gravityview' ),
 				'file'          => 'permissions.php',
 				'icon-class'    => 'dashicons-lock',
 				'callback'      => '',
 				'callback_args' => '',
 			),
 			array(
-				'id'            => 'advanced',
-				'title'         => __( 'Custom Code', 'gk-gravityview' ),
+				'id'            => self::GROUP_ADVANCED,
+				'title'         => esc_html__( 'Custom Code', 'gk-gravityview' ),
 				'file'          => 'custom-code.php',
 				'icon-class'    => 'dashicons-editor-code',
 				'callback'      => '',
@@ -198,12 +260,20 @@ class GravityView_Admin_Metaboxes {
 		 */
 		$metaboxes = apply_filters( 'gravityview/metaboxes/default', $metaboxes );
 
+		return $metaboxes;
+	}
+
+	/**
+	 * Add default tabs to the Settings metabox
+	 *
+	 * @since 1.8
+	 */
+	private function add_settings_metabox_tabs() {
+		$metaboxes = self::get_settings_metabox_tabs();
+
 		foreach ( $metaboxes as $m ) {
-
 			$tab = new GravityView_Metabox_Tab( $m['id'], $m['title'], $m['file'], $m['icon-class'], $m['callback'], $m['callback_args'] );
-
 			GravityView_Metabox_Tabs::add( $tab );
-
 		}
 
 		unset( $tab );

@@ -26,6 +26,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 💻 Developer Updates
 
 - Added: `gk/gravityview/entry-approval/hide-notice` filter to control whether to hide the notice shown when there are no entries and "Only show approved entries" View setting is enabled. Default: `false`.
+- Added: `GravityView_Admin_Metaboxes::get_settings_metabox_tabs()` method to get the default settings View Settings metabox tabs.
+- Added: `GravityView_Admin_Metaboxes` constants for View Settings metabox tab IDs.
 
 = develop =
 
@@ -2373,7 +2375,7 @@ __Developer Notes:__
 * Fixed: Address fields displayed hidden inputs
 * Fixed: Merge Tag dropdown list can be too wide when field names are long
 * Fixed: When sorting, recent entries disappeared from results
-* Fixed: Searches that included apostrophes  or ampersands returned no results
+* Fixed: Searches that included apostrophes or ampersands returned no results
 * Fixed: Zero values not set in fields while in Edit Entry
 * Fixed: Re-calculate fields where calculation is enabled after entry is updated
 * Fixed: Warning message when Number fields not included in custom Edit Entry configurations
