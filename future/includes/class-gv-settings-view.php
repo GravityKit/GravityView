@@ -2,6 +2,7 @@
 namespace GV;
 
 use GravityKit\GravityView\Foundation\Settings\Framework as SettingsFramework;
+use GravityView_Admin_Metaboxes as Metaboxes;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -63,7 +64,7 @@ class View_Settings extends Settings {
 					'tooltip'           => esc_html__( 'Enter the number of entries to display per page. Set to negative one (-1) to display all entries.', 'gk-gravityview' ),
 					'type'              => 'number',
 					'class'             => 'small-text',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_MULTIPLE_ENTRIES,
 					'value'             => 25,
 					'show_in_shortcode' => true,
 					'min'               => -1,
@@ -72,14 +73,14 @@ class View_Settings extends Settings {
 					'label'             => __( 'Offset entries starting from', 'gk-gravityview' ),
 					'type'              => 'number',
 					'class'             => 'small-text',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_MULTIPLE_ENTRIES,
 					'value'             => 0,
 					'show_in_shortcode' => true,
 				),
 				'lightbox'                    => array(
 					'label'             => __( 'Enable lightbox for images', 'gk-gravityview' ),
 					'type'              => 'checkbox',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_VIEW_SETTINGS,
 					'value'             => 1,
 					'tooltip'           => __( 'If enabled, images will open full-size in a "lightbox". A lightbox displays images and videos by filling the screen and dimming out the rest of the web page.', 'gk-gravityview' ),
 					'show_in_shortcode' => true,
@@ -91,7 +92,7 @@ class View_Settings extends Settings {
 				'show_only_approved'          => array(
 					'label'             => __( 'Show only approved entries', 'gk-gravityview' ),
 					'type'              => 'checkbox',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_PERMISSIONS,
 					'desc'              => __( 'By default, only approved entries are displayed in a View. When enabled, this setting prevents unapproved or disapproved entries from appearing in results. If disabled, entries with all approval statuses will be visible, including disapproved entries.', 'gk-gravityview' ),
 					'tooltip'           => false,
 					'value'             => 1,
@@ -107,14 +108,14 @@ class View_Settings extends Settings {
 					'tooltip'           => __( 'Logged-out visitors and non-administrators will only see approved entries, while administrators will see entries with all statuses. This makes it easier for administrators to moderate entries from a View.', 'gk-gravityview' ),
 					'requires'          => 'show_only_approved',
 					'type'              => 'checkbox',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_PERMISSIONS,
 					'value'             => 0,
 					'show_in_shortcode' => true,
 				),
 				'caching'                     => array(
 					'label'             => __( 'Enable caching', 'gk-gravityview' ),
 					'type'              => 'checkbox',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_VIEW_SETTINGS,
 					'value'             => gravityview()->plugin->settings->get( 'caching' ),
 					'desc'              => strtr(
 						esc_html_x( 'Turn caching on or off to improve performance. Default settings are configured in [url]GravityView Caching Settings[/url].', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' ),
@@ -133,7 +134,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'Entry Cache Duration', 'gk-gravityview' ),
 					'tooltip'           => esc_html__( 'Specify the duration, in seconds, that entry data should remain cached before being refreshed. A shorter duration ensures more up-to-date data, while a longer duration improves performance.', 'gk-gravityview' ),
 					'type'              => 'number',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_VIEW_SETTINGS,
 					'value'             => gravityview()->plugin->settings->get( 'caching_entries' ),
 					'show_in_shortcode' => false,
 					'requires'          => 'caching=1',
@@ -143,7 +144,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'No Entries Behavior', 'gk-gravityview' ),
 					'type'              => 'select',
 					'desc'              => __( 'Choose what happens when a View has no entries visible to the current user.', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_MULTIPLE_ENTRIES,
 					'options'           => array(
 						'0' => __( 'Show a Message', 'gk-gravityview' ),
 						'1' => __( 'Display a Form', 'gk-gravityview' ),
@@ -156,7 +157,7 @@ class View_Settings extends Settings {
 				'no_results_text'             => array(
 					'label'             => __( 'No Entries Message', 'gk-gravityview' ),
 					'type'              => 'text',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_MULTIPLE_ENTRIES,
 					'desc'              => esc_html__( 'The text to display when there are no entries to show. HTML and shortcodes are allowed.', 'gk-gravityview' ),
 					'tooltip'           => false,
 					'value'             => '',
@@ -170,7 +171,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'No Entries Form', 'gk-gravityview' ),
 					'type'              => 'select',
 					'desc'              => __( 'Show a Gravity Forms form if there are no entries to show in the View.', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_MULTIPLE_ENTRIES,
 					'requires'          => 'no_entries_options=1',
 					'options'           => \GVCommon::get_forms_as_options(),
 					'value'             => esc_attr( \GV\Utils::_POST( 'post' ) ? gravityview_get_form_id( \GV\Utils::_POST( 'post' ) ) : \GV\Utils::_GET( 'form_id', '' ) ),
@@ -179,7 +180,7 @@ class View_Settings extends Settings {
 				'no_entries_form_title'       => array(
 					'label'             => __( 'Form Title', 'gk-gravityview' ),
 					'type'              => 'checkbox',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_MULTIPLE_ENTRIES,
 					'requires'          => 'no_entries_options=1',
 					'value'             => 1,
 					'show_in_shortcode' => true,
@@ -187,14 +188,14 @@ class View_Settings extends Settings {
 				'no_entries_form_description' => array(
 					'label'             => __( 'Form Description', 'gk-gravityview' ),
 					'type'              => 'checkbox',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_MULTIPLE_ENTRIES,
 					'requires'          => 'no_entries_options=1',
 					'value'             => 1,
 					'show_in_shortcode' => true,
 				),
 				'no_entries_redirect'         => array(
 					'label'       => __( 'No Entries Redirect URL', 'gk-gravityview' ),
-					'group'       => 'default',
+					'group'       => Metaboxes::GROUP_MULTIPLE_ENTRIES,
 					'desc'        => __( 'If there are no entries to show, the user will be taken to this URL.', 'gk-gravityview' ),
 					'type'        => 'text',
 					'class'       => 'code widefat',
@@ -207,7 +208,7 @@ class View_Settings extends Settings {
 				'no_search_results_text'      => array(
 					'label'             => __( '"No Search Results" Text', 'gk-gravityview' ),
 					'type'              => 'text',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'desc'              => '',
 					'tooltip'           => false,
 					'value'             => '',
@@ -219,7 +220,7 @@ class View_Settings extends Settings {
 				'hide_until_searched'         => array(
 					'label'             => __( 'Hide View data until search is performed', 'gk-gravityview' ),
 					'type'              => 'checkbox',
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'tooltip'           => __( 'When enabled it will only show any View entries after a search is performed.', 'gk-gravityview' ),
 					'value'             => 0,
 					'show_in_shortcode' => false,
@@ -230,7 +231,7 @@ class View_Settings extends Settings {
 				),
 				'hide_empty'                  => array(
 					'label'             => __( 'Hide empty fields', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_VIEW_SETTINGS,
 					'type'              => 'checkbox',
 					'desc'              => __( 'When enabled, empty fields will be not be displayed. If disabled, fields and their labels will be displayed with no content.', 'gk-gravityview' ),
 					'value'             => 1,
@@ -239,7 +240,7 @@ class View_Settings extends Settings {
 				),
 				'hide_empty_single'           => array(
 					'label'             => __( 'Hide empty fields', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_SINGLE_ENTRY,
 					'type'              => 'checkbox',
 					'desc'              => __( 'When enabled, empty fields will be not be displayed. If disabled, fields and their labels will be displayed with no content.', 'gk-gravityview' ),
 					'value'             => 1,
@@ -248,14 +249,14 @@ class View_Settings extends Settings {
 				),
 				'edit_feeds'                  => array(
 					'label'             => __( 'Feeds', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_EDIT_ENTRY,
 					'type'              => 'checkbox',
 					'value'             => array(),
 					'show_in_shortcode' => false,
 				),
 				'user_edit'                   => array(
 					'label'             => __( 'Allow User Edit', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'              => __( 'Allow logged-in users to edit entries they created.', 'gk-gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gk-gravityview' ), _x( 'edit entries', 'an action that admins can perform', 'gk-gravityview' ) ),
 					'value'             => 0,
 					'tooltip'           => __( 'Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gk-gravityview' ),
@@ -268,7 +269,7 @@ class View_Settings extends Settings {
 				),
 				'unapprove_edit'              => array(
 					'label'             => __( 'Unapprove Entries After Edit', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_EDIT_ENTRY,
 					'requires'          => 'user_edit',
 					'desc'              => __( 'When an entry is edited by a non-administrator, reset the approval status to "Unapproved".', 'gk-gravityview' ),
 					'tooltip'           => __( 'If the "Show only approved entries" setting is enabled, the entry will need to be re-approved by an administrator before it is shown in the View.', 'gk-gravityview' ),
@@ -282,7 +283,7 @@ class View_Settings extends Settings {
 				),
 				'user_delete'                 => array(
 					'label'             => __( 'Allow User Delete', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_DELETE_ENTRY,
 					'desc'              => __( 'Allow logged-in users to delete entries they created.', 'gk-gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gk-gravityview' ), _x( 'delete entries', 'an action that admins can perform', 'gk-gravityview' ) ),
 					'value'             => 0,
 					'tooltip'           => __( 'Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gk-gravityview' ),
@@ -295,7 +296,7 @@ class View_Settings extends Settings {
 				),
 				'user_duplicate'              => array(
 					'label'             => __( 'Allow User Duplicate', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'              => __( 'Allow logged-in users to duplicate entries they created.', 'gk-gravityview' ) . ' ' . sprintf( __( 'Administrators are able to %s regardless of this setting.', 'gk-gravityview' ), _x( 'duplicate entries', 'an action that admins can perform', 'gk-gravityview' ) ),
 					'value'             => 0,
 					'tooltip'           => __( 'Display "Duplicate Entry" fields to non-administrator users if they created the entry. Duplicate Entry fields will always be displayed to site administrators.', 'gk-gravityview' ),
@@ -311,7 +312,7 @@ class View_Settings extends Settings {
 					'type'              => 'select',
 					'desc'              => __( 'By default, entries are sorted by Entry ID.', 'gk-gravityview' ),
 					'value'             => '',
-					'group'             => 'sort',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'options'           => array(
 						'id'           => __( 'Default', 'gk-gravityview' ),
 						'date_created' => __( 'Date Created', 'gk-gravityview' ),
@@ -326,7 +327,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'Sort direction', 'gk-gravityview' ),
 					'type'              => 'select',
 					'value'             => 'ASC',
-					'group'             => 'sort',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'options'           => array(
 						'ASC'  => __( 'ASC', 'gk-gravityview' ),
 						'DESC' => __( 'DESC', 'gk-gravityview' ),
@@ -342,7 +343,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'Sort by secondary field', 'gk-gravityview' ),
 					'type'              => 'select',
 					'value'             => '',
-					'group'             => 'sort',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'options'           => array(
 						'id'           => __( 'Default', 'gk-gravityview' ),
 						'date_created' => __( 'Date Created', 'gk-gravityview' ),
@@ -358,7 +359,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'Secondary sort direction', 'gk-gravityview' ),
 					'type'              => 'select',
 					'value'             => 'ASC',
-					'group'             => 'sort',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'options'           => array(
 						'ASC'  => __( 'ASC', 'gk-gravityview' ),
 						'DESC' => __( 'DESC', 'gk-gravityview' ),
@@ -375,7 +376,7 @@ class View_Settings extends Settings {
 					'left_label'        => __( 'Column Sorting', 'gk-gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => false,
-					'group'             => 'sort',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'tooltip'           => null,
 					'show_in_shortcode' => true,
 					'show_in_template'  => array(
@@ -396,7 +397,7 @@ class View_Settings extends Settings {
 					'desc'              => __( 'Show entries submitted after this date. Supports relative dates, such as "-1 week" or "-1 month".', 'gk-gravityview' ),
 					'type'              => 'text',
 					'value'             => '',
-					'group'             => 'filter',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b0512429885520',
@@ -409,7 +410,7 @@ class View_Settings extends Settings {
 					'desc'              => __( 'Show entries submitted before this date. Supports relative dates, such as "now" or "-3 days".', 'gk-gravityview' ),
 					'type'              => 'text',
 					'value'             => '',
-					'group'             => 'filter',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'show_in_shortcode' => true,
 					'article'           => array(
 						'id'  => '54c67bbbe4b0512429885520',
@@ -419,7 +420,7 @@ class View_Settings extends Settings {
 				'class'                       => array(
 					'label'             => __( 'CSS Class', 'gk-gravityview' ),
 					'desc'              => __( 'CSS class to add to the wrapping HTML container.', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_ADVANCED,
 					'type'              => 'text',
 					'value'             => '',
 					'show_in_shortcode' => false,
@@ -429,7 +430,7 @@ class View_Settings extends Settings {
 					'desc'              => __( 'Define a default search value for the View', 'gk-gravityview' ),
 					'type'              => 'text',
 					'value'             => '',
-					'group'             => 'filter',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'show_in_shortcode' => false,
 				),
 				'search_field'                => array(
@@ -437,21 +438,21 @@ class View_Settings extends Settings {
 					'desc'              => __( 'If Search Value is set, you can define a specific field to search in. Otherwise, all fields will be searched.', 'gk-gravityview' ),
 					'type'              => 'text',
 					'value'             => '',
-					'group'             => 'filter',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'show_in_shortcode' => false,
 				),
 				'search_operator'             => array(
 					'label'             => __( 'Search Operator', 'gk-gravityview' ),
 					'type'              => 'operator',
 					'value'             => 'contains',
-					'group'             => 'filter',
+					'group'             => Metaboxes::GROUP_SORT_FILTER,
 					'show_in_shortcode' => false,
 				),
 				'single_title'                => array(
 					'label'             => __( 'Single Entry Title', 'gk-gravityview' ),
 					'type'              => 'text',
 					'desc'              => __( 'When viewing a single entry, change the title of the page to this setting. Otherwise, the title will not change between the Multiple Entries and Single Entry views.', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_SINGLE_ENTRY,
 					'value'             => '',
 					'show_in_shortcode' => false,
 					'full_width'        => true,
@@ -462,7 +463,7 @@ class View_Settings extends Settings {
 				),
 				'back_link_label'             => array(
 					'label'             => __( 'Back Link Label', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_SINGLE_ENTRY,
 					'desc'              => __( 'The text of the link that returns to the multiple entries view.', 'gk-gravityview' ),
 					'type'              => 'text',
 					'value'             => '',
@@ -474,7 +475,7 @@ class View_Settings extends Settings {
 				),
 				'edit_redirect'               => array(
 					'label'   => __( 'Redirect After Editing', 'gk-gravityview' ),
-					'group'   => 'default',
+					'group'   => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'    => __( 'The page to redirect to after editing an entry.', 'gk-gravityview' ),
 					'type'    => 'select',
 					'value'   => '',
@@ -493,7 +494,7 @@ class View_Settings extends Settings {
 					'label'             => __( 'Editing Returns To&hellip;', 'gk-gravityview' ),
 					'type'              => 'radio',
 					'desc'              => __( 'After editing an entry or clicking Cancel, where should the user be sent?', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_EDIT_ENTRY,
 					'value'             => 'single',
 					'options'           => array(
 						'multiple' => __( 'Multiple Entries', 'gk-gravityview' ),
@@ -509,7 +510,7 @@ class View_Settings extends Settings {
 				),
 				'edit_redirect_url'           => array(
 					'label'       => __( 'Edit Entry Redirect URL', 'gk-gravityview' ),
-					'group'       => 'default',
+					'group'       => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'        => __( 'After editing an entry, the user will be taken to this URL.', 'gk-gravityview' ),
 					'type'        => 'text',
 					'class'       => 'code widefat',
@@ -521,7 +522,7 @@ class View_Settings extends Settings {
 				),
 				'action_label_update'         => array(
 					'label'      => __( 'Update Button Text', 'gk-gravityview' ),
-					'group'      => 'default',
+					'group'      => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'       => '',
 					'type'       => 'text',
 					'value'      => _x( 'Update', 'Button to update an entry the user is editing', 'gk-gravityview' ),
@@ -537,10 +538,11 @@ class View_Settings extends Settings {
 						'close_lightbox'           => __( 'Close Lightbox', 'gk-gravityview' ),
 						'redirect_to_single_entry' => __( 'Redirect to Single Entry', 'gk-gravityview' ),
 					),
+					'group' => Metaboxes::GROUP_EDIT_ENTRY,
 				),
 				'action_label_cancel'         => array(
 					'label'      => __( 'Cancel Link Text', 'gk-gravityview' ),
-					'group'      => 'default',
+					'group'      => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'       => '',
 					'type'       => 'text',
 					'value'      => _x( 'Cancel', 'Shown when the user decides not to edit an entry', 'gk-gravityview' ),
@@ -548,7 +550,7 @@ class View_Settings extends Settings {
 				),
 				'action_label_next'           => array(
 					'label'      => __( 'Next Page Button Text', 'gk-gravityview' ),
-					'group'      => 'default',
+					'group'      => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'       => __( 'Only shown when multi-page forms are enabled.', 'gk-gravityview' ),
 					'type'       => 'text',
 					'value'      => __( 'Next', 'Show the next page in a multi-page form', 'gk-gravityview' ),
@@ -556,7 +558,7 @@ class View_Settings extends Settings {
 				),
 				'action_label_previous'       => array(
 					'label'      => __( 'Previous Page Button Text', 'gk-gravityview' ),
-					'group'      => 'default',
+					'group'      => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'       => __( 'Only shown when multi-page forms are enabled.', 'gk-gravityview' ),
 					'type'       => 'text',
 					'value'      => __( 'Previous', 'Show the previous page in a multi-page form', 'gk-gravityview' ),
@@ -564,7 +566,7 @@ class View_Settings extends Settings {
 				),
 				'action_label_delete'         => array(
 					'label'      => __( 'Delete Link Text', 'gk-gravityview' ),
-					'group'      => 'default',
+					'group'      => Metaboxes::GROUP_DELETE_ENTRY,
 					'desc'       => '',
 					'type'       => 'text',
 					'value'      => __( 'Delete', 'Button label to delete an entry from the Edit Entry screen', 'gk-gravityview' ),
@@ -572,7 +574,7 @@ class View_Settings extends Settings {
 				),
 				'edit_locking'                => array(
 					'label'      => __( 'Enable Edit Locking', 'gk-gravityview' ),
-					'group'      => 'default',
+					'group'      => Metaboxes::GROUP_EDIT_ENTRY,
 					'desc'       => __( 'Prevent multiple users from editing the same entry at the same time.', 'gk-gravityview' ),
 					'type'       => 'checkbox',
 					'full_width' => true,
@@ -585,7 +587,7 @@ class View_Settings extends Settings {
 				),
 				'delete_redirect'             => array(
 					'label'   => __( 'Redirect After Deleting', 'gk-gravityview' ),
-					'group'   => 'default',
+					'group'   => Metaboxes::GROUP_DELETE_ENTRY,
 					'desc'    => __( 'The page to redirect to after deleting an entry.', 'gk-gravityview' ),
 					'type'    => 'select',
 					'value'   => '1',
@@ -596,7 +598,7 @@ class View_Settings extends Settings {
 				),
 				'delete_redirect_url'         => array(
 					'label'       => __( 'Delete Entry Redirect URL', 'gk-gravityview' ),
-					'group'       => 'default',
+					'group'       => Metaboxes::GROUP_DELETE_ENTRY,
 					'desc'        => __( 'After deleting an entry, the user will be taken to this URL.', 'gk-gravityview' ),
 					'type'        => 'text',
 					'class'       => 'code widefat',
@@ -611,10 +613,11 @@ class View_Settings extends Settings {
 					'desc'  => __( 'This will require a <code>secret</code> attribute on all shortcodes and blocks connected to this View, including <code>[gravityview]</code>, <code>[gvfield]</code> and <code>[gventry]</code>.', 'gk-gravityview' ),
 					'type'  => 'checkbox',
 					'value' => 0,
+					'group' => Metaboxes::GROUP_PERMISSIONS,
 				],
 				'embed_only'                  => array(
 					'label'             => __( 'Prevent Direct Access', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_PERMISSIONS,
 					'desc'              => __( 'Only allow access to this View when embedded using the block or shortcode.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
@@ -629,7 +632,7 @@ class View_Settings extends Settings {
 				),
 				'custom_css'                  => array(
 					'label'             => __( 'Custom CSS', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_ADVANCED,
 					// translators: Do not translate the words inside the square brackets ([]); they are replaced.
 					'desc'              => strtr(
 					// translators: Do not translate the words inside the square brackets ([]); they are replaced.
@@ -658,7 +661,7 @@ class View_Settings extends Settings {
 				),
 				'custom_javascript'           => array(
 					'label'             => __( 'Custom JavaScript', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_ADVANCED,
 					'desc'              => strtr(
 						// translators: Do not translate the words inside the square brackets ([]); they are replaced.
 						esc_html__( 'JavaScript added here will be placed inside [script] tags in the page&rsquo;s footer, after GravityView scripts.', 'gk-gravityview' ),
@@ -688,7 +691,7 @@ class View_Settings extends Settings {
 				array(
 					'rest_disable' => array(
 						'label'             => __( 'Prevent REST Access', 'gk-gravityview' ),
-						'group'             => 'default',
+						'group'             => Metaboxes::GROUP_PERMISSIONS,
 						'desc'              => __( 'Disable REST access to this View.', 'gk-gravityview' ),
 						'type'              => 'checkbox',
 						'value'             => '',
@@ -701,7 +704,7 @@ class View_Settings extends Settings {
 				array(
 					'rest_enable' => array(
 						'label'             => __( 'Allow REST Access', 'gk-gravityview' ),
-						'group'             => 'default',
+						'group'             => Metaboxes::GROUP_PERMISSIONS,
 						'desc'              => __( 'Enable REST access to this View.', 'gk-gravityview' ),
 						'type'              => 'checkbox',
 						'value'             => '',
@@ -713,7 +716,7 @@ class View_Settings extends Settings {
 			array(
 				'csv_enable' => array(
 					'label'             => __( 'Allow Export', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_PERMISSIONS,
 					'desc'              => __( 'Enable users to download data as a CSV or TSV file.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
@@ -729,7 +732,7 @@ class View_Settings extends Settings {
 			array(
 				'csv_nolimit' => array(
 					'label'             => __( 'Show All In File', 'gk-gravityview' ),
-					'group'             => 'default',
+					'group'             => Metaboxes::GROUP_PERMISSIONS,
 					'desc'              => __( 'Do not limit the number of entries output in the file.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
 					'value'             => '',
@@ -744,6 +747,7 @@ class View_Settings extends Settings {
 					'type'              => 'number',
 					'value'             => '',
 					'show_in_shortcode' => false,
+					'group'             => Metaboxes::GROUP_VIEW_SETTINGS,
 				),
 			)
 		);

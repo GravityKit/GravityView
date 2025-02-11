@@ -1167,8 +1167,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( wp_list_pluck( $detailed, 'value', 'id' ), array_values( $defaults ) );
 
 		/** Group. */
-		$group = \GV\View_Settings::defaults( true, 'sort' );
-		$this->assertEmpty( array_filter( $group, function( $setting ) { return !empty( $setting['group'] ) && 'sort' != $setting['group']; } ) );
+		$group = \GV\View_Settings::defaults( true, 'sort_filter' );
+		$this->assertEmpty( array_filter( $group, function( $setting ) { return !empty( $setting['group'] ) && 'filter_sort' != $setting['group']; } ) );
 
 		/** Test old filter. */
 		add_filter( 'gravityview_default_args', function( $defaults ) {
