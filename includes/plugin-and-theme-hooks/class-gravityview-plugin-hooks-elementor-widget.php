@@ -788,13 +788,21 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$shortcode = sprintf( '[gravityview %s]', $atts_string );
 
+		$preview_single_entry = 'yes' === \GV\Utils::get( $settings, 'preview_single_entry' );
+		$show_debug_output = 'yes' === \GV\Utils::get( $settings, 'show_debug_output' );
 
-		if ( 'yes' === \GV\Utils::get( $settings, 'show_debug_output' ) ) {
-			echo '<div style="background-color: #f9f9f9; padding: 20px; margin-bottom: 20px;">';
-			echo '<h3>' . esc_html__( 'Shortcode', 'gk-gravityview' ) . '</h3>';
-			echo '<code>' . $shortcode . '</code>';
-			echo '</div>';
-		}
+		echo '<div style="font-size: .8em; background-color: #fff; padding: 10px; margin-bottom: 0; border-bottom: 1px dashed var(--e-a-border-color-bold);">';
+			if ( $preview_single_entry ) {
+				echo '<p style="margin:0; "><span style="line-height:1.15;" class="dashicons dashicons-media-default"></span> <strong>' . esc_html__( 'Single Entry Preview', 'gk-gravityview' ) . '</strong></p>';
+			} else {
+				echo '<p style="margin:0;"><span style="line-height:1.15;" class="dashicons dashicons-admin-page"></span> <strong>' . esc_html__( 'Multiple Entries Preview', 'gk-gravityview' ) . '</strong></p>';
+			}
+
+			if ( $show_debug_output ) {
+				echo '<p style="margin-top:1em; padding-top:0;"><strong>' . esc_html__( 'Shortcode', 'gk-gravityview' ) . '</strong></p>';
+				echo '<code>' . $shortcode . '</code>';
+			}
+		echo '</div>';
 
 		$custom_css = $view->settings->get( 'custom_css', null );
 
@@ -802,9 +810,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			wp_add_inline_style( 'gravityview_default_style', $custom_css );
 		}
 
-		$preview_single_entry = $settings['preview_single_entry'];
 
-		if ( 'yes' === $preview_single_entry ) {
+		if ( $preview_single_entry ) {
 			// Get the first entry in a View.
 			$entry     = $view->get_entries()->first();
 			$shortcode = sprintf( '[gventry entry_id="%d" view_id="%d" secret="%s"]', $entry->ID, $view_id, $secret );
