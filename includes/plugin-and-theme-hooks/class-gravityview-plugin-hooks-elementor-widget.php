@@ -767,6 +767,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			return;
 		}
 
+		add_filter( 'gk/gravityview/entry-approval/hide-notice', '__return_true' );
+
 		$atts_string = '';
 		$atts = $this->convert_widget_settings_to_shortcode( $settings );
 

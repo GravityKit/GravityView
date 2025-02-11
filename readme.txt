@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= Elementor =
+
+#### 💻 Developer Updates
+
+- Added: `gk/gravityview/entry-approval/hide-notice` filter to control whether to hide the notice shown when there are no entries and "Only show approved entries" View setting is enabled. Default: `false`.
+
 = develop =
 
 #### 🚀 Added

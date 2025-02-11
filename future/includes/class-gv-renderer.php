@@ -91,6 +91,17 @@ class Renderer {
 	 */
 	private static function maybe_print_entry_approval_notice( $gravityview ) {
 
+		/**
+		 * Filter: `gk/gravityview/entry-approval/show-notice`
+		 *
+		 * @since TODO
+		 *
+		 * @param bool $show_notice Whether to show the notice. Default: true.
+		 */
+		if ( apply_filters( 'gk/gravityview/entry-approval/hide-notice', false ) ) {
+			return;
+		}
+
 		if ( $gravityview->entries && $gravityview->entries->count() ) {
 			return;
 		}
