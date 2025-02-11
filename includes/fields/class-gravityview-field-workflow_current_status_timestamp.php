@@ -22,8 +22,6 @@ class GravityView_Field_Workflow_Current_Status_Timestamp extends GravityView_Fi
 
 	public function __construct() {
 		if ( ! defined( 'GRAVITY_FLOW_VERSION' ) ) {
-			parent::__construct();
-
 			return;
 		}
 

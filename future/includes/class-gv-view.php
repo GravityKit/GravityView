@@ -1116,10 +1116,21 @@ class View implements \ArrayAccess {
 			/** @type \GF_Query $query */
 			$query = new $query_class( $this->form->ID, $parameters['search_criteria'], Utils::get( $parameters, 'sorting' ) );
 
+			// Determine if we need to apply multisort: if the query is random, we don't need to.
+			$has_random = false;
+			foreach ( $query->_introspect()['order'] as $order ) {
+				if ( isset( $order[0] ) && $order[0] instanceof \GF_Query_Call ) {
+					if( 'RAND' === $order[0]->function_name ) {
+						$has_random = true;
+						break;
+					}
+				}
+			}
+
 			/**
 			 * Apply multisort.
 			 */
-			if ( ! empty( $has_multisort ) ) {
+			if ( ! empty( $has_multisort ) && ! $has_random ) {
 				// Clear ordering that was set when initializing the query since we're going to set it from scratch.
 				( function () {
 					$this->order = [];
@@ -1141,8 +1152,8 @@ class View implements \ArrayAccess {
 					$sort_field_ids  = array_keys( $_GET['sort'] );
 					$sort_directions = array_values( $_GET['sort'] );
 				} else {
-					$sort_field_ids  = $view_setting_sort_field_ids;
-					$sort_directions = $view_setting_sort_directions;
+					$sort_field_ids  = (array) $view_setting_sort_field_ids;
+					$sort_directions = (array) $view_setting_sort_directions;
 				}
 
 				$sorting_parameters = [];
@@ -1543,12 +1554,20 @@ class View implements \ArrayAccess {
 
 		$query_introspect =  $query->_introspect();
 
+		$random_order = false;
+
 		// Order keys are randomly generated, so we need to make them deterministic or else the query hash will change every time.
 		if ( isset( $query_introspect['order'] ) ) {
 			$order_hashes = [];
 
 			foreach ( $query_introspect['order'] as $order ) {
-				$order_hashes[] = md5( serialize( $order ) );
+				$serialized_order = serialize( $order );
+
+				if ( strpos( $serialized_order, '"RAND"' ) !== false ) {
+					$random_order = true;
+				}
+
+				$order_hashes[] = md5( serialize( $serialized_order ) );
 			}
 
 			$query_introspect['order'] = $order_hashes;
@@ -1573,7 +1592,7 @@ class View implements \ArrayAccess {
 
 		$long_lived_cache = new GravityView_Cache( $form_ids, $caching_atts );
 
-		if ( $long_lived_cache->use_cache() ) {
+		if ( ! $random_order && $long_lived_cache->use_cache() ) {
 			$cached_entries = $long_lived_cache->get();
 
 			if ( is_array( $cached_entries ) && array_key_exists( 'entries', $cached_entries ) && array_key_exists( 'total', $cached_entries ) ) {

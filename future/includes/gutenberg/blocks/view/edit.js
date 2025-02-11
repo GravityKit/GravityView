@@ -231,6 +231,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									options={ [
 										{ value: 'ASC', label: __( 'Ascending', 'gk-gravityview' ) },
 										{ value: 'DESC', label: __( 'Descending', 'gk-gravityview' ) },
+										{ value: 'RAND', label: __( 'Random', 'gk-gravityview' ) },
 									] }
 									onChange={ ( sortDirection ) => setAttributes( { sortDirection } ) }
 								/>

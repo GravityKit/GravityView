@@ -21,6 +21,22 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🚀 Added
+* Random sorting option in the GravityView block.
+
+#### ✨ Improved
+* Partial entries no longer appear as "Unapproved" on the Entries page.
+
+#### 🐛 Fixed
+
+* Random sorting was not working when overriding the View sorting using the `sort_direction` shortcode attribute.
+* Entry notes not displaying in the DataTables extension when the first View field is a Date field.
+* Gravity Flow fields were displaying as available when Gravity Flow was not active.
+* Result Number field would not reset counts when multiple Views were displayed on the same page.
+* Random sorting of View entries did not work unless View caching was explicitly disabled.
+
 = 2.34.2 on February 4, 2025 =
 
 This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.

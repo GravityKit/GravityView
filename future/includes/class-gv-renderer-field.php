@@ -60,6 +60,7 @@ class Field_Renderer extends Renderer {
 		$renderer = new $class( $field, $view, $source, $entry, $request );
 		ob_start();
 		$renderer->render();
+		$renderer->__destruct();
 		return ob_get_clean();
 	}
 }

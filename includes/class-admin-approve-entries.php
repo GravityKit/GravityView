@@ -96,17 +96,51 @@ class GravityView_Admin_ApproveEntries {
 			),
 		);
 
+		// Field filters do not allow for complex logic, so we need to use a custom SQL query for unapproved entries where:
+		// 1. 'is_approved' meta key = 3 [OR] 'is_approved' meta key = ''
+		// [AND] 2. 'partial_entry_percent' meta key = '' [OR] 'partial_entry_percent' meta key = NULL
 		$field_filters_unapproved = array(
 			'mode' => 'any',
 			array(
 				'key'   => GravityView_Entry_Approval::meta_key,
-				'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
-			),
-			array(
-				'key'      => GravityView_Entry_Approval::meta_key,
-				'value'    => '',
-			),
+				'value' => '__filter_unapproved'
+			)
 		);
+
+		add_filter( 'gform_gf_query_sql', function ( $sql ) use ( $form ) {
+			$entry_meta_table = GFFormsModel::get_entry_meta_table_name();
+
+			// Detect the placeholder that indicates we should use the custom SQL query.
+			if ( false === strpos( $sql['where'], '__filter_unapproved' ) ) {
+				return $sql;
+			}
+
+			$form_id           = $form['id'];
+			$unapproved_status = GravityView_Entry_Approval_Status::UNAPPROVED;
+
+			$sql['join'] = "
+				LEFT JOIN `{$entry_meta_table}` AS `m1`
+				ON (`m1`.`entry_id` = `t1`.`id` AND `m1`.`meta_key` = 'is_approved')
+				LEFT JOIN `{$entry_meta_table}` AS `m2`
+				ON (`m2`.`entry_id` = `t1`.`id` AND `m2`.`meta_key` = 'partial_entry_percent')
+			";
+
+			$sql['where'] = "
+				WHERE `t1`.`form_id` = '{$form_id}'
+				AND `t1`.`status` = 'active'
+				AND (
+					`m1`.`meta_value` IS NULL
+					OR `m1`.`meta_value` = '{$unapproved_status}'
+					OR `m1`.`meta_value` = ''
+				)
+				AND (
+					`m2`.`meta_value` IS NULL
+					OR `m2`.`meta_value` = ''
+				)
+			";
+
+			return $sql;
+		} );
 
 		$approved_count = $disapproved_count = $unapproved_count = 0;
 
