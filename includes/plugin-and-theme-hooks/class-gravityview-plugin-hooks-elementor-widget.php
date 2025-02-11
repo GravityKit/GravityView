@@ -812,7 +812,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$preview_single_entry = 'yes' === \GV\Utils::get( $settings, 'preview_single_entry' );
 		$show_debug_output = 'yes' === \GV\Utils::get( $settings, 'show_debug_output' );
 
-		echo '<div style="font-size: .8em; background-color: #fff; padding: 10px; margin-bottom: 0; border-bottom: 1px dashed var(--e-a-border-color-bold);">';
+		// Add a notice to the top of the View to indicate that it's a preview.
+		// Use the action instead of directly outputting to prevent Elementor errors.
+		add_action( 'gravityview/template/before', function () use ( $preview_single_entry, $show_debug_output, $shortcode ) {
+			echo '<div style="font-size: .8em; background-color: #fff; padding: 10px; margin-bottom: 0; border-bottom: 1px dashed var(--e-a-border-color-bold);">';
 			if ( $preview_single_entry ) {
 				echo '<p style="margin:0; "><span style="line-height:1.15;" class="dashicons dashicons-media-default"></span> <strong>' . esc_html__( 'Single Entry Preview', 'gk-gravityview' ) . '</strong></p>';
 			} else {
@@ -823,14 +826,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				echo '<p style="margin-top:1em; padding-top:0;"><strong>' . esc_html__( 'Shortcode', 'gk-gravityview' ) . '</strong></p>';
 				echo '<code>' . esc_html( $shortcode ) . '</code>';
 			}
-		echo '</div>';
+			echo '</div>';
+		}, 10, 1 );
 
 		$custom_css = $view->settings->get( 'custom_css', null );
 
 		if ( $custom_css ) {
 			wp_add_inline_style( 'gravityview_default_style', $custom_css );
 		}
-
 
 		if ( $preview_single_entry ) {
 			// Get the first entry in a View.
