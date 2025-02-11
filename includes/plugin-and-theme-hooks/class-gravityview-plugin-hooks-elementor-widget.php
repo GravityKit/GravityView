@@ -373,9 +373,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			}
 
 			$control_settings = [
-				'label'       => $default_setting['label'],
+				'label'       => esc_html( $default_setting['label'] ),
 				'default'     => $view_settings[ $key ] ?? $default_setting['value'],
 				'label_block' => true,
+				'description' => esc_html( $default_setting['desc'] ),
+				'separator'   => 'before',
 			];
 
 			switch ( $default_setting['type'] ) {
@@ -385,9 +387,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					break;
 				case 'number':
 					$type = Controls_Manager::NUMBER;
+					$control_settings['label_block'] = false;
 					break;
 				case 'checkbox':
 					$type = Controls_Manager::SWITCHER;
+					$control_settings['label_block'] = false;
 					break;
 				case 'select':
 				case 'radio':
@@ -396,6 +400,23 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					break;
 				default:
 					$type = Controls_Manager::TEXT;
+			}
+
+			if( ! empty( $default_setting['requires'] ) ) {
+
+				$control_settings['separator'] = 'none';
+
+				[ $condition_name, $condition_value ] = explode( '=', $default_setting['requires'] );
+
+				if ( $condition_value ) {
+					$control_settings['condition'] = [
+						$condition_name => $condition_value,
+					];
+				} else {
+					$control_settings['condition'] = [
+						$condition_name => 'yes'
+					];
+				}
 			}
 
 			$control_settings['type'] = $type;

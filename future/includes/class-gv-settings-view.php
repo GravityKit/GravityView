@@ -101,6 +101,16 @@ class View_Settings extends Settings {
 						'url' => 'https://docs.gravitykit.com/article/490-entry-approval-gravity-forms',
 					),
 				),
+				'admin_show_all_statuses'     => array(
+					'label'             => __( 'Show all entries to administrators', 'gk-gravityview' ),
+					'desc'              => __( 'Administrators will be able to see entries with any approval status.', 'gk-gravityview' ),
+					'tooltip'           => __( 'Logged-out visitors and non-administrators will only see approved entries, while administrators will see entries with all statuses. This makes it easier for administrators to moderate entries from a View.', 'gk-gravityview' ),
+					'requires'          => 'show_only_approved',
+					'type'              => 'checkbox',
+					'group'             => 'default',
+					'value'             => 0,
+					'show_in_shortcode' => true,
+				),
 				'caching'                     => array(
 					'label'             => __( 'Enable caching', 'gk-gravityview' ),
 					'type'              => 'checkbox',
@@ -205,16 +215,6 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'class'             => 'widefat',
 					'full_width'        => true,
-				),
-				'admin_show_all_statuses'     => array(
-					'label'             => __( 'Show all entries to administrators', 'gk-gravityview' ),
-					'desc'              => __( 'Administrators will be able to see entries with any approval status.', 'gk-gravityview' ),
-					'tooltip'           => __( 'Logged-out visitors and non-administrators will only see approved entries, while administrators will see entries with all statuses. This makes it easier for administrators to moderate entries from a View.', 'gk-gravityview' ),
-					'requires'          => 'show_only_approved',
-					'type'              => 'checkbox',
-					'group'             => 'default',
-					'value'             => 0,
-					'show_in_shortcode' => false,
 				),
 				'hide_until_searched'         => array(
 					'label'             => __( 'Hide View data until search is performed', 'gk-gravityview' ),
