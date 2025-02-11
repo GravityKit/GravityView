@@ -788,8 +788,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			return;
 		}
 
-		add_filter( 'gk/gravityview/entry-approval/hide-notice', '__return_true' );
-
 		$atts_string = '';
 		$atts = $this->convert_widget_settings_to_shortcode( $settings );
 
@@ -840,12 +838,27 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$shortcode = sprintf( '[gventry entry_id="%d" view_id="%d" secret="%s"]', $entry->ID, $view_id, $secret );
 		}
 
+		// Use a temporary filter to return true for the is_renderable check instead of __return_true
+		// to prevent removing other filters that might be added by other code.
+		$return_true_tmp = function() {
+			return true;
+		};
+
 		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && wp_doing_ajax() && 'elementor_ajax' === \GV\Utils::_POST( 'action' ) ) {
-			add_filter( 'gravityview_email_prevent_encrypt', '__return_true' );
+			add_filter( 'gravityview_email_prevent_encrypt', $return_true_tmp );
 		}
+
+		add_filter( 'gk/gravityview/entry-approval/hide-notice', $return_true_tmp );
+		add_filter( 'gravityview/request/is_renderable', $return_true_tmp );
+		add_filter( 'gk/gravityview/shortcodes/gravityview/parse-in-admin', $return_true_tmp );
 
 		// Needs to be above the frontend rendering to ensure the Views are loaded.
 		$rendered = Blocks::render_shortcode( $shortcode );
+
+		remove_filter( 'gk/gravityview/entry-approval/hide-notice', $return_true_tmp );
+		remove_filter( 'gravityview/request/is_renderable', $return_true_tmp );
+		remove_filter( 'gk/gravityview/shortcodes/gravityview/parse-in-admin', $return_true_tmp );
+		remove_filter( 'gravityview_email_prevent_encrypt', $return_true_tmp );
 
 		$gravityview_frontend = \GravityView_frontend::getInstance();
 		$gravityview_frontend->setGvOutputData( \GravityView_View_Data::getInstance( $shortcode ) );
