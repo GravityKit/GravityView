@@ -303,16 +303,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			]
 		);
 
-		$views = get_posts([
-			'post_type'      => 'gravityview',
-			'posts_per_page' => -1,
-		]);
+		$views = GVCommon::get_all_views();
 
-		$views_options = [];
 		$views_layouts = [];
 
 		foreach ($views as $view) {
-			$views_options[$view->ID] = $view->post_title;
 
 			try {
 				$gv_view = \GV\View::by_id($view->ID);
