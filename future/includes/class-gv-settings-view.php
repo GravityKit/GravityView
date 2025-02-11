@@ -260,7 +260,7 @@ class View_Settings extends Settings {
 					'value'             => 0,
 					'tooltip'           => __( 'Display "Edit Entry" fields to non-administrator users if they created the entry. Edit Entry fields will always be displayed to site administrators.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
-					'show_in_shortcode' => true,
+					'show_in_shortcode' => false,
 					'article'           => array(
 						'id'  => '54c67bbbe4b07997ea3f3f6b',
 						'url' => 'https://docs.gravitykit.com/article/77-user-edit-allow-users-to-edit-their-own-entries',
@@ -274,7 +274,7 @@ class View_Settings extends Settings {
 					'tooltip'           => __( 'If the "Show only approved entries" setting is enabled, the entry will need to be re-approved by an administrator before it is shown in the View.', 'gk-gravityview' ),
 					'value'             => 0,
 					'type'              => 'checkbox',
-					'show_in_shortcode' => true,
+					'show_in_shortcode' => false,
 					'article'           => array(
 						'id'  => '5ddd81d504286364bc923957',
 						'url' => 'https://docs.gravitykit.com/article/657-unapproving-edited-entries-automatically',
@@ -287,7 +287,7 @@ class View_Settings extends Settings {
 					'value'             => 0,
 					'tooltip'           => __( 'Display "Delete Entry" fields to non-administrator users if they created the entry. Delete Entry fields will always be displayed to site administrators.', 'gk-gravityview' ),
 					'type'              => 'checkbox',
-					'show_in_shortcode' => true,
+					'show_in_shortcode' => false,
 					'article'           => array(
 						'id'  => '54c67bb9e4b0512429885512',
 						'url' => 'https://docs.gravitykit.com/article/66-configuring-delete-entry',
@@ -304,7 +304,7 @@ class View_Settings extends Settings {
 						'url' => 'https://docs.gravitykit.com/article/66-configuring-delete-entry',
 					),
 					'type'              => 'checkbox',
-					'show_in_shortcode' => true,
+					'show_in_shortcode' => false,
 				),
 				'sort_field'                  => array(
 					'label'             => __( 'Sort by field', 'gk-gravityview' ),
