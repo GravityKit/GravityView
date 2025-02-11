@@ -307,20 +307,18 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$views_layouts = [];
 
-		foreach ($views as $view) {
-
-			try {
-				$gv_view = \GV\View::by_id($view->ID);
-				if ($gv_view) {
-					$views_layouts[$view->ID] = [
-						'multiple' => $gv_view->settings->get('template'),
-						'single' => $gv_view->settings->get('template_single_entry') ?? $gv_view->settings->get('template'),
-					];
-				}
-			} catch (Exception $e) {
-				// Skip if view can't be loaded
+			if ( ! $gv_view ) {
 				continue;
 			}
+
+			$settings = $gv_view->settings->as_atts();
+			unset( $settings['custom_javascript'], $settings['custom_css'], $settings['id'], $settings['edit_feeds'] );
+
+			$views_layouts[ $view->ID ] = [
+				'multiple' => $gv_view->settings->get( 'template' ),
+				'single'   => $gv_view->settings->get( 'template_single_entry', $gv_view->settings->get( 'template' ) ),
+				'settings' => $settings,
+			];
 		}
 
 		// Store layouts data for use in JS

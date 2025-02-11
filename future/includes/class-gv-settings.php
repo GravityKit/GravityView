@@ -75,7 +75,7 @@ class Settings {
 	}
 
 	/**
-	 * Returns all the objects in this collection as an an array.
+	 * Returns all the objects in this collection as an array.
 	 *
 	 * @api
 	 * @since 2.0
