@@ -126,10 +126,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				],
 				'style_selectors' => [
 					'multiple' => [
-						'wrapper' => '.gv-table-view',
-						'header'  => '.gv-table-view thead th',
-						'rows'    => '.gv-table-view tbody tr',
-						'cells'   => '.gv-table-view tbody td',
+						'wrapper' => '.gv-table-multiple-container',
+						'header'  => '.gv-table-multiple-container thead th',
+						'rows'    => '.gv-table-multiple-container tbody tr',
+						'cells'   => '.gv-table-multiple-container tbody td',
 					],
 					'single'   => [
 						'wrapper' => '.gv-table-single-container',
@@ -693,6 +693,101 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								],
 								'condition'  => [
 									"gravityview_{$layout_id}_header_border_{$context}!" => 'none',
+								],
+							]
+						);
+					}
+
+					$this->end_controls_tab();
+				}
+
+				$this->end_controls_tabs();
+				$this->end_controls_section();
+			}
+
+			// Footer Section (for layouts with footers)
+			if ( isset( $settings['has_footer'] ) && $settings['has_footer'] && isset( $selectors['multiple']['footer'] ) ) {
+				$this->start_controls_section(
+					"gravityview_{$layout_id}_footer_section",
+					[
+						'label'     => sprintf( __( '%s Footer', 'gk-gravityview' ), $layout_name ),
+						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
+						'condition' => [
+							'layout_multiple' => $layout_id,
+						],
+					]
+				);
+
+				$this->start_controls_tabs( "gravityview_{$layout_id}_footer_tabs" );
+
+				foreach ( $contexts as $context => $context_label ) {
+					$this->start_controls_tab(
+						"gravityview_{$layout_id}_footer_{$context}_tab",
+						[ 'label' => $context_label ]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_footer_background_{$context}",
+						[
+							'label'     => __( 'Background Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['footer'] => 'background-color: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_footer_color_{$context}",
+						[
+							'label'     => __( 'Text Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['footer'] => 'color: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->add_group_control(
+						Group_Control_Typography::get_type(),
+						[
+							'name'     => "gravityview_{$layout_id}_footer_typography_{$context}",
+							'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['footer'],
+						]
+					);
+
+					if ( isset( $selectors[ $context ]['footer'] ) ) {
+						$this->add_group_control(
+							Group_Control_Border::get_type(),
+							[
+								'name'           => "gravityview_{$layout_id}_footer_border_{$context}",
+								'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['footer'],
+								'separator'      => 'before',
+								'fields_options' => [
+									'border' => [
+										'label' => __( 'Footer Border Type', 'gk-gravityview' ),
+									],
+									'width'  => [
+										'label' => __( 'Footer Border Width', 'gk-gravityview' ),
+									],
+									'color'  => [
+										'label' => __( 'Footer Border Color', 'gk-gravityview' ),
+									],
+								],
+							]
+						);
+
+						$this->add_responsive_control(
+							"gravityview_{$layout_id}_footer_border_radius_{$context}",
+							[
+								'label'      => __( 'Footer Border Radius', 'gk-gravityview' ),
+								'type'       => Controls_Manager::DIMENSIONS,
+								'size_units' => [ 'px', '%' ],
+								'selectors'  => [
+									'{{WRAPPER}} ' . $selectors[ $context ]['footer'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+								],
+								'condition'  => [
+									"gravityview_{$layout_id}_footer_border_{$context}!" => 'none',
 								],
 							]
 						);
