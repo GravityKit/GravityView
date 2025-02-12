@@ -598,6 +598,41 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					]
 				);
 
+				// Add border collapse setting for table layouts
+				if ( in_array( $layout_id, ['default_table', 'datatables_table'] ) ) {
+					$this->add_control(
+						"gravityview_{$layout_id}_border_collapse_{$context}",
+						[
+							'label'     => __( 'Border Collapse', 'gk-gravityview' ),
+							'type'      => Controls_Manager::SELECT,
+							'default'   => 'collapse',
+							'options'   => [
+								'collapse' => __( 'Collapse', 'gk-gravityview' ),
+								'separate' => __( 'Separate', 'gk-gravityview' ),
+							],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] . ' table' => 'border-collapse: {{VALUE}};',
+							],
+							'separator' => 'before',
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_border_spacing_{$context}",
+						[
+							'label'      => __( 'Cell Spacing', 'gk-gravityview' ),
+							'type'       => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', 'em' ],
+							'selectors'  => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] . ' table' => 'border-spacing: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}};',
+							],
+							'condition' => [
+								"gravityview_{$layout_id}_border_collapse_{$context}" => 'separate',
+							],
+						]
+					);
+				}
+
 				$this->add_group_control(
 					Group_Control_Box_Shadow::get_type(),
 					[
