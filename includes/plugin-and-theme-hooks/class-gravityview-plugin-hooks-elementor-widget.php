@@ -120,7 +120,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			'default_table'    => [
 				'label'           => esc_html__( 'Table', 'gk-gravityview' ),
 				'template_id'     => 'default_table',
-				'class'           => 'gv-table-view',
 				'settings'        => [
 					'has_header' => true,
 					'has_footer' => true,
@@ -143,7 +142,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			'default_list'     => [
 				'label'           => esc_html__( 'List', 'gk-gravityview' ),
 				'template_id'     => 'default_list',
-				'class'           => 'gv-list-container',
 				'settings'        => [
 					'has_header' => false,
 					'has_footer' => false,
@@ -166,7 +164,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			'datatables_table' => [
 				'label'           => esc_html__( 'DataTables', 'gk-gravityview' ),
 				'template_id'     => 'datatables',
-				'class'           => 'gv-datatables-view',
 				'settings'        => [
 					'has_header'     => true,
 					'has_footer'     => true,
@@ -195,7 +192,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			'diy'              => [
 				'label'           => esc_html__( 'DIY Layout', 'gk-gravityview' ),
 				'template_id'     => 'custom',
-				'class'           => 'gv-diy-view',
 				'settings'        => [
 					'supports_custom_css' => true,
 				],
@@ -219,7 +215,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			'layout_builder'   => [
 				'label'           => esc_html__( 'Layout Builder', 'gk-gravityview' ),
 				'template_id'     => 'layout_builder',
-				'class'           => 'gv-layout-builder-view',
 				'settings'        => [
 					'has_grid'            => true,
 					'supports_custom_css' => true,
