@@ -893,18 +893,49 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				]
 			);
 
-			$this->add_control(
-				'search_gap',
+			$this->add_responsive_control(
+				'search_container_padding',
 				[
-					'label' => __('Gap Between Fields', 'gk-gravityview'),
-					'type' => Controls_Manager::SLIDER,
+					'label' => __('Container Padding', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
 					'size_units' => ['px', 'em'],
-					'range' => [
-						'px' => ['min' => 0, 'max' => 50],
-						'em' => ['min' => 0, 'max' => 5],
-					],
 					'selectors' => [
-						'{{WRAPPER}} .gv-widget-search .gv-search-box' => 'margin: 0 {{SIZE}}{{UNIT}};',
+						'{{WRAPPER}} .gv-widget-search' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'search_container_background',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-widget-search' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Border::get_type(),
+				[
+					'name' => 'search_container_border',
+					'label' => __('Border', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-widget-search',
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_container_border_radius',
+				[
+					'label' => __('Border Radius', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', '%'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-widget-search' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+					'condition' => [
+						'search_container_border_border!' => 'none',
 					],
 				]
 			);
@@ -919,13 +950,47 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				]
 			);
 
-			$this->add_control(
-				'search_box_background',
+			$this->add_responsive_control(
+				'search_box_spacing',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
+					'label' => __('Box Spacing', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_box_padding',
+				[
+					'label' => __('Box Padding', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			// Labels
+			$this->add_control(
+				'search_label_heading',
+				[
+					'label' => __('Labels', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_control(
+				'search_label_color',
+				[
+					'label' => __('Label Color', 'gk-gravityview'),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .gv-search-box' => 'background-color: {{VALUE}};',
+						'{{WRAPPER}} .gv-search-box label' => 'color: {{VALUE}};',
 					],
 				]
 			);
@@ -933,29 +998,24 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Typography::get_type(),
 				[
-					'name' => 'search_box_typography',
-					'label' => __('Typography', 'gk-gravityview'),
-					'selector' => '{{WRAPPER}} .gv-search-box',
-				]
-			);
-
-			$this->add_group_control(
-				Group_Control_Border::get_type(),
-				[
-					'name' => 'search_box_border',
-					'label' => __('Border', 'gk-gravityview'),
-					'selector' => '{{WRAPPER}} .gv-search-box',
+					'name' => 'search_label_typography',
+					'label' => __('Label Typography', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-search-box label',
 				]
 			);
 
 			$this->add_responsive_control(
-				'search_box_padding',
+				'search_label_spacing',
 				[
-					'label' => __('Padding', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
+					'label' => __('Label Bottom Spacing', 'gk-gravityview'),
+					'type' => Controls_Manager::SLIDER,
 					'size_units' => ['px', 'em'],
+					'range' => [
+						'px' => ['min' => 0, 'max' => 50],
+						'em' => ['min' => 0, 'max' => 5],
+					],
 					'selectors' => [
-						'{{WRAPPER}} .gv-search-box' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'{{WRAPPER}} .gv-search-box label' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 					],
 				]
 			);
@@ -970,34 +1030,85 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				]
 			);
 
+			$this->start_controls_tabs('search_input_style_tabs');
+
+			// Normal state
+			$this->start_controls_tab(
+				'search_input_normal_tab',
+				['label' => __('Normal', 'gk-gravityview')]
+			);
+
 			$this->add_control(
 				'search_input_background',
 				[
 					'label' => __('Background Color', 'gk-gravityview'),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .gv-search-box input, {{WRAPPER}} .gv-search-box select' => 'background-color: {{VALUE}};',
+						'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'background-color: {{VALUE}};',
 					],
 				]
 			);
 
 			$this->add_control(
-				'search_input_text_color',
+				'search_input_color',
 				[
 					'label' => __('Text Color', 'gk-gravityview'),
 					'type' => Controls_Manager::COLOR,
 					'selectors' => [
-						'{{WRAPPER}} .gv-search-box input, {{WRAPPER}} .gv-search-box select' => 'color: {{VALUE}};',
+						'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'color: {{VALUE}};',
 					],
 				]
 			);
+
+			$this->end_controls_tab();
+
+			// Focus state
+			$this->start_controls_tab(
+				'search_input_focus_tab',
+				['label' => __('Focus', 'gk-gravityview')]
+			);
+
+			$this->add_control(
+				'search_input_background_focus',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box input[type="text"]:focus, {{WRAPPER}} .gv-search-box select:focus' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'search_input_color_focus',
+				[
+					'label' => __('Text Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box input[type="text"]:focus, {{WRAPPER}} .gv-search-box select:focus' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Box_Shadow::get_type(),
+				[
+					'name' => 'search_input_box_shadow_focus',
+					'selector' => '{{WRAPPER}} .gv-search-box input[type="text"]:focus, {{WRAPPER}} .gv-search-box select:focus',
+				]
+			);
+
+			$this->end_controls_tab();
+
+			$this->end_controls_tabs();
 
 			$this->add_group_control(
 				Group_Control_Typography::get_type(),
 				[
 					'name' => 'search_input_typography',
 					'label' => __('Typography', 'gk-gravityview'),
-					'selector' => '{{WRAPPER}} .gv-search-box input, {{WRAPPER}} .gv-search-box select',
+					'selector' => '{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select',
+					'separator' => 'before',
 				]
 			);
 
@@ -1006,7 +1117,57 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				[
 					'name' => 'search_input_border',
 					'label' => __('Border', 'gk-gravityview'),
-					'selector' => '{{WRAPPER}} .gv-search-box input, {{WRAPPER}} .gv-search-box select',
+					'selector' => '{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select',
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_input_border_radius',
+				[
+					'label' => __('Border Radius', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', '%'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_input_padding',
+				[
+					'label' => __('Padding', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			// Date Picker Specific Styles
+			$this->add_control(
+				'search_datepicker_heading',
+				[
+					'label' => __('Date Picker', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_datepicker_width',
+				[
+					'label' => __('Width', 'gk-gravityview'),
+					'type' => Controls_Manager::SLIDER,
+					'size_units' => ['px', '%'],
+					'range' => [
+						'px' => ['min' => 100, 'max' => 500],
+						'%' => ['min' => 10, 'max' => 100],
+					],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-date input[type="text"]' => 'width: {{SIZE}}{{UNIT}};',
+					],
 				]
 			);
 
@@ -1040,7 +1201,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			);
 
 			$this->add_control(
-				'search_button_text_color',
+				'search_button_color',
 				[
 					'label' => __('Text Color', 'gk-gravityview'),
 					'type' => Controls_Manager::COLOR,
@@ -1070,7 +1231,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			);
 
 			$this->add_control(
-				'search_button_text_color_hover',
+				'search_button_color_hover',
 				[
 					'label' => __('Text Color', 'gk-gravityview'),
 					'type' => Controls_Manager::COLOR,
@@ -1090,6 +1251,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					'name' => 'search_button_typography',
 					'label' => __('Typography', 'gk-gravityview'),
 					'selector' => '{{WRAPPER}} .gv-search-button',
+					'separator' => 'before',
 				]
 			);
 
@@ -1103,6 +1265,18 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			);
 
 			$this->add_responsive_control(
+				'search_button_border_radius',
+				[
+					'label' => __('Border Radius', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', '%'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$this->add_responsive_control(
 				'search_button_padding',
 				[
 					'label' => __('Padding', 'gk-gravityview'),
@@ -1110,38 +1284,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					'size_units' => ['px', 'em'],
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					],
-				]
-			);
-
-			// Clear Button
-			$this->add_control(
-				'search_clear_heading',
-				[
-					'label' => __('Clear Button', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
-					'separator' => 'before',
-				]
-			);
-
-			$this->add_control(
-				'search_clear_text_color',
-				[
-					'label' => __('Text Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
-					'selectors' => [
-						'{{WRAPPER}} .gv-search-clear' => 'color: {{VALUE}};',
-					],
-				]
-			);
-
-			$this->add_control(
-				'search_clear_text_color_hover',
-				[
-					'label' => __('Hover Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
-					'selectors' => [
-						'{{WRAPPER}} .gv-search-clear:hover' => 'color: {{VALUE}};',
 					],
 				]
 			);
@@ -1417,6 +1559,79 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 			$this->end_controls_tabs();
 
+			// Pagination Settings
+			$this->add_control(
+				'pagination_settings_heading',
+				[
+					'label' => __('Pagination Settings', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_control(
+				'pagination_show_all',
+				[
+					'label' => __('Show All Pages', 'gk-gravityview'),
+					'type' => Controls_Manager::SWITCHER,
+					'description' => __('Show all page numbers instead of truncating', 'gk-gravityview'),
+					'default' => '',
+					'label_on' => __('Yes', 'gk-gravityview'),
+					'label_off' => __('No', 'gk-gravityview'),
+				]
+			);
+
+			$this->add_control(
+				'pagination_end_size',
+				[
+					'label' => __('End Size', 'gk-gravityview'),
+					'type' => Controls_Manager::NUMBER,
+					'description' => __('How many numbers on either end of the pagination', 'gk-gravityview'),
+					'default' => 1,
+					'min' => 1,
+					'max' => 10,
+					'condition' => [
+						'pagination_show_all!' => 'yes',
+					],
+				]
+			);
+
+			$this->add_control(
+				'pagination_mid_size',
+				[
+					'label' => __('Mid Size', 'gk-gravityview'),
+					'type' => Controls_Manager::NUMBER,
+					'description' => __('How many numbers on either side of the current page', 'gk-gravityview'),
+					'default' => 2,
+					'min' => 0,
+					'max' => 10,
+					'condition' => [
+						'pagination_show_all!' => 'yes',
+					],
+				]
+			);
+
+			$this->add_control(
+				'pagination_prev_text',
+				[
+					'label' => __('Previous Label', 'gk-gravityview'),
+					'type' => Controls_Manager::TEXT,
+					'default' => '&laquo;',
+					'description' => __('Text/HTML for the previous page link', 'gk-gravityview'),
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_control(
+				'pagination_next_text',
+				[
+					'label' => __('Next Label', 'gk-gravityview'),
+					'type' => Controls_Manager::TEXT,
+					'default' => '&raquo;',
+					'description' => __('Text/HTML for the next page link', 'gk-gravityview'),
+				]
+			);
+
 			$this->end_controls_section();
 
 			// DataTables specific controls
@@ -1574,6 +1789,28 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			add_filter( 'gravityview_email_prevent_encrypt', $return_true_tmp );
 		}
 
+		add_filter( 'gravityview_page_links_args', function( $args ) {
+			$settings = $this->get_settings_for_display();
+
+			// Apply pagination settings if they exist
+			if ( ! empty( $settings['pagination_end_size'] ) ) {
+				$args['end_size'] = absint( $settings['pagination_end_size'] );
+			}
+
+			if ( ! empty( $settings['pagination_mid_size'] ) ) {
+				$args['mid_size'] = absint( $settings['pagination_mid_size'] );
+			}
+
+			if ( 'yes' === $settings['pagination_show_all'] ) {
+				$args['show_all'] = true;
+			}
+
+			// Set prev/next text from settings or use defaults
+			$args['prev_text'] = ! empty( $settings['pagination_prev_text'] ) ? $settings['pagination_prev_text'] : '<span class="dashicons dashicons-arrow-left-alt2"></span>';
+			$args['next_text'] = ! empty( $settings['pagination_next_text'] ) ? $settings['pagination_next_text'] : '<span class="dashicons dashicons-arrow-right-alt2"></span>';
+
+			return $args;
+		});
 		add_filter( 'gk/gravityview/entry-approval/hide-notice', $return_true_tmp );
 		add_filter( 'gravityview/request/is_renderable', $return_true_tmp );
 		add_filter( 'gk/gravityview/shortcodes/gravityview/parse-in-admin', $return_true_tmp );
