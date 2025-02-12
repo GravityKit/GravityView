@@ -50,12 +50,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		// Check if Elementor is installed and activated
 		if ( ! did_action( 'elementor/loaded' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_missing_elementor' ] );
+
 			return;
 		}
 
 		// Check if GravityView is installed and activated
 		if ( ! class_exists( 'GravityView_Plugin' ) ) {
 			add_action( 'admin_notices', [ $this, 'admin_notice_missing_gravityview' ] );
+
 			return;
 		}
 
@@ -115,13 +117,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		// TODO: Load these dynamically from the plugin, reading from available layouts.
 		$this->view_layouts = [
-			'default_table' => [
+			'default_table'    => [
 				'label'           => esc_html__( 'Table', 'gk-gravityview' ),
 				'template_id'     => 'default_table',
 				'class'           => 'gv-table-view',
 				'settings'        => [
-					'has_header'          => true,
-					'has_footer'          => true,
+					'has_header' => true,
+					'has_footer' => true,
 				],
 				'style_selectors' => [
 					'multiple' => [
@@ -130,7 +132,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						'rows'    => '.gv-table-view tbody tr',
 						'cells'   => '.gv-table-view tbody td',
 					],
-					'single' => [
+					'single'   => [
 						'wrapper' => '.gv-table-single-container',
 						'header'  => '.gv-table-single-container thead th',
 						'rows'    => '.gv-table-single-container tbody tr',
@@ -138,13 +140,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					],
 				],
 			],
-			'default_list' => [
+			'default_list'     => [
 				'label'           => esc_html__( 'List', 'gk-gravityview' ),
 				'template_id'     => 'default_list',
 				'class'           => 'gv-list-container',
 				'settings'        => [
-					'has_header'          => false,
-					'has_footer'          => false,
+					'has_header' => false,
+					'has_footer' => false,
 				],
 				'style_selectors' => [
 					'multiple' => [
@@ -153,7 +155,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						'title'   => '.gv-list-view-title',
 						'content' => '.gv-list-view-content',
 					],
-					'single' => [
+					'single'   => [
 						'wrapper' => '.gv-list-single-container',
 						'entry'   => '.gv-list-single-entry',
 						'title'   => '.gv-list-single-title',
@@ -166,10 +168,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				'template_id'     => 'datatables',
 				'class'           => 'gv-datatables-view',
 				'settings'        => [
-					'has_header'          => true,
-					'has_footer'          => true,
-					'has_search'          => true,
-					'has_pagination'      => true,
+					'has_header'     => true,
+					'has_footer'     => true,
+					'has_search'     => true,
+					'has_pagination' => true,
 				],
 				'style_selectors' => [
 					'multiple' => [
@@ -180,7 +182,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						'pagination' => '.dataTables_pagination',
 						'search'     => '.dataTables_filter',
 					],
-					'single' => [
+					'single'   => [
 						'wrapper'    => '.gv-datatables-single-container',
 						'header'     => '.gv-datatables-single-container thead th',
 						'rows'       => '.gv-datatables-single-container tbody tr',
@@ -190,7 +192,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					],
 				],
 			],
-			'diy' => [
+			'diy'              => [
 				'label'           => esc_html__( 'DIY Layout', 'gk-gravityview' ),
 				'template_id'     => 'custom',
 				'class'           => 'gv-diy-view',
@@ -205,7 +207,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						'field_label' => '.gv-field-label',
 						'field_value' => '.gv-field-value',
 					],
-					'single' => [
+					'single'   => [
 						'wrapper'     => '.gv-diy-single-container',
 						'container'   => '.gv-diy-single-view',
 						'entry'       => '.gv-diy-single-entry',
@@ -214,7 +216,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					],
 				],
 			],
-			'layout_builder' => [
+			'layout_builder'   => [
 				'label'           => esc_html__( 'Layout Builder', 'gk-gravityview' ),
 				'template_id'     => 'layout_builder',
 				'class'           => 'gv-layout-builder-view',
@@ -229,7 +231,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						'columns' => '.gv-grid-col',
 						'items'   => '.gv-grid-col-item',
 					],
-					'single' => [
+					'single'   => [
 						'wrapper' => '.gv-grid-single-container',
 						'grid'    => '.gv-grid-single',
 						'columns' => '.gv-grid-single-col',
@@ -373,8 +375,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$this->add_control(
 			'views_layouts',
 			[
-				'type' => \Elementor\Controls_Manager::HIDDEN,
-				'default' => json_encode($views_layouts),
+				'type'    => \Elementor\Controls_Manager::HIDDEN,
+				'default' => json_encode( $views_layouts ),
 			]
 		);
 
@@ -382,7 +384,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$this->add_control(
 			'layout_single',
 			[
-				'type' => \Elementor\Controls_Manager::HIDDEN,
+				'type'    => \Elementor\Controls_Manager::HIDDEN,
 				'default' => '',
 			]
 		);
@@ -391,7 +393,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$this->add_control(
 			'layout_multiple',
 			[
-				'type' => \Elementor\Controls_Manager::HIDDEN,
+				'type'    => \Elementor\Controls_Manager::HIDDEN,
 				'default' => '',
 			]
 		);
@@ -407,7 +409,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$defaults = \GV\View_Settings::defaults( true );
 
-		foreach( $defaults as $key => $default_setting ) {
+		foreach ( $defaults as $key => $default_setting ) {
 
 			if ( empty( $default_setting['show_in_shortcode'] ) ) {
 				continue;
@@ -415,7 +417,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 			$control_settings = [
 				'label'       => esc_html( \GV\Utils::get( $default_setting, 'label', '' ) ),
-				'default'     => \GV\Utils::get( $default_setting, 'value', '' ), // TODO: Get default value from View settings.
+				'default'     => \GV\Utils::get( $default_setting, 'value', '' ),
+				// TODO: Get default value from View settings.
 				'label_block' => true,
 				'description' => esc_html( \GV\Utils::get( $default_setting, 'desc', '' ) ),
 				'separator'   => 'before',
@@ -427,27 +430,30 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$type = Controls_Manager::TEXT;
 					break;
 				case 'number':
-					$type = Controls_Manager::NUMBER;
+					$type                            = Controls_Manager::NUMBER;
 					$control_settings['label_block'] = false;
 					break;
 				case 'checkbox':
-					$type = Controls_Manager::SWITCHER;
+					$type                            = Controls_Manager::SWITCHER;
 					$control_settings['label_block'] = false;
 					break;
 				case 'select':
 				case 'radio':
-					$type = Controls_Manager::SELECT;
+					$type                        = Controls_Manager::SELECT;
 					$control_settings['options'] = $default_setting['options'];
 					break;
 				default:
 					$type = Controls_Manager::TEXT;
 			}
 
-			if( ! empty( $default_setting['requires'] ) ) {
+			if ( ! empty( $default_setting['requires'] ) ) {
 
 				$control_settings['separator'] = 'none';
 
-				[ $condition_name, $condition_value ] = array_pad( explode( '=', $default_setting['requires'] ), 2, null );
+				[
+					$condition_name,
+					$condition_value,
+				] = array_pad( explode( '=', $default_setting['requires'] ), 2, null );
 
 				if ( null !== $condition_value ) {
 					$control_settings['condition'] = [
@@ -455,7 +461,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					];
 				} else {
 					$control_settings['condition'] = [
-						$condition_name => 'yes'
+						$condition_name => 'yes',
 					];
 				}
 			}
@@ -510,52 +516,52 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$this->end_controls_section();
 
 		// Layout-specific style controls
-		foreach ($this->view_layouts as $layout_id => $layout) {
+		foreach ( $this->view_layouts as $layout_id => $layout ) {
 			$layout_name = $layout['label'];
-			$selectors = $layout['style_selectors'];
-			$settings = $layout['settings'];
+			$selectors   = $layout['style_selectors'];
+			$settings    = $layout['settings'];
 
 			// Container Section
 			$this->start_controls_section(
 				"gravityview_{$layout_id}_container_section",
 				[
-					'label' => sprintf(__('%s Container', 'gk-gravityview'), $layout_name),
-					'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+					'label'     => sprintf( __( '%s Container', 'gk-gravityview' ), $layout_name ),
+					'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 					'condition' => [
 						'layout_multiple' => $layout_id,
 					],
 				]
 			);
 
-			$this->start_controls_tabs("gravityview_{$layout_id}_container_tabs");
+			$this->start_controls_tabs( "gravityview_{$layout_id}_container_tabs" );
 
 			$contexts = [
-				'multiple' => esc_html__('Multiple Entries', 'gk-gravityview'),
-				'single' => esc_html__('Single Entry', 'gk-gravityview'),
+				'multiple' => esc_html__( 'Multiple Entries', 'gk-gravityview' ),
+				'single'   => esc_html__( 'Single Entry', 'gk-gravityview' ),
 			];
 
-			foreach ($contexts as $context => $context_label) {
+			foreach ( $contexts as $context => $context_label ) {
 				$this->start_controls_tab(
 					"gravityview_{$layout_id}_container_{$context}_tab",
-					['label' => $context_label]
+					[ 'label' => $context_label ]
 				);
 
 				$this->add_responsive_control(
 					"gravityview_{$layout_id}_width_{$context}",
 					[
-						'label' => __('Width', 'gk-gravityview'),
-						'type' => Controls_Manager::SLIDER,
-						'size_units' => ['%', 'px'],
-						'range' => [
-							'%' => ['min' => 10, 'max' => 100],
-							'px' => ['min' => 100, 'max' => 2500],
+						'label'      => __( 'Width', 'gk-gravityview' ),
+						'type'       => Controls_Manager::SLIDER,
+						'size_units' => [ '%', 'px' ],
+						'range'      => [
+							'%'  => [ 'min' => 10, 'max' => 100 ],
+							'px' => [ 'min' => 100, 'max' => 2500 ],
 						],
-						'default' => [
+						'default'    => [
 							'unit' => '%',
 							'size' => 100,
 						],
-						'selectors' => [
-							'{{WRAPPER}} ' . $selectors[$context]['wrapper'] => 'width: {{SIZE}}{{UNIT}};',
+						'selectors'  => [
+							'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'width: {{SIZE}}{{UNIT}};',
 						],
 					]
 				);
@@ -563,18 +569,18 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->add_group_control(
 					Group_Control_Border::get_type(),
 					[
-						'name' => "gravityview_{$layout_id}_container_border_{$context}",
-						'selector' => '{{WRAPPER}} ' . $selectors[$context]['wrapper'],
-						'separator' => 'before',
+						'name'           => "gravityview_{$layout_id}_container_border_{$context}",
+						'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['wrapper'],
+						'separator'      => 'before',
 						'fields_options' => [
 							'border' => [
-								'label' => __('Container Border Type', 'gk-gravityview'),
+								'label' => __( 'Container Border Type', 'gk-gravityview' ),
 							],
-							'width' => [
-								'label' => __('Container Border Width', 'gk-gravityview'),
+							'width'  => [
+								'label' => __( 'Container Border Width', 'gk-gravityview' ),
 							],
-							'color' => [
-								'label' => __('Container Border Color', 'gk-gravityview'),
+							'color'  => [
+								'label' => __( 'Container Border Color', 'gk-gravityview' ),
 							],
 						],
 					]
@@ -583,13 +589,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->add_responsive_control(
 					"gravityview_{$layout_id}_container_border_radius_{$context}",
 					[
-						'label' => __('Border Radius', 'gk-gravityview'),
-						'type' => Controls_Manager::DIMENSIONS,
-						'size_units' => ['px', '%'],
-						'selectors' => [
-							'{{WRAPPER}} ' . $selectors[$context]['wrapper'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+						'label'      => __( 'Border Radius', 'gk-gravityview' ),
+						'type'       => Controls_Manager::DIMENSIONS,
+						'size_units' => [ 'px', '%' ],
+						'selectors'  => [
+							'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 						],
-						'condition' => [
+						'condition'  => [
 							"gravityview_{$layout_id}_container_border_{$context}!" => 'none',
 						],
 					]
@@ -598,8 +604,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->add_group_control(
 					Group_Control_Box_Shadow::get_type(),
 					[
-						'name' => "gravityview_{$layout_id}_container_box_shadow_{$context}",
-						'selector' => '{{WRAPPER}} ' . $selectors[$context]['wrapper'],
+						'name'     => "gravityview_{$layout_id}_container_box_shadow_{$context}",
+						'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['wrapper'],
 					]
 				);
 
@@ -610,33 +616,33 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->end_controls_section();
 
 			// Header Section (for layouts with headers)
-			if (isset($settings['has_header']) && $settings['has_header'] && isset($selectors['multiple']['header'])) {
+			if ( isset( $settings['has_header'] ) && $settings['has_header'] && isset( $selectors['multiple']['header'] ) ) {
 				$this->start_controls_section(
 					"gravityview_{$layout_id}_header_section",
 					[
-						'label' => sprintf(__('%s Header', 'gk-gravityview'), $layout_name),
-						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+						'label'     => sprintf( __( '%s Header', 'gk-gravityview' ), $layout_name ),
+						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 						'condition' => [
 							'layout_multiple' => $layout_id,
 						],
 					]
 				);
 
-				$this->start_controls_tabs("gravityview_{$layout_id}_header_tabs");
+				$this->start_controls_tabs( "gravityview_{$layout_id}_header_tabs" );
 
-				foreach ($contexts as $context => $context_label) {
+				foreach ( $contexts as $context => $context_label ) {
 					$this->start_controls_tab(
 						"gravityview_{$layout_id}_header_{$context}_tab",
-						['label' => $context_label]
+						[ 'label' => $context_label ]
 					);
 
 					$this->add_control(
 						"gravityview_{$layout_id}_header_background_{$context}",
 						[
-							'label' => __('Background Color', 'gk-gravityview'),
-							'type' => Controls_Manager::COLOR,
+							'label'     => __( 'Background Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
 							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[$context]['header'] => 'background-color: {{VALUE}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['header'] => 'background-color: {{VALUE}};',
 							],
 						]
 					);
@@ -644,10 +650,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$this->add_control(
 						"gravityview_{$layout_id}_header_color_{$context}",
 						[
-							'label' => __('Text Color', 'gk-gravityview'),
-							'type' => Controls_Manager::COLOR,
+							'label'     => __( 'Text Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
 							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[$context]['header'] => 'color: {{VALUE}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['header'] => 'color: {{VALUE}};',
 							],
 						]
 					);
@@ -655,27 +661,27 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$this->add_group_control(
 						Group_Control_Typography::get_type(),
 						[
-							'name' => "gravityview_{$layout_id}_header_typography_{$context}",
-							'selector' => '{{WRAPPER}} ' . $selectors[$context]['header'],
+							'name'     => "gravityview_{$layout_id}_header_typography_{$context}",
+							'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['header'],
 						]
 					);
 
-					if (isset($selectors[$context]['header'])) {
+					if ( isset( $selectors[ $context ]['header'] ) ) {
 						$this->add_group_control(
 							Group_Control_Border::get_type(),
 							[
-								'name' => "gravityview_{$layout_id}_header_border_{$context}",
-								'selector' => '{{WRAPPER}} ' . $selectors[$context]['header'],
-								'separator' => 'before',
+								'name'           => "gravityview_{$layout_id}_header_border_{$context}",
+								'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['header'],
+								'separator'      => 'before',
 								'fields_options' => [
 									'border' => [
-										'label' => __('Header Border Type', 'gk-gravityview'),
+										'label' => __( 'Header Border Type', 'gk-gravityview' ),
 									],
-									'width' => [
-										'label' => __('Header Border Width', 'gk-gravityview'),
+									'width'  => [
+										'label' => __( 'Header Border Width', 'gk-gravityview' ),
 									],
-									'color' => [
-										'label' => __('Header Border Color', 'gk-gravityview'),
+									'color'  => [
+										'label' => __( 'Header Border Color', 'gk-gravityview' ),
 									],
 								],
 							]
@@ -684,13 +690,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						$this->add_responsive_control(
 							"gravityview_{$layout_id}_header_border_radius_{$context}",
 							[
-								'label' => __('Header Border Radius', 'gk-gravityview'),
-								'type' => Controls_Manager::DIMENSIONS,
-								'size_units' => ['px', '%'],
-								'selectors' => [
-									'{{WRAPPER}} ' . $selectors[$context]['header'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+								'label'      => __( 'Header Border Radius', 'gk-gravityview' ),
+								'type'       => Controls_Manager::DIMENSIONS,
+								'size_units' => [ 'px', '%' ],
+								'selectors'  => [
+									'{{WRAPPER}} ' . $selectors[ $context ]['header'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 								],
-								'condition' => [
+								'condition'  => [
 									"gravityview_{$layout_id}_header_border_{$context}!" => 'none',
 								],
 							]
@@ -705,33 +711,33 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			}
 
 			// Rows Section
-			if (isset($selectors['multiple']['rows'])) {
+			if ( isset( $selectors['multiple']['rows'] ) ) {
 				$this->start_controls_section(
 					"gravityview_{$layout_id}_rows_section",
 					[
-						'label' => sprintf(__('%s Rows', 'gk-gravityview'), $layout_name),
-						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+						'label'     => sprintf( __( '%s Rows', 'gk-gravityview' ), $layout_name ),
+						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 						'condition' => [
 							'layout_multiple' => $layout_id,
 						],
 					]
 				);
 
-				$this->start_controls_tabs("gravityview_{$layout_id}_rows_tabs");
+				$this->start_controls_tabs( "gravityview_{$layout_id}_rows_tabs" );
 
-				foreach ($contexts as $context => $context_label) {
+				foreach ( $contexts as $context => $context_label ) {
 					$this->start_controls_tab(
 						"gravityview_{$layout_id}_rows_{$context}_tab",
-						['label' => $context_label]
+						[ 'label' => $context_label ]
 					);
 
 					$this->add_control(
 						"gravityview_{$layout_id}_row_background_{$context}",
 						[
-							'label' => __('Background Color', 'gk-gravityview'),
-							'type' => Controls_Manager::COLOR,
+							'label'     => __( 'Background Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
 							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[$context]['rows'] => 'background-color: {{VALUE}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['rows'] => 'background-color: {{VALUE}};',
 							],
 						]
 					);
@@ -739,10 +745,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$this->add_control(
 						"gravityview_{$layout_id}_row_alternate_background_{$context}",
 						[
-							'label' => __('Alternate Row Background', 'gk-gravityview'),
-							'type' => Controls_Manager::COLOR,
+							'label'     => __( 'Alternate Row Background', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
 							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[$context]['rows'] . ':nth-child(even)' => 'background-color: {{VALUE}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['rows'] . ':nth-child(even)' => 'background-color: {{VALUE}};',
 							],
 						]
 					);
@@ -750,10 +756,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$this->add_control(
 						"gravityview_{$layout_id}_row_hover_background_{$context}",
 						[
-							'label' => __('Hover Background Color', 'gk-gravityview'),
-							'type' => Controls_Manager::COLOR,
+							'label'     => __( 'Hover Background Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
 							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[$context]['rows'] . ':hover' => 'background-color: {{VALUE}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['rows'] . ':hover' => 'background-color: {{VALUE}};',
 							],
 						]
 					);
@@ -766,33 +772,33 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			}
 
 			// Cells Section
-			if (isset($selectors['multiple']['cells'])) {
+			if ( isset( $selectors['multiple']['cells'] ) ) {
 				$this->start_controls_section(
 					"gravityview_{$layout_id}_cells_section",
 					[
-						'label' => sprintf(__('%s Cells', 'gk-gravityview'), $layout_name),
-						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+						'label'     => sprintf( __( '%s Cells', 'gk-gravityview' ), $layout_name ),
+						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 						'condition' => [
 							'layout_multiple' => $layout_id,
 						],
 					]
 				);
 
-				$this->start_controls_tabs("gravityview_{$layout_id}_cells_tabs");
+				$this->start_controls_tabs( "gravityview_{$layout_id}_cells_tabs" );
 
-				foreach ($contexts as $context => $context_label) {
+				foreach ( $contexts as $context => $context_label ) {
 					$this->start_controls_tab(
 						"gravityview_{$layout_id}_cells_{$context}_tab",
-						['label' => $context_label]
+						[ 'label' => $context_label ]
 					);
 
 					$this->add_control(
 						"gravityview_{$layout_id}_cell_color_{$context}",
 						[
-							'label' => __('Text Color', 'gk-gravityview'),
-							'type' => Controls_Manager::COLOR,
+							'label'     => __( 'Text Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
 							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[$context]['cells'] => 'color: {{VALUE}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['cells'] => 'color: {{VALUE}};',
 							],
 						]
 					);
@@ -800,26 +806,26 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$this->add_group_control(
 						Group_Control_Typography::get_type(),
 						[
-							'name' => "gravityview_{$layout_id}_cell_typography_{$context}",
-							'selector' => '{{WRAPPER}} ' . $selectors[$context]['cells'],
+							'name'     => "gravityview_{$layout_id}_cell_typography_{$context}",
+							'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['cells'],
 						]
 					);
 
 					$this->add_group_control(
 						Group_Control_Border::get_type(),
 						[
-							'name' => "gravityview_{$layout_id}_cell_border_{$context}",
-							'selector' => '{{WRAPPER}} ' . $selectors[$context]['cells'],
-							'separator' => 'before',
+							'name'           => "gravityview_{$layout_id}_cell_border_{$context}",
+							'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['cells'],
+							'separator'      => 'before',
 							'fields_options' => [
 								'border' => [
-									'label' => __('Cell Border Type', 'gk-gravityview'),
+									'label' => __( 'Cell Border Type', 'gk-gravityview' ),
 								],
-								'width' => [
-									'label' => __('Cell Border Width', 'gk-gravityview'),
+								'width'  => [
+									'label' => __( 'Cell Border Width', 'gk-gravityview' ),
 								],
-								'color' => [
-									'label' => __('Cell Border Color', 'gk-gravityview'),
+								'color'  => [
+									'label' => __( 'Cell Border Color', 'gk-gravityview' ),
 								],
 							],
 						]
@@ -828,13 +834,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$this->add_responsive_control(
 						"gravityview_{$layout_id}_cell_border_radius_{$context}",
 						[
-							'label' => __('Cell Border Radius', 'gk-gravityview'),
-							'type' => Controls_Manager::DIMENSIONS,
-							'size_units' => ['px', '%'],
-							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[$context]['cells'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							'label'      => __( 'Cell Border Radius', 'gk-gravityview' ),
+							'type'       => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', '%' ],
+							'selectors'  => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['cells'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 							],
-							'condition' => [
+							'condition'  => [
 								"gravityview_{$layout_id}_cell_border_{$context}!" => 'none',
 							],
 						]
@@ -844,13 +850,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$this->add_responsive_control(
 						"gravityview_{$layout_id}_cell_spacing_{$context}",
 						[
-							'label' => __('Cell Spacing', 'gk-gravityview'),
-							'type' => Controls_Manager::DIMENSIONS,
-							'size_units' => ['px', 'em'],
-							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[$context]['cells'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							'label'      => __( 'Cell Spacing', 'gk-gravityview' ),
+							'type'       => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', 'em' ],
+							'selectors'  => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['cells'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 							],
-							'condition' => [
+							'condition'  => [
 								"gravityview_{$layout_id}_cell_border_{$context}!" => 'none',
 							],
 						]
@@ -867,7 +873,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->start_controls_section(
 				'gravityview_search_section',
 				[
-					'label' => esc_html__('Search', 'gk-gravityview'),
+					'label' => esc_html__( 'Search', 'gk-gravityview' ),
 					'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 				]
 			);
@@ -876,18 +882,18 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_container_heading',
 				[
-					'label' => __('Search Container', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label' => __( 'Search Container', 'gk-gravityview' ),
+					'type'  => Controls_Manager::HEADING,
 				]
 			);
 
 			$this->add_responsive_control(
 				'search_container_margin',
 				[
-					'label' => __('Container Margin', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Container Margin', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-widget-search' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -896,10 +902,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_container_padding',
 				[
-					'label' => __('Container Padding', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Container Padding', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-widget-search' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -908,8 +914,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_container_background',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-widget-search' => 'background-color: {{VALUE}};',
 					],
@@ -919,23 +925,23 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Border::get_type(),
 				[
-					'name' => 'search_container_border',
-					'label' => __('Border', 'gk-gravityview'),
+					'name'     => 'search_container_border',
+					'label'    => __( 'Border', 'gk-gravityview' ),
 					'selector' => '{{WRAPPER}} .gv-widget-search',
-					'default' => 'none',
+					'default'  => 'none',
 				]
 			);
 
 			$this->add_responsive_control(
 				'search_container_border_radius',
 				[
-					'label' => __('Border Radius', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', '%'],
-					'selectors' => [
+					'label'      => __( 'Border Radius', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-widget-search' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
-					'condition' => [
+					'condition'  => [
 						'search_container_border_border!' => [ '', 'none' ],
 					],
 				]
@@ -945,8 +951,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_box_heading',
 				[
-					'label' => __('Search Box', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label'     => __( 'Search Box', 'gk-gravityview' ),
+					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				]
 			);
@@ -954,10 +960,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_box_spacing',
 				[
-					'label' => __('Box Spacing', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Box Spacing', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-box' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -966,10 +972,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_box_padding',
 				[
-					'label' => __('Box Padding', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Box Padding', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-box' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -979,22 +985,22 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_box_width',
 				[
-					'label' => __('Search Box Width', 'gk-gravityview'),
-					'type' => Controls_Manager::SLIDER,
-					'size_units' => ['px', '%'],
-					'range' => [
-						'px' => ['min' => 100, 'max' => 1000],
-						'%' => ['min' => 10, 'max' => 100],
-						'em' => ['min' => 1, 'max' => 100],
+					'label'      => __( 'Search Box Width', 'gk-gravityview' ),
+					'type'       => Controls_Manager::SLIDER,
+					'size_units' => [ 'px', '%' ],
+					'range'      => [
+						'px' => [ 'min' => 100, 'max' => 1000 ],
+						'%'  => [ 'min' => 10, 'max' => 100 ],
+						'em' => [ 'min' => 1, 'max' => 100 ],
 					],
-					'default' => [
+					'default'    => [
 						'unit' => 'em',
 						'size' => 10,
 					],
-					'selectors' => [
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-box' => 'flex-basis: {{SIZE}}{{UNIT}};',
 					],
-					'separator' => 'before',
+					'separator'  => 'before',
 				]
 			);
 
@@ -1002,9 +1008,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Border::get_type(),
 				[
-					'name' => 'search_box_border',
-					'label' => __('Box Border', 'gk-gravityview'),
-					'selector' => '{{WRAPPER}} .gv-search-box',
+					'name'      => 'search_box_border',
+					'label'     => __( 'Box Border', 'gk-gravityview' ),
+					'selector'  => '{{WRAPPER}} .gv-search-box',
 					'separator' => 'before',
 				]
 			);
@@ -1012,13 +1018,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_box_border_radius',
 				[
-					'label' => __('Box Border Radius', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', '%'],
-					'selectors' => [
+					'label'      => __( 'Box Border Radius', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-box' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
-					'condition' => [
+					'condition'  => [
 						'search_box_border_border!' => '',
 					],
 				]
@@ -1028,8 +1034,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_label_heading',
 				[
-					'label' => __('Labels', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label'     => __( 'Labels', 'gk-gravityview' ),
+					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				]
 			);
@@ -1037,8 +1043,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_label_color',
 				[
-					'label' => __('Label Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Label Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-box label' => 'color: {{VALUE}};',
 					],
@@ -1048,8 +1054,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Typography::get_type(),
 				[
-					'name' => 'search_label_typography',
-					'label' => __('Label Typography', 'gk-gravityview'),
+					'name'     => 'search_label_typography',
+					'label'    => __( 'Label Typography', 'gk-gravityview' ),
 					'selector' => '{{WRAPPER}} .gv-search-box label',
 				]
 			);
@@ -1057,14 +1063,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_label_spacing',
 				[
-					'label' => __('Label Bottom Spacing', 'gk-gravityview'),
-					'type' => Controls_Manager::SLIDER,
-					'size_units' => ['px', 'em'],
-					'range' => [
-						'px' => ['min' => 0, 'max' => 50],
-						'em' => ['min' => 0, 'max' => 5],
+					'label'      => __( 'Label Bottom Spacing', 'gk-gravityview' ),
+					'type'       => Controls_Manager::SLIDER,
+					'size_units' => [ 'px', 'em' ],
+					'range'      => [
+						'px' => [ 'min' => 0, 'max' => 50 ],
+						'em' => [ 'min' => 0, 'max' => 5 ],
 					],
-					'selectors' => [
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-box label' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 					],
 				]
@@ -1074,25 +1080,25 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_input_heading',
 				[
-					'label' => __('Input Fields', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label'     => __( 'Input Fields', 'gk-gravityview' ),
+					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				]
 			);
 
-			$this->start_controls_tabs('search_input_style_tabs');
+			$this->start_controls_tabs( 'search_input_style_tabs' );
 
 			// Normal state
 			$this->start_controls_tab(
 				'search_input_normal_tab',
-				['label' => __('Normal', 'gk-gravityview')]
+				[ 'label' => __( 'Normal', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'search_input_background',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'background-color: {{VALUE}};',
 					],
@@ -1102,8 +1108,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_input_color',
 				[
-					'label' => __('Text Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Text Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'color: {{VALUE}};',
 					],
@@ -1115,14 +1121,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			// Focus state
 			$this->start_controls_tab(
 				'search_input_focus_tab',
-				['label' => __('Focus', 'gk-gravityview')]
+				[ 'label' => __( 'Focus', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'search_input_background_focus',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-box input[type="text"]:focus, {{WRAPPER}} .gv-search-box select:focus' => 'background-color: {{VALUE}};',
 					],
@@ -1132,8 +1138,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_input_color_focus',
 				[
-					'label' => __('Text Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Text Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-box input[type="text"]:focus, {{WRAPPER}} .gv-search-box select:focus' => 'color: {{VALUE}};',
 					],
@@ -1143,7 +1149,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Box_Shadow::get_type(),
 				[
-					'name' => 'search_input_box_shadow_focus',
+					'name'     => 'search_input_box_shadow_focus',
 					'selector' => '{{WRAPPER}} .gv-search-box input[type="text"]:focus, {{WRAPPER}} .gv-search-box select:focus',
 				]
 			);
@@ -1155,9 +1161,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Typography::get_type(),
 				[
-					'name' => 'search_input_typography',
-					'label' => __('Typography', 'gk-gravityview'),
-					'selector' => '{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select',
+					'name'      => 'search_input_typography',
+					'label'     => __( 'Typography', 'gk-gravityview' ),
+					'selector'  => '{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select',
 					'separator' => 'before',
 				]
 			);
@@ -1165,8 +1171,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Border::get_type(),
 				[
-					'name' => 'search_input_border',
-					'label' => __('Border', 'gk-gravityview'),
+					'name'     => 'search_input_border',
+					'label'    => __( 'Border', 'gk-gravityview' ),
 					'selector' => '{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select',
 				]
 			);
@@ -1174,10 +1180,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_input_border_radius',
 				[
-					'label' => __('Border Radius', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', '%'],
-					'selectors' => [
+					'label'      => __( 'Border Radius', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -1186,10 +1192,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_input_padding',
 				[
-					'label' => __('Padding', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Padding', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -1199,8 +1205,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_datepicker_heading',
 				[
-					'label' => __('Date Picker', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label'     => __( 'Date Picker', 'gk-gravityview' ),
+					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				]
 			);
@@ -1208,14 +1214,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_datepicker_width',
 				[
-					'label' => __('Width', 'gk-gravityview'),
-					'type' => Controls_Manager::SLIDER,
-					'size_units' => ['px', '%'],
-					'range' => [
-						'px' => ['min' => 100, 'max' => 500],
-						'%' => ['min' => 10, 'max' => 100],
+					'label'      => __( 'Width', 'gk-gravityview' ),
+					'type'       => Controls_Manager::SLIDER,
+					'size_units' => [ 'px', '%' ],
+					'range'      => [
+						'px' => [ 'min' => 100, 'max' => 500 ],
+						'%'  => [ 'min' => 10, 'max' => 100 ],
 					],
-					'selectors' => [
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-date input[type="text"]' => 'width: {{SIZE}}{{UNIT}};',
 					],
 				]
@@ -1225,25 +1231,25 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_button_heading',
 				[
-					'label' => __('Search Button', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label'     => __( 'Search Button', 'gk-gravityview' ),
+					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				]
 			);
 
-			$this->start_controls_tabs('search_button_style_tabs');
+			$this->start_controls_tabs( 'search_button_style_tabs' );
 
 			// Normal state
 			$this->start_controls_tab(
 				'search_button_normal_tab',
-				['label' => __('Normal', 'gk-gravityview')]
+				[ 'label' => __( 'Normal', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'search_button_background',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-button' => 'background-color: {{VALUE}};',
 					],
@@ -1253,8 +1259,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_button_color',
 				[
-					'label' => __('Text Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Text Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-button' => 'color: {{VALUE}};',
 					],
@@ -1266,14 +1272,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			// Hover state
 			$this->start_controls_tab(
 				'search_button_hover_tab',
-				['label' => __('Hover', 'gk-gravityview')]
+				[ 'label' => __( 'Hover', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'search_button_background_hover',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-button:hover' => 'background-color: {{VALUE}};',
 					],
@@ -1283,8 +1289,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'search_button_color_hover',
 				[
-					'label' => __('Text Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Text Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-button:hover' => 'color: {{VALUE}};',
 					],
@@ -1298,9 +1304,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Typography::get_type(),
 				[
-					'name' => 'search_button_typography',
-					'label' => __('Typography', 'gk-gravityview'),
-					'selector' => '{{WRAPPER}} .gv-search-button',
+					'name'      => 'search_button_typography',
+					'label'     => __( 'Typography', 'gk-gravityview' ),
+					'selector'  => '{{WRAPPER}} .gv-search-button',
 					'separator' => 'before',
 				]
 			);
@@ -1308,8 +1314,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Border::get_type(),
 				[
-					'name' => 'search_button_border',
-					'label' => __('Border', 'gk-gravityview'),
+					'name'     => 'search_button_border',
+					'label'    => __( 'Border', 'gk-gravityview' ),
 					'selector' => '{{WRAPPER}} .gv-search-button',
 				]
 			);
@@ -1317,10 +1323,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_button_border_radius',
 				[
-					'label' => __('Border Radius', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', '%'],
-					'selectors' => [
+					'label'      => __( 'Border Radius', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -1329,10 +1335,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'search_button_padding',
 				[
-					'label' => __('Padding', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Padding', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-search-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -1344,7 +1350,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->start_controls_section(
 				'gravityview_pagination_section',
 				[
-					'label' => esc_html__('Pagination', 'gk-gravityview'),
+					'label' => esc_html__( 'Pagination', 'gk-gravityview' ),
 					'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
 				]
 			);
@@ -1353,18 +1359,18 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_container_heading',
 				[
-					'label' => __('Container', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label' => __( 'Container', 'gk-gravityview' ),
+					'type'  => Controls_Manager::HEADING,
 				]
 			);
 
 			$this->add_responsive_control(
 				'pagination_container_margin',
 				[
-					'label' => __('Container Margin', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Container Margin', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-widget-page-links' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -1373,10 +1379,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'pagination_container_padding',
 				[
-					'label' => __('Container Padding', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Container Padding', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .gv-widget-page-links' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -1385,8 +1391,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_container_background',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .gv-widget-page-links' => 'background-color: {{VALUE}};',
 					],
@@ -1397,8 +1403,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_list_heading',
 				[
-					'label' => __('Page Numbers List', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label'     => __( 'Page Numbers List', 'gk-gravityview' ),
+					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				]
 			);
@@ -1406,14 +1412,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'pagination_list_spacing',
 				[
-					'label' => __('Space Between Numbers', 'gk-gravityview'),
-					'type' => Controls_Manager::SLIDER,
-					'size_units' => ['px', 'em'],
-					'range' => [
-						'px' => ['min' => 0, 'max' => 50],
-						'em' => ['min' => 0, 'max' => 5],
+					'label'      => __( 'Space Between Numbers', 'gk-gravityview' ),
+					'type'       => Controls_Manager::SLIDER,
+					'size_units' => [ 'px', 'em' ],
+					'range'      => [
+						'px' => [ 'min' => 0, 'max' => 50 ],
+						'em' => [ 'min' => 0, 'max' => 5 ],
 					],
-					'selectors' => [
+					'selectors'  => [
 						'{{WRAPPER}} .page-numbers li' => 'margin: 0 {{SIZE}}{{UNIT}};',
 					],
 				]
@@ -1422,26 +1428,26 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_group_control(
 				Group_Control_Typography::get_type(),
 				[
-					'name' => 'pagination_typography',
-					'label' => __('Typography', 'gk-gravityview'),
+					'name'     => 'pagination_typography',
+					'label'    => __( 'Typography', 'gk-gravityview' ),
 					'selector' => '{{WRAPPER}} .page-numbers',
 				]
 			);
 
 			// Page Numbers
-			$this->start_controls_tabs('pagination_number_style_tabs');
+			$this->start_controls_tabs( 'pagination_number_style_tabs' );
 
 			// Normal state
 			$this->start_controls_tab(
 				'pagination_number_normal_tab',
-				['label' => __('Normal', 'gk-gravityview')]
+				[ 'label' => __( 'Normal', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'pagination_number_color',
 				[
-					'label' => __('Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .page-numbers a' => 'color: {{VALUE}};',
 					],
@@ -1451,8 +1457,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_number_background',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .page-numbers a' => 'background-color: {{VALUE}};',
 					],
@@ -1464,14 +1470,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			// Hover state
 			$this->start_controls_tab(
 				'pagination_number_hover_tab',
-				['label' => __('Hover', 'gk-gravityview')]
+				[ 'label' => __( 'Hover', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'pagination_number_hover_color',
 				[
-					'label' => __('Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .page-numbers a:hover' => 'color: {{VALUE}};',
 					],
@@ -1481,8 +1487,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_number_hover_background',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .page-numbers a:hover' => 'background-color: {{VALUE}};',
 					],
@@ -1494,14 +1500,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			// Active state
 			$this->start_controls_tab(
 				'pagination_number_active_tab',
-				['label' => __('Active', 'gk-gravityview')]
+				[ 'label' => __( 'Active', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'pagination_number_active_color',
 				[
-					'label' => __('Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .page-numbers .current' => 'color: {{VALUE}};',
 					],
@@ -1511,8 +1517,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_number_active_background',
 				[
-					'label' => __('Background Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Background Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .page-numbers .current' => 'background-color: {{VALUE}};',
 					],
@@ -1526,21 +1532,21 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'pagination_number_padding',
 				[
-					'label' => __('Padding', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', 'em'],
-					'selectors' => [
+					'label'      => __( 'Padding', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', 'em' ],
+					'selectors'  => [
 						'{{WRAPPER}} .page-numbers a, {{WRAPPER}} .page-numbers .current' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
-					'separator' => 'before',
+					'separator'  => 'before',
 				]
 			);
 
 			$this->add_group_control(
 				Group_Control_Border::get_type(),
 				[
-					'name' => 'pagination_number_border',
-					'label' => __('Border', 'gk-gravityview'),
+					'name'     => 'pagination_number_border',
+					'label'    => __( 'Border', 'gk-gravityview' ),
 					'selector' => '{{WRAPPER}} .page-numbers a, {{WRAPPER}} .page-numbers .current',
 				]
 			);
@@ -1548,10 +1554,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_responsive_control(
 				'pagination_number_border_radius',
 				[
-					'label' => __('Border Radius', 'gk-gravityview'),
-					'type' => Controls_Manager::DIMENSIONS,
-					'size_units' => ['px', '%'],
-					'selectors' => [
+					'label'      => __( 'Border Radius', 'gk-gravityview' ),
+					'type'       => Controls_Manager::DIMENSIONS,
+					'size_units' => [ 'px', '%' ],
+					'selectors'  => [
 						'{{WRAPPER}} .page-numbers a, {{WRAPPER}} .page-numbers .current' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 				]
@@ -1561,25 +1567,25 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_arrows_heading',
 				[
-					'label' => __('Navigation Arrows', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label'     => __( 'Navigation Arrows', 'gk-gravityview' ),
+					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				]
 			);
 
-			$this->start_controls_tabs('pagination_arrows_style_tabs');
+			$this->start_controls_tabs( 'pagination_arrows_style_tabs' );
 
 			// Normal state
 			$this->start_controls_tab(
 				'pagination_arrows_normal_tab',
-				['label' => __('Normal', 'gk-gravityview')]
+				[ 'label' => __( 'Normal', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'pagination_arrows_color',
 				[
-					'label' => __('Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .page-numbers.next, {{WRAPPER}} .page-numbers.prev' => 'color: {{VALUE}};',
 					],
@@ -1591,14 +1597,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			// Hover state
 			$this->start_controls_tab(
 				'pagination_arrows_hover_tab',
-				['label' => __('Hover', 'gk-gravityview')]
+				[ 'label' => __( 'Hover', 'gk-gravityview' ) ]
 			);
 
 			$this->add_control(
 				'pagination_arrows_hover_color',
 				[
-					'label' => __('Color', 'gk-gravityview'),
-					'type' => Controls_Manager::COLOR,
+					'label'     => __( 'Color', 'gk-gravityview' ),
+					'type'      => Controls_Manager::COLOR,
 					'selectors' => [
 						'{{WRAPPER}} .page-numbers.next:hover, {{WRAPPER}} .page-numbers.prev:hover' => 'color: {{VALUE}};',
 					],
@@ -1613,8 +1619,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_settings_heading',
 				[
-					'label' => __('Pagination Settings', 'gk-gravityview'),
-					'type' => Controls_Manager::HEADING,
+					'label'     => __( 'Pagination Settings', 'gk-gravityview' ),
+					'type'      => Controls_Manager::HEADING,
 					'separator' => 'before',
 				]
 			);
@@ -1622,25 +1628,25 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_show_all',
 				[
-					'label' => __('Show All Pages', 'gk-gravityview'),
-					'type' => Controls_Manager::SWITCHER,
-					'description' => __('Show all page numbers instead of truncating', 'gk-gravityview'),
-					'default' => '',
-					'label_on' => __('Yes', 'gk-gravityview'),
-					'label_off' => __('No', 'gk-gravityview'),
+					'label'       => __( 'Show All Pages', 'gk-gravityview' ),
+					'type'        => Controls_Manager::SWITCHER,
+					'description' => __( 'Show all page numbers instead of truncating', 'gk-gravityview' ),
+					'default'     => '',
+					'label_on'    => __( 'Yes', 'gk-gravityview' ),
+					'label_off'   => __( 'No', 'gk-gravityview' ),
 				]
 			);
 
 			$this->add_control(
 				'pagination_end_size',
 				[
-					'label' => __('End Size', 'gk-gravityview'),
-					'type' => Controls_Manager::NUMBER,
-					'description' => __('How many numbers on either end of the pagination', 'gk-gravityview'),
-					'default' => 1,
-					'min' => 1,
-					'max' => 10,
-					'condition' => [
+					'label'       => __( 'End Size', 'gk-gravityview' ),
+					'type'        => Controls_Manager::NUMBER,
+					'description' => __( 'How many numbers on either end of the pagination', 'gk-gravityview' ),
+					'default'     => 1,
+					'min'         => 1,
+					'max'         => 10,
+					'condition'   => [
 						'pagination_show_all!' => 'yes',
 					],
 				]
@@ -1649,13 +1655,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_mid_size',
 				[
-					'label' => __('Mid Size', 'gk-gravityview'),
-					'type' => Controls_Manager::NUMBER,
-					'description' => __('How many numbers on either side of the current page', 'gk-gravityview'),
-					'default' => 2,
-					'min' => 0,
-					'max' => 10,
-					'condition' => [
+					'label'       => __( 'Mid Size', 'gk-gravityview' ),
+					'type'        => Controls_Manager::NUMBER,
+					'description' => __( 'How many numbers on either side of the current page', 'gk-gravityview' ),
+					'default'     => 2,
+					'min'         => 0,
+					'max'         => 10,
+					'condition'   => [
 						'pagination_show_all!' => 'yes',
 					],
 				]
@@ -1664,21 +1670,21 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->add_control(
 				'pagination_prev_text',
 				[
-					'label' => __('Previous Label', 'gk-gravityview'),
-					'type' => Controls_Manager::TEXT,
-					'default' => '&laquo;',
-					'description' => __('Text/HTML for the previous page link', 'gk-gravityview'),
-					'separator' => 'before',
+					'label'       => __( 'Previous Label', 'gk-gravityview' ),
+					'type'        => Controls_Manager::TEXT,
+					'default'     => '&laquo;',
+					'description' => __( 'Text/HTML for the previous page link', 'gk-gravityview' ),
+					'separator'   => 'before',
 				]
 			);
 
 			$this->add_control(
 				'pagination_next_text',
 				[
-					'label' => __('Next Label', 'gk-gravityview'),
-					'type' => Controls_Manager::TEXT,
-					'default' => '&raquo;',
-					'description' => __('Text/HTML for the next page link', 'gk-gravityview'),
+					'label'       => __( 'Next Label', 'gk-gravityview' ),
+					'type'        => Controls_Manager::TEXT,
+					'default'     => '&raquo;',
+					'description' => __( 'Text/HTML for the next page link', 'gk-gravityview' ),
 				]
 			);
 
@@ -1689,43 +1695,43 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->start_controls_section(
 					"gravityview_{$layout_id}_datatables_section",
 					[
-						'label' => sprintf(__('%s DataTables', 'gk-gravityview'), $layout_name),
-						'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+						'label'     => sprintf( __( '%s DataTables', 'gk-gravityview' ), $layout_name ),
+						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 						'condition' => [
 							'layout_multiple' => $layout_id,
 						],
 					]
 				);
 
-				$this->start_controls_tabs("gravityview_{$layout_id}_datatables_tabs");
+				$this->start_controls_tabs( "gravityview_{$layout_id}_datatables_tabs" );
 
-				foreach ($contexts as $context => $context_label) {
+				foreach ( $contexts as $context => $context_label ) {
 					$this->start_controls_tab(
 						"gravityview_{$layout_id}_datatables_{$context}_tab",
-						['label' => $context_label]
+						[ 'label' => $context_label ]
 					);
 
-					if (isset($selectors[$context]['pagination'])) {
+					if ( isset( $selectors[ $context ]['pagination'] ) ) {
 						$this->add_control(
 							"gravityview_{$layout_id}_pagination_color_{$context}",
 							[
-								'label' => __('Pagination Color', 'gk-gravityview'),
-								'type' => Controls_Manager::COLOR,
+								'label'     => __( 'Pagination Color', 'gk-gravityview' ),
+								'type'      => Controls_Manager::COLOR,
 								'selectors' => [
-									'{{WRAPPER}} ' . $selectors[$context]['pagination'] => 'color: {{VALUE}};',
+									'{{WRAPPER}} ' . $selectors[ $context ]['pagination'] => 'color: {{VALUE}};',
 								],
 							]
 						);
 					}
 
-					if (isset($selectors[$context]['search'])) {
+					if ( isset( $selectors[ $context ]['search'] ) ) {
 						$this->add_control(
 							"gravityview_{$layout_id}_search_color_{$context}",
 							[
-								'label' => __('Search Box Color', 'gk-gravityview'),
-								'type' => Controls_Manager::COLOR,
+								'label'     => __( 'Search Box Color', 'gk-gravityview' ),
+								'type'      => Controls_Manager::COLOR,
 								'selectors' => [
-									'{{WRAPPER}} ' . $selectors[$context]['search'] => 'color: {{VALUE}};',
+									'{{WRAPPER}} ' . $selectors[ $context ]['search'] => 'color: {{VALUE}};',
 								],
 							]
 						);
@@ -1749,7 +1755,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	protected function render() {
 		// Get settings and ensure we have valid data
 		$settings = $this->get_settings_for_display() ?: [];
-		$view_id = (int) \GV\Utils::get( $settings, 'embedded_view', 0 );
+		$view_id  = (int) \GV\Utils::get( $settings, 'embedded_view', 0 );
 
 		if ( 0 === $view_id ) {
 			// Only show this message in the admin editor.
@@ -1765,6 +1771,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					'{message}' => esc_html__( 'Select a View from the widget settings.', 'gk-gravityview' ),
 				] );
 			}
+
 			return;
 		}
 
@@ -1773,17 +1780,18 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		if ( ! $view ) {
 			echo esc_html__( 'View not found.', 'gk-gravityview' );
+
 			return;
 		}
 
 		$atts_string = '';
-		$atts = $this->convert_widget_settings_to_shortcode( $settings );
+		$atts        = $this->convert_widget_settings_to_shortcode( $settings );
 
 		$atts['id'] = $view->ID;
 
 		// Only add the secret if the current user can edit the View.
 		// This is to prevent the secret from being exposed to users who shouldn't see it.
-		if( current_user_can( 'edit_gravityview', $view->ID ) ) {
+		if ( current_user_can( 'edit_gravityview', $view->ID ) ) {
 			$secret = $view->get_validation_secret();
 			if ( $secret ) {
 				$atts['secret'] = $secret;
@@ -1798,7 +1806,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$shortcode = sprintf( '[gravityview %s]', $atts_string );
 
 		$preview_single_entry = 'yes' === \GV\Utils::get( $settings, 'preview_single_entry' );
-		$show_debug_output = 'yes' === \GV\Utils::get( $settings, 'show_debug_output' );
+		$show_debug_output    = 'yes' === \GV\Utils::get( $settings, 'show_debug_output' );
 
 		// Add a notice to the top of the View to indicate that it's a preview.
 		// Use the action instead of directly outputting to prevent Elementor errors.
@@ -1831,7 +1839,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		// Use a temporary filter to return true for the is_renderable check instead of __return_true
 		// to prevent removing other filters that might be added by other code.
-		$return_true_tmp = function() {
+		$return_true_tmp = function () {
 			return true;
 		};
 
@@ -1839,7 +1847,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			add_filter( 'gravityview_email_prevent_encrypt', $return_true_tmp );
 		}
 
-		add_filter( 'gravityview_page_links_args', function( $args ) {
+		add_filter( 'gravityview_page_links_args', function ( $args ) {
 			$settings = $this->get_settings_for_display();
 
 			// Apply pagination settings if they exist
@@ -1860,7 +1868,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$args['next_text'] = ! empty( $settings['pagination_next_text'] ) ? $settings['pagination_next_text'] : '<span class="dashicons dashicons-arrow-right-alt2"></span>';
 
 			return $args;
-		});
+		} );
 		add_filter( 'gk/gravityview/entry-approval/hide-notice', $return_true_tmp );
 		add_filter( 'gravityview/request/is_renderable', $return_true_tmp );
 		add_filter( 'gk/gravityview/shortcodes/gravityview/parse-in-admin', $return_true_tmp );
@@ -1888,7 +1896,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$this->settings = $this->get_default_data();
 
-		if( null === $item ) {
+		if ( null === $item ) {
 			$item = [];
 		}
 
@@ -1900,7 +1908,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$defaults = \GV\View_Settings::defaults( true );
 
 		$atts = [];
-		foreach( $defaults as $key => $view_setting ) {
+		foreach ( $defaults as $key => $view_setting ) {
 
 			if ( empty( $view_setting['show_in_shortcode'] ) ) {
 				continue;
