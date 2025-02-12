@@ -128,12 +128,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					'multiple' => [
 						'wrapper' => '.gv-table-multiple-container',
 						'header'  => '.gv-table-multiple-container thead th',
+						'footer'  => '.gv-table-multiple-container tfoot th',
 						'rows'    => '.gv-table-multiple-container tbody tr',
 						'cells'   => '.gv-table-multiple-container tbody td',
 					],
 					'single'   => [
 						'wrapper' => '.gv-table-single-container',
 						'header'  => '.gv-table-single-container thead th',
+						'footer'  => '.gv-table-single-container tfoot th',
 						'rows'    => '.gv-table-single-container tbody tr',
 						'cells'   => '.gv-table-single-container tbody td',
 					],
