@@ -449,7 +449,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 				[ $condition_name, $condition_value ] = array_pad( explode( '=', $default_setting['requires'] ), 2, null );
 
-				if ( $condition_value ) {
+				if ( null !== $condition_value ) {
 					$control_settings['condition'] = [
 						$condition_name => $condition_value,
 					];
