@@ -306,6 +306,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$views = GVCommon::get_all_views();
 
 		$views_layouts = [];
+		foreach ( $views as $view ) {
+			$gv_view = \GV\View::from_post( $view );
 
 			if ( ! $gv_view ) {
 				continue;
