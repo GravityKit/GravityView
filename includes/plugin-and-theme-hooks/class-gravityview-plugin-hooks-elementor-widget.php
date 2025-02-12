@@ -863,6 +863,562 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->end_controls_section();
 			}
 
+			// Search Section
+			$this->start_controls_section(
+				'gravityview_search_section',
+				[
+					'label' => esc_html__('Search', 'gk-gravityview'),
+					'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+				]
+			);
+
+			// Container
+			$this->add_control(
+				'search_container_heading',
+				[
+					'label' => __('Search Container', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_container_margin',
+				[
+					'label' => __('Container Margin', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-widget-search' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'search_gap',
+				[
+					'label' => __('Gap Between Fields', 'gk-gravityview'),
+					'type' => Controls_Manager::SLIDER,
+					'size_units' => ['px', 'em'],
+					'range' => [
+						'px' => ['min' => 0, 'max' => 50],
+						'em' => ['min' => 0, 'max' => 5],
+					],
+					'selectors' => [
+						'{{WRAPPER}} .gv-widget-search .gv-search-box' => 'margin: 0 {{SIZE}}{{UNIT}};',
+					],
+				]
+			);
+
+			// Search Box
+			$this->add_control(
+				'search_box_heading',
+				[
+					'label' => __('Search Box', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_control(
+				'search_box_background',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Typography::get_type(),
+				[
+					'name' => 'search_box_typography',
+					'label' => __('Typography', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-search-box',
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Border::get_type(),
+				[
+					'name' => 'search_box_border',
+					'label' => __('Border', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-search-box',
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_box_padding',
+				[
+					'label' => __('Padding', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			// Input Fields
+			$this->add_control(
+				'search_input_heading',
+				[
+					'label' => __('Input Fields', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_control(
+				'search_input_background',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box input, {{WRAPPER}} .gv-search-box select' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'search_input_text_color',
+				[
+					'label' => __('Text Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box input, {{WRAPPER}} .gv-search-box select' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Typography::get_type(),
+				[
+					'name' => 'search_input_typography',
+					'label' => __('Typography', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-search-box input, {{WRAPPER}} .gv-search-box select',
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Border::get_type(),
+				[
+					'name' => 'search_input_border',
+					'label' => __('Border', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-search-box input, {{WRAPPER}} .gv-search-box select',
+				]
+			);
+
+			// Search Button
+			$this->add_control(
+				'search_button_heading',
+				[
+					'label' => __('Search Button', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->start_controls_tabs('search_button_style_tabs');
+
+			// Normal state
+			$this->start_controls_tab(
+				'search_button_normal_tab',
+				['label' => __('Normal', 'gk-gravityview')]
+			);
+
+			$this->add_control(
+				'search_button_background',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-button' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'search_button_text_color',
+				[
+					'label' => __('Text Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-button' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->end_controls_tab();
+
+			// Hover state
+			$this->start_controls_tab(
+				'search_button_hover_tab',
+				['label' => __('Hover', 'gk-gravityview')]
+			);
+
+			$this->add_control(
+				'search_button_background_hover',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-button:hover' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'search_button_text_color_hover',
+				[
+					'label' => __('Text Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-button:hover' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->end_controls_tab();
+
+			$this->end_controls_tabs();
+
+			$this->add_group_control(
+				Group_Control_Typography::get_type(),
+				[
+					'name' => 'search_button_typography',
+					'label' => __('Typography', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-search-button',
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Border::get_type(),
+				[
+					'name' => 'search_button_border',
+					'label' => __('Border', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-search-button',
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_button_padding',
+				[
+					'label' => __('Padding', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			// Clear Button
+			$this->add_control(
+				'search_clear_heading',
+				[
+					'label' => __('Clear Button', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_control(
+				'search_clear_text_color',
+				[
+					'label' => __('Text Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-clear' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'search_clear_text_color_hover',
+				[
+					'label' => __('Hover Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-clear:hover' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->end_controls_section();
+
+			// Pagination Section
+			$this->start_controls_section(
+				'gravityview_pagination_section',
+				[
+					'label' => esc_html__('Pagination', 'gk-gravityview'),
+					'tab'   => \Elementor\Controls_Manager::TAB_STYLE,
+				]
+			);
+
+			// Container
+			$this->add_control(
+				'pagination_container_heading',
+				[
+					'label' => __('Container', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+				]
+			);
+
+			$this->add_responsive_control(
+				'pagination_container_margin',
+				[
+					'label' => __('Container Margin', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-widget-page-links' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$this->add_responsive_control(
+				'pagination_container_padding',
+				[
+					'label' => __('Container Padding', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-widget-page-links' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'pagination_container_background',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .gv-widget-page-links' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			// Page Numbers List
+			$this->add_control(
+				'pagination_list_heading',
+				[
+					'label' => __('Page Numbers List', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_responsive_control(
+				'pagination_list_spacing',
+				[
+					'label' => __('Space Between Numbers', 'gk-gravityview'),
+					'type' => Controls_Manager::SLIDER,
+					'size_units' => ['px', 'em'],
+					'range' => [
+						'px' => ['min' => 0, 'max' => 50],
+						'em' => ['min' => 0, 'max' => 5],
+					],
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers li' => 'margin: 0 {{SIZE}}{{UNIT}};',
+					],
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Typography::get_type(),
+				[
+					'name' => 'pagination_typography',
+					'label' => __('Typography', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .page-numbers',
+				]
+			);
+
+			// Page Numbers
+			$this->start_controls_tabs('pagination_number_style_tabs');
+
+			// Normal state
+			$this->start_controls_tab(
+				'pagination_number_normal_tab',
+				['label' => __('Normal', 'gk-gravityview')]
+			);
+
+			$this->add_control(
+				'pagination_number_color',
+				[
+					'label' => __('Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers a' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'pagination_number_background',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers a' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->end_controls_tab();
+
+			// Hover state
+			$this->start_controls_tab(
+				'pagination_number_hover_tab',
+				['label' => __('Hover', 'gk-gravityview')]
+			);
+
+			$this->add_control(
+				'pagination_number_hover_color',
+				[
+					'label' => __('Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers a:hover' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'pagination_number_hover_background',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers a:hover' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->end_controls_tab();
+
+			// Active state
+			$this->start_controls_tab(
+				'pagination_number_active_tab',
+				['label' => __('Active', 'gk-gravityview')]
+			);
+
+			$this->add_control(
+				'pagination_number_active_color',
+				[
+					'label' => __('Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers .current' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->add_control(
+				'pagination_number_active_background',
+				[
+					'label' => __('Background Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers .current' => 'background-color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->end_controls_tab();
+
+			$this->end_controls_tabs();
+
+			$this->add_responsive_control(
+				'pagination_number_padding',
+				[
+					'label' => __('Padding', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', 'em'],
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers a, {{WRAPPER}} .page-numbers .current' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_group_control(
+				Group_Control_Border::get_type(),
+				[
+					'name' => 'pagination_number_border',
+					'label' => __('Border', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .page-numbers a, {{WRAPPER}} .page-numbers .current',
+				]
+			);
+
+			$this->add_responsive_control(
+				'pagination_number_border_radius',
+				[
+					'label' => __('Border Radius', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', '%'],
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers a, {{WRAPPER}} .page-numbers .current' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			// Navigation Arrows
+			$this->add_control(
+				'pagination_arrows_heading',
+				[
+					'label' => __('Navigation Arrows', 'gk-gravityview'),
+					'type' => Controls_Manager::HEADING,
+					'separator' => 'before',
+				]
+			);
+
+			$this->start_controls_tabs('pagination_arrows_style_tabs');
+
+			// Normal state
+			$this->start_controls_tab(
+				'pagination_arrows_normal_tab',
+				['label' => __('Normal', 'gk-gravityview')]
+			);
+
+			$this->add_control(
+				'pagination_arrows_color',
+				[
+					'label' => __('Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers.next, {{WRAPPER}} .page-numbers.prev' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->end_controls_tab();
+
+			// Hover state
+			$this->start_controls_tab(
+				'pagination_arrows_hover_tab',
+				['label' => __('Hover', 'gk-gravityview')]
+			);
+
+			$this->add_control(
+				'pagination_arrows_hover_color',
+				[
+					'label' => __('Color', 'gk-gravityview'),
+					'type' => Controls_Manager::COLOR,
+					'selectors' => [
+						'{{WRAPPER}} .page-numbers.next:hover, {{WRAPPER}} .page-numbers.prev:hover' => 'color: {{VALUE}};',
+					],
+				]
+			);
+
+			$this->end_controls_tab();
+
+			$this->end_controls_tabs();
+
+			$this->end_controls_section();
+
 			// DataTables specific controls
 			if ( 'datatables_table' === $layout_id ) {
 				$this->start_controls_section(
