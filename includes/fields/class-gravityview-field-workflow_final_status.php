@@ -16,8 +16,6 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 
 	public function __construct() {
 		if ( ! defined( 'GRAVITY_FLOW_VERSION' ) ) {
-			parent::__construct();
-
 			return;
 		}
 
