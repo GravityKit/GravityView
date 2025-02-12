@@ -1765,6 +1765,13 @@ class GravityView_Edit_Entry_Render {
 		$failed_validation_page = null;
 		$field_values           = rgpost( 'gform_field_values' );
 
+		// Taken from GFForms::get_ajax_form_response()
+		if ( is_string( $field_values ) ) {
+			$field_values_array = [];
+			parse_str( $field_values, $field_values_array );
+			$field_values = $field_values_array;
+		}
+
 		// Prevent entry limit from running when editing an entry, also
 		// prevent form scheduling from preventing editing
 		unset( $this->form['limitEntries'], $this->form['scheduleForm'] );
