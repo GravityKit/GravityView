@@ -65,9 +65,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$message = sprintf(
 		/* translators: 1: Plugin name 2: GravityView */
-			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'gravityview-elementor' ),
-			'<strong>' . esc_html__( 'GravityView Elementor Integration', 'gravityview-elementor' ) . '</strong>',
-			'<strong>' . esc_html__( 'GravityView', 'gravityview-elementor' ) . '</strong>'
+			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'gk-gravityview' ),
+			'<strong>' . esc_html__( 'GravityView Elementor Integration', 'gk-gravityview' ) . '</strong>',
+			'<strong>' . esc_html__( 'GravityView', 'gk-gravityview' ) . '</strong>'
 		);
 
 		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
@@ -83,9 +83,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		$message = sprintf(
 		/* translators: 1: Plugin name 2: Elementor */
-			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'gravityview-elementor' ),
-			'<strong>' . esc_html__( 'GravityView Elementor Integration', 'gravityview-elementor' ) . '</strong>',
-			'<strong>' . esc_html__( 'Elementor', 'gravityview-elementor' ) . '</strong>'
+			esc_html__( '"%1$s" requires "%2$s" to be installed and activated.', 'gk-gravityview' ),
+			'<strong>' . esc_html__( 'GravityView Elementor Integration', 'gk-gravityview' ) . '</strong>',
+			'<strong>' . esc_html__( 'Elementor', 'gk-gravityview' ) . '</strong>'
 		);
 
 		printf( '<div class="notice notice-warning is-dismissible"><p>%1$s</p></div>', $message );
@@ -109,7 +109,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		// TODO: Load these dynamically from the plugin, reading from available layouts.
 		$this->view_layouts = [
 			'default_table'          => [
-				'label'           => __( 'Table Layout', 'gravityview-elementor' ),
+				'label'           => esc_html__( 'Table Layout', 'gk-gravityview' ),
 				'template_id'     => 'default_table',
 				'class'           => 'gv-table-view',
 				'settings'        => [
@@ -125,7 +125,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				],
 			],
 			'default_list'          => [
-				'label'           => __( 'List Layout', 'gravityview-elementor' ),
+				'label'           => esc_html__( 'List Layout', 'gk-gravityview' ),
 				'template_id'     => 'default_list',
 				'class'           => 'gv-list-container',
 				'settings'        => [
@@ -141,7 +141,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				],
 			],
 			'datatables_table'     => [
-				'label'           => __( 'DataTables Layout', 'gravityview-elementor' ),
+				'label'           => esc_html__( 'DataTables Layout', 'gk-gravityview' ),
 				'template_id'     => 'datatables',
 				'class'           => 'gv-datatables-view',
 				'settings'        => [
@@ -161,7 +161,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				],
 			],
 			'diy'            => [
-				'label'           => __( 'DIY Layout', 'gravityview-elementor' ),
+				'label'           => esc_html__( 'DIY Layout', 'gk-gravityview' ),
 				'template_id'     => 'custom',
 				'class'           => 'gv-diy-view',
 				'settings'        => [
@@ -177,7 +177,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				],
 			],
 			'layout_builder' => [
-				'label'           => __( 'Layout Builder', 'gravityview-elementor' ),
+				'label'           => esc_html__( 'Layout Builder', 'gk-gravityview' ),
 				'template_id'     => 'layout_builder',
 				'class'           => 'gv-layout-builder-view',
 				'settings'        => [
@@ -215,7 +215,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	 * @return string Widget title.
 	 */
 	public function get_title() {
-		return __( 'GravityView', 'gk-gravityview' );
+		return esc_html__( 'GravityView', 'gk-gravityview' );
 	}
 
 	/**
