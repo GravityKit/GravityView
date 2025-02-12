@@ -922,6 +922,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					'name' => 'search_container_border',
 					'label' => __('Border', 'gk-gravityview'),
 					'selector' => '{{WRAPPER}} .gv-widget-search',
+					'default' => 'none',
 				]
 			);
 
@@ -935,7 +936,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						'{{WRAPPER}} .gv-widget-search' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					],
 					'condition' => [
-						'search_container_border_border!' => 'none',
+						'search_container_border_border!' => [ '', 'none' ],
 					],
 				]
 			);
@@ -970,6 +971,55 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					'size_units' => ['px', 'em'],
 					'selectors' => [
 						'{{WRAPPER}} .gv-search-box' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+				]
+			);
+
+			// Add search box width control
+			$this->add_responsive_control(
+				'search_box_width',
+				[
+					'label' => __('Search Box Width', 'gk-gravityview'),
+					'type' => Controls_Manager::SLIDER,
+					'size_units' => ['px', '%'],
+					'range' => [
+						'px' => ['min' => 100, 'max' => 1000],
+						'%' => ['min' => 10, 'max' => 100],
+						'em' => ['min' => 1, 'max' => 100],
+					],
+					'default' => [
+						'unit' => 'em',
+						'size' => 10,
+					],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box' => 'flex-basis: {{SIZE}}{{UNIT}};',
+					],
+					'separator' => 'before',
+				]
+			);
+
+			// Add search box border controls
+			$this->add_group_control(
+				Group_Control_Border::get_type(),
+				[
+					'name' => 'search_box_border',
+					'label' => __('Box Border', 'gk-gravityview'),
+					'selector' => '{{WRAPPER}} .gv-search-box',
+					'separator' => 'before',
+				]
+			);
+
+			$this->add_responsive_control(
+				'search_box_border_radius',
+				[
+					'label' => __('Box Border Radius', 'gk-gravityview'),
+					'type' => Controls_Manager::DIMENSIONS,
+					'size_units' => ['px', '%'],
+					'selectors' => [
+						'{{WRAPPER}} .gv-search-box' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					],
+					'condition' => [
+						'search_box_border_border!' => '',
 					],
 				]
 			);
