@@ -1828,7 +1828,7 @@ class GravityView_Edit_Entry_Render {
 					}
 
 					// Re-validate the field
-					$field->validate( $field, $this->form );
+					$field->validate( $value, $this->form );
 
 					// Validate if multi-file upload reached max number of files [maxFiles] => 2
 					if ( \GV\Utils::get( $field, 'maxFiles' ) && \GV\Utils::get( $field, 'multipleFiles' ) ) {
