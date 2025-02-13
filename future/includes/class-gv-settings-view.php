@@ -245,12 +245,20 @@ class View_Settings extends Settings {
 					'tooltip'           => false,
 					'show_in_shortcode' => false,
 				),
-				'edit_feeds'                  => array(
-					'label'             => __( 'Feeds', 'gk-gravityview' ),
+				'paged_edit' => array(
+					'label'             => __( 'Enable multi-page editing', 'gravityview' ),
 					'group'             => 'default',
+					'desc'              => strtr( esc_html_x( '⚠️ Warning: Multi-page editing does not behave as it does in Gravity Forms. Please [link]read about the differences[/link] before enabling!', '[link] and [/link] are replaced by HTML and should not be translated.' ,'gravityview' ), array(
+						'[link]' => '<a href="https://docs.gravityview.co/article/819-edit-entry-multi-page-forms" rel="external">',
+						'[/link]' => '</a>'
+					) ),
+					'value'             => 0,
 					'type'              => 'checkbox',
-					'value'             => array(),
 					'show_in_shortcode' => false,
+					'article'           => array(
+						'id' => '61c227e27a51e86e8d223ff9',
+						'url' => 'https://docs.gravityview.co/article/819-edit-entry-multi-page-forms',
+					),
 				),
 				'user_edit'                   => array(
 					'label'             => __( 'Allow User Edit', 'gk-gravityview' ),
