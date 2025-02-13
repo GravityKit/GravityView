@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.7.1
+Tested up to: 6.7.2
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,7 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.35 on February 12, 2025 =
+
+This update adds random sorting to the GravityView block, improves how partial entries are handled, and fixes several issues, including a fatal error in Gravity Forms 2.9.3 or newer.
 
 #### 🚀 Added
 * Random sorting option in the GravityView block.
@@ -36,6 +38,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Result Number field would not reset counts when multiple Views were displayed on the same page.
 * Random sorting of View entries did not work unless View caching was explicitly disabled.
 * Fatal error in Gravity Forms 2.9.3 or newer when editing an entry with a File Upload field.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.23.
 
 = 2.34.2 on February 4, 2025 =
 

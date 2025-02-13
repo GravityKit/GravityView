@@ -296,6 +296,39 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.35 on February 12, 2025</h3>
+
+				<p>This update adds random sorting to the GravityView block, improves how partial entries are handled, and fixes several issues, including a fatal error in Gravity Forms 2.9.3 or newer.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Random sorting option in the GravityView block.</li>
+				</ul>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>Partial entries no longer appear as "Unapproved" on the Entries page.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Random sorting was not working when overriding the View sorting using the <code>sort_direction</code> shortcode attribute.</li>
+					<li>Entry notes not displaying in the DataTables extension when the first View field is a Date field.</li>
+					<li>Gravity Flow fields were displaying as available when Gravity Flow was not active.</li>
+					<li>Result Number field would not reset counts when multiple Views were displayed on the same page.</li>
+					<li>Random sorting of View entries did not work unless View caching was explicitly disabled.</li>
+					<li>Fatal error in Gravity Forms 2.9.3 or newer when editing an entry with a File Upload field.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.23.</li>
+				</ul>
+
 				<h3>2.34.2 on February 4, 2025</h3>
 
 				<p>This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.</p>
