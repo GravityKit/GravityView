@@ -237,12 +237,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "5d33a5fc40221fd32bc296c05b87cc51feab10a2"
+                "reference": "be4ce564ddb8a3bc11c1ca57f73bf84e800ae231"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/5d33a5fc40221fd32bc296c05b87cc51feab10a2",
-                "reference": "5d33a5fc40221fd32bc296c05b87cc51feab10a2",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/be4ce564ddb8a3bc11c1ca57f73bf84e800ae231",
+                "reference": "be4ce564ddb8a3bc11c1ca57f73bf84e800ae231",
                 "shasum": ""
             },
             "require": {
@@ -340,10 +340,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.22",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.23",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2024-12-09T16:46:42+00:00"
+            "time": "2025-02-10T19:25:37+00:00"
         },
         {
             "name": "illuminate/container",
@@ -999,8 +999,8 @@
             "type": "library",
             "extra": {
                 "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
+                    "url": "https://github.com/symfony/polyfill",
+                    "name": "symfony/polyfill"
                 }
             },
             "autoload": {
@@ -6049,12 +6049,12 @@
             },
             "type": "library",
             "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
                 "branch-alias": {
                     "dev-main": "2.5-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
                 }
             },
             "autoload": {
@@ -6280,12 +6280,12 @@
             },
             "type": "library",
             "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
                 "branch-alias": {
                     "dev-main": "2.5-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
                 }
             },
             "autoload": {
@@ -6886,12 +6886,12 @@
             },
             "type": "library",
             "extra": {
+                "thanks": {
+                    "url": "https://github.com/symfony/contracts",
+                    "name": "symfony/contracts"
+                },
                 "branch-alias": {
                     "dev-main": "2.5-dev"
-                },
-                "thanks": {
-                    "name": "symfony/contracts",
-                    "url": "https://github.com/symfony/contracts"
                 }
             },
             "autoload": {

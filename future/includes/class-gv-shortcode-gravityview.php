@@ -97,9 +97,9 @@ class gravityview extends \GV\Shortcode {
 		 *      $message .= ' ' . esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
 		 *      return \GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message ), 'notice' );
 		 *  }
+		 *
+		 * $rendered_views[] = $view_id;
 		 */
-
-		$rendered_views[] = $view_id;
 
 		$post = get_post( $view->ID );
 
@@ -138,7 +138,6 @@ class gravityview extends \GV\Shortcode {
 		}
 
 		array_push( self::$callstack, true );
-
 		/**
 		 * Remove Widgets on a nested embedded View.
 		 */
@@ -147,9 +146,6 @@ class gravityview extends \GV\Shortcode {
 		}
 
 		$atts = $this->parse_and_sanitize_atts( $atts );
-
-		$view->settings->update( array( 'shortcode_atts' => $atts ) );
-		$view->settings->update( $atts );
 
 		/**
 		 * Assign all `shortcode_atts` settings to the View so they can be used by layouts and extensions.
