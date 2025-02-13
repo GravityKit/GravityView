@@ -2434,71 +2434,103 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	public function test_required_upload_field_with_conditional_logic_and_invalid_extension_validation() {
 		$this->_reset_context();
 
-		$administrator = $this->_generate_user( 'administrator' );
-
+		// Create a form with a required file upload field, extension and with conditional logic.
 		$form = $this->factory->form->import_and_get( 'upload.json' );
 
-		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', array(
-			'created_by' => $administrator,
-			'status' => 'active',
-			'form_id' => $form['id'],
-		) );
-
-		$form['fields'][0]->conditionalLogic = array(
-			'rules' => array(
-				array(
-					'fieldId' => '4',
-					'value' => 'text 1',
+		$form['fields'][0]->conditionalLogic  = [
+			'rules'      => [
+				[
+					'fieldId'  => '2',
+					'value'    => 'foo',
 					'operator' => 'is',
-				),
-			),
-			'logicType' => 'all',
+				],
+			],
+			'logicType'  => 'all',
 			'actionType' => 'show',
-		);
-		$form['fields'][0]->isRequired = true;
+		];
+		$form['fields'][0]->isRequired        = true;
 		$form['fields'][0]->allowedExtensions = 'pdf';
 
 		\GFAPI::update_form( $form );
 
-		$view = $this->factory->view->create_and_get( array(
-			'form_id' => $form['id'],
+		// Create a View with 2 fields to test conditional logic.
+		$view = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
 			'template_id' => 'table',
-			'fields' => array(
-				// Excluding field ID 4
-				'edit_edit-fields' => array(
-					wp_generate_password( 4, false ) => array(
+			'fields'      => [
+				'edit_edit-fields' => [
+					wp_generate_password( 4, false ) => [
 						'id' => '1',
-					),
-					wp_generate_password( 4, false ) => array(
+					],
+					wp_generate_password( 4, false ) => [
 						'id' => '2',
-					),
-				),
-			),
-		) );
+					],
+				],
+			],
+		] );
 
-		$file = tmpfile();
-		fwrite($file, 'not PDF!');
-
-		$_POST = array(
-			'input_1' => stream_get_meta_data($file)['uri'],
-			'input_2' => 'text 1 updated',
-		);
-
-		$_FILES = array(
-			'input_1' => array(
-				'name' => 'test.txt',
-				'type' => 'text/plain',
-				'tmp_name' =>  stream_get_meta_data($file)['uri'],
-				'error' => 0,
-				'size' => 1024
-			)
-		);
+		// Create an entry.
+		$administrator = $this->_generate_user( 'administrator' );
 
 		wp_set_current_user( $administrator );
-		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
 
-		$this->assertStringContainsString("gfield_validation_message'>The uploaded file type is not allowed. Must be one of the following: pdf", $output);
+		$entry = $this->factory->entry->import_and_get( 'simple_entry.json', [
+			'created_by' => $administrator,
+			'form_id'    => $form['id'],
+			'2'          => 'bar',
+		] );
 
+		$file = tempnam( '/tmp/', 'gvtest_' );
+		file_put_contents( $file, 'not PDF' );
+
+		$_FILES = [
+			'input_1' => [
+				'name'     => 'not_pdf.txt',
+				'size'     => 1,
+				'tmp_name' => $file,
+				'error'    => UPLOAD_ERR_OK,
+			],
+		];
+
+		$_POST = [
+			'input_2' => 'bar',
+		];
+
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( 'bar', $entry['2'] );
+		$this->assertEquals( '', $entry['1'] ); // The file should not be uploaded because the required field's value is not 'foo';
+
+		$_POST = [
+			'input_2' => 'foo',
+		];
+
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
+		$this->assertNotEquals( 'foo', $entry['2'] );
+		$this->assertEquals( '', $entry['1'] );
+		$this->assertStringContainsString( "gfield_validation_message'>The uploaded file type is not allowed. Must be one of the following: pdf", $output );
+
+		// Reset the context since the previous render failed validation.
+		$form['fields'][0]                    = GFFormsModel::get_field( $form['id'], 1 );
+		$form['fields'][0]->failed_validation = false;
+
+		add_filter( 'gform_save_field_value', [ $this, '_fake_move_uploaded_file' ], 10, 5 );
+
+		file_put_contents( $file, '%PDF-1.1' );
+
+		$_FILES = [
+			'input_1' => [
+				'name'     => 'pdf.pdf',
+				'size'     => 1,
+				'tmp_name' => $file,
+				'error'    => UPLOAD_ERR_OK,
+			],
+		];
+
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
+		$this->assertEquals( 'foo', $entry['2'] );
+		$this->assertNotEmpty( $entry['1'] );
+
+		remove_all_filters( 'gform_save_field_value' );
 		$this->_reset_context();
 	}
 
