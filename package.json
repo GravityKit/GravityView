@@ -47,7 +47,7 @@
     "tests:e2e": "npx playwright test --config=tests/E2E/setup/playwright.config.js",
     "import:forms-entries": "npm run wp-env run cli wp import_forms_and_entries",
     "lc-test": "npm run wp-env run cli wp post list",
-    "pretty-permalinks": "npm run wp-env run cli wp rewrite structure '/%postname%/' -- --hard"
+    "pretty-permalinks": "npm run wp-env run cli wp rewrite structure /%postname%/"
   },
   "husky": {
     "hooks": {
