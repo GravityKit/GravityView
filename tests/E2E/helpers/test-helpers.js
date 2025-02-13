@@ -285,6 +285,13 @@ async function createPageWithShortcode(page, { shortcode, title }) {
 
 	await page.locator(".wp-block-post-title").fill(title);
 
+	// Close "Welcome to the block Editor" modal if present.
+	const modal = page.locator(".components-modal__content");
+
+	if (await modal.isVisible()) {
+		await modal.getByLabel("Close", { exact: true }).click();
+	}
+
 	await page.click(".components-dropdown.block-editor-inserter");
 	await page.fill('input[placeholder="Search"]', "Shortcode");
 	await page.click(".components-popover .editor-block-list-item-shortcode");
