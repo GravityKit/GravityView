@@ -10,8 +10,6 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-\GV\Mocks\Legacy_Context::push( array( 'view' => $gravityview->view ) );
-
 gravityview_before( $gravityview );
 
 ?>
@@ -40,5 +38,3 @@ if ( $link = gravityview_back_link( $gravityview ) ) {
 <?php
 
 gravityview_after( $gravityview );
-
-\GV\Mocks\Legacy_Context::pop();

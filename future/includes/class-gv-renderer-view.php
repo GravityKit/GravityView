@@ -75,30 +75,7 @@ class View_Renderer extends Renderer {
 		}
 
 		/**
-		 * Load a legacy override template if exists.
-		 */
-		$override = new \GV\Legacy_Override_Template( $view, null, null, $request );
-		foreach ( array( 'header', 'body', 'footer' ) as $part ) {
-
-			$path = $override->get_template_part( $template_slug, $part );
-
-			if ( $path && false === strpos( $path, '/deprecated' ) ) {
-				/**
-				 * We have to bail and call the legacy renderer. Crap!
-				 */
-				gravityview()->log->notice( 'Legacy templates detected in theme {path}', array( 'path' => $path ) );
-
-				/**
-				 * Show a warning at the top, if View is editable by the user.
-				 */
-				add_action( 'gravityview_before', $this->legacy_template_warning( $view, $path ) );
-
-				return $override->render( $template_slug );
-			}
-		}
-
-		/**
-		 * Filter the template class that is about to be used to render the view.
+		 * Filters the template class that is about to be used to render the view.
 		 *
 		 * @since 2.0
 		 * @param string $class The chosen class - Default: \GV\View_Table_Template.
@@ -178,26 +155,6 @@ class View_Renderer extends Renderer {
 		/** @todo Deprecate this! */
 		$parameters = \GravityView_frontend::get_view_entries_parameters( $parameters, $view->form->ID );
 
-		global $post;
-
-		/** Mock the legacy state for the widgets and whatnot */
-		\GV\Mocks\Legacy_Context::push(
-			array_merge(
-				array(
-					'view'    => $view,
-					'entries' => $entries,
-					'request' => $request,
-				),
-				empty( $parameters ) ? array() : array(
-					'paging'  => $parameters['paging'],
-					'sorting' => $parameters['sorting'],
-				),
-				empty( $post ) ? array() : array(
-					'post' => $post,
-				)
-			)
-		);
-
 		add_action(
 			'gravityview/template/after',
 			$view_id_output = function ( $context ) {
@@ -212,7 +169,6 @@ class View_Renderer extends Renderer {
 		remove_filter( 'gravityview/template/view/render', $add_anchor_id_filter );
 		remove_filter( 'gravityview/widget/search/form/action', $add_search_action_filter );
 
-		\GV\Mocks\Legacy_Context::pop();
 		return ob_get_clean();
 	}
 }
