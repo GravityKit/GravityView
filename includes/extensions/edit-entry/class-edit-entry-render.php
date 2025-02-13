@@ -1716,7 +1716,6 @@ class GravityView_Edit_Entry_Render {
 					}
 
 				    $this->entry[ $input_name ] = $value;
-				    $_POST[ $input_name ]       = $value;
 
 				    break;
 
