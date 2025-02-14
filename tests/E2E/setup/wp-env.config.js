@@ -25,6 +25,9 @@ const wpEnvConfig = {
     SAVEQUERIES: true,
     SCRIPT_DEBUG: true,
   },
+  mappings: {
+    "wp-cli.yml": "./wp-cli.wp-env.yml"
+  },
 };
 
 fs.writeFileSync(
