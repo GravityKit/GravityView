@@ -57,6 +57,7 @@ test("Display Form", async ({ page }, testInfo) => {
 			.click();
 
 		await page.getByRole("button", { name: "Update" }).click();
+		await page.getByText("View updated. View on website.").waitFor();
 	});
 
 	await test.step("Check the View on the front end", async () => {
