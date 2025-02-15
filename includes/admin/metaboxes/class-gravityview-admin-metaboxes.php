@@ -181,6 +181,14 @@ class GravityView_Admin_Metaboxes {
 				'callback_args' => '',
 			),
 			array(
+				'id'            => 'styles',
+				'title'         => __( 'Styles', 'gk-gravityview' ),
+				'file'          => 'styles.php',
+				'icon-class'    => 'dashicons-art',
+				'callback'      => '',
+				'callback_args' => '',
+			),
+			array(
 				'id'            => 'advanced',
 				'title'         => __( 'Custom Code', 'gk-gravityview' ),
 				'file'          => 'custom-code.php',
