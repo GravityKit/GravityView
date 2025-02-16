@@ -106,87 +106,162 @@ class GVCommon_Test extends GV_UnitTestCase {
 	 * @covers GVCommon::format_date
 	 * @group date_created
 	 */
-	function test_format_date() {
+	function data_provider_format_date(): array {
+		$factory = new GV_UnitTest_Factory( $this );
+		$form               = $factory->form->create_and_get();
+		$date_created       = '2024-10-28 14:01:38';
+		$now = current_time( 'mysql', 1 );
+		$two_days_from_now  = date( 'Y-m-d H:i:s', strtotime( $now . ' +2 day' ) );
+		$two_hours_from_now = date( 'h:i a', strtotime( $now . ' +2 hour' ) );
 
-		$form = $this->factory->form->create_and_get();
-		$current_time = current_time( 'mysql' );
-		$two_days_from_now  = date( 'Y-m-d H:i:s', strtotime( $current_time . ' +2 day' ) );
-		$two_hours_from_now = date( 'h:i a', strtotime( $current_time . ' +2 hour' ) );
-
-		$entry = $this->factory->entry->create_and_get( array(
-			'form_id' => $form['id'],
-			'10' 	  => $two_days_from_now,
-			'11'	  => $two_hours_from_now
-		) );
+		$entry = $factory->entry->create_and_get( [
+			'date_created' => $date_created,
+			'form_id'      => $form['id'],
+			'10'           => $two_days_from_now,
+			'11'           => $two_hours_from_now,
+		] );
 
 		$date_created = \GV\Utils::get( $entry, 'date_created' );
-		$datepicker = \GV\Utils::get( $entry, '10' );
-		$time = \GV\Utils::get( $entry, '11' );
+		$datepicker   = \GV\Utils::get( $entry, '10' );
+		$time         = \GV\Utils::get( $entry, '11' );
 
 		/**
 		 * adjusting date to local configured Time Zone
+		 *
 		 * @see GFCommon::format_date()
 		 */
 		$entry_gmt_time   = mysql2date( 'G', $date_created );
 		$entry_local_time = GFCommon::get_local_timestamp( $entry_gmt_time );
 
-		$datepicker_gmt_time   = mysql2date( 'G', $datepicker );
-		$time_gmt_time   = mysql2date( 'G', $time );
+		$datepicker_gmt_time = mysql2date( 'G', $datepicker );
+		$time_gmt_time       = mysql2date( 'G', $time );
 
-		$tests = array(
-			GVCommon::format_date( $date_created, 'raw=1') => $date_created,
-			GVCommon::format_date( $date_created, array('raw' => true ) ) => $date_created,
-			GVCommon::format_date( $date_created, 'raw=1&timestamp=1') => $date_created,
-			GVCommon::format_date( $date_created, array('raw' => true, 'timestamp' => 1 ) ) => $date_created,
-			GVCommon::format_date( $date_created, 'raw=1&time=1') => $date_created,
-			GVCommon::format_date( $date_created, 'raw=1&human=1') => $date_created,
-			GVCommon::format_date( $date_created, 'raw=1&format=example') => $date_created,
+		$tests = [
+			[ GVCommon::format_date( $date_created, 'raw=1' ), $date_created ],
+			[ GVCommon::format_date( $date_created, [ 'raw' => true ] ), $date_created ],
+			[ GVCommon::format_date( $date_created, 'raw=1&timestamp=1' ), $date_created ],
+			[ GVCommon::format_date( $date_created, [ 'raw' => true, 'timestamp' => 1 ] ), $date_created ],
+			[ GVCommon::format_date( $date_created, 'raw=1&time=1' ), $date_created ],
+			[ GVCommon::format_date( $date_created, 'raw=1&human=1' ), $date_created ],
+			[ GVCommon::format_date( $date_created, 'raw=1&format=example' ), $date_created ],
+			[ GVCommon::format_date( $date_created, 'timestamp=1&raw=1' ), $date_created ],
 
-			GVCommon::format_date( $date_created, 'timestamp=1&raw=1') => $date_created, // Raw logic is first, it wins
-			GVCommon::format_date( $date_created, 'timestamp=1') => $entry_local_time,
-			GVCommon::format_date( $date_created, 'timestamp=1&time=1') => $entry_local_time,
-			GVCommon::format_date( $date_created, 'timestamp=1&human=1') => $entry_local_time,
-			GVCommon::format_date( $date_created, 'timestamp=1&format=example') => $entry_local_time,
-
-			// Blog date format
-			GVCommon::format_date( $date_created ) => GFCommon::format_date( $date_created, false, '', false ),
+			// Raw logic is first, it wins
+			[ GVCommon::format_date( $date_created, 'timestamp=1' ), $entry_local_time ],
+			[ GVCommon::format_date( $date_created, 'timestamp=1&time=1' ), $entry_local_time ],
+			[ GVCommon::format_date( $date_created, 'timestamp=1&human=1' ), $entry_local_time ],
+			[ GVCommon::format_date( $date_created, 'timestamp=1&format=example' ), $entry_local_time ],
 
 			// Blog date format
-			GVCommon::format_date( $date_created, 'human=1' ) => GFCommon::format_date( $date_created, true, '', false ),
-			GVCommon::format_date( $date_created, array('human' => true) ) => GFCommon::format_date( $date_created, true, '', false ),
+			[ GVCommon::format_date( $date_created ), GFCommon::format_date( $date_created, false, '', false ) ],
+
+			// Blog date format
+			[
+				GVCommon::format_date( $date_created, 'human=1' ),
+				GFCommon::format_date( $date_created, true, '', false ),
+			],
+			[
+				GVCommon::format_date( $date_created, [ 'human' => true ] ),
+				GFCommon::format_date( $date_created, true, '', false ),
+			],
 
 			// Blog "date at time" format ("%s at %s")
-			GVCommon::format_date( $date_created, 'time=1' ) => GFCommon::format_date( $date_created, false, '', true ),
-			GVCommon::format_date( $date_created, array('time' => true) )=> GFCommon::format_date( $date_created, false, '', true ),
+			[
+				GVCommon::format_date( $date_created, 'time=1' ),
+				GFCommon::format_date( $date_created, false, '', true ),
+			],
+			[
+				GVCommon::format_date( $date_created, [ 'time' => true ] ),
+				GFCommon::format_date( $date_created, false, '', true ),
+			],
 
 			// 1 second ago
-			GVCommon::format_date( $date_created, 'diff=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			GVCommon::format_date( $date_created, array('diff' => true ) ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			GVCommon::format_date( $date_created, 'diff=1&format=%s is so long ago' ) => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
-			GVCommon::format_date( $date_created, array('diff' => 1, 'format' => '%s is so long ago' ) ) => sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+			[
+				GVCommon::format_date( $date_created, 'diff=1' ),
+				sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			],
+			[
+				GVCommon::format_date( $date_created, [ 'diff' => true ] ),
+				sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			],
+			[
+				GVCommon::format_date( $date_created, 'diff=1&format=%s is so long ago' ),
+				sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+			],
+			[
+				GVCommon::format_date( $date_created, [ 'diff' => 1, 'format' => '%s is so long ago' ] ),
+				sprintf( '%s is so long ago', human_time_diff( $entry_gmt_time ) ),
+			],
 
 			// 2 days and 2 hours from now
-			GVCommon::format_date( $datepicker, 'diff=1&human=1') => sprintf( '%s from now', human_time_diff( $datepicker_gmt_time ) ),
-//			GVCommon::format_date( $time, 'diff=1&human=1&time=1') => sprintf( '%s from now', human_time_diff( $time_gmt_time ) ),
-
+			[
+				GVCommon::format_date( $datepicker, 'diff=1&human=1' ),
+				sprintf( '%s from now', human_time_diff( $datepicker_gmt_time ) ),
+			],
+			[
+				GVCommon::format_date( $time, 'diff=1&human=1&time=1') ,
+				sprintf( '%s from now', human_time_diff( $time_gmt_time ) ),
+			],
 			// Relative should NOT process other modifiers
-			GVCommon::format_date( $date_created, 'diff=1&time=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			GVCommon::format_date( $date_created, 'diff=1&human=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
-			GVCommon::format_date( $date_created, 'human=1&diff=1' ) => sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			[
+				GVCommon::format_date( $date_created, 'diff=1&time=1' ),
+				sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			],
+			[
+				GVCommon::format_date( $date_created, 'diff=1&human=1' ),
+				sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			],
+			[
+				GVCommon::format_date( $date_created, 'human=1&diff=1' ),
+				sprintf( '%s ago', human_time_diff( $entry_gmt_time ) ),
+			],
 
-			GVCommon::format_date( $date_created, 'format=mdy' ) => GFCommon::format_date( $date_created, false, 'mdy', false ),
-			GVCommon::format_date( $date_created, 'human=1&format=m/d/Y' ) => GFCommon::format_date( $date_created, true, 'm/d/Y', false ),
+			[
+				GVCommon::format_date( $date_created, 'format=mdy' ),
+				GFCommon::format_date( $date_created, false, 'mdy', false ),
+			],
+			[
+				GVCommon::format_date( $date_created, 'human=1&format=m/d/Y' ),
+				GFCommon::format_date( $date_created, true, 'm/d/Y', false ),
+			],
 
-			GVCommon::format_date( $date_created, 'time=1&format=d' ) => GFCommon::format_date( $date_created, false, 'd', true ),
-			GVCommon::format_date( $date_created, 'human=1&time=1&format=mdy' ) => GFCommon::format_date( $date_created, true, 'mdy', true ),
+			[
+				GVCommon::format_date( $date_created, 'time=1&format=d' ),
+				GFCommon::format_date( $date_created, false, 'd', true ),
+			],
+			[
+				GVCommon::format_date( $date_created, 'human=1&time=1&format=mdy' ),
+				GFCommon::format_date( $date_created, true, 'mdy', true ),
+			],
+			[
+				GVCommon::format_date( $date_created, [ 'format' => 'm/d/Y' ] ),
+				date_i18n( 'm/d/Y', $entry_local_time, true ),
+			],
+			[
+				GVCommon::format_date( $date_created, [ 'format' => 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h\:i\:s' ] ),
+				date_i18n( 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h:i:s', $entry_local_time, true ),
+			],
+		];
 
-			GVCommon::format_date( $date_created, array('format' => 'm/d/Y' ) ) => date_i18n( 'm/d/Y', $entry_local_time, true ),
-			GVCommon::format_date( $date_created, array('format' => 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h\:i\:s' ) ) => date_i18n( 'm/d/Y\ \w\i\t\h\ \t\i\m\e\ h:i:s', $entry_local_time, true ),
+		// Add date_created to every test.
+		return array_map(
+			static function ( $parameters ) use ( $date_created ) {
+				$parameters[] = $date_created;
+
+				return $parameters;
+			},
+			$tests
 		);
+	}
 
-		foreach ( $tests as $formatted_date => $expected ) {
-			$this->assertEquals( $expected, $formatted_date );
-		}
+	/**
+	 * @dataProvider data_provider_format_date
+	 *
+	 * @param $formatted_date
+	 * @param $expected
+	 */
+	public function test_format_date( $formatted_date, $expected, $date_created ) {
+		$this->assertEquals( $expected, $formatted_date, sprintf( 'Failed with "%s".', $date_created ) );
 	}
 
 	/**
