@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.7.1
+Tested up to: 6.7.2
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,9 +21,49 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.35 on February 12, 2025 =
 
-* Fixed: The Search Bar would not always be visible on Views with the Layout Builder.
+This update adds random sorting to the GravityView block, improves how partial entries are handled, and fixes several issues, including a fatal error in Gravity Forms 2.9.3 or newer.
+
+#### 🚀 Added
+* Random sorting option in the GravityView block.
+
+#### ✨ Improved
+* Partial entries no longer appear as "Unapproved" on the Entries page.
+
+#### 🐛 Fixed
+* Random sorting was not working when overriding the View sorting using the `sort_direction` shortcode attribute.
+* Entry notes not displaying in the DataTables extension when the first View field is a Date field.
+* Gravity Flow fields were displaying as available when Gravity Flow was not active.
+* Result Number field would not reset counts when multiple Views were displayed on the same page.
+* Random sorting of View entries did not work unless View caching was explicitly disabled.
+* Fatal error in Gravity Forms 2.9.3 or newer when editing an entry with a File Upload field.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.23.
+
+= 2.34.2 on February 4, 2025 =
+
+This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.
+
+#### 🐛 Fixed
+* `function _load_textdomain_just_in_time was called incorrectly` PHP notice in WordPress 6.7 or newer.
+* Display issue caused by a malformed `div` tag in the Layout Builder View template.
+
+= 2.34.1 on January 30, 2025 =
+
+This update resolves multiple issues, including problems with search bar visibility in Layout Builder, entry management in multisite environments, and non-functional entry locking and notes, among others.
+
+#### 🐛 Fixed
+* The Search Bar would not always be visible in Views using the Layout Builder.
+* Users belonging to the main network site in a multisite environment couldn’t delete their own entries on subsites.
+* Entry locking not working.
+* JavaScript error preventing entry notes from being added when using the Twenty Twenty-Two theme or newer.
+* Using a comma in the `:format` merge tag modifier with Date fields caused partial results to be returned.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets` filter to override whether to load the entry lock UI assets.
+* Added `gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup` filter to modify the entry locking UI dialog window markup.
 
 = 2.34 on January 9, 2025 =
 

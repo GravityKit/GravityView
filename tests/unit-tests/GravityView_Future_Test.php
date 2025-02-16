@@ -7452,6 +7452,78 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->_reset_context();
 	}
 
+	public function test_random_sorting() {
+		add_filter('gk/gravityview/view/entries/cache', '__return_false');
+		$this->_reset_context();
+
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$form = \GV\GF_Form::by_id( $form['id'] );
+
+		$post = $this->factory->view->create_and_get( [
+			'form_id'     => $form->ID,
+			'template_id' => 'table',
+			'settings'    => [
+				'sort_field'         => [ 1 ],
+				'sort_direction'     => [ \GV\Entry_Sort::RAND ],
+				'show_only_approved' => 0,
+			],
+			'fields'      => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id'    => '4',
+						'label' => 'Email',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => '16',
+						'label' => 'Description',
+					],
+				],
+			],
+		] );
+
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'1' => 'Foo',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'1' => 'Bar',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form->ID,
+			'status' => 'active',
+			'1' => 'Baz',
+		) );
+
+		$prior_entry_ids = null;
+		$random_order    = false;
+
+		for ( $i = 0; $i < 10; $i++ ) {
+			$entries = $view->get_entries()->all();
+
+			$current_entry_ids = array_map( fn( $entry ) => $entry->ID, $entries );
+
+			if ( $prior_entry_ids !== null && $current_entry_ids !== $prior_entry_ids ) {
+				$random_order = true;
+
+				break;
+			}
+
+			$prior_entry_ids = $current_entry_ids;
+		}
+
+		$this->assertTrue( $random_order );
+
+		remove_all_filters( 'gk/gravityview/view/entries/cache' );
+		$this->_reset_context();
+	}
+
 	public function test_oembed_in_custom_content() {
 		$this->_reset_context();
 

@@ -352,7 +352,7 @@ class GravityView_Edit_Entry {
     /**
      * checks if user has permissions to edit a specific entry
      *
-     * Needs to be used combined with GravityView_Edit_Entry::user_can_edit_entry for maximum security!!
+     * Needs to be used combined with GravityView_Edit_Entry_Render::user_can_edit_entry for maximum security!!
      *
      * @param  array|\WP_Error $entry Gravity Forms entry array or WP_Error if the entry wasn't found.
      * @param \GV\View|int    $view ID of the view you want to check visibility against {@since 1.9.2}. Required since 2.0.
@@ -403,7 +403,7 @@ class GravityView_Edit_Entry {
             $current_user = wp_get_current_user();
 
             // User edit is disabled
-            if ( empty( $user_edit ) ) {
+            if ( $view_id && empty( $user_edit ) ) {
 
                 gravityview()->log->debug( 'User Edit is disabled. Returning false.' );
 

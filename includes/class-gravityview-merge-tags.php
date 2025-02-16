@@ -117,7 +117,13 @@ class GravityView_Merge_Tags {
 			'human'						=> 'modifier_human', /** @see modifier_human */
 		);
 
-		$modifiers = explode( ',', $modifier );
+		// Do not split on escaped commas (\,).
+		$modifiers = preg_split('/(?<!\\\\),/', $modifier);
+
+		// Remove \ from escaped commas before processing.
+		$modifiers = array_map(function($mod) {
+			return str_replace('\\,', ',', trim($mod));
+		}, $modifiers);
 
 		$return = $raw_value;
 
@@ -137,6 +143,7 @@ class GravityView_Merge_Tags {
 				if ( empty( $matches ) ) {
 					continue;
 				}
+
 
 				// The called method is passed the raw value and the full matches array
 				$return = self::$method( $return, $matches, $value, $field, $passed_modifier, $merge_tag );
