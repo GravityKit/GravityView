@@ -20,6 +20,10 @@ module.exports = defineConfig({
 				outputFolder: path.resolve(__dirname, "../report"),
 			},
 		],
+		[
+			"junit",
+			{ outputFile: path.resolve(__dirname, "../results/junit.xml") },
+		],
 	],
 	use: {
 		baseURL: `${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}`,

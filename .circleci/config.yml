@@ -31,7 +31,7 @@ jobs:
       - store_artifacts:
           path: tests/E2E/results
       - store_test_results:
-          path: tests/E2E/results
+          path: tests/E2E/results/junit.xml
 
   prepare_test_and_build_environment:
     <<: *default_job_config
