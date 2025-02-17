@@ -24,7 +24,7 @@ const wpEnvConfig = {
   },
 	lifecycleScripts: {
 		"afterClean": "rm -f .state.json ../helpers/gf-importer/.imported-forms.json",
-		"afterStart": "npm run wp-env:cli wp import_forms_and_entries && npm run wp-env:cli wp rewrite structure '/%postname%/' -- --hard"
+		"afterStart": "npm run wp-env:cli wp import_forms_and_entries && npm run wp-env:cli wp rewrite structure '/%postname%/' -- --hard && npm run wp-env:cli wp plugin install gravityformscli --force --activate"
 	}
 };
 
