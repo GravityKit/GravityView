@@ -30,7 +30,7 @@ jobs:
             - name: Clone GV Tooling
               run: gh repo clone GravityKit/Tooling $HOME/tooling
 
-            # Ensure the docker-unit-tests directory exists and create the .env file there.
+            # Create .env file in docker-unit-tests folder after cloning
             - name: Create .env file in docker-unit-tests if missing
               run: |
                   mkdir -p "$HOME/tooling/docker-unit-tests"
@@ -109,6 +109,18 @@ jobs:
                     rsync -a /tmp/workspace/ $HOME/
                   fi
 
+            # Re-create the .env file in docker-unit-tests after extraction (in case it was overwritten)
+            - name: Ensure .env file in docker-unit-tests exists
+              run: |
+                  mkdir -p "$HOME/tooling/docker-unit-tests"
+                  if [ ! -f "$HOME/tooling/docker-unit-tests/.env" ]; then
+                    echo "PLUGIN_DIR=$HOME" > "$HOME/tooling/docker-unit-tests/.env"
+                    echo "WP_LATEST_TESTS_DIR=./wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "PHPUNIT_DIR=./phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "GF_PLUGIN_DIR=./gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> "$HOME/tooling/docker-unit-tests/.env"
+                  fi
+
             - name: Run PHP 7.4 Unit Tests
               run: |
                   export ENV_FILE="$HOME/tooling/docker-unit-tests/.env"
@@ -132,6 +144,18 @@ jobs:
                     rsync -a /tmp/workspace/workspace_artifact/ $HOME/
                   else
                     rsync -a /tmp/workspace/ $HOME/
+                  fi
+
+            # Re-create the .env file in docker-unit-tests after extraction
+            - name: Ensure .env file in docker-unit-tests exists
+              run: |
+                  mkdir -p "$HOME/tooling/docker-unit-tests"
+                  if [ ! -f "$HOME/tooling/docker-unit-tests/.env" ]; then
+                    echo "PLUGIN_DIR=$HOME" > "$HOME/tooling/docker-unit-tests/.env"
+                    echo "WP_LATEST_TESTS_DIR=./wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "PHPUNIT_DIR=./phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "GF_PLUGIN_DIR=./gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> "$HOME/tooling/docker-unit-tests/.env"
                   fi
 
             - name: Run PHP 8.0 Unit Tests
