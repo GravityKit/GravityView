@@ -28,6 +28,10 @@ const wpEnvConfig = {
   mappings: {
     "wp-cli.yml": "./wp-cli.wp-env.yml"
   },
+	lifecycleScripts: {
+		"afterClean": "rm -f .state.json ../helpers/gf-importer/.imported-forms.json",
+		"afterStart": "npm run wp-env run cli wp import_forms_and_entries && npm run wp-env run cli wp rewrite structure '/%postname%/' -- --hard",
+	}
 };
 
 fs.writeFileSync(
