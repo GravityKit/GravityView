@@ -30,6 +30,9 @@ jobs:
             - name: Clone GV Tooling
               run: gh repo clone GravityKit/Tooling $HOME/tooling
 
+            - name: Make Docker Unit Tests Script Executable
+              run: chmod +x $HOME/tooling/docker-unit-tests/docker-unit-tests.sh
+
             - name: Authenticate GitHub for Composer
               env:
                   GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
