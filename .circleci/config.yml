@@ -23,7 +23,6 @@ jobs:
       - run:
           name: Run E2E tests
           command: |
-            npm run wp-env:configure
             npm run tests:e2e:setup
             npm run tests:e2e:run
       - store_artifacts:
