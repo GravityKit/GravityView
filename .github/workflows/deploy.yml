@@ -105,10 +105,11 @@ jobs:
 
             - name: Build and Package
               run: |
+                  BRANCH_REF="${GITHUB_REF}"
                   $HOME/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
                   $HOME/tooling/build-tools/build_tools.sh grunt
 
-                  if [[ "${{ github.ref }}" != "refs/heads/main" ]]; then
+                  if [[ "$BRANCH_REF" != "refs/heads/main" ]]; then
                     $HOME/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
                   else
                     $HOME/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
@@ -139,6 +140,7 @@ jobs:
             - name: Notify GravityView Release Manager
               if: github.ref == 'refs/heads/main'
               run: |
+                  git fetch --unshallow
                   if ! git log -n 1 | grep "\[skip notify\]"; then
                     $HOME/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
                   fi
