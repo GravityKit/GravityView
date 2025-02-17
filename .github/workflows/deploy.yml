@@ -16,6 +16,11 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
 
+            - name: Log Repository Structure
+              run: |
+                  echo "Repository structure (GITHUB_WORKSPACE):"
+                  tree -L 2 "${GITHUB_WORKSPACE}" || find "${GITHUB_WORKSPACE}" -maxdepth 2 -type d
+
             - name: Install Docker Compose
               run: |
                   sudo apt-get update
@@ -29,18 +34,24 @@ jobs:
             - name: Clone GV Tooling
               run: gh repo clone GravityKit/Tooling $HOME/tooling
 
-            # Create .env file in docker-unit-tests folder with PLUGIN_DIR set to the plugin subdirectory
+            - name: Log Tooling Structure
+              run: |
+                  echo "Tooling directory structure ($HOME/tooling):"
+                  tree -L 2 "$HOME/tooling" || find "$HOME/tooling" -maxdepth 2 -type d
+
+            # Create .env file in docker-unit-tests folder with PLUGIN_DIR set to the repository root
             - name: Create .env file in docker-unit-tests if missing
               run: |
                   mkdir -p "$HOME/tooling/docker-unit-tests"
                   if [ ! -f "$HOME/tooling/docker-unit-tests/.env" ]; then
-                    # Set PLUGIN_DIR to the plugin folder. Adjust this path if your repository layout differs.
-                    echo "PLUGIN_DIR=${GITHUB_WORKSPACE}/gravityview" > "$HOME/tooling/docker-unit-tests/.env"
+                    echo "PLUGIN_DIR=${GITHUB_WORKSPACE}" > "$HOME/tooling/docker-unit-tests/.env"
                     echo "WP_LATEST_TESTS_DIR=$HOME/wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
                     echo "PHPUNIT_DIR=$HOME/phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
                     echo "GF_PLUGIN_DIR=$HOME/gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
                     echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> "$HOME/tooling/docker-unit-tests/.env"
                   fi
+                  echo "Content of $HOME/tooling/docker-unit-tests/.env:"
+                  cat "$HOME/tooling/docker-unit-tests/.env"
 
             - name: Authenticate GitHub for Composer
               env:
@@ -71,6 +82,11 @@ jobs:
                   GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
 
+            - name: Log WP Latest Tests Lib Structure
+              run: |
+                  echo "Contents of wordpress-latest-tests-lib ($HOME/wordpress-latest-tests-lib):"
+                  tree -L 2 "$HOME/wordpress-latest-tests-lib" || find "$HOME/wordpress-latest-tests-lib" -maxdepth 2 -type d
+
             # Persist workspace artifact including test suites
             - name: Prepare Workspace Artifact
               run: |
@@ -82,6 +98,8 @@ jobs:
                   else
                     echo "wordpress-latest-tests-lib not found"
                   fi
+                  echo "Workspace artifact structure:"
+                  tree -L 2 workspace_artifact || find workspace_artifact -maxdepth 2 -type d
 
             - name: Save Workspace
               uses: actions/upload-artifact@v4
@@ -117,13 +135,15 @@ jobs:
                   else
                     rsync -a /tmp/workspace/ $HOME/
                   fi
+                  echo "Directory structure after extraction:"
+                  tree -L 2 "$HOME" || find "$HOME" -maxdepth 2 -type d
 
             - name: Verify .env file in docker-unit-tests exists
               run: |
                   if [ -f "$HOME/tooling/docker-unit-tests/.env" ]; then
-                    echo ".env file exists."
+                    echo ".env file exists in $HOME/tooling/docker-unit-tests"
                   else
-                    echo ".env file missing!" >&2
+                    echo ".env file missing in $HOME/tooling/docker-unit-tests" >&2
                     exit 1
                   fi
 
@@ -156,21 +176,25 @@ jobs:
                   else
                     rsync -a /tmp/workspace/ $HOME/
                   fi
+                  echo "Directory structure after extraction:"
+                  tree -L 2 "$HOME" || find "$HOME" -maxdepth 2 -type d
 
             - name: Verify .env file in docker-unit-tests exists
               run: |
                   if [ -f "$HOME/tooling/docker-unit-tests/.env" ]; then
-                    echo ".env file exists."
+                    echo ".env file exists in $HOME/tooling/docker-unit-tests"
                   else
-                    echo ".env file missing!" >&2
+                    echo ".env file missing in $HOME/tooling/docker-unit-tests" >&2
                     exit 1
                   fi
 
             - name: Check Test Suite Configuration
               run: |
                   source $HOME/tooling/docker-unit-tests/.env
+                  echo "Listing WP_LATEST_TESTS_DIR ($WP_LATEST_TESTS_DIR) contents:"
+                  tree -L 2 "$WP_LATEST_TESTS_DIR" || find "$WP_LATEST_TESTS_DIR" -maxdepth 2 -type d
                   if [ ! -f "$WP_LATEST_TESTS_DIR/wp-tests-config.php" ]; then
-                    echo "wp-tests-config.php not found!" >&2
+                    echo "wp-tests-config.php not found in $WP_LATEST_TESTS_DIR" >&2
                     exit 1
                   else
                     echo "Test suite is configured."
@@ -200,6 +224,8 @@ jobs:
                   else
                     rsync -a /tmp/workspace/ $HOME/
                   fi
+                  echo "Final workspace structure:"
+                  tree -L 2 "$HOME" || find "$HOME" -maxdepth 2 -type d
 
             - name: Build and Package
               run: |
@@ -233,11 +259,11 @@ jobs:
               run: |
                   git config user.email "support@gravitykit.com"
                   git config user.name "GravityView - CI"
-                  $HOME/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
+                  $HOME/tooling/build-tools/build_tools.sh create_release -o "gravityview gravityview.php $(ls gravityview-*.zip)"
 
             - name: Notify GravityView Release Manager
               if: github.ref == 'refs/heads/main'
               run: |
                   if ! git log -n 1 | grep "\[skip notify\]"; then
-                    $HOME/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
+                    $HOME/tooling/build-tools/build_tools.sh announce_build -o "gravityview gravityview.php $(ls gravityview-*.zip) --with-circle"
                   fi
