@@ -24,8 +24,7 @@ jobs:
             - name: Authenticate with GitHub CLI
               env:
                   GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-              run: |
-                  echo "$GH_ACCESS_TOKEN" | gh auth login --with-token
+              run: echo "$GH_ACCESS_TOKEN" | gh auth login --with-token
 
             - name: Clone GV Tooling
               run: gh repo clone GravityKit/Tooling $HOME/tooling
@@ -45,9 +44,8 @@ jobs:
             - name: Authenticate GitHub for Composer
               env:
                   GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-              run: composer config --global --auth github-oauth.github.com $GH_ACCESS_TOKEN
+              run: composer config --global --auth github-oauth.github.com $GH_AUTH_TOKEN
 
-            # Ensure test_dependencies directory exists before caching
             - name: Ensure test_dependencies directory exists
               run: mkdir -p $HOME/test_dependencies
 
@@ -72,7 +70,6 @@ jobs:
                   GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
 
-            # Consolidate workspace files into a single directory for upload
             - name: Prepare Workspace Artifact
               run: |
                   mkdir -p workspace_artifact
@@ -95,6 +92,11 @@ jobs:
             HOME: /home/runner
         needs: prepare_test_and_build_environment
         steps:
+            - name: Install Docker Compose
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y docker-compose
+
             - name: Restore Workspace
               uses: actions/download-artifact@v4
               with:
@@ -109,7 +111,6 @@ jobs:
                     rsync -a /tmp/workspace/ $HOME/
                   fi
 
-            # Re-create the .env file in docker-unit-tests after extraction (in case it was overwritten)
             - name: Ensure .env file in docker-unit-tests exists
               run: |
                   mkdir -p "$HOME/tooling/docker-unit-tests"
@@ -132,6 +133,11 @@ jobs:
             HOME: /home/runner
         needs: prepare_test_and_build_environment
         steps:
+            - name: Install Docker Compose
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y docker-compose
+
             - name: Restore Workspace
               uses: actions/download-artifact@v4
               with:
@@ -146,7 +152,6 @@ jobs:
                     rsync -a /tmp/workspace/ $HOME/
                   fi
 
-            # Re-create the .env file in docker-unit-tests after extraction
             - name: Ensure .env file in docker-unit-tests exists
               run: |
                   mkdir -p "$HOME/tooling/docker-unit-tests"
