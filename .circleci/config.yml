@@ -56,8 +56,8 @@ jobs:
             /home/circleci/tooling/build-tools/build_tools.sh gh -o "auth login --with-token < .gh_token"
             /home/circleci/tooling/build-tools/build_tools.sh gh -o 'release download -R gravityforms/gravityforms --clobber --pattern "*.zip" --dir .tmp'
             unzip .tmp/gravityforms*.zip -d .tmp
-            mv .env.sample .env
-            sed -i "s|GRAVITY_FORMS_FOLDER=.*|GRAVITY_FORMS_FOLDER=${PWD}/.tmp/gravityforms|" .env
+            cp .env.sample .env
+            sed -i "s|WP_ENV_PLUGINS=.*|WP_ENV_PLUGINS=${PWD}/.tmp/gravityforms|" .env
       - save_cache:
           key: test-dependencies-{{ epoch }}
           paths:
