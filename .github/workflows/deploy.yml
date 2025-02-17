@@ -1,0 +1,136 @@
+name: CI Pipeline
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+
+jobs:
+    prepare_test_and_build_environment:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Code
+              uses: actions/checkout@v4
+
+            - name: Clone GV Tooling
+              run: git clone git@github.com:gravityview/Tooling.git $HOME/tooling
+
+            - name: Cache Dependencies
+              uses: actions/cache@v4
+              with:
+                  path: $HOME/test_dependencies
+                  key: test-dependencies-${{ github.run_id }}
+                  restore-keys: test-dependencies-
+
+            - name: Install Build Dependencies
+              run: |
+                  $HOME/tooling/build-tools/build_tools.sh npm -o install
+                  $HOME/tooling/build-tools/build_tools.sh composer -o install
+
+            - name: Configure Test Environment
+              run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
+
+            - name: Save Workspace
+              uses: actions/upload-artifact@v4
+              with:
+                  name: workspace
+                  path: $HOME/
+
+    run_php_74_unit_tests:
+        runs-on: ubuntu-latest
+        needs: prepare_test_and_build_environment
+        steps:
+            - name: Restore Workspace
+              uses: actions/download-artifact@v4
+              with:
+                  name: workspace
+                  path: $HOME/
+
+            - name: Run PHP 7.4 Unit Tests
+              run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_74
+
+    run_php_80_unit_tests:
+        runs-on: ubuntu-latest
+        needs: prepare_test_and_build_environment
+        steps:
+            - name: Restore Workspace
+              uses: actions/download-artifact@v4
+              with:
+                  name: workspace
+                  path: $HOME/
+
+            - name: Run PHP 8.0 Unit Tests
+              run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_80
+
+    # Uncomment if you want to run acceptance tests
+    # run_acceptance_tests:
+    #   runs-on: ubuntu-latest
+    #   needs: prepare_test_and_build_environment
+    #   steps:
+    #     - name: Restore Workspace
+    #       uses: actions/download-artifact@v4
+    #       with:
+    #         name: workspace
+    #         path: $HOME/
+    #
+    #     - name: Set Up Virtual Host
+    #       run: echo 127.0.0.1 wordpress | sudo tee -a /etc/hosts
+    #
+    #     - name: Run Acceptance Tests
+    #       run: |
+    #         PLUGIN_DIR=$PLUGIN_DIR docker-compose -f tests/acceptance/docker/docker-compose.yml run codeception --debug -vvv --html --xml
+    #
+    #     - name: Store Test Results
+    #       uses: actions/upload-artifact@v4
+    #       with:
+    #         name: acceptance-test-results
+    #         path: tests/acceptance/_output
+
+    build_package_release:
+        runs-on: ubuntu-latest
+        needs: [run_php_74_unit_tests, run_php_80_unit_tests]
+        steps:
+            - name: Restore Workspace
+              uses: actions/download-artifact@v4
+              with:
+                  name: workspace
+                  path: $HOME/
+
+            - name: Build and Package
+              run: |
+                  $HOME/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
+                  $HOME/tooling/build-tools/build_tools.sh grunt
+
+                  if [[ "${{ github.ref }}" != "refs/heads/main" ]]; then
+                    $HOME/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php --include-hash"
+                  else
+                    $HOME/tooling/build-tools/build_tools.sh package_build -o "gravityview gravityview.php $([[ $(git log -n 1 | grep "\[skip release\]") ]] && echo --include-hash)"
+                  fi
+
+                  mkdir -p gravityview
+                  cp -R vendor* gravityview
+                  rm gravityview/vendor_prefixed/gravitykit/foundation/src/translations.js.php
+                  zip -gr $(ls gravityview-*.zip) gravityview
+                  mkdir .release
+                  cp gravityview-*.zip .release
+
+            - name: Store Release Artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: release
+                  path: .release
+
+            - name: Create GitHub Release
+              if: github.ref == 'refs/heads/main'
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  git config user.email "support@gravitykit.com"
+                  git config user.name "GravityView - CI"
+                  $HOME/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
+
+            - name: Notify GravityView Release Manager
+              if: github.ref == 'refs/heads/main' && ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]
+              run: |
+                  $HOME/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
