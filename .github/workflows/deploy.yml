@@ -35,6 +35,10 @@ jobs:
                   GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: composer config --global --auth github-oauth.github.com $GH_ACCESS_TOKEN
 
+            # Ensure test_dependencies directory exists before caching
+            - name: Ensure test_dependencies directory exists
+              run: mkdir -p $HOME/test_dependencies
+
             - name: Cache Dependencies
               uses: actions/cache@v4
               with:
@@ -55,10 +59,6 @@ jobs:
               env:
                   GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
-
-            # Ensure the test_dependencies directory exists
-            - name: Ensure test_dependencies directory exists
-              run: mkdir -p $HOME/test_dependencies
 
             # Consolidate workspace files into a single directory for upload
             - name: Prepare Workspace Artifact
@@ -90,7 +90,12 @@ jobs:
                   path: /tmp/workspace/
 
             - name: Extract Workspace Artifact
-              run: rsync -a /tmp/workspace/workspace_artifact/ $HOME/
+              run: |
+                  if [ -d /tmp/workspace/workspace_artifact ]; then
+                    rsync -a /tmp/workspace/workspace_artifact/ $HOME/
+                  else
+                    rsync -a /tmp/workspace/ $HOME/
+                  fi
 
             - name: Run PHP 7.4 Unit Tests
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_74
@@ -108,7 +113,12 @@ jobs:
                   path: /tmp/workspace/
 
             - name: Extract Workspace Artifact
-              run: rsync -a /tmp/workspace/workspace_artifact/ $HOME/
+              run: |
+                  if [ -d /tmp/workspace/workspace_artifact ]; then
+                    rsync -a /tmp/workspace/workspace_artifact/ $HOME/
+                  else
+                    rsync -a /tmp/workspace/ $HOME/
+                  fi
 
             - name: Run PHP 8.0 Unit Tests
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_80
@@ -149,7 +159,12 @@ jobs:
                   path: /tmp/workspace/
 
             - name: Extract Workspace Artifact
-              run: rsync -a /tmp/workspace/workspace_artifact/ $HOME/
+              run: |
+                  if [ -d /tmp/workspace/workspace_artifact ]; then
+                    rsync -a /tmp/workspace/workspace_artifact/ $HOME/
+                  else
+                    rsync -a /tmp/workspace/ $HOME/
+                  fi
 
             - name: Build and Package
               run: |
