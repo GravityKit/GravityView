@@ -16,6 +16,16 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
 
+            - name: Create .env file if missing
+              run: |
+                  if [ ! -f .env ]; then
+                    echo "PLUGIN_DIR=$HOME" > .env
+                    echo "WP_LATEST_TESTS_DIR=./wordpress-latest-tests-lib" >> .env
+                    echo "PHPUNIT_DIR=./phpunit" >> .env
+                    echo "GF_PLUGIN_DIR=./gravityforms" >> .env
+                    echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> .env
+                  fi
+
             - name: Install Docker Compose
               run: |
                   sudo apt-get update
@@ -29,9 +39,6 @@ jobs:
 
             - name: Clone GV Tooling
               run: gh repo clone GravityKit/Tooling $HOME/tooling
-
-            - name: Set Executable Permissions on Docker Unit Tests Directory
-              run: chmod -R +x $HOME/tooling/docker-unit-tests
 
             - name: Authenticate GitHub for Composer
               env:
@@ -61,7 +68,7 @@ jobs:
             - name: Configure Test Environment
               env:
                   GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-              run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
+              run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
 
             # Consolidate workspace files into a single directory for upload
             - name: Prepare Workspace Artifact
