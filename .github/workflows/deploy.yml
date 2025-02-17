@@ -10,6 +10,8 @@ on:
 jobs:
     prepare_test_and_build_environment:
         runs-on: ubuntu-latest
+        env:
+            HOME: /home/runner
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4
@@ -54,13 +56,18 @@ jobs:
                   GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
 
+            # Consolidate workspace files into a single directory for upload
+            - name: Prepare Workspace Artifact
+              run: |
+                  mkdir -p workspace_artifact
+                  cp -R $HOME/tooling workspace_artifact/
+                  cp -R $HOME/test_dependencies workspace_artifact/
+
             - name: Save Workspace
               uses: actions/upload-artifact@v4
               with:
                   name: workspace
-                  path: |
-                      ${{ env.HOME }}/tooling
-                      ${{ env.HOME }}/test_dependencies
+                  path: workspace_artifact
                   if-no-files-found: warn
                   compression-level: 6
                   overwrite: false
@@ -68,6 +75,8 @@ jobs:
 
     run_php_74_unit_tests:
         runs-on: ubuntu-latest
+        env:
+            HOME: /home/runner
         needs: prepare_test_and_build_environment
         steps:
             - name: Restore Workspace
@@ -76,20 +85,26 @@ jobs:
                   name: workspace
                   path: /tmp/workspace/
 
-            - run: rsync -a /tmp/workspace/ $HOME/
+            - name: Extract Workspace Artifact
+              run: rsync -a /tmp/workspace/workspace_artifact/ $HOME/
 
             - name: Run PHP 7.4 Unit Tests
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_74
 
     run_php_80_unit_tests:
         runs-on: ubuntu-latest
+        env:
+            HOME: /home/runner
         needs: prepare_test_and_build_environment
         steps:
             - name: Restore Workspace
               uses: actions/download-artifact@v4
               with:
                   name: workspace
-                  path: $HOME/
+                  path: /tmp/workspace/
+
+            - name: Extract Workspace Artifact
+              run: rsync -a /tmp/workspace/workspace_artifact/ $HOME/
 
             - name: Run PHP 8.0 Unit Tests
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_80
@@ -119,13 +134,18 @@ jobs:
     #         path: tests/acceptance/_output
     build_package_release:
         runs-on: ubuntu-latest
+        env:
+            HOME: /home/runner
         needs: [run_php_74_unit_tests, run_php_80_unit_tests]
         steps:
             - name: Restore Workspace
               uses: actions/download-artifact@v4
               with:
                   name: workspace
-                  path: $HOME/
+                  path: /tmp/workspace/
+
+            - name: Extract Workspace Artifact
+              run: rsync -a /tmp/workspace/workspace_artifact/ $HOME/
 
             - name: Build and Package
               run: |
