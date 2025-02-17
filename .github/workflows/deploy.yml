@@ -29,15 +29,15 @@ jobs:
             - name: Clone GV Tooling
               run: gh repo clone GravityKit/Tooling $HOME/tooling
 
-            # Create .env file in docker-unit-tests folder after cloning
+            # Create .env file in docker-unit-tests folder with absolute WP_LATEST_TESTS_DIR
             - name: Create .env file in docker-unit-tests if missing
               run: |
                   mkdir -p "$HOME/tooling/docker-unit-tests"
                   if [ ! -f "$HOME/tooling/docker-unit-tests/.env" ]; then
                     echo "PLUGIN_DIR=$HOME" > "$HOME/tooling/docker-unit-tests/.env"
-                    echo "WP_LATEST_TESTS_DIR=./wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "PHPUNIT_DIR=./phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "GF_PLUGIN_DIR=./gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "WP_LATEST_TESTS_DIR=$HOME/wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "PHPUNIT_DIR=$HOME/phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "GF_PLUGIN_DIR=$HOME/gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
                     echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> "$HOME/tooling/docker-unit-tests/.env"
                   fi
 
@@ -71,7 +71,7 @@ jobs:
                   GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
 
-            # Persist workspace artifact including test suites
+            # Persist workspace artifact including the test suites folder
             - name: Prepare Workspace Artifact
               run: |
                   mkdir -p workspace_artifact
@@ -118,16 +118,14 @@ jobs:
                     rsync -a /tmp/workspace/ $HOME/
                   fi
 
-            # Ensure .env file in docker-unit-tests exists (re-create if necessary)
-            - name: Ensure .env file in docker-unit-tests exists
+            # Ensure .env file in docker-unit-tests exists (should be present from prepare job)
+            - name: Verify .env file in docker-unit-tests exists
               run: |
-                  mkdir -p "$HOME/tooling/docker-unit-tests"
-                  if [ ! -f "$HOME/tooling/docker-unit-tests/.env" ]; then
-                    echo "PLUGIN_DIR=$HOME" > "$HOME/tooling/docker-unit-tests/.env"
-                    echo "WP_LATEST_TESTS_DIR=./wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "PHPUNIT_DIR=./phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "GF_PLUGIN_DIR=./gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> "$HOME/tooling/docker-unit-tests/.env"
+                  if [ -f "$HOME/tooling/docker-unit-tests/.env" ]; then
+                    echo ".env file exists."
+                  else
+                    echo ".env file missing!" >&2
+                    exit 1
                   fi
 
             - name: Run PHP 7.4 Unit Tests
@@ -160,15 +158,24 @@ jobs:
                     rsync -a /tmp/workspace/ $HOME/
                   fi
 
-            - name: Ensure .env file in docker-unit-tests exists
+            - name: Verify .env file in docker-unit-tests exists
               run: |
-                  mkdir -p "$HOME/tooling/docker-unit-tests"
-                  if [ ! -f "$HOME/tooling/docker-unit-tests/.env" ]; then
-                    echo "PLUGIN_DIR=$HOME" > "$HOME/tooling/docker-unit-tests/.env"
-                    echo "WP_LATEST_TESTS_DIR=./wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "PHPUNIT_DIR=./phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "GF_PLUGIN_DIR=./gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> "$HOME/tooling/docker-unit-tests/.env"
+                  if [ -f "$HOME/tooling/docker-unit-tests/.env" ]; then
+                    echo ".env file exists."
+                  else
+                    echo ".env file missing!" >&2
+                    exit 1
+                  fi
+
+            # (Optionally) Verify that the test suite is configured
+            - name: Check Test Suite Configuration
+              run: |
+                  source $HOME/tooling/docker-unit-tests/.env
+                  if [ ! -f "$WP_LATEST_TESTS_DIR/wp-tests-config.php" ]; then
+                    echo "Test suite not configured!" >&2
+                    exit 1
+                  else
+                    echo "Test suite is configured."
                   fi
 
             - name: Run PHP 8.0 Unit Tests
