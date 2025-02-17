@@ -44,8 +44,9 @@ jobs:
             - name: Authenticate GitHub for Composer
               env:
                   GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-              run: composer config --global --auth github-oauth.github.com $GH_ACCESS_TOKEN
+              run: composer config --global --auth github-oauth.github.com "$GH_ACCESS_TOKEN"
 
+            # Ensure test_dependencies directory exists before caching
             - name: Ensure test_dependencies directory exists
               run: mkdir -p $HOME/test_dependencies
 
@@ -70,11 +71,17 @@ jobs:
                   GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
 
+            # Persist workspace artifact including test suites
             - name: Prepare Workspace Artifact
               run: |
                   mkdir -p workspace_artifact
                   cp -R $HOME/tooling workspace_artifact/
                   cp -R $HOME/test_dependencies workspace_artifact/
+                  if [ -d "$HOME/wordpress-latest-tests-lib" ]; then
+                    cp -R $HOME/wordpress-latest-tests-lib workspace_artifact/
+                  else
+                    echo "wordpress-latest-tests-lib not found"
+                  fi
 
             - name: Save Workspace
               uses: actions/upload-artifact@v4
@@ -111,6 +118,7 @@ jobs:
                     rsync -a /tmp/workspace/ $HOME/
                   fi
 
+            # Ensure .env file in docker-unit-tests exists (re-create if necessary)
             - name: Ensure .env file in docker-unit-tests exists
               run: |
                   mkdir -p "$HOME/tooling/docker-unit-tests"
