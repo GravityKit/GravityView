@@ -43,9 +43,9 @@
   "scripts": {
     "wp-env": "cd tests/E2E/setup && wp-env",
     "wp-env:configure": "cd tests/E2E/setup && node wp-env.config.js",
-    "wp-env:bash": "npm run wp-env cli bash -c",
+    "wp-env:bash": "npm run wp-env:cli bash -c",
     "wp-env:cli": "npm run wp-env run cli -- ",
-    "tests:e2e:clean": "npm run wp-env:configure && npm run wp-env clean",
+    "tests:e2e:clean": "npm run wp-env:configure && npm run wp-env clean all",
     "tests:e2e:setup": "npm run wp-env:configure && npm run wp-env start",
     "tests:e2e:run": "npx playwright test --config=tests/E2E/setup/playwright.config.js"
   },

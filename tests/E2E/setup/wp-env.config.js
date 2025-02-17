@@ -12,7 +12,10 @@ const runAfterClean = [
 const runAfterStart = [
 	"npm run wp-env:cli wp import_forms_and_entries",
 	"npm run wp-env:cli wp rewrite structure '/%postname%/' -- --hard",
-	"npm run wp-env:cli wp plugin install gravityformscli --force --activate",
+	"npm run wp-env:cli wp plugin install gravityformscli pexlechris-adminer -- --activate",
+	"npm run wp-env:cli wp option update gform_pending_installation 0", // Prevents the setup wizard from running.
+	`npm run wp-env:cli wp gf license update ${process.env.GRAVITY_FORMS_LICENSE_KEY}`,
+	`npm run wp-env:cli wp gk licenses activate ${process.env.GRAVITYKIT_LICENSE_KEY} -- --url=${process.env.WP_ENV_URL}`,
 ];
 
 const wpEnvConfig = {
