@@ -5,13 +5,11 @@ const path = require("path");
 
 require("dotenv").config({ path: `${process.env.INIT_CWD}/.env` });
 
-const runAfterClean = [
-	"rm -f .state.json ../helpers/gf-importer/.imported-forms.json",
-];
+const runAfterClean = ["rm -f .state.json"];
 
 const runAfterStart = [
-	"npm run wp-env:cli wp import_forms_and_entries",
 	"npm run wp-env:cli wp rewrite structure '/%postname%/' -- --hard",
+	`npm run wp-env:cli wp eval-file wp-content/plugins/${path.basename(process.env.INIT_CWD)}/tests/E2E/helpers/gf-importer/gf-importer.php`,
 	"npm run wp-env:cli wp plugin install gravityformscli pexlechris-adminer -- --activate",
 	"npm run wp-env:cli wp option update gform_pending_installation 0", // Prevents the setup wizard from running.
 	`npm run wp-env:cli wp gf license update ${process.env.GRAVITY_FORMS_LICENSE_KEY}`,
