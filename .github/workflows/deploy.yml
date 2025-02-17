@@ -37,15 +37,14 @@ jobs:
             - name: Force Composer to Use HTTPS
               run: composer config --global github-protocols https
 
-            - name: Clear Composer Cache
-              run: composer clear-cache
-
             - name: Install Build Dependencies
               run: |
                   $HOME/tooling/build-tools/build_tools.sh npm -o install
                   $HOME/tooling/build-tools/build_tools.sh composer -o install
 
             - name: Configure Test Environment
+              env:
+                  GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
 
             - name: Save Workspace
