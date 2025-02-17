@@ -16,6 +16,17 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
 
+            # Create a default .env file in docker-unit-tests folder if missing.
+            - name: Create .env file in docker-unit-tests if missing
+              run: |
+                  if [ ! -f "$HOME/tooling/docker-unit-tests/.env" ]; then
+                    echo "PLUGIN_DIR=$HOME" > "$HOME/tooling/docker-unit-tests/.env"
+                    echo "WP_LATEST_TESTS_DIR=./wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "PHPUNIT_DIR=./phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "GF_PLUGIN_DIR=./gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
+                    echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> "$HOME/tooling/docker-unit-tests/.env"
+                  fi
+
             - name: Install Docker Compose
               run: |
                   sudo apt-get update
@@ -29,17 +40,6 @@ jobs:
 
             - name: Clone GV Tooling
               run: gh repo clone GravityKit/Tooling $HOME/tooling
-
-            # Create .env file in docker-unit-tests directory so that the script finds it.
-            - name: Create .env file in docker-unit-tests if missing
-              run: |
-                  if [ ! -f "$HOME/tooling/docker-unit-tests/.env" ]; then
-                    echo "PLUGIN_DIR=$HOME" > "$HOME/tooling/docker-unit-tests/.env"
-                    echo "WP_LATEST_TESTS_DIR=./wordpress-latest-tests-lib" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "PHPUNIT_DIR=./phpunit" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "GF_PLUGIN_DIR=./gravityforms" >> "$HOME/tooling/docker-unit-tests/.env"
-                    echo "GH_AUTH_TOKEN=${{ secrets.GH_ACCESS_TOKEN }}" >> "$HOME/tooling/docker-unit-tests/.env"
-                  fi
 
             - name: Authenticate GitHub for Composer
               env:
@@ -109,7 +109,9 @@ jobs:
                   fi
 
             - name: Run PHP 7.4 Unit Tests
-              run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_74
+              run: |
+                  export ENV_FILE="$HOME/tooling/docker-unit-tests/.env"
+                  bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_74
 
     run_php_80_unit_tests:
         runs-on: ubuntu-latest
@@ -132,7 +134,6 @@ jobs:
                   fi
 
             - name: Run PHP 8.0 Unit Tests
-              run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_80
 
     # Uncomment if you want to run acceptance tests
     # run_acceptance_tests:
@@ -157,6 +158,9 @@ jobs:
     #       with:
     #         name: acceptance-test-results
     #         path: tests/acceptance/_output
+              run: |
+                  export ENV_FILE="$HOME/tooling/docker-unit-tests/.env"
+                  bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_80
 
     build_package_release:
         runs-on: ubuntu-latest
