@@ -59,8 +59,12 @@ jobs:
               with:
                   name: workspace
                   path: |
-                      $HOME/tooling
-                      $HOME/test_dependencies
+                      ${{ env.HOME }}/tooling
+                      ${{ env.HOME }}/test_dependencies
+                  if-no-files-found: warn
+                  compression-level: 6
+                  overwrite: false
+                  include-hidden-files: false
 
     run_php_74_unit_tests:
         runs-on: ubuntu-latest
