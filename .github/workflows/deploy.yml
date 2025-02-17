@@ -132,6 +132,8 @@ jobs:
                   $HOME/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
 
             - name: Notify GravityView Release Manager
-              if: github.ref == 'refs/heads/main' && ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]
+              if: github.ref == 'refs/heads/main'
               run: |
-                  $HOME/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
+                  if ! git log -n 1 | grep "\[skip notify\]"; then
+                    $HOME/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
+                  fi
