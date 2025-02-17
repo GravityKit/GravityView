@@ -147,6 +147,16 @@ jobs:
                     exit 1
                   fi
 
+            - name: Ensure phpunit.xml exists in PLUGIN_DIR
+              run: |
+                  source "$HOME/tooling/docker-unit-tests/.env"
+                  if [ ! -f "$PLUGIN_DIR/phpunit.xml" ] && [ -f "$PLUGIN_DIR/phpunit.xml.dist" ]; then
+                    cp "$PLUGIN_DIR/phpunit.xml.dist" "$PLUGIN_DIR/phpunit.xml"
+                    echo "Created phpunit.xml from phpunit.xml.dist"
+                  else
+                    echo "phpunit.xml exists or phpunit.xml.dist not found."
+                  fi
+
             - name: Run PHP 7.4 Unit Tests
               run: |
                   export ENV_FILE="$HOME/tooling/docker-unit-tests/.env"
@@ -198,6 +208,16 @@ jobs:
                     exit 1
                   else
                     echo "Test suite is configured."
+                  fi
+
+            - name: Ensure phpunit.xml exists in PLUGIN_DIR
+              run: |
+                  source "$HOME/tooling/docker-unit-tests/.env"
+                  if [ ! -f "$PLUGIN_DIR/phpunit.xml" ] && [ -f "$PLUGIN_DIR/phpunit.xml.dist" ]; then
+                    cp "$PLUGIN_DIR/phpunit.xml.dist" "$PLUGIN_DIR/phpunit.xml"
+                    echo "Created phpunit.xml from phpunit.xml.dist"
+                  else
+                    echo "phpunit.xml exists or phpunit.xml.dist not found."
                   fi
 
             - name: Run PHP 8.0 Unit Tests
