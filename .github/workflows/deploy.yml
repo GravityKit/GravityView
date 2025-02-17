@@ -56,6 +56,10 @@ jobs:
                   GH_AUTH_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
 
+            # Ensure the test_dependencies directory exists
+            - name: Ensure test_dependencies directory exists
+              run: mkdir -p $HOME/test_dependencies
+
             # Consolidate workspace files into a single directory for upload
             - name: Prepare Workspace Artifact
               run: |
