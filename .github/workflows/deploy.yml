@@ -29,8 +29,16 @@ jobs:
                   key: test-dependencies-${{ github.run_id }}
                   restore-keys: test-dependencies-
 
+            - name: Authenticate GitHub for Composer
+              env:
+                    GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+              run: composer config --global --auth github-oauth.github.com $GH_ACCESS_TOKEN
+
             - name: Force Composer to Use HTTPS
               run: composer config --global github-protocols https
+
+            - name: Clear Composer Cache
+              run: composer clear-cache
 
             - name: Install Build Dependencies
               run: |
