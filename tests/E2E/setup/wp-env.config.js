@@ -2,21 +2,15 @@
 
 const fs = require('fs');
 const path = require('path');
-const { getLocalPlugins } = require('../helpers/config-helpers');
 
 require('dotenv').config({ path: `${process.env.INIT_CWD}/.env` });
 
-const localConfigPath = path.join(__dirname, '.local-plugins.json');
-
-const localPlugins = getLocalPlugins(localConfigPath);
-
 const wpEnvConfig = {
-  phpVersion: '7.4',
+  phpVersion: process.env.WP_ENV_PHP_VERSION || '7.4',
   plugins: [
-    '../../..',
-    process.env.GRAVITY_FORMS_FOLDER || '/tmp/gravityforms',
-    ...localPlugins,
-  ],
+		'../../..', // GravityView
+		...( process.env.WP_ENV_PLUGINS ? process.env.WP_ENV_PLUGINS.split(',').map((plugin) => plugin.trim()) : [] ),
+	],
   port: parseInt(process.env.WP_ENV_PORT, 10) || 8888,
   config: {
     WP_DEBUG: true,
@@ -30,7 +24,7 @@ const wpEnvConfig = {
   },
 	lifecycleScripts: {
 		"afterClean": "rm -f .state.json ../helpers/gf-importer/.imported-forms.json",
-		"afterStart": "npm run wp-env run cli wp import_forms_and_entries && npm run wp-env run cli wp rewrite structure '/%postname%/' -- --hard",
+		"afterStart": "npm run wp-env:cli wp import_forms_and_entries && npm run wp-env:cli wp rewrite structure '/%postname%/' -- --hard"
 	}
 };
 
