@@ -59,7 +59,7 @@ jobs:
             cp .env.sample .env
             sed -i "s|WP_ENV_PLUGINS=.*|WP_ENV_PLUGINS=${PWD}/.tmp/gravityforms|" .env
             sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
-            sed -i "s|GRAVITYVIEW_LICENSE_KEY=.*|GRAVITYVIEW_LICENSE_KEY=${GRAVITYVIEW_KEY}|" .env
+            sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYVIEW_KEY}|" .env
       - save_cache:
           key: test-dependencies-{{ epoch }}
           paths:
