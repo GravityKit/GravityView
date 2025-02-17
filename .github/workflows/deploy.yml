@@ -101,7 +101,7 @@ jobs:
                   fi
 
             - name: Run PHP 7.4 Unit Tests
-              run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_74
+              run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_74
 
     run_php_80_unit_tests:
         runs-on: ubuntu-latest
@@ -124,7 +124,7 @@ jobs:
                   fi
 
             - name: Run PHP 8.0 Unit Tests
-              run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_80
+              run: bash $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_80
 
     # Uncomment if you want to run acceptance tests
     # run_acceptance_tests:
@@ -149,6 +149,7 @@ jobs:
     #       with:
     #         name: acceptance-test-results
     #         path: tests/acceptance/_output
+
     build_package_release:
         runs-on: ubuntu-latest
         env:
