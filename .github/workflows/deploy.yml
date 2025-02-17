@@ -29,6 +29,9 @@ jobs:
                   key: test-dependencies-${{ github.run_id }}
                   restore-keys: test-dependencies-
 
+            - name: Force Composer to Use HTTPS
+              run: composer config --global github-protocols https
+
             - name: Install Build Dependencies
               run: |
                   $HOME/tooling/build-tools/build_tools.sh npm -o install
