@@ -19,7 +19,7 @@
     },
     {
       "type": "vcs",
-      "url": "git@github.com:gravityview/Foundation.git"
+      "url": "https://github.com/GravityKit/Foundation.git"
     }
   ],
   "require": {
