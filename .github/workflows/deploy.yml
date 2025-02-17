@@ -19,20 +19,27 @@ jobs:
                   sudo apt-get update
                   sudo apt-get install -y docker-compose
 
+            - name: Authenticate with GitHub CLI
+              env:
+                  GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+              run: |
+                  echo "$GH_ACCESS_TOKEN" | gh auth login --with-token
+
             - name: Clone GV Tooling
-              run: git clone https://${{ secrets.GH_ACCESS_TOKEN }}@github.com/GravityKit/Tooling.git $HOME/tooling
+              run: gh repo clone GravityKit/Tooling $HOME/tooling
+
+            - name: Authenticate GitHub for Composer
+              env:
+                  GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
+              run: composer config --global --auth github-oauth.github.com $GH_ACCESS_TOKEN
 
             - name: Cache Dependencies
               uses: actions/cache@v4
               with:
                   path: $HOME/test_dependencies
-                  key: test-dependencies-${{ github.run_id }}
-                  restore-keys: test-dependencies-
-
-            - name: Authenticate GitHub for Composer
-              env:
-                    GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-              run: composer config --global --auth github-oauth.github.com $GH_ACCESS_TOKEN
+                  key: test-dependencies-${{ runner.os }}-${{ hashFiles('composer.lock', 'package-lock.json') }}
+                  restore-keys: |
+                      test-dependencies-${{ runner.os }}-
 
             - name: Force Composer to Use HTTPS
               run: composer config --global github-protocols https
@@ -51,7 +58,9 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: workspace
-                  path: $HOME/
+                  path: |
+                      $HOME/tooling
+                      $HOME/test_dependencies
 
     run_php_74_unit_tests:
         runs-on: ubuntu-latest
@@ -61,7 +70,9 @@ jobs:
               uses: actions/download-artifact@v4
               with:
                   name: workspace
-                  path: $HOME/
+                  path: /tmp/workspace/
+
+            - run: rsync -a /tmp/workspace/ $HOME/
 
             - name: Run PHP 7.4 Unit Tests
               run: $HOME/tooling/docker-unit-tests/docker-unit-tests.sh test_74
@@ -102,7 +113,6 @@ jobs:
     #       with:
     #         name: acceptance-test-results
     #         path: tests/acceptance/_output
-
     build_package_release:
         runs-on: ubuntu-latest
         needs: [run_php_74_unit_tests, run_php_80_unit_tests]
@@ -115,7 +125,7 @@ jobs:
 
             - name: Build and Package
               run: |
-                  BRANCH_REF="${GITHUB_REF}"
+                  BRANCH_REF="${{ github.ref }}"
                   $HOME/tooling/build-tools/build_tools.sh composer -o "install --no-dev"
                   $HOME/tooling/build-tools/build_tools.sh grunt
 
@@ -150,7 +160,6 @@ jobs:
             - name: Notify GravityView Release Manager
               if: github.ref == 'refs/heads/main'
               run: |
-                  git fetch --unshallow
                   if ! git log -n 1 | grep "\[skip notify\]"; then
                     $HOME/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
                   fi
