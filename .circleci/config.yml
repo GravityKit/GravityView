@@ -30,6 +30,7 @@ jobs:
             while [ $attempt -lt $max_attempts ]; do
               npm run tests:e2e:setup && break
               attempt=$(( attempt + 1 ))
+              rm -rf /home/circleci/.wp-env
               echo "Retrying WP-ENV setup in $sleep_time seconds... (Attempt $attempt/$max_attempts)"
               sleep $sleep_time
             done
