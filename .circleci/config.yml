@@ -38,8 +38,7 @@ jobs:
               echo "WP-ENV setup failed."
               exit 1
             fi
-            npm run tests:e2e:setup
-            npm run tests:e2e:parallel
+            npm run tests:e2e:run
       - store_artifacts:
           path: tests/E2E/results
       - store_test_results:
