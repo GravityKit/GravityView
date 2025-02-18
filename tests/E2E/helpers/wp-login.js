@@ -24,20 +24,16 @@ async function wpLogin({
 	} catch (error) {
 		console.log("Logging in and saving state…");
 
-		const loginPage = "wp-login.php";
-
-		await page.goto(`${baseUrl}/${loginPage}`);
+		await page.goto(`${baseUrl}/wp-login.php`);
 
 		await page.fill("#user_login", username);
 		await page.fill("#user_pass", password);
 
 		await page.click("#wp-submit");
 
-		await page.locator("body").waitFor({ state: "attached" });
-
-		if (!(await page.locator("#adminmenuwrap").isVisible())) {
+		if (!(await page.waitForURL(`${baseUrl}/wp-admin/**`), { waitUntil: 'domcontentloaded' })) {
 			throw new Error("WordPress login failed");
-		}
+		};
 
 		await page.context().storageState({ path: stateFile });
 	}
