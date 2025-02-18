@@ -33,9 +33,9 @@ async function wpLogin({
 
 		await page.click("#wp-submit");
 
-		await page.waitForNavigation({ waitUntil: "networkidle" });
+		await page.locator("body").waitFor({ state: "attached" });
 
-		if (page.url().includes(loginPage)) {
+		if (!(await page.locator("#adminmenuwrap").isVisible())) {
 			throw new Error("WordPress login failed");
 		}
 
