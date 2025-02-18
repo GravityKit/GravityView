@@ -17,6 +17,7 @@ anchors:
 jobs:
   run_e2e_tests:
     <<: *default_job_config
+    parallelism: 4
     steps:
       - attach_workspace:
           at: /home/circleci
@@ -24,7 +25,8 @@ jobs:
           name: Run E2E tests
           command: |
             npm run tests:e2e:setup
-            npm run tests:e2e:run
+            TESTFILES=$(circleci tests glob "tests/E2E/tests/**/*.spec.js")
+            echo "$TESTFILES" | circleci tests run --command="xargs npx playwright test --config=tests/E2E/setup/playwright.config.js" --verbose --split-by=timings
       - store_artifacts:
           path: tests/E2E/results
       - store_test_results:
