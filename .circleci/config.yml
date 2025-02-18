@@ -24,6 +24,19 @@ jobs:
       - run:
           name: Run E2E tests
           command: |
+            attempt=0
+            max_attempts=3
+            sleep_time=5
+            while [ $attempt -lt $max_attempts ]; do
+              npm run tests:e2e:setup && break
+              attempt=$(( attempt + 1 ))
+              echo "Retrying WP-ENV setup in $sleep_time seconds... (Attempt $attempt/$max_attempts)"
+              sleep $sleep_time
+            done
+            if [ $attempt -eq $max_attempts ]; then
+              echo "WP-ENV setup failed."
+              exit 1
+            fi
             npm run tests:e2e:setup
             npm run tests:e2e:parallel
       - store_artifacts:
