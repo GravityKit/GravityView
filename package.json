@@ -47,7 +47,8 @@
     "wp-env:cli": "npm run wp-env run cli -- ",
     "tests:e2e:clean": "npm run wp-env:configure && npm run wp-env clean all",
     "tests:e2e:setup": "npm run wp-env:configure && npm run wp-env start",
-    "tests:e2e:run": "npx playwright test --config=tests/E2E/setup/playwright.config.js"
+    "tests:e2e:run": "npx playwright test --config=tests/E2E/setup/playwright.config.js",
+    "tests:e2e:parallel": "TESTFILES=$(circleci tests glob 'tests/E2E/tests/**/*.spec.js') && echo \"$TESTFILES\" | circleci tests run --command=\"xargs npx playwright test --config=tests/E2E/setup/playwright.config.js\" --verbose --split-by=filesize"
   },
   "husky": {
     "hooks": {

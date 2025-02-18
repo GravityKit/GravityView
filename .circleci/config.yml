@@ -25,8 +25,7 @@ jobs:
           name: Run E2E tests
           command: |
             npm run tests:e2e:setup
-            TESTFILES=$(circleci tests glob "tests/E2E/tests/**/*.spec.js")
-            echo "$TESTFILES" | circleci tests run --command="xargs npx playwright test --config=tests/E2E/setup/playwright.config.js" --verbose --split-by=filesize
+            npm run tests:e2e:parallel
       - store_artifacts:
           path: tests/E2E/results
       - store_test_results:
