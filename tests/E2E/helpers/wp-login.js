@@ -31,7 +31,7 @@ async function wpLogin({
 
 		await page.click("#wp-submit");
 
-		if (!(await page.waitForURL(`${baseUrl}/wp-admin/**`), { waitUntil: 'domcontentloaded' })) {
+		if (!(await page.waitForURL(`${baseUrl}/wp-admin/**`), { waitUntil: 'domcontentloaded', timeout: 6000 })) {
 			throw new Error("WordPress login failed");
 		};
 
