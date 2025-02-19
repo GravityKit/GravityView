@@ -44,11 +44,9 @@ test("Verify Allow Export", async ({ page }, testInfo) => {
 
 	await test.step("Check the View on the front end and attempt to download entries", async () => {
 		await checkViewOnFrontEnd(page);
+		const downloadPromise = page.waitForEvent("download");
 		await clickDownloadButton(page, downloadUrl);
-	});
-
-	await test.step("Verify the download was successful", async () => {
-		const download = await page.waitForEvent("download");
+		const download = await downloadPromise;
         expect(download).toBeTruthy();
 	});
 });
