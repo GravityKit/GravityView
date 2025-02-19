@@ -1,42 +1,56 @@
-const path = require("path");
-const fs = require("fs").promises;
+const fs = require( 'fs' ).promises;
 
-require("dotenv").config({ path: `${process.env.INIT_CWD}/.env` });
-
-async function wpLogin({
-	page,
-	stateFile,
-	username = process.env.WP_ENV_USER,
-	password = process.env.WP_ENV_USER_PASS,
-} = {}) {
-	const baseUrl =
-		`${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}` ||
-		"http://localhost";
+async function wpLogin( { browser, stateFile, baseURL, username, password } ) {
+	let stateFileExists = false;
 
 	try {
-		await fs.access(stateFile);
+		await fs.access( stateFile );
 
-		const { cookies } = JSON.parse(await fs.readFile(stateFile, "utf-8"));
-
-		console.log("Loading previously saved state…");
-
-		await page.context().addCookies(cookies);
-	} catch (error) {
-		console.log("Logging in and saving state…");
-
-		await page.goto(`${baseUrl}/wp-login.php`);
-
-		await page.fill("#user_login", username);
-		await page.fill("#user_pass", password);
-
-		await page.click("#wp-submit");
-
-		if (!(await page.waitForURL(`${baseUrl}/wp-admin/**`), { waitUntil: 'domcontentloaded', timeout: 60000 })) {
-			throw new Error("WordPress login failed");
-		};
-
-		await page.context().storageState({ path: stateFile });
+		stateFileExists = true;
+	} catch ( error ) {
+		console.log( 'No authentication state file found. Logging in…' );
 	}
+
+	// **Create context with or without `storageState`**
+	const context = stateFileExists
+		? await browser.newContext( { storageState: stateFile, baseURL } )
+		: await browser.newContext( { baseURL } );
+
+	const page = await context.newPage();
+
+	// If state file exists, verify if the session is valid
+	if ( stateFileExists ) {
+		console.log( 'Checking authentication state…' );
+
+		await page.goto( '/wp-admin', { waitUntil: 'domcontentloaded', timeout: 60000 } );
+
+		if ( await page.$( '#wpadminbar' ) ) {
+			console.log( 'Valid session detected, continuing…' );
+
+			await context.close();
+
+			return;
+		}
+
+		console.log( 'Stale authentication state detected. Logging in…' );
+	}
+
+	await page.goto( '/wp-login.php' );
+	await page.fill( '#user_login', username );
+	await page.fill( '#user_pass', password );
+	await page.click( '#wp-submit' );
+
+	try {
+		await page.waitForURL( '/wp-admin/**', { waitUntil: 'domcontentloaded', timeout: 60000 } );
+	} catch ( error ) {
+		throw new Error( 'WordPress login failed. Please check credentials.' );
+	}
+
+	await page.context().storageState( { path: stateFile } );
+
+	console.log( 'New authentication state saved.' );
+
+	await context.close();
 }
 
 module.exports = { wpLogin };

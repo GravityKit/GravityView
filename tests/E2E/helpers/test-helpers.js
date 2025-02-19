@@ -92,18 +92,6 @@ async function gotoAndEnsureLoggedIn(
 	stateFile = storageState,
 ) {
 	await page.goto(url);
-
-	const adminBarSelector = "#wpadminbar";
-	const isLoggedIn = await page.$(adminBarSelector);
-	const skipMessage =
-		"User not logged in. Delete old state file and try again.";
-
-	if (!isLoggedIn) {
-		console.log(skipMessage);
-		testInfo
-			? testInfo.skip(!isLoggedIn, skipMessage)
-			: test.skip(skipMessage);
-	}
 }
 
 /**

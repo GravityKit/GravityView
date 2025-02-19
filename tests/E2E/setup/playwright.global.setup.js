@@ -1,86 +1,73 @@
-const { chromium } = require('playwright');
-const { exec } = require('child_process');
-const { wpLogin } = require('../helpers/wp-login');
-const { promises: fs } = require('fs');
+const { chromium } = require( 'playwright' );
+const { exec } = require( 'child_process' );
+const { wpLogin } = require( '../helpers/wp-login' );
 
 async function startDockerContainer() {
-  return new Promise((resolve, reject) => {
-    exec(
-      'docker run -d --rm --network host --ipc=host jacoblincool/playwright:chromium-server-1.48.0',
-      (error, stdout) => {
-        if (error) {
-          console.error('Error starting Docker container:', error);
+	return new Promise( ( resolve, reject ) => {
+		exec(
+			'docker run -d --rm --network host --ipc=host jacoblincool/playwright:chromium-server-1.48.0',
+			( error, stdout ) => {
+				if ( error ) {
+					console.error( 'Error starting Docker container:', error );
 
-          return reject(error);
-        }
+					return reject( error );
+				}
 
-        const containerId = stdout.trim().substring(0, 12);
+				console.log( 'Docker container started with ID:', stdout.trim().substring( 0, 12 ) );
 
-        console.log('Docker container started with ID:', containerId);
-
-        resolve(containerId);
-      }
-    );
-  });
+				resolve();
+			},
+		);
+	} );
 }
 
-async function waitForWsEndpoint(wsEndpoint, retries = 5, delay = 2000) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const browser = await chromium.connect({ wsEndpoint });
+async function waitForWsEndpoint( wsEndpoint, retries = 5, delay = 2000 ) {
+	for ( let i = 0; i < retries; i++ ) {
+		try {
+			return await chromium.connect( { wsEndpoint } );
+		} catch ( error ) {
+			console.log( `Retrying connection to wsEndpoint: ${ wsEndpoint } (${ i + 1 }/${ retries })` );
 
-      return browser;
-    } catch (error) {
-      console.log(
-        `Retrying connection to wsEndpoint: ${wsEndpoint} (${i + 1}/${retries})`
-      );
-
-      await new Promise((resolve) => setTimeout(resolve, delay));
-    }
-  }
-
-  throw new Error(
-    `Failed to connect to wsEndpoint: ${wsEndpoint} after ${retries} retries`
-  );
+			await new Promise( ( resolve ) => setTimeout( resolve, delay ) );
+		}
+	}
+	throw new Error( `Failed to connect to Playwright WebSocket: ${ wsEndpoint } after ${ retries } retries` );
 }
 
-module.exports = async (config) => {
-  require('dotenv').config({ path: `${process.env.INIT_CWD}/.env` });
+module.exports = async ( config ) => {
+	require( 'dotenv' ).config( { path: `${ process.env.INIT_CWD }/.env` } );
 
-  const projectConfig = config.projects.find(
-    (project) => project.name === 'chromium'
-  );
+	const projectConfig = config.projects.find( ( project ) => project.name === 'chromium' );
 
-  const {
-    storageState: stateFile,
-    connectOptions: { wsEndpoint },
-  } = projectConfig.use;
+	const { storageState: stateFile, connectOptions: { wsEndpoint }, baseURL } = projectConfig.use;
 
-  try {
-    await startDockerContainer();
-  } catch (error) {
-    console.error('Failed to start Docker container: ', error);
+	try {
+		await startDockerContainer();
+	} catch ( error ) {
+		console.error( `Failed to start Docker container: ${ error.message }` );
 
-    throw error;
-  }
+		process.exit( 1 );
+	}
 
-  let browser;
+	let browser;
 
-  try {
-    await fs.access(stateFile);
-    console.log('Loading previously saved state…');
-  } catch (error) {
-    browser = await waitForWsEndpoint(wsEndpoint);
-  }
+	try {
+		browser = await waitForWsEndpoint( wsEndpoint );
+	} catch ( error ) {
+		console.error( error.message );
 
-  if (!browser) {
-    browser = await waitForWsEndpoint(wsEndpoint);
-  }
+		process.exit( 1 );
+	}
 
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  
-  if (!await fs.access(stateFile).then(() => true).catch(() => false)) {
-    await wpLogin({ page, stateFile });
-  }
+	try {
+		await wpLogin(
+			{ browser, stateFile, baseURL, username: process.env.WP_ENV_USER, password: process.env.WP_ENV_USER_PASS },
+		);
+	} catch ( error ) {
+		console.error( error.message );
+
+		process.exit( 1 );
+	}
+
+	await browser.close();
 };

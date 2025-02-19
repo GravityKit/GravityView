@@ -1,12 +1,11 @@
 import { test, expect } from "@wordpress/e2e-test-utils-playwright";
-import { gotoAndEnsureLoggedIn } from "../helpers/test-helpers";
 
 const url = `${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}`;
 
 test("GravityView submenu items are available under the GravityKit menu", async ({
 	page,
 }, testInfo) => {
-	await gotoAndEnsureLoggedIn(page, testInfo, `${url}/wp-admin`);
+	await page.goto('/wp-admin');
 
 	const gravityKitMenuSelector = "#toplevel_page__gk_admin_menu";
 
