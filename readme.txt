@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop = 
+
+#### 🚀 Added
+* New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.
+
 = 2.35 on February 12, 2025 =
 
 This update adds random sorting to the GravityView block, improves how partial entries are handled, and fixes several issues, including a fatal error in Gravity Forms 2.9.3 or newer.

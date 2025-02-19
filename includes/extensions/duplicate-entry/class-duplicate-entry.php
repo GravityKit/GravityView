@@ -70,6 +70,10 @@ final class GravityView_Duplicate_Entry {
 		add_filter( 'gravityview/field/is_visible', array( $this, 'maybe_not_visible' ), 10, 3 );
 
 		add_filter( 'gravityview/api/reserved_query_args', array( $this, 'add_reserved_arg' ) );
+
+		// Add notification event and trigger
+		add_filter( 'gform_notification_events', [ $this, 'add_duplicate_notification_events' ], 10, 2 );
+		add_action( 'gravityview/duplicate-entry/duplicated', [ $this, 'trigger_notifications' ], 10, 2 );
 	}
 
 	/**
@@ -913,6 +917,32 @@ final class GravityView_Duplicate_Entry {
 		echo '<script>window.location.href = ' . json_encode( $return_url ) . ';</script>';
 
 		exit;
+	}
+
+	/**
+	 * Trigger notifications when an entry is duplicated.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $duplicated_entry The duplicated entry.
+	 * @param array $entry The original entry.
+	 */
+	public function trigger_notifications( $duplicated_entry = [], $entry = [] ): void {
+		GravityView_Notifications::send_notifications( $duplicated_entry['id'], 'gravityview/duplicate-entry/duplicated', $duplicated_entry );
+	}
+
+	/**
+	 * Adds entry duplicated status to notification events.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $notification_events The notification events.
+	 * @return array The modified notification events.
+	 */
+	public function add_duplicate_notification_events( array $notification_events ): array {
+		$notification_events['gravityview/duplicate-entry/duplicated'] = 'GravityView - ' . esc_html_x( 'Entry is duplicated', 'The title for an event in a notifications drop down list.', 'gk-gravityview' );
+
+		return $notification_events;
 	}
 } // end class
 
