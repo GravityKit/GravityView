@@ -13,11 +13,6 @@ import {
  * Verifies the "Allow Export" setting enables entry downloads successfully.
  */
 test("Verify Allow Export", async ({ page }, testInfo) => {
-	let success = false;
-
-	page.on("download", (download) => {
-		success = true;
-	});
 
 	await test.step("Log in and navigate to the appropriate page", async () => {
 		await gotoAndEnsureLoggedIn(page, testInfo);
@@ -53,6 +48,7 @@ test("Verify Allow Export", async ({ page }, testInfo) => {
 	});
 
 	await test.step("Verify the download was successful", async () => {
-		expect(success).toBe(true);
+		const download = await page.waitForEvent("download");
+        expect(download).toBeTruthy();
 	});
 });
