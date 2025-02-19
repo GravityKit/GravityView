@@ -27,7 +27,6 @@ const wpEnvConfig = {
 		'wp-cli.yml': './wp-cli.wp-env.yml',
 	},
 	lifecycleScripts: {
-		afterClean: runAfterClean.join( ' && ' ),
 		afterStart: [
 			'npm run wp-env:cli wp rewrite structure \'/%postname%/\' -- --hard',
 			`npm run wp-env:cli wp eval-file wp-content/plugins/${ path.basename( process.env.INIT_CWD ) }/tests/E2E/helpers/gf-importer/gf-importer.php`,
