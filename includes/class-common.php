@@ -406,12 +406,12 @@ class GVCommon {
 
 
 		// Handle case-insensitive title sorting with uppercase/lowercase letters
-		if ( 'title' === $order_by ) {
-			usort( $forms, function( $a, $b ) use ( $order ) {
+		if ( ! empty( $forms ) && 'title' === $order_by ) {
+			uasort( $forms, function( $a, $b ) use ( $order ) {
 				$result = strcasecmp( $a['title'], $b['title'] );
 				return ( 'DESC' === $order ) ? -$result : $result;
 			});
-		} else {
+		} elseif ( ! empty( $forms ) ) {
 			$forms = wp_list_sort( $forms, $order_by, $order, true );
 		}
 
