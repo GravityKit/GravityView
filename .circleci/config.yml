@@ -38,7 +38,8 @@ jobs:
               echo "WP-ENV setup failed."
               exit 1
             fi
-            npm run tests:e2e:run
+            TESTFILES=$(circleci tests glob "tests/E2E/tests/**/*.spec.js")
+            echo "$TESTFILES" | circleci tests run --command="xargs npx playwright test --config=tests/E2E/setup/playwright.config.js" --verbose --split-by=timings
       - store_artifacts:
           path: tests/E2E/results
       - store_test_results:
