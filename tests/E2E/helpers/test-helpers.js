@@ -75,26 +75,6 @@ async function selectGravityFormByTitle(page, formTitle, testInfo = null) {
 }
 
 /**
- * Navigates to the specified URL (or default URL) and ensures the user is logged in.
- *
- * TODO: Update the wpLogin helper to verify that the old state file is valid
- * before attempting to use it.
- *
- * @param {import('playwright').Page} page - The Playwright page object.
- * @param {import('@playwright/test').TestInfo} testInfo - Playwright's test information object.
- * @param {string} [url=defaultGVAdminURL] - The URL to navigate to and check login status.
- * @param {string} [stateFile=storageState] - The path to the storage state file.
- */
-async function gotoAndEnsureLoggedIn(
-	page,
-	testInfo = null,
-	url = defaultGVAdminURL,
-	stateFile = storageState,
-) {
-	await page.goto(url);
-}
-
-/**
  * Helper function to create a GravityView.
  *
  * @param {import('playwright').Page} page - The Playwright page object.
