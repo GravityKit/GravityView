@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import {
 	checkViewOnFrontEnd,
 	createView,
-	
 	publishView,
 	templates,
 } from "../../../helpers/test-helpers";

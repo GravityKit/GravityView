@@ -3,7 +3,6 @@ import {
 	checkViewOnFrontEnd,
 	createView,
 	getOptionValueBySearchTerm,
-	
 	publishView,
 	templates,
 } from "../../../helpers/test-helpers";
