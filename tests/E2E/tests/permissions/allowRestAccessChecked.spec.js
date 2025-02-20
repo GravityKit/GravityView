@@ -10,7 +10,7 @@ import {
  * Verifies that REST API access is enabled when 'Allow REST Access' is checked.
  */
 test("Verify Allow Rest Access Checked", async ({ page }, testInfo) => {
-	let currentUrl, params, viewId, baseUrl, apiUrl, response;
+	let currentUrl, params, viewId, apiUrl, response;
 
 	await test.step("Log in and navigate to the appropriate page", async () => {
 		await gotoAndEnsureLoggedIn(page, testInfo);
@@ -37,8 +37,7 @@ test("Verify Allow Rest Access Checked", async ({ page }, testInfo) => {
 		currentUrl = page.url();
 		params = new URLSearchParams(new URL(currentUrl).search);
 		viewId = params.get("post");
-		baseUrl = new URL(currentUrl).origin;
-		apiUrl = `${baseUrl}/wp-json/gravityview/v1/views/${viewId}`;
+		apiUrl = `/wp-json/gravityview/v1/views/${viewId}`;
 	});
 
 	let responsePromise;
