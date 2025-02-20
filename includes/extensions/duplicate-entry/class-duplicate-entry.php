@@ -73,7 +73,7 @@ final class GravityView_Duplicate_Entry {
 
 		// Add notification event and trigger
 		add_filter( 'gform_notification_events', [ $this, 'add_duplicate_notification_events' ], 10, 2 );
-		add_action( 'gravityview/duplicate-entry/duplicated', [ $this, 'trigger_notifications' ], 10, 2 );
+		add_action( 'gravityview/duplicate-entry/duplicated', [ $this, 'trigger_notifications' ] );
 	}
 
 	/**
@@ -920,14 +920,13 @@ final class GravityView_Duplicate_Entry {
 	}
 
 	/**
-	 * Trigger notifications when an entry is duplicated.
+	 * Triggers notifications when an entry is duplicated.
 	 *
 	 * @since $ver$
 	 *
 	 * @param array $duplicated_entry The duplicated entry.
-	 * @param array $entry The original entry.
 	 */
-	public function trigger_notifications( $duplicated_entry = [], $entry = [] ): void {
+	public function trigger_notifications( $duplicated_entry = [] ): void {
 		GravityView_Notifications::send_notifications( $duplicated_entry['id'], 'gravityview/duplicate-entry/duplicated', $duplicated_entry );
 	}
 
@@ -937,6 +936,7 @@ final class GravityView_Duplicate_Entry {
 	 * @since $ver$
 	 *
 	 * @param array $notification_events The notification events.
+	 *
 	 * @return array The modified notification events.
 	 */
 	public function add_duplicate_notification_events( array $notification_events ): array {
