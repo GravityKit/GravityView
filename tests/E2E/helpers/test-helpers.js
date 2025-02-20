@@ -1,12 +1,6 @@
 const path = require("path");
 const { test, expect } = require("@playwright/test");
 
-const url = `${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}`;
-
-const defaultGVAdminURL = `${url}/wp-admin/edit.php?post_type=gravityview`;
-
-const storageState = path.join(__dirname, "../setup/.state.json");
-
 const templates = [
 	{
 		name: "Table",
@@ -249,7 +243,7 @@ async function clickDownloadButton(
  * console.log('Published page URL:', url);
  */
 async function createPageWithShortcode(page, { shortcode, title }) {
-	await page.goto(`${url}/wp-admin/post-new.php?post_type=page`);
+	await page.goto("/wp-admin/post-new.php?post_type=page");
 
 	await page.locator(".wp-block-post-title").fill(title);
 
