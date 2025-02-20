@@ -3,6 +3,8 @@ const { defineConfig, devices } = require( '@playwright/test' );
 
 require( 'dotenv' ).config( { path: `${ process.env.INIT_CWD }/.env` } );
 
+const useLocalBrowser = process.env.USE_LOCAL_BROWSER === '1';
+
 module.exports = defineConfig( {
 	testDir: process.env.TEST_DIR || path.resolve( __dirname, '..' ),
 	outputDir: path.resolve( __dirname, '../results' ),
@@ -37,9 +39,11 @@ module.exports = defineConfig( {
 			use: {
 				...devices['Desktop Chrome'],
 				viewport: { width: 1280, height: 1024 },
-				connectOptions: {
-					wsEndpoint: 'ws://localhost:53333/playwright',
-				},
+				...(useLocalBrowser ? {} : {
+					connectOptions: {
+						wsEndpoint: 'ws://localhost:53333/playwright',
+					},
+				}),
 				storageState: path.resolve( __dirname, '.state.json' ),
 			},
 		},

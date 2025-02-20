@@ -39,29 +39,51 @@ module.exports = async ( config ) => {
 
 	const projectConfig = config.projects.find( ( project ) => project.name === 'chromium' );
 
-	const { storageState: stateFile, connectOptions: { wsEndpoint }, baseURL } = projectConfig.use;
-
-	try {
-		await startDockerContainer();
-	} catch ( error ) {
-		console.error( `Failed to start Docker container: ${ error.message }` );
-
-		process.exit( 1 );
-	}
-
 	let browser;
 
-	try {
-		browser = await waitForWsEndpoint( wsEndpoint );
-	} catch ( error ) {
-		console.error( error.message );
+	if ( process.env.USE_LOCAL_BROWSER === '1' ) {
+		console.log( 'Using Docker Playwright browser.' );
 
-		process.exit( 1 );
+		try {
+			browser = await chromium.launch();
+		} catch ( error ) {
+			console.error( `Failed to launch Playwright browser: ${ error.message }` );
+
+			process.exit( 1 );
+		}
+
+	} else {
+		console.log( 'Using local Playwright browser.' );
+
+		const { connectOptions: { wsEndpoint } } = projectConfig.use;
+
+		try {
+			await startDockerContainer();
+		} catch ( error ) {
+			console.error( `Failed to start Docker container: ${ error.message }` );
+
+			process.exit( 1 );
+		}
+
+		try {
+			browser = await waitForWsEndpoint( wsEndpoint );
+		} catch ( error ) {
+			console.error( error.message );
+
+			process.exit( 1 );
+		}
 	}
 
 	try {
-		await wpLogin(
-			{ browser, stateFile, baseURL, username: process.env.WP_ENV_USER, password: process.env.WP_ENV_USER_PASS },
+		const { storageState, baseURL } = projectConfig.use;
+
+		await wpLogin( {
+				browser,
+				storageState,
+				baseURL,
+				username: process.env.WP_ENV_USER,
+				password: process.env.WP_ENV_USER_PASS,
+			},
 		);
 	} catch ( error ) {
 		console.error( error.message );

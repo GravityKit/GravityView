@@ -1,25 +1,25 @@
 const fs = require( 'fs' ).promises;
 
-async function wpLogin( { browser, stateFile, baseURL, username, password } ) {
-	let stateFileExists = false;
+async function wpLogin( { browser, storageState, baseURL, username, password } ) {
+	let storageStateExists = false;
 
 	try {
-		await fs.access( stateFile );
+		await fs.access( storageState );
 
-		stateFileExists = true;
+		storageStateExists = true;
 	} catch ( error ) {
 		console.log( 'No authentication state file found. Logging in…' );
 	}
 
 	// **Create context with or without `storageState`**
-	const context = stateFileExists
-		? await browser.newContext( { storageState: stateFile, baseURL } )
+	const context = storageStateExists
+		? await browser.newContext( { storageState, baseURL } )
 		: await browser.newContext( { baseURL } );
 
 	const page = await context.newPage();
 
 	// If state file exists, verify if the session is valid
-	if ( stateFileExists ) {
+	if ( storageStateExists ) {
 		console.log( 'Checking authentication state…' );
 
 		await page.goto( '/wp-admin', { waitUntil: 'domcontentloaded', timeout: 60000 } );
@@ -46,7 +46,7 @@ async function wpLogin( { browser, stateFile, baseURL, username, password } ) {
 		throw new Error( 'WordPress login failed. Please check credentials.' );
 	}
 
-	await page.context().storageState( { path: stateFile } );
+	await page.context().storageState( { path: storageState } );
 
 	console.log( 'New authentication state saved.' );
 
