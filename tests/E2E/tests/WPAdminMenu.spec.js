@@ -1,7 +1,5 @@
 import { test, expect } from "@wordpress/e2e-test-utils-playwright";
 
-const url = `${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}`;
-
 test("GravityView submenu items are available under the GravityKit menu", async ({
 	page,
 }, testInfo) => {
