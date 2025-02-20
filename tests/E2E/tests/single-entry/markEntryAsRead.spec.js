@@ -1,12 +1,12 @@
 import { test, expect } from '@playwright/test';
-import { checkViewOnFrontEnd, createView, gotoAndEnsureLoggedIn, publishView, templates } from '../../helpers/test-helpers';
+import { checkViewOnFrontEnd, createView, publishView, templates } from '../../helpers/test-helpers';
 
 /**
  * Confirms an entry can be marked as "read" with correct status display.
  */
 test('Verify Mark Entry As Read Setting', async ({ page }, testInfo) => {
     const username = 'Alice Smith';
-    await gotoAndEnsureLoggedIn(page, testInfo);
+    await page.goto('/wp-admin/edit.php?post_type=gravityview');
     await createView(page, { formTitle: 'User Details', viewName: 'Verify Mark Entry As Read Setting Test', template: templates[0] });
     await publishView(page);
     await checkViewOnFrontEnd(page);

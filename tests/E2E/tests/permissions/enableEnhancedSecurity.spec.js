@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import {
 	createPageWithShortcode,
 	createView,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	templates,
 } from "../../helpers/test-helpers";
@@ -12,7 +11,7 @@ import {
  */
 test("Verify Enhanced Security", async ({ page }, testInfo) => {
 	await test.step("Log in and navigate to the appropriate page", async () => {
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	});
 
 	await test.step("Create a View with the Favorite Color form", async () => {

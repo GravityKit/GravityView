@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import {
 	createView,
 	getViewUrl,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	templates,
 } from "../../helpers/test-helpers";
@@ -15,7 +14,7 @@ test("Verify Prevent Direct Access", async ({ browser }, testInfo) => {
 	const page = await loggedInContext.newPage();
 
 	await test.step("Log in and create the View", async () => {
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 		await createView(page, {
 			formTitle: "Favorite Color",
 			viewName: "Verify Prevent Direct Access Test",

@@ -3,14 +3,14 @@ import {
 	checkViewOnFrontEnd,
 	createView,
 	getOptionValueBySearchTerm,
-	gotoAndEnsureLoggedIn,
+	
 	publishView,
 	templates,
 } from "../../../helpers/test-helpers";
 
 test("Display Form", async ({ page }, testInfo) => {
 	await test.step("Login and navigate to the View creation page", async () => {
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	});
 
 	await test.step("Create and publish the View", async () => {

@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import {
 	checkViewOnFrontEnd,
 	createView,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	templates,
 } from "../../helpers/test-helpers";
@@ -11,7 +10,7 @@ test("Verify Custom JS is executed correctly on front end", async ({
 	page,
 }, testInfo) => {
 	await test.step("Log in and navigate to the appropriate page", async () => {
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	});
 
 	await test.step("Create a new View with a predefined template", async () => {

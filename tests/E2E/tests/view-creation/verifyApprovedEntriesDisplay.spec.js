@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
 	checkViewOnFrontEnd,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	selectGravityFormByTitle,
 } from "../../helpers/test-helpers";
@@ -10,7 +9,7 @@ import {
  * Ensures only approved entries are displayed on the front end.
  */
 test("Verify Approved Entries Display", async ({ page }, testInfo) => {
-	await gotoAndEnsureLoggedIn(page, testInfo);
+	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	await page.getByText("Add New View", { exact: true }).click();
 	await page.getByLabel("Enter View name here").click();
 	await page

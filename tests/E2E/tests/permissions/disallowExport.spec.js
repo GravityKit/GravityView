@@ -4,7 +4,6 @@ import {
 	clickDownloadButton,
 	createView,
 	getViewUrl,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	templates,
 } from "../../helpers/test-helpers";
@@ -16,7 +15,7 @@ test("Verify Disallow Export", async ({ page }, testInfo) => {
 	let noDownload = true;
 
 	await test.step("Log in and navigate to the appropriate page", async () => {
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	});
 
 	await test.step("Create a new View with the Favorite Color form", async () => {

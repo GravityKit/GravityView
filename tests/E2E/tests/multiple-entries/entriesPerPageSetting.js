@@ -1,5 +1,5 @@
 import { test, expect, chromium } from '@playwright/test';
-import { checkViewOnFrontEnd, countTableEntries, createView, gotoAndEnsureLoggedIn, publishView, templates } from '../../helpers/test-helpers';
+import { checkViewOnFrontEnd, countTableEntries, createView, publishView, templates } from '../../helpers/test-helpers';
 
 const filteredTemplates = templates.filter(template => template.name !== 'List');
 
@@ -32,7 +32,7 @@ test.describe('GravityView - Number of entries per page', () => {
         for (const template of filteredTemplates) {
             const viewName = `${template.name} View — Entries Per Page Test`;
 
-            await gotoAndEnsureLoggedIn(page);
+            await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
             await createView(page, { formTitle, viewName, template }, testInfo);
 

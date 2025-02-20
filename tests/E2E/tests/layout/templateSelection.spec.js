@@ -1,5 +1,5 @@
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
-import { selectGravityFormByTitle, gotoAndEnsureLoggedIn, publishView, templates, checkViewOnFrontEnd } from '../../helpers/test-helpers';
+import { selectGravityFormByTitle, publishView, templates, checkViewOnFrontEnd } from '../../helpers/test-helpers';
 
 /**
  * Checks functionality of template selection in layout settings.
@@ -13,7 +13,7 @@ test.describe('GravityView Template Selection', () => {
 
   for (const template of templates) {
     test(`Verify GravityView template: ${template.name}`, async ({ page }, testInfo) => {
-      await gotoAndEnsureLoggedIn(page, testInfo);
+      await page.goto('/wp-admin/edit.php?post_type=gravityview');
       
       await page.waitForSelector('text=New View', { state: 'visible' });
 

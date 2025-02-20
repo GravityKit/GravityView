@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import {
 	checkViewOnFrontEnd,
 	createView,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	templates,
 } from "../../helpers/test-helpers";
@@ -14,7 +13,7 @@ test("Verify Redirect After Deleting", async ({ page }, testInfo) => {
 	const customURL = "http://example.com/";
 
 	await test.step("Log in and navigate to the appropriate page", async () => {
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	});
 
 	await test.step("Create a new View with a specific form and template", async () => {

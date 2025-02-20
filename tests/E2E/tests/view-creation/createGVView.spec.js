@@ -1,7 +1,6 @@
 import { test, expect } from "@wordpress/e2e-test-utils-playwright";
 import {
 	createView,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	templates,
 } from "../../helpers/test-helpers";
@@ -15,7 +14,7 @@ test.describe.serial("GravityView View Creation", () => {
 	let firstTestSkipped = true;
 
 	test("Create a new GravityView view", async ({ page }, testInfo) => {
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 		await createView(
 			page,
 			{
@@ -34,7 +33,7 @@ test.describe.serial("GravityView View Creation", () => {
 			firstTestSkipped,
 			"Skipping test because the first test was skipped.",
 		);
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 		const viewSelector = 'a.row-title:has-text("Test View")';
 		await page.click(viewSelector);
 

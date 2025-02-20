@@ -345,7 +345,7 @@ async function getOptionValueBySearchTerm(page, selector, searchTerm) {
 module.exports = {
 	templates,
 	selectGravityFormByTitle,
-	gotoAndEnsureLoggedIn,
+	
 	createView,
 	publishView,
 	checkViewOnFrontEnd,

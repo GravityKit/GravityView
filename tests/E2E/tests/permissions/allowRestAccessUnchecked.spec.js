@@ -1,7 +1,6 @@
 import { test, expect } from "@playwright/test";
 import {
 	createView,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	templates,
 } from "../../helpers/test-helpers";
@@ -13,7 +12,7 @@ test("Verify Allow Rest Access Unchecked", async ({ page }, testInfo) => {
 	let currentUrl, params, viewId, apiUrl, response;
 
 	await test.step("Log in and navigate to the appropriate page", async () => {
-		await gotoAndEnsureLoggedIn(page, testInfo);
+		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	});
 
 	await test.step("Create a new View with the Favorite Color form", async () => {

@@ -2,7 +2,6 @@ import { test, expect } from "@playwright/test";
 import {
 	checkViewOnFrontEnd,
 	createView,
-	gotoAndEnsureLoggedIn,
 	publishView,
 	templates,
 } from "../../helpers/test-helpers";
@@ -11,7 +10,7 @@ import {
  * Ensures no entries are displayed when data is hidden until search.
  */
 test("Hide Data Until Search", async ({ page }, testInfo) => {
-	await gotoAndEnsureLoggedIn(page, testInfo);
+	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	await createView(page, {
 		formTitle: "Favorite Book",
 		viewName: "Hide Data Until Search Test",

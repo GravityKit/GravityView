@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
-import { checkViewOnFrontEnd, createView, gotoAndEnsureLoggedIn, publishView, templates } from '../../helpers/test-helpers';
+import { checkViewOnFrontEnd, createView, publishView, templates } from '../../helpers/test-helpers';
 
 /**
  * Verifies empty fields are hidden with 'Hide Empty Fields' enabled.
  */
 test('Verify Hide Empty Fields Setting (Single)', async ({ page }, testInfo) => {
-    await gotoAndEnsureLoggedIn(page, testInfo);
+    await page.goto('/wp-admin/edit.php?post_type=gravityview');
     await createView(page, { formTitle: 'Favorite Book', viewName: 'Hide Empty Fields Setting Test (Single)', template: templates[1] });
     
     const addFieldButton = '.gv-droppable-area[data-areaid="directory_list-title"] .gv-add-field';
