@@ -154,18 +154,26 @@ async function publishView(page) {
  *
  * @param {import('playwright').Page} page - The Playwright page object.
  * @param {string} [permalinkSelector="#sample-permalink"] - The CSS selector for the permalink element.
+ * @param {boolean} [assertResponse=true] - Whether to assert the response status (default: true).
  */
 async function checkViewOnFrontEnd(
 	page,
 	permalinkSelector = "#sample-permalink",
+	assertResponse = true
 ) {
 	await page.waitForLoadState("networkidle");
 	const permalinkEl = page.locator(permalinkSelector);
 	await permalinkEl.waitFor({ state: "visible" });
 	const viewUrl = await getViewUrl(page, permalinkSelector);
-	await page.goto(viewUrl);
+
+	const response = await page.goto(viewUrl);
 	await page.waitForURL(viewUrl);
 	await page.waitForLoadState("networkidle");
+
+	if (assertResponse) {
+		expect(response.status()).toBe(200);
+	}
+
 }
 
 /**
