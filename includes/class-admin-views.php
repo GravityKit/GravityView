@@ -235,7 +235,7 @@ class GravityView_Admin_Views {
 			return;
 		}
 
-		$forms        = gravityview_get_forms(true, false, 'title', 'ASC');
+		$forms        = gravityview_get_forms( true, false, 'title' );
 		$current_form = \GV\Utils::_GET( 'gravityview_form_id' );
 
 		// If there are no forms to select, show no forms.
