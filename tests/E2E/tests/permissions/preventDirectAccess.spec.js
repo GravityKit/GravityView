@@ -13,7 +13,7 @@ test("Verify Prevent Direct Access", async ({ browser }, testInfo) => {
 	const loggedInContext = await browser.newContext();
 	const page = await loggedInContext.newPage();
 
-	await test.step("Log in and create the View", async () => {
+	await test.step("Create the View", async () => {
 		await page.goto('/wp-admin/edit.php?post_type=gravityview');
 		await createView(page, {
 			formTitle: "Favorite Color",
