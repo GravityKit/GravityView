@@ -12,9 +12,7 @@ import {
 test("Verify Redirect After Deleting", async ({ page }, testInfo) => {
 	const customURL = "http://example.com/";
 
-	await test.step("Log in and navigate to the appropriate page", async () => {
-		await page.goto('/wp-admin/edit.php?post_type=gravityview');
-	});
+	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
 	await test.step("Create a new View with a specific form and template", async () => {
 		await createView(page, {

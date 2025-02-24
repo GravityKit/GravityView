@@ -10,9 +10,8 @@ import {
  * Ensures a View without a valid secret shows an error message.
  */
 test("Verify Enhanced Security", async ({ page }, testInfo) => {
-	await test.step("Log in and navigate to the appropriate page", async () => {
-		await page.goto('/wp-admin/edit.php?post_type=gravityview');
-	});
+
+	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
 	await test.step("Create a View with the Favorite Color form", async () => {
 		await createView(page, {

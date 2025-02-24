@@ -12,9 +12,7 @@ import {
 test("Secondary Sort Direction DESC", async ({ page }, testInfo) => {
 	let firstCell;
 
-	await test.step("Log in and navigate to the appropriate page", async () => {
-		await page.goto('/wp-admin/edit.php?post_type=gravityview');
-	});
+	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
 	await test.step("Create a new View with the Pet Preference form", async () => {
 		await createView(page, {

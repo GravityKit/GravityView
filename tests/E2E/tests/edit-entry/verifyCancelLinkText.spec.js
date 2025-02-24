@@ -12,9 +12,7 @@ import {
 test("Verify Cancel Link Text", async ({ page }, testInfo) => {
 	const customMessage = "Forget It, Jack";
 
-	await test.step("Log in and navigate to the appropriate page", async () => {
-		await page.goto('/wp-admin/edit.php?post_type=gravityview');
-	});
+	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
 	await test.step("Create a new View with the Event Registration form", async () => {
 		await createView(page, {
