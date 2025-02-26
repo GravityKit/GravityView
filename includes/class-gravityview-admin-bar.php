@@ -103,6 +103,7 @@ class GravityView_Admin_Bar {
 		$entry = gravityview()->request->is_entry();
 
 		if ( $entry && GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_entries' ), $entry->ID ) ) {
+			$entry_data = $entry->as_entry();
 
 			$wp_admin_bar->add_menu(
 				array(
@@ -112,7 +113,7 @@ class GravityView_Admin_Bar {
 					'meta'   => array(
 						'title' => sprintf( __( 'Edit Entry %s', 'gk-gravityview' ), $entry->get_slug() ),
 					),
-					'href'   => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $entry['form_id'], $entry['id'] ) ) ),
+					'href'   => esc_url_raw( admin_url( sprintf( 'admin.php?page=gf_entries&amp;screen_mode=edit&amp;view=entry&amp;id=%d&lid=%d', $entry_data['form_id'], $entry_data['id'] ) ) ),
 				)
 			);
 
