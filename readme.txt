@@ -26,6 +26,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🚀 Added
 * New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.
 
+#### Fixed
+* Edit Entry link in Admin bar was invalid for Multi Entries.
+
 #### ✨ Improved
 * Forms in the form selection filter on the Views page are now sorted alphabetically.
 
