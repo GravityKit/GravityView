@@ -23,6 +23,12 @@ final class Search_Field_Is_Read extends Search_Field_Choices {
 	protected static string $type = 'is_read';
 
 	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected static string $field_type = 'select';
+
+	/**
 	 * @inheritdoc
 	 *
 	 * @since $ver$

@@ -51,6 +51,14 @@ final class Search_Field_All extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
+	protected function get_default_label(): string {
+		return esc_html__( 'Search Entries:', 'gk-gravityview' );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
 	protected function get_value(): string {
 		return (string) parent::get_value();
 	}
@@ -59,7 +67,7 @@ final class Search_Field_All extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected static function get_options(): array {
+	protected function get_options(): array {
 		return [
 			'placeholder' => [
 				'type'  => 'text',

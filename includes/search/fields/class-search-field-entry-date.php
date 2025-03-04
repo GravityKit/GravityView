@@ -23,6 +23,12 @@ final class Search_Field_Entry_Date extends Search_Field {
 	protected static string $type = 'entry_date';
 
 	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected static string $field_type = 'entry_date';
+
+	/**
 	 * @inheritdoc
 	 *
 	 * @since $ver$

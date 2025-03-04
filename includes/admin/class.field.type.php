@@ -40,7 +40,7 @@ abstract class GravityView_FieldType {
 
 		$this->field = wp_parse_args( $field, $defaults );
 
-		$this->value = is_null( $curr_value ) ? $this->field['value'] : $curr_value;
+		$this->value = is_null( $curr_value ) || '' === $curr_value ? $this->field['value'] : $curr_value;
 	}
 
 	/**

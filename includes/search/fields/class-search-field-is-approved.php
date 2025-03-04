@@ -25,6 +25,12 @@ final class Search_Field_Is_Approved extends Search_Field_Choices {
 	protected static string $type = 'is_approved';
 
 	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected static string $field_type = 'multi';
+
+	/**
 	 * @inheritdoc
 	 *
 	 * @since $ver$

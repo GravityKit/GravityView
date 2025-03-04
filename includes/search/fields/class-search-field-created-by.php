@@ -23,6 +23,12 @@ final class Search_Field_Created_By extends Search_Field {
 	protected static string $type = 'created_by';
 
 	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected static string $field_type = 'created_by';
+
+	/**
 	 * @inheritdoc
 	 *
 	 * @since $ver$

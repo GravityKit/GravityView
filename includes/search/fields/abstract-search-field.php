@@ -2,6 +2,7 @@
 
 namespace GV\Search\Fields;
 
+use GravityView_Widget_Search;
 use GV\Search\Search_Field_Collection;
 
 /**
@@ -11,6 +12,13 @@ use GV\Search\Search_Field_Collection;
  * @template T The type of the value.
  */
 abstract class Search_Field extends \GravityView_Admin_View_Item {
+	/**
+	 * Holds the initialized fields.
+	 *
+	 * @since $ver$
+	 */
+	private static $initialized_fields = [];
+
 	/**
 	 * The position.
 	 *
@@ -28,6 +36,15 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @var string
 	 */
 	protected static string $type = 'unknown';
+
+	/**
+	 * The search field type.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string
+	 */
+	protected static string $field_type = 'text';
 
 	/**
 	 * The Field description.
@@ -131,7 +148,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return array
 	 */
-	protected static function get_options(): array {
+	protected function get_options(): array {
 		return [];
 	}
 
@@ -142,20 +159,44 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return array[]
 	 */
-	private static function get_search_field_options(): array {
-		return [
+	private function get_search_field_options(): array {
+		$options = [
 			'show_label'   => [
 				'type'  => 'checkbox',
 				'label' => esc_html__( 'Show label', 'gk-gravityview' ),
 				'value' => '1',
 			],
 			'custom_label' => [
-				'type'  => 'text',
-				'label' => esc_html__( 'Custom label', 'gk-gravityview' ),
-				'value' => '',
-				'class' => 'widefat',
+				'type'        => 'text',
+				'label'       => esc_html__( 'Custom label', 'gk-gravityview' ),
+				'value'       => '',
+				'placeholder' => $this->get_default_label(),
+				'class'       => 'widefat',
 			],
 		];
+
+		$input_types_mapping = GravityView_Widget_Search::get_input_types_by_field_type();
+		$input_types         = $input_types_mapping[ $this->get_field_type() ] ?? $input_types_mapping['text'];
+
+		if ( $input_types ) {
+			$options['input_type'] = [
+				'type'  => count( $input_types ) > 1 ? 'select' : 'hidden',
+				'label' => esc_html__( 'Input type', 'gk-gravityview' ),
+				'value' => current( $input_types ),
+				'class' => 'widefat',
+			];
+
+			if ( count( $input_types ) > 1 ) {
+				$input_type_labels_mapping        = GravityView_Widget_Search::get_search_input_labels();
+				$input_type_labels                = array_map(
+					static fn( string $input_type ): string => $input_type_labels_mapping[ $input_type ] ?? 'Unknown',
+					$input_types,
+				);
+				$options['input_type']['choices'] = array_combine( $input_types, $input_type_labels );
+			}
+		}
+
+		return $options;
 	}
 
 	/**
@@ -197,6 +238,17 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns the field type.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	protected function get_field_type(): string {
+		return static::$field_type;
+	}
+
+	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -216,6 +268,17 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		}
 
 		return $this->item['custom_label'] ?? $this->title;
+	}
+
+	/**
+	 * Returns the default label for this field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The default label.
+	 */
+	protected function get_default_label(): string {
+		return $this->title;
 	}
 
 	/**
@@ -251,9 +314,9 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	protected function init(): void {
-		// Only register the options once per field type.
-		if ( ! has_filter( 'gravityview_template_search_options', [ static::class, 'set_search_field_options' ] ) ) {
-			add_filter( 'gravityview_template_search_options', [ static::class, 'set_search_field_options' ], 10, 3 );
+		if ( ! isset( self::$initialized_fields[ $this->get_type() ] ) ) {
+			add_filter( 'gravityview_template_search_options', [ $this, 'set_search_field_options' ], 10, 3 );
+			self::$initialized_fields[ $this->get_type() ] = true;
 		}
 	}
 
@@ -279,11 +342,11 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return array The updated options.
 	 */
-	final public static function set_search_field_options( $options = [], $template = '', $type = '' ): array {
+	final public function set_search_field_options( $options = [], $template = '', $type = '' ): array {
 		if ( ! static::is_of_type( $type ) ) {
 			return (array) $options;
 		}
 
-		return array_merge( self::get_search_field_options(), static::get_options() );
+		return array_merge( $this->get_search_field_options(), $this->get_options() );
 	}
 }
