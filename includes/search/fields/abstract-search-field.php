@@ -66,6 +66,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			$label ?? $this->get_label(),
 			$this->get_type(),
 			$data,
+			array_intersect_key( $data, array_flip( [ 'custom_label', 'show_label' ] ) )
 		);
 
 		$this->item['icon']        = $this->icon ? $this->icon : $this->item['icon'];
