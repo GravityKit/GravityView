@@ -234,7 +234,7 @@ function render_template_options( array $templates, ?string $selected_template )
 
 		<div id='search-fields' class='gv-section'>
 
-			<h4><?php esc_html_e( 'Search fields shown.', 'gk-gravityview' ); ?></h4>
+			<h4><?php esc_html_e( 'Search fields shown', 'gk-gravityview' ); ?></h4>
 
 			<div id="search-active-fields" class="gv-grid">
 				<?php
@@ -242,7 +242,7 @@ function render_template_options( array $templates, ?string $selected_template )
 				?>
 			</div>
 
-			<h4><?php esc_html_e( 'Advanced Search fields shown.', 'gk-gravityview' ); ?>
+			<h4><?php esc_html_e( 'Advanced Search fields shown', 'gk-gravityview' ); ?>
 				<span><?php esc_html_e( 'If any Advanced Search fields exist, a link will show to toggle them.', 'gk-gravityview' ); ?></span>
 			</h4>
 
