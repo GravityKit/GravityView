@@ -2084,7 +2084,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		}
 
 		foreach ( $all_views as $view ) {
-			$views[ $view->ID ] = esc_html( sprintf( '%s #%d', $view->post_title, $view->ID ) );
+			$view_title = $view->post_title ? $view->post_title : esc_html_x( 'Untitled', 'When a View title is empty', 'gk-gravityview' );
+			// translators: %s is the View title, %d is the View ID.
+			$views[ $view->ID ] = esc_html( sprintf( __( '%s (View #%d)', 'gk-gravityview' ), $view_title, $view->ID ) );
 		}
 
 		return $views;
