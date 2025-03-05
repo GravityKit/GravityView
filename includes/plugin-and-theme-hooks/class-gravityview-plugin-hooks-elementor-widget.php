@@ -1988,88 +1988,38 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$debug_output = sprintf( '<p class="gravityview-elementor-preview-debug-output"><strong>%s</strong></p>', esc_html__( 'Shortcode', 'gk-gravityview' ) );
 				$debug_output .= sprintf( '<div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;"><code>%s</code></div>', esc_html( $shortcode ) );
 			}
+
+			$this->output_preview_styles();
+			$this->output_preview_script();
 			
-			printf( '
-			<style>
-				.gravityview-elementor-preview {
-					font-size: .8em;
-					background-color: #fff;
-					box-sizing: content-box;
-					min-height: 1.5em;
-					padding: 10px 20px;
-					border-bottom: 1px dashed var(--e-a-border-color-bold);
-					box-sizing: content-box; 
-					margin-bottom: 0; 
-				}
-				.gravityview-elementor-preview p {
-					margin: 0;
-					text-align: left;
-				}
-				.gravityview-elementor-preview button {
-					background: none;
-					border: none;
-					padding: 0;
-					margin: 0;
-					float: left;
-					display: inline-block;
-					cursor: pointer;
-					font-size: 1em;
-					line-height: 1.5;
-					box-shadow: none;
-					box-sizing: content-box;
-				}
-				.gravityview-elementor-preview a {
-					color: var(--wp--preset--color--foreground);
-					text-decoration: underline;
-					display: inline-block;
-					float: right;
-					padding-right: 20px;
-				}
-				.gravityview-elementor-preview a:hover {
-					color: var(--wp--preset--color--foreground);
-					text-decoration: none;
-				}
-				.gravityview-elementor-preview .dashicons {
-					text-decoration: none;
-					line-height: 1.15;
-					margin: 0 .2em;
-				}
-				.gravityview-elementor-preview .dashicons.dashicons-admin-page {
-					margin-right: 0;
-				}
-				.gravityview-elementor-preview-debug-output {
-					padding: .5em 0; 
-					box-sizing: content-box;
-					text-align: left;
-					display: block;
-					clear: both;
-				}
-				</style>
+			$edit_url = esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) );
+			$toggle_aria_label = sprintf( esc_html__( 'Toggle %s', 'gk-gravityview' ), $toggle_label );
+			
+			?>
 			<div class="gravityview-elementor-preview">
 				<p>
 					<button 
 						role="button" 
-						aria-label="%1$s" 
+						aria-label="<?php echo esc_attr( $toggle_aria_label ); ?>" 
 						aria-controls="elementor-control-preview_single_entry"
 						aria-pressed="false"
-						onclick="window.parent.jQuery(\'.elementor-control-preview_single_entry .elementor-switch-label\').trigger(\'click\');">
-						<span class="dashicons %6$s" aria-hidden="true"></span> 
-						<strong>%2$s</strong>
-						<em>(Click to toggle)</em>
+						onclick="gvTogglePreviewSection()">
+						<span class="dashicons <?php echo esc_attr( $dashicons_class ); ?>" aria-hidden="true"></span> 
+						<strong><?php echo esc_html( $preview_label ); ?></strong>
+						<em>(<?php esc_html_e( 'Click to toggle', 'gk-gravityview' ); ?>)</em>
 					</button>
-					<a href="%3$s" onclick="event.stopPropagation(); return true;" target="_blank"><span class="dashicons dashicons-edit"></span>%4$s%5$s</a>
+					<a href="<?php echo $edit_url; ?>" onclick="event.stopPropagation(); return true;" target="_blank">
+						<span class="dashicons dashicons-edit"></span>
+						<?php 
+						esc_html_e( 'Edit View', 'gk-gravityview' );
+						?>
+						<span class="screen-reader-text"><?php esc_html_e( '(This link opens in a new window.)', 'gk-gravityview' ); ?></span>
+					</a>
 					<span style="text-align: center;"></span>
 				</p>
-				%7$s
-			</div>', 
-				sprintf( esc_html__( 'Toggle %s', 'gk-gravityview' ), $toggle_label ),
-				$preview_label,
-				esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) ), 
-				esc_html__( 'Edit View', 'gk-gravityview' ),
-				'<span class="screen-reader-text"> ' . esc_attr__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span>',
-				$dashicons_class,
-				$debug_output
-			);
+				<?php echo wp_kses_post( $debug_output ); ?>
+			</div>
+			<?php
 		}, -PHP_INT_MAX, 1 );
 
 		$custom_css = $view->settings->get( 'custom_css', null );
@@ -2224,5 +2174,78 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	 */
 	protected static function get_filled_icon() {
 		return '<svg fill="none" height="80" viewBox="0 0 80 80" width="80" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path clip-rule="evenodd" d="m70.6842 63.9999h-9.2135v3c0 4.9706-4.1537 9-9.2134 9h-24.5683c-5.1266 0-9.2135-4.0294-9.2135-9v-44.9999h-9.21341c-1.73812 0-3.07072 1.343-3.07072 2.9999v30c0 1.657 1.3326 3.0001 3.07072 3.0001h1.53601c.8068 0 1.5347.6715 1.5347 1.5v3c0 .8284-.7279 1.4999-1.5347 1.4999h-1.53601c-5.13114 0-9.213445-4.0294-9.213445-9v-30c0-4.9705 4.082305-9 9.213445-9h9.21341v-2.9999c0-4.97062 4.0869-9 9.2135-9h24.5683c5.0597 0 9.2134 4.02938 9.2134 9v45h9.2135c1.6711 0 3.0707-1.3431 3.0707-3.0001v-30c0-1.6569-1.3996-2.9999-3.0707-2.9999h-1.536c-.8736 0-1.536-.6716-1.536-1.5v-3.0001c0-.8284.6624-1.5 1.536-1.5h1.536c5.0642 0 9.2121 4.0295 9.2121 9v30c0 4.9706-4.1479 9-9.2121 9zm-15.3562-50.9999c0-1.657-1.404-3-3.0707-3h-24.5683c-1.7335 0-3.0708 1.343-3.0708 3v53.9999c0 1.6568 1.3373 3.0001 3.0708 3.0001h24.5683c1.6667 0 3.0707-1.3433 3.0707-3.0001z" fill="#40464d" fill-rule="evenodd"/></svg>';
+	}
+
+	/**
+	 * Output the preview styles
+	 */
+	private function output_preview_styles() {
+		?>
+		<style>
+			.gravityview-elementor-preview {
+				font-size: .8em;
+				background-color: #fff;
+				box-sizing: content-box;
+				min-height: 1.5em;
+				padding: 10px 20px;
+				border-bottom: 1px dashed var(--e-a-border-color-bold);
+				box-sizing: content-box; 
+				margin-bottom: 0; 
+			}
+			.gravityview-elementor-preview p {
+				margin: 0;
+				text-align: left;
+			}
+			.gravityview-elementor-preview button {
+				background: none;
+				border: none;
+				padding: 0;
+				margin: 0;
+				float: left;
+				display: inline-block;
+				cursor: pointer;
+				font-size: 1em;
+				line-height: 1.5;
+				box-shadow: none;
+				box-sizing: content-box;
+			}
+			.gravityview-elementor-preview a {
+				color: var(--wp--preset--color--foreground);
+				text-decoration: underline;
+				display: inline-block;
+				float: right;
+				padding-right: 20px;
+			}
+			.gravityview-elementor-preview a:hover {
+				color: var(--wp--preset--color--foreground);
+				text-decoration: none;
+			}
+			.gravityview-elementor-preview .dashicons {
+				text-decoration: none;
+				line-height: 1.15;
+				margin: 0 .2em;
+			}
+			.gravityview-elementor-preview .dashicons.dashicons-admin-page {
+				margin-right: 0;
+			}
+			.gravityview-elementor-preview-debug-output {
+				padding: .5em 0; 
+				box-sizing: content-box;
+				text-align: left;
+				display: block;
+				clear: both;
+			}
+		</style>
+		<?php
+	}
+
+	/**
+	 * Output the preview JavaScript.
+	 * 
+	 * @since TODO
+	 * 
+	 * @return void
+	 */
+	private function output_preview_script() {
 	}
 }
