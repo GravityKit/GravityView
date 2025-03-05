@@ -1960,6 +1960,12 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$preview_single_entry = 'yes' === \GV\Utils::get( $settings, 'preview_single_entry' );
 		$show_debug_output    = 'yes' === \GV\Utils::get( $settings, 'show_debug_output' );
 
+		if ( $preview_single_entry ) {
+			// Get the first entry in a View.
+			$entry     = $view->get_entries()->first();
+			$shortcode = sprintf( '[gventry entry_id="%d" view_id="%d" secret="%s"]', $entry->ID, $view_id, $secret );
+		}
+
 		// Add a notice to the top of the View to indicate that it's a preview.
 		// Use the action instead of directly outputting to prevent Elementor errors.
 		add_action( 'gravityview/template/before', function () use ( $preview_single_entry, $show_debug_output, $shortcode, $view ) {
@@ -2068,12 +2074,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		if ( $custom_css ) {
 			wp_add_inline_style( 'gravityview_default_style', $custom_css );
-		}
-
-		if ( $preview_single_entry ) {
-			// Get the first entry in a View.
-			$entry     = $view->get_entries()->first();
-			$shortcode = sprintf( '[gventry entry_id="%d" view_id="%d" secret="%s"]', $entry->ID, $view_id, $secret );
 		}
 
 		// Use a temporary filter to return true for the is_renderable check instead of __return_true
