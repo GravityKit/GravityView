@@ -1,6 +1,18 @@
-console.log( 'elementor-widget.js loaded' );
-
+/**
+ * GravityView Elementor Widget Handler
+ * 
+ * Handles the functionality of the GravityView Elementor widget in the editor.
+ * 
+ * @since TODO
+ */
 class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
+	/**
+	 * Get default settings for the widget handler.
+	 * 
+	 * @since TODO
+	 * 
+	 * @return {Object} Default settings object containing selectors and controls.
+	 */
 	getDefaultSettings() {
 		return {
 			selectors: {
@@ -18,18 +30,35 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 		};
 	}
 
+	/**
+	 * Initialize the widget handler.
+	 * 
+	 * @since TODO
+	 */
 	onInit() {
 		super.onInit();
 		console.log( 'GravityViewWidgetHandler initialized' );
 		this.initEditorListeners();
 	}
 
+	/**
+	 * Initialize editor event listeners.
+	 * 
+	 * @since TODO
+	 */
 	initEditorListeners() {
 		console.log( 'Initializing editor listeners' );
 		elementor.channels.editor.on( 'change', this.onControlChange.bind( this ) );
 		console.log( 'Editor listeners initialized' );
 	}
 
+	/**
+	 * Handle control change events in the Elementor editor.
+	 * 
+	 * @since TODO
+	 * 
+	 * @param {Object} view The Elementor view object that triggered the change.
+	 */
 	onControlChange( view ) {
 		if ( !view || !view.model ) {
 			return;
@@ -58,7 +87,7 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 		// Compare against the control name from settings
 		if ( controlName === controls.viewId ) {
 
-			console.log( 'Updating layout type for view:', controlValue );
+			console.log( 'Updating layout type for View:', controlValue );
 
 			this.updateLayoutType( controlValue );
 			this.updateViewSettings( controlValue );
@@ -101,6 +130,13 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 		}
 	}
 
+	/**
+	 * Update the layout type based on the selected View.
+	 * 
+	 * @since TODO
+	 * 
+	 * @param {string|number} viewId The ID of the selected view.
+	 */
 	updateLayoutType( viewId ) {
 		if ( !viewId ) {
 			console.warn( 'No view ID provided' );
@@ -109,120 +145,107 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 
 		console.log( 'Updating layout type for view:', viewId );
 
-		const viewsLayouts = document.querySelector( this.getDefaultSettings().selectors.viewsLayouts );
-		console.log( viewsLayouts );
-		if ( !viewsLayouts?.value ) {
+		const layouts = this.getViewsLayoutsData();
+		if ( !layouts || !layouts[ viewId ] ) {
 			return;
 		}
 
 		const layout = layouts[ viewId ];
 		console.log( 'Fetched layouts for View:', layout );
 
-		try {
-			const layouts = JSON.parse( viewsLayouts.value );
-			if ( !layouts[ viewId ] ) {
-				return;
-			}
-
-			const layout = layouts[ viewId ];
-			console.log( 'Fetched layouts for View:', layout );
-
-			// Get the current edited element
-			const elementView = elementor.getPanelView()?.getCurrentPageView()?.getOption( 'editedElementView' );
-			if ( !elementView ) {
-				console.warn( 'Edited element view not found' );
-				return;
-			}
-
-			const controls = this.getDefaultSettings().controls;
-			const model = elementView.getEditModel();
-			const settings = model.get( 'settings' );
-
-			// Update the model settings
-			settings.set( controls.layoutSingle, layout.single );
-			settings.set( controls.layoutMultiple, layout.multiple );
-
-			// Update the control inputs and trigger change events
-			const layoutSingle = document.querySelector( this.getDefaultSettings().selectors.layoutSingle );
-			const layoutMultiple = document.querySelector( this.getDefaultSettings().selectors.layoutMultiple );
-
-			// Update values
-			layoutSingle.value = layout.single;
-			layoutMultiple.value = layout.multiple;
-
-		} catch ( e ) {
-			console.error( 'Error updating layout:', e );
+		// Get the current edited element
+		const elementView = elementor.getPanelView()?.getCurrentPageView()?.getOption( 'editedElementView' );
+		if ( !elementView ) {
+			console.warn( 'Edited element view not found' );
+			return;
 		}
+
+		const controls = this.getDefaultSettings().controls;
+		const model = elementView.getEditModel();
+		const settings = model.get( 'settings' );
+
+		// Update the model settings
+		settings.set( controls.layoutSingle, layout.single );
+		settings.set( controls.layoutMultiple, layout.multiple );
+
+		// Update the control inputs and trigger change events
+		const layoutSingle = document.querySelector( this.getDefaultSettings().selectors.layoutSingle );
+		const layoutMultiple = document.querySelector( this.getDefaultSettings().selectors.layoutMultiple );
+
+		// Update values
+		layoutSingle.value = layout.single;
+		layoutMultiple.value = layout.multiple;
 	}
 
+	/**
+	 * Update view settings based on the selected view.
+	 * 
+	 * @since TODO
+	 * 
+	 * @param {string|number} viewId The ID of the selected view.
+	 */
 	updateViewSettings( viewId ) {
 		if ( !viewId ) {
 			console.warn( 'No view ID provided' );
 			return;
 		}
 
-		console.log( 'Updating settings for view:', viewId );
+		console.log( 'Updating settings for View:', viewId );
 
 		const layouts = this.getViewsLayoutsData();
 		if ( !layouts || !layouts[ viewId ] || !layouts[ viewId ].settings ) {
 			return;
 		}
 
-		try {
-			const layouts = JSON.parse( viewsLayouts.value );
-			if ( !layouts[ viewId ] || !layouts[ viewId ].settings ) {
-				return;
-			}
+		const settings = layouts[ viewId ].settings;
+		console.log( 'Fetched settings for View:', settings );
 
-			const settings = layouts[ viewId ].settings;
-			console.log( 'Fetched settings for View:', settings );
-
-			// Get the current edited element
-			const elementView = elementor.getPanelView()?.getCurrentPageView()?.getOption( 'editedElementView' );
-			if ( !elementView ) {
-				console.warn( 'Edited element view not found' );
-				return;
-			}
-
-			const container = elementView.getContainer();
-			const model = elementView.getEditModel();
-			const modelSettings = model.get( 'settings' );
-
-			// Batch update the settings
-			Object.entries( settings ).forEach( ( [ key, value ] ) => {
-				// Convert boolean values to 'yes'/'no' for Elementor compatibility
-				if ( typeof value === 'boolean' ) {
-					value = value ? 'yes' : 'no';
-				}
-
-				console.log( 'Preparing setting update:', key, value );
-
-				// Update both the model and container settings
-				modelSettings.set( key, value );
-				container.settings.set( key, value );
-
-				// Update the DOM input
-				const input = document.querySelector( `.elementor-control-${key} input, .elementor-control-${key} select, .elementor-control-${key} textarea` );
-				if ( input ) {
-					if ( input.type === 'checkbox' ) {
-						input.checked = value === 'yes';
-					} else {
-						input.value = value;
-					}
-
-					// Trigger change event to update Elementor's UI
-					input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
-				}
-			} );
-
-			// Render just this widget
-			elementView.renderOnChange();
-
-		} catch ( e ) {
-			console.error( 'Error updating settings:', e );
+		// Get the current edited element
+		const elementView = elementor.getPanelView()?.getCurrentPageView()?.getOption( 'editedElementView' );
+		if ( !elementView ) {
+			console.warn( 'Edited element view not found' );
+			return;
 		}
+
+		const container = elementView.getContainer();
+		const model = elementView.getEditModel();
+		const modelSettings = model.get( 'settings' );
+
+		// Batch update the settings
+		Object.entries( settings ).forEach( ( [ key, value ] ) => {
+			// Convert boolean values to 'yes'/'no' for Elementor compatibility
+			if ( typeof value === 'boolean' ) {
+				value = value ? 'yes' : 'no';
+			}
+
+			console.log( 'Preparing setting update:', key, value );
+
+			// Update both the model and container settings
+			modelSettings.set( key, value );
+			container.settings.set( key, value );
+
+			// Update the DOM input
+			const input = document.querySelector( `.elementor-control-${key} input, .elementor-control-${key} select, .elementor-control-${key} textarea` );
+			if ( input ) {
+				if ( input.type === 'checkbox' ) {
+					input.checked = value === 'yes';
+				} else {
+					input.value = value;
+				}
+
+				// Trigger change event to update Elementor's UI
+				input.dispatchEvent( new Event( 'change', { bubbles: true } ) );
+			}
+		} );
+
+		// Render just this widget
+		elementView.renderOnChange();
 	}
 }
 
-// Use vanilla JS for initialization
+/**
+ * Initialize the GravityView Widget Handler when Elementor is ready.
+ * 
+ * @since TODO
+ */
 window.addEventListener( 'elementor/init', () => new GravityViewWidgetHandler() );
