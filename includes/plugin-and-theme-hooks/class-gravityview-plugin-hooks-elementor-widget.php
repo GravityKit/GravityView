@@ -2247,5 +2247,80 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	 * @return void
 	 */
 	private function output_preview_script() {
+		?>
+		<script>
+		/**
+		 * When the preview section is toggled, open the style tab, wait for it to load, and then toggle the preview section.
+		 * After the preview section is toggled, restore the previous state.
+		 * 
+		 * TODO: This is a hacky solution and we should contact Elementor to get a better solution.
+		 */
+		function gvTogglePreviewSection() {
+			const elementorPanel = window.parent.elementor?.getPanelView();
+			
+			if (!elementorPanel || !elementorPanel.currentPageView) {
+				console.error('Elementor panel or current page view not found');
+				return;
+			}
+
+			const currentPageView = elementorPanel.currentPageView;
+
+			// Store the current state
+			const previousState = {
+				activeTab: currentPageView.activeTab,
+				activeSection: currentPageView.activeSection || null
+			};
+
+			let timeout = 50;
+			if (currentPageView.activeTab !== 'style') {
+				// First, ensure we're on the style tab
+				currentPageView.activateTab('style');
+				setTimeout(() => {
+					elementorPanel.$el.find('.elementor-tab-control-style').click();
+				}, timeout);
+			}
+
+			// Function to restore previous state
+			const restorePreviousState = () => {
+				// Switch back to the previous tab if it wasn't style
+				if (previousState.activeTab !== 'style') {
+					currentPageView.activateTab(previousState.activeTab);
+					elementorPanel.$el.find('.elementor-tab-control-' + previousState.activeTab).click();
+				}
+
+				// Wait for tab switch before restoring section
+				setTimeout(() => {
+					if (previousState.activeSection) {
+						currentPageView.activateSection(previousState.activeSection);
+						elementorPanel.$el.find('.elementor-control-' + previousState.activeSection).not('.e-open').trigger('click');
+					}
+				}, timeout);
+			};
+
+			// Give the UI a moment to update
+			setTimeout(() => {
+				const $section = elementorPanel.$el.find('.elementor-control-gravityview_preview_section');
+				const $toggle = elementorPanel.$el.find('input[data-setting=preview_single_entry]').parent('label');
+
+				if (!$section.hasClass('e-open')) {
+					// Activate the first section to ensure proper initialization
+					$section.click();
+					
+					// Wait for section to be ready
+					setTimeout(() => {
+						const $freshToggle = elementorPanel.$el.find('input[data-setting=preview_single_entry]').parent('label');
+						if ($freshToggle.length > 0) {
+							$freshToggle.trigger('click');
+						}
+					}, timeout);
+				} else {
+					$toggle.trigger('click');
+				}
+
+				setTimeout(restorePreviousState, timeout);
+			}, timeout);
+		}
+		</script>
+		<?php
 	}
 }
