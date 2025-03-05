@@ -1937,19 +1937,33 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		// Add a notice to the top of the View to indicate that it's a preview.
 		// Use the action instead of directly outputting to prevent Elementor errors.
-		add_action( 'gravityview/template/after', function () use ( $preview_single_entry, $show_debug_output, $shortcode ) {
-			echo '<div style="font-size: .8em; background-color: #fff; padding: 10px 0; margin-bottom: 0; border-top: 1px dashed var(--e-a-border-color-bold);">';
+		add_action( 'gravityview/template/after', function () use ( $preview_single_entry, $show_debug_output, $shortcode, $view ) {
 			if ( $preview_single_entry ) {
-				echo '<p style="margin:0;"><span style="line-height:1.15;" class="dashicons dashicons-media-default"></span> <strong>' . esc_html__( 'Single Entry Preview', 'gk-gravityview' ) . '</strong></p>';
+				$preview_label = esc_html__( 'Single Entry Preview', 'gk-gravityview' );
 			} else {
-				echo '<p style="margin:0;"><span style="line-height:1.15;" class="dashicons dashicons-admin-page"></span> <strong>' . esc_html__( 'Multiple Entries Preview', 'gk-gravityview' ) . '</strong></p>';
+				$preview_label = esc_html__( 'Multiple Entries Preview', 'gk-gravityview' );
 			}
+			
+			printf( '
+			<div style="font-size: .8em; background-color: #fff; box-sizing: content-box; height: 1.5em; padding: 10px; margin-bottom: 0; border-top: 1px dashed var(--e-a-border-color-bold);">
+				<p style="margin:0;">
+					<span style="display: inline-block; float: left;">
+						<span style="line-height:1.15;" class="dashicons dashicons-admin-page"></span> 
+						<strong>%s</strong> 
+					</span>
+					<a href="%s" onclick="event.stopPropagation(); return true;" target="_blank" style="display: inline-block; float: right; color: var(--wp--preset--color--foreground); text-decoration: underline;"><span style="line-height:1.15; text-decoration: none;" class="dashicons dashicons-edit"></span> %s%s</a>
+				</p>
+			</div>', 
+				esc_html( $preview_label ), 
+				esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) ), 
+				esc_html__( 'Edit View', 'gk-gravityview' ),
+				'<span class="screen-reader-text"> ' . esc_attr__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span>'
+			);
 
 			if ( $show_debug_output ) {
-				echo '<p style="margin-top:1em; padding-top:0;"><strong>' . esc_html__( 'Shortcode', 'gk-gravityview' ) . '</strong></p>';
-				echo '<code>' . esc_html( $shortcode ) . '</code>';
+				printf( '<p style="margin-top:1em; padding-top:0; box-sizing: content-box;"><strong>%s</strong></p>', esc_html__( 'Shortcode', 'gk-gravityview' ) );
+				printf( '<div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;"><code>%s</code></div>', esc_html( $shortcode ) );
 			}
-			echo '</div>';
 		}, PHP_INT_MAX, 1 );
 
 		$custom_css = $view->settings->get( 'custom_css', null );
