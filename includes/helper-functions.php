@@ -150,6 +150,7 @@ if ( ! function_exists( 'gravityview_sanitize_html_class' ) ) {
 
 		$classes = array_map( 'trim', $classes );
 		$classes = array_map( 'sanitize_html_class', $classes );
+		$classes = array_unique( $classes );
 		$classes = array_filter( $classes );
 
 		return implode( ' ', $classes );
