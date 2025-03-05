@@ -1962,34 +1962,107 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		// Add a notice to the top of the View to indicate that it's a preview.
 		// Use the action instead of directly outputting to prevent Elementor errors.
-		add_action( 'gravityview/template/after', function () use ( $preview_single_entry, $show_debug_output, $shortcode, $view ) {
+		add_action( 'gravityview/template/before', function () use ( $preview_single_entry, $show_debug_output, $shortcode, $view ) {
+			$single_preview_label = esc_html__( 'Single Entry Preview', 'gk-gravityview' );
+			$multiple_preview_label = esc_html__( 'Multiple Entries Preview', 'gk-gravityview' );
 			if ( $preview_single_entry ) {
-				$preview_label = esc_html__( 'Single Entry Preview', 'gk-gravityview' );
+				$preview_label = $single_preview_label;
+				$toggle_label = $multiple_preview_label;
+				$dashicons_class = 'dashicons-media-default';
 			} else {
-				$preview_label = esc_html__( 'Multiple Entries Preview', 'gk-gravityview' );
+				$preview_label = $multiple_preview_label;
+				$toggle_label = $single_preview_label;
+				$dashicons_class = 'dashicons-admin-page';
+			}
+
+			$debug_output = '';
+			if ( $show_debug_output ) {
+				$debug_output = sprintf( '<p class="gravityview-elementor-preview-debug-output"><strong>%s</strong></p>', esc_html__( 'Shortcode', 'gk-gravityview' ) );
+				$debug_output .= sprintf( '<div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;"><code>%s</code></div>', esc_html( $shortcode ) );
 			}
 			
 			printf( '
-			<div style="font-size: .8em; background-color: #fff; box-sizing: content-box; height: 1.5em; padding: 10px; margin-bottom: 0; border-top: 1px dashed var(--e-a-border-color-bold);">
-				<p style="margin:0;">
-					<span style="display: inline-block; float: left;">
-						<span style="line-height:1.15;" class="dashicons dashicons-admin-page"></span> 
-						<strong>%s</strong> 
-					</span>
-					<a href="%s" onclick="event.stopPropagation(); return true;" target="_blank" style="display: inline-block; float: right; color: var(--wp--preset--color--foreground); text-decoration: underline;"><span style="line-height:1.15; text-decoration: none;" class="dashicons dashicons-edit"></span> %s%s</a>
+			<style>
+				.gravityview-elementor-preview {
+					font-size: .8em;
+					background-color: #fff;
+					box-sizing: content-box;
+					min-height: 1.5em;
+					padding: 10px 20px;
+					border-bottom: 1px dashed var(--e-a-border-color-bold);
+					box-sizing: content-box; 
+					margin-bottom: 0; 
+				}
+				.gravityview-elementor-preview p {
+					margin: 0;
+					text-align: left;
+				}
+				.gravityview-elementor-preview button {
+					background: none;
+					border: none;
+					padding: 0;
+					margin: 0;
+					float: left;
+					display: inline-block;
+					cursor: pointer;
+					font-size: 1em;
+					line-height: 1.5;
+					box-shadow: none;
+					box-sizing: content-box;
+				}
+				.gravityview-elementor-preview a {
+					color: var(--wp--preset--color--foreground);
+					text-decoration: underline;
+					display: inline-block;
+					float: right;
+					padding-right: 20px;
+				}
+				.gravityview-elementor-preview a:hover {
+					color: var(--wp--preset--color--foreground);
+					text-decoration: none;
+				}
+				.gravityview-elementor-preview .dashicons {
+					text-decoration: none;
+					line-height: 1.15;
+					margin: 0 .2em;
+				}
+				.gravityview-elementor-preview .dashicons.dashicons-admin-page {
+					margin-right: 0;
+				}
+				.gravityview-elementor-preview-debug-output {
+					padding: .5em 0; 
+					box-sizing: content-box;
+					text-align: left;
+					display: block;
+					clear: both;
+				}
+				</style>
+			<div class="gravityview-elementor-preview">
+				<p>
+					<button 
+						role="button" 
+						aria-label="%1$s" 
+						aria-controls="elementor-control-preview_single_entry"
+						aria-pressed="false"
+						onclick="window.parent.jQuery(\'.elementor-control-preview_single_entry .elementor-switch-label\').trigger(\'click\');">
+						<span class="dashicons %6$s" aria-hidden="true"></span> 
+						<strong>%2$s</strong>
+						<em>(Click to toggle)</em>
+					</button>
+					<a href="%3$s" onclick="event.stopPropagation(); return true;" target="_blank"><span class="dashicons dashicons-edit"></span>%4$s%5$s</a>
+					<span style="text-align: center;"></span>
 				</p>
+				%7$s
 			</div>', 
-				esc_html( $preview_label ), 
+				sprintf( esc_html__( 'Toggle %s', 'gk-gravityview' ), $toggle_label ),
+				$preview_label,
 				esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) ), 
 				esc_html__( 'Edit View', 'gk-gravityview' ),
-				'<span class="screen-reader-text"> ' . esc_attr__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span>'
+				'<span class="screen-reader-text"> ' . esc_attr__( '(This link opens in a new window.)', 'gk-gravityview' ) . '</span>',
+				$dashicons_class,
+				$debug_output
 			);
-
-			if ( $show_debug_output ) {
-				printf( '<p style="margin-top:1em; padding-top:0; box-sizing: content-box;"><strong>%s</strong></p>', esc_html__( 'Shortcode', 'gk-gravityview' ) );
-				printf( '<div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;"><code>%s</code></div>', esc_html( $shortcode ) );
-			}
-		}, PHP_INT_MAX, 1 );
+		}, -PHP_INT_MAX, 1 );
 
 		$custom_css = $view->settings->get( 'custom_css', null );
 
