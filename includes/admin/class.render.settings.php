@@ -182,7 +182,7 @@ class GravityView_Render_Settings {
 
 		$is_table_layout = preg_match( '/table/ism', $template_id );
 
-		if ( 'field' === $field_type ) {
+		if ( in_array( $field_type, [ 'field', 'search' ], true ) ) {
 			// Default options - fields
 			$field_options = [
 				'show_label'        => [
@@ -240,12 +240,14 @@ class GravityView_Render_Settings {
 			];
 
 			// Match Table as well as DataTables
-			if ( $is_table_layout ) {
+			if ( $is_table_layout && 'field' === $field_type ) {
 				$field_options['width'] = [
 					'type'     => 'number',
 					'label'    => __( 'Percent Width', 'gk-gravityview' ),
-					'desc'     => __( 'Leave blank for column width to be based on the field content.',
-						'gk-gravityview' ),
+					'desc' => __(
+						'Leave blank for column width to be based on the field content.',
+						'gk-gravityview'
+					),
 					'class'    => 'code widefat',
 					'value'    => '',
 					'priority' => 200,

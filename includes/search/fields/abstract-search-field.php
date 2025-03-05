@@ -13,13 +13,6 @@ use GV\Search\Search_Field_Collection;
  */
 abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
-	 * Holds the initialized fields.
-	 *
-	 * @since $ver$
-	 */
-	private static $initialized_fields = [];
-
-	/**
 	 * The position.
 	 *
 	 * @since $ver$
@@ -77,6 +70,9 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * Creates the base field instance.
 	 *
 	 * @since $ver$
+	 *
+	 * @param string|null $label The name of the field.
+	 * @param array       $data  The configuration of the field.
 	 */
 	public function __construct( ?string $label = null, array $data = [] ) {
 		parent::__construct(
@@ -120,7 +116,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		// Can't instantiate the abstract class, but we can use it as a factory.
 		if ( static::class === self::class ) {
 			$fields = Search_Field_Collection::available_fields( (int) ( $data['form_id'] ?? 0 ) );
-			$class  = $fields->get_class_by_type( $data['id'] );
+			$class  = $fields->get_class_by_type( (string) $data['id'] );
 			if ( ! is_a( $class, self::class, true ) ) {
 				return null;
 			}
@@ -142,6 +138,23 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns the options merged onto the existing options array.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $options The existing options.
+	 *
+	 * @return array The updated options.
+	 */
+	public function merge_options( array $options ): array {
+		if ( isset( $options['custom_label'] ) ) {
+			$options['custom_label']['placeholder'] = $this->get_default_label();
+		}
+
+		return array_merge( $options, $this->get_search_field_options(), $this->get_options() );
+	}
+
+	/**
 	 * Returns the options for this field.
 	 *
 	 * @since $ver$
@@ -160,30 +173,18 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return array[]
 	 */
 	private function get_search_field_options(): array {
-		$options = [
-			'show_label'   => [
-				'type'  => 'checkbox',
-				'label' => esc_html__( 'Show label', 'gk-gravityview' ),
-				'value' => '1',
-			],
-			'custom_label' => [
-				'type'        => 'text',
-				'label'       => esc_html__( 'Custom label', 'gk-gravityview' ),
-				'value'       => '',
-				'placeholder' => $this->get_default_label(),
-				'class'       => 'widefat',
-			],
-		];
+		$options = [];
 
 		$input_types_mapping = GravityView_Widget_Search::get_input_types_by_field_type();
 		$input_types         = $input_types_mapping[ $this->get_field_type() ] ?? $input_types_mapping['text'];
 
 		if ( $input_types ) {
 			$options['input_type'] = [
-				'type'  => count( $input_types ) > 1 ? 'select' : 'hidden',
-				'label' => esc_html__( 'Input type', 'gk-gravityview' ),
-				'value' => current( $input_types ),
-				'class' => 'widefat',
+				'type'     => count( $input_types ) > 1 ? 'select' : 'hidden',
+				'label'    => esc_html__( 'Input type', 'gk-gravityview' ),
+				'value'    => current( $input_types ),
+				'class'    => 'widefat',
+				'priority' => 1150,
 			];
 
 			if ( count( $input_types ) > 1 ) {
@@ -233,7 +234,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return string The type.
 	 */
-	protected function get_type(): string {
+	public function get_type(): string {
 		return static::$type;
 	}
 
@@ -314,10 +315,6 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	protected function init(): void {
-		if ( ! isset( self::$initialized_fields[ $this->get_type() ] ) ) {
-			add_filter( 'gravityview_template_search_options', [ $this, 'set_search_field_options' ], 10, 3 );
-			self::$initialized_fields[ $this->get_type() ] = true;
-		}
 	}
 
 	/**
@@ -329,24 +326,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return bool Whether the search field is of the provided type.
 	 */
-	protected static function is_of_type( string $type ): bool {
+	public function is_of_type( string $type ): bool {
 		return $type === static::$type;
-	}
-
-	/**
-	 * Add the settings for this field.
-	 *
-	 * @param array  $options  The original options.
-	 * @param string $template The template ID.
-	 * @param string $type     The field type.
-	 *
-	 * @return array The updated options.
-	 */
-	final public function set_search_field_options( $options = [], $template = '', $type = '' ): array {
-		if ( ! static::is_of_type( $type ) ) {
-			return (array) $options;
-		}
-
-		return array_merge( $this->get_search_field_options(), $this->get_options() );
 	}
 }

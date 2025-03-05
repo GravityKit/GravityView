@@ -9,10 +9,9 @@
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
-use GV\GF_Form;
 use GV\Search\Fields\Search_Field;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
-use GV\View;
+use GV\Search\Search_Field_Collection;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -146,6 +145,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_filter( 'gravityview_widget_search_filters', [ $this, 'maybe_sieve_filter_choices' ], 1000, 4 );
 
 			add_filter( 'gk/gravityview/search/available-fields', [ $this, 'add_form_search_fields' ], 0, 2 );
+			add_filter( 'gravityview_template_search_options', [ $this, 'set_search_field_options' ], 10, 6 );
 		}
 
 		parent::__construct( esc_html__( 'Search Bar', 'gk-gravityview' ), null, $default_values, $settings );
@@ -490,10 +490,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$fields = apply_filters( 'gravityview/search/searchable_fields', $fields, $form_id );
 
 		if ( ! empty( $fields ) ) {
+			$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types',
+				[ 'fileupload', 'post_image', 'post_id', 'section' ],
+				null );
 
-			$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', array( 'fileupload', 'post_image', 'post_id', 'section' ), null );
-
-			$blocklist_sub_fields = apply_filters( 'gravityview_blocklist_sub_fields', array( 'image_choice', 'multi_choice' ), null );
+			$blocklist_sub_fields = apply_filters( 'gravityview_blocklist_sub_fields',
+				[ 'image_choice', 'multi_choice' ],
+				null );
 
 			foreach ( $fields as $id => $field ) {
 				if ( in_array( $field['type'], $blocklist_field_types ) ) {
@@ -522,26 +525,30 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @see admin-search-widget.js
 	 *
-	 * @param string|int|float $field_id Gravity Forms field ID
-	 * @param string           $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
+	 * @param string|int|float $field_id   Gravity Forms field ID
+	 * @param string           $field_type Gravity Forms field type (also the `name` parameter of GravityView_Field
+	 *                                     classes)
 	 *
 	 * @return string GV field search input type ('multi', 'boolean', 'select', 'date', 'text')
 	 */
 	public static function get_search_input_types( $field_id = '', $field_type = null ) {
 		// @todo - This needs to be improved - many fields have . including products and addresses
-		if ( false !== strpos( (string) $field_id, '.' ) && in_array( $field_type, array( 'checkbox' ) ) || in_array( $field_id, array( 'is_fulfilled' ) ) ) {
+		if ( false !== strpos( (string) $field_id, '.' ) && in_array( $field_type,
+				[ 'checkbox' ] ) || in_array( $field_id, [ 'is_fulfilled' ] ) ) {
 			$input_type = 'boolean'; // on/off checkbox
-		} elseif ( in_array( $field_type, array( 'checkbox', 'post_category', 'multiselect', 'image_choice','multi_choice' ) ) ) {
+		} elseif ( in_array( $field_type,
+			[ 'checkbox', 'post_category', 'multiselect', 'image_choice', 'multi_choice' ] ) ) {
 			$input_type = 'multi'; // multiselect
-		} elseif ( in_array( $field_id, array( 'payment_status' ) ) ) {
+		} elseif ( in_array( $field_id, [ 'payment_status' ] ) ) {
 			$input_type = 'multi_text';
-		} elseif ( in_array( $field_type, array( 'select', 'radio' ) ) ) {
+		} elseif ( in_array( $field_type, [ 'select', 'radio' ] ) ) {
 			$input_type = 'select';
-		} elseif ( in_array( $field_type, array( 'date' ) ) || in_array( $field_id, array( 'payment_date' ) ) ) {
+		} elseif ( in_array( $field_type, [ 'date' ] ) || in_array( $field_id, [ 'payment_date' ] ) ) {
 			$input_type = 'date';
-		} elseif ( in_array( $field_type, array( 'number', 'quantity', 'total' ) ) || in_array( $field_id, array( 'payment_amount' ) ) ) {
+		} elseif ( in_array( $field_type, [ 'number', 'quantity', 'total' ] ) || in_array( $field_id,
+				[ 'payment_amount' ] ) ) {
 			$input_type = 'number';
-		} elseif ( in_array( $field_type, array( 'product' ) ) ) {
+		} elseif ( in_array( $field_type, [ 'product' ] ) ) {
 			$input_type = 'product';
 		} else {
 			$input_type = 'text';
@@ -2666,8 +2673,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$fields = apply_filters( 'gravityview/search/searchable_fields', $fields, $form_id );
 
-		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', [ 'fileupload', 'post_image', 'post_id', 'section' ] );
-		$blocklist_sub_fields  = apply_filters( 'gravityview_blocklist_sub_fields', [ 'image_choice', 'multi_choice' ] );
+		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types',
+			[ 'fileupload', 'post_image', 'post_id', 'section' ] );
+		$blocklist_sub_fields  = apply_filters( 'gravityview_blocklist_sub_fields',
+			[ 'image_choice', 'multi_choice' ] );
 
 		foreach ( $fields as $id => $field ) {
 			if (
@@ -2691,6 +2700,35 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $search_fields;
 	}
 
+	/**
+	 * Add the settings for this field.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array      $options     The original options.
+	 * @param string     $template_id The template ID.
+	 * @param string     $field_id    The field ID.
+	 * @param string     $context     The area ID.
+	 * @param string     $input_type  The (optional) input type.
+	 * @param string|int $form_id     The form ID.
+	 *
+	 * @return array The updated options.
+	 */
+	final public function set_search_field_options(
+		$options = [],
+		$template_id = '',
+		$field_id = '',
+		$context = '',
+		$input_type = '',
+		$form_id = 0
+	): array {
+		$search_field = Search_Field_Collection::get_field_by_field_id( (int) $form_id, $field_id );
+		if ( ! $search_field ) {
+			return $options;
+		}
+
+		return $search_field->merge_options( $options );
+	}
 } // end class
 
 new GravityView_Widget_Search();

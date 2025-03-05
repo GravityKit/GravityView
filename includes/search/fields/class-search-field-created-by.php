@@ -57,6 +57,14 @@ final class Search_Field_Created_By extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
+	protected function get_default_label(): string {
+		return esc_html__( 'Submitted by:', 'gk-gravityview' );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
 	protected function get_value(): string {
 		return (string) parent::get_value();
 	}

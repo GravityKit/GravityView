@@ -43,6 +43,14 @@ final class Search_Field_Entry_ID extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
+	protected function get_default_label(): string {
+		return esc_html__( 'Entry ID:', 'gk-gravityview' );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
 	public function get_description(): string {
 		return esc_html__( 'Search on entry ID', 'gk-gravityview' );
 	}

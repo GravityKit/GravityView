@@ -2,8 +2,6 @@
 
 namespace GV;
 
-use GV\Search\Search_Field_Collection;
-
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();

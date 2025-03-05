@@ -70,10 +70,11 @@ final class Search_Field_All extends Search_Field {
 	protected function get_options(): array {
 		return [
 			'placeholder' => [
-				'type'  => 'text',
-				'label' => esc_html__( 'Placeholder', 'gk-gravityview' ),
-				'value' => '',
-				'class' => 'widefat',
+				'type'     => 'text',
+				'label'    => esc_html__( 'Placeholder', 'gk-gravityview' ),
+				'value'    => '',
+				'class'    => 'widefat',
+				'priority' => 1150,
 			],
 		];
 	}

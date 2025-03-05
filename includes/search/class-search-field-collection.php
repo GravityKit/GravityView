@@ -115,6 +115,28 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	}
 
 	/**
+	 * Return the available field instance by field ID, if it exists.
+	 *
+	 * @since $ver$
+	 *
+	 * @param int    $form_id  The form ID.
+	 * @param string $field_id The field ID.
+	 *
+	 * @return Search_Field|null The field.
+	 */
+	public static function get_field_by_field_id( int $form_id, string $field_id ): ?Search_Field {
+		$available_fields = self::available_fields( $form_id );
+
+		foreach ( $available_fields as $field ) {
+			if ( $field->is_of_type( $field_id ) ) {
+				return $field;
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Returns the search field collection as a configuration array.
 	 *
 	 * @since $ver$

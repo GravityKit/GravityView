@@ -104,7 +104,7 @@ final class Search_Field_Gravity_Forms extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_type(): string {
+	public function get_type(): string {
 		return sprintf( '%s::%d::%s', self::$type, $this->form_field['form_id'] ?? 0, $this->form_field['id'] ?? 0 );
 	}
 
@@ -112,7 +112,7 @@ final class Search_Field_Gravity_Forms extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected static function is_of_type( string $type ): bool {
-		return strpos( $type, self::$type . '::' ) === 0;
+	public function is_of_type( string $type ): bool {
+		return $this->get_type() === $type;
 	}
 }

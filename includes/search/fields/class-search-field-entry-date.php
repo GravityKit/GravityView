@@ -49,6 +49,14 @@ final class Search_Field_Entry_Date extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
+	protected function get_default_label(): string {
+		return esc_html__( 'Filter by date:', 'gk-gravityview' );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
 	public function get_description(): string {
 		return esc_html__( 'Search on entry date within a range', 'gk-gravityview' );
 	}
