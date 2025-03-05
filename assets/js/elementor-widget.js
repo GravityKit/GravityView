@@ -79,6 +79,28 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 		}
 	}
 
+	/**
+	 * Get the layouts data from the hidden control.
+	 * 
+	 * @since TODO
+	 * 
+	 * @return {Object|null} The parsed layouts data or null if not found/invalid.
+	 */
+	getViewsLayoutsData() {
+		const viewsLayouts = document.querySelector( this.getDefaultSettings().selectors.viewsLayouts );
+		
+		if ( !viewsLayouts?.value ) {
+			return null;
+		}
+
+		try {
+			return JSON.parse( viewsLayouts.value );
+		} catch ( e ) {
+			console.error( 'Error parsing layouts data:', e );
+			return null;
+		}
+	}
+
 	updateLayoutType( viewId ) {
 		if ( !viewId ) {
 			console.warn( 'No view ID provided' );
@@ -87,13 +109,14 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 
 		console.log( 'Updating layout type for view:', viewId );
 
-		// Get layouts data from hidden control
 		const viewsLayouts = document.querySelector( this.getDefaultSettings().selectors.viewsLayouts );
 		console.log( viewsLayouts );
 		if ( !viewsLayouts?.value ) {
 			return;
 		}
 
+		const layout = layouts[ viewId ];
+		console.log( 'Fetched layouts for View:', layout );
 
 		try {
 			const layouts = JSON.parse( viewsLayouts.value );
@@ -140,9 +163,8 @@ class GravityViewWidgetHandler extends elementorModules.editor.utils.Module {
 
 		console.log( 'Updating settings for view:', viewId );
 
-		// Get layouts data from hidden control
-		const viewsLayouts = document.querySelector( this.getDefaultSettings().selectors.viewsLayouts );
-		if ( !viewsLayouts?.value ) {
+		const layouts = this.getViewsLayoutsData();
+		if ( !layouts || !layouts[ viewId ] || !layouts[ viewId ].settings ) {
 			return;
 		}
 
