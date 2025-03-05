@@ -1983,6 +1983,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 			$debug_output = '';
 			if ( $show_debug_output ) {
+				// Hide the secret from the shortcode to prevent accidental exposure.
+				$shortcode = preg_replace( '/secret="[^"]+"/', 'secret="*****"', $shortcode );
 				$debug_output = sprintf( '<p class="gravityview-elementor-preview-debug-output"><strong>%s</strong></p>', esc_html__( 'Shortcode', 'gk-gravityview' ) );
 				$debug_output .= sprintf( '<div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;"><code>%s</code></div>', esc_html( $shortcode ) );
 			}
