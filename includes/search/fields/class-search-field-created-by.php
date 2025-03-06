@@ -2,6 +2,8 @@
 
 namespace GV\Search\Fields;
 
+use GVCommon;
+
 /**
  * Represents a search field that searches on the Entry Date.
  *
@@ -9,7 +11,7 @@ namespace GV\Search\Fields;
  *
  * @extends Search_Field<string>
  */
-final class Search_Field_Created_By extends Search_Field {
+final class Search_Field_Created_By extends Search_Field_Choices {
 	/**
 	 * @inheritDoc
 	 * @since $ver$
@@ -27,15 +29,6 @@ final class Search_Field_Created_By extends Search_Field {
 	 * @since $ver$
 	 */
 	protected static string $field_type = 'created_by';
-
-	/**
-	 * @inheritdoc
-	 *
-	 * @since $ver$
-	 *
-	 * @var string
-	 */
-	protected $value = '';
 
 	/**
 	 * @inheritDoc
@@ -65,7 +58,49 @@ final class Search_Field_Created_By extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_value(): string {
-		return (string) parent::get_value();
+	protected function get_input_name(): string {
+		return 'gv_by';
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function has_choices(): bool {
+		return true;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function get_choices(): array {
+		$users = GVCommon::get_users( 'search_widget', [ 'fields' => [ 'ID', 'display_name' ] ] );
+
+		$choices = [];
+		foreach ( $users as $user ) {
+			/**
+			 * Filter the display text in created by search choices.
+			 *
+			 * @since 2.3
+			 *
+			 * @param string[in,out] The text. Default: $user->display_name
+			 * @param \WP_User      $user The user.
+			 * @param \GV\View|null $view The view.
+			 */
+			$text = apply_filters(
+				'gravityview/search/created_by/text',
+				$user->display_name,
+				$user,
+				$this->view
+			);
+
+			$choices[] = [
+				'value' => $user->ID,
+				'text'  => $text,
+			];
+		}
+
+		return $choices;
 	}
 }

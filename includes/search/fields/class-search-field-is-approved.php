@@ -31,15 +31,6 @@ final class Search_Field_Is_Approved extends Search_Field_Choices {
 	protected static string $field_type = 'multi';
 
 	/**
-	 * @inheritdoc
-	 *
-	 * @since $ver$
-	 *
-	 * @var string
-	 */
-	protected $value = '';
-
-	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -61,14 +52,6 @@ final class Search_Field_Is_Approved extends Search_Field_Choices {
 	 */
 	protected function get_default_label(): string {
 		return esc_html__( 'Approval:', 'gk-gravityview' );
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since $ver$
-	 */
-	protected function get_value(): string {
-		return (string) parent::get_value();
 	}
 
 	/**

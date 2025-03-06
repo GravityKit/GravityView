@@ -66,8 +66,8 @@ final class Grid {
 	 *
 	 * @since 2.31.0
 	 *
-	 * @param Widget_Collection|Field_Collection $collection The collection.
-	 * @param string                             $zone       The zone.
+	 * @param Collection $collection The collection.
+	 * @param string     $zone       The zone.
 	 *
 	 * @return array The row configurations.
 	 */

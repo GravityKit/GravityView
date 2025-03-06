@@ -7,7 +7,7 @@ namespace GV\Search\Fields;
  *
  * @since $ver$
  *
- * @extends Search_Field<string>
+ * @extends Search_Field
  */
 final class Search_Field_All extends Search_Field {
 	/**
@@ -23,13 +23,10 @@ final class Search_Field_All extends Search_Field {
 	protected static string $type = 'all';
 
 	/**
-	 * @inheritdoc
-	 *
+	 * @inheritDoc
 	 * @since $ver$
-	 *
-	 * @var string
 	 */
-	protected $value = '';
+	protected static string $field_type = 'search_all';
 
 	/**
 	 * @inheritDoc
@@ -59,14 +56,6 @@ final class Search_Field_All extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_value(): string {
-		return (string) parent::get_value();
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since $ver$
-	 */
 	protected function get_options(): array {
 		return [
 			'placeholder' => [
@@ -77,5 +66,13 @@ final class Search_Field_All extends Search_Field {
 				'priority' => 1150,
 			],
 		];
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_input_name(): string {
+		return 'gv_search';
 	}
 }

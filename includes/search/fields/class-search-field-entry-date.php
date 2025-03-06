@@ -7,7 +7,7 @@ namespace GV\Search\Fields;
  *
  * @since $ver$
  *
- * @extends Search_Field<string>
+ * @extends Search_Field<array{start:string, end:string}>
  */
 final class Search_Field_Entry_Date extends Search_Field {
 	/**
@@ -27,15 +27,6 @@ final class Search_Field_Entry_Date extends Search_Field {
 	 * @since $ver$
 	 */
 	protected static string $field_type = 'entry_date';
-
-	/**
-	 * @inheritdoc
-	 *
-	 * @since $ver$
-	 *
-	 * @var string
-	 */
-	protected $value = '';
 
 	/**
 	 * @inheritDoc
@@ -65,7 +56,10 @@ final class Search_Field_Entry_Date extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_value(): string {
-		return (string) parent::get_value();
+	protected function get_input_value(): array {
+		return [
+			'start' => $_REQUEST['gv_start'] ?? '',
+			'end'   => $_REQUEST['gv_end'] ?? '',
+		];
 	}
 }

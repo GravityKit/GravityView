@@ -25,15 +25,6 @@ final class Search_Field_Gravity_Forms extends Search_Field {
 	protected static string $type = 'gravity_forms';
 
 	/**
-	 * @inheritdoc
-	 *
-	 * @since $ver$
-	 *
-	 * @var string
-	 */
-	protected $value = '';
-
-	/**
 	 * The inner field object.
 	 *
 	 * @since $ver$
@@ -83,14 +74,6 @@ final class Search_Field_Gravity_Forms extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_value(): string {
-		return (string) parent::get_value();
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since $ver$
-	 */
 	public function to_configuration(): array {
 		return array_merge(
 			parent::to_configuration(),
@@ -114,5 +97,13 @@ final class Search_Field_Gravity_Forms extends Search_Field {
 	 */
 	public function is_of_type( string $type ): bool {
 		return $this->get_type() === $type;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_input_name(): string {
+		return sprintf( 'filter_%s', $this->form_field['id'] );
 	}
 }

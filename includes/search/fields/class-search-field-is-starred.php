@@ -29,15 +29,6 @@ final class Search_Field_Is_Starred extends Search_Field {
 	protected static string $field_type = 'checkbox';
 
 	/**
-	 * @inheritdoc
-	 *
-	 * @since $ver$
-	 *
-	 * @var string
-	 */
-	protected $value = '';
-
-	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -51,13 +42,5 @@ final class Search_Field_Is_Starred extends Search_Field {
 	 */
 	public function get_description(): string {
 		return esc_html__( 'Filter on starred entries', 'gk-gravityview' );
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since $ver$
-	 */
-	protected function get_value(): string {
-		return (string) parent::get_value();
 	}
 }

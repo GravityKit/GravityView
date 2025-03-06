@@ -77,12 +77,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 //				),
 //			),
 // Todo: make custom clear field.
-//			'search_clear'  => array(
-//				'type'  => 'checkbox',
-//				'label' => __( 'Show Clear button', 'gk-gravityview' ),
-//				'desc'  => __( 'When a search is performed, display a button that removes all search values.', 'gk-gravityview' ),
-//				'value' => true,
-//			),
+//
 
 			//Todo:  Is this a global setting?
 //			'search_mode'   => array(
@@ -246,6 +241,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'multi'       => [ 'select', 'multiselect', 'radio', 'checkbox', 'link' ],
 			'multiselect' => [ 'select', 'multiselect', 'radio', 'checkbox', 'link' ],
 			'checkbox'    => [ 'select', 'multiselect', 'radio', 'checkbox', 'link' ],
+			'submit'      => [ 'submit' ],
 
 			// hybrids
 			'created_by'  => [ 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ],
@@ -306,6 +302,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'link'            => esc_html__( 'Links', 'gk-gravityview' ),
 			'date_range'      => esc_html__( 'Date range', 'gk-gravityview' ),
 			'number_range'    => esc_html__( 'Number range', 'gk-gravityview' ),
+			'submit'          => esc_html__( 'Submit button', 'gk-gravityview' ),
 		];
 
 		/**

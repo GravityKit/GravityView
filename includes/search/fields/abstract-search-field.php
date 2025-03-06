@@ -4,6 +4,11 @@ namespace GV\Search\Fields;
 
 use GravityView_Widget_Search;
 use GV\Search\Search_Field_Collection;
+use GV\View;
+
+if ( ! class_exists( 'GravityView_Admin_View_Item' ) ) {
+	include_once GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-admin-view-item.php';
+}
 
 /**
  * Represents a single Search Field.
@@ -58,13 +63,13 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	protected string $icon = '';
 
 	/**
-	 * The value.
+	 * The View object.
 	 *
 	 * @since $ver$
 	 *
-	 * @var T
+	 * @var View|null
 	 */
-	protected $value;
+	protected ?View $view = null;
 
 	/**
 	 * Creates the base field instance.
@@ -112,7 +117,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return static|null The field instance.
 	 */
-	public static function from_configuration( array $data ): ?Search_Field {
+	public static function from_configuration( array $data, ?View $view = null ): ?Search_Field {
 		// Can't instantiate the abstract class, but we can use it as a factory.
 		if ( static::class === self::class ) {
 			$fields = Search_Field_Collection::available_fields( (int) ( $data['form_id'] ?? 0 ) );
@@ -124,7 +129,8 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			return $class::from_configuration( $data );
 		}
 
-		$field = new static( $data['label'] ?? null, $data );
+		$field       = new static( $data['label'] ?? null, $data );
+		$field->view = $view;
 
 		unset( $data['type'] );
 
@@ -222,9 +228,28 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		return [
 			'type'     => $this->get_type(),
 			'label'    => $this->title,
-			'value'    => $this->get_value(),
 			'position' => $this->position,
 		];
+	}
+
+	/**
+	 * Returns the label used on the frontend.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	private function get_frontend_label(): string {
+		if ( ! ( $this->item['show_label'] ?? true ) ) {
+			return '';
+		}
+
+		$label = $this->item['custom_label'] ?? '';
+		if ( ! $label ) {
+			$label = $this->get_default_label();
+		}
+
+		return $label;
 	}
 
 	/**
@@ -250,6 +275,17 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns the field type.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	protected function get_input_type(): string {
+		return $this->item['input_type'] ?? static::$field_type;
+	}
+
+	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -264,11 +300,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	protected function get_label(): string {
-		if ( ! ( $this->item['show_label'] ?? true ) ) {
-			return '';
-		}
-
-		return $this->item['custom_label'] ?? $this->title;
+		return $this->title;
 	}
 
 	/**
@@ -328,5 +360,46 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 */
 	public function is_of_type( string $type ): bool {
 		return $type === static::$type;
+	}
+
+	/**
+	 * Returns the name of the input on the form.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	protected function get_input_name(): string {
+		return sprintf( 'filter_%s', $this->get_type() );
+	}
+
+	/**
+	 * Returns the value(s) for the field input.
+	 *
+	 * @since $ver$
+	 *
+	 * @return T
+	 */
+	protected function get_input_value() {
+		return $_REQUEST[ $this->get_input_name() ] ?? '';
+	}
+
+	/**
+	 * Returns the data needed for the template to render.
+	 *
+	 * @since $ver$
+	 *
+	 * @return array
+	 */
+	public function to_template_data(): array {
+		return [
+			'key'          => $this->get_type(),
+			'name'         => $this->get_input_name(),
+			'label'        => $this->get_frontend_label(),
+			'value'        => $this->get_input_value(),
+			'type'         => $this->get_type(),
+			'input'        => $this->get_input_type(),
+			'custom_class' => $this->item['custom_class'] ?? '',
+		];
 	}
 }

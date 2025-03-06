@@ -14,6 +14,8 @@ use GV\Search\Fields\Search_Field_Entry_ID;
 use GV\Search\Fields\Search_Field_Is_Approved;
 use GV\Search\Fields\Search_Field_Is_Read;
 use GV\Search\Fields\Search_Field_Is_Starred;
+use GV\Search\Fields\Search_Field_Submit;
+use GV\View;
 use IteratorAggregate;
 
 /**
@@ -66,6 +68,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			new Search_Field_Created_By(),
 			new Search_Field_Is_Starred(),
 			new Search_Field_Is_Read(),
+			new Search_Field_Submit(),
 		];
 
 		if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {
@@ -90,7 +93,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @return self|null The collection.
 	 */
-	public static function from_configuration( array $configuration ): self {
+	public static function from_configuration( array $configuration, ?View $view = null ): self {
 		$collection = new self();
 
 		foreach ( $configuration as $position => $_fields ) {
@@ -102,7 +105,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 				$_configuration['UID']      = $uid;
 				$_configuration['position'] = $position;
 
-				$field = Search_Field::from_configuration( $_configuration );
+				$field = Search_Field::from_configuration( $_configuration, $view );
 				if ( ! $field ) {
 					continue;
 				}

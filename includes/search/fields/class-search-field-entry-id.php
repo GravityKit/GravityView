@@ -23,15 +23,6 @@ final class Search_Field_Entry_ID extends Search_Field {
 	protected static string $type = 'entry_id';
 
 	/**
-	 * @inheritdoc
-	 *
-	 * @since $ver$
-	 *
-	 * @var string
-	 */
-	protected $value = '';
-
-	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -59,7 +50,7 @@ final class Search_Field_Entry_ID extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_value(): string {
-		return (string) parent::get_value();
+	protected function get_input_name(): string {
+		return 'gv_id';
 	}
 }

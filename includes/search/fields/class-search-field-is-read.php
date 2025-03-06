@@ -29,15 +29,6 @@ final class Search_Field_Is_Read extends Search_Field_Choices {
 	protected static string $field_type = 'select';
 
 	/**
-	 * @inheritdoc
-	 *
-	 * @since $ver$
-	 *
-	 * @var string
-	 */
-	protected $value = '';
-
-	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -51,14 +42,6 @@ final class Search_Field_Is_Read extends Search_Field_Choices {
 	 */
 	public function get_description(): string {
 		return esc_html__( 'Filter on read entries', 'gk-gravityview' );
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since $ver$
-	 */
-	protected function get_value(): string {
-		return (string) parent::get_value();
 	}
 
 	/**
