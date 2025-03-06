@@ -7,18 +7,53 @@
 
 $view_id      = \GV\Utils::get( $data, 'view_id', 0 );
 $search_mode  = \GV\Utils::get( $data, 'search_mode', 'any' );
-$search_clear = \GV\Utils::get( $data, 'search_clear', false );
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
+$search_clear = \GV\Utils::get( $search_field, 'search_clear', false );
 
 $submit_html_tag     = $search_field['tag'] ?? 'input';
 $submit_button_id    = sprintf( 'gv_search_button_%d', $view_id );
 $submit_button_label = $search_field['label'] ?? __( 'Search', 'gk-gravityview' );
+
 ?>
 <div class="gv-search-box gv-search-box-submit">
 	<?php
 
-	// Output the Clear button, if enabled
-	echo $search_clear;
+	if ( $search_clear ) {
+		// Output the Clear button, if enabled
+		$clear_button_params = [
+			'url'     => remove_query_arg(
+				( GravityView_Widget_Search::getInstance() )->add_reserved_args( [] )
+			),
+			'text'    => esc_html__( 'Clear', 'gk-gravityview' ),
+			'view_id' => $view_id,
+			'format'  => 'html',
+			'atts'    => [ 'class' => 'button gv-search-clear' ],
+		];
+
+		/**
+		 * Modifies search widget's Clear button parameters.
+		 *
+		 * @filter `gravityview/widget/search/clear-button/params`
+		 *
+		 * @since  2.21
+		 *
+		 * @param array{url: string, text: string, view_id: int, atts: array} $clear_button_params
+		 */
+		$clear_button_params = wp_parse_args(
+			apply_filters( 'gk/gravityview/widget/search/clear-button/params', $clear_button_params ),
+			$clear_button_params
+		);
+
+		if ( 'text' === $clear_button_params['format'] ) {
+			echo $clear_button_params['url'];
+		} else {
+			echo gravityview_get_link(
+				$clear_button_params['url'],
+				$clear_button_params['text'],
+				$clear_button_params['atts']
+			);
+		}
+	}
 
 	$args  = gv_get_query_args();
 	$input = '<input type="hidden" name="%s" value="%s"/>';

@@ -91,8 +91,9 @@ final class Search_Field_Submit extends Search_Field {
 	 * @since $ver$
 	 */
 	public function to_template_data(): array {
-		$data        = parent::to_template_data();
-		$data['tag'] = $this->item['tag'] ?? 'input';
+		$data                 = parent::to_template_data();
+		$data['tag']          = $this->item['tag'] ?? 'input';
+		$data['search_clear'] = $this->item['search_clear'] ?? true;
 
 		return $data;
 	}
