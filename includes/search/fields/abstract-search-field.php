@@ -392,7 +392,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return array
 	 */
 	public function to_template_data(): array {
-		return [
+		$params = [
 			'key'          => $this->get_type(),
 			'name'         => $this->get_input_name(),
 			'label'        => $this->get_frontend_label(),
@@ -401,5 +401,11 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			'input'        => $this->get_input_type(),
 			'custom_class' => $this->item['custom_class'] ?? '',
 		];
+
+		foreach ( array_keys( $this->get_options() ) as $key ) {
+			$params[ $key ] = $this->item[ $key ] ?? null;
+		}
+
+		return $params;
 	}
 }
