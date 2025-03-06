@@ -62,16 +62,16 @@ final class Search_Field_Submit extends Search_Field {
 				'type'  => 'hidden',
 				'value' => 1,
 			],
-			'tag'          => [
-				'type'     => 'select',
-				'label'    => esc_html__( 'Button HTML-tag', 'gk-gravityview' ),
-				'value'    => 'input',
-				'class'    => 'widefat',
-				'choices'  => [
-					'input'  => esc_html__( 'input (default)', 'gk-gravityview' ),
-					'button' => esc_html__( 'button', 'gk-gravityview' ),
+			'search_mode'  => [
+				'type'       => 'select',
+				'label'      => esc_html__( 'Search Mode', 'gk-gravityview' ),
+				'desc'       => __( 'Should search results match all search fields, or any?', 'gk-gravityview' ),
+				'value'      => 'any',
+				'choices'    => [
+					'any' => esc_html__( 'Match Any Fields', 'gk-gravityview' ),
+					'all' => esc_html__( 'Match All Fields', 'gk-gravityview' ),
 				],
-				'priority' => 1150,
+				'priority'   => 1000,
 			],
 			'search_clear' => [
 				'type'     => 'checkbox',
@@ -83,18 +83,17 @@ final class Search_Field_Submit extends Search_Field {
 				'value'    => true,
 				'priority' => 1050,
 			],
+			'tag'          => [
+				'type'     => 'select',
+				'label'    => esc_html__( 'Button HTML-tag', 'gk-gravityview' ),
+				'value'    => 'input',
+				'class'    => 'widefat',
+				'choices'  => [
+					'input'  => esc_html__( 'input (default)', 'gk-gravityview' ),
+					'button' => esc_html__( 'button', 'gk-gravityview' ),
+				],
+				'priority' => 1150,
+			],
 		];
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since $ver$
-	 */
-	public function to_template_data(): array {
-		$data                 = parent::to_template_data();
-		$data['tag']          = $this->item['tag'] ?? 'input';
-		$data['search_clear'] = $this->item['search_clear'] ?? true;
-
-		return $data;
 	}
 }

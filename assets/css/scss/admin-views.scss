@@ -1898,9 +1898,8 @@ $dialog-button-padding: 5px;
 		font-size: 1.1em;
 		clear: left;
 
-		// Hide hidden containers and search mode by default
-		&.hidden,
-		&.gv-setting-container-search_mode {
+		// Hide hidden containers by default
+		&.hidden {
 			display: none;
 		}
 

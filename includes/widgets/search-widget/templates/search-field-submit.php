@@ -6,9 +6,9 @@
  */
 
 $view_id      = \GV\Utils::get( $data, 'view_id', 0 );
-$search_mode  = \GV\Utils::get( $data, 'search_mode', 'any' );
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
 $search_clear = \GV\Utils::get( $search_field, 'search_clear', false );
+$search_mode  = \GV\Utils::get( $search_field, 'search_mode', 'any' );
 
 $submit_html_tag     = $search_field['tag'] ?? 'input';
 $submit_button_id    = sprintf( 'gv_search_button_%d', $view_id );

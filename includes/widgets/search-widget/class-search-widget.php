@@ -80,18 +80,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 //
 
 			//Todo:  Is this a global setting?
-//			'search_mode'   => array(
-//				'type'       => 'radio',
-//				'full_width' => true,
-//				'label'      => esc_html__( 'Search Mode', 'gk-gravityview' ),
-//				'desc'       => __( 'Should search results match all search fields, or any?', 'gk-gravityview' ),
-//				'value'      => 'any',
-//				'class'      => 'hide-if-js',
-//				'options'    => array(
-//					'any' => esc_html__( 'Match Any Fields', 'gk-gravityview' ),
-//					'all' => esc_html__( 'Match All Fields', 'gk-gravityview' ),
-//				),
-//			),
+//
 
 			// Todo: Move this setting to the choice field.
 //			'sieve_choices' => array(
