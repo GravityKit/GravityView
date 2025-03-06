@@ -75,4 +75,12 @@ final class Search_Field_All extends Search_Field {
 	protected function get_input_name(): string {
 		return 'gv_search';
 	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_input_type(): string {
+		return 'search_all';
+	}
 }
