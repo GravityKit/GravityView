@@ -838,6 +838,10 @@ class GravityView_Merge_Tags {
 	 */
 	public static function replace_get_variables( $text, $form = array(), $entry = array(), $url_encode = false ) {
 
+		if ( ! is_string( $text ) ) {
+			return $text;
+		}
+
 		// Is there is {get:[xyz]} merge tag?
 		preg_match_all( '/{get:(.*?)}/ism', $text, $matches, PREG_SET_ORDER );
 
