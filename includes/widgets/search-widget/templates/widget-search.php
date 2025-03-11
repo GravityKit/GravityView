@@ -8,23 +8,16 @@
  * @global array             $data
  */
 
-use GV\Grid;
-use GV\Search\Search_Field_Collection;
+$gravityview_view = GravityView_View::getInstance();
 
 $view_id            = \GV\Utils::get( $data, 'view_id', null );
 $search_method      = \GV\Utils::get( $data, 'search_method', 'get' );
-$search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 $search_class       = \GV\Utils::get( $data, 'search_class', '' );
 $permalink_fields   = \GV\Utils::get( $data, 'permalink_fields', [] );
 $search_form_action = \GV\Utils::get( $data, 'search_form_action', '' );
-
-$view = GV\View::by_id( $view_id );
-
-$fields        = gravityview_get_directory_search( $view_id );
-$collection    = Search_Field_Collection::from_configuration( $fields, $view );
-$general_rows  = Grid::get_rows_from_collection( $collection, 'search-general' );
-$advanced_rows = Grid::get_rows_from_collection( $collection, 'search-advanced' );
-
+$general_rows       = \GV\Utils::get( $data, 'search_rows_general', [] );
+$advanced_rows      = \GV\Utils::get( $data, 'search_rows_advanced', [] );
+$search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 ?>
 
 <form class="gv-widget-search <?php echo gravityview_sanitize_html_class( $search_class ); ?>"
@@ -51,7 +44,7 @@ $advanced_rows = Grid::get_rows_from_collection( $collection, 'search-advanced' 
 						<?php
 						if ( ! empty( $areas ) ) {
 							foreach ( $areas as $area ) {
-								foreach ( $collection->by_position( 'search-general' . '_' . $area['areaid'] )->all() as $field ) {
+								foreach ( $search_fields->by_position( 'search-general' . '_' . $area['areaid'] )->all() as $field ) {
 									$search_field = $field->to_template_data();
 									/**
 									 * @action `gravityview_search_widget_field_before` Before each search input is rendered (other than the submit button)
@@ -60,6 +53,7 @@ $advanced_rows = Grid::get_rows_from_collection( $collection, 'search-advanced' 
 									 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
 									 */
 									do_action( 'gravityview_search_widget_field_before', $this, $search_field );
+									$gravityview_view->search_field = $search_field;
 
 									$data['search_field'] = $search_field;
 
@@ -77,10 +71,11 @@ $advanced_rows = Grid::get_rows_from_collection( $collection, 'search-advanced' 
 
 	if ( ! empty( $advanced_rows ) ) {
 	// TODO: Show advanced search if any of the fields in the advanced search are being searched.
+	// Todo: move styling and javascript to files.
 	?>
     <a style="display: block; width: 100%; margin: 10px 0;" href='javascript:void(0);'
        onclick='jQuery(".gv-widget-search-advanced-search").toggleClass("gv-hide")'>
-        <?php esc_html_e( 'Advanced Search','gk-gravityview' ); ?>
+		<?php esc_html_e( 'Advanced Search', 'gk-gravityview' ); ?>
     </a>
 
     <style>.gv-hide {
@@ -107,7 +102,7 @@ $advanced_rows = Grid::get_rows_from_collection( $collection, 'search-advanced' 
 						<?php
 						if ( ! empty( $areas ) ) {
 							foreach ( $areas as $area ) {
-								foreach ( $collection->by_position( 'search-advanced' . '_' . $area['areaid'] )->all() as $field ) {
+								foreach ( $search_fields->by_position( 'search-advanced' . '_' . $area['areaid'] )->all() as $field ) {
 									$search_field = $field->to_template_data();
 									/**
 									 * @action `gravityview_search_widget_field_before` Before each search input is rendered (other than the submit button)
@@ -116,6 +111,7 @@ $advanced_rows = Grid::get_rows_from_collection( $collection, 'search-advanced' 
 									 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
 									 */
 									do_action( 'gravityview_search_widget_field_before', $this, $search_field );
+									$gravityview_view->search_field = $search_field;
 
 									$data['search_field'] = $search_field;
 

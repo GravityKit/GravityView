@@ -9,6 +9,7 @@
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
+use GV\Grid;
 use GV\Search\Fields\Search_Field;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
 use GV\Search\Search_Field_Collection;
@@ -65,19 +66,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 //				'id'   => 'search_fields_section',
 //				'desc' => sprintf( '<h3>%s</h3>', esc_html__( 'Search settings', 'gk-gravityview' ) ),
 //			),
-// Todo: this should be removable because of the layout builder.
-//			'search_layout' => array(
-//				'type'       => 'radio',
-//				'full_width' => true,
-//				'label'      => esc_html__( 'Search Layout', 'gk-gravityview' ),
-//				'value'      => 'horizontal',
-//				'options'    => array(
-//					'horizontal' => esc_html__( 'Horizontal', 'gk-gravityview' ),
-//					'vertical'   => esc_html__( 'Vertical', 'gk-gravityview' ),
-//				),
-//			),
-// Todo: make custom clear field.
-//
+
 
 			//Todo:  Is this a global setting?
 //
@@ -1763,13 +1752,24 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 		if ( $context instanceof \GV\Template_Context ) {
 			$view_id = $context->view->ID;
+			$view = $context->view;
 		} else {
 			$view_id = \GV\Utils::get( $widget_args, 'view_id', 0 );
+			$view    = \GV\View::by_id( $view_id );
 		}
 
-		$search_fields = $this->set_search_fields( $widget_args, $context );
+//		$search_fields = $this->get_search_fields( $widget_args, $context );
 
-		if ( $this->has_date_field( $search_fields ) ) {
+		// Todo: The fields should be stored on the widget, to support multiple search widgets.
+		$fields        = gravityview_get_directory_search( $view_id );
+		$search_fields = Search_Field_Collection::from_configuration( $fields, $view );
+
+		if ( ! $search_fields->count() ) {
+			gravityview()->log->debug( 'No search fields configured for widget:', [ 'data' => $widget_args ] );
+			return;
+		}
+
+		if ( $search_fields->has_date_field() ) {
 			// enqueue datepicker stuff only if needed!
 			$this->enqueue_datepicker();
 		}
@@ -1778,16 +1778,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$custom_class  = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
 
 		$data = [
-			'datepicker_class'   => $this->get_datepicker_class(),
-			'search_fields'      => $search_fields,
-			'search_method'      => $this->get_search_method(),
-			'search_layout'      => $search_layout,
-			'search_mode'        => ( ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any' ),
-			'search_clear'       => ( ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false ),
-			'view_id'            => $view_id,
-			'search_class'       => self::get_search_class( $custom_class, $search_layout ),
-			'permalink_fields'   => $this->add_no_permalink_fields( [], $this, $widget_args ),
-			'search_form_action' => self::get_search_form_action(),
+			'datepicker_class'     => $this->get_datepicker_class(),
+			'search_method'        => $this->get_search_method(),
+			'search_layout'        => $search_layout,
+			'search_mode'          => ( ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any' ),
+			'search_clear'         => ( ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false ),
+			'view_id'              => $view_id,
+			'search_class'         => self::get_search_class( $custom_class, $search_layout ),
+			'permalink_fields'     => $this->add_no_permalink_fields( [], $this, $widget_args ),
+			'search_form_action'   => self::get_search_form_action(),
+			'search_fields'        => $search_fields,
+			'search_rows_general'  => Grid::get_rows_from_collection( $search_fields, 'search-general' ),
+			'search_rows_advanced' => Grid::get_rows_from_collection( $search_fields, 'search-advanced' ),
 		];
 
 		GravityView_View::getInstance()->render( 'widget', 'search', false, $data );
@@ -1798,7 +1800,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @return array|mixed|null
 	 */
-	public function set_search_fields( $widget_args, $context ) {
+	private function get_search_fields( $widget_args, $context ) {
 		if ( $context instanceof \GV\Template_Context ) {
 			$view = $context->view;
 		} else {
@@ -1812,22 +1814,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return [];
 		}
 
-		$search_fields = $view->fields->by_position( 'search_*' )->as_configuration();
-
-		if ( empty( $search_fields ) || ! is_array( $search_fields ) ) {
-			gravityview()->log->debug( 'No search fields configured for widget:', [ 'data' => $widget_args ] );
-
-			return [];
-		}
-
 		// prepare fields
-		foreach ( $search_fields as $group => $fields ) {
+		foreach ( $search_fields as $position => $fields ) {
 			foreach ( $fields as $k => $field ) {
 				$updated_field = $field;
 
 				$updated_field = $this->get_search_filter_details( $updated_field, $context, $widget_args );
-
-				$updated_field['label'] = self::get_field_label( $field );
 
 				switch ( $field['field'] ) {
 					case 'search_all':
@@ -1879,27 +1871,32 @@ class GravityView_Widget_Search extends \GV\Widget {
 						break;
 				}
 
-				$search_fields[ $group ][ $k ] = $updated_field;
+				$search_fields[ $position ][ $k ] = $updated_field;
 			}
 		}
 
-		gravityview()->log->debug( 'Calculated Search Fields: ', [ 'data' => $search_fields ] );
+		foreach ( $search_fields as $position => $fields ) {
+			/**
+			 * Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
+			 *
+			 * @param array                     $search_fields Array of search filters with `key`, `label`, `value`, `type`, `choices` keys
+			 * @param GravityView_Widget_Search $this          Current widget object
+			 * @param array                     $widget_args   Args passed to this method. {@since 1.8}
+			 * @param \GV\Template_Context      $context       {@since 2.0}
+			 *
+			 * @type array
+			 */
+			$search_fields[ $position ] = apply_filters(
+				'gravityview_widget_search_filters',
+				$fields,
+				$this,
+				$widget_args,
+				$context,
+				$position
+			);
+		}
 
-		/**
-		 * Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
-		 *
-		 * @param array                     $search_fields Array of search filters with `key`, `label`, `value`, `type`, `choices` keys
-		 * @param GravityView_Widget_Search $this          Current widget object
-		 * @param array                     $widget_args   Args passed to this method. {@since 1.8}
-		 * @param \GV\Template_Context      $context       {@since 2.0}
-		 *
-		 * @type array
-		 */
-		$search_fields = apply_filters( 'gravityview_widget_search_filters',
-			$search_fields,
-			$this,
-			$widget_args,
-			$context );
+		gravityview()->log->debug( 'Calculated Search Fields: ', [ 'data' => $search_fields ] );
 
 		return $search_fields;
 	}
@@ -2128,6 +2125,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function maybe_sieve_filter_choices( $search_fields, $widget, $widget_args, $context ) {
 		$sieve_choices = \GV\Utils::get( $widget_args, 'sieve_choices', false );
 
+		var_dump($search_fields);
 		if ( ! $sieve_choices ) {
 			return $search_fields;
 		}
@@ -2137,16 +2135,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 				continue;
 			}
 
-			$field = gravityview_get_field( $context->view->form->form,
-				$filter['key'] );  // @todo Support multiple forms (joins)
+			$field = gravityview_get_field(
+				$context->view->form->form,
+				$filter['key']
+			);  // @todo Support multiple forms (joins)
 
 			/**
 			 * Only output used choices for this field.
 			 *
 			 * @since 2.16 Modified default value to the `sieve_choices` widget setting and added $widget_args parameter.
 			 *
-			 * @param bool  $sieve_choices True: Yes, filter choices based on whether the value exists in entries. False: show all choices in the original field. Default: false.
-			 * @param array $field         The field configuration.
+			 * @param bool $sieve_choices True: Yes, filter choices based on whether the value exists in entries. False: show all choices in the original field. Default: false.
+			 * @param array $field        The field configuration.
 			 * @param \GV\Template_Context The context.
 			 */
 			if ( apply_filters( 'gravityview/search/sieve_choices', $sieve_choices, $field, $context, $widget_args ) ) {
@@ -2325,7 +2325,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	public static function the_clear_search_button() {
 		_deprecated_function( __METHOD__,
-			'TODO',
+			'$ver$',
 			'The button is now available in the templates as global $data[\'search_clear\']' );
 	}
 
@@ -2647,6 +2647,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		$fields = gravityview_get_form_fields( $form_id, true, true );
+
 		/**
 		 * Modify the fields that are displayed as searchable in the Search Bar dropdown\n.
 		 *
@@ -2659,10 +2660,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 */
 		$fields = apply_filters( 'gravityview/search/searchable_fields', $fields, $form_id );
 
-		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types',
-			[ 'fileupload', 'post_image', 'post_id', 'section' ] );
-		$blocklist_sub_fields  = apply_filters( 'gravityview_blocklist_sub_fields',
-			[ 'image_choice', 'multi_choice' ] );
+		$blocklist_field_types = apply_filters(
+			'gravityview_blocklist_field_types',
+			[ 'fileupload', 'post_image', 'post_id', 'section' ]
+		);
+		$blocklist_sub_fields  = apply_filters(
+			'gravityview_blocklist_sub_fields',
+			[ 'image_choice', 'multi_choice' ]
+		);
 
 		foreach ( $fields as $id => $field ) {
 			if (

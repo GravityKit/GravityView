@@ -55,11 +55,19 @@ final class Search_Field_Entry_Date extends Search_Field {
 	/**
 	 * @inheritDoc
 	 * @since $ver$
+	 *     */
+	protected function get_input_type(): string {
+		return 'entry_date';
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
 	 */
-	protected function get_input_value(): array {
+	protected function get_input_value() {
 		return [
-			'start' => $_REQUEST['gv_start'] ?? '',
-			'end'   => $_REQUEST['gv_end'] ?? '',
+			'start' => $this->get_request_value( 'gv_start', '' ),
+			'end'   => $this->get_request_value( 'gv_end', '' ),
 		];
 	}
 }

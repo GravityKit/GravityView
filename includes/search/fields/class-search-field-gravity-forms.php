@@ -5,6 +5,7 @@ namespace GV\Search\Fields;
 use GF_Field;
 use GF_Fields;
 use GFAPI;
+use GravityView_Widget_Search;
 
 /**
  * Represents a search field based on a Gravity Forms Field.
@@ -99,6 +100,10 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	public function get_type(): string {
+		if ( isset( $this->item['id'] ) ) {
+			return $this->item['id'];
+		}
+
 		return sprintf( '%s::%d::%s', self::$type, $this->form_field['form_id'] ?? 0, $this->form_field['id'] ?? 0 );
 	}
 
@@ -115,8 +120,30 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	protected function get_input_name(): string {
-		$field_id = $this->get_field() ? $this->get_field()->id : 0;
+		$field_id = $this->get_field_id();
+
 		return sprintf( 'filter_%s', $field_id );
+	}
+
+	/**
+	 * Returns the field ID.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The field ID.
+	 */
+	private function get_field_id(): string {
+		$field = $this->get_field();
+		if ( $field ) {
+			return (string) $this->get_field()->id;
+		}
+
+		$parts = explode( '::', (string) ( $this->id ?? '' ) );
+		if ( count( $parts ) !== 3 ) {
+			return '0';
+		}
+
+		return (string) $parts[2];
 	}
 
 	/**
@@ -129,7 +156,9 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			return false;
 		}
 
-		return count( $field->choices ?? [] ) > 0;
+		$choices = $field->choices ?? [];
+
+		return is_array( $choices ) && count( $choices ) > 0;
 	}
 
 	/**
@@ -137,7 +166,12 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	protected function get_field_type(): string {
-		return $this->has_choices() ? 'select' : parent::get_field_type();
+		$field = $this->get_field();
+		if ( ! $field ) {
+			return parent::get_field_type();
+		}
+
+		return GravityView_Widget_Search::get_search_input_types( $field['id'], $field['type'] );
 	}
 
 	/**
@@ -164,6 +198,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 		if ( $this->field ) {
 			return $this->field;
 		}
+
 		$parts = explode( '::', (string) ( $this->id ?? '' ) );
 		if ( count( $parts ) !== 3 ) {
 			return null;
@@ -172,5 +207,41 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 		$field = GFAPI::get_field( $parts[1], $parts[2] );
 
 		return $this->field = ( $field ?: null );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_key(): string {
+		$field = $this->get_field();
+		if ( ! $field ) {
+			return parent::get_key();
+		}
+
+		return $field['id'];
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_input_value() {
+		$value = parent::get_input_value();
+		if ( empty( $value ) ) {
+			if ( 'date_range' === $this->get_input_type() ) {
+				$value = [
+					'start' => '',
+					'end'   => '',
+				];
+			} elseif ( 'number_range' === $this->get_input_type() ) {
+				$value = [
+					'min' => '',
+					'max' => '',
+				];
+			}
+		}
+
+		return $value;
 	}
 }

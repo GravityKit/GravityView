@@ -89,9 +89,10 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @since $ver$
 	 *
-	 * @param array $configuration The configuration.
+	 * @param array     $configuration The configuration.
+	 * @param View|null $view          The View object.
 	 *
-	 * @return self|null The collection.
+	 * @return self The collection.
 	 */
 	public static function from_configuration( array $configuration, ?View $view = null ): self {
 		$collection = new self();
@@ -214,5 +215,25 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 		}
 
 		return '';
+	}
+
+	/**
+	 * Returns whether this collection contains a date field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether the collection contains a date field.
+	 */
+	public function has_date_field(): bool {
+		$date_field_types = [ 'date', 'date_range', 'entry_date' ];
+
+		foreach ( $this->storage as $field ) {
+			$input_type = $field->to_template_data()['input'] ?? '';
+			if ( in_array( $input_type, $date_field_types, true ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -6,6 +6,7 @@ use GravityView_Widget_Search;
 use GV\Search\Search_Field_Collection;
 use GV\View;
 
+// Todo: use autoloader, composer classmap ?
 if ( ! class_exists( 'GravityView_Admin_View_Item' ) ) {
 	include_once GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-admin-view-item.php';
 }
@@ -214,7 +215,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return mixed
 	 */
 	protected function get_value() {
-		return $this->value;
+		return null;
 	}
 
 	/**
@@ -282,7 +283,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return string
 	 */
 	protected function get_input_type(): string {
-		return $this->item['input_type'] ?? static::$field_type;
+		return $this->item['input_type'] ?? 'input_text';
 	}
 
 	/**
@@ -381,7 +382,25 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return T
 	 */
 	protected function get_input_value() {
-		return $_REQUEST[ $this->get_input_name() ] ?? '';
+		return $this->get_request_value( $this->get_input_name() ) ?? '';
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_request_value( string $name, $default = null ) {
+		$value = \GV\Utils::_REQUEST( $name, $default );
+
+		$value = stripslashes_deep( $value );
+
+		if ( ! is_null( $value ) ) {
+			$value = gv_map_deep( $value, 'rawurldecode' );
+		}
+
+		$value = gv_map_deep( $value, '_wp_specialchars' );
+
+		return $value;
 	}
 
 	/**
@@ -393,7 +412,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 */
 	public function to_template_data(): array {
 		$params = [
-			'key'          => $this->get_type(),
+			'key'          => $this->get_key(),
 			'name'         => $this->get_input_name(),
 			'label'        => $this->get_frontend_label(),
 			'value'        => $this->get_input_value(),
@@ -407,5 +426,14 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		}
 
 		return $params;
+	}
+
+	/**
+	 * Returns the field key.
+	 *
+	 * @since $ver$
+	 */
+	protected function get_key(): string {
+		return $this->get_type();
 	}
 }
