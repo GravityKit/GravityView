@@ -1936,26 +1936,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			return;
 		}
 
-		$atts_string = '';
-		$atts        = $this->convert_widget_settings_to_shortcode( $settings );
-
-		$atts['id'] = $view->ID;
-
 		// Only add the secret if the current user can edit the View.
 		// This is to prevent the secret from being exposed to users who shouldn't see it.
 		if ( current_user_can( 'edit_gravityview', $view->ID ) ) {
 			$secret = $view->get_validation_secret();
-			if ( $secret ) {
-				$atts['secret'] = $secret;
-			}
 		}
-
-		// Convert array to shortcode attributes string
-		foreach ( $atts as $key => $value ) {
-			$atts_string .= sprintf( ' %s="%s"', $key, esc_attr( $value ) );
-		}
-
-		$shortcode = sprintf( '[gravityview %s]', $atts_string );
 
 		$preview_single_entry = 'yes' === \GV\Utils::get( $settings, 'preview_single_entry' );
 		$show_debug_output    = 'yes' === \GV\Utils::get( $settings, 'show_debug_output' );
@@ -1964,6 +1949,34 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			// Get the first entry in a View.
 			$entry     = $view->get_entries()->first();
 			$shortcode = sprintf( '[gventry entry_id="%d" view_id="%d" secret="%s"]', $entry->ID, $view_id, $secret );
+		} else {
+			$atts = $this->convert_widget_settings_to_shortcode( $settings );
+			
+			if ( $secret ) {
+				$atts['secret'] = $secret;
+			}
+			
+			$atts['id'] = $view->ID;
+			
+			// Reverse the array to put the `id` attribute first, `secret` second.
+			$atts = array_reverse( $atts, true );
+			
+			$atts_string = '';
+			// Convert array to shortcode attributes string.
+			foreach ( $atts as $key => $value ) {
+				// For sorting attributes, there are arrays. This converts to `sort_direction[0]="id"`, for example.
+				if ( is_array( $value ) ) {
+					foreach( $value as $k => $v ) {
+						// Convert sort_direction to `sort_direction` and `sort_direction_2`. Supports more than 2 (`sort_direction_3`, etc.).
+						$suffix = 0 === $k ? '' : '_' . ( $k + 1 );
+						$atts_string .= sprintf( ' %1$s%2$s="%3$s"', $key, esc_attr( $suffix ), esc_attr( $v ) );
+					}
+				} else {
+					$atts_string .= sprintf( ' %1$s="%2$s"', $key, esc_attr( $value ) );
+				}
+			}
+
+			$shortcode = sprintf( '[gravityview %s]', $atts_string );
 		}
 
 		// Add a notice to the top of the View to indicate that it's a preview.
