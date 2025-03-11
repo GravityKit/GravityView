@@ -2083,17 +2083,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		echo $rendered['content'];
 	}
 
-	public function get_data( $item = null ) {
-
-		$this->settings = $this->get_default_data();
-
-		if ( null === $item ) {
-			$item = [];
-		}
-
-		return parent::get_data( $item );
-	}
-
 	private function convert_widget_settings_to_shortcode( $settings ) {
 
 		$defaults = \GV\View_Settings::defaults( true );
