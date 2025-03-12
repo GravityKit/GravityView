@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### Fixed
 * Edit Entry link in Admin bar was invalid for Multi Entries.
+* View Details block could not be previewed when enhanced security was enabled on the View.
 
 #### ✨ Improved
 * Forms in the form selection filter on the Views page are now sorted alphabetically.
