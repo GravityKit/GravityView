@@ -236,7 +236,7 @@ class Blocks {
 			static function ( $post ) {
 				$view = View::from_post( $post );
 
-				if ( ! GVCommon::has_cap( 'edit_view', $view->ID ) ) {
+				if ( ! GVCommon::has_cap( 'edit_gravityviews', $view->ID ) ) {
 					return null;
 				}
 
