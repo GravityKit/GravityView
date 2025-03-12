@@ -762,8 +762,8 @@ class GravityView_frontend {
 				if ( wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
 					return strtr(
 						// Translators: Do not translate the [url] placeholder.
-						esc_html__( 'No entries found. This page will redirect to [url] when opened in a browser.', 'gk-gravityview' ),
-						[ '[url]' => '"' . $redirect_url . '"' ]
+						esc_html__( 'No entries found. This page will redirect to "[url]" when opened in a browser.', 'gk-gravityview' ),
+						[ '[url]' => $redirect_url ]
 					);
 				}
 
