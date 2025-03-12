@@ -754,11 +754,18 @@ class GravityView_frontend {
 		}
 
 		if ( 2 === $no_entries_option ) {
-
 			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect' );
 
 			if ( $no_entries_redirect ) {
 				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
+
+				if ( wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+					return strtr(
+						// Translators: Do not translate the [url] placeholder.
+						esc_html__( 'No entries found. This page will redirect to [url] when opened in a browser.', 'gk-gravityview' ),
+						[ '[url]' => '"' . $redirect_url . '"' ]
+					);
+				}
 
 				$redirected = wp_redirect( $redirect_url );
 
