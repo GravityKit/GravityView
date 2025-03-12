@@ -429,6 +429,21 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns the search field in the legacy format.
+	 *
+	 * @since $ver$
+	 *
+	 * @return array{field: string, label:string, input_type:string} The search field in the legacy format.
+	 */
+	public function to_legacy_format(): array {
+		return [
+			'field' => $this->get_key(),
+			'input' => $this->get_input_type(),
+			'label' => $this->get_frontend_label(),
+		];
+	}
+
+	/**
 	 * Returns the field key.
 	 *
 	 * @since $ver$

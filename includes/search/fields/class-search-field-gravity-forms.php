@@ -122,7 +122,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	protected function get_input_name(): string {
 		$field_id = $this->get_field_id();
 
-		return sprintf( 'filter_%s', $field_id );
+		return sprintf( 'filter_%s', str_replace( '.', '_', $field_id ) );
 	}
 
 	/**
@@ -133,11 +133,6 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @return string The field ID.
 	 */
 	private function get_field_id(): string {
-		$field = $this->get_field();
-		if ( $field ) {
-			return (string) $this->get_field()->id;
-		}
-
 		$parts = explode( '::', (string) ( $this->id ?? '' ) );
 		if ( count( $parts ) !== 3 ) {
 			return '0';
@@ -171,7 +166,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			return parent::get_field_type();
 		}
 
-		return GravityView_Widget_Search::get_search_input_types( $field['id'], $field['type'] );
+		return GravityView_Widget_Search::get_search_input_types( $this->get_field_id(), $field['type'] );
 	}
 
 	/**
@@ -204,9 +199,10 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			return null;
 		}
 
-		$field = GFAPI::get_field( $parts[1], $parts[2] );
+		$field       = GFAPI::get_field( $parts[1], $parts[2] );
+		$this->field = $field ? $field : null;
 
-		return $this->field = ( $field ?: null );
+		return $this->field;
 	}
 
 	/**
@@ -214,12 +210,12 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	protected function get_key(): string {
-		$field = $this->get_field();
-		if ( ! $field ) {
+		$field_id = $this->get_field_id();
+		if ( ! $field_id ) {
 			return parent::get_key();
 		}
 
-		return $field['id'];
+		return $field_id;
 	}
 
 	/**
@@ -243,5 +239,20 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function to_legacy_format(): array {
+		$data = parent::to_legacy_format();
+
+		$field = $this->get_field();
+		if ( $field ) {
+			$data['form_id'] = $field['formId'] ?? null;
+		}
+
+		return $data;
 	}
 }

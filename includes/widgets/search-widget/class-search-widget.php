@@ -626,13 +626,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		foreach ( $view->widgets->by_id( $this->get_widget_id() )->all() as $widget ) {
-			if ( $_fields = json_decode( $widget->configuration->get( 'search_fields' ), true ) ) {
-				foreach ( $_fields as $field ) {
-					if ( empty( $field['form_id'] ) ) {
-						$field['form_id'] = $view->form ? $view->form->ID : 0;
-					}
-					$searchable_fields[] = $with_full_field ? $field : $field['field'];
+			if ( ! $widget instanceof self ) {
+				continue;
+			}
+
+			foreach ( $widget->get_search_fields( $view->ID ) as $field ) {
+				if ( empty( $field['form_id'] ) ) {
+					$field['form_id'] = $view->form ? $view->form->ID : 0;
 				}
+				$searchable_fields[] = $with_full_field ? $field : $field['field'];
 			}
 		}
 
@@ -1761,7 +1763,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 //		$search_fields = $this->get_search_fields( $widget_args, $context );
 
 		// Todo: The fields should be stored on the widget, to support multiple search widgets.
-		$fields        = gravityview_get_directory_search( $view_id );
+		$fields        = $this->get_search_field_configuration( $view_id );
 		$search_fields = Search_Field_Collection::from_configuration( $fields, $view );
 
 		if ( ! $search_fields->count() ) {
@@ -1800,7 +1802,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @return array|mixed|null
 	 */
-	private function get_search_fields( $widget_args, $context ) {
+	private function _get_search_fields( $widget_args, $context ) {
 		if ( $context instanceof \GV\Template_Context ) {
 			$view = $context->view;
 		} else {
@@ -2691,6 +2693,30 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $search_fields;
 	}
 
+	private function get_search_field_configuration( int $view_id ) {
+		return gravityview_get_directory_search( $view_id );
+	}
+
+	/**
+	 * Returns all the searchable fields for a View in the legacy format.
+	 *
+	 * @since $ver$
+	 *
+	 * @param int $view_id The View ID.
+	 *
+	 * @return array{field: string, label:string, input_type:string}[] The searchable fields in the legacy format.
+	 */
+	private function get_search_fields( int $view_id ): array {
+		$search_fields = [];
+		$configuration = $this->get_search_field_configuration( $view_id );
+		$collection    = Search_Field_Collection::from_configuration( $configuration );
+
+		foreach ( $collection->all() as $field ) {
+			$search_fields[] = $field->to_legacy_format();
+		}
+
+		return $search_fields;
+	}
 	/**
 	 * Add the settings for this field.
 	 *

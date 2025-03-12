@@ -26,7 +26,7 @@ final class Search_Field_Is_Starred extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected static string $field_type = 'checkbox';
+	protected static string $field_type = 'boolean';
 
 	/**
 	 * @inheritDoc
