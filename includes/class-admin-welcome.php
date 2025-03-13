@@ -318,11 +318,11 @@ class GravityView_Welcome {
 				<ul>
 					<li>View Details block could not be previewed when enhanced security was enabled on the View.</li>
 					<li>Adding the GravityView shortcode or View block in the block editor prevented content from being saved when the View was configured to redirect on no entries.</li>
-					<li><code>[gravityview]</code> shortcode not returning results when the <code>search_value</code> attribute contained an apostrophe.</li>
-					<li>Issues in Views using joined data from multiple forms (<a href="https://www.gravitykit.com/extensions/multiple-forms/">Multiple Forms</a> extension):
+					<li><code>[gravityview]</code> shortcode not returning results when the <code>search_value</code> attribute contains an apostrophe.</li>
+					<li>Issues in Views using joined data (<a href="https://www.gravitykit.com/extensions/multiple-forms/">Multiple Forms</a> extension):
 						<ul>
 							<li>Single Entry layout not working in a lightbox;</li>
-							<li>Invalid GravityView &gt; Edit Entry link in the top admin bar when editing an entry;</li>
+							<li>Invalid <code>GravityView &gt; Edit Entry</code> link in the top admin bar when editing an entry;</li>
 							<li>PHP notice triggered when editing entries in a lightbox.</li>
 						</ul>
 					</li>

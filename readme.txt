@@ -36,9 +36,9 @@ This update introduces a new notification event for duplicated entries, along wi
 * View Details block could not be previewed when enhanced security was enabled on the View.
 * Adding the GravityView shortcode or View block in the block editor prevented content from being saved when the View was configured to redirect on no entries.
 * `[gravityview]` shortcode not returning results when the `search_value` attribute value contains an apostrophe.
-* Issues in Views using joined data from multiple forms ([Multiple Forms](https://www.gravitykit.com/extensions/multiple-forms/) extension):
+* Issues in Views using joined data ([Multiple Forms](https://www.gravitykit.com/extensions/multiple-forms/) extension):
   - Single Entry layout not working in a lightbox;
-  - Invalid GravityView > Edit Entry link under in the top admin bar when editing an entry;
+  - Invalid `GravityView > Edit Entry` link in the top admin bar when editing an entry;
   - PHP notice triggered when editing entries in a lightbox.
 
 = 2.35 on February 12, 2025 =
