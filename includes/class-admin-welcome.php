@@ -296,6 +296,38 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.36 on March 13, 2025</h3>
+
+				<p>This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.</li>
+				</ul>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>Forms in the form selection filter on the Views page are now sorted alphabetically.</li>
+					<li>Security enhancements for GravityView blocks and shortcodes.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>View Details block could not be previewed when enhanced security was enabled on the View.</li>
+					<li>Adding the GravityView shortcode or View block in the block editor prevented content from being saved when the View was configured to redirect on no entries.</li>
+					<li><code>[gravityview]</code> shortcode not returning results when the <code>search_value</code> attribute contains an apostrophe.</li>
+					<li>Issues in Views using joined data (<a href="https://www.gravitykit.com/extensions/multiple-forms/">Multiple Forms</a> extension):
+						<ul>
+							<li>Single Entry layout not working in a lightbox;</li>
+							<li>Invalid <code>GravityView &gt; Edit Entry</code> link in the top admin bar when editing an entry;</li>
+							<li>PHP notice triggered when editing entries in a lightbox.</li>
+						</ul>
+					</li>
+				</ul>
+
 				<h3>2.35 on February 12, 2025</h3>
 
 				<p>This update adds random sorting to the GravityView block, improves how partial entries are handled, and fixes several issues, including a fatal error in Gravity Forms 2.9.3 or newer.</p>
@@ -384,64 +416,6 @@ class GravityView_Welcome {
 					<li>Fatal error when searching entries by Approval Status in Views joined with another form using the Multiple Forms extension.</li>
 					<li>Some <a href='https://docs.gravitykit.com/article/350-merge-tag-modifiers'>merge tag modifiers</a> (e.g., <code>:maxwords</code>) not being processed.</li>
 					<li>WordPress's timezone offset not applying to Date field output with the <code>:format</code> merge tag modifier.</li>
-				</ul>
-
-				<h3>2.33.2 on December 31, 2024</h3>
-
-				<p>This update removes debugging code from the Entry Notes field.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Debugging code being shown in the Entry Notes field output.</li>
-				</ul>
-
-				<h3>2.33.1 on December 30, 2024</h3>
-
-				<p>This update removes debugging code from the Entry Notes field.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Debugging code being shown in the Entry Notes field output.</li>
-				</ul>
-
-				<h3>2.33 on December 19, 2024</h3>
-
-				<p>This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Support for the Source ID meta introduced in Gravity Forms 2.9.</li>
-					<li>New User Activation field in the View editor to activate users added by the Gravity Forms User Registration add-on.</li>
-					<li>Client-side validation of View editor settings to prevent incorrect values.</li>
-					<li><code>:initials</code> merge tag modifier for Name fields to display initials.</li>
-					<li><code>:format</code> merge tag modifier for field inputs (e.g., <code>{Event Field:1.1:format:Y-m-d}</code>).</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.</li>
-					<li>Individual Checkboxes field inputs incorrectly exported in CSV.</li>
-					<li>Custom permalinks not being used in embedded Views.</li>
-					<li>Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.</li>
-					<li>Labels for fields with empty values disappearing in mobile view when joining forms using the Multiple Forms extension.</li>
-					<li>Views defaulting to English instead of the site's language for users without certain capabilities.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.22.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gravityview/template/field/csv/tick</code> filter to programmatically modify the checkbox "check" output in CSV.</li>
-					<li>Added <code>gravityview/shortcode/after-processing</code> action after a <code>[gravityview]</code> shortcode is finished.</li>
 				</ul>
 
 				<p style="text-align: center;">

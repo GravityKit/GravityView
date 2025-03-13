@@ -404,7 +404,16 @@ class GVCommon {
 			$forms = GFAPI::get_forms( $active, $trash );
 		}
 
-		$forms = wp_list_sort( $forms, $order_by, $order, true );
+
+		// Handle case-insensitive title sorting with uppercase/lowercase letters
+		if ( ! empty( $forms ) && 'title' === $order_by ) {
+			uasort( $forms, function( $a, $b ) use ( $order ) {
+				$result = strnatcasecmp( $a['title'], $b['title'] );
+				return ( 'DESC' === $order ) ? -$result : $result;
+			});
+		} elseif ( ! empty( $forms ) ) {
+			$forms = wp_list_sort( $forms, $order_by, $order, true );
+		}
 
 		/**
 		 * Modify the forms returned by GFAPI::get_forms().

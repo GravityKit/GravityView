@@ -55,21 +55,23 @@ class Entry_Renderer extends Renderer {
 		do_action( 'gravityview_render_entry_' . $view->ID, $entry, $view, $request );
 
 		/** Entry does not belong to this view. */
-		if ( $view->joins ) {
+		if ( $view->joins && $entry instanceof Multi_Entry ) {
 			$form_ids = array();
 			foreach ( $view->joins as $join ) {
 				$form_ids[] = $join->join->ID;
 				$form_ids[] = $join->join_on->ID;
 			}
-			foreach ( $entry->entries as $e ) {
+
+			foreach ( $entry->entries ?? [] as $e ) {
 				if ( ! in_array( $e['form_id'], $form_ids ) ) {
 					gravityview()->log->error(
 						'The requested entry does not belong to this View. Entry #{entry_id}, #View {view_id}',
-						array(
+						[
 							'entry_id' => $e->ID,
 							'view_id'  => $view->ID,
-						)
+						]
 					);
+
 					return null;
 				}
 			}

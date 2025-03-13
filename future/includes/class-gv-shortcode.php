@@ -3,6 +3,7 @@
 namespace GV;
 
 use GFCommon;
+use GVCommon;
 use WP_Error;
 
 /** If this file is called directly, abort. */
@@ -175,6 +176,17 @@ class Shortcode {
 
 		if ( $view->validate_secret( $secret ) ) {
 			return $view;
+		}
+
+		// If the user can't edit the View, don't show the error message with the secret.
+		if ( ! GVCommon::has_cap( 'edit_gravityviews', $view->ID ) ) {
+			return new WP_Error(
+				'invalid_secret',
+				sprintf(
+					esc_html__( '%1$s: Invalid View secret provided.', 'gk-gravityview' ),
+					'GravityView'
+				)
+			);
 		}
 
 		return new WP_Error(
