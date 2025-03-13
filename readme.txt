@@ -21,21 +21,25 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.36 on March 13, 2025 =
+
+This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.
 
 #### 🚀 Added
 * New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.
 
+#### ✨ Improved
+* Forms in the form selection filter on the Views page are now sorted alphabetically.
+* Security enhancements for GravityView blocks and shortcodes.
+
 #### Fixed
-* Single Entry layout did not work in a lightbox when Views used joined data from multiple forms.
-* Edit Entry link in Admin bar was invalid for Multi Entries.
 * View Details block could not be previewed when enhanced security was enabled on the View.
 * Adding the GravityView shortcode or View block in the block editor prevented content from being saved when the View was configured to redirect on no entries.
 * `[gravityview]` shortcode not returning results when the `search_value` attribute value contains an apostrophe.
-* PHP notice that occurred when editing an entry from a View using joined data from multiple forms.
-
-#### ✨ Improved
-* Forms in the form selection filter on the Views page are now sorted alphabetically.
+* Issues in Views using joined data from multiple forms ([Multiple Forms](https://www.gravitykit.com/extensions/multiple-forms/) extension):
+  - Single Entry layout not working in a lightbox;
+  - Invalid GravityView > Edit Entry link under in the top admin bar when editing an entry;
+  - PHP notice triggered when editing entries in a lightbox.
 
 = 2.35 on February 12, 2025 =
 
