@@ -296,7 +296,7 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
-				<h3> 2.36 on March 13, 2025</h3>
+				<h3>2.36 on March 13, 2025</h3>
 
 				<p>This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.</p>
 
