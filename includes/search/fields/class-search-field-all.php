@@ -20,7 +20,7 @@ final class Search_Field_All extends Search_Field {
 	 * @inheritdoc
 	 * @since $ver$
 	 */
-	protected static string $type = 'all';
+	protected static string $type = 'search_all';
 
 	/**
 	 * @inheritDoc
