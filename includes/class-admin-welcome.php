@@ -418,64 +418,6 @@ class GravityView_Welcome {
 					<li>WordPress's timezone offset not applying to Date field output with the <code>:format</code> merge tag modifier.</li>
 				</ul>
 
-				<h3>2.33.2 on December 31, 2024</h3>
-
-				<p>This update removes debugging code from the Entry Notes field.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Debugging code being shown in the Entry Notes field output.</li>
-				</ul>
-
-				<h3>2.33.1 on December 30, 2024</h3>
-
-				<p>This update removes debugging code from the Entry Notes field.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Debugging code being shown in the Entry Notes field output.</li>
-				</ul>
-
-				<h3>2.33 on December 19, 2024</h3>
-
-				<p>This release introduces support for the Source ID meta (Gravity Forms 2.9+), adds a new User Activation field to the View editor, and includes various fixes and enhancements.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Support for the Source ID meta introduced in Gravity Forms 2.9.</li>
-					<li>New User Activation field in the View editor to activate users added by the Gravity Forms User Registration add-on.</li>
-					<li>Client-side validation of View editor settings to prevent incorrect values.</li>
-					<li><code>:initials</code> merge tag modifier for Name fields to display initials.</li>
-					<li><code>:format</code> merge tag modifier for field inputs (e.g., <code>{Event Field:1.1:format:Y-m-d}</code>).</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Merge tags in redirect URLs were not processed after editing or deleting an entry in the lightbox.</li>
-					<li>Individual Checkboxes field inputs incorrectly exported in CSV.</li>
-					<li>Custom permalinks not being used in embedded Views.</li>
-					<li>Deprecated filter notice when both the Advanced Filter extension (version 3 or newer) and Gravity Flow are active.</li>
-					<li>Labels for fields with empty values disappearing in mobile view when joining forms using the Multiple Forms extension.</li>
-					<li>Views defaulting to English instead of the site's language for users without certain capabilities.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.22.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gravityview/template/field/csv/tick</code> filter to programmatically modify the checkbox "check" output in CSV.</li>
-					<li>Added <code>gravityview/shortcode/after-processing</code> action after a <code>[gravityview]</code> shortcode is finished.</li>
-				</ul>
-
 				<p style="text-align: center;">
 					<a href="https://www.gravitykit.com/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gk-gravityview' ); ?></a>
 				</p>
