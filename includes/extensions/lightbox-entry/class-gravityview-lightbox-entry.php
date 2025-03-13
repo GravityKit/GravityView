@@ -513,6 +513,9 @@ class GravityView_Lightbox_Entry {
 	 */
 	private function render_entry( $type, $view, $entry, $form ) {
 		global $wp;
+		global $post;
+
+		$post = $post ?? get_post( $view->ID );
 
 		add_filter( 'gravityview_go_back_url', '__return_false' );
 
