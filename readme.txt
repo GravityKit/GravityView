@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.
 
 #### Fixed
+* Single Entry layout did not work in a lightbox when Views used joined data from multiple forms.
 * Edit Entry link in Admin bar was invalid for Multi Entries.
 * View Details block could not be previewed when enhanced security was enabled on the View.
 * Adding the GravityView shortcode or View block in the block editor prevented content from being saved when the View was configured to redirect on no entries.
