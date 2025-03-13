@@ -269,7 +269,7 @@ class GravityView_Lightbox_Entry {
 	 * @used-by `gravityview/template/field/entry_link` filter.
 	 *
 	 * @since   2.29.0
-	 * @since   TBD Switched to using `gravityview/template/field/entry_link` filter, and updated method parameters.
+	 * @since   2.36.0 Switched to using `gravityview/template/field/entry_link` filter, and updated method parameters.
 	 *
 	 * @param string           $link    The entry link (HTML markup).
 	 * @param string           $href    The entry link URL.

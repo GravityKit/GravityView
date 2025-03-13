@@ -33,7 +33,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 	/**
 	 * Sets the selected View from the ViewSelect object.
 	 *
-	 * @since TBD
+	 * @since 2.36.0
 	 *
 	 * @param {number} _viewId The View ID.
 	 */
