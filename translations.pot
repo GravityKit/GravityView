@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.35\n"
+"Project-Id-Version: GravityView 2.36\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-13T01:18:09+00:00\n"
+"POT-Creation-Date: 2025-03-13T23:51:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -110,7 +110,7 @@ msgstr ""
 #: future/includes/class-gv-view.php:417
 #: future/includes/class-gv-view.php:423
 #: future/includes/class-gv-view.php:437
-#: includes/class-frontend-views.php:818
+#: includes/class-frontend-views.php:825
 msgid "You are not allowed to view this content."
 msgstr ""
 
@@ -298,7 +298,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:214
 #: includes/class-admin-views.php:1746
 #: includes/class-frontend-views.php:685
-#: includes/class-gravityview-admin-bar.php:111
+#: includes/class-gravityview-admin-bar.php:112
 #: includes/class-gravityview-entry-link-shortcode.php:250
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1113
 #: includes/extensions/edit-entry/fields/edit_link.php:14
@@ -740,7 +740,7 @@ msgstr ""
 
 #: future/includes/class-gv-settings-view.php:316
 #: future/includes/class-gv-settings-view.php:347
-#: includes/class-common.php:1697
+#: includes/class-common.php:1706
 #: includes/fields/class-gravityview-field-date-created.php:29
 msgid "Date Created"
 msgstr ""
@@ -1065,7 +1065,11 @@ msgstr ""
 msgid "Are you sure you want to restore this View? It will immediately be removed from the trash and set to draft status."
 msgstr ""
 
-#: future/includes/class-gv-shortcode.php:183
+#: future/includes/class-gv-shortcode.php:186
+msgid "%1$s: Invalid View secret provided."
+msgstr ""
+
+#: future/includes/class-gv-shortcode.php:195
 msgid "%1$s: Invalid View secret provided. Update the shortcode with the secret: %2$s"
 msgstr ""
 
@@ -1098,7 +1102,7 @@ msgid "Add New View"
 msgstr ""
 
 #: future/includes/class-gv-view.php:180
-#: includes/class-gravityview-admin-bar.php:163
+#: includes/class-gravityview-admin-bar.php:164
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/entry.js:1
@@ -1204,7 +1208,7 @@ msgstr ""
 msgid "GravityView View"
 msgstr ""
 
-#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:244
+#: future/includes/gutenberg/class-gv-gutenberg-blocks.php:248
 #: includes/fields/class-gravityview-field-gravityview_view.php:58
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
@@ -1930,7 +1934,7 @@ msgid "The connected form can not be found; it may no longer exist."
 msgstr ""
 
 #: includes/class-admin-views.php:611
-#: includes/class-gravityview-admin-bar.php:164
+#: includes/class-gravityview-admin-bar.php:165
 msgid "Edit Form"
 msgstr ""
 
@@ -2114,23 +2118,23 @@ msgstr ""
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:448
+#: includes/class-admin-welcome.php:422
 msgid "View change history"
 msgstr ""
 
-#: includes/class-admin-welcome.php:500
+#: includes/class-admin-welcome.php:474
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:544
+#: includes/class-admin-welcome.php:518
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:576
+#: includes/class-admin-welcome.php:550
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:577
+#: includes/class-admin-welcome.php:551
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
 msgstr ""
 
@@ -2260,7 +2264,7 @@ msgstr ""
 msgid "Select a Form"
 msgstr ""
 
-#: includes/class-common.php:497
+#: includes/class-common.php:506
 #: includes/fields/class-gravityview-field-post-id.php:28
 #: future/includes/gutenberg/build/entry-link.js:1
 #: future/includes/gutenberg/build/view.js:1
@@ -2268,29 +2272,29 @@ msgstr ""
 msgid "Post ID"
 msgstr ""
 
-#: includes/class-common.php:1186
-#: includes/class-common.php:1255
+#: includes/class-common.php:1195
+#: includes/class-common.php:1264
 msgid "%s ago"
 msgstr ""
 
-#: includes/class-common.php:1197
+#: includes/class-common.php:1206
 msgid "%1$s at %2$s"
 msgstr ""
 
-#: includes/class-common.php:1255
+#: includes/class-common.php:1264
 msgid "%s from now"
 msgstr ""
 
-#: includes/class-common.php:1650
+#: includes/class-common.php:1659
 msgid "Default (Entry ID)"
 msgstr ""
 
-#: includes/class-common.php:1701
+#: includes/class-common.php:1710
 #: includes/fields/class-gravityview-field-date-updated.php:31
 msgid "Date Updated"
 msgstr ""
 
-#: includes/class-common.php:1833
+#: includes/class-common.php:1842
 msgid "Email hidden; Javascript is required."
 msgstr ""
 
@@ -2320,26 +2324,31 @@ msgstr ""
 msgid "The ID is already a View."
 msgstr ""
 
-#: includes/class-frontend-views.php:1618
+#. Translators: Do not translate the [url] placeholder.
+#: includes/class-frontend-views.php:765
+msgid "No entries found. This page will redirect to \"[url]\" when opened in a browser."
+msgstr ""
+
+#: includes/class-frontend-views.php:1626
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1619
+#: includes/class-frontend-views.php:1627
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
 
-#: includes/class-gravityview-admin-bar.php:113
+#: includes/class-gravityview-admin-bar.php:114
 msgid "Edit Entry %s"
 msgstr ""
 
-#: includes/class-gravityview-admin-bar.php:167
+#: includes/class-gravityview-admin-bar.php:168
 msgctxt "Edit View with the ID of %d"
 msgid "Edit View #%d"
 msgstr ""
 
-#: includes/class-gravityview-admin-bar.php:168
+#: includes/class-gravityview-admin-bar.php:169
 msgctxt "Edit Form with the ID of %d"
 msgid "Edit Form #%d"
 msgstr ""
@@ -2705,9 +2714,9 @@ msgid "Powered by GravityView"
 msgstr ""
 
 #: includes/extensions/delete-entry/class-delete-entry.php:386
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:432
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:463
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:474
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:436
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:467
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:478
 msgid "The entry does not exist."
 msgstr ""
 
@@ -2757,7 +2766,7 @@ msgid "A link to delete the entry. Respects the Delete Entry permissions."
 msgstr ""
 
 #: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:76
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:298
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:302
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:95
 msgctxt "User capability"
 msgid "Entry Creator"
@@ -2767,61 +2776,66 @@ msgstr ""
 msgid "Allow the following users to delete the entry:"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:208
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:212
 msgid "Duplicate Link Text"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:210
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:242
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:264
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:214
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:246
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:268
 msgid "Duplicate Entry"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:216
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:220
 msgid "Allow the following users to duplicate the entry:"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:244
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:248
 msgid "A link to duplicate the entry. Respects the Duplicate Entry permissions."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:500
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:541
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:875
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:504
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:545
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:879
 msgid "There was an error duplicating the entry."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:605
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:609
 msgid "Are you sure you want to duplicate this entry?"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:640
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:644
 msgid "The link to duplicate this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:644
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:648
 msgid "You do not have permission to duplicate this entry."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:781
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:785
 msgid "There was an error duplicating the entry: %s"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:785
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:789
 msgid "The entry was successfully duplicated."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:831
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:835
 msgid "Duplicate"
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:857
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:861
 msgid "Entry duplicated."
 msgstr ""
 
-#: includes/extensions/duplicate-entry/class-duplicate-entry.php:867
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:871
 msgctxt "Error message links to logging page"
 msgid "Check the GravityView logs for more information."
+msgstr ""
+
+#: includes/extensions/duplicate-entry/class-duplicate-entry.php:943
+msgctxt "The title for an event in a notifications drop down list."
+msgid "Entry is duplicated"
 msgstr ""
 
 #: includes/extensions/edit-entry/class-edit-entry-admin.php:111
@@ -3132,7 +3146,7 @@ msgstr ""
 msgid "The note is empty."
 msgstr ""
 
-#: includes/extensions/lightbox-entry/class-gravityview-lightbox-entry.php:122
+#: includes/extensions/lightbox-entry/class-gravityview-lightbox-entry.php:137
 msgid "The requested entry could not be found."
 msgstr ""
 
@@ -4869,7 +4883,7 @@ msgstr ""
 
 #: includes/widgets/class-gravityview-widget-page-size.php:39
 #: includes/widgets/class-gravityview-widget-page-size.php:99
-#: future/includes/gutenberg/blocks/view-details/edit.js:55
+#: future/includes/gutenberg/blocks/view-details/edit.js:72
 #: future/includes/gutenberg/blocks/view/edit.js:215
 #: future/includes/gutenberg/build/view-details.js:1
 #: future/includes/gutenberg/build/view.js:1
@@ -7159,7 +7173,7 @@ msgstr ""
 #: future/includes/gutenberg/blocks/entry-field/edit.js:64
 #: future/includes/gutenberg/blocks/entry-link/edit.js:48
 #: future/includes/gutenberg/blocks/entry/edit.js:59
-#: future/includes/gutenberg/blocks/view-details/edit.js:40
+#: future/includes/gutenberg/blocks/view-details/edit.js:57
 #: future/includes/gutenberg/blocks/view/edit.js:116
 #: future/includes/gutenberg/build/entry-field.js:1
 #: future/includes/gutenberg/build/entry-link.js:1
@@ -7213,22 +7227,22 @@ msgstr ""
 msgid "Field Values"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view-details/edit.js:49
+#: future/includes/gutenberg/blocks/view-details/edit.js:66
 #: future/includes/gutenberg/build/view-details.js:1
 msgid "Detail"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view-details/edit.js:52
+#: future/includes/gutenberg/blocks/view-details/edit.js:69
 #: future/includes/gutenberg/build/view-details.js:1
 msgid "Total Entries"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view-details/edit.js:53
+#: future/includes/gutenberg/blocks/view-details/edit.js:70
 #: future/includes/gutenberg/build/view-details.js:1
 msgid "First Entry"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view-details/edit.js:54
+#: future/includes/gutenberg/blocks/view-details/edit.js:71
 #: future/includes/gutenberg/build/view-details.js:1
 msgid "Last Entry"
 msgstr ""
