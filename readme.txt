@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Edit Entry link in Admin bar was invalid for Multi Entries.
 * View Details block could not be previewed when enhanced security was enabled on the View.
 * Adding the GravityView shortcode or View block in the block editor prevented content from being saved when the View was configured to redirect on no entries.
+* `[gravityview]` shortcode not returning results when the `search_value` attribute value contains an apostrophe.
 
 #### ✨ Improved
 * Forms in the form selection filter on the Views page are now sorted alphabetically.

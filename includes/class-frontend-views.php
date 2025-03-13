@@ -1023,9 +1023,10 @@ class GravityView_frontend {
 
 		// implicity search
 		if ( ! empty( $args['search_value'] ) ) {
-
 			// Search operator options. Options: `is` or `contains`
 			$operator = ! empty( $args['search_operator'] ) && in_array( $args['search_operator'], array( 'is', 'isnot', '>', '<', 'contains' ) ) ? $args['search_operator'] : 'contains';
+
+			$args['search_value'] = html_entity_decode( $args['search_value'], ENT_QUOTES );
 
 			$search_criteria['field_filters'][] = array(
 				'key'      => \GV\Utils::_GET( 'search_field', \GV\Utils::get( $args, 'search_field' ) ), // The field ID to search
