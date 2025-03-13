@@ -38,7 +38,7 @@ class GravityView_Lightbox_Entry {
 
 		add_filter( 'gravityview/template/before', [ $this, 'maybe_enable_lightbox' ] );
 		add_filter( 'gk/foundation/rest/routes', [ $this, 'register_rest_routes' ] );
-		add_filter( 'gravityview_field_entry_link', [ $this, 'rewrite_entry_link' ], 10, 4 );
+		add_filter( 'gravityview/template/field/entry_link', [ $this, 'rewrite_entry_link' ], 10, 3 );
 		add_filter( 'gk/foundation/inline-scripts', [ $this, 'enqueue_view_editor_script' ] );
 		add_filter( 'gravityview/view/links/directory', [ $this, 'rewrite_directory_link' ] );
 		add_filter( 'gform_get_form_confirmation_filter', [ $this, 'process_gravity_forms_form_submission' ] );
@@ -248,21 +248,23 @@ class GravityView_Lightbox_Entry {
 	/**
 	 * Rewrites Single or Edit Entry links to open inside lightbox.
 	 *
-	 * @used-by `gravityview_field_entry_link` filter.
+	 * @used-by `gravityview/template/field/entry_link` filter.
 	 *
 	 * @since   2.29.0
+	 * @since   TBD Switched to using `gravityview/template/field/entry_link` filter, and updated method parameters.
 	 *
-	 * @param string $link           The entry link (HTML markup).
-	 * @param string $href           The entry link URL.
-	 * @param array  $entry          The entry data.
-	 * @param array  $field_settings The Link to Single Entry field settings.
+	 * @param string           $link    The entry link (HTML markup).
+	 * @param string           $href    The entry link URL.
+	 * @param Template_Context $context The context
 	 *
 	 * @return string
 	 */
-	public function rewrite_entry_link( $link, $href, $entry, $field_settings ) {
-		$view    = GravityView_View::getInstance();
-		$is_rest = ! empty( $this->get_rest_endpoint_from_request() );
-		$is_edit = 'edit_link' === ( $field_settings['id'] ?? '' );
+	public function rewrite_entry_link( $link, $href, $context ) {
+		$view           = GravityView_View::getInstance();
+		$entry          = $context->entry->as_entry();
+		$field_settings = $context->field->as_configuration();
+		$is_rest        = ! empty( $this->get_rest_endpoint_from_request() );
+		$is_edit        = 'edit_link' === ( $field_settings['id'] ?? '' );
 
 		if ( ! (int) ( $field_settings['lightbox'] ?? 0 ) && ! $is_rest ) {
 			return $link;
