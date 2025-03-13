@@ -17,3 +17,4 @@ GravityKit\GravityView\Foundation\Core::register( GRAVITYVIEW_FILE );
 
 /** @define "GRAVITYVIEW_DIR" "../" */
 require GRAVITYVIEW_DIR . 'future/gravityview.php';
+require GRAVITYVIEW_DIR . 'includes/search/autoloader.php';

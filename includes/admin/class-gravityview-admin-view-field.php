@@ -8,9 +8,11 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 	protected $label_type = 'field';
 
-	protected function additional_info() {
+	protected function get_title( string $label ): string {
+		return sprintf( __( 'Field: %s', 'gk-gravityview' ), $label );
+	}
 
-		$field_info = '';
+	protected function additional_info() {
 
 		$field_info_items = array();
 

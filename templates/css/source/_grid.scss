@@ -25,6 +25,7 @@
   box-sizing: border-box;
   direction: $direction;
   text-align: $left;
+  width: 100%;
 
 	&:before,
 	&:after {

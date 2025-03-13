@@ -3,12 +3,11 @@
  * Display the search single CHECKBOX input field ( on/off type)
  *
  * @file class-search-widget.php See for usage
+ *
+ * @global array $data
  */
 
-$gravityview_view = GravityView_View::getInstance();
-$view_id          = $gravityview_view->getViewId();
-$search_field     = $gravityview_view->search_field;
-
+$search_field = \GV\Utils::get( $data, 'search_field', [] );
 ?>
 
 <div class="gv-search-box gv-search-field-single_checkbox">
