@@ -123,11 +123,11 @@ class GravityView_Lightbox_Entry {
 
 		$entry            = ! empty( $entries ) ? reset( $entries ) : null;
 		$multiple_entries = count( $entries ) > 1 ? Multi_Entry::from_entries( $entries ) : null;
-		$view            = View::by_id( $request->get_param( 'view_id' ) ?? 0 );
-		$form            = GVCommon::get_form( $view->form->ID ?? 0 );
-		$edit_nonce      = $request->get_param( 'edit' ) ?? null;
-		$delete_nonce    = $request->get_param( 'delete' ) ?? null;
-		$duplicate_nonce = $request->get_param( 'duplicate' ) ?? null;
+		$view             = View::by_id( $request->get_param( 'view_id' ) ?? 0 );
+		$form             = GVCommon::get_form( $view->form->ID ?? 0 );
+		$edit_nonce       = $request->get_param( 'edit' ) ?? null;
+		$delete_nonce     = $request->get_param( 'delete' ) ?? null;
+		$duplicate_nonce  = $request->get_param( 'duplicate' ) ?? null;
 
 		if ( ! $view || ! $entry || ! $form ) {
 			gravityview()->log->error( 'Unable to find View, entry or form.' );
@@ -288,7 +288,7 @@ class GravityView_Lightbox_Entry {
 			return $link;
 		}
 
-		$entry_ids = $context->entry->is_multi() ? array_map(fn($entry) => $entry->ID, $context->entry->entries) : [$entry['id']];
+		$entry_ids = $context->entry->is_multi() ? array_map( fn( $entry ) => $entry->ID, $context->entry->entries ) : [ $entry['id'] ];
 
 		$directory_link = $this->get_rest_directory_link( $view->view_id, implode( ',', $entry_ids ) );
 
