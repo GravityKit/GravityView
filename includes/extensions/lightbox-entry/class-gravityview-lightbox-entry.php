@@ -3,6 +3,7 @@
 use GV\Edit_Entry_Renderer;
 use GV\Entry_Renderer;
 use GV\GF_Entry;
+use GV\Multi_Entry;
 use GV\Template_Context;
 use GV\View;
 
@@ -26,7 +27,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @since 2.29.0
 	 */
-	const REST_ENDPOINT_REGEX = 'view/(?P<view_id>[0-9]+)/entry/(?P<entry_id>[0-9]+)';
+	const REST_ENDPOINT_REGEX = 'view/(?P<view_id>[0-9]+)/entry/(?P<entry_ids>[0-9,]+)';
 
 	/**
 	 * Class constructor.
@@ -107,15 +108,29 @@ class GravityView_Lightbox_Entry {
 	 * @return WP_REST_Response
 	 */
 	public function process_rest_request( $request ) {
+		$entry_ids = $request->get_param( 'entry_ids' ) ?? '';
+		$entries   = [];
+
+		foreach ( explode( ',', $entry_ids ) as $entry_id ) {
+			$_entry = GF_Entry::by_id( $entry_id );
+
+			if ( ! $_entry ) {
+				continue;
+			}
+
+			$entries[] = $_entry;
+		}
+
+		$entry            = ! empty( $entries ) ? reset( $entries ) : null;
+		$multiple_entries = count( $entries ) > 1 ? Multi_Entry::from_entries( $entries ) : null;
 		$view            = View::by_id( $request->get_param( 'view_id' ) ?? 0 );
-		$entry           = GF_Entry::by_id( $request->get_param( 'entry_id' ) ?? 0 );
-		$form            = GVCommon::get_form( $entry['form_id'] ?? 0 );
+		$form            = GVCommon::get_form( $view->form->ID ?? 0 );
 		$edit_nonce      = $request->get_param( 'edit' ) ?? null;
 		$delete_nonce    = $request->get_param( 'delete' ) ?? null;
 		$duplicate_nonce = $request->get_param( 'duplicate' ) ?? null;
 
 		if ( ! $view || ! $entry || ! $form ) {
-			gravityview()->log->error( "Unable to find View ID {$view->ID} and/or entry ID {$entry->ID}." );
+			gravityview()->log->error( 'Unable to find View, entry or form.' );
 
 			ob_start();
 
@@ -141,7 +156,7 @@ class GravityView_Lightbox_Entry {
 		return $this->render_entry(
 			$edit_nonce ? 'edit' : 'single',
 			$view,
-			$entry,
+			$multiple_entries ?? $entry,
 			$form
 		);
 	}
@@ -177,12 +192,15 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @since 2.9.0
 	 *
+	 * @param int    $view_id   The View ID.
+	 * @param string $entry_ids The entry IDs (comma-separated).
+	 *
 	 * @return string
 	 */
-	public function get_rest_directory_link( $view_id, $entry_id ) {
+	public function get_rest_directory_link( $view_id, $entry_ids ) {
 		return add_query_arg(
 			[ '_wpnonce' => wp_create_nonce( 'wp_rest' ) ],
-			rest_url( $this->get_rest_endpoint( $view_id, $entry_id ) ),
+			rest_url( $this->get_rest_endpoint( $view_id, $entry_ids ) ),
 		);
 	}
 
@@ -191,18 +209,18 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @since 2.29.0
 	 *
-	 * @param int $view_id  The View ID.
-	 * @param int $entry_id The entry ID.
+	 * @param int    $view_id   The View ID.
+	 * @param string $entry_ids The entry IDs (comma-separated).
 	 *
 	 * @return string
 	 */
-	public function get_rest_endpoint( $view_id, $entry_id ) {
+	public function get_rest_endpoint( $view_id, $entry_ids ) {
 		return sprintf(
 			'%s/v%s/view/%s/entry/%s',
 			self::REST_NAMESPACE,
 			self::REST_VERSION,
 			$view_id,
-			$entry_id
+			$entry_ids
 		);
 	}
 
@@ -237,12 +255,12 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @param string $endpoint The REST endpoint.
 	 *
-	 * @return array{view_id:string, entry_id:string}|null
+	 * @return array{view_id:string, entry_ids:string}|null
 	 */
 	public function get_view_and_entry_from_rest_endpoint( $endpoint ) {
 		preg_match( self::REST_ENDPOINT_REGEX, $endpoint, $matches );
 
-		return ! empty( $matches ) ? [ 'view_id' => $matches['view_id'], 'entry_id' => $matches['entry_id'] ] : null;
+		return ! empty( $matches ) ? [ 'view_id' => $matches['view_id'], 'entry_ids' => $matches['entry_ids'] ] : null;
 	}
 
 	/**
@@ -270,7 +288,9 @@ class GravityView_Lightbox_Entry {
 			return $link;
 		}
 
-		$directory_link = $this->get_rest_directory_link( $view->view_id, $entry['id'] );
+		$entry_ids = $context->entry->is_multi() ? array_map(fn($entry) => $entry->ID, $context->entry->entries) : [$entry['id']];
+
+		$directory_link = $this->get_rest_directory_link( $view->view_id, implode( ',', $entry_ids ) );
 
 		if ( $is_edit ) {
 			$directory_link = add_query_arg(
@@ -484,10 +504,10 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @since   2.29.0
 	 *
-	 * @param string   $type  The type of the entry view (single or edit).
-	 * @param View     $view  The View object.
-	 * @param GF_Entry $entry The entry data.
-	 * @param array    $form  The form data.
+	 * @param string               $type  The type of the entry view (single or edit).
+	 * @param View                 $view  The View object.
+	 * @param Multi_Entry|GF_Entry $entry The entry data.
+	 * @param array                $form  The form data.
 	 *
 	 * @return WP_REST_Response
 	 */
