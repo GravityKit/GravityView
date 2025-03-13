@@ -80,7 +80,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @param string|null $label The name of the field.
 	 * @param array       $data  The configuration of the field.
 	 */
-	public function __construct( ?string $label = null, array $data = [] ) {
+	public function __construct( ?string $label = null, array $data = [], bool $call_initialize = true ) {
 		parent::__construct(
 			$label ?? $this->get_label(),
 			$this->get_type(),
@@ -88,10 +88,9 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			array_intersect_key( $data, array_flip( [ 'custom_label', 'show_label' ] ) )
 		);
 
-		$this->item['icon']        = $this->icon ? $this->icon : $this->item['icon'];
-		$this->item['description'] = $this->get_description();
-
-		$this->init();
+		if ( $call_initialize ) {
+			$this->init();
+		}
 	}
 
 	/**
@@ -102,11 +101,24 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return string
 	 */
 	public function icon_html(): string {
-		if ( ! $this->icon ) {
+		$icon = $this->get_icon();
+		if ( ! $icon ) {
 			return '';
 		}
 
-		return sprintf( '<i class="dashicons %s"></i>', $this->icon );
+		$is_gf_icon  = ( false !== strpos( $icon, 'gform-icon' ) && gravityview()->plugin->is_GF_25() );
+		$is_dashicon = ( false !== strpos( $icon, 'dashicons' ) );
+
+		$html = '<i class="%s"></i>';
+		if ( 0 === strpos( $icon, 'data:' ) ) {
+			$html = '<i class="dashicons background-icon" style="background-image: url(\'%s\');"></i>';
+		} elseif ( $is_gf_icon ) {
+			$html = '<i class="gform-icon %s"></i>';
+		} elseif ( $is_dashicon ) {
+			$html = '<i class="dashicons %s"></i>';
+		}
+
+		return sprintf( $html, esc_attr( $icon ) );
 	}
 
 	/**
@@ -140,6 +152,8 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 				$field->{$key} = $value;
 			}
 		}
+
+		$field->init();
 
 		return $field;
 	}
@@ -325,6 +339,17 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns the icon.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	public function get_icon(): string {
+		return (string) ( $this->icon ? $this->icon : $this->item['icon'] );
+	}
+
+	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 * @return array{value: string, label?: string, class?: string, hide_in_picker?: bool}
@@ -336,7 +361,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		}
 
 		$field_info_items = [
-			[ 'value' => $this->item['description'] ],
+			[ 'value' => $description ],
 		];
 
 		return $field_info_items;
@@ -348,6 +373,8 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	protected function init(): void {
+		$this->item['icon']        = $this->get_icon();
+		$this->item['description'] = $this->get_description();
 	}
 
 	/**
@@ -386,8 +413,14 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
-	 * @inheritDoc
+	 * Retrieve the field value from the current request.
+	 *
 	 * @since $ver$
+	 *
+	 * @param string $name    the param name.
+	 * @param mixed  $default The default value if not found.
+	 *
+	 * @return mixed The value.
 	 */
 	protected function get_request_value( string $name, $default = null ) {
 		$value = \GV\Utils::_REQUEST( $name, $default );

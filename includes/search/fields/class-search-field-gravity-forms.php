@@ -6,6 +6,7 @@ use GF_Field;
 use GF_Fields;
 use GFAPI;
 use GravityView_Widget_Search;
+use GV\View;
 
 /**
  * Represents a search field based on a Gravity Forms Field.
@@ -15,12 +16,6 @@ use GravityView_Widget_Search;
  * @extends Search_Field<string>
  */
 final class Search_Field_Gravity_Forms extends Search_Field_Choices {
-	/**
-	 * @inheritDoc
-	 * @since $ver$
-	 */
-	protected string $icon = 'dashicons-admin-site-alt3';
-
 	/**
 	 * @inheritdoc
 	 * @since $ver$
@@ -46,9 +41,23 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	private ?GF_Field $field = null;
 
 	/**
+	 * @inheritDoc
+	 *
+	 * Make only allow named constructors for this field, due to the dependencies.
+	 *
+	 * @since $ver$
+	 */
+	protected function __construct( ?string $label = null, array $data = [] ) {
+		// Do not initialize here, it will be called on the named constructors to parse dependencies.
+		parent::__construct( $label, $data, false );
+	}
+
+	/**
 	 * Creates an instance based on a field object.
 	 *
 	 * @since $ver$
+	 *
+	 * @param array $field The field object.
 	 *
 	 * @return self The instance.
 	 */
@@ -59,9 +68,29 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 		$instance             = new self( $field['label'] ?? '' );
 		$instance->form_field = $field;
+		$gf_field             = GF_Fields::create( $field );
+		if ( $gf_field ) {
+			$instance->field = $gf_field;
+		}
 
-		$instance->id   = $instance->get_type();
-		$instance->icon = GF_Fields::create( $field )->get_form_editor_field_type_icon();
+		$instance->id = $instance->get_type();
+
+		$instance->init();
+
+		return $instance;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public static function from_configuration( array $data, ?View $view = null ): ?self {
+		$instance = parent::from_configuration( $data, $view );
+		if ( ! $instance ) {
+			return null;
+		}
+
+		$instance->init();
 
 		return $instance;
 	}
@@ -105,6 +134,22 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 		}
 
 		return sprintf( '%s::%d::%s', self::$type, $this->form_field['form_id'] ?? 0, $this->form_field['id'] ?? 0 );
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function init(): void {
+		parent::init();
+
+		$field = $this->get_field();
+		if ( ! $field ) {
+			return;
+		}
+
+		$this->item['icon']   = $field->get_form_editor_field_type_icon();
+		$this->item['parent'] = $field['parent'] ?? null;
 	}
 
 	/**
