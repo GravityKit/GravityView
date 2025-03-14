@@ -121,11 +121,11 @@ $flexbox-margin: 10px;
 
 .gv-search-clear {
 	display: none;
+	margin: 0 3%;
 
 	.gv-is-search & {
 		order: 2;
 		display: inline-block;
-		margin: 0 3%;
 		height: 100%; // Otherwise, the text border stretches to max height
 	}
 }
