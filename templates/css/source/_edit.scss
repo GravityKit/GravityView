@@ -1,5 +1,14 @@
-
 .gv-edit-entry-wrapper {
+
+	.gform-footer {
+		#publishing-action {
+			width: 100%;
+			input.gv-button-update, a.gv-button-cancel, a.gv-button-delete{
+				line-height: normal;
+				margin: 0;
+			}
+		}
+	}
 
 	.dashicons {
 		font-size: .925em;
@@ -56,6 +65,18 @@
 
 		&.gform-icon--circle-delete {
 			color: #dd301d;
+		}
+	}
+}
+
+@media only screen and (max-width: 400px) {
+	.gv-edit-entry-wrapper .gravity-theme .gform-footer {
+		#publishing-action {
+			input.gv-button-update, a.gv-button-cancel, a.gv-button-delete {
+				float: none;
+				margin-top: 3px;
+				display: inline-block;
+			}
 		}
 	}
 }
