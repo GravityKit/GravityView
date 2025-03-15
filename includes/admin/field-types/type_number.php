@@ -33,7 +33,7 @@ class GravityView_FieldType_number extends GravityView_FieldType_text {
 		$atts  = '';
 		$atts .= isset( $max ) ? ' max="' . (int) $max . '"' : '';
 		$atts .= isset( $min ) ? ' min="' . (int) $min . '"' : '';
-		$atts .= isset( $step ) ? ' step="' . (int) $step . '"' : '';
+		$atts .= isset( $step ) ? ' step="' . (float) $step . '"' : '';
 		?>
 		<input name="<?php echo esc_attr( $this->name ); ?>" id="<?php echo $this->get_field_id(); ?>" type="number"
 				value="<?php echo esc_attr( $this->value ); ?>"
