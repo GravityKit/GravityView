@@ -3,6 +3,9 @@
 	.gform-footer {
 		#publishing-action {
 			width: 100%;
+			.alignright{
+				float: right;
+			}
 			input.gv-button-update, a.gv-button-cancel, a.gv-button-delete{
 				line-height: normal;
 				margin: 0;
