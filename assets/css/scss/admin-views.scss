@@ -562,7 +562,6 @@ $gv-overlay-index: 10000;
 
 #gravityview_settings {
 	th {
-		white-space: nowrap;
 		width: 30%;
 		min-width: 100px;
 		max-width: 200px; // Default th width in forms.css
@@ -594,7 +593,7 @@ $gv-overlay-index: 10000;
 
 	th,
 	td {
-		span, input {
+		span, input, textarea {
 			font-weight: normal !important;
 		}
 

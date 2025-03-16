@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop = 
+
+* Fixed: Settings text may not wrap correctly in the View editor.
+
 = 2.36 on March 13, 2025 =
 
 This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.
@@ -2469,7 +2473,7 @@ __Developer Notes:__
 * Fixed: Address fields displayed hidden inputs
 * Fixed: Merge Tag dropdown list can be too wide when field names are long
 * Fixed: When sorting, recent entries disappeared from results
-* Fixed: Searches that included apostrophes  or ampersands returned no results
+* Fixed: Searches that included apostrophes or ampersands returned no results
 * Fixed: Zero values not set in fields while in Edit Entry
 * Fixed: Re-calculate fields where calculation is enabled after entry is updated
 * Fixed: Warning message when Number fields not included in custom Edit Entry configurations
