@@ -1979,62 +1979,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$shortcode = sprintf( '[gravityview %s]', $atts_string );
 		}
 
-		// Add a notice to the top of the View to indicate that it's a preview.
-		// Use the action instead of directly outputting to prevent Elementor errors.
-		add_action( 'gravityview/template/before', function () use ( $preview_single_entry, $show_debug_output, $shortcode, $view ) {
-			$single_preview_label = esc_html__( 'Single Entry Preview', 'gk-gravityview' );
-			$multiple_preview_label = esc_html__( 'Multiple Entries Preview', 'gk-gravityview' );
-			if ( $preview_single_entry ) {
-				$preview_label = $single_preview_label;
-				$toggle_label = $multiple_preview_label;
-				$dashicons_class = 'dashicons-media-default';
-			} else {
-				$preview_label = $multiple_preview_label;
-				$toggle_label = $single_preview_label;
-				$dashicons_class = 'dashicons-admin-page';
-			}
-
-			$debug_output = '';
-			if ( $show_debug_output ) {
-				// Hide the secret from the shortcode to prevent accidental exposure.
-				$shortcode = preg_replace( '/secret="[^"]+"/', 'secret="*****"', $shortcode );
-				$debug_output = sprintf( '<p class="gravityview-elementor-preview-debug-output"><strong>%s</strong></p>', esc_html__( 'Shortcode', 'gk-gravityview' ) );
-				$debug_output .= sprintf( '<div class="gravityview-elementor-preview-debug-output-code"><code>%s</code></div>', esc_html( $shortcode ) );
-			}
-
-			$this->output_preview_styles();
-			$this->output_preview_script();
-			
-			$edit_url = esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) );
-			$toggle_aria_label = sprintf( esc_html__( 'Toggle %s', 'gk-gravityview' ), $toggle_label );
-			
-			?>
-			<div class="gravityview-elementor-preview">
-				<p>
-					<button 
-						role="button" 
-						aria-label="<?php echo esc_attr( $toggle_aria_label ); ?>" 
-						aria-controls="elementor-control-preview_single_entry"
-						aria-pressed="false"
-						onclick="gvTogglePreviewSection()">
-						<span class="dashicons <?php echo esc_attr( $dashicons_class ); ?>" aria-hidden="true"></span> 
-						<strong><?php echo esc_html( $preview_label ); ?></strong>
-						<em>(<?php esc_html_e( 'Click to toggle', 'gk-gravityview' ); ?>)</em>
-					</button>
-					<a href="<?php echo $edit_url; ?>" onclick="event.stopPropagation(); return true;" target="_blank">
-						<span class="dashicons dashicons-edit"></span>
-						<?php 
-						esc_html_e( 'Edit View', 'gk-gravityview' );
-						?>
-						<span class="screen-reader-text"><?php esc_html_e( '(This link opens in a new window.)', 'gk-gravityview' ); ?></span>
-					</a>
-					<span style="text-align: center;"></span>
-				</p>
-				<?php echo wp_kses_post( $debug_output ); ?>
-			</div>
-			<?php
-		}, -PHP_INT_MAX, 1 );
-
 		$custom_css = $view->settings->get( 'custom_css', null );
 
 		if ( $custom_css ) {
@@ -2092,8 +2036,15 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && wp_doing_ajax() && 'elementor_ajax' === \GV\Utils::_POST( 'action' ) ) {
 			wp_print_styles();
 		}
+		
+		$content = '';
+		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && ! wp_doing_ajax() ) {
+			$content  = $this->render_preview_notice( $preview_single_entry, $show_debug_output, $shortcode, $view );
+		}
 
-		echo $rendered['content'];
+		$content .= $rendered['content'];
+
+		echo $content;
 	}
 
 	private function convert_widget_settings_to_shortcode( $settings ) {
@@ -2328,5 +2279,70 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		}
 		</script>
 		<?php
+	}
+
+	/**
+	 * Render the preview notice at the top of the View.
+	 *
+	 * @since TODO
+	 * @param bool   $preview_single_entry Whether to preview a single entry.
+	 * @param bool   $show_debug_output    Whether to show debug output.
+	 * @param string $shortcode            The shortcode being used.
+	 * @param \GV\View $view              The View object.
+	 */
+	private function render_preview_notice( $preview_single_entry, $show_debug_output, $shortcode, $view ) {
+		$single_preview_label = esc_html__( 'Single Entry Preview', 'gk-gravityview' );
+		$multiple_preview_label = esc_html__( 'Multiple Entries Preview', 'gk-gravityview' );
+		if ( $preview_single_entry ) {
+			$preview_label = $single_preview_label;
+			$toggle_label = $multiple_preview_label;
+			$dashicons_class = 'dashicons-media-default';
+		} else {
+			$preview_label = $multiple_preview_label;
+			$toggle_label = $single_preview_label;
+			$dashicons_class = 'dashicons-admin-page';
+		}
+
+		$debug_output = '';
+		if ( $show_debug_output ) {
+			// Hide the secret from the shortcode to prevent accidental exposure.
+			$shortcode = preg_replace( '/secret="[^"]+"/', 'secret="*****"', $shortcode );
+			$debug_output = sprintf( '<p class="gravityview-elementor-preview-debug-output"><strong>%s</strong></p>', esc_html__( 'Shortcode', 'gk-gravityview' ) );
+			$debug_output .= sprintf( '<div class="gravityview-elementor-preview-debug-output-code"><code>%s</code></div>', esc_html( $shortcode ) );
+		}
+
+		$this->output_preview_styles();
+		$this->output_preview_script();
+		
+		$edit_url = esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) );
+		$toggle_aria_label = sprintf( esc_html__( 'Toggle %s', 'gk-gravityview' ), $toggle_label );
+		
+		ob_start();
+		?>
+		<div class="gravityview-elementor-preview">
+			<p>
+				<button 
+					role="button" 
+					aria-label="<?php echo esc_attr( $toggle_aria_label ); ?>" 
+					aria-controls="elementor-control-preview_single_entry"
+					aria-pressed="false"
+					onclick="gvTogglePreviewSection()">
+					<span class="dashicons <?php echo esc_attr( $dashicons_class ); ?>" aria-hidden="true"></span> 
+					<strong><?php echo esc_html( $preview_label ); ?></strong>
+					<em>(<?php esc_html_e( 'Click to toggle', 'gk-gravityview' ); ?>)</em>
+				</button>
+				<a href="<?php echo $edit_url; ?>" onclick="event.stopPropagation(); return true;" target="_blank">
+					<span class="dashicons dashicons-edit"></span>
+					<?php 
+					esc_html_e( 'Edit View', 'gk-gravityview' );
+					?>
+					<span class="screen-reader-text"><?php esc_html_e( '(This link opens in a new window.)', 'gk-gravityview' ); ?></span>
+				</a>
+				<span style="text-align: center;"></span>
+			</p>
+			<?php echo wp_kses_post( $debug_output ); ?>
+		</div>
+		<?php
+		return ob_get_clean();
 	}
 }
