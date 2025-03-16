@@ -214,23 +214,25 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					],
 				],
 			],
-			'layout_builder'   => [
+			'gravityview-layout-builder'   => [
 				'label'           => esc_html__( 'Layout Builder', 'gk-gravityview' ),
-				'template_id'     => 'layout_builder',
+				'template_id'     => 'gravityview-layout-builder',
 				'settings'        => [
 					'has_grid'            => true,
 					'supports_custom_css' => true,
 				],
 				'style_selectors' => [
 					'multiple' => [
-						'wrapper' => '.gv-layout-builder-view',
+						'wrapper' => '.gv-layout-builder-container--multiple',
 						'grid'    => '.gv-grid',
 						'columns' => '.gv-grid-col',
 						'items'   => '.gv-grid-col-item',
+						'entry'   => '.gv-layout-builder-view--entry',
 					],
 					'single'   => [
-						'wrapper' => '.gv-grid-single-container',
-						'grid'    => '.gv-grid-single',
+						'wrapper' => '.gv-layout-builder-container--single',
+						'grid'    => '.gv-grid',
+						'entry'   => '.gv-layout-builder-view--entry',
 						'columns' => '.gv-grid-single-col',
 						'items'   => '.gv-grid-single-item',
 					],
@@ -366,6 +368,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				'single'   => $gv_view->settings->get( 'template_single_entry', $gv_view->settings->get( 'template' ) ),
 				'settings' => $settings,
 			];
+
 		}
 
 		// Store layouts data for use in JS
@@ -376,12 +379,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				'default' => json_encode( $views_layouts ),
 			]
 		);
+		
 
 		// Hidden control for multiple layout
 		$this->add_control(
 			'layout_single',
 			[
-				'type'    => \Elementor\Controls_Manager::HIDDEN,
+				'type'    => \Elementor\Controls_Manager::TEXT,
 				'default' => '',
 			]
 		);
@@ -390,10 +394,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$this->add_control(
 			'layout_multiple',
 			[
-				'type'    => \Elementor\Controls_Manager::HIDDEN,
+				'type'    => \Elementor\Controls_Manager::TEXT,
 				'default' => '',
-			]
-		);
+			]	
+		);			
 
 		$this->end_controls_section();
 
@@ -910,6 +914,190 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->end_controls_section();
 			}
 
+			// Grid Section
+			if ( isset( $selectors['multiple']['grid'] ) ) {
+				$this->start_controls_section(
+					"gravityview_{$layout_id}_grid_section",
+					[
+						'label'     => sprintf( __( '%s Grid', 'gk-gravityview' ), $layout_name ),
+						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
+						'condition' => [
+							'layout_multiple' => $layout_id,
+						],
+					]
+				);
+
+				$this->start_controls_tabs( "gravityview_{$layout_id}_grid_tabs" );
+
+				foreach ( $contexts as $context => $context_label ) {
+					$this->start_controls_tab(
+						"gravityview_{$layout_id}_grid_{$context}_tab",
+						[ 'label' => $context_label ]
+					);
+
+					if ( $context === 'multiple' ) {
+						// Add columns control
+						$this->add_responsive_control(
+							"gravityview_{$layout_id}_grid_columns_{$context}",
+							[
+								'label' => __( 'Entries Per Row', 'gk-gravityview' ),
+								'type' => Controls_Manager::NUMBER,
+								'min' => 1,
+								'max' => 6,
+								'step' => 1,
+								'default' => 1,
+								'selectors' => [
+									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'display: grid; grid-template-columns: repeat({{VALUE}}, 1fr);',
+								],
+							]
+						);
+
+						// Add masonry toggle
+						$this->add_control(
+							"gravityview_{$layout_id}_grid_masonry_{$context}",
+							[
+								'label' => __( 'Masonry Layout', 'gk-gravityview' ),
+								'type' => Controls_Manager::SWITCHER,
+								'label_on' => __( 'Yes', 'gk-gravityview' ),
+								'label_off' => __( 'No', 'gk-gravityview' ),
+								'return_value' => 'yes',
+								'default' => '',
+								'condition' => [
+									"gravityview_{$layout_id}_grid_columns_{$context}!" => '1',
+								],
+								'selectors' => [
+									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'grid-auto-rows: auto;',
+									'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'break-inside: avoid; min-width: 0;',
+								],
+							]
+						);
+
+						// Add equal height toggle
+						$this->add_control(
+							"gravityview_{$layout_id}_grid_equal_height_{$context}",
+							[
+								'label' => __( 'Equal Height Entries', 'gk-gravityview' ),
+								'type' => Controls_Manager::SWITCHER,
+								'label_on' => __( 'Yes', 'gk-gravityview' ),
+								'label_off' => __( 'No', 'gk-gravityview' ),
+								'return_value' => 'yes',
+								'default' => '',
+								'condition' => [
+									"gravityview_{$layout_id}_grid_columns_{$context}!" => '1',
+									"gravityview_{$layout_id}_grid_masonry_{$context}" => '',
+								],
+								'selectors' => [
+									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'align-items: stretch;',
+								],
+							]
+						);
+
+						// Add column gap control
+						$this->add_responsive_control(
+							"gravityview_{$layout_id}_column_gap_{$context}",
+							[
+								'label' => __( 'Gap Between Entries', 'gk-gravityview' ),
+								'type' => Controls_Manager::SLIDER,
+								'size_units' => [ 'px', 'em', '%' ],
+								'range' => [
+									'px' => [
+										'min' => 0,
+										'max' => 100,
+									],
+									'em' => [
+										'min' => 0,
+										'max' => 10,
+									],
+									'%' => [
+										'min' => 0,
+										'max' => 100,
+									],
+								],
+								'default' => [
+									'unit' => 'px',
+									'size' => 20,
+								],
+								'selectors' => [
+									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'gap: {{SIZE}}{{UNIT}};',
+									'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'min-width: 0;',
+								],
+							]
+						);
+
+					}
+
+					$this->add_control(
+						"gravityview_{$layout_id}_grid_background_{$context}",
+						[
+							'label'     => __( 'Entry Background Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'background-color: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_grid_color_{$context}",
+						[
+							'label'     => __( 'Entry Text Color', 'gk-gravityview' ),
+							'type'      => Controls_Manager::COLOR,
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'color: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->add_group_control(
+						Group_Control_Typography::get_type(),
+						[
+							'name'     => "gravityview_{$layout_id}_grid_typography_{$context}",
+							'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['entry'],
+						]
+					);
+
+					$this->add_group_control(
+						Group_Control_Border::get_type(),
+						[
+							'name'           => "gravityview_{$layout_id}_grid_border_{$context}",
+							'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['entry'],
+							'separator'      => 'before',
+							'fields_options' => [
+								'border' => [
+									'label' => __( 'Entry Border Type', 'gk-gravityview' ),
+								],	
+								'width'  => [
+									'label' => __( 'Entry Border Width', 'gk-gravityview' ),
+								],
+								'color'  => [
+									'label' => __( 'Entry Border Color', 'gk-gravityview' ),
+								],		
+							],
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_grid_border_radius_{$context}",
+						[
+							'label'      => __( 'Entry Border Radius', 'gk-gravityview' ),
+							'type'       => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', '%' ],
+							'selectors'  => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],	
+							'condition'  => [
+								"gravityview_{$layout_id}_grid_border_{$context}!" => 'none',
+							],
+						]
+					);
+					
+					$this->end_controls_tab();
+				}
+
+				$this->end_controls_tabs();
+				$this->end_controls_section();
+			}	
+			
 			// Cells Section
 			if ( isset( $selectors['multiple']['cells'] ) ) {
 				$this->start_controls_section(
@@ -1061,6 +1249,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->end_controls_tabs();
 				$this->end_controls_section();
 			}
+			
 		}
 	}
 
@@ -2037,14 +2226,30 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			wp_print_styles();
 		}
 		
-		$content = '';
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && ! wp_doing_ajax() ) {
-			$content  = $this->render_preview_notice( $preview_single_entry, $show_debug_output, $shortcode, $view );
+		$output = '';
+		if ( \Elementor\Plugin::$instance->editor->is_edit_mode()  ) {
+			// Only output styles and script once, and only in edit mode
+			static $preview_styles_output = false;
+			if ( ! $preview_styles_output ) {
+				$preview_styles_output = true;
+			}
+			
+			$output = $this->render_preview_notice( $preview_single_entry, $show_debug_output, $shortcode, $view );
 		}
 
-		$content .= $rendered['content'];
+		// Add the rendered content
+		$output .= $rendered['content'];
 
-		echo $content;
+		// Only output necessary styles
+		if ( ! wp_style_is( 'gravityview_default_style', 'done' ) ) {
+			wp_print_styles( 'gravityview_default_style' );
+		}
+
+		if ( ! wp_style_is( 'gravityview_style_gravityview-layout-builder', 'done' ) ) {
+			wp_print_styles( 'gravityview_style_gravityview-layout-builder' );
+		}
+
+		echo $output;
 	}
 
 	private function convert_widget_settings_to_shortcode( $settings ) {
@@ -2289,6 +2494,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 	 * @param bool   $show_debug_output    Whether to show debug output.
 	 * @param string $shortcode            The shortcode being used.
 	 * @param \GV\View $view              The View object.
+	 * 
+	 * @return string The preview notice HTML.
 	 */
 	private function render_preview_notice( $preview_single_entry, $show_debug_output, $shortcode, $view ) {
 		$single_preview_label = esc_html__( 'Single Entry Preview', 'gk-gravityview' );
@@ -2302,7 +2509,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$toggle_label = $single_preview_label;
 			$dashicons_class = 'dashicons-admin-page';
 		}
-
+		
 		$debug_output = '';
 		if ( $show_debug_output ) {
 			// Hide the secret from the shortcode to prevent accidental exposure.
@@ -2310,14 +2517,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$debug_output = sprintf( '<p class="gravityview-elementor-preview-debug-output"><strong>%s</strong></p>', esc_html__( 'Shortcode', 'gk-gravityview' ) );
 			$debug_output .= sprintf( '<div class="gravityview-elementor-preview-debug-output-code"><code>%s</code></div>', esc_html( $shortcode ) );
 		}
-
-		$this->output_preview_styles();
-		$this->output_preview_script();
 		
 		$edit_url = esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) );
 		$toggle_aria_label = sprintf( esc_html__( 'Toggle %s', 'gk-gravityview' ), $toggle_label );
 		
 		ob_start();
+
+		$this->output_preview_styles();
+		$this->output_preview_script();
 		?>
 		<div class="gravityview-elementor-preview">
 			<p>
