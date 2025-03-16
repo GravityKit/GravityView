@@ -528,6 +528,13 @@ class GravityView_Render_Settings {
 				</section>
 			</div>';
 		} elseif ( 'search' === $field_type ) {
+			if ( ! $item ) {
+				$item = [
+					'id'      => $field_id,
+					'label'   => $field_label,
+					'form_id' => $form_id,
+				];
+			}
 			$search_field = Search_Field::from_configuration( $item );
 			$description  = $search_field ? $search_field->get_description() : '';
 			$icon         = $search_field ? $search_field->icon_html() : '';
