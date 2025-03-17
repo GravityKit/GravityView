@@ -1292,6 +1292,17 @@ class GravityView_Elementor_Widget extends Widget_Base {
 						]
 					);
 
+					$this->add_control(
+						"gravityview_{$layout_id}_row_background_{$context}",
+						[
+							'label' => __( 'Row Background Color', 'gk-gravityview' ),
+							'type' => Controls_Manager::COLOR,
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row' => 'background-color: {{VALUE}};',
+							],
+						]
+					);
+
 					$this->add_responsive_control(
 						"gravityview_{$layout_id}_row_spacing_{$context}",
 						[
