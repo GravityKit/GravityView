@@ -2658,11 +2658,14 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				margin: 0;
 				float: left;
 				display: inline-block;
-				cursor: pointer;
+				cursor: default;
 				font-size: 1em;
 				line-height: 1.5;
 				box-shadow: none;
 				box-sizing: content-box;
+			}
+			.gravityview-elementor-preview em {
+				display: none;
 			}
 			.gravityview-elementor-preview a {
 				color: var(--wp--preset--color--foreground);
@@ -2693,6 +2696,16 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				background-color: #f0f0f0; 
 				padding: 10px; 
 				border-radius: 5px;	
+			}
+			
+			/**
+			 * Modify behavior when the widget is not selected.
+			 */
+			.elementor-element-editable .gravityview-elementor-preview em {
+				display: inline-block;
+			}
+			.elementor-element-editable .gravityview-elementor-preview button {
+				cursor: pointer;
 			}
 			</style>
 		<?php
