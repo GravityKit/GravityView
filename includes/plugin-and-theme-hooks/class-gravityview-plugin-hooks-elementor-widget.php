@@ -1249,7 +1249,317 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->end_controls_tabs();
 				$this->end_controls_section();
 			}
-			
+
+			// Layout Builder Entry Section
+			if ( $layout_id === 'gravityview-layout-builder' ) {
+				$this->start_controls_section(
+					"gravityview_{$layout_id}_entry_section",
+					[
+						'label'     => __( 'Layout Builder Entry', 'gk-gravityview' ),
+						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
+						'condition' => [
+							'layout_multiple' => $layout_id,
+						],
+					]
+				);
+
+				$this->start_controls_tabs( "gravityview_{$layout_id}_entry_tabs" );
+
+				foreach ( $contexts as $context => $context_label ) {
+					$this->start_controls_tab(
+						"gravityview_{$layout_id}_entry_{$context}_tab",
+						[ 'label' => $context_label ]
+					);
+
+					// Row Styling
+					$this->add_control(
+						"gravityview_{$layout_id}_row_heading_{$context}",
+						[
+							'label' => __( 'Entry Rows', 'gk-gravityview' ),
+							'type' => Controls_Manager::HEADING,
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_row_spacing_{$context}",
+						[
+							'label' => __( 'Row Spacing', 'gk-gravityview' ),
+							'type' => Controls_Manager::SLIDER,
+							'size_units' => [ 'px', 'em' ],
+							'range' => [
+								'px' => [ 'min' => 0, 'max' => 100 ],
+								'em' => [ 'min' => 0, 'max' => 10 ],
+							],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row + .gv-grid-row' => 'margin-top: {{SIZE}}{{UNIT}};',
+							],
+						]
+					);
+
+					$this->add_group_control(
+						Group_Control_Border::get_type(),
+						[
+							'name' => "gravityview_{$layout_id}_row_border_{$context}",
+							'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row',
+							'separator' => 'before',
+							'fields_options' => [
+								'border' => [
+									'label' => __( 'Row Border Type', 'gk-gravityview' ),
+								],
+								'width' => [
+									'label' => __( 'Row Border Width', 'gk-gravityview' ),
+								],
+								'color' => [
+									'label' => __( 'Row Border Color', 'gk-gravityview' ),
+								],
+							],
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_row_margin_{$context}",
+						[
+							'label' => __( 'Row Margin', 'gk-gravityview' ),
+							'type' => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', '%', 'em', 'rem', 'vw' ],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row + .gv-grid-row' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_row_padding_{$context}",
+						[
+							'label' => __( 'Row Padding', 'gk-gravityview' ),
+							'type' => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', '%', 'em', 'rem', 'vw' ],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],
+						]
+					);
+
+					// Column Styling
+					$this->add_control(
+						"gravityview_{$layout_id}_column_heading_{$context}",
+						[
+							'label' => __( 'Entry Columns', 'gk-gravityview' ),
+							'type' => Controls_Manager::HEADING,
+							'separator' => 'before',
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_column_margin_{$context}",
+						[
+							'label' => __( 'Column Margin', 'gk-gravityview' ),
+							'type' => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', '%', 'em', 'rem', 'vw' ],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' div[class^=gv-grid-col-]' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],
+						]
+					);
+
+					$this->add_group_control(
+						Group_Control_Border::get_type(),
+						[
+							'name' => "gravityview_{$layout_id}_column_border_{$context}",
+							'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-1-2, {{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-1-3, {{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-2-3',
+							'separator' => 'before',
+							'fields_options' => [
+								'border' => [
+									'label' => __( 'Column Border Type', 'gk-gravityview' ),
+								],
+								'width' => [
+									'label' => __( 'Column Border Width', 'gk-gravityview' ),
+									'min' => 0,
+								],
+								'color' => [
+									'label' => __( 'Column Border Color', 'gk-gravityview' ),
+								],
+							],
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_column_padding_{$context}",
+						[
+							'label' => __( 'Column Padding', 'gk-gravityview' ),
+							'type' => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', 'em' ],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-1-2, {{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-1-3, {{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-2-3' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],
+						]
+					);
+
+					// Field Value Styling
+					$this->add_control(
+						"gravityview_{$layout_id}_value_heading_{$context}",
+						[
+							'label' => __( 'Field Values', 'gk-gravityview' ),
+							'type' => Controls_Manager::HEADING,
+							'separator' => 'before',
+						]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_value_color_{$context}",
+						[
+							'label' => __( 'Value Color', 'gk-gravityview' ),
+							'type' => Controls_Manager::COLOR,
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-value' => 'color: {{VALUE}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-value *' => 'color: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->add_group_control(
+						Group_Control_Typography::get_type(),
+						[
+							'name' => "gravityview_{$layout_id}_value_typography_{$context}",
+							'label' => __( 'Value Typography', 'gk-gravityview' ),
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-value' => 'font-family: {{FONT_FAMILY}}; font-size: {{FONT_SIZE}}{{UNIT}}; font-weight: {{FONT_WEIGHT}}; line-height: {{LINE_HEIGHT}}{{UNIT}}; letter-spacing: {{LETTER_SPACING}}{{UNIT}}; text-transform: {{TEXT_TRANSFORM}}; text-decoration: {{TEXT_DECORATION}}; text-align: {{TEXT_ALIGN}}; color: {{TEXT_COLOR}};',
+							],
+						]
+					);
+
+					$this->add_group_control(
+						Group_Control_Border::get_type(),
+						[
+							'name' => "gravityview_{$layout_id}_value_border_{$context}",
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row + .gv-grid-row div[class^=gv-field-]' => 'border: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' div[class^=gv-field-] + div[class^=gv-field-]' => 'border: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],
+							'separator' => 'before',
+							'fields_options' => [
+								'border' => [
+									'label' => __( 'Value Border Type', 'gk-gravityview' ),
+								],
+								'width' => [
+									'label' => __( 'Value Border Width', 'gk-gravityview' ),
+									'min' => 0,
+								],
+								'color' => [
+									'label' => __( 'Value Border Color', 'gk-gravityview' ),
+								],
+							],
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_value_spacing_{$context}",
+						[
+							'label' => __( 'Value Margin', 'gk-gravityview' ),
+							'type' => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', '%', 'em', 'rem', 'vw' ],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row + .gv-grid-row div[class^=gv-field-]' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],
+						]
+					);
+
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_value_padding_{$context}",
+						[
+							'label' => __( 'Value Padding', 'gk-gravityview' ),
+							'type' => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', '%', 'em', 'rem', 'vw' ],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row + .gv-grid-row div[class^=gv-field-]' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],
+						]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_link_heading_{$context}",
+						[
+							'label' => __( 'Field Links', 'gk-gravityview' ),
+							'type' => Controls_Manager::HEADING,
+							'separator' => 'before',
+						]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_link_color_{$context}",
+						[
+							'label' => __( 'Link Color', 'gk-gravityview' ),
+							'type' => Controls_Manager::COLOR,
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-value a' => 'color: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->add_group_control(
+						Group_Control_Typography::get_type(),
+						[
+							'name' => "gravityview_{$layout_id}_link_typography_{$context}",
+							'label' => __( 'Link Typography', 'gk-gravityview' ),
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-value a' => 'font-family: {{FONT_FAMILY}}; font-size: {{FONT_SIZE}}{{UNIT}}; font-weight: {{FONT_WEIGHT}}; line-height: {{LINE_HEIGHT}}{{UNIT}}; letter-spacing: {{LETTER_SPACING}}{{UNIT}}; text-transform: {{TEXT_TRANSFORM}}; text-decoration: {{TEXT_DECORATION}};',
+							],
+						]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_link_decoration_{$context}",
+						[
+							'label' => __( 'Link Decoration', 'gk-gravityview' ),
+							'type' => Controls_Manager::SELECT,
+							'default' => 'none',
+							'options' => [
+								'none' => __( 'None', 'gk-gravityview' ),
+								'underline' => __( 'Underline', 'gk-gravityview' ),
+								'overline' => __( 'Overline', 'gk-gravityview' ),
+								'line-through' => __( 'Line Through', 'gk-gravityview' ),
+							],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-value a' => 'text-decoration: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_link_hover_color_{$context}",
+						[
+							'label' => __( 'Link Hover Color', 'gk-gravityview' ),
+							'type' => Controls_Manager::COLOR,
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-value a:hover' => 'color: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->add_control(
+						"gravityview_{$layout_id}_link_hover_decoration_{$context}",
+						[
+							'label' => __( 'Link Hover Decoration', 'gk-gravityview' ),
+							'type' => Controls_Manager::SELECT,
+							'default' => 'none',
+							'options' => [
+								'none' => __( 'None', 'gk-gravityview' ),
+								'underline' => __( 'Underline', 'gk-gravityview' ),
+								'overline' => __( 'Overline', 'gk-gravityview' ),
+								'line-through' => __( 'Line Through', 'gk-gravityview' ),
+							],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-value a:hover' => 'text-decoration: {{VALUE}};',
+							],
+						]
+					);
+
+					$this->end_controls_tab();
+				}
+
+				$this->end_controls_tabs();
+				$this->end_controls_section();
+			}
 		}
 	}
 
