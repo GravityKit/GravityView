@@ -1026,6 +1026,18 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 					}
 
+					$this->add_responsive_control(
+						"gravityview_{$layout_id}_grid_padding_{$context}",
+						[
+							'label' => __( 'Padding', 'gk-gravityview' ),
+							'type' => Controls_Manager::DIMENSIONS,
+							'size_units' => [ 'px', '%', 'em', 'rem', 'vw' ],
+							'selectors' => [
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+							],
+						]
+					);
+
 					$this->add_control(
 						"gravityview_{$layout_id}_grid_background_{$context}",
 						[
