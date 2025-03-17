@@ -947,7 +947,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								'step' => 1,
 								'default' => 1,
 								'selectors' => [
-									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'display: grid; grid-template-columns: repeat({{VALUE}}, 1fr);',
 								],
 							]
 						);
@@ -968,6 +967,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								'selectors' => [
 									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'grid-auto-rows: auto;',
 									'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'break-inside: avoid; min-width: 0;',
+									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'display: grid; grid-template-columns: repeat({{VALUE}}, 1fr); align-items: start;',
 								],
 							]
 						);
@@ -981,7 +981,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								'label_on' => __( 'Yes', 'gk-gravityview' ),
 								'label_off' => __( 'No', 'gk-gravityview' ),
 								'return_value' => 'yes',
-								'default' => '',
+								'default' => 'yes',
 								'condition' => [
 									"gravityview_{$layout_id}_grid_columns_{$context}!" => '1',
 									"gravityview_{$layout_id}_grid_masonry_{$context}" => '',
