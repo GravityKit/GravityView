@@ -2740,23 +2740,22 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			// Store the current state
 			const previousState = {
 				activeTab: currentPageView.activeTab,
-				activeSection: currentPageView.activeSection || null
+				activeSection: currentPageView.activeSection || null,
+				activePanelTab: elementorPanel.$el.find('.elementor-control-type-tab.e-tab-active').index(),
 			};
 
-			let timeout = 50;
-			if (currentPageView.activeTab !== 'style') {
-				// First, ensure we're on the style tab
-				currentPageView.activateTab('style');
-				setTimeout(() => {
-					elementorPanel.$el.find('.elementor-tab-control-style').trigger('click');
-				}, timeout);
+			// currentPageView.activateTab doesn't work reliably, so we need to trigger a click.
+			const styleTab = elementorPanel.$el.find('.elementor-tab-control-style');
+			if (styleTab.length) {
+				styleTab.trigger('click');
 			}
+
+			const timeout = 50;
 
 			// Function to restore previous state
 			const restorePreviousState = () => {
 				// Switch back to the previous tab if it wasn't style
 				if (previousState.activeTab !== 'style') {
-					currentPageView.activateTab(previousState.activeTab);
 					elementorPanel.$el.find('.elementor-tab-control-' + previousState.activeTab).trigger('click');
 				}
 
@@ -2765,6 +2764,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					if (previousState.activeSection) {
 						currentPageView.activateSection(previousState.activeSection);
 						elementorPanel.$el.find('.elementor-control-' + previousState.activeSection).not('.e-open').trigger('click');
+					}
+
+					// Restore the active panel tab
+					if (previousState.activePanelTab) {
+						elementorPanel.$el.find('.elementor-control-type-tab').eq(previousState.activePanelTab).trigger('click');
 					}
 				}, timeout);
 			};
