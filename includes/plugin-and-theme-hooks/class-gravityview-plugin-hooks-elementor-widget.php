@@ -2748,7 +2748,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				// First, ensure we're on the style tab
 				currentPageView.activateTab('style');
 				setTimeout(() => {
-					elementorPanel.$el.find('.elementor-tab-control-style').click();
+					elementorPanel.$el.find('.elementor-tab-control-style').trigger('click');
 				}, timeout);
 			}
 
@@ -2757,7 +2757,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				// Switch back to the previous tab if it wasn't style
 				if (previousState.activeTab !== 'style') {
 					currentPageView.activateTab(previousState.activeTab);
-					elementorPanel.$el.find('.elementor-tab-control-' + previousState.activeTab).click();
+					elementorPanel.$el.find('.elementor-tab-control-' + previousState.activeTab).trigger('click');
 				}
 
 				// Wait for tab switch before restoring section
@@ -2776,7 +2776,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 				if (!$section.hasClass('e-open')) {
 					// Activate the first section to ensure proper initialization
-					$section.click();
+					$section.trigger('click');
 					
 					// Wait for section to be ready
 					setTimeout(() => {
