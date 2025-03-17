@@ -2222,31 +2222,18 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$gravityview_frontend->setGvOutputData( \GravityView_View_Data::getInstance( $shortcode ) );
 		$gravityview_frontend->add_scripts_and_styles();
 
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && wp_doing_ajax() && 'elementor_ajax' === \GV\Utils::_POST( 'action' ) ) {
+		$elementor_ajax_data = \Elementor\Plugin::$instance->common->get_component( 'ajax' )->get_current_action_data();
+		$is_first_render = empty( $elementor_ajax_data );
+
+		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && ! $is_first_render ) {
 			wp_print_styles();
 		}
 		
-		$output = '';
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode()  ) {
-			// Only output styles and script once, and only in edit mode
-			static $preview_styles_output = false;
-			if ( ! $preview_styles_output ) {
-				$preview_styles_output = true;
-			}
-			
-			$output = $this->render_preview_notice( $preview_single_entry, $show_debug_output, $shortcode, $view );
-		}
-
 		// Add the rendered content
-		$output .= $rendered['content'];
+		$output = $rendered['content'];
 
-		// Only output necessary styles
-		if ( ! wp_style_is( 'gravityview_default_style', 'done' ) ) {
-			wp_print_styles( 'gravityview_default_style' );
-		}
-
-		if ( ! wp_style_is( 'gravityview_style_gravityview-layout-builder', 'done' ) ) {
-			wp_print_styles( 'gravityview_style_gravityview-layout-builder' );
+		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && ! $is_first_render ) {
+			$output = $this->render_preview_notice( $preview_single_entry, $show_debug_output, $shortcode, $view ) . $output;
 		}
 
 		echo $output;
@@ -2521,8 +2508,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$edit_url = esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) );
 		$toggle_aria_label = sprintf( esc_html__( 'Toggle %s', 'gk-gravityview' ), $toggle_label );
 		
-		ob_start();
-
 		$this->output_preview_styles();
 		$this->output_preview_script();
 		?>
