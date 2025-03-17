@@ -2818,6 +2818,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$edit_url = esc_url_raw( admin_url( sprintf( 'post.php?post=%d&action=edit', $view->ID ) ) );
 		$toggle_aria_label = sprintf( esc_html__( 'Toggle %s', 'gk-gravityview' ), $toggle_label );
 		
+		ob_start();
+
 		$this->output_preview_styles();
 		$this->output_preview_script();
 		?>
