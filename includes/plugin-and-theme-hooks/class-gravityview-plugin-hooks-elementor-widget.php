@@ -1098,7 +1098,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 							],	
 							'condition'  => [
-								"gravityview_{$layout_id}_grid_border_{$context}!" => 'none',
+								"gravityview_{$layout_id}_grid_border_{$context}_border!" => 'none',
 							],
 						]
 					);
