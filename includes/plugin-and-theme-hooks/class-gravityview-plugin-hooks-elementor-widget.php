@@ -2484,13 +2484,16 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			wp_add_inline_style( 'gravityview_default_style', $custom_css );
 		}
 
+		$elementor_ajax_data = \Elementor\Plugin::$instance->common->get_component( 'ajax' )->get_current_action_data();
+		$is_first_render = empty( $elementor_ajax_data );
+
 		// Use a temporary filter to return true for the is_renderable check instead of __return_true
 		// to prevent removing other filters that might be added by other code.
 		$return_true_tmp = function () {
 			return true;
 		};
 
-		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && wp_doing_ajax() && 'elementor_ajax' === \GV\Utils::_POST( 'action' ) ) {
+		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && $is_first_render ) {
 			add_filter( 'gravityview_email_prevent_encrypt', $return_true_tmp );
 		}
 
@@ -2531,9 +2534,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		$gravityview_frontend = \GravityView_frontend::getInstance();
 		$gravityview_frontend->setGvOutputData( \GravityView_View_Data::getInstance( $shortcode ) );
 		$gravityview_frontend->add_scripts_and_styles();
-
-		$elementor_ajax_data = \Elementor\Plugin::$instance->common->get_component( 'ajax' )->get_current_action_data();
-		$is_first_render = empty( $elementor_ajax_data );
 
 		if ( \Elementor\Plugin::$instance->editor->is_edit_mode() && ! $is_first_render ) {
 			wp_print_styles();
