@@ -227,7 +227,7 @@ class GV_UnitTest_Factory_For_Entry extends GF_UnitTest_Factory_For_Entry {
 	 * Create form from a json dump file.
 	 *
 	 * @param string $filename Name of the file in data/forms/
-	 * @param int $overrides Data that we want to override
+	 * @param array $overrides Data that we want to override
 	 *
 	 * @return array A form array as returned by Gravity Forms
 	 */

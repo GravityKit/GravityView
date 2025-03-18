@@ -754,11 +754,18 @@ class GravityView_frontend {
 		}
 
 		if ( 2 === $no_entries_option ) {
-
 			$no_entries_redirect = $context->view->settings->get( 'no_entries_redirect' );
 
 			if ( $no_entries_redirect ) {
 				$redirect_url = GFCommon::replace_variables( $no_entries_redirect, $context->form, $context->entry, false, false, false, 'text' );
+
+				if ( wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
+					return strtr(
+						// Translators: Do not translate the [url] placeholder.
+						esc_html__( 'No entries found. This page will redirect to "[url]" when opened in a browser.', 'gk-gravityview' ),
+						[ '[url]' => $redirect_url ]
+					);
+				}
 
 				$redirected = wp_redirect( $redirect_url );
 
@@ -1016,9 +1023,10 @@ class GravityView_frontend {
 
 		// implicity search
 		if ( ! empty( $args['search_value'] ) ) {
-
 			// Search operator options. Options: `is` or `contains`
 			$operator = ! empty( $args['search_operator'] ) && in_array( $args['search_operator'], array( 'is', 'isnot', '>', '<', 'contains' ) ) ? $args['search_operator'] : 'contains';
+
+			$args['search_value'] = html_entity_decode( $args['search_value'], ENT_QUOTES );
 
 			$search_criteria['field_filters'][] = array(
 				'key'      => \GV\Utils::_GET( 'search_field', \GV\Utils::get( $args, 'search_field' ) ), // The field ID to search

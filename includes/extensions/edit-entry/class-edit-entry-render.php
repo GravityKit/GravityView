@@ -1716,7 +1716,6 @@ class GravityView_Edit_Entry_Render {
 					}
 
 				    $this->entry[ $input_name ] = $value;
-				    $_POST[ $input_name ]       = $value;
 
 				    break;
 
@@ -1764,6 +1763,13 @@ class GravityView_Edit_Entry_Render {
 		// Needed by the validation function.
 		$failed_validation_page = null;
 		$field_values           = rgpost( 'gform_field_values' );
+
+		// Taken from GFForms::get_ajax_form_response()
+		if ( is_string( $field_values ) ) {
+			$field_values_array = [];
+			parse_str( $field_values, $field_values_array );
+			$field_values = $field_values_array;
+		}
 
 		// Prevent entry limit from running when editing an entry, also
 		// prevent form scheduling from preventing editing
@@ -1828,7 +1834,7 @@ class GravityView_Edit_Entry_Render {
 					}
 
 					// Re-validate the field
-					$field->validate( $field, $this->form );
+					$field->validate( $value, $this->form );
 
 					// Validate if multi-file upload reached max number of files [maxFiles] => 2
 					if ( \GV\Utils::get( $field, 'maxFiles' ) && \GV\Utils::get( $field, 'multipleFiles' ) ) {

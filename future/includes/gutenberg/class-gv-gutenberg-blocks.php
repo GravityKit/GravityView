@@ -236,6 +236,10 @@ class Blocks {
 			static function ( $post ) {
 				$view = View::from_post( $post );
 
+				if ( ! GVCommon::has_cap( 'edit_gravityviews', $view->ID ) ) {
+					return null;
+				}
+
 				return array_filter(
 					[
 						'value'  => (string) $view->ID,
@@ -258,7 +262,7 @@ class Blocks {
 		 *
 		 * @param array $formatted_views
 		 */
-		$formatted_views = apply_filters( 'gk/gravityview/gutenberg/blocks/views', $formatted_views );
+		$formatted_views = apply_filters( 'gk/gravityview/gutenberg/blocks/views', array_filter( $formatted_views ) );
 
 		return $formatted_views;
 	}

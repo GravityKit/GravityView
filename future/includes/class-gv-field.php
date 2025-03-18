@@ -275,6 +275,10 @@ class Field {
 		foreach ( $configuration as $key => $value ) {
 			if ( ! in_array( $key, $shared_configuration_keys ) ) {
 				$this->configuration[ $key ] = $value;
+
+				if ( 'lightbox' === $key && 1 === (int) $value ) {
+					$this->show_as_link = true;
+				}
 			}
 		}
 	}
