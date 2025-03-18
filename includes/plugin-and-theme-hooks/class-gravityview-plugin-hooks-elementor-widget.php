@@ -538,6 +538,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			$this->start_controls_section(
 				"gravityview_{$layout_id}_container_section",
 				[
+					// translators: %s is the layout name.
 					'label'     => sprintf( __( '%s Container', 'gk-gravityview' ), $layout_name ),
 					'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 					'condition' => [
@@ -819,6 +820,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->start_controls_section(
 					"gravityview_{$layout_id}_rows_section",
 					[
+						// translators: %s is the layout name.
 						'label'     => sprintf( __( '%s Rows', 'gk-gravityview' ), $layout_name ),
 						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 						'condition' => [
@@ -880,6 +882,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->start_controls_section(
 					"gravityview_{$layout_id}_grid_section",
 					[
+						// translators: %s is the layout name.
 						'label'     => sprintf( __( '%s Grid', 'gk-gravityview' ), $layout_name ),
 						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 						'condition' => [
@@ -897,7 +900,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					);
 
 					if ( $context === 'multiple' ) {
-						// Add columns control
+						
 						$this->add_responsive_control(
 							"gravityview_{$layout_id}_grid_columns_{$context}",
 							[
@@ -913,7 +916,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 							]
 						);
 
-						// Add equal height toggle
 						$this->add_control(
 							"gravityview_{$layout_id}_grid_equal_height_{$context}",
 							[
@@ -932,9 +934,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 							]
 						);
 
-						// Add column gap control
 						$this->add_responsive_control(
-							"gravityview_{$layout_id}_column_gap_{$context}",
+							"gravityview_{$layout_id}_grid_gap_{$context}",
 							[
 								'label' => __( 'Gap Between Entries', 'gk-gravityview' ),
 								'type' => Controls_Manager::SLIDER,
@@ -963,7 +964,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								],
 							]
 						);
-
 					}
 
 					$this->add_responsive_control(
@@ -1043,6 +1043,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->start_controls_section(
 					"gravityview_{$layout_id}_cells_section",
 					[
+						// translators: %s is the layout name.
 						'label'     => sprintf( __( '%s Cells', 'gk-gravityview' ), $layout_name ),
 						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 						'condition' => [
@@ -1130,7 +1131,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				$this->start_controls_section(
 					"gravityview_{$layout_id}_datatables_section",
 					[
-						'label'     => sprintf( __( '%s DataTables', 'gk-gravityview' ), $layout_name ),
+						'label'     => __( 'DataTables', 'gk-gravityview' ),
 						'tab'       => \Elementor\Controls_Manager::TAB_STYLE,
 						'condition' => [
 							'layout_multiple' => $layout_id,
