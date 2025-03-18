@@ -580,7 +580,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				);
 
 				$this->add_group_control(
-					Group_Control_Border::get_type(),
+					GravityView_Group_Control_Border::get_type(),
 					[
 						'name'           => "gravityview_{$layout_id}_container_border_{$context}",
 						'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['wrapper'],
@@ -595,21 +595,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 							'color'  => [
 								'label' => __( 'Container Border Color', 'gk-gravityview' ),
 							],
-						],
-					]
-				);
-
-				$this->add_responsive_control(
-					"gravityview_{$layout_id}_container_border_radius_{$context}",
-					[
-						'label'      => __( 'Border Radius', 'gk-gravityview' ),
-						'type'       => Controls_Manager::DIMENSIONS,
-						'size_units' => [ 'px', '%' ],
-						'selectors'  => [
-							'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-						],
-						'condition'  => [
-							"gravityview_{$layout_id}_container_border_{$context}!" => 'none',
 						],
 					]
 				);
@@ -716,7 +701,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 					if ( isset( $selectors[ $context ]['header'] ) ) {
 						$this->add_group_control(
-							Group_Control_Border::get_type(),
+							GravityView_Group_Control_Border::get_type(),
 							[
 								'name'           => "gravityview_{$layout_id}_header_border_{$context}",
 								'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['header'],
@@ -731,21 +716,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 									'color'  => [
 										'label' => __( 'Header Border Color', 'gk-gravityview' ),
 									],
-								],
-							]
-						);
-
-						$this->add_responsive_control(
-							"gravityview_{$layout_id}_header_border_radius_{$context}",
-							[
-								'label'      => __( 'Header Border Radius', 'gk-gravityview' ),
-								'type'       => Controls_Manager::DIMENSIONS,
-								'size_units' => [ 'px', '%' ],
-								'selectors'  => [
-									'{{WRAPPER}} ' . $selectors[ $context ]['header'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-								],
-								'condition'  => [
-									"gravityview_{$layout_id}_header_border_{$context}!" => 'none',
+									'radii' => [
+										'label' => __( 'Header Border Radius', 'gk-gravityview' ),
+									],
 								],
 							]
 						);
@@ -811,7 +784,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 					if ( isset( $selectors[ $context ]['footer'] ) ) {
 						$this->add_group_control(
-							Group_Control_Border::get_type(),
+							GravityView_Group_Control_Border::get_type(),
 							[
 								'name'           => "gravityview_{$layout_id}_footer_border_{$context}",
 								'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['footer'],
@@ -826,21 +799,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 									'color'  => [
 										'label' => __( 'Footer Border Color', 'gk-gravityview' ),
 									],
-								],
-							]
-						);
-
-						$this->add_responsive_control(
-							"gravityview_{$layout_id}_footer_border_radius_{$context}",
-							[
-								'label'      => __( 'Footer Border Radius', 'gk-gravityview' ),
-								'type'       => Controls_Manager::DIMENSIONS,
-								'size_units' => [ 'px', '%' ],
-								'selectors'  => [
-									'{{WRAPPER}} ' . $selectors[ $context ]['footer'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-								],
-								'condition'  => [
-									"gravityview_{$layout_id}_footer_border_{$context}!" => 'none',
+									'radii' => [
+										'label' => __( 'Footer Border Radius', 'gk-gravityview' ),
+									],
 								],
 							]
 						);
@@ -877,8 +838,8 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					$this->add_control(
 						"gravityview_{$layout_id}_row_background_{$context}",
 						[
-							'label'     => __( 'Background Color', 'gk-gravityview' ),
-							'type'      => Controls_Manager::COLOR,
+							'label' => __( 'Row Background Color', 'gk-gravityview' ),
+							'type' => Controls_Manager::COLOR,
 							'selectors' => [
 								'{{WRAPPER}} ' . $selectors[ $context ]['rows'] => 'background-color: {{VALUE}};',
 							],
@@ -947,26 +908,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								'step' => 1,
 								'default' => 1,
 								'selectors' => [
-								],
-							]
-						);
-
-						// Add masonry toggle
-						$this->add_control(
-							"gravityview_{$layout_id}_grid_masonry_{$context}",
-							[
-								'label' => __( 'Masonry Layout', 'gk-gravityview' ),
-								'type' => Controls_Manager::SWITCHER,
-								'label_on' => __( 'Yes', 'gk-gravityview' ),
-								'label_off' => __( 'No', 'gk-gravityview' ),
-								'return_value' => 'yes',
-								'default' => '',
-								'condition' => [
-									"gravityview_{$layout_id}_grid_columns_{$context}!" => '1',
-								],
-								'selectors' => [
-									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'grid-auto-rows: auto;',
-									'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'break-inside: avoid; min-width: 0;',
 									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'display: grid; grid-template-columns: repeat({{VALUE}}, 1fr); align-items: start;',
 								],
 							]
@@ -984,7 +925,6 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								'default' => 'yes',
 								'condition' => [
 									"gravityview_{$layout_id}_grid_columns_{$context}!" => '1',
-									"gravityview_{$layout_id}_grid_masonry_{$context}" => '',
 								],
 								'selectors' => [
 									'{{WRAPPER}} ' . $selectors[ $context ]['wrapper'] => 'align-items: stretch;',
@@ -1069,7 +1009,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					);
 
 					$this->add_group_control(
-						Group_Control_Border::get_type(),
+						GravityView_Group_Control_Border::get_type(),
 						[
 							'name'           => "gravityview_{$layout_id}_grid_border_{$context}",
 							'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['entry'],
@@ -1083,22 +1023,10 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								],
 								'color'  => [
 									'label' => __( 'Entry Border Color', 'gk-gravityview' ),
-								],		
-							],
-						]
-					);
-
-					$this->add_responsive_control(
-						"gravityview_{$layout_id}_grid_border_radius_{$context}",
-						[
-							'label'      => __( 'Entry Border Radius', 'gk-gravityview' ),
-							'type'       => Controls_Manager::DIMENSIONS,
-							'size_units' => [ 'px', '%' ],
-							'selectors'  => [
-								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-							],	
-							'condition'  => [
-								"gravityview_{$layout_id}_grid_border_{$context}_border!" => 'none',
+								],
+								'radii' => [
+									'label' => __( 'Entry Border Radius', 'gk-gravityview' ),
+								],
 							],
 						]
 					);
@@ -1151,7 +1079,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					);
 
 					$this->add_group_control(
-						Group_Control_Border::get_type(),
+						GravityView_Group_Control_Border::get_type(),
 						[
 							'name'           => "gravityview_{$layout_id}_cell_border_{$context}",
 							'selector'       => '{{WRAPPER}} ' . $selectors[ $context ]['cells'],
@@ -1166,24 +1094,13 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								'color'  => [
 									'label' => __( 'Cell Border Color', 'gk-gravityview' ),
 								],
+								'radii' => [
+									'label' => __( 'Cell Border Radius', 'gk-gravityview' ),
+								],
 							],
 						]
 					);
 
-					$this->add_responsive_control(
-						"gravityview_{$layout_id}_cell_border_radius_{$context}",
-						[
-							'label'      => __( 'Cell Border Radius', 'gk-gravityview' ),
-							'type'       => Controls_Manager::DIMENSIONS,
-							'size_units' => [ 'px', '%' ],
-							'selectors'  => [
-								'{{WRAPPER}} ' . $selectors[ $context ]['cells'] => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-							],
-							'condition'  => [
-								"gravityview_{$layout_id}_cell_border_{$context}!" => 'none',
-							],
-						]
-					);
 
 					// Add cell spacing controls
 					$this->add_responsive_control(
@@ -1320,7 +1237,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					);
 
 					$this->add_group_control(
-						Group_Control_Border::get_type(),
+						GravityView_Group_Control_Border::get_type(),
 						[
 							'name' => "gravityview_{$layout_id}_row_border_{$context}",
 							'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row',
@@ -1334,6 +1251,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								],
 								'color' => [
 									'label' => __( 'Row Border Color', 'gk-gravityview' ),
+								],
+								'radii' => [
+									'label' => __( 'Row Border Radius', 'gk-gravityview' ),
 								],
 							],
 						]
@@ -1386,7 +1306,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					);
 
 					$this->add_group_control(
-						Group_Control_Border::get_type(),
+						GravityView_Group_Control_Border::get_type(),
 						[
 							'name' => "gravityview_{$layout_id}_column_border_{$context}",
 							'selector' => '{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-1-2, {{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-1-3, {{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-col-2-3',
@@ -1401,6 +1321,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								],
 								'color' => [
 									'label' => __( 'Column Border Color', 'gk-gravityview' ),
+								],
+								'radii' => [
+									'label' => __( 'Column Border Radius', 'gk-gravityview' ),
 								],
 							],
 						]
@@ -1452,12 +1375,12 @@ class GravityView_Elementor_Widget extends Widget_Base {
 					);
 
 					$this->add_group_control(
-						Group_Control_Border::get_type(),
+						GravityView_Group_Control_Border::get_type(),
 						[
 							'name' => "gravityview_{$layout_id}_value_border_{$context}",
 							'selectors' => [
-								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row + .gv-grid-row div[class^=gv-field-]' => 'border: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' div[class^=gv-field-] + div[class^=gv-field-]' => 'border: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+								//'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' .gv-grid-row + .gv-grid-row div[class^=gv-field-]' => 'border: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+								'{{WRAPPER}} ' . $selectors[ $context ]['entry'] . ' div[class^=gv-field-]' => 'border: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 							],
 							'separator' => 'before',
 							'fields_options' => [
@@ -1470,6 +1393,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 								],
 								'color' => [
 									'label' => __( 'Value Border Color', 'gk-gravityview' ),
+								],	
+								'radii' => [
+									'label' => __( 'Value Border Radius', 'gk-gravityview' ),
 								],
 							],
 						]
@@ -1645,27 +1571,12 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		);
 
 		$this->add_group_control(
-			Group_Control_Border::get_type(),
+			GravityView_Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_container_border',
 				'label'    => __( 'Border', 'gk-gravityview' ),
 				'selector' => '{{WRAPPER}} .gv-widget-search',
 				'default'  => 'none',
-			]
-		);
-
-		$this->add_responsive_control(
-			'search_container_border_radius',
-			[
-				'label'      => __( 'Border Radius', 'gk-gravityview' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} .gv-widget-search' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-				'condition'  => [
-					'search_container_border_border!' => [ '', 'none' ],
-				],
 			]
 		);
 
@@ -1728,27 +1639,12 @@ class GravityView_Elementor_Widget extends Widget_Base {
 
 		// Add search box border controls
 		$this->add_group_control(
-			Group_Control_Border::get_type(),
+			GravityView_Group_Control_Border::get_type(),
 			[
 				'name'      => 'search_box_border',
 				'label'     => __( 'Box Border', 'gk-gravityview' ),
 				'selector'  => '{{WRAPPER}} .gv-search-box',
 				'separator' => 'before',
-			]
-		);
-
-		$this->add_responsive_control(
-			'search_box_border_radius',
-			[
-				'label'      => __( 'Box Border Radius', 'gk-gravityview' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} .gv-search-box' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
-				'condition'  => [
-					'search_box_border_border!' => '',
-				],
 			]
 		);
 
@@ -1891,23 +1787,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		);
 
 		$this->add_group_control(
-			Group_Control_Border::get_type(),
+			GravityView_Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_input_border',
 				'label'    => __( 'Border', 'gk-gravityview' ),
 				'selector' => '{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select',
-			]
-		);
-
-		$this->add_responsive_control(
-			'search_input_border_radius',
-			[
-				'label'      => __( 'Border Radius', 'gk-gravityview' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} .gv-search-box input[type="text"], {{WRAPPER}} .gv-search-box select' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
 			]
 		);
 
@@ -2034,23 +1918,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		);
 
 		$this->add_group_control(
-			Group_Control_Border::get_type(),
+			GravityView_Group_Control_Border::get_type(),
 			[
 				'name'     => 'search_button_border',
 				'label'    => __( 'Border', 'gk-gravityview' ),
 				'selector' => '{{WRAPPER}} .gv-search-button',
-			]
-		);
-
-		$this->add_responsive_control(
-			'search_button_border_radius',
-			[
-				'label'      => __( 'Border Radius', 'gk-gravityview' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} .gv-search-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
 			]
 		);
 
@@ -2272,23 +2144,11 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		);
 
 		$this->add_group_control(
-			Group_Control_Border::get_type(),
+			GravityView_Group_Control_Border::get_type(),
 			[
 				'name'     => 'pagination_number_border',
 				'label'    => __( 'Border', 'gk-gravityview' ),
 				'selector' => '{{WRAPPER}} .page-numbers a, {{WRAPPER}} .page-numbers .current',
-			]
-		);
-
-		$this->add_responsive_control(
-			'pagination_number_border_radius',
-			[
-				'label'      => __( 'Border Radius', 'gk-gravityview' ),
-				'type'       => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
-				'selectors'  => [
-					'{{WRAPPER}} .page-numbers a, {{WRAPPER}} .page-numbers .current' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-				],
 			]
 		);
 
@@ -2890,3 +2750,53 @@ class GravityView_Elementor_Widget extends Widget_Base {
 		return ob_get_clean();
 	}
 }
+
+class GravityView_Group_Control_Border extends \Elementor\Group_Control_Border {
+
+	public static function get_type() {
+		return 'border';
+	}
+
+	public function init_fields() {
+		$fields = parent::init_fields();
+		$fields['radii'] = [
+			'label' => esc_html__( 'Border Radius', 'gk-gravityview' ),
+			'type' => \Elementor\Controls_Manager::DIMENSIONS,
+			'size_units' => [ 'px', '%', 'em', 'rem', 'vw' ],
+			'selectors' => [
+				'{{SELECTOR}}' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+			],
+			'condition' => [
+				'border!' => [ '', 'none' ],
+			],
+		];
+		
+		return $fields;
+	}
+
+	/**
+	 * Get default options.
+	 *
+	 * Retrieve the default options of the border control. Used to return the
+	 * default options while initializing the border control.
+	 *
+	 * @since 1.9.0
+	 * @access protected
+	 *
+	 * @return array Default border control options.
+	 */
+	protected function get_default_options() {
+		return parent::get_default_options();
+		return [
+			'popover' => [
+				'starter_name' => 'border_toggle',
+				'starter_value' => 'yes',
+				'starter_title' => esc_html__( 'Border Settings', 'gk-gravityview' ),
+			]
+		];
+	}
+}
+
+add_action( 'elementor/controls/register', function( $controls_manager ) {
+	$controls_manager->add_group_control( GravityView_Group_Control_Border::get_type(), new GravityView_Group_Control_Border() );
+});
