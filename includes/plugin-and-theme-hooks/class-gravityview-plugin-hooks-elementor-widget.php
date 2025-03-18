@@ -2295,7 +2295,7 @@ class GravityView_Elementor_Widget extends Widget_Base {
 			// Only show this message in the admin editor.
 			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
 				$template = '
-				<div style="text-align: center; width: 100%;">
+				<div style="text-align: center; width: 100%; padding-top: 15px;">
 					<div style="width:120px; margin: 0 auto;">{icon}</div>
 					<p>{message}</p>
 				</div>';
@@ -2526,9 +2526,9 @@ class GravityView_Elementor_Widget extends Widget_Base {
 				box-sizing: content-box;
 				min-height: 1.5em;
 				padding: 10px 20px;
-				border-bottom: 1px dashed var(--e-a-border-color-bold);
 				box-sizing: content-box; 
-				margin-bottom: 0; 
+				margin-bottom: 10px;
+				border-radius: 4px 4px 0 0;
 			}
 			.gravityview-elementor-preview p {
 				margin: 0;
