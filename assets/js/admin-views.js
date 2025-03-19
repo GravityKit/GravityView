@@ -13,7 +13,7 @@
  * @typedef {{
 *   passed_form_id: bool,
 *   has_merge_tag_listener: bool,
-*   label_cancel: string
+*   label_cancel: string,
 *   label_continue: string,
 *   loading_text: string,
 *   nonce: string,
@@ -22,6 +22,8 @@
 *   cookiepath: string,
 *   label_viewname: string,
 *   label_publisherror: string,
+*   label_expand_dialog: string,
+*   label_contract_dialog: string,
 * }} gvGlobals
 *
 * @typedef {{
@@ -56,6 +58,9 @@
    var viewConfiguration, viewGeneralSettings;
 
    const $spinner = $( '<svg class="loading" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z" fill="currentColor"></path></svg>' );
+
+   const EXPAND_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M2.2 7.2c.4 0 .7-.3.7-.7V6l-.2-2.1 1.6 1.7 2 2c.1.2.3.2.5.2.5 0 .8-.3.8-.8 0-.2 0-.4-.2-.5l-2-2-1.7-1.6h2.2c0 .1.5.1.5.1.4 0 .7-.3.7-.7 0-.4-.3-.7-.7-.7H2.6c-.8 0-1.2.5-1.2 1.2v3.7c0 .4.3.7.8.7zm7.4 7.5h3.8c.8 0 1.2-.4 1.2-1.2V9.8c0-.4-.3-.7-.8-.7-.4 0-.7.3-.7.7v2.6c.1 0-1.5-1.7-1.5-1.7l-2-2c-.1-.1-.3-.2-.5-.2-.5 0-.8.3-.8.8s0 .4.2.5l2 2 1.7 1.6H10c0-.1-.5-.1-.5-.1-.4 0-.7.3-.7.7 0 .4.3.7.7.7z"/></svg>';
+   const CONTRACT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M6.9 2c-.4 0-.7.3-.7.7v.5l.2 2.1-1.6-1.7-2-2c-.1-.2-.3-.2-.5-.2-.5 0-.8.3-.8.8s0 .4.2.5l2 2 1.7 1.6H3.2c0-.1-.5-.1-.5-.1-.4 0-.7.3-.7.7s.3.7.7.7h3.8c.8 0 1.2-.5 1.2-1.2V2.7c0-.4-.3-.7-.8-.7zm6.5 6.4H9.6c-.8 0-1.2.5-1.2 1.2v3.7c0 .4.3.7.8.7s.7-.3.7-.7v-2.6c-.1 0 1.5 1.7 1.5 1.7l2 2c.1.2.3.2.5.2.5 0 .8-.3.8-.8s0-.4-.2-.5l-2-2-1.7-1.6H13c0 .1.5.1.5.1.4 0 .7-.3.7-.7s-.3-.7-.7-.7z"/></svg>';
 
    viewConfiguration = {
 
@@ -258,6 +263,49 @@
 			   })
 
 			   .on( 'gravityview/dropdown/activate gravityview/dropdown/install', vcfg.enableLockedTemplate )
+
+			   .on( 'gravityview/dialog-opened', function( e, dialog ) {
+					var $parent = $( dialog ).parent();
+					var ninety_five_per = $( window ).width() * 0.95;
+					
+					// Only add the expand button if it doesn't exist and dialog width is less than 95%
+					if ( $parent.find('.gv-dialog-expand').length === 0 && vcfg.dialogWidth < ninety_five_per ) {
+						var $expandButton = $('<button>', {
+							class: 'gv-dialog-expand ui-button',
+							'aria-label': gvGlobals.label_expand_dialog,
+							'aria-expanded': 'false',
+							'aria-controls': $parent.find('.ui-dialog-content').attr('id') || 'dialog-content',
+							title: gvGlobals.label_expand_dialog,
+							tabindex: '0',
+							html: '<span class="screen-reader-text">' + gvGlobals.label_expand_dialog + '</span>' + EXPAND_ICON
+						});
+						$parent.find('.ui-dialog-titlebar').append( $expandButton );
+					}
+				} )
+
+				.on( 'click', '.gv-dialog-expand', function(e) {
+					// Only handle click or Enter/Space key
+					if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') {
+						return;
+					}
+
+					e.preventDefault();
+					var $dialog = $(this).closest('.ui-dialog');
+					var $button = $(this);
+					var isExpanded = $dialog.hasClass('gv-dialog-expanded');
+					
+					$dialog.toggleClass('gv-dialog-expanded');
+					$button.attr({
+						'aria-expanded': !isExpanded,
+						'aria-label': isExpanded ? gvGlobals.label_contract_dialog : gvGlobals.label_expand_dialog,
+						title: isExpanded ? gvGlobals.label_contract_dialog : gvGlobals.label_expand_dialog
+					})
+						.find('.screen-reader-text').text(isExpanded ? gvGlobals.label_contract_dialog : gvGlobals.label_expand_dialog).end()
+						.find('svg').replaceWith(isExpanded ? EXPAND_ICON : CONTRACT_ICON);
+					
+					// Trigger window resize to recalculate dialog position.
+					$( window ).trigger( 'resize' );
+				})
 		   ;
 		   // End bind to $( document.body )
 
