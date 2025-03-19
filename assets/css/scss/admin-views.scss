@@ -768,9 +768,14 @@ $gv-overlay-index: 10000;
 
 .post-type-gravityview .CodeMirror {
 	max-width: 690px !important;
+	height: 14.5em; // 10 visible rows
 }
-.post-type-gravityview .CodeMirror-lines {
-	min-height: 14em; // 10 visible rows
+.post-type-gravityview .gv-dialog-expanded .CodeMirror {
+	height: auto;
+}
+
+.post-type-gravityview .gv-dialog-expanded .CodeMirror-lines {
+	min-height: 14.5em;
 }
 
 .gform-admin .gform-dropdown--merge-tags .gform-dropdown__container {
