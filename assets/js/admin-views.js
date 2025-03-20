@@ -316,10 +316,12 @@
 		   $( window ).on( 'resize', function () {
 			   const $openDialog = $( ".ui-dialog:visible" ).find( '.ui-dialog-content' );
 
+			   $openDialog.dialog( 'option', 'position', {
 				   my: 'center',
 				   at: 'center',
-				   of: window
-			   $openDialog.dialog( 'option', 'position', {
+				   collision: 'fit',
+				   of: window,
+				   within: $( '#wpwrap' ),
 			   } );
 
 			   // If dialog width is greater than the maximum dialog width, set to the maximum dialog width.
