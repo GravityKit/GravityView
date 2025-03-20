@@ -23,7 +23,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop = 
 
-* Fixed: Settings text may not wrap correctly in the View editor.
+#### ✨ Improved
+* The display of action buttons/links on the Edit Entry page.
+
+#### 🐛 Fixed
+* Broken Entry Edit link inside the lightbox when viewing a single entry.
+* Settings text may not wrap correctly in the View editor.
 
 = 2.36 on March 13, 2025 =
 
