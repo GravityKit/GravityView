@@ -91,6 +91,12 @@
 		*/
 	   performingAjaxAction: false,
 
+	   /**
+	    * @since TODO
+	    * @type {number} The maximum width of the modal dialogs to use for field and widget settings.
+	    */
+	   maxDialogWidth: 0.95,
+
 	   init: function () {
 
 		   // short tag
@@ -265,18 +271,16 @@
 			   .on( 'gravityview/dropdown/activate gravityview/dropdown/install', vcfg.enableLockedTemplate )
 
 			   .on( 'gravityview/dialog-opened', function( e, dialog ) {
-					var $parent = $( dialog ).parent();
-					var ninety_five_per = $( window ).width() * 0.95;
+					const $parent = $( dialog ).parent();
 					
-					// Only add the expand button if it doesn't exist and dialog width is less than 95%
-					if ( $parent.find('.gv-dialog-expand').length === 0 && vcfg.dialogWidth < ninety_five_per ) {
-						var $expandButton = $('<button>', {
+					// Only add the expand button if it doesn't exist and dialog width is less than the maximum dialog width.
+					if ( $parent.find('.gv-dialog-expand').length === 0 && vcfg.dialogWidth < $( window ).width() * vcfg.maxDialogWidth ) {
+						const $expandButton = $('<button>', {
 							class: 'gv-dialog-expand ui-button',
 							'aria-label': gvGlobals.label_expand_dialog,
 							'aria-expanded': 'false',
 							'aria-controls': $parent.find('.ui-dialog-content').attr('id') || 'dialog-content',
 							title: gvGlobals.label_expand_dialog,
-							tabindex: '0',
 							html: '<span class="screen-reader-text">' + gvGlobals.label_expand_dialog + '</span>' + EXPAND_ICON
 						});
 						$parent.find('.ui-dialog-titlebar').append( $expandButton );
@@ -290,9 +294,9 @@
 					}
 
 					e.preventDefault();
-					var $dialog = $(this).closest('.ui-dialog');
-					var $button = $(this);
-					var isExpanded = $dialog.hasClass('gv-dialog-expanded');
+					const $dialog = $(this).closest('.ui-dialog');
+					const $button = $(this);
+					const isExpanded = $dialog.hasClass('gv-dialog-expanded');
 					
 					$dialog.toggleClass('gv-dialog-expanded');
 					$button.attr({
@@ -310,24 +314,19 @@
 		   // End bind to $( document.body )
 
 		   $( window ).on( 'resize', function () {
+			   const $openDialog = $( ".ui-dialog:visible" ).find( '.ui-dialog-content' );
 
-			   var $open_dialog = $( ".ui-dialog:visible" ).find( '.ui-dialog-content' );
-
-			   $open_dialog.dialog( 'option', 'position', {
 				   my: 'center',
 				   at: 'center',
 				   of: window
+			   $openDialog.dialog( 'option', 'position', {
 			   } );
 
-			   // If dialog width is greater than 95% of window width, set to 95% window width
-			   var window_width = vcfg.dialogWidth;
-			   var ninety_five_per = $( window ).width() * 0.95;
-
-			   if ( vcfg.dialogWidth > ninety_five_per ) {
-				   window_width = ninety_five_per;
+			   // If dialog width is greater than the maximum dialog width, set to the maximum dialog width.
+			   let calcMaxDialogWidth = $( window ).width() * vcfg.maxDialogWidth;
+			   if ( vcfg.dialogWidth > calcMaxDialogWidth ) {
+				   $openDialog.dialog( 'option', 'width', calcMaxDialogWidth );
 			   }
-
-			   $open_dialog.dialog( 'option', 'width', window_width );
 		   });
 
 		   // Make sure the user intends to leave the page before leaving.
