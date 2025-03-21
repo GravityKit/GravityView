@@ -26,9 +26,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### ✨ Improved
 * The display of action buttons/links on the Edit Entry page.
 * Added an expand/contract button to field and widget settings in the View editor.
-	- When the dialog is expanded, the code editor will expand to the full width of the dialog.
+  - When the dialog is expanded, the code editor will expand to the full width of the dialog.
 
 #### 🐛 Fixed
+* Missing settings in the View editor for customizing next/previous page button text on the Edit Entry screen.
 * Missing hooks in the Layout Builder template prevented extensions like Ratings & Reviews from working.
 * Broken Entry Edit link inside the lightbox when viewing a single entry.
 * Settings text may not wrap correctly in the View editor.
