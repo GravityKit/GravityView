@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 	- When the dialog is expanded, the code editor will expand to the full width of the dialog.
 
 #### 🐛 Fixed
+* Missing hooks in the Layout Builder template prevented extensions like Ratings & Reviews from working.
 * Broken Entry Edit link inside the lightbox when viewing a single entry.
 * Settings text may not wrap correctly in the View editor.
 * The "Are you sure you want to leave this page?" unsaved changes warning appears after opening field settings and navigating away from the Edit View page, even if no changes were made.
