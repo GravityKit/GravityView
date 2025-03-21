@@ -2867,8 +2867,14 @@
 			   }
 		   ];
 
-		   vcfg.showDialog( parent.find( ".gv-dialog-options" ), buttons );
+		   var dialogOptions = parent.find( ".gv-dialog-options" );
+		   
+		   // Set up a one-time event handler to detect changes in this dialog
+		   dialogOptions.find(':input').one( 'change', function() {
+			   vcfg.setUnsavedChanges( true );
+		   } );
 
+		   vcfg.showDialog( dialogOptions, buttons );
 	   },
 
 	   /**
@@ -2889,7 +2895,10 @@
 
 		   $( 'input[type=checkbox]', $parent ).attr( 'disabled', null );
 
-		   vcfg.setUnsavedChanges( true );
+		   // Only mark as having unsaved changes if this is not the initial dialog opening
+		   if ( ! first_run ) {
+		       vcfg.setUnsavedChanges( true );
+		   }
 	   },
 
 	   /**
