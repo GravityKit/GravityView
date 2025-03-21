@@ -2210,6 +2210,19 @@ hr {
 	}
 }
 
+/**
+ * When the dialog is expanded, allow columns to be bigger.
+ */
+.postbox .gv-dialog-expanded .gv-dialog-options {
+	.cell-sort {
+		width: 24px;
+	}
+
+	th {
+		width: 33%;
+	}
+}
+
 .wp-block-legacy-widget {
 	.gv-widget-search-fields .cell-add-remove {
 		width: 70px !important;
