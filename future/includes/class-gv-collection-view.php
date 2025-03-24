@@ -151,7 +151,7 @@ class View_Collection extends Collection {
 
 			// Merge only unique Views.
 			foreach ( self::from_content( $meta_value )->all() as $view ) {
-				if ( ! in_array( $view->ID, $view_ids ) ) {
+				if ( ! in_array( $view->ID, $view_ids, true ) ) {
 					$views->add( $view );
 				}
 			}
