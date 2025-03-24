@@ -3,13 +3,15 @@
  * Display the search by numeric range.
  *
  * @file class-search-widget.php See for usage
+ * @global array $data
  */
 
 $gravityview_view = GravityView_View::getInstance();
-$view_id          = $gravityview_view->getViewId();
-$value            = $gravityview_view->search_field['value'];
-$label            = $gravityview_view->search_field['label'];
-$name             = $gravityview_view->search_field['name'];
+$search_field     = \GV\Utils::get( $data, 'search_field', [] );
+$view_id          = \GV\Utils::get( $data, 'view_id', 0 );
+$value            = \GV\Utils::get( $search_field, 'value', 0 );
+$label            = \GV\Utils::get( $search_field, 'label', 0 );
+$name             = \GV\Utils::get( $search_field, 'name', 0 );
 
 $min = $value['min'] ?? null; // Can't trust `rgar` here.
 $max = $value['max'] ?? null;

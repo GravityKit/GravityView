@@ -3,11 +3,11 @@
  * Display the search LINK input field
  *
  * @file class-search-widget.php See for usage
+ *
+ * @global array $data
  */
 
-$gravityview_view = GravityView_View::getInstance();
-$view_id          = $gravityview_view->getViewId();
-$search_field     = $gravityview_view->search_field;
+$search_field = \GV\Utils::get( $data, 'search_field', [] );
 
 // base url to calculate the final full link
 $base_url = GravityView_Widget_Search::get_search_form_action();

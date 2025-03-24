@@ -21,6 +21,36 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+<<<<<<< HEAD
+
+= WIP =
+
+- ⚠️ TODO: Properly handle deprecating the `GravityView_View` properties; other code likely calls them. ⚠️
+- TODO: Make sure the `set_template_data()` and `unset_template_data()` methods aren't heavy. They're called a lot.
+- TODO: Clean up widget-search.php so that each of the sections (basic fields, advanced fields, and permalink fields) are processed in a loop instead of multiple times.
+- TODO: Actually implement the Advanced Search part, not just cobble it together.
+- TODO: Write unit tests to cover changed functionality.
+- TODO: Add back-compatibility so that `field`, `input`, and `input_type` keys are set so that filters `$search_fields` structure so that it is set for existing filters and methods:
+	- [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "field" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/fields/class-gravityview-field.php on line 239
+    - [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "field" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/widgets/search-widget/class-search-widget.php on line 1509
+    - [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "input" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/widgets/search-widget/class-search-widget.php on line 1423
+
+
+- Search Bar is now a tab! You can now configure the Search Bar settings in the View editor, under the "Search" tab.
+
+__Developer Updates:__
+
+- Added: Fourth `$data` attribute to \GravityView_View::render() method to set a `$data` global in View templates.
+- Updated the Search Bar templates to remove usage of `$gravityview_view` in favor of a global `$data` variable.
+	- `$gravityview_view->search_fields` => `$data['search_fields']`
+	- `$gravityview_view->permalink_fields` => `$data['permalink_fields']`
+	- `$gravityview_view->search_layout` => `$data['search_layout']`
+	- `$gravityview_view->search_mode` => `$data['search_mode']`
+	- `$gravityview_view->search_class` => `$data['search_class']`
+	- `$gravityview_view->search_clear` => `$data['search_clear']`
+
+= develop =
+=======
 = develop = 
 
 #### ✨ Improved
@@ -38,6 +68,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = 2.36 on March 13, 2025 =
 
 This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.
+>>>>>>> develop
 
 #### 🚀 Added
 * New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.

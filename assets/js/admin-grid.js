@@ -56,7 +56,7 @@
 					dataType: 'json'
 				} )
 					.always( () => {
-						$add_row.removeClass( 'open' )
+						$add_row.removeClass( 'open' );
 						$add_row.find( '.gv-toggle' ).attr( 'aria-expanded', false );
 					} )
 					.done( ( response => {

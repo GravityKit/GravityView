@@ -66,14 +66,14 @@ final class Grid {
 	 *
 	 * @since 2.31.0
 	 *
-	 * @param Widget_Collection|Field_Collection $collection The collection.
-	 * @param string                             $zone       The zone.
+	 * @param Collection $collection The collection.
+	 * @param string     $zone       The zone.
 	 *
 	 * @return array The row configurations.
 	 */
 	public static function get_rows_from_collection( Collection $collection, string $zone ): array {
 		$rows = [];
-		if ( ! $collection instanceof Widget_Collection && ! $collection instanceof Field_Collection ) {
+		if ( ! $collection instanceof Collection_Position_Aware ) {
 			return $rows;
 		}
 
