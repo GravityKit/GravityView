@@ -21,6 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+<<<<<<< HEAD
 
 = WIP =
 
@@ -49,15 +50,41 @@ __Developer Updates:__
 	- `$gravityview_view->search_clear` => `$data['search_clear']`
 
 = develop =
+=======
+= develop = 
+
+#### ✨ Improved
+* The display of action buttons/links on the Edit Entry page.
+* Added an expand/contract button to field and widget settings in the View editor.
+  - When the dialog is expanded, the code editor will expand to the full width of the dialog.
+
+#### 🐛 Fixed
+* Missing settings in the View editor for customizing next/previous page button text on the Edit Entry screen.
+* Missing hooks in the Layout Builder template prevented extensions like Ratings & Reviews from working.
+* Broken Entry Edit link inside the lightbox when viewing a single entry.
+* Settings text may not wrap correctly in the View editor.
+* The "Are you sure you want to leave this page?" unsaved changes warning appears after opening field settings and navigating away from the Edit View page, even if no changes were made.
+
+= 2.36 on March 13, 2025 =
+
+This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.
+>>>>>>> develop
 
 #### 🚀 Added
 * New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.
 
-#### Fixed
-* Edit Entry link in Admin bar was invalid for Multi Entries.
-
 #### ✨ Improved
 * Forms in the form selection filter on the Views page are now sorted alphabetically.
+* Security enhancements for GravityView blocks and shortcodes.
+
+#### 🐛 Fixed
+* View Details block could not be previewed when enhanced security was enabled on the View.
+* Adding the GravityView shortcode or View block in the block editor prevented content from being saved when the View was configured to redirect on no entries.
+* `[gravityview]` shortcode not returning results when the `search_value` attribute value contains an apostrophe.
+* Issues in Views using joined data ([Multiple Forms](https://www.gravitykit.com/extensions/multiple-forms/) extension):
+  - Single Entry layout not working in a lightbox;
+  - Invalid `GravityView > Edit Entry` link in the top admin bar when editing an entry;
+  - PHP notice triggered when editing entries in a lightbox.
 
 = 2.35 on February 12, 2025 =
 
@@ -2487,7 +2514,7 @@ __Developer Notes:__
 * Fixed: Address fields displayed hidden inputs
 * Fixed: Merge Tag dropdown list can be too wide when field names are long
 * Fixed: When sorting, recent entries disappeared from results
-* Fixed: Searches that included apostrophes  or ampersands returned no results
+* Fixed: Searches that included apostrophes or ampersands returned no results
 * Fixed: Zero values not set in fields while in Edit Entry
 * Fixed: Re-calculate fields where calculation is enabled after entry is updated
 * Fixed: Warning message when Number fields not included in custom Edit Entry configurations

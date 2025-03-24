@@ -68,6 +68,8 @@ $flexbox-margin: 10px;
 			width: 100%;
 			flex: 0 0 auto;
 			flex-flow: row wrap;
+			align-items: center; 
+			gap: 5px;
 
 			.gv-search-button {
 				order: -111;
@@ -121,11 +123,13 @@ $flexbox-margin: 10px;
 
 .gv-search-clear {
 	display: none;
+	margin: 0 3%;
+	line-height: normal; 
+	align-items: center;
 
 	.gv-is-search & {
 		order: 2;
 		display: inline-block;
-		margin: 0 3%;
 		height: 100%; // Otherwise, the text border stretches to max height
 	}
 }

@@ -35,6 +35,9 @@
 }
 
 $dismiss-red: #C62D2D;
+$dialog-padding: 25px;
+$dialog-padding-top: 35px;
+$dialog-button-padding: 5px;
 
 /**
  * Convert buttons to not having any style
@@ -564,7 +567,6 @@ $gv-overlay-index: 10000;
 
 #gravityview_settings {
 	th {
-		white-space: nowrap;
 		width: 30%;
 		min-width: 100px;
 		max-width: 200px; // Default th width in forms.css
@@ -596,7 +598,7 @@ $gv-overlay-index: 10000;
 
 	th,
 	td {
-		span, input {
+		span, input, textarea {
 			font-weight: normal !important;
 		}
 
@@ -767,8 +769,15 @@ $gv-overlay-index: 10000;
 }
 
 .post-type-gravityview .CodeMirror {
-	height: 15.75em; // 10 visible rows
 	max-width: 690px !important;
+	height: 14.5em; // 10 visible rows
+}
+.post-type-gravityview .gv-dialog-expanded .CodeMirror {
+	height: auto;
+}
+
+.post-type-gravityview .gv-dialog-expanded .CodeMirror-lines {
+	min-height: 14.5em;
 }
 
 .gform-admin .gform-dropdown--merge-tags .gform-dropdown__container {
@@ -1069,8 +1078,72 @@ $gv-overlay-index: 10000;
 	z-index: $gv-overlay-index + 1 !important;
 	overflow: visible; // Allow GF tooltips to overflow modal window
 	user-select: auto;
+	border-radius: 10px;
+	overflow-y: auto;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 
+				0 2px 4px rgba(0, 0, 0, 0.06);
+	border: 1px solid rgba(0, 0, 0, 0.08);
+
+	.ui-dialog-titlebar {
+		position: relative;
+		border-radius: 0;
+		background: #fdfdff;
+		border-bottom: 1px solid #e2e8f0;
+		padding: $dialog-padding-top ($dialog-padding / 2) $dialog-padding;
+	}
+
+	.ui-button.gv-dialog-expand {
+		position: absolute;
+		top: 18px;
+		right: auto;
+		left: $dialog-button-padding;
+
+		html[dir=rtl] & {
+			left: auto;
+			right: $dialog-button-padding;
+		}
+
+		width: 30px;
+		height: 30px;
+		padding: 0;
+		border: 1px solid transparent;
+		background: transparent;
+		cursor: pointer;
+		z-index: 1;
+
+		svg {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 16px;
+			height: 16px;
+			fill: currentColor;
+		}
+	}
+
+	&.gv-dialog-expanded {
+		position: fixed !important;
+		width: 95vw !important;
+		min-height: none !important;
+		min-width: 95vw !important;
+		max-width: none !important;
+		height: 95vh !important;
+	}
 }
 
+.admin-bar .gv-dialog.gv-dialog-expanded {
+	top: calc( 32px + 2.5vh ) !important;
+	height: calc(95vh - 32px) !important;
+}
+
+/** When the dialog is expanded, the CodeMirror editor should be full-width and as tall as it wants to be. */
+.post-type-gravityview .gv-dialog-expanded .CodeMirror {
+	max-width: 100% !important;
+	height: 100% !important;
+}
+
+// Overlay styles
 .gv-overlay {
 	cursor: pointer;
 	position: fixed;
@@ -1079,6 +1152,20 @@ $gv-overlay-index: 10000;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+	top: 0;
+	left: 0;
+}
+
+// High Contrast Mode Support
+@media (forced-colors: active) {
+	.gv-dialog .gv-dialog-expand {
+		border: 1px solid ButtonText;
+
+		&:focus {
+			outline: 2px solid ButtonText;
+			outline-offset: 2px;
+		}
+	}
 }
 
 /** Sections */
@@ -1615,9 +1702,6 @@ hr {
 	display: block;
 }
 
-$dialog-padding: 25px;
-$dialog-button-padding: 5px;
-
 .gv-dialog {
 
 	&.ui-widget-content > div:not(.ui-tooltip) {
@@ -1655,7 +1739,7 @@ $dialog-button-padding: 5px;
 		border-radius: 0;
 		background: $color-gf-fff;
 		border-bottom: 1px solid $color-gf-eee;
-		padding: $dialog-padding ($dialog-padding / 2) $dialog-padding;
+		padding: $dialog-padding-top ($dialog-padding / 2) $dialog-padding;
 	}
 
 	.gv-field-details--toggle {
@@ -1735,28 +1819,45 @@ $dialog-button-padding: 5px;
 		border-radius: 3px;
 	}
 
+	.ui-button.gv-dialog-expand,
 	.ui-button.ui-dialog-titlebar-close {
-
 		padding: 3px;
 		top: $dialog-button-padding;
 		right: $dialog-button-padding;
 		border-radius: 3px;
 		text-indent: -99999px;
+		box-shadow: none;
+		color: $color-666;
+
+		&:hover {
+			background: #f1f1f1;
+			color: $color-333;
+		}
+
+		&:focus {
+			outline: none;
+			border-color: #2271b1;
+			box-shadow: 0 0 0 1px #2271b1;
+			color: #000;
+		}
+
+		&:focus:not(:focus-visible) {
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	.ui-button.ui-dialog-titlebar-close {
 
 		html[dir=rtl] & {
 			right: auto;
 			left: $dialog-button-padding;
 		}
 
-		&:hover {
-			background: #f1f1f1;
-		}
-
 		// Replace the jQuery UI "X" with Dashicons
 		.ui-icon.ui-icon-closethick {
 			display: none;
 		}
-
 		&:before {
 			text-indent: 0;
 			position: absolute;
@@ -1805,6 +1906,14 @@ $dialog-button-padding: 5px;
 			.gv-setting-container {
 				padding-left: $dialog-padding;
 				margin-left: -$gutter-width;
+			}
+
+			@media (max-width: 850px) {
+				// Fix the container going off-screen on small screens.
+				.gv-setting-container {
+					padding-left: 0;
+					margin-left: 0;
+				}
 			}
 
 			legend {
@@ -2099,6 +2208,19 @@ $dialog-button-padding: 5px;
 			display: flex;
 			width: 50px;
 		}
+	}
+}
+
+/**
+ * When the dialog is expanded, allow columns to be bigger.
+ */
+.postbox .gv-dialog-expanded .gv-dialog-options {
+	.cell-sort {
+		width: 24px;
+	}
+
+	th {
+		width: 33%;
 	}
 }
 

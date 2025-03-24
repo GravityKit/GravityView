@@ -30,6 +30,23 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		return <NoViewsNotice blockPreviewImage={ previewImage } newViewUrl={ gkGravityViewBlocks?.create_new_view_url } />;
 	}
 
+	/**
+	 * Sets the selected View from the ViewSelect object.
+	 *
+	 * @since 2.36.0
+	 *
+	 * @param {number} _viewId The View ID.
+	 */
+	function selectView( _viewId ) {
+		const selectedView = gkGravityViewBlocks.views.find( option => option.value === _viewId );
+
+		setAttributes( {
+			viewId: _viewId,
+			secret: selectedView?.secret,
+			previewBlock: previewBlock && ! _viewId ? false : previewBlock,
+		} );
+	}
+
 	const shouldPreview = ( previewBlock && viewId );
 
 	return (
@@ -41,7 +58,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( _viewId ) => setAttributes( { viewId: _viewId, previewBlock: previewBlock && !_viewId ? false : previewBlock } ) }
+								onChange={ selectView }
 							/>
 
 							<Disabled isDisabled={ !viewId }>
@@ -79,7 +96,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 					<ViewSelector
 						viewId={ viewId }
-						onChange={ ( _viewId ) => setAttributes( { viewId: _viewId, previewBlock: previewBlock && !_viewId ? false : previewBlock } ) }
+						onChange={ selectView }
 					/>
 
 					<PreviewControl

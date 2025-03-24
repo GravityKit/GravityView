@@ -51,7 +51,6 @@ class GravityView_Edit_Entry_Admin {
 	 * @return void
 	 */
 	public function view_settings_metabox( $current_settings ) {
-
 		GravityView_Render_Settings::render_setting_row( 'edit_locking', $current_settings );
 
 		GravityView_Render_Settings::render_setting_row( 'user_edit', $current_settings );
@@ -65,6 +64,10 @@ class GravityView_Edit_Entry_Admin {
 		GravityView_Render_Settings::render_setting_row( 'action_label_update', $current_settings );
 
 		GravityView_Render_Settings::render_setting_row( 'edit_cancel_lightbox_action', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'action_label_next', $current_settings );
+
+		GravityView_Render_Settings::render_setting_row( 'action_label_previous', $current_settings );
 
 		GravityView_Render_Settings::render_setting_row( 'action_label_cancel', $current_settings );
 	}

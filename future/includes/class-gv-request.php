@@ -215,19 +215,21 @@ abstract class Request {
 	 * @return \GV\Entry|false The entry requested or false.
 	 */
 	public function is_edit_entry( $form_id = 0 ) {
-
 		$entry = $this->is_entry( $form_id );
 
 		/**
-		 * Whether we're currently on the Edit Entry screen \n.
+		 * Checks whether we're currently on the Edit Entry screen.
 		 * The Edit Entry functionality overrides this value.
+		 *
+		 * @filter `gravityview_is_edit_entry`
+		 *
+		 * @since v2.0-beta.2
 		 *
 		 * @param boolean $is_edit_entry
 		 */
 		if ( $entry && apply_filters( 'gravityview_is_edit_entry', false ) ) {
-
 			if ( $entry->is_multi() ) {
-				return array_pop( $entry->entries );
+				return reset( $entry->entries );
 			}
 
 			return $entry;

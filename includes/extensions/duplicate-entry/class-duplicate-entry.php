@@ -922,7 +922,7 @@ final class GravityView_Duplicate_Entry {
 	/**
 	 * Triggers notifications when an entry is duplicated.
 	 *
-	 * @since $ver$
+	 * @since 2.36.0
 	 *
 	 * @param array $duplicated_entry The duplicated entry.
 	 */
@@ -933,7 +933,7 @@ final class GravityView_Duplicate_Entry {
 	/**
 	 * Adds entry duplicated status to notification events.
 	 *
-	 * @since $ver$
+	 * @since 2.36.0
 	 *
 	 * @param array $notification_events The notification events.
 	 *

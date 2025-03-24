@@ -19,6 +19,10 @@
       "default": "",
       "type": "string"
     },
+    "secret": {
+      "default": null,
+      "type": "string"
+    },
     "detail": {
       "default": "total_entries",
       "type": "string"

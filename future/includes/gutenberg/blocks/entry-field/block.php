@@ -51,6 +51,10 @@ class EntryField {
 			$value = esc_attr( sanitize_text_field( $value ) );
 
 			if ( isset( $block_to_shortcode_attributes_map[ $attribute ] ) && ! empty( $value ) ) {
+				if ( 'secret' === $attribute && Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
+					$value = '*********';
+				}
+
 				if ( 'field_setting_overrides' === $attribute ) {
 					$shortcode_attributes[] = $value;
 				} else {

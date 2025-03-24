@@ -49,11 +49,11 @@ $href = GravityView_Edit_Entry::get_edit_link( $entry, $gravityview->view->ID, $
 $output = gravityview_get_link( $href, $output, $link_atts );
 
 /**
- * Modify the link HTML (here for backward compatibility).
+ * Modify the link HTML.
  *
- * @param string $output HTML output of the link
+ * @since 2.0
+ * @param string $link HTML output of the link
  * @param string $href URL of the link
- * @param array  $entry The GF entry array
- * @param  array $field_settings Settings for the particular GV field
+ * @param \GV\Template_Context $context The context
  */
-echo apply_filters( 'gravityview_field_entry_link', $output, $href, $entry, $field_settings );
+echo apply_filters( 'gravityview/template/field/entry_link', $output, $href, $gravityview );
