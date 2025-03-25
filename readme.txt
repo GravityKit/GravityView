@@ -25,7 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 
-* Fatal error when a Chained Selects Add-On search field is added to the Search Bar, then the add-on is deactivated.
+* Fatal error when a Chained Selects Add-On search field is added to the Search Bar, then the field is removed from the connected form.
 
 = 2.37 on March 24, 2025 =
 
