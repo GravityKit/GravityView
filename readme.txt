@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+
+* Fatal error when a Chained Selects Add-On search field is added to the Search Bar, then the add-on is deactivated.
+
 = 2.37 on March 24, 2025 =
 
 This release enhances dialogs in the View editor, improves button and link positioning on the Edit Entry page, and resolves missing settings, embed issues in page builders, unsaved changes warnings, and more.
