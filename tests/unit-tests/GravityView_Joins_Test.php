@@ -618,8 +618,6 @@ class GravityView_Joins_Test extends GV_UnitTestCase {
 
 		$renderer = new \GV\View_Renderer();
 
-		$renderer = new \GV\Legacy_Override_Template( $view );
-
 		$out = $renderer->render( 'list' );
 		$result = preg_replace( '/\s+/', '', wp_strip_all_tags( $out ) );
 

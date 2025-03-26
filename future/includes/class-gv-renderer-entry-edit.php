@@ -31,17 +31,9 @@ class Edit_Entry_Renderer extends Entry_Renderer {
 		$entries = new \GV\Entry_Collection();
 		$entries->add( $entry );
 
-		\GV\Mocks\Legacy_Context::push(
-			array(
-				'view'    => $view,
-				'entries' => $entries,
-			)
-		);
-
 		ob_start();
-		do_action( 'gravityview_edit_entry', null, $entry, $view, $request );
 
-		\GV\Mocks\Legacy_Context::pop();
+		do_action( 'gravityview_edit_entry', null, $entry, $view, $request );
 
 		return ob_get_clean();
 	}
