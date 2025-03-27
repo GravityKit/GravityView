@@ -25,7 +25,7 @@ $is_currency = 'total' === $gravityview_view->search_field['type'];
 if ( ! $is_currency ) {
 	// could still be currency from the field.
 	$field       = GVCommon::get_field( $gravityview_view->getForm() ?? [], $gravityview_view->search_field['key'] );
-	$is_currency = 'currency' === $field->numberFormat;
+	$is_currency = $field && ( 'currency' === $field['numberFormat'] ?? null );
 }
 
 /**
@@ -47,25 +47,25 @@ $step = apply_filters(
 
 <div class="gv-search-box gv-search-number gv-search-number-range">
 	<?php if ( ! gv_empty( $label, false, false ) ) { ?>
-		<label for="search-box-<?php echo esc_attr( $name ) . '-start'; ?>">
+        <label for="search-box-<?php echo esc_attr( $name ) . '-start'; ?>">
 			<?php echo esc_html( $label ) . ( $is_currency ? ' (' . GFCommon::get_currency() . ')' : '' ); ?>
-		</label>
+        </label>
 	<?php } ?>
-	<p>
-		<input name="<?php echo esc_attr( $name ) . '[min]'; ?>"
-			   id="search-box-<?php echo esc_attr( $name ) . '-min'; ?>"
-			   type="number"
-			   placeholder="<?php esc_attr_e( 'From', 'gk-gravityview' ); ?>"
-			   step="<?php echo esc_attr( $step ); ?>"
-			   value="<?php echo esc_attr( $min ); ?>">
+    <p>
+        <input name="<?php echo esc_attr( $name ) . '[min]'; ?>"
+               id="search-box-<?php echo esc_attr( $name ) . '-min'; ?>"
+               type="number"
+               placeholder="<?php esc_attr_e( 'From', 'gk-gravityview' ); ?>"
+               step="<?php echo esc_attr( $step ); ?>"
+               value="<?php echo esc_attr( $min ); ?>">
 
-		<input name="<?php echo esc_attr( $name ) . '[max]'; ?>"
-			   id="search-box-<?php echo esc_attr( $name ) . '-max'; ?>"
-			   type="number"
-			   placeholder="<?php esc_attr_e( 'To', 'gk-gravityview' ); ?>"
-			   step="<?php echo esc_attr( $step ); ?>"
-			   value="<?php echo esc_attr( $max ); ?>">
-	</p>
+        <input name="<?php echo esc_attr( $name ) . '[max]'; ?>"
+               id="search-box-<?php echo esc_attr( $name ) . '-max'; ?>"
+               type="number"
+               placeholder="<?php esc_attr_e( 'To', 'gk-gravityview' ); ?>"
+               step="<?php echo esc_attr( $step ); ?>"
+               value="<?php echo esc_attr( $max ); ?>">
+    </p>
 	<?php if ( $error ) {
 		printf( '<p class="error">%s</p>', $error );
 	} ?>
