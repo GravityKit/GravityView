@@ -68,9 +68,16 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 		$instance             = new self( $field['label'] ?? '' );
 		$instance->form_field = $field;
-		$gf_field             = GF_Fields::create( $field );
+		$gf_field             = GFAPI::get_field( $field['form_id'] ?? 0, $field['id'] ?? 0 );
+
 		if ( $gf_field ) {
 			$instance->field = $gf_field;
+			// Clone to have a copy per field for immutability.
+			$instance->field = clone $gf_field;
+			// Set remaining params, like `parent` and `id`.
+			foreach ( $field as $param => $value ) {
+				$instance->field->{$param} = $value;
+			}
 		}
 
 		$instance->id = $instance->get_type();

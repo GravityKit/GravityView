@@ -187,6 +187,19 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns the available input types for this search field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string[]
+	 */
+	protected function get_input_types(): array {
+		$input_types_mapping = GravityView_Widget_Search::get_input_types_by_field_type();
+
+		return $input_types_mapping[ $this->get_field_type() ] ?? $input_types_mapping['text'];
+	}
+
+	/**
 	 * Returns the default settings for every search field.
 	 *
 	 * @since $ver$
@@ -196,8 +209,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	private function get_search_field_options(): array {
 		$options = [];
 
-		$input_types_mapping = GravityView_Widget_Search::get_input_types_by_field_type();
-		$input_types         = $input_types_mapping[ $this->get_field_type() ] ?? $input_types_mapping['text'];
+		$input_types = $this->get_input_types();
 
 		if ( $input_types ) {
 			$options['input_type'] = [
@@ -297,7 +309,10 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return string
 	 */
 	protected function get_input_type(): string {
-		return $this->item['input_type'] ?? 'input_text';
+		$type        = $this->item['input_type'] ?? 'input_text';
+		$input_types = $this->get_input_types();
+
+		return in_array( $type, $input_types, true ) ? $type : reset( $input_types );
 	}
 
 	/**
