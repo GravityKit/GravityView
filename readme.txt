@@ -27,6 +27,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Fatal error when a Chained Selects Add-On search field is added to the Search Bar, then the field is removed from the connected form.
 
+#### 💻 Developer Updates
+
+* Added `gk/gravityview/edit-entry/user-can-edit-field` filter to allow modifying field visibility in Edit Entry.
+
 = 2.37 on March 24, 2025 =
 
 This release enhances dialogs in the View editor, improves button and link positioning on the Edit Entry page, and resolves missing settings, embed issues in page builders, unsaved changes warnings, and more.
