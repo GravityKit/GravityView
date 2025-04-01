@@ -45,6 +45,10 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 						if ( ! empty( $areas ) ) {
 							foreach ( $areas as $area ) {
 								foreach ( $search_fields->by_position( 'search-general' . '_' . $area['areaid'] )->all() as $field ) {
+									if ( ! $field->is_visible() ) {
+										continue;
+									}
+
 									$search_field = $field->to_template_data();
 									/**
 									 * @action `gravityview_search_widget_field_before` Before each search input is rendered (other than the submit button)

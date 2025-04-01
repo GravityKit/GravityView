@@ -113,6 +113,8 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			'custom_label',
 			'show_label',
 			'input_type',
+			'only_loggedin',
+			'only_loggedin_cap',
 		];
 	}
 
@@ -218,6 +220,10 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	public function merge_options( array $options ): array {
 		if ( isset( $options['custom_label'] ) ) {
 			$options['custom_label']['placeholder'] = $this->get_default_label();
+		}
+
+		if ( in_array( static::class, [ Search_Field_Submit::class, Search_Field_Search_Mode::class ], true ) ) {
+			unset( $options['only_loggedin'], $options['only_loggedin_cap'] );
 		}
 
 		return array_merge( $options, $this->get_search_field_options(), $this->get_options() );
@@ -548,5 +554,38 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 */
 	protected function get_key(): string {
 		return $this->get_type();
+	}
+
+	/**
+	 * The capability required for this search field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string|null The name of the capability.
+	 */
+	protected function required_cap(): ?string {
+		if ( ! ( $this->settings['only_loggedin'] ?? false ) ) {
+			return null;
+		}
+
+		return $this->settings['only_loggedin_cap'] ?? null;
+	}
+
+	/**
+	 * Returns whether the search field is visible for the current user.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether the field is visible.
+	 */
+	final public function is_visible(): bool {
+		$cap = $this->required_cap();
+
+		return apply_filters(
+			'gk/gravityview/search/field/is_visible',
+			( ! $cap || \GVCommon::has_cap( $cap ) ),
+			$this,
+			$this->view
+		);
 	}
 }
