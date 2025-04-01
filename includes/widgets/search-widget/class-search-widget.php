@@ -182,6 +182,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'multiselect' => [ 'select', 'multiselect', 'radio', 'checkbox', 'link' ],
 			'checkbox'    => [ 'select', 'multiselect', 'radio', 'checkbox', 'link' ],
 			'submit'      => [ 'submit' ],
+			'search_mode' => [ 'hidden', 'radio' ],
 
 			// hybrids
 			'created_by'  => [ 'select', 'radio', 'checkbox', 'multiselect', 'link', 'input_text' ],
@@ -243,6 +244,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'date_range'      => esc_html__( 'Date range', 'gk-gravityview' ),
 			'number_range'    => esc_html__( 'Number range', 'gk-gravityview' ),
 			'submit'          => esc_html__( 'Submit button', 'gk-gravityview' ),
+			'hidden'          => esc_html__( 'Hidden Field', 'gk-gravityview' ),
 		];
 
 		/**

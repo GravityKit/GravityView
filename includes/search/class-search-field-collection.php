@@ -14,6 +14,7 @@ use GV\Search\Fields\Search_Field_Entry_ID;
 use GV\Search\Fields\Search_Field_Is_Approved;
 use GV\Search\Fields\Search_Field_Is_Read;
 use GV\Search\Fields\Search_Field_Is_Starred;
+use GV\Search\Fields\Search_Field_Search_Mode;
 use GV\Search\Fields\Search_Field_Submit;
 use GV\View;
 use IteratorAggregate;
@@ -63,12 +64,13 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 		$fields = [
 			new Search_Field_All(),
+			new Search_Field_Search_Mode(),
+			new Search_Field_Submit(),
 			new Search_Field_Entry_Date(),
 			new Search_Field_Entry_ID(),
 			new Search_Field_Created_By(),
 			new Search_Field_Is_Starred(),
 			new Search_Field_Is_Read(),
-			new Search_Field_Submit(),
 		];
 
 		if ( gravityview()->plugin->supports( Plugin::FEATURE_GFQUERY ) ) {

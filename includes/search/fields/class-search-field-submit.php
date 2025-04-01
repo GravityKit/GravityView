@@ -6,15 +6,13 @@ namespace GV\Search\Fields;
  * Represents a search field that searches all fields.
  *
  * @since $ver$
- *
- * @extends Search_Field
  */
 final class Search_Field_Submit extends Search_Field {
 	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected string $icon = 'dashicons-search';
+	protected string $icon = 'dashicons-button';
 
 	/**
 	 * @inheritdoc
@@ -61,17 +59,6 @@ final class Search_Field_Submit extends Search_Field {
 			'show_label'   => [
 				'type'  => 'hidden',
 				'value' => 1,
-			],
-			'search_mode'  => [
-				'type'       => 'select',
-				'label'      => esc_html__( 'Search Mode', 'gk-gravityview' ),
-				'desc'       => __( 'Should search results match all search fields, or any?', 'gk-gravityview' ),
-				'value'      => 'any',
-				'choices'    => [
-					'any' => esc_html__( 'Match Any Fields', 'gk-gravityview' ),
-					'all' => esc_html__( 'Match All Fields', 'gk-gravityview' ),
-				],
-				'priority'   => 1000,
 			],
 			'search_clear' => [
 				'type'     => 'checkbox',
