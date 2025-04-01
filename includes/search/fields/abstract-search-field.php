@@ -2,7 +2,9 @@
 
 namespace GV\Search\Fields;
 
+use GF_Field;
 use GravityView_Widget_Search;
+use GV\Context;
 use GV\Search\Search_Field_Collection;
 use GV\View;
 
@@ -73,6 +75,48 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	protected ?View $view = null;
 
 	/**
+	 * Microcache of the connected field instance.
+	 *
+	 * @since $ver$
+	 *
+	 * @var GF_Field|null
+	 */
+	protected ?GF_Field $field = null;
+
+	/**
+	 * The Context object.
+	 *
+	 * @since $ver$
+	 *
+	 * @var Context|null
+	 */
+	protected ?Context $context = null;
+
+	/**
+	 * The widget args.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array
+	 */
+	protected array $widget_args = [];
+
+	/**
+	 * Returns the keys from the data array that are considered settings.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string[]
+	 */
+	protected function setting_keys(): array {
+		return [
+			'custom_label',
+			'show_label',
+			'input_type',
+		];
+	}
+
+	/**
 	 * Creates the base field instance.
 	 *
 	 * @since $ver$
@@ -85,7 +129,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			$label ?? $this->get_label(),
 			$this->get_type(),
 			$data,
-			array_intersect_key( $data, array_flip( [ 'custom_label', 'show_label' ] ) )
+			array_intersect_key( $data, array_flip( $this->setting_keys() ) ),
 		);
 
 		if ( $call_initialize ) {
@@ -130,7 +174,11 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return static|null The field instance.
 	 */
-	public static function from_configuration( array $data, ?View $view = null ): ?Search_Field {
+	public static function from_configuration(
+		array $data,
+		?View $view = null,
+		array $additional_params = []
+	): ?Search_Field {
 		// Can't instantiate the abstract class, but we can use it as a factory.
 		if ( static::class === self::class ) {
 			$fields = Search_Field_Collection::available_fields( (int) ( $data['form_id'] ?? 0 ) );
@@ -139,7 +187,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 				return null;
 			}
 
-			return $class::from_configuration( $data );
+			return $class::from_configuration( $data, $view, $additional_params );
 		}
 
 		$field       = new static( $data['label'] ?? null, $data );
@@ -147,7 +195,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 		unset( $data['type'] );
 
-		foreach ( $data as $key => $value ) {
+		foreach ( array_merge( $data, $additional_params ) as $key => $value ) {
 			if ( property_exists( $field, $key ) ) {
 				$field->{$key} = $value;
 			}
@@ -267,11 +315,11 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return string
 	 */
 	private function get_frontend_label(): string {
-		if ( ! ( $this->item['show_label'] ?? true ) ) {
+		if ( ! ( $this->settings['show_label'] ?? true ) ) {
 			return '';
 		}
 
-		$label = $this->item['custom_label'] ?? '';
+		$label = $this->settings['custom_label'] ?? '';
 		if ( ! $label ) {
 			$label = $this->get_default_label();
 		}
@@ -309,7 +357,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return string
 	 */
 	protected function get_input_type(): string {
-		$type        = $this->item['input_type'] ?? 'input_text';
+		$type        = $this->settings['input_type'] ?? 'input_text';
 		$input_types = $this->get_input_types();
 
 		return in_array( $type, $input_types, true ) ? $type : reset( $input_types );
@@ -390,6 +438,8 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	protected function init(): void {
 		$this->item['icon']        = $this->get_icon();
 		$this->item['description'] = $this->get_description();
+
+		$this->form_id = $this->view ? $this->view->form->ID : null;
 	}
 
 	/**

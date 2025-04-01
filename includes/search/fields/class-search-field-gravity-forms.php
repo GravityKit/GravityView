@@ -3,8 +3,10 @@
 namespace GV\Search\Fields;
 
 use GF_Field;
-use GF_Fields;
+use GF_Query_Column;
 use GFAPI;
+use GFCommon;
+use GFFormsModel;
 use GravityView_Widget_Search;
 use GV\View;
 
@@ -30,15 +32,6 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @var array
 	 */
 	public array $form_field = [];
-
-	/**
-	 * Microcache of the connected field instance.
-	 *
-	 * @since $ver$
-	 *
-	 * @var GF_Field|null
-	 */
-	private ?GF_Field $field = null;
 
 	/**
 	 * @inheritDoc
@@ -71,7 +64,6 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 		$gf_field             = GFAPI::get_field( $field['form_id'] ?? 0, $field['id'] ?? 0 );
 
 		if ( $gf_field ) {
-			$instance->field = $gf_field;
 			// Clone to have a copy per field for immutability.
 			$instance->field = clone $gf_field;
 			// Set remaining params, like `parent` and `id`.
@@ -91,8 +83,12 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	public static function from_configuration( array $data, ?View $view = null ): ?self {
-		$instance = parent::from_configuration( $data, $view );
+	public static function from_configuration(
+		array $data,
+		?View $view = null,
+		array $additional_params = []
+	): ?self {
+		$instance = parent::from_configuration( $data, $view, $additional_params );
 		if ( ! $instance ) {
 			return null;
 		}
@@ -150,13 +146,48 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	protected function init(): void {
 		parent::init();
 
-		$field = $this->get_field();
+		$this->item['icon'] = $this->get_field_icon();
+
+		$field = $this->get_gf_field();
 		if ( ! $field ) {
 			return;
 		}
 
-		$this->item['icon']   = $field->get_form_editor_field_type_icon();
 		$this->item['parent'] = $field['parent'] ?? null;
+	}
+
+	/**
+	 * Returns the icon for the Grvaity Forms Field.
+	 *
+	 * @since $ver$
+	 * @return string
+	 */
+	private function get_field_icon(): string {
+		$field = $this->get_gf_field();
+		if ( $field ) {
+			return $field->get_form_editor_field_type_icon();
+		}
+
+		$type = $this->get_field_id();
+
+		switch ( $type ) {
+			case 'is_fulfilled':
+				return 'dashicons-yes-alt';
+			case 'currency':
+				return 'dashicons-money-alt';
+			case 'payment_amount':
+				return 'gform-icon--numbers-alt';
+			case 'payment_date':
+				return 'dashicons-calendar-alt';
+			case 'payment_method':
+				return 'dashicons-products';
+			case 'payment_status':
+				return 'dashicons-visibility';
+			case 'geolocation':
+				return 'dashicons-admin-site';
+			default:
+				return 'dashicons-admin-generic';
+		}
 	}
 
 	/**
@@ -198,14 +229,48 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	protected function has_choices(): bool {
-		$field = $this->get_field();
+		$field = $this->get_gf_field();
+		if ( $field ) {
+			$choices = $field->choices ?? [];
+
+			$has_choices = is_array( $choices ) && count( $choices ) > 0;
+			if ( $has_choices ) {
+				return true;
+			}
+		}
+
+		return in_array(
+			$field ? $field->type : $this->get_field_id(),
+			[
+				'payment_status',
+				'post_category',
+			],
+			true
+		);
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function is_sievable(): bool {
+		return $this->has_choices() && ! $this->is_child();
+	}
+
+	/**
+	 * Whether this field has a parent.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool
+	 */
+	private function is_child(): bool {
+		$field = $this->get_gf_field();
 		if ( ! $field ) {
 			return false;
 		}
 
-		$choices = $field->choices ?? [];
-
-		return is_array( $choices ) && count( $choices ) > 0;
+		return ( $field->parent ?? null ) instanceof GF_Field;
 	}
 
 	/**
@@ -213,25 +278,96 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	protected function get_field_type(): string {
-		$field = $this->get_field();
-		if ( ! $field ) {
-			return parent::get_field_type();
-		}
+		$field = $this->get_gf_field();
 
-		return GravityView_Widget_Search::get_search_input_types( $this->get_field_id(), $field['type'] );
+		return GravityView_Widget_Search::get_search_input_types(
+			$this->get_field_id(),
+			$field ? $field['type'] : null
+		);
 	}
 
 	/**
 	 * @inheritDoc@
 	 * @since     $ver$
 	 */
-	public function get_choices(): array {
-		$field = $this->get_field();
-		if ( ! $field ) {
-			return [];
+	protected function get_choices(): array {
+		$field = $this->get_gf_field();
+		if ( $field && ! empty( $field->choices ?? [] ) ) {
+			return $field->choices;
 		}
 
-		return $field->choices ?? [];
+		$field_type = $field ? $field->type : $this->get_field_id();
+		switch ( $field_type ) {
+			case 'payment_status':
+				return GFCommon::get_entry_payment_statuses_as_choices();
+			case 'post_category':
+				return gravityview_get_terms_choices();
+			default:
+				return [];
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_sieved_values(): array {
+		global $wpdb;
+
+		$form_id               = $this->view->form->ID;
+		$field_id              = $this->get_field_id();
+		$entry_table_name      = GFFormsModel::get_entry_table_name();
+		$entry_meta_table_name = GFFormsModel::get_entry_meta_table_name();
+
+		$column = new GF_Query_Column( $field_id, $form_id );
+
+		if ( $column->is_entry_column() ) {
+			$choices = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT `{$field_id}` FROM `$entry_table_name` WHERE `form_id` = %d",
+					$form_id
+				)
+			);
+		} else {
+			$key_like = $wpdb->esc_like( $field_id ) . '.%';
+			$choices  = $wpdb->get_col(
+				$wpdb->prepare(
+					"SELECT DISTINCT `meta_value` FROM $entry_meta_table_name WHERE ( `meta_key` LIKE %s OR `meta_key` = %s ) AND `form_id` = %d",
+					$key_like,
+					$field_id,
+					$form_id
+				)
+			);
+
+			$field = $this->get_gf_field();
+
+			if ( $field && 'json' === ( $field['storageType'] ?? '' ) ) {
+				$choices        = array_map( 'json_decode', $choices );
+				$_choices_array = [];
+				foreach ( $choices as $choice ) {
+					if ( ! is_array( $choice ) ) {
+						$choice = [ $choice ];
+					}
+
+					$_choices_array[] = $choice;
+				}
+
+				$choices = array_unique( array_merge( [], ...$_choices_array ) );
+			}
+
+			if ( 'post_category' === $field->type ) {
+				$choices = array_map(
+					static function ( $choice ): string {
+						$parts = explode( ':', $choice );
+
+						return reset( $parts );
+					},
+					$choices
+				);
+			}
+		}
+
+		return $choices;
 	}
 
 	/**
@@ -241,7 +377,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 *
 	 * @return GF_Field|null The Gravity Forms field.
 	 */
-	private function get_field(): ?GF_Field {
+	private function get_gf_field(): ?GF_Field {
 		if ( $this->field ) {
 			return $this->field;
 		}
@@ -300,7 +436,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	public function to_legacy_format(): array {
 		$data = parent::to_legacy_format();
 
-		$field = $this->get_field();
+		$field = $this->get_gf_field();
 		if ( $field ) {
 			$data['form_id'] = $field['formId'] ?? null;
 		}

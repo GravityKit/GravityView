@@ -89,12 +89,17 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @since $ver$
 	 *
-	 * @param array     $configuration The configuration.
-	 * @param View|null $view          The View object.
+	 * @param array     $configuration     The configuration.
+	 * @param View|null $view              The View object.
+	 * @param array     $additional_params Additional params passed along to every field (e.g. Context, Widget args).
 	 *
 	 * @return self The collection.
 	 */
-	public static function from_configuration( array $configuration, ?View $view = null ): self {
+	public static function from_configuration(
+		array $configuration,
+		?View $view = null,
+		array $additional_params = []
+	): self {
 		$collection = new self();
 
 		foreach ( $configuration as $position => $_fields ) {
@@ -106,7 +111,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 				$_configuration['UID']      = $uid;
 				$_configuration['position'] = $position;
 
-				$field = Search_Field::from_configuration( $_configuration, $view );
+				$field = Search_Field::from_configuration( $_configuration, $view, $additional_params );
 				if ( ! $field ) {
 					continue;
 				}
@@ -116,6 +121,16 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 		}
 
 		return $collection;
+	}
+
+	/**
+	 * Creates collection based on the legacy configuration.
+	 *
+	 * @since $ver$
+	 * @return self
+	 */
+	public static function from_legacy_configuration( array $legacy_configuration ): self {
+		// Todo.
 	}
 
 	/**

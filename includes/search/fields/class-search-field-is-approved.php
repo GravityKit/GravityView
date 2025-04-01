@@ -58,7 +58,7 @@ final class Search_Field_Is_Approved extends Search_Field_Choices {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	public function get_choices(): array {
+	protected function get_choices(): array {
 		return array_map(
 			static fn( array $choice ): array => [
 				'text'  => $choice['label'] ?? '',

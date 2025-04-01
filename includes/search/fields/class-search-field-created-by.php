@@ -2,6 +2,7 @@
 
 namespace GV\Search\Fields;
 
+use GFFormsModel;
 use GVCommon;
 
 /**
@@ -74,7 +75,15 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	public function get_choices(): array {
+	protected function is_sievable(): bool {
+		return true;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_choices(): array {
 		$users = GVCommon::get_users( 'search_widget', [ 'fields' => [ 'ID', 'display_name' ] ] );
 
 		$choices = [];
@@ -102,5 +111,23 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 		}
 
 		return $choices;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_sieved_values(): array {
+		global $wpdb;
+
+		$entry_table_name = GFFormsModel::get_entry_table_name();
+		$form_id          = $this->view->form->ID;
+
+		return $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT DISTINCT `created_by` FROM $entry_table_name WHERE `form_id` = %d",
+				$form_id
+			)
+		);
 	}
 }

@@ -48,7 +48,7 @@ final class Search_Field_Is_Read extends Search_Field_Choices {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	public function get_choices(): array {
+	protected function get_choices(): array {
 		return [
 			[
 				'text'  => __( 'Read', 'gk-gravityview' ),
