@@ -3,6 +3,7 @@
 /** If this file is called directly, abort. */
 
 use GV\Utils;
+use GV\View;
 use GV\View_Collection;
 
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -16,6 +17,13 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class GravityView_Edit_Entry_Locking {
 	const LOCK_CACHE_KEY_PREFIX = 'lock_entry_';
+
+	/**
+	 * The interval in seconds to check for locked entries in the UI.
+	 *
+	 * @since TBD
+	 */
+	const LOCK_CHECK_INTERVAL = 10;
 
 	/**
 	 * Load extension entry point.

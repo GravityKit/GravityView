@@ -53,6 +53,8 @@ class GravityView_Edit_Entry_Admin {
 	public function view_settings_metabox( $current_settings ) {
 		GravityView_Render_Settings::render_setting_row( 'edit_locking', $current_settings );
 
+		GravityView_Render_Settings::render_setting_row( 'edit_locking_check_interval', $current_settings );
+
 		GravityView_Render_Settings::render_setting_row( 'user_edit', $current_settings );
 
 		GravityView_Render_Settings::render_setting_row( 'unapprove_edit', $current_settings );
