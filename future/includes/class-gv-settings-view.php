@@ -590,6 +590,7 @@ class View_Settings extends Settings {
 					'full_width' => true,
 					'class'      => 'small-text',
 					'value'      => \GravityView_Edit_Entry_Locking::LOCK_CHECK_INTERVAL,
+					'requires'   => 'edit_locking=1',
 					'min'        => 1,
 				),
 				'delete_redirect'             => array(
