@@ -209,7 +209,7 @@ class GravityView_Edit_Entry_Locking {
 				continue;
 			}
 
-			$this->enqueue_scripts( $entry );
+			$this->enqueue_scripts( $entry, $view );
 
 			break;
 		}
@@ -221,24 +221,34 @@ class GravityView_Edit_Entry_Locking {
 	 * Called via load() and `wp_enqueue_scripts`
 	 *
 	 * @since 2.5.2
+	 * @since TBD Added $view parameter.
 	 *
-	 * @param array $entry Gravity Forms entry array
+	 * @param array     $entry Gravity Forms entry array.
+	 * @param View|null $view  (optional) The View object.
 	 *
 	 * @return void
 	 */
-	protected function enqueue_scripts( $entry ) {
+	protected function enqueue_scripts( $entry, ?View $view = null ) {
 		$lock_user_id = $this->check_lock( $entry['id'] );
 
-		// Gravity forms locking checks if #wpwrap exist in the admin dashboard, 
+		$request_check_interval = $view ? $view->settings->get( 'edit_locking_check_interval', self::LOCK_CHECK_INTERVAL ) : self::LOCK_CHECK_INTERVAL;
+
+		// Gravity forms locking checks if #wpwrap exist in the admin dashboard,
 		// So we have to add the lock UI to the body before the gforms locking script is loaded.
 		wp_add_inline_script( 'heartbeat', '
-			jQuery(document).ready(function($) {
-				if ($("#wpwrap").length === 0) {
-					var lockUI = ' . json_encode( $this->get_lock_ui( $lock_user_id, $entry ) ) . ';
-					$("body").prepend(lockUI);
-				}
-			});
-		' );
+			jQuery( document ).ready( function( $ ) {
+					if ( $( "#wpwrap" ).length === 0 ) {
+						var lockUI = ' . json_encode( $this->get_lock_ui( $lock_user_id, $entry ) ) . ';
+						$( "body" ).prepend( lockUI );
+					}
+				
+					if ( typeof wp !== "undefined" && wp.heartbeat ) {
+						setTimeout( function() {
+							wp.heartbeat.interval( ' . ( int ) $request_check_interval . ', 0 );
+						}, 1000 );	
+					}
+				} );
+			' );
 
 		$min          = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 		$locking_path = GFCommon::get_base_url() . '/includes/locking/';
