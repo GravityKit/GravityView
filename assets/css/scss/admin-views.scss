@@ -1080,7 +1080,7 @@ $gv-overlay-index: 10000;
 	user-select: auto;
 	border-radius: 10px;
 	overflow-y: auto;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1),
 				0 2px 4px rgba(0, 0, 0, 0.06);
 	border: 1px solid rgba(0, 0, 0, 0.08);
 
@@ -1385,6 +1385,9 @@ hr {
 
 	&.has-custom-visibility .gv-field-controls .icon-custom-visibility {
 		display: inline-block;
+		&.hide-if-js {
+			display: none;
+		}
 	}
 
 	h5 {

@@ -811,17 +811,26 @@
 
 		   var custom_visibility;
 
-		   if ( $( e.target ).is('select') ) {
+		   if ( $( e.target ).is( 'select' ) ) {
 			   custom_visibility = 'read' !== $( e.target ).val();
 		   } else {
 			   custom_visibility = $( e.target ).is( ':checked' );
 		   }
 
-		   var parent = $( e.target ).parents( '.gv-fields' );
+		   const $settings = $( e.target ).closest( '.gv-dialog-options' );
+		   let $field;
 
-		   parent.toggleClass( 'has-custom-visibility', custom_visibility );
+		   if ( $settings.data( 'field' ) ) {
+			   $field = $settings.data( 'field' );
+		   } else {
+			   const $parent = $( e.target ).closest( '.gv-fields' );
+			   $parent.toggleClass( 'has-custom-visibility', custom_visibility );
+			   $field = $parent.find( '.gv-field-controls' );
+		   }
 
-		   parent.find( '.gv-field-controls .icon-custom-visibility' ).toggleClass( 'hide-if-js', ! custom_visibility );
+		   if ( $field ) {
+			   $field.find( '.icon-custom-visibility' ).toggleClass( 'hide-if-js', !custom_visibility );
+		   }
 	   },
 
 	   /**
