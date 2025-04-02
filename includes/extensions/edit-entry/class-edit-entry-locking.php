@@ -194,7 +194,10 @@ class GravityView_Edit_Entry_Locking {
 			}
 
 			// Check the nonce.
-			if ( ! ( new GravityView_Edit_Entry_Render( GravityView_Edit_Entry::getInstance() ) )->verify_nonce() ) {
+			$edit_entry_render             = new GravityView_Edit_Entry_Render( GravityView_Edit_Entry::getInstance() );
+			$edit_entry_render::$nonce_key = ( GravityView_Edit_Entry::getInstance() )::get_nonce_key( $view->ID, $entry['form_id'], $entry['id'] );
+
+			if ( ! $edit_entry_render->verify_nonce() ) {
 				continue;
 			}
 
