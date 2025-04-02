@@ -8,6 +8,7 @@
 
 $gravityview_view = GravityView_View::getInstance();
 $search_field     = \GV\Utils::get( $data, 'search_field', [] );
+$custom_class     = \GV\Utils::get( $search_field, 'custom_class', [] );
 $view_id          = \GV\Utils::get( $data, 'view_id', 0 );
 $value            = \GV\Utils::get( $search_field, 'value', 0 );
 $label            = \GV\Utils::get( $search_field, 'label', 0 );
@@ -45,7 +46,7 @@ $step = apply_filters(
 );
 ?>
 
-<div class="gv-search-box gv-search-number gv-search-number-range">
+<div class="gv-search-box gv-search-number gv-search-number-range <?php echo $custom_class; ?>">
 	<?php if ( ! gv_empty( $label, false, false ) ) { ?>
         <label for="search-box-<?php echo esc_attr( $name ) . '-start'; ?>">
 			<?php echo esc_html( $label ) . ( $is_currency ? ' (' . GFCommon::get_currency() . ')' : '' ); ?>

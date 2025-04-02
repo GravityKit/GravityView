@@ -8,6 +8,7 @@
  */
 
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
 
 // Make sure that there are choices to display
 if ( empty( $search_field['choices'] ) ) {
@@ -16,7 +17,7 @@ if ( empty( $search_field['choices'] ) ) {
 }
 
 ?>
-<div class="gv-search-box gv-search-field-radio">
+<div class="gv-search-box gv-search-field-radio <?php echo $custom_class; ?>">
 	<?php if ( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 	<label for=search-box-<?php echo esc_attr( $search_field['name'] ); ?>><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>

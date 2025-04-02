@@ -8,8 +8,9 @@
  */
 
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
-$form_id = \GV\Utils::get( $search_field, 'form_id', null );
-$form = \GV\GF_Form::by_id( $form_id );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
+$form_id      = \GV\Utils::get( $search_field, 'form_id', null );
+$form         = \GV\GF_Form::by_id( $form_id );
 
 // Make sure that there are choices to display
 if ( empty( $search_field['choices'] ) ) {
@@ -36,7 +37,7 @@ $placeholder = \GV\Utils::get( $gf_field, 'placeholder', '' );
 $default_option = apply_filters( 'gravityview/extension/search/select_default', ( '' === $placeholder ? '&mdash;' : $placeholder ), 'select' );
 
 ?>
-<div class="gv-search-box gv-search-field-select">
+<div class="gv-search-box gv-search-field-select <?php echo $custom_class; ?>">
 	<?php if ( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 		<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>

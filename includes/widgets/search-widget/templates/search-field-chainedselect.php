@@ -11,8 +11,9 @@
  * @global array $data
  */
 
-$search_field = \GV\Utils::get( $data, 'search_field', [] );
+$search_field  = \GV\Utils::get( $data, 'search_field', [] );
 $search_layout = \GV\Utils::get( $data, 'search_layout', 'horizontal' );
+$custom_class  = \GV\Utils::get( $search_field, 'custom_class', [] );
 
 if ( ! class_exists( 'GF_Chained_Field_Select' ) ) {
 	gravityview()->log->error( 'The Gravity Forms Chained Select Add-On is not active.' );
@@ -54,7 +55,7 @@ $hide_inactive = apply_filters( 'gravityview/search/chained_selects/hide_inactiv
 // Set horizontal/vertical alignment
 $gf_field->chainedSelectsAlignment = $search_layout;
 ?>
-<div class="gv-search-box gv-search-field-chainedselect">
+<div class="gv-search-box gv-search-field-chainedselect <?php echo $custom_class; ?>">
 	<?php if ( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 		<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
 		<?php

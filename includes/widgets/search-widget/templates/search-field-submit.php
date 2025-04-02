@@ -8,13 +8,14 @@
 $view_id      = \GV\Utils::get( $data, 'view_id', 0 );
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
 $search_clear = \GV\Utils::get( $search_field, 'search_clear', false );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
 
 $submit_html_tag     = $search_field['tag'] ?? 'input';
 $submit_button_id    = sprintf( 'gv_search_button_%d', $view_id );
 $submit_button_label = $search_field['label'] ?? __( 'Search', 'gk-gravityview' );
 
 ?>
-<div class="gv-search-box gv-search-box-submit">
+<div class="gv-search-box gv-search-box-submit <?php echo $custom_class; ?>">
 	<?php
 
 	if ( $search_clear ) {

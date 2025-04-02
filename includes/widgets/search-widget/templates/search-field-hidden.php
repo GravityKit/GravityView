@@ -9,4 +9,4 @@
 
 $search_field = \GV\Utils::get( $data, 'search_field', null );
 ?>
-<input type="hidden" name="<?php echo esc_attr( $search_field['name'] ); ?>" value="<?php echo esc_attr( $search_field['value'] ); ?>">
+<input type="hidden" name="<?php echo esc_attr( $search_field['name'] ?? '' ); ?>" value="<?php echo esc_attr( $search_field['value'] ?? '' ); ?>">

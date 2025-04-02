@@ -7,14 +7,15 @@
  * @global array $data
  */
 
-$view_id = \GV\Utils::get( $data, 'view_id', null );
-$search_field = \GV\Utils::get( $data, 'search_field', null );
-$value = \GV\Utils::get( $search_field, 'value' );
-$label = \GV\Utils::get( $search_field, 'label' );
+$view_id          = \GV\Utils::get( $data, 'view_id', null );
+$search_field     = \GV\Utils::get( $data, 'search_field', null );
 $datepicker_class = \GV\Utils::get( $data, 'datepicker_class', '' );
+$value            = \GV\Utils::get( $search_field, 'value' );
+$label            = \GV\Utils::get( $search_field, 'label' );
+$custom_class     = \GV\Utils::get( $search_field, 'custom_class', [] );
 ?>
 
-<div class="gv-search-box gv-search-date gv-search-date-range gv-search-field-entry_date">
+<div class="gv-search-box gv-search-date gv-search-date-range gv-search-field-entry_date <?php echo $custom_class; ?>">
 	<?php if ( ! gv_empty( $label, false, false ) ) { ?>
 	<label for="gv_start_date_<?php echo (int) $view_id; ?>"><?php echo esc_html( $label ); ?></label>
 	<?php } ?>

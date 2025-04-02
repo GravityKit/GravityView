@@ -111,6 +111,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	protected function setting_keys(): array {
 		return [
 			'custom_label',
+			'custom_class',
 			'show_label',
 			'input_type',
 			'only_loggedin',
@@ -522,7 +523,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			'value'        => $this->get_input_value(),
 			'type'         => $this->get_type(),
 			'input'        => $this->get_input_type(),
-			'custom_class' => $this->item['custom_class'] ?? '',
+			'custom_class' => $this->sanitize_classes( $this->settings['custom_class'] ?? '' ),
 		];
 
 		foreach ( array_keys( $this->get_options() ) as $key ) {
@@ -530,6 +531,13 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		}
 
 		return $params;
+	}
+
+	protected function sanitize_classes( string $classes ): string {
+		$list = explode( ' ', $classes );
+		$list = array_map( 'sanitize_title_with_dashes', $list );
+
+		return implode( ' ', array_filter( $list ) );
 	}
 
 	/**

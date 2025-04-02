@@ -7,13 +7,14 @@
  * @global array $data
  */
 
-$search_field     = \GV\Utils::get( $data, 'search_field', [] );
+$search_field = \GV\Utils::get( $data, 'search_field', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
 
 if ( ! is_string( $search_field['value'] ?? '' ) ) {
 	$search_field['value'] = '';
 }
 ?>
-<div class="gv-search-box gv-search-field-text">
+<div class="gv-search-box gv-search-field-text <?php echo $custom_class; ?>">
 	<?php if ( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 	<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
 	<?php } ?>
