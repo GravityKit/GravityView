@@ -523,7 +523,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			'value'        => $this->get_input_value(),
 			'type'         => $this->get_type(),
 			'input'        => $this->get_input_type(),
-			'custom_class' => $this->sanitize_classes( $this->settings['custom_class'] ?? '' ),
+			'custom_class' => gravityview_sanitize_html_class( $this->settings['custom_class'] ?? '' ),
 		];
 
 		foreach ( array_keys( $this->get_options() ) as $key ) {
@@ -531,13 +531,6 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		}
 
 		return $params;
-	}
-
-	protected function sanitize_classes( string $classes ): string {
-		$list = explode( ' ', $classes );
-		$list = array_map( 'sanitize_title_with_dashes', $list );
-
-		return implode( ' ', array_filter( $list ) );
 	}
 
 	/**
@@ -595,5 +588,14 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			$this,
 			$this->view
 		);
+	}
+
+	/**
+	 * Returns whether the field has a request value.
+	 *
+	 * @since $ver$
+	 */
+	final public function has_request_value(): bool {
+		return ! empty( $this->get_input_value() );
 	}
 }

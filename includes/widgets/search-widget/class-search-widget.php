@@ -1733,18 +1733,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$custom_class  = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
 
 		$data = [
-			'datepicker_class'     => $this->get_datepicker_class(),
-			'search_method'        => $this->get_search_method(),
-			'search_layout'        => $search_layout,
-			'search_mode'          => ( ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any' ),
-			'search_clear'         => ( ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false ),
-			'view_id'              => $view_id,
-			'search_class'         => self::get_search_class( $custom_class, $search_layout ),
-			'permalink_fields'     => $this->add_no_permalink_fields( [], $this, $widget_args ),
-			'search_form_action'   => self::get_search_form_action(),
-			'search_fields'        => $search_fields,
-			'search_rows_general'  => Grid::get_rows_from_collection( $search_fields, 'search-general' ),
-			'search_rows_advanced' => Grid::get_rows_from_collection( $search_fields, 'search-advanced' ),
+			'datepicker_class'            => $this->get_datepicker_class(),
+			'search_method'               => $this->get_search_method(),
+			'search_layout'               => $search_layout,
+			'search_mode'                 => ( ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any' ),
+			'search_clear'                => ( ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false ),
+			'view_id'                     => $view_id,
+			'search_class'                => self::get_search_class( $custom_class, $search_layout ),
+			'permalink_fields'            => $this->add_no_permalink_fields( [], $this, $widget_args ),
+			'search_form_action'          => self::get_search_form_action(),
+			'search_fields'               => $search_fields,
+			'search_rows_search-general'  => Grid::get_rows_from_collection( $search_fields, 'search-general' ),
+			'search_rows_search-advanced' => Grid::get_rows_from_collection( $search_fields, 'search-advanced' ),
 		];
 
 		GravityView_View::getInstance()->render( 'widget', 'search', false, $data );

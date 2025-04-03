@@ -253,4 +253,25 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 		return false;
 	}
+
+	/**
+	 * Returns whether one of the visible fields has a request value.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether one of the visible fields has a request value.
+	 */
+	public function has_request_values(): bool {
+		foreach ( $this->storage as $field ) {
+			if ( ! $field->is_visible() ) {
+				continue;
+			}
+
+			if ( $field->has_request_value() ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
