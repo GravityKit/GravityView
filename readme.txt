@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * View editor setting to control how frequently requests to take control of a locked entry are checked when Edit Locking is enabled.
 
 #### 🐛 Fixed
+* `[gv_entry_link]` shortcode not rendering inside the Custom Content field when using the Layout Builder template.
 * Fatal error when a Chained Selects Add-On search field is added to the Search Bar, then the field is removed from the connected form.
 * Entry locking not working in certain cases.
 
