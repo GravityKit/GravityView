@@ -2,7 +2,6 @@
 
 namespace GV\Search;
 
-use GV\Search\Fields\Search_Field_All;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,10 +27,10 @@ final class Search_Field_Collection_Test extends TestCase {
 	public function test_from_configuration(): void {
 		$collection = Search_Field_Collection::from_configuration( [
 			'search_default' => [
-				'asdf' => [ 'id' => 'all' ],
+				'asdf' => [ 'id' => 'search_all' ],
 			],
 			'search_advanced' => [
-				'asdf2' => [ 'id' => 'all' ],
+				'asdf2' => [ 'id' => 'search_all' ],
 			],
 		] );
 
@@ -40,20 +39,18 @@ final class Search_Field_Collection_Test extends TestCase {
 			[
 				'search_default' => [
 					'asdf' => [
-						'type'     => 'all',
-						'label'    => 'Unknown Field',
-						'value'    => '',
-						'position' => 'search_default',
 						'UID'      => 'asdf',
+						'type'     => 'search_all',
+						'label'    => 'Search Everything',
+						'position' => 'search_default',
 					],
 				],
 				'search_advanced' => [
 					'asdf2' => [
-						'type'     => 'all',
-						'label'    => 'Unknown Field',
-						'value'    => '',
-						'position' => 'search_advanced',
 						'UID'      => 'asdf2',
+						'type'     => 'search_all',
+						'label'    => 'Search Everything',
+						'position' => 'search_advanced',
 					],
 				],
 			],

@@ -102,6 +102,15 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	protected array $widget_args = [];
 
 	/**
+	 * The UID of the widget area.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string
+	 */
+	protected string $UID = '';
+
+	/**
 	 * Returns the keys from the data array that are considered settings.
 	 *
 	 * @since $ver$
@@ -308,6 +317,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 */
 	public function to_configuration(): array {
 		return [
+			'UID'      => $this->UID,
 			'type'     => $this->get_type(),
 			'label'    => $this->title,
 			'position' => $this->position,
