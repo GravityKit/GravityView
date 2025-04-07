@@ -138,7 +138,6 @@ class View_Collection extends Collection {
 	 * @return \GV\View_Collection $views View Collection containing any additional Views found
 	 */
 	private static function merge_deep( $views, $meta_value ) {
-
 		$meta_value = gv_maybe_json_decode( $meta_value, true );
 
 		if ( is_array( $meta_value ) ) {
@@ -148,7 +147,14 @@ class View_Collection extends Collection {
 		}
 
 		if ( is_string( $meta_value ) ) {
-			$views->merge( self::from_content( $meta_value ) );
+			$view_ids = array_map( fn( $view ) => $view->ID, $views->all() );
+
+			// Merge only unique Views.
+			foreach ( self::from_content( $meta_value )->all() as $view ) {
+				if ( ! in_array( $view->ID, $view_ids, true ) ) {
+					$views->add( $view );
+				}
+			}
 		}
 
 		return $views;

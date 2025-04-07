@@ -296,6 +296,37 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+				<h3>2.37 on March 24, 2025</h3>
+
+				<p>This release enhances dialogs in the View editor, improves button and link positioning on the Edit Entry page, and resolves missing settings, embed issues in page builders, unsaved changes warnings, and more.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>Expand/contract button to field and widget settings in the View editor.
+						<ul>
+							<li>When the dialog is expanded, the code editor will expand to the full width of the dialog.</li>
+						</ul>
+					</li>
+				</ul>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>The display of action buttons/links on the Edit Entry page.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Missing settings in the View editor for customizing next/previous page button text on the Edit Entry screen.</li>
+					<li>Missing hooks in the Layout Builder template prevented extensions like Ratings &amp; Reviews from working.</li>
+					<li>Broken Entry Edit link inside the lightbox when viewing a single entry.</li>
+					<li>Settings text may not wrap correctly in the View editor.</li>
+					<li>The "Are you sure you want to leave this page?" unsaved changes warning appears after opening field settings and navigating away from the Edit View page, even if no changes were made.</li>
+					<li>Embedding a View via a page builder (e.g., Elementor) prevented a GravityView View field in the Single Entry layout from rendering.</li>
+				</ul>
+
 				<h3>2.36 on March 13, 2025</h3>
 
 				<p>This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.</p>
@@ -359,63 +390,6 @@ class GravityView_Welcome {
 
 				<ul>
 					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.23.</li>
-				</ul>
-
-				<h3>2.34.2 on February 4, 2025</h3>
-
-				<p>This release fixes a PHP notice in WordPress 6.7+ and a display issue in Views using the Layout Builder template.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li><code>function _load_textdomain_just_in_time was called incorrectly</code> PHP notice in WordPress 6.7 or newer.</li>
-					<li>Display issue caused by a malformed <code>div</code> tag in the Layout Builder View template.</li>
-				</ul>
-
-				<h3>2.34.1 on January 30, 2025</h3>
-
-				<p>This update resolves multiple issues, including problems with search bar visibility in Layout Builder, entry management in multisite environments, and non-functional entry locking and notes, among others.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>The Search Bar would not always be visible in Views using the Layout Builder.</li>
-					<li>Users belonging to the main network site in a multisite environment couldn’t delete their own entries on subsites.</li>
-					<li>Entry locking not working.</li>
-					<li>JavaScript error preventing entry notes from being added when using the Twenty Twenty-Two theme or newer.</li>
-					<li>Using a comma in the <code>:format</code> merge tag modifier with Date fields caused partial results to be returned.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/edit-entry/renderer/enqueue-entry-lock-assets</code> filter to override whether to load the entry lock UI assets.</li>
-					<li>Added <code>gk/gravityview/edit-entry/renderer/entry-lock-dialog-markup</code> filter to modify the entry locking UI dialog window markup.</li>
-				</ul>
-
-				<h3>2.34 on January 9, 2025</h3>
-
-				<p>This release introduces the <a href="https://www.gravitykit.com/announcing-gravityview-2-34-all-new-layout-builder">Layout Builder</a> that allows creating custom layouts with rows and columns directly in the View editor, adds support for exporting entries by Approval Status, and includes various fixes and improvements.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>New Layout Builder View type for creating custom layouts with single or multi-column configurations and adjustable widths.</li>
-					<li>Support for using entry Approval Status in conditional logic rules on the Gravity Forms Export Entries page.</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Entries added via the Gravity Forms API or while GravityView is inactive can now be filtered using the "Unapproved" status on the Entries page.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Fatal error when searching entries by Approval Status in Views joined with another form using the Multiple Forms extension.</li>
-					<li>Some <a href='https://docs.gravitykit.com/article/350-merge-tag-modifiers'>merge tag modifiers</a> (e.g., <code>:maxwords</code>) not being processed.</li>
-					<li>WordPress's timezone offset not applying to Date field output with the <code>:format</code> merge tag modifier.</li>
 				</ul>
 
 				<p style="text-align: center;">

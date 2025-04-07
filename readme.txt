@@ -50,13 +50,28 @@ __Developer Updates:__
 	- `$gravityview_view->search_clear` => `$data['search_clear']`
 
 = develop =
-=======
-= develop = 
+
+#### 🚀 Added
+* View editor setting to control how frequently requests to take control of a locked entry are checked when Edit Locking is enabled.
+
+#### 🐛 Fixed
+* Fatal error when a Chained Selects Add-On search field is added to the Search Bar, then the field is removed from the connected form.
+* Entry locking not working in certain cases.
+
+#### 💻 Developer Updates
+
+* Added `gk/gravityview/edit-entry/user-can-edit-field` filter to allow modifying field visibility in Edit Entry.
+
+= 2.37 on March 24, 2025 =
+
+This release enhances dialogs in the View editor, improves button and link positioning on the Edit Entry page, and resolves missing settings, embed issues in page builders, unsaved changes warnings, and more.
+
+#### 🚀 Added
+* Expand/contract button to field and widget settings in the View editor.
+  - When the dialog is expanded, the code editor will expand to the full width of the dialog.
 
 #### ✨ Improved
 * The display of action buttons/links on the Edit Entry page.
-* Added an expand/contract button to field and widget settings in the View editor.
-  - When the dialog is expanded, the code editor will expand to the full width of the dialog.
 
 #### 🐛 Fixed
 * Missing settings in the View editor for customizing next/previous page button text on the Edit Entry screen.
@@ -64,6 +79,7 @@ __Developer Updates:__
 * Broken Entry Edit link inside the lightbox when viewing a single entry.
 * Settings text may not wrap correctly in the View editor.
 * The "Are you sure you want to leave this page?" unsaved changes warning appears after opening field settings and navigating away from the Edit View page, even if no changes were made.
+* Embedding a View via a page builder (e.g., Elementor) prevented a GravityView View field in the Single Entry layout from rendering.
 
 = 2.36 on March 13, 2025 =
 
