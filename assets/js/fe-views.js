@@ -39,6 +39,36 @@ jQuery( function ( $ ) {
 			this.number_range();
 
 			this.iframe();
+
+			this.enable_multi_page_entry_edit();
+		},
+
+		/**
+		 * Multi-page forms can have multiple submit buttons (Previous/Next/Update), and the backend
+		 * relies on the button's name and value to determine which page to display next.
+		 *
+		 * In 2.9.0.1, Gravity Forms refactored the submission process to use
+		 * jQuery(form).trigger('submit'), which does not include the clicked button's value.
+		 *
+		 * To preserve expected behavior, we inject a hidden input with the clicked button’s
+		 * name and value before submission.
+		 *
+		 * @since TBD
+		 */
+		enable_multi_page_entry_edit: function() {
+			$( document ).on( 'gform_post_render', function( event, formId, currentPage ) {
+				const $form = $( `#gform_${ formId }` );
+
+				$form.find( 'input[type="submit"][name]' ).each( function() {
+					$( this ).on( 'click', function() {
+						$form.append( $( '<input>', {
+							type: 'hidden',
+							name: this.name,
+							value: this.value,
+						} ) );
+					} );
+				} );
+			} );
 		},
 
 		/**
