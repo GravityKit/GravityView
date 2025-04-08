@@ -31,8 +31,8 @@ jQuery( function ( $ ) {
 			$( '.gv-search-clear' ).on( 'click', this.clear_search );
 
 			$( 'a.gv-sort' ).on( 'click', this.multiclick_sort );
-			
-			this.disable_upload_file_when_limit_reached();
+
+			$( document ).on( 'gform_post_render', this.disable_upload_file_when_limit_reached.bind( this ) );
 
 			this.fix_updating_files_after_edit();
 
@@ -55,77 +55,79 @@ jQuery( function ( $ ) {
 		},
 
 		/**
-		 * Fix the issue for file upload fields where the button is not disabled and show message for multi upload file.
+		 * Sets up event bindings for Gravity Forms multi-file uploaders to enforce limits.
+		 * Checks if the necessary GF objects exist before proceeding.
+		 * @since 2.30
+		 * @since 2.37.1 (Refactored)
 		 */
-		disable_upload_file_when_limit_reached: function(){
+		disable_upload_file_when_limit_reached: function() {
+			// Ensure the GF uploader object is available
+			if ( typeof gfMultiFileUploader === 'undefined' || typeof gfMultiFileUploader.uploaders === 'undefined' ) {
+				return; // Exit if GF object isn't ready
+			}
 
-			var checkUploaders = setInterval(function() {
-				if (typeof gfMultiFileUploader !== 'undefined' && gfMultiFileUploader.uploaders) {
-					clearInterval(checkUploaders);
-					$.each(gfMultiFileUploader.uploaders, function(index, uploader){
-						uploader.bind('Init', function(up, params) {
-							var data = up.settings;
-							var max = parseInt(data.gf_vars.max_files, 10);
-							if(max === 0){
-								return;
-							}
-							var fieldId = data.multipart_params.field_id;
-							var existingFilesCount = $('#preview_existing_files_'+fieldId).children().length;
-							var limitReached = existingFilesCount >= max;
-							gfMultiFileUploader.toggleDisabled(data, limitReached);
-						});
+			$.each( gfMultiFileUploader.uploaders, function( index, uploader ) {
+				uploader.bind( 'Init', function( up, params ) {
+					var data = up.settings;
+					var max = parseInt( data.gf_vars.max_files, 10 );
+					if ( max === 0 ) {
+						return;
+					}
+					var fieldId = data.multipart_params.field_id;
+					var existingFilesCount = $( '#preview_existing_files_' + fieldId ).children().length;
+					var limitReached = existingFilesCount >= max;
+					gfMultiFileUploader.toggleDisabled( data, limitReached );
+				} );
 
-						uploader.bind('FilesAdded', function(up, files) {
-							var data = up.settings;
-							var max = parseInt(data.gf_vars.max_files, 10);
-							if(max === 0){
-								return;
-							}
-							var fieldId = data.multipart_params.field_id;
-							var formId = data.multipart_params.form_id;
-							var newFilesCount = $('#gform_preview_'+formId+'_'+fieldId).children().length;
-							var existingFilesCount = $('#preview_existing_files_'+fieldId).children().length;
-							var limitReached = existingFilesCount + newFilesCount >= max;
+				uploader.bind( 'FilesAdded', function( up, files ) {
+					var data = up.settings;
+					var max = parseInt( data.gf_vars.max_files, 10 );
+					if ( max === 0 ) {
+						return;
+					}
+					var fieldId = data.multipart_params.field_id;
+					var formId = data.multipart_params.form_id;
+					var newFilesCount = $( '#gform_preview_' + formId + '_' + fieldId ).children().length;
+					var existingFilesCount = $( '#preview_existing_files_' + fieldId ).children().length;
+					var limitReached = existingFilesCount + newFilesCount >= max;
 
-							$.each(files, function(i, file) {
-								if (max > 0 && existingFilesCount >= max){
-									up.removeFile(file);
-									$('#'+file.id).remove();
-									return;
-								}
+					$.each( files, function( i, file ) {
+						if ( max > 0 && existingFilesCount >= max ) {
+							up.removeFile( file );
+							$( '#' + file.id ).remove();
+							return;
+						}
 
-								existingFilesCount++;
-							});
+						existingFilesCount++;
+					} );
 
-							gfMultiFileUploader.toggleDisabled(data, limitReached);
-
-
-							// Only show message if max is greater than 1 or limit is reached
-							if(max <= 1 || !limitReached){
-								return true;
-							}
+					gfMultiFileUploader.toggleDisabled( data, limitReached );
 
 
-							// Check if message already exists
-							if($("#" + up.settings.gf_vars.message_id).children().length > 0){
-								return true;
-							}
+					// Only show message if max is greater than 1 or limit is reached
+					if ( max <= 1 || !limitReached ) {
+						return true;
+					}
 
-							$( "#" + up.settings.gf_vars.message_id ).prepend( "<li class='gfield_description gfield_validation_message'>" +
-								$('<div/>').text(gform_gravityforms.strings.max_reached).html()
-							 +
-								 "</li>" );
 
-							// Announce errors.
-							setTimeout(function () {
-								wp.a11y.speak( $( "#" + up.settings.gf_vars.message_id ).text() );
-							}, 1000 );
+					// Check if message already exists
+					if ( $( "#" + up.settings.gf_vars.message_id ).children().length > 0 ) {
+						return true;
+					}
 
-						});
+					$( "#" + up.settings.gf_vars.message_id ).prepend( "<li class='gfield_description gfield_validation_message'>" +
+						$('<div/>').text(gform_gravityforms.strings.max_reached).html()
+						+
+							"</li>" );
 
-					});
-				}
-			}, 1);
+					// Announce errors.
+					setTimeout( function () {
+						wp.a11y.speak( $( "#" + up.settings.gf_vars.message_id ).text() );
+					}, 1000 );
+
+				} );
+
+			} );
 		},
 
 		/**
