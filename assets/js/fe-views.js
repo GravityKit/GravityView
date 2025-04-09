@@ -53,7 +53,7 @@ jQuery( function ( $ ) {
 		 * To preserve expected behavior, we inject a hidden input with the clicked button’s
 		 * name and value before submission.
 		 *
-		 * @since TBD
+		 * @since 2.38.0
 		 */
 		enable_multi_page_entry_edit: function() {
 			$( document ).on( 'gform_post_render', function( event, formId, currentPage ) {

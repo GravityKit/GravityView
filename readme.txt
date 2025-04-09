@@ -21,18 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.38 on April 9, 2025 =
+
+This release adds a new setting for Edit Entry locking and fixes issues with multi-page form entry editing, shortcode rendering inside the Layout Builder template, entry locking, and more.
 
 #### 🚀 Added
 * View editor setting to control how frequently requests to take control of a locked entry are checked when Edit Locking is enabled.
 
 #### 🐛 Fixed
 * Navigation between pages in multi-page forms was broken when editing entries.
-* GravityView View field in the Single Entry layout may not display results when the Single Entry layout is accessed from a paginated View.
-* `[gv_entry_link]` shortcode not rendering inside the Custom Content field when using the Layout Builder template.
-* Fatal error when a Chained Selects Add-On search field is added to the Search Bar, then the field is removed from the connected form.
+* GravityView View field in the Single Entry layout may not display results when accessed from a paginated View.
+* `[gv_entry_link]` shortcode was not rendering inside the Custom Content field when using the Layout Builder template.
+* Fatal error when a Chained Selects Add-On search field was added to the Search Bar, then removed from the connected form.
 * Entry locking not working in certain cases.
-* Browser performance issue when embedding a View in Elementor preview.
+* Browser performance issue when the View is rendered in the Element preview area.
 
 #### 💻 Developer Updates
 

@@ -21,7 +21,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * The interval in seconds to check for locked entries in the UI.
 	 *
-	 * @since TBD
+	 * @since 2.38.0
 	 */
 	const LOCK_CHECK_INTERVAL = 10;
 
@@ -221,7 +221,7 @@ class GravityView_Edit_Entry_Locking {
 	 * Called via load() and `wp_enqueue_scripts`
 	 *
 	 * @since 2.5.2
-	 * @since TBD Added $view parameter.
+	 * @since 2.38.0 Added $view parameter.
 	 *
 	 * @param array     $entry Gravity Forms entry array.
 	 * @param View|null $view  (optional) The View object.
