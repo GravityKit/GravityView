@@ -34,7 +34,7 @@ This release adds a new setting for Edit Entry locking and fixes issues with mul
 * `[gv_entry_link]` shortcode was not rendering inside the Custom Content field when using the Layout Builder template.
 * Fatal error when a Chained Selects Add-On search field was added to the Search Bar, then removed from the connected form.
 * Entry locking not working in certain cases.
-* Browser performance issue when the View is rendered in the Element preview area.
+* Browser performance issue when a View is rendered in the Elementor preview area.
 
 #### 💻 Developer Updates
 

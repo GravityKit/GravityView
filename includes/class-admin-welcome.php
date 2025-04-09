@@ -315,7 +315,7 @@ class GravityView_Welcome {
 					<li><code>[gv_entry_link]</code> shortcode was not rendering inside the Custom Content field when using the Layout Builder template.</li>
 					<li>Fatal error when a Chained Selects Add-On search field was added to the Search Bar, then removed from the connected form.</li>
 					<li>Entry locking not working in certain cases.</li>
-					<li>Browser performance issue when the View is rendered in the Element preview area.</li>
+					<li>Browser performance issue when a View is rendered in the Elementor preview area.</li>
 				</ul>
 
 				<h4>💻 Developer Updates</h4>
