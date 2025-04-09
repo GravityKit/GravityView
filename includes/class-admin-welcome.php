@@ -296,6 +296,34 @@ class GravityView_Welcome {
 				 *  - If 4.28, include to 4.26.
 				 */
 				?>
+
+				<h3>2.38 on April 9, 2025</h3>
+
+				<p>This release adds a new setting for Edit Entry locking and fixes issues with multi-page form entry editing, shortcode rendering inside the Layout Builder template, entry locking, and more.</p>
+
+				<h4>🚀 Added</h4>
+
+				<ul>
+					<li>View editor setting to control how frequently requests to take control of a locked entry are checked when Edit Locking is enabled.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Navigation between pages in multi-page forms was broken when editing entries.</li>
+					<li>GravityView View field in the Single Entry layout may not display results when accessed from a paginated View.</li>
+					<li><code>[gv_entry_link]</code> shortcode was not rendering inside the Custom Content field when using the Layout Builder template.</li>
+					<li>Fatal error when a Chained Selects Add-On search field was added to the Search Bar, then removed from the connected form.</li>
+					<li>Entry locking not working in certain cases.</li>
+					<li>Browser performance issue when a View is rendered in the Elementor preview area.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>Added <code>gk/gravityview/edit-entry/user-can-edit-field</code> filter to allow modifying field visibility in Edit Entry.</li>
+				</ul>
+
 				<h3>2.37 on March 24, 2025</h3>
 
 				<p>This release enhances dialogs in the View editor, improves button and link positioning on the Edit Entry page, and resolves missing settings, embed issues in page builders, unsaved changes warnings, and more.</p>
@@ -357,39 +385,6 @@ class GravityView_Welcome {
 							<li>PHP notice triggered when editing entries in a lightbox.</li>
 						</ul>
 					</li>
-				</ul>
-
-				<h3>2.35 on February 12, 2025</h3>
-
-				<p>This update adds random sorting to the GravityView block, improves how partial entries are handled, and fixes several issues, including a fatal error in Gravity Forms 2.9.3 or newer.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Random sorting option in the GravityView block.</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Partial entries no longer appear as "Unapproved" on the Entries page.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Random sorting was not working when overriding the View sorting using the <code>sort_direction</code> shortcode attribute.</li>
-					<li>Entry notes not displaying in the DataTables extension when the first View field is a Date field.</li>
-					<li>Gravity Flow fields were displaying as available when Gravity Flow was not active.</li>
-					<li>Result Number field would not reset counts when multiple Views were displayed on the same page.</li>
-					<li>Random sorting of View entries did not work unless View caching was explicitly disabled.</li>
-					<li>Fatal error in Gravity Forms 2.9.3 or newer when editing an entry with a File Upload field.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.23.</li>
 				</ul>
 
 				<p style="text-align: center;">
