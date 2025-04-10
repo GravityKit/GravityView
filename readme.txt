@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 💻 Developer Updates
 
 * Modified the $forms array passed to `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` to only include the form ID as key and title as value, not full Gravity Forms form objects.
+* Forms shown in the Data Source dropdown no longer have the `gk/gravityview/common/get_forms` filter applied to them.
 
 = 2.38 on April 9, 2025 =
 
