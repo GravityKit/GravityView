@@ -21,6 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### ✨ Improved
+
+* Speed of fetching forms shown in the Data Source dropdown in the View editor.
+
+#### 💻 Developer Updates
+
+* Modified the $forms array passed to `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` to only include the form ID as key and title as value, not full Gravity Forms form objects.
+
 = 2.38 on April 9, 2025 =
 
 This release adds a new setting for Edit Entry locking and fixes issues with multi-page form entry editing, shortcode rendering inside the Layout Builder template, entry locking, and more.
