@@ -24,13 +24,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### ✨ Improved
-
 * Speed of fetching forms shown in the Data Source dropdown in the View editor.
 
 #### 💻 Developer Updates
-
 * Modified the $forms array passed to `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` to only include the form ID as key and title as value, not full Gravity Forms form objects.
 * Forms shown in the Data Source dropdown no longer have the `gk/gravityview/common/get_forms` filter applied to them.
+* Added `gk/gravityview/lightbox/entry/link` filter to modify the markup of Single Entry or Edit Entry links that open inside a lightbox.
 
 = 2.38 on April 9, 2025 =
 
