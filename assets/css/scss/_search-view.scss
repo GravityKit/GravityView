@@ -1,4 +1,8 @@
-div#search-view.has-options-panel {
+[data-fieldid="search_bar"] .gv-field-details--container {
+	display: none;
+}
+
+[data-search-fields].has-options-panel {
     &:before {
         content: '';
         position: absolute;
@@ -31,6 +35,7 @@ div#search-view.has-options-panel {
 
     .gv-field-details--container {
         margin-bottom: 32px;
+		display: block;
 
         p {
             color: #999999;

@@ -1496,7 +1496,7 @@
 			   $custom_label_field = $admin_label; // We have an administrative label for this field
 		   }
 
-		   var $label = dialog.closest( '.gv-fields' ).find( '.gv-field-label-text-container' );
+		   var $label = dialog.closest( '.gv-fields' ).find( '.gv-field-label-text-container' ).first();
 
 		   // If there's a custom title, use it for the label.
 		   if ( $custom_label_field.length ) {
@@ -2568,6 +2568,7 @@
 				   $addButton
 					   .closest( '.gv-droppable-area' )
 					   .find( '.active-drop' )
+					   .first()
 					   .append( $newField );
 			   }
 
@@ -2802,10 +2803,11 @@
 				   // Check if field comes from another active area and if so, update name attributes.
 				   if ( ui.item.find( ".gv-dialog-options" ).length > 0 ) {
 
-					   var sender_area = ui.sender.attr( 'data-areaid' ), receiver_area = $( this ).attr( 'data-areaid' );
+					   const sender_area = ui.sender.attr( 'data-areaid' );
+					   const receiver_area = $( this ).attr( 'data-areaid' );
 
-					   ui.item.find( '[name^="searchs[' + sender_area + ']"]' ).each( function () {
-						   var name = $( this ).attr( 'name' );
+					   ui.item.find( '[name*="[' + sender_area + ']"]' ).each( function () {
+						   const name = $( this ).attr( 'name' );
 						   $( this ).attr( 'name', name.replace( sender_area, receiver_area ) );
 					   } );
 
@@ -2923,7 +2925,7 @@
 			   parent = $( e.currentTarget ).parents( '.gv-fields' );
 		   }
 
-		   $( '.gv-field-settings', parent ).addClass( 'active' );
+		   $( '.gv-field-settings', parent ).first().addClass( 'active' );
 
 		   vcfg.updateVisibilitySettings( e, true );
 
@@ -2940,7 +2942,8 @@
 			   }
 		   ];
 
-		   var dialogOptions = parent.find( ".gv-dialog-options" );
+		   // Just the first one in case of nested options.
+		   const dialogOptions = parent.find( '.gv-dialog-options' ).first();
 
 		   // Set up a one-time event handler to detect changes in this dialog
 		   dialogOptions.find(':input').one( 'change', function() {

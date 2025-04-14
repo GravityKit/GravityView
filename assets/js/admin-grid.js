@@ -1,13 +1,21 @@
 ( ( $ ) => {
-	$( () => {
-		$( document ).find( '.gv-grid' ).sortable( {
-			handle: '.gv-grid-row-handle',
+	const activateGrid = ( selector ) => {
+		$( selector ).find( '.gv-grid' ).sortable( {
+			handle: '> .gv-grid-row-actions > .gv-grid-row-handle',
 			items: '> .gv-grid-row.is-sortable',
 			distance: 2,
 			revert: 75,
 			placeholder: 'grid-row-placeholder',
 			forcePlaceholderSize: true,
 		} );
+	};
+
+	$( () => {
+		activateGrid( document );
+
+		if ( window?.gvAdminActions !== undefined ) {
+			window.gvAdminActions[ 'activateGrid' ] = activateGrid;
+		}
 
 		$( document ).on( 'click', '.gv-grid-row-delete', function () {
 			const $row = $( this ).closest( '.gv-grid-row' );

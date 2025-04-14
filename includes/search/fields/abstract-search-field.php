@@ -317,6 +317,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 */
 	public function to_configuration(): array {
 		return [
+			'id'       => $this->get_key(),
 			'UID'      => $this->UID,
 			'type'     => $this->get_type(),
 			'label'    => $this->title,

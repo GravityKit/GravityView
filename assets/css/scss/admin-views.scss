@@ -313,7 +313,7 @@ $gv-overlay-index: 10000;
 
 #edit-active-fields,
 #single-active-fields,
-#search-advanced-active-fields,
+.search-advanced-active-fields,
 #directory-footer-widgets {
 	margin-bottom: 0;
 }
@@ -1290,7 +1290,7 @@ hr {
 	}
 
 	// Prevent focus of this non-working button.
-	.gv-add-field {
+	[data-fieldid] > .gv-add-field {
 		display: none;
 	}
 
@@ -1466,7 +1466,7 @@ hr {
 			color: #636D77;
 		}
 
-		button.gv-field-duplicate {
+		> h5 > button.gv-field-duplicate {
 			position: static;
 		}
 	}

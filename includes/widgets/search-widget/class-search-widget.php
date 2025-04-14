@@ -51,7 +51,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$settings = [
 			'search_fields_section' => [
 				'type' => 'html',
-				'desc' => '<div data-search-fields><!-- Search fields will be added here! 🔎 --></div>',
+				'desc' => \Closure::fromCallable( [ $this, 'get_search_sections' ] ),
 			],
 			'search_fields'         => [
 				'type'  => 'hidden',
@@ -1709,12 +1709,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$view    = \GV\View::by_id( $view_id );
 		}
 
-//		$search_fields = $this->get_search_fields( $widget_args, $context );
-
-		// Todo: The fields should be stored on the widget, to support multiple search widgets.
-		$fields        = $this->get_search_field_configuration( $view_id );
 		$search_fields = Search_Field_Collection::from_configuration(
-			$fields,
+			$widget_args['search_fields_section'] ?? [],
 			$view,
 			compact( 'context', 'widget_args' )
 		);
@@ -2394,12 +2390,62 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$input_type = '',
 		$form_id = 0
 	): array {
-		$search_field = Search_Field_Collection::get_field_by_field_id( (int) $form_id, $field_id );
+		$search_field = Search_Field_Collection::get_field_by_field_id( (int) $form_id, (string) $field_id );
 		if ( ! $search_field ) {
 			return $options;
 		}
 
 		return $search_field->merge_options( $options );
+	}
+
+	private function get_search_sections( array $field ): string {
+		$directory_entries_template = 'table';
+
+		ob_start();
+		?>
+
+		<div data-search-fields="<?php echo esc_attr( $field['name'] ?? '' ); ?>">
+			<div class="gv-section">
+				<h4><?php esc_html_e( 'Search fields shown', 'gk-gravityview' ); ?></h4>
+
+				<div class="gv-grid search-active-fields">
+					<?php
+					do_action(
+						'gravityview_render_search_active_areas',
+						$directory_entries_template,
+						'search-general',
+						$field
+					);
+					?>
+				</div>
+
+				<h4>
+					<?php esc_html_e( 'Advanced Search fields shown', 'gk-gravityview' ); ?>
+					<span>
+						<?php
+						esc_html_e(
+							'If any Advanced Search fields exist, a link will show to toggle them.',
+							'gk-gravityview'
+						);
+						?>
+					</span>
+				</h4>
+
+				<div class="gv-grid search-advanced-active-fields">
+					<?php
+					do_action(
+						'gravityview_render_search_active_areas',
+						$directory_entries_template,
+						'search-advanced',
+						$field
+					);
+					?>
+				</div>
+			</div>
+		</div>
+		<?php
+
+		return ob_get_clean();
 	}
 } // end class
 

@@ -66,11 +66,13 @@
 				// [WP widget] hook on assigned view id change to clear cache
 				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData )
 
-				.on ( 'click', '#search-fields .gv-field-settings', gvSearchWidget.openFieldSettings )
+				.on( 'click', '[data-search-fields] .gv-field-settings', gvSearchWidget.openFieldSettings )
 
-				.on( 'click', '#search-view > .gv-dialog-options [data-close-settings]', gvSearchWidget.closeFieldSettings )
+				.on( 'click', '[data-search-fields] > .gv-dialog-options [data-close-settings]', gvSearchWidget.closeFieldSettings )
 
-				.on( 'click', '#search-view', gvSearchWidget.closeFieldSettingsOutside )
+				.on( 'click', '[data-search-fields]', gvSearchWidget.closeFieldSettingsOutside )
+
+				.on( 'gravityview/field-added', gvSearchWidget.replaceSearchInputName )
 			;
 
 			// Refresh widget searchable settings after saving or adding the widget
@@ -148,15 +150,14 @@
 
 			// Remove ui-front to add field dialogs to <body>, fixing their appearance.
 			$( this ).closest( '[role="dialog"]' ).removeClass( 'ui-front' );
+			$( this ).focus(); // Remove focus from "add field before" button.
 
 			gvSearchWidget.widgetTarget = $( this );
-			if ( !gvSearchWidget.searchModal ) {
-				gvSearchWidget.searchModal = $( '#search-view' );
-			}
 
-			// Add to the end of the stack so the content is in the modal.
+
+			// // Add to the end of the stack so the content is in the modal.
 			setTimeout( () => {
-				const $sortables = gvSearchWidget.searchModal.find( '.active-drop-search' );
+				const $sortables = gvSearchWidget.widgetTarget.find( '.active-drop-search' );
 
 				// Sortable needs to be reinitialized when the modal opens.
 				$sortables.each( ( _, el ) => {
@@ -164,13 +165,10 @@
 					sortable && sortable.destroy(); // Remove sorting if it is active.
 				} );
 
-				gvAdminActions.initDroppables( gvSearchWidget.searchModal ); // Add sorting (back).
+				gvAdminActions?.initDroppables( gvSearchWidget.widgetTarget ); // Add sorting (back).
+				gvAdminActions?.activateGrid( gvSearchWidget.widgetTarget ); // initialize grid.
 			} );
 
-			if ( gvSearchWidget.searchModal ) {
-				gvSearchWidget.searchModal.attr( 'aria-hidden', 'false' );
-				gvSearchWidget.searchModal.appendTo( $( this ).find( '[data-search-fields]' ) );
-			}
 		},
 
 		/**
@@ -182,13 +180,9 @@
 			e.preventDefault();
 
 			// Close any open field settings first.
-			gvSearchWidget.closeFieldSettings(e);
+			gvSearchWidget.closeFieldSettings( e );
 
 			gvSearchWidget.widgetTarget = $( this );
-			if ( gvSearchWidget.searchModal ) {
-				gvSearchWidget.searchModal.attr( 'aria-hidden', 'true' );
-				gvSearchWidget.searchModal.appendTo( $( '#gv-view-configuration-tabs' ) );
-			}
 		},
 
 		/** Table manipulation */
@@ -762,34 +756,38 @@
 		},
 
 		openFieldSettings: function ( e ) {
-			gvSearchWidget.closeFieldSettings(e); // Close any open panels.
+			gvSearchWidget.closeFieldSettings( e ); // Close any open panels.
 
 			const $field = $( this ).closest( '.gv-fields' );
 			const $options = $field.find( '.gv-dialog-options' );
 			$options.data( 'field', $field ); // Store the originating field.
 
-			$field.addClass('has-options-panel');
+			$field.addClass( 'has-options-panel' );
 
 			// Add close button to the settings pane.
-			const $close = $('<button data-close-settings type="button" title="Close settings pane" class="gv-dialog-options--close">' +
+			const $close = $( '<button data-close-settings type="button" title="Close settings pane" class="gv-dialog-options--close">' +
 				'<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">' +
 				'<path d="M12.0672 6.91528L16.4187 12.4538L11.9705 17.9149L10.7784 17.0043L14.4187 12.4362L10.8585 7.90468L12.0672 6.91528Z" fill="currentColor"/>' +
 				'</svg>' +
-				'</button>');
+				'</button>' );
 
 			$options.append( $close );
 
-			$( '#search-view' )
-				.addClass('has-options-panel')
+			$( this ).closest( '[data-search-fields]' )
+				.addClass( 'has-options-panel' )
 				.append( $options ); // Move options to search view div.
 		},
 
 		closeFieldSettings: function ( e ) {
 			e.preventDefault();
 
-			$( '#search-view' ).removeClass( 'has-options-panel' );
+			const $wrapper = $( e.target ).is( '[data-search-fields]' )
+				? $( e.target )
+				: $( e.target ).closest( '[data-search-fields]' );
 
-			const $options = $( '#search-view > .gv-dialog-options' );
+			$wrapper.removeClass( 'has-options-panel' );
+
+			const $options = $wrapper.find( ' > .gv-dialog-options' );
 			if ( !$options.length ) {
 				return;
 			}
@@ -812,11 +810,23 @@
 		},
 
 		closeFieldSettingsOutside: function ( e ) {
-			if ( e.target.id !== 'search-view' ) {
+			if ( !$( e.target ).is( '[data-search-fields]' ) ) {
 				return;
 			}
 
-			gvSearchWidget.closeFieldSettings(e);
+			gvSearchWidget.closeFieldSettings( e );
+		},
+
+		replaceSearchInputName: function ( e, field ) {
+			const $search_field = $( field ).closest( '[data-search-fields]' );
+			if ( !$search_field.length ) {
+				return;
+			}
+
+			$( field ).find( '[name*="searchs["]' ).each( function () {
+				const name = $( this ).attr( 'name' );
+				$( this ).attr( 'name', name.replace( 'searchs[', $search_field.data( 'search-fields' ) + '[' ) );
+			} );
 		}
 	}; // end
 

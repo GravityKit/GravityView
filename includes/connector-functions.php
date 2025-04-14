@@ -355,20 +355,6 @@ function gravityview_set_directory_widgets( $post_id, $widgets = array() ) {
 }
 
 /**
- * Set the Search fields, as configured for a View.
- *
- * @since $ver$
- *
- * @param int   $post_id       The post ID.
- * @param array $search_fields Array of search fields.
- *
- * @return int|bool
- */
-function gravityview_set_directory_search( int $post_id, array $search_fields = [] ) {
-	return update_post_meta( $post_id, '_gravityview_directory_search', $search_fields );
-}
-
-/**
  * Render dropdown (select) with the list of sortable fields from a form ID
  *
  * @param  int    $formid Form ID

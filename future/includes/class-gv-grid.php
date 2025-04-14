@@ -46,7 +46,7 @@ final class Grid {
 		$rows = self::get_row_types();
 		$row  = $rows[ $type ] ?? [];
 
-		$id ??= substr( md5( ++ self::$counter . microtime( true ) ), 0, 13 );
+		$id ??= self::uid();
 
 		if ( $keep_area_id ) {
 			return $row;
@@ -59,6 +59,17 @@ final class Grid {
 		}
 
 		return $row;
+	}
+
+	/**
+	 * Returns unique ID.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string
+	 */
+	public static function uid(): string {
+		return substr( md5( ++ self::$counter . microtime( true ) ), 0, 13 );
 	}
 
 	/**

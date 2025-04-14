@@ -1,4 +1,5 @@
 <?php
+
 /**
  * HTML input type - pass pure HTML into settings in the `desc` key
  *
@@ -9,10 +10,10 @@ class GravityView_FieldType_html extends GravityView_FieldType {
 	/**
 	 * Display HTML, wrapped in container class
 	 */
-	function render_option() {
+	public function render_option() {
 		?>
 		<div class="<?php echo $this->get_label_class(); ?>" id="<?php echo $this->get_field_id(); ?>">
-		<?php echo $this->get_field_desc(); ?>
+			<?php echo $this->get_field_desc(); ?>
 		</div>
 		<?php
 	}
@@ -21,7 +22,17 @@ class GravityView_FieldType_html extends GravityView_FieldType {
 	 * @since 1.17
 	 * @return string
 	 */
-	function get_field_desc() {
-		return ! empty( $this->field['desc'] ) ? $this->field['desc'] : '';
+	public function get_field_desc() {
+		$html = $this->field['desc'] ?? '';
+		if ( is_callable( $html ) ) {
+			return (string) $html(
+				[
+					'name'  => $this->name,
+					'value' => $this->value,
+				]
+			);
+		}
+
+		return (string) $html;
 	}
 }

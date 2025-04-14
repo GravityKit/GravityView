@@ -18,6 +18,9 @@ use GV\GF_Form;
 use GV\Grid;
 use GV\Plugin;
 use GV\Search\Fields\Search_Field;
+use GV\Search\Fields\Search_Field_All;
+use GV\Search\Fields\Search_Field_Search_Mode;
+use GV\Search\Fields\Search_Field_Submit;
 use GV\Search\Search_Field_Collection;
 use GV\View;
 use GV\Widget_Collection;
@@ -827,13 +830,6 @@ HTML;
 				$_POST['widgets'] = [];
 			}
 			$statii['directory_widgets'] = gravityview_set_directory_widgets( $post_id, $_POST['widgets'] );
-
-			// Visible search fields.
-			if ( empty( $_POST['searchs'] ) ) {
-				$_POST['searchs'] = [];
-			}
-
-			$statii['directory_search'] = gravityview_set_directory_search( $post_id, $_POST['searchs'] );
 		} // end save view configuration
 
 		/**
@@ -1463,8 +1459,7 @@ HTML;
 	function render_widgets_active_areas( $template_id = '', $zone = '', $post_id = '' ) {
 		$default_widget_areas = \GV\Widget::get_default_widget_areas();
 
-		$widgets   = [];
-		$unique_id = static fn(): string => substr( md5( microtime( true ) ), 0, 13 );
+		$widgets = [];
 
 		$header_top   = 'header_' . ( $default_widget_areas[0]['1-1'][0]['areaid'] ?? 'top' );
 		$header_left  = 'header_' . ( $default_widget_areas[1]['1-2 left'][0]['areaid'] ?? 'left' );
@@ -1476,30 +1471,26 @@ HTML;
 				// This is a new View, prefill the widgets
 				$widgets = [
 					$header_top   => [
-						$unique_id() => [
-							'id'            => 'search_bar',
-							'label'         => __( 'Search Bar', 'gk-gravityview' ),
-							'search_layout' => 'horizontal',
-							'search_clear'  => '0',
-							'search_fields' => '[{"field":"search_all","input":"input_text"}]',
-							'search_mode'   => 'any',
+						Grid::uid() => [
+							'id'    => 'search_bar',
+							'label' => __( 'Search Bar', 'gk-gravityview' ),
 						],
 					],
 					$header_left  => [
-						$unique_id() => [
+						Grid::uid() => [
 							'id'    => 'page_info',
 							'label' => __( 'Show Pagination Info', 'gk-gravityview' ),
 						],
 					],
 					$header_right => [
-						$unique_id() => [
+						Grid::uid() => [
 							'id'       => 'page_links',
 							'label'    => __( 'Page Links', 'gk-gravityview' ),
 							'show_all' => '0',
 						],
 					],
 					$footer_right => [
-						$unique_id() => [
+						Grid::uid() => [
 							'id'       => 'page_links',
 							'label'    => __( 'Page Links', 'gk-gravityview' ),
 							'show_all' => '0',
@@ -1561,34 +1552,45 @@ HTML;
 	/**
 	 * Render the widget active areas
 	 *
-	 * @param string $template_id The current slug of the selected View template
-	 * @param string $zone        Either 'header' or 'footer'
-	 * @param int    $view_id     Current View ID.
+	 * @param string                          $template_id The current slug of the selected View template.
+	 * @param string                          $zone        Either 'header' or 'footer'.
+	 * @param array{name:string, value:mixed} $data        The search field data.
 	 *
-	 * @return string          html
+	 * @todo: move this to the search widget?
 	 */
-	public function render_search_active_areas( string $template_id, string $zone, int $view_id = 0 ): string {
-		$rows = $fields = [];
+	public function render_search_active_areas( string $template_id, string $zone, array $data ): void {
+		$fields    = $data['value'] ?? null;
+		$rows      = [ Grid::get_row_by_type( '100' ) ];
+		$name      = $data['name'] ?? null;
+		$has_value = null !== $fields;
 
-		if ( ! empty( $view_id ) ) {
-			$fields     = gravityview_get_directory_search( $view_id );
+		if ( $has_value ) {
 			$collection = Search_Field_Collection::from_configuration( $fields );
-			$rows       = Grid::get_rows_from_collection( $collection, $zone ) ?: $rows;
+			$rows       = Grid::get_rows_from_collection( $collection, $zone );
+		} elseif ( 'search-general' === $zone ) {
+			$zone_100 = $zone . '_' . ( $rows[0]['1-1'][0]['areaid'] ?? 'top' );
 
-			if ( 'auto-draft' === get_post_status( $view_id ) ) {
-				// Todo: maybe add some defaults.
-			}
+			$fields = [
+				$zone_100 => [
+					Grid::uid() => ( new Search_Field_All() )->to_configuration(),
+					Grid::uid() => ( new Search_Field_Search_Mode() )->to_configuration(),
+					Grid::uid() => ( new Search_Field_Submit() )->to_configuration(),
+				],
+			];
 		}
-
-		ob_start();
 		?>
 
-        <div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-fields">
+		<div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-fields">
 			<?php
 			$type       = 'search';
 			$is_dynamic = true;
 
+			ob_start();
 			$this->render_active_areas( $template_id, $type, $zone, $rows, $fields );
+			$content = ob_get_clean();
+
+			// replace input names.
+			echo str_replace( sprintf( 'name="%ss[', $type ), sprintf( 'name="%s[', $name ), $content );
 
 			/**
 			 * Allows additional content after the zone was rendered.
@@ -1602,14 +1604,8 @@ HTML;
 			 */
 			do_action( 'gk/gravityview/admin-views/view/after-zone', $template_id, $type, $zone, $is_dynamic );
 			?>
-        </div>
-
+		</div>
 		<?php
-		$output = ob_get_clean();
-
-		echo $output;
-
-		return (string) $output;
 	}
 
 	/**
