@@ -120,6 +120,21 @@ $gv-overlay-index: 10000;
 		box-shadow: 0 0 20px 0 #D5D7E9;
 	}
 
+	.gv-grid-rows-container {
+		min-height: 10px;
+		transition: height 300ms ease-out;
+	}
+
+	&.is-receivable {
+		> .gv-grid-rows-container {
+			min-height: 44px;
+			border-radius: 3px;
+			background: rgba(210, 224, 235, .4);
+			outline: 10px solid rgba(210, 224, 235, .4);
+			margin-bottom: 18px;
+		}
+	}
+
 	.gv-grid-row-action {
 		display: flex;
 		padding: 8px 6px;
@@ -146,13 +161,13 @@ $gv-overlay-index: 10000;
 	}
 
 	.grid-row-placeholder {
-		background: rgba(210, 224, 235, 0.6);
+		background: rgba(99, 109, 119, .2);
 		border-radius: 3px;
 		margin-bottom: 24px;
 		padding: 12px;
 	}
 
-	&.ui-sortable .gv-grid-row {
+	.ui-sortable .gv-grid-row {
 		box-shadow: 0 0 0 2px rgba(210, 224, 235, .6);
 		border-radius: 3px;
 	}
@@ -772,6 +787,7 @@ $gv-overlay-index: 10000;
 	max-width: 690px !important;
 	height: 14.5em; // 10 visible rows
 }
+
 .post-type-gravityview .gv-dialog-expanded .CodeMirror {
 	height: auto;
 }
@@ -838,6 +854,7 @@ $gv-overlay-index: 10000;
 		> :nth-child(odd) {
 			background-color: initial;
 		}
+
 		.alternate {
 			background-color: #f6f7f7;
 		}
@@ -1081,7 +1098,7 @@ $gv-overlay-index: 10000;
 	border-radius: 10px;
 	overflow-y: auto;
 	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1),
-				0 2px 4px rgba(0, 0, 0, 0.06);
+	0 2px 4px rgba(0, 0, 0, 0.06);
 	border: 1px solid rgba(0, 0, 0, 0.08);
 
 	.ui-dialog-titlebar {
@@ -1133,7 +1150,7 @@ $gv-overlay-index: 10000;
 }
 
 .admin-bar .gv-dialog.gv-dialog-expanded {
-	top: calc( 32px + 2.5vh ) !important;
+	top: calc(32px + 2.5vh) !important;
 	height: calc(95vh - 32px) !important;
 }
 
@@ -1385,6 +1402,7 @@ hr {
 
 	&.has-custom-visibility .gv-field-controls .icon-custom-visibility {
 		display: inline-block;
+
 		&.hide-if-js {
 			display: none;
 		}
@@ -1861,6 +1879,7 @@ hr {
 		.ui-icon.ui-icon-closethick {
 			display: none;
 		}
+
 		&:before {
 			text-indent: 0;
 			position: absolute;
@@ -2488,13 +2507,16 @@ hr {
  * Search Bar
  */
 #search-view {
-	display: none ;
+	display: none;
+
 	.gv-field-duplicate {
 		display: none;
 	}
+
 	.gv-add-field {
 		display: inline-block;
 	}
+
 	[data-search-fields] & {
 		display: block;
 	}

@@ -2408,7 +2408,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			<div class="gv-section">
 				<h4><?php esc_html_e( 'Search fields shown', 'gk-gravityview' ); ?></h4>
 
-				<div class="gv-grid search-active-fields">
+				<div class="search-active-fields">
 					<?php
 					do_action(
 						'gravityview_render_search_active_areas',
@@ -2431,7 +2431,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 					</span>
 				</h4>
 
-				<div class="gv-grid search-advanced-active-fields">
+				<div class="search-advanced-active-fields">
 					<?php
 					do_action(
 						'gravityview_render_search_active_areas',

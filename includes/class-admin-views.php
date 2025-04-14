@@ -1212,7 +1212,11 @@ HTML;
 		}
 
 		foreach ( $rows as $row ) :
-			printf( '<div class="gv-grid-row %s">', $is_dynamic ? 'is-sortable' : '' );
+			printf(
+				'<div class="gv-grid-row %s" data-context="%s">',
+				$is_dynamic ? 'is-sortable' : '',
+				esc_attr( $zone )
+			);
 
 			/**
 			 * Triggers before a row is rendered in the View editor.
@@ -1520,13 +1524,14 @@ HTML;
 		ob_start();
 		?>
 
-        <div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets">
+        <div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-widgets" data-grid-context="<?php echo esc_attr($zone); ?>" data-grid-connect="widget">
 			<?php
 			$type       = 'widget';
 			$is_dynamic = $this->is_dynamic( $template_id, $type, $zone );
 
+			echo '<div class="gv-grid-rows-container">';
 			$this->render_active_areas( $template_id, $type, $zone, $default_widget_areas, $widgets );
-
+			echo '</div>';
 			/**
 			 * Allows additional content after the zone was rendered.
 			 *
@@ -1580,18 +1585,19 @@ HTML;
 		}
 		?>
 
-		<div class="gv-grid gv-grid-pad gv-grid-border" id="directory-<?php echo $zone; ?>-fields">
+		<div data-grid-connect="search" data-grid-context="<?php echo esc_attr($zone); ?>" class="gv-grid gv-grid-pad gv-grid-border" id="search-<?php echo $zone; ?>-fields">
 			<?php
 			$type       = 'search';
 			$is_dynamic = true;
 
+			echo '<div class="gv-grid-rows-container">';
 			ob_start();
 			$this->render_active_areas( $template_id, $type, $zone, $rows, $fields );
 			$content = ob_get_clean();
 
 			// replace input names.
 			echo str_replace( sprintf( 'name="%ss[', $type ), sprintf( 'name="%s[', $name ), $content );
-
+			echo '</div>';
 			/**
 			 * Allows additional content after the zone was rendered.
 			 *
@@ -1755,8 +1761,9 @@ HTML;
 			$is_dynamic = $this->is_dynamic( $template_id, $type, $context );
 
 			ob_start();
+			echo '<div class="gv-grid-rows-container">';
 			$this->render_active_areas( $template_id, $type, $context, $template_areas, $fields );
-
+			echo '</div>';
 			/**
 			 * Allows additional content after the zone was rendered.
 			 *

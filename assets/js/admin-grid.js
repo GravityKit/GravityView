@@ -1,12 +1,42 @@
 ( ( $ ) => {
 	const activateGrid = ( selector ) => {
-		$( selector ).find( '.gv-grid' ).sortable( {
-			handle: '> .gv-grid-row-actions > .gv-grid-row-handle',
-			items: '> .gv-grid-row.is-sortable',
-			distance: 2,
-			revert: 75,
-			placeholder: 'grid-row-placeholder',
-			forcePlaceholderSize: true,
+		$( selector ).find( '.gv-grid > .gv-grid-rows-container' ).each( ( i, grid ) => {
+			let options = {
+				handle: '> .gv-grid-row-actions > .gv-grid-row-handle',
+				items: '> .gv-grid-row.is-sortable',
+				distance: 2,
+				revert: 75,
+				placeholder: 'grid-row-placeholder',
+				forcePlaceholderSize: true,
+				receive: function ( event, ui ) {
+					const sender_area = ui.sender.closest( '.gv-grid' ).data( 'grid-context' );
+					const receiver_area = $( this ).closest( '.gv-grid' ).data( 'grid-context' );
+
+					ui.item.attr( 'data-context', receiver_area );
+					ui.item.find( '[data-context]' ).attr( 'data-context', receiver_area );
+					ui.item.find( '[data-areaid]' ).attr( 'data-areaid', ( _, area_id ) => {
+						return area_id.replace( sender_area + '_', receiver_area + '_' )
+					} );
+
+					ui.item.find( '[name*="[' + sender_area + '_"]' ).each( function () {
+						const name = $( this ).attr( 'name' );
+						$( this ).attr( 'name', name.replace( '[' + sender_area + '_', '[' + receiver_area + '_' ) );
+					} );
+				}
+			};
+
+			let connectWith = $( grid ).closest( '.gv-grid' ).data( 'grid-connect' );
+			if ( connectWith !== undefined ) {
+				options.connectWith = '[data-grid-connect="' + connectWith + '"] > .gv-grid-rows-container';
+				options.start = () => {
+					$( selector ).find( '[data-grid-connect="' + connectWith + '"]' ).addClass( 'is-receivable' );
+				};
+				options.stop = () => {
+					$( selector ).find( '[data-grid-connect="' + connectWith + '"]' ).removeClass( 'is-receivable' );
+				};
+			}
+
+			$( grid ).sortable( options );
 		} );
 	};
 
@@ -14,7 +44,7 @@
 		activateGrid( document );
 
 		if ( window?.gvAdminActions !== undefined ) {
-			window.gvAdminActions[ 'activateGrid' ] = activateGrid;
+			window.gvAdminActions.activateGrid = activateGrid;
 		}
 
 		$( document ).on( 'click', '.gv-grid-row-delete', function () {
@@ -70,7 +100,8 @@
 					.done( ( response => {
 						const result = JSON.parse( response );
 						const $row = $( result?.row );
-						$row.insertBefore( $add_row );
+
+						$row.appendTo( $add_row.closest( '.gv-grid' ).find( '> .gv-grid-rows-container' ) );
 
 						$( document.body ).trigger(
 							'gravityview/row-added',
