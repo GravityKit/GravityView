@@ -2670,6 +2670,6 @@ class GravityView_Edit_Entry_Render {
 			],
 		];
 
-		die( wp_json_encode( $output ) );
+		wp_send_json( $output, 200 );
 	}
 }//end class
