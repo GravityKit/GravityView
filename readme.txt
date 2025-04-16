@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🐛 Fixed
+* Uploaded files are kept on the Edit Entry form if validation fails.
+
 #### ✨ Improved
 * Speed of fetching forms shown in the Data Source dropdown in the View editor.
 

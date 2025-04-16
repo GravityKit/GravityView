@@ -74,14 +74,45 @@ jQuery( function ( $ ) {
 		/**
 		 * Fix the issue of updating files after edit where the previous value still exists in the uploaded field.
 		 */
-		fix_updating_files_after_edit: function(){
-			$.each($('.ginput_preview_list'), function(index, element){
-				if ($(element).children().length > 0) {
-					return true;
-				}
+		fix_updating_files_after_edit: function () {
+			$( document ).on( 'gform_post_render', () => {
+				$( '.ginput_preview_list' ).each( function () {
 
-				$(element).parents('form').find('[name=gform_uploaded_files]').val('');
-			});
+					setTimeout( () => {
+						if ( $( this ).children().length > 0 ) {
+							return;
+						}
+
+						const uploader_id = $( this ).attr( 'id' ).replace( 'gform_preview_', 'gform_multifile_upload_' );
+						const input_name = 'input_' + uploader_id.split( '_' ).pop();
+
+						const uploader = window?.gfMultiFileUploader?.uploaders[ uploader_id ] || null;
+						if ( !uploader ) {
+							return;
+						}
+
+						const $fields_input = $( this ).closest( 'form' ).find( '[name=gform_uploaded_files]' );
+						const all_files = JSON.parse( $fields_input.val() || '{}' );
+						$fields_input.val( '' ); // Clear out as they will be added through the Uploader.
+
+						// Fake the Uploader files.
+						const files = ( all_files[ input_name ] || [] ).map( file => {
+							file.name = file.uploaded_filename || 'unknown';
+							file.id = ( file.temp_filename || '' ).split( '_o_' ).pop().split( '.' ).shift();
+							file.status = plupload.DONE;
+							file.percent = 100;
+							file.gv_is_existing = true;
+
+							return new plupload.File( file );
+						} );
+
+						for ( file of files ) {
+							uploader.addFile( file );
+						}
+
+					}, 100 );
+				} );
+			} );
 		},
 
 		/**

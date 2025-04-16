@@ -159,6 +159,8 @@ class GravityView_Edit_Entry_Render {
 
 		// Add fields expected by GFFormDisplay::validate()
 		add_filter( 'gform_pre_validation', array( $this, 'gform_pre_validation' ) );
+
+		add_filter( 'gform_multifile_upload_field',  [ $this, 'fake_existing_file_uploads' ], 10, 3 );
 	}
 
 	/**
@@ -423,6 +425,9 @@ class GravityView_Edit_Entry_Render {
 			 */
 			$this->maybe_update_post_fields( $form );
 
+			// Remove uploaded files from cache to clean the `gform_uploaded_files` field.
+            $this->remove_uploaded_files( (int) $this->form_id );
+
 			/**
 			 * Perform an action after the entry has been updated using Edit Entry.
 			 *
@@ -434,6 +439,7 @@ class GravityView_Edit_Entry_Render {
 			 */
 			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this, $gv_data );
 		} else {
+			$this->add_uploaded_file_sizes( (int) $this->form_id );
 			gravityview()->log->error( 'Submission is NOT valid.', array( 'entry' => $this->entry ) );
 		}
 	} // process_save
@@ -701,7 +707,7 @@ class GravityView_Edit_Entry_Render {
 				$inputs = $field->get_entry_inputs();
 				if ( is_array( $inputs ) ) {
 				    foreach ( $inputs as $input ) {
-						list( $field_id, $input_id ) = rgexplode( '.', $input['id'], 2 );
+						[ $field_id, $input_id ] = rgexplode( '.', $input['id'], 2 );
 
 						if ( 'product' === $field->type ) {
 							$input_name = 'input_' . str_replace( '.', '_', $input['id'] );
@@ -1688,7 +1694,7 @@ class GravityView_Edit_Entry_Render {
 				    } else {
 
 				        // Fix PHP warning on line 1498 of form_display.php for post_image fields
-				        // Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511
+				        // Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511.
 				        $_FILES[ $input_name ] = array(
 							'name' => '',
 							'size' => '',
@@ -1698,13 +1704,11 @@ class GravityView_Edit_Entry_Render {
 
 					if ( \GV\Utils::get( $field, 'multipleFiles' ) ) {
 						// If there are fresh uploads, process and merge them.
-						// Otherwise, use the passed values, which should be json-encoded array of URLs
+						// Otherwise, use the passed values, which should be json-encoded array of URLs.
 						if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
 							$value = empty( $value ) ? '[]' : $value;
-							$value = stripslashes_deep( $value );
-							$value = GFFormsModel::prepare_value( $form, $field, $value, $input_name, $entry['id'], array() );
 						} elseif ( GFCommon::is_json( $value ) ) {
-							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`)
+							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`).
 							global $_gf_uploaded_files;
 
 							$_gf_uploaded_files[ $input_name ] = $value;
@@ -2313,7 +2317,7 @@ class GravityView_Edit_Entry_Render {
 			foreach ( $form['fields'] as &$field ) {
 				foreach ( $remove_conditions_rule as $_remove_conditions_r ) {
 
-				    list( $rule_field_id, $rule_i ) = $_remove_conditions_r;
+				    [ $rule_field_id, $rule_i ] = $_remove_conditions_r;
 
 					if ( $field['id'] == $rule_field_id ) {
 						unset( $field->conditionalLogic['rules'][ $rule_i ] );
@@ -2581,5 +2585,84 @@ class GravityView_Edit_Entry_Render {
 		$labels = apply_filters( 'gravityview/edit_entry/button_labels', $labels, $this->form, $this->entry, $this->view_id );
 
 		return (array) $labels;
+	}
+
+	/**
+	 * Removes any uploaded files from the internal cache after the form was valid and the entry was stored.
+	 *
+	 * @since $ver$
+	 *
+	 * @param int $form_id The form ID.
+	 */
+	private function remove_uploaded_files( int $form_id ): void {
+		$tmp_location = GFFormsModel::get_tmp_upload_location( $form_id );
+		$tmp_path     = $tmp_location['path'];
+
+		foreach ( RGFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
+			foreach ( $files as $key => $file ) {
+				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
+				if ( ! file_exists( $tmp_file ) ) {
+					unset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ][ $key ] );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Add file size to add back to the uploader.
+	 *
+	 * @see fe-views.js `fix_updating_files_after_edit`.
+	 *
+	 * @since $ver$
+	 *
+	 * @param int $form_id The form ID.
+	 */
+	private function add_uploaded_file_sizes( int $form_id ): void {
+		$tmp_location = GFFormsModel::get_tmp_upload_location( $form_id );
+		$tmp_path     = $tmp_location['path'];
+
+		foreach ( RGFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
+			foreach ( $files as $key => $file ) {
+				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
+				if ( file_exists( $tmp_file ) ) {
+
+					GFFormsModel::$uploaded_files[ $form_id ][ $input_name ][ $key ]['size'] = filesize( $tmp_file );
+				}
+			}
+		}
+	}
+
+	/**
+	 * Returns an upload result for existing temporary uploaded files.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $field The field object.
+	 * @param array $form  The Form object.
+	 */
+	public function fake_existing_file_uploads( $field, $form ) {
+		$file = rgpost( 'file', [] );
+		// We inject this additional parameter on the file object for recognition.
+		if ( ! rgar( $file, 'gv_is_existing', false ) ) {
+			return $field;
+		}
+
+		$tmp_location = GFFormsModel::get_tmp_upload_location( $form['id'] ?? 0 );
+		$tmp_path     = $tmp_location['path'];
+
+		$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
+		if ( ! file_exists( $tmp_file ) ) {
+			return null;
+		}
+
+		$output = [
+			'status' => 'ok',
+			'data'   => [
+				'temp_filename'     => $file['temp_filename'],
+				'uploaded_filename' => str_replace( "\\'", "'", urldecode( $file['uploaded_filename'] ) ),
+			],
+		];
+
+		die( wp_json_encode( $output ) );
 	}
 }//end class
