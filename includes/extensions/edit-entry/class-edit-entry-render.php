@@ -2599,6 +2599,10 @@ class GravityView_Edit_Entry_Render {
 		$tmp_path     = $tmp_location['path'];
 
 		foreach ( RGFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
+			if ( ! is_array( $files ) ) {
+				continue;
+			}
+
 			foreach ( $files as $key => $file ) {
 				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
 				if ( ! file_exists( $tmp_file ) ) {
@@ -2622,10 +2626,13 @@ class GravityView_Edit_Entry_Render {
 		$tmp_path     = $tmp_location['path'];
 
 		foreach ( RGFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
+			if ( ! is_array( $files ) ) {
+				continue;
+			}
+
 			foreach ( $files as $key => $file ) {
 				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
 				if ( file_exists( $tmp_file ) ) {
-
 					GFFormsModel::$uploaded_files[ $form_id ][ $input_name ][ $key ]['size'] = filesize( $tmp_file );
 				}
 			}
