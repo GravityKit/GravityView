@@ -4,7 +4,15 @@
   "license": "GPL-2.0",
   "devDependencies": {
     "@lodder/grunt-postcss": "^3.1.1",
+    "@playwright/test": "1.48.1",
+    "@types/node": "^20.14.14",
+    "@wordpress/e2e-test-utils-playwright": "^1.14.0",
+    "@wordpress/env": "^10.14.0",
+    "@wordpress/scripts": "^30.7.0",
     "autoprefixer": "^9.8.8",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.2",
     "grunt": "^1.4.1",
     "grunt-contrib-imagemin": "^4.0.0",
     "grunt-contrib-jshint": "^3.2.0",
@@ -21,7 +29,9 @@
     "load-grunt-tasks": "^3.5.2",
     "node-sass": "^9.0.0",
     "postcss": "^8.4.31",
-    "shelljs": "^0.8.5"
+    "prettier": "^3.5.3",
+    "shelljs": "^0.8.5",
+    "wp-cli": "^0.0.5"
   },
   "repository": {
     "type": "git",
@@ -32,6 +42,17 @@
   ],
   "dependencies": {
     "bower": "^1.8.8"
+  },
+  "scripts": {
+    "wp-env": "cd tests/E2E/setup && wp-env",
+    "wp-env:configure": "cd tests/E2E/setup && node wp-env.config.js",
+    "wp-env:bash": "npm run wp-env:cli bash -c",
+    "wp-env:cli": "npm run wp-env run cli -- ",
+    "tests:e2e:js:lint": "prettier --check tests/E2E && eslint tests/E2E",
+    "tests:e2e:js:format": "prettier --write tests/E2E",
+    "tests:e2e:clean": "npm run wp-env:configure && npm run wp-env clean all",
+    "tests:e2e:setup": "npm run wp-env:configure && npm run wp-env start",
+    "tests:e2e:run": "npx playwright test --config=tests/E2E/setup/playwright.config.js"
   },
   "husky": {
     "hooks": {

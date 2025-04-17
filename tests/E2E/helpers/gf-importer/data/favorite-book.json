@@ -1,0 +1,47 @@
+{
+	"form": {
+		"title": "Favorite Book",
+		"description": "This form collects people's favorite books.",
+		"button": {
+			"type": "text",
+			"text": "Submit",
+			"imageUrl": ""
+		},
+		"fields": [
+			{
+				"id": 1,
+				"type": "text",
+				"label": "Name",
+				"isRequired": true
+			},
+			{
+				"id": 2,
+				"type": "text",
+				"label": "Favorite Book",
+				"isRequired": false
+			}
+		]
+	},
+	"entries": [
+		{
+			"1": "Alice",
+			"2": "To Kill a Mockingbird"
+		},
+		{
+			"1": "Bob",
+			"2": "1984"
+		},
+		{
+			"1": "Charlie",
+			"2": ""
+		},
+		{
+			"1": "David",
+			"2": "The Great Gatsby"
+		},
+		{
+			"1": "Eve",
+			"2": ""
+		}
+	]
+}
