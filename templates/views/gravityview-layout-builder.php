@@ -15,11 +15,11 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 ob_start();
 gravityview_before( $gravityview );
-
-gravityview_header( $gravityview );
 ?>
 <div class="<?php echo esc_attr( gv_container_class( 'gv-layout-builder-container', false, $gravityview ) ); ?>">
 <?php
+gravityview_header( $gravityview );
+
 // There are no entries.
 if ( ! $gravityview->entries->count() ) {
 	?>
