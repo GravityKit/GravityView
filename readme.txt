@@ -21,9 +21,53 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop = 
+= develop =
 
-* Fixed: Settings text may not wrap correctly in the View editor.
+#### ✨ Improved
+* Speed of fetching forms shown in the Data Source dropdown in the View editor.
+
+#### 💻 Developer Updates
+* Modified the $forms array passed to `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` to only include the form ID as key and title as value, not full Gravity Forms form objects.
+* Forms shown in the Data Source dropdown no longer have the `gk/gravityview/common/get_forms` filter applied to them.
+* Added `gk/gravityview/lightbox/entry/link` filter to modify the markup of Single Entry or Edit Entry links that open inside a lightbox.
+
+= 2.38 on April 9, 2025 =
+
+This release adds a new setting for Edit Entry locking and fixes issues with multi-page form entry editing, shortcode rendering inside the Layout Builder template, entry locking, and more.
+
+#### 🚀 Added
+* View editor setting to control how frequently requests to take control of a locked entry are checked when Edit Locking is enabled.
+
+#### 🐛 Fixed
+* Navigation between pages in multi-page forms was broken when editing entries.
+* GravityView View field in the Single Entry layout may not display results when accessed from a paginated View.
+* `[gv_entry_link]` shortcode was not rendering inside the Custom Content field when using the Layout Builder template.
+* Fatal error when a Chained Selects Add-On search field was added to the Search Bar, then removed from the connected form.
+* Entry locking not working in certain cases.
+* Browser performance issue when a View is rendered in the Elementor preview area.
+
+#### 💻 Developer Updates
+
+* Added `gk/gravityview/edit-entry/user-can-edit-field` filter to allow modifying field visibility in Edit Entry.
+
+= 2.37 on March 24, 2025 =
+
+This release enhances dialogs in the View editor, improves button and link positioning on the Edit Entry page, and resolves missing settings, embed issues in page builders, unsaved changes warnings, and more.
+
+#### 🚀 Added
+* Expand/contract button to field and widget settings in the View editor.
+  - When the dialog is expanded, the code editor will expand to the full width of the dialog.
+
+#### ✨ Improved
+* The display of action buttons/links on the Edit Entry page.
+
+#### 🐛 Fixed
+* Missing settings in the View editor for customizing next/previous page button text on the Edit Entry screen.
+* Missing hooks in the Layout Builder template prevented extensions like Ratings & Reviews from working.
+* Broken Entry Edit link inside the lightbox when viewing a single entry.
+* Settings text may not wrap correctly in the View editor.
+* The "Are you sure you want to leave this page?" unsaved changes warning appears after opening field settings and navigating away from the Edit View page, even if no changes were made.
+* Embedding a View via a page builder (e.g., Elementor) prevented a GravityView View field in the Single Entry layout from rendering.
 
 = 2.36 on March 13, 2025 =
 

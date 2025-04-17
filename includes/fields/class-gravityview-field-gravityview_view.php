@@ -215,6 +215,10 @@ class GravityView_Field_GravityView_View extends GravityView_Field {
 
 		$shortcode = $view->get_shortcode( $attributes );
 
+		// Embedded Views don't officially support pagination. Leaving the `pagenum`
+		// query arg may result in no records being shown if the page exceeds the total.
+		unset( $_GET['pagenum'] );
+
 		echo do_shortcode( $shortcode );
 	}
 }

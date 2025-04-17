@@ -1582,7 +1582,13 @@ class GravityView_frontend {
 
 				$script_debug = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
-				wp_register_script( 'gravityview-fe-view', plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ), apply_filters( 'gravityview_js_dependencies', $js_dependencies ), GV_PLUGIN_VERSION, true );
+				wp_register_script(
+					'gravityview-fe-view',
+					plugins_url( 'assets/js/fe-views' . $script_debug . '.js', GRAVITYVIEW_FILE ),
+					apply_filters( 'gravityview_js_dependencies', $js_dependencies ),
+					filemtime( GRAVITYVIEW_DIR . 'assets/js/fe-views' . $script_debug . '.js' ),
+					true
+				);
 
 				static $inlined_scripts = [];
 

@@ -582,6 +582,17 @@ class View_Settings extends Settings {
 						'url' => 'https://docs.gravitykit.com/article/676-entry-locking',
 					),
 				),
+				'edit_locking_check_interval' => array(
+					'label'      => __( 'Request Control Check Frequency', 'gk-gravityview' ),
+					'group'      => 'default',
+					'desc'       => __( 'How often (in seconds) to check for requests to take control of a locked entry. A lower value results in faster responses but may increase server load.', 'gk-gravityview' ),
+					'type'       => 'number',
+					'full_width' => true,
+					'class'      => 'small-text',
+					'value'      => \GravityView_Edit_Entry_Locking::LOCK_CHECK_INTERVAL,
+					'requires'   => 'edit_locking=1',
+					'min'        => 1,
+				),
 				'delete_redirect'             => array(
 					'label'   => __( 'Redirect After Deleting', 'gk-gravityview' ),
 					'group'   => 'default',

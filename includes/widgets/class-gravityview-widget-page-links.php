@@ -49,7 +49,7 @@ class GravityView_Widget_Page_Links extends \GV\Widget {
 		);
 
 		$page_link_args = array(
-			'base'      => add_query_arg( 'pagenum', '%#%', gv_directory_link() ),
+			'base'      => add_query_arg( 'pagenum', '%#%', (string) gv_directory_link() ),
 			'format'    => '&pagenum=%#%',
 			'add_args'  => array(),
 			'prev_text' => '&laquo;',

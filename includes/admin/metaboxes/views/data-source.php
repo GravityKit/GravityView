@@ -23,13 +23,13 @@ GravityView_Admin::connected_form_warning( $current_form );
  */
 $order_by = apply_filters( 'gk/gravityview/metaboxes/data-source/order-by', 'title' );
 
-// check for available gravity forms
-$forms = gravityview_get_forms( 'any', false, $order_by );
+$forms = GVCommon::get_forms_as_options( null, false, $order_by );
 
 /**
- * @param int $current_form Form currently selected in the View (0 if none selected)
- * @param array $forms Array of active forms, not in trash
+ * @param int    $current_form Form currently selected in the View (0 if none selected)
+ * @param array  $forms Array of active forms, not in trash
  * @since 1.22.1
+ * @since 2.39   Modified the $forms array to only include the form ID as key and title as value, not full form objects.
  */
 do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 
@@ -54,14 +54,11 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 		?>
 		<select name="gravityview_form_id" id="gravityview_form_id">
 			<option value="" <?php selected( '', $current_form, true ); ?>>&mdash; <?php esc_html_e( 'list of forms', 'gk-gravityview' ); ?> &mdash;</option>
-			<?php foreach ( $forms as $form ) { ?>
-				<option value="<?php echo $form['id']; ?>" <?php selected( $form['id'], $current_form, true ); ?>>
-											<?php
-											echo esc_html( sprintf( '%s &ndash; #%d', $form['title'], $form['id'] ) );
-											if ( empty( $form['is_active'] ) ) {
-												printf( ' (%s)', esc_html_x( 'Inactive', 'Indicates that a form is inactive.', 'gk-gravityview' ) );
-											}
-											?>
+			<?php foreach ( $forms as $id => $title ) { ?>
+				<option value="<?php echo $id; ?>" <?php selected( $id, $current_form, true ); ?>>
+					<?php
+					echo esc_html( $title );
+					?>
 				</option>
 			<?php } ?>
 		</select>
@@ -100,8 +97,9 @@ do_action( 'gravityview/metaboxes/data-source/before', $current_form, $forms );
 <?php
 
 /**
- * @param int $current_form Form currently selected in the View (0 if none selected)
- * @param array $forms Array of active forms, not in trash
+ * @param int    $current_form Form currently selected in the View (0 if none selected)
+ * @param array  $forms Array of active forms, not in trash
  * @since 1.22.1
+ * @since 2.39   Modified the $forms array to only include the form ID and title, not full form objects.
  */
 do_action( 'gravityview/metaboxes/data-source/after', $current_form, $forms );

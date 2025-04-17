@@ -68,6 +68,10 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 
 			$field = GFAPI::get_field( $searchable_field['form_id'], $searchable_field['field'] );
 
+			if( ! $field ) {
+				continue;
+			}
+
 			foreach ( $field->get_entry_inputs() as $input ) {
 				$searchable_fields[] = array(
 					'field' => $input['id'],

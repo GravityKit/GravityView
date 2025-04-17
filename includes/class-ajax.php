@@ -327,7 +327,10 @@ class GravityView_Ajax {
 
 		// import form
 		$forms = '';
-		$count = GFExport::import_file( $xml_or_json_path, $forms );
+		$result = GFExport::import_file( $xml_or_json_path, $forms );
+
+		// GF <2.9.5 returns an integer while newer versions return an array with "form_ids" and "failed_forms" properties.
+		$count = is_array( $result ) ? count( $result['form_ids'] ?? [] ) : $result;
 
 		gravityview()->log->debug( '[import_form] Importing form (Result) {count}', [ 'count' => $count ] );
 		gravityview()->log->debug( '[import_form] Importing form (Form) ', [ 'data' => $forms ] );
