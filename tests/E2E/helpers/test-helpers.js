@@ -1,28 +1,27 @@
-const path = require("path");
-const { test, expect } = require("@playwright/test");
+const { test, expect } = require('@playwright/test');
 
 const templates = [
 	{
-		name: "Table",
-		slug: "default_table",
+		name: 'Table',
+		slug: 'default_table',
 		selector: '.gv-view-types-module:has(h5:text("Table"))',
-		container: ".gv-table-container",
-		contains: "table.gv-table-view",
+		container: '.gv-table-container',
+		contains: 'table.gv-table-view'
 	},
 	{
-		name: "List",
-		slug: "default_list",
+		name: 'List',
+		slug: 'default_list',
 		selector: '.gv-view-types-module:has(h5:text("List"))',
-		container: ".gv-list-container",
-		contains: "ul.gv-list-view",
+		container: '.gv-list-container',
+		contains: 'ul.gv-list-view'
 	},
 	{
-		name: "DataTables Table",
-		slug: "datatables_table",
+		name: 'DataTables Table',
+		slug: 'datatables_table',
 		selector: '.gv-view-types-module:has(h5:text("DataTables Table"))',
-		container: ".gv-datatables-container",
-		contains: "table.dataTable",
-	},
+		container: '.gv-datatables-container',
+		contains: 'table.dataTable'
+	}
 ];
 
 /**
@@ -35,31 +34,20 @@ const templates = [
  * @throws Will throw an error if the form title is not found.
  */
 async function selectGravityFormByTitle(page, formTitle, testInfo = null) {
-	const formSelector = "#gravityview_form_id";
-	const noFormsMessage =
-		"Form(s) not found. Use 'npm run import:forms-entries' to import forms.";
+	const formSelector = '#gravityview_form_id';
+	const noFormsMessage = "Form(s) not found. Use 'npm run import:forms-entries' to import forms.";
 
-	try {
-		const formLocator = page.locator(formSelector);
-		const optionCount = await formLocator.evaluate((form) => {
-			return form.options.length;
-		});
+	const formLocator = page.locator(formSelector);
+	const optionCount = await formLocator.evaluate((form) => {
+		return form.options.length;
+	});
 
-		if (optionCount < 2) {
-			console.warn(noFormsMessage);
-			testInfo
-				? testInfo.skip(true, noFormsMessage)
-				: test.skip(noFormsMessage);
-		}
-	} catch (e) {
-		throw e;
+	if (optionCount < 2) {
+		console.warn(noFormsMessage);
+		testInfo ? testInfo.skip(true, noFormsMessage) : test.skip(noFormsMessage);
 	}
 
-	const optionValue = await getOptionValueBySearchTerm(
-		page,
-		formSelector,
-		formTitle,
-	);
+	const optionValue = await getOptionValueBySearchTerm(page, formSelector, formTitle);
 
 	if (optionValue) {
 		await page.selectOption(formSelector, optionValue);
@@ -83,31 +71,27 @@ async function selectGravityFormByTitle(page, formTitle, testInfo = null) {
  * @param {string} params.template.contains - Optional CSS selector for specific content check.
  * @param {import('@playwright/test').TestInfo | null} [testInfo=null] - Optional Playwright test information object.
  */
-async function createView(
-	page,
-	{ formTitle, viewName, template },
-	testInfo = null,
-) {
-	await page.waitForSelector("text=New View", { state: "visible" });
-	await page.click("text=New View");
+async function createView(page, { formTitle, viewName, template }, testInfo = null) {
+	await page.waitForSelector('text=New View', { state: 'visible' });
+	await page.click('text=New View');
 
 	try {
 		await selectGravityFormByTitle(page, formTitle, testInfo);
-	} catch (e) {
+	} catch {
 		const formMissingMessage = `The form '${formTitle}' doesn't exist.`;
 		testInfo ? testInfo.skip(true, formMissingMessage) : test.skip();
 	}
 
-	await page.fill("#title", viewName);
+	await page.fill('#title', viewName);
 
-	await page.waitForSelector("#gravityview_select_template", {
-		state: "visible",
+	await page.waitForSelector('#gravityview_select_template', {
+		state: 'visible'
 	});
-	await page.waitForSelector(".gv-view-types-module", { state: "visible" });
+	await page.waitForSelector('.gv-view-types-module', { state: 'visible' });
 
 	const templateSelector = await page.$(template.selector);
 	const isPlaceholder = await templateSelector.evaluate((element) =>
-		element.classList.contains("gv-view-template-placeholder"),
+		element.classList.contains('gv-view-template-placeholder')
 	);
 	const skipMessage = `Skipping test: ${template.name} template not found.`;
 
@@ -117,16 +101,16 @@ async function createView(
 	}
 
 	const selectButtonLocator = page.locator(
-		`a.gv_select_template[data-templateid="${template.slug}"]`,
+		`a.gv_select_template[data-templateid="${template.slug}"]`
 	);
 	await templateSelector.hover();
-	await page.dispatchEvent(template.selector, "mouseenter");
-	await selectButtonLocator.waitFor({ state: "visible" });
+	await page.dispatchEvent(template.selector, 'mouseenter');
+	await selectButtonLocator.waitFor({ state: 'visible' });
 	await selectButtonLocator.click();
 
-	await page.waitForSelector("#gravityview_settings", { state: "visible" });
+	await page.waitForSelector('#gravityview_settings', { state: 'visible' });
 
-	const checkbox = page.locator("#gravityview_se_show_only_approved");
+	const checkbox = page.locator('#gravityview_se_show_only_approved');
 	if (await checkbox.isVisible()) {
 		await checkbox.uncheck();
 	}
@@ -138,14 +122,14 @@ async function createView(
  * @param {import('playwright').Page} page - The Playwright page object.
  */
 async function publishView(page) {
-	await page.locator("#publish:not(.disabled)").waitFor();
+	await page.locator('#publish:not(.disabled)').waitFor();
 	await Promise.all([
-		page.click("#publish"),
-		page.waitForURL(/\/wp-admin\/post(?:\-new)?\.php(?:\?[^#]*)?$/),
+		page.click('#publish'),
+		page.waitForURL(/\/wp-admin\/post(?:-new)?\.php(?:\?[^#]*)?$/)
 	]);
 
-	await page.waitForSelector(".notice-success");
-	const successMessage = await page.textContent(".notice-success");
+	await page.waitForSelector('.notice-success');
+	const successMessage = await page.textContent('.notice-success');
 	expect(successMessage).toMatch(/View (published|updated)/);
 }
 
@@ -158,22 +142,21 @@ async function publishView(page) {
  */
 async function checkViewOnFrontEnd(
 	page,
-	permalinkSelector = "#sample-permalink",
+	permalinkSelector = '#sample-permalink',
 	assertResponse = true
 ) {
-	await page.waitForLoadState("networkidle");
+	await page.waitForLoadState('networkidle');
 	const permalinkEl = page.locator(permalinkSelector);
-	await permalinkEl.waitFor({ state: "visible" });
+	await permalinkEl.waitFor({ state: 'visible' });
 	const viewUrl = await getViewUrl(page, permalinkSelector);
 
 	const response = await page.goto(viewUrl);
 	await page.waitForURL(viewUrl);
-	await page.waitForLoadState("networkidle");
+	await page.waitForLoadState('networkidle');
 
 	if (assertResponse) {
 		expect(response.status()).toBe(200);
 	}
-
 }
 
 /**
@@ -183,12 +166,9 @@ async function checkViewOnFrontEnd(
  * @param {string} tableSelector - The CSS selector for the table element.
  * @returns {Promise<number>} - The number of entries in the table.
  */
-async function countTableEntries(page, tableSelector = ".gv-table-view") {
-	await page.waitForSelector(tableSelector, { state: "visible" });
-	const rowCount = await page.$$eval(
-		`${tableSelector} tbody tr`,
-		(rows) => rows.length,
-	);
+async function countTableEntries(page, tableSelector = '.gv-table-view') {
+	await page.waitForSelector(tableSelector, { state: 'visible' });
+	const rowCount = await page.$$eval(`${tableSelector} tbody tr`, (rows) => rows.length);
 	return rowCount;
 }
 
@@ -198,16 +178,12 @@ async function countTableEntries(page, tableSelector = ".gv-table-view") {
  * @param {string} downloadUrl - The URL to download from.
  * @param {string} buttonId - A unique ID for the download button.
  */
-async function clickDownloadButton(
-	page,
-	downloadUrl,
-	buttonId = "download-button",
-) {
+async function clickDownloadButton(page, downloadUrl, buttonId = 'download-button') {
 	const result = await page.evaluate(
 		({ url, id }) => {
 			try {
-				const button = document.createElement("button");
-				button.innerText = "Download";
+				const button = document.createElement('button');
+				button.innerText = 'Download';
 				button.id = id;
 				button.onclick = () => {
 					window.location.href = url;
@@ -215,13 +191,13 @@ async function clickDownloadButton(
 				document.body.appendChild(button);
 				return {
 					success: true,
-					message: "Button appended successfully.",
+					message: 'Button appended successfully.'
 				};
 			} catch (error) {
 				return { success: false, message: error.message };
 			}
 		},
-		{ url: downloadUrl, id: buttonId },
+		{ url: downloadUrl, id: buttonId }
 	);
 
 	if (!result.success) {
@@ -229,7 +205,7 @@ async function clickDownloadButton(
 	}
 
 	const downloadButton = await page.waitForSelector(`#${buttonId}`, {
-		state: "visible",
+		state: 'visible'
 	});
 
 	await downloadButton.click();
@@ -251,32 +227,27 @@ async function clickDownloadButton(
  * console.log('Published page URL:', url);
  */
 async function createPageWithShortcode(page, { shortcode, title }) {
-	await page.goto("/wp-admin/post-new.php?post_type=page");
+	await page.goto('/wp-admin/post-new.php?post_type=page');
 
-	await page.locator(".wp-block-post-title").fill(title);
+	await page.locator('.wp-block-post-title').fill(title);
 
 	// Close "Welcome to the block Editor" modal if present.
-	const modal = page.locator(".components-modal__content");
+	const modal = page.locator('.components-modal__content');
 
 	if (await modal.isVisible()) {
-		await modal.getByLabel("Close", { exact: true }).click();
+		await modal.getByLabel('Close', { exact: true }).click();
 	}
 
-	await page.click(".components-dropdown.block-editor-inserter");
-	await page.fill('input[placeholder="Search"]', "Shortcode");
-	await page.click(".components-popover .editor-block-list-item-shortcode");
+	await page.click('.components-dropdown.block-editor-inserter');
+	await page.fill('input[placeholder="Search"]', 'Shortcode');
+	await page.click('.components-popover .editor-block-list-item-shortcode');
 
-	await page
-		.locator("div.wp-block-shortcode textarea")
-		.fill(`[${shortcode}]`);
-	await page.click("button.editor-post-publish-panel__toggle");
-	await page.click("button.editor-post-publish-button");
-	await page.waitForSelector("input.components-text-control__input");
+	await page.locator('div.wp-block-shortcode textarea').fill(`[${shortcode}]`);
+	await page.click('button.editor-post-publish-panel__toggle');
+	await page.click('button.editor-post-publish-button');
+	await page.waitForSelector('input.components-text-control__input');
 
-	const pageUrl = await page.getAttribute(
-		"input.components-text-control__input",
-		"value",
-	);
+	const pageUrl = await page.getAttribute('input.components-text-control__input', 'value');
 	return pageUrl;
 }
 
@@ -287,13 +258,13 @@ async function createPageWithShortcode(page, { shortcode, title }) {
  * @param {string} [permalinkSelector="#sample-permalink"] - The CSS selector for the permalink element.
  * @returns {Promise<string | null>} - The URL as a string, or `null` if no anchor tag is found.
  */
-async function getViewUrl(page, permalinkSelector = "#sample-permalink") {
+async function getViewUrl(page, permalinkSelector = '#sample-permalink') {
 	const element = page.locator(permalinkSelector);
-	const isAnchor = await element.evaluate((el) => el.tagName === "A");
+	const isAnchor = await element.evaluate((el) => el.tagName === 'A');
 	if (isAnchor) {
-		return await element.getAttribute("href");
+		return await element.getAttribute('href');
 	}
-	return await element.locator("a").first().getAttribute("href");
+	return await element.locator('a').first().getAttribute('href');
 }
 
 /**
@@ -313,14 +284,11 @@ async function getOptionValueBySearchTerm(page, selector, searchTerm) {
 			const options = Array.from(select.options);
 			const lowerCaseSearchTerm = searchTerm.toLowerCase();
 			const option = options.find((opt) =>
-				opt.textContent
-					.trim()
-					.toLowerCase()
-					.startsWith(lowerCaseSearchTerm),
+				opt.textContent.trim().toLowerCase().startsWith(lowerCaseSearchTerm)
 			);
-			return option ? option.value : "";
+			return option ? option.value : '';
 		},
-		{ searchTerm, selector },
+		{ searchTerm, selector }
 	);
 }
 
@@ -334,5 +302,5 @@ module.exports = {
 	clickDownloadButton,
 	createPageWithShortcode,
 	getViewUrl,
-	getOptionValueBySearchTerm,
+	getOptionValueBySearchTerm
 };

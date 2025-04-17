@@ -1,2 +1,2 @@
 apache_modules:
-  - mod_rewrite
+    - mod_rewrite
