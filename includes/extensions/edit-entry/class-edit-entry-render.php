@@ -1707,6 +1707,8 @@ class GravityView_Edit_Entry_Render {
 						// Otherwise, use the passed values, which should be json-encoded array of URLs.
 						if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
 							$value = empty( $value ) ? '[]' : $value;
+
+							$_POST[ 'input_' . $field->id ] = $value;
 						} elseif ( GFCommon::is_json( $value ) ) {
 							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`).
 							global $_gf_uploaded_files;
@@ -1817,10 +1819,11 @@ class GravityView_Edit_Entry_Render {
 			$field_type        = RGFormsModel::get_input_type( $field );
 			$is_required       = ! empty( $field->isRequired );
 			$failed_validation = ! empty( $field->failed_validation );
+			$is_hidden         = RGFormsModel::is_field_hidden( $this->form, $field, $this->entry );
 
-			// Manually validate required fields as they can be skipped be skipped by GF's validation
-			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic
-			if ( $is_required && ! $failed_validation && rgblank( $value ) ) {
+			// Manually validate required fields as they can be skipped by GF's validation.
+			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic.
+			if ( $is_required && ! $is_hidden && ! $failed_validation && rgblank( $value ) ) {
 				$field->failed_validation  = true;
 				$field->validation_message = esc_html__( 'This field is required.', 'gk-gravityview' );
 
@@ -1830,6 +1833,14 @@ class GravityView_Edit_Entry_Render {
 			switch ( $field_type ) {
 				case 'fileupload':
 				case 'post_image':
+					if ( GFCommon::is_json( $value ) ) {
+						try {
+							$value = json_decode( $value, true, 512, JSON_THROW_ON_ERROR );
+						} catch ( JsonException $e ) {
+							$value = [];
+						}
+					}
+
 					// Clear "this field is required" validation result when no files were uploaded but already exist on the server
 					if ( $is_required && $failed_validation && ! empty( $value ) ) {
 						$field->failed_validation = false;
