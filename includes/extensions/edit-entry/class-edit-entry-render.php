@@ -133,6 +133,15 @@ class GravityView_Edit_Entry_Render {
 	public $is_paged_submitted;
 	private $unset_hidden_calculations = [];
 
+	/**
+	 * Holds files that should be removed.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array<string, array<string, string>>
+	 */
+	private $remove_files = [];
+
 	function __construct( GravityView_Edit_Entry $loader ) {
 		$this->loader = $loader;
 	}
@@ -385,6 +394,8 @@ class GravityView_Edit_Entry_Render {
 			 * @hack This step is needed to unset the adminOnly from form fields, to add the calculation fields
 			 */
 			$form = $this->form_prepare_for_save();
+
+			$this->permanently_remove_deleted_files();
 
 			/**
 			 * @hack to avoid the capability validation of the method save_lead for GF 1.9+
@@ -1707,13 +1718,20 @@ class GravityView_Edit_Entry_Render {
 						// Otherwise, use the passed values, which should be json-encoded array of URLs.
 						if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
 							$value = empty( $value ) ? '[]' : $value;
-
-							$_POST[ 'input_' . $field->id ] = $value;
 						} elseif ( GFCommon::is_json( $value ) ) {
 							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`).
 							global $_gf_uploaded_files;
 
 							$_gf_uploaded_files[ $input_name ] = $value;
+						}
+
+						if ( GFCommon::is_json( $value ) ) {
+							$posted_value = RGFormsModel::get_field_value( $field );
+							$old_files    = json_decode( $value, true ) ?: [];
+							$new_files    = json_decode( $posted_value, true ) ?: [];
+							$kept_files   = array_intersect( $old_files, $new_files );
+							// We use this strategy to keep the indexes of the original array, as we need them for removal.
+							$this->remove_files[ '' . $field->id ] = array_diff( $old_files, $kept_files );
 						}
 					} else {
 						// A file already exists when editing an entry
@@ -2682,5 +2700,21 @@ class GravityView_Edit_Entry_Render {
 		];
 
 		wp_send_json( $output, 200 );
+	}
+
+	/**
+	 * Removes any files that have been deleted before validation.
+	 *
+	 * @since $ver$
+	 */
+	private function permanently_remove_deleted_files(): void {
+		$entry_id = $this->entry['id'] ?? 0;
+
+		foreach ( $this->remove_files as $field_id => $files ) {
+			// Revering the order because files are removed one by one. This would change the index after every removal.
+			foreach ( array_reverse( $files, true ) as $file_index => $file_name ) {
+				GFFormsModel::delete_file( $entry_id, $field_id, $file_index );
+			}
+		}
 	}
 }//end class
