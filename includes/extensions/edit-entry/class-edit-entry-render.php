@@ -1837,11 +1837,10 @@ class GravityView_Edit_Entry_Render {
 			$field_type        = RGFormsModel::get_input_type( $field );
 			$is_required       = ! empty( $field->isRequired );
 			$failed_validation = ! empty( $field->failed_validation );
-			$is_hidden         = RGFormsModel::is_field_hidden( $this->form, $field, $this->entry );
 
 			// Manually validate required fields as they can be skipped by GF's validation.
 			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic.
-			if ( $is_required && ! $is_hidden && ! $failed_validation && rgblank( $value ) ) {
+			if ( $is_required && ! $failed_validation && rgblank( $value ) ) {
 				$field->failed_validation  = true;
 				$field->validation_message = esc_html__( 'This field is required.', 'gk-gravityview' );
 
