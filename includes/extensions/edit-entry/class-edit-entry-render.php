@@ -2710,9 +2710,9 @@ class GravityView_Edit_Entry_Render {
 		$entry_id = $this->entry['id'] ?? 0;
 
 		foreach ( $this->remove_files as $field_id => $files ) {
-			// Revering the order because files are removed one by one. This would change the index after every removal.
+			// Reversing the order because files are removed one by one. This would change the index after every removal.
 			foreach ( array_reverse( $files, true ) as $file_index => $file_name ) {
-//				GFFormsModel::delete_file( $entry_id, $field_id, $file_index );
+				GFFormsModel::delete_file( $entry_id, $field_id, $file_index );
 			}
 		}
 	}
