@@ -13,6 +13,7 @@ use GV\Grid;
 use GV\Search\Fields\Search_Field;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
 use GV\Search\Search_Field_Collection;
+use GV\View;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -594,12 +595,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 				continue;
 			}
 
-			foreach ( $widget->get_search_fields( $view->ID ) as $field ) {
+			foreach ( $widget->get_search_fields( $view ) as $field ) {
 				if ( empty( $field['form_id'] ) ) {
 					$field['form_id'] = $view->form ? $view->form->ID : 0;
 				}
 				$searchable_fields[] = $with_full_field ? $field : $field['field'];
 			}
+		}
+
+		if ( ! $with_full_field ) {
+			$searchable_fields = array_values( array_unique( $searchable_fields ) );
 		}
 
 		/**
@@ -855,11 +860,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$value = is_array( $value ) ? array_map( 'trim', $value ) : trim( $value );
 			}
 
-			if ( gv_empty( $value,
-					false,
-					false ) || ( is_array( $value ) && 1 === count( $value ) && gv_empty( $value[0],
-						false,
-						false ) ) ) {
+			if (
+				gv_empty( $value, false, false )
+				|| (
+					is_array( $value ) && 1 === count( $value )
+					&& gv_empty( $value[0], false, false )
+				)
+			) {
 				/**
 				 * Filter to control if empty field values should be ignored or strictly matched (default: true).
 				 *
@@ -1441,8 +1448,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		// get form field array
-		$form_field = is_numeric( $field_id ) ? \GV\GF_Field::by_id( $form,
-			$field_id ) : \GV\Internal_Field::by_id( $field_id );
+		$form_field = is_numeric( $field_id )
+			? \GV\GF_Field::by_id( $form, $field_id )
+			: \GV\Internal_Field::by_id( $field_id );
 
 		if ( ! $form_field ) {
 			return false;
@@ -1500,12 +1508,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 				break;
 
 			case 'checkbox':
-				// convert checkbox on/off into the correct search filter
-				if ( false !== strpos( $field_id,
-						'.' ) && ! empty( $form_field->inputs ) && ! empty( $form_field->choices ) ) {
-					foreach ( $form_field->inputs as $k => $input ) {
-						if ( $input['id'] == $field_id ) {
-							$filter['value']    = $form_field->choices[ $k ]['value'];
+				// convert checkbox on/off into the correct search filter.
+				// `empty` uses `__isset` on the field, which will return false; even if there are values.
+				$inputs  = (array) $form_field->inputs;
+				$choices = (array) $form_field->choices;
+				if (
+					false !== strpos( $field_id, '.' )
+					&& ! empty( $inputs )
+					&& ! empty( $choices )
+				) {
+					foreach ( $inputs as $k => $input ) {
+						if ( $input['id'] === $field_id ) {
+							$filter['value']    = $choices[ $k ]['value'];
 							$filter['operator'] = $this->get_operator( $get, $key, [ 'is' ], 'is' );
 							break;
 						}
@@ -2344,23 +2358,19 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $search_fields;
 	}
 
-	private function get_search_field_configuration( int $view_id ) {
-		return gravityview_get_directory_search( $view_id );
-	}
-
 	/**
 	 * Returns all the searchable fields for a View in the legacy format.
 	 *
 	 * @since $ver$
 	 *
-	 * @param int $view_id The View ID.
+	 * @param View $view The View.
 	 *
 	 * @return array{field: string, label:string, input_type:string}[] The searchable fields in the legacy format.
 	 */
-	private function get_search_fields( int $view_id ): array {
+	private function get_search_fields( View $view ): array {
 		$search_fields = [];
-		$configuration = $this->get_search_field_configuration( $view_id );
-		$collection    = Search_Field_Collection::from_configuration( $configuration );
+		$configuration = $this->configuration->get( 'search_fields_section', [] );
+		$collection    = Search_Field_Collection::from_configuration( $configuration, $view );
 
 		foreach ( $collection->all() as $field ) {
 			$search_fields[] = $field->to_legacy_format();
