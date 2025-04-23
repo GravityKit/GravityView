@@ -1725,7 +1725,7 @@ class GravityView_Edit_Entry_Render {
 							$_gf_uploaded_files[ $input_name ] = $value;
 						}
 
-						if ( GFCommon::is_json( $value ) ) {
+						if ( 'image_hopper' !== $field->type && GFCommon::is_json( $value ) ) {
 							$posted_value = RGFormsModel::get_field_value( $field );
 							$old_files    = json_decode( $value, true ) ?: [];
 							$new_files    = json_decode( $posted_value, true ) ?: [];
@@ -2712,7 +2712,7 @@ class GravityView_Edit_Entry_Render {
 		foreach ( $this->remove_files as $field_id => $files ) {
 			// Revering the order because files are removed one by one. This would change the index after every removal.
 			foreach ( array_reverse( $files, true ) as $file_index => $file_name ) {
-				GFFormsModel::delete_file( $entry_id, $field_id, $file_index );
+//				GFFormsModel::delete_file( $entry_id, $field_id, $file_index );
 			}
 		}
 	}
