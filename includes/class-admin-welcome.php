@@ -324,7 +324,7 @@ class GravityView_Welcome {
 				<h4>💻 Developer Updates</h4>
 
 				<ul>
-					<li>The <code>$forms</code> array passed to the <code>gravityview/metaboxes/data-source/before</code> and <code>gravityview/metaboxes/data-source/after</code> filters now contains only form IDs as keys and titles as values, instead of full form objects.</li>
+					<li>The <code>$forms</code> array passed to the <code>gravityview/metaboxes/data-source/before</code> and <code>gravityview/metaboxes/data-source/after</code> filters now includes only form IDs as keys and titles as values, instead of full form objects.</li>
 					<li>The <code>gk/gravityview/common/get_forms</code> filter is no longer applied to forms shown in the Data Source dropdown.</li>
 					<li>Added <code>gk/gravityview/lightbox/entry/link</code> filter to modify the markup of Single Entry and Edit Entry links that open in a lightbox.</li>
 				</ul>

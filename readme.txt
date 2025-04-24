@@ -37,7 +37,7 @@ This update speeds up form loading in the View editor, fixes GravityEdit compati
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.24.
 
 #### 💻 Developer Updates
-* Modified the `$forms` array passed to the `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` filters now contains only form IDs as keys and titles as values, instead of full form objects.
+* The `$forms` array passed to the `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` filters now includes only form IDs as keys and titles as values, instead of full form objects.
 * The `gk/gravityview/common/get_forms` filter is no longer applied to forms shown in the Data Source dropdown.
 * Added `gk/gravityview/lightbox/entry/link` filter to modify the markup of Single Entry and Edit Entry links that open in a lightbox.
 
