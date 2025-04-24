@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e56545ec20e762d9f700ff2434772a3c",
+    "content-hash": "63c300303c7310147a8fdacf76fbde9e",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -233,16 +233,16 @@
         },
         {
             "name": "gravitykit/foundation",
-            "version": "dev-main",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "be4ce564ddb8a3bc11c1ca57f73bf84e800ae231"
+                "reference": "7385734dc8e123afbd9087aef048cf4607b8ba5a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/be4ce564ddb8a3bc11c1ca57f73bf84e800ae231",
-                "reference": "be4ce564ddb8a3bc11c1ca57f73bf84e800ae231",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/7385734dc8e123afbd9087aef048cf4607b8ba5a",
+                "reference": "7385734dc8e123afbd9087aef048cf4607b8ba5a",
                 "shasum": ""
             },
             "require": {
@@ -269,6 +269,7 @@
                 "szepeviktor/phpstan-wordpress": "^1.3",
                 "wp-coding-standards/wpcs": "^2.3"
             },
+            "default-branch": true,
             "type": "library",
             "extra": {
                 "strauss": {
@@ -340,10 +341,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.23",
+                "source": "https://github.com/GravityKit/Foundation/tree/develop",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2025-02-10T19:25:37+00:00"
+            "time": "2025-04-17T13:52:57+00:00"
         },
         {
             "name": "illuminate/container",
