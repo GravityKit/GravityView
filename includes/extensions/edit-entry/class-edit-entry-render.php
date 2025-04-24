@@ -437,7 +437,7 @@ class GravityView_Edit_Entry_Render {
 			$this->maybe_update_post_fields( $form );
 
 			// Remove uploaded files from cache to clean the `gform_uploaded_files` field.
-            $this->remove_uploaded_files( (int) $this->form_id );
+			$this->remove_uploaded_files( (int) $this->form_id );
 
 			/**
 			 * Perform an action after the entry has been updated using Edit Entry.
