@@ -1,0 +1,39 @@
+{
+	"form": {
+		"title": "Weather Form",
+		"description": "This form collects information about different weather types and their corresponding images.",
+		"button": {
+			"type": "text",
+			"text": "Submit",
+			"imageUrl": ""
+		},
+		"fields": [
+			{
+				"id": 1,
+				"type": "text",
+				"label": "Name",
+				"isRequired": true
+			},
+			{
+				"id": 2,
+				"type": "fileupload",
+				"label": "Image",
+				"isRequired": true
+			}
+		]
+	},
+	"entries": [
+		{
+			"1": "Rain",
+			"2": "https://i.ibb.co/Hn80dWN/rain.jpg"
+		},
+		{
+			"1": "Snow",
+			"2": "https://i.ibb.co/JCrHCvh/snow.jpg"
+		},
+		{
+			"1": "Sun",
+			"2": "https://i.ibb.co/Qf1gXPG/sun.jpg"
+		}
+	]
+}
