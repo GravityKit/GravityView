@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.7.2
+Tested up to: 6.8
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,15 +21,25 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.39 on April 24, 2025 =
+
+This update speeds up form loading in the View editor, fixes GravityEdit compatibility and translation issues in WordPress 6.8, and includes other fixes and improvements.
 
 #### ✨ Improved
-* Speed of fetching forms shown in the Data Source dropdown in the View editor.
+* Faster form fetching in the Data Source dropdown in the View editor.
+* Expand/contract button is no longer shown in View editor warning dialogs.
+
+#### 🐛 Fixed
+* Compatibility issue with GravityEdit when using the Layout Builder template.
+* PHP notice in WordPress 6.8 caused by initializing product translations too early.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.24.
 
 #### 💻 Developer Updates
-* Modified the $forms array passed to `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` to only include the form ID as key and title as value, not full Gravity Forms form objects.
-* Forms shown in the Data Source dropdown no longer have the `gk/gravityview/common/get_forms` filter applied to them.
-* Added `gk/gravityview/lightbox/entry/link` filter to modify the markup of Single Entry or Edit Entry links that open inside a lightbox.
+* Modified the `$forms` array passed to the `gravityview/metaboxes/data-source/before` and `gravityview/metaboxes/data-source/after` filters now contains only form IDs as keys and titles as values, instead of full form objects.
+* The `gk/gravityview/common/get_forms` filter is no longer applied to forms shown in the Data Source dropdown.
+* Added `gk/gravityview/lightbox/entry/link` filter to modify the markup of Single Entry and Edit Entry links that open in a lightbox.
 
 = 2.38 on April 9, 2025 =
 
@@ -47,7 +57,6 @@ This release adds a new setting for Edit Entry locking and fixes issues with mul
 * Browser performance issue when a View is rendered in the Elementor preview area.
 
 #### 💻 Developer Updates
-
 * Added `gk/gravityview/edit-entry/user-can-edit-field` filter to allow modifying field visibility in Edit Entry.
 
 = 2.37 on March 24, 2025 =

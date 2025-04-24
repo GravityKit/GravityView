@@ -332,7 +332,7 @@ class GravityView_Lightbox_Entry {
 		 *
 		 * @filter `gk/gravityview/lightbox/entry/link`
 		 *
-		 * @since TBD
+		 * @since 2.39.0
 		 *
 		 * @param string           $entry_link_markup The full HTML markup for the entry link.
 		 * @param string           $entry_link_url    The entry link URL.

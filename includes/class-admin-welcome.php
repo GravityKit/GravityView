@@ -297,6 +297,38 @@ class GravityView_Welcome {
 				 */
 				?>
 
+				<h3>2.39 on April 24, 2025</h3>
+
+				<p>This update speeds up form loading in the View editor, fixes GravityEdit compatibility and translation issues in WordPress 6.8, and includes other fixes and improvements.</p>
+
+				<h4>✨ Improved</h4>
+
+				<ul>
+					<li>Faster form fetching in the Data Source dropdown in the View editor.</li>
+					<li>Expand/contract button is no longer shown in View editor warning dialogs.</li>
+				</ul>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Compatibility issue with GravityEdit when using the Layout Builder template.</li>
+					<li>PHP notice in WordPress 6.8 caused by initializing product translations too early.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.24.</li>
+				</ul>
+
+				<h4>💻 Developer Updates</h4>
+
+				<ul>
+					<li>The <code>$forms</code> array passed to the <code>gravityview/metaboxes/data-source/before</code> and <code>gravityview/metaboxes/data-source/after</code> filters now contains only form IDs as keys and titles as values, instead of full form objects.</li>
+					<li>The <code>gk/gravityview/common/get_forms</code> filter is no longer applied to forms shown in the Data Source dropdown.</li>
+					<li>Added <code>gk/gravityview/lightbox/entry/link</code> filter to modify the markup of Single Entry and Edit Entry links that open in a lightbox.</li>
+				</ul>
+
 				<h3>2.38 on April 9, 2025</h3>
 
 				<p>This release adds a new setting for Edit Entry locking and fixes issues with multi-page form entry editing, shortcode rendering inside the Layout Builder template, entry locking, and more.</p>
@@ -353,38 +385,6 @@ class GravityView_Welcome {
 					<li>Settings text may not wrap correctly in the View editor.</li>
 					<li>The "Are you sure you want to leave this page?" unsaved changes warning appears after opening field settings and navigating away from the Edit View page, even if no changes were made.</li>
 					<li>Embedding a View via a page builder (e.g., Elementor) prevented a GravityView View field in the Single Entry layout from rendering.</li>
-				</ul>
-
-				<h3>2.36 on March 13, 2025</h3>
-
-				<p>This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Forms in the form selection filter on the Views page are now sorted alphabetically.</li>
-					<li>Security enhancements for GravityView blocks and shortcodes.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>View Details block could not be previewed when enhanced security was enabled on the View.</li>
-					<li>Adding the GravityView shortcode or View block in the block editor prevented content from being saved when the View was configured to redirect on no entries.</li>
-					<li><code>[gravityview]</code> shortcode not returning results when the <code>search_value</code> attribute contains an apostrophe.</li>
-					<li>Issues in Views using joined data (<a href="https://www.gravitykit.com/extensions/multiple-forms/">Multiple Forms</a> extension):
-						<ul>
-							<li>Single Entry layout not working in a lightbox;</li>
-							<li>Invalid <code>GravityView &gt; Edit Entry</code> link in the top admin bar when editing an entry;</li>
-							<li>PHP notice triggered when editing entries in a lightbox.</li>
-						</ul>
-					</li>
 				</ul>
 
 				<p style="text-align: center;">
