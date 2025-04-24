@@ -353,7 +353,7 @@ class GVCommon {
 			return $static_cache[ $static_cache_key ];
 		}
 
-		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, array( 'id', 'title' ) );
+		$forms = self::get_forms_columns( $active, $trash, $sort_column, $sort_dir, array( 'id', 'title', 'is_active' ) );
 
 		if ( empty( $forms ) ) {
 			return $options;
@@ -366,7 +366,13 @@ class GVCommon {
 				continue;
 			}
 
-			$options[ (int) $form['id'] ] = sprintf( '%s (#%d)', esc_html( $form['title'] ), (int) $form['id'] );
+			$title = sprintf( '%s (#%d)', esc_html( $form['title'] ), (int) $form['id'] );
+
+			if ( empty( $form['is_active'] ) ) {
+				$title .= sprintf( ' (%s)', esc_html_x( 'Inactive', 'Indicates that a form is inactive.', 'gk-gravityview' ) );
+			}
+
+			$options[ (int) $form['id'] ] = $title;
 		}
 
 		$static_cache[ $static_cache_key ] = $options;

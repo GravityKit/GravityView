@@ -264,7 +264,7 @@ class GravityView_Lightbox_Entry {
 	}
 
 	/**
-	 * Rewrites Single or Edit Entry links to open inside lightbox.
+	 * Rewrites Single Entry or Edit Entry links to open inside lightbox.
 	 *
 	 * @used-by `gravityview/template/field/entry_link` filter.
 	 *
@@ -273,7 +273,7 @@ class GravityView_Lightbox_Entry {
 	 *
 	 * @param string           $link    The entry link (HTML markup).
 	 * @param string           $href    The entry link URL.
-	 * @param Template_Context $context The context
+	 * @param Template_Context $context The context.
 	 *
 	 * @return string
 	 */
@@ -290,10 +290,10 @@ class GravityView_Lightbox_Entry {
 
 		$entry_ids = $context->entry->is_multi() ? array_map( fn( $entry ) => $entry->ID, $context->entry->entries ) : [ $entry['id'] ];
 
-		$directory_link = $this->get_rest_directory_link( $view->view_id, implode( ',', $entry_ids ) );
+		$entry_link_url = $this->get_rest_directory_link( $view->view_id, implode( ',', $entry_ids ) );
 
 		if ( $is_edit ) {
-			$directory_link = add_query_arg(
+			$entry_link_url = add_query_arg(
 				[
 					'edit' => wp_create_nonce(
 						GravityView_Edit_Entry::get_nonce_key(
@@ -303,12 +303,12 @@ class GravityView_Lightbox_Entry {
 						)
 					),
 				],
-				$directory_link,
+				$entry_link_url,
 			);
 		}
 
 		$atts = [
-			'class'         => ( $link_atts['class'] ?? '' ) . ' gravityview-fancybox',
+			'class'         => 'gravityview-fancybox',
 			'rel'           => 'nofollow',
 			'data-type'     => 'iframe',
 			'data-fancybox' => $view->getCurrentField()['UID'],
@@ -321,11 +321,31 @@ class GravityView_Lightbox_Entry {
 			$link_text = preg_match( '/<a[^>]*>(.*?)<\/a>/', $link, $matches ) ? $matches[1] : '';
 		}
 
-		return gravityview_get_link(
-			$directory_link,
+		$entry_link_markup = gravityview_get_link(
+			$entry_link_url,
 			$link_text,
 			$is_rest ? [] : $atts // Do not add the attributes if the link is being rendered in the REST context.
 		);
+
+		/**
+		 * Filters the markup of Single Entry or Edit Entry links that open inside a lightbox.
+		 *
+		 * @filter `gk/gravityview/lightbox/entry/link`
+		 *
+		 * @since 2.39.0
+		 *
+		 * @param string           $entry_link_markup The full HTML markup for the entry link.
+		 * @param string           $entry_link_url    The entry link URL.
+		 * @param string           $link_text         The anchor text of the link.
+		 * @param array            $atts              The HTML attributes for the link.
+		 * @param GravityView_View $view              The View object.
+		 * @param Template_Context $context           The template context.
+		 * @param bool             $is_rest           Whether the link is rendered in a REST context.
+		 * @param bool             $is_edit           Whether the link is for editing an entry.
+		 *
+		 * @return string Filtered entry link markup.
+		 */
+		return apply_filters( 'gk/gravityview/lightbox/entry/link', $entry_link_markup, $entry_link_url, $link_text, $atts, $view, $context, $is_rest, $is_edit );
 	}
 
 	/**

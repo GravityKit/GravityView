@@ -159,16 +159,16 @@
         },
         {
             "name": "gettext/languages",
-            "version": "2.10.0",
+            "version": "2.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-gettext/Languages.git",
-                "reference": "4d61d67fe83a2ad85959fe6133d6d9ba7dddd1ab"
+                "reference": "0b0b0851c55168e1dfb14305735c64019732b5f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-gettext/Languages/zipball/4d61d67fe83a2ad85959fe6133d6d9ba7dddd1ab",
-                "reference": "4d61d67fe83a2ad85959fe6133d6d9ba7dddd1ab",
+                "url": "https://api.github.com/repos/php-gettext/Languages/zipball/0b0b0851c55168e1dfb14305735c64019732b5f1",
+                "reference": "0b0b0851c55168e1dfb14305735c64019732b5f1",
                 "shasum": ""
             },
             "require": {
@@ -178,7 +178,8 @@
                 "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5 || ^7.5 || ^8.4"
             },
             "bin": [
-                "bin/export-plural-rules"
+                "bin/export-plural-rules",
+                "bin/import-cldr-data"
             ],
             "type": "library",
             "autoload": {
@@ -217,7 +218,7 @@
             ],
             "support": {
                 "issues": "https://github.com/php-gettext/Languages/issues",
-                "source": "https://github.com/php-gettext/Languages/tree/2.10.0"
+                "source": "https://github.com/php-gettext/Languages/tree/2.12.1"
             },
             "funding": [
                 {
@@ -229,7 +230,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-10-18T15:00:10+00:00"
+            "time": "2025-03-19T11:14:02+00:00"
         },
         {
             "name": "gravitykit/foundation",
@@ -237,12 +238,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "be4ce564ddb8a3bc11c1ca57f73bf84e800ae231"
+                "reference": "49d64e0af95875a348d6928c5c6f7c60252a78ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/be4ce564ddb8a3bc11c1ca57f73bf84e800ae231",
-                "reference": "be4ce564ddb8a3bc11c1ca57f73bf84e800ae231",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/49d64e0af95875a348d6928c5c6f7c60252a78ca",
+                "reference": "49d64e0af95875a348d6928c5c6f7c60252a78ca",
                 "shasum": ""
             },
             "require": {
@@ -340,10 +341,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.23",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.2.24",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2025-02-10T19:25:37+00:00"
+            "time": "2025-04-24T20:54:03+00:00"
         },
         {
             "name": "illuminate/container",
