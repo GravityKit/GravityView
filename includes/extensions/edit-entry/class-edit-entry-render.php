@@ -1850,7 +1850,7 @@ class GravityView_Edit_Entry_Render {
 			switch ( $field_type ) {
 				case 'fileupload':
 				case 'post_image':
-					if ( GFCommon::is_json( $value ) ) {
+					if ( 'image_hopper' !== $field->type && GFCommon::is_json( $value ) ) {
 						try {
 							$value = json_decode( $value, true, 512, JSON_THROW_ON_ERROR );
 						} catch ( JsonException $e ) {
