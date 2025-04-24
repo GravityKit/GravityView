@@ -2623,8 +2623,7 @@ class GravityView_Edit_Entry_Render {
 	 * @param int $form_id The form ID.
 	 */
 	private function remove_uploaded_files( int $form_id ): void {
-		$tmp_location = GFFormsModel::get_tmp_upload_location( $form_id );
-		$tmp_path     = $tmp_location['path'];
+		$tmp_path = $this->get_tmp_upload_path( $form_id );
 
 		foreach ( RGFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
 			if ( ! is_array( $files ) ) {
@@ -2650,17 +2649,16 @@ class GravityView_Edit_Entry_Render {
 	 * @param int $form_id The form ID.
 	 */
 	private function add_uploaded_file_sizes( int $form_id ): void {
-		$tmp_location = GFFormsModel::get_tmp_upload_location( $form_id );
-		$tmp_path     = $tmp_location['path'];
+		$tmp_path = $this->get_tmp_upload_path( $form_id );
 
-		foreach ( RGFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
+		foreach ( GFFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
 			if ( ! is_array( $files ) ) {
 				continue;
 			}
 
 			foreach ( $files as $key => $file ) {
 				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
-				if ( file_exists( $tmp_file ) ) {
+				if ( is_readable( $tmp_file ) ) {
 					GFFormsModel::$uploaded_files[ $form_id ][ $input_name ][ $key ]['size'] = filesize( $tmp_file );
 				}
 			}
@@ -2682,8 +2680,7 @@ class GravityView_Edit_Entry_Render {
 			return $field;
 		}
 
-		$tmp_location = GFFormsModel::get_tmp_upload_location( $form['id'] ?? 0 );
-		$tmp_path     = $tmp_location['path'];
+		$tmp_path = $this->get_tmp_upload_path( (int) ( $form['id'] ?? 0 ) );
 
 		$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
 		if ( ! file_exists( $tmp_file ) ) {
@@ -2715,5 +2712,27 @@ class GravityView_Edit_Entry_Render {
 				GFFormsModel::delete_file( $entry_id, $field_id, $file_index );
 			}
 		}
+	}
+
+	/**
+	 * Returns the temporary upload path for a form.
+	 *
+	 * @since $ver$
+	 *
+	 * @param int $form_id The form ID.
+	 *
+	 * @return string The path.
+	 */
+	private function get_tmp_upload_path( int $form_id ): string {
+		if ( method_exists( GFFormsModel::class, 'get_tmp_upload_location' ) ) {
+			$tmp_location = GFFormsModel::get_tmp_upload_location( $form_id );
+
+			$path = $tmp_location['path'] ?? '';
+			if ( $path ) {
+				return $path;
+			}
+		}
+
+		return GFFormsModel::get_upload_path( $form_id ) . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
 	}
 }//end class
