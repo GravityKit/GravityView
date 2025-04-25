@@ -297,6 +297,22 @@ class GravityView_Welcome {
 				 */
 				?>
 
+				<h3>2.39.1 on April 25, 2025</h3>
+
+				<p>This hotfix resolves a fatal error that occurred when updating the plugin from version 2.38 or earlier.</p>
+
+				<h4>🐛 Fixed</h4>
+
+				<ul>
+					<li>Fatal error when updating the plugin from version 2.38 or earlier.</li>
+				</ul>
+
+				<h4>🔧 Updated</h4>
+
+				<ul>
+					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.25.</li>
+				</ul>
+
 				<h3>2.39 on April 24, 2025</h3>
 
 				<p>This update speeds up form loading in the View editor, fixes GravityEdit compatibility and translation issues in WordPress 6.8, and includes other fixes and improvements.</p>
