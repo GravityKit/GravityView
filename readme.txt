@@ -21,6 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.39.1 on April 25, 2025 =
+
+This hotfix resolves a fatal error that occurred when updating the plugin from version 2.38 or earlier.
+
+#### 🐛 Fixed
+* Fatal error when updating the plugin from version 2.38 or earlier.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.2.25.
+
 = 2.39 on April 24, 2025 =
 
 This update speeds up form loading in the View editor, fixes GravityEdit compatibility and translation issues in WordPress 6.8, and includes other fixes and improvements.
