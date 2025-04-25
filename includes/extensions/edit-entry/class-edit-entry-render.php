@@ -1837,10 +1837,11 @@ class GravityView_Edit_Entry_Render {
 			$field_type        = RGFormsModel::get_input_type( $field );
 			$is_required       = ! empty( $field->isRequired );
 			$failed_validation = ! empty( $field->failed_validation );
+			$is_hidden         = RGFormsModel::is_field_hidden( $this->form, $field, $this->entry );
 
 			// Manually validate required fields as they can be skipped by GF's validation.
 			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic.
-			if ( $is_required && ! $failed_validation && rgblank( $value ) ) {
+			if ( $is_required && ! $is_hidden && ! $failed_validation && rgblank( $value ) ) {
 				$field->failed_validation  = true;
 				$field->validation_message = esc_html__( 'This field is required.', 'gk-gravityview' );
 
@@ -1872,7 +1873,7 @@ class GravityView_Edit_Entry_Render {
 					if ( \GV\Utils::get( $field, 'maxFiles' ) && \GV\Utils::get( $field, 'multipleFiles' ) ) {
 						$input_name = 'input_' . $field->id;
 						// uploaded
-						$file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
+						$file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : [];
 
 						// existent
 						$entry = $this->get_entry();
@@ -1883,7 +1884,7 @@ class GravityView_Edit_Entry_Render {
 
 						// count uploaded files and existent entry files
 						$count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
-										( is_array( $value ) ? count( $value ) : 0 );
+									   ( is_array( $value ) ? count( $value ) : 0 );
 
 						if ( $count_files > $field->maxFiles ) {
 							$field->validation_message = __( 'Maximum number of files reached', 'gk-gravityview' );
@@ -1900,63 +1901,59 @@ class GravityView_Edit_Entry_Render {
 
 			// This field has failed validation.
 			if ( ! empty( $field->failed_validation ) ) {
-
 				gravityview()->log->debug(
-                    'GravityView_Edit_Entry[custom_validation] Field is invalid.',
-                    array(
-						'data' => array(
+					'GravityView_Edit_Entry[custom_validation] Field is invalid.',
+					[
+						'data' => [
 							'field' => $field,
 							'value' => $value,
-						),
-                    )
-                );
+						],
+					]
+				);
 
 				switch ( $field_type ) {
-
-				    // Captchas don't need to be re-entered.
-				    case 'captcha':
-				        // Post Image fields aren't editable, so we un-fail them.
-				    case 'post_image':
-				        $field->failed_validation = false;
-				        unset( $field->validation_message );
-				        break;
-
+					// Captchas don't need to be re-entered.
+					case 'captcha':
+						// Post Image fields aren't editable, so we un-fail them.
+					case 'post_image':
+						$field->failed_validation = false;
+						unset( $field->validation_message );
+						break;
 				}
 
 				// You can't continue inside a switch, so we do it after.
 				if ( empty( $field->failed_validation ) ) {
-				    continue;
+					continue;
 				}
 
 				// checks if the No Duplicates option is not validating entry against itself, since
 				// we're editing a stored entry, it would also assume it's a duplicate.
 				if ( ! empty( $field->noDuplicates ) ) {
+					$entry = $this->get_entry();
 
-				    $entry = $this->get_entry();
+					// If the value of the entry is the same as the stored value
+					// Then we can assume it's not a duplicate, it's the same.
+					if ( ! empty( $entry ) && $value == $entry[ $field->id ] ) {
+						// if value submitted was not changed, then don't validate
+						$field->failed_validation = false;
 
-				    // If the value of the entry is the same as the stored value
-				    // Then we can assume it's not a duplicate, it's the same.
-				    if ( ! empty( $entry ) && $value == $entry[ $field->id ] ) {
-				        // if value submitted was not changed, then don't validate
-				        $field->failed_validation = false;
+						unset( $field->validation_message );
 
-				        unset( $field->validation_message );
+						gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Field not a duplicate; it is the same entry.',
+							[ 'data' => $entry ] );
 
-				        gravityview()->log->debug( 'GravityView_Edit_Entry[custom_validation] Field not a duplicate; it is the same entry.', array( 'data' => $entry ) );
-
-				        continue;
-				    }
+						continue;
+					}
 				}
 
 				// if here then probably we are facing the validation 'At least one field must be filled out'
 				if ( GFFormDisplay::is_empty( $field, $this->form_id ) && empty( $field->isRequired ) ) {
-				    unset( $field->validation_message );
+					unset( $field->validation_message );
 					$field->failed_validation = false;
-				    continue;
+					continue;
 				}
 
 				$gv_valid = false;
-
 			}
 		}
 
