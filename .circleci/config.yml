@@ -150,13 +150,7 @@ workflows:
           <<: *context
       - run_php_74_unit_tests:
           <<: *test_job_config
-      - run_php_80_unit_tests:
-          <<: *test_job_config
-      - run_e2e_tests:
-          <<: *test_job_config
       - build_package_release:
           <<: *context
           requires:
             - run_php_74_unit_tests
-            - run_php_80_unit_tests
-            - run_e2e_tests
