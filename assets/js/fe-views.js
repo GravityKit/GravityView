@@ -93,10 +93,12 @@ jQuery( function ( $ ) {
 
 						const $fields_input = $( this ).closest( 'form' ).find( '[name=gform_uploaded_files]' );
 						const all_files = JSON.parse( $fields_input.val() || '{}' );
-						$fields_input.val( '' ); // Clear out as they will be added through the Uploader.
+						const input_files = all_files[ input_name ] || [];
+						delete all_files[ input_name ];
+						$fields_input.val( JSON.stringify( all_files ) ); // Clear out as they will be added through the Uploader.
 
 						// Fake the Uploader files.
-						const files = ( all_files[ input_name ] || [] ).map( file => {
+						const files = ( input_files ).map( file => {
 							file.name = file.uploaded_filename || 'unknown';
 							file.id = ( file.temp_filename || '' ).split( '_o_' ).pop().split( '.' ).shift();
 							file.status = plupload.DONE;
