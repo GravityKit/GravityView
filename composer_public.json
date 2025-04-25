@@ -21,9 +21,9 @@
       "type": "package",
       "package": {
         "name": "gravitykit/foundation",
-        "version": "1.2.24",
+        "version": "1.2.25",
         "dist": {
-          "url": "https://www.dropbox.com/scl/fi/bogp0p3bjydnlzajtye3f/foundation-1.2.24.zip?rlkey=vesk1v8bwrim2nrrrv99qyltt&dl=1",
+          "url": "https://www.dropbox.com/scl/fi/rxgwe4cm2oexyvw63n65q/foundation-1.2.25.zip?rlkey=dm0jwmvw9s5plst1z7gthnoue&dl=1",
           "type": "zip"
         }
       }
