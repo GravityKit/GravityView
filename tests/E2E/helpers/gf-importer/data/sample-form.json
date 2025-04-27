@@ -1,0 +1,35 @@
+{
+	"form": {
+		"title": "Sample Form",
+		"description": "This is a sample form.",
+		"button": {
+			"type": "text",
+			"text": "Submit",
+			"imageUrl": ""
+		},
+		"fields": [
+			{
+				"id": 1,
+				"type": "text",
+				"label": "Full Name",
+				"isRequired": true
+			},
+			{
+				"id": 2,
+				"type": "email",
+				"label": "Email Address",
+				"isRequired": true
+			}
+		]
+	},
+	"entries": [
+		{
+			"1": "Alice Wonderland",
+			"2": "alice@example.com"
+		},
+		{
+			"1": "Bob Builder",
+			"2": "bob@example.com"
+		}
+	]
+}
