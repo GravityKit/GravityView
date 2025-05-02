@@ -44,16 +44,6 @@ class View_List_Template extends View_Template {
 			$form = GF_Form::by_id( $field->form_id );
 		}
 
-		/**
-		 * Push legacy entry context.
-		 */
-		\GV\Mocks\Legacy_Context::load(
-			array(
-				'entry' => $entry,
-				'form'  => $form,
-			)
-		);
-
 		$context = Template_Context::from_template( $this, compact( 'field', 'entry' ) );
 
 		$renderer = new Field_Renderer();
