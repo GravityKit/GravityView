@@ -1685,33 +1685,30 @@ class GravityView_Edit_Entry_Render {
 				 */
 				case 'fileupload':
 				    // Set the previous value
-				    $entry = $this->get_entry();
+					$entry = $this->get_entry();
 
-				    $input_name = 'input_' . $field->id;
-				    $form_id    = $form['id'];
+					$input_name = 'input_' . $field->id;
+					$form_id    = $form['id'];
 
-				    $value = null;
+					$value = null;
 
-				    // Use the previous entry value as the default.
-				    if ( isset( $entry[ $field->id ] ) ) {
-				        $value = $entry[ $field->id ];
-				    }
+					// Use the previous entry value as the default.
+					if ( isset( $entry[ $field->id ] ) ) {
+						$value = $entry[ $field->id ];
+					}
 
-				    // If this is a single upload file
-				    if ( ! empty( $_FILES[ $input_name ] ) && ! empty( $_FILES[ $input_name ]['name'] ) ) {
-				        $file_path = GFFormsModel::get_file_upload_path( $form['id'], $_FILES[ $input_name ]['name'] );
-				        $value     = $file_path['url'];
-
-				    } else {
-
-				        // Fix PHP warning on line 1498 of form_display.php for post_image fields
-				        // Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511.
-				        $_FILES[ $input_name ] = array(
+					// If this is a single upload file.
+					if ( ! empty( $_FILES[ $input_name ] ) && ! empty( $_FILES[ $input_name ]['name'] ) ) {
+						$file_path = GFFormsModel::get_file_upload_path( $form['id'], $_FILES[ $input_name ]['name'] );
+						$value     = $file_path['url'];
+					} else {
+						// Fix PHP warning on line 1498 of form_display.php for post_image fields
+						// Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511.
+						$_FILES[ $input_name ] = [
 							'name' => '',
 							'size' => '',
-						);
-
-				    }
+						];
+					}
 
 					if ( \GV\Utils::get( $field, 'multipleFiles' ) ) {
 						// If there are fresh uploads, process and merge them.
@@ -1725,23 +1722,17 @@ class GravityView_Edit_Entry_Render {
 							$_gf_uploaded_files[ $input_name ] = $value;
 						}
 
-						if ( 'image_hopper' !== $field->type && GFCommon::is_json( $value ) ) {
-							$posted_value = RGFormsModel::get_field_value( $field );
-							$old_files    = json_decode( $value, true ) ?: [];
-							$new_files    = json_decode( $posted_value, true ) ?: [];
-							$kept_files   = array_intersect( $old_files, $new_files );
-							// We use this strategy to keep the indexes of the original array, as we need them for removal.
-							$this->remove_files[ '' . $field->id ] = array_diff( $old_files, $kept_files );
-						}
+						$this->record_files_for_removal( $field, (string) $value, $input_name );
 					} else {
 						// A file already exists when editing an entry
 						// We set this to solve issue when file upload fields are required.
 						GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
 					}
 
-				    $this->entry[ $input_name ] = $value;
+					$this->entry[ '' . $field->id ] = $value;
+					$this->entry[ $input_name ]     = $value;
 
-				    break;
+					break;
 
 				case 'number':
 				    // Fix "undefined index" issue at line 1286 in form_display.php
@@ -1833,16 +1824,32 @@ class GravityView_Edit_Entry_Render {
 		$gv_valid = true;
 
 		foreach ( $validation_results['form']['fields'] as $key => &$field ) {
-			$value             = RGFormsModel::get_field_value( $field );
-			$field_type        = RGFormsModel::get_input_type( $field );
+			$posted_value      = GFFormsModel::get_field_value( $field );
+			$field_type        = GFFormsModel::get_input_type( $field );
 			$is_required       = ! empty( $field->isRequired );
 			$failed_validation = ! empty( $field->failed_validation );
+
+			// Use the posted value only if that value was posted. Fallback to original value.
+			$value = isset( $_POST[ 'input_' . $field->id ] )
+				? $posted_value
+				: $this->entry[ $field->id ] ?? '';
+
+			$value = apply_filters(
+				'gk/gravityview/edit_entry/custom-validation-value',
+				$value,
+				$field,
+				$this->entry ?? []
+			);
 
 			// Manually validate required fields as they can be skipped by GF's validation.
 			// This can happen when the field is considered "hidden" (see `GFFormDisplay::validate`) due to unmet conditional logic.
 			if ( $is_required && ! $failed_validation && rgblank( $value ) ) {
-				$field->failed_validation  = true;
-				$field->validation_message = esc_html__( 'This field is required.', 'gk-gravityview' );
+				if ( method_exists( $field, 'set_required_error' ) ) {
+					$field->set_required_error( $value );
+				} else {
+					$field->failed_validation  = true;
+					$field->validation_message = esc_html__( 'This field is required.', 'gk-gravityview' );
+				}
 
 				continue;
 			}
@@ -1850,12 +1857,9 @@ class GravityView_Edit_Entry_Render {
 			switch ( $field_type ) {
 				case 'fileupload':
 				case 'post_image':
-					if ( 'image_hopper' !== $field->type && GFCommon::is_json( $value ) ) {
-						try {
-							$value = json_decode( $value, true, 512, JSON_THROW_ON_ERROR );
-						} catch ( JsonException $e ) {
-							$value = [];
-						}
+					// If the value is an empty Array encoded as JSON it is still empty.
+					if ( '[]' === $value ) {
+						$value = '';
 					}
 
 					// Clear "this field is required" validation result when no files were uploaded but already exist on the server
@@ -1867,33 +1871,6 @@ class GravityView_Edit_Entry_Render {
 
 					// Re-validate the field
 					$field->validate( $value, $this->form );
-
-					// Validate if multi-file upload reached max number of files [maxFiles] => 2
-					if ( \GV\Utils::get( $field, 'maxFiles' ) && \GV\Utils::get( $field, 'multipleFiles' ) ) {
-						$input_name = 'input_' . $field->id;
-						// uploaded
-						$file_names = isset( GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] ) ? GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ][ $input_name ] : array();
-
-						// existent
-						$entry = $this->get_entry();
-						$value = null;
-						if ( isset( $entry[ $field->id ] ) ) {
-							$value = json_decode( $entry[ $field->id ], true );
-						}
-
-						// count uploaded files and existent entry files
-						$count_files = ( is_array( $file_names ) ? count( $file_names ) : 0 ) +
-										( is_array( $value ) ? count( $value ) : 0 );
-
-						if ( $count_files > $field->maxFiles ) {
-							$field->validation_message = __( 'Maximum number of files reached', 'gk-gravityview' );
-							$field->failed_validation  = true;
-							$gv_valid                  = false;
-
-							// in case of error make sure the newest upload files are removed from the upload input
-							GFFormsModel::$uploaded_files[ $validation_results['form']['id'] ] = null;
-						}
-					}
 
 					break;
 			}
@@ -2625,13 +2602,13 @@ class GravityView_Edit_Entry_Render {
 	private function remove_uploaded_files( int $form_id ): void {
 		$tmp_path = $this->get_tmp_upload_path( $form_id );
 
-		foreach ( RGFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
+		foreach ( GFFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
 			if ( ! is_array( $files ) ) {
 				continue;
 			}
 
 			foreach ( $files as $key => $file ) {
-				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
+				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] ?? 'missing.file' );
 				if ( ! file_exists( $tmp_file ) ) {
 					unset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ][ $key ] );
 				}
@@ -2651,7 +2628,7 @@ class GravityView_Edit_Entry_Render {
 	private function add_uploaded_file_sizes( int $form_id ): void {
 		$tmp_path = $this->get_tmp_upload_path( $form_id );
 
-		foreach ( GFFormsModel::$uploaded_files[ $form_id ] as $input_name => $files ) {
+		foreach ( GFFormsModel::$uploaded_files[ $form_id ] ?? [] as $input_name => $files ) {
 			if ( ! is_array( $files ) ) {
 				continue;
 			}
@@ -2706,6 +2683,10 @@ class GravityView_Edit_Entry_Render {
 	private function permanently_remove_deleted_files(): void {
 		$entry_id = $this->entry['id'] ?? 0;
 
+		if ( ! $entry_id ) {
+			return;
+		}
+
 		foreach ( $this->remove_files as $field_id => $files ) {
 			// Reversing the order because files are removed one by one. This would change the index after every removal.
 			foreach ( array_reverse( $files, true ) as $file_index => $file_name ) {
@@ -2734,5 +2715,49 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		return GFFormsModel::get_upload_path( $form_id ) . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR;
+	}
+
+	/**
+	 * Records any files to remove after validation.
+	 *
+	 * @since $ver$
+	 *
+	 * @param GF_Field $field      The FileUpload field.
+	 * @param string   $value      The current entry value for the field.
+	 * @param string   $input_name The name of the field input.
+	 */
+	private function record_files_for_removal( GF_Field $field, string $value, string $input_name ): void {
+
+		/**
+		 * @filter `gk/gravityview/edit-entry/record-file-removal` Modifies whether to record files for removal.
+		 *
+		 * @since  $ver$
+		 *
+		 * @param bool                $should_record Whether to record.
+		 * @param GF_Field_FileUpload $field         The FileUpload field.
+		 * @param string              $value         The current entry value for the field.
+		 */
+		$should_record = (bool) apply_filters(
+			'gk/gravityview/edit-entry/record-file-removal',
+			true,
+			$field,
+			$value
+		);
+
+		if (
+			! $should_record
+			|| ! GFCommon::is_json( $value )
+			|| ! isset( $_POST[ $input_name ] )
+		) {
+			return;
+		}
+
+		$posted_value = GFFormsModel::get_field_value( $field );
+		$old_files    = json_decode( $value, true ) ?: [];
+		$new_files    = json_decode( $posted_value, true ) ?: [];
+		$kept_files   = array_intersect( $old_files, $new_files );
+
+		// We use this strategy to keep the indexes of the original array, as we need them for removal.
+		$this->remove_files[ '' . $field->id ] = array_diff( $old_files, $kept_files );
 	}
 }//end class
