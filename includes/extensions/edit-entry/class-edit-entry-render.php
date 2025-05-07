@@ -1690,17 +1690,22 @@ class GravityView_Edit_Entry_Render {
 					$input_name = 'input_' . $field->id;
 					$form_id    = $form['id'];
 
-					$value = null;
-
 					// Use the previous entry value as the default.
-					if ( isset( $entry[ $field->id ] ) ) {
-						$value = $entry[ $field->id ];
-					}
+					$value = $entry[ $field->id ] ?? '';
 
 					// If this is a single upload file.
-					if ( ! empty( $_FILES[ $input_name ] ) && ! empty( $_FILES[ $input_name ]['name'] ) ) {
-						$file_path = GFFormsModel::get_file_upload_path( $form['id'], $_FILES[ $input_name ]['name'] );
-						$value     = $file_path['url'];
+					if ( ! empty( $_FILES[ $input_name ] ) ) {
+						// Always remove the old file, if the file upload input is active.
+						$this->record_files_for_removal( $field, $value );
+						// The new value to validate is now empty.
+						$value = '';
+						// Mark the old value as removed, to prevent Max Files Exceeded error.
+						$this->entry[ '' . $field->id ] = '';
+						if ( ! empty( $_FILES[ $input_name ]['name'] ) ) {
+							// Uploading a new file.
+							$file_path = GFFormsModel::get_file_upload_path( $form_id, $_FILES[ $input_name ]['name'] );
+							$value     = $file_path['url'];
+						}
 					} else {
 						// Fix PHP warning on line 1498 of form_display.php for post_image fields
 						// Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511.
@@ -1722,15 +1727,12 @@ class GravityView_Edit_Entry_Render {
 							$_gf_uploaded_files[ $input_name ] = $value;
 						}
 
-						$this->record_files_for_removal( $field, (string) $value, $input_name );
-					} else {
-						// A file already exists when editing an entry
-						// We set this to solve issue when file upload fields are required.
-						GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] = $value;
+						$this->record_files_for_removal( $field, (string) $value );
+						$this->entry[ '' . $field->id ] = $value;
 					}
 
-					$this->entry[ '' . $field->id ] = $value;
-					$this->entry[ $input_name ]     = $value;
+					// Here for backwards compatibility, not sure if it can be removed.
+					$this->entry[ $input_name ] = $value;
 
 					break;
 
@@ -2724,10 +2726,8 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @param GF_Field $field      The FileUpload field.
 	 * @param string   $value      The current entry value for the field.
-	 * @param string   $input_name The name of the field input.
 	 */
-	private function record_files_for_removal( GF_Field $field, string $value, string $input_name ): void {
-
+	private function record_files_for_removal( GF_Field $field, string $value ): void {
 		/**
 		 * @filter `gk/gravityview/edit-entry/record-file-removal` Modifies whether to record files for removal.
 		 *
@@ -2744,11 +2744,22 @@ class GravityView_Edit_Entry_Render {
 			$value
 		);
 
+		$input_name = 'input_' . $field->id;
+
 		if (
 			! $should_record
-			|| ! GFCommon::is_json( $value )
-			|| ! isset( $_POST[ $input_name ] )
+			|| ! ( isset( $_POST[ $input_name ] ) || isset( $_FILES[ $input_name ] ) )
 		) {
+			return;
+		}
+
+		if ( ! ( $field->multipleFiles ?? false ) && ! empty( $value ) ) {
+			$this->remove_files[ '' . $field->id ] = [ $value ];
+
+			return;
+		}
+
+		if ( ! GFCommon::is_json( $value ) ) {
 			return;
 		}
 

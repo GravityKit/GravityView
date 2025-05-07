@@ -88,6 +88,9 @@ jQuery( function ( $ ) {
 
 						const uploader = window?.gfMultiFileUploader?.uploaders[ uploader_id ] || null;
 						if ( !uploader ) {
+							// This might be a single file uploader. Disable that input since we have files.
+							const $input = $( this ).closest( '.gfield' ).find( 'input[name=' + input_name + ']' );
+							$input.attr( 'disabled', $input.type === 'file' ? 'disabled' : '' );
 							return;
 						}
 
