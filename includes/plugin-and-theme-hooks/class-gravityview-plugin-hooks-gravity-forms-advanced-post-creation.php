@@ -63,6 +63,8 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 				continue;
 			}
 
+			$feed['meta']['postStatus'] = get_post_status( $created_post['post_id'] );
+
 			$apc->update_post( $created_post['post_id'], $feed, $render->entry, $form );
 		}
 	}
