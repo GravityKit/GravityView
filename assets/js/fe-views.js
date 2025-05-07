@@ -75,6 +75,30 @@ jQuery( function ( $ ) {
 		 * Fix the issue of updating files after edit where the previous value still exists in the uploaded field.
 		 */
 		fix_updating_files_after_edit: function () {
+			if ( window.gform ) {
+				// Prevent enabling the single upload input when the field is conditional but already has values.
+				gform.addAction( 'gform_post_conditional_logic_field_action', ( form_id, action, target_id ) => {
+					if ( action !== 'show' ) {
+						return;
+					}
+					if ( !$( target_id ).is( '.gfield--type-fileupload' ) ) {
+						return;
+					}
+
+					const input_name = 'input_' + target_id.split( '_' ).pop();
+					const existing_files_id = input_name.replace('input_', '#preview_existing_files_');
+
+					// No files, so we don't need to disable the input.
+					if ( $( existing_files_id ).children().length === 0 ) {
+						return;
+					}
+
+					// This might be a single file uploader. Disable that input since we have files.
+					const $input = $( target_id ).find( 'input[name=' + input_name + ']' );
+					$input.attr( 'disabled', $input.type === 'file' ? 'disabled' : false );
+				} );
+			}
+
 			$( document ).on( 'gform_post_render', () => {
 				$( '.ginput_preview_list' ).each( function () {
 
