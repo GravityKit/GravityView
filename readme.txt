@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🚀 Added
+* Support for the `{get}` merge tag inside the `[gv_entry_link]` shortcode.
+
 = 2.39.1 on April 25, 2025 =
 
 This hotfix resolves a fatal error that occurred when updating the plugin from version 2.38 or earlier.

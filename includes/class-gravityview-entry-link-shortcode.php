@@ -129,6 +129,8 @@ class GravityView_Entry_Link_Shortcode {
 			return null;
 		}
 
+		$atts = gv_map_deep( $atts, [ 'GravityView_Merge_Tags', 'replace_get_variables' ] );
+
 		$this->settings = shortcode_atts( self::$defaults, $atts, $context );
 
 		$this->view_id = empty( $this->settings['view_id'] ) ? GravityView_View::getInstance()->getViewId() : absint( $this->settings['view_id'] );
