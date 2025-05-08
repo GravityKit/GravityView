@@ -1866,6 +1866,7 @@ class GravityView_Edit_Entry_Render {
 				&& rgblank( $value )
 				// The value might be empty for a single field upload, so also check `is_value_submission_empty`.
 				&& $field->is_value_submission_empty( $validation_results['form']['id'] ?? 0 )
+				&& ! GFFormsModel::is_field_hidden( $this->form, $field, [], $this->entry )
 			) {
 				if ( method_exists( $field, 'set_required_error' ) ) {
 					$field->set_required_error( $value );
