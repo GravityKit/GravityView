@@ -86,7 +86,7 @@ jQuery( function ( $ ) {
 					}
 
 					const input_name = 'input_' + target_id.split( '_' ).pop();
-					const existing_files_id = input_name.replace('input_', '#preview_existing_files_');
+					const existing_files_id = input_name.replace( 'input_', '#preview_existing_files_' );
 
 					// No files, so we don't need to disable the input.
 					if ( $( existing_files_id ).children().length === 0 ) {
@@ -95,7 +95,7 @@ jQuery( function ( $ ) {
 
 					// This might be a single file uploader. Disable that input since we have files.
 					const $input = $( target_id ).find( 'input[name=' + input_name + ']' );
-					$input.attr( 'disabled', $input.type === 'file' ? 'disabled' : false );
+					$input.attr( 'disabled', $input[ 0 ].type === 'file' ? 'disabled' : false );
 				} );
 			}
 

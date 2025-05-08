@@ -14,6 +14,11 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class GravityView_Edit_Entry_Render {
+	/**
+	 * Value used to mark file upload as empty.
+	 * @since $ver$
+	 */
+	private const EMPTY_FILE_UPLOAD_VALUE = '__GV_EMPTY_FILE__';
 
 	/**
 	 * @var GravityView_Edit_Entry
@@ -516,6 +521,11 @@ class GravityView_Edit_Entry_Render {
 					$empty_value                       = '';
 				}
 
+				// We are intentionally marking this as empty, to force clear the value in `save_field_value()`.
+				if ( $field->get_input_type() === 'fileupload' ) {
+					$empty_value .= self::EMPTY_FILE_UPLOAD_VALUE;
+				}
+
 			    $lead_detail_id = GFFormsModel::get_lead_detail_id( $current_fields, $input_id );
 
 			    GFFormsModel::update_lead_field_value( $this->form, $this->entry, $field, $lead_detail_id, $input_id, $empty_value );
@@ -633,6 +643,11 @@ class GravityView_Edit_Entry_Render {
 
 		if ( ! $field || $field->get_input_type() !== 'fileupload' ) {
 			return $value;
+		}
+
+		// We foced this value to be empty in `unset_hidden_field_values()`.
+		if ( strpos( $value, self::EMPTY_FILE_UPLOAD_VALUE ) !== false ) {
+			return str_replace( self::EMPTY_FILE_UPLOAD_VALUE, '', $value );
 		}
 
 		$input_name = 'input_' . str_replace( '.', '_', $input_id );
