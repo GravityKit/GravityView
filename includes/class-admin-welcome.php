@@ -15,6 +15,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+use GravityKit\GravityView\Foundation\Helpers\Arr;
+
 /**
  * GravityView_Welcome Class
  *
@@ -501,125 +503,35 @@ class GravityView_Welcome {
 				<div class="headline-feature" style="max-width: 100%">
 					<h2 style="border-bottom: 1px solid #ccc; padding-bottom: 1em; margin-bottom: 0; margin-top: 0"><?php esc_html_e( 'What&rsquo;s New', 'gk-gravityview' ); ?></h2>
 				</div>
-
 				<?php
+
+				$changelog_html = '';
+				if ( class_exists( 'GravityKitFoundation' ) && is_callable( [ 'GravityKitFoundation', 'licenses' ] ) ) {
+					$product_manager = GravityKitFoundation::licenses()->product_manager();
+					try {
+						$products_data = $product_manager->get_products_data( array( 'key_by' => 'id' ) );
+					} catch ( Exception $e ) {
+						$products_data = [];
+					}
+
+					$changelog = Arr::get( $products_data, '17.sections.changelog' );
+
+					if( $changelog ) {
+						$changelog_html = wp_kses_post( $changelog );
+						$changelog_html = str_replace( [ '<h4>', '</h4>', '<ul>' ], [ '<h3>', '</h3>', '<ul class="ul-disc">' ], $changelog_html );
+					}
+				}
+
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				echo $changelog_html;
+
 				/**
-				 * Include changelog entries for two MINOR versions. Prune beyond that.
-				 *
-				 * Examples:
-				 *  - If 4.28.3, include to 4.26.
-				 *  - If 4.28, include to 4.26.
+				 * Keep the original link to the full changelog page as a fallback
+				 * or if the truncated changelog itself doesn't include one (though it should).
 				 */
 				?>
-
-				<h3>2.39.1 on April 25, 2025</h3>
-
-				<p>This hotfix resolves a fatal error that occurred when updating the plugin from version 2.38 or earlier.</p>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Fatal error when updating the plugin from version 2.38 or earlier.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.25.</li>
-				</ul>
-
-				<h3>2.39 on April 24, 2025</h3>
-
-				<p>This update speeds up form loading in the View editor, fixes GravityEdit compatibility and translation issues in WordPress 6.8, and includes other fixes and improvements.</p>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>Faster form fetching in the Data Source dropdown in the View editor.</li>
-					<li>Expand/contract button is no longer shown in View editor warning dialogs.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Compatibility issue with GravityEdit when using the Layout Builder template.</li>
-					<li>PHP notice in WordPress 6.8 caused by initializing product translations too early.</li>
-				</ul>
-
-				<h4>🔧 Updated</h4>
-
-				<ul>
-					<li><a href="https://www.gravitykit.com/foundation/">Foundation</a> to version 1.2.24.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>The <code>$forms</code> array passed to the <code>gravityview/metaboxes/data-source/before</code> and <code>gravityview/metaboxes/data-source/after</code> filters now includes only form IDs as keys and titles as values, instead of full form objects.</li>
-					<li>The <code>gk/gravityview/common/get_forms</code> filter is no longer applied to forms shown in the Data Source dropdown.</li>
-					<li>Added <code>gk/gravityview/lightbox/entry/link</code> filter to modify the markup of Single Entry and Edit Entry links that open in a lightbox.</li>
-				</ul>
-
-				<h3>2.38 on April 9, 2025</h3>
-
-				<p>This release adds a new setting for Edit Entry locking and fixes issues with multi-page form entry editing, shortcode rendering inside the Layout Builder template, entry locking, and more.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>View editor setting to control how frequently requests to take control of a locked entry are checked when Edit Locking is enabled.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Navigation between pages in multi-page forms was broken when editing entries.</li>
-					<li>GravityView View field in the Single Entry layout may not display results when accessed from a paginated View.</li>
-					<li><code>[gv_entry_link]</code> shortcode was not rendering inside the Custom Content field when using the Layout Builder template.</li>
-					<li>Fatal error when a Chained Selects Add-On search field was added to the Search Bar, then removed from the connected form.</li>
-					<li>Entry locking not working in certain cases.</li>
-					<li>Browser performance issue when a View is rendered in the Elementor preview area.</li>
-				</ul>
-
-				<h4>💻 Developer Updates</h4>
-
-				<ul>
-					<li>Added <code>gk/gravityview/edit-entry/user-can-edit-field</code> filter to allow modifying field visibility in Edit Entry.</li>
-				</ul>
-
-				<h3>2.37 on March 24, 2025</h3>
-
-				<p>This release enhances dialogs in the View editor, improves button and link positioning on the Edit Entry page, and resolves missing settings, embed issues in page builders, unsaved changes warnings, and more.</p>
-
-				<h4>🚀 Added</h4>
-
-				<ul>
-					<li>Expand/contract button to field and widget settings in the View editor.
-						<ul>
-							<li>When the dialog is expanded, the code editor will expand to the full width of the dialog.</li>
-						</ul>
-					</li>
-				</ul>
-
-				<h4>✨ Improved</h4>
-
-				<ul>
-					<li>The display of action buttons/links on the Edit Entry page.</li>
-				</ul>
-
-				<h4>🐛 Fixed</h4>
-
-				<ul>
-					<li>Missing settings in the View editor for customizing next/previous page button text on the Edit Entry screen.</li>
-					<li>Missing hooks in the Layout Builder template prevented extensions like Ratings &amp; Reviews from working.</li>
-					<li>Broken Entry Edit link inside the lightbox when viewing a single entry.</li>
-					<li>Settings text may not wrap correctly in the View editor.</li>
-					<li>The "Are you sure you want to leave this page?" unsaved changes warning appears after opening field settings and navigating away from the Edit View page, even if no changes were made.</li>
-					<li>Embedding a View via a page builder (e.g., Elementor) prevented a GravityView View field in the Single Entry layout from rendering.</li>
-				</ul>
-
-				<p style="text-align: center;">
-					<a href="https://www.gravitykit.com/changelog/" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View change history', 'gk-gravityview' ); ?></a>
+				<p style="text-align: center; margin-top: 2em;">
+					<a href="https://www.gravitykit.com/products/gravityview/#changelog" class="aligncenter button button-primary button-hero" style="margin: 0 auto; display: inline-block; text-transform: capitalize"><?php esc_html_e( 'View Full Change History on GravityKit.com', 'gk-gravityview' ); ?></a>
 				</p>
 
 				<div class="clear"></div>
