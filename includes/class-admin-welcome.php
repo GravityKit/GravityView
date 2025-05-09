@@ -517,6 +517,7 @@ class GravityView_Welcome {
 					$changelog = Arr::get( $products_data, '17.sections.changelog' );
 
 					if( $changelog ) {
+						$changelog = trim( preg_replace( '/(?:<br\s*\\/?>\s*)+$/i', '', $changelog ) ); // Trim trailing <br> tags.
 						$changelog_html = wp_kses_post( $changelog );
 						$changelog_html = str_replace( [ '<h4>', '</h4>', '<ul>' ], [ '<h3>', '</h3>', '<ul class="ul-disc">' ], $changelog_html );
 					}
