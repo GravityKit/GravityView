@@ -506,22 +506,26 @@ class GravityView_Welcome {
 				<?php
 
 				$changelog_html = '';
+
 				if ( class_exists( 'GravityKitFoundation' ) && is_callable( [ 'GravityKitFoundation', 'licenses' ] ) ) {
 					$product_manager = GravityKitFoundation::licenses()->product_manager();
+
 					try {
-						$products_data = $product_manager->get_products_data( array( 'key_by' => 'id' ) );
+						$products_data = $product_manager->get_products_data( [ 'key_by' => 'id' ] );
 					} catch ( Exception $e ) {
 						$products_data = [];
 					}
 
 					$changelog = Arr::get( $products_data, '17.sections.changelog' );
 
-					if( $changelog ) {
-						$changelog = trim( preg_replace( '/(?:<br\s*\\/?>\s*)+$/i', '', $changelog ) ); // Trim trailing <br> tags.
+					if ( $changelog ) {
+						$changelog      = trim( preg_replace( '/(?:<br\s*\\/?>\s*)+$/i', '', $changelog ) ); // Trim trailing <br> tags.
 						$changelog_html = wp_kses_post( $changelog );
 						$changelog_html = str_replace( [ '<h4>', '</h4>', '<ul>' ], [ '<h3>', '</h3>', '<ul class="ul-disc">' ], $changelog_html );
 					}
 				}
+
+				$changelog_html = str_replace('<a class="gk-link', '<a class="gk-link hidden', $changelog_html);
 
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				echo $changelog_html;
