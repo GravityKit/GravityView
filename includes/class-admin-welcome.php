@@ -633,14 +633,20 @@ class GravityView_Welcome {
 
 				<div class='col'>
 					<h3><?php esc_html_e( 'Casey Burridge', 'gk-gravityview' ); ?></h3>
-					<h4 style='font-weight:0; margin-top:0'><?php esc_html_e( 'Content Creator', 'gk-gravityview' ); ?></h4>
+					<h4><?php esc_html_e( 'Content Creator', 'gk-gravityview' ); ?></h4>
 					<p><img alt="<?php esc_attr_e( 'Casey Burridge', 'gk-gravityview' ); ?>" class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Casey.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94"/><?php esc_html_e( 'Casey is GravityKit&rsquo;s resident content creator. He&rsquo;s been a WordPress lover ever since launching his first blog more than 6 years ago. Casey has lived and worked in London and Beijing, but feels most at home in Cape Town, South Africa, where he&rsquo;s originally from.', 'gk-gravityview' ); ?></p>
 				</div>
 
 				<div class='col'>
 					<h3><?php esc_html_e( 'Doeke Norg', 'gk-gravityview' ); ?> <a href="https://x.com/doekenorg" title="<?php esc_attr_e( 'Follow Doeke on X', 'gk-gravityview' ); ?>"><span class="dashicons dashicons-twitter"></span></a> <a href="https://doeken.org/" title="<?php esc_attr_e( 'View Doeke&rsquo;s website', 'gk-gravityview' ); ?>"><span class="dashicons dashicons-admin-site"></span></a></h3>
-					<h4 style='font-weight:0; margin-top:0'><?php esc_html_e( 'Senior Developer', 'gk-gravityview' ); ?></h4>
-					<p><?php esc_html_e( 'With almost 20 years of experience in PHP, there are few things Doeke doesn&rsquo;t know about our favourite programming language. He lives with his family in The Netherlands, and spends his time designing elaborate, but maintainable code. He also writes a blog about software design in PHP.', 'gk-gravityview' ); ?></p>
+					<h4><?php esc_html_e( 'Senior Developer', 'gk-gravityview' ); ?></h4>
+					<p><img alt="<?php esc_attr_e( 'Doeke Norg', 'gk-gravityview' ); ?>"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Doeke.webp', GRAVITYVIEW_FILE ); ?>" width="94" height="94" /><?php esc_html_e( 'With almost 20 years of experience in PHP, there are few things Doeke doesn&rsquo;t know about our favourite programming language. He lives with his family in The Netherlands, and spends his time designing elaborate, but maintainable code. He also writes a blog about software design in PHP.', 'gk-gravityview' ); ?></p>
+				</div>
+
+				<div class='col'>
+					<h3><?php esc_html_e( 'Mwale Kalenga', 'gk-gravityview' ); ?> <a href="https://mwale.me/" title="<?php esc_attr_e( 'View Mwale&rsquo;s website', 'gk-gravityview' ); ?>"><span class="dashicons dashicons-admin-site"></span></a></h3>
+					<h4><?php esc_html_e( 'QA Engineer', 'gk-gravityview' ); ?></h4>
+					<p><img alt="<?php esc_attr_e( 'Mwale Kalenga', 'gk-gravityview' ); ?>"  class="alignleft avatar" src="<?php echo plugins_url( 'assets/images/team/Mwale.jpg', GRAVITYVIEW_FILE ); ?>" width="94" height="94" /><?php esc_html_e( 'Mwale is a meticulous QA Engineer dedicated to ensuring seamless plugin performance and exceptional user satisfaction. With a strong foundation in WordPress development and extensive expertise in testing, Mwale excels at delivering robust, reliable solutions that enhance user experiences across diverse platforms and environments.', 'gk-gravityview' ); ?></p>
 				</div>
 			</div>
 
