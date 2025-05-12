@@ -1706,6 +1706,36 @@ class GravityView_Widget_Search extends \GV\Widget {
 	}
 
 	/**
+	 * Retrieves the search fields based on the (legacy) configuration.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array     $widget_args        The widget's configuration.
+	 * @param View|null $view               The View.
+	 * @param array     $additional_context Any additional context.
+	 *
+	 * @return Search_Field_Collection The Search Field Collection.
+	 */
+	private function get_search_field_collection(
+		array $widget_args,
+		?View $view,
+		array $additional_context = []
+	): Search_Field_Collection {
+		if ( isset( $widget_args['search_fields_section'] ) ) {
+			return Search_Field_Collection::from_configuration(
+				(array) $widget_args['search_fields_section'],
+				$view,
+				$additional_context
+			);
+		}
+
+		return Search_Field_Collection::from_legacy_configuration(
+			$widget_args,
+			$view,
+			$additional_context
+		);
+	}
+	/**
 	 * Renders the Search Widget
 	 *
 	 * @param array                       $widget_args
@@ -1717,17 +1747,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 	public function render_frontend( $widget_args, $content = '', $context = '' ) {
 		if ( $context instanceof \GV\Template_Context ) {
 			$view_id = $context->view->ID;
-			$view = $context->view;
+			$view    = $context->view;
 		} else {
 			$view_id = \GV\Utils::get( $widget_args, 'view_id', 0 );
 			$view    = \GV\View::by_id( $view_id );
 		}
 
-		$search_fields = Search_Field_Collection::from_configuration(
-			$widget_args['search_fields_section'] ?? [],
-			$view,
-			compact( 'context', 'widget_args' )
-		);
+		$additional_context = compact( 'context', 'widget_args' );
+		$search_fields      = $this->get_search_field_collection( $widget_args, $view, $additional_context );
 
 		if ( ! $search_fields->count() ) {
 			gravityview()->log->debug( 'No search fields configured for widget:', [ 'data' => $widget_args ] );
@@ -2369,8 +2396,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function get_search_fields( View $view ): array {
 		$search_fields = [];
-		$configuration = $this->configuration->get( 'search_fields_section', [] );
-		$collection    = Search_Field_Collection::from_configuration( $configuration, $view );
+		$collection    = $this->get_search_field_collection( $this->configuration->all(), $view );
 
 		foreach ( $collection->all() as $field ) {
 			$search_fields[] = $field->to_legacy_format();

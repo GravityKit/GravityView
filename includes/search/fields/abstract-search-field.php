@@ -5,6 +5,7 @@ namespace GV\Search\Fields;
 use GF_Field;
 use GravityView_Widget_Search;
 use GV\Context;
+use GV\Grid;
 use GV\Search\Search_Field_Collection;
 use GV\View;
 
@@ -194,7 +195,18 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		// Can't instantiate the abstract class, but we can use it as a factory.
 		if ( static::class === self::class ) {
 			$fields = Search_Field_Collection::available_fields( (int) ( $data['form_id'] ?? 0 ) );
-			$class  = $fields->get_class_by_type( (string) $data['id'] );
+			$class  = '';
+
+			foreach ( $fields as $field ) {
+				$configuration = $field->to_configuration();
+				if ( (string) $data['id'] === $configuration['type'] ) {
+					$class = get_class( $field );
+					// Merge default data with explicit data.
+					$data = array_merge( $configuration, $data );
+					break;
+				}
+			}
+
 			if ( ! is_a( $class, self::class, true ) ) {
 				return null;
 			}
@@ -211,6 +223,10 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			if ( property_exists( $field, $key ) ) {
 				$field->{$key} = $value;
 			}
+		}
+
+		if ( ! $field->UID ) {
+			$field->UID = Grid::uid();
 		}
 
 		$field->init();

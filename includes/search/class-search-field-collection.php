@@ -5,12 +5,14 @@ namespace GV\Search;
 use ArrayIterator;
 use GV\Collection;
 use GV\Collection_Position_Aware;
+use GV\Grid;
 use GV\Plugin;
 use GV\Search\Fields\Search_Field;
 use GV\Search\Fields\Search_Field_All;
 use GV\Search\Fields\Search_Field_Created_By;
 use GV\Search\Fields\Search_Field_Entry_Date;
 use GV\Search\Fields\Search_Field_Entry_ID;
+use GV\Search\Fields\Search_Field_Gravity_Forms;
 use GV\Search\Fields\Search_Field_Is_Approved;
 use GV\Search\Fields\Search_Field_Is_Read;
 use GV\Search\Fields\Search_Field_Is_Starred;
@@ -18,6 +20,7 @@ use GV\Search\Fields\Search_Field_Search_Mode;
 use GV\Search\Fields\Search_Field_Submit;
 use GV\View;
 use IteratorAggregate;
+use JsonException;
 
 /**
  * Represents a collection of search fields.
@@ -125,13 +128,95 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	}
 
 	/**
-	 * Creates collection based on the legacy configuration.
+	 * Creates a collection based on the legacy configuration.
 	 *
 	 * @since $ver$
-	 * @return self
+	 *
+	 * @param array     $configuration The legacy configuration.
+	 * @param View|null $view          The View.
+	 *
+	 * @return self The collection.
 	 */
-	public static function from_legacy_configuration( array $legacy_configuration ): self {
-		// Todo.
+	public static function from_legacy_configuration(
+		array $configuration,
+		?View $view,
+		array $additional_params = []
+	): self {
+		$collection = new self();
+
+		try {
+			$search_fields = json_decode( $configuration['search_fields'] ?? '[]', true, 512, JSON_THROW_ON_ERROR );
+		} catch ( JsonException $e ) {
+			return $collection;
+		}
+
+		if ( [] === $search_fields ) {
+			return $collection;
+		}
+
+		$row = 'horizontal' === ( $configuration['search_layout'] ?? null )
+			? Grid::get_row_by_type( '50/50' )
+			: Grid::get_row_by_type( '100' );
+
+		if ( [] === $row ) {
+			return $collection;
+		}
+
+		$shared_data = [
+			'form_id'       => (int) ( $configuration['form_id'] ?? 0 ),
+			'sieve_choices' => (bool) ( $configuration['sieve_choices'] ?? false ),
+		];
+
+		$areas      = array_keys( $row );
+		$area_count = count( $areas );
+
+		// Transform legacy fields into Search Fields.
+		foreach ( $search_fields as $i => $field ) {
+			// Automatically loop through all available areas.
+			$area_key = $areas[ $i % $area_count ];
+
+			$field_id = (string) ( $field['field'] ?? '' );
+			if ( is_numeric( $field_id ) ) {
+				$field_id = Search_Field_Gravity_Forms::generate_field_id( $shared_data['form_id'], $field_id );
+			}
+
+			$field_data = array_merge( $shared_data, [
+				'id'           => $field_id,
+				'input_type'   => $field['input'] ?? 'input_text',
+				'custom_label' => $field['label'] ?? '',
+				'position'     => 'search-general_' . ( $row[ $area_key ][0]['areaid'] ?? '' ),
+			] );
+
+			$search_field = Search_Field::from_configuration( $field_data, $view, $additional_params );
+			if ( $search_field ) {
+				$collection->add( $search_field );
+			}
+		}
+
+		// Add Submit and Search Mode fields in a separate row.
+		$submit_row = Grid::get_row_by_type( '50/50' );
+
+		// Add search and mode field
+		$collection->add(
+			Search_Field_Submit::from_configuration(
+				[
+					'position'     => 'search-general_' . ( $submit_row['1-2 left'][0]['areaid'] ?? '' ),
+					'search_clear' => (bool) ( $configuration['search_clear'] ?? false ),
+				]
+			)
+		);
+
+		$collection->add(
+			Search_Field_Search_Mode::from_configuration(
+				[
+					'position'   => 'search-general_' . ( $submit_row['1-2 right'][0]['areaid'] ?? '' ),
+					'mode'       => $configuration['search_mode'] ?? 'any',
+					'input_type' => 'hidden',
+				]
+			)
+		);
+
+		return $collection;
 	}
 
 	/**
@@ -210,27 +295,6 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 		);
 
 		return $clone;
-	}
-
-	/**
-	 * Returns the class name of the search field, based on the provided type.
-	 *
-	 * @since $ver$
-	 *
-	 * @param string $type The search field type.
-	 *
-	 * @return string The class name.
-	 */
-	public function get_class_by_type( string $type ): string {
-		foreach ( $this->storage as $field ) {
-			$configuration = $field->to_configuration();
-
-			if ( $type === $configuration['type'] ) {
-				return get_class( $field );
-			}
-		}
-
-		return '';
 	}
 
 	/**

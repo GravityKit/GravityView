@@ -83,25 +83,6 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	public static function from_configuration(
-		array $data,
-		?View $view = null,
-		array $additional_params = []
-	): ?self {
-		$instance = parent::from_configuration( $data, $view, $additional_params );
-		if ( ! $instance ) {
-			return null;
-		}
-
-		$instance->init();
-
-		return $instance;
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since $ver$
-	 */
 	protected function get_label(): string {
 		return esc_html__( 'Gravity Forms Field', 'gk-gravityview' );
 	}
@@ -136,7 +117,24 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			return $this->item['id'];
 		}
 
-		return sprintf( '%s::%d::%s', self::$type, $this->form_field['form_id'] ?? 0, $this->form_field['id'] ?? 0 );
+		return self::generate_field_id(
+			(int) ( $this->form_field['form_id'] ?? 0 ),
+			(string) ( $this->form_field['id'] ?? '0' )
+		);
+	}
+
+	/**
+	 * Generates a valid Search Field ID.
+	 *
+	 * @since $ver$
+	 *
+	 * @param int    $form_id  The form ID.
+	 * @param string $field_id The field ID.
+	 *
+	 * @return string The Search Field ID.
+	 */
+	public static function generate_field_id( int $form_id, string $field_id ): string {
+		return sprintf( '%s::%d::%s', self::$type, $form_id, $field_id );
 	}
 
 	/**
@@ -157,7 +155,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	}
 
 	/**
-	 * Returns the icon for the Grvaity Forms Field.
+	 * Returns the icon for the Gravity Forms Field.
 	 *
 	 * @since $ver$
 	 * @return string
