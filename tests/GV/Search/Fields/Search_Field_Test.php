@@ -17,15 +17,35 @@ final class Search_Field_Test extends TestCase {
 	 */
 	public function test_to_array(): void {
 		$field = new class extends Search_Field {
-			protected string $type = 'private';
+			protected static string $type = 'private';
 		};
 
-		self::assertSame( [ 'type' => 'private', 'label' => 'Unknown Field', 'value' => null ], $field->to_configuration() );
+		self::assertSame(
+			[
+				'id'       => 'private',
+				'UID'      => '',
+				'type'     => 'private',
+				'label'    => 'Unknown Field',
+				'position' => '',
+			],
+			$field->to_configuration()
+		);
 
-		$from_array = $field::from_configuration( [ 'type' => 'ignore me', 'label' => 'Custom Label', 'value' => 'is set' ] );
+		$from_array = $field::from_configuration(
+			[
+				'type'  => 'ignore me',
+				'label' => 'Custom Label',
+			]
+		);
 
 		self::assertSame(
-			[ 'type' => 'private', 'label' => 'Custom Label', 'value' => 'is set' ],
+			[
+				'id'       => 'private',
+				'UID'      => '',
+				'type'     => 'private',
+				'label'    => 'Custom Label',
+				'position' => '',
+			],
 			$from_array->to_configuration()
 		);
 	}

@@ -298,17 +298,6 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
-	 * Returns the value of the field as the correct type.
-	 *
-	 * @since $ver$
-	 *
-	 * @return mixed
-	 */
-	protected function get_value() {
-		return null;
-	}
-
-	/**
 	 * Returns the field as a configuration array.
 	 *
 	 * @since $ver$
@@ -396,7 +385,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	protected function get_label(): string {
-		return $this->title;
+		return $this->title ?? esc_html( 'Unknown Field', 'gk-gravityview' );
 	}
 
 	/**

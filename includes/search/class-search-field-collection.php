@@ -55,7 +55,6 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 * @param int $form_id The form ID.
 	 *
 	 * @return self
-	 * @todo  add @filter
 	 */
 	public static function available_fields( int $form_id = 0 ): self {
 		if ( $form_id > 0 && isset( self::$available_fields_cache[ $form_id ] ) ) {

@@ -26,7 +26,7 @@ final class Search_Field_Collection_Test extends TestCase {
 	 */
 	public function test_from_configuration(): void {
 		$collection = Search_Field_Collection::from_configuration( [
-			'search_default' => [
+			'search_default'  => [
 				'asdf' => [ 'id' => 'search_all' ],
 			],
 			'search_advanced' => [
@@ -37,8 +37,9 @@ final class Search_Field_Collection_Test extends TestCase {
 		self::assertSame( 2, $collection->count() );
 		self::assertSame(
 			[
-				'search_default' => [
+				'search_default'  => [
 					'asdf' => [
+						'id'       => 'search_all',
 						'UID'      => 'asdf',
 						'type'     => 'search_all',
 						'label'    => 'Search Everything',
@@ -47,6 +48,7 @@ final class Search_Field_Collection_Test extends TestCase {
 				],
 				'search_advanced' => [
 					'asdf2' => [
+						'id'       => 'search_all',
 						'UID'      => 'asdf2',
 						'type'     => 'search_all',
 						'label'    => 'Search Everything',

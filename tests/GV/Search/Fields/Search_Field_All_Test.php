@@ -11,12 +11,15 @@ use PHPUnit\Framework\TestCase;
  */
 final class Search_Field_All_Test extends TestCase {
 	/**
-	 * Test case for {@see Search_Field_All::get_value()}.
+	 * Test case for {@see Search_Field::to_template_data()}.
 	 *
 	 * @since $ver$
 	 */
-	public function test_get_value(): void {
-		$field = Search_Field_All::from_configuration( [ 'value' => 1234 ] );
-		self::assertSame( [ 'type' => 'all', 'label' => 'Search Everything', 'value' => '1234' ], $field->to_configuration() );
+	public function test_to_template_data(): void {
+		$field                 = Search_Field_All::from_configuration( [] );
+		$_REQUEST['gv_search'] = 'Search Value';
+		$data                  = $field->to_template_data();
+
+		self::assertSame( $data['value'], 'Search Value' );
 	}
 }
