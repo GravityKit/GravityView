@@ -90,4 +90,6 @@
 		</properties>
 	</rule>
 
+	<exclude-pattern>*/.tmp/*</exclude-pattern>
+
 </ruleset>

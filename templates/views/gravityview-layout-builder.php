@@ -4,6 +4,7 @@
  */
 
 use GV\Grid;
+use GV\Mocks\Legacy_Context;
 use GV\Template_Context;
 
 if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
@@ -14,11 +15,11 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 
 ob_start();
 gravityview_before( $gravityview );
-
-gravityview_header( $gravityview );
 ?>
 <div class="<?php echo esc_attr( gv_container_class( 'gv-layout-builder-container', false, $gravityview ) ); ?>">
 <?php
+gravityview_header( $gravityview );
+
 // There are no entries.
 if ( ! $gravityview->entries->count() ) {
 	?>
@@ -49,6 +50,9 @@ if ( ! $gravityview->entries->count() ) {
 							if ( ! empty( $areas ) ) {
 								foreach ( $areas as $area ) {
 									foreach ( $gravityview->fields->by_position( $zone . '_' . $area['areaid'] )->all() as $field ) {
+										// Add current entry to the context (accessible via GravityView_frontend::getInstance()->getEntry() or GravityView_View::getInstance()->getCurrentEntry()_
+										Legacy_Context::load( [ 'entry' => $entry ] );
+
 										echo $gravityview->template->the_field( $field, $entry );
 									}
 								}

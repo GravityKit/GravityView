@@ -273,6 +273,11 @@
 			   .on( 'gravityview/dialog-opened', function( e, dialog ) {
 					const $parent = $( dialog ).parent();
 
+					// Skip warning dialogs, such as when changing the View type.
+					if ( $parent.find('.gv-dialog-warning').length ) {
+						return;
+					}
+
 					// Only add the expand button if it doesn't exist and dialog width is less than the maximum dialog width.
 					if ( $parent.find('.gv-dialog-expand').length === 0 && vcfg.dialogWidth < $( window ).width() * vcfg.maxDialogWidth ) {
 						const $expandButton = $('<button>', {

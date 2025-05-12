@@ -32,7 +32,7 @@ a.tooltip_bottomleft:hover {
 	   -moz-border-radius: 6px;
 	        border-radius: 6px;
 	-webkit-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.3);
-	-moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.3);
+	     -moz-box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.3);
 	     box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.3);
 }
 

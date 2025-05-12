@@ -24,7 +24,7 @@ If you wish to make changes to the plugin, you need to install the necessary dep
    - Run `npm install -g grunt-cli` if this the first time you've installed Node.js or switched to a new version
 
 Next, install dependencies:
-1. Run `composer public-install` to install Composer dependencies, including development dependencies, or `composer public-install-no-dev` if you don't need the development dependencies
+1. Run `composer install-public` to install Composer dependencies, including development dependencies, or `composer install-public-no-dev` if you don't need the development dependencies
    - If you have access to private GravityKit repositories, you can run `composer install` or `composer install --no-dev` instead
    
 2. Run `npm install` to install Node.js dependencies
@@ -78,6 +78,20 @@ If you wish to run tests using your local environment, use the following instruc
         <env name="WP_TESTS_DIR" value="/path/to/wordpress-develop/tests/phpunit"/>
    </php>
     ```
+
+#### End-to-End Tests
+
+We use Playwright for end-to-end (E2E) testing against a WordPress environment bootstrapped in Docker using [wp-env](https://developer.wordpress.org/block-editor/getting-started/devenv/get-started-with-wp-env/).
+
+To set up and run E2E tests:
+
+1. Run `npm install` to install Node.js dependencies.
+
+2. Copy `.env.sample` to `.env` and update it with the correct path to the Gravity Forms plugin and license keys.
+
+3. Run `npm run tests:wp-env:setup` to configure the environment, then run `npm run tests:wp-env:run` to execute the tests.
+
+To reset the database between test runs, use `npm run tests:e2e:clean`.
 
 ----------
 

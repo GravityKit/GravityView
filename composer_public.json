@@ -21,9 +21,9 @@
       "type": "package",
       "package": {
         "name": "gravitykit/foundation",
-        "version": "1.2.23",
+        "version": "1.2.25",
         "dist": {
-          "url": "https://www.dropbox.com/scl/fi/mhitpaqbqp3pob9ihjz6b/foundation-1.2.23.zip?rlkey=drog8lyjxpttmfao0weskl57h&dl=1",
+          "url": "https://www.dropbox.com/scl/fi/rxgwe4cm2oexyvw63n65q/foundation-1.2.25.zip?rlkey=dm0jwmvw9s5plst1z7gthnoue&dl=1",
           "type": "zip"
         }
       }
@@ -33,7 +33,15 @@
     "php": ">=7.4.0",
     "ext-json": "*",
     "ext-openssl": "*",
-    "gravitykit/foundation": "1.2.23"
+    "gravitykit/foundation": "1.2.25",
+    "doctrine/inflector": "1.1.0",
+    "gettext/gettext": "^4.8.7",
+    "illuminate/support": "5.4.*",
+    "illuminate/translation": "5.4.*",
+    "illuminate/validation": "5.4.*",
+    "monolog/monolog": "1.*",
+    "psr/log": "^1.1",
+    "trustedlogin/client": "^v1.8.0"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.5",
@@ -56,7 +64,14 @@
       "namespace_prefix": "GravityKit\\GravityView",
       "classmap_prefix": "GravityKit_GravityView_",
       "packages": [
-        "gravitykit/foundation"
+        "gravitykit/foundation",
+        "illuminate/support",
+        "illuminate/validation",
+        "illuminate/translation",
+        "monolog/monolog",
+        "psr/log",
+        "gettext/gettext",
+        "trustedlogin/client"
       ],
       "namespace_replacement_patterns": {
         "/^Gettext/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Gettext",

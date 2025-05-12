@@ -2508,7 +2508,7 @@ class GravityView_Edit_Entry_Render {
 			/**
 			 * @filter `gk/gravityview/edit-entry/user-can-edit-field` Filter whether the user can edit a specific field.
 			 *
-			 * @since TODO
+			 * @since 2.38.0
 			 *
 			 * @param bool     $has_cap True if the user has the capability to edit the field, false otherwise.
 			 * @param array    $field The field settings array.
