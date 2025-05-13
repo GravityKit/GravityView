@@ -2526,6 +2526,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param array{name:string, value:mixed} $data        The search field data.
 	 */
 	public function render_search_active_areas( string $template_id, string $zone, array $data ): void {
+		global $post;
 		$admin_views = GravityView_Admin_Views::get_instance();
 
 		$fields    = $data['value'] ?? null;
@@ -2533,10 +2534,13 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$name      = $data['name'] ?? null;
 		$has_value = null !== $fields;
 
+		$view = View::from_post( $post );
+
 		if ( $has_value ) {
 			$collection = Search_Field_Collection::from_configuration( $fields );
 			$rows       = Grid::get_rows_from_collection( $collection, $zone );
-		} elseif ( 'search-general' === $zone ) {
+		} elseif ( ! $view && 'search-general' === $zone ) {
+			// This is a newly added widget, because it does not have a connected View yet.
 			$area_key = key( $rows[0] );
 			$zone_100 = $zone . '_' . ( $rows[0][ $area_key ][0]['areaid'] ?? 'top' );
 
