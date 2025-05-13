@@ -30,6 +30,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class GravityView_Admin_Views {
+	/**
+	 * Contains the singleton.
+	 *
+	 * @since $ver$
+	 *
+	 * @var self
+	 */
+	private static $instance;
+
+	/**
+	 * Returns the singleton.
+	 *
+	 * @since $ver$
+	 *
+	 * @return self
+	 */
+	public static function get_instance(): self {
+		self::$instance ??= new self();
+
+		return self::$instance;
+	}
 
 	function __construct() {
 		add_action( 'save_post', [ $this, 'save_postdata' ] );
@@ -54,11 +75,9 @@ class GravityView_Admin_Views {
 
 		add_action( 'gravityview_render_directory_active_areas', [ $this, 'render_directory_active_areas' ], 10, 5 );
 		add_action( 'gravityview_render_widgets_active_areas', [ $this, 'render_widgets_active_areas' ], 10, 3 );
-		add_action( 'gravityview_render_search_active_areas', [ $this, 'render_search_active_areas' ], 10, 3 );
 		add_action( 'gravityview_render_field_pickers', [ $this, 'render_field_pickers' ], 10, 2 );
 		add_action( 'gravityview_render_available_fields', [ $this, 'render_available_fields' ], 10, 2 );
 		add_action( 'gravityview_render_available_widgets', [ $this, 'render_available_widgets' ] );
-		add_action( 'gravityview_render_available_search_fields', [ $this, 'render_available_search_fields' ] );
 		add_action( 'gravityview_render_active_areas', [ $this, 'render_active_areas' ], 10, 5 );
 		add_filter( 'gravityview/view/configuration/fields', [ $this, 'set_default_view_fields' ], 10, 3 );
 
@@ -1093,29 +1112,6 @@ HTML;
 	}
 
 	/**
-	 * Render html for displaying available search fields.
-	 *
-	 * @since $ver$
-	 */
-	public function render_available_search_fields(): void {
-		global $post;
-
-		$view = View::by_id( $post->ID ?? 0 );
-		if ( ! $view instanceof View || ! $view->form instanceof GF_Form ) {
-			return;
-		}
-
-		$search_fields = Search_Field_Collection::available_fields( $view->form->ID ?? 0 );
-		if ( ! $search_fields->count() ) {
-			return;
-		}
-
-		foreach ( $search_fields as $search_field ) {
-			echo $search_field;
-		}
-	}
-
-	/**
 	 * Get the list of registered widgets. Each item is used to instantiate a GravityView_Admin_View_Widget object
 	 *
 	 * @since      1.13.1
@@ -1552,66 +1548,6 @@ HTML;
 		echo $output;
 
 		return $output;
-	}
-
-	/**
-	 * Render the widget active areas
-	 *
-	 * @param string                          $template_id The current slug of the selected View template.
-	 * @param string                          $zone        Either 'header' or 'footer'.
-	 * @param array{name:string, value:mixed} $data        The search field data.
-	 *
-	 * @todo: move this to the search widget?
-	 */
-	public function render_search_active_areas( string $template_id, string $zone, array $data ): void {
-		$fields    = $data['value'] ?? null;
-		$rows      = [ Grid::get_row_by_type( '100' ) ];
-		$name      = $data['name'] ?? null;
-		$has_value = null !== $fields;
-
-		if ( $has_value ) {
-			$collection = Search_Field_Collection::from_configuration( $fields );
-			$rows       = Grid::get_rows_from_collection( $collection, $zone );
-		} elseif ( 'search-general' === $zone ) {
-			$zone_100 = $zone . '_' . ( $rows[0]['1-1'][0]['areaid'] ?? 'top' );
-
-			$fields = [
-				$zone_100 => [
-					Grid::uid() => ( new Search_Field_All() )->to_configuration(),
-					Grid::uid() => ( new Search_Field_Search_Mode() )->to_configuration(),
-					Grid::uid() => ( new Search_Field_Submit() )->to_configuration(),
-				],
-			];
-		}
-		?>
-
-		<div data-grid-connect="search" data-grid-context="<?php echo esc_attr($zone); ?>" class="gv-grid gv-grid-pad gv-grid-border" id="search-<?php echo $zone; ?>-fields">
-			<?php
-			$type       = 'search';
-			$is_dynamic = true;
-
-			echo '<div class="gv-grid-rows-container">';
-			ob_start();
-			$this->render_active_areas( $template_id, $type, $zone, $rows, $fields );
-			$content = ob_get_clean();
-
-			// replace input names.
-			echo str_replace( sprintf( 'name="%ss[', $type ), sprintf( 'name="%s[', $name ), $content );
-			echo '</div>';
-			/**
-			 * Allows additional content after the zone was rendered.
-			 *
-			 * @filter `gk/gravityview/admin/view/after-zone`
-			 *
-			 * @param string $template_id Template ID.
-			 * @param string $type        The zone type (field or widget).
-			 * @param string $context     Current View context: `directory`, `single`, or `edit` (default: 'single')
-			 * @param bool   $is_dynamic  Whether the zone is dynamic.
-			 */
-			do_action( 'gk/gravityview/admin-views/view/after-zone', $template_id, $type, $zone, $is_dynamic );
-			?>
-		</div>
-		<?php
 	}
 
 	/**
@@ -2220,4 +2156,4 @@ HTML;
 	}
 }
 
-new GravityView_Admin_Views();
+GravityView_Admin_Views::get_instance();

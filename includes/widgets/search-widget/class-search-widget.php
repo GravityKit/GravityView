@@ -9,9 +9,13 @@
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
+use GV\GF_Form;
 use GV\Grid;
 use GV\Search\Fields\Search_Field;
+use GV\Search\Fields\Search_Field_All;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
+use GV\Search\Fields\Search_Field_Search_Mode;
+use GV\Search\Fields\Search_Field_Submit;
 use GV\Search\Search_Field_Collection;
 use GV\View;
 
@@ -82,6 +86,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			add_filter( 'gk/gravityview/search/available-fields', [ $this, 'add_form_search_fields' ], 0, 2 );
 			add_filter( 'gravityview_template_search_options', [ $this, 'set_search_field_options' ], 10, 6 );
+
+			add_action( 'gravityview_render_search_active_areas', [ $this, 'render_search_active_areas' ], 10, 3 );
+			add_action( 'gravityview_render_available_search_fields', [ $this, 'render_available_search_fields' ] );
 		}
 
 		parent::__construct( esc_html__( 'Search Bar', 'gk-gravityview' ), null, $default_values, $settings );
@@ -2483,6 +2490,92 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		return ob_get_clean();
 	}
+
+	/**
+	 * Render the search areas.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string                          $template_id The current slug of the selected View template.
+	 * @param string                          $zone        Either 'search-general' or 'search-advanced'.
+	 * @param array{name:string, value:mixed} $data        The search field data.
+	 */
+	public function render_search_active_areas( string $template_id, string $zone, array $data ): void {
+		$admin_views = GravityView_Admin_Views::get_instance();
+
+		$fields    = $data['value'] ?? null;
+		$rows      = [ Grid::get_row_by_type( '100' ) ];
+		$name      = $data['name'] ?? null;
+		$has_value = null !== $fields;
+
+		if ( $has_value ) {
+			$collection = Search_Field_Collection::from_configuration( $fields );
+			$rows       = Grid::get_rows_from_collection( $collection, $zone );
+		} elseif ( 'search-general' === $zone ) {
+			$zone_100 = $zone . '_' . ( $rows[0]['1-1'][0]['areaid'] ?? 'top' );
+
+			$fields = [
+				$zone_100 => [
+					Grid::uid() => ( new Search_Field_All() )->to_configuration(),
+					Grid::uid() => ( new Search_Field_Search_Mode() )->to_configuration(),
+					Grid::uid() => ( new Search_Field_Submit() )->to_configuration(),
+				],
+			];
+		}
+		?>
+
+		<div data-grid-connect="search" data-grid-context="<?php echo esc_attr($zone); ?>" class="gv-grid gv-grid-pad gv-grid-border" id="search-<?php echo $zone; ?>-fields">
+			<?php
+			$type       = 'search';
+			$is_dynamic = true;
+
+			echo '<div class="gv-grid-rows-container">';
+			ob_start();
+			$admin_views->render_active_areas( $template_id, $type, $zone, $rows, $fields );
+			$content = ob_get_clean();
+
+			// replace input names.
+			echo str_replace( sprintf( 'name="%ss[', $type ), sprintf( 'name="%s[', $name ), $content );
+			echo '</div>';
+			/**
+			 * Allows additional content after the zone was rendered.
+			 *
+			 * @filter `gk/gravityview/admin/view/after-zone`
+			 *
+			 * @param string $template_id Template ID.
+			 * @param string $type        The zone type (field or widget).
+			 * @param string $context     Current View context: `directory`, `single`, or `edit` (default: 'single')
+			 * @param bool   $is_dynamic  Whether the zone is dynamic.
+			 */
+			do_action( 'gk/gravityview/admin-views/view/after-zone', $template_id, $type, $zone, $is_dynamic );
+			?>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Render html for displaying available search fields.
+	 *
+	 * @since $ver$
+	 */
+	public function render_available_search_fields(): void {
+		global $post;
+
+		$view = View::by_id( $post->ID ?? 0 );
+		if ( ! $view instanceof View || ! $view->form instanceof GF_Form ) {
+			return;
+		}
+
+		$search_fields = Search_Field_Collection::available_fields( $view->form->ID ?? 0 );
+		if ( ! $search_fields->count() ) {
+			return;
+		}
+
+		foreach ( $search_fields as $search_field ) {
+			echo $search_field;
+		}
+	}
+
 } // end class
 
 new GravityView_Widget_Search();
