@@ -1,10 +1,4 @@
 <?php
-
-/**
- * Plugin Name: GF Importer
- * Description: Imports Gravity Forms and Entries via WP-CLI or based on a query parameter.
- */
-
 namespace GravityKit\GravityView\Tests\E2E\Helpers\GFImporter;
 
 use GFAPI;
@@ -126,11 +120,9 @@ function gf_import_forms_and_entries()
                 $entry['is_read'] = (bool)$entry['is_read'];
             }
 
-            // Handle file upload fields
             $form = GFAPI::get_form($form_id);
             foreach ($form['fields'] as $field) {
                 if ($field->type === 'fileupload' && isset($entry[$field->id])) {
-                    // If the field is configured for multiple files, ensure the value is JSON encoded
                     if ($field->multipleFiles && is_array($entry[$field->id])) {
                         $entry[$field->id] = json_encode($entry[$field->id]);
                     }
@@ -175,10 +167,17 @@ function gf_import_forms_and_entries()
     ];
 }
 
+$current_command = isset($GLOBALS['argv']) ? implode(' ', array_slice($GLOBALS['argv'], 1)) : '';
+
 if (defined('WP_CLI') && WP_CLI) {
     \WP_CLI::add_command('gf import', function () {
         gf_import_forms_and_entries();
     });
+
+    // Only execute immediately if we're running through wp eval-file
+    if (!preg_match('/gf\s+import/', $current_command)) {
+        gf_import_forms_and_entries();
+    }
 }
 
 add_action('init', function () {
