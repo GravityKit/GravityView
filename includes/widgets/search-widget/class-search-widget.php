@@ -2512,7 +2512,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$collection = Search_Field_Collection::from_configuration( $fields );
 			$rows       = Grid::get_rows_from_collection( $collection, $zone );
 		} elseif ( 'search-general' === $zone ) {
-			$zone_100 = $zone . '_' . ( $rows[0]['1-1'][0]['areaid'] ?? 'top' );
+			$area_key = key( $rows[0] );
+			$zone_100 = $zone . '_' . ( $rows[0][ $area_key ][0]['areaid'] ?? 'top' );
 
 			$fields = [
 				$zone_100 => [
