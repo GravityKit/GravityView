@@ -275,12 +275,6 @@ abstract class Field_Template extends Template {
 		$source         = $this->source;
 		$source_backend = $source ? $source::$backend : null;
 
-		\GV\Mocks\Legacy_Context::load(
-			array(
-				'field' => $this->field,
-			)
-		);
-
 		/** Alter the display value according to Gravity Forms. */
 		if ( \GV\Source::BACKEND_GRAVITYFORMS === $source_backend && ! $this->field instanceof Internal_Field ) {
 
