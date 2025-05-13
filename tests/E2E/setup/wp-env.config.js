@@ -10,7 +10,6 @@ const wpEnvConfig = {
 	phpVersion: process.env.WP_ENV_PHP_VERSION || '7.4',
 	plugins: [
 		'../../..', // GravityView
-		'../helpers/gf-importer', // GF Importer - relative to setup directory
 		...(process.env.WP_ENV_PLUGINS
 			? process.env.WP_ENV_PLUGINS.split(',').map((plugin) => plugin.trim())
 			: [])
