@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Plugin Name: GF Importer
+ * Description: Imports Gravity Forms and Entries via WP-CLI or based on a query parameter.
+ */
+
 namespace GravityKit\GravityView\Tests\E2E\Helpers\GFImporter;
 
 use GFAPI;
