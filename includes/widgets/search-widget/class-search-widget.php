@@ -1023,18 +1023,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$widgets = $view->widgets->by_id( $this->widget_id );
 		if ( $widgets->count() ) {
-			$widgets = $widgets->all();
-			$widget  = $widgets[0];
+			/** @var GravityView_Widget_Search $widget */
+			foreach ( $widgets->all() as $widget ) {
+				$search_fields = $widget->get_search_fields( $view );
 
-			$search_fields = json_decode( $widget->configuration->get( 'search_fields' ), true );
-
-			foreach ( (array) $search_fields as $search_field ) {
-				if ( 'created_by' === $search_field['field'] && 'input_text' === $search_field['input'] ) {
-					$created_by_text_mode = true;
+				foreach ( $search_fields as $search_field ) {
+					if ( 'created_by' === $search_field['field'] && 'input_text' === $search_field['input'] ) {
+						$created_by_text_mode = true;
+						break 2;
+					}
 				}
 			}
 		}
-
 		$extra_conditions = [];
 		$mode             = 'any';
 
@@ -1765,6 +1765,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 			gravityview()->log->debug( 'No search fields configured for widget:', [ 'data' => $widget_args ] );
 			return;
 		}
+
+		// Before rendering, we want to make sure the submit and search mode field are added.
+		$search_fields = $search_fields->ensure_required_search_fields();
 
 		if ( $search_fields->has_date_field() ) {
 			// enqueue datepicker stuff only if needed!
@@ -2623,7 +2626,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'rendering' => $rendering,
 		];
 	}
-
 } // end class
 
 new GravityView_Widget_Search();
@@ -2656,9 +2658,11 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		 * @param array The user meta fields.
 		 * @param \GV\View $view The view.
 		 */
-		$user_meta_fields = apply_filters( 'gravityview/widgets/search/created_by/user_meta_fields',
+		$user_meta_fields = apply_filters(
+			'gravityview/widgets/search/created_by/user_meta_fields',
 			$user_meta_fields,
-			$this->view );
+			$this->view
+		);
 
 		$user_fields = [
 			'user_nicename',
@@ -2682,9 +2686,11 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		}
 
 		foreach ( $user_meta_fields as $meta_field ) {
-			$conditions[] = $wpdb->prepare( '(`um`.`meta_key` = %s AND `um`.`meta_value` LIKE %s)',
+			$conditions[] = $wpdb->prepare(
+				'(`um`.`meta_key` = %s AND `um`.`meta_value` LIKE %s)',
 				$meta_field,
-				'%' . $wpdb->esc_like( $this->value ) . '%' );
+				'%' . $wpdb->esc_like( $this->value ) . '%'
+			);
 		}
 
 		$conditions = '(' . implode( ' OR ', $conditions ) . ')';

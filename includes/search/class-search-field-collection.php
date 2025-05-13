@@ -193,28 +193,10 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			}
 		}
 
-		// Add Submit and Search Mode fields in a separate row.
-		$submit_row = Grid::get_row_by_type( '50/50' );
-
-		// Add search and mode field
-		$collection->add(
-			Search_Field_Submit::from_configuration(
-				[
-					'position'     => 'search-general_' . ( $submit_row['1-2 left'][0]['areaid'] ?? '' ),
-					'search_clear' => (bool) ( $configuration['search_clear'] ?? false ),
-				]
-			)
-		);
-
-		$collection->add(
-			Search_Field_Search_Mode::from_configuration(
-				[
-					'position'   => 'search-general_' . ( $submit_row['1-2 right'][0]['areaid'] ?? '' ),
-					'mode'       => $configuration['search_mode'] ?? 'any',
-					'input_type' => 'hidden',
-				]
-			)
-		);
+		// Only add the required fields if there are search fields.
+		if ( $collection->count() > 0 ) {
+			$collection = $collection->ensure_required_search_fields();
+		}
 
 		return $collection;
 	}
@@ -336,5 +318,71 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 		}
 
 		return false;
+	}
+
+	/**
+	 * Returns whether the current collection has any fields of the provided type.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $type The type to check.
+	 *
+	 * @return bool Whether the field type is in the collection.
+	 */
+	public function has_fields_of_type( string $type ): bool {
+		foreach ( $this->storage as $field ) {
+			if ( $field->is_of_type( $type ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Ensures required fields are added to the collection.
+	 *
+	 * @since $ver$
+	 *
+	 * @return self A new collection with the required fields.
+	 */
+	public function ensure_required_search_fields(): self {
+		$collection = clone $this;
+
+		// Add Submit and Search Mode fields in a separate row.
+		$submit_row           = Grid::get_row_by_type( '50/50' );
+		$search_mode_position = 'search-general_' . ( $submit_row['1-2 right'][0]['areaid'] ?? '' );
+
+		foreach ( $collection->storage as $field ) {
+			if ( $field->is_of_type( 'submit' ) ) {
+				// If the search mode is missing, add it with an existing search field.
+				$search_mode_position = $field->position;
+			}
+		}
+
+		/** @var Search_Field[] $required_fields */
+		$required_fields = [
+			Search_Field_Submit::from_configuration(
+				[
+					'position'     => 'search-general_' . ( $submit_row['1-2 left'][0]['areaid'] ?? '' ),
+					'search_clear' => (bool) ( $configuration['search_clear'] ?? false ),
+				]
+			),
+			Search_Field_Search_Mode::from_configuration(
+				[
+					'position'   => $search_mode_position,
+					'mode'       => $configuration['search_mode'] ?? 'any',
+					'input_type' => 'hidden',
+				]
+			),
+		];
+
+		foreach ( $required_fields as $field ) {
+			if ( ! $collection->has_fields_of_type( $field->get_type() ) ) {
+				$collection->add( $field );
+			}
+		}
+
+		return $collection;
 	}
 }
