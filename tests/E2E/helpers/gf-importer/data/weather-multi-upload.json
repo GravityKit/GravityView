@@ -28,21 +28,20 @@
         {
             "1": "Monday Weather",
             "2": [
-                "https://i.ibb.co/Hn80dWN/rain.jpg",
-                "https://i.ibb.co/JCrHCvh/snow.jpg"
+                "https://i.ibb.co/Hn80dWN/rain.jpg"
             ]
         },
         {
             "1": "Tuesday Weather",
             "2": [
-                "https://i.ibb.co/Hn80dWN/rain.jpg",
-                "https://i.ibb.co/Qf1gXPG/sun.jpg"
+                "https://i.ibb.co/JCrHCvh/snow.jpg"
+                
             ]
         },
         {
             "1": "Wednesday Weather",
             "2": [
-                "https://i.ibb.co/JCrHCvh/snow.jpg"
+                "https://i.ibb.co/Qf1gXPG/sun.jpg"
             ]
         }
     ]
