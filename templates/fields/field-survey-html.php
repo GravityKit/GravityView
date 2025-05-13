@@ -16,6 +16,7 @@ $field         = $gravityview->field;
 $display_value = $gravityview->display_value;
 $input_id      = gravityview_get_input_id_from_id( $field->ID );
 $form_id 	   = $gravityview->view->form->ID;
+$field_value = gravityview_get_field_value( $gravityview->entry, $field->ID, $display_value );
 
 // Used in filters below.
 $return_true = function () {
@@ -40,6 +41,10 @@ switch ( $gravityview->field->field->inputType ) {
 		// Display the <ul>
 		if ( ! $input_id ) {
 			echo $display_value;
+			return;
+		}
+
+		if( empty( $field_value ) || empty( $display_value ) ) {
 			return;
 		}
 
