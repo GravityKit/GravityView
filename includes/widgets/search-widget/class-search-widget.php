@@ -39,30 +39,27 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private $search_method = 'get';
 
+	/**
+	 * Contains the context for the search fields to render.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array{template_id: string, form_id: int}
+	 */
+	private array $search_fields_context = [];
+
 	public function __construct() {
 		$this->widget_id          = 'search_bar';
 		$this->widget_description = esc_html__( 'Search form for searching entries.', 'gk-gravityview' );
 		$this->widget_subtitle    = '';
 
 		self::$instance = &$this;
-
 		self::$file = plugin_dir_path( __FILE__ );
-
-		$default_values = [
-			'header' => 0,
-			'footer' => 0,
-		];
 
 		$settings = [
 			'search_fields_section' => [
 				'type' => 'html',
 				'desc' => \Closure::fromCallable( [ $this, 'get_search_sections' ] ),
-			],
-			'search_fields'         => [
-				'type'  => 'hidden',
-				'label' => '',
-				'class' => 'gv-search-fields-value',
-				'value' => '[{"field":"search_all","input":"input_text"}]', // Default: Search Everything text box
 			],
 		];
 
@@ -89,9 +86,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			add_action( 'gravityview_render_search_active_areas', [ $this, 'render_search_active_areas' ], 10, 3 );
 			add_action( 'gravityview_render_available_search_fields', [ $this, 'render_available_search_fields' ] );
+			add_action( 'gk/gravityview/template/before-field-render', [ $this, 'record_search_field_context' ], 9, 5 );
 		}
 
-		parent::__construct( esc_html__( 'Search Bar', 'gk-gravityview' ), null, $default_values, $settings );
+		parent::__construct( esc_html__( 'Search Bar', 'gk-gravityview' ), null, [], $settings );
 
 		// calculate the search method (POST / GET)
 		$this->set_search_method();
@@ -2441,8 +2439,32 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $search_field->merge_options( $options );
 	}
 
+	/**
+	 * Renders the search areas in the settings field.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $field The field configuration.
+	 *
+	 * @return string
+	 */
 	private function get_search_sections( array $field ): string {
-		$directory_entries_template = 'table';
+		global $post;
+
+		$directory_entries_template = $this->search_fields_context['rendering']['template_id'] ?? 'default_table';
+
+		// If no value is present, check if we have a legacy configuration.
+		if ( null === ( $field['value'] ?? null ) ) {
+			$search_fields = Search_Field_Collection::from_legacy_configuration(
+				$this->search_fields_context['settings'] ?? [],
+				View::from_post( $post )
+			);
+
+			if ( $search_fields->count() > 0 ) {
+				// Set the legacy configuration on the field value as the Search Fields configuration.
+				$field['value'] = $search_fields->to_configuration();
+			}
+		}
 
 		ob_start();
 		?>
@@ -2575,6 +2597,31 @@ class GravityView_Widget_Search extends \GV\Widget {
 		foreach ( $search_fields as $search_field ) {
 			echo $search_field;
 		}
+	}
+
+	/**
+	 * Records the rendering context of a search field about to be rendered.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $field_type Either 'widget', 'field' or 'search'.
+	 * @param string $key        The key of the settings field.
+	 * @param array  $option     The configuration of the settings field.
+	 * @param array  $settings   All the values for the current item being rendered.
+	 * @param array  $rendering  Extra rendering context added to the action.
+	 */
+	public function record_search_field_context( string $field_type, string $key, array $option, array $settings, array $rendering ): void {
+		if (
+			'widget' !== $field_type
+			|| 'search_fields_section' !== $key
+		) {
+			return;
+		}
+
+		$this->search_fields_context = [
+			'settings'  => $settings,
+			'rendering' => $rendering,
+		];
 	}
 
 } // end class

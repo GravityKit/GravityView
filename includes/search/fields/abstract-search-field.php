@@ -321,13 +321,21 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return array The configuration.
 	 */
 	public function to_configuration(): array {
-		return [
+		$configuration = [
 			'id'       => $this->get_key(),
 			'UID'      => $this->UID,
 			'type'     => $this->get_type(),
 			'label'    => $this->title,
 			'position' => $this->position,
 		];
+
+		foreach ( $this->setting_keys() as $key ) {
+			if ( isset( $this->settings[ $key ] ) ) {
+				$configuration[ $key ] = $this->settings[ $key ];
+			}
+		}
+
+		return $configuration;
 	}
 
 	/**

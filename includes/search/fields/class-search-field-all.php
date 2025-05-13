@@ -60,7 +60,7 @@ final class Search_Field_All extends Search_Field {
 		return [
 			'placeholder' => [
 				'type'     => 'text',
-				'label'    => esc_html__( 'Placeholder', 'gk-gravityview' ),
+				'label'    => esc_html__( 'Placeholder text', 'gk-gravityview' ),
 				'value'    => '',
 				'class'    => 'widefat',
 				'priority' => 1150,

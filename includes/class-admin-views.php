@@ -37,7 +37,7 @@ class GravityView_Admin_Views {
 	 *
 	 * @var self
 	 */
-	private static $instance;
+	private static self $instance;
 
 	/**
 	 * Returns the singleton.
@@ -2147,7 +2147,7 @@ HTML;
 		 * @filter `gk/gravityview/view/template/active-areas`
 		 * @since  2.31.0
 		 *
-		 * @param bool   $is_dynamic  Whether area is dynamic, meaning sortable / deletable / acionable.
+		 * @param bool   $is_dynamic  Whether area is dynamic, meaning sortable / deletable / actionable.
 		 * @param string $template_id Template ID.
 		 * @param string $type        The object type; widget or field.
 		 * @param string $zone        Current View context: `directory`, `single`, or `edit` (default: 'single')

@@ -463,6 +463,26 @@ class GravityView_Render_Settings {
 			foreach ( $option_group as $key => $option ) {
 				$value = $current[ $key ] ?? null;
 
+				/**
+				 * @action `gk/gravityview/template/before-field-render` which allows you to act before a field of an item is rendered.
+				 *
+				 * @since  $ver$
+				 *
+				 * @param string $field_type Either `widget`, `field` or `search`.
+				 * @param string $key        The key of the field.
+				 * @param array  $option     The field configuration.
+				 * @param array  $current    All the values for the current item being rendered.
+				 * @param array  $context    Extra rendering context added to the action.
+				 */
+				do_action(
+					'gk/gravityview/template/before-field-render',
+					(string) $field_type,
+					(string) $key,
+					(array) $option,
+					(array) $current,
+					compact( 'form_id', 'template_id' )
+				);
+
 				$field_output = self::render_field_option( $name_prefix . '[' . $key . ']', $option, $value );
 
 				// The setting is empty
