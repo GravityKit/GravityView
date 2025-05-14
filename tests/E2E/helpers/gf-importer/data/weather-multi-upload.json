@@ -37,13 +37,36 @@
             "1": "Tuesday Weather",
             "2": [
                 "https://i.ibb.co/JCrHCvh/snow.jpg"
-                
             ]
         },
         {
             "1": "Wednesday Weather",
             "2": [
                 "https://i.ibb.co/Qf1gXPG/sun.jpg"
+            ]
+        },
+        {
+            "1": "Thursday Weather",
+            "2": [
+                "https://i.ibb.co/Hn80dWN/rain.jpg"
+            ]
+        },
+        {
+            "1": "Friday Weather",
+            "2": [
+                "https://i.ibb.co/JCrHCvh/snow.jpg"
+            ]
+        },
+        {
+            "1": "Saturday Weather",
+            "2": [
+                "https://i.ibb.co/Qf1gXPG/sun.jpg"
+            ]
+        },
+        {
+            "1": "Sunday Weather",
+            "2": [
+                "https://i.ibb.co/Hn80dWN/rain.jpg"
             ]
         }
     ]
