@@ -135,7 +135,7 @@ jQuery( function ( $ ) {
 							return new plupload.File( file );
 						} );
 
-						for ( file of files ) {
+						for ( const file of files ) {
 							uploader.addFile( file );
 						}
 

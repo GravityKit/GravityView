@@ -456,6 +456,7 @@ class GravityView_Edit_Entry_Render {
 			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this, $gv_data );
 		} else {
 			$this->add_uploaded_file_sizes( (int) $this->form_id );
+			$this->maybe_revert_single_file_images();
 			gravityview()->log->error( 'Submission is NOT valid.', array( 'entry' => $this->entry ) );
 		}
 	} // process_save
@@ -1710,7 +1711,7 @@ class GravityView_Edit_Entry_Render {
 
 					// If this is a single upload file.
 					if ( ! empty( $_FILES[ $input_name ] ) ) {
-						// Always remove the old file, if the file upload input is active.
+						// Always remove the old file, if the <input type=file> is not disabled.
 						$this->record_files_for_removal( $field, $value );
 						// The new value to validate is now empty.
 						$value = '';
@@ -2791,5 +2792,60 @@ class GravityView_Edit_Entry_Render {
 
 		// We use this strategy to keep the indexes of the original array, as we need them for removal.
 		$this->remove_files[ '' . $field->id ] = array_diff( $old_files, $kept_files );
+	}
+
+	/**
+	 * Reverts the old values for single file uploads as the files are not uploaded to a temporary folder.
+	 *
+	 * When the validation of the form fails, the upload information is gone for subsequent posts. To avoid confusion,
+	 * we reset the old value; and mark the field with an "error".
+	 *
+	 * @since $ver$
+	 */
+	private function maybe_revert_single_file_images(): void {
+		$original_entry = GFAPI::get_entry( $this->entry['id'] ?? 0 );
+		if ( ! $original_entry ) {
+			return;
+		}
+
+		/** @var GF_Field_FileUpload $field */
+		foreach ( $this->form['fields'] as $field ) {
+			if (
+				'fileupload' !== $field->get_input_type()
+				|| $field->multipleFiles
+			) {
+				continue;
+			}
+
+			$old_value = $original_entry[ $field->id ] ?? null;
+			$value     = $this->entry[ $field->id ] ?? null;
+
+			if ( $old_value === $value ) {
+				// Nothing changed, so no extra problems.
+				continue;
+			}
+
+			// Return old value.
+			$this->entry[ '' . $field->id ] = $old_value;
+
+			// If a new value was set, we need to make sure the user provides the file again.
+			if (
+				! empty( $_FILES[ 'input_' . $field->id ]['name'] )
+				&& ! $field->failed_validation // Other validation takes priority.
+			) {
+				$field->failed_validation  = true;
+				$field->validation_message = strtr(
+					// Translators: [b] and [/b] are replaced by `<strong>` and `</strong>` tags.
+					esc_html__(
+						'[b]Note:[/b] For security reasons you must upload the file again.',
+						'gk-gravitview'
+					),
+					[
+						'[b]'  => '<strong>',
+						'[/b]' => '</strong>',
+					]
+				);
+			}
+		}
 	}
 }//end class
