@@ -20,7 +20,9 @@
                 "label": "Weather Images",
                 "isRequired": true,
                 "multipleFiles": true,
-                "maxFiles": 2
+                "maxFiles": 2,
+                "allowedExtensions": "jpg",
+                "maxFileSize": 1
             }
         ]
     },
