@@ -24,12 +24,12 @@ test('File persistence during entry edit validation', async ({ page }) => {
 
   await page.getByLabel('Name(Required)').fill('');
 
-  const meerkatImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/brown-meerkat.jpg');
+  const windImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/wind.jpg');
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');
-  await fileInput.setInputFiles(meerkatImagePath);
+  await fileInput.setInputFiles(windImagePath);
 
-  await expect(page.getByText(/brown-meerkat\.jpg/i)).toBeVisible();
+  await expect(page.getByText(/wind\.jpg/i)).toBeVisible();
 
   let uploadInProgress = true;
   page.on('dialog', async dialog => {
@@ -48,7 +48,7 @@ test('File persistence during entry edit validation', async ({ page }) => {
 
   await expect(page.getByText('This field is required.')).toBeVisible();
 
-  await expect(page.locator('.gfield_fileupload_filename').filter({ hasText: 'brown-meerkat.jpg' })).toBeVisible();
+  await expect(page.locator('.gfield_fileupload_filename').filter({ hasText: 'wind.jpg' })).toBeVisible();
 
   await page.getByLabel('Name(Required)').fill('Wednesday Weather Updated');
   await page.getByRole('button', { name: 'Update' }).click();
