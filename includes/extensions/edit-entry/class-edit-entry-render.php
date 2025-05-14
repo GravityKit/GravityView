@@ -456,7 +456,7 @@ class GravityView_Edit_Entry_Render {
 			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this, $gv_data );
 		} else {
 			$this->add_uploaded_file_sizes( (int) $this->form_id );
-			$this->maybe_revert_single_file_images();
+			$this->maybe_fix_valid_file_uploads();
 			gravityview()->log->error( 'Submission is NOT valid.', array( 'entry' => $this->entry ) );
 		}
 	} // process_save
@@ -2801,51 +2801,95 @@ class GravityView_Edit_Entry_Render {
 	 * we reset the old value; and mark the field with an "error".
 	 *
 	 * @since $ver$
+	 *
+	 * @param GF_Field $field The upload field.
 	 */
-	private function maybe_revert_single_file_images(): void {
+	private function maybe_revert_single_file_upload( GF_Field $field ): void {
 		$original_entry = GFAPI::get_entry( $this->entry['id'] ?? 0 );
 		if ( ! $original_entry ) {
 			return;
 		}
 
-		/** @var GF_Field_FileUpload $field */
-		foreach ( $this->form['fields'] as $field ) {
-			if (
-				'fileupload' !== $field->get_input_type()
-				|| $field->multipleFiles
-			) {
-				continue;
-			}
+		$old_value = $original_entry[ $field->id ] ?? null;
+		$value     = $this->entry[ $field->id ] ?? null;
 
-			$old_value = $original_entry[ $field->id ] ?? null;
-			$value     = $this->entry[ $field->id ] ?? null;
+		if ( $old_value === $value ) {
+			// Nothing changed, so no extra problems.
+			return;
+		}
 
-			if ( $old_value === $value ) {
-				// Nothing changed, so no extra problems.
-				continue;
-			}
+		// Return old value.
+		$this->entry[ '' . $field->id ] = $old_value;
 
-			// Return old value.
-			$this->entry[ '' . $field->id ] = $old_value;
-
-			// If a new value was set, we need to make sure the user provides the file again.
-			if (
-				! empty( $_FILES[ 'input_' . $field->id ]['name'] )
-				&& ! $field->failed_validation // Other validation takes priority.
-			) {
-				$field->failed_validation  = true;
-				$field->validation_message = strtr(
-					// Translators: [b] and [/b] are replaced by `<strong>` and `</strong>` tags.
-					esc_html__(
-						'[b]Note:[/b] For security reasons you must upload the file again.',
-						'gk-gravitview'
-					),
-					[
-						'[b]'  => '<strong>',
-						'[/b]' => '</strong>',
-					]
-				);
-			}
+		// If a new value was set, we need to make sure the user provides the file again.
+		if (
+			! empty( $_FILES[ 'input_' . $field->id ]['name'] )
+			&& ! $field->failed_validation // Other validation takes priority.
+		) {
+			$field->failed_validation  = true;
+			$field->validation_message = strtr(
+			// Translators: [b] and [/b] are replaced by `<strong>` and `</strong>` tags.
+				esc_html__(
+					'[b]Note:[/b] For security reasons you must upload the file again.',
+					'gk-gravitview'
+				),
+				[
+					'[b]'  => '<strong>',
+					'[/b]' => '</strong>',
+				]
+			);
 		}
 	}
+
+	/**
+	 * Unsets values marked for removal on a valid multiple files upload field.
+	 *
+	 * If the form does not validate, but the upload field IS valid, we want to keep any removed files from showing up
+	 * in the form again. If the field does not validate, we keep those old values, to make the UI more intuitive.
+	 *
+	 * @since $ver$
+	 *
+	 * @param GF_Field $field The upload field.
+	 */
+	private function maybe_unset_multiple_file_upload( GF_Field $field ): void {
+		if (
+			! isset( $this->remove_files[ $field->id ] )
+			|| $field->failed_validation
+		) {
+			return;
+		}
+
+		$value         = $this->entry[ $field->id ] ?? '[]';
+		$current_files = GFCommon::is_json( $value ) ? json_decode( $value, true ) : [];
+		if ( empty ( $current_files ) ) {
+			// This shouldn't be possible, just a sanity check.
+			return;
+		}
+
+		$files_to_keep = array_values( array_diff( $current_files, $this->remove_files[ $field->id ] ) );
+
+		try {
+			$this->entry[ '' . $field->id ] = json_encode( $files_to_keep, JSON_THROW_ON_ERROR );
+		} catch ( JsonException $e ) {
+			// Fall through by design.
+		}
+	}
+
+	/**
+	 * Handles the field value for field uploads on invalid forms.
+	 *
+	 * @since $ver$
+	 */
+	private function maybe_fix_valid_file_uploads(): void {
+		foreach ( $this->form['fields'] ?? [] as $field ) {
+			if ( 'fileupload' !== $field->get_input_type() ) {
+				continue;
+			}
+
+			$field->multipleFiles
+				? $this->maybe_unset_multiple_file_upload( $field )
+				: $this->maybe_revert_single_file_upload( $field );
+		}
+	}
+
 }//end class
