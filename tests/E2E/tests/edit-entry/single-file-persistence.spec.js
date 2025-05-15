@@ -24,11 +24,11 @@ test('Single file persistence during entry edit validation', async ({ page }) =>
 
 	page.on('dialog', (dialog) => console.log(dialog.message()));
 
-	await page.getByRole('link', { name: 'Snow' }).click();
+	await page.getByRole('link', { name: 'Rain' }).click();
 	await page.getByRole('link', { name: 'Edit Entry' }).click();
 
 	const nameField = page.getByLabel('Name(Required)');
-	await expect(nameField).toHaveValue('Snow');
+	await expect(nameField).toHaveValue('Rain');
 
 	const initialFiles = page.locator('.ginput_preview');
 	await expect(initialFiles).toHaveCount(1);
@@ -58,6 +58,8 @@ test('Single file persistence during entry edit validation', async ({ page }) =>
 		'../../helpers/gf-importer/data/images/blizzard.jpg'
 	);
 	const fileInput = page.locator('input[type="file"]._admin');
+	await fileInput.waitFor({ state: 'attached' });
+	await expect(fileInput).toBeEnabled();
 	await fileInput.setInputFiles(blizzardImagePath);
 
 	const updateButton = page.getByRole('button', { name: 'Update' });
@@ -69,10 +71,15 @@ test('Single file persistence during entry edit validation', async ({ page }) =>
 
 	await expect(page.getByText('This field is required.')).toBeVisible();
 	await expect(
-		page.locator('.gfield_fileupload_filename').filter({ hasText: 'blizzard.jpg' })
+		page.locator('.ginput_preview').filter({ hasText: 'rain.jpg' })
 	).toBeVisible();
 
-	await nameField.fill('Snow');
+	await expect(page.getByText('For security reasons you must upload the file again')).toBeVisible();
+
+	await nameField.fill('Rain');
+
+	await fileInput.setInputFiles(blizzardImagePath);
+	await deleteButtons.first().click();
 	await updateButton.click();
 
 	await expect(page.getByText('Entry Updated. Return to Entry')).toBeVisible();
