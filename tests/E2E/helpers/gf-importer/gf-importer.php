@@ -95,6 +95,15 @@ foreach ( $data_files as $file ) {
 			$entry['is_read'] = (bool) $entry['is_read'];
 		}
 
+        $form = GFAPI::get_form($form_id);
+        foreach ($form['fields'] as $field) {
+            if ($field->type === 'fileupload' && isset($entry[$field->id])) {
+                if ($field->multipleFiles && is_array($entry[$field->id])) {
+                    $entry[$field->id] = json_encode($entry[$field->id]);
+                }
+            }
+        }
+
 		$result = GFAPI::add_entry( $entry );
 
 		if ( is_wp_error( $result ) ) {
