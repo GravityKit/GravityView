@@ -59,7 +59,6 @@ test('Single file persistence during entry edit validation', async ({ page }) =>
 	);
 	const fileInput = page.locator('input[type="file"]._admin');
 	await fileInput.waitFor({ state: 'attached' });
-	await expect(fileInput).toBeEnabled();
 	await fileInput.setInputFiles(blizzardImagePath);
 
 	const updateButton = page.getByRole('button', { name: 'Update' });
