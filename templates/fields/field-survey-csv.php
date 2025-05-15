@@ -39,7 +39,7 @@ switch ( $gravityview->field->field->inputType ) {
 
 		$choices = array();
 		if ( ! empty( $field->field->choices ) ) {
-			foreach ( $field->field->choices as $choice ) {
+			foreach ( $field->field->get_ordered_choices( $value ) as $choice ) {
 				$choices[] = trim( $choice['text'] );
 			}
 		}
