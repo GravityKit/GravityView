@@ -40,7 +40,7 @@ switch ( $gravityview->field->field->inputType ) {
 		$choices = array();
 		if ( ! empty( $field->field->choices ) ) {
 			foreach ( $field->field->choices as $choice ) {
-				$choices[] = $choice['text'];
+				$choices[] = trim( $choice['text'] );
 			}
 		}
 
@@ -87,19 +87,12 @@ switch ( $gravityview->field->field->inputType ) {
 			// Only include checked choices
 			$choice_value = $choice['value'];
 			if ( is_array( $value ) && in_array( $choice_value, $value ) ) {
-				$choices[] = $choice['text'];
-			}
-		}
-		// Format items with proper spacing
-		$formatted_items = array();
-		foreach ( $choices as $item ) {
-			if ( ! empty( $item ) ) {
-				$formatted_items[] = trim( $item );
+				$choices[] = trim( $choice['text'] );
 			}
 		}
 
 		// Output with comma and space separation for CSV
-		echo implode( ', ', $formatted_items );
+		echo implode( ', ', $choices );
 		return;
 
 	case 'likert':
