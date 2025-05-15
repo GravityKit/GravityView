@@ -15,7 +15,7 @@
 					ui.item.attr( 'data-context', receiver_area );
 					ui.item.find( '[data-context]' ).attr( 'data-context', receiver_area );
 					ui.item.find( '[data-areaid]' ).attr( 'data-areaid', ( _, area_id ) => {
-						return area_id.replace( sender_area + '_', receiver_area + '_' )
+						return area_id.replace( sender_area + '_', receiver_area + '_' );
 					} );
 
 					ui.item.find( '[name*="[' + sender_area + '_"]' ).each( function () {

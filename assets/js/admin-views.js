@@ -1501,6 +1501,12 @@
 			   $custom_label_field = $admin_label; // We have an administrative label for this field
 		   }
 
+		   // Prevent updating the custom label from a nested search field.
+		   if ( $( dialog ).closest('[data-search-fields]').length !== $custom_label_field.closest( '[data-search-fields]' ).length ) {
+			   // This works because the regular search widget does not have a custom title field.
+			   return;
+		   }
+
 		   var $label = dialog.closest( '.gv-fields' ).find( '.gv-field-label-text-container' ).first();
 
 		   // If there's a custom title, use it for the label.
