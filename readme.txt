@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🐛 Fixed
+* CSV export of Survey Add-On fields now correctly outputs data values instead of raw HTML markup.
+
 #### 🚀 Added
 * Support for the `{get}` merge tag inside the `[gv_entry_link]` shortcode.
 
