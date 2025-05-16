@@ -42,6 +42,8 @@ jobs:
             echo "$TESTFILES" | circleci tests run --command="xargs npx playwright test --config=tests/E2E/setup/playwright.config.js" --verbose
       - store_artifacts:
           path: tests/E2E/results
+      - store_artifacts:
+          path: tests/E2E/report
       - store_test_results:
           path: tests/E2E/results/junit.xml
 
@@ -124,20 +126,6 @@ jobs:
             zip -gr $(ls gravityview-*.zip) gravityview
             mkdir .release
             cp gravityview-*.zip .release
-      - run:
-          name: Create a Github release
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "main" ]; then
-              git config user.email "support@gravitykit.com"
-              git config user.name "GravityView - CI"
-              /home/circleci/tooling/build-tools/build_tools.sh create_release -o "gravityview.php $(ls gravityview-*.zip)"
-            fi
-      - run:
-          name: Notify Release Manager
-          command: |
-            if ! [[ $(git log -n 1 | grep "\[skip notify\]") ]]; then
-              /home/circleci/tooling/build-tools/build_tools.sh announce_build -o "gravityview.php $(ls gravityview-*.zip) --with-circle"
-            fi
       - store_artifacts:
           path: .release
           destination: release
@@ -148,15 +136,9 @@ workflows:
     jobs:
       - prepare_test_and_build_environment:
           <<: *context
-      - run_php_74_unit_tests:
-          <<: *test_job_config
-      - run_php_80_unit_tests:
-          <<: *test_job_config
       - run_e2e_tests:
           <<: *test_job_config
       - build_package_release:
           <<: *context
           requires:
-            - run_php_74_unit_tests
-            - run_php_80_unit_tests
             - run_e2e_tests

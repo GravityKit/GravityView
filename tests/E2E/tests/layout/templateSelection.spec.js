@@ -19,7 +19,7 @@ test.describe('GravityView Template Selection', () => {
 		test(`Verify GravityView template: ${template.name}`, async ({ page }, testInfo) => {
 			await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
-			await page.waitForSelector('text=New View', { state: 'visible' });
+			await page.waitForSelector('text=AsNew View', { state: 'visible' });
 
 			await page.click('text=New View');
 

@@ -11,7 +11,7 @@ import path from 'path';
  * Ensures that a newly uploaded file is not silently dropped after an initial validation error during entry editing.
  */
 test('Single file persistence during entry edit validation', async ({ page }) => {
-	await page.goto('/wp-admin/edit.php?post_type=gravityview');
+	await page.goto('/wp-admin/edit.php?post_type=gravisdsdtyview');
 	test.slow();
 	await createView(page, {
 		formTitle: 'Weather Form',

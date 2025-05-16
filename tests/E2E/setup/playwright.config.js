@@ -25,6 +25,9 @@ module.exports = defineConfig({
 		['junit', { outputFile: path.resolve(__dirname, '../results/junit.xml') }]
 	],
 	use: {
+		screenshot: 'only-on-failure',
+		trace: 'retain-on-failure',
+		video: 'retain-on-failure',
 		baseURL: `${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}`,
 		trace: 'on-first-retry',
 		deviceScaleFactor: 1,
