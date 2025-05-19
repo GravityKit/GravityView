@@ -882,11 +882,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				 * @param int|null $view_id
 				 * @param int|null $form_id
 				 */
-				$ignore_empty_values = apply_filters( 'gravityview/search/ignore-empty-values',
-					true,
-					$filter_key,
-					$view_id,
-					$form_id );
+				$ignore_empty_values = apply_filters( 'gravityview/search/ignore-empty-values', true, $filter_key, $view_id, $form_id );
 
 				if ( is_array( $value ) || $ignore_empty_values ) {
 					continue;
@@ -904,11 +900,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				}
 			}
 
-			if ( ! $filter = $this->prepare_field_filter( $filter_key,
-				$value,
-				$view,
-				$searchable_field_objects,
-				$get ) ) {
+			if ( ! $filter = $this->prepare_field_filter( $filter_key, $value, $view, $searchable_field_objects, $get ) ) {
 				continue;
 			}
 
@@ -2642,9 +2634,51 @@ if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
  * A GF_Query condition that allows user data searches.
  */
 class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Condition {
+	/**
+	 * The View object.
+	 *
+	 * @since 2.2.2
+	 *
+	 * @var View
+	 */
+	private $view;
+
+	/**
+	 * The value to search.
+	 *
+	 * @since 2.2.2
+	 *
+	 * @var mixed
+	 */
+	private $value;
+
 	public function __construct( $filter, $view ) {
 		$this->value = $filter['value'];
 		$this->view  = $view;
+	}
+
+	/**
+	 * Serializes the object.
+	 *
+	 * @since $ver$
+	 *
+	 * @return array THe serialized data.
+	 */
+	public function __serialize(): array {
+		return [
+			'view_id' => $this->view->ID,
+			'value'   => $this->value,
+		];
+	}
+
+	/**
+	 * Deserializes the object.
+	 *
+	 * @since $ver$
+	 */
+	public function __unserialize( array $data ): void {
+		$this->value = $data['value'];
+		$this->view  = View::by_id( $data['view_id'] ?? 0 );
 	}
 
 	public function sql( $query ) {
