@@ -166,7 +166,6 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 		$form_id = (int) ( $view ? $view->form->ID : ( $configuration['form_id'] ?? 0 ) );
 
 		$shared_data = [
-			'form_id'       => $form_id,
 			'sieve_choices' => (bool) ( $configuration['sieve_choices'] ?? false ),
 		];
 
@@ -179,14 +178,13 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			$area_key = $areas[ $i % $area_count ];
 
 			$field_id = (string) ( $field['field'] ?? '' );
-			if ( is_numeric( $field_id ) ) {
-				$field_id = Search_Field_Gravity_Forms::generate_field_id( $shared_data['form_id'], $field_id );
-			}
+			$form_id = (string) ( $field['form_id'] ?? $form_id );
 
 			$field_data = array_merge(
 				$shared_data,
 				[
 					'id'           => $field_id,
+					'form_id'      => $form_id,
 					'input_type'   => $field['input'] ?? 'input_text',
 					'custom_label' => $field['label'] ?? '',
 					'position'     => 'search-general_' . ( $row[ $area_key ][0]['areaid'] ?? '' ),
@@ -194,6 +192,11 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			);
 
 			$search_field = Search_Field::from_configuration( $field_data, $view, $additional_params );
+			if ( ! $search_field ) {
+				$field_data['id'] = Search_Field_Gravity_Forms::generate_field_id( $form_id, $field_id );
+				$search_field     = Search_Field::from_configuration( $field_data, $view, $additional_params );
+			}
+
 			if ( $search_field ) {
 				$collection->add( $search_field );
 			}
