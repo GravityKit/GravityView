@@ -290,6 +290,16 @@ class GravityView_Render_Settings {
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
 
+		// Filter out any fields that are not in the provided context.
+		$_context = 'directory' === $context ? 'multiple' : $context;
+		foreach ( $field_options as $key => $field_option ) {
+			if ( isset( $field_option['contexts'] ) && ! in_array( $_context, $field_option['contexts'], true ) ) {
+				unset( $field_options[ $key ] );
+			} elseif ( ! isset( $field_option['contexts'] ) && 'search' === $_context ) {
+				unset( $field_options[ $key ] );
+			}
+		}
+
 		/**
 		 * Filters the field options.
 		 *

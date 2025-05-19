@@ -570,22 +570,6 @@ abstract class GravityView_Field {
 	 * @return array                     [description]
 	 */
 	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ) {
-
-		foreach( $field_options as $key => $field_option ) {
-
-			$_context = $context;
-
-			if ( 'directory' === $context ) {
-				$_context = 'multiple';
-			}
-
-			if( isset( $field_option['contexts'] ) && ! in_array( $_context, $field_option['contexts'], true ) ) {
-				unset( $field_options[ $key ] );
-			} elseif ( ! isset( $field_option['contexts'] ) && 'search' === $_context ) {
-				unset( $field_options[ $key ] );
-			}
-		}
-
 		$this->_field_options = $field_options;
 		$this->_field_id      = $field_id;
 
