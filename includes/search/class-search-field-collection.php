@@ -132,8 +132,9 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @since $ver$
 	 *
-	 * @param array     $configuration The legacy configuration.
-	 * @param View|null $view          The View.
+	 * @param array     $configuration     The legacy configuration.
+	 * @param View|null $view              The View.
+	 * @param array     $additional_params Additional params passed along to every field (e.g. Context, Widget args).
 	 *
 	 * @return self The collection.
 	 */
@@ -162,8 +163,10 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			return $collection;
 		}
 
+		$form_id = (int) ( $view ? $view->form->ID : ( $configuration['form_id'] ?? 0 ) );
+
 		$shared_data = [
-			'form_id'       => (int) ( $configuration['form_id'] ?? 0 ),
+			'form_id'       => $form_id,
 			'sieve_choices' => (bool) ( $configuration['sieve_choices'] ?? false ),
 		];
 
@@ -180,12 +183,15 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 				$field_id = Search_Field_Gravity_Forms::generate_field_id( $shared_data['form_id'], $field_id );
 			}
 
-			$field_data = array_merge( $shared_data, [
-				'id'           => $field_id,
-				'input_type'   => $field['input'] ?? 'input_text',
-				'custom_label' => $field['label'] ?? '',
-				'position'     => 'search-general_' . ( $row[ $area_key ][0]['areaid'] ?? '' ),
-			] );
+			$field_data = array_merge(
+				$shared_data,
+				[
+					'id'           => $field_id,
+					'input_type'   => $field['input'] ?? 'input_text',
+					'custom_label' => $field['label'] ?? '',
+					'position'     => 'search-general_' . ( $row[ $area_key ][0]['areaid'] ?? '' ),
+				]
+			);
 
 			$search_field = Search_Field::from_configuration( $field_data, $view, $additional_params );
 			if ( $search_field ) {
