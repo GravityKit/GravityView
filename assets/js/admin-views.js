@@ -2217,8 +2217,7 @@
 
 				   switch ( $( this ).attr( 'data-objecttype' ) ) {
 					   case 'search':
-						   // Todo: The form ID is important here.
-						   return $( '#available-search-active-fields' ).html();
+						   context = 'search';
 					   case 'field':
 						   // If in Single context, show fields available in single
 						   // If it Directory, same for directory
