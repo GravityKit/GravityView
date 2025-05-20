@@ -50,7 +50,7 @@ test('Single file persistence during entry edit validation', async ({ page }) =>
 	const deleteButtons = page.locator('.ginput_preview_control.gform-icon--circle-delete');
 	await expect(deleteButtons).toHaveCount(1);
 
-	await deleteButtons.first().click();
+	await deleteButtons.first().click({ delay: 100 });
 	await expect(page.locator('.ginput_preview')).toHaveCount(0);
 
 	const blizzardImagePath = path.join(
