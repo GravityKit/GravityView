@@ -138,6 +138,13 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @param array       $data  The configuration of the field.
 	 */
 	public function __construct( ?string $label = null, array $data = [], bool $call_initialize = true ) {
+		$data = wp_parse_args(
+			$data,
+			[
+				'show_label' => true,
+			]
+		);
+
 		parent::__construct(
 			$label ?? $this->get_label(),
 			$this->get_type(),
@@ -252,7 +259,13 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			unset( $options['only_loggedin'], $options['only_loggedin_cap'] );
 		}
 
-		return array_merge( $options, $this->get_search_field_options(), $this->get_options() );
+		$field_options = array_merge( $this->get_search_field_options(), $this->get_options() );
+		array_walk( $field_options, static function ( &$value ) {
+			$value['contexts']   ??= [];
+			$value['contexts'][] = 'search';
+		} );
+
+		return array_merge( $options, $field_options );
 	}
 
 	/**
