@@ -231,11 +231,10 @@ function render_template_options( array $templates, ?string $selected_template )
 	</div> <?php // end edit view tab ?>
 
 	<div id='search-view' aria-hidden="true">
-		<div id="available-search-active-fields" class="hide-if-js gv-tooltip">
-			<div aria-live="polite" role="listbox" class="gv-items-picker-container" data-layout="list" data-cols="2">
-				<button class="close" role="button" aria-label="<?php esc_html_e( 'Close', 'gk-gravityview' ); ?>"><i class="dashicons dashicons-dismiss"></i></button>
-				<?php do_action( 'gravityview_render_available_search_fields' ); ?>
-			</div>
+		<div id="search-fields">
+			<?php
+			do_action( 'gravityview_render_field_pickers', 'search' );
+			?>
 		</div>
 	</div>
 </div> <?php // end tabs ?>

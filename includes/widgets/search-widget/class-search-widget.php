@@ -2526,13 +2526,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$name      = $data['name'] ?? null;
 		$has_value = null !== $fields;
 
-		$view = View::from_post( $post );
+		$is_new = 'auto-draft' === get_post_status( $post );
 
 		if ( $has_value ) {
 			$collection = Search_Field_Collection::from_configuration( $fields );
 			$rows       = Grid::get_rows_from_collection( $collection, $zone );
-		} elseif ( ! $view && 'search-general' === $zone ) {
-			// This is a newly added widget, because it does not have a connected View yet.
+		} elseif ( $is_new && 'search-general' === $zone ) {
 			$area_key = key( $rows[0] );
 			$zone_100 = $zone . '_' . ( $rows[0][ $area_key ][0]['areaid'] ?? 'top' );
 
@@ -2580,15 +2579,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @since $ver$
 	 */
-	public function render_available_search_fields(): void {
+	public function render_available_search_fields( ?int $form_id = 0 ): void {
 		global $post;
 
-		$view = View::by_id( $post->ID ?? 0 );
-		if ( ! $view instanceof View || ! $view->form instanceof GF_Form ) {
-			return;
+		if ( ! $form_id ) {
+			$view = View::by_id( $post->ID ?? 0 );
+			if ( ! $view instanceof View || ! $view->form instanceof GF_Form ) {
+				return;
+			}
+			$form_id = $view->form->ID ?? 0;
 		}
 
-		$search_fields = Search_Field_Collection::available_fields( $view->form->ID ?? 0 );
+		$search_fields = Search_Field_Collection::available_fields( $form_id );
 		if ( ! $search_fields->count() ) {
 			return;
 		}
