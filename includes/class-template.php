@@ -172,6 +172,8 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 
 	public $search_clear;
 
+	public $updated;
+
 	/**
 	 * Construct the view object
 	 *

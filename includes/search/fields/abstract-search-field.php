@@ -228,6 +228,10 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 		foreach ( array_merge( $data, $additional_params ) as $key => $value ) {
 			if ( property_exists( $field, $key ) ) {
+				if ( 'context' === $key && ! $value instanceof Context ) {
+					continue;
+				}
+
 				$field->{$key} = $value;
 			}
 		}
