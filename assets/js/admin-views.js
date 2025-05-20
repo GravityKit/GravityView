@@ -2218,6 +2218,7 @@
 				   switch ( $( this ).attr( 'data-objecttype' ) ) {
 					   case 'search':
 						   context = 'search';
+						   /* falls through */
 					   case 'field':
 						   // If in Single context, show fields available in single
 						   // If it Directory, same for directory

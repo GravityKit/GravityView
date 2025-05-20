@@ -32,6 +32,7 @@
 		init: function ( wrapClass ) {
 
 			gvSearchWidget.wrapClass = wrapClass;
+			gvSearchWidget.currentFormId = $( '#gravityview_form_id' ).val();
 
 			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
@@ -154,7 +155,6 @@
 
 			gvSearchWidget.widgetTarget = $( this );
 
-
 			// // Add to the end of the stack so the content is in the modal.
 			setTimeout( () => {
 				const $sortables = gvSearchWidget.widgetTarget.find( '.active-drop-search' );
@@ -165,6 +165,7 @@
 					sortable && sortable.destroy(); // Remove sorting if it is active.
 				} );
 
+				gvAdminActions?.initTooltips();
 				gvAdminActions?.initDroppables( gvSearchWidget.widgetTarget ); // Add sorting (back).
 				gvAdminActions?.activateGrid( gvSearchWidget.widgetTarget ); // initialize grid.
 			} );
@@ -728,12 +729,12 @@
 		 * When form changes, clear the select fields cache and remove all the search_bar configs
 		 */
 		clearViewSearchData: function () {
-			gvSearchWidget.selectFields = null;
-			$( '.gv-search-fields-value' ).each( function () {
-				$( this ).parents( '.' + gvSearchWidget.wrapClass ).find( 'table' ).remove();
-				$( this ).val( gvSearchWidget.default_search_fields );
-			} );
-
+			// Delete any fields from search widgets that are for a specific form (:: is that indicator).
+			$( '[data-fieldid="search_bar"] [data-fieldid*="::"]' ).remove();
+			if ( gvSearchWidget.currentFormId ) {
+				$( `[data-fieldid="search_bar"] [data-formid=${gvSearchWidget.currentFormId}]` ).attr( 'data-formid', '' );
+			}
+			gvSearchWidget.currentFormId = $( this ).val();
 		},
 
 		/**
