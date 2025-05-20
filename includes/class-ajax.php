@@ -82,6 +82,7 @@ class GravityView_Ajax {
 				'directory' => '',
 				'edit'      => '',
 				'single'    => '',
+				'search'    => '',
 			];
 		}
 

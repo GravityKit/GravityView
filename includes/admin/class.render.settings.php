@@ -292,6 +292,8 @@ class GravityView_Render_Settings {
 
 		// Filter out any fields that are not in the provided context.
 		$_context = 'directory' === $context ? 'multiple' : $context;
+		$_context = strpos( $_context, 'search-' ) === 0 ? 'search' : $_context;
+
 		foreach ( $field_options as $key => $field_option ) {
 			if ( isset( $field_option['contexts'] ) && ! in_array( $_context, $field_option['contexts'], true ) ) {
 				unset( $field_options[ $key ] );

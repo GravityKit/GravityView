@@ -887,6 +887,12 @@ HTML;
 	function render_available_fields( $form_id = 0, $context = 'single' ) {
 		$form = GVCommon::get_form_or_form_template( $form_id );
 
+		if ( 'search' === $context ) {
+			do_action( 'gravityview_render_available_search_fields', (int) $form_id );
+
+			return;
+		}
+
 		/**
 		 * @deprecated 2.9
 		 */
@@ -1505,11 +1511,7 @@ HTML;
 				 * @param string $zone    The widget zone that's being requested
 				 * @param int    $post_id The auto-draft post ID
 				 */
-				$widgets = (array) apply_filters( 'gravityview/view/widgets/default',
-					$widgets,
-					$template_id,
-					$zone,
-					$post_id );
+				$widgets = (array) apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
 			} else {
 				$widgets              = (array) gravityview_get_directory_widgets( $post_id );
 				$collection           = Widget_Collection::from_configuration( $widgets );
@@ -1598,13 +1600,13 @@ HTML;
                     </div>
                 </div>
 
-                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox"
-                     class="gv-items-picker-container">
+                <div id="available-fields-<?php echo $filter_field_id; ?>" aria-live="polite" role="listbox" class="gv-items-picker-container">
 					<?php do_action( 'gravityview_render_available_fields', $form_id, $context ); ?>
                 </div>
 
-                <div class="gv-no-results hidden description"><?php esc_html_e( 'No fields were found matching the search.',
-						'gk-gravityview' ); ?></div>
+                <div class="gv-no-results hidden description">
+					<?php esc_html_e( 'No fields were found matching the search.', 'gk-gravityview' ); ?>
+				</div>
             </div>
 			<?php
 		}
