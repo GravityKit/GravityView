@@ -26,12 +26,7 @@ foreach ( $rows as $row ) { ?>
 				<?php
 				if ( ! empty( $areas ) ) {
 					foreach ( $areas as $area ) {
-						foreach ( $search_fields->by_position( $search_section . '_' . $area['areaid'] )->all() as $field ) {
-							if ( ! $field->is_visible() ) {
-								continue;
-							}
-
-							$search_field = $field->to_template_data();
+						foreach ( $search_fields->by_position( $search_section . '_' . $area['areaid'] )->to_template_data() as $search_field ) {
 							/**
 							 * @action `gravityview_search_widget_field_before` Before each search input is rendered (other than the submit button)
 							 *

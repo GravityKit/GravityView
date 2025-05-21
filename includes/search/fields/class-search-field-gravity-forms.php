@@ -385,7 +385,9 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			return null;
 		}
 
-		$field       = GFAPI::get_field( $parts[1], $parts[2] );
+		[ , $form_id, $field_id ] = $parts;
+
+		$field       = GFAPI::get_field( $form_id, $field_id );
 		$this->field = $field ? $field : null;
 
 		return $this->field;

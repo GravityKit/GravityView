@@ -3,6 +3,7 @@
 namespace GV\Search\Fields;
 
 use GF_Field;
+use GFFormsModel;
 use GravityView_Widget_Search;
 use GV\Context;
 use GV\Grid;
@@ -190,14 +191,16 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @since $ver$
 	 *
-	 * @param array $data The field data.
+	 * @param array     $data               The field data.
+	 * @param View|null $view               The View object.
+	 * @param array     $additional_context Any additional context.
 	 *
 	 * @return static|null The field instance.
 	 */
 	public static function from_configuration(
 		array $data,
 		?View $view = null,
-		array $additional_params = []
+		array $additional_context = []
 	): ?Search_Field {
 		// Can't instantiate the abstract class, but we can use it as a factory.
 		if ( static::class === self::class ) {
@@ -218,7 +221,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 				return null;
 			}
 
-			return $class::from_configuration( $data, $view, $additional_params );
+			return $class::from_configuration( $data, $view, $additional_context );
 		}
 
 		$field       = new static( $data['label'] ?? null, $data );
@@ -226,7 +229,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 		unset( $data['type'] );
 
-		foreach ( array_merge( $data, $additional_params ) as $key => $value ) {
+		foreach ( array_merge( $data, $additional_context ) as $key => $value ) {
 			if ( property_exists( $field, $key ) ) {
 				if ( 'context' === $key && ! $value instanceof Context ) {
 					continue;
@@ -371,6 +374,20 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		if ( ! $label ) {
 			$label = $this->get_default_label();
 		}
+
+		$form_field = $this->field ? GFFormsModel::get_field( $this->form_id, $this->get_key() ) : [];
+		$field      = $this->to_legacy_format();
+
+		/**
+		 * Modify the label for a search field. Supports returning HTML.
+		 *
+		 * @since 1.17.3 Added $field parameter
+		 *
+		 * @param string $label      Existing label text, sanitized.
+		 * @param array  $form_field Gravity Forms field array, as returned by `GFFormsModel::get_field()`
+		 * @param array  $field      Field setting as sent by the GV configuration - has `field`, `input` (input type), and `label` keys
+		 */
+		$label = apply_filters( 'gravityview_search_field_label', esc_attr( $label ), $form_field, $field );
 
 		return $label;
 	}
@@ -586,6 +603,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			'field' => $this->get_key(),
 			'input' => $this->get_input_type(),
 			'label' => $this->get_frontend_label(),
+			'title' => $this->get_label(),
 		];
 	}
 

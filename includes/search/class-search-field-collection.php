@@ -3,6 +3,7 @@
 namespace GV\Search;
 
 use ArrayIterator;
+use GravityView_Widget_Search;
 use GV\Collection;
 use GV\Collection_Position_Aware;
 use GV\Grid;
@@ -18,6 +19,7 @@ use GV\Search\Fields\Search_Field_Is_Read;
 use GV\Search\Fields\Search_Field_Is_Starred;
 use GV\Search\Fields\Search_Field_Search_Mode;
 use GV\Search\Fields\Search_Field_Submit;
+use GV\Template_Context;
 use GV\View;
 use IteratorAggregate;
 use JsonException;
@@ -40,14 +42,25 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	private static $available_fields_cache = [];
 
 	/**
+	 * Contains any additional context used for filters.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array
+	 */
+	private array $context;
+
+	/**
 	 * Creates a collection of fields.
 	 *
 	 * @since $ver$
 	 *
-	 * @param Search_Field[] $fields The fields.
+	 * @param Search_Field[] $fields  The fields.
+	 * @param array          $context The additional context.
 	 */
-	private function __construct( array $fields = [] ) {
+	private function __construct( array $fields = [], array $context = [] ) {
 		$this->storage = $fields;
+		$this->context = $context;
 	}
 
 	/**
@@ -93,18 +106,18 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @since $ver$
 	 *
-	 * @param array     $configuration     The configuration.
-	 * @param View|null $view              The View object.
-	 * @param array     $additional_params Additional params passed along to every field (e.g. Context, Widget args).
+	 * @param array     $configuration      The configuration.
+	 * @param View|null $view               The View object.
+	 * @param array     $additional_context Additional params passed along to every field (e.g. Context, Widget args).
 	 *
 	 * @return self The collection.
 	 */
 	public static function from_configuration(
 		array $configuration,
 		?View $view = null,
-		array $additional_params = []
+		array $additional_context = []
 	): self {
-		$collection = new self();
+		$collection = new self( [], $additional_context );
 
 		foreach ( $configuration as $position => $_fields ) {
 			if ( ! $_fields ) {
@@ -115,7 +128,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 				$_configuration['UID']      = $uid;
 				$_configuration['position'] = $position;
 
-				$field = Search_Field::from_configuration( $_configuration, $view, $additional_params );
+				$field = Search_Field::from_configuration( $_configuration, $view, $additional_context );
 				if ( ! $field ) {
 					continue;
 				}
@@ -132,18 +145,18 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @since $ver$
 	 *
-	 * @param array     $configuration     The legacy configuration.
-	 * @param View|null $view              The View.
-	 * @param array     $additional_params Additional params passed along to every field (e.g. Context, Widget args).
+	 * @param array     $configuration      The legacy configuration.
+	 * @param View|null $view               The View.
+	 * @param array     $additional_context Additional params passed along to every field (e.g. Context, Widget args).
 	 *
 	 * @return self The collection.
 	 */
 	public static function from_legacy_configuration(
 		array $configuration,
 		?View $view,
-		array $additional_params = []
+		array $additional_context = []
 	): self {
-		$collection = new self();
+		$collection = new self( [], $additional_context );
 
 		try {
 			$search_fields = json_decode( $configuration['search_fields'] ?? '[]', true, 512, JSON_THROW_ON_ERROR );
@@ -178,7 +191,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			$area_key = $areas[ $i % $area_count ];
 
 			$field_id = (string) ( $field['field'] ?? '' );
-			$form_id = (string) ( $field['form_id'] ?? $form_id );
+			$form_id  = (string) ( $field['form_id'] ?? $form_id );
 
 			$field_data = array_merge(
 				$shared_data,
@@ -191,10 +204,10 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 				]
 			);
 
-			$search_field = Search_Field::from_configuration( $field_data, $view, $additional_params );
+			$search_field = Search_Field::from_configuration( $field_data, $view, $additional_context );
 			if ( ! $search_field ) {
 				$field_data['id'] = Search_Field_Gravity_Forms::generate_field_id( $form_id, $field_id );
-				$search_field     = Search_Field::from_configuration( $field_data, $view, $additional_params );
+				$search_field     = Search_Field::from_configuration( $field_data, $view, $additional_context );
 			}
 
 			if ( $search_field ) {
@@ -393,5 +406,48 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 		}
 
 		return $collection;
+	}
+
+	/**
+	 * Returns the fields as filtered template data.
+	 *
+	 * @since $ver$
+	 *
+	 * @return array The template data.
+	 */
+	public function to_template_data(): array {
+		$search_fields = [];
+
+		foreach ( $this->storage as $field ) {
+			if ( ! $field->is_visible() ) {
+				continue;
+			}
+
+			$search_fields[] = $field->to_template_data();
+		}
+
+		/**
+		 * Modify what fields are shown. The order of the fields in the $search_filters array controls the order as displayed in the search bar widget.
+		 *
+		 * @param array                        $search_fields Array of search filters with `key`, `label`, `value`, `type`, `choices` keys
+		 * @param GravityView_Widget_Search    $widget        Current widget object
+		 * @param array  |null                 $widget_args   Args passed to this method. {@since 1.8}
+		 * @param null|string|Template_Context $context       {@since 2.0}
+		 * @param string|null                  $position      The search field position {@since $ver$}
+		 *
+		 * @type array The filtered search filters.
+		 */
+		$search_fields = apply_filters(
+			'gravityview_widget_search_filters',
+			$search_fields,
+			$this->context['widget'] ?? null,
+			$this->context['widget_args'] ?? null,
+			$this->context['context'] ?? null,
+			! empty( $field->position ) ? $field->position : null,
+		);
+
+		gravityview()->log->debug( 'Calculated Search Fields: ', [ 'data' => $search_fields ] );
+
+		return $search_fields;
 	}
 }
