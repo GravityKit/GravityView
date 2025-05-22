@@ -1695,6 +1695,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return;
 		}
 
+		$submit_field = $search_fields->by_type( Search_Field_Submit::class )->first();
+		$search_clear = $submit_field && ( $submit_field->to_configuration()['search_clear'] ?? false );
+
+		$search_mode_field = $search_fields->by_type( Search_Field_Search_Mode::class )->first();
+		$search_mode       = $search_mode_field && ( $search_mode_field->to_configuration()['mode'] ?? 'any' );
+
 		// Before rendering, we want to make sure the submit and search mode field are added.
 		$search_fields = $search_fields->ensure_required_search_fields();
 
@@ -1703,16 +1709,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$this->enqueue_datepicker();
 		}
 
-		// Todo: deprecate unused and fake search layout, search clear and search mode.
-		$search_layout = ( ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'horizontal' );
+		$search_layout = ( ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'rows' );
 		$custom_class  = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
 
 		$data = [
 			'datepicker_class'            => $this->get_datepicker_class(),
 			'search_method'               => $this->get_search_method(),
 			'search_layout'               => $search_layout,
-			'search_mode'                 => ( ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : 'any' ),
-			'search_clear'                => ( ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : false ),
+			'search_mode'                 => ( ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : $search_mode ),
+			'search_clear'                => ( ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : $search_clear ),
 			'view_id'                     => $view_id,
 			'search_class'                => self::get_search_class( $custom_class, $search_layout ),
 			'permalink_fields'            => $this->add_no_permalink_fields( [], $this, $widget_args ),
@@ -1729,7 +1734,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Get the search class for a search form.
 	 *
 	 * @since 1.5.4
-	 * @since TODO Added $search_layout parameter. TODO: UNDO THIS!
+	 * @since $ver$ Added $search_layout parameter.
 	 *
 	 * @param string $custom_class  Custom class to add to the search form
 	 * @param string $search_layout Search layout ("horizontal" or "vertical"). Default: "horizontal".

@@ -450,4 +450,30 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 		return $search_fields;
 	}
+
+	/**
+	 * Returns a collection of fields of a specific type.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $type The search type or class name.
+	 *
+	 * @return self A new collection.
+	 */
+	public function by_type( string $type ): self {
+		$clone = clone $this;
+
+		$clone->storage = array_filter(
+			$clone->storage,
+			static function ( Search_Field $field ) use ( $type ): bool {
+				if ( is_subclass_of( $type, Search_Field::class ) ) {
+					return $field instanceof $type;
+				}
+
+				return $field->is_of_type( $type );
+			}
+		);
+
+		return $clone;
+	}
 }

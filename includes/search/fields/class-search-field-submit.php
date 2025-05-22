@@ -54,6 +54,18 @@ final class Search_Field_Submit extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
+	protected function setting_keys(): array {
+		$keys   = parent::setting_keys();
+		$keys[] = 'search_clear';
+		$keys[] = 'tag';
+
+		return $keys;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
 	protected function get_options(): array {
 		return [
 			'show_label'   => [
