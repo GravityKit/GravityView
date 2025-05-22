@@ -186,8 +186,8 @@ abstract class Search_Field_Choices extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	public function to_template_data(): array {
-		$data = parent::to_template_data();
+	protected function collect_template_data(): array {
+		$data = parent::collect_template_data();
 
 		if ( $this->has_choices() ) {
 			$data['choices'] = $this->should_be_sieved() ? $this->sieved_choices() : $this->get_choices();

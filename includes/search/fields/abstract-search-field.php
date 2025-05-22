@@ -375,8 +375,9 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			$label = $this->get_default_label();
 		}
 
-		$form_field = $this->field ? GFFormsModel::get_field( $this->form_id, $this->get_key() ) : [];
-		$field      = $this->to_legacy_format();
+		$form_field     = $this->field ? GFFormsModel::get_field( $this->form_id, $this->get_key() ) : [];
+		$field          = $this->to_legacy_format();
+		$field['label'] = $label;
 
 		/**
 		 * Modify the label for a search field. Supports returning HTML.
@@ -567,13 +568,13 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
-	 * Returns the data needed for the template to render.
+	 * Collects the data needed for the template to render.
 	 *
 	 * @since $ver$
 	 *
 	 * @return array
 	 */
-	public function to_template_data(): array {
+	protected function collect_template_data(): array {
 		$params = [
 			'key'          => $this->get_key(),
 			'name'         => $this->get_input_name(),
@@ -589,6 +590,33 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		}
 
 		return $params;
+	}
+
+	/**
+	 * Returns the data needed for the template to render.
+	 *
+	 * This method is final to ensure consistent filtering behavior across all implementations.
+	 * Extending classes should override {@see self::collect_template_data()} to modify the data.
+	 *
+	 * @since $ver$
+	 *
+	 * @return array
+	 */
+	final public function to_template_data(): array {
+		$filter         = $this->collect_template_data();
+		$field          = $this->to_legacy_format();
+		$field['label'] = $this->get_frontend_label();
+
+		/**
+		 * Filter the output filter details for the Search widget.
+		 *
+		 * @since 2.5
+		 *
+		 * @param array $filter The filter details
+		 * @param array $field  The search field configuration
+		 * @param \GV\Context|null The context
+		 */
+		return apply_filters( 'gravityview/search/filter_details', $filter, $field, $this->context );
 	}
 
 	/**
