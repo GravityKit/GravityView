@@ -147,7 +147,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		);
 
 		parent::__construct(
-			$label ?? $this->get_label(),
+			$label ?? $this->get_name(),
 			$this->get_type(),
 			$data,
 			array_intersect_key( $data, array_flip( $this->setting_keys() ) ),
@@ -365,7 +365,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return string
 	 */
-	private function get_frontend_label(): string {
+	public function get_frontend_label(): string {
 		if ( ! ( $this->settings['show_label'] ?? true ) ) {
 			return '';
 		}
@@ -442,7 +442,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @since $ver$
 	 */
-	protected function get_label(): string {
+	protected function get_name(): string {
 		return $this->title ?? esc_html( 'Unknown Field', 'gk-gravityview' );
 	}
 
@@ -602,8 +602,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		return [
 			'field' => $this->get_key(),
 			'input' => $this->get_input_type(),
-			'label' => $this->get_frontend_label(),
-			'title' => $this->get_label(),
+			'title' => $this->get_name(),
 		];
 	}
 

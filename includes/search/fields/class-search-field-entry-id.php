@@ -26,7 +26,7 @@ final class Search_Field_Entry_ID extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_label(): string {
+	protected function get_name(): string {
 		return esc_html__( 'Entry ID', 'gk-gravityview' );
 	}
 

@@ -32,7 +32,7 @@ final class Search_Field_Entry_Date extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_label(): string {
+	protected function get_name(): string {
 		return esc_html__( 'Entry Date', 'gk-gravityview' );
 	}
 

@@ -32,7 +32,7 @@ final class Search_Field_Is_Starred extends Search_Field {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_label(): string {
+	protected function get_name(): string {
 		return esc_html__( 'Is Starred', 'gk-gravityview' );
 	}
 

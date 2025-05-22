@@ -384,7 +384,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				$custom_field['field'],
 				selected( $custom_field['field'], $current, false ),
 				$custom_field['input'],
-				$custom_field['label'],
+				$field->get_frontend_label(),
 				$custom_field['title'],
 			);
 		}

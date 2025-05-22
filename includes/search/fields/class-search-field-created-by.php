@@ -35,7 +35,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function get_label(): string {
+	protected function get_name(): string {
 		return esc_html__( 'Entry Creator', 'gk-gravityview' );
 	}
 
