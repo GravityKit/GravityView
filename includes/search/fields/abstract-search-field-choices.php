@@ -82,7 +82,7 @@ abstract class Search_Field_Choices extends Search_Field {
 			return false;
 		}
 
-		$should_sieve = ( $this->settings['sieve_choices'] ?? false );
+		$should_sieve = (bool) ( $this->settings['sieve_choices'] ?? false );
 
 		return apply_filters(
 			'gravityview/search/sieve_choices',
@@ -149,7 +149,7 @@ abstract class Search_Field_Choices extends Search_Field {
 	 *
 	 * @return array{text: string, value:string} The choices.
 	 */
-	final protected function sieved_choices(): array {
+	final protected function sieved_choices( array $choices ): array {
 		if ( ! $this->is_sievable() ) {
 			return [];
 		}
@@ -157,8 +157,8 @@ abstract class Search_Field_Choices extends Search_Field {
 		$form_id = $this->view ? $this->view->form->ID ?? null : null;
 		$view_id = $this->view->ID ?? null;
 
-		if ( ! $form_id || ! $view_id ) {
-			return $this->get_choices();
+		if ( ! $form_id || ! $view_id || ! $choices ) {
+			return $choices;
 		}
 
 		$cache = new GravityView_Cache( $form_id, [ 'sieve', $this->get_key(), $view_id ] );
@@ -168,7 +168,7 @@ abstract class Search_Field_Choices extends Search_Field {
 			$values         = $this->get_sieved_values();
 			$cached_choices = [];
 
-			foreach ( $this->get_choices() as $choice ) {
+			foreach ( $choices as $choice ) {
 				if ( in_array( $choice['text'], $values, true ) || in_array( $choice['value'], $values, true ) ) {
 					$cached_choices[] = $choice;
 				}
@@ -190,9 +190,44 @@ abstract class Search_Field_Choices extends Search_Field {
 		$data = parent::collect_template_data();
 
 		if ( $this->has_choices() ) {
-			$data['choices'] = $this->should_be_sieved() ? $this->sieved_choices() : $this->get_choices();
+			if ( $this->should_be_sieved() ) {
+				// We use a hook because some plugins (like populate anything) overwrite the choices,
+				// so we need to sieve after they changed it.
+				add_filter(
+					'gravityview_widget_search_filters',
+					\Closure::fromCallable( [ $this, 'sieve_choices_callback' ] ),
+					1024 // Late registration to sieve after plugins changed the values.
+				);
+			}
+			$data['choices'] = $this->get_choices();
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Sieves the choices on the search fields.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $search_fields The search fields.
+	 *
+	 * @uses  `gravityview_widget_search_filters`.
+	 *
+	 * @return array The updated search fields.
+	 */
+	private function sieve_choices_callback( array $search_fields ): array {
+		foreach ( $search_fields as &$search_field ) {
+			if (
+				! ( $search_field['choices'] ?? [] )
+				|| $this->get_type() !== ( $search_field['type'] ?? null )
+			) {
+				continue;
+			}
+
+			$search_field['choices'] = $this->sieved_choices( $search_field['choices'] );
+		}
+
+		return $search_fields;
 	}
 }
