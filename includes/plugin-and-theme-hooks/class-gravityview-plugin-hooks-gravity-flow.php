@@ -65,7 +65,17 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 			return 'multi';
 		}
 
-		if ( 'workflow_user' === $field_type ) {
+		if (
+			in_array(
+				$field_type,
+				[
+					'workflow_user',
+					'workflow_role',
+				],
+				true
+			)
+		) {
+
 			return 'select';
 		}
 
