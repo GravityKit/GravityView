@@ -101,7 +101,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 		// Field is sieved, so the actual visible choices should be 1: Second Choice.
 		$template_data = array_column( $collection->to_template_data(), null, 'type' );
 		self::assertCount( 1, $template_data[ $field_id ]['choices'] );
-		self::assertSame('Second Choice', $template_data[$field_id]['choices'][0]['value']);
+		self::assertSame( 'Second Choice', $template_data[ $field_id ]['choices'][0]['value'] );
 	}
 
 	/**
@@ -291,10 +291,21 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 			],
 		] );
 
-		$collection = $collection->ensure_required_search_fields();
+		$collection = $collection->ensure_required_search_fields( [
+			'search_mode'  => 'all',
+			'search_clear' => '0',
+		] );
 
 		// Should have both search mode and submit fields.
 		self::assertTrue( $collection->has_fields_of_type( 'search_mode' ) );
 		self::assertTrue( $collection->has_fields_of_type( 'submit' ) );
+
+		// Get the search mode field and verify configuration
+		$search_mode = $collection->by_type( 'search_mode' )->first();
+		self::assertSame( 'all', $search_mode->to_template_data()['mode'] );
+
+		// Get the submit field and verify configuration
+		$submit = $collection->by_type( 'submit' )->first();
+		self::assertFalse( $submit->to_template_data()['search_clear'] );
 	}
 }
