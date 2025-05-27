@@ -217,7 +217,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 		// Only add the required fields if there are search fields.
 		if ( $collection->count() > 0 ) {
-			$collection = $collection->ensure_required_search_fields();
+			$collection = $collection->ensure_required_search_fields( $configuration );
 		}
 
 		return $collection;
@@ -366,9 +366,11 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @since $ver$
 	 *
+	 * @param array $configuration The configuration.
+	 *
 	 * @return self A new collection with the required fields.
 	 */
-	public function ensure_required_search_fields(): self {
+	public function ensure_required_search_fields( array $configuration = [] ): self {
 		$collection = clone $this;
 
 		// Add Submit and Search Mode fields in a separate row.
