@@ -179,8 +179,11 @@
 			e.preventDefault();
 
 			// Remove ui-front to add field dialogs to <body>, fixing their appearance.
-			$( this ).closest( '[role="dialog"]' ).removeClass( 'ui-front' );
-			$( this ).focus(); // Remove focus from "add field before" button.
+			$( this )
+				.closest( '[role="dialog"]' )
+				.removeClass( 'ui-front' )
+				.focus() // Remove focus from "add field before" button.
+				.wrapInner('<div class="gv-search-widget-wrapper"></div>');
 
 			gvSearchWidget.widgetTarget = $( this );
 
@@ -212,6 +215,8 @@
 			gvSearchWidget.closeFieldSettings( e );
 
 			gvSearchWidget.widgetTarget = $( this );
+
+			$( this ).closest( '.gv-search-widget-wrapper' ).contents().unwrap();
 		},
 
 		/** Table manipulation */

@@ -578,6 +578,8 @@ class GravityView_Render_Settings {
 			</div>",
 				wpautop( trim( $description ) )
 			);
+
+			$field_settings = sprintf( '<div class="gv-dialog-options--content">%s</div>', $field_settings );
 		} else {
 			$subtitle               = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
 			$widget_details_content = Utils::get( $item, 'description', '' );

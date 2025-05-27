@@ -1,106 +1,130 @@
-[data-fieldid="search_bar"] .gv-field-details--container {
-	display: none;
+.post-type-gravityview [data-fieldid="search_bar"] {
+	.gv-field-details--container {
+		display: none;
+	}
+
+	.ui-dialog-content {
+		overflow: visible;
+		margin: 5px 0; // Fix scroll.
+	}
+}
+
+.gv-search-widget-wrapper {
+	position: relative;
+    padding: 0 !important;
 }
 
 [data-search-fields].has-options-panel {
-    &:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #FFF;
-        opacity: .75;
-        z-index: 15; // Needs to be on top of field buttons with high z-indexes.
-    }
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: hsl(0, 0%, 100%);
+		opacity: .75;
+		z-index: 15; // Needs to be on top of field buttons with high z-indexes.
+	}
 
-    > .gv-dialog-options {
-        display: block;
-        position: absolute;
-        right: 0;
-        width: 400px;
-        top: 0;
-        bottom: 0;
-        background: #F6F6F6;
-        border-left: 1px solid #f1f1f1;
-        box-sizing: border-box;
-        padding: 24px !important;
-        z-index: 20; // Needs to be on top of the overlay. Leaving room for 5 layers.
-    }
+	> .gv-dialog-options {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		right: 0;
+		width: 400px;
+		top: 0;
+		bottom: 0;
+		background: #F6F6F6;
+		border-left: 1px solid #f1f1f1;
+		box-sizing: border-box;
+		padding: 0 !important;
+		z-index: 20; // Needs to be on top of the overlay. Leaving room for 5 layers.
+	}
 
-    .gv-fields.has-options-panel {
-        border: 1px solid #136cb9;
-    }
+	.gv-dialog-options--content {
+		flex: 1;
+		overflow-y: auto;
+		// Space for the fixed button.
+		padding: 0 24px 30px;
+		margin: 24px 0;
+	}
 
-    .gv-field-details--container {
-        margin-bottom: 32px;
+	.gv-fields.has-options-panel {
+		border: 1px solid #136cb9;
+	}
+
+	.gv-field-details--container {
 		display: block;
+		padding: 0 24px;
 
-        p {
-            color: #999999;
-        }
-    }
+		p {
+			color: #999999;
+		}
+	}
 
-    .gv-setting-container {
-        padding: 0;
-        margin-bottom: 16px;
+	.gv-setting-container {
+		padding: 0;
+		margin-bottom: 16px;
 
-        input[type=color],
-        input[type=date],
-        input[type=datetime-local],
-        input[type=datetime],
-        input[type=email],
-        input[type=month],
-        input[type=number],
-        input[type=password],
-        input[type=search],
-        input[type=tel],
-        input[type=text],
-        input[type=time],
-        input[type=url],
-        input[type=week],
-        select,
-        textarea {
-            border: 0;
-            border-radius: 2px;
-            box-shadow: 0 0 0 1px #a7a7a7;
-            color: #070707;
-            min-height: 40px;
-            margin-top: 12px;
+		input[type=color],
+		input[type=date],
+		input[type=datetime-local],
+		input[type=datetime],
+		input[type=email],
+		input[type=month],
+		input[type=number],
+		input[type=password],
+		input[type=search],
+		input[type=tel],
+		input[type=text],
+		input[type=time],
+		input[type=url],
+		input[type=week],
+		select,
+		textarea {
+			border: 0;
+			border-radius: 2px;
+			box-shadow: 0 0 0 1px #a7a7a7;
+			color: #070707;
+			min-height: 40px;
+			margin-top: 12px;
 
-            &:active, &:focus {
-                box-shadow: 0 0 0 1px #2271b1;
-            }
-        }
+			&:active, &:focus {
+				box-shadow: 0 0 0 1px #2271b1;
+			}
+		}
 
-        > label {
-            padding-right: 0;
-            display: block;
-            color: #070707;
-        }
-    }
+		> label {
+			padding-right: 0;
+			display: block;
+			color: #070707;
+			position: relative;
+		}
+	}
 
-    button.gv-dialog-options--close {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        border: 0;
-        border-radius: 0;
-        background: transparent;
-        height: 40px;
-        text-align: left;
-        cursor: pointer;
-        &:hover {
-            color: #2271b1;
-        }
-    }
+	button.gv-dialog-options--close {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		border: 0;
+		border-radius: 0;
+		background: #F6F6F6;
+		height: 40px;
+		text-align: left;
+		cursor: pointer;
+		padding-left: 24px;
+
+		&:hover {
+			color: #2271b1;
+		}
+	}
 }
 
 .search-field-title {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 0;
 }
