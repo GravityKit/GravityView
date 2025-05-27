@@ -92,10 +92,16 @@
 	   performingAjaxAction: false,
 
 	   /**
-	    * @since TODO
+	    * @since $ver$
 	    * @type {number} The maximum width of the modal dialogs to use for field and widget settings.
 	    */
 	   maxDialogWidth: 0.95,
+
+	   /**
+		* @since $ver$
+		* @type {boolean} Whether to ignore the `escape` key event.
+		*/
+	   ignoreEscapeEvent: false,
 
 	   init: function () {
 
@@ -698,12 +704,10 @@
 		* @return {bool}   [description]
 		*/
 	   closeTooltips: function ( e ) {
-
 		   var activeTooltips = $( "[data-tooltip='active']" );
 
 		   var close = false;
 		   var return_false = false;
-
 		   switch ( e.type ) {
 
 			   case 'keyup':
@@ -711,6 +715,11 @@
 				   // Escape key was pressed
 				   if ( e.keyCode === 27 ) {
 					   if ( $( '.ui-autocomplete' ).is( ':visible' ) ) {
+						   return;
+					   }
+
+					   if ( viewConfiguration.ignoreEscapeEvent ) {
+						   viewConfiguration.ignoreEscapeEvent = false;
 						   return;
 					   }
 
@@ -1524,6 +1533,14 @@
 			   }
 
 		   }
+	   },
+
+	   /**
+		* Ignores the escape button for the next call.
+		* @since $ver$
+		*/
+	   ignoreEscape: function () {
+		   viewConfiguration.ignoreEscapeEvent = true;
 	   },
 
 	   /**
@@ -3510,6 +3527,7 @@
 		   showDialog: viewConfiguration.showDialog,
 		   initDroppables: viewConfiguration.init_droppables,
 		   setCustomLabel: viewConfiguration.setCustomLabel,
+		   ignoreEscape: viewConfiguration.ignoreEscape,
 	   };
 
 	   $( document.body ).trigger( 'gravityview/loaded' );

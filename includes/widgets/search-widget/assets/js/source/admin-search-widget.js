@@ -41,6 +41,7 @@
 				// [View] hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
 				.on( 'dialogclose dialogdestroy', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.closeDialog )
+				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.beforeCloseDialog )
 
 				// [WP widget] When opening the WP widget settings, trigger the search fields table
 				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
@@ -142,6 +143,34 @@
 		},
 
 		/**
+		 * Prevent closing of dialog on escape if search field settings are open.
+		 * @since $ver$
+		 * @param {jQueryEvent} e The keydown event.
+		 */
+		beforeCloseDialog: function ( e ) {
+			// Only handle Escape key events
+			if ( 'Escape' !== e.key ) {
+				return;
+			}
+
+			// Check if we have an open field settings panel
+			const $wrapper = gvSearchWidget.widgetTarget.find( '[data-search-fields].has-options-panel' );
+			if ( !$wrapper.length ) {
+				return;
+			}
+
+			// Instruct admin to ignore this escape call.
+			gvAdminActions?.ignoreEscape();
+
+			e.target = $wrapper;
+
+			// Close the field settings panel instead
+			gvSearchWidget.closeFieldSettings( e );
+
+			return false;
+		},
+
+		/**
 		 * [Specific for View Search Widget]
 		 * Capture the widget dialog and call to render the widget settings content
 		 * @param  {jQuery} e event
@@ -169,7 +198,6 @@
 				gvAdminActions?.initDroppables( gvSearchWidget.widgetTarget ); // Add sorting (back).
 				gvAdminActions?.activateGrid( gvSearchWidget.widgetTarget ); // initialize grid.
 			} );
-
 		},
 
 		/**
@@ -782,9 +810,20 @@
 		closeFieldSettings: function ( e ) {
 			e.preventDefault();
 
-			const $wrapper = $( e.target ).is( '[data-search-fields]' )
-				? $( e.target )
-				: $( e.target ).closest( '[data-search-fields]' );
+			let $wrapper = $();
+			const $target = $( e.target );
+
+			switch ( true ) {
+				case $target.is( '[data-search-fields]' ):
+					$wrapper = $target;
+					break;
+				case $target.closest( '[data-search-fields]' ).length > 0:
+					$wrapper = $target.closest( '[data-search-fields]' );
+					break;
+				case $target.find( '[data-search-fields]' ).length > 0:
+					$wrapper = $target.find( '[data-search-fields]' );
+					break;
+			}
 
 			$wrapper.removeClass( 'has-options-panel' );
 
