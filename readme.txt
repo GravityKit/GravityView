@@ -43,6 +43,9 @@ This hotfix resolves a fatal error that occurred when updating the plugin from v
 
 This update speeds up form loading in the View editor, fixes GravityEdit compatibility and translation issues in WordPress 6.8, and includes other fixes and improvements.
 
+#### 🐛 Fixed
+* Uploaded files are kept on the Edit Entry form if validation fails.
+
 #### ✨ Improved
 * Faster form fetching in the Data Source dropdown in the View editor.
 * Expand/contract button is no longer shown in View editor warning dialogs.
