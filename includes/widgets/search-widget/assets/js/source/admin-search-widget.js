@@ -29,6 +29,13 @@
 		// The default search should be a single "Search All" field
 		default_search_fields: '[{"field":"search_all","input":"input_text"}]',
 
+		/**
+		 * Initialize the search widget functionality
+		 *
+		 * @since 1.2
+		 * @param {string} wrapClass - The CSS class name for the widget wrapper
+		 * @returns {void}
+		 */
 		init: function ( wrapClass ) {
 
 			gvSearchWidget.wrapClass = wrapClass;
@@ -528,7 +535,6 @@
 		/**
 		 * Style the table rows - remove/add sorting icon, zebra stripe
 		 * @param  {object} table Table
-		 * @return {[type]}       [description]
 		 */
 		styleRow: function ( table ) {
 
@@ -552,7 +558,6 @@
 		/**
 		 * When field is changed, update the search fields selector (disable the ones in use) and the input types for the new field selected
 		 * @param  {jQuery} e
-		 * @return {[type]} [description]
 		 */
 		updateRow: function ( e ) {
 			var $row = $( this ).parents( 'tr' );
@@ -564,7 +569,6 @@
 
 		/**
 		 * Modify the gvSearchWidget.selectFields input to disable existing search fields, then replace the fields with the generated input.
-		 * @return {void}
 		 */
 		updateAvailableFields: function () {
 
@@ -601,7 +605,6 @@
 		/**
 		 * Update the input types for the new field selected
 		 * @param  {jQuery} tr table row object
-		 * @return {[type]}    [description]
 		 */
 		updateSelectInput: function ( tr ) {
 			var type = tr.find( 'select.gv-search-fields option:selected' ).attr( 'data-inputtypes' );
@@ -789,6 +792,13 @@
 
 		},
 
+		/**
+		 * Opens the field settings panel for a search field.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {jQueryEvent} e The click event.
+		 */
 		openFieldSettings: function ( e ) {
 			gvSearchWidget.closeFieldSettings( e ); // Close any open panels.
 
@@ -812,6 +822,13 @@
 				.append( $options ); // Move options to search view div.
 		},
 
+		/**
+		 * Closes the field settings panel for a search field.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {jQueryEvent} e The click event.
+		 */
 		closeFieldSettings: function ( e ) {
 			e.preventDefault();
 
@@ -854,6 +871,13 @@
 			gvAdminActions.setCustomLabel( $field );
 		},
 
+		/**
+		 * Event handler for closing field settings when clicking outside the search field settings panel.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {jQueryEvent} e The click event.
+		 */
 		closeFieldSettingsOutside: function ( e ) {
 			if ( !$( e.target ).is( '[data-search-fields]' ) ) {
 				return;
@@ -862,6 +886,14 @@
 			gvSearchWidget.closeFieldSettings( e );
 		},
 
+		/**
+		 * Updates the name attribute of search input fields to match the search field context.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {jQueryEvent} e The event object.
+		 * @param {jQuery} field The field element.
+		 */
 		replaceSearchInputName: function ( e, field ) {
 			const $search_field = $( field ).closest( '[data-search-fields]' );
 			if ( !$search_field.length ) {
