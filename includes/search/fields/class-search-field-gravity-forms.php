@@ -158,7 +158,8 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * Returns the icon for the Gravity Forms Field.
 	 *
 	 * @since $ver$
-	 * @return string
+	 *
+	 * @return string The icon class name.
 	 */
 	private function get_field_icon(): string {
 		$field = $this->get_gf_field();

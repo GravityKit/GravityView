@@ -43,7 +43,7 @@ final class Search_Field_Is_Approved extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	public function get_description(): string {
-		return esc_html__( 'Filter on read entries', 'gk-gravityview' );
+		return esc_html__( 'Filter on approval status', 'gk-gravityview' );
 	}
 
 	/**
