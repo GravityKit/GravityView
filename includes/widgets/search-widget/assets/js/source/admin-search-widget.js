@@ -20,6 +20,8 @@
 		// holds the current widget settings DOM object
 		widgetTarget: $( '.gv-dialog-options' ),
 
+		searchModal: null,
+
 		selectFields: null,
 
 		wp_widget_id: 'gravityview_search',
@@ -27,16 +29,26 @@
 		// The default search should be a single "Search All" field
 		default_search_fields: '[{"field":"search_all","input":"input_text"}]',
 
+		/**
+		 * Initialize the search widget functionality
+		 *
+		 * @since 1.2
+		 * @param {string} wrapClass - The CSS class name for the widget wrapper
+		 * @returns {void}
+		 */
 		init: function ( wrapClass ) {
 
 			gvSearchWidget.wrapClass = wrapClass;
+			gvSearchWidget.currentFormId = $( '#gravityview_form_id' ).val();
 
 			var wp_widget_id = gvSearchWidget.wp_widget_id;
 
-			$( 'body' )
+			$( document.body )
 
 				// [View] hook on all the open settings buttons for search_bar widget
 				.on( 'dialogopen', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.openDialog )
+				.on( 'dialogclose dialogdestroy', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.closeDialog )
+				.on( 'dialogbeforeclose', '[data-fieldid="search_bar"] .' + wrapClass, gvSearchWidget.beforeCloseDialog )
 
 				// [WP widget] When opening the WP widget settings, trigger the search fields table
 				.bind( 'click.widgets-toggle', gvSearchWidget.openWidget )
@@ -61,7 +73,16 @@
 				.on( 'change', '#gravityview_form_id', gvSearchWidget.clearViewSearchData )
 
 				// [WP widget] hook on assigned view id change to clear cache
-				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData );
+				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData )
+
+				.on( 'click', '[data-search-fields] .gv-field-settings', gvSearchWidget.openFieldSettings )
+
+				.on( 'click', '[data-search-fields] > .gv-dialog-options [data-close-settings]', gvSearchWidget.closeFieldSettings )
+
+				.on( 'click', '[data-search-fields]', gvSearchWidget.closeFieldSettingsOutside )
+
+				.on( 'gravityview/field-added', gvSearchWidget.replaceSearchInputName )
+			;
 
 			// Refresh widget searchable settings after saving or adding the widget
 			// Bind to document because WP triggers document, not body
@@ -80,7 +101,6 @@
 			gvSearchWidget.widgetTarget = obj.closest( 'div.widget' ).find( 'div.' + gvSearchWidget.wrapClass );
 			// reset fields to the exist appended to the table (if none, it gets undefined)
 			gvSearchWidget.selectFields = null;
-
 		},
 
 		/**
@@ -130,14 +150,80 @@
 		},
 
 		/**
+		 * Prevent closing of dialog on escape if search field settings are open.
+		 * @since $ver$
+		 * @param {jQueryEvent} e The keydown event.
+		 */
+		beforeCloseDialog: function ( e ) {
+			// Only handle Escape key events
+			if ( 'Escape' !== e.key ) {
+				return;
+			}
+
+			// Check if we have an open field settings panel
+			const $wrapper = gvSearchWidget.widgetTarget.find( '[data-search-fields].has-options-panel' );
+			if ( !$wrapper.length ) {
+				return;
+			}
+
+			// Instruct admin to ignore this escape call.
+			gvAdminActions?.ignoreEscape();
+
+			e.target = $wrapper;
+
+			// Close the field settings panel instead
+			gvSearchWidget.closeFieldSettings( e );
+
+			return false;
+		},
+
+		/**
 		 * [Specific for View Search Widget]
 		 * Capture the widget dialog and call to render the widget settings content
 		 * @param  {jQuery} e event
 		 */
 		openDialog: function ( e ) {
 			e.preventDefault();
+
+			// Remove ui-front to add field dialogs to <body>, fixing their appearance.
+			$( this )
+				.closest( '[role="dialog"]' )
+				.removeClass( 'ui-front' )
+				.focus() // Remove focus from "add field before" button.
+				.wrapInner('<div class="gv-search-widget-wrapper"></div>');
+
 			gvSearchWidget.widgetTarget = $( this );
-			gvSearchWidget.renderUI( $( this ).parents( '.gv-fields' ) );
+
+			// // Add to the end of the stack so the content is in the modal.
+			setTimeout( () => {
+				const $sortables = gvSearchWidget.widgetTarget.find( '.active-drop-search' );
+
+				// Sortable needs to be reinitialized when the modal opens.
+				$sortables.each( ( _, el ) => {
+					const sortable = $( el ).sortable( 'instance' );
+					sortable && sortable.destroy(); // Remove sorting if it is active.
+				} );
+
+				gvAdminActions?.initTooltips();
+				gvAdminActions?.initDroppables( gvSearchWidget.widgetTarget ); // Add sorting (back).
+				gvAdminActions?.activateGrid( gvSearchWidget.widgetTarget ); // initialize grid.
+			} );
+		},
+
+		/**
+		 * [Specific for View Search Widget]
+		 * Capture the widget dialog and call to render the widget settings content
+		 * @param  {jQuery} e event
+		 */
+		closeDialog: function ( e ) {
+			e.preventDefault();
+
+			// Close any open field settings first.
+			gvSearchWidget.closeFieldSettings( e );
+
+			gvSearchWidget.widgetTarget = $( this );
+
+			$( this ).closest( '.gv-search-widget-wrapper' ).contents().unwrap();
 		},
 
 		/** Table manipulation */
@@ -449,7 +535,6 @@
 		/**
 		 * Style the table rows - remove/add sorting icon, zebra stripe
 		 * @param  {object} table Table
-		 * @return {[type]}       [description]
 		 */
 		styleRow: function ( table ) {
 
@@ -473,7 +558,6 @@
 		/**
 		 * When field is changed, update the search fields selector (disable the ones in use) and the input types for the new field selected
 		 * @param  {jQuery} e
-		 * @return {[type]} [description]
 		 */
 		updateRow: function ( e ) {
 			var $row = $( this ).parents( 'tr' );
@@ -485,7 +569,6 @@
 
 		/**
 		 * Modify the gvSearchWidget.selectFields input to disable existing search fields, then replace the fields with the generated input.
-		 * @return {void}
 		 */
 		updateAvailableFields: function () {
 
@@ -522,7 +605,6 @@
 		/**
 		 * Update the input types for the new field selected
 		 * @param  {jQuery} tr table row object
-		 * @return {[type]}    [description]
 		 */
 		updateSelectInput: function ( tr ) {
 			var type = tr.find( 'select.gv-search-fields option:selected' ).attr( 'data-inputtypes' );
@@ -657,7 +739,7 @@
 				widgetTarget = e.target ? $( e.target ).parents( '.gv-widget-search-fields, .gv-fields' ) : e.parents( '.gv-widget-search-fields, .gv-fields' );
 				// If one of the search fields uses a "date range", the search mode option input fields become disabled.
 				// In order to pass the selected search mode option to the server, we need to enable the checked input field.
-				$( '.gv-setting-container-search_mode' ).find( 'input:checked:disabled' ).prop('disabled', false);
+				$( '.gv-setting-container-search_mode' ).find( 'input:checked:disabled' ).prop( 'disabled', false );
 			} else {
 				widgetTarget = gvSearchWidget.widgetTarget;
 			}
@@ -683,12 +765,12 @@
 		 * When form changes, clear the select fields cache and remove all the search_bar configs
 		 */
 		clearViewSearchData: function () {
-			gvSearchWidget.selectFields = null;
-			$( '.gv-search-fields-value' ).each( function () {
-				$( this ).parents( '.' + gvSearchWidget.wrapClass ).find( 'table' ).remove();
-				$( this ).val( gvSearchWidget.default_search_fields );
-			} );
-
+			// Delete any fields from search widgets that are for a specific form (:: is that indicator).
+			$( '[data-fieldid="search_bar"] [data-fieldid*="::"]' ).remove();
+			if ( gvSearchWidget.currentFormId ) {
+				$( `[data-fieldid="search_bar"] [data-formid=${gvSearchWidget.currentFormId}]` ).attr( 'data-formid', '' );
+			}
+			gvSearchWidget.currentFormId = $( this ).val();
 		},
 
 		/**
@@ -708,8 +790,121 @@
 				gvSearchWidget.renderUI( widget );
 			}
 
-		}
+		},
 
+		/**
+		 * Opens the field settings panel for a search field.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {jQueryEvent} e The click event.
+		 */
+		openFieldSettings: function ( e ) {
+			gvSearchWidget.closeFieldSettings( e ); // Close any open panels.
+
+			const $field = $( this ).closest( '.gv-fields' );
+			const $options = $field.find( '.gv-dialog-options' );
+			$options.data( 'field', $field ); // Store the originating field.
+
+			$field.addClass( 'has-options-panel' );
+
+			// Add close button to the settings pane.
+			const $close = $( '<button data-close-settings type="button" title="Close settings pane" class="gv-dialog-options--close">' +
+				'<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+				'<path d="M12.0672 6.91528L16.4187 12.4538L11.9705 17.9149L10.7784 17.0043L14.4187 12.4362L10.8585 7.90468L12.0672 6.91528Z" fill="currentColor"/>' +
+				'</svg>' +
+				'</button>' );
+
+			$options.append( $close );
+
+			$( this ).closest( '[data-search-fields]' )
+				.addClass( 'has-options-panel' )
+				.append( $options ); // Move options to search view div.
+		},
+
+		/**
+		 * Closes the field settings panel for a search field.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {jQueryEvent} e The click event.
+		 */
+		closeFieldSettings: function ( e ) {
+			e.preventDefault();
+
+			let $wrapper = $();
+			const $target = $( e.target );
+
+			switch ( true ) {
+				case $target.is( '[data-search-fields]' ):
+					$wrapper = $target;
+					break;
+				case $target.closest( '[data-search-fields]' ).length > 0:
+					$wrapper = $target.closest( '[data-search-fields]' );
+					break;
+				case $target.find( '[data-search-fields]' ).length > 0:
+					$wrapper = $target.find( '[data-search-fields]' );
+					break;
+			}
+
+			$wrapper.removeClass( 'has-options-panel' );
+
+			const $options = $wrapper.find( ' > .gv-dialog-options' );
+			if ( !$options.length ) {
+				return;
+			}
+
+			const $close = $options.find( '.gv-dialog-options--close' );
+			if ( $close.length ) {
+				$close.remove();
+			}
+
+			const $field = $options.data( 'field' );
+			if ( !$field.length ) {
+				return;
+			}
+
+			$field
+				.removeClass( 'has-options-panel' )
+				.append( $options ); // Return options to field.
+
+			gvAdminActions.setCustomLabel( $field );
+		},
+
+		/**
+		 * Event handler for closing field settings when clicking outside the search field settings panel.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {jQueryEvent} e The click event.
+		 */
+		closeFieldSettingsOutside: function ( e ) {
+			if ( !$( e.target ).is( '[data-search-fields]' ) ) {
+				return;
+			}
+
+			gvSearchWidget.closeFieldSettings( e );
+		},
+
+		/**
+		 * Updates the name attribute of search input fields to match the search field context.
+		 *
+		 * @since $ver$
+		 *
+		 * @param {jQueryEvent} e The event object.
+		 * @param {jQuery} field The field element.
+		 */
+		replaceSearchInputName: function ( e, field ) {
+			const $search_field = $( field ).closest( '[data-search-fields]' );
+			if ( !$search_field.length ) {
+				return;
+			}
+
+			$( field ).find( '[name*="searchs["]' ).each( function () {
+				const name = $( this ).attr( 'name' );
+				$( this ).attr( 'name', name.replace( 'searchs[', $search_field.data( 'search-fields' ) + '[' ) );
+			} );
+		}
 	}; // end
 
 	$( document ).ready( function () {
