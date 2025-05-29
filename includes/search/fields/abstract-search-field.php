@@ -113,6 +113,20 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	protected string $UID = '';
 
 	/**
+	 * A list of default settings keys.
+	 *
+	 * @since $ver$
+	 */
+	protected const DEFAULT_SETTINGS = [
+		'custom_label',
+		'custom_class',
+		'show_label',
+		'input_type',
+		'only_loggedin',
+		'only_loggedin_cap',
+	];
+
+	/**
 	 * Returns the keys from the data array that are considered settings.
 	 *
 	 * @since $ver$
@@ -120,14 +134,10 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return string[]
 	 */
 	protected function setting_keys(): array {
-		return [
-			'custom_label',
-			'custom_class',
-			'show_label',
-			'input_type',
-			'only_loggedin',
-			'only_loggedin_cap',
-		];
+		return array_merge(
+			self::DEFAULT_SETTINGS,
+			array_keys( $this->get_options() ),
+		);
 	}
 
 	/**
@@ -209,7 +219,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 			foreach ( $fields as $field ) {
 				$configuration = $field->to_configuration();
-				if ( (string) $data['id'] === $configuration['type'] ) {
+				if ( (string) ( $data['id'] ?? '' ) === $configuration['type'] ) {
 					$class = get_class( $field );
 					// Merge default data with explicit data.
 					$data = array_merge( $configuration, $data );
@@ -474,7 +484,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @return string
 	 */
-	public function get_icon(): string {
+	protected function get_icon(): string {
 		return (string) ( $this->icon ? $this->icon : $this->item['icon'] );
 	}
 
@@ -529,7 +539,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @return string
 	 */
 	protected function get_input_name(): string {
-		return sprintf( 'filter_%s', $this->get_type() );
+		return sprintf( 'filter_%s', str_replace( '.', '_', $this->get_key() ) );
 	}
 
 	/**
@@ -670,7 +680,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 		return apply_filters(
 			'gk/gravityview/search/field/is_visible',
-			( ! $cap || \GVCommon::has_cap( $cap ) ),
+			( null === $cap || \GVCommon::has_cap( $cap ) ),
 			$this,
 			$this->view
 		);
@@ -682,6 +692,6 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	final public function has_request_value(): bool {
-		return ! empty( $this->get_input_value() );
+		return (string) $this->get_input_value() !== '';
 	}
 }

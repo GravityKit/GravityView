@@ -1,14 +1,12 @@
 <?php
 
-namespace GV\Search;
 
 use GV\Collection_Position_Aware;
 use GV\Grid;
 use GV\Search\Fields\Search_Field;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
+use GV\Search\Search_Field_Collection;
 use GV\View;
-use GV_UnitTestCase;
-use JsonException;
 
 /**
  * Unit tests for {@see Search_Field_Collection}
@@ -246,12 +244,17 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 			],
 		] );
 
+		unset( $_REQUEST['gv_search'] );
+
 		// Initially should be false as no request values are set.
 		self::assertFalse( $collection->has_request_values() );
 
 		$_REQUEST['gv_search'] = 'value';
 
 		self::assertTrue( $collection->has_request_values() );
+
+		// Cleanup.
+		unset( $_REQUEST['gv_search'] );
 	}
 
 	/**
