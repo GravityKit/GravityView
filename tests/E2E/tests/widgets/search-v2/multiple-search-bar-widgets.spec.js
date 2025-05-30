@@ -1,6 +1,5 @@
 const { test, expect } = require('@playwright/test');
 const {
-	templates,
 	createView,
 	publishView,
 	checkViewOnFrontEnd,
@@ -8,7 +7,9 @@ const {
   viewTemplatesMap
 } = require('../../../helpers/test-helpers');
 
-// This test creates a View with multiple search bar widgets and tests searching for entries.
+/**
+ * Verifies that the search functionality works correctly on Views with multiple search bar widgets.
+ */
 test('Multiple Search Bar Widgets', async ({ page }) => {
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
