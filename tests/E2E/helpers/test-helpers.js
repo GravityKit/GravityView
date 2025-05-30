@@ -292,6 +292,34 @@ async function getOptionValueBySearchTerm(page, selector, searchTerm) {
 	);
 }
 
+/**
+ * Clicks the first visible element matching the given selector or Locator.
+ *
+ * @param {import('@playwright/test').Page} page - Playwright Page object
+ * @param {number} [timeout=5000] - Optional timeout in milliseconds
+ */
+async function clickFirstVisible(page, selectorOrLocator, timeout = 5000) {
+	const locator = typeof selectorOrLocator === 'string'
+	  ? page.locator(selectorOrLocator)
+	  : selectorOrLocator;
+  
+	await locator.first().waitFor({ state: 'attached', timeout });
+  
+	const elements = await locator.elementHandles();
+  
+	for (const el of elements) {
+	  if (await el.isVisible()) {
+		await el.scrollIntoViewIfNeeded();
+		await el.click();
+		return;
+	  }
+	}
+  
+	throw new Error(
+	  `No visible element found. Type: ${typeof selectorOrLocator}, Count: ${elements.length}`
+	);
+}
+
 module.exports = {
 	templates,
 	selectGravityFormByTitle,
@@ -302,5 +330,6 @@ module.exports = {
 	clickDownloadButton,
 	createPageWithShortcode,
 	getViewUrl,
-	getOptionValueBySearchTerm
+	getOptionValueBySearchTerm,
+	clickFirstVisible
 };
