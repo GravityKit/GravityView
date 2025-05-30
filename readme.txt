@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.8
+Tested up to: 6.8.1
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,6 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.40 on May 29, 2025 =
+
+This release fixes issues with editing entries that include File Upload fields and downloading files with spaces in their filenames, corrects CSV export of Survey Add-On values, and adds support for the `{get}` merge tag inside the `[gv_entry_link]` shortcode.
+
+#### 🚀 Added
+* Support for the `{get}` merge tag inside the `[gv_entry_link]` shortcode.
+
+#### 🐛 Fixed
+* Multiple issues with the File Upload field on the Edit Entry screen.
+* CSV export of Survey Add-On fields now correctly outputs data values instead of raw HTML markup.
+* Filenames with spaces in File Upload field links were incorrectly encoded, preventing files from opening or downloading. Thanks, Jake!
+
 = 2.39.1 on April 25, 2025 =
 
 This hotfix resolves a fatal error that occurred when updating the plugin from version 2.38 or earlier.
@@ -34,6 +46,9 @@ This hotfix resolves a fatal error that occurred when updating the plugin from v
 = 2.39 on April 24, 2025 =
 
 This update speeds up form loading in the View editor, fixes GravityEdit compatibility and translation issues in WordPress 6.8, and includes other fixes and improvements.
+
+#### 🐛 Fixed
+* Uploaded files are kept on the Edit Entry form if validation fails.
 
 #### ✨ Improved
 * Faster form fetching in the Data Source dropdown in the View editor.

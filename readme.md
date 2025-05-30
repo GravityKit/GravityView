@@ -24,7 +24,7 @@ If you wish to make changes to the plugin, you need to install the necessary dep
    - Run `npm install -g grunt-cli` if this the first time you've installed Node.js or switched to a new version
 
 Next, install dependencies:
-1. Run `composer public-install` to install Composer dependencies, including development dependencies, or `composer public-install-no-dev` if you don't need the development dependencies
+1. Run `composer install-public` to install Composer dependencies, including development dependencies, or `composer install-public-no-dev` if you don't need the development dependencies
    - If you have access to private GravityKit repositories, you can run `composer install` or `composer install --no-dev` instead
    
 2. Run `npm install` to install Node.js dependencies
