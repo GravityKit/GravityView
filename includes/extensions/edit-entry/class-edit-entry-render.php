@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 class GravityView_Edit_Entry_Render {
 	/**
 	 * Value used to mark file upload as empty.
-	 * @since $ver$
+	 * @since 2.40
 	 */
 	private const EMPTY_FILE_UPLOAD_VALUE = '__GV_EMPTY_FILE__';
 
@@ -141,7 +141,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Holds files that should be removed.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @var array<string, array<string, string>>
 	 */
@@ -2619,7 +2619,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Removes any uploaded files from the internal cache after the form was valid and the entry was stored.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param int $form_id The form ID.
 	 */
@@ -2645,7 +2645,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @see fe-views.js `fix_updating_files_after_edit`.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param int $form_id The form ID.
 	 */
@@ -2669,7 +2669,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Returns an upload result for existing temporary uploaded files.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param array $field The field object.
 	 * @param array $form  The Form object.
@@ -2702,7 +2702,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Removes any files that have been deleted before validation.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 */
 	private function permanently_remove_deleted_files(): void {
 		$entry_id = $this->entry['id'] ?? 0;
@@ -2722,7 +2722,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Returns the temporary upload path for a form.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param int $form_id The form ID.
 	 *
@@ -2744,7 +2744,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Records any files to remove after validation.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param GF_Field $field      The FileUpload field.
 	 * @param string   $value      The current entry value for the field.
@@ -2753,7 +2753,7 @@ class GravityView_Edit_Entry_Render {
 		/**
 		 * @filter `gk/gravityview/edit-entry/record-file-removal` Modifies whether to record files for removal.
 		 *
-		 * @since  $ver$
+		 * @since  2.40
 		 *
 		 * @param bool                $should_record Whether to record.
 		 * @param GF_Field_FileUpload $field         The FileUpload field.
@@ -2800,7 +2800,7 @@ class GravityView_Edit_Entry_Render {
 	 * When the validation of the form fails, the upload information is gone for subsequent posts. To avoid confusion,
 	 * we reset the old value; and mark the field with an "error".
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param GF_Field $field The upload field.
 	 */
@@ -2847,7 +2847,7 @@ class GravityView_Edit_Entry_Render {
 	 * If the form does not validate, but the upload field IS valid, we want to keep any removed files from showing up
 	 * in the form again. If the field does not validate, we keep those old values, to make the UI more intuitive.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param GF_Field $field The upload field.
 	 */
@@ -2878,7 +2878,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Handles the field value for field uploads on invalid forms.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 */
 	private function maybe_fix_valid_file_uploads(): void {
 		foreach ( $this->form['fields'] ?? [] as $field ) {

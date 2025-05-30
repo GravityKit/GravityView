@@ -2,7 +2,7 @@
 /**
  * The default survey field output template for CSVs.
  *
- * @since TBD
+ * @since 2.40
  *
  * @global \GV\Template_Context $gravityview
  */
@@ -80,7 +80,7 @@ switch ( $gravityview->field->field->inputType ) {
 			/**
 			 * Filter to customize the check symbol used in CSV exports
 			 *
-			 * @since TBD
+			 * @since 2.40
 			 *
 			 * @param string               $output_symbol The symbol to use for checked values. Default: "✓"
 			 * @param array                $entry         The entry being displayed
@@ -142,7 +142,7 @@ switch ( $gravityview->field->field->inputType ) {
 		 * Without the space, CSV parsers may interpret the values incorrectly and create
 		 * unwanted extra columns when displaying multiple Likert field values.
 		 *
-		 * @since TBD
+		 * @since 2.40
 		 *
 		 * @param string The glue. Default: "; " (semicolon with space)
 		 * @param \GV\Template_Context The context.

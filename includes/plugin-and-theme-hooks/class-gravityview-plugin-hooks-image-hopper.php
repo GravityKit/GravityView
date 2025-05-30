@@ -4,7 +4,7 @@
  * Add Hooks required for Image Hopper.
  *
  * @file      class-gravityview-plugin-hooks-image-hopper.php
- * @since     $ver$
+ * @since     2.40
  * @license   GPL2+
  * @author    GravityKit <hello@gravitykit.com>
  * @link      http://www.gravitykit.com
@@ -15,14 +15,14 @@
 final class GravityView_Plugin_Hooks_Image_Hopper extends GravityView_Plugin_and_Theme_Hooks {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.40
 	 * @var string
 	 */
 	protected $class_name = Image_Hopper_Gravity_Forms_AddOn_Bootstrap::class;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.40
 	 */
 	protected function add_hooks(): void {
 		parent::add_hooks();
@@ -41,7 +41,7 @@ final class GravityView_Plugin_Hooks_Image_Hopper extends GravityView_Plugin_and
 	/**
 	 * Disables recording file removal for Image Hopper fields.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param bool     $should_record Whether to record a field for file removal.
 	 * @param GF_Field $field         The field.
@@ -62,7 +62,7 @@ final class GravityView_Plugin_Hooks_Image_Hopper extends GravityView_Plugin_and
 	 * This will prevent falling back to the value on the Entry, as Image Hopper uses different logic to validate the
 	 * field.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param mixed    $value The current value.
 	 * @param GF_Field $field The field instance.
@@ -81,7 +81,7 @@ final class GravityView_Plugin_Hooks_Image_Hopper extends GravityView_Plugin_and
 	/**
 	 * Returns whether the provided field is an Image Hopper field.
 	 *
-	 * @since $ver$
+	 * @since 2.40
 	 *
 	 * @param GF_Field $field The field instance.
 	 *
