@@ -24,6 +24,30 @@ const templates = [
 	}
 ];
 
+const viewTemplatesMap = {
+	table: {
+		name: 'Table',
+		slug: 'default_table',
+		selector: '.gv-view-types-module:has(h5:text("Table"))',
+		container: '.gv-table-container',
+		contains: 'table.gv-table-view'
+	},
+	list: {
+		name: 'List',
+		slug: 'default_list',
+		selector: '.gv-view-types-module:has(h5:text("List"))',
+		container: '.gv-list-container',
+		contains: 'ul.gv-list-view'
+	},
+	dataTables: {
+		name: 'DataTables Table',
+		slug: 'datatables_table',
+		selector: '.gv-view-types-module:has(h5:text("DataTables Table"))',
+		container: '.gv-datatables-container',
+		contains: 'table.dataTable'
+	}
+};
+
 /**
  * Selects a Gravity Form from the dropdown by matching the form title.
  * Throws an error if the form title is not found.
@@ -322,6 +346,7 @@ async function clickFirstVisible(page, selectorOrLocator, timeout = 5000) {
 
 module.exports = {
 	templates,
+	viewTemplatesMap,
 	selectGravityFormByTitle,
 	createView,
 	publishView,
