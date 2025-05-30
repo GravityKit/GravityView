@@ -2831,8 +2831,7 @@ class GravityView_Edit_Entry_Render {
 			// Translators: [b] and [/b] are replaced by `<strong>` and `</strong>` tags.
 				esc_html__(
 					'[b]Note:[/b] For security reasons you must upload the file again.',
-					'gk-gravitview'
-				),
+					'gk-gravitview', 'gk-gravityview' ),
 				[
 					'[b]'  => '<strong>',
 					'[/b]' => '</strong>',
