@@ -4,7 +4,7 @@ const {
 	publishView,
 	checkViewOnFrontEnd,
 	clickFirstVisible,
-  viewTemplatesMap
+	viewTemplatesMap
 } = require('../../../helpers/test-helpers');
 
 /**
@@ -43,7 +43,6 @@ test('Multiple Search Bar Widgets', async ({ page }) => {
 	await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
 	await publishView(page);
-
 	await checkViewOnFrontEnd(page);
 
 	const form1 = page.locator('form.gv-widget-search').nth(0);
