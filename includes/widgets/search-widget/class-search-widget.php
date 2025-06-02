@@ -968,8 +968,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			// Construct a manual query for unapproved statuses
-			if ( 'is_approved' === $filter['key'] && in_array( \GravityView_Entry_Approval_Status::UNAPPROVED,
-					(array) $filter['value'] ) ) {
+			if (
+				'is_approved' === $filter['key']
+				&& in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, (array) $filter['value'], false )
+			) {
 				$_tmp_query       = new $query_class(
 					$view->form->ID,
 					[

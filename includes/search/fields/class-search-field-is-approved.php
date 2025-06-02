@@ -61,10 +61,18 @@ final class Search_Field_Is_Approved extends Search_Field_Choices {
 	protected function get_choices(): array {
 		return array_map(
 			static fn( array $choice ): array => [
-				'text'  => $choice['label'] ?? '',
-				'value' => $choice['value'] ?? '',
+				'text'  => (string) ( $choice['label'] ?? '' ),
+				'value' => (string) ( $choice['value'] ?? '' ),
 			],
 			GravityView_Entry_Approval_Status::get_all()
 		);
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function get_input_name(): string {
+		return 'is_approved';
 	}
 }
