@@ -101,7 +101,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 	 */
 	protected function get_input_value(): string {
 		$stored_value = $this->settings['mode'] ?? self::MODE_ANY;
-		if ( 'hidden' === $this->settings['input_type'] ) {
+		if ( 'hidden' === ( $this->settings['input_type'] ?? '' ) ) {
 			return $stored_value;
 		}
 
@@ -133,5 +133,13 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 				'value' => self::MODE_ALL,
 			],
 		];
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function is_searchable_field(): bool {
+		return false;
 	}
 }

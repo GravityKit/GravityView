@@ -95,4 +95,12 @@ final class Search_Field_Submit extends Search_Field {
 			],
 		];
 	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function is_searchable_field(): bool {
+		return false;
+	}
 }

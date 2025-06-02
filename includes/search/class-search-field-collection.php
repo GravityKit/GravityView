@@ -379,7 +379,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 		foreach ( $collection->storage as $field ) {
 			if ( $field->is_of_type( 'submit' ) ) {
-				// If the search mode is missing, add it with an existing search field.
+				// If only the search mode is missing, add it with an existing Submit field.
 				$search_mode_position = $field->position;
 			}
 		}
@@ -411,6 +411,25 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	}
 
 	/**
+	 * Checks if the collection has any visible searchable fields.
+	 *
+	 * This excludes Submit and Search Mode fields as they are not actual search fields.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether there are visible searchable fields.
+	 */
+	private function has_visible_fields(): bool {
+		foreach ( $this->storage as $field ) {
+			if ( $field->is_visible() && $field->is_searchable_field() ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Returns the fields as filtered template data.
 	 *
 	 * @since $ver$
@@ -418,8 +437,11 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 * @return array The template data.
 	 */
 	public function to_template_data(): array {
-		$search_fields = [];
+		if ( ! $this->has_visible_fields() ) {
+			return [];
+		}
 
+		$search_fields = [];
 		foreach ( $this->storage as $field ) {
 			if ( ! $field->is_visible() ) {
 				continue;

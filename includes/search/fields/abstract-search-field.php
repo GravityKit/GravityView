@@ -277,10 +277,13 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		}
 
 		$field_options = array_merge( $this->get_search_field_options(), $this->get_options() );
-		array_walk( $field_options, static function ( &$value ) {
-			$value['contexts']   ??= [];
-			$value['contexts'][] = 'search';
-		} );
+		array_walk(
+			$field_options,
+			static function ( &$value ) {
+				$value['contexts']   ??= [];
+				$value['contexts'][] = 'search';
+			}
+		);
 
 		return array_merge( $options, $field_options );
 	}
@@ -553,6 +556,17 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 */
 	public function is_of_type( string $type ): bool {
 		return $type === static::$type;
+	}
+
+	/**
+	 * Returns whether the search field is a searchable field.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether the search field is a searchable field.
+	 */
+	public function is_searchable_field(): bool {
+		return true;
 	}
 
 	/**

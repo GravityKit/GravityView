@@ -76,6 +76,8 @@ final class Search_Field_Test extends TestCase {
 		self::assertTrue( $this->search_field->is_of_type( 'unit_test' ) );
 		self::assertFalse( $this->search_field->is_of_type( 'other_type' ) );
 
+		self::assertTrue( $this->search_field->is_searchable_field() );
+
 		self::assertStringContainsString(
 			'<i class="dashicons dashicons-test-icon"></i>',
 			$this->search_field->icon_html()

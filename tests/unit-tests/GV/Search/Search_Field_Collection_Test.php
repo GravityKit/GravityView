@@ -1,6 +1,5 @@
 <?php
 
-
 use GV\Collection_Position_Aware;
 use GV\Grid;
 use GV\Search\Fields\Search_Field;
@@ -258,6 +257,51 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Test case for {@see Search_Field_Collection::to_template_data()} with no visible searchable fields.
+	 *
+	 * @since $ver$
+	 */
+	public function test_to_template_data_empty_when_no_visible_searchable_fields(): void {
+		// Test collection with only non-searchable fields returns empty.
+		$collection = Search_Field_Collection::from_configuration( [
+			'search_default' => [
+				'submit'      => [ 'id' => 'submit' ],
+				'search_mode' => [ 'id' => 'search_mode' ],
+			],
+		] );
+
+		$template_data = $collection->to_template_data();
+		self::assertIsArray( $template_data );
+		self::assertEmpty( $template_data );
+	}
+
+	/**
+	 * Test case for {@see Search_Field_Collection::to_template_data()} with invisible searchable fields.
+	 *
+	 * @since $ver$
+	 */
+	public function test_to_template_data_with_invisible_searchable_fields(): void {
+		// Test collection with searchable fields returns data.
+		$field = new class extends Search_Field {
+			protected static string $type = 'custom-hidden';
+
+			protected function required_cap(): ?string {
+				return 'invalid-role';
+			}
+		};
+
+		self::assertFalse( $field->is_visible() );
+		$collection = Search_Field_Collection::from_configuration( [] );
+		$collection->add( $field );
+
+		$template_data = $collection
+			->ensure_required_search_fields()
+			->to_template_data();
+		self::assertIsArray( $template_data );
+		self::assertEmpty( $template_data );
+	}
+
+	/**
 	 * Test case for {@see Search_Field_Collection::to_template_data()}.
 	 *
 	 * @since $ver$
@@ -303,11 +347,11 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 		self::assertTrue( $collection->has_fields_of_type( 'search_mode' ) );
 		self::assertTrue( $collection->has_fields_of_type( 'submit' ) );
 
-		// Get the search mode field and verify configuration
+		// Get the search mode field and verify configuration.
 		$search_mode = $collection->by_type( 'search_mode' )->first();
 		self::assertSame( 'all', $search_mode->to_template_data()['mode'] );
 
-		// Get the submit field and verify configuration
+		// Get the submit field and verify configuration.
 		$submit = $collection->by_type( 'submit' )->first();
 		self::assertFalse( $submit->to_template_data()['search_clear'] );
 	}
