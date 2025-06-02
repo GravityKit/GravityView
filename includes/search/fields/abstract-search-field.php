@@ -440,6 +440,30 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Recursively filters out empty values from an array while preserving '0'.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $input The array to filter.
+	 *
+	 * @return array The filtered array.
+	 */
+	protected function filter_empty_values( array $input ): array {
+		return array_filter(
+			$input,
+			function ( $value ) {
+				if ( is_array( $value ) ) {
+					$filtered = $this->filter_empty_values( $value );
+
+					return ! empty( $filtered );
+				}
+
+				return '' !== $value && null !== $value;
+			}
+		);
+	}
+
+	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -692,6 +716,17 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * @since $ver$
 	 */
 	final public function has_request_value(): bool {
-		return (string) $this->get_input_value() !== '';
+		$value = $this->get_input_value();
+		if ( is_string( $value ) && '' !== $value ) {
+			return true;
+		}
+
+		if ( is_array( $value ) ) {
+			$filtered = $this->filter_empty_values( $value );
+
+			return [] !== $filtered;
+		}
+
+		return false;
 	}
 }
