@@ -283,23 +283,26 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	 */
 	public function test_to_template_data_with_invisible_searchable_fields(): void {
 		// Test collection with searchable fields returns data.
-		$field = new class extends Search_Field {
+		$class = new class extends Search_Field {
 			protected static string $type = 'custom-hidden';
-
-			protected function required_cap(): ?string {
-				return 'invalid-role';
-			}
 		};
+
+		$field = $class::from_configuration( [
+			'only_loggedin' => true,
+		] );
 
 		self::assertFalse( $field->is_visible() );
 		$collection = Search_Field_Collection::from_configuration( [] );
 		$collection->add( $field );
 
-		$template_data = $collection
-			->ensure_required_search_fields()
-			->to_template_data();
-		self::assertIsArray( $template_data );
-		self::assertEmpty( $template_data );
+		$collection = $collection->ensure_required_search_fields();
+		self::assertFalse( $collection->has_visible_fields() );
+		$this->factory->user->create_and_set();
+		self::assertTrue( $collection->has_visible_fields() );
+
+		$by_position = $collection->by_position( 'missing' );
+		self::assertFalse( $by_position->has_visible_fields( true ) ); // Strict check on the split off collection.
+		self::assertTrue( $by_position->has_visible_fields() ); // parent collection has.
 	}
 
 	/**
@@ -319,7 +322,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 
 		$rows = Grid::get_rows_from_collection( $collection, 'search-general' );
 
-		$left = $collection->by_position( 'search-general_' . $rows[0]['1-2 left'][0]['areaid'] );
+		$left  = $collection->by_position( 'search-general_' . $rows[0]['1-2 left'][0]['areaid'] );
 		$right = $collection->by_position( 'search-general_' . $rows[0]['1-2 right'][0]['areaid'] );
 		self::assertSame( 'submit', $left->first()->get_type() );
 		self::assertSame( 'search_mode', $right->first()->get_type() );
@@ -378,5 +381,71 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 		// Get the submit field and verify configuration.
 		$submit = $collection->by_type( 'submit' )->first();
 		self::assertFalse( $submit->to_template_data()['search_clear'] );
+	}
+
+	/**
+	 * Test case for {@see Search_Field_Collection::has_date_field()}.
+	 *
+	 * @since $ver$
+	 */
+	public function test_has_date_field(): void {
+		// Test collection without date fields.
+		$collection = Search_Field_Collection::from_configuration( [
+			'search_default' => [
+				'field1' => [ 'id' => 'search_all' ],
+				'field2' => [ 'id' => 'entry_id' ],
+				'field3' => [ 'id' => 'submit' ],
+			],
+		] );
+
+		self::assertFalse( $collection->has_date_field() );
+
+		// Test with entry_date field (which has input type 'entry_date').
+		$collection_with_entry_date = Search_Field_Collection::from_configuration( [
+			'search_default' => [
+				'field1' => [ 'id' => 'entry_date' ],
+			],
+		] );
+
+		self::assertTrue( $collection_with_entry_date->has_date_field() );
+
+		// Test with mixed fields including a date field.
+		$mixed_collection = Search_Field_Collection::from_configuration( [
+			'search_default' => [
+				'field1' => [ 'id' => 'search_all' ],
+				'field2' => [ 'id' => 'entry_date' ],
+				'field3' => [ 'id' => 'submit' ],
+			],
+		] );
+
+		self::assertTrue( $mixed_collection->has_date_field() );
+
+		$legacy_config = [
+			'search_fields' => json_encode( [
+				[
+					'field' => 'entry_date',
+					'input' => 'date_range',
+					'label' => 'Entry Date Range',
+				],
+			], JSON_THROW_ON_ERROR ),
+		];
+
+		$legacy_collection = Search_Field_Collection::from_legacy_configuration( $legacy_config, null );
+		self::assertTrue( $legacy_collection->has_date_field() );
+
+		// Test with only non-date legacy fields.
+		$non_date_legacy_config = [
+			'search_fields' => json_encode( [
+				[
+					'field' => 'search_all',
+					'input' => 'input_text',
+					'label' => 'Search All',
+				],
+			], JSON_THROW_ON_ERROR ),
+		];
+
+		$non_date_legacy_collection = Search_Field_Collection::from_legacy_configuration( $non_date_legacy_config,
+			null );
+		self::assertFalse( $non_date_legacy_collection->has_date_field() );
 	}
 }

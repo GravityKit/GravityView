@@ -150,7 +150,7 @@ final class Search_Field_Test extends TestCase {
 				'type'          => 'unit_test',
 				'input'         => 'single_checkbox',
 				'custom_class'  => '',
-				'custom_option' => null,
+				'custom_option' => 'Custom value',
 			],
 			$data
 		);

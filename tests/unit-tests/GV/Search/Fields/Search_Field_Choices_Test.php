@@ -138,6 +138,43 @@ final class Search_Field_Choices_Test extends TestCase {
 	}
 
 	/**
+	 * Test case for missing {@see Search_Field_Choices::get_sieved_values()} implementation.
+	 *
+	 * @since $ver$
+	 */
+	public function test_missing_sieve_choices_implementation(): void {
+		$this->expectException( BadMethodCallException::class );
+		$this->expectDeprecationMessageMatches( '/Make sure to implement ".+?:get_sieved_values" or disable sieving./' );
+
+		$field = new class extends Search_Field_Choices {
+
+			protected function get_choices(): array {
+				return [
+					[ 'text' => 'Choice 1', 'value' => '1' ],
+					[ 'text' => 'Choice 2', 'value' => '2' ],
+					[ 'text' => 'Choice 3', 'value' => '3' ],
+				];
+			}
+
+			protected function is_sievable(): bool {
+				return true;
+			}
+		};
+		// Sieving requires an active View and Form.
+		$view       = new View();
+		$view->ID   = 123;
+		$view->form = GF_Form::by_id( 1 );
+
+		$instance = $field::from_configuration( [
+			'sieve_choices' => '1',
+		], $view );
+
+		$collection = Search_Field_Collection::from_configuration( [] );
+		$collection->add( $instance );
+		$collection->to_template_data();
+	}
+
+	/**
 	 * Tests configuration handling.
 	 *
 	 * @since $ver$

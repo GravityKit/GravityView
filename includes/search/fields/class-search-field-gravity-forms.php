@@ -8,7 +8,6 @@ use GFAPI;
 use GFCommon;
 use GFFormsModel;
 use GravityView_Widget_Search;
-use GV\View;
 
 /**
  * Represents a search field based on a Gravity Forms Field.
