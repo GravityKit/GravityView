@@ -7,9 +7,9 @@ const {
 } = require('../../../helpers/test-helpers');
 
 /*
- * This test verifies that the Search Bar is hidden for logged-out users when the visibility option is enabled.
+ * Verifies that the Search Bar is hidden for logged-out users when the visibility option is enabled.
  */
-test('search bar is hidden when user is logged out', async ({ page }) => {
+test('Search Bar is Hidden When Logged Out', async ({ page }) => {
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	await createView(page, {
 		formTitle: 'A Simple Form',
