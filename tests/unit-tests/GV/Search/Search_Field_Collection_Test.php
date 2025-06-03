@@ -3,6 +3,7 @@
 use GV\Collection_Position_Aware;
 use GV\Grid;
 use GV\Search\Fields\Search_Field;
+use GV\Search\Fields\Search_Field_All;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
 use GV\Search\Search_Field_Collection;
 use GV\View;
@@ -299,6 +300,29 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 			->to_template_data();
 		self::assertIsArray( $template_data );
 		self::assertEmpty( $template_data );
+	}
+
+	/**
+	 * Test case for {@see Search_Field_Collection::to_template_data()} with visible searchable fields.
+	 *
+	 * @since $ver$
+	 */
+
+	public function test_to_template_data_with_visible_searchable_fields(): void {
+		$collection = Search_Field_Collection::from_configuration( [] );
+		$collection->add( new Search_Field_All() );
+		$collection    = $collection->ensure_required_search_fields();
+		$template_data = $collection->to_template_data();
+
+		self::assertIsArray( $template_data );
+		self::assertCount( 3, $template_data );
+
+		$rows = Grid::get_rows_from_collection( $collection, 'search-general' );
+
+		$left = $collection->by_position( 'search-general_' . $rows[0]['1-2 left'][0]['areaid'] );
+		$right = $collection->by_position( 'search-general_' . $rows[0]['1-2 right'][0]['areaid'] );
+		self::assertSame( 'submit', $left->first()->get_type() );
+		self::assertSame( 'search_mode', $right->first()->get_type() );
 	}
 
 	/**

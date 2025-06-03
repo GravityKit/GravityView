@@ -51,6 +51,15 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	private array $context;
 
 	/**
+	 * Weather a parent collection has searchable fields.
+	 *
+	 * @since $ver$
+	 *
+	 * @var bool|null
+	 */
+	private ?bool $base_has_visible_fields = null;
+
+	/**
 	 * Creates a collection of fields.
 	 *
 	 * @since $ver$
@@ -290,12 +299,15 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 * @since $ver$
 	 */
 	public function by_position( $position ) {
-		$clone = clone $this;
+		$clone                          = clone $this;
+		$clone->base_has_visible_fields = $this->has_visible_fields();
 
 		$search         = implode( '.*', array_map( 'preg_quote', explode( '*', $position ) ) );
-		$clone->storage = array_filter(
-			$clone->storage,
-			static fn( Search_Field $field ): bool => preg_match( "#^{$search}$#", $field->position ),
+		$clone->storage = array_values(
+			array_filter(
+				$clone->storage,
+				static fn( Search_Field $field ): bool => preg_match( "#^{$search}$#", $field->position ),
+			)
 		);
 
 		return $clone;
@@ -419,7 +431,11 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @return bool Whether there are visible searchable fields.
 	 */
-	private function has_visible_fields(): bool {
+	public function has_visible_fields( bool $ignore_base = false ): bool {
+		if ( ! $ignore_base && true === $this->base_has_visible_fields ) {
+			return true;
+		}
+
 		foreach ( $this->storage as $field ) {
 			if ( $field->is_visible() && $field->is_searchable_field() ) {
 				return true;

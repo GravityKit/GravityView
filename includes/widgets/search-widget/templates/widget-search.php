@@ -16,7 +16,6 @@ $search_method      = \GV\Utils::get( $data, 'search_method', 'get' );
 $search_class       = \GV\Utils::get( $data, 'search_class', '' );
 $permalink_fields   = \GV\Utils::get( $data, 'permalink_fields', [] );
 $search_form_action = \GV\Utils::get( $data, 'search_form_action', '' );
-$advanced_rows      = \GV\Utils::get( $data, 'search_rows_search-advanced', [] );
 $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 ?>
 
@@ -41,8 +40,9 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 	</div>
 
 	<?php
-	if ( ! empty( $advanced_rows ) ) {
-		$has_active_fields = $search_fields->by_position( 'search-advanced*' )->has_request_values();
+	$advanced_collection = $search_fields->by_position( 'search-advanced*' );
+	if ( $advanced_collection->has_visible_fields( true ) ) {
+		$has_active_fields = $advanced_collection->has_request_values();
 
 		$expanded = $has_active_fields ? 'true' : 'false';
 		$open     = $has_active_fields ? ' open' : '';
