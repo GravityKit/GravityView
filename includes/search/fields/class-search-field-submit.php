@@ -103,4 +103,14 @@ final class Search_Field_Submit extends Search_Field {
 	public function is_searchable_field(): bool {
 		return false;
 	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function init(): void {
+		parent::init();
+
+		$this->settings['show_label'] = true;
+	}
 }
