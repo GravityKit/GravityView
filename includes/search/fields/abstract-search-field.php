@@ -633,8 +633,8 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			'custom_class' => gravityview_sanitize_html_class( $this->settings['custom_class'] ?? '' ),
 		];
 
-		foreach ( array_keys( $this->get_options() ) as $key ) {
-			$params[ $key ] = $this->item[ $key ] ?? null;
+		foreach ( $this->get_options() as $key => $option ) {
+			$params[ $key ] = $this->item[ $key ] ?? $option['value'] ?? null;
 		}
 
 		return $params;
@@ -703,7 +703,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			return null;
 		}
 
-		return $this->settings['only_loggedin_cap'] ?? null;
+		return $this->settings['only_loggedin_cap'] ?? 'read';
 	}
 
 	/**
