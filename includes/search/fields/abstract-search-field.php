@@ -729,7 +729,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @since $ver$
 	 */
-	final public function has_request_value(): bool {
+	public function has_request_value(): bool {
 		$value = $this->get_input_value();
 		if ( is_string( $value ) && '' !== $value ) {
 			return true;

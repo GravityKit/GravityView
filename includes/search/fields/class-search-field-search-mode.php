@@ -101,7 +101,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 	 */
 	protected function get_input_value(): string {
 		$stored_value = $this->settings['mode'] ?? self::MODE_ANY;
-		if ( 'hidden' === ( $this->settings['input_type'] ?? '' ) ) {
+		if ( 'hidden' === ( $this->settings['input_type'] ?? 'hidden' ) ) {
 			return $stored_value;
 		}
 
@@ -114,8 +114,25 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 	 * @inheritDoc
 	 * @since $ver$
 	 */
+	public function has_request_value(): bool {
+		if (
+			'hidden' === ( $this->settings['input_type'] ?? 'hidden' )
+			|| ! isset( $_REQUEST[ $this->get_input_name() ] )
+			|| '' === $this->get_request_value( $this->get_input_name() )
+		) {
+			return false;
+		}
+
+		$stored_value = $this->settings['mode'] ?? self::MODE_ANY;
+		return $this->get_input_value() !== $stored_value;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
 	protected function has_choices(): bool {
-		return true;
+		return 'hidden' !== ( $this->settings['input_type'] ?? 'hidden' );
 	}
 
 	/**
