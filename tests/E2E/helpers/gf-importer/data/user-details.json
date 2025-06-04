@@ -39,26 +39,11 @@
 				"label": "Favorite Color",
 				"isRequired": true,
 				"choices": [
-					{
-						"text": "Red",
-						"value": "red"
-					},
-					{
-						"text": "Blue",
-						"value": "blue"
-					},
-					{
-						"text": "Green",
-						"value": "green"
-					},
-					{
-						"text": "Yellow",
-						"value": "yellow"
-					},
-					{
-						"text": "Purple",
-						"value": "purple"
-					}
+					"Red",
+					"Blue",
+					"Green",
+					"Yellow",
+					"Purple"
 				]
 			}
 		]
