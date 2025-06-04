@@ -12,10 +12,10 @@ const {
  * a search with regular search fields first.
  */
 
-test('advanced search panel remains open after search', async ({ page }) => {
+test('Advanced Search Panel Works After Regular Search', async ({ page }) => {
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	await createView(page, {
-		formTitle: 'Training Feedback',
+		formTitle: 'A Simple Form',
 		viewName: 'Verify Adv Search Remains Open',
 		template: viewTemplatesMap.table
 	});
@@ -32,11 +32,13 @@ test('advanced search panel remains open after search', async ({ page }) => {
 	await publishView(page);
 	await checkViewOnFrontEnd(page);
 
-	// TO DO: Add a regular search field and perform a search with it first.
-
+	await page.getByLabel('Search Entries:').fill('example');
+	await page.getByRole('button', { name: 'Search', exact: true }).click();
+	await page.getByLabel('Search Entries:').fill('');
 	await page.getByLabel('Toggle Advanced Search').click();
 	await page.getByLabel('Is Starred').check();
 	await page.getByRole('button', { name: 'Search', exact: true }).click();
-
-	await expect(page.getByLabel('Is Starred')).toBeVisible();
+	const rows = page.locator('tbody > tr');
+	await expect(rows).toHaveCount(1);
+	await expect(page.getByText('David', { exact: true })).toBeVisible();
 });
