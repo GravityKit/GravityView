@@ -25,12 +25,12 @@ test('Search Widget Field Order', async ({ page }) => {
 		.getByRole('link', { name: /Add Search Field/ })
 		.click();
 	await page
-		.locator('#ui-id-17')
-		.getByTitle('Search Field: Is Starred\nFilter on starred entries')
+		.getByRole('tooltip')
+		.locator('.gv-field-label-text-container', { hasText: 'Is Starred' })
 		.click();
 	await page
-		.locator('#ui-id-17')
-		.getByTitle('Search Field: Approval Status\nFilter on read entries')
+		.getByRole('tooltip')
+		.locator('.gv-field-label-text-container', { hasText: 'Approval Status' })
 		.click();
 	await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
