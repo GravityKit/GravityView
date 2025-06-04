@@ -12,7 +12,7 @@ const {
  * one advanced search field.
  */
 
-test('advanced search panel remains open after search', async ({ page }) => {
+test('Advanced Search Panel Remains Open After Search', async ({ page }) => {
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	await createView(page, {
 		formTitle: 'Training Feedback',
