@@ -352,7 +352,6 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 				$choices = array_unique( array_merge( [], ...$_choices_array ) );
 			}
-
 			if ( 'post_category' === $field->type ) {
 				$choices = array_map(
 					static function ( $choice ): string {

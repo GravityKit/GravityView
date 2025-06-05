@@ -1,8 +1,11 @@
 <?php
 
+use GV\GF_Form;
 use GV\Search\Fields\Search_Field;
+use GV\Search\Fields\Search_Field_Created_By;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
 use GV\Search\Search_Field_Collection;
+use GV\View;
 
 /**
  * Tests {@see Search_Field_Gravity_Forms} functionality and behaviors.
@@ -42,7 +45,8 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * Tests {@see Search_Field_Gravity_Forms::get_type()}, {@see Search_Field_Gravity_Forms::get_description()}, and {@see Search_Field_Gravity_Forms::is_of_type()} with basic getter functionality.
+	 * Tests {@see Search_Field_Gravity_Forms::get_type()}, {@see Search_Field_Gravity_Forms::get_description()}, and
+	 * {@see Search_Field_Gravity_Forms::is_of_type()} with basic getter functionality.
 	 *
 	 * @since $ver$
 	 */
@@ -167,19 +171,19 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	 * @since $ver$
 	 */
 	public function test_has_request_value(): void {
-		// Test with no request values
+		// Test with no request values.
 		unset( $_REQUEST['filter_1'] );
 		self::assertFalse( $this->search_field->has_request_value() );
 
-		// Test with value set
+		// Test with value set.
 		$_REQUEST['filter_1'] = 'test value';
 		self::assertTrue( $this->search_field->has_request_value() );
 
-		// Test with empty value
+		// Test with empty value.
 		$_REQUEST['filter_1'] = '';
 		self::assertFalse( $this->search_field->has_request_value() );
 
-		// Clean up
+		// Clean up.
 		unset( $_REQUEST['filter_1'] );
 	}
 
@@ -203,7 +207,42 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	 * @since $ver$
 	 */
 	public function test_choices_handling(): void {
-		$form       = $this->factory->form->import_and_get( 'complete.json' );
+		$term = wp_insert_term(
+			'Test Category',
+			'category',
+			[
+				'slug'   => 'test-category',
+				'parent' => 0,
+			],
+		);
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$user = $this->factory->user->create_and_get(
+			[
+				'user_login' => 'author',
+				'role'       => 'author',
+			]
+		);
+		$this->factory->user->create(
+			[
+				'user_login' => 'author_2',
+				'role'       => 'author',
+			]
+		);
+
+		$post_id = $this->factory->post->create();
+		$entry   = $this->factory->entry->create_and_get(
+			[
+				'post_id'        => $post_id,
+				'status'         => 'active',
+				'form_id'        => $form['id'],
+				23               => 'Test Category:' . $term['term_id'],
+				35               => json_encode( [ 'Second Choice', 'Third Choice' ] ),
+				'created_by'     => $user->ID,
+				'payment_status' => 'Failed',
+			]
+		);
+
 		$collection = Search_Field_Collection::available_fields( $form['id'] );
 
 		$configuration = [
@@ -222,8 +261,89 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 				->first();
 			self::assertInstanceOf( Search_Field::class, $field, "Failed to find field $field_type" );;
 
-			$data = $field->to_template_data();
-			self::assertContains( $contains_value, array_column( $data['choices'], 'text' ) );
+			$sieved_data = $field->to_template_data();
+			self::assertContains( $contains_value, array_column( $sieved_data['choices'], 'text' ) );
 		}
+
+		// Sieving requires an active View and Form.
+		$view       = new View();
+		$view->ID   = 123;
+		$view->form = GF_Form::by_id( $form['id'] );
+
+		$sieve = Search_Field_Collection::from_configuration( [] );
+		$sieve->add(
+			$post_category_23 = Search_Field::from_configuration(
+				[
+					'id'            => Search_Field_Gravity_Forms::generate_field_id( $form['id'], '23' ),
+					'form_id'       => $form['id'],
+					'sieve_choices' => true,
+				],
+				$view,
+			),
+			$multiselect_35 = Search_Field::from_configuration(
+				[
+					'id'            => Search_Field_Gravity_Forms::generate_field_id( $form['id'], '35' ),
+					'form_id'       => $form['id'],
+					'sieve_choices' => true,
+				],
+				$view
+			),
+			$payment_status = Search_Field::from_configuration(
+				[
+					'id'            => Search_Field_Gravity_Forms::generate_field_id( $form['id'], 'payment_status' ),
+					'form_id'       => $form['id'],
+					'sieve_choices' => true,
+				],
+				$view
+			),
+			$created_by = Search_Field_Created_By::from_configuration(
+				[
+					'form_id'       => $form['id'],
+					'sieve_choices' => true,
+				],
+				$view
+			),
+		);
+
+		$reduce = static function ( $carry, $item ): array {
+			$carry[ $item['key'] ] = array_column( $item['choices'], 'text' );
+
+			return $carry;
+		};
+
+		$unsieved_data = array_reduce(
+			[
+				$post_category_23->to_template_data(),
+				$multiselect_35->to_template_data(),
+				$payment_status->to_template_data(),
+				$created_by->to_template_data(),
+			],
+			$reduce,
+			[]
+		);
+
+		self::assertContains( 'Uncategorized', $unsieved_data['23'] );
+		self::assertNotCount( 1, $unsieved_data['35'] );
+		self::assertContains( 'First Choice', $unsieved_data['35'] );
+		self::assertNotCount( 1, $unsieved_data['payment_status'] );
+		self::assertContains( 'author', $unsieved_data['created_by'] );
+		self::assertContains( 'author_2', $unsieved_data['created_by'] );
+
+		$sieved_data = array_reduce(
+			$sieve->to_template_data(),
+			$reduce,
+			[]
+		);
+
+		self::assertSame(
+			[
+				'23'             => [ 'Test Category' ],
+				// 35 is a multiselect, which contains JSON-encoded values.
+				'35'             => [ 'Second Choice', 'Third Choice' ],
+				'payment_status' => [ 'Failed' ],
+				'created_by'     => [ 'author' ],
+			],
+			$sieved_data,
+		);
 	}
 }
