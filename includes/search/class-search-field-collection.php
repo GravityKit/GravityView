@@ -516,4 +516,23 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 		return $clone;
 	}
+
+	/**
+	 * Adds multiple fields to the collection.
+	 *
+	 * @since $ver$
+	 *
+	 * @param Search_Field $value     The field to add.
+	 * @param Search_Field ...$fields Additional fields to add.
+	 */
+	public function add( $value /*, ...$fields */ ): void {
+		$fields = func_get_args();
+		foreach ( $fields as $field ) {
+			if ( ! $field instanceof Search_Field ) {
+				continue;
+			}
+
+			parent::add( $field );
+		}
+	}
 }

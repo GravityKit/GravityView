@@ -5,6 +5,7 @@ use GV\Grid;
 use GV\Search\Fields\Search_Field;
 use GV\Search\Fields\Search_Field_All;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
+use GV\Search\Fields\Search_Field_Submit;
 use GV\Search\Search_Field_Collection;
 use GV\View;
 
@@ -31,6 +32,21 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	public function test_collection_is_position_aware(): void {
 		$collection = Search_Field_Collection::from_configuration( [] );
 		self::assertInstanceOf( Collection_Position_Aware::class, $collection );
+	}
+
+	/**
+	 * Test case for {@see Search_Field_Collection::add()} with multiple fields.
+	 *
+	 * @since $ver$
+	 */
+	public function test_add_multiple_fields(  ):void {
+		$collection = Search_Field_Collection::from_configuration( [] );
+		$collection->add(
+			new Search_Field_All(),
+			new Search_Field_Submit(),
+		);
+
+		self::assertCount( 2, $collection );
 	}
 
 	/**
