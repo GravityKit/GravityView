@@ -30,5 +30,6 @@ test('Search Bar is Hidden When Logged Out', async ({ page }) => {
 	await loggedOutPage.goto(viewUrl);
 
 	await expect(loggedOutPage.getByLabel('Search Entries:')).not.toBeVisible();
+	await expect(loggedOutPage.getByRole('button', { name: 'Search' })).not.toBeVisible();
 	await context.close();
 });
