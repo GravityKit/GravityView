@@ -15,37 +15,59 @@ function gf_form_exists_by_title( $title ) {
 
 function transform_form_fields( $fields ) {
     $transformed_fields = [];
-    
+
     foreach ( $fields as $field ) {
         $transformed_field = [
-            'id' => $field['id'],
-            'type' => $field['type'],
-            'label' => $field['label'],
+            'id'         => $field['id'],
+            'type'       => $field['type'],
+            'label'      => $field['label'],
             'isRequired' => $field['isRequired'] ?? false,
-            'value' => '',
+            'value'      => '',
         ];
-        
-        if ( $field['type'] === 'select' && isset( $field['choices'] ) ) {
-            $transformed_field['choices'] = [];
-            foreach ( $field['choices'] as $index => $choice ) {
-                $transformed_field['choices'][] = [
-                    'text' => $choice,
-                    'value' => $choice,
-                    'isSelected' => false
-                ];
-            }
-        }
-        
+
+        // Handle specific field types
         switch ( $field['type'] ) {
             case 'text':
             case 'email':
                 $transformed_field['inputType'] = $field['type'];
                 break;
+
+            case 'select':
+                if ( isset( $field['choices'] ) ) {
+                    $transformed_field['choices'] = array_map( function ( $choice ) {
+                        return [
+                            'text'       => $choice,
+                            'value'      => $choice,
+                            'isSelected' => false,
+                        ];
+                    }, $field['choices'] );
+                }
+                break;
+
+            case 'address':
+                $transformed_field['inputs'] = [
+                    [ 'id' => "{$field['id']}.1", 'label' => 'Street Address' ],
+                    [ 'id' => "{$field['id']}.2", 'label' => 'Address Line 2' ],
+                    [ 'id' => "{$field['id']}.3", 'label' => 'City' ],
+                    [ 'id' => "{$field['id']}.4", 'label' => 'State / Province' ],
+                    [ 'id' => "{$field['id']}.5", 'label' => 'ZIP / Postal Code' ],
+                    [ 'id' => "{$field['id']}.6", 'label' => 'Country' ],
+                ];
+                break;
+
+            case 'name':
+                $transformed_field['inputs'] = [
+                    [ 'id' => "{$field['id']}.3", 'label' => 'First' ],
+                    [ 'id' => "{$field['id']}.6", 'label' => 'Last' ],
+                ];
+                break;
+
+            // Add more complex field support here as needed
         }
-        
+
         $transformed_fields[] = $transformed_field;
     }
-    
+
     return $transformed_fields;
 }
 
