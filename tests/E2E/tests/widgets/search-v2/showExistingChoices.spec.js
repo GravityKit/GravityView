@@ -84,26 +84,26 @@ test('Search Bar Only Shows Choices That Exist in Submitted Entries', async ({ p
 	});
 
 	await test.step('Assert search fields are visible', async () => {
-		await expect(page.getByLabel('What is your primary productivity tool?')).toBeVisible();
-		await expect(page.getByLabel('How do you measure your productivity?')).toBeVisible();
-		await expect(page.getByLabel('What is your biggest productivity challenge?')).toBeVisible();
+		await expect(page.getByRole('combobox', { name: 'What is your primary productivity tool?' })).toBeVisible();
+		await expect(page.getByRole('combobox', { name: 'How do you measure your productivity?' })).toBeVisible();
+		await expect(page.getByRole('combobox', { name: 'What is your biggest productivity challenge?' })).toBeVisible();
 	});
 
 	await test.step('Assert dropdown choices for each field', async () => {
-		const select1 = page.getByLabel('What is your primary productivity tool?');
+		const select1 = page.getByRole('combobox', { name: 'What is your primary productivity tool?' });
 		const options1 = await select1.locator('option').allTextContents();
 		expect(options1).toContain('Asana');
 		expect(options1).toContain('Trello');
 		expect(options1).not.toContain('Basecamp');
 
-		const select2 = page.getByLabel('How do you measure your productivity?');
+		const select2 = page.getByRole('combobox', { name: 'How do you measure your productivity?' });
 		const options2 = await select2.locator('option').allTextContents();
 		expect(options2).toContain('Weekly Reviews');
 		expect(options2).toContain('Time Tracking');
 		expect(options2).not.toContain('Pomodoro Technique');
 
 		// Nothing should be filtered/sieved out from this field
-		const select3 = page.getByLabel('What is your biggest productivity challenge?');
+		const select3 = page.getByRole('combobox', { name: 'What is your biggest productivity challenge?' });
 		const options3 = await select3.locator('option').allTextContents();
 		expect(options3).toContain('Distractions');
 		expect(options3).toContain('Overwhelm');
