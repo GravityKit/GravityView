@@ -58,7 +58,6 @@ test.describe('GravityMaps: Map Filter Radius Search – setup, configuration, a
 	});
 
 	test('should filter entries by geolocation radius on the map', async ({ page }) => {
-
 		await test.step('Create View with Map template', async () => {
 			await page.goto('/wp-admin/edit.php?post_type=gravityview');
 			await createView(page, {
@@ -103,13 +102,19 @@ test.describe('GravityMaps: Map Filter Radius Search – setup, configuration, a
 			await page.getByText('United States CapitolWashington, DC, USA').click();
 			await page.locator('#search-box-filter_geolocation').selectOption('1');
 			await page.getByRole('button', { name: 'Search', exact: true }).click();
-			await expect(page.getByRole('heading', { name: 'United States Capitol' })).toBeVisible();
-			await expect(page.getByRole('heading', { name: 'National Gallery of Art' })).toBeVisible();
-            await expect(page.getByRole('heading', { name: 'Smithsonian National Air and' })).toBeVisible();
-            // TODO: Add additional assertions after bug is fixed
-            // await expect(page.getByRole('heading', { name: 'Lincoln Memorial' })).not.toBeVisible();
-            // await expect(page.getByRole('heading', { name: 'Washington Monument' })).not.toBeVisible();
-            // await expect(page.getByRole('heading', { name: 'The White House' })).not.toBeVisible();
+			await expect(
+				page.getByRole('heading', { name: 'United States Capitol' })
+			).toBeVisible();
+			await expect(
+				page.getByRole('heading', { name: 'National Gallery of Art' })
+			).toBeVisible();
+			await expect(
+				page.getByRole('heading', { name: 'Smithsonian National Air and' })
+			).toBeVisible();
+			// TODO: Add additional assertions after bug is fixed
+			// await expect(page.getByRole('heading', { name: 'Lincoln Memorial' })).not.toBeVisible();
+			// await expect(page.getByRole('heading', { name: 'Washington Monument' })).not.toBeVisible();
+			// await expect(page.getByRole('heading', { name: 'The White House' })).not.toBeVisible();
 		});
 	});
 });
