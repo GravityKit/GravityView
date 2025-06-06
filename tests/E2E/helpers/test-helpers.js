@@ -45,6 +45,13 @@ const viewTemplatesMap = {
 		selector: '.gv-view-types-module:has(h5:text("DataTables Table"))',
 		container: '.gv-datatables-container',
 		contains: 'table.dataTable'
+	},
+	maps: {
+		name: 'Map',
+		slug: 'map',
+		selector: '.gv-view-types-module:has(h5:text("Map"))',
+		container: '.gv-map-container',
+		contains: '.gk-map-entries'
 	}
 };
 
