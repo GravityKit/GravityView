@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.39.1\n"
+"Project-Id-Version: GravityView 2.40\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-04-25T21:08:51+00:00\n"
+"POT-Creation-Date: 2025-05-30T01:12:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -218,9 +218,11 @@ msgstr ""
 msgid "All Views"
 msgstr ""
 
+#. translators: %s is a link to the New View page
 #: future/includes/class-gv-plugin.php:723
 #: future/includes/class-gv-plugin.php:724
 #: future/includes/class-gv-view.php:179
+#: includes/class-admin-welcome.php:214
 msgid "New View"
 msgstr ""
 
@@ -236,7 +238,8 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:245
 #: includes/admin/metaboxes/views/placeholder.php:39
 #: includes/admin/metaboxes/views/placeholder.php:64
-#: includes/class-admin-welcome.php:199
+#: includes/class-admin-welcome.php:204
+#: includes/class-admin-welcome.php:440
 #: includes/fields/class-gravityview-field-gravityview_view.php:78
 #: includes/widgets/search-widget/class-search-widget.php:95
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:15
@@ -299,8 +302,8 @@ msgstr ""
 #: includes/class-admin-views.php:1746
 #: includes/class-frontend-views.php:685
 #: includes/class-gravityview-admin-bar.php:112
-#: includes/class-gravityview-entry-link-shortcode.php:250
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1113
+#: includes/class-gravityview-entry-link-shortcode.php:252
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1146
 #: includes/extensions/edit-entry/fields/edit_link.php:14
 #: includes/fields/class-gravityview-field-edit-link.php:54
 #: templates/fields/field-edit_link-html.php:38
@@ -902,7 +905,7 @@ msgid "Update Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:526
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2567
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2600
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
@@ -924,7 +927,7 @@ msgid "Cancel Link Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:545
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2566
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2599
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
@@ -1196,22 +1199,27 @@ msgid "This class will be added to the widget container"
 msgstr ""
 
 #: future/includes/gutenberg/blocks/entry-field/block.php:22
+#: includes/class-admin-welcome.php:381
 msgid "GravityView Entry Field"
 msgstr ""
 
 #: future/includes/gutenberg/blocks/entry-link/block.php:22
+#: includes/class-admin-welcome.php:406
 msgid "GravityView Entry Link"
 msgstr ""
 
 #: future/includes/gutenberg/blocks/entry/block.php:22
+#: includes/class-admin-welcome.php:361
 msgid "GravityView Entry"
 msgstr ""
 
 #: future/includes/gutenberg/blocks/view-details/block.php:22
+#: includes/class-admin-welcome.php:339
 msgid "GravityView View Details"
 msgstr ""
 
 #: future/includes/gutenberg/blocks/view/block.php:23
+#: includes/class-admin-welcome.php:319
 #: includes/fields/class-gravityview-field-gravityview_view.php:30
 msgid "GravityView View"
 msgstr ""
@@ -1495,7 +1503,7 @@ msgid "View Settings"
 msgstr ""
 
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:161
-#: includes/class-gravityview-entry-link-shortcode.php:253
+#: includes/class-gravityview-entry-link-shortcode.php:255
 #: includes/extensions/delete-entry/class-delete-entry-admin.php:82
 #: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:32
 #: includes/extensions/delete-entry/class-gravityview-field-delete-link.php:108
@@ -1609,8 +1617,8 @@ msgstr ""
 #: includes/class-admin-add-shortcode.php:140
 #: includes/class-admin-views.php:1849
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:379
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1175
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1308
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1208
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1341
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:100
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1312
 msgid "Cancel"
@@ -1900,6 +1908,7 @@ msgstr ""
 
 #: includes/class-admin-views.php:332
 #: includes/class-admin-views.php:364
+#: includes/class-admin-welcome.php:209
 msgid "Create a View"
 msgstr ""
 
@@ -2085,60 +2094,411 @@ msgstr ""
 msgid "You have unsaved changes. Continuing will discard them. Are you sure you want to proceed?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:66
-#: includes/class-admin-welcome.php:67
+#: includes/class-admin-welcome.php:68
+#: includes/class-admin-welcome.php:69
 msgid "Changelog"
 msgstr ""
 
-#: includes/class-admin-welcome.php:80
-#: includes/class-admin-welcome.php:81
-#: includes/class-admin-welcome.php:170
+#: includes/class-admin-welcome.php:82
+#: includes/class-admin-welcome.php:83
+#: includes/class-admin-welcome.php:175
 msgid "Credits"
 msgstr ""
 
-#: includes/class-admin-welcome.php:94
+#: includes/class-admin-welcome.php:96
 msgid "GravityView: Getting Started"
 msgstr ""
 
-#: includes/class-admin-welcome.php:95
-#: includes/class-admin-welcome.php:164
+#: includes/class-admin-welcome.php:97
+#: includes/class-admin-welcome.php:169
 msgid "Getting Started"
 msgstr ""
 
-#: includes/class-admin-welcome.php:159
+#. translators: %s is the plugin version number
+#: includes/class-admin-welcome.php:163
 msgid "Welcome to GravityView %s"
 msgstr ""
 
-#: includes/class-admin-welcome.php:160
+#: includes/class-admin-welcome.php:165
 msgid "Thank you for installing GravityView. Beautifully display your Gravity Forms entries."
 msgstr ""
 
-#: includes/class-admin-welcome.php:167
+#: includes/class-admin-welcome.php:172
 msgid "List of Changes"
 msgstr ""
 
-#: includes/class-admin-welcome.php:287
+#: includes/class-admin-welcome.php:195
+msgid "Configuring a View"
+msgstr ""
+
+#: includes/class-admin-welcome.php:204
+msgid "Read more: Setting Up Your First View"
+msgstr ""
+
+#. translators: %s is a link to the New View page
+#: includes/class-admin-welcome.php:214
+msgid "Go to the GravityKit menu and click on %s"
+msgstr ""
+
+#. translators: [strong]...[/strong] represents text that should be bold
+#: includes/class-admin-welcome.php:219
+msgid "If you want to [strong]create a new form[/strong], click the \"Use a Form Preset\" button"
+msgstr ""
+
+#. translators: [strong]...[/strong] represents text that should be bold
+#: includes/class-admin-welcome.php:229
+msgid "If you want to [strong]use an existing form&rsquo;s entries[/strong], select from the dropdown."
+msgstr ""
+
+#. translators: [strong]Table[/strong] and [strong]Listing[/strong] represent text that should be bold
+#: includes/class-admin-welcome.php:239
+msgid "Select the type of View you would like to create. There are two core types of Views: [strong]Table[/strong] and [strong]Listing[/strong]."
+msgstr ""
+
+#. translators: [strong]...[/strong] represents text that should be bold
+#: includes/class-admin-welcome.php:250
+msgid "[strong]Table Views[/strong] output entries as tables; a grid of data."
+msgstr ""
+
+#. translators: [strong]...[/strong] represents text that should be bold
+#: includes/class-admin-welcome.php:260
+msgid "[strong]Listing Views[/strong] display entries in a more visual layout."
+msgstr ""
+
+#: includes/class-admin-welcome.php:269
+msgid "On the View Configuration metabox, click on the \"+Add Field\" button to add form fields to the active areas of your View. These are the fields that will be displayed in the frontend."
+msgstr ""
+
+#: includes/class-admin-welcome.php:273
+msgid "What is a View?"
+msgstr ""
+
+#: includes/class-admin-welcome.php:274
+msgid "When a form is submitted in Gravity Forms, an entry is created. Without GravityView, Gravity Forms entries are visible only in the WordPress dashboard, and only to users with permission."
+msgstr ""
+
+#: includes/class-admin-welcome.php:275
+msgid "GravityView allows you to display entries on the front of your site. In GravityView, when you arrange the fields you want displayed and save the configuration, it's called a \"View\"."
+msgstr ""
+
+#: includes/class-admin-welcome.php:283
+msgid "Embed GravityView Blocks in Your Content"
+msgstr ""
+
+#: includes/class-admin-welcome.php:284
+msgid "GravityView provides several powerful blocks that allow you to easily embed Views, Entries, and more into your content."
+msgstr ""
+
+#. translators: Do not translate [strong] and [/strong]; these are replaced with HTML tags.
+#: includes/class-admin-welcome.php:324
+msgid "[strong]Display a complete GravityView View[/strong] on any page or post."
+msgstr ""
+
+#: includes/class-admin-welcome.php:330
+msgid "Embed fully-functional Views with all your configured layouts and settings."
+msgstr ""
+
+#. translators: Do not translate [strong] and [/strong]; these are replaced with HTML tags.
+#: includes/class-admin-welcome.php:344
+msgid "[strong]Display specific information about a View[/strong], such as the total number of entries."
+msgstr ""
+
+#: includes/class-admin-welcome.php:351
+msgid "Great for showing statistics and summaries from your form data."
+msgstr ""
+
+#. translators: Do not translate [strong] and [/strong]; these are replaced with HTML tags.
+#: includes/class-admin-welcome.php:366
+msgid "[strong]Display a complete entry[/strong] from your form submissions."
+msgstr ""
+
+#: includes/class-admin-welcome.php:373
+msgid "Show all fields from a specific entry using your Single Entry layout."
+msgstr ""
+
+#. translators: Do not translate [strong] and [/strong]; these are replaced with HTML tags.
+#: includes/class-admin-welcome.php:386
+msgid "[strong]Display a single field from an entry[/strong] anywhere on your site."
+msgstr ""
+
+#: includes/class-admin-welcome.php:393
+msgid "Perfect for highlighting specific information from your entries."
+msgstr ""
+
+#. translators: Do not translate [strong] and [/strong]; these are replaced with HTML tags.
+#: includes/class-admin-welcome.php:411
+msgid "[strong]Create links to specific entries[/strong] or entry actions."
+msgstr ""
+
+#: includes/class-admin-welcome.php:418
+msgid "Generate links to view, edit, or delete entries with customizable text."
+msgstr ""
+
+#: includes/class-admin-welcome.php:423
+msgid "Demonstration of embedding GravityView blocks using the block editor by typing /GravityView to see the block autocompletions."
+msgstr ""
+
+#: includes/class-admin-welcome.php:433
+msgid "Embed Views in Classic Editor"
+msgstr ""
+
+#: includes/class-admin-welcome.php:434
+msgid "Views don&rsquo;t need to be embedded in a post or page, but you can if you want. Embed Views using the \"Add View\" button above your content editor."
+msgstr ""
+
+#. translators: Do not translate [strong] and [/strong]; these are replaced with HTML tags.
+#: includes/class-admin-welcome.php:437
+msgid "GravityView has full support for shortcodes to embed Views, entries, and fields. [link]See a full list of shortcodes[/link]."
+msgstr ""
+
+#: includes/class-admin-welcome.php:444
+msgid "Screenshot of Add View button"
+msgstr ""
+
+#: includes/class-admin-welcome.php:452
+msgid "Configure Multiple Entry, Single Entry, and Edit Entry Layouts"
+msgstr ""
+
+#. translators: [strong]Multiple Entry[/strong], [strong]Single Entry[/strong], and [strong]Edit Entry[/strong] represent text that should be bold
+#: includes/class-admin-welcome.php:457
+msgid "You can configure what fields are displayed in [strong]Multiple Entry[/strong], [strong]Single Entry[/strong], and [strong]Edit Entry[/strong] modes. These can be configured by clicking on the three associated tabs when editing a View."
+msgstr ""
+
+#: includes/class-admin-welcome.php:466
+msgid "Click \"+ Add Field\" to add a field to a zone"
+msgstr ""
+
+#: includes/class-admin-welcome.php:467
+msgid "Click the name of the field you want to display"
+msgstr ""
+
+#: includes/class-admin-welcome.php:468
+msgid "Once added, fields can be dragged and dropped to be re-arranged. Hover over the field until you see a cursor with four arrows, then drag the field."
+msgstr ""
+
+#. translators: %1$s is a gear icon, %2$sField Settings%3$s is bold text
+#: includes/class-admin-welcome.php:472
+msgid "Click the %1$s gear icon on each field to configure the %2$sField Settings%3$s"
+msgstr ""
+
+#: includes/class-admin-welcome.php:481
+msgid "Add a field dialog box"
+msgstr ""
+
+#: includes/class-admin-welcome.php:504
 msgid "What&rsquo;s New"
 msgstr ""
 
-#: includes/class-admin-welcome.php:407
-msgid "View change history"
+#: includes/class-admin-welcome.php:539
+msgid "View Full Change History on GravityKit.com"
 msgstr ""
 
-#: includes/class-admin-welcome.php:459
+#: includes/class-admin-welcome.php:591
 msgid "GravityView is brought to you by:"
 msgstr ""
 
-#: includes/class-admin-welcome.php:503
+#: includes/class-admin-welcome.php:596
+#: includes/class-admin-welcome.php:598
+msgid "Zack Katz"
+msgstr ""
+
+#: includes/class-admin-welcome.php:596
+msgid "Follow Zack on X"
+msgstr ""
+
+#: includes/class-admin-welcome.php:596
+msgid "View Zack&rsquo;s website"
+msgstr ""
+
+#: includes/class-admin-welcome.php:597
+msgid "Project Lead &amp; Developer"
+msgstr ""
+
+#. translators: %1$s is ATP podcast link, %2$s is The Flop House podcast link
+#: includes/class-admin-welcome.php:601
+msgid "Zack has been developing WordPress plugins since 2008 and has been a huge Gravity Forms fan from the start. Zack is co-owner of GravityKit and he lives with his wife in Leverett, Massachusetts. He can&rsquo;t wait for the next episode of %1$s or %2$s podcasts."
+msgstr ""
+
+#: includes/class-admin-welcome.php:609
+#: includes/class-admin-welcome.php:611
+msgid "Rafael Ehlers"
+msgstr ""
+
+#: includes/class-admin-welcome.php:609
+msgid "Follow Rafael on Twitter"
+msgstr ""
+
+#: includes/class-admin-welcome.php:609
+msgid "View Rafael&rsquo;s WordPress Journey"
+msgstr ""
+
+#: includes/class-admin-welcome.php:610
+msgid "Project Manager, Support Lead &amp; Customer&nbsp;Advocate"
+msgstr ""
+
+#. translators: %s is a link to Porto Alegre, Brazil
+#: includes/class-admin-welcome.php:614
+msgid "Rafael helps guide GravityKit development priorities and keep us on track. He&rsquo;s the face of our customer support and helps customers get the most out of the product. Rafael hails from %s."
+msgstr ""
+
+#: includes/class-admin-welcome.php:621
+#: includes/class-admin-welcome.php:623
+msgid "Vlad K."
+msgstr ""
+
+#: includes/class-admin-welcome.php:622
+msgid "Head of Development"
+msgstr ""
+
+#: includes/class-admin-welcome.php:623
+msgid "Vlad is GravityKit&rsquo;s lead developer. Known for his versatility, Vlad handles both front-end and back-end programming, as well as testing and DevOps. He lives in Ottawa, Canada, and frequently travels the world in pursuit of unique experiences that fuel his creativity and broaden his worldview."
+msgstr ""
+
+#: includes/class-admin-welcome.php:627
+#: includes/class-admin-welcome.php:629
+msgid "Rafael Bennemann"
+msgstr ""
+
+#: includes/class-admin-welcome.php:627
+msgid "Follow Rafael on X"
+msgstr ""
+
+#: includes/class-admin-welcome.php:628
+msgid "Support Specialist"
+msgstr ""
+
+#. translators: %s is a link to Spritz Veneziano
+#: includes/class-admin-welcome.php:632
+msgid "Rafael dedicated most of his adult life to helping people and companies take their ideas to the web, first as a developer and now as a Customer Advocate at GravityKit. He will do his best to help you too, all the while sipping a %s in Northern Italy, where he currently lives with his family."
+msgstr ""
+
+#: includes/class-admin-welcome.php:639
+#: includes/class-admin-welcome.php:641
+msgid "Casey Burridge"
+msgstr ""
+
+#: includes/class-admin-welcome.php:640
+msgid "Content Creator"
+msgstr ""
+
+#: includes/class-admin-welcome.php:641
+msgid "Casey is GravityKit&rsquo;s resident content creator. He&rsquo;s been a WordPress lover ever since launching his first blog more than 6 years ago. Casey has lived and worked in London and Beijing, but feels most at home in Cape Town, South Africa, where he&rsquo;s originally from."
+msgstr ""
+
+#: includes/class-admin-welcome.php:645
+#: includes/class-admin-welcome.php:647
+msgid "Doeke Norg"
+msgstr ""
+
+#: includes/class-admin-welcome.php:645
+msgid "Follow Doeke on X"
+msgstr ""
+
+#: includes/class-admin-welcome.php:645
+msgid "View Doeke&rsquo;s website"
+msgstr ""
+
+#: includes/class-admin-welcome.php:646
+msgid "Senior Developer"
+msgstr ""
+
+#: includes/class-admin-welcome.php:647
+msgid "With almost 20 years of experience in PHP, there are few things Doeke doesn&rsquo;t know about our favourite programming language. He lives with his family in The Netherlands, and spends his time designing elaborate, but maintainable code. He also writes a blog about software design in PHP."
+msgstr ""
+
+#: includes/class-admin-welcome.php:651
+#: includes/class-admin-welcome.php:653
+msgid "Mwale Kalenga"
+msgstr ""
+
+#: includes/class-admin-welcome.php:651
+msgid "View Mwale&rsquo;s website"
+msgstr ""
+
+#: includes/class-admin-welcome.php:652
+msgid "QA Engineer"
+msgstr ""
+
+#: includes/class-admin-welcome.php:653
+msgid "Mwale is a meticulous QA Engineer dedicated to ensuring seamless plugin performance and exceptional user satisfaction. With a strong foundation in WordPress development and extensive expertise in testing, Mwale excels at delivering robust, reliable solutions that enhance user experiences across diverse platforms and environments."
+msgstr ""
+
+#: includes/class-admin-welcome.php:660
 msgid "Contributors"
 msgstr ""
 
-#: includes/class-admin-welcome.php:535
+#: includes/class-admin-welcome.php:662
+msgid "Development"
+msgstr ""
+
+#: includes/class-admin-welcome.php:669
+msgid "Translations"
+msgstr ""
+
+#: includes/class-admin-welcome.php:692
 msgid "Want to contribute?"
 msgstr ""
 
-#: includes/class-admin-welcome.php:536
+#. translators: %1$s and %2$s are the opening and closing tags for the GitHub link
+#: includes/class-admin-welcome.php:696
 msgid "If you want to contribute to the code, %1$syou can on Github%2$s. If your contributions are accepted, you will be thanked here."
+msgstr ""
+
+#: includes/class-admin-welcome.php:707
+msgid "Thanks to the following open-source software:"
+msgstr ""
+
+#. translators: %1$s is a link to DataTables
+#: includes/class-admin-welcome.php:713
+msgid "%1$s - amazing tool for table data display. Many thanks!"
+msgstr ""
+
+#. translators: %1$s is a link to Flexibility
+#: includes/class-admin-welcome.php:720
+msgid "%1$s - Adds support for CSS flexbox to Internet Explorer 8 &amp; 9"
+msgstr ""
+
+#. translators: %1$s is a link to Gamajo Template Loader
+#: includes/class-admin-welcome.php:727
+msgid "%1$s - makes it easy to load template files with user overrides"
+msgstr ""
+
+#. translators: %1$s is a link to jQuery Cookie plugin
+#: includes/class-admin-welcome.php:734
+msgid "%1$s - Access and store cookie values with jQuery"
+msgstr ""
+
+#. translators: %1$s is a link to Gravity Forms
+#: includes/class-admin-welcome.php:741
+msgid "%1$s - If Gravity Forms weren't such a great plugin, GravityView wouldn't exist!"
+msgstr ""
+
+#: includes/class-admin-welcome.php:745
+msgid "GravityView uses icons made by Freepik, Adam Whitcroft, Amit Jakhu, Zurb, Scott de Jonge, Yannick, Picol, Icomoon, TutsPlus, Dave Gandy, SimpleIcon from www.flaticon.com"
+msgstr ""
+
+#. translators: %s is a link to vecteezy.com
+#: includes/class-admin-welcome.php:749
+msgid "GravityView uses free vector art by %s"
+msgstr ""
+
+#. translators: %1$s is a link to PHPEnkoder
+#: includes/class-admin-welcome.php:756
+msgid "%1$s script encodes the email addresses."
+msgstr ""
+
+#: includes/class-admin-welcome.php:760
+msgid "The Duplicate View functionality is based on the excellent Duplicate Post plugin by Enrico Battocchi"
+msgstr ""
+
+#. translators: %s is a link to BrowserStack
+#: includes/class-admin-welcome.php:764
+msgid "Browser testing by %s"
+msgstr ""
+
+#. translators: %s is a link to Easy Digital Downloads
+#: includes/class-admin-welcome.php:771
+msgid "%s makes auto-upgrades possible"
 msgstr ""
 
 #: includes/class-admin.php:68
@@ -2686,7 +3046,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:229
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2425
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2458
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -2694,7 +3054,7 @@ msgstr ""
 msgid "Reset Entry approval for GravityView"
 msgstr ""
 
-#: includes/class-gravityview-entry-link-shortcode.php:256
+#: includes/class-gravityview-entry-link-shortcode.php:258
 #: includes/fields/class-gravityview-field-entry-link.php:81
 #: templates/deprecated/fields/entry_link.php:17
 #: templates/fields/field-entry_link-html.php:27
@@ -2924,86 +3284,82 @@ msgstr ""
 msgid "Your request was rejected"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1176
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1309
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1209
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1342
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:70
 msgid "Update"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1177
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1310
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1210
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1343
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:75
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:262
 msgid "Next"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1178
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1311
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1211
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1344
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:76
 msgid "Previous"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1201
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1234
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1201
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1234
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1208
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1241
 msgid "Entry Updated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1230
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1263
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %1$sReturning to Entry%2$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1235
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1268
 msgctxt "Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %1$sReturning to %2$s%3$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1241
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1274
 msgctxt "Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %1$sRedirecting to %2$s%3$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1246
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1279
 msgid "Entry Updated. %1$sReturn to Entry%2$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1467
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1500
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1474
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1507
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1821
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1875
 msgid "This field is required."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1857
-msgid "Maximum number of files reached"
-msgstr ""
-
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2420
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2453
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2429
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2462
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2445
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2478
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2470
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2503
 msgid "You do not have permission to edit this field."
 msgstr ""
 
@@ -3012,12 +3368,8 @@ msgctxt "The title for an event in a notifications drop down list."
 msgid "Entry is updated"
 msgstr ""
 
-#: includes/extensions/edit-entry/partials/inline-javascript.php:9
+#: includes/extensions/edit-entry/partials/inline-javascript.php:15
 msgid "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to delete"
-msgstr ""
-
-#: includes/extensions/edit-entry/partials/inline-javascript.php:21
-msgid "Ajax error while deleting field."
 msgstr ""
 
 #: includes/extensions/entry-notes/class-gravityview-field-notes.php:106
@@ -5269,7 +5621,7 @@ msgstr ""
 msgid "Your browser does not support the video tag."
 msgstr ""
 
-#: templates/fields/field-survey-html.php:151
+#: templates/fields/field-survey-html.php:156
 msgid "%s (%d out of %d stars)"
 msgstr ""
 
