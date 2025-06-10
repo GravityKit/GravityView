@@ -129,7 +129,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	 */
 	public function test_default_mode(): void {
 		$template_data = $this->search_field->to_template_data();
-		self::assertSame( 'any', $template_data['mode'] );
+		self::assertSame( 'all', $template_data['mode'] );
 	}
 
 	/**
