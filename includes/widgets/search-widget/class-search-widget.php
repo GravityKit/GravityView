@@ -1721,6 +1721,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'search_mode'                 => ( ! empty( $widget_args['search_mode'] ) ? $widget_args['search_mode'] : $search_mode ),
 			'search_clear'                => ( ! empty( $widget_args['search_clear'] ) ? $widget_args['search_clear'] : $search_clear ),
 			'view_id'                     => $view_id,
+			'form_id'                     => $view->form ? $view->form->ID : 0,
 			'search_class'                => self::get_search_class( $custom_class, $search_layout ),
 			'permalink_fields'            => $this->add_no_permalink_fields( [], $this, $widget_args ),
 			'search_form_action'          => self::get_search_form_action(),

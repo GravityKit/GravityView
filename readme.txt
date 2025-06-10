@@ -23,8 +23,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-- ⚠️ TODO: Properly handle deprecating the `GravityView_View` properties; other code likely calls them. ⚠️
-
 This update brings a major overhaul to the Search Bar widget, giving you much more flexibility in how search fields are displayed and configured. We’ve also added new developer features and improved template handling to make customizations easier.
 
 #### 🚀 Added

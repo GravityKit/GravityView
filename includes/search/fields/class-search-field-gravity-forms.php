@@ -442,4 +442,18 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 		return $data;
 	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function collect_template_data(): array {
+		$data  = parent::collect_template_data();
+		$field = $this->get_gf_field();
+		if ( $field ) {
+			$data['gf_field_type'] = $field->type ?? '';
+		}
+
+		return $data;
+	}
 }
