@@ -28,6 +28,7 @@ test('Search Mode Visible - Match Any Fields', async ({ page }) => {
 	await checkViewOnFrontEnd(page);
 
 	await page.getByLabel('Search Entries:').fill('Clara training');
+	await page.getByLabel('Match Any Fields').click();
 	await page.getByRole('button', { name: 'Search' }).click();
 	const tableBody = page.locator('.gv-table-view >> tbody');
 
