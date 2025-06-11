@@ -1,5 +1,6 @@
 <?php
 namespace GravityKit\GravityView\Tests\E2E\Helpers\GFImporter;
+
 use GFAPI;
 use WP_CLI;
 
@@ -10,7 +11,7 @@ function gf_form_exists_by_title( $title ) {
             return $form['id'];
         }
     }
-    return false; // Return false if no form with the given title exists
+    return false;
 }
 
 function transform_form_fields( $fields ) {
@@ -25,7 +26,6 @@ function transform_form_fields( $fields ) {
             'value'      => '',
         ];
 
-        // Handle specific field types
         switch ( $field['type'] ) {
             case 'text':
             case 'email':
@@ -61,8 +61,6 @@ function transform_form_fields( $fields ) {
                     [ 'id' => "{$field['id']}.6", 'label' => 'Last' ],
                 ];
                 break;
-
-            // Add more complex field support here as needed
         }
 
         $transformed_fields[] = $transformed_field;
@@ -90,35 +88,44 @@ $skipped_count = 0;
 
 foreach ( $data_files as $file ) {
     $decoded_data = json_decode( file_get_contents( $file ), true );
-    
+
     if ( empty( $decoded_data['form']['title'] ) ) {
-        WP_CLI::error(
-            sprintf(
-                "Invalid or missing form data in '%s'.",
-                basename( $file )
-            )
-        );
+        WP_CLI::error( sprintf( "Invalid or missing form data in '%s'.", basename( $file ) ) );
     }
-    
+
     $form_title = $decoded_data['form']['title'];
-    
+
     if ( gf_form_exists_by_title( $form_title ) ) {
         WP_CLI::log( "Skipping duplicate form '{$form_title}'." );
         $skipped_count++;
         continue;
     }
-    
-    // Transform the form fields before importing
+
     $form_data = $decoded_data['form'];
-    if ( isset( $form_data['fields'] ) ) {
-        $form_data['fields'] = transform_form_fields( $form_data['fields'] );
+
+    if ( ! isset( $form_data['fields'] ) || ! is_array( $form_data['fields'] ) ) {
+        WP_CLI::error( "Form '{$form_title}' is missing valid 'fields' data." );
     }
-    
+
+    foreach ( $form_data['fields'] as &$field ) {
+        if ( $field['type'] === 'select' && isset( $field['choices'] ) && is_array( $field['choices'] ) ) {
+            $field['choices'] = array_map( function ( $choice ) {
+                return [
+                    'text'       => $choice,
+                    'value'      => $choice,
+                    'isSelected' => false,
+                ];
+            }, $field['choices'] );
+        }
+    }
+    unset( $field );
+
     $form_id = GFAPI::add_form( $form_data );
-    
+
     if ( is_wp_error( $form_id ) ) {
         WP_CLI::error(
-            sprintf( "Could not import '%s' from '%s': %s",
+            sprintf(
+                "Could not import '%s' from '%s': %s",
                 $form_title,
                 basename( $file ),
                 $form_id->get_error_message()
@@ -126,34 +133,44 @@ foreach ( $data_files as $file ) {
         );
         continue;
     }
-    
+
     $imported_count++;
     WP_CLI::success( "Imported '{$form_title}' (#{$form_id})." );
-    
+
     if ( empty( $decoded_data['entries'] ) || ! is_array( $decoded_data['entries'] ) ) {
         continue;
     }
-    
+
     foreach ( $decoded_data['entries'] as $entry ) {
         $entry['form_id'] = $form_id;
-        
+
         if ( isset( $entry['submitted_on'] ) ) {
             $entry['date_created'] = $entry['submitted_on'];
         }
-        
+
         if ( isset( $entry['is_starred'] ) ) {
             $entry['is_starred'] = (bool) $entry['is_starred'];
         }
-        
+
         if ( isset( $entry['is_read'] ) ) {
             $entry['is_read'] = (bool) $entry['is_read'];
         }
-        
+
+        $form = GFAPI::get_form( $form_id );
+        foreach ( $form['fields'] as $field ) {
+            if ( $field->type === 'fileupload' && isset( $entry[ $field->id ] ) ) {
+                if ( $field->multipleFiles && is_array( $entry[ $field->id ] ) ) {
+                    $entry[ $field->id ] = json_encode( $entry[ $field->id ] );
+                }
+            }
+        }
+
         $result = GFAPI::add_entry( $entry );
-        
+
         if ( is_wp_error( $result ) ) {
             WP_CLI::error(
-                sprintf( "Could not import entry for form #%s from '%s': %s",
+                sprintf(
+                    "Could not import entry for form #%s from '%s': %s",
                     $form_id,
                     basename( $file ),
                     $result->get_error_message()
