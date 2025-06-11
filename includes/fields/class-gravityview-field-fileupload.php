@@ -477,9 +477,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$file_path = set_url_scheme( $file_path );
 		}
 
-		// This is from Gravity Forms's code
-		$file_path = esc_attr( str_replace( ' ', '%20', $file_path ) );
-
 		// Get file path information
 		$file_path_info = pathinfo( $file_path );
 
@@ -500,8 +497,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 		// Get the secure download URL
 		$is_secure          = false;
-		$insecure_file_path = $file_path;
-		$secure_file_path   = $field->get_download_url( $file_path );
+		$insecure_file_path = str_replace( ' ', '%20', $file_path );
+		$secure_file_path   = str_replace( ' ', '%20', $field->get_download_url( $file_path ) );
 
 		if ( $secure_file_path !== $file_path ) {
 			$file_path = $secure_file_path;

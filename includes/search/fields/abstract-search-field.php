@@ -10,11 +10,6 @@ use GV\Grid;
 use GV\Search\Search_Field_Collection;
 use GV\View;
 
-// Todo: use autoloader, composer classmap ?
-if ( ! class_exists( 'GravityView_Admin_View_Item' ) ) {
-	include_once GRAVITYVIEW_DIR . 'includes/admin/class-gravityview-admin-view-item.php';
-}
-
 /**
  * Represents a single Search Field.
  *

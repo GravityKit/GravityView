@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.8
+Tested up to: 6.8.1
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,38 +21,40 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-<<<<<<< HEAD
-
-= WIP =
-
-- ⚠️ TODO: Properly handle deprecating the `GravityView_View` properties; other code likely calls them. ⚠️
-- TODO: Make sure the `set_template_data()` and `unset_template_data()` methods aren't heavy. They're called a lot.
-- TODO: Clean up widget-search.php so that each of the sections (basic fields, advanced fields, and permalink fields) are processed in a loop instead of multiple times.
-- TODO: Actually implement the Advanced Search part, not just cobble it together.
-- TODO: Write unit tests to cover changed functionality.
-- TODO: Add back-compatibility so that `field`, `input`, and `input_type` keys are set so that filters `$search_fields` structure so that it is set for existing filters and methods:
-	- [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "field" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/fields/class-gravityview-field.php on line 239
-    - [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "field" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/widgets/search-widget/class-search-widget.php on line 1509
-    - [16-May-2024 21:57:31 UTC] PHP Warning:  Undefined array key "input" in /Users/zackkatz/Local/dev/app/public/wp-content/plugins/GravityView/includes/widgets/search-widget/class-search-widget.php on line 1423
-
-
-- Search Bar is now a tab! You can now configure the Search Bar settings in the View editor, under the "Search" tab.
-
-__Developer Updates:__
-
-- Added: Fourth `$data` attribute to \GravityView_View::render() method to set a `$data` global in View templates.
-- Updated the Search Bar templates to remove usage of `$gravityview_view` in favor of a global `$data` variable.
-	- `$gravityview_view->search_fields` => `$data['search_fields']`
-	- `$gravityview_view->permalink_fields` => `$data['permalink_fields']`
-	- `$gravityview_view->search_layout` => `$data['search_layout']`
-	- `$gravityview_view->search_mode` => `$data['search_mode']`
-	- `$gravityview_view->search_class` => `$data['search_class']`
-	- `$gravityview_view->search_clear` => `$data['search_clear']`
-
 = develop =
+
+This update brings a major overhaul to the Search Bar widget, giving you much more flexibility in how search fields are displayed and configured. We’ve also added new developer features and improved template handling to make customizations easier.
+
+#### 🚀 Added
+* The Search Bar widget can now be configured with different Row types, just like the Layout Builder.
+* Advanced search fields are shown in a collapsible section, hidden by default for a cleaner interface.
+* Added a dedicated Search Button field for more flexible placement.
+* Added a Search Mode field (can be hidden or shown as radio buttons).
+* Hide individual search fields based on user role.
+* Sieving can now be set on a per-field basis for choice search fields.
+* More granular control over search fields with specific settings for each one.
+
+#### 🛠 Developer Updates
+* Added a fourth `$data` attribute to `\GravityView_View::render()` for setting a `$data` global in View templates.
+* Updated Search Bar templates to use the new global `$data` variable instead of `$gravityview_view`.
+    * `$gravityview_view->search_fields` → `$data['search_fields']`
+    * `$gravityview_view->permalink_fields` → `$data['permalink_fields']`
+    * `$gravityview_view->search_layout` → `$data['search_layout']`
+    * `$gravityview_view->search_mode` → `$data['search_mode']`
+    * `$gravityview_view->search_class` → `$data['search_class']`
+    * `$gravityview_view->search_clear` → `$data['search_clear']`
+
+= 2.40 on May 29, 2025 =
+
+This release fixes issues with editing entries that include File Upload fields and downloading files with spaces in their filenames, corrects CSV export of Survey Add-On values, and adds support for the `{get}` merge tag inside the `[gv_entry_link]` shortcode.
 
 #### 🚀 Added
 * Support for the `{get}` merge tag inside the `[gv_entry_link]` shortcode.
+
+#### 🐛 Fixed
+* Multiple issues with the File Upload field on the Edit Entry screen.
+* CSV export of Survey Add-On fields now correctly outputs data values instead of raw HTML markup.
+* Filenames with spaces in File Upload field links were incorrectly encoded, preventing files from opening or downloading. Thanks, Jake!
 
 = 2.39.1 on April 25, 2025 =
 
@@ -67,6 +69,9 @@ This hotfix resolves a fatal error that occurred when updating the plugin from v
 = 2.39 on April 24, 2025 =
 
 This update speeds up form loading in the View editor, fixes GravityEdit compatibility and translation issues in WordPress 6.8, and includes other fixes and improvements.
+
+#### 🐛 Fixed
+* Uploaded files are kept on the Edit Entry form if validation fails.
 
 #### ✨ Improved
 * Faster form fetching in the Data Source dropdown in the View editor.

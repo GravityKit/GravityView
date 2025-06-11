@@ -352,7 +352,6 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 				$choices = array_unique( array_merge( [], ...$_choices_array ) );
 			}
-
 			if ( 'post_category' === $field->type ) {
 				$choices = array_map(
 					static function ( $choice ): string {
@@ -439,6 +438,20 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 		$field = $this->get_gf_field();
 		if ( $field ) {
 			$data['form_id'] = $field['formId'] ?? null;
+		}
+
+		return $data;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function collect_template_data(): array {
+		$data  = parent::collect_template_data();
+		$field = $this->get_gf_field();
+		if ( $field ) {
+			$data['gf_field_type'] = $field->type ?? '';
 		}
 
 		return $data;

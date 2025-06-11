@@ -17,6 +17,13 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 	private const MODE_ANY = 'any';
 
 	/**
+	 * The default mode.
+	 *
+	 * @since $ver$
+	 */
+	private const MODE_DEFAULT = self::MODE_ALL;
+
+	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
@@ -80,7 +87,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 				'class'    => 'widefat',
 				'label'    => esc_html__( 'Search Mode', 'gk-gravityview' ),
 				'desc'     => __( 'Should search results match all search fields, or any?', 'gk-gravityview' ),
-				'value'    => self::MODE_ANY,
+				'value'    => self::MODE_DEFAULT,
 				'choices'  => array_column( $this->get_choices(), 'text', 'value' ),
 				'priority' => 1200,
 			],
@@ -100,7 +107,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	protected function get_input_value(): string {
-		$stored_value = $this->settings['mode'] ?? self::MODE_ANY;
+		$stored_value = $this->settings['mode'] ?? self::MODE_DEFAULT;
 		if ( 'hidden' === ( $this->settings['input_type'] ?? 'hidden' ) ) {
 			return $stored_value;
 		}
@@ -123,7 +130,8 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 			return false;
 		}
 
-		$stored_value = $this->settings['mode'] ?? self::MODE_ANY;
+		$stored_value = $this->settings['mode'] ?? self::MODE_DEFAULT;
+
 		return $this->get_input_value() !== $stored_value;
 	}
 

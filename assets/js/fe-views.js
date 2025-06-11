@@ -78,14 +78,74 @@ jQuery( function ( $ ) {
 		/**
 		 * Fix the issue of updating files after edit where the previous value still exists in the uploaded field.
 		 */
-		fix_updating_files_after_edit: function(){
-			$.each($('.ginput_preview_list'), function(index, element){
-				if ($(element).children().length > 0) {
-					return true;
-				}
+		fix_updating_files_after_edit: function () {
+			if ( window.gform ) {
+				// Prevent enabling the single upload input when the field is conditional but already has values.
+				gform.addAction( 'gform_post_conditional_logic_field_action', ( form_id, action, target_id ) => {
+					if ( action !== 'show' ) {
+						return;
+					}
+					if ( !$( target_id ).is( '.gfield--type-fileupload' ) ) {
+						return;
+					}
 
-				$(element).parents('form').find('[name=gform_uploaded_files]').val('');
-			});
+					const input_name = 'input_' + target_id.split( '_' ).pop();
+					const existing_files_id = input_name.replace( 'input_', '#preview_existing_files_' );
+
+					// No files, so we don't need to disable the input.
+					if ( $( existing_files_id ).children().length === 0 ) {
+						return;
+					}
+
+					// This might be a single file uploader. Disable that input since we have files.
+					const $input = $( target_id ).find( 'input[name=' + input_name + ']' );
+					$input.attr( 'disabled', $input[ 0 ].type === 'file' ? 'disabled' : false );
+				} );
+			}
+
+			$( document ).on( 'gform_post_render', () => {
+				$( '.ginput_preview_list' ).each( function () {
+
+					setTimeout( () => {
+						if ( $( this ).children().length > 0 ) {
+							return;
+						}
+
+						const uploader_id = $( this ).attr( 'id' ).replace( 'gform_preview_', 'gform_multifile_upload_' );
+						const input_name = 'input_' + uploader_id.split( '_' ).pop();
+
+						const uploader = window?.gfMultiFileUploader?.uploaders[ uploader_id ] || null;
+						if ( !uploader ) {
+							// This might be a single file uploader. Disable that input since we have files.
+							const $input = $( this ).closest( '.gfield' ).find( 'input[name=' + input_name + ']' );
+							$input.attr( 'disabled', $input.type === 'file' ? 'disabled' : '' );
+							return;
+						}
+
+						const $fields_input = $( this ).closest( 'form' ).find( '[name=gform_uploaded_files]' );
+						const all_files = JSON.parse( $fields_input.val() || '{}' );
+						const input_files = all_files[ input_name ] || [];
+						delete all_files[ input_name ];
+						$fields_input.val( JSON.stringify( all_files ) ); // Clear out as they will be added through the Uploader.
+
+						// Fake the Uploader files.
+						const files = ( input_files ).map( file => {
+							file.name = file.uploaded_filename || 'unknown';
+							file.id = ( file.temp_filename || '' ).split( '_o_' ).pop().split( '.' ).shift();
+							file.status = plupload.DONE;
+							file.percent = 100;
+							file.gv_is_existing = true;
+
+							return new plupload.File( file );
+						} );
+
+						for ( const file of files ) {
+							uploader.addFile( file );
+						}
+
+					}, 100 );
+				} );
+			} );
 		},
 
 		/**
