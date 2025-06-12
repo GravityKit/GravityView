@@ -24,6 +24,37 @@ const templates = [
 	}
 ];
 
+const viewTemplatesMap = {
+	table: {
+		name: 'Table',
+		slug: 'default_table',
+		selector: '.gv-view-types-module:has(h5:text("Table"))',
+		container: '.gv-table-container',
+		contains: 'table.gv-table-view'
+	},
+	list: {
+		name: 'List',
+		slug: 'default_list',
+		selector: '.gv-view-types-module:has(h5:text("List"))',
+		container: '.gv-list-container',
+		contains: 'ul.gv-list-view'
+	},
+	dataTables: {
+		name: 'DataTables Table',
+		slug: 'datatables_table',
+		selector: '.gv-view-types-module:has(h5:text("DataTables Table"))',
+		container: '.gv-datatables-container',
+		contains: 'table.dataTable'
+	},
+	map: {
+		name: 'Map',
+		slug: 'map',
+		selector: '.gv-view-types-module:has(h5:text("Map"))',
+		container: '.gv-map-container',
+		contains: '.gk-map-entries'
+	}
+};
+
 /**
  * Selects a Gravity Form from the dropdown by matching the form title.
  * Throws an error if the form title is not found.
@@ -292,8 +323,37 @@ async function getOptionValueBySearchTerm(page, selector, searchTerm) {
 	);
 }
 
+/**
+ * Clicks the first visible element matching the given selector or Locator.
+ *
+ * @param {import('@playwright/test').Page} page - Playwright Page object
+ * @param {number} [timeout=5000] - Optional timeout in milliseconds
+ */
+async function clickFirstVisible(page, selectorOrLocator, timeout = 5000) {
+	const locator = typeof selectorOrLocator === 'string'
+	  ? page.locator(selectorOrLocator)
+	  : selectorOrLocator;
+  
+	await locator.first().waitFor({ state: 'attached', timeout });
+  
+	const elements = await locator.elementHandles();
+  
+	for (const el of elements) {
+	  if (await el.isVisible()) {
+		await el.scrollIntoViewIfNeeded();
+		await el.click();
+		return;
+	  }
+	}
+  
+	throw new Error(
+	  `No visible element found. Type: ${typeof selectorOrLocator}, Count: ${elements.length}`
+	);
+}
+
 module.exports = {
 	templates,
+	viewTemplatesMap,
 	selectGravityFormByTitle,
 	createView,
 	publishView,
@@ -302,5 +362,6 @@ module.exports = {
 	clickDownloadButton,
 	createPageWithShortcode,
 	getViewUrl,
-	getOptionValueBySearchTerm
+	getOptionValueBySearchTerm,
+	clickFirstVisible
 };
