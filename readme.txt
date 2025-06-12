@@ -21,6 +21,29 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+This update brings a major overhaul to the Search Bar widget, giving you much more flexibility in how search fields are displayed and configured. We’ve also added new developer features and improved template handling to make customizations easier.
+
+#### 🚀 Added
+* The Search Bar widget can now be configured with different Row types, just like the Layout Builder.
+* Advanced search fields are shown in a collapsible section, hidden by default for a cleaner interface.
+* Added a dedicated Search Button field for more flexible placement.
+* Added a Search Mode field (can be hidden or shown as radio buttons).
+* Hide individual search fields based on user role.
+* Sieving can now be set on a per-field basis for choice search fields.
+* More granular control over search fields with specific settings for each one.
+
+#### 🛠 Developer Updates
+* Added a fourth `$data` attribute to `\GravityView_View::render()` for setting a `$data` global in View templates.
+* Updated Search Bar templates to use the new global `$data` variable instead of `$gravityview_view`.
+    * `$gravityview_view->search_fields` → `$data['search_fields']`
+    * `$gravityview_view->permalink_fields` → `$data['permalink_fields']`
+    * `$gravityview_view->search_layout` → `$data['search_layout']`
+    * `$gravityview_view->search_mode` → `$data['search_mode']`
+    * `$gravityview_view->search_class` → `$data['search_class']`
+    * `$gravityview_view->search_clear` → `$data['search_clear']`
+
 = 2.40 on May 29, 2025 =
 
 This release fixes issues with editing entries that include File Upload fields and downloading files with spaces in their filenames, corrects CSV export of Survey Add-On values, and adds support for the `{get}` merge tag inside the `[gv_entry_link]` shortcode.
@@ -106,6 +129,7 @@ This release enhances dialogs in the View editor, improves button and link posit
 = 2.36 on March 13, 2025 =
 
 This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.
+>>>>>>> develop
 
 #### 🚀 Added
 * New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.
