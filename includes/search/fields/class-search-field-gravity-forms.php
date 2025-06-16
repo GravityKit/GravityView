@@ -161,26 +161,22 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @return string The icon class name.
 	 */
 	private function get_field_icon(): string {
+
+		// Use Gravity Forms field icon if available.
 		$field = $this->get_gf_field();
 		if ( $field ) {
 			return $field->get_form_editor_field_type_icon();
 		}
 
+		// Use GravityView field icon next, if available.
+		$field = \GravityView_Fields::get( $this->get_field_id() );
+		if ( $field ) {
+			return $field->get_icon();
+		}
+
 		$type = $this->get_field_id();
 
 		switch ( $type ) {
-			case 'is_fulfilled':
-				return 'dashicons-yes-alt';
-			case 'currency':
-				return 'dashicons-money-alt';
-			case 'payment_amount':
-				return 'gform-icon--numbers-alt';
-			case 'payment_date':
-				return 'dashicons-calendar-alt';
-			case 'payment_method':
-				return 'dashicons-products';
-			case 'payment_status':
-				return 'dashicons-visibility';
 			case 'geolocation':
 				return 'dashicons-admin-site';
 			default:
