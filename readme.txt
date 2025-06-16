@@ -23,6 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 💻 Developer Updates
+
+* `requires` and `requires-not` field setting conditional display were not working correctly for radio buttons.
+
 #### 🔧 Updated
 
 * Use `filemtime()` instead of plugin version for CSS file versioning.
