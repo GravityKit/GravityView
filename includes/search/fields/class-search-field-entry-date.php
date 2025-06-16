@@ -55,19 +55,16 @@ final class Search_Field_Entry_Date extends Search_Field {
 	/**
 	 * @inheritDoc
 	 * @since $ver$
-	 *     */
-	protected function get_input_type(): string {
-		return 'entry_date';
-	}
-
-	/**
-	 * @inheritDoc
-	 * @since $ver$
 	 */
 	protected function get_input_value() {
-		return [
-			'start' => $this->get_request_value( 'gv_start', '' ),
-			'end'   => $this->get_request_value( 'gv_end', '' ),
-		];
+
+		if ( $this->get_input_type() === 'date_range' ) {
+			return [
+				'start' => $this->get_request_value( 'gv_start', '' ),
+				'end'   => $this->get_request_value( 'gv_end', '' ),
+			];
+		}
+
+		return $this->get_request_value( 'filter_entry_date', '' );
 	}
 }
