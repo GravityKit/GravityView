@@ -31,7 +31,7 @@ final class Search_Field_Submit extends Search_Field {
 	 * @since $ver$
 	 */
 	protected function get_name(): string {
-		return esc_html__( 'Submit button', 'gk-gravityview' );
+		return esc_html__( 'Submit Button', 'gk-gravityview' );
 	}
 
 	/**

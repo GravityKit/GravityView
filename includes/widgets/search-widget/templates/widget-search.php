@@ -94,7 +94,7 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 		$this->render( 'search-field', $search_field['input'], false, $data );
 
 		/**
-		 * @action `gravityview_search_widget_field_after` After each search input is rendered (other than the submit button)
+		 * @action `gravityview_search_widget_field_after` After each search input is rendered.
 		 *
 		 * @param GravityView_Widget_Search $this GravityView Widget instance
 		 * @param array                     $search_field

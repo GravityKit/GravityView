@@ -250,7 +250,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'link'            => esc_html__( 'Links', 'gk-gravityview' ),
 			'date_range'      => esc_html__( 'Date range', 'gk-gravityview' ),
 			'number_range'    => esc_html__( 'Number range', 'gk-gravityview' ),
-			'submit'          => esc_html__( 'Submit button', 'gk-gravityview' ),
+			'submit'          => esc_html__( 'Submit Button', 'gk-gravityview' ),
 			'hidden'          => esc_html__( 'Hidden Field', 'gk-gravityview' ),
 		];
 

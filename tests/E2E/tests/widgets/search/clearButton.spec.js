@@ -18,7 +18,7 @@ test('Clear Search', async ({ page }) => {
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 	await page.getByRole('link', { name: 'Add Search Field' }).first().click();
-	await page.getByLabel('Configure Submit button').click();
+	await page.getByLabel('Configure Submit Button').click();
 	await page.getByLabel('Show Clear Button').setChecked(true);
 	await page.getByRole('button', { name: 'Close settings pane' }).click();
 	await page.locator('.ui-dialog').getByRole('button', { name: 'Close', exact: true }).click();

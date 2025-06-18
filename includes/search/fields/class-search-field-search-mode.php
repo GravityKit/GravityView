@@ -57,7 +57,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	protected function get_name(): string {
-		return esc_html__( 'Search mode', 'gk-gravityview' );
+		return esc_html__( 'Search Mode', 'gk-gravityview' );
 	}
 
 	/**
