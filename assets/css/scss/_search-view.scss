@@ -35,23 +35,41 @@
 		pointer-events: none;
 	}
 
+	&:before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #FFF;
+		opacity: 0;
+		z-index: 15; // Needs to be on top of field buttons with high z-indexes.
+		pointer-events: none;
+		transition: opacity 0.2s ease;
+		transition-delay: 0.1s;
+	}
+
 	&.has-options-panel {
 		&:before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background-color: hsl(0, 0%, 100%);
+			transition-delay: unset;
 			opacity: .75;
-			z-index: 15; // Needs to be on top of field buttons with high z-indexes.
+			pointer-events: auto;
 		}
 
 		> .gv-dialog-options {
 			opacity: 1;
 			transform: translateX(0);
 			pointer-events: auto;
+		}
+
+		.gv-field-details--container {
+			display: block;
+			padding: 0 24px;
+
+			p {
+				color: #999999;
+			}
 		}
 	}
 
@@ -67,14 +85,6 @@
 		border: 1px solid #136cb9;
 	}
 
-	.gv-field-details--container {
-		display: block;
-		padding: 0 24px;
-
-		p {
-			color: #999999;
-		}
-	}
 
 	.gv-setting-container {
 		padding: 0;
