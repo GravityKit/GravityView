@@ -824,6 +824,7 @@
 			setTimeout( function () {
 				// Make sure the field settings panel is added, to slide the panel in.
 				$fields_wrapper.addClass( 'has-options-panel' );
+				gvSearchWidget.trap_focus( $options );
 			} );
 		},
 
@@ -876,17 +877,22 @@
 				return;
 			}
 
-			const opperation = ( f ) => {
+			gvSearchWidget.remove_focus_trap( $options );
+
+			/**
+			 * If the close is triggered by a quick action, we need to wait for the transition to finish.
+			 * @param {Function} f
+			 */
+			const maybe_set_timeout = ( f ) => {
 				if ( is_quick ) {
 					return f();
 				}
 
 				const timeout = gvSearchWidget.getMaxTransitionDuration( $options );
-				console.log( timeout );
-				setTimeout( f, timeout + 5 );
+				setTimeout( f, timeout );
 			};
 
-			opperation( () => {
+			maybe_set_timeout( () => {
 				const $close = $options.find( '.gv-dialog-options--close' );
 				if ( $close.length ) {
 					$close.remove();
@@ -902,7 +908,36 @@
 				gvAdminActions.setCustomLabel( $field );
 			} );
 		},
+		trap_focus: function ( $container ) {
+			const $elements = $container.find( ':tabbable' );
+			$elements.first().focus(); // Focus on the first tabbable element.
 
+			const $first = $elements.first()[ 0 ];
+			const $last = $elements.last()[ 0 ];
+
+			$container.on( 'keydown.trap_focus', function ( e ) {
+				if ( e.key === 'Tab' ) {
+					const focused = document.activeElement;
+
+					if ( e.shiftKey ) {
+						// Shift + Tab
+						if ( focused === $first ) {
+							e.preventDefault();
+							$last.focus();
+						}
+					} else {
+						// Tab
+						if ( focused === $last ) {
+							e.preventDefault();
+							$first.focus();
+						}
+					}
+				}
+			} );
+		},
+		remove_focus_trap: function ( $container ) {
+			$container.off( 'keydown.trap_focus' );
+		},
 		/**
 		 * Event handler for closing field settings when clicking outside the search field settings panel.
 		 *
