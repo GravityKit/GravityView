@@ -11,22 +11,10 @@
 
 .gv-search-widget-wrapper {
 	position: relative;
-    padding: 0 !important;
+	padding: 0 !important;
 }
 
-[data-search-fields].has-options-panel {
-	&:before {
-		content: '';
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: hsl(0, 0%, 100%);
-		opacity: .75;
-		z-index: 15; // Needs to be on top of field buttons with high z-indexes.
-	}
-
+[data-search-fields] {
 	> .gv-dialog-options {
 		display: flex;
 		flex-direction: column;
@@ -40,6 +28,31 @@
 		box-sizing: border-box;
 		padding: 0 !important;
 		z-index: 20; // Needs to be on top of the overlay. Leaving room for 5 layers.
+		opacity: 0;
+		transform: translateX(40px);
+		/* Just outside of frame */
+		transition: opacity 0.2s ease, transform 0.2s ease;
+		pointer-events: none;
+	}
+
+	&.has-options-panel {
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: hsl(0, 0%, 100%);
+			opacity: .75;
+			z-index: 15; // Needs to be on top of field buttons with high z-indexes.
+		}
+
+		> .gv-dialog-options {
+			opacity: 1;
+			transform: translateX(0);
+			pointer-events: auto;
+		}
 	}
 
 	.gv-dialog-options--content {
@@ -120,11 +133,11 @@
 			color: #2271b1;
 		}
 	}
-}
 
-.search-field-title {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin-bottom: 0;
+	.search-field-title {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 0;
+	}
 }

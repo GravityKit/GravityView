@@ -190,7 +190,7 @@
 				.closest( '[role="dialog"]' )
 				.removeClass( 'ui-front' )
 				.focus() // Remove focus from "add field before" button.
-				.wrapInner('<div class="gv-search-widget-wrapper"></div>');
+				.wrapInner( '<div class="gv-search-widget-wrapper"></div>' );
 
 			gvSearchWidget.widgetTarget = $( this );
 
@@ -800,7 +800,7 @@
 		 * @param {jQueryEvent} e The click event.
 		 */
 		openFieldSettings: function ( e ) {
-			gvSearchWidget.closeFieldSettings( e ); // Close any open panels.
+			gvSearchWidget.closeFieldSettings( e, true ); // Close any open panels.
 
 			const $field = $( this ).closest( '.gv-fields' );
 			const $options = $field.find( '.gv-dialog-options' );
@@ -809,27 +809,49 @@
 			$field.addClass( 'has-options-panel' );
 
 			// Add close button to the settings pane.
-			const $close = $( '<button data-close-settings type="button" title="Close settings pane" class="gv-dialog-options--close">' +
+			const $close = $(
+				'<button data-close-settings type="button" title="Close settings pane" class="gv-dialog-options--close">' +
 				'<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">' +
 				'<path d="M12.0672 6.91528L16.4187 12.4538L11.9705 17.9149L10.7784 17.0043L14.4187 12.4362L10.8585 7.90468L12.0672 6.91528Z" fill="currentColor"/>' +
 				'</svg>' +
-				'</button>' );
+				'</button>'
+			);
 
 			$options.append( $close );
 
-			$( this ).closest( '[data-search-fields]' )
-				.addClass( 'has-options-panel' )
-				.append( $options ); // Move options to search view div.
+			const $fields_wrapper = $( this ).closest( '[data-search-fields]' );
+			$fields_wrapper.append( $options );
+			setTimeout( function () {
+				// Make sure the field settings panel is added, to slide the panel in.
+				$fields_wrapper.addClass( 'has-options-panel' );
+			} );
 		},
 
+		/**
+		 * Calculates the maximum transition duration of an element.
+		 * @param $el
+		 * @return {number} The duration in ms.
+		 */
+		getMaxTransitionDuration: function ( $el ) {
+			const el = $el.get( 0 );
+			const style = window.getComputedStyle( el );
+
+			const durations = style.transitionDuration.split( ',' ).map( ( s ) => parseFloat( s ) * 1000 );
+			const delays = style.transitionDelay.split( ',' ).map( ( s ) => parseFloat( s ) * 1000 );
+
+			const times = durations.map( ( d, i ) => d + ( delays[ i ] || 0 ) );
+
+			return Math.max( ...times );
+		},
 		/**
 		 * Closes the field settings panel for a search field.
 		 *
 		 * @since $ver$
 		 *
 		 * @param {jQueryEvent} e The click event.
+		 * @param {boolean} is_quick Whether the close is triggered by a quick action.
 		 */
-		closeFieldSettings: function ( e ) {
+		closeFieldSettings: function ( e, is_quick = false ) {
 			e.preventDefault();
 
 			let $wrapper = $();
@@ -854,21 +876,31 @@
 				return;
 			}
 
-			const $close = $options.find( '.gv-dialog-options--close' );
-			if ( $close.length ) {
-				$close.remove();
-			}
+			const opperation = ( f ) => {
+				if ( is_quick ) {
+					return f();
+				}
 
-			const $field = $options.data( 'field' );
-			if ( !$field.length ) {
-				return;
-			}
+				const timeout = gvSearchWidget.getMaxTransitionDuration( $options );
+				console.log( timeout );
+				setTimeout( f, timeout + 5 );
+			};
 
-			$field
-				.removeClass( 'has-options-panel' )
-				.append( $options ); // Return options to field.
+			opperation( () => {
+				const $close = $options.find( '.gv-dialog-options--close' );
+				if ( $close.length ) {
+					$close.remove();
+				}
 
-			gvAdminActions.setCustomLabel( $field );
+				const $field = $options.data( 'field' );
+				if ( !$field.length ) {
+					return;
+				}
+
+				$field.removeClass( 'has-options-panel' ).append( $options ); // Return options to field.
+
+				gvAdminActions.setCustomLabel( $field );
+			} );
 		},
 
 		/**
