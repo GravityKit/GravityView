@@ -77,6 +77,8 @@
 
 				.on( 'click', '[data-search-fields] .gv-field-settings', gvSearchWidget.openFieldSettings )
 
+				.on( 'dblclick', "[data-search-fields] .gv-fields:not(.gv-nonexistent-form-field)", gvSearchWidget.openFieldSettings )
+
 				.on( 'click', '[data-search-fields] > .gv-dialog-options [data-close-settings]', gvSearchWidget.closeFieldSettings )
 
 				.on( 'click', '[data-search-fields]', gvSearchWidget.closeFieldSettingsOutside )
