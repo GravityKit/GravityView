@@ -47,17 +47,18 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 		$expanded = $has_active_fields ? 'true' : 'false';
 		$open     = $has_active_fields ? ' open' : '';
 		?>
-		<button
-			id="search-advanced-toggle"
-			type="button"
+		<a
+			id="gv-search-advanced-toggle"
+			href="javascript:void(0);"
+			aria-role="button"
 			aria-expanded="<?php echo esc_attr( $expanded ); ?>"
-			aria-controls="search-advanced"
+			aria-controls="gv-search-advanced"
 			aria-label="<?php esc_attr_e( 'Toggle Advanced Search', 'gk-gravityview' ); ?>"
 		>
 			<span aria-hidden="true"><?php esc_html_e( 'Advanced Search', 'gk-gravityview' ); ?></span>
-		</button>
+		</a>
 
-		<div id="search-advanced" class="gv-widget-search-advanced-search gv-grid<?php echo esc_attr( $open ); ?>">
+		<div id="gv-search-advanced" class="gv-widget-search-advanced-search gv-grid<?php echo esc_attr( $open ); ?>">
 			<?php
 			/**
 			 * @action `gravityview_search_widget_fields_before` Inside the `<form>` tag of the GravityView search form, before inputs are rendered

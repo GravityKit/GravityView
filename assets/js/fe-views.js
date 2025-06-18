@@ -34,7 +34,7 @@ jQuery( function ( $ ) {
 
 			$( document ).on( 'gform_post_render', this.disable_upload_file_when_limit_reached.bind( this ) );
 
-			$( '#search-advanced-toggle' ).on( 'click', this.toggle_advanced_search );
+			$( '#gv-search-advanced-toggle' ).on( 'click', this.toggle_advanced_search );
 
 			this.disable_upload_file_when_limit_reached();
 
@@ -397,8 +397,8 @@ jQuery( function ( $ ) {
 		},
 
 		toggle_advanced_search: function () {
-			$( this ).attr( 'aria-expanded', ( i, val ) => 'true' === val ? 'false' : 'true' );
-			$( '#search-advanced' ).toggleClass( 'open', 'true' === $( this ).attr( 'aria-expanded' ) );
+			$( this ).attr( 'aria-expanded', ( _i, val ) => 'true' === val ? 'false' : 'true' );
+			$( '#gv-search-advanced' ).toggleClass( 'gv-search-advanced--open', 'true' === $( this ).attr( 'aria-expanded' ) );
 		}
 	};
 

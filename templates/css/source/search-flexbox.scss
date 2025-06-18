@@ -10,8 +10,7 @@ $flexbox-margin: 10px;
 	align-items: flex-start;
 	justify-content: space-between;
 	flex: 1 0 auto;
-	margin: ( $flexbox-margin * 2 ) ($flexbox-margin * -1);
-
+	margin: ($flexbox-margin * 2) ($flexbox-margin * -1);
 
 	&.gv-search-horizontal {
 		.gv-search-box {
@@ -21,6 +20,7 @@ $flexbox-margin: 10px;
 		label.gv-check-radio {
 			display: inline-block;
 			margin-right: 1em;
+
 			input {
 				display: inline;
 			}
@@ -29,6 +29,7 @@ $flexbox-margin: 10px;
 
 	&.gv-search-vertical {
 		flex-direction: column;
+
 		.gv-search-box {
 			flex: 1 1 auto;
 		}
@@ -95,6 +96,7 @@ $flexbox-margin: 10px;
 			.gv-search-horizontal & {
 				flex: 1 0 20em;
 			}
+
 			justify-content: flex-start;
 
 			p {
@@ -115,6 +117,7 @@ $flexbox-margin: 10px;
 					-webkit-appearance: none;
 					margin: 0;
 				}
+
 				-moz-appearance: textfield;
 			}
 		}
@@ -134,10 +137,14 @@ $flexbox-margin: 10px;
 	}
 }
 
-#search-advanced {
+#gv-search-advanced-toggle {
+	margin: ($flexbox-margin * 2) ($flexbox-margin);
+}
+
+#gv-search-advanced {
 	display: none;
 
-	&.open {
+	&.gv-search-advanced--open {
 		display: inherit;
 	}
 }
