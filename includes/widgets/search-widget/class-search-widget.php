@@ -2305,8 +2305,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$fields = [
 				$zone_100 => [
 					Grid::uid() => ( new Search_Field_All() )->to_configuration(),
-					Grid::uid() => ( new Search_Field_Search_Mode() )->to_configuration(),
 					Grid::uid() => ( new Search_Field_Submit() )->to_configuration(),
+					Grid::uid() => ( new Search_Field_Search_Mode() )->to_configuration(),
 				],
 			];
 		}
