@@ -205,7 +205,7 @@
 			   .on( 'click', ".gv-field-controls .gv-field-settings", vcfg.openFieldSettings )
 
 			   // Double-clicking a field/widget label opens settings
-			   .on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
+			   .on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field) h5", vcfg.openFieldSettings )
 
 			   .on( 'change', "#gravityview_settings", vcfg.changedSettingsAction )
 

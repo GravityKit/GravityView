@@ -29,6 +29,8 @@
 		// The default search should be a single "Search All" field
 		default_search_fields: '[{"field":"search_all","input":"input_text"}]',
 
+		restore_focus: null,
+
 		/**
 		 * Initialize the search widget functionality
 		 *
@@ -77,7 +79,7 @@
 
 				.on( 'click', '[data-search-fields] .gv-field-settings', gvSearchWidget.openFieldSettings )
 
-				.on( 'dblclick', "[data-search-fields] .gv-fields:not(.gv-nonexistent-form-field)", gvSearchWidget.openFieldSettings )
+				.on( 'dblclick', "[data-search-fields] .gv-fields:not(.gv-nonexistent-form-field) h5", gvSearchWidget.openFieldSettings )
 
 				.on( 'click', '[data-search-fields] > .gv-dialog-options [data-close-settings]', gvSearchWidget.closeFieldSettings )
 
@@ -822,6 +824,7 @@
 			setTimeout( function () {
 				// Make sure the field settings panel is added, to slide the panel in.
 				$fields_wrapper.addClass( 'has-options-panel' );
+				gvSearchWidget.record_focus( $field.find('.gv-field-controls button.gv-field-settings') );
 				gvSearchWidget.trap_focus( $options );
 			} );
 		},
@@ -904,7 +907,17 @@
 				$field.removeClass( 'has-options-panel' ).append( $options ); // Return options to field.
 
 				gvAdminActions.setCustomLabel( $field );
+				gvSearchWidget.release_focus();
 			} );
+		},
+		record_focus: function ( $element ) {
+			gvSearchWidget.restore_focus = $element;
+		},
+		release_focus: function() {
+			if (gvSearchWidget.restore_focus) {
+				gvSearchWidget.restore_focus.focus();
+				gvSearchWidget.restore_focus = null;
+			}
 		},
 		trap_focus: function ( $container ) {
 			const $elements = $container.find( ':tabbable' );
