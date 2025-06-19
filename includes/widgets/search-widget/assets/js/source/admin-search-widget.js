@@ -812,11 +812,7 @@
 
 			// Add close button to the settings pane.
 			const $close = $(
-				'<button data-close-settings type="button" title="Close settings pane" class="gv-dialog-options--close">' +
-				'<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-				'<path d="M12.0672 6.91528L16.4187 12.4538L11.9705 17.9149L10.7784 17.0043L14.4187 12.4362L10.8585 7.90468L12.0672 6.91528Z" fill="currentColor"/>' +
-				'</svg>' +
-				'</button>'
+				`<button data-close-settings type="button" title="${ gvGlobals.label_close }" class="ui-button ui-dialog-titlebar-close">${ gvGlobals.label_close }</button>`
 			);
 
 			$options.append( $close );
@@ -895,7 +891,7 @@
 			};
 
 			maybe_set_timeout( () => {
-				const $close = $options.find( '.gv-dialog-options--close' );
+				const $close = $options.find( '.ui-dialog-titlebar-close' );
 				if ( $close.length ) {
 					$close.remove();
 				}
