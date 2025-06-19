@@ -103,7 +103,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 		$config = $field->to_configuration();
 		self::assertSame( 'search_mode', $config['id'] );
 		self::assertSame( 'search_mode', $config['type'] );
-		self::assertSame( 'Search mode', $config['label'] );
+		self::assertSame( 'Search Mode', $config['label'] );
 		self::assertSame( 'all', $config['mode'] );
 	}
 

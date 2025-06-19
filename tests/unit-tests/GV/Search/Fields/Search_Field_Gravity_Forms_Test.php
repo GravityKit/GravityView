@@ -144,10 +144,10 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 		$test_cases = [
 			'is_fulfilled'   => 'dashicons-yes-alt',
 			'currency'       => 'dashicons-money-alt',
-			'payment_amount' => 'gform-icon--numbers-alt',
-			'payment_date'   => 'dashicons-calendar-alt',
-			'payment_method' => 'dashicons-products',
-			'payment_status' => 'dashicons-visibility',
+			'payment_amount' => 'dashicons-cart',
+			'payment_date'   => 'dashicons-cart',
+			'payment_method' => 'dashicons-cart',
+			'payment_status' => 'dashicons-cart',
 			'geolocation'    => 'dashicons-admin-site',
 			'unknown_type'   => 'dashicons-admin-generic',
 		];
