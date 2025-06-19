@@ -23,6 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🐛 Fixed
+
+* For some users, adding a Chained Selects Add-On field to the Search Bar causes JavaScript code to be visible and the field would not work as expected.
+
 #### 💻 Developer Updates
 
 * `requires` and `requires-not` field setting conditional display were not working correctly for radio buttons.

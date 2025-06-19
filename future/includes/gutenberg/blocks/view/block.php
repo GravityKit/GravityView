@@ -66,19 +66,7 @@ class View {
 			);
 		}
 
-		// Gravity Forms outputs JS not wrapped in <script> tags that's then displayed in the block preview.
-		// One of the situations where this happens is when a chained select field is added to the View search bar.
-		if ( class_exists( 'GFFormDisplay' ) && defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			$hooks_js_printed = GFFormDisplay::$hooks_js_printed;
-
-			GFFormDisplay::$hooks_js_printed = true;
-
-			$rendered_shortcode = Blocks::render_shortcode( $shortcode );
-
-			GFFormDisplay::$hooks_js_printed = $hooks_js_printed;
-		} else {
-			$rendered_shortcode = Blocks::render_shortcode( $shortcode );
-		}
+		$rendered_shortcode = Blocks::render_shortcode( $shortcode );
 
 		if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
 			return $rendered_shortcode['content'];
