@@ -19,7 +19,7 @@ test('Search Bar is Hidden When Logged Out', async ({ page }) => {
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 	await page.getByLabel('Configure Search Everything').click();
 	await page.getByRole('checkbox', { name: /Make visible only to logged/i }).check();
-	await page.getByRole('button', { name: 'Close settings pane' }).click();
+	await page.locator('button[data-close-settings]').click();
 	await page.getByRole('button', { name: 'Close', exact: true }).click();
 
 	await publishView(page);

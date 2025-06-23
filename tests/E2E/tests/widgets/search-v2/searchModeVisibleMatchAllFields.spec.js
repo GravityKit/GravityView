@@ -21,7 +21,7 @@ test('Search Mode Visible - Match All Fields', async ({ page }) => {
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 	await page.getByLabel('Configure Search mode Settings').click();
 	await page.getByLabel('Input type Hidden Field Radio').selectOption('radio');
-	await page.getByRole('button', { name: 'Close settings pane' }).click();
+	await page.locator('button[data-close-settings]').click();
 	await page.getByRole('button', { name: 'Close', exact: true }).click();
 
 	await publishView(page);

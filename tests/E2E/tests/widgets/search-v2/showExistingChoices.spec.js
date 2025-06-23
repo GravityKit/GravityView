@@ -63,14 +63,14 @@ test('Search Bar Only Shows Choices That Exist in Submitted Entries', async ({ p
 			.getByLabel('Configure Settings')
 			.click();
 		await clickFirstVisible(page, page.getByText('Only show choices that exist'));
-		await page.getByRole('button', { name: 'Close settings pane' }).click();
+		await page.locator('button[data-close-settings]').click();
 
 		await page
 			.getByRole('heading', { name: 'Configure Settings How do you' })
 			.getByLabel('Configure Settings')
 			.click();
 		await clickFirstVisible(page, page.getByText('Only show choices that exist'));
-		await page.getByRole('button', { name: 'Close settings pane' }).click();
+		await page.locator('button[data-close-settings]').click();
 
 		await page
 			.getByLabel('Search Bar Settings', { exact: true })

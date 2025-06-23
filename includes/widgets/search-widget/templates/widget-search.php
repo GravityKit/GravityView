@@ -45,7 +45,7 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 		$has_active_fields = $advanced_collection->has_request_values();
 
 		$expanded = $has_active_fields ? 'true' : 'false';
-		$open     = $has_active_fields ? ' open' : '';
+		$open     = $has_active_fields ? ' gv-search-advanced--open' : '';
 		?>
 		<a
 			id="gv-search-advanced-toggle"
