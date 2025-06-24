@@ -58,7 +58,7 @@ jobs:
             git clone git@github.com:gravityview/Tooling.git /home/circleci/tooling
       - restore_cache:
           keys:
-            - test-dependencies-{{ checksum ".date" }}-{{ checksum "composer.lock" }}-{{ checksum "package-json.json" }}
+            - test-dependencies-{{ checksum ".date" }}-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
             - test-dependencies-{{ epoch }}
             - test-dependencies-
       - run:
@@ -79,7 +79,7 @@ jobs:
             sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
             sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYVIEW_KEY}|" .env
       - save_cache:
-          key: test-dependencies-{{ checksum ".date" }}-{{ checksum "composer.lock" }}-{{ checksum "package-json.json" }}
+          key: test-dependencies-{{ checksum ".date" }}-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - /home/circleci/test_dependencies
       - persist_to_workspace:
