@@ -153,6 +153,20 @@ abstract class GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns whether the field can be duplicated.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether the field can be duplicated.
+	 */
+	protected function can_duplicate(): bool {
+		/**
+		 * @filter `gk/gravityview/admin/can_duplicate_field` Modify whether a field can be duplicated.
+		 * @since  $ver$
+		 */
+		return (bool) apply_filters( 'gk/gravityview/admin/can_duplicate_field', true, $this );
+	}
+	/**
 	 * Generate HTML for field or a widget modal
 	 *
 	 * @return string
@@ -232,10 +246,12 @@ abstract class GravityView_Admin_View_Item {
 
 		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $title . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . '</span></span>';
 
-		$output .= sprintf(
-			'<button class="gv-field-duplicate" type="button" title="%s"><span class="dashicons dashicons-admin-page"/></button>',
-			esc_attr__( 'Duplicate this field', 'gk-gravityview' )
-		);
+		if ( $this->can_duplicate() ) {
+			$output .= sprintf(
+				'<button class="gv-field-duplicate" type="button" title="%s"><span class="dashicons dashicons-admin-page"/></button>',
+				esc_attr__( 'Duplicate this field', 'gk-gravityview' )
+			);
+		}
 
 		$output .= '<span class="gv-field-controls"><button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 

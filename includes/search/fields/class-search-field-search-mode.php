@@ -167,4 +167,24 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 	public function is_searchable_field(): bool {
 		return false;
 	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function is_allowed_once(): bool {
+		return true;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function allowed_sections(): array {
+		return array_diff(
+			parent::allowed_sections(),
+			[ 'search-advanced' ] // Remove the advanced search section.
+		);
+	}
+
 }

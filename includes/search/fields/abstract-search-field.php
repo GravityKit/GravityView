@@ -738,4 +738,85 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 		return false;
 	}
+
+	/**
+	 * Returns whether the field is allowed to be used once in a search.
+	 *
+	 * @since $ver$
+	 *
+	 * @return bool Whether the field is allowed to be used once in a search.
+	 */
+	protected function is_allowed_once(): bool {
+		return false;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function can_duplicate(): bool {
+		if ( $this->is_allowed_once() ) {
+			return false;
+		}
+
+		return parent::can_duplicate();
+	}
+
+	/**
+	 * Returns the sections where the field is allowed to be used.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string[]
+	 */
+	protected function allowed_sections(): array {
+		$sections = [
+			'search-general',
+			'search-advanced',
+		];
+
+		/**
+		 * @filter `gk/gravityview/search/field/allowed_sections` Modifies the sections where the field is allowed to be used.
+		 *
+		 * @since  $ver$
+		 *
+		 * @param string[]     $sections The sections.
+		 * @param Search_Field $field    The search field.
+		 *
+		 * @return string[] The modified sections.
+		 */
+		$sections = (array) apply_filters( 'gk/gravityview/search/field/allowed_sections', $sections, $this );
+
+		return array_map( 'esc_attr', $sections );
+	}
+
+	/**
+	 * Returns whether the field is allowed to be used in the provided section.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $section The section.
+	 *
+	 * @return bool Whether the field is allowed to be used in the provided section.
+	 */
+	final public function is_allowed_for_section( string $section ): bool {
+		return in_array( $section, $this->allowed_sections(), true );
+	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * Adds the required data attributes to the output.
+	 *
+	 * @since $ver$
+	 */
+	final public function getOutput(): string {
+		$replace = [
+			$this->is_allowed_once() ? 'data-allowed-once="true"' : null,
+			sprintf( 'data-allowed-sections="%s"', implode( ',', $this->allowed_sections() ) ),
+			'data-fieldid=',
+		];
+
+		return str_replace( 'data-fieldid=', implode( ' ', array_filter( $replace ) ), parent::getOutput() );
+	}
 }

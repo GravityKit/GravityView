@@ -37,6 +37,9 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 			$this->search_field->get_description() );
 		self::assertTrue( $this->search_field->is_of_type( 'search_mode' ) );
 		self::assertFalse( $this->search_field->is_of_type( 'other_type' ) );
+		self::assertTrue( $this->search_field->is_allowed_for_section( 'search-general' ) );
+		self::assertFalse( $this->search_field->is_allowed_for_section( 'search-advanced' ) );
+		self::assertStringContainsString( 'data-allowed-once="true"', (string) $this->search_field );
 
 		self::assertFalse( $this->search_field->is_searchable_field() );
 

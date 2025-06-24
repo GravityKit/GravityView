@@ -321,6 +321,7 @@
 					// Trigger window resize to recalculate dialog position.
 					$( window ).trigger( 'resize' );
 				})
+			   .on( 'tooltipopen', vcfg.onTooltipOpen )
 		   ;
 		   // End bind to $( document.body )
 
@@ -2227,18 +2228,14 @@
 			   hide:    200,
 			   content: function () {
 				   // Is the field picker in single or directory mode?
-				   //	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
 				   var context = $( this ).attr( 'data-context' );
 				   var formId = $( this ).attr( 'data-formid' ) || $( '#gravityview_form_id' ).val();
 				   var templateId = $( '#gravityview_directory_template' ).val();
 
 				   switch ( $( this ).attr( 'data-objecttype' ) ) {
 					   case 'search':
-						   context = 'search';
-						   /* falls through */
 					   case 'field':
-						   // If in Single context, show fields available in single
-						   // If it Directory, same for directory
+						   // Show available fields according to the selected context (single or directory, general or advanced).
 						   return $( '#' + context + '-available-fields-' + ( formId || templateId ) ).html();
 					   case 'widget':
 						   return $( "#directory-available-widgets" ).html();
@@ -2252,7 +2249,7 @@
 					   .attr( 'data-tooltip', 'active' )
 					   .attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-				   $focus_item = $( 'input[type=search]', tooltip.tooltip );
+				   let $focus_item = $( 'input[type=search]', tooltip.tooltip );
 
 				   // Widgets don't have a search field; select the first "Add Widget" button instead
 				   if ( ! $focus_item.length) {
@@ -2267,7 +2264,7 @@
 				   } else {
 
 					   // Otherwise, check for cookies
-					   layout_cookie = $.cookie( 'gv-items-picker-layout' );
+					   const layout_cookie = $.cookie( 'gv-items-picker-layout' );
 
 					   if ( viewConfiguration.getCookieVal( layout_cookie ) ) {
 						   activate_layout = layout_cookie;
@@ -2500,6 +2497,8 @@
 			   $before,
 			   !!$before
 		   );
+
+		   viewConfiguration.toggleAllowedOnceField( clicked );
 	   },
 
 	   /**
@@ -2641,6 +2640,57 @@
 		   );
 	   },
 
+	   onTooltipOpen: function ( e, tooltip ) {
+		   viewConfiguration.filterFields( e.target, tooltip.tooltip[0] );
+	   },
+
+	   /**
+		* Toggles the allowed once class on a field.
+		*
+		* @since $ver$
+		*
+		* @param {Element} target The field element (or child there of).
+		* @param {Boolean} toggle Whether to add or remove the class.
+		*/
+	   toggleAllowedOnceField: function ( target, toggle = true ) {
+		   if ( !$( target ).is( '[data-allowed-once="true"]' ) ) {
+			   target = $( target ).closest( '[data-allowed-once="true"]' );
+		   }
+
+		   $( target ).toggleClass( 'gv-field--is-added', toggle );
+	   },
+
+	   /**
+		* Updates the field lists to
+		* @param source
+		* @param wrapper
+		*/
+	   filterFields: function ( source, wrapper ) {
+		   const fields = $( source )
+			   .closest( '.gv-section' )
+			   .find( '[data-fieldid]' )
+			   .map(
+				   ( _, el ) => $( el ).data( 'fieldid' )
+			   )
+			   .toArray();
+
+		   let content = $( wrapper ).html();
+
+		   if ( !content ) {
+			   return;
+		   }
+
+		   const $content = $( '<div>' ).html( content );
+		   $content
+			   .find( '[data-allowed-once="true"]' )
+			   .each( ( _, el ) => {
+				   const is_added = fields.indexOf( $( el ).data( 'fieldid' ) ) > -1;
+				   viewConfiguration.toggleAllowedOnceField( el, is_added );
+			   } );
+
+		   content = $content.html();
+		   $( wrapper ).html( content );
+	   },
 	   /**
 		* Re-initialize Merge Tags
 		*

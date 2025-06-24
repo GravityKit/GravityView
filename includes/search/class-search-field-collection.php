@@ -77,13 +77,17 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * @since $ver$
 	 *
-	 * @param int $form_id The form ID.
+	 * @param int         $form_id The form ID.
+	 * @param string|null $section The section to check.
 	 *
 	 * @return self
 	 */
-	public static function available_fields( int $form_id = 0 ): self {
-		if ( $form_id > 0 && isset( self::$available_fields_cache[ $form_id ] ) ) {
-			return self::$available_fields_cache[ $form_id ];
+	public static function available_fields( int $form_id = 0, ?string $section = null ): self {
+		$section   = $section ?? 'search';
+		$cache_key = $form_id . '_' . $section;
+
+		if ( $form_id > 0 && isset( self::$available_fields_cache[ $cache_key ] ) ) {
+			return self::$available_fields_cache[ $cache_key ];
 		}
 
 		$fields = [
@@ -101,7 +105,16 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			$fields[] = new Search_Field_Is_Approved();
 		}
 
-		$fields = (array) apply_filters( 'gk/gravityview/search/available-fields', $fields, $form_id );
+		if ( $section && 'search' !== $section ) {
+			$fields = array_values(
+				array_filter(
+					$fields,
+					static fn( Search_Field $field ) => $field->is_allowed_for_section( $section )
+				)
+			);
+		}
+
+		$fields = (array) apply_filters( 'gk/gravityview/search/available-fields', $fields, $form_id, $section );
 
 		$collection = new self( array_filter( $fields, static fn( $field ) => $field instanceof Search_Field ) );
 

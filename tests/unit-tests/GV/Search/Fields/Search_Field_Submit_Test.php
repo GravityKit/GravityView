@@ -37,6 +37,10 @@ final class Search_Field_Submit_Test extends TestCase {
 		self::assertTrue( $this->search_field->is_of_type( 'submit' ) );
 		self::assertFalse( $this->search_field->is_of_type( 'other_type' ) );
 
+		self::assertStringContainsString( 'data-allowed-once="true"', (string) $this->search_field );
+		self::assertTrue( $this->search_field->is_allowed_for_section( 'search-general' ) );
+		self::assertFalse( $this->search_field->is_allowed_for_section( 'search-advanced' ) );
+
 		self::assertFalse( $this->search_field->is_searchable_field() );
 
 		self::assertStringContainsString(

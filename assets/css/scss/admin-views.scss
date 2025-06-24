@@ -1382,6 +1382,17 @@ hr {
 		}
 	}
 
+	&.gv-field--is-added {
+		opacity: .25;
+
+		* {
+			pointer-events: none;
+			cursor: not-allowed;
+		}
+
+		pointer-events: none;
+	}
+
 	.gv-field-controls {
 		.dashicons-media-default,
 		.icon-custom-visibility,

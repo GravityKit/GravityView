@@ -113,4 +113,23 @@ final class Search_Field_Submit extends Search_Field {
 
 		$this->settings['show_label'] = true;
 	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function is_allowed_once(): bool {
+		return true;
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function allowed_sections(): array {
+		return array_diff(
+			parent::allowed_sections(),
+			[ 'search-advanced' ] // Remove the advanced search section.
+		);
+	}
 }

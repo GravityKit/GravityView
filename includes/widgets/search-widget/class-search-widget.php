@@ -86,7 +86,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_filter( 'gravityview_template_search_options', [ $this, 'set_search_field_options' ], 10, 6 );
 
 			add_action( 'gravityview_render_search_active_areas', [ $this, 'render_search_active_areas' ], 10, 3 );
-			add_action( 'gravityview_render_available_search_fields', [ $this, 'render_available_search_fields' ] );
+			add_action( 'gravityview_render_available_search_fields', [ $this, 'render_available_search_fields' ], 10, 2 );
 			add_action( 'gk/gravityview/template/before-field-render', [ $this, 'record_search_field_context' ], 9, 5 );
 		}
 
@@ -182,7 +182,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'address'     => [ 'input_text' ],
 			'number'      => [ 'input_text', 'number_range' ],
 			'date'        => [ 'date', 'date_range' ],
-			'entry_date'  => [ 'date_range' ],
+			'entry_date'  => [ 'date', 'date_range' ],
 			'boolean'     => [ 'single_checkbox' ],
 			'select'      => [ 'select', 'radio', 'link' ],
 			'multi'       => [ 'select', 'multiselect', 'radio', 'checkbox', 'link' ],
@@ -2346,7 +2346,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * @since $ver$
 	 */
-	public function render_available_search_fields( ?int $form_id = 0 ): void {
+	public function render_available_search_fields( ?int $form_id = 0, ?string $section = null ): void {
 		global $post;
 
 		if ( ! $form_id ) {
@@ -2357,7 +2357,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$form_id = $view->form->ID ?? 0;
 		}
 
-		$search_fields = Search_Field_Collection::available_fields( $form_id );
+		$search_fields = Search_Field_Collection::available_fields( $form_id, $section );
 		if ( ! $search_fields->count() ) {
 			return;
 		}

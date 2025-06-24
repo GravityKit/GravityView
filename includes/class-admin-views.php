@@ -887,8 +887,8 @@ HTML;
 	function render_available_fields( $form_id = 0, $context = 'single' ) {
 		$form = GVCommon::get_form_or_form_template( $form_id );
 
-		if ( 'search' === $context ) {
-			do_action( 'gravityview_render_available_search_fields', (int) $form_id );
+		if ( strpos( $context, 'search-' ) === 0 ) {
+			do_action( 'gravityview_render_available_search_fields', (int) $form_id, $context );
 
 			return;
 		}

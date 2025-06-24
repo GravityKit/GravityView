@@ -233,7 +233,8 @@ function render_template_options( array $templates, ?string $selected_template )
 	<div id='search-view' aria-hidden="true">
 		<div id="search-fields">
 			<?php
-			do_action( 'gravityview_render_field_pickers', 'search' );
+			do_action( 'gravityview_render_field_pickers', 'search-general' );
+			do_action( 'gravityview_render_field_pickers', 'search-advanced' );
 			?>
 		</div>
 	</div>
