@@ -1355,7 +1355,7 @@
 				   if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
 					   e.preventDefault();
 					   closeAutocompletion();
-					   $textarea.focus();
+					   $textarea.trigger( 'focus' );
 				   }
 			   } );
 
@@ -1370,7 +1370,7 @@
 
 				   if ( 38 === e.which || 40 === e.which || 13 === e.which ) {
 					   if ( $autocompleteEl.not( ':focus' ) ) {
-						   $autocompleteEl.focus();
+						   $autocompleteEl.trigger( 'focus' );
 					   }
 
 					   e.preventDefault();

@@ -193,7 +193,7 @@
 			$( this )
 				.closest( '[role="dialog"]' )
 				.removeClass( 'ui-front' )
-				.focus() // Remove focus from "add field before" button.
+				.trigger( 'focus' ) // Remove focus from "add field before" button.
 				.wrapInner( '<div class="gv-search-widget-wrapper"></div>' );
 
 			gvSearchWidget.widgetTarget = $( this );
@@ -915,16 +915,16 @@
 		},
 		release_focus: function() {
 			if (gvSearchWidget.restore_focus) {
-				gvSearchWidget.restore_focus.focus();
+				$( gvSearchWidget.restore_focus ).trigger( 'focus' );
 				gvSearchWidget.restore_focus = null;
 			}
 		},
 		trap_focus: function ( $container ) {
 			const $elements = $container.find( ':tabbable' );
-			$elements.first().focus(); // Focus on the first tabbable element.
+			$elements.first().trigger( 'focus' ); // Focus on the first tabbable element.
 
-			const $first = $elements.first()[ 0 ];
-			const $last = $elements.last()[ 0 ];
+			const first = $elements.first()[ 0 ];
+			const last = $elements.last()[ 0 ];
 
 			$container.on( 'keydown.trap_focus', function ( e ) {
 				if ( e.key === 'Tab' ) {
@@ -932,15 +932,15 @@
 
 					if ( e.shiftKey ) {
 						// Shift + Tab
-						if ( focused === $first ) {
+						if ( focused === first ) {
 							e.preventDefault();
-							$last.focus();
+							last.focus();
 						}
 					} else {
 						// Tab
-						if ( focused === $last ) {
+						if ( focused === last ) {
 							e.preventDefault();
-							$first.focus();
+							first.focus();
 						}
 					}
 				}
