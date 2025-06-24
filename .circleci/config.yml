@@ -82,6 +82,8 @@ jobs:
           key: test-dependencies-{{ checksum ".date" }}-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
           paths:
             - /home/circleci/test_dependencies
+            - /home/circleci/plugin/vendor
+            - /home/circleci/plugin/node_modules
       - persist_to_workspace:
           root: /home/circleci
           paths:
