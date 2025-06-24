@@ -231,10 +231,14 @@ function render_template_options( array $templates, ?string $selected_template )
 	</div> <?php // end edit view tab ?>
 
 	<div id='search-view' aria-hidden="true">
-		<div id="search-fields">
+		<div id="search-general-fields">
 			<?php
-			do_action( 'gravityview_render_field_pickers', 'search-general' );
-			do_action( 'gravityview_render_field_pickers', 'search-advanced' );
+				do_action( 'gravityview_render_field_pickers', 'search-general' );
+			?>
+		</div>
+		<div id="search-advanced-fields">
+			<?php
+				do_action( 'gravityview_render_field_pickers', 'search-advanced' );
 			?>
 		</div>
 	</div>

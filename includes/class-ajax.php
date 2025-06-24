@@ -79,10 +79,11 @@ class GravityView_Ajax {
 			];
 		} else {
 			$data = [
-				'directory' => '',
-				'edit'      => '',
-				'single'    => '',
-				'search'    => '',
+				'directory'       => '',
+				'edit'            => '',
+				'single'          => '',
+				'search-general'  => '',
+				'search-advanced' => '',
 			];
 		}
 
