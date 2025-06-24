@@ -1339,6 +1339,11 @@ hr {
 	border: none;
 	background: rgba(99, 109, 119, .2);
 	border-radius: 3px;
+	display: none;
+
+	.is-receivable & {
+		display: block;
+	}
 }
 
 #directory-fields .gv-fields {
@@ -1391,6 +1396,10 @@ hr {
 		}
 
 		pointer-events: none;
+	}
+
+	&.gv-field--not-allowed {
+		cursor: not-allowed;
 	}
 
 	.gv-field-controls {

@@ -2868,16 +2868,27 @@
 			   distance: 2,
 			   revert: 75,
 			   connectWith: ".active-drop-search",
-			   start: function( event, ui ) {
-				   $( document.body ).find( ".active-drop-container-search" ).addClass('is-receivable');
+			   start: function ( _, ui ) {
+				   const allowedSections = ui.item.data( 'allowed-sections' );
+				   let $containers = $( document.body ).find( '.active-drop-container-search' );
+
+				   // Only add `is-receivable` if the field is allowed in the current section.
+				   if ( allowedSections ) {
+					   const sections = allowedSections.split( ',' );
+					   $containers = $containers.filter( function () {
+						   return sections.indexOf( $( this ).closest( '[data-grid-context]' ).data( 'grid-context' ) ) > -1;
+					   } );
+				   }
+
+				   $containers.addClass( 'is-receivable' );
 			   },
-			   stop: function( event, ui ) {
-				   $( document.body ).find( ".active-drop-container-search" ).removeClass('is-receivable');
+			   stop: function( _, ui ) {
+				   $( document.body ).find( ".active-drop-container-search" ).removeClass( 'is-receivable' );
 			   },
-			   change: function( event, ui ) {
+			   change: function( ) {
 				   vcfg.setUnsavedChanges( true );
 			   },
-			   receive: function ( event, ui ) {
+			   receive: function ( _, ui ) {
 				   // Check if field comes from another active area and if so, update name attributes.
 				   if ( ui.item.find( ".gv-dialog-options" ).length > 0 ) {
 
@@ -2888,10 +2899,38 @@
 						   const name = $( this ).attr( 'name' );
 						   $( this ).attr( 'name', name.replace( sender_area, receiver_area ) );
 					   } );
+				   }
 
+				   const allowedSections = ui.item.data( 'allowed-sections' );
+				   if ( allowedSections ) {
+					   const $targetList = $( this ).closest( '[data-grid-context]' );
+					   const targetContext = $targetList.data( 'grid-context' );
+					   const allowedArray = allowedSections.split( ',' );
+
+					   if ( !allowedArray.includes( targetContext ) ) {
+						   // Prevent insertion.
+						   $( ui.sender ).sortable( 'cancel' );
+					   }
 				   }
 
 				   vcfg.toggleDropMessage();
+			   },
+			   over: function ( _, ui ) {
+				   const $targetList = $( this ).closest( '[data-grid-context]' );
+				   const targetContext = $targetList.data( 'grid-context' );
+
+				   const allowedSections = ui.item.data( 'allowed-sections' );
+				   if ( allowedSections ) {
+					   const allowedArray = allowedSections.split( ',' );
+
+					   if ( !allowedArray.includes( targetContext ) ) {
+						   // // Disallow placeholder even showing.
+						   ui.item.addClass( 'gv-field--not-allowed' );
+					   }
+				   }
+			   },
+			   out: function ( _, ui ) {
+				   ui.item.removeClass( 'gv-field--not-allowed' );
 			   }
 		   } );
 	   },
