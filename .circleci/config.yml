@@ -51,12 +51,14 @@ jobs:
     <<: *default_job_config
     steps:
       - checkout
+      - run: date +%F > .date # Used for a cache key per day
       - run:
           name: Get test/build tools
           command: |
             git clone git@github.com:gravityview/Tooling.git /home/circleci/tooling
       - restore_cache:
           keys:
+            - test-dependencies-{{ checksum ".date"}-{{ checksum "composer.lock" }}-{{ checksum "package-json.json" }}
             - test-dependencies-{{ epoch }}
             - test-dependencies-
       - run:
@@ -77,7 +79,7 @@ jobs:
             sed -i "s|GRAVITY_FORMS_LICENSE_KEY=.*|GRAVITY_FORMS_LICENSE_KEY=${GRAVITYFORMS_KEY}|" .env
             sed -i "s|GRAVITYKIT_LICENSE_KEY=.*|GRAVITYKIT_LICENSE_KEY=${GRAVITYVIEW_KEY}|" .env
       - save_cache:
-          key: test-dependencies-{{ epoch }}
+          key: test-dependencies-{{ checksum ".date" }-{{ checksum "composer.lock" }}-{{ checksum "package-json.json" }}
           paths:
             - /home/circleci/test_dependencies
       - persist_to_workspace:
