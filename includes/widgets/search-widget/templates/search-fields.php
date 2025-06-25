@@ -19,10 +19,8 @@ foreach ( $rows as $row ) { ?>
 	<div class="gv-grid-row">
 		<?php
 		foreach ( $row as $col => $areas ) {
-			$is_right = ( '2-2' === $col || strpos( $col, ' right' ) !== false );
-			$column   = $col . ' gv-' . ( $is_right ? 'right' : 'left' );
 			?>
-			<div class="gv-grid-col-<?php echo esc_attr( $column ); ?>">
+			<div class="gv-grid-col-<?php echo esc_attr( $col ); ?>">
 				<?php
 				if ( ! empty( $areas ) ) {
 					foreach ( $areas as $area ) {
