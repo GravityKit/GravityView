@@ -55,9 +55,20 @@ final class Search_Field_Entry_Date extends Search_Field {
 	/**
 	 * @inheritDoc
 	 * @since $ver$
-	 *     */
+	 */
 	protected function get_input_type(): string {
 		return 'entry_date';
+	}
+
+	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	protected function collect_template_data(): array {
+		$data               = parent::collect_template_data();
+		$data['input_type'] = parent::get_input_type();
+
+		return $data;
 	}
 
 	/**

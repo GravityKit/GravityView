@@ -571,6 +571,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 		return $searchable_fields;
 	}
 
+	/**
+	 * Normalize date from datepicker format to Y-m-d format.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $date_string The date string to normalize.
+	 *
+	 * @return string Normalized date string or empty string if invalid.
+	 */
+	private function normalize_date( string $date_string ): string {
+		if ( empty( $date_string ) ) {
+			return '';
+		}
+
+		$date = date_create_from_format( $this->get_datepicker_format( true ), $date_string );
+
+		return $date ? $date->format( 'Y-m-d' ) : '';
+	}
+
 	/** --- Frontend --- */
 
 	/**
@@ -698,31 +717,27 @@ class GravityView_Widget_Search extends \GV\Widget {
 			/**
 			 * Get and normalize the dates according to the input format.
 			 */
-			if ( $curr_start = ! empty( $get['gv_start'] ) ? $get['gv_start'] : '' ) {
-				if ( $curr_start_date = date_create_from_format( $this->get_datepicker_format( true ), $curr_start ) ) {
-					$curr_start = $curr_start_date->format( 'Y-m-d' );
-				}
-			}
+			$curr_start = $this->normalize_date($get['gv_start'] ?? '');
 
-			if ( $curr_end = ! empty( $get['gv_start'] ) ? ( ! empty( $get['gv_end'] ) ? $get['gv_end'] : '' ) : '' ) {
-				if ( $curr_end_date = date_create_from_format( $this->get_datepicker_format( true ), $curr_end ) ) {
-					$curr_end = $curr_end_date->format( 'Y-m-d' );
-				}
-			}
+			// If gv_end is not explicitly set but gv_start is, use start date as end date.
+			$curr_end = isset( $get['gv_end'] )
+				? $this->normalize_date( $get['gv_end'] )
+				: $curr_start;
 
 			if ( $view ) {
 				/**
 				 * Override start and end dates if View is limited to some already.
 				 */
-				if ( $start_date = $view->settings->get( 'start_date' ) ) {
-					if ( $start_timestamp = strtotime( $curr_start ) ) {
-						$curr_start = $start_timestamp < strtotime( $start_date ) ? $start_date : $curr_start;
-					}
+				$start_date = $view->settings->get( 'start_date' );
+				$start_timestamp = strtotime( $curr_start );
+				if ( $start_date && $start_timestamp ) {
+					$curr_start = $start_timestamp < strtotime( $start_date ) ? $start_date : $curr_start;
 				}
-				if ( $end_date = $view->settings->get( 'end_date' ) ) {
-					if ( $end_timestamp = strtotime( $curr_end ) ) {
-						$curr_end = $end_timestamp > strtotime( $end_date ) ? $end_date : $curr_end;
-					}
+
+				$end_date = $view->settings->get( 'end_date' );
+				$end_timestamp = strtotime( $curr_end );
+				if ( $end_date && $end_timestamp ) {
+					$curr_end = $end_timestamp > strtotime( $end_date ) ? $end_date : $curr_end;
 				}
 			}
 

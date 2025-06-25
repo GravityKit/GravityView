@@ -814,7 +814,10 @@
 
 			const $field = $( this ).closest( '.gv-fields' );
 			const $options = $field.find( '.gv-dialog-options' );
-			$options.data( 'field', $field ); // Store the originating field.
+			$options
+				.data( 'field', $field ) // Store the originating field.
+				.trigger( 'change' ) // Make sure conditional fields are updated.
+			;
 
 			$field.addClass( 'has-options-panel' );
 
