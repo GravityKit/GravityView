@@ -1405,12 +1405,14 @@ hr {
 	.gv-field-controls {
 		.dashicons-media-default,
 		.icon-custom-visibility,
-		.gv-indicator-icon {
+		.gv-indicator-icon,
+		.icon-hidden {
 			cursor: help;
 		}
 
 		.icon-custom-visibility,
-		.gv-indicator-icon {
+		.gv-indicator-icon,
+		.icon-hidden {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
 

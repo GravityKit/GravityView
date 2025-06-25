@@ -301,6 +301,11 @@ abstract class GravityView_Admin_View_Item {
 				'title'     => __( 'This field has modified visibility', 'gk-gravityview' ),
 				'css_class' => 'dashicons dashicons-lock icon-custom-visibility',
 			),
+			'hidden' => [
+				'visible' => 'hidden' === \GV\Utils::get( $this->settings, 'input_type' ),
+				'title'   => __( 'This field is hidden', 'gk-gravityview' ),
+				'css_class' => 'dashicons dashicons-hidden icon-hidden',
+			],
 		);
 
 		$output = '';

@@ -198,6 +198,8 @@
 
 			   .on( 'change', '.gv-dialog-options [name*=allow_edit_cap]', vcfg.toggleCustomVisibility )
 
+			   .on( 'change', '.gv-dialog-options [name*=input_type]', vcfg.toggleInputHidden )
+
 			   // show field buttons: Settings & Remove
 			   .on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
 
@@ -850,6 +852,33 @@
 
 		   if ( $field ) {
 			   $field.find( '.icon-custom-visibility' ).toggleClass( 'hide-if-js', !custom_visibility );
+		   }
+	   },
+
+	   /**
+		* Toggle the dashicon representing whether the field has an input type hidden.
+		*
+		* @since $ver$
+		*
+		* @param  {jQueryEvent} e jQuery event object.
+		*/
+	   toggleInputHidden: function ( e ) {
+
+		   const is_hidden = 'hidden' === $( e.target ).val();
+
+		   const $settings = $( e.target ).closest( '.gv-dialog-options' );
+		   let $field;
+
+		   if ( $settings.data( 'field' ) ) {
+			   $field = $settings.data( 'field' );
+		   } else {
+			   const $parent = $( e.target ).closest( '.gv-fields' );
+			   $parent.toggleClass( 'has-input-hidden', is_hidden );
+			   $field = $parent.find( '.gv-field-controls' );
+		   }
+
+		   if ( $field ) {
+			   $field.find( '.icon-hidden' ).toggleClass( 'hide-if-js', !is_hidden );
 		   }
 	   },
 

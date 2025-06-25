@@ -1345,6 +1345,7 @@ HTML;
 													);
 													break;
 												case 'search':
+													$item['input_type'] = $field['input_type'];
 													echo( Search_Field::from_configuration( $item ) ?? '' );
 													break;
 												default:
