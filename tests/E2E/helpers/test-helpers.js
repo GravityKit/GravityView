@@ -56,6 +56,20 @@ const viewTemplatesMap = {
 };
 
 /**
+ * Creates a locator from a selector string or returns the existing locator.
+ *
+ * @param {import('@playwright/test').Page} page Playwright Page object.
+ * @param {string|import('@playwright/test').Locator} selectorOrLocator CSS selector string or existing Locator.
+ *
+ * @returns {import('@playwright/test').Locator} Playwright Locator object.
+ */
+function createLocator(page, selectorOrLocator) {
+	return typeof selectorOrLocator === 'string'
+		? page.locator(selectorOrLocator)
+		: selectorOrLocator;
+}
+
+/**
  * Selects a Gravity Form from the dropdown by matching the form title.
  * Throws an error if the form title is not found.
  *
@@ -327,28 +341,51 @@ async function getOptionValueBySearchTerm(page, selector, searchTerm) {
  * Clicks the first visible element matching the given selector or Locator.
  *
  * @param {import('@playwright/test').Page} page - Playwright Page object
+ * @param {string|import('@playwright/test').Locator} selectorOrLocator - CSS selector string or Locator object
  * @param {number} [timeout=5000] - Optional timeout in milliseconds
  */
 async function clickFirstVisible(page, selectorOrLocator, timeout = 5000) {
-	const locator = typeof selectorOrLocator === 'string'
-	  ? page.locator(selectorOrLocator)
-	  : selectorOrLocator;
-  
+	const locator = createLocator(page, selectorOrLocator);
+
 	await locator.first().waitFor({ state: 'attached', timeout });
-  
+
 	const elements = await locator.elementHandles();
-  
+
 	for (const el of elements) {
-	  if (await el.isVisible()) {
-		await el.scrollIntoViewIfNeeded();
-		await el.click();
-		return;
-	  }
+		if (await el.isVisible()) {
+			await el.scrollIntoViewIfNeeded();
+			await el.click();
+			return;
+		}
 	}
-  
+
 	throw new Error(
-	  `No visible element found. Type: ${typeof selectorOrLocator}, Count: ${elements.length}`
+		`No visible element found. Type: ${typeof selectorOrLocator}, Count: ${elements.length}`
 	);
+}
+
+/**
+ * Verifies that two elements are visible and checks if the first element appears above the second element vertically on the page.
+ *
+ * @param {import('playwright').Page} page Playwright Page object.
+ * @param {import('@playwright/test').Locator} locator_one - The locator for the first element that should be above.
+ * @param {import('@playwright/test').Locator} locator_two - The locator for the second element that should be below.
+ *
+ * @returns {Promise<import('@playwright/test').Expect>} - A Promise that resolves when the assertion is complete.
+ *
+ * @throws {Error} If either element is not visible, or if the first element is not positioned above the second element.
+ */
+async function expectToBeVisibleBefore(page, locator_one, locator_two) {
+	locator_one = createLocator(page, locator_one);
+	locator_two = createLocator(page, locator_two);
+
+	await expect(locator_one).toBeVisible();
+	await expect(locator_two).toBeVisible();
+
+	const box_one = await locator_one.boundingBox();
+	const box_two = await locator_two.boundingBox();
+
+	await expect(box_one.y).toBeLessThan(box_two.y);
 }
 
 module.exports = {
@@ -363,5 +400,6 @@ module.exports = {
 	createPageWithShortcode,
 	getViewUrl,
 	getOptionValueBySearchTerm,
-	clickFirstVisible
+	clickFirstVisible,
+	expectToBeVisibleBefore
 };
