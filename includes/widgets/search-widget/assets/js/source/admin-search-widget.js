@@ -203,7 +203,8 @@
 				// Make sure all template ID references are up-to-date.
 				const template_id = $('#gravityview_directory_template').val();
 				gvSearchWidget.widgetTarget
-					.find( `[data-template-id!="${template_id}"]` )
+					.find( '[data-template-id]' )
+					.filter( ( _, el ) => $( el ).attr( 'data-template-id' ) !== template_id )
 					.attr( 'data-template-id', template_id );
 
 				const $sortables = gvSearchWidget.widgetTarget.find( '.active-drop-search' );

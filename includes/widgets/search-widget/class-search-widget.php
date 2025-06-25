@@ -182,7 +182,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'address'     => [ 'input_text' ],
 			'number'      => [ 'input_text', 'number_range' ],
 			'date'        => [ 'date', 'date_range' ],
-			'entry_date'  => [ 'date', 'date_range' ],
+			'entry_date'  => [ 'date_range', 'date' ], // `date_range` is the default for backwards compatibility.
 			'boolean'     => [ 'single_checkbox' ],
 			'select'      => [ 'select', 'radio', 'link' ],
 			'multi'       => [ 'select', 'multiselect', 'radio', 'checkbox', 'link' ],
