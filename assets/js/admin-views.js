@@ -642,8 +642,7 @@
 		* @param {boolean} reverse_logic If true, find items that do not match the attribute value. True = `requires-not`; false = `requires`
 		*/
 	   toggleRequired: function( currentTarget, data_attr, reverse_logic ) {
-
-		   var $parent = $( currentTarget, '#post' );
+		   let $parent = $( currentTarget, '#post' );
 
 		   $parent
 			   .find( '[data-' + data_attr + ']' )
@@ -654,7 +653,13 @@
 					   requires_name = requires_array[0],
 					   requires_value = requires_array[1];
 
-				   var $input = $parent.find('[name$="[' + requires_name + ']"]').filter(':input');
+				   // Scope to closest .gv-dialog-options if it exists, to avoid problems with nested dialogs.
+				   const $options = $this.closest('.gv-dialog-options');
+				   if ($options.length > 0) {
+					   $parent = $options;
+				   }
+
+				   const $input = $parent.find('[name$="[' + requires_name + ']"]').filter(':input');
 
 				   if ( $input.is('[type=checkbox]') ) {
 					   if ( reverse_logic ) {
