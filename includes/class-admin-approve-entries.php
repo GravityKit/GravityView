@@ -118,12 +118,19 @@ class GravityView_Admin_ApproveEntries {
 			$form_id           = $form['id'];
 			$unapproved_status = GravityView_Entry_Approval_Status::UNAPPROVED;
 
-			$sql['join'] = "
+			// Preserve any existing JOINs (important for meta field sorting)
+			$existing_joins = ! empty( $sql['join'] ) ? $sql['join'] : '';
+
+			// Add our approval-specific JOINs
+			$approval_joins = "
 				LEFT JOIN `{$entry_meta_table}` AS `m1`
 				ON (`m1`.`entry_id` = `t1`.`id` AND `m1`.`meta_key` = 'is_approved')
 				LEFT JOIN `{$entry_meta_table}` AS `m2`
 				ON (`m2`.`entry_id` = `t1`.`id` AND `m2`.`meta_key` = 'partial_entry_percent')
 			";
+
+			// Combine existing JOINs with our approval JOINs
+			$sql['join'] = trim( $existing_joins . ' ' . $approval_joins );
 
 			$sql['where'] = "
 				WHERE `t1`.`form_id` = '{$form_id}'
