@@ -72,13 +72,15 @@ class GravityView_Admin_ApproveEntries {
 	public function filter_links_entry_list( $filter_links = array(), $form = array(), $include_counts = true ) {
 
 		/**
-		 * Disable filter links.
+		 * @filter `gravityview/approve_entries/show_filter_links_entry_list` Disable filter links.
 		 *
 		 * @since 1.17.1
 		 * @param bool $show_filter_links True: show the "approved"/"disapproved" filter links. False: hide them.
 		 * @param array $form GF Form object of current form
 		 */
-		if ( false === apply_filters( 'gravityview/approve_entries/show_filter_links_entry_list', true, $form ) ) {
+		$show_filter_links = apply_filters( 'gravityview/approve_entries/show_filter_links_entry_list', true, $form );
+
+		if ( false === $show_filter_links ) {
 			return $filter_links;
 		}
 
@@ -98,7 +100,8 @@ class GravityView_Admin_ApproveEntries {
 
 		// Field filters do not allow for complex logic, so we need to use a custom SQL query for unapproved entries where:
 		// 1. 'is_approved' meta key = 3 [OR] 'is_approved' meta key = ''
-		// [AND] 2. 'partial_entry_percent' meta key = '' [OR] 'partial_entry_percent' meta key = NULL
+		// [AND]
+		// 2. 'partial_entry_percent' meta key = '' [OR] 'partial_entry_percent' meta key = NULL
 		$field_filters_unapproved = array(
 			'mode' => 'any',
 			array(
@@ -115,35 +118,38 @@ class GravityView_Admin_ApproveEntries {
 				return $sql;
 			}
 
-			$form_id           = $form['id'];
-			$unapproved_status = GravityView_Entry_Approval_Status::UNAPPROVED;
+			$form_id           = (int) $form['id'];
+			$unapproved_status = (int) GravityView_Entry_Approval_Status::UNAPPROVED;
 
-			// Preserve any existing JOINs (important for meta field sorting)
-			$existing_joins = ! empty( $sql['join'] ) ? $sql['join'] : '';
-
-			// Add our approval-specific JOINs
-			$approval_joins = "
-				LEFT JOIN `{$entry_meta_table}` AS `m1`
-				ON (`m1`.`entry_id` = `t1`.`id` AND `m1`.`meta_key` = 'is_approved')
-				LEFT JOIN `{$entry_meta_table}` AS `m2`
-				ON (`m2`.`entry_id` = `t1`.`id` AND `m2`.`meta_key` = 'partial_entry_percent')
+			$additional_joins = "
+				LEFT JOIN `{$entry_meta_table}` AS `gv_approval`
+				ON (`gv_approval`.`entry_id` = `t1`.`id` AND `gv_approval`.`meta_key` = 'is_approved')
+				LEFT JOIN `{$entry_meta_table}` AS `gv_partial`
+				ON (`gv_partial`.`entry_id` = `t1`.`id` AND `gv_partial`.`meta_key` = 'partial_entry_percent')
 			";
 
-			// Combine existing JOINs with our approval JOINs
-			$sql['join'] = trim( $existing_joins . ' ' . $approval_joins );
+			// Append our JOINs to the existing ones. The existing JOINs (like o2 for sorting) will remain intact.
+			$sql['join'] = $sql['join'] . $additional_joins;
 
+			// And now we add the custom SQL for the unapproved status being set to 3 or empty.
+			// The existing WHERE clause is overwritten, but it wasn't complex.
+			// We are replacing `AND (`m3`.`meta_key` = 'is_approved' AND `m3`.`meta_value` = '__filter_unapproved')`.
 			$sql['where'] = "
-				WHERE `t1`.`form_id` = '{$form_id}'
-				AND `t1`.`status` = 'active'
+				WHERE (
+				`t1`.`form_id` IN ('{$form_id}')
 				AND (
-					`m1`.`meta_value` IS NULL
-					OR `m1`.`meta_value` = '{$unapproved_status}'
-					OR `m1`.`meta_value` = ''
+					`t1`.`status` = 'active'
+					AND (
+						`gv_approval`.`meta_value` IS NULL
+						OR `gv_approval`.`meta_value` = '{$unapproved_status}'
+						OR `gv_approval`.`meta_value` = ''
+					)
+					AND (
+						`gv_partial`.`meta_value` IS NULL
+						OR `gv_partial`.`meta_value` = ''
+					)
 				)
-				AND (
-					`m2`.`meta_value` IS NULL
-					OR `m2`.`meta_value` = ''
-				)
+			)
 			";
 
 			return $sql;
