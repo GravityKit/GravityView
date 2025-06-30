@@ -176,6 +176,8 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 		if ( $this->post_type_support ) {
 			add_filter( 'gravityview_post_type_support', array( $this, 'merge_post_type_support' ), 10, 2 );
 		}
+
+		add_action( 'template_redirect', [ $this, 'on_template_redirect' ] );
 	}
 
 	/**
@@ -248,5 +250,39 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 */
 	public function merge_content_meta_keys( $meta_keys = array(), $post = null, &$views = null ) {
 		return array_merge( $this->content_meta_keys, $meta_keys );
+	}
+
+	/**
+	 * Add hooks to remove the permalink structure from View rendered links.
+	 *
+	 * @since TODO
+	 *
+	 * @return void
+	 */
+	public function on_template_redirect() {
+		if ( ! $this->should_disable_permalink_structure() ) {
+			return;
+		}
+
+		add_action( 'gravityview/template/before', function() {
+			add_filter( 'option_permalink_structure', '__return_false' );
+		}, 1 );
+
+		add_action( 'gravityview/template/after', function() {
+			remove_filter( 'option_permalink_structure', '__return_false' );
+		}, 1000 );
+	}
+
+	/**
+	 * When returning true, Views will be rendered with permalinks disabled.
+	 *
+	 * This is useful for plugins with custom endpoints, such as LearnDash, BuddyBoss, etc.
+	 *
+	 * @since TODO
+	 *
+	 * @return bool Whether to remove the permalink structure from View rendered links.
+	 */
+	public function should_disable_permalink_structure() {
+		return false;
 	}
 }

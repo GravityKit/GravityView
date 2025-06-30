@@ -24,11 +24,35 @@ class GravityView_Theme_Hooks_Ultimate_Member extends GravityView_Plugin_and_The
 	 */
 	protected $constant_name = 'ultimatemember_version';
 
+	/**
+	 * The function name to check if we are on a UM Core Page.
+	 *
+	 * @since TODO
+	 *
+	 * @var string
+	 */
+	protected $function_name = 'um_is_core_page';
+
 	function add_hooks() {
 		parent::add_hooks();
 
 		// Needs to be early to be triggered before DataTables
 		add_action( 'template_redirect', array( $this, 'parse_um_profile_post_content' ) );
+	}
+
+	/**
+	 * Remove the permalink structure for Ultimate Member profile tabs.
+	 *
+	 * @since TODO
+	 *
+	 * @return bool Whether to remove the permalink structure from View rendered links.
+	 */
+	public function should_disable_permalink_structure() {
+		if ( um_is_core_page( 'user' ) || um_is_core_page( 'members' ) ) {
+			return true;
+		}
+
+		return parent::should_disable_permalink_structure();
 	}
 
 	/**
