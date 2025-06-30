@@ -158,10 +158,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Chained_Selects extends GravityView
 			return;
 		}
 
-		// Adds the gform hooks required by Chained Selects. See gforms_hooks.js.
-		if ( empty( GFFormDisplay::$hooks_js_printed ) ) {
-			echo GFCommon::get_hooks_javascript_code();
-		}
+		echo GFForms::maybe_prepend_hooks_js_script('');
 
 		if ( ! wp_script_is( 'gform_chained_selects' ) ) {
 			wp_enqueue_script(

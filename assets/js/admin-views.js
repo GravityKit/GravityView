@@ -670,6 +670,12 @@
 					   } else {
 						   $this.toggle( $input.is(':checked') );
 					   }
+				   } else if ( $input.is('[type=radio]') ) {
+					   if ( reverse_logic ) {
+						   $this.toggle( !$input.filter('[value="' + requires_value + '"]').is(':checked') );
+					   } else {
+						   $this.toggle( $input.filter('[value="' + requires_value + '"]').is(':checked') );
+					   }
 				   } else if ( requires_value !== undefined ) {
 					   if ( reverse_logic ) {
 						   $this.toggle( $input.val() !== requires_value );

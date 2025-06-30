@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= search update =
 
 This update brings a major overhaul to the Search Bar widget, giving you much more flexibility in how search fields are displayed and configured. We’ve also added new developer features and improved template handling to make customizations easier.
 
@@ -43,6 +43,24 @@ This update brings a major overhaul to the Search Bar widget, giving you much mo
     * `$gravityview_view->search_mode` → `$data['search_mode']`
     * `$gravityview_view->search_class` → `$data['search_class']`
     * `$gravityview_view->search_clear` → `$data['search_clear']`
+
+= develop =
+
+#### 🚀 Added
+
+* GravityBoard widget to embed a board in a View.
+
+#### 🐛 Fixed
+
+* For some users, adding a Chained Selects Add-On field to the Search Bar causes JavaScript code to be visible and the field would not work as expected.
+
+#### 💻 Developer Updates
+
+* `requires` and `requires-not` field setting conditional display were not working correctly for radio buttons.
+
+#### 🔧 Updated
+
+* Use `filemtime()` instead of plugin version for CSS file versioning.
 
 = 2.40 on May 29, 2025 =
 
@@ -129,7 +147,6 @@ This release enhances dialogs in the View editor, improves button and link posit
 = 2.36 on March 13, 2025 =
 
 This update introduces a new notification event for duplicated entries, along with fixes and improvements to GravityView blocks, shortcodes, and Views using joined data from multiple forms.
->>>>>>> develop
 
 #### 🚀 Added
 * New notification event "GravityView - Entry is duplicated" that runs when entries are duplicated using GravityView.
