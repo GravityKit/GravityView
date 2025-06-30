@@ -162,13 +162,13 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 */
 	private function get_field_icon(): string {
 
-		// Use Gravity Forms field icon if available.
+		// Use Gravity Forms' field icon if available.
 		$field = $this->get_gf_field();
 		if ( $field ) {
 			return $field->get_form_editor_field_type_icon();
 		}
 
-		// Use GravityView field icon next, if available.
+		// Use GravityView's field icon next, if available.
 		$field = \GravityView_Fields::get( $this->get_field_id() );
 		if ( $field ) {
 			return $field->get_icon();
@@ -276,7 +276,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 		return GravityView_Widget_Search::get_search_input_types(
 			$this->get_field_id(),
-			$field ? $field['type'] : null
+			$field ? $field['type'] : $this->form_field['type'] ?? null
 		);
 	}
 
