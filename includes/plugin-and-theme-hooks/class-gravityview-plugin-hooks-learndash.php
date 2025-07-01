@@ -1,17 +1,22 @@
 <?php
 /**
- * Add GravityView integration to LifterLMS.
+ * Add GravityView integration to LearnDash.
  *
- * @file      class-gravityview-plugin-hooks-lifterlms.php
+ * @file      class-gravityview-plugin-hooks-learndash.php
  * @since     2.20
  * @license   GPL2+
  * @author    Katz Web Services, Inc.
  * @link      https://gravityview.co
- * @copyright Copyright 2024, Katz Web Services, Inc.
+ * @copyright Copyright 2025, Katz Web Services, Inc.
  *
  * @package   GravityView
  */
 
+/**
+ * Class GravityView_Plugin_Hooks_LearnDash
+ *
+ * @since TODO
+ */
 final class GravityView_Plugin_Hooks_LearnDash extends GravityView_Plugin_and_Theme_Hooks {
 
 	/**
