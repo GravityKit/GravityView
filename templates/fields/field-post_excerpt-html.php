@@ -11,17 +11,21 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-if ( ! empty( $gravityview->field->dynamic_data ) && ! empty( $gravityview->entry['post_id'] ) ) {
+// Get the post ID from entry (supports both standard GF and Advanced Post Creation)
+$entry   = $gravityview->entry->as_entry();
+$post_id = GVCommon::get_post_id_from_entry( $entry );
+
+if ( ! empty( $gravityview->field->dynamic_data ) && ! empty( $post_id ) ) {
 
 	global $post;
 
 	/** Backup! */
 	$_the_post = $post;
 
-	$post = get_post( $gravityview->entry['post_id'] );
+	$post = get_post( $post_id );
 
 	if ( empty( $post ) ) {
-		gravityview()->log->error( 'Dynamic data for post {post_id} does not exist.', array( 'post_id' => $gravityview->entry['post_id'] ) );
+		gravityview()->log->error( 'Dynamic data for post {post_id} does not exist.', array( 'post_id' => $post_id ) );
 		$post = $_the_post;
 		return;
 	}

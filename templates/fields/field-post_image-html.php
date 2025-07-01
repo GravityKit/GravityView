@@ -15,6 +15,7 @@ $field          = $gravityview->field->field;
 $value          = $gravityview->value;
 $entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
+$post_id        = GVCommon::get_post_id_from_entry( $entry );
 
 /**
  * Parse the stored value of the post image
@@ -40,7 +41,7 @@ $link_atts = array();
  *
  * Dynamic data (get post featured image instead of GF entry field)
  */
-if ( ! empty( $field['postFeaturedImage'] ) && ! empty( $field_settings['dynamic_data'] ) && ! empty( $entry['post_id'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
+if ( ! empty( $field['postFeaturedImage'] ) && ! empty( $field_settings['dynamic_data'] ) && ! empty( $post_id ) && has_post_thumbnail( $post_id ) ) {
 
 	/**
 	 * Modify what size is fetched for the post's Featured Image
@@ -51,10 +52,10 @@ if ( ! empty( $field['postFeaturedImage'] ) && ! empty( $field_settings['dynamic
 	 * @param \GV\Template_Context $context The context
 	 */
 	$image_size = apply_filters( 'gravityview/fields/post_image/size', 'large', $entry, $gravityview );
-	$image_url  = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), $image_size );
+	$image_url  = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), $image_size );
 
 	if ( empty( $image_url[0] ) ) {
-		do_action( 'gravityview_log_debug', 'Dynamic featured image for post #' . $entry['post_id'] . ' doesnt exist (size: ' . $image_size . ').' );
+		do_action( 'gravityview_log_debug', 'Dynamic featured image for post #' . $post_id . ' doesnt exist (size: ' . $image_size . ').' );
 	} else {
 		$url = $image_url[0];
 	}
@@ -65,8 +66,8 @@ if ( ! empty( $field['postFeaturedImage'] ) && ! empty( $field_settings['dynamic
 //
 
 // Link to the post created by the entry
-if ( ! empty( $field_settings['link_to_post'] ) ) {
-	$href = get_permalink( $entry['post_id'] );
+if ( ! empty( $field_settings['link_to_post'] ) && ! empty( $post_id ) ) {
+	$href = get_permalink( $post_id );
 }
 // Link to the single entry
 elseif ( ! empty( $field_settings['show_as_link'] ) ) {

@@ -547,8 +547,10 @@ final class GravityView_Delete_Entry {
 	 */
 	public function process_connected_posts( $entry_id = 0, $entry = array() ) {
 
+		$post_id = GVCommon::get_post_id_from_entry( $entry );
+
 		// The entry had no connected post
-		if ( empty( $entry['post_id'] ) ) {
+		if ( empty( $post_id ) ) {
 			return;
 		}
 
@@ -567,9 +569,9 @@ final class GravityView_Delete_Entry {
 		$action = current_action();
 
 		if ( 'gravityview/delete-entry/deleted' === $action ) {
-			$result = wp_delete_post( $entry['post_id'], true );
+			$result = wp_delete_post( $post_id, true );
 		} else {
-			$result = wp_trash_post( $entry['post_id'] );
+			$result = wp_trash_post( $post_id );
 		}
 
 		if ( false === $result ) {

@@ -14,18 +14,19 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 $display_value  = $gravityview->display_value;
 $entry          = $gravityview->entry->as_entry();
 $field_settings = $gravityview->field->as_configuration();
+$post_id        = GVCommon::get_post_id_from_entry( $entry );
 
-if ( ! empty( $field_settings['dynamic_data'] ) && ! empty( $entry['post_id'] ) ) {
+if ( ! empty( $field_settings['dynamic_data'] ) && ! empty( $post_id ) ) {
 
 	global $post, $wp_query;
 
 	/** Backup! */
 	$_the_post = $post;
 
-	$post = get_post( $entry['post_id'] );
+	$post = get_post( $post_id );
 
 	if ( empty( $post ) ) {
-		do_action( 'gravityview_log_debug', 'Dynamic data for post #' . $entry['post_id'] . ' doesnt exist.' );
+		do_action( 'gravityview_log_debug', 'Dynamic data for post #' . $post_id . ' doesnt exist.' );
 		$post = $_the_post;
 		return;
 	}
