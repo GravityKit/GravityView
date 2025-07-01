@@ -12,6 +12,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+require_once __DIR__ . '/settings/class-search-widget-settings-visible-fields-only.php';
+
 class GravityView_Widget_Search extends \GV\Widget {
 
 	public $icon = 'dashicons-search';
@@ -983,7 +985,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				unset( $search_criteria['field_filters'][ $i ] );
 			}
 		}
-
 
 		$widgets = $view->widgets->by_id( $this->widget_id );
 		if ( $widgets->count() ) {
