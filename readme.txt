@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 
 * For some users, adding a Chained Selects Add-On field to the Search Bar causes JavaScript code to be visible and the field would not work as expected.
+* Added a compatibility notice when using Formidable Views and GravityView at the same time.
 
 #### 💻 Developer Updates
 
