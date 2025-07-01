@@ -47,6 +47,10 @@ class View {
 				continue;
 			}
 
+			if ( 'secret' === $attribute && $preview_as_shortcode ) {
+				$value = '*********';
+			}
+
 			$shortcode_attributes[] = sprintf(
 				'%s="%s"',
 				$attribute,
