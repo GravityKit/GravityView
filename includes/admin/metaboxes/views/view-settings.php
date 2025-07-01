@@ -21,6 +21,8 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	GravityView_Render_Settings::render_setting_row( 'admin_show_all_statuses', $current_settings );
 
+	GravityView_Render_Settings::render_setting_row( 'search_visible_fields', $current_settings );
+
 	GravityView_Render_Settings::render_setting_row( 'caching', $current_settings );
 
 	GravityView_Render_Settings::render_setting_row( 'caching_entries', $current_settings );
