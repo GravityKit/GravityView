@@ -13,6 +13,9 @@
  * @since 1.15.2
  */
 
+// Make sure the permalink override trait is loaded.
+require_once plugin_dir_path( __FILE__ ) . 'trait-gravityview-permalink-override.php';
+
 /**
  * Abstract class that makes it easy for plugins and themes to register no-conflict scripts and styles, as well as
  * add post meta keys for GravityView to parse when checking for the existence of shortcodes in content.
@@ -177,7 +180,21 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 			add_filter( 'gravityview_post_type_support', array( $this, 'merge_post_type_support' ), 10, 2 );
 		}
 
-		add_action( 'template_redirect', [ $this, 'on_template_redirect' ] );
+		// Automatically set up permalink overrides if the class uses the trait
+		if ( $this->uses_permalink_override_trait() ) {
+			add_action( 'template_redirect', array( $this, 'on_template_redirect' ) );
+		}
+	}
+
+	/**
+	 * Check if the current class uses the permalink override trait.
+	 *
+	 * @since TODO
+	 *
+	 * @return bool Whether the class uses the GravityView_Permalink_Override_Trait.
+	 */
+	private function uses_permalink_override_trait() {
+		return in_array( GravityView_Permalink_Override_Trait::class, class_uses( $this ), true );
 	}
 
 	/**
@@ -250,39 +267,5 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 	 */
 	public function merge_content_meta_keys( $meta_keys = array(), $post = null, &$views = null ) {
 		return array_merge( $this->content_meta_keys, $meta_keys );
-	}
-
-	/**
-	 * Add hooks to remove the permalink structure from View rendered links.
-	 *
-	 * @since TODO
-	 *
-	 * @return void
-	 */
-	public function on_template_redirect() {
-		if ( ! $this->should_disable_permalink_structure() ) {
-			return;
-		}
-
-		add_action( 'gravityview/template/before', function() {
-			add_filter( 'option_permalink_structure', '__return_false' );
-		}, 1 );
-
-		add_action( 'gravityview/template/after', function() {
-			remove_filter( 'option_permalink_structure', '__return_false' );
-		}, 1000 );
-	}
-
-	/**
-	 * When returning true, Views will be rendered with permalinks disabled.
-	 *
-	 * This is useful for plugins with custom endpoints, such as LearnDash, BuddyBoss, etc.
-	 *
-	 * @since TODO
-	 *
-	 * @return bool Whether to remove the permalink structure from View rendered links.
-	 */
-	public function should_disable_permalink_structure() {
-		return false;
 	}
 }

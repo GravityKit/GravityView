@@ -17,6 +17,8 @@
  */
 class GravityView_Plugin_Hooks_WooCommerce extends GravityView_Plugin_and_Theme_Hooks {
 
+	use GravityView_Permalink_Override_Trait;
+
 	/**
 	 * The function name to fetch WooCommerce page IDs.
 	 *
@@ -41,12 +43,11 @@ class GravityView_Plugin_Hooks_WooCommerce extends GravityView_Plugin_and_Theme_
 	 *
 	 * @return bool Whether to remove the permalink structure from View rendered links.
 	 */
-	public function should_disable_permalink_structure() {
-
+	protected function should_disable_permalink_structure() {
 		$page_id = wc_get_page_id( 'myaccount' );
 
 		if ( get_the_ID() !== $page_id ) {
-			return parent::should_disable_permalink_structure();
+			return false;
 		}
 
 		return true;
