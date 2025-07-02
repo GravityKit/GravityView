@@ -869,12 +869,12 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function maybe_update_post_fields( $form ) {
 
-		if ( empty( $this->entry['post_id'] ) ) {
+		$post_id = GVCommon::get_post_id_from_entry( $this->entry );
+
+		if ( empty( $post_id ) ) {
 	        gravityview()->log->debug( 'This entry has no post fields. Continuing...' );
 			return;
 		}
-
-		$post_id = $this->entry['post_id'];
 
 		// Security check
 		if ( false === GVCommon::has_cap( 'edit_post', $post_id ) ) {
@@ -1488,17 +1488,23 @@ class GravityView_Edit_Entry_Render {
 			return $field_content;
 		}
 
+		$post_id = GVCommon::get_post_id_from_entry( $this->entry );
+
+		if ( empty( $post_id ) ) {
+			return $field_content;
+		}
+
         $message = null;
 
         // First, make sure they have the capability to edit the post.
-		if ( null === get_post( $this->entry['post_id'] ) ) {
+		if ( null === get_post( $post_id ) ) {
 			/**
 			 * Modify the message when someone is editing an entry attached to a post that no longer exists.
 			 *
 			 * @param string $message The existing "This field is not editable; the post no longer exists." text
 			 */
 			$message = apply_filters( 'gravityview/edit_entry/no_post_text', __( 'This field is not editable; the post no longer exists.', 'gk-gravityview' ) );
-        } elseif ( false === current_user_can( 'edit_post', $this->entry['post_id'] ) ) {
+        } elseif ( false === current_user_can( 'edit_post', $post_id ) ) {
 			/**
 			 * Modify the message when someone isn't able to edit a post.
 			 *

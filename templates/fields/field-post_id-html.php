@@ -1,6 +1,6 @@
 <?php
 /**
- * The default post ID field output template.
+ * The default post_id field output template.
  *
  * @global \GV\Template_Context $gravityview
  * @since 2.0
@@ -11,16 +11,12 @@ if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	return;
 }
 
-$display_value = $gravityview->display_value;
-$entry         = $gravityview->entry->as_entry();
+$post_id       = GVCommon::get_post_id_from_entry( $gravityview->entry->as_entry() );
+$display_value = $gravityview->display_value ? $gravityview->display_value : $post_id;
 
-// Link to the post URL?
-if ( $gravityview->field->link_to_post && ! empty( $entry['post_id'] ) ) {
-
-	echo gravityview_get_link( get_permalink( $entry['post_id'] ), esc_html( $display_value ) );
+if ( $gravityview->field->link_to_post && ! empty( $post_id ) ) {
+	echo gravityview_get_link( get_permalink( $post_id ), esc_html( $display_value ) );
 
 } else {
-
-	echo esc_html( $display_value );
-
+	echo $display_value;
 }
