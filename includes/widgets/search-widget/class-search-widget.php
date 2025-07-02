@@ -2584,12 +2584,16 @@ if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
  */
 class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Condition {
 	/**
+	 * The author name to test.
+	 *
 	 * @var mixed
 	 */
 	private $value;
 
 	/**
-	 * @var mixed
+	 * The View.
+	 *
+	 * @var \GV\View
 	 */
 	private $view;
 
