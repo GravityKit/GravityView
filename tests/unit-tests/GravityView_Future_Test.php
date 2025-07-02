@@ -2414,6 +2414,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
+		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 		gravityview()->request->returns['is_entry'] = $entry;
 
@@ -8218,6 +8219,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
+		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 		gravityview()->request->returns['is_entry'] = $entry;
 
@@ -8244,6 +8246,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		) );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 
+		gravityview()->request = new \GV\Mock_Request();
 		gravityview()->request->returns['is_view'] = $view;
 		gravityview()->request->returns['is_entry'] = $entry;
 
