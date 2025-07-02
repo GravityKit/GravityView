@@ -1263,7 +1263,12 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	}
 
 	public function test_form_render_default_fields() {
-		$this->setExpectedDeprecated( 'GF_Field::get_conditional_logic_event' );
+
+		// This deprecation notice has triggered intermittently in the past, so
+		// we'll expect it and then trigger it at the end of the test.
+		// Note: The structure of the notice is __CLASS__ . ':' . __METHOD__, which
+		// looks wrong here, but isn't.
+		$this->setExpectedDeprecated( 'GF_Field:GF_Field::get_conditional_logic_event' );
 
 		/** Create a user */
 		$administrator = $this->_generate_user( 'administrator' );
@@ -1313,7 +1318,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertStringContainsString( "value='Much Better' checked='checked'", $output );
 		$this->assertStringNotContainsString( "value='Much Worse' checked='checked'", $output );
 
-		// Make sure we trigger a deprecation notice, which is expected.
+		// Make sure we trigger a deprecation notice, which is expected, just to be sure.
 		$field = new GF_Field();
 		$field->get_conditional_logic_event( 'keyup' );
 
