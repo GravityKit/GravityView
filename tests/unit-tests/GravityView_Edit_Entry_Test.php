@@ -1263,6 +1263,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	}
 
 	public function test_form_render_default_fields() {
+		$this->setExpectedDeprecated( 'GF_Field::get_conditional_logic_event' );
+
 		/** Create a user */
 		$administrator = $this->_generate_user( 'administrator' );
 
