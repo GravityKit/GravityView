@@ -1313,6 +1313,10 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertStringContainsString( "value='Much Better' checked='checked'", $output );
 		$this->assertStringNotContainsString( "value='Much Worse' checked='checked'", $output );
 
+		// Make sure we trigger a deprecation notice, which is expected.
+		$field = new GF_Field();
+		$field->get_conditional_logic_event( 'keyup' );
+
 		$this->_reset_context();
 	}
 
