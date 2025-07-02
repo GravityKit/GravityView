@@ -37,9 +37,18 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	 *
 	 * @since $ver$
 	 *
-	 * @var bool
+	 * @var int
 	 */
-	private static bool $should_skip = false;
+	private int $skipped = 0;
+
+	/**
+	 * Holds the visible fields per form on the View.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array<int, array<int|string>>
+	 */
+	private array $fields;
 
 	/**
 	 * Returns the singleton.
@@ -67,10 +76,10 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	 * @param GF_Query $query The Query.
 	 * @param View     $view  The View.
 	 */
-	public function maybe_update_search_condition( GF_Query $query, View $view ): void {
-		// If the current user can search everything, we don't need to do anything.
+	public function maybe_update_search_condition( GF_Query &$query, View $view ): void {
 		$where = $query->_introspect()['where'] ?? null;
 
+		// If the current user can search everything, we don't need to do anything.
 		if ( ! $where || ! $this->is_search_limited( $view ) ) {
 			return;
 		}
@@ -91,7 +100,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	 * @return bool Whether the current user can search everything.
 	 */
 	private function is_search_limited( View $view ): bool {
-		if ( self::$should_skip ) {
+		if ( $this->skipped > 0 ) {
 			return false;
 		}
 
@@ -136,10 +145,13 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	 * @return bool Whether the condition is an excluded field.
 	 */
 	private function is_excluded_field( GF_Query_Condition $condition, array $fields ): bool {
-		$left = $condition->left ?? null;
+		$left  = $condition->left ?? null;
+		$right = $condition->right ?? null;
+
 		if (
-			! $left instanceof GF_Query_Column
-			|| GF_Query_Column::META === $left->field_id
+			! $right instanceof GF_Query_Condition // Might be used for a join.
+			|| ! $left instanceof GF_Query_Column // Broken condition.
+			|| GF_Query_Column::META === $left->field_id // Search everything.
 		) {
 			return false;
 		}
@@ -201,11 +213,6 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 				fn( GF_Query_Condition $expression ) => $this->replace_condition( $query, $expression, $fields ),
 				$condition->expressions ?? []
 			);
-
-			// No need to nest a single condition in a group.
-			if ( count( $expressions ) === 1 ) {
-				return reset( $expressions );
-			}
 
 			return GF_Query_Condition::_AND === $condition->operator
 				? GF_Query_Condition::_and( ...$expressions )
@@ -294,10 +301,14 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	 * @return array<int, array<int|string>> The visible fields per form on the View.
 	 */
 	private function get_visible_fields( View $view ): array {
-		self::$should_skip = true; // Prevent infinite loop.
+		if ( isset( $this->fields[ $view->ID ] ) ) {
+			return $this->fields[ $view->ID ];
+		}
+
+		++$this->skipped; // Prevent infinite loop.
 
 		$fields = array_reduce(
-			$view->fields->by_visible( $view )->all(),
+			$view->fields->by_visible()->all(),
 			static function ( array $fields, Field $field ) {
 				if ( $field instanceof Internal_Field && 'meta' === $field->field->group ) {
 					return $fields;
@@ -320,15 +331,17 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 			[]
 		);
 
-		$form_ids   = array_column( View::get_joined_forms( $view->ID ), 'ID' );
-		$form_ids[] = gravityview_get_form_id( $view->ID );
+		$form_ids = array_column( View::get_joined_forms( $view->ID ), 'ID' );
 
 		// Make sure all joined forms are in the array.
 		foreach ( $form_ids as $form_id ) {
 			$fields[ $form_id ] = array_values( array_unique( $fields[ $form_id ] ?? [] ) );
 		}
 
-		self::$should_skip = false;
+		--$this->skipped;
+
+		// Cache and return.
+		$this->fields[ $view->ID ] = $fields;
 
 		return $fields;
 	}
