@@ -30,6 +30,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 
 * For some users, adding a Chained Selects Add-On field to the Search Bar causes JavaScript code to be visible and the field would not work as expected.
+* Single Entry and Edit Entry were not working when Views were embedded in some plugin membership pages. These plugins include LearnDash, BuddyBoss and BuddyPress, Ultimate Member, and WooCommerce Account Pages.
 
 #### 💻 Developer Updates
 
