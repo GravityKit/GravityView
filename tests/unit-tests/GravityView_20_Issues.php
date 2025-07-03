@@ -106,7 +106,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'status' => 'active',
-			'3' => date( 'Y-m-d H:i:s', strtotime( "-${year_and_one_day_ago}" ) ),
+			'3' => date( 'Y-m-d H:i:s', strtotime( "-{$year_and_one_day_ago}" ) ),
 		) );
 
 		global $post;
@@ -587,7 +587,7 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 		$field->update_configuration( array( 'number_format' => true ) );
 
 		$this->assertEquals( '9.999,99', $renderer->render( $field, $view, $form, $entry, $request ) );
-		
+
 		$field->update_configuration( array( 'decimals' => 3 ) );
 
 		$this->assertEquals( '9.999,990', $renderer->render( $field, $view, $form, $entry, $request ) );
