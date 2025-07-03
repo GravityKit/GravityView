@@ -100,7 +100,7 @@ class GravityView_Recent_Entries_Widget extends WP_Widget {
 			return;
 		}
 
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		if ( GVCommon::is_rest_request() ) {
 			return false;
 		}
 

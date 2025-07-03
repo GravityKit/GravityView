@@ -2124,7 +2124,18 @@ class GVCommon {
 		// Optional: $from_name, $message_format, $attachments, $lead, $notification
 		$SendEmail->invoke( new GFCommon(), $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, $attachments, $entry, $notification );
 	}
-}//end class
+
+	/**
+	 * Check if the current request is a REST request.
+	 *
+	 * @since 2.41
+	 *
+	 * @return bool True if the request is a REST request, false otherwise.
+	 */
+	public static function is_rest_request() {
+		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+	}
+}
 
 
 /**

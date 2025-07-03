@@ -91,9 +91,10 @@ class GravityView_Image {
 	function validate_image_src() {
 
 		if ( ! $this->validate_src ) {
-			return true; }
+			return true;
+		}
 
-		$info = pathinfo( $this->src );
+		$info = pathinfo( (string) $this->src );
 
 		$image_exts = self::get_image_extensions();
 
