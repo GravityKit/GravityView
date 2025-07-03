@@ -9,24 +9,24 @@
  * @link      http://www.gravitykit.com
  * @copyright Copyright 2025, Katz Web Services, Inc.
  *
- * @since TODO
+ * @since 2.41
  */
 
 /**
  * @inheritDoc
- * @since TODO
+ * @since 2.41
  */
 class GravityView_Theme_Hooks_Formidable_Views extends GravityView_Plugin_and_Theme_Hooks {
 
 	/**
 	 * @inheritDoc
-	 * @since TODO
+	 * @since 2.41
 	 */
 	protected $function_name = 'load_formidable_views';
 
 	/**
 	 * @inheritDoc
-	 * @since TODO
+	 * @since 2.41
 	 */
 	protected function add_hooks() {
 		parent::add_hooks();
@@ -37,7 +37,7 @@ class GravityView_Theme_Hooks_Formidable_Views extends GravityView_Plugin_and_Th
 	/**
 	 * Add a notice about the conflict between GravityView and Formidable Views.
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 *
 	 * @param array $notices
 	 *

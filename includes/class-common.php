@@ -2128,7 +2128,7 @@ class GVCommon {
 	/**
 	 * Check if the current request is a REST request.
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 *
 	 * @return bool True if the request is a REST request, false otherwise.
 	 */
