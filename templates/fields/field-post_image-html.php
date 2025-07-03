@@ -25,23 +25,23 @@ $post_id        = GVCommon::get_post_id_from_entry( $entry );
  * @see GFCommon::get_lead_field_display()
  * @var array
  */
-$ary         = explode( '|:|', $value );
-$url         = count( $ary ) > 0 ? $ary[0] : '';
-$title       = count( $ary ) > 1 ? $ary[1] : '';
-$caption     = count( $ary ) > 2 ? $ary[2] : '';
-$description = count( $ary ) > 3 ? $ary[3] : '';
+$image_data  = GravityView_Field_Post_Image::explode_value( $value );
+$url         = $image_data['url'];
+$title       = $image_data['title'];
+$caption     = $image_data['caption'];
+$description = $image_data['description'];
 
 $link_atts = array();
 
 /**
  * @since 1.5.4
  *
- * $field['postFeaturedImage'] - holds if the Post Image field is set as post featured image
+ * $field->postFeaturedImage - holds if the Post Image field is set as post featured image
  * $field_settings['dynamic_data'] - whether the field content should be fetched from the Post (dynamic data) or from the GF entry
  *
  * Dynamic data (get post featured image instead of GF entry field)
  */
-if ( ! empty( $field['postFeaturedImage'] ) && ! empty( $field_settings['dynamic_data'] ) && ! empty( $post_id ) && has_post_thumbnail( $post_id ) ) {
+if ( ! empty( $field->postFeaturedImage ) && ! empty( $field_settings['dynamic_data'] ) && ! empty( $post_id ) && has_post_thumbnail( $post_id ) ) {
 
 	/**
 	 * Modify what size is fetched for the post's Featured Image
