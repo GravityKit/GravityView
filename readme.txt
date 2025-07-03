@@ -21,6 +21,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.41 on July 3, 2025 =
+
+This release adds a GravityBoard widget for embedding boards in Views, resolves issues with block rendering and Chained Selects fields, fixes Single and Edit Entry not working in membership plugins, and alerts users to potential conflicts with Formidable Views.
+
+#### 🚀 Added
+* [GravityBoard](https://www.gravitykit.com/products/gravityboard/) widget to embed a board in a View.
+
+#### 🐛 Fixed
+* For some users, adding a Chained Selects Add-On field to the Search Bar causes JavaScript code to be visible and the field would not work as expected.
+* When "Preview as shortcode" was enabled in the View editor, some blocks would not render properly on the frontend.
+* Added a compatibility notice when using Formidable Views and GravityView at the same time.
+* Single Entry and Edit Entry were not working when Views were embedded in some plugin membership pages. These plugins include LearnDash, BuddyBoss and BuddyPress, Ultimate Member, and WooCommerce Account Pages.
+
+#### 💻 Developer Updates
+* `requires` and `requires-not` field setting conditional display were not working correctly for radio buttons.
+* Added `GVCommon::is_rest_request()` method to check if the current request is a REST request, a clone of the `wp_is_serving_rest_request()` function.
+* CSS files are now versioned using `filemtime()` instead of the plugin version, ensuring browsers always load the latest styles after updates.
+
 = 2.40 on May 29, 2025 =
 
 This release fixes issues with editing entries that include File Upload fields and downloading files with spaces in their filenames, corrects CSV export of Survey Add-On values, and adds support for the `{get}` merge tag inside the `[gv_entry_link]` shortcode.

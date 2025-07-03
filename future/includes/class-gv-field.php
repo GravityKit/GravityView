@@ -11,7 +11,20 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *
  * Houses all base Field functionality.
  */
-class Field {
+class Field extends \stdClass {
+	/**
+	 * Whether to reverse the order of the entries.
+	 *
+	 * @var bool
+	 */
+	public bool $reverse = false;
+
+	/**
+	 * The start of the sequence.
+	 *
+	 * @var int
+	 */
+	public $start;
 
 	/**
 	 * @var array The custom View configuration for this field.
@@ -89,6 +102,14 @@ class Field {
 	 * @since 2.0
 	 */
 	public $show_as_link = false;
+
+	/**
+	 * Whether to open the link in a new window.
+	 *
+	 * @var bool
+	 */
+	public $new_window;
+
 
 	/**
 	 * @var bool Filter this field from searching.

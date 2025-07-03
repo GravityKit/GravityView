@@ -4,6 +4,7 @@ namespace GravityKit\GravityView\Gutenberg\Blocks;
 
 use GravityKit\GravityView\Gutenberg\Blocks;
 use GravityKit\GravityView\Foundation\Helpers\Arr;
+use GVCommon;
 
 class Entry {
 	/**
@@ -43,13 +44,16 @@ class Entry {
 			'secret'  => 'secret',
 		);
 
+		$preview_as_shortcode = Arr::get( $block_attributes, 'previewAsShortcode' );
+		$is_rest_request      = GVCommon::is_rest_request();
+
 		$shortcode_attributes = array();
 
 		foreach ( $block_attributes as $attribute => $value ) {
 			$value = esc_attr( sanitize_text_field( $value ) );
 
 			if ( isset( $block_to_shortcode_attributes_map[ $attribute ] ) && ! empty( $value ) ) {
-				if ( 'secret' === $attribute && Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
+				if ( 'secret' === $attribute && $preview_as_shortcode && $is_rest_request ) {
 					$value = '*********';
 				}
 
@@ -63,7 +67,7 @@ class Entry {
 
 		$shortcode = sprintf( '[gventry %s]', implode( ' ', $shortcode_attributes ) );
 
-		if ( Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
+		if ( $preview_as_shortcode && $is_rest_request ) {
 			return $shortcode;
 		}
 

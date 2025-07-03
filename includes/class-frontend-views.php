@@ -1668,10 +1668,17 @@ class GravityView_frontend {
 		$rtl = is_rtl() ? '-rtl' : '';
 
 		$css_file_base = $use_legacy_search_style ? 'gv-legacy-search' : 'gv-default-styles';
+		$css_file_path = $css_file_base . $rtl . '.css';
 
-		$path = gravityview_css_url( $css_file_base . $rtl . '.css' );
+		$css_url = gravityview_css_url( $css_file_path );
 
-		wp_enqueue_style( 'gravityview_default_style', $path, $css_dependencies, GV_PLUGIN_VERSION, 'all' );
+		$version = GV_PLUGIN_VERSION;
+
+		if( is_readable( GRAVITYVIEW_DIR . 'templates/css/source/' . $css_file_path ) ) {
+			$version = filemtime( GRAVITYVIEW_DIR . 'templates/css/source/' . $css_file_path );
+		}
+
+		wp_enqueue_style( 'gravityview_default_style', $css_url, $css_dependencies, $version, 'all' );
 	}
 
 	/**

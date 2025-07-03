@@ -2583,6 +2583,20 @@ if ( ! gravityview()->plugin->supports( \GV\Plugin::FEATURE_GFQUERY ) ) {
  * A GF_Query condition that allows user data searches.
  */
 class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Condition {
+	/**
+	 * The author name to test.
+	 *
+	 * @var mixed
+	 */
+	private $value;
+
+	/**
+	 * The View.
+	 *
+	 * @var \GV\View
+	 */
+	private $view;
+
 	public function __construct( $filter, $view ) {
 		$this->value = $filter['value'];
 		$this->view  = $view;
