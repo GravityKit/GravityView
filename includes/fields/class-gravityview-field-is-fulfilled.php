@@ -20,6 +20,8 @@ class GravityView_Field_Is_Fulfilled extends GravityView_Field {
 
 	var $_custom_merge_tag = 'is_fulfilled';
 
+	public $icon = 'dashicons-yes-alt';
+
 	/**
 	 * @var int The value used by Gravity Forms when the order has not been fulfilled
 	 */

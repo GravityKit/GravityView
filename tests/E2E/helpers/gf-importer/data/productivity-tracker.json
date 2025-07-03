@@ -1,0 +1,121 @@
+{
+  "form": {
+    "title": "Productivity Tracker",
+    "description": "This form collects information about productivity-related aspects.",
+    "button": {
+      "type": "text",
+      "text": "Submit",
+      "imageUrl": ""
+    },
+    "fields": [
+      {
+        "id": 1,
+        "type": "select",
+        "label": "What is your primary productivity tool?",
+        "isRequired": true,
+        "choices": [
+          "Trello",
+          "Asana",
+          "Notion",
+          "ClickUp",
+          "Jira",
+          "Todoist",
+          "Basecamp"
+        ]
+      },
+      {
+        "id": 2,
+        "type": "select",
+        "label": "How do you measure your productivity?",
+        "isRequired": true,
+        "choices": [
+          "Daily Goals",
+          "Weekly Reviews",
+          "Time Tracking",
+          "Project Completion",
+          "Task Lists",
+          "Pomodoro Technique",
+          "Self-Reflection"
+        ]
+      },
+      {
+        "id": 3,
+        "type": "select",
+        "label": "What is your biggest productivity challenge?",
+        "isRequired": true,
+        "choices": [
+          "Procrastination",
+          "Distractions",
+          "Overwhelm",
+          "Motivation",
+          "Focus",
+          "Time Management",
+          "Task Prioritization"
+        ]
+      },
+      {
+        "id": 4,
+        "type": "text",
+        "label": "Additional Comments",
+        "isRequired": false
+      },
+      {
+        "id": 5,
+        "type": "number",
+        "label": "Hours Spent on Productivity Tools",
+        "isRequired": true
+      }
+    ]
+  },
+  "entries": [
+    {
+      "1": "Trello",
+      "2": "Daily Goals",
+      "3": "Procrastination",
+      "4": "I rely on to-do lists.",
+      "5": "5"
+    },
+    {
+      "1": "Asana",
+      "2": "Weekly Reviews",
+      "3": "Distractions",
+      "4": "Notifications make it hard to stay focused.",
+      "5": "3"
+    },
+    {
+      "1": "ClickUp",
+      "2": "Time Tracking",
+      "3": "Focus",
+      "4": "Working on minimizing multitasking.",
+      "5": "4"
+    },
+    {
+      "1": "Notion",
+      "2": "Project Completion",
+      "3": "Overwhelm",
+      "4": "Breaking down tasks helps.",
+      "5": "6"
+    },
+    {
+      "1": "Jira",
+      "2": "Task Lists",
+      "3": "Time Management",
+      "4": "Using calendar blocks now.",
+      "5": "2"
+    },
+    {
+      "1": "Todoist",
+      "2": "Weekly Reviews",
+      "3": "Procrastination",
+      "4": "Trying new techniques weekly.",
+      "5": "4"
+    },
+    {
+      "1": "Notion",
+      "2": "Daily Goals",
+      "3": "Distractions",
+      "4": "Phone is a big source of distraction.",
+      "5": "3"
+    }
+  ]
+}

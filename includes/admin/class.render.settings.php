@@ -1,5 +1,6 @@
 <?php
 
+use GV\Search\Fields\Search_Field;
 use GV\Utils;
 
 /**
@@ -67,14 +68,22 @@ class GravityView_Render_Settings {
 		if ( isset( $field_options['lightbox'] ) ) {
 			$field_options['lightbox'] = array_merge(
 				$field_options['lightbox'],
-				[ 'requires' => 'show_as_link', 'priority' => 101 ]
+				[
+					'requires' => 'show_as_link',
+					'priority' => 101,
+					'context'  => [ 'multiple' ],
+				]
 			);
 		}
 
 		if ( isset( $field_options['new_window'] ) ) {
 			$field_options['new_window'] = array_merge(
 				$field_options['new_window'],
-				[ 'requires' => 'show_as_link', 'priority' => 102 ]
+				[
+					'requires' => 'show_as_link',
+					'priority' => 102,
+					'context'  => [ 'multiple' ],
+				]
 			);
 		}
 
@@ -173,7 +182,7 @@ class GravityView_Render_Settings {
 
 		$is_table_layout = preg_match( '/table/ism', $template_id );
 
-		if ( 'field' === $field_type ) {
+		if ( in_array( $field_type, [ 'field', 'search' ], true ) ) {
 			// Default options - fields
 			$field_options = [
 				'show_label'        => [
@@ -183,6 +192,7 @@ class GravityView_Render_Settings {
 					'priority'     => 1000,
 					'group'        => 'label',
 					'requires_not' => 'full_width=1',
+					'contexts'     => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 				'custom_label'      => [
 					'type'         => 'text',
@@ -194,6 +204,7 @@ class GravityView_Render_Settings {
 					'requires'     => 'show_label',
 					'requires_not' => 'full_width=1',
 					'group'        => 'label',
+					'contexts'     => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 				'custom_class'      => [
 					'type'       => 'text',
@@ -205,6 +216,7 @@ class GravityView_Render_Settings {
 					'class'      => 'widefat code',
 					'priority'   => 5000,
 					'group'      => 'advanced',
+					'contexts'   => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 				'only_loggedin'     => [
 					'type'     => 'checkbox',
@@ -212,6 +224,7 @@ class GravityView_Render_Settings {
 					'value'    => '',
 					'priority' => 4000,
 					'group'    => 'visibility',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 				'only_loggedin_cap' => [
 					'type'     => 'select',
@@ -222,20 +235,24 @@ class GravityView_Render_Settings {
 					'priority' => 4100,
 					'requires' => 'only_loggedin',
 					'group'    => 'visibility',
+					'contexts' => [ 'multiple', 'single', 'edit', 'search' ],
 				],
 			];
 
 			// Match Table as well as DataTables
-			if ( $is_table_layout && 'directory' === $context ) {
+			if ( $is_table_layout && 'field' === $field_type ) {
 				$field_options['width'] = [
 					'type'     => 'number',
 					'label'    => __( 'Percent Width', 'gk-gravityview' ),
-					'desc'     => __( 'Leave blank for column width to be based on the field content.',
-						'gk-gravityview' ),
+					'desc' => __(
+						'Leave blank for column width to be based on the field content.',
+						'gk-gravityview'
+					),
 					'class'    => 'code widefat',
 					'value'    => '',
 					'priority' => 200,
 					'group'    => 'display',
+					'contexts' => [ 'multiple' ],
 				];
 			}
 		}
@@ -272,6 +289,18 @@ class GravityView_Render_Settings {
 		 * @param int    $form_id     The form ID. {@since 2.5}
 		 */
 		$field_options = apply_filters( "gravityview_template_{$input_type}_options", $field_options, $template_id, $field_id, $context, $input_type, $form_id );
+
+		// Filter out any fields that are not in the provided context.
+		$_context = 'directory' === $context ? 'multiple' : $context;
+		$_context = strpos( $_context, 'search-' ) === 0 ? 'search' : $_context;
+
+		foreach ( $field_options as $key => $field_option ) {
+			if ( isset( $field_option['contexts'] ) && ! in_array( $_context, $field_option['contexts'], true ) ) {
+				unset( $field_options[ $key ] );
+			} elseif ( ! isset( $field_option['contexts'] ) && 'search' === $_context ) {
+				unset( $field_options[ $key ] );
+			}
+		}
 
 		/**
 		 * Filters the field options.
@@ -446,6 +475,26 @@ class GravityView_Render_Settings {
 			foreach ( $option_group as $key => $option ) {
 				$value = $current[ $key ] ?? null;
 
+				/**
+				 * @action `gk/gravityview/template/before-field-render` which allows you to act before a field of an item is rendered.
+				 *
+				 * @since  $ver$
+				 *
+				 * @param string $field_type Either `widget`, `field` or `search`.
+				 * @param string $key        The key of the field.
+				 * @param array  $option     The field configuration.
+				 * @param array  $current    All the values for the current item being rendered.
+				 * @param array  $context    Extra rendering context added to the action.
+				 */
+				do_action(
+					'gk/gravityview/template/before-field-render',
+					(string) $field_type,
+					(string) $key,
+					(array) $option,
+					(array) $current,
+					compact( 'form_id', 'template_id' )
+				);
+
 				$field_output = self::render_field_option( $name_prefix . '[' . $key . ']', $option, $value );
 
 				// The setting is empty
@@ -510,6 +559,27 @@ class GravityView_Render_Settings {
 				$item_details .= '
 				</section>
 			</div>';
+		} elseif ( 'search' === $field_type ) {
+			if ( ! $item ) {
+				$item = [
+					'id'      => $field_id,
+					'label'   => $field_label,
+					'form_id' => $form_id,
+				];
+			}
+			$search_field = Search_Field::from_configuration( $item );
+			$description  = $search_field ? $search_field->get_description() : '';
+			$icon         = $search_field ? $search_field->icon_html() : '';
+
+			$item_details = sprintf(
+				"<div class=\"gv-field-details--container\">
+				<h3 class=\"search-field-title\">$icon <span>{$item['label']}</span></h3>
+				%s
+			</div>",
+				wpautop( trim( $description ) )
+			);
+
+			$field_settings = sprintf( '<div class="gv-dialog-options--content">%s</div>', $field_settings );
 		} else {
 			$subtitle               = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
 			$widget_details_content = Utils::get( $item, 'description', '' );
@@ -807,7 +877,7 @@ EOD;
 
 		$class = '';
 		// and $add_merge_tags is not false
-		if ( $show && false !== $add_merge_tags || 'force' === $add_merge_tags ) {
+		if ( $show && ( false !== $add_merge_tags || 'force' === $add_merge_tags ) ) {
 			$class = 'gv-merge-tag-support mt-position-right mt-hide_all_fields ';
 		}
 

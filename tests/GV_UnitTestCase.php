@@ -21,6 +21,8 @@ class GV_UnitTestCase extends WP_UnitTestCase {
 			gf_upgrade()->upgrade_schema();
 		}
 
+		GVCommon::clear_cache();
+
 		$this->factory = new GV_UnitTest_Factory( $this );
 
 		if ( version_compare( GFForms::$version, '2.2', '<' ) ) {

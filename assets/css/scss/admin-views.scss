@@ -15,6 +15,7 @@
 @import "admin-metabox";
 @import "admin-merge-tags";
 @import "view-dropdown";
+@import "search-view";
 
 // http://blog.teamtreehouse.com/a-better-clearfix-with-sass
 %clearfix {
@@ -93,7 +94,7 @@ $gv-overlay-index: 10000;
 		background-color: #FFF;
 
 		&:hover {
-			.gv-grid-row-actions {
+			> .gv-grid-row-actions {
 				display: flex;
 			}
 		}
@@ -117,6 +118,21 @@ $gv-overlay-index: 10000;
 		display: none;
 		overflow: hidden;
 		box-shadow: 0 0 20px 0 #D5D7E9;
+	}
+
+	.gv-grid-rows-container {
+		min-height: 10px;
+		transition: height 300ms ease-out;
+	}
+
+	&.is-receivable {
+		> .gv-grid-rows-container {
+			min-height: 44px;
+			border-radius: 3px;
+			background: rgba(210, 224, 235, .4);
+			outline: 10px solid rgba(210, 224, 235, .4);
+			margin-bottom: 18px;
+		}
 	}
 
 	.gv-grid-row-action {
@@ -145,13 +161,13 @@ $gv-overlay-index: 10000;
 	}
 
 	.grid-row-placeholder {
-		background: rgba(210, 224, 235, 0.6);
+		background: rgba(99, 109, 119, .2);
 		border-radius: 3px;
 		margin-bottom: 24px;
 		padding: 12px;
 	}
 
-	&.ui-sortable .gv-grid-row {
+	.ui-sortable .gv-grid-row {
 		box-shadow: 0 0 0 2px rgba(210, 224, 235, .6);
 		border-radius: 3px;
 	}
@@ -312,6 +328,7 @@ $gv-overlay-index: 10000;
 
 #edit-active-fields,
 #single-active-fields,
+.search-advanced-active-fields,
 #directory-footer-widgets {
 	margin-bottom: 0;
 }
@@ -770,6 +787,7 @@ $gv-overlay-index: 10000;
 	max-width: 690px !important;
 	height: 14.5em; // 10 visible rows
 }
+
 .post-type-gravityview .gv-dialog-expanded .CodeMirror {
 	height: auto;
 }
@@ -836,6 +854,7 @@ $gv-overlay-index: 10000;
 		> :nth-child(odd) {
 			background-color: initial;
 		}
+
 		.alternate {
 			background-color: #f6f7f7;
 		}
@@ -1078,8 +1097,8 @@ $gv-overlay-index: 10000;
 	user-select: auto;
 	border-radius: 10px;
 	overflow-y: auto;
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 
-				0 2px 4px rgba(0, 0, 0, 0.06);
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1),
+	0 2px 4px rgba(0, 0, 0, 0.06);
 	border: 1px solid rgba(0, 0, 0, 0.08);
 
 	.ui-dialog-titlebar {
@@ -1131,7 +1150,7 @@ $gv-overlay-index: 10000;
 }
 
 .admin-bar .gv-dialog.gv-dialog-expanded {
-	top: calc( 32px + 2.5vh ) !important;
+	top: calc(32px + 2.5vh) !important;
 	height: calc(95vh - 32px) !important;
 }
 
@@ -1288,7 +1307,7 @@ hr {
 	}
 
 	// Prevent focus of this non-working button.
-	.gv-add-field {
+	[data-fieldid] > .gv-add-field {
 		display: none;
 	}
 
@@ -1320,6 +1339,11 @@ hr {
 	border: none;
 	background: rgba(99, 109, 119, .2);
 	border-radius: 3px;
+	display: none;
+
+	.is-receivable & {
+		display: block;
+	}
 }
 
 #directory-fields .gv-fields {
@@ -1363,15 +1387,32 @@ hr {
 		}
 	}
 
+	&.gv-field--is-added {
+		opacity: .25;
+
+		* {
+			pointer-events: none;
+			cursor: not-allowed;
+		}
+
+		pointer-events: none;
+	}
+
+	&.gv-field--not-allowed {
+		cursor: not-allowed;
+	}
+
 	.gv-field-controls {
 		.dashicons-media-default,
 		.icon-custom-visibility,
-		.gv-indicator-icon {
+		.gv-indicator-icon,
+		.icon-hidden {
 			cursor: help;
 		}
 
 		.icon-custom-visibility,
-		.gv-indicator-icon {
+		.gv-indicator-icon,
+		.icon-hidden {
 			line-height: 44px;
 			margin: -2px 6px 0 0;
 
@@ -1383,6 +1424,10 @@ hr {
 
 	&.has-custom-visibility .gv-field-controls .icon-custom-visibility {
 		display: inline-block;
+
+		&.hide-if-js {
+			display: none;
+		}
 	}
 
 	h5 {
@@ -1461,7 +1506,7 @@ hr {
 			color: #636D77;
 		}
 
-		button.gv-field-duplicate {
+		> h5 > button.gv-field-duplicate {
 			position: static;
 		}
 	}
@@ -1702,7 +1747,7 @@ hr {
 
 .gv-dialog {
 
-	&.ui-widget-content > div {
+	&.ui-widget-content > div:not(.ui-tooltip) {
 		padding-left: $dialog-padding;
 		padding-right: $dialog-padding;
 	}
@@ -1856,6 +1901,7 @@ hr {
 		.ui-icon.ui-icon-closethick {
 			display: none;
 		}
+
 		&:before {
 			text-indent: 0;
 			position: absolute;
@@ -2005,9 +2051,8 @@ hr {
 		font-size: 1.1em;
 		clear: left;
 
-		// Hide hidden containers and search mode by default
-		&.hidden,
-		&.gv-setting-container-search_mode {
+		// Hide hidden containers by default
+		&.hidden {
 			display: none;
 		}
 
@@ -2478,4 +2523,23 @@ hr {
  */
 .post-type-gravityview #post-body.columns-2 #postbox-container-1 {
 	clear: left;
+}
+
+/**
+ * Search Bar
+ */
+#search-view {
+	display: none;
+
+	.gv-field-duplicate {
+		display: none;
+	}
+
+	.gv-add-field {
+		display: inline-block;
+	}
+
+	[data-search-fields] & {
+		display: block;
+	}
 }

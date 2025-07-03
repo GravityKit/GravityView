@@ -1307,8 +1307,6 @@
         "isRequired": false,
         "size": "medium",
         "errorMessage": "",
-        "inputs": [],
-        "choices": [],
         "displayAllCategories": true,
         "inputType": "checkbox",
         "formId": 14,

@@ -34,7 +34,10 @@ test('Verify Hide Empty Fields Setting', async ({ page }, testInfo) => {
 		.getByText('Favorite Book', { exact: true })
 		.click();
 	await page.getByRole('button', { name: 'Configure Favorite Book' }).click();
-	await page.getByLabel('Show Label').setChecked(true);
+	await page
+		.getByLabel('Favorite Book Settings', { exact: true })
+		.getByLabel('Show Label')
+		.setChecked(true);
 	await page
 		.getByLabel('Favorite Book Settings', { exact: true })
 		.getByRole('button', { name: 'Close', exact: true })

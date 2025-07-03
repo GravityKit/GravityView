@@ -124,7 +124,7 @@ function render_template_options( array $templates, ?string $selected_template )
 
 			<h4><?php esc_html_e( 'Entries Fields', 'gk-gravityview' ); ?> <span><?php esc_html_e( 'These fields will be shown for each entry.', 'gk-gravityview' ); ?></span></h4>
 
-			<div id="directory-active-fields" class="gv-grid">
+			<div id="directory-active-fields" class="gv-grid" data-grid-context="directory">
 				<?php
 				if ( ! empty( $directory_entries_template ) ) {
 					do_action( 'gravityview_render_directory_active_areas', $directory_entries_template, 'directory', $post->ID, true );
@@ -191,7 +191,7 @@ function render_template_options( array $templates, ?string $selected_template )
 				</div>
 			</div>
 
-			<div id="single-active-fields" class="gv-grid">
+			<div id="single-active-fields" class="gv-grid" data-grid-context="single">
 				<?php
 				if ( ! empty( $single_entry_template ) ) {
 					do_action( 'gravityview_render_directory_active_areas', $single_entry_template, 'single', $post->ID, true );
@@ -229,6 +229,19 @@ function render_template_options( array $templates, ?string $selected_template )
 		</div>
 
 	</div> <?php // end edit view tab ?>
+
+	<div id='search-view' aria-hidden="true">
+		<div id="search-general-fields">
+			<?php
+				do_action( 'gravityview_render_field_pickers', 'search-general' );
+			?>
+		</div>
+		<div id="search-advanced-fields">
+			<?php
+				do_action( 'gravityview_render_field_pickers', 'search-advanced' );
+			?>
+		</div>
+	</div>
 </div> <?php // end tabs ?>
 
 <input type="hidden" name="gv_fields_done" value="1" />

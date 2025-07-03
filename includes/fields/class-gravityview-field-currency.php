@@ -20,6 +20,8 @@ class GravityView_Field_Currency extends GravityView_Field {
 
 	var $_custom_merge_tag = 'currency';
 
+	public $icon = 'dashicons-money-alt';
+
 	/**
 	 * GravityView_Field_Currency constructor.
 	 */

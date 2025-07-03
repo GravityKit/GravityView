@@ -751,6 +751,8 @@ class View implements \ArrayAccess {
 		$view       = new self();
 		$view->post = $post;
 
+		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
+
 		/** Get connected form. */
 		$view->form = GF_Form::by_id( $view->_gravityview_form_id );
 		global $pagenow;
@@ -834,7 +836,7 @@ class View implements \ArrayAccess {
 			)
 		);
 
-		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
+
 
 		/**
 		 * Override View.

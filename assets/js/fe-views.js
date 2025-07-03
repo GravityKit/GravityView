@@ -34,6 +34,10 @@ jQuery( function ( $ ) {
 
 			$( document ).on( 'gform_post_render', this.disable_upload_file_when_limit_reached.bind( this ) );
 
+			$( '#gv-search-advanced-toggle' ).on( 'click', this.toggle_advanced_search );
+
+			this.disable_upload_file_when_limit_reached();
+
 			this.fix_updating_files_after_edit();
 
 			this.number_range();
@@ -390,6 +394,11 @@ jQuery( function ( $ ) {
 					window.location = event.data.redirectToUrl;
 				}
 			} );
+		},
+
+		toggle_advanced_search: function () {
+			$( this ).attr( 'aria-expanded', ( _i, val ) => 'true' === val ? 'false' : 'true' );
+			$( '#gv-search-advanced' ).toggleClass( 'gv-search-advanced--open', 'true' === $( this ).attr( 'aria-expanded' ) );
 		}
 	};
 

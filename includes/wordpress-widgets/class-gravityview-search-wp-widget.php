@@ -79,6 +79,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
+		unset($instance['title']);
 		// @todo Add to the widget configuration form
 		$instance['search_layout'] = apply_filters( 'gravityview/widget/search/layout', 'vertical', $instance );
 
