@@ -13,6 +13,9 @@
  * @since 1.15.2
  */
 
+// Make sure the permalink override trait is loaded.
+require_once plugin_dir_path( __FILE__ ) . 'trait-gravityview-permalink-override.php';
+
 /**
  * Abstract class that makes it easy for plugins and themes to register no-conflict scripts and styles, as well as
  * add post meta keys for GravityView to parse when checking for the existence of shortcodes in content.
@@ -176,6 +179,22 @@ abstract class GravityView_Plugin_and_Theme_Hooks {
 		if ( $this->post_type_support ) {
 			add_filter( 'gravityview_post_type_support', array( $this, 'merge_post_type_support' ), 10, 2 );
 		}
+
+		// Automatically set up permalink overrides if the class uses the trait
+		if ( $this->uses_permalink_override_trait() ) {
+			add_action( 'template_redirect', array( $this, 'on_template_redirect' ) );
+		}
+	}
+
+	/**
+	 * Check if the current class uses the permalink override trait.
+	 *
+	 * @since TODO
+	 *
+	 * @return bool Whether the class uses the GravityView_Permalink_Override_Trait.
+	 */
+	private function uses_permalink_override_trait() {
+		return in_array( GravityView_Permalink_Override_Trait::class, class_uses( $this ), true );
 	}
 
 	/**
