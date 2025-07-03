@@ -18,6 +18,8 @@
  */
 class GravityView_Theme_Hooks_Ultimate_Member extends GravityView_Plugin_and_Theme_Hooks {
 
+	use GravityView_Permalink_Override_Trait;
+
 	/**
 	 * @inheritDoc
 	 * @since 1.17.2
@@ -47,12 +49,12 @@ class GravityView_Theme_Hooks_Ultimate_Member extends GravityView_Plugin_and_The
 	 *
 	 * @return bool Whether to remove the permalink structure from View rendered links.
 	 */
-	public function should_disable_permalink_structure() {
+	protected function should_disable_permalink_structure() {
 		if ( um_is_core_page( 'user' ) || um_is_core_page( 'members' ) ) {
 			return true;
 		}
 
-		return parent::should_disable_permalink_structure();
+		return false;
 	}
 
 	/**
