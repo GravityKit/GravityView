@@ -2,7 +2,6 @@
 /**
  * The GravityView New Search widget
  *
- * @package   GravityView-DataTables-Ext
  * @license   GPL2+
  * @author    GravityKit <hello@gravitykit.com>
  * @link      http://www.gravitykit.com
@@ -12,6 +11,8 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+require_once __DIR__ . '/settings/class-search-widget-settings-visible-fields-only.php';
 
 class GravityView_Widget_Search extends \GV\Widget {
 
@@ -737,16 +738,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 				// Certain form field meta values are stored as JSON, so we need to encode them before searching.
 				// This replicates the behavior of GF_Query_JSON_Literal::sql().
-				$value = $params['value'] ?? '';
+				$original_value = $params['value'] ?? '';
 
-				if ( $use_json_storage && $value && is_string( $value ) ) {
-					$value = trim( json_encode( $value ), '"' );
+				if ( $use_json_storage && $original_value && is_string( $original_value ) ) {
+					$value = trim( json_encode( $original_value ), '"' );
 					$value = str_replace( '\\', '\\\\', $value );
 
-					$search_criteria['field_filters'][] = array_merge(
-						$params,
-						[ 'value' => $value ]
-					);
+					if ( $value !== $original_value ) {
+						$params['value']                    = $value;
+						$search_criteria['field_filters'][] = $params;
+					}
 				}
 			}
 		}
@@ -984,7 +985,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 				unset( $search_criteria['field_filters'][ $i ] );
 			}
 		}
-
 
 		$widgets = $view->widgets->by_id( $this->widget_id );
 		if ( $widgets->count() ) {
