@@ -1954,4 +1954,95 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$entries           = $view->get_entries()->fetch()->all();
 		$this->assertCount( 1, $entries );
 	}
+
+	/**
+	 * Test case that ensures hidden fields are not searchable through "Search Everything".
+	 *
+	 * @since $ver$
+	 */
+	public function test_search_everything_limited_to_visible_fields(): void {
+		$form = $this->factory->form->import_and_get( 'standard.json' );
+
+		$post = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => [
+				'directory_table-columns' => [
+					wp_generate_password( 16, false ) => [
+						'id'                => '5',
+						'label'             => 'Text field',
+						'only_loggedin'     => '1',
+						'only_loggedin_cap' => 'read',
+					],
+				],
+				'single_table-columns'    => [
+					wp_generate_password( 16, false ) => [
+						'id'    => '7',
+						'label' => 'Select field',
+					],
+				],
+			],
+			'widgets'     => [
+				'header_top' => [
+					wp_generate_password( 4, false ) => [
+						'id'            => 'search_bar',
+						'search_fields' => '[{"field":"search_all","input":"input_text"}]',
+					],
+				],
+			],
+			'settings'    => array_merge( \GV\View_Settings::defaults(), [
+				'show_only_approved'    => 0,
+				'search_visible_fields' => 1,
+			] ),
+		] );
+
+		$view = \GV\View::from_post( $post );
+
+		$this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status'  => 'active',
+			'5'       => 'Visible value',
+			'6'       => 'Hidden value',
+			'7'       => 'Second Choice',
+		] );
+
+		$_GET    = [];
+		$entries = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries );
+
+		$_GET['gv_search'] = 'hidden';
+		$entries           = $view->get_entries()->fetch()->all();
+		$this->assertCount( 0, $entries );
+
+		$_GET['gv_search'] = 'Visible';
+		$entries           = $view->get_entries()->fetch()->all();
+		$this->assertCount( 0, $entries ); // User is not logged in.
+
+		$this->factory->user->create_and_set( [
+			'user_login' => 'test_user',
+			'user_email' => md5( microtime() ) . '@gravityview.tests',
+			'role'       => 'editor',
+		] );
+
+		// Clear cache to retrieve the new visible fields for this user.
+		GravityView_Search_Widget_Settings_Visible_Fields_Only::clear_cache();
+
+		$_GET['gv_search'] = 'hidden';
+		$entries           = $view->get_entries()->fetch()->all();
+		$this->assertCount( 0, $entries );
+
+		$_GET['gv_search'] = 'Visible';
+		$entries           = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries ); // User is logged in.
+
+		add_filter( 'gk/gravityview/widget/search/visible_fields_only', '__return_false' );
+
+		$_GET['gv_search'] = 'hidden';
+		$entries           = $view->get_entries()->fetch()->all();
+		$this->assertCount( 1, $entries ); // Filter has disabled the search for visible fields only.
+
+		// Clean up.
+		remove_filter( 'gk/gravityview/widget/search/visible_fields_only', '__return_false' );
+		unset( $_GET['gv_search'] );
+	}
 }

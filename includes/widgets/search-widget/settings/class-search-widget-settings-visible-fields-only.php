@@ -345,6 +345,18 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 
 		return $fields;
 	}
+
+	/**
+	 * Clears the visible fields cache.
+	 *
+	 * @since   $ver$
+	 *
+	 * @interal Do not rely on this method. It could change at any time.
+	 */
+	public static function clear_cache(): void {
+		$instance         = self::get_instance();
+		$instance->fields = [];
+	}
 }
 
 GravityView_Search_Widget_Settings_Visible_Fields_Only::get_instance();

@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🚀 Added
+* A new `search_visible_fields` setting that restricts "Search Everything" searches to visible View fields.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/widget/search/visible_fields_only` filter to modify whether "Search Everything" searches are limited for a View.
+
 = 2.41 on July 3, 2025 =
 
 This release adds a GravityBoard widget for embedding boards in Views, resolves issues with block rendering and Chained Selects fields, fixes Single and Edit Entry not working in membership plugins, and alerts users to potential conflicts with Formidable Views.
