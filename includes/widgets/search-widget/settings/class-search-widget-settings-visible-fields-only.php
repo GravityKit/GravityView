@@ -95,7 +95,6 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 		}
 
 		$visible_fields = $this->get_visible_fields( $view );
-		var_dump($visible_fields);
 		$condition      = $this->replace_condition( $query, $where, $visible_fields );
 
 		$query->where( $condition );
@@ -106,6 +105,8 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	 *
 	 * Note: This is somewhat hacky. It could be better if we made the search fields available with a public function on
 	 * the Search Widget.
+	 *
+	 * @todo Refactor to use a public API for accessing search fields from the Search Widget.
 	 *
 	 * @param array $searchable_fields The searchable fields to record.
 	 * @param View  $view              The View.
@@ -266,7 +267,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 		}
 
 		$source = $condition->left->source;
-		// If an array is set, but it is empty; it should exclude aLL values; so we replace it with an invalid statement.
+		// If an array is set, but it is empty; it should exclude ALL values; so we replace it with an invalid statement.
 		if ( ! $fields[ $source ] ) {
 			return new GF_Query_Condition(
 				$condition->left,
@@ -317,13 +318,16 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 			}
 		}
 
-		if ( $new_conditions ) {
-			$strict_condition = count( $new_conditions ) === 1
-				? reset( $new_conditions )
-				: GF_Query_Condition::_or( ...$new_conditions );
+		// This should not be possible.
+		if ( ! $new_conditions ) {
+			return $condition;
 		}
 
-		return GF_Query_Condition::_and( $condition, $strict_condition ?? null );
+		$strict_condition = count( $new_conditions ) === 1
+			? reset( $new_conditions )
+			: GF_Query_Condition::_or( ...$new_conditions );
+
+		return GF_Query_Condition::_and( $condition, $strict_condition );
 	}
 
 	/**
