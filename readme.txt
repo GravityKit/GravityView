@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 💻 Developer Updates
+
+* Added `gk/gravityview/search/additional-reserved-args` filter to add additional reserved arguments for the Search Bar widget.
+
 = 2.41 on July 3, 2025 =
 
 This release adds a GravityBoard widget for embedding boards in Views, resolves issues with block rendering and Chained Selects fields, fixes Single and Edit Entry not working in membership plugins, and alerts users to potential conflicts with Formidable Views.
