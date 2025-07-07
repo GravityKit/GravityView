@@ -53,7 +53,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns the singleton.
 	 *
-	 * @since $ver%
+	 * @since $ver$
 	 */
 	public static function get_instance(): self {
 		return self::$instance ??= new self();
@@ -237,14 +237,18 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 		$source = $condition->left->source;
 		// If an array is set, but it is empty; it should exclude aLL values; so we replace it with an invalid statement.
 		if ( ! $fields[ $source ] ) {
-			return null;
+			return new GF_Query_Condition(
+				$condition->left,
+				GF_Query_Condition::EQ,
+				new GF_Query_Literal( '__GK_NO_MATCH__' ),
+			);
 		}
 
 		$exact = [];
 		$like  = [];
 
 		foreach ( $fields[ $source ] as $field_id ) {
-			if ( strpos( $field_id, '%' ) !== false ) {
+			if ( false !== strpos( $field_id, '%' ) ) {
 				$like[] = $field_id;
 			} else {
 				$exact[] = $field_id;
@@ -351,7 +355,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	 *
 	 * @since   $ver$
 	 *
-	 * @interal Do not rely on this method. It could change at any time.
+	 * @internal Do not rely on this method. It could change at any time.
 	 */
 	public static function clear_cache(): void {
 		$instance         = self::get_instance();
