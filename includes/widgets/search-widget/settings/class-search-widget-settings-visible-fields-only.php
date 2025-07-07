@@ -51,6 +51,15 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	private array $fields;
 
 	/**
+	 * Holds search fields per View.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array
+	 */
+	private array $searchable_fields = [];
+
+	/**
 	 * Returns the singleton.
 	 *
 	 * @since $ver$
@@ -66,6 +75,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	 */
 	private function __construct() {
 		add_action( 'gravityview/view/query', [ $this, 'maybe_update_search_condition' ], 2048, 2 );
+		add_action( 'gravityview/search/searchable_fields/allowlist', [ $this, 'record_searchable_fields' ], 2048, 3 );
 	}
 
 	/**
@@ -85,9 +95,30 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 		}
 
 		$visible_fields = $this->get_visible_fields( $view );
+		var_dump($visible_fields);
 		$condition      = $this->replace_condition( $query, $where, $visible_fields );
 
 		$query->where( $condition );
+	}
+
+	/**
+	 * Records the searchable fields for the current View.
+	 *
+	 * Note: This is somewhat hacky. It could be better if we made the search fields available with a public function on
+	 * the Search Widget.
+	 *
+	 * @param array $searchable_fields The searchable fields to record.
+	 * @param View  $view              The View.
+	 * @param bool  $with_full_field   Whether the searchable fields array includes the full field.
+	 *
+	 * @return array The unchanged searchable fields.
+	 */
+	public function record_searchable_fields( array $searchable_fields, $view, $with_full_field ): array {
+		if ( $with_full_field && $view instanceof View && $this->is_search_limited( $view ) ) {
+			$this->searchable_fields[ $view->ID ] = $searchable_fields;
+		}
+
+		return $searchable_fields;
 	}
 
 	/**
@@ -149,7 +180,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 		$right = $condition->right ?? null;
 
 		if (
-			! $right instanceof GF_Query_Condition // Might be used for a join.
+			null === $right // Might be used for a join.
 			|| ! $left instanceof GF_Query_Column // Broken condition.
 			|| GF_Query_Column::META === $left->field_id // Search everything.
 		) {
@@ -337,6 +368,18 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 
 		$form_ids = array_column( View::get_joined_forms( $view->ID ), 'ID' );
 
+		// Include fields that are allowed as search fields.
+		foreach ( $this->searchable_fields[ $view->ID ] ?? [] as $field_data ) {
+			$fields[ $field_data['form_id'] ][] = $field_data['field'];
+			// Likely a choice field, so include `field.%` as allowed.
+			if (
+				'input_text' !== $field_data['input']
+				&& false === strpos( $field_data['field'], '.' )
+			) {
+				$fields[ $field_data['form_id'] ][] = $field_data['field'] . '.%';
+			}
+		}
+
 		// Make sure all joined forms are in the array.
 		foreach ( $form_ids as $form_id ) {
 			$fields[ $form_id ] = array_values( array_unique( $fields[ $form_id ] ?? [] ) );
@@ -353,7 +396,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Clears the visible fields cache.
 	 *
-	 * @since   $ver$
+	 * @since    $ver$
 	 *
 	 * @internal Do not rely on this method. It could change at any time.
 	 */
