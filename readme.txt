@@ -44,23 +44,21 @@ This update brings a major overhaul to the Search Bar widget, giving you much mo
     * `$gravityview_view->search_class` → `$data['search_class']`
     * `$gravityview_view->search_clear` → `$data['search_clear']`
 
-= develop =
+= 2.41 on July 3, 2025 =
 
 #### 🚀 Added
-
-* GravityBoard widget to embed a board in a View.
+* [GravityBoard](https://www.gravitykit.com/products/gravityboard/) widget to embed a board in a View.
 
 #### 🐛 Fixed
-
 * For some users, adding a Chained Selects Add-On field to the Search Bar causes JavaScript code to be visible and the field would not work as expected.
+* When "Preview as shortcode" was enabled in the View editor, some blocks would not render properly on the frontend.
+* Added a compatibility notice when using Formidable Views and GravityView at the same time.
+* Single Entry and Edit Entry were not working when Views were embedded in some plugin membership pages. These plugins include LearnDash, BuddyBoss and BuddyPress, Ultimate Member, and WooCommerce Account Pages.
 
 #### 💻 Developer Updates
-
 * `requires` and `requires-not` field setting conditional display were not working correctly for radio buttons.
-
-#### 🔧 Updated
-
-* Use `filemtime()` instead of plugin version for CSS file versioning.
+* Added `GVCommon::is_rest_request()` method to check if the current request is a REST request, a clone of the `wp_is_serving_rest_request()` function.
+* CSS files are now versioned using `filemtime()` instead of the plugin version, ensuring browsers always load the latest styles after updates.
 
 = 2.40 on May 29, 2025 =
 

@@ -616,20 +616,18 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertStringContainsString( 'gv-edit-entry-wrapper', ob_get_clean() );
 
 		/** So this is the basic emulation of viewing the edit entry. Let's try something more complex: */
-
-		$_this = &$this;
-		$_this->disable_action_1 = false;;
-		add_action( 'gform_pre_render', function( $form, $ajax = false, $field_values = '' ) use ( $_this  ) {
-			if ( $_this->disable_action_1 ) /** Run only when inside this test. */ {
+		$disable_action_1 = false;
+		add_action( 'gform_pre_render', function( $form, $ajax = false, $field_values = '' ) use ( &$disable_action_1  ) {
+			if ( $disable_action_1 ) /** Run only when inside this test. */ {
 				return $form;
 			}
 
 			/** @todo Add output form assertions here, like, are the needed fields hidden? ... */
-			$_this->assertTrue( false );
+			$this->assertTrue( false );
 
 			return $form;
 		}, 9999, 3 );
-		$_this->disable_action_1 = true;
+		$disable_action_1 = true;
 		ob_start() && $render->init( $data, null, \GV\View::from_post( $view ) ); ob_get_clean();
 
 		/** Great, now how about some saving? The default form. Although we should be testing specific forms as well. */

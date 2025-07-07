@@ -4,7 +4,7 @@ namespace GravityKit\GravityView\Gutenberg\Blocks;
 
 use GravityKit\GravityView\Gutenberg\Blocks;
 use GravityKit\GravityView\Foundation\Helpers\Arr;
-use GFFormDisplay;
+use GVCommon;
 
 class View {
 	/**
@@ -41,10 +41,17 @@ class View {
 		$shortcode_attributes        = [];
 		$mapped_shortcode_attributes = \GV\Shortcodes\gravityview::map_block_atts_to_shortcode_atts( $block_attributes );
 
+		$preview_as_shortcode = Arr::get( $block_attributes, 'previewAsShortcode' );
+		$is_rest_request      = GVCommon::is_rest_request();
+
 		foreach ( $mapped_shortcode_attributes as $attribute => $value ) {
 			$value = esc_attr( sanitize_text_field( $value ) );
 			if ( empty( $value ) ) {
 				continue;
+			}
+
+			if ( 'secret' === $attribute && $preview_as_shortcode && $is_rest_request ) {
+				$value = '*********';
 			}
 
 			$shortcode_attributes[] = sprintf(
@@ -56,7 +63,7 @@ class View {
 
 		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_attributes ) );
 
-		if ( Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
+		if ( $preview_as_shortcode && $is_rest_request ) {
 			return wp_json_encode(
 				array(
 					'content' => $shortcode,
@@ -68,7 +75,7 @@ class View {
 
 		$rendered_shortcode = Blocks::render_shortcode( $shortcode );
 
-		if ( ! defined( 'REST_REQUEST' ) || ! REST_REQUEST ) {
+		if ( ! $is_rest_request ) {
 			return $rendered_shortcode['content'];
 		}
 

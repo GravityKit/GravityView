@@ -518,6 +518,8 @@ function gv_map_deep( $value, $callback ) {
 	$_value = unserialize( serialize( $value ) ); // Make a deep copy to avoid overwriting the original object.
 
 	$unsafe_callbacks = [
+		'strtolower',
+		'strtoupper',
 		'rawurlencode',
 		'rawurldecode',
 		'urlencode',

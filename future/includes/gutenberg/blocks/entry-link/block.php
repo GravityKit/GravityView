@@ -4,6 +4,7 @@ namespace GravityKit\GravityView\Gutenberg\Blocks;
 
 use GravityKit\GravityView\Gutenberg\Blocks;
 use GravityKit\GravityView\Foundation\Helpers\Arr;
+use GVCommon;
 
 class EntryLink {
 	/**
@@ -72,11 +73,13 @@ class EntryLink {
 			$shortcode = sprintf( '[gv_entry_link %s/]', implode( ' ', $shortcode_attributes ) );
 		}
 
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		$is_rest_request = GVCommon::is_rest_request();
+
+		if ( $is_rest_request ) {
 			add_filter( 'gravityview/entry_link/add_query_args', '__return_false' );
 		}
 
-		if ( Arr::get( $block_attributes, 'previewAsShortcode' ) ) {
+		if ( Arr::get( $block_attributes, 'previewAsShortcode' ) && $is_rest_request ) {
 			return $shortcode;
 		}
 
