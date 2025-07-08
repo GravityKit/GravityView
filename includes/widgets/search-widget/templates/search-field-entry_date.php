@@ -43,7 +43,7 @@ $input_html = '<input name="%s" id="%1$s_date_%d" type="text" class="%s" placeho
 			(int) $view_id,
 			esc_attr( $datepicker_class ),
 			$is_date_range ? esc_attr__( 'Start date', 'gk-gravityview' ) : '',
-			esc_attr( $value['start'] )
+			esc_attr( $value['start'] ?? '' )
 		);
 
 		if ( $is_date_range ) {
@@ -53,7 +53,7 @@ $input_html = '<input name="%s" id="%1$s_date_%d" type="text" class="%s" placeho
 				(int) $view_id,
 				esc_attr( $datepicker_class ),
 				esc_attr__( 'End date', 'gk-gravityview' ),
-				esc_attr( $value['end'] )
+				esc_attr( $value['end'] ?? '' )
 			);
 		}
 		?>

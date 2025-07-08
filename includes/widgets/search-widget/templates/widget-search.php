@@ -50,7 +50,7 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 		<a
 			id="gv-search-advanced-toggle"
 			href="javascript:void(0);"
-			aria-role="button"
+			role="button"
 			aria-expanded="<?php echo esc_attr( $expanded ); ?>"
 			aria-controls="gv-search-advanced"
 			aria-label="<?php esc_attr_e( 'Toggle Advanced Search', 'gk-gravityview' ); ?>"

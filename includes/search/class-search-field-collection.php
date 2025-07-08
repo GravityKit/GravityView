@@ -30,6 +30,7 @@ use JsonException;
  * @since $ver$
  *
  * @extends Collection<Search_Field>
+ * @implements IteratorAggregate<Search_Field>
  */
 final class Search_Field_Collection extends Collection implements Collection_Position_Aware, IteratorAggregate {
 	/**

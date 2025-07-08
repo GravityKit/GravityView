@@ -3,7 +3,7 @@
 namespace GV\Search\Fields;
 
 /**
- * Represents a search field that searches on the Entry Date.
+ * Represents a search field that filters entries by read status.
  *
  * @since $ver$
  *
