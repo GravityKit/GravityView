@@ -9,7 +9,7 @@
 
 $search_field     = \GV\Utils::get( $data, 'search_field', [] );
 $datepicker_class = \GV\Utils::get( $data, 'datepicker_class', '' );
-$custom_class     = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class     = \GV\Utils::get( $search_field, 'custom_class', '' );
 ?>
 
 <div class="gv-search-box gv-search-date <?php echo $custom_class; ?>">

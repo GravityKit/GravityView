@@ -61,7 +61,7 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 		<div id="gv-search-advanced" class="gv-widget-search-advanced-search gv-grid<?php echo esc_attr( $open ); ?>">
 			<?php
 			/**
-			 * @action `gravityview_search_widget_fields_before` Inside the `<form>` tag of the GravityView search form, before inputs are rendered
+			 * @action `gravityview_search_widget_advanced_fields_before` Inside the `<form>` tag of the GravityView search form, before advanced inputs are rendered
 			 *
 			 * @param GravityView_Widget_Search $this GravityView Widget instance
 			 */
@@ -71,7 +71,7 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 			$this->render( 'search', 'fields', false, $data );
 
 			/**
-			 * @action `gravityview_search_widget_fields_after` Inside the `<form>` tag of the GravityView search form, after inputs are rendered
+			 * @action `gravityview_search_widget_advanced_fields_after` Inside the `<form>` tag of the GravityView search form, after advanced inputs are rendered
 			 *
 			 * @param GravityView_Widget_Search $this GravityView Widget instance
 			 */

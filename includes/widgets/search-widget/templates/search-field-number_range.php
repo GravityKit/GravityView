@@ -7,7 +7,7 @@
  */
 
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
-$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', '' );
 $form_id      = \GV\Utils::get( $data, 'form_id', 0 );
 $view_id      = \GV\Utils::get( $data, 'view_id', 0 );
 $value        = \GV\Utils::get( $search_field, 'value', 0 );

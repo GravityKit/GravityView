@@ -13,7 +13,7 @@
 
 $search_field  = \GV\Utils::get( $data, 'search_field', [] );
 $search_layout = \GV\Utils::get( $data, 'search_layout', 'horizontal' );
-$custom_class  = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class  = \GV\Utils::get( $search_field, 'custom_class', '' );
 
 if ( ! class_exists( 'GF_Chained_Field_Select' ) ) {
 	gravityview()->log->error( 'The Gravity Forms Chained Select Add-On is not active.' );

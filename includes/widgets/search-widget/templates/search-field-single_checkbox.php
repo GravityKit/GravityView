@@ -8,7 +8,7 @@
  */
 
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
-$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', '' );
 ?>
 
 <div class="gv-search-box gv-search-field-single_checkbox <?php echo $custom_class; ?>">

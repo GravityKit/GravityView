@@ -12,7 +12,7 @@ $value            = \GV\Utils::get( $search_field, 'value', [] );
 $label            = \GV\Utils::get( $search_field, 'label' );
 $name             = \GV\Utils::get( $search_field, 'name' );
 $datepicker_class = \GV\Utils::get( $data, 'datepicker_class', '' );
-$custom_class     = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class     = \GV\Utils::get( $search_field, 'custom_class', '' );
 ?>
 
 <div class="gv-search-box gv-search-date gv-search-date-range <?php echo $custom_class; ?>">

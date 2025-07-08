@@ -8,7 +8,7 @@
  */
 
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
-$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', '' );
 $form_id      = \GV\Utils::get( $search_field, 'form_id', null );
 $form         = \GV\GF_Form::by_id( $form_id );
 

@@ -12,7 +12,7 @@ $search_field     = \GV\Utils::get( $data, 'search_field', null );
 $datepicker_class = \GV\Utils::get( $data, 'datepicker_class', '' );
 $value            = \GV\Utils::get( $search_field, 'value' );
 $label            = \GV\Utils::get( $search_field, 'label' );
-$custom_class     = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class     = \GV\Utils::get( $search_field, 'custom_class', '' );
 $input_type       = \GV\Utils::get( $search_field, 'input_type', 'date_range' );
 
 $is_date_range = 'date_range' === $input_type;

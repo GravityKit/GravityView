@@ -8,7 +8,7 @@
  */
 
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
-$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', '' );
 
 // Make sure that there are choices to display
 if ( empty( $search_field['choices'] ) ) {

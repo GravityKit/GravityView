@@ -3,7 +3,7 @@
 namespace GV\Search\Fields;
 
 /**
- * Represents a search field that searches all fields.
+ * Represents a Submit Button field for search forms.
  *
  * @since $ver$
  */

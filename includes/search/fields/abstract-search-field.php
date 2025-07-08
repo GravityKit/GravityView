@@ -454,6 +454,10 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		$type        = $this->settings['input_type'] ?? 'input_text';
 		$input_types = $this->get_input_types();
 
+		if ( ! $input_types ) {
+			return 'input_text';
+		}
+
 		return in_array( $type, $input_types, true ) ? $type : reset( $input_types );
 	}
 

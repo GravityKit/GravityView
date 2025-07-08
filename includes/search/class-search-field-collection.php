@@ -61,6 +61,15 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	private ?bool $base_has_visible_fields = null;
 
 	/**
+	 * The position what this collection was filtered by.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string|null
+	 */
+	private ?string $position = null;
+
+	/**
 	 * Creates a collection of fields.
 	 *
 	 * @since $ver$
@@ -119,7 +128,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 		$collection = new self( array_filter( $fields, static fn( $field ) => $field instanceof Search_Field ) );
 
-		self::$available_fields_cache[ $form_id ] = $collection;
+		self::$available_fields_cache[ $cache_key ] = $collection;
 
 		return $collection;
 	}
@@ -315,6 +324,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	public function by_position( $position ) {
 		$clone                          = clone $this;
 		$clone->base_has_visible_fields = $this->has_visible_fields();
+		$clone->position                = $position;
 
 		$search         = implode( '.*', array_map( 'preg_quote', explode( '*', $position ) ) );
 		$clone->storage = array_values(
@@ -497,7 +507,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			$this->context['widget'] ?? null,
 			$this->context['widget_args'] ?? null,
 			$this->context['context'] ?? null,
-			! empty( $field->position ) ? $field->position : null,
+			$this->position,
 		);
 
 		gravityview()->log->debug( 'Calculated Search Fields: ', [ 'data' => $search_fields ] );

@@ -9,7 +9,7 @@
 
 $view_id      = \GV\Utils::get( $data, 'view_id', null );
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
-$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', '' );
 $value        = \GV\Utils::get( $search_field, 'value' );
 $label        = \GV\Utils::get( $search_field, 'label' );
 $placeholder  = \GV\Utils::get( $search_field, 'placeholder', '' );

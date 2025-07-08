@@ -65,7 +65,8 @@ final class Search_Field_Entry_Date extends Search_Field {
 	 * @since $ver$
 	 */
 	protected function collect_template_data(): array {
-		$data               = parent::collect_template_data();
+		$data = parent::collect_template_data();
+		// Requires the parent's value.
 		$data['input_type'] = parent::get_input_type();
 
 		return $data;

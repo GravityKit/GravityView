@@ -8,7 +8,7 @@
  */
 
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
-$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', '' );
 
 // base url to calculate the final full link
 $base_url = GravityView_Widget_Search::get_search_form_action();

@@ -8,7 +8,7 @@
  */
 
 $search_field = \GV\Utils::get( $data, 'search_field', [] );
-$custom_class = \GV\Utils::get( $search_field, 'custom_class', [] );
+$custom_class = \GV\Utils::get( $search_field, 'custom_class', '' );
 
 if ( ! is_string( $search_field['value'] ?? '' ) ) {
 	$search_field['value'] = '';
