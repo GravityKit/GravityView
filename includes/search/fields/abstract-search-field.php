@@ -140,8 +140,9 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * @since $ver$
 	 *
-	 * @param string|null $label The name of the field.
-	 * @param array       $data  The configuration of the field.
+	 * @param string|null $label           The name of the field.
+	 * @param array       $data            The configuration of the field.
+	 * @param bool        $call_initialize Whether to call the `init()` method.
 	 */
 	public function __construct( ?string $label = null, array $data = [], bool $call_initialize = true ) {
 		$data = wp_parse_args(
@@ -192,6 +193,23 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns whether this field matches the provided configuration.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $configuration The configuration.
+	 *
+	 * @return bool Whether this field matches the provided configuration.
+	 */
+	public function satisfies( array $configuration ): bool {
+		if ( self::class === static::class ) {
+			return false;
+		}
+
+		return ( $configuration['id'] ?? '' ) === $this->get_type();
+	}
+
+	/**
 	 * Returns the Field instance based on the data.
 	 *
 	 * @since $ver$
@@ -210,23 +228,25 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		// Can't instantiate the abstract class, but we can use it as a factory.
 		if ( static::class === self::class ) {
 			$fields = Search_Field_Collection::available_fields( (int) ( $data['form_id'] ?? 0 ) );
-			$class  = '';
 
 			foreach ( $fields as $field ) {
-				$configuration = $field->to_configuration();
-				if ( (string) ( $data['id'] ?? '' ) === $configuration['type'] ) {
-					$class = get_class( $field );
-					// Merge default data with explicit data.
-					$data = array_merge( $configuration, $data );
-					break;
+				if ( ! $field->satisfies( $data ) ) {
+					continue;
 				}
+
+				$configuration = $field->to_configuration();
+				$class         = get_class( $field );
+				// Merge default data with explicit data.
+				$data = array_merge( $configuration, $data );
+
+				if ( ! is_a( $class, self::class, true ) ) {
+					return null;
+				}
+
+				return $class::from_configuration( $data, $view, $additional_context );
 			}
 
-			if ( ! is_a( $class, self::class, true ) ) {
-				return null;
-			}
-
-			return $class::from_configuration( $data, $view, $additional_context );
+			return null;
 		}
 
 		$field       = new static( $data['label'] ?? null, $data );

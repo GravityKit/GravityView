@@ -51,9 +51,9 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	 * @since $ver$
 	 */
 	public function test_basic_getters(): void {
-		self::assertSame( 'gravity_forms::123::1', $this->search_field->get_type() );
+		self::assertSame( '123::1', $this->search_field->get_type() );
 		self::assertSame( 'Gravity Forms Field', $this->search_field->get_description() );
-		self::assertTrue( $this->search_field->is_of_type( 'gravity_forms::123::1' ) );
+		self::assertTrue( $this->search_field->is_of_type( '123::1' ) );
 		self::assertFalse( $this->search_field->is_of_type( 'other_type' ) );
 	}
 
@@ -103,7 +103,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	 */
 	public function test_generate_field_id(): void {
 		$field_id = Search_Field_Gravity_Forms::generate_field_id( 789, '3.1' );
-		self::assertSame( 'gravity_forms::789::3.1', $field_id );
+		self::assertSame( '789::3.1', $field_id );
 	}
 
 	/**

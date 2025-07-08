@@ -45,6 +45,27 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	}
 
 	/**
+	 * @inheritDoc
+	 * @since $ver$
+	 */
+	public function satisfies( array $configuration ): bool {
+		if ( $this->is_of_type( $configuration['type'] ?? '' ) ) {
+			return true;
+		}
+
+		$type = self::generate_field_id(
+			$configuration['form_id'] ?? 0,
+			$configuration['id'] ?? '0'
+		);
+
+		if ( $this->is_of_type( $type ) ) {
+			return true;
+		}
+
+		return parent::satisfies( $configuration );
+	}
+
+	/**
 	 * Creates an instance based on a field object.
 	 *
 	 * @since $ver$
@@ -71,7 +92,8 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			}
 		}
 
-		$instance->id = $instance->get_type();
+		$instance->id         = $instance->get_type();
+		$instance->item['id'] = $instance->id;
 
 		$instance->init();
 
@@ -103,6 +125,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			parent::to_configuration(),
 			[
 				'form_field' => $this->form_field,
+				'form_id'    => $this->form_field['form_id'] ?? 0,
 			]
 		);
 	}
@@ -112,10 +135,6 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	public function get_type(): string {
-		if ( isset( $this->item['id'] ) ) {
-			return $this->item['id'];
-		}
-
 		return self::generate_field_id(
 			(int) ( $this->form_field['form_id'] ?? 0 ),
 			(string) ( $this->form_field['id'] ?? '0' )
@@ -133,7 +152,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @return string The Search Field ID.
 	 */
 	public static function generate_field_id( int $form_id, string $field_id ): string {
-		return sprintf( '%s::%d::%s', self::$type, $form_id, $field_id );
+		return sprintf( '%d::%s', $form_id, $field_id );
 	}
 
 	/**
@@ -161,7 +180,6 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 * @return string The icon class name.
 	 */
 	private function get_field_icon(): string {
-
 		// Use Gravity Forms' field icon if available.
 		$field = $this->get_gf_field();
 		if ( $field ) {
@@ -211,19 +229,25 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 */
 	private function get_field_id(): string {
 		$parts = explode( '::', (string) ( $this->id ?? '' ) );
-		if ( count( $parts ) !== 3 ) {
-			return '0';
-		}
+		$count = count( $parts );
 
-		return (string) $parts[2];
+		switch ( $count ) {
+			case 1:
+				return (string) $this->id;
+			case 2:
+				return (string) $parts[1];
+			default:
+				return '0';
+		}
 	}
 
 	/**
 	 * @inheritDoc
 	 * @since $ver$
 	 */
-	protected function has_choices(): bool {
+	public function has_choices(): bool {
 		$field = $this->get_gf_field();
+
 		if ( $field ) {
 			$choices = $field->choices ?? [];
 
@@ -375,12 +399,12 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			return $this->field;
 		}
 
-		$parts = explode( '::', (string) ( $this->id ?? '' ) );
-		if ( count( $parts ) !== 3 ) {
+		$parts = explode( '::', ( $this->get_type() ?? '' ) );
+		if ( count( $parts ) !== 2 ) {
 			return null;
 		}
 
-		[ , $form_id, $field_id ] = $parts;
+		[ $form_id, $field_id ] = $parts;
 
 		$field       = GFAPI::get_field( $form_id, $field_id );
 		$this->field = $field ? $field : null;

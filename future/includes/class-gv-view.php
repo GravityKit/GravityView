@@ -26,6 +26,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Can be accessed as an array for old compatibility's sake
  *  in line with the elements inside the \GravityView_View_Data::$views array.
  */
+#[\AllowDynamicProperties]
 class View implements \ArrayAccess {
 
 	/**
@@ -1480,7 +1481,7 @@ class View implements \ArrayAccess {
 
 			$result = $this->run_db_query( $query );
 
-			list ( $db_entries, $query ) = $result;
+			[ $db_entries, $query ] = $result;
 
 			/**
 			 * Map from Gravity Forms entries arrays to an Entry_Collection.
