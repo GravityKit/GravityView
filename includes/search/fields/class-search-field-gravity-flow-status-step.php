@@ -167,7 +167,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	public function is_of_type( string $type ): bool {
-		return strpos( $type, '::workflow_' ) > 0;
+		return strpos( $type, '::workflow_step_status_' ) > 0;
 	}
 
 	/**
