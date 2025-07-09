@@ -155,5 +155,10 @@
 		align-items: center;
 		gap: 8px;
 		margin-bottom: 0;
+
+		i.dashicons.background-icon {
+			background-repeat: no-repeat;
+			background-position: center center;
+		}
 	}
 }

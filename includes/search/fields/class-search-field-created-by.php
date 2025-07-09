@@ -6,7 +6,7 @@ use GFFormsModel;
 use GVCommon;
 
 /**
- * Represents a search field that searches on the Entry Date.
+ * Represents a search field that searches on the Entry Creator.
  *
  * @since $ver$
  *
