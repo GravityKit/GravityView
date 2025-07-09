@@ -10,6 +10,7 @@
  */
 
 use GV\Field;
+use GV\GF_Form;
 use GV\Internal_Field;
 use GV\View;
 
@@ -331,6 +332,18 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	}
 
 	/**
+	 * Returns if the field is an edit field.
+	 *
+	 * @since $ver$
+	 *
+	 * @param Field $field The field object.
+	 *
+	 * @return bool Whether the field is an edit field.
+	 */
+	private static function is_edit_field( Field $field ): bool {
+		return strpos( $field->position ?? '', 'edit_' ) === 0;
+	}
+	/**
 	 * Returns the visible fields per form on the View.
 	 *
 	 * @since $ver$
@@ -349,7 +362,10 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 		$fields = array_reduce(
 			$view->fields->by_visible()->all(),
 			static function ( array $fields, Field $field ) {
-				if ( $field instanceof Internal_Field && 'meta' === $field->field->group ) {
+				if (
+					( $field instanceof Internal_Field && 'meta' === $field->field->group )
+					|| self::is_edit_field( $field )
+				) {
 					return $fields;
 				}
 
