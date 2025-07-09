@@ -475,7 +475,7 @@ class View_Settings extends Settings {
 					'placeholder'       => __( '&larr; Go back', 'gk-gravityview' ),
 					'class'             => 'widefat',
 					'merge_tags'        => 'force',
-					'show_in_shortcode' => false,
+					'show_in_shortcode' => true,
 					'full_width'        => true,
 				),
 				'edit_redirect'               => array(

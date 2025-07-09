@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/widget/search/visible_fields_only` filter to modify whether "Search Everything" searches are limited for a View.
+* Added `gk/gravityview/search/additional-reserved-args` filter to add additional reserved arguments for the Search Bar widget.
 
 = 2.41 on July 3, 2025 =
 

@@ -161,6 +161,18 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$args[] = 'gv_by';
 		$args[] = 'mode';
 
+		/**
+		 * Add additional reserved arguments for the search widget.
+		 *
+		 * @since TODO
+		 *
+		 * @param array $args The reserved arguments.
+		 */
+		$additional_args = apply_filters( 'gk/gravityview/search/additional-reserved-args', [] );
+
+		// Maintain required arguments and add additional arguments.
+		$args = array_unique( array_merge( $args, $additional_args ) );
+
 		$get = (array) $_GET;
 
 		// If the fields being searched as reserved; not to be considered user-passed variables
