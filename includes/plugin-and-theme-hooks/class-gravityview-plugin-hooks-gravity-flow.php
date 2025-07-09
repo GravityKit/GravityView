@@ -12,6 +12,8 @@
  * @since 1.17
  */
 
+use GV\Search\Fields\Search_Field_Gravity_Flow_Status_Step;
+
 /**
  * @inheritDoc
  * @since 1.17
@@ -33,7 +35,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 
 		parent::add_hooks();
 
-		add_filter( 'gravityview/search/searchable_fields', array( $this, 'modify_search_bar_fields_dropdown' ), 10, 2 );
+//		add_filter( 'gravityview/search/searchable_fields', array( $this, 'modify_search_bar_fields_dropdown' ), 10, 2 );
 
 		add_filter( 'gravityview/admin/available_fields', array( $this, 'maybe_add_non_default_fields' ), 10, 3 );
 
@@ -48,6 +50,8 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 		add_action( 'gravityflow_post_process_workflow', array( $this, 'clear_cache_after_workflow' ), 10, 4 );
 
 		add_filter( 'gravityview/extension/search/input_type', array( $this, 'add_workflow_user_fields_to_search' ), 10, 2 );
+
+		add_filter( 'gk/gravityview/search/available-fields', [ $this, 'add_workflow_search_fields' ], 10, 2 );
 	}
 
 
@@ -82,6 +86,44 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 		return $input_type;
 	}
 
+	/**
+	 * Adds Gravity Flow-specific search fields.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $fields  The current fields.
+	 * @param int   $form_id The form ID.
+	 *
+	 * @return array The updated search fields.
+	 */
+	public function add_workflow_search_fields( $fields, $form_id ): array {
+		if ( ! is_array( $fields ) || ! is_int( $form_id ) ) {
+			return [];
+		}
+
+		$GFlow = new Gravity_Flow_API( $form_id );
+
+		$workflow_steps = $GFlow->get_steps();
+
+		if ( ! $workflow_steps ) {
+			return $fields;
+		}
+
+		foreach ( $workflow_steps as $step ) {
+			$fields[] = Search_Field_Gravity_Flow_Status_Step::from_step( $step );
+		}
+
+//		$fields[] = Search_Field_Gravity_Flow_Step_Choice::from_configuration( [] );
+//		$fields[] = Search_Field_Gravity_Flow_Final_Status::from_configuration( [] );
+//				'label' => esc_html__( 'Workflow Step', 'gk-gravityview' ),
+//
+//		$fields[] = Search_Field_Gravity_Flow_Final_Status::from_configuration(
+//				'type'  => 'workflow_final_status',
+//				'label' => esc_html__( 'Workflow Status', 'gk-gravityview' ),
+//		);
+
+		return $fields;
+	}
 
 	/**
 	 * Clears GravityView entry cache after running a Gravity Flow Workflow
