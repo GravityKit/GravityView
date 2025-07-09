@@ -12,6 +12,7 @@
  * @package   GravityView
  */
 
+use GV\Search\Fields\Search_Field_Gravity_Flow_Final_Status;
 use GV\Search\Fields\Search_Field_Gravity_Flow_Status_Step;
 use GV\Search\Fields\Search_Field_Gravity_Flow_Step;
 
@@ -110,13 +111,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 		}
 
 		$fields[] = Search_Field_Gravity_Flow_Step::from_configuration( [ 'form_id' => $form_id ] );
-//		$fields[] = Search_Field_Gravity_Flow_Final_Status::from_configuration( [] );
-//				'label' => esc_html__( 'Workflow Step', 'gk-gravityview' ),
-//
-//		$fields[] = Search_Field_Gravity_Flow_Final_Status::from_configuration(
-//				'type'  => 'workflow_final_status',
-//				'label' => esc_html__( 'Workflow Status', 'gk-gravityview' ),
-//		);
+		$fields[] = Search_Field_Gravity_Flow_Final_Status::from_configuration( [ 'form_id' => $form_id ] );
 
 		return $fields;
 	}
@@ -155,38 +150,6 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 		$entry_meta = gravity_flow()->get_entry_meta( [], $form_id );
 
 		return (array) \GV\Utils::get( $entry_meta, $status_key . '/filter/choices' );
-	}
-
-	/**
-	 * Get the list of active Workflow Steps and Workflow Step Statuses
-	 *
-	 * @since 1.17.3
-	 *
-	 * @param array $fields Array of searchable fields
-	 * @param int   $form_id
-	 *
-	 * @uses  Gravity_Flow_API::get_current_step
-	 *
-	 * @return array Updated Array of searchable fields
-	 */
-	public function modify_search_bar_fields_dropdown( $fields, $form_id ) {
-		$GFlow = new Gravity_Flow_API( $form_id );
-
-		$workflow_steps = $GFlow->get_steps();
-
-		if ( $workflow_steps ) {
-			$fields['workflow_step'] = [
-				'label' => esc_html__( 'Workflow Step', 'gk-gravityview' ),
-				'type'  => 'select',
-			];
-
-			$fields['workflow_final_status'] = [
-				'label' => esc_html__( 'Workflow Status', 'gk-gravityview' ),
-				'type'  => 'select',
-			];
-		}
-
-		return $fields;
 	}
 
 	/**

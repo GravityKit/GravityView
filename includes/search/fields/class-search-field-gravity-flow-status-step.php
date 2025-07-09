@@ -20,7 +20,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	 *
 	 * @var string
 	 */
-	protected static string $type = 'workflow_status_step';
+	protected static string $type = 'workflow_step_status';
 
 	/**
 	 * The inner step.
@@ -69,6 +69,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 		$instance->id         = $instance->get_type();
 		$instance->item['id'] = $instance->id;
+		$instance->form_id    = $step->get_form_id();
 
 		$instance->init();
 
@@ -87,7 +88,8 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 			return $this->step->get_id();
 		}
 
-		[ , $step_id ] = sscanf( $this->id, '%d::workflow_step_status_%d' );
+		$regex   = sprintf( '/%s_(\d+)/is', preg_quote( self::$type, '/' ) );
+		$step_id = preg_match( $regex, $this->id, $matches ) ? (int) $matches[1] : null;
 
 		return $step_id ?? null;
 	}
@@ -108,8 +110,8 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 		// Retrieve the step field for this search field.
 		$gravity_flow_api = new Gravity_Flow_API( $instance->form_id );
+		$step             = $gravity_flow_api->get_step( $instance->get_step_id() );
 
-		$step           = $gravity_flow_api->get_step( $instance->get_step_id() );
 		$instance->step = $step ? $step : null;
 
 		return $instance;
@@ -127,7 +129,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 			return null;
 		}
 
-		return sprintf( 'workflow_step_status_%d', $this->step->get_id() );
+		return sprintf( self::$type . '_%d', $this->step->get_id() );
 	}
 
 	/**
@@ -167,7 +169,9 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	 * @since $ver$
 	 */
 	public function is_of_type( string $type ): bool {
-		return strpos( $type, '::workflow_step_status_' ) > 0;
+		$test = sprintf( '%s_%d', self::$type, $this->get_step_id() );
+
+		return strpos( $type, $test ) !== false;
 	}
 
 	/**

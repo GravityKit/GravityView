@@ -39,7 +39,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	 *
 	 * @since $ver$
 	 */
-	public function test_add_multiple_fields(  ):void {
+	public function test_add_multiple_fields(): void {
 		$collection = Search_Field_Collection::from_configuration( [] );
 		$collection->add(
 			new Search_Field_All(),
@@ -144,6 +144,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 						'type'       => 'search_all',
 						'label'      => 'Search Everything',
 						'position'   => 'search_default',
+						'form_id'    => null,
 						'show_label' => true,
 					],
 				],
@@ -154,6 +155,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 						'type'       => 'search_all',
 						'label'      => 'Search Everything',
 						'position'   => 'search_advanced',
+						'form_id'    => null,
 						'show_label' => true,
 					],
 				],

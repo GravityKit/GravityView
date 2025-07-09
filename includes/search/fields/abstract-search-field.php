@@ -375,6 +375,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 			'type'     => $this->get_type(),
 			'label'    => $this->title,
 			'position' => $this->position,
+			'form_id'  => $this->form_id,
 		];
 
 		foreach ( $this->setting_keys() as $key ) {
@@ -561,7 +562,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		$this->item['icon']        = $this->get_icon();
 		$this->item['description'] = $this->get_description();
 
-		$this->form_id = $this->view ? $this->view->form->ID : null;
+		$this->form_id = $this->view ? $this->view->form->ID : $this->form_id;
 	}
 
 	/**
