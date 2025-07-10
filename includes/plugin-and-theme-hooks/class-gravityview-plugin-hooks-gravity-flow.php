@@ -95,8 +95,12 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	 * @return array The updated search fields.
 	 */
 	public function add_workflow_search_fields( $fields, $form_id ): array {
-		if ( ! is_array( $fields ) || ! is_int( $form_id ) ) {
+		if ( ! is_array( $fields ) ) {
 			return [];
+		}
+
+		if ( ! is_int( $form_id ) ) {
+			return $fields;
 		}
 
 		$gravity_flow_api = new Gravity_Flow_API( $form_id );
