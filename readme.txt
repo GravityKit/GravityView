@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= search update =
+= develop =
 
 This update brings a major overhaul to the Search Bar widget, giving you much more flexibility in how search fields are displayed and configured. We’ve also added new developer features and improved template handling to make customizations easier.
 
@@ -43,8 +43,11 @@ This update brings a major overhaul to the Search Bar widget, giving you much mo
     * `$gravityview_view->search_mode` → `$data['search_mode']`
     * `$gravityview_view->search_class` → `$data['search_class']`
     * `$gravityview_view->search_clear` → `$data['search_clear']`
+* Added `gk/gravityview/search/additional-reserved-args` filter to add additional reserved arguments for the Search Bar widget.
 
 = 2.41 on July 3, 2025 =
+
+This release adds a GravityBoard widget for embedding boards in Views, resolves issues with block rendering and Chained Selects fields, fixes Single and Edit Entry not working in membership plugins, and alerts users to potential conflicts with Formidable Views.
 
 #### 🚀 Added
 * [GravityBoard](https://www.gravitykit.com/products/gravityboard/) widget to embed a board in a View.
