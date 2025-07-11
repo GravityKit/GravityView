@@ -6,19 +6,19 @@ use PHPUnit\Framework\TestCase;
 /**
  * Unit tests for {@see Search_Field_Search_Mode}.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * The search field we're testing.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private Search_Field_Search_Mode $search_field;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -29,7 +29,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the basic getters specific to Search_Field_Search_Mode.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_basic_getters(): void {
 		self::assertSame( 'search_mode', $this->search_field->get_type() );
@@ -52,7 +52,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the field returns the correct default label.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_default_label(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -62,7 +62,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the field type and input type are correct.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_field_and_input_types(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -73,7 +73,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the search mode field has the correct choices.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_choices(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -96,7 +96,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the search mode field with custom mode configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_configuration_with_mode(): void {
 		$field = Search_Field_Search_Mode::from_configuration( [
@@ -113,7 +113,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the template data includes the correct mode value.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_template_data_with_mode(): void {
 		$field = Search_Field_Search_Mode::from_configuration( [
@@ -128,7 +128,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the default mode value when not specified.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_default_mode(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -138,7 +138,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the input value with hidden input type returns stored value.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_hidden_input_returns_stored_value(): void {
 		$field = Search_Field_Search_Mode::from_configuration( [
@@ -153,7 +153,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the input value with radio input type uses request value when available.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_radio_input_uses_request_value(): void {
 		$field = Search_Field_Search_Mode::from_configuration( [
@@ -178,7 +178,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests has_request_value returns true when mode is set in request.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_has_request_value(): void {
 		$hidden  = Search_Field_Search_Mode::from_configuration( [
@@ -212,7 +212,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the search mode field extends Search_Field_Choices.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_extends_choices_field(): void {
 		self::assertInstanceOf( \GV\Search\Fields\Search_Field_Choices::class, $this->search_field );
@@ -221,7 +221,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the input name is correct.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_input_name(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -231,7 +231,7 @@ final class Search_Field_Search_Mode_Test extends TestCase {
 	/**
 	 * Tests the search mode field settings include mode.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_setting_keys_include_mode(): void {
 		$reflection = new ReflectionClass( $this->search_field );

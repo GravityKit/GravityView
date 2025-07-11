@@ -113,7 +113,7 @@ final class Search_Field_Custom extends Search_Field {
 
 ### Documentation Requirements
 - **DocBlocks** for all classes and methods
-- **@since $ver$** tags for version tracking
+- **@since 2.42
 - **Comments ending with periods** for consistency
 
 ## Git Workflow
@@ -318,7 +318,7 @@ final class Search_Field_Custom extends Search_Field {
 
 ### Documentation Requirements
 - **DocBlocks** for all classes and methods
-- **@since $ver$** tags for version tracking
+- **@since 2.42
 - **Comments ending with periods** for consistency
 
 ## Git Workflow

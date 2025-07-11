@@ -855,7 +855,7 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 	/**
 	 * Render a template part
 	 *
-	 * @since TODO Added $data parameter.
+	 * @since 2.42
 	 *
 	 * @param string $slug The template slug (like "table").
 	 * @param string $name The template part name (like "body").

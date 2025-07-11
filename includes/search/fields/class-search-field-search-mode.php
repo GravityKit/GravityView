@@ -5,13 +5,13 @@ namespace GV\Search\Fields;
 /**
  * Represents a search mode field.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Search_Mode extends Search_Field_Choices {
 	/**
 	 * The available modes.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private const MODE_ALL = 'all';
 	private const MODE_ANY = 'any';
@@ -19,31 +19,31 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 	/**
 	 * The default mode.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private const MODE_DEFAULT = self::MODE_ALL;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected string $icon = 'dashicons-filter';
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $type = 'search_mode';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $field_type = 'search_mode';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setting_keys(): array {
 		$keys   = parent::setting_keys();
@@ -54,7 +54,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_name(): string {
 		return esc_html__( 'Search Mode', 'gk-gravityview' );
@@ -62,7 +62,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_description(): string {
 		return esc_html__( 'Should search results match all search fields, or any?', 'gk-gravityview' );
@@ -70,7 +70,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_default_label(): string {
 		return esc_html__( 'Search Mode', 'gk-gravityview' );
@@ -78,7 +78,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_options(): array {
 		return [
@@ -96,7 +96,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_input_name(): string {
 		return 'mode';
@@ -104,7 +104,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_input_value(): string {
 		$stored_value = $this->settings['mode'] ?? self::MODE_DEFAULT;
@@ -119,7 +119,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function has_request_value(): bool {
 		if (
@@ -137,7 +137,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function has_choices(): bool {
 		return 'hidden' !== ( $this->settings['input_type'] ?? 'hidden' );
@@ -145,7 +145,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_choices(): array {
 		return [
@@ -162,7 +162,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function is_searchable_field(): bool {
 		return false;
@@ -170,7 +170,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function is_allowed_once(): bool {
 		return true;
@@ -178,7 +178,7 @@ final class Search_Field_Search_Mode extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function allowed_sections(): array {
 		return array_diff(

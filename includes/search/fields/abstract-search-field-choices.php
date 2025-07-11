@@ -8,14 +8,14 @@ use GravityView_Cache;
 /**
  * Represents a search field with possible choices.
  *
- * @since $ver$
+ * @since 2.42
  * @template T The type of the value.
  * @extends Search_Field<T>
  */
 abstract class Search_Field_Choices extends Search_Field {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setting_keys(): array {
 		$keys   = parent::setting_keys();
@@ -27,7 +27,7 @@ abstract class Search_Field_Choices extends Search_Field {
 	/**
 	 * Whether the field has choices.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function has_choices(): bool {
 		return $this->get_choices() !== [];
@@ -36,7 +36,7 @@ abstract class Search_Field_Choices extends Search_Field {
 	/**
 	 * Returns the choices for the field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array{text: string, value:string} The choices.
 	 */
@@ -45,7 +45,7 @@ abstract class Search_Field_Choices extends Search_Field {
 	/**
 	 * Returns the unique values that are stored for this field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string[] The values.
 	 */
@@ -62,7 +62,7 @@ abstract class Search_Field_Choices extends Search_Field {
 	/**
 	 * Whether the choices on the field can be sieved.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool
 	 */
@@ -73,7 +73,7 @@ abstract class Search_Field_Choices extends Search_Field {
 	/**
 	 * Whether the choices should be sieved.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool
 	 */
@@ -145,7 +145,7 @@ abstract class Search_Field_Choices extends Search_Field {
 	/**
 	 * Returns the (maybe cached) sieved choices.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array{text: string, value:string} The choices.
 	 */
@@ -184,7 +184,7 @@ abstract class Search_Field_Choices extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function collect_template_data(): array {
 		$data = parent::collect_template_data();
@@ -208,7 +208,7 @@ abstract class Search_Field_Choices extends Search_Field {
 	/**
 	 * Sieves the choices on the search fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array $search_fields The search fields.
 	 *

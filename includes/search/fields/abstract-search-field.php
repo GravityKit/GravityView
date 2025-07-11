@@ -13,14 +13,14 @@ use GV\View;
 /**
  * Represents a single Search Field.
  *
- * @since $ver$
+ * @since 2.42
  * @template T The type of the value.
  */
 abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The position.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var string
 	 */
@@ -29,7 +29,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * A unique identifier for the Search Field type.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var string
 	 */
@@ -38,7 +38,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The search field type.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var string
 	 */
@@ -47,7 +47,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The Field description.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var string
 	 */
@@ -56,7 +56,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The icon.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var string
 	 */
@@ -65,7 +65,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The View object.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var View|null
 	 */
@@ -74,7 +74,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Microcache of the connected field instance.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var GF_Field|null
 	 */
@@ -83,7 +83,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The Context object.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var Context|null
 	 */
@@ -92,7 +92,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The widget args.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var array
 	 */
@@ -101,7 +101,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The UID of the widget area.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var string
 	 */
@@ -110,7 +110,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * A list of default settings keys.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected const DEFAULT_SETTINGS = [
 		'custom_label',
@@ -124,7 +124,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the keys from the data array that are considered settings.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string[]
 	 */
@@ -138,7 +138,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Creates the base field instance.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string|null $label           The name of the field.
 	 * @param array       $data            The configuration of the field.
@@ -167,7 +167,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the icon for the field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -195,7 +195,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns whether this field matches the provided configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array $configuration The configuration.
 	 *
@@ -212,7 +212,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the Field instance based on the data.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array     $data               The field data.
 	 * @param View|null $view               The View object.
@@ -276,7 +276,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the options merged onto the existing options array.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array $options The existing options.
 	 *
@@ -306,7 +306,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the options for this field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array
 	 */
@@ -317,7 +317,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the available input types for this search field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string[]
 	 */
@@ -330,7 +330,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the default settings for every search field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array[]
 	 */
@@ -364,7 +364,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the field as a configuration array.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array The configuration.
 	 */
@@ -390,7 +390,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the label used on the frontend.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -425,7 +425,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the unique type of this field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string The type.
 	 */
@@ -436,7 +436,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the field type.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -447,7 +447,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the field type.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -465,7 +465,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Recursively filters out empty values from an array while preserving '0'.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array $input The array to filter.
 	 *
@@ -488,7 +488,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_title( string $label ): string {
 		// Translators: %s will contain the label of the field.
@@ -498,7 +498,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the label for this field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_name(): string {
 		return $this->title ?? esc_html( 'Unknown Field', 'gk-gravityview' );
@@ -507,7 +507,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the default label for this field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string The default label.
 	 */
@@ -518,7 +518,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the description for this field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_description(): string {
 		return '';
@@ -527,7 +527,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the icon.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -537,7 +537,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 * @return array{value: string, label?: string, class?: string, hide_in_picker?: bool}
 	 */
 	protected function additional_info(): array {
@@ -556,7 +556,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Registers the required hooks.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function init(): void {
 		$this->item['icon']        = $this->get_icon();
@@ -568,7 +568,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns whether the search field is of the provided type.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $type The type.
 	 *
@@ -581,7 +581,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns whether the search field is a searchable field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool Whether the search field is a searchable field.
 	 */
@@ -592,7 +592,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the name of the input on the form.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -603,7 +603,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the value(s) for the field input.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return T
 	 */
@@ -614,7 +614,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Retrieve the field value from the current request.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $name    the param name.
 	 * @param mixed  $default The default value if not found.
@@ -638,7 +638,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Collects the data needed for the template to render.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array
 	 */
@@ -666,7 +666,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 * This method is final to ensure consistent filtering behavior across all implementations.
 	 * Extending classes should override {@see self::collect_template_data()} to modify the data.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array
 	 */
@@ -690,7 +690,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the search field in the legacy format.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array{field: string, label:string, input_type:string} The search field in the legacy format.
 	 */
@@ -705,7 +705,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the field key.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_key(): string {
 		return $this->get_type();
@@ -714,7 +714,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * The capability required for this search field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string|null The name of the capability.
 	 */
@@ -729,7 +729,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns whether the search field is visible for the current user.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool Whether the field is visible.
 	 */
@@ -747,7 +747,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns whether the field has a request value.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function has_request_value(): bool {
 		$value = $this->get_input_value();
@@ -767,7 +767,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns whether the field is allowed to be used once in a search.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool Whether the field is allowed to be used once in a search.
 	 */
@@ -777,7 +777,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function can_duplicate(): bool {
 		if ( $this->is_allowed_once() ) {
@@ -790,7 +790,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns the sections where the field is allowed to be used.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string[]
 	 */
@@ -803,7 +803,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		/**
 		 * @filter `gk/gravityview/search/field/allowed_sections` Modifies the sections where the field is allowed to be used.
 		 *
-		 * @since  $ver$
+		 * @since 2.42
 		 *
 		 * @param string[]     $sections The sections.
 		 * @param Search_Field $field    The search field.
@@ -818,7 +818,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	/**
 	 * Returns whether the field is allowed to be used in the provided section.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $section The section.
 	 *
@@ -833,7 +833,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 	 *
 	 * Adds the required data attributes to the output.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	final public function getOutput(): string {
 		$replace = [

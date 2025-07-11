@@ -92,13 +92,13 @@
 	   performingAjaxAction: false,
 
 	   /**
-	    * @since $ver$
+	    * @since 2.42
 	    * @type {number} The maximum width of the modal dialogs to use for field and widget settings.
 	    */
 	   maxDialogWidth: 0.95,
 
 	   /**
-		* @since $ver$
+		* @since 2.42
 		* @type {boolean} Whether to ignore the `escape` key event.
 		*/
 	   ignoreEscapeEvent: false,
@@ -373,7 +373,7 @@
 		/**
 		 * Returns the width of the dialog, based on the window size and field type.
 		 *
-		 * @since TODO
+		 * @since 2.42
 		 *
 		 * @param $dialog
 		 * @returns {number|int}
@@ -864,7 +864,7 @@
 	   /**
 		* Toggle the dashicon representing whether the field has an input type hidden.
 		*
-		* @since $ver$
+		* @since 2.42
 		*
 		* @param  {jQueryEvent} e jQuery event object.
 		*/
@@ -1578,7 +1578,7 @@
 
 	   /**
 		* Ignores the escape button for the next call.
-		* @since $ver$
+		* @since 2.42
 		*/
 	   ignoreEscape: function () {
 		   viewConfiguration.ignoreEscapeEvent = true;
@@ -2687,7 +2687,7 @@
 	   /**
 		* Toggles the allowed once class on a field.
 		*
-		* @since $ver$
+		* @since 2.42
 		*
 		* @param {Element} target The field element (or child there of).
 		* @param {Boolean} toggle Whether to add or remove the class.

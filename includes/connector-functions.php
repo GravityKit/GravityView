@@ -330,7 +330,7 @@ function gravityview_get_directory_widgets( $post_id ) {
 /**
  * Get the search fields as configured for a View.
  *
- * @since $ver$
+ * @since 2.42
  *
  * @param int $view_id The View ID.
  *

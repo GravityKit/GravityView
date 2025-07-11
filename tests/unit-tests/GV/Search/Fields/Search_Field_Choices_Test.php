@@ -9,19 +9,19 @@ use PHPUnit\Framework\TestCase;
 /**
  * Unit tests for {@see Search_Field_Choices}.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Choices_Test extends TestCase {
 	/**
 	 * The search field we're testing.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private Search_Field_Choices $search_field;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -66,7 +66,7 @@ final class Search_Field_Choices_Test extends TestCase {
 	/**
 	 * Tests the basic getters.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_basic_getters(): void {
 		self::assertSame( 'choices_test', $this->search_field->get_type() );
@@ -85,7 +85,7 @@ final class Search_Field_Choices_Test extends TestCase {
 	/**
 	 * Tests choices-related functionality through template data.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_choices_functionality(): void {
 		$data = $this->search_field->to_template_data();
@@ -100,7 +100,7 @@ final class Search_Field_Choices_Test extends TestCase {
 	/**
 	 * Tests sieving functionality through template data.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_sieving(): void {
 		// Sieving requires an active View and Form.
@@ -140,7 +140,7 @@ final class Search_Field_Choices_Test extends TestCase {
 	/**
 	 * Test case for missing {@see Search_Field_Choices::get_sieved_values()} implementation.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_missing_sieve_choices_implementation(): void {
 		$this->expectException( BadMethodCallException::class );
@@ -177,7 +177,7 @@ final class Search_Field_Choices_Test extends TestCase {
 	/**
 	 * Tests configuration handling.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_configuration(): void {
 		$config = $this->search_field->to_configuration();

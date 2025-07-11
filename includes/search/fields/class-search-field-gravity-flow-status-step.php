@@ -10,13 +10,13 @@ use GV\View;
 /**
  * A search field for Gravity Flow Step fields.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	/**
 	 * The unique type for workflow fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var string
 	 */
@@ -25,7 +25,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	/**
 	 * The inner step.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var Gravity_Flow_Step|null
 	 */
@@ -33,7 +33,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $field_type = 'select';
 
@@ -42,7 +42,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	 *
 	 * Make only allow named constructors for this field, due to the dependencies.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function __construct( ?string $label = null, array $data = [] ) {
 		// Do not initialize here, it will be called on the named constructors to parse dependencies.
@@ -52,7 +52,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	/**
 	 * Creates an instance from a Gravity Flow step.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param Gravity_Flow_Step $step The step.
 	 *
@@ -79,7 +79,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	/**
 	 * Retrieves the step ID from the field ID.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return int|null
 	 */
@@ -96,7 +96,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public static function from_configuration(
 		array $data,
@@ -120,7 +120,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	/**
 	 * Returns the workflow step ID.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string|null The workflow step ID.
 	 */
@@ -134,7 +134,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_type(): string {
 		if ( ! $this->step ) {
@@ -147,7 +147,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	/**
 	 * Returns the icon for the field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -158,7 +158,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 	/**
 	 * Returns the description for this field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_description(): string {
 		return esc_html__( 'Gravity Flow Step Status', 'gk-gravityview' );
@@ -166,7 +166,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function is_of_type( string $type ): bool {
 		$test = sprintf( '%s_%d', self::$type, $this->get_step_id() );
@@ -176,7 +176,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_key(): string {
 		$field_id = $this->step_status_id();
@@ -186,7 +186,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function satisfies( array $configuration ): bool {
 		if ( $this->is_of_type( $configuration['id'] ?? '' ) ) {
@@ -198,7 +198,7 @@ final class Search_Field_Gravity_Flow_Status_Step extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_choices(): array {
 		if (

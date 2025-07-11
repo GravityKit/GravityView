@@ -752,7 +752,7 @@ function gravityview_maybe_convert_date_string_to_timestamp( $value = '' ) {
 
 /**
  * A polyfill for json_validate which is introduced in PHP 8.3.
- * @since $ver$
+ * @since 2.42
  */
 if ( ! function_exists( 'json_validate' ) ) {
 	/**

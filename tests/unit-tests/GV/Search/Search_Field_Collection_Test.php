@@ -12,12 +12,12 @@ use GV\View;
 /**
  * Unit tests for {@see Search_Field_Collection}
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function setUp(): void {
 		parent::setUp();
@@ -27,7 +27,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Makes sure the collection is position aware, as it is used in various places.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_collection_is_position_aware(): void {
 		$collection = Search_Field_Collection::from_configuration( [] );
@@ -37,7 +37,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::add()} with multiple fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_add_multiple_fields(): void {
 		$collection = Search_Field_Collection::from_configuration( [] );
@@ -52,7 +52,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::from_legacy_configuration()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 * @throws JsonException When JSON could not be generated.
 	 */
 	public function test_from_legacy_configuration(): void {
@@ -122,7 +122,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	 * Test case for {@see Search_Field_Collection::from_configuration()} and
 	 * {@see Search_Field_Collection::to_configuration()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_from_configuration(): void {
 		$collection = Search_Field_Collection::from_configuration( [
@@ -168,7 +168,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	 * Test case for {@see Search_Field_Collection::available_fields()}
 	 * and {@see Search_Field_Collection::has_fields_of_type()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_available_fields(): void {
 		$provided_form_id = null; // Will receive the provided form ID.
@@ -214,7 +214,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::get_field_by_field_id()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_get_field_by_field_id(): void {
 		// Test getting a search_all field.
@@ -230,7 +230,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::by_type()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_by_type(): void {
 		$collection = Search_Field_Collection::from_configuration( [
@@ -253,7 +253,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::has_request_values()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_has_request_values(): void {
 		$collection = Search_Field_Collection::from_configuration( [
@@ -278,7 +278,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::to_template_data()} with no visible searchable fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_to_template_data_empty_when_no_visible_searchable_fields(): void {
 		// Test collection with only non-searchable fields returns empty.
@@ -297,7 +297,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::to_template_data()} with invisible searchable fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_to_template_data_with_invisible_searchable_fields(): void {
 		// Test collection with searchable fields returns data.
@@ -326,7 +326,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::to_template_data()} with visible searchable fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 
 	public function test_to_template_data_with_visible_searchable_fields(): void {
@@ -349,7 +349,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::to_template_data()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_to_template_data(): void {
 		$collection = Search_Field_Collection::from_configuration( [
@@ -374,7 +374,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::ensure_required_search_fields()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_ensure_required_search_fields(): void {
 		$collection = Search_Field_Collection::from_configuration( [
@@ -404,7 +404,7 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 	/**
 	 * Test case for {@see Search_Field_Collection::has_date_field()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_has_date_field(): void {
 		// Test collection without date fields.

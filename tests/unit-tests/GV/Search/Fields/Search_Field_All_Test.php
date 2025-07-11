@@ -6,19 +6,19 @@ use PHPUnit\Framework\TestCase;
 /**
  * Unit tests for {@see Search_Field_All}.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_All_Test extends TestCase {
 	/**
 	 * The search field we're testing.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private Search_Field_All $search_field;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -29,7 +29,7 @@ final class Search_Field_All_Test extends TestCase {
 	/**
 	 * Tests the basic getters specific to Search_Field_All.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_basic_getters(): void {
 		self::assertSame( 'search_all', $this->search_field->get_type() );
@@ -46,7 +46,7 @@ final class Search_Field_All_Test extends TestCase {
 	/**
 	 * Tests the configuration includes the placeholder value when set.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_configuration_with_placeholder(): void {
 		$field = Search_Field_All::from_configuration( [
@@ -63,7 +63,7 @@ final class Search_Field_All_Test extends TestCase {
 	/**
 	 * Tests the template data includes the placeholder value when set.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_template_data_with_placeholder(): void {
 		$field = Search_Field_All::from_configuration( [
@@ -78,7 +78,7 @@ final class Search_Field_All_Test extends TestCase {
 	/**
 	 * Tests has_request_value returns true when gv_search is set in request.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_has_request_value(): void {
 		unset( $_REQUEST['gv_search'] );

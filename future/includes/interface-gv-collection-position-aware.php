@@ -5,13 +5,13 @@ namespace GV;
 /**
  * Represents a collection that has a position (fields, widgets and search fields).
  *
- * @since $ver$
+ * @since 2.42
  */
 interface Collection_Position_Aware {
 	/**
 	 * Get a copy of this \GV\Field_Collection filtered by position.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $position The position to get the fields for.
 	 *                         Can be a wildcard *

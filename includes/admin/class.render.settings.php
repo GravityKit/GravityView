@@ -478,7 +478,7 @@ class GravityView_Render_Settings {
 				/**
 				 * @action `gk/gravityview/template/before-field-render` which allows you to act before a field of an item is rendered.
 				 *
-				 * @since  $ver$
+				 * @since  2.42
 				 *
 				 * @param string $field_type Either `widget`, `field` or `search`.
 				 * @param string $key        The key of the field.

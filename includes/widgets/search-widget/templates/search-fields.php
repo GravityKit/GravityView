@@ -5,7 +5,7 @@ use GV\Search\Search_Field_Collection;
 /**
  * Template part that renders the search fields for a section.
  *
- * @since $ver$
+ * @since 2.42
  *
  * @global array $data
  * @var          $search_fields Search_Field_Collection The Fields.

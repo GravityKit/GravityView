@@ -10,26 +10,26 @@ use GV\View;
 /**
  * Tests {@see Search_Field_Gravity_Forms} functionality and behaviors.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * The field under test.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private Search_Field_Gravity_Forms $search_field;
 
 	/**
 	 * Contains the mocked data.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private array $mock_form_field;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function setUp(): void {
 		parent::setUp();
@@ -48,7 +48,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	 * Tests {@see Search_Field_Gravity_Forms::get_type()}, {@see Search_Field_Gravity_Forms::get_description()}, and
 	 * {@see Search_Field_Gravity_Forms::is_of_type()} with basic getter functionality.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_basic_getters(): void {
 		self::assertSame( '123::1', $this->search_field->get_type() );
@@ -60,7 +60,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms::from_field()} with empty field data returns null.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_from_field_with_empty_field(): void {
 		$result = Search_Field_Gravity_Forms::from_field( [] );
@@ -70,7 +70,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms::from_field()} creates proper instance with valid field data.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_from_field_with_valid_data(): void {
 		$form        = $this->factory->form->import_and_get( 'standard.json' );
@@ -99,7 +99,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms::generate_field_id()} creates correctly formatted field ID string.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_generate_field_id(): void {
 		$field_id = Search_Field_Gravity_Forms::generate_field_id( 789, '3.1' );
@@ -109,7 +109,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms::to_template_data()} includes correct input name format.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_template_data_input_name(): void {
 		$data = $this->search_field->to_template_data();
@@ -119,7 +119,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms()} input name formatting with subfield (dot notation).
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_input_name_with_subfield(): void {
 		$field_with_subfield = [
@@ -138,7 +138,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms::icon_html()} returns correct icons for various field types.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_field_icon_for_special_types(): void {
 		$test_cases = [
@@ -168,7 +168,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms::has_request_value()} with different request scenarios.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_has_request_value(): void {
 		// Test with no request values.
@@ -190,7 +190,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms::to_legacy_format()} includes form_id when available.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_to_legacy_format_includes_form_id(): void {
 		$legacy_data = $this->search_field->to_legacy_format();
@@ -204,7 +204,7 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	/**
 	 * Tests {@see Search_Field_Gravity_Forms()} choices handling for various choice-based fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_choices_handling(): void {
 		$term = wp_insert_term(

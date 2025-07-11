@@ -64,7 +64,7 @@ final class Grid {
 	/**
 	 * Returns unique ID.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */

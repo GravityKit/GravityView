@@ -6,19 +6,19 @@ use PHPUnit\Framework\TestCase;
 /**
  * Unit tests for {@see Search_Field_Is_Read}.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * The search field we're testing.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private Search_Field_Is_Read $search_field;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -29,7 +29,7 @@ final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * Tests the basic getters specific to Search_Field_Is_Read.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_basic_getters(): void {
 		self::assertSame( 'is_read', $this->search_field->get_type() );
@@ -46,7 +46,7 @@ final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * Tests the configuration includes default values when set.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_configuration_with_defaults(): void {
 		$field = Search_Field_Is_Read::from_configuration( [
@@ -63,7 +63,7 @@ final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * Tests the template data includes the correct input type and structure.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_template_data_structure(): void {
 		$field = Search_Field_Is_Read::from_configuration( [
@@ -81,7 +81,7 @@ final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * Tests that the choices array has the correct structure and values.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_choices_structure(): void {
 		$data = $this->search_field->to_template_data();
@@ -101,7 +101,7 @@ final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * Tests the field returns the correct field type identifier.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_field_type_identifier(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -112,7 +112,7 @@ final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * Tests custom label overrides default label in template data.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_custom_label_override(): void {
 		$field = Search_Field_Is_Read::from_configuration( [
@@ -126,7 +126,7 @@ final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * Tests has_request_value returns true when filter_is_read is set in request.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_has_request_value(): void {
 		// Test with no request values.
@@ -152,7 +152,7 @@ final class Search_Field_Is_Read_Test extends TestCase {
 	/**
 	 * Tests configuration export and import maintains structure.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_configuration_maintains_structure(): void {
 		$original_config = [

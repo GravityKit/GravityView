@@ -27,7 +27,7 @@ use JsonException;
 /**
  * Represents a collection of search fields.
  *
- * @since $ver$
+ * @since 2.42
  *
  * @extends Collection<Search_Field>
  * @implements IteratorAggregate<Search_Field>
@@ -36,7 +36,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Micro cache to avoid multiple DB and filter calls.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var array<int, self>
 	 */
@@ -45,7 +45,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Contains any additional context used for filters.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var array
 	 */
@@ -54,7 +54,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Weather a parent collection has searchable fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var bool|null
 	 */
@@ -63,7 +63,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * The position what this collection was filtered by.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var string|null
 	 */
@@ -72,7 +72,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Creates a collection of fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param Search_Field[] $fields  The fields.
 	 * @param array          $context The additional context.
@@ -85,7 +85,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns the default search fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param int         $form_id The form ID.
 	 * @param string|null $section The section to check.
@@ -136,7 +136,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns a collection from a stored configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array     $configuration      The configuration.
 	 * @param View|null $view               The View object.
@@ -175,7 +175,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Creates a collection based on the legacy configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array     $configuration      The legacy configuration.
 	 * @param View|null $view               The View.
@@ -258,7 +258,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Return the available field instance by field ID, if it exists.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param int    $form_id  The form ID.
 	 * @param string $field_id The field ID.
@@ -280,7 +280,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns the search field collection as a configuration array.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array
 	 */
@@ -302,7 +302,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns The iterator.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return ArrayIterator<Search_Field>
 	 */
@@ -319,7 +319,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function by_position( $position ) {
 		$clone                          = clone $this;
@@ -340,7 +340,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns whether this collection contains a date field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool Whether the collection contains a date field.
 	 */
@@ -360,7 +360,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns whether one of the visible fields has a request value.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool Whether one of the visible fields has a request value.
 	 */
@@ -381,7 +381,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns whether the current collection has any fields of the provided type.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $type The type to check.
 	 *
@@ -400,7 +400,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Ensures required fields are added to the collection.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array $configuration The configuration.
 	 *
@@ -451,7 +451,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	 *
 	 * This excludes Submit and Search Mode fields as they are not actual search fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool Whether there are visible searchable fields.
 	 */
@@ -472,7 +472,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns the fields as filtered template data.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array The template data.
 	 */
@@ -518,7 +518,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns a collection of fields of a specific type.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $type The search type or class name.
 	 *
@@ -544,7 +544,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Adds multiple fields to the collection.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param Search_Field $value     The field to add.
 	 * @param Search_Field ...$fields Additional fields to add.

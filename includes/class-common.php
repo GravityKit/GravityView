@@ -20,7 +20,7 @@ class GVCommon {
 	/**
 	 * Contains micro cached Forms.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var array
 	 */
@@ -29,7 +29,7 @@ class GVCommon {
 	/**
 	 * Clears the internal microcache.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public static function clear_cache(): void {
 		self::$forms = [];

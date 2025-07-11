@@ -2,7 +2,7 @@
 /**
  * Setting that limits the search results of "Search Everything" to visible fields only.
  *
- * @since     $ver$
+ * @since     2.42
  *
  * @package   GravityView
  * @license   GPL2+
@@ -21,13 +21,13 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Manages the Query to limit Search Everything searches to visible fields only.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Holds the single instance.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var self
 	 */
@@ -36,7 +36,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Whether the current query should be skipped.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var int
 	 */
@@ -45,7 +45,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Holds the visible fields per form on the View.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var array<int, array<int|string>>
 	 */
@@ -54,7 +54,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Holds search fields per View.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var array
 	 */
@@ -63,7 +63,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns the singleton.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public static function get_instance(): self {
 		return self::$instance ??= new self();
@@ -72,7 +72,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Prevent multiple instances.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private function __construct() {
 		add_action( 'gravityview/view/query', [ $this, 'maybe_update_search_condition' ], 2048, 2 );
@@ -82,7 +82,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Updates the search condition to limit the search to visible fields only.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param GF_Query $query The Query.
 	 * @param View     $view  The View.
@@ -126,7 +126,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns if the search is limited to visible fields only.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param View $view The View.
 	 *
@@ -142,7 +142,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 		/**
 		 * @filter `gk/gravityview/widget/search/visible_fields_only` Modify the search capability of "Search Everything".
 		 *
-		 * @since  $ver$
+		 * @since 2.42
 		 *
 		 * @param bool $is_visible_fields_only Whether the search capability of "Search Everything" is limited to visible fields only.
 		 * @param View $view                   The View.
@@ -157,7 +157,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns if the condition is a condition group.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param GF_Query_Condition $condition The condition to check.
 	 *
@@ -170,7 +170,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns if the condition is an excluded field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param GF_Query_Condition $condition The condition to check.
 	 * @param array              $fields    The visible fields.
@@ -200,7 +200,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns if the condition is a "Search Everything" condition.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param GF_Query_Condition $condition The condition to check.
 	 *
@@ -213,7 +213,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns if the condition's field ID is in the visible fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param GF_Query_Condition $condition The condition to check.
 	 * @param array              $fields    The visible fields.
@@ -227,7 +227,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Recursively replaces the entire query conditions tree.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param GF_Query                      $query     The Query.
 	 * @param GF_Query_Condition            $condition The condition to update.
@@ -334,7 +334,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns if the field is an edit field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param Field $field The field object.
 	 *
@@ -346,7 +346,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Returns the visible fields per form on the View.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param View $view The View.
 	 *
@@ -416,7 +416,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 	/**
 	 * Clears the visible fields cache.
 	 *
-	 * @since    $ver$
+	 * @since 2.42
 	 *
 	 * @internal Do not rely on this method. It could change at any time.
 	 */

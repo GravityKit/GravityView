@@ -1958,7 +1958,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	/**
 	 * Test case that ensures hidden fields are not searchable through "Search Everything".
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_search_everything_limited_to_visible_fields(): void {
 		$form = $this->factory->form->import_and_get( 'standard.json' );

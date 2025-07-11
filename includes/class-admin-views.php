@@ -33,7 +33,7 @@ class GravityView_Admin_Views {
 	/**
 	 * Contains the singleton.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var self
 	 */
@@ -42,7 +42,7 @@ class GravityView_Admin_Views {
 	/**
 	 * Returns the singleton.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return self
 	 */

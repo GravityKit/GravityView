@@ -155,7 +155,7 @@
 
 		/**
 		 * Prevent closing of dialog on escape if search field settings are open.
-		 * @since $ver$
+		 * @since 2.42
 		 * @param {jQueryEvent} e The keydown event.
 		 */
 		beforeCloseDialog: function ( e ) {
@@ -806,7 +806,7 @@
 		/**
 		 * Opens the field settings panel for a search field.
 		 *
-		 * @since $ver$
+		 * @since 2.42
 		 *
 		 * @param {jQueryEvent} e The click event.
 		 */
@@ -858,7 +858,7 @@
 		/**
 		 * Closes the field settings panel for a search field.
 		 *
-		 * @since $ver$
+		 * @since 2.42
 		 *
 		 * @param {jQueryEvent} e The click event.
 		 * @param {boolean} is_quick Whether the close is triggered by a quick action.
@@ -962,7 +962,7 @@
 		/**
 		 * Event handler for closing field settings when clicking outside the search field settings panel.
 		 *
-		 * @since $ver$
+		 * @since 2.42
 		 *
 		 * @param {jQueryEvent} e The click event.
 		 */
@@ -977,7 +977,7 @@
 		/**
 		 * Updates the name attribute of search input fields to match the search field context.
 		 *
-		 * @since $ver$
+		 * @since 2.42
 		 *
 		 * @param {jQueryEvent} e The event object.
 		 * @param {jQuery} field The field element.

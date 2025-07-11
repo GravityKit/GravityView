@@ -155,14 +155,14 @@ abstract class GravityView_Admin_View_Item {
 	/**
 	 * Returns whether the field can be duplicated.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool Whether the field can be duplicated.
 	 */
 	protected function can_duplicate(): bool {
 		/**
 		 * @filter `gk/gravityview/admin/can_duplicate_field` Modify whether a field can be duplicated.
-		 * @since  $ver$
+		 * @since  2.42
 		 */
 		return (bool) apply_filters( 'gk/gravityview/admin/can_duplicate_field', true, $this );
 	}
@@ -340,7 +340,7 @@ abstract class GravityView_Admin_View_Item {
 	/**
 	 * Returns the label.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $label The label.
 	 *

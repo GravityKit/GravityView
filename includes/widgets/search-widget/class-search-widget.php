@@ -43,7 +43,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Contains the context for the search fields to render.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var array{template_id: string, form_id: int}
 	 */
@@ -126,7 +126,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		/**
 		 * Add additional reserved arguments for the search widget.
 		 *
-		 * @since TODO
+		 * @since 2.42
 		 *
 		 * @param array $args The reserved arguments.
 		 */
@@ -587,7 +587,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Normalize date from datepicker format to Y-m-d format.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $date_string The date string to normalize.
 	 *
@@ -1336,7 +1336,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 *
 	 * Format searched values
 	 *
-	 * @since $ver$ Added 5th $get parameter for operator overrides.
+	 * @since 2.42
 	 *
 	 * @param string   $value             $_GET/$_POST search value
 	 * @param \GV\View $view              The view we're looking at
@@ -1664,7 +1664,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Retrieves the search fields based on the (legacy) configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array     $widget_args        The widget's configuration.
 	 * @param View|null $view               The View.
@@ -1765,7 +1765,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Get the search class for a search form.
 	 *
 	 * @since 1.5.4
-	 * @since $ver$ Added $search_layout parameter.
+	 * @since 2.42
 	 *
 	 * @param string $custom_class  Custom class to add to the search form
 	 * @param string $search_layout Search layout ("horizontal" or "vertical"). Default: "horizontal".
@@ -1796,7 +1796,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * Calculate the search form action
 	 *
 	 * @since 1.6
-	 * @since TODO Added $post_id parameter.
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -2071,7 +2071,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Retrieves the words in with its operator for querying.
 	 *
-	 * @since v2.21.1
+	 * @since 2.21.1
 	 *
 	 * @param string $query       The search query.
 	 * @param bool   $split_words Whether to split the words.
@@ -2122,7 +2122,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Adds search fields for a specific form.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param Search_Field[] $search_fields The fields.
 	 * @param int            $form_id       The form ID.
@@ -2182,7 +2182,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Returns all the searchable fields for a View in the legacy format.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param View $view The View.
 	 *
@@ -2202,7 +2202,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Add the settings for this field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array      $options     The original options.
 	 * @param string     $template_id The template ID.
@@ -2232,7 +2232,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Renders the search areas in the settings field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array $field The field configuration.
 	 *
@@ -2306,7 +2306,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Render the search areas.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string                          $template_id The current slug of the selected View template.
 	 * @param string                          $zone        Either 'search-general' or 'search-advanced'.
@@ -2372,7 +2372,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Render html for displaying available search fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function render_available_search_fields( ?int $form_id = 0, ?string $section = null ): void {
 		global $post;
@@ -2398,7 +2398,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Records the rendering context of a search field about to be rendered.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param string $field_type Either 'widget', 'field' or 'search'.
 	 * @param string $key        The key of the settings field.
@@ -2457,7 +2457,7 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 	/**
 	 * Serializes the object.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return array THe serialized data.
 	 */
@@ -2471,7 +2471,7 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 	/**
 	 * Deserializes the object.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function __unserialize( array $data ): void {
 		$this->value = $data['value'];

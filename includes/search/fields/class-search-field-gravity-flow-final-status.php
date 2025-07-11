@@ -7,24 +7,24 @@ use GravityView_Field_Workflow_Final_Status;
 /**
  * A search field for Gravity Flow Final Status.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $type = 'workflow_final_status';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $field_type = 'select';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_name(): string {
 		return esc_html__( 'Workflow Status', 'gk-gravityview' );
@@ -32,7 +32,7 @@ final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices 
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_description(): string {
 		return esc_html( 'Gravity Flow Final Status', 'gk-gravityview' );
@@ -43,7 +43,7 @@ final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices 
 	 *
 	 * Make only allow named constructors for this field, due to the dependencies.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function __construct( ?string $label = null, array $data = [] ) {
 		// Do not initialize here, it will be called on the named constructors to parse dependencies.
@@ -55,7 +55,7 @@ final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices 
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function satisfies( array $configuration ): bool {
 		if ( $this->is_of_type( $configuration['id'] ?? '' ) ) {
@@ -67,7 +67,7 @@ final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices 
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function is_of_type( string $type ): bool {
 		$string = self::$type;
@@ -78,7 +78,7 @@ final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices 
 	/**
 	 * Returns the icon for the field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string
 	 */
@@ -88,7 +88,7 @@ final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices 
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_type(): string {
 		return sprintf( '%d::%s', $this->form_id, parent::get_type() );
@@ -96,7 +96,7 @@ final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices 
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_key(): string {
 		return self::$type;
@@ -104,7 +104,7 @@ final class Search_Field_Gravity_Flow_Final_Status extends Search_Field_Choices 
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_choices(): array {
 		$gravity_flow = gravity_flow();

@@ -12,21 +12,21 @@ use GravityView_Widget_Search;
 /**
  * Represents a search field based on a Gravity Forms Field.
  *
- * @since $ver$
+ * @since 2.42
  *
  * @extends Search_Field<string>
  */
 final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $type = 'gravity_forms';
 
 	/**
 	 * The inner field object.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @var array
 	 */
@@ -37,7 +37,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 *
 	 * Make only allow named constructors for this field, due to the dependencies.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function __construct( ?string $label = null, array $data = [] ) {
 		// Do not initialize here, it will be called on the named constructors to parse dependencies.
@@ -46,7 +46,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function satisfies( array $configuration ): bool {
 		if ( $this->is_of_type( $configuration['type'] ?? '' ) ) {
@@ -68,7 +68,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	/**
 	 * Creates an instance based on a field object.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array $field The field object.
 	 *
@@ -102,7 +102,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_name(): string {
 		return esc_html__( 'Gravity Forms Field', 'gk-gravityview' );
@@ -110,7 +110,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_description(): string {
 		return esc_html__( 'Gravity Forms Field', 'gk-gravityview' );
@@ -118,7 +118,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function to_configuration(): array {
 		return array_merge(
@@ -132,7 +132,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_type(): string {
 		return self::generate_field_id(
@@ -144,7 +144,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	/**
 	 * Generates a valid Search Field ID.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param int    $form_id  The form ID.
 	 * @param string $field_id The field ID.
@@ -157,7 +157,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function init(): void {
 		parent::init();
@@ -175,7 +175,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	/**
 	 * Returns the icon for the Gravity Forms Field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string The icon class name.
 	 */
@@ -204,7 +204,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function is_of_type( string $type ): bool {
 		return $this->get_type() === $type;
@@ -212,7 +212,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_input_name(): string {
 		$field_id = $this->get_field_id();
@@ -223,7 +223,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	/**
 	 * Returns the field ID.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return string The field ID.
 	 */
@@ -243,7 +243,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function has_choices(): bool {
 		$field = $this->get_gf_field();
@@ -269,7 +269,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function is_sievable(): bool {
 		return $this->has_choices() && ! $this->is_child();
@@ -278,7 +278,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	/**
 	 * Whether this field has a parent.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return bool
 	 */
@@ -293,7 +293,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_field_type(): string {
 		$field = $this->get_gf_field();
@@ -306,7 +306,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc@
-	 * @since     $ver$
+	 * @since 2.42
 	 */
 	protected function get_choices(): array {
 		$field = $this->get_gf_field();
@@ -327,7 +327,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_sieved_values(): array {
 		global $wpdb;
@@ -390,7 +390,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	/**
 	 * Retrieve the Gravity Forms field connected to this search field.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @return GF_Field|null The Gravity Forms field.
 	 */
@@ -414,7 +414,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_key(): string {
 		$field_id = $this->get_field_id();
@@ -427,7 +427,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_input_value() {
 		$value = parent::get_input_value();
@@ -450,7 +450,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function to_legacy_format(): array {
 		$data = parent::to_legacy_format();
@@ -465,7 +465,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function collect_template_data(): array {
 		$data  = parent::collect_template_data();

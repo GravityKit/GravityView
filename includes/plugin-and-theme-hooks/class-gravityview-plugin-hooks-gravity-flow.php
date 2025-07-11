@@ -87,7 +87,7 @@ class GravityView_Plugin_Hooks_Gravity_Flow extends GravityView_Plugin_and_Theme
 	/**
 	 * Adds Gravity Flow-specific search fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 *
 	 * @param array $fields  The current fields.
 	 * @param int   $form_id The form ID.

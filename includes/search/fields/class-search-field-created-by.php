@@ -8,32 +8,32 @@ use GVCommon;
 /**
  * Represents a search field that searches on the Entry Creator.
  *
- * @since $ver$
+ * @since 2.42
  *
  * @extends Search_Field<string>
  */
 final class Search_Field_Created_By extends Search_Field_Choices {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected string $icon = 'dashicons-admin-users';
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $type = 'created_by';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $field_type = 'created_by';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_name(): string {
 		return esc_html__( 'Entry Creator', 'gk-gravityview' );
@@ -41,7 +41,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_description(): string {
 		return esc_html__( 'Search on entry creator', 'gk-gravityview' );
@@ -49,7 +49,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_default_label(): string {
 		return esc_html__( 'Submitted by:', 'gk-gravityview' );
@@ -57,7 +57,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_input_name(): string {
 		return 'gv_by';
@@ -65,7 +65,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function has_choices(): bool {
 		return true;
@@ -73,7 +73,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function is_sievable(): bool {
 		return true;
@@ -81,7 +81,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_choices(): array {
 		$users = GVCommon::get_users( 'search_widget', [ 'fields' => [ 'ID', 'display_name' ] ] );
@@ -115,7 +115,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_sieved_values(): array {
 		global $wpdb;

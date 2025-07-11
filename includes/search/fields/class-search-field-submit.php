@@ -5,30 +5,30 @@ namespace GV\Search\Fields;
 /**
  * Represents a Submit Button field for search forms.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Submit extends Search_Field {
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected string $icon = 'dashicons-button';
 
 	/**
 	 * @inheritdoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $type = 'submit';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected static string $field_type = 'submit';
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_name(): string {
 		return esc_html__( 'Submit Button', 'gk-gravityview' );
@@ -36,7 +36,7 @@ final class Search_Field_Submit extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function get_description(): string {
 		return esc_html__( 'Button to submit the search', 'gk-gravityview' );
@@ -44,7 +44,7 @@ final class Search_Field_Submit extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_default_label(): string {
 		return esc_html__( 'Search', 'gk-gravityview' );
@@ -52,7 +52,7 @@ final class Search_Field_Submit extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setting_keys(): array {
 		$keys   = parent::setting_keys();
@@ -64,7 +64,7 @@ final class Search_Field_Submit extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function get_options(): array {
 		return [
@@ -98,7 +98,7 @@ final class Search_Field_Submit extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function is_searchable_field(): bool {
 		return false;
@@ -106,7 +106,7 @@ final class Search_Field_Submit extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function init(): void {
 		parent::init();
@@ -116,7 +116,7 @@ final class Search_Field_Submit extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function is_allowed_once(): bool {
 		return true;
@@ -124,7 +124,7 @@ final class Search_Field_Submit extends Search_Field {
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function allowed_sections(): array {
 		return array_diff(

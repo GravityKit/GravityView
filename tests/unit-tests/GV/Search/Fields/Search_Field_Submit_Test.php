@@ -6,19 +6,19 @@ use PHPUnit\Framework\TestCase;
 /**
  * Unit tests for {@see Search_Field_Submit}.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * The search field we're testing.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private Search_Field_Submit $search_field;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -29,7 +29,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests the basic getters specific to Search_Field_Submit.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_basic_getters(): void {
 		self::assertSame( 'submit', $this->search_field->get_type() );
@@ -52,7 +52,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests the field returns the correct default label.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_default_label(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -62,7 +62,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests the field type and input type are correct.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_field_and_input_types(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -73,7 +73,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests the submit field specific options.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_submit_specific_options(): void {
 		$field = Search_Field_Submit::from_configuration( [
@@ -91,7 +91,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests template data includes submit-specific settings.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_template_data_with_submit_settings(): void {
 		$field = Search_Field_Submit::from_configuration( [
@@ -111,7 +111,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests that show_label is always true for submit fields.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_show_label_forced_true(): void {
 		$field = Search_Field_Submit::from_configuration( [
@@ -126,7 +126,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests tag option default value and choices.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_tag_option_defaults(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -143,7 +143,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests search_clear option default value.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_search_clear_option_default(): void {
 		$template_data = $this->search_field->to_template_data();
@@ -160,7 +160,7 @@ final class Search_Field_Submit_Test extends TestCase {
 	/**
 	 * Tests configuration export and import maintains submit-specific structure.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_configuration_maintains_submit_structure(): void {
 		$original_config = [

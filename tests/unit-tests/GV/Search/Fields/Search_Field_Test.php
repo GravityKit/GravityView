@@ -7,19 +7,19 @@ use PHPUnit\Framework\TestCase;
 /**
  * Unit tests for {@see Search_Field}.
  *
- * @since $ver$
+ * @since 2.42
  */
 final class Search_Field_Test extends TestCase {
 	/**
 	 * The search field we're testing.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	private Search_Field $search_field;
 
 	/**
 	 * @inheritDoc
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	protected function setUp(): void {
 		parent::setUp();
@@ -37,7 +37,7 @@ final class Search_Field_Test extends TestCase {
 
 			/**
 			 * @inheritDoc
-			 * @since $ver$
+			 * @since 2.42
 			 */
 			public function get_description(): string {
 				return 'Unit test description.';
@@ -45,7 +45,7 @@ final class Search_Field_Test extends TestCase {
 
 			/**
 			 * @inheritDoc
-			 * @since $ver$
+			 * @since 2.42
 			 */
 			protected function get_default_label(): string {
 				return 'Unit Test';
@@ -66,7 +66,7 @@ final class Search_Field_Test extends TestCase {
 	/**
 	 * Tests the basic getters.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_basic_getters(): void {
 		self::assertSame( 'unit_test', $this->search_field->get_type() );
@@ -87,7 +87,7 @@ final class Search_Field_Test extends TestCase {
 	/**
 	 * Tests merge_options returns the expected merged array.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_merge_options(): void {
 		$options = [
@@ -104,7 +104,7 @@ final class Search_Field_Test extends TestCase {
 	/**
 	 * Tests to_configuration returns expected keys.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_to_configuration(): void {
 		$config = $this->search_field->to_configuration();
@@ -128,7 +128,7 @@ final class Search_Field_Test extends TestCase {
 	/**
 	 * Tests to_template_data returns an array with expected keys.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_to_template_data(): void {
 		$data          = $this->search_field->to_template_data();
@@ -173,7 +173,7 @@ final class Search_Field_Test extends TestCase {
 	/**
 	 * Tests to_legacy_format returns the expected structure.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_to_legacy_format(): void {
 		self::assertSame(
@@ -189,7 +189,7 @@ final class Search_Field_Test extends TestCase {
 	/**
 	 * Tests is_visible returns a boolean.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_is_visible(): void {
 		self::assertTrue( $this->search_field->is_visible() );
@@ -201,7 +201,7 @@ final class Search_Field_Test extends TestCase {
 	/**
 	 * Test case for {@see Search_Field::has_request_value()}.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_has_request_value(): void {
 		unset( $_REQUEST['filter_unit_test'] );
@@ -214,7 +214,7 @@ final class Search_Field_Test extends TestCase {
 	/**
 	 * Tests that {@see Search_Field::from_configuration()} works as a factory method.
 	 *
-	 * @since $ver$
+	 * @since 2.42
 	 */
 	public function test_from_configuration_factory(): void {
 		$config = [
