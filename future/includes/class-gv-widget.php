@@ -271,13 +271,13 @@ abstract class Widget {
 			$widgets = array();
 		}
 
-		$widgets[ $this->get_widget_id() ] = array(
+		$widgets[ $this->get_widget_id() ] = [
 			'label'       => $this->widget_label,
 			'description' => $this->widget_description,
 			'subtitle'    => $this->widget_subtitle,
 			'icon'        => $this->icon,
-			'class'       => get_called_class(),
-		);
+			'class'       => static::class,
+        ];
 
 		return $widgets;
 	}

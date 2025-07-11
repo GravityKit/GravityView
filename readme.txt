@@ -23,11 +23,28 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+This update brings a major overhaul to the Search Bar widget, giving you much more flexibility in how search fields are displayed and configured. We’ve also added new developer features and improved template handling to make customizations easier.
+
 #### 🚀 Added
 * A new `search_visible_fields` setting that restricts "Search Everything" searches to visible View fields.
+* The Search Bar widget can now be configured with different Row types, just like the Layout Builder.
+* Advanced search fields are shown in a collapsible section, hidden by default for a cleaner interface.
+* Added a dedicated Search Button field for more flexible placement.
+* Added a Search Mode field (can be hidden or shown as radio buttons).
+* Hide individual search fields based on user role.
+* Sieving can now be set on a per-field basis for choice search fields.
+* More granular control over search fields with specific settings for each one.
 
-#### 💻 Developer Updates
+#### 🛠 Developer Updates
 * Added `gk/gravityview/widget/search/visible_fields_only` filter to modify whether "Search Everything" searches are limited for a View.
+* Added a fourth `$data` attribute to `\GravityView_View::render()` for setting a `$data` global in View templates.
+* Updated Search Bar templates to use the new global `$data` variable instead of `$gravityview_view`.
+    * `$gravityview_view->search_fields` → `$data['search_fields']`
+    * `$gravityview_view->permalink_fields` → `$data['permalink_fields']`
+    * `$gravityview_view->search_layout` → `$data['search_layout']`
+    * `$gravityview_view->search_mode` → `$data['search_mode']`
+    * `$gravityview_view->search_class` → `$data['search_class']`
+    * `$gravityview_view->search_clear` → `$data['search_clear']`
 * Added `gk/gravityview/search/additional-reserved-args` filter to add additional reserved arguments for the Search Bar widget.
 
 = 2.41 on July 3, 2025 =

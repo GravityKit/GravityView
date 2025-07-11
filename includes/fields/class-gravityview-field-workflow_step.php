@@ -32,8 +32,6 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 
 		add_filter( 'gravityview_search_field_label', array( $this, 'modify_gravityview_search_field_step_label' ), 10, 3 );
 
-		add_filter( 'gravityview_widget_search_filters', array( $this, 'modify_frontend_search_fields' ), 10, 3 );
-
 		add_filter( 'gravityview_field_entry_value_workflow_step', array( $this, 'modify_entry_value_workflow_step' ), 10, 4 );
 	}
 
@@ -140,51 +138,6 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 		}
 
 		return $workflow_step;
-	}
-
-	/**
-	 * Set the search field choices to the Steps available for the current form
-	 *
-	 * @since 1.17.3
-	 *
-	 * @param array                     $search_fields
-	 * @param GravityView_Widget_Search $widget
-	 * @param array                     $widget_args
-	 *
-	 * @return array
-	 */
-	function modify_frontend_search_fields( $search_fields = array(), GravityView_Widget_Search $widget = null, $widget_args = array() ) {
-
-		foreach ( $search_fields as & $search_field ) {
-
-			if ( $this->name === $search_field['key'] ) {
-
-				$form_id = GravityView_View::getInstance()->getFormId();
-
-				$workflow_steps = gravity_flow()->get_steps( $form_id );
-
-				$choices = array();
-
-				foreach ( $workflow_steps as $step ) {
-					$choices[] = array(
-						'text'  => $step->get_name(),
-						'value' => $step->get_id(),
-					);
-				}
-
-				$search_field['choices'] = $choices;
-			}
-
-			// Workflow Step Statuses
-			elseif ( $workflow_step_id = $this->get_step_id_from_key( $search_field['key'] ) ) {
-
-				$status_key = sprintf( 'workflow_step_status_%d', $workflow_step_id );
-
-				$search_field['choices'] = GravityView_Plugin_Hooks_Gravity_Flow::get_status_options( null, $status_key );
-			}
-		}
-
-		return $search_fields;
 	}
 }
 
