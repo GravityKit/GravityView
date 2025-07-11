@@ -92,10 +92,16 @@
 	   performingAjaxAction: false,
 
 	   /**
-	    * @since TODO
+	    * @since $ver$
 	    * @type {number} The maximum width of the modal dialogs to use for field and widget settings.
 	    */
 	   maxDialogWidth: 0.95,
+
+	   /**
+		* @since $ver$
+		* @type {boolean} Whether to ignore the `escape` key event.
+		*/
+	   ignoreEscapeEvent: false,
 
 	   init: function () {
 
@@ -192,6 +198,8 @@
 
 			   .on( 'change', '.gv-dialog-options [name*=allow_edit_cap]', vcfg.toggleCustomVisibility )
 
+			   .on( 'change', '.gv-dialog-options [name*=input_type]', vcfg.toggleInputHidden )
+
 			   // show field buttons: Settings & Remove
 			   .on( 'click', ".gv-field-controls .gv-remove-field", vcfg.removeField )
 
@@ -199,7 +207,7 @@
 			   .on( 'click', ".gv-field-controls .gv-field-settings", vcfg.openFieldSettings )
 
 			   // Double-clicking a field/widget label opens settings
-			   .on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field)", vcfg.openFieldSettings )
+			   .on( 'dblclick', ".gv-fields:not(.gv-nonexistent-form-field) h5", vcfg.openFieldSettings )
 
 			   .on( 'change', "#gravityview_settings", vcfg.changedSettingsAction )
 
@@ -302,7 +310,7 @@
 					const $dialog = $(this).closest('.ui-dialog');
 					const $button = $(this);
 					const isExpanded = $dialog.hasClass('gv-dialog-expanded');
-					
+
 					$dialog.toggleClass('gv-dialog-expanded');
 					$button.attr({
 						'aria-expanded': !isExpanded,
@@ -311,10 +319,11 @@
 					})
 						.find('.screen-reader-text').text(isExpanded ? gvGlobals.label_contract_dialog : gvGlobals.label_expand_dialog).end()
 						.find('svg').replaceWith(isExpanded ? EXPAND_ICON : CONTRACT_ICON);
-					
+
 					// Trigger window resize to recalculate dialog position.
 					$( window ).trigger( 'resize' );
 				})
+			   .on( 'tooltipopen', vcfg.onTooltipOpen )
 		   ;
 		   // End bind to $( document.body )
 
@@ -329,11 +338,7 @@
 				   within: $( '#wpwrap' ),
 			   } );
 
-			   // If dialog width is greater than the maximum dialog width, set to the maximum dialog width.
-			   let calcMaxDialogWidth = $( window ).width() * vcfg.maxDialogWidth;
-			   if ( vcfg.dialogWidth > calcMaxDialogWidth ) {
-				   $openDialog.dialog( 'option', 'width', calcMaxDialogWidth );
-			   }
+				$openDialog.dialog( 'option', 'width', vcfg.getDialogWidth( $openDialog ) );
 		   });
 
 		   // Make sure the user intends to leave the page before leaving.
@@ -364,6 +369,32 @@
 
 		   $( 'div .gform-dropdown__trigger' ).on( 'click.gravityforms', vcfg.sendMergeTagValueToCodemirrorEditor );
 	   },
+
+		/**
+		 * Returns the width of the dialog, based on the window size and field type.
+		 *
+		 * @since TODO
+		 *
+		 * @param $dialog
+		 * @returns {number|int}
+		 */
+		getDialogWidth: function( $dialog ) {
+
+			var dialog_width = viewConfiguration.dialogWidth;
+
+			// If the dialog is for the Search Bar widget, make it wider.
+			if ( $dialog.parents( '[data-fieldid="search_bar"]' ).length > 0 ) {
+				dialog_width = 1200;
+			}
+
+			// If dialog width is greater than the maximum dialog width, set to the maximum dialog width.
+			let calcMaxDialogWidth = $( window ).width() * viewConfiguration.maxDialogWidth;
+			if ( dialog_width > calcMaxDialogWidth ) {
+				return calcMaxDialogWidth;
+			}
+
+			return dialog_width;
+		},
 
 	   getCookieVal: function ( cookie ) {
 		   if ( ! cookie || cookie === 'undefined' || 'false' === cookie ) {
@@ -613,8 +644,7 @@
 		* @param {boolean} reverse_logic If true, find items that do not match the attribute value. True = `requires-not`; false = `requires`
 		*/
 	   toggleRequired: function( currentTarget, data_attr, reverse_logic ) {
-
-		   var $parent = $( currentTarget, '#post' );
+		   let $parent = $( currentTarget, '#post' );
 
 		   $parent
 			   .find( '[data-' + data_attr + ']' )
@@ -625,7 +655,13 @@
 					   requires_name = requires_array[0],
 					   requires_value = requires_array[1];
 
-				   var $input = $parent.find('[name$="[' + requires_name + ']"]').filter(':input');
+				   // Scope to closest .gv-dialog-options if it exists, to avoid problems with nested dialogs.
+				   const $options = $this.closest('.gv-dialog-options');
+				   if ($options.length > 0) {
+					   $parent = $options;
+				   }
+
+				   const $input = $parent.find('[name$="[' + requires_name + ']"]').filter(':input');
 
 				   if ( $input.is('[type=checkbox]') ) {
 					   if ( reverse_logic ) {
@@ -682,12 +718,10 @@
 		* @return {bool}   [description]
 		*/
 	   closeTooltips: function ( e ) {
-
 		   var activeTooltips = $( "[data-tooltip='active']" );
 
 		   var close = false;
 		   var return_false = false;
-
 		   switch ( e.type ) {
 
 			   case 'keyup':
@@ -695,6 +729,11 @@
 				   // Escape key was pressed
 				   if ( e.keyCode === 27 ) {
 					   if ( $( '.ui-autocomplete' ).is( ':visible' ) ) {
+						   return;
+					   }
+
+					   if ( viewConfiguration.ignoreEscapeEvent ) {
+						   viewConfiguration.ignoreEscapeEvent = false;
 						   return;
 					   }
 
@@ -716,15 +755,18 @@
 
 			   case 'mouseup':
 
-				   if ( // If clicking inside the dialog or tooltip
-					   $( e.target ).parents( '.ui-dialog,.ui-tooltip' ).length ||
-
-					   // Or on the dialog or tooltip itself
-					   $( e.target ).is( '.ui-dialog,.ui-tooltip' ) ) {
+				   if ( $( e.target ).closest( '.ui-tooltip' ).length) {
+					   // If clicked inside a tooltip.
 					   close = false;
+				   } else if ( $( e.target ).closest( '.ui-dialog' ).length) {
+					   // If clicked inside a dialog.
+					   if (activeTooltips.length > 0) {
+						   // And there are tooltips active, close only those.
+						   close = 'tooltips';
+					   }
 				   }
 
-					   // For tooltips, clicking on anything outside of the tooltip
+				   // For tooltips, clicking on anything outside the tooltip
 				   // should close it. Not for dialogs.
 				   else if ( activeTooltips.length > 0 ) {
 					   close = true;
@@ -758,10 +800,12 @@
 		   if ( close ) {
 
 			   // Close all open tooltips
-			   activeTooltips.gvTooltip( "close" );
+			   activeTooltips.gvTooltip( 'close' );
 
 			   // Close all open dialogs
-			   $( ".ui-dialog:visible" ).find( '.ui-dialog-content' ).dialog( "close" );
+			   if ( close !== 'tooltips' ) {
+				   $( '.ui-dialog:visible' ).find( '.ui-dialog-content' ).dialog( 'close' );
+			   }
 
 			   // Prevent scrolling window on click close
 			   if ( return_false ) {
@@ -795,17 +839,53 @@
 
 		   var custom_visibility;
 
-		   if ( $( e.target ).is('select') ) {
+		   if ( $( e.target ).is( 'select' ) ) {
 			   custom_visibility = 'read' !== $( e.target ).val();
 		   } else {
 			   custom_visibility = $( e.target ).is( ':checked' );
 		   }
 
-		   var parent = $( e.target ).parents( '.gv-fields' );
+		   const $settings = $( e.target ).closest( '.gv-dialog-options' );
+		   let $field;
 
-		   parent.toggleClass( 'has-custom-visibility', custom_visibility );
+		   if ( $settings.data( 'field' ) ) {
+			   $field = $settings.data( 'field' );
+		   } else {
+			   const $parent = $( e.target ).closest( '.gv-fields' );
+			   $parent.toggleClass( 'has-custom-visibility', custom_visibility );
+			   $field = $parent.find( '.gv-field-controls' );
+		   }
 
-		   parent.find( '.gv-field-controls .icon-custom-visibility' ).toggleClass( 'hide-if-js', ! custom_visibility );
+		   if ( $field ) {
+			   $field.find( '.icon-custom-visibility' ).toggleClass( 'hide-if-js', !custom_visibility );
+		   }
+	   },
+
+	   /**
+		* Toggle the dashicon representing whether the field has an input type hidden.
+		*
+		* @since $ver$
+		*
+		* @param  {jQueryEvent} e jQuery event object.
+		*/
+	   toggleInputHidden: function ( e ) {
+
+		   const is_hidden = 'hidden' === $( e.target ).val();
+
+		   const $settings = $( e.target ).closest( '.gv-dialog-options' );
+		   let $field;
+
+		   if ( $settings.data( 'field' ) ) {
+			   $field = $settings.data( 'field' );
+		   } else {
+			   const $parent = $( e.target ).closest( '.gv-fields' );
+			   $parent.toggleClass( 'has-input-hidden', is_hidden );
+			   $field = $parent.find( '.gv-field-controls' );
+		   }
+
+		   if ( $field ) {
+			   $field.find( '.icon-hidden' ).toggleClass( 'hide-if-js', !is_hidden );
+		   }
 	   },
 
 	   /**
@@ -1169,16 +1249,7 @@
 			   appendTo: thisDialog.parent(),
 			   draggable: false,
 			   resizable: false,
-			   width: function () {
-
-				   // If the window is wider than {vcfg.dialogWidth}px, use vcfg.dialogWidth
-				   if ( $( window ).width() > vcfg.dialogWidth ) {
-					   return vcfg.dialogWidth;
-				   }
-
-				   // Otherwise, return the window width, less 10px
-				   return $( window ).width() - 10;
-			   },
+			   width: vcfg.getDialogWidth( thisDialog ),
 			   open: function () {
 				   $( '<div class="gv-overlay" />' ).prependTo( '#wpwrap' );
 
@@ -1324,7 +1395,7 @@
 				   if ( $autocompleteEl.is( ':visible' ) && 27 === e.which ) {
 					   e.preventDefault();
 					   closeAutocompletion();
-					   $textarea.focus();
+					   $textarea.trigger( 'focus' );
 				   }
 			   } );
 
@@ -1339,7 +1410,7 @@
 
 				   if ( 38 === e.which || 40 === e.which || 13 === e.which ) {
 					   if ( $autocompleteEl.not( ':focus' ) ) {
-						   $autocompleteEl.focus();
+						   $autocompleteEl.trigger( 'focus' );
 					   }
 
 					   e.preventDefault();
@@ -1398,6 +1469,11 @@
 		* @param {jQuery} dialog
 		*/
 	   setupFieldDetails: function ( dialog ) {
+
+			// Don't show field details in the search bar dialog.
+			if ( dialog.parents( "[data-fieldid=\"search_bar\"]" ).length ) {
+				return;
+			}
 
 		   // Add the details to the title bar
 		   $( '.gv-field-details--container', dialog ).insertAfter( '.ui-dialog-title:visible' );
@@ -1467,20 +1543,26 @@
 
 		   // Does the field have a custom label?
 		   var $admin_label = $( '[name*=admin_label]', dialog );
-		   var $custom_label;
+		   var $custom_label_field;
 
 		   if ( ! $admin_label.length || ! $admin_label.val() ) {
-			   $custom_label = $( '[name*=custom_label]', dialog );
+			   $custom_label_field = $( '[name*=custom_label]', dialog );
 		   } else {
-			   $custom_label = $admin_label; // We have an administrative label for this field
+			   $custom_label_field = $admin_label; // We have an administrative label for this field
 		   }
 
-		   var $label = dialog.parents( '.gv-fields' ).find( '.gv-field-label-text-container' );
+		   // Prevent updating the custom label from a nested search field.
+		   if ( $( dialog ).closest('[data-search-fields]').length !== $custom_label_field.closest( '[data-search-fields]' ).length ) {
+			   // This works because the regular search widget does not have a custom title field.
+			   return;
+		   }
+
+		   var $label = dialog.closest( '.gv-fields' ).find( '.gv-field-label-text-container' ).first();
 
 		   // If there's a custom title, use it for the label.
-		   if ( $custom_label.length ) {
+		   if ( $custom_label_field.length ) {
 
-			   var custom_label_text = $custom_label.val().trim();
+			   var custom_label_text = $custom_label_field.val().trim();
 
 			   // Make sure the custom label isn't empty
 			   if( custom_label_text.length > 0 ) {
@@ -1492,6 +1574,14 @@
 			   }
 
 		   }
+	   },
+
+	   /**
+		* Ignores the escape button for the next call.
+		* @since $ver$
+		*/
+	   ignoreEscape: function () {
+		   viewConfiguration.ignoreEscapeEvent = true;
 	   },
 
 	   /**
@@ -2178,15 +2268,14 @@
 			   hide:    200,
 			   content: function () {
 				   // Is the field picker in single or directory mode?
-				   //	var context = ( $(this).parents('#single-view').length ) ? 'single' : 'directory';
 				   var context = $( this ).attr( 'data-context' );
 				   var formId = $( this ).attr( 'data-formid' ) || $( '#gravityview_form_id' ).val();
 				   var templateId = $( '#gravityview_directory_template' ).val();
 
 				   switch ( $( this ).attr( 'data-objecttype' ) ) {
+					   case 'search':
 					   case 'field':
-						   // If in Single context, show fields available in single
-						   // If it Directory, same for directory
+						   // Show available fields according to the selected context (single or directory, general or advanced).
 						   return $( '#' + context + '-available-fields-' + ( formId || templateId ) ).html();
 					   case 'widget':
 						   return $( "#directory-available-widgets" ).html();
@@ -2200,7 +2289,7 @@
 					   .attr( 'data-tooltip', 'active' )
 					   .attr( 'data-tooltip-id', $( this ).attr( 'aria-describedby' ) );
 
-				   $focus_item = $( 'input[type=search]', tooltip.tooltip );
+				   let $focus_item = $( 'input[type=search]', tooltip.tooltip );
 
 				   // Widgets don't have a search field; select the first "Add Widget" button instead
 				   if ( ! $focus_item.length) {
@@ -2215,7 +2304,7 @@
 				   } else {
 
 					   // Otherwise, check for cookies
-					   layout_cookie = $.cookie( 'gv-items-picker-layout' );
+					   const layout_cookie = $.cookie( 'gv-items-picker-layout' );
 
 					   if ( viewConfiguration.getCookieVal( layout_cookie ) ) {
 						   activate_layout = layout_cookie;
@@ -2238,7 +2327,6 @@
 					   );
 				   }
 			   },
-			   closeOnEscape: true,
 			   disabled: true, // Don't open on hover
 			   position: {
 				   my: "center bottom",
@@ -2449,6 +2537,8 @@
 			   $before,
 			   !!$before
 		   );
+
+		   viewConfiguration.toggleAllowedOnceField( clicked );
 	   },
 
 	   /**
@@ -2545,6 +2635,7 @@
 				   $addButton
 					   .closest( '.gv-droppable-area' )
 					   .find( '.active-drop' )
+					   .first()
 					   .append( $newField );
 			   }
 
@@ -2589,6 +2680,57 @@
 		   );
 	   },
 
+	   onTooltipOpen: function ( e, tooltip ) {
+		   viewConfiguration.filterFields( e.target, tooltip.tooltip[0] );
+	   },
+
+	   /**
+		* Toggles the allowed once class on a field.
+		*
+		* @since $ver$
+		*
+		* @param {Element} target The field element (or child there of).
+		* @param {Boolean} toggle Whether to add or remove the class.
+		*/
+	   toggleAllowedOnceField: function ( target, toggle = true ) {
+		   if ( !$( target ).is( '[data-allowed-once="true"]' ) ) {
+			   target = $( target ).closest( '[data-allowed-once="true"]' );
+		   }
+
+		   $( target ).toggleClass( 'gv-field--is-added', toggle );
+	   },
+
+	   /**
+		* Updates the field lists to
+		* @param source
+		* @param wrapper
+		*/
+	   filterFields: function ( source, wrapper ) {
+		   const fields = $( source )
+			   .closest( '.gv-section' )
+			   .find( '[data-fieldid]' )
+			   .map(
+				   ( _, el ) => $( el ).data( 'fieldid' )
+			   )
+			   .toArray();
+
+		   let content = $( wrapper ).html();
+
+		   if ( !content ) {
+			   return;
+		   }
+
+		   const $content = $( '<div>' ).html( content );
+		   $content
+			   .find( '[data-allowed-once="true"]' )
+			   .each( ( _, el ) => {
+				   const is_added = fields.indexOf( $( el ).data( 'fieldid' ) ) > -1;
+				   viewConfiguration.toggleAllowedOnceField( el, is_added );
+			   } );
+
+		   content = $content.html();
+		   $( wrapper ).html( content );
+	   },
 	   /**
 		* Re-initialize Merge Tags
 		*
@@ -2758,6 +2900,79 @@
 				   vcfg.toggleDropMessage();
 			   }
 		   } );
+
+		   // Search fields.
+		   $( panel ).find( ".active-drop-search" ).sortable( {
+			   placeholder: "fields-placeholder",
+			   items: '> .gv-fields',
+			   distance: 2,
+			   revert: 75,
+			   connectWith: ".active-drop-search",
+			   start: function ( _, ui ) {
+				   const allowedSections = ui.item.data( 'allowed-sections' );
+				   let $containers = $( document.body ).find( '.active-drop-container-search' );
+
+				   // Only add `is-receivable` if the field is allowed in the current section.
+				   if ( allowedSections ) {
+					   const sections = allowedSections.split( ',' );
+					   $containers = $containers.filter( function () {
+						   return sections.indexOf( $( this ).closest( '[data-grid-context]' ).data( 'grid-context' ) ) > -1;
+					   } );
+				   }
+
+				   $containers.addClass( 'is-receivable' );
+			   },
+			   stop: function( _, ui ) {
+				   $( document.body ).find( ".active-drop-container-search" ).removeClass( 'is-receivable' );
+			   },
+			   change: function( ) {
+				   vcfg.setUnsavedChanges( true );
+			   },
+			   receive: function ( _, ui ) {
+				   // Check if field comes from another active area and if so, update name attributes.
+				   if ( ui.item.find( ".gv-dialog-options" ).length > 0 ) {
+
+					   const sender_area = ui.sender.attr( 'data-areaid' );
+					   const receiver_area = $( this ).attr( 'data-areaid' );
+
+					   ui.item.find( '[name*="[' + sender_area + ']"]' ).each( function () {
+						   const name = $( this ).attr( 'name' );
+						   $( this ).attr( 'name', name.replace( sender_area, receiver_area ) );
+					   } );
+				   }
+
+				   const allowedSections = ui.item.data( 'allowed-sections' );
+				   if ( allowedSections ) {
+					   const $targetList = $( this ).closest( '[data-grid-context]' );
+					   const targetContext = $targetList.data( 'grid-context' );
+					   const allowedArray = allowedSections.split( ',' );
+
+					   if ( !allowedArray.includes( targetContext ) ) {
+						   // Prevent insertion.
+						   $( ui.sender ).sortable( 'cancel' );
+					   }
+				   }
+
+				   vcfg.toggleDropMessage();
+			   },
+			   over: function ( _, ui ) {
+				   const $targetList = $( this ).closest( '[data-grid-context]' );
+				   const targetContext = $targetList.data( 'grid-context' );
+
+				   const allowedSections = ui.item.data( 'allowed-sections' );
+				   if ( allowedSections ) {
+					   const allowedArray = allowedSections.split( ',' );
+
+					   if ( !allowedArray.includes( targetContext ) ) {
+						   // // Disallow placeholder even showing.
+						   ui.item.addClass( 'gv-field--not-allowed' );
+					   }
+				   }
+			   },
+			   out: function ( _, ui ) {
+				   ui.item.removeClass( 'gv-field--not-allowed' );
+			   }
+		   } );
 	   },
 
 	   toggleDropMessage: function () {
@@ -2781,7 +2996,7 @@
 		   e.preventDefault();
 
 		   var vcfg = viewConfiguration;
-		   var area = $( e.currentTarget ).parents( ".active-drop" );
+		   var area = $( e.currentTarget ).parentsUntil( ".active-drop" ).parent();
 
 		   vcfg.setUnsavedChanges( true );
 
@@ -2792,7 +3007,7 @@
 			   return;
 		   }
 
-		   $( e.currentTarget ).parents( '.gv-fields' ).fadeOut( 'fast', function () {
+			$( e.currentTarget ).parentsUntil( '.gv-fields' ).parent().fadeOut( 'fast', function () {
 
 			   $( this ).remove();
 
@@ -2853,6 +3068,12 @@
 	   openFieldSettings: function ( e ) {
 		   e.preventDefault();
 
+		   // Don't open a dialog for search field settings.
+		   const $field = $( e.target ).closest( '[data-fieldid="search_bar"]' );
+		   if ( $field.length && $( e.target ).closest( $field.find( '.gv-dialog-options' ) ).length ) {
+			   return;
+		   }
+
 		   var parent, vcfg = viewConfiguration;
 
 		   if ( $( e.currentTarget ).is( '.gv-fields' ) ) {
@@ -2861,7 +3082,7 @@
 			   parent = $( e.currentTarget ).parents( '.gv-fields' );
 		   }
 
-		   $( '.gv-field-settings', parent ).addClass( 'active' );
+		   $( '.gv-field-settings', parent ).first().addClass( 'active' );
 
 		   vcfg.updateVisibilitySettings( e, true );
 
@@ -2878,8 +3099,9 @@
 			   }
 		   ];
 
-		   var dialogOptions = parent.find( ".gv-dialog-options" );
-		   
+		   // Just the first one in case of nested options.
+		   const dialogOptions = parent.find( '.gv-dialog-options' ).first();
+
 		   // Set up a one-time event handler to detect changes in this dialog
 		   dialogOptions.find(':input').one( 'change', function() {
 			   vcfg.setUnsavedChanges( true );
@@ -3432,7 +3654,9 @@
 		   initTooltips: viewConfiguration.init_tooltips,
 		   removeTooltips: viewConfiguration.remove_tooltips,
 		   showDialog: viewConfiguration.showDialog,
-		   initDroppables: viewConfiguration.init_droppables
+		   initDroppables: viewConfiguration.init_droppables,
+		   setCustomLabel: viewConfiguration.setCustomLabel,
+		   ignoreEscape: viewConfiguration.ignoreEscape,
 	   };
 
 	   $( document.body ).trigger( 'gravityview/loaded' );

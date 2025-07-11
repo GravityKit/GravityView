@@ -22,6 +22,3 @@ class GravityView_FieldType_hidden extends GravityView_FieldType {
 		<?php
 	}
 }
-
-
-

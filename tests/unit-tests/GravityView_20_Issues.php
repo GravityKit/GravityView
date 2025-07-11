@@ -650,7 +650,6 @@ class GV_20_Issues_Test extends GV_UnitTestCase {
 
 	public function test_fileupload_download_link_lightbox() {
 		$form = $this->factory->form->import_and_get( 'complete.json' );
-
 		$upload_url = GFFormsModel::get_upload_url( $form['id'] );
 
 		$file = $upload_url . '/one.jpg';

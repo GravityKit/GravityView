@@ -17,11 +17,9 @@ test('Entry Date Field', async ({ page }) => {
 		template: templates[0]
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	await page
-		.getByRole('cell', { name: 'Search Everything' })
-		.getByRole('combobox')
-		.selectOption('entry_date');
-	await page.locator('.ui-dialog').getByRole('button', { name: 'Close', exact: true }).click();
+	await page.getByRole('link', { name: 'Add Search Field' }).first().click();
+	await page.locator('.ui-tooltip-content [data-fieldid="entry_date"]').click();
+	await page.getByRole('button', { name: ' Close' }).click();
 	await publishView(page);
 	await checkViewOnFrontEnd(page);
 	await page.getByPlaceholder('Start date').fill('04/01/2024');

@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.40\n"
+"Project-Id-Version: GravityView 2.41\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-30T01:12:01+00:00\n"
+"POT-Creation-Date: 2025-07-03T19:41:10+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1198,22 +1198,22 @@ msgstr ""
 msgid "This class will be added to the widget container"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/entry-field/block.php:22
+#: future/includes/gutenberg/blocks/entry-field/block.php:23
 #: includes/class-admin-welcome.php:381
 msgid "GravityView Entry Field"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/entry-link/block.php:22
+#: future/includes/gutenberg/blocks/entry-link/block.php:23
 #: includes/class-admin-welcome.php:406
 msgid "GravityView Entry Link"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/entry/block.php:22
+#: future/includes/gutenberg/blocks/entry/block.php:23
 #: includes/class-admin-welcome.php:361
 msgid "GravityView Entry"
 msgstr ""
 
-#: future/includes/gutenberg/blocks/view-details/block.php:22
+#: future/includes/gutenberg/blocks/view-details/block.php:23
 #: includes/class-admin-welcome.php:339
 msgid "GravityView View Details"
 msgstr ""
@@ -3576,7 +3576,7 @@ msgid "CAPTCHA"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-chainedselect.php:23
-#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-chainedselects.php:206
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-forms-chainedselects.php:203
 msgid "Chained Select"
 msgstr ""
 
@@ -4837,6 +4837,18 @@ msgstr ""
 msgid "Install & Activate"
 msgstr ""
 
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-formidable-views.php:60
+msgid "Plugin conflict detected."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-formidable-views.php:61
+msgid "Formidable Views and GravityView share the same \"entry\" endpoint for viewing single entries. This may cause conflicts."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-formidable-views.php:63
+msgid "To resolve this, you can %1$schange the entry endpoint%2$s in GravityKit Settings from \"entry\" to something else."
+msgstr ""
+
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-flow.php:139
 msgctxt "Gravity Flow Workflow Step Status"
 msgid "Status: %s"
@@ -4874,6 +4886,34 @@ msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravity-perks-nested-forms.php:125
 msgid "The field ID on the parent form for this nested form."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityboard.php:95
+msgid "Display a GravityBoard board."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityboard.php:105
+msgid "Board to display"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityboard.php:108
+msgid "Select the GravityBoard to display in this widget."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityboard.php:114
+msgid "GravityBoard"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityboard.php:126
+msgid "&mdash; Select a Board &mdash;"
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityboard.php:195
+msgid "Admin-only notice: Please select a board to display in the widget settings."
+msgstr ""
+
+#: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityboard.php:202
+msgid "Admin-only notice: GravityBoard plugin is not available."
 msgstr ""
 
 #: includes/plugin-and-theme-hooks/class-gravityview-plugin-hooks-gravityformsquiz.php:54
