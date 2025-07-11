@@ -29,6 +29,7 @@ module.exports = [
 		},
 		rules: {
 			'no-unused-vars': ['error', { args: 'all', argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+			'indent': [ 'warn', 'tab', { "SwitchCase": 1 } ],
 		},
 	},
 ];

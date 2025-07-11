@@ -749,3 +749,28 @@ function gravityview_maybe_convert_date_string_to_timestamp( $value = '' ) {
 
 	return $date->getTimestamp();
 }
+
+/**
+ * A polyfill for json_validate which is introduced in PHP 8.3.
+ * @since 2.42
+ */
+if ( ! function_exists( 'json_validate' ) ) {
+	/**
+	 * Validates a JSON string.
+	 *
+	 * @param string $json  The JSON string to validate.
+	 * @param int    $depth Maximum depth. Must be greater than zero.
+	 * @param int    $flags Bitmask of JSON decode options.
+	 *
+	 * @return bool Returns true if the string is a valid JSON, otherwise false.
+	 */
+	function json_validate( string $json, int $depth = 512, int $flags = 0 ): bool {
+		try {
+			json_decode( $json, false, $depth, $flags | JSON_THROW_ON_ERROR );
+
+			return true;
+		} catch ( \JsonException $e ) {
+			return false;
+		}
+	}
+}

@@ -10,7 +10,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * A collection of \GV\Widget objects.
  * @implements Collection<\GV\Widget>
  */
-class Widget_Collection extends Collection {
+class Widget_Collection extends Collection implements Collection_Position_Aware {
 	/**
 	 * Add a \GV\Widet to this collection.
 	 *

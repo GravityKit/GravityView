@@ -8,6 +8,14 @@ class GravityView_Admin_View_Widget extends GravityView_Admin_View_Item {
 
 	protected $label_type = 'widget';
 
+	/**
+	 * @inheritDoc
+	 * @since 2.42
+	 */
+	protected function get_title( string $label ): string {
+		return sprintf( __( 'Widget: %s', 'gk-gravityview' ), $label );
+	}
+
 	protected function additional_info() {
 
 		$field_info_items = array();

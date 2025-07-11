@@ -26,6 +26,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  * Can be accessed as an array for old compatibility's sake
  *  in line with the elements inside the \GravityView_View_Data::$views array.
  */
+#[\AllowDynamicProperties]
 class View implements \ArrayAccess {
 
 	/**
@@ -751,6 +752,8 @@ class View implements \ArrayAccess {
 		$view       = new self();
 		$view->post = $post;
 
+		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
+
 		/** Get connected form. */
 		$view->form = GF_Form::by_id( $view->_gravityview_form_id );
 		global $pagenow;
@@ -834,7 +837,7 @@ class View implements \ArrayAccess {
 			)
 		);
 
-		self::$cache[ "View::from_post:{$post->ID}" ] = &$view;
+
 
 		/**
 		 * Override View.
@@ -1478,7 +1481,7 @@ class View implements \ArrayAccess {
 
 			$result = $this->run_db_query( $query );
 
-			list ( $db_entries, $query ) = $result;
+			[ $db_entries, $query ] = $result;
 
 			/**
 			 * Map from Gravity Forms entries arrays to an Entry_Collection.

@@ -101,6 +101,13 @@ class View_Settings extends Settings {
 						'url' => 'https://docs.gravitykit.com/article/490-entry-approval-gravity-forms',
 					),
 				),
+				'search_visible_fields'       => [
+					'label' => __( 'Search in visible fields only', 'gk-gravityview' ),
+					'type'  => 'checkbox',
+					'group' => 'default',
+					'value' => 0,
+					'desc'  => __( 'Limit "Search Everything" search results to visible fields only.', 'gk-gravityview' ),
+				],
 				'caching'                     => array(
 					'label'             => __( 'Enable caching', 'gk-gravityview' ),
 					'type'              => 'checkbox',
@@ -468,7 +475,7 @@ class View_Settings extends Settings {
 					'placeholder'       => __( '&larr; Go back', 'gk-gravityview' ),
 					'class'             => 'widefat',
 					'merge_tags'        => 'force',
-					'show_in_shortcode' => false,
+					'show_in_shortcode' => true,
 					'full_width'        => true,
 				),
 				'edit_redirect'               => array(
