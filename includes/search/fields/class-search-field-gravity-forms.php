@@ -7,6 +7,7 @@ use GF_Query_Column;
 use GFAPI;
 use GFCommon;
 use GFFormsModel;
+use GravityView_Fields;
 use GravityView_Widget_Search;
 
 /**
@@ -182,12 +183,20 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	private function get_field_icon(): string {
 		// Use Gravity Forms' field icon if available.
 		$field = $this->get_gf_field();
+
 		if ( $field ) {
-			return $field->get_form_editor_field_type_icon();
+			// GF 2.9+.
+			if ( method_exists( $field, 'get_form_editor_field_type_icon' ) ) {
+				return $field->get_form_editor_field_type_icon();
+			} elseif ( method_exists( $field, 'get_form_editor_field_icon' ) ) {
+				// GF 2.5+.
+				return $field->get_form_editor_field_icon();
+			}
 		}
 
 		// Use GravityView's field icon next, if available.
-		$field = \GravityView_Fields::get( $this->get_field_id() );
+		$field = GravityView_Fields::get( $this->get_field_id() );
+
 		if ( $field ) {
 			return $field->get_icon();
 		}
