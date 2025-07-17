@@ -202,6 +202,55 @@ final class Search_Field_Gravity_Forms_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Tests to ensure that address subfields with gf_field_type are recognized by the search filter.
+	 *
+	 * @since 2.42.2
+	 */
+	public function test_address_subfield_search_filter_(): void {
+		$form = $this->factory->form->create_and_get([
+			'title' => 'Test Form',
+			'fields' => [
+				[
+					'type' => 'address',
+					'id' => 1,
+					'label' => 'Address',
+					'addressType' => 'us',
+					'inputs' => [
+						['id' => '1.1', 'label' => 'Street Address'],
+						['id' => '1.2', 'label' => 'Address Line 2'],
+						['id' => '1.3', 'label' => 'City'],
+						['id' => '1.4', 'label' => 'State / Province'],
+						['id' => '1.5', 'label' => 'ZIP / Postal Code'],
+						['id' => '1.6', 'label' => 'Country'],
+					],
+				],
+			],
+		]);
+
+		$view = GravityView_View::getInstance();
+		$view->setForm( $form );
+
+		// This is what the Search Bar sends for address subfields in v2.42+.
+		$search_field = [
+			'key'           => '1.4', // State/Province.
+			'label'         => 'Address (State / Province)',
+			'type'          => 'select', // NOT 'address' - this is the input type.
+			'gf_field_type' => 'address', // This identifies it as an address field.
+			'input'         => 'select',
+		];
+
+		$address_field = new GravityView_Field_Address();
+		$filtered = $address_field->search_field_filter( [ $search_field ] );
+
+		self::assertArrayHasKey( 'choices', $filtered[0], 'State field should have choices added' );
+		self::assertNotEmpty( $filtered[0]['choices'], 'State choices should not be empty' );
+
+		$state_texts = array_column( $filtered[0]['choices'], 'text' );
+		self::assertContains( 'California', $state_texts, 'Should contain California' );
+		self::assertContains( 'New York', $state_texts, 'Should contain New York' );
+	}
+
+	/**
 	 * Tests {@see Search_Field_Gravity_Forms()} choices handling for various choice-based fields.
 	 *
 	 * @since 2.42
