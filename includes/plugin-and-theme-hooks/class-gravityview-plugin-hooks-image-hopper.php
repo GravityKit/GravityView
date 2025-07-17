@@ -88,7 +88,7 @@ final class GravityView_Plugin_Hooks_Image_Hopper extends GravityView_Plugin_and
 	 * @return bool Whether the field is an Image Hopper field.
 	 */
 	private static function is_image_hopper_field( GF_Field $field ): bool {
-		return 'image_hopper' === $field->type;
+		return 'image_hopper' === $field->type || 'image_hopper_post' === $field->type;
 	}
 }
 
