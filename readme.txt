@@ -23,10 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.42.2 on July 17, 2025 =
 
-This hotfix resolves an issue where Address field subfields were not appearing in the Search Bar widget on the frontend.
+This hotfix resolves a display issue introduced in 2.42 affecting address subfields in the Search Bar widget, and fixes a fatal error related to the Image Hopper Post Image field.
 
 #### 🐛 Fixed
-* Address field subfields (State/Province, City, etc.) were not displaying in the Search Bar widget.
+* Address field subfields (State/Province, City, etc.) were not displaying in the Search Bar widget after the 2.42 update.
+* Fatal error when editing an entry containing an Image Hopper Post Image field.
 
 = 2.42.1 on July 16, 2025 =
 
