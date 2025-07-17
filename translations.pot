@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.42\n"
+"Project-Id-Version: GravityView 2.42.1\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-11T01:55:07+00:00\n"
+"POT-Creation-Date: 2025-07-17T01:55:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -5304,8 +5304,8 @@ msgstr ""
 msgid "Gravity Flow Step Status"
 msgstr ""
 
-#: includes/search/fields/class-search-field-gravity-forms.php:108
-#: includes/search/fields/class-search-field-gravity-forms.php:116
+#: includes/search/fields/class-search-field-gravity-forms.php:109
+#: includes/search/fields/class-search-field-gravity-forms.php:117
 msgid "Gravity Forms Field"
 msgstr ""
 
