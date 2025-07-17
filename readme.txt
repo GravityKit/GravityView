@@ -21,7 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.42.2 on July 17, 2025 =
+
+This hotfix resolves an issue where Address field subfields were not appearing in the Search Bar widget on the frontend.
 
 #### 🐛 Fixed
 * Address field subfields (State/Province, City, etc.) were not displaying in the Search Bar widget.

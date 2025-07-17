@@ -61,9 +61,9 @@ class GravityView_Field_Address extends GravityView_Field {
 	 * Dynamically add choices to the address field dropdowns, if any
 	 *
 	 * @since 1.19.2
-	 * @since TBD Removed the unused `$widget` and `$widget_args` parameters.
+	 * @since 2.42.2 Removed `$widget` and `$widget_args` parameters.
 	 *
-	 * @param array                     $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
+	 * @param array $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
 	 *
 	 * @return array If the search field GF Field type is `address`, and there are choices to add, adds them and changes the input type. Otherwise, sets the input to text.
 	 */
