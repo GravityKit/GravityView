@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -20,6 +20,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.42.1 on July 16, 2025 =
+
+This patch resolves a fatal error that could occur when using the plugin with older versions of Gravity Forms.
+
+#### 🐛 Fixed
+* Fatal error due to a call to an undefined method when using GravityView with Gravity Forms versions older than 2.9.
 
 = 2.42 on July 10, 2025 =
 
