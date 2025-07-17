@@ -5,6 +5,8 @@
  * @subpackage includes\fields
  */
 
+use GV\Utils;
+
 /**
  * Add custom options for address fields
  */
@@ -59,18 +61,16 @@ class GravityView_Field_Address extends GravityView_Field {
 	 * Dynamically add choices to the address field dropdowns, if any
 	 *
 	 * @since 1.19.2
+	 * @since TBD Removed the unused `$widget` and `$widget_args` parameters.
 	 *
 	 * @param array                     $search_fields Array of search filters with `key`, `label`, `value`, `type` keys
-	 * @param GravityView_Widget_Search $widget Current widget object
-	 * @param array                     $widget_args Args passed to this method. {@since 1.8}
 	 *
 	 * @return array If the search field GF Field type is `address`, and there are choices to add, adds them and changes the input type. Otherwise, sets the input to text.
 	 */
-	public function search_field_filter( $search_fields, $widget, $widget_args ) {
+	public function search_field_filter( $search_fields ) {
+		foreach ( $search_fields as &$search_field ) {
 
-		foreach ( $search_fields as & $search_field ) {
-
-			if ( 'address' !== \GV\Utils::get( $search_field, 'type' ) ) {
+			if ( 'address' !== Utils::get( $search_field, 'gf_field_type' ) ) {
 				continue;
 			}
 
@@ -94,7 +94,7 @@ class GravityView_Field_Address extends GravityView_Field {
 
 			if ( ! empty( $choices ) ) {
 				$search_field['choices'] = $choices;
-				$search_field['type']    = \GV\Utils::get( $search_field, 'input' );
+				$search_field['type']    = Utils::get( $search_field, 'input' );
 			} else {
 				$search_field['type']  = 'text';
 				$search_field['input'] = 'input_text';
@@ -203,7 +203,7 @@ class GravityView_Field_Address extends GravityView_Field {
 	public function input_types( $input_types ) {
 
 		// Use the same inputs as the "text" input type allows
-		$text_inputs = \GV\Utils::get( $input_types, 'text' );
+		$text_inputs = Utils::get( $input_types, 'text' );
 
 		$input_types['street']  = $text_inputs;
 		$input_types['street2'] = $text_inputs;
