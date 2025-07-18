@@ -53,7 +53,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 
 	public function widget( $args, $instance ) {
 
-		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+		if ( GVCommon::is_rest_request() ) {
 			return false;
 		}
 
@@ -79,6 +79,7 @@ class GravityView_Search_WP_Widget extends WP_Widget {
 			echo $args['before_title'] . $title . $args['after_title'];
 		}
 
+		unset($instance['title']);
 		// @todo Add to the widget configuration form
 		$instance['search_layout'] = apply_filters( 'gravityview/widget/search/layout', 'vertical', $instance );
 

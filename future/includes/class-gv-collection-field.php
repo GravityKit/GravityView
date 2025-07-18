@@ -11,7 +11,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *
  * @implements Collection<Field>
  */
-class Field_Collection extends Collection {
+class Field_Collection extends Collection implements Collection_Position_Aware {
 
 	/**
 	 * Returns all the objects in this collection as an an array. Here for docBlock purposes only.

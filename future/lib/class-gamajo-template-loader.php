@@ -24,7 +24,7 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 	 * @package Gamajo_Template_Loader
 	 * @author  Gary Jones
 	 */
-	class Gamajo_Template_Loader {
+	class Gamajo_Template_Loader extends \stdClass {
 		/**
 		 * Prefix for filter names.
 		 *

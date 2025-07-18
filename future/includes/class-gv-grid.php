@@ -46,7 +46,7 @@ final class Grid {
 		$rows = self::get_row_types();
 		$row  = $rows[ $type ] ?? [];
 
-		$id ??= substr( md5( ++ self::$counter . microtime( true ) ), 0, 13 );
+		$id ??= self::uid();
 
 		if ( $keep_area_id ) {
 			return $row;
@@ -62,18 +62,29 @@ final class Grid {
 	}
 
 	/**
+	 * Returns unique ID.
+	 *
+	 * @since 2.42
+	 *
+	 * @return string
+	 */
+	public static function uid(): string {
+		return substr( md5( ++ self::$counter . microtime( true ) ), 0, 13 );
+	}
+
+	/**
 	 * Calculates and returns the row configurations based on a collection and the zone.
 	 *
 	 * @since 2.31.0
 	 *
-	 * @param Widget_Collection|Field_Collection $collection The collection.
-	 * @param string                             $zone       The zone.
+	 * @param Collection $collection The collection.
+	 * @param string     $zone       The zone.
 	 *
 	 * @return array The row configurations.
 	 */
 	public static function get_rows_from_collection( Collection $collection, string $zone ): array {
 		$rows = [];
-		if ( ! $collection instanceof Widget_Collection && ! $collection instanceof Field_Collection ) {
+		if ( ! $collection instanceof Collection_Position_Aware ) {
 			return $rows;
 		}
 

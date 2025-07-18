@@ -9,12 +9,12 @@
  * @link      https://www.gravitykit.com
  * @copyright Copyright 2025, GravityKit
  *
- * @since TODO
+ * @since 2.41
  */
 
 /**
  * @inheritDoc
- * @since TODO
+ * @since 2.41
  */
 class GravityView_Plugin_Hooks_GravityBoard extends GravityView_Plugin_and_Theme_Hooks {
 
@@ -25,7 +25,7 @@ class GravityView_Plugin_Hooks_GravityBoard extends GravityView_Plugin_and_Theme
 
 	/**
 	 * @inheritDoc
-	 * @since TODO
+	 * @since 2.41
 	 */
 	protected $style_handles = array(
 		'gravityboard-app-styles',
@@ -33,7 +33,7 @@ class GravityView_Plugin_Hooks_GravityBoard extends GravityView_Plugin_and_Theme
 
 	/**
 	 * @inheritDoc
-	 * @since TODO
+	 * @since 2.41
 	 */
 	protected $script_handles = array(
 		'gravityboard-app',
@@ -42,7 +42,7 @@ class GravityView_Plugin_Hooks_GravityBoard extends GravityView_Plugin_and_Theme
 	/**
 	 * Add hooks when GravityBoard is active
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 */
 	protected function add_hooks() {
 		new GravityView_Widget_GravityBoard();
@@ -54,7 +54,7 @@ class GravityView_Plugin_Hooks_GravityBoard extends GravityView_Plugin_and_Theme
 /**
  * Widget to display a GravityBoard
  *
- * @since TODO
+ * @since 2.41
  */
 class GravityView_Widget_GravityBoard extends \GV\Widget {
 
@@ -73,7 +73,7 @@ class GravityView_Widget_GravityBoard extends \GV\Widget {
 	/**
 	 * Constructor
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 */
 	function __construct() {
 
@@ -117,7 +117,7 @@ class GravityView_Widget_GravityBoard extends \GV\Widget {
 	/**
 	 * Get available boards as options for the widget settings
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 *
 	 * @return array Array of board options
 	 */
@@ -162,7 +162,7 @@ class GravityView_Widget_GravityBoard extends \GV\Widget {
 	/**
 	 * Add widget to a list of allowed "Hide Until Searched" items
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 *
 	 * @param array $allowlist Array of widgets to show before a search is performed, if the setting is enabled.
 	 *
@@ -176,7 +176,7 @@ class GravityView_Widget_GravityBoard extends \GV\Widget {
 	/**
 	 * Render the widget on the frontend
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 *
 	 * @param array                       $widget_args Widget arguments
 	 * @param string|\GV\Template_Context $content     Content

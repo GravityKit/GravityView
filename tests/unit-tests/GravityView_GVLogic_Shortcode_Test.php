@@ -126,7 +126,6 @@ class GravityView_GVLogic_Shortcode_Test extends GV_UnitTestCase {
 	function test_register_another_gvlogic_shortcode() {
 
 		$GVLogic_Shortcode            = GVLogic_Shortcode::get_instance();
-		$GVLogic_Shortcode->shortcode = 'gvlogic2';
 
 		add_shortcode( 'gvlogic2', array( $GVLogic_Shortcode, 'shortcode' ) );
 
@@ -629,7 +628,6 @@ EOD;
 	 */
 	function test_gv_shortcode_nested_gvlogic2() {
 		$GVLogic_Shortcode            = GVLogic_Shortcode::get_instance();
-		$GVLogic_Shortcode->shortcode = 'gvlogic2';
 
 		add_shortcode( 'gvlogic2', array( $GVLogic_Shortcode, 'shortcode' ) );
 

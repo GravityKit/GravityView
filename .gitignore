@@ -47,6 +47,9 @@ docs/html
 # Environment file (used for local unit tests)
 .env
 
+# Date file (used for CI cache key)
+.date
+
 # Docker files and folders used for local unit tests
 docker-compose.yml
 docker-unit-tests.sh

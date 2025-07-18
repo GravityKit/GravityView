@@ -17,6 +17,17 @@
  */
 class GravityView_Plugin_Hooks_WooCommerce extends GravityView_Plugin_and_Theme_Hooks {
 
+	use GravityView_Permalink_Override_Trait;
+
+	/**
+	 * The function name to fetch WooCommerce page IDs.
+	 *
+	 * @since TODO
+	 *
+	 * @var string
+	 */
+	protected $function_name = 'wc_get_page_id';
+
 	/**
 	 * @inheritDoc
 	 */
@@ -24,6 +35,23 @@ class GravityView_Plugin_Hooks_WooCommerce extends GravityView_Plugin_and_Theme_
 		'woocommerce_admin_menu_styles',
 		'woocommerce_admin_styles',
 	);
+
+	/**
+	 * Remove the permalink structure for LearnDash post types.
+	 *
+	 * @since TODO
+	 *
+	 * @return bool Whether to remove the permalink structure from View rendered links.
+	 */
+	protected function should_disable_permalink_structure() {
+		$page_id = wc_get_page_id( 'myaccount' );
+
+		if ( get_the_ID() !== $page_id ) {
+			return false;
+		}
+
+		return true;
+	}
 }
 
 new GravityView_Plugin_Hooks_WooCommerce();
