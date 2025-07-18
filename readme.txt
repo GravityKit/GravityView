@@ -23,6 +23,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+* Sorting entries by field values in Gravity Forms Entries table was not working when the "Unapproved" status filter was applied.
+* For some users, adding a Chained Selects Add-On field to the Search Bar causes JavaScript code to be visible and the field would not work as expected.
 * Added compatibility for Views embedded in Jetpack CRM Client Portal Pro pages.
 
 = 2.42.2 on July 17, 2025 =
