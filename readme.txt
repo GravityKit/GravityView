@@ -21,6 +21,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+* Added compatibility for Views embedded in Jetpack CRM Client Portal Pro pages.
+
 = 2.42.2 on July 17, 2025 =
 
 This hotfix resolves a display issue introduced in 2.42 affecting address subfields in the Search Bar widget, and fixes a fatal error related to the Image Hopper Post Image field.
