@@ -129,8 +129,7 @@ class GravityView_Plugin_Hooks_Gravity_Forms extends GravityView_Plugin_and_Them
 	 *
 	 * @since TODO
 	 */
-	public function add_query_arg_to_gf_download_url( $context ) {
-
+	public function add_query_arg_to_gf_download_url() {
 		/**
 		 * Adds the View ID to the Gravity Forms download URL.
 		 *
