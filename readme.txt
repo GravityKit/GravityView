@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 * Added compatibility for Views embedded in Jetpack CRM Client Portal Pro pages.
+* Improved performance of Gravity Forms secure embedded file image downloads embedded in Views by adding caching, while also maintaining security.
 
 = 2.42.2 on July 17, 2025 =
 
