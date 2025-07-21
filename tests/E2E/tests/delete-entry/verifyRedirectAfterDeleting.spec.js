@@ -9,11 +9,10 @@ import {
 /**
  * Verifies that custom JavaScript code is executed correctly and affects the behavior of the front-end view as intended.
  */
-test('Verify Redirect After Deleting', async ({ page }) => {
+test('Verify Redirect After Deleting', async ({ page, baseURL }) => {
 
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
-	const baseURL = new URL(page.url()).origin;
     const customURL = `${baseURL}/hello-world/`;
 
 	await test.step('Create a new View with a specific form and template', async () => {
