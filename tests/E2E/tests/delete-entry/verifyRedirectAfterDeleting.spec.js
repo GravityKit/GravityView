@@ -40,7 +40,10 @@ test('Verify Redirect After Deleting', async ({ page }) => {
 		await page.locator('.gv-table-view tbody tr:nth-child(1)').getByRole('link').click();
 		await page.getByRole('link', { name: 'Edit Entry' }).click();
 		page.on('dialog', (dialog) => dialog.accept());
-		await page.getByRole('link', { name: 'Delete', exact: true }).click();
+		// Ensure delete button is ready before clicking
+		const deleteButton = page.getByRole('link', { name: 'Delete', exact: true });
+		await expect(deleteButton).toBeVisible();
+		await deleteButton.click();
 		await page.waitForURL(customURL);
 		expect(page.url()).toBe(customURL);
 	});
