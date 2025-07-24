@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.42.2\n"
+"Project-Id-Version: GravityView 2.43\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-07-18T00:14:05+00:00\n"
+"POT-Creation-Date: 2025-07-24T23:30:52+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1852,43 +1852,43 @@ msgstr ""
 msgid "Please select a View"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:212
+#: includes/class-admin-approve-entries.php:225
 msgid "GravityView Fields"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:213
+#: includes/class-admin-approve-entries.php:226
 msgid "Allow administrators to approve or reject entries and users to opt-in or opt-out of their entries being displayed."
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:234
+#: includes/class-admin-approve-entries.php:247
 msgid "Approve/Reject"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:241
+#: includes/class-admin-approve-entries.php:254
 msgid "User Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:265
+#: includes/class-admin-approve-entries.php:278
 msgid "Approved? (Admin-only)"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:267
+#: includes/class-admin-approve-entries.php:280
 msgid "Approved?"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:287
+#: includes/class-admin-approve-entries.php:300
 msgid "Show Entry on Website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:289
+#: includes/class-admin-approve-entries.php:302
 msgid "Opt-In"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:297
+#: includes/class-admin-approve-entries.php:310
 msgid "Yes, display my entry on the website"
 msgstr ""
 
-#: includes/class-admin-approve-entries.php:465
+#: includes/class-admin-approve-entries.php:478
 msgid "GravityView entry approval status"
 msgstr ""
 
