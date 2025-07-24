@@ -320,24 +320,30 @@ class GravityView_Entry_Approval {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
-		// If the checkbox is blank, it's disapproved, regardless of the label
+		// Determine new approval status
+		$existing_status = GravityView_Entry_Approval::get_entry_status( $entry_id, 'value' );
+
 		if ( '' === \GV\Utils::get( $entry, $approved_column ) ) {
-			$value = GravityView_Entry_Approval_Status::DISAPPROVED;
+			$new_status = GravityView_Entry_Approval_Status::DISAPPROVED;
 		} else {
-			// If the checkbox is not blank, it's approved
-			$value = GravityView_Entry_Approval_Status::APPROVED;
+			$new_status = GravityView_Entry_Approval_Status::APPROVED;
 		}
 
 		/**
 		 * Filter the approval status on entry update.
 		 *
-		 * @param string $value The approval status.
+		 * @filter `gravityview/approve_entries/update_unapproved_meta`
+		 *
+		 * @param string $new_status The approval status.
 		 * @param array $form The form.
 		 * @param array $entry The entry.
 		 */
-		$value = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $value, $form, $entry );
+		$new_status = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $new_status, $form, $entry );
 
-		self::update_approved_meta( $entry_id, $value, $form['id'] );
+		// Update meta only if status has changed.
+		if ( (int) $existing_status !== (int) $new_status ) {
+			self::update_approved_meta( $entry_id, $new_status, $form['id'] );
+		}
 	}
 
 	/**

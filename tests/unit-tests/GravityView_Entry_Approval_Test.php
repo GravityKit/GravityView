@@ -276,4 +276,26 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 		$this->assertEquals( 1, $filter_links[1]['count'] );
 		$this->assertEquals( 0, $filter_links[2]['count'] );
 	}
+	/**
+	 * Test no notifications fire when approval status remains unchanged.
+	 *
+	 * @since TODO
+	 *
+	 * @covers GravityView_Entry_Approval::after_update_entry_update_approved_meta
+	 */
+	public function test_no_notifications_when_approval_status_unchanged() {
+		$entry = $this->entries[0];
+		$current_status = GravityView_Entry_Approval::get_entry_status($entry, 'value');
+
+		// Trigger the update without changing status
+		GravityView_Entry_Approval::after_update_entry_update_approved_meta($this->form, $entry);
+
+		// Get the new status
+		$new_status = GravityView_Entry_Approval::get_entry_status($entry, 'value');
+
+		// Assert that no notifications are fired
+		$this->assertSame($current_status, $new_status, 'Approval status should not change');
+		$this->assertFalse(did_action('gravityview/approve_entries/updated'), 'Notifications should not have fired');
+	}
+
 }
