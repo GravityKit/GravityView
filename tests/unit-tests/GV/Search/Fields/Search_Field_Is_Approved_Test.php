@@ -72,7 +72,7 @@ final class Search_Field_Is_Approved_Test extends TestCase {
 		] );
 
 		$data = $field->to_template_data();
-		self::assertSame( 'is_approved', $data['name'] );
+		self::assertSame( 'filter_is_approved', $data['name'] );
 		self::assertSame( 'is_approved', $data['type'] );
 		self::assertSame( 'multiselect', $data['input'] );
 		self::assertSame( 'approval-filter-class', $data['custom_class'] );
@@ -136,29 +136,29 @@ final class Search_Field_Is_Approved_Test extends TestCase {
 	}
 
 	/**
-	 * Tests has_request_value returns true when is_approved is set in request.
+	 * Tests has_request_value returns true when filter_is_approved is set in request.
 	 *
 	 * @since 2.42
 	 */
 	public function test_has_request_value(): void {
 		// Test with no request values.
-		unset( $_REQUEST['is_approved'] );
+		unset( $_REQUEST['filter_is_approved'] );
 		self::assertFalse( $this->search_field->has_request_value() );
 
 		// Test with value set.
-		$_REQUEST['is_approved'] = '1';
+		$_REQUEST['filter_is_approved'] = '1';
 		self::assertTrue( $this->search_field->has_request_value() );
 
 		// Test with array value.
-		$_REQUEST['is_approved'] = [ '1', '2' ];
+		$_REQUEST['filter_is_approved'] = [ '1', '2' ];
 		self::assertTrue( $this->search_field->has_request_value() );
 
 		// Test with empty value.
-		$_REQUEST['is_approved'] = '';
+		$_REQUEST['filter_is_approved'] = '';
 		self::assertFalse( $this->search_field->has_request_value() );
 
 		// Clean up.
-		unset( $_REQUEST['is_approved'] );
+		unset( $_REQUEST['filter_is_approved'] );
 	}
 
 	/**
