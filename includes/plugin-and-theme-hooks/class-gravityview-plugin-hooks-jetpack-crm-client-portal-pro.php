@@ -9,13 +9,13 @@
  * @link      http://www.gravitykit.com
  * @copyright Copyright 2025, Katz Web Services, Inc.
  *
- * @since TODO
+ * @since 2.43.0
  */
 
 /**
  * Add support for the Jetpack CRM Client Portal Pro plugin
  *
- * @since TODO
+ * @since 2.43.0
  */
 class GravityView_Theme_Hooks_Jetpack_CRM_Client_Portal_Pro extends GravityView_Plugin_and_Theme_Hooks {
 
@@ -24,7 +24,7 @@ class GravityView_Theme_Hooks_Jetpack_CRM_Client_Portal_Pro extends GravityView_
 	/**
 	 * @inheritDoc
 	 *
-	 * @since TODO
+	 * @since 2.43.0
 	 *
 	 * @var string
 	 */
@@ -33,7 +33,7 @@ class GravityView_Theme_Hooks_Jetpack_CRM_Client_Portal_Pro extends GravityView_
 	/**
 	 * In addition to Client Portal Pro, we need to make sure that Jetpack CRM is loaded.
 	 *
-	 * @since TODO
+	 * @since 2.43.0
 	 *
 	 * @var string
 	 */
@@ -42,7 +42,7 @@ class GravityView_Theme_Hooks_Jetpack_CRM_Client_Portal_Pro extends GravityView_
 	/**
 	 * Remove the permalink structure for Jetpack CRM Client Portal endpoints.
 	 *
-	 * @since TODO
+	 * @since 2.43.0
 	 *
 	 * @return bool Whether to remove the permalink structure from View rendered links.
 	 */
