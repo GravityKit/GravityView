@@ -21,6 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.43 on July 24, 2025 =
+
+This update adds support for displaying Views inside Jetpack CRM Client Portal Pro pages, fixes entry sorting on the Gravity Forms Entries page when filtering by approval status, and resolves Search Bar issues involving the Chained Selects Add-On and Approval Status search.
+
+#### 🚀 Added
+* Support for displaying Views embedded in Jetpack CRM Client Portal Pro pages.
+
+#### 🐛 Fixed
+* Sorting entries by field values in the Gravity Forms Entries table did not work when the “Unapproved” status filter was applied.
+* In some cases, adding a Chained Selects Add-On field to the Search Bar caused raw JavaScript code to be visible and prevented the field from working properly.
+* Approval Status search was not working.
+
 = 2.42.2 on July 17, 2025 =
 
 This hotfix resolves a display issue introduced in 2.42 affecting address subfields in the Search Bar widget, and fixes a fatal error related to the Image Hopper Post Image field.
