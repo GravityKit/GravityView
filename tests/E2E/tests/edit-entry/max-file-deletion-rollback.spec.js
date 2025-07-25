@@ -51,8 +51,8 @@ test('Does not restore deleted files after validation failure', async ({ page })
   const fileInput = page.locator('input[type="file"]:visible');
   await fileInput.setInputFiles([fogImagePath, blizzardImagePath]);
 
-  await expect(page.getByText(/fog\.jpg/i)).toBeVisible();
-  await expect(page.getByText(/blizzard\.jpg/i)).toBeVisible();
+  await expect(page.getByText('fog.jpg', { exact: true })).toBeVisible();
+  await expect(page.getByText('blizzard.jpg', { exact: true })).toBeVisible();
 
   const updateButton = page.getByRole('button', { name: 'Update' });
   while (uploadInProgress) {
