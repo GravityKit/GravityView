@@ -2142,6 +2142,39 @@ class GVCommon {
 	}
 
 	/**
+	 * Get post ID from an entry, checking both standard Gravity Forms post fields and Advanced Post Creation add-on
+	 *
+	 * @since TODO
+	 *
+	 * @param array $entry Gravity Forms entry array
+	 * @param int   $feed_id Currently unused. Reserved for specifying which APC feed to use.
+	 *
+	 * @return int|null Post ID if found, null if not.
+	 */
+	public static function get_post_id_from_entry( $entry, $feed_id = null ) {
+		if ( empty( $entry ) || ! is_array( $entry ) ) {
+			return null;
+		}
+
+		$post_id = (int) \GV\Utils::get( $entry, 'post_id', 0 );
+
+		/**
+		 * Filter the post ID retrieved from an entry.
+		 *
+		 * Used by Advanced Post Creation integration.
+		 *
+		 * @since TODO
+		 *
+		 * @param int|null $post_id The post ID found, or null if not found.
+		 * @param array    $entry   The entry array.
+		 * @param int|null $feed_id The feed ID requested.
+		 */
+		$post_id = apply_filters( 'gk/gravityview/common/get-post-id-from-entry', $post_id, $entry, $feed_id );
+
+		return $post_id;
+	}
+
+	/**
 	 * Check if the current request is a REST request.
 	 *
 	 * @since 2.41
@@ -2151,8 +2184,7 @@ class GVCommon {
 	public static function is_rest_request() {
 		return defined( 'REST_REQUEST' ) && REST_REQUEST;
 	}
-}
-
+}//end class
 
 /**
  * Generate an HTML anchor tag with a list of supported attributes
