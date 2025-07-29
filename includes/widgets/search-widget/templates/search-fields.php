@@ -39,20 +39,26 @@ foreach ( $rows as $row ) { ?>
 				<?php
 				if ( ! empty( $areas ) ) {
 					foreach ( $areas as $area ) {
-						foreach ( $search_fields->by_position( $search_section . '_' . $area['areaid'] )->to_template_data() as $search_field ) {
-							/**
-							 * @action `gravityview_search_widget_field_before` Before each search input is rendered.
-							 *
-							 * @param GravityView_Widget_Search                                             $this GravityView Widget instance
-							 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
-							 */
-							do_action( 'gravityview_search_widget_field_before', $this, $search_field );
-							$gravityview_view->search_field = $search_field;
+						?>
+						<div class="gv-search-widget-area">
+							<?php
+							foreach ( $search_fields->by_position( $search_section . '_' . $area['areaid'] )->to_template_data() as $search_field ) {
+								/**
+								 * @action `gravityview_search_widget_field_before` Before each search input is rendered.
+								 *
+								 * @param GravityView_Widget_Search                                             $this GravityView Widget instance
+								 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
+								 */
+								do_action( 'gravityview_search_widget_field_before', $this, $search_field );
+								$gravityview_view->search_field = $search_field;
 
-							$data['search_field'] = $search_field;
+								$data['search_field'] = $search_field;
 
-							$this->render( 'search-field', $search_field['input'], false, $data );
-						}
+								$this->render( 'search-field', $search_field['input'], false, $data );
+							}
+							?>
+						</div>
+						<?php
 					}
 				}
 				?>
