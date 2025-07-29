@@ -14,13 +14,28 @@ $search_section   = \GV\Utils::get( $data, 'section', '' );
 $rows             = \GV\Utils::get( $data, 'search_rows_' . $search_section, [] );
 $search_fields    = \GV\Utils::get( $data, 'search_fields', [] );
 $gravityview_view = GravityView_View::getInstance();
+$exclude_classes  = [ 'left', 'right', 'middle' ];
 
 foreach ( $rows as $row ) { ?>
 	<div class="gv-grid-row">
 		<?php
 		foreach ( $row as $col => $areas ) {
+			// Remove text-align classes.
+			$classes = array_filter(
+				explode( ' ', $col ),
+				static fn( string $column_class ) => ! in_array( trim( $column_class ), $exclude_classes, true ),
+			);
+
+			$column_class = apply_filters(
+				'gk/gravityview/search/widget/grid/column-class',
+				'gv-grid-col-' . implode( ' ', $classes ),
+				$col,
+				$areas,
+				$search_fields
+			);
+
 			?>
-			<div class="gv-grid-col-<?php echo esc_attr( $col ); ?>">
+			<div class="<?php echo esc_attr( $column_class ); ?>">
 				<?php
 				if ( ! empty( $areas ) ) {
 					foreach ( $areas as $area ) {

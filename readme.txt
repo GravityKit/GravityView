@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### ✨ Improved
+* Text alignment classes (left, right) are no longer applied on columns in the search widget.
+
 = 2.43 on July 24, 2025 =
 
 This update adds support for displaying Views inside Jetpack CRM Client Portal Pro pages, fixes entry sorting on the Gravity Forms Entries page when filtering by approval status, and resolves Search Bar issues involving the Chained Selects Add-On and Approval Status search.
