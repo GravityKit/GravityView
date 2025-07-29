@@ -28,8 +28,6 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 	}
 
 	function add_hooks() {
-		add_filter( 'gravityview_widget_search_filters', array( $this, 'modify_search_filters' ), 10, 3 );
-
 		add_filter( 'gravityview_field_entry_value_workflow_final_status', array( $this, 'modify_entry_value_workflow_final_status' ), 10, 4 );
 	}
 
@@ -54,29 +52,6 @@ class GravityView_Field_Workflow_Final_Status extends GravityView_Field {
 		}
 
 		return $output;
-	}
-
-
-	/**
-	 * Populate the Final Status Search Bar field dropdown with all the statuses in Gravity Flow
-	 *
-	 * @since 1.17.3
-	 *
-	 * @param array                          $search_fields
-	 * @param GravityView_Widget_Search|null $widget
-	 * @param array                          $widget_args
-	 *
-	 * @return array
-	 */
-	function modify_search_filters( $search_fields = array(), GravityView_Widget_Search $widget = null, $widget_args = array() ) {
-
-		foreach ( $search_fields as & $search_field ) {
-			if ( $this->name === \GV\Utils::get( $search_field, 'key' ) ) {
-				$search_field['choices'] = GravityView_Plugin_Hooks_Gravity_Flow::get_status_options();
-			}
-		}
-
-		return $search_fields;
 	}
 }
 

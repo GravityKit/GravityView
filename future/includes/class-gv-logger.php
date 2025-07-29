@@ -25,7 +25,7 @@ class LogLevel {
  *
  * @TODO: (Foundation) Deprecate in future versions.
  */
-abstract class Logger /** @todo extends Psr\Log\AbstractLogger */ {
+abstract class Logger /** @todo extends GravityKit\GravityView\Foundation\ThirdParty\Psr\Log\AbstractLogger */ {
 	/**
 	 * System is unusable.
 	 *

@@ -583,7 +583,7 @@ class GravityView_Lightbox_Entry {
 		);
 
 		?>
-		<html lang="<?php echo get_bloginfo( 'language' ); ?>">
+		<html lang="<?php echo get_bloginfo( 'language' ); ?>"<?php echo is_rtl() ? ' dir="rtl"' : ''; ?>>
 			<head>
 				<?php
 				/**

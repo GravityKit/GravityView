@@ -5,7 +5,7 @@
  */
 
 /**
- * A field or widget in GravityView view configuration
+ * A (search) field or widget in GravityView view configuration
  */
 abstract class GravityView_Admin_View_Item {
 
@@ -135,7 +135,7 @@ abstract class GravityView_Admin_View_Item {
 					continue;
 				}
 
-				$class = isset( $item['class'] ) ? sanitize_html_class( $item['class'] ) . ' description' : 'description';
+				$class = isset( $item['class'] ) ? gravityview_sanitize_html_class( $item['class'] ) . ' description' : 'description';
 				// Add the title in case the value's long, in which case, it'll be truncated by CSS.
 				$output .= '<span class="' . $class . '">';
 				$output .= esc_html( $item['value'] );
@@ -153,6 +153,20 @@ abstract class GravityView_Admin_View_Item {
 	}
 
 	/**
+	 * Returns whether the field can be duplicated.
+	 *
+	 * @since 2.42
+	 *
+	 * @return bool Whether the field can be duplicated.
+	 */
+	protected function can_duplicate(): bool {
+		/**
+		 * @filter `gk/gravityview/admin/can_duplicate_field` Modify whether a field can be duplicated.
+		 * @since  2.42
+		 */
+		return (bool) apply_filters( 'gk/gravityview/admin/can_duplicate_field', true, $this );
+	}
+	/**
 	 * Generate HTML for field or a widget modal
 	 *
 	 * @return string
@@ -161,8 +175,6 @@ abstract class GravityView_Admin_View_Item {
 
 		$settings_title    = sprintf( __( 'Configure %s Settings', 'gk-gravityview' ), esc_html( rgar( $this->item, 'label', ucfirst( $this->label_type ?: '' ) ) ) );
 		$delete_title      = sprintf( __( 'Remove %s', 'gk-gravityview' ), ucfirst( $this->label_type ?: '' ) );
-		$single_link_title = __( 'This field links to the Single Entry', 'gk-gravityview' );
-		$visibility_title  = __( 'This field has modified visibility', 'gk-gravityview' );
 
 		// $settings_html will just be hidden inputs if empty. Otherwise, it'll have an <ul>. Ugly hack, I know.
 		// TODO: Un-hack this
@@ -178,11 +190,11 @@ abstract class GravityView_Admin_View_Item {
 		} elseif ( ! empty( $this->item['customLabel'] ) ) {
 			$label = $this->item['customLabel'];
 		}
-		$label = esc_attr( $label );
+
+		$label = (string) esc_attr( $label );
 
 		$field_icon = '';
 
-		$form = ! empty( $this->form ) ? $this->form : false;
 		$form = ! empty( $this->form_id ) ? GVCommon::get_form( $this->form_id ) : false;
 
 		$nonexistent_form_field = $form && $this->id && preg_match( '/^\d+\.\d+$|^\d+$/', $this->id ) && ! gravityview_get_field( $form, $this->id );
@@ -206,7 +218,7 @@ abstract class GravityView_Admin_View_Item {
 				$field_icon = '<i class="' . esc_attr( $this->item['icon'] ) . '"></i>';
 			}
 
-			$field_icon = $field_icon . ' ';
+			$field_icon .= ' ';
 		} elseif ( \GV\Utils::get( $this->item, 'parent' ) ) {
 			$field_icon = '<i class="gv-icon gv-icon-level-down"></i>' . ' ';
 		}
@@ -218,11 +230,7 @@ abstract class GravityView_Admin_View_Item {
 		esc_html( $this->settings['add_button_label'] ?? __( 'Add Field', 'gk-gravityview' ) )
 		);
 
-		if ( $this instanceof GravityView_Admin_View_Widget ) {
-			$title  = esc_attr( sprintf( __( 'Widget: %s', 'gk-gravityview' ), $label ) );
-		} else {
-			$title  = esc_attr( sprintf( __( 'Field: %s', 'gk-gravityview' ), $label ) );
-		}
+		$title = esc_attr( $this->get_title( $label ) );
 
 		if ( ! $nonexistent_form_field ) {
 			$title .= "\n" . $this->get_item_info( false );
@@ -238,10 +246,12 @@ abstract class GravityView_Admin_View_Item {
 
 		$output .= '<span class="gv-field-label" data-original-title="' . esc_attr( $label ) . '" title="' . $title . '">' . $field_icon . '<span class="gv-field-label-text-container">' . $label . '</span></span>';
 
-		$output .= sprintf(
-			'<button class="gv-field-duplicate" type="button" title="%s"><span class="dashicons dashicons-admin-page"/></button>',
-			esc_attr__( 'Duplicate this field', 'gk-gravityview' )
-		);
+		if ( $this->can_duplicate() ) {
+			$output .= sprintf(
+				'<button class="gv-field-duplicate" type="button" title="%s"><span class="dashicons dashicons-admin-page"/></button>',
+				esc_attr__( 'Duplicate this field', 'gk-gravityview' )
+			);
+		}
 
 		$output .= '<span class="gv-field-controls"><button class="gv-remove-field" aria-label="' . esc_attr( $delete_title ) . '" title="' . esc_attr( $delete_title ) . '"><span class="dashicons-dismiss dashicons"></span></button></span>';
 
@@ -291,6 +301,11 @@ abstract class GravityView_Admin_View_Item {
 				'title'     => __( 'This field has modified visibility', 'gk-gravityview' ),
 				'css_class' => 'dashicons dashicons-lock icon-custom-visibility',
 			),
+			'hidden' => [
+				'visible' => 'hidden' === \GV\Utils::get( $this->settings, 'input_type' ),
+				'title'   => __( 'This field is hidden', 'gk-gravityview' ),
+				'css_class' => 'dashicons dashicons-hidden icon-hidden',
+			],
 		);
 
 		$output = '';
@@ -320,5 +335,18 @@ abstract class GravityView_Admin_View_Item {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Returns the label.
+	 *
+	 * @since 2.42
+	 *
+	 * @param string $label The label.
+	 *
+	 * @return string The title.
+	 */
+	protected function get_title( string $label ): string {
+		return $label;
 	}
 }

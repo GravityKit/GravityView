@@ -9,10 +9,11 @@ import {
 /**
  * Verifies that custom JavaScript code is executed correctly and affects the behavior of the front-end view as intended.
  */
-test('Verify Redirect After Deleting', async ({ page }) => {
-	const customURL = 'http://example.com/';
+test('Verify Redirect After Deleting', async ({ page, baseURL }) => {
 
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
+
+    const customURL = `${baseURL}/hello-world/`;
 
 	await test.step('Create a new View with a specific form and template', async () => {
 		await createView(page, {
@@ -40,8 +41,11 @@ test('Verify Redirect After Deleting', async ({ page }) => {
 		await page.locator('.gv-table-view tbody tr:nth-child(1)').getByRole('link').click();
 		await page.getByRole('link', { name: 'Edit Entry' }).click();
 		page.on('dialog', (dialog) => dialog.accept());
-		await page.getByRole('link', { name: 'Delete', exact: true }).click();
-		await page.waitForURL(customURL);
+		// Ensure delete button is ready before clicking
+		const deleteButton = page.getByRole('link', { name: 'Delete', exact: true });
+		await expect(deleteButton).toBeVisible();
+		await deleteButton.click();
+		await page.waitForURL(customURL, { waitUntil: 'load'});
 		expect(page.url()).toBe(customURL);
 	});
 });

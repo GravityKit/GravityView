@@ -17,11 +17,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class GVCommon {
+	/**
+	 * Contains micro cached Forms.
+	 *
+	 * @since 2.42
+	 *
+	 * @var array
+	 */
+	private static array $forms = [];
+
+	/**
+	 * Clears the internal microcache.
+	 *
+	 * @since 2.42
+	 */
+	public static function clear_cache(): void {
+		self::$forms = [];
+	}
 
 	/**
 	 * Returns the form object for a given Form ID.
 	 *
-	 * @param mixed $form_id
+	 * @param int|string $form_id The Form ID.
+	 *
 	 * @return array|false Array: Form object returned from Gravity Forms; False: no form ID specified or Gravity Forms isn't active.
 	 */
 	public static function get_form( $form_id ) {
@@ -34,15 +52,13 @@ class GVCommon {
 			return false;
 		}
 
-		static $forms = array();
-
-		if ( isset( $forms[ $form_id ] ) ) {
-			return $forms[ $form_id ];
+		if ( isset( self::$forms[ $form_id ] ) ) {
+			return self::$forms[ $form_id ];
 		}
 
 		$form = \GFAPI::get_form( $form_id );
 
-		$forms[ $form_id ] = $form;
+		self::$forms[ $form_id ] = $form;
 
 		return $form;
 	}
@@ -2157,8 +2173,18 @@ class GVCommon {
 
 		return $post_id;
 	}
-}//end class
 
+	/**
+	 * Check if the current request is a REST request.
+	 *
+	 * @since 2.41
+	 *
+	 * @return bool True if the request is a REST request, false otherwise.
+	 */
+	public static function is_rest_request() {
+		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+	}
+}//end class
 
 /**
  * Generate an HTML anchor tag with a list of supported attributes
