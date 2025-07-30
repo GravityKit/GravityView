@@ -14,14 +14,9 @@
 /** If this file is called directly, abort. */
 
 use GV\Field_Collection;
-use GV\GF_Form;
 use GV\Grid;
 use GV\Plugin;
 use GV\Search\Fields\Search_Field;
-use GV\Search\Fields\Search_Field_All;
-use GV\Search\Fields\Search_Field_Search_Mode;
-use GV\Search\Fields\Search_Field_Submit;
-use GV\Search\Search_Field_Collection;
 use GV\View;
 use GV\Widget_Collection;
 
@@ -101,6 +96,8 @@ class GravityView_Admin_Views {
 		add_action( 'gk/gravityview/admin-views/row/before', [ $this, 'render_actions' ], 5, 4 );
 		add_action( 'gk/gravityview/admin-views/view/after-zone', [ $this, 'render_add_row' ], 5, 4 );
 		add_filter( 'gk/gravityview/admin-views/view/is-dynamic', [ $this, 'set_dynamic_areas' ], 0, 4 );
+
+		add_action( 'gk/gravityview/admin-views/area/actions', [ $this, 'add_clear_all_fields_action' ], 0, 5 );
 	}
 
 	/**
@@ -1245,32 +1242,39 @@ HTML;
                              data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"
                              data-context="<?php echo esc_attr( $zone ); ?>"
                              data-templateid="<?php echo esc_attr( $template_id ); ?>">
-                            <p class="gv-droppable-area-title"
-								<?php
-								if ( 'widget' === $type && empty( $area['subtitle'] ) ) {
-									echo ' style="margin: 0; padding: 0;"';
-								}
-								?>
-                            >
-                                <strong
+                            <div class="gv-droppable-area-header">
+								<div class="gv-droppable-area-header-title">
 									<?php
-									if ( 'widget' === $type ) {
-										echo 'class="screen-reader-text"';
-									}
+									printf(
+										'<strong%s>%s</strong>',
+										'widget' === $type ? ' class="screen-reader-text"' : '',
+										esc_html( $area['title'] )
+									);
 									?>
-                                ><?php echo esc_html( $area['title'] ); ?></strong>
 
-								<?php if ( 'widget' !== $type ) { ?>
-                                    <a class="clear-all-fields alignright" role="button" href="#"
-                                       data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>"><?php esc_html_e( 'Clear all fields',
-											'gk-gravityview' ); ?></a>
-								<?php } ?>
-
-								<?php if ( ! empty( $area['subtitle'] ) ) { ?>
-                                    <span class="gv-droppable-area-subtitle"><span class="gf_tooltip gv_tooltip tooltip"
-                                                                                   title="<?php echo esc_attr( $area['subtitle'] ); ?>"></span></span>
-								<?php } ?>
-                            </p>
+									<?php if ( ! empty( $area['subtitle'] ) ) { ?>
+										<span class="gv-droppable-area-subtitle">
+											<span class="gf_tooltip gv_tooltip tooltip" title="<?php echo esc_attr( $area['subtitle'] ); ?>"></span>
+										</span>
+									<?php } ?>
+								</div>
+								<div class="gv-droppable-area-header-actions">
+									<?php
+									/**
+									 * @action Modifies the area actions in the admin View editor.
+									 *
+									 * @since 2.42
+									 *
+									 * @param array  $area         The current area configuration.
+									 * @param string $type         The type of area (e.g., 'widget', 'field').
+									 * @param bool   $is_dynamic   Whether the area is dynamic.
+									 * @param string $template_id  The ID of the template being used.
+									 * @param string $zone         The zone where the area is located.
+									 */
+									do_action( 'gk/gravityview/admin-views/area/actions', $area, $type, $is_dynamic, $template_id, $zone );
+									?>
+								</div>
+                            </div>
                             <div class="active-drop-container active-drop-container-<?php echo esc_attr( $type ); ?>">
                                 <div class="active-drop active-drop-<?php echo esc_attr( $type ); ?>"
                                      data-areaid="<?php echo esc_attr( $zone . '_' . $area['areaid'] ); ?>">
@@ -2156,6 +2160,29 @@ HTML;
 		 * @param string $zone        Current View context: `directory`, `single`, or `edit` (default: 'single')
 		 */
 		return (bool) apply_filters( 'gk/gravityview/admin-views/view/is-dynamic', false, $template_id, $type, $zone );
+	}
+
+	/**
+	 * Renders a "Clear all fields" button in the View configuration.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array  $area        The area.
+	 * @param string $type        The type.
+	 * @param bool   $is_dynamic  Whether the zone is dynamic.
+	 * @param string $template_id The template ID.
+	 * @param string $zone        The zone.
+	 */
+	public function add_clear_all_fields_action( $area, $type, $is_dynamic, $template_id, $zone ): void {
+		if ( 'widget' === $type ) {
+			return;
+		}
+
+		printf(
+			'<a class="clear-all-fields" role="button" href="#" data-areaid="%s">%s</a>',
+			esc_attr( $zone . '_' . $area['areaid'] ),
+			esc_html__( 'Clear all fields', 'gk-gravityview' )
+		);
 	}
 }
 
