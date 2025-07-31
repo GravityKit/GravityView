@@ -32,6 +32,8 @@ gravityview_before( $gravityview );
 	<?php if ( $has_title || $has_subtitle || $has_image || $has_description || $has_content_attributes || $has_footer_left || $has_footer_right ) : ?>
 		<div id="gv_list_<?php echo esc_attr( $entry_slug ); ?>" class="gv-list-view">
 
+		<?php gravityview_header( $gravityview ); ?>
+
 		<?php if ( $has_title || $has_subtitle ) { ?>
 
 			<div class="gv-list-view-title">
