@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 * "Undefined array key" PHP warning that could occur when using the Gravity Forms Signature Add-On.
 * Time fields showing the wrong time when the server and WordPress are in different timezones.
+* Selecting "none" as the View field's container tag in DIY Layout would reset to "div".
 
 = 2.43 on July 24, 2025 =
 
