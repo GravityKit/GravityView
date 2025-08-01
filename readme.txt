@@ -23,14 +23,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.43.1 on July 31, 2025 =
 
-This update fixes several issues including DIY Layout container tag selection, time field display, and resolves PHP warnings and deprecation messages.
+This update fixes several issues, including DIY Layout container tag selection, incorrect Time field value display, and various PHP warnings and deprecation messages.
 
 #### 🐛 Fixed
-* Time fields displaying incorrect times when the server and WordPress were set to different timezones.
-* Selecting "none" as the View field container tag in DIY Layout would reset to "div" after saving.
-* Inline editing being automatically enabled on Single Entry pages in List Views when using GravityEdit.
+* Time field values displaying incorrectly when the server and WordPress are set to different timezones.
+* Choosing "None" as the container tag in DIY Layout not being saved and reverting to "DIV".
+* Inline editing automatically enabled on Single Entry pages in List Views when using GravityEdit.
 * "Undefined array key" PHP warning that could occur when using the Gravity Forms Signature Add-On.
-* General PHP warnings and deprecated notices.
+* Various PHP warnings and deprecated notices.
 
 = 2.43 on July 24, 2025 =
 
