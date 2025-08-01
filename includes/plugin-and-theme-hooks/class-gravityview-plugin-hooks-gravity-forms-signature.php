@@ -12,6 +12,8 @@
  * @since 1.17
  */
 
+use GV\Utils;
+
 /**
  * @inheritDoc
  * @since 1.17
@@ -79,9 +81,19 @@ class GravityView_Plugin_Hooks_Gravity_Forms_Signature extends GravityView_Plugi
 		}
 
 		// We need to fetch a fresh version of the entry, since the saved entry hasn't refreshed in GV yet.
-		$entry       = GravityView_View::getInstance()->getCurrentEntry();
-		$entry       = GFAPI::get_entry( $entry['id'] );
-		$entry_value = \GV\Utils::get( $entry, $field->id );
+		$entry = GravityView_View::getInstance()->getCurrentEntry();
+
+		if ( ! is_array( $entry ) || empty( $entry['id'] ) ) {
+			return $field_content;
+		}
+
+		$entry = GFAPI::get_entry( $entry['id'] );
+
+		if ( is_wp_error( $entry ) ) {
+			return $field_content;
+		}
+
+		$entry_value = Utils::get( $entry, $field->id );
 
 		$_POST[ "input_{$field->id}" ]                               = $entry_value; // Used when Edit Entry form *is* submitted
 		$_POST[ "input_{$form_id}_{$field->id}_signature_filename" ] = $entry_value; // Used when Edit Entry form *is not* submitted

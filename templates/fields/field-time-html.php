@@ -2,12 +2,13 @@
 /**
  * The default time field output template.
  *
- * @global \GV\Template_Context $gravityview
  * @since 2.0
+ * @global \GV\Template_Context $gravityview
  */
 
 if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
-	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
+	gravityview()->log->error( '{file} template loaded without context', [ 'file' => __FILE__ ] );
+
 	return;
 }
 
@@ -23,18 +24,20 @@ if ( false !== strpos( $value, '00:00' ) ) {
 $output = '';
 
 if ( '' !== $value ) {
+	$view_field_format = $gravityview->field->date_display;
 
-	$format = $gravityview->field->date_display;
-
-	if ( empty( $format ) ) {
-
+	if ( empty( $view_field_format ) ) {
 		$field->sanitize_settings();
 
-		$format = GravityView_Field_Time::date_format( $field->timeFormat, $field_id );
+		$view_field_format = GravityView_Field_Time::date_format( $field->timeFormat, $field_id );
 	}
 
-	// If there is a custom PHP date format passed via the date_display setting, use PHP's date format
-	$output = date_i18n( $format, strtotime( $value ) );
+	$form_field_format = ( '12' === $field->timeFormat ) ? 'h:i A' : 'H:i';
+
+	$datetime  = DateTime::createFromFormat( $form_field_format, $value, new DateTimeZone( 'UTC' ) );
+	$timestamp = $datetime ? $datetime->getTimestamp() : strtotime( $value );
+
+	$output = date_i18n( $view_field_format, $timestamp );
 }
 
 echo $output;

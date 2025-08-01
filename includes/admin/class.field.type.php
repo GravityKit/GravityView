@@ -40,7 +40,27 @@ abstract class GravityView_FieldType {
 
 		$this->field = wp_parse_args( $field, $defaults );
 
-		$this->value = is_null( $curr_value ) || '' === $curr_value ? $this->field['value'] : $curr_value;
+		// Preserve empty string if it's a valid option for radio/select fields.
+		// Otherwise, empty string or null means "use default".
+		$is_empty_valid_option = (
+			in_array( $this->field['type'], [ 'radio', 'select' ], true )
+			&& ! empty( $this->field['options'] )
+			&& array_key_exists( '', $this->field['options'] )
+		);
+
+		if ( null === $curr_value ) {
+			$this->value = $this->field['value'];
+
+			return;
+		}
+
+		if ( '' === $curr_value && ! $is_empty_valid_option ) {
+			$this->value = $this->field['value'];
+
+			return;
+		}
+
+		$this->value = $curr_value;
 	}
 
 	/**
