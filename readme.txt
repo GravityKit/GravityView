@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🚀 Added
+
+* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
+
 = 2.43.1 on July 31, 2025 =
 
 This update fixes several issues, including DIY Layout container tag selection, incorrect Time field value display, and various PHP warnings and deprecation messages.
