@@ -2517,6 +2517,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		return $settings;
 	}
+
 	/**
 	 * Renders the settings for a search area.
 	 *

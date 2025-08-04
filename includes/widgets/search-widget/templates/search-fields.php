@@ -43,8 +43,7 @@ foreach ( $rows as $row ) { ?>
 						$position_settings = $search_fields->get_position_configuration( $position );
 						$classes           = [ 'gv-search-widget-area' ];
 
-
-						if ( 'row' === $position_settings['layout'] ?? 'column' ) {
+						if ( 'row' === ( $position_settings['layout'] ?? 'column' ) ) {
 							$classes[] = 'gv-search-horizontal';
 						}
 
