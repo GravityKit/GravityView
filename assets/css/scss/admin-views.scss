@@ -158,7 +158,7 @@ $gv-overlay-index: 10000;
 		}
 
 		&:hover {
-			color: #2271B1;
+			color: $color-blue-50;
 		}
 	}
 
@@ -2565,6 +2565,24 @@ hr {
 /**
  * Search Bar
  */
+a.gv-search-area-settings {
+	display: flex;
+	text-decoration: none;
+	color: inherit;
+	padding: 4px;
+
+	i.dashicons {
+		transition: transform 200ms;
+	}
+
+	&:hover {
+		color: #2271b1;
+		i.dashicons {
+			transform: rotate(30deg);
+		}
+	}
+}
+
 #search-view {
 	display: none;
 

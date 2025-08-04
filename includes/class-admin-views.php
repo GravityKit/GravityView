@@ -97,7 +97,7 @@ class GravityView_Admin_Views {
 		add_action( 'gk/gravityview/admin-views/view/after-zone', [ $this, 'render_add_row' ], 5, 4 );
 		add_filter( 'gk/gravityview/admin-views/view/is-dynamic', [ $this, 'set_dynamic_areas' ], 0, 4 );
 
-		add_action( 'gk/gravityview/admin-views/area/actions', [ $this, 'add_clear_all_fields_action' ], 0, 5 );
+		add_action( 'gk/gravityview/admin-views/area/actions', [ $this, 'add_clear_all_fields_action' ], 0, 6 );
 	}
 
 	/**
@@ -1263,15 +1263,16 @@ HTML;
 									/**
 									 * @action Modifies the area actions in the admin View editor.
 									 *
-									 * @since 2.42
+									 * @since  $ver$
 									 *
-									 * @param array  $area         The current area configuration.
-									 * @param string $type         The type of area (e.g., 'widget', 'field').
-									 * @param bool   $is_dynamic   Whether the area is dynamic.
-									 * @param string $template_id  The ID of the template being used.
-									 * @param string $zone         The zone where the area is located.
+									 * @param array  $area        The current area configuration.
+									 * @param string $type        The type of area (e.g., 'widget', 'field').
+									 * @param array  $values      The values in the area.
+									 * @param bool   $is_dynamic  Whether the area is dynamic.
+									 * @param string $template_id The ID of the template being used.
+									 * @param string $zone        The zone where the area is located.
 									 */
-									do_action( 'gk/gravityview/admin-views/area/actions', $area, $type, $is_dynamic, $template_id, $zone );
+									do_action( 'gk/gravityview/admin-views/area/actions', $area, $type, $values, $is_dynamic, $template_id, $zone );
 									?>
 								</div>
                             </div>
@@ -1382,22 +1383,22 @@ HTML;
 					<?php endforeach; ?>
                 </div>
 				<?php
-				/**
-				 * Triggers after a row is rendered in the View editor.
-				 *
-				 * @since  2.31.0
-				 *
-				 * @action `gk/gravityview/admin-views/row/before`
-				 *
-				 * @param bool   $is_dynamic  Whether the area is dynamic.
-				 * @param View   $view        The View.
-				 * @param string $template_id The template ID.
-				 * @param string $type        The object type (widget or field).
-				 * @param string $zone        The render zone.
-				 */
-				do_action( 'gk/gravityview/admin-views/row/after', $is_dynamic, $view, $template_id, $type, $zone );
-
 			endforeach;
+			/**
+			 * Triggers after a row is rendered in the View editor.
+			 *
+			 * @since  2.31.0
+			 *
+			 * @action `gk/gravityview/admin-views/row/before`
+			 *
+			 * @param bool   $is_dynamic  Whether the area is dynamic.
+			 * @param View   $view        The View.
+			 * @param string $template_id The template ID.
+			 * @param string $type        The object type (widget or field).
+			 * @param string $zone        The render zone.
+			 */
+			do_action( 'gk/gravityview/admin-views/row/after', $is_dynamic, $view, $template_id, $type, $zone );
+
 			echo '</div>';
 		endforeach;
 	}
@@ -2169,11 +2170,12 @@ HTML;
 	 *
 	 * @param array  $area        The area.
 	 * @param string $type        The type.
+	 *
 	 * @param bool   $is_dynamic  Whether the zone is dynamic.
 	 * @param string $template_id The template ID.
 	 * @param string $zone        The zone.
 	 */
-	public function add_clear_all_fields_action( $area, $type, $is_dynamic, $template_id, $zone ): void {
+	public function add_clear_all_fields_action( $area, $type, $values, $is_dynamic, $template_id, $zone ): void {
 		if ( 'widget' === $type ) {
 			return;
 		}

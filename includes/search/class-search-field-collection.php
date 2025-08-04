@@ -70,6 +70,15 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	private ?string $position = null;
 
 	/**
+	 * Holds the configuration per position.
+	 *
+	 * @since $ver$
+	 *
+	 * @var array
+	 */
+	private array $position_configuration = [];
+
+	/**
 	 * Creates a collection of fields.
 	 *
 	 * @since 2.42
@@ -157,6 +166,11 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			}
 
 			foreach ( $_fields as $uid => $_configuration ) {
+				if ( 'area_settings' === $uid ) {
+					$collection->set_position_configuration( $position, $_configuration );
+					continue;
+				}
+
 				$_configuration['UID']      = $uid;
 				$_configuration['position'] = $position;
 
@@ -558,5 +572,30 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 			parent::add( $field );
 		}
+	}
+
+	/**
+	 * Sets the position configuration.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $position      The position.
+	 * @param array  $configuration The configuration.
+	 */
+	private function set_position_configuration( string $position, array $configuration ): void {
+		$this->position_configuration[ $position ] = $configuration;
+	}
+
+	/**
+	 * Returns the position configuration.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $position The position.
+	 *
+	 * @return array The configuration.
+	 */
+	public function get_position_configuration( string $position ): array {
+		return $this->position_configuration[ $position ] ?? [];
 	}
 }
