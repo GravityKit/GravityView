@@ -482,6 +482,71 @@ class GravityView_Field_Test extends GV_UnitTestCase {
 
 		$_GET = $_REQUEST = array();
 	}
+
+	/**
+	 * Test time field displays correctly regardless of server/WP timezone differences.
+	 *
+	 * @covers templates/fields/field-time-html.php
+	 */
+	function test_time_field_timezone_conversion() {
+		// Save original timezone settings.
+		$original_wp_timezone = get_option( 'timezone_string' );
+		$original_php_timezone = date_default_timezone_get();
+
+		// Set different timezones to simulate the reported issue.
+		update_option( 'timezone_string', 'America/New_York' );
+		date_default_timezone_set( 'America/Chicago' );
+
+		$form_id = $this->factory->form->create( array(
+			'fields' => array(
+				GF_Fields::create( array(
+					'type' => 'time',
+					'id' => 1,
+					'timeFormat' => '12',
+				) ),
+			),
+		) );
+
+		$form = GFAPI::get_form( $form_id );
+
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form_id,
+			'1' => '11:00 AM',
+			'status' => 'active',
+		) );
+
+		// Mock the template context.
+		$gravityview = (object) array(
+			'template' => 'table',
+			'field' => (object) array(
+				'ID' => 1,
+				'field' => $form['fields'][0],
+				'date_display' => '',
+			),
+			'value' => '11:00 AM',
+		);
+
+		ob_start();
+
+		include( GRAVITYVIEW_DIR . 'templates/fields/field-time-html.php' );
+
+		$output = ob_get_contents();
+
+		ob_end_clean();
+
+		// Assert displayed time matches stored time (no timezone conversion).
+		$this->assertStringContainsString( '11:00', $output );
+		$this->assertStringNotContainsString( '3:00', $output );
+
+		// Restore original settings.
+		if ( $original_wp_timezone ) {
+			update_option( 'timezone_string', $original_wp_timezone );
+		} else {
+			delete_option( 'timezone_string' );
+		}
+
+		date_default_timezone_set( $original_php_timezone );
+	}
 }
 
 GFForms::include_feed_addon_framework();

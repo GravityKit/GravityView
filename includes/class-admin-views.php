@@ -261,17 +261,20 @@ class GravityView_Admin_Views {
 		$current_form = \GV\Utils::_GET( 'gravityview_form_id' );
 
 		// If there are no forms to select, show no forms.
-		if ( ! empty( $forms ) ) { ?>
+		if ( ! empty( $forms ) && is_array( $forms ) ) { ?>
             <label for="gravityview_form_id" class="screen-reader-text"><?php esc_html_e( 'Filter Views by form',
 					'gk-gravityview' ); ?></label>
             <select name="gravityview_form_id" id="gravityview_form_id">
                 <option value="" <?php selected( '', $current_form, true ); ?>><?php esc_html_e( 'All forms',
 						'gk-gravityview' ); ?></option>
-				<?php foreach ( $forms as $form ) { ?>
-                    <option value="<?php echo esc_attr( $form['id'] ); ?>" <?php selected( $form['id'],
-						$current_form,
-						true ); ?>><?php echo esc_html( $form['title'] ); ?></option>
-				<?php } ?>
+							<?php foreach ( $forms as $form ) {
+									if ( ! is_array( $form ) || ! isset( $form['id'], $form['title'] ) ) {
+										continue;
+									} ?>
+									<option value="<?php echo esc_attr( $form['id'] ); ?>" <?php selected( $form['id'], $current_form, true ); ?>>
+											<?php echo esc_html( $form['title'] ); ?>
+									</option>
+							<?php } ?>
             </select>
 			<?php
 		}

@@ -26,6 +26,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### ✨ Improved
 * Text alignment classes (left, right) are no longer applied on columns in the search widget.
 
+#### 🚀 Added
+
+* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
+
+= 2.43.1 on July 31, 2025 =
+
+This update fixes several issues, including DIY Layout container tag selection, incorrect Time field value display, and various PHP warnings and deprecation messages.
+
+#### 🐛 Fixed
+* Time field values displaying incorrectly when the server and WordPress are set to different timezones.
+* Choosing "None" as the container tag in DIY Layout not being saved and reverting to "DIV".
+* Inline editing automatically enabled on Single Entry pages in List Views when using GravityEdit.
+* "Undefined array key" PHP warning that could occur when using the Gravity Forms Signature Add-On.
+* Various PHP warnings and deprecated notices.
+
 = 2.43 on July 24, 2025 =
 
 This update adds support for displaying Views inside Jetpack CRM Client Portal Pro pages, fixes entry sorting on the Gravity Forms Entries page when filtering by approval status, and resolves Search Bar issues involving the Chained Selects Add-On and Approval Status search.
