@@ -2551,6 +2551,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 				'area_settings',
 				$area['settings'] ?? [],
 				'area_settings',
+				[
+					'label' => esc_html__( 'Column Settings', 'gk-gravityview' ),
+				]
 			);
 
 			// Remove no options indicator to avoid disabling the search widget settings icon.
@@ -2558,7 +2561,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			$html .= sprintf(
 				'<div class="area-settings-container" data-areaid="%s">%s</div>',
-				$area['areaid'],
+				$zone . '_' . $area['areaid'],
 				$settings
 			);
 		}

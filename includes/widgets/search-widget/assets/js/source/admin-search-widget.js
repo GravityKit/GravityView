@@ -77,7 +77,7 @@
 				// [WP widget] hook on assigned view id change to clear cache
 				.on( 'change', '#gravityview_view_id', gvSearchWidget.clearWidgetSearchData )
 
-				.on( 'click', '[data-search-fields] .gv-field-settings', gvSearchWidget.openFieldSettings )
+				.on( 'click', '[data-search-fields] .gv-field-settings, .gv-search-area-settings', gvSearchWidget.openFieldSettings )
 
 				.on( 'dblclick', "[data-search-fields] .gv-fields:not(.gv-nonexistent-form-field) h5", gvSearchWidget.openFieldSettings )
 
@@ -813,7 +813,19 @@
 		openFieldSettings: function ( e ) {
 			gvSearchWidget.closeFieldSettings( e, true ); // Close any open panels.
 
-			const $field = $( this ).closest( '.gv-fields' );
+			let $field;
+			if ( $( this ).hasClass( 'gv-search-area-settings' ) ) {
+				const area_id = $( this ).data( 'areaid' );
+				$field = $( this ).closest( '.gv-grid-row' ).find( `[data-areaid="${area_id}"].area-settings-container` );
+				console.log($field);
+			} else {
+				$field = $( this ).closest( '.gv-fields' );
+			}
+
+			if (!$field.length) {
+				return;
+			}
+
 			const $options = $field.find( '.gv-dialog-options' );
 			$options
 				.data( 'field', $field ) // Store the originating field.
@@ -824,7 +836,7 @@
 
 			// Add close button to the settings pane.
 			const $close = $(
-				`<button data-close-settings type="button" title="${ gvGlobals.label_close }" class="ui-button ui-dialog-titlebar-close">${ gvGlobals.label_close }</button>`
+				`<button data-close-settings type="button" title="${gvGlobals.label_close}" class="ui-button ui-dialog-titlebar-close">${gvGlobals.label_close}</button>`
 			);
 
 			$options.append( $close );
@@ -834,7 +846,7 @@
 			setTimeout( function () {
 				// Make sure the field settings panel is added, to slide the panel in.
 				$fields_wrapper.addClass( 'has-options-panel' );
-				gvSearchWidget.record_focus( $field.find('.gv-field-controls button.gv-field-settings') );
+				gvSearchWidget.record_focus( $field.find( '.gv-field-controls button.gv-field-settings' ) );
 				gvSearchWidget.trap_focus( $options );
 			} );
 		},

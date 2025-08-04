@@ -587,6 +587,12 @@ class GravityView_Render_Settings {
 			);
 
 			$field_settings = sprintf( '<div class="gv-dialog-options--content">%s</div>', $field_settings );
+		} elseif ( 'area' === $field_type ) {
+			$field_settings = sprintf( '<div class="gv-dialog-options--content">%s</div>', $field_settings );
+			$item_details   = sprintf(
+				'<div class="gv-field-details--container"><h3 class="search-field-title"><span>%s</span></h3></div>',
+				$item['label'] ?? ''
+			);
 		} else {
 			$subtitle               = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
 			$widget_details_content = Utils::get( $item, 'description', '' );
