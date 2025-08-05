@@ -27,6 +27,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
 
+#### ✨ Improved
+
+* File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
+
 = 2.43.1 on July 31, 2025 =
 
 This update fixes several issues, including DIY Layout container tag selection, incorrect Time field value display, and various PHP warnings and deprecation messages.
