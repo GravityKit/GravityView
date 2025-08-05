@@ -135,8 +135,10 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 */
 	public function maybe_prevent_field_render( $html, $args ) {
 
+		$field_id = \GV\Utils::get( $args['field'], 'id' );
+
 		// If the field is `entry_approval` type but the user doesn't have the moderate entries cap, don't render.
-		if ( $this->name === \GV\Utils::get( $args['field'], 'id' ) && ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+		if ( $this->name === $field_id && ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			return '';
 		}
 
@@ -347,6 +349,12 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 				continue;
 			}
 
+			// Check if user has permission to edit this field using the same logic as regular fields
+			if ( ! $this->check_user_can_edit_approval_field( $edit_field ) ) {
+				// User doesn't have permission - skip this field
+				continue;
+			}
+
 			$label = ( $edit_field['custom_label'] ? $edit_field['custom_label'] : __( 'Approve Entries', 'gk-gravityview' ) );
 
 			if ( ! $edit_field['show_label'] ) {
@@ -394,6 +402,37 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 			$new_fields[] = new GF_Field_Radio( $field_data );
 		}
 		return $new_fields;
+	}
+
+	/**
+	 * Check if the current user has permission to edit the approval field using the same logic as regular fields
+	 *
+	 * @since TODO
+	 *
+	 * @param array $edit_field Field configuration from the View
+	 *
+	 * @return bool True if user can edit the field, false otherwise
+	 */
+	private function check_user_can_edit_approval_field( $edit_field ) {
+		// If user has full entry editing capabilities, they can edit all fields
+		if ( GVCommon::has_cap( array( 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ) ) ) {
+			return true;
+		}
+
+		// Check if user has the moderate entries capability (required for approval field)
+		if ( ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+			return false;
+		}
+
+		// Check the allow_edit_cap setting (matches the pattern used for regular fields)
+		$field_cap = isset( $edit_field['allow_edit_cap'] ) ? $edit_field['allow_edit_cap'] : false;
+
+		if ( $field_cap ) {
+			return GVCommon::has_cap( $field_cap );
+		}
+
+		// Default: allow if user has moderate entries capability
+		return true;
 	}
 
 }
