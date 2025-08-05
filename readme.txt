@@ -21,6 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.43.2 on August 5, 2025 =
+
+This release introduces a flexible display format for checkbox fields, tightens Edit Entry security, and polishes File Upload presentation.
+
+#### 🚀 Added
+
+* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
+
+#### ✨ Improved
+
+* Improved security in Edit Entry surrounding the Approval Status field.
+* File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
+* The Approval Status field correctly reflects the current entry approval status.
+
 = 2.43.1 on July 31, 2025 =
 
 This update fixes several issues, including DIY Layout container tag selection, incorrect Time field value display, and various PHP warnings and deprecation messages.

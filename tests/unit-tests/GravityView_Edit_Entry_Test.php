@@ -1893,6 +1893,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		/** Create a user */
 		$administrator = $this->_generate_user( 'administrator' );
+		$user          = $this->_generate_user( 'subscriber' );
 
 		$form = $this->factory->form->import_and_get( 'simple.json' );
 
@@ -1906,6 +1907,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			'status' => 'active',
 			'1' => 'this is one',
 			'2' => 'this is two',
+			'created_by' => $user,
 		) );
 
 		$view = $this->factory->view->create_and_get( array(
@@ -1931,7 +1933,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		);
 
 		add_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
-		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
 		remove_filter( 'gravityview/edit_entry/render_hidden_field', '__return_false' );
 
 		$this->assertStringNotContainsString( "name='input_1'", $output );
@@ -1940,7 +1942,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'this is two', $entry[2] );
 
 		// Since input 1 is now rendered, the value will be updated by _emulate_render()
-		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
 		$this->assertStringContainsString( "name='input_1'", $output );
 		$this->assertStringNotContainsString( "name='input_2'", $output );
 		$this->assertEquals( 'this is ' . $random_string, $entry[1] );
@@ -1949,21 +1951,35 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Reset the value after _emulate_render modifies it
 		GFAPI::update_entry_field( $entry['id'], '1', 'this is one' );
 
-		$view->fields = \GV\Field_Collection::from_configuration( array(
-			'edit_edit-fields' => array(
-				wp_generate_password( 4, false ) => array(
-					'id' => '2',
-				),
-			),
-		) );
+		// Register hooks for entry approval.
+		new GravityView_Field_Entry_Approval();
 
-		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		$view->fields = \GV\Field_Collection::from_configuration( [
+			'edit_edit-fields' => [
+				wp_generate_password( 4, false ) => [
+					'id' => '2',
+				],
+				wp_generate_password( 4, false ) => [
+					'id' => 'entry_approval',
+					'allow_edit_cap' => 'manage_options',
+				],
+			],
+		] );
+
+
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
 
 		$this->assertStringNotContainsString( "name='input_1'", $output );
 		$this->assertStringContainsString( "name='input_2'", $output );
+		$this->assertStringContainsString( "name='input_" . crc32( 'is_approved' )."'", $output );
 		$this->assertEquals( 'this is one', $entry[1] );
 		$this->assertEquals( '666', $entry[2] );
 
+		wp_set_current_user( $user );
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
+		$this->assertStringNotContainsString( "name='input_" . crc32( 'is_approved' )."'", $output );
+
+		wp_set_current_user( $administrator );
 		$view->fields = \GV\Field_Collection::from_configuration( array(
 			'edit_edit-fields' => array(
 				wp_generate_password( 4, false ) => array(
@@ -1972,7 +1988,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 			),
 		) );
 
-		list( $output, $render, $entry ) = $this->_emulate_render( $form, $view, $entry );
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
 
 		$this->assertStringContainsString( "name='input_1'", $output );
 		$this->assertStringNotContainsString( "name='input_2'", $output );
