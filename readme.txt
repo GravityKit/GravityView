@@ -25,7 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### ✨ Improved
 * Text alignment classes (left, right) are no longer applied on columns in the search widget.
-
+* File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
 #### 🚀 Added
 
 * Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.

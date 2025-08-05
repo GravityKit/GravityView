@@ -55,7 +55,6 @@
 
 	// GF 2.5.6.4
 	.ginput_preview_control {
-		bottom: -0.25rem;
 		display: inline-block;
 		font-size: 1.25rem;
 		outline: none;
@@ -69,6 +68,13 @@
 		&.gform-icon--circle-delete {
 			color: #dd301d;
 		}
+	}
+
+	.gform-theme--framework .gfield:where(.gfield--type-fileupload,.gfield--input-type-fileupload) .ginput_preview {
+		margin-top: 8px;
+		margin-bottom: 4px;
+		flex-direction: row;
+		align-items: center;
 	}
 }
 
