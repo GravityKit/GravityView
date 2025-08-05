@@ -23,9 +23,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-This update improves security for the entry approval field in Edit Entry forms.
+#### 🚀 Added
+
+* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
 
 #### ✨ Improved
+
+* File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
 * Users without proper permissions can no longer modify entry approval status through Edit Entry forms.
 * The approved status field correctly reflects the current entry approval status.
 
