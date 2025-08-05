@@ -525,8 +525,15 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$widgets = (array) get_option( 'widget_gravityview_search', [] );
 
 		foreach ( $widgets as $widget ) {
-			if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) {
-				if ( $_fields = json_decode( $widget['search_fields'], true ) ) {
+			if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+
+				$_fields = \GV\Utils::get( $widget, 'search_fields' );
+
+				if ( is_string( $_fields ) ) {
+					$_fields = json_decode( $_fields, true );
+				}
+
+				if ( $_fields ) {
 					foreach ( $_fields as $field ) {
 						if ( empty( $field['form_id'] ) ) {
 							$field['form_id'] = $view->form ? $view->form->ID : 0;
