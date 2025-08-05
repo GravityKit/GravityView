@@ -29,6 +29,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🚀 Added
 
 * Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
+* Added area settings for Search Bar widget columns with a new layout option to arrange search fields either stacked (vertical) or side by side (horizontal).
 
 = 2.43.1 on July 31, 2025 =
 
