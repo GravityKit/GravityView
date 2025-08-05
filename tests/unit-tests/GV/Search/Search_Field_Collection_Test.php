@@ -110,7 +110,11 @@ final class Search_Field_Collection_Test extends GV_UnitTestCase {
 		self::assertTrue( $field->to_template_data()['sieve_choices'] );
 		self::assertCount( 3, $field->to_template_data()['choices'] );
 
-		self::assertCount( 2, $rows[0] ); // Horizontal has two columns.
+		// Check if the area settings are set correctly to horizontal ("row").
+		$configuration_result = $collection->to_configuration();
+		$area_id = 'search-general_' . $rows[0]['1-1'][0]['areaid'];
+		self::assertArrayHasKey( 'area_settings', $configuration_result[ $area_id ] ?? [] );
+		self::assertSame( 'row', $configuration_result[ $area_id ]['area_settings']['layout'] ?? '' );
 
 		// Field is sieved, so the actual visible choices should be 1: Second Choice.
 		$template_data = array_column( $collection->to_template_data(), null, 'type' );

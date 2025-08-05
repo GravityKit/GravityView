@@ -3051,14 +3051,13 @@
 		   viewConfiguration.toggleDropMessage();
 	   },
 
-	   toggleRemoveAllFields: function ( e, item ) {
+	   toggleRemoveAllFields: function ( ) {
+		   let has_fields = false;
 
-		   has_fields = false;
-
-		   $( ".active-drop:visible" ).each( function ( index, item ) {
+		   $( ".active-drop:visible" ).each( function ( _index, item ) {
 			   has_fields = ( $( this ).find( '.gv-fields' ).length > 1 );
-			   $( '.clear-all-fields', $( item ).parents('.gv-droppable-area') ).toggle( has_fields );
-		   });
+			   $( '.clear-all-fields', $( item ).parents( '.gv-droppable-area' ) ).toggleClass( 'gv-hide', ! has_fields );
+		   } );
 	   },
 
 	   /**

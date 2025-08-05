@@ -12,6 +12,24 @@ $flexbox-margin: 10px;
 	flex: 1 0 auto;
 	margin: ($flexbox-margin * 2) ($flexbox-margin * -1);
 
+	&.gv-search-rows {
+		.gv-search-widget-area {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: flex-start;
+			flex-direction: column;
+			width: 100%;
+
+			&.gv-search-horizontal {
+				flex-direction: row;
+
+				.gv-search-box {
+					flex: 1 1 10em;
+				}
+			}
+		}
+	}
+
 	&.gv-search-horizontal {
 		.gv-search-box {
 			flex: 1 1 10em;
@@ -92,12 +110,11 @@ $flexbox-margin: 10px;
 			-js-display: flex;
 			display: flex;
 			flex-flow: row wrap;
+			justify-content: flex-start;
 
 			.gv-search-horizontal & {
 				flex: 1 0 20em;
 			}
-
-			justify-content: flex-start;
 
 			p {
 				-js-display: flex;
