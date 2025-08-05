@@ -39,11 +39,11 @@ foreach ( $rows as $row ) { ?>
 				<?php
 				if ( ! empty( $areas ) ) {
 					foreach ( $areas as $area ) {
-						$position          = $search_section . '_' . $area['areaid'];
-						$position_settings = $search_fields->get_position_configuration( $position );
-						$classes           = [ 'gv-search-widget-area' ];
+						$position      = $search_section . '_' . $area['areaid'];
+						$area_settings = $search_fields->get_area_configuration( $position );
+						$classes       = [ 'gv-search-widget-area' ];
 
-						if ( 'row' === ( $position_settings['layout'] ?? 'column' ) ) {
+						if ( 'row' === ( $area_settings['layout'] ?? 'column' ) ) {
 							$classes[] = 'gv-search-horizontal';
 						}
 

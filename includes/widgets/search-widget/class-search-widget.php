@@ -1753,7 +1753,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$this->enqueue_datepicker();
 		}
 
-		$search_layout = ( ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] : 'rows' );
+		$search_layout = ( ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] . ' gv-search-rows' : 'rows' );
 		$custom_class  = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
 
 		$data = [
