@@ -817,7 +817,6 @@
 			if ( $( this ).hasClass( 'gv-search-area-settings' ) ) {
 				const area_id = $( this ).data( 'areaid' );
 				$field = $( this ).closest( '.gv-grid-row' ).find( `[data-areaid="${area_id}"].area-settings-container` );
-				console.log($field);
 			} else {
 				$field = $( this ).closest( '.gv-fields' );
 			}
