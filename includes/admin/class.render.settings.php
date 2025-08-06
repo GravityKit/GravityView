@@ -188,7 +188,7 @@ class GravityView_Render_Settings {
 				'show_label'        => [
 					'type'         => 'checkbox',
 					'label'        => __( 'Show Label', 'gk-gravityview' ),
-					'value'        => ! empty( $is_table_layout ),
+					'value'        => 'search' === $field_type ? true : ! empty( $is_table_layout ),
 					'priority'     => 1000,
 					'group'        => 'label',
 					'requires_not' => 'full_width=1',
