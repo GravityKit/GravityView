@@ -646,7 +646,14 @@ class GravityView_Edit_Entry_Render {
 			return $value;
 		}
 
-		// We foced this value to be empty in `unset_hidden_field_values()`.
+		$internal_entry = $this->get_entry();
+
+		if ( empty( $value ) && empty( $internal_entry[ '' . $field->id ] ) ) {
+			// We explicitly removed the value from the entry, or we didn't have one, so we don't want keep the old value.
+			return '';
+		}
+
+		// We force this value to be empty in `unset_hidden_field_values()`.
 		if ( strpos( $value, self::EMPTY_FILE_UPLOAD_VALUE ) !== false ) {
 			return str_replace( self::EMPTY_FILE_UPLOAD_VALUE, '', $value );
 		}
