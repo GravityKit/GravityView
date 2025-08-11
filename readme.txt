@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+
+* New Search Bar field labels are now visible by default on any layout.
+
 = 2.43.2 on August 5, 2025 =
 
 This release introduces a flexible display format for checkbox fields, tightens Edit Entry security, and polishes File Upload presentation.
