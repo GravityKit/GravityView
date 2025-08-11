@@ -847,7 +847,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				gv_empty( $value, false, false )
 				|| (
 					is_array( $value ) && 1 === count( $value )
-					&& gv_empty( reset( $value ), false, false )
+					&& gv_empty( $value[0], false, false )
 				)
 			) {
 				/**
