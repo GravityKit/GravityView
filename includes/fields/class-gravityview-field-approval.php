@@ -88,8 +88,9 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 		add_filter( 'gravityview/edit_entry/form_fields', array( $this, 'show_field_in_edit_entry' ), 10, 3 );
 
-		add_action( 'gravityview/edit_entry/after_update', array( $this, 'update_edit_entry' ), 10, 3 );
+		add_action( 'gravityview/edit_entry/after_update', array( $this, 'update_edit_entry' ), 10, 4 );
 
+		add_filter( 'gravityview/edit_entry/field_value', [ $this, 'override_field_value' ], 10, 3 );
 	}
 
 	/**
@@ -97,20 +98,51 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 *
 	 * @since 2.26
 	 *
-	 * @param array                         $form Gravity Forms form array
-	 * @param int                           $entry_id Gravity Forms Entry ID
-	 * @param GravityView_Edit_Entry_Render $Edit_Entry_Render
+	 * @param array                         $form              Gravity Forms form array.
+	 * @param int                           $entry_id          Gravity Forms Entry ID.
+	 * @param GravityView_Edit_Entry_Render $edit_entry_render The Edit Entry renderer.
+	 * @param GravityView_View_Data         $gv_data           The GravityView View data.
 	 *
 	 * @return void
 	 */
-	public function update_edit_entry( $form = array(), $entry_id = 0, $Edit_Entry_Render = null ) {
+	public function update_edit_entry( $form = [], $entry_id = 0, $edit_entry_render = null, $gv_data = null ) {
 		if ( ! $form || ! $entry_id ) {
+			return;
+		}
+
+		if ( ! $gv_data ) {
+			// We can't be sure the user can edit the approval field, since we can't check the view configuration.
 			return;
 		}
 
 		$unique_id = crc32( 'is_approved' );
 
+		// There is no input to process.
 		if ( ! isset( $_POST[ 'input_' . $unique_id ] ) ) {
+			return;
+		}
+
+		$can_edit = false;
+		// Make sure we can edit the approval field.
+		foreach ( $gv_data->views->all() as $view ) {
+			$properties  = $view->fields ? $view->fields->as_configuration() : [];
+			$edit_fields = $properties['edit_edit-fields'] ?? null;
+			foreach ( $edit_fields as $edit_field ) {
+				if (
+					(int) ( $edit_field['form_id'] ?? 0 ) !== (int) $form['id']
+					|| ( 'entry_approval' !== $edit_field['id'] )
+				) {
+					continue;
+				}
+
+				if ( $this->check_user_can_edit_approval_field( $edit_field ) ) {
+					$can_edit = true;
+					break 2;
+				}
+			}
+		}
+
+		if ( ! $can_edit ) {
 			return;
 		}
 
@@ -121,6 +153,25 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 		}
 
 		GravityView_Entry_Approval::update_approved( $entry_id, $approval_status, $form['id'] );
+	}
+
+	/**
+	 * Overwrites the field value with the current approval status.
+	 *
+	 * @since $ver$
+	 *
+	 * @param mixed                         $field_value       Field value used to populate the input.
+	 * @param GF_Field                      $field             Gravity Forms field object.
+	 * @param GravityView_Edit_Entry_Render $edit_entry_render The Edit Entry renderer.
+	 *
+	 * @return mixed The (possibly updated) value.
+	 */
+	public function override_field_value( $field_value, $field, GravityView_Edit_Entry_Render $edit_entry_render ) {
+		if ( crc32( 'is_approved' ) !== ( $field->id ?? null ) ) {
+			return $field_value;
+		}
+
+		return $edit_entry_render->entry['is_approved'] ?? $field_value;
 	}
 
 	/**
@@ -135,8 +186,10 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 	 */
 	public function maybe_prevent_field_render( $html, $args ) {
 
+		$field_id = \GV\Utils::get( $args['field'], 'id' );
+
 		// If the field is `entry_approval` type but the user doesn't have the moderate entries cap, don't render.
-		if ( $this->name === \GV\Utils::get( $args['field'], 'id' ) && ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
+		if ( $this->name === $field_id && ! GVCommon::has_cap( 'gravityview_moderate_entries' ) ) {
 			return '';
 		}
 
@@ -347,6 +400,12 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 				continue;
 			}
 
+			// Check if the user has permission to edit this field using the same logic as regular fields.
+			if ( ! $this->check_user_can_edit_approval_field( (array) $edit_field ) ) {
+				// User doesn't have permission - skip this field.
+				continue;
+			}
+
 			$label = ( $edit_field['custom_label'] ? $edit_field['custom_label'] : __( 'Approve Entries', 'gk-gravityview' ) );
 
 			if ( ! $edit_field['show_label'] ) {
@@ -369,33 +428,58 @@ class GravityView_Field_Entry_Approval extends GravityView_Field {
 
 			$approval_value = $_POST[ "input_{$unique_id}" ] ?? $approval_value;
 
-			$field_data = array(
+			$field_data = [
 				'id'           => $unique_id,
 				'custom_id'    => $id,
 				'label'        => $label,
-				'choices'      => array(
-					array(
+				'choices'      => [
+					[
 						'text'  => __( 'Approve', 'gk-gravityview' ),
 						'value' => GravityView_Entry_Approval_Status::APPROVED,
-					),
-					array(
+					],
+					[
 						'text'  => __( 'Disapprove', 'gk-gravityview' ),
 						'value' => GravityView_Entry_Approval_Status::DISAPPROVED,
-					),
-					array(
+					],
+					[
 						'text'  => __( 'Reset Approval', 'gk-gravityview' ),
 						'value' => GravityView_Entry_Approval_Status::UNAPPROVED,
-					),
-				),
+					],
+				],
 				'defaultValue' => (int) $approval_value,
 				'cssClass'     => $edit_field['custom_class'],
-			);
+			];
 
 			$new_fields[] = new GF_Field_Radio( $field_data );
 		}
+
 		return $new_fields;
 	}
 
+	/**
+	 * Check if the current user has permission to edit the approval field using the same logic as regular fields.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $edit_field Field configuration from the View.
+	 *
+	 * @return bool Whether the user can edit the field.
+	 */
+	private function check_user_can_edit_approval_field( array $edit_field ): bool {
+		// If the user has full entry editing capabilities, they can edit all fields.
+		if ( GVCommon::has_cap( [ 'gravityforms_edit_entries', 'gravityview_edit_others_entries' ] ) ) {
+			return true;
+		}
+
+		// Check the allow_edit_cap setting (matches the pattern used for regular fields).
+		$field_cap = $edit_field['allow_edit_cap'] ?? false;
+
+		if ( $field_cap ) {
+			return GVCommon::has_cap( $field_cap );
+		}
+
+		return false;
+	}
 }
 
 new GravityView_Field_Entry_Approval();

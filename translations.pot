@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.43.1\n"
+"Project-Id-Version: GravityView 2.43.2\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-01T00:37:54+00:00\n"
+"POT-Creation-Date: 2025-08-05T19:41:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -2985,7 +2985,7 @@ msgid "Disapproved"
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:57
-#: includes/fields/class-gravityview-field-approval.php:382
+#: includes/fields/class-gravityview-field-approval.php:441
 msgid "Disapprove"
 msgstr ""
 
@@ -2999,7 +2999,7 @@ msgid "Approved"
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:63
-#: includes/fields/class-gravityview-field-approval.php:378
+#: includes/fields/class-gravityview-field-approval.php:437
 msgid "Approve"
 msgstr ""
 
@@ -3014,7 +3014,7 @@ msgid "Unapproved"
 msgstr ""
 
 #: includes/class-gravityview-entry-approval-status.php:70
-#: includes/fields/class-gravityview-field-approval.php:386
+#: includes/fields/class-gravityview-field-approval.php:445
 msgid "Reset Approval"
 msgstr ""
 
@@ -3570,7 +3570,7 @@ msgid "Open map link in a new tab or window?"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-approval.php:30
-#: includes/fields/class-gravityview-field-approval.php:350
+#: includes/fields/class-gravityview-field-approval.php:409
 msgid "Approve Entries"
 msgstr ""
 
@@ -3628,7 +3628,23 @@ msgstr ""
 msgid "Label of the input"
 msgstr ""
 
-#: includes/fields/class-gravityview-field-checkbox.php:75
+#: includes/fields/class-gravityview-field-checkbox.php:74
+msgid "Display Format:"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:76
+msgid "Choose how multiple checkbox values should be displayed."
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:78
+msgid "Bulleted list (default)"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:79
+msgid "Comma-separated values"
+msgstr ""
+
+#: includes/fields/class-gravityview-field-checkbox.php:89
 #: includes/fields/class-gravityview-field-consent.php:112
 #: includes/fields/class-gravityview-field-image-choice.php:55
 #: includes/fields/class-gravityview-field-multiple-choice.php:50
@@ -5568,44 +5584,44 @@ msgstr ""
 msgid "There was an error loading searchable fields. Save the View or refresh the page to fix this issue."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1873
+#: includes/widgets/search-widget/class-search-widget.php:1880
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1874
+#: includes/widgets/search-widget/class-search-widget.php:1881
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1875
+#: includes/widgets/search-widget/class-search-widget.php:1882
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1876
+#: includes/widgets/search-widget/class-search-widget.php:1883
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1877
+#: includes/widgets/search-widget/class-search-widget.php:1884
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1878
+#: includes/widgets/search-widget/class-search-widget.php:1885
 msgid "Show a different month"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2264
+#: includes/widgets/search-widget/class-search-widget.php:2271
 msgid "Search fields shown"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2278
+#: includes/widgets/search-widget/class-search-widget.php:2285
 msgid "Advanced Search fields shown"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2281
+#: includes/widgets/search-widget/class-search-widget.php:2288
 msgid "If any Advanced Search fields exist, a link will show to toggle them."
 msgstr ""
 
