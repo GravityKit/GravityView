@@ -9,6 +9,8 @@
  * @copyright Copyright 2014, Katz Web Services, Inc.
  */
 
+use GravityKit\GravityView\Foundation\Helpers\WP as WPHelper;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
@@ -501,7 +503,7 @@ class GravityView_Edit_Entry_Render {
 		$transient_key = $this->get_entry_msg_transient_key();
 
 		// Store the message type and related data in a transient for 60 seconds.
-		set_transient(
+		WPHelper::set_transient(
 			$transient_key,
 			[
 				'type'               => $type,
@@ -1275,11 +1277,11 @@ class GravityView_Edit_Entry_Render {
 			$transient_key = $this->get_entry_msg_transient_key();
 
 			// Get the stored message data.
-			$message_data = get_transient( $transient_key );
+			$message_data = WPHelper::get_transient( $transient_key );
 
 			if ( $message_data ) {
 				// Delete the transient so it's only shown once.
-				delete_transient( $transient_key );
+				WPHelper::delete_transient( $transient_key );
 
 				// Set the properties from the stored data.
 				$this->is_valid           = $message_data['is_valid'];
