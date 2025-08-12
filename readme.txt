@@ -21,6 +21,14 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Removing all files from a field in Edit Entry now stores the correct (empty) value.
+
+#### ✨ Improved
+* A valid Edit Entry form submission is now redirected to itself to prevent accidental repeat POST requests.
+
 = 2.43.2 on August 5, 2025 =
 
 This release introduces a flexible display format for checkbox fields, tightens Edit Entry security, and polishes File Upload presentation.

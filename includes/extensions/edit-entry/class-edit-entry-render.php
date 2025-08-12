@@ -21,6 +21,15 @@ class GravityView_Edit_Entry_Render {
 	private const EMPTY_FILE_UPLOAD_VALUE = '__GV_EMPTY_FILE__';
 
 	/**
+	 * Internal key used to track if a file input was disabled.
+	 *
+	 * @since $ver$
+	 *
+	 * @var string
+	 */
+	private const GV_FILE_UPLOAD_DISABLED = 'gv_field_disabled';
+
+	/**
 	 * @var GravityView_Edit_Entry
 	 */
 	protected $loader;
@@ -454,12 +463,67 @@ class GravityView_Edit_Entry_Render {
 			 * @param GravityView_View_Data $gv_data The View data
 			 */
 			do_action( 'gravityview/edit_entry/after_update', $this->form, $this->entry['id'], $this, $gv_data );
+
+			// Store the success message in transient and redirect to prevent resubmission.
+			$this->store_message_and_redirect( 'success' );
 		} else {
 			$this->add_uploaded_file_sizes( (int) $this->form_id );
 			$this->maybe_fix_valid_file_uploads();
 			gravityview()->log->error( 'Submission is NOT valid.', array( 'entry' => $this->entry ) );
 		}
 	} // process_save
+
+	/**
+	 * Returns the transient key for the entry message.
+	 *
+	 * @since $ver$
+	 *
+	 * @return string The transient key.
+	 */
+	private function get_entry_msg_transient_key(): string {
+		return 'gv_edit_entry_msg_' . md5( get_current_user_id() . '_' . $this->entry['id'] . '_' . $this->view_id );
+	}
+
+	/**
+	 * Stores a message in a transient and redirect to prevent repeat form resubmission.
+	 *
+	 * This is called the Post-Redirect-Get (PRG) pattern.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $type Type of message: 'success' or 'error'.
+	 */
+	private function store_message_and_redirect( string $type ): void {
+		if ( defined( 'DOING_GRAVITYVIEW_TESTS' ) && DOING_GRAVITYVIEW_TESTS ) {
+			return;
+		}
+		// Generate a unique key for this user/entry combination.
+		$transient_key = $this->get_entry_msg_transient_key();
+
+		// Store the message type and related data in a transient for 60 seconds.
+		set_transient(
+			$transient_key,
+			[
+				'type'               => $type,
+				'form_id'            => $this->form_id,
+				'entry_id'           => $this->entry['id'],
+				'view_id'            => $this->view_id,
+				'is_valid'           => $this->is_valid,
+				'is_paged_submitted' => $this->is_paged_submitted,
+			],
+			60
+		);
+
+		// Get the current URL without any form-related query args.
+		$redirect_url = remove_query_arg( [ 'gform_submit', 'gform_unique_id', 'gform_source_page_number_' . $this->form_id, 'gform_field_values' ] );
+
+		// Add a flag to indicate we've just saved.
+		$redirect_url = add_query_arg( 'gv_updated', '1', $redirect_url );
+
+		// Perform the redirect.
+		wp_safe_redirect( $redirect_url );
+		exit;
+	}
 
 	/**
 	 * Delete the value of fields hidden by conditional logic when the entry is edited
@@ -646,13 +710,6 @@ class GravityView_Edit_Entry_Render {
 			return $value;
 		}
 
-		$internal_entry = $this->get_entry();
-
-		if ( empty( $value ) && empty( $internal_entry[ '' . $field->id ] ) ) {
-			// We explicitly removed the value from the entry, or we didn't have one, so we don't want keep the old value.
-			return '';
-		}
-
 		// We force this value to be empty in `unset_hidden_field_values()`.
 		if ( strpos( $value, self::EMPTY_FILE_UPLOAD_VALUE ) !== false ) {
 			return str_replace( self::EMPTY_FILE_UPLOAD_VALUE, '', $value );
@@ -661,18 +718,34 @@ class GravityView_Edit_Entry_Render {
 		$input_name = 'input_' . str_replace( '.', '_', $input_id );
 
 		if ( $field->multipleFiles ) {
+			$inner_entry = $this->get_entry();
+			if ( self::EMPTY_FILE_UPLOAD_VALUE === \GV\Utils::get( $inner_entry, $input_id, '' ) ) {
+				return '[]'; // Should be a JSON encoded empty array.
+			}
+
 			if ( empty( $value ) ) {
 				return json_decode( \GV\Utils::get( $entry, $input_id, '' ), true );
 			}
+
 			return $value;
 		}
 
-		/** No file is being uploaded. */
-		if ( empty( $_FILES[ $input_name ]['name'] ) ) {
-			/** So return the original upload, with $value as backup (it can be empty during edit form rendering) */
+		// Check if the field was disabled (no $_FILES or our custom marker is set).
+		if (
+			! isset( $_FILES[ $input_name ] )
+			|| ! empty( $_FILES[ $input_name ][ self::GV_FILE_UPLOAD_DISABLED ] )
+		) {
+			// Field was disabled (file exists), keep the original value.
 			return rgar( $entry, $input_id, $value );
 		}
 
+		// Field was enabled - check if a new file was uploaded.
+		if ( empty( $_FILES[ $input_name ]['name'] ) ) {
+			// Field was enabled but empty (file removed or never had one), clear the value.
+			return '';
+		}
+
+		// New file was uploaded.
 		return $value;
 	}
 
@@ -1196,6 +1269,28 @@ class GravityView_Edit_Entry_Render {
 	 * @return void
 	 */
 	private function maybe_print_message() {
+		// Check if we have a message from a redirect (Post-Redirect-Get pattern).
+		if ( '1' === ( \GV\Utils::_GET( 'gv_updated' ) ) ) {
+			// Generate the transient key.
+			$transient_key = $this->get_entry_msg_transient_key();
+
+			// Get the stored message data.
+			$message_data = get_transient( $transient_key );
+
+			if ( $message_data ) {
+				// Delete the transient so it's only shown once.
+				delete_transient( $transient_key );
+
+				// Set the properties from the stored data.
+				$this->is_valid           = $message_data['is_valid'];
+				$this->is_paged_submitted = $message_data['is_paged_submitted'];
+
+				// Display the appropriate success message.
+				$this->display_update_message();
+				return;
+			}
+			// If we don't have a transient key, it's very likely that the form has been submitted again, so we continue.
+		}
 
 		if ( 'update' !== \GV\Utils::_POST( 'action' ) ) {
 			return;
@@ -1233,18 +1328,30 @@ class GravityView_Edit_Entry_Render {
 			$this->is_paged_submitted = \GV\Utils::_POST( 'save' ) === $labels['submit'];
 		}
 
-		$back_link = remove_query_arg( array( 'page', 'view', 'edit', 'gvid' ) );
+		$this->display_update_message();
+	}
+
+	/**
+	 * Display the update message based on validation status.
+	 *
+	 * @since $ver$
+	 *
+	 * @return void
+	 */
+	private function display_update_message() {
+		$back_link = remove_query_arg( array( 'page', 'view', 'edit', 'gvid', 'gv_updated' ) );
 
 		if ( ! $this->is_valid ) {
-
 			// Keeping this compatible with Gravity Forms.
 			$validation_message = "<div class='validation_error'>" . __( 'There was a problem with your submission.', 'gk-gravityview' ) . ' ' . __( 'Errors have been highlighted below.', 'gk-gravityview' ) . '</div>';
 			$message            = apply_filters( "gform_validation_message_{$this->form['id']}", apply_filters( 'gform_validation_message', $validation_message, $this->form ), $this->form );
 
 			echo GVCommon::generate_notice( $message, 'gv-error' );
+			return;
+		}
 
-		} elseif ( false === $this->is_paged_submitted ) {
-			// Paged form that hasn't been submitted on the last page yet
+		if ( false === $this->is_paged_submitted ) {
+			// Paged form that hasn't been submitted on the last page yet.
 			$entry_updated_message = sprintf( esc_attr__( 'Entry Updated.', 'gk-gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
 
 			/**
@@ -1258,54 +1365,51 @@ class GravityView_Edit_Entry_Render {
 			$message = apply_filters( 'gravityview/edit_entry/page/success', $entry_updated_message, $this->view_id, $this->entry );
 
 			echo GVCommon::generate_notice( $message );
-		} else {
-			$view              = \GV\View::by_id( $this->view_id );
-			$edit_redirect     = $view->settings->get( 'edit_redirect' );
-			$edit_redirect_url = $view->settings->get( 'edit_redirect_url' );
-
-			switch ( $edit_redirect ) {
-
-				case '0':
-					$redirect_url          = $back_link;
-					$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sReturning to Entry%2$s', 'Replacements are HTML', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', '</a>' );
-					break;
-
-				case '1':
-					$redirect_url          = $directory_link = GravityView_API::directory_link();
-					$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sReturning to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
-					break;
-
-				case '2':
-					$redirect_url          = $edit_redirect_url;
-					$redirect_url          = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
-					$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sRedirecting to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $redirect_url ), '</a>' );
-					break;
-
-				case '':
-				default:
-					$entry_updated_message = sprintf( esc_attr__( 'Entry Updated. %1$sReturn to Entry%2$s', 'gk-gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
-					break;
-			}
-
-			if ( isset( $redirect_url ) ) {
-				$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;URL=%s" /></noscript>', json_encode( $redirect_url ), esc_attr( $redirect_url ) );
-			}
-
-			/**
-			 * Modify the edit entry success message (including the anchor link).
-			 *
-			 * @since  1.5.4
-			 *
-			 * @param string      $entry_updated_message Existing message
-			 * @param int         $view_id               View ID
-			 * @param array       $entry                 Gravity Forms entry array
-			 * @param string      $back_link             URL to return to the original entry. @since 1.6
-			 * @param string|null $redirect_url          URL to return to after the update. @since 2.14.6
-			 */
-			$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message, $this->view_id, $this->entry, $back_link, isset( $redirect_url ) ? $redirect_url : null );
-
-			echo GVCommon::generate_notice( $message );
+			return;
 		}
+
+		$view              = \GV\View::by_id( $this->view_id );
+		$edit_redirect     = $view->settings->get( 'edit_redirect' );
+		$edit_redirect_url = $view->settings->get( 'edit_redirect_url' );
+
+		switch ( $edit_redirect ) {
+			case '0':
+				$redirect_url          = $back_link;
+				$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sReturning to Entry%2$s', 'Replacements are HTML', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', '</a>' );
+				break;
+			case '1':
+				$redirect_url          = $directory_link = GravityView_API::directory_link();
+				$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sReturning to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
+				break;
+			case '2':
+				$redirect_url          = $edit_redirect_url;
+				$redirect_url          = GFCommon::replace_variables( $redirect_url, $this->form, $this->entry, false, false, false, 'text' );
+				$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sRedirecting to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $redirect_url ), '</a>' );
+				break;
+			case '':
+			default:
+				$entry_updated_message = sprintf( esc_attr__( 'Entry Updated. %1$sReturn to Entry%2$s', 'gk-gravityview' ), '<a href="' . esc_url( $back_link ) . '">', '</a>' );
+				break;
+		}
+
+		if ( isset( $redirect_url ) ) {
+			$entry_updated_message .= sprintf( '<script>window.location.href = %s;</script><noscript><meta http-equiv="refresh" content="0;URL=%s" /></noscript>', json_encode( $redirect_url ), esc_attr( $redirect_url ) );
+		}
+
+		/**
+		 * Modify the edit entry success message (including the anchor link).
+		 *
+		 * @since  1.5.4
+		 *
+		 * @param string      $entry_updated_message Existing message
+		 * @param int         $view_id               View ID
+		 * @param array       $entry                 Gravity Forms entry array
+		 * @param string      $back_link             URL to return to the original entry. @since 1.6
+		 * @param string|null $redirect_url          URL to return to after the update. @since 2.14.6
+		 */
+		$message = apply_filters( 'gravityview/edit_entry/success', $entry_updated_message, $this->view_id, $this->entry, $back_link, isset( $redirect_url ) ? $redirect_url : null );
+
+		echo GVCommon::generate_notice( $message );
 	}
 
 	/**
@@ -1733,8 +1837,9 @@ class GravityView_Edit_Entry_Render {
 						// Fix PHP warning on line 1498 of form_display.php for post_image fields
 						// Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511.
 						$_FILES[ $input_name ] = [
-							'name' => '',
-							'size' => '',
+							'name'                        => '',
+							'size'                        => '',
+							self::GV_FILE_UPLOAD_DISABLED => true, // Custom marker to indicate field was disabled.
 						];
 					}
 
@@ -1750,7 +1855,12 @@ class GravityView_Edit_Entry_Render {
 							$_gf_uploaded_files[ $input_name ] = $value;
 						}
 
-						$this->record_files_for_removal( $field, (string) $value );
+						$is_cleared = false;
+						$this->record_files_for_removal( $field, (string) $value, $is_cleared );
+						if ( $is_cleared ) {
+							$value = self::EMPTY_FILE_UPLOAD_VALUE;
+						}
+
 						$this->entry[ '' . $field->id ] = $value;
 					}
 
@@ -2639,7 +2749,13 @@ class GravityView_Edit_Entry_Render {
 			}
 
 			foreach ( $files as $key => $file ) {
-				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] ?? 'missing.file' );
+				// Skip files that don't have a temp_filename - these are likely already processed files
+				// from a previous submission that are being referenced again.
+				if ( empty( $file['temp_filename'] ) ) {
+					continue;
+				}
+
+				$tmp_file = $tmp_path . wp_basename( $file['temp_filename'] );
 				if ( ! file_exists( $tmp_file ) ) {
 					unset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ][ $key ] );
 				}
@@ -2755,8 +2871,9 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * @param GF_Field $field      The FileUpload field.
 	 * @param string   $value      The current entry value for the field.
+	 * @param bool     $is_cleared Reference to update when all files are cleared.
 	 */
-	private function record_files_for_removal( GF_Field $field, string $value ): void {
+	private function record_files_for_removal( GF_Field $field, string $value, bool &$is_cleared = false ): void {
 		/**
 		 * @filter `gk/gravityview/edit-entry/record-file-removal` Modifies whether to record files for removal.
 		 *
@@ -2796,6 +2913,10 @@ class GravityView_Edit_Entry_Render {
 		$old_files    = json_decode( $value, true ) ?: [];
 		$new_files    = json_decode( $posted_value, true ) ?: [];
 		$kept_files   = array_intersect( $old_files, $new_files );
+
+		if ( $old_files && ! $new_files && ! $kept_files ) {
+			$is_cleared = true;
+		}
 
 		// We use this strategy to keep the indexes of the original array, as we need them for removal.
 		$this->remove_files[ '' . $field->id ] = array_diff( $old_files, $kept_files );
@@ -2838,7 +2959,8 @@ class GravityView_Edit_Entry_Render {
 			// Translators: [b] and [/b] are replaced by `<strong>` and `</strong>` tags.
 				esc_html__(
 					'[b]Note:[/b] For security reasons you must upload the file again.',
-					'gk-gravitview', 'gk-gravityview' ),
+					'gk-gravityview'
+				),
 				[
 					'[b]'  => '<strong>',
 					'[/b]' => '</strong>',
