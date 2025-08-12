@@ -69,7 +69,14 @@ class GravityView_Entry_Notes {
 		// Make sure the keys are all set
 		$note = wp_parse_args( $note, $default_note );
 
-		GFFormsModel::add_note( intval( $note['lead_id'] ), intval( $note['user_id'] ), esc_attr( $note['user_name'] ), $note['note'], esc_attr( $note['note_type'] ) );
+		$entry_id = (int) $note['lead_id'];
+		$user_id  = (int) $note['user_id'];
+		$user_name = esc_attr( $note['user_name'] );
+		$note_content = $note['note'];
+		$note_type = esc_attr( $note['note_type'] );
+
+		// Call directly instead of through GFAPI::add_note() alias.
+		GFFormsModel::add_note( $entry_id, $user_id, $user_name, $note_content, $note_type );
 
 		// If last_error is empty string, there was no error.
 		if ( empty( $wpdb->last_error ) ) {
@@ -138,32 +145,25 @@ class GravityView_Entry_Notes {
 	 * Get a single note by note ID
 	 *
 	 * @since 1.17
+	 * @since TODO Deprecated in favor of GFAPI::get_note()
+	 *
+	 * @deprecated TODO
 	 *
 	 * @param int $note_id The ID of the note in the `{prefix}_rg_lead_notes` table
 	 *
-	 * @return object|bool False if not found; note object otherwise.
+	 * @return object|false False if not found; note object otherwise.
 	 */
 	public static function get_note( $note_id ) {
-		global $wpdb;
 
-		if ( version_compare( GravityView_GFFormsModel::get_database_version(), '2.3-dev-1', '>=' )
-			&& method_exists( 'GFFormsModel', 'get_entry_notes_table_name' ) ) {
-			$notes_table = GFFormsModel::get_entry_notes_table_name();
-		} else {
-			$notes_table = GFFormsModel::get_lead_notes_table_name();
+		_deprecated_function( __METHOD__, 'TODO', 'GFAPI::get_note()' );
+
+		$note = GFAPI::get_note( $note_id );
+
+		if ( is_wp_error( $note ) ) {
+			return false;
 		}
 
-		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				" SELECT n.id, n.user_id, n.date_created, n.value, n.note_type, ifnull(u.display_name,n.user_name) as user_name, u.user_email
-	              FROM $notes_table n
-	              LEFT OUTER JOIN $wpdb->users u ON n.user_id = u.id
-	              WHERE n.id=%d",
-				$note_id
-			)
-		);
-
-		return $results ? $results[0] : false;
+		return $note;
 	}
 
 	/**

@@ -24,10 +24,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🐛 Fixed
+* New Search Bar field labels are now visible by default on any layout.
 * Removing all files from a field in Edit Entry now stores the correct (empty) value.
 
 #### ✨ Improved
 * A valid Edit Entry form submission is now redirected to itself to prevent accidental repeat POST requests.
+
+#### 💻 Developer Updates
+
+* Deprecated `GravityView_Entry_Notes::get_note()` in favor of `GFAPI::get_note()`.
 
 = 2.43.2 on August 5, 2025 =
 
