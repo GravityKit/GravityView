@@ -69,7 +69,14 @@ class GravityView_Entry_Notes {
 		// Make sure the keys are all set
 		$note = wp_parse_args( $note, $default_note );
 
-		GFFormsModel::add_note( intval( $note['lead_id'] ), intval( $note['user_id'] ), esc_attr( $note['user_name'] ), $note['note'], esc_attr( $note['note_type'] ) );
+		$entry_id = (int) $note['lead_id'];
+		$user_id  = (int) $note['user_id'];
+		$user_name = esc_attr( $note['user_name'] );
+		$note_content = $note['note'];
+		$note_type = esc_attr( $note['note_type'] );
+
+		// Call directly instead of through GFAPI::add_note() alias.
+		GFFormsModel::add_note( $entry_id, $user_id, $user_name, $note_content, $note_type );
 
 		// If last_error is empty string, there was no error.
 		if ( empty( $wpdb->last_error ) ) {
