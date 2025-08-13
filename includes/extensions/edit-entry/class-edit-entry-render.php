@@ -1380,7 +1380,7 @@ class GravityView_Edit_Entry_Render {
 				$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sReturning to Entry%2$s', 'Replacements are HTML', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', '</a>' );
 				break;
 			case '1':
-				$redirect_url          = $directory_link = GravityView_API::directory_link();
+				$redirect_url          = GravityView_API::directory_link();
 				$entry_updated_message = sprintf( esc_attr_x( 'Entry Updated. %1$sReturning to %2$s%3$s', 'Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML.', 'gk-gravityview' ), '<a href="' . esc_url( $redirect_url ) . '">', esc_html( $view->post_title ), '</a>' );
 				break;
 			case '2':
