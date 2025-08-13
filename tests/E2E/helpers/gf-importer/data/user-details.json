@@ -56,35 +56,35 @@
 	"entries": [
 		{
 			"1": "Alice Smith",
-			"2": "alice@example.com",
+			"2": "alice@gravitykit.test",
 			"3": "30",
 			"4": "1994-06-15",
 			"5": "Red"
 		},
 		{
 			"1": "Bob Johnson",
-			"2": "bob@example.com",
+			"2": "bob@gravitykit.test",
 			"3": "45",
 			"4": "1979-08-22",
 			"5": "Blue"
 		},
 		{
 			"1": "Charlie Brown",
-			"2": "charlie@example.com",
+			"2": "charlie@gravitykit.test",
 			"3": "22",
 			"4": "2001-11-30",
 			"5": "Green"
 		},
 		{
 			"1": "David White",
-			"2": "david@example.com",
+			"2": "david@gravitykit.test",
 			"3": "35",
 			"4": "1989-02-14",
 			"5": "Yellow"
 		},
 		{
 			"1": "Eve Black",
-			"2": "eve@example.com",
+			"2": "eve@gravitykit.test",
 			"3": "28",
 			"4": "1995-07-09",
 			"5": "Purple"

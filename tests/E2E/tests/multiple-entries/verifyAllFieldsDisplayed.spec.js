@@ -26,8 +26,8 @@ test('Verify All Fields Are Displayed Correctly', async ({ page }, testInfo) => 
 	await expect(page.getByText('Alice Smith')).toBeVisible();
 	await expect(page.getByText('Bob Johnson')).toBeVisible();
 
-	await expect(page.getByText('alice@example.com')).toBeVisible();
-	await expect(page.getByText('bob@example.com')).toBeVisible();
+	await expect(page.getByText('alice@gravitykit.test')).toBeVisible();
+	await expect(page.getByText('bob@gravitykit.test')).toBeVisible();
 
 	await expect(page.getByText('35', { exact: true })).toBeVisible();
 	await expect(page.getByText('45', { exact: true })).toBeVisible();
