@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 
 * New Search Bar field labels are now visible by default on any layout.
+* Some Search Field icons were displaying too large.
 
 #### 💻 Developer Updates
 
