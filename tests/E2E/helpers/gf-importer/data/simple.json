@@ -25,23 +25,23 @@
 	"entries": [
 		{
 			"1": "Alice",
-			"2": "alice@example.com",
+			"2": "alice@gravitykit.test",
 			"submitted_on": "2024-08-28 15:30:00"
 		},
 		{
 			"1": "Bob",
-			"2": "bob@example.com",
+			"2": "bob@gravitykit.test",
 			"submitted_on": "2024-08-29 10:15:00"
 		},
 		{
 			"1": "Charlie",
-			"2": "charlie@example.com",
+			"2": "charlie@gravitykit.test",
 			"submitted_on": "2024-04-16 10:15:00",
 			"is_read": true
 		},
 		{
 			"1": "David",
-			"2": "david@example.com",
+			"2": "david@gravitykit.test",
 			"submitted_on": "2024-04-14 10:25:00",
 			"is_starred": true
 		}
