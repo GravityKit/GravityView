@@ -2893,6 +2893,7 @@ class GravityView_Edit_Entry_Render {
 		);
 
 		$input_name = 'input_' . $field->id;
+		$form_id    = (int) $field->formId;
 
 		if (
 			! $should_record
@@ -2912,16 +2913,24 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		$posted_value = GFFormsModel::get_field_value( $field );
-		$old_files    = json_decode( $value, true ) ?: [];
-		$new_files    = json_decode( $posted_value, true ) ?: [];
-		$kept_files   = array_intersect( $old_files, $new_files );
+		// This contains the files that were on the entry before the form was submitted.
+		$files_in_entry = json_decode( $value, true ) ?: [];
+		// This contains the files that are supposed to stay on the entry after the form is submitted.
+		// NOTE: This does not include any files that are going to be uploaded!
+		$files_to_keep = json_decode( $posted_value, true ) ?: [];
+		// This contains the existing files that are going to be kept. This seems superfluous, but we require this
+		// array to calculate the correct index of the file to remove.
+		$kept_files = array_intersect( $files_in_entry, $files_to_keep );
 
-		if ( $old_files && ! $new_files && ! $kept_files ) {
+		// If new files are being uploaded, the entry should not be cleared.
+		$has_new_uploads = ! empty( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ?? [] );
+
+		if ( ! $has_new_uploads && $files_in_entry && ! $files_to_keep ) {
 			$is_cleared = true;
 		}
 
 		// We use this strategy to keep the indexes of the original array, as we need them for removal.
-		$this->remove_files[ '' . $field->id ] = array_diff( $old_files, $kept_files );
+		$this->remove_files[ '' . $field->id ] = array_diff( $files_in_entry, $kept_files );
 	}
 
 	/**
