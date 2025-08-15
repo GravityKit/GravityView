@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+
+* Improved performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
+
 = 2.43.3 on August 14, 2025 =
 
 This update improves Entry Notes and improves the default behavior for the Search Bar labels.
