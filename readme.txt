@@ -27,6 +27,7 @@ This update improves Entry Notes and improves the default behavior for the Searc
 
 #### 🐛 Fixed
 
+* Entry Notes field displaying an error message when adding a note, even if the note is successfully added.
 * New Search Bar field labels are now visible by default on any layout.
 
 #### ✨ Improved

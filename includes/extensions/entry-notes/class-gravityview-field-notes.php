@@ -379,10 +379,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		if ( $success ) {
-			wp_send_json_success( [ 'html' => $success ] );
+			if ( $this->doing_ajax ) {
+				wp_send_json_success( [ 'html' => $success ] );
+			}
+			return;
 		}
 
-		wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-invalid' ) ) ] );
+		if ( $this->doing_ajax ) {
+			wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-invalid' ) ) ] );
+		}
 	}
 
 	/**
