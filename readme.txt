@@ -21,7 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.43.3 on August 14, 2025 =
+
+This update improves Entry Notes and improves the default behavior for the Search Bar labels.
 
 #### 🐛 Fixed
 
@@ -29,8 +31,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### ✨ Improved
 
-* Enhanced security for Entry Notes field by implementing field-specific sanitization based on content type.
-* Improved error handling for both AJAX and non-AJAX requests in Entry Notes.
+* Sanitization for Entry Notes content.
+* Error handling for both AJAX and non-AJAX requests in Entry Notes.
+* Removed old broken links from this changelog ⛓️‍💥
 
 #### 💻 Developer Updates
 
