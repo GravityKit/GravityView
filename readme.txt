@@ -27,6 +27,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 * New Search Bar field labels are now visible by default on any layout.
 
+#### ✨ Improved
+
+* Enhanced security for Entry Notes field by implementing field-specific sanitization based on content type.
+* Improved error handling for both AJAX and non-AJAX requests in Entry Notes.
+
 #### 💻 Developer Updates
 
 * Deprecated `GravityView_Entry_Notes::get_note()` in favor of `GFAPI::get_note()`.
