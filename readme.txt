@@ -23,9 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-#### 🐛 Fixed
+#### ✨ Improved
 
-* Improved performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
+* Detection of BuddyBoss and BuddyPress pages on groups pages as well as user profile pages.
+* Performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
 
 = 2.43.3 on August 14, 2025 =
 
