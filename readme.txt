@@ -30,8 +30,29 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### ✨ Improved
 
+* Detection of BuddyBoss and BuddyPress pages on groups pages as well as user profile pages.
+* Performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
 * Text alignment classes (left, right) are no longer applied on columns in the search widget.
 * File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
+
+= 2.43.3 on August 14, 2025 =
+
+This update improves Entry Notes and improves the default behavior for the Search Bar labels.
+
+#### 🐛 Fixed
+
+* Entry Notes field displaying an error message when adding a note, even if the note is successfully added.
+* New Search Bar field labels are now visible by default on any layout.
+
+#### ✨ Improved
+
+* Sanitization for Entry Notes content.
+* Error handling for both AJAX and non-AJAX requests in Entry Notes.
+* Removed old broken links from this changelog ⛓️‍💥
+
+#### 💻 Developer Updates
+
+* Deprecated `GravityView_Entry_Notes::get_note()` in favor of `GFAPI::get_note()`.
 
 = 2.43.2 on August 5, 2025 =
 
