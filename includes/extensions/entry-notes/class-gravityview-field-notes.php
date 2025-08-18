@@ -22,13 +22,13 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @since 1.17
 	 * @var string Current __FILE__
 	 */
-	static $file;
+	public static $file;
 
 	/**
 	 * @since 1.17
 	 * @var string plugin_dir_path() of the current field file
 	 */
-	static $path;
+	public static $path;
 
 	/**
 	 * @since 1.17
@@ -41,11 +41,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 *
 	 * @var string
 	 */
-	var $name = 'notes';
+	public $name = 'notes';
 
-	var $icon = 'dashicons-admin-comments';
+	/** @var string $icon Icon class for the field. */
+	public $icon = 'dashicons-admin-comments';
 
-	function __construct() {
+	/**
+	 * Constructor.
+	 */
+	public function __construct() {
 
 		self::$path = plugin_dir_path( __FILE__ );
 		self::$file = __FILE__;
@@ -165,15 +169,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
-	 * Verify permissions, check if $_POST is set and as expected. If so, use process_add_note
+	 * Verify permissions, check if $_POST is set and as expected. If so, use process_add_note.
 	 *
 	 * @since 1.17
 	 *
-	 * @see   process_add_note
+	 * @see process_add_note()
 	 *
 	 * @return void
 	 */
-	function maybe_add_note() {
+	public function maybe_add_note() {
 		if ( ! isset( $_POST['action'] ) || 'gv_note_add' !== $_POST['action'] ) {
 			return;
 		}
@@ -192,7 +196,61 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$data = $post;
 		}
 
-		$this->process_add_note( (array) $data );
+		// Sanitize fields appropriately based on their expected content
+		$sanitized_data = $this->sanitize_note_data( $data );
+
+		$this->process_add_note( (array) $sanitized_data );
+	}
+
+	/**
+	 * Sanitize note data fields appropriately based on their expected content type.
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $data Raw data from $_POST.
+	 *
+	 * @return array Sanitized data array.
+	 */
+	private function sanitize_note_data( $data ) {
+		$sanitized = [];
+
+		$single_line_text_fields = [
+			'entry-slug',
+			'gv_note_add',
+			'action',
+			'add_note',
+			'_wp_http_referer',
+			'gv-note-to',
+			'gv-note-subject',
+		];
+
+		foreach ( $single_line_text_fields as $field ) {
+			if ( ! isset( $data[ $field ] ) ) {
+				continue;
+			}
+
+			$sanitized[ $field ] = sanitize_text_field( $data[ $field ] );
+		}
+
+		if ( isset( $data['gv-note-content'] ) ) {
+			$sanitized['gv-note-content'] = sanitize_textarea_field( $data['gv-note-content'] );
+		}
+
+		if ( isset( $data['gv-note-to-custom'] ) ) {
+			$sanitized['gv-note-to-custom'] = sanitize_email( $data['gv-note-to-custom'] );
+		}
+
+		if ( isset( $data['show-delete'] ) ) {
+			$sanitized['show-delete'] = (int) $data['show-delete'];
+		}
+
+		foreach ( $data as $key => $value ) {
+			if ( ! isset( $sanitized[ $key ] ) ) {
+				$sanitized[ $key ] = sanitize_text_field( $value );
+			}
+		}
+
+		return $sanitized;
 	}
 
 	/**
@@ -202,91 +260,148 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 *
 	 * @since 1.17
 	 *
-	 * @return void
-	 * @var array   $data             {
-	 * @type string $action           "gv_note_add"
-	 * @type string $entry            -slug Entry slug or ID to add note to
-	 * @type string $gv_note_add      Nonce with action "gv_note_add_{entry slug}" and name "gv_note_add"
-	 * @type string $_wp_http_referer Relative URL to submitting page ('/view/example/entry/123/')
-	 * @type string $gv               -note-content Note content
-	 * @type string $add_note         Submit button value ('Add Note')
-	 *                                }
+	 * @param array $data {
+	 *     Array of note data.
 	 *
+	 *     @type string $action           Action name "gv_note_add".
+	 *     @type string $entry-slug       Entry slug or ID to add note to.
+	 *     @type string $gv_note_add      Nonce with action "gv_note_add_{entry slug}" and name "gv_note_add".
+	 *     @type string $_wp_http_referer Relative URL to submitting page ('/view/example/entry/123/').
+	 *     @type string $gv-note-content  Note content.
+	 *     @type string $add_note         Submit button value ('Add Note').
+	 * }
+	 *
+	 * @return void
 	 */
 	private function process_add_note( $data ) {
-
-		$error   = false;
-		$success = false;
 
 		if ( empty( $data['entry-slug'] ) ) {
 
 			$error = self::strings( 'error-invalid' );
 			gravityview()->log->error( 'The note is missing an Entry ID.' );
 
-		} else {
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( $error ) ] );
+			}
 
-			$valid = wp_verify_nonce( $data['gv_note_add'], 'gv_note_add_' . $data['entry-slug'] );
+			return;
+		}
 
-			$has_cap = GVCommon::has_cap( 'gravityview_add_entry_notes' );
+		$valid = wp_verify_nonce( $data['gv_note_add'], 'gv_note_add_' . $data['entry-slug'] );
 
-			if ( ! $has_cap ) {
-				$error = self::strings( 'error-cap-add' );
-				gravityview()->log->error( 'Adding a note failed: the user does not have the "gravityview_add_entry_notes" capability.' );
-			} elseif ( $valid ) {
+		$has_cap = GVCommon::has_cap( 'gravityview_add_entry_notes' );
 
-				$entry = gravityview_get_entry( $data['entry-slug'], true, false );
+		if ( ! $has_cap ) {
+			gravityview()->log->error( 'Adding a note failed: the user does not have the "gravityview_add_entry_notes" capability.' );
 
-				$added = $this->add_note( $entry, $data );
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-cap-add' ) ) ] );
+			}
 
-				// Error adding note
-				if ( is_wp_error( $added ) ) {
+			return;
+		}
 
-					$error = $added->get_error_message();
+		if ( ! $valid ) {
+			gravityview()->log->error( 'Nonce validation failed; the note was not created' );
 
-				} else {
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-invalid' ) ) ] );
+			}
 
-					// Confirm the note was added, because GF doesn't return note ID on success
-					$note = GravityView_Entry_Notes::get_note( $added );
+			return;
+		}
 
-					// Possibly email peeps about this great new note
-					$this->maybe_send_entry_notes( $note, $entry, $data );
+		$entry = gravityview_get_entry( $data['entry-slug'], true, false );
 
-					if ( $note ) {
-						$success = self::display_note( $note, ! empty( $data['show-delete'] ) );
-						gravityview()->log->debug( 'The note was successfully created', [ 'data' => compact( 'note', 'data' ) ] );
-					} else {
-						$error = self::strings( 'error-add-note' );
-						gravityview()->log->error( 'The note was not successfully created', [ 'data' => compact( 'note', 'data' ) ] );
-					}
-				}
-			} else {
-				$error = self::strings( 'error-invalid' );
-				gravityview()->log->error( 'Nonce validation failed; the note was not created' );
+		if ( ! $entry ) {
+			gravityview()->log->error( 'The entry was not found', [ 'data' => compact( 'data' ) ] );
+
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-invalid' ) ) ] );
+			}
+
+			return;
+		}
+
+		$added = $this->add_note( $entry, $data );
+
+		// Error adding note
+		if ( is_wp_error( $added ) ) {
+
+			gravityview()->log->error( 'Error adding note', [ 'data' => compact( 'added' ) ] );
+
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( $added->get_error_message() ) ] );
+			}
+
+			return;
+		}
+
+		if ( ! class_exists( 'GFAPI' ) ) {
+			gravityview()->log->error( 'GFAPI is not loaded' );
+
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-add-note' ) ) ] );
+			}
+			return;
+		}
+
+		// Confirm the note was added, because GF doesn't return note ID on success.
+		$note = GFAPI::get_note( $added );
+
+		if ( is_wp_error( $note ) ) {
+			gravityview()->log->error( 'The note was not successfully created', [ 'data' => compact( 'note', 'data' ) ] );
+
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-add-note' ) ) ] );
+			}
+
+			return;
+		}
+
+		// Possibly email peeps about this great new note.
+		$email_success = $this->maybe_send_entry_notes( $note, $entry, $data );
+
+		if ( is_wp_error( $email_success ) ) {
+			gravityview()->log->error( 'The note was not successfully emailed', [ 'data' => compact( 'note', 'data' ) ] );
+
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-email-note' ) ) ] );
 			}
 		}
 
-		if ( $this->doing_ajax ) {
-			if ( $success ) {
+		$success = self::display_note( $note, ! empty( $data['show-delete'] ) );
+
+		gravityview()->log->debug( 'The note was successfully created', [ 'data' => compact( 'note', 'data' ) ] );
+
+		if ( ! $this->doing_ajax ) {
+			return;
+		}
+
+		if ( $success ) {
+			if ( $this->doing_ajax ) {
 				wp_send_json_success( [ 'html' => $success ] );
-			} else {
-				$error = $error ? $error : self::strings( 'error-invalid' );
-				wp_send_json_error( [ 'error' => esc_html( $error ) ] );
 			}
+			return;
+		}
+
+		if ( $this->doing_ajax ) {
+			wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-invalid' ) ) ] );
 		}
 	}
 
 	/**
 	 * Possibly delete notes, if request is proper.
 	 *
-	 * Verify permissions. Check expected $_POST. Parse args, then send to process_delete_notes
+	 * Verify permissions. Check expected $_POST. Parse args, then send to process_delete_notes.
 	 *
 	 * @since 1.17
 	 *
-	 * @see   process_delete_notes
+	 * @see process_delete_notes()
 	 *
 	 * @return void
 	 */
-	function maybe_delete_notes() {
+	public function maybe_delete_notes() {
 
 		if ( ! GVCommon::has_cap( 'gravityview_delete_entry_notes' ) ) {
 			return;
@@ -308,24 +423,35 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 			$data = wp_parse_args( $data, $required_args );
 
+			// Sanitize the delete data
+			$data['gv_delete_notes'] = sanitize_text_field( $data['gv_delete_notes'] );
+			$data['entry-slug']      = sanitize_text_field( $data['entry-slug'] );
+			if ( isset( $data['note'] ) && is_array( $data['note'] ) ) {
+				$data['note'] = array_map( 'absint', $data['note'] );
+			}
+
 			$this->process_delete_notes( $data );
 		}
 	}
 
 	/**
-	 * Handle deleting notes
+	 * Handle deleting notes.
+	 *
+	 * @since 1.17
+	 *
+	 * @param array $data {
+	 *     Array of deletion data.
+	 *
+	 *     @type string $action           Action name "gv_delete_notes".
+	 *     @type string $entry-slug       Entry slug or ID to delete notes from.
+	 *     @type string $gv_delete_notes  Nonce with action "gv_delete_notes_{entry slug}" and name "gv_delete_notes".
+	 *     @type string $_wp_http_referer Relative URL to submitting page ('/view/example/entry/123/').
+	 *     @type int[]  $note             Array of Note IDs to be deleted.
+	 * }
 	 *
 	 * @return void
-	 * @var array   $data             {
-	 * @type string $action           "gv_delete_notes"
-	 * @type string $entry            -slug Entry slug or ID to add note to
-	 * @type string $gv_delete_notes  Nonce with action "gv_delete_notes_{entry slug}" and name "gv_delete_notes"
-	 * @type string $_wp_http_referer Relative URL to submitting page ('/view/example/entry/123/')
-	 * @type int[]  $note             Array of Note IDs to be deleted
-	 *                                }
-	 *
 	 */
-	function process_delete_notes( $data ) {
+	public function process_delete_notes( $data ) {
 
 		$valid   = wp_verify_nonce( $data['gv_delete_notes'], 'gv_delete_notes_' . $data['entry-slug'] );
 		$has_cap = GVCommon::has_cap( 'gravityview_delete_entry_notes' );
@@ -353,13 +479,13 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
-	 * Include this extension templates path
+	 * Include this extension templates path.
 	 *
 	 * @since 1.17
 	 *
-	 * @param array $file_paths List of template paths ordered
+	 * @param array $file_paths List of template paths ordered.
 	 *
-	 * @return array File paths with `./` and `./partials/` paths added
+	 * @return array File paths with `./` and `./partials/` paths added.
 	 */
 	public function add_template_path( $file_paths ) {
 
@@ -409,13 +535,13 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
-	 * Get strings used by the Entry Notes field
+	 * Get strings used by the Entry Notes field.
 	 *
-	 * Use `gravityview/field/notes/strings` filter to modify the strings
+	 * Use `gravityview/field/notes/strings` filter to modify the strings.
 	 *
 	 * @since 1.17
 	 *
-	 * @param string $key If set, return the string with the key of $key
+	 * @param string $key If set, return the string with the key of $key.
 	 *
 	 * @return array|string Array of strings with keys and values. If $key is set, returns string. If missing $strings[ $key ], empty string.
 	 */
@@ -440,6 +566,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'email-footer'          => __( 'This note was sent from {url}', 'gk-gravityview' ),
 			'also-email'            => __( 'Also email this note to', 'gk-gravityview' ),
 			'error-add-note'        => __( 'There was an error adding the note.', 'gk-gravityview' ),
+			'error-email-note'      => __( 'There was an error emailing the note.', 'gk-gravityview' ),
 			'error-invalid'         => __( 'The request was invalid. Refresh the page and try again.', 'gk-gravityview' ),
 			'error-empty-note'      => _x( 'Note cannot be blank.', 'Message to display when submitting a note without content.', 'gk-gravityview' ),
 			'error-cap-delete'      => __( 'You don\'t have the ability to delete notes.', 'gk-gravityview' ),
@@ -447,7 +574,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		];
 
 		/**
-		 * after return.
+		 * Modify the strings used by the Entry Notes field.
 		 *
 		 * @since 1.17
 		 *
@@ -463,18 +590,16 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
-	 * Generate HTML output for a single note
+	 * Generate HTML output for a single note.
 	 *
 	 * @since 1.17
-	 *
 	 * @since 2.0
 	 *
-	 * @param bool                 $show_delete Whether to show the bulk delete inputs
-	 *
-	 * @param object               $note        Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
+	 * @param object               $note        Note object with id, user_id, date_created, value, note_type, user_name, user_email vars.
+	 * @param bool                 $show_delete Whether to show the bulk delete inputs.
 	 * @param \GV\Template_Context $context     The context.
 	 *
-	 * @return string HTML
+	 * @return string HTML.
 	 */
 	public static function display_note( $note, $show_delete = false, $context = null ) {
 
@@ -484,14 +609,14 @@ class GravityView_Field_Notes extends GravityView_Field {
 
 		$note_content = [
 			'avatar'                 => get_avatar( $note->user_id, 48 ),
-			'user_name'              => $note->user_name,
-			'user_email'             => $note->user_email,
+			'user_name'              => esc_html( $note->user_name ),
+			'user_email'             => esc_html( $note->user_email ),
 			'added_on'               => esc_html__( 'added on {date_created_formatted}', 'gk-gravityview' ),
 			'value'                  => wpautop( esc_html( $note->value ) ),
-			'date_created'           => $note->date_created,
-			'date_created_formatted' => GFCommon::format_date( $note->date_created, false ),
+			'date_created'           => esc_html( $note->date_created ),
+			'date_created_formatted' => esc_html( GFCommon::format_date( $note->date_created, false ) ),
 			'user_id'                => intval( $note->user_id ),
-			'note_type'              => $note->note_type,
+			'note_type'              => esc_html( $note->note_type ),
 			'note_id'                => intval( $note->id ),
 		];
 
@@ -532,7 +657,10 @@ class GravityView_Field_Notes extends GravityView_Field {
 		}
 
 		foreach ( $note_content as $tag => $value ) {
-			$note_detail_html = str_replace( '{' . $tag . '}', $value ?? '', $note_detail_html );
+			// Ensure value is a string and handle null values safely.
+			$replacement = $value !== null ? (string) $value : '';
+			// The tag itself should be safe as it comes from our code, not user input.
+			$note_detail_html = str_replace( '{' . esc_attr( $tag ) . '}', $replacement, $note_detail_html );
 		}
 
 		$replacements = [
@@ -541,7 +669,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 			'{note_detail}' => $note_detail_html,
 		];
 
-		// Strip extra whitespace in template
+		// Strip extra whitespace in template.
 		$output = gravityview_strip_whitespace( $note_row );
 
 		foreach ( $replacements as $tag => $replacement ) {
@@ -556,15 +684,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 *
 	 * @since 1.17
 	 *
-	 * @see   GravityView_Entry_Notes::add_note This method is mostly a wrapper
+	 * @see GravityView_Entry_Notes::add_note() This method is mostly a wrapper.
 	 *
-	 * @param array $entry
-	 * @param array $data Note details array
+	 * @param array $entry Entry array.
+	 * @param array $data  Note details array.
 	 *
-	 * @return int|WP_Error
+	 * @return int|WP_Error Note ID on success, WP_Error on failure.
 	 */
 	private function add_note( $entry, $data ) {
-		global $current_user, $wpdb;
+		global $current_user;
 
 		$user_data = get_userdata( $current_user->ID );
 
@@ -574,22 +702,19 @@ class GravityView_Field_Notes extends GravityView_Field {
 			return new WP_Error( 'gv-add-note-empty', __( 'The note is empty.', 'gk-gravityview' ) );
 		}
 
-		$return = GravityView_Entry_Notes::add_note( $entry['id'], $user_data->ID, $user_data->display_name, $note_content, 'gravityview/field/notes' );
-
-		return $return;
+		return GravityView_Entry_Notes::add_note( $entry['id'], $user_data->ID, $user_data->display_name, $note_content, 'gravityview/field/notes' );
 	}
 
 	/**
-	 * Get the Add Note form HTML
+	 * Get the Add Note form HTML.
 	 *
 	 * @since 1.17
-	 *
 	 * @since 2.0
 	 *
-	 * @param array                $atts    Shortcode attributes for entry ID
-	 * @param \GV\Template_Context $context The context, when called outside of a shortcode
+	 * @param array                $atts    Shortcode attributes for entry ID.
+	 * @param \GV\Template_Context $context The context, when called outside of a shortcode.
 	 *
-	 * @return string HTML of the Add Note form, or empty string if the user doesn't have the `gravityview_add_entry_notes` cap
+	 * @return string HTML of the Add Note form, or empty string if the user doesn't have the `gravityview_add_entry_notes` cap.
 	 */
 	public static function get_add_note_part( $atts, $context = null ) {
 
@@ -629,12 +754,12 @@ class GravityView_Field_Notes extends GravityView_Field {
 			$gv_entry = \GV\GF_Entry::from_entry( $entry );
 		}
 
-		// Strip extra whitespace in template
+		// Strip extra whitespace in template.
 		$add_note_html = gravityview_strip_whitespace( $add_note_html );
 		$entry_slug    = $gv_entry->get_slug();
 		$nonce_field   = wp_nonce_field( 'gv_note_add_' . $entry_slug, 'gv_note_add', false, false );
 
-		// Only generate the dropdown if the field settings allow it
+		// Only generate the dropdown if the field settings allow it.
 		$email_fields = '';
 		if ( ! empty( $visibility_settings['email'] ) ) {
 			$email_fields = self::get_note_email_fields( $entry_slug );
@@ -650,17 +775,16 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
-	 * Get array of emails addresses from the stored entry
+	 * Get array of emails addresses from the stored entry.
 	 *
 	 * @since 1.17
 	 *
-	 * @return array Array of email addresses connected to the entry
+	 * @return array Array of email addresses connected to the entry.
 	 */
 	private static function get_note_emails_array() {
 
 		$gravityview_view = GravityView_View::getInstance();
 
-		// getting email values
 		$email_fields = GFCommon::get_email_fields( $gravityview_view->getForm() );
 
 		$entry = $gravityview_view->getCurrentEntry();
@@ -668,8 +792,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$note_emails = [];
 
 		foreach ( $email_fields as $email_field ) {
-			if ( ! empty( $entry["{$email_field->id}"] ) && is_email( $entry["{$email_field->id}"] ) ) {
-				$note_emails[] = $entry["{$email_field->id}"];
+			if ( ! empty( $entry[ "{$email_field->id}" ] ) && is_email( $entry[ "{$email_field->id}" ] ) ) {
+				$note_emails[] = $entry[ "{$email_field->id}" ];
 			}
 		}
 
@@ -678,8 +802,8 @@ class GravityView_Field_Notes extends GravityView_Field {
 		 *
 		 * @since 1.17
 		 *
-		 * @param array $note_emails Array of email addresses connected to the entry
-		 * @param array $entry       Current entry
+		 * @param array $note_emails Array of email addresses connected to the entry.
+		 * @param array $entry       Current entry.
 		 */
 		$note_emails = apply_filters( 'gravityview/field/notes/emails', $note_emails, $entry );
 
@@ -687,15 +811,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 	}
 
 	/**
-	 * Generate a HTML dropdown of email values based on email fields from the current form
+	 * Generate a HTML dropdown of email values based on email fields from the current form.
 	 *
 	 * @since 1.17
 	 *
-	 * @uses  get_note_emails_array
+	 * @uses get_note_emails_array()
 	 *
-	 * @param int|string $entry_slug Current entry unique ID
+	 * @param int|string $entry_slug Current entry unique ID.
 	 *
-	 * @return string HTML output
+	 * @return string HTML output.
 	 */
 	private static function get_note_email_fields( $entry_slug = '' ) {
 
@@ -716,7 +840,7 @@ class GravityView_Field_Notes extends GravityView_Field {
 		 *
 		 * @since 1.17
 		 *
-		 * @param bool $include_custom Default: true
+		 * @param bool $include_custom Default: true.
 		 */
 		$include_custom = apply_filters( 'gravityview/field/notes/custom-email', true );
 
@@ -754,12 +878,13 @@ class GravityView_Field_Notes extends GravityView_Field {
 			<?php
 		}
 
-		// TODO: Add a filter
 		return ob_get_clean();
 	}
 
 	/**
-	 * If note has an email to send, and the user has the right caps, send it
+	 * If note has an email to send, and the user has the right caps, send it.
+	 *
+	 * Note: Tap in to Gravity Forms' `gform_after_email` action if you want a return result from sending the email.
 	 *
 	 * @since 1.17
 	 *
@@ -767,123 +892,131 @@ class GravityView_Field_Notes extends GravityView_Field {
 	 * @param array        $entry Entry data.
 	 * @param array        $data  $_POST data.
 	 *
-	 * @return void Tap in to Gravity Forms' `gform_after_email` action if you want a return result from sending the email.
+	 * @return void|false|WP_Error Returns false if email not configured, WP_Error on failure, void on success.
 	 */
 	private function maybe_send_entry_notes( $note = false, $entry = [], $data = [] ) {
 
-		if ( ! $note || ! GVCommon::has_cap( 'gravityview_email_entry_notes' ) ) {
-			gravityview()->log->debug( 'User doesn\'t have "gravityview_email_entry_notes" cap, or $note is empty', [ 'data' => $note ] );
+		// Emailing notes is not configured.
+		if ( empty( $data['gv-note-to'] ) ) {
+			return false;
+		}
 
-			return;
+		// The note is empty.
+		if ( ! $note ) {
+			return new WP_Error( 'gv-add-note-empty', __( 'The note is empty.', 'gk-gravityview' ) );
+		}
+
+		// The user does not have the "gravityview_email_entry_notes" cap.
+		if ( ! GVCommon::has_cap( 'gravityview_email_entry_notes' ) ) {
+			gravityview()->log->error( 'User doesn\'t have "gravityview_email_entry_notes" cap', [ 'data' => $note ] );
+			return new WP_Error( 'gv-email-note-cap', __( 'You do not have permission to email entry notes.', 'gk-gravityview' ) );
 		}
 
 		gravityview()->log->debug( '$data', [ 'data' => $data ] );
 
-		// emailing notes if configured
-		if ( ! empty( $data['gv-note-to'] ) ) {
+		$default_data = [
+			'gv-note-to'        => '',
+			'gv-note-to-custom' => '',
+			'gv-note-subject'   => '',
+			'gv-note-content'   => '',
+			'current-url'       => '',
+		];
 
-			$default_data = [
-				'gv-note-to'        => '',
-				'gv-note-to-custom' => '',
-				'gv-note-subject'   => '',
-				'gv-note-content'   => '',
-				'current-url'       => '',
-			];
+		$current_user = wp_get_current_user();
+		$email_data   = wp_parse_args( $data, $default_data );
 
-			$current_user = wp_get_current_user();
-			$email_data   = wp_parse_args( $data, $default_data );
+		$from = $current_user->user_email;
+		$to   = $email_data['gv-note-to'];
 
-			$from = $current_user->user_email;
-			$to   = $email_data['gv-note-to'];
+		/**
+		 * Documented in get_note_email_fields.
+		 *
+		 * @see get_note_email_fields
+		 */
+		$include_custom = apply_filters( 'gravityview/field/notes/custom-email', true );
 
-			/**
-			 * Documented in get_note_email_fields
-			 *
-			 * @see get_note_email_fields
-			 */
-			$include_custom = apply_filters( 'gravityview/field/notes/custom-email', true );
-
-			if ( 'custom' === $to && $include_custom ) {
-				$to = $email_data['gv-note-to-custom'];
-				gravityview()->log->debug( 'Sending note to a custom email address: {to}', [ 'to' => $to ] );
-			}
-
-			if ( ! GFCommon::is_valid_email_list( $to ) ) {
-				gravityview()->log->error(
-					'$to not a valid email or email list (CSV of emails): {to}',
-					[
-						'to'   => print_r( $to, true ),
-						'data' => $email_data,
-					]
-				);
-
-				return;
-			}
-
-			$bcc      = false;
-			$reply_to = $from;
-			$subject  = trim( $email_data['gv-note-subject'] );
-
-			// We use empty() here because GF uses empty to check against, too. `0` isn't a valid subject to GF
-			$subject        = empty( $subject ) ? self::strings( 'default-email-subject' ) : $subject;
-			$message        = $email_data['gv-note-content'];
-			$email_footer   = self::strings( 'email-footer' );
-			$from_name      = $current_user->display_name;
-			$message_format = 'html';
-
-			/**
-			 * Modify the values passed when sending a note email.
-			 *
-			 * @since 1.17
-			 * @see   GVCommon::send_email
-			 *
-			 * @param array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
-			 */
-			$email_content = apply_filters( 'gravityview/field/notes/email_content', compact( 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer' ) );
-
-			extract( $email_content );
-
-			$is_html = ( 'html' === $message_format );
-
-			// Add the message footer
-			$message .= $this->get_email_footer( $email_footer, $is_html, $email_data );
-
-			/**
-			 * Should the message content have paragraphs added automatically, if using HTML message format.
-			 *
-			 * @since 1.18
-			 *
-			 * @param bool $wpautop_email True: Apply wpautop() to the email message if using; False: Leave as entered (Default: true)
-			 */
-			$wpautop_email = apply_filters( 'gravityview/field/notes/wpautop_email', true );
-
-			if ( $is_html && $wpautop_email ) {
-				$message = wpautop( $message );
-			}
-
-			GVCommon::send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, '', $entry, false );
-
-			$form = isset( $entry['form_id'] ) ? GVCommon::get_form( $entry['form_id'] ) : [];
-
-			/**
-			 * @see https://www.gravityhelp.com/documentation/article/10146-2/ It's here for compatibility with Gravity Forms
-			 */
-			do_action( 'gform_post_send_entry_note', __METHOD__, $to, $from, $subject, $message, $form, $entry );
+		if ( 'custom' === $to && $include_custom ) {
+			$to = $email_data['gv-note-to-custom'];
+			gravityview()->log->debug( 'Sending note to a custom email address: {to}', [ 'to' => $to ] );
 		}
+
+		if ( ! GFCommon::is_valid_email_list( $to ) ) {
+			gravityview()->log->error(
+				'$to not a valid email or email list (CSV of emails): {to}',
+				[
+					'to'   => print_r( $to, true ),
+					'data' => $email_data,
+				]
+			);
+
+			return new WP_Error( 'gv-add-note-invalid-email', __( 'The email address is invalid.', 'gk-gravityview' ) );
+		}
+
+		$bcc      = false;
+		$reply_to = $from;
+		$subject  = trim( $email_data['gv-note-subject'] );
+
+		// We use empty() here because GF uses empty to check against, too. `0` isn't a valid subject to GF
+		$subject        = empty( $subject ) ? self::strings( 'default-email-subject' ) : $subject;
+		$message        = $email_data['gv-note-content'];
+		$email_footer   = self::strings( 'email-footer' );
+		$from_name      = $current_user->display_name;
+		$message_format = 'html';
+
+		/**
+		 * Modify the values passed when sending a note email.
+		 *
+		 * @since 1.17
+		 * @see   GVCommon::send_email
+		 *
+		 * @param array $email_settings Values being passed to the GVCommon::send_email() method: 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer'
+		 */
+		$email_content = apply_filters( 'gravityview/field/notes/email_content', compact( 'from', 'to', 'bcc', 'reply_to', 'subject', 'message', 'from_name', 'message_format', 'entry', 'email_footer' ) );
+
+		extract( $email_content );
+
+		$is_html = ( 'html' === $message_format );
+
+		// Add the message footer.
+		$message .= $this->get_email_footer( $email_footer, $is_html, $email_data );
+
+		/**
+		 * Should the message content have paragraphs added automatically, if using HTML message format.
+		 *
+		 * @since 1.18
+		 *
+		 * @param bool $wpautop_email True: Apply wpautop() to the email message if using; False: Leave as entered (Default: true).
+		 */
+		$wpautop_email = apply_filters( 'gravityview/field/notes/wpautop_email', true );
+
+		if ( $is_html && $wpautop_email ) {
+			$message = wpautop( $message );
+		}
+
+		GVCommon::send_email( $from, $to, $bcc, $reply_to, $subject, $message, $from_name, $message_format, '', $entry, false );
+
+		$form = isset( $entry['form_id'] ) ? GVCommon::get_form( $entry['form_id'] ) : [];
+
+		/**
+		 * @see https://www.gravityhelp.com/documentation/article/10146-2/ It's here for compatibility with Gravity Forms.
+		 */
+		do_action( 'gform_post_send_entry_note', __METHOD__, $to, $from, $subject, $message, $form, $entry );
 	}
 
 	/**
-	 * Get the footer for Entry Note emails
+	 * Get the footer for Entry Note emails.
 	 *
-	 * `{url}` is replaced by the URL of the page where the note form was embedded
+	 * `{url}` is replaced by the URL of the page where the note form was embedded.
 	 *
 	 * @since 1.18
-	 * @see   GravityView_Field_Notes::strings The default value of $message_footer is set here, with the key 'email-footer'
 	 *
-	 * @param string $email_footer The message footer value
-	 * @param bool   $is_html      True: Email is being sent as HTML; False: sent as text
+	 * @see GravityView_Field_Notes::strings() The default value of $message_footer is set here, with the key 'email-footer'.
 	 *
-	 * @return string If email footer is not empty, return the message with placeholders replaced with dynamic values
+	 * @param string $email_footer The message footer value.
+	 * @param bool   $is_html      True: Email is being sent as HTML; False: sent as text.
+	 * @param array  $email_data   Email data array.
+	 *
+	 * @return string If email footer is not empty, return the message with placeholders replaced with dynamic values.
 	 */
 	private function get_email_footer( $email_footer = '', $is_html = true, $email_data = [] ) {
 
