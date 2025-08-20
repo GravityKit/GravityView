@@ -25,11 +25,11 @@
 	"entries": [
 		{
 			"1": "Alice Wonderland",
-			"2": "alice@example.com"
+			"2": "alice@gravitykit.test"
 		},
 		{
 			"1": "Bob Builder",
-			"2": "bob@example.com"
+			"2": "bob@gravitykit.test"
 		}
 	]
 }

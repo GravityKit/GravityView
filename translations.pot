@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.43.2\n"
+"Project-Id-Version: GravityView 2.43.3\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-08-05T19:41:22+00:00\n"
+"POT-Creation-Date: 2025-08-15T01:56:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -3052,7 +3052,7 @@ msgstr ""
 #: includes/class-gravityview-entry-approval.php:202
 #: includes/class-gravityview-entry-approval.php:211
 #: includes/class-gravityview-entry-approval.php:220
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:443
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:570
 msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
@@ -3383,138 +3383,151 @@ msgstr ""
 msgid "Would you like to permanently delete this file? 'Cancel' to stop. 'OK' to delete"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:106
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:110
 msgid "Entry Notes"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:108
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:112
 msgid "Display, add, and delete notes for an entry."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:379
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:505
 msgid "Note Settings"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:380
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:506
 msgctxt "%s is opening and closing HTML link"
 msgid "Only users with specific capabilities will be able to view, add and delete notes. %1$sRead more%2$s."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:383
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:509
 msgid "Display notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:386
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:512
 msgid "Display notes to users who are not logged-in?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:390
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:516
 msgid "Enable adding notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:393
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:519
 msgid "Allow emailing notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:397
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:523
 msgid "Allow deleting notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:425
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:551
 msgid "Add Note"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:426
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:552
 msgid "Note added."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:427
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:553
 msgid "Note Content"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:428
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:554
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:120
 msgid "Delete"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:429
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:555
 msgid "Are you sure you want to delete the selected notes?"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:430
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:556
 msgid "Notes for this entry"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:431
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:557
 msgid "Toggle all notes"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:432
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:558
 msgid "There are no notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:433
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:559
 msgid "Processing&hellip;"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:434
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:560
 msgid "Other email address"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:435
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:561
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:259
 msgid "Email address"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:436
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:562
 msgctxt "Example email address used as a placeholder"
 msgid "you@example.com"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:437
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:563
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:258
 msgid "Subject"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:438
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:564
 msgid "Email subject"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:439
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:565
 msgid "New entry note"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:440
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:566
 msgid "This note was sent from {url}"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:441
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:567
 msgid "Also email this note to"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:442
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:568
 msgid "There was an error adding the note."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:444
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:569
+msgid "There was an error emailing the note."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:571
 msgctxt "Message to display when submitting a note without content."
 msgid "Note cannot be blank."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:445
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:572
 msgid "You don't have the ability to delete notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:446
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:573
 msgid "You don't have the ability to add notes."
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:489
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:614
 msgid "added on {date_created_formatted}"
 msgstr ""
 
-#: includes/extensions/entry-notes/class-gravityview-field-notes.php:574
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:702
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:906
 msgid "The note is empty."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:912
+msgid "You do not have permission to email entry notes."
+msgstr ""
+
+#: includes/extensions/entry-notes/class-gravityview-field-notes.php:952
+msgid "The email address is invalid."
 msgstr ""
 
 #: includes/extensions/lightbox-entry/class-gravityview-lightbox-entry.php:137

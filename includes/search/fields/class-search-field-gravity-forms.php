@@ -188,7 +188,9 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 			// GF 2.9+.
 			if ( method_exists( $field, 'get_form_editor_field_type_icon' ) ) {
 				return $field->get_form_editor_field_type_icon();
-			} elseif ( method_exists( $field, 'get_form_editor_field_icon' ) ) {
+			}
+
+			if ( method_exists( $field, 'get_form_editor_field_icon' ) ) {
 				// GF 2.5+.
 				return $field->get_form_editor_field_icon();
 			}
