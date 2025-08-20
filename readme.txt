@@ -23,6 +23,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🐛 Fixed
+
+* Some Search Field icons were displaying too large.
+
 #### ✨ Improved
 
 * Detection of BuddyBoss and BuddyPress pages on groups pages as well as user profile pages.
