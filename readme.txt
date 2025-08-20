@@ -23,14 +23,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
-#### 🐛 Fixed
-
-* Removing all files from a field in Edit Entry now stores the correct (empty) value.
+#### 🚀 Added
+* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
+* Added area settings for Search Bar widget columns with a new layout option to arrange search fields either stacked (vertical) or side by side (horizontal).
 
 #### ✨ Improved
-
 * Detection of BuddyBoss and BuddyPress pages on groups pages as well as user profile pages.
 * Performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
+* Text alignment classes (left, right) are no longer applied on columns in the search widget.
+* File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
+
+#### 🐛 Fixed
+* Removing all files from a field in Edit Entry now stores the correct (empty) value.
+* Date Range filters now work correctly when only a start or end date is entered. Also fixes the issue when using the DataTables layout.
+* Some Search Field icons were displaying too large.
 * A valid Edit Entry form submission is now redirected to itself to prevent accidental repeat POST requests.
 
 = 2.43.3 on August 14, 2025 =
