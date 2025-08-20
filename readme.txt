@@ -24,11 +24,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🐛 Fixed
-
+* Date Range filters now work correctly when only a start or end date is entered. Also fixes the issue when using the DataTables layout.
 * Some Search Field icons were displaying too large.
 
 #### ✨ Improved
-
 * Detection of BuddyBoss and BuddyPress pages on groups pages as well as user profile pages.
 * Performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
 
