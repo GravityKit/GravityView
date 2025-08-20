@@ -36,6 +36,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 * Date Range filters now work correctly when only a start or end date is entered. Also fixes the issue when using the DataTables layout.
 * Some Search Field icons were displaying too large.
+* Approval-related notifications were firing incorrectly when editing entries, even when the approval status didn't change.
 
 = 2.43.3 on August 14, 2025 =
 
