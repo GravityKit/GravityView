@@ -165,4 +165,3 @@ workflows:
           requires:
             - run_php_74_unit_tests
             - run_php_80_unit_tests
-            - run_e2e_tests

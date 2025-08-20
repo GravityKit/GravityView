@@ -31,7 +31,7 @@ test('File size limit validation during entry edit', async ({ page }) => {
   const validImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/fog.jpg');
   await fileInput.setInputFiles(validImagePath);
 
-  await expect(page.getByText(/fog\.jpg/i)).toBeVisible();
+  await expect(page.getByText('fog.jpg', { exact: true })).toBeVisible();
 
   await page.getByLabel('Name(Required)').fill('');
 

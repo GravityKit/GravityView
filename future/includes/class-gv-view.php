@@ -733,7 +733,6 @@ class View implements \ArrayAccess {
 	public static function from_post( $post ) {
 
 		if ( ! $post || self::POST_TYPE !== get_post_type( $post ) ) {
-			gravityview()->log->error( 'Only gravityview post types can be \GV\View instances.' );
 			return null;
 		}
 

@@ -151,11 +151,17 @@ class GravityView_Edit_Entry {
 			return $visible;
 		}
 
-		static $visibility_cache_for_view = array();
+		// We're already on the edit entry page, so we don't need to show the field.
+		if ( gravityview()->request->is_edit_entry() ) {
+			return false;
+		}
+
+		static $visibility_cache_for_view = [];
 
 		$anchor_id = $view->get_anchor_id();
 
-		if ( ! is_null( $result = \GV\Utils::get( $visibility_cache_for_view, $anchor_id, null ) ) ) {
+		$result = \GV\Utils::get( $visibility_cache_for_view, $anchor_id, null );
+		if ( ! is_null( $result ) ) {
 			return $result;
 		}
 

@@ -5,6 +5,7 @@
  * @global \GV\Template_Context $gravityview
  * @since 2.0
  */
+
 if ( ! isset( $gravityview ) || empty( $gravityview->template ) ) {
 	gravityview()->log->error( '{file} template loaded without context', array( 'file' => __FILE__ ) );
 	return;
@@ -22,11 +23,17 @@ $is_single_input = floor( $field_id ) !== floatval( $field_id );
 
 $output = '';
 
-$display_type = \GV\Utils::get( $field_settings, 'choice_display' );
+$display_type   = \GV\Utils::get( $field_settings, 'choice_display' );
+$display_format = \GV\Utils::get( $field_settings, 'display_format', 'default' );
 
-// It's the parent field, not an input
+// It's the parent field, not an input.
 if ( ! $is_single_input ) {
-	if ( 'label' === $display_type ) {
+	if ( 'csv' === $display_format ) {
+		// Use helper method for CSV formatting.
+		$show_label = ( 'label' === $display_type );
+		$output     = GravityView_Field_Checkbox::format_checkbox_csv( $value, $field, $show_label, $entry, $gravityview );
+	} elseif ( 'label' === $display_type ) {
+		// Use standard GF formatting (bulleted list).
 		$output = $field->get_value_entry_detail( $value, '', true );
 	} else {
 		$output = gravityview_get_field_value( $entry, $field_id, $display_value );
@@ -43,7 +50,7 @@ if ( ! $is_single_input ) {
 			$output = gravityview_get_field_label( $form, $field_id, $value );
 			break;
 		case 'tick':
-		default: // Backward compatibility
+		default: // Backward compatibility.
 			if ( '' !== $field_value ) {
 				/**
 				 * Change the output for a checkbox "check" symbol. Default is the "dashicons-yes" icon.
@@ -63,4 +70,5 @@ if ( ! $is_single_input ) {
 	}
 }
 
+// @phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped by GF or our helper method
 echo $output;

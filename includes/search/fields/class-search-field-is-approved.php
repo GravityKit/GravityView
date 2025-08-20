@@ -67,12 +67,4 @@ final class Search_Field_Is_Approved extends Search_Field_Choices {
 			GravityView_Entry_Approval_Status::get_all()
 		);
 	}
-
-	/**
-	 * @inheritDoc
-	 * @since 2.42
-	 */
-	protected function get_input_name(): string {
-		return 'is_approved';
-	}
 }
