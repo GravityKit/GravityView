@@ -43,8 +43,8 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 	 */
 	public function set_post_categories( $form = array(), $entry_id = 0 ) {
 
-		$entry   = GFAPI::get_entry( $entry_id );
-		$post_id = \GV\Utils::get( $entry, 'post_id' );
+		$entry = GFAPI::get_entry( $entry_id );
+		$post_id = GVCommon::get_post_id_from_entry( $entry );
 
 		if ( empty( $post_id ) ) {
 			return false;
@@ -125,9 +125,9 @@ class GravityView_Field_Post_Category extends GravityView_Field {
 	function edit_entry_post_category_choices( $choices, $field, $form_id ) {
 
 		$entry = GravityView_Edit_Entry::getInstance()->instances['render']->get_entry();
+		$post_id = $entry ? GVCommon::get_post_id_from_entry( $entry ) : false;
 
-		// $entry['post_id'] should always be set, but we check to make sure.
-		if ( $entry && isset( $entry['post_id'] ) && $post_id = $entry['post_id'] ) {
+		if ( $post_id ) {
 
 			$post_categories = wp_get_post_categories( $post_id, array( 'fields' => 'ids' ) );
 
