@@ -34,8 +34,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
 
 #### 🐛 Fixed
+* Removing all files from a field in Edit Entry now stores the correct (empty) value.
 * Date Range filters now work correctly when only a start or end date is entered. Also fixes the issue when using the DataTables layout.
 * Some Search Field icons were displaying too large.
+* A valid Edit Entry form submission is now redirected to itself to prevent accidental repeat POST requests.
 
 = 2.43.3 on August 14, 2025 =
 
