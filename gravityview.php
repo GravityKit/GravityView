@@ -92,6 +92,11 @@ require GRAVITYVIEW_DIR . 'future/loader.php';
 add_action(
 	'plugins_loaded',
 	function () {
+
+		if ( class_exists( 'GravityView_Plugin', false ) ) {
+			return;
+		}
+
 		/**
 		 * GravityView_Plugin is only used by the legacy class-gravityview-extension.php that's shipped with extensions.
 		 *
