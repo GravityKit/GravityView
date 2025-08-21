@@ -1264,9 +1264,11 @@ HTML;
 								<div class="gv-droppable-area-header-actions">
 									<?php
 									/**
-									 * @action Modifies the area actions in the admin View editor.
+									 * Allows adding custom actions inside the View editor's droppable areas.
 									 *
-									 * @since  $ver$
+									 * @action `gk/gravityview/admin-views/area/actions`
+									 *
+									 * @since 2.44
 									 *
 									 * @param array  $area        The current area configuration.
 									 * @param string $type        The type of area (e.g., 'widget', 'field').
@@ -2169,7 +2171,7 @@ HTML;
 	/**
 	 * Renders a "Clear all fields" button in the View configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @param array  $area        The area.
 	 * @param string $type        The type.

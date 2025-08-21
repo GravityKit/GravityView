@@ -25,7 +25,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Internal key used to track if a file input was disabled.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @var string
 	 */
@@ -478,7 +478,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Returns the transient key for the entry message.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @return string The transient key.
 	 */
@@ -491,7 +491,7 @@ class GravityView_Edit_Entry_Render {
 	 *
 	 * This is called the Post-Redirect-Get (PRG) pattern.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @param string $type Type of message: 'success' or 'error'.
 	 */
@@ -1336,7 +1336,7 @@ class GravityView_Edit_Entry_Render {
 	/**
 	 * Display the update message based on validation status.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @return void
 	 */

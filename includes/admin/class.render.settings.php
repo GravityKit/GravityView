@@ -19,7 +19,7 @@ class GravityView_Render_Settings {
 	/**
 	 * A placeholder when no options are available.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 */
 	public const NO_OPTIONS = '<!-- No Options -->';
 

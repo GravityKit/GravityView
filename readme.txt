@@ -41,6 +41,9 @@ This release updates the View editor with new display options for Checkbox field
 * Date Range filters returned incorrect results when only a start or end date was entered (including in the DataTables layout).
 * Inconsistent sizing of Search Bar field icons.
 
+#### 💻 Developer Updates
+* Added `gk/gravityview/admin-views/area/actions` hook, which runs inside the View editor’s droppable areas and allows adding custom actions.
+
 = 2.43.3 on August 14, 2025 =
 
 This update improves Entry Notes and improves the default behavior for the Search Bar labels.

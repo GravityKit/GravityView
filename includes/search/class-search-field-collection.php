@@ -72,7 +72,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Holds the configuration per position.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @var array
 	 */
@@ -598,7 +598,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Sets the position configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @param string $position      The position.
 	 * @param array  $configuration The configuration.
@@ -610,7 +610,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	/**
 	 * Returns the position configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @param string $position The position.
 	 *
