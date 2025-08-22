@@ -179,7 +179,7 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 
 		$context->request->returns = ['is_entry' => $entry_0];
 
-		foreach ( range( 1, 10 ) as $_ ) {
+		for ( $i = 0; $i < 10; $i++ ) {
 			\GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( [
 				'form_id' => $form['id'],
 				'status' => 'active',
