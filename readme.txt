@@ -37,7 +37,7 @@ This release updates the View editor with new display options for Checkbox field
 * Entries updated through the Edit Entry page redirect back to that page, preventing repeated submissions.
 
 #### 🐛 Fixed
-* Removing all files from a field on the Edit Entry page did not store the correct empty value.
+* Removing a file from a File Upload field on the Edit Entry page did not clear the field.
 * Date Range filters returned incorrect results when only a start or end date was entered (including in the DataTables layout).
 * Inconsistent sizing of Search Bar field icons.
 
