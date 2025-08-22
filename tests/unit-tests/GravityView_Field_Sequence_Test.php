@@ -416,6 +416,226 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Test that reverse mode respects View filters when calculating total
+	 * This tests the fix where we prioritize View's entries collection over GFAPI
+	 * @covers GravityView_Field_Sequence::calculate_starting_number
+	 */
+	public function test_reverse_respects_view_filters() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		// Create entries with different field values for filtering
+		// These will be filtered OUT by the View
+		for ( $i = 0; $i < 3; $i++ ) {
+			$this->factory->entry->create_and_get( [
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'1' => 'Hidden', // These won't match the filter
+			] );
+		}
+
+		// Create entries that WILL be shown in the View
+		for ( $i = 0; $i < 2; $i++ ) {
+			$this->factory->entry->create_and_get( [
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'1' => 'Visible', // These will match the filter
+			] );
+		}
+
+		// Create view with filter to only show entries where field 1 = 'Visible'
+		// This should result in only 2 entries being counted, not 5
+		$post = $this->factory->view->create_and_get( [
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => [
+				'page_size' => 10,
+				'show_only_approved' => 0,
+				'search_field' => '1',
+				'search_value' => 'Visible',
+				'search_operator' => 'is',
+			],
+			'fields' => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id' => 'sequence',
+						'start' => '10',
+						'reverse' => '1', // Enable reverse mode
+					],
+				],
+			],
+		] );
+
+		$view = \GV\View::from_post( $post );
+		$field = $view->fields->by_visible( $view )->first();
+
+		// Create entry to test with
+		$entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'Visible', // This entry matches the filter
+		] ) );
+
+		// Flush cache to ensure fresh data
+		\GV\View::_flush_cache();
+
+		// Set up the request context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns = ['is_view' => $view];
+
+		$context = \GV\Template_Context::from_template( [
+			'view' => $view,
+			'entry' => $entry,
+			'field' => $field,
+		] );
+
+		// With 3 total VISIBLE entries (2 created + 1 test entry) and reverse mode with start=10:
+		// The highest number should be 10 + 3 - 1 = 12
+		// First entry in reverse should be 12
+		$sequence = $this->sequence_field->get_sequence( $context );
+		$this->assertEquals( 12, $sequence, 'Reverse mode should only count filtered entries (3 visible, not 6 total)' );
+
+		// Next should be 11
+		$sequence = $this->sequence_field->get_sequence( $context );
+		$this->assertEquals( 11, $sequence, 'Second entry in reverse should decrement correctly' );
+
+		// Third should be 10
+		$sequence = $this->sequence_field->get_sequence( $context );
+		$this->assertEquals( 10, $sequence, 'Third entry in reverse should reach the start value' );
+	}
+
+	/**
+	 * Test that reverse mode respects approval filters
+	 * @covers GravityView_Field_Sequence::calculate_starting_number
+	 */
+	public function test_reverse_respects_approval_filters() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		// Create approved entries
+		$approved_entries = [];
+		for ( $i = 0; $i < 2; $i++ ) {
+			$entry = $this->factory->entry->create_and_get( [
+				'form_id' => $form['id'],
+				'status' => 'active',
+			] );
+			gform_update_meta( $entry['id'], 'is_approved', '1' );
+			$approved_entries[] = $entry;
+		}
+
+		// Create unapproved entries
+		for ( $i = 0; $i < 3; $i++ ) {
+			$entry = $this->factory->entry->create_and_get( [
+				'form_id' => $form['id'],
+				'status' => 'active',
+			] );
+			// These entries are NOT approved
+			gform_update_meta( $entry['id'], 'is_approved', '0' );
+		}
+
+		// Create view that only shows approved entries
+		$post = $this->factory->view->create_and_get( [
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => [
+				'page_size' => 10,
+				'show_only_approved' => 1, // Only show approved entries
+			],
+			'fields' => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id' => 'sequence',
+						'start' => '100',
+						'reverse' => '1', // Enable reverse mode
+					],
+				],
+			],
+		] );
+
+		$view = \GV\View::from_post( $post );
+		$field = $view->fields->by_visible( $view )->first();
+
+		// Use one of the approved entries for testing
+		$entry = \GV\GF_Entry::from_entry( $approved_entries[0] );
+
+		// Flush cache to ensure fresh data
+		\GV\View::_flush_cache();
+
+		// Set up the request context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns = ['is_view' => $view];
+
+		$context = \GV\Template_Context::from_template( [
+			'view' => $view,
+			'entry' => $entry,
+			'field' => $field,
+		] );
+
+		// With 2 approved entries and reverse mode with start=100:
+		// The highest number should be 100 + 2 - 1 = 101
+		// First entry in reverse should be 101
+		$sequence = $this->sequence_field->get_sequence( $context );
+		$this->assertEquals( 101, $sequence, 'Reverse mode should only count approved entries (2 approved, not 5 total)' );
+
+		// Next should be 100
+		$sequence = $this->sequence_field->get_sequence( $context );
+		$this->assertEquals( 100, $sequence, 'Second approved entry should be 100' );
+	}
+
+	/**
+	 * Test that reverse mode handles empty views gracefully
+	 * @covers GravityView_Field_Sequence::calculate_starting_number
+	 */
+	public function test_reverse_with_no_entries_fallback() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		// Create a view with filters that match NO entries
+		$post = $this->factory->view->create_and_get( [
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => [
+				'page_size' => 10,
+				'show_only_approved' => 0,
+				'search_field' => '1',
+				'search_value' => 'NonExistentValue', // This won't match any entries
+				'search_operator' => 'is',
+			],
+			'fields' => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id' => 'sequence',
+						'start' => '100',
+						'reverse' => '1', // Enable reverse mode
+					],
+				],
+			],
+		] );
+
+		$view = \GV\View::from_post( $post );
+		$field = $view->fields->by_visible( $view )->first();
+
+		// Create an entry that doesn't match the filter
+		$entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'DifferentValue', // Doesn't match the filter
+		] ) );
+
+		// Set up the context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns = ['is_view' => $view];
+
+		$context = \GV\Template_Context::from_template( [
+			'view' => $view,
+			'entry' => $entry,
+			'field' => $field,
+		] );
+
+		// When no entries match the filter, total should default to 1
+		// and the sequence should be: start + 1 - 1 = start
+		$sequence = $this->sequence_field->get_sequence( $context );
+		$this->assertEquals( 100, $sequence, 'With no matching entries, reverse should default safely to start value' );
+	}
+
+	/**
 	 * Test pagination with custom start values
 	 * @covers GravityView_Field_Sequence::get_sequence
 	 */
@@ -860,6 +1080,84 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Test that SQL query optimization only selects entry IDs for memory efficiency
+	 * This validates that the memory optimization is working to reduce data transfer
+	 * @covers GravityView_Field_Sequence::capture_view_sql_query
+	 */
+	public function test_sql_optimization_selects_only_ids() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		// Create multiple entries to simulate a dataset
+		for ( $i = 0; $i < 3; $i++ ) {
+			$this->factory->entry->create_and_get( [
+				'form_id' => $form['id'],
+				'status' => 'active',
+				'1' => 'Test Value ' . $i,
+				'2' => 'Another Value ' . $i,
+			] );
+		}
+
+		$post = $this->factory->view->create_and_get( [
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => [
+				'page_size' => 10,
+				'show_only_approved' => 0,
+			],
+			'fields' => [
+				'single_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id' => 'sequence',
+						'start' => '1',
+					],
+				],
+			],
+		] );
+
+		$view = \GV\View::from_post( $post );
+		$field = $view->fields->by_visible( $view )->first();
+
+		$entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status' => 'active',
+		] ) );
+
+		// Set up mock request for single entry view
+		$context = \GV\Template_Context::from_template( [
+			'view' => $view,
+			'entry' => $entry,
+			'field' => $field,
+			'request' => new \GV\Mock_Request(),
+		] );
+		$context->request->returns = ['is_entry' => $entry];
+
+		// Hook into the wpdb query to check what's actually being executed
+		global $wpdb;
+		$captured_query = null;
+		add_filter( 'query', function( $query ) use ( &$captured_query, $form ) {
+			// Look for our optimized query that selects only IDs
+			if ( strpos( $query, 'SELECT `t1`.`id`' ) !== false && strpos( $query, 'form_id' ) !== false ) {
+				$captured_query = $query;
+			}
+			return $query;
+		} );
+
+		// Trigger the sequence calculation
+		$sequence = $this->sequence_field->get_sequence( $context );
+
+		// Verify that we got a sequence number (basic functionality check)
+		$this->assertGreaterThan( 0, $sequence, 'Should return a valid sequence number' );
+		
+		// Verify that our optimized query was executed
+		$this->assertNotNull( $captured_query, 'Optimized SQL query selecting only IDs should have been executed' );
+		$this->assertStringContainsString( 'SELECT `t1`.`id`', $captured_query, 'Query should select only the ID column for memory efficiency' );
+		$this->assertStringNotContainsString( 'SELECT *', $captured_query, 'Query should NOT select all columns' );
+
+		// Clean up
+		remove_all_filters( 'query' );
+	}
+
+	/**
 	 * Test that numeric string start values are properly preserved
 	 * This specifically tests the fix where is_numeric() is used instead of empty()
 	 * @covers GravityView_Field_Sequence::ensure_field_configuration
@@ -907,7 +1205,7 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 		foreach ( $test_values as $test_value ) {
 			$field->UID = wp_generate_password( 8, false );
 			$field->start = $test_value;
-			
+
 			$expected = (int) $test_value;
 			$sequence = $this->sequence_field->get_sequence( $context );
 			$this->assertEquals( $expected, $sequence, "Numeric string '$test_value' should be converted to int $expected" );
