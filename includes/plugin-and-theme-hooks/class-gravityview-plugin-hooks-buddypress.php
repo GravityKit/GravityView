@@ -9,7 +9,7 @@
  * @link      http://www.gravitykit.com
  * @copyright Copyright 2025, Katz Web Services, Inc.
  *
- * @since TODO
+ * @since 2.41
  */
 
 /**
@@ -22,26 +22,21 @@ class GravityView_Plugin_Hooks_BuddyPress extends GravityView_Plugin_and_Theme_H
 	/**
 	 * The function name to check if we are on a BuddyPress/Boss page.
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 *
 	 * @var string
 	 */
-	protected $function_name = 'bp_is_user_profile';
+	protected $function_name = 'is_buddypress';
 
 	/**
 	 * Remove the permalink structure for BuddyPress pages.
 	 *
-	 * @since TODO
+	 * @since 2.41
 	 *
 	 * @return bool Whether to remove the permalink structure from View rendered links.
 	 */
 	protected function should_disable_permalink_structure() {
-
-		if ( ! bp_is_user_profile() ) {
-			return false;
-		}
-
-		return true;
+		return is_buddypress();
 	}
 }
 

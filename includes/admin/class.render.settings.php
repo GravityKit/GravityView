@@ -17,6 +17,13 @@ use GV\Utils;
 
 class GravityView_Render_Settings {
 	/**
+	 * A placeholder when no options are available.
+	 *
+	 * @since 2.44
+	 */
+	public const NO_OPTIONS = '<!-- No Options -->';
+
+	/**
 	 * Registers required filter hooks.
 	 *
 	 * @since 2.32.0
@@ -444,7 +451,7 @@ class GravityView_Render_Settings {
 
 		// If there are no options, return what we got.
 		if ( empty( $option_groups ) ) {
-			return $hidden_fields . '<!-- No Options -->'; // The HTML comment is here for checking if the output is empty in render_label()
+			return $hidden_fields . self::NO_OPTIONS; // The NO OPTIONS marker is here for checking if the output is empty in render_label().
 		}
 
 		$settings_title = esc_attr( sprintf( __( '%s Settings', 'gk-gravityview' ), wp_strip_all_tags( html_entity_decode( $field_label ) ) ) );
@@ -580,6 +587,12 @@ class GravityView_Render_Settings {
 			);
 
 			$field_settings = sprintf( '<div class="gv-dialog-options--content">%s</div>', $field_settings );
+		} elseif ( 'area' === $field_type ) {
+			$field_settings = sprintf( '<div class="gv-dialog-options--content">%s</div>', $field_settings );
+			$item_details   = sprintf(
+				'<div class="gv-field-details--container"><h3 class="search-field-title"><span>%s</span></h3></div>',
+				$item['label'] ?? ''
+			);
 		} else {
 			$subtitle               = ! empty( $item['subtitle'] ) ? '<div class="subtitle">' . $item['subtitle'] . '</div>' : '';
 			$widget_details_content = Utils::get( $item, 'description', '' );
