@@ -229,19 +229,19 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	 *
 	 * @param \GV\Template_Context $context The template context containing View, field, and entry information.
 	 *
-	 * @return int The sequence number for the field/entry within the view results.
+	 * @return int The sequence number for the field/entry within the View results.
 	 */
 	public function get_sequence( $context ) {
-		// Static cache for starting line numbers per view/field combination.
+		// Static cache for starting line numbers per View/field combination.
 		static $startlines = array();
 
 		// Ensure field configuration is loaded from View settings.
 		$this->ensure_field_configuration( $context );
 
-		// Generate unique key for this view/field combination to track sequence state.
+		// Generate unique key for this View/field combination to track sequence state.
 		$context_key = $this->get_context_key( $context );
 
-		// Handle single entry view - need to find its position in the full result set.
+		// Handle single entry View - need to find its position in the full result set.
 		if ( $this->is_single_entry_view( $context ) ) {
 			return $this->get_single_entry_sequence( $context );
 		}
@@ -289,13 +289,13 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	}
 
 	/**
-	 * Generate a unique key for caching sequence state per view/field combination.
+	 * Generate a unique key for caching sequence state per View/field combination.
 	 *
 	 * @since TODO
 	 *
 	 * @param \GV\Template_Context $context The template context.
 	 *
-	 * @return string MD5 hash of the view anchor ID and field UID.
+	 * @return string MD5 hash of the View anchor ID and field UID.
 	 */
 	private function get_context_key( $context ) {
 		return md5(
@@ -309,7 +309,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	}
 
 	/**
-	 * Check if we're in a single entry view context.
+	 * Check if we're in a single entry View context.
 	 *
 	 * @since TODO
 	 *
@@ -322,10 +322,10 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	}
 
 	/**
-	 * Calculate sequence number for a single entry view.
+	 * Calculate sequence number for a single entry View.
 	 *
 	 * This method finds the position of the current entry within the full
-	 * result set by executing the view's query and locating the entry.
+	 * result set by executing the View's query and locating the entry.
 	 *
 	 * @since TODO
 	 *
@@ -336,7 +336,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	private function get_single_entry_sequence( $context ) {
 		$entry = $context->request->is_entry();
 
-		// Capture the SQL query used by the view.
+		// Capture the SQL query used by the View.
 		$sql_query = $this->capture_view_sql_query( $context );
 
 		if ( empty( $sql_query ) ) {
@@ -355,7 +355,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	}
 
 	/**
-	 * Capture the SQL query used to fetch entries for the view.
+	 * Capture the SQL query used to fetch entries for the View.
 	 *
 	 * @since TODO
 	 *
@@ -390,7 +390,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		// This significantly reduces memory usage for large result sets
 		$sql_query['select'] = 'SELECT `t1`.`id`';
 
-		// For single entry views with a custom start value, sort by ID ASC to get
+		// For Single Entry context with a custom start value, sort by ID ASC to get
 		// consistent sequence numbers based on creation order
 		// Only override if start value is different from default (1)
 		if ( $this->is_single_entry_view( $context ) && $context->field->start !== 1 ) {
@@ -438,7 +438,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 				continue;
 			}
 
-			// Calculate sequence based on position in the view's sort order.
+			// Calculate sequence based on position in the View's sort order.
 			if ( $context->field->reverse ) {
 				// For reverse: highest number - position.
 				return $context->field->start + $total_entries - $position - 1;
@@ -452,7 +452,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	}
 
 	/**
-	 * Calculate the starting number for paginated views.
+	 * Calculate the starting number for paginated Views.
 	 *
 	 * Takes into account the current page, page size, and whether
 	 * the sequence is reversed.
@@ -477,7 +477,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 			// Get total entries count
 			$total_entries = 0;
 
-			// Primary method: Use view's entries collection to respect all View filters.
+			// Primary method: Use View's entries collection to respect all View filters.
 			// This includes search filters, field filters, approval status, joins, etc.
 			try {
 				$request = gravityview()->request;
@@ -488,7 +488,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 					}
 				}
 			} catch ( \Exception $e ) {
-				// If there's any error getting the view's collection, we'll fall back.
+				// If there's any error getting the View's collection, we'll fall back.
 				$total_entries = 0;
 			}
 
