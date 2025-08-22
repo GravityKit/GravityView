@@ -34,6 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
 
 #### 🐛 Fixed
+* Result Number (sequence) field now properly respects the "Start Number" configuration setting in Views.
 * Date Range filters now work correctly when only a start or end date is entered. Also fixes the issue when using the DataTables layout.
 * Some Search Field icons were displaying too large.
 
