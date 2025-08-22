@@ -125,7 +125,7 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 		$this->assertEquals( 4, $field->field->get_sequence( $context ) );
 		$this->assertEquals( 3, $field->field->get_sequence( $context ) );
 
-		$_GET = 0;
+		$_GET = [];
 
 		// Test reverse with custom start
 		$field->UID   = wp_generate_password( 8, false );
