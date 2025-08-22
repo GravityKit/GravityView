@@ -2392,7 +2392,7 @@ class GravityView_Edit_Entry_Render {
 			} else if ( 'address' === $field->type ) {
 				// Address fields have multiple inputs and need special handling.
 				// This prevents defaultValue from being set to an empty string.
-				$address_values = array();
+				$address_values = [];
 				$inputs = $field->get_entry_inputs();
 
 				if ( is_array( $inputs ) ) {
