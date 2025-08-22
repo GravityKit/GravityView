@@ -2607,6 +2607,118 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * Test that Address field with empty string value doesn't cause PHP errors
+	 * Tests the fix for: PHP Fatal error: Cannot assign an empty string to a string offset
+	 * 
+	 * @since TODO
+	 * @covers GravityView_Edit_Entry_Render::get_field_value
+	 */
+	public function test_address_field_empty_string_fix() {
+		$this->_reset_context();
+		
+		// Create a user who can edit entries
+		$user = $this->factory->user->create_and_set( array(
+			'user_login' => 'test_user',
+			'role'       => 'administrator',
+		) );
+		
+		// Create a form with an Address field
+		$form = $this->factory->form->create_and_get( array(
+			'fields' => array(
+				array(
+					'id'                    => 1,
+					'type'                  => 'address',
+					'label'                 => 'Address',
+					'addressType'           => 'us',
+					'defaultCountry'        => 'United States',
+					'inputs'                => array(
+						array(
+							'id'    => '1.1',
+							'label' => 'Street Address',
+						),
+						array(
+							'id'    => '1.2',
+							'label' => 'Address Line 2',
+						),
+						array(
+							'id'    => '1.3',
+							'label' => 'City',
+						),
+						array(
+							'id'    => '1.4',
+							'label' => 'State / Province',
+						),
+						array(
+							'id'    => '1.5',
+							'label' => 'ZIP / Postal Code',
+						),
+						array(
+							'id'    => '1.6',
+							'label' => 'Country',
+						),
+					),
+					'enableCopyValuesOption' => true,
+				),
+			),
+		) );
+
+		// Create an entry with partial address data
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id'    => $form['id'],
+			'status'     => 'active',
+			'created_by' => $user->ID,
+			'1.1'        => '123 Main St',
+			'1.3'        => 'New York',
+			'1.4'        => 'NY',
+		) );
+
+		// Create a view for editing
+		$view = $this->factory->view->create_and_get( array(
+			'form_id'  => $form['id'],
+			'settings' => array(
+				'user_edit' => 1,
+			),
+		) );
+
+		// Set up the request context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Set POST data for editing
+		$_POST = array(
+			'input_1_1' => '456 Second St',
+			'input_1_3' => 'Boston',
+			'input_1_4' => 'MA',
+		);
+
+		// This should NOT cause a PHP error after our fix
+		// The fix ensures that when get_value_submission returns an empty string
+		// for an Address field, we convert it to an array before using it
+		try {
+			list( $output, $render, $updated_entry ) = $this->_emulate_render( $form, $view, $entry );
+			$this->assertTrue( true, 'No PHP error should occur when processing address field' );
+			
+			// Verify the output contains address fields
+			$this->assertStringContainsString( "name='input_1_1'", $output, 'Should contain street address input' );
+			$this->assertStringContainsString( "name='input_1_3'", $output, 'Should contain city input' );
+			$this->assertStringContainsString( "name='input_1_4'", $output, 'Should contain state input' );
+			
+		} catch ( \Error $e ) {
+			// Check if it's the specific error we're testing for
+			if ( strpos( $e->getMessage(), 'Cannot assign an empty string to a string offset' ) !== false ||
+			     strpos( $e->getMessage(), 'Illegal string offset' ) !== false ) {
+				$this->fail( 'Address field fix is not working - PHP Error occurred: ' . $e->getMessage() );
+			} else {
+				// Re-throw other errors
+				throw $e;
+			}
+		}
+		
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */
