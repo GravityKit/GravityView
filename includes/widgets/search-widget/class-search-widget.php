@@ -43,7 +43,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Holds the recorded areas for rendering the settings.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @var array
 	 */
@@ -847,7 +847,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				gv_empty( $value, false, false )
 				|| (
 					is_array( $value ) && 1 === count( $value )
-					&& gv_empty( $value[0], false, false )
+					&& gv_empty( array_values($value)[0], false, false )
 				)
 			) {
 				/**
@@ -2449,7 +2449,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Resets the recorded areas for the next row.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @param bool   $is_dynamic  Whether the area is dynamic.
 	 * @param string $template_id The template ID.
@@ -2467,7 +2467,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Renders a "Clear all fields" button in the View configuration.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @param array  $area        The area.
 	 * @param string $type        The type.
@@ -2495,7 +2495,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Registers the area settings for the search fields.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @param array  $settings    The area settings.
 	 * @param string $template_id The template ID.
@@ -2528,7 +2528,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	/**
 	 * Renders the settings for a search area.
 	 *
-	 * @since $ver$
+	 * @since 2.44
 	 *
 	 * @param bool   $is_dynamic  Whether the area is dynamic.
 	 * @param View   $view        The View.

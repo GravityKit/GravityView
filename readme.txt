@@ -23,38 +23,47 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🐛 Fixed
+
+* Result Number (sequence) field now properly respects the "Start Number" configuration setting in Views.
+
+= 2.44 on August 21, 2025 =
+
+This release updates the View editor with new display options for Checkbox fields and Search Bar columns, enhances Magic Links validation and BuddyBoss/BuddyPress page support, and resolves issues affecting the Search Bar widget and Edit Entry screen.
+
 #### 🚀 Added
-* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
-* Added area settings for Search Bar widget columns with a new layout option to arrange search fields either stacked (vertical) or side by side (horizontal).
+* "Display Format" setting for Checkbox fields to choose between bulleted lists (default) or comma-separated values.
+* Ability to arrange Search Bar fields vertically (stacked) or horizontally (side by side).
 
 #### ✨ Improved
-* Detection of BuddyBoss and BuddyPress pages on groups pages as well as user profile pages.
+* Detection of BuddyBoss and BuddyPress on group and user profile pages.
 * Performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
-* Text alignment classes (left, right) are no longer applied on columns in the search widget.
-* File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
+* Text alignment classes (left, right) no longer applied to Search Bar columns.
+* Alignment of File Upload field icons with filenames on the Edit Entry screen.
+* Entries updated through the Edit Entry page redirect back to that page, preventing repeated submissions.
 
 #### 🐛 Fixed
-* Result Number (sequence) field now properly respects the "Start Number" configuration setting in Views.
-* Date Range filters now work correctly when only a start or end date is entered. Also fixes the issue when using the DataTables layout.
-* Some Search Field icons were displaying too large.
+* Removing a file from a File Upload field on the Edit Entry page did not clear the field.
+* Date Range filters returned incorrect results when only a start or end date was entered (including in the DataTables layout).
+* Inconsistent sizing of Search Bar field icons.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/admin-views/area/actions` hook, which runs inside the View editor’s droppable areas and allows adding custom actions.
 
 = 2.43.3 on August 14, 2025 =
 
 This update improves Entry Notes and improves the default behavior for the Search Bar labels.
 
 #### 🐛 Fixed
-
 * Entry Notes field displaying an error message when adding a note, even if the note is successfully added.
 * New Search Bar field labels are now visible by default on any layout.
 
 #### ✨ Improved
-
 * Sanitization for Entry Notes content.
 * Error handling for both AJAX and non-AJAX requests in Entry Notes.
 * Removed old broken links from this changelog ⛓️‍💥
 
 #### 💻 Developer Updates
-
 * Deprecated `GravityView_Entry_Notes::get_note()` in favor of `GFAPI::get_note()`.
 
 = 2.43.2 on August 5, 2025 =
@@ -62,11 +71,9 @@ This update improves Entry Notes and improves the default behavior for the Searc
 This release introduces a flexible display format for checkbox fields, tightens Edit Entry security, and polishes File Upload presentation.
 
 #### 🚀 Added
-
 * Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
 
 #### ✨ Improved
-
 * Improved security in Edit Entry surrounding the Approval Status field.
 * File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
 * The Approval Status field correctly reflects the current entry approval status.
