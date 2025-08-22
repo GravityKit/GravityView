@@ -336,14 +336,14 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	private function get_single_entry_sequence( $context ) {
 		$entry = $context->request->is_entry();
 
-		// Capture the SQL query used by the view
+		// Capture the SQL query used by the view.
 		$sql_query = $this->capture_view_sql_query( $context );
 
 		if ( empty( $sql_query ) ) {
 			return 0;
 		}
 
-		// Get all entries (without pagination) to find current entry's position
+		// Get all entries (without pagination) to find current entry's position.
 		$results = $this->get_all_entry_results( $sql_query );
 
 		if ( is_null( $results ) ) {
@@ -386,6 +386,10 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		// Remove pagination to get all results
 		unset( $sql_query['paginate'] );
 
+		// Optimize SELECT clause to only fetch entry IDs for better memory efficiency
+		// This significantly reduces memory usage for large result sets
+		$sql_query['select'] = 'SELECT `t1`.`id`';
+
 		// For single entry views with a custom start value, sort by ID ASC to get
 		// consistent sequence numbers based on creation order
 		// Only override if start value is different from default (1)
@@ -425,18 +429,18 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		$total_entries = count( $results );
 
 		foreach ( $results as $position => $result ) {
-			// Check if this result row contains the entry ID
-			// The result may have the ID in 'id' or 'entry_id' column
+			// Check if this result row contains the entry ID.
+			// The result may have the ID in 'id' or 'entry_id' column.
 			$result_id = isset( $result['id'] ) ? $result['id'] : ( isset( $result['entry_id'] ) ? $result['entry_id'] : null );
 
-			// Use loose comparison to handle string/int type differences
+			// Use loose comparison to handle string/int type differences.
 			if ( $result_id != $entry->ID ) {
 				continue;
 			}
 
-			// Calculate sequence based on position in the view's sort order
+			// Calculate sequence based on position in the view's sort order.
 			if ( $context->field->reverse ) {
-				// For reverse: highest number - position
+				// For reverse: highest number - position.
 				return $context->field->start + $total_entries - $position - 1;
 			} else {
 				// For normal: position + start value (position is 0-based)
@@ -444,7 +448,7 @@ class GravityView_Field_Sequence extends GravityView_Field {
 			}
 		}
 
-		return 0; // Entry not found
+		return 0; // Entry not found.
 	}
 
 	/**
@@ -460,53 +464,53 @@ class GravityView_Field_Sequence extends GravityView_Field {
 	 * @return int The starting sequence number for the current page.
 	 */
 	private function calculate_starting_number( $context ) {
-		// Get current page number (convert from 1-based to 0-based)
+		// Get current page number (convert from 1-based to 0-based).
 		$pagenum = max( 0, \GV\Utils::_GET( 'pagenum', 1 ) - 1 );
 
-		// Get number of entries per page
+		// Get number of entries per page.
 		$pagesize = $context->view->settings->get( 'page_size', 25 );
 
 		if ( $context->field->reverse ) {
-			// For reversed sequences: highest number = start + total - 1
-			// Then subtract entries on previous pages
+			// For reversed sequences: highest number = start + total - 1.
+			// Then subtract entries on previous pages.
 
 			// Get total entries count
 			$total_entries = 0;
 
-			// Always use GFAPI for accurate count in reverse mode
-			if ( $context->view->form ) {
-				$search_criteria = array( 'status' => 'active' );
-				$form_id = $context->view->form->ID;
-
-				if ( $form_id ) {
-					// Count all entries for this form - this is the most reliable method
-					$total_entries = \GFAPI::count_entries( $form_id, $search_criteria );
-				}
-			}
-
-			// Only use view's collection as a fallback if GFAPI didn't work
-			if ( $total_entries <= 0 ) {
+			// Primary method: Use view's entries collection to respect all View filters.
+			// This includes search filters, field filters, approval status, joins, etc.
+			try {
 				$request = gravityview()->request;
-				$entries_collection = $context->view->get_entries( $request );
-				$total_entries = $entries_collection->total();
+				if ( $request ) {
+					$entries_collection = $context->view->get_entries( $request );
+					if ( $entries_collection ) {
+						$total_entries = $entries_collection->total();
+					}
+				}
+			} catch ( \Exception $e ) {
+				// If there's any error getting the view's collection, we'll fall back.
+				$total_entries = 0;
 			}
 
-			// Final fallback - if still no total, assume at least 1
+			// If we couldn't get the total from the View's collection,
+			// we should NOT fall back to GFAPI::count_entries() as it ignores filters.
+			// Instead, default to 1 to avoid division by zero or negative numbers.
+			// This is a safer approach that won't give misleading sequence numbers.
 			if ( $total_entries <= 0 ) {
 				$total_entries = 1;
 			}
 
 			$entries_before = $pagenum * $pagesize;
 
-			// Highest number in sequence = start + (total - 1)
-			// Current page starts at: highest - entries_before
-			// Formula: start + (total - 1) - entries_before = start + total - entries_before - 1
+			// Highest number in sequence = start + (total - 1).
+			// Current page starts at: highest - entries_before.
+			// Formula: start + (total - 1) - entries_before = start + total - entries_before - 1.
 			return $context->field->start + $total_entries - $entries_before - 1;
 		} else {
-			// For normal sequences: calculate based on page position
+			// For normal sequences: calculate based on page position.
 			$entries_before = $pagenum * $pagesize;
 
-			// Calculate: entries_before + start_value
+			// Calculate: entries_before + start_value.
 			return $entries_before + $context->field->start;
 		}
 	}
