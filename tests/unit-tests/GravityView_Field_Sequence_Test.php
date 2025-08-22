@@ -1367,8 +1367,8 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 		] );
 
 		/** Trigger registration under this ID */
-		if ( class_exists( 'GVFutureTest_Widget_Test_Merge_Tag' ) ) {
-			new GVFutureTest_Widget_Test_Merge_Tag( 'Widget', $widget_id );
+		if ( class_exists( 'GVSequenceTest_Widget_Test_Merge_Tag' ) ) {
+			new GVSequenceTest_Widget_Test_Merge_Tag( 'Widget', $widget_id );
 		}
 
 		$this->factory->entry->create_and_get( [
@@ -1422,11 +1422,11 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 }
 
 /**
- * Widget test helper class for testing merge tag functionality.
+ * Widget test helper class for testing sequence field merge tag functionality.
  *
  * @since 2.7
  */
-class GVFutureTest_Widget_Test_Merge_Tag extends \GV\Widget {
+class GVSequenceTest_Widget_Test_Merge_Tag extends \GV\Widget {
 	/**
 	 * Render widget frontend with merge tag replacement.
 	 *
