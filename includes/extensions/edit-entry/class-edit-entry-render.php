@@ -1730,7 +1730,7 @@ class GravityView_Edit_Entry_Render {
 			// Fix for Address fields: ensure pre_value is an array when field expects it
 			// Address fields may return an empty string in certain conditions but expect an array
 			if ( 'address' === $field->type && ! is_array( $pre_value ) ) {
-				$pre_value = array();
+				$pre_value = [];
 			}
 
 			$field_value = ! $allow_pre_populated && ! ( $override_saved_value && ! gv_empty( $pre_value, false, false ) ) ? $field_value : $pre_value;
@@ -2390,11 +2390,11 @@ class GravityView_Edit_Entry_Render {
 				    }
 				}
 			} else if ( 'address' === $field->type ) {
-				// Address fields have multiple inputs and need special handling
-				// to prevent defaultValue from being set to an empty string
+				// Address fields have multiple inputs and need special handling.
+				// This prevents defaultValue from being set to an empty string.
 				$address_values = array();
 				$inputs = $field->get_entry_inputs();
-				
+
 				if ( is_array( $inputs ) ) {
 					foreach ( $inputs as $input ) {
 						$input_id = $input['id'];
@@ -2403,15 +2403,15 @@ class GravityView_Edit_Entry_Render {
 						}
 					}
 				}
-				
-				// Only set defaultValue if we have address data, otherwise leave it unset
-				// to avoid string offset errors in Gravity Forms
+
+				// Only set defaultValue if we have address data, otherwise leave it unset.
+				// to avoid string offset errors in Gravity Forms.
 				if ( ! empty( $address_values ) ) {
 					$field->defaultValue = $address_values;
 				}
 			} else {
 
-				// We need to run through each field to set the default values
+				// We need to run through each field to set the default values.
 				foreach ( $this->entry as $field_id => $field_value ) {
 
 				    if ( floatval( $field_id ) === floatval( $field->id ) ) {
