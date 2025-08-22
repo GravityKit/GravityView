@@ -297,6 +297,7 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 
 	/**
 	 * Test that zero start number works
+	 *
 	 * @covers GravityView_Field_Sequence::get_sequence
 	 */
 	public function test_zero_start_number() {
@@ -856,6 +857,61 @@ class GravityView_Field_Sequence_Test extends GV_UnitTestCase {
 
 		remove_all_filters( 'gk/gravityview/view/entries/cache' );
 		remove_all_filters( 'gravityview_use_cache' );
+	}
+
+	/**
+	 * Test that numeric string start values are properly preserved
+	 * This specifically tests the fix where is_numeric() is used instead of empty()
+	 * @covers GravityView_Field_Sequence::ensure_field_configuration
+	 */
+	public function test_numeric_string_start_values_preserved() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+
+		// Test "0" as string (the main bug being fixed)
+		$post = $this->factory->view->create_and_get( [
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'settings' => [
+				'page_size' => 3,
+				'show_only_approved' => 0,
+			],
+			'fields' => [
+				'directory_table-columns' => [
+					wp_generate_password( 4, false ) => [
+						'id' => 'sequence',
+						'start' => '0', // String "0" should be preserved
+					],
+				],
+			],
+		] );
+
+		$view = \GV\View::from_post( $post );
+		$field = $view->fields->by_visible( $view )->first();
+
+		$entry = \GV\GF_Entry::from_entry( $this->factory->entry->create_and_get( [
+			'form_id' => $form['id'],
+			'status' => 'active',
+		] ) );
+
+		$context = \GV\Template_Context::from_template( [
+			'view' => $view,
+			'entry' => $entry,
+			'field' => $field,
+		] );
+
+		$sequence = $this->sequence_field->get_sequence( $context );
+		$this->assertEquals( 0, $sequence, 'String "0" should be preserved and not overridden' );
+
+		// Test other numeric strings
+		$test_values = ['100', '-50', '999'];
+		foreach ( $test_values as $test_value ) {
+			$field->UID = wp_generate_password( 8, false );
+			$field->start = $test_value;
+			
+			$expected = (int) $test_value;
+			$sequence = $this->sequence_field->get_sequence( $context );
+			$this->assertEquals( $expected, $sequence, "Numeric string '$test_value' should be converted to int $expected" );
+		}
 	}
 
 	/**

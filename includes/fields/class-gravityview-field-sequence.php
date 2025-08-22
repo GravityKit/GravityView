@@ -273,16 +273,16 @@ class GravityView_Field_Sequence extends GravityView_Field {
 		// Get field configuration once
 		$field_settings = $context->field->as_configuration();
 
-		// Load 'start' value from field configuration if not already set
-		// The property may exist but be null/empty, so check for meaningful value
-		if ( empty( $context->field->start ) && $context->field->start !== 0 ) {
+		// Load 'start' value from field configuration if not already set.
+		// Only check if the value is numeric - this allows "0" to be preserved.
+		if ( ! is_numeric( $context->field->start ) ) {
 			$start_value = isset( $field_settings['start'] ) ? $field_settings['start'] : 1;
 			$context->field->start = is_numeric( $start_value ) ? (int) $start_value : 1;
 		}
 
-		// Load 'reverse' value from field configuration if it exists
-		// Only override the field's reverse property if the configuration explicitly sets it
-		// This allows tests to manually set reverse while still respecting View configuration
+		// Load 'reverse' value from field configuration if it exists.
+		// Only override the field's reverse property if the configuration explicitly sets it.
+		// This allows tests to manually set reverse while still respecting View configuration.
 		if ( isset( $field_settings['reverse'] ) ) {
 			$context->field->reverse = ! empty( $field_settings['reverse'] );
 		}
