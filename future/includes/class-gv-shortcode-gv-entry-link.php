@@ -59,13 +59,26 @@ class gv_entry_link extends \GV\Shortcode {
 	}
 
 	/**
-	 * Process and output the entry link shortcode.
+	 * Generate a link to an entry. The link can be an edit, delete, or standard link.
 	 *
-	 * @param array  $atts The attributes passed.
-	 * @param string $content The content inside the shortcode.
-	 * @param string $tag The shortcode tag.
+	 * @since 1.15
+	 * @since TODO Moved to gv_entry_link class.
 	 *
-	 * @return string|null The output.
+	 * @param array       $atts {
+	 *    @type string $action What type of link to generate. Options: `read`, `edit`, and `delete`. Default: `read`
+	 *    @type string $view_id Define the ID for the View. If not set, use current View ID, if exists.
+	 *    @type string $entry_id ID of the entry to edit. If undefined, uses the current entry ID, if exists.
+	 *    @type string $post_id ID of the base post or page to use for an embedded View
+	 *    @type string $link_atts Pass anchor tag attributes (`target=_blank` to open Edit Entry link in a new window, for example)
+	 *    @type bool   $lightbox When true, opens the entry link in a lightbox/modal with iframe. Default: false
+	 *    @type string $return What should the shortcode return: link HTML (`html`) or the URL (`url`). Default: `html`
+	 *    @type string $field_values Only used for `action="edit"`. Parameters to pass in to the prefill data in Edit Entry form. Uses the same format as Gravity Forms "Allow field to be populated dynamically" {@see https://www.gravityhelp.com/documentation/article/allow-field-to-be-populated-dynamically/ }
+	 * }
+	 *
+	 * @param string|null $content Used as link anchor text, if specified.
+	 * @param string      $tag Current shortcode being called. Not used.
+	 *
+	 * @return null|string If admin or an error occurred, returns null. Otherwise, returns entry link output. If `$atts['return']` is 'url', the entry link URL. Otherwise, entry link `<a>` HTML tag.
 	 */
 	public function callback( $atts, $content = '', $tag = '' ) {
 		// Don't process when saving post. Keep processing if it's admin-ajax.php
