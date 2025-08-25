@@ -33,6 +33,7 @@ class GravityView_Entry_Link_Shortcode {
 		'link_atts'    => '',
 		'return'       => 'html',
 		'field_values' => '',
+		'lightbox'     => false,
 	);
 
 	/**
@@ -107,6 +108,7 @@ class GravityView_Entry_Link_Shortcode {
 	 *    @type string $entry_id ID of the entry to edit. If undefined, uses the current entry ID, if exists.
 	 *    @type string $post_id ID of the base post or page to use for an embedded View
 	 *    @type string $link_atts Pass anchor tag attributes (`target=_blank` to open Edit Entry link in a new window, for example)
+	 *    @type bool   $lightbox When true, opens the entry link in a lightbox/modal with iframe. Default: false
 	 *    @type string $return What should the shortcode return: link HTML (`html`) or the URL (`url`). Default: `html`
 	 *    @type string $field_values Only used for `action="edit"`. Parameters to pass in to the prefill data in Edit Entry form. Uses the same format as Gravity Forms "Allow field to be populated dynamically" {@see https://www.gravityhelp.com/documentation/article/allow-field-to-be-populated-dynamically/ }
 	 * }
