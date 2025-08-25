@@ -22,7 +22,7 @@ class gv_entry_link extends \GV\Shortcode {
 	/**
 	 * {@inheritDoc}
 	 */
-	public $defaults = [
+	protected static $defaults = [
 		'action'       => 'read',
 		'view_id'      => 0,
 		'entry_id'     => 0,
@@ -82,7 +82,7 @@ class gv_entry_link extends \GV\Shortcode {
 		$atts = gv_map_deep( $atts, [ 'GravityView_Merge_Tags', 'replace_get_variables' ] );
 
 		// Adjust defaults based on which shortcode was called
-		$defaults = $this->defaults;
+		$defaults = self::$defaults;
 		if ( 'gv_edit_entry_link' === $tag ) {
 			$defaults['action'] = 'edit';
 		} elseif ( 'gv_delete_entry_link' === $tag ) {

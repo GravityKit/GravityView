@@ -18,6 +18,17 @@ class gravityview extends \GV\Shortcode {
 	public $name = 'gravityview';
 
 	/**
+	 * {@inheritDoc}
+	 */
+	protected static $defaults = [
+		'id'       => 0,
+		'view_id'  => 0,
+		'detail'   => null,
+		'class'    => '',
+		'secret'   => '',
+	];
+
+	/**
 	 * A stack of calls to track nested shortcodes.
 	 */
 	public static $callstack = array();
@@ -49,12 +60,7 @@ class gravityview extends \GV\Shortcode {
 
 		$atts = wp_parse_args(
 			$passed_atts,
-			array(
-				'id'      => 0,
-				'view_id' => 0,
-				'detail'  => null,
-				'class'   => '',
-			)
+			self::$defaults
 		);
 
 		if ( ! $view_id = $atts['id'] ? : $atts['view_id'] ) {
@@ -76,7 +82,7 @@ class gravityview extends \GV\Shortcode {
 		}
 
 		/*
-		@TODO: implement infinite loop check
+		 * @TODO: implement infinite loop check
 		 * @see https://github.com/GravityKit/GravityView/pull/1911#commits-pushed-343168f
 		 *
 		 *

@@ -16,6 +16,16 @@ class gvfield extends \GV\Shortcode {
 	public $name = 'gvfield';
 
 	/**
+	 * {@inheritDoc}
+	 */
+	protected static $defaults = [
+		'view_id'  => null,
+		'entry_id' => null,
+		'field_id' => null,
+		'secret'   => '',
+	];
+
+	/**
 	 * Process and output the [gvfield] shortcode.
 	 *
 	 * @param array  $passed_atts The attributes passed.
@@ -33,11 +43,7 @@ class gvfield extends \GV\Shortcode {
 
 		$atts = wp_parse_args(
 			$atts,
-			array(
-				'view_id'  => null,
-				'entry_id' => null,
-				'field_id' => null,
-			)
+			self::$defaults
 		);
 
 		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );

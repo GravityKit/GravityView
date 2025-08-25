@@ -25,7 +25,7 @@ class Shortcode {
 	/**
 	 * @var array The default attributes for this shortcode.
 	 */
-	public $defaults = [];
+	protected static $defaults = [];
 
 	/**
 	 * @var array The parsed attributes of this shortcode.
