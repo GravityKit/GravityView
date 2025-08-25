@@ -21,12 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Range filter applied to the Date Created field returned incorrect results when only a start date was entered.
+
 = 2.44 on August 21, 2025 =
 
 This release updates the View editor with new display options for Checkbox fields and Search Bar columns, enhances Magic Links validation and BuddyBoss/BuddyPress page support, and resolves issues affecting the Search Bar widget and Edit Entry screen.
 
 #### 🚀 Added
-* "Display Format" setting for Checkbox fields to choose between bulleted lists (default) or comma-separated values.
 * Ability to arrange Search Bar fields vertically (stacked) or horizontally (side by side).
 
 #### ✨ Improved
@@ -65,7 +69,7 @@ This update improves Entry Notes and improves the default behavior for the Searc
 This release introduces a flexible display format for checkbox fields, tightens Edit Entry security, and polishes File Upload presentation.
 
 #### 🚀 Added
-* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
+* "Display Format" setting for Checkbox fields to choose between bulleted lists (default) or comma-separated values.
 
 #### ✨ Improved
 * Improved security in Edit Entry surrounding the Approval Status field.
