@@ -285,6 +285,11 @@ abstract class GravityView_Lightbox_Provider {
 			return $output;
 		}
 
+		// If the action is delete, return the original HTML output.
+		if ( 'delete' === \GV\Utils::get( $args['atts'], 'action', '' ) ) {
+			return $output;
+		}
+
 		$link_atts = $args['link_atts'];
 
 		// Add the CSS class name to the link attributes.

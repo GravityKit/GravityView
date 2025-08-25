@@ -21,6 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🚀 Added
+* New `lightbox` attribute for the `[gv_entry_link]` shortcode to open the link in a lightbox.
+	- Supports `action` attribute values: `read`, `edit`
+
+#### ✨ Improved
+
+* Security of the `[gv_entry_link]` shortcode.
+
+#### 💻 Developer Updates
+
+* Deprecated `GravityView_Entry_Link_Shortcode` class. Use `GV\Shortcodes\gv_entry_link` instead.
+
 = 2.44 on August 21, 2025 =
 
 This release updates the View editor with new display options for Checkbox fields and Search Bar columns, enhances Magic Links validation and BuddyBoss/BuddyPress page support, and resolves issues affecting the Search Bar widget and Edit Entry screen.

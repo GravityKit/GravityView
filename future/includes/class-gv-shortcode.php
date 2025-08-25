@@ -23,6 +23,11 @@ class Shortcode {
 	private static $shortcodes;
 
 	/**
+	 * @var array The default attributes for this shortcode.
+	 */
+	public $defaults = [];
+
+	/**
 	 * @var array The parsed attributes of this shortcode.
 	 */
 	public $atts;
