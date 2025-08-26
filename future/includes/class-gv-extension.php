@@ -1,5 +1,9 @@
 <?php
+
 namespace GV;
+
+use GravityKit\GravityView\Foundation\Helpers\Core as CoreHelpers;
+use GravityView_Admin_Notices;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
@@ -13,7 +17,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  *
  * @deprecated 2.16.1
  *
- * @TODO Remove once all extensions have been updated to use Foundation.
+ * @TODO       Remove once all extensions have been updated to use Foundation.
  */
 abstract class Extension {
 	/**
@@ -27,8 +31,8 @@ abstract class Extension {
 	protected $_version = null;
 
 	/**
-	 * @var int The ID of the download on gravitykit.com
 	 * @since 1.1
+	 * @var int The ID of the download on gravitykit.com
 	 */
 	protected $_item_id = null;
 
@@ -63,15 +67,10 @@ abstract class Extension {
 	protected $_path = '';
 
 	/**
-	 * @var array Admin notices to display
-	 */
-	protected static $admin_notices = array();
-
-	/**
-	 * @var boolean[] An array of extension compatibility.
 	 * @since 2.0 This is an array of classes instead.
+	 * @var boolean[] An array of extension compatibility.
 	 */
-	public static $is_compatible = array();
+	public static $is_compatible = [];
 
 	/**
 	 * Generic initialization.
@@ -85,16 +84,14 @@ abstract class Extension {
 			$this->_path = __FILE__;
 		}
 
-		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
-
-		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
+		add_action( 'init', [ $this, 'load_plugin_textdomain' ] );
 
 		// Save the view configuration. Run at 14 so that View metadata is already saved (at 10)
-		add_action( 'save_post', array( $this, 'save_post' ), 14 );
+		add_action( 'save_post', [ $this, 'save_post' ], 14 );
 
-		add_action( 'gravityview/metaboxes/before_render', array( $this, 'add_metabox_tab' ) );
+		add_action( 'gravityview/metaboxes/before_render', [ $this, 'add_metabox_tab' ] );
 
-		add_filter( 'gravityview/metaboxes/tooltips', array( $this, 'tooltips' ) );
+		add_filter( 'gravityview/metaboxes/tooltips', [ $this, 'tooltips' ] );
 
 		$this->add_hooks();
 	}
@@ -110,7 +107,8 @@ abstract class Extension {
 	 */
 	public function load_plugin_textdomain() {
 		if ( empty( $this->_text_domain ) ) {
-			gravityview()->log->debug( 'Extension translation cannot be loaded; the `_text_domain` variable is not defined', array( 'data' => $this ) );
+			gravityview()->log->debug( 'Extension translation cannot be loaded; the `_text_domain` variable is not defined', [ 'data' => $this ] );
+
 			return;
 		}
 
@@ -152,19 +150,21 @@ abstract class Extension {
 	 *
 	 * @return void
 	 */
-	public function add_hooks() { }
+	public function add_hooks() {
+	}
 
 	/**
-	 * Save extra view configuration.
+	 * Saves extra view configuration.
 	 *
-	 * @param  int $post_id Post ID
+	 * @param int $post_id Post ID
+	 *
 	 * @return void
 	 */
-	public function save_post( $post_id ) { }
+	public function save_post( $post_id ) {
+	}
 
 	/**
-	 * Add tooltips for the extension.
-	 *
+	 * Adds tooltips for the extension.
 	 * Add a tooltip with an array using the `title` and `value` keys. The `title` key is the H6 tag value of the tooltip; it's the headline. The `value` is the tooltip content, and can contain any HTML.
 	 *
 	 * The tooltip key must be `gv_{name_of_setting}`. If the name of the setting is "example_extension_setting", the code would be:
@@ -176,24 +176,25 @@ abstract class Extension {
 	 * );
 	 * </code>
 	 *
-	 * @param  array $tooltips Existing GV tooltips, with `title` and `value` keys
+	 * @param array $tooltips Existing GV tooltips, with `title` and `value` keys
+	 *
 	 * @return array Modified tooltips
 	 */
-	public function tooltips( $tooltips = array() ) {
+	public function tooltips( $tooltips = [] ) {
 		return $tooltips;
 	}
 
 	/**
-	 * Add a tab to GravityView Edit View tabbed metabox. By overriding this method, you will add a tab to View settings
+	 * Adds a tab to GravityView Edit View tabbed metabox. By overriding this method, you will add a tab to View settings
 	 *
 	 * @since 1.8 (Extension version 1.0.7)
-	 * @see https://gist.github.com/zackkatz/6cc381bcf54849f2ed41 For example of adding a metabox
+	 * @see   https://gist.github.com/zackkatz/6cc381bcf54849f2ed41 For example of adding a metabox
 	 *
 	 * @return array Array of metabox
 	 */
 	protected function tab_settings() {
 		// When overriding, return array with expected keys
-		return array();
+		return [];
 	}
 
 	/**
@@ -211,7 +212,7 @@ abstract class Extension {
 			return;
 		}
 
-		$tab_defaults = array(
+		$tab_defaults = [
 			'id'            => '',
 			'title'         => '',
 			'callback'      => '',
@@ -220,7 +221,7 @@ abstract class Extension {
 			'callback_args' => '',
 			'context'       => 'side',
 			'priority'      => 'default',
-		);
+		];
 
 		$tab = wp_parse_args( $tab_settings, $tab_defaults );
 
@@ -245,7 +246,7 @@ abstract class Extension {
 	}
 
 	/**
-	 * Check whether the extension is supported:
+	 * Checks whether the extension is supported:
 	 *
 	 * - Checks if GravityView and Gravity Forms exist
 	 * - Checks GravityView and Gravity Forms version numbers
@@ -255,8 +256,7 @@ abstract class Extension {
 	 * @return boolean Is the extension supported?
 	 */
 	protected function is_extension_supported() {
-
-		self::$is_compatible = is_array( self::$is_compatible ) ? self::$is_compatible : array( get_called_class() => (bool) self::$is_compatible );
+		self::$is_compatible = is_array( self::$is_compatible ) ? self::$is_compatible : [ get_called_class() => (bool) self::$is_compatible ];
 
 		if ( ! function_exists( 'gravityview' ) ) {
 			$message = sprintf( __( 'Could not activate the %s Extension; GravityView is not active.', 'gk-gravityview' ), esc_html( $this->_title ) );
@@ -274,51 +274,65 @@ abstract class Extension {
 		if ( ! empty( $message ) ) {
 			self::add_notice( $message );
 			self::$is_compatible[ get_called_class() ] = false;
-			gravityview()->log->error( '{message}', array( 'message' => $message ) );
+			gravityview()->log->error( '{message}', [ 'message' => $message ] );
 		}
 
 		return self::is_compatible();
 	}
 
 	/**
-	 * Add a notice to be displayed in the admin.
+	 * Adds a notice to be displayed in the admin.
 	 *
-	 * @param array $notice Array with `class` and `message` keys. The message is not escaped.
+	 * @param array|string $notice Array with `class` and `message` keys, or string message.
 	 *
 	 * @return void
 	 */
-	public static function add_notice( $notice = array() ) {
-
+	public static function add_notice( $notice = [] ) {
 		if ( is_array( $notice ) && empty( $notice['message'] ) ) {
-			gravityview()->log->error( 'Notice not set', array( 'data' => $notice ) );
+			gravityview()->log->error( 'Notice not set', [ 'data' => $notice ] );
+
 			return;
 		} elseif ( is_string( $notice ) ) {
-			$notice = array( 'message' => $notice );
+			$notice = [ 'message' => $notice ];
 		}
 
 		$notice['class'] = empty( $notice['class'] ) ? 'error' : $notice['class'];
 
-		self::$admin_notices [] = $notice;
-	}
+		// Pass the calling plugin context by finding the extension constructor in backtrace
+		$backtrace           = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
 
-	/**
-	 * Outputs the admin notices generated by the all plugins
-	 *
-	 * @return void
-	 */
-	public function admin_notice() {
-		if ( empty( self::$admin_notices ) ) {
-			return;
+		// Look for GV\Extension constructor call to identify the calling plugin
+		foreach ( $backtrace as $index => $trace ) {
+			if ( ! isset( $trace['function'], $trace['class'] ) ) {
+				continue;
+			}
+
+			if ( '__construct' !== $trace['function'] ) {
+				continue;
+			}
+
+			if ( 'GV\\Extension' !== $trace['class'] ) {
+				continue;
+			}
+
+			if ( ! isset( $backtrace[ $index + 1 ]['file'] ) ) {
+				continue;
+			}
+
+			$callee = $backtrace[ $index + 1 ]['file'];
+
+			// Get the text domain of the product that called this class.
+			foreach ( CoreHelpers::get_installed_plugins() as $plugin ) {
+				if ( ! isset( $plugin['path'] ) || false === strpos( $callee, $plugin['path'] ) ) {
+					continue;
+				}
+
+				$notice['namespace'] = $plugin['text_domain'];
+
+				break;
+			}
 		}
 
-		foreach ( self::$admin_notices as $key => $notice ) {
-			echo '<div id="message" class="' . esc_attr( $notice['class'] ) . '">';
-			echo wpautop( $notice['message'] );
-			echo '<div class="clear"></div>';
-			echo '</div>';
-		}
-
-		// reset the notices handler
-		self::$admin_notices = array();
+		GravityView_Admin_Notices::add_notice( $notice );
 	}
 }
