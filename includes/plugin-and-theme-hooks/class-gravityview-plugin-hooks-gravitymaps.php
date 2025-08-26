@@ -35,41 +35,41 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 		);
 
 		if ( defined( 'GRAVITYVIEW_MAPS_VERSION' ) &&
-		     version_compare( GRAVITYVIEW_MAPS_VERSION, '1.8', '<' )
+		     version_compare( GRAVITYVIEW_MAPS_VERSION, '1.8', '<' ) &&
+		     class_exists( 'GravityKitFoundation' )
 		) {
-			/**
-			 * @since 2.16
-			 *
-			 * @param array $notices
-			 *
-			 * @return array $notices, with a new notice about Maps compatibility added.
-			 */
-			add_filter(
-				'gravityview/admin/notices',
-				function ( $notices ) {
+			$notice_manager = GravityKitFoundation::notices();
 
-					$message = '<h3>' . esc_html__( 'Plugin update required.', 'gk-gravityview' ) . '</h3>';
-					$message .= esc_html_x( 'You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update [plugin][/link] to the latest version.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' );
+			if ( $notice_manager ) {
+				$messages = [
+					esc_html__( 'Plugin update required.', 'gk-gravityview' ),
+					esc_html_x( 'You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update [plugin][/link] to the latest version.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' )
+				];
 
-					$message = strtr(
-						$message,
-						[
-							'[version]' => GRAVITYVIEW_MAPS_VERSION,
-							'[link]'    => '<a href="' . esc_url( GravityKitFoundation::licenses()->get_link_to_product_search( 27 ) ) . '">',
-							'[plugin]'  => 'GravityView Maps',
-							'[/link]'   => '</a>',
-						]
-					);
+				$message = strtr(
+					join(' ', $messages),
+					[
+						'[version]' => GRAVITYVIEW_MAPS_VERSION,
+						'[link]'    => '<a href="' . esc_url( GravityKitFoundation::licenses()->get_link_to_product_search( 27 ) ) . '">',
+						'[plugin]'  => 'GravityView Maps',
+						'[/link]'   => '</a>',
+					]
+				);
 
-					$notices[] = [
-						'class'   => 'error',
-						'message' => $message,
-						'dismiss' => false,
-					];
-
-					return $notices;
+				try {
+					$notice_manager->add_runtime( [
+						'namespace'    => 'gk-gravitymaps',
+						'slug'         => 'gravitymaps-version-conflict',
+						'message'      => $message,
+						'severity'     => 'error',
+						'capabilities' => [ 'manage_options' ],
+						'dismissible'  => false,
+						'screens'      => ['dashboard', 'plugins'],
+					] );
+				} catch ( Exception $e ) {
+					gravityview()->log->debug( 'Failed to register GravityMaps compatibility notice with Foundation: ' . $e->getMessage() );
 				}
-			);
+			}
 		}
 
 		parent::add_hooks();
