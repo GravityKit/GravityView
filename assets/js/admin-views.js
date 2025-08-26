@@ -2366,6 +2366,19 @@
 		*/
 	   setupFieldFilters: function( e ) {
 
+		   /**
+		    * Normalize string to remove accents/diacritics for comparison
+		    * @param {string} str The string to normalize
+		    * @return {string} The normalized string
+		    */
+		   var normalizeString = function( str ) {
+			   if ( typeof str !== 'string' ) {
+				   return '';
+			   }
+			   // Normalize to NFD (decomposed form) then remove combining diacritical marks
+			   return str.normalize( 'NFD' ).replace( /[\u0300-\u036f]/g, '' ).toLowerCase();
+		   };
+
 		   var input = $( this ).val().trim(),
 			   $tooltip = $( this ).parents( '.ui-tooltip-content' ),
 			   $resultsNotFound = $tooltip.find( '.gv-no-results' );
@@ -2378,11 +2391,20 @@
 
 		   $tooltip.find( '.gv-fields' ).show().filter( function () {
 
-			   var match_title = $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ).match( new RegExp( input, 'i' ) );
-			   var match_id    = $( this ).attr( 'data-fieldid' ).match( new RegExp( input, 'i' ) );
-			   var match_parent = $( this ).attr( 'data-parent-label' ) ? $( this ).attr( 'data-parent-label' ).match( new RegExp( input, 'i' ) ) : false;
+			   // Normalize the search input for accent-insensitive comparison
+			   var normalizedInput = normalizeString( input );
+			   
+			   // Get and normalize the field values
+			   var fieldTitle = $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ) || '';
+			   var fieldId = $( this ).attr( 'data-fieldid' ) || '';
+			   var parentLabel = $( this ).attr( 'data-parent-label' ) || '';
+			   
+			   // Perform accent-insensitive matching
+			   var match_title = normalizedInput === '' || normalizeString( fieldTitle ).indexOf( normalizedInput ) !== -1;
+			   var match_id = normalizedInput === '' || normalizeString( fieldId ).indexOf( normalizedInput ) !== -1;
+			   var match_parent = normalizedInput === '' || ( parentLabel && normalizeString( parentLabel ).indexOf( normalizedInput ) !== -1 );
 
-			   return ! match_title && ! match_id && ! match_parent;
+			   return !( match_title || match_id || match_parent );
 		   } ).hide();
 
 		   if ( ! $tooltip.find( '.gv-fields:visible' ).length ) {

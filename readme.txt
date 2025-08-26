@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Range filter applied to the Date Created field returned incorrect results when only a start date was entered.
+* Field filter form in the View editor now properly filters accented characters (e.g., typing "e" now matches "é").
 
 = 2.44 on August 21, 2025 =
 
