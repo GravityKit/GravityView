@@ -2,13 +2,13 @@
 /**
  * GravityView Admin notices
  *
- * @package   GravityView
+ * @since     1.12
  * @license   GPL2+
  * @author    GravityKit <hello@gravitykit.com>
  * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.12
+ * @package   GravityView
  */
 
 /**
@@ -16,39 +16,63 @@
  *
  * @since 1.15.1
  */
-register_activation_hook( GRAVITYVIEW_FILE, array( 'GravityView_Admin_Notices', 'flush_dismissed_notices' ) );
+register_activation_hook( GRAVITYVIEW_FILE, [ 'GravityView_Admin_Notices', 'flush_dismissed_notices' ] );
 
 /**
- * Handle displaying and storing of admin notices for GravityView
+ * Handles displaying and storing of admin notices for GravityView.
  *
- * @since 1.12
+ * @deprecated TBD Use GravityKitFoundation::notices() directly to add notices.
+ *
+ * @since      1.12
  */
 class GravityView_Admin_Notices {
-
 	/**
 	 * @var array
 	 */
-	private static $admin_notices = array();
+	private static $admin_notices = [];
 
-	private static $dismissed_notices = array();
+	private static $dismissed_notices = [];
 
-	function __construct() {
+	/**
+	 * @var array Notices waiting to be registered with Foundation after init.
+	 */
+	private static $deferred_notices = [];
 
-		$this->add_hooks();
-	}
+	/**
+	 * @var bool Whether init hook has been registered
+	 */
+	private static $init_hooked = false;
 
-	function add_hooks() {
-		add_action( 'network_admin_notices', array( $this, 'dismiss_notice' ), 50 );
-		add_action( 'admin_notices', array( $this, 'dismiss_notice' ), 50 );
-		add_action( 'admin_notices', array( $this, 'admin_notice' ), 100 );
-		add_action( 'network_admin_notices', array( $this, 'admin_notice' ), 100 );
+	/**
+	 * Processes notices that were deferred before Foundation was available.
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public static function process_deferred_notices() {
+		if ( empty( self::$deferred_notices ) ) {
+			return;
+		}
+
+		foreach ( self::$deferred_notices as $notice ) {
+			self::register_foundation_notice( $notice );
+		}
+
+		self::$deferred_notices = [];
 	}
 
 	/**
 	 * Clear out the dismissed notices when the plugin gets activated
 	 *
-	 * @see register_activation_hook
-	 * @since 1.15.1
+	 * @deprecated TBD Use GravityKitFoundation::notices() to register and manage notices.
+	 *
+	 * @since      1.15.1
+	 *
+	 * @see        register_activation_hook
+	 *
 	 * @return void
 	 */
 	public static function flush_dismissed_notices() {
@@ -56,34 +80,36 @@ class GravityView_Admin_Notices {
 	}
 
 	/**
-	 * Dismiss a GravityView notice - stores the dismissed notices for 16 weeks
+	 * Dismissees a GravityView notice - stores the dismissed notices for 16 weeks.
 	 *
-	 * @since 1.12
+	 * @deprecated TBD Use GravityKitFoundation::notices() to register and manage notices.
+	 *
+	 * @since      1.12
+	 *
 	 * @return void
 	 */
 	public function dismiss_notice() {
-
-		// No dismiss sent
+		// No dismiss sent.
 		if ( empty( $_GET['gv-dismiss'] ) || empty( $_GET['notice'] ) ) {
 			return;
 		}
 
-		// Invalid nonce
+		// Invalid nonce.
 		if ( ! wp_verify_nonce( $_GET['gv-dismiss'], 'dismiss' ) ) {
 			return;
 		}
 
 		$notice_id = esc_attr( $_GET['notice'] );
 
-		// don't display a message if use has dismissed the message for this version
+		// don't display a message if use has dismissed the message for this version.
 		$dismissed_notices = (array) get_transient( 'gravityview_dismissed_notices' );
 
 		$dismissed_notices[] = $notice_id;
 
 		$dismissed_notices = array_unique( $dismissed_notices );
 
-		// Remind users every week
-		set_transient( 'gravityview_dismissed_notices', $dismissed_notices, WEEK_IN_SECONDS );
+		// Remind users every week.
+		set_transient( 'gravityview_dismissed_notices', $dismissed_notices, 16 * WEEK_IN_SECONDS );
 	}
 
 	/**
@@ -92,29 +118,33 @@ class GravityView_Admin_Notices {
 	 * If the passed notice array has a `dismiss` key, the notice is dismissable. If it's dismissable,
 	 * we check against other notices that have already been dismissed.
 	 *
-	 * @since 1.12
-	 * @see GravityView_Admin_Notices::dismiss_notice()
-	 * @see GravityView_Admin_Notices::add_notice()
-	 * @param  string $notice            Notice array, set using `add_notice()`.
+	 * @deprecated TBD Use GravityKitFoundation::notices() to register and manage notices.
+	 *
+	 * @since      1.12
+	 *
+	 * @see        GravityView_Admin_Notices::add_notice()
+	 * @see        GravityView_Admin_Notices::dismiss_notice()
+	 *
+	 * @param string $notice Notice array, set using `add_notice()`.
+	 *
 	 * @return boolean                   True: show notice; False: hide notice
 	 */
 	private function is_notice_dismissed( $notice ) {
-
 		// There are no dismissed notices.
 		if ( empty( self::$dismissed_notices ) ) {
 			return false;
 		}
 
-		// Has the
 		$is_dismissed = ! empty( $notice['dismiss'] ) && in_array( $notice['dismiss'], self::$dismissed_notices );
 
 		return $is_dismissed ? true : false;
 	}
 
 	/**
-	 * Get admin notices
+	 * Returns admin notices.
 	 *
 	 * @since 1.12
+	 *
 	 * @return array
 	 */
 	public static function get_notices() {
@@ -122,16 +152,15 @@ class GravityView_Admin_Notices {
 	}
 
 	/**
-	 * Handle whether to display notices in Multisite based on plugin activation status
-	 *
-	 * @uses \GV\Plugin::is_network_activated
+	 * Handles whether to display notices in multisite based on plugin activation status.
 	 *
 	 * @since 1.12
 	 *
-	 * @return bool True: show the notices; false: don't show
+	 * @uses  \GV\Plugin::is_network_activated
+	 *
+	 * @return bool True: show the notices; false: don't show.
 	 */
 	private function check_show_multisite_notices() {
-
 		if ( ! is_multisite() ) {
 			return true;
 		}
@@ -141,7 +170,7 @@ class GravityView_Admin_Notices {
 			return false;
 		}
 
-		// or they don't have admin capabilities
+		// ...or they don't have admin capabilities.
 		if ( ! is_super_admin() ) {
 			return false;
 		}
@@ -150,19 +179,25 @@ class GravityView_Admin_Notices {
 	}
 
 	/**
-	 * Outputs the admin notices generated by the plugin
+	 * Outputs the admin notices generated by the plugin.
 	 *
-	 * @uses GVCommon::has_cap()
-	 * @since 1.12
+	 * @deprecated TBD Use GravityKitFoundation::notices() to register and manage notices.
+	 *
+	 * @since      1.12
+	 *
+	 * @uses       GVCommon::has_cap()
 	 *
 	 * @return void
 	 */
 	public function admin_notice() {
-
 		/**
-		 * Modify the notices displayed in the admin.
+		 * Modifies the notices displayed in the admin.
 		 *
-		 * @since 1.12
+		 * @filter     `gravityview/admin/notices`
+		 *
+		 * @deprecated TBD Use the filters provided by the GravityKitFoundation::notices() framework.
+		 *
+		 * @since      1.12
 		 *
 		 * @param array $notices Array of notices to display.
 		 */
@@ -172,22 +207,22 @@ class GravityView_Admin_Notices {
 			return;
 		}
 
-		// don't display a message if use has dismissed the message for this version
-		// TODO: Use get_user_meta instead of get_transient
-		self::$dismissed_notices = isset( $_GET['show-dismissed-notices'] ) ? array() : (array) get_transient( 'gravityview_dismissed_notices' );
+		// Don't display a message if use has dismissed the message for this version.
+		// TODO: Use get_user_meta instead of get_transient.
+		self::$dismissed_notices = isset( $_GET['show-dismissed-notices'] ) ? [] : (array) get_transient( 'gravityview_dismissed_notices' );
 
 		$output = '';
 
 		foreach ( $notices as $notice ) {
 
-			// If the user doesn't have the capability to see the warning
+			// If the user doesn't have the capability to see the warning.
 			if ( isset( $notice['cap'] ) && false === GVCommon::has_cap( $notice['cap'] ) ) {
-				gravityview()->log->debug( 'Notice not shown because user does not have the capability to view it.', array( 'data' => $notice ) );
+				gravityview()->log->debug( 'Notice not shown because user does not have the capability to view it.', [ 'data' => $notice ] );
 				continue;
 			}
 
 			if ( true === $this->is_notice_dismissed( $notice ) ) {
-				gravityview()->log->debug( 'Notice not shown because the notice has already been dismissed.', array( 'data' => $notice ) );
+				gravityview()->log->debug( 'Notice not shown because the notice has already been dismissed.', [ 'data' => $notice ] );
 				continue;
 			}
 
@@ -208,14 +243,14 @@ class GravityView_Admin_Notices {
 
 				$url = esc_url(
 					add_query_arg(
-						array(
+						[
 							'gv-dismiss' => wp_create_nonce( 'dismiss' ),
 							'notice'     => $dismiss,
-						)
+						]
 					)
 				);
 
-				$align    = is_rtl() ? 'alignleft' : 'alignright';
+				$align   = is_rtl() ? 'alignleft' : 'alignright';
 				$message .= '<a href="' . $url . '" data-notice="' . $dismiss . '" class="' . $align . ' button button-link">' . esc_html__( 'Dismiss', 'gk-gravityview' ) . '</a></p>';
 			}
 
@@ -230,33 +265,220 @@ class GravityView_Admin_Notices {
 
 		unset( $output, $align, $message, $notices );
 
-		// reset the notices handler
-		self::$admin_notices = array();
+		// Reset the notices handler.
+		self::$admin_notices = [];
 	}
 
 	/**
-	 * Add a notice to be displayed in the admin.
+	 * Adds a notice to be displayed in the admin.
 	 *
-	 * @since 1.12 Moved from {@see GravityView_Admin::add_notice() }
-	 * @since 1.15.1 Allows for `cap` key, passing capability required to show the message
-	 * @param array $notice {
-	 *      @type string       $class    HTML class to be used for the notice. Default: 'error'
-	 *      @type string       $message  Notice message, not escaped. Allows HTML.
-	 *      @type string       $dismiss  Unique key used to determine whether the notice has been dismissed. Set to false if not dismissable.
-	 *      @type string|array $cap      The capability or caps required for an user to see the notice
-	 * }
+	 * @deprecated TBD Use GravityKitFoundation::notices() to register and manage notices.
+	 *
+	 * @since      1.12 Moved from {@see GravityView_Admin::add_notice() }
+	 * @since      1.15.1 Allows for `cap` key, passing capability required to show the message
+	 * @since      TBD Integrates with Foundation notices framework while maintaining backward compatibility.
+	 *
+	 * @param array       $notice  {
+	 *
+	 * @type string       $class   HTML class to be used for the notice. Default: 'error'
+	 * @type string       $message Notice message, not escaped. Allows HTML.
+	 * @type string       $dismiss Unique key used to determine whether the notice has been dismissed. Set to false if not dismissable.
+	 * @type string|array $cap     The capability or caps required for an user to see the notice
+	 *                             }
 	 * @return void
 	 */
-	public static function add_notice( $notice = array() ) {
-
+	public static function add_notice( $notice = [] ) {
 		if ( ! isset( $notice['message'] ) ) {
-			gravityview()->log->error( 'Notice not set', array( 'data' => $notice ) );
+			gravityview()->log->error( 'Notice not set', [ 'data' => $notice ] );
+
 			return;
 		}
 
 		$notice['class'] = empty( $notice['class'] ) ? 'error' : $notice['class'];
 
 		self::$admin_notices[] = $notice;
+		self::register_foundation_notice( $notice );
+	}
+
+
+	/**
+	 * Registers a notice with Foundation notices framework..
+	 *
+	 * @since TBD
+	 *
+	 * @param array $notice Legacy notice array.
+	 *
+	 * @return void
+	 */
+	private static function register_foundation_notice( $notice ) {
+		if ( ! class_exists( 'GravityKitFoundation' ) ) {
+			self::$deferred_notices[] = $notice;
+
+			if ( ! self::$init_hooked ) {
+				add_action( 'gk/foundation/initialized', [ __CLASS__, 'process_deferred_notices' ] );
+
+				self::$init_hooked = true;
+			}
+
+			return;
+		}
+
+		try {
+			$notice_manager = GravityKitFoundation::notices();
+
+			if ( ! $notice_manager ) {
+				return;
+			}
+
+			$notice = array_merge(
+				self::convert_notice_to_new_format( $notice ),
+				[
+					'screens' => $notice['screens'] ?? [ 'dashboard', 'plugins' ],
+				]
+			);
+
+			$notice_manager->add_runtime( $notice );
+		} catch ( Exception $e ) {
+			gravityview()->log->debug( 'Failed to register notice with Foundation: ' . $e->getMessage(), [ 'notice' => $notice ] );
+		}
+	}
+
+	/**
+	 * Converts legacy notice object to the new Notices framework format.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $legacy_notice Legacy notice array.
+	 *
+	 * @return array Foundation notice array.
+	 */
+	private static function convert_notice_to_new_format( $legacy_notice ) {
+		// Determine the appropriate namespace (text domain) for the calling plugin.
+		$namespace = $legacy_notice['namespace'] ?? self::determine_plugin_namespace( $legacy_notice );
+
+		$new_notice = [
+			'namespace' => $namespace,
+			'slug'      => self::generate_notice_slug( $legacy_notice, $namespace ),
+			'message'   => $legacy_notice['message'],
+		];
+
+		// Map severity from legacy class names.
+		$severity_map = [
+			'error'   => 'error',
+			'warning' => 'warning',
+			'success' => 'success',
+			'info'    => 'info',
+			'notice'  => 'info',
+			'updated' => 'success',
+		];
+
+		$class                  = isset( $legacy_notice['class'] ) ? $legacy_notice['class'] : 'error';
+		$new_notice['severity'] = isset( $severity_map[ $class ] ) ? $severity_map[ $class ] : 'info';
+
+		if ( ! empty( $legacy_notice['dismiss'] ) ) {
+			$new_notice['dismissible'] = true;
+			// Use the dismiss key as part of the slug for uniqueness.
+			$new_notice['slug'] = $legacy_notice['dismiss'];
+		} else {
+			$new_notice['dismissible'] = false;
+		}
+
+		if ( ! empty( $legacy_notice['cap'] ) ) {
+			$capabilities               = is_array( $legacy_notice['cap'] ) ? $legacy_notice['cap'] : [ $legacy_notice['cap'] ];
+			$new_notice['capabilities'] = $capabilities;
+		}
+
+		return $new_notice;
+	}
+
+	/**
+	 * Generates a unique slug for a notice.
+	 *
+	 * @since TBD
+	 *
+	 * @param array  $notice    Legacy notice array.
+	 * @param string $namespace Plugin namespace/text domain.
+	 *
+	 * @return string
+	 */
+	private static function generate_notice_slug( $notice, $namespace = 'gk-gravityview' ) {
+		// If dismiss key is provided, use it (already unique per plugin).
+		if ( ! empty( $notice['dismiss'] ) ) {
+			return $notice['dismiss'];
+		}
+
+		// Generate slug with namespace prefix to avoid collisions between plugins.
+		$message_hash     = substr( md5( $notice['message'] ), 0, 8 );
+		$namespace_prefix = str_replace( [ '-', '_' ], '', $namespace );
+
+		return $namespace_prefix . '-notice-' . $message_hash;
+	}
+
+	/**
+	 * Determines the appropriate plugin namespace (text domain) for the calling plugin.
+	 *
+	 * @since TBD
+	 *
+	 * @return string Plugin text domain or fallback to 'gk-gravityview'.
+	 */
+	private static function determine_plugin_namespace( $notice = null ) {
+		// Check if plugin context was passed from Extension class.
+		if ( $notice && isset( $notice['_calling_plugin_file'] ) ) {
+			$calling_plugin_file = $notice['_calling_plugin_file'];
+		} else {
+			// Try to determine calling plugin using debug backtrace.
+			$calling_plugin_file = self::get_calling_plugin_file();
+		}
+
+		if ( $calling_plugin_file ) {
+			// Use Foundation's Core helper to get installed plugins by text domain.
+			$installed_plugins = \GravityKit\GravityView\Foundation\Helpers\Core::get_installed_plugins();
+
+			// Find plugin by plugin file path.
+			foreach ( $installed_plugins as $plugin ) {
+				if ( isset( $plugin['plugin_file'] ) && $plugin['plugin_file'] === $calling_plugin_file ) {
+					return $plugin['text_domain'];
+				}
+			}
+		}
+
+		// Fallback to GravityView if we can't determine the caller.
+		return 'gk-gravityview';
+	}
+
+	/**
+	 * Get the plugin file that is calling add_notice().
+	 *
+	 * @since TBD
+	 *
+	 * @return string|null Plugin file path or null if not detected.
+	 */
+	private static function get_calling_plugin_file() {
+		$backtrace         = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS, 10 );
+		$installed_plugins = \GravityKit\GravityView\Foundation\Helpers\Core::get_installed_plugins();
+
+		// Look for the first caller outside this class.
+		foreach ( $backtrace as $trace ) {
+			if ( ! isset( $trace['file'] ) ) {
+				continue;
+			}
+
+			$file = $trace['file'];
+
+			// Skip our own class.
+			if ( false !== strpos( $file, 'class-gravityview-admin-notices.php' ) ) {
+				continue;
+			}
+
+			// Check if this file belongs to any registered plugin.
+			foreach ( $installed_plugins as $plugin ) {
+				if ( isset( $plugin['path'] ) && false !== strpos( $file, $plugin['path'] ) ) {
+					return $plugin['plugin_file'] ?? null;
+				}
+			}
+		}
+
+		return null;
 	}
 }
 
