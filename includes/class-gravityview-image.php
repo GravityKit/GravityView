@@ -111,11 +111,14 @@ class GravityView_Image {
 	public static function get_image_extensions() {
 
 		/**
-		 * tag.
+		 * Filter the image extensions recognized by GravityView.
+		 *
+		 * This is used to determine whether to display the file using <img> tag or as a link.
+		 * Also, it is used to determine whether to bypass secure downloads for media files.
 		 *
 		 * @param array $image_exts Default: `['jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp', 'svg']`
 		 */
-		$image_exts = apply_filters( 'gravityview_image_extensions', array( 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp', 'svg' ) );
+		$image_exts = apply_filters( 'gravityview_image_extensions', [ 'jpg', 'jpeg', 'jpe', 'gif', 'png', 'bmp', 'tif', 'tiff', 'ico', 'webp', 'svg' ] );
 
 		return (array) $image_exts;
 	}
