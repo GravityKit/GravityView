@@ -26,6 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 
 * Improved performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
+* Tooltips in field settings will now be fully visible.
 
 = 2.43.3 on August 14, 2025 =
 
