@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Range filter applied to the Date Created field returned incorrect results when only a start date was entered.
+* In some complex situations the file upload field would not show exiting images on the Edit Entry Form.
 
 = 2.44 on August 21, 2025 =
 
