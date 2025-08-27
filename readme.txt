@@ -23,8 +23,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+
+* Added a new setting to the File Upload field to disable secure download URLs for images, audio, and video files. This greatly improves performance.
+
 #### 🐛 Fixed
 
+* File Upload field display on the Edit Entry screen: icons are now aligned with the filename.
 * Improved performance of [Magic Links](https://www.gravitykit.com/products/magic-links/) validation.
 * Tooltips in field settings will now be fully visible.
 

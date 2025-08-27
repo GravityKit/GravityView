@@ -40,6 +40,21 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			'merge_tags' => false,
 		);
 
+		$add_options['bypass_secure_download'] = array(
+			'type'       => 'checkbox',
+			'label'      => __( 'Use Direct File Path for Media:', 'gk-gravityview' ),
+			'desc'       => __( 'Point to uploaded files directly instead of using secure download URLs. This improves performance.', 'gk-gravityview' ),
+			'tooltip'    => __( 'This improves performance when displaying media but reduces file security. Non-embeddable files (PDFs, documents, etc.) will still use secure download paths.', 'gk-gravityview' ),
+			'value'      => false,
+			'merge_tags' => false,
+			'group'      => 'display',
+			'article'    => [
+				'id'  => '68adf3756587963d509160bd',
+				'type' => 'modal',
+				'url' => 'https://docs.gravitykit.com/article/1088-direct-file-path',
+			],
+		);
+
 		$add_options['image_width'] = array(
 			'type'       => 'text',
 			'label'      => __( 'Custom Width:', 'gk-gravityview' ),
@@ -500,7 +515,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		$insecure_file_path = str_replace( ' ', '%20', $file_path );
 		$secure_file_path   = str_replace( ' ', '%20', $field->get_download_url( $file_path ) );
 
-		if ( $secure_file_path !== $file_path ) {
+		$bypass_secure_links = self::should_bypass_secure_links( $field_settings, $field, $file_path, $extension, $context );
+
+		// Only use the secure download URL if bypass is disabled AND a secure URL was generated.
+		// This preserves the original URL when bypass is enabled or when GF doesn't generate a secure URL.
+		if ( ! $bypass_secure_links && $secure_file_path !== $file_path ) {
 			$file_path = $secure_file_path;
 			$is_secure = true;
 		}
@@ -527,6 +546,78 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			'extension'          => $extension,
 			'is_secure'          => $is_secure,
 		);
+	}
+
+	/**
+	 * Determine if we should bypass secure download URLs for this field.
+	 *
+	 * @since TODO
+	 *
+	 * @param array $field_settings GravityView settings for the field.
+	 * @param \GF_Field_FileUpload $field The file upload field.
+	 * @param string $file_path The file path.
+	 * @param string $extension The file extension.
+	 * @param \GV\Template_Context $context The template context.
+	 *
+	 * @return bool Whether to bypass secure download URLs.
+	 */
+	private static function should_bypass_secure_links( $field_settings, $field, $file_path, $extension, $context ) {
+
+		$bypass_secure_links = \GV\Utils::get( $field_settings, 'bypass_secure_download', false );
+
+		// Only bypass for media files by default (images, audio, video).
+		if ( $bypass_secure_links ) {
+			$file_extension = strtolower( $extension );
+
+			// Get allowed media extensions.
+			$image_extensions = GravityView_Image::get_image_extensions();
+			$audio_extensions = wp_get_audio_extensions();
+			$video_extensions = wp_get_video_extensions();
+			$media_extensions = array_merge( $image_extensions, $audio_extensions, $video_extensions );
+
+			/**
+			 * Filter the file extensions that are allowed to bypass secure download URLs.
+			 *
+			 * By default, only media files (images, audio, video) can bypass secure downloads.
+			 * Use this filter to customize which file types are allowed to use direct URLs.
+			 *
+			 * Special case: Return an array containing '*' to allow ALL file types to bypass
+			 * secure downloads. Use with extreme caution as this exposes all uploaded files.
+			 *
+			 * @since TODO
+			 *
+			 * @param array $media_extensions       Array of file extensions that can bypass secure downloads.
+			 *                                      Default: merge of image, audio, and video extensions.
+			 *                                      Use array('*') to allow all file types.
+			 * @param array $field_settings         GravityView settings for the field.
+			 * @param \GF_Field_FileUpload $field The file upload field.
+			 * @param array $field_settings GravityView settings for the field.
+			 * @param \GV\Template_Context $context The template context.
+			 * @param string $file_path The file path.
+			 */
+			$allowed_extensions = apply_filters( 'gk/gravityview/fields/fileupload/secure-links/allowed-extensions', $media_extensions, $field, $field_settings, $context, $file_path );
+
+			// Only bypass if the file extension is in the allowed list.
+			// Special case: '*' means allow all extensions.
+			if ( ! in_array( '*', $allowed_extensions, true ) && ! in_array( $file_extension, $allowed_extensions, true ) ) {
+				$bypass_secure_links = false;
+			}
+		}
+
+		/**
+		 * Filter whether to bypass secure download URLs for this field.
+		 *
+		 * @since TODO
+		 *
+		 * @param bool $bypass_secure_links Whether to bypass secure download URLs and use direct file paths.
+		 * @param GF_Field_FileUpload $field The file upload field.
+		 * @param array $field_settings GravityView settings for the field.
+		 * @param \GV\Template_Context $context The template context.
+		 * @param string $file_path The original file path.
+		 */
+		$bypass_secure_links = apply_filters( 'gk/gravityview/fields/fileupload/secure-links/bypass', $bypass_secure_links, $field, $field_settings, $context, $file_path );
+
+		return (bool) $bypass_secure_links;
 	}
 }
 
