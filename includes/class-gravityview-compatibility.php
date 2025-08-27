@@ -78,10 +78,12 @@ class GravityView_Compatibility {
 		foreach ( self::$notices as $notice ) {
 			try {
 				$notice_manager->add_runtime( $notice );
-			} catch ( Exception $e ) {
+			} catch ( Throwable $e ) {
 				gravityview()->log->debug( 'Failed to register compatibility notice with Foundation: ' . $e->getMessage(), [ 'notice' => $notice ] );
 			}
 		}
+
+		self::$notices = [];
 	}
 
 	/**
@@ -348,7 +350,7 @@ class GravityView_Compatibility {
 				self::$notices['gf_inactive'] = [
 					'namespace'    => 'gk-gravityview',
 					'slug'         => 'gf_inactive',
-					'message'      => sprintf( __( '%1$sGravityView requires Gravity Forms to be active. %2$sActivate Gravity Forms%3$s to use the GravityView plugin.', 'gk-gravityview' ), '', $button, '</a>' ),
+					'message'      => sprintf( __( '%1$sGravityView requires Gravity Forms to be active. %2$sActivate Gravity Forms%3$s to use the GravityView plugin.', 'gk-gravityview' ), '', $button, '</a></strong>' ),
 					'severity'     => 'error',
 					'capabilities' => [ 'activate_plugins' ],
 					'dismissible'  => false,
@@ -406,7 +408,7 @@ class GravityView_Compatibility {
 	 */
 	public static function get_plugin_status( $location = '' ) {
 		if ( ! function_exists( 'is_plugin_active' ) ) {
-			include_once ABSPATH . '/wp-admin/includes/plugin.php';
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
 		if ( is_network_admin() && is_plugin_active_for_network( $location ) ) {
