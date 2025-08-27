@@ -361,11 +361,12 @@ class GravityView_Compatibility {
 					'slug'         => 'gf_installed',
 					'message'      => sprintf( __( '%1$sGravityView requires Gravity Forms to be installed in order to run properly. %2$sGet Gravity Forms%3$s - starting at $59%4$s%5$s', 'gk-gravityview' ), '', '<a href="https://www.gravitykit.com/gravityforms/">', '', '', '</a>' ),
 					'severity'     => 'error',
-					'capabilities' => [],
+					'capabilities' => [ 'install_plugins' ],
 					'dismissible'  => false,
 					'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
 					'context'      => 'all',
 				];
+
 				break;
 		}
 
