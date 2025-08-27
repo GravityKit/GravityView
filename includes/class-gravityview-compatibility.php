@@ -37,7 +37,7 @@ class GravityView_Compatibility {
 	 */
 	private static $notices = [];
 
-	function __construct() {
+	private function __construct() {
 		self::$valid_gravity_forms = self::check_gravityforms();
 
 		self::$valid_wordpress = self::check_wordpress();
@@ -92,7 +92,9 @@ class GravityView_Compatibility {
 			return self::$instance;
 		}
 
-		return new self();
+		self::$instance = new self();
+
+		return self::$instance;
 	}
 
 	/**
