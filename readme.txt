@@ -28,11 +28,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 	- Supports `action` attribute values: `read`, `edit`
 
 #### ✨ Improved
-
 * Security of the `[gv_entry_link]` shortcode.
 
-#### 💻 Developer Updates
+#### 🐛 Fixed
+* Range filter applied to the Date Created field returned incorrect results when only a start date was entered.
 
+#### 💻 Developer Updates
 * Deprecated `GravityView_Entry_Link_Shortcode` class. Use `GV\Shortcodes\gv_entry_link` instead.
 
 = 2.44 on August 21, 2025 =
@@ -40,7 +41,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 This release updates the View editor with new display options for Checkbox fields and Search Bar columns, enhances Magic Links validation and BuddyBoss/BuddyPress page support, and resolves issues affecting the Search Bar widget and Edit Entry screen.
 
 #### 🚀 Added
-* "Display Format" setting for Checkbox fields to choose between bulleted lists (default) or comma-separated values.
 * Ability to arrange Search Bar fields vertically (stacked) or horizontally (side by side).
 
 #### ✨ Improved
@@ -79,7 +79,7 @@ This update improves Entry Notes and improves the default behavior for the Searc
 This release introduces a flexible display format for checkbox fields, tightens Edit Entry security, and polishes File Upload presentation.
 
 #### 🚀 Added
-* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
+* "Display Format" setting for Checkbox fields to choose between bulleted lists (default) or comma-separated values.
 
 #### ✨ Improved
 * Improved security in Edit Entry surrounding the Approval Status field.
