@@ -46,7 +46,7 @@ class GravityView_Admin_Notices {
 	/**
 	 * Processes notices that were deferred before Foundation was available.
 	 *
-	 * @interal
+	 * @internal
 	 *
 	 * @since TBD
 	 *
@@ -80,7 +80,7 @@ class GravityView_Admin_Notices {
 	}
 
 	/**
-	 * Dismissees a GravityView notice - stores the dismissed notices for 16 weeks.
+	 * Dismisses a GravityView notice - stores the dismissed notices for 16 weeks.
 	 *
 	 * @deprecated TBD Use GravityKitFoundation::notices() to register and manage notices.
 	 *
@@ -108,7 +108,7 @@ class GravityView_Admin_Notices {
 
 		$dismissed_notices = array_unique( $dismissed_notices );
 
-		// Remind users every week.
+		// Remind users after 16 weeks.
 		set_transient( 'gravityview_dismissed_notices', $dismissed_notices, 16 * WEEK_IN_SECONDS );
 	}
 
@@ -481,5 +481,3 @@ class GravityView_Admin_Notices {
 		return null;
 	}
 }
-
-new GravityView_Admin_Notices();

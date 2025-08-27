@@ -54,7 +54,7 @@ class GravityView_Compatibility {
 	/**
 	 * Registers notices.
 	 *
-	 * @interal
+	 * @internal
 	 *
 	 * @since TBD
 	 *
@@ -465,7 +465,7 @@ class GravityView_Compatibility {
 	 * Determines if the compatibility notice should be shown on the current admin screen.
 	 * This limits the display of the notice to the Dashboard, Plugins and GravityView post type screens.
 	 *
-	 * @interal
+	 * @internal
 	 *
 	 * @since TBD
 	 *

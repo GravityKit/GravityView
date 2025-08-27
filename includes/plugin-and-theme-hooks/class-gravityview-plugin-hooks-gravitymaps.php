@@ -6,6 +6,8 @@
  * @since 2.16
  */
 class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_Hooks {
+	const MAPS_PRODUCT_ID = 27;
+
 	protected $constant_name = 'GRAVITYVIEW_MAPS_VERSION';
 
 	/**
@@ -43,6 +45,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 			if ( $notice_manager ) {
 				$messages = [
 					esc_html__( 'Plugin update required.', 'gk-gravityview' ),
+					// Translators: [plugin], [version], [link], [/link] are placeholders. Do not translate the words inside [].
 					esc_html_x( 'You are using [plugin] [version] that is incompatible with the current version of GravityView. Please [link]update [plugin][/link] to the latest version.', 'Placeholders inside [] are not to be translated.', 'gk-gravityview' )
 				];
 
@@ -50,7 +53,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 					join(' ', $messages),
 					[
 						'[version]' => GRAVITYVIEW_MAPS_VERSION,
-						'[link]'    => '<a href="' . esc_url( GravityKitFoundation::licenses()->get_link_to_product_search( 27 ) ) . '">',
+						'[link]'    => '<a href="' . esc_url( GravityKitFoundation::licenses()->get_link_to_product_search( self::MAPS_PRODUCT_ID ) ) . '">',
 						'[plugin]'  => 'GravityView Maps',
 						'[/link]'   => '</a>',
 					]
@@ -64,7 +67,7 @@ class GravityView_Plugin_Hooks_GravityMaps extends GravityView_Plugin_and_Theme_
 						'severity'     => 'error',
 						'capabilities' => [ 'manage_options' ],
 						'dismissible'  => false,
-						'screens'      => ['dashboard', 'plugins'],
+						'screens'      => [ 'dashboard', 'plugins' ],
 					] );
 				} catch ( Exception $e ) {
 					gravityview()->log->debug( 'Failed to register GravityMaps compatibility notice with Foundation: ' . $e->getMessage() );
