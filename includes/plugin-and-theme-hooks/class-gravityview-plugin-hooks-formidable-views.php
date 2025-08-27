@@ -77,6 +77,7 @@ class GravityView_Theme_Hooks_Formidable_Views extends GravityView_Plugin_and_Th
 				'capabilities' => [ 'manage_options' ],
 				'dismissible'  => false,
 				'screens'      => [ 'dashboard', 'plugins' ],
+				'context'      => 'all',
 			] );
 		} catch ( Exception $e ) {
 			gravityview()->log->debug( 'Failed to register Formidable Views conflict notice with Foundation: ' . $e->getMessage() );

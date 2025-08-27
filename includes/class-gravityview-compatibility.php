@@ -208,6 +208,7 @@ class GravityView_Compatibility {
 				'capabilities' => [ 'manage_options' ],
 				'dismissible'  => true,
 				'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+				'context'      => 'all',
 			];
 		}
 
@@ -236,6 +237,7 @@ class GravityView_Compatibility {
 				'capabilities' => [ 'update_core' ],
 				'dismissible'  => true,
 				'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+				'context'      => 'all',
 			];
 
 			return false;
@@ -252,6 +254,7 @@ class GravityView_Compatibility {
 			'capabilities' => [ 'update_core' ],
 			'dismissible'  => true,
 			'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+			'context'      => 'all',
 		];
 
 		return true;
@@ -268,39 +271,42 @@ class GravityView_Compatibility {
 	public static function check_gravityforms() {
 		// Bypass other checks: if the class exists.
 		if ( class_exists( 'GFCommon' ) ) {
-			// Does the version meet future requirements?.
+			// Does the version meet future requirements?
 			if ( true === gravityview()->plugin->is_compatible_future_gravityforms() ) {
 				return true;
 			}
 
-			// Does it meet minimum requirements?.
+			// Does it meet minimum requirements?
 			$meets_minimum = gravityview()->plugin->is_compatible_gravityforms();
+
+			$messages = [];
 
 			if ( $meets_minimum ) {
 				/* translators: first placeholder is the future required version of Gravity Forms. The second placeholder is the current version of Gravity Forms. */
-				$message = sprintf( __( 'In the future, GravityView will require Gravity Forms Version %s or newer.', 'gk-gravityview' ), GV_FUTURE_MIN_GF_VERSION );
-				$version = GV_FUTURE_MIN_GF_VERSION;
+				$messages[] = sprintf( __( 'In the future, GravityView will require Gravity Forms Version %s or newer.', 'gk-gravityview' ), GV_FUTURE_MIN_GF_VERSION );
+				$version    = GV_FUTURE_MIN_GF_VERSION;
 			} else {
 				/* translators: the placeholder is the required version of Gravity Forms. */
-				$message = sprintf( __( 'GravityView requires Gravity Forms Version %s or newer.', 'gk-gravityview' ), GV_MIN_GF_VERSION );
-				$version = GV_MIN_GF_VERSION;
+				$messages[] = sprintf( __( 'GravityView requires Gravity Forms Version %s or newer.', 'gk-gravityview' ), GV_MIN_GF_VERSION );
+				$version    = GV_MIN_GF_VERSION;
 			}
 
 			/* translators: the placeholder is the current version of Gravity Forms. */
-			$message .= ' ' . sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gk-gravityview' ), '<strong>' . GFCommon::$version . '</strong>' );
+			$messages[] = sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gk-gravityview' ), '<strong>' . GFCommon::$version . '</strong>' );
 
 			/* translators: In this context, "get" means purchase */
-			$message .= ' <a href="https://www.gravitykit.com/gravityforms/">' . esc_html__( 'Get the Latest Gravity Forms.', 'gk-gravityview' ) . '</a>';
+			$messages[] = '<a href="https://www.gravitykit.com/gravityforms/">' . esc_html__( 'Get the latest Gravity Forms.', 'gk-gravityview' ) . '</a>';
 
 			// Show the notice even if the future version requirements aren't met.
 			self::$notices['gf_version'] = [
 				'namespace'    => 'gk-gravityview',
 				'slug'         => 'gf_version_' . $version,
-				'message'      => $message,
+				'message'      => join( ' ', $messages ),
 				'severity'     => $meets_minimum ? 'warning' : 'error',
-				'capabilities' => [],
+				'capabilities' => [ 'update_plugins' ],
 				'dismissible'  => false,
 				'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+				'context'      => 'all',
 			];
 
 			// Return false if the plugin is not compatible, true if meets minimum.
@@ -342,9 +348,10 @@ class GravityView_Compatibility {
 					'slug'         => 'gf_inactive',
 					'message'      => sprintf( __( '%1$sGravityView requires Gravity Forms to be active. %2$sActivate Gravity Forms%3$s to use the GravityView plugin.', 'gk-gravityview' ), '', $button, '</a>' ),
 					'severity'     => 'error',
-					'capabilities' => [],
+					'capabilities' => [ 'activate_plugins' ],
 					'dismissible'  => false,
 					'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+					'context'      => 'all',
 				];
 
 				break;
@@ -357,6 +364,7 @@ class GravityView_Compatibility {
 					'capabilities' => [],
 					'dismissible'  => false,
 					'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+					'context'      => 'all',
 				];
 				break;
 		}
@@ -382,6 +390,7 @@ class GravityView_Compatibility {
 			'capabilities' => [ 'activate_plugins' ],
 			'dismissible'  => true,
 			'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+			'context'      => 'all',
 		];
 	}
 
@@ -425,7 +434,7 @@ class GravityView_Compatibility {
 	public static function override_post_pages_when_compatibility_fails() {
 		global $pagenow;
 
-		if ( ! in_array( $pagenow, [ 'post.php', 'edit.php', 'post-new.php' ] ) ) {
+		if ( ! in_array( $pagenow, [ 'post.php', 'edit.php', 'post-new.php' ], true ) ) {
 			return;
 		}
 
@@ -477,7 +486,7 @@ class GravityView_Compatibility {
 		$screen_obj = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
 		$current_id = $screen_obj ? $screen_obj->id : null;
 
-		if ( in_array( $current_id, [ 'dashboard', 'plugins' ], true ) ) {
+		if ( in_array( $current_id, [ 'dashboard', 'plugins', 'dashboard-network', 'plugins-network' ], true ) ) {
 			return true;
 		}
 
