@@ -265,24 +265,24 @@ $gv-overlay-index: 10000;
 			border-radius: 2px;
 		}
 
-		.gv-grid-add-row-icon-column-100 {
-			width: 100%;
-		}
+		$column-widths: (
+			100: 100%,
+			50: 50%,
+			25: 25%,
+			20: 20%,
+			40: 40%,
+			60: 60%,
+			80: 80%,
+			33: 33%,
+			66: 66%,
+			16: (100%/6),
+		);
 
-		.gv-grid-add-row-icon-column-50 {
-			width: 50%;
-		}
-
-		.gv-grid-add-row-icon-column-25 {
-			width: 25%;
-		}
-
-		.gv-grid-add-row-icon-column-33 {
-			width: 33%;
-		}
-
-		.gv-grid-add-row-icon-column-66 {
-			width: 66%;
+		// Generate classes from the map
+		@each $key, $width in $column-widths {
+			.gv-grid-add-row-icon-column-#{$key} {
+				width: $width;
+			}
 		}
 	}
 }
@@ -301,6 +301,10 @@ $gv-overlay-index: 10000;
 
 .gv-grid-col-1-2 {
 	grid-column: span 6;
+}
+
+.gv-grid-col-1-5 {
+	grid-column: span 2; // on a 10 grid
 }
 
 .gv-grid-col-1-8 {

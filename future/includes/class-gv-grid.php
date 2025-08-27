@@ -237,7 +237,7 @@ final class Grid {
 						'subtitle' => '',
 					],
 				],
-				'1-4 mdidle' => [
+				'1-4 middle' => [
 					[
 						'areaid'   => 'middle',
 						'title'    => __( 'Middle', 'gk-gravityview' ),
