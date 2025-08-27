@@ -69,7 +69,7 @@ final class Grid {
 	 * @return string
 	 */
 	public static function uid(): string {
-		return substr( md5( ++ self::$counter . microtime( true ) ), 0, 13 );
+		return substr( md5( ++self::$counter . microtime( true ) ), 0, 13 );
 	}
 
 	/**
@@ -126,7 +126,7 @@ final class Grid {
 	 */
 	public static function get_row_types(): array {
 		$types = [
-			'100'      => [
+			'100'         => [
 				'1-1' => [
 					[
 						'areaid'   => 'top',
@@ -135,7 +135,7 @@ final class Grid {
 					],
 				],
 			],
-			'50/50'    => [
+			'50/50'       => [
 				'1-2 left'  => [
 					[
 						'areaid'   => 'left',
@@ -151,7 +151,7 @@ final class Grid {
 					],
 				],
 			],
-			'33/66'    => [
+			'33/66'       => [
 				'1-3 left'  => [
 					[
 						'areaid'   => 'left',
@@ -167,7 +167,7 @@ final class Grid {
 					],
 				],
 			],
-			'66/33'    => [
+			'66/33'       => [
 				'2-3 left'  => [
 					[
 						'areaid'   => 'left',
@@ -183,7 +183,7 @@ final class Grid {
 					],
 				],
 			],
-			'33/33/33' => [
+			'33/33/33'    => [
 				'1-3 left'   => [
 					[
 						'areaid'   => 'left',
@@ -206,7 +206,7 @@ final class Grid {
 					],
 				],
 			],
-			'50/25/25' => [
+			'50/25/25'    => [
 				'1-2 left'   => [
 					[
 						'areaid'   => 'left',
@@ -229,7 +229,7 @@ final class Grid {
 					],
 				],
 			],
-			'25/25/50' => [
+			'25/25/50'    => [
 				'1-4 left'   => [
 					[
 						'areaid'   => 'left',
@@ -252,7 +252,7 @@ final class Grid {
 					],
 				],
 			],
-			'25/50/25' => [
+			'25/50/25'    => [
 				'1-4 left'   => [
 					[
 						'areaid'   => 'left',
@@ -275,11 +275,41 @@ final class Grid {
 					],
 				],
 			],
+			'25/25/25/25' => [
+				'1-4 first'  => [
+					[
+						'areaid'   => 'first',
+						'title'    => __( 'First', 'gk-gravityview' ),
+						'subtitle' => '',
+					],
+				],
+				'1-4 second' => [
+					[
+						'areaid'   => 'second',
+						'title'    => __( 'Second', 'gk-gravityview' ),
+						'subtitle' => '',
+					],
+				],
+				'1-4 third'  => [
+					[
+						'areaid'   => 'third',
+						'title'    => __( 'Third', 'gk-gravityview' ),
+						'subtitle' => '',
+					],
+				],
+				'1-4 fourth' => [
+					[
+						'areaid'   => 'fourth',
+						'title'    => __( 'Fourth', 'gk-gravityview' ),
+						'subtitle' => '',
+					],
+				],
+			],
 		];
 
 		array_walk_recursive(
 			$types,
-			function ( &$value, $key ) {
+			static function ( &$value, $key ) {
 				if ( 'areaid' === $key ) {
 					$value = ( self::$area_prefix ? self::$area_prefix . '-' : '' ) . $value;
 				}
