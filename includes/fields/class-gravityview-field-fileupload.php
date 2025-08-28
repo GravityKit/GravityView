@@ -611,6 +611,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		/**
 		 * Filters whether to bypass secure download URLs for this field.
 		 *
+		 * @filter `gk/gravityview/fields/fileupload/secure-links/bypass`
+		 *
 		 * @since TODO
 		 *
 		 * @param bool                $bypass_secure_links Whether to bypass secure download URLs and use direct file paths.
