@@ -324,16 +324,12 @@ class gv_entry_link extends \GV\Shortcode {
 				return false;
 			}
 
-			if ( ! isset( $entries[ $entry_id ] ) ) {
-				if ( 'last' === $entry_id ) {
-					$entry = $view->get_entries()->last();
-				} else {
-					$entry = $view->get_entries()->first();
-				}
-			}
+			$entry = isset( $entries[ $entry_id ] ) ? $entries[ $entry_id ] : null;
 
-			if ( $entry ) {
-				$entry = $entry->as_entry();
+			if ( ! $entry ) {
+				$collection = $view->get_entries();
+				$entry_obj  = ( 'first' === $entry_id ) ? $collection->first() : $collection->last();
+				$entry      = $entry_obj ? $entry_obj->as_entry() : null;
 			}
 		} else {
 			$entry = isset( $entries[ $entry_id ] ) ? $entries[ $entry_id ] : GVCommon::get_entry( $entry_id, true, false );
