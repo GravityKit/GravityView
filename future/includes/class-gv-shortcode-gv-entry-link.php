@@ -5,6 +5,8 @@ use GravityView_API;
 use GravityView_Delete_Entry;
 use GravityView_Edit_Entry;
 use GravityView_frontend;
+use GravityView_Lightbox;
+use GravityView_Lightbox_Entry;
 use GV\View;
 use GVCommon;
 
@@ -196,7 +198,31 @@ class gv_entry_link extends \GV\Shortcode {
 		 */
 		$context = $tag; // For backward compatibility with filter.
 		$final_atts = $this->settings;
+
 		$return = apply_filters( 'gravityview/shortcodes/gv_entry_link/output', $return, compact( 'url', 'link_text', 'link_atts', 'atts', 'content', 'context', 'final_atts' ) );
+
+		// For lightbox functionality, enqueue assets and add lightbox attributes.
+		if ( ! empty( $this->settings['lightbox'] ) && 'delete' !== $this->settings['action'] && class_exists( 'GravityView_Lightbox_Entry' ) ) {
+			$provider = GravityView_Lightbox::get_provider();
+
+			if ( $provider ) {
+				$provider->enqueue_scripts();
+				$provider->enqueue_styles();
+
+				wp_enqueue_script( $provider::$script_slug );
+				wp_enqueue_style( $provider::$style_slug );
+
+				add_action( 'wp_footer', array( $provider, 'print_scripts' ) );
+			}
+
+			// Fix attributes for iframe lightbox.
+			$return = str_replace( 'data-type="ajax"', 'data-type="iframe"', $return );
+
+			// Ensure data-fancybox attribute is present with unique ID.
+			if ( false === strpos( $return, 'data-fancybox=' ) ) {
+				$return = str_replace( 'class="gravityview-fancybox"', 'class="gravityview-fancybox" data-fancybox="' . uniqid() . '"', $return );
+			}
+		}
 
 		return $return;
 	}
@@ -254,7 +280,29 @@ class gv_entry_link extends \GV\Shortcode {
 	 * @return string|boolean If URL is fetched, the URL to the entry link. If not found, returns false.
 	 */
 	private function get_url() {
-		// If post_id is not defined, default to view_id.
+		// If lightbox is enabled and not delete action, use REST endpoint
+		if ( ! empty( $this->settings['lightbox'] ) && 'delete' !== $this->settings['action'] && class_exists( 'GravityView_Lightbox_Entry' ) ) {
+			$rest_url = ( new GravityView_Lightbox_Entry() )->get_rest_directory_link( $this->view_id, $this->entry['id'] );
+
+			// Add edit nonce if this is an edit action.
+			if ( 'edit' === $this->settings['action'] ) {
+				$rest_url = add_query_arg(
+					[
+						'edit' => wp_create_nonce(
+							GravityView_Edit_Entry::get_nonce_key(
+								$this->view_id,
+								$this->entry['form_id'],
+								$this->entry['id']
+							)
+						),
+					],
+					$rest_url
+				);
+			}
+
+			return $rest_url;
+		}
+
 		$post_id = empty( $this->settings['post_id'] ) ? $this->view_id : $this->settings['post_id'];
 
 		switch ( $this->settings['action'] ) {

@@ -82,6 +82,23 @@ class GravityView_Lightbox {
 	public static function register( $provider ) {
 		self::$providers[ $provider::$slug ] = $provider;
 	}
+
+	/**
+	 * Returns the configured lightbox provider instance.
+	 *
+	 * @since TBD
+	 *
+	 * @return GravityView_Lightbox_Provider|null The active lightbox provider, or null if none is set.
+	 */
+	public static function get_provider() {
+		$provider_slug = gravityview()->plugin->settings->get( 'lightbox', self::DEFAULT_PROVIDER );
+
+		if ( isset( self::$providers[ $provider_slug ] ) ) {
+			return new self::$providers[ $provider_slug ]();
+		}
+
+		return null;
+	}
 }
 
 new GravityView_Lightbox();
