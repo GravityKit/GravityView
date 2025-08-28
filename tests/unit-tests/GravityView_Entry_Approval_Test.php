@@ -234,6 +234,50 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Ensures no approval actions/notifications fire when status remains Disapproved
+	 * and does fire when changing to Approved.
+	 *
+	 * @covers GravityView_Entry_Approval::after_update_entry_update_approved_meta
+	 */
+	public function test_no_notifications_when_status_unchanged_on_edit_disapproved() {
+		$form = $this->factory->form->import_and_get( 'approval.json', 0 );
+
+		// Create an entry with the approval checkbox UNCHECKED (disapproved)
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'alpha',
+			'2' => 'beta',
+			'3.1' => '',
+		) );
+
+		// Set initial approval meta to DISAPPROVED to match checkbox
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::DISAPPROVED );
+
+		$gv_approval = new class extends GravityView_Entry_Approval { public function __construct() {} };
+
+		$updated_before     = did_action( 'gravityview/approve_entries/updated' );
+		$disapproved_before = did_action( 'gravityview/approve_entries/disapproved' );
+		$approved_before    = did_action( 'gravityview/approve_entries/approved' );
+
+		// Save without changing checkbox; expect no actions
+		$gv_approval->after_update_entry_update_approved_meta( $form, $entry['id'] );
+		$this->assertSame( $updated_before, did_action( 'gravityview/approve_entries/updated' ) );
+		$this->assertSame( $disapproved_before, did_action( 'gravityview/approve_entries/disapproved' ) );
+		$this->assertSame( $approved_before, did_action( 'gravityview/approve_entries/approved' ) );
+
+		// Change checkbox to Approved
+		$entry['3.1'] = 'Approved';
+		GFAPI::update_entry( $entry );
+
+		$gv_approval->after_update_entry_update_approved_meta( $form, $entry['id'] );
+
+		// Expect updated + approved incremented
+		$this->assertSame( $updated_before + 1, did_action( 'gravityview/approve_entries/updated' ) );
+		$this->assertSame( $approved_before + 1, did_action( 'gravityview/approve_entries/approved' ) );
+	}
+
+	/**
 	 * @covers GravityView_Entry_Approval::add_approval_status_updated_note
 	 */
 	public function test_add_approval_status_updated_note() {
