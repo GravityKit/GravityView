@@ -100,8 +100,16 @@ abstract class GravityView_Lightbox_Provider {
 	 * @return void
 	 */
 	protected function print_scripts() {
+		static $did_print = false;
+
+		if ( $did_print ) {
+			return;
+		}
+
 		wp_print_scripts( static::$script_slug );
-		wp_print_styles( static::$script_slug );
+		wp_print_styles( static::$style_slug );
+
+		$did_print = true;
 	}
 
 	/**
