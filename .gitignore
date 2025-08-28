@@ -1,5 +1,6 @@
 ## Mac
 .DS_Store
+.serena
 
 ## PhpStorm
 .idea/**/workspace.xml
