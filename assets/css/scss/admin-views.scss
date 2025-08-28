@@ -100,8 +100,26 @@ $gv-overlay-index: 10000;
 		}
 
 		&.is-sortable {
-			.gv-droppable-area-title {
+			.gv-droppable-area-header-title {
 				display: none;
+			}
+			.gv-droppable-area-header {
+				opacity: 0;
+				transition: opacity 200ms ease-out;
+			}
+
+			.gv-droppable-area:hover,
+			.gv-droppable-area:focus-within
+			{
+				> .gv-droppable-area-header {
+					opacity: 1;
+				}
+			}
+
+			.gv-droppable-area:focus-within {
+				> .gv-droppable-area-header {
+					transition: none; // Instant visibility on tab-focus.
+				}
 			}
 		}
 	}
@@ -148,7 +166,7 @@ $gv-overlay-index: 10000;
 		}
 
 		&:hover {
-			color: #2271B1;
+			color: $color-blue-50;
 		}
 	}
 
@@ -764,6 +782,11 @@ $gv-overlay-index: 10000;
 		border-radius: 3px;
 		text-decoration: underline;
 	}
+
+	&.gv-hide {
+		opacity: 0;
+		pointer-events: none;
+	}
 }
 
 /** Show spinner cursor while the View is being AJAX updated. **/
@@ -1219,11 +1242,25 @@ hr {
 		clear: both;
 	}
 
-	.gv-droppable-area-title {
-		padding: .5em 0;
-		text-align: left;
+	.gv-droppable-area-header-title {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+	}
 
-		margin: 6px 8px 0 8px;
+	.gv-droppable-area-header-actions {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		margin-left: auto;
+	}
+
+	.gv-droppable-area-header {
+		text-align: left;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin: 0 8px;
 
 		html[dir=rtl] & {
 			margin: 0 0 6px 12px;
@@ -1239,10 +1276,18 @@ hr {
 			text-transform: none;
 			font-weight: normal;
 		}
+
+		> .clear-all-fields {
+			margin-left: auto; // align the first item to the right.
+		}
+
+		> * + .clear-all-fields {
+			margin-left: 0;
+		}
 	}
 
 	.gv-droppable-area-subtitle {
-		margin: 0.25em 0 0 0;
+		margin: 0;
 		padding: 0;
 		color: #636D77;
 	}
@@ -2528,6 +2573,24 @@ hr {
 /**
  * Search Bar
  */
+a.gv-search-area-settings {
+	display: flex;
+	text-decoration: none;
+	color: inherit;
+	padding: 4px;
+
+	i.dashicons {
+		transition: transform 200ms;
+	}
+
+	&:hover {
+		color: #2271b1;
+		i.dashicons {
+			transform: rotate(30deg);
+		}
+	}
+}
+
 #search-view {
 	display: none;
 

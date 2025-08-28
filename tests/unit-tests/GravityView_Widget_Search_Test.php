@@ -2045,4 +2045,139 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		remove_filter( 'gk/gravityview/widget/search/visible_fields_only', '__return_false' );
 		unset( $_GET['gv_search'] );
 	}
+
+	/**
+	 * Test that Date Range filter with single date (associative array) doesn't cause PHP warning.
+	 * Regression test for fix in commit ac90184c1.
+	 *
+	 * @covers GravityView_Widget_Search::filter_entries()
+	 * @group GravityView_Widget_Search
+	 * @since 2.43.3
+	 */
+	public function test_date_range_filter_with_associative_array() {
+		// Test that filter_entries() handles associative arrays properly
+		// This addresses the fix where reset($value) is used instead of $value[0]
+		// to avoid "Undefined array key 0" warning with associative arrays
+
+		$form = $this->factory->form->import_and_get( 'complete.json' );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '3',
+						'label' => 'Date',
+					),
+				),
+			),
+			'widgets' => array(
+				'header_top' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'search_bar',
+						'search_fields' => '[{"field":"3","input":"date_range"}]',
+					),
+				),
+			),
+		) );
+
+		// Create test entries
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'3' => '2025-08-01',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'3' => '2025-08-05',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'3' => '2025-08-10',
+		) );
+
+		// Test with associative array containing only 'start' key
+		// This simulates the DataTables date range filter with only start date
+		$_GET = array(
+			'filter_3' => array( 'start' => '2025-08-01' )
+		);
+
+		add_filter( 'gravityview/widgets/search/datepicker/format', function() { return 'ymd_dash'; } );
+
+		// Before the fix, this would generate a PHP warning:
+		// "Undefined array key 0 in class-search-widget.php on line 836"
+		// After the fix, it should work without warnings and properly filter entries
+		$search_criteria = $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true );
+
+		// Verify the search criteria was built correctly
+		$this->assertArrayHasKey( 'field_filters', $search_criteria );
+		$this->assertIsArray( $search_criteria['field_filters'] );
+
+		// Find the date filter in the field_filters array
+		$date_filter_found = false;
+		foreach ( $search_criteria['field_filters'] as $filter ) {
+			if ( is_array( $filter ) && isset( $filter['key'] ) && $filter['key'] === '3' ) {
+				$date_filter_found = true;
+				// Verify the filter was created with the start date
+				$this->assertEquals( '>=', $filter['operator'] );
+				$this->assertEquals( '2025-08-01', $filter['value'] );
+				break;
+			}
+		}
+		$this->assertTrue( $date_filter_found, 'Date filter should be created from associative array with start key' );
+
+		// Test with associative array containing only 'end' key
+		$_GET = array(
+			'filter_3' => array( 'end' => '2025-08-10' )
+		);
+
+		$search_criteria = $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true );
+
+		// Find the date filter in the field_filters array
+		$date_filter_found = false;
+		foreach ( $search_criteria['field_filters'] as $filter ) {
+			if ( is_array( $filter ) && isset( $filter['key'] ) && $filter['key'] === '3' ) {
+				$date_filter_found = true;
+				// Verify the filter was created with the end date
+				$this->assertEquals( '<=', $filter['operator'] );
+				$this->assertEquals( '2025-08-10', $filter['value'] );
+				break;
+			}
+		}
+		$this->assertTrue( $date_filter_found, 'Date filter should be created from associative array with end key' );
+
+		// Test with both start and end dates (full date range)
+		$_GET = array(
+			'filter_3' => array( 'start' => '2025-08-01', 'end' => '2025-08-10' )
+		);
+
+		$search_criteria = $this->widget->filter_entries( array(), null, array( 'id' => $view->ID ), true );
+
+		// Count the date filters - should have two (one for start, one for end)
+		$date_filter_count = 0;
+		$has_start_filter = false;
+		$has_end_filter = false;
+		foreach ( $search_criteria['field_filters'] as $filter ) {
+			if ( is_array( $filter ) && isset( $filter['key'] ) && $filter['key'] === '3' ) {
+				$date_filter_count++;
+				if ( $filter['operator'] === '>=' && $filter['value'] === '2025-08-01' ) {
+					$has_start_filter = true;
+				}
+				if ( $filter['operator'] === '<=' && $filter['value'] === '2025-08-10' ) {
+					$has_end_filter = true;
+				}
+			}
+		}
+		$this->assertEquals( 2, $date_filter_count, 'Should have two date filters for full date range' );
+		$this->assertTrue( $has_start_filter, 'Should have start date filter' );
+		$this->assertTrue( $has_end_filter, 'Should have end date filter' );
+
+		// Clean up
+		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
+		$_GET = array();
+	}
 }

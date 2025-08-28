@@ -70,6 +70,15 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 	private ?string $position = null;
 
 	/**
+	 * Holds the configuration per position.
+	 *
+	 * @since 2.44
+	 *
+	 * @var array
+	 */
+	private array $area_configuration = [];
+
+	/**
 	 * Creates a collection of fields.
 	 *
 	 * @since 2.42
@@ -157,6 +166,11 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			}
 
 			foreach ( $_fields as $uid => $_configuration ) {
+				if ( 'area_settings' === $uid ) {
+					$collection->set_area_configuration( $position, $_configuration );
+					continue;
+				}
+
 				$_configuration['UID']      = $uid;
 				$_configuration['position'] = $position;
 
@@ -200,9 +214,7 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			return $collection;
 		}
 
-		$row = 'horizontal' === ( $configuration['search_layout'] ?? null )
-			? Grid::get_row_by_type( '50/50' )
-			: Grid::get_row_by_type( '100' );
+		$row = Grid::get_row_by_type( '100' );
 
 		if ( [] === $row ) {
 			return $collection;
@@ -252,6 +264,17 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 			$collection = $collection->ensure_required_search_fields( $configuration );
 		}
 
+		if ( 'horizontal' === ( $configuration['search_layout'] ?? null ) ) {
+			foreach ( $row as $areas ) {
+				foreach ( $areas as $area ) {
+					$collection->set_area_configuration(
+						'search-general_' . $area['areaid'],
+						[ 'layout' => 'row' ]
+					);
+				}
+			}
+		}
+
 		return $collection;
 	}
 
@@ -292,8 +315,20 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 				continue;
 			}
 
-			$configuration[ $data['position'] ]                 ??= [];
+			$configuration[ $data['position'] ]               ??= [];
 			$configuration[ $data['position'] ][ $data['UID'] ] = $data;
+		}
+
+		foreach ( $configuration as $position => $_ ) {
+			$settings = $this->get_area_configuration( $position );
+			if ( $settings ) {
+				// The area settings are stored like a field with a fixed ID.
+				// So these values are here to keep the renderer happy.
+				$settings['id']    = 'area_settings';
+				$settings['label'] = esc_html__( 'Column', 'gk-gravityview' );
+
+				$configuration[ $position ]['area_settings'] = $settings;
+			}
 		}
 
 		return $configuration;
@@ -558,5 +593,30 @@ final class Search_Field_Collection extends Collection implements Collection_Pos
 
 			parent::add( $field );
 		}
+	}
+
+	/**
+	 * Sets the position configuration.
+	 *
+	 * @since 2.44
+	 *
+	 * @param string $position      The position.
+	 * @param array  $configuration The configuration.
+	 */
+	private function set_area_configuration( string $position, array $configuration ): void {
+		$this->area_configuration[ $position ] = $configuration;
+	}
+
+	/**
+	 * Returns the position configuration.
+	 *
+	 * @since 2.44
+	 *
+	 * @param string $position The position.
+	 *
+	 * @return array The configuration.
+	 */
+	public function get_area_configuration( string $position ): array {
+		return $this->area_configuration[ $position ] ?? [];
 	}
 }
