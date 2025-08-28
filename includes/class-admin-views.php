@@ -1969,10 +1969,15 @@ HTML;
 			plugins_url( 'assets/css/admin-global.css', GRAVITYVIEW_FILE ),
 			[],
 			\GV\Plugin::$version );
+
+		$style_path = 'assets/css/admin-views.css';
+		$style_modified_time = filemtime( plugin_dir_path( GRAVITYVIEW_FILE ) . $style_path );
+		$style_modified_time = ! $style_modified_time ? \GV\Plugin::$version : $style_modified_time;
+
 		wp_register_style( 'gravityview_views_styles',
 			plugins_url( 'assets/css/admin-views.css', GRAVITYVIEW_FILE ),
 			[ 'dashicons', 'wp-jquery-ui-dialog' ],
-			\GV\Plugin::$version );
+			$style_modified_time );
 
 		wp_register_script( 'gravityview-jquery-cookie',
 			plugins_url( 'assets/lib/jquery.cookie/jquery.cookie.min.js', GRAVITYVIEW_FILE ),
@@ -1992,7 +1997,6 @@ HTML;
 
 		if ( 'form_list' === GFForms::get_page() ) {
 			wp_enqueue_style( 'gravityview_views_styles' );
-
 			return;
 		}
 
