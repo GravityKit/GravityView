@@ -184,6 +184,56 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Ensures no approval actions/notifications fire when approval status doesn't change
+	 * even if the Approve Entries field is present on Edit Entry.
+	 *
+	 * @covers GravityView_Entry_Approval::after_update_entry_update_approved_meta
+	 */
+	public function test_no_notifications_when_status_unchanged_on_edit() {
+		// Import a form that includes the Approve Entries checkbox field.
+		$form = $this->factory->form->import_and_get( 'approval.json', 0 );
+
+		// Create an entry with the approval checkbox checked and meta set to APPROVED.
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'foo',
+			'2' => 'bar',
+			'3.1' => 'Approved',
+		) );
+
+		// Set initial approval meta to APPROVED to match the checkbox value.
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		// Avoid registering hooks in constructor; we only need the method.
+		$gv_approval = new class extends GravityView_Entry_Approval { public function __construct() {} };
+
+		$updated_count_before     = did_action( 'gravityview/approve_entries/updated' );
+		$approved_count_before    = did_action( 'gravityview/approve_entries/approved' );
+		$disapproved_count_before = did_action( 'gravityview/approve_entries/disapproved' );
+		$unapproved_count_before  = did_action( 'gravityview/approve_entries/unapproved' );
+
+		// Simulate Edit Entry saving without changing the approval field.
+		$gv_approval->after_update_entry_update_approved_meta( $form, $entry['id'] );
+
+		// Expect: no approval actions fired because status did not change.
+		$this->assertSame( $updated_count_before, did_action( 'gravityview/approve_entries/updated' ) );
+		$this->assertSame( $approved_count_before, did_action( 'gravityview/approve_entries/approved' ) );
+		$this->assertSame( $disapproved_count_before, did_action( 'gravityview/approve_entries/disapproved' ) );
+		$this->assertSame( $unapproved_count_before, did_action( 'gravityview/approve_entries/unapproved' ) );
+
+		// Control: now change the checkbox to blank (disapproved) so a change occurs.
+		$entry['3.1'] = '';
+		GFAPI::update_entry( $entry );
+
+		$gv_approval->after_update_entry_update_approved_meta( $form, $entry['id'] );
+
+		// Expect: actions incremented for updated and disapproved.
+		$this->assertSame( $updated_count_before + 1, did_action( 'gravityview/approve_entries/updated' ) );
+		$this->assertSame( $disapproved_count_before + 1, did_action( 'gravityview/approve_entries/disapproved' ) );
+	}
+
+	/**
 	 * @covers GravityView_Entry_Approval::add_approval_status_updated_note
 	 */
 	public function test_add_approval_status_updated_note() {

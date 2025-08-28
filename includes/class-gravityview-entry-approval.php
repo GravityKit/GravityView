@@ -593,7 +593,7 @@ class GravityView_Entry_Approval {
 	 *
 	 * @return void
 	 */
-	private static function update_approved_meta( $entry_id, $status, $form_id = 0 ) {
+    private static function update_approved_meta( $entry_id, $status, $form_id = 0 ) {
 
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $status ) ) {
 			gravityview()->log->error( '$is_approved not valid value', array( 'data' => $status ) );
@@ -605,10 +605,16 @@ class GravityView_Entry_Approval {
 			return;
 		}
 
-		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
+        $status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
 
-		// update entry meta
-		gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
+        // Prevent unnecessary updates and notifications when status hasn't changed.
+        $previous_status = GravityView_Entry_Approval_Status::maybe_convert_status( gform_get_meta( $entry_id, self::meta_key ) );
+        if ( $previous_status === $status ) {
+            return;
+        }
+
+        // update entry meta
+        gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
 
 		/**
 		 * Triggered when an entry approval is updated.
