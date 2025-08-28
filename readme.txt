@@ -35,6 +35,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Range filter applied to the Date Created field returned incorrect results when only a start date was entered.
 * Field filter form in the View editor now properly filters accented characters (e.g., typing "e" now matches "é").
 * Approval-related notifications no longer fire when saving an entry if the Approve Entries field remains unchanged; notifications now send only when the approval status actually changes (applies to Edit Entry, front‑end approval, admin bulk actions, and merge‑tag approval updates).
+* In some complex situations a File Upload field would not show existing images on the Edit Entry Form.
 
 #### 💻 Developer Updates
 * Filters for customizing secure download bypass behavior:

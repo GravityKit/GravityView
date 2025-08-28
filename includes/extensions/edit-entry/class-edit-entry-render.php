@@ -1823,48 +1823,51 @@ class GravityView_Edit_Entry_Render {
 					$value = $entry[ $field->id ] ?? '';
 
 					// If this is a single upload file.
-					if ( ! empty( $_FILES[ $input_name ] ) ) {
-						// Always remove the old file, if the <input type=file> is not disabled.
-						$this->record_files_for_removal( $field, $value );
-						// The new value to validate is now empty.
-						$value = '';
-						// Mark the old value as removed, to prevent Max Files Exceeded error.
-						$this->entry[ '' . $field->id ] = '';
-						if ( ! empty( $_FILES[ $input_name ]['name'] ) ) {
-							// Uploading a new file.
-							$file_path = GFFormsModel::get_file_upload_path( $form_id, $_FILES[ $input_name ]['name'] );
-							$value     = $file_path['url'];
-						}
-					} else {
-						// Fix PHP warning on line 1498 of form_display.php for post_image fields
-						// Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511.
-						$_FILES[ $input_name ] = [
-							'name'                        => '',
-							'size'                        => '',
-							self::GV_FILE_UPLOAD_DISABLED => true, // Custom marker to indicate field was disabled.
-						];
-					}
+                    if ( ! \GV\Utils::get( $field, 'multipleFiles' ) ) {
+                        if ( ! empty( $_FILES[ $input_name ] ) ) {
+                            // Always remove the old file, if the <input type=file> is not disabled.
+                            $this->record_files_for_removal( $field, $value );
+                            // The new value to validate is now empty.
+                            $value = '';
+                            // Mark the old value as removed, to prevent Max Files Exceeded error.
+                            $this->entry[ '' . $field->id ] = '';
+                            if ( ! empty( $_FILES[ $input_name ][ 'name' ] ) ) {
+                                // Uploading a new file.
+                                $file_path = GFFormsModel::get_file_upload_path(
+                                    $form_id,
+                                    $_FILES[ $input_name ][ 'name' ]
+                                );
+                                $value     = $file_path[ 'url' ];
+                            }
+                        } else {
+                            // Fix PHP warning on line 1498 of form_display.php for post_image fields
+                            // Fix PHP Notice:  Undefined index:  size in form_display.php on line 1511.
+                            $_FILES[ $input_name ] = [
+                                'name'                        => '',
+                                'size'                        => '',
+                                self::GV_FILE_UPLOAD_DISABLED => true, // Custom marker to indicate field was disabled.
+                            ];
+                        }
+                    } elseif ( \GV\Utils::get( $field, 'multipleFiles' ) ) {
+                        // If there are fresh uploads, process and merge them.
+                        // Otherwise, use the passed values, which should be json-encoded array of URLs.
+                        if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
+                            $value = empty( $value ) ? '[]' : $value;
+                        } elseif ( GFCommon::is_json( $value ) ) {
+                            // Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`).
+                            global $_gf_uploaded_files;
 
-					if ( \GV\Utils::get( $field, 'multipleFiles' ) ) {
-						// If there are fresh uploads, process and merge them.
-						// Otherwise, use the passed values, which should be json-encoded array of URLs.
-						if ( isset( GFFormsModel::$uploaded_files[ $form_id ][ $input_name ] ) ) {
-							$value = empty( $value ) ? '[]' : $value;
-						} elseif ( GFCommon::is_json( $value ) ) {
-							// Existing file; let GF derive the value from the `$_gf_uploaded_files` object (see `\GF_Field_FileUpload::get_multifile_value()`).
-							global $_gf_uploaded_files;
+                            $_gf_uploaded_files[ $input_name ] = $value;
+                        }
 
-							$_gf_uploaded_files[ $input_name ] = $value;
-						}
+                        $is_cleared = false;
+                        $this->record_files_for_removal( $field, (string) $value, $is_cleared );
+                        if ( $is_cleared ) {
+                            $value = self::EMPTY_FILE_UPLOAD_VALUE;
+                        }
 
-						$is_cleared = false;
-						$this->record_files_for_removal( $field, (string) $value, $is_cleared );
-						if ( $is_cleared ) {
-							$value = self::EMPTY_FILE_UPLOAD_VALUE;
-						}
-
-						$this->entry[ '' . $field->id ] = $value;
-					}
+                        $this->entry[ '' . $field->id ] = $value;
+                    }
 
 					// Here for backwards compatibility, not sure if it can be removed.
 					$this->entry[ $input_name ] = $value;
