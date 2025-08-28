@@ -302,7 +302,7 @@ class gv_entry_link extends \GV\Shortcode {
 			}
 
 			$entry = $backup_entry;
-		} elseif ( in_array( $entry_id, array( 'first', 'last' ) ) ) {
+		} elseif ( in_array( $entry_id, [ 'first', 'last' ], true ) ) {
 			$view = \GV\View::by_id( $this->view_id );
 
 			if ( ! $view ) {
@@ -310,8 +310,12 @@ class gv_entry_link extends \GV\Shortcode {
 				return false;
 			}
 
-			if ( ! isset( $entry[ $entry_id ] ) ) {
-				$entry = 'last' === $entry_id ? $view->get_entries( null )->first() : $view->get_entries( null )->last();
+			if ( ! isset( $entries[ $entry_id ] ) ) {
+				if ( 'last' === $entry_id ) {
+					$entry = $view->get_entries( null )->last();
+				} else {
+					$entry = $view->get_entries( null )->first();
+				}
 			}
 
 			if ( $entry ) {
