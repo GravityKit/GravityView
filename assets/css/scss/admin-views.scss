@@ -304,7 +304,7 @@ $gv-overlay-index: 10000;
 }
 
 .gv-grid-col-1-5 {
-	grid-column: span 2; // on a 10 grid
+	grid-column: span 2; // 2/12 = 1/6 width (~16.67%), not the true 1/5 (20%).
 }
 
 .gv-grid-col-1-8 {
