@@ -24,16 +24,22 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🚀 Added
+* Added a new setting to the File Upload field to disable secure download URLs for images, audio, and video files. This greatly improves performance.
 * New `lightbox` attribute for the `[gv_entry_link]` shortcode to open the link in a lightbox.
-	- Supports `action` attribute values: `read`, `edit`
+  - Supports `action` attribute values: `read`, `edit`.
 
 #### ✨ Improved
 * Security of the `[gv_entry_link]` shortcode.
 
 #### 🐛 Fixed
 * Range filter applied to the Date Created field returned incorrect results when only a start date was entered.
+* Field filter form in the View editor now properly filters accented characters (e.g., typing "e" now matches "é").
+* Approval-related notifications no longer fire when saving an entry if the Approve Entries field remains unchanged; notifications now send only when the approval status actually changes (applies to Edit Entry, front‑end approval, admin bulk actions, and merge‑tag approval updates).
 
 #### 💻 Developer Updates
+* Filters for customizing secure download bypass behavior:
+  - `gk/gravityview/fields/fileupload/secure-links/bypass` controls bypass per field/View/user;
+  - `gk/gravityview/fields/fileupload/secure-links/allowed-extensions` customizes allowed file types.
 * Deprecated `GravityView_Entry_Link_Shortcode` class. Use `GV\Shortcodes\gv_entry_link` instead.
 
 = 2.44 on August 21, 2025 =

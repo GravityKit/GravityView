@@ -63,9 +63,10 @@ body .ui-tooltip {
 	br { display: none; }
 
 }
-/* Fades and background-images don't work well together in IE6, drop the image */
-* html .ui-tooltip {
-	background-image: none;
+
+// Prevent dialog from clipping tooltips
+.ui-dialog:has(.ui-tooltip) {
+	overflow: visible !important;
 }
 
 .ui-tooltip-content {
