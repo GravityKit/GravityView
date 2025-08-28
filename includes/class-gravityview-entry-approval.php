@@ -322,10 +322,19 @@ class GravityView_Entry_Approval {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
+		if ( is_wp_error( $entry ) ) {
+			gravityview()->log->error( 'Entry could not be retrieved in after_update_entry_update_approved_meta: {error}', [
+				'error' => $entry->get_error_message(),
+				'data' => [ $entry, $entry_id ],
+			] );
+			return;
+		}
+
         // Determine current and new approval statuses
         $existing_status = self::get_entry_status( $entry_id, 'value' );
+		$approved_value = (string) \GV\Utils::get( $entry, $approved_column, '' );
 
-        if ( '' === \GV\Utils::get( $entry, $approved_column ) ) {
+        if ( '' === $approved_value ) {
             $new_status = GravityView_Entry_Approval_Status::DISAPPROVED;
         } else {
             $new_status = GravityView_Entry_Approval_Status::APPROVED;
