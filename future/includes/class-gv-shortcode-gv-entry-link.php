@@ -115,6 +115,9 @@ class gv_entry_link extends \GV\Shortcode {
 			return null;
 		}
 
+		// Sanity check to make sure the expected View ID is set in the atts.
+		$atts['view_id'] = $this->view_id;
+
 		$view = $this->get_view_by_atts( $atts );
 
 		if ( is_wp_error( $view ) ) {
