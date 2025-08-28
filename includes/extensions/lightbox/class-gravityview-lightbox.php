@@ -11,8 +11,18 @@
 class GravityView_Lightbox {
 	const DEFAULT_PROVIDER = 'fancybox';
 
-	private static $providers = array();
+	/**
+	 * The registered lightbox providers
+	 *
+	 * @var GravityView_Lightbox_Provider[]
+	 */
+	private static $providers = [];
 
+	/**
+	 * The active lightbox provider
+	 *
+	 * @var GravityView_Lightbox_Provider|null
+	 */
 	private static $active_provider = null;
 
 	/**
