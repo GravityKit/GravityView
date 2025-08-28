@@ -176,18 +176,21 @@ class gv_entry_link extends \GV\Shortcode {
 		 * Modify the output of the [gv_entry_link] shortcode.
 		 *
 		 * @since 2.0.15
-		 * @param string $return The HTML link output
+		 * @since TODO Added $final_atts to the second parameter of the filter.
+		 * @param string $return The HTML link output.
 		 * @param array {
 		 *   @type string        $url The URL used to generate the anchor tag.
 		 *   @type string        $link_text The link text.
 		 *   @type array         $link_atts The link attributes.
-		 *   @type array|string  $atts Shortcode atts passed to shortcode
-		 *   @type string        $content Content passed to shortcode
-		 *   @type string        $context The tag of the shortcode being called
+		 *   @type array|string  $atts Shortcode atts passed to shortcode.
+		 *   @type string        $content Content passed to shortcode.
+		 *   @type string        $context The tag of the shortcode being called.
+		 *   @type array         $final_atts The calculated attributes of the shortcode.
 		 * }
 		 */
-		$context = $tag; // For backward compatibility with filter
-		$return = apply_filters( 'gravityview/shortcodes/gv_entry_link/output', $return, compact( 'url', 'link_text', 'link_atts', 'atts', 'content', 'context' ) );
+		$context = $tag; // For backward compatibility with filter.
+		$final_atts = $this->settings;
+		$return = apply_filters( 'gravityview/shortcodes/gv_entry_link/output', $return, compact( 'url', 'link_text', 'link_atts', 'atts', 'content', 'context', 'final_atts' ) );
 
 		return $return;
 	}
