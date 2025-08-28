@@ -912,12 +912,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( 'sentinel', $fe->getGvOutputData() );
 		$fe->setGvOutputData( $restore_GvOutputData );
 
-		/** \GravityView_Entry_Link_Shortcode::shortcode short circuits with null if is_admin() */
+		/** \GV\Shortcodes\gv_entry_link::callback short circuits with null if is_admin() */
 		set_current_screen( 'front' );
-		$entry_link_shortcode = new \GravityView_Entry_Link_Shortcode(); /** And with false if allowed to continue with bad data. */
-		$this->assertFalse( $entry_link_shortcode->read_shortcode( array( 'view_id' => 1, 'entry_id' => 1 ) ) );
+		$entry_link_shortcode = new \GV\Shortcodes\gv_entry_link(); /** And with null if View validation fails early. */
+		$this->assertNull( $entry_link_shortcode->callback( array( 'view_id' => 1, 'entry_id' => 1 ), '', 'gv_entry_link' ) );
 		set_current_screen( 'dashboard' );
-		$this->assertNull( $entry_link_shortcode->read_shortcode( array( 'view_id' => 1, 'entry_id' => 1 ) ) );
+		$this->assertNull( $entry_link_shortcode->callback( array( 'view_id' => 1, 'entry_id' => 1 ), '', 'gv_entry_link' ) );
 
 		/** \GVLogic_Shortcode::shortcode short circuits as well. */
 		set_current_screen( 'front' );

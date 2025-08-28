@@ -130,6 +130,7 @@ class gv_entry_link extends \GV\Shortcode {
 		}
 
 		if ( ! $view ) {
+			gravityview()->log->error( "A View with ID {$this->view_id} was not found." );
 			return null;
 		}
 
