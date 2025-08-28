@@ -114,13 +114,13 @@ final class GravityView_Entry_Approval_Status {
 	}
 
 	/**
-	 * Convert previously-used values to the current values, for backward compatibility
+	 * Convert previously-used values to the current values, for backward compatibility.
 	 *
 	 * @since 1.18
 	 *
 	 * @param string $old_value The status
 	 *
-	 * @return int|string Current value, possibly converted from old value
+	 * @return int Status value (`1` for approved, `2` for disapproved, or `3` for unapproved).
 	 */
 	public static function maybe_convert_status( $old_value = '' ) {
 
