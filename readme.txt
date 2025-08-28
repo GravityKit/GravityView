@@ -42,6 +42,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
   - `gk/gravityview/fields/fileupload/secure-links/allowed-extensions` customizes allowed file types.
 * Deprecated `GravityView_Entry_Link_Shortcode` class. Use `GV\Shortcodes\gv_entry_link` instead.
 
+#### 💻 Developer Updates
+* Deprecated `GravityView_Admin_Notices` class in favour of the new notices functionality provided by Foundation.
+
 = 2.44 on August 21, 2025 =
 
 This release updates the View editor with new display options for Checkbox fields and Search Bar columns, enhances Magic Links validation and BuddyBoss/BuddyPress page support, and resolves issues affecting the Search Bar widget and Edit Entry screen.
