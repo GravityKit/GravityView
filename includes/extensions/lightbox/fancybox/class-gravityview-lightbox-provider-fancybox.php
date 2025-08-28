@@ -13,22 +13,42 @@
  */
 class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provider {
 
+	/**
+	 * @inheritDoc
+	 */
 	public static $slug = 'fancybox';
 
+	/**
+	 * @inheritDoc
+	 */
 	public static $script_slug = 'gravityview-fancybox';
 
+	/**
+	 * @inheritDoc
+	 */
 	public static $style_slug = 'gravityview-fancybox';
 
 	/**
 	 * @inheritDoc
 	 */
-	public function print_scripts( $gravityview ) {
+	public static $css_class_name = 'gravityview-fancybox';
 
-		parent::print_scripts( $gravityview );
+	/**
+	 * @inheritDoc
+	 */
+	public static $data_type_attribute = 'data-type';
 
-		if ( ! self::is_active( $gravityview ) ) {
-			return;
-		}
+	/**
+	 * @inheritDoc
+	 */
+	public static $data_type_value = 'ajax';
+
+	/**
+	 * @inheritDoc
+	 */
+	public function print_scripts() {
+
+		parent::print_scripts();
 
 		$settings = self::get_settings();
 
@@ -45,7 +65,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		</style>
 		<script>
 			if ( window.Fancybox ){
-				Fancybox.bind(".gravityview-fancybox", <?php echo $settings; ?>);
+				Fancybox.bind(".<?php echo sanitize_html_class( self::$css_class_name ); ?>", <?php echo $settings; ?>);
 			}
 		</script>
 		<?php
@@ -108,6 +128,8 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 */
 	public function allowed_atts( $atts = array() ) {
 
+		$atts = parent::allowed_atts( $atts );
+
 		$atts['data-fancybox']         = null;
 		$atts['data-fancybox-trigger'] = null;
 		$atts['data-fancybox-index']   = null;
@@ -143,7 +165,7 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 			return $link_atts;
 		}
 
-		$link_atts['class'] = \GV\Utils::get( $link_atts, 'class' ) . ' gravityview-fancybox';
+		$link_atts['class'] = \GV\Utils::get( $link_atts, 'class' ) . ' ' . self::$css_class_name;
 
 		$link_atts['class'] = gravityview_sanitize_html_class( $link_atts['class'] );
 

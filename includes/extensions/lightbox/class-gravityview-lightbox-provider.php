@@ -7,11 +7,53 @@
  */
 abstract class GravityView_Lightbox_Provider {
 
+	/**
+	 * The internal slug of the lightbox provider.
+	 *
+	 * @var string
+	 */
 	public static $slug;
 
+	/**
+	 * The slug of the registered script to use for the lightbox.
+	 *
+	 * @var string
+	 */
 	public static $script_slug;
 
+	/**
+	 * The slug of the registered style to use for the lightbox.
+	 *
+	 * @var string
+	 */
 	public static $style_slug;
+
+	/**
+	 * The CSS class name to use for the lightbox.
+	 *
+	 * @since TODO
+	 *
+	 * @var string
+	 */
+	public static $css_class_name;
+
+	/**
+	 * The attribute to use to set the lightbox type.
+	 *
+	 * @since TODO
+	 *
+	 * @var string
+	 */
+	public static $data_type_attribute = 'data-type';
+
+	/**
+	 * The type of data-type attribute to use for HTML attributes.
+	 *
+	 * @since TODO
+	 *
+	 * @var string
+	 */
+	public static $data_type_value = 'ajax';
 
 	/**
 	 * Adds actions and that modify GravityView to use this lightbox provider
@@ -22,33 +64,52 @@ abstract class GravityView_Lightbox_Provider {
 
 		add_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10, 4 );
 		add_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
+		add_filter( 'gravityview/shortcodes/gv_entry_link/output', array( $this, 'filter_entry_link_output' ), 10, 2 );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 
-		add_action( 'gravityview/template/after', array( $this, 'print_scripts' ) );
+		add_action( 'gravityview/template/after', array( $this, 'print_scripts_if_active' ) );
 
 		add_action( 'wp_footer', array( $this, 'output_footer' ) );
 	}
 
+	/**
+	 * Prints scripts for lightbox after a View is rendered if the provider is active.
+	 *
+	 * @since TODO
+	 *
+	 * @param GV\Template_Context $context
+	 *
+	 * @return void
+	 */
+	public function print_scripts_if_active( $context ) {
+		if ( ! $context instanceof \GV\Template_Context || ! self::is_active( $context ) ) {
+			return;
+		}
+
+		$this->print_scripts();
+	}
 
 	/**
 	 * Prints scripts for lightbox after a View is rendered
 	 *
 	 * @since 2.10.1
-	 *
-	 * @param GV\Template_Context $gravityview
+	 * @since TODO   Changed to always print scripts, regardless of context.
 	 *
 	 * @return void
 	 */
-	public function print_scripts( $gravityview ) {
+	protected function print_scripts() {
+		static $did_print = false;
 
-		if ( ! self::is_active( $gravityview ) ) {
+		if ( $did_print ) {
 			return;
 		}
 
 		wp_print_scripts( static::$script_slug );
-		wp_print_styles( static::$script_slug );
+		wp_print_styles( static::$style_slug );
+
+		$did_print = true;
 	}
 
 	/**
@@ -56,13 +117,17 @@ abstract class GravityView_Lightbox_Provider {
 	 *
 	 * @since 2.10.1
 	 *
-	 * @param GV\Template_Context $gravityview
+	 * @param GV\Template_Context $context
 	 *
 	 * @return bool true: yes! false: no!
 	 */
-	protected static function is_active( $gravityview ) {
+	protected static function is_active( $context ) {
 
-		$lightbox = $gravityview->view->settings->get( 'lightbox' );
+		if ( ! $context instanceof \GV\Template_Context ) {
+			return false;
+		}
+
+		$lightbox = $context->view->settings->get( 'lightbox' );
 
 		if ( ! $lightbox ) {
 			return false;
@@ -174,7 +239,83 @@ abstract class GravityView_Lightbox_Provider {
 	 * @return array
 	 */
 	public function allowed_atts( $atts = array() ) {
+		$atts[ static::$data_type_attribute ] = null;
 		return $atts;
+	}
+
+	/**
+	 * Get the data-type attribute to use for the lightbox.
+	 *
+	 * @return string
+	 */
+	public function get_data_type_attribute() {
+		return static::$data_type_attribute;
+	}
+
+	/**
+	 * Get the data-type value to use for the lightbox.
+	 *
+	 * @return string
+	 */
+	public function get_data_type_value() {
+		return static::$data_type_value;
+	}
+
+	/**
+	 * Get the CSS class name to use for the lightbox.
+	 *
+	 * @return string
+	 */
+	public function get_css_class_name() {
+		return static::$css_class_name;
+	}
+
+	/**
+	 * Filter the output of the [gv_entry_link] shortcode
+	 *
+	 * @param string $output The HTML link output
+	 * @param array {
+	 *   @type string        $url The URL used to generate the anchor tag. {@see GravityView_Entry_Link_Shortcode::get_url}
+	 *   @type string        $link_text {@see GravityView_Entry_Link_Shortcode::get_anchor_text}
+	 *   @type array         $link_atts {@see GravityView_Entry_Link_Shortcode::get_link_atts}
+	 *   @type array|string  $atts Shortcode atts passed to shortcode
+	 *   @type string        $content Content passed to shortcode
+	 *   @type string        $context The tag of the shortcode being called
+	 * }
+	 *
+	 * @return string
+	 */
+	public function filter_entry_link_output( $output, $args ) {
+
+		// Prevent errors when saving a post or page in the admin.
+		if ( wp_doing_ajax() || GVCommon::is_rest_request() ) {
+			return $output;
+		}
+
+		// If the lightbox attribute is not set, return the original HTML output.
+		if ( empty( $args['atts']['lightbox'] ) ) {
+			return $output;
+		}
+
+		// If the action is delete, return the original HTML output.
+		if ( 'delete' === \GV\Utils::get( $args['atts'], 'action', '' ) ) {
+			return $output;
+		}
+
+		$link_atts = $args['link_atts'];
+
+		// Add the CSS class name to the link attributes.
+		$css_class = \GV\Utils::get( $link_atts, 'class', '' ) . ' ' . $this->get_css_class_name();
+		$link_atts['class'] = gravityview_sanitize_html_class( $css_class );
+		$link_atts[ $this->get_data_type_attribute() ] = $this->get_data_type_value();
+
+		// Generate the HTML link.
+		$output = gravityview_get_link( $args['url'], $args['link_text'], $link_atts );
+
+		// Print the scripts for the lightbox.
+		$this->print_scripts();
+
+		return $output;
 	}
 
 	/**

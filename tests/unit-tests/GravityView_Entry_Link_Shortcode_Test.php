@@ -9,12 +9,12 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  */
 class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
-	/** @type  GravityView_Entry_Link_Shortcode */
+	/** @type  \GV\Shortcodes\gv_entry_link */
 	var $object;
 
 	public function setUp() : void {
 		parent::setUp();
-		$this->object = new GravityView_Entry_Link_Shortcode;
+		$this->object = new \GV\Shortcodes\gv_entry_link;
 	}
 
 	/**
@@ -107,14 +107,14 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 	 */
 	function _test_read( $view, $entry, $atts ) {
 
-		$link = $this->object->read_shortcode( $atts );
+		$link = $this->object->callback( $atts, '', 'gv_entry_link' );
 
 		$gvid = GravityView_View_Data::getInstance()->has_multiple_views() ? '&gvid='.gravityview_get_view_id() : '';
 
 		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id']. esc_attr( $gvid ) . '">View Details</a>', $link, 'no action' );
 
 		$atts['return'] = 'url';
-		$link_return_url = $this->object->read_shortcode( $atts );
+		$link_return_url = $this->object->callback( $atts, '', 'gv_entry_link' );
 		$this->assertEquals( 'http://example.org/?p='.$atts['post_id'].'&entry='.$atts['entry_id'] . $gvid, $link_return_url, 'no action, url only' );
 	}
 
@@ -126,7 +126,7 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		// NO CAPS
 		$this->factory->user->create_and_set(array( 'user_login' => 'zero', 'role' => 'zero'));
 
-		$zero_link = $this->object->delete_shortcode( $atts );
+		$zero_link = $this->object->callback( $atts, '', 'gv_delete_entry_link' );
 		$this->assertNull( $zero_link, 'user without caps shouldn\'t see delete link' );
 
 		// ADMIN
@@ -135,14 +135,14 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$delete_entry_delete_link = GravityView_Delete_Entry::get_delete_link( $entry, $view->ID, $atts['post_id'] );
 
 		$atts['return'] = 'html';
-		$delete_link = $this->object->delete_shortcode( $atts );
+		$delete_link = $this->object->callback( $atts, '', 'gv_delete_entry_link' );
 		$atts['action'] = 'delete';
-		$delete_link_backward_compat = $this->object->read_shortcode( $atts );
+		$delete_link_backward_compat = $this->object->callback( $atts, '', 'gv_entry_link' );
 		$this->assertEquals( '<a href="'. esc_url_raw( $delete_entry_delete_link ) .'" onclick="return window.confirm(&#039;Are you sure you want to delete this entry? This cannot be undone.&#039;);">Delete Entry</a>', $delete_link, 'delete link' );
 		$this->assertEquals( $delete_link, $delete_link_backward_compat );
 
 		$atts['return'] = 'url';
-		$delete_link_return_url = $this->object->delete_shortcode( $atts );
+		$delete_link_return_url = $this->object->callback( $atts, '', 'gv_delete_entry_link' );
 		$this->assertEquals( $delete_entry_delete_link, $delete_link_return_url, 'delete link URL only' );
 	}
 
@@ -158,24 +158,24 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$gvid = '&gvid='.$view->ID;
 
 		$atts['return'] = 'html';
-		$edit_link = $this->object->edit_shortcode( $atts );
+		$edit_link = $this->object->callback( $atts, '', 'gv_edit_entry_link' );
 		$atts['action'] = 'edit';
-		$edit_link_backward_compat = $this->object->read_shortcode( $atts );
+		$edit_link_backward_compat = $this->object->callback( $atts, '', 'gv_entry_link' );
 		$this->assertEquals( $edit_link, $edit_link_backward_compat );
 		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'] . '&amp;edit='.$nonce. esc_attr( $gvid ) . '">Edit Entry</a>', $edit_link, 'edit link' );
 
 		$atts['return'] = 'url';
-		$edit_link_return_url = $this->object->edit_shortcode( $atts );
+		$edit_link_return_url = $this->object->callback( $atts, '', 'gv_edit_entry_link' );
 		$this->assertEquals( 'http://example.org/?p='.$atts['post_id'].'&entry='.$atts['entry_id'] . '&edit='.$nonce . $gvid, $edit_link_return_url, 'edit link URL only' );
 
 		$atts['return'] = 'html';
 		$atts['link_atts'] = 'target="_blank"&title="check me out!"';
-		$edit_link_link_atts = $this->object->edit_shortcode( $atts );
+		$edit_link_link_atts = $this->object->callback( $atts, '', 'gv_edit_entry_link' );
 		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'] .'&amp;edit='.$nonce . esc_attr( $gvid ) . '" target="&quot;_blank&quot;" title="&quot;check me out!&quot;">Edit Entry</a>', $edit_link_link_atts, 'edit link, return html, with link_atts target="_blank"&title="check me out!"' );
 
 		$atts['return'] = 'html';
 		$atts['link_atts'] = 'target=_blank&title=check me out!';
-		$edit_link_link_atts = $this->object->edit_shortcode( $atts );
+		$edit_link_link_atts = $this->object->callback( $atts, '', 'gv_edit_entry_link' );
 		$this->assertEquals( '<a href="http://example.org/?p='.$atts['post_id'].'&amp;entry='.$atts['entry_id'] . '&amp;edit='.$nonce . esc_attr( $gvid ) . '" rel="noopener noreferrer" target="_blank" title="check me out!">Edit Entry</a>', $edit_link_link_atts, 'edit link return html with link atts target=_blank&title=check me out!' );
 
 		global $post;
@@ -183,11 +183,11 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 
 		\GV\Mocks\Legacy_Context::push( array( 'view' => \GV\View::from_post( $view ), 'entry' => \GV\GF_Entry::from_entry( $entry ), 'post' => $post ) );
 
-		$edit_link_no_atts = $this->object->edit_shortcode( array() );
+		$edit_link_no_atts = $this->object->callback( array(), '', 'gv_edit_entry_link' );
 		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$atts['entry_id'] . '&amp;edit='.$nonce.esc_attr( $gvid ).'">Edit Entry</a>', $edit_link_no_atts, 'edit link no atts' );
 
 		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
-		$edit_link_no_atts_custom_slug = $this->object->edit_shortcode( array() );
+		$edit_link_no_atts_custom_slug = $this->object->callback( array(), '', 'gv_edit_entry_link' );
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
 		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$entry_slug .'&amp;edit='.$nonce.esc_attr( $gvid ).'">Edit Entry</a>', $edit_link_no_atts_custom_slug, 'edit link no atts custom slug' );
 		remove_filter( 'gravityview_custom_entry_slug', '__return_true' );
@@ -199,7 +199,7 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		$zero = $this->factory->user->create_and_set(array('role' => 'zero'));
 
 		// User without edit entry caps should not be able to see link
-		$this->assertNull( $this->object->edit_shortcode( $atts ), 'user with no caps shouldn\'t be able to see link' );
+		$this->assertNull( $this->object->callback( $atts, '', 'gv_edit_entry_link' ), 'user with no caps shouldn\'t be able to see link' );
 
 		$this->_reset_context();
 	}

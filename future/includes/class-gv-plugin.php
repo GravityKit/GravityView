@@ -258,7 +258,6 @@ final class Plugin {
 		/** @since 1.8.4 */
 		include_once $this->dir( 'includes/class-data.php' );
 		include_once $this->dir( 'includes/class-gravityview-shortcode.php' );
-		include_once $this->dir( 'includes/class-gravityview-entry-link-shortcode.php' );
 		include_once $this->dir( 'includes/class-gvlogic-shortcode.php' );
 		include_once $this->dir( 'includes/presets/register-default-templates.php' );
 

@@ -1,23 +1,22 @@
 <?php
 /**
- * Handle issues with plugin and version compatibility
+ * Handles issues with plugin and version compatibility
  *
- * @package   GravityView
+ * @since     1.12
  * @license   GPL2+
  * @author    GravityKit <hello@gravitykit.com>
  * @link      http://www.gravitykit.com
  * @copyright Copyright 2015, Katz Web Services, Inc.
  *
- * @since 1.12
+ * @package   GravityView
  */
 
 /**
- * Handle GravityView compatibility notices and fallback shortcodes
+ * Handles GravityView compatibility notices and fallback shortcodes.
  *
  * @since 1.12
  */
 class GravityView_Compatibility {
-
 	/**
 	 * @var GravityView_Compatibility
 	 */
@@ -34,12 +33,11 @@ class GravityView_Compatibility {
 	public static $valid_wordpress = false;
 
 	/**
-	 * @var array Holder for notices to be displayed in frontend shortcodes if not valid GF
+	 * @var array Holder for notices to be displayed in frontend shortcodes if not valid GF.
 	 */
-	private static $notices = array();
+	private static $notices = [];
 
-	function __construct() {
-
+	private function __construct() {
 		self::$valid_gravity_forms = self::check_gravityforms();
 
 		self::$valid_wordpress = self::check_wordpress();
@@ -48,25 +46,44 @@ class GravityView_Compatibility {
 
 		self::check_gf_directory();
 
-		$this->add_hooks();
-	}
-
-	function add_hooks() {
-
-		add_filter( 'gravityview/admin/notices', array( $this, 'insert_admin_notices' ) );
+		add_action( 'gk/foundation/initialized', [ $this, 'register_compatibility_notices' ] );
 
 		$this->add_fallback_shortcode();
 	}
 
 	/**
-	 * Add the compatibility notices to the other admin notices
+	 * Registers notices.
 	 *
-	 * @param array $notices
+	 * @internal
 	 *
-	 * @return array
+	 * @since TBD
+	 *
+	 * @return void
 	 */
-	function insert_admin_notices( $notices = array() ) {
-		return array_merge( $notices, self::$notices );
+	public function register_compatibility_notices() {
+		if ( empty( self::$notices ) ) {
+			return;
+		}
+
+		if ( ! class_exists( 'GravityKitFoundation' ) ) {
+			return;
+		}
+
+		$notice_manager = GravityKitFoundation::notices();
+
+		if ( ! $notice_manager ) {
+			return;
+		}
+
+		foreach ( self::$notices as $notice ) {
+			try {
+				$notice_manager->add_runtime( $notice );
+			} catch ( Throwable $e ) {
+				gravityview()->log->debug( 'Failed to register compatibility notice with Foundation: ' . $e->getMessage(), [ 'notice' => $notice ] );
+			}
+		}
+
+		self::$notices = [];
 	}
 
 	/**
@@ -76,14 +93,18 @@ class GravityView_Compatibility {
 		if ( self::$instance ) {
 			return self::$instance;
 		}
-		return new self();
+
+		self::$instance = new self();
+
+		return self::$instance;
 	}
 
 	/**
 	 * Is everything compatible with this version of GravityView?
 	 *
 	 * @deprecated 1.19.4
-	 * @see \GV\Plugin::is_compatible() accessible via gravityview()->plugin->is_compatible()
+	 *
+	 * @see        \GV\Plugin::is_compatible() accessible via gravityview()->plugin->is_compatible()
 	 *
 	 * @return bool
 	 */
@@ -94,20 +115,22 @@ class GravityView_Compatibility {
 	/**
 	 * Is the version of WordPress compatible?
 	 *
-	 * @since 1.12
-	 *
 	 * @deprecated 1.19.4
-	 * @see \GV\Plugin::is_compatible_wordpress() accessible via gravityview()->plugin->is_compatible_wordpress()
+	 *
+	 * @since      1.12
+	 *
+	 * @see        \GV\Plugin::is_compatible_wordpress() accessible via gravityview()->plugin->is_compatible_wordpress()
 	 */
 	private static function is_valid_wordpress() {
 		return gravityview()->plugin->is_compatible_wordpress();
 	}
 
 	/**
-	 * @since 1.12
-	 *
 	 * @deprecated 1.19.4
-	 * @see \GV\Plugin::is_compatible_gravityforms() accessible via gravityview()->plugin->is_compatible_gravityforms()
+	 *
+	 * @since      1.12
+	 *
+	 * @see        \GV\Plugin::is_compatible_gravityforms() accessible via gravityview()->plugin->is_compatible_gravityforms()
 	 *
 	 * @return bool
 	 */
@@ -117,25 +140,24 @@ class GravityView_Compatibility {
 
 	/**
 	 * @since 1.12
-	 * @return bool
+	 *
+	 * @return void
 	 */
 	private function add_fallback_shortcode() {
-
-		// If Gravity Forms doesn't exist or is outdated, load the admin view class to
+		// If Gravity Forms doesn't exist or is outdated, load the admin view class to.
 		// show the notice, but not load any post types or process shortcodes.
 		// Without Gravity Forms, there is no GravityView. Beautiful, really.
 		if ( ! gravityview()->plugin->is_compatible() ) {
-
 			// If the plugin's not loaded, might as well hide the shortcode for people.
-			add_shortcode( 'gravityview', array( $this, '_shortcode_gf_notice' ) );
-
+			add_shortcode( 'gravityview', [ $this, '_shortcode_gf_notice' ] );
 		}
 	}
 
 	/**
-	 * Get admin notices
+	 * Returns admin notices.
 	 *
 	 * @since 1.12
+	 *
 	 * @return array
 	 */
 	public static function get_notices() {
@@ -152,16 +174,16 @@ class GravityView_Compatibility {
 	 *
 	 * @return null|string NULL returned if user can't activate plugins. Notice shown with a warning that GF isn't supported.
 	 */
-	public function _shortcode_gf_notice( $atts = array(), $content = null, $shortcode = 'gravityview' ) {
-
+	public function _shortcode_gf_notice( $atts = [], $content = null, $shortcode = 'gravityview' ) {
 		if ( ! GVCommon::has_cap( 'activate_plugins' ) ) {
 			return null;
 		}
 
 		$notices = self::get_notices();
 
-		$message = '<div style="border:1px solid red; padding: 15px;"><p style="text-align:center;"><em>' . esc_html__( 'You are seeing this notice because you are an administrator. Other users of the site will see nothing.', 'gk-gravityview' ) . '</em></p>';
-		foreach ( (array) $notices as $notice ) {
+		$message = esc_html__( 'You are seeing this notice because you are an administrator. Other users of the site will see nothing.', 'gk-gravityview' );
+
+		foreach ( $notices as $notice ) {
 			$message .= wpautop( $notice['message'] );
 		}
 		$message .= '</div>';
@@ -179,16 +201,19 @@ class GravityView_Compatibility {
 	 */
 	public static function check_php() {
 		if ( ! gravityview()->plugin->is_compatible_future_php() ) {
-
 			// Show the notice on every update. Yes, annoying, but not as annoying as a plugin breaking.
 			$key = sprintf( 'php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GV_PLUGIN_VERSION );
 
-			self::$notices[ $key ] = array(
-				'class'   => 'error',
-				'message' => sprintf( __( "%1\$sGravityView will soon require PHP Version %2\$s.%3\$s \n\nYou're using Version %4\$s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '<h3>', GV_FUTURE_MIN_PHP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . phpversion() . '</span>' ),
-				'cap'     => 'manage_options',
-				'dismiss' => $key,
-			);
+			self::$notices[ $key ] = [
+				'namespace'    => 'gk-gravityview',
+				'slug'         => $key,
+				'message'      => sprintf( __( "%1\$sGravityView will soon require PHP Version %2\$s.%3\$s \n\nYou're using Version %4\$s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '', GV_FUTURE_MIN_PHP_VERSION, '', '<strong>' . phpversion() . '</strong>' ),
+				'severity'     => 'warning',
+				'capabilities' => [ 'manage_options' ],
+				'dismissible'  => true,
+				'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+				'context'      => 'all',
+			];
 		}
 
 		return true;
@@ -208,13 +233,16 @@ class GravityView_Compatibility {
 		}
 
 		if ( ! gravityview()->plugin->is_compatible_wordpress() ) {
-
-			self::$notices['wp_version'] = array(
-				'class'   => 'error',
-				'message' => sprintf( __( "%1\$sGravityView requires WordPress %2\$s or newer.%3\$s \n\nYou're using Version %4\$s. Please upgrade your WordPress installation.", 'gk-gravityview' ), '<h3>', GV_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
-				'cap'     => 'update_core',
-				'dismiss' => 'wp_version',
-			);
+			self::$notices['wp_version'] = [
+				'namespace'    => 'gk-gravityview',
+				'slug'         => 'wp_version',
+				'message'      => sprintf( __( "%1\$sGravityView requires WordPress %2\$s or newer.%3\$s \n\nYou're using Version %4\$s. Please upgrade your WordPress installation.", 'gk-gravityview' ), '', GV_MIN_WP_VERSION, '', '<strong>' . $wp_version . '</strong>' ),
+				'severity'     => 'error',
+				'capabilities' => [ 'update_core' ],
+				'dismissible'  => true,
+				'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+				'context'      => 'all',
+			];
 
 			return false;
 		}
@@ -222,29 +250,31 @@ class GravityView_Compatibility {
 		// Show the notice on every update. Yes, annoying, but not as annoying as a plugin breaking.
 		$key = sprintf( 'wp_%s_%s', GV_FUTURE_MIN_WP_VERSION, GV_PLUGIN_VERSION );
 
-		self::$notices[ $key ] = array(
-			'class'   => 'notice-warning',
-			'message' => sprintf( __( "%1\$sGravityView will soon require WordPress %2\$s%3\$s \n\nYou're using Version %4\$s. Please upgrade your WordPress installation.", 'gk-gravityview' ), '<h3>', GV_FUTURE_MIN_WP_VERSION, "</h3>\n\n", '<span style="font-family: Consolas, Courier, monospace;">' . $wp_version . '</span>' ),
-			'cap'     => 'update_core',
-			'dismiss' => $key,
-		);
+		self::$notices[ $key ] = [
+			'namespace'    => 'gk-gravityview',
+			'slug'         => $key,
+			'message'      => sprintf( __( "%1\$sGravityView will soon require WordPress %2\$s%3\$s \n\nYou're using Version %4\$s. Please upgrade your WordPress installation.", 'gk-gravityview' ), '', GV_FUTURE_MIN_WP_VERSION, '', '<strong>' . $wp_version . '</strong>' ),
+			'severity'     => 'warning',
+			'capabilities' => [ 'update_core' ],
+			'dismissible'  => true,
+			'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+			'context'      => 'all',
+		];
 
 		return true;
 	}
 
 
 	/**
-	 * Check if Gravity Forms plugin is active and show notice if not.
+	 * Checks if Gravity Forms plugin is active and show notice if not.
 	 *
 	 * @since 1.12
 	 *
 	 * @return boolean True: checks have been passed; GV is fine to run; False: checks have failed, don't continue loading
 	 */
 	public static function check_gravityforms() {
-
-		// Bypass other checks: if the class exists
+		// Bypass other checks: if the class exists.
 		if ( class_exists( 'GFCommon' ) ) {
-
 			// Does the version meet future requirements?
 			if ( true === gravityview()->plugin->is_compatible_future_gravityforms() ) {
 				return true;
@@ -253,35 +283,37 @@ class GravityView_Compatibility {
 			// Does it meet minimum requirements?
 			$meets_minimum = gravityview()->plugin->is_compatible_gravityforms();
 
+			$messages = [];
+
 			if ( $meets_minimum ) {
 				/* translators: first placeholder is the future required version of Gravity Forms. The second placeholder is the current version of Gravity Forms. */
-				$title   = __( 'In the future, GravityView will require Gravity Forms Version %s or newer.', 'gk-gravityview' );
-				$version = GV_FUTURE_MIN_GF_VERSION;
-				$class   = 'notice-warning';
+				$messages[] = sprintf( __( 'In the future, GravityView will require Gravity Forms Version %s or newer.', 'gk-gravityview' ), GV_FUTURE_MIN_GF_VERSION );
+				$version    = GV_FUTURE_MIN_GF_VERSION;
 			} else {
 				/* translators: the placeholder is the required version of Gravity Forms. */
-				$title   = __( 'GravityView requires Gravity Forms Version %s or newer.', 'gk-gravityview' );
-				$version = GV_MIN_GF_VERSION;
-				$class   = 'error';
+				$messages[] = sprintf( __( 'GravityView requires Gravity Forms Version %s or newer.', 'gk-gravityview' ), GV_MIN_GF_VERSION );
+				$version    = GV_MIN_GF_VERSION;
 			}
 
-			$message = '<h3>' . esc_html( sprintf( $title, $version ) ) . '</h3>';
-
 			/* translators: the placeholder is the current version of Gravity Forms. */
-			$message .= '<p>' . sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gk-gravityview' ), '<span style="font-family: Consolas, Courier, monospace;">' . GFCommon::$version . '</span>' ) . '</p>';
+			$messages[] = sprintf( esc_html__( "You're using Version %s. Please update your Gravity Forms or purchase a license.", 'gk-gravityview' ), '<strong>' . GFCommon::$version . '</strong>' );
 
 			/* translators: In this context, "get" means purchase */
-			$message .= '<p><a href="https://www.gravitykit.com/gravityforms/" class="button button-secondary button-large button-hero">' . esc_html__( 'Get the Latest Gravity Forms', 'gk-gravityview' ) . '</a></p>';
+			$messages[] = '<a href="https://www.gravitykit.com/gravityforms/">' . esc_html__( 'Get the latest Gravity Forms.', 'gk-gravityview' ) . '</a>';
 
-			// Show the notice even if the future version requirements aren't met
-			self::$notices['gf_version'] = array(
-				'class'   => $class,
-				'message' => $message,
-				'cap'     => 'update_plugins',
-				'dismiss' => 'gf_version_' . $version,
-			);
+			// Show the notice even if the future version requirements aren't met.
+			self::$notices['gf_version'] = [
+				'namespace'    => 'gk-gravityview',
+				'slug'         => 'gf_version_' . $version,
+				'message'      => join( ' ', $messages ),
+				'severity'     => $meets_minimum ? 'warning' : 'error',
+				'capabilities' => [ 'update_plugins' ],
+				'dismissible'  => false,
+				'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+				'context'      => 'all',
+			];
 
-			// Return false if the plugin is not compatible, true if meets minimum
+			// Return false if the plugin is not compatible, true if meets minimum.
 			return $meets_minimum;
 		}
 
@@ -296,40 +328,49 @@ class GravityView_Compatibility {
 			return true;
 		}
 
-		// If GFCommon doesn't exist, assume GF not active
+		// If GFCommon doesn't exist, assume GF not active.
 		$return = false;
 
 		switch ( $gf_status ) {
 			case 'inactive':
-				// Required for multisite
+				// Required for multisite.
 				if ( ! function_exists( 'wp_create_nonce' ) ) {
 					require_once ABSPATH . WPINC . '/pluggable.php';
 				}
 
-				// Otherwise, throws an error on activation & deactivation "Use of undefined constant LOGGED_IN_COOKIE"
+				// Otherwise, throws an error on activation & deactivation "Use of undefined constant LOGGED_IN_COOKIE".
 				if ( is_multisite() ) {
 					wp_cookie_constants();
 				}
 
 				$return = false;
 
-				$button = function_exists( 'is_network_admin' ) && is_network_admin() ? '<strong><a href="#gravity-forms">' : '<strong><a href="' . wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php' ) . '" class="button button-large">';
+				$button = function_exists( 'is_network_admin' ) && is_network_admin() ? '<strong><a href="#gravity-forms">' : '<strong><a href="' . wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=gravityforms/gravityforms.php' ), 'activate-plugin_gravityforms/gravityforms.php' ) . '">';
 
-				self::$notices['gf_inactive'] = array(
-					'class'   => 'error',
-					'message' => sprintf( __( '%1$sGravityView requires Gravity Forms to be active. %2$sActivate Gravity Forms%3$s to use the GravityView plugin.', 'gk-gravityview' ), '<h3>', "</h3>\n\n" . $button, '</a></strong>' ),
-					'cap'     => 'activate_plugins',
-					'dismiss' => 'gf_inactive',
-				);
+				self::$notices['gf_inactive'] = [
+					'namespace'    => 'gk-gravityview',
+					'slug'         => 'gf_inactive',
+					'message'      => sprintf( __( '%1$sGravityView requires Gravity Forms to be active. %2$sActivate Gravity Forms%3$s to use the GravityView plugin.', 'gk-gravityview' ), '', $button, '</a></strong>' ),
+					'severity'     => 'error',
+					'capabilities' => [ 'activate_plugins' ],
+					'dismissible'  => false,
+					'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+					'context'      => 'all',
+				];
 
 				break;
 			default:
-				self::$notices['gf_installed'] = array(
-					'class'   => 'error',
-					'message' => sprintf( __( '%1$sGravityView requires Gravity Forms to be installed in order to run properly. %2$sGet Gravity Forms%3$s - starting at $59%4$s%5$s', 'gk-gravityview' ), '<h3>', "</h3>\n\n" . '<a href="https://www.gravitykit.com/gravityforms/" class="button button-secondary button-large button-hero">', '<em>', '</em>', '</a>' ),
-					'cap'     => 'install_plugins',
-					'dismiss' => 'gf_installed',
-				);
+				self::$notices['gf_installed'] = [
+					'namespace'    => 'gk-gravityview',
+					'slug'         => 'gf_installed',
+					'message'      => sprintf( __( '%1$sGravityView requires Gravity Forms to be installed in order to run properly. %2$sGet Gravity Forms%3$s - starting at $59%4$s%5$s', 'gk-gravityview' ), '', '<a href="https://www.gravitykit.com/gravityforms/">', '', '', '</a>' ),
+					'severity'     => 'error',
+					'capabilities' => [ 'install_plugins' ],
+					'dismissible'  => false,
+					'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+					'context'      => 'all',
+				];
+
 				break;
 		}
 
@@ -342,29 +383,32 @@ class GravityView_Compatibility {
 	 * @return void
 	 */
 	private static function check_gf_directory() {
-
-		if ( class_exists( 'GFDirectory' ) ) {
-			self::$notices['gf_directory'] = array(
-				'class'   => 'error is-dismissible',
-				'title'   => __( 'Potential Conflict', 'gk-gravityview' ),
-				'message' => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gk-gravityview' ),
-				'dismiss' => 'gf_directory',
-				'cap'     => 'activate_plugins',
-			);
+		if ( ! class_exists( 'GFDirectory' ) ) {
+			return;
 		}
+
+		self::$notices['gf_directory'] = [
+			'namespace'    => 'gk-gravityview',
+			'slug'         => 'gf_directory',
+			'message'      => __( 'GravityView and Gravity Forms Directory are both active. This may cause problems. If you experience issues, disable the Gravity Forms Directory plugin.', 'gk-gravityview' ),
+			'severity'     => 'warning',
+			'capabilities' => [ 'activate_plugins' ],
+			'dismissible'  => true,
+			'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
+			'context'      => 'all',
+		];
 	}
 
 	/**
-	 * Check if specified plugin is active, inactive or not installed
+	 * Checks if specified plugin is active, inactive or not installed.
 	 *
 	 * @param string $location (default: '')
 	 *
-	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive
+	 * @return boolean|string True: plugin is active; False: plugin file doesn't exist at path; 'inactive' it's inactive.
 	 */
 	public static function get_plugin_status( $location = '' ) {
-
 		if ( ! function_exists( 'is_plugin_active' ) ) {
-			include_once ABSPATH . '/wp-admin/includes/plugin.php';
+			include_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
 		if ( is_network_admin() && is_plugin_active_for_network( $location ) ) {
@@ -395,14 +439,14 @@ class GravityView_Compatibility {
 	public static function override_post_pages_when_compatibility_fails() {
 		global $pagenow;
 
-		if ( ! in_array( $pagenow, array( 'post.php', 'edit.php', 'post-new.php' ) ) ) {
+		if ( ! in_array( $pagenow, [ 'post.php', 'edit.php', 'post-new.php' ], true ) ) {
 			return;
 		}
 
 		$display_notices = function ( $hook_data ) {
 			global $post;
 
-			if ( ! $post instanceof \WP_Post || 'gravityview' !== $post->post_type ) {
+			if ( ! $post instanceof WP_Post || 'gravityview' !== $post->post_type ) {
 				return $hook_data;
 			}
 
@@ -411,22 +455,6 @@ class GravityView_Compatibility {
 			remove_all_actions( 'network_admin_notices' );
 
 			new GravityView_Admin_Notices();
-
-			/**
-			 * Make GravityView notices non-dismissible and display them to all users.
-			 *
-			 * @param array $notices Array of notices to display.
-			 */
-			add_filter( 'gravityview/admin/notices', function ( $notices ) {
-				$compat_notices = GravityView_Compatibility::get_notices();
-
-				foreach ( $compat_notices as &$notice ) {
-					unset( $notice['dismiss'] ); // Make sure the notice is always displayed and is not dismissible.
-					unset( $notice['cap'] ); // Display the notice to everyone.
-				}
-
-				return array_merge( $notices, $compat_notices );
-			} );
 
 			// Hide the "Screen Options" tab.
 			add_filter( 'screen_options_show_screen', '__return_false' );
@@ -445,6 +473,33 @@ class GravityView_Compatibility {
 		 * Without this in place, other notices, the Post Title, and the Publish metabox will continue to be displayed.
 		 */
 		add_filter( 'replace_editor', $display_notices );
+	}
+
+	/**
+	 * Determines if the compatibility notice should be shown on the current admin screen.
+	 * This limits the display of the notice to the Dashboard, Plugins and GravityView post type screens.
+	 *
+	 * @internal
+	 *
+	 * @since TBD
+	 *
+	 * @return bool
+	 */
+	public static function should_show_notice() {
+		global $post;
+
+		$screen_obj = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		$current_id = $screen_obj ? $screen_obj->id : null;
+
+		if ( in_array( $current_id, [ 'dashboard', 'plugins', 'dashboard-network', 'plugins-network' ], true ) ) {
+			return true;
+		}
+
+		if ( $post instanceof WP_Post && 'gravityview' === $post->post_type ) {
+			return true;
+		}
+
+		return false;
 	}
 }
 
