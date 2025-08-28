@@ -205,6 +205,10 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 		// Set initial approval meta to APPROVED to match the checkbox value.
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
 
+		$entry = GFAPI::get_entry( $entry['id'] );
+
+		$this->assertSame( \GravityView_Entry_Approval_Status::APPROVED, GravityView_Entry_Approval::get_entry_status( $entry, 'value' ) );
+
 		// Avoid registering hooks in constructor; we only need the method.
 		$gv_approval = new class extends GravityView_Entry_Approval { public function __construct() {} };
 
@@ -254,17 +258,23 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 		// Set initial approval meta to DISAPPROVED to match checkbox
 		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::DISAPPROVED );
 
+		$entry = GFAPI::get_entry( $entry['id'] );
+
+		$this->assertSame( \GravityView_Entry_Approval_Status::DISAPPROVED, GravityView_Entry_Approval::get_entry_status( $entry, 'value' ) );
+
 		$gv_approval = new class extends GravityView_Entry_Approval { public function __construct() {} };
 
 		$updated_before     = did_action( 'gravityview/approve_entries/updated' );
+		$unapproved_before  = did_action( 'gravityview/approve_entries/unapproved' );
 		$disapproved_before = did_action( 'gravityview/approve_entries/disapproved' );
 		$approved_before    = did_action( 'gravityview/approve_entries/approved' );
 
 		// Save without changing checkbox; expect no actions
 		$gv_approval->after_update_entry_update_approved_meta( $form, $entry['id'] );
-		$this->assertSame( $updated_before, did_action( 'gravityview/approve_entries/updated' ) );
-		$this->assertSame( $disapproved_before, did_action( 'gravityview/approve_entries/disapproved' ) );
-		$this->assertSame( $approved_before, did_action( 'gravityview/approve_entries/approved' ) );
+		$this->assertSame( $updated_before, did_action( 'gravityview/approve_entries/updated' ), 'Approval did not change, so no updated action should have been triggered' );
+		$this->assertSame( $unapproved_before, did_action( 'gravityview/approve_entries/unapproved' ), 'Approval did not change, so no unapproved action should have been triggered' );
+		$this->assertSame( $disapproved_before, did_action( 'gravityview/approve_entries/disapproved' ), 'Approval did not change, so no disapproved action should have been triggered' );
+		$this->assertSame( $approved_before, did_action( 'gravityview/approve_entries/approved' ), 'Approval did not change, so no approved action should have been triggered' );
 
 		// Change checkbox to Approved
 		$entry['3.1'] = 'Approved';
@@ -273,8 +283,10 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 		$gv_approval->after_update_entry_update_approved_meta( $form, $entry['id'] );
 
 		// Expect updated + approved incremented
-		$this->assertSame( $updated_before + 1, did_action( 'gravityview/approve_entries/updated' ) );
-		$this->assertSame( $approved_before + 1, did_action( 'gravityview/approve_entries/approved' ) );
+		$this->assertSame( $updated_before + 1, did_action( 'gravityview/approve_entries/updated' ), 'These should have been triggered' );
+		$this->assertSame( $approved_before + 1, did_action( 'gravityview/approve_entries/approved' ), 'These should have been triggered' );
+		$this->assertSame( $unapproved_before, did_action( 'gravityview/approve_entries/unapproved' ), 'These should not have been triggered' );
+		$this->assertSame( $disapproved_before, did_action( 'gravityview/approve_entries/disapproved' ), 'These should not have been triggered' );
 	}
 
 	/**
