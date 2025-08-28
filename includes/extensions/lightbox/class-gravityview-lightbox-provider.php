@@ -31,7 +31,7 @@ abstract class GravityView_Lightbox_Provider {
 	/**
 	 * The CSS class name to use for the lightbox.
 	 *
-	 * @since TODO
+	 * @since 2.45
 	 *
 	 * @var string
 	 */
@@ -40,7 +40,7 @@ abstract class GravityView_Lightbox_Provider {
 	/**
 	 * The attribute to use to set the lightbox type.
 	 *
-	 * @since TODO
+	 * @since 2.45
 	 *
 	 * @var string
 	 */
@@ -49,7 +49,7 @@ abstract class GravityView_Lightbox_Provider {
 	/**
 	 * The type of data-type attribute to use for HTML attributes.
 	 *
-	 * @since TODO
+	 * @since 2.45
 	 *
 	 * @var string
 	 */
@@ -77,7 +77,7 @@ abstract class GravityView_Lightbox_Provider {
 	/**
 	 * Prints scripts for lightbox after a View is rendered if the provider is active.
 	 *
-	 * @since TODO
+	 * @since 2.45
 	 *
 	 * @param GV\Template_Context $context
 	 *
@@ -95,7 +95,7 @@ abstract class GravityView_Lightbox_Provider {
 	 * Prints scripts for lightbox after a View is rendered
 	 *
 	 * @since 2.10.1
-	 * @since TODO   Changed to always print scripts, regardless of context.
+	 * @since 2.45 Changed to always print scripts, regardless of context.
 	 *
 	 * @return void
 	 */

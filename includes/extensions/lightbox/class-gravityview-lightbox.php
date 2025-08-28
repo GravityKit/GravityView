@@ -86,7 +86,7 @@ class GravityView_Lightbox {
 	/**
 	 * Returns the configured lightbox provider instance.
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @return GravityView_Lightbox_Provider|null The active lightbox provider, or null if none is set.
 	 */

@@ -48,7 +48,7 @@ class GravityView_Admin_Notices {
 	 *
 	 * @internal
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @return void
 	 */
@@ -276,7 +276,7 @@ class GravityView_Admin_Notices {
 	 *
 	 * @since      1.12 Moved from {@see GravityView_Admin::add_notice() }
 	 * @since      1.15.1 Allows for `cap` key, passing capability required to show the message
-	 * @since      TBD Integrates with Foundation notices framework while maintaining backward compatibility.
+	 * @since      2.45 Integrates with Foundation notices framework while maintaining backward compatibility.
 	 *
 	 * @param array       $notice  {
 	 *
@@ -304,7 +304,7 @@ class GravityView_Admin_Notices {
 	/**
 	 * Registers a notice with Foundation notices framework..
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @param array $notice Legacy notice array.
 	 *
@@ -346,7 +346,7 @@ class GravityView_Admin_Notices {
 	/**
 	 * Converts legacy notice object to the new Notices framework format.
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @param array $legacy_notice Legacy notice array.
 	 *
@@ -394,7 +394,7 @@ class GravityView_Admin_Notices {
 	/**
 	 * Generates a unique slug for a notice.
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @param array  $notice    Legacy notice array.
 	 * @param string $namespace Plugin namespace/text domain.
@@ -417,7 +417,7 @@ class GravityView_Admin_Notices {
 	/**
 	 * Determines the appropriate plugin namespace (text domain) for the calling plugin.
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @return string Plugin text domain or fallback to 'gk-gravityview'.
 	 */
@@ -449,7 +449,7 @@ class GravityView_Admin_Notices {
 	/**
 	 * Get the plugin file that is calling add_notice().
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @return string|null Plugin file path or null if not detected.
 	 */

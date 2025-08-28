@@ -69,7 +69,7 @@ class gv_entry_link extends \GV\Shortcode {
 	 * Generate a link to an entry. The link can be an edit, delete, or standard link.
 	 *
 	 * @since 1.15
-	 * @since TODO Moved to gv_entry_link class.
+	 * @since 2.45 Moved to `gv_entry_link` class.
 	 *
 	 * @param array       $atts {
 	 *    @type string $action What type of link to generate. Options: `read`, `edit`, and `delete`. Default: `read`
@@ -184,7 +184,8 @@ class gv_entry_link extends \GV\Shortcode {
 		 * Modify the output of the [gv_entry_link] shortcode.
 		 *
 		 * @since 2.0.15
-		 * @since TODO Added $final_atts to the second parameter of the filter.
+		 * @since 2.45 Added $final_atts to the second parameter of the filter.
+		 *
 		 * @param string $return The HTML link output.
 		 * @param array {
 		 *   @type string        $url The URL used to generate the anchor tag.

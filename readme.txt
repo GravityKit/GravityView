@@ -21,10 +21,13 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.45 on August 28, 2025 =
+
+This release introduces a new 4-column Layout Builder option and lightbox support for the `[gv_entry_link]` shortcode, improves performance by disabling secure links for File Upload fields, and resolves various issues with filters, notifications, and file display on the Edit Entry screen.
 
 #### 🚀 Added
-* Added a new setting to the File Upload field to disable secure download URLs for images, audio, and video files. This greatly improves performance.
+* 4-column row layout option in Layout Builder.
+* Setting for the File Upload field to disable secure download URLs for images, audio, and video files, greatly improving performance.
 * New `lightbox` attribute for the `[gv_entry_link]` shortcode to open the link in a lightbox.
   - Supports `action` attribute values: `read`, `edit`.
 
@@ -32,22 +35,24 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Security of the `[gv_entry_link]` shortcode.
 
 #### 🐛 Fixed
-* Range filter applied to the Date Created field returned incorrect results when only a start date was entered.
-* Field filter form in the View editor now properly filters accented characters (e.g., typing "e" now matches "é").
-* Approval-related notifications no longer fire when saving an entry if the Approve Entries field remains unchanged; notifications now send only when the approval status actually changes (applies to Edit Entry, front‑end approval, admin bulk actions, and merge‑tag approval updates).
-* In some complex situations a File Upload field would not show existing images on the Edit Entry Form.
+* Range filter on the Date Created field returned incorrect results when only a start date was entered.
+* Field filter form in the View editor now properly matches accented characters (e.g., typing "e" matches "é").
+* Approval-related notifications no longer fire when saving an entry if the Approve Entries field remains unchanged.
+  - Notifications now send only when the approval status actually changes (applies to Edit Entry, front-end approval, admin bulk actions, and merge-tag approval updates).
+* File Upload field now reliably displays existing images on the Edit Entry form in complex scenarios.
 
 #### 💻 Developer Updates
 * Filters for customizing secure download bypass behavior:
   - `gk/gravityview/fields/fileupload/secure-links/bypass` controls bypass per field/View/user;
   - `gk/gravityview/fields/fileupload/secure-links/allowed-extensions` customizes allowed file types.
-* Deprecated `GravityView_Entry_Link_Shortcode` class. Use `GV\Shortcodes\gv_entry_link` instead.
+* Deprecated `GravityView_Entry_Link_Shortcode` class in favor of the `GV\Shortcodes\gv_entry_link` function.
+* Deprecated `GravityView_Admin_Notices` class in favor of the new notices functionality provided by Foundation.
 
-#### 💻 Developer Updates
-* Deprecated `GravityView_Admin_Notices` class in favour of the new notices functionality provided by Foundation.
-
-#### ✨ Improved
-* Added a 4-columns Layout Row for the Layout Builder.
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.3.0:
+  - New GravityKit global settings for logging configuration (level, type, cleanup schedule, retention);
+  - A unified way to display admin notices across all GravityKit products;
+  - Performance improvements and bug fixes.
 
 = 2.44 on August 21, 2025 =
 

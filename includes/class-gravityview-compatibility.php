@@ -56,7 +56,7 @@ class GravityView_Compatibility {
 	 *
 	 * @internal
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @return void
 	 */
@@ -481,7 +481,7 @@ class GravityView_Compatibility {
 	 *
 	 * @internal
 	 *
-	 * @since TBD
+	 * @since 2.45
 	 *
 	 * @return bool
 	 */

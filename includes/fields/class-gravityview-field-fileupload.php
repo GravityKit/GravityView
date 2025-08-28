@@ -554,7 +554,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 	/**
 	 * Determine if we should bypass secure download URLs for this field.
 	 *
-	 * @since TODO
+	 * @since 2.45
 	 *
 	 * @param array                $field_settings GravityView settings for the field.
 	 * @param GF_Field_FileUpload  $field          The file upload field.
@@ -588,7 +588,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 *
 			 * @filter `gk/gravityview/fields/fileupload/secure-links/allowed-extensions`
 			 *
-			 * @since TODO
+			 * @since 2.45
 			 *
 			 * @param array                $media_extensions Array of file extensions that can bypass secure downloads.
 			 *                                               Default: merge of image, audio, and video extensions.
@@ -613,7 +613,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		 *
 		 * @filter `gk/gravityview/fields/fileupload/secure-links/bypass`
 		 *
-		 * @since TODO
+		 * @since 2.45
 		 *
 		 * @param bool                $bypass_secure_links Whether to bypass secure download URLs and use direct file paths.
 		 * @param GF_Field_FileUpload $field               The file upload field.
