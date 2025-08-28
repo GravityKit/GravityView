@@ -4,6 +4,8 @@ namespace GV\Shortcodes;
 use GravityView_API;
 use GravityView_Delete_Entry;
 use GravityView_Edit_Entry;
+use GravityView_frontend;
+use GV\View;
 use GVCommon;
 
 /** If this file is called directly, abort. */
@@ -303,27 +305,30 @@ class gv_entry_link extends \GV\Shortcode {
 		static $entries = array();
 
 		if ( empty( $entry_id ) ) {
-			$backup_entry = \GravityView_frontend::getInstance()->getSingleEntry() ? \GravityView_frontend::getInstance()->getEntry() : \GravityView_View::getInstance()->getCurrentEntry();
+			$backup_entry = GravityView_frontend::getInstance()->getSingleEntry() ? GravityView_frontend::getInstance()->getEntry() : \GravityView_View::getInstance()->getCurrentEntry();
 
 			if ( ! $backup_entry ) {
 				gravityview()->log->error( 'No entry defined (or entry id not valid number)', array( 'data' => $this->settings ) );
+
 				return false;
 			}
 
-			$entry = $backup_entry;
+			// Do not cache "current" entries keyed by 0; context-dependent and changes per loop.
+			return $backup_entry;
 		} elseif ( in_array( $entry_id, [ 'first', 'last' ], true ) ) {
-			$view = \GV\View::by_id( $this->view_id );
+			$view = View::by_id( $this->view_id );
 
 			if ( ! $view ) {
 				gravityview()->log->error( "A View with ID {$this->view_id} was not found." );
+
 				return false;
 			}
 
 			if ( ! isset( $entries[ $entry_id ] ) ) {
 				if ( 'last' === $entry_id ) {
-					$entry = $view->get_entries( null )->last();
+					$entry = $view->get_entries()->last();
 				} else {
-					$entry = $view->get_entries( null )->first();
+					$entry = $view->get_entries()->first();
 				}
 			}
 
@@ -337,8 +342,9 @@ class gv_entry_link extends \GV\Shortcode {
 		if ( $entry ) {
 			$entries[ $entry_id ] = $entry;
 		} else {
-			// No search results
+			// No search results.
 			gravityview()->log->error( 'No entries match the entry ID defined: {entry_id}', array( 'entry_id' => $entry_id ) );
+
 			return false;
 		}
 
