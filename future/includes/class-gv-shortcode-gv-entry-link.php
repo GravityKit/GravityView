@@ -1,6 +1,9 @@
 <?php
 namespace GV\Shortcodes;
 
+use GravityView_API;
+use GravityView_Delete_Entry;
+use GravityView_Edit_Entry;
 use GVCommon;
 
 /** If this file is called directly, abort. */
@@ -206,7 +209,7 @@ class gv_entry_link extends \GV\Shortcode {
 		wp_parse_str( $this->settings['link_atts'], $link_atts );
 
 		if ( 'delete' === $this->settings['action'] ) {
-			$link_atts['onclick'] = isset( $link_atts['onclick'] ) ? $link_atts['onclick'] : \GravityView_Delete_Entry::get_confirm_dialog();
+			$link_atts['onclick'] = isset( $link_atts['onclick'] ) ? $link_atts['onclick'] : GravityView_Delete_Entry::get_confirm_dialog();
 		}
 
 		return (array) $link_atts;
@@ -248,22 +251,22 @@ class gv_entry_link extends \GV\Shortcode {
 	 * @return string|boolean If URL is fetched, the URL to the entry link. If not found, returns false.
 	 */
 	private function get_url() {
-		// if post_id is not defined, default to view_id
+		// If post_id is not defined, default to view_id.
 		$post_id = empty( $this->settings['post_id'] ) ? $this->view_id : $this->settings['post_id'];
 
 		switch ( $this->settings['action'] ) {
 			case 'edit':
-				$url = \GravityView_Edit_Entry::get_edit_link( $this->entry, $this->view_id, $post_id );
+				$url = GravityView_Edit_Entry::get_edit_link( $this->entry, $this->view_id, $post_id, $this->settings['field_values'] ?? '' );
+
 				break;
 			case 'delete':
-				$url = \GravityView_Delete_Entry::get_delete_link( $this->entry, $this->view_id, $post_id );
+				$url = GravityView_Delete_Entry::get_delete_link( $this->entry, $this->view_id, $post_id );
+
 				break;
 			case 'read':
 			default:
-				$url = \GravityView_API::entry_link( $this->entry, $post_id );
+				$url = GravityView_API::entry_link( $this->entry, $post_id, true, $this->view_id );
 		}
-
-		$url = $this->maybe_add_field_values_query_args( $url );
 
 		return $url;
 	}
@@ -276,10 +279,10 @@ class gv_entry_link extends \GV\Shortcode {
 	private function has_cap() {
 		switch ( $this->settings['action'] ) {
 			case 'edit':
-				$has_cap = \GravityView_Edit_Entry::check_user_cap_edit_entry( $this->entry, $this->view_id );
+				$has_cap = GravityView_Edit_Entry::check_user_cap_edit_entry( $this->entry, $this->view_id );
 				break;
 			case 'delete':
-				$has_cap = \GravityView_Delete_Entry::check_user_cap_delete_entry( $this->entry, array(), $this->view_id );
+				$has_cap = GravityView_Delete_Entry::check_user_cap_delete_entry( $this->entry, array(), $this->view_id );
 				break;
 			case 'read':
 			default:
