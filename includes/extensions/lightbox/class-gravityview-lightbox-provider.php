@@ -115,6 +115,10 @@ abstract class GravityView_Lightbox_Provider {
 	 */
 	protected static function is_active( $context ) {
 
+		if ( ! $context instanceof \GV\Template_Context ) {
+			return false;
+		}
+
 		$lightbox = $context->view->settings->get( 'lightbox' );
 
 		if ( ! $lightbox ) {
