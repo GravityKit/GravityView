@@ -29,6 +29,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 * Range filter applied to the Date Created field returned incorrect results when only a start date was entered.
 
+#### 💻 Developer Updates
+* Filters for customizing secure download bypass behavior:
+  - `gk/gravityview/fields/fileupload/secure-links/bypass` controls bypass per field/View/user;
+  - `gk/gravityview/fields/fileupload/secure-links/allowed-extensions` customizes allowed file types.
+
 = 2.44 on August 21, 2025 =
 
 This release updates the View editor with new display options for Checkbox fields and Search Bar columns, enhances Magic Links validation and BuddyBoss/BuddyPress page support, and resolves issues affecting the Search Bar widget and Edit Entry screen.
