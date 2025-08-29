@@ -751,25 +751,23 @@ class GravityView_Widget_Search extends \GV\Widget {
 			/**
 			 * Get and normalize the dates according to the input format.
 			 */
-			$curr_start = $this->normalize_date($get['gv_start'] ?? '');
-
-			// If gv_end is not explicitly set but gv_start is, use start date as end date.
-			$curr_end = isset( $get['gv_end'] )
-				? $this->normalize_date( $get['gv_end'] )
-				: $curr_start;
+			$curr_start = $this->normalize_date( $get['gv_start'] ?? '' );
+			$curr_end   = $this->normalize_date( $get['gv_end'] ?? '' );
 
 			if ( $view ) {
 				/**
 				 * Override start and end dates if View is limited to some already.
 				 */
-				$start_date = $view->settings->get( 'start_date' );
+				$start_date      = $view->settings->get( 'start_date' );
 				$start_timestamp = strtotime( $curr_start );
+
 				if ( $start_date && $start_timestamp ) {
 					$curr_start = $start_timestamp < strtotime( $start_date ) ? $start_date : $curr_start;
 				}
 
-				$end_date = $view->settings->get( 'end_date' );
+				$end_date      = $view->settings->get( 'end_date' );
 				$end_timestamp = strtotime( $curr_end );
+
 				if ( $end_date && $end_timestamp ) {
 					$curr_end = $end_timestamp > strtotime( $end_date ) ? $end_date : $curr_end;
 				}

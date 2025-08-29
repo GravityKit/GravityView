@@ -21,12 +21,44 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.45 on August 28, 2025 =
+
+This release introduces a new 4-column Layout Builder option and lightbox support for the `[gv_entry_link]` shortcode, improves performance by disabling secure links for File Upload fields, and resolves various issues with filters, notifications, and file display on the Edit Entry screen.
+
+#### 🚀 Added
+* 4-column row layout option in Layout Builder.
+* Setting for the File Upload field to disable secure download URLs for images, audio, and video files, greatly improving performance.
+* New `lightbox` attribute for the `[gv_entry_link]` shortcode to open the link in a lightbox.
+  - Supports `action` attribute values: `read`, `edit`.
+
+#### ✨ Improved
+* Security of the `[gv_entry_link]` shortcode.
+
+#### 🐛 Fixed
+* Range filter on the Date Created field returned incorrect results when only a start date was entered.
+* Field filter form in the View editor now properly matches accented characters (e.g., typing "e" matches "é").
+* Approval-related notifications no longer fire when saving an entry if the Approve Entries field remains unchanged.
+  - Notifications now send only when the approval status actually changes (applies to Edit Entry, front-end approval, admin bulk actions, and merge-tag approval updates).
+* File Upload field now reliably displays existing images on the Edit Entry form in complex scenarios.
+
+#### 💻 Developer Updates
+* Filters for customizing secure download bypass behavior:
+  - `gk/gravityview/fields/fileupload/secure-links/bypass` controls bypass per field/View/user;
+  - `gk/gravityview/fields/fileupload/secure-links/allowed-extensions` customizes allowed file types.
+* Deprecated `GravityView_Entry_Link_Shortcode` class in favor of the `GV\Shortcodes\gv_entry_link` function.
+* Deprecated `GravityView_Admin_Notices` class in favor of the new notices functionality provided by Foundation.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.3.0:
+  - New GravityKit global settings for logging configuration (level, type, cleanup schedule, retention);
+  - A unified way to display admin notices across all GravityKit products;
+  - Performance improvements and bug fixes.
+
 = 2.44 on August 21, 2025 =
 
 This release updates the View editor with new display options for Checkbox fields and Search Bar columns, enhances Magic Links validation and BuddyBoss/BuddyPress page support, and resolves issues affecting the Search Bar widget and Edit Entry screen.
 
 #### 🚀 Added
-* "Display Format" setting for Checkbox fields to choose between bulleted lists (default) or comma-separated values.
 * Ability to arrange Search Bar fields vertically (stacked) or horizontally (side by side).
 
 #### ✨ Improved
@@ -65,7 +97,7 @@ This update improves Entry Notes and improves the default behavior for the Searc
 This release introduces a flexible display format for checkbox fields, tightens Edit Entry security, and polishes File Upload presentation.
 
 #### 🚀 Added
-* Added a new "Display Format" setting for checkbox fields to choose between bulleted lists (default) and showing as comma-separated values.
+* "Display Format" setting for Checkbox fields to choose between bulleted lists (default) or comma-separated values.
 
 #### ✨ Improved
 * Improved security in Edit Entry surrounding the Approval Status field.

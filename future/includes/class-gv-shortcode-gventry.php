@@ -16,6 +16,17 @@ class gventry extends \GV\Shortcode {
 	public $name = 'gventry';
 
 	/**
+	 * {@inheritDoc}
+	 */
+	protected static $defaults = [
+		'id'       => 0,
+		'entry_id' => 0,
+		'view_id'  => 0,
+		'edit'     => 0,
+		'secret'   => '',
+	];
+
+	/**
 	 * Process and output the [gventry] shortcode.
 	 *
 	 * @param array  $passed_atts The attributes passed.
@@ -33,12 +44,7 @@ class gventry extends \GV\Shortcode {
 
 		$atts = wp_parse_args(
             $atts,
-            array(
-				'id'       => 0,
-				'entry_id' => 0,
-				'view_id'  => 0,
-				'edit'     => 0,
-            )
+            self::$defaults
         );
 
 		$atts = gv_map_deep( $atts, array( 'GravityView_Merge_Tags', 'replace_get_variables' ) );

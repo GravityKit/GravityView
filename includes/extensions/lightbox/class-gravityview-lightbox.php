@@ -11,8 +11,18 @@
 class GravityView_Lightbox {
 	const DEFAULT_PROVIDER = 'fancybox';
 
-	private static $providers = array();
+	/**
+	 * The registered lightbox providers
+	 *
+	 * @var GravityView_Lightbox_Provider[]
+	 */
+	private static $providers = [];
 
+	/**
+	 * The active lightbox provider
+	 *
+	 * @var GravityView_Lightbox_Provider|null
+	 */
 	private static $active_provider = null;
 
 	/**
@@ -71,6 +81,23 @@ class GravityView_Lightbox {
 	 */
 	public static function register( $provider ) {
 		self::$providers[ $provider::$slug ] = $provider;
+	}
+
+	/**
+	 * Returns the configured lightbox provider instance.
+	 *
+	 * @since 2.45
+	 *
+	 * @return GravityView_Lightbox_Provider|null The active lightbox provider, or null if none is set.
+	 */
+	public static function get_provider() {
+		$provider_slug = gravityview()->plugin->settings->get( 'lightbox', self::DEFAULT_PROVIDER );
+
+		if ( isset( self::$providers[ $provider_slug ] ) ) {
+			return new self::$providers[ $provider_slug ]();
+		}
+
+		return null;
 	}
 }
 

@@ -323,10 +323,6 @@ class Views_Route extends Route {
 
 		$entries = $view->get_entries( new Request( $request ) );
 
-		if ( ! $entries->all() ) {
-			return new \WP_Error( 'gravityview-no-entries', __( 'No Entries found.', 'gk-gravityview' ) );
-		}
-
 		if ( in_array( $format, array( 'csv', 'tsv' ), true ) ) {
 
 			ob_start();

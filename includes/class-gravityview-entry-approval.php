@@ -142,19 +142,21 @@ class GravityView_Entry_Approval {
 	 * Get the approval status for an entry
 	 *
 	 * @since 1.18
-	 * @uses GVCommon::get_entry_id() Accepts entry slug or entry ID
+	 * @uses GVCommon::get_entry_id() Accepts entry slug or entry ID.
 	 *
 	 * @param array|int|string $entry Entry array, entry slug, or entry ID
 	 * @param string           $value_or_label "value" or "label" (default: "label")
 	 *
-	 * @return bool|string Return the label or value of entry approval
+	 * @return int|string Return the label (string) or value (int) of entry approval status.
 	 */
 	public static function get_entry_status( $entry, $value_or_label = 'label' ) {
 
 		$entry_id = is_array( $entry ) ? $entry['id'] : GVCommon::get_entry_id( $entry, true );
 
+		/** @var int|string|false $status */
 		$status = gform_get_meta( $entry_id, self::meta_key );
 
+		/** @var int $status */
 		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
 
 		if ( 'value' === $value_or_label ) {
@@ -320,24 +322,39 @@ class GravityView_Entry_Approval {
 
 		$entry = GFAPI::get_entry( $entry_id );
 
-		// If the checkbox is blank, it's disapproved, regardless of the label
-		if ( '' === \GV\Utils::get( $entry, $approved_column ) ) {
-			$value = GravityView_Entry_Approval_Status::DISAPPROVED;
-		} else {
-			// If the checkbox is not blank, it's approved
-			$value = GravityView_Entry_Approval_Status::APPROVED;
+		if ( is_wp_error( $entry ) ) {
+			gravityview()->log->error( 'Entry could not be retrieved in after_update_entry_update_approved_meta: {error}', [
+				'error' => $entry->get_error_message(),
+				'data' => [ $entry, $entry_id ],
+			] );
+			return;
 		}
 
-		/**
-		 * Filter the approval status on entry update.
-		 *
-		 * @param string $value The approval status.
-		 * @param array $form The form.
-		 * @param array $entry The entry.
-		 */
-		$value = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $value, $form, $entry );
+        // Determine current and new approval statuses
+        $existing_status = self::get_entry_status( $entry_id, 'value' );
+		$approved_value = (string) \GV\Utils::get( $entry, $approved_column, '' );
 
-		self::update_approved_meta( $entry_id, $value, $form['id'] );
+        if ( '' === $approved_value ) {
+            $new_status = GravityView_Entry_Approval_Status::DISAPPROVED;
+        } else {
+            $new_status = GravityView_Entry_Approval_Status::APPROVED;
+        }
+
+        /**
+         * Filter the approval status on entry update.
+         *
+         * @filter `gravityview/approve_entries/update_unapproved_meta`
+         *
+         * @param string $new_status The approval status.
+         * @param array $form The form.
+         * @param array $entry The entry.
+         */
+        $new_status = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $new_status, $form, $entry );
+
+        // Only update meta (and trigger actions) if the status actually changed.
+        if ( (int) $existing_status !== (int) $new_status ) {
+            self::update_approved_meta( $entry_id, $new_status, $form['id'] );
+        }
 	}
 
 	/**
@@ -593,7 +610,7 @@ class GravityView_Entry_Approval {
 	 *
 	 * @return void
 	 */
-	private static function update_approved_meta( $entry_id, $status, $form_id = 0 ) {
+    private static function update_approved_meta( $entry_id, $status, $form_id = 0 ) {
 
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $status ) ) {
 			gravityview()->log->error( '$is_approved not valid value', array( 'data' => $status ) );
@@ -605,21 +622,44 @@ class GravityView_Entry_Approval {
 			return;
 		}
 
-		$status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
+		/** @var int $new_status */
+        $new_status = GravityView_Entry_Approval_Status::maybe_convert_status( $status );
 
-		// update entry meta
-		gform_update_meta( $entry_id, self::meta_key, $status, $form_id );
+		/** @var int|string|false $did_previous_meta_exist */
+		$did_previous_meta_exist = gform_get_meta( $entry_id, self::meta_key );
+
+		/** @var int $previous_status */
+		$previous_status = GravityView_Entry_Approval_Status::maybe_convert_status( $did_previous_meta_exist );
+
+		if (
+			// Check whether the meta previously existed because it gets converted to `3` for $previous_status.
+			false !== $did_previous_meta_exist
+			&& $previous_status === $new_status
+		) {
+			return;
+		}
+
+        // update entry meta
+        gform_update_meta( $entry_id, self::meta_key, $new_status, $form_id );
 
 		/**
 		 * Triggered when an entry approval is updated.
 		 *
+		 * Valid status values:
+		 * - `1` for approved
+		 * - `2` for disapproved
+		 * - `3` for unapproved
+		 *
+		 * @see GravityView_Entry_Approval_Status::maybe_convert_status()
+		 *
 		 * @since 1.7.6.1
-		 * @param  int $entry_id ID of the Gravity Forms entry
-		 * @param  string|int $status String whether entry is approved or not. See GravityView_Entry_Approval_Status for valid statuses.
+		 *
+		 * @param  int $entry_id ID of the Gravity Forms entry.
+		 * @param  int $new_status Status value.
 		 */
-		do_action( 'gravityview/approve_entries/updated', $entry_id, $status );
+		do_action( 'gravityview/approve_entries/updated', $entry_id, $new_status );
 
-		$action = GravityView_Entry_Approval_Status::get_key( $status );
+		$action = GravityView_Entry_Approval_Status::get_key( $new_status );
 
 		/**
 		 * Triggered when an entry approval is set. {$action} can be 'approved', 'unapproved', or 'disapproved'.

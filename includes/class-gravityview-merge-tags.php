@@ -687,7 +687,7 @@ class GravityView_Merge_Tags {
 				$entry_link = esc_html( $entry_link );
 			}
 
-			$return = str_replace( $full_tag, $entry_link, $return );
+			$return = str_replace( $full_tag, (string) $entry_link, $return );
 		}
 
 		return $return;
