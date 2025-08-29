@@ -32,7 +32,7 @@ $links_label = apply_filters( 'gravityview/extension/search/links_label', $links
 /**
  * Change what separates search bar "Link" input type links.
  *
- * @param string $links_sep Default: `&nbsp;|&nbsp;` Used to connect multiple links
+ * @param string $links_sep Default: " | " (spaces are non-breaking space html entities) Used to connect multiple links
  */
 $links_sep = apply_filters( 'gravityview/extension/search/links_sep', '&nbsp;|&nbsp;' );
 

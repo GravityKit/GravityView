@@ -590,7 +590,7 @@ final class GravityView_Duplicate_Entry {
 		 * @since 2.5
 		 * @see wp_verify_nonce()
 		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
-		 * @param string $nonce_key Name of nonce action used in wp_verify_nonce. $_GET['duplicate'] holds the nonce value itself. Default: `duplicate_{entry_id}`
+		 * @param string $nonce_key Name of nonce action used in wp\_verify\_nonce. The $\_GET['duplicate'] value holds the nonce value itself. Default: duplicate_{entry_id}
 		 */
 		$valid = apply_filters( 'gravityview/duplicate-entry/verify_nonce', $valid, $nonce_key );
 

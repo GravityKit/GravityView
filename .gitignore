@@ -71,3 +71,9 @@ wordpress-latest-tests-lib
 /tests/E2E/**/results/
 test-results/
 .claude/settings.local.json
+
+# Docusaurus
+.docusaurus/
+wp-hooks-docs/.docusaurus/
+wp-hooks-docs/build/
+wp-hooks-docs/node_modules/

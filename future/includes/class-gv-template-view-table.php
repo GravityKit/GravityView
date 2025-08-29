@@ -264,8 +264,8 @@ class View_Table_Template extends View_Template {
 		/**
 		 * Modify the fields displayed in a table.
 		 *
-		 * @param array $fields
-		 * @param \GravityView_View $this
+		 * @param array $fields The fields. Refer to \GV\Field_Collection::from_configuration() for structure.
+		 * @param \GravityView_View $gravityview_view The GravityView_View object.
 		 * @deprecated Use `gravityview/template/table/fields`
 		 */
 		$fields = apply_filters( 'gravityview_table_cells', $fields->as_configuration(), \GravityView_View::getInstance() );
@@ -286,7 +286,7 @@ class View_Table_Template extends View_Template {
 		 * Filter the row attributes for the row in table view.
 		 *
 		 * @param array $attributes The HTML attributes.
-		 * @param \GV\Template_Context The context.
+		 * @param \GV\Template_Context $context The context.
 		 *
 		 * @since 2.0
 		 */
@@ -307,7 +307,7 @@ class View_Table_Template extends View_Template {
 				 *
 				 * @since 2.0
 				 *
-				 * @param \GV\Template_Context The context.
+				 * @param \GV\Template_Context $context The context.
 				 */
 				do_action( 'gravityview/template/table/cells/before', $context );
 
@@ -317,7 +317,7 @@ class View_Table_Template extends View_Template {
 				 * @deprecated Use `gravityview/template/table/cells/before`
 				 * @since 1.0.7
 				 *
-				 * @param \GravityView_View $this Current GravityView_View object
+				 * @param \GravityView_View $gravityview_view Current GravityView_View object
 				 */
 				do_action( 'gravityview_table_cells_before', \GravityView_View::getInstance() );
 
@@ -337,7 +337,7 @@ class View_Table_Template extends View_Template {
 				 *
 				 * @since 2.0
 				 *
-				 * @param \GV\Template_Context The context.
+				 * @param \GV\Template_Context $context The context.
 				 */
 				do_action( 'gravityview/template/table/cells/after', $context );
 
@@ -347,7 +347,7 @@ class View_Table_Template extends View_Template {
 				 * @deprecated Use `gravityview/template/table/cells/after`
 				 * @since 1.0.7
 				 *
-				 * @param \GravityView_View $this Current GravityView_View object
+				 * @param \GravityView_View $gravityview_view Current GravityView_View object
 				 */
 				do_action( 'gravityview_table_cells_after', \GravityView_View::getInstance() );
 

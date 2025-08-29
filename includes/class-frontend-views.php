@@ -1113,8 +1113,8 @@ class GravityView_frontend {
 		 * Filter the entries output to the View.
 		 *
 		 * @deprecated since 1.5.2
+		 * @param array $entries Array of entries to be displayed
 		 * @param array $args View settings associative array
-		 * @var array
 		 */
 		$entries = apply_filters( 'gravityview_view_entries', $entries, $args );
 

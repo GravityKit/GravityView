@@ -25,7 +25,7 @@ foreach ( $metaboxes as $metabox ) {
 	echo '<div id="' . esc_attr( $metabox->id ) . '">';
 
 	/**
-	 * Can be used to insert additional HTML inside the <div> before the metabox is rendered.
+	 * Can be used to insert additional HTML inside the div before the metabox is rendered.
 	 *
 	 * @since  2.26
 	 *
@@ -38,7 +38,7 @@ foreach ( $metaboxes as $metabox ) {
 	$metabox->render( $post );
 
 	/**
-	 * Can be used to insert additional HTML inside the <div> after the metabox is rendered.
+	 * Can be used to insert additional HTML inside the div after the metabox is rendered.
 	 *
 	 * @since  2.26
 	 *

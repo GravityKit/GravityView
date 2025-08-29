@@ -129,7 +129,7 @@ if ( ! $this->getTotalEntries() ) {
 				<?php
 
 				/**
-				 * Tap in inside the View Content wrapper <div>.
+				 * Tap in inside the View Content wrapper div.
 				 *
 				 * @param array $entry Gravity Forms Entry array
 				 * @param \GravityView_View $this The GravityView_View instance
@@ -156,7 +156,7 @@ if ( ! $this->getTotalEntries() ) {
 				);
 
 				/**
-				 * Tap in at the end of the View Content wrapper <div>.
+				 * Tap in at the end of the View Content wrapper div.
 				 *
 				 * @param array $entry Gravity Forms Entry array
 				 * @param \GravityView_View $this The GravityView_View instance
