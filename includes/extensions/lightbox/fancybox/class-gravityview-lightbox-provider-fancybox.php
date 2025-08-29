@@ -44,31 +44,57 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	public static $data_type_value = 'ajax';
 
 	/**
+	 * Add inline scripts and styles for FancyBox initialization.
+	 *
+	 * @since 2.45.1 Renamed from print_scripts() for clarity.
 	 * @inheritDoc
 	 */
-	public function print_scripts() {
+	public function add_inline_scripts_and_styles() {
+		// Ensure scripts are registered before adding inline content
+		if ( ! wp_script_is( self::$script_slug, 'registered' ) ) {
+			return;
+		}
 
-		parent::print_scripts();
+		if ( ! wp_style_is( self::$style_slug, 'registered' ) ) {
+			return;
+		}
 
 		$settings = self::get_settings();
 
-		$settings = json_encode( $settings );
-		?>
-		<style>
-			.fancybox-container {
-				z-index: 100000; /** Divi is 99999 */
-			}
+		// Ensure settings can be JSON encoded
+		$settings_json = wp_json_encode( $settings );
+		if ( false === $settings_json ) {
+			return;
+		}
 
+		$css_class_name = esc_js( self::$css_class_name );
+
+		// Add initialization script
+		wp_add_inline_script(
+			self::$script_slug,
+			"if ( window.Fancybox ){ Fancybox.bind('.{$css_class_name}', {$settings_json}); }"
+		);
+
+		// Add custom styles
+		wp_add_inline_style( self::$style_slug,
+			".fancybox-container {
+				z-index: 100000; /* Divi is 99999 */
+			}
 			.admin-bar .fancybox-container {
 				margin-top: 32px;
-			}
-		</style>
-		<script>
-			if ( window.Fancybox ){
-				Fancybox.bind(".<?php echo sanitize_html_class( self::$css_class_name ); ?>", <?php echo $settings; ?>);
-			}
-		</script>
-		<?php
+			}"
+		);
+	}
+
+	/**
+	 * Legacy method for backward compatibility.
+	 *
+	 * @since 2.10
+	 * @deprecated 2.45.1 Use add_inline_scripts_and_styles() instead.
+	 */
+	public function print_scripts() {
+		_deprecated_function( __METHOD__, '2.45.1', __CLASS__ . '::add_inline_scripts_and_styles()' );
+		$this->add_inline_scripts_and_styles();
 	}
 
 	/**
@@ -112,14 +138,14 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	/**
 	 * @inheritDoc
 	 */
-	public function enqueue_scripts() {
+	public function register_scripts() {
 		wp_register_script( self::$script_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.umd.js', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function enqueue_styles() {
+	public function register_styles() {
 		wp_register_style( self::$style_slug, plugins_url( 'assets/lib/fancybox/dist/fancybox.css', GRAVITYVIEW_FILE ), array(), GV_PLUGIN_VERSION );
 	}
 
@@ -150,30 +176,39 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 	 * @inheritDoc
 	 */
 	public function fileupload_link_atts( $link_atts, $field_compat = array(), $context = null, $additional_details = null ) {
-
+		// Early return if lightbox is not enabled for this context.
 		if ( $context && ! $context->view->settings->get( 'lightbox', false ) ) {
 			return $link_atts;
 		}
 
-		// Prevent empty content from getting added to the lightbox gallery
-		if ( is_array( $additional_details ) && empty( $additional_details['file_path'] ) ) {
+		// Validate additional_details is an array.
+		if ( ! is_array( $additional_details ) ) {
 			return $link_atts;
 		}
 
-		// Prevent empty content from getting added to the lightbox gallery
-		if ( is_array( $additional_details ) && ! empty( $additional_details['disable_lightbox'] ) ) {
+		// Prevent empty content from getting added to the lightbox gallery.
+		if ( empty( $additional_details['file_path'] ) || ! empty( $additional_details['disable_lightbox'] ) ) {
 			return $link_atts;
 		}
 
-		$link_atts['class'] = \GV\Utils::get( $link_atts, 'class' ) . ' ' . self::$css_class_name;
+		// Ensure link_atts is an array.
+		if ( ! is_array( $link_atts ) ) {
+			$link_atts = array();
+		}
 
-		$link_atts['class'] = gravityview_sanitize_html_class( $link_atts['class'] );
+		// Add FancyBox CSS class.
+		$existing_class = \GV\Utils::get( $link_atts, 'class', '' );
+		$link_atts['class'] = gravityview_sanitize_html_class( trim( $existing_class . ' ' . self::$css_class_name ) );
 
-		if ( $context && ! empty( $context->field->field ) ) {
-			if ( $context->field->field->multipleFiles ) {
-				$entry                      = $context->entry->as_entry();
-				$link_atts['data-fancybox'] = 'gallery-' . sprintf( '%s-%s-%s', $entry['form_id'], $context->field->ID, $context->entry->get_slug() );
-			}
+		// Set up gallery grouping for multiple files.
+		if ( $context && ! empty( $context->field->field ) && $context->field->field->multipleFiles ) {
+			$entry = $context->entry->as_entry();
+			$gallery_id = sprintf( '%s-%s-%s',
+				esc_attr( $entry['form_id'] ),
+				esc_attr( $context->field->ID ),
+				esc_attr( $context->entry->get_slug() )
+			);
+			$link_atts['data-fancybox'] = 'gallery-' . $gallery_id;
 		}
 
 		$file_path = \GV\Utils::get( $additional_details, 'file_path', '' );
@@ -184,8 +219,10 @@ class GravityView_Lightbox_Provider_FancyBox extends GravityView_Lightbox_Provid
 		 *
 		 * @see https://web.archive.org/web/20230221135246/https://fancyapps.com/docs/ui/fancybox/#media-types
 		 */
-		if ( false !== strpos( $file_path, 'gv-iframe' ) || preg_match( '/\.svg$/i', $file_path ) ) {
-			$link_atts['data-type'] = 'pdf';
+		if ( ! empty( $file_path ) ) {
+			if ( false !== strpos( $file_path, 'gv-iframe' ) || preg_match( '/\.svg$/i', $file_path ) ) {
+				$link_atts['data-type'] = 'pdf';
+			}
 		}
 
 		return $link_atts;
