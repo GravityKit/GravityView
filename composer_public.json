@@ -21,9 +21,9 @@
       "type": "package",
       "package": {
         "name": "gravitykit/foundation",
-        "version": "1.2.25",
+        "version": "1.3.0",
         "dist": {
-          "url": "https://www.dropbox.com/scl/fi/rxgwe4cm2oexyvw63n65q/foundation-1.2.25.zip?rlkey=dm0jwmvw9s5plst1z7gthnoue&dl=1",
+          "url": "https://www.dropbox.com/scl/fi/9jqckmard0hkerb8pw31i/foundation-1.3.0.zip?rlkey=wvpzlqebxyh2zs1uiksovzayx&dl=1",
           "type": "zip"
         }
       }
@@ -33,7 +33,7 @@
     "php": ">=7.4.0",
     "ext-json": "*",
     "ext-openssl": "*",
-    "gravitykit/foundation": "1.2.25",
+    "gravitykit/foundation": "1.3.0",
     "doctrine/inflector": "1.1.0",
     "gettext/gettext": "^4.8.7",
     "illuminate/support": "5.4.*",
