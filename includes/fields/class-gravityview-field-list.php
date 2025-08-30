@@ -47,6 +47,8 @@ class GravityView_Field_List extends GravityView_Field {
 		add_filter( 'gravityview/common/get_form_fields', array( $this, 'add_form_fields' ), 10, 3 );
 
 		add_filter( 'gravityview/search/searchable_fields', array( $this, 'remove_columns_from_searchable_fields' ), 10 );
+
+		add_filter( 'gravityview/merge_tags/modifiers/value', array( $this, 'handle_list_column_modifier' ), 10, 6 );
 	}
 
 	/**
@@ -233,6 +235,40 @@ class GravityView_Field_List extends GravityView_Field {
 		$columns = wp_list_pluck( $field->choices, 'text' );
 
 		return isset( $columns[ $column_id ] ) ? $columns[ $column_id ] : $backup_label;
+	}
+
+	/**
+	 * Handle List field column modifiers (e.g., {List:10:2} where "2" is the column number)
+	 *
+	 * @since TBD
+	 *
+	 * @param string   $return The current merge tag value to be filtered.
+	 * @param string   $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
+	 * @param string   $value The original merge tag value, passed from Gravity Forms
+	 * @param string   $merge_tag If the merge tag being executed is an individual field merge tag (i.e. {Name:3}), this variable will contain the field's ID. If not, this variable will contain the name of the merge tag (i.e. all_fields).
+	 * @param string   $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
+	 * @param GF_Field $field The current field.
+	 *
+	 * @return string
+	 */
+	public function handle_list_column_modifier( $return, $raw_value, $value, $merge_tag, $modifier, $field ) {
+		
+		// Only process for List fields with columns enabled
+		if ( ! $field instanceof GF_Field_List || ! $field->enableColumns ) {
+			return $return;
+		}
+
+		// Check if the modifier is a numeric column specifier
+		if ( is_numeric( $modifier ) ) {
+			$column_id = intval( $modifier );
+			$column_value = self::column_value( $field, $raw_value, $column_id, 'text' );
+			
+			if ( null !== $column_value ) {
+				return $column_value;
+			}
+		}
+
+		return $return;
 	}
 }
 
