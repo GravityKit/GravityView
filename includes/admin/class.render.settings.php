@@ -77,7 +77,7 @@ class GravityView_Render_Settings {
 				$field_options['lightbox'],
 				[
 					'requires' => 'show_as_link',
-					'priority' => 101,
+					'priority' => 51,
 					'context'  => [ 'multiple' ],
 				]
 			);
@@ -88,7 +88,7 @@ class GravityView_Render_Settings {
 				$field_options['new_window'],
 				[
 					'requires' => 'show_as_link',
-					'priority' => 102,
+					'priority' => 52,
 					'context'  => [ 'multiple' ],
 				]
 			);
@@ -130,7 +130,7 @@ class GravityView_Render_Settings {
 
 			if ( 'show_as_link' === $key ) {
 				$_group                   = 'display';
-				$field_option['priority'] = 100;
+				$field_option['priority'] = 50;
 			}
 
 			$option_groups[ $_group ][ $key ] = $field_option;
