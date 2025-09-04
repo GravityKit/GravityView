@@ -239,7 +239,7 @@ class GravityView_Field_List extends GravityView_Field {
 	/**
 	 * Handles List field column modifiers (e.g., `{List:10:2}` where "2" is the column number).
 	 *
-	 * @since TBD
+	 * @since 2.46.0
 	 *
 	 * @param string   $return    The current merge tag value to be filtered.
 	 * @param string   $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.

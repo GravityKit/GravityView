@@ -2612,7 +2612,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	 * Test that Address field with empty string value doesn't cause PHP errors
 	 * Tests the fix for: PHP Fatal error: Cannot assign an empty string to a string offset
 	 * 
-	 * @since TODO
+	 * @since 2.46.0
 	 * @covers GravityView_Edit_Entry_Render::get_field_value
 	 */
 	public function test_address_field_empty_string_fix() {

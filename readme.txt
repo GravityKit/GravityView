@@ -21,17 +21,21 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.46 on September 4, 2025 =
+
+This release adds the ability to output column values from multi-column List fields using merge tag modifiers, notifies admins when users access pages with misconfigured shortcode secrets, and fixes issues with Checkbox field settings, Result Number sequencing, and a potential PHP error with Address fields.
 
 #### 🚀 Added
 * Support for the List field merge tag modifier (e.g., `{List:1:2:text}`), enabling output of column values as an HTML list (default) or as a comma-separated string.
-
-#### ✨ Improved
 * An admin notice is displayed when a GravityView shortcode’s required `secret` attribute is missing or invalid.
 
 #### 🐛 Fixed
 * Display issue with Checkbox field settings in the View editor where related "Link to single entry" options were not grouped together.
 * Result Number field now respects the "First Number in the Sequence" setting instead of always starting at 0.
+* PHP fatal error that could occur when editing entries containing Address fields.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.3.1, fixing an unrelated product dependency notice shown when installing certain products from the Manage Your Kit screen.
 
 = 2.45 on August 28, 2025 =
 
