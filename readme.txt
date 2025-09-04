@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Display issue with Checkbox field settings in the View editor where related "Link to single entry" options were not grouped together.
+* Result Number field now respects the "First Number in the Sequence" setting instead of always starting at 0.
 
 = 2.45 on August 28, 2025 =
 
