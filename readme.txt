@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+* Support for the List field merge tag modifier (e.g., `{List:1:2:text}`), enabling output of column values as an HTML list (default) or as a comma-separated string.
+
 #### 🐛 Fixed
 * Display issue with Checkbox field settings in the View editor where related "Link to single entry" options were not grouped together.
 
