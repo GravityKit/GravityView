@@ -5,6 +5,52 @@
  * @since 1.12
  */
 
+/**
+ * Returns the current shortcode tag being executed.
+ *
+ * @since 2.45.1
+ *
+ * @param string $op  Operation: 'push' to add a tag, 'pop' to remove, 'top' to get current.
+ * @param string $tag Shortcode tag to push (only used with 'push' operation).
+ *
+ * @return string|null Current shortcode tag or null if stack is empty.
+ */
+if ( ! function_exists( 'gv_current_shortcode_tag' ) ) {
+	function gv_current_shortcode_tag( $op = 'top', $tag = null ) {
+		static $stack = [];
+
+		switch ( $op ) {
+			case 'push':
+				if ( is_string( $tag ) && '' !== $tag ) {
+					$stack[] = $tag;
+				}
+
+				return end( $stack ) ?: null;
+			case 'pop':
+				array_pop( $stack );
+
+				return end( $stack ) ?: null;
+			default:
+				return end( $stack ) ?: null;
+		}
+	}
+
+	if ( function_exists( 'add_filter' ) ) {
+		add_filter( 'pre_do_shortcode_tag', function ( $return, $tag ) {
+			if ( false === $return ) {
+				gv_current_shortcode_tag( 'push', $tag );
+			}
+
+			return $return;
+		}, 10, 2 );
+
+		add_filter( 'do_shortcode_tag', function ( $output, $tag ) {
+			gv_current_shortcode_tag( 'pop' );
+
+			return $output;
+		}, 10, 2 );
+	}
+}
 
 /**
  * Get the URL for a CSS file
