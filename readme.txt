@@ -26,6 +26,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🚀 Added
 * Support for the List field merge tag modifier (e.g., `{List:1:2:text}`), enabling output of column values as an HTML list (default) or as a comma-separated string.
 
+#### ✨ Improved
+* An admin notice is displayed when a GravityView shortcode’s required `secret` attribute is missing or invalid.
+
 #### 🐛 Fixed
 * Display issue with Checkbox field settings in the View editor where related "Link to single entry" options were not grouped together.
 * Result Number field now respects the "First Number in the Sequence" setting instead of always starting at 0.
