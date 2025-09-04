@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Display issue with Checkbox field settings in the View editor where related "Link to single entry" options were not grouped together.
+
 = 2.45 on August 28, 2025 =
 
 This release introduces a new 4-column Layout Builder option and lightbox support for the `[gv_entry_link]` shortcode, improves performance by disabling secure links for File Upload fields, and resolves various issues with filters, notifications, and file display on the Edit Entry screen.
