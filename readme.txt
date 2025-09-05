@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Widgets not rendering when Views are embedded using shortcodes in page builders like Elementor and Divi.
+
 = 2.46 on September 4, 2025 =
 
 This release adds the ability to output column values from multi-column List fields using merge tag modifiers, notifies admins when users access pages with misconfigured shortcode secrets, and fixes issues with Checkbox field settings, Result Number sequencing, and a potential PHP error with Address fields.
