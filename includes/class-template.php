@@ -959,9 +959,32 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			return;
 		}
 
-		// Prevent being called twice
-		if ( did_action( "gravityview/widgets/$zone/{$view->ID}/rendered" ) ) {
-			gravityview()->log->debug( 'Not rendering {zone}; already rendered', array( 'zone' => $zone . '_' . $view->ID . '_widgets' ) );
+		// Prevent being called twice for the same filter, but allow shortcode contexts.
+		$current_filter = current_filter();
+
+		$filter_action_key = "gravityview/widgets/$zone/{$view->ID}/$current_filter/rendered";
+
+		// Simple shortcode detection - just check if 'do_shortcode' is in the call stack.
+		// Use a static cache to avoid repeated backtrace calls within the same request.
+		static $shortcode_context_cache = array();
+
+		$cache_key = "{$current_filter}_{$view->ID}";
+
+		if ( ! isset( $shortcode_context_cache[ $cache_key ] ) ) {
+			// Only do the backtrace lookup once per filter+View combination.
+			$shortcode_context_cache[ $cache_key ] = in_array( 'do_shortcode', wp_debug_backtrace_summary( null, 0, false ) );
+		}
+
+		if ( $shortcode_context_cache[ $cache_key ] ) {
+			// Use a simple unique identifier for shortcode contexts.
+			$shortcode_key = md5( $current_filter . $view->ID . microtime( true ) );
+
+			$filter_action_key .= "/sc_$shortcode_key";
+		}
+
+		if ( did_action( $filter_action_key ) ) {
+			gravityview()->log->debug( 'Not rendering {zone}; already rendered for {filter}', array( 'zone' => $zone, 'filter' => $current_filter ) );
+
 			return;
 		}
 
@@ -1021,11 +1044,11 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		<?php
 
 		/**
-		 * Prevent widgets from being called twice.
+		 * Prevent widgets from being called twice for the same filter.
 		 * Checking for loop_start prevents themes and plugins that pre-process shortcodes from triggering the action before displaying. Like, ahem, the Divi theme and WordPress SEO plugin
 		 */
 		if ( did_action( 'wp_head' ) ) {
-			do_action( "gravityview/widgets/$zone/{$view->ID}/rendered" );
+			do_action( $filter_action_key );
 		}
 	}
 
