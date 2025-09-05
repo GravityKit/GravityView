@@ -587,7 +587,7 @@ class GravityView_Lightbox_Entry {
 			<head>
 				<?php
 				/**
-				 * Fires after <head> tag.
+				 * Fires after the opening head tag.
 				 *
 				 * @action `gk/gravityview/lightbox/entry/output/head-before`
 				 *
@@ -615,7 +615,7 @@ class GravityView_Lightbox_Entry {
 
 				<?php
 				/**
-				 * Fires before </head> tag.
+				 * Fires before the closing head tag.
 				 *
 				 * @action `gk/gravityview/lightbox/entry/output/head-after`
 				 *
@@ -633,7 +633,7 @@ class GravityView_Lightbox_Entry {
 			<body>
 				<?php
 				/**
-				 * Fires after <body> tag before the content is rendered.
+				 * Fires after the body tag before the content is rendered.
 				 *
 				 * @action `gk/gravityview/lightbox/entry/output/content-before`
 				 *
@@ -651,7 +651,7 @@ class GravityView_Lightbox_Entry {
 
 				<?php
 				/**
-				 * Fires inside the <body> tag after the content is rendered and before the footer.
+				 * Fires inside the body tag after the content is rendered and before the footer.
 				 *
 				 * @action `gk/gravityview/lightbox/entry/output/content-after`
 				 *
@@ -669,7 +669,7 @@ class GravityView_Lightbox_Entry {
 
 				<?php
 				/**
-				 * Fires after the footer and before the closing </body> tag.
+				 * Fires after the footer and before the closing body tag.
 				 *
 				 * @action `gk/gravityview/lightbox/entry/output/footer-after`
 				 *

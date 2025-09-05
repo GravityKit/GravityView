@@ -662,7 +662,7 @@ class GravityView_Entry_Approval {
 		$action = GravityView_Entry_Approval_Status::get_key( $new_status );
 
 		/**
-		 * Triggered when an entry approval is set. {$action} can be 'approved', 'unapproved', or 'disapproved'.
+		 * Triggered when an entry approval is set. The action value can be 'approved', 'unapproved', or 'disapproved'.
 		 * Note: If you want this to work with Bulk Actions, run in a plugin rather than a theme; the bulk updates hook runs before themes are loaded.
 		 *
 		 * @since 1.7.6.1

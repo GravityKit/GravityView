@@ -153,7 +153,9 @@ class Field_Collection extends Collection implements Collection_Position_Aware {
 	/**
 	 * Return a configuration array for this field collection.
 	 *
-	 * @return array See \GV\Field_Collection::from_configuration() for structure.
+	 * @see \GV\Field_Collection::from_configuration() for structure.
+	 *
+	 * @return array
 	 */
 	public function as_configuration() {
 		$configuration = array();

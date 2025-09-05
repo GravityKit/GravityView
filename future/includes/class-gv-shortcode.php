@@ -3,7 +3,9 @@
 namespace GV;
 
 use GFCommon;
+use GravityKitFoundation;
 use GVCommon;
+use Throwable;
 use WP_Error;
 
 /** If this file is called directly, abort. */
@@ -157,7 +159,7 @@ class Shortcode {
 	}
 
 	/**
-	 * Returns the view by the provided attributes.
+	 * Returns the View by the provided attributes.
 	 *
 	 * It will also handle security through the `secret` attribute.
 	 *
@@ -183,23 +185,75 @@ class Shortcode {
 			return $view;
 		}
 
-		// If the user can't edit the View, don't show the error message with the secret.
-		if ( ! GVCommon::has_cap( 'edit_gravityviews', $view->ID ) ) {
+		if ( GVCommon::has_cap( 'edit_gravityviews', $view->ID ) ) {
 			return new WP_Error(
 				'invalid_secret',
 				sprintf(
-					esc_html__( '%1$s: Invalid View secret provided.', 'gk-gravityview' ),
-					'GravityView'
+					esc_html__( '%1$s: Invalid View secret provided. Update the shortcode with the secret: %2$s', 'gk-gravityview' ),
+					'GravityView',
+					'<code>secret="' . $view->get_validation_secret() . '"</code>'
 				)
 			);
+		}
+
+		// If the user can't edit the View, don't show the error message with the secret but display an admin notice.
+		if ( class_exists( 'GravityKitFoundation' ) && GravityKitFoundation::notices() ) {
+			$current_url = home_url( add_query_arg( null, null ) );
+			$page_hash   = md5( strtok( $current_url, '?' ) );
+
+			$shortcode     = gv_current_shortcode_tag();
+			$shortcode_key = strtolower( preg_replace( '/[^a-z0-9_]+/i', '-', $shortcode ?: 'gravityview' ) );
+
+			$title = get_the_title();
+
+			if ( ! $title ) {
+				$title = __( 'this page', 'gk-gravityview' );
+			}
+
+			$page_link = sprintf(
+				'<a href="%s" target="_blank">%s</a>',
+				esc_url( $current_url ),
+				esc_html( $title )
+			);
+
+			// Shortcode descriptor (safe fallback if missing).
+			$shortcode_message = $shortcode
+				? sprintf( '<strong>[%s]</strong> %s', esc_html( $shortcode ), esc_html__( 'shortcode', 'gk-gravityview' ) )
+				: esc_html__( 'A GravityView shortcode', 'gk-gravityview' );
+
+			$message_template = esc_html__(
+				'[shortcode] on [page_link] is missing or has an invalid "secret" attribute.',
+				'gk-gravityview'
+			);
+
+			$message = strtr( $message_template, [
+				'[shortcode]' => $shortcode_message,
+				'[page_link]' => $page_link,
+			] );
+
+			GravityKitFoundation::notices()->add_stored( [
+				'message'      => $message,
+				'severity'     => 'warning',
+				'namespace'    => 'gk-gravityview',
+				'capabilities' => [ 'manage_options' ],
+				'context'      => 'all',
+				'screens'      => [
+					'dashboard',
+				],
+				'slug'         => sprintf( // Unique per shortcode tag + View + page.
+					'gv_invalid_secret_%s_view_%d_page_%s',
+					$shortcode_key,
+					(int) $view->ID,
+					$page_hash
+				),
+			] );
 		}
 
 		return new WP_Error(
 			'invalid_secret',
 			sprintf(
-				esc_html__( '%1$s: Invalid View secret provided. Update the shortcode with the secret: %2$s', 'gk-gravityview' ),
-				'GravityView',
-				'<code>secret="' . $view->get_validation_secret() . '"</code>'
+				esc_html__( '%1$s: Invalid View secret provided.', 'gk-gravityview' ),
+				'GravityView'
 			)
 		);
 	}
@@ -218,5 +272,4 @@ class Shortcode {
 
 		return '<div><p>' . $error->get_error_message() . '</p></div>';
 	}
-
 }

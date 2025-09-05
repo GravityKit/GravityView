@@ -40,3 +40,5 @@ translations.pot export-ignore
 /tests export-ignore
 /tests/* export-ignore
 /tests/unit-tests/* export-ignore
+.docusaurus/ export-ignore
+wp-hooks-docs/ export-ignore

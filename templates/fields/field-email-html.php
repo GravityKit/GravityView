@@ -67,9 +67,8 @@ if ( ! isset( $field_settings['emailmailto'] ) || ! empty( $field_settings['emai
 * @since 1.1.6
 *
 * @since 2.0
-* @param \GV\Template_Context The $gravityview template context object.
-*
-* @var boolean
+* @param boolean $prevent_encrypt Whether to prevent email encryption
+* @param \GV\Template_Context $gravityview The $gravityview template context object
 */
 $prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false, $gravityview );
 

@@ -598,4 +598,76 @@ class GravityView_Helper_Functions_Test extends GV_UnitTestCase {
 			$resultCustom['mixed_structure']
 		);
 	}
+
+	/**
+	 * @covers ::gv_current_shortcode_tag
+	 *
+	 * @since 2.45.1
+	 *
+	 * @group shortcode
+	 */
+	public function test_gv_current_shortcode_tag() {
+		// Test initial state - should return null.
+		$this->assertNull( gv_current_shortcode_tag() );
+		$this->assertNull( gv_current_shortcode_tag( 'top' ) );
+
+		// Test pushing tags onto the stack.
+		$result = gv_current_shortcode_tag( 'push', 'gravityview' );
+		$this->assertEquals( 'gravityview', $result );
+		$this->assertEquals( 'gravityview', gv_current_shortcode_tag() );
+
+		// Test nested shortcodes.
+		$result = gv_current_shortcode_tag( 'push', 'gv_entry_link' );
+		$this->assertEquals( 'gv_entry_link', $result );
+		$this->assertEquals( 'gv_entry_link', gv_current_shortcode_tag() );
+
+		// Test popping from the stack.
+		$result = gv_current_shortcode_tag( 'pop' );
+		$this->assertEquals( 'gravityview', $result );
+		$this->assertEquals( 'gravityview', gv_current_shortcode_tag() );
+
+		// Test popping the last item.
+		$result = gv_current_shortcode_tag( 'pop' );
+		$this->assertNull( $result );
+		$this->assertNull( gv_current_shortcode_tag() );
+
+		// Test invalid operations.
+		$this->assertNull( gv_current_shortcode_tag( 'invalid' ) );
+		$this->assertNull( gv_current_shortcode_tag( '' ) );
+
+		// Test pushing invalid tags.
+		$this->assertNull( gv_current_shortcode_tag( 'push', '' ) );
+		$this->assertNull( gv_current_shortcode_tag( 'push', null ) );
+		$this->assertNull( gv_current_shortcode_tag( 'push', 123 ) );
+
+		// Test WP shortcode filter integration.
+		if ( function_exists( 'do_shortcode' ) ) {
+			add_shortcode( 'test_shortcode', function ( $atts ) {
+				return 'Current: ' . ( gv_current_shortcode_tag() ?: 'none' );
+			} );
+
+			// Test that the shortcode stack works during shortcode execution.
+			$result = do_shortcode( '[test_shortcode]' );
+			$this->assertEquals( 'Current: test_shortcode', $result );
+
+			// Test nested shortcodes.
+			add_shortcode( 'outer_shortcode', function ( $atts ) {
+				$outer        = gv_current_shortcode_tag();
+				$inner_result = do_shortcode( '[test_shortcode]' );
+				$outer_after  = gv_current_shortcode_tag();
+
+				return "Outer: $outer, Inner result: $inner_result, Outer after: $outer_after";
+			} );
+
+			$result = do_shortcode( '[outer_shortcode]' );
+			$this->assertEquals( 'Outer: outer_shortcode, Inner result: Current: test_shortcode, Outer after: outer_shortcode', $result );
+
+			// Clean up test shortcodes.
+			remove_shortcode( 'test_shortcode' );
+			remove_shortcode( 'outer_shortcode' );
+		}
+
+		// Ensure stack is clean after tests.
+		$this->assertNull( gv_current_shortcode_tag() );
+	}
 }

@@ -976,7 +976,7 @@ function gv_container_class( $passed_css_class = '', $echo = true, $context = nu
 	$css_class = trim( $passed_css_class . ' ' . $default_css_class );
 
 	/**
-	 * Modify the CSS class to be added to the wrapper <div> of a View.
+	 * Modify the CSS class to be added to the wrapper div of a View.
      *
 	 * @since 1.5.4
 	 * @param string $css_class Default: `gv-container gv-container-{view id}`. If View is hidden until search, adds ` hidden`. If the View has no results, adds `gv-container-no-results`
@@ -1295,7 +1295,7 @@ function gravityview_before() {
 	}
 
 	/**
-	 * Prepend content to the View container `<div>`.
+	 * Prepend content to the View container div.
      *
 	 * @deprecated Use `gravityview/template/before`.
 	 * @param int $view_id The ID of the View being displayed
@@ -1313,7 +1313,7 @@ function gravityview_header() {
 		$gravityview = reset( $args );
 		if ( $gravityview instanceof \GV\Template_Context ) {
 			/**
-			 * Prepend content to the View container <div>.
+			 * Prepend content to the View container div.
 			 *
 			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
 			 */
@@ -1327,7 +1327,7 @@ function gravityview_header() {
 	}
 
 	/**
-	 * Prepend content to the View container `<div>`.
+	 * Prepend content to the View container div.
      *
 	 * @deprecated Use `gravityview/template/header`.
 	 * @param int $view_id The ID of the View being displayed
@@ -1345,7 +1345,7 @@ function gravityview_footer() {
 		$gravityview = reset( $args );
 		if ( $gravityview instanceof \GV\Template_Context ) {
 			/**
-			 * Prepend outside the View container <div>.
+			 * Prepend outside the View container div.
 			 *
 			 * @param \GV\Template_Context $gravityview The $gravityview object available in templates.
 			 */
@@ -1359,7 +1359,7 @@ function gravityview_footer() {
 	}
 
 	/**
-	 * Display content after a View. Used to render footer widget areas. Rendered outside the View container `<div>`.
+	 * Display content after a View. Used to render footer widget areas. Rendered outside the View container div.
      *
 	 * @deprecated Use `gravityview/template/footer`.
 	 * @param int $view_id The ID of the View being displayed
@@ -1389,7 +1389,7 @@ function gravityview_after() {
 	}
 
 	/**
-	 * Append content to the View container `<div>`.
+	 * Append content to the View container div.
      *
 	 * @deprecated Use `gravityview/template/after`
 	 * @param int $view_id The ID of the View being displayed
