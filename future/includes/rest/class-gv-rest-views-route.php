@@ -147,7 +147,7 @@ class Views_Route extends Route {
 		 * Allow more entry fields that are output in regular REST requests.
 		 *
 		 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
-		 * @param View $view The view.
+		 * @param View $view The View.
 		 * @param \GV\Entry $entry The entry.
 		 * @param \WP_REST_Request $request Request object.
 		 * @param string $context The context (directory, single)
@@ -513,10 +513,12 @@ class Views_Route extends Route {
 		/**
 		 * Disable rest output. Final chance.
 		 *
-		 * @param bool Enable or not.
+		 * @param bool $allow_rest_output Enable or not.
 		 * @param View $view The view.
 		 */
-		if ( ! apply_filters( 'gravityview/view/output/rest', true, $view ) ) {
+		$allow_rest_output = apply_filters( 'gravityview/view/output/rest', true, $view );
+
+		if ( ! $allow_rest_output ) {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
 		}
 
@@ -588,7 +590,7 @@ class Views_Route extends Route {
 		if (
 			'1' === $view->settings->get( 'csv_enable' )
 			&& in_array( $format, [ 'csv', 'tsv' ], true )
-			&& wp_verify_nonce( $nonce, sprintf( '%s.%d', GravityView_Widget_Export_Link::WIDGET_ID, $view->ID ) )
+			&& wp_verify_nonce( $nonce, GravityView_Widget_Export_Link::get_nonce_action( $view->ID ) )
 		) {
 			// All results.
 			$request->set_param( 'limit', 0 );

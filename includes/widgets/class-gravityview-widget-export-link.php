@@ -109,6 +109,82 @@ HTML;
 		parent::__construct( 'Export Link', self::WIDGET_ID, self::defaults(), self::settings() );
 
 		add_filter( 'gravityview_admin_label_item_info', [ $this, 'hide_description_picker' ], 10, 2 );
+		add_filter( 'gravityview/view/can_render', [ $this, 'maybe_allow_rest_export_access' ], 10, 4 );
+	}
+
+	/**
+	 * Get the nonce action string for a specific View.
+	 *
+	 * @since TODO
+	 *
+	 * @param int $view_id The View ID.
+	 *
+	 * @return string The nonce action string.
+	 */
+	public static function get_nonce_action( $view_id ) {
+		return sprintf( '%s.%d', self::WIDGET_ID, $view_id );
+	}
+
+	/**
+	 * Allow REST API access for CSV/TSV exports when View has Export Link widget and valid nonce.
+	 *
+	 * This filter allows Views that are embed-only or have REST disabled to still export CSV/TSV
+	 * files when accessed through the Export Link widget with a valid nonce.
+	 *
+	 * @since TODO
+	 *
+	 * @param null|bool|\WP_Error $result  The current access check result.
+	 * @param \GV\View            $view    The View being accessed.
+	 * @param string[]            $context The context of the request (e.g., 'rest', 'csv').
+	 * @param \GV\Request         $request The request object.
+	 *
+	 * @return bool|\WP_Error True if access is allowed, original result otherwise.
+	 */
+	public function maybe_allow_rest_export_access( $result, $view, $context, $request ) {
+		// Only modify for REST requests
+		if ( ! in_array( 'rest', $context, true ) ) {
+			return $result;
+		}
+
+		// If there's no error, nothing to fix.
+		if ( ! is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		// Check if this is a CSV/TSV export request.
+		$params = $request->get_url_params();
+		$format = GV\Utils::get( $params, 'format', '' );
+
+		if ( ! in_array( $format, array( 'csv', 'tsv' ), true ) ) {
+			return $result;
+		}
+
+		// Check for nonce.
+		$nonce = $request->get_param( '_nonce' );
+		if ( empty( $nonce ) ) {
+			return $result;
+		}
+
+		// Check if this View has the Export Link widget configured.
+		$has_export_widget = false;
+		foreach ( $view->widgets->all() as $widget ) {
+			if ( $widget->get_widget_id() === self::WIDGET_ID ) {
+				$has_export_widget = true;
+				break;
+			}
+		}
+
+		if ( ! $has_export_widget ) {
+			return $result;
+		}
+
+		// Verify the nonce.
+		if ( ! wp_verify_nonce( $nonce, self::get_nonce_action( $view->ID ) ) ) {
+			return $result;
+		}
+
+		// Allow access even if embed-only or REST disabled.
+		return true;
 	}
 
 	/**
@@ -217,16 +293,7 @@ HTML;
 			return '';
 		}
 
-		$user_id = wp_get_current_user()->ID;
-		if ( $user_id ) {
-			wp_set_current_user( 0 );
-		}
-
-		$nonce = wp_create_nonce( sprintf( '%s.%d', $this->get_widget_id(), $view->ID ) );
-
-		if ( $user_id ) {
-			wp_set_current_user( $user_id );
-		}
+		$nonce = wp_create_nonce( self::get_nonce_action( $view->ID ) );
 
 		return $nonce ?: '';
 	}
