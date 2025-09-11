@@ -21,7 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.46.1 on September 11, 2025 =
+
+This update fixes widget display issues when embedding Views with page builders.
 
 #### 🐛 Fixed
 * Widgets not rendering when Views are embedded using shortcodes in page builders like Elementor and Divi.
