@@ -324,10 +324,78 @@
 					$( window ).trigger( 'resize' );
 				})
 			   .on( 'tooltipopen', vcfg.onTooltipOpen )
+
+			   // Keyboard navigation event handlers for field reordering
+			   .on('click', '.gv-move-up', function(e) {
+				   var $btn = $(this);
+				   if ($btn.data('gv-skip-click')) {
+					   $btn.removeData('gv-skip-click');
+					   e.preventDefault();
+					   e.stopPropagation();
+					   return;
+				   }
+
+				   e.preventDefault();
+				   e.stopPropagation();
+				   vcfg.moveField($btn.closest('.gv-fields'), -1, 'up', $btn);
+			   })
+			   .on('click', '.gv-move-down', function(e) {
+				   var $btn = $(this);
+				   if ($btn.data('gv-skip-click')) {
+					   $btn.removeData('gv-skip-click');
+					   e.preventDefault();
+					   e.stopPropagation();
+					   return;
+				   }
+
+				   e.preventDefault();
+				   e.stopPropagation();
+				   vcfg.moveField($btn.closest('.gv-fields'), 1, 'down', $btn);
+			   })
+			   .on('keydown', '.gv-field-reorder button', function(e) {
+				   var $btn = $(this);
+				   var isUp = $btn.hasClass('gv-move-up');
+				   var isDown = $btn.hasClass('gv-move-down');
+
+				   if (e.key === ' ' || e.keyCode === 32 || e.key === 'Enter' || e.keyCode === 13) {
+					   // Prevent native click firing later; run our move now
+					   e.preventDefault();
+					   e.stopPropagation();
+					   $btn.data('gv-skip-click', true);
+					   setTimeout(function() {
+						   $btn.removeData('gv-skip-click');
+					   }, 250);
+
+					   if (isUp) {
+						   vcfg.moveField($btn.closest('.gv-fields'), -1, 'up', $btn);
+					   } else {
+						   vcfg.moveField($btn.closest('.gv-fields'), 1, 'down', $btn);
+					   }
+					   return;
+				   }
+
+				   if (e.key === 'ArrowUp' || e.keyCode === 38) {
+					   e.preventDefault();
+					   vcfg.moveField($btn.closest('.gv-fields'), -1, 'up', $btn);
+				   } else if (e.key === 'ArrowDown' || e.keyCode === 40) {
+					   e.preventDefault();
+					   vcfg.moveField($btn.closest('.gv-fields'), 1, 'down', $btn);
+				   }
+			   })
+			   .on('keydown', '.gv-fields', function(e) {
+				   if (e.key === 'ArrowUp' || e.keyCode === 38) {
+					   e.preventDefault();
+					   vcfg.moveField($(this), -1, 'up');
+				   } else if (e.key === 'ArrowDown' || e.keyCode === 40) {
+					   e.preventDefault();
+					   vcfg.moveField($(this), 1, 'down');
+				   }
+			   })
+			   .on('focusin', '.gv-fields', function() {
+				   vcfg.updateReorderButtons($(this));
+			   })
            ;
            // End bind to $( document.body )
-
-           // Keyboard reordering is handled by assets/js/admin-views-keyboard-nav.js
 
            $( window ).on( 'resize', function () {
 			   const $openDialog = $( ".ui-dialog:visible" ).find( '.ui-dialog-content' );
@@ -342,8 +410,6 @@
 
 				$openDialog.dialog( 'option', 'width', vcfg.getDialogWidth( $openDialog ) );
 		   });
-
-           // Keyboard-only UI class handled by assets/js/admin-views-keyboard-nav.js
 
            // Make sure the user intends to leave the page before leaving.
 		   window.addEventListener('beforeunload', ( event) => {
@@ -2397,12 +2463,12 @@
 
 			   // Normalize the search input for accent-insensitive comparison
 			   var normalizedInput = normalizeString( input );
-			   
+
 			   // Get and normalize the field values
 			   var fieldTitle = $( this ).find( '.gv-field-label' ).attr( 'data-original-title' ) || '';
 			   var fieldId = $( this ).attr( 'data-fieldid' ) || '';
 			   var parentLabel = $( this ).attr( 'data-parent-label' ) || '';
-			   
+
 			   // Perform accent-insensitive matching
 			   var match_title = normalizedInput === '' || normalizeString( fieldTitle ).indexOf( normalizedInput ) !== -1;
 			   var match_id = normalizedInput === '' || normalizeString( fieldId ).indexOf( normalizedInput ) !== -1;
@@ -3486,6 +3552,183 @@
 		   } );
 
 		   return false;
+	   },
+
+	   /**
+	    * Get the container for a field (field, widget, or search area)
+	    * @since 2.48
+	    */
+	   getFieldContainer: function($field) {
+		   return $field.closest('.active-drop-field, .active-drop-widget, .active-drop-search');
+	   },
+
+	   /**
+	    * Update visibility of move up/down buttons based on field position
+	    * @since 2.48
+	    */
+	   updateReorderButtons: function($field) {
+		   var vcfg = viewConfiguration;
+		   var $container = vcfg.getFieldContainer($field);
+		   var $siblings = $container.children('.gv-fields');
+		   var index = $siblings.index($field);
+		   var $up = $field.find('.gv-move-up');
+		   var $down = $field.find('.gv-move-down');
+		   var atTop = index <= 0;
+		   var atBottom = index === $siblings.length - 1;
+
+		   $up.attr('aria-hidden', atTop ? 'true' : 'false').toggle(!atTop);
+		   $down.attr('aria-hidden', atBottom ? 'true' : 'false').toggle(!atBottom);
+	   },
+
+	   /**
+	    * Announce field position change to screen readers
+	    * @since 2.48
+	    */
+	   announceFieldMove: function($field) {
+		   try {
+			   var vcfg = viewConfiguration;
+			   var $container = vcfg.getFieldContainer($field);
+			   var $siblings = $container.children('.gv-fields');
+			   var index = $siblings.index($field);
+			   var $status = $('#gv-reorder-status');
+
+			   if ($status.length === 0) {
+				   $status = $('<div/>', {
+					   id: 'gv-reorder-status',
+					   'class': 'screen-reader-text',
+					   'aria-live': 'polite',
+					   role: 'status'
+				   }).appendTo(document.body);
+			   }
+
+			   $status.text('Moved to position ' + (index + 1) + ' of ' + $siblings.length + '.');
+		   } catch(e) {
+			   // Silent failure for screen reader announcements
+		   }
+	   },
+
+	   /**
+	    * Ensure focus on an element with retries
+	    * @since 2.48
+	    */
+	   ensureFocus: function($el) {
+		   if (!$el || !$el.length) return false;
+
+		   var attempts = 0;
+		   var maxAttempts = 5;
+		   var tryFocus = function() {
+			   attempts++;
+			   if (!$el.is(':visible')) {
+				   if (attempts < maxAttempts) {
+					   return setTimeout(tryFocus, 0);
+				   }
+				   return;
+			   }
+
+			   try {
+				   $el[0].focus({ preventScroll: true });
+			   } catch(e) {
+				   $el.trigger('focus');
+			   }
+
+			   var ok = document.activeElement === $el[0];
+			   if (!ok && attempts < maxAttempts) {
+				   setTimeout(tryFocus, 0);
+			   }
+		   };
+
+		   tryFocus();
+		   return true;
+	   },
+
+	   /**
+	    * Focus the field container to ensure visibility of reorder controls
+	    * @since 2.48
+	    */
+	   focusFieldContainer: function($field) {
+		   if (!$field || !$field.length) return;
+
+		   try {
+			   $field.attr('tabindex', '-1');
+			   $field[0].focus({ preventScroll: true });
+			   setTimeout(function() {
+				   $field.removeAttr('tabindex');
+			   }, 250);
+		   } catch(e) {
+			   // Silent failure
+		   }
+	   },
+
+	   /**
+	    * Focus the preferred reorder control button
+	    * @since 2.48
+	    */
+	   focusReorderControl: function($field, preferred) {
+		   var sel = preferred === 'up' ? '.gv-move-up' : '.gv-move-down';
+		   var $btn = $field.find(sel).filter(':visible');
+
+		   if (!$btn.length) {
+			   sel = preferred === 'up' ? '.gv-move-down' : '.gv-move-up';
+			   $btn = $field.find(sel).filter(':visible');
+		   }
+
+		   if ($btn.length) {
+			   $btn.trigger('focus');
+			   return true;
+		   }
+
+		   return false;
+	   },
+
+	   /**
+	    * Move a field up or down in the container
+	    * @since 2.48
+	    */
+	   moveField: function($field, delta, preferred, $usedBtn) {
+		   var vcfg = viewConfiguration;
+		   if (!$field || !$field.length) return;
+
+		   var $container = vcfg.getFieldContainer($field);
+		   if (!$container.length) return;
+
+		   var $siblings = $container.children('.gv-fields');
+		   var index = $siblings.index($field);
+		   var newIndex = index + (delta < 0 ? -1 : 1);
+
+		   if (newIndex < 0 || newIndex >= $siblings.length) return;
+
+		   var $focused = $(document.activeElement);
+		   var hadFocusInside = $.contains($field[0], $focused[0]);
+
+		   if (delta < 0) {
+			   $field.prev('.gv-fields').before($field);
+		   } else {
+			   $field.next('.gv-fields').after($field);
+		   }
+
+		   vcfg.setUnsavedChanges(true);
+
+		   // Defer updates and focus to next tick to ensure DOM settled
+		   setTimeout(function() {
+			   // Ensure :focus-within for visibility of reorder controls
+			   vcfg.focusFieldContainer($field);
+			   vcfg.updateReorderButtons($field);
+			   vcfg.announceFieldMove($field);
+
+			   // Prefer re-focusing the exact button used if still visible
+			   if ($usedBtn && $usedBtn.length && $usedBtn.is(':visible')) {
+				   vcfg.ensureFocus($usedBtn);
+			   } else if (!vcfg.focusReorderControl($field, preferred)) {
+				   if (hadFocusInside && $focused && $focused.length && $.contains($field[0], $focused[0])) {
+					   vcfg.ensureFocus($focused);
+				   } else {
+					   var $t = $field.find('.gv-move-up:visible, .gv-move-down:visible, button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])').filter(':visible').first();
+					   if ($t.length) {
+						   vcfg.ensureFocus($t);
+					   }
+				   }
+			   }
+		   }, 0);
 	   }
 
    }; // end viewConfiguration object
@@ -3845,4 +4088,6 @@
 			   .fail( on_fail );
 	   } );
    } );
+
+
 }(jQuery));
