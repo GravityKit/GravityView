@@ -2040,15 +2040,6 @@ HTML;
 			[ 'jquery' ],
 			$version );
 
-		// Keyboard navigation enhancements for reordering fields (always unminified; small file)
-		wp_enqueue_script(
-			'gravityview_views_keyboard_nav',
-			plugins_url( 'assets/js/admin-views-keyboard-nav.js', GRAVITYVIEW_FILE ),
-			[ 'jquery' ],
-			$version,
-			true
-		);
-
 		wp_localize_script(
 			'gravityview_views_scripts',
 			'gvGlobals',
