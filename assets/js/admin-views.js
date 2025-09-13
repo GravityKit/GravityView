@@ -324,10 +324,12 @@
 					$( window ).trigger( 'resize' );
 				})
 			   .on( 'tooltipopen', vcfg.onTooltipOpen )
-		   ;
-		   // End bind to $( document.body )
+           ;
+           // End bind to $( document.body )
 
-		   $( window ).on( 'resize', function () {
+           // Keyboard reordering is handled by assets/js/admin-views-keyboard-nav.js
+
+           $( window ).on( 'resize', function () {
 			   const $openDialog = $( ".ui-dialog:visible" ).find( '.ui-dialog-content' );
 
 			   $openDialog.dialog( 'option', 'position', {
@@ -341,7 +343,9 @@
 				$openDialog.dialog( 'option', 'width', vcfg.getDialogWidth( $openDialog ) );
 		   });
 
-		   // Make sure the user intends to leave the page before leaving.
+           // Keyboard-only UI class handled by assets/js/admin-views-keyboard-nav.js
+
+           // Make sure the user intends to leave the page before leaving.
 		   window.addEventListener('beforeunload', ( event) => {
 			   if ( vcfg.hasUnsavedChanges ) {
 				   event.preventDefault();
@@ -2851,7 +2855,7 @@
 	   },
 
 	   // Sortables and droppables
-	   init_droppables: function ( panel ) {
+       init_droppables: function ( panel ) {
 
 		   // Already initialized.
 		   if( $( panel ).find( ".active-drop-field" ).sortable( 'instance' ) ) {
@@ -2869,7 +2873,106 @@
 			   connectWith: ".active-drop-widget",
 			   start: function( event, ui ) {
 				   $( '#directory-fields, #single-fields' ).find( ".active-drop-container-widget" ).addClass('is-receivable');
-			   },
+       },
+
+       /**
+        * Move a field up or down within its current container for keyboard users.
+        * @param {jQuery} $field The `.gv-fields` element to move.
+        * @param {number} delta -1 to move up, +1 to move down.
+        */
+       keyboardMoveField: function( $field, delta, preferred, $usedBtn ) {
+           if ( !$field || $field.length === 0 ) { return; }
+
+           // Determine the sortable container this field belongs to.
+           var $container = $field.closest('.active-drop-field, .active-drop-widget, .active-drop-search');
+           if ( $container.length === 0 ) { return; }
+
+           var $siblings = $container.children('.gv-fields');
+           var index = $siblings.index( $field );
+           if ( index === -1 ) { return; }
+
+           var newIndex = index + ( delta < 0 ? -1 : 1 );
+           if ( newIndex < 0 || newIndex >= $siblings.length ) { return; }
+
+           // Preserve focus within moved field.
+           var $focused = $( document.activeElement );
+           var hadFocusInside = $.contains( $field[0], $focused[0] );
+
+           if ( delta < 0 ) {
+               $field.prev('.gv-fields').before( $field );
+           } else {
+               $field.next('.gv-fields').after( $field );
+           }
+
+           // Mark as changed and update buttons state.
+           viewConfiguration.setUnsavedChanges( true );
+           viewConfiguration.updateReorderButtonsState( $field );
+
+           // Announce movement to assistive tech (polite)
+           viewConfiguration.announceReorder( $field );
+
+           setTimeout( function(){
+               // Keep focus on the just-used control if possible
+               var focusPreferred = function(){
+                   var sel = preferred === 'up' ? '.gv-move-up' : '.gv-move-down';
+                   var $btn = $field.find( sel ).filter(':visible');
+                   if ( !$btn.length ) {
+                       sel = preferred === 'up' ? '.gv-move-down' : '.gv-move-up';
+                       $btn = $field.find( sel ).filter(':visible');
+                   }
+                   if ( $btn.length ) { $btn.trigger('focus'); return true; }
+                   return false;
+               };
+               if ( $usedBtn && $usedBtn.length && $usedBtn.is(':visible') ) {
+                   $usedBtn.trigger('focus');
+               } else if ( !focusPreferred() ) {
+                   if ( hadFocusInside && $focused && $focused.length && $.contains( $field[0], $focused[0] ) ) {
+                       $focused.trigger('focus');
+                   } else {
+                       var $target = $field.find('.gv-move-up:visible, .gv-move-down:visible, button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])').filter(':visible').first();
+                       if ( $target.length ) { $target.trigger('focus'); }
+                   }
+               }
+           }, 0 );
+       },
+
+       /**
+        * Enable/disable up/down buttons depending on field position.
+        * @param {jQuery} $field
+        */
+        updateReorderButtonsState: function( $field ){
+            if ( !$field || $field.length === 0 ) { return; }
+            var $container = $field.closest('.active-drop-field, .active-drop-widget, .active-drop-search');
+            var $siblings = $container.children('.gv-fields');
+            var index = $siblings.index( $field );
+            var $up = $field.find('.gv-move-up');
+            var $down = $field.find('.gv-move-down');
+            var atTop = index <= 0;
+            var atBottom = index === $siblings.length - 1;
+            $up.attr('aria-hidden', atTop ? 'true' : 'false').toggle(!atTop);
+            $down.attr('aria-hidden', atBottom ? 'true' : 'false').toggle(!atBottom);
+        },
+
+        /**
+         * Create or update a polite live region announcing reordering.
+         * @param {jQuery} $field
+         */
+        announceReorder: function( $field ){
+            try {
+                var $container = $field.closest('.active-drop-field, .active-drop-widget, .active-drop-search');
+                var $siblings = $container.children('.gv-fields');
+                var index = $siblings.index( $field );
+                var regionId = 'gv-reorder-status';
+                var $status = $('#' + regionId);
+                if ( $status.length === 0 ) {
+                    $status = $('<div/>', { id: regionId, 'class': 'screen-reader-text', 'aria-live': 'polite', role: 'status' }).appendTo( document.body );
+                }
+                var position = index + 1;
+                $status.text( 'Moved to position ' + position + ' of ' + $siblings.length + '.' );
+            } catch (e) {
+                // no-op
+            }
+        },
 			   stop: function( event, ui ) {
 				   $( '#directory-fields, #single-fields' ).find( ".active-drop-container-widget" ).removeClass('is-receivable');
 			   },
