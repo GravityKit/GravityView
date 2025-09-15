@@ -388,6 +388,33 @@ async function expectToBeVisibleBefore(page, locator_one, locator_two) {
 	await expect(box_one.y).toBeLessThan(box_two.y);
 }
 
+/**
+ * Opens a new browser context and logs in as a subscriber user.
+ *
+ * @param {import('playwright').Browser} browser - The Playwright browser object.
+ * @param {string} [username='subscriber1'] - The username to log in with (defaults to 'subscriber1').
+ * @returns {Promise<import('playwright').BrowserContext>} - The authenticated browser context.
+ */
+async function loginAsSubscriber(browser, username = 'subscriber1') {
+	const baseURL = `${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}`;
+	const context = await browser.newContext({ baseURL });
+	const page = await context.newPage();
+
+	await page.goto('/wp-login.php');
+	await page.fill('#user_login', username);
+	await page.fill('#user_pass', 'password');
+
+	await Promise.all([
+		page.waitForURL('/wp-admin/**', {
+			waitUntil: 'domcontentloaded',
+			timeout: 60000
+		}),
+		page.click('#wp-submit')
+	]);
+
+	return context;
+}
+
 module.exports = {
 	templates,
 	viewTemplatesMap,
@@ -401,5 +428,6 @@ module.exports = {
 	getViewUrl,
 	getOptionValueBySearchTerm,
 	clickFirstVisible,
-	expectToBeVisibleBefore
+	expectToBeVisibleBefore,
+	loginAsSubscriber
 };
