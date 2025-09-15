@@ -36,7 +36,8 @@
 		{
 			"1": "Charlie",
 			"2": "Bird",
-			"is_approved": "1"
+			"is_approved": "1",
+			"created_by": "2"
 		},
 		{
 			"1": "David",
