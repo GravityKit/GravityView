@@ -25,15 +25,18 @@
 	"entries": [
 		{
 			"1": "Alice",
-			"2": "Dog"
+			"2": "Dog",
+			"is_approved": "1"
 		},
 		{
 			"1": "Bob",
-			"2": "Cat"
+			"2": "Cat",
+			"is_approved": "1"
 		},
 		{
 			"1": "Charlie",
-			"2": "Bird"
+			"2": "Bird",
+			"is_approved": "1"
 		},
 		{
 			"1": "David",
@@ -117,15 +120,18 @@
 		},
 		{
 			"1": "Xander",
-			"2": "Dog"
+			"2": "Dog",
+			"is_approved": "2"
 		},
 		{
 			"1": "Yara",
-			"2": "Hamster"
+			"2": "Hamster",
+			"is_approved": "2"
 		},
 		{
 			"1": "Zane",
-			"2": "Cat"
+			"2": "Cat",
+			"is_approved": "2"
 		},
 		{
 			"1": "Amy",
