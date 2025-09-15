@@ -83,9 +83,11 @@ $content = ob_get_clean();
  * @param string $anchor_id         (optional) Unique anchor ID to identify the view.
  * @param \GV\View $view            The View.
  */
+$class = gv_container_class( 'gv-template-layout-builder', false, $gravityview );
+
 $wrapper_container = apply_filters(
 	'gravityview/view/wrapper_container',
-	'<div id="' . esc_attr( $gravityview->view->get_anchor_id() ) . '">{content}</div>',
+	'<div id="' . esc_attr( $gravityview->view->get_anchor_id() ) . '" class="' . esc_attr( $class ) . '">{content}</div>',
 	$gravityview->view->get_anchor_id(),
 	$gravityview->view
 );
