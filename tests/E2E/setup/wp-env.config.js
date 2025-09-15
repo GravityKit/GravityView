@@ -34,7 +34,7 @@ const wpEnvConfig = {
 			`npm run wp-env:cli wp gf license update ${process.env.GRAVITY_FORMS_LICENSE_KEY}`,
 			`npm run wp-env:cli wp gk licenses activate ${process.env.GRAVITYKIT_LICENSE_KEY} -- --url=${process.env.WP_ENV_URL} || true`,
 			"npm run wp-env:cli wp gk products install gv-datatables && npm run wp-env:cli wp plugin activate gravityview-datatables",
-			"npm run wp-env:cli wp user get subscriber1 >/dev/null 2>&1 || npm run wp-env:cli wp user create subscriber1 subscriber1@example.com --role=subscriber --user_pass=password"
+			"npm run wp-env:cli wp user get subscriber1 >/dev/null 2>&1 || npm run wp-env:cli -- wp user create subscriber1 subscriber1@example.com --role=subscriber --user_pass=password"
 		].join(' && ')
 	}
 };
