@@ -1750,6 +1750,9 @@ class View implements \ArrayAccess {
 			}
 
 			foreach ( $allowed as $field ) {
+				// Remove all links from output.
+				$field->update_configuration( [ 'show_as_link' => '0' ] );
+
 				$source = self::get_source( $field, $view );
 
 				$return[] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
