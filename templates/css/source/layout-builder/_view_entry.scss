@@ -1,7 +1,10 @@
 .gv-layout-builder-view--entry {
     border: 1px solid $color-border;
-    background: #FFF;
     padding: $padding 0;
+    // Prevent background on featured entry.
+    &:not( .gv-featured-entry ) {
+        background: #FFF;
+    }
 
     + .gv-layout-builder-view--entry {
         margin-top: -1px;
