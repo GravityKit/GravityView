@@ -58,6 +58,10 @@
     "showPreviewImage": {
       "type": "boolean",
       "default": false
+    },
+    "secret": {
+      "type": "string",
+      "default": null
     }
   },
   "example": {

@@ -24,8 +24,10 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🐛 Fixed
-* Featured entries had no special styling on the Layout Builder Template.
-
+* Entry Link block not working with secure Views that require a secret.
+* The Export widget not working when Views were filtered to show entries created by the currently logged-in user.
+* Fields linked to single entry layouts are now exported as plain text values, not hyperlinks, when using direct CSV/TSV export URLs.
+* Featured entries in the Layout Builder template now display with their intended styling.
 = 2.46.1 on September 11, 2025 =
 
 This update fixes widget display issues when embedding Views with page builders.
