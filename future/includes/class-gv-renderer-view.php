@@ -36,6 +36,9 @@ class View_Renderer extends Renderer {
 			return null;
 		}
 
+		// Track that we're rendering this View.
+		\GV\View::push_rendering( $view->ID );
+
 		/**
 		 * Modify the template slug about to be loaded in directory views.
 		 *
@@ -93,7 +96,11 @@ class View_Renderer extends Renderer {
 				 */
 				add_action( 'gravityview_before', $this->legacy_template_warning( $view, $path ) );
 
-				return $override->render( $template_slug );
+				$result = $override->render( $template_slug );
+
+				\GV\View::pop_rendering();
+
+				return $result;
 			}
 		}
 
@@ -213,6 +220,11 @@ class View_Renderer extends Renderer {
 		remove_filter( 'gravityview/widget/search/form/action', $add_search_action_filter );
 
 		\GV\Mocks\Legacy_Context::pop();
-		return ob_get_clean();
+
+		$output = ob_get_clean();
+
+		\GV\View::pop_rendering();
+
+		return $output;
 	}
 }

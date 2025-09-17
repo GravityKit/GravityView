@@ -95,6 +95,15 @@ class View implements \ArrayAccess {
 	private static $cache = array();
 
 	/**
+	 * @var array Stack to track currently rendering Views (for embedded View detection).
+	 *
+	 * @since TBD
+	 *
+	 * @internal
+	 */
+	private static $rendering_stack = array();
+
+	/**
 	 * @var \GV\Join[] The joins for all sources in this view.
 	 *
 	 * @api
@@ -924,6 +933,160 @@ class View implements \ArrayAccess {
 	 */
 	public static function exists( $view ) {
 		return self::POST_TYPE == get_post_type( $view );
+	}
+
+	/**
+	 * Starts tracking that a View is being rendered.
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @param int $view_id The View ID being rendered.
+	 */
+	public static function push_rendering( $view_id ) {
+		self::$rendering_stack[] = $view_id;
+	}
+
+	/**
+	 * Stops tracking that a View is being rendered
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @return int|null The View ID that was being rendered, or null if stack was empty.
+	 */
+	public static function pop_rendering() {
+		return array_pop( self::$rendering_stack );
+	}
+
+	/**
+	 * Checks if a View is currently being rendered (embedded View detection).
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @param int|null $view_id If provided, check if this specific View is being rendered. If null, check if any view is being rendered.
+	 *
+	 * @return bool True if the View (or any View) is being rendered.
+	 */
+	public static function is_rendering( $view_id = null ) {
+		if ( null === $view_id ) {
+			return ! empty( self::$rendering_stack );
+		}
+
+		return in_array( $view_id, self::$rendering_stack );
+	}
+
+	/**
+	 * Returns the currently rendering View ID (the most recent one).
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @return int|null The View ID currently being rendered, or null if none.
+	 */
+	public static function get_current_rendering() {
+		if ( empty( self::$rendering_stack ) ) {
+			return null;
+		}
+
+		return end( self::$rendering_stack );
+	}
+
+	/**
+	 * Returns all currently rendering View IDs.
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @return array Array of View IDs in rendering order (oldest to newest).
+	 */
+	public static function get_rendering_stack() {
+		return self::$rendering_stack;
+	}
+
+	/**
+	 * Checks if View is the primary (first) rendering View.
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @param int $view_id The View ID to check
+	 *
+	 * @return bool True if the View is the primary rendering View.
+	 */
+	public static function is_primary_view( $view_id ) {
+		return ! empty( self::$rendering_stack ) && self::$rendering_stack[0] === $view_id;
+	}
+
+	/**
+	 * Checks if View is embedded (not the first in stack).
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @param int $view_id The View ID to check
+	 *
+	 * @return bool True if the View is embedded within another View.
+	 */
+	public static function is_embedded_view( $view_id ) {
+		return in_array( $view_id, self::$rendering_stack ) && $view_id !== self::$rendering_stack[0];
+	}
+
+	/**
+	 * Returns the parent View of an embedded View.
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @param int $view_id The View ID to get parent for.
+	 *
+	 * @return int|null The parent View ID, or null if not embedded or no parent.
+	 */
+	public static function get_parent_view( $view_id ) {
+		$position = array_search( $view_id, self::$rendering_stack );
+
+		if ( $position > 0 ) {
+			return self::$rendering_stack[ $position - 1 ];
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the rendering depth of a View (how many levels deep it's nested).
+	 *
+	 * @interal
+	 *
+	 * @since TBD
+	 *
+	 * @param int $view_id The View ID to check
+	 *
+	 * @return int|false The depth (0 for primary, 1+ for nested), or false if not rendering.
+	 */
+	public static function get_rendering_depth( $view_id ) {
+		return array_search( $view_id, self::$rendering_stack );
+	}
+
+	/**
+	 * Resets the rendering stack.
+	 *
+	 * @internal
+	 *
+	 * @since TBD
+	 *
+	 * @internal
+	 */
+	public static function reset_rendering_stack() {
+		self::$rendering_stack = [];
 	}
 
 	/**
