@@ -951,6 +951,16 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param \GV\Request $request The request object
 	 */
 	public function gf_query_filter( &$query, $view, $request ) {
+		// Don't apply search filters when viewing a single entry.
+		if ( $request && $request->is_entry() ) {
+			return;
+		}
+
+		// When $request is null, check if we're in a single entry context.
+		if ( ! $request && gravityview()->request && gravityview()->request->is_entry() ) {
+			return;
+		}
+
 		/**
 		 * This is a shortcut to get all the needed search criteria.
 		 * We feed these into an new GF_Query and tack them onto the current object.
