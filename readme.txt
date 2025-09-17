@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Entry Link block not working with secure Views that require a secret.
 * The Export widget not working when Views were filtered to show entries created by the currently logged-in user.
 * Fields linked to single entry layouts are now exported as plain text values, not hyperlinks, when using direct CSV/TSV export URLs.
+* Featured entries in the Layout Builder template now display with their intended styling.
 
 #### 💻 Developer Updates
 * Added a `gv-template-{type}` class to the outer containers of Layout Builder, List, and Table templates, enabling easier custom JS and CSS targeting.
