@@ -977,7 +977,7 @@ class View implements \ArrayAccess {
 			return ! empty( self::$rendering_stack );
 		}
 
-		return in_array( $view_id, self::$rendering_stack );
+		return in_array( $view_id, self::$rendering_stack, true );
 	}
 
 	/**
@@ -1037,7 +1037,7 @@ class View implements \ArrayAccess {
 	 * @return bool True if the View is embedded within another View.
 	 */
 	public static function is_embedded_view( $view_id ) {
-		return in_array( $view_id, self::$rendering_stack ) && $view_id !== self::$rendering_stack[0];
+		return in_array( $view_id, self::$rendering_stack, true ) && $view_id !== self::$rendering_stack[0];
 	}
 
 	/**

@@ -1455,7 +1455,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 			// For embedded Views with no searchable fields, allow all fields.
 			if ( ! $is_embedded_view || ! empty( $searchable_fields ) ) {
-				if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $field_id, $searchable_fields ) ) {
+				if ( ! in_array( 'search_all', $searchable_fields, true ) && ! in_array( $field_id, $searchable_fields, true ) ) {
 					return false;
 				}
 			}
