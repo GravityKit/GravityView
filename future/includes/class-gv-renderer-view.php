@@ -174,8 +174,8 @@ class View_Renderer extends Renderer {
 			 */
 			$parameters = $view->settings->as_atts();
 			if ( ! empty( $parameters['sort_field'] ) && is_array( $parameters['sort_field'] ) ) {
-				$has_multisort            = true;
 				$parameters['sort_field'] = reset( $parameters['sort_field'] );
+
 				if ( ! empty( $parameters['sort_direction'] ) && is_array( $parameters['sort_direction'] ) ) {
 					$parameters['sort_direction'] = reset( $parameters['sort_direction'] );
 				}
