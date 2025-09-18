@@ -951,36 +951,31 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param \GV\Request $request The request object
 	 */
 	public function gf_query_filter( &$query, $view, $request ) {
-		// Check if we're currently rendering an embedded View.
-		$is_embedded_view = \GV\View::is_rendering( $view->ID );
+		// Check if this View is currently in the rendering process.
+		// This helps identify Views embedded via [gravityview] shortcode.
+		$is_view_rendering = \GV\View::is_rendering( $view->ID );
 
-		// Handle Mock_Request for embedded Views.
+		// Handle Mock_Request (used for Views rendered via shortcode).
 		if ( $request instanceof \GV\Mock_Request ) {
-			// Mock requests are used for embedded Views, allow filters.
-			$is_embedded_view = true;
+			// Mock requests indicate shortcode-rendered Views, allow filters.
+			$is_view_rendering = true;
 		}
 
-		// For embedded views, always apply filters.
-		if ( $is_embedded_view ) {
+		// For Views being rendered (e.g., via shortcode in Single Entry), always apply filters.
+		if ( $is_view_rendering ) {
 			// Continue processing filters below.
 		} elseif ( $request && $request->is_entry() ) {
 			// Don't apply search filters when viewing a single entry with a valid (non-mock) request.
 			return;
 		} elseif ( ! $request && gravityview()->request && gravityview()->request->is_entry() ) {
-			// When $request is null and we're in a single entry context, check if main View.
+			// When $request is null but context is single entry, check the main View.
 			$main_view = gravityview()->request->is_view();
 
-			// If we can identify the main View:
-			if ( $main_view ) {
-				// Main View => suppress filters.
-				if ( $view->ID === $main_view->ID ) {
-					return;
-				}
-				// Different View => it's embedded; continue processing filters.
-			} else {
-				// Unclear context — default to suppress.
+			// Suppress filters if no main View, or if this is the main View.
+			if ( ! $main_view || $view->ID === $main_view->ID ) {
 				return;
 			}
+			// Otherwise it's a different (embedded) View → continue processing filters.
 		}
 
 		/**
@@ -1380,7 +1375,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	}
 
 	/**
-	 * Prepare the field filters to GFAPI
+	 * Prepares the field filters to GFAPI.
 	 *
 	 * The type post_category, multiselect and checkbox support multi-select search - each value needs to be separated
 	 * in an independent filter so we could apply the ANY search mode.
@@ -1406,8 +1401,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$form = null;
 
-		// Check if this is an embedded View - if so, we allow filtering on any field.
-		$is_embedded_view = \GV\View::is_rendering( $view->ID );
+		// Check if this View is currently rendering (e.g., via shortcode).
+		// If so, we allow filtering on any field even without configured searchable fields.
+		$is_view_rendering = \GV\View::is_rendering( $view->ID );
 
 		if ( count( $filter_key ) > 1 ) {
 			// form is specified
@@ -1433,8 +1429,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			// form is in searchable fields
-			// Skip this check for embedded Views with no searchable fields configured.
-			if ( ! $is_embedded_view || ! empty( $searchable_fields ) ) {
+			// Skip this check for shortcode-rendered Views with no searchable fields configured.
+			if ( ! $is_view_rendering || ! empty( $searchable_fields ) ) {
 				$found = false;
 
 				foreach ( $searchable_fields as $field ) {
@@ -1453,8 +1449,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			$field_id          = reset( $filter_key );
 			$searchable_fields = wp_list_pluck( $searchable_fields, 'field' );
 
-			// For embedded Views with no searchable fields, allow all fields.
-			if ( ! $is_embedded_view || ! empty( $searchable_fields ) ) {
+			// For shortcode-rendered Views with no searchable fields, allow all fields.
+			if ( ! $is_view_rendering || ! empty( $searchable_fields ) ) {
 				if ( ! in_array( 'search_all', $searchable_fields, true ) && ! in_array( $field_id, $searchable_fields, true ) ) {
 					return false;
 				}
