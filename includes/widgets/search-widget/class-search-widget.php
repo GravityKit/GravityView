@@ -77,6 +77,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			// frontend - filter entries
 			add_filter( 'gravityview_fe_search_criteria', [ $this, 'filter_entries' ], 10, 3 );
 
+			add_action( 'gravityview/view/query', [ $this, 'gf_query_filter' ], 10, 3 );
+
 			// frontend - add template path
 			add_filter( 'gravityview_template_paths', [ $this, 'add_template_path' ] );
 
@@ -951,14 +953,36 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param \GV\Request $request The request object
 	 */
 	public function gf_query_filter( &$query, $view, $request ) {
-		// Don't apply search filters when viewing a single entry.
-		if ( $request && $request->is_entry() ) {
-			return;
+		// Check if we're currently rendering an embedded View.
+		$is_embedded_view = \GV\View::is_rendering( $view->ID );
+
+		// Handle Mock_Request for embedded Views.
+		if ( $request instanceof \GV\Mock_Request ) {
+			// Mock requests are used for embedded Views, allow filters.
+			$is_embedded_view = true;
 		}
 
-		// When $request is null, check if we're in a single entry context.
-		if ( ! $request && gravityview()->request && gravityview()->request->is_entry() ) {
+		// For embedded views, always apply filters.
+		if ( $is_embedded_view ) {
+			// Continue processing filters below.
+		} elseif ( $request && $request->is_entry() ) {
+			// Don't apply search filters when viewing a single entry with a valid (non-mock) request.
 			return;
+		} elseif ( ! $request && gravityview()->request && gravityview()->request->is_entry() ) {
+			// When $request is null and we're in a single entry context, check if main View.
+			$main_view = gravityview()->request->is_view();
+
+			// If we can identify the main View:
+			if ( $main_view ) {
+				// Main View => suppress filters.
+				if ( $view->ID === $main_view->ID ) {
+					return;
+				}
+				// Different View => it's embedded; continue processing filters.
+			} else {
+				// Unclear context — default to suppress.
+				return;
+			}
 		}
 
 		/**
@@ -1384,6 +1408,9 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$form = null;
 
+		// Check if this is an embedded View - if so, we allow filtering on any field.
+		$is_embedded_view = \GV\View::is_rendering( $view->ID );
+
 		if ( count( $filter_key ) > 1 ) {
 			// form is specified
 			[ $field_id, $form_id ] = $filter_key;
@@ -1408,22 +1435,31 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			// form is in searchable fields
-			$found = false;
-			foreach ( $searchable_fields as $field ) {
-				if ( $field_id == $field['field'] && $form->ID == $field['form_id'] ) {
-					$found = true;
-					break;
-				}
-			}
+			// Skip this check for embedded Views with no searchable fields configured.
+			if ( ! $is_embedded_view || ! empty( $searchable_fields ) ) {
+				$found = false;
 
-			if ( ! $found ) {
-				return false;
+				foreach ( $searchable_fields as $field ) {
+					if ( $field_id == $field['field'] && $form->ID == $field['form_id'] ) {
+						$found = true;
+
+						break;
+					}
+				}
+
+				if ( ! $found ) {
+					return false;
+				}
 			}
 		} else {
 			$field_id          = reset( $filter_key );
 			$searchable_fields = wp_list_pluck( $searchable_fields, 'field' );
-			if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $field_id, $searchable_fields ) ) {
-				return false;
+
+			// For embedded Views with no searchable fields, allow all fields.
+			if ( ! $is_embedded_view || ! empty( $searchable_fields ) ) {
+				if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $field_id, $searchable_fields ) ) {
+					return false;
+				}
 			}
 		}
 
