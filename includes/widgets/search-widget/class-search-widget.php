@@ -951,6 +951,33 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 * @param \GV\Request $request The request object
 	 */
 	public function gf_query_filter( &$query, $view, $request ) {
+		// Check if this View is currently in the rendering process.
+		// This helps identify Views embedded via [gravityview] shortcode.
+		$is_view_rendering = \GV\View::is_rendering( $view->ID );
+
+		// Handle Mock_Request (used for Views rendered via shortcode).
+		if ( $request instanceof \GV\Mock_Request ) {
+			// Mock requests indicate shortcode-rendered Views, allow filters.
+			$is_view_rendering = true;
+		}
+
+		// For Views being rendered (e.g., via shortcode in Single Entry), always apply filters.
+		if ( $is_view_rendering ) {
+			// Continue processing filters below.
+		} elseif ( $request && $request->is_entry() ) {
+			// Don't apply search filters when viewing a single entry with a valid (non-mock) request.
+			return;
+		} elseif ( ! $request && gravityview()->request && gravityview()->request->is_entry() ) {
+			// When $request is null but context is single entry, check the main View.
+			$main_view = gravityview()->request->is_view();
+
+			// Suppress filters if no main View, or if this is the main View.
+			if ( ! $main_view || $view->ID === $main_view->ID ) {
+				return;
+			}
+			// Otherwise it's a different (embedded) View → continue processing filters.
+		}
+
 		/**
 		 * This is a shortcut to get all the needed search criteria.
 		 * We feed these into an new GF_Query and tack them onto the current object.
@@ -1348,7 +1375,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	}
 
 	/**
-	 * Prepare the field filters to GFAPI
+	 * Prepares the field filters to GFAPI.
 	 *
 	 * The type post_category, multiselect and checkbox support multi-select search - each value needs to be separated
 	 * in an independent filter so we could apply the ANY search mode.
@@ -1374,6 +1401,10 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$form = null;
 
+		// Check if this View is currently rendering (e.g., via shortcode).
+		// If so, we allow filtering on any field even without configured searchable fields.
+		$is_view_rendering = \GV\View::is_rendering( $view->ID );
+
 		if ( count( $filter_key ) > 1 ) {
 			// form is specified
 			[ $field_id, $form_id ] = $filter_key;
@@ -1398,22 +1429,31 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			// form is in searchable fields
-			$found = false;
-			foreach ( $searchable_fields as $field ) {
-				if ( $field_id == $field['field'] && $form->ID == $field['form_id'] ) {
-					$found = true;
-					break;
-				}
-			}
+			// Skip this check for shortcode-rendered Views with no searchable fields configured.
+			if ( ! $is_view_rendering || ! empty( $searchable_fields ) ) {
+				$found = false;
 
-			if ( ! $found ) {
-				return false;
+				foreach ( $searchable_fields as $field ) {
+					if ( $field_id == $field['field'] && $form->ID == $field['form_id'] ) {
+						$found = true;
+
+						break;
+					}
+				}
+
+				if ( ! $found ) {
+					return false;
+				}
 			}
 		} else {
 			$field_id          = reset( $filter_key );
 			$searchable_fields = wp_list_pluck( $searchable_fields, 'field' );
-			if ( ! in_array( 'search_all', $searchable_fields ) && ! in_array( $field_id, $searchable_fields ) ) {
-				return false;
+
+			// For shortcode-rendered Views with no searchable fields, allow all fields.
+			if ( ! $is_view_rendering || ! empty( $searchable_fields ) ) {
+				if ( ! in_array( 'search_all', $searchable_fields, true ) && ! in_array( $field_id, $searchable_fields, true ) ) {
+					return false;
+				}
 			}
 		}
 
