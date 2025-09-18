@@ -77,8 +77,6 @@ class GravityView_Widget_Search extends \GV\Widget {
 			// frontend - filter entries
 			add_filter( 'gravityview_fe_search_criteria', [ $this, 'filter_entries' ], 10, 3 );
 
-			add_action( 'gravityview/view/query', [ $this, 'gf_query_filter' ], 10, 3 );
-
 			// frontend - add template path
 			add_filter( 'gravityview_template_paths', [ $this, 'add_template_path' ] );
 
