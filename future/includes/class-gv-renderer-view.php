@@ -97,9 +97,13 @@ class View_Renderer extends Renderer {
 					/**
 					 * Show a warning at the top, if View is editable by the user.
 					 */
-					add_action( 'gravityview_before', $this->legacy_template_warning( $view, $path ) );
+					$legacy_warning_cb = $this->legacy_template_warning( $view, $path );
+
+					add_action( 'gravityview_before', $legacy_warning_cb );
 
 					$result = $override->render( $template_slug );
+
+					remove_action( 'gravityview_before', $legacy_warning_cb );
 
 					return $result;
 				}
