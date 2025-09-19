@@ -185,6 +185,13 @@ class Shortcode {
 			return $view;
 		}
 
+		$current_rendering_view_id = View::get_current_rendering();
+
+		// If the shortcode is included in the View itself, allow it to render without the valid secret.
+		if ( $current_rendering_view_id && $current_rendering_view_id == $atts['view_id'] ) {
+			return $view;
+		}
+
 		$shortcode     = gv_current_shortcode_tag();
 
 		// Shortcode descriptor (safe fallback if missing). Double brackets to avoid the shortcode being parsed in the message.
