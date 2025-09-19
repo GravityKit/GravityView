@@ -28,7 +28,7 @@ final class View_Layout_Builder_Template extends View_Template {
 	/**
 	 * Modifies the entry class for this template.
 	 *
-	 * @since  $ver$
+	 * @since  2.46.2
 	 *
 	 * @filter `gravityview_entry_class`.
 	 * @filter `gravityview/template/layout-builder/entry/class`.

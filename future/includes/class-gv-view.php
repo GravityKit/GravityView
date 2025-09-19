@@ -97,7 +97,7 @@ class View implements \ArrayAccess {
 	/**
 	 * @var array Stack to track currently rendering Views (for embedded View detection).
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @internal
 	 */
@@ -940,7 +940,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @param int $view_id The View ID being rendered.
 	 */
@@ -953,7 +953,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @return int|null The View ID that was being rendered, or null if stack was empty.
 	 */
@@ -966,7 +966,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @param int|null $view_id If provided, check if this specific View is being rendered. If null, check if any view is being rendered.
 	 *
@@ -985,7 +985,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @return int|null The View ID currently being rendered, or null if none.
 	 */
@@ -1002,7 +1002,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @return array Array of View IDs in rendering order (oldest to newest).
 	 */
@@ -1015,7 +1015,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @param int $view_id The View ID to check
 	 *
@@ -1030,7 +1030,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @param int $view_id The View ID to check
 	 *
@@ -1045,7 +1045,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @param int $view_id The View ID to get parent for.
 	 *
@@ -1066,7 +1066,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @interal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @param int $view_id The View ID to check
 	 *
@@ -1081,7 +1081,7 @@ class View implements \ArrayAccess {
 	 *
 	 * @internal
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 *
 	 * @internal
 	 */

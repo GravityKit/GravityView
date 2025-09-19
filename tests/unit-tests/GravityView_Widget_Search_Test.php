@@ -2187,7 +2187,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 * @covers GravityView_Widget_Search::gf_query_filter()
 	 * @covers GravityView_Widget_Search::prepare_field_filter()
 	 *
-	 * @since TBD
+	 * @since 2.46.2
 	 */
 	public function test_embedded_view_filtering_in_single_entry() {
 		$inner_form = $this->factory->form->create_and_get( array(

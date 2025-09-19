@@ -11,7 +11,7 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
  * Tests for the View rendering tracking API.
  *
  * @group gv_view_tracking
- * @since TBD
+ * @since 2.46.2
  */
 class GV_View_Tracking_Test extends GV_UnitTestCase {
 	/**
