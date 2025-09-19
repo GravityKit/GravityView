@@ -185,14 +185,34 @@ class Shortcode {
 			return $view;
 		}
 
+		$current_rendering_view_id = View::get_current_rendering();
+
+		// If the shortcode is included in the View itself, allow it to render without the valid secret.
+		if ( $current_rendering_view_id && $current_rendering_view_id == $atts['view_id'] ) {
+			return $view;
+		}
+
+		$shortcode     = gv_current_shortcode_tag();
+
+		// Shortcode descriptor (safe fallback if missing). Double brackets to avoid the shortcode being parsed in the message.
+		$shortcode_message = $shortcode
+			? sprintf( '<strong>[[%s]]</strong> %s', esc_html( $shortcode ), esc_html__( 'shortcode', 'gk-gravityview' ) )
+			: esc_html__( 'A GravityView shortcode', 'gk-gravityview' );
+
 		if ( GVCommon::has_cap( 'edit_gravityviews', $view->ID ) ) {
+			$message_template = esc_html__(
+				'The [shortcode] is missing or has an invalid "secret" attribute. Update the shortcode with the following attribute: [secret]',
+				'gk-gravityview'
+			);
+
+			$message = strtr( $message_template, [
+				'[shortcode]' => $shortcode_message,
+				'[secret]'    => '<code>secret="' . esc_attr( $view->get_validation_secret() ) . '"</code>',
+			] );
+
 			return new WP_Error(
 				'invalid_secret',
-				sprintf(
-					esc_html__( '%1$s: Invalid View secret provided. Update the shortcode with the secret: %2$s', 'gk-gravityview' ),
-					'GravityView',
-					'<code>secret="' . $view->get_validation_secret() . '"</code>'
-				)
+				$message
 			);
 		}
 
@@ -201,7 +221,10 @@ class Shortcode {
 			$current_url = home_url( add_query_arg( null, null ) );
 			$page_hash   = md5( strtok( $current_url, '?' ) );
 
-			$shortcode     = gv_current_shortcode_tag();
+			// Restore the shortcode brackets for display.
+			$shortcode_message = str_replace('[[', '[', $shortcode_message );
+			$shortcode_message = str_replace(']]', ']', $shortcode_message );
+
 			$shortcode_key = strtolower( preg_replace( '/[^a-z0-9_]+/i', '-', $shortcode ?: 'gravityview' ) );
 
 			$title = get_the_title();
@@ -216,11 +239,6 @@ class Shortcode {
 				esc_html( $title )
 			);
 
-			// Shortcode descriptor (safe fallback if missing).
-			$shortcode_message = $shortcode
-				? sprintf( '<strong>[%s]</strong> %s', esc_html( $shortcode ), esc_html__( 'shortcode', 'gk-gravityview' ) )
-				: esc_html__( 'A GravityView shortcode', 'gk-gravityview' );
-
 			$message_template = esc_html__(
 				'[shortcode] on [page_link] is missing or has an invalid "secret" attribute.',
 				'gk-gravityview'
@@ -232,15 +250,16 @@ class Shortcode {
 			] );
 
 			GravityKitFoundation::notices()->add_stored( [
-				'message'      => $message,
-				'severity'     => 'warning',
-				'namespace'    => 'gk-gravityview',
-				'capabilities' => [ 'manage_options' ],
-				'context'      => 'all',
-				'screens'      => [
+				'message'              => $message,
+				'severity'             => 'warning',
+				'namespace'            => 'gk-gravityview',
+				'globally_dismissible' => true,
+				'capabilities'         => [ 'manage_options' ],
+				'context'              => 'all',
+				'screens'              => [
 					'dashboard',
 				],
-				'slug'         => sprintf( // Unique per shortcode tag + View + page.
+				'slug'                 => sprintf( // Unique per shortcode tag + View + page.
 					'gv_invalid_secret_%s_view_%d_page_%s',
 					$shortcode_key,
 					(int) $view->ID,
@@ -249,12 +268,19 @@ class Shortcode {
 			] );
 		}
 
+		$message_template = esc_html__(
+			'The [shortcode] is missing or has an invalid "secret" attribute.',
+			'gk-gravityview'
+		);
+
+		$message = strtr( $message_template, [
+			'[shortcode]' => $shortcode_message,
+			'[secret]'    => '<code>secret="' . esc_attr( $view->get_validation_secret() ) . '"</code>',
+		] );
+
 		return new WP_Error(
 			'invalid_secret',
-			sprintf(
-				esc_html__( '%1$s: Invalid View secret provided.', 'gk-gravityview' ),
-				'GravityView'
-			)
+			$message
 		);
 	}
 

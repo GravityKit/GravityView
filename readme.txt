@@ -21,6 +21,25 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.46.2 on September 18, 2025 =
+
+#### ✨ Improved
+* Notices and frontend messages for shortcodes with invalid or missing `secret` attributes are clearer and can be dismissed globally.
+* Shortcodes referencing the same View they are embedded in no longer require a secret.
+
+#### 🐛 Fixed
+* Entry Link block not working with secure Views requiring a secret.
+* Export widget not working when Views were filtered to show entries created by the logged-in user.
+* Fields linked to Single Entry layouts are now exported as p`xlain text values, not hyperlinks, when using direct CSV/TSV export URLs.
+* Featured entries in the Layout Builder template now display with the intended styling.
+* Single Entry pages not rendering when search filter parameters were present in the URL.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.4.0.
+
+#### 💻 Developer Updates
+* Added a `gv-template-{type}` class to the outer containers of Layout Builder, List, and Table templates, enabling easier custom JS and CSS targeting.
+
 = 2.46.1 on September 11, 2025 =
 
 This update fixes widget display issues when embedding Views with page builders.

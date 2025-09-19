@@ -2180,4 +2180,185 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		remove_all_filters( 'gravityview/widgets/search/datepicker/format' );
 		$_GET = array();
 	}
+
+	/**
+	 * Tests filtering of Views embedded in Single Entry layout with actual rendering.
+	 *
+	 * @covers GravityView_Widget_Search::gf_query_filter()
+	 * @covers GravityView_Widget_Search::prepare_field_filter()
+	 *
+	 * @since 2.46.2
+	 */
+	public function test_embedded_view_filtering_in_single_entry() {
+		$inner_form = $this->factory->form->create_and_get( array(
+			'fields' => array(
+				array(
+					'id' => 1,
+					'type' => 'text',
+					'label' => 'Name',
+				),
+				array(
+					'id' => 2,
+					'type' => 'text',
+					'label' => 'Category',
+				),
+			),
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $inner_form['id'],
+			'status' => 'active',
+			'1' => 'Product A',
+			'2' => 'Electronics',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $inner_form['id'],
+			'status' => 'active',
+			'1' => 'Product B',
+			'2' => 'Electronics',
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $inner_form['id'],
+			'status' => 'active',
+			'1' => 'Product C',
+			'2' => 'Furniture',
+		) );
+
+		$inner_view_post = $this->factory->view->create_and_get( array(
+			'form_id' => $inner_form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'directory_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => '1',
+						'label' => 'Name',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => '2',
+						'label' => 'Category',
+					),
+				),
+			),
+			'settings' => array(
+				'show_only_approved' => 0,
+			),
+		) );
+
+		$outer_form = $this->factory->form->create_and_get();
+		$outer_entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $outer_form['id'],
+			'status' => 'active',
+		) );
+
+		$outer_view_post = $this->factory->view->create_and_get( array(
+			'form_id' => $outer_form['id'],
+			'template_id' => 'table',
+			'fields' => array(
+				'single_table-columns' => array(
+					wp_generate_password( 4, false ) => array(
+						'id' => 'id',
+						'label' => 'Entry ID',
+					),
+					wp_generate_password( 4, false ) => array(
+						'id' => 'custom',
+						'content' => sprintf(
+							'<div class="embedded-view-wrapper">[gravityview id="%d"]</div>',
+							$inner_view_post->ID
+						),
+					),
+				),
+			),
+		) );
+
+		$request = new \GV\Mock_Request();
+
+		$outer_view                   = \GV\View::from_post( $outer_view_post );
+		$request->returns['is_view']  = $outer_view;
+		$request->returns['is_entry'] = \GV\GF_Entry::by_id( $outer_entry['id'] );
+
+		gravityview()->request = $request;
+
+		// Test 1: without filter, all entries should appear in embedded View.
+		$_GET = array();
+		\GV\View::reset_rendering_stack();
+
+		// Verify entries exist before rendering.
+		$inner_entries = GFAPI::get_entries( $inner_form['id'] );
+		$this->assertNotEmpty( $inner_entries, 'Inner form should have entries' );
+		$this->assertCount( 3, $inner_entries, 'Should have exactly 3 entries' );
+
+		$renderer = new \GV\Entry_Renderer();
+		$output = $renderer->render( $request->returns['is_entry'], $outer_view );
+
+		// Debug: check what's in the output.
+		if ( strpos( $output, 'No entries match' ) !== false ) {
+			$this->fail( 'Embedded view shows "No entries match" when no filters applied.' );
+		}
+
+		// Verify single entry renders.
+		$this->assertStringContainsString( 'Entry ID', $output, 'Single entry field label should render' );
+		$this->assertStringContainsString( (string) $outer_entry['id'], $output, 'Single entry ID should render' );
+
+		// Verify embedded view renders with all entries
+		$this->assertStringContainsString( 'embedded-view-wrapper', $output, 'Embedded view wrapper should render' );
+		$this->assertStringContainsString( 'Product A', $output, 'First product should be visible' );
+		$this->assertStringContainsString( 'Product B', $output, 'Second product should be visible' );
+		$this->assertStringContainsString( 'Product C', $output, 'Third product should be visible' );
+		$this->assertStringContainsString( 'Electronics', $output, 'Electronics category should be visible' );
+		$this->assertStringContainsString( 'Furniture', $output, 'Furniture category should be visible' );
+
+		// Test 2: with filter on category field, only matching entries should show.
+		$_GET = array( 'filter_2' => 'Electronics' );
+		\GV\View::reset_rendering_stack();
+
+		$output = $renderer->render( $request->returns['is_entry'], $outer_view );
+
+		// Verify single entry still renders (not affected by filter)
+		$this->assertStringContainsString( 'Entry ID', $output, 'Single entry should still render with filter' );
+		$this->assertStringContainsString( (string) $outer_entry['id'], $output, 'Single entry ID should still render with filter' );
+
+		// Verify embedded view is filtered
+		$this->assertStringContainsString( 'Product A', $output, 'Electronics Product A should be visible' );
+		$this->assertStringContainsString( 'Product B', $output, 'Electronics Product B should be visible' );
+		$this->assertStringNotContainsString( 'Product C', $output, 'Furniture Product C should be filtered out' );
+		$this->assertStringNotContainsString( 'Furniture', $output, 'Furniture category should be filtered out' );
+
+		// Test 3: with filter that matches no entries.
+		$_GET = array( 'filter_2' => 'NonExistentCategory' );
+		\GV\View::reset_rendering_stack();
+
+		$output = $renderer->render( $request->returns['is_entry'], $outer_view );
+
+		// Verify single entry still renders
+		$this->assertStringContainsString( 'Entry ID', $output, 'Single entry should render even with non-matching filter' );
+		$this->assertStringContainsString( (string) $outer_entry['id'], $output, 'Single entry ID should render even with non-matching filter' );
+
+		// Verify embedded view shows no entries
+		$this->assertStringContainsString( 'embedded-view-wrapper', $output, 'Embedded view wrapper should still render' );
+		$this->assertStringNotContainsString( 'Product A', $output, 'No products should match' );
+		$this->assertStringNotContainsString( 'Product B', $output, 'No products should match' );
+		$this->assertStringNotContainsString( 'Product C', $output, 'No products should match' );
+
+		// The embedded View should show "No entries" message.
+		$has_no_results = strpos( $output, 'No entries match' ) !== false ||
+		                   strpos( $output, 'no-results' ) !== false;
+		$this->assertTrue( $has_no_results, 'Embedded view should show no results message when filter matches nothing' );
+
+		// Test 4: Verify main single entry is protected from filters that would affect it.
+		$_GET = array( 'filter_id' => '999999' ); // Filter that would exclude the main entry if applied.
+		\GV\View::reset_rendering_stack();
+
+		$output = $renderer->render( $request->returns['is_entry'], $outer_view );
+
+		// The single entry should STILL render despite filter_id not matching.
+		$this->assertStringContainsString( 'Entry ID', $output, 'Single entry should be protected from filter_id' );
+		$this->assertStringContainsString( (string) $outer_entry['id'], $output, 'Single entry should render regardless of filter_id value' );
+
+		$_GET = array();
+		\GV\View::reset_rendering_stack();
+
+		gravityview()->request = new \GV\Frontend_Request();
+	}
 }

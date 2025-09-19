@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import { Panel, PanelBody, SelectControl, TextControl } from '@wordpress/components';
+import { useEffect } from '@wordpress/element';
 
 import ViewSelector from 'shared/js/view-selector';
 import EntrySelector from 'shared/js/entry-selector';
@@ -23,10 +24,21 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 		fieldValues,
 		action,
 		content,
+		secret,
 		previewBlock,
 		previewAsShortcode,
 		showPreviewImage
 	} = attributes;
+
+	// For blocks saved before the secret attribute was added, populate it from the View data.
+	useEffect( () => {
+		if ( viewId && !secret && gkGravityViewBlocks?.views ) {
+			const selectedView = gkGravityViewBlocks.views.find( option => option.value === viewId );
+			if ( selectedView && selectedView.secret ) {
+				setAttributes( { secret: selectedView.secret } );
+			}
+		}
+	}, [ viewId, secret ] );
 
 	const previewImage = gkGravityViewBlocks[ blockName ]?.previewImage && <img className="preview-image" src={ gkGravityViewBlocks[ blockName ]?.previewImage } alt={ __( 'Block preview image.', 'gk-gravityview' ) } />;
 
@@ -49,7 +61,15 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							<ViewSelector
 								viewId={ viewId }
 								isSidebar={ true }
-								onChange={ ( viewId ) => setAttributes( { viewId, previewBlock: false, entryId: '' } ) }
+								onChange={ ( viewId ) => {
+									const selectedView = gkGravityViewBlocks.views.find( option => option.value === viewId );
+									setAttributes( {
+										viewId,
+										secret: selectedView?.secret ?? null,
+										previewBlock: false,
+										entryId: ''
+									} );
+								} }
 							/>
 
 							<EntrySelector
@@ -136,7 +156,15 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 					<ViewSelector
 						viewId={ viewId }
-						onChange={ ( viewId ) => setAttributes( { viewId, previewBlock: false, entryId: '' } ) }
+						onChange={ ( viewId ) => {
+							const selectedView = gkGravityViewBlocks.views.find( option => option.value === viewId );
+							setAttributes( {
+								viewId,
+								secret: selectedView?.secret ?? null,
+								previewBlock: false,
+								entryId: ''
+							} );
+						} }
 					/>
 
 					<EntrySelector
