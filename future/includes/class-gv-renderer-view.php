@@ -1,6 +1,8 @@
 <?php
 namespace GV;
 
+use Throwable;
+
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 	die();
@@ -212,15 +214,24 @@ class View_Renderer extends Renderer {
 			);
 
 			ob_start();
-			$template->render();
 
-			remove_action( 'gravityview/template/after', $view_id_output );
-			remove_filter( 'gravityview/template/view/render', $add_anchor_id_filter );
-			remove_filter( 'gravityview/widget/search/form/action', $add_search_action_filter );
+			try {
+				$template->render();
 
-			\GV\Mocks\Legacy_Context::pop();
+				$output = ob_get_clean();
+			} catch ( Throwable $e ) {
+				if ( ob_get_level() > 0 ) {
+					ob_end_clean();
+				}
 
-			$output = ob_get_clean();
+				throw $e;
+			} finally {
+				remove_action( 'gravityview/template/after', $view_id_output );
+				remove_filter( 'gravityview/template/view/render', $add_anchor_id_filter );
+				remove_filter( 'gravityview/widget/search/form/action', $add_search_action_filter );
+
+				\GV\Mocks\Legacy_Context::pop();
+			}
 
 			return $output;
 		} finally {
