@@ -65,7 +65,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									const selectedView = gkGravityViewBlocks.views.find( option => option.value === viewId );
 									setAttributes( {
 										viewId,
-										secret: selectedView?.secret,
+										secret: selectedView?.secret ?? null,
 										previewBlock: false,
 										entryId: ''
 									} );
@@ -160,7 +160,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 							const selectedView = gkGravityViewBlocks.views.find( option => option.value === viewId );
 							setAttributes( {
 								viewId,
-								secret: selectedView?.secret,
+								secret: selectedView?.secret ?? null,
 								previewBlock: false,
 								entryId: ''
 							} );
