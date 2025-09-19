@@ -205,14 +205,15 @@ class GravityView_Compatibility {
 			$key = sprintf( 'php_%s_%s', GV_FUTURE_MIN_PHP_VERSION, GV_PLUGIN_VERSION );
 
 			self::$notices[ $key ] = [
-				'namespace'    => 'gk-gravityview',
-				'slug'         => $key,
-				'message'      => sprintf( __( "%1\$sGravityView will soon require PHP Version %2\$s.%3\$s \n\nYou're using Version %4\$s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '', GV_FUTURE_MIN_PHP_VERSION, '', '<strong>' . phpversion() . '</strong>' ),
-				'severity'     => 'warning',
-				'capabilities' => [ 'manage_options' ],
-				'dismissible'  => true,
-				'screens'      => [ [ __CLASS__, 'should_show_notice' ] ],
-				'context'      => 'all',
+				'namespace'            => 'gk-gravityview',
+				'slug'                 => $key,
+				'message'              => sprintf( __( "%1\$sGravityView will soon require PHP Version %2\$s.%3\$s \n\nYou're using Version %4\$s. Please ask your host to upgrade your server's PHP.", 'gk-gravityview' ), '', GV_FUTURE_MIN_PHP_VERSION, '', '<strong>' . phpversion() . '</strong>' ),
+				'severity'             => 'warning',
+				'capabilities'         => [ 'manage_options' ],
+				'dismissible'          => true,
+				'globally_dismissible' => true,
+				'screens'              => [ [ __CLASS__, 'should_show_notice' ] ],
+				'context'              => 'all',
 			];
 		}
 

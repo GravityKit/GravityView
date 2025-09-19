@@ -250,15 +250,16 @@ class Shortcode {
 			] );
 
 			GravityKitFoundation::notices()->add_stored( [
-				'message'      => $message,
-				'severity'     => 'warning',
-				'namespace'    => 'gk-gravityview',
-				'capabilities' => [ 'manage_options' ],
-				'context'      => 'all',
-				'screens'      => [
+				'message'              => $message,
+				'severity'             => 'warning',
+				'namespace'            => 'gk-gravityview',
+				'globally_dismissible' => true,
+				'capabilities'         => [ 'manage_options' ],
+				'context'              => 'all',
+				'screens'              => [
 					'dashboard',
 				],
-				'slug'         => sprintf( // Unique per shortcode tag + View + page.
+				'slug'                 => sprintf( // Unique per shortcode tag + View + page.
 					'gv_invalid_secret_%s_view_%d_page_%s',
 					$shortcode_key,
 					(int) $view->ID,
