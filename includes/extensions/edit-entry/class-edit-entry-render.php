@@ -1564,15 +1564,20 @@ class GravityView_Edit_Entry_Render {
 		// In case we have validated the form, use it to inject the validation results into the form render
 		if ( isset( $this->form_after_validation ) && $this->form_after_validation['id'] === $form['id'] ) {
 			$form = $this->form_after_validation;
+			// Don't re-process fields after validation - they're already set up correctly.
 		} else {
 			$form['fields'] = $this->get_configured_edit_fields( $form, $this->view_id );
+
+			// IMPORTANT: Set field values BEFORE filtering conditional logic.
+			$form = $this->prefill_conditional_logic( $form );
+
+			$form = $this->filter_conditional_logic( $form );
+
+			// Rebuild field dependencies after filtering for partial fields.
+			$form = $this->rebuild_field_dependencies( $form );
 		}
 
-		$form = $this->filter_conditional_logic( $form );
-
-		$form = $this->prefill_conditional_logic( $form );
-
-		// for now we don't support Save and Continue feature.
+		// For now we don't support Save and Continue feature.
 		if ( ! self::$supports_save_and_continue ) {
 	        unset( $form['save'] );
 		}
@@ -1938,6 +1943,11 @@ class GravityView_Edit_Entry_Render {
 
 		// Hide fields depending on Edit Entry settings
 		$this->form['fields'] = $this->get_configured_edit_fields( $this->form, $this->view_id );
+
+		// Set up conditional logic for validation (same as in filter_modify_form_fields).
+		$this->form = $this->prefill_conditional_logic( $this->form );
+		$this->form = $this->filter_conditional_logic( $this->form );
+		$this->form = $this->rebuild_field_dependencies( $this->form );
 
 		$this->is_valid = GFFormDisplay::validate( $this->form, $field_values, 1, $failed_validation_page );
 
@@ -2373,7 +2383,6 @@ class GravityView_Edit_Entry_Render {
 	 * @return array $form, modified to fix conditional
 	 */
 	function prefill_conditional_logic( $form ) {
-
 		if ( ! GFFormDisplay::has_conditional_logic( $form ) ) {
 			return $form;
 		}
@@ -2381,7 +2390,6 @@ class GravityView_Edit_Entry_Render {
 		// Have Conditional Logic pre-fill fields as if the data were default values
 		/** @var GF_Field $field */
 		foreach ( $form['fields'] as &$field ) {
-
 			if ( 'checkbox' === $field->type ) {
 				foreach ( $field->get_entry_inputs() as $key => $input ) {
 				    $input_id = $input['id'];
@@ -2413,29 +2421,76 @@ class GravityView_Edit_Entry_Render {
 					$field->defaultValue = $address_values;
 				}
 			} else {
-
 				// We need to run through each field to set the default values.
 				foreach ( $this->entry as $field_id => $field_value ) {
-
 				    if ( floatval( $field_id ) === floatval( $field->id ) ) {
+				        // Only set defaultValue if we have an actual value in the entry.
+				        // This preserves merge tags/etc. for fields that haven't been edited.
+				        if ( ! empty( $field_value ) ) {
+				            if ( 'list' === $field->type ) {
+					            $list_rows        = maybe_unserialize( $field_value );
+					            $list_field_value = [];
 
-				        if ( 'list' === $field->type ) {
-				            $list_rows = maybe_unserialize( $field_value );
-
-				            $list_field_value = array();
-				            foreach ( (array) $list_rows as $row ) {
-				                foreach ( (array) $row as $column ) {
-				                    $list_field_value[] = $column;
+					            foreach ( (array) $list_rows as $row ) {
+				                    foreach ( (array) $row as $column ) {
+				                        $list_field_value[] = $column;
+				                    }
 				                }
-				            }
 
-				            $field->defaultValue = serialize( $list_field_value );
-				        } else {
-				            $field->defaultValue = $field_value;
+				                $field->defaultValue = serialize( $list_field_value );
+				            } else {
+				                $field->defaultValue = $field_value;
+				            }
 				        }
+				        // If field_value is empty, leave the original defaultValue (which may contain merge tags).
 				    }
 				}
 			}
+		}
+
+		return $form;
+	}
+
+	/**
+	 * Rebuilds field dependencies after filtering to ensure conditional logic works with partial fields.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $form The form array.
+	 *
+	 * @return array Form with rebuilt field dependencies.
+	 */
+	private function rebuild_field_dependencies( $form ) {
+		// Only process if there's conditional logic.
+		if ( ! GFFormDisplay::has_conditional_logic( $form ) ) {
+			return $form;
+		}
+
+		// Rebuild conditionalLogicFields for each field
+		// This is CRITICAL for partial fields - it tells each field which other fields depend on it
+		foreach ( $form['fields'] as &$field ) {
+			// Get all fields that depend on this fields.
+			$dependent_fields = [];
+
+			foreach ( $form['fields'] as $other_field ) {
+				if ( ! empty( $other_field->conditionalLogic ) && ! empty( $other_field->conditionalLogic['rules'] ) ) {
+					foreach ( $other_field->conditionalLogic['rules'] as $rule ) {
+						// Extract the main field ID from the rule (handles sub-inputs like "2.3" -> "2").
+						$rule_field_id = $rule['fieldId'];
+						$main_field_id = intval( $rule_field_id );
+
+						// If this field is referenced in the rule, add the other field as dependent.
+						if ( $main_field_id == $field->id ) {
+							$dependent_fields[] = floatval( $other_field->id );
+
+							break; // Only add once per dependent field.
+						}
+					}
+				}
+			}
+
+			// Set the conditionalLogicFields property with unique field IDs.
+			$field->conditionalLogicFields = array_unique( $dependent_fields );
 		}
 
 		return $form;
@@ -2463,13 +2518,20 @@ class GravityView_Edit_Entry_Render {
 		foreach ( $form['fields'] as $field ) {
 			$editable_ids[] = $field['id']; // wp_list_pluck is destructive in this context
 		}
+
+		// Only remove rules for fields that depend on non-editable fields.
 		$remove_conditions_rule = array();
-		foreach ( $the_form['fields'] as $field ) {
+		foreach ( $form['fields'] as $field ) {
 			if ( ! empty( $field->conditionalLogic ) && ! empty( $field->conditionalLogic['rules'] ) ) {
 				foreach ( $field->conditionalLogic['rules'] as $i => $rule ) {
-					if ( ! in_array( $rule['fieldId'], $editable_ids ) ) {
+					// Extract the main field ID from the rule's fieldId (handles sub-inputs like "2.3" -> "2").
+					$rule_field_id = $rule['fieldId'];
+					$main_field_id = (int) $rule_field_id; // This extracts "2" from "2.3".
+
+					// Check if the main field this rule depends on is NOT editable.
+					if ( ! in_array( $main_field_id, $editable_ids, true) ) {
 						/**
-						 * This conditional field is not editable in this View.
+						 * This conditional field depends on a field that is not editable in this View.
 						 * We need to remove the rule, but only if it matches.
 						 */
 						if ( $_field = GFAPI::get_field( $the_form, $rule['fieldId'] ) ) {
