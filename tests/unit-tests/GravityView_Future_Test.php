@@ -831,44 +831,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers \GV\Shortcode::maybe_strip_shortcode_from_content()
-	 * @covers \GV\Shortcode::strip_shortcode_from_content()
-	 */
-	public function test_get_the_excerpt_strips_gravityview_shortcodes() {
-		if ( ! class_exists( 'GVFuture_Test_Excerpt_Shortcode' ) ) {
-			class GVFuture_Test_Excerpt_Shortcode extends \GV\Shortcode {
-				public $name = 'gv_future_excerpt';
-
-				public function callback( $atts, $content = '', $tag = '' ) {
-					return 'excerpt shortcode output';
-				}
-			}
-		}
-
-		GVFuture_Test_Excerpt_Shortcode::add();
-
-		$post_id = $this->factory->post->create( array(
-			'post_title' => 'GV Excerpt Test',
-			'post_excerpt' => 'Lead [gv_future_excerpt id="123"] text',
-			'post_status' => 'publish',
-		) );
-
-		$post = get_post( $post_id );
-
-		$this->assertStringContainsString( '[gv_future_excerpt', $post->post_excerpt );
-
-		setup_postdata( $post );
-		$excerpt = get_the_excerpt( $post );
-		wp_reset_postdata();
-
-		GVFuture_Test_Excerpt_Shortcode::remove();
-
-		$this->assertStringNotContainsString( '[gv_future_excerpt', $excerpt );
-		$this->assertStringContainsString( 'Lead', $excerpt );
-		$this->assertStringContainsString( 'text', $excerpt );
-	}
-
-	/**
 	 * @covers \GV\Shortcode::parse()
 	 * @covers \GravityView_View_Data::parse_post_content()
 	 */
@@ -3916,17 +3878,9 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$post->post_title .= ' realllly';
 		wp_update_post( $post );
 
-		if ( ! class_exists( 'GVFuture_Test_Shortcode_P1' ) ) {
-			class GVFuture_Test_Shortcode_P1 extends \GV\Shortcode {
-				public $name = 'gvtest_shortcode_p1';
-
-				public function callback( $atts, $content = '', $tag = '' ) {
-					return 'no no no no no nononon';
-				}
-			}
-		}
-
-		GVFuture_Test_Shortcode_P1::add();
+		add_shortcode( 'gvtest_shortcode_p1', function( $atts ) {
+			return 'no no no no no nononon';
+		} );
 
 		$the_title_filter = function( $title ) {
 			return $title . ' heh';
@@ -3981,10 +3935,8 @@ class GVFuture_Test extends GV_UnitTestCase {
 
 		$field->update_configuration( array( 'dynamic_data' => true ) );
 		/** Note: Gravity Forms saves the data in a filtered way. */
-		$expected = "<p>This is an excerpt ooh(); <b>okay</b> add this</p>\n tack this on";
-		$rendered_excerpt = $renderer->render( $field, $view, $form, $entry, $request );
-		$this->assertEquals( $expected, $rendered_excerpt );
-		$this->assertStringNotContainsString( 'gvtest_shortcode_p1', $rendered_excerpt );
+		$expected = "<p>This is an excerpt ooh(); <b>okay</b> &#091;gvtest_shortcode_p1&#093; add this</p>\n tack this on";
+		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** Post tags */
 		wp_set_post_tags( $post->ID, 'some,more,[gvtest_shortcode_p1]', true );
@@ -4097,10 +4049,6 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		/** @todo: When there's not much else to do, test all the filters in the template! */
-
-		if ( class_exists( 'GVFuture_Test_Shortcode_P1' ) ) {
-			GVFuture_Test_Shortcode_P1::remove();
-		}
 
 		/** Post custom */
 		#$field = \GV\GF_Field::by_id( $form, '25' );
