@@ -101,12 +101,9 @@ class Shortcode {
 	 *
 	 * @internal
 	 *
-	 * @param array  $tags_to_remove Array of shortcode tags to remove. Unused.
-	 * @param string $content        Content shortcodes are being removed from. Unused.
-	 *
 	 * @return array Array of shortcode tags to remove, which is just the current shortcode name.
 	 */
-	public function _get_strip_shortcode_tagnames( $tags_to_remove, $content ) {
+	public function _get_strip_shortcode_tagnames() {
 		return [ $this->name ];
 	}
 
