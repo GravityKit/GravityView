@@ -1251,8 +1251,23 @@ class GravityView_Edit_Entry_Render {
 			</form>
 
 			<script>
-				gform.addFilter('gform_reset_pre_conditional_logic_field_action', function ( reset, formId, targetId, defaultValues, isInit ) {
-				    return false;
+				jQuery(document).ready(function() {
+					// Remove filter that blocks field resets entirely, which prevents cascading conditional logic from working.
+					if (window.gform && gform.filters && gform.filters['gform_reset_pre_conditional_logic_field_action']) {
+						gform.filters['gform_reset_pre_conditional_logic_field_action'] = [];
+					}
+
+					gform.addFilter('gform_reset_pre_conditional_logic_field_action', function (reset, formId, targetId, defaultValues, isInit) {
+						// Only prevent resets during the initial form load.
+						// This preserves existing entry values when the edit form first displays.
+						if (isInit) {
+							return false;
+						}
+
+						// Allow resets after initialization so conditional logic cascades properly.
+						// When field A changes, field B can reset, which triggers field C to reset, etc.
+						return true;
+					});
 				});
 			</script>
 
