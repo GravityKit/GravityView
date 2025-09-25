@@ -573,9 +573,10 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 			// Get allowed media extensions.
 			$image_extensions = GravityView_Image::get_image_extensions();
+			$pdf_extensions   = [ 'pdf' ];
 			$audio_extensions = wp_get_audio_extensions();
 			$video_extensions = wp_get_video_extensions();
-			$media_extensions = array_merge( $image_extensions, $audio_extensions, $video_extensions );
+			$media_extensions = array_merge( $image_extensions, $audio_extensions, $video_extensions, $pdf_extensions );
 
 			/**
 			 * Filters the file extensions that are allowed to bypass secure download URLs.
@@ -591,7 +592,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * @since 2.45
 			 *
 			 * @param array                $media_extensions Array of file extensions that can bypass secure downloads.
-			 *                                               Default: merge of image, audio, and video extensions.
+			 *                                               Default: merge of image, pdf, audio, and video extensions.
 			 *                                               Use array('*') to allow all file types.
 			 * @param array                $field_settings   GravityView settings for the field.
 			 * @param GF_Field_FileUpload  $field            The file upload field.
