@@ -20,7 +20,11 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class Shortcode {
 	/**
-	 * @var array All GravityView-registered and loaded shortcodes can be found here.
+	 * Cache of all added shortcodes.
+	 *
+	 * @since TBD
+	 *
+	 * @var array
 	 */
 	private static $shortcodes;
 
@@ -66,6 +70,132 @@ class Shortcode {
 	}
 
 	/**
+	 * Pre-processes content to encode problematic attribute values before WordPress parses them.
+	 *
+	 * This runs before WordPress's do_shortcode() to base64-encode all attribute values
+	 * that contain characters which break WP shortcode parsing (like <).
+	 *
+	 * @internal
+	 *
+	 * @since TBD
+	 *
+	 * @param string $content The content to preprocess.
+	 *
+	 * @return string The content with encoded attribute values.
+	 */
+	public static function preprocess_shortcode_attributes( $content ) {
+		if ( empty( $content ) || false === strpos( $content, '[' ) ) {
+			return $content;
+		}
+
+		// Build pattern to match only our registered shortcodes.
+		$shortcodes = array_keys( self::$shortcodes );
+
+		if ( empty( $shortcodes ) ) {
+			return $content;
+		}
+
+		// Create pattern that matches only our shortcodes.
+		$shortcode_pattern = implode( '|', array_map( 'preg_quote', $shortcodes ) );
+
+		// Match any attribute that contains problematic characters.
+		// We check for <, >, [, ], or & which can break WordPress parsing.
+		$pattern = '/\[(' . $shortcode_pattern . ')(\s+[^\]]*?)\]/';
+
+		$content = preg_replace_callback( $pattern, function( $matches ) {
+			$shortcode_name = $matches[1];
+			$attributes_string = $matches[2];
+
+			// Parse all attributes and encode those with problematic characters.
+			$attributes_string = preg_replace_callback(
+				'/(\w+)\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s\]]+))/',
+				function( $attr_matches ) {
+					$attr_name = $attr_matches[1];
+
+					// Determine which capture group has the value and quote type.
+					if ( isset( $attr_matches[2] ) && $attr_matches[2] !== '' ) {
+						// Double quoted value.
+						$attr_value = $attr_matches[2];
+
+						$quote = '"';
+					} elseif ( isset( $attr_matches[3] ) && $attr_matches[3] !== '' ) {
+						// Single quoted value
+						$attr_value = $attr_matches[3];
+
+						$quote = "'";
+					} elseif ( isset( $attr_matches[4] ) && $attr_matches[4] !== '' ) {
+						// Unquoted value
+						$attr_value = $attr_matches[4];
+
+						$quote = '';
+					} else {
+						// No value found, skip this attribute
+						return $attr_matches[0];
+					}
+
+					// Check if value contains problematic characters
+					if ( preg_match( '/[<>&\[\]]/', $attr_value ) ) {
+						// Base64-encode and prefix with 'b64:'
+						$attr_value = 'b64:' . base64_encode( $attr_value );
+					}
+
+					return $attr_name . '=' . $quote . $attr_value . $quote;
+				},
+				$attributes_string
+			);
+
+			return '[' . $shortcode_name . $attributes_string . ']';
+		}, $content );
+
+		return $content;
+	}
+
+	/**
+	 * Wrapper callback that's used to normalize attributes and other operations before calling the actual shortcode callback.
+	 *
+	 * @since TBD
+	 *
+	 * @param array  $atts    The attributes passed.
+	 * @param string $content The content inside the shortcode.
+	 * @param string $tag     The tag.
+	 *
+	 * @return string The output.
+	 */
+	public function callback_wrapper( $atts, $content = '', $tag = '' ) {
+		// Normalize attributes by decoding any base64-encoded values.
+		$atts = $this->normalize_attributes( $atts );
+
+		// Call the actual callback.
+		return $this->callback( $atts, $content, $tag );
+	}
+
+	/**
+	 * Decodes base64-encoded attribute values.
+	 *
+	 * This method handles base64 encoded values (prefixed with 'b64:') that were
+	 * encoded to prevent WordPress shortcode parser from breaking on special characters.
+	 *
+	 * @since TBD
+	 *
+	 * @param array $atts The shortcode attributes.
+	 *
+	 * @return array The attributes with decoded values.
+	 */
+	protected function normalize_attributes( $atts ) {
+		if ( ! is_array( $atts ) ) {
+			return $atts;
+		}
+
+		foreach ( $atts as &$value ) {
+			if ( is_string( $value ) && strpos( $value, 'b64:' ) === 0 ) {
+				$value = base64_decode( substr( $value, 4 ) );
+			}
+		}
+
+		return $atts;
+	}
+
+	/**
 	 * Register this shortcode class with the WordPress Shortcode API.
 	 *
 	 * @internal
@@ -86,9 +216,20 @@ class Shortcode {
 				return null;
 			}
 		} else {
-			add_shortcode( $name, array( $shortcode, 'callback' ) );
-			add_filter( 'get_the_excerpt', [ $shortcode, 'maybe_strip_shortcode_from_content' ] );
 			self::$shortcodes[ $name ] = $shortcode;
+			add_shortcode( $name, [ $shortcode, 'callback_wrapper' ] );
+			add_filter( 'get_the_excerpt', [ $shortcode, 'maybe_strip_shortcode_from_content' ] );
+
+			static $filters_added;
+
+			if ( ! $filters_added ) {
+				// Add the content pre-processing filter only once.
+				add_filter( 'the_content', [ __CLASS__, 'preprocess_shortcode_attributes' ], 5 );
+				add_filter( 'widget_text', [ __CLASS__, 'preprocess_shortcode_attributes' ], 5 );
+				add_filter( 'widget_text_content', [ __CLASS__, 'preprocess_shortcode_attributes' ], 5 );
+
+				$filters_added = true;
+			}
 		}
 
 		return self::$shortcodes[ $name ];

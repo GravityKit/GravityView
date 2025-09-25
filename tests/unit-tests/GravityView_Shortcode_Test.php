@@ -486,4 +486,64 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertStringContainsString( 'data-label="Text">abc</td>', $content );
 		$this->assertStringNotContainsString( 'data-label="Text">abcxyz</td>', $content );
 	}
+
+	/**
+	 * Test that shortcode attributes with problematic characters (< > & [ ]) are properly encoded/decoded.
+	 *
+	 * @covers \GV\Shortcode::preprocess_shortcode_attributes
+	 * @covers \GV\Shortcode::normalize_attributes
+	 */
+	public function test_shortcode_attribute_encoding() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'show_only_approved' => 0,
+			),
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => '10',
+		) );
+
+		$secret = \GV\View::from_post( $view )->get_validation_secret();
+
+		// Test 1: create content with problematic characters that would break WordPress parsing.
+		$content_with_less_than = sprintf(
+			'[gravityview id="%d" secret="%s" search_field="1" search_value="5" search_operator="<"] and [test attr="<"]',
+			$view->ID,
+			$secret
+		);
+
+		// Process through the_content filter (which should apply our preprocessing).
+		$filtered_content = apply_filters( 'the_content', $content_with_less_than );
+
+		// The shortcode should be processed and render a view container.
+		$this->assertStringContainsString( 'gv-container', $filtered_content, 'GravityView shortcode with < operator should render' );
+
+		// The view should be properly rendered (not remain as shortcode text).
+		$this->assertStringNotContainsString( '[gravityview', $filtered_content, 'GravityView shortcode should be processed, not remain as text' );
+
+		// The non-GravityView [test] shortcode should remain (WordPress may convert quotes).
+		$this->assertTrue(
+			strpos( $filtered_content, '[test attr="<"]' ) !== false ||
+			strpos( $filtered_content, '[test attr=&#8221;<"]' ) !== false,
+			'Non-GravityView shortcode should remain unprocessed'
+		);
+
+		// Test 2: test with multiple problematic characters.
+		$content_complex = sprintf(
+			'[gravityview id="%d" secret="%s" search_field="1" search_value="5 & more" search_operator=">"] Content',
+			$view->ID,
+			$secret
+		);
+
+		$filtered_complex = apply_filters( 'the_content', $content_complex );
+
+		// Should render the View.
+		$this->assertStringContainsString( 'gv-container', $filtered_complex, 'GravityView with & and > should render' );
+		$this->assertStringNotContainsString( '[gravityview', $filtered_complex, 'Complex shortcode should be processed' );
+	}
 }
