@@ -16,7 +16,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /**
  * The base \GV\Shortcode class.
  *
- * Contains some unitility methods, base class for all GV Shortcodes.
+ * Contains some utility methods, base class for all GV Shortcodes.
  */
 class Shortcode {
 	/**
@@ -117,7 +117,6 @@ class Shortcode {
 	 * @return string The content with the current shortcode removed.
 	 */
 	function strip_shortcode_from_content( $content ) {
-
 		add_filter( 'strip_shortcodes_tagnames', [ $this, '_get_strip_shortcode_tagnames' ] );
 
 		$content = strip_shortcodes( $content );
