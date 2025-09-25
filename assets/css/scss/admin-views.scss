@@ -95,6 +95,27 @@ $gv-overlay-index: 10000;
 
 		&:hover {
 			> .gv-grid-row-actions {
+				opacity: 1;
+				pointer-events: auto;
+			}
+		}
+
+		&:focus-within {
+			> .gv-grid-row-actions {
+				opacity: 1;
+				pointer-events: auto;
+			}
+		}
+
+		&.is-keyboard-nav {
+			.gv-grid-row-handle {
+				display: none;
+			}
+		}
+
+		&:focus-within {
+			// Keep row controls visible during keyboard navigation.
+			> .gv-grid-row-actions {
 				display: flex;
 			}
 		}
@@ -133,9 +154,17 @@ $gv-overlay-index: 10000;
 		background-color: #FFF;
 		border-radius: 3px;
 		border: 1px solid #D5D7E9;
-		display: none;
+		display: flex;
+		opacity: 0;
+		pointer-events: none;
 		overflow: hidden;
 		box-shadow: 0 0 20px 0 #D5D7E9;
+		transition: opacity 150ms ease;
+	}
+
+	.gv-grid-row-actions:focus-within {
+		opacity: 1;
+		pointer-events: auto;
 	}
 
 	.gv-grid-rows-container {
@@ -160,6 +189,10 @@ $gv-overlay-index: 10000;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
+		background: transparent;
+		border: 0;
+		color: inherit;
+		line-height: 1;
 
 		& + .gv-grid-row-action {
 			border-left: 1px solid #D5D7E9;
@@ -167,6 +200,22 @@ $gv-overlay-index: 10000;
 
 		&:hover {
 			color: $color-blue-50;
+		}
+
+		&:focus {
+			outline: 2px solid $color-blue-40;
+			outline-offset: 1px;
+		}
+
+		&.gv-grid-row-move-up,
+		&.gv-grid-row-move-down {
+			display: none;
+		}
+
+		.dashicons {
+			font-size: 16px;
+			width: 16px;
+			height: 16px;
 		}
 	}
 
