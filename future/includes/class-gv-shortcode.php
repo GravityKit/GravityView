@@ -16,7 +16,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 /**
  * The base \GV\Shortcode class.
  *
- * Contains some unitility methods, base class for all GV Shortcodes.
+ * Contains some utility methods, base class for all GV Shortcodes.
  */
 class Shortcode {
 	/**
@@ -87,10 +87,60 @@ class Shortcode {
 			}
 		} else {
 			add_shortcode( $name, array( $shortcode, 'callback' ) );
+			add_filter( 'get_the_excerpt', [ $shortcode, 'maybe_strip_shortcode_from_content' ] );
 			self::$shortcodes[ $name ] = $shortcode;
 		}
 
 		return self::$shortcodes[ $name ];
+	}
+
+	/**
+	 * Filters the list of shortcode tags to remove from the content.
+	 *
+	 * @since TODO
+	 *
+	 * @internal
+	 *
+	 * @return array Array of shortcode tags to remove, which is just the current shortcode name.
+	 */
+	public function _get_strip_shortcode_tagnames() {
+		return [ $this->name ];
+	}
+
+	/**
+	 * Strips the current shortcode from passed content.
+	 *
+	 * @since TODO
+	 *
+	 * @param string $content The content.
+	 *
+	 * @return string The content with the current shortcode removed.
+	 */
+	function strip_shortcode_from_content( $content ) {
+		add_filter( 'strip_shortcodes_tagnames', [ $this, '_get_strip_shortcode_tagnames' ] );
+
+		$content = strip_shortcodes( $content );
+
+		remove_filter( 'strip_shortcodes_tagnames', [ $this, '_get_strip_shortcode_tagnames' ] );
+
+		return $content;
+	}
+
+	/**
+	 * Strips the current shortcode from passed content if it exists.
+	 *
+	 * @since TODO
+	 *
+	 * @param string $content The content.
+	 *
+	 * @return string The content with the current shortcode removed, if it existed. Otherwise, the original content.
+	 */
+	function maybe_strip_shortcode_from_content( $content ) {
+		if( ! has_shortcode( $content, $this->name ) ) {
+			return $content;
+		}
+
+		return $this->strip_shortcode_from_content( $content );
 	}
 
 	/**

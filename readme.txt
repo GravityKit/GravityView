@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### ✨ Improved
+* Excerpts and content previews now automatically remove GravityView shortcodes for cleaner content display in archives, widgets, and feeds.
+
 = 2.46.2 on September 18, 2025 =
 
 #### ✨ Improved
