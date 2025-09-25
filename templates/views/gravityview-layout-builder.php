@@ -81,7 +81,6 @@ gravityview_after( $gravityview );
 
 $content = ob_get_clean();
 
-$class     = gv_container_class( 'gv-template-layout-builder', false, $gravityview );
 $anchor_id = $gravityview->view->get_anchor_id();
 
 /**
@@ -95,7 +94,7 @@ $anchor_id = $gravityview->view->get_anchor_id();
  */
 $wrapper_container = apply_filters(
 	'gravityview/view/wrapper_container',
-	'<div id="' . esc_attr( $anchor_id ) . '" class="' . esc_attr( $class ) . '">{content}</div>',
+	'<div id="' . esc_attr( $anchor_id ) . '" class="gv-template-layout-builder">{content}</div>',
 	$anchor_id,
 	$gravityview->view
 );

@@ -27,5 +27,9 @@ test('Hide Data Until Search', async ({ page }, testInfo) => {
 	await page.getByLabel('Hide View data until search is performed').setChecked(true);
 	await publishView(page);
 	await checkViewOnFrontEnd(page);
-	await expect(page.locator('body')).not.toHaveClass(/gv-table-view/);
+	await expect(page.getByRole('cell', { name: '1984' })).not.toBeVisible();
+	await expect(page.getByLabel('Search Entries:')).toBeVisible();
+	await page.getByLabel('Search Entries:').fill('Bob');
+	await page.getByRole('button', { name: 'Search' }).click();
+	await expect(page.getByRole('cell', { name: '1984' })).toBeVisible();
 });

@@ -26,6 +26,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### ✨ Improved
 * Excerpts and content previews now automatically remove GravityView shortcodes for cleaner content display in archives, widgets, and feeds.
 
+#### 🐛 Fixed
+* Search bar no longer disappears when the “Hide View data until search is performed” setting is enabled.
+
 = 2.46.2 on September 18, 2025 =
 
 #### ✨ Improved
