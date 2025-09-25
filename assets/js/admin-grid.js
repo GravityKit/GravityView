@@ -240,23 +240,22 @@ let lastInteractionWasKeyboard = false;
 		const $down = $row.find( '.gv-grid-row-move-down' );
 		const $handle = $row.find( '.gv-grid-row-handle' );
 
-		const hasMultipleRows = !isOnlyRow;
-		const canMoveUp = hasMultipleRows && !atTop;
-		const canMoveDown = hasMultipleRows && !atBottom;
+		const canMoveUp = !isOnlyRow && !atTop;
+		const canMoveDown = !isOnlyRow && !atBottom;
 
 		$up
-			.attr( 'aria-hidden', hasMultipleRows ? 'false' : 'true' )
+			.attr( 'aria-hidden', canMoveUp ? 'false' : 'true' )
 			.attr( 'aria-disabled', ( !canMoveUp ).toString() )
 			.prop( 'disabled', !canMoveUp )
 			.attr( 'tabindex', canMoveUp ? 0 : -1 )
-			.toggle( hasMultipleRows );
+			.toggle( canMoveUp );
 
 		$down
-			.attr( 'aria-hidden', hasMultipleRows ? 'false' : 'true' )
+			.attr( 'aria-hidden', canMoveDown ? 'false' : 'true' )
 			.attr( 'aria-disabled', ( !canMoveDown ).toString() )
 			.prop( 'disabled', !canMoveDown )
 			.attr( 'tabindex', canMoveDown ? 0 : -1 )
-			.toggle( hasMultipleRows );
+			.toggle( canMoveDown );
 
 		if ( $handle.length ) {
 			const shouldHideHandle = isOnlyRow || $row.hasClass( 'is-keyboard-nav' );
