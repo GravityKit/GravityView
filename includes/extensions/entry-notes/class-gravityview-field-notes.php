@@ -323,6 +323,15 @@ class GravityView_Field_Notes extends GravityView_Field {
 			return;
 		}
 
+		if ( ! class_exists( 'GFAPI' ) ) {
+			gravityview()->log->error( 'GFAPI is not loaded' );
+
+			if ( $this->doing_ajax ) {
+				wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-add-note' ) ) ] );
+			}
+			return;
+		}
+
 		$added = $this->add_note( $entry, $data );
 
 		// Error adding note
@@ -334,15 +343,6 @@ class GravityView_Field_Notes extends GravityView_Field {
 				wp_send_json_error( [ 'error' => esc_html( $added->get_error_message() ) ] );
 			}
 
-			return;
-		}
-
-		if ( ! class_exists( 'GFAPI' ) ) {
-			gravityview()->log->error( 'GFAPI is not loaded' );
-
-			if ( $this->doing_ajax ) {
-				wp_send_json_error( [ 'error' => esc_html( self::strings( 'error-add-note' ) ) ] );
-			}
 			return;
 		}
 

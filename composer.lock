@@ -238,12 +238,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "197ee3b8086276f1603a33a0aa400ec7bb3d77d8"
+                "reference": "98125214239267090d7b6696ab9bbcd1434df356"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/197ee3b8086276f1603a33a0aa400ec7bb3d77d8",
-                "reference": "197ee3b8086276f1603a33a0aa400ec7bb3d77d8",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/98125214239267090d7b6696ab9bbcd1434df356",
+                "reference": "98125214239267090d7b6696ab9bbcd1434df356",
                 "shasum": ""
             },
             "require": {
@@ -341,10 +341,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.4.0",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.5.0",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2025-09-19T01:24:44+00:00"
+            "time": "2025-09-25T23:31:13+00:00"
         },
         {
             "name": "illuminate/container",

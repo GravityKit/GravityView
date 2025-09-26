@@ -831,6 +831,49 @@ class GVFuture_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @covers \GV\Shortcode::maybe_strip_shortcode_from_content()
+	 * @covers \GV\Shortcode::strip_shortcode_from_content()
+	 */
+	public function test_gv_shortcodes_stripped_from_excerpts() {
+		$gv_shortcode = GVFutureTest_Excerpt_Shortcode::add();
+
+		// Register a standard WP shortcode to verify it's not stripped.
+		add_shortcode( 'standard_shortcode', function() { return 'Standard output'; } );
+
+		// Create a post with both shortcodes in the excerpt.
+		$post_id = $this->factory->post->create( array(
+			'post_excerpt' => 'Start [gv_test] middle [standard_shortcode] end',
+			'post_status' => 'publish',
+		) );
+
+		// Get the processed excerpt.
+		$post = get_post( $post_id );
+
+		setup_postdata( $post );
+
+		$excerpt = get_the_excerpt( $post );
+
+		wp_reset_postdata();
+
+		// Clean up.
+		if ( $gv_shortcode ) {
+			remove_filter( 'get_the_excerpt', array( $gv_shortcode, 'maybe_strip_shortcode_from_content' ) );
+
+			GVFutureTest_Excerpt_Shortcode::remove();
+		}
+
+		remove_shortcode( 'standard_shortcode' );
+
+		// Assertions: GV shortcode should be stripped, standard shortcode should remain.
+		$this->assertStringNotContainsString( '[gv_test]', $excerpt );
+		$this->assertStringContainsString( '[standard_shortcode]', $excerpt );
+		$this->assertStringContainsString( 'Start', $excerpt );
+		$this->assertStringContainsString( 'middle', $excerpt );
+		$this->assertStringContainsString( 'end', $excerpt );
+	}
+
+
+	/**
 	 * @covers \GV\Shortcode::parse()
 	 * @covers \GravityView_View_Data::parse_post_content()
 	 */
@@ -8578,5 +8621,16 @@ class GVFutureTest_Widget_Test extends \GV\Widget {
 		?>
 			<strong class="floaty">GravityView<?php echo \GV\Utils::get( $widget_args, 'test' ); ?></strong>
 		<?php
+	}
+}
+
+/**
+ * Test helper class for GV shortcode excerpt stripping tests.
+ */
+class GVFutureTest_Excerpt_Shortcode extends \GV\Shortcode {
+	public $name = 'gv_test';
+
+	public function callback( $atts, $content = '', $tag = '' ) {
+		return 'GV shortcode output';
 	}
 }
