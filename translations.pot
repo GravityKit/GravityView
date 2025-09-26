@@ -2,20 +2,21 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.46.2\n"
+"Project-Id-Version: GravityView 2.47\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-25T19:55:46-04:00\n"
+"POT-Creation-Date: 2025-09-26T01:40:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
+#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -25,14 +26,17 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
+#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
+#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
+#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:409
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:198
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:199
@@ -929,7 +933,7 @@ msgid "Update Button Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:533
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2763
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2748
 msgctxt "Button to update an entry the user is editing"
 msgid "Update"
 msgstr ""
@@ -951,7 +955,7 @@ msgid "Cancel Link Text"
 msgstr ""
 
 #: future/includes/class-gv-settings-view.php:552
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2762
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2747
 msgctxt "Shown when the user decides not to edit an entry"
 msgid "Cancel"
 msgstr ""
@@ -1122,27 +1126,27 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
-#: future/includes/class-gv-shortcode.php:249
+#: future/includes/class-gv-shortcode.php:429
 msgid "shortcode"
 msgstr ""
 
-#: future/includes/class-gv-shortcode.php:250
+#: future/includes/class-gv-shortcode.php:430
 msgid "A GravityView shortcode"
 msgstr ""
 
-#: future/includes/class-gv-shortcode.php:253
+#: future/includes/class-gv-shortcode.php:433
 msgid "The [shortcode] is missing or has an invalid \"secret\" attribute. Update the shortcode with the following attribute: [secret]"
 msgstr ""
 
-#: future/includes/class-gv-shortcode.php:283
+#: future/includes/class-gv-shortcode.php:463
 msgid "this page"
 msgstr ""
 
-#: future/includes/class-gv-shortcode.php:292
+#: future/includes/class-gv-shortcode.php:472
 msgid "[shortcode] on [page_link] is missing or has an invalid \"secret\" attribute."
 msgstr ""
 
-#: future/includes/class-gv-shortcode.php:321
+#: future/includes/class-gv-shortcode.php:501
 msgid "The [shortcode] is missing or has an invalid \"secret\" attribute."
 msgstr ""
 
@@ -1664,8 +1668,8 @@ msgstr ""
 #: includes/class-admin-add-shortcode.php:140
 #: includes/class-admin-views.php:2057
 #: includes/extensions/edit-entry/class-edit-entry-locking.php:379
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1327
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1469
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1312
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1454
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:100
 #: vendor_prefixed/trustedlogin/client/src/Form.php:1312
 msgid "Cancel"
@@ -3090,7 +3094,7 @@ msgid "The request was invalid. Refresh the page and try again."
 msgstr ""
 
 #: includes/class-gravityview-entry-approval.php:231
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2621
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2606
 msgid "You do not have permission to edit this entry."
 msgstr ""
 
@@ -3319,87 +3323,87 @@ msgstr ""
 msgid "Your request was rejected"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1328
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1470
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1313
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1455
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:70
 msgid "Update"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1329
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1471
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1314
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1456
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:95
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:262
 msgid "Next"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1330
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1472
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1315
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1457
 #: includes/extensions/lightbox/fancybox/class-gravityview-lightbox-provider-fancybox.php:96
 msgid "Previous"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1363
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1348
 msgid "There was a problem with your submission."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1363
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1348
 msgid "Errors have been highlighted below."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1372
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1357
 msgid "Entry Updated."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1395
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1380
 msgctxt "Replacements are HTML"
 msgid "Entry Updated. %1$sReturning to Entry%2$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1399
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1384
 msgctxt "Replacement 1 is HTML. Replacement 2 is the title of the page where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %1$sReturning to %2$s%3$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1404
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1389
 msgctxt "Replacement 1 is HTML. Replacement 2 is the URL where the user will be taken. Replacement 3 is HTML."
 msgid "Entry Updated. %1$sRedirecting to %2$s%3$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1408
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1393
 msgid "Entry Updated. %1$sReturn to Entry%2$s"
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1628
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1613
 msgid "This field is not editable; the post no longer exists."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:1635
+#: includes/extensions/edit-entry/class-edit-entry-render.php:1620
 msgid "You don&rsquo;t have permission to edit this post."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2018
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2003
 msgid "This field is required."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2616
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2601
 msgid "The link to edit this entry is not valid; it may have expired."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2625
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2610
 msgid "You cannot edit the entry; it is in the trash."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2641
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2626
 msgctxt "Link shown when invalid Edit Entry link is clicked"
 msgid "Go back."
 msgstr ""
 
-#: includes/extensions/edit-entry/class-edit-entry-render.php:2666
+#: includes/extensions/edit-entry/class-edit-entry-render.php:2651
 msgid "You do not have permission to edit this field."
 msgstr ""
 
 #. Translators: [b] and [/b] are replaced by `<strong>` and `</strong>` tags.
-#: includes/extensions/edit-entry/class-edit-entry-render.php:3015
+#: includes/extensions/edit-entry/class-edit-entry-render.php:3000
 msgid "[b]Note:[/b] For security reasons you must upload the file again."
 msgstr ""
 
@@ -8299,4 +8303,84 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/sort-selector.js:75
 msgid "No Sorting Fields found"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block title"
+msgid "GravityView Entry Field"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+msgctxt "block description"
+msgid "Display an entry field value."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "GravityView"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "form entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-field/block.json
+#: future/includes/gutenberg/blocks/entry-link/block.json
+#: future/includes/gutenberg/blocks/entry/block.json
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block keyword"
+msgid "entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block title"
+msgid "GravityView Entry Link"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry-link/block.json
+msgctxt "block description"
+msgid "Display a link to the GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block title"
+msgid "GravityView Entry"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/entry/block.json
+msgctxt "block description"
+msgid "Display a GravityView entry."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block title"
+msgid "GravityView View Details"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view-details/block.json
+msgctxt "block description"
+msgid "Display specific information about a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block title"
+msgid "GravityView View"
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block description"
+msgid "Display a GravityView View."
+msgstr ""
+
+#: future/includes/gutenberg/blocks/view/block.json
+msgctxt "block keyword"
+msgid "view"
 msgstr ""
