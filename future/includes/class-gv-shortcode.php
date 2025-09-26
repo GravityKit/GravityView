@@ -196,6 +196,38 @@ class Shortcode {
 	}
 
 	/**
+	 * Post-processes content after shortcode rendering.
+	 *
+	 * @internal
+	 *
+	 * @since TBD
+	 *
+	 * @param string $content The content to process.
+	 *
+	 * @return string The processed content.
+	 */
+	public static function post_process_content( $content ) {
+		if ( empty( $content ) || empty( self::$shortcodes ) ) {
+			return $content;
+		}
+
+		// Remove secret attribute if the shortcode did not render.
+		$shortcodes = array_keys( self::$shortcodes );
+		$pattern    = '/\[(' . implode( '|', array_map( 'preg_quote', $shortcodes ) ) . ')([^\]]*)\]/';
+
+		return preg_replace_callback( $pattern, function ( $matches ) {
+			$full_match = $matches[0];
+			$attributes = $matches[2];
+
+			if ( stripos( $attributes, 'secret=' ) !== false ) {
+				$full_match = preg_replace( '/\s*\bsecret\s*=\s*["\']?[^"\'\s\]]+["\']?/', '', $full_match );
+			}
+
+			return $full_match;
+		}, $content );
+	}
+
+	/**
 	 * Register this shortcode class with the WordPress Shortcode API.
 	 *
 	 * @internal
@@ -224,9 +256,16 @@ class Shortcode {
 
 			if ( ! $filters_added ) {
 				// Add the content pre-processing filter only once.
-				add_filter( 'the_content', [ __CLASS__, 'preprocess_shortcode_attributes' ], 5 );
-				add_filter( 'widget_text', [ __CLASS__, 'preprocess_shortcode_attributes' ], 5 );
-				add_filter( 'widget_text_content', [ __CLASS__, 'preprocess_shortcode_attributes' ], 5 );
+				// Use priority 1 to run as early as possible before do_shortcode (priority 11)
+				add_filter( 'the_content', [ __CLASS__, 'preprocess_shortcode_attributes' ], 1 );
+				add_filter( 'widget_text', [ __CLASS__, 'preprocess_shortcode_attributes' ], 1 );
+				add_filter( 'widget_text_content', [ __CLASS__, 'preprocess_shortcode_attributes' ], 1 );
+
+				// Post-process content after shortcode rendering.
+				// Use PHP_INT_MAX to ensure this runs absolutely last
+				add_filter( 'the_content', [ __CLASS__, 'post_process_content' ], PHP_INT_MAX );
+				add_filter( 'widget_text', [ __CLASS__, 'post_process_content' ], PHP_INT_MAX );
+				add_filter( 'widget_text_content', [ __CLASS__, 'post_process_content' ], PHP_INT_MAX );
 
 				$filters_added = true;
 			}
