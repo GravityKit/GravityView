@@ -31,7 +31,7 @@ This release improves the handling of shortcodes and File Upload fields, and fix
 * Shortcodes can now accept special characters that WordPress ignores.
 
 #### 🐛 Fixed
-* Search bar no longer disappears when the “Hide View data until search is performed” setting is enabled.
+* Search Bar no longer disappears when the “Hide View data until search is performed” setting is enabled.
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.5.0.
