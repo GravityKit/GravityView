@@ -22,7 +22,7 @@ class Shortcode {
 	/**
 	 * Cache of all added shortcodes.
 	 *
-	 * @since TBD
+	 * @since 2.47
 	 *
 	 * @var array
 	 */
@@ -77,7 +77,7 @@ class Shortcode {
 	 *
 	 * @internal
 	 *
-	 * @since TBD
+	 * @since 2.47
 	 *
 	 * @param string $content The content to preprocess.
 	 *
@@ -153,7 +153,7 @@ class Shortcode {
 	/**
 	 * Wrapper callback that's used to normalize attributes and other operations before calling the actual shortcode callback.
 	 *
-	 * @since TBD
+	 * @since 2.47
 	 *
 	 * @param array  $atts    The attributes passed.
 	 * @param string $content The content inside the shortcode.
@@ -175,7 +175,7 @@ class Shortcode {
 	 * This method handles base64 encoded values (prefixed with 'b64:') that were
 	 * encoded to prevent WordPress shortcode parser from breaking on special characters.
 	 *
-	 * @since TBD
+	 * @since 2.47
 	 *
 	 * @param array $atts The shortcode attributes.
 	 *
@@ -200,7 +200,7 @@ class Shortcode {
 	 *
 	 * @internal
 	 *
-	 * @since TBD
+	 * @since 2.47
 	 *
 	 * @param string $content The content to process.
 	 *
@@ -277,7 +277,7 @@ class Shortcode {
 	/**
 	 * Filters the list of shortcode tags to remove from the content.
 	 *
-	 * @since TODO
+	 * @since 2.47
 	 *
 	 * @internal
 	 *
@@ -290,7 +290,7 @@ class Shortcode {
 	/**
 	 * Strips the current shortcode from passed content.
 	 *
-	 * @since TODO
+	 * @since 2.47
 	 *
 	 * @param string $content The content.
 	 *
@@ -309,7 +309,7 @@ class Shortcode {
 	/**
 	 * Strips the current shortcode from passed content if it exists.
 	 *
-	 * @since TODO
+	 * @since 2.47
 	 *
 	 * @param string $content The content.
 	 *

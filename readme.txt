@@ -21,14 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.47 on September 25, 2025 =
+
+This release improves the handling of shortcodes and File Upload fields, and fixes an issue where a View would fail to render.
 
 #### ✨ Improved
 * Excerpts and content previews now automatically remove GravityView shortcodes for cleaner content display in archives, widgets, and feeds.
 * Allow PDF files to bypass secure download URLs when the "Use Direct File Path for Media" setting is enabled for a File Upload field.
+* Shortcodes can now accept special characters that WordPress ignores.
 
 #### 🐛 Fixed
 * Search bar no longer disappears when the “Hide View data until search is performed” setting is enabled.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.5.0.
 
 #### 💻 Developer Updates
 * Added `pdf` to the allowed file extensions for the `gk/gravityview/fields/fileupload/secure-links/allowed-extensions` filter.
