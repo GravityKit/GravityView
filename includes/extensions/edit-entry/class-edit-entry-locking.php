@@ -50,6 +50,10 @@ class GravityView_Edit_Entry_Locking {
 		add_action( 'wp_ajax_gf_reject_lock_request_entry', [ $this, 'ajax_reject_lock_request' ], 1 );
 		add_action( 'wp_ajax_nopriv_gf_lock_request_entry', [ $this, 'ajax_lock_request' ] );
 		add_action( 'wp_ajax_nopriv_gf_reject_lock_request_entry', [ $this, 'ajax_reject_lock_request' ] );
+		
+		// Add AJAX endpoint for immediate lock release when user navigates away
+		add_action( 'wp_ajax_gv_release_entry_lock', [ $this, 'ajax_release_entry_lock' ] );
+		add_action( 'wp_ajax_nopriv_gv_release_entry_lock', [ $this, 'ajax_release_entry_lock' ] );
 	}
 
 	/**
@@ -247,6 +251,17 @@ class GravityView_Edit_Entry_Locking {
 							wp.heartbeat.interval( ' . ( int ) $request_check_interval . ', 0 );
 						}, 1000 );	
 					}
+					
+					// Simple cleanup when user navigates away from edit page
+					$( window ).on( "beforeunload pagehide", function() {
+						if ( navigator.sendBeacon ) {
+							var formData = new FormData();
+							formData.append( "action", "gv_release_entry_lock" );
+							formData.append( "entry_id", "' . (int) $entry['id'] . '" );
+							formData.append( "nonce", "' . wp_create_nonce( 'gv_release_lock_' . $entry['id'] ) . '" );
+							navigator.sendBeacon( "' . admin_url( 'admin-ajax.php' ) . '", formData );
+						}
+					} );
 				} );
 			' );
 
@@ -729,5 +744,36 @@ class GravityView_Edit_Entry_Locking {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * AJAX handler to release entry lock when user navigates away.
+	 *
+	 * @since TBD
+	 *
+	 * @return void
+	 */
+	public function ajax_release_entry_lock() {
+		$entry_id = absint( $_POST['entry_id'] ?? 0 );
+		$nonce    = sanitize_text_field( $_POST['nonce'] ?? '' );
+
+		if ( ! $entry_id || ! wp_verify_nonce( $nonce, 'gv_release_lock_' . $entry_id ) ) {
+			wp_send_json_error( 'Invalid request' );
+		}
+
+		$current_user_id = get_current_user_id();
+		if ( ! $current_user_id ) {
+			wp_send_json_error( 'User not authenticated' );
+		}
+
+		$lock_user_id = $this->get_lock_meta( $entry_id );
+
+		// Release lock if current user has it
+		if ( $lock_user_id == $current_user_id ) {
+			$this->delete_lock_meta( $entry_id );
+			wp_send_json_success( 'Lock released' );
+		} else {
+			wp_send_json_error( 'Lock not owned by current user' );
+		}
 	}
 }
