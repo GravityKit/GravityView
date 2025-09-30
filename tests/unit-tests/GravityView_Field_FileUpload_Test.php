@@ -390,43 +390,43 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 	 */
 	public function test_bypass_filter_for_specific_views_with_html_output() {
 		$filter_name = 'gk/gravityview/fields/fileupload/secure-links/bypass';
-		
+
 		// Create test data
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'5' => json_encode( array( 
+			'5' => json_encode( array(
 				'https://example.com/uploads/2024/01/image.jpg',
 				'https://example.com/uploads/2024/01/document.pdf'
 			) ),
 		) );
-		
+
 		// Create multiple views with different IDs
 		$allowed_view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'post_title' => 'Allowed View',
 		) );
 		$allowed_view_id = $allowed_view->ID;
-		
+
 		$restricted_view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'post_title' => 'Restricted View',
 		) );
-		
+
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
-		
+
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
 		$field = \GV\GF_Field::by_id( $form, '5' );
-		
+
 		// Configure field to enable bypass and show as links
-		$field->update_configuration( array( 
+		$field->update_configuration( array(
 			'bypass_secure_download' => true,
 			'link_to_file' => true,  // Show as links
 			'show_as_link' => false  // Don't link to entry
 		) );
-		
+
 		// Add filter for specific View IDs
 		add_filter( $filter_name, function( $bypass, $field, $field_settings, $context, $file_path ) use ( $allowed_view_id ) {
 			if ( $context && $context->view && $context->view->ID == $allowed_view_id ) {
@@ -434,31 +434,31 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 			}
 			return false;  // Don't bypass for other views
 		}, 10, 5 );
-		
+
 		// Test with allowed View - should show direct URLs
 		$view_obj = \GV\View::from_post( $allowed_view );
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
+
 		// With bypass enabled, URLs should be direct (no secure download parameters)
-		$this->assertStringContainsString( 'href="http://example.com/uploads/2024/01/image.jpg"', $output, 
+		$this->assertStringContainsString( 'href="http://example.com/uploads/2024/01/image.jpg"', $output,
 			'Allowed View should show direct image URL without secure parameters' );
-		$this->assertStringContainsString( 'href="http://example.com/uploads/2024/01/document.pdf?gv-iframe=true"', $output, 
+		$this->assertStringContainsString( 'href="http://example.com/uploads/2024/01/document.pdf?gv-iframe=true"', $output,
 			'Allowed View should show direct PDF URL with iframe parameter' );
-		$this->assertStringNotContainsString( '?gf-download=', $output, 
+		$this->assertStringNotContainsString( '?gf-download=', $output,
 			'Allowed View should NOT contain secure download parameters' );
 		$this->assertStringContainsString( '<ul class=\'gv-field-file-uploads', $output,
 			'Should render as unordered list of files' );
-		
+
 		// Test with restricted View - bypass should be disabled
 		$view_obj = \GV\View::from_post( $restricted_view );
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
+
 		// Without bypass, should still show files but potentially with secure URLs
-		$this->assertStringContainsString( 'uploads/2024/01/image.jpg', $output, 
+		$this->assertStringContainsString( 'uploads/2024/01/image.jpg', $output,
 			'Restricted View should still reference the image file' );
-		$this->assertStringContainsString( 'uploads/2024/01/document.pdf', $output, 
+		$this->assertStringContainsString( 'uploads/2024/01/document.pdf', $output,
 			'Restricted View should still reference the PDF file' );
-		
+
 		remove_all_filters( $filter_name );
 	}
 
@@ -468,35 +468,35 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 	 */
 	public function test_bypass_filter_with_user_roles_and_html_output() {
 		$filter_name = 'gk/gravityview/fields/fileupload/secure-links/bypass';
-		
+
 		// Create test data
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
-			'5' => json_encode( array( 
+			'5' => json_encode( array(
 				'https://example.com/members/confidential-report.pdf',
-				'https://example.com/members/private-image.jpg' 
+				'https://example.com/members/private-image.jpg'
 			) ),
 		) );
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 		) );
-		
+
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 		$view_obj = \GV\View::from_post( $view );
-		
+
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
 		$field = \GV\GF_Field::by_id( $form, '5' );
-		
+
 		// Configure field with bypass enabled
-		$field->update_configuration( array( 
+		$field->update_configuration( array(
 			'bypass_secure_download' => true,
 			'link_to_file' => true,
 			'show_as_link' => false
 		) );
-		
+
 		// Add user role-based filter
 		add_filter( $filter_name, function( $bypass, $field, $field_settings, $context, $file_path ) {
 			// Only bypass for logged-in users with edit_posts capability
@@ -508,46 +508,46 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 			}
 			return false;
 		}, 10, 5 );
-		
+
 		// Test 1: Guest user - should NOT get direct URLs
 		wp_set_current_user( 0 );
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
-		$this->assertStringContainsString( 'confidential-report.pdf', $output, 
+
+		$this->assertStringContainsString( 'confidential-report.pdf', $output,
 			'Guest should see file names' );
-		$this->assertStringContainsString( 'private-image.jpg', $output, 
+		$this->assertStringContainsString( 'private-image.jpg', $output,
 			'Guest should see image file names' );
-		
+
 		// Test 2: Subscriber - should NOT get direct URLs (no edit_posts capability)
 		$subscriber = $this->factory->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $subscriber );
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
-		$this->assertStringContainsString( 'confidential-report.pdf', $output, 
+
+		$this->assertStringContainsString( 'confidential-report.pdf', $output,
 			'Subscriber should see file names' );
-		
+
 		// Test 3: Editor - SHOULD get direct URLs (has edit_posts capability)
 		$editor = $this->factory->user->create( array( 'role' => 'editor' ) );
 		wp_set_current_user( $editor );
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
-		$this->assertStringContainsString( 'href="http://example.com/members/confidential-report.pdf?gv-iframe=true"', $output, 
+
+		$this->assertStringContainsString( 'href="http://example.com/members/confidential-report.pdf?gv-iframe=true"', $output,
 			'Editor should see direct PDF URL' );
-		$this->assertStringContainsString( 'href="http://example.com/members/private-image.jpg"', $output, 
+		$this->assertStringContainsString( 'href="http://example.com/members/private-image.jpg"', $output,
 			'Editor should see direct image URL' );
-		$this->assertStringNotContainsString( '?gf-download=', $output, 
+		$this->assertStringNotContainsString( '?gf-download=', $output,
 			'Editor should NOT see secure download parameters' );
-		
+
 		// Test 4: Administrator - SHOULD get direct URLs
 		$admin = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $admin );
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
-		$this->assertStringContainsString( 'href="http://example.com/members/confidential-report.pdf?gv-iframe=true"', $output, 
+
+		$this->assertStringContainsString( 'href="http://example.com/members/confidential-report.pdf?gv-iframe=true"', $output,
 			'Administrator should see direct PDF URL' );
-		$this->assertStringNotContainsString( '?gf-download=', $output, 
+		$this->assertStringNotContainsString( '?gf-download=', $output,
 			'Administrator should NOT see secure download parameters' );
-		
+
 		// Reset user
 		wp_set_current_user( 0 );
 		remove_all_filters( $filter_name );
@@ -560,7 +560,7 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 	public function test_allowed_extensions_filter_affects_html_output() {
 		$bypass_filter = 'gk/gravityview/fields/fileupload/secure-links/bypass';
 		$extensions_filter = 'gk/gravityview/fields/fileupload/secure-links/allowed-extensions';
-		
+
 		// Create test data with various file types
 		$form = $this->factory->form->import_and_get( 'complete.json' );
 		$entry = $this->factory->entry->create_and_get( array(
@@ -576,91 +576,89 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 		$view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 		) );
-		
+
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$entry = \GV\GF_Entry::by_id( $entry['id'] );
 		$view_obj = \GV\View::from_post( $view );
-		
+
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
 		$field = \GV\GF_Field::by_id( $form, '5' );
-		
+
 		// Configure field to show media (not links) and enable bypass
-		$field->update_configuration( array( 
+		$field->update_configuration( array(
 			'bypass_secure_download' => true,
 			'link_to_file' => false,  // Show as media (images, videos, audio)
 			'show_as_link' => false
 		) );
-		
+
 		// Always bypass for testing
 		add_filter( $bypass_filter, '__return_true', 10 );
-		
+
 		// Test 1: Default allowed extensions (images, audio, video)
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
+
 		// Images should render as img tags with direct URLs
-		$this->assertStringContainsString( '<img src="http://example.com/files/photo.jpg"', $output, 
+		$this->assertStringContainsString( '<img src="http://example.com/files/photo.jpg"', $output,
 			'Images should render as img tags with direct URLs' );
-		
+
 		// Videos should render as video elements
-		$this->assertStringContainsString( '<video', $output, 
+		$this->assertStringContainsString( '<video', $output,
 			'Videos should render as video elements' );
-		$this->assertStringContainsString( 'src="http://example.com/files/video.mp4', $output, 
+		$this->assertStringContainsString( 'src="http://example.com/files/video.mp4', $output,
 			'Video should have direct URL in src attribute' );
-		
+
 		// Audio should render as audio elements
-		$this->assertStringContainsString( '<audio', $output, 
+		$this->assertStringContainsString( '<audio', $output,
 			'Audio should render as audio elements' );
-		$this->assertStringContainsString( 'src="http://example.com/files/audio.mp3', $output, 
+		$this->assertStringContainsString( 'src="http://example.com/files/audio.mp3', $output,
 			'Audio should have direct URL in src attribute' );
-		
+
 		// PDFs always show as links (not embedded)
-		$this->assertStringContainsString( 'href="http://example.com/files/document.pdf?gv-iframe=true"', $output, 
+		$this->assertStringContainsString( 'href="http://example.com/files/document.pdf?gv-iframe=true"', $output,
 			'PDF should show as link with iframe parameter' );
-		
+
 		// XLSX should show as link
-		$this->assertStringContainsString( 'spreadsheet.xlsx', $output, 
+		$this->assertStringContainsString( 'spreadsheet.xlsx', $output,
 			'XLSX files should be in output' );
-		
+
 		// Test 2: Limit to images only
 		remove_all_filters( $extensions_filter );
 		add_filter( $extensions_filter, function( $allowed_extensions ) {
 			// Only allow image extensions
 			return array( 'jpg', 'jpeg', 'png', 'gif', 'webp' );
 		}, 10, 1 );
-		
+
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
+
 		// Images should still render with direct URLs
-		$this->assertStringContainsString( '<img src="http://example.com/files/photo.jpg"', $output, 
+		$this->assertStringContainsString( '<img src="http://example.com/files/photo.jpg"', $output,
 			'Images should still render with direct URLs when only images are allowed' );
-		
+
 		// Test 3: Add document formats to allowed extensions
 		remove_all_filters( $extensions_filter );
 		add_filter( $extensions_filter, function( $allowed_extensions ) {
-			// Add PDF and XLSX to allowed extensions
-			$allowed_extensions[] = 'pdf';
 			$allowed_extensions[] = 'xlsx';
 			return $allowed_extensions;
 		}, 10, 1 );
-		
+
 		// Change to link display to see document links
-		$field->update_configuration( array( 
+		$field->update_configuration( array(
 			'link_to_file' => true  // Show as links
 		) );
-		
+
 		$output = $renderer->render( $field, $view_obj, $form, $entry, $request );
-		
+
 		// All file types should now show as direct links
-		$this->assertStringContainsString( 'href="http://example.com/files/photo.jpg"', $output, 
+		$this->assertStringContainsString( 'href="http://example.com/files/photo.jpg"', $output,
 			'Image should show as direct link' );
-		$this->assertStringContainsString( 'href="http://example.com/files/document.pdf?gv-iframe=true"', $output, 
-			'PDF should show as direct link when added to allowed extensions' );
-		$this->assertStringContainsString( 'href="http://example.com/files/spreadsheet.xlsx"', $output, 
+		$this->assertStringContainsString( 'href="http://example.com/files/document.pdf?gv-iframe=true"', $output,
+			'PDF should show as direct link.' );
+		$this->assertStringContainsString( 'href="http://example.com/files/spreadsheet.xlsx"', $output,
 			'XLSX should show as direct link when added to allowed extensions' );
-		$this->assertStringNotContainsString( '?gf-download=', $output, 
+		$this->assertStringNotContainsString( '?gf-download=', $output,
 			'Should not contain secure download parameters for allowed types' );
-		
+
 		remove_all_filters( $bypass_filter );
 		remove_all_filters( $extensions_filter );
 	}
@@ -672,10 +670,10 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 	public function test_complete_real_world_html_output_scenario() {
 		$bypass_filter = 'gk/gravityview/fields/fileupload/secure-links/bypass';
 		$extensions_filter = 'gk/gravityview/fields/fileupload/secure-links/allowed-extensions';
-		
+
 		// Create test data
 		$form = $this->factory->form->import_and_get( 'complete.json' );
-		
+
 		// Create entries for different scenarios
 		$gallery_entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -685,7 +683,7 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 				'https://example.com/gallery/timelapse.mp4'
 			) ),
 		) );
-		
+
 		$member_entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
 			'5' => json_encode( array(
@@ -693,59 +691,59 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 				'https://example.com/members/financial-data.xlsx'
 			) ),
 		) );
-		
+
 		// Create different Views
 		$gallery_view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'post_title' => 'Public Gallery View',
 		) );
 		$gallery_view_id = $gallery_view->ID;
-		
+
 		$member_view = $this->factory->view->create_and_get( array(
 			'form_id' => $form['id'],
 			'post_title' => 'Members Only View',
 		) );
 		$member_view_id = $member_view->ID;
-		
+
 		$form = \GV\GF_Form::by_id( $form['id'] );
 		$request = new \GV\Frontend_Request();
 		$renderer = new \GV\Field_Renderer();
 		$field = \GV\GF_Field::by_id( $form, '5' );
-		
+
 		// Add comprehensive bypass logic based on Views and user roles
 		add_filter( $bypass_filter, function( $bypass, $field, $field_settings, $context, $file_path ) use ( $gallery_view_id, $member_view_id ) {
 			if ( ! $context || ! $context->view ) {
 				return false;
 			}
-			
+
 			$view_id = $context->view->ID;
-			
+
 			// Public gallery - always bypass for media files
 			if ( $view_id == $gallery_view_id ) {
 				return true;
 			}
-			
+
 			// Member area - only bypass for logged-in users
 			if ( $view_id == $member_view_id ) {
 				return is_user_logged_in();
 			}
-			
+
 			return false;
 		}, 10, 5 );
-		
+
 		// Configure allowed extensions based on View context
 		add_filter( $extensions_filter, function( $allowed_extensions, $field, $field_settings, $context, $file_path ) use ( $gallery_view_id, $member_view_id ) {
 			if ( ! $context || ! $context->view ) {
 				return $allowed_extensions;
 			}
-			
+
 			$view_id = $context->view->ID;
-			
+
 			// Gallery View: only allow images and videos
 			if ( $view_id == $gallery_view_id ) {
 				return array( 'jpg', 'jpeg', 'png', 'gif', 'mp4', 'mov', 'webm' );
 			}
-			
+
 			// Member View: add document formats for logged-in users
 			if ( $view_id == $member_view_id && is_user_logged_in() ) {
 				$allowed_extensions[] = 'pdf';
@@ -753,67 +751,67 @@ class GravityView_Field_FileUpload_Test extends GV_UnitTestCase {
 				$allowed_extensions[] = 'docx';
 				return $allowed_extensions;
 			}
-			
+
 			return $allowed_extensions;
 		}, 10, 5 );
-		
+
 		// SCENARIO 1: Public gallery as guest user
 		wp_set_current_user( 0 );
 		$gallery_view_obj = \GV\View::from_post( $gallery_view );
 		$gallery_entry_obj = \GV\GF_Entry::by_id( $gallery_entry['id'] );
-		
+
 		// Configure for media display
-		$field->update_configuration( array( 
+		$field->update_configuration( array(
 			'bypass_secure_download' => true,
 			'link_to_file' => false,  // Show as media
 			'show_as_link' => false
 		) );
-		
+
 		$output = $renderer->render( $field, $gallery_view_obj, $form, $gallery_entry_obj, $request );
-		
+
 		// Gallery should show direct URLs even for guests
-		$this->assertStringContainsString( '<img src="http://example.com/gallery/sunset.jpg"', $output, 
+		$this->assertStringContainsString( '<img src="http://example.com/gallery/sunset.jpg"', $output,
 			'Public gallery should show direct image URLs for guests' );
-		$this->assertStringContainsString( '<img src="http://example.com/gallery/mountains.png"', $output, 
+		$this->assertStringContainsString( '<img src="http://example.com/gallery/mountains.png"', $output,
 			'Public gallery should show direct PNG URLs' );
-		$this->assertStringContainsString( '<video', $output, 
+		$this->assertStringContainsString( '<video', $output,
 			'Public gallery should show video element' );
-		$this->assertStringContainsString( 'src="http://example.com/gallery/timelapse.mp4', $output, 
+		$this->assertStringContainsString( 'src="http://example.com/gallery/timelapse.mp4', $output,
 			'Public gallery should show direct video URLs' );
-		$this->assertStringNotContainsString( '?gf-download=', $output, 
+		$this->assertStringNotContainsString( '?gf-download=', $output,
 			'Public gallery should NOT have secure download parameters' );
-		
+
 		// SCENARIO 2: Member area as guest - should NOT bypass
 		$member_view_obj = \GV\View::from_post( $member_view );
 		$member_entry_obj = \GV\GF_Entry::by_id( $member_entry['id'] );
-		
+
 		// Configure for link display
-		$field->update_configuration( array( 
+		$field->update_configuration( array(
 			'link_to_file' => true  // Show as links
 		) );
-		
+
 		$output = $renderer->render( $field, $member_view_obj, $form, $member_entry_obj, $request );
-		
+
 		// Member files should be referenced but not with direct URLs for guests
-		$this->assertStringContainsString( 'annual-report.pdf', $output, 
+		$this->assertStringContainsString( 'annual-report.pdf', $output,
 			'Guest should see PDF filename in member area' );
-		$this->assertStringContainsString( 'financial-data.xlsx', $output, 
+		$this->assertStringContainsString( 'financial-data.xlsx', $output,
 			'Guest should see XLSX filename in member area' );
-		
+
 		// SCENARIO 3: Member area as logged-in member - SHOULD bypass
 		$member_user = $this->factory->user->create( array( 'role' => 'subscriber' ) );
 		wp_set_current_user( $member_user );
-		
+
 		$output = $renderer->render( $field, $member_view_obj, $form, $member_entry_obj, $request );
-		
+
 		// Member should see direct URLs for documents
-		$this->assertStringContainsString( 'href="http://example.com/members/annual-report.pdf?gv-iframe=true"', $output, 
+		$this->assertStringContainsString( 'href="http://example.com/members/annual-report.pdf?gv-iframe=true"', $output,
 			'Logged-in member should see direct PDF URL' );
-		$this->assertStringContainsString( 'href="http://example.com/members/financial-data.xlsx"', $output, 
+		$this->assertStringContainsString( 'href="http://example.com/members/financial-data.xlsx"', $output,
 			'Logged-in member should see direct XLSX URL' );
-		$this->assertStringNotContainsString( '?gf-download=', $output, 
+		$this->assertStringNotContainsString( '?gf-download=', $output,
 			'Member area should NOT have secure download parameters for logged-in users' );
-		
+
 		// Clean up
 		wp_set_current_user( 0 );
 		remove_all_filters( $bypass_filter );
