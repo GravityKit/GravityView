@@ -263,21 +263,17 @@
 			   })
 
 			   .on( 'keydown', '.gv-add-field', function( e ) {
-				   if ( e.key !== 'Enter' && e.key !== ' ' && e.keyCode !== 13 && e.keyCode !== 32 ) {
+				   if ( 13 !== e.keyCode && 32 !== e.keyCode ) {
 					   return true;
 				   }
-				   e.preventDefault();
 				   $( this ).parent( '.gv-fields' ).addClass( 'trigger--active' );
 			   })
 
 			   .on( 'keyup', '.gv-add-field', function( e ) {
-				   if ( e.key !== 'Enter' && e.key !== ' ' && e.keyCode !== 13 && e.keyCode !== 32 ) {
+				   if ( 13 !== e.keyCode && 32 !== e.keyCode ) {
 					   return true;
 				   }
-				   e.preventDefault();
-				   const $button = $( this );
-				   $button.parent( '.gv-fields' ).removeClass( 'trigger--active' );
-				   $button.trigger( 'click' );
+				   $( this ).parent( '.gv-fields' ).removeClass( 'trigger--active' );
 			   })
 
 			   .on( 'gravityview/dropdown/activate gravityview/dropdown/install', vcfg.enableLockedTemplate )

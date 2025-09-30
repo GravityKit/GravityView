@@ -27,7 +27,16 @@ if ( ! $gravityview->entries->count() ) {
 	?>
 	<div class="gv-list-view <?php echo esc_attr( $no_results_css_class ); ?>">
 		<div class="gv-list-view-title">
-			<h3><?php echo gv_no_results( true, $gravityview ); ?></h3>
+		<?php
+			$output = gv_no_results( true, $gravityview );
+
+			if ( strpos( $output, '<form' ) !== false ) {
+				echo $output;
+			} else {
+				// Maintain backwards compatibility with prior output.
+				echo '<h3>' . $output . '</h3>';
+			}
+		?>
 		</div>
 	</div>
 	<?php

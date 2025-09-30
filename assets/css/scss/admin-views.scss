@@ -93,28 +93,8 @@ $gv-overlay-index: 10000;
 		position: relative;
 		background-color: #FFF;
 
-		&:hover {
-			> .gv-grid-row-actions {
-				opacity: 1;
-				pointer-events: auto;
-			}
-		}
-
+		&:hover,
 		&:focus-within {
-			> .gv-grid-row-actions {
-				opacity: 1;
-				pointer-events: auto;
-			}
-		}
-
-		&.is-keyboard-nav {
-			.gv-grid-row-handle {
-				display: none;
-			}
-		}
-
-		&:focus-within {
-			// Keep row controls visible during keyboard navigation.
 			> .gv-grid-row-actions {
 				display: flex;
 			}
@@ -154,17 +134,9 @@ $gv-overlay-index: 10000;
 		background-color: #FFF;
 		border-radius: 3px;
 		border: 1px solid #D5D7E9;
-		display: flex;
-		opacity: 0;
-		pointer-events: none;
+		display: none;
 		overflow: hidden;
 		box-shadow: 0 0 20px 0 #D5D7E9;
-		transition: opacity 150ms ease;
-	}
-
-	.gv-grid-row-actions:focus-within {
-		opacity: 1;
-		pointer-events: auto;
 	}
 
 	.gv-grid-rows-container {
@@ -189,33 +161,23 @@ $gv-overlay-index: 10000;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
-		background: transparent;
-		border: 0;
+		background: none;
+		border: none;
 		color: inherit;
-		line-height: 1;
+		font: inherit;
 
 		& + .gv-grid-row-action {
 			border-left: 1px solid #D5D7E9;
 		}
 
-		&:hover {
+		&:hover,
+		&:focus {
 			color: $color-blue-50;
+			outline: none;
 		}
 
 		&:focus {
-			outline: 2px solid $color-blue-40;
-			outline-offset: 1px;
-		}
-
-		&.gv-grid-row-move-up,
-		&.gv-grid-row-move-down {
-			display: none;
-		}
-
-		.dashicons {
-			font-size: 16px;
-			width: 16px;
-			height: 16px;
+			box-shadow: inset 0 0 0 2px $color-blue-50;
 		}
 	}
 
@@ -466,6 +428,7 @@ $gv-overlay-index: 10000;
 	}
 
 	&:hover .gv-view-types-hover,
+	&:focus-within .gv-view-types-hover,
 	&.active .gv-view-types-hover {
 		display: block;
 	}
