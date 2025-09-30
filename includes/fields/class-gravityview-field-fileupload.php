@@ -52,9 +52,9 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			'merge_tags' => false,
 			'group'      => 'display',
 			'article'    => [
-				'id'  => '68adf3756587963d509160bd',
+				'id'  => '68d62421a4a2be1d00c2b039',
 				'type' => 'modal',
-				'url' => 'https://docs.gravitykit.com/article/1088-direct-file-path',
+				'url' => 'https://docs.gravitykit.com/article/1102-using-direct-file-paths-for-media-in-gravityview',
 			],
 		);
 
