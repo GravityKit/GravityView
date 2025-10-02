@@ -21,11 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.48 on October 2, 2025  =
+
+This update improves responsiveness and spacing in Layout Builder layouts, and fixes an issue that could prevent GravityKit settings from saving.
 
 #### ✨ Improved
-* Layout Builder layout responsive display on smaller screens.
-* Spacing between Layout Builder entries: added a margin to the top of each entry.
+* Layout Builder layouts:
+  - Responsive display on smaller screens;
+  - Added top margin to each entry for clearer visual separation.
+
+#### 🐛 Fixed
+* Saving GravityKit settings could fail in certain situations.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.0.
 
 = 2.47 on September 25, 2025 =
 
