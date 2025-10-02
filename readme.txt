@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### ✨ Improved
 * Layout Builder layout responsive display on smaller screens.
+* Spacing between Layout Builder entries: added a margin to the top of each entry.
 
 = 2.47 on September 25, 2025 =
 
