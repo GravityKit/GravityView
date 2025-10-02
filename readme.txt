@@ -26,9 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 This update improves responsiveness and spacing in Layout Builder layouts, and fixes an issue that could prevent GravityKit settings from saving.
 
 #### ✨ Improved
-* Layout Builder layouts:
-  - Responsive display on smaller screens;
-  - Added top margin to each entry for clearer visual separation.
+* Layout Builder layouts are easier to view on smaller screens and entries are now more clearly separated.
 
 #### 🐛 Fixed
 * Saving GravityKit settings could fail in certain situations.
