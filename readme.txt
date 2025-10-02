@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.8.2
+Tested up to: 6.8.3
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -20,6 +20,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.48 on October 2, 2025 =
+
+This update improves responsiveness and spacing in Layout Builder layouts, and fixes an issue that could prevent GravityKit settings from saving.
+
+#### ✨ Improved
+* Layout Builder layouts are easier to view on smaller screens and entries are now more clearly separated.
+
+#### 🐛 Fixed
+* Saving GravityKit settings could fail in certain situations.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.0.
 
 = 2.47 on September 25, 2025 =
 

@@ -47,14 +47,14 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			'type'       => 'checkbox',
 			'label'      => __( 'Use Direct File Path for Media:', 'gk-gravityview' ),
 			'desc'       => __( 'Point to uploaded files directly instead of using secure download URLs. This improves performance.', 'gk-gravityview' ),
-			'tooltip'    => __( 'This improves performance when displaying media but reduces file security. Non-embeddable files (PDFs, documents, etc.) will still use secure download paths.', 'gk-gravityview' ),
+			'tooltip'    => __( 'This improves performance when displaying media and PDFs, but reduces file security. Non-embeddable files (Word documents, spreadsheets, etc.) will still use secure download paths.', 'gk-gravityview' ),
 			'value'      => false,
 			'merge_tags' => false,
 			'group'      => 'display',
 			'article'    => [
-				'id'  => '68adf3756587963d509160bd',
+				'id'  => '68d62421a4a2be1d00c2b039',
 				'type' => 'modal',
-				'url' => 'https://docs.gravitykit.com/article/1088-direct-file-path',
+				'url' => 'https://docs.gravitykit.com/article/1102-using-direct-file-paths-for-media-in-gravityview',
 			],
 		);
 
