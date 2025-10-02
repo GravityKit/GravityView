@@ -9,14 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-09-26T01:40:13+00:00\n"
+"POT-Creation-Date: 2025-10-02T18:23:28-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
-#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -26,17 +25,14 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
-#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
-#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:409
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:198
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:199
@@ -413,7 +409,7 @@ msgid "Specify the duration in seconds that entry data should remain cached befo
 msgstr ""
 
 #: future/includes/class-gv-settings-plugin.php:330
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:583
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:585
 msgid "General"
 msgstr ""
 
@@ -1556,7 +1552,7 @@ msgstr ""
 #: includes/class-admin-views.php:672
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:206
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:305
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:379
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:392
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:103
 msgid "Settings"
 msgstr ""
@@ -3966,7 +3962,7 @@ msgid "Point to uploaded files directly instead of using secure download URLs. T
 msgstr ""
 
 #: includes/fields/class-gravityview-field-fileupload.php:50
-msgid "This improves performance when displaying media but reduces file security. Non-embeddable files (PDFs, documents, etc.) will still use secure download paths."
+msgid "This improves performance when displaying media and PDFs, but reduces file security. Non-embeddable files (Word documents, spreadsheets, etc.) will still use secure download paths."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-fileupload.php:63
@@ -5928,118 +5924,123 @@ msgstr ""
 msgid "The file appears to be corrupted or was modified during download."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:421
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:423
 msgid "You are using a version of GravityView that does not yet support the new GravityKit settings framework."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:424
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:426
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "As such, the settings below will not apply to GravityView pages and you will have to continue using the [link]old settings[/link] until an updated version of the plugin is available. We apologize for the inconvenience as we work to update our products in a timely fashion."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:475
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:477
 msgid "Group GravityKit Products"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:476
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:478
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:324
 msgid "Aggregate all GravityKit products into a single entry on the Plugins page for a cleaner view and easier management."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:481
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:483
 msgid "GravityKit Menu Position"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:482
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:484
 msgid "Select the menu below which to place the GravityKit menu."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:491
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:493
 msgid "GravityKit Menu Page"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:492
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:494
 msgid "Select the page to open when clicking the GravityKit menu."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:498
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:500
 msgid "Display \"Powered By\" Link"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:499
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:501
 msgid "A \"Powered by GravityKit\" link will be displayed below some GravityKit products. Help us spread the word!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:505
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:507
 msgid "Affiliate ID"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:507
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:509
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Earn money when people clicking your links become GravityKit customers. [link]Register as an affiliate[/link]!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:523
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:525
 msgid "Become a Beta Tester"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:524
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:526
 msgid "You will have early access to the latest GravityKit products. There may be bugs! If you encounter an issue, report it to help make GravityKit products better!"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:535
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:537
 msgid "Support Email"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:536
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:538
 msgid "In order to provide responses to your support requests, please provide your email address."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:540
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:542
 msgid "Support email is required"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:544
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:546
 msgid "Please provide a valid email address"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:552
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:554
 msgid "Show Support Port"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:553
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:555
 msgid "The Support Port provides quick access to how-to articles and tutorials. For administrators, it also makes it easy to contact support."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:555
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:557
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "[image]Support Port icon[/image]"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:570
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:572
 msgid "Enable No-Conflict Mode"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:571
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:573
 msgid "No-conflict mode prevents extraneous scripts and styles from being printed on GravityKit admin pages, reducing conflicts with other plugins and themes."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:587
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:589
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:313
 msgid "Support"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:591
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:593
 msgid "Technical"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:791
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:797
 msgid "Unknown Plugin"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Core.php:793
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:799
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "GravityKit Foundation [version] (loaded by [plugin])."
+msgstr ""
+
+#. translators: [plugins] is replaced with a list of plugin names.
+#: vendor_prefixed/gravitykit/foundation/src/Core.php:950
+msgid "[plugins] contain both namespaced and non-namespaced Foundation, which may cause conflicts with the standalone Foundation plugin."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:211
@@ -6858,24 +6859,24 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "[plugin] requires PHP [version] or newer."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:580
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:593
 msgid "Invalid request."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:601
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:617
 msgid "Plugin settings data not found."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:632
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:648
 msgctxt "Placeholders inside [] are not to be translated."
 msgid "Setting [setting] has unmet requirements."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:675
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:695
 msgid "Settings were successfully saved."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:677
+#: vendor_prefixed/gravitykit/foundation/src/Settings/Framework.php:697
 msgid "Error saving settings."
 msgstr ""
 
@@ -6899,36 +6900,36 @@ msgctxt "Placeholders inside [] are not to be translated."
 msgid "Settings that failed validation: [settings]."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:140
+#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:141
 msgid "Enable WordPress Debug Logging"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:169
+#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:170
 msgid "WP Debug"
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:633
+#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:643
 msgid "The log file is empty."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:637
+#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:647
 msgid "Debug log file exists but is not accessible."
 msgstr ""
 
 #. Translators: Do not translate the placeholders inside [].
-#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:648
+#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:658
 msgid "Download [link]debug log[/link] ([size] / [date_modified])."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:659
+#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:669
 msgid "Debug log file exists but download link could not be generated."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:724
+#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:734
 msgid "WordPress debugging is enabled by the host, but the log file is empty."
 msgstr ""
 
-#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:742
+#: vendor_prefixed/gravitykit/foundation/src/Settings/WPDebugSettings.php:752
 msgid "The [code]wp-config.php[/code] file is not writable. Debug settings cannot be modified."
 msgstr ""
 
@@ -8303,84 +8304,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/sort-selector.js:75
 msgid "No Sorting Fields found"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""
