@@ -55,3 +55,16 @@
         }
     }
 }
+
+@import '../_responsive';
+
+@include respond($tablet-portrait) {
+    .gv-layout-builder-view .gv-grid-row {
+        flex-direction: column;
+    }
+
+    .gv-layout-builder-view .gv-grid-col-1-3,
+    .gv-layout-builder-view .gv-grid-col-1-1 {
+        width: 100%;
+    }
+}

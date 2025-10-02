@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### ✨ Improved
+* Layout Builder layout responsive display on smaller screens.
+
 = 2.47 on September 25, 2025 =
 
 This release improves the handling of shortcodes and File Upload fields, and fixes an issue where a View would fail to render.
