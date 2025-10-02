@@ -95,7 +95,7 @@ class View_Settings extends Settings {
 					'desc'              => __( 'By default, only approved entries are displayed in a View. When enabled, this setting prevents unapproved or disapproved entries from appearing in results. If disabled, entries with all approval statuses will be visible, including disapproved entries.', 'gk-gravityview' ),
 					'tooltip'           => false,
 					'value'             => 1,
-					'show_in_shortcode' => true,
+					'show_in_shortcode' => false,
 					'article'           => array(
 						'id'  => '5bad1a33042863158cc6d396',
 						'url' => 'https://docs.gravitykit.com/article/490-entry-approval-gravity-forms',
