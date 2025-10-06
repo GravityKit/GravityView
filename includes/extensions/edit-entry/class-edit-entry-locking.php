@@ -18,6 +18,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 class GravityView_Edit_Entry_Locking {
 	const LOCK_CACHE_KEY_PREFIX = 'lock_entry_';
 	const LOCK_TIMESTAMP_PREFIX = 'lock_timestamp_entry_';
+	const LOCK_INTERVAL_PREFIX = 'lock_interval_entry_';
 
 	/**
 	 * The interval in seconds to check for locked entries in the UI.
@@ -27,12 +28,12 @@ class GravityView_Edit_Entry_Locking {
 	const LOCK_CHECK_INTERVAL = 10;
 
 	/**
-	 * How long before we consider a lock "stale" (no heartbeat).
-	 * Should be ~2x the heartbeat interval to account for network delays.
+	 * Multiplier for calculating stale threshold.
+	 * Stale threshold = heartbeat_interval * STALE_THRESHOLD_MULTIPLIER.
 	 *
 	 * @since TBD
 	 */
-	const LOCK_STALE_THRESHOLD = 20; // 20 seconds = 2 missed heartbeats
+	const STALE_THRESHOLD_MULTIPLIER = 2;
 
 	/**
 	 * Load extension entry point.
@@ -243,6 +244,11 @@ class GravityView_Edit_Entry_Locking {
 
 		$request_check_interval = $view ? $view->settings->get( 'edit_locking_check_interval', self::LOCK_CHECK_INTERVAL ) : self::LOCK_CHECK_INTERVAL;
 
+		// If current user has the lock, ensure the interval is stored
+		if ( ! $lock_user_id && get_current_user_id() ) {
+			$this->update_lock_interval( $entry['id'], $request_check_interval );
+		}
+
 		// Gravity forms locking checks if #wpwrap exist in the admin dashboard,
 		// So we have to add the lock UI to the body before the gforms locking script is loaded.
 		wp_add_inline_script( 'heartbeat', '
@@ -288,14 +294,26 @@ class GravityView_Edit_Entry_Locking {
 		$lock_user_id = $this->check_lock( $entry['id'] );
 
 		$vars = [
-			'hasLock'    => ! $lock_user_id ? 1 : 0,
-			'lockUI'     => $this->get_lock_ui( $lock_user_id, $entry ),
-			'objectID'   => $entry['id'],
-			'objectType' => 'entry',
-			'strings'    => $strings,
+			'hasLock'           => ! $lock_user_id ? 1 : 0,
+			'lockUI'            => $this->get_lock_ui( $lock_user_id, $entry ),
+			'objectID'          => $entry['id'],
+			'objectType'        => 'entry',
+			'strings'           => $strings,
+			'heartbeatInterval' => $request_check_interval,
 		];
 
 		wp_localize_script( 'gforms_locking', 'gflockingVars', $vars );
+
+		// Add script to send heartbeat interval with every heartbeat request
+		wp_add_inline_script( 'gforms_locking', '
+			( function( $ ) {
+				$( document ).on( "heartbeat-send.gform-refresh-lock-entry", function( e, data ) {
+					if ( data["gform-refresh-lock-entry"] && window.gflockingVars ) {
+						data["gform-refresh-lock-entry"].heartbeatInterval = window.gflockingVars.heartbeatInterval;
+					}
+				} );
+			} )( jQuery );
+		', 'after' );
 	}
 
 	/**
@@ -538,6 +556,7 @@ class GravityView_Edit_Entry_Locking {
 	public function delete_lock_meta( $entry_id ) {
 		GFCache::delete( $this->get_lock_cache_key_for_entry( $entry_id ) );
 		GFCache::delete( self::LOCK_TIMESTAMP_PREFIX . $entry_id );
+		GFCache::delete( self::LOCK_INTERVAL_PREFIX . $entry_id );
 	}
 
 	/**
@@ -573,14 +592,74 @@ class GravityView_Edit_Entry_Locking {
 	}
 
 	/**
-	 * Checks if a lock is stale (holder hasn't sent heartbeat recently).
-	 * A lock is considered stale if no heartbeat received in 20+ seconds.
+	 * Updates the heartbeat interval for a lock.
+	 * Stores the View's custom heartbeat interval with the lock.
+	 *
+	 * @since TBD
+	 *
+	 * @param int $entry_id The entry ID.
+	 * @param int $interval The heartbeat interval in seconds.
+	 *
+	 * @return void
+	 */
+	protected function update_lock_interval( $entry_id, $interval ) {
+		GFCache::set(
+			self::LOCK_INTERVAL_PREFIX . $entry_id,
+			(int) $interval,
+			true,
+			1500
+		);
+	}
+
+	/**
+	 * Gets the stored heartbeat interval for a lock.
 	 *
 	 * @since TBD
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
-	 * @return bool True if lock is stale (no heartbeat for 20+ seconds).
+	 * @return int The heartbeat interval in seconds, or default if not found.
+	 */
+	protected function get_lock_interval( $entry_id ) {
+		$interval = GFCache::get( self::LOCK_INTERVAL_PREFIX . $entry_id );
+
+		return $interval ? (int) $interval : self::LOCK_CHECK_INTERVAL;
+	}
+
+	/**
+	 * Gets the stale threshold for a specific entry's lock.
+	 * Calculates based on the stored heartbeat interval.
+	 *
+	 * @since TBD
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return int Stale threshold in seconds (interval * multiplier).
+	 */
+	protected function get_lock_stale_threshold( $entry_id ) {
+		$interval = $this->get_lock_interval( $entry_id );
+		$threshold = $interval * self::STALE_THRESHOLD_MULTIPLIER;
+
+		/**
+		 * Filters the stale lock threshold for an entry.
+		 *
+		 * @since TBD
+		 *
+		 * @param int $threshold The calculated threshold in seconds.
+		 * @param int $entry_id  The entry ID.
+		 * @param int $interval  The heartbeat interval for this lock.
+		 */
+		return (int) apply_filters( 'gk/gravityview/edit-entry/lock-stale-threshold', $threshold, $entry_id, $interval );
+	}
+
+	/**
+	 * Checks if a lock is stale (holder hasn't sent heartbeat recently).
+	 *
+	 * @since TBD
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return bool True if lock is stale (2+ missed heartbeats).
 	 */
 	protected function is_lock_stale( $entry_id ) {
 		$timestamp = $this->get_lock_timestamp( $entry_id );
@@ -591,8 +670,9 @@ class GravityView_Edit_Entry_Locking {
 		}
 
 		$age = time() - $timestamp;
+		$threshold = $this->get_lock_stale_threshold( $entry_id );
 
-		return $age > self::LOCK_STALE_THRESHOLD;
+		return $age > $threshold;
 	}
 
 	/**
@@ -700,6 +780,11 @@ class GravityView_Edit_Entry_Locking {
 				// Update timestamp to mark this session as active
 				$this->update_lock_timestamp( $object_id );
 
+				// Store the heartbeat interval if provided
+				if ( isset( $received['heartbeatInterval'] ) && $received['heartbeatInterval'] > 0 ) {
+					$this->update_lock_interval( $object_id, $received['heartbeatInterval'] );
+				}
+
 				if ( ( $lock_requester = $this->check_lock_request( $object_id ) ) && ( $user = get_userdata( $lock_requester ) ) ) {
 					$lock_request = [
 						'text' => sprintf( __( $this->get_string( 'lock_requested' ), 'gk-gravityview' ), $user->display_name ),
@@ -756,7 +841,7 @@ class GravityView_Edit_Entry_Locking {
 
 			// Check if lock is stale (holder closed tab)
 			if ( $this->is_lock_stale( $object_id ) ) {
-				// Lock holder hasn't sent heartbeat in 20+ seconds - they're gone!
+				// Lock holder hasn't sent heartbeat (2+ missed) - they're gone!
 				// Clean up old lock and grant immediately
 				$this->delete_lock_meta( $object_id );
 				$this->delete_lock_request_meta( $object_id );
