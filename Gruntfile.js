@@ -1,5 +1,8 @@
 module.exports = function(grunt) {
 
+	// Suppress shelljs warnings for Node 20
+	process.removeAllListeners('warning');
+
 	// Only need to install one package and this will load them all for you. Run:
 	// npm install --save-dev load-grunt-tasks
 	require('load-grunt-tasks')(grunt);
@@ -248,6 +251,7 @@ module.exports = function(grunt) {
 						'!tests/**',
 						'!tmp/**',
 						'!vendor/**',
+						'!vendor_prefixed/**',
 						'!includes/lib/xml-parsers/**',
 						'!includes/lib/jquery-cookie/**',
 						'!.test_dependencies/**',
