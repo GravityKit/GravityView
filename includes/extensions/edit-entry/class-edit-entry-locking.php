@@ -18,7 +18,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
 class GravityView_Edit_Entry_Locking {
 	const LOCK_CACHE_KEY_PREFIX = 'lock_entry_';
 	const LOCK_TIMESTAMP_PREFIX = 'lock_timestamp_entry_';
-	const LOCK_INTERVAL_PREFIX = 'lock_interval_entry_';
+	const LOCK_INTERVAL_PREFIX  = 'lock_interval_entry_';
 
 	/**
 	 * The interval in seconds to check for locked entries in the UI.
@@ -60,7 +60,6 @@ class GravityView_Edit_Entry_Locking {
 		add_action( 'wp_ajax_gf_reject_lock_request_entry', [ $this, 'ajax_reject_lock_request' ], 1 );
 		add_action( 'wp_ajax_nopriv_gf_lock_request_entry', [ $this, 'ajax_lock_request' ] );
 		add_action( 'wp_ajax_nopriv_gf_reject_lock_request_entry', [ $this, 'ajax_reject_lock_request' ] );
-	
 	}
 
 	/**
@@ -251,7 +250,9 @@ class GravityView_Edit_Entry_Locking {
 
 		// Gravity forms locking checks if #wpwrap exist in the admin dashboard,
 		// So we have to add the lock UI to the body before the gforms locking script is loaded.
-		wp_add_inline_script( 'heartbeat', '
+		wp_add_inline_script(
+            'heartbeat',
+            '
 			jQuery( document ).ready( function( $ ) {
 					if ( $( "#wpwrap" ).length === 0 ) {
 						var lockUI = ' . json_encode( $this->get_lock_ui( $lock_user_id, $entry ) ) . ';
@@ -260,12 +261,13 @@ class GravityView_Edit_Entry_Locking {
 				
 					if ( typeof wp !== "undefined" && wp.heartbeat ) {
 						setTimeout( function() {
-							wp.heartbeat.interval( ' . ( int ) $request_check_interval . ', 0 );
+							wp.heartbeat.interval( ' . (int) $request_check_interval . ', 0 );
 						}, 1000 );	
 					}
 					
 				} );
-			' );
+			'
+        );
 
 		$min          = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 		$locking_path = GFCommon::get_base_url() . '/includes/locking/';
@@ -274,11 +276,14 @@ class GravityView_Edit_Entry_Locking {
 		wp_enqueue_style( 'gforms_locking_css', $locking_path . "css/locking{$min}.css", [ 'edit' ], GFCommon::$version );
 
 		// add inline css to hide notification-dialog-wrap if it has the hidden class
-		wp_add_inline_style( 'gforms_locking_css', '
+		wp_add_inline_style(
+            'gforms_locking_css',
+            '
 			.notification-dialog-wrap.hidden {
 				display: none;
 			}
-		' );
+		'
+        );
 
 		$translations = array_map( 'wp_strip_all_tags', $this->get_strings() );
 
@@ -305,7 +310,9 @@ class GravityView_Edit_Entry_Locking {
 		wp_localize_script( 'gforms_locking', 'gflockingVars', $vars );
 
 		// Add script to send heartbeat interval with every heartbeat request
-		wp_add_inline_script( 'gforms_locking', '
+		wp_add_inline_script(
+            'gforms_locking',
+            '
 			( function( $ ) {
 				$( document ).on( "heartbeat-send.gform-refresh-lock-entry", function( e, data ) {
 					if ( data["gform-refresh-lock-entry"] && window.gflockingVars ) {
@@ -313,7 +320,9 @@ class GravityView_Edit_Entry_Locking {
 					}
 				} );
 			} )( jQuery );
-		', 'after' );
+		',
+            'after'
+        );
 	}
 
 	/**
@@ -374,7 +383,7 @@ class GravityView_Edit_Entry_Locking {
 
 		}
 
-		$html = '<div id="gform-lock-dialog" class="notification-dialog-wrap' . $hidden . '">
+		$html  = '<div id="gform-lock-dialog" class="notification-dialog-wrap' . $hidden . '">
                     <div class="notification-dialog-background"></div>
                     <div class="notification-dialog">' . $message . '</div>';
 		$html .= '</div>';
@@ -637,7 +646,7 @@ class GravityView_Edit_Entry_Locking {
 	 * @return int Stale threshold in seconds (interval * multiplier).
 	 */
 	protected function get_lock_stale_threshold( $entry_id ) {
-		$interval = $this->get_lock_interval( $entry_id );
+		$interval  = $this->get_lock_interval( $entry_id );
 		$threshold = $interval * self::STALE_THRESHOLD_MULTIPLIER;
 
 		/**
@@ -669,7 +678,7 @@ class GravityView_Edit_Entry_Locking {
 			return true;
 		}
 
-		$age = time() - $timestamp;
+		$age       = time() - $timestamp;
 		$threshold = $this->get_lock_stale_threshold( $entry_id );
 
 		return $age > $threshold;
@@ -913,5 +922,4 @@ class GravityView_Edit_Entry_Locking {
 
 		return $response;
 	}
-
 }
