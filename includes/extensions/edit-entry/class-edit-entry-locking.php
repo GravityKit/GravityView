@@ -17,6 +17,7 @@ if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
  */
 class GravityView_Edit_Entry_Locking {
 	const LOCK_CACHE_KEY_PREFIX = 'lock_entry_';
+	const LOCK_TIMESTAMP_PREFIX = 'lock_timestamp_entry_';
 
 	/**
 	 * The interval in seconds to check for locked entries in the UI.
@@ -24,6 +25,14 @@ class GravityView_Edit_Entry_Locking {
 	 * @since 2.38.0
 	 */
 	const LOCK_CHECK_INTERVAL = 10;
+
+	/**
+	 * How long before we consider a lock "stale" (no heartbeat).
+	 * Should be ~2x the heartbeat interval to account for network delays.
+	 *
+	 * @since TBD
+	 */
+	const LOCK_STALE_THRESHOLD = 20; // 20 seconds = 2 missed heartbeats
 
 	/**
 	 * Load extension entry point.
@@ -50,10 +59,7 @@ class GravityView_Edit_Entry_Locking {
 		add_action( 'wp_ajax_gf_reject_lock_request_entry', [ $this, 'ajax_reject_lock_request' ], 1 );
 		add_action( 'wp_ajax_nopriv_gf_lock_request_entry', [ $this, 'ajax_lock_request' ] );
 		add_action( 'wp_ajax_nopriv_gf_reject_lock_request_entry', [ $this, 'ajax_reject_lock_request' ] );
-		
-		// Add AJAX endpoint for immediate lock release when user navigates away
-		add_action( 'wp_ajax_gv_release_entry_lock', [ $this, 'ajax_release_entry_lock' ] );
-		add_action( 'wp_ajax_nopriv_gv_release_entry_lock', [ $this, 'ajax_release_entry_lock' ] );
+	
 	}
 
 	/**
@@ -252,16 +258,6 @@ class GravityView_Edit_Entry_Locking {
 						}, 1000 );	
 					}
 					
-					// Simple cleanup when user navigates away from edit page
-					$( window ).on( "beforeunload pagehide", function() {
-						if ( navigator.sendBeacon ) {
-							var formData = new FormData();
-							formData.append( "action", "gv_release_entry_lock" );
-							formData.append( "entry_id", "' . (int) $entry['id'] . '" );
-							formData.append( "nonce", "' . wp_create_nonce( 'gv_release_lock_' . $entry['id'] ) . '" );
-							navigator.sendBeacon( "' . admin_url( 'admin-ajax.php' ) . '", formData );
-						}
-					} );
 				} );
 			' );
 
@@ -541,6 +537,62 @@ class GravityView_Edit_Entry_Locking {
 	 */
 	public function delete_lock_meta( $entry_id ) {
 		GFCache::delete( $this->get_lock_cache_key_for_entry( $entry_id ) );
+		GFCache::delete( self::LOCK_TIMESTAMP_PREFIX . $entry_id );
+	}
+
+	/**
+	 * Updates the timestamp of the last heartbeat for a lock.
+	 * This tracks when the lock holder last sent a heartbeat to detect stale sessions.
+	 *
+	 * @since TBD
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return void
+	 */
+	protected function update_lock_timestamp( $entry_id ) {
+		GFCache::set(
+			self::LOCK_TIMESTAMP_PREFIX . $entry_id,
+			time(),
+			true,
+			1500
+		);
+	}
+
+	/**
+	 * Gets the timestamp of the last heartbeat for a lock.
+	 *
+	 * @since TBD
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return int|null Timestamp or null if not found.
+	 */
+	protected function get_lock_timestamp( $entry_id ) {
+		return GFCache::get( self::LOCK_TIMESTAMP_PREFIX . $entry_id );
+	}
+
+	/**
+	 * Checks if a lock is stale (holder hasn't sent heartbeat recently).
+	 * A lock is considered stale if no heartbeat received in 20+ seconds.
+	 *
+	 * @since TBD
+	 *
+	 * @param int $entry_id The entry ID.
+	 *
+	 * @return bool True if lock is stale (no heartbeat for 20+ seconds).
+	 */
+	protected function is_lock_stale( $entry_id ) {
+		$timestamp = $this->get_lock_timestamp( $entry_id );
+
+		if ( ! $timestamp ) {
+			// No timestamp means old lock - consider stale
+			return true;
+		}
+
+		$age = time() - $timestamp;
+
+		return $age > self::LOCK_STALE_THRESHOLD;
 	}
 
 	/**
@@ -564,6 +616,7 @@ class GravityView_Edit_Entry_Locking {
 		}
 
 		$this->update_lock_meta( $entry_id, $user_id );
+		$this->update_lock_timestamp( $entry_id );
 
 		return $user_id;
 	}
@@ -641,7 +694,11 @@ class GravityView_Edit_Entry_Locking {
 
 				$send['lock_error'] = $error;
 			} elseif ( $new_lock = $this->set_lock( $object_id ) ) {
+				// Successfully acquired/refreshed lock
 				$send['new_lock'] = $new_lock;
+
+				// Update timestamp to mark this session as active
+				$this->update_lock_timestamp( $object_id );
 
 				if ( ( $lock_requester = $this->check_lock_request( $object_id ) ) && ( $user = get_userdata( $lock_requester ) ) ) {
 					$lock_request = [
@@ -695,8 +752,34 @@ class GravityView_Edit_Entry_Locking {
 		$user_id = $this->check_lock( $object_id );
 
 		if ( $user_id && get_userdata( $user_id ) ) {
-			$send['status'] = $this->get_lock_request_meta( $object_id ) ? 'pending' : 'deleted';
+			// Entry is locked by another user
+
+			// Check if lock is stale (holder closed tab)
+			if ( $this->is_lock_stale( $object_id ) ) {
+				// Lock holder hasn't sent heartbeat in 20+ seconds - they're gone!
+				// Clean up old lock and grant immediately
+				$this->delete_lock_meta( $object_id );
+				$this->delete_lock_request_meta( $object_id );
+
+				if ( $this->set_lock( $object_id ) ) {
+					$send['status'] = 'granted';
+
+					/**
+					 * Fires when a lock is automatically granted due to stale session.
+					 *
+					 * @since TBD
+					 *
+					 * @param int $object_id The entry ID.
+					 * @param int $user_id   The previous lock holder's user ID.
+					 */
+					do_action( 'gk/gravityview/edit-entry/lock-granted-stale', $object_id, $user_id );
+				}
+			} else {
+				// Lock holder is still active - normal request flow
+				$send['status'] = $this->get_lock_request_meta( $object_id ) ? 'pending' : 'deleted';
+			}
 		} elseif ( $this->set_lock( $object_id ) ) {
+			// No lock exists - grant immediately
 			$send['status'] = 'granted';
 		}
 
@@ -746,34 +829,4 @@ class GravityView_Edit_Entry_Locking {
 		return $response;
 	}
 
-	/**
-	 * AJAX handler to release entry lock when user navigates away.
-	 *
-	 * @since TBD
-	 *
-	 * @return void
-	 */
-	public function ajax_release_entry_lock() {
-		$entry_id = absint( $_POST['entry_id'] ?? 0 );
-		$nonce    = sanitize_text_field( $_POST['nonce'] ?? '' );
-
-		if ( ! $entry_id || ! wp_verify_nonce( $nonce, 'gv_release_lock_' . $entry_id ) ) {
-			wp_send_json_error( 'Invalid request' );
-		}
-
-		$current_user_id = get_current_user_id();
-		if ( ! $current_user_id ) {
-			wp_send_json_error( 'User not authenticated' );
-		}
-
-		$lock_user_id = $this->get_lock_meta( $entry_id );
-
-		// Release lock if current user has it
-		if ( $lock_user_id == $current_user_id ) {
-			$this->delete_lock_meta( $entry_id );
-			wp_send_json_success( 'Lock released' );
-		} else {
-			wp_send_json_error( 'Lock not owned by current user' );
-		}
-	}
 }
