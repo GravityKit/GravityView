@@ -1,7 +1,13 @@
 module.exports = function(grunt) {
 
-	// Suppress shelljs warnings for Node 20
-	process.removeAllListeners('warning');
+	// Suppress circular dependency warnings.
+	const originalEmitWarning = process.emitWarning;
+	process.emitWarning = function ( warning, ...args ) {
+		if ( 'string' === typeof warning && warning.includes( 'Accessing non-existent property' ) ) {
+			return;
+		}
+		return originalEmitWarning.call( process, warning, ...args );
+	};
 
 	// Only need to install one package and this will load them all for you. Run:
 	// npm install --save-dev load-grunt-tasks
