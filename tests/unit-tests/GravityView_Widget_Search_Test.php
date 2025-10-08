@@ -2361,4 +2361,94 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 
 		gravityview()->request = new \GV\Frontend_Request();
 	}
+
+	/**
+	 * Test that when only gv_start is provided (single date search), only entries from that specific date are returned.
+	 *
+	 * Previously, when gv_start was provided without gv_end, all entries from that date onwards were returned.
+	 * This test verifies that the fix correctly limits results to the specified date only.
+	 *
+	 * @since TBD
+	 */
+	public function test_single_date_search() {
+		$form                           = $this->factory->form->import_and_get( 'complete.json' );
+
+		$settings                       = \GV\View_Settings::defaults();
+		$settings['show_only_approved'] = 0;
+
+		$post                           = $this->factory->view->create_and_get( [
+			'form_id'     => $form['id'],
+			'template_id' => 'table',
+			'fields'      => [
+				'directory_table-columns' => [
+					wp_generate_password( 16, false ) => [
+						'id'    => '16',
+						'label' => 'Textarea',
+					],
+				],
+			],
+			'widgets'     => [
+				'header_top' => [
+					wp_generate_password( 4, false ) => [
+						'id'            => 'search_bar',
+						'search_fields' => '[{"field":"entry_date","input":"date_range"}]',
+					],
+				],
+			],
+			'settings'    => $settings,
+		] );
+
+		$view                           = \GV\View::from_post( $post );
+
+		// Create entries on different dates.
+		$this->factory->entry->create_and_get( [
+			'form_id'      => $form['id'],
+			'status'       => 'active',
+			'date_created' => '2025-09-20 10:00:00',
+			'16'           => 'entry before target date',
+		] );
+
+		$this->factory->entry->create_and_get( [
+			'form_id'      => $form['id'],
+			'status'       => 'active',
+			'date_created' => '2025-09-21 08:30:00',
+			'16'           => 'entry on target date - morning',
+		] );
+
+		$this->factory->entry->create_and_get( [
+			'form_id'      => $form['id'],
+			'status'       => 'active',
+			'date_created' => '2025-09-21 15:45:00',
+			'16'           => 'entry on target date - afternoon',
+		] );
+
+		$this->factory->entry->create_and_get( [
+			'form_id'      => $form['id'],
+			'status'       => 'active',
+			'date_created' => '2025-09-22 09:00:00',
+			'16'           => 'entry after target date',
+		] );
+
+		// Without any date filter, should return all 4 entries.
+		$_GET = [];
+		$this->assertEquals( 4, $view->get_entries()->fetch()->count(), 'Should return all 4 entries when no date filter is applied' );
+
+		// Single date search for 09/21/2025 (only gv_start, no gv_end)
+		// Should return ONLY the 2 entries created on that specific date.
+		$_GET = [ 'gv_start' => '09/21/2025' ];
+		unset( $_GET['gv_end'] );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count(), 'Single date search should return only entries from that specific date' );
+
+		// Single date search for a date with no entries.
+		$_GET = [ 'gv_start' => '09/23/2025' ];
+		unset( $_GET['gv_end'] );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count(), 'Single date search for a date with no entries should return 0' );
+
+		// Single date search for 09/20/2025.
+		$_GET = [ 'gv_start' => '09/20/2025' ];
+		unset( $_GET['gv_end'] );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count(), 'Single date search for 09/20/2025 should return 1 entry' );
+
+		$_GET = [];
+	}
 }

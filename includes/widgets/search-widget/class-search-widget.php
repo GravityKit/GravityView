@@ -801,6 +801,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 					'00:00:00' ) ) { // See https://github.com/gravityview/GravityView/issues/1056
 					$search_criteria['end_date'] = date( 'Y-m-d H:i:s', strtotime( $search_criteria['end_date'] ) - 1 );
 				}
+			} elseif ( ! empty( $curr_start ) ) {
+				// If only start date is provided (single date search), set end_date to end of the same day.
+				$curr_end                    = date( 'Y-m-d H:i:s', strtotime( $curr_start ) + DAY_IN_SECONDS );
+				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
+
+				if ( strpos( $search_criteria['end_date'], '00:00:00' ) ) {
+					$search_criteria['end_date'] = date( 'Y-m-d H:i:s', strtotime( $search_criteria['end_date'] ) - 1 );
+				}
 			}
 		}
 

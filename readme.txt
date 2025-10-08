@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+When using a single-input Entry Date search field, results now include only entries created on the specified date, rather than all entries from that date onward.* 
+
 = 2.48 on October 2, 2025 =
 
 This update improves responsiveness and spacing in Layout Builder layouts, and fixes an issue that could prevent GravityKit settings from saving.
