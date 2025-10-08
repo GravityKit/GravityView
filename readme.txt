@@ -24,7 +24,8 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🐛 Fixed
-When using a single-input Entry Date search field, results now include only entries created on the specified date, rather than all entries from that date onward.* 
+* When using a single-input Entry Date search field, results now include only entries created on the specified date, rather than all entries from that date onward.*
+* File Upload field images were incorrectly displaying in a lightbox when the View's "Enable lightbox for images" setting was disabled, but another field had "Open in a lightbox?" enabled.
 
 = 2.48 on October 2, 2025 =
 
