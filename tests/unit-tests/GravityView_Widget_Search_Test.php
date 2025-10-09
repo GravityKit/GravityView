@@ -2368,7 +2368,7 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	 * Previously, when gv_start was provided without gv_end, all entries from that date onwards were returned.
 	 * This test verifies that the fix correctly limits results to the specified date only.
 	 *
-	 * @since TBD
+	 * @since 2.48.1
 	 */
 	public function test_single_date_search() {
 		$form                           = $this->factory->form->import_and_get( 'complete.json' );
