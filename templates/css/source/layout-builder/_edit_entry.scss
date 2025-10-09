@@ -1,93 +1,110 @@
 .gv-edit-entry-wrapper .gform_wrapper {
-    border: 1px solid $color-border;
-    background: #FFF;
-    padding: $padding 0;
+	border: 1px solid $color-border;
+	background: #FFF;
+	padding: $padding 0;
 }
 
 .gv-edit-entry-wrapper .gform_wrapper {
-    padding: $padding;
+	padding: $padding;
 
-    .gform-footer {
-        margin-top: $padding;
-        background-color: #F7FAFC;
-        padding: $padding $padding*2;
-        border-radius: 4px;
+	div.gform-footer {
+		margin: -$padding;
+		margin-top: $padding;
+		background-color: #F7FAFC;
+		padding: $padding $padding*2;
+		border-radius: 4px;
 
-        #publishing-action {
-            flex: 1;
-        }
+		#publishing-action {
+			flex: 1;
+		}
 
-        input.button,
-        a.btn {
-            font-size: 1em;
-            line-height: 1.3em;
-            text-decoration: none;
-            display: inline-block;
-            border-radius: 4px;
-            padding: 14px 20px;
-            margin: 0;
-            border: 1px solid $color-border;
-            color: $color-primary;
-            cursor: pointer;
+		input.button,
+		a.btn
+		{
+			&,
+			&.gv-button-cancel {
+				background: transparent;
+				font-size: 1rem;
+				line-height: 1.3rem;
+				text-decoration: none;
+				display: inline-block;
+				border-radius: 4px;
+				padding: 14px 20px;
+				margin: 0;
+				border: 1px solid $color-border;
+				color: $color-primary;
+				cursor: pointer;
 
-            &:hover {
-                color: #005680;
-                border-color: #005680;;
-            }
+				&:hover {
+					color: #005680;
+					border-color: #005680;
+				}
+			}
 
-            &.button-primary {
-                background-color: $color-primary;
-                border-color: $color-primary;
-                color: #FFF;
+			&.button-primary {
+				background-color: $color-primary;
+				border-color: $color-primary;
+				color: #FFF;
 
-                &:hover {
-                    background-color: #005680;
-                    border-color: #005680;
-                }
-            }
+				&:hover {
+					background-color: #005680;
+					border-color: #005680;
+				}
+			}
 
-            &.btn-danger {
-                color: $color-danger;
+			&.btn-danger {
+				color: $color-danger;
 
-                &:hover {
-                    background-color: $color-danger;
-                    border-color: $color-danger;
-                    color: #FFF;
-                }
-            }
+				&:hover {
+					background-color: $color-danger;
+					border-color: $color-danger;
+					color: #FFF;
+				}
+			}
 
-            &.gv-button-delete {
-                float: right;
-            }
+			&.gv-button-delete {
+				float: right;
+				background-color: transparent;
+			}
 
-            &.gv-button-cancel {
-                margin-left: 5px;
-                border-color: transparent;
-            }
-        }
-    }
+			&.gv-button-cancel {
+				margin-left: 5px;
+				border-color: transparent;
+			}
+		}
+	}
 
-    .gfield_label,
-    .gform-field-label--type-sub {
-        color: $color-label;
-        font-weight: normal;
-    }
+	.gfield_label,
+	.gform-field-label--type-sub {
+		color: $color-label;
+		font-weight: normal;
+	}
 
-    .gfield_label {
-        margin-bottom: 3px;
-    }
+	.gfield_label {
+		margin-bottom: 3px;
+	}
 
-    label.gform-field-label--type-sub {
-        text-transform: uppercase;
-        font-size: .7em;
-        padding-left: 14px;
-    }
+	label.gform-field-label--type-sub {
+		text-transform: uppercase;
+		font-size: .7em;
+		padding-left: 14px;
+	}
 
-    .ginput_container {
-        input {
-            border: 1px solid $color-border;
-            border-radius: 4px;
-            padding: 13px;
-        }
-    }
+	.ginput_container {
+		input, select, textarea {
+			border: 1px solid $color-border;
+			border-radius: 4px;
+		}
+
+		input[type=checkbox] {
+			width: 20px;
+			height: 20px;
+			padding: 0;
+		}
+
+		select[size], select[multiple] {
+			background: none;
+			appearance: initial;
+		}
+	}
 }
