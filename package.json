@@ -22,7 +22,7 @@
     "grunt-newer": "^1.1.0",
     "grunt-potomo": "^3.1.0",
     "grunt-sass": "^3.1.0",
-    "grunt-wp-i18n": "^1.0.3",
+    "grunt-wp-i18n": "^1.0.4",
     "grunt-wp-readme-to-markdown": "^2.1.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",

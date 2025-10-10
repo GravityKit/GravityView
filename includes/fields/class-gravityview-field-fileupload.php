@@ -161,7 +161,19 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			$base_id = $post ? $post->ID : $context->view->ID;
 
 			$is_single = $context->request->is_entry();
-			$lightbox  = $context->view->settings->get( 'lightbox', false );
+			// Only enable lightbox if:
+			// 1. This field has "Open in a lightbox?" checked (field-level setting); or
+			// 2. View has "Enable lightbox for images" checked (VIEW-level setting).
+			//
+			// However, if the View-level lightbox was auto-enabled by maybe_enable_lightbox()
+			// (because other fields like entry_link have lightbox enabled), we should *not*
+			// enable lightbox for file upload images unless this field specifically has it enabled.
+			$field_lightbox        = (int) ( $field_settings['lightbox'] ?? 0 );
+			$view_lightbox         = $context->view->settings->get( 'lightbox', false );
+			$lightbox_auto_enabled = $context->view->settings->get( 'lightbox_auto_enabled', false );
+
+			// Use View-level lightbox only if it wasn't auto-enabled, or if field-level is explicitly enabled.
+			$lightbox = $field_lightbox || ( $view_lightbox && ! $lightbox_auto_enabled );
 
 			/** A compatibility array that's required by some of the deprecated filters. */
 			$field_compat = array(

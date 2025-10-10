@@ -21,6 +21,15 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.48.1 on October 9, 2025 =
+
+This update resolves issues with date filtering, lightbox display, and Edit Entry layout styling.
+
+#### 🐛 Fixed
+* When using a single-input Entry Date search field, results now include only entries created on the specified date, rather than all entries from that date onward.
+* File Upload field images were incorrectly displaying in a lightbox when the View's "Enable lightbox for images" setting was disabled, but another field had "Open in a lightbox?" enabled.
+* Styling issues on the Edit Entry page when using the Layout Builder for the Single Entry page.
+
 = 2.48 on October 2, 2025 =
 
 This update improves responsiveness and spacing in Layout Builder layouts, and fixes an issue that could prevent GravityKit settings from saving.

@@ -1,5 +1,14 @@
 module.exports = function(grunt) {
 
+	// Suppress circular dependency warnings.
+	const originalEmitWarning = process.emitWarning;
+	process.emitWarning = function ( warning, ...args ) {
+		if ( 'string' === typeof warning && warning.includes( 'Accessing non-existent property' ) ) {
+			return;
+		}
+		return originalEmitWarning.call( process, warning, ...args );
+	};
+
 	// Only need to install one package and this will load them all for you. Run:
 	// npm install --save-dev load-grunt-tasks
 	require('load-grunt-tasks')(grunt);
@@ -242,12 +251,13 @@ module.exports = function(grunt) {
 						'templates/**/*.php',
 						'future/**/*.php',
 						'includes/**/*.php',
-						'vendor_prefixed/gravitykit/**',
-						'vendor_prefixed/trustedlogin/**',
 						'!node_modules/**',
 						'!tests/**',
 						'!tmp/**',
 						'!vendor/**',
+						'!vendor_prefixed/**',
+						'vendor_prefixed/gravitykit/**/*.php',
+						'vendor_prefixed/trustedlogin/**/*.php',
 						'!includes/lib/xml-parsers/**',
 						'!includes/lib/jquery-cookie/**',
 						'!.test_dependencies/**',

@@ -67,6 +67,13 @@ class GravityView_Lightbox_Entry {
 			if ( (int) ( $field->as_configuration()['lightbox'] ?? 0 ) ) {
 				$context->view->settings->set( 'lightbox', 1 );
 
+				/**
+				 *  Set a flag to indicate the lightbox was auto-enabled, so file upload fields can distinguish
+				 *  between explicit "Enable lightbox for images" (which should affect file uploads) and auto-enabled
+				 *  for entry links (which should not affect file uploads).
+				 */
+				$context->view->settings->set( 'lightbox_auto_enabled', 1 );
+
 				break;
 			}
 		}
