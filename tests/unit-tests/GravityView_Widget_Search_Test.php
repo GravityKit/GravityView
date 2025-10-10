@@ -2363,10 +2363,9 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * Test that when only gv_start is provided (single date search), only entries from that specific date are returned.
-	 *
-	 * Previously, when gv_start was provided without gv_end, all entries from that date onwards were returned.
-	 * This test verifies that the fix correctly limits results to the specified date only.
+	 * Test Entry Date search behavior based on URL parameters:
+	 * - If only gv_start is present (no gv_end parameter), return entries from only that specific date.
+	 * - If both gv_start and gv_end are present (even if one is empty), it's a range search.
 	 *
 	 * @since 2.48.1
 	 */
@@ -2433,21 +2432,32 @@ class GravityView_Widget_Search_Test extends GV_UnitTestCase {
 		$_GET = [];
 		$this->assertEquals( 4, $view->get_entries()->fetch()->count(), 'Should return all 4 entries when no date filter is applied' );
 
-		// Single date search for 09/21/2025 (only gv_start, no gv_end)
-		// Should return ONLY the 2 entries created on that specific date.
+		// Single date parameter: only gv_start, no gv_end parameter at all.
+		// Should return ONLY entries from that specific date (2 entries: 09/21 morning, 09/21 afternoon).
 		$_GET = [ 'gv_start' => '09/21/2025' ];
 		unset( $_GET['gv_end'] );
-		$this->assertEquals( 2, $view->get_entries()->fetch()->count(), 'Single date search should return only entries from that specific date' );
+		$this->assertEquals( 2, $view->get_entries()->fetch()->count(), 'Single date parameter (gv_start only) should return entries from only that specific date' );
 
-		// Single date search for a date with no entries.
+		// Date range parameters: gv_start with empty gv_end.
+		// Should return entries from that date onwards (3 entries: 09/21 morning, 09/21 afternoon, 09/22).
+		$_GET = [ 'gv_start' => '09/21/2025', 'gv_end' => '' ];
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count(), 'Date range with only start filled should return entries from that date onwards' );
+
+		// Single date parameter for a date with no entries.
 		$_GET = [ 'gv_start' => '09/23/2025' ];
 		unset( $_GET['gv_end'] );
-		$this->assertEquals( 0, $view->get_entries()->fetch()->count(), 'Single date search for a date with no entries should return 0' );
+		$this->assertEquals( 0, $view->get_entries()->fetch()->count(), 'Single date parameter for a date with no entries should return 0' );
 
-		// Single date search for 09/20/2025.
+		// Single date parameter for 09/20/2025.
+		// Should return only 1 entry (the one from 09/20).
 		$_GET = [ 'gv_start' => '09/20/2025' ];
 		unset( $_GET['gv_end'] );
-		$this->assertEquals( 1, $view->get_entries()->fetch()->count(), 'Single date search for 09/20/2025 should return 1 entry' );
+		$this->assertEquals( 1, $view->get_entries()->fetch()->count(), 'Single date parameter for 09/20/2025 should return 1 entry' );
+
+		// Date range with only end filled: empty gv_start with gv_end.
+		// Should return entries up to and including that date (3 entries: 09/20, 09/21 morning, 09/21 afternoon).
+		$_GET = [ 'gv_start' => '', 'gv_end' => '09/21/2025' ];
+		$this->assertEquals( 3, $view->get_entries()->fetch()->count(), 'Date range with only end filled should return entries up to and including that date' );
 
 		$_GET = [];
 	}

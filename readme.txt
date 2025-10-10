@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Date and Entry Date field search logic when using a single input or a range.
+
 = 2.48.1 on October 9, 2025 =
 
 This update resolves issues with date filtering, lightbox display, and Edit Entry layout styling.
