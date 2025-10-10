@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.48\n"
+"Project-Id-Version: GravityView 2.48.1\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-02T23:21:41+00:00\n"
+"POT-Creation-Date: 2025-10-10T00:11:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -3563,7 +3563,7 @@ msgstr ""
 msgid "The email address is invalid."
 msgstr ""
 
-#: includes/extensions/lightbox-entry/class-gravityview-lightbox-entry.php:137
+#: includes/extensions/lightbox-entry/class-gravityview-lightbox-entry.php:144
 msgid "The requested entry could not be found."
 msgstr ""
 
@@ -5294,7 +5294,7 @@ msgid "Feature submitted websites with screenshots."
 msgstr ""
 
 #: includes/search/class-search-field-collection.php:328
-#: includes/widgets/search-widget/class-search-widget.php:2594
+#: includes/widgets/search-widget/class-search-widget.php:2602
 msgid "Column"
 msgstr ""
 
@@ -5649,64 +5649,64 @@ msgstr ""
 msgid "There was an error loading searchable fields. Save the View or refresh the page to fix this issue."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1932
+#: includes/widgets/search-widget/class-search-widget.php:1940
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1933
+#: includes/widgets/search-widget/class-search-widget.php:1941
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1934
+#: includes/widgets/search-widget/class-search-widget.php:1942
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1935
+#: includes/widgets/search-widget/class-search-widget.php:1943
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1936
+#: includes/widgets/search-widget/class-search-widget.php:1944
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1937
+#: includes/widgets/search-widget/class-search-widget.php:1945
 msgid "Show a different month"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2323
+#: includes/widgets/search-widget/class-search-widget.php:2331
 msgid "Search fields shown"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2337
+#: includes/widgets/search-widget/class-search-widget.php:2345
 msgid "Advanced Search fields shown"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2340
+#: includes/widgets/search-widget/class-search-widget.php:2348
 msgid "If any Advanced Search fields exist, a link will show to toggle them."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2529
+#: includes/widgets/search-widget/class-search-widget.php:2537
 msgid "Configure Area Settings"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2555
+#: includes/widgets/search-widget/class-search-widget.php:2563
 msgid "Arrange Fields:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2557
+#: includes/widgets/search-widget/class-search-widget.php:2565
 msgid "Stacked (vertical)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2558
+#: includes/widgets/search-widget/class-search-widget.php:2566
 msgid "Side by side (horizontal)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2601
+#: includes/widgets/search-widget/class-search-widget.php:2609
 msgid "Column Settings"
 msgstr ""
 
