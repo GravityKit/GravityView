@@ -16,13 +16,44 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	 */
 	protected $show_on_single = true;
 
-	function __construct() {
-		// Initialize widget in the frontend or when editing a View/performing widget AJAX action
-		$doing_ajax   = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
-		$editing_view = 'edit' === \GV\Utils::_GET( 'action' ) && 'gravityview' === get_post_type( \GV\Utils::_GET( 'post' ) );
-		$is_frontend  = gravityview()->request->is_frontend();
+	/**
+	 * Should the widget be initialized?
+	 *
+	 * Initialization is heavy (querying for all GF forms), so we only do it when necessary.
+	 *
+	 * @since TODO
+	 *
+	 * @return boolean
+	 */
+	private function should_initialize() {
+		$doing_ajax = wp_doing_ajax();
 
-		if ( ! $doing_ajax && ! $editing_view && ! $is_frontend ) {
+		// Saving a View.
+		if ( $doing_ajax && 'gv_field_options' === \GV\Utils::_POST( 'action' ) ) {
+			return true;
+		}
+
+		// Editing a View.
+		if ( 'edit' === \GV\Utils::_GET( 'action' ) && 'gravityview' === get_post_type( \GV\Utils::_GET( 'post' ) ) ) {
+			return true;
+		}
+
+		// Frontend.
+		if ( gravityview()->request->is_frontend() ) {
+			return true;
+		}
+
+		// Elementor AJAX request.
+		if ( $doing_ajax && 'elementor_ajax' === \GV\Utils::_POST( 'action' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function __construct() {
+
+		if ( ! $this->should_initialize() ) {
 			return;
 		}
 
