@@ -26,6 +26,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 * Date and Entry Date field search logic when using a single input or a range.
 
+#### 💻 Developer Updates
+* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
+
 = 2.48.1 on October 9, 2025 =
 
 This update resolves issues with date filtering, lightbox display, and Edit Entry layout styling.

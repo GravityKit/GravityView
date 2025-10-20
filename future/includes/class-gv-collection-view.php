@@ -124,7 +124,25 @@ class View_Collection extends Collection {
 			}
 		}
 
-		return $views;
+		$view_collection = $views;
+
+		/**
+		 * Filters the View Collection processed from a WP_Post object.
+		 *
+		 * This allows code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
+		 * The GravityView Elementor Widget uses this filter to add Views to the Collection that are embedded in Elementor widgets.
+		 * This allows the widget support `?gvid` being properly handled when multiple Views are embedded in the same post.
+		 *
+		 * @since TODO
+		 *
+		 * @param \GV\View_Collection $view_collection The View Collection.
+		 * @param \WP_Post $post The post.
+		 *
+		 * @return \GV\View_Collection The filtered View Collection.
+		 */
+		$view_collection = apply_filters( 'gk/gravityview/view_collection/from_post/views', $view_collection, $post );
+
+		return $view_collection;
 	}
 
 	/**
