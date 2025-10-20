@@ -998,7 +998,19 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$form = isset( $entry['form_id'] ) ? GVCommon::get_form( $entry['form_id'] ) : [];
 
 		/**
-		 * @see https://www.gravityhelp.com/documentation/article/10146-2/ It's here for compatibility with Gravity Forms.
+		 * It's here for compatibility with Gravity Forms.
+		 *
+		 * @link https://docs.gravityforms.com/gform_post_send_entry_note/
+		 *
+		 * @since 1.17
+		 *
+		 * @param string $method The method that was used to send the note.
+		 * @param string $to The email address that the note was sent to.
+		 * @param string $from The email address that the note was sent from.
+		 * @param string $subject The subject of the note.
+		 * @param string $message The message of the note.
+		 * @param array  $form The form that the note was sent from.
+		 * @param array  $entry The entry that the note was sent from.
 		 */
 		do_action( 'gform_post_send_entry_note', __METHOD__, $to, $from, $subject, $message, $form, $entry );
 	}
