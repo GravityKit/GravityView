@@ -124,8 +124,6 @@ class View_Collection extends Collection {
 			}
 		}
 
-		$view_collection = $views;
-
 		/**
 		 * Filters the View Collection processed from a WP_Post object.
 		 *
@@ -140,9 +138,9 @@ class View_Collection extends Collection {
 		 *
 		 * @return \GV\View_Collection The filtered View Collection.
 		 */
-		$view_collection = apply_filters( 'gk/gravityview/view_collection/from_post/views', $view_collection, $post );
+		$views = apply_filters( 'gk/gravityview/view-collection/from-post/views', $views, $post );
 
-		return $view_collection;
+		return $views;
 	}
 
 	/**
