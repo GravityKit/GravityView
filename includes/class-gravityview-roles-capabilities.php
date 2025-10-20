@@ -394,15 +394,23 @@ class GravityView_Roles_Capabilities {
 		// Add full access caps for GV & GF
 		$caps_to_check = self::maybe_add_full_access_caps( $caps_to_check );
 
+		$user = $user_id ? get_user_by( 'id', $user_id ) : wp_get_current_user();
+
+		// Sanity check: make sure the user exists.
+		if ( ! $user || ! $user->exists() ) {
+			return $has_cap;
+		}
+
 		foreach ( $caps_to_check as $cap ) {
 			if ( ! is_null( $object_id ) ) {
-				$has_cap = $user_id ? user_can( $user_id, $cap, $object_id ) : current_user_can( $cap, $object_id );
+				$has_cap = user_can( $user, $cap, $object_id );
 			} else {
-				$has_cap = $user_id ? user_can( $user_id, $cap ) : current_user_can( $cap );
+				$has_cap = user_can( $user, $cap );
 			}
-			// At the first successful response, stop checking
+
+			// At the first successful response, stop checking.
 			if ( $has_cap ) {
-				break;
+				return true;
 			}
 		}
 
