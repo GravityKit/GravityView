@@ -2786,8 +2786,8 @@
 			   return;
 		   }
 
-		   // Only init merge tags if the View has been saved and the form hasn't been changed.
-		   if ( 'undefined' !== typeof( form ) && $( document.body ).not( '.gv-form-changed' ) && $merge_tag_supported.length >= 0 ) {
+		   // Only init merge tags if a form is defined.
+		   if ( 'undefined' !== typeof( form ) && $merge_tag_supported.length >= 0 ) {
 
 			   if ( window.gfMergeTags ) {
 
