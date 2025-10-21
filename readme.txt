@@ -24,6 +24,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 = develop =
 
 #### 🐛 Fixed
+* Fatal error when using Chained Select fields in the Search Bar without proper form context.
 * Date and Entry Date field search logic when using a single input or a range.
 
 #### 💻 Developer Updates
