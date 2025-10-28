@@ -70,8 +70,6 @@ jobs:
           name: Configure test environment
           command: |
             /home/circleci/tooling/docker-unit-tests/docker-unit-tests.sh prepare_all
-            echo $GH_AUTH_TOKEN > .gh_token
-            /home/circleci/tooling/build-tools/build_tools.sh gh -o "auth login --with-token < .gh_token"
             /home/circleci/tooling/build-tools/build_tools.sh gh -o 'release download -R gravityforms/gravityforms --clobber --pattern "*.zip" --dir .tmp'
             unzip .tmp/gravityforms*.zip -d .tmp
             cp .env.sample .env
