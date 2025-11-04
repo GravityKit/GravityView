@@ -1,0 +1,141 @@
+/**
+ * Toast notification styles (Foundation-inspired)
+ *
+ * @since 2.43
+ */
+
+// Toast container
+.gv-toast-container {
+	position: fixed;
+	top: 1.75rem;
+	right: 1rem;
+	z-index: 999999;
+	pointer-events: none;
+}
+
+// Toast base styles
+.gv-toast {
+	position: relative;
+	margin-bottom: 0.5rem;
+	padding: 0 0.75rem;
+	border-radius: 0.2rem;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	width: 20rem;
+	max-width: calc(100vw - 2rem);
+	opacity: 0;
+	transform: translateX(calc(100% + 2rem));
+	transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+	pointer-events: auto;
+	overflow: hidden;
+	color: #F7F7F7;
+}
+
+// Toast show animation
+.gv-toast-show {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+// Toast content
+.gv-toast-content {
+	display: flex;
+	align-items: center;
+	padding: 0.75rem 0;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+// Toast icon
+.gv-toast-icon {
+	display: flex;
+	align-items: center;
+	margin-right: 0.5rem;
+	flex-shrink: 0;
+}
+
+// Toast message
+.gv-toast-message {
+	flex: 1;
+	word-break: break-word;
+}
+
+// Progress bar
+.gv-toast-progress {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background-color: rgba(0, 0, 0, 0.3);
+	transition-property: width;
+	transition-timing-function: linear;
+}
+
+// Success toast
+.gv-toast-success {
+	background-color: rgb(22, 163, 74);
+
+	.gv-toast-progress {
+		background-color: rgb(22, 101, 52);
+	}
+}
+
+// Error toast
+.gv-toast-error {
+	background-color: rgb(220, 38, 38);
+
+	.gv-toast-progress {
+		background-color: rgb(153, 27, 27);
+	}
+}
+
+// Warning toast
+.gv-toast-warning {
+	background-color: rgb(202, 138, 4);
+
+	.gv-toast-progress {
+		background-color: rgb(161, 98, 7);
+	}
+}
+
+// RTL support
+html[dir="rtl"] {
+	.gv-toast-container {
+		right: auto;
+		left: 1rem;
+	}
+
+	.gv-toast {
+		transform: translateX(calc(-100% - 2rem));
+	}
+
+	.gv-toast-show {
+		transform: translateX(0);
+	}
+
+	.gv-toast-icon {
+		margin-right: 0;
+		margin-left: 0.5rem;
+	}
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+	.gv-toast-container {
+		top: 1rem;
+		right: 0.5rem;
+		left: 0.5rem;
+		width: auto;
+	}
+
+	html[dir="rtl"] .gv-toast-container {
+		left: 0.5rem;
+		right: 0.5rem;
+	}
+
+	.gv-toast {
+		width: 100%;
+		max-width: 100%;
+	}
+}
