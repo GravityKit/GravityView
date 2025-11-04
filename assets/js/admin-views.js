@@ -135,8 +135,52 @@
 			   // start fresh button
 			   .on( 'click', 'a[href="#gv_start_fresh"]', vcfg.startFresh )
 
-			   // when saving the View, try to create form before proceeding
-			   .on( 'click', '#publish, #save-post', vcfg.processFormSubmit )
+			   // Publish button: Try AJAX first with fallback to traditional save
+		   .on( 'click', '#publish', function( e ) {
+			   var vcfg = viewConfiguration;
+
+			   // If already processing via form submit, don't intercept
+			   if ( vcfg.isFallbackSubmitting ) {
+				   return;
+			   }
+
+			   e.preventDefault();
+			   e.stopImmediatePropagation();
+
+			   // Validate before attempting save
+			   if ( ! vcfg.validateSettingFields( e ) ) {
+				   return false;
+			   }
+
+			   // If Start Fresh mode, use traditional form submission
+			   if ( vcfg.startFreshStatus ) {
+				   vcfg.processFormSubmit( e );
+				   return false;
+			   }
+
+			   // Try AJAX save first
+			   vcfg.saveViewAjax()
+				   .fail( function( error ) {
+					   // AJAX failed - fallback to traditional form submission
+					   console.log( 'AJAX save failed, falling back to traditional submission:', error );
+
+					   // Set flag to prevent re-interception
+					   vcfg.isFallbackSubmitting = true;
+
+					   // Trigger traditional form submission
+					   vcfg.processFormSubmit( e );
+
+					   // Reset flag after a delay
+					   setTimeout( function() {
+						   vcfg.isFallbackSubmitting = false;
+					   }, 1000 );
+				   } );
+
+			   return false;
+		   } )
+
+		   // Save Draft button: Use traditional form submission
+		   .on( 'click', '#save-post', vcfg.processFormSubmit )
 
 			   // when saving the View, try to create form before proceeding
 			   .on( 'submit', '#post', vcfg.processFormSubmit )
@@ -3502,9 +3546,10 @@
 		*/
 	   saveViewAjax: function() {
 		   var vcfg = this;
+		   var deferred = $.Deferred();
 
 		   if ( vcfg.isSavingAjax ) {
-			   return;
+			   return deferred.reject( 'already_saving' ).promise();
 		   }
 
 		   vcfg.isSavingAjax = true;
@@ -3517,7 +3562,7 @@
 		   if ( ! postId ) {
 			   vcfg.GVToast.error( gvGlobals.ajax_save_error_no_post_id );
 			   vcfg.isSavingAjax = false;
-			   return;
+			   return deferred.reject( 'no_post_id' ).promise();
 		   }
 
 		   // Show saving indicator
@@ -3575,6 +3620,7 @@
 				   if ( response.success ) {
 					   vcfg.GVToast.success( gvGlobals.ajax_save_success );
 					   vcfg.setUnsavedChanges( false );
+					   deferred.resolve( response );
 				   } else {
 					   // Extract error message from response.data.message or response.data
 					   var errorMessage = gvGlobals.ajax_save_error_generic;
@@ -3586,22 +3632,33 @@
 						   }
 					   }
 					   vcfg.GVToast.error( errorMessage );
+					   deferred.reject( response );
 				   }
 			   },
-			   error: function() {
-			   		vcfg.GVToast.error( gvGlobals.ajax_save_error_generic );
+			   error: function( jqXHR, textStatus, errorThrown ) {
+					vcfg.GVToast.error( gvGlobals.ajax_save_error_generic );
+					deferred.reject( jqXHR );
 			   },
 			   complete: function() {
 				   vcfg.isSavingAjax = false;
 				   $publishButton.prop( 'disabled', false ).val( originalText );
 			   }
 		   } );
+
+		   return deferred.promise();
 	   },
 
 	   /**
-		* Flag to track if AJAX save is in progress
-		*/
-	   isSavingAjax: false
+	    * Flag to track if AJAX save is in progress
+		* @since TODO
+	    */
+	   isSavingAjax: false,
+
+	   /**
+	    * Flag to prevent re-interception when falling back to traditional submission
+	    * @since TODO
+	    */
+	   isFallbackSubmitting: false
 
    }; // end viewConfiguration object
 

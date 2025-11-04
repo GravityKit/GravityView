@@ -531,29 +531,34 @@ class GravityView_Ajax {
 	}
 
 	/**
-	 * Save View via AJAX
-	 * AJAX callback
+	 * Save a GravityView View via AJAX.
 	 *
-	 * @since 2.43
+	 * Validates nonce and capabilities, prepares data via the admin class,
+	 * persists it, and returns a JSON response with updated metadata.
 	 *
-	 * @return void
+	 * @return void Outputs JSON and exits.
 	 */
 	function save_view() {
+		// Ensure this is an AJAX context.
+		if ( ! wp_doing_ajax() ) {
+			wp_send_json_error( [ 'message' => __( 'Invalid context.', 'gk-gravityview' ) ], 400 );
+		}
+
+		// Nonce/capability checks.
 		$this->check_ajax_nonce();
 
-		// Get the post ID
+		// Get and validate the post ID.
 		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
-
 		if ( ! $post_id ) {
-			wp_send_json_error( [ 'message' => __( 'Invalid View ID.', 'gk-gravityview' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Invalid View ID.', 'gk-gravityview' ) ], 400 );
 		}
 
-		// Verify post type
+		// Verify post type.
 		if ( 'gravityview' !== get_post_type( $post_id ) ) {
-			wp_send_json_error( [ 'message' => __( 'Invalid View type.', 'gk-gravityview' ) ] );
+			wp_send_json_error( [ 'message' => __( 'Invalid View type.', 'gk-gravityview' ) ], 400 );
 		}
 
-		// Validate user can edit and save View
+		// Capability check.
 		if ( ! GVCommon::has_cap( 'edit_gravityview', $post_id ) ) {
 			gravityview()->log->error(
 				'Current user does not have the capability to edit View {view_id}',
@@ -562,46 +567,60 @@ class GravityView_Ajax {
 					'data'    => wp_get_current_user(),
 				]
 			);
-			wp_send_json_error( [ 'message' => __( 'You do not have permission to edit this View.', 'gk-gravityview' ) ] );
+
+			wp_send_json_error( [ 'message' => __( 'You do not have permission to edit this View.', 'gk-gravityview' ) ], 403 );
 		}
 
-		gravityview()->log->debug( '[save_view] Saving View via AJAX.', [ 'post_id' => $post_id, 'data' => $_POST ] );
+		gravityview()->log->debug(
+			'[save_view] Saving View via AJAX.',
+			[ 'post_id' => $post_id, 'data' => wp_unslash( $_POST ) ]
+		);
 
-		// Get the admin views instance
+		// Prevent overwriting when someone else is editing.
+		if ( function_exists( 'wp_check_post_lock' ) && wp_check_post_lock( $post_id ) ) {
+			wp_send_json_error( [ 'message' => __( 'This View is currently being edited by another user.', 'gk-gravityview' ) ], 409 );
+		}
+
+		// Prepare data from request.
 		$admin_views = GravityView_Admin_Views::get_instance();
+		$view_data   = $admin_views->prepare_view_data_from_request();
 
-		// Prepare the data from the request
-		$view_data = $admin_views->prepare_view_data_from_request();
-
-		// Use the shared save processing method
+		// Persist custom data (meta, config, etc.).
 		$statii = $admin_views->process_view_save_data( $post_id, $view_data );
 
-		// Update the post modified date to reflect the save
-		wp_update_post( [
+		// Bump modified timestamps so the edit screen reflects the save.
+		$update = [
 			'ID'                => $post_id,
 			'post_modified'     => current_time( 'mysql' ),
-			'post_modified_gmt' => current_time( 'mysql', 1 ),
-		] );
+			'post_modified_gmt' => current_time( 'mysql', true ),
+		];
 
-		// Set flag to prevent infinite loop when triggering save_post hooks
-		// This prevents save_postdata() from running again when we trigger the hooks below
-		$_POST['gv_ajax_save_in_progress'] = true;
+		$result = wp_update_post( $update, true );
 
-		// Trigger WordPress core save hooks for extension compatibility
-		// This ensures extensions and third-party plugins that hook into save_post will run
-		$post = get_post( $post_id );
-		do_action( 'save_post', $post_id, $post, true );
-		do_action( 'save_post_gravityview', $post_id, $post, true );
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error(
+				[
+					'message' => $result->get_error_message(),
+				],
+				500
+			);
+		}
 
-		// Clean up flag
-		unset( $_POST['gv_ajax_save_in_progress'] );
+		// No manual save_post calls here: wp_update_post() already fired all relevant hooks.
 
 		gravityview()->log->debug( '[save_view] View saved successfully via AJAX.', [ 'post_id' => $post_id ] );
 
-		wp_send_json_success( [
-			'message' => __( 'View saved successfully!', 'gk-gravityview' ),
-			'post_id' => $post_id,
-		] );
+		$post = get_post( $post_id );
+
+		wp_send_json_success(
+			[
+				'message'            => __( 'View saved successfully!', 'gk-gravityview' ),
+				'post_id'            => $post_id,
+				'post_modified'      => $post ? $post->post_modified : null,
+				'post_modified_gmt'  => $post ? $post->post_modified_gmt : null,
+				'details'            => $statii, // Helpful for UI feedback; remove if noisy.
+			]
+		);
 	}
 }
 
