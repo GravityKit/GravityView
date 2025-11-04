@@ -23,6 +23,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+
+* Saving Views is now much faster! No more waiting for the page to reload.
+	- Use Command+S (Mac) or Control+S (Windows/Linux) to save Views without reloading the page.
+
 #### 🐛 Fixed
 * Fatal error when using Chained Select fields in the Search Bar without proper form context.
 * Date and Entry Date field search logic when using a single input or a range.
