@@ -485,6 +485,9 @@
 
 		   // Recalculate zebra stripes.
 		   viewConfiguration.zebraStripeSettings();
+
+		   // Track unsaved changes when settings are modified
+		   viewConfiguration.setUnsavedChanges( true );
 	   },
 
 	   /**
