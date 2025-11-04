@@ -379,6 +379,17 @@
 				   // Check for Cmd+S (Mac) or Ctrl+S (Windows/Linux)
 				   if ( ( e.metaKey || e.ctrlKey ) && e.key === 's' ) {
 					   e.preventDefault();
+
+					   // Prevent concurrent saves
+					   if ( vcfg.isSavingAjax ) {
+						   return;
+					   }
+
+					   // Validate before saving
+					   if ( ! vcfg.validateSettingFields( e ) ) {
+						   return;
+					   }
+
 					   vcfg.saveViewAjax();
 				   }
 			   })
@@ -3462,12 +3473,16 @@
 		   vcfg.isSavingAjax = true;
 
 		   // Initialize toast system
-		   GVToast.init();
+		   if ( typeof GVToast !== 'undefined' && GVToast && typeof GVToast.init === 'function' ) {
+			   GVToast.init();
+		   }
 
 		   // Get the post ID
 		   var postId = $( '#post_ID' ).val();
 		   if ( ! postId ) {
-			   GVToast.error( gvGlobals.ajax_save_error_no_post_id );
+			   if ( typeof GVToast !== 'undefined' && GVToast && typeof GVToast.error === 'function' ) {
+				   GVToast.error( gvGlobals.ajax_save_error_no_post_id );
+			   }
 			   vcfg.isSavingAjax = false;
 			   return deferred.reject( 'no_post_id' ).promise();
 		   }
@@ -3490,21 +3505,20 @@
 		   } );
 
 		   var $post = $( '#post' );
-		   var $fields = $post.find( '[name^=fields]' ).filter(':input');
+
+		   // Clone the form to avoid race conditions with live DOM modifications
+		   var $formClone = $post.clone();
+		   var $fields = $formClone.find( '[name^=fields]' ).filter(':input');
 		   var serializedFields = $fields.serialize();
 
-		   // Temporarily disable individual field inputs so they won't be included
-		   $fields.prop( 'disabled', true );
+		   // Remove individual field inputs from clone so they won't be included
+		   $fields.remove();
 
-		   // Also disable any existing gv_fields inputs
-		   $post.find( '[name=gv_fields]' ).filter(':input').prop( 'disabled', true );
+		   // Also remove any existing gv_fields inputs from clone
+		   $formClone.find( '[name=gv_fields]' ).filter(':input').remove();
 
-		   // Now serialize the form (without the individual fields)
-		   var formData = $post.serializeArray();
-
-		   // Re-enable the fields (so the UI still works)
-		   $fields.prop( 'disabled', false );
-		   $post.find( '[name=gv_fields]' ).filter(':input').prop( 'disabled', false );
+		   // Serialize the cloned form (without the individual fields)
+		   var formData = $formClone.serializeArray();
 
 		   // Add the serialized fields as a single gv_fields parameter
 		   formData.push(
@@ -3524,9 +3538,18 @@
 			   type: 'POST',
 			   data: formData,
 			   success: function( response ) {
-				   if ( response.success ) {
-					   GVToast.success( gvGlobals.ajax_save_success );
+				   if ( response.success && response.data && response.data.post_id ) {
+					   // Only clear unsaved flag if we have confirmed post ID from server
+					   if ( typeof GVToast !== 'undefined' && GVToast && typeof GVToast.success === 'function' ) {
+						   GVToast.success( gvGlobals.ajax_save_success );
+					   }
 					   vcfg.setUnsavedChanges( false );
+					   deferred.resolve( response );
+				   } else if ( response.success ) {
+					   // Success but missing confirmation data - show warning
+					   if ( typeof GVToast !== 'undefined' && GVToast && typeof GVToast.warning === 'function' ) {
+						   GVToast.warning( gvGlobals.ajax_save_warning || 'View may not have saved completely.' );
+					   }
 					   deferred.resolve( response );
 				   } else {
 					   // Extract error message from response.data.message or response.data
@@ -3538,12 +3561,16 @@
 							   errorMessage = response.data.message;
 						   }
 					   }
-					   GVToast.error( errorMessage );
+					   if ( typeof GVToast !== 'undefined' && GVToast && typeof GVToast.error === 'function' ) {
+						   GVToast.error( errorMessage );
+					   }
 					   deferred.reject( response );
 				   }
 			   },
 			   error: function( jqXHR, textStatus, errorThrown ) {
-					GVToast.error( gvGlobals.ajax_save_error_generic );
+					if ( typeof GVToast !== 'undefined' && GVToast && typeof GVToast.error === 'function' ) {
+						GVToast.error( gvGlobals.ajax_save_error_generic );
+					}
 					deferred.reject( jqXHR );
 			   },
 			   complete: function() {
