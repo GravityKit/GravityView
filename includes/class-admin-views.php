@@ -761,6 +761,12 @@ HTML;
 			return;
 		}
 
+		// Prevent infinite loop during AJAX save
+		// When save_view() triggers save_post hooks, this flag prevents running save logic twice
+		if ( ! empty( $_POST['gv_ajax_save_in_progress'] ) ) {
+			return;
+		}
+
 		// validate post_type
 		if ( ! isset( $_POST['post_type'] ) || 'gravityview' != $_POST['post_type'] ) {
 			return;
@@ -781,61 +787,134 @@ HTML;
 
 		gravityview()->log->debug( '[save_postdata] Saving View post type.', [ 'data' => $_POST ] );
 
+		// Prepare the data from the request
+		$view_data = $this->prepare_view_data_from_request();
+
+		// Process the actual save using shared method
+		$this->process_view_save_data( $post_id, $view_data );
+	}
+
+	/**
+	 * Prepare View data from $_POST request
+	 *
+	 * Extracts and structures View data from the current $_POST request into a standardized
+	 * format for processing. This method isolates global state access and provides a clear
+	 * data contract for the save processing logic.
+	 *
+	 * @since 2.43
+	 *
+	 * @return array {
+	 *     Structured View data array.
+	 *
+	 *     @type array $nonces {
+	 *         Security nonces for different form sections.
+	 *
+	 *         @type string|null $select_form          Form selection nonce.
+	 *         @type string|null $select_template      Template selection nonce.
+	 *         @type string|null $view_configuration   View configuration nonce.
+	 *     }
+	 *     @type string      $form_id            Gravity Forms form ID.
+	 *     @type bool        $start_fresh        Whether this is a "start fresh" View.
+	 *     @type array       $templates {
+	 *         Template identifiers.
+	 *
+	 *         @type string $directory  Directory template ID.
+	 *         @type string $single     Single entry template ID.
+	 *     }
+	 *     @type array       $template_settings  Template-specific settings.
+	 *     @type array       $fields             View field configuration.
+	 *     @type bool        $fields_complete    Whether field configuration is complete.
+	 *     @type array       $widgets            Widget configuration.
+	 * }
+	 */
+	public function prepare_view_data_from_request() {
+		return [
+			'nonces'            => [
+				'select_form'        => isset( $_POST['gravityview_select_form_nonce'] ) ? $_POST['gravityview_select_form_nonce'] : null,
+				'select_template'    => isset( $_POST['gravityview_select_template_nonce'] ) ? $_POST['gravityview_select_template_nonce'] : null,
+				'view_configuration' => isset( $_POST['gravityview_view_configuration_nonce'] ) ? $_POST['gravityview_view_configuration_nonce'] : null,
+			],
+			'form_id'           => ! empty( $_POST['gravityview_form_id'] ) ? $_POST['gravityview_form_id'] : '',
+			'start_fresh'       => ! empty( $_POST['gravityview_form_id_start_fresh'] ),
+			'templates'         => [
+				'directory' => rgpost( 'gravityview_directory_template' ),
+				'single'    => rgpost( 'gravityview_single_template' ),
+			],
+			'template_settings' => ! empty( $_POST['template_settings'] ) ? $_POST['template_settings'] : [],
+			'fields'            => ! empty( $_POST['gv_fields'] ) ? $_POST['gv_fields'] : [],
+			'fields_complete'   => isset( $_POST['gv_fields_done'] ),
+			'widgets'           => ! empty( $_POST['widgets'] ) ? $_POST['widgets'] : [],
+		];
+	}
+
+	/**
+	 * Process View save data - shared logic for both traditional and AJAX saves
+	 *
+	 * @since 2.43
+	 *
+	 * @param int   $post_id   The View post ID to save.
+	 * @param array $view_data Prepared View data array. See {@see prepare_view_data_from_request()} for structure.
+	 *
+	 * @return array Array of statuses of the post meta saving processes.
+	 */
+	public function process_view_save_data( $post_id, $view_data ) {
 		$statii = [];
 
-		// check if this is a start fresh View
-		if ( isset( $_POST['gravityview_select_form_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_form_nonce'],
-				'gravityview_select_form' ) ) {
-			$form_id = ! empty( $_POST['gravityview_form_id'] ) ? $_POST['gravityview_form_id'] : '';
-			// save form id
+		// Check if this is a start fresh View
+		if ( ! empty( $view_data['nonces']['select_form'] ) && wp_verify_nonce( $view_data['nonces']['select_form'], 'gravityview_select_form' ) ) {
+			$form_id = $view_data['form_id'];
+			// Save form id
 			$statii['form_id'] = update_post_meta( $post_id, '_gravityview_form_id', $form_id );
 		}
 
 		if ( false === GVCommon::has_cap( 'gravityforms_create_form' ) && empty( $statii['form_id'] ) ) {
-			gravityview()->log->error( 'Current user does not have the capability to create a new Form.',
-				[ 'data' => wp_get_current_user() ] );
+			gravityview()->log->error(
+				'Current user does not have the capability to create a new Form.',
+				[ 'data' => wp_get_current_user() ]
+			);
 
-			return;
+			return $statii;
 		}
 
 		// Was this a start fresh?
-		if ( ! empty( $_POST['gravityview_form_id_start_fresh'] ) ) {
+		if ( $view_data['start_fresh'] ) {
 			$statii['start_fresh'] = add_post_meta( $post_id, '_gravityview_start_fresh', 1 );
 		} else {
 			$statii['start_fresh'] = delete_post_meta( $post_id, '_gravityview_start_fresh' );
 		}
 
 		// Check if we have a template id
-		if ( isset( $_POST['gravityview_select_template_nonce'] ) && wp_verify_nonce( $_POST['gravityview_select_template_nonce'],
-				'gravityview_select_template' ) ) {
-			$directory_template_id = rgpost( 'gravityview_directory_template' );
-			$single_template_id    = rgpost( 'gravityview_single_template' );
+		if ( ! empty( $view_data['nonces']['select_template'] ) && wp_verify_nonce( $view_data['nonces']['select_template'], 'gravityview_select_template' ) ) {
+			$directory_template_id = $view_data['templates']['directory'];
+			$single_template_id    = $view_data['templates']['single'];
 
-			// now save template ids
-			$statii['directory_template'] = update_post_meta( $post_id,
+			// Now save template ids
+			$statii['directory_template'] = update_post_meta(
+				$post_id,
 				'_gravityview_directory_template',
-				$directory_template_id );
-			$statii['single_template']    = update_post_meta( $post_id,
+				$directory_template_id
+			);
+			$statii['single_template']    = update_post_meta(
+				$post_id,
 				'_gravityview_single_template',
-				$single_template_id );
+				$single_template_id
+			);
 		}
 
-		// save View Configuration metabox
-		if ( isset( $_POST['gravityview_view_configuration_nonce'] ) && wp_verify_nonce( $_POST['gravityview_view_configuration_nonce'],
-				'gravityview_view_configuration' ) ) {
-			// template settings
-			if ( empty( $_POST['template_settings'] ) ) {
-				$_POST['template_settings'] = [];
-			}
-			$statii['template_settings'] = update_post_meta( $post_id,
+		// Save View Configuration metabox
+		if ( ! empty( $view_data['nonces']['view_configuration'] ) && wp_verify_nonce( $view_data['nonces']['view_configuration'], 'gravityview_view_configuration' ) ) {
+			// Template settings
+			$statii['template_settings'] = update_post_meta(
+				$post_id,
 				'_gravityview_template_settings',
-				$_POST['template_settings'] );
+				$view_data['template_settings']
+			);
 
-			// guard against unloaded View configuration page
-			if ( isset( $_POST['gv_fields'] ) && isset( $_POST['gv_fields_done'] ) ) {
+			// Guard against unloaded View configuration page
+			if ( ! empty( $view_data['fields'] ) && $view_data['fields_complete'] ) {
 				$fields = [];
 
-				if ( ! empty( $_POST['gv_fields'] ) ) {
+				if ( ! empty( $view_data['fields'] ) ) {
 					$fields = _gravityview_process_posted_fields();
 				}
 
@@ -845,10 +924,7 @@ HTML;
 			}
 
 			// Directory Visible Widgets
-			if ( empty( $_POST['widgets'] ) ) {
-				$_POST['widgets'] = [];
-			}
-			$statii['directory_widgets'] = gravityview_set_directory_widgets( $post_id, $_POST['widgets'] );
+			$statii['directory_widgets'] = gravityview_set_directory_widgets( $post_id, $view_data['widgets'] );
 		} // end save view configuration
 
 		/**
@@ -856,13 +932,17 @@ HTML;
 		 *
 		 * @since 1.17.2
 		 *
+		 * @param int   $post_id ID of the View that has been saved.
 		 * @param array $statii  Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (`directory_widgets` => `124`). If failed (or didn't change), the value will be false.
-		 * @param int   $post_id ID of the View that has been saved
 		 */
 		do_action( 'gravityview_view_saved', $post_id, $statii );
 
-		gravityview()->log->debug( '[save_postdata] Update Post Meta Statuses (also returns false if nothing changed)',
-			[ 'data' => array_map( 'intval', $statii ) ] );
+		gravityview()->log->debug(
+			'[process_view_save_data] Update Post Meta Statuses (also returns false if nothing changed)',
+			[ 'data' => array_map( 'intval', $statii ) ]
+		);
+
+		return $statii;
 	}
 
 	/**
@@ -2068,6 +2148,10 @@ HTML;
 					'gk-gravityview' ),
 				'discard_unsaved_changes'     => __( 'You have unsaved changes. Continuing will discard them. Are you sure you want to proceed?',
 					'gk-gravityview' ),
+				'ajax_save_error_no_post_id'  => __( 'Unable to save: Post ID not found.', 'gk-gravityview' ),
+				'ajax_save_button_saving'     => __( 'Saving&hellip;', 'gk-gravityview' ),
+				'ajax_save_success'           => __( 'View saved successfully!', 'gk-gravityview' ),
+				'ajax_save_error_generic'     => __( 'An error occurred while saving the View.', 'gk-gravityview' ),
 				'foundation_licenses_router'  => array_merge(
 					GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
 					[

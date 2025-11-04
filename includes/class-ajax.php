@@ -24,6 +24,9 @@ class GravityView_Ajax {
 		add_action( 'wp_ajax_gv_set_preset_form', [ $this, 'create_preset_form' ] );
 
 		add_action( 'wp_ajax_gv_sortable_fields_form', [ $this, 'get_sortable_fields' ] );
+
+		// Save View via AJAX
+		add_action( 'wp_ajax_gv_save_view', [ $this, 'save_view' ] );
 	}
 
 	/**
@@ -525,6 +528,80 @@ class GravityView_Ajax {
 			'fields'  => $fields,
 			'widgets' => $widgets,
 		];
+	}
+
+	/**
+	 * Save View via AJAX
+	 * AJAX callback
+	 *
+	 * @since 2.43
+	 *
+	 * @return void
+	 */
+	function save_view() {
+		$this->check_ajax_nonce();
+
+		// Get the post ID
+		$post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+
+		if ( ! $post_id ) {
+			wp_send_json_error( [ 'message' => __( 'Invalid View ID.', 'gk-gravityview' ) ] );
+		}
+
+		// Verify post type
+		if ( 'gravityview' !== get_post_type( $post_id ) ) {
+			wp_send_json_error( [ 'message' => __( 'Invalid View type.', 'gk-gravityview' ) ] );
+		}
+
+		// Validate user can edit and save View
+		if ( ! GVCommon::has_cap( 'edit_gravityview', $post_id ) ) {
+			gravityview()->log->error(
+				'Current user does not have the capability to edit View {view_id}',
+				[
+					'view_id' => $post_id,
+					'data'    => wp_get_current_user(),
+				]
+			);
+			wp_send_json_error( [ 'message' => __( 'You do not have permission to edit this View.', 'gk-gravityview' ) ] );
+		}
+
+		gravityview()->log->debug( '[save_view] Saving View via AJAX.', [ 'post_id' => $post_id, 'data' => $_POST ] );
+
+		// Get the admin views instance
+		$admin_views = GravityView_Admin_Views::get_instance();
+
+		// Prepare the data from the request
+		$view_data = $admin_views->prepare_view_data_from_request();
+
+		// Use the shared save processing method
+		$statii = $admin_views->process_view_save_data( $post_id, $view_data );
+
+		// Update the post modified date to reflect the save
+		wp_update_post( [
+			'ID'                => $post_id,
+			'post_modified'     => current_time( 'mysql' ),
+			'post_modified_gmt' => current_time( 'mysql', 1 ),
+		] );
+
+		// Set flag to prevent infinite loop when triggering save_post hooks
+		// This prevents save_postdata() from running again when we trigger the hooks below
+		$_POST['gv_ajax_save_in_progress'] = true;
+
+		// Trigger WordPress core save hooks for extension compatibility
+		// This ensures extensions and third-party plugins that hook into save_post will run
+		$post = get_post( $post_id );
+		do_action( 'save_post', $post_id, $post, true );
+		do_action( 'save_post_gravityview', $post_id, $post, true );
+
+		// Clean up flag
+		unset( $_POST['gv_ajax_save_in_progress'] );
+
+		gravityview()->log->debug( '[save_view] View saved successfully via AJAX.', [ 'post_id' => $post_id ] );
+
+		wp_send_json_success( [
+			'message' => __( 'View saved successfully!', 'gk-gravityview' ),
+			'post_id' => $post_id,
+		] );
 	}
 }
 
