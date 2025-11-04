@@ -18,6 +18,15 @@
 	'use strict';
 
 	/**
+	 * Detects if client prefers reduced motion.
+	 * Respects user accessibility preferences for animations and transitions.
+	 *
+	 * @type {boolean}
+	 * @since 2.43
+	 */
+	var isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	/**
 	 * Toast notification constants
 	 *
 	 * @since 2.43
@@ -28,7 +37,7 @@
 		 * 7.5 seconds provides enough time to read a typical message without being intrusive.
 		 * Based on average reading speed of 200-250 words per minute.
 		 */
-		DURATION: 7500,
+		DURATION: 8000,
 
 		/**
 		 * CSS transition duration for fade-out animation in milliseconds.
@@ -109,25 +118,34 @@
 
 			this.container.append( $toast );
 
-			// Trigger reflow to enable CSS transition
-			$toast[0].offsetHeight;
+			// For reduced motion, skip the slide-in animation
+			if ( isReducedMotion ) {
+				$toast.addClass( 'gv-toast-show' );
+			} else {
+				// Trigger reflow to enable CSS transition
+				$toast[0].offsetHeight;
+				// Show toast with animation
+				$toast.addClass( 'gv-toast-show' );
+			}
 
-			// Show toast
-			$toast.addClass( 'gv-toast-show' );
-
-			// Set progress bar animation
+			// Set progress bar animation (hidden for reduced motion users)
 			var $progress = $toast.find( '.gv-toast-progress' );
-			$progress.css( {
-				'width': DEFAULTS.PROGRESS_START,
-				'transition-duration': duration + 'ms'
-			} );
+			if ( ! isReducedMotion ) {
+				$progress.css( {
+					'width': DEFAULTS.PROGRESS_START,
+					'transition-duration': duration + 'ms'
+				} );
+			} else {
+				// Hide progress bar for reduced motion
+				$progress.hide();
+			}
 
 			// Auto-hide after duration
 			setTimeout( function() {
 				$toast.removeClass( 'gv-toast-show' );
 				setTimeout( function() {
 					$toast.remove();
-				}, DEFAULTS.FADE_DURATION );
+				}, isReducedMotion ? 0 : DEFAULTS.FADE_DURATION );
 			}, duration );
 		},
 

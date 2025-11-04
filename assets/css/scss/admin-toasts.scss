@@ -139,3 +139,20 @@ html[dir="rtl"] {
 		max-width: 100%;
 	}
 }
+
+// Reduced motion accessibility support
+@media (prefers-reduced-motion: reduce) {
+	.gv-toast {
+		transition: none;
+		transform: translateX(0);
+		opacity: 1;
+	}
+
+	.gv-toast-progress {
+		display: none;
+	}
+
+	html[dir="rtl"] .gv-toast {
+		transform: translateX(0);
+	}
+}
