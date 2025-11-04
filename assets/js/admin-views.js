@@ -3447,99 +3447,6 @@
 	   },
 
 	   /**
-		* Toast notification system (Foundation-inspired)
-		*
-		* @since 2.43
-		*/
-	   GVToast: {
-		   container: null,
-
-		   /**
-			* Initialize toast container
-			*/
-		   init: function() {
-			   if ( this.container ) {
-				   return;
-			   }
-
-			   this.container = $( '<div class="gv-toast-container"></div>' );
-			   $( 'body' ).append( this.container );
-		   },
-
-		   /**
-			* Show a toast notification
-			* @param {string} message - The message to display
-			* @param {string} type - The type of toast (success, error, warning)
-			* @param {number} duration - How long to show the toast in milliseconds (default: 3000)
-			*/
-		   show: function( message, type, duration ) {
-			   this.init();
-
-			   duration = duration || 7500;
-
-			   var iconMap = {
-				   success: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>',
-				   error: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
-				   warning: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>'
-			   };
-
-			   var $toast = $(
-				   '<div class="gv-toast gv-toast-' + type + '">' +
-					   '<div class="gv-toast-content">' +
-						   '<span class="gv-toast-icon">' + iconMap[type] + '</span>' +
-						   '<span class="gv-toast-message">' + message + '</span>' +
-					   '</div>' +
-					   '<div class="gv-toast-progress"></div>' +
-				   '</div>'
-			   );
-
-			   this.container.append( $toast );
-
-			   // Trigger reflow to enable CSS transition
-			   $toast[0].offsetHeight;
-
-			   // Show toast
-			   $toast.addClass( 'gv-toast-show' );
-
-			   // Set progress bar animation
-			   var $progress = $toast.find( '.gv-toast-progress' );
-			   $progress.css( {
-				   'width': '0%',
-				   'transition-duration': duration + 'ms'
-			   } );
-
-			   // Auto-hide after duration
-			   setTimeout( function() {
-				   $toast.removeClass( 'gv-toast-show' );
-				   setTimeout( function() {
-					   $toast.remove();
-				   }, 300 );
-			   }, duration );
-		   },
-
-		   /**
-			* Show success toast
-			*/
-		   success: function( message, duration ) {
-			   this.show( message, 'success', duration );
-		   },
-
-		   /**
-			* Show error toast
-			*/
-		   error: function( message, duration ) {
-			   this.show( message, 'error', duration );
-		   },
-
-		   /**
-			* Show warning toast
-			*/
-		   warning: function( message, duration ) {
-			   this.show( message, 'warning', duration );
-		   }
-	   },
-
-	   /**
 		* Save the View via AJAX
 		*
 		* @since 2.43
@@ -3555,12 +3462,12 @@
 		   vcfg.isSavingAjax = true;
 
 		   // Initialize toast system
-		   vcfg.GVToast.init();
+		   GVToast.init();
 
 		   // Get the post ID
 		   var postId = $( '#post_ID' ).val();
 		   if ( ! postId ) {
-			   vcfg.GVToast.error( gvGlobals.ajax_save_error_no_post_id );
+			   GVToast.error( gvGlobals.ajax_save_error_no_post_id );
 			   vcfg.isSavingAjax = false;
 			   return deferred.reject( 'no_post_id' ).promise();
 		   }
@@ -3618,7 +3525,7 @@
 			   data: formData,
 			   success: function( response ) {
 				   if ( response.success ) {
-					   vcfg.GVToast.success( gvGlobals.ajax_save_success );
+					   GVToast.success( gvGlobals.ajax_save_success );
 					   vcfg.setUnsavedChanges( false );
 					   deferred.resolve( response );
 				   } else {
@@ -3631,12 +3538,12 @@
 							   errorMessage = response.data.message;
 						   }
 					   }
-					   vcfg.GVToast.error( errorMessage );
+					   GVToast.error( errorMessage );
 					   deferred.reject( response );
 				   }
 			   },
 			   error: function( jqXHR, textStatus, errorThrown ) {
-					vcfg.GVToast.error( gvGlobals.ajax_save_error_generic );
+					GVToast.error( gvGlobals.ajax_save_error_generic );
 					deferred.reject( jqXHR );
 			   },
 			   complete: function() {
@@ -3953,8 +3860,7 @@
 		   initDroppables: viewConfiguration.init_droppables,
 		   setCustomLabel: viewConfiguration.setCustomLabel,
 		   ignoreEscape: viewConfiguration.ignoreEscape,
-		   saveViewAjax: viewConfiguration.saveViewAjax,
-		   GVToast: viewConfiguration.GVToast,
+		   saveViewAjax: viewConfiguration.saveViewAjax
 	   };
 
 	   $( document.body ).trigger( 'gravityview/loaded' );

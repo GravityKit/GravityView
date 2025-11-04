@@ -2093,11 +2093,27 @@ HTML;
 			plugins_url( 'assets/css/admin-datepicker.css', GRAVITYVIEW_FILE ),
 			$version );
 
+		// Enqueue toast notification system (required by admin-views)
+		wp_enqueue_script(
+			'gravityview_admin_toasts',
+			plugins_url( 'assets/js/admin-toasts' . $script_debug . '.js', GRAVITYVIEW_FILE ),
+			[ 'jquery' ],
+			$version
+		);
+
+		wp_enqueue_style(
+			'gravityview_admin_toasts',
+			plugins_url( 'assets/css/admin-toasts.css', GRAVITYVIEW_FILE ),
+			[],
+			$version
+		);
+
 		// Enqueue scripts
 		wp_enqueue_script(
 			'gravityview_views_scripts',
 			plugins_url( 'assets/js/admin-views' . $script_debug . '.js', GRAVITYVIEW_FILE ),
 			[
+				'gravityview_admin_toasts',
 				'jquery-ui-tabs',
 				'jquery-ui-draggable',
 				'jquery-ui-droppable',
