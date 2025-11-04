@@ -2410,7 +2410,7 @@ class GravityView_Edit_Entry_Render {
 				// Only set defaultValue if we have address data, otherwise leave it unset.
 				// to avoid string offset errors in Gravity Forms.
 				if ( ! empty( $address_values ) ) {
-					$field->defaultValue = $address_values;
+					//$field->defaultValue = $address_values;
 				}
 			} else {
 
