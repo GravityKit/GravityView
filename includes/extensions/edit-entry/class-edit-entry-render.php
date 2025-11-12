@@ -1250,12 +1250,6 @@ class GravityView_Edit_Entry_Render {
 				?>
 			</form>
 
-			<script>
-				gform.addFilter('gform_reset_pre_conditional_logic_field_action', function ( reset, formId, targetId, defaultValues, isInit ) {
-				    return false;
-				});
-			</script>
-
 		</div>
 
 		<?php
@@ -1431,14 +1425,15 @@ class GravityView_Edit_Entry_Render {
 		 */
 		do_action( 'gravityview/edit-entry/render/before', $this );
 
-		add_filter( 'gform_pre_render', array( $this, 'filter_modify_form_fields' ), 5000, 3 );
-		add_filter( 'gform_submit_button', array( $this, 'render_form_buttons' ) );
-		add_filter( 'gform_next_button', array( $this, 'render_form_buttons' ) );
-		add_filter( 'gform_previous_button', array( $this, 'render_form_buttons' ) );
+		add_filter( 'gform_pre_render', [ $this, 'filter_modify_form_fields' ], 5000, 3 );
+		add_filter( 'gform_has_conditional_logic', [ $this, 'set_default_values' ], 10, 2 );
+		add_filter( 'gform_submit_button', [ $this, 'render_form_buttons' ] );
+		add_filter( 'gform_next_button', [ $this, 'render_form_buttons' ] );
+		add_filter( 'gform_previous_button', [ $this, 'render_form_buttons' ] );
 		add_filter( 'gform_disable_view_counter', '__return_true' );
 
-		add_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5, 5 );
-		add_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10, 5 );
+		add_filter( 'gform_field_input', [ $this, 'verify_user_can_edit_post' ], 5, 5 );
+		add_filter( 'gform_field_input', [ $this, 'modify_edit_field_input' ], 10, 5 );
 
 		// We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
 		unset( $_GET['page'] );
@@ -1569,8 +1564,6 @@ class GravityView_Edit_Entry_Render {
 		}
 
 		$form = $this->filter_conditional_logic( $form );
-
-		$form = $this->prefill_conditional_logic( $form );
 
 		// for now we don't support Save and Continue feature.
 		if ( ! self::$supports_save_and_continue ) {
@@ -2363,40 +2356,45 @@ class GravityView_Edit_Entry_Render {
 	 * Conditional logic isn't designed to work with forms that already have content. When switching input values,
 	 * the dependent fields will be blank.
 	 *
-	 * Note: This is because GF populates a JavaScript variable with the input values. This is tough to filter at the input level;
-	 * via the `gform_field_value` filter; it requires lots of legwork. Doing it at the form level is easier.
+	 * We update the `defaultValue` of all the fields, just before the JavaScript is rendered, in order for the
+	 * `defaults` key on the Conditional Logic configuration to be populated properly with the stored values.
 	 *
-	 * @since 1.17.4
+	 * @since $ver$
 	 *
-	 * @param array $form Gravity Forms array object
-	 *
-	 * @return array $form, modified to fix conditional
+	 * @param bool       $has_conditional_logic Whether the form has conditional logic
+	 * @param array|null $form                  The forb object.
 	 */
-	function prefill_conditional_logic( $form ) {
-
-		if ( ! GFFormDisplay::has_conditional_logic( $form ) ) {
-			return $form;
+	public function set_default_values( bool $has_conditional_logic, ?array $form = null ): bool {
+		if ( ! $has_conditional_logic || ! $form ) {
+			return (bool) $has_conditional_logic;
 		}
 
 		// Have Conditional Logic pre-fill fields as if the data were default values
 		/** @var GF_Field $field */
 		foreach ( $form['fields'] as &$field ) {
+			// The field has not yet rendered, so wait.
+			if ( ! $field->get_context_property( 'rendering_form' ) ) {
+				break;
+			}
 
 			if ( 'checkbox' === $field->type ) {
 				foreach ( $field->get_entry_inputs() as $key => $input ) {
-				    $input_id = $input['id'];
-				    $choice   = $field->choices[ $key ];
-				    $value    = \GV\Utils::get( $this->entry, $input_id );
-				    $match    = RGFormsModel::choice_value_match( $field, $choice, $value );
-				    if ( $match ) {
-				        $field->choices[ $key ]['isSelected'] = true;
-				    }
+					$input_id = $input['id'];
+					$choice   = $field->choices[ $key ];
+					$value    = \GV\Utils::get( $this->entry, $input_id );
+					$match    = RGFormsModel::choice_value_match( $field, $choice, $value );
+					if ( $match ) {
+						$field->choices[ $key ]['isSelected'] = true;
+					}
 				}
-			} else if ( 'address' === $field->type ) {
+				continue;
+			}
+
+			if ( 'address' === $field->type ) {
 				// Address fields have multiple inputs and need special handling.
 				// This prevents defaultValue from being set to an empty string.
 				$address_values = [];
-				$inputs = $field->get_entry_inputs();
+				$inputs         = $field->get_entry_inputs();
 
 				if ( is_array( $inputs ) ) {
 					foreach ( $inputs as $input ) {
@@ -2412,33 +2410,35 @@ class GravityView_Edit_Entry_Render {
 				if ( ! empty( $address_values ) ) {
 					$field->defaultValue = $address_values;
 				}
-			} else {
 
-				// We need to run through each field to set the default values.
-				foreach ( $this->entry as $field_id => $field_value ) {
+				continue;
+			}
 
-				    if ( floatval( $field_id ) === floatval( $field->id ) ) {
+			$field_id = (float) $field->id;
+			// We need to run through each field to set the default values.
+			if ( ! isset( $this->entry[ $field_id ] ) ) {
+				continue;
+			}
 
-				        if ( 'list' === $field->type ) {
-				            $list_rows = maybe_unserialize( $field_value );
+			$field_value = $this->entry[ $field_id ];
 
-				            $list_field_value = array();
-				            foreach ( (array) $list_rows as $row ) {
-				                foreach ( (array) $row as $column ) {
-				                    $list_field_value[] = $column;
-				                }
-				            }
+			$field->defaultValue = $field_value;
 
-				            $field->defaultValue = serialize( $list_field_value );
-				        } else {
-				            $field->defaultValue = $field_value;
-				        }
-				    }
+			if ( 'list' === $field->type ) {
+				$list_rows = maybe_unserialize( $field_value );
+
+				$list_field_value = [];
+				foreach ( (array) $list_rows as $row ) {
+					foreach ( (array) $row as $column ) {
+						$list_field_value[] = $column;
+					}
 				}
+
+				$field->defaultValue = serialize( $list_field_value );
 			}
 		}
 
-		return $form;
+		return (bool) $has_conditional_logic;
 	}
 
 	/**
