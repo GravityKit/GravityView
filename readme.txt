@@ -29,6 +29,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Email fields with confirmation enabled could display `Array` instead of the correct value.
 * Workflow Step field not able to be used to link to a single entry.
 * Stored values are properly reset when using conditional logic on the Edit Entry page.
+* Note not being added for every scenario where approval status is updated using Edit Entry.
+	- After auto-unapproving an entry when the "Unapprove Entries After Editing" View setting is enabled.
+	- Upon editing an entry when using the Approval Status field.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
