@@ -972,7 +972,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Set it to anything other than "update" so that the logic passes
 		$config = array(
 			'meta' => array(
-				'feed_type' => 'create',
+				'feedType' => 'create',
 			),
 		);
 
@@ -989,7 +989,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 	// Set it to "update" so that the logic fails
 		$config = array(
 			'meta' => array(
-				'feed_type' => 'update',
+				'feedType' => 'update',
 			),
 		);
 
@@ -1002,7 +1002,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Now use "Create" to pass through initial logic check
 		$config = array(
 			'meta' => array(
-				'feed_type' => 'create',
+				'feedType' => 'create',
 			),
 		);
 
