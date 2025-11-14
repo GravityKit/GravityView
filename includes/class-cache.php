@@ -391,7 +391,13 @@ class GravityView_Cache {
 			)
 		);
 
-		return update_option( self::BLOCKLIST_OPTION_NAME, $updated_list );
+		$updated = update_option( self::BLOCKLIST_OPTION_NAME, $updated_list );
+
+		if ( ! $updated ) {
+			gravityview()->log->error( 'Failed to remove form IDs from cache blocklist.' );
+		}
+
+		return $updated;
 	}
 
 	/**
