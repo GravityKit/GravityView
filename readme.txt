@@ -21,17 +21,20 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+This release addresses multiple issues impacting search fields, Edit Entry behavior, logging of entry approval status changes, and other aspects of the plugin’s functionality.
+
+= 2.48.2 on November 13, 2025 =
 
 #### 🐛 Fixed
 * Fatal error when using Chained Select fields in the Search Bar without proper form context.
-* Date and Entry Date field search logic when using a single input or a range.
+* Incorrect search logic for Date and Entry Date fields when using a single input or a range.
+* Fields on the Edit Entry page not clearing stored values when hidden by conditional logic, or restoring their default/merge-tag-based values when shown again.
 * Email fields with confirmation enabled could display `Array` instead of the correct value.
 * Workflow Step field not able to be used to link to a single entry.
-* Stored values are properly reset when using conditional logic on the Edit Entry page.
-* Note not being added for every scenario where approval status is updated using Edit Entry.
-	- After auto-unapproving an entry when the "Unapprove Entries After Editing" View setting is enabled.
-	- Upon editing an entry when using the Approval Status field.
+* Entry Notes not being added when an entry’s approval status changed due to the Unapprove Entries After Editing setting or when updated via the Approval Status field on the Entry Edit page.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.2.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
