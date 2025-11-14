@@ -21,9 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-This release addresses multiple issues impacting search fields, Edit Entry behavior, logging of entry approval status changes, and other aspects of the plugin’s functionality.
-
 = 2.48.2 on November 13, 2025 =
+
+This release addresses multiple issues impacting search fields, Edit Entry behavior, logging of entry approval status changes, and other aspects of the plugin’s functionality.
 
 #### 🐛 Fixed
 * Fatal error when using Chained Select fields in the Search Bar without proper form context.
