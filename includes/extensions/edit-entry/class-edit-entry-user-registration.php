@@ -107,20 +107,37 @@ class GravityView_Edit_Entry_User_Registration {
 
         // Make sure the feed is active
 	    if ( ! \GV\Utils::get( $config, 'is_active', false ) ) {
+			gravityview()->log->debug( 'User Registration feed is not active; not updating user', array( 'entry_id' => $entry_id ) );
 			return;
 	    }
 
 	    // If an Update feed, make sure the conditions are met.
 	    if ( 'update' === \GV\Utils::get( $config, 'meta/feedType' ) ) {
 	    	if ( ! $gf_user_registration->is_feed_condition_met( $config, $form, $entry ) ) {
+			    gravityview()->log->debug( 'User Registration feed conditions not met; not updating user', array( 'entry_id' => $entry_id ) );
 			    return;
 		    }
 	    }
 
-	    // Do not update user if the user hasn't been registered (happens when manual activation is enabled in User Registration feed)
-	    $username = \GV\Utils::get( $config, 'meta/username', null );
-	    if ( ! isset( $entry[ $username ] ) || ! get_user_by( 'login', $entry[ $username ] ) ) {
-		    return;
+	    // Only validate username for Create feeds where username field is configured
+	    // For Update feeds, the user is identified via entry['created_by'], so username validation is unnecessary
+	    $feed_type = \GV\Utils::get( $config, 'meta/feedType' );
+	    $username_field = \GV\Utils::get( $config, 'meta/username', null );
+
+	    // For Create feeds with username field, verify the user exists (handles manual activation scenario)
+	    if ( 'create' === $feed_type && $username_field ) {
+		    if ( ! isset( $entry[ $username_field ] ) || ! get_user_by( 'login', $entry[ $username_field ] ) ) {
+			    gravityview()->log->debug(
+				    'User not yet registered (manual activation enabled); not updating user',
+				    [
+						'data' => [
+							'entry_id' => $entry_id,
+							'username_field' => $username_field,
+						],
+					]
+			    );
+			    return;
+		    }
 	    }
 
         // The priority is set to 3 so that default priority (10) will still override it
@@ -289,7 +306,7 @@ class GravityView_Edit_Entry_User_Registration {
 		 */
         $restore_display_name = apply_filters( 'gravityview/edit_entry/restore_display_name', true );
 
-        $is_update_feed = ( $config && 'update' === \GV\Utils::get( $config, 'meta/feed_type' ) );
+        $is_update_feed = ( $config && 'update' === \GV\Utils::get( $config, 'meta/feedType' ) );
 
 	    /**
 	     * Don't restore display name:
