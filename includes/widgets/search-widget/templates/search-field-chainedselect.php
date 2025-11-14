@@ -26,12 +26,28 @@ if ( empty( $search_field['choices'] ) ) {
 	return;
 }
 
-$form = \GV\GF_Form::by_id( $search_field['form_id'] );
+$form_id = \GV\Utils::get( $search_field, 'form_id', null );
+$form    = \GV\GF_Form::by_id( $form_id );
+
+if ( ! $form ) {
+	gravityview()->log->error( 'search-field-chainedselect.php - Form not found for ID: {form_id}', [ 'form_id' => $form_id ] );
+	return;
+}
 
 $field = \GV\GF_Field::by_id( $form, $search_field['key'] );
 
+if ( ! $field ) {
+	gravityview()->log->error( 'search-field-chainedselect.php - Field not found for key: {key}', [ 'key' => $search_field['key'] ] );
+	return;
+}
+
 /** @var GF_Chained_Field_Select $gf_field */
 $gf_field = $field->field;
+
+if ( ! $gf_field ) {
+	gravityview()->log->error( 'search-field-chainedselect.php - GF field object not found' );
+	return;
+}
 
 /**
  * Prevent Chained Select Search Bar input fields from outputting styles.

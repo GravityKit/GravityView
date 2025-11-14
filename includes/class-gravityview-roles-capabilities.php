@@ -400,9 +400,10 @@ class GravityView_Roles_Capabilities {
 			} else {
 				$has_cap = $user_id ? user_can( $user_id, $cap ) : current_user_can( $cap );
 			}
-			// At the first successful response, stop checking
+
+			// At the first successful response, stop checking.
 			if ( $has_cap ) {
-				break;
+				return true;
 			}
 		}
 

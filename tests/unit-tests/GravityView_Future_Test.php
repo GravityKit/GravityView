@@ -3855,9 +3855,12 @@ class GVFuture_Test extends GV_UnitTestCase {
 			}
 		}
 
-		/** Hack in a jpeg. */
-		$filename = tempnam( '/tmp/', 'gvtest_' ). '.jpg';
-		$image = "$filename|:|<script>TITLE</script> huh, <b>wut</b>|:|cap<script>tion</script>|:|de's<script>tion</script>";
+	  /** Hack in a jpeg. */
+		$upload_root_info = GF_Field_FileUpload::get_upload_root_info( $form['id'] );
+		wp_mkdir_p( $upload_root_info['path'] );
+		$filename = $upload_root_info['path'] . 'gvtest_' . uniqid() . '.jpg';
+		$file_url = $upload_root_info['url'] . basename( $filename );
+		$image = "$file_url|:|<script>TITLE</script> huh, <b>wut</b>|:|cap<script>tion</script>|:|de's<script>tion</script>";
 
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id' => $form['id'],
@@ -3891,6 +3894,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$entry['24'] = $image;
 
 		$post = get_post( GFCommon::create_post( $form, $entry ) );
+
+	  // Clean up the test image file.
+	  if ( file_exists( $filename ) ) {
+		  unlink( $filename );
+	  }
 
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -4079,11 +4087,11 @@ class GVFuture_Test extends GV_UnitTestCase {
 		$image_tag = 'figure';
 		$image_caption_tag = 'figcaption';
 		$field = \GV\GF_Field::by_id( $form, '24' );
-		$expected = sprintf('<%1$s class="gv-image"><a class="gravityview-fancybox" href="' . $filename . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s>', $image_tag, $image_caption_tag);
+		$expected = sprintf('<%1$s class="gv-image"><a class="gravityview-fancybox" href="' . $file_url . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $file_url . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s>', $image_tag, $image_caption_tag);
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'link_to_post' => true ) );
-		$expected = sprintf('<%1$s class="gv-image"><a href="' . get_permalink( $post->ID ) . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $filename . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s>', $image_tag, $image_caption_tag);
+		$expected = sprintf('<%1$s class="gv-image"><a href="' . get_permalink( $post->ID ) . '" title="&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;"><img src="' . $file_url . '" alt="cap&lt;script&gt;tion&lt;/script&gt;" /></a><div class="gv-image-title"><span class="gv-image-label">Title:</span> <div class="gv-image-value">&lt;script&gt;TITLE&lt;/script&gt; huh, &lt;b&gt;wut&lt;/b&gt;</div></div><div class="gv-image-caption"><span class="gv-image-label">Caption:</span> <%2$s class="gv-image-value">cap&lt;script&gt;tion&lt;/script&gt;</%2$s></div><div class="gv-image-description"><span class="gv-image-label">Description:</span> <div class="gv-image-value">de&#039;s&lt;script&gt;tion&lt;/script&gt;</div></div></%1$s>', $image_tag, $image_caption_tag);
 		$this->assertEquals( $expected, $renderer->render( $field, $view, $form, $entry, $request ) );
 
 		$field->update_configuration( array( 'dynamic_data' => true, 'link_to_post' => false, 'show_as_link' => true ) );

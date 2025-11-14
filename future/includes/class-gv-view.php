@@ -655,6 +655,9 @@ class View implements \ArrayAccess {
 			return $forms;
 		}
 
+		// Ensure the joins meta is an array. It sometimes is a string.
+		$joins_meta = (array) $joins_meta;
+
 		foreach ( $joins_meta  as $meta ) {
 			if ( ! is_array( $meta ) || 4 != count( $meta ) ) {
 				continue;

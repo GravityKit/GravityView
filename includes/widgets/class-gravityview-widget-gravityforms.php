@@ -7,6 +7,16 @@ use GV\View;
  */
 class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
+	/**
+	 * @var string
+	 * @since TODO
+	 */
+	public $widget_id = 'gravityforms';
+
+	/**
+	 * @var string
+	 * @since 2.19
+	 */
 	public $icon = 'data:image/svg+xml,%3Csvg%20enable-background%3D%22new%200%200%20391.6%20431.1%22%20viewBox%3D%220%200%20391.6%20431.1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22m391.6%20292.8c0%2019.7-14%2043.9-31%2053.7l-133.8%2077.2c-17.1%209.9-45%209.9-62%200l-133.8-77.2c-17.1-9.9-31-34-31-53.7v-154.5c0-19.7%2013.9-43.9%2031-53.7l133.8-77.2c17.1-9.9%2045-9.9%2062%200l133.7%2077.2c17.1%209.8%2031%2034%2031%2053.7z%22%20fill%3D%22%2340464D%22%2F%3E%3Cpath%20d%3D%22m157.8%20179.8h177.2v-49.8h-176.8c-25.3%200-46.3%208.7-62.3%2025.7-38.6%2041.1-39.6%20144.6-39.6%20144.6h277.4v-93.6h-49.8v43.8h-174.4c1.1-16.3%208.6-45.5%2022.8-60.6%206.4-6.9%2014.5-10.1%2025.5-10.1z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E';
 
 	/**
@@ -16,13 +26,44 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	 */
 	protected $show_on_single = true;
 
-	function __construct() {
-		// Initialize widget in the frontend or when editing a View/performing widget AJAX action
-		$doing_ajax   = defined( 'DOING_AJAX' ) && DOING_AJAX && 'gv_field_options' === \GV\Utils::_POST( 'action' );
-		$editing_view = 'edit' === \GV\Utils::_GET( 'action' ) && 'gravityview' === get_post_type( \GV\Utils::_GET( 'post' ) );
-		$is_frontend  = gravityview()->request->is_frontend();
+	/**
+	 * Should the widget be initialized?
+	 *
+	 * Initialization is heavy (querying for all GF forms), so we only do it when necessary.
+	 *
+	 * @since TODO
+	 *
+	 * @return boolean
+	 */
+	private function should_initialize() {
+		$doing_ajax = wp_doing_ajax();
 
-		if ( ! $doing_ajax && ! $editing_view && ! $is_frontend ) {
+		// Saving a View.
+		if ( $doing_ajax && 'gv_field_options' === \GV\Utils::_POST( 'action' ) ) {
+			return true;
+		}
+
+		// Editing a View.
+		if ( 'edit' === \GV\Utils::_GET( 'action' ) && 'gravityview' === get_post_type( \GV\Utils::_GET( 'post' ) ) ) {
+			return true;
+		}
+
+		// Frontend.
+		if ( gravityview()->request->is_frontend() ) {
+			return true;
+		}
+
+		// Elementor AJAX request.
+		if ( $doing_ajax && 'elementor_ajax' === \GV\Utils::_POST( 'action' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function __construct() {
+
+		if ( ! $this->should_initialize() ) {
 			return;
 		}
 

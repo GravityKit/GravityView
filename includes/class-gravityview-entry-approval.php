@@ -353,7 +353,11 @@ class GravityView_Entry_Approval {
 
         // Only update meta (and trigger actions) if the status actually changed.
         if ( (int) $existing_status !== (int) $new_status ) {
-            self::update_approved_meta( $entry_id, $new_status, $form['id'] );
+            $updated = self::update_approved_meta( $entry_id, $new_status, $form['id'] );
+
+			if ( true === $updated ) {
+				self::add_approval_status_updated_note( $entry_id, $new_status );
+			}
         }
 	}
 
@@ -446,11 +450,11 @@ class GravityView_Entry_Approval {
 		$form_id = intval( $form_id );
 
 		// Update the entry meta
-		self::update_approved_meta( $entry_id, $approved, $form_id );
+		$updated = self::update_approved_meta( $entry_id, $approved, $form_id );
 
 		// add note to entry if approval field updating worked or there was no approved field
 		// There's no validation for the meta
-		if ( true === $result ) {
+		if ( true === $result && true === $updated ) {
 
 			// Add an entry note
 			self::add_approval_status_updated_note( $entry_id, $approved );
@@ -602,24 +606,25 @@ class GravityView_Entry_Approval {
 	 * Update the `is_approved` entry meta value
 	 *
 	 * @since 1.7.6.1 `after_update_entry_update_approved_meta` was previously to be named `update_approved_meta`
-	 * @since 1.17.1 Added $form_id parameter
+	 * @since 1.17.1  Added $form_id parameter.
+	 * @since TODO    Added boolean return value.
 	 *
 	 * @param  int    $entry_id ID of the Gravity Forms entry
 	 * @param  string $status String whether entry is approved or not. `0` for not approved, `Approved` for approved.
 	 * @param int    $form_id ID of the form of the entry being updated. Improves query performance.
 	 *
-	 * @return void
+	 * @return bool True if the meta was updated, false otherwise (invalid status, missing function, or status unchanged)
 	 */
     private static function update_approved_meta( $entry_id, $status, $form_id = 0 ) {
 
 		if ( ! GravityView_Entry_Approval_Status::is_valid( $status ) ) {
 			gravityview()->log->error( '$is_approved not valid value', array( 'data' => $status ) );
-			return;
+			return false;
 		}
 
 		if ( ! function_exists( 'gform_update_meta' ) ) {
 			gravityview()->log->error( '`gform_update_meta` does not exist.' );
-			return;
+			return false;
 		}
 
 		/** @var int $new_status */
@@ -636,11 +641,16 @@ class GravityView_Entry_Approval {
 			false !== $did_previous_meta_exist
 			&& $previous_status === $new_status
 		) {
-			return;
+			return false;
 		}
 
         // update entry meta
-        gform_update_meta( $entry_id, self::meta_key, $new_status, $form_id );
+        $updated = (bool) gform_update_meta( $entry_id, self::meta_key, $new_status, $form_id );
+
+		if ( ! $updated ) {
+			gravityview()->log->error( 'Entry meta failed to update for entry {entry_id} with status {new_status} and form {form_id}', [ 'entry_id' => $entry_id, 'new_status' => $new_status, 'form_id' => $form_id ] );
+			return false;
+		}
 
 		/**
 		 * Triggered when an entry approval is updated.
@@ -670,6 +680,8 @@ class GravityView_Entry_Approval {
 		 * @param  int $entry_id ID of the Gravity Forms entry
 		 */
 		do_action( 'gravityview/approve_entries/' . $action, $entry_id );
+
+		return $updated;
 	}
 
 	/**
@@ -765,7 +777,20 @@ class GravityView_Entry_Approval {
 			$approval_status = GravityView_Entry_Approval_Status::UNAPPROVED;
 		}
 
-		self::update_approved_meta( $entry_id, $approval_status, $form['id'] );
+		$updated = self::update_approved_meta( $entry_id, $approval_status, $form['id'] );
+
+		/**
+		 * Add a note when the entry has been approved or disapproved?
+		 *
+		 * @since 1.16.3
+		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
+		 */
+		$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
+
+		if ( true === $updated && true === $add_note ) {
+			$message = esc_html__( 'Entry was automatically unapproved after editing.', 'gk-gravityview' );
+			GravityView_Entry_Notes::add_note( $entry_id, get_current_user_id(), wp_get_current_user()->display_name, $message );
+		}
 	}
 
 	/**

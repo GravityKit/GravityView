@@ -21,6 +21,11 @@ if ( empty( $value ) ) {
 	return;
 }
 
+// Handle email fields with confirmation enabled.
+if ( is_array( $value ) ) {
+	$value = reset( $value );
+}
+
 // Default: plain email, no link
 $output = $value;
 

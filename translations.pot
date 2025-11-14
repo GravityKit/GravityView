@@ -9,14 +9,13 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-10T00:11:42+00:00\n"
+"POT-Creation-Date: 2025-10-31T13:29:23-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Domain: gk-gravityview\n"
 
 #. Plugin Name of the plugin
-#: gravityview.php
 #: future/includes/gutenberg/class-gv-gutenberg-blocks.php:165
 #: includes/class-gravityview-admin-bar.php:60
 #: includes/class-gravityview-roles-capabilities.php:149
@@ -26,17 +25,14 @@ msgstr ""
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
-#: gravityview.php
 msgid "https://www.gravitykit.com"
 msgstr ""
 
 #. Description of the plugin
-#: gravityview.php
 msgid "The best, easiest way to display Gravity Forms entries on your website."
 msgstr ""
 
 #. Author of the plugin
-#: gravityview.php
 #: vendor_prefixed/gravitykit/foundation/src/Licenses/WP/PluginsPage.php:409
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:198
 #: vendor_prefixed/gravitykit/foundation/src/WP/AdminMenu.php:199
@@ -4059,42 +4055,42 @@ msgid "Size in Pixels"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-gravity-forms.php:35
-#: includes/widgets/class-gravityview-widget-gravityforms.php:70
+#: includes/widgets/class-gravityview-widget-gravityforms.php:111
 msgid "Gravity Forms"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-gravity-forms.php:36
-#: includes/widgets/class-gravityview-widget-gravityforms.php:29
+#: includes/widgets/class-gravityview-widget-gravityforms.php:70
 msgid "Display a Gravity Forms form."
 msgstr ""
 
 #: includes/fields/class-gravityview-field-gravity-forms.php:55
-#: includes/widgets/class-gravityview-widget-gravityforms.php:39
+#: includes/widgets/class-gravityview-widget-gravityforms.php:80
 msgid "Form to display"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-gravity-forms.php:61
-#: includes/widgets/class-gravityview-widget-gravityforms.php:45
+#: includes/widgets/class-gravityview-widget-gravityforms.php:86
 msgid "Show form title?"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-gravity-forms.php:66
-#: includes/widgets/class-gravityview-widget-gravityforms.php:50
+#: includes/widgets/class-gravityview-widget-gravityforms.php:91
 msgid "Show form description?"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-gravity-forms.php:71
-#: includes/widgets/class-gravityview-widget-gravityforms.php:55
+#: includes/widgets/class-gravityview-widget-gravityforms.php:96
 msgid "Enable AJAX"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-gravity-forms.php:78
-#: includes/widgets/class-gravityview-widget-gravityforms.php:62
+#: includes/widgets/class-gravityview-widget-gravityforms.php:103
 msgid "Field value parameters"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-gravity-forms.php:79
-#: includes/widgets/class-gravityview-widget-gravityforms.php:63
+#: includes/widgets/class-gravityview-widget-gravityforms.php:104
 msgid "Learn how to dynamically populate a field."
 msgstr ""
 
@@ -4592,7 +4588,7 @@ msgid "Radio Buttons"
 msgstr ""
 
 #: includes/fields/class-gravityview-field-section.php:24
-#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:169
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:190
 msgid "Section"
 msgstr ""
 
@@ -5294,7 +5290,7 @@ msgid "Feature submitted websites with screenshots."
 msgstr ""
 
 #: includes/search/class-search-field-collection.php:328
-#: includes/widgets/search-widget/class-search-widget.php:2602
+#: includes/widgets/search-widget/class-search-widget.php:2603
 msgid "Column"
 msgstr ""
 
@@ -5649,64 +5645,64 @@ msgstr ""
 msgid "There was an error loading searchable fields. Save the View or refresh the page to fix this issue."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1940
+#: includes/widgets/search-widget/class-search-widget.php:1941
 msgctxt "Close calendar"
 msgid "Close"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1941
+#: includes/widgets/search-widget/class-search-widget.php:1942
 msgctxt "Previous month in calendar"
 msgid "Prev"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1942
+#: includes/widgets/search-widget/class-search-widget.php:1943
 msgctxt "Next month in calendar"
 msgid "Next"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1943
+#: includes/widgets/search-widget/class-search-widget.php:1944
 msgctxt "Today in calendar"
 msgid "Today"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1944
+#: includes/widgets/search-widget/class-search-widget.php:1945
 msgctxt "Week in calendar"
 msgid "Week"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:1945
+#: includes/widgets/search-widget/class-search-widget.php:1946
 msgid "Show a different month"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2331
+#: includes/widgets/search-widget/class-search-widget.php:2332
 msgid "Search fields shown"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2345
+#: includes/widgets/search-widget/class-search-widget.php:2346
 msgid "Advanced Search fields shown"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2348
+#: includes/widgets/search-widget/class-search-widget.php:2349
 msgid "If any Advanced Search fields exist, a link will show to toggle them."
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2537
+#: includes/widgets/search-widget/class-search-widget.php:2538
 msgid "Configure Area Settings"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2563
+#: includes/widgets/search-widget/class-search-widget.php:2564
 msgid "Arrange Fields:"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2565
+#: includes/widgets/search-widget/class-search-widget.php:2566
 msgid "Stacked (vertical)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2566
+#: includes/widgets/search-widget/class-search-widget.php:2567
 msgid "Side by side (horizontal)"
 msgstr ""
 
-#: includes/widgets/search-widget/class-search-widget.php:2609
+#: includes/widgets/search-widget/class-search-widget.php:2610
 msgid "Column Settings"
 msgstr ""
 
@@ -6044,8 +6040,10 @@ msgstr ""
 
 #. translators: [plugins] is replaced with a list of plugin names.
 #: vendor_prefixed/gravitykit/foundation/src/Core.php:950
-msgid "[plugins] contain both namespaced and non-namespaced Foundation, which may cause conflicts with the standalone Foundation plugin."
-msgstr ""
+msgid "[plugins] contains both namespaced and non-namespaced Foundation, which may cause conflicts with the standalone Foundation plugin."
+msgid_plural "[plugins] contain both namespaced and non-namespaced Foundation, which may cause conflicts with the standalone Foundation plugin."
+msgstr[0] ""
+msgstr[1] ""
 
 #: vendor_prefixed/gravitykit/foundation/src/Integrations/HelpScout.php:211
 msgid "Instant Answers"
@@ -7519,54 +7517,140 @@ msgid "Changes to [product] require reloading the UI."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:162
-msgid "Required"
+msgctxt "Dropdown label"
+msgid "Select"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:163
-msgid "Are you sure you want to clear unsaved changes?"
+msgid "Live status is not available."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:164
-msgid "plugin icon"
+msgid "Request failed. Please try again."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:165
-msgid "Close Navigation"
+msgid "Notice"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:166
-msgid "Open Navigation"
+msgid "Progress"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:167
-msgid "Quick search..."
+msgid "Remind me later…"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:168
-msgid "Product Navigation"
+msgid "Dismiss for myself"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:169
+msgid "Dismiss for everyone"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:170
-msgid "Save Settings"
+msgid "Dismiss notice"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:171
-msgid "Saving..."
+msgid "Dismiss all"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:172
-msgid "Floaty logo"
+msgid "Failed to dismiss notices. Please try again."
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:173
-msgid "The settings data couldn't be loaded."
+msgid "Notice area for [product]"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:174
-msgid "Please [link]contact support[/link]."
+msgid "Show all"
 msgstr ""
 
 #: vendor_prefixed/gravitykit/foundation/src/translations.js.php:175
+msgid "Show less"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:176
+msgid "Error: "
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:177
+msgid "Request failed: [reason]"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:178
+msgid "Unknown error"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:179
+msgid "Malformed server response"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:180
+msgctxt "Error code"
+msgid "unknown"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:181
+msgid "Request failed"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:182
+msgid "Network error"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:183
+msgid "Required"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:184
+msgid "Are you sure you want to clear unsaved changes?"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:185
+msgid "plugin icon"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:186
+msgid "Close Navigation"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:187
+msgid "Open Navigation"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:188
+msgid "Quick search..."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:189
+msgid "Product Navigation"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:191
+msgid "Save Settings"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:192
+msgid "Saving..."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:193
+msgid "Floaty logo"
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:194
+msgid "The settings data couldn't be loaded."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:195
+msgid "Please [link]contact support[/link]."
+msgstr ""
+
+#: vendor_prefixed/gravitykit/foundation/src/translations.js.php:196
 msgid "Select All"
 msgstr ""
 
@@ -8308,84 +8392,4 @@ msgstr ""
 #: future/includes/gutenberg/build/view.js:1
 #: future/includes/gutenberg/shared/js/sort-selector.js:75
 msgid "No Sorting Fields found"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block title"
-msgid "GravityView Entry Field"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-msgctxt "block description"
-msgid "Display an entry field value."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "GravityView"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "form entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-field/block.json
-#: future/includes/gutenberg/blocks/entry-link/block.json
-#: future/includes/gutenberg/blocks/entry/block.json
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block keyword"
-msgid "entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block title"
-msgid "GravityView Entry Link"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry-link/block.json
-msgctxt "block description"
-msgid "Display a link to the GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block title"
-msgid "GravityView Entry"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/entry/block.json
-msgctxt "block description"
-msgid "Display a GravityView entry."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block title"
-msgid "GravityView View Details"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view-details/block.json
-msgctxt "block description"
-msgid "Display specific information about a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block title"
-msgid "GravityView View"
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block description"
-msgid "Display a GravityView View."
-msgstr ""
-
-#: future/includes/gutenberg/blocks/view/block.json
-msgctxt "block keyword"
-msgid "view"
 msgstr ""

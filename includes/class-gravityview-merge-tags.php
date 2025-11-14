@@ -50,6 +50,11 @@ class GravityView_Merge_Tags {
 	 * @return string
 	 */
 	public function cache_merge_tag_modifiers( $text ) {
+
+		if ( ! is_string( $text ) ) {
+			return $text;
+		}
+
 		// Regex pattern taken from GFCommon::replace_variables().
 		preg_match_all( '/{[^{]*?:(\d+(\.\w+)?)(:(.*?))?}/mi', $text, $matches, PREG_SET_ORDER );
 
