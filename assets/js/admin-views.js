@@ -104,7 +104,7 @@
 	   ignoreEscapeEvent: false,
 
 	   /**
-		* @since TODO
+		* @since 2.48.2
 		* @type {number} Delay in milliseconds to wait before moving focus after smooth scrolling.
 		*/
 	   smoothScrollFocusDelay: 300,

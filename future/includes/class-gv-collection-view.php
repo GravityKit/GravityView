@@ -131,7 +131,7 @@ class View_Collection extends Collection {
 		 * The GravityView Elementor Widget uses this filter to add Views to the Collection that are embedded in Elementor widgets.
 		 * This allows the widget support `?gvid` being properly handled when multiple Views are embedded in the same post.
 		 *
-		 * @since TODO
+		 * @since 2.48.2
 		 *
 		 * @param \GV\View_Collection $view_collection The View Collection.
 		 * @param \WP_Post $post The post.
