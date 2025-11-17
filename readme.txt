@@ -21,6 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.48.3 on November 17, 2025 =
+
+This hotfix resolves a performance issue introduced in 2.48.2.
+
+#### 🐛 Fixed
+* After the 2.48.2 update, Views were taking significantly longer to load.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.0.
+
 = 2.48.2 on November 13, 2025 =
 
 This release addresses multiple issues impacting search fields, Edit Entry behavior, logging of entry approval status changes, and other aspects of the plugin’s functionality.
