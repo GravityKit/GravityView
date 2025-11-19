@@ -21,6 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/delete-entry/show-delete-button` filter to allow code to modify the visibility of the Delete button, with entry, form, View ID, and post ID as parameters.
+	- The `gravityview/delete-entry/show-delete-button` filter will be deprecated in a future release.
+
 = 2.48.3 on November 17, 2025 =
 
 This hotfix resolves a performance issue introduced in 2.48.2.
