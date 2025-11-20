@@ -275,4 +275,43 @@ abstract class Entry {
 		}
 		return Utils::get( $this, $field->form_id, $fallback );
 	}
+
+	/**
+	 * Check if the current user can access the entry.
+	 *
+	 * @since 2.29.0
+	 *
+	 * @param \GV\View    $view    The View context.
+	 * @param \GV\Request $request The request context.
+	 *
+	 * @return bool|\WP_Error True if allowed, WP_Error if denied.
+	 */
+	public function check_access( \GV\View $view, $request = null ) {
+
+		$status = Utils::get( $this->entry, 'status' );
+
+		if ( 'active' !== $status ) {
+			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $this->ID ) );
+			return new \WP_Error( 'gravityview/entry_not_active' );
+		}
+
+		$has_custom_slug = apply_filters( 'gravityview_custom_entry_slug', false );
+		$query_slug      = get_query_var( \GV\Entry::get_endpoint_name() );
+		$entry_slug      = $this->get_slug();
+
+		if ( $has_custom_slug && $entry_slug !== $query_slug ) {
+			return new \WP_Error( 'gravityview/entry_slug_mismatch' );
+		}
+
+		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $view->ID );
+
+		if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
+			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $this->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
+				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $this->ID ) );
+				return new \WP_Error( 'gravityview/entry_not_approved' );
+			}
+		}
+
+		return true;
+	}
 }

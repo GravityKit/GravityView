@@ -340,44 +340,10 @@ class View implements \ArrayAccess {
 			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
 				case 'post_password_required':
 					return get_the_password_form( $view->ID );
-				case 'no_form_attached':
-					gravityview()->log->error(
-						'View #{view_id} cannot render: {error_code} {error_message}',
-						array(
-							'error_code'    => $error->get_error_code(),
-							'error_message' => $error->get_error_message(),
-						)
-					);
-
-					/**
-					 * This View has no data source. There's nothing to show really.
-					 * ...apart from a nice message if the user can do anything about it.
-					 */
-					if ( GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-
-						$title = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
-
-						$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
-
-						$image = sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', esc_attr__( 'Data Source', 'gk-gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/data-source.png', GRAVITYVIEW_FILE ) ) );
-
-						return GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message . $image ), 'notice' );
-					}
-					break;
 				case 'in_trash':
 					return '';  // Views in trash are unreachable when accessed as a CPT, but adding this just in case. We do not give a hint that this content exists, for security purposes.
-				case 'no_direct_access':
-				case 'embed_only':
-				case 'not_public':
 				default:
-					gravityview()->log->notice(
-						'View #{view_id} cannot render: {error_code} {error_message}',
-						array(
-							'error_code'    => $error->get_error_code(),
-							'error_message' => $error->get_error_message(),
-						)
-					);
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
+					return \GravityView_Error_Messages::get( $error->get_error_code(), $view, 'shortcode' );
 			}
 
 			return $content;
@@ -389,21 +355,10 @@ class View implements \ArrayAccess {
 		 * Editing a single entry.
 		 */
 		if ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) {
-			if ( 'active' != $entry['status'] ) {
-				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-			}
-
-			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-			}
-
-			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-				}
+			$gv_entry = $entry->as_entry();
+			$check = $gv_entry->check_access( $view );
+			if ( is_wp_error( $check ) ) {
+				return \GravityView_Error_Messages::get( $check, $view, 'shortcode', $gv_entry );
 			}
 
 			$renderer = new Edit_Entry_Renderer();
@@ -423,21 +378,9 @@ class View implements \ArrayAccess {
 
 			foreach ( $entryset as $e ) {
 
-				if ( 'active' !== $e['status'] ) {
-					gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $e->ID ) );
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-				}
-
-				if ( $custom_slug && ! in_array( $e->slug, $ids ) ) {
-					gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $e->ID ) );
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-				}
-
-				if ( $show_only_approved && ! $is_admin_and_can_view ) {
-					if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $e->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-						gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $e->ID ) );
-						return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-					}
+				$check = $e->check_access( $view );
+				if ( is_wp_error( $check ) ) {
+					return \GravityView_Error_Messages::get( $check, $view, 'shortcode', $e );
 				}
 
 				$error = GVCommon::check_entry_display( $e->as_entry(), $view );
@@ -450,7 +393,7 @@ class View implements \ArrayAccess {
 							'message'  => $error->get_error_message(),
 						)
 					);
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
+					return \GravityView_Error_Messages::get( $error->get_error_code(), $view, 'shortcode', $e );
 				}
 			}
 

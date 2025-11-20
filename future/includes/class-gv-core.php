@@ -155,6 +155,8 @@ final class Core {
 			return;
 		}
 
+		/** Error messages used throughout the plugin. */
+		require_once $this->plugin->dir( 'future/includes/class-gravityview-error-messages.php' );
 
 		/** Add rewrite endpoint for single-entry URLs. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
