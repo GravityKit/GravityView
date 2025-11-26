@@ -499,14 +499,33 @@ class GVCommon {
 						if ( 'email' === $field['type'] && false === strpos( $input['id'], '.' ) ) {
 							continue;
 						}
-						$fields[ "{$input['id']}" ] = array(
+
+						$fields[ "{$input['id']}" ] = [
 							'label'       => \GV\Utils::get( $input, 'label' ),
 							'customLabel' => \GV\Utils::get( $input, 'customLabel' ),
 							'parent'      => $field,
 							'type'        => \GV\Utils::get( $field, 'type' ),
 							'adminLabel'  => \GV\Utils::get( $field, 'adminLabel' ),
 							'adminOnly'   => \GV\Utils::get( $field, 'adminOnly' ),
-						);
+							'sub_type'    => 'input', // Mark as a sub input field.
+						];
+					}
+				}
+
+				// Recursively add repeater fields.
+				if ( ! empty( $field['fields'] ?? [] ) ) {
+					$subfields = self::get_form_fields(
+						[ 'fields' => $field['fields'] ],
+						$add_default_properties,
+						$include_parent_field,
+					);
+
+					foreach ( $subfields as $id => $sub_field ) {
+						// Only set the parent if not already set (preserves direct parent for nested repeaters).
+						$sub_field['parent']    = $sub_field['parent'] ?? $field;
+						$sub_field['sub_type']  = 'field';
+						$combined_id            = sprintf( '%d.%s', $field['id'], $id );
+						$fields[ $id ] = $sub_field;
 					}
 				}
 

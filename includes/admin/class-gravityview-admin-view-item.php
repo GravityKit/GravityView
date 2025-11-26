@@ -199,8 +199,14 @@ abstract class GravityView_Admin_View_Item {
 
 		$nonexistent_form_field = $form && $this->id && preg_match( '/^\d+\.\d+$|^\d+$/', $this->id ) && ! gravityview_get_field( $form, $this->id );
 
-		if ( $this->item['icon'] && ! \GV\Utils::get( $this->item, 'parent' ) ) {
-
+		$is_sub_field = 'field' === ( $this->item['sub_type'] ?? null );
+		if (
+			$this->item['icon']
+			&& (
+				! \GV\Utils::get( $this->item, 'parent' )
+				|| $is_sub_field
+			)
+		) {
 			$has_gf_icon  = ( false !== strpos( $this->item['icon'], 'gform-icon' ) );
 			$has_dashicon = ( false !== strpos( $this->item['icon'], 'dashicons' ) );
 

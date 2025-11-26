@@ -24,8 +24,7 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 		}
 
 		// Fields with IDs, not like Source URL or Entry ID
-		if ( is_numeric( $this->id ) ) {
-
+		if ( is_numeric( $this->id ) || preg_match( '/^\d(\.\d+)*$/', $this->id ) ) {
 			$field_type_title = GFCommon::get_field_type_title( $this->item['input_type'] );
 
 			if ( ! empty( $this->item['parent'] ) ) {
