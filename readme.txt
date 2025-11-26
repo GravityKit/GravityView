@@ -32,6 +32,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Note not being added for every scenario where approval status is updated using Edit Entry.
 	- After auto-unapproving an entry when the "Unapprove Entries After Editing" View setting is enabled.
 	- Upon editing an entry when using the Approval Status field.
+* User Registration Update feeds were prepopulating Edit Entry fields with the logged-in user's data instead of the entry's user data, causing potential accidental profile overwrites when admins edited users with incomplete information.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.

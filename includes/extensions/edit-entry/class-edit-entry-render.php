@@ -1435,6 +1435,9 @@ class GravityView_Edit_Entry_Render {
 		add_filter( 'gform_field_input', [ $this, 'verify_user_can_edit_post' ], 5, 5 );
 		add_filter( 'gform_field_input', [ $this, 'modify_edit_field_input' ], 10, 5 );
 
+		// Fix User Registration prepopulation to use entry's user, not current user
+		add_filter( 'gform_user_registration_update_user_id', [ $this, 'fix_user_registration_prepopulation_user_id' ], 10, 4 );
+
 		// We need to remove the fake $_GET['page'] arg to avoid rendering form as if in admin.
 		unset( $_GET['page'] );
 
@@ -1514,6 +1517,7 @@ class GravityView_Edit_Entry_Render {
 		remove_filter( 'gform_disable_view_counter', '__return_true' );
 		remove_filter( 'gform_field_input', array( $this, 'verify_user_can_edit_post' ), 5 );
 		remove_filter( 'gform_field_input', array( $this, 'modify_edit_field_input' ), 10 );
+		remove_filter( 'gform_user_registration_update_user_id', array( $this, 'fix_user_registration_prepopulation_user_id' ), 10 );
 
 		echo $html;
 
@@ -1680,6 +1684,60 @@ class GravityView_Edit_Entry_Render {
 	    }
 
 		return $return;
+	}
+
+	/**
+	 * Fix User Registration prepopulation to use the entry's user instead of current logged-in user
+	 *
+	 * CRITICAL FIX for Help Scout ticket #69646:
+	 * When editing an entry with User Registration Update feed, fields were being prepopulated
+	 * with the currently logged-in user's data instead of the user associated with the entry.
+	 *
+	 * This caused dangerous behavior where:
+	 * - Admins editing users with incomplete profiles would see their own data in empty fields
+	 * - Saving would overwrite the target user's profile with admin data
+	 *
+	 * The root cause:
+	 * - GF User Registration's `get_update_user_id()` method (line 4942) tries to get user from `$entry['created_by']`
+	 * - But when called during `gform_pre_render` for prepopulation, no entry is passed (empty array)
+	 * - It falls back to `get_current_user_id()` which returns the logged-in admin
+	 * - This wrong user ID is then used by `prepopulate_form()` (line 1168) to fetch user meta
+	 *
+	 * The fix:
+	 * - Hook into `gform_user_registration_update_user_id` filter (added in UR 3.0)
+	 * - Return the correct user ID from the entry being edited ($this->entry['created_by'])
+	 * - Only active during Edit Entry form rendering, ensures correct prepopulation
+	 *
+	 * @since 2.40
+	 *
+	 * @param int   $user_id The user ID that User Registration calculated (incorrect: current user)
+	 * @param array $entry   Entry being processed (empty during prepopulation)
+	 * @param array $form    The form being rendered
+	 * @param array $feed    The User Registration feed configuration
+	 *
+	 * @return int The correct user ID from the entry being edited
+	 */
+	public function fix_user_registration_prepopulation_user_id( $user_id, $entry, $form, $feed ) {
+
+		// Only override if we have an entry being edited and it has a created_by value
+		if ( ! empty( $this->entry['created_by'] ) ) {
+			gravityview()->log->debug(
+				'Fixing User Registration prepopulation user ID',
+				[
+					'data' => [
+						'original_user_id' => $user_id,
+						'correct_user_id'  => $this->entry['created_by'],
+						'entry_id'         => $this->entry['id'],
+						'form_id'          => $form['id'],
+					],
+				]
+			);
+
+			return (int) $this->entry['created_by'];
+		}
+
+		// If no entry or no created_by, return original (shouldn't happen in Edit Entry context)
+		return $user_id;
 	}
 
 	/**
