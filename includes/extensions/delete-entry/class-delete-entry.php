@@ -299,9 +299,24 @@ final class GravityView_Delete_Entry {
 		/**
 		 * Should the Delete button be shown in the Edit Entry screen?
 		 *
-		 * @param boolean $show_entry Default: true
+		 * @param boolean $show_delete_button Default: true.
 		 */
 		$show_delete_button = apply_filters( 'gravityview/delete-entry/show-delete-button', true );
+
+		/**
+		 * Should the Delete button be shown in the Edit Entry screen?
+		 *
+		 * Receives the value of the `gravityview/delete-entry/show-delete-button` filter (default: true).
+		 *
+		 * @since TODO
+		 *
+		 * @param boolean $show_delete_button Whether the Delete button should be shown. Default: true.
+		 * @param array $form The Gravity Forms form.
+		 * @param array $entry The Gravity Forms entry.
+		 * @param int $view_id The current View ID.
+		 * @param int $post_id The current Post ID. May be same as View ID.
+		 */
+		$show_delete_button = apply_filters( 'gk/gravityview/delete-entry/show-delete-button', $show_delete_button, $form, $entry, $view_id, $post_id );
 
 		// If the button is hidden by the filter, don't show.
 		if ( ! $show_delete_button ) {

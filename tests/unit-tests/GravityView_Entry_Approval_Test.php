@@ -292,7 +292,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	/**
 	 * Verifies that notes ARE added when approval status changes via Edit Entry.
 	 *
-	 * @since TODO
+	 * @since 2.48.2
 	 *
 	 * @covers GravityView_Entry_Approval::after_update_entry_update_approved_meta
 	 */
@@ -343,7 +343,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	/**
 	 * Verifies that notes are NOT added when approval status remains unchanged via Edit Entry.
 	 *
-	 * @since TODO
+	 * @since 2.48.2
 	 *
 	 * @covers GravityView_Entry_Approval::after_update_entry_update_approved_meta
 	 */
@@ -381,7 +381,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	/**
 	 * Verifies that notes are added when entry is auto-unapproved after editing.
 	 *
-	 * @since TODO
+	 * @since 2.48.2
 	 *
 	 * @covers GravityView_Entry_Approval::autounapprove
 	 */
@@ -446,7 +446,7 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	/**
 	 * Verifies that update_approved_meta() returns boolean values correctly.
 	 *
-	 * @since TODO
+	 * @since 2.48.2
 	 *
 	 * @covers GravityView_Entry_Approval::update_approved_meta
 	 */

@@ -2417,7 +2417,7 @@ class GravityView_Edit_Entry_Render {
 	 * We update the `defaultValue` of all the fields, just before the JavaScript is rendered, in order for the
 	 * `defaults` key on the Conditional Logic configuration to be populated properly with the stored values.
 	 *
-	 * @since $ver$
+	 * @since 2.48.2
 	 *
 	 * @param bool       $has_conditional_logic Whether the form has conditional logic
 	 * @param array|null $form                  The forb object.

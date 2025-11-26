@@ -9,7 +9,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 
 	/**
 	 * @var string
-	 * @since TODO
+	 * @since 2.48.2
 	 */
 	public $widget_id = 'gravityforms';
 
@@ -31,7 +31,7 @@ class GravityView_Widget_Gravity_Forms extends \GV\Widget {
 	 *
 	 * Initialization is heavy (querying for all GF forms), so we only do it when necessary.
 	 *
-	 * @since TODO
+	 * @since 2.48.2
 	 *
 	 * @return boolean
 	 */
