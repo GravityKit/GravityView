@@ -7,7 +7,7 @@ const { loadEnv } = require('../helpers/misc');
 async function startDockerContainer() {
 	return new Promise((resolve, reject) => {
 		exec(
-			'docker run -d --rm --network host --ipc=host jacoblincool/playwright:chromium-server-1.48.0',
+			'docker run -d --rm --network host --ipc=host jacoblincool/playwright:chromium-server-1.56.1',
 			(error, stdout) => {
 				if (error) {
 					console.error('Error starting Docker container:', error);
