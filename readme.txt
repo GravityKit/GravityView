@@ -26,7 +26,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 This update fixes a compatibility issue with the Advanced Post Creation Add-On and adds new filters for customizing Edit and Delete Entry behavior.
 
 #### 🐛 Fixed
-* “You don’t have permission to edit this post” shown when editing entries with Post fields linked to posts created through the Advanced Post Creation Add-On.
+* "You don’t have permission to edit this post" shown when editing entries with Post fields linked to posts created through the Advanced Post Creation Add-On.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/edit-entry/init/data` filter to modify form, entry, and View data before rendering the Edit Entry form.
