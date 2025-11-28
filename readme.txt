@@ -23,6 +23,29 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 💻 Developer Updates
+* Added `gravityview/edit-entry/pre-populate/allow` filter to control whether prepopulation is allowed for multi-input fields in Edit Entry context.
+* Added `gravityview/edit-entry/pre-populate/value` filter to control the prepopulated value for single-input fields in Edit Entry context.
+	- **Use case**: To prevent User Registration (and other plugins) from prepopulating empty entry fields with user meta data in Edit Entry, which can cause accidental profile overwrites. See Help Scout ticket #69646.
+	- **Example**: `add_filter( 'gravityview/edit-entry/pre-populate/allow', '__return_false' );` to disable prepopulation for multi-input fields.
+	- **Example**: `add_filter( 'gravityview/edit-entry/pre-populate/value', '__return_empty_string' );` to disable prepopulation for single-input fields.
+* Added `gk/gravityview/delete-entry/show-delete-button` filter to allow code to modify the visibility of the Delete button, with entry, form, View ID, and post ID as parameters.
+	- The `gravityview/delete-entry/show-delete-button` filter will be deprecated in a future release.
+
+= 2.48.3 on November 17, 2025 =
+
+This hotfix resolves a performance issue introduced in 2.48.2.
+
+#### 🐛 Fixed
+* After the 2.48.2 update, Views were taking significantly longer to load.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.0.
+
+= 2.48.2 on November 13, 2025 =
+
+This release addresses multiple issues impacting search fields, Edit Entry behavior, logging of entry approval status changes, and other aspects of the plugin’s functionality.
+
 #### 🐛 Fixed
 * User Registration Update feeds were prepopulating Edit Entry fields with the logged-in user's data instead of the entry's user data, causing potential accidental profile overwrites when admins edited users with incomplete information.
 

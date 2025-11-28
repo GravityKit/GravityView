@@ -1763,8 +1763,27 @@ class GravityView_Edit_Entry_Render {
 
 			$field_value = array();
 
-			// only accept pre-populated values if the field doesn't have any choice selected.
-			$allow_pre_populated = $field->allowsPrepopulate;
+			/**
+			 * Filter whether to allow prepopulation for multi-input fields in Edit Entry.
+			 *
+			 * User Registration and other plugins can prepopulate empty fields with user meta data,
+			 * which can cause issues when admins edit entries. Empty fields may show the admin's data
+			 * instead of remaining empty, potentially overwriting the target user's profile on save.
+			 *
+			 * This filter allows control over prepopulation behavior while maintaining backward compatibility.
+			 * Default behavior respects $field->allowsPrepopulate.
+			 *
+			 * @since 2.49
+			 *
+			 * @see Help Scout ticket #69646
+			 *
+			 * @param bool     $allow_prepopulate Whether to allow prepopulation. Default: $field->allowsPrepopulate.
+			 * @param GF_Field $field              The current field object.
+			 * @param array    $entry              The entry being edited.
+			 * @param array    $form               The form object.
+			 */
+			$default_allow_prepopulate = $field->allowsPrepopulate;
+			$allow_pre_populated = apply_filters( 'gravityview/edit-entry/pre-populate/allow', $default_allow_prepopulate, $field, $this->entry, $this->form );
 
 			foreach ( (array) $field->inputs as $input ) {
 
@@ -1790,8 +1809,27 @@ class GravityView_Edit_Entry_Render {
 
 			$id = intval( $field->id );
 
-			// get pre-populated value if exists
-			$pre_value = $field->allowsPrepopulate ? GFFormsModel::get_parameter_value( $field->inputName, array(), $field ) : '';
+			/**
+			 * Filter the prepopulated value for single-input fields in Edit Entry.
+			 *
+			 * User Registration and other plugins can prepopulate empty fields with user meta data,
+			 * which can cause issues when admins edit entries. Empty fields may show the admin's data
+			 * instead of remaining empty, potentially overwriting the target user's profile on save.
+			 *
+			 * This filter allows control over prepopulation behavior while maintaining backward compatibility.
+			 * Default behavior respects $field->allowsPrepopulate.
+			 *
+			 * @since 2.49
+			 *
+			 * @see Help Scout ticket #69646
+			 *
+			 * @param string   $pre_value The prepopulated value. Default: from $field->allowsPrepopulate check.
+			 * @param GF_Field $field      The current field object.
+			 * @param array    $entry      The entry being edited.
+			 * @param array    $form       The form object.
+			 */
+			$default_pre_value = $field->allowsPrepopulate ? GFFormsModel::get_parameter_value( $field->inputName, array(), $field ) : '';
+			$pre_value = apply_filters( 'gravityview/edit-entry/pre-populate/value', $default_pre_value, $field, $this->entry, $this->form );
 
 			// saved field entry value (if empty, fallback to the pre-populated value, if exists)
 			// or pre-populated value if not empty and set to override saved value
