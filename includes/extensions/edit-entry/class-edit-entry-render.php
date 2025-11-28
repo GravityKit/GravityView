@@ -306,7 +306,7 @@ class GravityView_Edit_Entry_Render {
 		$this->view  = $data['view'];
 
 		$this->form_id = $this->entry['form_id'];
-		$this->view_id = $this->view ? $this->view->ID : $gravityview_view->getViewId();
+		$this->view_id = $this->view ? $this->view->ID : GravityView_View::getInstance()->getViewId();
 
 		$this->post_id = \GV\Utils::get( $post, 'ID' );
 
