@@ -4,10 +4,10 @@
   "license": "GPL-2.0",
   "devDependencies": {
     "@lodder/grunt-postcss": "^3.1.1",
-    "@playwright/test": "1.48.1",
+    "@playwright/test": "1.56.1",
     "@types/node": "^20.14.14",
     "@wordpress/e2e-test-utils-playwright": "^1.14.0",
-    "@wordpress/env": "^10.14.0",
+    "@wordpress/env": "^10.34.0",
     "@wordpress/scripts": "^30.7.0",
     "autoprefixer": "^9.8.8",
     "dotenv": "^16.4.5",

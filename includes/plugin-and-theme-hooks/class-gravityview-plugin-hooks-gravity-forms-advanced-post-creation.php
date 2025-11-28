@@ -68,6 +68,42 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 	}
 
 	/**
+	 * Populates the entry's post_id from APC meta for Edit Entry permission checks.
+	 *
+	 * APC stores post IDs in entry meta as an array, not in $entry['post_id'].
+	 * This method populates the post_id before Edit Entry renders to fix permission checks.
+	 *
+	 * @since 2.48.4
+	 *
+	 * @param array $data {
+	 *     @type array           $form  The form array.
+	 *     @type array           $entry The entry array.
+	 *     @type \GV\View|null   $view  The View object.
+	 * }
+	 *
+	 * @return array The modified data array with entry post_id populated.
+	 */
+	public function populate_entry_post_id( $data ) {
+		if ( ! empty( $data['entry']['post_id'] ) || empty( $data['entry']['id'] ) ) {
+			return $data;
+		}
+
+		$apc = GF_Advanced_Post_Creation::get_instance();
+		$apc_posts = gform_get_meta( $data['entry']['id'], $apc->get_slug() . '_post_id' );
+
+		// If APC created posts, use the first post's ID for permission checks.
+		if ( ! empty( $apc_posts ) && is_array( $apc_posts ) ) {
+			$first_post = reset( $apc_posts );
+
+			if ( ! empty( $first_post['post_id'] ) ) {
+				$data['entry']['post_id'] = $first_post['post_id'];
+			}
+		}
+
+		return $data;
+	}
+
+	/**
 	 * Adds a notice if the form contains a feed for Advanced Post Creation.
 	 * @since 2.20
 	 *
@@ -139,6 +175,7 @@ HTML;
 	protected function add_hooks(): void {
 		parent::add_hooks();
 
+		add_filter( 'gk/gravityview/edit-entry/init/data', [ $this, 'populate_entry_post_id' ], 5 );
 		add_action( 'gravityview/edit_entry/after_update', [ $this, 'update_post_on_entry_edit' ], 10, 3 );
 		add_action( 'gravityview_render_directory_active_areas', [ $this, 'add_view_notification' ], 5, 4 );
 	}

@@ -21,6 +21,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.48.4 on November 27, 2025 =
+
+This release resolves a compatibility issue with the Advanced Post Creation Add-On and adds new filters for developers to adjust edit and delete entry behavior.
+
+#### 🐛 Fixed
+* "You don’t have permission to edit this post" shown when editing entries with Post fields linked to posts created through the Advanced Post Creation Add-On.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/init/data` filter to modify form, entry, and View data before rendering the Edit Entry form.
+* Added `gk/gravityview/delete-entry/show-delete-button` filter to allow code to modify the visibility of the Delete button, with entry, form, View ID, and post ID as parameters.
+  - The `gravityview/delete-entry/show-delete-button` filter will be deprecated in a future release.
+
 = 2.48.3 on November 17, 2025 =
 
 This hotfix resolves a performance issue introduced in 2.48.2.
