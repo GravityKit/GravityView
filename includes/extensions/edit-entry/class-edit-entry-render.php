@@ -285,7 +285,7 @@ class GravityView_Edit_Entry_Render {
 		 *
 		 * @filter `gk/gravityview/edit-entry/init/data`
 		 *
-		 * @since TBD
+		 * @since 2.48.4
 		 *
 		 * @param array $data {
 		 *     @type array         $form  The form array.

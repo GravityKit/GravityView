@@ -73,7 +73,7 @@ final class GravityView_Plugin_Hooks_Gravity_Forms_Advanced_Post_Creation extend
 	 * APC stores post IDs in entry meta as an array, not in $entry['post_id'].
 	 * This method populates the post_id before Edit Entry renders to fix permission checks.
 	 *
-	 * @since TBD
+	 * @since 2.48.4
 	 *
 	 * @param array $data {
 	 *     @type array           $form  The form array.

@@ -308,7 +308,7 @@ final class GravityView_Delete_Entry {
 		 *
 		 * Receives the value of the `gravityview/delete-entry/show-delete-button` filter (default: true).
 		 *
-		 * @since TODO
+		 * @since 2.48.4
 		 *
 		 * @param boolean $show_delete_button Whether the Delete button should be shown. Default: true.
 		 * @param array $form The Gravity Forms form.
