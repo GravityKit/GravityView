@@ -23,7 +23,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = 2.48.4 on November 27, 2025 =
 
-This update fixes a compatibility issue with the Advanced Post Creation Add-On and adds new filters for customizing Edit and Delete Entry behavior.
+This release resolves a compatibility issue with the Advanced Post Creation Add-On and adds new filters for developers to adjust edit and delete entry behavior.
 
 #### 🐛 Fixed
 * "You don’t have permission to edit this post" shown when editing entries with Post fields linked to posts created through the Advanced Post Creation Add-On.
