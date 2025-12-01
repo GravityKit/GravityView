@@ -23,14 +23,14 @@ test('File type validation during entry edit', async ({ page }) => {
   await page.getByRole('link', { name: 'Tuesday Weather' }).click();
   await page.getByRole('link', { name: 'Edit Entry' }).click();
 
-  const pngFilePath = path.join(__dirname, '../../helpers/gf-importer/data/images/brown-meerkat.png');
+  const pngFilePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/brown-meerkat.png');
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');
   await fileInput.setInputFiles(pngFilePath);
 
   await expect(page.getByText(/type of file is not allowed/i)).toBeVisible();
 
-  const validImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/wind.jpg');
+  const validImagePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/wind.jpg');
   await fileInput.setInputFiles(validImagePath);
 
   await expect(page.getByText(/wind\.jpg/i)).toBeVisible();

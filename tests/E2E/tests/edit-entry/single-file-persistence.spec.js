@@ -55,7 +55,7 @@ test('Single file persistence during entry edit validation', async ({ page }) =>
 
 	const blizzardImagePath = path.join(
 		__dirname,
-		'../../helpers/gf-importer/data/images/blizzard.jpg'
+		'../../../../../node_modules/@gravitykit/gf-importer/data/images/blizzard.jpg'
 	);
 	const fileInput = page.locator('input[type="file"]._admin');
 	await fileInput.waitFor({ state: 'attached' });

@@ -44,8 +44,8 @@ test('Does not restore deleted files after validation failure', async ({ page })
   await deleteButtons.first().click();
   await expect(page.locator('.ginput_preview')).toHaveCount(0);
 
-  const fogImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/fog.jpg');
-  const blizzardImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/blizzard.jpg');
+  const fogImagePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/fog.jpg');
+  const blizzardImagePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/blizzard.jpg');
 
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');
