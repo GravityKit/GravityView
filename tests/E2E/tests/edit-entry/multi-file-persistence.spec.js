@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createView, publishView, checkViewOnFrontEnd, templates } from '../../helpers/test-helpers';
-import path from 'path';
+import { createView, publishView, checkViewOnFrontEnd, templates, getTestImagePath } from '../../helpers/test-helpers';
 
 /**
  * Ensures that uploaded files are not lost when a validation error occurs during entry editing.
@@ -24,7 +23,7 @@ test('File persistence during entry edit validation', async ({ page }) => {
 
   await page.getByLabel('Name(Required)').fill('');
 
-  const windImagePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/wind.jpg');
+  const windImagePath = getTestImagePath('wind.jpg');
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');
   await fileInput.setInputFiles(windImagePath);

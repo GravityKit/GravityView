@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createView, publishView, checkViewOnFrontEnd, templates } from '../../helpers/test-helpers';
-import path from 'path';
+import { createView, publishView, checkViewOnFrontEnd, templates, getTestImagePath } from '../../helpers/test-helpers';
 
 /**
  * Ensures deleted files are not restored when validation fails after editing an entry with a file upload limit.
@@ -44,8 +43,8 @@ test('Does not restore deleted files after validation failure', async ({ page })
   await deleteButtons.first().click();
   await expect(page.locator('.ginput_preview')).toHaveCount(0);
 
-  const fogImagePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/fog.jpg');
-  const blizzardImagePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/blizzard.jpg');
+  const fogImagePath = getTestImagePath('fog.jpg');
+  const blizzardImagePath = getTestImagePath('blizzard.jpg');
 
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');

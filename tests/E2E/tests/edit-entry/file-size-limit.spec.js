@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createView, publishView, checkViewOnFrontEnd, templates } from '../../helpers/test-helpers';
-import path from 'path';
+import { createView, publishView, checkViewOnFrontEnd, templates, getTestImagePath } from '../../helpers/test-helpers';
 
 /**
  * Ensures that files exceeding the maximum allowed upload size are rejected when editing an entry.
@@ -21,14 +20,14 @@ test('File size limit validation during entry edit', async ({ page }) => {
   await page.getByRole('link', { name: 'Thursday Weather' }).click();
   await page.getByRole('link', { name: 'Edit Entry' }).click();
 
-  const largeFilePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/thunderstorm.jpg');
+  const largeFilePath = getTestImagePath('thunderstorm.jpg');
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');
   await fileInput.setInputFiles(largeFilePath);
 
   await expect(page.getByText(/File exceeds size limit/i)).toBeVisible();
 
-  const validImagePath = path.join(__dirname, '../../../../../node_modules/@gravitykit/gf-importer/data/images/fog.jpg');
+  const validImagePath = getTestImagePath('fog.jpg');
   await fileInput.setInputFiles(validImagePath);
 
   await expect(page.getByText('fog.jpg', { exact: true })).toBeVisible();
