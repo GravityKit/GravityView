@@ -301,7 +301,9 @@ class View_Table_Template extends View_Template {
 
 		foreach ( $this->get_entry_rows( $entry, $fields ) as $r => $row ) {
 			$row_attributes = $attributes;
-			$row_attributes[] = sprintf( 'data-row="%d"', $r );
+			if ( ! isset( $attributes['data-row'] ) ) {
+				$row_attributes[] = sprintf( 'data-row="%d"', $r );
+			}
 
 			$row_attributes = implode( ' ', $row_attributes );
 
