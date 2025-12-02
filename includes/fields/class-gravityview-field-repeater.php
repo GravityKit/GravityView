@@ -3,7 +3,7 @@
 use GV\Entry;
 use GV\Field;
 use GV\Field_HTML_Template;
-use GV\Source;
+use GV\GF_Entry;
 
 /**
  * @file       class-gravityview-field-repeater.php
@@ -60,42 +60,24 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	}
 
 	/**
-	 * @since $ver$
+	 * Register the required hooks for this field.
 	 *
-	 * @param string            $display_value The display value.
-	 * @param GF_Field_Repeater $field         The repeater field instance.
-	 * @param GV\View           $view          The View object.
-	 * @param Source            $source        The source object.
-	 * @param Entry             $entry         The entry object.
+	 * @since $ver$
 	 */
-	public function filter_repeater_value( $display_value, $field, $entry, $form ) {
-		$gv_field = \GravityView_View::getInstance()->getCurrentField();
-		$field_id = $gv_field['field_id'] ?? $field->id;
-		if (
-			! $field instanceof GF_Field_Repeater
-			|| strpos( $field_id, '.' ) === false
-		) {
-			return $display_value;
-		}
-
-		$field_tree      = explode( '.', $gv_field['field_id'] );
-		$nested_field_id = end( $field_tree );
-
-		return $field->get_value_entry_detail(
-			$entry[ $field->id ],
-			$entry['currency'],
-			false,
-			'html',
-			'screen',
-			[ $nested_field_id ]
-		);
-	}
-
 	private function add_hooks(): void {
-//		add_filter( 'gform_entry_field_value', [ $this, 'filter_repeater_value' ], 10, 5 );
 		add_filter( 'gravityview/template/field/class', [ $this, 'maybe_replace_renderer_class' ], 10, 2 );
 	}
 
+	/**
+	 * Replaces the renderer class for a Repeater field.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string $class The original class.
+	 * @param Field  $field The Field object.
+	 *
+	 * @return string The required renderer class.
+	 */
 	public function maybe_replace_renderer_class( string $class, Field $field ): string {
 		if (
 			$class !== "\\" . Field_HTML_Template::class

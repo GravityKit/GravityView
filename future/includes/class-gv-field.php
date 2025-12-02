@@ -437,4 +437,35 @@ class Field extends \stdClass {
 				return isset( $this->configuration[ $key ] );
 		}
 	}
+
+	/**
+	 * Returns all the ancestors for this field, in order from root to this field.
+	 *
+	 * Note: this is for fields that are nested, like repeater fields.
+	 *
+	 * @since $ver$
+	 *
+	 * @return int[] The ancestor IDs.
+	 */
+	public function get_ancestors_ids(): array {
+		// A regular field has no ancestors.
+		return [];
+	}
+
+	/**
+	 * Returns the results this field will produce on the entry.
+	 *
+	 * Note: This means that the field is present inside a repeater field, for example. It does not mean the field has
+	 * multiple values, like a checkbox.
+	 *
+	 * @since $ver$
+	 *
+	 * @param Entry  $entry The entry object.
+	 * @param string $index The nesting index. For example '0', '0.0', '0.1' ,'1.0', '0.0.1', etc.
+	 *
+	 * @return array The results per index. If no index is provided, returns *all* results.
+	 */
+	public function get_results( Entry $entry, string $index = '' ): array {
+		return [ $this->get_value( null, null, $entry, null ) ];
+	}
 }

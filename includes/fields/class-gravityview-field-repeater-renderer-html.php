@@ -33,22 +33,18 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
 			return;
 		}
 
-		$field_id     = $config['id'] ?? 0;
-		$ancestor_ids = $fields[ $field_id ] ?? [ 0 ];
-		$root_id      = $ancestor_ids[0];
+		// The value has added to the entry by the template.
+		$field_id = $config['id'] ?? 0;
+		if ( isset( $entry[ $field_id ] ) ) {
+			parent::render();
 
-		$data = $entry[ $root_id ] ?? [];
-
-		// Todo: Include a setting to limit the number of nested results.
-		$flattened = array_values( array_filter(
-			$this->flatten( $data ),
-			static fn( $key ) => substr( $key, -strlen( '_' . $field_id ) ) === '_' . $field_id,
-			ARRAY_FILTER_USE_KEY
-		) );
+			return;
+		}
 
 		$old_entry = $this->entry;
 
-		foreach ( $flattened as $i => $value ) {
+		// Todo: Include a setting to limit the number of nested results.
+		foreach ( $this->field->get_results( $entry ) as $i => $value ) {
 			$data              = $entry->as_entry();
 			$data[ $field_id ] = $value;
 			// Temporarily overwrite entry for rendering.
@@ -66,32 +62,18 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
 		// Reset entry.
 		$this->entry = $old_entry;
 	}
-
-	/**
-	 * Utility to flatten array values recursively so they can be saved with the appropriate index.
-	 *
-	 * @since $ver
-	 *
-	 * @param array|mixed $array  The array to flatten.
-	 * @param string      $prefix The prefix to prepend.
-	 *
-	 * @return array The flattened array.
-	 */
-	private function flatten( $array, string $prefix = '' ): array {
-		$result = [];
-		if ( ! is_array( $array ) ) {
-			return [];
-		}
-
-		foreach ( $array as $key => $value ) {
-			if ( is_array( $value ) ) {
-				$result += $this->flatten( $value, $prefix . $key . '_' );
-			} else {
-				$result[ $prefix . $key ] = $value;
-			}
-		}
-
-		return $result;
-	}
-
 }
+
+
+/**
+ * Required for rowspan on tables:
+ *
+ * Every Entry object must have a way to:
+ *  - Loop the fields to identify possible (nested) repeater fields.
+ *  - For every repeater field, figure out what the maximum amount of values is (including nested values, and value cap).
+ *  - On the entry, we need to be able to `getMaxValueSize()`. This is required to set the "rowspan" for the non-repeater fields.
+ *  - On the Field, we also need to be able to get `getMaxValueSize()` from *that* level, to get the rowspan for *that* cell.
+ *  - The rowspan is only useful for direct children of the repeater field. A repeater field will render all its values in a single cell. No rowspan applicable unless *it* is a direct child of a repeater field.
+ *  - Ideally we would not focus on "repeater" fields, but "Field that have multiple values" so nested forms could be added.
+ *
+ */
