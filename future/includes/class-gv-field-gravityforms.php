@@ -292,8 +292,10 @@ class GF_Field extends Field {
 					}
 
 					// Nested repeater: recursively flatten and group by parent level.
-					$nested_result = static::retrieve_nested_data( [ $sub_field_id => $sub_field_value ],
-						$repeater_fields );
+					$nested_result = static::retrieve_nested_data(
+						[ $sub_field_id => $sub_field_value ],
+						$repeater_fields
+					);
 
 					foreach ( $nested_result as $nested_field_id => $nested_values ) {
 						$result[ $nested_field_id ][ $level_index ] = $nested_values;

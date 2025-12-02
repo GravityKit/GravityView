@@ -1,9 +1,8 @@
 <?php
 
-use GV\Entry;
+use GV\Core;
 use GV\Field;
 use GV\Field_HTML_Template;
-use GV\GF_Entry;
 
 /**
  * @file       class-gravityview-field-repeater.php
@@ -66,6 +65,28 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	 */
 	private function add_hooks(): void {
 		add_filter( 'gravityview/template/field/class', [ $this, 'maybe_replace_renderer_class' ], 10, 2 );
+		add_filter( 'gform_entry_field_value', [ $this, 'remove_gform_styling' ], 10, 2 );
+	}
+
+	/**
+	 * Remove styling from repeater fields if this is a View Rendering.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string        $html  The HTML of the field.
+	 * @param GF_Field|null $field The field instance.
+	 *
+	 * @return string The updated HTML.
+	 */
+	public function remove_gform_styling( string $html, $field = null ): string {
+		if (
+			Core::get()->request->is_view
+			|| ! $field instanceof GF_Field_Repeater
+		) {
+			return $html;
+		}
+
+		return preg_replace( "/(class='gfield_repeater_value') style='[^']*'/i", '$1', $html );
 	}
 
 	/**

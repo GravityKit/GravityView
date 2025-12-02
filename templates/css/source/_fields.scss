@@ -27,3 +27,25 @@
 .gv-image-caption {
 	font-style: italic;
 }
+
+
+// Repeater field
+.gfield_repeater_label {
+	font-weight: bold;
+}
+
+.gfield_repeater_value > .gfield_repeater {
+	background-color: rgba(1, 1, 1, .05);
+	border-left: 5px solid rgba(54, 86, 102, .1);
+
+	margin: 10px;
+	padding: 10px 20px;
+}
+
+.gfield_repeater .gfield_repeater {
+	.gfield_label {
+		margin: -10px -20px 0;
+		padding: 10px;
+		background-color: rgba(54, 86, 102, .1);
+	}
+}
