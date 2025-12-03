@@ -25,6 +25,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * With Edit Locking enabled, entries sometimes stayed locked after someone finished editing them, causing attempts by others to take over editing to fail.
+* PHP deprecation warning when editing certain entries with Post fields.
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/delete-entry/mode` filter to allow code to modify the delete mode (whether to trash or delete an entry) for a specific View.
