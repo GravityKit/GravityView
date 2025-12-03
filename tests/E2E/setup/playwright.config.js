@@ -56,5 +56,6 @@ module.exports = defineConfig({
 		command: 'npm run wp-env start',
 		url: `${process.env.WP_ENV_URL}:${process.env.WP_ENV_PORT}`,
 		reuseExistingServer: true
-	}
+	},
+	timeout: 60_000,
 });

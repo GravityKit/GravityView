@@ -62,6 +62,11 @@ jobs:
             - test-dependencies-{{ epoch }}
             - test-dependencies-
       - run:
+          name: Create .npmrc
+          command: |
+            echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+            echo "@gravitykit:registry=https://npm.pkg.github.com" >> ~/.npmrc
+      - run:
           name: Install dependencies
           command: |
             /home/circleci/tooling/build-tools/build_tools.sh npm -o install
