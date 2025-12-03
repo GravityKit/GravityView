@@ -59,6 +59,48 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 *
+	 * @since $ver$
+	 */
+	public function field_options( $field_options, $template_id, $field_id, $context, $input_type, $form_id ): array {
+		if ( ! is_array( $field_options ) ) {
+			$field_options = [];
+		}
+
+		$field_options['max_results'] = [
+			'type'         => 'number',
+			'label'        => __( 'Maximum results', 'gk-gravityview' ),
+			'desc'         => esc_html__( 'Maximum number of results to show per nesting level. Leave empty to show all results.', 'gk-gravityview' ),
+			'value'        => '',
+			'priority'     => 1000,
+			'group'        => 'display',
+			'requires_not' => 'full_width=1',
+			'contexts'     => [ 'multiple', 'single' ],
+			'min'          => 0,
+		];
+
+		$field_options['hide_nested_repeater_fields'] = [
+			'type'         => 'checkbox',
+			'label'        => __( 'Hide nested repeater results', 'gk-gravityview' ),
+			'value'        => '',
+			'priority'     => 1000,
+			'group'        => 'display',
+			'requires_not' => 'full_width=1',
+			'contexts'     => [ 'multiple', 'single' ],
+		];
+
+		return parent::field_options(
+			$field_options,
+			$template_id,
+			$field_id,
+			$context,
+			$input_type,
+			$form_id
+		);
+	}
+
+	/**
 	 * Register the required hooks for this field.
 	 *
 	 * @since $ver$
@@ -66,6 +108,83 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	private function add_hooks(): void {
 		add_filter( 'gravityview/template/field/class', [ $this, 'maybe_replace_renderer_class' ], 10, 2 );
 		add_filter( 'gform_entry_field_value', [ $this, 'remove_gform_styling' ], 10, 2 );
+		add_filter( 'gravityview/field/repeater/value', [ $this, 'limit_results' ], 10, 2 );
+	}
+
+	/**
+	 * Limits the results of a Repeater field to `max_results`.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $value The value for the repeater field.
+	 * @param Field $field The GV Field object.
+	 *
+	 * @return array The limited results.
+	 */
+	public function limit_results( $value, Field $field ): array {
+		if ( ! is_array( $value ) ) {
+			$value = [];
+		}
+		$config      = $field->as_configuration();
+		$max_results = (int) abs( $config['max_results'] ?? 0 );
+
+		$gf_field = $field->field ?? null;
+		if ( ! $gf_field instanceof GF_Field_Repeater ) {
+			return $value;
+		}
+
+		// To hide any nested repeater field, we need to "remove" their values.
+		if ( $config['hide_nested_repeater_fields'] ?? false ) {
+			foreach ( $gf_field->fields ?? [] as $child ) {
+				if ( $child instanceof GF_Field_Repeater ) {
+					foreach ( $value as $i => $_ ) {
+						// Unset all nested values.
+						$value[ $i ][ $child->id ] = [];
+					}
+				}
+			}
+		}
+
+		if ( 0 === $max_results ) {
+			return $value;
+		}
+
+		return $this->limit_results_recursively( $value, $gf_field, $max_results );
+	}
+
+	/**
+	 * Recursively limits the result of a repeater field to `max_results`.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array                      $value       The value of the current repeater field.
+	 * @param GF_Field|GF_Field_Repeater $field       The repeater field.
+	 * @param int                        $max_results The maximum amount of results.
+	 *
+	 * @return array
+	 */
+	protected function limit_results_recursively( array $value, GF_Field $field, int $max_results ): array {
+		// First, we cut down the number of results for this level.
+		if ( count( $value ) > $max_results ) {
+			$value = array_slice( $value, 0, $max_results );
+		}
+
+		// If any subfields are repeaters, limit those as well.
+		foreach ( $field->fields ?? [] as $child ) {
+			if ( ! $child instanceof GF_Field_Repeater ) {
+				continue;
+			}
+
+			foreach ( $value as $i => $values ) {
+				$value[ $i ][ $child->id ] = $this->limit_results_recursively(
+					$values[ $child->id ] ?? [],
+					$child,
+					$max_results
+				);
+			}
+		}
+
+		return $value;
 	}
 
 	/**
@@ -80,13 +199,23 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	 */
 	public function remove_gform_styling( string $html, $field = null ): string {
 		if (
-			Core::get()->request->is_view
+			! Core::get()->request->is_view()
 			|| ! $field instanceof GF_Field_Repeater
 		) {
 			return $html;
 		}
 
-		return preg_replace( "/(class='gfield_repeater_value') style='[^']*'/i", '$1', $html );
+		// remove style tags.
+		$html = preg_replace( "/(class='gfield_repeater_value') style='[^']*'/i", '$1', $html );
+
+		// Remove empty repeater cells (where gfield_repeater_items is empty).
+		$html = preg_replace(
+			"/<div class=['\"]gfield_repeater_cell['\"][^>]*>\s*<div class=['\"]gfield_repeater_value['\"][^>]*>\s*<div class=['\"]gfield_repeater['\"][^>]*>\s*<div class=['\"]gfield_label[^'\"]*['\"][^>]*>[^<]*<\/div>\s*<div class=['\"]gfield_repeater_items['\"][^>]*>\s*<\/div>\s*<\/div>\s*<\/div>\s*<\/div>/i",
+			'',
+			$html
+		);
+
+		return $html;
 	}
 
 	/**
@@ -131,15 +260,28 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	public static function is_part_of_repeater_field( Field $field ): bool {
 		$config  = $field->as_configuration();
 		$form_id = (int) ( $config['form_id'] ?? 0 );
+		// Single digit as string as a key.
+		$field_id = (string) (int) ( $config['id'] ?? 0 );
 
-		if ( ! $form_id ) {
+		return static::has_repeater_parent( $form_id, $field_id );
+	}
+
+	/**
+	 * Returns whether a field has a repeater field as a parent.
+	 *
+	 * @since $ver$
+	 *
+	 * @param int $form_id  The form ID.
+	 * @param int $field_id The field ID.
+	 *
+	 * @return bool Whether the field is a child of a repeater field.
+	 */
+	private static function has_repeater_parent( int $form_id, int $field_id ): bool {
+		if ( ! $form_id || ! $field_id ) {
 			return false;
 		}
 		// Recursively retrieve all field ID's that are part of a repeater field on the form.
 		$repeater_field_ids = static::get_repeater_field_ids( $form_id );
-
-		// Single digit as string as a key.
-		$field_id = (string) (int) ( $config['id'] ?? 0 );
 
 		return array_key_exists( $field_id, $repeater_field_ids );
 	}

@@ -641,7 +641,7 @@ class View_Table_Template extends View_Template {
 		$data      = $entry->as_entry();
 
 		// First, calculate the total row count for base field row-spans.
-		$total_row_count = $this->count_descendant_rows( $data,	$repeaters_by_generation );
+		$total_row_count = $this->count_descendant_rows( $data, $repeaters_by_generation );
 
 		// Prepare base fields (level 0) with full rowspan.
 		$base_cells = [];
@@ -697,7 +697,7 @@ class View_Table_Template extends View_Template {
 			}
 
 			// Create entry with row-specific data.
-			$row_entry_data = $entry->as_entry();
+			$row_entry_data = $data;
 			foreach ( $row_data as $field_id => $field_data ) {
 				$row_entry_data[ $field_id ] = $field_data['value'] ?? '';
 			}
