@@ -4,14 +4,14 @@ import { createView, publishView, checkViewOnFrontEnd, templates, getTestImagePa
 /**
  * Ensures that uploaded files are not lost when a validation error occurs during entry editing.
  */
-test('File persistence during entry edit validation', async ({ page }) => {
+test('File persistence during entry edit validation', async ({ page }, testInfo) => {
   await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
   await createView(page, {
     formTitle: 'Weather Multi-Upload Form',
     viewName: 'File Persistence Test',
     template: templates[0]
-  });
+  }, testInfo);
 
   await publishView(page);
   await checkViewOnFrontEnd(page);

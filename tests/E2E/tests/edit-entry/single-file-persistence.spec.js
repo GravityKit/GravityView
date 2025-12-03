@@ -10,14 +10,14 @@ import {
 /**
  * Ensures that a newly uploaded file is not silently dropped after an initial validation error during entry editing.
  */
-test('Single file persistence during entry edit validation', async ({ page }) => {
+test('Single file persistence during entry edit validation', async ({ page }, testInfo) => {
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 	test.slow();
 	await createView(page, {
 		formTitle: 'Weather Form',
 		viewName: 'Single File Persistence Test',
 		template: templates[0]
-	});
+	}, testInfo);
 
 	await publishView(page);
 	await checkViewOnFrontEnd(page);

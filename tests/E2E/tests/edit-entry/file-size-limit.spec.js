@@ -5,14 +5,14 @@ import { createView, publishView, checkViewOnFrontEnd, templates, getTestImagePa
  * Ensures that files exceeding the maximum allowed upload size are rejected when editing an entry.
  * Also verifies that the file does not persist after a validation error is triggered elsewhere in the form.
  */
-test('File size limit validation during entry edit', async ({ page }) => {
+test('File size limit validation during entry edit', async ({ page }, testInfo) => {
   await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
   await createView(page, {
     formTitle: 'Weather Multi-Upload Form',
     viewName: 'File Size Limit Test',
     template: templates[0]
-  });
+  }, testInfo);
 
   await publishView(page);
   await checkViewOnFrontEnd(page);
