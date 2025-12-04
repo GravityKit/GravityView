@@ -472,7 +472,7 @@ final class GravityView_Delete_Entry {
 	/**
 	 * Delete mode: permanently delete, or move to trash?
 	 *
-	 * @since TODO Added $entry and $view_id parameters.
+	 * @since 2.48.5 Added $entry and $view_id parameters.
 	 *
 	 * @param array $entry The entry to get the delete mode for.
 	 * @param int|null $view_id The View ID. Default: null.
@@ -496,7 +496,7 @@ final class GravityView_Delete_Entry {
 		 *
 		 * Receives the value of the deprecated `gravityview/delete-entry/mode` filter (default: `delete`).
 		 *
-		 * @since TODO
+		 * @since 2.48.5
 		 *
 		 * @link https://docs.gravitykit.com/article/299-change-the-delete-entry-mode-from-delete-to-trash for examples.
 		 *
@@ -513,7 +513,7 @@ final class GravityView_Delete_Entry {
 	 * Delete or trash an entry.
 	 *
 	 * @since 1.13.1
-	 * @since TODO Added $view_id parameter.
+	 * @since 2.48.5 Added $view_id parameter.
 	 *
 	 * @uses GFAPI::delete_entry()
 	 * @uses GFAPI::update_entry_property()
@@ -552,7 +552,7 @@ final class GravityView_Delete_Entry {
 				/**
 				 * Triggered when an entry is deleted.
 				 *
-				 * @since TODO
+				 * @since 2.48.5
 				 * @param  int $entry_id ID of the Gravity Forms entry
 				 * @param  array $entry Deleted entry array
 				 * @param int|null $view_id The View ID. Default: null.
@@ -588,7 +588,7 @@ final class GravityView_Delete_Entry {
 				/**
 				 * Triggered when an entry is trashed.
 				 *
-				 * @since TODO
+				 * @since 2.48.5
 				 *
 				 * @param  int      $entry_id ID of the Gravity Forms entry.
 				 * @param  array    $entry Trashed entry array.
@@ -633,7 +633,7 @@ final class GravityView_Delete_Entry {
 		 *
 		 * Receives the value of the deprecated `gravityview/delete-entry/delete-connected-post` filter (default: true).
 		 *
-		 * @since TODO
+		 * @since 2.48.5
 		 *
 		 * @param boolean $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true.
 		 * @param array $entry Array of the entry being deleted/trashed.

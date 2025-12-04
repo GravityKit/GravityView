@@ -35,11 +35,13 @@ This release resolves deprecation notices in GravityView blocks on WordPress 6.7
 
 #### 💻 Developer Updates
 * Added `gk/gravityview/delete-entry/mode` filter to allow code to modify the delete mode (whether to trash or delete an entry) for a specific View.
-	* Deprecated the `gravityview/delete-entry/mode` filter.
+  - Deprecated the `gravityview/delete-entry/mode` filter.
 * Added `gk/gravityview/delete-entry/delete-connected-post` filter to allow code to modify the behavior of deleting posts connected to an entry.
-	* Deprecated the `gravityview/delete-entry/delete-connected-post` filter.
-* Added `gk/gravityview/delete-entry/deleted` action to trigger when an entry is deleted. Deprecated the `gravityview/delete-entry/deleted` action.
-* Added `gk/gravityview/delete-entry/trashed` action to trigger when an entry is trashed. Deprecated the `gravityview/delete-entry/trashed` action.
+  - Deprecated the `gravityview/delete-entry/delete-connected-post` filter.
+* Added `gk/gravityview/delete-entry/deleted` action to trigger when an entry is deleted.
+  - Deprecated the `gravityview/delete-entry/deleted` action.
+* Added `gk/gravityview/delete-entry/trashed` action to trigger when an entry is trashed.
+ - Deprecated the `gravityview/delete-entry/trashed` action.
 
 = 2.48.4 on November 27, 2025 =
 
