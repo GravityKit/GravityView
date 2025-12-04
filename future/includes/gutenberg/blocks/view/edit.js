@@ -129,7 +129,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 
 						<PanelBody title={ __( 'Entries Settings', 'gk-gravityview' ) } initialOpen={ false }>
 							<Disabled isDisabled={ !viewId }>
-								<BaseControl label={ __( 'Start Date', 'gk-gravityview' ) }>
+								<BaseControl label={ __( 'Start Date', 'gk-gravityview' ) } __nextHasNoMarginBottom>
 									<ButtonGroup className="btn-group-double">
 										<Button
 											isSecondary={ startDateType !== 'date' }
@@ -149,7 +149,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									</ButtonGroup>
 
 									{ startDateType === 'date' && <>
-										<BaseControl label={ __( 'Date', 'gk-gravityview' ) }>
+										<BaseControl label={ __( 'Date', 'gk-gravityview' ) } __nextHasNoMarginBottom>
 											<DatePicker
 												dateFormat="yyyy-MM-dd"
 												selected={ isStartDateValid ? moment( startDate ).toDate() : '' }
@@ -168,7 +168,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									</> }
 								</BaseControl>
 
-								<BaseControl label={ __( 'End Date', 'gk-gravityview' ) }>
+								<BaseControl label={ __( 'End Date', 'gk-gravityview' ) } __nextHasNoMarginBottom>
 									<ButtonGroup className="btn-group-double">
 										<Button
 											isSecondary={ endDateType !== 'date' }
@@ -188,7 +188,7 @@ export default function Edit( { attributes, setAttributes, name: blockName } ) {
 									</ButtonGroup>
 
 									{ endDateType === 'date' && <>
-										<BaseControl label={ __( 'Date', 'gk-gravityview' ) }>
+										<BaseControl label={ __( 'Date', 'gk-gravityview' ) } __nextHasNoMarginBottom>
 											<DatePicker
 												dateFormat="yyyy-MM-dd"
 												selected={ isEndDateValid ? moment( endDate ).toDate() : '' }
