@@ -26,6 +26,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 #### 🐛 Fixed
 * With Edit Locking enabled, entries sometimes stayed locked after someone finished editing them, causing attempts by others to take over editing to fail.
 
+#### 💻 Developer Updates
+* Added `gk/gravityview/delete-entry/mode` filter to allow code to modify the delete mode (whether to trash or delete an entry) for a specific View.
+	* Deprecated the `gravityview/delete-entry/mode` filter.
 = 2.48.4 on November 27, 2025 =
 
 This release resolves a compatibility issue with the Advanced Post Creation Add-On and adds new filters for developers to adjust edit and delete entry behavior.

@@ -408,7 +408,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		// Delete the entry
-		$delete_response = $this->delete_or_trash_entry( $entry );
+		$delete_response = $this->delete_or_trash_entry( $entry, $view ? $view->ID : null );
 
 		if ( is_wp_error( $delete_response ) ) {
 			return $this->_redirect_and_exit( $delete_redirect_base, $delete_response->get_error_message(), 'error' );
@@ -472,9 +472,14 @@ final class GravityView_Delete_Entry {
 	/**
 	 * Delete mode: permanently delete, or move to trash?
 	 *
+	 * @since TODO Added $entry and $view_id parameters.
+	 *
+	 * @param array $entry The entry to get the delete mode for.
+	 * @param int|null $view_id The View ID. Default: null.
+	 *
 	 * @return string `delete` or `trash`
 	 */
-	private function get_delete_mode() {
+	private function get_delete_mode( $entry, $view_id = null ) {
 
 		/**
 		 * Delete mode: permanently delete, or move to trash?
@@ -484,22 +489,43 @@ final class GravityView_Delete_Entry {
 		 */
 		$delete_mode = apply_filters( 'gravityview/delete-entry/mode', 'delete' );
 
+		/**
+		 * Delete mode: permanently delete, or move to trash?
+		 *
+		 * Receives the value of the deprecated `gravityview/delete-entry/mode` filter (default: `delete`).
+		 *
+		 * @since TODO
+		 *
+		 * @link https://docs.gravitykit.com/article/299-change-the-delete-entry-mode-from-delete-to-trash for examples.
+		 *
+		 * @param string   $delete_mode Delete mode: `trash` or `delete`. Default: `delete`.
+		 * @param array $entry The entry to get the delete mode for.
+		 * @param int|null $view_id The View ID. Default: null.
+		 */
+		$delete_mode = apply_filters( 'gk/gravityview/delete-entry/mode', $delete_mode, $entry, $view_id );
+
 		return ( 'trash' === $delete_mode ) ? 'trash' : 'delete';
 	}
 
 	/**
+	 * Delete or trash an entry.
+	 *
 	 * @since 1.13.1
+	 * @since TODO Added $view_id parameter.
 	 *
 	 * @uses GFAPI::delete_entry()
 	 * @uses GFAPI::update_entry_property()
 	 *
+	 * @param array $entry The entry to delete or trash.
+	 * @param int   $view_id The View ID. Default: null.
+	 *
 	 * @return WP_Error|string "deleted" or "trashed" if successful, WP_Error if GFAPI::delete_entry() or updating entry failed.
 	 */
-	private function delete_or_trash_entry( $entry ) {
+	private function delete_or_trash_entry( $entry, $view_id = null ) {
 
 		$entry_id = $entry['id'];
 
-		$mode = $this->get_delete_mode();
+		$mode = $this->get_delete_mode( $entry, $view_id );
 
 		if ( 'delete' === $mode ) {
 
@@ -679,7 +705,7 @@ final class GravityView_Delete_Entry {
 		}
 
 		if ( 'trash' === $entry['status'] ) {
-			if ( 'trash' === $this->get_delete_mode() ) {
+			if ( 'trash' === $this->get_delete_mode( $entry, $view_id ) ) {
 				$error = __( 'The entry is already in the trash.', 'gk-gravityview' );
 			} else {
 				$error = __( 'You cannot delete the entry; it is already in the trash.', 'gk-gravityview' );
