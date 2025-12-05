@@ -2797,6 +2797,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Create entry with EMPTY field value
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id'    => $form['id'],
+			'status'     => 'active',
 			'created_by' => $admin->ID,
 			'1'          => '', // Empty field
 		) );
@@ -2870,6 +2871,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Create entry with EMPTY field value
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id'    => $form['id'],
+			'status'     => 'active',
 			'created_by' => $admin->ID,
 			'1'          => '', // Empty field
 		) );
@@ -2948,6 +2950,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Create entry with FILLED field value
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id'    => $form['id'],
+			'status'     => 'active',
 			'created_by' => $admin->ID,
 			'1'          => 'saved_field_value', // Filled field
 		) );
@@ -3032,6 +3035,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Create entry with EMPTY address fields
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id'    => $form['id'],
+			'status'     => 'active',
 			'created_by' => $admin->ID,
 			'1.1'        => '', // Empty street
 			'1.3'        => '', // Empty city
@@ -3105,6 +3109,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Create entry with EMPTY field value
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id'    => $form['id'],
+			'status'     => 'active',
 			'created_by' => $admin->ID,
 			'1'          => '', // Empty field
 		) );
@@ -3201,6 +3206,7 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Name fields are EMPTY because they haven't been filled yet
 		$entry = $this->factory->entry->create_and_get( array(
 			'form_id'    => $form['id'],
+			'status'     => 'active',
 			'created_by' => $admin->ID, // Entry created by admin
 			'1.3'        => '', // Empty first name
 			'1.6'        => '', // Empty last name
