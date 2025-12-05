@@ -1750,7 +1750,28 @@ class GravityView_Edit_Entry_Render {
 	private function get_field_value( $field ) {
 
 		/**
+		 * Filter whether to allow prepopulation in Edit Entry.
+		 *
+		 * User Registration and other plugins can prepopulate empty fields with user meta data,
+		 * which can cause issues when admins edit entries. Empty fields may show the admin's data
+		 * instead of remaining empty, potentially overwriting the target user's profile on save.
+		 *
+		 * This filter provides a single point of control over this behavior for all field types
+		 * while maintaining backward compatibility. To disable prepopulation, return `false`.
+		 *
+		 * @since TODO
+		 *
+		 * @param bool     $allow_prepopulation Whether to allow prepopulation. Default: `$field->allowsPrepopulate`.
+		 * @param GF_Field $field              The current field object.
+		 * @param array    $entry              The entry being edited.
+		 * @param array    $form               The form object.
+		*/
+		$allow_prepopulation = apply_filters( 'gk/gravityview/edit-entry/pre-populate/allow', $field->allowsPrepopulate, $field, $this->entry, $this->form );
+
+	    /**
 		 * Allow the pre-populated value to override saved value in Edit Entry form. By default, pre-populate mechanism only kicks on empty fields.
+		 *
+		 * @deprecated TODO Use `gk/gravityview/edit-entry/pre-populate/override` instead.
 		 *
 		 * @param boolean True: override saved values; False: don't override (default)
 		 * @param $field GF_Field object Gravity Forms field object
@@ -1758,121 +1779,144 @@ class GravityView_Edit_Entry_Render {
 		 */
 		$override_saved_value = apply_filters( 'gravityview/edit_entry/pre_populate/override', false, $field );
 
+		/**
+		 * Allow the pre-populated value to override saved value in Edit Entry form. By default, pre-populate mechanism only kicks on empty fields.
+		 *
+		 * @param boolean $override_saved_value True: override saved values; False: don't override (default).
+		 * @param GF_Field $field GF_Field object Gravity Forms field object.
+		 * @since TODO
+		 */
+		$override_saved_value = apply_filters( 'gk/gravityview/edit-entry/pre-populate/override', $override_saved_value, $field );
+
 		// We're dealing with multiple inputs (e.g. checkbox) but not time or date (as it doesn't store data in input IDs)
-		if ( isset( $field->inputs ) && is_array( $field->inputs ) && ! in_array( $field->type, array( 'time', 'date' ) ) && ! ( $field instanceof GF_Field_Radio && in_array($field->type, array('image_choice','multi_choice')) ) ) {
+		if ( isset( $field->inputs ) && is_array( $field->inputs ) && ! in_array( $field->type, array( 'time', 'date' ) ) && ! ( $field instanceof GF_Field_Radio && in_array( $field->type, array( 'image_choice', 'multi_choice' ) ) ) ) {
 
 			$field_value = array();
-
-			/**
-			 * Filter whether to allow prepopulation for multi-input fields in Edit Entry.
-			 *
-			 * User Registration and other plugins can prepopulate empty fields with user meta data,
-			 * which can cause issues when admins edit entries. Empty fields may show the admin's data
-			 * instead of remaining empty, potentially overwriting the target user's profile on save.
-			 *
-			 * This filter allows control over prepopulation behavior while maintaining backward compatibility.
-			 * Default behavior respects $field->allowsPrepopulate.
-			 *
-			 * @since 2.49
-			 *
-			 * @see Help Scout ticket #69646
-			 *
-			 * @param bool     $allow_prepopulate Whether to allow prepopulation. Default: $field->allowsPrepopulate.
-			 * @param GF_Field $field              The current field object.
-			 * @param array    $entry              The entry being edited.
-			 * @param array    $form               The form object.
-			 */
-			$default_allow_prepopulate = $field->allowsPrepopulate;
-			$allow_pre_populated = apply_filters( 'gravityview/edit-entry/pre-populate/allow', $default_allow_prepopulate, $field, $this->entry, $this->form );
+			$has_value   = false;
 
 			foreach ( (array) $field->inputs as $input ) {
 
 				$input_id = strval( $input['id'] );
 
 				if ( isset( $this->entry[ $input_id ] ) && ! gv_empty( $this->entry[ $input_id ], false, false ) ) {
-				    $field_value[ $input_id ] = 'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
-				    $allow_pre_populated      = false;
+					$field_value[ $input_id ] = 'post_category' === $field->type ? GFCommon::format_post_category( $this->entry[ $input_id ], true ) : $this->entry[ $input_id ];
+					$has_value                = true;
 				}
 			}
 
-			$pre_value = $field->get_value_submission( array(), false );
+			$pre_value = null;
+			if ( $allow_prepopulation ) {
+				$pre_value = $field->get_value_submission( array(), false );
+			}
 
-			// Fix for Address fields: ensure pre_value is an array when field expects it
-			// Address fields may return an empty string in certain conditions but expect an array
+			// Fix for Address fields: ensure pre_value is an array when field expects it.
 			if ( 'address' === $field->type && ! is_array( $pre_value ) ) {
 				$pre_value = [];
 			}
 
-			$field_value = ! $allow_pre_populated && ! ( $override_saved_value && ! gv_empty( $pre_value, false, false ) ) ? $field_value : $pre_value;
-
+			// Use prepopulated value if the field is empty OR if we're overriding.
+			if ( ( ! $has_value || $override_saved_value ) && ! gv_empty( $pre_value, false, false ) ) {
+				$field_value = $pre_value;
+			}
 		} else {
 
-			$id = intval( $field->id );
+			$id          = intval( $field->id );
+			$field_value = null;
+			$has_value   = isset( $this->entry[ $id ] ) && ! gv_empty( $this->entry[ $id ], false, false );
 
-			/**
-			 * Filter the prepopulated value for single-input fields in Edit Entry.
-			 *
-			 * User Registration and other plugins can prepopulate empty fields with user meta data,
-			 * which can cause issues when admins edit entries. Empty fields may show the admin's data
-			 * instead of remaining empty, potentially overwriting the target user's profile on save.
-			 *
-			 * This filter allows control over prepopulation behavior while maintaining backward compatibility.
-			 * Default behavior respects $field->allowsPrepopulate.
-			 *
-			 * @since 2.49
-			 *
-			 * @see Help Scout ticket #69646
-			 *
-			 * @param string   $pre_value The prepopulated value. Default: from $field->allowsPrepopulate check.
-			 * @param GF_Field $field      The current field object.
-			 * @param array    $entry      The entry being edited.
-			 * @param array    $form       The form object.
-			 */
-			$default_pre_value = $field->allowsPrepopulate ? GFFormsModel::get_parameter_value( $field->inputName, array(), $field ) : '';
-			$pre_value = apply_filters( 'gravityview/edit-entry/pre-populate/value', $default_pre_value, $field, $this->entry, $this->form );
+			if ( $has_value ) {
+				$field_value = $this->entry[ $id ];
+			}
 
-			// saved field entry value (if empty, fallback to the pre-populated value, if exists)
-			// or pre-populated value if not empty and set to override saved value
-			$field_value = isset( $this->entry[ $id ] ) && ! gv_empty( $this->entry[ $id ], false, false ) && ! ( $override_saved_value && ! gv_empty( $pre_value, false, false ) ) ? $this->entry[ $id ] : $pre_value;
+			// Use prepopulated value if the field is empty OR if we're overriding.
+			if ( ! $has_value || $override_saved_value ) {
+				if ( $allow_prepopulation ) {
+					$pre_value   = GFFormsModel::get_parameter_value( $field->inputName, array(), $field );
+					$field_value = $pre_value ?: $field_value;
+				}
+			}
 
 			// in case field is post_category but inputType is select, multi-select or radio, convert value into array of category IDs.
 			if ( 'post_category' === $field->type && ! gv_empty( $field_value, false, false ) ) {
 				$categories = array();
 				foreach ( explode( ',', $field_value ) as $cat_string ) {
-				    $categories[] = GFCommon::format_post_category( $cat_string, true );
+					$categories[] = GFCommon::format_post_category( $cat_string, true );
 				}
 				$field_value = 'multiselect' === $field->get_input_type() ? $categories : implode( '', $categories );
 			}
 		}
 
+		/**
+		 * Filter whether to apply field default values in Edit Entry when field value is empty.
+		 *
+		 * Field default values can include prepopulation variables that get replaced with user meta,
+		 * which can cause the same prepopulation issues as described above.
+		 *
+		 * This filter allows control over default value application while maintaining backward compatibility.
+		 * Default behavior applies field defaults (calls get_value_default_if_empty).
+		 *
+		 * @since TODO
+		 *
+		 * @param bool     $apply_defaults Whether to apply field default values. Default: true.
+		 * @param GF_Field $field           The current field object.
+		 * @param array    $entry           The entry being edited.
+		 * @param array    $form            The form object.
+		 * @param mixed    $field_value     The current field value before defaults are applied.
+		 */
+		$apply_field_defaults = apply_filters( 'gk/gravityview/edit-entry/apply-field-defaults', true, $field, $this->entry, $this->form, $field_value );
+
 		// if value is empty get the default value if defined
-		$field_value = $field->get_value_default_if_empty( $field_value );
+		if ( $apply_field_defaults ) {
+			$field_value = $field->get_value_default_if_empty( $field_value );
+		}
 
-	    /**
-	     * Change the value of an Edit Entry field, if needed.
+		/**
+		 * Change the value of an Edit Entry field, if needed.
 		 *
-	     * @since 1.11
-	     * @since 1.20 Added third param
-	     * @param mixed $field_value field value used to populate the input
-	     * @param object $field Gravity Forms field object ( Class GF_Field )
-	     * @param GravityView_Edit_Entry_Render $this Current object
-	     */
-	    $field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field, $this );
+		 * @since 1.11
+		 * @since 1.20 Added third param
+		 * @deprecated TODO Use `gk/gravityview/edit-entry/field-value` instead.
+		 * @param mixed $field_value field value used to populate the input
+		 * @param object $field Gravity Forms field object ( Class GF_Field )
+		 * @param GravityView_Edit_Entry_Render $this Current object
+		 */
+		$field_value = apply_filters( 'gravityview/edit_entry/field_value', $field_value, $field, $this );
 
-	    /**
-	     * Change the value of an Edit Entry field for a specific field type.
+		/**
+		 * Change the value of an Edit Entry field.
 		 *
-	     * @since 1.17
-	     * @since 1.20 Added third param
-	     * @param mixed $field_value field value used to populate the input
-	     * @param GF_Field $field Gravity Forms field object
-	     * @param GravityView_Edit_Entry_Render $this Current object
-	     */
-	    $field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type, $field_value, $field, $this );
+		 * @since TODO
+		 * @param mixed $field_value field value used to populate the input
+		 * @param GF_Field $field Gravity Forms field object
+		 * @param GravityView_Edit_Entry_Render $this Current object
+		 */
+		$field_value = apply_filters( 'gk/gravityview/edit-entry/field-value', $field_value, $field, $this );
+
+		/**
+		 * Change the value of an Edit Entry field for a specific field type.
+		 *
+		 * @since 1.17
+		 * @since 1.20 Added third param
+		 * @deprecated TODO Use `gk/gravityview/edit-entry/field-value-{field-type}` instead.
+		 * @param mixed $field_value field value used to populate the input
+		 * @param GF_Field $field Gravity Forms field object
+		 * @param GravityView_Edit_Entry_Render $this Current object
+		 */
+		$field_value = apply_filters( 'gravityview/edit_entry/field_value_' . $field->type, $field_value, $field, $this );
+
+		/**
+		 * Change the value of an Edit Entry field for a specific field type.
+		 *
+		 * @since TODO
+		 * @since 1.20 Added third param
+		 * @param mixed $field_value field value used to populate the input
+		 * @param GF_Field $field Gravity Forms field object
+		 * @param GravityView_Edit_Entry_Render $this Current object
+		 */
+		$field_value = apply_filters( 'gk/gravityview/edit-entry/field-value-' . $field->type, $field_value, $field, $this );
 
 		return $field_value;
 	}
-
 
 	// ---- Entry validation
 
