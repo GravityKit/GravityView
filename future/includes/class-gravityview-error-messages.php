@@ -87,13 +87,23 @@ class GravityView_Error_Messages {
 		// Normalize error code.
 		$error_code = str_replace( 'gravityview/', '', $error_code );
 
+		// Normalize entry ID for logging (callers may pass object, array, or numeric).
+		$entry_id = '(not set)';
+		if ( is_object( $entry ) && isset( $entry->ID ) ) {
+			$entry_id = $entry->ID;
+		} elseif ( is_array( $entry ) && ( isset( $entry['ID'] ) || isset( $entry['id'] ) ) ) {
+			$entry_id = $entry['ID'] ?? $entry['id'];
+		} elseif ( is_numeric( $entry ) ) {
+			$entry_id = $entry;
+		}
+
 		// Log the error.
 		gravityview()->log->debug(
 			'Access denied: {error} | View: {view_id} | Context: {context}',
 			[
 				'error'    => $error_code,
 				'view_id'  => $view ? $view->ID : '(not set)',
-				'entry_id' => $entry ? $entry->ID : '(not set)',
+				'entry_id' => $entry_id,
 				'context'  => $context,
 			]
 		);
