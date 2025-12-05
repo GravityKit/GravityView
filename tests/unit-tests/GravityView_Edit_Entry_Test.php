@@ -3015,6 +3015,8 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 					'id'                    => 1,
 					'type'                  => 'address',
 					'label'                 => 'Address',
+					'addressType'           => 'us',
+					'defaultCountry'        => 'United States',
 					'allowsPrepopulate'     => true,
 					'inputs'                => array(
 						array(
@@ -3023,9 +3025,25 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 							'name'  => 'admin_street',
 						),
 						array(
+							'id'    => '1.2',
+							'label' => 'Address Line 2',
+						),
+						array(
 							'id'    => '1.3',
 							'label' => 'City',
 							'name'  => 'admin_city',
+						),
+						array(
+							'id'    => '1.4',
+							'label' => 'State / Province',
+						),
+						array(
+							'id'    => '1.5',
+							'label' => 'ZIP / Postal Code',
+						),
+						array(
+							'id'    => '1.6',
+							'label' => 'Country',
 						),
 					),
 				),
