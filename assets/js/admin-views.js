@@ -1351,6 +1351,11 @@
 				   codemirrorConfig.codemirror = $.extend( {}, codemirrorConfig.codemirror, attributeValue );
 			   }
 
+			   // Disable linting for CSS mode as WordPress CSS editor does not support modern CSS syntax.
+			   if ( attributeValue && 'css' === attributeValue.mode ) {
+				   codemirrorConfig.codemirror.lint = false;
+			   }
+
 			   // And then instantiate CodeMirror using those settings, which will then extend the WP defaults.
 			   let editor = wp.codeEditor.initialize( $( this ), codemirrorConfig );
 
