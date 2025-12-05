@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later
 msgid ""
 msgstr ""
-"Project-Id-Version: GravityView 2.48.5\n"
+"Project-Id-Version: GravityView 2.49\n"
 "Report-Msgid-Bugs-To: https://www.gravitykit.com/support\n"
 "Last-Translator: GravityKit <support@gravitykit.com>\n"
 "Language-Team: GravityKit <support@gravitykit.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-05T00:16:33+00:00\n"
+"POT-Creation-Date: 2025-12-05T19:31:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -130,7 +130,7 @@ msgstr ""
 #: future/includes/class-gv-view.php:427
 #: future/includes/class-gv-view.php:433
 #: future/includes/class-gv-view.php:447
-#: includes/class-frontend-views.php:825
+#: includes/class-frontend-views.php:872
 msgid "You are not allowed to view this content."
 msgstr ""
 
@@ -310,7 +310,7 @@ msgstr ""
 #: future/includes/class-gv-renderer.php:333
 #: future/includes/class-gv-renderer.php:390
 #: future/includes/class-gv-view.php:354
-#: includes/class-frontend-views.php:696
+#: includes/class-frontend-views.php:743
 msgid "You can only see this message because you are able to edit this View."
 msgstr ""
 
@@ -321,7 +321,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:213
 #: includes/admin/metaboxes/views/view-configuration.php:214
 #: includes/class-admin-views.php:1924
-#: includes/class-frontend-views.php:685
+#: includes/class-frontend-views.php:732
 #: includes/class-gravityview-admin-bar.php:112
 #: includes/extensions/edit-entry/class-edit-entry-render.php:1251
 #: includes/extensions/edit-entry/fields/edit_link.php:14
@@ -339,7 +339,7 @@ msgstr ""
 #: includes/admin/metaboxes/views/view-configuration.php:167
 #: includes/admin/metaboxes/views/view-configuration.php:168
 #: includes/admin/metaboxes/views/view-configuration.php:186
-#: includes/class-frontend-views.php:689
+#: includes/class-frontend-views.php:736
 msgid "Single Entry"
 msgstr ""
 
@@ -348,18 +348,18 @@ msgstr ""
 #: includes/admin/metaboxes/class-gravityview-admin-metaboxes.php:137
 #: includes/admin/metaboxes/views/view-configuration.php:93
 #: includes/admin/metaboxes/views/view-configuration.php:115
-#: includes/class-frontend-views.php:682
+#: includes/class-frontend-views.php:729
 msgid "Multiple Entries"
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:330
-#: includes/class-frontend-views.php:693
+#: includes/class-frontend-views.php:740
 msgctxt "Displayed when a View is not configured. %s is replaced by the tab label"
 msgid "The %s layout has not been configured."
 msgstr ""
 
 #: future/includes/class-gv-renderer.php:332
-#: includes/class-frontend-views.php:695
+#: includes/class-frontend-views.php:742
 msgid "Add fields to %s"
 msgstr ""
 
@@ -2745,16 +2745,16 @@ msgid "The ID is already a View."
 msgstr ""
 
 #. Translators: Do not translate the [url] placeholder.
-#: includes/class-frontend-views.php:765
+#: includes/class-frontend-views.php:812
 msgid "No entries found. This page will redirect to \"[url]\" when opened in a browser."
 msgstr ""
 
-#: includes/class-frontend-views.php:1632
+#: includes/class-frontend-views.php:1679
 msgctxt "Clear all data from the form"
 msgid "Clear"
 msgstr ""
 
-#: includes/class-frontend-views.php:1633
+#: includes/class-frontend-views.php:1680
 msgctxt "Reset the search form to the state that existed on page load"
 msgid "Reset"
 msgstr ""
