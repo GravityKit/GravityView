@@ -2763,6 +2763,496 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * Test default prepopulation behavior (backward compatibility)
+	 * When no filters are applied, prepopulation should work as before
+	 *
+	 * @since 2.49
+	 * @covers GravityView_Edit_Entry_Render::get_field_value
+	 * @see Help Scout ticket #69646
+	 */
+	public function test_prepopulation_default_behavior() {
+		$this->_reset_context();
+
+		// Create admin user
+		$admin = $this->factory->user->create_and_set( array(
+			'user_login' => 'admin_user',
+			'role'       => 'administrator',
+		) );
+
+		// Create form with text field that allows prepopulation
+		$form = $this->factory->form->create_and_get( array(
+			'fields' => array(
+				GF_Fields::create( array(
+					'id'                  => 1,
+					'type'                => 'text',
+					'label'               => 'Text Field',
+					'allowsPrepopulate'   => true,
+					'inputName'           => 'test_field',
+				) ),
+			),
+		) );
+
+		// Create entry with EMPTY field value
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id'    => $form['id'],
+			'created_by' => $admin->ID,
+			'1'          => '', // Empty field
+		) );
+
+		// Create view for editing
+		$view = $this->factory->view->create_and_get( array(
+			'form_id'  => $form['id'],
+			'settings' => array(
+				'user_edit' => 1,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'    => '1',
+						'label' => 'Text Field',
+					),
+				),
+			),
+		) );
+
+		// Set up request context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Mock prepopulation value being returned
+		add_filter( 'gform_field_value_test_field', function() {
+			return 'prepopulated_value';
+		} );
+
+		// Render the edit form
+		list( $output, $render, $updated_entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		// Default behavior: prepopulation should work (field->allowsPrepopulate is true by default)
+		$this->assertStringContainsString( 'prepopulated_value', $output,
+			'Default behavior should allow prepopulation when field->allowsPrepopulate is true' );
+
+		remove_all_filters( 'gform_field_value_test_field' );
+		$this->_reset_context();
+	}
+
+	/**
+	 * Test prepopulation filter disables prepopulation for empty fields
+	 *
+	 * @since 2.49
+	 * @covers GravityView_Edit_Entry_Render::get_field_value
+	 * @see Help Scout ticket #69646
+	 */
+	public function test_prepopulation_filter_disables_for_empty_fields() {
+		$this->_reset_context();
+
+		// Create admin user
+		$admin = $this->factory->user->create_and_set( array(
+			'user_login' => 'admin_user',
+			'role'       => 'administrator',
+		) );
+
+		// Create form with text field that allows prepopulation
+		$form = $this->factory->form->create_and_get( array(
+			'fields' => array(
+				GF_Fields::create( array(
+					'id'                  => 1,
+					'type'                => 'text',
+					'label'               => 'Text Field',
+					'allowsPrepopulate'   => true,
+					'inputName'           => 'test_field',
+				) ),
+			),
+		) );
+
+		// Create entry with EMPTY field value
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id'    => $form['id'],
+			'created_by' => $admin->ID,
+			'1'          => '', // Empty field
+		) );
+
+		// Create view for editing
+		$view = $this->factory->view->create_and_get( array(
+			'form_id'  => $form['id'],
+			'settings' => array(
+				'user_edit' => 1,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'    => '1',
+						'label' => 'Text Field',
+					),
+				),
+			),
+		) );
+
+		// Set up request context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Mock prepopulation value being returned
+		add_filter( 'gform_field_value_test_field', function() {
+			return 'prepopulated_value';
+		} );
+
+		// Disable prepopulation via filter
+		add_filter( 'gk/gravityview/edit-entry/pre-populate/allow', '__return_false' );
+
+		// Render the edit form
+		list( $output, $render, $updated_entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		// Empty field should NOT contain prepopulated value when filter returns false
+		$this->assertStringNotContainsString( 'prepopulated_value', $output,
+			'Empty fields should remain empty when prepopulation filter returns false' );
+
+		remove_all_filters( 'gform_field_value_test_field' );
+		remove_all_filters( 'gk/gravityview/edit-entry/pre-populate/allow' );
+		$this->_reset_context();
+	}
+
+	/**
+	 * Test prepopulation filter does NOT affect filled fields
+	 * Filled fields should always show their saved values
+	 *
+	 * @since 2.49
+	 * @covers GravityView_Edit_Entry_Render::get_field_value
+	 * @see Help Scout ticket #69646
+	 */
+	public function test_prepopulation_filter_does_not_affect_filled_fields() {
+		$this->_reset_context();
+
+		// Create admin user
+		$admin = $this->factory->user->create_and_set( array(
+			'user_login' => 'admin_user',
+			'role'       => 'administrator',
+		) );
+
+		// Create form with text field
+		$form = $this->factory->form->create_and_get( array(
+			'fields' => array(
+				GF_Fields::create( array(
+					'id'                  => 1,
+					'type'                => 'text',
+					'label'               => 'Text Field',
+					'allowsPrepopulate'   => true,
+					'inputName'           => 'test_field',
+				) ),
+			),
+		) );
+
+		// Create entry with FILLED field value
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id'    => $form['id'],
+			'created_by' => $admin->ID,
+			'1'          => 'saved_field_value', // Filled field
+		) );
+
+		// Create view for editing
+		$view = $this->factory->view->create_and_get( array(
+			'form_id'  => $form['id'],
+			'settings' => array(
+				'user_edit' => 1,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'    => '1',
+						'label' => 'Text Field',
+					),
+				),
+			),
+		) );
+
+		// Set up request context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Disable prepopulation via filter
+		add_filter( 'gk/gravityview/edit-entry/pre-populate/allow', '__return_false' );
+
+		// Render the edit form
+		list( $output, $render, $updated_entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		// Filled field should still show its saved value even when prepopulation is disabled
+		$this->assertStringContainsString( 'saved_field_value', $output,
+			'Filled fields should still show saved values when prepopulation filter returns false' );
+
+		remove_all_filters( 'gk/gravityview/edit-entry/pre-populate/allow' );
+		$this->_reset_context();
+	}
+
+	/**
+	 * Test prepopulation filter works for multi-input fields (Address)
+	 *
+	 * @since 2.49
+	 * @covers GravityView_Edit_Entry_Render::get_field_value
+	 * @see Help Scout ticket #69646
+	 */
+	public function test_prepopulation_filter_multi_input_fields() {
+		$this->_reset_context();
+
+		// Create admin user with address in user meta
+		$admin = $this->factory->user->create_and_set( array(
+			'user_login' => 'admin_user',
+			'role'       => 'administrator',
+		) );
+		update_user_meta( $admin->ID, 'admin_street', '123 Admin St' );
+		update_user_meta( $admin->ID, 'admin_city', 'Admin City' );
+
+		// Create form with Address field that allows prepopulation
+		$form = $this->factory->form->create_and_get( array(
+			'fields' => array(
+				array(
+					'id'                    => 1,
+					'type'                  => 'address',
+					'label'                 => 'Address',
+					'allowsPrepopulate'     => true,
+					'inputs'                => array(
+						array(
+							'id'    => '1.1',
+							'label' => 'Street Address',
+							'name'  => 'admin_street',
+						),
+						array(
+							'id'    => '1.3',
+							'label' => 'City',
+							'name'  => 'admin_city',
+						),
+					),
+				),
+			),
+		) );
+
+		// Create entry with EMPTY address fields
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id'    => $form['id'],
+			'created_by' => $admin->ID,
+			'1.1'        => '', // Empty street
+			'1.3'        => '', // Empty city
+		) );
+
+		// Create view for editing
+		$view = $this->factory->view->create_and_get( array(
+			'form_id'  => $form['id'],
+			'settings' => array(
+				'user_edit' => 1,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'    => '1',
+						'label' => 'Address',
+					),
+				),
+			),
+		) );
+
+		// Set up request context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Disable prepopulation via filter
+		add_filter( 'gk/gravityview/edit-entry/pre-populate/allow', '__return_false' );
+
+		// Render the edit form
+		list( $output, $render, $updated_entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		// Empty address fields should NOT be prepopulated with admin's user meta
+		$this->assertStringNotContainsString( '123 Admin St', $output,
+			'Empty multi-input fields should remain empty when prepopulation filter returns false' );
+		$this->assertStringNotContainsString( 'Admin City', $output,
+			'Empty multi-input fields should remain empty when prepopulation filter returns false' );
+
+		remove_all_filters( 'gk/gravityview/edit-entry/pre-populate/allow' );
+		$this->_reset_context();
+	}
+
+	/**
+	 * Test field defaults filter controls default value application
+	 *
+	 * @since 2.49
+	 * @covers GravityView_Edit_Entry_Render::get_field_value
+	 * @see Help Scout ticket #69646
+	 */
+	public function test_field_defaults_filter() {
+		$this->_reset_context();
+
+		// Create admin user
+		$admin = $this->factory->user->create_and_set( array(
+			'user_login' => 'admin_user',
+			'role'       => 'administrator',
+		) );
+
+		// Create form with text field that has a default value
+		$form = $this->factory->form->create_and_get( array(
+			'fields' => array(
+				GF_Fields::create( array(
+					'id'           => 1,
+					'type'         => 'text',
+					'label'        => 'Text Field',
+					'defaultValue' => 'default_value',
+				) ),
+			),
+		) );
+
+		// Create entry with EMPTY field value
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id'    => $form['id'],
+			'created_by' => $admin->ID,
+			'1'          => '', // Empty field
+		) );
+
+		// Create view for editing
+		$view = $this->factory->view->create_and_get( array(
+			'form_id'  => $form['id'],
+			'settings' => array(
+				'user_edit' => 1,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'    => '1',
+						'label' => 'Text Field',
+					),
+				),
+			),
+		) );
+
+		// Set up request context
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Disable field defaults via filter
+		add_filter( 'gk/gravityview/edit-entry/apply-field-defaults', '__return_false' );
+
+		// Render the edit form
+		list( $output, $render, $updated_entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		// Empty field should NOT contain default value when filter returns false
+		$this->assertStringNotContainsString( 'default_value', $output,
+			'Empty fields should not show default values when apply-field-defaults filter returns false' );
+
+		remove_all_filters( 'gk/gravityview/edit-entry/apply-field-defaults' );
+		$this->_reset_context();
+	}
+
+	/**
+	 * Test User Registration scenario from Help Scout #69646
+	 * Admin editing another user's entry should not see admin's data in empty fields
+	 *
+	 * @since 2.49
+	 * @covers GravityView_Edit_Entry_Render::get_field_value
+	 * @see Help Scout ticket #69646
+	 */
+	public function test_user_registration_scenario_ticket_69646() {
+		$this->_reset_context();
+
+		// Create target user (the user the entry is for)
+		$target_user = $this->factory->user->create_and_set( array(
+			'user_login'   => 'target_user',
+			'role'         => 'subscriber',
+			'display_name' => 'Target User',
+		) );
+		update_user_meta( $target_user->ID, 'first_name', 'Target' );
+		update_user_meta( $target_user->ID, 'last_name', 'User' );
+
+		// Create admin user (who created the entry and is now editing it)
+		$admin = $this->factory->user->create_and_set( array(
+			'user_login'   => 'admin_editor',
+			'role'         => 'administrator',
+			'display_name' => 'Admin Editor',
+		) );
+		update_user_meta( $admin->ID, 'first_name', 'Admin' );
+		update_user_meta( $admin->ID, 'last_name', 'Editor' );
+
+		// Create form with Name field that allows prepopulation (User Registration would set this)
+		$form = $this->factory->form->create_and_get( array(
+			'fields' => array(
+				array(
+					'id'                => 1,
+					'type'              => 'name',
+					'label'             => 'Name',
+					'allowsPrepopulate' => true,
+					'inputs'            => array(
+						array(
+							'id'    => '1.3',
+							'label' => 'First Name',
+							'name'  => 'first_name',
+						),
+						array(
+							'id'    => '1.6',
+							'label' => 'Last Name',
+							'name'  => 'last_name',
+						),
+					),
+				),
+			),
+		) );
+
+		// Create entry: created BY admin FOR target user (Uncanny Groups scenario)
+		// Name fields are EMPTY because they haven't been filled yet
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id'    => $form['id'],
+			'created_by' => $admin->ID, // Entry created by admin
+			'1.3'        => '', // Empty first name
+			'1.6'        => '', // Empty last name
+		) );
+
+		// Create view for editing
+		$view = $this->factory->view->create_and_get( array(
+			'form_id'  => $form['id'],
+			'settings' => array(
+				'user_edit' => 1,
+			),
+			'fields' => array(
+				'edit_edit-fields' => array(
+					wp_generate_password( 4, false ) => array(
+						'id'    => '1',
+						'label' => 'Name',
+					),
+				),
+			),
+		) );
+
+		// Set up request context - admin is editing the entry
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = \GV\View::from_post( $view );
+		gravityview()->request->returns['is_entry'] = \GV\GF_Entry::by_id( $entry['id'] );
+
+		// Simulate User Registration prepopulation (would return admin's data since admin is logged in)
+		add_filter( 'gform_field_value_first_name', function() use ( $admin ) {
+			return get_user_meta( $admin->ID, 'first_name', true );
+		} );
+		add_filter( 'gform_field_value_last_name', function() use ( $admin ) {
+			return get_user_meta( $admin->ID, 'last_name', true );
+		} );
+
+		// THE FIX: Disable prepopulation in Edit Entry to prevent admin's data from showing
+		add_filter( 'gk/gravityview/edit-entry/pre-populate/allow', '__return_false' );
+
+		// Render the edit form
+		list( $output, $render, $updated_entry ) = $this->_emulate_render( $form, $view, $entry );
+
+		// CRITICAL: Empty name fields should NOT show admin's user meta
+		// This prevents overwriting target user's profile with admin's data
+		$this->assertStringNotContainsString( 'Admin', $output,
+			'Empty fields should NOT show admin user meta when editing another user\'s entry' );
+		$this->assertStringNotContainsString( 'Editor', $output,
+			'Empty fields should NOT show admin user meta when editing another user\'s entry' );
+
+		remove_all_filters( 'gform_field_value_first_name' );
+		remove_all_filters( 'gform_field_value_last_name' );
+		remove_all_filters( 'gk/gravityview/edit-entry/pre-populate/allow' );
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */
