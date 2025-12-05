@@ -108,6 +108,7 @@ class GravityView_Merge_Tags {
 			'timestamp'                 => 'modifier_timestamp', /** @see modifier_timestamp */
 			'explode'                   => 'modifier_explode', /** @see modifier_explode */
 			'urlencode'                 => 'modifier_strings', /** @see modifier_strings */
+			'rawurlencode'              => 'modifier_strings', /** @see modifier_strings */
 			'wpautop'                   => 'modifier_strings',
 			'esc_html'                  => 'modifier_strings',
 			'sanitize_html_class'       => 'modifier_strings',
@@ -343,6 +344,9 @@ class GravityView_Merge_Tags {
 			if ( in_array( 'urlencode', $modifiers ) ) {
 				$return = urlencode( $return );
 			}
+			if ( in_array( 'rawurlencode', $modifiers ) ) {
+				$return = rawurlencode( $return );
+			}
 		}
 
 		return $return;
@@ -396,6 +400,9 @@ class GravityView_Merge_Tags {
 		switch ( $matches[0] ) {
 			case 'urlencode':
 				$return = urlencode( $raw_value );
+				break;
+			case 'rawurlencode':
+				$return = rawurlencode( $raw_value );
 				break;
 			case 'wpautop':
 				$return = trim( wpautop( $raw_value ) );

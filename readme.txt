@@ -27,6 +27,9 @@ This release resolves deprecation notices in GravityView blocks on WordPress 6.7
 
 **Note: [GravityView blocks](https://docs.gravitykit.com/article/915-embedding-views-entries-and-fields-using-blocks) now require WordPress 6.3 or newer.**
 
+#### 🚀 Added
+* Support for the [`:rawurlencode` merge tag modifier](https://docs.gravitykit.com/article/350-merge-tag-modifiers#Usage-rawurlencode-Modifier-eLEk5), which properly encodes values used in email link parameters like subject and body (example: `mailto:example@example.com?subject={Subject:1:rawurlencode}&body={Message:2:rawurlencode}`).
+
 #### 🐛 Fixed
 * Deprecation notices in GravityView blocks on WordPress 6.7+.
 * With Edit Locking enabled, entries sometimes stayed locked after someone finished editing them, causing attempts by others to take over editing to fail.
