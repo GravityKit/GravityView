@@ -233,10 +233,10 @@ class oEmbed {
 		}
 
 		if ( $entry ) {
-			$gv_entry = $entry->as_entry();
-			$check = $gv_entry->check_access( $view );
+			$check = $entry->check_access( $view );
+
 			if ( is_wp_error( $check ) ) {
-				return \GravityView_Error_Messages::get( $check, $view, 'oembed', $gv_entry );
+				return \GravityView_Error_Messages::get( $check, $view, 'oembed', $entry );
 			}
 		}
 
