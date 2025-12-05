@@ -21,9 +21,12 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= 2.48.6 on December 5, 2025 =
+= 2.49 on December 5, 2025 =
 
 This hotfix ensures Views display correctly on WordPress 6.9 with classic themes.
+
+#### 🚀 Added
+* [`:rawurlencode` merge tag modifier](https://docs.gravitykit.com/article/350-merge-tag-modifiers#Usage-rawurlencode-Modifier-eLEk5) for better handling of special characters in URL paths and email links.
 
 #### 🐛 Fixed
 * Compatibility issue with WordPress 6.9 that caused Views to display incorrectly on classic themes.
