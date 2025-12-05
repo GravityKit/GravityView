@@ -21,7 +21,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.48.6 on December 5, 2025 =
 
 This hotfix ensures Views display correctly on WordPress 6.9 with classic themes.
 

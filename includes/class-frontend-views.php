@@ -125,7 +125,7 @@ class GravityView_frontend {
 	 * @see https://core.trac.wordpress.org/ticket/64099
 	 * @see https://make.wordpress.org/core/2025/11/18/wordpress-6-9-frontend-performance-field-guide/
 	 *
-	 * @since TBD
+	 * @since 2.48.6
 	 *
 	 * @return void
 	 */
