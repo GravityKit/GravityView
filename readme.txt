@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.8.3
+Tested up to: 6.9
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -20,6 +20,28 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.48.5 on December 4, 2025 =
+
+This release resolves deprecation notices in GravityView blocks on WordPress 6.7+, fixes edit locking not releasing entries properly on the Edit Entry page, and addresses PHP warnings.
+
+**Note: [GravityView blocks](https://docs.gravitykit.com/article/915-embedding-views-entries-and-fields-using-blocks) now require WordPress 6.3 or newer.**
+
+#### 🐛 Fixed
+* Deprecation notices in GravityView blocks on WordPress 6.7+.
+* With Edit Locking enabled, entries sometimes stayed locked after someone finished editing them, causing attempts by others to take over editing to fail.
+* PHP deprecation warning when editing certain entries with Post fields.
+* PHP notice when using `{sequence}` merge tag as a custom label for a View field.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/delete-entry/mode` filter to allow code to modify the delete mode (whether to trash or delete an entry) for a specific View.
+  - Deprecated the `gravityview/delete-entry/mode` filter.
+* Added `gk/gravityview/delete-entry/delete-connected-post` filter to allow code to modify the behavior of deleting posts connected to an entry.
+  - Deprecated the `gravityview/delete-entry/delete-connected-post` filter.
+* Added `gk/gravityview/delete-entry/deleted` action to trigger when an entry is deleted.
+  - Deprecated the `gravityview/delete-entry/deleted` action.
+* Added `gk/gravityview/delete-entry/trashed` action to trigger when an entry is trashed.
+ - Deprecated the `gravityview/delete-entry/trashed` action.
 
 = 2.48.4 on November 27, 2025 =
 

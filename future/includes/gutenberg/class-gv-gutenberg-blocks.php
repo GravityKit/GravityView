@@ -7,7 +7,7 @@ use GV\View;
 use GVCommon;
 
 class Blocks {
-	const MIN_WP_VERSION = '6.0.0';
+	const MIN_WP_VERSION = '6.3.0';
 
 	const SLUG = 'gk-gravityview-blocks';
 
