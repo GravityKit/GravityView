@@ -60,7 +60,7 @@ export default function SortFieldSelector( {
 	}, [ viewId ] );
 
 	return (
-		<BaseControl className="sort-field-selector" label={ labels.sort }>
+		<BaseControl className="sort-field-selector" label={ labels.sort } __nextHasNoMarginBottom>
 			<Select
 				aria-label={ labels.sort }
 				placeholder={ labels.selectSortField }

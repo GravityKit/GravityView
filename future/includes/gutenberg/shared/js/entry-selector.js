@@ -27,7 +27,7 @@ export default function EntrySelector( { children, entryId, onChange, minimalBot
 				{ noButtonGroup && EntryInput }
 
 				{ !noButtonGroup && <>
-					<BaseControl label={ showInSidebar ? __( 'Entry Type', 'gk-gravityview' ) : '' }>
+					<BaseControl label={ showInSidebar ? __( 'Entry Type', 'gk-gravityview' ) : '' } __nextHasNoMarginBottom>
 						<ButtonGroup className="btn-group-triple">
 							<Button
 								isPrimary={ ![ 'first', 'last' ].includes( entryId ) }

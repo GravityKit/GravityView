@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.8.3
+Tested up to: 6.9
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -21,7 +21,56 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.48.5 on December 4, 2025 =
+
+This release resolves deprecation notices in GravityView blocks on WordPress 6.7+, fixes edit locking not releasing entries properly on the Edit Entry page, and addresses PHP warnings.
+
+**Note: [GravityView blocks](https://docs.gravitykit.com/article/915-embedding-views-entries-and-fields-using-blocks) now require WordPress 6.3 or newer.**
+
+#### 🚀 Added
+* Support for the [`:rawurlencode` merge tag modifier](https://docs.gravitykit.com/article/350-merge-tag-modifiers#Usage-rawurlencode-Modifier-eLEk5), which properly encodes values used in email link parameters like subject and body (example: `mailto:example@example.com?subject={Subject:1:rawurlencode}&body={Message:2:rawurlencode}`).
+
+#### 🐛 Fixed
+* Deprecation notices in GravityView blocks on WordPress 6.7+.
+* With Edit Locking enabled, entries sometimes stayed locked after someone finished editing them, causing attempts by others to take over editing to fail.
+* PHP deprecation warning when editing certain entries with Post fields.
+* PHP notice when using `{sequence}` merge tag as a custom label for a View field.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/delete-entry/mode` filter to allow code to modify the delete mode (whether to trash or delete an entry) for a specific View.
+  - Deprecated the `gravityview/delete-entry/mode` filter.
+* Added `gk/gravityview/delete-entry/delete-connected-post` filter to allow code to modify the behavior of deleting posts connected to an entry.
+  - Deprecated the `gravityview/delete-entry/delete-connected-post` filter.
+* Added `gk/gravityview/delete-entry/deleted` action to trigger when an entry is deleted.
+  - Deprecated the `gravityview/delete-entry/deleted` action.
+* Added `gk/gravityview/delete-entry/trashed` action to trigger when an entry is trashed.
+ - Deprecated the `gravityview/delete-entry/trashed` action.
+
+= 2.48.4 on November 27, 2025 =
+
+This release resolves a compatibility issue with the Advanced Post Creation Add-On and adds new filters for developers to adjust edit and delete entry behavior.
+
+#### 🐛 Fixed
+* "You don’t have permission to edit this post" shown when editing entries with Post fields linked to posts created through the Advanced Post Creation Add-On.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/init/data` filter to modify form, entry, and View data before rendering the Edit Entry form.
+* Added `gk/gravityview/delete-entry/show-delete-button` filter to allow code to modify the visibility of the Delete button, with entry, form, View ID, and post ID as parameters.
+  - The `gravityview/delete-entry/show-delete-button` filter will be deprecated in a future release.
+
+= 2.48.3 on November 17, 2025 =
+
+This hotfix resolves a performance issue introduced in 2.48.2.
+
+#### 🐛 Fixed
+* After the 2.48.2 update, Views were taking significantly longer to load.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.0.
+
+= 2.48.2 on November 13, 2025 =
+
+This release addresses multiple issues impacting search fields, Edit Entry behavior, logging of entry approval status changes, and other aspects of the plugin’s functionality.
 
 #### 💻 Developer Updates
 * Added `gravityview/edit-entry/pre-populate/allow` filter to control whether prepopulation is allowed for multi-input fields in Edit Entry context.
