@@ -21,6 +21,16 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+This hotfix ensures Views display correctly on WordPress 6.9 with classic themes.
+
+#### 🐛 Fixed
+* Compatibility issue with WordPress 6.9 that caused Views to display incorrectly on classic themes.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/compatibility/block-assets-on-demand` filter to control whether GravityView disables WordPress 6.9's on-demand block asset loading (`true` by default).
+
 = 2.48.5 on December 4, 2025 =
 
 This release resolves deprecation notices in GravityView blocks on WordPress 6.7+, fixes edit locking not releasing entries properly on the Edit Entry page, and addresses PHP warnings.
