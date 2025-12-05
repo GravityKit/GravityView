@@ -21,6 +21,19 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= 2.49 on December 5, 2025 =
+
+This update adds a new merge tag modifier for improved URL encoding and resolves a WordPress 6.9 compatibility issue affecting classic themes.
+
+#### 🚀 Added
+* [`:rawurlencode` merge tag modifier](https://docs.gravitykit.com/article/350-merge-tag-modifiers#Usage-rawurlencode-Modifier-eLEk5) for better handling of special characters in URL paths and email links.
+
+#### 🐛 Fixed
+* Compatibility issue with WordPress 6.9 that caused Views to display incorrectly on classic themes.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/compatibility/block-assets-on-demand` filter to control whether GravityView disables WordPress 6.9's on-demand block asset loading (`true` by default).
+
 = 2.48.5 on December 4, 2025 =
 
 This release resolves deprecation notices in GravityView blocks on WordPress 6.7+, fixes edit locking not releasing entries properly on the Edit Entry page, and addresses PHP warnings.
