@@ -20,10 +20,11 @@ test('Search Widget Field Order', async ({ page }) => {
 	});
 
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	await page
-		.locator('#search-search-general-fields')
-		.getByRole('link', { name: /Add Search Field/ })
-		.click();
+	const addSearchFieldButton = page
+			.locator('#search-search-general-fields')
+			.getByRole('link', { name: ' Add Search Field' });
+	await expect (addSearchFieldButton).toBeVisible();
+	await addSearchFieldButton.click();
 	await page
 		.getByRole('tooltip')
 		.locator('.gv-field-label-text-container', { hasText: 'Is Starred' })

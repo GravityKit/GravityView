@@ -20,10 +20,11 @@ test('Advanced Search Panel Works After Regular Search', async ({ page }) => {
 		template: viewTemplatesMap.table
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	await page
-		.locator('#search-search-advanced-fields')
-		.getByRole('link', { name: ' Add Search Field' })
-		.click();
+	const addSearchFieldButton = page
+			.locator('#search-search-general-fields')
+			.getByRole('link', { name: ' Add Search Field' });
+	await expect (addSearchFieldButton).toBeVisible();
+	await addSearchFieldButton.click();
 	await clickFirstVisible(
 		page,
 		page.getByTitle('Search Field: Is Starred\nFilter on starred entries')

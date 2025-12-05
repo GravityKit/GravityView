@@ -31,11 +31,12 @@ test('Multiple Search Bar Widgets', async ({ page }) => {
 		.getByLabel('Configure Search Bar Settings')
 		.nth(1)
 		.click();
-	await page
+	const addSearchFieldButton = page
 		.getByLabel('Search Bar Settings', { exact: true })
 		.locator('#search-search-general-fields')
-		.getByRole('link', { name: /Add Search Field/ })
-		.click();
+		.getByRole('link', { name: /Add Search Field/ });
+	await expect (addSearchFieldButton).toBeVisible();
+	await addSearchFieldButton.click();
 	await page
 		.locator('#ui-id-19')
 		.getByText('Add "Search Everything" Search EverythingSearch across all entry fields')

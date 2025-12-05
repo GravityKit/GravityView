@@ -25,10 +25,11 @@ test('Search Bar Only Shows Choices That Exist in Submitted Entries', async ({ p
 
 	await test.step('Configure Search Bar and add fields', async () => {
 		await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-		await page
+		const addSearchFieldButton = page
 			.locator('#search-search-general-fields')
-			.getByRole('link', { name: ' Add Search Field' })
-			.click();
+			.getByRole('link', { name: ' Add Search Field' });
+		await expect (addSearchFieldButton).toBeVisible();
+		await addSearchFieldButton.click();
 		const filterFields = page
 			.getByRole('tooltip', { name: 'Close  Filter Fields: Filter' })
 			.getByPlaceholder('Filter fields by name or label');

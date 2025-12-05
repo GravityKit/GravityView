@@ -17,7 +17,11 @@ test('Entry Starred', async ({ page }) => {
 		template: templates[0]
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	await page.getByRole('link', { name: 'Add Search Field' }).first().click();
+	const addSearchFieldButton = page
+			.locator('#search-search-general-fields')
+			.getByRole('link', { name: ' Add Search Field' });
+	await expect (addSearchFieldButton).toBeVisible();
+	await addSearchFieldButton.click();
 	await page.locator('.ui-tooltip-content [data-fieldid="is_starred"]').click();
 	await page.getByRole('button', { name: ' Close' }).click();
 	await publishView(page);

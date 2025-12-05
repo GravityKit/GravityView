@@ -17,7 +17,11 @@ test('Clear Search', async ({ page }) => {
 		template: templates[0]
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	await page.getByRole('link', { name: 'Add Search Field' }).first().click();
+	const addSearchFieldButton = page
+			.locator('#search-search-general-fields')
+			.getByRole('link', { name: ' Add Search Field' });
+	await expect (addSearchFieldButton).toBeVisible();
+	await addSearchFieldButton.click();
 	await page.getByLabel('Configure Submit Button').click();
 	await page.getByLabel('Show Clear Button').setChecked(true);
 	await page.locator('button[data-close-settings]').click();
