@@ -23,10 +23,11 @@ test('Secondary Sort Direction DESC', async ({ page }) => {
 	});
 
 	await test.step('Enable secondary sorting by Name in descending order', async () => {
-		await page
+		const filterAndSortButton = page
 			.locator('#gravityview_settings div')
-			.getByRole('link', { name: 'Filter & Sort' })
-			.click();
+			.getByRole('link', { name: 'Filter & Sort' });
+		await expect(filterAndSortButton).toBeVisible();
+		await filterAndSortButton.click();
 		await page.locator('#gravityview_sort_field_1').selectOption({ label: 'Preferred Pet' });
 		await page.locator('#gravityview_sort_field_2').selectOption({ label: 'Name' });
 		await page.locator('#gravityview_se_sort_direction_2').selectOption({ label: 'DESC' });

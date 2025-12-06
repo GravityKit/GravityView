@@ -23,10 +23,11 @@ test('Verify Column Sorting', async ({ page }) => {
 	});
 
 	await test.step('Enable column sorting and select the Favorite Color field', async () => {
-		await page
+		const filterAndSortButton = page
 			.locator('#gravityview_settings div')
-			.getByRole('link', { name: 'Filter & Sort' })
-			.click();
+			.getByRole('link', { name: 'Filter & Sort' });
+		await expect(filterAndSortButton).toBeVisible();
+		await filterAndSortButton.click();
 		await page.getByLabel('Enable sorting by column').setChecked(true);
 		await page.locator('#gravityview_sort_field_1').selectOption({ label: 'Favorite Color' });
 		await publishView(page);
