@@ -19,6 +19,7 @@ test('Entry Starred', async ({ page }) => {
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 	await clickAddSearchField(page);
+	await page.waitForTimeout(1000);
 	await page.locator('.ui-tooltip-content [data-fieldid="is_starred"]').click();
 	await page.getByRole('button', { name: ' Close' }).click();
 	await publishView(page);

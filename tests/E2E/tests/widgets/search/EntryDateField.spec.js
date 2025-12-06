@@ -19,6 +19,7 @@ test('Entry Date Field', async ({ page }) => {
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 	await clickAddSearchField(page);
+	await page.waitForTimeout(1000);
 	await page.locator('.ui-tooltip-content [data-fieldid="entry_date"]').click();
 	await page.getByRole('button', { name: ' Close' }).click();
 	await publishView(page);
