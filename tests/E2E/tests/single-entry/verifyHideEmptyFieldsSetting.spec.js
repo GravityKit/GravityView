@@ -19,6 +19,7 @@ test('Verify Hide Empty Fields Setting (Single)', async ({ page }) => {
 
 	const addFieldButton = '.gv-droppable-area[data-areaid="directory_list-title"] .gv-add-field';
 	await page.click(addFieldButton);
+	await page.waitForTimeout(1000); // wait for the tooltip to appear
 	const fieldPickerTooltip = '.gravityview-item-picker-tooltip';
 	await page.waitForSelector(fieldPickerTooltip, { state: 'visible' });
 	await page
