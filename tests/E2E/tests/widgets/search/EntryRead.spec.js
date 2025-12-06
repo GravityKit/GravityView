@@ -19,7 +19,9 @@ test('Entry Read', async ({ page }) => {
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 	await clickAddSearchField(page);
-	await page.locator('.ui-tooltip-content [data-fieldid="is_read"]').click();
+	const isReadField = page.locator('.ui-tooltip-content [data-fieldid="is_read"]');
+	await expect(isReadField).toBeVisible();
+	await isReadField.click();
 	await page.getByRole('button', { name: ' Close' }).click();
 	await publishView(page);
 	await checkViewOnFrontEnd(page);
