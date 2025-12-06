@@ -4,7 +4,8 @@ const {
 	publishView,
 	checkViewOnFrontEnd,
 	viewTemplatesMap,
-	clickFirstVisible
+	clickFirstVisible,
+	clickAddSearchField
 } = require('../../../helpers/test-helpers');
 
 /*
@@ -20,11 +21,7 @@ test('Search Widget Field Order', async ({ page }) => {
 	});
 
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	const addSearchFieldButton = page
-			.locator('#search-search-general-fields')
-			.getByRole('link', { name: ' Add Search Field' });
-	await expect (addSearchFieldButton).toBeVisible();
-	await addSearchFieldButton.click();
+	await clickAddSearchField(page);
 	await page
 		.getByRole('tooltip')
 		.locator('.gv-field-label-text-container', { hasText: 'Is Starred' })

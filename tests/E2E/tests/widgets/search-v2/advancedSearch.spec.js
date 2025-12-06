@@ -4,7 +4,8 @@ const {
 	publishView,
 	checkViewOnFrontEnd,
 	viewTemplatesMap,
-	clickFirstVisible
+	clickFirstVisible,
+	clickAddSearchField
 } = require('../../../helpers/test-helpers');
 
 /*
@@ -20,11 +21,7 @@ test('Advanced Search Panel Works After Regular Search', async ({ page }) => {
 		template: viewTemplatesMap.table
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	const addSearchFieldButton = page
-			.locator('#search-search-general-fields')
-			.getByRole('link', { name: ' Add Search Field' });
-	await expect (addSearchFieldButton).toBeVisible();
-	await addSearchFieldButton.click();
+	await clickAddSearchField(page);
 	await clickFirstVisible(
 		page,
 		page.getByTitle('Search Field: Is Starred\nFilter on starred entries')

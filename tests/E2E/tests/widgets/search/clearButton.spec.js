@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {
 	checkViewOnFrontEnd,
+	clickAddSearchField,
 	createView,
 	publishView,
 	templates
@@ -17,11 +18,7 @@ test('Clear Search', async ({ page }) => {
 		template: templates[0]
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	const addSearchFieldButton = page
-			.locator('#search-search-general-fields')
-			.getByRole('link', { name: ' Add Search Field' });
-	await expect (addSearchFieldButton).toBeVisible();
-	await addSearchFieldButton.click();
+	await clickAddSearchField(page);
 	await page.getByLabel('Configure Submit Button').click();
 	await page.getByLabel('Show Clear Button').setChecked(true);
 	await page.locator('button[data-close-settings]').click();

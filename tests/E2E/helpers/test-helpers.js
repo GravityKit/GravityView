@@ -388,6 +388,19 @@ async function expectToBeVisibleBefore(page, locator_one, locator_two) {
 	await expect(box_one.y).toBeLessThan(box_two.y);
 }
 
+/**
+ * Clicks the "Add Search Field" button in the search widget configuration.
+ *
+ * @param {import('playwright').Page} page - The Playwright page object.
+ */
+async function clickAddSearchField(page) {
+	const addSearchFieldButton = page
+		.locator('#search-search-general-fields')
+		.getByRole('link', { name: ' Add Search Field' });
+	await expect(addSearchFieldButton).toBeVisible();
+	await addSearchFieldButton.click();
+}
+
 module.exports = {
 	templates,
 	viewTemplatesMap,
@@ -401,5 +414,6 @@ module.exports = {
 	getViewUrl,
 	getOptionValueBySearchTerm,
 	clickFirstVisible,
-	expectToBeVisibleBefore
+	expectToBeVisibleBefore,
+	clickAddSearchField
 };

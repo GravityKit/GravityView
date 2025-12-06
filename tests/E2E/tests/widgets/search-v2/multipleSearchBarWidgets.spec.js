@@ -4,7 +4,8 @@ const {
 	publishView,
 	checkViewOnFrontEnd,
 	clickFirstVisible,
-	viewTemplatesMap
+	viewTemplatesMap,
+	clickAddSearchField
 } = require('../../../helpers/test-helpers');
 
 /**
@@ -31,12 +32,7 @@ test('Multiple Search Bar Widgets', async ({ page }) => {
 		.getByLabel('Configure Search Bar Settings')
 		.nth(1)
 		.click();
-	const addSearchFieldButton = page
-		.getByLabel('Search Bar Settings', { exact: true })
-		.locator('#search-search-general-fields')
-		.getByRole('link', { name: /Add Search Field/ });
-	await expect (addSearchFieldButton).toBeVisible();
-	await addSearchFieldButton.click();
+	await clickAddSearchField(page);
 	await page
 		.locator('#ui-id-19')
 		.getByText('Add "Search Everything" Search EverythingSearch across all entry fields')

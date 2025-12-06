@@ -5,7 +5,8 @@ const {
 	createView,
 	publishView,
 	checkViewOnFrontEnd,
-	viewTemplatesMap
+	viewTemplatesMap,
+	clickAddSearchField
 } = require('../../../helpers/test-helpers');
 
 // Load .env variables
@@ -73,11 +74,7 @@ test.describe('GravityMaps: Map Filter Radius Search – setup, configuration, a
 			await page.getByRole('heading', { name: ' Landmark Name' }).locator('i').click();
 
 			await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-			const addSearchFieldButton = page
-				.locator('#search-search-general-fields')
-				.getByRole('link', { name: ' Add Search Field' });
-			await expect (addSearchFieldButton).toBeVisible();
-			await addSearchFieldButton.click();
+			await clickAddSearchField(page);
 			await page.getByRole('heading', { name: ' Geolocation Radius' }).locator('i').click();
 			await page
 				.getByLabel('Search Bar Settings', { exact: true })

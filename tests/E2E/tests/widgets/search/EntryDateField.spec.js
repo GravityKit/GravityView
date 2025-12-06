@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import {
 	checkViewOnFrontEnd,
+	clickAddSearchField,
 	createView,
 	publishView,
 	templates
@@ -17,11 +18,7 @@ test('Entry Date Field', async ({ page }) => {
 		template: templates[0]
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
-	const addSearchFieldButton = page
-			.locator('#search-search-general-fields')
-			.getByRole('link', { name: ' Add Search Field' });
-	await expect (addSearchFieldButton).toBeVisible();
-	await addSearchFieldButton.click();
+	await clickAddSearchField(page);
 	await page.locator('.ui-tooltip-content [data-fieldid="entry_date"]').click();
 	await page.getByRole('button', { name: ' Close' }).click();
 	await publishView(page);
