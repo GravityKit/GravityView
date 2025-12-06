@@ -400,6 +400,7 @@ async function clickAddSearchField(page) {
 		.getByRole('link', { name: ' Add Search Field' });
 	await expect(addSearchFieldButton).toBeVisible();
 	await addSearchFieldButton.click();
+	await page.waitForTimeout(1000);
 }
 
 module.exports = {
