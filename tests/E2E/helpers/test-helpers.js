@@ -405,7 +405,32 @@ async function clickAddSearchField(page) {
 	// Wait until it's enabled/clickable
 	await expect(addSearchFieldButton).toBeEnabled();
 
+	// DEBUG: Check what's initialized before clicking
+	const debugInfoBefore = await page.evaluate(() => {
+		const button = document.querySelector('#search-search-general-fields a[href="#"]');
+		return {
+			jQueryLoaded: typeof jQuery !== 'undefined',
+			jQueryUILoaded: typeof jQuery?.ui !== 'undefined',
+			tooltipLoaded: typeof jQuery?.ui?.tooltip !== 'undefined',
+			buttonExists: !!button,
+			hasClickHandler: button && typeof jQuery !== 'undefined' && jQuery._data(button, 'events')?.click ? true : false,
+			tooltipContentExistsBeforeClick: !!document.querySelector('.ui-tooltip-content')
+		};
+	});
+
+	console.log('[DEBUG] Before click:', JSON.stringify(debugInfoBefore, null, 2));
+
 	await addSearchFieldButton.click({ delay: 100 });
+
+	// DEBUG: Check what happened after click
+	const debugInfoAfter = await page.evaluate(() => ({
+		tooltipVisible: document.querySelector('.ui-tooltip-content') ?
+			window.getComputedStyle(document.querySelector('.ui-tooltip-content')).display !== 'none' : false,
+		tooltipInDOM: !!document.querySelector('.ui-tooltip-content'),
+		tooltipCount: document.querySelectorAll('.ui-tooltip-content').length
+	}));
+
+	console.log('[DEBUG] After click:', JSON.stringify(debugInfoAfter, null, 2));
 
 	await page.waitForTimeout(1000);
 }
