@@ -394,45 +394,30 @@ async function expectToBeVisibleBefore(page, locator_one, locator_two) {
  * @param {import('playwright').Page} page - The Playwright page object.
  */
 async function clickAddSearchField(page) {
-	await page.waitForTimeout(1000);
-
-  	const addSearchFieldButton = page
+	const addSearchFieldButton = page
 		.locator('#search-search-general-fields')
 		.getByRole('link', { name: ' Add Search Field' });
 
 	await expect(addSearchFieldButton).toBeVisible();
-
-	// Wait until it's enabled/clickable
 	await expect(addSearchFieldButton).toBeEnabled();
 
-	// DEBUG: Check what's initialized before clicking
-	const debugInfoBefore = await page.evaluate(() => {
+	// Wait for the click handler to be attached to the button
+	await page.waitForFunction(() => {
 		const button = document.querySelector('#search-search-general-fields a[href="#"]');
-		return {
-			jQueryLoaded: typeof jQuery !== 'undefined',
-			jQueryUILoaded: typeof jQuery?.ui !== 'undefined',
-			tooltipLoaded: typeof jQuery?.ui?.tooltip !== 'undefined',
-			buttonExists: !!button,
-			hasClickHandler: button && typeof jQuery !== 'undefined' && jQuery._data(button, 'events')?.click ? true : false,
-			tooltipContentExistsBeforeClick: !!document.querySelector('.ui-tooltip-content')
-		};
-	});
+		return button && typeof jQuery !== 'undefined' && jQuery._data(button, 'events')?.click;
+	}, { timeout: 10000 });
 
-	console.log('[DEBUG] Before click:', JSON.stringify(debugInfoBefore, null, 2));
+	console.log('[DEBUG] Click handler is attached, proceeding with click');
 
 	await addSearchFieldButton.click({ delay: 100 });
 
-	// DEBUG: Check what happened after click
-	const debugInfoAfter = await page.evaluate(() => ({
-		tooltipVisible: document.querySelector('.ui-tooltip-content') ?
-			window.getComputedStyle(document.querySelector('.ui-tooltip-content')).display !== 'none' : false,
-		tooltipInDOM: !!document.querySelector('.ui-tooltip-content'),
-		tooltipCount: document.querySelectorAll('.ui-tooltip-content').length
-	}));
+	// Wait for the tooltip to appear after clicking
+	await page.waitForSelector('.ui-tooltip-content', {
+		state: 'visible',
+		timeout: 10000
+	});
 
-	console.log('[DEBUG] After click:', JSON.stringify(debugInfoAfter, null, 2));
-
-	await page.waitForTimeout(1000);
+	console.log('[DEBUG] Tooltip appeared successfully');
 }
 
 module.exports = {
