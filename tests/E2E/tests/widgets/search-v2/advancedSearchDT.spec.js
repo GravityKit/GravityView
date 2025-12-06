@@ -33,7 +33,6 @@ test('Advanced Search Panel Works After Regular Search', async ({ page }) => {
 	await page.getByLabel('Search Entries:').fill('example');
 	await page.getByRole('button', { name: 'Search', exact: true }).click();
 	await page.getByLabel('Search Entries:').fill('');
-	await page.getByLabel('Toggle Advanced Search').click();
 	await page.getByLabel('Is Starred').check();
 	await page.getByRole('button', { name: 'Search', exact: true }).click();
 	const rows = page.locator('tbody > tr');

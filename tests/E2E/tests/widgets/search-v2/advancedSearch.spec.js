@@ -22,10 +22,10 @@ test('Advanced Search Panel Works After Regular Search', async ({ page }) => {
 	});
 	await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 	await clickAddSearchField(page);
-	await clickFirstVisible(
-		page,
-		page.getByTitle('Search Field: Is Starred\nFilter on starred entries')
-	);
+	const isStarredField = page.locator('#ui-id-17').getByTitle('Search Field: Is Starred\nFilter on starred entries');
+	await expect(isStarredField).toBeVisible();
+	await isStarredField.click();
+	await page.waitForTimeout(1000);
 	await page.getByRole('button', { name: ' Close' }).click();
 	await publishView(page);
 	await checkViewOnFrontEnd(page);
@@ -33,7 +33,6 @@ test('Advanced Search Panel Works After Regular Search', async ({ page }) => {
 	await page.getByLabel('Search Entries:').fill('example');
 	await page.getByRole('button', { name: 'Search', exact: true }).click();
 	await page.getByLabel('Search Entries:').fill('');
-	await page.getByLabel('Toggle Advanced Search').click();
 	await page.getByLabel('Is Starred').check();
 	await page.getByRole('button', { name: 'Search', exact: true }).click();
 	const rows = page.locator('tbody > tr');

@@ -30,7 +30,6 @@ test('Advanced Search Panel Remains Open After Search', async ({ page }) => {
 	await publishView(page);
 	await checkViewOnFrontEnd(page);
 
-	await page.getByLabel('Toggle Advanced Search').click();
 	await page.getByLabel('Is Starred').check();
 	await page.getByRole('button', { name: 'Search', exact: true }).click();
 
