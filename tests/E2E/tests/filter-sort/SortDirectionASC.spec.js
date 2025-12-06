@@ -23,10 +23,11 @@ test('Verify Sort Direction ASC', async ({ page }) => {
 	});
 
 	await test.step('Enable sorting by Favorite Color in ascending order', async () => {
-		await page
+		const filterAndSortButton = page
 			.locator('#gravityview_settings div')
-			.getByRole('link', { name: 'Filter & Sort' })
-			.click();
+			.getByRole('link', { name: 'Filter & Sort' });
+		await expect(filterAndSortButton).toBeVisible();
+		await filterAndSortButton.click();
 		await page.locator('#gravityview_sort_field_1').selectOption({ label: 'Favorite Color' });
 		await publishView(page);
 	});
