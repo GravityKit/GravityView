@@ -401,15 +401,20 @@ async function clickAddSearchField(page) {
 	await expect(addSearchFieldButton).toBeVisible();
 	await expect(addSearchFieldButton).toBeEnabled();
 
-	// Wait for the click handler to be attached to the button
-	await page.waitForFunction(() => {
-		const button = document.querySelector('#search-search-general-fields a[href="#"]');
-		return button && typeof jQuery !== 'undefined' && jQuery._data(button, 'events')?.click;
-	}, { timeout: 10000 });
+	// TEST: Simple 5000ms wait to see if timing is the issue
+	console.log('[DEBUG] Waiting 5000ms before click...');
+	await page.waitForTimeout(5000);
 
-	console.log('[DEBUG] Click handler is attached, proceeding with click');
+	// DEBUG: Check handler status after wait
+	const hasHandler = await page.evaluate(() => {
+		const button = document.querySelector('#search-search-general-fields a[href="#"]');
+		return button && typeof jQuery !== 'undefined' && jQuery._data(button, 'events')?.click ? true : false;
+	});
+	console.log('[DEBUG] After 5000ms wait - hasClickHandler:', hasHandler);
 
 	await addSearchFieldButton.click({ delay: 100 });
+
+	console.log('[DEBUG] Click executed, waiting for tooltip...');
 
 	// Wait for the tooltip to appear after clicking
 	await page.waitForSelector('.ui-tooltip-content', {
