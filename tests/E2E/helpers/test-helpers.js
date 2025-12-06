@@ -394,6 +394,7 @@ async function expectToBeVisibleBefore(page, locator_one, locator_two) {
  * @param {import('playwright').Page} page - The Playwright page object.
  */
 async function clickAddSearchField(page) {
+	await page.waitForTimeout(1000);
 	const addSearchFieldButton = page
 		.locator('#search-search-general-fields')
 		.getByRole('link', { name: ' Add Search Field' });
