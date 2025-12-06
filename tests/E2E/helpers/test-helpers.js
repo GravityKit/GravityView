@@ -405,7 +405,7 @@ async function clickAddSearchField(page) {
 	// Wait until it's enabled/clickable
 	await expect(addSearchFieldButton).toBeEnabled();
 
-	await addSearchFieldButton.click();
+	await addSearchFieldButton.click({ delay: 100 });
 
 	await page.waitForTimeout(1000);
 }
