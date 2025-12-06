@@ -33,10 +33,12 @@ test('Multiple Search Bar Widgets', async ({ page }) => {
 		.nth(1)
 		.click();
 	await clickAddSearchField(page);
-	await page
-		.locator('#ui-id-19')
-		.getByText('Add "Search Everything" Search EverythingSearch across all entry fields')
-		.click();
+	await page.waitForTimeout(1000);
+	const addSearchEverythingButton = page
+	.locator('#ui-id-19')
+	.getByText('Add "Search Everything" Search EverythingSearch across all entry fields');
+	await expect(addSearchEverythingButton).toBeVisible();
+	await addSearchEverythingButton.click();
 	await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
 	await publishView(page);
