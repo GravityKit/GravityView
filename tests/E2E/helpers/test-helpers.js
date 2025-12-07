@@ -395,8 +395,8 @@ async function expectToBeVisibleBefore(page, locator_one, locator_two) {
  */
 async function clickAddSearchField(page) {
 	const addSearchFieldButton = page
-		.locator('#search-search-advanced-fields')
-		.getByRole('link', { name: /Add Search Field/i });
+		.locator('#search-search-general-fields')
+		.getByRole('link', { name: ' Add Search Field' });
 
 	await expect(addSearchFieldButton).toBeVisible();
 	await expect(addSearchFieldButton).toBeEnabled();
