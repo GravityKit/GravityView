@@ -401,30 +401,33 @@ async function clickAddSearchField(page) {
 	await expect(addSearchFieldButton).toBeVisible();
 	await expect(addSearchFieldButton).toBeEnabled();
 
-	// TEST: Simple 5000ms wait to see if timing is the issue
-	console.log('[DEBUG] Waiting 5000ms before click...');
 	await page.waitForTimeout(10000);
 
-	// DEBUG: Check handler status after wait
-	const hasHandler = await page.evaluate(() => {
-		const button = document.querySelector('#search-search-general-fields a[href="#"]');
-		return button && typeof jQuery !== 'undefined' && jQuery._data(button, 'events')?.click ? true : false;
-	});
-	console.log('[DEBUG] After 5000ms wait - hasClickHandler:', hasHandler);
-
+	// Try clicking the button, retry once if tooltip doesn't appear
 	await addSearchFieldButton.click({ delay: 100 });
+	console.log('[DEBUG] First click executed, checking for tooltip...');
 
-	console.log('[DEBUG] Click executed, waiting for tooltip...');
+	await page.waitForTimeout(2000);
 
-	await page.waitForTimeout(5000);
+	// Check if tooltip appeared
+	const tooltipVisible = await page.locator('.ui-tooltip-content').isVisible().catch(() => false);
 
-	// Wait for the tooltip to appear after clicking
+	if (!tooltipVisible) {
+		console.log('[DEBUG] Tooltip not visible after first click, retrying...');
+		await addSearchFieldButton.click({ delay: 100 });
+		console.log('[DEBUG] Second click executed');
+		await page.waitForTimeout(2000);
+	} else {
+		console.log('[DEBUG] Tooltip appeared after first click');
+	}
+
+	// Wait for the tooltip to be visible (final check)
 	await page.waitForSelector('.ui-tooltip-content', {
 		state: 'visible',
 		timeout: 10000
 	});
 
-	console.log('[DEBUG] Tooltip appeared successfully');
+	console.log('[DEBUG] Tooltip confirmed visible');
 }
 
 module.exports = {
