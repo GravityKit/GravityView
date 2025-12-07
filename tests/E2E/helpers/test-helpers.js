@@ -403,7 +403,7 @@ async function clickAddSearchField(page) {
 
 	// TEST: Simple 5000ms wait to see if timing is the issue
 	console.log('[DEBUG] Waiting 5000ms before click...');
-	await page.waitForTimeout(5000);
+	await page.waitForTimeout(10000);
 
 	// DEBUG: Check handler status after wait
 	const hasHandler = await page.evaluate(() => {
@@ -415,6 +415,8 @@ async function clickAddSearchField(page) {
 	await addSearchFieldButton.click({ delay: 100 });
 
 	console.log('[DEBUG] Click executed, waiting for tooltip...');
+
+	await page.waitForTimeout(5000);
 
 	// Wait for the tooltip to appear after clicking
 	await page.waitForSelector('.ui-tooltip-content', {
