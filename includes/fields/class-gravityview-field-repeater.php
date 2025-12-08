@@ -12,44 +12,68 @@ use GV\Field_HTML_Template;
 class GravityView_Field_Repeater extends GravityView_Field {
 	/**
 	 * {@inheritDoc}
+	 *
 	 * @since $ver$
 	 */
 	public $name = 'repeater';
 
 	/**
 	 * {@inheritDoc}
+	 *
 	 * @since $ver$
 	 */
 	public $_gf_field_class_name = 'GF_Field_Repeater';
 
 	/**
 	 * {@inheritDoc}
+	 *
 	 * @since $ver$
 	 */
 	public $group = 'advanced';
 
 	/**
 	 * {@inheritDoc}
+	 *
 	 * @since $ver$
 	 */
 	public $search_operators = [ 'is', 'isnot', 'contains' ];
 
 	/**
 	 * {@inheritDoc}
+	 *
 	 * @since $ver$
 	 */
 	public $is_searchable = false;
 
 	/**
 	 * {@inheritDoc}
+	 *
 	 * @since $ver$
+	 */
+	public $is_sortable = false;
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @since $ver$
+	 *
 	 * @var string
 	 */
 	public $icon = 'dashicons-forms';
 
 	/**
+	 * Whether the field is initialized.
+	 *
+	 * @since $ver$
+	 *
+	 * @var bool
+	 */
+	protected static bool $is_initialized = false;
+
+	/**
 	 * {@inheritDoc}
-	 * @sinve $ver$
+	 *
+	 * @since $ver$
 	 */
 	public function __construct() {
 		$this->label = esc_html__( 'Repeater', 'gk-gravityview' );
@@ -122,9 +146,14 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	 * @since $ver$
 	 */
 	private function add_hooks(): void {
+		if ( static::$is_initialized ) {
+			return;
+		}
+
 		add_filter( 'gravityview/template/field/class', [ $this, 'maybe_replace_renderer_class' ], 10, 2 );
 		add_filter( 'gform_entry_field_value', [ $this, 'remove_gform_styling' ], 10, 2 );
 		add_filter( 'gravityview/field/repeater/value', [ $this, 'limit_results' ], 10, 2 );
+		add_filter( 'gravityview/sortable/field_blocklist', [ $this, 'prevent_sort_subfields' ], 10, 4 );
 	}
 
 	/**
@@ -298,6 +327,31 @@ class GravityView_Field_Repeater extends GravityView_Field {
 		$field_id = (string) (int) ( $config['id'] ?? 0 );
 
 		return static::has_repeater_parent( $form_id, $field_id );
+	}
+
+	/**
+	 * Prevents sorting of repeater fields, or it's subfields.
+	 *
+	 * @since $ver$
+	 *
+	 * @param string[] $not_sortable The field types that aren't sortable.
+	 * @param string   $field_type   The field type.
+	 * @param array    $form         The form object.
+	 * @param string   $field_id     The field ID, which might be the same as the field type.
+	 *
+	 * @return array
+	 */
+	public function prevent_sort_subfields( $not_sortable, $field_type, $form, $field_id ): array {
+		if ( ! is_array( $not_sortable ) ) {
+			$not_sortable = [];
+		}
+
+		// part of a repeater field, so we can't sort by this field.
+		if ( static::has_repeater_parent( $form['id'] ?? 0, (int) $field_id ) ) {
+			$not_sortable[] = $field_id;
+		}
+
+		return $not_sortable;
 	}
 
 	/**
