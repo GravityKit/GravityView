@@ -17,7 +17,7 @@ anchors:
 jobs:
   run_e2e_tests:
     <<: *default_job_config
-    parallelism: 4
+    parallelism: 2
     steps:
       - attach_workspace:
           at: /home/circleci
