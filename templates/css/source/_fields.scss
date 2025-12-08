@@ -1,4 +1,3 @@
-
 // Give some default space
 .gv-field-label {
 	#{$padding-right}: .25em;
@@ -53,5 +52,9 @@
 .gfield_repeater_item + .gfield_repeater_item {
 	border-top: 1px solid rgba(54, 86, 102, .25);
 	margin-top: 5px;
-	padding-top:  5px;
+	padding-top: 5px;
+}
+
+.gv-more-results {
+	font-style: italic;
 }

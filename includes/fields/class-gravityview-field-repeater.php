@@ -69,15 +69,17 @@ class GravityView_Field_Repeater extends GravityView_Field {
 		}
 
 		$field_options['max_results'] = [
-			'type'         => 'number',
-			'label'        => __( 'Maximum results', 'gk-gravityview' ),
-			'desc'         => esc_html__( 'Maximum number of results to show per nesting level. Leave empty to show all results.', 'gk-gravityview' ),
-			'value'        => '',
-			'priority'     => 1000,
-			'group'        => 'display',
-			'requires_not' => 'full_width=1',
-			'contexts'     => [ 'multiple', 'single' ],
-			'min'          => 0,
+			'type'     => 'number',
+			'label'    => __( 'Maximum results', 'gk-gravityview' ),
+			'desc'     => esc_html__(
+				'Maximum number of results to show per nesting level. Leave empty to show all results.',
+				'gk-gravityview'
+			),
+			'value'    => '',
+			'priority' => 1000,
+			'group'    => 'display',
+			'contexts' => [ 'multiple', 'single' ],
+			'min'      => 0,
 		];
 
 		$field_options['hide_nested_repeater_fields'] = [
@@ -88,6 +90,20 @@ class GravityView_Field_Repeater extends GravityView_Field {
 			'group'        => 'display',
 			'requires_not' => 'full_width=1',
 			'contexts'     => [ 'multiple', 'single' ],
+		];
+
+		$field_options['show_more_results'] = [
+			'type'         => 'checkbox',
+			'label'        => __( 'Show "X more results" text', 'gk-gravityview' ),
+			'desc'         => esc_html__(
+				'Display a "X more results" text when more results are available.',
+				'gk-gravityview'
+			),
+			'value'        => '',
+			'priority'     => 1000,
+			'group'        => 'display',
+			'contexts'     => [ 'multiple', 'single' ],
+			'requires_not' => 'hide_nested_repeater_fields=1',
 		];
 
 		return parent::field_options(
@@ -126,7 +142,7 @@ class GravityView_Field_Repeater extends GravityView_Field {
 			$value = [];
 		}
 		$config      = $field->as_configuration();
-		$max_results = (int) abs( $config['max_results'] ?? 0 );
+		$max_results = abs( (int) ( $config['max_results'] ?? 0 ) );
 
 		$gf_field = $field->field ?? null;
 		if ( ! $gf_field instanceof GF_Field_Repeater ) {
@@ -149,7 +165,7 @@ class GravityView_Field_Repeater extends GravityView_Field {
 			return $value;
 		}
 
-		return $this->limit_results_recursively( $value, $gf_field, $max_results );
+		return $this->limit_results_recursively( $value, $gf_field, $config );
 	}
 
 	/**
@@ -157,17 +173,24 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	 *
 	 * @since $ver$
 	 *
-	 * @param array                      $value       The value of the current repeater field.
-	 * @param GF_Field|GF_Field_Repeater $field       The repeater field.
-	 * @param int                        $max_results The maximum amount of results.
+	 * @param array                      $value  The value of the current repeater field.
+	 * @param GF_Field|GF_Field_Repeater $field  The repeater field.
+	 * @param array                      $config The field configuration.
 	 *
 	 * @return array
 	 */
-	protected function limit_results_recursively( array $value, GF_Field $field, int $max_results ): array {
+	protected function limit_results_recursively( array $value, GF_Field $field, array $config ): array {
+		$max_results       = (int) abs( $config['max_results'] ?? 0 );
+		$show_more_results = (bool) ( $config['show_more_results'] ?? false );
+
 		// First, we cut down the number of results for this level.
-		if ( count( $value ) > $max_results ) {
+		$result_count = count( $value );
+		if ( $result_count > $max_results ) {
 			$value = array_slice( $value, 0, $max_results );
 		}
+
+		// Keep track of the remaining result count (Note: dynamic parameter!).
+		$field->more_results_count = $show_more_results ? ( $result_count - $max_results ) : 0;
 
 		// If any subfields are repeaters, limit those as well.
 		foreach ( $field->fields ?? [] as $child ) {
@@ -179,7 +202,7 @@ class GravityView_Field_Repeater extends GravityView_Field {
 				$value[ $i ][ $child->id ] = $this->limit_results_recursively(
 					$values[ $child->id ] ?? [],
 					$child,
-					$max_results
+					$config
 				);
 			}
 		}
@@ -214,6 +237,17 @@ class GravityView_Field_Repeater extends GravityView_Field {
 			'',
 			$html
 		);
+
+		if ( ! empty( $field->more_results_count ) ) {
+			$html .= sprintf(
+			// Translators: %d is replaced with the number of remaining results.
+				'<span class="gv-more-results">' . esc_html__( '%d more results', 'gk-gravityview' ) . '</span>',
+				$field->more_results_count
+			);
+		}
+
+		// Remove the temporary dynamic parameter.
+		unset( $field->more_results_count );
 
 		return $html;
 	}
