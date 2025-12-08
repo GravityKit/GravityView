@@ -410,6 +410,11 @@ class View_Table_Template extends View_Template {
 
 		$rowspan = ( $field->rowspan ??= 1 ) > 1 ? sprintf( ' rowspan="%d"', $field->rowspan ) : '';
 
+		$field_id = '{{field_id}}';
+		if ( ( $field->row ?? 0 ) > 0 ) {
+			$field_id .= '-' . $field->row;
+		}
+
 		$args = [
 			'entry'      => $entry->as_entry(),
 			'field'      => is_numeric( $field->ID ) ? $field->as_configuration() : null,
@@ -417,7 +422,7 @@ class View_Table_Template extends View_Template {
 			'hide_empty' => false,
 			'zone_id'    => 'directory_table-columns',
 			'label'      => self::get_field_column_label( $field, $context ),
-			'markup'     => '<td id="{{ field_id }}"' . $rowspan . ' class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
+			'markup'     => '<td id="' . $field_id . '"' . $rowspan . ' class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
 			'form'       => $form,
 		];
 
@@ -676,7 +681,7 @@ class View_Table_Template extends View_Template {
 
 		// Step 6: Convert flat rows to row objects with Field_Collection and Entry.
 		$rows = [];
-		foreach ( $flat_rows as $row_data ) {
+		foreach ( $flat_rows as $row => $row_data ) {
 			$row_fields = new Field_Collection();
 
 			foreach ( $fields->all() as $field ) {
@@ -690,8 +695,9 @@ class View_Table_Template extends View_Template {
 				$cell_info    = $row_data[ $field_id ];
 				$field_config = $field->as_configuration();
 
-				$field = Field::from_configuration( $field_config );
+				$field          = Field::from_configuration( $field_config );
 				$field->rowspan = $cell_info['rowspan'] ?? 0;
+				$field->row     = (int) $row;
 
 				$row_fields->add( $field );
 			}
