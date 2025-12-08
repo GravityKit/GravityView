@@ -27,8 +27,12 @@ test('Verify Sort Direction DESC', async ({ page }) => {
 			.locator('#gravityview_settings div')
 			.getByRole('link', { name: 'Filter & Sort' })
 			.click();
-		await page.locator('#gravityview_se_sort_direction').selectOption({ label: 'DESC' });
-		await page.locator('#gravityview_sort_field_1').selectOption({ label: 'Favorite Color' });
+		const sortDirection = page.locator('#gravityview_se_sort_direction');
+		await expect(sortDirection).toBeEnabled();
+		await sortDirection.selectOption({ label: 'DESC' });
+		const sortField = page.locator('#gravityview_sort_field_1');
+		await expect(sortField).toBeEnabled();
+		await sortField.selectOption({ label: 'Favorite Color' });
 		await publishView(page);
 	});
 
