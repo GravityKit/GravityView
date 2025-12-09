@@ -43,7 +43,6 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
 
 		$old_entry = $this->entry;
 
-		// Todo: Include a setting to limit the number of nested results.
 		foreach ( $this->field->get_results( $entry ) as $i => $value ) {
 			$data              = $entry->as_entry();
 			$data[ $field_id ] = $value;

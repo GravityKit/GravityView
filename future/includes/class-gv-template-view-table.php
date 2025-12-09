@@ -408,11 +408,11 @@ class View_Table_Template extends View_Template {
 		$context        = Template_Context::from_template( $this, compact( 'field' ) );
 		$context->entry = $single_entry;
 
-		$rowspan = ( $field->rowspan ??= 1 ) > 1 ? sprintf( ' rowspan="%d"', $field->rowspan ) : '';
+		$rowspan = ( $field->rowspan ??= 1 ) > 1 ? sprintf( ' rowspan="{{ rowspan }}"',) : '';
 
-		$field_id = '{{field_id}}';
-		if ( ( $field->row ?? 0 ) > 0 ) {
-			$field_id .= '-' . $field->row;
+		$field_id = '{{ field_id }}';
+		if ( ( $field->row ??= 0 ) > 0 ) {
+			$field_id .= '-{{ row }}';
 		}
 
 		$args = [
@@ -424,6 +424,8 @@ class View_Table_Template extends View_Template {
 			'label'      => self::get_field_column_label( $field, $context ),
 			'markup'     => '<td id="' . $field_id . '"' . $rowspan . ' class="{{ class }}" data-label="{{label_value:data-label}}">{{ value }}</td>',
 			'form'       => $form,
+			'rowspan'    => $field->rowspan,
+			'row'        => $field->row,
 		];
 
 		/** Output. */

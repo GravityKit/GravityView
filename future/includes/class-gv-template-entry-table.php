@@ -78,48 +78,75 @@ class Entry_Table_Template extends Entry_Template {
 			$column_label = apply_filters( 'gravityview_render_after_label', $field->get_label( $this->view, $form, $entry ), $field->as_configuration() );
 			$column_label = apply_filters( 'gravityview/template/field_label', $column_label, $field->as_configuration(), $form->form ? $form->form : null, $entry->as_entry() );
 
-			/**
-			 * Override the field label.
-			 *
-			 * @since 2.0
-			 * @param string $column_label The label to override.
-			 * @param \GV\Template_Context $context The context.
-			 */
-			$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
+			$old_entry = $this->entry;
 
-			/**
-			 * @filter `gravityview/template/table/entry/hide_empty`
-			 * @param boolean $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
-			 * @param \GV\Template_Context $context The context ;) Love it, cherish it. And don't you dare modify it!
-			 */
-			$hide_empty = apply_filters( 'gravityview/render/hide-empty-zone', $this->view->settings->get( 'hide_empty_single', false ), $context );
+			$results = $field->get_results( $entry );
+			$rowspan = count( $results );
 
-			$markup = '<tr id="{{ field_id }}" class="{{ class }}"><th scope="row">{{ label }}</th><td>{{ value }}</td></tr>';
+			foreach ( $results as $i => $value ) {
+				$data               = $entry->as_entry();
+				$data[ $field->ID ] = $value;
+				// Temporarily overwrite entry for rendering.
+				$entry       = GF_Entry::from_entry( $data );
+				$this->entry = $entry;
+				$context     = Template_Context::from_template( $this, compact( 'entry', 'field' ) );
 
-			/**
-			 * Modifies the table row markup for an entry.
-			 *
-			 * @filter `gravityview/template/table/entry/markup`
-			 *
-			 * @since  2.29.0
-			 *
-			 * @param string    $markup The markup.
-			 * @param \GV\Field $field  The field.
-			 */
-			$markup = apply_filters( 'gravityview/template/table/entry/markup', $markup, $field );
+				/**
+				 * Override the field label.
+				 *
+				 * @since 2.0
+				 *
+				 * @param string               $column_label The label to override.
+				 * @param \GV\Template_Context $context      The context.
+				 */
+				$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
 
-			echo \gravityview_field_output(
-				array(
-					'entry'      => $this->entry->as_entry(),
-					'field'      => is_numeric( $field->ID ) ? $field->as_configuration() : null,
-					'label'      => $column_label,
-					'value'      => $this->the_field( $field ),
-					'markup'     => $markup,
-					'hide_empty' => $hide_empty,
-					'zone_id'    => 'single_table-columns',
-				),
-				$context
-			);
+				/**
+				 * @filter `gravityview/template/table/entry/hide_empty`
+				 *
+				 * @param boolean              $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
+				 * @param \GV\Template_Context $context    The context ;) Love it, cherish it. And don't you dare modify it!
+				 */
+				$hide_empty = apply_filters(
+					'gravityview/render/hide-empty-zone',
+					$this->view->settings->get( 'hide_empty_single', false ),
+					$context
+				);
+
+				$markup = '<tr id="{{ field_id }}" class="{{ class }}" data-row="{{ row }}"><th rowspan="{{ rowspan }}" scope="row">{{ label }}</th><td>{{ value }}</td></tr>';
+				if ( $i > 0 ) {
+					$markup = '<tr id="{{ field_id }}-{{ row }} " class="{{ class }}" data-row="{{ row }}"><td>{{ value }}</td></tr>';
+				}
+				/**
+				 * Modifies the table row markup for an entry.
+				 *
+				 * @filter `gravityview/template/table/entry/markup`
+				 *
+				 * @since  2.29.0
+				 *
+				 * @param string    $markup The markup.
+				 * @param \GV\Field $field  The field.
+				 */
+				$markup = apply_filters( 'gravityview/template/table/entry/markup', $markup, $field );
+
+				echo \gravityview_field_output(
+					[
+						'entry'      => $data,
+						'field'      => is_numeric( $field->ID ) ? $field->as_configuration() : null,
+						'label'      => $column_label,
+						'value'      => $this->the_field( $field ),
+						'markup'     => $markup,
+						'hide_empty' => $hide_empty,
+						'zone_id'    => 'single_table-columns',
+						'row'        => $i,
+						'rowspan'    => $rowspan,
+					],
+					$context
+				);
+			}
+
+			// Reset entry.
+			$this->entry = $old_entry;
 		}
 	}
 }
