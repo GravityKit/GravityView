@@ -268,24 +268,47 @@ class GravityView_Edit_Entry_Render {
 
 		if ( $entry ) {
 			self::$original_entry = $entry->as_entry();
-			$this->entry          = $entry->as_entry();
+			$entry                = $entry->as_entry();
 		} else {
 			$gravityview_view     = GravityView_View::getInstance();
 			$entries              = $gravityview_view->getEntries();
 			self::$original_entry = $entries[0];
-			$this->entry          = $entries[0];
+			$entry                = $entries[0];
 		}
 
-		self::$original_form = GVCommon::get_form( $this->entry['form_id'] );
-		$this->form          = self::$original_form;
+		self::$original_form = GVCommon::get_form( $entry['form_id'] );
+
+		$form = self::$original_form;
+
+		/**
+		 * Modifies form, entry, and View data before rendering the Edit Entry form.
+		 *
+		 * @filter `gk/gravityview/edit-entry/init/data`
+		 *
+		 * @since 2.48.4
+		 *
+		 * @param array $data {
+		 *     @type array         $form  The form array.
+		 *     @type array         $entry The entry array.
+		 *     @type \GV\View|null $view  The View object.
+		 * }
+		 *
+		 * @param GravityView_Edit_Entry_Render $this  The Edit Entry renderer instance.
+		 */
+		$data = apply_filters(
+			'gk/gravityview/edit-entry/init/data',
+			compact( 'form', 'entry', 'view' ),
+			$this
+		);
+
+		$this->form  = $data['form'];
+		$this->entry = $data['entry'];
+		$this->view  = $data['view'];
 
 		$this->form_id = $this->entry['form_id'];
+		$this->view_id = $this->view ? $this->view->ID : GravityView_View::getInstance()->getViewId();
 
-		$this->view_id = $view ? $view->ID : $gravityview_view->getViewId();
-
-		$this->view = $view;
-
-		$this->post_id = \GV\Utils::get( $post, 'ID', null );
+		$this->post_id = \GV\Utils::get( $post, 'ID' );
 
 		self::$nonce_key = GravityView_Edit_Entry::get_nonce_key( $this->view_id, $this->form_id, $this->entry['id'] );
 	}

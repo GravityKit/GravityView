@@ -13,6 +13,7 @@ export default function PreviewControl( { previewAsShortcode, disabled = false, 
 						label={ __( 'Preview As Shortcode', 'gk-gravityview' ) }
 						checked={ previewAsShortcode }
 						onChange={ ( previewAsShortcode ) => onChange( previewAsShortcode ) }
+						__nextHasNoMarginBottom
 					/>
 				</Disabled>
 			</div>
