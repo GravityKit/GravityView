@@ -17,7 +17,8 @@ anchors:
 jobs:
   run_e2e_tests:
     <<: *default_job_config
-    parallelism: 4
+    parallelism: 1
+    resource_class: large # specify a resource class
     steps:
       - attach_workspace:
           at: /home/circleci

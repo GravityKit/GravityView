@@ -27,9 +27,15 @@ test('Secondary Sort Direction DESC', async ({ page }) => {
 			.locator('#gravityview_settings div')
 			.getByRole('link', { name: 'Filter & Sort' })
 			.click();
-		await page.locator('#gravityview_sort_field_1').selectOption({ label: 'Preferred Pet' });
-		await page.locator('#gravityview_sort_field_2').selectOption({ label: 'Name' });
-		await page.locator('#gravityview_se_sort_direction_2').selectOption({ label: 'DESC' });
+		const sortField = page.locator('#gravityview_sort_field_1');
+		await expect(sortField).toBeEnabled();
+		await sortField.selectOption({ label: 'Preferred Pet' });
+		const sortField2 = page.locator('#gravityview_sort_field_2');
+		await expect(sortField2).toBeEnabled();
+		await sortField2.selectOption({ label: 'Name' });
+		const sortDirection = page.locator('#gravityview_se_sort_direction_2');
+		await expect(sortDirection).toBeEnabled();
+		await sortDirection.selectOption({ label: 'DESC' });
 		await publishView(page);
 	});
 

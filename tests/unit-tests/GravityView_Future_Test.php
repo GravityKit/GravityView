@@ -5269,7 +5269,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Post password */
 		wp_update_post( array( 'ID' => $post->ID, 'post_password' => '123' ) );
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
-		$this->assertStringContainsString( 'content is password protected', \GV\View::content( 'what!?' ) );
+		$this->assertStringContainsString( 'This content is password', \GV\View::content( 'what!?' ) );
 
 		/** When the user has added a password, show the content. Requires 4.7.0 or newer. */
 		if( class_exists( 'WP_Hook' ) ) {
@@ -5337,7 +5337,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Post password */
 		wp_update_post( array( 'ID' => $post->ID, 'post_password' => '123' ) );
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
-		$this->assertStringContainsString( 'content is password protected', $future->callback( $args ) );
+		$this->assertStringContainsString( 'This content is password', $future->callback( $args ) );
 
 		/** Private */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'private', 'post_password' => '' ) );
@@ -5659,7 +5659,7 @@ class GVFuture_Test extends GV_UnitTestCase {
 		/** Post password */
 		wp_update_post( array( 'ID' => $post->ID, 'post_password' => '123' ) );
 		$request->returns['is_view'] = \GV\View::by_id( $post->ID );
-		$this->assertStringContainsString( 'content is password protected', call_user_func_array( $future, $args ) );
+		$this->assertStringContainsString( 'This content is password', call_user_func_array( $future, $args ) );
 
 		/** Trash */
 		wp_update_post( array( 'ID' => $post->ID, 'post_status' => 'trash' ) );

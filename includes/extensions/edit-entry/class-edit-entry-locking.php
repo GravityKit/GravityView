@@ -31,7 +31,7 @@ class GravityView_Edit_Entry_Locking {
 	 * Multiplier for calculating stale threshold.
 	 * Stale threshold = heartbeat_interval * STALE_THRESHOLD_MULTIPLIER.
 	 *
-	 * @since TBD
+	 * @since 2.48.5
 	 */
 	const STALE_THRESHOLD_MULTIPLIER = 2;
 
@@ -572,7 +572,7 @@ class GravityView_Edit_Entry_Locking {
 	 * Updates the timestamp of the last heartbeat for a lock.
 	 * This tracks when the lock holder last sent a heartbeat to detect stale sessions.
 	 *
-	 * @since TBD
+	 * @since 2.48.5
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
@@ -590,7 +590,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Gets the timestamp of the last heartbeat for a lock.
 	 *
-	 * @since TBD
+	 * @since 2.48.5
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
@@ -604,7 +604,7 @@ class GravityView_Edit_Entry_Locking {
 	 * Updates the heartbeat interval for a lock.
 	 * Stores the View's custom heartbeat interval with the lock.
 	 *
-	 * @since TBD
+	 * @since 2.48.5
 	 *
 	 * @param int $entry_id The entry ID.
 	 * @param int $interval The heartbeat interval in seconds.
@@ -623,7 +623,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Gets the stored heartbeat interval for a lock.
 	 *
-	 * @since TBD
+	 * @since 2.48.5
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
@@ -639,7 +639,7 @@ class GravityView_Edit_Entry_Locking {
 	 * Gets the stale threshold for a specific entry's lock.
 	 * Calculates based on the stored heartbeat interval.
 	 *
-	 * @since TBD
+	 * @since 2.48.5
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
@@ -652,7 +652,7 @@ class GravityView_Edit_Entry_Locking {
 		/**
 		 * Filters the stale lock threshold for an entry.
 		 *
-		 * @since TBD
+		 * @since 2.48.5
 		 *
 		 * @param int $threshold The calculated threshold in seconds.
 		 * @param int $entry_id  The entry ID.
@@ -664,7 +664,7 @@ class GravityView_Edit_Entry_Locking {
 	/**
 	 * Checks if a lock is stale (holder hasn't sent heartbeat recently).
 	 *
-	 * @since TBD
+	 * @since 2.48.5
 	 *
 	 * @param int $entry_id The entry ID.
 	 *
@@ -861,7 +861,7 @@ class GravityView_Edit_Entry_Locking {
 					/**
 					 * Fires when a lock is automatically granted due to stale session.
 					 *
-					 * @since TBD
+					 * @since 2.48.5
 					 *
 					 * @param int $object_id The entry ID.
 					 * @param int $user_id   The previous lock holder's user ID.
