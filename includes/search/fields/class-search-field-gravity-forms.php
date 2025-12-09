@@ -7,6 +7,7 @@ use GF_Query_Column;
 use GFAPI;
 use GFCommon;
 use GFFormsModel;
+use GravityView_Field_Repeater;
 use GravityView_Fields;
 use GravityView_Widget_Search;
 
@@ -182,18 +183,24 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	 */
 	private function get_field_icon(): string {
 		// Use Gravity Forms' field icon if available.
-		$field = $this->get_gf_field();
+		$gf_field = $this->get_gf_field();
 
-		if ( $field ) {
+		$icon = null;
+		if ( $gf_field ) {
 			// GF 2.9+.
-			if ( method_exists( $field, 'get_form_editor_field_type_icon' ) ) {
-				return $field->get_form_editor_field_type_icon();
+			if ( method_exists( $gf_field, 'get_form_editor_field_type_icon' ) ) {
+				$icon = $gf_field->get_form_editor_field_type_icon();
 			}
 
-			if ( method_exists( $field, 'get_form_editor_field_icon' ) ) {
+			if ( method_exists( $gf_field, 'get_form_editor_field_icon' ) ) {
 				// GF 2.5+.
-				return $field->get_form_editor_field_icon();
+				$icon = $gf_field->get_form_editor_field_icon();
 			}
+		}
+
+		// We won't stand for the cog icon by default.
+		if ( $icon && ! in_array( $icon, [ 'dashicons-admin-generic', 'gform-icon--cog' ], true ) ) {
+			return $icon;
 		}
 
 		// Use GravityView's field icon next, if available.
@@ -204,8 +211,13 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 		}
 
 		$type = $this->get_field_id();
+		if ( is_numeric( $type ) && $gf_field instanceof GF_Field ) {
+			$type = $gf_field->get_input_type();
+		}
 
 		switch ( $type ) {
+			case 'repeater':
+				return 'dashicons-controls-repeat';
 			case 'geolocation':
 				return 'dashicons-admin-site';
 			default:
@@ -287,16 +299,47 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	}
 
 	/**
+	 * @inheritDoc
+	 *
+	 * @since $ver$
+	 */
+	protected function is_parent(): bool {
+		$field = $this->get_gf_field();
+		if ( ! $field ) {
+			return false;
+		}
+
+		return ( ( false === strpos( $field->id, '.' ) && $field->get_entry_inputs() ) || ( $field->fields ?? null ) );
+	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * @since $ver$
+	 */
+	protected function get_nesting_level(): int {
+		$field = $this->get_gf_field();
+		if ( ! $field ) {
+			return parent::get_nesting_level();
+		}
+
+		$parents = GravityView_Field_Repeater::get_repeater_field_ids( $field->formId ?? 0 );
+		$level   = count( $parents[ $field->id ] ?? [] );
+
+		return $level ? $level : parent::get_nesting_level();
+	}
+
+	/**
 	 * Whether this field has a parent.
 	 *
 	 * @since 2.42
 	 *
 	 * @return bool
 	 */
-	private function is_child(): bool {
+	protected function is_child(): bool {
 		$field = $this->get_gf_field();
 		if ( ! $field ) {
-			return false;
+			return parent::is_child();
 		}
 
 		return ( $field->parent ?? null ) instanceof GF_Field;
@@ -316,7 +359,7 @@ final class Search_Field_Gravity_Forms extends Search_Field_Choices {
 	}
 
 	/**
-	 * @inheritDoc@
+	 * @inheritDoc
 	 * @since 2.42
 	 */
 	protected function get_choices(): array {

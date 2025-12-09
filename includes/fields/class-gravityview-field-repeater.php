@@ -59,7 +59,7 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	 *
 	 * @var string
 	 */
-	public $icon = 'dashicons-forms';
+	public $icon = 'dashicons-controls-repeat';
 
 	/**
 	 * Whether the field is initialized.

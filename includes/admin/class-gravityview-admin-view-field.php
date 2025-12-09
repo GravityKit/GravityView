@@ -56,4 +56,40 @@ class GravityView_Admin_View_Field extends GravityView_Admin_View_Item {
 
 		return $field_info_items;
 	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * @since $ver$
+	 */
+	protected function is_parent(): bool {
+		if ( ! is_numeric( $this->id ) || strpos( $this->id, '.' ) !== false ) {
+			return parent::is_parent();
+		}
+
+		$field = GFFormsModel::get_field( $this->form_id, $this->id );
+
+		return $field && ( $field->get_entry_inputs() || ( $field->fields ?? null ) );
+	}
+
+	/**
+	 * @inheritDoc
+	 *
+	 * @since $ver$
+	 */
+	protected function get_nesting_level(): int {
+		if ( ! is_numeric( $this->id ) ) {
+			return parent::get_nesting_level();
+		}
+
+		$field = GFFormsModel::get_field( $this->form_id, $this->id );
+		if ( ! $field ) {
+			return parent::get_nesting_level();
+		}
+
+		$parents = GravityView_Field_Repeater::get_repeater_field_ids( $this->form_id );
+		$level   = count( $parents[ $this->id ] ?? [] );
+
+		return $level ? $level : parent::get_nesting_level();
+	}
 }
