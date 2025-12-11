@@ -438,7 +438,7 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	 * @param int|null $form_id Optional form ID to clear cache for. If null, clears all cache.
 	 */
 	public static function clear_cache( ?int $form_id = null ): void {
-		if ( $form_id === null ) {
+		if ( null === $form_id ) {
 			self::$repeater_field_cache = [];
 		} else {
 			unset( self::$repeater_field_cache[ $form_id ] );

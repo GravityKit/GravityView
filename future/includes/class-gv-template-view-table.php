@@ -592,37 +592,21 @@ class View_Table_Template extends View_Template {
 			return $default_row;
 		}
 
-		$form_id = $entry['form_id'] ?? 0;
+		$form_id = (int) ( $entry['form_id'] ?? 0 );
 
 		// Todo: This needs to be a more generic function somewhere else called: "get_ancestor_mapping()".
 		$ancestor_mapping = GravityView_Field_Repeater::get_repeater_field_ids( $form_id );
-
-		// Step 1: Find active ancestors (direct parent repeaters of visible fields).
-		$active_ancestors    = [];
-
-		foreach ( $fields->all() as $field ) {
-			$ancestors = $ancestor_mapping[ $field->ID ] ?? [];
-			if ( ! $ancestors ) {
-				continue;
-			}
-			$direct_parent                       = end( $ancestors );
-			$active_ancestors[ $direct_parent ]  = true;
-
-			// Keep track of the parent on the field itself.
-			$field->parent_id = $direct_parent;
-		}
+		$active_ancestors = $this->get_active_ancestors( $ancestor_mapping, $fields );
 
 		if ( ! $active_ancestors ) {
 			return $default_row;
 		}
 
-		$active_ancestors = array_keys( $active_ancestors );
-
 		// Step 2: Calculate generation for each active ancestor (count of active ancestors it has).
 		$ancestor_generation = [];
 		foreach ( $active_ancestors as $ancestor ) {
-			$ancestor_parents                = $ancestor_mapping[ $ancestor ] ?? [];
-			$active_count                    = count( array_intersect( $ancestor_parents, $active_ancestors ) );
+			$ancestor_parents                 = $ancestor_mapping[ $ancestor ] ?? [];
+			$active_count                     = count( array_intersect( $ancestor_parents, $active_ancestors ) );
 			$ancestor_generation[ $ancestor ] = $active_count;
 		}
 
@@ -645,7 +629,7 @@ class View_Table_Template extends View_Template {
 		ksort( $repeaters_by_generation );
 
 		// Step 5: Flatten entry data into rows with cells with row-spans.
-		$data      = $entry->as_entry();
+		$data = $entry->as_entry();
 
 		// First, calculate the total row count for base field row-spans.
 		$total_row_count = $this->count_descendant_rows( $data, $repeaters_by_generation );
@@ -864,5 +848,34 @@ class View_Table_Template extends View_Template {
 		}
 
 		return max( 1, $total_rows );
+	}
+
+	/**
+	 * Returns active ancestors (direct parent repeaters of visible fields).
+	 *
+	 * @since $ver$
+	 *
+	 * @param array            $ancestor_mapping The ancestor mapping.
+	 * @param Field_Collection $fields           The visible fields.
+	 *
+	 * @return int[] The active ancestor field IDs.
+	 */
+	private function get_active_ancestors( array $ancestor_mapping, Field_Collection $fields ): array {
+		$active_ancestors = [];
+
+		foreach ( $fields->all() as $field ) {
+			$ancestors = $ancestor_mapping[ $field->ID ] ?? [];
+			if ( ! $ancestors ) {
+				continue;
+			}
+
+			$direct_parent                      = end( $ancestors );
+			$active_ancestors[ $direct_parent ] = true;
+
+			// Keep track of the parent on the field itself.
+			$field->parent_id = $direct_parent;
+		}
+
+		return array_keys( $active_ancestors );
 	}
 }
