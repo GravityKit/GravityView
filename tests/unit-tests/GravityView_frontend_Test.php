@@ -402,7 +402,7 @@ class GravityView_frontend_Test extends GV_UnitTestCase {
 		$this->assertGreaterThanOrEqual(2, count($matches[0]));
 
 		$this->assertEquals( '1', $entry1->as_entry()['is_read'] );
-		$this->assertEquals( '1', $entry1->as_entry()['is_read'] );
+		$this->assertEquals( '1', $entry2->as_entry()['is_read'] );
 
 		// Custom read label can be set via filter.
 		$filtered_read_label_filter = 'Filtered - Custom Read Label';

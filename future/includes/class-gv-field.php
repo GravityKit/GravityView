@@ -460,12 +460,21 @@ class Field extends \stdClass {
 	 *
 	 * @since $ver$
 	 *
-	 * @param Entry  $entry The entry object.
-	 * @param string $index The nesting index. For example '0', '0.0', '0.1' ,'1.0', '0.0.1', etc.
+	 * @param View|null    $view    The View object.
+	 * @param Source|null  $source  The Source object.
+	 * @param Entry|null   $entry   The entry object.
+	 * @param Request|null $request The Request object.
+	 * @param string       $index   The nesting index. For example '0', '0.0', '0.1' ,'1.0', '0.0.1', etc.
 	 *
 	 * @return array The results per index. If no index is provided, returns *all* results.
 	 */
-	public function get_results( Entry $entry, string $index = '' ): array {
-		return [ $this->get_value( null, null, $entry, null ) ];
+	public function get_results(
+		?View $view = null,
+		?Source $source = null,
+		?Entry $entry = null,
+		?Request $request = null,
+		string $index = ''
+	): array {
+		return [];
 	}
 }

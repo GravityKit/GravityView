@@ -43,8 +43,12 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
 
 		$old_entry = $this->entry;
 
-		foreach ( $this->field->get_results( $entry ) as $i => $value ) {
-			$data              = $entry->as_entry();
+		foreach ( $this->field->get_results( $this->view, $this->source, $entry, $this->request ) as $i => $value ) {
+			$data = $entry->as_entry();
+			if ( is_array( $value ) && isset( $value[ $field_id ] ) && false !== strpos( $field_id, '.' ) ) {
+				// This field might be an input of a complex field.
+				$value = $value[ $field_id ];
+			}
 			$data[ $field_id ] = $value;
 			// Temporarily overwrite entry for rendering.
 			$this->entry = GF_Entry::from_entry( $data );
@@ -69,10 +73,15 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
  *
  * Every Entry object must have a way to:
  *  - Loop the fields to identify possible (nested) repeater fields.
- *  - For every repeater field, figure out what the maximum amount of values is (including nested values, and value cap).
- *  - On the entry, we need to be able to `getMaxValueSize()`. This is required to set the "rowspan" for the non-repeater fields.
- *  - On the Field, we also need to be able to get `getMaxValueSize()` from *that* level, to get the rowspan for *that* cell.
- *  - The rowspan is only useful for direct children of the repeater field. A repeater field will render all its values in a single cell. No rowspan applicable unless *it* is a direct child of a repeater field.
- *  - Ideally we would not focus on "repeater" fields, but "Field that have multiple values" so nested forms could be added.
+ *  - For every repeater field, figure out what the maximum amount of values is (including nested values, and value
+ *  cap).
+ *  - On the entry, we need to be able to `getMaxValueSize()`. This is required to set the "rowspan" for the
+ *  non-repeater fields.
+ *  - On the Field, we also need to be able to get `getMaxValueSize()` from *that* level, to get the rowspan for *that*
+ *  cell.
+ *  - The rowspan is only useful for direct children of the repeater field. A repeater field will render all its values
+ *  in a single cell. No rowspan applicable unless *it* is a direct child of a repeater field.
+ *  - Ideally we would not focus on "repeater" fields, but "Field that have multiple values" so nested forms could be
+ *  added.
  *
  */

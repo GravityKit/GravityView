@@ -235,34 +235,70 @@ class GF_Field extends Field {
 	 *
 	 * @since $ver$
 	 */
-	public function get_results( Entry $entry, string $index = '' ): array {
-		if ( ! $this->get_ancestors_ids() ) {
-			return parent::get_results( $entry );
+	public function get_results(
+		?View $view = null,
+		?Source $source = null,
+		?Entry $entry = null,
+		?Request $request = null,
+		string $index = ''
+	): array {
+		if (
+			! $entry
+			|| ! $this->get_ancestors_ids() ) {
+			return [];
 		}
 
-		$field_id  = $this->ID;
+		$field_id = $this->ID;
 
 		$ancestors = $this->get_ancestors_ids();
 		$values    = static::retrieve_nested_data( $entry->as_entry(), $ancestors );
 
-		$data = $values[ $field_id ] ?? [];
+		$data   = $values[ $field_id ] ?? [];
 		$levels = explode( '.', $index ) ?: [];
 
 		foreach ( $levels as $sub_index ) {
-			if ( $sub_index !== '' ) {
+			if ( '' !== $sub_index ) {
 				$data = $data[ $sub_index ] ?? [];
 			}
 		}
 
-		$result = [];
-		array_walk_recursive( $data, static function ( $value ) use ( &$result ) {
-			$result[] = trim( $value );
-		} );
+		return self::flatten_field_values( $data );
+	}
 
-		return array_map(
-			fn( $value ) => $this->get_value_filters( $value, null, null, $entry ),
-			$result
-		);
+	/**
+	 * Flattens field values, stopping at associative arrays (string keys).
+	 *
+	 * Traverses the data recursively, collecting scalar values and associative arrays.
+	 * Numeric-indexed arrays are traversed deeper, while associative arrays are kept intact.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $data The data to flatten.
+	 *
+	 * @return array The flattened values.
+	 */
+	private static function flatten_field_values( array $data ): array {
+		$result = [];
+
+		foreach ( $data as $value ) {
+			if ( ! is_array( $value ) ) {
+				// Scalar value, add directly.
+				$result[] = $value;
+				continue;
+			}
+
+			// Check if this is an associative array (has string keys).
+			$has_string_keys = count( array_filter( array_keys( $value ), 'is_string' ) ) > 0;
+			if ( $has_string_keys ) {
+				// Associative array, keep it as a single value.
+				$result[] = $value;
+			} else {
+				// Numeric array, traverse deeper.
+				$result = array_merge( $result, self::flatten_field_values( $value ) );
+			}
+		}
+
+		return $result;
 	}
 
 	/**
