@@ -9,7 +9,7 @@ import {
 /**
  * Validates the text of the delete link.
  */
-test('Verify Delete Link Text', async ({ page }) => {
+test('Verify Delete Link Text', async ({ page }, testInfo) => {
 	const customMessage = 'Erase This Drama!';
 
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
@@ -19,7 +19,7 @@ test('Verify Delete Link Text', async ({ page }) => {
 			formTitle: 'Event Registration',
 			viewName: 'Verify Delete Link Text Test',
 			template: templates[0]
-		});
+		}, testInfo);
 	});
 
 	await test.step('Customize Delete Link Text and publish the View', async () => {

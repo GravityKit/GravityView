@@ -9,7 +9,7 @@ import {
 /**
  * Checks the correct display of the cancel link text.
  */
-test('Verify Cancel Link Text', async ({ page }) => {
+test('Verify Cancel Link Text', async ({ page }, testInfo) => {
 	const customMessage = 'Forget It, Jack';
 
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
@@ -19,7 +19,7 @@ test('Verify Cancel Link Text', async ({ page }) => {
 			formTitle: 'Event Registration',
 			viewName: 'Verify Cancel Link Text Test',
 			template: templates[0]
-		});
+		}, testInfo);
 	});
 
 	await test.step('Customize Cancel Link Text and publish the View', async () => {
