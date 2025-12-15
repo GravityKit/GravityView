@@ -274,11 +274,16 @@ abstract class GravityView_Admin_View_Item {
 
 		$data_form_id = $form ? ' data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
-		$data_parent_label = ! empty( $this->item['parent'] ) ? ' data-parent-label="' . esc_attr( $this->item['parent']['label'] ) . '"' : '';
+		$parent_label_attr = esc_attr( $this->item['parent']['label'] );
+		$data_parent_label = ! empty( $this->item['parent'] ) ? ' data-parent-label="' . $parent_label_attr . '"' : '';
 
 		$style = '';
 		if ( $this->is_child() ) {
-			$style = ' style="--field-level: ' . $this->get_nesting_level() . ';"';
+			$style = sprintf(
+				' style="--field-level: %s; --parent-label: \'%s\';"',
+				$this->get_nesting_level(),
+				$parent_label_attr,
+			);
 		}
 
 		$output = '<div data-fieldid="' . esc_attr( $this->id ) . '" ' . $data_form_id . $data_parent_label . ' data-inputtype="' . esc_attr( $this->item['input_type'] ) . '" class="gv-fields' . $container_class . '"' . $style . '>' . $output . $this->item['settings_html'] . '</div>';
