@@ -256,9 +256,8 @@ class GravityView_Field_Repeater extends GravityView_Field {
 		) {
 			return $html;
 		}
-
 		// remove style tags.
-		$html = preg_replace( "/(class='gfield_repeater_value') style='[^']*'/i", '$1', $html );
+		$html = preg_replace( "/(class='gfield_repeater(_(label|value))?')\s+style='[^']*'/i", '$1', $html );
 
 		// Remove empty repeater cells (where gfield_repeater_items is empty).
 		$html = preg_replace(
@@ -267,11 +266,15 @@ class GravityView_Field_Repeater extends GravityView_Field {
 			$html
 		);
 
-		if ( ! empty( $field->more_results_count ) ) {
-			$html .= sprintf(
+		if ( 0 < ( $field->more_results_count ?? 0 ) ) {
+			$message = esc_html(
 			// Translators: %d is replaced with the number of remaining results.
-				'<span class="gv-more-results">' . esc_html__( '%d more results', 'gk-gravityview' ) . '</span>',
-				$field->more_results_count
+				_n( '%d more result', '%d more results', $field->more_results_count, 'gk-gravityview' )
+			);
+
+			$html .= sprintf(
+				'<span class="gv-more-results">' . $message . '</span>',
+				$field->more_results_count,
 			);
 		}
 
