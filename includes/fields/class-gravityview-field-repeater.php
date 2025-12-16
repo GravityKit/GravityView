@@ -93,17 +93,18 @@ class GravityView_Field_Repeater extends GravityView_Field {
 		}
 
 		$field_options['max_results'] = [
-			'type'     => 'number',
-			'label'    => __( 'Maximum results', 'gk-gravityview' ),
-			'desc'     => esc_html__(
+			'type'       => 'number',
+			'label'      => __( 'Maximum results', 'gk-gravityview' ),
+			'desc'       => esc_html__(
 				'Maximum number of results to show per nesting level. Leave empty to show all results.',
 				'gk-gravityview'
 			),
-			'value'    => '',
-			'priority' => 1000,
-			'group'    => 'display',
-			'contexts' => [ 'multiple', 'single' ],
-			'min'      => 0,
+			'value'      => '',
+			'priority'   => 1000,
+			'group'      => 'display',
+			'contexts'   => [ 'multiple', 'single' ],
+			'min'        => 0,
+			'merge_tags' => false,
 		];
 
 		$field_options['hide_nested_repeater_fields'] = [
