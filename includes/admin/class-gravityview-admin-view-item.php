@@ -274,7 +274,7 @@ abstract class GravityView_Admin_View_Item {
 
 		$data_form_id = $form ? ' data-formid="' . esc_attr( $this->form_id ) . '"' : '';
 
-		$parent_label_attr = esc_attr( $this->item['parent']['label'] );
+		$parent_label_attr = esc_attr( $this->item['parent']['label'] ?? '' );
 		$data_parent_label = ! empty( $this->item['parent'] ) ? ' data-parent-label="' . $parent_label_attr . '"' : '';
 
 		$style = '';

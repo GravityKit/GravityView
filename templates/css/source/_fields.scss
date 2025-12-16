@@ -35,7 +35,7 @@
 
 .gfield_repeater_value > .gfield_repeater {
 	background-color: rgba(1, 1, 1, .05);
-	border-left: 5px solid rgba(54, 86, 102, .1);
+	border-left: 5px solid rgba(80,80,80, .1);
 
 	margin: 10px;
 	padding: 10px 20px;
@@ -45,16 +45,21 @@
 	.gfield_label {
 		margin: -10px -20px 0;
 		padding: 10px;
-		background-color: rgba(54, 86, 102, .1);
+		background-color: rgba(80, 80, 80, .1);
 	}
 }
 
 .gfield_repeater_item + .gfield_repeater_item {
-	border-top: 1px solid rgba(54, 86, 102, .25);
-	margin-top: 5px;
-	padding-top: 5px;
+	border-top: 1px solid rgba(80, 80, 80, .25);
+	margin-top: 1rem;
+	padding-top: 1rem;
 }
 
 .gv-more-results {
 	font-style: italic;
+}
+
+.gv-repeater-hr {
+	border-color: rgba(80, 80, 80, 0.25);
+	margin: 1rem 0;
 }

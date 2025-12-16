@@ -19,7 +19,6 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
 	public function render(): void {
 		$config = $this->field->as_configuration();
 		$fields = GravityView_Field_Repeater::get_repeater_field_ids( $config['form_id'] ?? 0 );
-
 		if ( ! array_key_exists( $config['id'] ?? 0, $fields ) ) {
 			parent::render();
 
@@ -41,6 +40,11 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
 			return;
 		}
 
+		// Rendering this at the first level, so it's "not" nested.
+		if ( 1 === ( $this->field->field->nestingLevel ?? 0 ) ) {
+			$this->field->field->nestingLevel = 0;
+		}
+
 		$old_entry = $this->entry;
 
 		foreach ( $this->field->get_results( $this->view, $this->source, $entry, $this->request ) as $i => $value ) {
@@ -54,8 +58,7 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
 			$this->entry = GF_Entry::from_entry( $data );
 
 			if ( $i > 0 ) {
-				// Todo: This is terrible, and needs to look better.
-				echo '<hr style="margin: 1em 0;"/>';
+				echo '<hr class="gv-repeater-hr" />';
 			}
 
 			// Render the original way, PER value.
@@ -66,22 +69,3 @@ final class GravityView_Repeater_Field_HTML_Template extends Field_HTML_Template
 		$this->entry = $old_entry;
 	}
 }
-
-
-/**
- * Required for rowspan on tables:
- *
- * Every Entry object must have a way to:
- *  - Loop the fields to identify possible (nested) repeater fields.
- *  - For every repeater field, figure out what the maximum amount of values is (including nested values, and value
- *  cap).
- *  - On the entry, we need to be able to `getMaxValueSize()`. This is required to set the "rowspan" for the
- *  non-repeater fields.
- *  - On the Field, we also need to be able to get `getMaxValueSize()` from *that* level, to get the rowspan for *that*
- *  cell.
- *  - The rowspan is only useful for direct children of the repeater field. A repeater field will render all its values
- *  in a single cell. No rowspan applicable unless *it* is a direct child of a repeater field.
- *  - Ideally we would not focus on "repeater" fields, but "Field that have multiple values" so nested forms could be
- *  added.
- *
- */

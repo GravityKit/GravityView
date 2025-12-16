@@ -253,56 +253,13 @@ class GF_Field extends Field {
 		$ancestors = $this->get_ancestors_ids();
 		$values    = static::retrieve_nested_data( $entry->as_entry(), $ancestors );
 
-		$data   = $values[ $field_id ] ?? [];
-		$levels = explode( '.', $index ) ?: [];
+		$data = $values[ $field_id ] ?? [];
 
-		foreach ( $levels as $sub_index ) {
-			if ( '' !== $sub_index ) {
-				$data = $data[ $sub_index ] ?? [];
-			}
-		}
-
-		return self::flatten_field_values( $data );
+		return array_filter( $data );
 	}
 
 	/**
-	 * Flattens field values, stopping at associative arrays (string keys).
-	 *
-	 * Traverses the data recursively, collecting scalar values and associative arrays.
-	 * Numeric-indexed arrays are traversed deeper, while associative arrays are kept intact.
-	 *
-	 * @since $ver$
-	 *
-	 * @param array $data The data to flatten.
-	 *
-	 * @return array The flattened values.
-	 */
-	private static function flatten_field_values( array $data ): array {
-		$result = [];
-
-		foreach ( $data as $value ) {
-			if ( ! is_array( $value ) ) {
-				// Scalar value, add directly.
-				$result[] = $value;
-				continue;
-			}
-
-			// Check if this is an associative array (has string keys).
-			$has_string_keys = count( array_filter( array_keys( $value ), 'is_string' ) ) > 0;
-			if ( $has_string_keys ) {
-				// Associative array, keep it as a single value.
-				$result[] = $value;
-			} else {
-				// Numeric array, traverse deeper.
-				$result = array_merge( $result, self::flatten_field_values( $value ) );
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Retrieves the nested data for a field, subdivided by ancestor levels.
+	 * Retrieves the nested data for a field as a single level.
 	 *
 	 * @since $ver$
 	 *
@@ -319,11 +276,10 @@ class GF_Field extends Field {
 				continue;
 			}
 
-			// Process each level of the repeater field.
-			foreach ( $values as $level_index => $level_data ) {
-				foreach ( $level_data as $sub_field_id => $sub_field_value ) {
+			foreach ( $values as $nested_data ) {
+				foreach ( $nested_data as $sub_field_id => $sub_field_value ) {
 					if ( ! in_array( $sub_field_id, $repeater_fields, true ) ) {
-						$result[ $sub_field_id ][ $level_index ] = $sub_field_value;
+						$result[ $sub_field_id ][] = $sub_field_value;
 						continue;
 					}
 
@@ -334,7 +290,8 @@ class GF_Field extends Field {
 					);
 
 					foreach ( $nested_result as $nested_field_id => $nested_values ) {
-						$result[ $nested_field_id ][ $level_index ] = $nested_values;
+						$result[ $nested_field_id ] ??= [];
+						$result[ $nested_field_id ]   = array_merge( $result[ $nested_field_id ], $nested_values );
 					}
 				}
 			}
