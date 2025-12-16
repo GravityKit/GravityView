@@ -205,7 +205,7 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	 * @return array
 	 */
 	protected function limit_results_recursively( array $value, GF_Field $field, array $config ): array {
-		$max_results       = (int) abs( $config['max_results'] ?? 0 );
+		$max_results       = abs( (int) ( $config['max_results'] ?? 0 ) );
 		$show_more_results = (bool) ( $config['show_more_results'] ?? false );
 
 		// Reset in case View is rendered multiple times with different settings.
