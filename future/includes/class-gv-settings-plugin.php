@@ -203,7 +203,7 @@ class Plugin_Settings {
 		/**
 		 * Filter default global settings.
 		 *
-		 * @param  [in,out] array The defaults.
+		 * @param array The defaults.
 		 */
 		return apply_filters( 'gravityview/settings/defaults', $defaults );
 	}
