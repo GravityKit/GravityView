@@ -168,7 +168,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function set_search_method() {
 		/**
-		 * @filter `gravityview/search/method` Modify the search form method (GET / POST).
+		 * Modify the search form method (GET / POST).
 		 * @since  1.16.4
 		 *
 		 * @param string $search_method Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
@@ -587,7 +587,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		);
 
 		/**
-		 * @filter `gravityview/search/searchable_fields/allowlist` Modifies the fields able to be searched using the Search Bar
+		 * Modifies the fields able to be searched using the Search Bar
 		 *
 		 * @since  2.14
 		 *
@@ -683,7 +683,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
 
 		/**
-		 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
+		 * Search for each word separately or the whole phrase?
 		 *
 		 * @since  1.20.2
 		 * @since  2.19.6 Added $view parameter
@@ -694,7 +694,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$split_words = apply_filters( 'gravityview/search-all-split-words', true, $view );
 
 		/**
-		 * @filter `gravityview/search-trim-input` Remove leading/trailing whitespaces from search value
+		 * Remove leading/trailing whitespaces from search value
 		 *
 		 * @since  2.9.3
 		 * @since  2.19.6 Added $view parameter
@@ -939,7 +939,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		];
 
 		/**
-		 * @filter `gk/gravityview/common/quotation-marks` Modify the quotation marks used to detect quoted searches.
+		 * Modify the quotation marks used to detect quoted searches.
 		 *
 		 * @since  2.22
 		 *
@@ -1102,7 +1102,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			/**
-			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
+			 * Modify the search operator for the field (contains, is, isnot, etc)
 			 *
 			 * @since  2.0 Added $view parameter
 			 *

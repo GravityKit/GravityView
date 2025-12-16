@@ -22,7 +22,7 @@ $gf_field = GFAPI::get_field( $form, $search_field['key'] );
 $placeholder = \GV\Utils::get( $gf_field, 'placeholder', '' );
 
 /**
- * @filter `gravityview/extension/search/select_default` Define the text for the default option in a select (multi or single dropdown)
+ * Define the text for the default option in a select (multi or single dropdown)
  *
  * @since 1.16.4
  *

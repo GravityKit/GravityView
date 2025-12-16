@@ -34,7 +34,7 @@ trait Field_Renderer_Trait {
 		);
 
 		/**
-		 * @filter `gravityview/template/field/label` Override the field label.
+		 * Override the field label.
 		 * @since  2.0
 		 *
 		 * @param  [in,out] string $label The label to override.

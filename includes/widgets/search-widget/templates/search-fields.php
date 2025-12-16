@@ -50,7 +50,7 @@ foreach ( $rows as $row ) { ?>
 						printf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 						foreach ( $search_fields->by_position( $position )->to_template_data() as $search_field ) {
 							/**
-							 * @action `gravityview_search_widget_field_before` Before each search input is rendered.
+							 * Before each search input is rendered.
 							 *
 							 * @param GravityView_Widget_Search                                             $this GravityView Widget instance
 							 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field

@@ -2710,7 +2710,7 @@ class GravityView_Edit_Entry_Render {
 			$has_cap = GVCommon::has_cap( $field['allow_edit_cap'] );
 
 			/**
-			 * @filter `gk/gravityview/edit-entry/user-can-edit-field` Filter whether the user can edit a specific field.
+			 * Filter whether the user can edit a specific field.
 			 *
 			 * @since 2.38.0
 			 *
@@ -2929,7 +2929,7 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function record_files_for_removal( GF_Field $field, string $value, bool &$is_cleared = false ): void {
 		/**
-		 * @filter `gk/gravityview/edit-entry/record-file-removal` Modifies whether to record files for removal.
+		 * Modifies whether to record files for removal.
 		 *
 		 * @since  2.40
 		 *

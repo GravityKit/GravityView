@@ -72,7 +72,7 @@ class GravityView_Admin_ApproveEntries {
 	public function filter_links_entry_list( $filter_links = array(), $form = array(), $include_counts = true ) {
 
 		/**
-		 * @filter `gravityview/approve_entries/show_filter_links_entry_list` Disable filter links.
+		 * Disable filter links.
 		 *
 		 * @since 1.17.1
 		 * @param bool $show_filter_links True: show the "approved"/"disapproved" filter links. False: hide them.

@@ -483,7 +483,7 @@ class GravityView_Render_Settings {
 				$value = $current[ $key ] ?? null;
 
 				/**
-				 * @action `gk/gravityview/template/before-field-render` which allows you to act before a field of an item is rendered.
+				 * which allows you to act before a field of an item is rendered.
 				 *
 				 * @since  2.42
 				 *

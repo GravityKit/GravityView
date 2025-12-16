@@ -512,7 +512,7 @@ class gravityview extends \GV\Shortcode {
 		self::$current_view = null; // Clear for future calls.
 
 		/**
-		 * @action `gravityview/shortcode/after-processing` Runs after the GV shortcode is processed.
+		 * Runs after the GV shortcode is processed.
 		 *
 		 * @since  2.33
 		 *

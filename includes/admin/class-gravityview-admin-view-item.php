@@ -161,7 +161,7 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected function can_duplicate(): bool {
 		/**
-		 * @filter `gk/gravityview/admin/can_duplicate_field` Modify whether a field can be duplicated.
+		 * Modify whether a field can be duplicated.
 		 * @since  2.42
 		 */
 		return (bool) apply_filters( 'gk/gravityview/admin/can_duplicate_field', true, $this );

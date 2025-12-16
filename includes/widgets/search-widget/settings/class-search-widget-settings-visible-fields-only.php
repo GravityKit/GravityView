@@ -140,7 +140,7 @@ final class GravityView_Search_Widget_Settings_Visible_Fields_Only {
 		$is_visible_fields_only = $view->settings->get( 'search_visible_fields', 0 );
 
 		/**
-		 * @filter `gk/gravityview/widget/search/visible_fields_only` Modify the search capability of "Search Everything".
+		 * Modify the search capability of "Search Everything".
 		 *
 		 * @since 2.42
 		 *
