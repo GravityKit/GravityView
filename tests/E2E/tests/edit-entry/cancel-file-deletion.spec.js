@@ -9,14 +9,14 @@ import {
 /**
  * Ensures that files remain unchanged when canceling an edit operation that includes file deletion.
  */
-test('File persistence when canceling file deletion', async ({ page }) => {
+test('File persistence when canceling file deletion', async ({ page }, testInfo) => {
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
 	await createView(page, {
 		formTitle: 'Weather Multi-Upload Form',
 		viewName: 'File Persistence Test',
 		template: templates[0]
-	});
+	}, testInfo);
 
 	await publishView(page);
 	await checkViewOnFrontEnd(page);

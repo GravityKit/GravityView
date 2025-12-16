@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
+
 = 2.49 on December 5, 2025 =
 
 This update adds a new merge tag modifier for improved URL encoding and resolves a WordPress 6.9 compatibility issue affecting classic themes.

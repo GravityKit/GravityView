@@ -18,7 +18,7 @@ jobs:
   run_e2e_tests:
     <<: *default_job_config
     parallelism: 1
-    resource_class: large # specify a resource class
+    resource_class: xlarge # specify a resource class
     steps:
       - attach_workspace:
           at: /home/circleci
@@ -62,6 +62,11 @@ jobs:
             - test-dependencies-{{ .Branch }}-{{ checksum ".date" }}-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}
             - test-dependencies-{{ epoch }}
             - test-dependencies-
+      - run:
+          name: Create .npmrc
+          command: |
+            echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+            echo "@gravitykit:registry=https://npm.pkg.github.com" >> ~/.npmrc
       - run:
           name: Install dependencies
           command: |
