@@ -161,8 +161,8 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	 *
 	 * @since $ver$
 	 *
-	 * @param array $value The value for the repeater field.
-	 * @param Field $field The GV Field object.
+	 * @param array|mixed $value The value for the repeater field.
+	 * @param Field       $field The GV Field object.
 	 *
 	 * @return array The limited results.
 	 */
@@ -170,13 +170,13 @@ class GravityView_Field_Repeater extends GravityView_Field {
 		if ( ! is_array( $value ) ) {
 			$value = [];
 		}
-		$config      = $field->as_configuration();
-		$max_results = abs( (int) ( $config['max_results'] ?? 0 ) );
 
 		$gf_field = $field->field ?? null;
 		if ( ! $gf_field instanceof GF_Field_Repeater ) {
 			return $value;
 		}
+
+		$config = $field->as_configuration();
 
 		// To hide any nested repeater field, we need to "remove" their values.
 		if ( $config['hide_nested_repeater_fields'] ?? false ) {
@@ -188,10 +188,6 @@ class GravityView_Field_Repeater extends GravityView_Field {
 					}
 				}
 			}
-		}
-
-		if ( 0 === $max_results ) {
-			return $value;
 		}
 
 		return $this->limit_results_recursively( $value, $gf_field, $config );
@@ -211,6 +207,13 @@ class GravityView_Field_Repeater extends GravityView_Field {
 	protected function limit_results_recursively( array $value, GF_Field $field, array $config ): array {
 		$max_results       = (int) abs( $config['max_results'] ?? 0 );
 		$show_more_results = (bool) ( $config['show_more_results'] ?? false );
+
+		// Reset in case View is rendered multiple times with different settings.
+		unset( $field->more_results_count );
+
+		if ( 0 === $max_results ) {
+			return $value;
+		}
 
 		// First, we cut down the number of results for this level.
 		$result_count = count( $value );
