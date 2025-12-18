@@ -460,10 +460,12 @@ class GravityView_Entry_Approval {
 			self::add_approval_status_updated_note( $entry_id, $approved );
 
 			/**
-			 * Destroy the cache for this form
+			 * Destroy the cache for this form.
 			 *
 			 * @see class-cache.php
 			 * @since 1.5.1
+			 *
+			 * @param int $form_id The Gravity Forms form ID.
 			 */
 			do_action( 'gravityview_clear_form_cache', $form_id );
 
