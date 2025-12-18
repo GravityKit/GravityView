@@ -16,76 +16,29 @@ if ( 'gform_next_button' === current_filter() ) {
 	}
 }
 
-// Get the back link behavior from View settings.
-$back_link_behavior = 'previous';
-if ( $object->view instanceof \GV\View ) {
-	$back_link_behavior = $object->view->settings->get( 'back_link_behavior', 'previous' );
-}
-
 ?>
 <div id="publishing-action">
 	<?php
 
-	// The default back link is the URL without the edit parameters.
-	$default_back_link = remove_query_arg( [ 'page', 'view', 'edit' ] );
-
-	// Determine the cancel button URL based on the View setting.
-	// Note: 'hidden' only hides the Back Link on Single Entry, not the Cancel button here.
-	switch ( $back_link_behavior ) {
-		case 'directory':
-			// Return to directory, preserving search/filter parameters.
-			$back_link = $default_back_link;
-			$query_args = gv_get_query_args();
-			if ( ! empty( $query_args ) ) {
-				$back_link = add_query_arg( $query_args, $back_link );
-			}
-			break;
-
-		case 'hidden':
-		case 'previous':
-		default:
-			/**
-			 * Return to previous page.
-			 *
-			 * Priority order:
-			 * 1. gv_back parameter (post ID passed via entry link URL) - most reliable for embedded Views
-			 * 2. wp_get_referer() (HTTP referer header) - may be lost due to browser behavior or form submissions
-			 * 3. $default_back_link fallback - URL without edit parameters
-			 *
-			 * @since 2.31 Added gv_back parameter support.
-			 */
-			$gv_back = \GV\Utils::_GET( GravityView_API::BACK_LINK_PARAM );
-
-			if ( $gv_back && is_numeric( $gv_back ) && get_post_status( (int) $gv_back ) ) {
-				// Use the post ID from the gv_back parameter.
-				$back_link = get_permalink( (int) $gv_back );
-			} else {
-				// Fall back to HTTP referer, then default link.
-				$referer   = wp_get_referer();
-				$back_link = $referer ? $referer : $default_back_link;
-			}
-			break;
-	}
-
-	/**
-     * Modify the cancel button link URL.
+    /**
+     * Modify the cancel button link URL when editing an entry in a View.
      *
      * @since 1.11.1
      * @since 2.11 The cancel link now uses history.back() so the $back_link URL matters less.
-     * @param string $back_link Existing URL of the Cancel link
-     * @param array $form The Gravity Forms form
-     * @param array $entry The Gravity Forms entry
-     * @param int $view_id The current View ID
+     * @param string $back_link Existing URL of the Cancel link.
+     * @param array $form The Gravity Forms form.
+     * @param array $entry The Gravity Forms entry.
+     * @param int $view_id The current View ID.
      */
-    $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', $back_link, $object->form, $object->entry, $object->view_id );
+    $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', remove_query_arg( array( 'page', 'view', 'edit' ) ), $object->form, $object->entry, $object->view_id );
 
 	/**
-	 * container.
+	 * Run before the publishing action buttons (Update, Cancel) are displayed in the Edit Entry screen.
      *
 	 * @since 1.5.1
-	 * @param array $form The Gravity Forms form
-	 * @param array $entry The Gravity Forms entry
-	 * @param int $view_id The current View ID
+	 * @param array $form The Gravity Forms form.
+	 * @param array $entry The Gravity Forms entry.
+	 * @param int $view_id The current View ID.
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/before', $object->form, $object->entry, $object->view_id );
 
@@ -124,16 +77,16 @@ if ( $object->view instanceof \GV\View ) {
 	$update_count = (int) \GV\Utils::_POST( 'update_count', 0 );
 
 	/**
-	 * Modify the onclick JavaScript for the Cancel button. Return an empty string to use the href only.
-	 *
+	 * Modify the JavaScript code that runs when the Cancel button is clicked.
+     *
 	 * @since 2.13.4
-	 * @param string $onclick_js The onclick JavaScript. Empty by default (uses href).
+	 * @param string $back_link Existing "back" of the Cancel link.
 	 * @param array $form The Gravity Forms form.
 	 * @param array $entry The Gravity Forms entry.
 	 * @param int $view_id The current View ID.
-	 * @param int $update_count The number of times the form has been updated in this session.
+	 * @param int $update_count The number of pages to go back based on the # of updates to the edited form.
 	 */
-	$cancel_onclick_js = apply_filters( 'gravityview/edit_entry/cancel_onclick', '', $object->form, $object->entry, $object->view_id, $update_count );
+	$cancel_onclick_js = apply_filters( 'gravityview/edit_entry/cancel_onclick', 'history.go(' . ( $update_count + 1 ) * -1 . '); return false;', $object->form, $object->entry, $object->view_id, $update_count );
 
 	$cancel_onclick = empty( $cancel_onclick_js ) ? '' : 'onclick="' . esc_attr( $cancel_onclick_js ) . '"';
 	?>
@@ -141,16 +94,17 @@ if ( $object->view instanceof \GV\View ) {
 	<?php
 
 	/**
-	 * container.
+	 * Runs after the Update and Cancel buttons are displayed in the Edit Entry screen.
 	 *
 	 * @used-by GravityView_Delete_Entry::add_delete_button()
 	 *
 	 * @since 1.5.1
-     * @since 2.0.13 Added $post_id
-	 * @param array $form The Gravity Forms form
-	 * @param array $entry The Gravity Forms entry
-	 * @param int $view_id The current View ID
-     * @param int $post_id The current Post ID
+     * @since 2.0.13 Added $post_id.
+	 *
+	 * @param array $form The Gravity Forms form.
+	 * @param array $entry The Gravity Forms entry.
+	 * @param int $view_id The current View ID.
+     * @param int $post_id The current Post ID.
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/after', $object->form, $object->entry, $object->view_id, $object->post_id );
 	?>
