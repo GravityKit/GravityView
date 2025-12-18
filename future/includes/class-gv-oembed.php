@@ -317,7 +317,9 @@ class oEmbed {
 		/**
 		 * Modify the url part for a View. [Read the doc](https://docs.gravitykit.com/article/62-changing-the-view-slug).
 		 *
-		 * @param string $rewrite_slug The slug shown in the URL
+		 * @since 2.0
+		 *
+		 * @param string $rewrite_slug The slug shown in the URL.
 		 */
 		$rewrite_slug = apply_filters( 'gravityview_slug', 'view' );
 
