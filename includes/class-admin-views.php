@@ -856,8 +856,8 @@ HTML;
 		 *
 		 * @since 1.17.2
 		 *
+		 * @param int   $post_id ID of the View that has been saved.
 		 * @param array $statii  Array of statuses of the post meta saving processes. If saving worked, each key should be mapped to a value of the post ID (`directory_widgets` => `124`). If failed (or didn't change), the value will be false.
-		 * @param int   $post_id ID of the View that has been saved
 		 */
 		do_action( 'gravityview_view_saved', $post_id, $statii );
 
@@ -902,11 +902,13 @@ HTML;
 			'gravityview_blocklist_field_types' );
 
 		/**
-		 * @filter  `gravityview_blocklist_field_types` Modify the types of fields that shouldn't be shown in a View.
-		 * @since   2.9
+		 * Modify the types of fields that shouldn't be shown in a View.
 		 *
-		 * @param string $context               View context ('single', 'directory', or 'edit').
+		 * @filter `gravityview_blocklist_field_types`
+		 * @since  2.9
+		 *
 		 * @param array  $blocklist_field_types Array of field types which are not proper to be shown for the $context.
+		 * @param string $context               View context ('single', 'directory', or 'edit').
 		 */
 		$blocklist_field_types = apply_filters( 'gravityview_blocklist_field_types', $blocklist_field_types, $context );
 
@@ -971,9 +973,9 @@ HTML;
 		];
 
 		/**
-		 * non-standard Fields to show at the bottom of the field picker.
+		 * Modify the non-standard fields shown at the bottom of the field picker.
 		 *
-		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys
+		 * @param array $additional_fields Associative array of field arrays, with `label_text`, `desc`, `field_id`, `label_type`, `input_type`, `field_options`, and `settings_html` keys.
 		 */
 		$additional_fields = apply_filters( 'gravityview_additional_fields', $additional_fields );
 
@@ -1394,7 +1396,7 @@ HTML;
 			 *
 			 * @since  2.31.0
 			 *
-			 * @action `gk/gravityview/admin-views/row/before`
+			 * @action `gk/gravityview/admin-views/row/after`
 			 *
 			 * @param bool   $is_dynamic  Whether the area is dynamic.
 			 * @param View   $view        The View.
@@ -1518,9 +1520,10 @@ HTML;
 				/**
 				 * Modify the default widgets for new Views.
 				 *
-				 * @param array  $widgets A Widget configuration array
-				 * @param string $zone    The widget zone that's being requested
-				 * @param int    $post_id The auto-draft post ID
+				 * @param array  $widgets     A Widget configuration array.
+				 * @param string $template_id The current slug of the selected View template.
+				 * @param string $zone        The widget zone that's being requested.
+				 * @param int    $post_id     The auto-draft post ID.
 				 */
 				$widgets = (array) apply_filters( 'gravityview/view/widgets/default', $widgets, $template_id, $zone, $post_id );
 			} else {
@@ -2161,7 +2164,7 @@ HTML;
 		/**
 		 * Modifies whether the zone is sortable.
 		 *
-		 * @filter `gk/gravityview/view/template/active-areas`
+		 * @filter `gk/gravityview/admin-views/view/is-dynamic`
 		 * @since  2.31.0
 		 *
 		 * @param bool   $is_dynamic  Whether area is dynamic, meaning sortable / deletable / actionable.
