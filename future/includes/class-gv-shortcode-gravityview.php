@@ -490,12 +490,10 @@ class gravityview extends \GV\Shortcode {
 		 * Filter the detail output returned from `[gravityview detail="$detail"]`.
 		 *
 		 * @since 1.13
-		 * @param string $output Existing output
+		 * @since 2.0.3 Added $view parameter.
 		 *
-		 * @since 2.0.3
-		 * @param \GV\View $view The view.
-		 * @param \GV\Entry_Collection $entries The entries.
-		 * @param array $atts The shortcode atts with defaults.
+		 * @param string   $output Existing output.
+		 * @param \GV\View $view   The View object.
 		 */
 		$output = apply_filters( "gravityview/shortcode/detail/$key", $output, $view );
 
