@@ -486,8 +486,7 @@ final class GravityView_Delete_Entry {
 		 *
 		 * @deprecated TODO Use `gk/gravityview/delete-entry/mode` filter instead.
 		 * @since 1.13.1
-		 * @param string   $delete_mode Delete mode: `trash` or `delete`. Default: `delete`.
-		 * @param int|null $view_id The View ID. Default: null.
+		 * @param string $delete_mode Delete mode: `trash` or `delete`. Default: `delete`.
 		 */
 		$delete_mode = apply_filters( 'gravityview/delete-entry/mode', 'delete' );
 
