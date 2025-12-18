@@ -21,24 +21,24 @@ if ( 'gform_next_button' === current_filter() ) {
 	<?php
 
     /**
-     * Modify the cancel button link URL.
+     * Modify the cancel button link URL when editing an entry in a View.
      *
      * @since 1.11.1
      * @since 2.11 The cancel link now uses history.back() so the $back_link URL matters less.
-     * @param string $back_link Existing URL of the Cancel link
-     * @param array $form The Gravity Forms form
-     * @param array $entry The Gravity Forms entry
-     * @param int $view_id The current View ID
+     * @param string $back_link Existing URL of the Cancel link.
+     * @param array $form The Gravity Forms form.
+     * @param array $entry The Gravity Forms entry.
+     * @param int $view_id The current View ID.
      */
     $back_link = apply_filters( 'gravityview/edit_entry/cancel_link', remove_query_arg( array( 'page', 'view', 'edit' ) ), $object->form, $object->entry, $object->view_id );
 
 	/**
-	 * container.
+	 * Run before the publishing action buttons (Update, Cancel) are displayed in the Edit Entry screen.
      *
 	 * @since 1.5.1
-	 * @param array $form The Gravity Forms form
-	 * @param array $entry The Gravity Forms entry
-	 * @param int $view_id The current View ID
+	 * @param array $form The Gravity Forms form.
+	 * @param array $entry The Gravity Forms entry.
+	 * @param int $view_id The current View ID.
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/before', $object->form, $object->entry, $object->view_id );
 
@@ -73,11 +73,11 @@ if ( 'gform_next_button' === current_filter() ) {
 
 	// If the entry has been edited, history.back() will keep pointing to the Edit Entry screen. Go back before editing, please!
 	// On first visit, will be history.go(-1) because (0 + 1 * -1).
-	// After updating twice, history.go(-3) because (2 + 1 * -1)
+	// After updating twice, history.go(-3) because (2 + 1 * -1).
 	$update_count = (int) \GV\Utils::_POST( 'update_count', 0 );
 
 	/**
-	 * altogether, return an empty string.
+	 * Modify the JavaScript code that runs when the Cancel button is clicked.
      *
 	 * @since 2.13.4
 	 * @param string $back_link Existing "back" of the Cancel link.
@@ -94,16 +94,17 @@ if ( 'gform_next_button' === current_filter() ) {
 	<?php
 
 	/**
-	 * container.
+	 * Runs after the Update and Cancel buttons are displayed in the Edit Entry screen.
 	 *
 	 * @used-by GravityView_Delete_Entry::add_delete_button()
 	 *
 	 * @since 1.5.1
-     * @since 2.0.13 Added $post_id
-	 * @param array $form The Gravity Forms form
-	 * @param array $entry The Gravity Forms entry
-	 * @param int $view_id The current View ID
-     * @param int $post_id The current Post ID
+     * @since 2.0.13 Added $post_id.
+	 *
+	 * @param array $form The Gravity Forms form.
+	 * @param array $entry The Gravity Forms entry.
+	 * @param int $view_id The current View ID.
+     * @param int $post_id The current Post ID.
 	 */
 	do_action( 'gravityview/edit-entry/publishing-action/after', $object->form, $object->entry, $object->view_id, $object->post_id );
 	?>

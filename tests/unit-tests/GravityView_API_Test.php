@@ -332,6 +332,458 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since TODO
+	 */
+	public function test_gravityview_back_link_hidden_behavior() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+
+		// Test hidden behavior returns null
+		$context->view->settings->update( array( 'back_link_behavior' => 'hidden' ) );
+		$this->assertNull( gravityview_back_link( $context ), 'Hidden back link behavior should return null' );
+	}
+
+	/**
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since TODO
+	 */
+	public function test_gravityview_back_link_directory_returns_directory_link() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+
+		// Directory behavior should return a URL (directory link)
+		$context->view->settings->update( array( 'back_link_behavior' => 'directory' ) );
+
+		// Capture the generated URL via filter before template processing
+		$captured_url = '';
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$captured_url ) {
+			$captured_url = $href;
+			return ''; // Return empty to bypass template requirements
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		// Directory behavior should return a valid URL (gv_directory_link output)
+		$this->assertNotEmpty( $captured_url, 'Directory behavior should return a directory link URL' );
+		$this->assertStringContainsString( 'http', $captured_url, 'Directory behavior should return a valid URL' );
+
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since TODO
+	 */
+	public function test_gravityview_back_link_previous_uses_referer() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+
+		// Test previous behavior with valid same-site referer
+		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
+
+		// Set up a valid referer (same site)
+		$_SERVER['HTTP_REFERER'] = home_url( '/custom-page/?param=value' );
+
+		// Capture the generated URL via filter before template processing
+		$captured_url = '';
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$captured_url ) {
+			$captured_url = $href;
+			return ''; // Return empty to bypass template requirements
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		// wp_get_referer() validates and returns same-site referers
+		$this->assertStringContainsString( '/custom-page/', $captured_url, 'previous behavior should use HTTP_REFERER for same-site URLs' );
+
+		// Clean up
+		unset( $_SERVER['HTTP_REFERER'] );
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since TODO
+	 */
+	public function test_gravityview_back_link_previous_rejects_external_referer() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+
+		// Test previous behavior with external referer (should be rejected by wp_get_referer)
+		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
+
+		// Set up an external referer (should be rejected)
+		$_SERVER['HTTP_REFERER'] = 'https://malicious-site.com/phishing';
+
+		// Capture the generated URL via filter before template processing
+		$captured_url = '';
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$captured_url ) {
+			$captured_url = $href;
+			return ''; // Return empty to bypass template requirements
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		// wp_get_referer() should reject external URLs and fall back to directory link
+		$this->assertStringNotContainsString( 'malicious-site.com', $captured_url, 'previous behavior should reject external referers' );
+
+		// Clean up
+		unset( $_SERVER['HTTP_REFERER'] );
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since TODO
+	 */
+	public function test_gravityview_back_link_filter() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+
+		// Capture to verify filter receives URL, then modify
+		$filter_received_url = false;
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$filter_received_url ) {
+			$filter_received_url = ! empty( $href );
+			return ''; // Return empty to bypass template requirements
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		$this->assertTrue( $filter_received_url, 'Filter should receive back link URL' );
+
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since 2.31
+	 */
+	public function test_gravityview_back_link_gv_back_invalid_post_id() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+
+		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
+
+		// Set gv_back to a non-existent post ID.
+		$_GET['gv_back'] = 999999999;
+
+		// Set a valid referer as fallback.
+		$_SERVER['HTTP_REFERER'] = home_url( '/fallback-page/' );
+
+		// Capture the generated URL via filter.
+		$captured_url = '';
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$captured_url ) {
+			$captured_url = $href;
+			return '';
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		// Should fall back to referer since gv_back post doesn't exist.
+		$this->assertStringContainsString( '/fallback-page/', $captured_url, 'Invalid gv_back post ID should fall back to referer' );
+		$this->assertStringNotContainsString( '999999999', $captured_url, 'Invalid post ID should not appear in URL' );
+
+		// Clean up.
+		unset( $_GET['gv_back'], $_SERVER['HTTP_REFERER'] );
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since 2.31
+	 */
+	public function test_gravityview_back_link_gv_back_valid_post_id() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		// Create a page to use as the gv_back target.
+		$page = $this->factory->post->create_and_get( array(
+			'post_type'  => 'page',
+			'post_title' => 'Embedded View Page',
+			'post_name'  => 'embedded-view-page',
+		) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+
+		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
+
+		// Set gv_back to a valid post ID.
+		$_GET['gv_back'] = $page->ID;
+
+		// Set a different referer (should be ignored in favor of gv_back).
+		$_SERVER['HTTP_REFERER'] = home_url( '/different-page/' );
+
+		// Capture the generated URL via filter.
+		$captured_url = '';
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$captured_url ) {
+			$captured_url = $href;
+			return '';
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		// Should use gv_back post permalink, not the referer.
+		// Check for page_id parameter since test environment may not have pretty permalinks.
+		$this->assertStringContainsString( 'page_id=' . $page->ID, $captured_url, 'Valid gv_back post ID should use that post permalink' );
+		$this->assertStringNotContainsString( 'different-page', $captured_url, 'Referer should be ignored when gv_back is valid' );
+
+		// Clean up.
+		unset( $_GET['gv_back'], $_SERVER['HTTP_REFERER'] );
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * Test that gv_back works when HTTP referer is completely missing.
+	 *
+	 * Real-world scenario: Browser privacy settings strip referer, or user
+	 * bookmarked the Single Entry page directly.
+	 *
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since 2.31
+	 */
+	public function test_gravityview_back_link_gv_back_no_referer() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		// Create a page that "embedded" the View.
+		$embedding_page = $this->factory->post->create_and_get( array(
+			'post_type'  => 'page',
+			'post_title' => 'My Embedded View Page',
+		) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
+
+		// Set gv_back but NO referer (simulating privacy browser or direct bookmark).
+		$_GET['gv_back'] = $embedding_page->ID;
+		unset( $_SERVER['HTTP_REFERER'] );
+
+		$captured_url = '';
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$captured_url ) {
+			$captured_url = $href;
+			return '';
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		// Should use gv_back even without referer.
+		$this->assertStringContainsString( 'page_id=' . $embedding_page->ID, $captured_url, 'gv_back should work even when HTTP referer is missing' );
+
+		unset( $_GET['gv_back'] );
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * Test that directory behavior returns View directory link.
+	 *
+	 * Real-world scenario: GitHub #830 - "After edit/delete an entry keep the search results"
+	 * User wants to return to the Multiple Entries directory.
+	 *
+	 * Note: Full search filter preservation requires integration testing since it depends
+	 * on WordPress query processing. This test verifies the directory URL is generated.
+	 *
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since 2.31
+	 */
+	public function test_gravityview_back_link_directory_returns_view_link() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+		$context->view->settings->update( array( 'back_link_behavior' => 'directory' ) );
+
+		$captured_url = '';
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$captured_url ) {
+			$captured_url = $href;
+			return '';
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		// Directory behavior should return a URL containing the View's slug.
+		$this->assertStringContainsString( 'gravityview', $captured_url, 'Directory behavior should return View directory link' );
+		$this->assertNotEmpty( $captured_url, 'Directory behavior should generate a URL' );
+
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * Test that gv_back is NOT added when viewing View on its own CPT page.
+	 *
+	 * Real-world scenario: User visits /view/my-view/ directly (not embedded).
+	 * No gv_back should be added since there's no embedding page.
+	 *
+	 * @group back_link
+	 * @group entry_link
+	 * @covers GravityView_API::entry_link()
+	 * @since 2.31
+	 */
+	public function test_entry_link_no_gv_back_on_view_cpt_page() {
+		global $post;
+
+		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id'    => $form['id'],
+		) );
+
+		// Set global $post to the View itself (not an embedding page).
+		$post = $view;
+		setup_postdata( $post );
+
+		GravityView_View::getInstance()->setPostId( $view->ID );
+		GravityView_View::getInstance()->setViewId( $view->ID );
+
+		$entry_url = GravityView_API::entry_link( $entry, $view->ID, true, $view->ID );
+
+		// Should NOT contain gv_back when on View's own page.
+		$this->assertStringNotContainsString( 'gv_back', $entry_url, 'Entry link should not have gv_back when on View CPT page (not embedded)' );
+
+		wp_reset_postdata();
+	}
+
+	/**
+	 * Test that gv_back IS added when View is embedded in a regular page.
+	 *
+	 * Real-world scenario: Most common support issue - View embedded via shortcode
+	 * in a page, Back Link should return to that page.
+	 *
+	 * @group back_link
+	 * @group entry_link
+	 * @covers GravityView_API::entry_link()
+	 * @since 2.31
+	 */
+	public function test_entry_link_adds_gv_back_when_embedded() {
+		global $post;
+
+		$user = $this->factory->user->create_and_get( array( 'role' => 'administrator' ) );
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$entry = $this->factory->entry->create_and_get( array(
+			'created_by' => $user->ID,
+			'form_id'    => $form['id'],
+		) );
+
+		// Create a regular page that embeds the View.
+		$embedding_page = $this->factory->post->create_and_get( array(
+			'post_type'    => 'page',
+			'post_title'   => 'Page With Embedded View',
+			'post_content' => '[gravityview id="' . $view->ID . '"]',
+		) );
+
+		// Set global $post to the embedding page (simulating shortcode render context).
+		$post = $embedding_page;
+		setup_postdata( $post );
+
+		GravityView_View::getInstance()->setPostId( $embedding_page->ID );
+		GravityView_View::getInstance()->setViewId( $view->ID );
+
+		$entry_url = GravityView_API::entry_link( $entry, $embedding_page->ID, true, $view->ID );
+
+		// Should contain gv_back with embedding page ID.
+		$this->assertStringContainsString( 'gv_back=' . $embedding_page->ID, $entry_url, 'Entry link should have gv_back when View is embedded in a page' );
+
+		wp_reset_postdata();
+	}
+
+	/**
+	 * Test gv_back with non-numeric value is ignored.
+	 *
+	 * Real-world scenario: Malicious or malformed URL with non-numeric gv_back.
+	 *
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since 2.31
+	 */
+	public function test_gravityview_back_link_gv_back_non_numeric_ignored() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
+
+		// Set gv_back to non-numeric value.
+		$_GET['gv_back'] = 'malicious-script';
+		$_SERVER['HTTP_REFERER'] = home_url( '/safe-fallback/' );
+
+		$captured_url = '';
+		add_filter( 'gravityview/template/links/back/url', function( $href ) use ( &$captured_url ) {
+			$captured_url = $href;
+			return '';
+		}, 5 );
+
+		gravityview_back_link( $context );
+
+		// Should fall back to referer, ignoring non-numeric gv_back.
+		$this->assertStringContainsString( '/safe-fallback/', $captured_url, 'Non-numeric gv_back should be ignored' );
+		$this->assertStringNotContainsString( 'malicious', $captured_url, 'Malicious gv_back value should not appear in URL' );
+
+		unset( $_GET['gv_back'], $_SERVER['HTTP_REFERER'] );
+		remove_all_filters( 'gravityview/template/links/back/url' );
+	}
+
+	/**
+	 * Test that hidden behavior still returns null (no Back Link shown).
+	 *
+	 * Real-world scenario: User wants to hide the Back Link entirely.
+	 *
+	 * @group back_link
+	 * @covers ::gravityview_back_link()
+	 * @since 2.31
+	 */
+	public function test_gravityview_back_link_hidden_returns_null() {
+		$form = $this->factory->form->create_and_get();
+		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+
+		$context = new \GV\Template_Context();
+		$context->view = \GV\View::from_post( $view );
+		$context->view->settings->update( array( 'back_link_behavior' => 'hidden' ) );
+
+		// Even with gv_back set, hidden should return null.
+		$_GET['gv_back'] = 999;
+
+		$result = gravityview_back_link( $context );
+
+		$this->assertNull( $result, 'Hidden behavior should return null regardless of gv_back' );
+
+		unset( $_GET['gv_back'] );
+	}
+
+	/**
 	 * @group entry_link
 	 * @covers GravityView_API::entry_link()
 	 */
