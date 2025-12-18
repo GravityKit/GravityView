@@ -144,13 +144,13 @@ class Views_Route extends Route {
 		}
 
 		/**
-		 * Allow more entry fields that are output in regular REST requests.
+		 * Filter the field IDs that are output in REST requests.
 		 *
-		 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
-		 * @param View $view The view.
-		 * @param \GV\Entry $entry The entry.
-		 * @param \WP_REST_Request $request Request object.
-		 * @param string $context The context (directory, single)
+		 * @param array            $allowed_field_ids Array of field IDs to output. Default: visible fields in the View context.
+		 * @param View             $view              The View.
+		 * @param \GV\Entry        $entry             The entry.
+		 * @param \WP_REST_Request $request           Request object.
+		 * @param string           $context           The context (directory, single).
 		 */
 		$allowed_field_ids = apply_filters( 'gravityview/rest/entry/fields', wp_list_pluck( $allowed, 'ID' ), $view, $entry, $request, $context );
 
@@ -298,14 +298,15 @@ class Views_Route extends Route {
 			$output = $renderer->render( $view, new Request( $request ) );
 
 			/**
-			 * meta tags in the HTML output describing the data.
+			 * Filter whether to insert meta tags in the HTML output describing the data.
 			 *
 			 * @since 2.0
-			 * @param bool $insert_meta Add <meta> tags? [Default: true]
-			 * @param int $count The number of entries being rendered
-			 * @param View $view The view.
-			 * @param \WP_REST_Request $request Request object.
-			 * @param int $total The number of total entries for the request
+			 *
+			 * @param bool             $insert_meta Whether to add <meta> tags. Default: true.
+			 * @param int              $count       The number of entries being rendered.
+			 * @param View             $view        The View.
+			 * @param \WP_REST_Request $request     Request object.
+			 * @param int              $total       The total number of entries for the request.
 			 */
 			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $count, $view, $request, $total );
 
@@ -329,9 +330,22 @@ class Views_Route extends Route {
 
 			$csv_or_tsv = fopen( 'php://output', 'w' );
 
+			/**
+			 * Filter the filename for the CSV or TSV export.
+			 *
+			 * @param string $filename The filename. Default: the View title.
+			 * @param View   $view     The View being exported.
+			 */
 			$filename = apply_filters( 'gravityview/output/' . $format . '/filename', get_the_title( $view->post ), $view );
 
-			/** Da' BOM :) */
+			/**
+			 * Filter whether to include a BOM (Byte Order Mark) in the export file.
+			 *
+			 * This is a Gravity Forms filter. BOM helps Excel properly detect UTF-8 encoding.
+			 *
+			 * @param bool       $include_bom Whether to include the BOM. Default: true.
+			 * @param array|null $form        The Gravity Forms form array, or null if not available.
+			 */
 			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
 				fputs( $csv_or_tsv, "\xef\xbb\xbf" );
 			}
@@ -511,10 +525,10 @@ class Views_Route extends Route {
 		}
 
 		/**
-		 * Disable rest output. Final chance.
+		 * Disable REST output. Final chance.
 		 *
-		 * @param bool Enable or not.
-		 * @param View $view The view.
+		 * @param bool $enable Whether to enable REST output. Default: true.
+		 * @param View $view   The View being accessed.
 		 */
 		if ( ! apply_filters( 'gravityview/view/output/rest', true, $view ) ) {
 			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
