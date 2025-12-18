@@ -135,8 +135,6 @@ class View_Collection extends Collection {
 		 *
 		 * @param \GV\View_Collection $view_collection The View Collection.
 		 * @param \WP_Post $post The post.
-		 *
-		 * @return \GV\View_Collection The filtered View Collection.
 		 */
 		$views = apply_filters( 'gk/gravityview/view-collection/from-post/views', $views, $post );
 
