@@ -60,9 +60,11 @@ class GravityView_Entry_Notes {
 		/**
 		 * Modify note values before added using GFFormsModel::add_note().
 		 *
-		 * @see GFFormsModel::add_note
 		 * @since 1.15.2
-		 * @param array $note Array with `lead_id`, `user_id`, `user_name`, `note`, and `note_type` key value pairs
+		 *
+		 * @see GFFormsModel::add_note()
+		 *
+		 * @param array $note Array with `lead_id`, `user_id`, `user_name`, `note`, and `note_type` key value pairs.
 		 */
 		$note = apply_filters( 'gravityview/entry_notes/add_note', compact( 'lead_id', 'user_id', 'user_name', 'note', 'note_type' ) );
 
@@ -133,8 +135,9 @@ class GravityView_Entry_Notes {
 		 * Modify the notes array for an entry.
 		 *
 		 * @since 1.15
-		 * @param stdClass[]|null $notes Integer-keyed array of note objects
-		 * @param int $entry_id Entry to get notes for
+		 *
+		 * @param stdClass[]|null $notes Integer-keyed array of note objects.
+		 * @param int             $entry_id Entry to get notes for.
 		 */
 		$notes = apply_filters( 'gravityview/entry_notes/get_notes', $notes, $entry_id );
 
