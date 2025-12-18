@@ -23,8 +23,18 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### 🚀 Added
+* New "Back Link" View setting with three options:
+  - "Link to Previous Page" (default): Returns to the actual page the user came from—ideal for Views embedded in posts or pages.
+  - "Link to Multiple Entries": Returns to the View's entry list, preserving any active search filters.
+  - "Do not show the Back Link": Hides the Back Link on the Single Entry layout.
+
 #### 🐛 Fixed
 * Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
+* Back Link pointing to the View permalink, not the page where the View is embedded, when Views are embedded in posts or pages.
+
+#### 💻 Developer Updates
+* Added `gv_back` query parameter for tracking the source page when navigating to single entry from embedded Views.
 
 = 2.49 on December 5, 2025 =
 

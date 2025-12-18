@@ -478,6 +478,20 @@ class View_Settings extends Settings {
 					'show_in_shortcode' => true,
 					'full_width'        => true,
 				),
+				'back_link_behavior'          => array(
+					'label'             => __( 'Back Link', 'gk-gravityview' ),
+					'group'             => 'default',
+					'desc'              => __( 'The Back Link appears above the Single Entry layout and allows users to return to the Multiple Entries list.', 'gk-gravityview' ),
+					'type'              => 'select',
+					'value'             => 'previous',
+					'options'           => array(
+						'previous'  => __( 'Link to Previous Page (recommended for embedded Views)', 'gk-gravityview' ),
+						'directory' => __( 'Link to Multiple Entries (preserves search and filters)', 'gk-gravityview' ),
+						'hidden'    => __( 'Do not show the Back Link', 'gk-gravityview' ),
+					),
+					'show_in_shortcode' => true,
+					'full_width'        => true,
+				),
 				'edit_redirect'               => array(
 					'label'   => __( 'Redirect After Editing', 'gk-gravityview' ),
 					'group'   => 'default',

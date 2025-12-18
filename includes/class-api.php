@@ -14,6 +14,14 @@
 class GravityView_API {
 
 	/**
+	 * Query parameter name for tracking the source page when navigating to single entry from embedded Views.
+	 *
+	 * @since 2.31
+	 * @var string
+	 */
+	const BACK_LINK_PARAM = 'gv_back';
+
+	/**
 	 * Fetch Field Label
 	 *
 	 * @deprecated Use \GV\Field::get_label()
@@ -521,7 +529,7 @@ class GravityView_API {
 			$directory_links[ 'gv_directory_link_' . $post_id ] = $link;
 		}
 
-		// Deal with returning to proper pagination for embedded views
+		// Deal with returning to proper pagination for embedded Views.
 		if ( $link && $add_query_args ) {
 
 			$args = array();
@@ -842,6 +850,36 @@ class GravityView_API {
 			$args['gvid'] = $view_id ? $view_id : gravityview_get_view_id();
 		}
 
+		/**
+		 * Add gv_back parameter to track the source page for embedded Views.
+		 *
+		 * When a View is embedded in a post or page, we capture the embedding post's ID
+		 * so the "Back Link" and "Cancel" buttons can reliably return to the correct page,
+		 * even if the HTTP referer is lost (due to browser behavior, form submissions, etc.).
+		 *
+		 * @since TODO
+		 */
+		if ( $add_directory_args ) {
+			global $post;
+
+			// Get the current View ID from passed parameter or from the current context.
+			$current_view_id = $view_id ? $view_id : gravityview_get_view_id();
+
+			// Only add gv_back when:
+			// 1. We have a valid post object
+			// 2. We have a valid View ID
+			// 3. The current post is NOT the View itself (meaning the View is embedded)
+			// 4. The current post is not a View CPT (embedded in a regular post/page)
+			if (
+				is_a( $post, 'WP_Post' )
+				&& $current_view_id
+				&& (int) $post->ID !== (int) $current_view_id
+				&& 'gravityview' !== get_post_type( $post->ID )
+			) {
+				$args[ GravityView_API::BACK_LINK_PARAM ] = $post->ID;
+			}
+		}
+
 		return add_query_arg( $args, $directory_link );
 	}
 }
@@ -876,6 +914,7 @@ function gv_get_query_args() {
 	$reserved_args = array(
 		'entry',
 		'gvid',
+		GravityView_API::BACK_LINK_PARAM,
 		'status',
 		'action',
 		'view_id',
@@ -1030,16 +1069,62 @@ function gv_no_results( $wpautop = true, $context = null ) {
  *
  * @since 1.0.1
  * @since 2.0
+ * @since TODO Added support for back_link_behavior View setting.
  * @param \GV\Template_Context $context The context this link is being displayed from.
  * @return string|null      If no GV post exists, null. Otherwise, HTML string of back link.
  */
 function gravityview_back_link( $context = null ) {
 
-	$href = gv_directory_link( null, true, $context );
+	// Check View settings for back link behavior.
+	$back_link_behavior = 'previous';
+	if ( $context instanceof \GV\Template_Context && $context->view ) {
+		$back_link_behavior = $context->view->settings->get( 'back_link_behavior', 'previous' );
+	}
+
+	// If hidden, return null early.
+	if ( 'hidden' === $back_link_behavior ) {
+		return null;
+	}
+
+	// Determine the href based on behavior setting.
+	switch ( $back_link_behavior ) {
+		case 'directory':
+			// Return to directory link, preserving search/filter parameters.
+			$href = gv_directory_link( null, false, $context );
+			$query_args = gv_get_query_args();
+			if ( ! empty( $query_args ) ) {
+				$href = add_query_arg( $query_args, $href );
+			}
+			break;
+
+		case 'previous':
+		default:
+			/**
+			 * Return to previous page.
+			 *
+			 * Priority order:
+			 * 1. gv_back parameter (post ID passed via entry link URL) - most reliable for embedded Views
+			 * 2. wp_get_referer() (HTTP referer header) - may be lost due to browser behavior or form submissions
+			 * 3. gv_directory_link() fallback - View's directory page
+			 *
+			 * @since TODO Added gv_back parameter support.
+			 */
+			$gv_back = \GV\Utils::_GET( GravityView_API::BACK_LINK_PARAM );
+
+			if ( $gv_back && is_numeric( $gv_back ) && get_post_status( (int) $gv_back ) ) {
+				// Use the post ID from the gv_back parameter.
+				$href = get_permalink( (int) $gv_back );
+			} else {
+				// Fall back to HTTP referer, then directory link.
+				$referer = wp_get_referer();
+				$href    = $referer ? $referer : gv_directory_link( null, true, $context );
+			}
+			break;
+	}
 
 	/**
 	 * Modify the back link URL.
-     *
+	 *
 	 * @since 1.17.5
 	 * @see gv_directory_link() Generated the original back link
 	 * @param string $href Existing label URL
@@ -1049,7 +1134,7 @@ function gravityview_back_link( $context = null ) {
 
 	/**
 	 * Modify the back link URL.
-     *
+	 *
 	 * @since 2.0
 	 * @see gv_directory_link() Generated the original back link
 	 * @param string $href Existing label URL
