@@ -345,8 +345,8 @@ abstract class Field_Template extends Template {
 			/**
 			 * What to display when this field is empty.
 			 *
-			 * @param string $value The value to display (Default: empty string)
-			 * @param \GV\Template_Context The template context this is being called from.
+			 * @param string               $value   The value to display (Default: empty string)
+			 * @param \GV\Template_Context $context The template context this is being called from.
 			 */
 			$output = apply_filters( 'gravityview/field/value/empty', $output, Template_Context::from_template( $this ) );
 
@@ -475,8 +475,8 @@ abstract class Field_Template extends Template {
 			 *
 			 * @since 2.0
 			 *
-			 * @param string $output The current output.
-			 * @param \GV\Template_Context The template context this is being called from.
+			 * @param string               $output  The current output.
+			 * @param \GV\Template_Context $context The template context this is being called from.
 			 */
 			return apply_filters( "gravityview/template/field/{$field->type}/output", $output, $context );
 		};
@@ -505,8 +505,8 @@ abstract class Field_Template extends Template {
 		 *
 		 * @since 2.0
 		 *
-		 * @param string $output The current output.
-		 * @param \GV\Template_Context The template this is being called from.
+		 * @param string               $output  The current output.
+		 * @param \GV\Template_Context $context The template context this is being called from.
 		 */
 		echo apply_filters( 'gravityview/template/field/output', $output, $context );
 
