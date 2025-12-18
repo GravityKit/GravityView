@@ -243,14 +243,17 @@ class View implements \ArrayAccess {
 				'slug'       => apply_filters( 'gravityview_slug', 'view' ),
 
 				/**
-				 * Should the permalink structure.
-				 *  be prepended with the front base.
-				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
-				 *  Defaults to true.
+				 * Should the permalink structure be prepended with the front base.
+				 *
+				 * Example: If your permalink structure is `/blog/`, then your links will be:
+				 * - `false` → `/view/`
+				 * - `true` → `/blog/view/`
+				 *
+				 * @since 2.0
 				 *
 				 * @see https://codex.wordpress.org/Function_Reference/register_post_type
-				 * @since 2.0
-				 * @param bool $with_front
+				 *
+				 * @param bool $with_front Whether to prepend the front base. Default: true.
 				 */
 				'with_front' => apply_filters( 'gravityview/post_type/with_front', true ),
 			),
@@ -540,10 +543,11 @@ class View implements \ArrayAccess {
 			$direct_access = apply_filters( 'gravityview_direct_access', true, $this->ID );
 
 			/**
-			 * Should this View be directly accessbile?
+			 * Should this View be directly accessible?
 			 *
 			 * @since 2.0
-			 * @param boolean Accessible or not. Default: accessbile.
+			 *
+			 * @param bool $direct_access Whether the View is directly accessible. Default: true.
 			 * @param \GV\View $view The View we're trying to directly render here.
 			 * @param \GV\Request $request The current request.
 			 */
@@ -1981,12 +1985,11 @@ class View implements \ArrayAccess {
 		/**
 		 * Bypass restrictions on Views that require `unfiltered_html`.
 		 *
-		 * @param boolean
+		 * @since 2.16
 		 *
-		 * @since develop
+		 * @param bool $require_unfiltered_html Whether to require unfiltered_html capability. Default: true.
 		 * @param string $cap The capability requested.
 		 * @param int $user_id The user ID.
-		 * @param array $args Any additional args to map_meta_cap
 		 */
 		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true, $cap, $user_id ) ) {
 			return $caps;

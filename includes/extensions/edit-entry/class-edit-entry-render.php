@@ -1717,9 +1717,10 @@ class GravityView_Edit_Entry_Render {
 		/**
 		 * Allow the pre-populated value to override saved value in Edit Entry form. By default, pre-populate mechanism only kicks on empty fields.
 		 *
-		 * @param boolean True: override saved values; False: don't override (default)
-		 * @param $field GF_Field object Gravity Forms field object
 		 * @since 1.13
+		 *
+		 * @param bool $override Whether to override saved values with pre-populated values. Default: false.
+		 * @param GF_Field $field Gravity Forms field object.
 		 */
 		$override_saved_value = apply_filters( 'gravityview/edit_entry/pre_populate/override', false, $field );
 
