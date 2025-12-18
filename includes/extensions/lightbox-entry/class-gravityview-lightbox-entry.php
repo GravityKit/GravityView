@@ -563,13 +563,10 @@ class GravityView_Lightbox_Entry {
 		 *
 		 * @since  2.31.0
 		 *
-		 * @param array       $args           {
-		 *
-		 * @type View         $view           The View object being rendered.
-		 * @type GF_Entry     $entry          The Gravity Forms entry data.
-		 * @type array        $form           The Gravity Forms form array.
-		 * @type Entry_Render $entry_renderer The renderer object responsible for rendering the entry.
-		 *                                    }
+		 * @param View         $view           The View object being rendered.
+		 * @param GF_Entry     $entry          The Gravity Forms entry data.
+		 * @param array        $form           The Gravity Forms form array.
+		 * @param Entry_Render $entry_renderer The renderer object responsible for rendering the entry.
 		 */
 		do_action_ref_array( 'gk/gravityview/lightbox/entry/before-output', [ &$view, &$entry, &$form, &$entry_renderer ] );
 
