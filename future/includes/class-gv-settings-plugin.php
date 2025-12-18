@@ -203,7 +203,9 @@ class Plugin_Settings {
 		/**
 		 * Filter default global settings.
 		 *
-		 * @param array The defaults.
+		 * @since 2.16
+		 *
+		 * @param array $defaults The default settings.
 		 */
 		return apply_filters( 'gravityview/settings/defaults', $defaults );
 	}
@@ -223,7 +225,7 @@ class Plugin_Settings {
 		 *
 		 * @since 1.7.6
 		 *
-		 * @param bool $show_settings Default: true
+		 * @param bool $show_settings Whether to show the settings menu. Default: true.
 		 */
 		$show_settings = apply_filters( 'gravityview/show-settings-menu', true );
 
