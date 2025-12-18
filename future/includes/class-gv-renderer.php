@@ -315,8 +315,6 @@ EOD;
 		 *
 		 * @since 2.17.8
 		 *
-		 * @filter `gk/gravityview/renderer/should-display-configuration-notice`
-		 *
 		 * @param bool                 $should_display Whether to display the notice. Default: true.
 		 * @param \GV\Template_Context $gravityview    The $gravityview template object.
 		 * @param string               $context        The context of the notice. Possible values: `directory`, `single`, `edit`.
@@ -372,8 +370,9 @@ EOD;
 		 * Modify the reserved embed slugs that trigger a warning.
 		 *
 		 * @since 2.5
-		 * @param array $reserved_slugs An array of strings, reserved slugs.
-		 * @param \GV\Template_Context $gravityview The context.
+		 *
+		 * @param array                $reserved_slugs An array of strings, reserved slugs.
+		 * @param \GV\Template_Context $gravityview    The context.
 		 */
 		$reserved_slugs = apply_filters( 'gravityview/rewrite/reserved_slugs', $reserved_slugs, $gravityview );
 
