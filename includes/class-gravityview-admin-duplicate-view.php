@@ -119,8 +119,9 @@ class GravityView_Admin_Duplicate_View {
 		 * Modify the default status for a new View. Return empty for the new View to inherit existing View status.
 		 *
 		 * @since 1.6
-		 * @param string|null If string, the status to set for the new View. If empty, use existing View status.
-		 * @param WP_Post $post View being cloned
+		 *
+		 * @param string|null $status If string, the status to set for the new View. If empty, use existing View status.
+		 * @param WP_Post     $post   View being cloned.
 		 */
 		$new_view_status = apply_filters( 'gravityview/duplicate-view/status', $status, $post );
 
