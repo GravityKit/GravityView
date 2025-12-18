@@ -87,13 +87,14 @@ class Entry_Renderer extends Renderer {
 		}
 
 		/**
-		 * Modify the template slug about to be loaded in directory views.
+		 * Modify the template slug about to be loaded in single entry views.
 		 *
 		 * @since 1.6
-		 * @param deprecated
+		 * @deprecated
 		 * @see The `gravityview_get_template_id` filter
-		 * @param string $slug Default: 'table'
-		 * @param string $view The current view context: single
+		 *
+		 * @param string $slug    The template slug. Default: 'table'.
+		 * @param string $context The current view context: 'single'.
 		 */
 		$template_slug = apply_filters( 'gravityview_template_slug_' . $view->settings->get( 'template_single_entry' ), 'table', 'single' );
 
