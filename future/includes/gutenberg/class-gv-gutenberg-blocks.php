@@ -184,9 +184,9 @@ class Blocks {
 		/**
 		 * Modifies the global blocks localization data.
 		 *
-		 * @since  2.17
+		 * @since 2.17
 		 *
-		 * @param array $block_localization_data
+		 * @param array $block_localization_data Array of data to be localized for Gutenberg blocks.
 		 */
 		$block_localization_data = apply_filters(
 			'gk/gravityview/gutenberg/blocks/localization',
@@ -258,9 +258,9 @@ class Blocks {
 		/**
 		 * Modifies the Views object used in the UI.
 		 *
-		 * @since  2.17
+		 * @since 2.17
 		 *
-		 * @param array $formatted_views
+		 * @param array $formatted_views Array of formatted View data for the block editor.
 		 */
 		$formatted_views = apply_filters( 'gk/gravityview/gutenberg/blocks/views', array_filter( $formatted_views ) );
 
