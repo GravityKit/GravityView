@@ -98,7 +98,8 @@ class GravityView_Admin_Metaboxes {
 		 * Before rendering GravityView metaboxes.
 		 *
 		 * @since 1.8
-		 * @param WP_Post $post
+		 *
+		 * @param WP_Post $post The current View post object.
 		 */
 		do_action( 'gravityview/metaboxes/before_render', $post );
 
@@ -111,7 +112,8 @@ class GravityView_Admin_Metaboxes {
 		 * After rendering GravityView metaboxes.
 		 *
 		 * @since 1.8
-		 * @param WP_Post $post
+		 *
+		 * @param WP_Post $post The current View post object.
 		 */
 		do_action( 'gravityview/metaboxes/after_render', $post );
 	}
@@ -193,8 +195,9 @@ class GravityView_Admin_Metaboxes {
 		/**
 		 * Modify the default settings metabox tabs.
 		 *
-		 * @param array $metaboxes
 		 * @since 1.8
+		 *
+		 * @param array $metaboxes Array of metabox tab configurations.
 		 */
 		$metaboxes = apply_filters( 'gravityview/metaboxes/default', $metaboxes );
 
