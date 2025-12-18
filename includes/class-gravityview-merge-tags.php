@@ -478,15 +478,16 @@ class GravityView_Merge_Tags {
 		}
 
 		/**
-		 * Turn off merge tag variable replacements.\n.
+		 * Turn off merge tag variable replacements.
+		 *
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
 		 *
 		 * @since 1.13
 		 *
 		 * @param boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
-		 * @param string $text       Text to replace variables in
-		 * @param  array      $form        GF Form array
-		 * @param  array      $entry        GF Entry array
+		 * @param string  $text                 Text to replace variables in.
+		 * @param array   $form                 GF Form array.
+		 * @param array   $entry                GF Entry array.
 		 */
 		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
 
@@ -870,11 +871,12 @@ class GravityView_Merge_Tags {
 			$value = stripslashes_deep( \GV\Utils::_GET( $property ) );
 
 			/**
-			 * values from an array to string.
+			 * Filter the glue string used to join array values from $_GET into a string.
 			 *
 			 * @since 1.15
-			 * @param string $glue String used to `implode()` $_GET values Default: ', '
-			 * @param string $property The current name of the $_GET parameter being combined
+			 *
+			 * @param string $glue     String used to `implode()` $_GET values. Default: ', '.
+			 * @param string $property The current name of the $_GET parameter being combined.
 			 */
 			$glue = apply_filters( 'gravityview/merge_tags/get/glue/', ', ', $property );
 
@@ -883,25 +885,27 @@ class GravityView_Merge_Tags {
 			$value = $url_encode ? urlencode( $value ) : $value;
 
 			/**
-			 * merge tag.
+			 * Filter whether to escape HTML in the {get} merge tag output.
+			 *
 			 * By default, all values passed through URLs will be escaped for security reasons. If for some reason you want to
 			 * pass HTML in the URL, for example, you will need to return false on this filter. It is strongly recommended that you do
 			 * not disable this filter.
 			 *
 			 * @since 1.15
-			 * @param bool $esc_html Whether to esc_html() the value. Default: `true`
+			 *
+			 * @param bool $esc_html Whether to esc_html() the value. Default: true.
 			 */
 			$esc_html = apply_filters( 'gravityview/merge_tags/get/esc_html/' . $property, true );
 
 			$value = $esc_html ? esc_html( $value ) : $value;
 
 			/**
-			 * replacement before being used.
+			 * Filter the {get} merge tag replacement value before being used.
 			 *
-			 * @param string $value Value that will replace `{get}`
-			 * @param string $text Text that contains `{get}` (before replacement)
-			 * @param array $form Gravity Forms form array
-			 * @param array $entry Entry array
+			 * @param string $value Value that will replace `{get}`.
+			 * @param string $text  Text that contains `{get}` (before replacement).
+			 * @param array  $form  Gravity Forms form array.
+			 * @param array  $entry Entry array.
 			 */
 			$value = apply_filters( 'gravityview/merge_tags/get/value/' . $property, $value, $text, $form, $entry );
 
