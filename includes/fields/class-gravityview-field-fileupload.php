@@ -378,7 +378,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				 * @since 2.0
 				 * @see GravityView_Image For the available attributes.
 				 *
-				 * @param array $image_atts
+				 * @param array $image_atts Array of image attributes including `src`, `class`, `alt`, and `width`.
 				 */
 				$image_atts = apply_filters( 'gravityview/fields/fileupload/image_atts', $image_atts );
 
@@ -446,12 +446,14 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 *
 					 * @since 2.0 Added $context
 					 * @since 2.11 Added $additional_details
-					 * @param array|string $link_atts Array or attributes string
-					 * @param array $field_compat Current GravityView field array
-					 * @param Template_Context $context The context.
-					 * @param array $additional_details Array of additional details about the file. {
-					 * @type string $file_path URL to file.
-					 * @type string $insecure_file_path URL to insecure file.
+					 *
+					 * @param array|string     $link_atts          Array or attributes string.
+					 * @param array            $field_compat       Current GravityView field array.
+					 * @param Template_Context $context            The context.
+					 * @param array            $additional_details Array of additional details about the file. {
+					 *     @type string $file_path          URL to file.
+					 *     @type string $insecure_file_path URL to insecure file.
+					 *     @type bool   $disable_lightbox   Whether the lightbox is disabled.
 					 * }
 					 */
 					$link_atts = apply_filters( 'gravityview/fields/fileupload/link_atts', array( 'target' => '_blank' ), $field_compat, $context, compact( 'file_path', 'insecure_file_path', 'disable_lightbox' ) );
@@ -603,14 +605,13 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 *
 			 * @since 2.45
 			 *
-			 * @param array                $media_extensions Array of file extensions that can bypass secure downloads.
-			 *                                               Default: merge of image, pdf, audio, and video extensions.
-			 *                                               Use array('*') to allow all file types.
-			 * @param array                $field_settings   GravityView settings for the field.
-			 * @param GF_Field_FileUpload  $field            The file upload field.
-			 * @param array                $field_settings   GravityView settings for the field.
-			 * @param Template_Context $context          The template context.
-			 * @param string               $file_path        The file path.
+			 * @param array               $media_extensions Array of file extensions that can bypass secure downloads.
+			 *                                              Default: merge of image, pdf, audio, and video extensions.
+			 *                                              Use array('*') to allow all file types.
+			 * @param GF_Field_FileUpload $field            The file upload field.
+			 * @param array               $field_settings   GravityView settings for the field.
+			 * @param Template_Context    $context          The template context.
+			 * @param string              $file_path        The file path.
 			 */
 			$allowed_extensions = apply_filters( 'gk/gravityview/fields/fileupload/secure-links/allowed-extensions', $media_extensions, $field, $field_settings, $context, $file_path );
 
