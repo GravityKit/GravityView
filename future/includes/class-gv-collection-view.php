@@ -103,11 +103,11 @@ class View_Collection extends Collection {
 			 * This is useful when using themes that store content that may contain shortcodes in custom post meta.
 			 *
 			 * @since 2.0
-			 * @since 2.0.7 Added $views parameter, passed by reference
+			 * @since 2.0.7 Added $views parameter, passed by reference.
 			 *
-			 * @param array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
-			 * @param \WP_Post $post The post that is being checked
-			 * @param \GV\View_Collection $views The current View Collection object, passed as reference
+			 * @param array              $meta_keys Array of key values to check. If empty, do not check. Default: empty array.
+			 * @param \WP_Post           $post      The post that is being checked.
+			 * @param \GV\View_Collection $views    The current View Collection object, passed as reference.
 			 */
 			$meta_keys = apply_filters_ref_array( 'gravityview/view_collection/from_post/meta_keys', array( array(), $post, &$views ) );
 
