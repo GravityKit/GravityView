@@ -24,10 +24,11 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 	  data-viewid="<?php echo (int) $view_id; ?>">
 	<?php
 	/**
-	 * Inside the `<form>` tag of the GravityView search form,
-	 *         before inputs are rendered
+	 * Inside the `<form>` tag of the GravityView search form, before inputs are rendered.
 	 *
-	 * @param GravityView_Widget_Search $this GravityView Widget instance
+	 * @since 1.2
+	 *
+	 * @param GravityView_Widget_Search $this GravityView Widget instance.
 	 */
 	do_action( 'gravityview_search_widget_fields_before', $this );
 	?>
@@ -61,9 +62,11 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 		<div id="gv-search-advanced" class="gv-widget-search-advanced-search gv-grid<?php echo esc_attr( $open ); ?>">
 			<?php
 			/**
-			 * Inside the `<form>` tag of the GravityView search form, before advanced inputs are rendered
+			 * Inside the `<form>` tag of the GravityView search form, before advanced inputs are rendered.
 			 *
-			 * @param GravityView_Widget_Search $this GravityView Widget instance
+			 * @since 2.42
+			 *
+			 * @param GravityView_Widget_Search $this GravityView Widget instance.
 			 */
 			do_action( 'gravityview_search_widget_advanced_fields_before', $this );
 
@@ -71,9 +74,11 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 			$this->render( 'search', 'fields', false, $data );
 
 			/**
-			 * Inside the `<form>` tag of the GravityView search form, after advanced inputs are rendered
+			 * Inside the `<form>` tag of the GravityView search form, after advanced inputs are rendered.
 			 *
-			 * @param GravityView_Widget_Search $this GravityView Widget instance
+			 * @since 2.42
+			 *
+			 * @param GravityView_Widget_Search $this GravityView Widget instance.
 			 */
 			do_action( 'gravityview_search_widget_advanced_fields_after', $this );
 			?>
@@ -85,8 +90,10 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 		/**
 		 * Before each search input is rendered.
 		 *
-		 * @param GravityView_Widget_Search                                             $this GravityView Widget instance.
-		 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
+		 * @since 2.0.6.1
+		 *
+		 * @param GravityView_Widget_Search                                             $this         GravityView Widget instance.
+		 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field Search field configuration.
 		 */
 		do_action( 'gravityview_search_widget_field_before', $this, $search_field );
 
@@ -97,17 +104,20 @@ $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
 		/**
 		 * After each search input is rendered.
 		 *
-		 * @param GravityView_Widget_Search $this GravityView Widget instance
-		 * @param array                     $search_field
+		 * @since 2.0.6.1
+		 *
+		 * @param GravityView_Widget_Search $this         GravityView Widget instance.
+		 * @param array                     $search_field Search field configuration.
 		 */
 		do_action( 'gravityview_search_widget_field_after', $this, $search_field );
 	}
 
 	/**
-	 * Inside the `<form>` tag of the GravityView search form,
-	 *         after inputs are rendered
+	 * Inside the `<form>` tag of the GravityView search form, after inputs are rendered.
 	 *
-	 * @param GravityView_Widget_Search $this GravityView Widget instance
+	 * @since 1.2
+	 *
+	 * @param GravityView_Widget_Search $this GravityView Widget instance.
 	 */
 	do_action( 'gravityview_search_widget_fields_after', $this );
 	?>
