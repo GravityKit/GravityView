@@ -355,10 +355,9 @@ class View implements \ArrayAccess {
 		 * Editing a single entry.
 		 */
 		if ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) {
-			$gv_entry = $entry->as_entry();
-			$check = $gv_entry->check_access( $view );
+			$check = $entry->check_access( $view );
 			if ( is_wp_error( $check ) ) {
-				return \GravityView_Error_Messages::get( $check, $view, 'shortcode', $gv_entry );
+				return \GravityView_Error_Messages::get( $check, $view, 'shortcode', $entry );
 			}
 
 			$renderer = new Edit_Entry_Renderer();
