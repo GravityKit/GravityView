@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### ✨ Improved
+* Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
+
 #### 🐛 Fixed
 * Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
 
