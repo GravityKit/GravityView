@@ -79,7 +79,7 @@ class View_List_Template extends View_Template {
 		/**
 		 * Whether to hide the zone if the value is empty.
 		 *
-		 * @filter `gravityview/render/hide-empty-zone`
+		 * @since 1.7.6
 		 *
 		 * @param bool                 $hide_empty Should the row be hidden if the value is empty? Default: don't hide.
 		 * @param \GV\Template_Context $context    The template context.
@@ -148,8 +148,11 @@ class View_List_Template extends View_Template {
 		/**
 		 * Modify the class applied to the entry row.
 		 *
+		 * @since 2.0.6.1
+		 *
 		 * @param string               $class   The existing class.
 		 * @param \GV\Template_Context $context The context.
+		 *
 		 * @return string The modified class.
 		 */
 		return apply_filters( 'gravityview/template/list/entry/class', $class, Template_Context::from_template( $context->template, compact( 'entry' ) ) );

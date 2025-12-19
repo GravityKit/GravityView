@@ -274,9 +274,10 @@ class View_Table_Template extends View_Template {
 		/**
 		 * Modify the fields displayed in this tables.
 		 *
-		 * @param \GV\Field_Collection $fields The fields.
-		 * @param \GV\Template_Context $context The context.
 		 * @since 2.0
+		 *
+		 * @param \GV\Field_Collection $fields  The fields.
+		 * @param \GV\Template_Context $context The context.
 		 */
 		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
 
@@ -285,10 +286,10 @@ class View_Table_Template extends View_Template {
 		/**
 		 * Filter the row attributes for the row in table view.
 		 *
-		 * @param array $attributes The HTML attributes.
-		 * @param \GV\Template_Context $context The context.
-		 *
 		 * @since 2.0
+		 *
+		 * @param array                $attributes The HTML attributes.
+		 * @param \GV\Template_Context $context    The context.
 		 */
 		$attributes = apply_filters( 'gravityview/template/table/entry/row/attributes', $attributes, $context );
 
@@ -543,8 +544,11 @@ class View_Table_Template extends View_Template {
 		/**
 		 * Modify the class applied to the entry row.
 		 *
-		 * @param string              $class   The existing class.
+		 * @since 2.0.6.1
+		 *
+		 * @param string               $class   The existing class.
 		 * @param \GV\Template_Context $context The context.
+		 *
 		 * @return string The modified class.
 		 */
 		return apply_filters( 'gravityview/template/table/entry/class', $class, Template_Context::from_template( $context->template, compact( 'entry' ) ) );
