@@ -447,15 +447,15 @@ class Views_Route extends Route {
 	 * @return mixed
 	 */
 	public function prepare_view_for_response( $view_post, \WP_REST_Request $request ) {
+		$view = View::from_post( $view_post );
+
 		if ( is_wp_error( $this->get_item_permissions_check( $request, $view_post->ID ) ) ) {
 			// Redacted out view.
 			return array(
 				'ID'           => $view_post->ID,
-				'post_content' => \GravityView_Error_Messages::get( 'rest_forbidden', null, 'rest' ),
+				'post_content' => \GravityView_Error_Messages::get( 'rest_forbidden', $view, 'rest' ),
 			);
 		}
-
-		$view = View::from_post( $view_post );
 
 		$item = $view->as_data();
 
