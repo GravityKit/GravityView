@@ -688,14 +688,15 @@ class GravityView_Entry_Approval_Merge_Tags {
 		$return_url = add_query_arg( $query_args, $return_url );
 
 		/**
-		 * Modify the return URL after entry approval.
+		 * Modifies the return URL after entry approval.
 		 *
 		 * @since 2.18.7
-		 * @param int $entry_id Entry ID.
-		 * @param int $approval_status Approval status.
-		 * @param int $form_id Form ID.
-		 * @param array $scopes Token scopes to be passed to the return URL and used in {@see maybe_show_approval_notice()}.
-		 * @param string $return_url Url to redirect to once moderation happens.
+		 *
+		 * @param string $return_url      URL to redirect to once moderation happens.
+		 * @param int    $entry_id        Entry ID.
+		 * @param int    $approval_status Approval status.
+		 * @param int    $form_id         Form ID.
+		 * @param array  $scopes          Token scopes to be passed to the return URL and used in {@see maybe_show_approval_notice()}.
 		 */
 		$return_url = apply_filters( 'gk/gravityview/approve-link/return-url', $return_url, $entry_id, $approval_status, $form_id, $scopes );
 
