@@ -43,12 +43,13 @@ $link_atts = array();
 if ( ! empty( $field['postFeaturedImage'] ) && ! empty( $field_settings['dynamic_data'] ) && ! empty( $entry['post_id'] ) && has_post_thumbnail( $entry['post_id'] ) ) {
 
 	/**
-	 * Modify what size is fetched for the post's Featured Image
+	 * Modify what size is fetched for the post's Featured Image.
 	 *
-	 * @param string $size The size to be fetched using `wp_get_attachment_image_src()` (default: 'large')
-	 * @param array $entry Gravity Forms entry array
 	 * @since 2.0
-	 * @param \GV\Template_Context $context The context
+	 *
+	 * @param string               $size    The size to be fetched using `wp_get_attachment_image_src()`. Default: 'large'.
+	 * @param array                $entry   Gravity Forms entry array.
+	 * @param \GV\Template_Context $context The context.
 	 */
 	$image_size = apply_filters( 'gravityview/fields/post_image/size', 'large', $entry, $gravityview );
 	$image_url  = wp_get_attachment_image_src( get_post_thumbnail_id( $entry['post_id'] ), $image_size );
@@ -79,6 +80,13 @@ else {
 
 	// Only show the lightbox if linking to the file itself
 	if ( $gravityview->view->settings->get( 'lightbox' ) ) {
+		/**
+		 * Modify the CSS class used to trigger lightbox functionality.
+		 *
+		 * @since 1.0.5-beta
+		 *
+		 * @param string $class The CSS class to trigger lightbox. Default: 'thickbox'.
+		 */
 		$link_atts['class'] = apply_filters( 'gravityview_lightbox_script', 'thickbox' );
 	}
 }
@@ -106,8 +114,11 @@ $image = new GravityView_Image( $image_atts );
 /**
  * Modify the values used for the image meta.
  *
- * @see https://www.gravitykit.com/support/documentation/201606759 Read more about the filter
- * @param array $image_meta Associative array with `title`, `caption`, and `description` keys, each an array with `label`, `value`, `tag_label` and `tag_value` keys
+ * @since 1.2
+ *
+ * @see https://www.gravitykit.com/support/documentation/201606759 Read more about the filter.
+ *
+ * @param array $image_meta Associative array with `title`, `caption`, and `description` keys, each an array with `label`, `value`, `tag_label` and `tag_value` keys.
  */
 $image_meta = apply_filters(
 	'gravityview_post_image_meta',
@@ -139,8 +150,11 @@ $wrappertag = 'figure';
 /**
  * Whether to show labels for the image meta.
  *
- * @see https://www.gravitykit.com/support/documentation/201606759 Read more about the filter
- * @param boolean $showlabels True: Show labels; False: hide labels
+ * @since 1.2
+ *
+ * @see https://www.gravitykit.com/support/documentation/201606759 Read more about the filter.
+ *
+ * @param bool $showlabels True: Show labels; False: hide labels.
  */
 $showlabels = apply_filters( 'gravityview_post_image_meta_show_labels', true );
 
