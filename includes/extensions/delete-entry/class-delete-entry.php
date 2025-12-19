@@ -252,6 +252,7 @@ final class GravityView_Delete_Entry {
 		 * Modify whether to include passed $_GET parameters to the end of the url.
 		 *
 		 * @since 2.10
+		 *
 		 * @param bool $add_query_params Whether to include passed $_GET parameters to the end of the Delete Link URL. Default: true.
 		 */
 		$add_query_args = apply_filters( 'gravityview/delete-entry/add_query_args', true );
@@ -299,7 +300,9 @@ final class GravityView_Delete_Entry {
 		/**
 		 * Should the Delete button be shown in the Edit Entry screen?
 		 *
-		 * @param boolean $show_delete_button Default: true.
+		 * @since 1.10
+		 *
+		 * @param bool $show_delete_button Default: true.
 		 */
 		$show_delete_button = apply_filters( 'gravityview/delete-entry/show-delete-button', true );
 
@@ -310,11 +313,11 @@ final class GravityView_Delete_Entry {
 		 *
 		 * @since 2.48.4
 		 *
-		 * @param boolean $show_delete_button Whether the Delete button should be shown. Default: true.
-		 * @param array $form The Gravity Forms form.
-		 * @param array $entry The Gravity Forms entry.
-		 * @param int $view_id The current View ID.
-		 * @param int $post_id The current Post ID. May be same as View ID.
+		 * @param bool  $show_delete_button Whether the Delete button should be shown. Default: true.
+		 * @param array $form              The Gravity Forms form.
+		 * @param array $entry             The Gravity Forms entry.
+		 * @param int   $view_id           The current View ID.
+		 * @param int   $post_id           The current Post ID. May be same as View ID.
 		 */
 		$show_delete_button = apply_filters( 'gk/gravityview/delete-entry/show-delete-button', $show_delete_button, $form, $entry, $view_id, $post_id );
 
@@ -454,7 +457,7 @@ final class GravityView_Delete_Entry {
 		 *
 		 * @since 2.9.2
 		 *
-		 * @param array $delete_redirect_args Array with `_delete_nonce`, `message` and `status` keys
+		 * @param array $delete_redirect_args Array with `_delete_nonce`, `message` and `status` keys.
 		 */
 		$delete_redirect_args = apply_filters( 'gravityview/delete-entry/redirect-args', $delete_redirect_args );
 
@@ -484,8 +487,9 @@ final class GravityView_Delete_Entry {
 		/**
 		 * Delete mode: permanently delete, or move to trash?
 		 *
-		 * @deprecated TODO Use `gk/gravityview/delete-entry/mode` filter instead.
 		 * @since 1.13.1
+		 * @deprecated Use `gk/gravityview/delete-entry/mode` filter instead.
+		 *
 		 * @param string $delete_mode Delete mode: `trash` or `delete`. Default: `delete`.
 		 */
 		$delete_mode = apply_filters( 'gravityview/delete-entry/mode', 'delete' );
@@ -500,8 +504,8 @@ final class GravityView_Delete_Entry {
 		 * @link https://docs.gravitykit.com/article/299-change-the-delete-entry-mode-from-delete-to-trash for examples.
 		 *
 		 * @param string   $delete_mode Delete mode: `trash` or `delete`. Default: `delete`.
-		 * @param array $entry The entry to get the delete mode for.
-		 * @param int|null $view_id The View ID. Default: null.
+		 * @param array    $entry       The entry to get the delete mode for.
+		 * @param int|null $view_id     The View ID. Default: null.
 		 */
 		$delete_mode = apply_filters( 'gk/gravityview/delete-entry/mode', $delete_mode, $entry, $view_id );
 
@@ -541,10 +545,11 @@ final class GravityView_Delete_Entry {
 				/**
 				 * Triggered when an entry is deleted.
 				 *
-				 * @deprecated TODO Use `gk/gravityview/delete-entry/deleted` action instead.
 				 * @since 1.16.4
-				 * @param  int $entry_id ID of the Gravity Forms entry
-				 * @param  array $entry Deleted entry array
+				 * @deprecated Use `gk/gravityview/delete-entry/deleted` action instead.
+				 *
+				 * @param int   $entry_id ID of the Gravity Forms entry.
+				 * @param array $entry    Deleted entry array.
 				 */
 				do_action( 'gravityview/delete-entry/deleted', $entry_id, $entry );
 
@@ -552,10 +557,11 @@ final class GravityView_Delete_Entry {
 				 * Triggered when an entry is deleted.
 				 *
 				 * @since 2.48.5
-				 * @param  int $entry_id ID of the Gravity Forms entry
-				 * @param  array $entry Deleted entry array
-				 * @param int|null $view_id The View ID. Default: null.
-				*/
+				 *
+				 * @param int      $entry_id ID of the Gravity Forms entry.
+				 * @param array    $entry    Deleted entry array.
+				 * @param int|null $view_id  The View ID. Default: null.
+				 */
 				do_action( 'gk/gravityview/delete-entry/deleted', $entry_id, $entry, $view_id );
 			}
 
@@ -575,12 +581,11 @@ final class GravityView_Delete_Entry {
 				/**
 				 * Triggered when an entry is trashed.
 				 *
-				 * @deprecated TODO Use `gk/gravityview/delete-entry/trashed` action instead.
+				 * @since 1.16.4
+				 * @deprecated Use `gk/gravityview/delete-entry/trashed` action instead.
 				 *
-				 * @since  1.16.4
-				 *
-				 * @param  int $entry_id ID of the Gravity Forms entry.
-				 * @param  array $entry Trashed entry array.
+				 * @param int   $entry_id ID of the Gravity Forms entry.
+				 * @param array $entry    Trashed entry array.
 				 */
 				do_action( 'gravityview/delete-entry/trashed', $entry_id, $entry );
 
@@ -621,9 +626,11 @@ final class GravityView_Delete_Entry {
 
 		/**
 		 * Should posts connected to an entry be deleted when the entry is deleted?
-		 * @deprecated TODO Use `gk/gravityview/delete-entry/delete-connected-post` filter instead.
+		 *
 		 * @since 1.17
-		 * @param boolean $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true
+		 * @deprecated Use `gk/gravityview/delete-entry/delete-connected-post` filter instead.
+		 *
+		 * @param bool $delete_post If trashing an entry, trash the post. If deleting an entry, delete the post. Default: true.
 		 */
 		$delete_post = apply_filters( 'gravityview/delete-entry/delete-connected-post', true );
 
@@ -691,9 +698,11 @@ final class GravityView_Delete_Entry {
 		 * Override Delete Entry nonce validation. Return true to declare nonce valid.
 		 *
 		 * @since 1.15.2
+		 *
 		 * @see wp_verify_nonce()
-		 * @param int|boolean $valid False if invalid; 1 or 2 when nonce was generated
-		 * @param string $nonce_key Name of nonce action used in wp\_verify\_nonce. The $\_GET['delete'] value holds the nonce value itself. Default: delete_{entry_id}
+		 *
+		 * @param int|bool $valid     False if invalid; 1 or 2 when nonce was generated.
+		 * @param string   $nonce_key Name of nonce action used in wp_verify_nonce(). The $_GET['delete'] value holds the nonce value itself. Default: delete_{entry_id}.
 		 */
 		$valid = apply_filters( 'gravityview/delete-entry/verify_nonce', $valid, $nonce_key );
 
@@ -713,7 +722,9 @@ final class GravityView_Delete_Entry {
 		/**
 		 * Modify the Delete Entry Javascript confirmation text.
 		 *
-		 * @param string $confirm Default: "Are you sure you want to delete this entry? This cannot be undone."
+		 * @since 1.10
+		 *
+		 * @param string $confirm Default: "Are you sure you want to delete this entry? This cannot be undone.".
 		 */
 		$confirm = apply_filters( 'gravityview/delete-entry/confirm-text', $confirm );
 
@@ -888,9 +899,10 @@ final class GravityView_Delete_Entry {
 		 * Modify the Delete Entry messages.
 		 *
 		 * @since 1.13.1
-		 * @param string $message Message to be displayed
-		 * @param string $status Message status (`error` or `success`)
-		 * @param string $message_from_url The original error message, if any, without the "There was an error deleting the entry:" prefix
+		 *
+		 * @param string $message          Message to be displayed.
+		 * @param string $status           Message status (`error` or `success`).
+		 * @param string $message_from_url The original error message, if any, without the "There was an error deleting the entry:" prefix.
 		 */
 		$message = apply_filters( 'gravityview/delete-entry/message', esc_attr( $message ), $status, $message_from_url );
 
