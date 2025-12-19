@@ -477,6 +477,7 @@ class View_Settings extends Settings {
 					'merge_tags'        => 'force',
 					'show_in_shortcode' => true,
 					'full_width'        => true,
+					'requires_not'      => 'back_link_behavior=hidden',
 				),
 				'back_link_behavior'          => array(
 					'label'             => __( 'Back Link', 'gk-gravityview' ),
