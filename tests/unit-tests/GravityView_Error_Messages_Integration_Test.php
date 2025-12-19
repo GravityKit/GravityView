@@ -122,9 +122,9 @@ class GravityView_Error_Messages_Integration_Test extends GV_UnitTestCase {
 		$request->returns['is_entry'] = $entry;
 
 		$view = \GV\View::by_id( $this->view->ID );
-		$entry = \GV\Entry::by_id( $entry['id'] );
+		$entry = \GV\GF_Entry::from_entry( $entry );
 
-		// Check access
+		// Check access.
 		$error = $entry->check_access( $view, $request );
 
 		$this->assertTrue( is_wp_error( $error ) );
@@ -203,9 +203,9 @@ class GravityView_Error_Messages_Integration_Test extends GV_UnitTestCase {
 		$request->returns['is_entry'] = $entry;
 
 		$view = \GV\View::by_id( $this->view->ID );
-		$entry = \GV\Entry::by_id( $entry['id'] );
+		$entry = \GV\GF_Entry::from_entry( $entry );
 
-		// Check access
+		// Check access.
 		$error = $entry->check_access( $view, $request );
 
 		$this->assertTrue( is_wp_error( $error ) );
