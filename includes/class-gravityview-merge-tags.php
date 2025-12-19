@@ -247,6 +247,17 @@ class GravityView_Merge_Tags {
 			return self::format_date( $raw_value, $modifier );
 		}
 
+		/**
+		 * Filters the formatted value for unsupported field types using the :format modifier.
+		 *
+		 * @since 2.33
+		 *
+		 * @param string   $raw_value The raw field value.
+		 * @param string   $format    The format string from the modifier.
+		 * @param GF_Field $field     The Gravity Forms field object.
+		 * @param string   $modifier  The full modifier string.
+		 * @param string   $merge_tag The merge tag being processed.
+		 */
 		return apply_filters( 'gravityview/merge_tags/modifiers/format', $raw_value, $format, $field, $modifier, $merge_tag );
 	}
 
@@ -900,7 +911,9 @@ class GravityView_Merge_Tags {
 			$value = $esc_html ? esc_html( $value ) : $value;
 
 			/**
-			 * Filter the {get} merge tag replacement value before being used.
+			 * Filters the {get} merge tag replacement value before being used.
+			 *
+			 * @since 1.15
 			 *
 			 * @param string $value Value that will replace `{get}`.
 			 * @param string $text  Text that contains `{get}` (before replacement).

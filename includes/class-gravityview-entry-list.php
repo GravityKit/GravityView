@@ -230,10 +230,12 @@ class GravityView_Entry_List {
 		$output .= '</' . $this->wrapper_tag . '>';
 
 		/**
-		 * Modify the HTML of the Recent Entries widget output.
+		 * Modifies the HTML of the Recent Entries widget output.
 		 *
-		 * @param string $output HTML to be displayed
-		 * @param GravityView_Entry_List $this The current class instance
+		 * @since 1.7.2
+		 *
+		 * @param string                 $output HTML to be displayed.
+		 * @param GravityView_Entry_List $this   The current class instance.
 		 */
 		$output = apply_filters( 'gravityview/widget/recent-entries/output', $output, $this );
 
@@ -285,11 +287,13 @@ class GravityView_Entry_List {
 		$link = GravityView_API::entry_link( $entry, $this->post_id, true, $this->view_id );
 
 		/**
-		 * The link to this other entry now.
+		 * Filters the link to an entry in an entry list.
 		 *
-		 * @param string $link The link.
-		 * @param array $entry The entry.
-		 * @param \GravityView_Entry_List $this The current entry list object.
+		 * @since 2.6
+		 *
+		 * @param string                  $link  The entry link URL.
+		 * @param array                   $entry The entry array.
+		 * @param \GravityView_Entry_List $this  The current entry list object.
 		 */
 		$link = apply_filters( 'gravityview/entry-list/link', $link, $entry, $this );
 
