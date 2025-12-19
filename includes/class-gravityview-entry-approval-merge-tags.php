@@ -240,11 +240,9 @@ class GravityView_Entry_Approval_Merge_Tags {
 			/**
 			 * Modifies entry approval link parameters.
 			 *
-			 * @filter `gk/gravityview/entry/approval-link/params`
+			 * @since 2.23
 			 *
-			 * @since  TBD
-			 *
-			 * @param array{url: string, text: string, form_id: int, action: string, format: string, atts: array} $approval_link_params
+			 * @param array{url: string, text: string, form_id: int, action: string, format: string, atts: array} $approval_link_params Entry approval link parameters.
 			 */
 			$approval_link_params = wp_parse_args(
 				apply_filters( 'gk/gravityview/entry/approval-link/params', $approval_link_params ),
