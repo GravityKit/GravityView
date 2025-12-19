@@ -50,7 +50,7 @@ if ( ! $gf_field ) {
 }
 
 /**
- * Modify the alignment of the Chained Select Search Bar input fields.
+ * Modifies the alignment of the Chained Select Search Bar input fields.
  *
  * @since 2.14.4
  *
@@ -60,7 +60,7 @@ if ( ! $gf_field ) {
 $alignment = apply_filters( 'gravityview/search/chained_selects/alignment', $search_layout, $search_field );
 
 /**
- * Choose whether to hide inactive dropdowns in the chain.
+ * Chooses whether to hide inactive dropdowns in the chain.
  *
  * @since 2.14.4
  *
