@@ -48,7 +48,11 @@ class GravityView_FieldType_textarea extends GravityView_FieldType {
 		$placeholder = rgar( $this->field, 'placeholder' );
 
 		/**
+		 * Filter the default number of rows for textarea fields in GravityView admin.
+		 *
 		 * @since 1.22.5
+		 *
+		 * @param int $rows The default number of rows. Default: 5.
 		 */
 		$default_rows = apply_filters( 'gravityview/admin/field-types/textarea/rows', 5 );
 

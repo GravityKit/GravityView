@@ -351,7 +351,7 @@ class gvlogic extends \GV\Shortcode {
 		}
 
 		/**
-		 * The logic attributes.
+		 * Filter the logic attributes for the [gvlogic] shortcode.
 		 *
 		 * @since 2.5
 		 *
