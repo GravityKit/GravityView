@@ -230,8 +230,9 @@ class View_Table_Template extends View_Template {
 		 * Override the field label.
 		 *
 		 * @since 2.0
-		 * @param string $column_label The label to override.
-		 * @param \GV\Template_Context $context The context. Does not have entry set here.
+		 *
+		 * @param string               $column_label The label to override.
+		 * @param \GV\Template_Context $context      The context. Does not have entry set here.
 		 */
 		$column_label = apply_filters( 'gravityview/template/field/label', $column_label, $context );
 
@@ -420,6 +421,7 @@ class View_Table_Template extends View_Template {
 		 * Fires inside the `tbody` of the table, before any rows are rendered.
 		 *
 		 * @since 2.0
+		 *
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/table/body/before', $context );
@@ -448,6 +450,7 @@ class View_Table_Template extends View_Template {
 		 * Fires inside the `tbody` of the table, after all rows are rendered.
 		 *
 		 * @since 2.0
+		 *
 		 * @param \GV\Template_Context $context The template context.
 		 */
 		do_action( 'gravityview/template/table/body/after', $context );

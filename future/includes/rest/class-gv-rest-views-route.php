@@ -146,6 +146,8 @@ class Views_Route extends Route {
 		/**
 		 * Filter the field IDs that are output in REST requests.
 		 *
+		 * @since 2.0
+		 *
 		 * @param array            $allowed_field_ids Array of field IDs to output. Default: visible fields in the View context.
 		 * @param View             $view              The View.
 		 * @param \GV\Entry        $entry             The entry.
@@ -198,11 +200,13 @@ class Views_Route extends Route {
 			/**
 			 * Filter the key name in the results for JSON output.
 			 *
+			 * @since 2.10
+			 *
 			 * @param string           $field_id The ID. Should be unique or keys will be gobbled up.
-			 * @param View             $view     The view.
+			 * @param View             $view     The View.
 			 * @param \GV\Entry        $entry    The entry.
 			 * @param \WP_REST_Request $request  Request object.
-			 * @param string           $context  The context (directory, single)
+			 * @param string           $context  The context (directory, single).
 			 */
 			$field_id = apply_filters( 'gravityview/api/field/key', $field_id, $view, $entry, $request, $context );
 
@@ -332,6 +336,8 @@ class Views_Route extends Route {
 
 			/**
 			 * Filter the filename for the CSV or TSV export.
+			 *
+			 * @since 2.21
 			 *
 			 * @param string $filename The filename. Default: the View title.
 			 * @param View   $view     The View being exported.
@@ -526,6 +532,8 @@ class Views_Route extends Route {
 
 		/**
 		 * Disable REST output. Final chance.
+		 *
+		 * @since 2.0
 		 *
 		 * @param bool $enable Whether to enable REST output. Default: true.
 		 * @param View $view   The View being accessed.

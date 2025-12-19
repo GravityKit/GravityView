@@ -110,6 +110,14 @@ class gvlogic extends \GV\Shortcode {
 		$output = do_shortcode( $output );
 		$output = \GFCommon::replace_variables( $output, array(), array(), false, true, false );
 
+		/**
+		 * Filters the final output of the [gvlogic] shortcode.
+		 *
+		 * @since 2.5
+		 *
+		 * @param string $output The shortcode output.
+		 * @param array  $atts   The shortcode attributes.
+		 */
 		return apply_filters( 'gravityview/shortcodes/gvlogic/output', $output, $atts );
 	}
 

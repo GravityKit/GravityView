@@ -237,8 +237,11 @@ class View implements \ArrayAccess {
 				/**
 				 * Modify the url part for a View.
 				 *
+				 * @since 1.0
+				 *
 				 * @see https://docs.gravitykit.com/article/62-changing-the-view-slug
-				 * @param string $slug The slug shown in the URL
+				 *
+				 * @param string $slug The slug shown in the URL.
 				 */
 				'slug'       => apply_filters( 'gravityview_slug', 'view' ),
 
