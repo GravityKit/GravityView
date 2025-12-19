@@ -269,7 +269,8 @@ class GravityView_Entry_Approval {
 		 * Modify whether to run the after_submission process.
 		 *
 		 * @since 2.3
-		 * @param bool $process_after_submission default: true
+		 *
+		 * @param bool $process_after_submission Default: true.
 		 */
 		$process_after_submission = apply_filters( 'gravityview/approve_entries/after_submission', true );
 
@@ -283,6 +284,7 @@ class GravityView_Entry_Approval {
 		 * Modify the default approval status for newly submitted entries.
 		 *
 		 * @since 2.0.14
+		 *
 		 * @param int $default_status See GravityView_Entry_Approval_Status() for valid statuses.
 		 */
 		$filtered_status = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $default_status );
@@ -505,6 +507,7 @@ class GravityView_Entry_Approval {
 		 * Add a note when the entry has been approved or disapproved?
 		 *
 		 * @since 1.16.3
+		 *
 		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
 		 */
 		$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
@@ -678,8 +681,9 @@ class GravityView_Entry_Approval {
 		 * Note: If you want this to work with Bulk Actions, run in a plugin rather than a theme; the bulk updates hook runs before themes are loaded.
 		 *
 		 * @since 1.7.6.1
-		 * @since 1.18 Added "unapproved"
-		 * @param  int $entry_id ID of the Gravity Forms entry
+		 * @since 1.18 Added "unapproved".
+		 *
+		 * @param int $entry_id ID of the Gravity Forms entry.
 		 */
 		do_action( 'gravityview/approve_entries/' . $action, $entry_id );
 
@@ -787,6 +791,7 @@ class GravityView_Entry_Approval {
 		 * Add a note when the entry has been approved or disapproved?
 		 *
 		 * @since 1.16.3
+		 *
 		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
 		 */
 		$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
@@ -812,7 +817,8 @@ class GravityView_Entry_Approval {
 		 * Where should the popover be placed?
 		 *
 		 * @since 2.3.1
-		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+		 *
+		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'.
 		 */
 		$placement = apply_filters( 'gravityview/approve_entries/popover_placement', $placement );
 

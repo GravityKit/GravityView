@@ -737,13 +737,15 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 		}
 
 		/**
-		 * If a zone has no field output, choose whether to show wrapper
-		 * False by default to keep backward compatibility
+		 * If a zone has no field output, choose whether to show wrapper.
+		 *
+		 * False by default to keep backward compatibility.
 		 *
 		 * @since 1.7.6
-		 * @param boolean $hide_empty_zone Default: false
-		 * @since 2.0
-		 * @param \GV\Template_Context $context The context. Null here. Since this path is deprecated.
+		 * @since 2.0 Added $context parameter.
+		 *
+		 * @param bool                       $hide_empty_zone Default: false.
+		 * @param \GV\Template_Context|null  $context         The context. Null here since this path is deprecated.
 		 */
 		if ( empty( $field_output ) && apply_filters( 'gravityview/render/hide-empty-zone', false, null ) ) {
 			return null;

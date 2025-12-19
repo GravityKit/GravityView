@@ -305,9 +305,10 @@ class GravityView_Entry_List {
 			 * Modify the content displayed after the entry link in an entry list.
 			 *
 			 * @since 1.7.2
-			 * @param string $item_output The HTML output for the after_link content
-			 * @param array $entry Gravity Forms entry array
-			 * @param GravityView_Entry_List $this The current class instance
+			 *
+			 * @param string                 $item_output The HTML output for the after_link content.
+			 * @param array                  $entry       Gravity Forms entry array.
+			 * @param GravityView_Entry_List $this        The current class instance.
 			 */
 			$after_link = apply_filters( 'gravityview/entry-list/after-link', '<div>' . $this->after_link . '</div>', $entry, $this );
 
@@ -322,9 +323,10 @@ class GravityView_Entry_List {
 		 * Modify each item's output in an entry list.
 		 *
 		 * @since 1.7.2
-		 * @param string $item_output The HTML output for the item
-		 * @param array $entry Gravity Forms entry array
-		 * @param GravityView_Entry_List $this The current class instance
+		 *
+		 * @param string                 $item_output The HTML output for the item.
+		 * @param array                  $entry       Gravity Forms entry array.
+		 * @param GravityView_Entry_List $this        The current class instance.
 		 */
 		$item_output = apply_filters( 'gravityview/entry-list/item', $item_output, $entry, $this );
 
