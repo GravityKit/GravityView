@@ -147,7 +147,9 @@ class GVCommon {
 		/**
 		 * Modify the parameters sent to get all views.
 		 *
-		 * @param  array $params Array of parameters to pass to `get_posts()`
+		 * @since 1.10
+		 *
+		 * @param array $params Array of parameters to pass to `get_posts()`.
 		 */
 		$views_params = apply_filters( 'gravityview/get_all_views/params', $params );
 
@@ -693,9 +695,11 @@ class GVCommon {
 		/**
 		 * Apply final criteria filter (Used by the Advanced Filter extension).
 		 *
-		 * @param array $criteria Search criteria used by GravityView
-		 * @param array $form_ids Forms to search
-		 * @param int $view_id ID of the view being used to search
+		 * @since 1.1
+		 *
+		 * @param array $criteria Search criteria used by GravityView.
+		 * @param array $form_ids Forms to search.
+		 * @param int   $view_id  ID of the View being used to search.
 		 */
 		$criteria = apply_filters( 'gravityview_search_criteria', $criteria, $form_ids, $criteria['context_view_id'] );
 
@@ -752,12 +756,13 @@ class GVCommon {
 			 * Define entries to be used before GFAPI::get_entries() is called.
 			 *
 			 * @since 1.14
-			 * @param  null $return If you want to override GFAPI::get_entries() and define entries yourself, tap in here.
-			 * @param  array $criteria The final search criteria used to generate the request to `GFAPI::get_entries()`
-			 * @param array $passed_criteria The original search criteria passed to `GVCommon::get_entries()`
-			 * @param  int|null $total Optional. An output parameter containing the total number of entries. Pass a non-null value to generate
-			 * @since 2.1 The $total parameter can now be overriden by reference.
+			 * @since 2.1 The $total parameter can now be overridden by reference.
 			 * @deprecated
+			 *
+			 * @param null     $return          If you want to override GFAPI::get_entries() and define entries yourself, tap in here.
+			 * @param array    $criteria        The final search criteria used to generate the request to `GFAPI::get_entries()`.
+			 * @param array    $passed_criteria The original search criteria passed to `GVCommon::get_entries()`.
+			 * @param int|null $total           Optional. An output parameter containing the total number of entries.
 			 */
 			$entries = apply_filters_ref_array( 'gravityview_before_get_entries', array( null, $criteria, $passed_criteria, &$total ) );
 
