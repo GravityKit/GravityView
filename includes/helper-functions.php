@@ -677,8 +677,9 @@ function gravityview_get_terms_choices( $args = array() ) {
 	/**
 	 * Modify the arguments passed to `get_terms()`.
 	 *
-	 * @see get_terms()
 	 * @since 1.15.3
+	 *
+	 * @see get_terms()
 	 *
 	 * @param array $args Arguments array as used by the get_terms() function.
 	 */
