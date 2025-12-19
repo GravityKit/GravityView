@@ -285,8 +285,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @since 1.2
 					 * @since 2.0 Added $context parameter.
 					 *
-					 * @param array $audio_settings Array with `src` and `class` keys.
-					 * @param Template_Context $context The context.
+					 * @param array            $audio_settings Array with `src` and `class` keys.
+					 * @param Template_Context $context        The context.
 					 */
 					$audio_settings = apply_filters(
 						'gravityview_audio_settings',
@@ -321,8 +321,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					 * @since 1.2
 					 * @since 2.0 Added $context parameter.
 					 *
-					 * @param array $video_settings Array with `src` and `class` keys
-					 * @param Template_Context $context The context.
+					 * @param array            $video_settings Array with `src` and `class` keys.
+					 * @param Template_Context $context        The context.
 					 */
 					$video_settings = apply_filters(
 						'gravityview_video_settings',
@@ -376,6 +376,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				 * Modify the default image attributes for uploaded images.
 				 *
 				 * @since 2.0
+				 *
 				 * @see GravityView_Image For the available attributes.
 				 *
 				 * @param array $image_atts Array of image attributes including `src`, `class`, `alt`, and `width`.
@@ -420,7 +421,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * @since 1.5.1
 			 * @since 2.0 Added $context parameter.
 			 *
-			 * @see GravityView_API:field_value() for info about $gravityview_view->field_data
+			 * @see GravityView_API::field_value() For info about $gravityview_view->field_data.
 			 *
 			 * @param bool             $disable_wrapped_link Whether to wrap the content with a link to the content object.
 			 * @param array            $field_compat         Current GravityView field array.
@@ -436,7 +437,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				 * @since 1.7
 				 * @since 2.0 Added $context parameter.
 				 *
-				 * @param string           $content      The existing anchor content. Could be `<img>` tag, audio/video embed or the file name.
+				 * @param string           $content      The existing anchor content. Could be `<img>` tag, audio/video embed, or the file name.
 				 * @param array            $field_compat Current GravityView field array.
 				 * @param Template_Context $context      The context.
 				 */
@@ -446,8 +447,8 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 					/**
 					 * Modify the link attributes for a file upload field.
 					 *
-					 * @since 2.0 Added $context
-					 * @since 2.11 Added $additional_details
+					 * @since 2.0  Added $context.
+					 * @since 2.11 Added $additional_details.
 					 *
 					 * @param array|string     $link_atts          Array or attributes string.
 					 * @param array            $field_compat       Current GravityView field array.
@@ -480,7 +481,7 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		 * @since 1.7
 		 * @since 2.0 Added $context parameter.
 		 *
-		 * @param array            $output_arr   Associative array of files. {
+		 * @param array            $output_arr   Associative array of files {
 		 *     @type string $file_path The path to the file as stored in Gravity Forms.
 		 *     @type string $content   The generated output for the file.
 		 * }
