@@ -64,7 +64,9 @@ abstract class Entry {
 		/**
 		 * Change the slug used for single entries.
 		 *
-		 * @param string $endpoint Slug to use when accessing single entry. Default: `entry`
+		 * @since 1.0
+		 *
+		 * @param string $endpoint Slug to use when accessing single entry. Default: `entry`.
 		 */
 		$endpoint = apply_filters( 'gravityview_directory_endpoint', 'entry' );
 
@@ -197,10 +199,11 @@ abstract class Entry {
 		 * The permalink of this entry.
 		 *
 		 * @since 2.0
-		 * @param string $permalink The permalink.
-		 * @param \GV\Entry $entry The entry we're retrieving it for.
-		 * @param \GV\View|null $view The view context.
-		 * @param \GV\Request $request The request context.
+		 *
+		 * @param string         $permalink The permalink.
+		 * @param \GV\Entry      $entry     The entry we're retrieving it for.
+		 * @param \GV\View|null  $view      The view context.
+		 * @param \GV\Request    $request   The request context.
 		 */
 		return apply_filters( 'gravityview/entry/permalink', $permalink, $this, $view, $request );
 	}
