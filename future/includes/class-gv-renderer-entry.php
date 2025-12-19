@@ -46,11 +46,11 @@ class Entry_Renderer extends Renderer {
 		 * Before rendering a single entry for a specific View ID.
 		 *
 		 * @since 1.17
+		 * @since 2.0 Added $entry, $view, and $request parameters.
 		 *
-		 * @since 2.0
-		 * @param \GV\Entry $entry The entry about to be rendered
-		 * @param \GV\View $view The connected view
-		 * @param \GV\Request $request The associated request
+		 * @param \GV\Entry   $entry   The entry about to be rendered.
+		 * @param \GV\View    $view    The connected View.
+		 * @param \GV\Request $request The associated request.
 		 */
 		do_action( 'gravityview_render_entry_' . $view->ID, $entry, $view, $request );
 
@@ -122,9 +122,10 @@ class Entry_Renderer extends Renderer {
 		 * Filter the template class that is about to be used to render the entry.
 		 *
 		 * @since 2.0
-		 * @param string $class The chosen class - Default: \GV\Entry_Table_Template.
-		 * @param \GV\Entry $entry The entry about to be rendered.
-		 * @param \GV\View $view The view connected to it.
+		 *
+		 * @param string      $class   The chosen class. Default: \GV\Entry_Table_Template.
+		 * @param \GV\Entry   $entry   The entry about to be rendered.
+		 * @param \GV\View    $view    The View connected to it.
 		 * @param \GV\Request $request The associated request.
 		 */
 		$class = apply_filters( 'gravityview/template/entry/class', sprintf( '\GV\Entry_%s_Template', ucfirst( $template_slug ) ), $entry, $view, $request );

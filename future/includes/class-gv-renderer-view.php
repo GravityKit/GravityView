@@ -59,6 +59,8 @@ class View_Renderer extends Renderer {
 			 *
 			 * Some contexts don't need initial entries, like the DataTables directory type.
 			 *
+			 * @since 1.10
+			 *
 			 * @param boolean $get_entries Whether to get entries. Default: true.
 			 */
 			$get_entries = apply_filters( 'gravityview_get_view_entries_' . $template_slug, true );
@@ -109,11 +111,12 @@ class View_Renderer extends Renderer {
 			}
 
 			/**
-			 * Filter the template class that is about to be used to render the view.
+			 * Filter the template class that is about to be used to render the View.
 			 *
 			 * @since 2.0
-			 * @param string $class The chosen class - Default: \GV\View_Table_Template.
-			 * @param View $view The view about to be rendered.
+			 *
+			 * @param string      $class   The chosen class. Default: \GV\View_Table_Template.
+			 * @param View        $view    The View about to be rendered.
 			 * @param \GV\Request $request The associated request.
 			 */
 			$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view, $request );
