@@ -178,8 +178,10 @@ abstract class Widget {
 		/**
 		 * Enable custom CSS class settings for widgets.
 		 *
-		 * @param boolean $enable_custom_class False by default. Return true if you want to enable.
-		 * @param \GV\Widget $this Current instance of \GV\Widget.
+		 * @since 1.5.4
+		 *
+		 * @param bool       $enable_custom_class False by default. Return true if you want to enable.
+		 * @param \GV\Widget $this                Current instance of \GV\Widget.
 		 */
 		$enable_custom_class = apply_filters( 'gravityview/widget/enable_custom_class', false, $this );
 
@@ -447,8 +449,10 @@ abstract class Widget {
 		/**
 		 * Modify whether to hide content until search.
 		 *
-		 * @param boolean $hide_until_searched Hide until search?
-		 * @param \GV\Widget $this Widget instance
+		 * @since 1.5.4
+		 *
+		 * @param bool       $hide_until_searched Hide until search?
+		 * @param \GV\Widget $this                Widget instance.
 		 */
 		$hide_until_searched = apply_filters( 'gravityview/widget/hide_until_searched', $hide_until_searched, $this );
 
@@ -546,7 +550,9 @@ abstract class Widget {
 		/**
 		 * Each item is used to instantiate a GravityView_Admin_View_Widget object.
 		 *
-		 * @param array $registered_widgets Empty array
+		 * @since 2.0
+		 *
+		 * @param array $registered_widgets Empty array.
 		 */
 		return apply_filters( 'gravityview/widgets/register', $registered_widgets );
 	}
