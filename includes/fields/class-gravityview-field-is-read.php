@@ -203,9 +203,7 @@ class GravityView_Field_Is_Read extends GravityView_Field {
 		/**
 		 * Modify the field's "Read" or "Unread" label.
 		 *
-		 * @filter `gk/gravityview/field/is-read/label`
-		 *
-		 * @since  2.24
+		 * @since 2.24
 		 *
 		 * @param string $label The label.
 		 * @param string $value The field value.

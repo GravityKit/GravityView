@@ -418,11 +418,13 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * Filter to alter the default behaviour of wrapping images (or image names) with a link to the content object.
 			 *
 			 * @since 1.5.1
-			 * @param bool $disable_wrapped_link whether to wrap the content with a link to the content object.
-			 * @param array $field_compat Current GravityView field array
+			 * @since 2.0 Added $context parameter.
+			 *
 			 * @see GravityView_API:field_value() for info about $gravityview_view->field_data
-			 * @since 2.0
-			 * @param Template_Context $context The context.
+			 *
+			 * @param bool             $disable_wrapped_link Whether to wrap the content with a link to the content object.
+			 * @param array            $field_compat         Current GravityView field array.
+			 * @param Template_Context $context              The context.
 			 */
 			$disable_wrapped_link = apply_filters( 'gravityview/fields/fileupload/disable_link', false, $field_compat, $context );
 
@@ -432,11 +434,11 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 				 * Modify the link text (defaults to the file name).
 				 *
 				 * @since 1.7
+				 * @since 2.0 Added $context parameter.
 				 *
-				 * @param string $content The existing anchor content. Could be `<img>` tag, audio/video embed or the file name.
-				 * @param array $field_compat Current GravityView field array.
-				 * @since 2.0
-				 * @param Template_Context $context The context.
+				 * @param string           $content      The existing anchor content. Could be `<img>` tag, audio/video embed or the file name.
+				 * @param array            $field_compat Current GravityView field array.
+				 * @param Template_Context $context      The context.
 				 */
 				$content = apply_filters( 'gravityview/fields/fileupload/link_content', $text, $field_compat, $context );
 
@@ -476,13 +478,14 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		 * Modify the files array.
 		 *
 		 * @since 1.7
-		 * @since 2.0 Added $context
-		 * @param array $output_arr Associative array of files. {
-		 *  @type string $file_path The path to the file as stored in Gravity Forms.
-		 *  @type string $content The generated output for the file.
+		 * @since 2.0 Added $context parameter.
+		 *
+		 * @param array            $output_arr   Associative array of files. {
+		 *     @type string $file_path The path to the file as stored in Gravity Forms.
+		 *     @type string $content   The generated output for the file.
 		 * }
-		 * @param array $field_compat Current GravityView field array.
-		 * @param Template_Context $context The context.
+		 * @param array            $field_compat Current GravityView field array.
+		 * @param Template_Context $context      The context.
 		 */
 		$output_arr = apply_filters( 'gravityview/fields/fileupload/files_array', $output_arr, $field_compat, $context );
 
@@ -545,13 +548,13 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 		 * Modify the file path before generating a link to it.
 		 *
 		 * @since 1.22.3
-		 * @since 2.0 Added $context parameter
-		 * @since 2.8.2
+		 * @since 2.0   Added $context parameter.
+		 * @since 2.8.2 Added $index parameter.
 		 *
-		 * @param string $file_path Path to the file uploaded by Gravity Forms
-		 * @param array $field_settings Array of GravityView field settings
-		 * @param Template_Context $context The context.
-		 * @param int $index The current index of the $file_paths array being processed
+		 * @param string           $file_path      Path to the file uploaded by Gravity Forms.
+		 * @param array            $field_settings Array of GravityView field settings.
+		 * @param Template_Context $context        The context.
+		 * @param int              $index          The current index of the $file_paths array being processed.
 		 */
 		$file_path = apply_filters( 'gravityview/fields/fileupload/file_path', $file_path, $field_settings, $context, $index );
 
@@ -601,8 +604,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 			 * Special case: Return an array containing '*' to allow ALL file types to bypass
 			 * secure downloads. Use with extreme caution as this exposes all uploaded files.
 			 *
-			 * @filter `gk/gravityview/fields/fileupload/secure-links/allowed-extensions`
-			 *
 			 * @since 2.45
 			 *
 			 * @param array               $media_extensions Array of file extensions that can bypass secure downloads.
@@ -624,8 +625,6 @@ class GravityView_Field_FileUpload extends GravityView_Field {
 
 		/**
 		 * Filters whether to bypass secure download URLs for this field.
-		 *
-		 * @filter `gk/gravityview/fields/fileupload/secure-links/bypass`
 		 *
 		 * @since 2.45
 		 *
