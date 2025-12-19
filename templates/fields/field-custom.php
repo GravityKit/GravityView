@@ -30,6 +30,8 @@ if ( ! class_exists( 'GFFormDisplay' ) ) {
 /**
  * Modify entry being displayed.
  *
+ * @since 2.10.3
+ *
  * @param array                $entry       The current entry being displayed.
  * @param array                $form        The current form the custom content is using.
  * @param \GV\Template_Context $gravityview The GravityView template context instance.
@@ -38,6 +40,8 @@ $entry = apply_filters( 'gravityview/fields/custom/entry', $entry, $form, $gravi
 
 /**
  * Modify form that content is being pulled from.
+ *
+ * @since 2.10.3
  *
  * @param array                $form        The current form the custom content is using.
  * @param array                $entry       The current entry being displayed.
