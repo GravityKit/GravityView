@@ -713,9 +713,11 @@ class GravityView_View extends \GV\Gamajo_Template_Loader {
 			/**
 			 * Modify the fields displayed in a table.
 			 *
-			 * @param array $fields
-			 * @param \GravityView_View $this
-			 * @deprecated Use `gravityview/template/table/fields`
+			 * @since 2.0.6.1
+			 * @deprecated Use `gravityview/template/table/fields` instead.
+			 *
+			 * @param array             $fields Array of field configurations.
+			 * @param \GravityView_View $this   The current View object.
 			 */
 			$fields = apply_filters( 'gravityview_table_cells', $fields, $this );
 		}
