@@ -485,8 +485,8 @@ class View_Settings extends Settings {
 					'type'              => 'select',
 					'value'             => 'previous',
 					'options'           => array(
-						'previous'  => __( 'Link to Previous Page (recommended for embedded Views)', 'gk-gravityview' ),
-						'directory' => __( 'Link to Multiple Entries (preserves search and filters)', 'gk-gravityview' ),
+						'previous'  => __( 'Link to previous page (recommended for embedded Views)', 'gk-gravityview' ),
+						'directory' => __( 'Link to Multiple Entries', 'gk-gravityview' ),
 						'hidden'    => __( 'Do not show the Back Link', 'gk-gravityview' ),
 					),
 					'show_in_shortcode' => true,

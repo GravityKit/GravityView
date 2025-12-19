@@ -34,7 +34,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Back Link pointing to the View permalink, not the page where the View is embedded, when Views are embedded in posts or pages.
 
 #### 💻 Developer Updates
-* Added `gv_back` query parameter for tracking the source page when navigating to single entry from embedded Views.
+* Added `refid` query parameter for tracking the source page when navigating to single entry from embedded Views.
 
 = 2.49 on December 5, 2025 =
 

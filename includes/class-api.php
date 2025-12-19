@@ -16,10 +16,11 @@ class GravityView_API {
 	/**
 	 * Query parameter name for tracking the source page when navigating to single entry from embedded Views.
 	 *
-	 * @since 2.31
+	 * @since TODO
+	 *
 	 * @var string
 	 */
-	const BACK_LINK_PARAM = 'gv_back';
+	const BACK_LINK_PARAM = 'refid';
 
 	/**
 	 * Fetch Field Label
@@ -851,7 +852,7 @@ class GravityView_API {
 		}
 
 		/**
-		 * Add gv_back parameter to track the source page for embedded Views.
+		 * Add refid parameter to track the source page for embedded Views.
 		 *
 		 * When a View is embedded in a post or page, we capture the embedding post's ID
 		 * so the "Back Link" and "Cancel" buttons can reliably return to the correct page,
@@ -865,7 +866,7 @@ class GravityView_API {
 			// Get the current View ID from passed parameter or from the current context.
 			$current_view_id = $view_id ? $view_id : gravityview_get_view_id();
 
-			// Only add gv_back when:
+			// Only add refid when:
 			// 1. We have a valid post object
 			// 2. We have a valid View ID
 			// 3. The current post is NOT the View itself (meaning the View is embedded)
@@ -1103,17 +1104,17 @@ function gravityview_back_link( $context = null ) {
 			 * Return to previous page.
 			 *
 			 * Priority order:
-			 * 1. gv_back parameter (post ID passed via entry link URL) - most reliable for embedded Views
+			 * 1. refid parameter (post ID passed via entry link URL) - most reliable for embedded Views
 			 * 2. wp_get_referer() (HTTP referer header) - may be lost due to browser behavior or form submissions
 			 * 3. gv_directory_link() fallback - View's directory page
 			 *
-			 * @since TODO Added gv_back parameter support.
+			 * @since TODO Added refid parameter support.
 			 */
-			$gv_back = \GV\Utils::_GET( GravityView_API::BACK_LINK_PARAM );
+			$refid = \GV\Utils::_GET( GravityView_API::BACK_LINK_PARAM );
 
-			if ( $gv_back && is_numeric( $gv_back ) && get_post_status( (int) $gv_back ) ) {
-				// Use the post ID from the gv_back parameter.
-				$href = get_permalink( (int) $gv_back );
+			if ( $refid && is_numeric( $refid ) && get_post_status( (int) $refid ) ) {
+				// Use the post ID from the refid parameter.
+				$href = get_permalink( (int) $refid );
 			} else {
 				// Fall back to HTTP referer, then directory link.
 				$referer = wp_get_referer();

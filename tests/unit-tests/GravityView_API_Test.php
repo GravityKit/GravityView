@@ -480,7 +480,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	 * @covers ::gravityview_back_link()
 	 * @since 2.31
 	 */
-	public function test_gravityview_back_link_gv_back_invalid_post_id() {
+	public function test_gravityview_back_link_refid_invalid_post_id() {
 		$form = $this->factory->form->create_and_get();
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -489,8 +489,8 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
 
-		// Set gv_back to a non-existent post ID.
-		$_GET['gv_back'] = 999999999;
+		// Set refid to a non-existent post ID.
+		$_GET['refid'] = 999999999;
 
 		// Set a valid referer as fallback.
 		$_SERVER['HTTP_REFERER'] = home_url( '/fallback-page/' );
@@ -504,12 +504,12 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		gravityview_back_link( $context );
 
-		// Should fall back to referer since gv_back post doesn't exist.
-		$this->assertStringContainsString( '/fallback-page/', $captured_url, 'Invalid gv_back post ID should fall back to referer' );
+		// Should fall back to referer since refid post doesn't exist.
+		$this->assertStringContainsString( '/fallback-page/', $captured_url, 'Invalid refid post ID should fall back to referer' );
 		$this->assertStringNotContainsString( '999999999', $captured_url, 'Invalid post ID should not appear in URL' );
 
 		// Clean up.
-		unset( $_GET['gv_back'], $_SERVER['HTTP_REFERER'] );
+		unset( $_GET['refid'], $_SERVER['HTTP_REFERER'] );
 		remove_all_filters( 'gravityview/template/links/back/url' );
 	}
 
@@ -518,11 +518,11 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	 * @covers ::gravityview_back_link()
 	 * @since 2.31
 	 */
-	public function test_gravityview_back_link_gv_back_valid_post_id() {
+	public function test_gravityview_back_link_refid_valid_post_id() {
 		$form = $this->factory->form->create_and_get();
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
-		// Create a page to use as the gv_back target.
+		// Create a page to use as the refid target.
 		$page = $this->factory->post->create_and_get( array(
 			'post_type'  => 'page',
 			'post_title' => 'Embedded View Page',
@@ -534,10 +534,10 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
 
-		// Set gv_back to a valid post ID.
-		$_GET['gv_back'] = $page->ID;
+		// Set refid to a valid post ID.
+		$_GET['refid'] = $page->ID;
 
-		// Set a different referer (should be ignored in favor of gv_back).
+		// Set a different referer (should be ignored in favor of refid).
 		$_SERVER['HTTP_REFERER'] = home_url( '/different-page/' );
 
 		// Capture the generated URL via filter.
@@ -549,18 +549,18 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		gravityview_back_link( $context );
 
-		// Should use gv_back post permalink, not the referer.
+		// Should use refid post permalink, not the referer.
 		// Check for page_id parameter since test environment may not have pretty permalinks.
-		$this->assertStringContainsString( 'page_id=' . $page->ID, $captured_url, 'Valid gv_back post ID should use that post permalink' );
-		$this->assertStringNotContainsString( 'different-page', $captured_url, 'Referer should be ignored when gv_back is valid' );
+		$this->assertStringContainsString( 'page_id=' . $page->ID, $captured_url, 'Valid refid post ID should use that post permalink' );
+		$this->assertStringNotContainsString( 'different-page', $captured_url, 'Referer should be ignored when refid is valid' );
 
 		// Clean up.
-		unset( $_GET['gv_back'], $_SERVER['HTTP_REFERER'] );
+		unset( $_GET['refid'], $_SERVER['HTTP_REFERER'] );
 		remove_all_filters( 'gravityview/template/links/back/url' );
 	}
 
 	/**
-	 * Test that gv_back works when HTTP referer is completely missing.
+	 * Test that refid works when HTTP referer is completely missing.
 	 *
 	 * Real-world scenario: Browser privacy settings strip referer, or user
 	 * bookmarked the Single Entry page directly.
@@ -569,7 +569,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	 * @covers ::gravityview_back_link()
 	 * @since 2.31
 	 */
-	public function test_gravityview_back_link_gv_back_no_referer() {
+	public function test_gravityview_back_link_refid_no_referer() {
 		$form = $this->factory->form->create_and_get();
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -583,8 +583,8 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$context->view = \GV\View::from_post( $view );
 		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
 
-		// Set gv_back but NO referer (simulating privacy browser or direct bookmark).
-		$_GET['gv_back'] = $embedding_page->ID;
+		// Set refid but NO referer (simulating privacy browser or direct bookmark).
+		$_GET['refid'] = $embedding_page->ID;
 		unset( $_SERVER['HTTP_REFERER'] );
 
 		$captured_url = '';
@@ -595,10 +595,10 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		gravityview_back_link( $context );
 
-		// Should use gv_back even without referer.
-		$this->assertStringContainsString( 'page_id=' . $embedding_page->ID, $captured_url, 'gv_back should work even when HTTP referer is missing' );
+		// Should use refid even without referer.
+		$this->assertStringContainsString( 'page_id=' . $embedding_page->ID, $captured_url, 'refid should work even when HTTP referer is missing' );
 
-		unset( $_GET['gv_back'] );
+		unset( $_GET['refid'] );
 		remove_all_filters( 'gravityview/template/links/back/url' );
 	}
 
@@ -639,17 +639,17 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * Test that gv_back is NOT added when viewing View on its own CPT page.
+	 * Test that refid is NOT added when viewing View on its own CPT page.
 	 *
 	 * Real-world scenario: User visits /view/my-view/ directly (not embedded).
-	 * No gv_back should be added since there's no embedding page.
+	 * No refid should be added since there's no embedding page.
 	 *
 	 * @group back_link
 	 * @group entry_link
 	 * @covers GravityView_API::entry_link()
 	 * @since 2.31
 	 */
-	public function test_entry_link_no_gv_back_on_view_cpt_page() {
+	public function test_entry_link_no_refid_on_view_cpt_page() {
 		global $post;
 
 		$user = $this->factory->user->create_and_set( array( 'role' => 'administrator' ) );
@@ -669,14 +669,14 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$entry_url = GravityView_API::entry_link( $entry, $view->ID, true, $view->ID );
 
-		// Should NOT contain gv_back when on View's own page.
-		$this->assertStringNotContainsString( 'gv_back', $entry_url, 'Entry link should not have gv_back when on View CPT page (not embedded)' );
+		// Should NOT contain refid when on View's own page.
+		$this->assertStringNotContainsString( 'refid', $entry_url, 'Entry link should not have refid when on View CPT page (not embedded)' );
 
 		wp_reset_postdata();
 	}
 
 	/**
-	 * Test that gv_back IS added when View is embedded in a regular page.
+	 * Test that refid IS added when View is embedded in a regular page.
 	 *
 	 * Real-world scenario: Most common support issue - View embedded via shortcode
 	 * in a page, Back Link should return to that page.
@@ -686,7 +686,7 @@ class GravityView_API_Test extends GV_UnitTestCase {
 	 * @covers GravityView_API::entry_link()
 	 * @since 2.31
 	 */
-	public function test_entry_link_adds_gv_back_when_embedded() {
+	public function test_entry_link_adds_refid_when_embedded() {
 		global $post;
 
 		$user = $this->factory->user->create_and_get( array( 'role' => 'administrator' ) );
@@ -713,22 +713,22 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		$entry_url = GravityView_API::entry_link( $entry, $embedding_page->ID, true, $view->ID );
 
-		// Should contain gv_back with embedding page ID.
-		$this->assertStringContainsString( 'gv_back=' . $embedding_page->ID, $entry_url, 'Entry link should have gv_back when View is embedded in a page' );
+		// Should contain refid with embedding page ID.
+		$this->assertStringContainsString( 'refid=' . $embedding_page->ID, $entry_url, 'Entry link should have refid when View is embedded in a page' );
 
 		wp_reset_postdata();
 	}
 
 	/**
-	 * Test gv_back with non-numeric value is ignored.
+	 * Test refid with non-numeric value is ignored.
 	 *
-	 * Real-world scenario: Malicious or malformed URL with non-numeric gv_back.
+	 * Real-world scenario: Malicious or malformed URL with non-numeric refid.
 	 *
 	 * @group back_link
 	 * @covers ::gravityview_back_link()
 	 * @since 2.31
 	 */
-	public function test_gravityview_back_link_gv_back_non_numeric_ignored() {
+	public function test_gravityview_back_link_refid_non_numeric_ignored() {
 		$form = $this->factory->form->create_and_get();
 		$view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 
@@ -736,8 +736,8 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$context->view = \GV\View::from_post( $view );
 		$context->view->settings->update( array( 'back_link_behavior' => 'previous' ) );
 
-		// Set gv_back to non-numeric value.
-		$_GET['gv_back'] = 'malicious-script';
+		// Set refid to non-numeric value.
+		$_GET['refid'] = 'malicious-script';
 		$_SERVER['HTTP_REFERER'] = home_url( '/safe-fallback/' );
 
 		$captured_url = '';
@@ -748,11 +748,11 @@ class GravityView_API_Test extends GV_UnitTestCase {
 
 		gravityview_back_link( $context );
 
-		// Should fall back to referer, ignoring non-numeric gv_back.
-		$this->assertStringContainsString( '/safe-fallback/', $captured_url, 'Non-numeric gv_back should be ignored' );
-		$this->assertStringNotContainsString( 'malicious', $captured_url, 'Malicious gv_back value should not appear in URL' );
+		// Should fall back to referer, ignoring non-numeric refid.
+		$this->assertStringContainsString( '/safe-fallback/', $captured_url, 'Non-numeric refid should be ignored' );
+		$this->assertStringNotContainsString( 'malicious', $captured_url, 'Malicious refid value should not appear in URL' );
 
-		unset( $_GET['gv_back'], $_SERVER['HTTP_REFERER'] );
+		unset( $_GET['refid'], $_SERVER['HTTP_REFERER'] );
 		remove_all_filters( 'gravityview/template/links/back/url' );
 	}
 
@@ -773,14 +773,14 @@ class GravityView_API_Test extends GV_UnitTestCase {
 		$context->view = \GV\View::from_post( $view );
 		$context->view->settings->update( array( 'back_link_behavior' => 'hidden' ) );
 
-		// Even with gv_back set, hidden should return null.
-		$_GET['gv_back'] = 999;
+		// Even with refid set, hidden should return null.
+		$_GET['refid'] = 999;
 
 		$result = gravityview_back_link( $context );
 
-		$this->assertNull( $result, 'Hidden behavior should return null regardless of gv_back' );
+		$this->assertNull( $result, 'Hidden behavior should return null regardless of refid' );
 
-		unset( $_GET['gv_back'] );
+		unset( $_GET['refid'] );
 	}
 
 	/**
