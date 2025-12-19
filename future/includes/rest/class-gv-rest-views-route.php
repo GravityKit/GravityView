@@ -447,15 +447,15 @@ class Views_Route extends Route {
 	 * @return mixed
 	 */
 	public function prepare_view_for_response( $view_post, \WP_REST_Request $request ) {
+		$view = View::from_post( $view_post );
+
 		if ( is_wp_error( $this->get_item_permissions_check( $request, $view_post->ID ) ) ) {
 			// Redacted out view.
 			return array(
 				'ID'           => $view_post->ID,
-				'post_content' => __( 'You are not allowed to access this content.', 'gk-gravityview' ),
+				'post_content' => \GravityView_Error_Messages::get( 'rest_forbidden', $view, 'rest' ),
 			);
 		}
-
-		$view = View::from_post( $view_post );
 
 		$item = $view->as_data();
 
@@ -516,18 +516,7 @@ class Views_Route extends Route {
 				break;
 			}
 
-			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
-				case 'rest_disabled':
-				case 'post_password_required':
-				case 'not_public':
-				case 'embed_only':
-				case 'no_direct_access':
-					return new \WP_Error( 'rest_forbidden_access_denied', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
-				case 'no_form_attached':
-					return new \WP_Error( 'rest_forbidden_no_form_attached', __( 'This View is not configured properly.', 'gk-gravityview' ) );
-				default:
-					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
-			}
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( $error->get_error_code(), $view, 'rest' ) );
 		}
 
 		/**
@@ -539,7 +528,7 @@ class Views_Route extends Route {
 		 * @param View $view   The View being accessed.
 		 */
 		if ( ! apply_filters( 'gravityview/view/output/rest', true, $view ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( 'rest_disabled', $view, 'rest' ) );
 		}
 
 		return true;
@@ -558,27 +547,16 @@ class Views_Route extends Route {
 		$view = View::by_id( $view_id );
 
 		if ( ! $entry = \GV\GF_Entry::by_id( $entry_id ) ) {
-			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( 'entry_not_found', $view, 'rest' ) );
 		}
 
 		if ( $entry['form_id'] != $view->form->ID ) {
-			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( 'entry_form_mismatch', $view, 'rest', $entry ) );
 		}
 
-		if ( 'active' != $entry['status'] ) {
-			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
-		}
-
-		if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
-		}
-
-		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $view->ID );
-
-		if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-				return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
-			}
+		$check = $entry->check_access( $view );
+		if ( is_wp_error( $check ) ) {
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( $check, $view, 'rest', $entry ) );
 		}
 
 		return true;
@@ -604,7 +582,7 @@ class Views_Route extends Route {
 		$view_id = rgar( $params, 'id', 0 );
 
 		if ( ! $view = View::by_id( $view_id ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( 'rest_forbidden', null, 'rest' ) );
 		}
 
 		if (

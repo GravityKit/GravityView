@@ -23,6 +23,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### ✨ Improved
+* Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
+
 #### 🐛 Fixed
 * Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
 
@@ -99,7 +102,16 @@ This release addresses multiple issues impacting search fields, Edit Entry behav
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.2.
 
 #### 💻 Developer Updates
-* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
+* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic,  or modify the View Collection before it is returned.
+* Improved error message handling with centralized `GravityView_Error_Messages` class:
+  - Error messages now differentiate between administrators (actionable links) and regular users (generic messages) to prevent information disclosure.
+  - Entry permission checks moved to `GV\Entry::check_access()` for better encapsulation.
+  - All error codes standardized to `snake_case` for consistency with WordPress core conventions.
+* Enhanced security of error messages by properly escaping all translatable strings using `esc_html__()` and `wp_kses_post()`.
+* Improved code quality and type safety:
+  - Removed redundant `as_entry()` conversions where objects are already `GV\Entry` instances.
+  - Added safe array access using `GV\Utils::get()` to prevent undefined index errors.
+  - Fixed type confusion between `GV\Entry` objects and raw entry arrays.
 
 = 2.48.1 on October 9, 2025 =
 
