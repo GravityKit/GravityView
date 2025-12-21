@@ -194,6 +194,15 @@ abstract class Entry {
 		$permalink = add_query_arg( $args, $permalink );
 
 		/**
+		 * Add the referrer parameter for back link navigation.
+		 *
+		 * @since TODO
+		 */
+		if ( $track_directory ) {
+			$permalink = gv_get_referrer_url( $permalink );
+		}
+
+		/**
 		 * The permalink of this entry.
 		 *
 		 * @since 2.0

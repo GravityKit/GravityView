@@ -14,13 +14,17 @@
 class GravityView_API {
 
 	/**
-	 * Query parameter name for tracking the source page when navigating to single entry from embedded Views.
+	 * Query parameter name for the referrer URL, used for back link navigation.
+	 *
+	 * When users navigate from a View directory to a single entry page, this stores
+	 * the full referrer URL (including query parameters) so the back link can
+	 * reliably return them to the exact page they came from.
 	 *
 	 * @since TODO
 	 *
 	 * @var string
 	 */
-	const BACK_LINK_PARAM = 'refid';
+	const REFERRER_PARAM = 'referrer';
 
 	/**
 	 * Fetch Field Label
@@ -545,6 +549,9 @@ class GravityView_API {
 			}
 
 			$link = add_query_arg( $args, $link );
+
+			// Add the referrer parameter for back link navigation.
+			$link = gv_get_referrer_url( $link );
 		}
 
 		/**
@@ -851,37 +858,22 @@ class GravityView_API {
 			$args['gvid'] = $view_id ? $view_id : gravityview_get_view_id();
 		}
 
+		$url = add_query_arg( $args, $directory_link );
+
 		/**
-		 * Add refid parameter to track the source page for embedded Views.
+		 * Add referrer parameter for back link navigation.
 		 *
-		 * When a View is embedded in a post or page, we capture the embedding post's ID
-		 * so the "Back Link" and "Cancel" buttons can reliably return to the correct page,
-		 * even if the HTTP referer is lost (due to browser behavior, form submissions, etc.).
+		 * Stores the full current page URL (including query parameters) so the back link
+		 * can reliably return users to the exact page they came from. This works for both
+		 * embedded Views and standalone Views.
 		 *
 		 * @since TODO
 		 */
 		if ( $add_directory_args ) {
-			global $post;
-
-			// Get the current View ID from passed parameter or from the current context.
-			$current_view_id = $view_id ? $view_id : gravityview_get_view_id();
-
-			// Only add refid when:
-			// 1. We have a valid post object
-			// 2. We have a valid View ID
-			// 3. The current post is NOT the View itself (meaning the View is embedded)
-			// 4. The current post is not a View CPT (embedded in a regular post/page)
-			if (
-				is_a( $post, 'WP_Post' )
-				&& $current_view_id
-				&& (int) $post->ID !== (int) $current_view_id
-				&& 'gravityview' !== get_post_type( $post->ID )
-			) {
-				$args[ GravityView_API::BACK_LINK_PARAM ] = $post->ID;
-			}
+			$url = gv_get_referrer_url( $url );
 		}
 
-		return add_query_arg( $args, $directory_link );
+		return $url;
 	}
 }
 
@@ -915,7 +907,7 @@ function gv_get_query_args() {
 	$reserved_args = array(
 		'entry',
 		'gvid',
-		GravityView_API::BACK_LINK_PARAM,
+		GravityView_API::REFERRER_PARAM,
 		'status',
 		'action',
 		'view_id',
@@ -937,6 +929,29 @@ function gv_get_query_args() {
 	}
 
 	return $query_args;
+}
+
+/**
+ * Adds the referrer parameter to a URL for back link navigation.
+ *
+ * The referrer stores the current page URL so the Back Link can return users
+ * to exactly where they came from, preserving query parameters. URL fragments
+ * are handled via JavaScript, since browsers don't send them to servers.
+ *
+ * @since TODO
+ *
+ * @param string $url URL to add the referrer parameter to. Optional; if not provided, the current page URL is used.
+ *
+ * @return string URL with the referrer parameter added.
+ */
+function gv_get_referrer_url( $url = '' ) {
+	$current_url = add_query_arg( [] );
+
+	if ( '' === $url ) {
+		$url = $current_url;
+	}
+
+	return add_query_arg( GravityView_API::REFERRER_PARAM, rawurlencode( $current_url ), $url );
 }
 
 
@@ -1104,19 +1119,28 @@ function gravityview_back_link( $context = null ) {
 			 * Return to previous page.
 			 *
 			 * Priority order:
-			 * 1. refid parameter (post ID passed via entry link URL) - most reliable for embedded Views
+			 * 1. referrer parameter (full URL passed via entry link) - most reliable, preserves query args
 			 * 2. wp_get_referer() (HTTP referer header) - may be lost due to browser behavior or form submissions
 			 * 3. gv_directory_link() fallback - View's directory page
 			 *
-			 * @since TODO Added refid parameter support.
+			 * @since TODO Added referrer parameter support.
 			 */
-			$refid = \GV\Utils::_GET( GravityView_API::BACK_LINK_PARAM );
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- View-only, no state change.
+			$referrer = isset( $_GET[ GravityView_API::REFERRER_PARAM ] ) ? sanitize_text_field( wp_unslash( $_GET[ GravityView_API::REFERRER_PARAM ] ) ) : '';
 
-			if ( $refid && is_numeric( $refid ) && get_post_status( (int) $refid ) ) {
-				// Use the post ID from the refid parameter.
-				$href = get_permalink( (int) $refid );
+			if ( $referrer ) {
+				// Validate the URL to prevent open redirect vulnerabilities.
+				$validated_referrer = wp_validate_redirect( $referrer, '' );
+
+				if ( $validated_referrer ) {
+					$href = $validated_referrer;
+				} else {
+					// Invalid referrer, fall back to HTTP referer or directory link.
+					$referer = wp_get_referer();
+					$href    = $referer ? $referer : gv_directory_link( null, true, $context );
+				}
 			} else {
-				// Fall back to HTTP referer, then directory link.
+				// No referrer parameter, try HTTP referer, then fall back to directory link.
 				$referer = wp_get_referer();
 				$href    = $referer ? $referer : gv_directory_link( null, true, $context );
 			}
@@ -1181,12 +1205,19 @@ function gravityview_back_link( $context = null ) {
 
 	/**
 	 * Modify the attributes used on the back link anchor tag.
-     *
+	 *
 	 * @since 2.1
-	 * @param array $atts Original attributes, default: [ data-viewid => $view_id ]
+	 * @param array $atts Original attributes, default: [ class => 'gv-back-link', data-viewid => $view_id ]
 	 * @param \GV\Template_Context The context.
 	 */
-	$atts = apply_filters( 'gravityview/template/links/back/atts', array( 'data-viewid' => $view_id ), $context );
+	$atts = apply_filters(
+		'gravityview/template/links/back/atts',
+		[
+			'class'       => 'gv-back-link',
+			'data-viewid' => $view_id,
+		],
+		$context
+	);
 
 	$link = gravityview_get_link( $href, esc_html( $label ), $atts );
 

@@ -184,13 +184,13 @@ class GravityView_Entry_Link_Shortcode_Test extends GV_UnitTestCase {
 		\GV\Mocks\Legacy_Context::push( array( 'view' => \GV\View::from_post( $view ), 'entry' => \GV\GF_Entry::from_entry( $entry ), 'post' => $post ) );
 
 		$edit_link_no_atts = $this->object->callback( array(), '', 'gv_edit_entry_link' );
-		$gv_back = '&amp;' . GravityView_API::BACK_LINK_PARAM . '=' . $atts['post_id'];
-		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$atts['entry_id'] . $gv_back . '&amp;edit='.$nonce.esc_attr( $gvid ).'">Edit Entry</a>', $edit_link_no_atts, 'edit link no atts' );
+		$referrer_param = '&amp;' . GravityView_API::REFERRER_PARAM . '=' . rawurlencode( gv_get_referrer_url() );
+		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$atts['entry_id'] . $referrer_param . '&amp;edit='.$nonce.esc_attr( $gvid ).'">Edit Entry</a>', $edit_link_no_atts, 'edit link no atts' );
 
 		add_filter( 'gravityview_custom_entry_slug', '__return_true' );
 		$edit_link_no_atts_custom_slug = $this->object->callback( array(), '', 'gv_edit_entry_link' );
 		$entry_slug = GravityView_API::get_entry_slug( $entry['id'], $entry );
-		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$entry_slug . $gv_back . '&amp;edit='.$nonce.esc_attr( $gvid ).'">Edit Entry</a>', $edit_link_no_atts_custom_slug, 'edit link no atts custom slug' );
+		$this->assertEquals( '<a href="http://example.org/?gravityview='.$view->post_name.'&amp;entry='.$entry_slug . $referrer_param . '&amp;edit='.$nonce.esc_attr( $gvid ).'">Edit Entry</a>', $edit_link_no_atts_custom_slug, 'edit link no atts custom slug' );
 		remove_filter( 'gravityview_custom_entry_slug', '__return_true' );
 
 		\GV\Mocks\Legacy_Context::pop();
