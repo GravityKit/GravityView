@@ -241,6 +241,9 @@ final class Core {
 		/** Elementor Widget. */
 		require_once $this->plugin->dir( 'future/includes/elementor/class-elementor-integration.php' );
 
+		/** Divi Module. */
+		require_once $this->plugin->dir( 'future/includes/divi/class-divi-integration.php' );
+
 		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
 
 		/** Cache busting. */
