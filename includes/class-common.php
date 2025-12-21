@@ -27,12 +27,22 @@ class GVCommon {
 	private static array $forms = [];
 
 	/**
+	 * Contains micro cached Views list for UI integrations.
+	 *
+	 * @since TODO
+	 *
+	 * @var array
+	 */
+	private static array $views_list_cache = [];
+
+	/**
 	 * Clears the internal microcache.
 	 *
 	 * @since 2.42
 	 */
 	public static function clear_cache(): void {
-		self::$forms = [];
+		self::$forms            = [];
+		self::$views_list_cache = [];
 	}
 
 	/**
@@ -156,6 +166,99 @@ class GVCommon {
 		return $views;
 	}
 
+	/**
+	 * Get Views with details for UI integrations (page builders, blocks, etc.).
+	 *
+	 * Returns rich View data suitable for select controls and UI components.
+	 * Each page builder can format the output as needed.
+	 *
+	 * @since TODO
+	 *
+	 * @param array $args {
+	 *     Optional. Arguments to customize the query.
+	 *
+	 *     @type string $post_status Post status. Default 'publish'.
+	 *     @type string $orderby     Order by field. Default 'post_title'.
+	 *     @type string $order       Sort order. Default 'ASC'.
+	 *     @type bool   $check_caps  Check edit capabilities. Default true.
+	 * }
+	 *
+	 * @return array[] {
+	 *     Array of View data arrays, keyed by View ID.
+	 *
+	 *     @type int         $id                    View ID.
+	 *     @type string      $title                 View title.
+	 *     @type string|null $secret                Validation secret.
+	 *     @type int         $form_id               Connected form ID.
+	 *     @type string      $template              Directory/multiple entries template.
+	 *     @type string      $template_single_entry Single entry template.
+	 * }
+	 */
+	public static function get_views_list( $args = [] ) {
+		$defaults = [
+			'post_status' => 'publish',
+			'orderby'     => 'post_title',
+			'order'       => 'ASC',
+			'check_caps'  => true,
+		];
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$cache_key = md5( wp_json_encode( $args ) );
+
+		if ( isset( self::$views_list_cache[ $cache_key ] ) ) {
+			// This filter is documented below.
+			return apply_filters( 'gk/gravityview/common/views-list', self::$views_list_cache[ $cache_key ], $args );
+		}
+
+		$views = self::get_all_views( [
+			'post_status' => $args['post_status'],
+			'orderby'     => $args['orderby'],
+			'order'       => $args['order'],
+		] );
+
+		$list = [];
+
+		foreach ( $views as $post ) {
+			$view = \GV\View::from_post( $post );
+
+			if ( ! $view ) {
+				continue;
+			}
+
+			if ( $args['check_caps'] && ! self::has_cap( 'edit_gravityviews', $view->ID ) ) {
+				continue;
+			}
+
+			$list[ $view->ID ] = [
+				'id'                    => $view->ID,
+				'title'                 => $view->post_title ?: esc_html__( 'Untitled', 'gk-gravityview' ),
+				'secret'                => $view->get_validation_secret(),
+				'form_id'               => $view->form ? $view->form->ID : 0,
+				'template'              => $view->settings->get( 'template', '' ),
+				'template_single_entry' => $view->settings->get( 'template_single_entry', '' ),
+			];
+		}
+
+		self::$views_list_cache[ $cache_key ] = $list;
+
+		/**
+		 * Filters the Views list for UI integrations.
+		 *
+		 * @since TODO
+		 *
+		 * @param array[] $list Array of View data arrays, keyed by View ID.
+		 * @param array $args {
+		 *     Arguments used for the query.
+		 *
+		 *     @type string $post_status Post status. Default 'publish'.
+		 *     @type string $orderby     Order by field. Default 'post_title'.
+		 *     @type string $order       Sort order. Default 'ASC'.
+		 *     @type bool   $check_caps  Check edit capabilities. Default true.
+		 * }
+		 */
+		return apply_filters( 'gk/gravityview/common/views-list', $list, $args );
+	}
 
 	/**
 	 * Get the form array for an entry based only on the entry ID

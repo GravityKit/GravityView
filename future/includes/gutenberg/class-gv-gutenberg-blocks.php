@@ -222,49 +222,30 @@ class Blocks {
 	 *
 	 * @since 2.17
 	 *
-	 * @return array|array[]
+	 * @return array[]
 	 */
 	public function get_views() {
-		$views = GVCommon::get_all_views(
-			array(
-				'orderby' => 'post_title',
-				'order'   => 'ASC',
-			)
-		);
+		$views_data = GVCommon::get_views_list();
 
-		$formatted_views = array_map(
-			static function ( $post ) {
-				$view = View::from_post( $post );
+		$formatted_views = [];
 
-				if ( ! GVCommon::has_cap( 'edit_gravityviews', $view->ID ) ) {
-					return null;
-				}
-
-				return array_filter(
-					[
-						'value'  => (string) $view->ID,
-						'label'  => sprintf(
-							'%s (#%d)',
-							$view->post_title ?: esc_html__( 'View', 'gk-gravityview' ),
-							$view->ID
-						),
-						'secret' => $view->get_validation_secret(),
-					]
-				);
-			},
-			$views
-		);
+		foreach ( $views_data as $view ) {
+			$formatted_views[] = [
+				'value'  => (string) $view['id'],
+				// translators: %1$s is the View title, %2$d is the View ID.
+				'label'  => sprintf( __( '%1$s (#%2$d)', 'gk-gravityview' ), $view['title'], $view['id'] ),
+				'secret' => $view['secret'],
+			];
+		}
 
 		/**
 		 * Modifies the Views object used in the UI.
 		 *
-		 * @since  2.17
+		 * @since 2.17
 		 *
 		 * @param array $formatted_views
 		 */
-		$formatted_views = apply_filters( 'gk/gravityview/gutenberg/blocks/views', array_filter( $formatted_views ) );
-
-		return $formatted_views;
+		return apply_filters( 'gk/gravityview/gutenberg/blocks/views', $formatted_views );
 	}
 
 	/**
