@@ -238,6 +238,9 @@ final class Core {
 		/** Gutenberg Blocks. */
 		require_once $this->plugin->dir( 'future/includes/gutenberg/class-gv-gutenberg-blocks.php' );
 
+		/** Elementor Widget. */
+		require_once $this->plugin->dir( 'future/includes/elementor/class-elementor-integration.php' );
+
 		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
 
 		/** Cache busting. */
