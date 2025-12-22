@@ -331,6 +331,14 @@ class ShortcodeRenderer {
 	public static function render( $shortcode, $options = [] ) {
 		global $wp_scripts, $wp_styles;
 
+		// Ensure WordPress script/style systems are initialized.
+		if ( ! $wp_scripts instanceof \WP_Scripts ) {
+			$wp_scripts = wp_scripts();
+		}
+		if ( ! $wp_styles instanceof \WP_Styles ) {
+			$wp_styles = wp_styles();
+		}
+
 		$scripts_before_shortcode = array_keys( $wp_scripts->registered );
 		$styles_before_shortcode  = array_keys( $wp_styles->registered );
 
