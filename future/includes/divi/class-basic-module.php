@@ -75,9 +75,9 @@ class Basic_Module extends \ET_Builder_Module {
 	 * @return void
 	 */
 	public function init() {
-		$this->name            = esc_html__( 'GravityView', 'gk-gravityview' );
-		$this->icon_path       = __DIR__ . '/assets/icon.svg';
-		$this->use_raw_content = true;
+		$this->name             = esc_html__( 'GravityView', 'gk-gravityview' );
+		$this->icon_path        = __DIR__ . '/assets/icon.svg';
+		$this->main_css_element = '%%order_class%%';
 
 		$this->settings_modal_toggles = [
 			'general' => [
@@ -91,23 +91,27 @@ class Basic_Module extends \ET_Builder_Module {
 		$this->advanced_fields = [
 			'background'     => [
 				'css' => [
-					'main' => '%%order_class%%',
+					'main'      => '%%order_class%%',
+					'important' => true,
 				],
 			],
 			'borders'        => [
 				'default' => [
 					'css' => [
 						'main' => [
-							'border_radii'  => '%%order_class%%',
-							'border_styles' => '%%order_class%%',
+							'border_radii'       => '%%order_class%%',
+							'border_radii_hover' => '%%order_class%%:hover',
+							'border_styles'      => '%%order_class%%',
 						],
+						'important' => true,
 					],
 				],
 			],
 			'box_shadow'     => [
 				'default' => [
 					'css' => [
-						'main' => '%%order_class%%',
+						'main'      => '%%order_class%%',
+						'important' => true,
 					],
 				],
 			],
