@@ -9,6 +9,7 @@
 namespace GravityKit\GravityView\Extensions\Divi;
 
 use GravityKit\GravityView\Gutenberg\Blocks;
+use GV\Shortcodes\gravityview as GravityView_Shortcode;
 use GVCommon;
 
 /** If this file is called directly, abort. */
@@ -244,30 +245,9 @@ class Basic_Module extends \ET_Builder_Module {
 			return '';
 		}
 
-		// Build shortcode attributes.
-		$atts = [ 'id' => $view_id ];
-
-		// Add optional settings if provided.
-		$optional_settings = [ 'page_size', 'sort_field', 'sort_direction' ];
-		foreach ( $optional_settings as $key ) {
-			if ( ! empty( $this->props[ $key ] ) ) {
-				$atts[ $key ] = $this->props[ $key ];
-			}
-		}
-
-		// Generate shortcode.
-		$shortcode_atts = [];
-		foreach ( $atts as $key => $value ) {
-			$shortcode_atts[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
-		}
-
-		$secret = $view->get_validation_secret();
-
-		if ( $secret ) {
-			$shortcode_atts[] = sprintf( 'secret="%s"', $secret );
-		}
-
-		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_atts ) );
+		// Build shortcode using the same pattern as Gutenberg blocks.
+		$shortcode_atts = self::map_props_to_shortcode_atts( $this->props );
+		$shortcode      = self::build_shortcode( $shortcode_atts, $view );
 
 		// Render using existing GravityView renderer.
 		// Following Gutenberg pattern: for frontend, return just the content.
@@ -314,30 +294,9 @@ class Basic_Module extends \ET_Builder_Module {
 			return '';
 		}
 
-		// Build shortcode attributes.
-		$atts = [ 'id' => $view_id ];
-
-		// Add optional settings if provided.
-		$optional_settings = [ 'page_size', 'sort_field', 'sort_direction' ];
-		foreach ( $optional_settings as $key ) {
-			if ( ! empty( $props[ $key ] ) ) {
-				$atts[ $key ] = $props[ $key ];
-			}
-		}
-
-		// Generate shortcode.
-		$shortcode_atts = [];
-		foreach ( $atts as $key => $value ) {
-			$shortcode_atts[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
-		}
-
-		$secret = $view->get_validation_secret();
-
-		if ( $secret ) {
-			$shortcode_atts[] = sprintf( 'secret="%s"', $secret );
-		}
-
-		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_atts ) );
+		// Build shortcode using the same pattern as Gutenberg blocks.
+		$shortcode_atts = self::map_props_to_shortcode_atts( $props );
+		$shortcode      = self::build_shortcode( $shortcode_atts, $view );
 
 		// Render using existing GravityView renderer with GravityView-only style filtering.
 		// This uses the shared Blocks class method with allowlist patterns to filter
@@ -383,6 +342,80 @@ class Basic_Module extends \ET_Builder_Module {
 		}
 
 		return $views_list;
+	}
+
+	/**
+	 * Map Divi module props to shortcode attributes.
+	 *
+	 * Uses the same mapping logic as the Gutenberg block to ensure consistency.
+	 *
+	 * @since TODO
+	 *
+	 * @see GravityView_Shortcode::map_block_atts_to_shortcode_atts()
+	 *
+	 * @param array $props Divi module props.
+	 *
+	 * @return array Mapped shortcode attributes.
+	 */
+	private static function map_props_to_shortcode_atts( $props ) {
+		// Map Divi prop names to Gutenberg block attribute names.
+		// This allows us to reuse the existing mapping logic.
+		$divi_to_block_map = [
+			'view_id'        => 'viewId',
+			'page_size'      => 'pageSize',
+			'sort_field'     => 'sortField',
+			'sort_direction' => 'sortDirection',
+		];
+
+		$block_attributes = [];
+
+		foreach ( $divi_to_block_map as $divi_key => $block_key ) {
+			if ( isset( $props[ $divi_key ] ) && '' !== $props[ $divi_key ] ) {
+				$block_attributes[ $block_key ] = $props[ $divi_key ];
+			}
+		}
+
+		// Use the existing Gutenberg mapping function for consistent attribute handling.
+		return GravityView_Shortcode::map_block_atts_to_shortcode_atts( $block_attributes );
+	}
+
+	/**
+	 * Build a shortcode string from attributes.
+	 *
+	 * Sanitizes and formats attributes into a [gravityview] shortcode.
+	 *
+	 * @since TODO
+	 *
+	 * @param array    $shortcode_atts Shortcode attributes from map_props_to_shortcode_atts().
+	 * @param \GV\View $view           View object for getting the secret.
+	 *
+	 * @return string The formatted shortcode string.
+	 */
+	private static function build_shortcode( $shortcode_atts, $view ) {
+		$formatted_atts = [];
+
+		foreach ( $shortcode_atts as $attribute => $value ) {
+			$value = esc_attr( sanitize_text_field( $value ) );
+
+			if ( '' === $value ) {
+				continue;
+			}
+
+			$formatted_atts[] = sprintf(
+				'%s="%s"',
+				$attribute,
+				str_replace( '"', '\"', $value )
+			);
+		}
+
+		// Add the secret for View validation.
+		$secret = $view->get_validation_secret();
+
+		if ( $secret ) {
+			$formatted_atts[] = sprintf( 'secret="%s"', esc_attr( $secret ) );
+		}
+
+		return sprintf( '[gravityview %s]', implode( ' ', $formatted_atts ) );
 	}
 
 	/**
