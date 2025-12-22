@@ -11,6 +11,7 @@ namespace GravityKit\GravityView\Extensions\Elementor;
 use Elementor\Controls_Manager;
 use Elementor\Widget_Base;
 use GravityKit\GravityView\Gutenberg\Blocks;
+use GV\Shortcodes\gravityview as GravityView_Shortcode;
 use GVCommon;
 
 /** If this file is called directly, abort. */
@@ -353,39 +354,95 @@ class Basic_Widget extends Widget_Base {
 			return;
 		}
 
-		// Build shortcode attributes.
-		$atts = [ 'id' => $view_id ];
-
-		// Add optional settings if they differ from defaults.
-		$defaults = \GV\View_Settings::defaults( true );
-		foreach ( [ 'page_size', 'sort_field', 'sort_direction' ] as $key ) {
-			$value         = \GV\Utils::get( $settings, $key );
-			$default_value = \GV\Utils::get( $defaults, $key . '/value' );
-
-			if ( ! empty( $value ) && $value !== $default_value ) {
-				$atts[ $key ] = $value;
-			}
-		}
-
-		// Generate shortcode.
-		$shortcode_atts = [];
-		foreach ( $atts as $key => $value ) {
-			$shortcode_atts[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
-		}
-
-		$secret = $view->get_validation_secret();
-
-		if ( $secret ) {
-			$shortcode_atts[] = sprintf( 'secret="%s"', $secret );
-		}
-
-		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_atts ) );
+		// Build shortcode using the same pattern as Gutenberg blocks.
+		$shortcode = self::build_shortcode( $settings, $view );
 
 		// Render using existing GravityView renderer.
 		$rendered = Blocks::render_shortcode( $shortcode );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $rendered['content'];
+	}
+
+	/**
+	 * Map Elementor widget settings to Gutenberg block attribute names.
+	 *
+	 * Elementor control IDs use snake_case for backward compatibility with the
+	 * Advanced Elementor Widget. This method converts them to the camelCase format
+	 * expected by the shared Gutenberg mapping function.
+	 *
+	 * @since TODO
+	 *
+	 * @param array $settings Elementor widget settings.
+	 *
+	 * @return array Block-style attributes (camelCase).
+	 */
+	private static function map_settings_to_block_atts( $settings ) {
+		// Map Elementor control names to Gutenberg block attribute names.
+		$elementor_to_block_map = [
+			'embedded_view'  => 'viewId',
+			'page_size'      => 'pageSize',
+			'sort_field'     => 'sortField',
+			'sort_direction' => 'sortDirection',
+		];
+
+		$block_atts = [];
+
+		foreach ( $elementor_to_block_map as $elementor_key => $block_key ) {
+			$value = \GV\Utils::get( $settings, $elementor_key, '' );
+
+			if ( '' !== $value ) {
+				$block_atts[ $block_key ] = $value;
+			}
+		}
+
+		return $block_atts;
+	}
+
+	/**
+	 * Build a shortcode string from widget settings.
+	 *
+	 * Uses the shared Gutenberg mapping function for consistency across
+	 * all page builder integrations.
+	 *
+	 * @since TODO
+	 *
+	 * @param array    $settings Widget settings from get_settings_for_display().
+	 * @param \GV\View $view     View object for getting the secret.
+	 *
+	 * @return string The formatted shortcode string.
+	 */
+	private static function build_shortcode( $settings, $view ) {
+		// Convert Elementor settings to Gutenberg-style attributes.
+		$block_atts = self::map_settings_to_block_atts( $settings );
+
+		// Use the shared Gutenberg mapping function.
+		$shortcode_atts = GravityView_Shortcode::map_block_atts_to_shortcode_atts( $block_atts );
+
+		$formatted_atts = [];
+
+		foreach ( $shortcode_atts as $attribute => $value ) {
+			$value = esc_attr( sanitize_text_field( $value ) );
+
+			if ( '' === $value ) {
+				continue;
+			}
+
+			$formatted_atts[] = sprintf(
+				'%s="%s"',
+				$attribute,
+				str_replace( '"', '\"', $value )
+			);
+		}
+
+		// Add the secret for View validation.
+		$secret = $view->get_validation_secret();
+
+		if ( $secret ) {
+			$formatted_atts[] = sprintf( 'secret="%s"', esc_attr( $secret ) );
+		}
+
+		return sprintf( '[gravityview %s]', implode( ' ', $formatted_atts ) );
 	}
 
 	/**
