@@ -125,7 +125,8 @@ class Basic_Module extends FLBuilderModule {
 	/**
 	 * Build a shortcode string from module settings.
 	 *
-	 * Uses the same attribute names as Gutenberg blocks for consistency.
+	 * Uses the shared Gutenberg shortcode builder for consistency across
+	 * all page builder integrations.
 	 *
 	 * @since TODO
 	 *
@@ -143,33 +144,11 @@ class Basic_Module extends FLBuilderModule {
 			'sortDirection' => isset( $settings->sortDirection ) ? $settings->sortDirection : '',
 		];
 
-		// Use the shared Gutenberg mapping function.
-		$shortcode_atts = GravityView_Shortcode::map_block_atts_to_shortcode_atts( $props );
-
-		$formatted_atts = [];
-
-		foreach ( $shortcode_atts as $attribute => $value ) {
-			$value = esc_attr( sanitize_text_field( $value ) );
-
-			if ( '' === $value ) {
-				continue;
-			}
-
-			$formatted_atts[] = sprintf(
-				'%s="%s"',
-				$attribute,
-				str_replace( '"', '\"', $value )
-			);
-		}
-
-		// Add the secret for View validation.
-		$secret = $view->get_validation_secret();
-
-		if ( $secret ) {
-			$formatted_atts[] = sprintf( 'secret="%s"', esc_attr( $secret ) );
-		}
-
-		return sprintf( '[gravityview %s]', implode( ' ', $formatted_atts ) );
+		// Use the shared shortcode builder.
+		return GravityView_Shortcode::build_shortcode_from_block_atts(
+			$props,
+			$view->get_validation_secret()
+		);
 	}
 }
 

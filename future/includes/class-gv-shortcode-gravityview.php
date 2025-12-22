@@ -383,6 +383,45 @@ class gravityview extends \GV\Shortcode {
 	}
 
 	/**
+	 * Build a [gravityview] shortcode string from block-style attributes.
+	 *
+	 * This method centralizes shortcode building for all page builder integrations
+	 * (Gutenberg, Divi, Elementor, Beaver Builder) to ensure consistency.
+	 *
+	 * @since TODO
+	 *
+	 * @param array       $block_atts Block-style attributes (camelCase: viewId, pageSize, etc.).
+	 * @param string|null $secret     Optional. View validation secret. If provided, added to shortcode.
+	 *
+	 * @return string The formatted [gravityview ...] shortcode string.
+	 */
+	public static function build_shortcode_from_block_atts( $block_atts, $secret = null ) {
+		$shortcode_atts = self::map_block_atts_to_shortcode_atts( $block_atts );
+
+		$formatted_atts = [];
+
+		foreach ( $shortcode_atts as $attribute => $value ) {
+			$value = esc_attr( sanitize_text_field( $value ) );
+
+			if ( '' === $value ) {
+				continue;
+			}
+
+			$formatted_atts[] = sprintf(
+				'%s="%s"',
+				$attribute,
+				str_replace( '"', '\"', $value )
+			);
+		}
+
+		if ( $secret ) {
+			$formatted_atts[] = sprintf( 'secret="%s"', esc_attr( $secret ) );
+		}
+
+		return sprintf( '[gravityview %s]', implode( ' ', $formatted_atts ) );
+	}
+
+	/**
 	 * Validate attributes passed to the [gravityview] shortcode. Supports {get} Merge Tags values.
 	 *
 	 * Attributes passed to the shortcode are compared to registered attributes {@see \GV\View_Settings::defaults}

@@ -245,9 +245,11 @@ class Basic_Module extends \ET_Builder_Module {
 			return '';
 		}
 
-		// Build shortcode using the same pattern as Gutenberg blocks.
-		$shortcode_atts = self::map_props_to_shortcode_atts( $this->props );
-		$shortcode      = self::build_shortcode( $shortcode_atts, $view );
+		// Build shortcode using the shared method.
+		$shortcode = GravityView_Shortcode::build_shortcode_from_block_atts(
+			$this->props,
+			$view->get_validation_secret()
+		);
 
 		// Render using existing GravityView renderer.
 		// Following Gutenberg pattern: for frontend, return just the content.
@@ -294,9 +296,11 @@ class Basic_Module extends \ET_Builder_Module {
 			return '';
 		}
 
-		// Build shortcode using the same pattern as Gutenberg blocks.
-		$shortcode_atts = self::map_props_to_shortcode_atts( $props );
-		$shortcode      = self::build_shortcode( $shortcode_atts, $view );
+		// Build shortcode using the shared method.
+		$shortcode = GravityView_Shortcode::build_shortcode_from_block_atts(
+			$props,
+			$view->get_validation_secret()
+		);
 
 		// Render using existing GravityView renderer with GravityView-only style filtering.
 		// This uses the shared Blocks class method with allowlist patterns to filter
@@ -342,63 +346,6 @@ class Basic_Module extends \ET_Builder_Module {
 		}
 
 		return $views_list;
-	}
-
-	/**
-	 * Map module props to shortcode attributes.
-	 *
-	 * Props use the same camelCase naming as Gutenberg block attributes,
-	 * allowing direct use of the shared mapping function.
-	 *
-	 * @since TODO
-	 *
-	 * @see GravityView_Shortcode::map_block_atts_to_shortcode_atts()
-	 *
-	 * @param array $props Module props (viewId, pageSize, sortField, sortDirection).
-	 *
-	 * @return array Mapped shortcode attributes.
-	 */
-	private static function map_props_to_shortcode_atts( $props ) {
-		return GravityView_Shortcode::map_block_atts_to_shortcode_atts( $props );
-	}
-
-	/**
-	 * Build a shortcode string from attributes.
-	 *
-	 * Sanitizes and formats attributes into a [gravityview] shortcode.
-	 *
-	 * @since TODO
-	 *
-	 * @param array    $shortcode_atts Shortcode attributes from map_props_to_shortcode_atts().
-	 * @param \GV\View $view           View object for getting the secret.
-	 *
-	 * @return string The formatted shortcode string.
-	 */
-	private static function build_shortcode( $shortcode_atts, $view ) {
-		$formatted_atts = [];
-
-		foreach ( $shortcode_atts as $attribute => $value ) {
-			$value = esc_attr( sanitize_text_field( $value ) );
-
-			if ( '' === $value ) {
-				continue;
-			}
-
-			$formatted_atts[] = sprintf(
-				'%s="%s"',
-				$attribute,
-				str_replace( '"', '\"', $value )
-			);
-		}
-
-		// Add the secret for View validation.
-		$secret = $view->get_validation_secret();
-
-		if ( $secret ) {
-			$formatted_atts[] = sprintf( 'secret="%s"', esc_attr( $secret ) );
-		}
-
-		return sprintf( '[gravityview %s]', implode( ' ', $formatted_atts ) );
 	}
 
 	/**

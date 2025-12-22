@@ -402,7 +402,7 @@ class Basic_Widget extends Widget_Base {
 	/**
 	 * Build a shortcode string from widget settings.
 	 *
-	 * Uses the shared Gutenberg mapping function for consistency across
+	 * Uses the shared Gutenberg shortcode builder for consistency across
 	 * all page builder integrations.
 	 *
 	 * @since TODO
@@ -416,33 +416,11 @@ class Basic_Widget extends Widget_Base {
 		// Convert Elementor settings to Gutenberg-style attributes.
 		$block_atts = self::map_settings_to_block_atts( $settings );
 
-		// Use the shared Gutenberg mapping function.
-		$shortcode_atts = GravityView_Shortcode::map_block_atts_to_shortcode_atts( $block_atts );
-
-		$formatted_atts = [];
-
-		foreach ( $shortcode_atts as $attribute => $value ) {
-			$value = esc_attr( sanitize_text_field( $value ) );
-
-			if ( '' === $value ) {
-				continue;
-			}
-
-			$formatted_atts[] = sprintf(
-				'%s="%s"',
-				$attribute,
-				str_replace( '"', '\"', $value )
-			);
-		}
-
-		// Add the secret for View validation.
-		$secret = $view->get_validation_secret();
-
-		if ( $secret ) {
-			$formatted_atts[] = sprintf( 'secret="%s"', esc_attr( $secret ) );
-		}
-
-		return sprintf( '[gravityview %s]', implode( ' ', $formatted_atts ) );
+		// Use the shared shortcode builder.
+		return GravityView_Shortcode::build_shortcode_from_block_atts(
+			$block_atts,
+			$view->get_validation_secret()
+		);
 	}
 
 	/**
