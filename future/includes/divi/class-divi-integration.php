@@ -90,7 +90,9 @@ class Integration {
 	/**
 	 * Enqueue Visual Builder assets.
 	 *
-	 * Loads the compiled React component bundle for Divi's Visual Builder.
+	 * Loads the compiled React component bundle for Divi's Visual Builder
+	 * and GravityView's core CSS styles.
+	 *
 	 * The bundle registers a component at ET_Builder.Modules.gk_gravityview
 	 * which renders the View content from the computed callback.
 	 *

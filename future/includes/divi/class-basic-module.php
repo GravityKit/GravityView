@@ -148,10 +148,17 @@ class Basic_Module extends \ET_Builder_Module {
 			],
 			'page_size'      => [
 				'label'           => esc_html__( 'Number of Entries', 'gk-gravityview' ),
-				'type'            => 'text',
+				'type'            => 'range',
 				'option_category' => 'basic_option',
 				'default'         => '',
-				'description'     => esc_html__( 'Number of entries to display per page. Leave empty to use View settings.', 'gk-gravityview' ),
+				'default_unit'    => '',
+				'range_settings'  => [
+					'min'  => '-1',
+					'max'  => '',
+					'step' => '1',
+				],
+				'unitless'        => true,
+				'description'     => esc_html__( 'Number of entries to display per page. Leave empty to use View settings. Use -1 to display all entries.', 'gk-gravityview' ),
 				'toggle_slug'     => 'settings',
 				'computed_affects' => [
 					'__view_content',
@@ -222,14 +229,49 @@ class Basic_Module extends \ET_Builder_Module {
 			return '';
 		}
 
-		$output = self::render_view_content( $this->props );
+		$view = \GV\View::by_id( $view_id );
 
-		if ( empty( $output ) ) {
+		if ( ! $view ) {
 			if ( $this->is_builder_context() ) {
 				return $this->render_placeholder_message(
 					esc_html__( 'View not found.', 'gk-gravityview' )
 				);
 			}
+			return '';
+		}
+
+		// Build shortcode attributes.
+		$atts = [ 'id' => $view_id ];
+
+		// Add optional settings if provided.
+		$optional_settings = [ 'page_size', 'sort_field', 'sort_direction' ];
+		foreach ( $optional_settings as $key ) {
+			if ( ! empty( $this->props[ $key ] ) ) {
+				$atts[ $key ] = $this->props[ $key ];
+			}
+		}
+
+		// Generate shortcode.
+		$shortcode_atts = [];
+		foreach ( $atts as $key => $value ) {
+			$shortcode_atts[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
+		}
+
+		$secret = $view->get_validation_secret();
+
+		if ( $secret ) {
+			$shortcode_atts[] = sprintf( 'secret="%s"', $secret );
+		}
+
+		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_atts ) );
+
+		// Render using existing GravityView renderer.
+		// Following Gutenberg pattern: for frontend, return just the content.
+		$rendered = Blocks::render_shortcode( $shortcode );
+
+		$output = $rendered['content'] ?? '';
+
+		if ( empty( $output ) ) {
 			return '';
 		}
 
@@ -240,13 +282,16 @@ class Basic_Module extends \ET_Builder_Module {
 	}
 
 	/**
-	 * Render View content (used for both frontend and Visual Builder).
+	 * Render View content for Visual Builder computed callback.
+	 *
+	 * Returns JSON with content and styles for the React component to handle.
+	 * Following the same pattern as Gutenberg blocks.
 	 *
 	 * @since TODO
 	 *
 	 * @param array $props Module properties.
 	 *
-	 * @return string Rendered View content.
+	 * @return string JSON-encoded content and styles.
 	 */
 	public static function render_view_content( $props ) {
 		if ( ! class_exists( '\GV\View' ) ) {
@@ -290,10 +335,30 @@ class Basic_Module extends \ET_Builder_Module {
 
 		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_atts ) );
 
-		// Render using existing GravityView renderer.
-		$rendered = Blocks::render_shortcode( $shortcode );
+		// Render using existing GravityView renderer with GravityView-only style filtering.
+		// This uses the shared Blocks class method with allowlist patterns to filter
+		// styles by handle (slug) BEFORE dependency resolution, ensuring only
+		// GravityView-related styles and their dependencies are included.
+		$rendered = Blocks::render_shortcode( $shortcode, [
+			'allowed_style_patterns' => Blocks::ALLOWLIST_HANDLE_PATTERNS,
+		] );
 
-		return $rendered['content'] ?? '';
+		$content = $rendered['content'] ?? '';
+		$styles  = $rendered['styles'] ?? [];
+
+		// If no content, return empty.
+		if ( empty( $content ) ) {
+			return '';
+		}
+
+		// Return JSON with content and styles for the React component to handle.
+		// The React component will dynamically load styles as external stylesheets,
+		// following the same pattern as the Gutenberg block implementation.
+		// Use array_values() to ensure sequential array keys for proper JSON array encoding.
+		return wp_json_encode( [
+			'content' => $content,
+			'styles'  => array_values( $styles ),
+		] );
 	}
 
 	/**
