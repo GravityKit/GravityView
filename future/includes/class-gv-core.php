@@ -244,6 +244,9 @@ final class Core {
 		/** Divi Module. */
 		require_once $this->plugin->dir( 'future/includes/divi/class-divi-integration.php' );
 
+		/** Beaver Builder Module. */
+		require_once $this->plugin->dir( 'future/includes/beaver-builder/class-beaver-builder-integration.php' );
+
 		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
 
 		/** Cache busting. */

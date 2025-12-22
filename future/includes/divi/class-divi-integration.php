@@ -52,7 +52,7 @@ class Integration {
 	private function is_divi_active() {
 		// Check for Divi theme.
 		$theme = wp_get_theme();
-		if ( 'Divi' === $theme->get( 'Name' ) || 'Divi' === $theme->parent_theme ) {
+		if ( 'Divi' === $theme->get( 'Name' ) || ( $theme->parent() && 'Divi' === $theme->parent()->get( 'Name' ) ) ) {
 			return true;
 		}
 
