@@ -3,6 +3,7 @@
 namespace GravityKit\GravityView\Gutenberg;
 
 use GravityKit\GravityView\Foundation\Helpers\Arr;
+use GravityKit\GravityView\Shortcodes\ShortcodeRenderer;
 use GV\View;
 use GVCommon;
 
@@ -278,6 +279,7 @@ class Blocks {
 	 * unrelated dependencies from being included in the final output.
 	 *
 	 * @since TODO
+	 * @deprecated TODO Use ShortcodeRenderer::filter_asset_handles() instead.
 	 *
 	 * @param array  $handles  Array of asset handles (slugs) to filter.
 	 * @param array  $patterns Array of patterns to match against handles.
@@ -286,19 +288,7 @@ class Blocks {
 	 * @return array Filtered array of handles.
 	 */
 	public static function filter_asset_handles( $handles, $patterns = [], $mode = 'blocklist' ) {
-		if ( empty( $handles ) || empty( $patterns ) ) {
-			return $handles;
-		}
-
-		$pattern_regex = '/(' . implode( '|', array_map( 'preg_quote', $patterns ) ) . ')/i';
-
-		if ( 'allowlist' === $mode ) {
-			// Keep only handles that match at least one pattern.
-			return array_values( preg_grep( $pattern_regex, $handles ) );
-		}
-
-		// Blocklist mode: remove handles that match any pattern.
-		return array_values( array_diff( $handles, preg_grep( $pattern_regex, $handles ) ) );
+		return ShortcodeRenderer::filter_asset_handles( $handles, $patterns, $mode );
 	}
 
 	/**
@@ -306,6 +296,7 @@ class Blocks {
 	 *
 	 * @since 2.17
 	 * @since TODO Added $options parameter for asset handle filtering.
+	 * @deprecated TODO Use ShortcodeRenderer::render() instead.
 	 *
 	 * @param string $shortcode The shortcode to render.
 	 * @param array  $options {
@@ -320,104 +311,7 @@ class Blocks {
 	 * @return array{content: string, scripts: array, styles: array}
 	 */
 	public static function render_shortcode( $shortcode, $options = [] ) {
-		global $wp_scripts, $wp_styles;
-
-		$scripts_before_shortcode = array_keys( $wp_scripts->registered );
-		$styles_before_shortcode  = array_keys( $wp_styles->registered );
-
-		ob_start();
-
-		$rendered_shortcode = do_shortcode( $shortcode );
-
-		do_action( 'wp_enqueue_scripts' );
-
-		$gravityview_frontend = \GravityView_frontend::getInstance();
-		$gravityview_frontend->setGvOutputData( \GravityView_View_Data::getInstance( $shortcode ) );
-		$gravityview_frontend->add_scripts_and_styles();
-
-		$scripts_after_shortcode = array_keys( $wp_scripts->registered );
-		$styles_after_shortcode  = array_keys( $wp_styles->registered );
-
-		$newly_registered_scripts = array_diff( $scripts_after_shortcode, $scripts_before_shortcode );
-		$newly_registered_styles  = array_diff( $styles_after_shortcode, $styles_before_shortcode );
-
-		// First, apply blocklist to remove scripts/styles that may cause conflicts.
-		$newly_registered_scripts = self::filter_asset_handles(
-			$newly_registered_scripts,
-			self::IGNORE_SCRIPTS_AND_STYLES,
-			'blocklist'
-		);
-		$newly_registered_styles = self::filter_asset_handles(
-			$newly_registered_styles,
-			self::IGNORE_SCRIPTS_AND_STYLES,
-			'blocklist'
-		);
-
-		// Then, apply allowlist if patterns are provided to further filter assets.
-		if ( ! empty( $options['allowed_script_patterns'] ) ) {
-			$newly_registered_scripts = self::filter_asset_handles(
-				$newly_registered_scripts,
-				$options['allowed_script_patterns'],
-				'allowlist'
-			);
-		}
-
-		if ( ! empty( $options['allowed_style_patterns'] ) ) {
-			$newly_registered_styles = self::filter_asset_handles(
-				$newly_registered_styles,
-				$options['allowed_style_patterns'],
-				'allowlist'
-			);
-		}
-
-		// This will return an array of all dependencies sorted in the order they should be loaded.
-		$get_dependencies = function ( $handle, $source, $dependencies = array() ) use ( &$get_dependencies ) {
-			if ( empty( $source->registered[ $handle ] ) ) {
-				return $dependencies;
-			}
-
-			if ( $source->registered[ $handle ]->extra && ! empty( $source->registered[ $handle ]->extra['data'] ) ) {
-				array_unshift(
-					$dependencies,
-					array_filter(
-						array(
-							'src'  => $source->registered[ $handle ]->src,
-							'data' => $source->registered[ $handle ]->extra['data'],
-						)
-					)
-				);
-			} elseif ( $source->registered[ $handle ]->src ) {
-				array_unshift( $dependencies, $source->registered[ $handle ]->src );
-			}
-
-			if ( ! $source->registered[ $handle ]->deps ) {
-				return $dependencies;
-			}
-
-			foreach ( $source->registered[ $handle ]->deps as $dependency ) {
-				array_unshift( $dependencies, $get_dependencies( $dependency, $source ) );
-			}
-
-			return Arr::flatten( $dependencies );
-		};
-
-		$script_dependencies = array();
-		foreach ( $newly_registered_scripts as $script ) {
-			$script_dependencies = array_merge( $script_dependencies, $get_dependencies( $script, $wp_scripts ) );
-		}
-
-		$style_dependencies = array();
-		foreach ( $newly_registered_styles as $style ) {
-			$style_dependencies = array_merge( $style_dependencies, $get_dependencies( $style, $wp_styles ) );
-		}
-
-		ob_end_clean();
-
-		return array(
-			'scripts' => array_unique( $script_dependencies, SORT_REGULAR ),
-			'styles'  => array_unique( $style_dependencies, SORT_REGULAR ),
-			'content' => $rendered_shortcode,
-		);
+		return ShortcodeRenderer::render( $shortcode, $options );
 	}
 }
 

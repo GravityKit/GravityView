@@ -8,8 +8,7 @@
 
 namespace GravityKit\GravityView\Extensions\Divi;
 
-use GravityKit\GravityView\Gutenberg\Blocks;
-use GV\Shortcodes\gravityview as GravityView_Shortcode;
+use GravityKit\GravityView\Shortcodes\ShortcodeRenderer;
 use GVCommon;
 
 /** If this file is called directly, abort. */
@@ -245,15 +244,14 @@ class Basic_Module extends \ET_Builder_Module {
 			return '';
 		}
 
-		// Build shortcode using the shared method.
-		$shortcode = GravityView_Shortcode::build_shortcode_from_block_atts(
+		// Build shortcode using the shared ShortcodeRenderer.
+		$shortcode = ShortcodeRenderer::build_from_block_atts(
 			$this->props,
 			$view->get_validation_secret()
 		);
 
-		// Render using existing GravityView renderer.
-		// Following Gutenberg pattern: for frontend, return just the content.
-		$rendered = Blocks::render_shortcode( $shortcode );
+		// Render using the shared ShortcodeRenderer.
+		$rendered = ShortcodeRenderer::render( $shortcode );
 
 		$output = $rendered['content'] ?? '';
 
@@ -296,18 +294,18 @@ class Basic_Module extends \ET_Builder_Module {
 			return '';
 		}
 
-		// Build shortcode using the shared method.
-		$shortcode = GravityView_Shortcode::build_shortcode_from_block_atts(
+		// Build shortcode using the shared ShortcodeRenderer.
+		$shortcode = ShortcodeRenderer::build_from_block_atts(
 			$props,
 			$view->get_validation_secret()
 		);
 
-		// Render using existing GravityView renderer with GravityView-only style filtering.
-		// This uses the shared Blocks class method with allowlist patterns to filter
-		// styles by handle (slug) BEFORE dependency resolution, ensuring only
-		// GravityView-related styles and their dependencies are included.
-		$rendered = Blocks::render_shortcode( $shortcode, [
-			'allowed_style_patterns' => Blocks::ALLOWLIST_HANDLE_PATTERNS,
+		// Render using ShortcodeRenderer with GravityView-only style filtering.
+		// This uses allowlist patterns to filter styles by handle (slug)
+		// BEFORE dependency resolution, ensuring only GravityView-related
+		// styles and their dependencies are included.
+		$rendered = ShortcodeRenderer::render( $shortcode, [
+			'allowed_style_patterns' => ShortcodeRenderer::ALLOWLIST_HANDLE_PATTERNS,
 		] );
 
 		$content = $rendered['content'] ?? '';

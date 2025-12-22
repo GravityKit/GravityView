@@ -10,8 +10,7 @@ namespace GravityKit\GravityView\Extensions\BeaverBuilder;
 
 use FLBuilderModule;
 use FLBuilder;
-use GravityKit\GravityView\Gutenberg\Blocks;
-use GV\Shortcodes\gravityview as GravityView_Shortcode;
+use GravityKit\GravityView\Shortcodes\ShortcodeRenderer;
 use GVCommon;
 
 /** If this file is called directly, abort. */
@@ -115,8 +114,8 @@ class Basic_Module extends FLBuilderModule {
 		// Build shortcode using the same pattern as Gutenberg blocks.
 		$shortcode = self::build_shortcode( $this->settings, $view );
 
-		// Render using existing GravityView renderer.
-		$rendered = Blocks::render_shortcode( $shortcode );
+		// Render using the shared ShortcodeRenderer.
+		$rendered = ShortcodeRenderer::render( $shortcode );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $rendered['content'];
@@ -125,7 +124,7 @@ class Basic_Module extends FLBuilderModule {
 	/**
 	 * Build a shortcode string from module settings.
 	 *
-	 * Uses the shared Gutenberg shortcode builder for consistency across
+	 * Uses the shared ShortcodeRenderer for consistency across
 	 * all page builder integrations.
 	 *
 	 * @since TODO
@@ -145,7 +144,7 @@ class Basic_Module extends FLBuilderModule {
 		];
 
 		// Use the shared shortcode builder.
-		return GravityView_Shortcode::build_shortcode_from_block_atts(
+		return ShortcodeRenderer::build_from_block_atts(
 			$props,
 			$view->get_validation_secret()
 		);

@@ -235,6 +235,9 @@ final class Core {
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
 
+		/** Shortcode Renderer (shared by all page builders). */
+		require_once $this->plugin->dir( 'future/includes/shortcodes/class-shortcode-renderer.php' );
+
 		/** Gutenberg Blocks. */
 		require_once $this->plugin->dir( 'future/includes/gutenberg/class-gv-gutenberg-blocks.php' );
 
