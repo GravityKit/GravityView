@@ -37,6 +37,9 @@ class Integration {
 
 		// Register the module when Divi is ready.
 		add_action( 'et_builder_ready', [ $this, 'register_modules' ] );
+
+		// Enqueue Visual Builder assets.
+		add_action( 'et_fb_enqueue_assets', [ $this, 'enqueue_vb_assets' ] );
 	}
 
 	/**
@@ -82,6 +85,34 @@ class Integration {
 
 		// The module registers itself in its constructor.
 		new Basic_Module();
+	}
+
+	/**
+	 * Enqueue Visual Builder assets.
+	 *
+	 * Loads the compiled React component bundle for Divi's Visual Builder.
+	 * The bundle registers a component at ET_Builder.Modules.gk_gravityview
+	 * which renders the View content from the computed callback.
+	 *
+	 * @since TODO
+	 *
+	 * @return void
+	 */
+	public function enqueue_vb_assets() {
+		$build_path = __DIR__ . '/build/bundle.min.js';
+
+		// Only enqueue if the build file exists.
+		if ( ! file_exists( $build_path ) ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'gk-gravityview-divi-vb',
+			plugins_url( 'build/bundle.min.js', __FILE__ ),
+			[ 'react', 'react-dom', 'et-frontend-builder' ],
+			filemtime( $build_path ),
+			true
+		);
 	}
 }
 
