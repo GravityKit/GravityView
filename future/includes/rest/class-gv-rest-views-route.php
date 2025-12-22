@@ -144,13 +144,15 @@ class Views_Route extends Route {
 		}
 
 		/**
-		 * Allow more entry fields that are output in regular REST requests.
+		 * Filter the field IDs that are output in REST requests.
 		 *
-		 * @param array $allowed The allowed ones, default by_visible, by_position( "context_*" ), i.e. as set in the view.
-		 * @param View $view The view.
-		 * @param \GV\Entry $entry The entry.
-		 * @param \WP_REST_Request $request Request object.
-		 * @param string $context The context (directory, single)
+		 * @since 2.0
+		 *
+		 * @param array            $allowed_field_ids Array of field IDs to output. Default: visible fields in the View context.
+		 * @param View             $view              The View.
+		 * @param \GV\Entry        $entry             The entry.
+		 * @param \WP_REST_Request $request           Request object.
+		 * @param string           $context           The context (directory, single).
 		 */
 		$allowed_field_ids = apply_filters( 'gravityview/rest/entry/fields', wp_list_pluck( $allowed, 'ID' ), $view, $entry, $request, $context );
 
@@ -198,11 +200,13 @@ class Views_Route extends Route {
 			/**
 			 * Filter the key name in the results for JSON output.
 			 *
+			 * @since 2.10
+			 *
 			 * @param string           $field_id The ID. Should be unique or keys will be gobbled up.
-			 * @param View             $view     The view.
+			 * @param View             $view     The View.
 			 * @param \GV\Entry        $entry    The entry.
 			 * @param \WP_REST_Request $request  Request object.
-			 * @param string           $context  The context (directory, single)
+			 * @param string           $context  The context (directory, single).
 			 */
 			$field_id = apply_filters( 'gravityview/api/field/key', $field_id, $view, $entry, $request, $context );
 
@@ -298,14 +302,15 @@ class Views_Route extends Route {
 			$output = $renderer->render( $view, new Request( $request ) );
 
 			/**
-			 * meta tags in the HTML output describing the data.
+			 * Filter whether to insert meta tags in the HTML output describing the data.
 			 *
 			 * @since 2.0
-			 * @param bool $insert_meta Add <meta> tags? [Default: true]
-			 * @param int $count The number of entries being rendered
-			 * @param View $view The view.
-			 * @param \WP_REST_Request $request Request object.
-			 * @param int $total The number of total entries for the request
+			 *
+			 * @param bool             $insert_meta Whether to add <meta> tags. Default: true.
+			 * @param int              $count       The number of entries being rendered.
+			 * @param View             $view        The View.
+			 * @param \WP_REST_Request $request     Request object.
+			 * @param int              $total       The total number of entries for the request.
 			 */
 			$insert_meta = apply_filters( 'gravityview/rest/entries/html/insert_meta', true, $count, $view, $request, $total );
 
@@ -329,9 +334,24 @@ class Views_Route extends Route {
 
 			$csv_or_tsv = fopen( 'php://output', 'w' );
 
+			/**
+			 * Filter the filename for the CSV or TSV export.
+			 *
+			 * @since 2.21
+			 *
+			 * @param string $filename The filename. Default: the View title.
+			 * @param View   $view     The View being exported.
+			 */
 			$filename = apply_filters( 'gravityview/output/' . $format . '/filename', get_the_title( $view->post ), $view );
 
-			/** Da' BOM :) */
+			/**
+			 * Filter whether to include a BOM (Byte Order Mark) in the export file.
+			 *
+			 * This is a Gravity Forms filter. BOM helps Excel properly detect UTF-8 encoding.
+			 *
+			 * @param bool       $include_bom Whether to include the BOM. Default: true.
+			 * @param array|null $form        The Gravity Forms form array, or null if not available.
+			 */
 			if ( apply_filters( 'gform_include_bom_export_entries', true, $view->form ? $view->form->form : null ) ) {
 				fputs( $csv_or_tsv, "\xef\xbb\xbf" );
 			}
@@ -427,15 +447,15 @@ class Views_Route extends Route {
 	 * @return mixed
 	 */
 	public function prepare_view_for_response( $view_post, \WP_REST_Request $request ) {
+		$view = View::from_post( $view_post );
+
 		if ( is_wp_error( $this->get_item_permissions_check( $request, $view_post->ID ) ) ) {
 			// Redacted out view.
 			return array(
 				'ID'           => $view_post->ID,
-				'post_content' => __( 'You are not allowed to access this content.', 'gk-gravityview' ),
+				'post_content' => \GravityView_Error_Messages::get( 'rest_forbidden', $view, 'rest' ),
 			);
 		}
-
-		$view = View::from_post( $view_post );
 
 		$item = $view->as_data();
 
@@ -496,28 +516,19 @@ class Views_Route extends Route {
 				break;
 			}
 
-			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
-				case 'rest_disabled':
-				case 'post_password_required':
-				case 'not_public':
-				case 'embed_only':
-				case 'no_direct_access':
-					return new \WP_Error( 'rest_forbidden_access_denied', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
-				case 'no_form_attached':
-					return new \WP_Error( 'rest_forbidden_no_form_attached', __( 'This View is not configured properly.', 'gk-gravityview' ) );
-				default:
-					return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
-			}
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( $error->get_error_code(), $view, 'rest' ) );
 		}
 
 		/**
-		 * Disable rest output. Final chance.
+		 * Disable REST output. Final chance.
 		 *
-		 * @param bool Enable or not.
-		 * @param View $view The view.
+		 * @since 2.0
+		 *
+		 * @param bool $enable Whether to enable REST output. Default: true.
+		 * @param View $view   The View being accessed.
 		 */
 		if ( ! apply_filters( 'gravityview/view/output/rest', true, $view ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( 'rest_disabled', $view, 'rest' ) );
 		}
 
 		return true;
@@ -536,27 +547,16 @@ class Views_Route extends Route {
 		$view = View::by_id( $view_id );
 
 		if ( ! $entry = \GV\GF_Entry::by_id( $entry_id ) ) {
-			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( 'entry_not_found', $view, 'rest' ) );
 		}
 
 		if ( $entry['form_id'] != $view->form->ID ) {
-			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( 'entry_form_mismatch', $view, 'rest', $entry ) );
 		}
 
-		if ( 'active' != $entry['status'] ) {
-			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
-		}
-
-		if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-			return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
-		}
-
-		$is_admin_and_can_view = $view->settings->get( 'admin_show_all_statuses' ) && \GVCommon::has_cap( 'gravityview_moderate_entries', $view->ID );
-
-		if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-				return new \WP_Error( 'rest_forbidden', 'You are not allowed to view this content.', 'gravityview' );
-			}
+		$check = $entry->check_access( $view );
+		if ( is_wp_error( $check ) ) {
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( $check, $view, 'rest', $entry ) );
 		}
 
 		return true;
@@ -582,7 +582,7 @@ class Views_Route extends Route {
 		$view_id = rgar( $params, 'id', 0 );
 
 		if ( ! $view = View::by_id( $view_id ) ) {
-			return new \WP_Error( 'rest_forbidden', __( 'You are not allowed to access this content.', 'gk-gravityview' ) );
+			return new \WP_Error( 'rest_forbidden', \GravityView_Error_Messages::get( 'rest_forbidden', null, 'rest' ) );
 		}
 
 		if (

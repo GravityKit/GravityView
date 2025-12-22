@@ -67,14 +67,14 @@ if ( ! isset( $field_settings['emailmailto'] ) || ! empty( $field_settings['emai
 }
 
 /**
-* Prevent encrypting emails no matter what - this is handy for DataTables exports, for example
+ * Prevent encrypting emails no matter what - this is handy for DataTables exports, for example.
  *
-* @since 1.1.6
-*
-* @since 2.0
-* @param boolean $prevent_encrypt Whether to prevent email encryption
-* @param \GV\Template_Context $gravityview The $gravityview template context object
-*/
+ * @since 1.1.6
+ * @since 2.0 Added $gravityview parameter.
+ *
+ * @param bool                 $prevent_encrypt Whether to prevent email encryption.
+ * @param \GV\Template_Context $gravityview     The template context object.
+ */
 $prevent_encrypt = apply_filters( 'gravityview_email_prevent_encrypt', false, $gravityview );
 
 // If encrypting the link

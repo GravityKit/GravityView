@@ -103,6 +103,12 @@
 		*/
 	   ignoreEscapeEvent: false,
 
+	   /**
+		* @since 2.48.2
+		* @type {number} Delay in milliseconds to wait before moving focus after smooth scrolling.
+		*/
+	   smoothScrollFocusDelay: 300,
+
 	   init: function () {
 
 		   // short tag
@@ -146,6 +152,9 @@
 
 			   // Convert rel="external" to target="_blank" for accessibility
 			   .on( 'click', 'a[rel*=external]', vcfg.openExternalLinks )
+
+			   // Scroll to settings without adding anchor to URL
+			   .on( 'click', '#gk-settings-link', vcfg.scrollToSettings )
 
 			   // close all tooltips if user clicks outside the tooltip
 			   .on( 'click mouseup keyup', vcfg.closeTooltips )
@@ -2081,6 +2090,37 @@
 
 		   window.open( this.href );
 		   return false;
+	   },
+
+	   /**
+		* Scroll to settings section without adding anchor to URL.
+		*
+		* Respects user's reduced motion preferences and moves focus to the settings section
+		* for keyboard and screen reader users.
+		*
+		* @param {Event} e jQuery event object
+		* @return {boolean} false to prevent default anchor behavior
+		*/
+		scrollToSettings: function( e ) {
+			e.preventDefault();
+
+			var $settings = $( '#gravityview_settings' );
+			if ( ! $settings.length ) {
+				return false;
+			}
+
+			var prefersReducedMotion = window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+			var behavior = prefersReducedMotion ? 'instant' : 'smooth';
+
+			// Scroll into view
+			$settings[0].scrollIntoView( { behavior: behavior, block: 'start' } );
+
+			// Make sure it's focusable, then focus it
+			if ( ! $settings.is( ':focus' ) ) {
+				$settings.attr( 'tabindex', '-1' ).trigger( 'focus' );
+			}
+
+			return false;
 	   },
 
 	   /**

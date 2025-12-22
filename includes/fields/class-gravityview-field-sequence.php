@@ -150,13 +150,21 @@ class GravityView_Field_Sequence extends GravityView_Field {
 
 		$legacy_field = \GravityView_View::getInstance()->getCurrentField(); // TODO: Don't use legacy code...
 
-		// If we're outside field context (like a GV widget), don't replace the merge tag
+		// If we're outside field context (like a GV widget), don't replace the merge tag.
 		if ( ! $legacy_field ) {
 			gravityview()->log->error( '{sequence} Merge Tag was used without outside of the GravityView entry loop.', array( 'data' => $matches ) );
+
 			return $text;
 		}
 
 		$return = $text;
+
+		// Entry is required for sequence calculation.
+		if ( empty( $entry ) ) {
+			gravityview()->log->debug( '{sequence} Merge Tag requires an entry context.', array( 'data' => $matches ) );
+
+			return $text;
+		}
 
 		$context        = new \GV\Template_Context();
 		$context->view  = \GV\View::by_id( $view_data['view_id'] );

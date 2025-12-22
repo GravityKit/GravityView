@@ -52,8 +52,9 @@ class gventry extends \GV\Shortcode {
 		/**
 		 * Filter the [gventry] shortcode attributes.
 		 *
-		 * @param array $atts The initial attributes.
 		 * @since 2.0
+		 *
+		 * @param array $atts The initial attributes.
 		 */
 		$atts = apply_filters( 'gravityview/shortcodes/gventry/atts', $atts );
 
@@ -227,14 +228,15 @@ class gventry extends \GV\Shortcode {
 					/**
 					 * Modify the edit entry success message in [gventry].
 					 *
-					 * @since  develop
+					 * @since 2.10
+					 * @since 2.14.6 Added $back_link and $redirect_url parameters.
 					 *
 					 * @param string      $message      The message.
 					 * @param \GV\View    $view         The View.
 					 * @param \GV\Entry   $entry        The entry.
 					 * @param array       $atts         The attributes.
-					 * @param string      $back_link    URL to return to the original entry. @since 2.14.6
-					 * @param string|null $redirect_url URL to return to after the update. @since 2.14.6
+					 * @param string      $back_link    URL to return to the original entry.
+					 * @param string|null $redirect_url URL to return to after the update.
 					 */
 					return apply_filters( 'gravityview/shortcodes/gventry/edit/success', $message, $view, $entry, $atts, $back_link, $redirect_url );
 				},
@@ -267,11 +269,12 @@ class gventry extends \GV\Shortcode {
 		/**
 		 * Filter the [gventry] output.
 		 *
-		 * @param string $output The output.
-		 * @param \GV\View|null $view The View detected or null.
-		 * @param \GV\Entry|null $entry The Entry or null.
-		 *
 		 * @since 2.0
+		 *
+		 * @param string         $output The output.
+		 * @param \GV\View|null  $view   The View detected or null.
+		 * @param \GV\Entry|null $entry  The Entry or null.
+		 * @param array          $atts   The shortcode attributes.
 		 */
 		return apply_filters( 'gravityview/shortcodes/gventry/output', $output, $view, $entry, $atts );
 	}

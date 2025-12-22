@@ -26,6 +26,16 @@ foreach ( $rows as $row ) { ?>
 				static fn( string $column_class ) => ! in_array( trim( $column_class ), $exclude_classes, true ),
 			);
 
+			/**
+			 * Filters the CSS class for search widget grid columns.
+			 *
+			 * @since 2.44
+			 *
+			 * @param string                  $column_class  The CSS class for the column (e.g., 'gv-grid-col-1-3').
+			 * @param string                  $col           The original column specification.
+			 * @param array                   $areas         Array of areas within the column.
+			 * @param Search_Field_Collection $search_fields The search fields collection.
+			 */
 			$column_class = apply_filters(
 				'gk/gravityview/search/widget/grid/column-class',
 				'gv-grid-col-' . implode( ' ', $classes ),
@@ -50,10 +60,12 @@ foreach ( $rows as $row ) { ?>
 						printf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 						foreach ( $search_fields->by_position( $position )->to_template_data() as $search_field ) {
 							/**
-							 * @action `gravityview_search_widget_field_before` Before each search input is rendered.
+							 * Before each search input is rendered.
 							 *
-							 * @param GravityView_Widget_Search                                             $this GravityView Widget instance
-							 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
+							 * @since 2.0.6.1
+							 *
+							 * @param GravityView_Widget_Search                                             $this         GravityView Widget instance.
+							 * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field Search field configuration.
 							 */
 							do_action( 'gravityview_search_widget_field_before', $this, $search_field );
 							$gravityview_view->search_field = $search_field;

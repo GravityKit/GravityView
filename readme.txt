@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.8.3
+Tested up to: 6.9
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -23,14 +23,95 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 = develop =
 
+#### ✨ Improved
+* Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
+
 #### 🐛 Fixed
-* Fatal error when using Chained Select fields in the Search Bar without proper form context.
-* Date and Entry Date field search logic when using a single input or a range.
-* Email fields with confirmation enabled could display `Array` instead of the correct value.
-* Workflow Step field not able to be used to link to a single entry.
+* Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
+
+= 2.49 on December 5, 2025 =
+
+This update adds a new merge tag modifier for improved URL encoding and resolves a WordPress 6.9 compatibility issue affecting classic themes.
+
+#### 🚀 Added
+* [`:rawurlencode` merge tag modifier](https://docs.gravitykit.com/article/350-merge-tag-modifiers#Usage-rawurlencode-Modifier-eLEk5) for better handling of special characters in URL paths and email links.
+
+#### 🐛 Fixed
+* Compatibility issue with WordPress 6.9 that caused Views to display incorrectly on classic themes.
 
 #### 💻 Developer Updates
-* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
+* Added `gk/gravityview/compatibility/block-assets-on-demand` filter to control whether GravityView disables WordPress 6.9's on-demand block asset loading (`true` by default).
+
+= 2.48.5 on December 4, 2025 =
+
+This release resolves deprecation notices in GravityView blocks on WordPress 6.7+, fixes edit locking not releasing entries properly on the Edit Entry page, and addresses PHP warnings.
+
+**Note: [GravityView blocks](https://docs.gravitykit.com/article/915-embedding-views-entries-and-fields-using-blocks) now require WordPress 6.3 or newer.**
+
+#### 🐛 Fixed
+* Deprecation notices in GravityView blocks on WordPress 6.7+.
+* With Edit Locking enabled, entries sometimes stayed locked after someone finished editing them, causing attempts by others to take over editing to fail.
+* PHP deprecation warning when editing certain entries with Post fields.
+* PHP notice when using `{sequence}` merge tag as a custom label for a View field.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/delete-entry/mode` filter to allow code to modify the delete mode (whether to trash or delete an entry) for a specific View.
+  - Deprecated the `gravityview/delete-entry/mode` filter.
+* Added `gk/gravityview/delete-entry/delete-connected-post` filter to allow code to modify the behavior of deleting posts connected to an entry.
+  - Deprecated the `gravityview/delete-entry/delete-connected-post` filter.
+* Added `gk/gravityview/delete-entry/deleted` action to trigger when an entry is deleted.
+  - Deprecated the `gravityview/delete-entry/deleted` action.
+* Added `gk/gravityview/delete-entry/trashed` action to trigger when an entry is trashed.
+ - Deprecated the `gravityview/delete-entry/trashed` action.
+
+= 2.48.4 on November 27, 2025 =
+
+This release resolves a compatibility issue with the Advanced Post Creation Add-On and adds new filters for developers to adjust edit and delete entry behavior.
+
+#### 🐛 Fixed
+* "You don’t have permission to edit this post" shown when editing entries with Post fields linked to posts created through the Advanced Post Creation Add-On.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/init/data` filter to modify form, entry, and View data before rendering the Edit Entry form.
+* Added `gk/gravityview/delete-entry/show-delete-button` filter to allow code to modify the visibility of the Delete button, with entry, form, View ID, and post ID as parameters.
+  - The `gravityview/delete-entry/show-delete-button` filter will be deprecated in a future release.
+
+= 2.48.3 on November 17, 2025 =
+
+This hotfix resolves a performance issue introduced in 2.48.2.
+
+#### 🐛 Fixed
+* After the 2.48.2 update, Views were taking significantly longer to load.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.0.
+
+= 2.48.2 on November 13, 2025 =
+
+This release addresses multiple issues impacting search fields, Edit Entry behavior, logging of entry approval status changes, and other aspects of the plugin’s functionality.
+
+#### 🐛 Fixed
+* Fatal error when using Chained Select fields in the Search Bar without proper form context.
+* Incorrect search logic for Date and Entry Date fields when using a single input or a range.
+* Fields on the Edit Entry page not clearing stored values when hidden by conditional logic, or restoring their default/merge-tag-based values when shown again.
+* Email fields with confirmation enabled could display `Array` instead of the correct value.
+* Workflow Step field not able to be used to link to a single entry.
+* Entry Notes not being added when an entry’s approval status changed due to the Unapprove Entries After Editing setting or when updated via the Approval Status field on the Entry Edit page.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.2.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic,  or modify the View Collection before it is returned.
+* Improved error message handling with centralized `GravityView_Error_Messages` class:
+  - Error messages now differentiate between administrators (actionable links) and regular users (generic messages) to prevent information disclosure.
+  - Entry permission checks moved to `GV\Entry::check_access()` for better encapsulation.
+  - All error codes standardized to `snake_case` for consistency with WordPress core conventions.
+* Enhanced security of error messages by properly escaping all translatable strings using `esc_html__()` and `wp_kses_post()`.
+* Improved code quality and type safety:
+  - Removed redundant `as_entry()` conversions where objects are already `GV\Entry` instances.
+  - Added safe array access using `GV\Utils::get()` to prevent undefined index errors.
+  - Fixed type confusion between `GV\Entry` objects and raw entry arrays.
 
 = 2.48.1 on October 9, 2025 =
 

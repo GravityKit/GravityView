@@ -93,12 +93,15 @@ class GravityView_frontend {
 	private function __construct() {}
 
 	private function initialize() {
+		// WordPress 6.9+ compatibility: disable on-demand block asset loading.
+		$this->maybe_disable_block_assets_on_demand();
+
 		add_action( 'wp', array( $this, 'parse_content' ), 11 );
 		add_filter( 'render_block', array( $this, 'detect_views_in_block_content' ) );
 		add_filter( 'parse_query', array( $this, 'parse_query_fix_frontpage' ), 10 );
 		add_action( 'template_redirect', array( $this, 'set_entry_data' ), 1 );
 
-		// Enqueue scripts and styles after GravityView_Template::register_styles()
+		// Enqueue scripts and styles after GravityView_Template::register_styles().
 		add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts_and_styles' ), 20 );
 
 		// Enqueue and print styles in the footer. Added 1 priority so stuff gets printed at 10 priority.
@@ -109,6 +112,50 @@ class GravityView_frontend {
 
 		add_action( 'gravityview_after', array( $this, 'context_not_configured_warning' ) );
 		add_filter( 'gravityview/template/text/no_entries', array( $this, 'filter_no_entries_output' ), 10, 3 );
+	}
+
+	/**
+	 * Disable on-demand block asset loading in WordPress 6.9+ for classic themes.
+	 *
+	 * WordPress 6.9 introduced on-demand block asset loading for classic themes, which uses
+	 * output buffering to detect which blocks are rendered and then "hoists" late-enqueued
+	 * styles back to the <head>. We enqueue styles during shortcode/block rendering
+	 * (after wp_head) and in the footer, which doesn't work properly with this new change.
+	 *
+	 * @see https://core.trac.wordpress.org/ticket/64099
+	 * @see https://make.wordpress.org/core/2025/11/18/wordpress-6-9-frontend-performance-field-guide/
+	 *
+	 * @since 2.49
+	 *
+	 * @return void
+	 */
+	private function maybe_disable_block_assets_on_demand() {
+		global $wp_version;
+
+		// Only apply for WordPress 6.9+ on the frontend.
+		if ( version_compare( $wp_version, '6.9-alpha', '<' ) || is_admin() ) {
+			return;
+		}
+
+		/**
+		 * Controls whether on-demand block asset loading should be disabled in WordPress 6.9+.
+		 *
+		 * WordPress 6.9 introduced on-demand block asset loading for classic themes, which can
+		 * prevent GravityView styles from loading properly.
+		 *
+		 * @filter `gk/gravityview/compatibility/block-assets-on-demand`
+		 *
+		 * @since 2.49
+		 *
+		 * @param bool $disable Whether to disable on-demand block asset loading. Default: true.
+		 */
+		$disable_on_demand = apply_filters( 'gk/gravityview/compatibility/block-assets-on-demand', true );
+
+		if ( ! $disable_on_demand ) {
+			return;
+		}
+
+		add_filter( 'should_load_block_assets_on_demand', '__return_false' );
 	}
 
 	/**
@@ -1056,6 +1103,7 @@ class GravityView_frontend {
 		 * Modify entry status requirements to be included in search results.
 		 *
 		 * @param string $status Default: `active`. Accepts all Gravity Forms entry statuses, including `spam` and `trash`
+		 * @param array  $args   View configuration arguments.
 		 */
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
@@ -1201,7 +1249,8 @@ class GravityView_frontend {
 		 * Filter get entries criteria for a specific View.
 		 *
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
-		 * @param array $args View configuration args.
+		 * @param array $args       View configuration args.
+		 * @param int   $form_id    ID of the Gravity Forms form.
 		 */
 		$parameters = apply_filters( "gravityview_get_entries_{$view_id}", $parameters, $args, $form_id );
 
@@ -1450,8 +1499,9 @@ class GravityView_frontend {
 				 *
 				 * @see GravityView_Field_Time
 				 * @since 1.14
-				 * @param string $name_part Field used for sorting
-				 * @param int $form_id GF Form ID
+				 *
+				 * @param string $sort_field_id Field used for sorting.
+				 * @param int    $form_id       GF Form ID.
 				 */
 				$sort_field_id = apply_filters( 'gravityview/sorting/time', $sort_field_id, $form_id );
 				break;
@@ -1541,8 +1591,8 @@ class GravityView_frontend {
 					 *
 					 * @since 2.5.1
 					 *
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
-					 * @param \GV\View The View.
+					 * @param string   $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View $view        The View.
 					 */
 					$js_dependency     = apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
 					$js_dependencies[] = $js_dependency;
@@ -1557,12 +1607,12 @@ class GravityView_frontend {
 					$css_dependency = apply_filters_deprecated( 'gravity_view_lightbox_style', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_style' );
 
 					/**
-					 * Override the lightbox script to enqueue. Default: `thickbox`.
+					 * Override the lightbox style to enqueue. Default: `thickbox`.
 					 *
 					 * @since 2.5.1
 					 *
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
-					 * @param \GV\View The View.
+					 * @param string   $style_slug If you want to use a different lightbox style, return the name of it here.
+					 * @param \GV\View $view       The View.
 					 */
 					$css_dependency     = apply_filters( 'gravityview_lightbox_style', $css_dependency, $view );
 					$css_dependencies[] = $css_dependency;

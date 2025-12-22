@@ -61,16 +61,17 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 			'tabindex'      => $tabindex,
 			'media_buttons' => false,
 			'quicktags'     => false,
-			'logic_event'   => $field->get_conditional_logic_event( 'keyup' ),
 			'placeholder'   => $field->get_field_placeholder_attribute(),
 		);
 
 		/**
 		 * Modify the settings passed to the Post Content wp_editor().
 		 *
-		 * @see wp_editor() For the options available
 		 * @since 1.7
-		 * @param array $editor_settings Array of settings to be passed to wp_editor(). Note: there are also two additional values in the array: `logic_event` and `placehodler`, added to the textarea HTML by GravityView.
+		 *
+		 * @see wp_editor() For the options available.
+		 *
+		 * @param array $editor_settings Array of settings to be passed to wp_editor(). Note: there is also an additional value in the array: `placeholder`, added to the textarea HTML by GravityView.
 		 */
 		$editor_settings = apply_filters( 'gravityview/edit_entry/post_content/wp_editor_settings', $editor_settings );
 
@@ -78,11 +79,10 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 		wp_editor( $value, $input_name, $editor_settings );
 		$editor = ob_get_clean();
 
-		$logic_event = \GV\Utils::get( $editor_settings, 'logic_event' );
 		$placeholder = \GV\Utils::get( $editor_settings, 'placeholder' );
 
 		/** @internal Instead of using `add_filter('the_editor')` and doing the same thing, it's cleaner here. */
-		$editor = str_replace( '<textarea ', "<textarea {$logic_event} {$placeholder}", $editor );
+		$editor = str_replace( '<textarea ', "<textarea {$placeholder}", $editor );
 
 		return sprintf( "<div class='ginput_container ginput_container_post_content'>%s</div>", trim( $editor ) );
 	}

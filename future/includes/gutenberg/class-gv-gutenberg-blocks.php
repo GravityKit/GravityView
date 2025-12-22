@@ -8,7 +8,7 @@ use GV\View;
 use GVCommon;
 
 class Blocks {
-	const MIN_WP_VERSION = '6.0.0';
+	const MIN_WP_VERSION = '6.3.0';
 
 	const SLUG = 'gk-gravityview-blocks';
 
@@ -203,9 +203,9 @@ class Blocks {
 		/**
 		 * Modifies the global blocks localization data.
 		 *
-		 * @since  2.17
+		 * @since 2.17
 		 *
-		 * @param array $block_localization_data
+		 * @param array $block_localization_data Array of data to be localized for Gutenberg blocks.
 		 */
 		$block_localization_data = apply_filters(
 			'gk/gravityview/gutenberg/blocks/localization',
@@ -262,7 +262,7 @@ class Blocks {
 		 *
 		 * @since 2.17
 		 *
-		 * @param array $formatted_views
+		 * @param array $formatted_views Array of formatted View data for the block editor.
 		 */
 		return apply_filters( 'gk/gravityview/gutenberg/blocks/views', $formatted_views );
 	}

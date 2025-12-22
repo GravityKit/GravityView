@@ -108,6 +108,7 @@ class GravityView_Merge_Tags {
 			'timestamp'                 => 'modifier_timestamp', /** @see modifier_timestamp */
 			'explode'                   => 'modifier_explode', /** @see modifier_explode */
 			'urlencode'                 => 'modifier_strings', /** @see modifier_strings */
+			'rawurlencode'              => 'modifier_strings', /** @see modifier_strings */
 			'wpautop'                   => 'modifier_strings',
 			'esc_html'                  => 'modifier_strings',
 			'sanitize_html_class'       => 'modifier_strings',
@@ -166,12 +167,13 @@ class GravityView_Merge_Tags {
 		 * Modify the merge tag modifier output.
 		 *
 		 * @since 2.0
-		 * @param string $return The current merge tag value to be filtered.
-		 * @param string $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
-		 * @param string $value The original merge tag value, passed from Gravity Forms
-		 * @param string $merge_tag If the merge tag being executed is an individual field merge tag (i.e. {Name:3}), this variable will contain the field's ID. If not, this variable will contain the name of the merge tag (i.e. all_fields).
-		 * @param string $modifier The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
-		 * @param GF_Field $field The current field.
+		 *
+		 * @param string   $return    The current merge tag value to be filtered.
+		 * @param string   $raw_value The raw value submitted for this field. May be CSV or JSON-encoded.
+		 * @param string   $value     The original merge tag value, passed from Gravity Forms.
+		 * @param string   $merge_tag If the merge tag being executed is an individual field merge tag (i.e. {Name:3}), this variable will contain the field's ID. If not, this variable will contain the name of the merge tag (i.e. all_fields).
+		 * @param string   $modifier  The string containing any modifiers for this merge tag. For example, "maxwords:10" would be the modifiers for the following merge tag: `{Text:2:maxwords:10}`.
+		 * @param GF_Field $field     The current field.
 		 */
 		$return = apply_filters( 'gravityview/merge_tags/modifiers/value', $return, $raw_value, $value, $merge_tag, $modifier, $field );
 
@@ -246,6 +248,17 @@ class GravityView_Merge_Tags {
 			return self::format_date( $raw_value, $modifier );
 		}
 
+		/**
+		 * Filters the formatted value for unsupported field types using the :format modifier.
+		 *
+		 * @since 2.33
+		 *
+		 * @param string   $raw_value The raw field value.
+		 * @param string   $format    The format string from the modifier.
+		 * @param GF_Field $field     The Gravity Forms field object.
+		 * @param string   $modifier  The full modifier string.
+		 * @param string   $merge_tag The merge tag being processed.
+		 */
 		return apply_filters( 'gravityview/merge_tags/modifiers/format', $raw_value, $format, $field, $modifier, $merge_tag );
 	}
 
@@ -343,6 +356,9 @@ class GravityView_Merge_Tags {
 			if ( in_array( 'urlencode', $modifiers ) ) {
 				$return = urlencode( $return );
 			}
+			if ( in_array( 'rawurlencode', $modifiers ) ) {
+				$return = rawurlencode( $return );
+			}
 		}
 
 		return $return;
@@ -396,6 +412,9 @@ class GravityView_Merge_Tags {
 		switch ( $matches[0] ) {
 			case 'urlencode':
 				$return = urlencode( $raw_value );
+				break;
+			case 'rawurlencode':
+				$return = rawurlencode( $raw_value );
 				break;
 			case 'wpautop':
 				$return = trim( wpautop( $raw_value ) );
@@ -471,15 +490,16 @@ class GravityView_Merge_Tags {
 		}
 
 		/**
-		 * Turn off merge tag variable replacements.\n.
+		 * Turn off merge tag variable replacements.
+		 *
 		 * Useful where you want to process variables yourself. We do this in the Math Extension.
 		 *
 		 * @since 1.13
 		 *
 		 * @param boolean $do_replace_variables True: yes, replace variables for this text; False: do not replace variables.
-		 * @param string $text       Text to replace variables in
-		 * @param  array      $form        GF Form array
-		 * @param  array      $entry        GF Entry array
+		 * @param string  $text                 Text to replace variables in.
+		 * @param array   $form                 GF Form array.
+		 * @param array   $entry                GF Entry array.
 		 */
 		$do_replace_variables = apply_filters( 'gravityview/merge_tags/do_replace_variables', true, $text, $form, $entry );
 
@@ -863,11 +883,12 @@ class GravityView_Merge_Tags {
 			$value = stripslashes_deep( \GV\Utils::_GET( $property ) );
 
 			/**
-			 * values from an array to string.
+			 * Filter the glue string used to join array values from $_GET into a string.
 			 *
 			 * @since 1.15
-			 * @param string $glue String used to `implode()` $_GET values Default: ', '
-			 * @param string $property The current name of the $_GET parameter being combined
+			 *
+			 * @param string $glue     String used to `implode()` $_GET values. Default: ', '.
+			 * @param string $property The current name of the $_GET parameter being combined.
 			 */
 			$glue = apply_filters( 'gravityview/merge_tags/get/glue/', ', ', $property );
 
@@ -876,25 +897,29 @@ class GravityView_Merge_Tags {
 			$value = $url_encode ? urlencode( $value ) : $value;
 
 			/**
-			 * merge tag.
+			 * Filter whether to escape HTML in the {get} merge tag output.
+			 *
 			 * By default, all values passed through URLs will be escaped for security reasons. If for some reason you want to
 			 * pass HTML in the URL, for example, you will need to return false on this filter. It is strongly recommended that you do
 			 * not disable this filter.
 			 *
 			 * @since 1.15
-			 * @param bool $esc_html Whether to esc_html() the value. Default: `true`
+			 *
+			 * @param bool $esc_html Whether to esc_html() the value. Default: true.
 			 */
 			$esc_html = apply_filters( 'gravityview/merge_tags/get/esc_html/' . $property, true );
 
 			$value = $esc_html ? esc_html( $value ) : $value;
 
 			/**
-			 * replacement before being used.
+			 * Filters the {get} merge tag replacement value before being used.
 			 *
-			 * @param string $value Value that will replace `{get}`
-			 * @param string $text Text that contains `{get}` (before replacement)
-			 * @param array $form Gravity Forms form array
-			 * @param array $entry Entry array
+			 * @since 1.15
+			 *
+			 * @param string $value Value that will replace `{get}`.
+			 * @param string $text  Text that contains `{get}` (before replacement).
+			 * @param array  $form  Gravity Forms form array.
+			 * @param array  $entry Entry array.
 			 */
 			$value = apply_filters( 'gravityview/merge_tags/get/value/' . $property, $value, $text, $form, $entry );
 

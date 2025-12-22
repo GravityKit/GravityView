@@ -158,6 +158,8 @@ class GravityView_Admin_No_Conflict {
 
 		/**
 		 * Runs after no-conflict styles are removed. You can re-add styles here.
+		 *
+		 * @since 1.0-beta
 		 */
 		do_action( 'gravityview_remove_conflicts_after' );
 	}
@@ -175,10 +177,13 @@ class GravityView_Admin_No_Conflict {
 	private function remove_conflicts( &$wp_objects, $required_objects, $type = 'scripts' ) {
 
 		/**
-		 * Modify the list of no conflict scripts or styles\n.
-		 * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`
+		 * Modify the list of no conflict scripts or styles.
 		 *
-		 * @param array $required_objects
+		 * Filter is `gravityview_noconflict_scripts` or `gravityview_noconflict_styles`.
+		 *
+		 * @since 1.0-beta
+		 *
+		 * @param array $required_objects Array of registered script/style handles to allow.
 		 */
 		$required_objects = apply_filters( "gravityview_noconflict_{$type}", $required_objects );
 

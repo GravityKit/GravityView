@@ -90,6 +90,8 @@ final class Core {
 		/**
 		 * Filter the logger instance being used for logging.
 		 *
+		 * @since 2.0
+		 *
 		 * @param \GV\Logger $logger The logger instance.
 		 */
 		$this->log = apply_filters( 'gravityview/logger', new WP_Action_Logger() );
@@ -153,6 +155,8 @@ final class Core {
 			return;
 		}
 
+		/** Error messages used throughout the plugin. */
+		require_once $this->plugin->dir( 'future/includes/class-gravityview-error-messages.php' );
 
 		/** Add rewrite endpoint for single-entry URLs. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-entry.php' );
@@ -259,7 +263,9 @@ final class Core {
 		 * The core has been loaded.
 		 *
 		 * Note: this is a very early load hook, not all of WordPress core has been loaded here.
-		 *  `init` hasn't been called yet.
+		 * `init` hasn't been called yet.
+		 *
+		 * @since 2.0
 		 */
 		do_action( 'gravityview/loaded' );
 	}
