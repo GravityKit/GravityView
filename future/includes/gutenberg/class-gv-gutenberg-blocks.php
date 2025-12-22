@@ -13,6 +13,24 @@ class Blocks {
 
 	const IGNORE_SCRIPTS_AND_STYLES = [ 'jetpack', 'elementor', 'yoast' ];
 
+	/**
+	 * Default allowlist patterns for GravityView assets.
+	 *
+	 * These patterns identify GravityView core and extension stylesheets/scripts
+	 * by their registered handle names.
+	 *
+	 * @since TODO
+	 *
+	 * @var array
+	 */
+	const ALLOWLIST_HANDLE_PATTERNS = [
+		'gravityview',
+		'gv-',
+		'gv_',
+		'gk-',
+		'gk_',
+	];
+
 	private $blocks_build_path;
 
 	public function __construct() {
@@ -249,15 +267,59 @@ class Blocks {
 	}
 
 	/**
+	 * Filters asset handles based on patterns.
+	 *
+	 * This method filters WordPress script/style handles using pattern matching.
+	 * It can operate in two modes:
+	 * - 'blocklist': Remove handles matching any pattern (default for backward compatibility)
+	 * - 'allowlist': Keep only handles matching at least one pattern
+	 *
+	 * Filtering happens on handles BEFORE dependency resolution, which prevents
+	 * unrelated dependencies from being included in the final output.
+	 *
+	 * @since TODO
+	 *
+	 * @param array  $handles  Array of asset handles (slugs) to filter.
+	 * @param array  $patterns Array of patterns to match against handles.
+	 * @param string $mode     Filter mode: 'allowlist' or 'blocklist'. Default 'blocklist'.
+	 *
+	 * @return array Filtered array of handles.
+	 */
+	public static function filter_asset_handles( $handles, $patterns = [], $mode = 'blocklist' ) {
+		if ( empty( $handles ) || empty( $patterns ) ) {
+			return $handles;
+		}
+
+		$pattern_regex = '/(' . implode( '|', array_map( 'preg_quote', $patterns ) ) . ')/i';
+
+		if ( 'allowlist' === $mode ) {
+			// Keep only handles that match at least one pattern.
+			return array_values( preg_grep( $pattern_regex, $handles ) );
+		}
+
+		// Blocklist mode: remove handles that match any pattern.
+		return array_values( array_diff( $handles, preg_grep( $pattern_regex, $handles ) ) );
+	}
+
+	/**
 	 * Renders shortcode and returns rendered content along with newly enqueued scripts and styles.
 	 *
 	 * @since 2.17
+	 * @since TODO Added $options parameter for asset handle filtering.
 	 *
-	 * @param string $shortcode
+	 * @param string $shortcode The shortcode to render.
+	 * @param array  $options {
+	 *     Optional. Configuration options.
+	 *
+	 *     @type array $allowed_style_patterns  Patterns to allowlist for styles. If provided, only
+	 *                                          styles with handles matching these patterns are returned.
+	 *     @type array $allowed_script_patterns Patterns to allowlist for scripts. If provided, only
+	 *                                          scripts with handles matching these patterns are returned.
+	 * }
 	 *
 	 * @return array{content: string, scripts: array, styles: array}
 	 */
-	static function render_shortcode( $shortcode ) {
+	public static function render_shortcode( $shortcode, $options = [] ) {
 		global $wp_scripts, $wp_styles;
 
 		$scripts_before_shortcode = array_keys( $wp_scripts->registered );
@@ -279,11 +341,34 @@ class Blocks {
 		$newly_registered_scripts = array_diff( $scripts_after_shortcode, $scripts_before_shortcode );
 		$newly_registered_styles  = array_diff( $styles_after_shortcode, $styles_before_shortcode );
 
-		// Ignore certain scripts and styles that may cause conflicts.
-		$ignore_pattern = '/(' . implode( '|', self::IGNORE_SCRIPTS_AND_STYLES ) . ')/';
+		// First, apply blocklist to remove scripts/styles that may cause conflicts.
+		$newly_registered_scripts = self::filter_asset_handles(
+			$newly_registered_scripts,
+			self::IGNORE_SCRIPTS_AND_STYLES,
+			'blocklist'
+		);
+		$newly_registered_styles = self::filter_asset_handles(
+			$newly_registered_styles,
+			self::IGNORE_SCRIPTS_AND_STYLES,
+			'blocklist'
+		);
 
-		$newly_registered_scripts = array_diff( $newly_registered_scripts, preg_grep( $ignore_pattern, $newly_registered_scripts ) );
-		$newly_registered_styles  = array_diff( $newly_registered_styles, preg_grep( $ignore_pattern, $newly_registered_styles ) );
+		// Then, apply allowlist if patterns are provided to further filter assets.
+		if ( ! empty( $options['allowed_script_patterns'] ) ) {
+			$newly_registered_scripts = self::filter_asset_handles(
+				$newly_registered_scripts,
+				$options['allowed_script_patterns'],
+				'allowlist'
+			);
+		}
+
+		if ( ! empty( $options['allowed_style_patterns'] ) ) {
+			$newly_registered_styles = self::filter_asset_handles(
+				$newly_registered_styles,
+				$options['allowed_style_patterns'],
+				'allowlist'
+			);
+		}
 
 		// This will return an array of all dependencies sorted in the order they should be loaded.
 		$get_dependencies = function ( $handle, $source, $dependencies = array() ) use ( &$get_dependencies ) {
