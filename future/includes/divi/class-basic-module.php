@@ -138,7 +138,7 @@ class Basic_Module extends \ET_Builder_Module {
 		$views_list = $this->get_views_list();
 
 		$fields = [
-			'view_id'        => [
+			'viewId'        => [
 				'label'           => esc_html__( 'Select View', 'gk-gravityview' ),
 				'type'            => 'select',
 				'option_category' => 'basic_option',
@@ -151,7 +151,7 @@ class Basic_Module extends \ET_Builder_Module {
 					'__view_content',
 				],
 			],
-			'page_size'      => [
+			'pageSize'      => [
 				'label'           => esc_html__( 'Number of Entries', 'gk-gravityview' ),
 				'type'            => 'range',
 				'option_category' => 'basic_option',
@@ -169,7 +169,7 @@ class Basic_Module extends \ET_Builder_Module {
 					'__view_content',
 				],
 			],
-			'sort_field'     => [
+			'sortField'     => [
 				'label'           => esc_html__( 'Sort Field', 'gk-gravityview' ),
 				'type'            => 'text',
 				'option_category' => 'basic_option',
@@ -180,7 +180,7 @@ class Basic_Module extends \ET_Builder_Module {
 					'__view_content',
 				],
 			],
-			'sort_direction' => [
+			'sortDirection' => [
 				'label'           => esc_html__( 'Sort Direction', 'gk-gravityview' ),
 				'type'            => 'select',
 				'option_category' => 'basic_option',
@@ -200,10 +200,10 @@ class Basic_Module extends \ET_Builder_Module {
 				'type'                => 'computed',
 				'computed_callback'   => [ self::class, 'render_view_content' ],
 				'computed_depends_on' => [
-					'view_id',
-					'page_size',
-					'sort_field',
-					'sort_direction',
+					'viewId',
+					'pageSize',
+					'sortField',
+					'sortDirection',
 				],
 			],
 		];
@@ -223,7 +223,7 @@ class Basic_Module extends \ET_Builder_Module {
 	 * @return string Module HTML output.
 	 */
 	public function render( $attrs, $content, $render_slug ) {
-		$view_id = ! empty( $this->props['view_id'] ) ? (int) $this->props['view_id'] : 0;
+		$view_id = ! empty( $this->props['viewId'] ) ? (int) $this->props['viewId'] : 0;
 
 		if ( ! $view_id ) {
 			if ( $this->is_builder_context() ) {
@@ -282,7 +282,7 @@ class Basic_Module extends \ET_Builder_Module {
 			return '';
 		}
 
-		$view_id = ! empty( $props['view_id'] ) ? (int) $props['view_id'] : 0;
+		$view_id = ! empty( $props['viewId'] ) ? (int) $props['viewId'] : 0;
 
 		if ( ! $view_id ) {
 			return '';
@@ -345,38 +345,21 @@ class Basic_Module extends \ET_Builder_Module {
 	}
 
 	/**
-	 * Map Divi module props to shortcode attributes.
+	 * Map module props to shortcode attributes.
 	 *
-	 * Uses the same mapping logic as the Gutenberg block to ensure consistency.
+	 * Props use the same camelCase naming as Gutenberg block attributes,
+	 * allowing direct use of the shared mapping function.
 	 *
 	 * @since TODO
 	 *
 	 * @see GravityView_Shortcode::map_block_atts_to_shortcode_atts()
 	 *
-	 * @param array $props Divi module props.
+	 * @param array $props Module props (viewId, pageSize, sortField, sortDirection).
 	 *
 	 * @return array Mapped shortcode attributes.
 	 */
 	private static function map_props_to_shortcode_atts( $props ) {
-		// Map Divi prop names to Gutenberg block attribute names.
-		// This allows us to reuse the existing mapping logic.
-		$divi_to_block_map = [
-			'view_id'        => 'viewId',
-			'page_size'      => 'pageSize',
-			'sort_field'     => 'sortField',
-			'sort_direction' => 'sortDirection',
-		];
-
-		$block_attributes = [];
-
-		foreach ( $divi_to_block_map as $divi_key => $block_key ) {
-			if ( isset( $props[ $divi_key ] ) && '' !== $props[ $divi_key ] ) {
-				$block_attributes[ $block_key ] = $props[ $divi_key ];
-			}
-		}
-
-		// Use the existing Gutenberg mapping function for consistent attribute handling.
-		return GravityView_Shortcode::map_block_atts_to_shortcode_atts( $block_attributes );
+		return GravityView_Shortcode::map_block_atts_to_shortcode_atts( $props );
 	}
 
 	/**

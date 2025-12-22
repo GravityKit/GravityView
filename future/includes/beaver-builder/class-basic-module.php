@@ -11,6 +11,7 @@ namespace GravityKit\GravityView\Extensions\BeaverBuilder;
 use FLBuilderModule;
 use FLBuilder;
 use GravityKit\GravityView\Gutenberg\Blocks;
+use GV\Shortcodes\gravityview as GravityView_Shortcode;
 use GVCommon;
 
 /** If this file is called directly, abort. */
@@ -89,7 +90,7 @@ class Basic_Module extends FLBuilderModule {
 			return;
 		}
 
-		$view_id = isset( $this->settings->view_id ) ? (int) $this->settings->view_id : 0;
+		$view_id = isset( $this->settings->viewId ) ? (int) $this->settings->viewId : 0;
 
 		if ( 0 === $view_id ) {
 			if ( FLBuilder::is_active() ) {
@@ -111,37 +112,64 @@ class Basic_Module extends FLBuilderModule {
 			return;
 		}
 
-		// Build shortcode attributes.
-		$atts = [ 'id' => $view_id ];
-
-		// Add optional settings if provided.
-		$optional_settings = [ 'page_size', 'sort_field', 'sort_direction' ];
-		foreach ( $optional_settings as $key ) {
-			$value = isset( $this->settings->$key ) ? $this->settings->$key : '';
-			if ( ! empty( $value ) ) {
-				$atts[ $key ] = $value;
-			}
-		}
-
-		// Generate shortcode.
-		$shortcode_atts = [];
-		foreach ( $atts as $key => $value ) {
-			$shortcode_atts[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
-		}
-
-		$secret = $view->get_validation_secret();
-
-		if ( $secret ) {
-			$shortcode_atts[] = sprintf( 'secret="%s"', $secret );
-		}
-
-		$shortcode = sprintf( '[gravityview %s]', implode( ' ', $shortcode_atts ) );
+		// Build shortcode using the same pattern as Gutenberg blocks.
+		$shortcode = self::build_shortcode( $this->settings, $view );
 
 		// Render using existing GravityView renderer.
 		$rendered = Blocks::render_shortcode( $shortcode );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $rendered['content'];
+	}
+
+	/**
+	 * Build a shortcode string from module settings.
+	 *
+	 * Uses the same attribute names as Gutenberg blocks for consistency.
+	 *
+	 * @since TODO
+	 *
+	 * @param object   $settings Module settings object.
+	 * @param \GV\View $view     View object for getting the secret.
+	 *
+	 * @return string The formatted shortcode string.
+	 */
+	private static function build_shortcode( $settings, $view ) {
+		// Convert settings object to array with camelCase keys matching Gutenberg.
+		$props = [
+			'viewId'        => isset( $settings->viewId ) ? $settings->viewId : '',
+			'pageSize'      => isset( $settings->pageSize ) ? $settings->pageSize : '',
+			'sortField'     => isset( $settings->sortField ) ? $settings->sortField : '',
+			'sortDirection' => isset( $settings->sortDirection ) ? $settings->sortDirection : '',
+		];
+
+		// Use the shared Gutenberg mapping function.
+		$shortcode_atts = GravityView_Shortcode::map_block_atts_to_shortcode_atts( $props );
+
+		$formatted_atts = [];
+
+		foreach ( $shortcode_atts as $attribute => $value ) {
+			$value = esc_attr( sanitize_text_field( $value ) );
+
+			if ( '' === $value ) {
+				continue;
+			}
+
+			$formatted_atts[] = sprintf(
+				'%s="%s"',
+				$attribute,
+				str_replace( '"', '\"', $value )
+			);
+		}
+
+		// Add the secret for View validation.
+		$secret = $view->get_validation_secret();
+
+		if ( $secret ) {
+			$formatted_atts[] = sprintf( 'secret="%s"', esc_attr( $secret ) );
+		}
+
+		return sprintf( '[gravityview %s]', implode( ' ', $formatted_atts ) );
 	}
 }
 
@@ -157,7 +185,7 @@ FLBuilder::register_module(
 				'view_selection' => [
 					'title'  => esc_html__( 'View Selection', 'gk-gravityview' ),
 					'fields' => [
-						'view_id' => [
+						'viewId' => [
 							'type'    => 'select',
 							'label'   => esc_html__( 'Select View', 'gk-gravityview' ),
 							'options' => Basic_Module::get_views_list(),
@@ -170,7 +198,7 @@ FLBuilder::register_module(
 				'view_settings'  => [
 					'title'  => esc_html__( 'View Settings', 'gk-gravityview' ),
 					'fields' => [
-						'page_size'      => [
+						'pageSize'      => [
 							'type'        => 'text',
 							'label'       => esc_html__( 'Number of Entries', 'gk-gravityview' ),
 							'placeholder' => esc_html__( 'Leave empty to use View settings', 'gk-gravityview' ),
@@ -178,7 +206,7 @@ FLBuilder::register_module(
 								'type' => 'refresh',
 							],
 						],
-						'sort_field'     => [
+						'sortField'     => [
 							'type'        => 'text',
 							'label'       => esc_html__( 'Sort Field', 'gk-gravityview' ),
 							'placeholder' => esc_html__( 'Field ID to sort by', 'gk-gravityview' ),
@@ -186,7 +214,7 @@ FLBuilder::register_module(
 								'type' => 'refresh',
 							],
 						],
-						'sort_direction' => [
+						'sortDirection' => [
 							'type'    => 'select',
 							'label'   => esc_html__( 'Sort Direction', 'gk-gravityview' ),
 							'default' => '',
