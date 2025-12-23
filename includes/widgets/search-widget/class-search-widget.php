@@ -1810,6 +1810,23 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$search_layout = ( ! empty( $widget_args['search_layout'] ) ? $widget_args['search_layout'] . ' gv-search-rows' : 'rows' );
 		$custom_class  = ! empty( $widget_args['custom_class'] ) ? $widget_args['custom_class'] : '';
 
+		// Validate required fields when a search is being performed.
+		$validation_errors = [];
+		if ( gravityview()->request->is_search() || GravityView_frontend::getInstance()->isSearch() ) {
+			$validation_errors = $this->validate_required_fields( $search_fields );
+
+			/**
+			 * Filters the validation errors for required search fields.
+			 *
+			 * @since TBD
+			 *
+			 * @param array                   $validation_errors Array of field name => error message pairs.
+			 * @param Search_Field_Collection $search_fields     The search fields collection.
+			 * @param int                     $view_id           The View ID.
+			 */
+			$validation_errors = apply_filters( 'gk/gravityview/search/validation-errors', $validation_errors, $search_fields, $view_id );
+		}
+
 		$data = [
 			'datepicker_class'            => $this->get_datepicker_class(),
 			'search_method'               => $this->get_search_method(),
@@ -1824,6 +1841,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			'search_fields'               => $search_fields,
 			'search_rows_search-general'  => Grid::get_rows_from_collection( $search_fields, 'search-general' ),
 			'search_rows_search-advanced' => Grid::get_rows_from_collection( $search_fields, 'search-advanced' ),
+			'validation_errors'           => $validation_errors,
 		];
 
 		GravityView_View::getInstance()->render( 'widget', 'search', false, $data );
@@ -2627,6 +2645,53 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// Reset areas for next rendering.
 		$this->area_settings = [];
+	}
+
+	/**
+	 * Validates required search fields.
+	 *
+	 * @since TODO
+	 *
+	 * @param Search_Field_Collection $search_fields The search fields collection.
+	 *
+	 * @return array Validation errors array (field name => error message). Empty if valid.
+	 */
+	public function validate_required_fields( Search_Field_Collection $search_fields ): array {
+		$errors = [];
+
+		// Get values from the appropriate request method.
+		$is_post = 'post' === $this->get_search_method();
+
+		foreach ( $search_fields->all() as $field ) {
+			$config = $field->to_configuration();
+
+			if ( empty( $config['required'] ) ) {
+				continue;
+			}
+
+			$field_name  = $config['name'] ?? '';
+			$field_value = $is_post ? \GV\Utils::_POST( $field_name, '' ) : \GV\Utils::_GET( $field_name, '' );
+
+			// Check if field is empty.
+			$is_empty = false;
+
+			if ( is_array( $field_value ) ) {
+				// For array values (e.g., date ranges, number ranges, multiselect).
+				$filtered = array_filter( $field_value, function ( $v ) {
+					return '' !== $v && null !== $v;
+				} );
+				$is_empty = empty( $filtered );
+			} else {
+				$is_empty = '' === trim( (string) $field_value );
+			}
+
+			if ( $is_empty ) {
+				$default_message      = esc_html__( 'This field is required.', 'gk-gravityview' );
+				$errors[ $field_name ] = $config['required_message'] ?? $default_message;
+			}
+		}
+
+		return $errors;
 	}
 
 } // end class

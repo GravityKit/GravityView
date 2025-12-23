@@ -119,6 +119,8 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		'input_type',
 		'only_loggedin',
 		'only_loggedin_cap',
+		'required',
+		'required_message',
 	];
 
 	/**
@@ -357,6 +359,24 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 				$options['input_type']['choices'] = array_combine( $input_types, $input_type_labels );
 			}
 		}
+
+		$options['required'] = [
+			'type'     => 'checkbox',
+			'label'    => esc_html__( 'Required', 'gk-gravityview' ),
+			'desc'     => esc_html__( 'Mark this field as required for search submission.', 'gk-gravityview' ),
+			'value'    => false,
+			'priority' => 1100,
+		];
+
+		$options['required_message'] = [
+			'type'        => 'text',
+			'label'       => esc_html__( 'Error Message', 'gk-gravityview' ),
+			'placeholder' => esc_html__( 'This field is required.', 'gk-gravityview' ),
+			'desc'        => esc_html__( 'Custom message shown when validation fails.', 'gk-gravityview' ),
+			'value'       => '',
+			'priority'    => 1110,
+			'requires'    => 'required',
+		];
 
 		return $options;
 	}

@@ -45,6 +45,8 @@ jQuery( function ( $ ) {
 			this.iframe();
 
 			this.enable_multi_page_entry_edit();
+
+			this.validateRequiredFields();
 		},
 
 		/**
@@ -399,6 +401,126 @@ jQuery( function ( $ ) {
 		toggle_advanced_search: function () {
 			$( this ).attr( 'aria-expanded', ( _i, val ) => 'true' === val ? 'false' : 'true' );
 			$( '#gv-search-advanced' ).toggleClass( 'gv-search-advanced--open', 'true' === $( this ).attr( 'aria-expanded' ) );
+		},
+
+		/**
+		 * Validate required search fields on form submission.
+		 *
+		 * @since TBD
+		 */
+		validateRequiredFields: function () {
+			$( document ).on( 'submit', '.gv-widget-search', function ( e ) {
+				var $form = $( this );
+				var isValid = true;
+				var firstInvalid = null;
+
+				// Clear previous errors
+				$form.find( '.gv-field-error' ).removeClass( 'gv-field-error' );
+				$form.find( '.gv-validation-message' ).remove();
+
+				// Validate standard required fields (inputs, selects, textareas)
+				$form.find( '[required]' ).each( function () {
+					var $field = $( this );
+					var $container = $field.closest( '.gv-search-box' );
+					var isFieldValid = true;
+					var message = $field.data( 'required-message' ) || gvGlobals.required_field_message || 'This field is required.';
+
+					if ( $field.is( 'select' ) ) {
+						isFieldValid = $field.val() !== '' && $field.val() !== null;
+					} else if ( $field.is( ':checkbox' ) ) {
+						isFieldValid = $field.is( ':checked' );
+					} else {
+						isFieldValid = $.trim( $field.val() ) !== '';
+					}
+
+					if ( ! isFieldValid ) {
+						isValid = false;
+						$container.addClass( 'gv-field-error' );
+
+						// Add error message after the input container
+						if ( $container.find( '.gv-validation-message' ).length === 0 ) {
+							var $error = $( '<div class="gv-validation-message" role="alert">' + message + '</div>' );
+							$container.append( $error );
+						}
+
+						if ( ! firstInvalid ) {
+							firstInvalid = $field;
+						}
+					}
+				} );
+
+				// Validate checkbox/radio groups with data-required-min-selection
+				$form.find( '[data-required-min-selection="1"]' ).each( function () {
+					var $container = $( this );
+					var name = $container.find( 'input[type="checkbox"], input[type="radio"]' ).first().attr( 'name' );
+					// Normalize name by removing trailing [] to avoid invalid selectors like filter_1[][]
+					var baseName = name ? name.replace( /\[\]$/, '' ) : '';
+					var isFieldValid = $form.find( 'input[name="' + baseName + '"]:checked, input[name="' + baseName + '[]"]:checked' ).length > 0;
+					var message = $container.data( 'required-message' ) || gvGlobals.required_field_message || 'This field is required.';
+
+					if ( ! isFieldValid ) {
+						isValid = false;
+						$container.addClass( 'gv-field-error' );
+
+						// Add error message
+						if ( $container.find( '.gv-validation-message' ).length === 0 ) {
+							var $error = $( '<div class="gv-validation-message" role="alert">' + message + '</div>' );
+							$container.append( $error );
+						}
+
+						if ( ! firstInvalid ) {
+							firstInvalid = $container.find( 'input' ).first();
+						}
+					}
+				} );
+
+				// Validate chained select containers with data-required="1"
+				$form.find( '[data-required="1"]' ).each( function () {
+					var $container = $( this );
+					var $selects = $container.find( 'select' );
+					var isFieldValid = false;
+					var message = $container.data( 'required-message' ) || gvGlobals.required_field_message || 'This field is required.';
+
+					// Check if at least one select has a non-empty value
+					$selects.each( function () {
+						if ( $( this ).val() !== '' && $( this ).val() !== null ) {
+							isFieldValid = true;
+							return false; // break
+						}
+					} );
+
+					if ( ! isFieldValid ) {
+						isValid = false;
+						$container.addClass( 'gv-field-error' );
+
+						// Add error message
+						if ( $container.find( '.gv-validation-message' ).length === 0 ) {
+							var $error = $( '<div class="gv-validation-message" role="alert">' + message + '</div>' );
+							$container.append( $error );
+						}
+
+						if ( ! firstInvalid ) {
+							firstInvalid = $selects.first();
+						}
+					}
+				} );
+
+				if ( ! isValid ) {
+					e.preventDefault();
+
+					// Focus first invalid field
+					if ( firstInvalid ) {
+						firstInvalid.focus();
+					}
+
+					// Announce error for screen readers
+					if ( typeof wp !== 'undefined' && wp.a11y && wp.a11y.speak ) {
+						wp.a11y.speak( gvGlobals.required_fields_error || 'Please fill in all required fields.', 'assertive' );
+					}
+
+					return false;
+				}
+			} );
 		}
 	};
 

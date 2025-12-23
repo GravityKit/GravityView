@@ -49,6 +49,9 @@ $step = apply_filters(
 	<?php if ( ! gv_empty( $label, false, false ) ) { ?>
         <label for="search-box-<?php echo esc_attr( $name ) . '-start'; ?>">
 			<?php echo esc_html( $label ) . ( $is_currency ? ' (' . GFCommon::get_currency() . ')' : '' ); ?>
+			<?php if ( ! empty( $search_field['required'] ) ) { ?>
+				<span class="gv-required-indicator">*</span>
+			<?php } ?>
         </label>
 	<?php } ?>
     <p>
@@ -57,14 +60,14 @@ $step = apply_filters(
                type="number"
                placeholder="<?php esc_attr_e( 'From', 'gk-gravityview' ); ?>"
                step="<?php echo esc_attr( $step ); ?>"
-               value="<?php echo esc_attr( $min ); ?>">
+               value="<?php echo esc_attr( $min ); ?>"<?php if ( ! empty( $search_field['required'] ) ) { ?> required aria-required="true" data-required-message="<?php echo esc_attr( $search_field['required_message'] ?? __( 'This field is required.', 'gk-gravityview' ) ); ?>"<?php } ?>>
 
         <input name="<?php echo esc_attr( $name ) . '[max]'; ?>"
                id="search-box-<?php echo esc_attr( $name ) . '-max'; ?>"
                type="number"
                placeholder="<?php esc_attr_e( 'To', 'gk-gravityview' ); ?>"
                step="<?php echo esc_attr( $step ); ?>"
-               value="<?php echo esc_attr( $max ); ?>">
+               value="<?php echo esc_attr( $max ); ?>"<?php if ( ! empty( $search_field['required'] ) ) { ?> required aria-required="true" data-required-message="<?php echo esc_attr( $search_field['required_message'] ?? __( 'This field is required.', 'gk-gravityview' ) ); ?>"<?php } ?>>
     </p>
 	<?php if ( $error ) {
 		printf( '<p class="error">%s</p>', $error );

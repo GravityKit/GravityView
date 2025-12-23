@@ -27,3 +27,46 @@
 .gv-image-caption {
 	font-style: italic;
 }
+
+// Required field error states
+.gv-field-error {
+	input,
+	select,
+	textarea {
+		border-color: #c02b0a;
+	}
+}
+
+// Validation error message
+.gv-validation-message {
+	color: #c02b0a;
+	font-size: 0.875em;
+	margin-top: 0.5em;
+	padding: 0.25em 0;
+}
+
+// Validation error summary (server-side validation)
+.gv-search-validation-summary {
+	background-color: #fef2f2;
+	border: 1px solid #c02b0a;
+	border-radius: 4px;
+	color: #c02b0a;
+	margin: 0 10px 1em;
+	padding: 0.75em 1em;
+	width: 100%;
+
+	p {
+		font-weight: 600;
+		margin: 0 0 0.5em;
+	}
+
+	ul {
+		list-style: disc;
+		margin: 0;
+		padding-left: 1.5em;
+	}
+
+	li {
+		margin: 0.25em 0;
+	}
+}

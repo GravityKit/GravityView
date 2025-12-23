@@ -1678,9 +1678,11 @@ class GravityView_frontend {
 			if ( 'wp_print_footer_scripts' === current_filter() ) {
 
 				$js_localization = array(
-					'cookiepath' => COOKIEPATH,
-					'clear'      => _x( 'Clear', 'Clear all data from the form', 'gk-gravityview' ),
-					'reset'      => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gk-gravityview' ),
+					'cookiepath'             => COOKIEPATH,
+					'clear'                  => _x( 'Clear', 'Clear all data from the form', 'gk-gravityview' ),
+					'reset'                  => _x( 'Reset', 'Reset the search form to the state that existed on page load', 'gk-gravityview' ),
+					'required_field_message' => esc_html__( 'This field is required.', 'gk-gravityview' ),
+					'required_fields_error'  => esc_html__( 'Please fill in all required fields.', 'gk-gravityview' ),
 				);
 
 				/**

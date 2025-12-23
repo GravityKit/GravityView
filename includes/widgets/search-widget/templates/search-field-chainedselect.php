@@ -72,9 +72,14 @@ $hide_inactive = apply_filters( 'gravityview/search/chained_selects/hide_inactiv
 // Set horizontal/vertical alignment
 $gf_field->chainedSelectsAlignment = $search_layout;
 ?>
-<div class="gv-search-box gv-search-field-chainedselect <?php echo $custom_class; ?>">
+<div class="gv-search-box gv-search-field-chainedselect <?php echo $custom_class; ?>"<?php if ( ! empty( $search_field['required'] ) ) { ?> data-required="1" data-required-message="<?php echo esc_attr( $search_field['required_message'] ?? __( 'This field is required.', 'gk-gravityview' ) ); ?>"<?php } ?>>
 	<?php if ( ! gv_empty( $search_field['label'], false, false ) ) { ?>
-		<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>"><?php echo esc_html( $search_field['label'] ); ?></label>
+		<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>">
+			<?php echo esc_html( $search_field['label'] ); ?>
+			<?php if ( ! empty( $search_field['required'] ) ) { ?>
+				<span class="gv-required-indicator">*</span>
+			<?php } ?>
+		</label>
 		<?php
 	}
 

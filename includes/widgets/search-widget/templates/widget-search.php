@@ -17,12 +17,27 @@ $search_class       = \GV\Utils::get( $data, 'search_class', '' );
 $permalink_fields   = \GV\Utils::get( $data, 'permalink_fields', [] );
 $search_form_action = \GV\Utils::get( $data, 'search_form_action', '' );
 $search_fields      = \GV\Utils::get( $data, 'search_fields', [] );
+$validation_errors  = \GV\Utils::get( $data, 'validation_errors', [] );
 ?>
 
 <form class="gv-widget-search <?php echo gravityview_sanitize_html_class( $search_class ); ?>"
 	  method="<?php echo $search_method; ?>" action="<?php echo esc_url( $search_form_action ); ?>"
 	  data-viewid="<?php echo (int) $view_id; ?>">
 	<?php
+	// Display validation error summary if there are server-side validation errors.
+	if ( ! empty( $validation_errors ) ) {
+		?>
+		<div class="gv-search-validation-summary" role="alert">
+			<p><?php esc_html_e( 'Please correct the following errors:', 'gk-gravityview' ); ?></p>
+			<ul>
+				<?php foreach ( $validation_errors as $field_name => $message ) { ?>
+					<li><?php echo esc_html( $message ); ?></li>
+				<?php } ?>
+			</ul>
+		</div>
+		<?php
+	}
+
 	/**
 	 * Inside the `<form>` tag of the GravityView search form, before inputs are rendered.
 	 *

@@ -55,7 +55,7 @@ final class Search_Field_Submit extends Search_Field {
 	 * @since 2.42
 	 */
 	protected function setting_keys(): array {
-		$keys   = parent::setting_keys();
+		$keys   = array_diff( parent::setting_keys(), [ 'required', 'required_message' ] );
 		$keys[] = 'search_clear';
 		$keys[] = 'tag';
 
