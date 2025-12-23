@@ -20,7 +20,6 @@ abstract class Search_Field_Choices extends Search_Field {
 	protected function setting_keys(): array {
 		$keys   = parent::setting_keys();
 		$keys[] = 'sieve_choices';
-		$keys[] = 'required_min_selection';
 
 		return $keys;
 	}
@@ -99,15 +98,6 @@ abstract class Search_Field_Choices extends Search_Field {
 	 */
 	protected function get_options(): array {
 		$options = parent::get_options();
-
-		$options['required_min_selection'] = [
-			'type'     => 'checkbox',
-			'label'    => esc_html__( 'Require at least one selection', 'gk-gravityview' ),
-			'desc'     => esc_html__( 'User must select at least one option from this field.', 'gk-gravityview' ),
-			'value'    => false,
-			'priority' => 1105,
-			'requires' => 'required',
-		];
 
 		if ( ! $this->is_sievable() ) {
 			return $options;

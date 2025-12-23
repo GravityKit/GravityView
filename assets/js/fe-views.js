@@ -449,14 +449,16 @@ jQuery( function ( $ ) {
 					}
 				} );
 
-				// Validate checkbox/radio groups with data-required-min-selection
-				$form.find( '[data-required-min-selection="1"]' ).each( function () {
+				// Validate checkbox/radio groups with data-gv-required-type
+				$form.find( '[data-gv-required-type]' ).each( function () {
 					var $container = $( this );
+					var fieldType = $container.data( 'gv-required-type' );
 					var name = $container.find( 'input[type="checkbox"], input[type="radio"]' ).first().attr( 'name' );
 					// Normalize name by removing trailing [] to avoid invalid selectors like filter_1[][]
 					var baseName = name ? name.replace( /\[\]$/, '' ) : '';
 					var isFieldValid = $form.find( 'input[name="' + baseName + '"]:checked, input[name="' + baseName + '[]"]:checked' ).length > 0;
-					var message = $container.data( 'required-message' ) || gvGlobals.required_field_message || 'This field is required.';
+					var defaultMessage = fieldType === 'checkbox' ? 'Please select at least one option.' : 'Please select an option.';
+					var message = $container.data( 'required-message' ) || gvGlobals.required_field_message || defaultMessage;
 
 					if ( ! isFieldValid ) {
 						isValid = false;

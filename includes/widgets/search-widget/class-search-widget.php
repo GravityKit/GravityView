@@ -2686,8 +2686,23 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			if ( $is_empty ) {
-				$default_message      = esc_html__( 'This field is required.', 'gk-gravityview' );
-				$errors[ $field_name ] = $config['required_message'] ?? $default_message;
+				// Get field-type-aware default message.
+				$field_type = $config['type'] ?? '';
+				switch ( $field_type ) {
+					case 'checkbox':
+					case 'multiselect':
+						$default_message = esc_html__( 'Please select at least one option.', 'gk-gravityview' );
+						break;
+					case 'radio':
+					case 'select':
+						$default_message = esc_html__( 'Please select an option.', 'gk-gravityview' );
+						break;
+					default:
+						$default_message = esc_html__( 'This field is required.', 'gk-gravityview' );
+				}
+				// Use custom message if set and not empty, otherwise use default.
+				$custom_message        = $config['required_message'] ?? '';
+				$errors[ $field_name ] = ( '' !== $custom_message ) ? $custom_message : $default_message;
 			}
 		}
 

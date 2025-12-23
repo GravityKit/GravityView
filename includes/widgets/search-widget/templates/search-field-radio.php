@@ -17,7 +17,7 @@ if ( empty( $search_field['choices'] ) ) {
 }
 
 ?>
-<div class="gv-search-box gv-search-field-radio <?php echo esc_attr( $custom_class ); ?>"<?php if ( ! empty( $search_field['required_min_selection'] ) ) { ?> data-required-min-selection="1" data-required-message="<?php echo esc_attr( $search_field['required_message'] ?? __( 'Please select an option.', 'gk-gravityview' ) ); ?>"<?php } ?>>
+<div class="gv-search-box gv-search-field-radio <?php echo esc_attr( $custom_class ); ?>"<?php if ( ! empty( $search_field['required'] ) ) { ?> data-gv-required-type="radio" data-required-message="<?php echo '' !== ( $search_field['required_message'] ?? '' ) ? esc_attr( $search_field['required_message'] ) : esc_attr__( 'Please select an option.', 'gk-gravityview' ); ?>"<?php } ?>>
 	<?php if ( ! gv_empty( $search_field['label'], false, false ) ) { ?>
 	<label for="search-box-<?php echo esc_attr( $search_field['name'] ); ?>">
 		<?php echo esc_html( $search_field['label'] ); ?>
