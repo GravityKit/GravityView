@@ -26,7 +26,8 @@
     "php": ">=7.4.0",
     "ext-json": "*",
     "ext-openssl": "*",
-    "gravitykit/foundation": "dev-main"
+    "gravitykit/foundation": "dev-main",
+    "gravitykit/query-filters": "^2.8"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.5",
@@ -49,6 +50,7 @@
       "namespace_prefix": "GravityKit\\GravityView",
       "classmap_prefix": "GravityKit_GravityView_",
       "packages": [
+        "gravitykit/query-filters",
         "gravitykit/foundation"
       ],
       "namespace_replacement_patterns": {
@@ -57,12 +59,21 @@
         "/^Psr/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Psr",
         "/^Monolog/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\Monolog",
         "/^TrustedLogin/": "GravityKit\\GravityView\\Foundation\\ThirdParty\\TrustedLogin",
-        "/^GravityKit\\\\Foundation/": "GravityKit\\GravityView\\Foundation"
+        "/^GravityKit\\\\Foundation/": "GravityKit\\GravityView\\Foundation",
+        "/^GravityKit\\\\QueryFilters/": "GravityKit\\GravityView\\QueryFilters"
       },
       "override_autoload": {
         "gravitykit/foundation": {
           "psr-4": {
             "GravityKit\\Foundation\\": "src"
+          },
+          "files": [
+            "assets"
+          ]
+        },
+        "gravitykit/query-filters": {
+          "psr-4": {
+            "GravityKit\\QueryFilters\\": "src"
           },
           "files": [
             "assets"

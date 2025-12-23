@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e56545ec20e762d9f700ff2434772a3c",
+    "content-hash": "e7da262c7fc41039f96d66812822a299",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -345,6 +345,55 @@
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
             "time": "2025-11-17T22:18:51+00:00"
+        },
+        {
+            "name": "gravitykit/query-filters",
+            "version": "v2.8.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:GravityKit/Query-Filters.git",
+                "reference": "89a7b58b2c86a9b873bafee53058cccee1cb8d7e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/GravityKit/Query-Filters/zipball/89a7b58b2c86a9b873bafee53058cccee1cb8d7e",
+                "reference": "89a7b58b2c86a9b873bafee53058cccee1cb8d7e",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~8.5",
+                "yoast/phpunit-polyfills": "^1.1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GravityKit\\QueryFilters\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "GravityKit\\QueryFilters\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "GravityKit",
+                    "email": "support@gravitykit.com"
+                }
+            ],
+            "description": "Advanced filtering functionality for Gravity Forms' GF_Query and form fields.",
+            "support": {
+                "source": "https://github.com/GravityKit/Query-Filters/tree/v2.8.0",
+                "issues": "https://github.com/GravityKit/Query-Filters/issues"
+            },
+            "time": "2025-12-04T22:25:33+00:00"
         },
         {
             "name": "illuminate/container",

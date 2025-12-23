@@ -18,6 +18,7 @@ class Mock_Request extends Request {
 		'is_entry'      => false,
 		'is_edit_entry' => false,
 		'is_search'     => false,
+		'get_arguments' => [],
 	);
 
 	public function is_view( $return_view = true ) {
@@ -34,6 +35,10 @@ class Mock_Request extends Request {
 
 	public function is_search() {
 		return $this->__call( __FUNCTION__, func_get_args() );
+	}
+
+	public function get_arguments(): array {
+		return (array) $this->__call( __FUNCTION__, func_get_args() );
 	}
 
 	public function __call( $function, $args ) {
