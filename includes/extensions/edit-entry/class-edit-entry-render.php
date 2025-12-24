@@ -1448,6 +1448,16 @@ class GravityView_Edit_Entry_Render {
 		 */
 		do_action( 'gravityview/edit-entry/render/before', $this );
 
+		/**
+		 * Workaround for Gravity Forms bug where `gf_legacy` is not defined early enough.
+		 *
+		 * This prevents "Uncaught ReferenceError: gf_legacy is not defined" errors in
+		 * js/conditional_logic.js when forms with conditional logic on buttons are rendered.
+		 *
+		 * @todo Remove when https://github.com/gravityforms/gravityforms/pull/3540 is merged and new GF is released.
+		 */
+		echo '<script>window.gf_legacy = window.gf_legacy || { is_legacy: "1" };</script>';
+
 		add_filter( 'gform_pre_render', [ $this, 'filter_modify_form_fields' ], 5000, 3 );
 		add_filter( 'gform_has_conditional_logic', [ $this, 'set_default_values' ], 10, 2 );
 		add_filter( 'gform_submit_button', [ $this, 'render_form_buttons' ] );

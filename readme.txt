@@ -27,6 +27,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 * Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
 
 #### 🐛 Fixed
+* JavaScript error breaking Edit Entry functionality when forms use conditional logic on buttons.
 * Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
 * Multi-column List fields on the Edit Entry page displayed serialized array data (e.g., `a:1:{i:0;s:0:"";}`) instead of remaining empty when revealed via conditional logic.
 
