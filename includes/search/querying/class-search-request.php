@@ -1,6 +1,6 @@
 <?php
 
-namespace GV\Search\Querying\Request;
+namespace GV\Search\Querying;
 
 use GV\Admin_Request;
 use GV\CLI_Request;
@@ -146,7 +146,7 @@ final class Search_Request {
 		$search_keys = [ 'gv_search', 'gv_start', 'gv_end', 'gv_by', 'gv_id' ];
 		$meta_regex  = self::get_meta_field_regex();
 
-		$search_field_regex = '/^(filter|input)_(([0-9_]+)|' . $meta_regex . ')$/sm';
+		$search_field_regex = '/^(filter|input)_(([0-9:_]+)|' . $meta_regex . ')$/sm';
 
 		$search_arguments = [];
 		foreach ( $arguments as $key => $value ) {
@@ -159,11 +159,6 @@ final class Search_Request {
 			}
 
 			if ( preg_match( $search_field_regex, $key ) ) {
-				$value = str_replace( [ 'filter_', 'input_' ], [ '', '' ], $value );
-				if ( preg_match( '/^[0-9_]+$/', $value ) ) {
-					$value = str_replace( '_', '.', $value );
-				}
-
 				$search_arguments[ $key ] = [
 					'value' => $value,
 				];
@@ -214,52 +209,80 @@ final class Search_Request {
 	 *
 	 * @since $ver$
 	 *
-	 * @return array{mode: string, filters: array{key: string, operator:string, value:mixed } The array.
+	 * @return array{mode: string, filters: array{key: string, operator:string, value:mixed, request_key?: string} }
+	 *                     The array.
 	 */
 	public function to_array(): array {
 		$filters = [];
 
 		foreach ( $this->arguments as $key => $data ) {
+			$operator = (string) ( $data['operator'] ?? '' );
+			if ( in_array( $key, [ 'gv_start', 'gv_end' ], true ) ) {
+				// We handle these further down the line as a single filter.
+				continue;
+			}
+
 			if ( 'gv_search' === $key ) {
 				$filters[] = [
-					'key'      => 'search_all',
-					'operator' => $data['operator'] ?? 'contains',
-					'value'    => $data['value'],
+					'key'         => 'search_all',
+					'request_key' => $key,
+					'operator'    => $operator ?: 'contains',
+					'value'       => $data['value'],
 				];
 				continue;
 			}
+
 			if ( 'gv_id' === $key ) {
 				$filters[] = [
-					'key'      => 'entry_id',
-					'operator' => $data['operator'] ?? '=',
-					'value'    => absint( $data['value'] ?? 0 ),
+					'key'         => 'entry_id',
+					'request_key' => $key,
+					'operator'    => $operator ?: '=',
+					'value'       => absint( $data['value'] ?? 0 ),
 				];
 				continue;
 			}
 
 			if ( 'gv_by' === $key ) {
 				$filters[] = [
-					'key'      => 'created_by',
-					'operator' => $data['operator'] ?? '=',
-					'value'    => $data['value'] ?? '',
+					'key'         => 'created_by',
+					'request_key' => $key,
+					'operator'    => $operator ?: '=',
+					'value'       => $data['value'] ?? '',
 				];
 				continue;
 			}
 
-			if ( in_array( $key, [ 'gv_start', 'gv_end' ], true ) ) {
-				$filters[] = [
-					'key'      => 'gv_start' === $key ? 'start_date' : 'end_date',
-					'operator' => '=',
-					'value'    => $data['value'] ?? '',
-				];
-				continue;
+			// Normalize key.
+			$request_key = $key;
+			$key         = str_replace( [ 'filter_', 'input_' ], '', (string) $key );
+			if ( preg_match( '/^[0-9_:]+$/m', $key ) ) {
+				$key = str_replace( '_', '.', $key );
 			}
 
-			// Default.
+			// Default, we keep the provided operator for now.
+			$filter = [
+				'key'         => $key,
+				'request_key' => $request_key,
+				'operator'    => $operator ?: '=',
+				'value'       => $data['value'] ?? '',
+			];
+
+			$filter_key = explode( ':', $key ); // When the key is provided as <field_id>:<form_id>.
+			if ( count( $filter_key ) === 1 ) {
+				$filter['field_id'] = $filter_key[0];
+			} elseif ( count( $filter_key ) === 2 ) {
+				$filter['field_id'] = $filter_key[0];
+				$filter['form_id']  = $filter_key[1];
+			}
+
+			$filters[] = $filter;
+		}
+
+		if ( isset( $this->arguments['gv_start'] ) || isset( $this->arguments['gv_end'] ) ) {
 			$filters[] = [
-				'key'      => $key,
-				'operator' => $data['operator'] ?? '=',
-				'value'    => $data['value'] ?? '',
+				'key'        => 'entry_date',
+				'start_date' => $this->arguments['gv_start']['value'] ?? null,
+				'end_date'   => $this->arguments['gv_end']['value'] ?? null,
 			];
 		}
 
@@ -278,8 +301,8 @@ final class Search_Request {
 	 */
 	private function set_mode( array $arguments ): void {
 		$mode = 'any';
-		if ( isset( $arguments['gv_mode'] ) ) {
-			$mode = strtolower( $arguments['gv_mode'] );
+		if ( isset( $arguments['mode'] ) ) {
+			$mode = strtolower( $arguments['mode'] );
 		}
 
 		if ( ! in_array( $mode, [ 'all', 'any' ], true ) ) {

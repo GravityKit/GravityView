@@ -5,7 +5,7 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 use GV\CLI_Request;
 use GV\Frontend_Request;
 use GV\Mock_Request;
-use GV\Search\Querying\Request\Search_Request;
+use GV\Search\Querying\Search_Request;
 
 /**
  * Tests for the {@see Search_Request} class.
@@ -62,8 +62,8 @@ final class Search_Request_Test extends GV_UnitTestCase {
 				[ 'some_other_key' => 'value' ],
 				false,
 			],
-			'gv_mode alone returns false'   => [
-				[ 'gv_mode' => 'all' ],
+			'mode alone returns false'      => [
+				[ 'mode' => 'all' ],
 				false,
 			],
 		];
@@ -128,7 +128,7 @@ final class Search_Request_Test extends GV_UnitTestCase {
 		$request                           = new Mock_Request();
 		$request->returns['get_arguments'] = [
 			'gv_search' => 'test',
-			'gv_mode'   => 'all',
+			'mode'      => 'all',
 		];
 
 		$search_request = Search_Request::from_request( $request );
@@ -150,7 +150,7 @@ final class Search_Request_Test extends GV_UnitTestCase {
 		return [
 			'empty arguments'    => [ [] ],
 			'unrelated keys'     => [ [ 'foo' => 'bar', 'baz' => 'qux' ] ],
-			'only gv_mode'       => [ [ 'gv_mode' => 'all' ] ],
+			'only mode'          => [ [ 'mode' => 'all' ] ],
 			'invalid filter key' => [ [ 'filter_invalid' => 'value' ] ],
 		];
 	}
@@ -177,14 +177,15 @@ final class Search_Request_Test extends GV_UnitTestCase {
 	 */
 	public function data_provider_for_test_from_arguments_creates_search_request(): array {
 		return [
-			'gv_search'  => [ [ 'gv_search' => 'test' ] ],
-			'gv_start'   => [ [ 'gv_start' => '2025-01-01' ] ],
-			'gv_end'     => [ [ 'gv_end' => '2025-12-31' ] ],
-			'gv_by'      => [ [ 'gv_by' => '1' ] ],
-			'gv_id'      => [ [ 'gv_id' => '123' ] ],
-			'filter_1'   => [ [ 'filter_1' => 'value' ] ],
-			'input_1'    => [ [ 'input_1' => 'value' ] ],
-			'filter_1_2' => [ [ 'filter_1_2' => 'value' ] ],
+			'gv_search'    => [ [ 'gv_search' => 'test' ] ],
+			'gv_start'     => [ [ 'gv_start' => '2025-01-01' ] ],
+			'gv_end'       => [ [ 'gv_end' => '2025-12-31' ] ],
+			'gv_by'        => [ [ 'gv_by' => '1' ] ],
+			'gv_id'        => [ [ 'gv_id' => '123' ] ],
+			'filter_1'     => [ [ 'filter_1' => 'value' ] ],
+			'input_1'      => [ [ 'input_1' => 'value' ] ],
+			'filter_1_2'   => [ [ 'filter_1_2' => 'value' ] ],
+			'filter_1_2:3' => [ [ 'filter_1_2:3' => 'value' ] ],
 		];
 	}
 
@@ -212,55 +213,116 @@ final class Search_Request_Test extends GV_UnitTestCase {
 		return [
 			'all gv_ fields with mode and custom operators' => [
 				[
-					'gv_search'    => 'query',
-					'gv_search|op' => '!=',
-					'gv_id'        => '123',
-					'gv_by'        => '42',
-					'gv_start'     => '2025-01-01',
-					'gv_end'       => '2025-12-31',
-					'gv_mode'      => 'all',
+					'gv_search'         => 'query',
+					'gv_id'             => '123',
+					'gv_id|op'          => '!=',
+					'gv_by'             => '42',
+					'gv_start'          => '2025-01-01',
+					'gv_end'            => '2025-12-31',
+					'mode'              => 'all',
+					'filter_is_starred' => '1',
+					'filter_1'          => 'value1',
+					'filter_1|op'       => '!=',
 				],
 				[
 					'mode'    => 'all',
 					'filters' => [
-						[ 'key' => 'search_all', 'operator' => '!=', 'value' => 'query' ],
-						[ 'key' => 'entry_id', 'operator' => '=', 'value' => 123 ],
-						[ 'key' => 'created_by', 'operator' => '=', 'value' => '42' ],
-						[ 'key' => 'start_date', 'operator' => '=', 'value' => '2025-01-01' ],
-						[ 'key' => 'end_date', 'operator' => '=', 'value' => '2025-12-31' ],
+						[
+							'key'         => 'search_all',
+							'request_key' => 'gv_search',
+							'operator'    => 'contains',
+							'value'       => 'query',
+						],
+						[ 'key' => 'entry_id', 'request_key' => 'gv_id', 'operator' => '!=', 'value' => 123 ],
+						[ 'key' => 'created_by', 'request_key' => 'gv_by', 'operator' => '=', 'value' => '42' ],
+						[
+							'key'         => 'is_starred',
+							'request_key' => 'filter_is_starred',
+							'operator'    => '=',
+							'value'       => '1',
+							'field_id'    => 'is_starred',
+						],
+						[
+							'key'         => '1',
+							'request_key' => 'filter_1',
+							'operator'    => '!=',
+							'value'       => 'value1',
+							'field_id'    => '1',
+						],
+						[
+							'key'        => 'entry_date',
+							'start_date' => '2025-01-01',
+							'end_date'   => '2025-12-31',
+						],
 					],
 				],
 			],
-			'filter and input fields preserved'             => [
+			'filter and input fields transformed'           => [
 				[
-					'filter_1'  => 'value1',
-					'input_2_3' => 'value2',
-					'gv_search' => 'test',
+					'filter_1'     => 'value1',
+					'input_2_3'    => 'value2',
+					'filter_4_5:6' => 'value3',
+					'gv_search'    => 'test',
 				],
 				[
 					'mode'    => 'any',
 					'filters' => [
-						[ 'key' => 'filter_1', 'operator' => '=', 'value' => 'value1' ],
-						[ 'key' => 'input_2_3', 'operator' => '=', 'value' => 'value2' ],
-						[ 'key' => 'search_all', 'operator' => 'contains', 'value' => 'test' ],
+						[
+							'key'         => '1',
+							'request_key' => 'filter_1',
+							'operator'    => '=',
+							'value'       => 'value1',
+							'field_id'    => '1',
+						],
+						[
+							'key'         => '2.3',
+							'request_key' => 'input_2_3',
+							'operator'    => '=',
+							'value'       => 'value2',
+							'field_id'    => '2.3',
+						],
+						[
+							'key'         => '4.5:6',
+							'request_key' => 'filter_4_5:6',
+							'operator'    => '=',
+							'value'       => 'value3',
+							'field_id'    => '4.5',
+							'form_id'     => '6',
+						],
+						[
+							'key'         => 'search_all',
+							'request_key' => 'gv_search',
+							'operator'    => 'contains',
+							'value'       => 'test',
+						],
 					],
 				],
 			],
 			'mode ALL uppercase normalizes to all'          => [
-				[ 'gv_search' => 'test', 'gv_mode' => 'ALL' ],
+				[ 'gv_search' => 'test', 'mode' => 'ALL' ],
 				[
 					'mode'    => 'all',
 					'filters' => [
-						[ 'key' => 'search_all', 'operator' => 'contains', 'value' => 'test' ],
+						[
+							'key'         => 'search_all',
+							'request_key' => 'gv_search',
+							'operator'    => 'contains',
+							'value'       => 'test',
+						],
 					],
 				],
 			],
 			'invalid mode defaults to any'                  => [
-				[ 'gv_search' => 'test', 'gv_mode' => 'invalid' ],
+				[ 'gv_search' => 'test', 'mode' => 'invalid' ],
 				[
 					'mode'    => 'any',
 					'filters' => [
-						[ 'key' => 'search_all', 'operator' => 'contains', 'value' => 'test' ],
+						[
+							'key'         => 'search_all',
+							'request_key' => 'gv_search',
+							'operator'    => 'contains',
+							'value'       => 'test',
+						],
 					],
 				],
 			],
@@ -269,7 +331,12 @@ final class Search_Request_Test extends GV_UnitTestCase {
 				[
 					'mode'    => 'any',
 					'filters' => [
-						[ 'key' => 'search_all', 'operator' => 'contains', 'value' => 'test' ],
+						[
+							'key'         => 'search_all',
+							'request_key' => 'gv_search',
+							'operator'    => 'contains',
+							'value'       => 'test',
+						],
 					],
 				],
 			],

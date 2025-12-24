@@ -2,7 +2,7 @@
 
 namespace GV;
 
-use GV\Search\Querying\Request\Search_Request;
+use GV\Search\Querying\Search_Request;
 
 /** If this file is called directly, abort. */
 if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {

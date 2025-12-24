@@ -10,11 +10,13 @@
 
 use GV\GF_Form;
 use GV\Grid;
+use GV\Request;
 use GV\Search\Fields\Search_Field;
 use GV\Search\Fields\Search_Field_All;
 use GV\Search\Fields\Search_Field_Gravity_Forms;
 use GV\Search\Fields\Search_Field_Search_Mode;
 use GV\Search\Fields\Search_Field_Submit;
+use GV\Search\Querying\Search_Request;
 use GV\Search\Search_Field_Collection;
 use GV\View;
 
@@ -539,21 +541,25 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$widgets = (array) get_option( 'widget_gravityview_search', [] );
 
 		foreach ( $widgets as $widget ) {
-			if ( ! empty( $widget['view_id'] ) && $widget['view_id'] == $view->ID ) { // phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
+			if (
+				empty( $widget['view_id'] )
+				|| ( (int) $widget['view_id'] !== (int) $view->ID )
+			) {
+				continue;
+			}
 
-				$_fields = \GV\Utils::get( $widget, 'search_fields' );
+			$_fields = \GV\Utils::get( $widget, 'search_fields' );
 
-				if ( is_string( $_fields ) ) {
-					$_fields = json_decode( $_fields, true );
-				}
+			if ( is_string( $_fields ) ) {
+				$_fields = json_decode( $_fields, true );
+			}
 
-				if ( $_fields ) {
-					foreach ( $_fields as $field ) {
-						if ( empty( $field['form_id'] ) ) {
-							$field['form_id'] = $view->form ? $view->form->ID : 0;
-						}
-						$searchable_fields[] = $with_full_field ? $field : $field['field'];
+			if ( $_fields ) {
+				foreach ( $_fields as $field ) {
+					if ( empty( $field['form_id'] ) ) {
+						$field['form_id'] = $view->form ? $view->form->ID : 0;
 					}
+					$searchable_fields[] = $with_full_field ? $field : $field['field'];
 				}
 			}
 		}
@@ -987,6 +993,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 			// Otherwise it's a different (embedded) View → continue processing filters.
 		}
 
+		// Make sure (if possible) we have a request object.
+		if ( ! $request instanceof Request ) {
+			$request = gravityview()->request;
+		}
+
+		$search_request = $request ? Search_Request::from_request( $request ) : null;
+		// Todo: turn $search_request into search_criteria.
+		// 	$search_criteria = $service->to_search_criteria( $search_request, $view );
 		/**
 		 * This is a shortcut to get all the needed search criteria.
 		 * We feed these into an new GF_Query and tack them onto the current object.
