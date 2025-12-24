@@ -2867,24 +2867,23 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 		// Capture the list field's defaultValue after set_default_values processes it.
 		$captured_default_value = null;
 
-		add_filter(
-			'gform_has_conditional_logic',
-			function ( $has_logic, $form ) use ( $list_field_id, &$captured_default_value ) {
-				foreach ( $form['fields'] as $field ) {
-					if ( (int) $field->id === $list_field_id ) {
-						$captured_default_value = $field->defaultValue ?? '';
-						break;
-					}
+		$capture_callback = function ( $has_logic, $form ) use ( $list_field_id, &$captured_default_value ) {
+			foreach ( $form['fields'] as $field ) {
+				if ( (int) $field->id === $list_field_id ) {
+					$captured_default_value = $field->defaultValue ?? '';
+					break;
 				}
+			}
 
-				return $has_logic;
-			},
-			999999,
-			2
-		);
+			return $has_logic;
+		};
+
+		add_filter( 'gform_has_conditional_logic', $capture_callback, 999999, 2 );
 
 		// Use _emulate_render() to properly initialize Edit Entry context.
-		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
+		[ $output, , $entry ] = $this->_emulate_render( $form, $view, $entry );
+
+		remove_filter( 'gform_has_conditional_logic', $capture_callback, 999999 );
 
 		// Verify the form was rendered.
 		$this->assertStringContainsString( 'gform_submit', $output );
