@@ -2045,6 +2045,43 @@ HTML;
 			[ 'jquery' ],
 			$version );
 
+		// SelectWoo for multiselect fields.
+		// Handle GF 2.5+ SelectWoo conflict by deregistering their version.
+		if ( gravityview()->plugin->is_GF_25() ) {
+			wp_deregister_script( 'gform_selectwoo' );
+			wp_dequeue_script( 'gform_selectwoo' );
+		}
+
+		wp_enqueue_script(
+			'gravityview_selectwoo',
+			plugins_url( 'assets/lib/selectWoo/selectWoo.full.min.js', GRAVITYVIEW_FILE ),
+			[ 'jquery' ],
+			\GV\Plugin::$version
+		);
+		wp_enqueue_style(
+			'gravityview_selectwoo',
+			plugins_url( 'assets/lib/selectWoo/selectWoo.min.css', GRAVITYVIEW_FILE ),
+			[],
+			\GV\Plugin::$version
+		);
+
+		wp_enqueue_script(
+			'gravityview_multiselect_selectwoo',
+			plugins_url( 'assets/js/admin-multiselect-selectwoo' . $script_debug . '.js', GRAVITYVIEW_FILE ),
+			[ 'jquery', 'gravityview_selectwoo' ],
+			\GV\Plugin::$version
+		);
+
+		wp_localize_script(
+			'gravityview_multiselect_selectwoo',
+			'GVMultiselect',
+			[
+				'language' => [
+					'search_placeholder' => esc_html__( 'Type to filter options…', 'gk-gravityview' ),
+				],
+			]
+		);
+
 		wp_localize_script(
 			'gravityview_views_scripts',
 			'gvGlobals',
@@ -2140,11 +2177,14 @@ HTML;
 		if ( preg_match( '/script/ism', $filter ) ) {
 			$allowed_dependencies = [
 				'sack',
+				'gravityview_selectwoo',
+				'gravityview_multiselect_selectwoo',
 			];
 		} elseif ( preg_match( '/style/ism', $filter ) ) {
 			$allowed_dependencies = [
 				'dashicons',
 				'wp-jquery-ui-dialog',
+				'gravityview_selectwoo',
 			];
 		}
 
