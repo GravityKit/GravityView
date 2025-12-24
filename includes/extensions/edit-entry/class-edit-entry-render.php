@@ -374,8 +374,15 @@ class GravityView_Edit_Entry_Render {
 
 		GFFormDisplay::enqueue_form_scripts( $this->form ? $this->form : $gravityview_view->getForm(), false );
 
-		// Fix for Gravity Forms bug where gf_legacy is accessed without checking if it exists.
-		// @see https://github.com/gravityforms/gravityforms/issues/3539
+		/**
+		 * Fix for Gravity Forms bug where gf_legacy is accessed without checking if it exists.
+		 *
+		 * This prevents "Uncaught ReferenceError: gf_legacy is not defined" errors in
+		 * js/conditional_logic.js when forms with conditional logic on buttons are rendered.
+		 *
+		 * @see https://github.com/gravityforms/gravityforms/issues/3539
+		 * @todo Remove when {@link https://github.com/gravityforms/gravityforms/pull/3540} is merged and released.
+		 */
 		wp_add_inline_script(
 			'gform_conditional_logic',
 			'window.gf_legacy = window.gf_legacy || { is_legacy: "0" };',
@@ -1455,16 +1462,6 @@ class GravityView_Edit_Entry_Render {
 		 * @param GravityView_Edit_Entry_Render $this
 		 */
 		do_action( 'gravityview/edit-entry/render/before', $this );
-
-		/**
-		 * Workaround for Gravity Forms bug where `gf_legacy` is not defined early enough.
-		 *
-		 * This prevents "Uncaught ReferenceError: gf_legacy is not defined" errors in
-		 * js/conditional_logic.js when forms with conditional logic on buttons are rendered.
-		 *
-		 * @todo Remove when https://github.com/gravityforms/gravityforms/pull/3540 is merged and new GF is released.
-		 */
-		echo '<script>window.gf_legacy = window.gf_legacy || { is_legacy: "1" };</script>';
 
 		add_filter( 'gform_pre_render', [ $this, 'filter_modify_form_fields' ], 5000, 3 );
 		add_filter( 'gform_has_conditional_logic', [ $this, 'set_default_values' ], 10, 2 );
