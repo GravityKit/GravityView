@@ -21,7 +21,9 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.50 on December 24, 2025 =
+
+This release improves error messaging for administrators, addresses a performance issue, and fixes JavaScript and List field display issues on the Edit Entry page.
 
 #### ✨ Improved
 * Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
