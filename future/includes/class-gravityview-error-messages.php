@@ -6,14 +6,14 @@
  * for security-safe scenarios while maintaining defense in depth for
  * enumeration-prone errors.
  *
- * @since 2.29.0
+ * @since 2.50.0
  * @package GravityView
  */
 
 /**
  * Error message handler class
  *
- * @since 2.29.0
+ * @since 2.50.0
  */
 class GravityView_Error_Messages {
 
@@ -23,7 +23,7 @@ class GravityView_Error_Messages {
 	 * These errors reveal VIEW configuration, not entry existence.
 	 * Users with 'edit_gravityview' see actionable, detailed messages.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 * @var array
 	 */
 	private static $view_errors = [
@@ -41,7 +41,7 @@ class GravityView_Error_Messages {
 	 * Users with 'gravityview_moderate_entries' may see specific messages.
 	 * Currently generic, but structured separately for future expansion.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 * @var array
 	 */
 	private static $entry_moderation_errors = [
@@ -55,7 +55,7 @@ class GravityView_Error_Messages {
 	 * Always returns generic message, even for administrators, to prevent
 	 * information disclosure attacks.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 * @var array
 	 */
 	private static $entry_existence_errors = [
@@ -68,7 +68,7 @@ class GravityView_Error_Messages {
 	/**
 	 * Get appropriate error message based on error code and capability.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 *
 	 * @param string         $error_code Error code from WP_Error
 	 * @param GV\View|null   $view       GV\View object
@@ -120,7 +120,7 @@ class GravityView_Error_Messages {
 	/**
 	 * Check if the current user can view detailed error messages.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 *
 	 * @param string      $error_code Normalized error code.
 	 * @param GV\View|null $view       View object.
@@ -149,7 +149,7 @@ class GravityView_Error_Messages {
 	/**
 	 * Get detailed error message for privileged users.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 *
 	 * @param string     $error_code Normalized error code.
 	 * @param GV\View    $view       View object.
@@ -218,7 +218,7 @@ class GravityView_Error_Messages {
 	/**
 	 * Build link template for message formatting.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 *
 	 * @param GV\View $view    View object.
 	 * @param string  $context Context (shortcode, oembed, rest).
@@ -258,7 +258,7 @@ class GravityView_Error_Messages {
 	/**
 	 * Get generic fallback message.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 *
 	 * @return string Generic error message.
 	 */
@@ -269,7 +269,7 @@ class GravityView_Error_Messages {
 	/**
 	 * Get documentation link for specific error.
 	 *
-	 * @since 2.29.0
+	 * @since 2.50.0
 	 *
 	 * @return string Documentation URL.
 	 */
