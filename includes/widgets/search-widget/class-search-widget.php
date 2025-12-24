@@ -2433,7 +2433,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 *
 			 * @param string $template_id Template ID.
 			 * @param string $type        The zone type (field or widget).
-			 * @param string $zone        Current View zone: `directory`, `single`, or `edit` (default: 'single').
+			 * @param string $zone        Current View zone: `directory`, `single`, `edit`, `search-general`, or `search-advanced`.
 			 * @param bool   $is_dynamic  Whether the zone is dynamic.
 			 */
 			do_action( 'gk/gravityview/admin-views/view/after-zone', $template_id, $type, $zone, $is_dynamic );
