@@ -536,7 +536,7 @@ class Views_Route extends Route {
 
 	public function get_sub_item_permissions_check( $request ) {
 		// Accessing a single entry needs the View access permissions.
-		if ( is_wp_error( $error = $this->get_items_permissions_check( $request ) ) ) {
+		if ( is_wp_error( $error = $this->get_item_permissions_check( $request ) ) ) {
 			return $error;
 		}
 
