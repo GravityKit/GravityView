@@ -2763,6 +2763,148 @@ class GravityView_Edit_Entry_Test extends GV_UnitTestCase {
 
 		$this->_reset_context();
 	}
+
+	/**
+	 * Test that empty list fields with conditional logic don't produce serialized strings.
+	 *
+	 * @see https://linear.app/gravitykit/issue/GVIEW-70/list-field-prefilled-with-serialized-data-when-editing-entry
+	 */
+	public function test_empty_list_field_with_conditional_logic_no_serialized_strings() {
+		$administrator = $this->factory->user->create_and_set( [ 'role' => 'administrator' ] );
+
+		$radio_field_id = 1;
+		$list_field_id  = 2;
+
+		$form = [
+			'title'  => 'List Field CL Test',
+			'fields' => [],
+		];
+
+		$form_id = GFAPI::add_form( $form );
+		$this->assertNotWPError( $form_id, 'Form should be created' );
+
+		$form = GFAPI::get_form( $form_id );
+
+		// Add a radio field.
+		$radio_field = GF_Fields::create( [
+			'id'      => $radio_field_id,
+			'type'    => 'radio',
+			'label'   => 'Show List?',
+			'formId'  => $form_id,
+			'choices' => [
+				[ 'text' => 'Yes', 'value' => 'yes' ],
+				[ 'text' => 'No', 'value' => 'no' ],
+			],
+		] );
+
+		// Add a multi-column list field with conditional logic.
+		$list_field = GF_Fields::create( [
+			'id'               => $list_field_id,
+			'type'             => 'list',
+			'label'            => 'Multi-Column List',
+			'formId'           => $form_id,
+			'enableColumns'    => true,
+			'choices'          => [
+				[ 'text' => 'Column A', 'value' => '' ],
+				[ 'text' => 'Column B', 'value' => '' ],
+				[ 'text' => 'Column C', 'value' => '' ],
+			],
+			'conditionalLogic' => [
+				'actionType' => 'show',
+				'logicType'  => 'all',
+				'rules'      => [
+					[
+						'fieldId'  => (string) $radio_field_id,
+						'operator' => 'is',
+						'value'    => 'yes',
+					],
+				],
+			],
+		] );
+
+		$form['fields'] = [ $radio_field, $list_field ];
+		$result         = GFAPI::update_form( $form );
+		$this->assertNotWPError( $result, 'Form should be updated' );
+
+		// Get fresh form with field objects.
+		$form = GFAPI::get_form( $form_id );
+
+		// Create an entry with radio set to "no" and empty list value.
+		$entry_data = [
+			'form_id'                => $form_id,
+			'created_by'             => $administrator->ID,
+			(string) $radio_field_id => 'no',
+			(string) $list_field_id  => '',
+		];
+		$entry_id   = GFAPI::add_entry( $entry_data );
+		$this->assertNotWPError( $entry_id, 'Entry should be created' );
+
+		$entry = GFAPI::get_entry( $entry_id );
+
+		// Create a View with Edit Entry enabled.
+		$view = $this->factory->view->create_and_get( [
+			'form_id'  => $form_id,
+			'settings' => [
+				'user_edit' => 1,
+			],
+			'fields'   => [
+				'edit_edit-fields' => [
+					wp_generate_password( 4, false ) => [
+						'id'    => (string) $radio_field_id,
+						'label' => 'Show List?',
+					],
+					wp_generate_password( 4, false ) => [
+						'id'    => (string) $list_field_id,
+						'label' => 'Multi-Column List',
+					],
+				],
+			],
+		] );
+
+		$this->_reset_context();
+		wp_set_current_user( $administrator->ID );
+
+		// Capture the list field's defaultValue after set_default_values processes it.
+		$captured_default_value = null;
+
+		add_filter(
+			'gform_has_conditional_logic',
+			function ( $has_logic, $form ) use ( $list_field_id, &$captured_default_value ) {
+				foreach ( $form['fields'] as $field ) {
+					if ( (int) $field->id === $list_field_id ) {
+						$captured_default_value = $field->defaultValue ?? '';
+						break;
+					}
+				}
+
+				return $has_logic;
+			},
+			999999,
+			2
+		);
+
+		// Use _emulate_render() to properly initialize Edit Entry context.
+		[ $output, $render, $entry ] = $this->_emulate_render( $form, $view, $entry );
+
+		// Verify the form was rendered.
+		$this->assertStringContainsString( 'gform_submit', $output );
+
+		// The list field's defaultValue should NOT be a serialized array with empty string.
+		// Bug: (array) "" returns [''], which serializes to 'a:1:{i:0;s:0:"";}'.
+		$this->assertNotSame(
+			'a:1:{i:0;s:0:"";}',
+			$captured_default_value,
+			'Empty list field should not have serialized empty array as defaultValue'
+		);
+
+		// The defaultValue should be empty for an empty list field.
+		$this->assertEmpty(
+			$captured_default_value,
+			'Empty list field should have empty defaultValue. Got: ' . var_export( $captured_default_value, true )
+		);
+
+		$this->_reset_context();
+	}
 }
 
 /** The GF_User_Registration mock if not exists. */

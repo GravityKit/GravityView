@@ -28,6 +28,7 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 #### 🐛 Fixed
 * Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
+* Multi-column List fields on the Edit Entry page displayed serialized array data (e.g., `a:1:{i:0;s:0:"";}`) instead of remaining empty when revealed via conditional logic.
 
 = 2.49 on December 5, 2025 =
 

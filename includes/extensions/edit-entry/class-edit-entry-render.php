@@ -2451,6 +2451,12 @@ class GravityView_Edit_Entry_Render {
 			if ( 'list' === $field->type ) {
 				$list_rows = maybe_unserialize( $field_value );
 
+				// If the list value is empty or not a properly structured array, reset default to empty.
+				if ( empty( $list_rows ) || ! is_array( $list_rows ) ) {
+					$field->defaultValue = '';
+					continue;
+				}
+
 				$list_field_value = [];
 				foreach ( (array) $list_rows as $row ) {
 					foreach ( (array) $row as $column ) {
