@@ -374,6 +374,14 @@ class GravityView_Edit_Entry_Render {
 
 		GFFormDisplay::enqueue_form_scripts( $this->form ? $this->form : $gravityview_view->getForm(), false );
 
+		// Fix for Gravity Forms bug where gf_legacy is accessed without checking if it exists.
+		// @see https://github.com/gravityforms/gravityforms/issues/3539
+		wp_add_inline_script(
+			'gform_conditional_logic',
+			'window.gf_legacy = window.gf_legacy || { is_legacy: "0" };',
+			'before'
+		);
+
 		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', array( 'cookiepath' => COOKIEPATH ) );
 
 		wp_enqueue_script( 'sack' ); // Sack is required for images.
