@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e56545ec20e762d9f700ff2434772a3c",
+    "content-hash": "8640524c39dda9f5041aac2e4741882c",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -238,12 +238,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "b291b630b00f923f97ca3374f008ffe1868d2eba"
+                "reference": "66edc91e98f462a4fea48369c25fa047bbf2f6c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/b291b630b00f923f97ca3374f008ffe1868d2eba",
-                "reference": "b291b630b00f923f97ca3374f008ffe1868d2eba",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/66edc91e98f462a4fea48369c25fa047bbf2f6c5",
+                "reference": "66edc91e98f462a4fea48369c25fa047bbf2f6c5",
                 "shasum": ""
             },
             "require": {
@@ -276,6 +276,8 @@
                     "target_directory": "vendor_prefixed",
                     "namespace_prefix": "GravityKit\\Foundation\\ThirdParty",
                     "classmap_prefix": "GravityKit_Foundation_ThirdParty_",
+                    "include_modified_date": false,
+                    "include_author": false,
                     "packages": [
                         "illuminate/support",
                         "illuminate/validation",
@@ -341,10 +343,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.7.0",
+                "source": "https://github.com/GravityKit/Foundation/tree/v1.7.1",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2025-11-17T22:18:51+00:00"
+            "time": "2025-12-26T16:52:53+00:00"
         },
         {
             "name": "illuminate/container",
