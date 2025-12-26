@@ -337,8 +337,6 @@ class GravityView_Lightbox_Entry {
 		/**
 		 * Filters the markup of Single Entry or Edit Entry links that open inside a lightbox.
 		 *
-		 * @filter `gk/gravityview/lightbox/entry/link`
-		 *
 		 * @since 2.39.0
 		 *
 		 * @param string           $entry_link_markup The full HTML markup for the entry link.
@@ -559,17 +557,12 @@ class GravityView_Lightbox_Entry {
 		/**
 		 * Fires before rendering the lightbox entry view.
 		 *
-		 * @action `gk/gravityview/lightbox/entry/before-output`
+		 * @since 2.31.0
 		 *
-		 * @since  2.31.0
-		 *
-		 * @param array       $args           {
-		 *
-		 * @type View         $view           The View object being rendered.
-		 * @type GF_Entry     $entry          The Gravity Forms entry data.
-		 * @type array        $form           The Gravity Forms form array.
-		 * @type Entry_Render $entry_renderer The renderer object responsible for rendering the entry.
-		 *                                    }
+		 * @param View         $view           The View object being rendered.
+		 * @param GF_Entry     $entry          The Gravity Forms entry data.
+		 * @param array        $form           The Gravity Forms form array.
+		 * @param Entry_Render $entry_renderer The renderer object responsible for rendering the entry.
 		 */
 		do_action_ref_array( 'gk/gravityview/lightbox/entry/before-output', [ &$view, &$entry, &$form, &$entry_renderer ] );
 
@@ -596,9 +589,7 @@ class GravityView_Lightbox_Entry {
 				/**
 				 * Fires after the opening head tag.
 				 *
-				 * @action `gk/gravityview/lightbox/entry/output/head-before`
-				 *
-				 * @since  2.31.0
+				 * @since 2.31.0
 				 *
 				 * @param string   $type  The type of the entry view (single or edit).
 				 * @param View     $view  The View object being rendered.
@@ -624,9 +615,7 @@ class GravityView_Lightbox_Entry {
 				/**
 				 * Fires before the closing head tag.
 				 *
-				 * @action `gk/gravityview/lightbox/entry/output/head-after`
-				 *
-				 * @since  2.31.0
+				 * @since 2.31.0
 				 *
 				 * @param string   $type  The type of the entry view (single or edit).
 				 * @param View     $view  The View object being rendered.
@@ -642,9 +631,7 @@ class GravityView_Lightbox_Entry {
 				/**
 				 * Fires after the body tag before the content is rendered.
 				 *
-				 * @action `gk/gravityview/lightbox/entry/output/content-before`
-				 *
-				 * @since  2.31.0
+				 * @since 2.31.0
 				 *
 				 * @param string   $type  The type of the entry view (single or edit).
 				 * @param View     $view  The View object being rendered.
@@ -660,9 +647,7 @@ class GravityView_Lightbox_Entry {
 				/**
 				 * Fires inside the body tag after the content is rendered and before the footer.
 				 *
-				 * @action `gk/gravityview/lightbox/entry/output/content-after`
-				 *
-				 * @since  2.31.0
+				 * @since 2.31.0
 				 *
 				 * @param string   $type  The type of the entry view (single or edit).
 				 * @param View     $view  The View object being rendered.
@@ -678,9 +663,7 @@ class GravityView_Lightbox_Entry {
 				/**
 				 * Fires after the footer and before the closing body tag.
 				 *
-				 * @action `gk/gravityview/lightbox/entry/output/footer-after`
-				 *
-				 * @since  2.31.0
+				 * @since 2.31.0
 				 *
 				 * @param string   $type  The type of the entry view (single or edit).
 				 * @param View     $view  The View object being rendered.

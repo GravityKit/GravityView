@@ -1103,6 +1103,7 @@ class GravityView_frontend {
 		 * Modify entry status requirements to be included in search results.
 		 *
 		 * @param string $status Default: `active`. Accepts all Gravity Forms entry statuses, including `spam` and `trash`
+		 * @param array  $args   View configuration arguments.
 		 */
 		$search_criteria['status'] = apply_filters( 'gravityview_status', 'active', $args );
 
@@ -1248,7 +1249,8 @@ class GravityView_frontend {
 		 * Filter get entries criteria for a specific View.
 		 *
 		 * @param array $parameters Array with `search_criteria`, `sorting` and `paging` keys.
-		 * @param array $args View configuration args.
+		 * @param array $args       View configuration args.
+		 * @param int   $form_id    ID of the Gravity Forms form.
 		 */
 		$parameters = apply_filters( "gravityview_get_entries_{$view_id}", $parameters, $args, $form_id );
 
@@ -1497,8 +1499,9 @@ class GravityView_frontend {
 				 *
 				 * @see GravityView_Field_Time
 				 * @since 1.14
-				 * @param string $name_part Field used for sorting
-				 * @param int $form_id GF Form ID
+				 *
+				 * @param string $sort_field_id Field used for sorting.
+				 * @param int    $form_id       GF Form ID.
 				 */
 				$sort_field_id = apply_filters( 'gravityview/sorting/time', $sort_field_id, $form_id );
 				break;
@@ -1588,8 +1591,8 @@ class GravityView_frontend {
 					 *
 					 * @since 2.5.1
 					 *
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
-					 * @param \GV\View The View.
+					 * @param string   $script_slug If you want to use a different lightbox script, return the name of it here.
+					 * @param \GV\View $view        The View.
 					 */
 					$js_dependency     = apply_filters( 'gravityview_lightbox_script', $js_dependency, $view );
 					$js_dependencies[] = $js_dependency;
@@ -1604,12 +1607,12 @@ class GravityView_frontend {
 					$css_dependency = apply_filters_deprecated( 'gravity_view_lightbox_style', array( 'thickbox' ), '2.5.1', 'gravityview_lightbox_style' );
 
 					/**
-					 * Override the lightbox script to enqueue. Default: `thickbox`.
+					 * Override the lightbox style to enqueue. Default: `thickbox`.
 					 *
 					 * @since 2.5.1
 					 *
-					 * @param string $script_slug If you want to use a different lightbox script, return the name of it here.
-					 * @param \GV\View The View.
+					 * @param string   $style_slug If you want to use a different lightbox style, return the name of it here.
+					 * @param \GV\View $view       The View.
 					 */
 					$css_dependency     = apply_filters( 'gravityview_lightbox_style', $css_dependency, $view );
 					$css_dependencies[] = $css_dependency;

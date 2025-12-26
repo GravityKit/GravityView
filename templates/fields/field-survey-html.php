@@ -129,8 +129,8 @@ switch ( $gravityview->field->field->inputType ) {
 		 *
 		 * @since 2.10.4
 		 *
-		 * @param string The glue. Default: "; " (semicolon with a trailing space)
-		 * @param \GV\Template_Context The context.
+		 * @param string               $glue        The glue. Default: "; " (semicolon with a trailing space).
+		 * @param \GV\Template_Context $gravityview The context.
 		 */
 		$glue = apply_filters( 'gravityview/template/field/survey/glue', '; ', $gravityview );
 
@@ -157,10 +157,13 @@ switch ( $gravityview->field->field->inputType ) {
 			: '';
 
 		/**
-		 * @action `gravityview/field/survey/rating-styles`
-		 * @usedby {@see GravityView_Field_Survey::output_frontend_css} to Enqueue styles for the Survey field.
+		 * Fires before the Survey rating field output.
+		 *
 		 * @since 2.16
-		 * @param \GV\GF_Field $field The current field.
+		 *
+		 * @see GravityView_Field_Survey::output_frontend_css() Enqueues styles for the Survey field.
+		 *
+		 * @param \GV\GF_Field         $field       The current field.
 		 * @param \GV\Template_Context $gravityview The context.
 		 */
 		do_action( 'gravityview/template/field/survey/rating/before', $field, $gravityview );

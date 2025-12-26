@@ -137,9 +137,11 @@ abstract class GravityView_FieldType {
 
 		$css_class = empty( $css_class ) ? 'tooltip' : $css_class;
 		/**
-		 * Filters the tooltips available
+		 * Filters the tooltips available.
 		 *
-		 * @param array $__gf_tooltips Array containing the available tooltips
+		 * @since 2.10
+		 *
+		 * @param array $__gf_tooltips Array containing the available tooltips.
 		 */
 		$__gf_tooltips = apply_filters( 'gform_tooltips', $__gf_tooltips );
 
@@ -173,10 +175,21 @@ abstract class GravityView_FieldType {
 		);
 
 		/**
-		 * Modify the tooltip HTML before outputting
+		 * Modify the tooltip HTML before outputting.
+		 *
+		 * @since 2.10
 		 *
 		 * @internal
+		 *
 		 * @see GravityView_Support_Port::maybe_add_article_to_tooltip()
+		 *
+		 * @param string $tooltip      The tooltip HTML.
+		 * @param array  $article      Article data array.
+		 * @param string $url          The tooltip URL.
+		 * @param string $atts         HTML attributes string.
+		 * @param string $css_class    CSS class string.
+		 * @param string $tooltip_text The tooltip text.
+		 * @param string $anchor_text  The anchor text HTML.
 		 */
 		$tooltip = apply_filters( 'gravityview/tooltips/tooltip', $tooltip, $article, $url, $atts, $css_class, $tooltip_text, $anchor_text );
 

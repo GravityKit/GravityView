@@ -626,9 +626,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 		 * @since 1.17
 		 * @since 2.0
 		 *
-		 * @param object               $note         Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
+		 * @param array                $note_content Array of note content that will be replaced in template files.
+		 * @param object               $note         Note object with id, user_id, date_created, value, note_type, user_name, user_email vars.
 		 * @param boolean              $show_delete  True: Notes are editable. False: no editing notes.
-		 * @param array                $note_content Array of note content that will be replaced in template files
 		 * @param \GV\Template_Context $context      The context.
 		 */
 		$note_content = apply_filters( 'gravityview/field/notes/content', $note_content, $note, $show_delete, $context );

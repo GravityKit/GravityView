@@ -205,6 +205,15 @@ abstract class GravityView_Lightbox_Provider {
 	protected function get_settings() {
 		$settings = static::default_settings();
 
+		/**
+		 * Modifies the settings for a lightbox provider.
+		 *
+		 * The dynamic portion of the hook name, `static::$slug`, refers to the lightbox provider slug.
+		 *
+		 * @since 2.4
+		 *
+		 * @param array $settings Default settings for the lightbox provider.
+		 */
 		return apply_filters( 'gravityview/lightbox/provider/' . static::$slug . '/settings', $settings );
 	}
 

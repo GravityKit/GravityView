@@ -24,9 +24,10 @@ if ( $field->enableColumns && false !== $column_id ) {
 	 * Format of single list column output of a List field with Multiple Columns enabled.
 	 *
 	 * @since 1.14
-	 * @param string $format `html` (for <ul> list), `text` (for CSV output)
-	 * @since 2.0
-	 * @param \GV\Template_Context $gravityview The context
+	 * @since 2.0 Added $gravityview parameter.
+	 *
+	 * @param string               $format      Output format: 'html' for `<ul>` list, 'text' for CSV output.
+	 * @param \GV\Template_Context $gravityview The template context.
 	 */
 	$format = apply_filters( 'gravityview/fields/list/column-format', 'html', $gravityview );
 

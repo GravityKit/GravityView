@@ -30,18 +30,22 @@ if ( ! class_exists( 'GFFormDisplay' ) ) {
 /**
  * Modify entry being displayed.
  *
- * @param array $entry The current entry being displayed.
- * @param array $form The current form the custom content is using.
- * @param \GV\Template_Context The GravityView template context instance.
+ * @since 2.10.3
+ *
+ * @param array                $entry       The current entry being displayed.
+ * @param array                $form        The current form the custom content is using.
+ * @param \GV\Template_Context $gravityview The GravityView template context instance.
  */
 $entry = apply_filters( 'gravityview/fields/custom/entry', $entry, $form, $gravityview );
 
 /**
  * Modify form that content is being pulled from.
  *
- * @param array $form The current form the custom content is using.
- * @param array $entry The current entry being displayed.
- * @param \GV\Template_Context The GravityView template context instance.
+ * @since 2.10.3
+ *
+ * @param array                $form        The current form the custom content is using.
+ * @param array                $entry       The current entry being displayed.
+ * @param \GV\Template_Context $gravityview The GravityView template context instance.
  */
 $form = apply_filters( 'gravityview/fields/custom/form', $form, $entry, $gravityview );
 
@@ -49,12 +53,10 @@ $form = apply_filters( 'gravityview/fields/custom/form', $form, $entry, $gravity
  * Modify Custom Content field output before Merge Tag processing.
  *
  * @since 1.6.2
- * @param string $content HTML content of field
+ * @since 2.0 Added $gravityview parameter.
  *
- * @since 2.0
- * @param \GV\Template_Context The gravityview template context instance.
- * @since 2.0
- * @param stdClass The gravityview template context object.
+ * @param string               $content     HTML content of field.
+ * @param \GV\Template_Context $gravityview The GravityView template context instance.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_before', $gravityview->field->content, $gravityview );
 $content = trim( rtrim( (string) $content ) );
@@ -71,11 +73,11 @@ $content = GravityView_API::replace_variables( $content, $form, $entry, false, t
  * Decode brackets in shortcodes, rendering them inert (escape brackets).
  *
  * @since 1.16.5
- * @param boolean $decode Enable/Disable decoding of brackets in the content (default: false)
- * @param string $content HTML content of field
+ * @since 2.0 Added $gravityview parameter.
  *
- * @since 2.0
- * @param \GV\Template_Context The gravityview template context instance.
+ * @param boolean              $decode      Enable/Disable decoding of brackets in the content. Default: false.
+ * @param string               $content     HTML content of field.
+ * @param \GV\Template_Context $gravityview The GravityView template context instance.
  */
 if ( apply_filters( 'gravityview/fields/custom/decode_shortcodes', false, $content, $gravityview ) ) {
 	$content = GVCommon::decode_shortcodes( $content );
@@ -95,10 +97,10 @@ if ( ! empty( $gravityview->field->wpautop ) ) {
  * Modify Custom Content field output after Merge Tag variables get replaced, before shortcodes get processed.
  *
  * @since 1.6.2
- * @param string $content HTML content of field
+ * @since 2.0 Added $gravityview parameter.
  *
- * @since 2.0
- * @param \GV\Template_Context The gravityview template context instance.
+ * @param string               $content     HTML content of field.
+ * @param \GV\Template_Context $gravityview The GravityView template context instance.
  */
 $content = apply_filters( 'gravityview/fields/custom/content_after', $content, $gravityview );
 

@@ -299,7 +299,7 @@ if ( ! class_exists( '\GV\Gamajo_Template_Loader' ) ) {
 			 *
 			 * @since 1.0.0
 			 *
-			 * @param array $var Default is directory in child theme at index 1, parent theme at 10, and plugin at 100.
+			 * @param array $file_paths Default is directory in child theme at index 1, parent theme at 10, and plugin at 100.
 			 */
 			$file_paths = apply_filters( $this->filter_prefix . '_template_paths', $file_paths );
 

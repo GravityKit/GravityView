@@ -217,8 +217,10 @@ class Field extends \stdClass {
 		/**
 		 * Filter the field class about to be created from the configuration.
 		 *
-		 * @param string $field_class The field class about to be used.
-		 * @param array $configuration The configuration as per \GV\Field::as_configuration()
+		 * @since 2.0
+		 *
+		 * @param string $field_class   The field class about to be used.
+		 * @param array  $configuration The configuration as per \GV\Field::as_configuration().
 		 */
 		$field_class = apply_filters( 'gravityview/field/class', $field_class, $configuration );
 
@@ -364,11 +366,13 @@ class Field extends \stdClass {
 			/**
 			 * Override the displayed value here.
 			 *
-			 * @param string $value The value.
-			 * @param \GV\Field The field we're doing this for.
-			 * @param \GV\View $view The view for this context if applicable.
-			 * @param \GV\Source $source The source (form) for this context if applicable.
-			 * @param \GV\Entry $entry The entry for this context if applicable.
+			 * @since 2.0
+			 *
+			 * @param string      $value   The value.
+			 * @param \GV\Field   $field   The field we're doing this for.
+			 * @param \GV\View    $view    The view for this context if applicable.
+			 * @param \GV\Source  $source  The source (form) for this context if applicable.
+			 * @param \GV\Entry   $entry   The entry for this context if applicable.
 			 * @param \GV\Request $request The request for this context if applicable.
 			 */
 			$value = apply_filters( "gravityview/field/{$this->type}/value", $value, $this, $view, $source, $entry, $request );
@@ -377,11 +381,13 @@ class Field extends \stdClass {
 		/**
 		 * Override the displayed value here.
 		 *
-		 * @param string $value The value.
-		 * @param \GV\Field The field we're doing this for.
-		 * @param \GV\View $view The view for this context if applicable.
-		 * @param \GV\Source $source The source (form) for this context if applicable.
-		 * @param \GV\Entry $entry The entry for this context if applicable.
+		 * @since 2.0
+		 *
+		 * @param string      $value   The value.
+		 * @param \GV\Field   $field   The field we're doing this for.
+		 * @param \GV\View    $view    The view for this context if applicable.
+		 * @param \GV\Source  $source  The source (form) for this context if applicable.
+		 * @param \GV\Entry   $entry   The entry for this context if applicable.
 		 * @param \GV\Request $request The request for this context if applicable.
 		 */
 		return apply_filters( 'gravityview/field/value', $value, $this, $view, $source, $entry, $request );
@@ -399,9 +405,11 @@ class Field extends \stdClass {
 		/**
 		 * Should this field be visible?
 		 *
-		 * @param boolean $visible Visible or not, defaults to the set field capability requirement if defined.
-		 * @param \GV\Field $field The field we're looking at.
-		 * @param \GV\View|null A context view. Since @develop
+		 * @since 2.0
+		 *
+		 * @param boolean       $visible Visible or not, defaults to the set field capability requirement if defined.
+		 * @param \GV\Field     $field   The field we're looking at.
+		 * @param \GV\View|null $view    A context view.
 		 */
 		return apply_filters( 'gravityview/field/is_visible', ( ! $this->cap || \GVCommon::has_cap( $this->cap ) ), $this, $view );
 	}

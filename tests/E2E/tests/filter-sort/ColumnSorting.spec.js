@@ -28,7 +28,9 @@ test('Verify Column Sorting', async ({ page }) => {
 			.getByRole('link', { name: 'Filter & Sort' })
 			.click();
 		await page.getByLabel('Enable sorting by column').setChecked(true);
-		await page.locator('#gravityview_sort_field_1').selectOption({ label: 'Favorite Color' });
+		const sortField = page.locator('#gravityview_sort_field_1');
+		await expect(sortField).toBeEnabled();
+		await sortField.selectOption({ label: 'Favorite Color' });
 		await publishView(page);
 	});
 

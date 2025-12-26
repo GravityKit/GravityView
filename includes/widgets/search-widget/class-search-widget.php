@@ -168,11 +168,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 	 */
 	private function set_search_method() {
 		/**
-		 * @filter `gravityview/search/method` Modify the search form method (GET / POST).
-		 * @since  1.16.4
+		 * Modify the search form method (GET / POST).
 		 *
-		 * @param string $search_method Assign an input type according to the form field type. Defaults: `boolean`, `multi`, `select`, `date`, `text`
-		 * @param string $field_type    Gravity Forms field type (also the `name` parameter of GravityView_Field classes)
+		 * @since 1.16.4
+		 *
+		 * @param string $search_method The search form method. Default: 'get'. Accepts 'get' or 'post'.
 		 */
 		$method = apply_filters( 'gravityview/search/method', $this->search_method );
 
@@ -587,7 +587,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		);
 
 		/**
-		 * @filter `gravityview/search/searchable_fields/allowlist` Modifies the fields able to be searched using the Search Bar
+		 * Modifies the fields able to be searched using the Search Bar
 		 *
 		 * @since  2.14
 		 *
@@ -683,7 +683,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$searchable_field_objects = $this->get_view_searchable_fields( $view, true );
 
 		/**
-		 * @filter `gravityview/search-all-split-words` Search for each word separately or the whole phrase?
+		 * Search for each word separately or the whole phrase?
 		 *
 		 * @since  1.20.2
 		 * @since  2.19.6 Added $view parameter
@@ -694,7 +694,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$split_words = apply_filters( 'gravityview/search-all-split-words', true, $view );
 
 		/**
-		 * @filter `gravityview/search-trim-input` Remove leading/trailing whitespaces from search value
+		 * Remove leading/trailing whitespaces from search value
 		 *
 		 * @since  2.9.3
 		 * @since  2.19.6 Added $view parameter
@@ -910,11 +910,11 @@ class GravityView_Widget_Search extends \GV\Widget {
 		}
 
 		/**
-		 * or `any`).
+		 * Modify the search mode used for field filters.
 		 *
 		 * @since 1.5.1
 		 *
-		 * @param string $mode Search mode (`any` vs `all`)
+		 * @param string $mode Search mode. 'any' matches entries with any filter condition met; 'all' requires all conditions to be met. Default: 'any'.
 		 */
 		$search_criteria['field_filters']['mode'] = apply_filters( 'gravityview/search/mode', $mode );
 
@@ -939,7 +939,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 		];
 
 		/**
-		 * @filter `gk/gravityview/common/quotation-marks` Modify the quotation marks used to detect quoted searches.
+		 * Modify the quotation marks used to detect quoted searches.
 		 *
 		 * @since  2.22
 		 *
@@ -1102,7 +1102,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			}
 
 			/**
-			 * @filter `gravityview_search_operator` Modify the search operator for the field (contains, is, isnot, etc)
+			 * Modify the search operator for the field (contains, is, isnot, etc)
 			 *
 			 * @since  2.0 Added $view parameter
 			 *
@@ -2105,8 +2105,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 		 *
 		 * @since 2.14
 		 *
-		 * @param string[] An allowlist of operators.
-		 * @param string The filter name.
+		 * @param string[] $allowed An allowlist of operators.
+		 * @param string   $key     The filter name.
 		 */
 		$allowed = apply_filters( 'gravityview/search/operator_allowlist', $allowed, $key );
 
@@ -2205,14 +2205,14 @@ class GravityView_Widget_Search extends \GV\Widget {
 		$fields = gravityview_get_form_fields( $form_id, true, true );
 
 		/**
-		 * Modify the fields that are displayed as searchable in the Search Bar dropdown\n.
+		 * Modify the fields that are displayed as searchable in the Search Bar dropdown.
 		 *
 		 * @since 1.17
 		 * @see   gravityview_get_form_fields() Used to fetch the fields
 		 * @see   GravityView_Widget_Search::get_search_input_types See this method to modify the type of input types allowed for a field
 		 *
-		 * @param array $fields Array of searchable fields, as fetched by gravityview_get_form_fields()
-		 * @param int   $form_id
+		 * @param array $fields  Array of searchable fields, as fetched by gravityview_get_form_fields()
+		 * @param int   $form_id The form ID.
 		 */
 		$fields = apply_filters( 'gravityview/search/searchable_fields', $fields, $form_id );
 
@@ -2433,7 +2433,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 			 *
 			 * @param string $template_id Template ID.
 			 * @param string $type        The zone type (field or widget).
-			 * @param string $context     Current View context: `directory`, `single`, or `edit` (default: 'single')
+			 * @param string $zone        Current View zone: `directory`, `single`, `edit`, `search-general`, or `search-advanced`.
 			 * @param bool   $is_dynamic  Whether the zone is dynamic.
 			 */
 			do_action( 'gk/gravityview/admin-views/view/after-zone', $template_id, $type, $zone, $is_dynamic );
@@ -2700,8 +2700,8 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		/**
 		 * Filter the user meta fields to search.
 		 *
-		 * @param array The user meta fields.
-		 * @param \GV\View $view The view.
+		 * @param array    $user_meta_fields The user meta fields.
+		 * @param \GV\View $view             The View.
 		 */
 		$user_meta_fields = apply_filters(
 			'gravityview/widgets/search/created_by/user_meta_fields',
@@ -2719,8 +2719,8 @@ class GravityView_Widget_Search_Author_GF_Query_Condition extends \GF_Query_Cond
 		/**
 		 * Filter the user fields to search.
 		 *
-		 * @param array The user fields.
-		 * @param \GV\View $view The view.
+		 * @param array    $user_fields The user fields.
+		 * @param \GV\View $view        The View.
 		 */
 		$user_fields = apply_filters( 'gravityview/widgets/search/created_by/user_fields', $user_fields, $this->view );
 

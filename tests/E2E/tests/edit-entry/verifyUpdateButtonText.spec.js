@@ -9,7 +9,7 @@ import {
 /**
  * Ensures the update button text is displayed correctly.
  */
-test('Verify Update Button Text', async ({ page }) => {
+test('Verify Update Button Text', async ({ page }, testInfo) => {
 	const customMessage = 'Zap It with Newness';
 
 	await page.goto('/wp-admin/edit.php?post_type=gravityview');
@@ -19,7 +19,7 @@ test('Verify Update Button Text', async ({ page }) => {
 			formTitle: 'Event Registration',
 			viewName: 'Verify Update Button Text Test',
 			template: templates[0]
-		});
+		}, testInfo);
 	});
 
 	await test.step('Customize Update Button Text and publish the View', async () => {

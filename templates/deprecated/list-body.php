@@ -43,7 +43,7 @@ if ( ! $this->getTotalEntries() ) {
 		<?php
 
 		/**
-		 * Tap in before the the entry is displayed, inside the entry container.
+		 * Tap in before the entry is displayed, inside the entry container.
 		 *
 		 * @param array $entry Gravity Forms Entry array
 		 * @param \GravityView_View $this The GravityView_View instance
@@ -57,7 +57,7 @@ if ( ! $this->getTotalEntries() ) {
 			<?php
 
 			/**
-			 * Tap in before the the entry title is displayed.
+			 * Tap in before the entry title is displayed.
 			 *
 			 * @param array $entry Gravity Forms Entry array
 			 * @param \GravityView_View $this The GravityView_View instance

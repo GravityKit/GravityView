@@ -16,9 +16,24 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 	<?php
 
+	/**
+	 * Fires at the beginning of the Sort & Filter metabox.
+	 *
+	 * @since 1.1.2
+	 *
+	 * @param array $current_settings Array of View settings.
+	 */
 	do_action( 'gravityview_metabox_sort_filter_before', $current_settings );
 
 	// Begin Sort fields
+
+	/**
+	 * Fires before the sort settings are rendered.
+	 *
+	 * @since 1.1.2
+	 *
+	 * @param array $current_settings Array of View settings.
+	 */
 	do_action( 'gravityview_metabox_sort_before', $current_settings );
 
 	/**
@@ -58,9 +73,25 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 
 
 	// End Sort fields
+
+	/**
+	 * Fires after the sort settings are rendered.
+	 *
+	 * @since 1.1.2
+	 *
+	 * @param array $current_settings Array of View settings.
+	 */
 	do_action( 'gravityview_metabox_sort_after', $current_settings );
 
 	// Begin Filter fields
+
+	/**
+	 * Fires before the filter settings are rendered.
+	 *
+	 * @since 1.1.2
+	 *
+	 * @param array $current_settings Array of View settings.
+	 */
 	do_action( 'gravityview_metabox_filter_before', $current_settings );
 
 	GravityView_Render_Settings::render_setting_row( 'start_date', $current_settings );
@@ -68,8 +99,23 @@ $current_settings = gravityview_get_template_settings( $post->ID );
 	GravityView_Render_Settings::render_setting_row( 'end_date', $current_settings );
 
 	// End Filter fields
+
+	/**
+	 * Fires after the filter settings are rendered.
+	 *
+	 * @since 1.1.2
+	 *
+	 * @param array $current_settings Array of View settings.
+	 */
 	do_action( 'gravityview_metabox_filter_after', $current_settings );
 
+	/**
+	 * Fires at the end of the Sort & Filter metabox.
+	 *
+	 * @since 1.1.2
+	 *
+	 * @param array $current_settings Array of View settings.
+	 */
 	do_action( 'gravityview_metabox_sort_filter_after', $current_settings );
 
 	?>

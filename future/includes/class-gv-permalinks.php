@@ -145,9 +145,7 @@ final class Permalinks {
 		/**
 		 * Modifies the list of reserved terms that are excluded from permalinks.
 		 *
-		 * @filter `gk/gravityview/permalinks/reserved-terms`
-		 *
-		 * @since  2.29.0
+		 * @since 2.29.0
 		 *
 		 * @param string[] $extra_reserved_terms List of extra reserved terms.
 		 * @param string[] $reserved_terms       The list of reserved WordPress terms.
