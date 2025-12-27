@@ -9,6 +9,22 @@ class GravityView_Admin_View_Widget extends GravityView_Admin_View_Item {
 	protected $label_type = 'widget';
 
 	/**
+	 * Determines whether this widget can be duplicated.
+	 *
+	 * @since TBD
+	 *
+	 * @return bool Whether the widget can be duplicated.
+	 */
+	protected function can_duplicate(): bool {
+		// The Search Bar widget has its own configuration dialog and should not be duplicated.
+		if ( 'search_bar' === $this->id ) {
+			return false;
+		}
+
+		return parent::can_duplicate();
+	}
+
+	/**
 	 * @inheritDoc
 	 * @since 2.42
 	 */
