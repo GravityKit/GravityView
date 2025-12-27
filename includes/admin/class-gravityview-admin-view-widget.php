@@ -44,6 +44,18 @@ class GravityView_Admin_View_Widget extends GravityView_Admin_View_Item {
 
 		}
 
+		/**
+		 * Allows widgets to add custom summary information displayed in the admin.
+		 *
+		 * @since TODO
+		 *
+		 * @param array  $field_info_items Array of info items with 'value' and optional 'class' keys.
+		 * @param string $widget_id        The widget ID (e.g., 'search_bar').
+		 * @param array  $settings         The widget settings/configuration.
+		 * @param array  $item             The widget item data.
+		 */
+		$field_info_items = apply_filters( 'gk/gravityview/admin/widget-info', $field_info_items, $this->id, $this->settings, $this->item );
+
 		return $field_info_items;
 	}
 }

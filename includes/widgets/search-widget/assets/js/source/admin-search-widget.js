@@ -31,6 +31,9 @@
 
 		restore_focus: null,
 
+		// Reference to the current search widget being edited (for handling field add/remove events).
+		currentSearchWidget: null,
+
 		/**
 		 * Initialize the search widget functionality
 		 *
@@ -86,6 +89,9 @@
 				.on( 'click', '[data-search-fields]', gvSearchWidget.closeFieldSettingsOutside )
 
 				.on( 'gravityview/field-added', gvSearchWidget.replaceSearchInputName )
+
+				// Update the widget summary when fields are added or removed.
+				.on( 'gravityview/field-added gravityview/field-removed', gvSearchWidget.onFieldChange )
 			;
 
 			// Refresh widget searchable settings after saving or adding the widget
@@ -189,6 +195,9 @@
 		openDialog: function ( e ) {
 			e.preventDefault();
 
+			// Store reference to the widget container for field change events.
+			gvSearchWidget.currentSearchWidget = $( this ).closest( '[data-fieldid="search_bar"]' );
+
 			// Remove ui-front to add field dialogs to <body>, fixing their appearance.
 			$( this )
 				.closest( '[role="dialog"]' )
@@ -235,6 +244,14 @@
 			gvSearchWidget.widgetTarget = $( this );
 
 			$( this ).closest( '.gv-search-widget-wrapper' ).contents().unwrap();
+
+			// Update the widget summary before clearing the reference.
+			if ( gvSearchWidget.currentSearchWidget && gvSearchWidget.currentSearchWidget.length ) {
+				gvSearchWidget.refreshWidgetSummary( gvSearchWidget.currentSearchWidget );
+			}
+
+			// Clear the widget reference.
+			gvSearchWidget.currentSearchWidget = null;
 		},
 
 		/** Table manipulation */
@@ -767,6 +784,124 @@
 
 			// Save
 			$( '.gv-search-fields-value', widgetTarget ).val( JSON.stringify( configs ) );
+
+			// Update the widget summary in the View editor.
+			var $widget = widgetTarget.closest( '[data-fieldid="search_bar"]' );
+			gvSearchWidget.updateWidgetSummary( $widget, configs, widgetTarget );
+		},
+
+		/**
+		 * Updates the Search Bar widget summary displayed in the View editor.
+		 *
+		 * @since TODO
+		 *
+		 * @param {jQuery} $widget The widget container element.
+		 * @param {Array} configs Array of search field configurations.
+		 * @param {jQuery} $searchModeContainer Element to search for the search mode setting.
+		 */
+		updateWidgetSummary: function ( $widget, configs, $searchModeContainer ) {
+			if ( ! $widget || ! $widget.length ) {
+				return;
+			}
+
+			var $summaryElement = $widget.find( '.gv-search-widget-summary' );
+
+			// If no summary element exists, create one.
+			if ( ! $summaryElement.length ) {
+				var $fieldInfo = $widget.find( '.gv-field-info' );
+
+				if ( ! $fieldInfo.length ) {
+					$widget.find( 'h5' ).append( '<span class="gv-field-info"></span>' );
+					$fieldInfo = $widget.find( '.gv-field-info' );
+				}
+
+				$fieldInfo.html( '<span class="gv-search-widget-summary"></span>' );
+				$summaryElement = $widget.find( '.gv-search-widget-summary' );
+			}
+
+			var summary = gvSearchWidget.generateWidgetSummary( configs, $searchModeContainer );
+			$summaryElement.text( summary );
+
+			// Add aria-label for screen readers to provide context.
+			var ariaLabel = gvSearchWidgetText.search_bar_config_label.replace( '%s', summary );
+			$summaryElement.attr( 'aria-label', ariaLabel );
+		},
+
+		/**
+		 * Generates the summary text for the Search Bar widget.
+		 *
+		 * Supports WordPress i18n for translations and RTL languages.
+		 *
+		 * @since TODO
+		 *
+		 * @param {Array} configs Array of search field configurations.
+		 * @param {jQuery} $searchModeContainer Element to search for the search mode setting.
+		 * @return {string} The summary text.
+		 */
+		generateWidgetSummary: function ( configs, $searchModeContainer ) {
+			var hasSearchAll = false;
+			var fieldCount = 0;
+			var hasAdvanced = false;
+			var advancedInputTypes = [ 'date_range', 'date_to', 'date_from', 'link' ];
+			var excludedFieldIds = [ 'search_all', 'search_mode', 'submit', '' ];
+
+			// Analyze the search field configurations.
+			$.each( configs, function ( index, config ) {
+				var fieldId = config.field || '';
+				var inputType = config.input || '';
+
+				if ( fieldId === 'search_all' ) {
+					hasSearchAll = true;
+				} else if ( excludedFieldIds.indexOf( fieldId ) === -1 ) {
+					fieldCount++;
+				}
+
+				if ( advancedInputTypes.indexOf( inputType ) !== -1 ) {
+					hasAdvanced = true;
+				}
+			} );
+
+			// Build the summary parts.
+			var parts = [];
+
+			// Use proper singular/plural forms from localized strings.
+			if ( hasSearchAll && fieldCount > 0 ) {
+				var template = fieldCount === 1
+					? gvSearchWidgetText.global_search_plus_field
+					: gvSearchWidgetText.global_search_plus_fields;
+				parts.push( template.replace( '%d', fieldCount ) );
+			} else if ( hasSearchAll ) {
+				parts.push( gvSearchWidgetText.global_search );
+			} else if ( fieldCount > 0 ) {
+				var template = fieldCount === 1
+					? gvSearchWidgetText.one_field
+					: gvSearchWidgetText.n_fields;
+				parts.push( template.replace( '%d', fieldCount ) );
+			}
+
+			// Check search mode value from the mode select field.
+			var $searchModeSelect = $searchModeContainer.find( 'select[name$="[mode]"]' );
+			var searchModeValue = $searchModeSelect.val() || 'any';
+
+			if ( searchModeValue === 'all' ) {
+				parts.push( gvSearchWidgetText.matches_all );
+			} else {
+				parts.push( gvSearchWidgetText.matches_any );
+			}
+
+			if ( hasAdvanced ) {
+				parts.push( gvSearchWidgetText.advanced );
+			}
+
+			// If no fields configured, show warning message.
+			if ( ! hasSearchAll && fieldCount === 0 ) {
+				return gvSearchWidgetText.needs_configuration;
+			}
+
+			// Use the localized separator (supports RTL).
+			var separator = gvSearchWidgetText.separator || ' • ';
+
+			return parts.join( separator );
 		},
 
 		/** Reset on View Change */
@@ -1003,6 +1138,98 @@
 				const name = $( this ).attr( 'name' );
 				$( this ).attr( 'name', name.replace( 'searchs[', $search_field.data( 'search-fields' ) + '[' ) );
 			} );
+		},
+
+		/**
+		 * Handles field added/removed events to update the widget summary.
+		 *
+		 * @since TODO
+		 *
+		 * @param {jQuery.Event} e The event object.
+		 * @param {jQuery} field The field element that was added or removed.
+		 */
+		onFieldChange: function ( e, field ) {
+			const $field = $( field );
+			const $searchFields = $field.closest( '[data-search-fields]' );
+
+			// Only proceed if this is a search bar widget field.
+			if ( ! $searchFields.length ) {
+				return;
+			}
+
+			// Find the widget container.
+			const $widget = $searchFields.closest( '[data-fieldid="search_bar"]' );
+
+			if ( ! $widget.length ) {
+				return;
+			}
+
+			// Build configs from current search fields.
+			var configs = [];
+
+			$searchFields.find( '.gv-fields' ).each( function () {
+				var $row = $( this );
+				var config = {
+					field: $row.data( 'fieldid' ) || '',
+					input: $row.data( 'inputtype' ) || ''
+				};
+				configs.push( config );
+			} );
+
+			// Update the summary.
+			gvSearchWidget.updateWidgetSummary( $widget, configs, $searchFields );
+		},
+
+		/**
+		 * Refreshes the Search Bar widget summary by extracting current field configurations.
+		 *
+		 * @since TODO
+		 *
+		 * @param {jQuery} $widget The widget container element.
+		 */
+		refreshWidgetSummary: function ( $widget ) {
+			if ( ! $widget || ! $widget.length ) {
+				return;
+			}
+
+			// Find the search fields container.
+			var $searchFields = $widget.find( '[data-search-fields]' );
+
+			if ( ! $searchFields.length ) {
+				return;
+			}
+
+			// Build configs from current search fields.
+			var configs = [];
+
+			$searchFields.find( '.gv-fields' ).each( function () {
+				var $row = $( this );
+				var config = {
+					field: $row.data( 'fieldid' ) || '',
+					input: $row.data( 'inputtype' ) || ''
+				};
+				configs.push( config );
+			} );
+
+			// Update the summary.
+			gvSearchWidget.updateWidgetSummary( $widget, configs, $searchFields );
+		},
+
+		/**
+		 * Initializes summaries for all existing Search Bar widgets on page load.
+		 *
+		 * Called once after the page loads to populate summary elements that were
+		 * rendered as empty placeholders by PHP.
+		 *
+		 * @since TODO
+		 */
+		initializeWidgetSummaries: function () {
+			var $widgets = $( '[data-fieldid="search_bar"]' );
+
+			$widgets.each( function () {
+				var $widget = $( this );
+				gvSearchWidget.refreshWidgetSummary( $widget );
+			} );
 		}
 	}; // end
 
@@ -1011,6 +1238,10 @@
 		var contextClass = $( 'body' ).hasClass( 'widgets-php' ) ? 'gv-widget-search-fields' : 'gv-dialog-options';
 
 		gvSearchWidget.init( contextClass );
+
+		// Initialize summaries for all existing Search Bar widgets.
+		// This populates the empty placeholders rendered by PHP.
+		gvSearchWidget.initializeWidgetSummaries();
 
 	} );
 
