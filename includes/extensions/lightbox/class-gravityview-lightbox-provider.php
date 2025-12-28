@@ -157,9 +157,12 @@ abstract class GravityView_Lightbox_Provider {
 
 		remove_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10 );
 		remove_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
+		remove_filter( 'gravityview/shortcodes/gv_entry_link/output', array( $this, 'filter_entry_link_output' ) );
 
 		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+
+		remove_action( 'gravityview/template/after', array( $this, 'print_scripts_if_active' ) );
 
 		remove_action( 'wp_footer', array( $this, 'output_footer' ) );
 	}
