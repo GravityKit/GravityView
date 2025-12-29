@@ -2673,6 +2673,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 			return $field_info_items;
 		}
 
+		// If $settings is empty, this is a picker widget (not yet added to the View).
+		// Keep the original description for picker widgets.
+		if ( empty( $settings ) ) {
+			return $field_info_items;
+		}
+
 		// Return an empty placeholder element - JS will populate the summary dynamically.
 		// This ensures real-time updates when fields are added/removed in the dialog.
 		return [

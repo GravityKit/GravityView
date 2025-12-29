@@ -763,6 +763,7 @@
 			var widgetTarget;
 			var configs = [];
 
+
 			if ( e ) {
 				widgetTarget = e.target ? $( e.target ).parents( '.gv-widget-search-fields, .gv-fields' ) : e.parents( '.gv-widget-search-fields, .gv-fields' );
 				// If one of the search fields uses a "date range", the search mode option input fields become disabled.
@@ -771,6 +772,7 @@
 			} else {
 				widgetTarget = gvSearchWidget.widgetTarget;
 			}
+
 
 			// Loop through table rows
 			widgetTarget.find( 'table tr.gv-search-field-row' ).each( function () {
@@ -782,11 +784,16 @@
 				configs.push( row );
 			} );
 
+
 			// Save
 			$( '.gv-search-fields-value', widgetTarget ).val( JSON.stringify( configs ) );
 
 			// Update the widget summary in the View editor.
+			// Use currentSearchWidget as fallback since the dialog is detached from the widget.
 			var $widget = widgetTarget.closest( '[data-fieldid="search_bar"]' );
+			if ( ! $widget.length && gvSearchWidget.currentSearchWidget ) {
+				$widget = gvSearchWidget.currentSearchWidget;
+			}
 			gvSearchWidget.updateWidgetSummary( $widget, configs, widgetTarget );
 		},
 
@@ -873,7 +880,7 @@
 			} else if ( hasSearchAll ) {
 				parts.push( gvSearchWidgetText.global_search );
 			} else if ( fieldCount > 0 ) {
-				var template = fieldCount === 1
+				template = fieldCount === 1
 					? gvSearchWidgetText.one_field
 					: gvSearchWidgetText.n_fields;
 				parts.push( template.replace( '%d', fieldCount ) );
@@ -1150,17 +1157,26 @@
 		 */
 		onFieldChange: function ( e, field ) {
 			const $field = $( field );
-			const $searchFields = $field.closest( '[data-search-fields]' );
 
-			// Only proceed if this is a search bar widget field.
-			if ( ! $searchFields.length ) {
+			// Skip if this is a field in the picker tooltip, not an actual View widget.
+			if ( $field.closest( '.gravityview-item-picker-tooltip' ).length ) {
 				return;
 			}
 
-			// Find the widget container.
-			const $widget = $searchFields.closest( '[data-fieldid="search_bar"]' );
+			let $searchFields = $field.closest( '[data-search-fields]' );
+			let $widget;
 
-			if ( ! $widget.length ) {
+			// When a field is removed, it's already detached from DOM when this event fires.
+			// Use currentSearchWidget as fallback to find the widget and search fields container.
+			if ( ! $searchFields.length && gvSearchWidget.currentSearchWidget ) {
+				$widget = gvSearchWidget.currentSearchWidget;
+				$searchFields = $widget.find( '[data-search-fields]' );
+			} else if ( $searchFields.length ) {
+				$widget = $searchFields.closest( '[data-fieldid="search_bar"]' );
+			}
+
+			// Only proceed if we have a valid widget and search fields container.
+			if ( ! $widget || ! $widget.length || ! $searchFields.length ) {
 				return;
 			}
 
@@ -1192,14 +1208,19 @@
 				return;
 			}
 
-			// Find the search fields container.
+			// Find the search fields container - check both the dialog and [data-search-fields].
 			var $searchFields = $widget.find( '[data-search-fields]' );
+
+			// If not found, try the dialog options container.
+			if ( ! $searchFields.length ) {
+				$searchFields = $widget.find( '.gv-dialog-options' );
+			}
 
 			if ( ! $searchFields.length ) {
 				return;
 			}
 
-			// Build configs from current search fields.
+			// Build configs from current search fields (.gv-fields elements).
 			var configs = [];
 
 			$searchFields.find( '.gv-fields' ).each( function () {
@@ -1224,7 +1245,8 @@
 		 * @since TODO
 		 */
 		initializeWidgetSummaries: function () {
-			var $widgets = $( '[data-fieldid="search_bar"]' );
+			// Only target widgets in the View configuration, not in the picker tooltip.
+			var $widgets = $( '[data-fieldid="search_bar"]' ).not( '.gravityview-item-picker-tooltip [data-fieldid="search_bar"]' );
 
 			$widgets.each( function () {
 				var $widget = $( this );
