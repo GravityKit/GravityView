@@ -45,9 +45,10 @@ test.describe('Search Bar Widget Summary', () => {
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
 		// Verify summary shows "Global search +2 fields" (default Search Everything + 2 added)
+		// Use h5 selector to target only the widget card header, not dialog field descriptions
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
-		await expect(widgetCard.locator('.gv-field-info')).toContainText('Global search +2 fields');
-		await expect(widgetCard.locator('.gv-field-info')).toContainText('Matches Any');
+		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Global search +2 fields');
+		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Matches Any');
 	});
 
 	test('Summary updates when fields are removed', async ({ page }) => {
@@ -70,9 +71,9 @@ test.describe('Search Bar Widget Summary', () => {
 			.click();
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify initial count
+		// Verify initial count - use h5 selector for the widget card header summary
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
-		await expect(widgetCard.locator('.gv-field-info')).toContainText('Global search +1 field');
+		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Global search +1 field');
 
 		// Re-open and remove the Is Starred field
 		await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
@@ -83,8 +84,8 @@ test.describe('Search Bar Widget Summary', () => {
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
 		// Verify summary updated to just show Global search
-		await expect(widgetCard.locator('.gv-field-info')).toContainText('Global search');
-		await expect(widgetCard.locator('.gv-field-info')).not.toContainText('+');
+		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Global search');
+		await expect(widgetCard.locator('h5 .gv-field-info')).not.toContainText('+');
 	});
 
 	test('Summary shows search mode correctly', async ({ page }) => {
@@ -108,14 +109,17 @@ test.describe('Search Bar Widget Summary', () => {
 			.locator('.gv-field-label-text-container', { hasText: 'Search Mode' })
 			.click();
 
+		// Close the field picker tooltip by clicking elsewhere to avoid interception issues
+		await page.locator('.gv-dialog-options').click();
+
 		// Change the default search mode to "all" (Matches All)
 		await page.locator('select[name$="[mode]"]').selectOption('all');
 
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify summary includes "Matches All"
+		// Verify summary includes "Matches All" - use h5 selector for widget card header
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
-		await expect(widgetCard.locator('.gv-field-info')).toContainText('Matches All');
+		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Matches All');
 	});
 
 	test('Picker tooltip shows default description, not summary', async ({ page }) => {
@@ -133,15 +137,20 @@ test.describe('Search Bar Widget Summary', () => {
 			.first()
 			.click();
 
-		// Find Search Bar in picker tooltip
-		const searchBarOption = page.locator('.ui-tooltip-content').getByText('Search Bar', {
-			exact: false
+		// Find Search Bar in picker tooltip - target the specific label element
+		const searchBarLabel = page.locator('.ui-tooltip-content .gv-field-label', {
+			hasText: 'Search Bar'
 		});
 
-		// Verify picker shows description, not field count/summary
+		// Verify picker shows the label (not the summary format)
+		await expect(searchBarLabel).toBeVisible();
+
+		// The picker should show the default description, not the dynamic summary
+		const searchBarOption = page.locator('.ui-tooltip-content [data-fieldid="search_bar"]');
 		await expect(searchBarOption).toBeVisible();
-		await expect(searchBarOption).not.toContainText('Global search');
-		await expect(searchBarOption).not.toContainText('Matches');
+		// Check the info area doesn't contain summary text (should have default description)
+		await expect(searchBarOption.locator('.gv-field-info')).not.toContainText('Global search');
+		await expect(searchBarOption.locator('.gv-field-info')).not.toContainText('Matches');
 	});
 
 	test('Summary shows warning when no fields configured', async ({ page }) => {
@@ -168,8 +177,8 @@ test.describe('Search Bar Widget Summary', () => {
 
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify summary shows warning
+		// Verify summary shows warning - use h5 selector for widget card header
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
-		await expect(widgetCard.locator('.gv-field-info')).toContainText('Needs configuration');
+		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Needs configuration');
 	});
 });
