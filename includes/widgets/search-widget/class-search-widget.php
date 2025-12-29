@@ -314,11 +314,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$script_min    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$script_source = empty( $script_min ) ? '/source' : '';
+		$script_path   = plugin_dir_path( __FILE__ ) . 'assets/js' . $script_source . '/admin-search-widget' . $script_min . '.js';
 
 		wp_enqueue_script( 'gravityview_searchwidget_admin',
 			plugins_url( 'assets/js' . $script_source . '/admin-search-widget' . $script_min . '.js', __FILE__ ),
 			[ 'jquery', 'gravityview_views_scripts' ],
-			\GV\Plugin::$version );
+			filemtime( $script_path ) );
 
 		wp_localize_script(
 			'gravityview_searchwidget_admin',
