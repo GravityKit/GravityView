@@ -340,6 +340,45 @@ final class Search_Request_Test extends GV_UnitTestCase {
 					],
 				],
 			],
+			'gv_start only'                                 => [
+				[ 'gv_start' => '2025-01-01' ],
+				[
+					'mode'    => 'any',
+					'filters' => [
+						[
+							'key'        => 'entry_date',
+							'start_date' => '2025-01-01',
+							'end_date'   => '2025-01-02 00:00:00',
+						],
+					],
+				],
+			],
+			'gv_start with time only'                       => [
+				[ 'gv_start' => '2025-01-01 15:00:50' ],
+				[
+					'mode'    => 'any',
+					'filters' => [
+						[
+							'key'        => 'entry_date',
+							'start_date' => '2025-01-01 15:00:50',
+							'end_date'   => '2025-01-02 15:00:50',
+						],
+					],
+				],
+			],
+			'gv_end only'                                   => [
+				[ 'gv_end' => '2025-01-01' ],
+				[
+					'mode'    => 'any',
+					'filters' => [
+						[
+							'key'        => 'entry_date',
+							'start_date' => null,
+							'end_date'   => '2025-01-01',
+						],
+					],
+				],
+			],
 		];
 	}
 

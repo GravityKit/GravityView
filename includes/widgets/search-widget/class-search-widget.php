@@ -803,8 +803,7 @@ class GravityView_Widget_Search extends \GV\Widget {
 				// Fast-forward 24 hour on the end time
 				$curr_end                    = date( 'Y-m-d H:i:s', strtotime( $curr_end ) + DAY_IN_SECONDS );
 				$search_criteria['end_date'] = $adjust_tz ? get_gmt_from_date( $curr_end ) : $curr_end;
-				if ( strpos( $search_criteria['end_date'],
-					'00:00:00' ) ) { // See https://github.com/gravityview/GravityView/issues/1056
+				if ( strpos( $search_criteria['end_date'], '00:00:00' ) ) { // See https://github.com/gravityview/GravityView/issues/1056
 					$search_criteria['end_date'] = date( 'Y-m-d H:i:s', strtotime( $search_criteria['end_date'] ) - 1 );
 				}
 			} elseif ( ! empty( $curr_start ) && ! array_key_exists( 'gv_end', $get ) ) {

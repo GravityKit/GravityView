@@ -53,10 +53,12 @@ final class Search_Filter_Builder {
 	 * @return array
 	 */
 	public function to_search_criteria( Search_Request $request, ?View $view = null ): array {
-		$search_criteria = [];
-		$data            = $request->to_array();
-
+		$search_criteria   = [];
+		$data              = $request->to_array();
 		$searchable_fields = $this->get_searchable_fields( $view );
+
+		$search_criteria['field_filters']['mode'] = $this->get_mode( $data );
+
 		foreach ( $data['filters'] ?? [] as $filter ) {
 			if ( ! in_array( $filter['key'], $searchable_fields, true ) ) {
 				continue;
@@ -64,15 +66,6 @@ final class Search_Filter_Builder {
 
 			$this->handle_filter( $filter, $search_criteria, $view );
 		}
-
-		/**
-		 * @filter `gravityview/search/mode` Modifies the search mode.
-		 *
-		 * @since  1.5.1
-		 *
-		 * @param string $mode Search mode (`any` vs `all`)
-		 */
-		$search_criteria['field_filters']['mode'] = apply_filters( 'gravityview/search/mode', $data['mode'] ?? 'any' );
 
 		return $search_criteria;
 	}
@@ -138,7 +131,7 @@ final class Search_Filter_Builder {
 	 *
 	 * @return array The search words with their operator.
 	 */
-	private function get_criteria_from_query( string $query, bool $split_words ): array {
+	private function get_criteria_from_query( string $query, bool $split_words, bool $has_json_storage ): array {
 		$words           = [];
 		$quotation_marks = $this->get_quotation_marks();
 
@@ -167,16 +160,37 @@ final class Search_Filter_Builder {
 		foreach ( $values as $value ) {
 			$is_exclude = '-' === ( $value[0] ?? '' );
 			$required   = '+' === ( $value[0] ?? '' );
-			$words[]    = array_filter( [
-				'operator' => $is_exclude ? 'not contains' : 'contains',
-				'value'    => ( $is_exclude || $required ) ? substr( $value, 1 ) : $value,
-				'required' => $required,
-			] );
+			$words[]    = array_filter(
+				[
+					'operator' => $is_exclude ? 'not contains' : 'contains',
+					'value'    => ( $is_exclude || $required ) ? substr( $value, 1 ) : $value,
+					'required' => $required,
+				]
+			);
 		}
 
-		return array_filter( $words, static function ( array $word ) {
-			return ! empty( $word['value'] ?? '' );
-		} );
+		// If one of the fields has a JSON storage, we add another criteria where the search value is escaped.
+		if ( $has_json_storage ) {
+			foreach ( $words as $params ) {
+				$original_value = $params['value'] ?? null;
+
+				if ( ! is_string( $original_value ) ) {
+					continue;
+				}
+
+				// This replicates the behavior of GF_Query_JSON_Literal::sql().
+				$value = trim( wp_json_encode( $original_value ), '"' );
+				$value = str_replace( '\\', '\\\\', $value );
+				if ( $value !== $original_value ) {
+					// Todo: I'm pretty sure we need to disable `required` here, as both can't be true.
+					$params['value'] = $value;
+					$words[]         = $params;
+				}
+			}
+		}
+
+		// Filter out empty words.
+		return array_filter( $words, static fn( array $word ) => ! empty( $word['value'] ?? '' ) );
 	}
 
 	/**
@@ -314,8 +328,8 @@ final class Search_Filter_Builder {
 		 * @since  2.9.3
 		 * @since  2.19.6 Added $view parameter
 		 *
-		 * @param bool     $trim_search_value True: remove whitespace; False: keep as is [Default: true]
-		 * @param \GV\View $view              The View being searched
+		 * @param bool $trim_search_value True: remove whitespace; False: keep as is [Default: true]
+		 * @param View $view              The View being searched
 		 */
 		return apply_filters( 'gravityview/search-trim-input', true, $view );
 	}
@@ -329,16 +343,15 @@ final class Search_Filter_Builder {
 	 * @param array $search_criteria The array to append the criteria to.
 	 */
 	private function handle_search_all( array $filter, array &$search_criteria, ?View $view = null ): void {
-		$key         = $filter['key'] ?? '';
-		$request_key = $filter['request_key'] ?? $key;
-		$value       = $filter['value'] ?? '';
-		$operator    = $filter['operator'] ?? 'contains';
+		$value = $filter['value'] ?? '';
 
-		// Todo, add split of words.
-		$search_criteria['field_filters'][] = [
-			'operator' => $this->get_operator( $operator, $request_key, $key, [ 'contains' ], 'contains' ),
-			'value'    => $view && $this->is_whitespace_stripped( $view ) ? trim( $value ) : $value,
-		];
+		$should_split_words = $this->should_split_words( $view );
+		$has_json_storage   = $this->has_json_storage( $view );
+		$criteria           = $this->get_criteria_from_query( $value, $should_split_words, $has_json_storage );
+
+		foreach ( $criteria as $criterion ) {
+			$search_criteria['field_filters'][] = $criterion;
+		}
 	}
 
 	/**
@@ -350,7 +363,11 @@ final class Search_Filter_Builder {
 	 * @param array     $search_criteria The search criteria.
 	 * @param View|null $view            The View.
 	 */
-	private function handle_date_range( array $filter, array &$search_criteria, ?View $view = null ): void {
+	private function handle_date_range(
+		array $filter,
+		array &$search_criteria,
+		?View $view = null
+	): void {
 		/**
 		 * Whether to adjust the timezone for entries. \n.
 		 * `date_created` is stored in UTC format. Convert search date into UTC (also used on templates/fields/date_created.php). \n
@@ -388,6 +405,15 @@ final class Search_Filter_Builder {
 			}
 
 			if ( ! empty( $date ) ) {
+				if ( $adjust_tz ) {
+					$date = get_gmt_from_date( $date );
+				}
+
+				// See https://github.com/gravityview/GravityView/issues/1056.
+				if ( 'end_date' === $key && strpos( $date, '00:00:00' ) ) {
+					$date = date( 'Y-m-d H:i:s', strtotime( $date ) - 1 );
+				}
+
 				$search_criteria[ $key ] = $date;
 			}
 		}
@@ -457,5 +483,73 @@ final class Search_Filter_Builder {
 
 		// If the format key isn't valid, return the default format value.
 		return $gf_date_formats[ $format ] ?? $gf_date_formats[ $default_format ];
+	}
+
+	/**
+	 * Returns whether words should be split.
+	 *
+	 * @since $ver$
+	 *
+	 * @param View|null $view The View.
+	 *
+	 * @return bool Whether words should be split.
+	 */
+	private function should_split_words( ?View $view = null ): bool {
+		/**
+		 * Search for each word separately or the whole phrase?
+		 *
+		 * @since  1.20.2
+		 * @since  2.19.6 Added $view parameter
+		 *
+		 * @param bool      $split_words True: split a phrase into words; False: search whole word only [Default: true]
+		 * @param View|null $view        The View being searched
+		 */
+		return apply_filters( 'gravityview/search-all-split-words', true, $view );
+	}
+
+	/**
+	 * Returns whether one of the fields is stored as JSON.
+	 *
+	 * @since $ver$
+	 *
+	 * @param View|null $view The View.
+	 *
+	 * @return bool Whether the View contains JSON storage.
+	 */
+	private function has_json_storage( ?View $view = null ): bool {
+		if ( ! $view ) {
+			return false;
+		}
+
+		$fields = $view->form->form['fields'] ?? [];
+		foreach ( $fields as $field ) {
+			if ( 'json' === ( $field['storageType'] ?? null ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Retrieves the search mode from the provided data array.
+	 *
+	 * @since $ver$
+	 *
+	 * @param array $data The data array containing search parameters.
+	 *
+	 * @return "any"|"all" The search mode.
+	 */
+	private function get_mode( array $data ): string {
+		/**
+		 * @filter `gravityview/search/mode` Modifies the search mode.
+		 *
+		 * @since  1.5.1
+		 *
+		 * @param string $mode Search mode (`any` vs `all`).
+		 */
+		$mode = strtolower( apply_filters( 'gravityview/search/mode', $data['mode'] ?? 'any' ) );
+
+		return in_array( $mode, [ 'any', 'all' ], true ) ? $mode : 'any';
 	}
 }
