@@ -21,11 +21,6 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
-
-#### 🐛 Fixed
-* Some hooks were not removed when switching lightbox provider.
-
 = 2.50 on December 29, 2025 =
 
 This release improves error messaging for administrators, addresses a performance issue, fixes REST API handling of View access settings, and resolves JavaScript and List field display issues on the Edit Entry page.
@@ -39,6 +34,7 @@ This release improves error messaging for administrators, addresses a performanc
 * Multi-column List fields on the Edit Entry page displayed serialized array data (e.g., `a:1:{i:0;s:0:"";}`) instead of remaining empty when revealed via conditional logic.
 * REST API requests for single entries now properly respect View settings like "Prevent Direct Access" and REST API restrictions.
 * PHP 8.4 implicit nullable parameter deprecation warnings.
+* Some hooks were not removed when switching lightbox provider.
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.1.
