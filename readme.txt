@@ -21,6 +21,11 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
+= develop =
+
+#### 🐛 Fixed
+* Some hooks were not removed when switching lightbox provider.
+
 = 2.50 on December 29, 2025 =
 
 This release improves error messaging for administrators, addresses a performance issue, fixes REST API handling of View access settings, and resolves JavaScript and List field display issues on the Edit Entry page.
