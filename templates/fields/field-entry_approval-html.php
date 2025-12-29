@@ -22,11 +22,12 @@ $entry = $gravityview->entry->as_entry();
 /**
  * Trigger loading the field approval javascript.
  *
- * @see GravityView_Field_Approval::enqueue_and_localize_script
  * @since 1.19
- * @since 2.0 Updated second param to use \GV\Template_Context
+ * @since 2.0 Updated param to use \GV\Template_Context.
  *
- * @param \GV\Template_Context The $gravityview field template context object.
+ * @see GravityView_Field_Approval::enqueue_and_localize_script
+ *
+ * @param \GV\Template_Context $gravityview The template context object.
  */
 do_action( 'gravityview/field/approval/load_scripts', $gravityview );
 

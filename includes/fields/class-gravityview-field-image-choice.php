@@ -111,14 +111,12 @@ class GravityView_Field_Image_Choice extends GravityView_Field {
 				/**
 				 * Overrides the image markup for the Image Choice field.
 				 *
-				 * @filter `gravityview/fields/image_choice/image_markup`
+				 * @since 2.31
 				 *
-				 * @since  2.31
-				 *
-				 * @param string          $image_markup The image markup
-				 * @param array           $choice       The choice array
-				 * @param array           $form         The current form array
-				 * @param GF_Field_Select $field        Gravity Forms Select field
+				 * @param string          $image_markup The image markup.
+				 * @param array           $choice       The choice array.
+				 * @param array           $form         The current form array.
+				 * @param GF_Field_Select $field        Gravity Forms Select field.
 				 */
 				$image_markup = apply_filters(
 					'gravityview/fields/image_choice/image_markup',

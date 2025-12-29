@@ -183,11 +183,13 @@ final class Plugin {
 		include_once $this->dir( 'includes/class-gravityview-change-entry-creator.php' );
 
 		/**
-		 * @action     `gravityview_include_frontend_actions` Triggered after all GravityView frontend files are loaded
+		 * Triggered after all GravityView frontend files are loaded.
+		 *
+		 * Nice place to insert extensions' frontend stuff.
+		 *
+		 * @since 2.0
 		 *
 		 * @deprecated Use `gravityview/loaded` along with \GV\Request::is_admin(), etc.
-		 *
-		 * Nice place to insert extensions' frontend stuff
 		 */
 		do_action( 'gravityview_include_frontend_actions' );
 	}
@@ -502,7 +504,8 @@ final class Plugin {
 		 * Overrides whether GravityView supports a feature.
 		 *
 		 * @since 2.0
-		 * @param boolean|null $supports Whether the feature is supported. Default: null.
+		 *
+		 * @param bool|null $supports Whether the feature is supported. Default: null.
 		 */
 		$supports = apply_filters( "gravityview/plugin/feature/$feature", null );
 

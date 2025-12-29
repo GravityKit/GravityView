@@ -30,16 +30,14 @@ $submit_button_label = $search_field['label'] ?? __( 'Search', 'gk-gravityview' 
 			'atts'    => [ 'class' => 'button gv-search-clear' ],
 		];
 
-		/**
-		 * Modifies search widget's Clear button parameters.
-		 *
-		 * @filter `gravityview/widget/search/clear-button/params`
-		 *
-		 * @since  2.21
-		 *
-		 * @param array{url: string, text: string, view_id: int, atts: array} $clear_button_params
-		 */
 		$clear_button_params = wp_parse_args(
+			/**
+			 * Modifies search widget's Clear button parameters.
+			 *
+			 * @since 2.21
+			 *
+			 * @param array{url: string, text: string, view_id: int, atts: array} $clear_button_params Clear button parameters.
+			 */
 			apply_filters( 'gk/gravityview/widget/search/clear-button/params', $clear_button_params ),
 			$clear_button_params
 		);

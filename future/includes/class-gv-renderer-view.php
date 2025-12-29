@@ -48,8 +48,9 @@ class View_Renderer extends Renderer {
 			 * @since 1.6
 			 * @deprecated
 			 * @see The `gravityview_get_template_id` filter
-			 * @param string $slug Default: 'table'
-			 * @param string $view The current view context: directory.
+			 *
+			 * @param string $slug    The template slug. Default: 'table'.
+			 * @param string $context The current view context: 'directory'.
 			 */
 			$template_slug = apply_filters( 'gravityview_template_slug_' . $view->settings->get( 'template' ), 'table', 'directory' );
 
@@ -58,9 +59,9 @@ class View_Renderer extends Renderer {
 			 *
 			 * Some contexts don't need initial entries, like the DataTables directory type.
 			 *
-			 * Whether to get the entries or not.
+			 * @since 1.10
 			 *
-			 * @param boolean $get_entries Get entries or not, default: true.
+			 * @param boolean $get_entries Whether to get entries. Default: true.
 			 */
 			$get_entries = apply_filters( 'gravityview_get_view_entries_' . $template_slug, true );
 
@@ -110,11 +111,12 @@ class View_Renderer extends Renderer {
 			}
 
 			/**
-			 * Filter the template class that is about to be used to render the view.
+			 * Filter the template class that is about to be used to render the View.
 			 *
 			 * @since 2.0
-			 * @param string $class The chosen class - Default: \GV\View_Table_Template.
-			 * @param View $view The view about to be rendered.
+			 *
+			 * @param string      $class   The chosen class. Default: \GV\View_Table_Template.
+			 * @param View        $view    The View about to be rendered.
 			 * @param \GV\Request $request The associated request.
 			 */
 			$class = apply_filters( 'gravityview/template/view/class', sprintf( '\GV\View_%s_Template', ucfirst( $template_slug ) ), $view, $request );
@@ -157,9 +159,9 @@ class View_Renderer extends Renderer {
 			/**
 			 * Allow appending the View ID anchor to the search URL.
 			 *
-			 * @since  2.15
+			 * @since 2.15
 			 *
-			 * @param bool   $set_view_id_anchor
+			 * @param bool $append_anchor Whether to append the View ID anchor to the search URL. Default: true.
 			 */
 			if ( apply_filters( 'gravityview/widget/search/append_view_id_anchor', true ) ) {
 				/**

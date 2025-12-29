@@ -77,14 +77,15 @@ if ( 'gform_next_button' === current_filter() ) {
 	$update_count = (int) \GV\Utils::_POST( 'update_count', 0 );
 
 	/**
-	 * altogether, return an empty string.
-     *
+	 * Modify the JavaScript code that runs when the Cancel button is clicked.
+	 *
 	 * @since 2.13.4
-	 * @param string $back_link Existing "back" of the Cancel link.
-	 * @param array $form The Gravity Forms form.
-	 * @param array $entry The Gravity Forms entry.
-	 * @param int $view_id The current View ID.
-	 * @param int $update_count The number of pages to go back based on the # of updates to the edited form.
+	 *
+	 * @param string $cancel_onclick_js The JavaScript to execute on Cancel button click.
+	 * @param array  $form              The Gravity Forms form.
+	 * @param array  $entry             The Gravity Forms entry.
+	 * @param int    $view_id           The current View ID.
+	 * @param int    $update_count      The number of pages to go back based on the # of updates to the edited form.
 	 */
 	$cancel_onclick_js = apply_filters( 'gravityview/edit_entry/cancel_onclick', 'history.go(' . ( $update_count + 1 ) * -1 . '); return false;', $object->form, $object->entry, $object->view_id, $update_count );
 

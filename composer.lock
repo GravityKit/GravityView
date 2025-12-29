@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7da262c7fc41039f96d66812822a299",
+    "content-hash": "434c0b4977742278a90d9414b6d725ca",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -238,12 +238,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:GravityKit/Foundation.git",
-                "reference": "b291b630b00f923f97ca3374f008ffe1868d2eba"
+                "reference": "abc07f2a68ff35f478f1aa1eedc8245d35ba7213"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/b291b630b00f923f97ca3374f008ffe1868d2eba",
-                "reference": "b291b630b00f923f97ca3374f008ffe1868d2eba",
+                "url": "https://api.github.com/repos/GravityKit/Foundation/zipball/abc07f2a68ff35f478f1aa1eedc8245d35ba7213",
+                "reference": "abc07f2a68ff35f478f1aa1eedc8245d35ba7213",
                 "shasum": ""
             },
             "require": {
@@ -276,6 +276,8 @@
                     "target_directory": "vendor_prefixed",
                     "namespace_prefix": "GravityKit\\Foundation\\ThirdParty",
                     "classmap_prefix": "GravityKit_Foundation_ThirdParty_",
+                    "include_modified_date": false,
+                    "include_author": false,
                     "packages": [
                         "illuminate/support",
                         "illuminate/validation",
@@ -341,10 +343,10 @@
                 }
             ],
             "support": {
-                "source": "https://github.com/GravityKit/Foundation/tree/v1.7.0",
+                "source": "https://github.com/GravityKit/Foundation/tree/main",
                 "issues": "https://github.com/GravityKit/Foundation/issues"
             },
-            "time": "2025-11-17T22:18:51+00:00"
+            "time": "2025-12-26T22:53:05+00:00"
         },
         {
             "name": "gravitykit/query-filters",

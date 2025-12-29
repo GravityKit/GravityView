@@ -171,15 +171,6 @@ class gravityview extends \GV\Shortcode {
 			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
 				case 'post_password_required':
 					return self::_return( get_the_password_form( $view->ID ) );
-				case 'no_form_attached':
-					/**
-					 * This View has no data source. There's nothing to show really.
-					 * ...apart from a nice message if the user can do anything about it.
-					 */
-					if ( \GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-						return self::_return( sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) ) );
-					}
-					break;
 				case 'in_trash':
 
 					if ( ! current_user_can( 'delete_post', $view->ID ) ) {
@@ -201,11 +192,8 @@ class gravityview extends \GV\Shortcode {
 					);
 
 					return self::_return( \GVCommon::generate_notice( '<p>' . $notice . '</p>', 'notice', array( 'delete_post' ), $view->ID ) );
-				case 'no_direct_access':
-				case 'embed_only':
-				case 'not_public':
 				default:
-					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
+					return self::_return( \GravityView_Error_Messages::get( $error->get_error_code(), $view, 'shortcode' ) );
 			}
 		}
 
@@ -237,21 +225,9 @@ class gravityview extends \GV\Shortcode {
 				return self::_return( '' );
 			}
 
-			if ( 'active' != $entry['status'] ) {
-				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
-			}
-
-			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
-				return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
-			}
-
-			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
-				}
+			$check = $entry->check_access( $view );
+			if ( is_wp_error( $check ) ) {
+				return self::_return( \GravityView_Error_Messages::get( $check, $view, 'shortcode', $entry ) );
 			}
 
 			$renderer = new \GV\Edit_Entry_Renderer();
@@ -271,21 +247,9 @@ class gravityview extends \GV\Shortcode {
 			$entryset = $entry->is_multi() ? $entry->entries : array( $entry );
 
 			foreach ( $entryset as $e ) {
-				if ( 'active' != $e['status'] ) {
-					gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $e->ID ) );
-					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
-				}
-
-				if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $e->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-					gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $e->ID ) );
-					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
-				}
-
-				if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-					if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $e->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-						gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $e->ID ) );
-						return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
-					}
+				$check = $e->check_access( $view );
+				if ( is_wp_error( $check ) ) {
+					return self::_return( \GravityView_Error_Messages::get( $check, $view, 'shortcode', $e ) );
 				}
 
 				$error = \GVCommon::check_entry_display( $e->as_entry(), $view );
@@ -298,7 +262,7 @@ class gravityview extends \GV\Shortcode {
 							'message'  => $error->get_error_message(),
 						)
 					);
-					return self::_return( __( 'You are not allowed to view this content.', 'gk-gravityview' ) );
+					return self::_return( \GravityView_Error_Messages::get( $error->get_error_code(), $view, 'shortcode', $e->as_entry() ) );
 				}
 			}
 
@@ -490,12 +454,10 @@ class gravityview extends \GV\Shortcode {
 		 * Filter the detail output returned from `[gravityview detail="$detail"]`.
 		 *
 		 * @since 1.13
-		 * @param string $output Existing output
+		 * @since 2.0.3 Added $view parameter.
 		 *
-		 * @since 2.0.3
-		 * @param \GV\View $view The view.
-		 * @param \GV\Entry_Collection $entries The entries.
-		 * @param array $atts The shortcode atts with defaults.
+		 * @param string   $output Existing output.
+		 * @param \GV\View $view   The View object.
 		 */
 		$output = apply_filters( "gravityview/shortcode/detail/$key", $output, $view );
 

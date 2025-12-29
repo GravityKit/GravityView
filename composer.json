@@ -88,7 +88,9 @@
           "paragonie/random_compat",
           "paragonie/sodium_compat"
         ]
-      }
+      },
+      "include_modified_date": false,
+      "include_author": false
     }
   },
   "scripts": {
@@ -97,16 +99,24 @@
     "prefix_vendor": "@php strauss.phar",
     "post_update_install": "./composer_post_update_install.sh",
     "post-install-cmd": [
+      "@foundation_compat",
       "@prefix_vendor",
+      "@foundation_compat",
+      "@foundation_cleanup",
       "@post_update_install",
       "composer dump-autoload -o"
     ],
     "post-update-cmd": [
+      "@foundation_compat",
       "@prefix_vendor",
+      "@foundation_compat",
+      "@foundation_cleanup",
       "@post_update_install",
       "composer dump-autoload -o"
     ],
-    "compat": "./vendor/bin/phpcs -p ./ ./gravityview.php ./tests  --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.2- --ignore=vendor/*,vendor_prefixed/*,node_modules/*"
+    "compat": "./vendor/bin/phpcs -p ./ ./gravityview.php ./tests  --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.2- --ignore=vendor/*,vendor_prefixed/*,node_modules/*",
+    "foundation_compat": "[ -f vendor/gravitykit/foundation/composer_post_update_install.sh ] && ( cd vendor/gravitykit/foundation && bash composer_post_update_install.sh ) || true",
+    "foundation_cleanup": "rm -f vendor/gravitykit/foundation/composer_post_update_install.sh"
   },
   "config": {
     "platform-check": false,

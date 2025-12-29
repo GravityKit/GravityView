@@ -21,10 +21,23 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 
 == Changelog ==
 
-= develop =
+= 2.50 on December 29, 2025 =
+
+This release improves error messaging for administrators, addresses a performance issue, fixes REST API handling of View access settings, and resolves JavaScript and List field display issues on the Edit Entry page.
+
+#### ✨ Improved
+* Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
 
 #### 🐛 Fixed
+* JavaScript error breaking Edit Entry functionality when forms use conditional logic on buttons.
 * Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
+* Multi-column List fields on the Edit Entry page displayed serialized array data (e.g., `a:1:{i:0;s:0:"";}`) instead of remaining empty when revealed via conditional logic.
+* REST API requests for single entries now properly respect View settings like "Prevent Direct Access" and REST API restrictions.
+* PHP 8.4 implicit nullable parameter deprecation warnings.
+* Some hooks were not removed when switching lightbox provider.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.1.
 
 = 2.49 on December 5, 2025 =
 
@@ -99,7 +112,16 @@ This release addresses multiple issues impacting search fields, Edit Entry behav
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.2.
 
 #### 💻 Developer Updates
-* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
+* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic,  or modify the View Collection before it is returned.
+* Improved error message handling with centralized `GravityView_Error_Messages` class:
+  - Error messages now differentiate between administrators (actionable links) and regular users (generic messages) to prevent information disclosure.
+  - Entry permission checks moved to `GV\Entry::check_access()` for better encapsulation.
+  - All error codes standardized to `snake_case` for consistency with WordPress core conventions.
+* Enhanced security of error messages by properly escaping all translatable strings using `esc_html__()` and `wp_kses_post()`.
+* Improved code quality and type safety:
+  - Removed redundant `as_entry()` conversions where objects are already `GV\Entry` instances.
+  - Added safe array access using `GV\Utils::get()` to prevent undefined index errors.
+  - Fixed type confusion between `GV\Entry` objects and raw entry arrays.
 
 = 2.48.1 on October 9, 2025 =
 

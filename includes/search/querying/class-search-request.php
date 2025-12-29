@@ -125,6 +125,11 @@ final class Search_Request {
 			$arguments = 'post' === $search_method ? $_POST : $_GET;
 		}
 
+		// Safety measure.
+		if ( ! is_array( $arguments ) ) {
+			return [];
+		}
+
 		$arguments = stripslashes_deep( $arguments );
 		if ( ! is_null( $arguments ) ) {
 			$arguments = gv_map_deep( $arguments, 'rawurldecode' );

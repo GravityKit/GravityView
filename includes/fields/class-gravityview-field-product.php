@@ -108,9 +108,11 @@ class GravityView_Field_Product extends GravityView_Field {
 		 * Hide product fields from being editable.
 		 *
 		 * @since 1.9.1
-		 * @since 1.20 Changed default from false to whether or not entry has transaction data
+		 * @since 1.20 Changed default from false to whether or not entry has transaction data.
+		 *
 		 * @see GVCommon::entry_has_transaction_data()
-		 * @param boolean $hide_product_fields Whether to hide product fields in the editor. Uses $entry data to determine.
+		 *
+		 * @param bool $hide_product_fields Whether to hide product fields in the editor. Uses $entry data to determine.
 		 */
 		$hide_product_fields = (bool) apply_filters( 'gravityview/edit_entry/hide-product-fields', $has_transaction_data );
 
