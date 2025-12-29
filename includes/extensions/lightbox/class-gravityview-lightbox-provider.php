@@ -59,19 +59,19 @@ abstract class GravityView_Lightbox_Provider {
 	 * Adds actions and that modify GravityView to use this lightbox provider
 	 */
 	public function add_hooks() {
-		add_filter( 'gravityview_lightbox_script', array( $this, 'filter_lightbox_script' ), 1000 );
-		add_filter( 'gravityview_lightbox_style', array( $this, 'filter_lightbox_style' ), 1000 );
+		add_filter( 'gravityview_lightbox_script', [ $this, 'filter_lightbox_script' ], 1000 );
+		add_filter( 'gravityview_lightbox_style', [ $this, 'filter_lightbox_style' ], 1000 );
 
-		add_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10, 4 );
-		add_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
-		add_filter( 'gravityview/shortcodes/gv_entry_link/output', array( $this, 'filter_entry_link_output' ), 10, 2 );
+		add_filter( 'gravityview/fields/fileupload/link_atts', [ $this, 'fileupload_link_atts' ], 10, 4 );
+		add_filter( 'gravityview/get_link/allowed_atts', [ $this, 'allowed_atts' ] );
+		add_filter( 'gravityview/shortcodes/gv_entry_link/output', [ $this, 'filter_entry_link_output' ], 10, 2 );
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 
-		add_action( 'gravityview/template/after', array( $this, 'print_scripts_if_active' ) );
+		add_action( 'gravityview/template/after', [ $this, 'print_scripts_if_active' ] );
 
-		add_action( 'wp_footer', array( $this, 'output_footer' ) );
+		add_action( 'wp_footer', [ $this, 'output_footer' ] );
 	}
 
 	/**
@@ -152,19 +152,19 @@ abstract class GravityView_Lightbox_Provider {
 	 * </code>
 	 */
 	public function remove_hooks() {
-		remove_filter( 'gravityview_lightbox_script', array( $this, 'filter_lightbox_script' ), 1000 );
-		remove_filter( 'gravityview_lightbox_style', array( $this, 'filter_lightbox_style' ), 1000 );
+		remove_filter( 'gravityview_lightbox_script', [ $this, 'filter_lightbox_script' ], 1000 );
+		remove_filter( 'gravityview_lightbox_style', [ $this, 'filter_lightbox_style' ], 1000 );
 
-		remove_filter( 'gravityview/fields/fileupload/link_atts', array( $this, 'fileupload_link_atts' ), 10 );
-		remove_filter( 'gravityview/get_link/allowed_atts', array( $this, 'allowed_atts' ) );
-		remove_filter( 'gravityview/shortcodes/gv_entry_link/output', array( $this, 'filter_entry_link_output' ) );
+		remove_filter( 'gravityview/fields/fileupload/link_atts', [ $this, 'fileupload_link_atts' ], 10 );
+		remove_filter( 'gravityview/get_link/allowed_atts', [ $this, 'allowed_atts' ] );
+		remove_filter( 'gravityview/shortcodes/gv_entry_link/output', [ $this, 'filter_entry_link_output' ], 10 );
 
-		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		remove_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+		remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		remove_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 
-		remove_action( 'gravityview/template/after', array( $this, 'print_scripts_if_active' ) );
+		remove_action( 'gravityview/template/after', [ $this, 'print_scripts_if_active' ] );
 
-		remove_action( 'wp_footer', array( $this, 'output_footer' ) );
+		remove_action( 'wp_footer', [ $this, 'output_footer' ] );
 	}
 
 	/**
