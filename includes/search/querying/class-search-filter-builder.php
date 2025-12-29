@@ -374,7 +374,6 @@ final class Search_Filter_Builder {
 			if ( $view ) {
 				$stored_date    = $view->settings->get( $key );
 				$date_timestamp = strtotime( $date );
-				var_dump($stored_date);
 				if (
 					( $stored_date && $date_timestamp )
 					&& (
