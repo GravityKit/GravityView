@@ -92,6 +92,9 @@
 
 				// Update the widget summary when fields are added or removed.
 				.on( 'gravityview/field-added gravityview/field-removed', gvSearchWidget.onFieldChange )
+
+				// Update the widget summary when the search mode select is changed.
+				.on( 'change', '.' + wrapClass + ' select[name$="[mode]"]', gvSearchWidget.onSearchModeChange )
 			;
 
 			// Refresh widget searchable settings after saving or adding the widget
@@ -1194,6 +1197,15 @@
 
 			// Update the summary.
 			gvSearchWidget.updateWidgetSummary( $widget, configs, $searchFields );
+		},
+
+		/**
+		 * Handles search mode select changes to update the widget summary immediately.
+		 *
+		 * @since TODO
+		 */
+		onSearchModeChange: function () {
+			gvSearchWidget.refreshWidgetSummary( gvSearchWidget.currentSearchWidget );
 		},
 
 		/**
