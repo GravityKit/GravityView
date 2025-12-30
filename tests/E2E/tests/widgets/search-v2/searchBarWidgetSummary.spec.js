@@ -45,10 +45,11 @@ test.describe('Search Bar Widget Summary', () => {
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
 		// Verify summary shows "Global search +2 fields" (default Search Everything + 2 added)
-		// Use h5 selector to target only the widget card header, not dialog field descriptions
+		// Use h5 .gv-field-info and .first() to target only the widget card header summary
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
-		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Global search +2 fields');
-		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Matches Any');
+		const headerSummary = widgetCard.locator('h5 .gv-field-info').first();
+		await expect(headerSummary).toContainText('Global search +2 fields');
+		await expect(headerSummary).toContainText('Matches Any');
 	});
 
 	test('Summary updates when fields are removed', async ({ page }) => {
@@ -71,9 +72,10 @@ test.describe('Search Bar Widget Summary', () => {
 			.click();
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify initial count - use h5 selector for the widget card header summary
+		// Verify initial count - use h5 .gv-field-info and .first() for the widget card header summary
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
-		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Global search +1 field');
+		const headerSummary = widgetCard.locator('h5 .gv-field-info').first();
+		await expect(headerSummary).toContainText('Global search +1 field');
 
 		// Re-open and remove the Is Starred field
 		await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
@@ -84,8 +86,8 @@ test.describe('Search Bar Widget Summary', () => {
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
 		// Verify summary updated to just show Global search
-		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Global search');
-		await expect(widgetCard.locator('h5 .gv-field-info')).not.toContainText('+');
+		await expect(headerSummary).toContainText('Global search');
+		await expect(headerSummary).not.toContainText('+');
 	});
 
 	test('Summary shows search mode correctly', async ({ page }) => {
@@ -104,22 +106,23 @@ test.describe('Search Bar Widget Summary', () => {
 			.locator('#search-search-general-fields')
 			.getByRole('link', { name: /Add Search Field/ })
 			.click();
-		await page
-			.getByRole('tooltip')
-			.locator('.gv-field-label-text-container', { hasText: 'Search Mode' })
-			.click();
 
-		// Close the field picker tooltip by clicking elsewhere to avoid interception issues
-		await page.locator('.gv-dialog-options').click();
+		// Wait for tooltip to be fully interactive, then click with force to avoid interception
+		const searchModeField = page
+			.getByRole('tooltip')
+			.locator('.gv-field-label-text-container', { hasText: 'Search Mode' });
+		await searchModeField.waitFor({ state: 'visible' });
+		await searchModeField.click({ force: true });
 
 		// Change the default search mode to "all" (Matches All)
 		await page.locator('select[name$="[mode]"]').selectOption('all');
 
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify summary includes "Matches All" - use h5 selector for widget card header
+		// Verify summary includes "Matches All" - use h5 .gv-field-info and .first() for widget card header
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
-		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Matches All');
+		const headerSummary = widgetCard.locator('h5 .gv-field-info').first();
+		await expect(headerSummary).toContainText('Matches All');
 	});
 
 	test('Picker tooltip shows default description, not summary', async ({ page }) => {
@@ -177,8 +180,9 @@ test.describe('Search Bar Widget Summary', () => {
 
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify summary shows warning - use h5 selector for widget card header
+		// Verify summary shows warning - use h5 .gv-field-info and .first() for widget card header
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
-		await expect(widgetCard.locator('h5 .gv-field-info')).toContainText('Needs configuration');
+		const headerSummary = widgetCard.locator('h5 .gv-field-info').first();
+		await expect(headerSummary).toContainText('Needs configuration');
 	});
 });
