@@ -10,9 +10,9 @@ const {
  * The summary displays field count and search mode at a glance.
  *
  * Summary format examples:
- * - "Global search • Matches Any" (just Search Everything)
- * - "Global search +2 fields • Matches Any" (Search Everything + 2 additional fields)
- * - "3 fields • Matches All" (no Search Everything, 3 fields, mode=all)
+ * - "Global search • Matches All" (just Search Everything, default mode)
+ * - "Global search +2 fields • Matches All" (Search Everything + 2 additional fields)
+ * - "3 fields • Matches Any" (no Search Everything, 3 fields, mode=any)
  * - "⚠️ Needs configuration" (no fields configured)
  */
 
@@ -28,28 +28,22 @@ test.describe('Search Bar Widget Summary', () => {
 		// Open Search Bar settings
 		await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 
-		// Add two search fields (in addition to the default Search Everything)
+		// Add two search fields using data-fieldid selectors (proven pattern from other tests)
 		await page
 			.locator('#search-search-general-fields')
 			.getByRole('link', { name: /Add Search Field/ })
 			.click();
-		await page
-			.getByRole('tooltip')
-			.locator('.gv-field-label-text-container', { hasText: 'Is Starred' })
-			.click();
-		await page
-			.getByRole('tooltip')
-			.locator('.gv-field-label-text-container', { hasText: 'Approval Status' })
-			.click();
+		await page.locator('.ui-tooltip-content [data-fieldid="is_starred"]').click();
+		await page.locator('.ui-tooltip-content [data-fieldid="is_approved"]').click();
 
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
 		// Verify summary shows "Global search +2 fields" (default Search Everything + 2 added)
-		// Use h5 .gv-field-info and .first() to target only the widget card header summary
+		// Default mode is "Matches All"
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
 		const headerSummary = widgetCard.locator('h5 .gv-field-info').first();
 		await expect(headerSummary).toContainText('Global search +2 fields');
-		await expect(headerSummary).toContainText('Matches Any');
+		await expect(headerSummary).toContainText('Matches All');
 	});
 
 	test('Summary updates when fields are removed', async ({ page }) => {
@@ -66,13 +60,18 @@ test.describe('Search Bar Widget Summary', () => {
 			.locator('#search-search-general-fields')
 			.getByRole('link', { name: /Add Search Field/ })
 			.click();
-		await page
-			.getByRole('tooltip')
-			.locator('.gv-field-label-text-container', { hasText: 'Is Starred' })
-			.click();
+		await page.locator('.ui-tooltip-content [data-fieldid="is_starred"]').click();
+
+		// Close the tooltip by pressing Escape, then verify the field was added
+		await page.keyboard.press('Escape');
+
+		// Verify the Is Starred field row exists before trying to remove it
+		const isStarredRow = page.locator('.gv-search-field-row', { hasText: 'Is Starred' });
+		await expect(isStarredRow).toBeVisible();
+
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify initial count - use h5 .gv-field-info and .first() for the widget card header summary
+		// Verify initial count
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
 		const headerSummary = widgetCard.locator('h5 .gv-field-info').first();
 		await expect(headerSummary).toContainText('Global search +1 field');
@@ -101,28 +100,28 @@ test.describe('Search Bar Widget Summary', () => {
 		// Open Search Bar settings
 		await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 
-		// Add the Search Mode field to allow users to toggle between Any/All
+		// Add the Search Mode field using data-fieldid selector
 		await page
 			.locator('#search-search-general-fields')
 			.getByRole('link', { name: /Add Search Field/ })
 			.click();
+		await page.locator('.ui-tooltip-content [data-fieldid="search_mode"]').click();
 
-		// Wait for tooltip to be fully interactive, then click with force to avoid interception
-		const searchModeField = page
-			.getByRole('tooltip')
-			.locator('.gv-field-label-text-container', { hasText: 'Search Mode' });
-		await searchModeField.waitFor({ state: 'visible' });
-		await searchModeField.click({ force: true });
+		// Close the tooltip
+		await page.keyboard.press('Escape');
 
-		// Change the default search mode to "all" (Matches All)
-		await page.locator('select[name$="[mode]"]').selectOption('all');
+		// The Search Mode field settings should now be visible in the dialog
+		// Wait for the mode select to be visible and change it to "any"
+		const modeSelect = page.locator('select[name$="[mode]"]').first();
+		await expect(modeSelect).toBeVisible();
+		await modeSelect.selectOption('any');
 
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify summary includes "Matches All" - use h5 .gv-field-info and .first() for widget card header
+		// Verify summary includes "Matches Any" (changed from default "All")
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
 		const headerSummary = widgetCard.locator('h5 .gv-field-info').first();
-		await expect(headerSummary).toContainText('Matches All');
+		await expect(headerSummary).toContainText('Matches Any');
 	});
 
 	test('Picker tooltip shows default description, not summary', async ({ page }) => {
@@ -167,20 +166,21 @@ test.describe('Search Bar Widget Summary', () => {
 		// Open Search Bar settings
 		await page.getByRole('button', { name: 'Configure Search Bar Settings' }).click();
 
-		// Remove all default fields (Search Everything should be present by default)
-		const searchEverythingRow = page.locator('.gv-search-field-row', { hasText: 'Search Everything' });
-		if (await searchEverythingRow.count() > 0) {
-			await searchEverythingRow.getByRole('button', { name: /Remove/ }).click();
-		}
+		// Wait for dialog to be ready
+		await page.waitForSelector('.gv-dialog-options');
 
-		// Remove any other fields that might be present
-		while ((await page.locator('.gv-search-field-row').count()) > 0) {
-			await page.locator('.gv-search-field-row').first().getByRole('button', { name: /Remove/ }).click();
+		// Remove all fields - keep clicking remove until none are left
+		let fieldRows = page.locator('.gv-search-field-row');
+		while ((await fieldRows.count()) > 0) {
+			// Click the first remove button
+			await fieldRows.first().getByRole('button', { name: /Remove/ }).click();
+			// Brief wait for DOM update
+			await page.waitForTimeout(100);
 		}
 
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
 
-		// Verify summary shows warning - use h5 .gv-field-info and .first() for widget card header
+		// Verify summary shows warning
 		const widgetCard = page.locator('[data-fieldid="search_bar"]');
 		const headerSummary = widgetCard.locator('h5 .gv-field-info').first();
 		await expect(headerSummary).toContainText('Needs configuration');
