@@ -2068,7 +2068,14 @@ HTML;
 		wp_enqueue_script(
 			'gravityview_multiselect_selectwoo',
 			plugins_url( 'assets/js/admin-multiselect-selectwoo' . $script_debug . '.js', GRAVITYVIEW_FILE ),
-			[ 'jquery', 'gravityview_selectwoo' ],
+			[ 'jquery', 'gravityview_selectwoo', 'gravityview_views_scripts' ],
+			\GV\Plugin::$version
+		);
+
+		wp_enqueue_style(
+			'gravityview_multiselect_selectwoo',
+			plugins_url( 'assets/css/admin-selectwoo.css', GRAVITYVIEW_FILE ),
+			[ 'gravityview_selectwoo' ],
 			\GV\Plugin::$version
 		);
 
@@ -2185,6 +2192,7 @@ HTML;
 				'dashicons',
 				'wp-jquery-ui-dialog',
 				'gravityview_selectwoo',
+				'gravityview_multiselect_selectwoo',
 			];
 		}
 

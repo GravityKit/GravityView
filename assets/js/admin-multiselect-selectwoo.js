@@ -31,7 +31,12 @@
 	// Add ARIA labels on dropdown open for accessibility.
 	$( document ).on( 'select2:open', '.gv-selectwoo', function() {
 		var $select = $( this );
-		var labelText = $( 'label[for="' + $select.attr( 'id' ) + '"] .gv-label' ).text() || '';
+		var selectId = $select.attr( 'id' );
+		var labelText = '';
+
+		if ( selectId ) {
+			labelText = $( 'label[for="' + selectId + '"] .gv-label' ).text() || '';
+		}
 
 		$( '.gv-multiselect-dropdown input.select2-search__field' ).attr( {
 			'aria-label': labelText + ' - ' + GVMultiselect.language.search_placeholder,

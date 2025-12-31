@@ -1,0 +1,206 @@
+@charset "UTF-8";
+/**
+ * SelectWoo Multiselect styles for GravityView admin.
+ *
+ * Uses WordPress Gutenberg FormTokenField design patterns.
+ * @see https://github.com/WordPress/gutenberg/tree/trunk/packages/components/src/form-token-field
+ *
+ * @package   GravityView
+ * @license   GPL2+
+ * @since     2.35
+ */
+.gv-multiselect-dropdown.select2-dropdown {
+  z-index: 100001;
+  border: 1px solid #9092b2;
+  border-radius: 0 0 3px 3px;
+  border-top: none;
+  box-shadow: none;
+  margin-top: 0;
+  background: #fff;
+}
+.gv-multiselect-dropdown .select2-results__option {
+  padding: 0.75em 1.5em;
+  color: #1e1e1e;
+  font-size: 14px;
+  line-height: 1.25;
+  background: #fff;
+  cursor: pointer;
+  border-bottom: 1px solid #e8e8e8;
+  border-left: 2px solid transparent;
+  margin: 0;
+  max-height: 300px;
+}
+.gv-multiselect-dropdown .select2-results__option.select2-results__option--highlighted[data-selected] {
+  background-color: #f6f9fc;
+  border-left-color: #242748;
+  color: #1e1e1e;
+}
+.gv-multiselect-dropdown .select2-results__option[data-selected=true] {
+  background-color: #fff;
+  padding-left: 36px;
+  position: relative;
+}
+.gv-multiselect-dropdown .select2-results__option[data-selected=true]::before {
+  content: "✓";
+  position: absolute;
+  left: 1em;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #3e7da6;
+  font-size: 16px;
+  font-weight: bold;
+}
+.gv-multiselect-dropdown .select2-results__option[data-selected=true].select2-results__option--highlighted {
+  background-color: #f6f9fc;
+  border-left-color: #242748;
+}
+.gv-multiselect-dropdown .select2-results__option:last-child {
+  border-bottom: none;
+}
+.gv-multiselect-dropdown .select2-search--dropdown {
+  padding: 8px;
+  border-bottom: 1px solid #e8e8e8;
+}
+.gv-multiselect-dropdown .select2-search--dropdown .select2-search__field {
+  border: 1px solid #9092b2;
+  border-radius: 3px;
+  padding: 8px 12px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+.gv-multiselect-dropdown .select2-search--dropdown .select2-search__field:focus {
+  border-color: #007cba;
+  box-shadow: 0 0 0 1px #007cba;
+}
+.gv-multiselect-dropdown .select2-results {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.select2-selection--multiple.gv-selectwoo-container {
+  border: 1px solid #949494;
+  border-radius: 2px;
+  background-color: #fff;
+  min-height: 32px;
+  padding: 4px;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-selection__rendered {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-selection__choice {
+  background-color: #ddd;
+  border: none;
+  border-radius: 2px;
+  color: #1e1e1e;
+  font-size: 13px;
+  line-height: 24px;
+  padding: 0 8px 0 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  float: none;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-selection__choice .select2-selection__choice__remove {
+  background: #ddd;
+  border-radius: 2px 0 0 2px;
+  color: #1e1e1e;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 24px;
+  padding: 0 6px 0 8px;
+  margin: 0;
+  cursor: pointer;
+  border: none;
+  float: none;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-selection__choice .select2-selection__choice__remove:hover {
+  color: #d63638;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-search--inline {
+  float: none;
+  margin: 0;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-search--inline .select2-search__field {
+  margin: 0;
+  padding: 0 4px;
+  font-size: 13px;
+  line-height: 24px;
+  min-height: 24px;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-search--inline .select2-search__field::placeholder {
+  color: #757575;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-selection__clear {
+  float: none;
+  margin-top: 0;
+  color: #757575;
+  font-size: 16px;
+  margin-right: 4px;
+  padding: 0 4px;
+  cursor: pointer;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  align-self: center;
+}
+.select2-selection--multiple.gv-selectwoo-container .select2-selection__clear:hover {
+  color: #d63638;
+}
+
+.select2-container--focus .select2-selection--multiple.gv-selectwoo-container,
+.select2-container--open .select2-selection--multiple.gv-selectwoo-container {
+  border-color: #007cba;
+  box-shadow: 0 0 0 1px #007cba;
+  outline: none;
+}
+
+[dir=rtl] .select2-selection--multiple.gv-selectwoo-container .select2-selection__choice .select2-selection__choice__remove {
+  border-radius: 0 2px 2px 0;
+  padding: 0 8px 0 6px;
+  margin-left: 0;
+  margin-right: 0;
+}
+[dir=rtl] .select2-selection--multiple.gv-selectwoo-container .select2-selection__choice {
+  padding: 0 0 0 8px;
+}
+[dir=rtl] .select2-selection--multiple.gv-selectwoo-container .select2-selection__clear {
+  margin-right: 0;
+  margin-left: 4px;
+}
+[dir=rtl] .select2-selection--multiple.gv-selectwoo-container .select2-search--inline .select2-search__field {
+  padding: 0 4px;
+}
+[dir=rtl] .gv-multiselect-dropdown .select2-results__option {
+  border-left: none;
+  border-right: 2px solid transparent;
+}
+[dir=rtl] .gv-multiselect-dropdown .select2-results__option.select2-results__option--highlighted[data-selected] {
+  border-left: none;
+  border-right-color: #242748;
+}
+[dir=rtl] .gv-multiselect-dropdown .select2-results__option[data-selected=true] {
+  padding-left: 0.75em;
+  padding-right: 36px;
+}
+[dir=rtl] .gv-multiselect-dropdown .select2-results__option[data-selected=true]::before {
+  left: auto;
+  right: 1em;
+}
+[dir=rtl] .gv-multiselect-dropdown .select2-results__option[data-selected=true].select2-results__option--highlighted {
+  border-left: none;
+  border-right-color: #242748;
+}
+
+/*# sourceMappingURL=admin-selectwoo.css.map */
