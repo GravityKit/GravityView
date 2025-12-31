@@ -1861,7 +1861,7 @@ class GravityView_frontend {
 	 * Replaces placeholders in custom CSS and JavaScript code with dynamic values.
 	 *
 	 * Supported placeholders:
-	 * - `GF_FORM_ID`: Replaced with the connected Gravity Forms form ID.
+	 * - `GF_FORM_ID`: Replaced with the primary connected Gravity Forms form ID (not joined forms from Multiple Forms).
 	 * - `VIEW_ID`: Replaced with the View ID.
 	 * - `VIEW_ANCHOR_ID`: Replaced with the View's anchor ID (e.g., `gv-view-{view_id}-{counter}`).
 	 * - `VIEW_ID_SELECTOR`: Replaced with the View's anchor ID as a CSS selector (e.g., `#gv-view-{view_id}-{counter}`).
