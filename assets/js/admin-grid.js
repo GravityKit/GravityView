@@ -73,7 +73,11 @@
 					} ).appendTo( document.body );
 				}
 
-				$status.text( 'Row moved to position ' + ( index + 1 ) + ' of ' + $siblings.length + '.' );
+				// Use localized string if available, with sprintf-style replacement
+				const message = ( window.gvGlobals?.row_moved_to_position || 'Row moved to position %1$s of %2$s.' )
+					.replace( '%1$s', index + 1 )
+					.replace( '%2$s', $siblings.length );
+				$status.text( message );
 			} catch ( e ) {
 				// Silent failure for screen reader announcements
 			}

@@ -2081,6 +2081,8 @@ HTML;
 					'gk-gravityview' ),
 				/* translators: 1: current position number, 2: total number of fields */
 				'field_moved_to_position'     => __( 'Moved to position %1$s of %2$s.', 'gk-gravityview' ),
+				/* translators: 1: current position number, 2: total number of rows */
+				'row_moved_to_position'       => __( 'Row moved to position %1$s of %2$s.', 'gk-gravityview' ),
 				'foundation_licenses_router'  => array_merge(
 					GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
 					[
