@@ -385,18 +385,22 @@
 
 				   if (e.key === 'ArrowUp' || e.keyCode === 38) {
 					   e.preventDefault();
+					   e.stopPropagation();
 					   vcfg.moveField($btn.closest('.gv-fields'), -1, 'up', $btn);
 				   } else if (e.key === 'ArrowDown' || e.keyCode === 40) {
 					   e.preventDefault();
+					   e.stopPropagation();
 					   vcfg.moveField($btn.closest('.gv-fields'), 1, 'down', $btn);
 				   }
 			   })
 			   .on('keydown', '.gv-fields', function(e) {
 				   if (e.key === 'ArrowUp' || e.keyCode === 38) {
 					   e.preventDefault();
+					   e.stopPropagation();
 					   vcfg.moveField($(this), -1, 'up');
 				   } else if (e.key === 'ArrowDown' || e.keyCode === 40) {
 					   e.preventDefault();
+					   e.stopPropagation();
 					   vcfg.moveField($(this), 1, 'down');
 				   }
 			   })
