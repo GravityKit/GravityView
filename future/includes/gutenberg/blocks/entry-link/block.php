@@ -47,6 +47,7 @@ class EntryLink {
 			'linkAtts'     => 'link_atts',
 			'fieldValues'  => 'field_values',
 			'content'      => 'content',
+			'secret'       => 'secret',
 		);
 
 		$shortcode_attributes = array();

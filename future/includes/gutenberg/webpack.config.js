@@ -10,6 +10,11 @@ module.exports = ( async () => {
 	const blocks = await fs.promises.readdir( blocksFolder, ( err, folders ) => folders );
 
 	for ( const block of blocks ) {
+		// Skip system files and hidden files.
+		if ( block.startsWith( '.' ) || ! fs.statSync( path.resolve( blocksFolder, block ) ).isDirectory() ) {
+			continue;
+		}
+
 		entryPoints[ block ] = path.resolve( process.cwd(), `${ blocksFolder }/${ block }` );
 	}
 

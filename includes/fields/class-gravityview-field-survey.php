@@ -101,6 +101,13 @@ class GravityView_Field_Survey extends GravityView_Field {
 		$input_id    = gravityview_get_input_id_from_id( $field_id );
 		$add_options = array();
 
+		/**
+		 * Modify the glue used to join multiple survey row values.
+		 *
+		 * @since 2.14
+		 *
+		 * @param string $glue The string used to join multiple values. Default: '; '.
+		 */
 		$glue                 = apply_filters( 'gravityview/template/field/survey/glue', '; ' );
 		$multiple_rows_suffix = sprintf( _x( ' (separated by %s)', 'text added to a label if multiple rows are enabled for the field)', 'gk-gravityview' ), esc_html( trim( $glue ) ) );
 

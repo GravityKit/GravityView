@@ -4,10 +4,10 @@
   "license": "GPL-2.0",
   "devDependencies": {
     "@lodder/grunt-postcss": "^3.1.1",
-    "@playwright/test": "1.48.1",
+    "@playwright/test": "1.56.1",
     "@types/node": "^20.14.14",
     "@wordpress/e2e-test-utils-playwright": "^1.14.0",
-    "@wordpress/env": "^10.14.0",
+    "@wordpress/env": "^10.34.0",
     "@wordpress/scripts": "^30.7.0",
     "autoprefixer": "^9.8.8",
     "dotenv": "^16.4.5",
@@ -22,7 +22,7 @@
     "grunt-newer": "^1.1.0",
     "grunt-potomo": "^3.1.0",
     "grunt-sass": "^3.1.0",
-    "grunt-wp-i18n": "^1.0.3",
+    "grunt-wp-i18n": "^1.0.4",
     "grunt-wp-readme-to-markdown": "^2.1.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.2.0",
@@ -41,6 +41,7 @@
     "cover 99.7%"
   ],
   "dependencies": {
+    "@gravitykit/gf-importer": "^1.0.7",
     "bower": "^1.8.8"
   },
   "scripts": {

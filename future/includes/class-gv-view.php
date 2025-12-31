@@ -95,6 +95,15 @@ class View implements \ArrayAccess {
 	private static $cache = array();
 
 	/**
+	 * @var array Stack to track currently rendering Views (for embedded View detection).
+	 *
+	 * @since 2.46.2
+	 *
+	 * @internal
+	 */
+	private static $rendering_stack = array();
+
+	/**
 	 * @var \GV\Join[] The joins for all sources in this view.
 	 *
 	 * @api
@@ -228,20 +237,26 @@ class View implements \ArrayAccess {
 				/**
 				 * Modify the url part for a View.
 				 *
+				 * @since 1.0
+				 *
 				 * @see https://docs.gravitykit.com/article/62-changing-the-view-slug
-				 * @param string $slug The slug shown in the URL
+				 *
+				 * @param string $slug The slug shown in the URL.
 				 */
 				'slug'       => apply_filters( 'gravityview_slug', 'view' ),
 
 				/**
-				 * Should the permalink structure.
-				 *  be prepended with the front base.
-				 *  (example: if your permalink structure is /blog/, then your links will be: false->/view/, true->/blog/view/).
-				 *  Defaults to true.
+				 * Should the permalink structure be prepended with the front base.
+				 *
+				 * Example: If your permalink structure is `/blog/`, then your links will be:
+				 * - `false` → `/view/`
+				 * - `true` → `/blog/view/`
+				 *
+				 * @since 2.0
 				 *
 				 * @see https://codex.wordpress.org/Function_Reference/register_post_type
-				 * @since 2.0
-				 * @param bool $with_front
+				 *
+				 * @param bool $with_front Whether to prepend the front base. Default: true.
 				 */
 				'with_front' => apply_filters( 'gravityview/post_type/with_front', true ),
 			),
@@ -325,44 +340,10 @@ class View implements \ArrayAccess {
 			switch ( str_replace( 'gravityview/', '', $error->get_error_code() ) ) {
 				case 'post_password_required':
 					return get_the_password_form( $view->ID );
-				case 'no_form_attached':
-					gravityview()->log->error(
-						'View #{view_id} cannot render: {error_code} {error_message}',
-						array(
-							'error_code'    => $error->get_error_code(),
-							'error_message' => $error->get_error_message(),
-						)
-					);
-
-					/**
-					 * This View has no data source. There's nothing to show really.
-					 * ...apart from a nice message if the user can do anything about it.
-					 */
-					if ( GVCommon::has_cap( array( 'edit_gravityviews', 'edit_gravityview' ), $view->ID ) ) {
-
-						$title = sprintf( __( 'This View is not configured properly. Start by <a href="%s">selecting a form</a>.', 'gk-gravityview' ), esc_url( get_edit_post_link( $view->ID, false ) ) );
-
-						$message = esc_html__( 'You can only see this message because you are able to edit this View.', 'gk-gravityview' );
-
-						$image = sprintf( '<img alt="%s" src="%s" style="margin-top: 10px;" />', esc_attr__( 'Data Source', 'gk-gravityview' ), esc_url( plugins_url( 'assets/images/screenshots/data-source.png', GRAVITYVIEW_FILE ) ) );
-
-						return GVCommon::generate_notice( '<h3>' . $title . '</h3>' . wpautop( $message . $image ), 'notice' );
-					}
-					break;
 				case 'in_trash':
 					return '';  // Views in trash are unreachable when accessed as a CPT, but adding this just in case. We do not give a hint that this content exists, for security purposes.
-				case 'no_direct_access':
-				case 'embed_only':
-				case 'not_public':
 				default:
-					gravityview()->log->notice(
-						'View #{view_id} cannot render: {error_code} {error_message}',
-						array(
-							'error_code'    => $error->get_error_code(),
-							'error_message' => $error->get_error_message(),
-						)
-					);
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
+					return \GravityView_Error_Messages::get( $error->get_error_code(), $view, 'shortcode' );
 			}
 
 			return $content;
@@ -374,21 +355,9 @@ class View implements \ArrayAccess {
 		 * Editing a single entry.
 		 */
 		if ( $entry = $request->is_edit_entry( $view->form ? $view->form->ID : 0 ) ) {
-			if ( 'active' != $entry['status'] ) {
-				gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-			}
-
-			if ( apply_filters( 'gravityview_custom_entry_slug', false ) && $entry->slug != get_query_var( \GV\Entry::get_endpoint_name() ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-			}
-
-			if ( $view->settings->get( 'show_only_approved' ) && ! $is_admin_and_can_view ) {
-				if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-					gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-				}
+			$check = $entry->check_access( $view );
+			if ( is_wp_error( $check ) ) {
+				return \GravityView_Error_Messages::get( $check, $view, 'shortcode', $entry );
 			}
 
 			$renderer = new Edit_Entry_Renderer();
@@ -408,21 +377,9 @@ class View implements \ArrayAccess {
 
 			foreach ( $entryset as $e ) {
 
-				if ( 'active' !== $e['status'] ) {
-					gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $e->ID ) );
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-				}
-
-				if ( $custom_slug && ! in_array( $e->slug, $ids ) ) {
-					gravityview()->log->error( 'Entry ID #{entry_id} was accessed by a bad slug', array( 'entry_id' => $e->ID ) );
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-				}
-
-				if ( $show_only_approved && ! $is_admin_and_can_view ) {
-					if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $e->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-						gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $e->ID ) );
-						return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-					}
+				$check = $e->check_access( $view );
+				if ( is_wp_error( $check ) ) {
+					return \GravityView_Error_Messages::get( $check, $view, 'shortcode', $e );
 				}
 
 				$error = GVCommon::check_entry_display( $e->as_entry(), $view );
@@ -435,7 +392,7 @@ class View implements \ArrayAccess {
 							'message'  => $error->get_error_message(),
 						)
 					);
-					return __( 'You are not allowed to view this content.', 'gk-gravityview' );
+					return \GravityView_Error_Messages::get( $error->get_error_code(), $view, 'shortcode', $e );
 				}
 			}
 
@@ -531,10 +488,11 @@ class View implements \ArrayAccess {
 			$direct_access = apply_filters( 'gravityview_direct_access', true, $this->ID );
 
 			/**
-			 * Should this View be directly accessbile?
+			 * Should this View be directly accessible?
 			 *
 			 * @since 2.0
-			 * @param boolean Accessible or not. Default: accessbile.
+			 *
+			 * @param bool $direct_access Whether the View is directly accessible. Default: true.
 			 * @param \GV\View $view The View we're trying to directly render here.
 			 * @param \GV\Request $request The current request.
 			 */
@@ -645,6 +603,9 @@ class View implements \ArrayAccess {
 		if ( empty( $joins_meta ) ) {
 			return $forms;
 		}
+
+		// Ensure the joins meta is an array. It sometimes is a string.
+		$joins_meta = (array) $joins_meta;
 
 		foreach ( $joins_meta  as $meta ) {
 			if ( ! is_array( $meta ) || 4 != count( $meta ) ) {
@@ -924,6 +885,160 @@ class View implements \ArrayAccess {
 	 */
 	public static function exists( $view ) {
 		return self::POST_TYPE == get_post_type( $view );
+	}
+
+	/**
+	 * Starts tracking that a View is being rendered.
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @param int $view_id The View ID being rendered.
+	 */
+	public static function push_rendering( $view_id ) {
+		self::$rendering_stack[] = $view_id;
+	}
+
+	/**
+	 * Stops tracking that a View is being rendered
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @return int|null The View ID that was being rendered, or null if stack was empty.
+	 */
+	public static function pop_rendering() {
+		return array_pop( self::$rendering_stack );
+	}
+
+	/**
+	 * Checks if a View is currently being rendered (embedded View detection).
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @param int|null $view_id If provided, check if this specific View is being rendered. If null, check if any view is being rendered.
+	 *
+	 * @return bool True if the View (or any View) is being rendered.
+	 */
+	public static function is_rendering( $view_id = null ) {
+		if ( null === $view_id ) {
+			return ! empty( self::$rendering_stack );
+		}
+
+		return in_array( $view_id, self::$rendering_stack, true );
+	}
+
+	/**
+	 * Returns the currently rendering View ID (the most recent one).
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @return int|null The View ID currently being rendered, or null if none.
+	 */
+	public static function get_current_rendering() {
+		if ( empty( self::$rendering_stack ) ) {
+			return null;
+		}
+
+		return end( self::$rendering_stack );
+	}
+
+	/**
+	 * Returns all currently rendering View IDs.
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @return array Array of View IDs in rendering order (oldest to newest).
+	 */
+	public static function get_rendering_stack() {
+		return self::$rendering_stack;
+	}
+
+	/**
+	 * Checks if View is the primary (first) rendering View.
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @param int $view_id The View ID to check
+	 *
+	 * @return bool True if the View is the primary rendering View.
+	 */
+	public static function is_primary_view( $view_id ) {
+		return ! empty( self::$rendering_stack ) && self::$rendering_stack[0] === $view_id;
+	}
+
+	/**
+	 * Checks if View is embedded (not the first in stack).
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @param int $view_id The View ID to check
+	 *
+	 * @return bool True if the View is embedded within another View.
+	 */
+	public static function is_embedded_view( $view_id ) {
+		return in_array( $view_id, self::$rendering_stack, true ) && $view_id !== self::$rendering_stack[0];
+	}
+
+	/**
+	 * Returns the parent View of an embedded View.
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @param int $view_id The View ID to get parent for.
+	 *
+	 * @return int|null The parent View ID, or null if not embedded or no parent.
+	 */
+	public static function get_parent_view( $view_id ) {
+		$position = array_search( $view_id, self::$rendering_stack );
+
+		if ( $position > 0 ) {
+			return self::$rendering_stack[ $position - 1 ];
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the rendering depth of a View (how many levels deep it's nested).
+	 *
+	 * @interal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @param int $view_id The View ID to check
+	 *
+	 * @return int|false The depth (0 for primary, 1+ for nested), or false if not rendering.
+	 */
+	public static function get_rendering_depth( $view_id ) {
+		return array_search( $view_id, self::$rendering_stack );
+	}
+
+	/**
+	 * Resets the rendering stack.
+	 *
+	 * @internal
+	 *
+	 * @since 2.46.2
+	 *
+	 * @internal
+	 */
+	public static function reset_rendering_stack() {
+		self::$rendering_stack = [];
 	}
 
 	/**
@@ -1750,6 +1865,9 @@ class View implements \ArrayAccess {
 			}
 
 			foreach ( $allowed as $field ) {
+				// Remove all links from output.
+				$field->update_configuration( [ 'show_as_link' => '0' ] );
+
 				$source = self::get_source( $field, $view );
 
 				$return[] = $renderer->render( $field, $view, $source, $entry, gravityview()->request, '\GV\Field_CSV_Template' );
@@ -1812,12 +1930,11 @@ class View implements \ArrayAccess {
 		/**
 		 * Bypass restrictions on Views that require `unfiltered_html`.
 		 *
-		 * @param boolean
+		 * @since 2.16
 		 *
-		 * @since develop
+		 * @param bool $require_unfiltered_html Whether to require unfiltered_html capability. Default: true.
 		 * @param string $cap The capability requested.
 		 * @param int $user_id The user ID.
-		 * @param array $args Any additional args to map_meta_cap
 		 */
 		if ( ! apply_filters( 'gravityview/security/require_unfiltered_html', true, $cap, $user_id ) ) {
 			return $caps;

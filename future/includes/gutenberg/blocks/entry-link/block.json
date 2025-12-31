@@ -1,5 +1,5 @@
 {
-  "apiVersion": 2,
+  "apiVersion": 3,
   "name": "gk-gravityview-blocks/entry-link",
   "version": "1.0.0",
   "title": "GravityView Entry Link",
@@ -58,6 +58,10 @@
     "showPreviewImage": {
       "type": "boolean",
       "default": false
+    },
+    "secret": {
+      "type": "string",
+      "default": null
     }
   },
   "example": {

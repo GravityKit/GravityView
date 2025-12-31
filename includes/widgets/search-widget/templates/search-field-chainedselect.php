@@ -26,29 +26,46 @@ if ( empty( $search_field['choices'] ) ) {
 	return;
 }
 
-$form = \GV\GF_Form::by_id( $search_field['form_id'] );
+$form_id = \GV\Utils::get( $search_field, 'form_id', null );
+$form    = \GV\GF_Form::by_id( $form_id );
+
+if ( ! $form ) {
+	gravityview()->log->error( 'search-field-chainedselect.php - Form not found for ID: {form_id}', [ 'form_id' => $form_id ] );
+	return;
+}
 
 $field = \GV\GF_Field::by_id( $form, $search_field['key'] );
+
+if ( ! $field ) {
+	gravityview()->log->error( 'search-field-chainedselect.php - Field not found for key: {key}', [ 'key' => $search_field['key'] ] );
+	return;
+}
 
 /** @var GF_Chained_Field_Select $gf_field */
 $gf_field = $field->field;
 
+if ( ! $gf_field ) {
+	gravityview()->log->error( 'search-field-chainedselect.php - GF field object not found' );
+	return;
+}
+
 /**
- * Prevent Chained Select Search Bar input fields from outputting styles.
+ * Modifies the alignment of the Chained Select Search Bar input fields.
  *
  * @since 2.14.4
- * @param GravityView_Widget_Search $this GravityView Widget instance
- * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
+ *
+ * @param string $search_layout The search layout. Default: 'horizontal' or 'vertical'.
+ * @param array  $search_field  The search field configuration array.
  */
 $alignment = apply_filters( 'gravityview/search/chained_selects/alignment', $search_layout, $search_field );
 
 /**
- * Choose whether to hide inactive dropdowns in the chain.
+ * Chooses whether to hide inactive dropdowns in the chain.
  *
  * @since 2.14.4
- * @param bool $hide_inactive Whether to hide drop-downs that aren't available yet.
- * @param GravityView_Widget_Search $this GravityView Widget instance
- * @param array{key:string,label:string,value:string,type:string,choices:array} $search_field
+ *
+ * @param bool  $hide_inactive Whether to hide drop-downs that aren't available yet. Default: false.
+ * @param array $search_field  The search field configuration array.
  */
 $hide_inactive = apply_filters( 'gravityview/search/chained_selects/hide_inactive', false, $search_field );
 

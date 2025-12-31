@@ -119,8 +119,9 @@ class GravityView_Admin_Duplicate_View {
 		 * Modify the default status for a new View. Return empty for the new View to inherit existing View status.
 		 *
 		 * @since 1.6
-		 * @param string|null If string, the status to set for the new View. If empty, use existing View status.
-		 * @param WP_Post $post View being cloned
+		 *
+		 * @param string|null $status If string, the status to set for the new View. If empty, use existing View status.
+		 * @param WP_Post     $post   View being cloned.
 		 */
 		$new_view_status = apply_filters( 'gravityview/duplicate-view/status', $status, $post );
 
@@ -143,8 +144,9 @@ class GravityView_Admin_Duplicate_View {
 		 * When copying a View, should the date also be copied?
 		 *
 		 * @since 1.6
-		 * @param boolean $copy_date Whether the copy the date from the existing View. Default: `false`
-		 * @param WP_Post $post View being cloned
+		 *
+		 * @param bool    $copy_date Whether the copy the date from the existing View. Default: false.
+		 * @param WP_Post $post      View being cloned.
 		 */
 		$copy_date = apply_filters( 'gravityview/duplicate-view/copy-date', false, $post );
 
@@ -154,11 +156,12 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * Modify View configuration before creating the duplicated View.
+		 * Modifies View configuration before creating the duplicated View.
 		 *
 		 * @since 1.6
-		 * @param array $new_view Array of settings to be passed to wp_insert_post()
-		 * @param WP_Post $post View being cloned
+		 *
+		 * @param array   $new_view Array of settings to be passed to wp_insert_post().
+		 * @param WP_Post $post     View being cloned.
 		 */
 		$new_view = apply_filters( 'gravityview/duplicate-view/new-view', $new_view, $post );
 
@@ -180,12 +183,14 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * After a View is duplicated, perform an action.
+		 * Fires after a View is duplicated.
 		 *
 		 * @since 1.6
+		 *
 		 * @see GravityView_Admin_Duplicate_View::copy_view_meta_info
-		 * @param int $new_view_id The ID of the newly created View
-		 * @param WP_Post $post The View that was just cloned
+		 *
+		 * @param int     $new_view_id The ID of the newly created View.
+		 * @param WP_Post $post        The View that was just cloned.
 		 */
 		do_action( 'gv_duplicate_view', $new_view_id, $post );
 
@@ -294,12 +299,13 @@ class GravityView_Admin_Duplicate_View {
 		}
 
 		/**
-		 * Modify the Clone View URL that is generated.
+		 * Modifies the Clone View URL that is generated.
 		 *
 		 * @since 1.6
-		 * @param string $clone_view_link Link with `admin_url("admin.php")`, plus the action query string
-		 * @param int $view_id View ID
-		 * @param string $context How to display the link. If "display", the URL is run through esc_html(). Default: `display`
+		 *
+		 * @param string $clone_view_link Link with `admin_url("admin.php")`, plus the action query string.
+		 * @param int    $view_id         View ID.
+		 * @param string $context         How to display the link. If "display", the URL is run through esc_html(). Default: `display`.
 		 */
 		$clone_view_link = apply_filters( 'gravityview/duplicate-view/get_clone_view_link', admin_url( 'admin.php' . $action ), $view->ID, $context );
 

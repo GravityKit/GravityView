@@ -35,10 +35,16 @@ if ( ! $gravityview->entries->count() ) {
 		GravityView_Layout_Builder::ID,
 		static fn() => Grid::get_rows_from_collection( $gravityview->fields, $zone )
 	);
+
 	// There are entries. Loop through them.
 	foreach ( $gravityview->entries->all() as $entry ) {
+		$class = $gravityview->template::entry_class(
+			'gv-layout-builder-view gv-layout-builder-view--entry gv-grid',
+			$entry,
+			$gravityview
+		);
 		?>
-        <div class="gv-layout-builder-view gv-layout-builder-view--entry gv-grid">
+        <div class="<?php echo esc_attr( $class ); ?>">
 			<?php foreach ( $rows as $row ) { ?>
                 <div class="gv-grid-row">
 					<?php
@@ -74,6 +80,9 @@ gravityview_footer( $gravityview );
 gravityview_after( $gravityview );
 
 $content = ob_get_clean();
+
+$anchor_id = $gravityview->view->get_anchor_id();
+
 /**
  * Modify the wrapper container.
  *
@@ -85,8 +94,8 @@ $content = ob_get_clean();
  */
 $wrapper_container = apply_filters(
 	'gravityview/view/wrapper_container',
-	'<div id="' . esc_attr( $gravityview->view->get_anchor_id() ) . '">{content}</div>',
-	$gravityview->view->get_anchor_id(),
+	'<div id="' . esc_attr( $anchor_id ) . '" class="gv-template-layout-builder">{content}</div>',
+	$anchor_id,
 	$gravityview->view
 );
 

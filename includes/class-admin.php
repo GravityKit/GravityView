@@ -136,7 +136,9 @@ class GravityView_Admin {
 		/**
 		 * Triggered after all GravityView admin files are loaded.
 		 *
-		 * Nice place to insert extensions' backend stuff
+		 * Nice place to insert extensions' backend stuff.
+		 *
+		 * @since 1.0.7
 		 */
 		do_action( 'gravityview_include_backend_actions' );
 	}

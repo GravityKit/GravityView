@@ -290,6 +290,186 @@ class GravityView_Entry_Approval_Test extends GV_UnitTestCase {
 	}
 
 	/**
+	 * Verifies that notes ARE added when approval status changes via Edit Entry.
+	 *
+	 * @since 2.48.2
+	 *
+	 * @covers GravityView_Entry_Approval::after_update_entry_update_approved_meta
+	 */
+	public function test_note_added_when_status_changes_on_edit() {
+		$form = $this->factory->form->import_and_get( 'approval.json', 0 );
+
+		// Create an entry with approval checkbox checked (APPROVED).
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'test',
+			'2' => 'data',
+			'3.1' => 'Approved',
+		) );
+
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+		$entry = GFAPI::get_entry( $entry['id'] );
+
+		$gv_approval = new class extends GravityView_Entry_Approval { public function __construct() {} };
+
+		// Get initial note count
+		$notes_before = \GravityView_Entry_Notes::get_notes( $entry['id'] );
+		$notes_count_before = is_array( $notes_before ) ? count( $notes_before ) : 0;
+
+		// Change status from APPROVED to DISAPPROVED
+		$entry['3.1'] = '';
+		GFAPI::update_entry( $entry );
+
+		$gv_approval->after_update_entry_update_approved_meta( $form, $entry['id'] );
+
+		// Verify a note was added
+		$notes_after = \GravityView_Entry_Notes::get_notes( $entry['id'] );
+		$notes_count_after = is_array( $notes_after ) ? count( $notes_after ) : 0;
+
+		$this->assertSame( $notes_count_before + 1, $notes_count_after, 'A note should have been added when approval status changed' );
+
+		// Verify the note content mentions the status change
+		if ( is_array( $notes_after ) && ! empty( $notes_after ) ) {
+			$latest_note = end( $notes_after );
+			$this->assertNotNull( $latest_note, 'Latest note should exist' );
+
+			// Notes can be objects or arrays depending on GF version
+			$note_value = is_object( $latest_note ) ? $latest_note->value : $latest_note['value'];
+			$this->assertStringContainsString( 'disapproved', strtolower( $note_value ), 'Note should mention disapproved status' );
+		}
+	}
+
+	/**
+	 * Verifies that notes are NOT added when approval status remains unchanged via Edit Entry.
+	 *
+	 * @since 2.48.2
+	 *
+	 * @covers GravityView_Entry_Approval::after_update_entry_update_approved_meta
+	 */
+	public function test_note_not_added_when_status_unchanged_on_edit() {
+		$form = $this->factory->form->import_and_get( 'approval.json', 0 );
+
+		// Create an entry with approval checkbox checked (APPROVED).
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'test',
+			'2' => 'data',
+			'3.1' => 'Approved',
+		) );
+
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+		$entry = GFAPI::get_entry( $entry['id'] );
+
+		$gv_approval = new class extends GravityView_Entry_Approval { public function __construct() {} };
+
+		// Get initial note count
+		$notes_before = \GravityView_Entry_Notes::get_notes( $entry['id'] );
+		$notes_count_before = is_array( $notes_before ) ? count( $notes_before ) : 0;
+
+		// Save without changing the approval status
+		$gv_approval->after_update_entry_update_approved_meta( $form, $entry['id'] );
+
+		// Verify no note was added
+		$notes_after = \GravityView_Entry_Notes::get_notes( $entry['id'] );
+		$notes_count_after = is_array( $notes_after ) ? count( $notes_after ) : 0;
+
+		$this->assertSame( $notes_count_before, $notes_count_after, 'No note should have been added when approval status did not change' );
+	}
+
+	/**
+	 * Verifies that notes are added when entry is auto-unapproved after editing.
+	 *
+	 * @since 2.48.2
+	 *
+	 * @covers GravityView_Entry_Approval::autounapprove
+	 */
+	public function test_note_added_on_autounapprove() {
+		$form = $this->factory->form->create_and_get();
+
+		// Create an approved entry
+		$entry = $this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => 'test',
+		) );
+
+		gform_update_meta( $entry['id'], \GravityView_Entry_Approval::meta_key, \GravityView_Entry_Approval_Status::APPROVED );
+
+		// Create a View with auto-unapprove enabled
+		$view_id = $this->factory->view->create( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'unapprove_edit' => '1',
+			),
+		) );
+
+		$view = \GV\View::by_id( $view_id );
+
+		// Get initial note count
+		$notes_before = \GravityView_Entry_Notes::get_notes( $entry['id'] );
+		$notes_count_before = is_array( $notes_before ) ? count( $notes_before ) : 0;
+
+		// Mock the edit context
+		$edit = $this->getMockBuilder( 'GravityView_Edit_Entry_Render' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Create GravityView_View_Data using from_post method
+		$gv_data = \GravityView_View_Data::getInstance( $view_id );
+
+		// Set current user as non-moderator to trigger auto-unapprove
+		$user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
+		wp_set_current_user( $user_id );
+
+		// Trigger auto-unapprove
+		GravityView_Entry_Approval::autounapprove( $form, $entry['id'], $edit, $gv_data );
+
+		// Verify a note was added
+		$notes_after = \GravityView_Entry_Notes::get_notes( $entry['id'] );
+		$notes_count_after = is_array( $notes_after ) ? count( $notes_after ) : 0;
+
+		$this->assertSame( $notes_count_before + 1, $notes_count_after, 'A note should have been added when entry was auto-unapproved' );
+
+		// Verify the note content mentions auto-unapproval
+		if ( is_array( $notes_after ) && ! empty( $notes_after ) ) {
+			$latest_note = end( $notes_after );
+			$this->assertNotNull( $latest_note, 'Latest note should exist' );
+
+			// Notes can be objects or arrays depending on GF version
+			$note_value = is_object( $latest_note ) ? $latest_note->value : $latest_note['value'];
+			$this->assertStringContainsString( 'automatically unapproved', strtolower( $note_value ), 'Note should mention automatic unapproval' );
+		}
+	}
+
+	/**
+	 * Verifies that update_approved_meta() returns boolean values correctly.
+	 *
+	 * @since 2.48.2
+	 *
+	 * @covers GravityView_Entry_Approval::update_approved_meta
+	 */
+	public function test_update_approved_meta_returns_boolean() {
+		$update_approved_meta = new ReflectionMethod( 'GravityView_Entry_Approval', 'update_approved_meta' );
+		$update_approved_meta->setAccessible( true );
+
+		$entry = $this->factory->entry->create_and_get( array( 'form_id' => $this->form_id ) );
+
+		// Test: Returns true when successfully updating meta
+		$result = $update_approved_meta->invoke( null, $entry['id'], GravityView_Entry_Approval_Status::APPROVED, $this->form_id );
+		$this->assertTrue( $result, 'Should return true when meta is successfully updated' );
+
+		// Test: Returns false when status is unchanged
+		$result = $update_approved_meta->invoke( null, $entry['id'], GravityView_Entry_Approval_Status::APPROVED, $this->form_id );
+		$this->assertFalse( $result, 'Should return false when status is unchanged' );
+
+		// Test: Returns false for invalid status
+		$result = $update_approved_meta->invoke( null, $entry['id'], 'INVALID_STATUS', $this->form_id );
+		$this->assertFalse( $result, 'Should return false for invalid status' );
+	}
+
+	/**
 	 * @covers GravityView_Entry_Approval::add_approval_status_updated_note
 	 */
 	public function test_add_approval_status_updated_note() {

@@ -93,7 +93,7 @@ class oEmbed {
 					'matches' => $matches,
 				)
 			);
-			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
+			return \GravityView_Error_Messages::get( 'entry_not_found', null, 'oembed' );
 		}
 
 		list( $view, $entry ) = $result;
@@ -229,18 +229,14 @@ class oEmbed {
 		$public_states = get_post_stati( array( 'public' => true ) );
 		if ( ! in_array( $view->post_status, $public_states ) && ! \GVCommon::has_cap( 'read_gravityview', $view->ID ) ) {
 			gravityview()->log->notice( 'The current user cannot access this View #{view_id}', array( 'view_id' => $view->ID ) );
-			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
+			return \GravityView_Error_Messages::get( 'not_public', $view, 'oembed' );
 		}
 
-		if ( $entry && 'active' !== $entry['status'] ) {
-			gravityview()->log->notice( 'Entry ID #{entry_id} is not active', array( 'entry_id' => $entry->ID ) );
-			return __( 'You are not allowed to view this content.', 'gk-gravityview' );
-		}
+		if ( $entry ) {
+			$check = $entry->check_access( $view );
 
-		if ( $view->settings->get( 'show_only_approved' ) ) {
-			if ( ! \GravityView_Entry_Approval_Status::is_approved( gform_get_meta( $entry->ID, \GravityView_Entry_Approval::meta_key ) ) ) {
-				gravityview()->log->error( 'Entry ID #{entry_id} is not approved for viewing', array( 'entry_id' => $entry->ID ) );
-				return __( 'You are not allowed to view this content.', 'gk-gravityview' );
+			if ( is_wp_error( $check ) ) {
+				return \GravityView_Error_Messages::get( $check, $view, 'oembed', $entry );
 			}
 		}
 
@@ -317,7 +313,9 @@ class oEmbed {
 		/**
 		 * Modify the url part for a View. [Read the doc](https://docs.gravitykit.com/article/62-changing-the-view-slug).
 		 *
-		 * @param string $rewrite_slug The slug shown in the URL
+		 * @since 2.0
+		 *
+		 * @param string $rewrite_slug The slug shown in the URL.
 		 */
 		$rewrite_slug = apply_filters( 'gravityview_slug', 'view' );
 

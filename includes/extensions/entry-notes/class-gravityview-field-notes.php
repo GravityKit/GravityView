@@ -626,9 +626,9 @@ class GravityView_Field_Notes extends GravityView_Field {
 		 * @since 1.17
 		 * @since 2.0
 		 *
-		 * @param object               $note         Note object with id, user_id, date_created, value, note_type, user_name, user_email vars
+		 * @param array                $note_content Array of note content that will be replaced in template files.
+		 * @param object               $note         Note object with id, user_id, date_created, value, note_type, user_name, user_email vars.
 		 * @param boolean              $show_delete  True: Notes are editable. False: no editing notes.
-		 * @param array                $note_content Array of note content that will be replaced in template files
 		 * @param \GV\Template_Context $context      The context.
 		 */
 		$note_content = apply_filters( 'gravityview/field/notes/content', $note_content, $note, $show_delete, $context );
@@ -998,7 +998,19 @@ class GravityView_Field_Notes extends GravityView_Field {
 		$form = isset( $entry['form_id'] ) ? GVCommon::get_form( $entry['form_id'] ) : [];
 
 		/**
-		 * @see https://www.gravityhelp.com/documentation/article/10146-2/ It's here for compatibility with Gravity Forms.
+		 * It's here for compatibility with Gravity Forms.
+		 *
+		 * @link https://docs.gravityforms.com/gform_post_send_entry_note/
+		 *
+		 * @since 1.17
+		 *
+		 * @param string $method The method that was used to send the note.
+		 * @param string $to The email address that the note was sent to.
+		 * @param string $from The email address that the note was sent from.
+		 * @param string $subject The subject of the note.
+		 * @param string $message The message of the note.
+		 * @param array  $form The form that the note was sent from.
+		 * @param array  $entry The entry that the note was sent from.
 		 */
 		do_action( 'gform_post_send_entry_note', __METHOD__, $to, $from, $subject, $message, $form, $entry );
 	}

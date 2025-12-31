@@ -24,9 +24,10 @@ if ( $field->enableColumns && false !== $column_id ) {
 	 * Format of single list column output of a List field with Multiple Columns enabled.
 	 *
 	 * @since 1.14
-	 * @param string $format `html` (for <ul> list), `text` (for CSV output)
-	 * @since 2.0
-	 * @param \GV\Template_Context $gravityview The context
+	 * @since 2.0 Added $gravityview parameter.
+	 *
+	 * @param string               $format      `html` (for <ul> list), `text` (for CSV output).
+	 * @param \GV\Template_Context $gravityview The context.
 	 */
 	$format = apply_filters( 'gravityview/fields/list/column-format', 'text', $gravityview );
 
@@ -39,8 +40,8 @@ if ( $field->enableColumns && false !== $column_id ) {
 	 *
 	 * @since 2.4.2
 	 *
-	 * @param string The glue. Default: ";" (semicolon)
-	 * @param \GV\Template_Context The context.
+	 * @param string               $glue        The glue. Default: ";" (semicolon).
+	 * @param \GV\Template_Context $gravityview The context.
 	 */
 	$glue = apply_filters( 'gravityview/template/field/csv/glue', ';', $gravityview );
 

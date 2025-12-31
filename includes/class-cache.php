@@ -391,7 +391,13 @@ class GravityView_Cache {
 			)
 		);
 
-		return update_option( self::BLOCKLIST_OPTION_NAME, $updated_list );
+		$updated = update_option( self::BLOCKLIST_OPTION_NAME, $updated_list );
+
+		if ( ! $updated ) {
+			gravityview()->log->error( 'Failed to remove form IDs from cache blocklist.' );
+		}
+
+		return $updated;
 	}
 
 	/**
@@ -529,7 +535,9 @@ class GravityView_Cache {
 		/**
 		 * Modify the cache time for a type of cache.
 		 *
-		 * @param int $time_in_seconds Default: `DAY_IN_SECONDS`
+		 * @since 1.3
+		 *
+		 * @param int $expiration Cache time in seconds. Default: DAY_IN_SECONDS.
 		 */
 		$expiration = (int) apply_filters( 'gravityview_cache_time_' . $filter_name, $expiration );
 
@@ -613,7 +621,9 @@ class GravityView_Cache {
 		/**
 		 * Override GravityView cleanup of transients by setting this to false.
 		 *
-		 * @param boolean $cleanup Whether to run the GravityView auto-cleanup of transients. Default: `true`
+		 * @since 1.3
+		 *
+		 * @param bool $cleanup Whether to run the GravityView auto-cleanup of transients. Default: `true`.
 		 */
 		$cleanup = apply_filters( 'gravityview_cleanup_transients', true );
 
@@ -725,7 +735,7 @@ SQL;
 		}
 
 		// Has the form been flagged as having changed items in it?
-		if ( ! $use_cache || $this->in_blocklist() ) {
+		if ( ! $use_cache && $this->in_blocklist() ) {
 
 			// Delete caches for all items with form IDs XYZ
 			$this->delete( $this->form_ids );
@@ -737,8 +747,10 @@ SQL;
 		/**
 		 * Modify whether to use the cache or not.
 		 *
-		 * @param  boolean $use_cache Previous setting
-		 * @param GravityView_Cache $this The GravityView_Cache object
+		 * @since 1.3
+		 *
+		 * @param bool              $use_cache Previous setting.
+		 * @param GravityView_Cache $this      The GravityView_Cache object.
 		 */
 		$this->use_cache = (bool) apply_filters( 'gravityview_use_cache', $use_cache, $this );
 

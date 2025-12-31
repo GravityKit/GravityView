@@ -359,14 +359,16 @@ class GravityView_Roles_Capabilities {
 		 * If you use this filter, at least check against certain capabilities and $object_ids.
 		 *
 		 * There are use-cases, albeit strange ones, where we'd like to check and override capabilities for
-		 *  for a non-logged in user.
+		 * a non-logged in user.
 		 *
 		 * Examples, you ask? https://github.com/gravityview/GravityView/issues/826
 		 *
-		 * @param boolean $allow_logged_out Allow the capability check or bail without even checking. Default: false. Do not allow. Do not pass Go. Do not collect $200.
-		 * @param string|array $caps_to_check Single capability or array of capabilities to check against
-		 * @param int|null $object_id (optional) Parameter can be used to check for capabilities against a specific object, such as a post or us.
-		 * @param int|null $user_id (optional) Check the capabilities for a user who is not necessarily the currently logged-in user.
+		 * @since 1.21.5.2
+		 *
+		 * @param bool         $allow_logged_out Allow the capability check or bail without even checking. Default: false.
+		 * @param string|array $caps_to_check    Single capability or array of capabilities to check against.
+		 * @param int|null     $object_id        Parameter can be used to check for capabilities against a specific object, such as a post or user.
+		 * @param int|null     $user_id          Check the capabilities for a user who is not necessarily the currently logged-in user.
 		 */
 		$allow_logged_out = apply_filters( 'gravityview/capabilities/allow_logged_out', false, $caps_to_check, $object_id, $user_id );
 
@@ -400,9 +402,10 @@ class GravityView_Roles_Capabilities {
 			} else {
 				$has_cap = $user_id ? user_can( $user_id, $cap ) : current_user_can( $cap );
 			}
-			// At the first successful response, stop checking
+
+			// At the first successful response, stop checking.
 			if ( $has_cap ) {
-				break;
+				return true;
 			}
 		}
 

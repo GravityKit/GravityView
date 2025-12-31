@@ -139,8 +139,6 @@ HTML;
 	 * @since 2.21
 	 */
 	public function render_frontend( $widget_args, $content = '', $context = '' ): void {
-		global $wp_query;
-
 		if (
 			! $context instanceof Template_Context
 			|| ! $this->pre_render_frontend( $context )
@@ -182,7 +180,8 @@ HTML;
 		 */
 		$rest_nonce_url = sprintf( '%sgravityview/v1/views/%d/entries.%s', get_rest_url(), $view->ID, $type );
 		$rest_nonce_url = add_query_arg( [
-			'_nonce'     => $nonce,
+			'_nonce'     => $nonce, // View-specific nonce for security.
+			'_wpnonce'   => wp_create_nonce( 'wp_rest' ), // REST API authentication.
 			'use_labels' => $use_labels,
 		], $rest_nonce_url );
 
@@ -193,7 +192,7 @@ HTML;
 
 		$link = strtr( '<a href="{url}" data-nonce-url="{nonce_url}" download rel="nofollow" type="{mime_type}">{label}</a>', [
 			'{url}'       => esc_url( $rest_url ),
-			'{nonce_url}'  => esc_url( $rest_nonce_url ),
+			'{nonce_url}' => esc_url( $rest_nonce_url ),
 			'{mime_type}' => $mime_type,
 			'{label}'     => esc_html( $label ),
 		] );
@@ -204,7 +203,7 @@ HTML;
 	}
 
 	/**
-	 * Create a nonce for a guest, as the REST API is stateless.
+	 * Create a nonce for export verification.
 	 *
 	 * @since 2.21
 	 *
@@ -217,16 +216,7 @@ HTML;
 			return '';
 		}
 
-		$user_id = wp_get_current_user()->ID;
-		if ( $user_id ) {
-			wp_set_current_user( 0 );
-		}
-
 		$nonce = wp_create_nonce( sprintf( '%s.%d', $this->get_widget_id(), $view->ID ) );
-
-		if ( $user_id ) {
-			wp_set_current_user( $user_id );
-		}
 
 		return $nonce ?: '';
 	}

@@ -77,7 +77,7 @@ final class GravityView_Entry_Approval_Status {
 		 *
 		 * Do not modify the array keys or the `value` key! Only modify the `label`, `action`, and `title` keys!
 		 *
-		 * @since TODO
+		 * @since 2.24
 		 *
 		 * @param array $choices Array of entry approval statuses.
 		 */

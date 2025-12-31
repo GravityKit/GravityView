@@ -486,4 +486,110 @@ class GravityView_Shortcode_Test extends GV_UnitTestCase {
 		$this->assertStringContainsString( 'data-label="Text">abc</td>', $content );
 		$this->assertStringNotContainsString( 'data-label="Text">abcxyz</td>', $content );
 	}
+
+	/**
+	 * Test that shortcode attributes with problematic characters (< > & [ ]) are properly encoded/decoded.
+	 *
+	 * @covers \GV\Shortcode::preprocess_shortcode_attributes
+	 * @covers \GV\Shortcode::normalize_attributes
+	 */
+	public function test_shortcode_attribute_encoding() {
+		$form = $this->factory->form->import_and_get( 'simple.json' );
+		$view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'show_only_approved' => 0,
+			),
+		) );
+
+		$this->factory->entry->create_and_get( array(
+			'form_id' => $form['id'],
+			'status' => 'active',
+			'1' => '10',
+		) );
+
+		$secret = \GV\View::from_post( $view )->get_validation_secret();
+
+		// Test 1: create content with problematic characters that would break WordPress parsing.
+		$content_with_less_than = sprintf(
+			'[gravityview id="%d" secret="%s" search_field="1" search_value="5" search_operator="<"] and [test attr="<"]',
+			$view->ID,
+			$secret
+		);
+
+		// Process through the_content filter (which should apply our preprocessing).
+		$filtered_content = apply_filters( 'the_content', $content_with_less_than );
+
+		// The shortcode should be processed and render a view container.
+		$this->assertStringContainsString( 'gv-container', $filtered_content, 'GravityView shortcode with < operator should render' );
+
+		// The view should be properly rendered (not remain as shortcode text).
+		$this->assertStringNotContainsString( '[gravityview', $filtered_content, 'GravityView shortcode should be processed, not remain as text' );
+
+		// The non-GravityView [test] shortcode should remain (WordPress may convert quotes).
+		$this->assertTrue(
+			strpos( $filtered_content, '[test attr="<"]' ) !== false ||
+			strpos( $filtered_content, '[test attr=&#8221;<"]' ) !== false,
+			'Non-GravityView shortcode should remain unprocessed'
+		);
+
+		// Test 2: test with multiple problematic characters.
+		$content_complex = sprintf(
+			'[gravityview id="%d" secret="%s" search_field="1" search_value="5 & more" search_operator=">"] Content',
+			$view->ID,
+			$secret
+		);
+
+		$filtered_complex = apply_filters( 'the_content', $content_complex );
+
+		// Should render the View.
+		$this->assertStringContainsString( 'gv-container', $filtered_complex, 'GravityView with & and > should render' );
+		$this->assertStringNotContainsString( '[gravityview', $filtered_complex, 'Complex shortcode should be processed' );
+	}
+
+	/**
+	 * Test that secrets are removed from broken/unprocessed shortcodes.
+	 *
+	 * @covers \GV\Shortcode::post_process_content
+	 */
+	public function test_post_process_removes_secrets_from_broken_shortcodes() {
+		$secret = 'test_secret_12345';
+
+		// Create content with a broken GravityView shortcode and a working test shortcode.
+		// The broken one has invalid syntax (<<) that will prevent WordPress from parsing it.
+		$content = sprintf(
+			'[gravityview id="10" secret="%s" <<] and [test secret="keep"] content',
+			$secret
+		);
+
+		$rendered_content = do_shortcode( $content );
+		$filtered_content = apply_filters( 'the_content', $rendered_content );
+
+		// The broken [gravityview] shortcode should remain but without the secret.
+		$this->assertStringContainsString( '[gravityview', $filtered_content, 'Broken GravityView shortcode should remain as text' );
+
+		// Secret should be completely removed from the content.
+		$this->assertStringNotContainsString( $secret, $filtered_content, 'Secret value should be removed from broken shortcode' );
+
+		// Check that the [gravityview] shortcode doesn't contain secret (but test shortcode can).
+		if ( preg_match( '/\[gravityview[^\]]*\]/', $filtered_content, $matches ) ) {
+			$this->assertStringNotContainsString( 'secret=', $matches[0], 'No secret attribute should remain in GravityView shortcode' );
+		}
+
+		// The test shortcode should remain unchanged with its secret.
+		$this->assertStringContainsString( '[test secret="keep"]', $filtered_content, 'Non-GravityView shortcode should remain unchanged' );
+
+		// Test with multiple broken GravityView shortcodes.
+		$content_multiple = '[gravityview id="1" secret="secret1" malformed>>] text [gvfield id="2" secret="secret2" broken<<] more [test secret="keep"]';
+
+		$rendered_multiple = do_shortcode( $content_multiple );
+		$filtered_multiple = apply_filters( 'the_content', $rendered_multiple );
+
+		// Both GravityView shortcodes should have secrets removed.
+		$this->assertStringNotContainsString( 'secret1', $filtered_multiple, 'First secret should be removed' );
+		$this->assertStringNotContainsString( 'secret2', $filtered_multiple, 'Second secret should be removed' );
+
+		// Test shortcode should keep its secret.
+		$this->assertStringContainsString( '[test secret="keep"]', $filtered_multiple, 'Test shortcode should keep its secret' );
+	}
 }

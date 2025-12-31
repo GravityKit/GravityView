@@ -18,6 +18,8 @@ $gravityview->template->get_template_part( 'list/list', 'footer' );
 
 $content = ob_get_clean();
 
+$anchor_id = $gravityview->view->get_anchor_id();
+
 /**
  * Modify the wrapper container.
  *
@@ -29,8 +31,8 @@ $content = ob_get_clean();
  */
 $wrapper_container = apply_filters(
 	'gravityview/view/wrapper_container',
-	'<div id="' . esc_attr( $gravityview->view->get_anchor_id() ) . '">{content}</div>',
-	$gravityview->view->get_anchor_id(),
+	'<div id="' . esc_attr( $anchor_id ) . '" class="gv-template-list">{content}</div>',
+	$anchor_id,
 	$gravityview->view
 );
 

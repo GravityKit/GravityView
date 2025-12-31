@@ -122,8 +122,10 @@ abstract class GravityView_Admin_View_Item {
 		/**
 		 * Tap in to modify the field information displayed next to an item.
 		 *
-		 * @param array $field_info_items Additional information to display in a field
-		 * @param GravityView_Admin_View_Field $this Field shown in the admin
+		 * @since 1.17.3
+		 *
+		 * @param array                        $field_info_items Additional information to display in a field.
+		 * @param GravityView_Admin_View_Field $field            Field shown in the admin.
 		 */
 		$field_info_items = apply_filters( 'gravityview_admin_label_item_info', $field_info_items, $this );
 
@@ -161,8 +163,12 @@ abstract class GravityView_Admin_View_Item {
 	 */
 	protected function can_duplicate(): bool {
 		/**
-		 * @filter `gk/gravityview/admin/can_duplicate_field` Modify whether a field can be duplicated.
-		 * @since  2.42
+		 * Modify whether a field can be duplicated.
+		 *
+		 * @since 2.42
+		 *
+		 * @param bool                         $can_duplicate Whether the field can be duplicated.
+		 * @param GravityView_Admin_View_Field $field         Field shown in the admin.
 		 */
 		return (bool) apply_filters( 'gk/gravityview/admin/can_duplicate_field', true, $this );
 	}
@@ -327,8 +333,11 @@ abstract class GravityView_Admin_View_Item {
 		 * Modify the icon output to add additional indicator icons.
 		 *
 		 * @internal This is currently internally used. Consider not relying on it until further notice :-)
-		 * @param array $icons Array of icons to be shown, with `visible`, `title`, `css_class` keys.
-		 * @param array $item_settings Settings for the current item (widget or field)
+		 *
+		 * @since 2.10
+		 *
+		 * @param array $icons    Array of icons to be shown, with `visible`, `title`, `css_class` keys.
+		 * @param array $settings Settings for the current item (widget or field).
 		 */
 		$icons = (array) apply_filters( 'gravityview/admin/indicator_icons', $icons, $this->settings );
 

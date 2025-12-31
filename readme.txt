@@ -1,7 +1,7 @@
 === GravityView ===
 Tags: gravity forms, directory, gravity forms directory
 Requires at least: 4.7
-Tested up to: 6.8.2
+Tested up to: 6.9
 Requires PHP: 7.4.0
 Stable tag: trunk
 Contributors: The GravityKit Team
@@ -20,6 +20,167 @@ Beautifully display your Gravity Forms entries. Learn more on [gravitykit.com](h
 3. Follow the instructions
 
 == Changelog ==
+
+= 2.50 on December 29, 2025 =
+
+This release improves error messaging for administrators, addresses a performance issue, fixes REST API handling of View access settings, and resolves JavaScript and List field display issues on the Edit Entry page.
+
+#### ✨ Improved
+* Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
+
+#### 🐛 Fixed
+* JavaScript error breaking Edit Entry functionality when forms use conditional logic on buttons.
+* Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.
+* Multi-column List fields on the Edit Entry page displayed serialized array data (e.g., `a:1:{i:0;s:0:"";}`) instead of remaining empty when revealed via conditional logic.
+* REST API requests for single entries now properly respect View settings like "Prevent Direct Access" and REST API restrictions.
+* PHP 8.4 implicit nullable parameter deprecation warnings.
+* Some hooks were not removed when switching lightbox provider.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.1.
+
+= 2.49 on December 5, 2025 =
+
+This update adds a new merge tag modifier for improved URL encoding and resolves a WordPress 6.9 compatibility issue affecting classic themes.
+
+#### 🚀 Added
+* [`:rawurlencode` merge tag modifier](https://docs.gravitykit.com/article/350-merge-tag-modifiers#Usage-rawurlencode-Modifier-eLEk5) for better handling of special characters in URL paths and email links.
+
+#### 🐛 Fixed
+* Compatibility issue with WordPress 6.9 that caused Views to display incorrectly on classic themes.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/compatibility/block-assets-on-demand` filter to control whether GravityView disables WordPress 6.9's on-demand block asset loading (`true` by default).
+
+= 2.48.5 on December 4, 2025 =
+
+This release resolves deprecation notices in GravityView blocks on WordPress 6.7+, fixes edit locking not releasing entries properly on the Edit Entry page, and addresses PHP warnings.
+
+**Note: [GravityView blocks](https://docs.gravitykit.com/article/915-embedding-views-entries-and-fields-using-blocks) now require WordPress 6.3 or newer.**
+
+#### 🐛 Fixed
+* Deprecation notices in GravityView blocks on WordPress 6.7+.
+* With Edit Locking enabled, entries sometimes stayed locked after someone finished editing them, causing attempts by others to take over editing to fail.
+* PHP deprecation warning when editing certain entries with Post fields.
+* PHP notice when using `{sequence}` merge tag as a custom label for a View field.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/delete-entry/mode` filter to allow code to modify the delete mode (whether to trash or delete an entry) for a specific View.
+  - Deprecated the `gravityview/delete-entry/mode` filter.
+* Added `gk/gravityview/delete-entry/delete-connected-post` filter to allow code to modify the behavior of deleting posts connected to an entry.
+  - Deprecated the `gravityview/delete-entry/delete-connected-post` filter.
+* Added `gk/gravityview/delete-entry/deleted` action to trigger when an entry is deleted.
+  - Deprecated the `gravityview/delete-entry/deleted` action.
+* Added `gk/gravityview/delete-entry/trashed` action to trigger when an entry is trashed.
+ - Deprecated the `gravityview/delete-entry/trashed` action.
+
+= 2.48.4 on November 27, 2025 =
+
+This release resolves a compatibility issue with the Advanced Post Creation Add-On and adds new filters for developers to adjust edit and delete entry behavior.
+
+#### 🐛 Fixed
+* "You don’t have permission to edit this post" shown when editing entries with Post fields linked to posts created through the Advanced Post Creation Add-On.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/edit-entry/init/data` filter to modify form, entry, and View data before rendering the Edit Entry form.
+* Added `gk/gravityview/delete-entry/show-delete-button` filter to allow code to modify the visibility of the Delete button, with entry, form, View ID, and post ID as parameters.
+  - The `gravityview/delete-entry/show-delete-button` filter will be deprecated in a future release.
+
+= 2.48.3 on November 17, 2025 =
+
+This hotfix resolves a performance issue introduced in 2.48.2.
+
+#### 🐛 Fixed
+* After the 2.48.2 update, Views were taking significantly longer to load.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.0.
+
+= 2.48.2 on November 13, 2025 =
+
+This release addresses multiple issues impacting search fields, Edit Entry behavior, logging of entry approval status changes, and other aspects of the plugin’s functionality.
+
+#### 🐛 Fixed
+* Fatal error when using Chained Select fields in the Search Bar without proper form context.
+* Incorrect search logic for Date and Entry Date fields when using a single input or a range.
+* Fields on the Edit Entry page not clearing stored values when hidden by conditional logic, or restoring their default/merge-tag-based values when shown again.
+* Email fields with confirmation enabled could display `Array` instead of the correct value.
+* Workflow Step field not able to be used to link to a single entry.
+* Entry Notes not being added when an entry’s approval status changed due to the Unapprove Entries After Editing setting or when updated via the Approval Status field on the Entry Edit page.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.2.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/view_collection/from_post/views` filter to allow code to add Views to the Collection that are not found by the default logic,  or modify the View Collection before it is returned.
+* Improved error message handling with centralized `GravityView_Error_Messages` class:
+  - Error messages now differentiate between administrators (actionable links) and regular users (generic messages) to prevent information disclosure.
+  - Entry permission checks moved to `GV\Entry::check_access()` for better encapsulation.
+  - All error codes standardized to `snake_case` for consistency with WordPress core conventions.
+* Enhanced security of error messages by properly escaping all translatable strings using `esc_html__()` and `wp_kses_post()`.
+* Improved code quality and type safety:
+  - Removed redundant `as_entry()` conversions where objects are already `GV\Entry` instances.
+  - Added safe array access using `GV\Utils::get()` to prevent undefined index errors.
+  - Fixed type confusion between `GV\Entry` objects and raw entry arrays.
+
+= 2.48.1 on October 9, 2025 =
+
+This update resolves issues with date filtering, lightbox display, and Edit Entry layout styling.
+
+#### 🐛 Fixed
+* When using a single-input Entry Date search field, results now include only entries created on the specified date, rather than all entries from that date onward.
+* File Upload field images were incorrectly displaying in a lightbox when the View's "Enable lightbox for images" setting was disabled, but another field had "Open in a lightbox?" enabled.
+* Styling issues on the Edit Entry page when using the Layout Builder for the Single Entry page.
+
+= 2.48 on October 2, 2025 =
+
+This update improves responsiveness and spacing in Layout Builder layouts, and fixes an issue that could prevent GravityKit settings from saving.
+
+#### ✨ Improved
+* Layout Builder layouts are easier to view on smaller screens and entries are now more clearly separated.
+
+#### 🐛 Fixed
+* Saving GravityKit settings could fail in certain situations.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.6.0.
+
+= 2.47 on September 25, 2025 =
+
+This release improves the handling of shortcodes and File Upload fields, and fixes an issue where a View would fail to render.
+
+#### ✨ Improved
+* Excerpts and content previews now automatically remove GravityView shortcodes for cleaner content display in archives, widgets, and feeds.
+* Allow PDF files to bypass secure download URLs when the "Use Direct File Path for Media" setting is enabled for a File Upload field.
+* Shortcodes can now accept special characters that WordPress ignores.
+
+#### 🐛 Fixed
+* Search Bar no longer disappears when the “Hide View data until search is performed” setting is enabled.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.5.0.
+
+#### 💻 Developer Updates
+* Added `pdf` to the allowed file extensions for the `gk/gravityview/fields/fileupload/secure-links/allowed-extensions` filter.
+
+= 2.46.2 on September 18, 2025 =
+
+#### ✨ Improved
+* Notices and frontend messages for shortcodes with invalid or missing `secret` attributes are clearer and can be dismissed globally.
+* Shortcodes referencing the same View they are embedded in no longer require a secret.
+
+#### 🐛 Fixed
+* Entry Link block not working with secure Views requiring a secret.
+* Export widget not working when Views were filtered to show entries created by the logged-in user.
+* Fields linked to Single Entry layouts are now exported as p`xlain text values, not hyperlinks, when using direct CSV/TSV export URLs.
+* Featured entries in the Layout Builder template now display with the intended styling.
+* Single Entry pages not rendering when search filter parameters were present in the URL.
+
+#### 🔧 Updated
+* [Foundation](https://www.gravitykit.com/foundation/) to version 1.4.0.
+
+#### 💻 Developer Updates
+* Added a `gv-template-{type}` class to the outer containers of Layout Builder, List, and Table templates, enabling easier custom JS and CSS targeting.
 
 = 2.46.1 on September 11, 2025 =
 

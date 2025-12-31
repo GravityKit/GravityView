@@ -63,10 +63,12 @@ class GravityView_Widget_Pagination_Info extends \GV\Widget {
 		/**
 		 * Modify the pagination widget output.
 		 *
-		 * @param string $output HTML output
-		 * @param int $first First entry #
-		 * @param int $last Last entry #
-		 * @param int $total Total entries #
+		 * @since 1.13.1
+		 *
+		 * @param string $output HTML output.
+		 * @param int    $first  First entry number.
+		 * @param int    $last   Last entry number.
+		 * @param int    $total  Total entries count.
 		 */
 		echo apply_filters( 'gravityview_pagination_output', $output, $first, $last, $total );
 	}

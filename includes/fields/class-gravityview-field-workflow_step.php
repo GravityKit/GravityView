@@ -32,7 +32,7 @@ class GravityView_Field_Workflow_Step extends GravityView_Field {
 
 		add_filter( 'gravityview_search_field_label', array( $this, 'modify_gravityview_search_field_step_label' ), 10, 3 );
 
-		add_filter( 'gravityview_field_entry_value_workflow_step', array( $this, 'modify_entry_value_workflow_step' ), 10, 4 );
+		add_filter( 'gravityview_field_entry_value_' . $this->name . '_pre_link', [ $this, 'modify_entry_value_workflow_step' ], 10, 4 );
 	}
 
 	/**

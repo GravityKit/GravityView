@@ -429,8 +429,11 @@ $gv-overlay-index: 10000;
 
 	&:hover .gv-view-types-hover,
 	&:focus-within .gv-view-types-hover,
-	&.active .gv-view-types-hover {
+	&.active .gv-view-types-hover,
+	& .gv-view-types-hover:focus-within {
 		display: block;
+		opacity: 1;
+		pointer-events: auto;
 	}
 
 	&.gv-selected {
@@ -500,13 +503,16 @@ $gv-overlay-index: 10000;
 
 
 .gv-view-types-hover {
-	display: none;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.15s ease-in-out;
 	background: rgba(0, 0, 0, .6);
 	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	height: 100%;
+	z-index: 10; // Ensure overlay is above the normal content
 
 	.gv-site-preview {
 		color: #fff;
@@ -548,6 +554,11 @@ $gv-overlay-index: 10000;
 		}
 	}
 
+}
+
+// Ensure Select button is always clickable for accessibility and automation tools
+.gv_select_template {
+	pointer-events: auto;
 }
 
 // Don't display the arrow toggle for collapsing the metabox

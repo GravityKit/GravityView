@@ -21,7 +21,7 @@ export default function ViewSelector( { viewId, isSidebar, onChange } ) {
 	const selectedView = views.filter( option => option.value === viewId ) || views[ 0 ];
 
 	return (
-		<BaseControl className={`view-selector ${viewId && isSidebar ? 'edit-view' :''}`} label={ labels.view }>
+		<BaseControl className={`view-selector ${viewId && isSidebar ? 'edit-view' :''}`} label={ labels.view } __nextHasNoMarginBottom>
 			<Select
 				aria-label={ labels.view }
 				placeholder={ labels.selectView }

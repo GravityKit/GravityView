@@ -144,14 +144,14 @@ class GravityView_Field_Checkbox extends GravityView_Field {
 		}
 
 		/**
-		 * Modify the separator used for CSV display of checkbox values
+		 * Modify the separator used for CSV display of checkbox values.
 		 *
 		 * @since 2.19
 		 *
-		 * @param string $separator The separator to use between values. Default: ', '
-		 * @param array $entry Gravity Forms entry array
-		 * @param GF_Field $field Gravity Forms field object
-		 * @param \GV\Template_Context $gravityview The template context
+		 * @param string               $separator   The separator to use between values. Default: ', '.
+		 * @param array                $entry       Gravity Forms entry array.
+		 * @param GF_Field             $field       Gravity Forms field object.
+		 * @param \GV\Template_Context $gravityview The template context.
 		 */
 		$separator = apply_filters( 'gravityview/field/checkbox/csv_separator', ', ', $entry, $field, $gravityview );
 

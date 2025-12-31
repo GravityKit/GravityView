@@ -103,11 +103,11 @@ class View_Collection extends Collection {
 			 * This is useful when using themes that store content that may contain shortcodes in custom post meta.
 			 *
 			 * @since 2.0
-			 * @since 2.0.7 Added $views parameter, passed by reference
+			 * @since 2.0.7 Added $views parameter, passed by reference.
 			 *
-			 * @param array $meta_keys Array of key values to check. If empty, do not check. Default: empty array
-			 * @param \WP_Post $post The post that is being checked
-			 * @param \GV\View_Collection $views The current View Collection object, passed as reference
+			 * @param array              $meta_keys Array of key values to check. If empty, do not check. Default: empty array.
+			 * @param \WP_Post           $post      The post that is being checked.
+			 * @param \GV\View_Collection $views    The current View Collection object, passed as reference.
 			 */
 			$meta_keys = apply_filters_ref_array( 'gravityview/view_collection/from_post/meta_keys', array( array(), $post, &$views ) );
 
@@ -123,6 +123,20 @@ class View_Collection extends Collection {
 				$views = self::merge_deep( $views, $post->{$meta_key} );
 			}
 		}
+
+		/**
+		 * Filters the View Collection processed from a WP_Post object.
+		 *
+		 * This allows code to add Views to the Collection that are not found by the default logic, or modify the View Collection before it is returned.
+		 * The GravityView Elementor Widget uses this filter to add Views to the Collection that are embedded in Elementor widgets.
+		 * This allows the widget support `?gvid` being properly handled when multiple Views are embedded in the same post.
+		 *
+		 * @since 2.48.2
+		 *
+		 * @param \GV\View_Collection $view_collection The View Collection.
+		 * @param \WP_Post $post The post.
+		 */
+		$views = apply_filters( 'gk/gravityview/view-collection/from-post/views', $views, $post );
 
 		return $views;
 	}

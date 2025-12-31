@@ -48,11 +48,11 @@ class GravityView_Edit_Entry_User_Registration {
     public function add_hooks() {
 
 	    /**
-	     * Choose whether to update user information via User Registration add-on when an entry is updated?
+	     * Choose whether to update user information via User Registration add-on when an entry is updated.
 	     *
 	     * @since 1.11
 	     *
-	     * @param boolean $boolean Whether to trigger update on user registration (default: true)
+	     * @param bool $trigger_update Whether to trigger update on user registration. Default: true.
 	     */
 	    if ( apply_filters( 'gravityview/edit_entry/user_registration/trigger_update', true ) ) {
 
@@ -168,10 +168,10 @@ class GravityView_Edit_Entry_User_Registration {
 	     *
 	     * @since 1.15
 	     *
-	     * @param boolean $preserve_role Preserve current user role Default: true.
-	     * @param array $config Gravity Forms User Registration feed configuration for the form.
-	     * @param array $form Gravity Forms form array.
-	     * @param array $entry Gravity Forms entry being edited.
+	     * @param bool  $preserve_role Preserve current user role. Default: true.
+	     * @param array $config        Gravity Forms User Registration feed configuration for the form.
+	     * @param array $form          Gravity Forms form array.
+	     * @param array $entry         Gravity Forms entry being edited.
 	     */
 	    $preserve_role = apply_filters( 'gravityview/edit_entry/user_registration/preserve_role', true, $config, $form, $entry );
 
@@ -192,9 +192,10 @@ class GravityView_Edit_Entry_User_Registration {
 	     * Modify the User Registration Addon feed configuration.
 	     *
 	     * @since 1.14
-	     * @param array $config Gravity Forms User Registration feed configuration for the form
-	     * @param array $form Gravity Forms form array
-	     * @param array $entry Gravity Forms entry being edited
+	     *
+	     * @param array $config Gravity Forms User Registration feed configuration for the form.
+	     * @param array $form   Gravity Forms form array.
+	     * @param array $entry  Gravity Forms entry being edited.
 	     */
 	    $config = apply_filters( 'gravityview/edit_entry/user_registration/config', $config, $form, $entry );
 
@@ -282,10 +283,12 @@ class GravityView_Edit_Entry_User_Registration {
 
         /**
 		 * Whether display names should be restored to before updating an entry.
-		 * Otherwise, display names will be reset to the format specified in Gravity Forms User Registration "Update" feed
+		 *
+		 * Otherwise, display names will be reset to the format specified in Gravity Forms User Registration "Update" feed.
 		 *
 		 * @since 1.14.4
-		 * @param boolean $restore_display_name Restore Display Name? Default: true
+		 *
+		 * @param bool $restore_display_name Restore Display Name? Default: true.
 		 */
         $restore_display_name = apply_filters( 'gravityview/edit_entry/restore_display_name', true );
 
@@ -320,13 +323,14 @@ class GravityView_Edit_Entry_User_Registration {
 	    unset( $restored_user->data->user_pass, $restored_user->user_pass );
 
         /**
-		 * Modify the user data after updated by Gravity Forms User Registration but before restored by GravityView
+		 * Modify the user data after updated by Gravity Forms User Registration but before restored by GravityView.
 		 *
 		 * @since 1.14
-		 * @param WP_User $restored_user The user with restored details about to be updated by wp_update_user()
-		 * @param WP_User $user_before_update The user before being updated by Gravity Forms User Registration
-		 * @param WP_User $user_after_update The user after being updated by Gravity Forms User Registration
-		 * @param array   $entry The Gravity Forms entry that was just updated
+		 *
+		 * @param WP_User $restored_user      The user with restored details about to be updated by wp_update_user().
+		 * @param WP_User $user_before_update The user before being updated by Gravity Forms User Registration.
+		 * @param WP_User $user_after_update  The user after being updated by Gravity Forms User Registration.
+		 * @param array   $entry              The Gravity Forms entry that was just updated.
 		 */
         $restored_user = apply_filters( 'gravityview/edit_entry/user_registration/restored_user', $restored_user, $this->_user_before_update, $user_after_update, $entry );
 
