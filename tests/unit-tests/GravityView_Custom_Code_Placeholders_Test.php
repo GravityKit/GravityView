@@ -5,6 +5,11 @@ defined( 'DOING_GRAVITYVIEW_TESTS' ) || exit;
 /**
  * Tests the custom code placeholder replacement functionality.
  *
+ * Placeholders:
+ * - `VIEW_ID`: Replaced with the View ID.
+ * - `GF_FORM_ID`: Replaced with the Gravity Forms form ID.
+ * - `VIEW_SELECTOR`: Replaced with `.gv-container.gv-container-{view_id}` for high-specificity CSS.
+ *
  * @group frontend
  * @group placeholders
  * @since $ver$
@@ -73,22 +78,11 @@ class GravityView_Custom_Code_Placeholders_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * @covers GravityView_frontend::replace_code_placeholders()
-	 */
-	public function test_view_anchor_id_placeholder_replacement() {
-		$form = $this->factory->form->create_and_get();
-		$_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
-		$view = \GV\View::from_post( $_view );
-
-		// When anchor_id is not set, it should default to gv-view-{id}-1.
-		$content = 'Anchor is VIEW_ANCHOR_ID';
-		$result = $this->replace_placeholders( $content, $view );
-
-		$expected_anchor = "gv-view-{$view->ID}-1";
-		$this->assertEquals( "Anchor is {$expected_anchor}", $result );
-	}
-
-	/**
+	 * Test VIEW_SELECTOR placeholder replacement.
+	 *
+	 * VIEW_SELECTOR is replaced with `.gv-container.gv-container-{view_id}` for
+	 * high-specificity CSS targeting without needing !important.
+	 *
 	 * @covers GravityView_frontend::replace_code_placeholders()
 	 */
 	public function test_view_id_selector_placeholder_replacement() {
@@ -96,30 +90,11 @@ class GravityView_Custom_Code_Placeholders_Test extends GV_UnitTestCase {
 		$_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view = \GV\View::from_post( $_view );
 
-		$content = 'Selector is VIEW_ID_SELECTOR';
+		$content = 'Selector is VIEW_SELECTOR';
 		$result = $this->replace_placeholders( $content, $view );
 
-		$expected_selector = "#gv-view-{$view->ID}-1";
+		$expected_selector = ".gv-container.gv-container-{$view->ID}";
 		$this->assertEquals( "Selector is {$expected_selector}", $result );
-	}
-
-	/**
-	 * @covers GravityView_frontend::replace_code_placeholders()
-	 */
-	public function test_anchor_id_with_set_anchor() {
-		$form = $this->factory->form->create_and_get();
-		$_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
-		$view = \GV\View::from_post( $_view );
-
-		// Simulate the anchor being set during rendering.
-		$view->set_anchor_id( 3 );
-
-		$content = 'Anchor is VIEW_ANCHOR_ID and selector is VIEW_ID_SELECTOR';
-		$result = $this->replace_placeholders( $content, $view );
-
-		$expected_anchor = "gv-view-{$view->ID}-3";
-		$this->assertStringContainsString( $expected_anchor, $result );
-		$this->assertStringContainsString( "#{$expected_anchor}", $result );
 	}
 
 	/**
@@ -134,11 +109,8 @@ class GravityView_Custom_Code_Placeholders_Test extends GV_UnitTestCase {
 .my-view-VIEW_ID {
     /* Form: GF_FORM_ID */
 }
-VIEW_ID_SELECTOR .entry {
+VIEW_SELECTOR .entry {
     color: red;
-}
-[data-anchor="VIEW_ANCHOR_ID"] {
-    display: block;
 }
 CSS;
 
@@ -146,8 +118,7 @@ CSS;
 
 		$this->assertStringContainsString( ".my-view-{$view->ID}", $result );
 		$this->assertStringContainsString( "/* Form: {$form['id']} */", $result );
-		$this->assertStringContainsString( "#gv-view-{$view->ID}-1 .entry", $result );
-		$this->assertStringContainsString( "[data-anchor=\"gv-view-{$view->ID}-1\"]", $result );
+		$this->assertStringContainsString( ".gv-container.gv-container-{$view->ID} .entry", $result );
 	}
 
 	/**
@@ -161,23 +132,24 @@ CSS;
 		$view = \GV\View::from_post( $_view );
 
 		// Lowercase should not be replaced.
-		$content = 'view_id gf_form_id view_anchor_id view_id_selector';
+		$content = 'view_id gf_form_id view_id_selector';
 		$result = $this->replace_placeholders( $content, $view );
 
 		$this->assertEquals( $content, $result, 'Lowercase placeholders should not be replaced' );
 
 		// Mixed case should not be replaced.
-		$content = 'View_Id GF_Form_ID View_Anchor_Id View_Id_Selector';
+		$content = 'View_Id GF_Form_ID View_Id_Selector';
 		$result = $this->replace_placeholders( $content, $view );
 
 		$this->assertEquals( $content, $result, 'Mixed case placeholders should not be replaced' );
 
 		// Only uppercase should be replaced.
-		$content = 'VIEW_ID GF_FORM_ID VIEW_ANCHOR_ID VIEW_ID_SELECTOR';
+		$content = 'VIEW_ID GF_FORM_ID VIEW_SELECTOR';
 		$result = $this->replace_placeholders( $content, $view );
 
 		$this->assertStringContainsString( (string) $view->ID, $result );
 		$this->assertStringContainsString( (string) $form['id'], $result );
+		$this->assertStringContainsString( ".gv-container.gv-container-{$view->ID}", $result );
 	}
 
 	/**
@@ -312,65 +284,36 @@ CSS;
 	/**
 	 * Test multiple Views on the same page have distinct placeholders.
 	 *
+	 * @group integration
 	 * @covers GravityView_frontend::replace_code_placeholders()
 	 */
 	public function test_multiple_views_on_page() {
 		// Create first View with first form.
-		$form1 = $this->factory->form->create_and_get();
+		$form1  = $this->factory->form->create_and_get();
 		$_view1 = $this->factory->view->create_and_get( array( 'form_id' => $form1['id'] ) );
-		$view1 = \GV\View::from_post( $_view1 );
-		$view1->set_anchor_id( 1 );
+		$view1  = \GV\View::from_post( $_view1 );
 
 		// Create second View with second form.
-		$form2 = $this->factory->form->create_and_get();
+		$form2  = $this->factory->form->create_and_get();
 		$_view2 = $this->factory->view->create_and_get( array( 'form_id' => $form2['id'] ) );
-		$view2 = \GV\View::from_post( $_view2 );
-		$view2->set_anchor_id( 2 );
+		$view2  = \GV\View::from_post( $_view2 );
 
-		$content = 'VIEW_ID GF_FORM_ID VIEW_ID_SELECTOR';
+		$content = 'VIEW_ID GF_FORM_ID VIEW_SELECTOR';
 
-		// Test View 1.
+		// View 1.
 		$result1 = $this->replace_placeholders( $content, $view1 );
 		$this->assertStringContainsString( (string) $view1->ID, $result1 );
 		$this->assertStringContainsString( (string) $form1['id'], $result1 );
-		$this->assertStringContainsString( "#gv-view-{$view1->ID}-1", $result1 );
+		$this->assertStringContainsString( ".gv-container.gv-container-{$view1->ID}", $result1 );
 
-		// Test View 2.
+		// View 2.
 		$result2 = $this->replace_placeholders( $content, $view2 );
 		$this->assertStringContainsString( (string) $view2->ID, $result2 );
 		$this->assertStringContainsString( (string) $form2['id'], $result2 );
-		$this->assertStringContainsString( "#gv-view-{$view2->ID}-2", $result2 );
+		$this->assertStringContainsString( ".gv-container.gv-container-{$view2->ID}", $result2 );
 
 		// Ensure View 1 and View 2 have different results.
 		$this->assertNotEquals( $result1, $result2 );
-	}
-
-	/**
-	 * Test same View embedded multiple times has different anchor IDs.
-	 *
-	 * @covers GravityView_frontend::replace_code_placeholders()
-	 */
-	public function test_same_view_multiple_instances() {
-		$form = $this->factory->form->create_and_get();
-		$_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
-		$view = \GV\View::from_post( $_view );
-
-		$content = 'VIEW_ID_SELECTOR';
-
-		// First instance.
-		$view->set_anchor_id( 1 );
-		$result1 = $this->replace_placeholders( $content, $view );
-		$this->assertEquals( "#gv-view-{$view->ID}-1", $result1 );
-
-		// Second instance.
-		$view->set_anchor_id( 2 );
-		$result2 = $this->replace_placeholders( $content, $view );
-		$this->assertEquals( "#gv-view-{$view->ID}-2", $result2 );
-
-		// Third instance.
-		$view->set_anchor_id( 3 );
-		$result3 = $this->replace_placeholders( $content, $view );
-		$this->assertEquals( "#gv-view-{$view->ID}-3", $result3 );
 	}
 
 	/**
@@ -387,8 +330,7 @@ CSS;
 (function($) {
     var viewId = VIEW_ID;
     var formId = GF_FORM_ID;
-    var selector = 'VIEW_ID_SELECTOR';
-    var anchorId = 'VIEW_ANCHOR_ID';
+    var selector = 'VIEW_SELECTOR';
 
     $(selector).on('click', '.entry', function() {
         console.log('View ' + viewId + ' clicked');
@@ -400,8 +342,7 @@ JS;
 
 		$this->assertStringContainsString( "var viewId = {$view->ID};", $result );
 		$this->assertStringContainsString( "var formId = {$form['id']};", $result );
-		$this->assertStringContainsString( "var selector = '#gv-view-{$view->ID}-1';", $result );
-		$this->assertStringContainsString( "var anchorId = 'gv-view-{$view->ID}-1';", $result );
+		$this->assertStringContainsString( "var selector = '.gv-container.gv-container-{$view->ID}';", $result );
 	}
 
 	/**
@@ -416,30 +357,25 @@ JS;
 
 		$content = <<<CSS
 /* Styles for View VIEW_ID connected to Form GF_FORM_ID */
-VIEW_ID_SELECTOR {
+VIEW_SELECTOR {
     background: #f5f5f5;
 }
 
-VIEW_ID_SELECTOR .gv-table-view {
+VIEW_SELECTOR .gv-table-view {
     border: 1px solid #ccc;
 }
 
-VIEW_ID_SELECTOR .gv-table-view th {
+VIEW_SELECTOR .gv-table-view th {
     background: #333;
     color: white;
-}
-
-[id="VIEW_ANCHOR_ID"] .entry-row:hover {
-    background: #e5e5e5;
 }
 CSS;
 
 		$result = $this->replace_placeholders( $content, $view );
 
 		$this->assertStringContainsString( "/* Styles for View {$view->ID} connected to Form {$form['id']} */", $result );
-		$this->assertStringContainsString( "#gv-view-{$view->ID}-1 {", $result );
-		$this->assertStringContainsString( "#gv-view-{$view->ID}-1 .gv-table-view {", $result );
-		$this->assertStringContainsString( "[id=\"gv-view-{$view->ID}-1\"]", $result );
+		$this->assertStringContainsString( ".gv-container.gv-container-{$view->ID} {", $result );
+		$this->assertStringContainsString( ".gv-container.gv-container-{$view->ID} .gv-table-view {", $result );
 	}
 
 	/**
@@ -461,9 +397,11 @@ CSS;
 	/**
 	 * Test that placeholders are replaced even when part of larger strings.
 	 *
-	 * Note: strtr() replaces all occurrences of placeholder strings, including
-	 * when they appear as substrings. This is expected behavior - users should
-	 * use unique variable names to avoid unintended replacements.
+	 * IMPORTANT: strtr() replaces all occurrences of placeholder strings,
+	 * including when they appear as substrings of other identifiers.
+	 *
+	 * Note: VIEW_SELECTOR is safe because strtr() processes longer keys first,
+	 * so VIEW_SELECTOR is replaced before VIEW_ID.
 	 *
 	 * @covers GravityView_frontend::replace_code_placeholders()
 	 */
@@ -521,9 +459,185 @@ CSS;
 		// Check default placeholders are present.
 		$this->assertArrayHasKey( 'VIEW_ID', $received_placeholders );
 		$this->assertArrayHasKey( 'GF_FORM_ID', $received_placeholders );
-		$this->assertArrayHasKey( 'VIEW_ANCHOR_ID', $received_placeholders );
-		$this->assertArrayHasKey( 'VIEW_ID_SELECTOR', $received_placeholders );
+		$this->assertArrayHasKey( 'VIEW_SELECTOR', $received_placeholders );
 
 		remove_all_filters( 'gk/gravityview/custom-code/placeholders' );
+	}
+
+	// =========================================================================
+	// Integration Tests - Verify actual WordPress hook flow
+	// =========================================================================
+
+	/**
+	 * Reset the GravityView context for integration tests.
+	 */
+	private function reset_gv_context() {
+		\GV\Mocks\Legacy_Context::reset();
+		gravityview()->request = new \GV\Frontend_Request();
+		\GV\View::_flush_cache();
+	}
+
+	/**
+	 * Test that custom CSS is enqueued with placeholders replaced.
+	 *
+	 * @group integration
+	 * @covers GravityView_frontend::add_scripts_and_styles()
+	 */
+	public function test_custom_css_enqueued_with_placeholders_replaced() {
+		$this->reset_gv_context();
+
+		$form  = $this->factory->form->create_and_get();
+		$_view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'custom_css' => '.view-VIEW_ID { color: red; } /* View VIEW_ID, Form GF_FORM_ID */',
+			),
+		) );
+		$view = \GV\View::by_id( $_view->ID );
+
+		// Create a View_Collection and add the view.
+		$views = new \GV\View_Collection();
+		$views->add( $view );
+
+		// Push the views into the legacy context.
+		\GV\Mocks\Legacy_Context::push( array(
+			'views' => $views,
+			'post'  => $_view,
+			'view'  => $view,
+		) );
+
+		// Set up mock request.
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		// NOTE: We intentionally do NOT pre-register the style handle here.
+		// The add_scripts_and_styles() method must call enqueue_default_style()
+		// BEFORE wp_add_inline_style() to ensure the handle exists.
+		// This test will fail if the order is wrong.
+
+		// Simulate wp_enqueue_scripts hook.
+		$fe = GravityView_frontend::getInstance();
+		$fe->add_scripts_and_styles();
+
+		// Verify the style was registered by add_scripts_and_styles().
+		global $wp_styles;
+		$this->assertTrue(
+			isset( $wp_styles->registered['gravityview_default_style'] ),
+			'gravityview_default_style should be registered by add_scripts_and_styles()'
+		);
+
+		// Get the inline styles that were added.
+		$inline_css = '';
+		$style = $wp_styles->registered['gravityview_default_style'];
+		if ( ! empty( $style->extra['after'] ) ) {
+			$inline_css = implode( "\n", $style->extra['after'] );
+		}
+
+		// Verify inline CSS was attached (this fails if wp_add_inline_style is called before registration).
+		$this->assertNotEmpty( $inline_css, 'Inline CSS should be attached to the style handle' );
+
+		// Verify placeholders were replaced.
+		$this->assertStringContainsString( ".view-{$view->ID}", $inline_css, 'VIEW_ID should be replaced' );
+		$this->assertStringContainsString( "View {$view->ID}", $inline_css, 'VIEW_ID in comment should be replaced' );
+		$this->assertStringContainsString( "Form {$form['id']}", $inline_css, 'GF_FORM_ID should be replaced' );
+
+		// Original placeholders should not exist.
+		$this->assertStringNotContainsString( 'VIEW_ID', $inline_css );
+		$this->assertStringNotContainsString( 'GF_FORM_ID', $inline_css );
+
+		// Clean up.
+		wp_deregister_style( 'gravityview_default_style' );
+		$this->reset_gv_context();
+	}
+
+	/**
+	 * Test that custom JavaScript is enqueued with placeholder replacement.
+	 *
+	 * @group integration
+	 * @covers GravityView_frontend::add_scripts_and_styles()
+	 */
+	public function test_custom_javascript_enqueued_with_placeholders_replaced() {
+		$this->reset_gv_context();
+
+		$form  = $this->factory->form->create_and_get();
+		$_view = $this->factory->view->create_and_get( array(
+			'form_id' => $form['id'],
+			'settings' => array(
+				'custom_javascript' => 'console.log("View ID:", VIEW_ID, "Form ID:", GF_FORM_ID);',
+			),
+		) );
+		$view = \GV\View::by_id( $_view->ID );
+
+		// Create a View_Collection and add the view.
+		$views = new \GV\View_Collection();
+		$views->add( $view );
+
+		// Push the views into the legacy context.
+		\GV\Mocks\Legacy_Context::push( array(
+			'views' => $views,
+			'post'  => $_view,
+			'view'  => $view,
+		) );
+
+		// Set up mock request.
+		gravityview()->request = new \GV\Mock_Request();
+		gravityview()->request->returns['is_view'] = $view;
+
+		// NOTE: Unlike the CSS test, we DO need to pre-register the script handle.
+		// The gravityview-fe-view script is registered in a separate WordPress hook
+		// (wp_register_scripts), not within add_scripts_and_styles() itself.
+		// This matches the real WordPress hook sequence.
+		wp_register_script( 'gravityview-fe-view', false );
+
+		// Simulate wp_enqueue_scripts hook.
+		$fe = GravityView_frontend::getInstance();
+		$fe->add_scripts_and_styles();
+
+		// Get the inline scripts that were added.
+		global $wp_scripts;
+		$inline_js = '';
+		if ( isset( $wp_scripts->registered['gravityview-fe-view'] ) ) {
+			$script = $wp_scripts->registered['gravityview-fe-view'];
+			if ( ! empty( $script->extra['after'] ) ) {
+				$inline_js = implode( "\n", $script->extra['after'] );
+			}
+		}
+
+		// Verify placeholders were replaced.
+		$this->assertStringContainsString( "View ID:\", {$view->ID}", $inline_js, 'VIEW_ID should be replaced' );
+		$this->assertStringContainsString( "Form ID:\", {$form['id']}", $inline_js, 'GF_FORM_ID should be replaced' );
+
+		// Original placeholders should not exist.
+		$this->assertStringNotContainsString( 'VIEW_ID,', $inline_js );
+
+		// Clean up.
+		wp_deregister_script( 'gravityview-fe-view' );
+		$this->reset_gv_context();
+	}
+
+	/**
+	 * Test that VIEW_SELECTOR provides high-specificity CSS selector.
+	 *
+	 * VIEW_SELECTOR outputs `.gv-container.gv-container-{view_id}` which has
+	 * higher specificity than a single class, reducing the need for !important.
+	 *
+	 * @group integration
+	 * @covers GravityView_frontend::replace_code_placeholders()
+	 */
+	public function test_view_id_selector_provides_high_specificity() {
+		$form = $this->factory->form->create_and_get();
+		$_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
+		$view = \GV\View::from_post( $_view );
+
+		$content = 'VIEW_SELECTOR { color: red; }';
+		$result = $this->replace_placeholders( $content, $view );
+
+		// Should output double-class selector for high specificity.
+		$expected = ".gv-container.gv-container-{$view->ID} { color: red; }";
+		$this->assertEquals( $expected, $result );
+
+		// The selector should match the actual container class output by gv_container_class().
+		// This ensures CSS targeting works correctly.
+		$this->assertStringContainsString( 'gv-container', $result, 'Selector should include gv-container class' );
 	}
 }
