@@ -111,7 +111,7 @@ class Integration {
 		wp_enqueue_script(
 			'gk-gravityview-divi-vb',
 			plugins_url( 'build/bundle.min.js', __FILE__ ),
-			[ 'react', 'react-dom', 'et-frontend-builder' ],
+			[ 'jquery', 'react', 'react-dom', 'et-frontend-builder' ],
 			filemtime( $build_path ),
 			true
 		);

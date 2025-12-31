@@ -598,27 +598,37 @@ class GravityView_ShortcodeRenderer_Test extends GV_UnitTestCase {
 	}
 
 	/**
-	 * Tests handling of array values for multi-sort.
+	 * Tests handling of array values for multi-sort in format_atts_string.
 	 *
-	 * @covers GravityKit\GravityView\Shortcodes\ShortcodeRenderer::build_from_view_settings
+	 * Array values should produce numbered attributes:
+	 * ['ASC', 'DESC'] → sort_direction="ASC" sort_direction_2="DESC"
+	 *
+	 * @covers GravityKit\GravityView\Shortcodes\ShortcodeRenderer::format_atts_string
 	 */
-	public function test_build_from_view_settings_array_values_multi_sort() {
-		$view = $this->factory->view->create_and_get();
-		$view = \GV\View::from_post( $view );
+	public function test_format_atts_string_array_values_multi_sort() {
+		// Test array handling with multi-sort values.
+		$atts = [
+			'id'             => 123,
+			'sort_field'     => [ 'date_created', '5', '10' ],
+			'sort_direction' => [ 'ASC', 'DESC' ],
+		];
 
-		// Mock settings with array values directly.
-		// We need to mock the convert_settings_to_shortcode_atts to return array values.
-		// Instead, let's test the array handling in build_from_view_settings by using a mock.
-		// Actually, the function calls convert_settings_to_shortcode_atts internally.
-		// For this test, we can verify the output format matches expectation.
+		$result = ShortcodeRenderer::format_atts_string( $atts );
 
-		$settings = [];
+		// First sort_field should have no suffix.
+		$this->assertStringContainsString( 'sort_field="date_created"', $result );
+		// Second sort_field should have _2 suffix.
+		$this->assertStringContainsString( 'sort_field_2="5"', $result );
+		// Third sort_field should have _3 suffix.
+		$this->assertStringContainsString( 'sort_field_3="10"', $result );
 
-		$result = ShortcodeRenderer::build_from_view_settings( $settings, $view );
+		// First sort_direction should have no suffix.
+		$this->assertStringContainsString( 'sort_direction="ASC"', $result );
+		// Second sort_direction should have _2 suffix.
+		$this->assertStringContainsString( 'sort_direction_2="DESC"', $result );
 
-		// Basic verification that it produces valid shortcode.
-		$this->assertStringStartsWith( '[gravityview', $result );
-		$this->assertStringEndsWith( ']', $result );
+		// Verify ID is included as a scalar.
+		$this->assertStringContainsString( 'id="123"', $result );
 	}
 
 	/**
