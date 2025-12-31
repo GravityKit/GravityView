@@ -32,7 +32,7 @@ test('File type validation during entry edit', async ({ page }, testInfo) => {
   const validImagePath = getTestImagePath('wind.jpg');
   await fileInput.setInputFiles(validImagePath);
 
-  await expect(page.getByText(/wind\.jpg/i)).toBeVisible();
+  await expect(page.getByText('wind.jpg', { exact: true })).toBeVisible();
 
   await page.getByLabel('Name(Required)').fill('');
 
