@@ -1429,8 +1429,14 @@ HTML;
 			return;
 		}
 
-		echo '<div class="gv-grid-row-actions">';
-		$actions = '<button type="button" class="gv-grid-row-action gv-grid-row-handle" tabindex="-1" aria-label="' . esc_attr__( 'Drag to reorder row', 'gk-gravityview' ) . '">
+		echo '<div class="gv-grid-row-actions" role="group" aria-label="' . esc_attr__( 'Row actions', 'gk-gravityview' ) . '">';
+		$actions = '<button type="button" class="gv-grid-row-action gv-grid-row-move-up" aria-label="' . esc_attr__( 'Move row up', 'gk-gravityview' ) . '">
+				<span class="dashicons dashicons-arrow-up-alt2"></span>
+			</button>
+			<button type="button" class="gv-grid-row-action gv-grid-row-move-down" aria-label="' . esc_attr__( 'Move row down', 'gk-gravityview' ) . '">
+				<span class="dashicons dashicons-arrow-down-alt2"></span>
+			</button>
+			<button type="button" class="gv-grid-row-action gv-grid-row-handle" aria-label="' . esc_attr__( 'Drag to reorder row', 'gk-gravityview' ) . '">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<rect x="8" y="4.99988" width="2" height="2" fill="currentColor"/>
 					<rect x="8" y="10.9999" width="2" height="2" fill="currentColor"/>
@@ -1440,7 +1446,7 @@ HTML;
 					<rect x="14" y="16.9999" width="2" height="2" fill="currentColor"/>
 				</svg>
 			</button>
-			<button type="button" class="gv-grid-row-action gv-grid-row-delete" tabindex="-1" data-confirm="' . esc_attr__(
+			<button type="button" class="gv-grid-row-action gv-grid-row-delete" data-confirm="' . esc_attr__(
 				'Are you sure you want to delete the entire row?',
 				'gk-gravityview'
 			) . '" aria-label="' . esc_attr__( 'Delete row', 'gk-gravityview' ) . '">

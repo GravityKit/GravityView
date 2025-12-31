@@ -189,6 +189,16 @@ $gv-overlay-index: 10000;
 		}
 	}
 
+	.gv-grid-row-move-up,
+	.gv-grid-row-move-down {
+		// Hidden by default; JavaScript controls visibility based on position
+		display: none;
+
+		&[aria-hidden="false"] {
+			display: flex;
+		}
+	}
+
 	.grid-row-placeholder {
 		background: rgba(99, 109, 119, .2);
 		border-radius: 3px;

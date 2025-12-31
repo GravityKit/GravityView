@@ -3641,33 +3641,46 @@
 		   var $focused = $(document.activeElement);
 		   var hadFocusInside = $.contains($field[0], $focused[0]);
 
-		   if (delta < 0) {
-			   $field.prev('.gv-fields').before($field);
-		   } else {
-			   $field.next('.gv-fields').after($field);
+		   try {
+			   if (delta < 0) {
+				   $field.prev('.gv-fields').before($field);
+			   } else {
+				   $field.next('.gv-fields').after($field);
+			   }
+		   } catch (e) {
+			   // DOM manipulation failed - field structure may be unexpected
+			   return;
 		   }
 
 		   vcfg.setUnsavedChanges(true);
 
 		   // Defer updates and focus to next tick to ensure DOM settled
 		   setTimeout(function() {
-			   // Ensure :focus-within for visibility of reorder controls
-			   vcfg.focusFieldContainer($field);
-			   vcfg.updateReorderButtons($field);
-			   vcfg.announceFieldMove($field);
+			   try {
+				   // Ensure :focus-within for visibility of reorder controls
+				   vcfg.focusFieldContainer($field);
+				   vcfg.updateReorderButtons($field);
+				   vcfg.announceFieldMove($field);
 
-			   // Prefer re-focusing the exact button used if still visible
-			   if ($usedBtn && $usedBtn.length && $usedBtn.is(':visible')) {
-				   vcfg.ensureFocus($usedBtn);
-			   } else if (!vcfg.focusReorderControl($field, preferred)) {
-				   if (hadFocusInside && $focused && $focused.length && $.contains($field[0], $focused[0])) {
-					   vcfg.ensureFocus($focused);
-				   } else {
-					   var $t = $field.find('.gv-move-up:visible, .gv-move-down:visible, button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])').filter(':visible').first();
-					   if ($t.length) {
-						   vcfg.ensureFocus($t);
+				   // Focus restoration with fallbacks:
+				   // 1. Try the exact button that was used (if still visible)
+				   // 2. Try the preferred direction's button (up or down)
+				   // 3. Try the original focused element (if still inside field)
+				   // 4. Fall back to first focusable element in field
+				   if ($usedBtn && $usedBtn.length && $usedBtn.is(':visible')) {
+					   vcfg.ensureFocus($usedBtn);
+				   } else if (!vcfg.focusReorderControl($field, preferred)) {
+					   if (hadFocusInside && $focused && $focused.length && $.contains($field[0], $focused[0])) {
+						   vcfg.ensureFocus($focused);
+					   } else {
+						   var $t = $field.find('.gv-move-up:visible, .gv-move-down:visible, button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])').filter(':visible').first();
+						   if ($t.length) {
+							   vcfg.ensureFocus($t);
+						   }
 					   }
 				   }
+			   } catch (e) {
+				   // Focus management failed - silent failure is acceptable
 			   }
 		   }, 0);
 	   }
