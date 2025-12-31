@@ -69,9 +69,10 @@
 			} );
 		} );
 
-		// Handle keyboard events for grid row actions
-		$( document ).on( 'keydown', '.gv-grid-row-action', function ( e ) {
-			// Trigger click on Enter or Space key
+		// Handle keyboard events for non-button grid row actions
+		$( document ).on( 'keydown', '.gv-grid-row-action:not(button)', function ( e ) {
+			// Trigger click on Enter or Space key for non-button elements only.
+			// Native buttons already handle keyboard activation.
 			if ( e.key === 'Enter' || e.key === ' ' ) {
 				e.preventDefault();
 				$( this ).trigger( 'click' );
@@ -107,6 +108,7 @@
 							.removeClass( 'open' )
 							.find( '.gv-toggle' )
 								.attr( 'aria-expanded', false )
+							.end()
 							.find( 'button' )
 								.attr( 'tabindex', '-1' );
 					} )
