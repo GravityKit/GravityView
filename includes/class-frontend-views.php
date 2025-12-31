@@ -1882,9 +1882,10 @@ class GravityView_frontend {
 		$view_id        = $view->ID;
 		$view_anchor_id = $view->get_anchor_id();
 
-		// If anchor_id is not set, generate a fallback using the View ID.
+		// If anchor_id is not set (scripts enqueue before View renders), use the View ID format.
+		// Note: This won't include the counter suffix, so it matches the first instance only.
 		if ( empty( $view_anchor_id ) ) {
-			$view_anchor_id = 'gv-view-' . $view_id;
+			$view_anchor_id = sprintf( 'gv-view-%d-1', $view_id );
 		}
 
 		$placeholders = array(
