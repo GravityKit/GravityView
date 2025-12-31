@@ -170,12 +170,15 @@ test.describe('Search Bar Widget Summary', () => {
 		await page.waitForSelector('.gv-dialog-options');
 
 		// Remove all fields - keep clicking remove until none are left
-		let fieldRows = page.locator('.gv-search-field-row');
-		while ((await fieldRows.count()) > 0) {
-			// Click the first remove button
+		const fieldRows = page.locator('.gv-search-field-row');
+		const maxIterations = 10;
+		let iterations = 0;
+		while ((await fieldRows.count()) > 0 && iterations < maxIterations) {
+			const currentCount = await fieldRows.count();
 			await fieldRows.first().getByRole('button', { name: /Remove/ }).click();
-			// Brief wait for DOM update
-			await page.waitForTimeout(100);
+			// Wait for the count to decrease (deterministic)
+			await expect(fieldRows).toHaveCount(currentCount - 1);
+			iterations++;
 		}
 
 		await clickFirstVisible(page, page.getByRole('button', { name: /Close/ }));
