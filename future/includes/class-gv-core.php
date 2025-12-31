@@ -239,8 +239,20 @@ final class Core {
 		/** Magic. */
 		require_once $this->plugin->dir( 'future/includes/class-gv-wrappers.php' );
 
+		/** Shortcode Renderer (shared by all page builders). */
+		require_once $this->plugin->dir( 'future/includes/shortcodes/class-shortcode-renderer.php' );
+
 		/** Gutenberg Blocks. */
 		require_once $this->plugin->dir( 'future/includes/gutenberg/class-gv-gutenberg-blocks.php' );
+
+		/** Elementor Widget. */
+		require_once $this->plugin->dir( 'future/includes/elementor/class-elementor-integration.php' );
+
+		/** Divi Module. */
+		require_once $this->plugin->dir( 'future/includes/divi/class-divi-integration.php' );
+
+		/** Beaver Builder Module. */
+		require_once $this->plugin->dir( 'future/includes/beaver-builder/class-beaver-builder-integration.php' );
 
 		require_once $this->plugin->dir( 'includes/class-gravityview-powered-by.php' );
 

@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Build artifacts (keep bundle.min.js for distribution)
+# build/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Lock files (optional - uncomment if you want to ignore)
+# package-lock.json
+# yarn.lock

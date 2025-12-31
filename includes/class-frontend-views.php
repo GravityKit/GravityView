@@ -1560,8 +1560,13 @@ class GravityView_frontend {
 			$views = $this->getGvOutputData()->get_views();
 
 			foreach ( $views as $view_id => $data ) {
-				$view        = \GV\View::by_id( $data['id'] );
-				$data        = $view->as_data();
+				$view = \GV\View::by_id( $data['id'] );
+
+				if ( ! $view ) {
+					continue;
+				}
+
+				$data = $view->as_data();
 				$template_id = $this->single_entry
 					? gravityview_get_single_entry_template_id( $view->ID )
 					: gravityview_get_directory_entries_template_id( $view->ID );
