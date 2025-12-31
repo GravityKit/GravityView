@@ -1429,8 +1429,14 @@ HTML;
 			return;
 		}
 
-		echo '<div class="gv-grid-row-actions">';
-		$actions = '<div class="gv-grid-row-action gv-grid-row-handle">
+		echo '<div class="gv-grid-row-actions" role="group" aria-label="' . esc_attr__( 'Row actions', 'gk-gravityview' ) . '">';
+		$actions = '<button type="button" class="gv-grid-row-action gv-grid-row-move-up" aria-label="' . esc_attr__( 'Move row up', 'gk-gravityview' ) . '">
+				<span class="dashicons dashicons-arrow-up-alt2"></span>
+			</button>
+			<button type="button" class="gv-grid-row-action gv-grid-row-move-down" aria-label="' . esc_attr__( 'Move row down', 'gk-gravityview' ) . '">
+				<span class="dashicons dashicons-arrow-down-alt2"></span>
+			</button>
+			<button type="button" class="gv-grid-row-action gv-grid-row-handle" aria-label="' . esc_attr__( 'Drag to reorder row', 'gk-gravityview' ) . '">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<rect x="8" y="4.99988" width="2" height="2" fill="currentColor"/>
 					<rect x="8" y="10.9999" width="2" height="2" fill="currentColor"/>
@@ -1439,17 +1445,17 @@ HTML;
 					<rect x="14" y="10.9999" width="2" height="2" fill="currentColor"/>
 					<rect x="14" y="16.9999" width="2" height="2" fill="currentColor"/>
 				</svg>
-			</div>
-			<div class="gv-grid-row-action gv-grid-row-delete" data-confirm="' . esc_attr__(
+			</button>
+			<button type="button" class="gv-grid-row-action gv-grid-row-delete" data-confirm="' . esc_attr__(
 				'Are you sure you want to delete the entire row?',
 				'gk-gravityview'
-			) . '">
+			) . '" aria-label="' . esc_attr__( 'Delete row', 'gk-gravityview' ) . '">
 				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M6.33755 7.17057C6.23321 6.47927 6.76848 5.85714 7.46761 5.85714H16.5328C17.2319 5.85714 17.7672 6.47927 17.6629 7.17058L15.9809 18.3134C15.8966 18.8724 15.4162 19.2857 14.8509 19.2857H9.14955C8.58424 19.2857 8.10387 18.8724 8.01949 18.3134L6.33755 7.17057Z" stroke="currentColor" stroke-width="1.71429"/>
 					<rect x="4" y="5" width="16" height="2" fill="currentColor"/>
 					<path d="M14.2858 5C14.2858 5 13.2624 5 12.0001 5C10.7377 5 9.71436 5 9.71436 5C9.71436 3.73763 10.7377 2.71429 12.0001 2.71429C13.2624 2.71429 14.2858 3.73763 14.2858 5Z" fill="currentColor"/>
 				</svg>
-			</div>';
+			</button>';
 
 		/**
 		 * Modifies the actions rendered in the View editor.
@@ -2073,6 +2079,10 @@ HTML;
 					'gk-gravityview' ),
 				'discard_unsaved_changes'     => __( 'You have unsaved changes. Continuing will discard them. Are you sure you want to proceed?',
 					'gk-gravityview' ),
+				/* translators: 1: current position number, 2: total number of fields */
+				'field_moved_to_position'     => __( 'Moved to position %1$s of %2$s.', 'gk-gravityview' ),
+				/* translators: 1: current position number, 2: total number of rows */
+				'row_moved_to_position'       => __( 'Row moved to position %1$s of %2$s.', 'gk-gravityview' ),
 				'foundation_licenses_router'  => array_merge(
 					GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
 					[

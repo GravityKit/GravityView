@@ -93,7 +93,8 @@ $gv-overlay-index: 10000;
 		position: relative;
 		background-color: #FFF;
 
-		&:hover {
+		&:hover,
+		&:focus-within {
 			> .gv-grid-row-actions {
 				display: flex;
 			}
@@ -160,13 +161,23 @@ $gv-overlay-index: 10000;
 		justify-content: center;
 		align-items: center;
 		cursor: pointer;
+		background: none;
+		border: none;
+		color: inherit;
+		font: inherit;
 
 		& + .gv-grid-row-action {
 			border-left: 1px solid #D5D7E9;
 		}
 
-		&:hover {
+		&:hover,
+		&:focus {
 			color: $color-blue-50;
+			outline: none;
+		}
+
+		&:focus {
+			box-shadow: inset 0 0 0 2px $color-blue-50;
 		}
 	}
 
@@ -175,6 +186,16 @@ $gv-overlay-index: 10000;
 
 		&:active {
 			cursor: grabbing;
+		}
+	}
+
+	.gv-grid-row-move-up,
+	.gv-grid-row-move-down {
+		// Hidden by default; JavaScript controls visibility based on position
+		display: none;
+
+		&[aria-hidden="false"] {
+			display: flex;
 		}
 	}
 
@@ -417,8 +438,10 @@ $gv-overlay-index: 10000;
 	}
 
 	&:hover .gv-view-types-hover,
+	&:focus-within .gv-view-types-hover,
 	&.active .gv-view-types-hover,
 	& .gv-view-types-hover:focus-within {
+		display: block;
 		opacity: 1;
 		pointer-events: auto;
 	}
@@ -1553,6 +1576,7 @@ hr {
 		}
 	}
 
+	&:focus-within,
 	&:hover {
 		border-color: $color-888;
 
@@ -1616,7 +1640,6 @@ hr {
 	}
 
 	.gv-field-controls button {
-
 		@extend .gv-reset-button-style;
 
 		border-left: 1px solid transparent;
@@ -1640,7 +1663,8 @@ hr {
 
 		&:hover,
 		&:active,
-		&.active {
+		&.active,
+		&:focus {
 			background: #fefefe;
 			box-shadow: 0 0 2px $color-ddd;
 
@@ -1716,6 +1740,52 @@ hr {
 				line-height: 20px;
 				cursor: default;
 			}
+
+			&:focus-visible,
+			&:focus-within {
+				outline: 5px auto $color-blue-tint-75;
+				outline-offset: -2px;
+			}
+		}
+	}
+
+	// Accessible keyboard-only reorder controls inside field controls
+	.gv-field-controls {
+		.gv-field-reorder {
+			display: none;
+
+			button {
+				border: 1px solid #D5D7E9;
+				background: #fff;
+				border-radius: 3px;
+				padding: 2px 4px;
+				line-height: 1;
+				cursor: pointer;
+
+				.dashicons {
+					font-size: 14px;
+					line-height: 14px;
+					width: 14px;
+					height: 14px;
+				}
+
+				&:hover {
+					background: #f6f7f7;
+					border-color: #C3C4C7;
+				}
+
+				&:disabled,
+				&[aria-disabled=true] {
+					opacity: .5;
+					cursor: default;
+				}
+			}
+		}
+	}
+
+	&:focus-within {
+		.gv-field-reorder {
+			display: inline-flex;
 		}
 	}
 
