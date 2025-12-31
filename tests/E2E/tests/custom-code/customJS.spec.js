@@ -28,7 +28,7 @@ test('Verify Custom JS is executed correctly on front end', async ({ page }, tes
 		await customCodeLink.click();
 
 		const jsEditor = page.locator(
-			'#gravityview_advanced tbody tr:nth-of-type(2) .CodeMirror-activeline'
+			'#gravityview_advanced tbody tr:nth-of-type(3) .CodeMirror-activeline'
 		);
 		await jsEditor.fill('document.body.setAttribute("data-test", "custom-js-applied");');
 	});
