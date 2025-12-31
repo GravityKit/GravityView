@@ -28,6 +28,12 @@ This release improves error messaging for administrators, addresses a performanc
 #### ✨ Improved
 * Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
 
+#### 🚀 Added
+* Search Bar widgets now display a live-updating configuration summary in the View editor, showing field count and search mode at a glance without opening the settings dialog.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/admin/widget-info` filter to allow widgets to add custom summary information in the View editor.
+
 #### 🐛 Fixed
 * JavaScript error breaking Edit Entry functionality when forms use conditional logic on buttons.
 * Unnecessary database queries running on every page load when GravityView caching was disabled, potentially causing performance issues.

@@ -1727,10 +1727,35 @@ hr {
 		// In the zones, don't display the field info;
 		// that's being handled by tooltips
 		display: none;
+
+		// Show the Search Bar widget summary in the zones
+		&:has(.gv-search-widget-summary) {
+			display: inline;
+			margin-left: 0.5em;
+			font-size: 0.85em;
+			font-weight: normal;
+			color: #636D77;
+
+			.gv-search-widget-summary::before {
+				content: "·";
+				margin-right: 0.5em;
+			}
+		}
 		text-align: left;
 
 		html[dir=rtl] & {
 			text-align: right;
+
+			// Mirror Search Bar widget summary spacing for RTL
+			&:has(.gv-search-widget-summary) {
+				margin-left: 0;
+				margin-right: 0.5em;
+
+				.gv-search-widget-summary::before {
+					margin-right: 0;
+					margin-left: 0.5em;
+				}
+			}
 		}
 
 		line-height: 1.25em;

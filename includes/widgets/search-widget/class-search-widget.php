@@ -103,6 +103,8 @@ class GravityView_Widget_Search extends \GV\Widget {
 			add_action( 'gk/gravityview/admin-views/row/after', [ $this, 'render_area_settings' ], 10, 5 );
 			add_action( 'gk/gravityview/admin-views/area/actions', [ $this, 'add_search_area_settings_button' ], 10, 6 );
 			add_filter( 'gravityview_template_area_options', [ $this, 'add_search_area_settings' ], 10, 3 );
+
+			add_filter( 'gk/gravityview/admin/widget-info', [ $this, 'add_widget_summary_info' ], 10, 4 );
 		}
 
 		parent::__construct( esc_html__( 'Search Bar', 'gk-gravityview' ), null, [], $settings );
@@ -312,11 +314,12 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		$script_min    = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 		$script_source = empty( $script_min ) ? '/source' : '';
+		$script_path   = plugin_dir_path( __FILE__ ) . 'assets/js' . $script_source . '/admin-search-widget' . $script_min . '.js';
 
 		wp_enqueue_script( 'gravityview_searchwidget_admin',
 			plugins_url( 'assets/js' . $script_source . '/admin-search-widget' . $script_min . '.js', __FILE__ ),
 			[ 'jquery', 'gravityview_views_scripts' ],
-			\GV\Plugin::$version );
+			filemtime( $script_path ) );
 
 		wp_localize_script(
 			'gravityview_searchwidget_admin',
@@ -332,6 +335,26 @@ class GravityView_Widget_Search extends \GV\Widget {
 					'gk-gravityview' ),
 				'input_labels'      => json_encode( self::get_search_input_labels() ),
 				'input_types'       => json_encode( self::get_input_types_by_field_type() ),
+			]
+		);
+
+		wp_localize_script(
+			'gravityview_searchwidget_admin',
+			'gvSearchWidgetText',
+			[
+				'global_search'             => esc_html__( 'Global search', 'gk-gravityview' ),
+				'global_search_plus_field'  => esc_html__( 'Global search +%d field', 'gk-gravityview' ),
+				'global_search_plus_fields' => esc_html__( 'Global search +%d fields', 'gk-gravityview' ),
+				'one_field'                 => esc_html__( '%d field', 'gk-gravityview' ),
+				'n_fields'                  => esc_html__( '%d fields', 'gk-gravityview' ),
+				'matches_all'               => esc_html__( 'Matches All', 'gk-gravityview' ),
+				'matches_any'               => esc_html__( 'Matches Any', 'gk-gravityview' ),
+				'advanced'                  => esc_html__( 'Advanced', 'gk-gravityview' ),
+				'separator'                 => esc_html_x( ' • ', 'Separator between search bar summary items', 'gk-gravityview' ),
+				'is_rtl'                    => is_rtl(),
+				// translators: %s is the search bar summary (e.g., "3 fields • Matches Any").
+				'search_bar_config_label'   => esc_html__( 'Search Bar configuration: %s', 'gk-gravityview' ),
+				'needs_configuration'       => esc_html__( '⚠️ Needs configuration', 'gk-gravityview' ),
 			]
 		);
 	}
@@ -2627,6 +2650,43 @@ class GravityView_Widget_Search extends \GV\Widget {
 
 		// Reset areas for next rendering.
 		$this->area_settings = [];
+	}
+
+	/**
+	 * Adds summary information placeholder to the Search Bar widget in the admin.
+	 *
+	 * The actual summary is generated dynamically by JavaScript to ensure real-time
+	 * updates when fields are added/removed. This method just provides the placeholder
+	 * element that JS will populate.
+	 *
+	 * @since TODO
+	 *
+	 * @param array  $field_info_items The current info items.
+	 * @param string $widget_id        The widget ID.
+	 * @param array  $settings         The widget settings.
+	 * @param array  $item             The widget item data.
+	 *
+	 * @return array The modified info items.
+	 */
+	public function add_widget_summary_info( array $field_info_items, string $widget_id, array $settings, array $item ): array {
+		if ( 'search_bar' !== $widget_id ) {
+			return $field_info_items;
+		}
+
+		// If $settings is empty, this is a picker widget (not yet added to the View).
+		// Keep the original description for picker widgets.
+		if ( empty( $settings ) ) {
+			return $field_info_items;
+		}
+
+		// Return an empty placeholder element - JS will populate the summary dynamically.
+		// This ensures real-time updates when fields are added/removed in the dialog.
+		return [
+			[
+				'value' => '',
+				'class' => 'gv-search-widget-summary',
+			],
+		];
 	}
 
 } // end class

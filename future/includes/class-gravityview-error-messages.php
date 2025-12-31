@@ -162,14 +162,14 @@ class GravityView_Error_Messages {
 		switch ( $error_code ) {
 			case 'embed_only':
 				return strtr(
-					// translators: %1$s is the action link, %2$s is the learn more link
+					// translators: [action]...[/action] wraps the edit link, [learn]...[/learn] wraps the documentation link
 					esc_html__( 'This View is set to "Embed Only" and cannot be accessed directly. [action]Change this setting[/action] or [learn]learn more[/learn].', 'gk-gravityview' ),
 					$link_template
 				);
 
 			case 'no_direct_access':
 				return strtr(
-					// translators: %1$s is the learn more link
+					// translators: [learn]...[/learn] wraps the documentation link
 					esc_html__( 'Direct access to this View has been disabled by the gravityview_direct_access filter. [learn]Learn about this filter[/learn].', 'gk-gravityview' ),
 					$link_template
 				);
@@ -177,21 +177,21 @@ class GravityView_Error_Messages {
 			case 'not_public':
 				$status = get_post_status( $view->ID );
 				return strtr(
-					// translators: %1$s is the action link, %2$s is the learn more link
+					// translators: %s is the post status (e.g., "draft"), [action]...[/action] wraps the edit link, [learn]...[/learn] wraps the documentation link
 					sprintf( esc_html__( 'This View is %s and not publicly visible. [action]Change the publishing status[/action] or [learn]learn about View visibility[/learn].', 'gk-gravityview' ), '<strong>' . esc_html( $status ) . '</strong>' ),
 					$link_template
 				);
 
 			case 'rest_disabled':
 				return strtr(
-					// translators: %1$s is the action link, %2$s is the learn more link
+					// translators: [action]...[/action] wraps the edit link, [learn]...[/learn] wraps the documentation link
 					esc_html__( 'REST API access is disabled for this View. [action]Enable REST API access[/action] or [learn]learn more[/learn].', 'gk-gravityview' ),
 					$link_template
 				);
 
 			case 'csv_disabled':
 				return strtr(
-					// translators: %1$s is the action link, %2$s is the learn more link
+					// translators: [action]...[/action] wraps the edit link, [learn]...[/learn] wraps the documentation link
 					esc_html__( 'CSV export is disabled for this View. [action]Enable CSV export[/action] or [learn]learn more[/learn].', 'gk-gravityview' ),
 					$link_template
 				);
@@ -206,7 +206,7 @@ class GravityView_Error_Messages {
 				}
 
 				return strtr(
-					// translators: %1$s is the action link, %2$s is the learn more link
+					// translators: [action]...[/action] wraps the edit link, [learn]...[/learn] wraps the documentation link
 					esc_html__( 'This View has no Gravity Forms form attached. [action]Configure the data source[/action] or [learn]learn more[/learn].', 'gk-gravityview' ),
 					$link_template
 				);
