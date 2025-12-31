@@ -459,25 +459,32 @@ CSS;
 	}
 
 	/**
-	 * Test that existing user code with similar text is not affected.
+	 * Test that placeholders are replaced even when part of larger strings.
+	 *
+	 * Note: strtr() replaces all occurrences of placeholder strings, including
+	 * when they appear as substrings. This is expected behavior - users should
+	 * use unique variable names to avoid unintended replacements.
 	 *
 	 * @covers GravityView_frontend::replace_code_placeholders()
 	 */
-	public function test_similar_text_not_affected() {
+	public function test_placeholder_replacement_in_substrings() {
 		$form = $this->factory->form->create_and_get();
 		$_view = $this->factory->view->create_and_get( array( 'form_id' => $form['id'] ) );
 		$view = \GV\View::from_post( $_view );
 
-		// Text that is similar but not exact should not be replaced.
+		// Placeholders ARE replaced even when part of larger strings.
+		// This documents the expected strtr() behavior.
 		$content = 'MY_VIEW_ID PREFIX_GF_FORM_ID VIEW_ID_SUFFIX';
 		$result = $this->replace_placeholders( $content, $view );
 
-		// These should remain unchanged (partial matches).
-		$this->assertStringContainsString( 'MY_VIEW_ID', $result );
-		$this->assertStringContainsString( 'PREFIX_GF_FORM_ID', $result );
-
-		// But VIEW_ID should be replaced in VIEW_ID_SUFFIX.
+		// VIEW_ID is replaced in all occurrences.
+		$this->assertStringContainsString( "MY_{$view->ID}", $result );
+		$this->assertStringContainsString( "PREFIX_{$form['id']}", $result );
 		$this->assertStringContainsString( "{$view->ID}_SUFFIX", $result );
+
+		// The original placeholder strings should no longer exist.
+		$this->assertStringNotContainsString( 'VIEW_ID', $result );
+		$this->assertStringNotContainsString( 'GF_FORM_ID', $result );
 	}
 
 	/**
