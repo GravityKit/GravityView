@@ -87,6 +87,38 @@ class ShortcodeRenderer {
 	];
 
 	/**
+	 * Formats an attributes array into a shortcode attributes string.
+	 *
+	 * Handles both scalar and array values. Array values are formatted with
+	 * numbered suffixes (e.g., sort_direction, sort_direction_2, sort_direction_3).
+	 *
+	 * @since TODO
+	 *
+	 * @param array $atts Attributes to format (key => value pairs).
+	 *
+	 * @return string Formatted attributes string (e.g., 'key1="value1" key2="value2"').
+	 */
+	public static function format_atts_string( $atts ) {
+		$parts = [];
+
+		foreach ( $atts as $key => $value ) {
+			if ( is_array( $value ) ) {
+				// Handle array values (e.g., multi-sort: sort_direction, sort_direction_2).
+				foreach ( $value as $index => $item ) {
+					$suffix  = 0 === $index ? '' : '_' . ( $index + 1 );
+					$escaped = str_replace( '"', '\"', sanitize_text_field( $item ) );
+					$parts[] = sprintf( '%s%s="%s"', $key, $suffix, $escaped );
+				}
+			} else {
+				$escaped = str_replace( '"', '\"', sanitize_text_field( $value ) );
+				$parts[] = sprintf( '%s="%s"', $key, $escaped );
+			}
+		}
+
+		return implode( ' ', $parts );
+	}
+
+	/**
 	 * Converts block attributes array to shortcode attributes array.
 	 *
 	 * This is useful for page builders that use camelCase attribute names
@@ -137,27 +169,11 @@ class ShortcodeRenderer {
 	public static function build_from_block_atts( $block_atts, $secret = null ) {
 		$shortcode_atts = self::map_block_atts_to_shortcode_atts( $block_atts );
 
-		$formatted_atts = [];
-
-		foreach ( $shortcode_atts as $attribute => $value ) {
-			// Sanitize the value for text content, then escape double quotes for shortcode context.
-			// Note: We use sanitize_text_field() (not esc_attr()) because shortcodes are plain text,
-			// not HTML attributes. esc_attr() would convert quotes to HTML entities (&quot;).
-			$value = str_replace( '"', '\"', sanitize_text_field( $value ) );
-
-			if ( '' === $value ) {
-				continue;
-			}
-
-			$formatted_atts[] = sprintf( '%s="%s"', $attribute, $value );
-		}
-
 		if ( $secret ) {
-			// Escape double quotes in secret value for shortcode context.
-			$formatted_atts[] = sprintf( 'secret="%s"', str_replace( '"', '\"', sanitize_text_field( $secret ) ) );
+			$shortcode_atts['secret'] = $secret;
 		}
 
-		return sprintf( '[gravityview %s]', implode( ' ', $formatted_atts ) );
+		return sprintf( '[gravityview %s]', self::format_atts_string( $shortcode_atts ) );
 	}
 
 	/**
@@ -192,27 +208,7 @@ class ShortcodeRenderer {
 		// Reverse to put `id` first, `secret` second for readability.
 		$atts = array_reverse( $atts, true );
 
-		$atts_string = '';
-
-		// Convert array to shortcode attributes string.
-		// Note: We use sanitize_text_field() and manual quote escaping (not esc_attr()) because
-		// shortcodes are plain text, not HTML attributes. esc_attr() would convert quotes to HTML entities.
-		foreach ( $atts as $key => $value ) {
-			// Handle array values (e.g., multi-sort: sort_direction[0], sort_direction_2).
-			if ( is_array( $value ) ) {
-				foreach ( $value as $k => $v ) {
-					// Convert to `sort_direction` and `sort_direction_2`, etc.
-					$suffix       = 0 === $k ? '' : '_' . ( $k + 1 );
-					$escaped_v    = str_replace( '"', '\"', sanitize_text_field( $v ) );
-					$atts_string .= sprintf( ' %1$s%2$s="%3$s"', $key, $suffix, $escaped_v );
-				}
-			} else {
-				$escaped_value = str_replace( '"', '\"', sanitize_text_field( $value ) );
-				$atts_string  .= sprintf( ' %1$s="%2$s"', $key, $escaped_value );
-			}
-		}
-
-		return sprintf( '[gravityview %s]', trim( $atts_string ) );
+		return sprintf( '[gravityview %s]', self::format_atts_string( $atts ) );
 	}
 
 	/**
