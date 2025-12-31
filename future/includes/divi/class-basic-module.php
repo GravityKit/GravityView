@@ -226,9 +226,7 @@ class Basic_Module extends \ET_Builder_Module {
 
 		if ( ! $view_id ) {
 			if ( $this->is_builder_context() ) {
-				return $this->render_placeholder_message(
-					esc_html__( 'Please select a View from the module settings.', 'gk-gravityview' )
-				);
+				return ShortcodeRenderer::render_placeholder( __( 'Please select a View from the module settings.', 'gk-gravityview' ) );
 			}
 			return '';
 		}
@@ -237,9 +235,7 @@ class Basic_Module extends \ET_Builder_Module {
 
 		if ( ! $view ) {
 			if ( $this->is_builder_context() ) {
-				return $this->render_placeholder_message(
-					esc_html__( 'View not found.', 'gk-gravityview' )
-				);
+				return ShortcodeRenderer::render_placeholder( __( 'View not found.', 'gk-gravityview' ) );
 			}
 			return '';
 		}
@@ -372,19 +368,4 @@ class Basic_Module extends \ET_Builder_Module {
 		return false;
 	}
 
-	/**
-	 * Render a placeholder message for the builder.
-	 *
-	 * @since TODO
-	 *
-	 * @param string $message The message to display.
-	 *
-	 * @return string HTML placeholder.
-	 */
-	private function render_placeholder_message( $message ) {
-		return sprintf(
-			'<div style="text-align:center; padding:20px; border:1px dashed #ccc; background:#f9f9f9;">%s</div>',
-			esc_html( $message )
-		);
-	}
 }

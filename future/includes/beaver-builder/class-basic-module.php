@@ -93,9 +93,8 @@ class Basic_Module extends FLBuilderModule {
 
 		if ( 0 === $view_id ) {
 			if ( FLBuilder::is_active() ) {
-				echo '<div style="text-align:center; padding:20px; border:1px dashed #ccc; background:#f9f9f9;">';
-				echo esc_html__( 'Please select a View from the module settings.', 'gk-gravityview' );
-				echo '</div>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is escaped in render_placeholder.
+				echo ShortcodeRenderer::render_placeholder( __( 'Please select a View from the module settings.', 'gk-gravityview' ) );
 			}
 			return;
 		}
@@ -104,9 +103,8 @@ class Basic_Module extends FLBuilderModule {
 
 		if ( ! $view ) {
 			if ( FLBuilder::is_active() ) {
-				echo '<div style="text-align:center; padding:20px; border:1px dashed #ccc; background:#f9f9f9;">';
-				echo esc_html__( 'View not found.', 'gk-gravityview' );
-				echo '</div>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is escaped in render_placeholder.
+				echo ShortcodeRenderer::render_placeholder( __( 'View not found.', 'gk-gravityview' ) );
 			}
 			return;
 		}

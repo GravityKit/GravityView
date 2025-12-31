@@ -337,9 +337,8 @@ class Basic_Widget extends Widget_Base {
 
 		if ( 0 === $view_id ) {
 			if ( \Elementor\Plugin::$instance->editor->is_edit_mode() ) {
-				echo '<div style="text-align:center; padding:20px; border:1px dashed #ccc;">';
-				echo esc_html__( 'Please select a View from the widget settings.', 'gk-gravityview' );
-				echo '</div>';
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is escaped in render_placeholder.
+				echo ShortcodeRenderer::render_placeholder( __( 'Please select a View from the widget settings.', 'gk-gravityview' ) );
 			}
 			return;
 		}
@@ -347,9 +346,8 @@ class Basic_Widget extends Widget_Base {
 		$view = \GV\View::by_id( $view_id );
 
 		if ( ! $view ) {
-			echo '<div style="text-align:center; padding:20px; border:1px dashed #ccc;">';
-			echo esc_html__( 'View not found.', 'gk-gravityview' );
-			echo '</div>';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output is escaped in render_placeholder.
+			echo ShortcodeRenderer::render_placeholder( __( 'View not found.', 'gk-gravityview' ) );
 			return;
 		}
 

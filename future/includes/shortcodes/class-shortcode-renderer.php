@@ -87,6 +87,22 @@ class ShortcodeRenderer {
 	];
 
 	/**
+	 * Renders a placeholder message for page builder editor contexts.
+	 *
+	 * @since TODO
+	 *
+	 * @param string $message The message to display.
+	 *
+	 * @return string HTML placeholder div.
+	 */
+	public static function render_placeholder( $message ) {
+		return sprintf(
+			'<div style="text-align:center; padding:20px; border:1px dashed #ccc; background:#f9f9f9;">%s</div>',
+			esc_html( $message )
+		);
+	}
+
+	/**
 	 * Formats an attributes array into a shortcode attributes string.
 	 *
 	 * Handles both scalar and array values. Array values are formatted with
