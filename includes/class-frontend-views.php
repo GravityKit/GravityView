@@ -1905,6 +1905,14 @@ class GravityView_frontend {
 		 */
 		$placeholders = apply_filters( 'gk/gravityview/custom-code/placeholders', $placeholders, $view, $content );
 
+		// Remove placeholders with empty values to avoid producing invalid CSS/JS.
+		$placeholders = array_filter(
+			$placeholders,
+			static function ( $value ) {
+				return '' !== $value && null !== $value;
+			}
+		);
+
 		return strtr( $content, $placeholders );
 	}
 }
