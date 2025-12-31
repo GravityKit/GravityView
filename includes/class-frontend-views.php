@@ -1649,6 +1649,7 @@ class GravityView_frontend {
 					$custom_javascript = $view->settings->get( 'custom_javascript' );
 
 					if ( ! empty( $custom_javascript ) ) {
+						$custom_javascript = $this->replace_code_placeholders( $custom_javascript, $view );
 						wp_add_inline_script( 'gravityview-fe-view', $custom_javascript, 'after' );
 					}
 				}
@@ -1668,6 +1669,7 @@ class GravityView_frontend {
 					$custom_css = $view->settings->get( 'custom_css', null );
 
 					if ( $custom_css ) {
+						$custom_css = $this->replace_code_placeholders( $custom_css, $view );
 						wp_add_inline_style( 'gravityview_default_style', $custom_css );
 					}
 				}
@@ -1853,6 +1855,55 @@ class GravityView_frontend {
 		}
 
 		return apply_filters( "gravityview/sortable/formfield_{$form['id']}_{$field_id}", apply_filters( "gravityview/sortable/field_{$field_id}", true, $form ) );
+	}
+
+	/**
+	 * Replaces placeholders in custom CSS and JavaScript code with dynamic values.
+	 *
+	 * Supported placeholders:
+	 * - `GFFORMID`: Replaced with the connected Gravity Forms form ID.
+	 * - `VIEW_ID`: Replaced with the View ID.
+	 * - `VIEW_ID_SELECTOR`: Replaced with the View's anchor ID (CSS selector format: `gv-view-{view_id}-{counter}`).
+	 *
+	 * @since $ver$
+	 *
+	 * @param string   $content The custom CSS or JavaScript content containing placeholders.
+	 * @param \GV\View $view    The View object to get replacement values from.
+	 *
+	 * @return string The content with placeholders replaced with actual values.
+	 */
+	private function replace_code_placeholders( $content, $view ) {
+		if ( empty( $content ) || ! $view instanceof \GV\View ) {
+			return $content;
+		}
+
+		$form_id          = $view->form ? $view->form->ID : '';
+		$view_id          = $view->ID;
+		$view_id_selector = $view->get_anchor_id();
+
+		// If anchor_id is not set, generate a fallback using the View ID.
+		if ( empty( $view_id_selector ) ) {
+			$view_id_selector = 'gv-view-' . $view_id;
+		}
+
+		$placeholders = array(
+			'GFFORMID'         => $form_id,
+			'VIEW_ID_SELECTOR' => $view_id_selector,
+			'VIEW_ID'          => $view_id,
+		);
+
+		/**
+		 * Filters the placeholders available for custom CSS and JavaScript code.
+		 *
+		 * @since $ver$
+		 *
+		 * @param array    $placeholders Associative array of placeholder => replacement value pairs.
+		 * @param \GV\View $view         The View object.
+		 * @param string   $content      The original content before replacement.
+		 */
+		$placeholders = apply_filters( 'gk/gravityview/custom-code/placeholders', $placeholders, $view, $content );
+
+		return strtr( $content, $placeholders );
 	}
 }
 
