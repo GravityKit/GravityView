@@ -1,8 +1,12 @@
 <?php
 /**
  * Silence is golden.
+ *
+ * @package GravityKit\GravityView\Extensions\Elementor
+ * @since TODO
  */
 
-if ( ! defined( 'GRAVITYVIEW_DIR' ) ) {
-	die();
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
