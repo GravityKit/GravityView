@@ -27,6 +27,7 @@ This release improves error messaging for administrators, addresses a performanc
 
 #### ✨ Improved
 * Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
+* Custom CSS and Custom JavaScript settings now support placeholders that are automatically replaced with View-specific values. This makes it easy to write custom styles that apply to a single View without affecting others on the same page. [Read about the new placeholders.](https://docs.gravitykit.com/article/246-adding-custom-css-to-your-website#:~:text=Available%20placeholders)
 
 #### 🐛 Fixed
 * JavaScript error breaking Edit Entry functionality when forms use conditional logic on buttons.
@@ -38,6 +39,11 @@ This release improves error messaging for administrators, addresses a performanc
 
 #### 🔧 Updated
 * [Foundation](https://www.gravitykit.com/foundation/) to version 1.7.1.
+
+#### 💻 Developer Updates
+* Added `gk/gravityview/custom-code/placeholders` filter to modify or add custom placeholders for the Custom CSS and JavaScript settings.
+* The `VIEW_SELECTOR` placeholder is hard-coded to `.gv-container.gv-container-{view id}`. If you have removed those classes by using the `gravityview/render/container/class` filter, the `VIEW_SELECTOR` placeholder will not work as expected; use the `VIEW_ID` placeholder instead.
+* View Custom CSS and JavaScript is now output only once per View, even when the same View is embedded multiple times on a page.
 
 = 2.49 on December 5, 2025 =
 
