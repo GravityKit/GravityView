@@ -3526,6 +3526,22 @@
 	   },
 
 	   /**
+	    * Refresh all reorder buttons in a container
+	    * Updates ARIA states for all siblings after a field move
+	    * @since 2.48
+	    */
+	   refreshReorderButtons: function($container) {
+		   var vcfg = viewConfiguration;
+		   if (!$container || !$container.length) {
+			   $container = $('.active-drop-container');
+		   }
+
+		   $container.children('.gv-fields').each(function() {
+			   vcfg.updateReorderButtons($(this));
+		   });
+	   },
+
+	   /**
 	    * Announce field position change to screen readers
 	    * @since 2.48
 	    */
@@ -3546,7 +3562,10 @@
 				   }).appendTo(document.body);
 			   }
 
-			   $status.text('Moved to position ' + (index + 1) + ' of ' + $siblings.length + '.');
+			   // Use localized string if available, with sprintf-style replacement
+			   var message = gvGlobals.field_moved_to_position || 'Moved to position %1$s of %2$s.';
+			   message = message.replace('%1$s', index + 1).replace('%2$s', $siblings.length);
+			   $status.text(message);
 		   } catch(e) {
 			   // Silent failure for screen reader announcements
 		   }
@@ -3663,7 +3682,8 @@
 			   try {
 				   // Ensure :focus-within for visibility of reorder controls
 				   vcfg.focusFieldContainer($field);
-				   vcfg.updateReorderButtons($field);
+				   // Update ARIA states for all siblings, not just the moved field
+				   vcfg.refreshReorderButtons($container);
 				   vcfg.announceFieldMove($field);
 
 				   // Focus restoration with fallbacks:

@@ -265,7 +265,7 @@ abstract class GravityView_Admin_View_Item {
 		// Keyboard reordering controls (visible on keyboard navigation only; see CSS/JS)
 		$move_up_label   = esc_attr__( 'Move field up', 'gk-gravityview' );
 		$move_down_label = esc_attr__( 'Move field down', 'gk-gravityview' );
-		$output         .= '<span class="gv-field-reorder" aria-label="' . esc_attr__( 'Reorder field', 'gk-gravityview' ) . '">'
+		$output         .= '<span class="gv-field-reorder" role="group" aria-label="' . esc_attr__( 'Reorder field', 'gk-gravityview' ) . '">'
 			. '<button type="button" class="gv-move-up" aria-label="' . $move_up_label . '" title="' . $move_up_label . '"><span class="dashicons dashicons-arrow-up-alt2"></span></button>'
 			. '<button type="button" class="gv-move-down" aria-label="' . $move_down_label . '" title="' . $move_down_label . '"><span class="dashicons dashicons-arrow-down-alt2"></span></button>'
 			. '</span>';

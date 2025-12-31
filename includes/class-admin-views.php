@@ -2079,6 +2079,8 @@ HTML;
 					'gk-gravityview' ),
 				'discard_unsaved_changes'     => __( 'You have unsaved changes. Continuing will discard them. Are you sure you want to proceed?',
 					'gk-gravityview' ),
+				/* translators: 1: current position number, 2: total number of fields */
+				'field_moved_to_position'     => __( 'Moved to position %1$s of %2$s.', 'gk-gravityview' ),
 				'foundation_licenses_router'  => array_merge(
 					GravityKitFoundation::ajax_router()->get_ajax_params( 'licenses' ),
 					[
