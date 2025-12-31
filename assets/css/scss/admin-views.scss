@@ -1745,6 +1745,17 @@ hr {
 
 		html[dir=rtl] & {
 			text-align: right;
+
+			// Mirror Search Bar widget summary spacing for RTL
+			&:has(.gv-search-widget-summary) {
+				margin-left: 0;
+				margin-right: 0.5em;
+
+				.gv-search-widget-summary::before {
+					margin-right: 0;
+					margin-left: 0.5em;
+				}
+			}
 		}
 
 		line-height: 1.25em;
