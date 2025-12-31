@@ -1861,9 +1861,10 @@ class GravityView_frontend {
 	 * Replaces placeholders in custom CSS and JavaScript code with dynamic values.
 	 *
 	 * Supported placeholders:
-	 * - `GFFORMID`: Replaced with the connected Gravity Forms form ID.
+	 * - `GF_FORM_ID`: Replaced with the connected Gravity Forms form ID.
 	 * - `VIEW_ID`: Replaced with the View ID.
-	 * - `VIEW_ID_SELECTOR`: Replaced with the View's anchor ID (CSS selector format: `gv-view-{view_id}-{counter}`).
+	 * - `VIEW_ANCHOR_ID`: Replaced with the View's anchor ID (e.g., `gv-view-{view_id}-{counter}`).
+	 * - `VIEW_ID_SELECTOR`: Replaced with the View's anchor ID as a CSS selector (e.g., `#gv-view-{view_id}-{counter}`).
 	 *
 	 * @since $ver$
 	 *
@@ -1877,18 +1878,19 @@ class GravityView_frontend {
 			return $content;
 		}
 
-		$form_id          = $view->form ? $view->form->ID : '';
-		$view_id          = $view->ID;
-		$view_id_selector = $view->get_anchor_id();
+		$form_id        = $view->form ? $view->form->ID : '';
+		$view_id        = $view->ID;
+		$view_anchor_id = $view->get_anchor_id();
 
 		// If anchor_id is not set, generate a fallback using the View ID.
-		if ( empty( $view_id_selector ) ) {
-			$view_id_selector = 'gv-view-' . $view_id;
+		if ( empty( $view_anchor_id ) ) {
+			$view_anchor_id = 'gv-view-' . $view_id;
 		}
 
 		$placeholders = array(
-			'GFFORMID'         => $form_id,
-			'VIEW_ID_SELECTOR' => $view_id_selector,
+			'VIEW_ID_SELECTOR' => '#' . $view_anchor_id,
+			'VIEW_ANCHOR_ID'   => $view_anchor_id,
+			'GF_FORM_ID'       => $form_id,
 			'VIEW_ID'          => $view_id,
 		);
 
