@@ -951,389 +951,504 @@ class GravityView_Widget_Search extends \GV\Widget {
 	}
 
 	/**
-	 * Filters the \GF_Query with advanced logic.
+	 * Determines if search filters should be applied for the given view and request.
 	 *
-	 * Drop-in for the legacy flat filters when \GF_Query is available.
+	 * Checks the rendering context to decide whether to apply search filters.
+	 * Filters are applied for views being rendered (e.g., via shortcode) but
+	 * suppressed when viewing single entries directly.
 	 *
-	 * @param \GF_Query   $query   The current query object reference
-	 * @param \GV\View    $this    The current view object
-	 * @param \GV\Request $request The request object
+	 * @since 2.30
+	 *
+	 * @param \GV\View         $view    The view object.
+	 * @param \GV\Request|null $request The request object.
+	 *
+	 * @return bool True if filters should be applied, false otherwise.
 	 */
-	public function gf_query_filter( &$query, $view, $request ) {
-		// Check if this View is currently in the rendering process.
-		// This helps identify Views embedded via [gravityview] shortcode.
+	private function should_apply_search_filters( $view, $request ): bool {
 		$is_view_rendering = \GV\View::is_rendering( $view->ID );
 
-		// Handle Mock_Request (used for Views rendered via shortcode).
+		// Mock requests indicate shortcode-rendered Views, allow filters.
 		if ( $request instanceof \GV\Mock_Request ) {
-			// Mock requests indicate shortcode-rendered Views, allow filters.
 			$is_view_rendering = true;
 		}
 
 		// For Views being rendered (e.g., via shortcode in Single Entry), always apply filters.
 		if ( $is_view_rendering ) {
-			// Continue processing filters below.
-		} elseif ( $request && $request->is_entry() ) {
-			// Don't apply search filters when viewing a single entry with a valid (non-mock) request.
-			return;
-		} elseif ( ! $request && gravityview()->request && gravityview()->request->is_entry() ) {
-			// When $request is null but context is single entry, check the main View.
+			return true;
+		}
+
+		// Don't apply search filters when viewing a single entry with a valid (non-mock) request.
+		if ( $request && $request->is_entry() ) {
+			return false;
+		}
+
+		// When $request is null but context is single entry, check the main View.
+		if ( ! $request && gravityview()->request && gravityview()->request->is_entry() ) {
 			$main_view = gravityview()->request->is_view();
 
 			// Suppress filters if no main View, or if this is the main View.
 			if ( ! $main_view || $view->ID === $main_view->ID ) {
-				return;
+				return false;
 			}
-			// Otherwise it's a different (embedded) View → continue processing filters.
+		}
+
+		return true;
+	}
+
+	/**
+	 * Extracts global search words from field filters.
+	 *
+	 * Separates filters with no key (global search) into include/exclude arrays
+	 * based on their operator.
+	 *
+	 * @since 2.30
+	 *
+	 * @param array $field_filters The field filters to process.
+	 *
+	 * @return array{
+	 *     include: string[],
+	 *     exclude: string[],
+	 *     remaining: array
+	 * } Arrays of words to include, exclude, and remaining filters.
+	 */
+	private function extract_global_search_words( array $field_filters ): array {
+		$include_words = [];
+		$exclude_words = [];
+		$remaining     = [];
+
+		foreach ( $field_filters as $criterion ) {
+			// Skip filters that have a specific field key.
+			if ( ! empty( $criterion['key'] ?? null ) ) {
+				$remaining[] = $criterion;
+				continue;
+			}
+
+			if ( 'not contains' === ( $criterion['operator'] ?? '' ) ) {
+				$exclude_words[] = $criterion['value'];
+			} elseif ( true === ( $criterion['required'] ?? false ) ) {
+				$include_words[] = $criterion['value'];
+			} else {
+				$remaining[] = $criterion;
+			}
+		}
+
+		return [
+			'include'   => $include_words,
+			'exclude'   => $exclude_words,
+			'remaining' => $remaining,
+		];
+	}
+
+	/**
+	 * Checks if a created_by field is configured for text mode search.
+	 *
+	 * @since 2.30
+	 *
+	 * @param \GV\View $view The view to check.
+	 *
+	 * @return bool True if created_by uses text input mode.
+	 */
+	private function is_created_by_text_mode( $view ): bool {
+		$widgets = $view->widgets->by_id( $this->widget_id );
+
+		if ( ! $widgets->count() ) {
+			return false;
+		}
+
+		foreach ( $widgets->all() as $widget ) {
+			$search_fields = $widget->get_search_fields( $view );
+
+			foreach ( $search_fields as $search_field ) {
+				if ( 'created_by' === $search_field['field'] && 'input_text' === $search_field['input'] ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Builds a query condition for unapproved entry status.
+	 *
+	 * Constructs a condition that matches both explicitly unapproved entries
+	 * and entries with no approval status set.
+	 *
+	 * @since 2.30
+	 *
+	 * @param array  $filter      The approval status filter.
+	 * @param string $query_class The query class name.
+	 * @param int    $form_id     The form ID.
+	 *
+	 * @return \GF_Query_Condition|null The query condition, or null if not applicable.
+	 */
+	private function build_unapproved_status_condition( array $filter, string $query_class, int $form_id ) {
+		if ( 'is_approved' !== $filter['key'] ) {
+			return null;
+		}
+
+		$values = (array) $filter['value'];
+
+		if ( ! in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, $values, false ) ) {
+			return null;
+		}
+
+		$_tmp_query = new $query_class(
+			$form_id,
+			[
+				'field_filters' => [
+					[
+						'operator' => 'in',
+						'key'      => 'is_approved',
+						'value'    => $values,
+					],
+					[
+						'operator' => 'is',
+						'key'      => 'is_approved',
+						'value'    => '',
+					],
+					'mode' => 'any',
+				],
+			]
+		);
+
+		$_tmp_query_parts = $_tmp_query->_introspect();
+
+		return $_tmp_query_parts['where'];
+	}
+
+	/**
+	 * Builds a date range query condition.
+	 *
+	 * @since 2.30
+	 *
+	 * @param array  $search_criteria The search criteria containing date fields.
+	 * @param string $query_class     The query class name.
+	 * @param int    $form_id         The form ID.
+	 *
+	 * @return \GF_Query_Condition|null The date condition, or null if no dates specified.
+	 */
+	private function build_date_condition( array $search_criteria, string $query_class, int $form_id ) {
+		if ( empty( $search_criteria['start_date'] ) && empty( $search_criteria['end_date'] ) ) {
+			return null;
+		}
+
+		$date_criteria = [];
+
+		if ( isset( $search_criteria['start_date'] ) ) {
+			$date_criteria['start_date'] = $search_criteria['start_date'];
+		}
+
+		if ( isset( $search_criteria['end_date'] ) ) {
+			$date_criteria['end_date'] = $search_criteria['end_date'];
+		}
+
+		$_tmp_query       = new $query_class( $form_id, $date_criteria );
+		$_tmp_query_parts = $_tmp_query->_introspect();
+
+		return $_tmp_query_parts['where'];
+	}
+
+	/**
+	 * Builds a global search words EXISTS/NOT EXISTS condition.
+	 *
+	 * @since 2.30
+	 *
+	 * @param array      $words   The words to search for.
+	 * @param bool       $exclude Whether to exclude (NOT EXISTS) or include (EXISTS).
+	 * @param \GF_Query  $query   The query object.
+	 * @param \GV\View   $view    The view object.
+	 *
+	 * @return \GF_Query_Condition The global search condition.
+	 */
+	private function build_global_search_condition( array $words, bool $exclude, $query, $view ): \GF_Query_Condition {
+		global $wpdb;
+
+		$function  = $exclude ? 'NOT EXISTS' : 'EXISTS';
+		$connector = $exclude ? ' OR ' : ' AND ';
+		$form_id   = $view->form ? $view->form->ID : 0;
+
+		$word_conditions = array_map(
+			static function ( string $word ) use ( $wpdb ) {
+				return $wpdb->prepare( '`meta_value` LIKE "%%%s%%"', $word );
+			},
+			$words
+		);
+
+		return new \GF_Query_Condition(
+			new \GF_Query_Call(
+				$function,
+				[
+					sprintf(
+						'SELECT 1 FROM `%s` WHERE `form_id` = %d AND `entry_id` = `%s`.`id` AND (%s)',
+						\GFFormsModel::get_entry_meta_table_name(),
+						$form_id,
+						$query->_alias( null, $form_id ),
+						implode( $connector, $word_conditions )
+					),
+				]
+			)
+		);
+	}
+
+	/**
+	 * Builds a product field search condition with currency handling.
+	 *
+	 * Handles the special case of product fields that store values with
+	 * currency symbols and formatting.
+	 *
+	 * @since 2.30
+	 *
+	 * @param array               $filter           The filter configuration.
+	 * @param \GF_Query_Column    $left             The left side of the condition.
+	 * @param \GF_Query           $query            The query object.
+	 * @param \GF_Query_Condition $search_condition The base search condition.
+	 *
+	 * @return array{left: mixed, extra_condition: \GF_Query_Condition|null}
+	 */
+	private function build_product_field_condition( array $filter, $left, $query, $search_condition ): array {
+		if ( ! $this->is_product_field( $filter ) || ! ( $filter['is_numeric'] ?? false ) ) {
+			return [ 'left' => $left, 'extra_condition' => null ];
+		}
+
+		$original_left = clone $left;
+		$column        = $left instanceof \GF_Query_Call ? $left->columns[0] ?? null : $left;
+		$column_name   = sprintf(
+			'`%s`.`%s`',
+			$column->alias,
+			$column->is_entry_column() ? $column->field_id : 'meta_value'
+		);
+
+		// Add the original join back as an extra condition.
+		$extra_condition = new \GF_Query_Condition( $column, null, $column );
+
+		// Split product name.
+		$position = new \GF_Query_Call( 'POSITION', [ sprintf( '"|" IN %s', $column_name ) ] );
+		$new_left = new \GF_Query_Call(
+			'SUBSTR',
+			[
+				$column_name,
+				sprintf( '%s + 1', $position->sql( $query ) ),
+			]
+		);
+
+		// Remove currency symbol and format properly.
+		$currency           = \RGCurrency::get_currency( \GFCommon::get_currency() );
+		$symbol             = html_entity_decode( rgar( $currency, 'symbol_left' ) );
+		$thousand_separator = rgar( $currency, 'thousand_separator' );
+		$decimal_separator  = rgar( $currency, 'decimal_separator' );
+
+		$replacements = [ $symbol => '', $thousand_separator => '' ];
+		if ( ',' === $decimal_separator ) {
+			$replacements[','] = '.';
+		}
+
+		foreach ( $replacements as $key => $value ) {
+			$new_left = new \GF_Query_Call(
+				'REPLACE',
+				[
+					$new_left->sql( $query ),
+					'"' . $key . '"',
+					'"' . $value . '"',
+				]
+			);
+		}
+
+		// Return original function call if needed.
+		if ( $original_left instanceof \GF_Query_Call ) {
+			$parameters    = $original_left->parameters;
+			$function_name = $original_left->function_name;
+
+			$parameters[0] = $new_left->sql( $query );
+			if ( 'CAST' === $function_name ) {
+				$function_name = ' ' . $function_name; // Prevent regular `CAST` sql.
+				if ( \GF_Query::TYPE_DECIMAL === ( $parameters[1] ?? '' ) ) {
+					$parameters[1] = 'DECIMAL(65,6)';
+				}
+				// CAST needs 'AS' as a separator.
+				$parameters = [ implode( ' AS ', $parameters ) ];
+			}
+
+			$new_left = new \GF_Query_Call( $function_name, $parameters );
+		}
+
+		return [ 'left' => $new_left, 'extra_condition' => $extra_condition ];
+	}
+
+	/**
+	 * Builds join conditions for multi-form views.
+	 *
+	 * @since 2.30
+	 *
+	 * @param \GV\View            $view             The view with joins.
+	 * @param \GF_Query           $query            The query object.
+	 * @param \GF_Query_Condition $search_condition The search condition.
+	 *
+	 * @return \GF_Query_Condition The OR condition for all joins.
+	 */
+	private function build_join_conditions( $view, $query, $search_condition ): \GF_Query_Condition {
+		$conditions = [];
+
+		foreach ( $view->joins as $_join ) {
+			$on   = $_join->join_on;
+			$join = $_join->join;
+
+			$conditions[] = new \GF_Query_Condition(
+				new \GF_Query_Column(
+					\GF_Query_Column::META,
+					$join->ID,
+					$query->_alias( \GF_Query_Column::META, $join->ID, 'm' )
+				),
+				$search_condition->operator,
+				$search_condition->right
+			);
+
+			$conditions[] = new \GF_Query_Condition(
+				new \GF_Query_Column(
+					\GF_Query_Column::META,
+					$on->ID,
+					$query->_alias( \GF_Query_Column::META, $on->ID, 'm' )
+				),
+				$search_condition->operator,
+				$search_condition->right
+			);
+		}
+
+		return \GF_Query_Condition::_or( ...$conditions );
+	}
+
+	/**
+	 * Prepares a filter by normalizing operator and form ID.
+	 *
+	 * @since 2.30
+	 *
+	 * @param array    $filter The filter to prepare.
+	 * @param \GV\View $view   The view context.
+	 *
+	 * @return array The prepared filter.
+	 */
+	private function prepare_filter_for_query( array $filter, $view ): array {
+		// By default, we want searches to be wildcard for each field.
+		$filter['operator'] = empty( $filter['operator'] ) ? 'contains' : $filter['operator'];
+
+		// For multichoice, let's have an in (OR) search.
+		if ( is_array( $filter['value'] ) ) {
+			$filter['operator'] = 'in';
+		}
+
+		// Default form with joins functionality.
+		if ( empty( $filter['form_id'] ) ) {
+			$filter['form_id'] = $view->form ? $view->form->ID : 0;
 		}
 
 		/**
-		 * This is a shortcut to get all the needed search criteria.
-		 * We feed these into an new GF_Query and tack them onto the current object.
+		 * Modify the search operator for the field (contains, is, isnot, etc).
+		 *
+		 * @since  2.0 Added $view parameter
+		 *
+		 * @param string   $operator Existing search operator.
+		 * @param array    $filter   Array with `key`, `value`, `operator`, `type` keys.
+		 * @param \GV\View $view     The View we're operating on.
 		 */
-		$search_criteria = $this->filter_entries( [], null, [ 'id' => $view->ID ], true /** force search_criteria */ );
+		$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter, $view );
 
-		/**
-		 * Call any userland filters that they might have.
-		 */
-		remove_filter( 'gravityview_fe_search_criteria', [ $this, 'filter_entries' ], 10, 3 );
-		$search_criteria = apply_filters( 'gravityview_fe_search_criteria',
-			$search_criteria,
-			$view->form->ID,
-			$view->settings->as_atts() );
-		add_filter( 'gravityview_fe_search_criteria', [ $this, 'filter_entries' ], 10, 3 );
+		return $filter;
+	}
 
-		$query_class = $view->get_query_class();
+	/**
+	 * Filters the \GF_Query with advanced logic.
+	 *
+	 * Drop-in for the legacy flat filters when \GF_Query is available.
+	 *
+	 * @param \GF_Query   $query   The current query object reference
+	 * @param \GV\View    $view    The current view object
+	 * @param \GV\Request $request The request object
+	 */
+	public function gf_query_filter( &$query, $view, $request ) {
+		if ( ! $this->should_apply_search_filters( $view, $request ) ) {
+			return;
+		}
+
+		$search_criteria = $this->get_search_criteria_for_view( $view );
 
 		if ( empty( $search_criteria['field_filters'] ) ) {
 			return;
 		}
 
-		$include_global_search_words = $exclude_global_search_words = [];
+		$query_class          = $view->get_query_class();
+		$form_id              = $view->form ? $view->form->ID : 0;
+		$created_by_text_mode = $this->is_created_by_text_mode( $view );
 
-		foreach ( $search_criteria['field_filters'] as $i => $criterion ) {
-			if ( ! empty( $criterion['key'] ?? null ) ) {
-				continue;
-			}
+		// Extract global search words from field filters.
+		$global_search      = $this->extract_global_search_words( $search_criteria['field_filters'] );
+		$extra_conditions   = [];
+		$search_conditions  = [];
+		$mode               = 'any';
+		$processed_filters  = [];
 
-			if ( 'not contains' === ( $criterion['operator'] ?? '' ) ) {
-				$exclude_global_search_words[] = $criterion['value'];
-				unset( $search_criteria['field_filters'][ $i ] );
-			} elseif ( true === ( $criterion['required'] ?? false ) ) {
-				$include_global_search_words[] = $criterion['value'];
-				unset( $search_criteria['field_filters'][ $i ] );
-			}
-		}
-
-		$widgets = $view->widgets->by_id( $this->widget_id );
-		if ( $widgets->count() ) {
-			/** @var GravityView_Widget_Search $widget */
-			foreach ( $widgets->all() as $widget ) {
-				$search_fields = $widget->get_search_fields( $view );
-
-				foreach ( $search_fields as $search_field ) {
-					if ( 'created_by' === $search_field['field'] && 'input_text' === $search_field['input'] ) {
-						$created_by_text_mode = true;
-						break 2;
-					}
-				}
-			}
-		}
-		$extra_conditions = [];
-		$mode             = 'any';
-
-		foreach ( $search_criteria['field_filters'] as $key => &$filter ) {
+		// Process field filters.
+		foreach ( $global_search['remaining'] as $filter ) {
 			if ( ! is_array( $filter ) ) {
-				if ( in_array( strtolower( $filter ), [ 'any', 'all' ] ) ) {
+				if ( in_array( strtolower( $filter ), [ 'any', 'all' ], true ) ) {
 					$mode = $filter;
 				}
 				continue;
 			}
 
-			// Construct a manual query for unapproved statuses
-			if (
-				'is_approved' === $filter['key']
-				&& in_array( \GravityView_Entry_Approval_Status::UNAPPROVED, (array) $filter['value'], false )
-			) {
-				$_tmp_query       = new $query_class(
-					$view->form->ID,
-					[
-						'field_filters' => [
-							[
-								'operator' => 'in',
-								'key'      => 'is_approved',
-								'value'    => (array) $filter['value'],
-							],
-							[
-								'operator' => 'is',
-								'key'      => 'is_approved',
-								'value'    => '',
-							],
-							'mode' => 'any',
-						],
-					]
-				);
-				$_tmp_query_parts = $_tmp_query->_introspect();
-
-				$extra_conditions[] = $_tmp_query_parts['where'];
-
-				$filter = false;
+			// Handle unapproved status filter.
+			$unapproved_condition = $this->build_unapproved_status_condition( $filter, $query_class, $form_id );
+			if ( $unapproved_condition ) {
+				$extra_conditions[] = $unapproved_condition;
 				continue;
 			}
 
-			// Construct manual query for text mode creator search
-			if ( 'created_by' === $filter['key'] && ! empty( $created_by_text_mode ) ) {
+			// Handle text mode creator search.
+			if ( 'created_by' === $filter['key'] && $created_by_text_mode ) {
 				$extra_conditions[] = new GravityView_Widget_Search_Author_GF_Query_Condition( $filter, $view );
-				$filter             = false;
 				continue;
 			}
 
-			// By default, we want searches to be wildcard for each field.
-			$filter['operator'] = empty( $filter['operator'] ) ? 'contains' : $filter['operator'];
-
-			// For multichoice, let's have an in (OR) search.
-			if ( is_array( $filter['value'] ) ) {
-				$filter['operator'] = 'in'; // @todo what about in contains (OR LIKE chains)?
-			}
-
-			// Default form with joins functionality
-			if ( empty( $filter['form_id'] ) ) {
-				$filter['form_id'] = $view->form ? $view->form->ID : 0;
-			}
-
-			/**
-			 * Modify the search operator for the field (contains, is, isnot, etc)
-			 *
-			 * @since  2.0 Added $view parameter
-			 *
-			 * @param string   $operator Existing search operator
-			 * @param array    $filter   array with `key`, `value`, `operator`, `type` keys
-			 * @param \GV\View $view     The View we're operating on.
-			 */
-			$filter['operator'] = apply_filters( 'gravityview_search_operator', $filter['operator'], $filter, $view );
-
+			// Prepare filter and skip empty non-"is" filters.
+			$filter = $this->prepare_filter_for_query( $filter, $view );
 			if ( 'is' !== $filter['operator'] && '' === $filter['value'] ) {
-				unset( $search_criteria['field_filters'][ $key ] );
-			}
-		}
-		unset( $filter );
-
-		if ( ! empty( $search_criteria['start_date'] ) || ! empty( $search_criteria['end_date'] ) ) {
-			$date_criteria = [];
-
-			if ( isset( $search_criteria['start_date'] ) ) {
-				$date_criteria['start_date'] = $search_criteria['start_date'];
+				continue;
 			}
 
-			if ( isset( $search_criteria['end_date'] ) ) {
-				$date_criteria['end_date'] = $search_criteria['end_date'];
-			}
-
-			$_tmp_query         = new $query_class( $view->form->ID, $date_criteria );
-			$_tmp_query_parts   = $_tmp_query->_introspect();
-			$extra_conditions[] = $_tmp_query_parts['where'];
+			$processed_filters[] = $filter;
 		}
 
-		$search_conditions = [];
-
-		if ( $filters = array_filter( $search_criteria['field_filters'] ) ) {
-			foreach ( $filters as $filter ) {
-				if ( ! is_array( $filter ) ) {
-					continue;
-				}
-
-				/**
-				 * Parse the filter criteria to generate the needed
-				 * WHERE condition. This is a trick to not write our own generation
-				 * code by reusing what's inside GF_Query already as they
-				 * take care of many small things like forcing numeric, etc.
-				 */
-				$_tmp_query       = new $query_class(
-					$filter['form_id'],
-					[
-						'mode'          => 'any',
-						'field_filters' => [ $filter ],
-					]
-				);
-				$_tmp_query_parts = $_tmp_query->_introspect();
-
-				/**
-				 * @var GF_Query_Condition $search_condition
-				 * */
-				$search_condition = $_tmp_query_parts['where'];
-
-				if ( empty( $filter['key'] ) && $search_condition->expressions ) {
-					$search_conditions[] = $search_condition;
-				} else {
-					// If the left condition is empty, it is likely a multiple forms filter. In this case, we should retrieve the search condition from the main form.
-					if ( ! $search_condition->left && $search_condition->expressions ) {
-						$search_condition = $search_condition->expressions[0];
-					}
-
-					$left = $search_condition->left;
-
-					// When casting a column value to a certain type (e.g., happens with the Number field), GF_Query_Column is wrapped in a GF_Query_Call class.
-					if ( $left instanceof GF_Query_Call && $left->parameters ) {
-						// Update columns to include the correct alias.
-						$parameters = array_map( static function ( $parameter ) use ( $query ) {
-							return $parameter instanceof GF_Query_Column
-								? new GF_Query_Column(
-									$parameter->field_id,
-									$parameter->source,
-									$query->_alias( $parameter->field_id,
-										$parameter->source,
-										$parameter->is_entry_column() ? 't' : 'm' )
-								)
-								: $parameter;
-						}, $left->parameters );
-
-						$left = new GF_Query_Call( $left->function_name, $parameters );
-					} elseif ( $left ) {
-						$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
-						$left  = new GF_Query_Column( $left->field_id, $left->source, $alias );
-					}
-
-					if ( $this->is_product_field( $filter ) && ( $filter['is_numeric'] ?? false ) ) {
-						$original_left = clone $left;
-						$column        = $left instanceof GF_Query_Call ? $left->columns[0] ?? null : $left;
-						$column_name   = sprintf( '`%s`.`%s`',
-							$column->alias,
-							$column->is_entry_column() ? $column->field_id : 'meta_value' );
-
-						// Add the original join back.
-						$search_conditions[] = new GF_Query_Condition( $column, null, $column );
-
-						// Split product name for.
-						$position = new GF_Query_Call( 'POSITION', [ sprintf( '"|" IN %s', $column_name ) ] );
-						$left     = new GF_Query_Call( 'SUBSTR', [
-							$column_name,
-							sprintf( "%s + 1", $position->sql( $query ) ),
-						] );
-
-						// Remove currency symbol and format properly.
-						$currency           = RGCurrency::get_currency( GFCommon::get_currency() );
-						$symbol             = html_entity_decode( rgar( $currency, 'symbol_left' ) );
-						$thousand_separator = rgar( $currency, 'thousand_separator' );
-						$decimal_separator  = rgar( $currency, 'decimal_separator' );
-
-						$replacements = [ $symbol => '', $thousand_separator => '' ];
-						if ( ',' === $decimal_separator ) {
-							$replacements[','] = '.';
-						}
-
-						foreach ( $replacements as $key => $value ) {
-							$left = new GF_Query_Call( 'REPLACE', [
-								$left->sql( $query ),
-								'"' . $key . '"',
-								'"' . $value . '"',
-							] );
-						}
-
-						// Return original function call.
-						if ( $original_left instanceof GF_Query_Call ) {
-							$parameters    = $original_left->parameters;
-							$function_name = $original_left->function_name;
-
-							$parameters[0] = $left->sql( $query );
-							if ( $function_name === 'CAST' ) {
-								$function_name = ' ' . $function_name; // prevent regular `CAST` sql.
-								if ( GF_Query::TYPE_DECIMAL === ( $parameters[1] ?? '' ) ) {
-									$parameters[1] = 'DECIMAL(65,6)';
-								}
-								// CAST needs 'AND' as a separator.
-								$parameters = [ implode( ' AS ', $parameters ) ];
-							}
-
-							$left = new GF_Query_Call( $function_name, $parameters );
-						}
-					}
-
-					if ( $view->joins && GF_Query_Column::META == $left->field_id ) {
-						foreach ( $view->joins as $_join ) {
-							$on   = $_join->join_on;
-							$join = $_join->join;
-
-							$search_conditions[] = GF_Query_Condition::_or(
-							// Join
-								new GF_Query_Condition(
-									new GF_Query_Column( GF_Query_Column::META,
-										$join->ID,
-										$query->_alias( GF_Query_Column::META, $join->ID, 'm' ) ),
-									$search_condition->operator,
-									$search_condition->right
-								),
-								// On
-								new GF_Query_Condition(
-									new GF_Query_Column( GF_Query_Column::META,
-										$on->ID,
-										$query->_alias( GF_Query_Column::META, $on->ID, 'm' ) ),
-									$search_condition->operator,
-									$search_condition->right
-								)
-							);
-						}
-					} else {
-						$search_conditions[] = new GF_Query_Condition(
-							$left,
-							$search_condition->operator,
-							$search_condition->right
-						);
-					}
-				}
-			}
-
-			if ( $search_conditions ) {
-				$search_conditions = 'all' === $mode
-					? [ GF_Query_Condition::_and( ...$search_conditions ) ]
-					: [ GF_Query_Condition::_or( ...$search_conditions ) ];
-			}
+		// Build date condition if needed.
+		$date_condition = $this->build_date_condition( $search_criteria, $query_class, $form_id );
+		if ( $date_condition ) {
+			$extra_conditions[] = $date_condition;
 		}
 
-		/**
-		 * Grab the current clauses. We'll be combining them shortly.
-		 */
+		// Build search conditions from processed filters.
+		$search_conditions = $this->build_search_conditions_from_filters(
+			$processed_filters,
+			$query_class,
+			$query,
+			$view
+		);
+
+		// Combine search conditions based on mode.
+		if ( $search_conditions ) {
+			$search_conditions = 'all' === $mode
+				? [ \GF_Query_Condition::_and( ...$search_conditions ) ]
+				: [ \GF_Query_Condition::_or( ...$search_conditions ) ];
+		}
+
+		// Add global search word conditions.
+		if ( $global_search['include'] ) {
+			$extra_conditions[] = $this->build_global_search_condition( $global_search['include'], false, $query, $view );
+		}
+		if ( $global_search['exclude'] ) {
+			$extra_conditions[] = $this->build_global_search_condition( $global_search['exclude'], true, $query, $view );
+		}
+
+		// Combine all conditions with the existing query.
 		$query_parts = $query->_introspect();
-
-		if ( $include_global_search_words ) {
-			global $wpdb;
-			$extra_conditions[] = new GF_Query_Condition( new GF_Query_Call(
-				'EXISTS',
-				[
-					sprintf(
-						'SELECT 1 FROM `%s` WHERE `form_id` = %d AND `entry_id` = `%s`.`id` AND (%s)',
-						GFFormsModel::get_entry_meta_table_name(),
-						$view->form ? $view->form->ID : 0,
-						$query->_alias( null, $view->form ? $view->form->ID : 0 ),
-						implode( ' AND ', array_map( static function ( string $word ) use ( $wpdb ) {
-							return $wpdb->prepare( '`meta_value` LIKE "%%%s%%"', $word );
-						}, $include_global_search_words ) )
-					),
-				]
-			) );
-		}
-
-		if ( $exclude_global_search_words ) {
-			global $wpdb;
-			$extra_conditions[] = new GF_Query_Condition( new GF_Query_Call(
-				'NOT EXISTS',
-				[
-					sprintf(
-						'SELECT 1 FROM `%s` WHERE `form_id` = %d AND `entry_id` = `%s`.`id` AND (%s)',
-						GFFormsModel::get_entry_meta_table_name(),
-						$view->form ? $view->form->ID : 0,
-						$query->_alias( null, $view->form ? $view->form->ID : 0 ),
-						implode( ' OR ', array_map( static function ( string $word ) use ( $wpdb ) {
-							return $wpdb->prepare( '`meta_value` LIKE "%%%s%%"', $word );
-						}, $exclude_global_search_words ) )
-					),
-				]
-			) );
-		}
-
-		/**
-		 * Combine the parts as a new WHERE clause.
-		 */
-		$where = \GF_Query_Condition::_and(
+		$where       = \GF_Query_Condition::_and(
 			...array_merge(
 				[ $query_parts['where'] ],
 				$search_conditions,
@@ -1341,6 +1456,163 @@ class GravityView_Widget_Search extends \GV\Widget {
 			)
 		);
 		$query->where( $where );
+	}
+
+	/**
+	 * Gets search criteria for a view with userland filters applied.
+	 *
+	 * @since 2.30
+	 *
+	 * @param \GV\View $view The view object.
+	 *
+	 * @return array The search criteria.
+	 */
+	private function get_search_criteria_for_view( $view ): array {
+		$search_criteria = $this->filter_entries( [], null, [ 'id' => $view->ID ], true );
+
+		// Apply userland filters, temporarily removing our own filter to prevent recursion.
+		remove_filter( 'gravityview_fe_search_criteria', [ $this, 'filter_entries' ], 10, 3 );
+		$search_criteria = apply_filters(
+			'gravityview_fe_search_criteria',
+			$search_criteria,
+			$view->form->ID,
+			$view->settings->as_atts()
+		);
+		add_filter( 'gravityview_fe_search_criteria', [ $this, 'filter_entries' ], 10, 3 );
+
+		return $search_criteria;
+	}
+
+	/**
+	 * Builds search conditions from an array of prepared filters.
+	 *
+	 * @since 2.30
+	 *
+	 * @param array     $filters     The prepared filters.
+	 * @param string    $query_class The query class name.
+	 * @param \GF_Query $query       The query object.
+	 * @param \GV\View  $view        The view object.
+	 *
+	 * @return array Array of GF_Query_Condition objects.
+	 */
+	private function build_search_conditions_from_filters( array $filters, string $query_class, $query, $view ): array {
+		$search_conditions = [];
+
+		foreach ( $filters as $filter ) {
+			$condition = $this->build_single_filter_condition( $filter, $query_class, $query, $view );
+			if ( $condition ) {
+				if ( is_array( $condition ) ) {
+					$search_conditions = array_merge( $search_conditions, $condition );
+				} else {
+					$search_conditions[] = $condition;
+				}
+			}
+		}
+
+		return $search_conditions;
+	}
+
+	/**
+	 * Builds a query condition for a single filter.
+	 *
+	 * @since 2.30
+	 *
+	 * @param array     $filter      The filter configuration.
+	 * @param string    $query_class The query class name.
+	 * @param \GF_Query $query       The query object.
+	 * @param \GV\View  $view        The view object.
+	 *
+	 * @return \GF_Query_Condition|\GF_Query_Condition[]|null The condition(s) or null.
+	 */
+	private function build_single_filter_condition( array $filter, string $query_class, $query, $view ) {
+		$_tmp_query       = new $query_class(
+			$filter['form_id'],
+			[
+				'mode'          => 'any',
+				'field_filters' => [ $filter ],
+			]
+		);
+		$_tmp_query_parts = $_tmp_query->_introspect();
+		$search_condition = $_tmp_query_parts['where'];
+
+		// Handle global filters without specific field key.
+		if ( empty( $filter['key'] ) && $search_condition->expressions ) {
+			return $search_condition;
+		}
+
+		// Extract condition from expressions if needed (multiple forms filter).
+		if ( ! $search_condition->left && $search_condition->expressions ) {
+			$search_condition = $search_condition->expressions[0];
+		}
+
+		$left = $this->normalize_condition_column( $search_condition->left, $query );
+
+		// Handle product field special case.
+		$product_result = $this->build_product_field_condition( $filter, $left, $query, $search_condition );
+		$left           = $product_result['left'];
+
+		$conditions = [];
+		if ( $product_result['extra_condition'] ) {
+			$conditions[] = $product_result['extra_condition'];
+		}
+
+		// Handle multi-form joins.
+		if ( $view->joins && \GF_Query_Column::META == $left->field_id ) {
+			$conditions[] = $this->build_join_conditions( $view, $query, $search_condition );
+		} else {
+			$conditions[] = new \GF_Query_Condition(
+				$left,
+				$search_condition->operator,
+				$search_condition->right
+			);
+		}
+
+		return $conditions;
+	}
+
+	/**
+	 * Normalizes a condition column to include proper aliases.
+	 *
+	 * @since 2.30
+	 *
+	 * @param mixed     $left  The left side of the condition.
+	 * @param \GF_Query $query The query object.
+	 *
+	 * @return mixed The normalized column.
+	 */
+	private function normalize_condition_column( $left, $query ) {
+		if ( ! $left ) {
+			return $left;
+		}
+
+		// Handle GF_Query_Call (e.g., for Number field casting).
+		if ( $left instanceof \GF_Query_Call && $left->parameters ) {
+			$parameters = array_map(
+				static function ( $parameter ) use ( $query ) {
+					if ( ! $parameter instanceof \GF_Query_Column ) {
+						return $parameter;
+					}
+
+					return new \GF_Query_Column(
+						$parameter->field_id,
+						$parameter->source,
+						$query->_alias(
+							$parameter->field_id,
+							$parameter->source,
+							$parameter->is_entry_column() ? 't' : 'm'
+						)
+					);
+				},
+				$left->parameters
+			);
+
+			return new \GF_Query_Call( $left->function_name, $parameters );
+		}
+
+		// Handle regular GF_Query_Column.
+		$alias = $query->_alias( $left->field_id, $left->source, $left->is_entry_column() ? 't' : 'm' );
+
+		return new \GF_Query_Column( $left->field_id, $left->source, $alias );
 	}
 
 	/**
