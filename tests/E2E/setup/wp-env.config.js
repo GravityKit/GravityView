@@ -28,7 +28,7 @@ const wpEnvConfig = {
 	lifecycleScripts: {
 		afterStart: [
 			"npm run wp-env:cli wp rewrite structure '/%postname%/' -- --hard",
-			`npm run wp-env:cli wp eval-file wp-content/plugins/${path.basename(process.env.INIT_CWD)}/tests/E2E/helpers/gf-importer/gf-importer.php`,
+			`npm run wp-env:cli wp eval-file wp-content/plugins/${path.basename(process.env.INIT_CWD)}/node_modules/@gravitykit/gf-importer/php/gf-importer.php`,
 			'npm run wp-env:cli wp plugin install gravityformscli pexlechris-adminer -- --activate',
 			'npm run wp-env:cli wp option update gform_pending_installation 0', // Prevents the setup wizard from running.
 			`npm run wp-env:cli wp gf license update ${process.env.GRAVITY_FORMS_LICENSE_KEY}`,

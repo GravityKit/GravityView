@@ -73,8 +73,11 @@ class GravityView_Field_Date extends GravityView_Field {
 		/**
 		 * Whether to override the Gravity Forms date format with a PHP date format.
 		 *
+		 * @since 1.0-beta
+		 *
 		 * @see https://codex.wordpress.org/Formatting_Date_and_Time
-		 * @param null|string Date Format (default: $field->dateFormat)
+		 *
+		 * @param string|null $date_format Date Format. Default: $field->dateFormat
 		 */
 		$full_date_format = apply_filters( 'gravityview_date_format', $date_format );
 

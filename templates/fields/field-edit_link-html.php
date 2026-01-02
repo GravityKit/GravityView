@@ -42,6 +42,14 @@ if ( ! empty( $field_settings['new_window'] ) ) {
 	$link_atts['target'] = '_blank';
 }
 
+/**
+ * Modify the entry link anchor text.
+ *
+ * @since 1.0-beta
+ *
+ * @param string               $link_text   The link anchor text after merge tag replacement.
+ * @param \GV\Template_Context $gravityview The template context.
+ */
 $output = apply_filters( 'gravityview_entry_link', GravityView_API::replace_variables( $link_text, $form, $entry ), $gravityview );
 
 $href = GravityView_Edit_Entry::get_edit_link( $entry, $gravityview->view->ID, $post ? $post->ID : null );

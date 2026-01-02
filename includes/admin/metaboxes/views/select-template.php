@@ -120,7 +120,7 @@ foreach ( GravityKitFoundation::helpers()->core->get_plugins() as $path => $plug
 							?>
 						</div><div class="hidden"> <?php } ?>
 
-						<p><a href="#gv_select_template" role="button" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>" data-base-template="<?php echo esc_attr( $base_type) ; ?>"><?php esc_html_e( 'Select', 'gk-gravityview' ); ?></a></p>
+						<p><a href="#gv_select_template" role="button" class="gv_select_template button button-hero button-primary" data-templateid="<?php echo esc_attr( $id ); ?>" data-base-template="<?php echo esc_attr( $base_type) ; ?>" data-testid="select-<?php echo esc_attr( sanitize_title( $label ) ); ?>" aria-label="<?php echo esc_attr( sprintf( __( 'Select %s', 'gk-gravityview' ), $label ) ); ?>"><?php esc_html_e( 'Select', 'gk-gravityview' ); ?></a></p>
 						<?php if ( ! empty( $template['preview'] ) ) { ?>
 							<a href="<?php echo esc_url( $template['preview'] ); ?>" rel="external" class="gv-site-preview"><i class="dashicons dashicons-welcome-view-site" title="<?php esc_html_e( 'View a live demo of this preset', 'gk-gravityview' ); ?>"></i></a>
 						<?php } ?>

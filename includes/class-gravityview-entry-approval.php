@@ -269,7 +269,8 @@ class GravityView_Entry_Approval {
 		 * Modify whether to run the after_submission process.
 		 *
 		 * @since 2.3
-		 * @param bool $process_after_submission default: true
+		 *
+		 * @param bool $process_after_submission Default: true.
 		 */
 		$process_after_submission = apply_filters( 'gravityview/approve_entries/after_submission', true );
 
@@ -283,6 +284,7 @@ class GravityView_Entry_Approval {
 		 * Modify the default approval status for newly submitted entries.
 		 *
 		 * @since 2.0.14
+		 *
 		 * @param int $default_status See GravityView_Entry_Approval_Status() for valid statuses.
 		 */
 		$filtered_status = apply_filters( 'gravityview/approve_entries/after_submission/default_status', $default_status );
@@ -341,13 +343,13 @@ class GravityView_Entry_Approval {
         }
 
         /**
-         * Filter the approval status on entry update.
+         * Filters the approval status on entry update.
          *
-         * @filter `gravityview/approve_entries/update_unapproved_meta`
+         * @since 2.5
          *
          * @param string $new_status The approval status.
-         * @param array $form The form.
-         * @param array $entry The entry.
+         * @param array  $form       The form.
+         * @param array  $entry      The entry.
          */
         $new_status = apply_filters( 'gravityview/approve_entries/update_unapproved_meta', $new_status, $form, $entry );
 
@@ -460,10 +462,12 @@ class GravityView_Entry_Approval {
 			self::add_approval_status_updated_note( $entry_id, $approved );
 
 			/**
-			 * Destroy the cache for this form
+			 * Destroy the cache for this form.
 			 *
 			 * @see class-cache.php
 			 * @since 1.5.1
+			 *
+			 * @param int $form_id The Gravity Forms form ID.
 			 */
 			do_action( 'gravityview_clear_form_cache', $form_id );
 
@@ -503,6 +507,7 @@ class GravityView_Entry_Approval {
 		 * Add a note when the entry has been approved or disapproved?
 		 *
 		 * @since 1.16.3
+		 *
 		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
 		 */
 		$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
@@ -676,8 +681,9 @@ class GravityView_Entry_Approval {
 		 * Note: If you want this to work with Bulk Actions, run in a plugin rather than a theme; the bulk updates hook runs before themes are loaded.
 		 *
 		 * @since 1.7.6.1
-		 * @since 1.18 Added "unapproved"
-		 * @param  int $entry_id ID of the Gravity Forms entry
+		 * @since 1.18 Added "unapproved".
+		 *
+		 * @param int $entry_id ID of the Gravity Forms entry.
 		 */
 		do_action( 'gravityview/approve_entries/' . $action, $entry_id );
 
@@ -759,12 +765,14 @@ class GravityView_Entry_Approval {
 		}
 
 		/**
-		 * @filter `gravityview/approve_entries/autounapprove/status`
+		 * Filters the approval status when an entry is auto-unapproved after editing.
+		 *
 		 * @since 2.2.2
-		 * @param int|false $approval_status Approval status integer, or false if you want to not update status. Use GravityView_Entry_Approval_Status constants. Default: 3 (GravityView_Entry_Approval_Status::UNAPPROVED)
-		 * @param array $form Gravity Forms form array
-		 * @param string $entry_id Numeric ID of the entry that was updated
-		 * @param \GV\View $view Current View where the entry was edited
+		 *
+		 * @param int|false $approval_status Approval status integer, or false if you want to not update status. Use GravityView_Entry_Approval_Status constants. Default: 3 (GravityView_Entry_Approval_Status::UNAPPROVED).
+		 * @param array     $form            Gravity Forms form array.
+		 * @param string    $entry_id        Numeric ID of the entry that was updated.
+		 * @param \GV\View  $view            Current View where the entry was edited.
 		 */
 		$approval_status = apply_filters( 'gravityview/approve_entries/autounapprove/status', GravityView_Entry_Approval_Status::UNAPPROVED, $form, $entry_id, $view );
 
@@ -783,6 +791,7 @@ class GravityView_Entry_Approval {
 		 * Add a note when the entry has been approved or disapproved?
 		 *
 		 * @since 1.16.3
+		 *
 		 * @param bool $add_note True: Yep, add that note! False: Do not, under any circumstances, add that note!
 		 */
 		$add_note = apply_filters( 'gravityview/approve_entries/add-note', true );
@@ -808,7 +817,8 @@ class GravityView_Entry_Approval {
 		 * Where should the popover be placed?
 		 *
 		 * @since 2.3.1
-		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'
+		 *
+		 * @param string $placement Where to place the popover; 'right' (default ltr), 'left' (default rtl), 'top', or 'bottom'.
 		 */
 		$placement = apply_filters( 'gravityview/approve_entries/popover_placement', $placement );
 

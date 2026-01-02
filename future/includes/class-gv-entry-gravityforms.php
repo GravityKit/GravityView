@@ -55,7 +55,15 @@ class GF_Entry extends Entry implements \ArrayAccess {
 		}
 
 		if ( ! $entry || is_wp_error( $entry ) ) {
-			/** Hmm, slugs? Must be. */
+			/**
+			 * Filter whether to enable custom entry slugs.
+			 *
+			 * When enabled, entries can be retrieved by slug instead of just numeric ID.
+			 *
+			 * @since 2.0
+			 *
+			 * @param bool $enable_custom_slug Whether to enable custom entry slugs. Default: false.
+			 */
 			if ( apply_filters( 'gravityview_custom_entry_slug', false ) ) {
 				return self::by_slug( $entry_id, $form_id );
 			}

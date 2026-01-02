@@ -51,8 +51,9 @@ class gvfield extends \GV\Shortcode {
 		/**
 		 * Filter the [gvfield] shortcode attributes.
 		 *
-		 * @param array $atts The initial attributes.
 		 * @since 2.0
+		 *
+		 * @param array $atts The initial attributes.
 		 */
 		$atts = apply_filters( 'gravityview/shortcodes/gvfield/atts', $atts );
 
@@ -189,12 +190,13 @@ class gvfield extends \GV\Shortcode {
 		/**
 		 * Filter the [gvfield] output.
 		 *
-		 * @param string $output The output.
-		 * @param \GV\View|null $view The View detected or null.
-		 * @param \GV\Entry|null $entry The Entry or null.
-		 * @param \GV\Field|null $field The Field or null.
-		 *
 		 * @since 2.0
+		 *
+		 * @param string          $output The output.
+		 * @param \GV\View|null   $view   The View detected or null.
+		 * @param \GV\Entry|null  $entry  The Entry or null.
+		 * @param \GV\Field|null  $field  The Field or null.
+		 * @param array           $atts   The shortcode attributes.
 		 */
 		return apply_filters( 'gravityview/shortcodes/gvfield/output', $output, $view, $entry, $field, $atts );
 	}

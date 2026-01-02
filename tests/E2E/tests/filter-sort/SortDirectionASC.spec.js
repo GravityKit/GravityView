@@ -27,7 +27,9 @@ test('Verify Sort Direction ASC', async ({ page }) => {
 			.locator('#gravityview_settings div')
 			.getByRole('link', { name: 'Filter & Sort' })
 			.click();
-		await page.locator('#gravityview_sort_field_1').selectOption({ label: 'Favorite Color' });
+		const sortField = page.locator('#gravityview_sort_field_1');
+		await expect(sortField).toBeEnabled();
+		await sortField.selectOption({ label: 'Favorite Color' });
 		await publishView(page);
 	});
 

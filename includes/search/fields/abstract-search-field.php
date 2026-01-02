@@ -801,7 +801,7 @@ abstract class Search_Field extends \GravityView_Admin_View_Item {
 		];
 
 		/**
-		 * @filter `gk/gravityview/search/field/allowed_sections` Modifies the sections where the field is allowed to be used.
+		 * Modifies the sections where the field is allowed to be used.
 		 *
 		 * @since 2.42
 		 *

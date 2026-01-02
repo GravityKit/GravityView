@@ -56,9 +56,10 @@ class Entry_Table_Template extends Entry_Template {
 		/**
 		 * Modify the fields displayed in this tables.
 		 *
-		 * @param \GV\Field_Collection $fields The fields.
-		 * @param \GV\Template_Context $context The context.
 		 * @since 2.0
+		 *
+		 * @param \GV\Field_Collection $fields  The fields.
+		 * @param \GV\Template_Context $context The context.
 		 */
 		$fields = apply_filters( 'gravityview/template/table/fields', $fields, $context );
 

@@ -138,14 +138,15 @@ switch ( $gravityview->field->field->inputType ) {
 
 		/**
 		 * The value used to separate multiple values in the CSV export.
+		 *
 		 * Must include a space after the semicolon to prevent CSV format issues.
 		 * Without the space, CSV parsers may interpret the values incorrectly and create
 		 * unwanted extra columns when displaying multiple Likert field values.
 		 *
 		 * @since 2.40
 		 *
-		 * @param string The glue. Default: "; " (semicolon with space)
-		 * @param \GV\Template_Context The context.
+		 * @param string               $glue        The glue. Default: "; " (semicolon with space).
+		 * @param \GV\Template_Context $gravityview The context.
 		 */
 		$glue = apply_filters( 'gravityview/template/field/csv/glue', '; ', $gravityview );
 

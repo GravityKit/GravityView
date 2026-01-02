@@ -55,14 +55,15 @@ if ( ! $is_single_input ) {
 				/**
 				 * Change the output for a checkbox "check" symbol. Default is the "dashicons-yes" icon.
 				 *
+				 * @since 1.0-beta
+				 * @since 2.0 Added $gravityview parameter.
+				 *
 				 * @see https://developer.wordpress.org/resource/dashicons/#yes
 				 *
-				 * @param string $output HTML span with `dashicons dashicons-yes` class
-				 * @param array $entry Gravity Forms entry array
-				 * @param array $field GravityView field array
-				 *
-				 * @since 2.0
-				 * @param \GV\Template_Context The template context.
+				 * @param string               $output      HTML span with `dashicons dashicons-yes` class.
+				 * @param array                $entry       Gravity Forms entry array.
+				 * @param array                $field       GravityView field array.
+				 * @param \GV\Template_Context $gravityview The template context.
 				 */
 				$output = apply_filters( 'gravityview_field_tick', '<span class="dashicons dashicons-yes"></span>', $entry, $field, $gravityview );
 			}

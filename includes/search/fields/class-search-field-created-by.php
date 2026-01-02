@@ -93,7 +93,7 @@ final class Search_Field_Created_By extends Search_Field_Choices {
 			 *
 			 * @since 2.3
 			 *
-			 * @param string[in,out] The text. Default: $user->display_name
+			 * @param string The text. Default: $user->display_name
 			 * @param \WP_User      $user The user.
 			 * @param \GV\View|null $view The view.
 			 */

@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const path = require('path');
 
 const templates = [
 	{
@@ -388,6 +389,20 @@ async function expectToBeVisibleBefore(page, locator_one, locator_two) {
 	await expect(box_one.y).toBeLessThan(box_two.y);
 }
 
+/**
+ * Gets the absolute path to a test image from the gf-importer package.
+ *
+ * @param {string} filename - The name of the image file (e.g., 'blizzard.jpg', 'wind.jpg').
+ * @returns {string} - The absolute path to the image file.
+ *
+ * @example
+ * const imagePath = getTestImagePath('blizzard.jpg');
+ * await fileInput.setInputFiles(imagePath);
+ */
+function getTestImagePath(filename) {
+	return path.join(__dirname, '../../../node_modules/@gravitykit/gf-importer/data/images', filename);
+}
+
 module.exports = {
 	templates,
 	viewTemplatesMap,
@@ -401,5 +416,6 @@ module.exports = {
 	getViewUrl,
 	getOptionValueBySearchTerm,
 	clickFirstVisible,
-	expectToBeVisibleBefore
+	expectToBeVisibleBefore,
+	getTestImagePath
 };

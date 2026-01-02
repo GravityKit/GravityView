@@ -374,6 +374,21 @@ class GravityView_Edit_Entry_Render {
 
 		GFFormDisplay::enqueue_form_scripts( $this->form ? $this->form : $gravityview_view->getForm(), false );
 
+		/**
+		 * Fix for Gravity Forms bug where gf_legacy is accessed without checking if it exists.
+		 *
+		 * This prevents "Uncaught ReferenceError: gf_legacy is not defined" errors in
+		 * js/conditional_logic.js when forms with conditional logic on buttons are rendered.
+		 *
+		 * @see https://github.com/gravityforms/gravityforms/issues/3539
+		 * @todo Remove when {@link https://github.com/gravityforms/gravityforms/pull/3540} is merged and released.
+		 */
+		wp_add_inline_script(
+			'gform_conditional_logic',
+			'window.gf_legacy = window.gf_legacy || { is_legacy: "0" };',
+			'before'
+		);
+
 		wp_localize_script( 'gravityview-fe-view', 'gvGlobals', array( 'cookiepath' => COOKIEPATH ) );
 
 		wp_enqueue_script( 'sack' ); // Sack is required for images.
@@ -1717,9 +1732,10 @@ class GravityView_Edit_Entry_Render {
 		/**
 		 * Allow the pre-populated value to override saved value in Edit Entry form. By default, pre-populate mechanism only kicks on empty fields.
 		 *
-		 * @param boolean True: override saved values; False: don't override (default)
-		 * @param $field GF_Field object Gravity Forms field object
 		 * @since 1.13
+		 *
+		 * @param bool $override Whether to override saved values with pre-populated values. Default: false.
+		 * @param GF_Field $field Gravity Forms field object.
 		 */
 		$override_saved_value = apply_filters( 'gravityview/edit_entry/pre_populate/override', false, $field );
 
@@ -2450,6 +2466,12 @@ class GravityView_Edit_Entry_Render {
 			if ( 'list' === $field->type ) {
 				$list_rows = maybe_unserialize( $field_value );
 
+				// If the list value is empty or not a properly structured array, reset default to empty.
+				if ( empty( $list_rows ) || ! is_array( $list_rows ) ) {
+					$field->defaultValue = '';
+					continue;
+				}
+
 				$list_field_value = [];
 				foreach ( (array) $list_rows as $row ) {
 					foreach ( (array) $row as $column ) {
@@ -2710,7 +2732,7 @@ class GravityView_Edit_Entry_Render {
 			$has_cap = GVCommon::has_cap( $field['allow_edit_cap'] );
 
 			/**
-			 * @filter `gk/gravityview/edit-entry/user-can-edit-field` Filter whether the user can edit a specific field.
+			 * Filter whether the user can edit a specific field.
 			 *
 			 * @since 2.38.0
 			 *
@@ -2929,7 +2951,7 @@ class GravityView_Edit_Entry_Render {
 	 */
 	private function record_files_for_removal( GF_Field $field, string $value, bool &$is_cleared = false ): void {
 		/**
-		 * @filter `gk/gravityview/edit-entry/record-file-removal` Modifies whether to record files for removal.
+		 * Modifies whether to record files for removal.
 		 *
 		 * @since  2.40
 		 *

@@ -27,8 +27,8 @@ if ( $value = json_decode( $value ) ) {
 	 *
 	 * @since 2.4.2
 	 *
-	 * @param string The glue. Default: ";" (semicolon)
-	 * @param \GV\Template_Context The context.
+	 * @param string               $glue        The glue. Default: ";" (semicolon).
+	 * @param \GV\Template_Context $gravityview The template context.
 	 */
 	$glue = apply_filters( 'gravityview/template/field/csv/glue', ';', $gravityview );
 

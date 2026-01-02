@@ -63,10 +63,11 @@ class GravityView_Widget_Page_Links extends \GV\Widget {
 		);
 
 		/**
-		 * Filter the pagination options.
+		 * Filters the pagination options.
 		 *
 		 * @since 1.1.4
-		 * @param array  $page_link_args Array of arguments for the `paginate_links()` function. [Read more about `paginate_links()`](http://developer.wordpress.org/reference/functions/paginate_links/)
+		 *
+		 * @param array $page_link_args Array of arguments for the `paginate_links()` function. {@link https://developer.wordpress.org/reference/functions/paginate_links/ Read more about `paginate_links()`}.
 		 */
 		$page_link_args = apply_filters( 'gravityview_page_links_args', $page_link_args );
 

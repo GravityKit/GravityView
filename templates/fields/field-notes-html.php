@@ -30,10 +30,12 @@ require_once GFCommon::get_base_path() . '/entry_detail.php';
 /**
  * Print scripts and styles required for the Notes field.
  *
- * @see GravityView_Field_Notes::enqueue_scripts
  * @since 1.17
- * @since 2.0
- * @param \GV\Template_Context $gravityview The context.
+ * @since 2.0 Changed parameter to \GV\Template_Context.
+ *
+ * @see GravityView_Field_Notes::enqueue_scripts
+ *
+ * @param \GV\Template_Context $gravityview The template context.
  */
 do_action( 'gravityview/field/notes/scripts', $gravityview );
 

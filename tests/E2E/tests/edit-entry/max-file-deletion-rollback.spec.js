@@ -1,18 +1,17 @@
 import { test, expect } from '@playwright/test';
-import { createView, publishView, checkViewOnFrontEnd, templates } from '../../helpers/test-helpers';
-import path from 'path';
+import { createView, publishView, checkViewOnFrontEnd, templates, getTestImagePath } from '../../helpers/test-helpers';
 
 /**
  * Ensures deleted files are not restored when validation fails after editing an entry with a file upload limit.
  */
-test('Does not restore deleted files after validation failure', async ({ page }) => {
+test('Does not restore deleted files after validation failure', async ({ page }, testInfo) => {
   await page.goto('/wp-admin/edit.php?post_type=gravityview');
 
   await createView(page, {
     formTitle: 'Weather Multi-Upload Form',
     viewName: 'File Deletion Rollback Test',
     template: templates[0]
-  });
+  }, testInfo);
 
   await publishView(page);
   await checkViewOnFrontEnd(page);
@@ -44,8 +43,8 @@ test('Does not restore deleted files after validation failure', async ({ page })
   await deleteButtons.first().click();
   await expect(page.locator('.ginput_preview')).toHaveCount(0);
 
-  const fogImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/fog.jpg');
-  const blizzardImagePath = path.join(__dirname, '../../helpers/gf-importer/data/images/blizzard.jpg');
+  const fogImagePath = getTestImagePath('fog.jpg');
+  const blizzardImagePath = getTestImagePath('blizzard.jpg');
 
   await page.getByRole('button', { name: /select files/i }).click();
   const fileInput = page.locator('input[type="file"]:visible');

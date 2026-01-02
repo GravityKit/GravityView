@@ -67,8 +67,10 @@ class GravityView_Field_Post_Content extends GravityView_Field {
 		/**
 		 * Modify the settings passed to the Post Content wp_editor().
 		 *
-		 * @see wp_editor() For the options available
 		 * @since 1.7
+		 *
+		 * @see wp_editor() For the options available.
+		 *
 		 * @param array $editor_settings Array of settings to be passed to wp_editor(). Note: there is also an additional value in the array: `placeholder`, added to the textarea HTML by GravityView.
 		 */
 		$editor_settings = apply_filters( 'gravityview/edit_entry/post_content/wp_editor_settings', $editor_settings );
