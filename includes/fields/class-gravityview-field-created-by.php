@@ -168,21 +168,18 @@ class GravityView_Field_Created_By extends GravityView_Field {
 	 */
 	public function get_field_input( array $form, $value, array $entry, GF_Field $field ): string {
 		GravityView_Change_Entry_Creator::enqueue_selectwoo_assets_frontend();
-		$inline_styles = '
-			<style>
-				.ginput_container .select2-container .select2-selection--single,
-				.ginput_container .select2-container--default .select2-selection--single .select2-selection__arrow {
-					height: 40px;
-				}
-				.ginput_container .select2-container--default .select2-selection--single .select2-selection__rendered {
-					line-height: 40px;
-				}
-			</style>
-		';
+		wp_add_inline_style( 'gravityview_selectwoo', '
+		.ginput_container .select2-container .select2-selection--single,
+		.ginput_container .select2-container--default .select2-selection--single .select2-selection__arrow {
+			height: 40px;
+		}
+		.ginput_container .select2-container--default .select2-selection--single .select2-selection__rendered {
+			line-height: 40px;
+		}
+		');
 
 		return sprintf(
-			'<div class="ginput_container">%s%s</div>',
-			$inline_styles,
+			'<div class="ginput_container">%s</div>',
 			GravityView_Change_Entry_Creator::get_select_field( $entry )
 		);
 	}
