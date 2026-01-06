@@ -28,7 +28,7 @@ test('File persistence during entry edit validation', async ({ page }, testInfo)
   const fileInput = page.locator('input[type="file"]:visible');
   await fileInput.setInputFiles(windImagePath);
 
-  await expect(page.getByText(/wind\.jpg/i)).toBeVisible();
+  await expect(page.getByText('wind.jpg', { exact: true })).toBeVisible();
 
   let uploadInProgress = true;
   page.on('dialog', async dialog => {

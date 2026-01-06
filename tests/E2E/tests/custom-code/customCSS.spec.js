@@ -28,7 +28,7 @@ test('Verify Custom CSS is applied on front end', async ({ page }, testInfo) => 
 		await customCodeLink.click();
 
 		const codeEditor = page.locator(
-			'#gravityview_advanced tbody tr:first-of-type .CodeMirror-activeline'
+			'#gravityview_advanced tbody tr:nth-of-type(2) .CodeMirror-activeline'
 		);
 		await codeEditor.fill('body { background-color: #ffeb3b; }');
 	});

@@ -670,7 +670,8 @@ $gv-overlay-index: 10000;
 			box-sizing: border-box;
 		}
 
-		label {
+		label,
+		.is-label {
 			display: block;
 			position: relative;
 			font-weight: 500;
