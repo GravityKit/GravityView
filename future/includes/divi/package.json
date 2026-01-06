@@ -1,0 +1,23 @@
+{
+	"name": "gravityview-divi",
+	"version": "1.0.0",
+	"description": "GravityView Divi Visual Builder integration",
+	"private": true,
+	"scripts": {
+		"build": "webpack --mode production",
+		"dev": "webpack --mode development",
+		"watch": "webpack --mode development --watch"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.28.5",
+		"@babel/preset-react": "^7.28.5",
+		"babel-loader": "^10.0.0",
+		"webpack": "^5.104.1",
+		"webpack-cli": "^6.0.1"
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not dead"
+	]
+}
