@@ -73,18 +73,18 @@ class GravityView_Change_Entry_Creator {
 	}
 
 	/**
-	 * Enqueue selectWoo script and style for frontend Edit Entry.
+	 * Enqueues selectWoo script and style for frontend Edit Entry.
 	 *
-	 * @since  TBD
+	 * @since TBD
 	 */
 	public static function enqueue_selectwoo_assets_frontend() {
 		self::enqueue_selectwoo_assets_internal();
 	}
 
 	/**
-	 * Internal method to enqueue selectWoo script and style.
+	 * Enqueues selectWoo script and style.
 	 *
-	 * @since  2.50.0
+	 * @since TBD
 	 */
 	private static function enqueue_selectwoo_assets_internal() {
 		$version      = \GV\Plugin::$version;
