@@ -28,6 +28,7 @@ This release improves error messaging for administrators, addresses a performanc
 #### ✨ Improved
 * Administrators now see detailed, actionable error messages when Views or entries cannot be displayed, instead of the generic "You are not allowed to view this content." message.
 * Custom CSS and Custom JavaScript settings now support placeholders that are automatically replaced with View-specific values. This makes it easy to write custom styles that apply to a single View without affecting others on the same page. [Read about the new placeholders.](https://docs.gravitykit.com/article/246-adding-custom-css-to-your-website#:~:text=Available%20placeholders)
+* The "Created By" field on the Edit Entry page now includes AJAX-powered search, making it easy to find and select users.
 
 #### 🐛 Fixed
 * JavaScript error breaking Edit Entry functionality when forms use conditional logic on buttons.
